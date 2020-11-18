@@ -1,10 +1,3 @@
-//
-//  GliaWidgetsTests.swift
-//  GliaWidgetsTests
-//
-//  Created by Eigo on 18.11.2020.
-//
-
 import XCTest
 @testable import GliaWidgets
 

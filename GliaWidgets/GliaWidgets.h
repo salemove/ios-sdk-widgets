@@ -1,10 +1,3 @@
-//
-//  GliaWidgets.h
-//  GliaWidgets
-//
-//  Created by Eigo on 18.11.2020.
-//
-
 #import <Foundation/Foundation.h>
 
 //! Project version number for GliaWidgets.
