@@ -34,6 +34,16 @@
 		1A60AFB9256682AF00E53F53 /* FlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60AFB8256682AF00E53F53 /* FlowCoordinator.swift */; };
 		1A60AFBC256682C800E53F53 /* SubFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60AFBB256682C800E53F53 /* SubFlowCoordinator.swift */; };
 		1A60AFBF2566834400E53F53 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60AFBE2566834400E53F53 /* ViewController.swift */; };
+		1A60AFCA2566943F00E53F53 /* RootCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60AFC92566943F00E53F53 /* RootCoordinator.swift */; };
+		1A60AFCE2566958900E53F53 /* ViewFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60AFCD2566958900E53F53 /* ViewFactory.swift */; };
+		1A60AFD52566992A00E53F53 /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60AFD42566992A00E53F53 /* ChatViewModel.swift */; };
+		1A60AFD925669A1500E53F53 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60AFD825669A1500E53F53 /* View.swift */; };
+		1A60AFDD25669A4200E53F53 /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60AFDC25669A4200E53F53 /* ChatView.swift */; };
+		1A60AFE025669A6100E53F53 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60AFDF25669A6100E53F53 /* ChatViewController.swift */; };
+		1A60AFE425669B0400E53F53 /* ChatCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60AFE325669B0400E53F53 /* ChatCoordinator.swift */; };
+		1A60AFE825669C5000E53F53 /* ChatStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60AFE725669C5000E53F53 /* ChatStyle.swift */; };
+		1A60AFEC2566A0E700E53F53 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60AFEB2566A0E700E53F53 /* NavigationController.swift */; };
+		1A60AFF12566A4B300E53F53 /* NavigationPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60AFF02566A4B300E53F53 /* NavigationPresenter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -108,6 +118,16 @@
 		1A60AFB8256682AF00E53F53 /* FlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowCoordinator.swift; sourceTree = "<group>"; };
 		1A60AFBB256682C800E53F53 /* SubFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubFlowCoordinator.swift; sourceTree = "<group>"; };
 		1A60AFBE2566834400E53F53 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		1A60AFC92566943F00E53F53 /* RootCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCoordinator.swift; sourceTree = "<group>"; };
+		1A60AFCD2566958900E53F53 /* ViewFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewFactory.swift; sourceTree = "<group>"; };
+		1A60AFD42566992A00E53F53 /* ChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
+		1A60AFD825669A1500E53F53 /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
+		1A60AFDC25669A4200E53F53 /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
+		1A60AFDF25669A6100E53F53 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
+		1A60AFE325669B0400E53F53 /* ChatCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCoordinator.swift; sourceTree = "<group>"; };
+		1A60AFE725669C5000E53F53 /* ChatStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatStyle.swift; sourceTree = "<group>"; };
+		1A60AFEB2566A0E700E53F53 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
+		1A60AFF02566A4B300E53F53 /* NavigationPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationPresenter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -165,9 +185,10 @@
 				1A60AF6725656BF200E53F53 /* ViewController */,
 				1A60AF6825656C0200E53F53 /* Coordinator */,
 				1A60AF6925656C0A00E53F53 /* View */,
-				1A60AF7825656DE700E53F53 /* Theme */,
 				1A60AF6A25656C1E00E53F53 /* Component */,
 				1A60AF6B25656C2700E53F53 /* ViewModel */,
+				1A60AF7825656DE700E53F53 /* Theme */,
+				1A60AFCC256694E300E53F53 /* Factory */,
 				1A60AFC12566857200E53F53 /* Lib */,
 				1A60AF6C25656C3600E53F53 /* Resources */,
 				1A60AF7D25656F0400E53F53 /* Glia.swift */,
@@ -209,6 +230,7 @@
 		1A60AF6725656BF200E53F53 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				1A60AFD22566991600E53F53 /* Chat */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -216,6 +238,8 @@
 		1A60AF6825656C0200E53F53 /* Coordinator */ = {
 			isa = PBXGroup;
 			children = (
+				1A60AFE225669AF800E53F53 /* Chat */,
+				1A60AFC92566943F00E53F53 /* RootCoordinator.swift */,
 			);
 			path = Coordinator;
 			sourceTree = "<group>";
@@ -223,6 +247,7 @@
 		1A60AF6925656C0A00E53F53 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				1A60AFD12566990F00E53F53 /* Chat */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -237,6 +262,7 @@
 		1A60AF6B25656C2700E53F53 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				1A60AFD32566991C00E53F53 /* Chat */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -269,6 +295,7 @@
 		1A60AF7C25656E1000E53F53 /* Style */ = {
 			isa = PBXGroup;
 			children = (
+				1A60AFE725669C5000E53F53 /* ChatStyle.swift */,
 			);
 			path = Style;
 			sourceTree = "<group>";
@@ -285,7 +312,9 @@
 		1A60AFC12566857200E53F53 /* Lib */ = {
 			isa = PBXGroup;
 			children = (
+				1A60AFEF2566A4A700E53F53 /* Presenter */,
 				1A60AFC72566866800E53F53 /* ViewController */,
+				1A60AFD725669A0500E53F53 /* View */,
 				1A60AFC62566865F00E53F53 /* Coordinator */,
 				1A60AFC52566865600E53F53 /* ViewModel */,
 			);
@@ -312,9 +341,74 @@
 		1A60AFC72566866800E53F53 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				1A60AFEA2566A0C200E53F53 /* NavigationController */,
 				1A60AFBE2566834400E53F53 /* ViewController.swift */,
 			);
 			path = ViewController;
+			sourceTree = "<group>";
+		};
+		1A60AFCC256694E300E53F53 /* Factory */ = {
+			isa = PBXGroup;
+			children = (
+				1A60AFCD2566958900E53F53 /* ViewFactory.swift */,
+			);
+			path = Factory;
+			sourceTree = "<group>";
+		};
+		1A60AFD12566990F00E53F53 /* Chat */ = {
+			isa = PBXGroup;
+			children = (
+				1A60AFDC25669A4200E53F53 /* ChatView.swift */,
+			);
+			path = Chat;
+			sourceTree = "<group>";
+		};
+		1A60AFD22566991600E53F53 /* Chat */ = {
+			isa = PBXGroup;
+			children = (
+				1A60AFDF25669A6100E53F53 /* ChatViewController.swift */,
+			);
+			path = Chat;
+			sourceTree = "<group>";
+		};
+		1A60AFD32566991C00E53F53 /* Chat */ = {
+			isa = PBXGroup;
+			children = (
+				1A60AFD42566992A00E53F53 /* ChatViewModel.swift */,
+			);
+			path = Chat;
+			sourceTree = "<group>";
+		};
+		1A60AFD725669A0500E53F53 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				1A60AFD825669A1500E53F53 /* View.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		1A60AFE225669AF800E53F53 /* Chat */ = {
+			isa = PBXGroup;
+			children = (
+				1A60AFE325669B0400E53F53 /* ChatCoordinator.swift */,
+			);
+			path = Chat;
+			sourceTree = "<group>";
+		};
+		1A60AFEA2566A0C200E53F53 /* NavigationController */ = {
+			isa = PBXGroup;
+			children = (
+				1A60AFEB2566A0E700E53F53 /* NavigationController.swift */,
+			);
+			path = NavigationController;
+			sourceTree = "<group>";
+		};
+		1A60AFEF2566A4A700E53F53 /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				1A60AFF02566A4B300E53F53 /* NavigationPresenter.swift */,
+			);
+			path = Presenter;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -504,18 +598,28 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1A60AFD925669A1500E53F53 /* View.swift in Sources */,
 				1A60AFBC256682C800E53F53 /* SubFlowCoordinator.swift in Sources */,
 				1A60AF7E25656F0400E53F53 /* Glia.swift in Sources */,
 				1A60AFB62566825400E53F53 /* ViewModel.swift in Sources */,
 				1A60AFB9256682AF00E53F53 /* FlowCoordinator.swift in Sources */,
 				1A60AF9F25667CA800E53F53 /* FontProvider.swift in Sources */,
+				1A60AFCE2566958900E53F53 /* ViewFactory.swift in Sources */,
 				1A60AF96256675C400E53F53 /* UIColor+Extensions.swift in Sources */,
+				1A60AFE425669B0400E53F53 /* ChatCoordinator.swift in Sources */,
 				1A60AFBF2566834400E53F53 /* ViewController.swift in Sources */,
+				1A60AFF12566A4B300E53F53 /* NavigationPresenter.swift in Sources */,
 				1A60AF93256674F900E53F53 /* Color.swift in Sources */,
 				1A60AFAF256680EF00E53F53 /* L10n.swift in Sources */,
 				1A60AF7A25656E0500E53F53 /* Theme.swift in Sources */,
+				1A60AFDD25669A4200E53F53 /* ChatView.swift in Sources */,
+				1A60AFCA2566943F00E53F53 /* RootCoordinator.swift in Sources */,
 				1A60AFB22566821B00E53F53 /* Asset.swift in Sources */,
+				1A60AFD52566992A00E53F53 /* ChatViewModel.swift in Sources */,
+				1A60AFE025669A6100E53F53 /* ChatViewController.swift in Sources */,
 				1A60AF90256674F000E53F53 /* Font.swift in Sources */,
+				1A60AFEC2566A0E700E53F53 /* NavigationController.swift in Sources */,
+				1A60AFE825669C5000E53F53 /* ChatStyle.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

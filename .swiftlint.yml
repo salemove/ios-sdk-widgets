@@ -3,6 +3,7 @@ disabled_rules:
   - nesting
   - implicit_return
   - function_parameter_count
+  - weak_delegate
 opt_in_rules:
   - empty_count
   - implicit_return
