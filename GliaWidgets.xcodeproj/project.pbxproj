@@ -26,6 +26,14 @@
 		1A60AF9B2566798D00E53F53 /* Roboto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1A60AF992566798D00E53F53 /* Roboto-Bold.ttf */; };
 		1A60AF9C2566798D00E53F53 /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1A60AF9A2566798D00E53F53 /* Roboto-Regular.ttf */; };
 		1A60AF9F25667CA800E53F53 /* FontProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60AF9E25667CA800E53F53 /* FontProvider.swift */; };
+		1A60AFA325667EA300E53F53 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1A60AFA225667EA300E53F53 /* Assets.xcassets */; };
+		1A60AFAA2566806000E53F53 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1A60AFAC2566806000E53F53 /* Localizable.strings */; };
+		1A60AFAF256680EF00E53F53 /* L10n.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60AFAE256680EF00E53F53 /* L10n.swift */; };
+		1A60AFB22566821B00E53F53 /* Asset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60AFB12566821B00E53F53 /* Asset.swift */; };
+		1A60AFB62566825400E53F53 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60AFB52566825400E53F53 /* ViewModel.swift */; };
+		1A60AFB9256682AF00E53F53 /* FlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60AFB8256682AF00E53F53 /* FlowCoordinator.swift */; };
+		1A60AFBC256682C800E53F53 /* SubFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60AFBB256682C800E53F53 /* SubFlowCoordinator.swift */; };
+		1A60AFBF2566834400E53F53 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60AFBE2566834400E53F53 /* ViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -92,6 +100,14 @@
 		1A60AF992566798D00E53F53 /* Roboto-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Bold.ttf"; sourceTree = "<group>"; };
 		1A60AF9A2566798D00E53F53 /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Regular.ttf"; sourceTree = "<group>"; };
 		1A60AF9E25667CA800E53F53 /* FontProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontProvider.swift; sourceTree = "<group>"; };
+		1A60AFA225667EA300E53F53 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		1A60AFAB2566806000E53F53 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		1A60AFAE256680EF00E53F53 /* L10n.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = L10n.swift; sourceTree = "<group>"; };
+		1A60AFB12566821B00E53F53 /* Asset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Asset.swift; sourceTree = "<group>"; };
+		1A60AFB52566825400E53F53 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
+		1A60AFB8256682AF00E53F53 /* FlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowCoordinator.swift; sourceTree = "<group>"; };
+		1A60AFBB256682C800E53F53 /* SubFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubFlowCoordinator.swift; sourceTree = "<group>"; };
+		1A60AFBE2566834400E53F53 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,6 +168,7 @@
 				1A60AF7825656DE700E53F53 /* Theme */,
 				1A60AF6A25656C1E00E53F53 /* Component */,
 				1A60AF6B25656C2700E53F53 /* ViewModel */,
+				1A60AFC12566857200E53F53 /* Lib */,
 				1A60AF6C25656C3600E53F53 /* Resources */,
 				1A60AF7D25656F0400E53F53 /* Glia.swift */,
 				1A205D5B25655CB1003AA3CD /* GliaWidgets.h */,
@@ -228,10 +245,14 @@
 			isa = PBXGroup;
 			children = (
 				1A60AF982566789F00E53F53 /* Font */,
+				1A60AFB12566821B00E53F53 /* Asset.swift */,
 				1A60AF8F256674F000E53F53 /* Font.swift */,
 				1A60AF9E25667CA800E53F53 /* FontProvider.swift */,
 				1A60AF92256674F900E53F53 /* Color.swift */,
+				1A60AFAE256680EF00E53F53 /* L10n.swift */,
 				1A60AF95256675C400E53F53 /* UIColor+Extensions.swift */,
+				1A60AFA225667EA300E53F53 /* Assets.xcassets */,
+				1A60AFAC2566806000E53F53 /* Localizable.strings */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -261,6 +282,41 @@
 			path = Font;
 			sourceTree = "<group>";
 		};
+		1A60AFC12566857200E53F53 /* Lib */ = {
+			isa = PBXGroup;
+			children = (
+				1A60AFC72566866800E53F53 /* ViewController */,
+				1A60AFC62566865F00E53F53 /* Coordinator */,
+				1A60AFC52566865600E53F53 /* ViewModel */,
+			);
+			path = Lib;
+			sourceTree = "<group>";
+		};
+		1A60AFC52566865600E53F53 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				1A60AFB52566825400E53F53 /* ViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		1A60AFC62566865F00E53F53 /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				1A60AFB8256682AF00E53F53 /* FlowCoordinator.swift */,
+				1A60AFBB256682C800E53F53 /* SubFlowCoordinator.swift */,
+			);
+			path = Coordinator;
+			sourceTree = "<group>";
+		};
+		1A60AFC72566866800E53F53 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				1A60AFBE2566834400E53F53 /* ViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -285,6 +341,7 @@
 				1A205D5525655CB1003AA3CD /* Frameworks */,
 				1A205D5625655CB1003AA3CD /* Resources */,
 				1A60AF5E25656A1F00E53F53 /* Embed Frameworks */,
+				1A60AFA525667F3C00E53F53 /* SwiftGen */,
 			);
 			buildRules = (
 			);
@@ -379,6 +436,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				1A60AF9C2566798D00E53F53 /* Roboto-Regular.ttf in Resources */,
+				1A60AFAA2566806000E53F53 /* Localizable.strings in Resources */,
+				1A60AFA325667EA300E53F53 /* Assets.xcassets in Resources */,
 				1A60AF9B2566798D00E53F53 /* Roboto-Bold.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -420,6 +479,24 @@
 			shellPath = /bin/sh;
 			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
+		1A60AFA525667F3C00E53F53 /* SwiftGen */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftGen;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftgen >/dev/null; then\n    swiftgen\nelse\n    echo \"warning: SwiftGen not installed, download it from https://github.com/SwiftGen/SwiftGen\"\nfi\n";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -427,11 +504,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1A60AFBC256682C800E53F53 /* SubFlowCoordinator.swift in Sources */,
 				1A60AF7E25656F0400E53F53 /* Glia.swift in Sources */,
+				1A60AFB62566825400E53F53 /* ViewModel.swift in Sources */,
+				1A60AFB9256682AF00E53F53 /* FlowCoordinator.swift in Sources */,
 				1A60AF9F25667CA800E53F53 /* FontProvider.swift in Sources */,
 				1A60AF96256675C400E53F53 /* UIColor+Extensions.swift in Sources */,
+				1A60AFBF2566834400E53F53 /* ViewController.swift in Sources */,
 				1A60AF93256674F900E53F53 /* Color.swift in Sources */,
+				1A60AFAF256680EF00E53F53 /* L10n.swift in Sources */,
 				1A60AF7A25656E0500E53F53 /* Theme.swift in Sources */,
+				1A60AFB22566821B00E53F53 /* Asset.swift in Sources */,
 				1A60AF90256674F000E53F53 /* Font.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -475,6 +558,14 @@
 				1A205D8625655CEE003AA3CD /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		1A60AFAC2566806000E53F53 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1A60AFAB2566806000E53F53 /* en */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

@@ -1,5 +1,3 @@
 import UIKit
 
-public class Glia {
-    
-}
+public class Glia {}

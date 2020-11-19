@@ -13,7 +13,6 @@ opt_in_rules:
   - closure_spacing
   - closure_end_indentation
   - force_unwrapping
-  - missing_docs
 excluded: # paths to ignore during linting. Takes precedence over `included`.
   - GliaWidgets/Carthage
 

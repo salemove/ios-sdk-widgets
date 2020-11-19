@@ -15,6 +15,7 @@ internal class FontProvider {
     }
 
     func font(named: String, size: CGFloat) -> UIFont {
+        // swiftlint:disable force_unwrapping
         return UIFont(name: named, size: size)!
     }
 
