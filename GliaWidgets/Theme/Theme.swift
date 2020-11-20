@@ -1,15 +1,14 @@
 import UIKit
 
-public protocol Theme {
-    var primaryColor: UIColor { get }
-    var chatStyle: ChatStyle { get }
-}
+public struct Theme {
+    public var primaryColor: UIColor {
+        didSet {
+            chatStyle.primaryColor = primaryColor
+        }
+    }
+    public var chatStyle = ChatStyle()
 
-public extension Theme {
-    var primaryColor: UIColor { Color.primary }
-    var chatStyle: ChatStyle { ChatStyle() }
-}
-
-public struct DefaultTheme: Theme {
-    public init() {}
+    public init() {
+        primaryColor = Color.primary
+    }
 }

@@ -1,9 +1,3 @@
-import UIKit
-
 public struct ChatStyle {
-    let color: UIColor
-
-    init(color: UIColor = Color.primary) {
-        self.color = color
-    }
+    public var primaryColor = Color.primary
 }

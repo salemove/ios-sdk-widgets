@@ -16,6 +16,9 @@ class ViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        glia?.start(.chat, from: self)
+        var theme = Theme()
+        theme.primaryColor = .red
+        theme.chatStyle.primaryColor = .blue
+        glia?.start(.chat, from: self, using: theme)
     }
 }

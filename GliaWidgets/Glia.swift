@@ -61,7 +61,7 @@ public class Glia {
 
     public func start(_ engagementKind: EngagementKind,
                       from viewController: UIViewController,
-                      using theme: Theme = DefaultTheme()) {
+                      using theme: Theme = Theme()) {
         let viewFactory = ViewFactory(with: theme)
         let presentationKind = PresentationKind(with: viewController)
         rootCoordinator = RootCoordinator(viewFactory: viewFactory,
