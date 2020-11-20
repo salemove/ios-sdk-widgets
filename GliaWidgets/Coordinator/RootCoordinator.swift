@@ -30,9 +30,9 @@ final class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
 
     private func makeNavigationPresenter() -> NavigationPresenter {
         switch presentationKind {
-        case .pushTo(let navigationController):
+        case .push(let navigationController):
             return NavigationPresenter(with: navigationController)
-        case .presentFrom:
+        case .present:
             let navigationController = NavigationController()
             navigationController.modalPresentationStyle = .fullScreen
             return NavigationPresenter(with: navigationController)
@@ -45,21 +45,22 @@ final class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
         coordinator.delegate = { [weak self] event in
             switch event {
             case .finished:
-                self?.coordinatorFinished(with: navigationPresenter)
+                self?.coordinatorFinished(navigationPresenter: navigationPresenter)
             }
         }
-        startCoordinator(coordinator, with: navigationPresenter)
+        startCoordinator(coordinator,
+                         navigationPresenter: navigationPresenter)
     }
 
     private func startCoordinator(_ coordinator: ChatCoordinator,
-                                  with navigationPresenter: NavigationPresenter) {
+                                  navigationPresenter: NavigationPresenter) {
         pushCoordinator(coordinator)
         let viewController = coordinator.start()
 
         switch presentationKind {
-        case .pushTo:
+        case .push:
             navigationPresenter.push(viewController)
-        case .presentFrom(let presentingViewController):
+        case .present(let presentingViewController):
             navigationPresenter.push(viewController, animated: false)
             presentingViewController.present(navigationPresenter.navigationController,
                                              animated: true,
@@ -67,13 +68,13 @@ final class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
         }
     }
 
-    private func coordinatorFinished(with navigationPresenter: NavigationPresenter) {
+    private func coordinatorFinished(navigationPresenter: NavigationPresenter) {
         popCoordinator()
 
         switch presentationKind {
-        case .pushTo:
+        case .push:
             navigationPresenter.pop()
-        case .presentFrom:
+        case .present:
             navigationPresenter.dismiss()
         }
     }

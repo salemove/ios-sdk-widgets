@@ -16,6 +16,6 @@ class ViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        glia?.start(.chat, presentation: .presentFrom(self))
+        glia?.start(.chat, from: self)
     }
 }
