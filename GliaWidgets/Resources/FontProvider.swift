@@ -6,7 +6,8 @@ internal class FontProvider {
     private var fonts: [String] {
         return [
             "Roboto-Regular",
-            "Roboto-Bold"
+            "Roboto-Bold",
+            "Roboto-Medium"
         ]
     }
 

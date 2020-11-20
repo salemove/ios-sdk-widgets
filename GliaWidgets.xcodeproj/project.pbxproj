@@ -12,7 +12,6 @@
 		1A205D6925655CB2003AA3CD /* GliaWidgets.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A205D5B25655CB1003AA3CD /* GliaWidgets.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1A205D7B25655CEC003AA3CD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A205D7A25655CEC003AA3CD /* AppDelegate.swift */; };
 		1A205D7F25655CEC003AA3CD /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A205D7E25655CEC003AA3CD /* ViewController.swift */; };
-		1A205D8425655CEE003AA3CD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1A205D8325655CEE003AA3CD /* Assets.xcassets */; };
 		1A205D8725655CEE003AA3CD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1A205D8525655CEE003AA3CD /* LaunchScreen.storyboard */; };
 		1A205DB4256566BB003AA3CD /* GliaWidgets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A205D5825655CB1003AA3CD /* GliaWidgets.framework */; };
 		1A205DB5256566BB003AA3CD /* GliaWidgets.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1A205D5825655CB1003AA3CD /* GliaWidgets.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -46,6 +45,15 @@
 		1A60AFF12566A4B300E53F53 /* NavigationPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60AFF02566A4B300E53F53 /* NavigationPresenter.swift */; };
 		1A60AFF52567CE1300E53F53 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60AFF42567CE1300E53F53 /* SettingsViewController.swift */; };
 		1A60AFF82567D70E00E53F53 /* PureLayout.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1A60AFF72567D70E00E53F53 /* PureLayout.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		1A60B0042567F25600E53F53 /* Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60B0032567F25600E53F53 /* Header.swift */; };
+		1A60B0082567F29900E53F53 /* HeaderStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60B0072567F29900E53F53 /* HeaderStyle.swift */; };
+		1A60B00D2567F79A00E53F53 /* Roboto-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1A60B00C2567F79A00E53F53 /* Roboto-Medium.ttf */; };
+		1A60B0152567FC7000E53F53 /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60B0142567FC7000E53F53 /* Button.swift */; };
+		1A60B0192567FC8A00E53F53 /* ButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60B0182567FC8A00E53F53 /* ButtonStyle.swift */; };
+		1A60B01D2567FCAD00E53F53 /* ButtonProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60B01C2567FCAD00E53F53 /* ButtonProperties.swift */; };
+		1A60B0202567FD1B00E53F53 /* BackButtonProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60B01F2567FD1B00E53F53 /* BackButtonProperties.swift */; };
+		1A60B0232567FD2D00E53F53 /* CloseButtonProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60B0222567FD2D00E53F53 /* CloseButtonProperties.swift */; };
+		1A60B0272568070800E53F53 /* UIStackView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60B0262568070800E53F53 /* UIStackView+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -101,7 +109,6 @@
 		1A205D7825655CEC003AA3CD /* TestingApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestingApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A205D7A25655CEC003AA3CD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1A205D7E25655CEC003AA3CD /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		1A205D8325655CEE003AA3CD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1A205D8625655CEE003AA3CD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1A205D8825655CEE003AA3CD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1A205DA6256564CE003AA3CD /* PureLayout.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PureLayout.framework; path = GliaWidgets/Frameworks/PureLayout.framework; sourceTree = "<group>"; };
@@ -133,6 +140,15 @@
 		1A60AFF02566A4B300E53F53 /* NavigationPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationPresenter.swift; sourceTree = "<group>"; };
 		1A60AFF42567CE1300E53F53 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		1A60AFF72567D70E00E53F53 /* PureLayout.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = PureLayout.framework; sourceTree = "<group>"; };
+		1A60B0032567F25600E53F53 /* Header.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Header.swift; sourceTree = "<group>"; };
+		1A60B0072567F29900E53F53 /* HeaderStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderStyle.swift; sourceTree = "<group>"; };
+		1A60B00C2567F79A00E53F53 /* Roboto-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Medium.ttf"; sourceTree = "<group>"; };
+		1A60B0142567FC7000E53F53 /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
+		1A60B0182567FC8A00E53F53 /* ButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyle.swift; sourceTree = "<group>"; };
+		1A60B01C2567FCAD00E53F53 /* ButtonProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonProperties.swift; sourceTree = "<group>"; };
+		1A60B01F2567FD1B00E53F53 /* BackButtonProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButtonProperties.swift; sourceTree = "<group>"; };
+		1A60B0222567FD2D00E53F53 /* CloseButtonProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseButtonProperties.swift; sourceTree = "<group>"; };
+		1A60B0262568070800E53F53 /* UIStackView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -191,9 +207,9 @@
 				1A60AF6825656C0200E53F53 /* Coordinator */,
 				1A60AF6925656C0A00E53F53 /* View */,
 				1A60AF6A25656C1E00E53F53 /* Component */,
-				1A60AF6B25656C2700E53F53 /* ViewModel */,
 				1A60AF7825656DE700E53F53 /* Theme */,
 				1A60AFCC256694E300E53F53 /* Factory */,
+				1A60AF6B25656C2700E53F53 /* ViewModel */,
 				1A60AFC12566857200E53F53 /* Lib */,
 				1A60AF6C25656C3600E53F53 /* Resources */,
 				1A60AF7D25656F0400E53F53 /* Glia.swift */,
@@ -219,7 +235,6 @@
 				1A60AFFC2567D82B00E53F53 /* Frameworks */,
 				1A205D7A25655CEC003AA3CD /* AppDelegate.swift */,
 				1A205D7E25655CEC003AA3CD /* ViewController.swift */,
-				1A205D8325655CEE003AA3CD /* Assets.xcassets */,
 				1A205D8525655CEE003AA3CD /* LaunchScreen.storyboard */,
 				1A205D8825655CEE003AA3CD /* Info.plist */,
 			);
@@ -262,6 +277,8 @@
 		1A60AF6A25656C1E00E53F53 /* Component */ = {
 			isa = PBXGroup;
 			children = (
+				1A60B0022567F1EB00E53F53 /* Header */,
+				1A60B0122567FC2900E53F53 /* Button */,
 			);
 			path = Component;
 			sourceTree = "<group>";
@@ -302,6 +319,7 @@
 		1A60AF7C25656E1000E53F53 /* Style */ = {
 			isa = PBXGroup;
 			children = (
+				1A60B0062567F28B00E53F53 /* Header */,
 				1A60AFE725669C5000E53F53 /* ChatStyle.swift */,
 			);
 			path = Style;
@@ -310,6 +328,7 @@
 		1A60AF982566789F00E53F53 /* Font */ = {
 			isa = PBXGroup;
 			children = (
+				1A60B00C2567F79A00E53F53 /* Roboto-Medium.ttf */,
 				1A60AF9A2566798D00E53F53 /* Roboto-Regular.ttf */,
 				1A60AF992566798D00E53F53 /* Roboto-Bold.ttf */,
 			);
@@ -324,6 +343,7 @@
 				1A60AFD725669A0500E53F53 /* View */,
 				1A60AFC62566865F00E53F53 /* Coordinator */,
 				1A60AFC52566865600E53F53 /* ViewModel */,
+				1A60B025256806D500E53F53 /* Extensions */,
 			);
 			path = Lib;
 			sourceTree = "<group>";
@@ -434,6 +454,58 @@
 			path = Frameworks;
 			sourceTree = "<group>";
 		};
+		1A60B0022567F1EB00E53F53 /* Header */ = {
+			isa = PBXGroup;
+			children = (
+				1A60B0032567F25600E53F53 /* Header.swift */,
+			);
+			path = Header;
+			sourceTree = "<group>";
+		};
+		1A60B0062567F28B00E53F53 /* Header */ = {
+			isa = PBXGroup;
+			children = (
+				1A60B0072567F29900E53F53 /* HeaderStyle.swift */,
+			);
+			path = Header;
+			sourceTree = "<group>";
+		};
+		1A60B0122567FC2900E53F53 /* Button */ = {
+			isa = PBXGroup;
+			children = (
+				1A60B0132567FC6400E53F53 /* Style */,
+				1A60B0142567FC7000E53F53 /* Button.swift */,
+			);
+			path = Button;
+			sourceTree = "<group>";
+		};
+		1A60B0132567FC6400E53F53 /* Style */ = {
+			isa = PBXGroup;
+			children = (
+				1A60B01B2567FC9700E53F53 /* Properties */,
+				1A60B0182567FC8A00E53F53 /* ButtonStyle.swift */,
+			);
+			path = Style;
+			sourceTree = "<group>";
+		};
+		1A60B01B2567FC9700E53F53 /* Properties */ = {
+			isa = PBXGroup;
+			children = (
+				1A60B01C2567FCAD00E53F53 /* ButtonProperties.swift */,
+				1A60B01F2567FD1B00E53F53 /* BackButtonProperties.swift */,
+				1A60B0222567FD2D00E53F53 /* CloseButtonProperties.swift */,
+			);
+			path = Properties;
+			sourceTree = "<group>";
+		};
+		1A60B025256806D500E53F53 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				1A60B0262568070800E53F53 /* UIStackView+Extensions.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -454,11 +526,11 @@
 			buildPhases = (
 				1A205D5325655CB1003AA3CD /* Headers */,
 				1A60AF882566647E00E53F53 /* SwiftLint */,
+				1A60AFA525667F3C00E53F53 /* SwiftGen */,
 				1A205D5425655CB1003AA3CD /* Sources */,
 				1A205D5525655CB1003AA3CD /* Frameworks */,
 				1A205D5625655CB1003AA3CD /* Resources */,
 				1A60AF5E25656A1F00E53F53 /* Embed Frameworks */,
-				1A60AFA525667F3C00E53F53 /* SwiftGen */,
 			);
 			buildRules = (
 			);
@@ -552,6 +624,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1A60B00D2567F79A00E53F53 /* Roboto-Medium.ttf in Resources */,
 				1A60AF9C2566798D00E53F53 /* Roboto-Regular.ttf in Resources */,
 				1A60AFAA2566806000E53F53 /* Localizable.strings in Resources */,
 				1A60AFA325667EA300E53F53 /* Assets.xcassets in Resources */,
@@ -571,7 +644,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				1A205D8725655CEE003AA3CD /* LaunchScreen.storyboard in Resources */,
-				1A205D8425655CEE003AA3CD /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -623,6 +695,7 @@
 			files = (
 				1A60AFD925669A1500E53F53 /* View.swift in Sources */,
 				1A60AFBC256682C800E53F53 /* SubFlowCoordinator.swift in Sources */,
+				1A60B01D2567FCAD00E53F53 /* ButtonProperties.swift in Sources */,
 				1A60AF7E25656F0400E53F53 /* Glia.swift in Sources */,
 				1A60AFB62566825400E53F53 /* ViewModel.swift in Sources */,
 				1A60AFB9256682AF00E53F53 /* FlowCoordinator.swift in Sources */,
@@ -634,14 +707,21 @@
 				1A60AFF12566A4B300E53F53 /* NavigationPresenter.swift in Sources */,
 				1A60AF93256674F900E53F53 /* Color.swift in Sources */,
 				1A60AFAF256680EF00E53F53 /* L10n.swift in Sources */,
+				1A60B0192567FC8A00E53F53 /* ButtonStyle.swift in Sources */,
+				1A60B0202567FD1B00E53F53 /* BackButtonProperties.swift in Sources */,
 				1A60AF7A25656E0500E53F53 /* Theme.swift in Sources */,
+				1A60B0082567F29900E53F53 /* HeaderStyle.swift in Sources */,
+				1A60B0152567FC7000E53F53 /* Button.swift in Sources */,
 				1A60AFDD25669A4200E53F53 /* ChatView.swift in Sources */,
 				1A60AFCA2566943F00E53F53 /* RootCoordinator.swift in Sources */,
+				1A60B0042567F25600E53F53 /* Header.swift in Sources */,
 				1A60AFB22566821B00E53F53 /* Asset.swift in Sources */,
 				1A60AFD52566992A00E53F53 /* ChatViewModel.swift in Sources */,
 				1A60AFE025669A6100E53F53 /* ChatViewController.swift in Sources */,
 				1A60AF90256674F000E53F53 /* Font.swift in Sources */,
 				1A60AFEC2566A0E700E53F53 /* NavigationController.swift in Sources */,
+				1A60B0272568070800E53F53 /* UIStackView+Extensions.swift in Sources */,
+				1A60B0232567FD2D00E53F53 /* CloseButtonProperties.swift in Sources */,
 				1A60AFE825669C5000E53F53 /* ChatStyle.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

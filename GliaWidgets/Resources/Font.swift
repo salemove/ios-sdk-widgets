@@ -8,4 +8,8 @@ enum Font {
     static func bold(_ size: CGFloat) -> UIFont {
         FontProvider.shared.font(named: "Roboto-Bold", size: size)
     }
+
+    static func medium(_ size: CGFloat) -> UIFont {
+        FontProvider.shared.font(named: "Roboto-Medium", size: size)
+    }
 }

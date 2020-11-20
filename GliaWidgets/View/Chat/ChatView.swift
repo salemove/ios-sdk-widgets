@@ -1,18 +1,23 @@
 final class ChatView: View {
     private let style: ChatStyle
+    private let header: Header
 
     init(with style: ChatStyle) {
         self.style = style
+        self.header = Header(with: style.headerStyle,
+                             leftItem: .back)
         super.init()
         setup()
         layout()
     }
 
     private func setup() {
-        apply(style: style)
+        backgroundColor = style.backgroundColor
     }
 
-    private func apply(style: ChatStyle) {}
-
-    private func layout() {}
+    private func layout() {
+        addSubview(header)
+        header.autoPinEdgesToSuperviewEdges(with: .zero,
+                                            excludingEdge: .bottom)
+    }
 }
