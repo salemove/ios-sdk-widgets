@@ -6,9 +6,10 @@ public struct Theme {
             chatStyle.primaryColor = primaryColor
         }
     }
-    public var chatStyle = ChatStyle()
+    public var chatStyle: ChatStyle
 
     public init() {
         primaryColor = Color.primary
+        chatStyle = ChatStyle(primaryColor: primaryColor)
     }
 }
