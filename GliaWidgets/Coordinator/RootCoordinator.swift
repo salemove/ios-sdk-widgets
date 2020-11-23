@@ -6,6 +6,7 @@ final class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
     private let viewFactory: ViewFactory
     private let engagementKind: EngagementKind
     private let presentationKind: PresentationKind
+    private var isNavigationBarHidden = false
 
     init(viewFactory: ViewFactory,
          engagementKind: EngagementKind,
@@ -35,13 +36,15 @@ final class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
         case .present:
             let navigationController = NavigationController()
             navigationController.modalPresentationStyle = .fullScreen
+            navigationController.isNavigationBarHidden = true
             return NavigationPresenter(with: navigationController)
         }
     }
 
     private func startChat(with navigationPresenter: NavigationPresenter) {
         let coordinator = ChatCoordinator(viewFactory: viewFactory,
-                                          navigationPresenter: navigationPresenter)
+                                          navigationPresenter: navigationPresenter,
+                                          presentationKind: presentationKind)
         coordinator.delegate = { [weak self] event in
             switch event {
             case .finished:
@@ -58,10 +61,14 @@ final class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
         let viewController = coordinator.start()
 
         switch presentationKind {
-        case .push:
+        case .push(let navigationController):
+            isNavigationBarHidden = navigationController.isNavigationBarHidden
+            navigationController.setNavigationBarHidden(true,
+                                                        animated: true)
             navigationPresenter.push(viewController)
         case .present(let presentingViewController):
-            navigationPresenter.push(viewController, animated: false)
+            navigationPresenter.push(viewController,
+                                     animated: false)
             presentingViewController.present(navigationPresenter.navigationController,
                                              animated: true,
                                              completion: nil)
@@ -72,8 +79,10 @@ final class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
         popCoordinator()
 
         switch presentationKind {
-        case .push:
+        case .push(let navigationController):
             navigationPresenter.pop()
+            navigationController.setNavigationBarHidden(isNavigationBarHidden,
+                                                        animated: true)
         case .present:
             navigationPresenter.dismiss()
         }

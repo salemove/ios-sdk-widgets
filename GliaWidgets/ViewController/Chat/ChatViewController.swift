@@ -1,10 +1,16 @@
+import UIKit
+
 final class ChatViewController: ViewController {
     private let viewModel: ChatViewModel
     private let viewFactory: ViewFactory
+    private let presentationKind: PresentationKind
 
-    init(viewModel: ChatViewModel, viewFactory: ViewFactory) {
+    init(viewModel: ChatViewModel,
+         viewFactory: ViewFactory,
+         presentationKind: PresentationKind) {
         self.viewModel = viewModel
         self.viewFactory = viewFactory
+        self.presentationKind = presentationKind
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -18,5 +24,16 @@ final class ChatViewController: ViewController {
         bind(viewModel: viewModel, to: view)
     }
 
-    private func bind(viewModel: ChatViewModel, to view: ChatView) {}
+    override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
+
+    private func bind(viewModel: ChatViewModel, to view: ChatView) {
+        view.header.leftItem = {
+            switch presentationKind {
+            case .push:
+                return Button(kind: .back, tap: { viewModel.event(.backTapped) })
+            case .present:
+                return Button(kind: .close, tap: { viewModel.event(.closeTapped) })
+            }
+        }()
+    }
 }

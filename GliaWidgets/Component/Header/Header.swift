@@ -2,11 +2,6 @@ import UIKit
 import PureLayout
 
 class Header: UIView {
-    enum Item {
-        case back
-        case close
-    }
-
     var leftItem: UIView? {
         get { leftItemContainer.subviews.first }
         set {
@@ -18,7 +13,6 @@ class Header: UIView {
             }
         }
     }
-
     var rightItem: UIView? {
         get { rightItemContainer.subviews.first }
         set {
@@ -32,7 +26,6 @@ class Header: UIView {
     }
 
     private let style: HeaderStyle
-    private let closeItem: Item
     private let extendsUnderStatusBar: Bool
     private let leftItemContainer = UIView()
     private let rightItemContainer = UIView()
@@ -41,10 +34,8 @@ class Header: UIView {
     private let kHeight: CGFloat = 68
 
     public init(with style: HeaderStyle,
-                closeItem: Item,
                 extendsUnderStatusBar: Bool = true) {
         self.style = style
-        self.closeItem = closeItem
         self.extendsUnderStatusBar = extendsUnderStatusBar
         super.init(frame: .zero)
         setup()
@@ -88,11 +79,5 @@ class Header: UIView {
         stackView.autoPinEdge(toSuperviewEdge: .top,
                               withInset: 10,
                               relation: .greaterThanOrEqual)
-
-        leftItem = Button(kind: .back)
-
-        /*let close = Button(style: .close)
-        rightContainer.addSubview(close)
-        close.autoPinEdgesToSuperviewEdges()**/
     }
 }

@@ -1,11 +1,11 @@
 final class ChatView: View {
+    let header: Header
+
     private let style: ChatStyle
-    private let header: Header
 
     init(with style: ChatStyle) {
         self.style = style
-        self.header = Header(with: style.headerStyle,
-                             closeItem: .back)
+        self.header = Header(with: style.headerStyle)
         super.init()
         setup()
         layout()

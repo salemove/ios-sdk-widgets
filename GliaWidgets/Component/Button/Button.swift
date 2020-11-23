@@ -14,8 +14,9 @@ class Button: UIButton {
     private let kind: ButtonKind
     private var activityIndicator: UIActivityIndicatorView?
 
-    init(kind: ButtonKind) {
+    init(kind: ButtonKind, tap: (() -> Void)? = nil) {
         self.kind = kind
+        self.tap = tap
         super.init(frame: .zero)
         setup()
         layout()
