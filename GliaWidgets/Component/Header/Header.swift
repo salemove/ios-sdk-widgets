@@ -7,21 +7,44 @@ class Header: UIView {
         case close
     }
 
+    var leftItem: UIView? {
+        get { leftItemContainer.subviews.first }
+        set {
+            leftItemContainer.subviews.first?.removeFromSuperview()
+            if let item = newValue {
+                leftItemContainer.addSubview(item)
+                item.autoPinEdgesToSuperviewEdges()
+                item.tintColor = style.leftItemColor
+            }
+        }
+    }
+
+    var rightItem: UIView? {
+        get { rightItemContainer.subviews.first }
+        set {
+            rightItemContainer.subviews.first?.removeFromSuperview()
+            if let item = newValue {
+                rightItemContainer.addSubview(item)
+                item.autoPinEdgesToSuperviewEdges()
+                item.tintColor = style.rightItemColor
+            }
+        }
+    }
+
     private let style: HeaderStyle
-    private let leftItem: Item
+    private let closeItem: Item
     private let extendsUnderStatusBar: Bool
-    private let leftContainer = UIView()
-    private let middleContainer = UIView()
-    private let rightContainer = UIView()
+    private let leftItemContainer = UIView()
+    private let rightItemContainer = UIView()
     private let titleLabel = UILabel()
     private let stackView = UIStackView()
     private let kHeight: CGFloat = 68
 
     public init(with style: HeaderStyle,
-                leftItem: Item,
+                closeItem: Item,
                 extendsUnderStatusBar: Bool = true) {
         self.style = style
-        self.leftItem = leftItem
+        self.closeItem = closeItem
         self.extendsUnderStatusBar = extendsUnderStatusBar
         super.init(frame: .zero)
         setup()
@@ -37,23 +60,19 @@ class Header: UIView {
         backgroundColor = style.backgroundColor
 
         titleLabel.font = style.titleFont
-        titleLabel.textColor = style.titleFontColor
+        titleLabel.textColor = style.titleColor
         titleLabel.textAlignment = .center
         titleLabel.text = style.title
 
         stackView.axis = .horizontal
         stackView.distribution = .fillProportionally
         stackView.spacing = 10
-        //stackView.alignment = .center
+        stackView.alignment = .center
         stackView.addArrangedSubviews([
-            leftContainer,
-            middleContainer,
-            rightContainer
+            leftItemContainer,
+            titleLabel,
+            rightItemContainer
         ])
-
-        /*leftContainer.backgroundColor = .red
-        middleContainer.backgroundColor = .black
-        rightContainer.backgroundColor = .gray*/
     }
 
     private func layout() {
@@ -64,21 +83,16 @@ class Header: UIView {
         autoSetDimension(.height, toSize: height)
 
         addSubview(stackView)
-        stackView.autoPinEdgesToSuperviewEdges(with: .init(top: 0, left: 10, bottom: 10, right: 10),
+        stackView.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 0, left: 10, bottom: 10, right: 10),
                                                excludingEdge: .top)
         stackView.autoPinEdge(toSuperviewEdge: .top,
                               withInset: 10,
                               relation: .greaterThanOrEqual)
 
-        middleContainer.addSubview(titleLabel)
-        titleLabel.autoPinEdgesToSuperviewEdges()
+        leftItem = Button(kind: .back)
 
-        let back = Button(style: .back)
-        leftContainer.addSubview(back)
-        back.autoPinEdgesToSuperviewEdges()
-
-        let close = Button(style: .close)
+        /*let close = Button(style: .close)
         rightContainer.addSubview(close)
-        close.autoPinEdgesToSuperviewEdges()
+        close.autoPinEdgesToSuperviewEdges()**/
     }
 }

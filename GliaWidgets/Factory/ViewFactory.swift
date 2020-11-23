@@ -6,6 +6,6 @@ final class ViewFactory {
     }
 
     func makeChatView() -> ChatView {
-        return ChatView(with: theme.chatStyle)
+        return ChatView(with: theme.chat)
     }
 }

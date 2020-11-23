@@ -11,11 +11,11 @@ class Button: UIButton {
         }
     }
 
-    private let style: ButtonStyle
+    private let kind: ButtonKind
     private var activityIndicator: UIActivityIndicatorView?
 
-    init(style: ButtonStyle) {
-        self.style = style
+    init(kind: ButtonKind) {
+        self.kind = kind
         super.init(frame: .zero)
         setup()
         layout()
@@ -27,7 +27,7 @@ class Button: UIButton {
     }
 
     private func setup() {
-        let properties = style.properties
+        let properties = kind.properties
 
         backgroundColor = properties.backgroundColor
         titleLabel?.font = properties.font
@@ -90,7 +90,7 @@ class Button: UIButton {
     }
 
     override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
-        guard let insets = style.properties.touchAreaInsets else {
+        guard let insets = kind.properties.touchAreaInsets else {
             return super.point(inside: point, with: event)
         }
 

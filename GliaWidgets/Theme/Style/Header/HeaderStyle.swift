@@ -1,21 +1,24 @@
 import UIKit
 
 public struct HeaderStyle {
-    public var backgroundColor: UIColor
     public var title: String
     public var titleFont: UIFont
-    public var titleFontColor: UIColor
-    public var backButtonColor: UIColor
+    public var titleColor: UIColor
+    public var leftItemColor: UIColor
+    public var rightItemColor: UIColor
+    public var backgroundColor: UIColor
 
-    public init(backgroundColor: UIColor,
-                title: String,
+    public init(title: String,
                 titleFont: UIFont,
-                titleFontColor: UIColor,
-                backButtonColor: UIColor) {
-        self.backgroundColor = backgroundColor
+                titleColor: UIColor,
+                leftItemColor: UIColor,
+                rightItemColor: UIColor,
+                backgroundColor: UIColor) {
         self.title = title
         self.titleFont = titleFont
-        self.titleFontColor = titleFontColor
-        self.backButtonColor = backButtonColor
+        self.titleColor = titleColor
+        self.leftItemColor = leftItemColor
+        self.rightItemColor = rightItemColor
+        self.backgroundColor = backgroundColor
     }
 }

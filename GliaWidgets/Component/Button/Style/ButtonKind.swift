@@ -1,9 +1,9 @@
-enum ButtonStyle {
+enum ButtonKind {
     case back
     case close
 }
 
-extension ButtonStyle {
+extension ButtonKind {
     var properties: ButtonProperties {
         switch self {
         case .back:

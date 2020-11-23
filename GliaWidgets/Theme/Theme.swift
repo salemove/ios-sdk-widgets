@@ -3,26 +3,40 @@ import UIKit
 public struct Theme {
     private typealias Strings = L10n
 
-    public var primaryColor: UIColor {
-        didSet { setPrimaryColor(primaryColor) }
-    }
-    public var chatStyle: ChatStyle
+    public let primaryColor: UIColor
+    public let secondaryColor: UIColor
+    public let baseNormalColor: UIColor
+    public let baseLightColor: UIColor
+    public let baseDarkColor: UIColor
+    public let baseShadeColor: UIColor
+    public let backgroundColor: UIColor
+    public let systemNegativeColor: UIColor
+    public var chat: ChatStyle
 
-    public init() {
-        primaryColor = Color.primary
+    public init(primaryColor: UIColor = Color.primary,
+                secondaryColor: UIColor = Color.secondary,
+                baseNormalColor: UIColor = Color.baseNormal,
+                baseLightColor: UIColor = Color.baseLight,
+                baseDarkColor: UIColor = Color.baseDark,
+                baseShadeColor: UIColor = Color.baseShade,
+                backgroundColor: UIColor = Color.background,
+                systemNegativeColor: UIColor = Color.systemNegative) {
+        self.primaryColor = primaryColor
+        self.secondaryColor = secondaryColor
+        self.baseNormalColor = baseNormalColor
+        self.baseLightColor = baseLightColor
+        self.baseDarkColor = baseDarkColor
+        self.baseShadeColor = baseShadeColor
+        self.backgroundColor = backgroundColor
+        self.systemNegativeColor = systemNegativeColor
 
-        let chatHeaderStyle = HeaderStyle(backgroundColor: primaryColor,
-                                          title: Strings.Chat.title,
+        let chatHeaderStyle = HeaderStyle(title: Strings.Chat.title,
                                           titleFont: Font.medium(20),
-                                          titleFontColor: Color.headerTitle,
-                                          backButtonColor: Color.headerButtonTint)
-        chatStyle = ChatStyle(headerStyle: chatHeaderStyle,
-                              backgroundColor: Color.background)
-
-        setPrimaryColor(primaryColor)
-    }
-
-    private mutating func setPrimaryColor(_ color: UIColor) {
-        chatStyle.headerStyle.backgroundColor = color
+                                          titleColor: baseLightColor,
+                                          leftItemColor: baseLightColor,
+                                          rightItemColor: baseLightColor,
+                                          backgroundColor: primaryColor)
+        chat = ChatStyle(headerStyle: chatHeaderStyle,
+                         backgroundColor: backgroundColor)
     }
 }

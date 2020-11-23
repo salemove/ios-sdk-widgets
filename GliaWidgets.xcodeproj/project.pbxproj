@@ -49,7 +49,7 @@
 		1A60B0082567F29900E53F53 /* HeaderStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60B0072567F29900E53F53 /* HeaderStyle.swift */; };
 		1A60B00D2567F79A00E53F53 /* Roboto-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1A60B00C2567F79A00E53F53 /* Roboto-Medium.ttf */; };
 		1A60B0152567FC7000E53F53 /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60B0142567FC7000E53F53 /* Button.swift */; };
-		1A60B0192567FC8A00E53F53 /* ButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60B0182567FC8A00E53F53 /* ButtonStyle.swift */; };
+		1A60B0192567FC8A00E53F53 /* ButtonKind.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60B0182567FC8A00E53F53 /* ButtonKind.swift */; };
 		1A60B01D2567FCAD00E53F53 /* ButtonProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60B01C2567FCAD00E53F53 /* ButtonProperties.swift */; };
 		1A60B0202567FD1B00E53F53 /* BackButtonProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60B01F2567FD1B00E53F53 /* BackButtonProperties.swift */; };
 		1A60B0232567FD2D00E53F53 /* CloseButtonProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60B0222567FD2D00E53F53 /* CloseButtonProperties.swift */; };
@@ -144,7 +144,7 @@
 		1A60B0072567F29900E53F53 /* HeaderStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderStyle.swift; sourceTree = "<group>"; };
 		1A60B00C2567F79A00E53F53 /* Roboto-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Medium.ttf"; sourceTree = "<group>"; };
 		1A60B0142567FC7000E53F53 /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
-		1A60B0182567FC8A00E53F53 /* ButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyle.swift; sourceTree = "<group>"; };
+		1A60B0182567FC8A00E53F53 /* ButtonKind.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonKind.swift; sourceTree = "<group>"; };
 		1A60B01C2567FCAD00E53F53 /* ButtonProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonProperties.swift; sourceTree = "<group>"; };
 		1A60B01F2567FD1B00E53F53 /* BackButtonProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButtonProperties.swift; sourceTree = "<group>"; };
 		1A60B0222567FD2D00E53F53 /* CloseButtonProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseButtonProperties.swift; sourceTree = "<group>"; };
@@ -483,7 +483,7 @@
 			isa = PBXGroup;
 			children = (
 				1A60B01B2567FC9700E53F53 /* Properties */,
-				1A60B0182567FC8A00E53F53 /* ButtonStyle.swift */,
+				1A60B0182567FC8A00E53F53 /* ButtonKind.swift */,
 			);
 			path = Style;
 			sourceTree = "<group>";
@@ -707,7 +707,7 @@
 				1A60AFF12566A4B300E53F53 /* NavigationPresenter.swift in Sources */,
 				1A60AF93256674F900E53F53 /* Color.swift in Sources */,
 				1A60AFAF256680EF00E53F53 /* L10n.swift in Sources */,
-				1A60B0192567FC8A00E53F53 /* ButtonStyle.swift in Sources */,
+				1A60B0192567FC8A00E53F53 /* ButtonKind.swift in Sources */,
 				1A60B0202567FD1B00E53F53 /* BackButtonProperties.swift in Sources */,
 				1A60AF7A25656E0500E53F53 /* Theme.swift in Sources */,
 				1A60B0082567F29900E53F53 /* HeaderStyle.swift in Sources */,
