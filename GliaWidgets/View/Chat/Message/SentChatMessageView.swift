@@ -9,6 +9,7 @@ class SentChatMessageView: UIView {
     private let contentView = UIView()
     private let messageLabel = UILabel()
     private let statusView = ChatMessageStatusView()
+    private let kInsets = UIEdgeInsets(top: 5, left: 16, bottom: 5, right: 16)
     private let kContentInsets = UIEdgeInsets(top: 12, left: 16, bottom: 12, right: 16)
     private let kMaxContentWidth: CGFloat = 271
     private let kMinContentWidth: CGFloat = 32
@@ -34,11 +35,10 @@ class SentChatMessageView: UIView {
 
     private func layout() {
         addSubview(contentView)
-        contentView.autoPinEdge(toSuperviewEdge: .top)
-        contentView.autoPinEdge(toSuperviewEdge: .right)
-        contentView.autoPinEdge(toSuperviewEdge: .left, withInset: 0, relation: .greaterThanOrEqual)
+        contentView.autoPinEdge(toSuperviewEdge: .top, withInset: kInsets.top)
+        contentView.autoPinEdge(toSuperviewEdge: .right, withInset: kInsets.right)
+        contentView.autoPinEdge(toSuperviewEdge: .left, withInset: kInsets.left, relation: .greaterThanOrEqual)
         contentView.autoSetDimension(.width, toSize: kMaxContentWidth, relation: .lessThanOrEqual)
-        contentView.autoSetDimension(.width, toSize: kMinContentWidth, relation: .greaterThanOrEqual)
 
         contentView.addSubview(messageLabel)
         messageLabel.autoPinEdgesToSuperviewEdges(with: kContentInsets)
@@ -46,7 +46,7 @@ class SentChatMessageView: UIView {
         addSubview(statusView)
         statusView.autoPinEdge(.top, to: .bottom, of: contentView, withOffset: 2)
         statusView.autoPinEdge(toSuperviewEdge: .right)
-        statusView.autoPinEdge(toSuperviewEdge: .bottom)
+        statusView.autoPinEdge(toSuperviewEdge: .bottom, withInset: kInsets.bottom)
     }
 
     private func setContent(_ content: ChatMessageContent) {

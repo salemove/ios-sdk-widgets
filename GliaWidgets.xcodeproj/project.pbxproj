@@ -60,6 +60,7 @@
 		1A60B038256BFDC500E53F53 /* SentChatMessageStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60B037256BFDC500E53F53 /* SentChatMessageStyle.swift */; };
 		1A60B03C256BFDE500E53F53 /* ReceivedChatMessageViewStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60B03B256BFDE500E53F53 /* ReceivedChatMessageViewStyle.swift */; };
 		1A60B047256C0B4500E53F53 /* ChatMessageContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60B046256C0B4500E53F53 /* ChatMessageContent.swift */; };
+		1A60B04A256C0E0100E53F53 /* ChatMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60B049256C0E0100E53F53 /* ChatMessageCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -161,6 +162,7 @@
 		1A60B037256BFDC500E53F53 /* SentChatMessageStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentChatMessageStyle.swift; sourceTree = "<group>"; };
 		1A60B03B256BFDE500E53F53 /* ReceivedChatMessageViewStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceivedChatMessageViewStyle.swift; sourceTree = "<group>"; };
 		1A60B046256C0B4500E53F53 /* ChatMessageContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageContent.swift; sourceTree = "<group>"; };
+		1A60B049256C0E0100E53F53 /* ChatMessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -512,6 +514,7 @@
 				1A60B037256BFDC500E53F53 /* SentChatMessageStyle.swift */,
 				1A60B03B256BFDE500E53F53 /* ReceivedChatMessageViewStyle.swift */,
 				1A60B046256C0B4500E53F53 /* ChatMessageContent.swift */,
+				1A60B049256C0E0100E53F53 /* ChatMessageCell.swift */,
 			);
 			path = Message;
 			sourceTree = "<group>";
@@ -743,6 +746,7 @@
 				1A60AFD52566992A00E53F53 /* ChatViewModel.swift in Sources */,
 				1A60AFE025669A6100E53F53 /* ChatViewController.swift in Sources */,
 				1A60AF90256674F000E53F53 /* Font.swift in Sources */,
+				1A60B04A256C0E0100E53F53 /* ChatMessageCell.swift in Sources */,
 				1A60AFEC2566A0E700E53F53 /* NavigationController.swift in Sources */,
 				1A60B0272568070800E53F53 /* UIStackView+Extensions.swift in Sources */,
 				1A60B0232567FD2D00E53F53 /* CloseButtonProperties.swift in Sources */,

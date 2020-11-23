@@ -9,6 +9,7 @@ class ReceivedChatMessageView: UIView {
     private let contentView = UIView()
     private let messageLabel = UILabel()
     private let operatorImageView = UIImageView()
+    private let kInsets = UIEdgeInsets(top: 5, left: 4, bottom: 5, right: 16)
     private let kContentInsets = UIEdgeInsets(top: 12, left: 16, bottom: 12, right: 16)
     private let kMaxContentWidth: CGFloat = 271
     private let kMinContentWidth: CGFloat = 32
@@ -34,16 +35,15 @@ class ReceivedChatMessageView: UIView {
 
     private func layout() {
         addSubview(operatorImageView)
-        operatorImageView.autoPinEdge(toSuperviewEdge: .left)
-        operatorImageView.autoPinEdge(toSuperviewEdge: .bottom)
+        operatorImageView.autoPinEdge(toSuperviewEdge: .left, withInset: kInsets.left)
+        operatorImageView.autoPinEdge(toSuperviewEdge: .bottom, withInset: kInsets.bottom)
 
         addSubview(contentView)
         contentView.autoPinEdge(.left, to: .right, of: operatorImageView, withOffset: 4)
-        contentView.autoPinEdge(toSuperviewEdge: .top)
-        contentView.autoPinEdge(toSuperviewEdge: .bottom)
+        contentView.autoPinEdge(toSuperviewEdge: .top, withInset: kInsets.top)
+        contentView.autoPinEdge(toSuperviewEdge: .bottom, withInset: kInsets.bottom)
         contentView.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
         contentView.autoSetDimension(.width, toSize: kMaxContentWidth, relation: .lessThanOrEqual)
-        contentView.autoSetDimension(.width, toSize: kMinContentWidth, relation: .greaterThanOrEqual)
 
         contentView.addSubview(messageLabel)
         messageLabel.autoPinEdgesToSuperviewEdges(with: kContentInsets)
