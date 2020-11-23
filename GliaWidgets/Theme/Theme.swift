@@ -11,6 +11,12 @@ public struct Theme {
     public let baseShadeColor: UIColor
     public let backgroundColor: UIColor
     public let systemNegativeColor: UIColor
+    public let header1Font: UIFont
+    public let header2Font: UIFont
+    public let header3Font: UIFont
+    public let bodyTextFont: UIFont
+    public let subtitleFont: UIFont
+    public let captionFont: UIFont
     public var chat: ChatStyle
 
     public init(primaryColor: UIColor = Color.primary,
@@ -20,7 +26,13 @@ public struct Theme {
                 baseDarkColor: UIColor = Color.baseDark,
                 baseShadeColor: UIColor = Color.baseShade,
                 backgroundColor: UIColor = Color.background,
-                systemNegativeColor: UIColor = Color.systemNegative) {
+                systemNegativeColor: UIColor = Color.systemNegative,
+                header1Font: UIFont = Font.header1,
+                header2Font: UIFont = Font.header2,
+                header3Font: UIFont = Font.header3,
+                bodyTextFont: UIFont = Font.bodyText,
+                subtitleFont: UIFont = Font.subtitle,
+                captionFont: UIFont = Font.caption) {
         self.primaryColor = primaryColor
         self.secondaryColor = secondaryColor
         self.baseNormalColor = baseNormalColor
@@ -29,9 +41,15 @@ public struct Theme {
         self.baseShadeColor = baseShadeColor
         self.backgroundColor = backgroundColor
         self.systemNegativeColor = systemNegativeColor
+        self.header1Font = header1Font
+        self.header2Font = header2Font
+        self.header3Font = header3Font
+        self.bodyTextFont = bodyTextFont
+        self.subtitleFont = subtitleFont
+        self.captionFont = captionFont
 
         let chatHeaderStyle = HeaderStyle(title: Strings.Chat.title,
-                                          titleFont: Font.medium(20),
+                                          titleFont: Font.headerTitle,
                                           titleColor: baseLightColor,
                                           leftItemColor: baseLightColor,
                                           rightItemColor: baseLightColor,

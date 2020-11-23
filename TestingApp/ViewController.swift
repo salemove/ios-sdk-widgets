@@ -8,7 +8,7 @@ class ViewController: UIViewController {
                                          apiToken: "",
                                          environment: .europe,
                                          site: "")
-    private var glia: Glia?
+    private var glia: Glia!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,6 +60,10 @@ extension ViewController {
             }
         }()
 
-        glia?.start(.chat, from: presenter, using: theme)
+        ///
+
+        glia.start(.chat,
+                   from: presenter,
+                   using: theme)
     }
 }
