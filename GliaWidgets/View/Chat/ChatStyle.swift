@@ -1,12 +1,18 @@
 import UIKit
 
 public struct ChatStyle {
-    public var headerStyle: HeaderStyle
+    public var header: HeaderStyle
+    public var sentMessage: SentChatMessageStyle
+    public var receivedMessage: ReceivedChatMessageStyle
     public var backgroundColor: UIColor
 
-    public init(headerStyle: HeaderStyle,
+    public init(header: HeaderStyle,
+                sentMessage: SentChatMessageStyle,
+                receivedMessage: ReceivedChatMessageStyle,
                 backgroundColor: UIColor) {
-        self.headerStyle = headerStyle
+        self.header = header
+        self.sentMessage = sentMessage
+        self.receivedMessage = receivedMessage
         self.backgroundColor = backgroundColor
     }
 }

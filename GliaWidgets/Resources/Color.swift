@@ -9,4 +9,5 @@ public enum Color {
     public static var baseShade = UIColor(hex: 0x6C7683, alpha: 0.5)
     public static var baseDark = UIColor(hex: 0x2C0735)
     public static var background: UIColor { .white }
+    public static var lightGrey = UIColor(hex: 0xF3F3F3)
 }

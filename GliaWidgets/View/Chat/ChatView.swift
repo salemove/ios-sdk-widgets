@@ -5,7 +5,7 @@ final class ChatView: View {
 
     init(with style: ChatStyle) {
         self.style = style
-        self.header = Header(with: style.headerStyle)
+        self.header = Header(with: style.header)
         super.init()
         setup()
         layout()

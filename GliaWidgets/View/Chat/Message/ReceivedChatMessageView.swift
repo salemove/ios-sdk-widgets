@@ -5,7 +5,7 @@ class ReceivedChatMessageView: UIView {
         didSet { setContent(content) }
     }
 
-    private let style: ReceivedChatMessageViewStyle
+    private let style: ReceivedChatMessageStyle
     private let contentView = UIView()
     private let messageLabel = UILabel()
     private let operatorImageView = UIImageView()
@@ -14,7 +14,7 @@ class ReceivedChatMessageView: UIView {
     private let kMaxContentWidth: CGFloat = 271
     private let kMinContentWidth: CGFloat = 32
 
-    init(with style: ReceivedChatMessageViewStyle) {
+    init(with style: ReceivedChatMessageStyle) {
         self.style = style
         super.init(frame: .zero)
         setup()

@@ -1,6 +1,6 @@
 import UIKit
 
-public struct ReceivedChatMessageViewStyle {
+public struct ReceivedChatMessageStyle {
     public var messageFont: UIFont
     public var messageColor: UIColor
     public var backgroundColor: UIColor

@@ -48,13 +48,21 @@ public struct Theme {
         self.subtitleFont = subtitleFont
         self.captionFont = captionFont
 
-        let chatHeaderStyle = HeaderStyle(title: Strings.Chat.title,
-                                          titleFont: Font.headerTitle,
-                                          titleColor: baseLightColor,
-                                          leftItemColor: baseLightColor,
-                                          rightItemColor: baseLightColor,
-                                          backgroundColor: primaryColor)
-        chat = ChatStyle(headerStyle: chatHeaderStyle,
+        let chatHeader = HeaderStyle(title: Strings.Chat.title,
+                                     titleFont: Font.headerTitle,
+                                     titleColor: baseLightColor,
+                                     leftItemColor: baseLightColor,
+                                     rightItemColor: baseLightColor,
+                                     backgroundColor: primaryColor)
+        let sentChatMessage = SentChatMessageStyle(messageFont: bodyTextFont,
+                                                   messageColor: baseLightColor,
+                                                   backgroundColor: primaryColor)
+        let receivedChatMessage = ReceivedChatMessageStyle(messageFont: bodyTextFont,
+                                                           messageColor: baseDarkColor,
+                                                           backgroundColor: Color.lightGrey)
+        chat = ChatStyle(header: chatHeader,
+                         sentMessage: sentChatMessage,
+                         receivedMessage: receivedChatMessage,
                          backgroundColor: backgroundColor)
     }
 }
