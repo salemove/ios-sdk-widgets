@@ -2,5 +2,7 @@ import UIKit
 
 struct BackButtonProperties: ButtonProperties {
     let image: UIImage? = Asset.back.image
-    let touchAreaInsets: TouchAreaInsets? = (dx: -10.0, dy: -10.0)
+    let width: CGFloat? = 30
+    let height: CGFloat? = 21
+    let contentHorizontalAlignment: UIControl.ContentHorizontalAlignment? = .left
 }

@@ -20,6 +20,8 @@ protocol ButtonProperties {
     var shadowOpacity: Float? { get }
     var shadowRadius: CGFloat? { get }
     var contentEdgeInsets: UIEdgeInsets? { get }
+    var contentHorizontalAlignment: UIControl.ContentHorizontalAlignment? { get }
+    var contentVerticalAlignment: UIControl.ContentVerticalAlignment? { get }
     var imageEdgeInsets: UIEdgeInsets? { get }
 }
 
@@ -41,5 +43,7 @@ extension ButtonProperties {
     var shadowOpacity: Float? { nil }
     var shadowRadius: CGFloat? { nil }
     var contentEdgeInsets: UIEdgeInsets? { nil }
+    var contentHorizontalAlignment: UIControl.ContentHorizontalAlignment? { nil }
+    var contentVerticalAlignment: UIControl.ContentVerticalAlignment? { nil }
     var imageEdgeInsets: UIEdgeInsets? { nil }
 }

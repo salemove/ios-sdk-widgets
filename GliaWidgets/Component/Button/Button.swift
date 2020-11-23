@@ -43,6 +43,14 @@ class Button: UIButton {
             self.imageEdgeInsets = imageEdgeInsets
         }
 
+        if let contentHorizontalAlignment = properties.contentHorizontalAlignment {
+            self.contentHorizontalAlignment = contentHorizontalAlignment
+        }
+
+        if let contentVerticalAlignment = properties.contentVerticalAlignment {
+            self.contentVerticalAlignment = contentVerticalAlignment
+        }
+
         if let width = properties.width {
             autoSetDimension(.width, toSize: width)
         }

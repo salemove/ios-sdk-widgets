@@ -30,7 +30,9 @@ class Header: UIView {
     private let leftItemContainer = UIView()
     private let rightItemContainer = UIView()
     private let titleLabel = UILabel()
-    private let stackView = UIStackView()
+    private let contentView = UIView()
+    private let kContentInsets = UIEdgeInsets(top: 0, left: 10, bottom: 10, right: 10)
+    private let kContentHeight: CGFloat = 30
     private let kHeight: CGFloat = 68
 
     public init(with style: HeaderStyle,
@@ -54,16 +56,6 @@ class Header: UIView {
         titleLabel.textColor = style.titleColor
         titleLabel.textAlignment = .center
         titleLabel.text = style.title
-
-        stackView.axis = .horizontal
-        stackView.distribution = .fillProportionally
-        stackView.spacing = 10
-        stackView.alignment = .center
-        stackView.addArrangedSubviews([
-            leftItemContainer,
-            titleLabel,
-            rightItemContainer
-        ])
     }
 
     private func layout() {
@@ -73,11 +65,21 @@ class Header: UIView {
             : kHeight
         autoSetDimension(.height, toSize: height)
 
-        addSubview(stackView)
-        stackView.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 0, left: 10, bottom: 10, right: 10),
-                                               excludingEdge: .top)
-        stackView.autoPinEdge(toSuperviewEdge: .top,
-                              withInset: 10,
-                              relation: .greaterThanOrEqual)
+        addSubview(contentView)
+        contentView.autoPinEdgesToSuperviewEdges(with: kContentInsets, excludingEdge: .top)
+        contentView.autoSetDimension(.height, toSize: kContentHeight)
+
+        contentView.addSubview(titleLabel)
+        titleLabel.autoPinEdge(toSuperviewEdge: .left)
+        titleLabel.autoPinEdge(toSuperviewEdge: .right)
+        titleLabel.autoAlignAxis(toSuperviewAxis: .horizontal)
+
+        contentView.addSubview(leftItemContainer)
+        leftItemContainer.autoPinEdge(toSuperviewEdge: .left)
+        leftItemContainer.autoAlignAxis(toSuperviewAxis: .horizontal)
+
+        contentView.addSubview(rightItemContainer)
+        rightItemContainer.autoPinEdge(toSuperviewEdge: .right)
+        rightItemContainer.autoAlignAxis(toSuperviewAxis: .horizontal)
     }
 }
