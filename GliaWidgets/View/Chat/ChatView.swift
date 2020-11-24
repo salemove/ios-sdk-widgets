@@ -34,8 +34,8 @@ final class ChatView: View {
         received.autoPinEdge(.top, to: .bottom, of: sent)
         received.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+        /*DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
             received.appendContent(.text("Hi, Roger! I’d be glad to help you out. Could you specify the accounts that you want to use."), animated: true)
-        }
+        }*/
     }
 }

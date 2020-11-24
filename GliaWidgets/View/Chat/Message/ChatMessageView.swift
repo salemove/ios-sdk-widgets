@@ -35,9 +35,10 @@ class ChatMessageView: UIView {
     func appendContentView(_ contentView: UIView, animated: Bool) {
         contentViews.addArrangedSubview(contentView)
         contentView.isHidden = animated
-        contentViews.layoutIfNeeded()
 
         if animated {
+            contentViews.layoutIfNeeded()
+
             UIView.animate(withDuration: 0.3) {
                 contentView.isHidden = false
                 self.contentViews.layoutIfNeeded()

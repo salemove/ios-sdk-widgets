@@ -1,7 +1,7 @@
 import UIKit
 
 class ReceivedChatMessageView: ChatMessageView {
-    private let operatorImageView = UIImageView()
+    private let operatorImageView = ChatMessageUserView()
     private let kInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 88)
 
     override init(with style: ChatMessageStyle) {
@@ -18,6 +18,7 @@ class ReceivedChatMessageView: ChatMessageView {
         addSubview(operatorImageView)
         operatorImageView.autoPinEdge(toSuperviewEdge: .left, withInset: kInsets.left)
         operatorImageView.autoPinEdge(toSuperviewEdge: .bottom, withInset: kInsets.bottom)
+        operatorImageView.autoPinEdge(toSuperviewEdge: .top, withInset: kInsets.top, relation: .greaterThanOrEqual)
 
         addSubview(contentViews)
         contentViews.autoPinEdge(.left, to: .right, of: operatorImageView, withOffset: 4)

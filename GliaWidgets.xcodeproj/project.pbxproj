@@ -17,6 +17,7 @@
 		1A205DB5256566BB003AA3CD /* GliaWidgets.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1A205D5825655CB1003AA3CD /* GliaWidgets.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1A4AD3AF256D283700468BFB /* ChatMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4AD3AE256D283700468BFB /* ChatMessageView.swift */; };
 		1A4AD3B3256D2A7600468BFB /* ChatMessageStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4AD3B2256D2A7600468BFB /* ChatMessageStyle.swift */; };
+		1A4AD3BA256D31A600468BFB /* ChatMessageUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4AD3B9256D31A600468BFB /* ChatMessageUserView.swift */; };
 		1A60AF5C25656A1F00E53F53 /* PureLayout.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A205DA6256564CE003AA3CD /* PureLayout.framework */; };
 		1A60AF5D25656A1F00E53F53 /* PureLayout.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1A205DA6256564CE003AA3CD /* PureLayout.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1A60AF7A25656E0500E53F53 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60AF7925656E0500E53F53 /* Theme.swift */; };
@@ -122,6 +123,7 @@
 		1A205DA6256564CE003AA3CD /* PureLayout.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PureLayout.framework; path = GliaWidgets/Frameworks/PureLayout.framework; sourceTree = "<group>"; };
 		1A4AD3AE256D283700468BFB /* ChatMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageView.swift; sourceTree = "<group>"; };
 		1A4AD3B2256D2A7600468BFB /* ChatMessageStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageStyle.swift; sourceTree = "<group>"; };
+		1A4AD3B9256D31A600468BFB /* ChatMessageUserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageUserView.swift; sourceTree = "<group>"; };
 		1A60AF7925656E0500E53F53 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		1A60AF7D25656F0400E53F53 /* Glia.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Glia.swift; sourceTree = "<group>"; };
 		1A60AF8F256674F000E53F53 /* Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
@@ -263,6 +265,14 @@
 				1A205DA6256564CE003AA3CD /* PureLayout.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		1A4AD3B8256D319000468BFB /* User */ = {
+			isa = PBXGroup;
+			children = (
+				1A4AD3B9256D31A600468BFB /* ChatMessageUserView.swift */,
+			);
+			path = User;
 			sourceTree = "<group>";
 		};
 		1A60AF6725656BF200E53F53 /* ViewController */ = {
@@ -510,6 +520,7 @@
 		1A60B02B256BF7C200E53F53 /* Message */ = {
 			isa = PBXGroup;
 			children = (
+				1A4AD3B8256D319000468BFB /* User */,
 				1A60B04F256D0D7400E53F53 /* Content */,
 				1A60B033256BF82E00E53F53 /* Status */,
 				1A4AD3AE256D283700468BFB /* ChatMessageView.swift */,
@@ -743,6 +754,7 @@
 				1A60B031256BF81500E53F53 /* SentChatMessageView.swift in Sources */,
 				1A60AFAF256680EF00E53F53 /* L10n.swift in Sources */,
 				1A60B0192567FC8A00E53F53 /* ButtonKind.swift in Sources */,
+				1A4AD3BA256D31A600468BFB /* ChatMessageUserView.swift in Sources */,
 				1A60B04D256D0CF600E53F53 /* ChatMessageContentView.swift in Sources */,
 				1A60B0202567FD1B00E53F53 /* BackButtonProperties.swift in Sources */,
 				1A60AF7A25656E0500E53F53 /* Theme.swift in Sources */,
