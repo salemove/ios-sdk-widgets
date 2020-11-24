@@ -3,10 +3,16 @@ import UIKit
 class ChatMessageUserView: UIView {
     var image: UIImage? {
         get { imageView.image }
-        set { imageView.image = newValue }
+        set {
+            imageView.image = newValue
+            widthConstraint.constant = newValue == nil
+                ? 0
+                : kSize.width
+        }
     }
 
     private let imageView = UIImageView()
+    private var widthConstraint: NSLayoutConstraint!
     private let kSize = CGSize(width: 28, height: 28)
 
     init() {
@@ -26,7 +32,8 @@ class ChatMessageUserView: UIView {
     }
 
     private func layout() {
-        autoSetDimensions(to: kSize)
+        autoSetDimension(.height, toSize: kSize.height)
+        widthConstraint = autoSetDimension(.width, toSize: 0)
 
         addSubview(imageView)
         imageView.autoPinEdgesToSuperviewEdges()
