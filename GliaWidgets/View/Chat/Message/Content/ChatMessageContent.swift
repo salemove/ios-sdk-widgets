@@ -1,4 +1,6 @@
+import UIKit
+
 enum ChatMessageContent {
-    case none
     case text(String)
+    case image(UIImage)
 }

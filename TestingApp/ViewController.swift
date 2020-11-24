@@ -4,10 +4,10 @@ import GliaWidgets
 
 class ViewController: UIViewController {
     private var settingsViewController = SettingsViewController()
-    private let gliaConf = Configuration(applicationToken: "",
-                                         apiToken: "",
-                                         environment: .europe,
-                                         site: "")
+    private let conf = Configuration(applicationToken: "",
+                                     apiToken: "",
+                                     environment: .europe,
+                                     site: "")
     private var glia: Glia!
 
     override func viewDidLoad() {
@@ -15,7 +15,7 @@ class ViewController: UIViewController {
         title = "Glia UI testing"
         view.backgroundColor = .white
 
-        glia = Glia(configuration: gliaConf)
+        glia = Glia(conf: conf)
 
         let settingsButton = makeButton(title: "Settings",
                                         selector: #selector(settingsTapped))
@@ -51,10 +51,8 @@ extension ViewController {
     }
 
     func presentChat() {
-        //let theme = settingsViewController.theme
-
-        ///
-
-        glia.start(.chat, from: self)
+        let theme = settingsViewController.theme
+        
+        glia.start(.chat, from: self.navigationController!, using: theme)
     }
 }

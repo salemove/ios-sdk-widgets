@@ -1,18 +1,10 @@
 import UIKit
 
 class ReceivedChatMessageView: UIView {
-    var content: ChatMessageContent = .none {
-        didSet { setContent(content) }
-    }
-
     private let style: ReceivedChatMessageStyle
-    private let contentView = UIView()
-    private let messageLabel = UILabel()
+    private let contentViews = UIStackView()
     private let operatorImageView = UIImageView()
-    private let kInsets = UIEdgeInsets(top: 5, left: 4, bottom: 5, right: 16)
-    private let kContentInsets = UIEdgeInsets(top: 12, left: 16, bottom: 12, right: 16)
-    private let kMaxContentWidth: CGFloat = 271
-    private let kMinContentWidth: CGFloat = 32
+    private let kInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 88)
 
     init(with style: ReceivedChatMessageStyle) {
         self.style = style
@@ -25,13 +17,27 @@ class ReceivedChatMessageView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func setup() {
-        contentView.backgroundColor = style.backgroundColor
-        contentView.layer.cornerRadius = 10
+    func addContent(_ content: ChatMessageContent) {
+        switch content {
+        case .text(let text):
+            let messageLabel = UILabel()
+            messageLabel.font = style.messageFont
+            messageLabel.textColor = style.messageColor
+            messageLabel.numberOfLines = 0
+            messageLabel.text = text
+            let insets = UIEdgeInsets(top: 12, left: 16, bottom: 12, right: 16)
+            let contentView = ChatMessageContentView(with: messageLabel,
+                                                     insets: insets)
+            contentView.backgroundColor = style.backgroundColor
+            contentViews.addArrangedSubview(contentView)
+        case .image:
+            break
+        }
+    }
 
-        messageLabel.font = style.messageFont
-        messageLabel.textColor = style.messageColor
-        messageLabel.numberOfLines = 0
+    private func setup() {
+        contentViews.axis = .vertical
+        contentViews.spacing = 4
     }
 
     private func layout() {
@@ -39,23 +45,10 @@ class ReceivedChatMessageView: UIView {
         operatorImageView.autoPinEdge(toSuperviewEdge: .left, withInset: kInsets.left)
         operatorImageView.autoPinEdge(toSuperviewEdge: .bottom, withInset: kInsets.bottom)
 
-        addSubview(contentView)
-        contentView.autoPinEdge(.left, to: .right, of: operatorImageView, withOffset: 4)
-        contentView.autoPinEdge(toSuperviewEdge: .top, withInset: kInsets.top)
-        contentView.autoPinEdge(toSuperviewEdge: .bottom, withInset: kInsets.bottom)
-        contentView.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
-        contentView.autoSetDimension(.width, toSize: kMaxContentWidth, relation: .lessThanOrEqual)
-
-        contentView.addSubview(messageLabel)
-        messageLabel.autoPinEdgesToSuperviewEdges(with: kContentInsets)
-    }
-
-    private func setContent(_ content: ChatMessageContent) {
-        switch content {
-        case .none:
-            messageLabel.text = nil
-        case .text(let text):
-            messageLabel.text = text
-        }
+        addSubview(contentViews)
+        contentViews.autoPinEdge(.left, to: .right, of: operatorImageView, withOffset: 4)
+        contentViews.autoPinEdge(toSuperviewEdge: .top, withInset: kInsets.top)
+        contentViews.autoPinEdge(toSuperviewEdge: .bottom, withInset: kInsets.bottom)
+        contentViews.autoPinEdge(toSuperviewEdge: .right, withInset: kInsets.right, relation: .greaterThanOrEqual)
     }
 }

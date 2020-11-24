@@ -54,8 +54,8 @@ public class Glia {
     private let configuration: Configuration
     private var rootCoordinator: RootCoordinator?
 
-    public init(configuration: Configuration) {
-        self.configuration = configuration
+    public init(conf: Configuration) {
+        self.configuration = conf
         configure()
     }
 
