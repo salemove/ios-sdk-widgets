@@ -15,6 +15,8 @@
 		1A205D8725655CEE003AA3CD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1A205D8525655CEE003AA3CD /* LaunchScreen.storyboard */; };
 		1A205DB4256566BB003AA3CD /* GliaWidgets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A205D5825655CB1003AA3CD /* GliaWidgets.framework */; };
 		1A205DB5256566BB003AA3CD /* GliaWidgets.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1A205D5825655CB1003AA3CD /* GliaWidgets.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		1A4AD3AF256D283700468BFB /* ChatMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4AD3AE256D283700468BFB /* ChatMessageView.swift */; };
+		1A4AD3B3256D2A7600468BFB /* ChatMessageStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4AD3B2256D2A7600468BFB /* ChatMessageStyle.swift */; };
 		1A60AF5C25656A1F00E53F53 /* PureLayout.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A205DA6256564CE003AA3CD /* PureLayout.framework */; };
 		1A60AF5D25656A1F00E53F53 /* PureLayout.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1A205DA6256564CE003AA3CD /* PureLayout.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1A60AF7A25656E0500E53F53 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60AF7925656E0500E53F53 /* Theme.swift */; };
@@ -57,8 +59,6 @@
 		1A60B02D256BF7FF00E53F53 /* ReceivedChatMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60B02C256BF7FF00E53F53 /* ReceivedChatMessageView.swift */; };
 		1A60B031256BF81500E53F53 /* SentChatMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60B030256BF81400E53F53 /* SentChatMessageView.swift */; };
 		1A60B035256BF89D00E53F53 /* ChatMessageStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60B034256BF89D00E53F53 /* ChatMessageStatusView.swift */; };
-		1A60B038256BFDC500E53F53 /* SentChatMessageStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60B037256BFDC500E53F53 /* SentChatMessageStyle.swift */; };
-		1A60B03C256BFDE500E53F53 /* ReceivedChatMessageViewStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60B03B256BFDE500E53F53 /* ReceivedChatMessageViewStyle.swift */; };
 		1A60B047256C0B4500E53F53 /* ChatMessageContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60B046256C0B4500E53F53 /* ChatMessageContent.swift */; };
 		1A60B04A256C0E0100E53F53 /* ChatMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60B049256C0E0100E53F53 /* ChatMessageCell.swift */; };
 		1A60B04D256D0CF600E53F53 /* ChatMessageContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60B04C256D0CF600E53F53 /* ChatMessageContentView.swift */; };
@@ -120,6 +120,8 @@
 		1A205D8625655CEE003AA3CD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1A205D8825655CEE003AA3CD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1A205DA6256564CE003AA3CD /* PureLayout.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PureLayout.framework; path = GliaWidgets/Frameworks/PureLayout.framework; sourceTree = "<group>"; };
+		1A4AD3AE256D283700468BFB /* ChatMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageView.swift; sourceTree = "<group>"; };
+		1A4AD3B2256D2A7600468BFB /* ChatMessageStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageStyle.swift; sourceTree = "<group>"; };
 		1A60AF7925656E0500E53F53 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		1A60AF7D25656F0400E53F53 /* Glia.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Glia.swift; sourceTree = "<group>"; };
 		1A60AF8F256674F000E53F53 /* Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
@@ -160,8 +162,6 @@
 		1A60B02C256BF7FF00E53F53 /* ReceivedChatMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceivedChatMessageView.swift; sourceTree = "<group>"; };
 		1A60B030256BF81400E53F53 /* SentChatMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentChatMessageView.swift; sourceTree = "<group>"; };
 		1A60B034256BF89D00E53F53 /* ChatMessageStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageStatusView.swift; sourceTree = "<group>"; };
-		1A60B037256BFDC500E53F53 /* SentChatMessageStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentChatMessageStyle.swift; sourceTree = "<group>"; };
-		1A60B03B256BFDE500E53F53 /* ReceivedChatMessageViewStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceivedChatMessageViewStyle.swift; sourceTree = "<group>"; };
 		1A60B046256C0B4500E53F53 /* ChatMessageContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageContent.swift; sourceTree = "<group>"; };
 		1A60B049256C0E0100E53F53 /* ChatMessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageCell.swift; sourceTree = "<group>"; };
 		1A60B04C256D0CF600E53F53 /* ChatMessageContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageContentView.swift; sourceTree = "<group>"; };
@@ -512,10 +512,10 @@
 			children = (
 				1A60B04F256D0D7400E53F53 /* Content */,
 				1A60B033256BF82E00E53F53 /* Status */,
+				1A4AD3AE256D283700468BFB /* ChatMessageView.swift */,
+				1A4AD3B2256D2A7600468BFB /* ChatMessageStyle.swift */,
 				1A60B030256BF81400E53F53 /* SentChatMessageView.swift */,
 				1A60B02C256BF7FF00E53F53 /* ReceivedChatMessageView.swift */,
-				1A60B037256BFDC500E53F53 /* SentChatMessageStyle.swift */,
-				1A60B03B256BFDE500E53F53 /* ReceivedChatMessageViewStyle.swift */,
 				1A60B049256C0E0100E53F53 /* ChatMessageCell.swift */,
 			);
 			path = Message;
@@ -725,7 +725,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1A60B03C256BFDE500E53F53 /* ReceivedChatMessageViewStyle.swift in Sources */,
 				1A60AFD925669A1500E53F53 /* View.swift in Sources */,
 				1A60AFBC256682C800E53F53 /* SubFlowCoordinator.swift in Sources */,
 				1A60B01D2567FCAD00E53F53 /* ButtonProperties.swift in Sources */,
@@ -733,7 +732,6 @@
 				1A60AFB62566825400E53F53 /* ViewModel.swift in Sources */,
 				1A60AFB9256682AF00E53F53 /* FlowCoordinator.swift in Sources */,
 				1A60AF9F25667CA800E53F53 /* FontProvider.swift in Sources */,
-				1A60B038256BFDC500E53F53 /* SentChatMessageStyle.swift in Sources */,
 				1A60AFCE2566958900E53F53 /* ViewFactory.swift in Sources */,
 				1A60AF96256675C400E53F53 /* UIColor+Extensions.swift in Sources */,
 				1A60AFE425669B0400E53F53 /* ChatCoordinator.swift in Sources */,
@@ -748,6 +746,7 @@
 				1A60B04D256D0CF600E53F53 /* ChatMessageContentView.swift in Sources */,
 				1A60B0202567FD1B00E53F53 /* BackButtonProperties.swift in Sources */,
 				1A60AF7A25656E0500E53F53 /* Theme.swift in Sources */,
+				1A4AD3B3256D2A7600468BFB /* ChatMessageStyle.swift in Sources */,
 				1A60B0082567F29900E53F53 /* HeaderStyle.swift in Sources */,
 				1A60B0152567FC7000E53F53 /* Button.swift in Sources */,
 				1A60AFDD25669A4200E53F53 /* ChatView.swift in Sources */,
@@ -755,6 +754,7 @@
 				1A60B0042567F25600E53F53 /* Header.swift in Sources */,
 				1A60B047256C0B4500E53F53 /* ChatMessageContent.swift in Sources */,
 				1A60AFB22566821B00E53F53 /* Asset.swift in Sources */,
+				1A4AD3AF256D283700468BFB /* ChatMessageView.swift in Sources */,
 				1A60AFD52566992A00E53F53 /* ChatViewModel.swift in Sources */,
 				1A60AFE025669A6100E53F53 /* ChatViewController.swift in Sources */,
 				1A60AF90256674F000E53F53 /* Font.swift in Sources */,

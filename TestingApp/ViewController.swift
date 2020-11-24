@@ -52,7 +52,7 @@ extension ViewController {
 
     func presentChat() {
         let theme = settingsViewController.theme
-        
+
         glia.start(.chat, from: self.navigationController!, using: theme)
     }
 }

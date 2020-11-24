@@ -54,12 +54,12 @@ public struct Theme {
                                      leftItemColor: baseLightColor,
                                      rightItemColor: baseLightColor,
                                      backgroundColor: primaryColor)
-        let sentChatMessage = SentChatMessageStyle(messageFont: bodyTextFont,
-                                                   messageColor: baseLightColor,
-                                                   backgroundColor: primaryColor)
-        let receivedChatMessage = ReceivedChatMessageStyle(messageFont: bodyTextFont,
-                                                           messageColor: baseDarkColor,
-                                                           backgroundColor: Color.lightGrey)
+        let sentChatMessage = ChatMessageStyle(messageFont: bodyTextFont,
+                                               messageColor: baseLightColor,
+                                               backgroundColor: primaryColor)
+        let receivedChatMessage = ChatMessageStyle(messageFont: bodyTextFont,
+                                                   messageColor: baseDarkColor,
+                                                   backgroundColor: Color.lightGrey)
         chat = ChatStyle(header: chatHeader,
                          sentMessage: sentChatMessage,
                          receivedMessage: receivedChatMessage,
