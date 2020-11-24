@@ -51,19 +51,10 @@ extension ViewController {
     }
 
     func presentChat() {
-        let theme = settingsViewController.theme
-        let presenter: UIViewController = {
-            if let navController = self.navigationController {
-                return navController
-            } else {
-                return self
-            }
-        }()
+        //let theme = settingsViewController.theme
 
         ///
 
-        glia.start(.chat,
-                   from: presenter,
-                   using: theme)
+        glia.start(.chat, from: self)
     }
 }

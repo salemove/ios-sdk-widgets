@@ -18,6 +18,7 @@ class ReceivedChatMessageView: UIView {
         self.style = style
         super.init(frame: .zero)
         setup()
+        layout()
     }
 
     required init?(coder: NSCoder) {
