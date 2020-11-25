@@ -11,9 +11,9 @@ public struct ThemeFont {
     public init(regular: UIFont? = nil,
                 medium: UIFont? = nil,
                 bold: UIFont? = nil) {
-        let regular = regular ?? Font.regular(0)
-        let medium = medium ?? Font.medium(0)
-        let bold = bold ?? Font.bold(0)
+        let regular = regular ?? Font.regular(1)
+        let medium = medium ?? Font.medium(1)
+        let bold = bold ?? Font.bold(1)
 
         header1 = bold.withSize(24)
         header2 = regular.withSize(20)

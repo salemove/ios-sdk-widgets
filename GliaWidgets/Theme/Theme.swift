@@ -3,9 +3,10 @@ import UIKit
 public struct Theme {
     private typealias Strings = L10n
 
-    public let color: ThemeColor
-    public let font: ThemeFont
     public var chat: ChatStyle
+
+    let color: ThemeColor
+    let font: ThemeFont
 
     public init(colorStyle: ThemeColorStyle = .default,
                 fontStyle: ThemeFontStyle = .default) {

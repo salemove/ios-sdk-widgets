@@ -10,9 +10,7 @@ extension ThemeFontStyle {
     var font: ThemeFont {
         switch self {
         case .default:
-            return ThemeFont(regular: Font.regular(1),
-                             medium: Font.medium(1),
-                             bold: Font.bold(1))
+            return ThemeFont()
         case .avenir:
             return ThemeFont(regular: UIFont(name: "Avenir-Roman", size: 1),
                              medium: UIFont(name: "Avenir-Medium", size: 1),
