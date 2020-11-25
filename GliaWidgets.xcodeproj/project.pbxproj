@@ -18,6 +18,11 @@
 		1A4AD3AF256D283700468BFB /* ChatMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4AD3AE256D283700468BFB /* ChatMessageView.swift */; };
 		1A4AD3B3256D2A7600468BFB /* ChatMessageStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4AD3B2256D2A7600468BFB /* ChatMessageStyle.swift */; };
 		1A4AD3BA256D31A600468BFB /* ChatMessageUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4AD3B9256D31A600468BFB /* ChatMessageUserView.swift */; };
+		1A4AD3BE256D37FD00468BFB /* UITableView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4AD3BD256D37FD00468BFB /* UITableView+Extensions.swift */; };
+		1A4AD3C1256E74C600468BFB /* ThemeFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4AD3C0256E74C600468BFB /* ThemeFont.swift */; };
+		1A4AD3C4256E7A0C00468BFB /* ThemeFontStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4AD3C3256E7A0C00468BFB /* ThemeFontStyle.swift */; };
+		1A4AD3C7256E863900468BFB /* ThemeColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4AD3C6256E863900468BFB /* ThemeColor.swift */; };
+		1A4AD3CA256E864800468BFB /* ThemeColorStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4AD3C9256E864800468BFB /* ThemeColorStyle.swift */; };
 		1A60AF5C25656A1F00E53F53 /* PureLayout.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A205DA6256564CE003AA3CD /* PureLayout.framework */; };
 		1A60AF5D25656A1F00E53F53 /* PureLayout.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1A205DA6256564CE003AA3CD /* PureLayout.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1A60AF7A25656E0500E53F53 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60AF7925656E0500E53F53 /* Theme.swift */; };
@@ -124,6 +129,11 @@
 		1A4AD3AE256D283700468BFB /* ChatMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageView.swift; sourceTree = "<group>"; };
 		1A4AD3B2256D2A7600468BFB /* ChatMessageStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageStyle.swift; sourceTree = "<group>"; };
 		1A4AD3B9256D31A600468BFB /* ChatMessageUserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageUserView.swift; sourceTree = "<group>"; };
+		1A4AD3BD256D37FD00468BFB /* UITableView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Extensions.swift"; sourceTree = "<group>"; };
+		1A4AD3C0256E74C600468BFB /* ThemeFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeFont.swift; sourceTree = "<group>"; };
+		1A4AD3C3256E7A0C00468BFB /* ThemeFontStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeFontStyle.swift; sourceTree = "<group>"; };
+		1A4AD3C6256E863900468BFB /* ThemeColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeColor.swift; sourceTree = "<group>"; };
+		1A4AD3C9256E864800468BFB /* ThemeColorStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeColorStyle.swift; sourceTree = "<group>"; };
 		1A60AF7925656E0500E53F53 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		1A60AF7D25656F0400E53F53 /* Glia.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Glia.swift; sourceTree = "<group>"; };
 		1A60AF8F256674F000E53F53 /* Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
@@ -337,6 +347,10 @@
 			isa = PBXGroup;
 			children = (
 				1A60AF7925656E0500E53F53 /* Theme.swift */,
+				1A4AD3C0256E74C600468BFB /* ThemeFont.swift */,
+				1A4AD3C3256E7A0C00468BFB /* ThemeFontStyle.swift */,
+				1A4AD3C6256E863900468BFB /* ThemeColor.swift */,
+				1A4AD3C9256E864800468BFB /* ThemeColorStyle.swift */,
 			);
 			path = Theme;
 			sourceTree = "<group>";
@@ -513,6 +527,7 @@
 			isa = PBXGroup;
 			children = (
 				1A60B0262568070800E53F53 /* UIStackView+Extensions.swift */,
+				1A4AD3BD256D37FD00468BFB /* UITableView+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -738,6 +753,7 @@
 			files = (
 				1A60AFD925669A1500E53F53 /* View.swift in Sources */,
 				1A60AFBC256682C800E53F53 /* SubFlowCoordinator.swift in Sources */,
+				1A4AD3C7256E863900468BFB /* ThemeColor.swift in Sources */,
 				1A60B01D2567FCAD00E53F53 /* ButtonProperties.swift in Sources */,
 				1A60AF7E25656F0400E53F53 /* Glia.swift in Sources */,
 				1A60AFB62566825400E53F53 /* ViewModel.swift in Sources */,
@@ -752,6 +768,7 @@
 				1A60AFF12566A4B300E53F53 /* NavigationPresenter.swift in Sources */,
 				1A60AF93256674F900E53F53 /* Color.swift in Sources */,
 				1A60B031256BF81500E53F53 /* SentChatMessageView.swift in Sources */,
+				1A4AD3C4256E7A0C00468BFB /* ThemeFontStyle.swift in Sources */,
 				1A60AFAF256680EF00E53F53 /* L10n.swift in Sources */,
 				1A60B0192567FC8A00E53F53 /* ButtonKind.swift in Sources */,
 				1A4AD3BA256D31A600468BFB /* ChatMessageUserView.swift in Sources */,
@@ -761,6 +778,7 @@
 				1A4AD3B3256D2A7600468BFB /* ChatMessageStyle.swift in Sources */,
 				1A60B0082567F29900E53F53 /* HeaderStyle.swift in Sources */,
 				1A60B0152567FC7000E53F53 /* Button.swift in Sources */,
+				1A4AD3CA256E864800468BFB /* ThemeColorStyle.swift in Sources */,
 				1A60AFDD25669A4200E53F53 /* ChatView.swift in Sources */,
 				1A60AFCA2566943F00E53F53 /* RootCoordinator.swift in Sources */,
 				1A60B0042567F25600E53F53 /* Header.swift in Sources */,
@@ -771,6 +789,8 @@
 				1A60AFE025669A6100E53F53 /* ChatViewController.swift in Sources */,
 				1A60AF90256674F000E53F53 /* Font.swift in Sources */,
 				1A60B04A256C0E0100E53F53 /* ChatMessageCell.swift in Sources */,
+				1A4AD3BE256D37FD00468BFB /* UITableView+Extensions.swift in Sources */,
+				1A4AD3C1256E74C600468BFB /* ThemeFont.swift in Sources */,
 				1A60AFEC2566A0E700E53F53 /* NavigationController.swift in Sources */,
 				1A60B0272568070800E53F53 /* UIStackView+Extensions.swift in Sources */,
 				1A60B0232567FD2D00E53F53 /* CloseButtonProperties.swift in Sources */,

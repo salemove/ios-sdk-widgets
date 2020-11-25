@@ -1,7 +1,8 @@
 import UIKit
 
 class SentChatMessageView: ChatMessageView {
-    private let statusView = ChatMessageStatusView()
+    let statusView = ChatMessageStatusView()
+
     private let kInsets = UIEdgeInsets(top: 5, left: 88, bottom: 5, right: 16)
 
     override init(with style: ChatMessageStyle) {

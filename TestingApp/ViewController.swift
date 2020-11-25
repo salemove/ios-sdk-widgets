@@ -51,7 +51,13 @@ extension ViewController {
     }
 
     func presentChat() {
-        let theme = settingsViewController.theme
+        //let theme = settingsViewController.theme
+
+        let font = ThemeFont(regular: UIFont(name: "Avenir-Heavy", size: 1))
+        let fontStyle: ThemeFontStyle = .custom(font)
+        let color = ThemeColor(primary: .red)
+        let colorStyle: ThemeColorStyle = .custom(color)
+        let theme = Theme(colorStyle: colorStyle, fontStyle: fontStyle)
 
         glia.start(.chat, from: self.navigationController!, using: theme)
     }

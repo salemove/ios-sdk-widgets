@@ -27,6 +27,7 @@ class Button: UIButton {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // swiftlint:disable cyclomatic_complexity
     private func setup() {
         let properties = kind.properties
 
