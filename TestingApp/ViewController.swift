@@ -47,7 +47,9 @@ class ViewController: UIViewController {
 
 extension ViewController {
     func presentSettings() {
-        navigationController?.pushViewController(settingsViewController, animated: true)
+        let navController = UINavigationController(rootViewController: settingsViewController)
+        navController.modalPresentationStyle = .fullScreen
+        present(navController, animated: true, completion: nil)
     }
 
     func presentChat() {

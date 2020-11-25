@@ -1,14 +1,14 @@
 import UIKit
 
 public struct ThemeColor {
-    let primary: UIColor
-    let secondary: UIColor
-    let baseNormal: UIColor
-    let baseLight: UIColor
-    let baseDark: UIColor
-    let baseShade: UIColor
-    let background: UIColor
-    let systemNegative: UIColor
+    public let primary: UIColor
+    public let secondary: UIColor
+    public let baseNormal: UIColor
+    public let baseLight: UIColor
+    public let baseDark: UIColor
+    public let baseShade: UIColor
+    public let background: UIColor
+    public let systemNegative: UIColor
 
     public init(primary: UIColor? = nil,
                 secondary: UIColor? = nil,

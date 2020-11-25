@@ -23,6 +23,8 @@
 		1A4AD3C4256E7A0C00468BFB /* ThemeFontStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4AD3C3256E7A0C00468BFB /* ThemeFontStyle.swift */; };
 		1A4AD3C7256E863900468BFB /* ThemeColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4AD3C6256E863900468BFB /* ThemeColor.swift */; };
 		1A4AD3CA256E864800468BFB /* ThemeColorStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4AD3C9256E864800468BFB /* ThemeColorStyle.swift */; };
+		1A4AD3CE256E8F5500468BFB /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4AD3CD256E8F5500468BFB /* SettingsCell.swift */; };
+		1A4AD3D1256E92F300468BFB /* SettingsColorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4AD3D0256E92F300468BFB /* SettingsColorCell.swift */; };
 		1A60AF5C25656A1F00E53F53 /* PureLayout.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A205DA6256564CE003AA3CD /* PureLayout.framework */; };
 		1A60AF5D25656A1F00E53F53 /* PureLayout.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1A205DA6256564CE003AA3CD /* PureLayout.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1A60AF7A25656E0500E53F53 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60AF7925656E0500E53F53 /* Theme.swift */; };
@@ -134,6 +136,8 @@
 		1A4AD3C3256E7A0C00468BFB /* ThemeFontStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeFontStyle.swift; sourceTree = "<group>"; };
 		1A4AD3C6256E863900468BFB /* ThemeColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeColor.swift; sourceTree = "<group>"; };
 		1A4AD3C9256E864800468BFB /* ThemeColorStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeColorStyle.swift; sourceTree = "<group>"; };
+		1A4AD3CD256E8F5500468BFB /* SettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
+		1A4AD3D0256E92F300468BFB /* SettingsColorCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsColorCell.swift; sourceTree = "<group>"; };
 		1A60AF7925656E0500E53F53 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		1A60AF7D25656F0400E53F53 /* Glia.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Glia.swift; sourceTree = "<group>"; };
 		1A60AF8F256674F000E53F53 /* Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
@@ -283,6 +287,15 @@
 				1A4AD3B9256D31A600468BFB /* ChatMessageUserView.swift */,
 			);
 			path = User;
+			sourceTree = "<group>";
+		};
+		1A4AD3CC256E8E6500468BFB /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				1A4AD3CD256E8F5500468BFB /* SettingsCell.swift */,
+				1A4AD3D0256E92F300468BFB /* SettingsColorCell.swift */,
+			);
+			path = Cells;
 			sourceTree = "<group>";
 		};
 		1A60AF6725656BF200E53F53 /* ViewController */ = {
@@ -473,6 +486,7 @@
 		1A60AFF32567CDFB00E53F53 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				1A4AD3CC256E8E6500468BFB /* Cells */,
 				1A60AFF42567CE1300E53F53 /* SettingsViewController.swift */,
 			);
 			path = Settings;
@@ -812,6 +826,8 @@
 			files = (
 				1A205D7F25655CEC003AA3CD /* ViewController.swift in Sources */,
 				1A205D7B25655CEC003AA3CD /* AppDelegate.swift in Sources */,
+				1A4AD3D1256E92F300468BFB /* SettingsColorCell.swift in Sources */,
+				1A4AD3CE256E8F5500468BFB /* SettingsCell.swift in Sources */,
 				1A60AFF52567CE1300E53F53 /* SettingsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
