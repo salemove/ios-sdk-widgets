@@ -4,18 +4,12 @@ import GliaWidgets
 
 class ViewController: UIViewController {
     private var settingsViewController = SettingsViewController()
-    private let conf = Configuration(applicationToken: "",
-                                     apiToken: "",
-                                     environment: .europe,
-                                     site: "")
     private var glia: Glia!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Glia UI testing"
         view.backgroundColor = .white
-
-        glia = Glia(conf: conf)
 
         let settingsButton = makeButton(title: "Settings",
                                         selector: #selector(settingsTapped))
@@ -53,7 +47,10 @@ extension ViewController {
     }
 
     func presentChat() {
+        let conf = settingsViewController.conf
         let theme = settingsViewController.theme
+
+        glia = Glia(conf: conf)
 
         /*//let font = ThemeFont(regular: UIFont(name: "Avenir-Heavy", size: 1))
         let fontStyle: ThemeFontStyle = .defaultLarge

@@ -15,16 +15,16 @@ public enum Environment {
 }
 
 public struct Configuration {
-    public let applicationToken: String
+    public let appToken: String
     public let apiToken: String
     public let environment: Environment
     public let site: String
 
-    public init(applicationToken: String,
+    public init(appToken: String,
                 apiToken: String,
                 environment: Environment,
                 site: String) {
-        self.applicationToken = applicationToken
+        self.appToken = appToken
         self.apiToken = apiToken
         self.environment = environment
         self.site = site

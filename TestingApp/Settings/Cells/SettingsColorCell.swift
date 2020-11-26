@@ -1,7 +1,11 @@
 import UIKit
 
 class SettingsColorCell: SettingsCell {
-    var color: UIColor { UIColor(hex: rgbTextField.text ?? "") ?? .black }
+    var color: UIColor {
+        let rgbHex = rgbTextField.text ?? ""
+        let alpha = CGFloat(((alphaTextField.text ?? "") as NSString).floatValue)
+        return UIColor(hex: rgbHex, alpha: alpha)
+    }
 
     private let sampleView = UIView()
     private let rgbTextField = UITextField()
@@ -18,12 +22,14 @@ class SettingsColorCell: SettingsCell {
     private func setup() {
         rgbTextField.borderStyle = .roundedRect
         rgbTextField.autocapitalizationType = .allCharacters
+        rgbTextField.autocorrectionType = .no
         rgbTextField.addTarget(self,
                             action: #selector(updateSample),
                             for: .editingChanged)
 
         alphaTextField.borderStyle = .roundedRect
         alphaTextField.autocapitalizationType = .allCharacters
+        alphaTextField.autocorrectionType = .no
         alphaTextField.addTarget(self,
                             action: #selector(updateSample),
                             for: .editingChanged)
@@ -55,50 +61,6 @@ class SettingsColorCell: SettingsCell {
     }
 
     @objc private func updateSample() {
-        sampleView.backgroundColor = UIColor(hex: rgbTextField.text ?? "") ?? .clear
-    }
-}
-
-private extension UIColor {
-    var rgbHexString: String {
-        return rgba[0...2].map { String(format: "%02lX", Int($0 * 255)) }.reduce("", +)
-    }
-
-    var alphaString: String {
-        return String(describing: rgba[3])
-    }
-
-    var rgba: [CGFloat] {
-        var red: CGFloat = 0
-        var green: CGFloat = 0
-        var blue: CGFloat = 0
-        var alpha: CGFloat = 0
-
-        getRed(&red, green: &green, blue: &blue, alpha: &alpha)
-
-        return [red, green, blue, alpha]
-    }
-
-    convenience init?(hex: String) {
-        let r, g, b: CGFloat
-
-        let start = hex.startIndex
-        let hexColor = String(hex[start...])
-
-        if hexColor.count == 6 {
-            let scanner = Scanner(string: hexColor)
-            var hexNumber: UInt64 = 0
-
-            if scanner.scanHexInt64(&hexNumber) {
-                r = CGFloat((hexNumber & 0x00ff00) >> 16) / 255
-                g = CGFloat((hexNumber & 0x0000ff00) >> 8) / 255
-                b = CGFloat((hexNumber & 0x000000ff) >> 0) / 255
-
-                self.init(red: r, green: g, blue: b, alpha: 1.0)
-                return
-            }
-        }
-
-        return nil
+        sampleView.backgroundColor = color
     }
 }

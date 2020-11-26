@@ -9,6 +9,9 @@ private struct Section {
 class SettingsViewController: UIViewController {
     private let tableView = UITableView(frame: .zero, style: .grouped)
     private var sections = [Section]()
+    private var appTokenCell: SettingsTextCell!
+    private var apiTokenCell: SettingsTextCell!
+    private var siteCell: SettingsTextCell!
     private var primaryColorCell: SettingsColorCell!
     private var secondaryColorCell: SettingsColorCell!
     private var baseNormalColorCell: SettingsColorCell!
@@ -19,6 +22,7 @@ class SettingsViewController: UIViewController {
     private var systemNegativeColorCell: SettingsColorCell!
 
     var theme: Theme = Theme()
+    var conf: Configuration { loadConf() }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,6 +48,20 @@ class SettingsViewController: UIViewController {
     }
 
     private func createCells() {
+        appTokenCell = SettingsTextCell(title: "App token:",
+                                        text: conf.appToken)
+        apiTokenCell = SettingsTextCell(title: "API token:",
+                                        text: conf.apiToken)
+        siteCell = SettingsTextCell(title: "Site:",
+                                    text: conf.site)
+        var confCells = [SettingsCell]()
+        confCells.append(appTokenCell)
+        confCells.append(apiTokenCell)
+        confCells.append(siteCell)
+
+        let confSection = Section(title: "Glia conf",
+                                  cells: confCells)
+
         primaryColorCell = SettingsColorCell(title: "Primary:",
                                              color: theme.color.primary)
         secondaryColorCell = SettingsColorCell(title: "Secondary:",
@@ -60,7 +78,7 @@ class SettingsViewController: UIViewController {
                                                 color: theme.color.background)
         systemNegativeColorCell = SettingsColorCell(title: "System negative:",
                                                     color: theme.color.systemNegative)
-        var colorCells = [SettingsColorCell]()
+        var colorCells = [SettingsCell]()
         colorCells.append(primaryColorCell)
         colorCells.append(secondaryColorCell)
         colorCells.append(baseNormalColorCell)
@@ -70,12 +88,36 @@ class SettingsViewController: UIViewController {
         colorCells.append(backgroundColorCell)
         colorCells.append(systemNegativeColorCell)
 
-        let colorSection = Section(title: "Theme colors (RRGGBBAA)",
+        let colorSection = Section(title: "Theme colors (RRGGBB Alpha)",
                                    cells: colorCells)
 
         sections.append(colorSection)
+        sections.append(confSection)
 
         tableView.reloadData()
+    }
+
+    private func loadConf() -> Configuration {
+        let appToken = UserDefaults.standard.string(forKey: "conf.appToken") ?? ""
+        let apiToken = UserDefaults.standard.string(forKey: "conf.apiToken") ?? ""
+        let site = UserDefaults.standard.string(forKey: "conf.site") ?? ""
+        return Configuration(appToken: appToken,
+                             apiToken: apiToken,
+                             environment: .europe,
+                             site: site)
+    }
+
+    private func saveConf() {
+        UserDefaults.standard.setValue(appTokenCell.textField.text ?? "", forKey: "conf.appToken")
+        UserDefaults.standard.setValue(apiTokenCell.textField.text ?? "", forKey: "conf.apiToken")
+        UserDefaults.standard.setValue(siteCell.textField.text ?? "", forKey: "conf.site")
+    }
+
+    private func makeConf() -> Configuration {
+        return Configuration(appToken: appTokenCell.textField.text ?? "",
+                             apiToken: apiTokenCell.textField.text ?? "",
+                             environment: .europe,
+                             site: siteCell.textField.text ?? "")
     }
 
     private func makeTheme() -> Theme {
@@ -92,6 +134,7 @@ class SettingsViewController: UIViewController {
     }
 
     @objc private func doneTapped() {
+        saveConf()
         theme = makeTheme()
         dismiss(animated: true, completion: nil)
     }
