@@ -11,7 +11,7 @@ class SettingsColorCell: SettingsCell {
     private let rgbTextField = UITextField()
     private let alphaTextField = UITextField()
 
-    public init(title: String, color: UIColor) {
+    init(title: String, color: UIColor) {
         rgbTextField.text = color.rgbHexString
         alphaTextField.text = color.alphaString
         super.init(title: title)

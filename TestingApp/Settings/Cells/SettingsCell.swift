@@ -3,7 +3,7 @@ import UIKit
 class SettingsCell: UITableViewCell {
     let titleLabel = UILabel()
 
-    public init(title: String) {
+    init(title: String) {
         titleLabel.text = title
         super.init(style: .default, reuseIdentifier: nil)
         setup()
@@ -16,6 +16,8 @@ class SettingsCell: UITableViewCell {
     }
 
     private func setup() {
+        selectionStyle = .none
+
         titleLabel.font = .systemFont(ofSize: 15)
         titleLabel.textColor = .darkGray
         titleLabel.numberOfLines = 0

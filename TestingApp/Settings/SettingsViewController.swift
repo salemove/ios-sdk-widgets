@@ -54,10 +54,12 @@ class SettingsViewController: UIViewController {
                                         text: conf.apiToken)
         siteCell = SettingsTextCell(title: "Site:",
                                     text: conf.site)
+        let fontCell = SettingsFontCell(title: "Font", defaultFont: .systemFont(ofSize: 10))
         var confCells = [SettingsCell]()
         confCells.append(appTokenCell)
         confCells.append(apiTokenCell)
         confCells.append(siteCell)
+        confCells.append(fontCell)
 
         let confSection = Section(title: "Glia conf",
                                   cells: confCells)
@@ -91,8 +93,8 @@ class SettingsViewController: UIViewController {
         let colorSection = Section(title: "Theme colors (RRGGBB Alpha)",
                                    cells: colorCells)
 
-        sections.append(colorSection)
         sections.append(confSection)
+        sections.append(colorSection)
 
         tableView.reloadData()
     }
