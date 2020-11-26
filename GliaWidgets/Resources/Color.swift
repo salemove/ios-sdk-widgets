@@ -8,6 +8,6 @@ enum Color {
     static var baseNormal = UIColor(hex: 0x6C7683)
     static var baseShade = UIColor(hex: 0x6C7683, alpha: 0.5)
     static var baseDark = UIColor(hex: 0x2C0735)
-    static var background: UIColor { .white }
     static var lightGrey = UIColor(hex: 0xF3F3F3)
+    static var background: UIColor { .white }
 }

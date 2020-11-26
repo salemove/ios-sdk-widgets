@@ -16,8 +16,9 @@ class SettingsCell: UITableViewCell {
     }
 
     private func setup() {
-        titleLabel.font = .systemFont(ofSize: 16)
+        titleLabel.font = .systemFont(ofSize: 15)
         titleLabel.textColor = .darkGray
+        titleLabel.numberOfLines = 0
     }
 
     private func layout() {

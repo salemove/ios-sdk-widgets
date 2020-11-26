@@ -1,36 +1,82 @@
 import UIKit
 
 class SettingsColorCell: SettingsCell {
-    var color: UIColor { UIColor(hex: textField.text ?? "") ?? .black }
+    var color: UIColor { UIColor(hex: rgbTextField.text ?? "") ?? .black }
 
-    private let textField = UITextField()
+    private let sampleView = UIView()
+    private let rgbTextField = UITextField()
+    private let alphaTextField = UITextField()
 
     public init(title: String, color: UIColor) {
-        textField.text = color.hexString
+        rgbTextField.text = color.rgbHexString
+        alphaTextField.text = color.alphaString
         super.init(title: title)
         setup()
         layout()
     }
 
     private func setup() {
-        textField.borderStyle = .roundedRect
-        textField.autocapitalizationType = .allCharacters
+        rgbTextField.borderStyle = .roundedRect
+        rgbTextField.autocapitalizationType = .allCharacters
+        rgbTextField.addTarget(self,
+                            action: #selector(updateSample),
+                            for: .editingChanged)
+
+        alphaTextField.borderStyle = .roundedRect
+        alphaTextField.autocapitalizationType = .allCharacters
+        alphaTextField.addTarget(self,
+                            action: #selector(updateSample),
+                            for: .editingChanged)
+
+        sampleView.layer.borderWidth = 0.5
+        sampleView.layer.borderColor = UIColor.black.cgColor
+
+        updateSample()
     }
 
     private func layout() {
-        contentView.addSubview(textField)
-        textField.autoSetDimension(.width, toSize: 100)
-        textField.autoPinEdge(.left, to: .right, of: titleLabel, withOffset: 20, relation: .greaterThanOrEqual)
-        textField.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 20),
+        contentView.addSubview(sampleView)
+        sampleView.autoSetDimensions(to: CGSize(width: 30, height: 30))
+        sampleView.autoPinEdge(.left, to: .right, of: titleLabel, withOffset: 20, relation: .greaterThanOrEqual)
+        sampleView.autoAlignAxis(toSuperviewAxis: .horizontal)
+
+        contentView.addSubview(rgbTextField)
+        rgbTextField.autoSetDimension(.width, toSize: 100)
+        rgbTextField.autoPinEdge(.left, to: .right, of: sampleView, withOffset: 10)
+        rgbTextField.autoPinEdge(toSuperviewEdge: .top, withInset: 10)
+        rgbTextField.autoPinEdge(toSuperviewEdge: .bottom, withInset: 10)
+
+        contentView.addSubview(alphaTextField)
+        alphaTextField.autoSetDimension(.width, toSize: 50)
+        alphaTextField.autoAlignAxis(toSuperviewAxis: .horizontal)
+        alphaTextField.autoPinEdge(.left, to: .right, of: rgbTextField, withOffset: 10)
+        alphaTextField.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 20),
                                                excludingEdge: .left)
+    }
+
+    @objc private func updateSample() {
+        sampleView.backgroundColor = UIColor(hex: rgbTextField.text ?? "") ?? .clear
     }
 }
 
-extension UIColor {
-    var hexString: String {
-        var r: CGFloat = 0, g: CGFloat = 0, b: CGFloat = 0
-        getRed(&r, green: &g, blue: &b, alpha: nil)
-        return [r, g, b].map { String(format: "%02lX", Int($0 * 255)) }.reduce("", +)
+private extension UIColor {
+    var rgbHexString: String {
+        return rgba[0...2].map { String(format: "%02lX", Int($0 * 255)) }.reduce("", +)
+    }
+
+    var alphaString: String {
+        return String(describing: rgba[3])
+    }
+
+    var rgba: [CGFloat] {
+        var red: CGFloat = 0
+        var green: CGFloat = 0
+        var blue: CGFloat = 0
+        var alpha: CGFloat = 0
+
+        getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+
+        return [red, green, blue, alpha]
     }
 
     convenience init?(hex: String) {
