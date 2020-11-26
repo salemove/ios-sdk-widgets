@@ -8,18 +8,17 @@ public struct ThemeFont {
     let subtitle: UIFont
     let caption: UIFont
 
-    public init(regular: UIFont? = nil,
-                medium: UIFont? = nil,
-                bold: UIFont? = nil) {
-        let regular = regular ?? Font.regular(1)
-        let medium = medium ?? Font.medium(1)
-        let bold = bold ?? Font.bold(1)
-
-        header1 = bold.withSize(24)
-        header2 = regular.withSize(20)
-        header3 = medium.withSize(18)
-        bodyText = regular.withSize(16)
-        subtitle = regular.withSize(14)
-        caption = regular.withSize(12)
+    public init(header1: UIFont? = nil,
+                header2: UIFont? = nil,
+                header3: UIFont? = nil,
+                bodyText: UIFont? = nil,
+                subtitle: UIFont? = nil,
+                caption: UIFont? = nil) {
+        self.header1 = header1 ?? Font.bold(24)
+        self.header2 = header2 ?? Font.regular(20)
+        self.header3 = header3 ?? Font.medium(18)
+        self.bodyText = bodyText ?? Font.regular(16)
+        self.subtitle = subtitle ?? Font.regular(14)
+        self.caption = caption ?? Font.regular(12)
     }
 }
