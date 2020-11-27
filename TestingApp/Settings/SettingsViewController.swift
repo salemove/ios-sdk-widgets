@@ -20,6 +20,13 @@ class SettingsViewController: UIViewController {
     private var baseShadeColorCell: SettingsColorCell!
     private var backgroundColorCell: SettingsColorCell!
     private var systemNegativeColorCell: SettingsColorCell!
+    private var header1FontCell: SettingsFontCell!
+    private var header2FontCell: SettingsFontCell!
+    private var header3FontCell: SettingsFontCell!
+    private var bodyTextFontCell: SettingsFontCell!
+    private var subtitleFontCell: SettingsFontCell!
+    private var captionFontCell: SettingsFontCell!
+    private var buttonLabelFontCell: SettingsFontCell!
 
     var theme: Theme = Theme()
     var conf: Configuration { loadConf() }
@@ -54,12 +61,10 @@ class SettingsViewController: UIViewController {
                                         text: conf.apiToken)
         siteCell = SettingsTextCell(title: "Site:",
                                     text: conf.site)
-        let fontCell = SettingsFontCell(title: "Font", defaultFont: .systemFont(ofSize: 10))
         var confCells = [SettingsCell]()
         confCells.append(appTokenCell)
         confCells.append(apiTokenCell)
         confCells.append(siteCell)
-        confCells.append(fontCell)
 
         let confSection = Section(title: "Glia conf",
                                   cells: confCells)
@@ -93,8 +98,35 @@ class SettingsViewController: UIViewController {
         let colorSection = Section(title: "Theme colors (RRGGBB Alpha)",
                                    cells: colorCells)
 
+        header1FontCell = SettingsFontCell(title: "Header1",
+                                           defaultFont: theme.font.header1)
+        header2FontCell = SettingsFontCell(title: "Header2",
+                                           defaultFont: theme.font.header2)
+        header3FontCell = SettingsFontCell(title: "Header3",
+                                           defaultFont: theme.font.header3)
+        bodyTextFontCell = SettingsFontCell(title: "Body text",
+                                            defaultFont: theme.font.bodyText)
+        subtitleFontCell = SettingsFontCell(title: "Subtitle",
+                                            defaultFont: theme.font.subtitle)
+        captionFontCell = SettingsFontCell(title: "Caption",
+                                            defaultFont: theme.font.caption)
+        buttonLabelFontCell = SettingsFontCell(title: "Button label",
+                                               defaultFont: theme.font.buttonLabel)
+        var fontCells = [SettingsCell]()
+        fontCells.append(header1FontCell)
+        fontCells.append(header2FontCell)
+        fontCells.append(header3FontCell)
+        fontCells.append(bodyTextFontCell)
+        fontCells.append(subtitleFontCell)
+        fontCells.append(captionFontCell)
+        fontCells.append(buttonLabelFontCell)
+
+        let fontSection = Section(title: "Fonts",
+                                  cells: fontCells)
+
         sections.append(confSection)
         sections.append(colorSection)
+        sections.append(fontSection)
 
         tableView.reloadData()
     }
@@ -131,8 +163,19 @@ class SettingsViewController: UIViewController {
                                baseShade: baseShadeColorCell.color,
                                background: backgroundColorCell.color,
                                systemNegative: systemNegativeColorCell.color)
+        let font = ThemeFont(header1: header1FontCell.selectedFont,
+                             header2: header2FontCell.selectedFont,
+                             header3: header3FontCell.selectedFont,
+                             bodyText: bodyTextFontCell.selectedFont,
+                             subtitle: subtitleFontCell.selectedFont,
+                             caption: captionFontCell.selectedFont,
+                             buttonLabel: buttonLabelFontCell.selectedFont)
+
         let colorStyle: ThemeColorStyle = .custom(color)
-        return Theme(colorStyle: colorStyle)
+        let fontStyle: ThemeFontStyle = .custom(font)
+
+        return Theme(colorStyle: colorStyle,
+                     fontStyle: fontStyle)
     }
 
     @objc private func doneTapped() {

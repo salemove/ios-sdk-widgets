@@ -1,13 +1,13 @@
 import UIKit
 
 public struct ThemeFont {
-    let header1: UIFont
-    let header2: UIFont
-    let header3: UIFont
-    let bodyText: UIFont
-    let subtitle: UIFont
-    let caption: UIFont
-    let buttonLabel: UIFont
+    public let header1: UIFont
+    public let header2: UIFont
+    public let header3: UIFont
+    public let bodyText: UIFont
+    public let subtitle: UIFont
+    public let caption: UIFont
+    public let buttonLabel: UIFont
 
     public init(header1: UIFont? = nil,
                 header2: UIFont? = nil,

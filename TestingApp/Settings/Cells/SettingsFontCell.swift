@@ -1,6 +1,21 @@
 import UIKit
 
 class SettingsFontCell: SettingsCell {
+    var selectedFont: UIFont {
+        let size = CGFloat(SettingsFontCell.kFontSizes[pickerView.selectedRow(inComponent: 1)])
+        let fontIndex = pickerView.selectedRow(inComponent: 0)
+
+        let font: UIFont = {
+            if fontIndex == 0 {
+                return defaultFont.withSize(size)
+            } else {
+                return SettingsFontCell.kFonts[fontIndex - 1].withSize(size)
+            }
+        }()
+
+        return font
+    }
+
     private let pickerView = UIPickerView()
     private let defaultFont: UIFont
     private static let kFontSizes: [CGFloat] = Array(stride(from: 8.0, through: 30.0, by: 1.0))
@@ -22,18 +37,35 @@ class SettingsFontCell: SettingsCell {
     private func setup() {
         pickerView.dataSource = self
         pickerView.delegate = self
+
+        selectDefaultFont()
     }
 
     private func layout() {
         contentView.addSubview(pickerView)
-        pickerView.autoSetDimension(.height, toSize: 100)
+        pickerView.autoSetDimensions(to: CGSize(width: 230, height: 100))
         pickerView.autoPinEdge(.left, to: .right, of: titleLabel, withOffset: 10)
         pickerView.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 20),
                                                excludingEdge: .left)
     }
 
     private func selectDefaultFont() {
-        // select picker values
+        pickerView.selectRow(0, inComponent: 0, animated: false)
+
+        let sizeIndex = SettingsFontCell.kFontSizes
+            .enumerated()
+            .first(where: { $0.element == defaultFont.pointSize })?
+            .offset
+
+        if let index = sizeIndex {
+            pickerView.selectRow(index, inComponent: 1, animated: false)
+        }
+
+        updateSample()
+    }
+
+    private func updateSample() {
+        titleLabel.font = selectedFont
     }
 }
 
@@ -86,5 +118,9 @@ extension SettingsFontCell: UIPickerViewDelegate {
         }
 
         return titleLabel
+    }
+
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        updateSample()
     }
 }
