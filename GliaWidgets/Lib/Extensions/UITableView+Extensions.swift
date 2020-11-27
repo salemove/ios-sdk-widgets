@@ -5,21 +5,19 @@ internal extension UITableView {
         register(type, forCellReuseIdentifier: String(describing: T.self))
     }
 
-    func deque<T: UITableViewCell>(cellFor indexPath: IndexPath) -> T {
-        // swiftlint:disable force_cast
+    func dequeue<T: UITableViewCell>(cellFor indexPath: IndexPath) -> T? {
         return dequeueReusableCell(
             withIdentifier: String(describing: T.self),
             for: indexPath
-        ) as! T
+        ) as? T
     }
 
     func register<T: UITableViewHeaderFooterView>(headerFooterView type: T.Type) {
         register(type, forHeaderFooterViewReuseIdentifier: String(describing: T.self))
     }
 
-    func dequeHeaderFooterView<T: UITableViewHeaderFooterView>() -> T {
-        // swiftlint:disable force_cast
-        return dequeueReusableHeaderFooterView(withIdentifier: String(describing: T.self)) as! T
+    func dequeueHeaderFooterView<T: UITableViewHeaderFooterView>() -> T? {
+        return dequeueReusableHeaderFooterView(withIdentifier: String(describing: T.self)) as? T
     }
 
     func scrollToBottom(animated: Bool) {

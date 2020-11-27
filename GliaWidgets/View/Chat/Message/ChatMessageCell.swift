@@ -3,7 +3,7 @@ import PureLayout
 
 class ChatMessageCell: UITableViewCell {
     var view: UIView? {
-        get { contentView.subviews.first }
+        get { return contentView.subviews.first }
         set {
             contentView.subviews.first?.removeFromSuperview()
 

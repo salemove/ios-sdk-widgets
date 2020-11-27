@@ -2,7 +2,7 @@ import UIKit
 
 class ChatMessageUserView: UIView {
     var image: UIImage? {
-        get { imageView.image }
+        get { return imageView.image }
         set {
             imageView.image = newValue
             widthConstraint.constant = newValue == nil

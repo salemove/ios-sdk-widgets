@@ -24,7 +24,7 @@ class ChatViewController: ViewController {
         bind(viewModel: viewModel, to: view)
     }
 
-    override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
+    override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
 
     private func bind(viewModel: ChatViewModel, to view: ChatView) {
         view.header.leftItem = {

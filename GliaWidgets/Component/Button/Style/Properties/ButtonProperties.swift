@@ -26,24 +26,24 @@ protocol ButtonProperties {
 }
 
 extension ButtonProperties {
-    var title: String? { nil }
-    var useImageSize: Bool { true }
-    var width: CGFloat? { useImageSize ? image?.size.width : nil }
-    var height: CGFloat? { useImageSize ? image?.size.height : nil }
-    var cornerRadius: CGFloat? { nil }
-    var borderWidth: CGFloat? { nil }
-    var borderColor: UIColor? { nil }
-    var backgroundColor: UIColor? { nil }
-    var font: UIFont? { nil }
-    var fontColor: UIColor? { nil }
-    var image: UIImage? { nil }
-    var touchAreaInsets: TouchAreaInsets? { nil }
-    var shadowColor: UIColor? { nil }
-    var shadowOffset: CGSize? { nil }
-    var shadowOpacity: Float? { nil }
-    var shadowRadius: CGFloat? { nil }
-    var contentEdgeInsets: UIEdgeInsets? { nil }
-    var contentHorizontalAlignment: UIControl.ContentHorizontalAlignment? { nil }
-    var contentVerticalAlignment: UIControl.ContentVerticalAlignment? { nil }
-    var imageEdgeInsets: UIEdgeInsets? { nil }
+    var title: String? { return nil }
+    var useImageSize: Bool { return true }
+    var width: CGFloat? { return useImageSize ? image?.size.width : nil }
+    var height: CGFloat? { return useImageSize ? image?.size.height : nil }
+    var cornerRadius: CGFloat? { return nil }
+    var borderWidth: CGFloat? { return nil }
+    var borderColor: UIColor? { return nil }
+    var backgroundColor: UIColor? { return nil }
+    var font: UIFont? { return nil }
+    var fontColor: UIColor? { return nil }
+    var image: UIImage? { return nil }
+    var touchAreaInsets: TouchAreaInsets? { return nil }
+    var shadowColor: UIColor? { return nil }
+    var shadowOffset: CGSize? { return nil }
+    var shadowOpacity: Float? { return nil }
+    var shadowRadius: CGFloat? { return nil }
+    var contentEdgeInsets: UIEdgeInsets? { return nil }
+    var contentHorizontalAlignment: UIControl.ContentHorizontalAlignment? { return nil }
+    var contentVerticalAlignment: UIControl.ContentVerticalAlignment? { return nil }
+    var imageEdgeInsets: UIEdgeInsets? { return nil }
 }

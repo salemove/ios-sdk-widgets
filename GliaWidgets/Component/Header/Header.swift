@@ -3,7 +3,7 @@ import PureLayout
 
 class Header: UIView {
     var leftItem: UIView? {
-        get { leftItemContainer.subviews.first }
+        get { return leftItemContainer.subviews.first }
         set {
             leftItemContainer.subviews.first?.removeFromSuperview()
             if let item = newValue {
@@ -14,7 +14,7 @@ class Header: UIView {
         }
     }
     var rightItem: UIView? {
-        get { rightItemContainer.subviews.first }
+        get { return rightItemContainer.subviews.first }
         set {
             rightItemContainer.subviews.first?.removeFromSuperview()
             if let item = newValue {

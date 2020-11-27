@@ -52,12 +52,8 @@ extension ViewController {
 
         glia = Glia(conf: conf)
 
-        /*//let font = ThemeFont(regular: UIFont(name: "Avenir-Heavy", size: 1))
-        let fontStyle: ThemeFontStyle = .defaultLarge
-        let color = ThemeColor(primary: .red)
-        let colorStyle: ThemeColorStyle = .custom(color)
-        let theme = Theme(colorStyle: colorStyle, fontStyle: fontStyle)*/
-
-        glia.start(.chat, from: self.navigationController!, using: theme)
+        glia.start(.chat,
+                   from: self.navigationController ?? self,
+                   using: theme)
     }
 }

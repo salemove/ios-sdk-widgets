@@ -2,9 +2,7 @@ import UIKit
 
 extension UIStackView {
     func replaceArrangedSubview(at index: Int, with view: UIView) {
-        guard index < arrangedSubviews.count else {
-            return
-        }
+        guard index < arrangedSubviews.count else { return }
 
         let subview = arrangedSubviews[index]
         removeArrangedSubview(subview)
@@ -14,9 +12,9 @@ extension UIStackView {
     }
 
     func replaceArrangedSubviews(with views: [UIView]) {
-        for subview in arrangedSubviews {
-            removeArrangedSubview(subview)
-            subview.removeFromSuperview()
+        arrangedSubviews.forEach {
+            removeArrangedSubview($0)
+            $0.removeFromSuperview()
         }
 
         addArrangedSubviews(views)
@@ -27,6 +25,6 @@ extension UIStackView {
     }
 
     func removeArrangedSubviews() {
-        arrangedSubviews.forEach({ $0.removeFromSuperview() })
+        arrangedSubviews.forEach { $0.removeFromSuperview() }
     }
 }

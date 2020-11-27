@@ -24,15 +24,15 @@ class SettingsColorCell: SettingsCell {
         rgbTextField.autocapitalizationType = .allCharacters
         rgbTextField.autocorrectionType = .no
         rgbTextField.addTarget(self,
-                            action: #selector(updateSample),
-                            for: .editingChanged)
+                               action: #selector(updateSample),
+                               for: .editingChanged)
 
         alphaTextField.borderStyle = .roundedRect
         alphaTextField.autocapitalizationType = .allCharacters
         alphaTextField.autocorrectionType = .no
         alphaTextField.addTarget(self,
-                            action: #selector(updateSample),
-                            for: .editingChanged)
+                                 action: #selector(updateSample),
+                                 for: .editingChanged)
 
         sampleView.layer.borderWidth = 0.5
         sampleView.layer.borderColor = UIColor.black.cgColor
@@ -56,8 +56,7 @@ class SettingsColorCell: SettingsCell {
         alphaTextField.autoSetDimension(.width, toSize: 50)
         alphaTextField.autoAlignAxis(toSuperviewAxis: .horizontal)
         alphaTextField.autoPinEdge(.left, to: .right, of: rgbTextField, withOffset: 10)
-        alphaTextField.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 20),
-                                               excludingEdge: .left)
+        alphaTextField.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 20), excludingEdge: .left)
     }
 
     @objc private func updateSample() {
