@@ -1,4 +1,4 @@
-final class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
+class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
     enum DelegateEvent {}
 
     var delegate: ((DelegateEvent) -> Void)?

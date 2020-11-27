@@ -1,4 +1,4 @@
-final class ChatViewModel: ViewModel {
+class ChatViewModel: ViewModel {
     enum Event {
         case backTapped
         case closeTapped

@@ -1,4 +1,4 @@
-final class ViewFactory {
+class ViewFactory {
     private let theme: Theme
 
     init(with theme: Theme) {

@@ -1,4 +1,4 @@
-final class ChatView: View {
+class ChatView: View {
     let header: Header
 
     private let style: ChatStyle
@@ -33,9 +33,5 @@ final class ChatView: View {
         received.autoPinEdge(toSuperviewEdge: .left)
         received.autoPinEdge(.top, to: .bottom, of: sent)
         received.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
-
-        /*DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
-            received.appendContent(.text("Hi, Roger! I’d be glad to help you out. Could you specify the accounts that you want to use."), animated: true)
-        }*/
     }
 }

@@ -1,6 +1,6 @@
 import UIKit
 
-final class ChatViewController: ViewController {
+class ChatViewController: ViewController {
     private let viewModel: ChatViewModel
     private let viewFactory: ViewFactory
     private let presentationKind: PresentationKind

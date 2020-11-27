@@ -1,4 +1,4 @@
-final class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
+class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
     enum DelegateEvent {
         case finished
     }
