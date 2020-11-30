@@ -77,6 +77,7 @@
 		1A7CA8212574D6760047CBBE /* ChatOperatorImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7CA8202574D6760047CBBE /* ChatOperatorImageView.swift */; };
 		1A7CA8242574D68E0047CBBE /* ChatOperatorStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7CA8232574D68E0047CBBE /* ChatOperatorStatusView.swift */; };
 		1A7CA8272574D6F40047CBBE /* ChatOperatorStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7CA8262574D6F40047CBBE /* ChatOperatorStyle.swift */; };
+		1A7CA82F25751B5A0047CBBE /* ChatOperatorImageStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7CA82E25751B5A0047CBBE /* ChatOperatorImageStyle.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -195,6 +196,7 @@
 		1A7CA8202574D6760047CBBE /* ChatOperatorImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatOperatorImageView.swift; sourceTree = "<group>"; };
 		1A7CA8232574D68E0047CBBE /* ChatOperatorStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatOperatorStatusView.swift; sourceTree = "<group>"; };
 		1A7CA8262574D6F40047CBBE /* ChatOperatorStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatOperatorStyle.swift; sourceTree = "<group>"; };
+		1A7CA82E25751B5A0047CBBE /* ChatOperatorImageStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatOperatorImageStyle.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -607,12 +609,29 @@
 		1A7CA81B2574D50D0047CBBE /* Operator */ = {
 			isa = PBXGroup;
 			children = (
+				1A7CA83225751B800047CBBE /* Status */,
+				1A7CA83125751B670047CBBE /* Image */,
 				1A7CA81C2574D6370047CBBE /* ChatOperatorView.swift */,
 				1A7CA8262574D6F40047CBBE /* ChatOperatorStyle.swift */,
-				1A7CA8202574D6760047CBBE /* ChatOperatorImageView.swift */,
-				1A7CA8232574D68E0047CBBE /* ChatOperatorStatusView.swift */,
 			);
 			path = Operator;
+			sourceTree = "<group>";
+		};
+		1A7CA83125751B670047CBBE /* Image */ = {
+			isa = PBXGroup;
+			children = (
+				1A7CA8202574D6760047CBBE /* ChatOperatorImageView.swift */,
+				1A7CA82E25751B5A0047CBBE /* ChatOperatorImageStyle.swift */,
+			);
+			path = Image;
+			sourceTree = "<group>";
+		};
+		1A7CA83225751B800047CBBE /* Status */ = {
+			isa = PBXGroup;
+			children = (
+				1A7CA8232574D68E0047CBBE /* ChatOperatorStatusView.swift */,
+			);
+			path = Status;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -812,6 +831,7 @@
 				1A60AFB9256682AF00E53F53 /* FlowCoordinator.swift in Sources */,
 				1A60AF9F25667CA800E53F53 /* FontProvider.swift in Sources */,
 				1A60AFCE2566958900E53F53 /* ViewFactory.swift in Sources */,
+				1A7CA82F25751B5A0047CBBE /* ChatOperatorImageStyle.swift in Sources */,
 				1A60AF96256675C400E53F53 /* UIColor+Extensions.swift in Sources */,
 				1A7CA81D2574D6370047CBBE /* ChatOperatorView.swift in Sources */,
 				1A60AFE425669B0400E53F53 /* ChatCoordinator.swift in Sources */,

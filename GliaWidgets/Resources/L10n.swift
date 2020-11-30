@@ -14,6 +14,26 @@ public enum L10n {
   public enum Chat {
     /// Chat
     public static let title = L10n.tr("Localizable", "chat.title")
+    public enum Operator {
+      public enum Connected {
+        /// {operatorName}
+        public static let text1 = L10n.tr("Localizable", "chat.operator.connected.text1")
+        /// {operatorName} has joined the conversation.
+        public static let text2 = L10n.tr("Localizable", "chat.operator.connected.text2")
+      }
+      public enum Connecting {
+        /// Connecting with {operatorName}
+        public static let text1 = L10n.tr("Localizable", "chat.operator.connecting.text1")
+        /// 
+        public static let text2 = L10n.tr("Localizable", "chat.operator.connecting.text2")
+      }
+      public enum Enqueued {
+        /// 
+        public static let text1 = L10n.tr("Localizable", "chat.operator.enqueued.text1")
+        /// An MSR will be with you shortly.
+        public static let text2 = L10n.tr("Localizable", "chat.operator.enqueued.text2")
+      }
+    }
   }
 }
 // swiftlint:enable explicit_type_interface function_parameter_count identifier_name line_length

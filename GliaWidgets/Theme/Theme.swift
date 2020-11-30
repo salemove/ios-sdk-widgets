@@ -1,32 +1,63 @@
 import UIKit
 
-public struct Theme {
+public class Theme {
     private typealias Strings = L10n
 
     public let color: ThemeColor
     public let font: ThemeFont
-    public var chat: ChatStyle
 
-    public init(colorStyle: ThemeColorStyle = .default,
-                fontStyle: ThemeFontStyle = .default) {
-        self.color = colorStyle.color
-        self.font = fontStyle.font
+    public lazy var chat: ChatStyle = {
+        typealias Strings = L10n.Chat
 
-        let chatHeader = HeaderStyle(title: Strings.Chat.title,
-                                     titleFont: Font.headerTitle,
+        let chatHeader = HeaderStyle(title: Strings.title,
+                                     titleFont: font.header2,
                                      titleColor: color.baseLight,
                                      leftItemColor: color.baseLight,
                                      rightItemColor: color.baseLight,
                                      backgroundColor: color.primary)
+
+        let operatorImage = ChatOperatorImageStyle(placeholderImage: Asset.chatOperatorPlaceholder.image,
+                                                   placeholderColor: color.baseLight,
+                                                   animationColor: color.primary)
+        let enqueued = ChatOperatorStateStyle(text1: Strings.Operator.Enqueued.text1,
+                                              text1Font: font.header1,
+                                              text1FontColor: color.baseDark,
+                                              text2: Strings.Operator.Enqueued.text2,
+                                              text2Font: font.subtitle,
+                                              text2FontColor: color.baseNormal)
+        let connecting = ChatOperatorStateStyle(text1: Strings.Operator.Connecting.text1,
+                                                text1Font: font.header2,
+                                                text1FontColor: color.baseDark,
+                                                text2: Strings.Operator.Connecting.text2,
+                                                text2Font: font.header2,
+                                                text2FontColor: color.baseDark)
+        let connected = ChatOperatorStateStyle(text1: Strings.Operator.Connected.text1,
+                                               text1Font: font.header1,
+                                               text1FontColor: color.baseDark,
+                                               text2: Strings.Operator.Connected.text1,
+                                               text2Font: font.subtitle,
+                                               text2FontColor: color.primary)
+        let chatOperator = ChatOperatorStyle(image: operatorImage,
+                                             enqueued: enqueued,
+                                             connecting: connecting,
+                                             connected: connected)
+
         let sentChatMessage = ChatMessageStyle(messageFont: font.bodyText,
                                                messageColor: color.baseLight,
                                                backgroundColor: color.primary)
         let receivedChatMessage = ChatMessageStyle(messageFont: font.bodyText,
                                                    messageColor: color.baseDark,
                                                    backgroundColor: Color.lightGrey)
-        chat = ChatStyle(header: chatHeader,
+        return ChatStyle(header: chatHeader,
+                         chatOperator: chatOperator,
                          sentMessage: sentChatMessage,
                          receivedMessage: receivedChatMessage,
                          backgroundColor: color.background)
+    }()
+
+    public init(colorStyle: ThemeColorStyle = .default,
+                fontStyle: ThemeFontStyle = .default) {
+        self.color = colorStyle.color
+        self.font = fontStyle.font
     }
 }

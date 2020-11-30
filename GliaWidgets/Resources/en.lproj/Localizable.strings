@@ -1,1 +1,7 @@
 "chat.title" = "Chat";
+"chat.operator.enqueued.text1" = "";
+"chat.operator.enqueued.text2" = "An MSR will be with you shortly.";
+"chat.operator.connecting.text1" = "Connecting with {operatorName}";
+"chat.operator.connecting.text2" = "";
+"chat.operator.connected.text1" = "{operatorName}";
+"chat.operator.connected.text2" = "{operatorName} has joined the conversation.";
