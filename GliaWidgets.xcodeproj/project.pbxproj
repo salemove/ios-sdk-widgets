@@ -609,8 +609,8 @@
 		1A7CA81B2574D50D0047CBBE /* Operator */ = {
 			isa = PBXGroup;
 			children = (
-				1A7CA83225751B800047CBBE /* Status */,
 				1A7CA83125751B670047CBBE /* Image */,
+				1A7CA83225751B800047CBBE /* Status */,
 				1A7CA81C2574D6370047CBBE /* ChatOperatorView.swift */,
 				1A7CA8262574D6F40047CBBE /* ChatOperatorStyle.swift */,
 			);
