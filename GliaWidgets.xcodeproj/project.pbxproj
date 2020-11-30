@@ -73,6 +73,10 @@
 		1A60B047256C0B4500E53F53 /* ChatMessageContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60B046256C0B4500E53F53 /* ChatMessageContent.swift */; };
 		1A60B04A256C0E0100E53F53 /* ChatMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60B049256C0E0100E53F53 /* ChatMessageCell.swift */; };
 		1A60B04D256D0CF600E53F53 /* ChatMessageContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60B04C256D0CF600E53F53 /* ChatMessageContentView.swift */; };
+		1A7CA81D2574D6370047CBBE /* ChatOperatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7CA81C2574D6370047CBBE /* ChatOperatorView.swift */; };
+		1A7CA8212574D6760047CBBE /* ChatOperatorImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7CA8202574D6760047CBBE /* ChatOperatorImageView.swift */; };
+		1A7CA8242574D68E0047CBBE /* ChatOperatorStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7CA8232574D68E0047CBBE /* ChatOperatorStatusView.swift */; };
+		1A7CA8272574D6F40047CBBE /* ChatOperatorStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7CA8262574D6F40047CBBE /* ChatOperatorStyle.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -187,6 +191,10 @@
 		1A60B046256C0B4500E53F53 /* ChatMessageContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageContent.swift; sourceTree = "<group>"; };
 		1A60B049256C0E0100E53F53 /* ChatMessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageCell.swift; sourceTree = "<group>"; };
 		1A60B04C256D0CF600E53F53 /* ChatMessageContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageContentView.swift; sourceTree = "<group>"; };
+		1A7CA81C2574D6370047CBBE /* ChatOperatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatOperatorView.swift; sourceTree = "<group>"; };
+		1A7CA8202574D6760047CBBE /* ChatOperatorImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatOperatorImageView.swift; sourceTree = "<group>"; };
+		1A7CA8232574D68E0047CBBE /* ChatOperatorStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatOperatorStatusView.swift; sourceTree = "<group>"; };
+		1A7CA8262574D6F40047CBBE /* ChatOperatorStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatOperatorStyle.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -445,6 +453,7 @@
 		1A60AFD12566990F00E53F53 /* Chat */ = {
 			isa = PBXGroup;
 			children = (
+				1A7CA81B2574D50D0047CBBE /* Operator */,
 				1A60B02B256BF7C200E53F53 /* Message */,
 				1A60AFDC25669A4200E53F53 /* ChatView.swift */,
 				1A60AFE725669C5000E53F53 /* ChatStyle.swift */,
@@ -593,6 +602,17 @@
 				1A60B046256C0B4500E53F53 /* ChatMessageContent.swift */,
 			);
 			path = Content;
+			sourceTree = "<group>";
+		};
+		1A7CA81B2574D50D0047CBBE /* Operator */ = {
+			isa = PBXGroup;
+			children = (
+				1A7CA81C2574D6370047CBBE /* ChatOperatorView.swift */,
+				1A7CA8262574D6F40047CBBE /* ChatOperatorStyle.swift */,
+				1A7CA8202574D6760047CBBE /* ChatOperatorImageView.swift */,
+				1A7CA8232574D68E0047CBBE /* ChatOperatorStatusView.swift */,
+			);
+			path = Operator;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -784,6 +804,7 @@
 			files = (
 				1A60AFD925669A1500E53F53 /* View.swift in Sources */,
 				1A60AFBC256682C800E53F53 /* SubFlowCoordinator.swift in Sources */,
+				1A7CA8212574D6760047CBBE /* ChatOperatorImageView.swift in Sources */,
 				1A4AD3C7256E863900468BFB /* ThemeColor.swift in Sources */,
 				1A60B01D2567FCAD00E53F53 /* ButtonProperties.swift in Sources */,
 				1A60AF7E25656F0400E53F53 /* Glia.swift in Sources */,
@@ -792,6 +813,7 @@
 				1A60AF9F25667CA800E53F53 /* FontProvider.swift in Sources */,
 				1A60AFCE2566958900E53F53 /* ViewFactory.swift in Sources */,
 				1A60AF96256675C400E53F53 /* UIColor+Extensions.swift in Sources */,
+				1A7CA81D2574D6370047CBBE /* ChatOperatorView.swift in Sources */,
 				1A60AFE425669B0400E53F53 /* ChatCoordinator.swift in Sources */,
 				1A60B035256BF89D00E53F53 /* ChatMessageStatusView.swift in Sources */,
 				1A60B02D256BF7FF00E53F53 /* ReceivedChatMessageView.swift in Sources */,
@@ -805,11 +827,13 @@
 				1A4AD3BA256D31A600468BFB /* ChatMessageUserView.swift in Sources */,
 				1A60B04D256D0CF600E53F53 /* ChatMessageContentView.swift in Sources */,
 				1A60B0202567FD1B00E53F53 /* BackButtonProperties.swift in Sources */,
+				1A7CA8242574D68E0047CBBE /* ChatOperatorStatusView.swift in Sources */,
 				1A60AF7A25656E0500E53F53 /* Theme.swift in Sources */,
 				1A4AD3B3256D2A7600468BFB /* ChatMessageStyle.swift in Sources */,
 				1A60B0082567F29900E53F53 /* HeaderStyle.swift in Sources */,
 				1A60B0152567FC7000E53F53 /* Button.swift in Sources */,
 				1A4AD3CA256E864800468BFB /* ThemeColorStyle.swift in Sources */,
+				1A7CA8272574D6F40047CBBE /* ChatOperatorStyle.swift in Sources */,
 				1A60AFDD25669A4200E53F53 /* ChatView.swift in Sources */,
 				1A60AFCA2566943F00E53F53 /* RootCoordinator.swift in Sources */,
 				1A60B0042567F25600E53F53 /* Header.swift in Sources */,
