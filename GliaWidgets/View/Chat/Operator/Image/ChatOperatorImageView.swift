@@ -3,11 +3,7 @@ import UIKit
 class ChatOperatorImageView: UIView {
     var image: UIImage? {
         get { return imageView.image }
-        set {
-            imageView.image = newValue == nil
-                ? style.placeholderImage
-                : newValue
-        }
+        set { imageView.image = newValue }
     }
     var isAnimating: Bool = false {
         didSet {
@@ -18,10 +14,11 @@ class ChatOperatorImageView: UIView {
     }
 
     private let style: ChatOperatorImageStyle
+    private let placeholderImageView = UIImageView()
     private let imageView = UIImageView()
     private var animationView: AnimationView?
     private let kImageInset: CGFloat = 10
-    private let kImageSize = CGSize(width: 80, height: 80)
+    private let kImageViewSize = CGSize(width: 80, height: 80)
 
     init(with style: ChatOperatorImageStyle) {
         self.style = style
@@ -35,32 +32,42 @@ class ChatOperatorImageView: UIView {
     }
 
     private func setup() {
-        imageView.image = nil
-        imageView.tintColor = style.placeholderColor
-        imageView.clipsToBounds = true
-        imageView.contentMode = .center
-        imageView.layer.cornerRadius = kImageSize.width / 2.0
+        placeholderImageView.image = style.placeholderImage
+        placeholderImageView.tintColor = style.placeholderColor
+        placeholderImageView.backgroundColor = style.animationColor
+        placeholderImageView.clipsToBounds = true
+        placeholderImageView.contentMode = .center
+        placeholderImageView.layer.cornerRadius = kImageViewSize.width / 2.0
 
-        imageView.backgroundColor = .red
+        imageView.clipsToBounds = true
+        imageView.contentMode = .scaleAspectFill
+        imageView.layer.cornerRadius = kImageViewSize.width / 2.0
     }
 
     private func layout() {
-        let imageSize = CGSize(width: kImageSize.width - kImageInset,
-                               height: kImageSize.height - kImageInset)
+        addSubview(placeholderImageView)
+        placeholderImageView.autoCenterInSuperview()
+        placeholderImageView.autoSetDimensions(to: kImageViewSize)
+        placeholderImageView.autoPinEdge(toSuperviewEdge: .left, withInset: 0, relation: .greaterThanOrEqual)
+        placeholderImageView.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
+        placeholderImageView.autoPinEdge(toSuperviewEdge: .top, withInset: 0, relation: .greaterThanOrEqual)
+        placeholderImageView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 0, relation: .greaterThanOrEqual)
 
         addSubview(imageView)
-        //imageView.autoSetDimensions(to: imageSize)
-        imageView.autoCenterInSuperview()
+        imageView.autoMatch(.height, to: .height, of: placeholderImageView)
+        imageView.autoMatch(.width, to: .width, of: placeholderImageView)
+        imageView.autoAlignAxis(.horizontal, toSameAxisOf: placeholderImageView)
+        imageView.autoAlignAxis(.vertical, toSameAxisOf: placeholderImageView)
     }
 
     private func startAnimating() {
         guard animationView == nil else { return }
 
         let animationView = AnimationView(color: style.animationColor,
-                                          baseSize: kImageSize)
+                                          baseSize: kImageViewSize)
         self.animationView = animationView
 
-        insertSubview(animationView, belowSubview: imageView)
+        insertSubview(animationView, belowSubview: placeholderImageView)
         animationView.autoPinEdgesToSuperviewEdges()
 
         animationView.startAnimating()
@@ -99,7 +106,6 @@ private class AnimationView: UIView {
             let alpha = self.alphas[$0.offset]
             let size = CGSize(width: self.baseSize.width + sizeIncrement,
                               height: self.baseSize.height + sizeIncrement)
-            print(size)
             circle.frame.size = size
             circle.layer.cornerRadius = size.width / 2.0
             circle.backgroundColor = color.withAlphaComponent(alpha)

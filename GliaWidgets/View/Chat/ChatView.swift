@@ -28,6 +28,14 @@ class ChatView: View {
         operatorView.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
         operatorView.autoAlignAxis(toSuperviewAxis: .vertical)
 
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            operatorView.state = .connecting(ChatOperatorView.ChatOperator(name: "Kate", image: nil))
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+            operatorView.state = .connected(ChatOperatorView.ChatOperator(name: "Kate", image: nil))
+        }
+
         let sent = SentChatMessageView(with: style.sentMessage)
         sent.appendContent(.text("Hi, I need help and guidance with moving money from one account to another"), animated: false)
         addSubview(sent)
