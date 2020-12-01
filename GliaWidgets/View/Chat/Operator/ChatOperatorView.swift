@@ -35,7 +35,7 @@ class ChatOperatorView: UIView {
         case .initial:
             hide(animated: animated)
         case .enqueued:
-            imageView.isAnimating = true
+            imageView.startAnimating(animated: false)
             statusView.setText1(style.enqueued.text1,
                                 text2: style.enqueued.text2,
                                 animated: false)
@@ -43,7 +43,6 @@ class ChatOperatorView: UIView {
             stackView.setCustomSpacing(0, after: imageView)
             show(animated: true)
         case .connecting(let name):
-            imageView.isAnimating = true
             let text1 = style.connecting.text1?.replacingOccurrences(of: kOperatorNamePlaceholder,
                                                                      with: name)
             statusView.setText1(text1,
@@ -52,7 +51,7 @@ class ChatOperatorView: UIView {
             statusView.setStyle(style.connecting)
             stackView.setCustomSpacing(0, after: imageView)
         case .connected(let name):
-            imageView.isAnimating = false
+            imageView.stopAnimating(animated: animated)
             let text1 = style.connected.text1?.replacingOccurrences(of: kOperatorNamePlaceholder,
                                                                     with: name)
             let text2 = style.connected.text2?.replacingOccurrences(of: kOperatorNamePlaceholder,
