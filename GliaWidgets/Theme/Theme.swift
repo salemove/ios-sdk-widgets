@@ -9,12 +9,12 @@ public class Theme {
     public lazy var chat: ChatStyle = {
         typealias Strings = L10n.Chat
 
-        let chatHeader = HeaderStyle(title: Strings.title,
-                                     titleFont: font.header2,
-                                     titleColor: color.baseLight,
-                                     leftItemColor: color.baseLight,
-                                     rightItemColor: color.baseLight,
-                                     backgroundColor: color.primary)
+        let header = HeaderStyle(title: Strings.title,
+                                 titleFont: font.header2,
+                                 titleColor: color.baseLight,
+                                 leftItemColor: color.baseLight,
+                                 rightItemColor: color.baseLight,
+                                 backgroundColor: color.primary)
 
         let operatorImage = ChatOperatorImageStyle(placeholderImage: Asset.chatOperatorPlaceholder.image,
                                                    placeholderColor: color.baseLight,
@@ -34,7 +34,7 @@ public class Theme {
         let connected = ChatOperatorStateStyle(text1: Strings.Operator.Connected.text1,
                                                text1Font: font.header1,
                                                text1FontColor: color.baseDark,
-                                               text2: Strings.Operator.Connected.text1,
+                                               text2: Strings.Operator.Connected.text2,
                                                text2Font: font.subtitle,
                                                text2FontColor: color.primary)
         let chatOperator = ChatOperatorStyle(image: operatorImage,
@@ -42,16 +42,16 @@ public class Theme {
                                              connecting: connecting,
                                              connected: connected)
 
-        let sentChatMessage = ChatMessageStyle(messageFont: font.bodyText,
-                                               messageColor: color.baseLight,
-                                               backgroundColor: color.primary)
-        let receivedChatMessage = ChatMessageStyle(messageFont: font.bodyText,
-                                                   messageColor: color.baseDark,
-                                                   backgroundColor: Color.lightGrey)
-        return ChatStyle(header: chatHeader,
+        let sentMessage = ChatMessageStyle(messageFont: font.bodyText,
+                                           messageColor: color.baseLight,
+                                           backgroundColor: color.primary)
+        let receivedMessage = ChatMessageStyle(messageFont: font.bodyText,
+                                               messageColor: color.baseDark,
+                                               backgroundColor: Color.lightGrey)
+        return ChatStyle(header: header,
                          chatOperator: chatOperator,
-                         sentMessage: sentChatMessage,
-                         receivedMessage: receivedChatMessage,
+                         sentMessage: sentMessage,
+                         receivedMessage: receivedMessage,
                          backgroundColor: color.background)
     }()
 

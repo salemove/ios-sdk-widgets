@@ -1,10 +1,6 @@
 import UIKit
 
 class ChatOperatorImageView: UIView {
-    var image: UIImage? {
-        get { return imageView.image }
-        set { imageView.image = newValue }
-    }
     var isAnimating: Bool = false {
         didSet {
             isAnimating
@@ -29,6 +25,15 @@ class ChatOperatorImageView: UIView {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    func setImage(_ image: UIImage?, animated: Bool) {
+        UIView.transition(with: imageView,
+                          duration: animated ? 0.2 : 0.0,
+                       options: .transitionCrossDissolve,
+                    animations: {
+                        self.imageView.image = image
+                    }, completion: nil)
     }
 
     private func setup() {

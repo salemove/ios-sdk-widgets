@@ -1,23 +1,16 @@
 import UIKit
 
 class ChatOperatorView: UIView {
-    struct ChatOperator {
-        let name: String
-        let image: UIImage?
-    }
-
     enum State {
         case enqueued
-        case connecting(ChatOperator)
-        case connected(ChatOperator)
+        case connecting(name: String)
+        case connected(name: String)
     }
 
-    var state: State = .enqueued {
-        didSet { setState(state) }
-    }
+    let imageView: ChatOperatorImageView
 
     private let style: ChatOperatorStyle
-    private let imageView: ChatOperatorImageView
+    private var state: State = .enqueued
     private let statusView = ChatOperatorStatusView()
     private let stackView = UIStackView()
     private let kOperatorNamePlaceholder = "{operatorName}"
@@ -34,9 +27,42 @@ class ChatOperatorView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    func setState(_ state: State, animated: Bool) {
+        self.state = state
+
+        switch state {
+        case .enqueued:
+            imageView.isAnimating = true
+            statusView.setLabel1Text(style.enqueued.text1, animated: animated)
+            statusView.setLabel2Text(style.enqueued.text2, animated: animated)
+        case .connecting(let name):
+            imageView.isAnimating = true
+            let text1 = style.connecting.text1?.replacingOccurrences(of: kOperatorNamePlaceholder,
+                                                                     with: name)
+            statusView.setLabel1Text(text1, animated: animated)
+            statusView.setLabel2Text(nil, animated: animated)
+        case .connected(let name):
+            imageView.isAnimating = false
+            let text1 = style.connected.text1?.replacingOccurrences(of: kOperatorNamePlaceholder,
+                                                                    with: name)
+            let text2 = style.connected.text2?.replacingOccurrences(of: kOperatorNamePlaceholder,
+                                                                    with: name)
+            statusView.setLabel1Text(text1, animated: animated)
+            statusView.setLabel2Text(text2, animated: animated)
+        }
+
+        let stateStyle = style(for: state)
+        statusView.label1.font = stateStyle.text1Font
+        statusView.label1.textColor = stateStyle.text1FontColor
+        statusView.label2.font = stateStyle.text2Font
+        statusView.label2.textColor = stateStyle.text2FontColor
+    }
+
     private func setup() {
         stackView.axis = .vertical
         stackView.spacing = 0
+
+        setState(.enqueued, animated: false)
     }
 
     private func layout() {
@@ -48,34 +74,6 @@ class ChatOperatorView: UIView {
         stackView.autoPinEdge(toSuperviewEdge: .left, withInset: 0, relation: .greaterThanOrEqual)
         stackView.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
         stackView.autoAlignAxis(toSuperviewAxis: .vertical)
-    }
-
-    private func setState(_ state: State) {
-        switch state {
-        case .enqueued:
-            imageView.image = nil
-            imageView.isAnimating = true
-            statusView.label1.text = style.enqueued.text1
-            statusView.label2.text = style.enqueued.text2
-        case .connecting(let chatOperator):
-            imageView.image = chatOperator.image
-            imageView.isAnimating = true
-            statusView.label1.text = style.enqueued.text1?.replacingOccurrences(of: kOperatorNamePlaceholder,
-                                                                                with: chatOperator.name)
-        case .connected(let chatOperator):
-            imageView.image = chatOperator.image
-            imageView.isAnimating = false
-            statusView.label1.text = style.enqueued.text1?.replacingOccurrences(of: kOperatorNamePlaceholder,
-                                                                                with: chatOperator.name)
-            statusView.label2.text = style.enqueued.text2?.replacingOccurrences(of: kOperatorNamePlaceholder,
-                                                                                with: chatOperator.name)
-        }
-
-        let stateStyle = style(for: state)
-        statusView.label1.font = stateStyle.text1Font
-        statusView.label1.textColor = stateStyle.text1FontColor
-        statusView.label2.font = stateStyle.text2Font
-        statusView.label2.textColor = stateStyle.text2FontColor
     }
 
     private func style(for state: State) -> ChatOperatorStateStyle {

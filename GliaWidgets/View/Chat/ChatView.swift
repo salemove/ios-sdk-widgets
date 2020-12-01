@@ -21,7 +21,7 @@ class ChatView: View {
                                             excludingEdge: .bottom)
 
         let operatorView = ChatOperatorView(with: style.chatOperator)
-        operatorView.state = .enqueued
+        operatorView.setState(.enqueued, animated: true)
         addSubview(operatorView)
         operatorView.autoPinEdge(.top, to: .bottom, of: header, withOffset: 20)
         operatorView.autoPinEdge(toSuperviewEdge: .left, withInset: 0, relation: .greaterThanOrEqual)
@@ -29,11 +29,11 @@ class ChatView: View {
         operatorView.autoAlignAxis(toSuperviewAxis: .vertical)
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-            operatorView.state = .connecting(ChatOperatorView.ChatOperator(name: "Kate", image: nil))
+            operatorView.setState(.connecting(name: "Kate"), animated: true)
         }
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-            operatorView.state = .connected(ChatOperatorView.ChatOperator(name: "Kate", image: nil))
+        DispatchQueue.main.asyncAfter(deadline: .now() + 6) {
+            operatorView.setState(.connected(name: "Kate"), animated: true)
         }
 
         let sent = SentChatMessageView(with: style.sentMessage)
