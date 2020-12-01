@@ -34,7 +34,7 @@ class ChatView: View {
             operatorView.setState(.connecting(name: "Kate"), animated: true)
         }
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 6) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 8) {
             operatorView.setState(.connected(name: "Kate"), animated: true)
         }
 

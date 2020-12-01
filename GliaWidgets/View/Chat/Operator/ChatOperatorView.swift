@@ -1,7 +1,7 @@
 import UIKit
 
 class ChatOperatorView: UIView {
-    enum State {
+    enum State: Equatable {
         case initial
         case enqueued
         case connecting(name: String)
@@ -15,6 +15,8 @@ class ChatOperatorView: UIView {
     private let statusView = ChatOperatorStatusView()
     private let stackView = UIStackView()
     private let kOperatorNamePlaceholder = "{operatorName}"
+    private var connectTimer: Timer?
+    private var connectCounter: Int = 0
 
     init(with style: ChatOperatorStyle) {
         self.style = style
@@ -50,6 +52,7 @@ class ChatOperatorView: UIView {
                                 animated: true)
             statusView.setStyle(style.connecting)
             stackView.setCustomSpacing(0, after: imageView)
+            startConnectTimer()
         case .connected(let name):
             imageView.stopAnimating(animated: animated)
             let text1 = style.connected.text1?.replacingOccurrences(of: kOperatorNamePlaceholder,
@@ -102,5 +105,21 @@ class ChatOperatorView: UIView {
         stackView.autoPinEdge(toSuperviewEdge: .left, withInset: 0, relation: .greaterThanOrEqual)
         stackView.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
         stackView.autoAlignAxis(toSuperviewAxis: .vertical)
+    }
+}
+
+private extension ChatOperatorView {
+    private func startConnectTimer() {
+        guard connectTimer == nil else { return }
+        connectTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+            switch self.state {
+            case .connecting:
+                self.connectCounter += 1
+                self.statusView.setText2("\(self.connectCounter)")
+            default:
+                self.connectTimer?.invalidate()
+                self.connectTimer = nil
+            }
+        }
     }
 }

@@ -38,6 +38,10 @@ class ChatOperatorStatusView: UIView {
                        }, completion: nil)
     }
 
+    func setText2(_ text: String) {
+        label2.text = text
+    }
+
     private func setup() {
         stackView.axis = .vertical
         stackView.spacing = 8
