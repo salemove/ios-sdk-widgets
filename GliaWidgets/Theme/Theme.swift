@@ -19,24 +19,24 @@ public class Theme {
         let operatorImage = ChatOperatorImageStyle(placeholderImage: Asset.chatOperatorPlaceholder.image,
                                                    placeholderColor: color.baseLight,
                                                    animationColor: color.primary)
-        let enqueued = ChatOperatorStateStyle(text1: Strings.Operator.Enqueued.text1,
-                                              text1Font: font.header1,
-                                              text1FontColor: color.baseDark,
-                                              text2: Strings.Operator.Enqueued.text2,
-                                              text2Font: font.subtitle,
-                                              text2FontColor: color.baseNormal)
-        let connecting = ChatOperatorStateStyle(text1: Strings.Operator.Connecting.text1,
-                                                text1Font: font.header2,
-                                                text1FontColor: color.baseDark,
-                                                text2: Strings.Operator.Connecting.text2,
-                                                text2Font: font.header2,
-                                                text2FontColor: color.baseDark)
-        let connected = ChatOperatorStateStyle(text1: Strings.Operator.Connected.text1,
+        let enqueued = ChatOperatorStatusStyle(text1: Strings.Operator.Enqueued.text1,
                                                text1Font: font.header1,
                                                text1FontColor: color.baseDark,
-                                               text2: Strings.Operator.Connected.text2,
+                                               text2: Strings.Operator.Enqueued.text2,
                                                text2Font: font.subtitle,
-                                               text2FontColor: color.primary)
+                                               text2FontColor: color.baseNormal)
+        let connecting = ChatOperatorStatusStyle(text1: Strings.Operator.Connecting.text1,
+                                                 text1Font: font.header2,
+                                                 text1FontColor: color.baseDark,
+                                                 text2: Strings.Operator.Connecting.text2,
+                                                 text2Font: font.header2,
+                                                 text2FontColor: color.baseDark)
+        let connected = ChatOperatorStatusStyle(text1: Strings.Operator.Connected.text1,
+                                                text1Font: font.header1,
+                                                text1FontColor: color.baseDark,
+                                                text2: Strings.Operator.Connected.text2,
+                                                text2Font: font.subtitle,
+                                                text2FontColor: color.primary)
         let chatOperator = ChatOperatorStyle(image: operatorImage,
                                              enqueued: enqueued,
                                              connecting: connecting,

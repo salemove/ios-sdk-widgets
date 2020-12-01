@@ -1,10 +1,9 @@
 import UIKit
 
 class ChatOperatorStatusView: UIView {
-    let label1 = UILabel()
-    let label2 = UILabel()
-
     private let stackView = UIStackView()
+    private let label1 = UILabel()
+    private let label2 = UILabel()
 
     init() {
         super.init(frame: .zero)
@@ -16,21 +15,27 @@ class ChatOperatorStatusView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func setLabel1Text(_ text: String?, animated: Bool) {
-        setText(text, to: label1, animated: animated)
+    func setStyle(_ style: ChatOperatorStatusStyle) {
+        label1.font = style.text1Font
+        label1.textColor = style.text1FontColor
+        label2.font = style.text2Font
+        label2.textColor = style.text2FontColor
     }
 
-    func setLabel2Text(_ text: String?, animated: Bool) {
-        setText(text, to: label2, animated: animated)
-    }
+    func setText1(_ text1: String?, text2: String?, animated: Bool) {
+        stackView.transform = CGAffineTransform(scaleX: 0, y: 0)
+        label1.text = text1
+        label2.text = text2
 
-    private func setText(_ text: String?, to label: UILabel, animated: Bool) {
-        UIView.transition(with: label,
-                      duration: 0.5,
-                       options: .transitionCrossDissolve,
-                    animations: {
-                        label.text = text
-                 }, completion: nil)
+        UIView.animate(withDuration: animated ? 0.5 : 0.0,
+                       delay: 0.0,
+                       usingSpringWithDamping: 0.8,
+                       initialSpringVelocity: 0.7,
+                       options: .curveEaseInOut,
+                       animations: {
+                        self.stackView.transform = .identity
+                        self.stackView.layoutIfNeeded()
+                       }, completion: nil)
     }
 
     private func setup() {

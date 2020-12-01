@@ -2,14 +2,14 @@ import UIKit
 
 public struct ChatOperatorStyle {
     public var image: ChatOperatorImageStyle
-    public var enqueued: ChatOperatorStateStyle
-    public var connecting: ChatOperatorStateStyle
-    public var connected: ChatOperatorStateStyle
+    public var enqueued: ChatOperatorStatusStyle
+    public var connecting: ChatOperatorStatusStyle
+    public var connected: ChatOperatorStatusStyle
 
     public init(image: ChatOperatorImageStyle,
-                enqueued: ChatOperatorStateStyle,
-                connecting: ChatOperatorStateStyle,
-                connected: ChatOperatorStateStyle) {
+                enqueued: ChatOperatorStatusStyle,
+                connecting: ChatOperatorStatusStyle,
+                connected: ChatOperatorStatusStyle) {
         self.image = image
         self.enqueued = enqueued
         self.connecting = connecting
@@ -17,7 +17,7 @@ public struct ChatOperatorStyle {
     }
 }
 
-public struct ChatOperatorStateStyle {
+public struct ChatOperatorStatusStyle {
     public var text1: String?
     public var text1Font: UIFont
     public var text1FontColor: UIColor

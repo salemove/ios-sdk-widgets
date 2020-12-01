@@ -28,7 +28,7 @@ public enum L10n {
         public static let text2 = L10n.tr("Localizable", "chat.operator.connecting.text2")
       }
       public enum Enqueued {
-        /// 
+        /// CompanyName
         public static let text1 = L10n.tr("Localizable", "chat.operator.enqueued.text1")
         /// An MSR will be with you shortly.
         public static let text2 = L10n.tr("Localizable", "chat.operator.enqueued.text2")
