@@ -6,6 +6,7 @@ class AlertButton: UIButton {
     private let style: AlertButtonStyle
     private let kHeight: CGFloat = 40.0
     private let kCornerRadius: CGFloat = 4.0
+    private let kContentInsets = UIEdgeInsets(top: 6, left: 10, bottom: 6, right: 10)
 
     public init(with style: AlertButtonStyle) {
         self.style = style
@@ -31,6 +32,7 @@ class AlertButton: UIButton {
 
     private func setup() {
         backgroundColor = style.backgroundColor
+        contentEdgeInsets = kContentInsets
         clipsToBounds = true
 
         layer.masksToBounds = false
@@ -40,12 +42,9 @@ class AlertButton: UIButton {
         layer.shadowRadius = 2.0
         layer.shadowOpacity = 0.2
 
-        contentEdgeInsets = UIEdgeInsets(top: 6, left: 20, bottom: 6, right: 20)
-
         titleLabel?.font = style.titleFont
         titleLabel?.textColor = style.titleColor
         titleLabel?.textAlignment = .center
-        setTitle(style.title, for: .normal)
 
         addTarget(self, action: #selector(tapped), for: .touchUpInside)
     }
