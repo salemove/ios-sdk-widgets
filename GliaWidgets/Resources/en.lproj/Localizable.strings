@@ -1,7 +1,9 @@
+"queue.enqueued.text1" = "CompanyName";
+"queue.enqueued.text2" = "An MSR will be with you shortly.";
+"queue.connecting.text1" = "Connecting with {operatorName}";
+"queue.connecting.text2" = "";
+"queue.connected.text1" = "{operatorName}";
+"queue.connected.text2" = "{operatorName} has joined the conversation.";
+
+
 "chat.title" = "Chat";
-"chat.operator.enqueued.text1" = "CompanyName";
-"chat.operator.enqueued.text2" = "An MSR will be with you shortly.";
-"chat.operator.connecting.text1" = "Connecting with {operatorName}";
-"chat.operator.connecting.text2" = "";
-"chat.operator.connected.text1" = "{operatorName}";
-"chat.operator.connected.text2" = "{operatorName} has joined the conversation.";

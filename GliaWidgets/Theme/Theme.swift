@@ -7,9 +7,10 @@ public class Theme {
     public let font: ThemeFont
 
     public lazy var chat: ChatStyle = {
-        typealias Strings = L10n.Chat
+        typealias Chat = L10n.Chat
+        typealias Queue = L10n.Queue
 
-        let header = HeaderStyle(title: Strings.title,
+        let header = HeaderStyle(title: Chat.title,
                                  titleFont: font.header2,
                                  titleColor: color.baseLight,
                                  leftItemColor: color.baseLight,
@@ -19,22 +20,22 @@ public class Theme {
         let queueOperator = QueueOperatorStyle(placeholderImage: Asset.chatOperatorPlaceholder.image,
                                                placeholderColor: color.baseLight,
                                                animationColor: color.primary)
-        let enqueued = QueueStatusStyle(text1: Strings.Operator.Enqueued.text1,
+        let enqueued = QueueStatusStyle(text1: Queue.Enqueued.text1,
                                         text1Font: font.header1,
                                         text1FontColor: color.baseDark,
-                                        text2: Strings.Operator.Enqueued.text2,
+                                        text2: Queue.Enqueued.text2,
                                         text2Font: font.subtitle,
                                         text2FontColor: color.baseNormal)
-        let connecting = QueueStatusStyle(text1: Strings.Operator.Connecting.text1,
+        let connecting = QueueStatusStyle(text1: Queue.Connecting.text1,
                                           text1Font: font.header2,
                                           text1FontColor: color.baseDark,
-                                          text2: Strings.Operator.Connecting.text2,
+                                          text2: Queue.Connecting.text2,
                                           text2Font: font.header2,
                                           text2FontColor: color.baseDark)
-        let connected = QueueStatusStyle(text1: Strings.Operator.Connected.text1,
+        let connected = QueueStatusStyle(text1: Queue.Connected.text1,
                                          text1Font: font.header1,
                                          text1FontColor: color.baseDark,
-                                         text2: Strings.Operator.Connected.text2,
+                                         text2: Queue.Connected.text2,
                                          text2Font: font.subtitle,
                                          text2FontColor: color.primary)
         let queue = QueueStyle(queueOperator: queueOperator,
