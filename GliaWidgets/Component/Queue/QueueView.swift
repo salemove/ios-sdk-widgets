@@ -3,7 +3,7 @@ import UIKit
 class QueueView: UIView {
     enum State: Equatable {
         case initial
-        case enqueued
+        case waiting
         case connecting(name: String)
         case connected(name: String)
     }
@@ -11,7 +11,7 @@ class QueueView: UIView {
     let operatorView: QueueOperatorView
 
     private let style: QueueStyle
-    private var state: State = .enqueued
+    private var state: State = .initial
     private let statusView = QueueStatusView()
     private let stackView = UIStackView()
     private let kOperatorNamePlaceholder = "{operatorName}"
@@ -36,7 +36,7 @@ class QueueView: UIView {
         switch state {
         case .initial:
             hide(animated: animated)
-        case .enqueued:
+        case .waiting:
             operatorView.startAnimating(animated: false)
             statusView.setText1(style.enqueued.text1,
                                 text2: style.enqueued.text2,

@@ -27,7 +27,7 @@ class ChatView: View {
             queueView.autoPinEdge(toSuperviewEdge: .left, withInset: 0, relation: .greaterThanOrEqual)
             queueView.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
             queueView.autoAlignAxis(toSuperviewAxis: .vertical)
-            queueView.setState(.enqueued, animated: true)
+            queueView.setState(.waiting, animated: true)
         }
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
