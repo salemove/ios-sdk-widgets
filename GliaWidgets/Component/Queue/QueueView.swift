@@ -37,7 +37,7 @@ class QueueView: UIView {
         case .initial:
             hide(animated: animated)
         case .waiting:
-            operatorView.startAnimating(animated: false)
+            operatorView.startAnimating(animated: animated)
             statusView.setText1(style.waiting.text1,
                                 text2: style.waiting.text2,
                                 animated: false)
@@ -61,7 +61,7 @@ class QueueView: UIView {
                                                                     with: name)
             statusView.setText1(text1,
                                 text2: text2,
-                                animated: true)
+                                animated: animated)
             statusView.setStyle(style.connected)
             stackView.setCustomSpacing(10, after: operatorView)
         }
