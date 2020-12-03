@@ -1,6 +1,6 @@
 import UIKit
 
-class ChatOperatorStatusView: UIView {
+class QueueStatusView: UIView {
     private let stackView = UIStackView()
     private let label1 = UILabel()
     private let label2 = UILabel()
@@ -15,7 +15,7 @@ class ChatOperatorStatusView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func setStyle(_ style: ChatOperatorStatusStyle) {
+    func setStyle(_ style: QueueStatusStyle) {
         label1.font = style.text1Font
         label1.textColor = style.text1FontColor
         label2.font = style.text2Font

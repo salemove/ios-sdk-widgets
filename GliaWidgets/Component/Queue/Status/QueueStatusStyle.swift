@@ -1,23 +1,6 @@
 import UIKit
 
-public struct ChatOperatorStyle {
-    public var image: ChatOperatorImageStyle
-    public var enqueued: ChatOperatorStatusStyle
-    public var connecting: ChatOperatorStatusStyle
-    public var connected: ChatOperatorStatusStyle
-
-    public init(image: ChatOperatorImageStyle,
-                enqueued: ChatOperatorStatusStyle,
-                connecting: ChatOperatorStatusStyle,
-                connected: ChatOperatorStatusStyle) {
-        self.image = image
-        self.enqueued = enqueued
-        self.connecting = connecting
-        self.connected = connected
-    }
-}
-
-public struct ChatOperatorStatusStyle {
+public struct QueueStatusStyle {
     public var text1: String?
     public var text1Font: UIFont
     public var text1FontColor: UIColor

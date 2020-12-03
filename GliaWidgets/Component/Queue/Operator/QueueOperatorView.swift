@@ -1,14 +1,14 @@
 import UIKit
 
-class ChatOperatorImageView: UIView {
-    private let style: ChatOperatorImageStyle
+class QueueOperatorView: UIView {
+    private let style: QueueOperatorStyle
     private let placeholderImageView = UIImageView()
     private let imageView = UIImageView()
     private var animationView: AnimationView
     private let kImageInset: CGFloat = 10
     private let kImageViewSize = CGSize(width: 80, height: 80)
 
-    init(with style: ChatOperatorImageStyle) {
+    init(with style: QueueOperatorStyle) {
         self.style = style
         self.animationView = AnimationView(color: style.animationColor)
         super.init(frame: .zero)

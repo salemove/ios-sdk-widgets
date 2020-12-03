@@ -20,22 +20,22 @@ class ChatView: View {
         header.autoPinEdgesToSuperviewEdges(with: .zero,
                                             excludingEdge: .bottom)
 
-        let operatorView = ChatOperatorView(with: style.chatOperator)
+        let queueView = QueueView(with: style.queue)
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.addSubview(operatorView)
-            operatorView.autoPinEdge(.top, to: .bottom, of: self.header, withOffset: 20)
-            operatorView.autoPinEdge(toSuperviewEdge: .left, withInset: 0, relation: .greaterThanOrEqual)
-            operatorView.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
-            operatorView.autoAlignAxis(toSuperviewAxis: .vertical)
-            operatorView.setState(.enqueued, animated: true)
+            self.addSubview(queueView)
+            queueView.autoPinEdge(.top, to: .bottom, of: self.header, withOffset: 20)
+            queueView.autoPinEdge(toSuperviewEdge: .left, withInset: 0, relation: .greaterThanOrEqual)
+            queueView.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
+            queueView.autoAlignAxis(toSuperviewAxis: .vertical)
+            queueView.setState(.enqueued, animated: true)
         }
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-            operatorView.setState(.connecting(name: "Kate"), animated: true)
+            queueView.setState(.connecting(name: "Kate"), animated: true)
         }
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 8) {
-            operatorView.setState(.connected(name: "Kate"), animated: true)
+            queueView.setState(.connected(name: "Kate"), animated: true)
         }
 
         let sent = SentChatMessageView(with: self.style.sentMessage)
@@ -43,7 +43,7 @@ class ChatView: View {
         DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
             self.addSubview(sent)
             sent.autoPinEdge(toSuperviewEdge: .right)
-            sent.autoPinEdge(.top, to: .bottom, of: operatorView, withOffset: 20)
+            sent.autoPinEdge(.top, to: .bottom, of: queueView, withOffset: 20)
             sent.autoPinEdge(toSuperviewEdge: .left, withInset: 0, relation: .greaterThanOrEqual)
         }
 

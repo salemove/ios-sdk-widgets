@@ -16,31 +16,31 @@ public class Theme {
                                  rightItemColor: color.baseLight,
                                  backgroundColor: color.primary)
 
-        let operatorImage = ChatOperatorImageStyle(placeholderImage: Asset.chatOperatorPlaceholder.image,
-                                                   placeholderColor: color.baseLight,
-                                                   animationColor: color.primary)
-        let enqueued = ChatOperatorStatusStyle(text1: Strings.Operator.Enqueued.text1,
-                                               text1Font: font.header1,
-                                               text1FontColor: color.baseDark,
-                                               text2: Strings.Operator.Enqueued.text2,
-                                               text2Font: font.subtitle,
-                                               text2FontColor: color.baseNormal)
-        let connecting = ChatOperatorStatusStyle(text1: Strings.Operator.Connecting.text1,
-                                                 text1Font: font.header2,
-                                                 text1FontColor: color.baseDark,
-                                                 text2: Strings.Operator.Connecting.text2,
-                                                 text2Font: font.header2,
-                                                 text2FontColor: color.baseDark)
-        let connected = ChatOperatorStatusStyle(text1: Strings.Operator.Connected.text1,
-                                                text1Font: font.header1,
-                                                text1FontColor: color.baseDark,
-                                                text2: Strings.Operator.Connected.text2,
-                                                text2Font: font.subtitle,
-                                                text2FontColor: color.primary)
-        let chatOperator = ChatOperatorStyle(image: operatorImage,
-                                             enqueued: enqueued,
-                                             connecting: connecting,
-                                             connected: connected)
+        let queueOperator = QueueOperatorStyle(placeholderImage: Asset.chatOperatorPlaceholder.image,
+                                               placeholderColor: color.baseLight,
+                                               animationColor: color.primary)
+        let enqueued = QueueStatusStyle(text1: Strings.Operator.Enqueued.text1,
+                                        text1Font: font.header1,
+                                        text1FontColor: color.baseDark,
+                                        text2: Strings.Operator.Enqueued.text2,
+                                        text2Font: font.subtitle,
+                                        text2FontColor: color.baseNormal)
+        let connecting = QueueStatusStyle(text1: Strings.Operator.Connecting.text1,
+                                          text1Font: font.header2,
+                                          text1FontColor: color.baseDark,
+                                          text2: Strings.Operator.Connecting.text2,
+                                          text2Font: font.header2,
+                                          text2FontColor: color.baseDark)
+        let connected = QueueStatusStyle(text1: Strings.Operator.Connected.text1,
+                                         text1Font: font.header1,
+                                         text1FontColor: color.baseDark,
+                                         text2: Strings.Operator.Connected.text2,
+                                         text2Font: font.subtitle,
+                                         text2FontColor: color.primary)
+        let queue = QueueStyle(queueOperator: queueOperator,
+                               enqueued: enqueued,
+                               connecting: connecting,
+                               connected: connected)
 
         let sentMessage = ChatMessageStyle(messageFont: font.bodyText,
                                            messageColor: color.baseLight,
@@ -49,7 +49,7 @@ public class Theme {
                                                messageColor: color.baseDark,
                                                backgroundColor: Color.lightGrey)
         return ChatStyle(header: header,
-                         chatOperator: chatOperator,
+                         queue: queue,
                          sentMessage: sentMessage,
                          receivedMessage: receivedMessage,
                          backgroundColor: color.background)

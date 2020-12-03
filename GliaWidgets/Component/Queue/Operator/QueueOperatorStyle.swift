@@ -1,6 +1,6 @@
 import UIKit
 
-public struct ChatOperatorImageStyle {
+public struct QueueOperatorStyle {
     public var placeholderImage: UIImage?
     public var placeholderColor: UIColor
     public var animationColor: UIColor

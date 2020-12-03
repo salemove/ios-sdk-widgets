@@ -1,6 +1,6 @@
 import UIKit
 
-class ChatOperatorView: UIView {
+class QueueView: UIView {
     enum State: Equatable {
         case initial
         case enqueued
@@ -8,19 +8,19 @@ class ChatOperatorView: UIView {
         case connected(name: String)
     }
 
-    let imageView: ChatOperatorImageView
+    let operatorView: QueueOperatorView
 
-    private let style: ChatOperatorStyle
+    private let style: QueueStyle
     private var state: State = .enqueued
-    private let statusView = ChatOperatorStatusView()
+    private let statusView = QueueStatusView()
     private let stackView = UIStackView()
     private let kOperatorNamePlaceholder = "{operatorName}"
     private var connectTimer: Timer?
     private var connectCounter: Int = 0
 
-    init(with style: ChatOperatorStyle) {
+    init(with style: QueueStyle) {
         self.style = style
-        self.imageView = ChatOperatorImageView(with: style.image)
+        self.operatorView = QueueOperatorView(with: style.queueOperator)
         super.init(frame: .zero)
         setup()
         layout()
@@ -37,12 +37,12 @@ class ChatOperatorView: UIView {
         case .initial:
             hide(animated: animated)
         case .enqueued:
-            imageView.startAnimating(animated: false)
+            operatorView.startAnimating(animated: false)
             statusView.setText1(style.enqueued.text1,
                                 text2: style.enqueued.text2,
                                 animated: false)
             statusView.setStyle(style.enqueued)
-            stackView.setCustomSpacing(0, after: imageView)
+            stackView.setCustomSpacing(0, after: operatorView)
             show(animated: true)
         case .connecting(let name):
             let text1 = style.connecting.text1?.replacingOccurrences(of: kOperatorNamePlaceholder,
@@ -51,10 +51,10 @@ class ChatOperatorView: UIView {
                                 text2: nil,
                                 animated: true)
             statusView.setStyle(style.connecting)
-            stackView.setCustomSpacing(0, after: imageView)
+            stackView.setCustomSpacing(0, after: operatorView)
             startConnectTimer()
         case .connected(let name):
-            imageView.stopAnimating(animated: animated)
+            operatorView.stopAnimating(animated: animated)
             let text1 = style.connected.text1?.replacingOccurrences(of: kOperatorNamePlaceholder,
                                                                     with: name)
             let text2 = style.connected.text2?.replacingOccurrences(of: kOperatorNamePlaceholder,
@@ -63,7 +63,7 @@ class ChatOperatorView: UIView {
                                 text2: text2,
                                 animated: true)
             statusView.setStyle(style.connected)
-            stackView.setCustomSpacing(10, after: imageView)
+            stackView.setCustomSpacing(10, after: operatorView)
         }
     }
 
@@ -97,7 +97,7 @@ class ChatOperatorView: UIView {
     }
 
     private func layout() {
-        stackView.addArrangedSubviews([imageView, statusView])
+        stackView.addArrangedSubviews([operatorView, statusView])
 
         addSubview(stackView)
         stackView.autoPinEdge(toSuperviewEdge: .top)
@@ -108,7 +108,7 @@ class ChatOperatorView: UIView {
     }
 }
 
-private extension ChatOperatorView {
+private extension QueueView {
     private func startConnectTimer() {
         guard connectTimer == nil else { return }
         connectTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
