@@ -29,11 +29,11 @@ public enum L10n {
       /// 
       public static let text2 = L10n.tr("Localizable", "queue.connecting.text2")
     }
-    public enum Enqueued {
+    public enum Waiting {
       /// CompanyName
-      public static let text1 = L10n.tr("Localizable", "queue.enqueued.text1")
+      public static let text1 = L10n.tr("Localizable", "queue.waiting.text1")
       /// An MSR will be with you shortly.
-      public static let text2 = L10n.tr("Localizable", "queue.enqueued.text2")
+      public static let text2 = L10n.tr("Localizable", "queue.waiting.text2")
     }
   }
 }

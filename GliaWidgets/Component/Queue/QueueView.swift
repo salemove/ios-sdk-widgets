@@ -38,10 +38,10 @@ class QueueView: UIView {
             hide(animated: animated)
         case .waiting:
             operatorView.startAnimating(animated: false)
-            statusView.setText1(style.enqueued.text1,
-                                text2: style.enqueued.text2,
+            statusView.setText1(style.waiting.text1,
+                                text2: style.waiting.text2,
                                 animated: false)
-            statusView.setStyle(style.enqueued)
+            statusView.setStyle(style.waiting)
             stackView.setCustomSpacing(0, after: operatorView)
             show(animated: true)
         case .connecting(let name):

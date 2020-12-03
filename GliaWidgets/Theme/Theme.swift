@@ -20,12 +20,12 @@ public class Theme {
         let queueOperator = QueueOperatorStyle(placeholderImage: Asset.chatOperatorPlaceholder.image,
                                                placeholderColor: color.baseLight,
                                                animationColor: color.primary)
-        let enqueued = QueueStatusStyle(text1: Queue.Enqueued.text1,
-                                        text1Font: font.header1,
-                                        text1FontColor: color.baseDark,
-                                        text2: Queue.Enqueued.text2,
-                                        text2Font: font.subtitle,
-                                        text2FontColor: color.baseNormal)
+        let waiting = QueueStatusStyle(text1: Queue.Waiting.text1,
+                                       text1Font: font.header1,
+                                       text1FontColor: color.baseDark,
+                                       text2: Queue.Waiting.text2,
+                                       text2Font: font.subtitle,
+                                       text2FontColor: color.baseNormal)
         let connecting = QueueStatusStyle(text1: Queue.Connecting.text1,
                                           text1Font: font.header2,
                                           text1FontColor: color.baseDark,
@@ -39,7 +39,7 @@ public class Theme {
                                          text2Font: font.subtitle,
                                          text2FontColor: color.primary)
         let queue = QueueStyle(queueOperator: queueOperator,
-                               enqueued: enqueued,
+                               waiting: waiting,
                                connecting: connecting,
                                connected: connected)
 
