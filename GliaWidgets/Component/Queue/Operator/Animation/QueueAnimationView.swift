@@ -5,10 +5,10 @@ class QueueAnimationView: UIView {
     private let replicatorLayer = CAReplicatorLayer()
     private let circleLayer = CAShapeLayer()
     private var heightConstraint: NSLayoutConstraint!
-    private let kInactiveSize: CGFloat = 80
-    private let kActiveSize: CGFloat = 142
+    private var widthConstraint: NSLayoutConstraint!
+    private let kSize: CGFloat = 142
     private let kAnimationDuration: Double = 2.5
-    private let kAnimationName = "pulse"
+    private let kAnimationName = "animation"
 
     init(color: UIColor) {
         self.color = color
@@ -22,12 +22,23 @@ class QueueAnimationView: UIView {
     }
 
     func startAnimating(animated: Bool) {
-        let animation = makeAnimation(duration: kAnimationDuration)
-        circleLayer.add(animation, forKey: kAnimationName)
+        UIView.animate(withDuration: animated ? 0.2 : 0.0) {
+            self.heightConstraint.constant = self.kSize
+            self.widthConstraint.constant = self.kSize
+            self.layoutIfNeeded()
+        } completion: { _ in
+            self.addAnimation()
+        }
     }
 
     func stopAnimating(animated: Bool) {
-
+        UIView.animate(withDuration: animated ? 0.2 : 0.0) {
+            self.heightConstraint.constant = 0
+            self.widthConstraint.constant = 0
+            self.layoutIfNeeded()
+        } completion: { _ in
+            self.removeAnimation()
+        }
     }
 
     private func setup() {
@@ -46,8 +57,8 @@ class QueueAnimationView: UIView {
     }
 
     private func layout() {
-        autoSetDimension(.width, toSize: kActiveSize)
-        heightConstraint = autoSetDimension(.height, toSize: kActiveSize)
+        widthConstraint = autoSetDimension(.width, toSize: 0)
+        heightConstraint = autoSetDimension(.height, toSize: 0)
 
         replicatorLayer.addSublayer(circleLayer)
 
@@ -56,7 +67,16 @@ class QueueAnimationView: UIView {
 
     private var activeBounds: CGRect {
         return CGRect(origin: .zero,
-                      size: CGSize(width: kActiveSize, height: kActiveSize))
+                      size: CGSize(width: kSize, height: kSize))
+    }
+
+    private func addAnimation() {
+        let animation = makeAnimation(duration: kAnimationDuration)
+        circleLayer.add(animation, forKey: kAnimationName)
+    }
+
+    private func removeAnimation() {
+        circleLayer.removeAnimation(forKey: kAnimationName)
     }
 
     private func makeAnimation(duration: Double) -> CAAnimationGroup {
