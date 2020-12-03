@@ -10,6 +10,11 @@ class QueueAnimationView: UIView {
     private let kAnimationDuration: Double = 2.5
     private let kAnimationName = "animation"
 
+    private var activeBounds: CGRect {
+        return CGRect(origin: .zero,
+                      size: CGSize(width: kSize, height: kSize))
+    }
+
     init(color: UIColor) {
         self.color = color
         super.init(frame: .zero)
@@ -63,11 +68,6 @@ class QueueAnimationView: UIView {
         replicatorLayer.addSublayer(circleLayer)
 
         layer.addSublayer(replicatorLayer)
-    }
-
-    private var activeBounds: CGRect {
-        return CGRect(origin: .zero,
-                      size: CGSize(width: kSize, height: kSize))
     }
 
     private func addAnimation() {
