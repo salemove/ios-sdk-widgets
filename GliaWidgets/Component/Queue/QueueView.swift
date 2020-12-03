@@ -43,13 +43,13 @@ class QueueView: UIView {
                                 animated: false)
             statusView.setStyle(style.waiting)
             stackView.setCustomSpacing(0, after: operatorView)
-            show(animated: true)
+            show(animated: animated)
         case .connecting(let name):
             let text1 = style.connecting.text1?.replacingOccurrences(of: kOperatorNamePlaceholder,
                                                                      with: name)
             statusView.setText1(text1,
                                 text2: nil,
-                                animated: true)
+                                animated: animated)
             statusView.setStyle(style.connecting)
             stackView.setCustomSpacing(0, after: operatorView)
             startConnectTimer()
