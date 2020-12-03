@@ -79,6 +79,7 @@
 		1A7CA8272574D6F40047CBBE /* QueueStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7CA8262574D6F40047CBBE /* QueueStyle.swift */; };
 		1A7CA82F25751B5A0047CBBE /* QueueOperatorStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7CA82E25751B5A0047CBBE /* QueueOperatorStyle.swift */; };
 		1AA738A72578DD0300E1120F /* QueueStatusStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA738A62578DD0300E1120F /* QueueStatusStyle.swift */; };
+		1AA738AE2578E0D500E1120F /* QueueAnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA738AD2578E0D500E1120F /* QueueAnimationView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -199,6 +200,7 @@
 		1A7CA8262574D6F40047CBBE /* QueueStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueStyle.swift; sourceTree = "<group>"; };
 		1A7CA82E25751B5A0047CBBE /* QueueOperatorStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueOperatorStyle.swift; sourceTree = "<group>"; };
 		1AA738A62578DD0300E1120F /* QueueStatusStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueStatusStyle.swift; sourceTree = "<group>"; };
+		1AA738AD2578E0D500E1120F /* QueueAnimationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueAnimationView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -611,6 +613,7 @@
 		1A7CA83125751B670047CBBE /* Operator */ = {
 			isa = PBXGroup;
 			children = (
+				1AA738AC2578E0C500E1120F /* Animation */,
 				1A7CA8202574D6760047CBBE /* QueueOperatorView.swift */,
 				1A7CA82E25751B5A0047CBBE /* QueueOperatorStyle.swift */,
 			);
@@ -635,6 +638,14 @@
 				1A7CA8262574D6F40047CBBE /* QueueStyle.swift */,
 			);
 			path = Queue;
+			sourceTree = "<group>";
+		};
+		1AA738AC2578E0C500E1120F /* Animation */ = {
+			isa = PBXGroup;
+			children = (
+				1AA738AD2578E0D500E1120F /* QueueAnimationView.swift */,
+			);
+			path = Animation;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -859,6 +870,7 @@
 				1A7CA8272574D6F40047CBBE /* QueueStyle.swift in Sources */,
 				1AA738A72578DD0300E1120F /* QueueStatusStyle.swift in Sources */,
 				1A60AFDD25669A4200E53F53 /* ChatView.swift in Sources */,
+				1AA738AE2578E0D500E1120F /* QueueAnimationView.swift in Sources */,
 				1A60AFCA2566943F00E53F53 /* RootCoordinator.swift in Sources */,
 				1A60B0042567F25600E53F53 /* Header.swift in Sources */,
 				1A60B047256C0B4500E53F53 /* ChatMessageContent.swift in Sources */,

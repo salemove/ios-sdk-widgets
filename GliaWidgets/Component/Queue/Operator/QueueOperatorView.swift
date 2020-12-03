@@ -4,13 +4,13 @@ class QueueOperatorView: UIView {
     private let style: QueueOperatorStyle
     private let placeholderImageView = UIImageView()
     private let imageView = UIImageView()
-    private var animationView: AnimationView
+    private var animationView: QueueAnimationView
     private let kImageInset: CGFloat = 10
     private let kImageViewSize = CGSize(width: 80, height: 80)
 
     init(with style: QueueOperatorStyle) {
         self.style = style
-        self.animationView = AnimationView(color: style.animationColor)
+        self.animationView = QueueAnimationView(color: style.animationColor)
         super.init(frame: .zero)
         setup()
         layout()
@@ -74,7 +74,7 @@ class QueueOperatorView: UIView {
     }
 }
 
-private class AnimationView: UIView {
+/*private class AnimationView: UIView {
     private let color: UIColor
     private let circles = [UIView(), UIView(), UIView()]
     private var widthConstraint: NSLayoutConstraint!
@@ -148,3 +148,4 @@ private class AnimationView: UIView {
         }
     }
 }
+*/
