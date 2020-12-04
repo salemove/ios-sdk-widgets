@@ -1,6 +1,7 @@
 enum ButtonKind {
     case back
     case close
+    case alertClose
 }
 
 extension ButtonKind {
@@ -10,6 +11,8 @@ extension ButtonKind {
             return BackButtonProperties()
         case .close:
             return CloseButtonProperties()
+        case .alertClose:
+            return AlertCloseButtonProperties()
         }
     }
 }

@@ -73,6 +73,7 @@
 		1A60B047256C0B4500E53F53 /* ChatMessageContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60B046256C0B4500E53F53 /* ChatMessageContent.swift */; };
 		1A60B04A256C0E0100E53F53 /* ChatMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60B049256C0E0100E53F53 /* ChatMessageCell.swift */; };
 		1A60B04D256D0CF600E53F53 /* ChatMessageContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60B04C256D0CF600E53F53 /* ChatMessageContentView.swift */; };
+		1A63B2ED257A312700508478 /* AlertCloseButtonProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A63B2EC257A312700508478 /* AlertCloseButtonProperties.swift */; };
 		1A7CA81D2574D6370047CBBE /* QueueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7CA81C2574D6370047CBBE /* QueueView.swift */; };
 		1A7CA8212574D6760047CBBE /* QueueOperatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7CA8202574D6760047CBBE /* QueueOperatorView.swift */; };
 		1A7CA8242574D68E0047CBBE /* QueueStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7CA8232574D68E0047CBBE /* QueueStatusView.swift */; };
@@ -198,6 +199,7 @@
 		1A60B046256C0B4500E53F53 /* ChatMessageContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageContent.swift; sourceTree = "<group>"; };
 		1A60B049256C0E0100E53F53 /* ChatMessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageCell.swift; sourceTree = "<group>"; };
 		1A60B04C256D0CF600E53F53 /* ChatMessageContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageContentView.swift; sourceTree = "<group>"; };
+		1A63B2EC257A312700508478 /* AlertCloseButtonProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertCloseButtonProperties.swift; sourceTree = "<group>"; };
 		1A7CA81C2574D6370047CBBE /* QueueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueView.swift; sourceTree = "<group>"; };
 		1A7CA8202574D6760047CBBE /* QueueOperatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueOperatorView.swift; sourceTree = "<group>"; };
 		1A7CA8232574D68E0047CBBE /* QueueStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueStatusView.swift; sourceTree = "<group>"; };
@@ -574,6 +576,7 @@
 				1A60B01C2567FCAD00E53F53 /* ButtonProperties.swift */,
 				1A60B01F2567FD1B00E53F53 /* BackButtonProperties.swift */,
 				1A60B0222567FD2D00E53F53 /* CloseButtonProperties.swift */,
+				1A63B2EC257A312700508478 /* AlertCloseButtonProperties.swift */,
 			);
 			path = Properties;
 			sourceTree = "<group>";
@@ -915,6 +918,7 @@
 				1A4AD3BE256D37FD00468BFB /* UITableView+Extensions.swift in Sources */,
 				1A4AD3C1256E74C600468BFB /* ThemeFont.swift in Sources */,
 				1A60AFEC2566A0E700E53F53 /* NavigationController.swift in Sources */,
+				1A63B2ED257A312700508478 /* AlertCloseButtonProperties.swift in Sources */,
 				1A60B0272568070800E53F53 /* UIStackView+Extensions.swift in Sources */,
 				1A60B0232567FD2D00E53F53 /* CloseButtonProperties.swift in Sources */,
 				1A60AFE825669C5000E53F53 /* ChatStyle.swift in Sources */,

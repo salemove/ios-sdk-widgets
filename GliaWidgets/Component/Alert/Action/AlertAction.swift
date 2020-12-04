@@ -3,6 +3,11 @@ import UIKit
 class AlertAction: UIButton {
     var tap: (() -> Void)?
 
+    var title: String? {
+        get { title(for: .normal) }
+        set { setTitle(newValue, for: .normal) }
+    }
+
     private let style: AlertActionStyle
     private let kHeight: CGFloat = 40.0
     private let kCornerRadius: CGFloat = 4.0
