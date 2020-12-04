@@ -28,8 +28,8 @@ class AlertViewController: ViewController {
         self.view = view
     }
 
-    public override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+    public override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         showAlertView(animated: animated)
     }
 
@@ -37,15 +37,35 @@ class AlertViewController: ViewController {
         guard alertView == nil else { return }
 
         let alertView = makeAlertView()
+        alertView.closeTapped = { self.dismiss(animated: animated) }
         self.alertView = alertView
 
         view.addSubview(alertView)
-        alertView.autoPinEdgesToSuperviewEdges(with: kAlertInsets,
-                                               excludingEdge: .top)
+        alertView.autoPinEdgesToSuperviewSafeArea(with: kAlertInsets,
+                                                  excludingEdge: .top)
+
+        alertView.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
+        UIView.animate(withDuration: animated ? 0.4 : 0.0,
+                       delay: 0.0,
+                       usingSpringWithDamping: 0.8,
+                       initialSpringVelocity: 0.7,
+                       options: .curveEaseInOut,
+                       animations: {
+                        alertView.transform = .identity
+                       }, completion: nil)
     }
 
     private func hideAlertView(animated: Bool) {
-
+        UIView.animate(withDuration: animated ? 0.4 : 0.0,
+                       delay: 0.0,
+                       usingSpringWithDamping: 0.8,
+                       initialSpringVelocity: 0.7,
+                       options: .curveEaseInOut,
+                       animations: {
+                        self.alertView?.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
+                       }, completion: { _ in
+                        self.alertView = nil
+                       })
     }
 
     private func makeAlertView() -> AlertView {
@@ -59,5 +79,10 @@ class AlertViewController: ViewController {
         }
 
         return alertView
+    }
+
+    private func dismiss(animated: Bool) {
+        hideAlertView(animated: animated)
+        dismiss(animated: animated, completion: nil)
     }
 }
