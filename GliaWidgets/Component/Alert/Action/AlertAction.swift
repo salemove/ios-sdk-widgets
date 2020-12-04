@@ -1,14 +1,14 @@
 import UIKit
 
-class AlertButton: UIButton {
+class AlertAction: UIButton {
     var tap: (() -> Void)?
 
-    private let style: AlertButtonStyle
+    private let style: AlertActionStyle
     private let kHeight: CGFloat = 40.0
     private let kCornerRadius: CGFloat = 4.0
     private let kContentInsets = UIEdgeInsets(top: 6, left: 10, bottom: 6, right: 10)
 
-    public init(with style: AlertButtonStyle) {
+    public init(with style: AlertActionStyle) {
         self.style = style
         super.init(frame: .zero)
         setup()

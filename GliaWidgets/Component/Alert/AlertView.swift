@@ -5,18 +5,15 @@ class AlertView: UIView {
     private let titleLabel = UILabel()
     private let messageLabel = UILabel()
     private let stackView = UIStackView()
-    private let buttonsStackView = UIStackView()
+    private let actionsStackView = UIStackView()
     private let kContentInsets = UIEdgeInsets(top: 28, left: 32, bottom: 28, right: 32)
 
     public init(with style: AlertStyle,
                 title: String?,
-                message: String?,
-                buttons: [AlertButton]) {
+                message: String?) {
         self.style = style
         super.init(frame: .zero)
-        setup(title: title,
-              message: message,
-              buttons: buttons)
+        setup(title: title, message: message)
         layout()
     }
 
@@ -25,9 +22,15 @@ class AlertView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    func addAction(_ action: AlertAction) {
+        actionsStackView.addArrangedSubview(action)
+        actionsStackView.axis = actionsStackView.arrangedSubviews.count > 2
+            ? .vertical
+            : .horizontal
+    }
+
     private func setup(title: String?,
-                       message: String?,
-                       buttons: [AlertButton]) {
+                       message: String?) {
         backgroundColor = style.backgroundColor
 
         stackView.axis = .vertical
@@ -45,12 +48,8 @@ class AlertView: UIView {
         messageLabel.textAlignment = .center
         messageLabel.text = message
 
-        buttonsStackView.spacing = 11
-        buttonsStackView.distribution = .fillEqually
-        buttonsStackView.axis = buttons.count > 2
-            ? .vertical
-            : .horizontal
-        buttonsStackView.addArrangedSubviews(buttons)
+        actionsStackView.spacing = 11
+        actionsStackView.distribution = .fillEqually
     }
 
     private func layout() {

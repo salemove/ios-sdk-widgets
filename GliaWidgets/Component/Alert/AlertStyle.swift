@@ -6,16 +6,16 @@ public struct AlertStyle {
     public var messageFont: UIFont
     public var messageColor: UIColor
     public var backgroundColor: UIColor
-    public var positiveButton: AlertButtonStyle
-    public var negativeButton: AlertButtonStyle
+    public var positiveButton: AlertActionStyle
+    public var negativeButton: AlertActionStyle
 
     public init(titleFont: UIFont,
                 titleColor: UIColor,
                 messageFont: UIFont,
                 messageColor: UIColor,
                 backgroundColor: UIColor,
-                positiveButton: AlertButtonStyle,
-                negativeButton: AlertButtonStyle) {
+                positiveButton: AlertActionStyle,
+                negativeButton: AlertActionStyle) {
         self.titleFont = titleFont
         self.titleColor = titleColor
         self.messageFont = messageFont

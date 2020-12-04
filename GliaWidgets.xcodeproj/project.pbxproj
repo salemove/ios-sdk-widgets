@@ -81,8 +81,8 @@
 		1AA738A72578DD0300E1120F /* QueueStatusStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA738A62578DD0300E1120F /* QueueStatusStyle.swift */; };
 		1AA738AE2578E0D500E1120F /* QueueAnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA738AD2578E0D500E1120F /* QueueAnimationView.swift */; };
 		1AA738B225790D5A00E1120F /* AlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA738B125790D5A00E1120F /* AlertView.swift */; };
-		1AA738B625790D9900E1120F /* AlertButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA738B525790D9900E1120F /* AlertButton.swift */; };
-		1AA738B925790DB400E1120F /* AlertButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA738B825790DB400E1120F /* AlertButtonStyle.swift */; };
+		1AA738B625790D9900E1120F /* AlertAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA738B525790D9900E1120F /* AlertAction.swift */; };
+		1AA738B925790DB400E1120F /* AlertActionStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA738B825790DB400E1120F /* AlertActionStyle.swift */; };
 		1AA738BC25790DBE00E1120F /* AlertStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA738BB25790DBE00E1120F /* AlertStyle.swift */; };
 /* End PBXBuildFile section */
 
@@ -206,8 +206,8 @@
 		1AA738A62578DD0300E1120F /* QueueStatusStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueStatusStyle.swift; sourceTree = "<group>"; };
 		1AA738AD2578E0D500E1120F /* QueueAnimationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueAnimationView.swift; sourceTree = "<group>"; };
 		1AA738B125790D5A00E1120F /* AlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertView.swift; sourceTree = "<group>"; };
-		1AA738B525790D9900E1120F /* AlertButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertButton.swift; sourceTree = "<group>"; };
-		1AA738B825790DB400E1120F /* AlertButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertButtonStyle.swift; sourceTree = "<group>"; };
+		1AA738B525790D9900E1120F /* AlertAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertAction.swift; sourceTree = "<group>"; };
+		1AA738B825790DB400E1120F /* AlertActionStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertActionStyle.swift; sourceTree = "<group>"; };
 		1AA738BB25790DBE00E1120F /* AlertStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertStyle.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -660,20 +660,20 @@
 		1AA738B025790D4B00E1120F /* Alert */ = {
 			isa = PBXGroup;
 			children = (
-				1AA738B425790D8700E1120F /* Button */,
+				1AA738B425790D8700E1120F /* Action */,
 				1AA738B125790D5A00E1120F /* AlertView.swift */,
 				1AA738BB25790DBE00E1120F /* AlertStyle.swift */,
 			);
 			path = Alert;
 			sourceTree = "<group>";
 		};
-		1AA738B425790D8700E1120F /* Button */ = {
+		1AA738B425790D8700E1120F /* Action */ = {
 			isa = PBXGroup;
 			children = (
-				1AA738B525790D9900E1120F /* AlertButton.swift */,
-				1AA738B825790DB400E1120F /* AlertButtonStyle.swift */,
+				1AA738B525790D9900E1120F /* AlertAction.swift */,
+				1AA738B825790DB400E1120F /* AlertActionStyle.swift */,
 			);
-			path = Button;
+			path = Action;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -877,7 +877,7 @@
 				1A60AF96256675C400E53F53 /* UIColor+Extensions.swift in Sources */,
 				1A7CA81D2574D6370047CBBE /* QueueView.swift in Sources */,
 				1A60AFE425669B0400E53F53 /* ChatCoordinator.swift in Sources */,
-				1AA738B625790D9900E1120F /* AlertButton.swift in Sources */,
+				1AA738B625790D9900E1120F /* AlertAction.swift in Sources */,
 				1A60B035256BF89D00E53F53 /* ChatMessageStatusView.swift in Sources */,
 				1A60B02D256BF7FF00E53F53 /* ReceivedChatMessageView.swift in Sources */,
 				1A60AFBF2566834400E53F53 /* ViewController.swift in Sources */,
@@ -895,7 +895,7 @@
 				1A60AF7A25656E0500E53F53 /* Theme.swift in Sources */,
 				1A4AD3B3256D2A7600468BFB /* ChatMessageStyle.swift in Sources */,
 				1A60B0082567F29900E53F53 /* HeaderStyle.swift in Sources */,
-				1AA738B925790DB400E1120F /* AlertButtonStyle.swift in Sources */,
+				1AA738B925790DB400E1120F /* AlertActionStyle.swift in Sources */,
 				1A60B0152567FC7000E53F53 /* Button.swift in Sources */,
 				1A4AD3CA256E864800468BFB /* ThemeColorStyle.swift in Sources */,
 				1A7CA8272574D6F40047CBBE /* QueueStyle.swift in Sources */,
