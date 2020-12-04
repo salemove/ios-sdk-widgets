@@ -15,6 +15,27 @@ public enum L10n {
     /// Chat
     public static let title = L10n.tr("Localizable", "chat.title")
   }
+
+  public enum Queue {
+    public enum Connected {
+      /// {operatorName}
+      public static let text1 = L10n.tr("Localizable", "queue.connected.text1")
+      /// {operatorName} has joined the conversation.
+      public static let text2 = L10n.tr("Localizable", "queue.connected.text2")
+    }
+    public enum Connecting {
+      /// Connecting with {operatorName}
+      public static let text1 = L10n.tr("Localizable", "queue.connecting.text1")
+      /// 
+      public static let text2 = L10n.tr("Localizable", "queue.connecting.text2")
+    }
+    public enum Waiting {
+      /// CompanyName
+      public static let text1 = L10n.tr("Localizable", "queue.waiting.text1")
+      /// An MSR will be with you shortly.
+      public static let text2 = L10n.tr("Localizable", "queue.waiting.text2")
+    }
+  }
 }
 // swiftlint:enable explicit_type_interface function_parameter_count identifier_name line_length
 // swiftlint:enable nesting type_body_length type_name vertical_whitespace_opening_braces
