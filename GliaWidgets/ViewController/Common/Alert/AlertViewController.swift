@@ -2,7 +2,7 @@ import UIKit
 
 class AlertViewController: ViewController {
     enum Kind {
-        case message(AlertMessageContent)
+        case message(AlertMessageTexts)
     }
 
     private let viewFactory: ViewFactory
@@ -72,9 +72,9 @@ class AlertViewController: ViewController {
         let alertView = viewFactory.makeAlertView()
 
         switch kind {
-        case .message(let content):
-            alertView.title = content.title
-            alertView.message = content.message
+        case .message(let texts):
+            alertView.title = texts.title
+            alertView.message = texts.message
             alertView.showsCloseButton = true
         }
 

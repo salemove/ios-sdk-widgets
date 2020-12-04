@@ -7,7 +7,7 @@ class ChatViewModel: ViewModel {
     }
 
     enum Action {
-        case showAlert(AlertMessageContent)
+        case showAlert(AlertMessageTexts)
     }
 
     enum DelegateEvent {
@@ -17,16 +17,16 @@ class ChatViewModel: ViewModel {
     var action: ((Action) -> Void)?
     var delegate: ((DelegateEvent) -> Void)?
 
-    private let alertContents: AlertContents
+    private let alertTexts: AlertTexts
 
-    init(alertContents: AlertContents) {
-        self.alertContents = alertContents
+    init(alertTexts: AlertTexts) {
+        self.alertTexts = alertTexts
     }
 
     public func event(_ event: Event) {
         switch event {
         case .alertTapped:
-            action?(.showAlert(alertContents.unexpectedError))
+            action?(.showAlert(alertTexts.unexpectedError))
         case .confirmTapped:
             break
         case .backTapped:

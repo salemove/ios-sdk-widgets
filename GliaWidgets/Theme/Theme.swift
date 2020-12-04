@@ -77,13 +77,13 @@ public class Theme {
                           noActionTitle: Alert.Action.no)
     }()
 
-    public lazy var alertContents: AlertContents = {
+    public lazy var alertTexts: AlertTexts = {
         typealias Alert = L10n.Alert
 
-        let unexcpected = AlertMessageContent(title: Alert.Unexpected.title,
+        let unexcpected = AlertMessageTexts(title: Alert.Unexpected.title,
                                               message: Alert.Unexpected.message)
 
-        return AlertContents(unexpectedError: unexcpected)
+        return AlertTexts(unexpectedError: unexcpected)
     }()
 
     public init(colorStyle: ThemeColorStyle = .default,

@@ -87,8 +87,8 @@
 		1AA738B625790D9900E1120F /* AlertActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA738B525790D9900E1120F /* AlertActionButton.swift */; };
 		1AA738B925790DB400E1120F /* AlertActionButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA738B825790DB400E1120F /* AlertActionButtonStyle.swift */; };
 		1AA738BC25790DBE00E1120F /* AlertStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA738BB25790DBE00E1120F /* AlertStyle.swift */; };
-		1AE15E38257A578B00A642C0 /* AlertMessageContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE15E37257A578B00A642C0 /* AlertMessageContent.swift */; };
-		1AE15E3B257A5CC900A642C0 /* AlertContents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE15E3A257A5CC900A642C0 /* AlertContents.swift */; };
+		1AE15E38257A578B00A642C0 /* AlertMessageTexts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE15E37257A578B00A642C0 /* AlertMessageTexts.swift */; };
+		1AE15E3B257A5CC900A642C0 /* AlertTexts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE15E3A257A5CC900A642C0 /* AlertTexts.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -217,8 +217,8 @@
 		1AA738B525790D9900E1120F /* AlertActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertActionButton.swift; sourceTree = "<group>"; };
 		1AA738B825790DB400E1120F /* AlertActionButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertActionButtonStyle.swift; sourceTree = "<group>"; };
 		1AA738BB25790DBE00E1120F /* AlertStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertStyle.swift; sourceTree = "<group>"; };
-		1AE15E37257A578B00A642C0 /* AlertMessageContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertMessageContent.swift; sourceTree = "<group>"; };
-		1AE15E3A257A5CC900A642C0 /* AlertContents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertContents.swift; sourceTree = "<group>"; };
+		1AE15E37257A578B00A642C0 /* AlertMessageTexts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertMessageTexts.swift; sourceTree = "<group>"; };
+		1AE15E3A257A5CC900A642C0 /* AlertTexts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertTexts.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -411,7 +411,7 @@
 		1A60AF7825656DE700E53F53 /* Theme */ = {
 			isa = PBXGroup;
 			children = (
-				1AE15E40257A5F3500A642C0 /* Content */,
+				1AE15E40257A5F3500A642C0 /* Texts */,
 				1A60AF7925656E0500E53F53 /* Theme.swift */,
 				1A4AD3C0256E74C600468BFB /* ThemeFont.swift */,
 				1A4AD3C3256E7A0C00468BFB /* ThemeFontStyle.swift */,
@@ -698,7 +698,7 @@
 		1AA738B025790D4B00E1120F /* Alert */ = {
 			isa = PBXGroup;
 			children = (
-				1AE15E36257A56D300A642C0 /* Content */,
+				1AE15E36257A56D300A642C0 /* Texts */,
 				1AA738B425790D8700E1120F /* ActionButton */,
 				1AA738B125790D5A00E1120F /* AlertView.swift */,
 				1AA738BB25790DBE00E1120F /* AlertStyle.swift */,
@@ -715,20 +715,20 @@
 			path = ActionButton;
 			sourceTree = "<group>";
 		};
-		1AE15E36257A56D300A642C0 /* Content */ = {
+		1AE15E36257A56D300A642C0 /* Texts */ = {
 			isa = PBXGroup;
 			children = (
-				1AE15E37257A578B00A642C0 /* AlertMessageContent.swift */,
+				1AE15E37257A578B00A642C0 /* AlertMessageTexts.swift */,
 			);
-			path = Content;
+			path = Texts;
 			sourceTree = "<group>";
 		};
-		1AE15E40257A5F3500A642C0 /* Content */ = {
+		1AE15E40257A5F3500A642C0 /* Texts */ = {
 			isa = PBXGroup;
 			children = (
-				1AE15E3A257A5CC900A642C0 /* AlertContents.swift */,
+				1AE15E3A257A5CC900A642C0 /* AlertTexts.swift */,
 			);
-			path = Content;
+			path = Texts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -920,7 +920,7 @@
 			files = (
 				1A60AFD925669A1500E53F53 /* View.swift in Sources */,
 				1A60AFBC256682C800E53F53 /* SubFlowCoordinator.swift in Sources */,
-				1AE15E38257A578B00A642C0 /* AlertMessageContent.swift in Sources */,
+				1AE15E38257A578B00A642C0 /* AlertMessageTexts.swift in Sources */,
 				1A7CA8212574D6760047CBBE /* QueueOperatorView.swift in Sources */,
 				1A4AD3C7256E863900468BFB /* ThemeColor.swift in Sources */,
 				1A63B2F3257A3F3D00508478 /* AlertViewController.swift in Sources */,
@@ -928,7 +928,7 @@
 				1A60AF7E25656F0400E53F53 /* Glia.swift in Sources */,
 				1A60AFB62566825400E53F53 /* ViewModel.swift in Sources */,
 				1A60AFB9256682AF00E53F53 /* FlowCoordinator.swift in Sources */,
-				1AE15E3B257A5CC900A642C0 /* AlertContents.swift in Sources */,
+				1AE15E3B257A5CC900A642C0 /* AlertTexts.swift in Sources */,
 				1A60AF9F25667CA800E53F53 /* FontProvider.swift in Sources */,
 				1A60AFCE2566958900E53F53 /* ViewFactory.swift in Sources */,
 				1A7CA82F25751B5A0047CBBE /* QueueOperatorStyle.swift in Sources */,
