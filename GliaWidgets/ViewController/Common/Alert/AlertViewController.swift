@@ -84,6 +84,11 @@ class AlertViewController: ViewController {
             alertView.showsCloseButton = false
             alertView.actionsAxis = .horizontal
 
+            let negativeButton = AlertActionButton(with: viewFactory.theme.alert.negativeAction)
+            negativeButton.title = texts.negativeTitle
+            negativeButton.tap = {
+                self.dismiss(animated: true)
+            }
             let positiveButton = AlertActionButton(with: viewFactory.theme.alert.positiveAction)
             positiveButton.title = texts.positiveTitle
             positiveButton.tap = {
@@ -91,13 +96,8 @@ class AlertViewController: ViewController {
                     confirmed()
                 }
             }
-            let negativeButton = AlertActionButton(with: viewFactory.theme.alert.negativeAction)
-            negativeButton.title = texts.negativeTitle
-            negativeButton.tap = {
-                self.dismiss(animated: true)
-            }
-            alertView.addActionView(positiveButton)
             alertView.addActionView(negativeButton)
+            alertView.addActionView(positiveButton)
         }
 
         return alertView
