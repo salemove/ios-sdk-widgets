@@ -89,6 +89,7 @@
 		1AA738BC25790DBE00E1120F /* AlertStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA738BB25790DBE00E1120F /* AlertStyle.swift */; };
 		1AE15E38257A578B00A642C0 /* AlertMessageTexts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE15E37257A578B00A642C0 /* AlertMessageTexts.swift */; };
 		1AE15E3B257A5CC900A642C0 /* AlertTexts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE15E3A257A5CC900A642C0 /* AlertTexts.swift */; };
+		1AE15E49257A6BD200A642C0 /* AlertConfirmationTexts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE15E48257A6BD200A642C0 /* AlertConfirmationTexts.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -219,6 +220,7 @@
 		1AA738BB25790DBE00E1120F /* AlertStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertStyle.swift; sourceTree = "<group>"; };
 		1AE15E37257A578B00A642C0 /* AlertMessageTexts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertMessageTexts.swift; sourceTree = "<group>"; };
 		1AE15E3A257A5CC900A642C0 /* AlertTexts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertTexts.swift; sourceTree = "<group>"; };
+		1AE15E48257A6BD200A642C0 /* AlertConfirmationTexts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertConfirmationTexts.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -719,6 +721,7 @@
 			isa = PBXGroup;
 			children = (
 				1AE15E37257A578B00A642C0 /* AlertMessageTexts.swift */,
+				1AE15E48257A6BD200A642C0 /* AlertConfirmationTexts.swift */,
 			);
 			path = Texts;
 			sourceTree = "<group>";
@@ -964,6 +967,7 @@
 				1A60B0042567F25600E53F53 /* Header.swift in Sources */,
 				1A60B047256C0B4500E53F53 /* ChatMessageContent.swift in Sources */,
 				1A63B2F6257A469A00508478 /* AlertPresenter.swift in Sources */,
+				1AE15E49257A6BD200A642C0 /* AlertConfirmationTexts.swift in Sources */,
 				1A60AFB22566821B00E53F53 /* Asset.swift in Sources */,
 				1A4AD3AF256D283700468BFB /* ChatMessageView.swift in Sources */,
 				1A60AFD52566992A00E53F53 /* ChatViewModel.swift in Sources */,

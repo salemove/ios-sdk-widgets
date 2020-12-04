@@ -18,6 +18,18 @@ public enum L10n {
       /// Yes
       public static let yes = L10n.tr("Localizable", "alert.action.yes")
     }
+    public enum Queue {
+      public enum Leave {
+        /// You will lose your place in the queue.
+        public static let message = L10n.tr("Localizable", "alert.queue.leave.message")
+        /// No
+        public static let no = L10n.tr("Localizable", "alert.queue.leave.no")
+        /// Are you sure you want to leave?
+        public static let title = L10n.tr("Localizable", "alert.queue.leave.title")
+        /// Yes
+        public static let yes = L10n.tr("Localizable", "alert.queue.leave.yes")
+      }
+    }
     public enum Unexpected {
       /// Please try again later.
       public static let message = L10n.tr("Localizable", "alert.unexpected.message")

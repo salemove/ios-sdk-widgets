@@ -39,8 +39,12 @@ class ChatViewController: ViewController, AlertPresenter {
 
         viewModel.action = { action in
             switch action {
-            case .showAlert(let content):
-                self.alert(with: content)
+            case .showAlert(let texts):
+                self.presentAlert(with: texts)
+            case .confirmExitQueue(let texts):
+                self.presentConfirmation(with: texts) {
+                    print("CONFIRMED")
+                }
             }
         }
     }
@@ -68,6 +72,6 @@ extension ChatViewController {
     }
 
     @objc private func confirmationTapped() {
-
+        viewModel.event(.confirmTapped)
     }
 }

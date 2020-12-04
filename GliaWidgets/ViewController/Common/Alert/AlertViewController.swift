@@ -3,6 +3,8 @@ import UIKit
 class AlertViewController: ViewController {
     enum Kind {
         case message(AlertMessageTexts)
+        case confirmation(AlertConfirmationTexts,
+                          confirmed: () -> Void)
     }
 
     private let viewFactory: ViewFactory
@@ -76,13 +78,33 @@ class AlertViewController: ViewController {
             alertView.title = texts.title
             alertView.message = texts.message
             alertView.showsCloseButton = true
+        case .confirmation(let texts, let confirmed):
+            alertView.title = texts.title
+            alertView.message = texts.message
+            alertView.showsCloseButton = false
+            alertView.actionsAxis = .horizontal
+
+            let positiveButton = AlertActionButton(with: viewFactory.theme.alert.positiveAction)
+            positiveButton.title = texts.positiveTitle
+            positiveButton.tap = {
+                self.dismiss(animated: true) {
+                    confirmed()
+                }
+            }
+            let negativeButton = AlertActionButton(with: viewFactory.theme.alert.negativeAction)
+            negativeButton.title = texts.negativeTitle
+            negativeButton.tap = {
+                self.dismiss(animated: true)
+            }
+            alertView.addActionView(positiveButton)
+            alertView.addActionView(negativeButton)
         }
 
         return alertView
     }
 
-    private func dismiss(animated: Bool) {
+    override func dismiss(animated: Bool, completion: (() -> Void)? = nil) {
         hideAlertView(animated: animated)
-        dismiss(animated: animated, completion: nil)
+        super.dismiss(animated: animated, completion: completion)
     }
 }

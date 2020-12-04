@@ -8,6 +8,7 @@ class ChatViewModel: ViewModel {
 
     enum Action {
         case showAlert(AlertMessageTexts)
+        case confirmExitQueue(AlertConfirmationTexts)
     }
 
     enum DelegateEvent {
@@ -28,7 +29,7 @@ class ChatViewModel: ViewModel {
         case .alertTapped:
             action?(.showAlert(alertTexts.unexpectedError))
         case .confirmTapped:
-            break
+            action?(.confirmExitQueue(alertTexts.leaveQueue))
         case .backTapped:
             delegate?(.finished)
         case .closeTapped:

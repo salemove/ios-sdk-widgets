@@ -59,10 +59,10 @@ public class Theme {
     public lazy var alert: AlertStyle = {
         typealias Alert = L10n.Alert
 
-        let positiveAction = AlertActionButtonStyle(titleFont: font.buttonLabel,
+        let negativeAction = AlertActionButtonStyle(titleFont: font.buttonLabel,
                                                     titleColor: color.baseLight,
                                                     backgroundColor: color.primary)
-        let negativeAction = AlertActionButtonStyle(titleFont: font.buttonLabel,
+        let positiveAction = AlertActionButtonStyle(titleFont: font.buttonLabel,
                                                     titleColor: color.baseLight,
                                                     backgroundColor: color.systemNegative)
         return AlertStyle(titleFont: font.header2,
@@ -81,9 +81,14 @@ public class Theme {
         typealias Alert = L10n.Alert
 
         let unexcpected = AlertMessageTexts(title: Alert.Unexpected.title,
-                                              message: Alert.Unexpected.message)
+                                            message: Alert.Unexpected.message)
+        let leaveQueue = AlertConfirmationTexts(title: Alert.Queue.Leave.title,
+                                                message: Alert.Queue.Leave.message,
+                                                negativeTitle: Alert.Queue.Leave.no,
+                                                positiveTitle: Alert.Queue.Leave.yes)
 
-        return AlertTexts(unexpectedError: unexcpected)
+        return AlertTexts(unexpectedError: unexcpected,
+                          leaveQueue: leaveQueue)
     }()
 
     public init(colorStyle: ThemeColorStyle = .default,

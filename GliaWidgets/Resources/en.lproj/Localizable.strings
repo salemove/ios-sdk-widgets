@@ -9,5 +9,9 @@
 "alert.action.no" = "No";
 "alert.unexpected.title" = "We're sorry, there has been an unexpected error.";
 "alert.unexpected.message" = "Please try again later.";
+"alert.queue.leave.title" = "Are you sure you want to leave?";
+"alert.queue.leave.message" = "You will lose your place in the queue.";
+"alert.queue.leave.yes" = "Yes";
+"alert.queue.leave.no" = "No";
 
 "chat.title" = "Chat";
