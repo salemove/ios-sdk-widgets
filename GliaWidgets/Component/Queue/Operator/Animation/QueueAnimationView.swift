@@ -57,7 +57,7 @@ class QueueAnimationView: UIView {
         circleLayer.fillColor = color.cgColor
         circleLayer.path = UIBezierPath(ovalIn: activeBounds).cgPath
         circleLayer.position = CGPoint(x: activeBounds.midX,
-                                 y: activeBounds.midY)
+                                       y: activeBounds.midY)
         circleLayer.frame = activeBounds
     }
 

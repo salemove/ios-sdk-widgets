@@ -23,10 +23,10 @@ class QueueOperatorView: UIView {
     func setImage(_ image: UIImage?, animated: Bool) {
         UIView.transition(with: imageView,
                           duration: animated ? 0.2 : 0.0,
-                       options: .transitionCrossDissolve,
-                    animations: {
-                        self.imageView.image = image
-                    }, completion: nil)
+                          options: .transitionCrossDissolve,
+                          animations: {
+                            self.imageView.image = image
+                          }, completion: nil)
     }
 
     func startAnimating(animated: Bool) {
