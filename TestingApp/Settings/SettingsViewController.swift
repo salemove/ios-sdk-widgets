@@ -54,6 +54,7 @@ class SettingsViewController: UIViewController {
         createCells()
     }
 
+    // swiftlint:disable function_body_length
     private func createCells() {
         appTokenCell = SettingsTextCell(title: "App token:",
                                         text: conf.appToken)
