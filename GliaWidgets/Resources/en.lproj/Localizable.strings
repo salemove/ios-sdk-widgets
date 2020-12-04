@@ -5,5 +5,9 @@
 "queue.connected.text1" = "{operatorName}";
 "queue.connected.text2" = "{operatorName} has joined the conversation.";
 
+"alert.action.yes" = "Yes";
+"alert.action.no" = "No";
+"alert.unexpected.title" = "We're sorry, there has been an unexpected error.";
+"alert.unexpected.message" = "Please try again later.";
 
 "chat.title" = "Chat";

@@ -6,17 +6,15 @@ class AlertView: UIView {
         case negative
     }
 
-    var closeTapped: (() -> Void)?
-
-    private let style: AlertStyle
-    private let titleLabel = UILabel()
-    private let messageLabel = UILabel()
-    private let stackView = UIStackView()
-    private let actionsStackView = UIStackView()
-    private let kContentInsets = UIEdgeInsets(top: 28, left: 32, bottom: 28, right: 32)
-    private let kCornerRadius: CGFloat = 30
-    private var closeButton: Button?
-    private var showsCloseButton: Bool = false {
+    var title: String? {
+        get { return titleLabel.text }
+        set { titleLabel.text = newValue }
+    }
+    var message: String? {
+        get { return messageLabel.text }
+        set { messageLabel.text = newValue }
+    }
+    var showsCloseButton: Bool = false {
         didSet {
             if showsCloseButton {
                 let closeButton = Button(kind: .alertClose,
@@ -31,16 +29,28 @@ class AlertView: UIView {
             }
         }
     }
-    private var actionCount: Int {
+    var actionCount: Int {
         return actionsStackView.arrangedSubviews.count
     }
+    var actionsAxis: NSLayoutConstraint.Axis {
+        get { return actionsStackView.axis }
+        set { actionsStackView.axis = newValue }
+    }
+    var closeTapped: (() -> Void)?
 
-    public init(with style: AlertStyle,
-                title: String?,
-                message: String?) {
+    private let style: AlertStyle
+    private let titleLabel = UILabel()
+    private let messageLabel = UILabel()
+    private let stackView = UIStackView()
+    private let actionsStackView = UIStackView()
+    private let kContentInsets = UIEdgeInsets(top: 28, left: 32, bottom: 28, right: 32)
+    private let kCornerRadius: CGFloat = 30
+    private var closeButton: Button?
+
+    public init(with style: AlertStyle) {
         self.style = style
         super.init(frame: .zero)
-        setup(title: title, message: message)
+        setup()
         layout()
     }
 
@@ -59,27 +69,11 @@ class AlertView: UIView {
         ).cgPath
     }
 
-    func addAction(title: String, kind: ActionKind, action: @escaping () -> Void) {
-        let actionStyle = style(for: kind)
-        let alertAction = AlertAction(with: actionStyle)
-        alertAction.title = title
-        alertAction.tap = { action() }
-
-        actionsStackView.addArrangedSubview(alertAction)
-        actionsStackView.axis = actionCount > 2
-            ? .vertical
-            : .horizontal
+    func addActionView(_ actionView: UIView) {
+        actionsStackView.addArrangedSubview(actionView)
     }
 
-    func show(animated: Bool) {
-        showsCloseButton = actionCount == 0
-    }
-
-    func hide(animated: Bool) {
-
-    }
-
-    private func style(for kind: ActionKind) -> AlertActionStyle {
+    private func style(for kind: ActionKind) -> AlertActionButtonStyle {
         switch kind {
         case .positive:
             return style.positiveAction
@@ -88,8 +82,7 @@ class AlertView: UIView {
         }
     }
 
-    private func setup(title: String?,
-                       message: String?) {
+    private func setup() {
         backgroundColor = style.backgroundColor
         clipsToBounds = true
 
@@ -112,13 +105,11 @@ class AlertView: UIView {
         titleLabel.font = style.titleFont
         titleLabel.textColor = style.titleColor
         titleLabel.textAlignment = .center
-        titleLabel.text = title
 
         messageLabel.numberOfLines = 0
         messageLabel.font = style.messageFont
         messageLabel.textColor = style.messageColor
         messageLabel.textAlignment = .center
-        messageLabel.text = message
 
         actionsStackView.spacing = 11
         actionsStackView.distribution = .fillEqually

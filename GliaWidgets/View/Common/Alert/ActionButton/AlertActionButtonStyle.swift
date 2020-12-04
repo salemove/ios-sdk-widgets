@@ -1,6 +1,6 @@
 import UIKit
 
-public struct AlertActionStyle {
+public struct AlertActionButtonStyle {
     public var titleFont: UIFont
     public var titleColor: UIColor
     public var backgroundColor: UIColor

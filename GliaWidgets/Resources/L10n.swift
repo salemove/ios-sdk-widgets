@@ -11,6 +11,21 @@ import Foundation
 // swiftlint:disable nesting type_body_length type_name vertical_whitespace_opening_braces
 public enum L10n {
 
+  public enum Alert {
+    public enum Action {
+      /// No
+      public static let no = L10n.tr("Localizable", "alert.action.no")
+      /// Yes
+      public static let yes = L10n.tr("Localizable", "alert.action.yes")
+    }
+    public enum Unexpected {
+      /// Please try again later.
+      public static let message = L10n.tr("Localizable", "alert.unexpected.message")
+      /// We're sorry, there has been an unexpected error.
+      public static let title = L10n.tr("Localizable", "alert.unexpected.title")
+    }
+  }
+
   public enum Chat {
     /// Chat
     public static let title = L10n.tr("Localizable", "chat.title")

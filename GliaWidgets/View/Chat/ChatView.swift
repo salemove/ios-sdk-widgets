@@ -55,28 +55,5 @@ class ChatView: View {
             received.autoPinEdge(.top, to: .bottom, of: sent)
             received.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
         }
-
-        let alertStyle = AlertStyle(titleFont: .systemFont(ofSize: 15),
-                                    titleColor: .black,
-                                    messageFont: .systemFont(ofSize: 14),
-                                    messageColor: .black,
-                                    backgroundColor: .white,
-                                    closeButtonColor: .darkGray,
-                                    positiveAction: .init(titleFont: .systemFont(ofSize: 14),
-                                                          titleColor: .white,
-                                                          backgroundColor: .blue),
-                                    negativeAction: .init(titleFont: .systemFont(ofSize: 14),
-                                                          titleColor: .white,
-                                                          backgroundColor: .red))
-        let alert = AlertView(with: alertStyle,
-                              title: "We are sorry!",
-                              message: "Operators are no longer available. Please try again later.")
-        //alert.addAction(title: "No", kind: .negative, action: {})
-        //alert.addAction(title: "Yes", kind: .positive, action: {})
-        addSubview(alert)
-        alert.autoPinEdgesToSuperviewEdges(with: .init(top: 0, left: 10, bottom: 30, right: 10),
-                                           excludingEdge: .top)
-
-        alert.show(animated: true)
     }
 }
