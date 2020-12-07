@@ -46,7 +46,7 @@ class AlertViewController: ViewController {
         alertView.autoPinEdgesToSuperviewSafeArea(with: kAlertInsets,
                                                   excludingEdge: .top)
 
-        alertView.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
+        alertView.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
         UIView.animate(withDuration: animated ? 0.4 : 0.0,
                        delay: 0.0,
                        usingSpringWithDamping: 0.8,
@@ -64,7 +64,7 @@ class AlertViewController: ViewController {
                        initialSpringVelocity: 0.7,
                        options: .curveEaseInOut,
                        animations: {
-                        self.alertView?.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
+                        self.alertView?.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
                        }, completion: { _ in
                         self.alertView = nil
                        })
@@ -81,7 +81,7 @@ class AlertViewController: ViewController {
         case .confirmation(let texts, let confirmed):
             alertView.title = texts.title
             alertView.message = texts.message
-            alertView.showsCloseButton = false
+            alertView.showsPoweredBy = true
             alertView.actionsAxis = .horizontal
 
             let negativeButton = AlertActionButton(with: viewFactory.theme.alert.negativeAction)

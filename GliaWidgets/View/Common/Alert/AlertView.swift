@@ -17,15 +17,18 @@ class AlertView: UIView {
     var showsCloseButton: Bool = false {
         didSet {
             if showsCloseButton {
-                let closeButton = Button(kind: .alertClose,
-                                         tap: { [weak self] in self?.closeTapped?() })
-                closeButton.tintColor = style.closeButtonColor
-                self.closeButton = closeButton
-                addSubview(closeButton)
-                closeButton.autoPinEdge(toSuperviewEdge: .right, withInset: 10)
-                closeButton.autoPinEdge(toSuperviewEdge: .bottom, withInset: 10)
+                addCloseButton()
             } else {
-                closeButton?.removeFromSuperview()
+                removeCloseButton()
+            }
+        }
+    }
+    var showsPoweredBy: Bool = false {
+        didSet {
+            if showsPoweredBy {
+                addPoweredBy()
+            } else {
+                removePoweredBy()
             }
         }
     }
@@ -45,6 +48,7 @@ class AlertView: UIView {
     private let actionsStackView = UIStackView()
     private let kContentInsets = UIEdgeInsets(top: 28, left: 32, bottom: 28, right: 32)
     private let kCornerRadius: CGFloat = 30
+    private var poweredBy: PoweredBy?
     private var closeButton: Button?
 
     public init(with style: AlertStyle) {
@@ -118,5 +122,35 @@ class AlertView: UIView {
     private func layout() {
         addSubview(stackView)
         stackView.autoPinEdgesToSuperviewEdges(with: kContentInsets)
+    }
+
+    private func addCloseButton() {
+        guard closeButton == nil else { return }
+
+        let closeButton = Button(kind: .alertClose,
+                                 tap: { [weak self] in self?.closeTapped?() })
+        closeButton.tintColor = style.closeButtonColor
+        self.closeButton = closeButton
+        addSubview(closeButton)
+        closeButton.autoPinEdge(toSuperviewEdge: .right, withInset: 10)
+        closeButton.autoPinEdge(toSuperviewEdge: .bottom, withInset: 10)
+    }
+
+    private func removeCloseButton() {
+        closeButton?.removeFromSuperview()
+    }
+
+    private func addPoweredBy() {
+        guard poweredBy == nil else { return }
+
+        let poweredBy = PoweredBy()
+        self.poweredBy = poweredBy
+
+        stackView.addArrangedSubview(poweredBy)
+        stackView.setCustomSpacing(23, after: actionsStackView)
+    }
+
+    private func removePoweredBy() {
+        poweredBy?.removeFromSuperview()
     }
 }

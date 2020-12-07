@@ -1,3 +1,5 @@
+"poweredBy" = "Powered by";
+
 "queue.waiting.text1" = "CompanyName";
 "queue.waiting.text2" = "An MSR will be with you shortly.";
 "queue.connecting.text1" = "Connecting with {operatorName}";

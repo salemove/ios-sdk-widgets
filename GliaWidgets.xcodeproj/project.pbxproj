@@ -28,6 +28,7 @@
 		1A4AD3D6256FE7F800468BFB /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4AD3D5256FE7F800468BFB /* UIColor+Extensions.swift */; };
 		1A4AD3D9256FE9D300468BFB /* SettingsTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4AD3D8256FE9D300468BFB /* SettingsTextCell.swift */; };
 		1A4AD3DC256FF67200468BFB /* SettingsFontCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4AD3DB256FF67200468BFB /* SettingsFontCell.swift */; };
+		1A56D53D257E24A400141BC8 /* PoweredBy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A56D53C257E24A400141BC8 /* PoweredBy.swift */; };
 		1A60AF5C25656A1F00E53F53 /* PureLayout.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A205DA6256564CE003AA3CD /* PureLayout.framework */; };
 		1A60AF5D25656A1F00E53F53 /* PureLayout.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1A205DA6256564CE003AA3CD /* PureLayout.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1A60AF7A25656E0500E53F53 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60AF7925656E0500E53F53 /* Theme.swift */; };
@@ -161,6 +162,7 @@
 		1A4AD3D5256FE7F800468BFB /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
 		1A4AD3D8256FE9D300468BFB /* SettingsTextCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTextCell.swift; sourceTree = "<group>"; };
 		1A4AD3DB256FF67200468BFB /* SettingsFontCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsFontCell.swift; sourceTree = "<group>"; };
+		1A56D53C257E24A400141BC8 /* PoweredBy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoweredBy.swift; sourceTree = "<group>"; };
 		1A60AF7925656E0500E53F53 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		1A60AF7D25656F0400E53F53 /* Glia.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Glia.swift; sourceTree = "<group>"; };
 		1A60AF8F256674F000E53F53 /* Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
@@ -349,6 +351,14 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		1A56D53B257E248200141BC8 /* PoweredBy */ = {
+			isa = PBXGroup;
+			children = (
+				1A56D53C257E24A400141BC8 /* PoweredBy.swift */,
+			);
+			path = PoweredBy;
+			sourceTree = "<group>";
+		};
 		1A60AF6725656BF200E53F53 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -382,6 +392,7 @@
 				1AA7389A2578DB6800E1120F /* Queue */,
 				1A60B0022567F1EB00E53F53 /* Header */,
 				1A60B0122567FC2900E53F53 /* Button */,
+				1A56D53B257E248200141BC8 /* PoweredBy */,
 			);
 			path = Component;
 			sourceTree = "<group>";
@@ -951,6 +962,7 @@
 				1A60B0192567FC8A00E53F53 /* ButtonKind.swift in Sources */,
 				1A4AD3BA256D31A600468BFB /* ChatMessageUserView.swift in Sources */,
 				1A60B04D256D0CF600E53F53 /* ChatMessageContentView.swift in Sources */,
+				1A56D53D257E24A400141BC8 /* PoweredBy.swift in Sources */,
 				1A60B0202567FD1B00E53F53 /* BackButtonProperties.swift in Sources */,
 				1A7CA8242574D68E0047CBBE /* QueueStatusView.swift in Sources */,
 				1A60AF7A25656E0500E53F53 /* Theme.swift in Sources */,
