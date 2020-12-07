@@ -166,7 +166,6 @@
 		1A60AFEB2566A0E700E53F53 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
 		1A60AFF02566A4B300E53F53 /* NavigationPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationPresenter.swift; sourceTree = "<group>"; };
 		1A60AFF42567CE1300E53F53 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
-		1A60AFF72567D70E00E53F53 /* PureLayout.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = PureLayout.framework; sourceTree = "<group>"; };
 		1A60B0032567F25600E53F53 /* Header.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Header.swift; sourceTree = "<group>"; };
 		1A60B0072567F29900E53F53 /* HeaderStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderStyle.swift; sourceTree = "<group>"; };
 		1A60B00C2567F79A00E53F53 /* Roboto-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Medium.ttf"; sourceTree = "<group>"; };
@@ -274,7 +273,6 @@
 			children = (
 				1A60AFF32567CDFB00E53F53 /* Settings */,
 				1A4AD3D4256FE7DA00468BFB /* Extensions */,
-				1A60AFFC2567D82B00E53F53 /* Frameworks */,
 				1A205D7A25655CEC003AA3CD /* AppDelegate.swift */,
 				1A205D7E25655CEC003AA3CD /* ViewController.swift */,
 				1A205D8525655CEE003AA3CD /* LaunchScreen.storyboard */,
@@ -512,14 +510,6 @@
 				1A60AFF42567CE1300E53F53 /* SettingsViewController.swift */,
 			);
 			path = Settings;
-			sourceTree = "<group>";
-		};
-		1A60AFFC2567D82B00E53F53 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				1A60AFF72567D70E00E53F53 /* PureLayout.framework */,
-			);
-			path = Frameworks;
 			sourceTree = "<group>";
 		};
 		1A60B0022567F1EB00E53F53 /* Header */ = {
