@@ -29,8 +29,6 @@
 		1A4AD3D9256FE9D300468BFB /* SettingsTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4AD3D8256FE9D300468BFB /* SettingsTextCell.swift */; };
 		1A4AD3DC256FF67200468BFB /* SettingsFontCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4AD3DB256FF67200468BFB /* SettingsFontCell.swift */; };
 		1A56D53D257E24A400141BC8 /* PoweredBy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A56D53C257E24A400141BC8 /* PoweredBy.swift */; };
-		1A60AF5C25656A1F00E53F53 /* PureLayout.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A205DA6256564CE003AA3CD /* PureLayout.framework */; };
-		1A60AF5D25656A1F00E53F53 /* PureLayout.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1A205DA6256564CE003AA3CD /* PureLayout.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1A56D5D0257E940900141BC8 /* PureLayout.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A56D5CF257E940900141BC8 /* PureLayout.framework */; };
 		1A56D5DB257E959B00141BC8 /* PureLayout.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A56D5CF257E940900141BC8 /* PureLayout.framework */; };
 		1A60AF7A25656E0500E53F53 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60AF7925656E0500E53F53 /* Theme.swift */; };
@@ -180,7 +178,6 @@
 		1A60AFEB2566A0E700E53F53 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
 		1A60AFF02566A4B300E53F53 /* NavigationPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationPresenter.swift; sourceTree = "<group>"; };
 		1A60AFF42567CE1300E53F53 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
-		1A60AFF72567D70E00E53F53 /* PureLayout.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = PureLayout.framework; sourceTree = "<group>"; };
 		1A60B0032567F25600E53F53 /* Header.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Header.swift; sourceTree = "<group>"; };
 		1A60B0072567F29900E53F53 /* HeaderStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderStyle.swift; sourceTree = "<group>"; };
 		1A60B00C2567F79A00E53F53 /* Roboto-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Medium.ttf"; sourceTree = "<group>"; };
@@ -298,7 +295,6 @@
 			children = (
 				1A60AFF32567CDFB00E53F53 /* Settings */,
 				1A4AD3D4256FE7DA00468BFB /* Extensions */,
-				1A60AFFC2567D82B00E53F53 /* Frameworks */,
 				1A205D7A25655CEC003AA3CD /* AppDelegate.swift */,
 				1A205D7E25655CEC003AA3CD /* ViewController.swift */,
 				1A205D8525655CEE003AA3CD /* LaunchScreen.storyboard */,
@@ -548,14 +544,6 @@
 				1A60AFF42567CE1300E53F53 /* SettingsViewController.swift */,
 			);
 			path = Settings;
-			sourceTree = "<group>";
-		};
-		1A60AFFC2567D82B00E53F53 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				1A60AFF72567D70E00E53F53 /* PureLayout.framework */,
-			);
-			path = Frameworks;
 			sourceTree = "<group>";
 		};
 		1A60B0022567F1EB00E53F53 /* Header */ = {
@@ -1200,7 +1188,6 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/GliaWidgets/Frameworks",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = GliaWidgets/Info.plist;
@@ -1230,7 +1217,6 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/GliaWidgets/Frameworks",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = GliaWidgets/Info.plist;
@@ -1295,7 +1281,6 @@
 				DEVELOPMENT_TEAM = W3CJ6X343D;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/TestingApp/Frameworks",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = TestingApp/Info.plist;
@@ -1322,7 +1307,6 @@
 				DEVELOPMENT_TEAM = W3CJ6X343D;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/TestingApp/Frameworks",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = TestingApp/Info.plist;
