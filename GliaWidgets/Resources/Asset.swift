@@ -23,8 +23,7 @@ public enum Asset {
   public static let chatOperatorPlaceholder = ImageAsset(name: "chatOperatorPlaceholder")
   public static let back = ImageAsset(name: "back")
   public static let close = ImageAsset(name: "close")
-  public static let logoIcon = ImageAsset(name: "logoIcon")
-  public static let logoName = ImageAsset(name: "logoName")
+  public static let gliaLogo = ImageAsset(name: "gliaLogo")
 }
 // swiftlint:enable identifier_name line_length nesting type_body_length type_name
 

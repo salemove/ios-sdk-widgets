@@ -6,8 +6,7 @@ class PoweredBy: UIView {
     }
 
     private let label = UILabel()
-    private let logoNameImageView = UIImageView()
-    private let logoIconImageView = UIImageView()
+    private let logoImageView = UIImageView()
     private let stackView = UIStackView()
 
     public init() {
@@ -25,15 +24,14 @@ class PoweredBy: UIView {
         label.text = L10n.poweredBy
         label.font = Font.regular(12)
 
-        logoNameImageView.image = Asset.logoName.image
-        logoIconImageView.image = Asset.logoIcon.image
+        logoImageView.image = Asset.gliaLogo.image
 
         stackView.axis = .horizontal
         stackView.alignment = .center
+        stackView.spacing = 5
         stackView.addArrangedSubviews([
             label,
-            logoNameImageView,
-            logoIconImageView
+            logoImageView
         ])
 
         setColor()
@@ -46,14 +44,10 @@ class PoweredBy: UIView {
         stackView.autoPinEdge(toSuperviewEdge: .top, withInset: 0, relation: .greaterThanOrEqual)
         stackView.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
         stackView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 0, relation: .greaterThanOrEqual)
-
-        stackView.setCustomSpacing(4, after: label)
-        stackView.setCustomSpacing(2, after: logoNameImageView)
     }
 
     private func setColor() {
-        label.textColor = color
-        logoNameImageView.tintColor = color.withAlphaComponent(1.0)
-        logoIconImageView.tintColor = color.withAlphaComponent(1.0)
+        label.textColor = color.withAlphaComponent(0.5)
+        logoImageView.tintColor = color.withAlphaComponent(1.0)
     }
 }
