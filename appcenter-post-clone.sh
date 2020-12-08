@@ -18,3 +18,9 @@ echo 'EXCLUDED_ARCHS = $(inherited) $(EXCLUDED_ARCHS__EFFECTIVE_PLATFORM_SUFFIX_
 
 export XCODE_XCCONFIG_FILE="$xcconfig"
 carthage bootstrap --platform iOS --no-use-binaries --cache-builds
+
+set -ex
+
+# Empty out Cartfile so that App Center doesn't attempt to build the dependencies.
+echo '' > Cartfile
+echo '' > Cartfile.resolved
