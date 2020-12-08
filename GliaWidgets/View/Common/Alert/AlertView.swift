@@ -77,15 +77,6 @@ class AlertView: UIView {
         actionsStackView.addArrangedSubview(actionView)
     }
 
-    private func style(for kind: ActionKind) -> AlertActionButtonStyle {
-        switch kind {
-        case .positive:
-            return style.positiveAction
-        case .negative:
-            return style.negativeAction
-        }
-    }
-
     private func setup() {
         backgroundColor = style.backgroundColor
         clipsToBounds = true
