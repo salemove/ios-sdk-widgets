@@ -25,6 +25,7 @@ class AlertViewController: ViewController {
     }
 
     public override func loadView() {
+        super.loadView()
         let view = UIView()
         view.backgroundColor = UIColor.black.withAlphaComponent(0.2)
         self.view = view
@@ -39,7 +40,7 @@ class AlertViewController: ViewController {
         guard alertView == nil else { return }
 
         let alertView = makeAlertView()
-        alertView.closeTapped = { self.dismiss(animated: animated) }
+        alertView.closeTapped = { [weak self] in self?.dismiss(animated: animated) }
         self.alertView = alertView
 
         view.addSubview(alertView)
@@ -86,13 +87,13 @@ class AlertViewController: ViewController {
 
             let negativeButton = AlertActionButton(with: viewFactory.theme.alert.negativeAction)
             negativeButton.title = texts.negativeTitle
-            negativeButton.tap = {
-                self.dismiss(animated: true)
+            negativeButton.tap = { [weak self] in
+                self?.dismiss(animated: true)
             }
             let positiveButton = AlertActionButton(with: viewFactory.theme.alert.positiveAction)
             positiveButton.title = texts.positiveTitle
-            positiveButton.tap = {
-                self.dismiss(animated: true) {
+            positiveButton.tap = { [weak self] in
+                self?.dismiss(animated: true) {
                     confirmed()
                 }
             }

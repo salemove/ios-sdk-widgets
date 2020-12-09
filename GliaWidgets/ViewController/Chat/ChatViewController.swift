@@ -19,6 +19,7 @@ class ChatViewController: ViewController, AlertPresenter {
     }
 
     public override func loadView() {
+        super.loadView()
         let view = viewFactory.makeChatView()
         self.view = view
         bind(viewModel: viewModel, to: view)
