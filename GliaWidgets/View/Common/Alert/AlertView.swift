@@ -83,10 +83,10 @@ class AlertView: UIView {
 
         layer.masksToBounds = false
         layer.cornerRadius = kCornerRadius
-        layer.shadowColor = UIColor.black.cgColor
+        layer.shadowColor = UIColor.black.withAlphaComponent(0.2).cgColor
         layer.shadowOffset = CGSize(width: 0.0, height: 10.0)
         layer.shadowRadius = 30.0
-        layer.shadowOpacity = 0.2
+        layer.shadowOpacity = 1.0
 
         stackView.axis = .vertical
         stackView.spacing = 16
