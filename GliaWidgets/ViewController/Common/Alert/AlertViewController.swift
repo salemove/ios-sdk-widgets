@@ -16,7 +16,7 @@ class AlertViewController: ViewController {
         self.kind = kind
         self.viewFactory = viewFactory
         super.init(nibName: nil, bundle: nil)
-        self.modalPresentationStyle = .overCurrentContext
+        self.modalPresentationStyle = .overFullScreen
         self.modalTransitionStyle = .crossDissolve
     }
 
