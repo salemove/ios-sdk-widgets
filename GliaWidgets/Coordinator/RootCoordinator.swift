@@ -9,19 +9,16 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
     private let engagementKind: EngagementKind
     private let navigationController = NavigationController()
     private let navigationPresenter: NavigationPresenter
-    private let window: GliaWindow
-    private let minimizedView: UIView
-    private let kMinimizedViewSize: CGFloat = 80.0
+    private var window: GliaWindow?
+    private var minimizedView: UIView?
+    private let kMinimizedViewSize = CGSize(width: 50.0, height: 50.0)
 
     init(viewFactory: ViewFactory,
          engagementKind: EngagementKind) {
         self.viewFactory = viewFactory
         self.engagementKind = engagementKind
         self.navigationPresenter = NavigationPresenter(with: navigationController)
-        self.minimizedView = viewFactory.makeMinimizedOperatorImageView(ofSize: kMinimizedViewSize)
-        self.window = GliaWindow(minimizedView: minimizedView)
 
-        window.rootViewController = navigationController
         navigationController.modalPresentationStyle = .fullScreen
         navigationController.isNavigationBarHidden = true
     }
@@ -36,8 +33,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
             break
         }
 
-        //window.isHidden = false
-        window.makeKeyAndVisible()
+        presentWindow(animated: true)
     }
 
     private func startChat() {
@@ -45,9 +41,12 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
                                           navigationPresenter: navigationPresenter)
         coordinator.delegate = { [weak self] event in
             switch event {
+            case .back:
+                self?.window?.setState(.minimized, animated: true)
             case .finished:
                 self?.popCoordinator()
                 self?.navigationPresenter.pop()
+                self?.dismissWindow(animated: true)
             }
         }
 
@@ -55,5 +54,46 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
 
         pushCoordinator(coordinator)
         navigationPresenter.push(viewController, animated: false)
+    }
+
+    private func makeWindow(with minimizedView: UIView) -> GliaWindow {
+        let window = GliaWindow(minimizedView: minimizedView,
+                                minimizedSize: kMinimizedViewSize)
+        window.rootViewController = navigationController
+        return window
+    }
+
+    private func presentWindow(animated: Bool) {
+        guard window == nil else { return }
+
+        let minimizedView = viewFactory.makeMinimizedOperatorImageView()
+        self.minimizedView = minimizedView
+
+        let window = makeWindow(with: minimizedView)
+        self.window = window
+        window.isHidden = false
+        window.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
+
+        UIView.animate(withDuration: animated ? 0.5 : 0.0,
+                       delay: 0.0,
+                       usingSpringWithDamping: 0.8,
+                       initialSpringVelocity: 0.5,
+                       options: .curveEaseInOut,
+                       animations: {
+                        window.transform = .identity
+                       }, completion: nil)
+    }
+
+    private func dismissWindow(animated: Bool) {
+        guard let window = window else { return }
+
+        UIView.animate(withDuration: animated ? 0.5 : 0.0,
+                       delay: 0.0,
+                       options: .curveEaseInOut) {
+            window.alpha = 0.0
+        } completion: { _ in
+            self.window = nil
+            self.minimizedView = nil
+        }
     }
 }

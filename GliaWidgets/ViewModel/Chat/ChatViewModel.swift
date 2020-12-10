@@ -12,6 +12,7 @@ class ChatViewModel: ViewModel {
     }
 
     enum DelegateEvent {
+        case back
         case finished
     }
 
@@ -31,7 +32,7 @@ class ChatViewModel: ViewModel {
         case .confirmTapped:
             action?(.confirmExitQueue(alertTexts.leaveQueue))
         case .backTapped:
-            delegate?(.finished)
+            delegate?(.back)
         case .closeTapped:
             delegate?(.finished)
         }

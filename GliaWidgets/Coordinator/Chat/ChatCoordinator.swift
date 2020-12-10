@@ -1,5 +1,6 @@
 class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
     enum DelegateEvent {
+        case back
         case finished
     }
 
@@ -23,6 +24,8 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
         let viewModel = ChatViewModel(alertTexts: viewFactory.theme.alertTexts)
         viewModel.delegate = { [weak self] event in
             switch event {
+            case .back:
+                self?.delegate?(.back)
             case .finished:
                 self?.delegate?(.finished)
             }

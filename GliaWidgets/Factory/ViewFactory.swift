@@ -15,8 +15,7 @@ class ViewFactory {
         return AlertView(with: theme.alert)
     }
 
-    func makeMinimizedOperatorImageView(ofSize size: CGFloat) -> UserImageView {
-        return UserImageView(with: theme.minimizedOperator,
-                             size: size)
+    func makeMinimizedOperatorImageView() -> UserImageView {
+        return UserImageView(with: theme.minimizedOperator)
     }
 }

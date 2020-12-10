@@ -8,15 +8,17 @@ class GliaWindow: UIWindow {
 
     private var state: State = .maximized
     private var minimizedView: UIView
+    private let minimizedSize: CGSize
+    private var tapRecognizer: UITapGestureRecognizer?
+    private var panRecognizer: UIPanGestureRecognizer?
 
-    init(minimizedView: UIView) {
+    init(minimizedView: UIView, minimizedSize: CGSize) {
         self.minimizedView = minimizedView
+        self.minimizedSize = minimizedSize
         super.init(frame: .zero)
         clipsToBounds = true
+        windowLevel = .alert
         setState(.maximized, animated: false)
-
-        //let panRecognizer = UIPanGestureRecognizer(target:self, action:#selector(handlePan(_:)))
-        //addGestureRecognizer(panRecognizer)
     }
 
     required init?(coder: NSCoder) {
@@ -29,13 +31,15 @@ class GliaWindow: UIWindow {
         switch state {
         case .maximized:
             maximize(animated: animated)
+            removeGestureRecognizers()
         case .minimized:
             minimize(animated: animated)
+            addGestureRecognizers()
         }
     }
 
     func maximize(animated: Bool) {
-        UIView.animate(withDuration: animated ? 0.2 : 0.0,
+        UIView.animate(withDuration: animated ? 0.4 : 0.0,
                        delay: 0.0,
                        usingSpringWithDamping: 0.8,
                        initialSpringVelocity: 0.7,
@@ -55,7 +59,7 @@ class GliaWindow: UIWindow {
         minimizedView.autoPinEdge(toSuperviewEdge: .top)
         minimizedView.autoPinEdge(toSuperviewEdge: .left)
 
-        UIView.animate(withDuration: animated ? 0.2 : 0.0,
+        UIView.animate(withDuration: animated ? 0.4 : 0.0,
                        delay: 0.0,
                        usingSpringWithDamping: 0.8,
                        initialSpringVelocity: 0.7,
@@ -73,10 +77,49 @@ class GliaWindow: UIWindow {
         case .maximized:
             return bounds
         case .minimized:
-            let origin = CGPoint(x: bounds.width - minimizedView.frame.size.width,
-                                 y: bounds.height - minimizedView.frame.size.height)
-            let size = minimizedView.frame.size
-            return CGRect(origin: origin, size: size)
+            let origin = CGPoint(x: bounds.width - minimizedSize.width,
+                                 y: bounds.height - minimizedSize.height)
+            return CGRect(origin: origin,
+                          size: minimizedSize)
         }
+    }
+
+    private func addGestureRecognizers() {
+        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.tap(_:)))
+        self.tapRecognizer = tapRecognizer
+        addGestureRecognizer(tapRecognizer)
+
+        let panRecognizer = UIPanGestureRecognizer(target: self, action: #selector(pan(_:)))
+        self.panRecognizer = panRecognizer
+        addGestureRecognizer(panRecognizer)
+    }
+
+    private func removeGestureRecognizers() {
+        if let tapRecognizer = tapRecognizer {
+            removeGestureRecognizer(tapRecognizer)
+        }
+
+        if let panRecognizer = panRecognizer {
+            removeGestureRecognizer(panRecognizer)
+        }
+
+        tapRecognizer = nil
+        panRecognizer = nil
+    }
+
+    @objc private func tap(_ sender: UITapGestureRecognizer) {
+        setState(.maximized, animated: true)
+    }
+
+    @objc func pan(_ gesture: UIPanGestureRecognizer) {
+        let translation = gesture.translation(in: self)
+        guard let gestureView = gesture.view else { return }
+
+        gestureView.center = CGPoint(
+            x: gestureView.center.x + translation.x,
+            y: gestureView.center.y + translation.y
+        )
+
+        gesture.setTranslation(.zero, in: self)
     }
 }
