@@ -26,19 +26,17 @@ class Header: UIView {
     }
 
     private let style: HeaderStyle
-    private let extendsUnderStatusBar: Bool
     private let leftItemContainer = UIView()
     private let rightItemContainer = UIView()
     private let titleLabel = UILabel()
     private let contentView = UIView()
+    private var heightLayoutConstraint: NSLayoutConstraint?
     private let kContentInsets = UIEdgeInsets(top: 0, left: 10, bottom: 10, right: 10)
     private let kContentHeight: CGFloat = 30
-    private let kHeight: CGFloat = 68
+    private let kHeight: CGFloat = 48
 
-    public init(with style: HeaderStyle,
-                extendsUnderStatusBar: Bool = true) {
+    public init(with style: HeaderStyle) {
         self.style = style
-        self.extendsUnderStatusBar = extendsUnderStatusBar
         super.init(frame: .zero)
         setup()
         layout()
@@ -56,14 +54,20 @@ class Header: UIView {
         titleLabel.textColor = style.titleColor
         titleLabel.textAlignment = .center
         titleLabel.text = style.title
+
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(orientationChanged),
+                                               name: UIDevice.orientationDidChangeNotification,
+                                               object: nil)
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
     private func layout() {
-        let statusBarHeight: CGFloat = UIApplication.shared.keyWindow?.safeAreaInsets.top ?? 20.0
-        let height = extendsUnderStatusBar
-            ? kHeight + statusBarHeight
-            : kHeight
-        autoSetDimension(.height, toSize: height)
+        heightLayoutConstraint = autoSetDimension(.height, toSize: kHeight)
+        updateHeight()
 
         addSubview(contentView)
         contentView.autoPinEdgesToSuperviewEdges(with: kContentInsets, excludingEdge: .top)
@@ -81,5 +85,22 @@ class Header: UIView {
         contentView.addSubview(rightItemContainer)
         rightItemContainer.autoPinEdge(toSuperviewEdge: .right)
         rightItemContainer.autoAlignAxis(toSuperviewAxis: .horizontal)
+    }
+
+    private func updateHeight() {
+        let isPortrait = [.portrait, .portraitUpsideDown].contains(UIDevice.current.orientation)
+        var height: CGFloat = kHeight
+
+        if isPortrait {
+            if let safeAreaTopInsets = UIApplication.shared.keyWindow?.safeAreaInsets.top {
+                height += safeAreaTopInsets
+            }
+        }
+
+        heightLayoutConstraint?.constant = height
+    }
+
+    @objc private func orientationChanged() {
+        updateHeight()
     }
 }

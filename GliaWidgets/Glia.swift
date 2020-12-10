@@ -17,8 +17,9 @@ public class Glia {
 
     public func start(_ engagementKind: EngagementKind,
                       queueID: String,
-                      visitorContext: VisitorContext,
+                      /*visitorContext: VisitorContext,*/
                       using theme: Theme = Theme()) throws {
+        let visitorContext = VisitorContext(type: .page, url: "")
         let interactor = try Interactor(with: conf,
                                         queueID: queueID,
                                         visitorContext: visitorContext)

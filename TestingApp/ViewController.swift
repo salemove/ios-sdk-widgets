@@ -56,7 +56,6 @@ extension ViewController {
         do {
             try glia.start(.chat,
                            queueID: queueID,
-                           visitorContext: VisitorContext(),
                            using: theme)
         } catch {
             alert(message: "Failed to start.\nCheck conf.")
