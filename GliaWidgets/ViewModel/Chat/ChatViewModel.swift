@@ -1,5 +1,6 @@
 class ChatViewModel: ViewModel {
     enum Event {
+        case viewDidLoad
         case backTapped
         case closeTapped
         case confirmedExitQueue
@@ -28,6 +29,8 @@ class ChatViewModel: ViewModel {
 
     public func event(_ event: Event) {
         switch event {
+        case .viewDidLoad:
+            enqueueForEngagement()
         case .backTapped:
             delegate?(.back)
         case .closeTapped:
@@ -35,6 +38,10 @@ class ChatViewModel: ViewModel {
         case .confirmedExitQueue:
             endSession()
         }
+    }
+
+    private func enqueueForEngagement() {
+
     }
 
     private func closeTapped() {

@@ -22,6 +22,11 @@ class ChatViewController: ViewController, AlertPresenter {
         bind(viewModel: viewModel, to: view)
     }
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        viewModel.event(.viewDidLoad)
+    }
+
     override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
 
     private func bind(viewModel: ChatViewModel, to view: ChatView) {
