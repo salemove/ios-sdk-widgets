@@ -1,8 +1,8 @@
 import UIKit
 
-class ChatViewController: ViewController {
+class ChatViewController: ViewController, AlertPresenter {
+    internal let viewFactory: ViewFactory
     private let viewModel: ChatViewModel
-    private let viewFactory: ViewFactory
     private let presentationKind: PresentationKind
 
     init(viewModel: ChatViewModel,
@@ -19,9 +19,11 @@ class ChatViewController: ViewController {
     }
 
     public override func loadView() {
+        super.loadView()
         let view = viewFactory.makeChatView()
         self.view = view
         bind(viewModel: viewModel, to: view)
+        addDemoAlertButtons()
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
@@ -35,5 +37,42 @@ class ChatViewController: ViewController {
                 return Button(kind: .close, tap: { viewModel.event(.closeTapped) })
             }
         }()
+
+        viewModel.action = { action in
+            switch action {
+            case .showAlert(let texts):
+                self.presentAlert(with: texts)
+            case .confirmExitQueue(let texts):
+                self.presentConfirmation(with: texts) {
+                    print("CONFIRMED")
+                }
+            }
+        }
+    }
+}
+
+extension ChatViewController {
+    private func addDemoAlertButtons() {
+        let alertButton = UIButton(type: .system)
+        alertButton.setTitle("Alert", for: .normal)
+        alertButton.addTarget(self, action: #selector(alertTapped), for: .touchUpInside)
+        view.addSubview(alertButton)
+        alertButton.autoPinEdge(toSuperviewEdge: .left, withInset: 20)
+        alertButton.autoPinEdge(toSuperviewEdge: .bottom, withInset: 20)
+
+        let confirmationButton = UIButton(type: .system)
+        confirmationButton.setTitle("Confirm", for: .normal)
+        confirmationButton.addTarget(self, action: #selector(confirmationTapped), for: .touchUpInside)
+        view.addSubview(confirmationButton)
+        confirmationButton.autoPinEdge(toSuperviewEdge: .right, withInset: 20)
+        confirmationButton.autoPinEdge(toSuperviewEdge: .bottom, withInset: 20)
+    }
+
+    @objc private func alertTapped() {
+        viewModel.event(.alertTapped)
+    }
+
+    @objc private func confirmationTapped() {
+        viewModel.event(.confirmTapped)
     }
 }

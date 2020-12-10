@@ -19,9 +19,11 @@ public typealias AssetImageTypeAlias = ImageAsset.Image
 
 // swiftlint:disable identifier_name line_length nesting type_body_length type_name
 public enum Asset {
+  public static let alertClose = ImageAsset(name: "alertClose")
   public static let chatOperatorPlaceholder = ImageAsset(name: "chatOperatorPlaceholder")
   public static let back = ImageAsset(name: "back")
   public static let close = ImageAsset(name: "close")
+  public static let gliaLogo = ImageAsset(name: "gliaLogo")
 }
 // swiftlint:enable identifier_name line_length nesting type_body_length type_name
 
