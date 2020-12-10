@@ -1,39 +1,5 @@
 import UIKit
 
-public enum Environment {
-    case europe
-    case usa
-    case beta
-
-    var url: String {
-        switch self {
-        case .europe:
-            return "https://api.salemove.eu"
-        case .usa:
-            return "https://api.salemove.com"
-        case .beta:
-            return "https://api.beta.salemove.com/"
-        }
-    }
-}
-
-public struct Configuration {
-    public let appToken: String
-    public let apiToken: String
-    public let environment: Environment
-    public let site: String
-
-    public init(appToken: String,
-                apiToken: String,
-                environment: Environment,
-                site: String) {
-        self.appToken = appToken
-        self.apiToken = apiToken
-        self.environment = environment
-        self.site = site
-    }
-}
-
 public enum EngagementKind {
     case chat
     case audioCall
@@ -41,12 +7,11 @@ public enum EngagementKind {
 }
 
 public class Glia {
-    private let configuration: Configuration
     private var rootCoordinator: RootCoordinator?
+    private let interactor: Interactor
 
-    public init(conf: Configuration) {
-        self.configuration = conf
-        configure()
+    public init(conf: Configuration) throws {
+        self.interactor = try Interactor(with: conf)
     }
 
     public func start(_ engagementKind: EngagementKind,
@@ -57,6 +22,4 @@ public class Glia {
                                           engagementKind: engagementKind)
         rootCoordinator?.start()
     }
-
-    private func configure() {}
 }

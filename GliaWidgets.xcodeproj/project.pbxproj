@@ -88,6 +88,8 @@
 		1AA738B925790DB400E1120F /* AlertActionButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA738B825790DB400E1120F /* AlertActionButtonStyle.swift */; };
 		1AA738BC25790DBE00E1120F /* AlertStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA738BB25790DBE00E1120F /* AlertStyle.swift */; };
 		1AC7A7482582237500567FF8 /* GliaWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC7A7472582237500567FF8 /* GliaWindow.swift */; };
+		1AC7A74F2582571100567FF8 /* Interactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC7A74E2582571100567FF8 /* Interactor.swift */; };
+		1AC7A7552582594200567FF8 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC7A7542582594200567FF8 /* Configuration.swift */; };
 		1AE15E38257A578B00A642C0 /* AlertMessageTexts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE15E37257A578B00A642C0 /* AlertMessageTexts.swift */; };
 		1AE15E3B257A5CC900A642C0 /* AlertTexts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE15E3A257A5CC900A642C0 /* AlertTexts.swift */; };
 		1AE15E49257A6BD200A642C0 /* AlertConfirmationTexts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE15E48257A6BD200A642C0 /* AlertConfirmationTexts.swift */; };
@@ -214,6 +216,8 @@
 		1AA738B825790DB400E1120F /* AlertActionButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertActionButtonStyle.swift; sourceTree = "<group>"; };
 		1AA738BB25790DBE00E1120F /* AlertStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertStyle.swift; sourceTree = "<group>"; };
 		1AC7A7472582237500567FF8 /* GliaWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GliaWindow.swift; sourceTree = "<group>"; };
+		1AC7A74E2582571100567FF8 /* Interactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interactor.swift; sourceTree = "<group>"; };
+		1AC7A7542582594200567FF8 /* Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
 		1AE15E37257A578B00A642C0 /* AlertMessageTexts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertMessageTexts.swift; sourceTree = "<group>"; };
 		1AE15E3A257A5CC900A642C0 /* AlertTexts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertTexts.swift; sourceTree = "<group>"; };
 		1AE15E48257A6BD200A642C0 /* AlertConfirmationTexts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertConfirmationTexts.swift; sourceTree = "<group>"; };
@@ -286,8 +290,10 @@
 				1A60AF7825656DE700E53F53 /* Theme */,
 				1A60AFCC256694E300E53F53 /* Factory */,
 				1A60AF6B25656C2700E53F53 /* ViewModel */,
+				1AC7A74D258256FF00567FF8 /* Interactor */,
 				1A60AFC12566857200E53F53 /* Lib */,
 				1A60AF6C25656C3600E53F53 /* Resources */,
+				1AC7A7542582594200567FF8 /* Configuration.swift */,
 				1A60AF7D25656F0400E53F53 /* Glia.swift */,
 				1A205D5B25655CB1003AA3CD /* GliaWidgets.h */,
 				1A205D5C25655CB1003AA3CD /* Info.plist */,
@@ -750,6 +756,14 @@
 			path = Window;
 			sourceTree = "<group>";
 		};
+		1AC7A74D258256FF00567FF8 /* Interactor */ = {
+			isa = PBXGroup;
+			children = (
+				1AC7A74E2582571100567FF8 /* Interactor.swift */,
+			);
+			path = Interactor;
+			sourceTree = "<group>";
+		};
 		1AE15E36257A56D300A642C0 /* Texts */ = {
 			isa = PBXGroup;
 			children = (
@@ -1052,6 +1066,7 @@
 				1A60B02D256BF7FF00E53F53 /* ReceivedChatMessageView.swift in Sources */,
 				1A60AFBF2566834400E53F53 /* ViewController.swift in Sources */,
 				1A60AFF12566A4B300E53F53 /* NavigationPresenter.swift in Sources */,
+				1AC7A74F2582571100567FF8 /* Interactor.swift in Sources */,
 				1A60AF93256674F900E53F53 /* Color.swift in Sources */,
 				1A60B031256BF81500E53F53 /* SentChatMessageView.swift in Sources */,
 				1A4AD3C4256E7A0C00468BFB /* ThemeFontStyle.swift in Sources */,
@@ -1071,6 +1086,7 @@
 				1A60B0152567FC7000E53F53 /* Button.swift in Sources */,
 				1A4AD3CA256E864800468BFB /* ThemeColorStyle.swift in Sources */,
 				1A7CA8272574D6F40047CBBE /* QueueStyle.swift in Sources */,
+				1AC7A7552582594200567FF8 /* Configuration.swift in Sources */,
 				1AA738A72578DD0300E1120F /* QueueStatusStyle.swift in Sources */,
 				1A60AFDD25669A4200E53F53 /* ChatView.swift in Sources */,
 				1AA738AE2578E0D500E1120F /* QueueAnimationView.swift in Sources */,
