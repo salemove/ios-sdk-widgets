@@ -48,10 +48,13 @@ extension ViewController {
 
     func presentChat() {
         let conf = settingsViewController.conf
+        let queueID = settingsViewController.queueID
         let theme = settingsViewController.theme
 
         glia = Glia(conf: conf)
 
-        glia.start(.chat, using: theme)
+        glia.start(.chat,
+                   queueID: queueID,
+                   using: theme)
     }
 }

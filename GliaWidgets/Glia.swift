@@ -3,6 +3,7 @@ import UIKit
 public enum Environment {
     case europe
     case usa
+    case beta
 
     var url: String {
         switch self {
@@ -10,6 +11,8 @@ public enum Environment {
             return "https://api.salemove.eu"
         case .usa:
             return "https://api.salemove.com"
+        case .beta:
+            return "https://api.beta.salemove.com/"
         }
     }
 }
@@ -47,6 +50,7 @@ public class Glia {
     }
 
     public func start(_ engagementKind: EngagementKind,
+                      queueID: String,
                       using theme: Theme = Theme()) {
         let viewFactory = ViewFactory(with: theme)
         rootCoordinator = RootCoordinator(viewFactory: viewFactory,
