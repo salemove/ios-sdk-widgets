@@ -7,14 +7,11 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
 
     private let viewFactory: ViewFactory
     private let navigationPresenter: NavigationPresenter
-    private let presentationKind: PresentationKind
 
     init(viewFactory: ViewFactory,
-         navigationPresenter: NavigationPresenter,
-         presentationKind: PresentationKind) {
+         navigationPresenter: NavigationPresenter) {
         self.viewFactory = viewFactory
         self.navigationPresenter = navigationPresenter
-        self.presentationKind = presentationKind
     }
 
     func start() -> ChatViewController {
@@ -31,7 +28,6 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
             }
         }
         return ChatViewController(viewModel: viewModel,
-                                  viewFactory: viewFactory,
-                                  presentationKind: presentationKind)
+                                  viewFactory: viewFactory)
     }
 }

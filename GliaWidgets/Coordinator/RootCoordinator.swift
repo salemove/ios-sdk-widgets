@@ -1,3 +1,5 @@
+import UIKit
+
 class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
     enum DelegateEvent {}
 
@@ -5,86 +7,53 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
 
     private let viewFactory: ViewFactory
     private let engagementKind: EngagementKind
-    private let presentationKind: PresentationKind
-    private var isNavigationBarHidden = false
+    private let navigationController = NavigationController()
+    private let navigationPresenter: NavigationPresenter
+    private let window: GliaWindow
+    private let minimizedView: UIView
+    private let kMinimizedViewSize: CGFloat = 80.0
 
     init(viewFactory: ViewFactory,
-         engagementKind: EngagementKind,
-         presentationKind: PresentationKind) {
+         engagementKind: EngagementKind) {
         self.viewFactory = viewFactory
         self.engagementKind = engagementKind
-        self.presentationKind = presentationKind
+        self.navigationPresenter = NavigationPresenter(with: navigationController)
+        self.minimizedView = viewFactory.makeMinimizedOperatorImageView(ofSize: kMinimizedViewSize)
+        self.window = GliaWindow(minimizedView: minimizedView)
+
+        window.rootViewController = navigationController
+        navigationController.modalPresentationStyle = .fullScreen
+        navigationController.isNavigationBarHidden = true
     }
 
     func start() {
-        let navigationPresenter = makeNavigationPresenter()
-
         switch engagementKind {
         case .chat:
-            startChat(with: navigationPresenter)
+            startChat()
         case .audioCall:
             break
         case .videoCall:
             break
         }
+
+        //window.isHidden = false
+        window.makeKeyAndVisible()
     }
 
-    private func makeNavigationPresenter() -> NavigationPresenter {
-        switch presentationKind {
-        case .push(let navigationController):
-            return NavigationPresenter(with: navigationController)
-        case .present:
-            let navigationController = NavigationController()
-            navigationController.modalPresentationStyle = .fullScreen
-            navigationController.isNavigationBarHidden = true
-            return NavigationPresenter(with: navigationController)
-        }
-    }
-
-    private func startChat(with navigationPresenter: NavigationPresenter) {
+    private func startChat() {
         let coordinator = ChatCoordinator(viewFactory: viewFactory,
-                                          navigationPresenter: navigationPresenter,
-                                          presentationKind: presentationKind)
+                                          navigationPresenter: navigationPresenter)
         coordinator.delegate = { [weak self] event in
             switch event {
             case .finished:
-                self?.coordinatorFinished(navigationPresenter: navigationPresenter)
+                self?.popCoordinator()
+                self?.navigationPresenter.pop()
             }
         }
-        startCoordinator(coordinator,
-                         navigationPresenter: navigationPresenter)
-    }
 
-    private func startCoordinator(_ coordinator: ChatCoordinator,
-                                  navigationPresenter: NavigationPresenter) {
-        pushCoordinator(coordinator)
         let viewController = coordinator.start()
 
-        switch presentationKind {
-        case .push(let navigationController):
-            isNavigationBarHidden = navigationController.isNavigationBarHidden
-            navigationController.setNavigationBarHidden(true,
-                                                        animated: true)
-            navigationPresenter.push(viewController)
-        case .present(let presentingViewController):
-            navigationPresenter.push(viewController,
-                                     animated: false)
-            presentingViewController.present(navigationPresenter.navigationController,
-                                             animated: true,
-                                             completion: nil)
-        }
-    }
-
-    private func coordinatorFinished(navigationPresenter: NavigationPresenter) {
-        popCoordinator()
-
-        switch presentationKind {
-        case .push(let navigationController):
-            navigationPresenter.pop()
-            navigationController.setNavigationBarHidden(isNavigationBarHidden,
-                                                        animated: true)
-        case .present:
-            navigationPresenter.dismiss()
-        }
+        pushCoordinator(coordinator)
+        navigationPresenter.push(viewController, animated: false)
     }
 }

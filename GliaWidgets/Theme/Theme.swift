@@ -17,7 +17,7 @@ public class Theme {
                                  rightItemColor: color.baseLight,
                                  backgroundColor: color.primary)
 
-        let queueOperator = QueueOperatorStyle(placeholderImage: Asset.chatOperatorPlaceholder.image,
+        let queueOperator = QueueOperatorStyle(placeholderImage: Asset.operatorPlaceholder.image,
                                                placeholderColor: color.baseLight,
                                                animationColor: color.primary)
         let waiting = QueueStatusStyle(text1: Queue.Waiting.text1,
@@ -89,6 +89,12 @@ public class Theme {
 
         return AlertTexts(unexpectedError: unexcpected,
                           leaveQueue: leaveQueue)
+    }()
+
+    public lazy var minimizedOperator: UserImageStyle = {
+        return UserImageStyle(placeholderImage: Asset.operatorPlaceholder.image,
+                              placeholderColor: color.baseLight,
+                              backgroundColor: color.primary)
     }()
 
     public init(colorStyle: ThemeColorStyle = .default,

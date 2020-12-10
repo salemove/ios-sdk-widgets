@@ -37,19 +37,6 @@ public enum EngagementKind {
     case videoCall
 }
 
-enum PresentationKind {
-    case push(UINavigationController)
-    case present(UIViewController)
-
-    init(with viewController: UIViewController) {
-        if let navigationController = viewController as? UINavigationController {
-            self = .push(navigationController)
-        } else {
-            self = .present(viewController)
-        }
-    }
-}
-
 public class Glia {
     private let configuration: Configuration
     private var rootCoordinator: RootCoordinator?
@@ -63,10 +50,8 @@ public class Glia {
                       from viewController: UIViewController,
                       using theme: Theme = Theme()) {
         let viewFactory = ViewFactory(with: theme)
-        let presentationKind = PresentationKind(with: viewController)
         rootCoordinator = RootCoordinator(viewFactory: viewFactory,
-                                          engagementKind: engagementKind,
-                                          presentationKind: presentationKind)
+                                          engagementKind: engagementKind)
         rootCoordinator?.start()
     }
 

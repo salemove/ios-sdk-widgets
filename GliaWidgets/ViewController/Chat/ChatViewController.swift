@@ -3,14 +3,11 @@ import UIKit
 class ChatViewController: ViewController, AlertPresenter {
     internal let viewFactory: ViewFactory
     private let viewModel: ChatViewModel
-    private let presentationKind: PresentationKind
 
     init(viewModel: ChatViewModel,
-         viewFactory: ViewFactory,
-         presentationKind: PresentationKind) {
+         viewFactory: ViewFactory) {
         self.viewModel = viewModel
         self.viewFactory = viewFactory
-        self.presentationKind = presentationKind
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -29,14 +26,8 @@ class ChatViewController: ViewController, AlertPresenter {
     override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
 
     private func bind(viewModel: ChatViewModel, to view: ChatView) {
-        view.header.leftItem = {
-            switch presentationKind {
-            case .push:
-                return Button(kind: .back, tap: { viewModel.event(.backTapped) })
-            case .present:
-                return Button(kind: .close, tap: { viewModel.event(.closeTapped) })
-            }
-        }()
+        view.header.leftItem = Button(kind: .back, tap: { viewModel.event(.backTapped) })
+        view.header.rightItem = Button(kind: .close, tap: { viewModel.event(.closeTapped) })
 
         viewModel.action = { action in
             switch action {

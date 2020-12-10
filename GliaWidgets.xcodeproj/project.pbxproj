@@ -29,6 +29,8 @@
 		1A4AD3D9256FE9D300468BFB /* SettingsTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4AD3D8256FE9D300468BFB /* SettingsTextCell.swift */; };
 		1A4AD3DC256FF67200468BFB /* SettingsFontCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4AD3DB256FF67200468BFB /* SettingsFontCell.swift */; };
 		1A56D53D257E24A400141BC8 /* PoweredBy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A56D53C257E24A400141BC8 /* PoweredBy.swift */; };
+		1A6075E02582209100569B0E /* UserImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6075DF2582209100569B0E /* UserImageView.swift */; };
+		1A6075E7258220E300569B0E /* UserImageStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6075E6258220E300569B0E /* UserImageStyle.swift */; };
 		1A60AF7A25656E0500E53F53 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60AF7925656E0500E53F53 /* Theme.swift */; };
 		1A60AF7E25656F0400E53F53 /* Glia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60AF7D25656F0400E53F53 /* Glia.swift */; };
 		1A60AF90256674F000E53F53 /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60AF8F256674F000E53F53 /* Font.swift */; };
@@ -85,6 +87,7 @@
 		1AA738B625790D9900E1120F /* AlertActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA738B525790D9900E1120F /* AlertActionButton.swift */; };
 		1AA738B925790DB400E1120F /* AlertActionButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA738B825790DB400E1120F /* AlertActionButtonStyle.swift */; };
 		1AA738BC25790DBE00E1120F /* AlertStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA738BB25790DBE00E1120F /* AlertStyle.swift */; };
+		1AC7A7482582237500567FF8 /* GliaWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC7A7472582237500567FF8 /* GliaWindow.swift */; };
 		1AE15E38257A578B00A642C0 /* AlertMessageTexts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE15E37257A578B00A642C0 /* AlertMessageTexts.swift */; };
 		1AE15E3B257A5CC900A642C0 /* AlertTexts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE15E3A257A5CC900A642C0 /* AlertTexts.swift */; };
 		1AE15E49257A6BD200A642C0 /* AlertConfirmationTexts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE15E48257A6BD200A642C0 /* AlertConfirmationTexts.swift */; };
@@ -152,6 +155,8 @@
 		1A4AD3DB256FF67200468BFB /* SettingsFontCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsFontCell.swift; sourceTree = "<group>"; };
 		1A56D53C257E24A400141BC8 /* PoweredBy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoweredBy.swift; sourceTree = "<group>"; };
 		1A56D5CF257E940900141BC8 /* PureLayout.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PureLayout.framework; path = Carthage/Build/iOS/PureLayout.framework; sourceTree = "<group>"; };
+		1A6075DF2582209100569B0E /* UserImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserImageView.swift; sourceTree = "<group>"; };
+		1A6075E6258220E300569B0E /* UserImageStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserImageStyle.swift; sourceTree = "<group>"; };
 		1A60AF7925656E0500E53F53 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		1A60AF7D25656F0400E53F53 /* Glia.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Glia.swift; sourceTree = "<group>"; };
 		1A60AF8F256674F000E53F53 /* Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
@@ -208,6 +213,7 @@
 		1AA738B525790D9900E1120F /* AlertActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertActionButton.swift; sourceTree = "<group>"; };
 		1AA738B825790DB400E1120F /* AlertActionButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertActionButtonStyle.swift; sourceTree = "<group>"; };
 		1AA738BB25790DBE00E1120F /* AlertStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertStyle.swift; sourceTree = "<group>"; };
+		1AC7A7472582237500567FF8 /* GliaWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GliaWindow.swift; sourceTree = "<group>"; };
 		1AE15E37257A578B00A642C0 /* AlertMessageTexts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertMessageTexts.swift; sourceTree = "<group>"; };
 		1AE15E3A257A5CC900A642C0 /* AlertTexts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertTexts.swift; sourceTree = "<group>"; };
 		1AE15E48257A6BD200A642C0 /* AlertConfirmationTexts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertConfirmationTexts.swift; sourceTree = "<group>"; };
@@ -272,6 +278,7 @@
 		1A205D5A25655CB1003AA3CD /* GliaWidgets */ = {
 			isa = PBXGroup;
 			children = (
+				1AC7A7462582236300567FF8 /* Window */,
 				1A60AF6725656BF200E53F53 /* ViewController */,
 				1A60AF6825656C0200E53F53 /* Coordinator */,
 				1A60AF6925656C0A00E53F53 /* View */,
@@ -356,6 +363,23 @@
 			path = PoweredBy;
 			sourceTree = "<group>";
 		};
+		1A6075DE2582207E00569B0E /* ImageView */ = {
+			isa = PBXGroup;
+			children = (
+				1A6075E52582209A00569B0E /* User */,
+			);
+			path = ImageView;
+			sourceTree = "<group>";
+		};
+		1A6075E52582209A00569B0E /* User */ = {
+			isa = PBXGroup;
+			children = (
+				1A6075DF2582209100569B0E /* UserImageView.swift */,
+				1A6075E6258220E300569B0E /* UserImageStyle.swift */,
+			);
+			path = User;
+			sourceTree = "<group>";
+		};
 		1A60AF6725656BF200E53F53 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -386,6 +410,7 @@
 		1A60AF6A25656C1E00E53F53 /* Component */ = {
 			isa = PBXGroup;
 			children = (
+				1A6075DE2582207E00569B0E /* ImageView */,
 				1AA7389A2578DB6800E1120F /* Queue */,
 				1A60B0022567F1EB00E53F53 /* Header */,
 				1A60B0122567FC2900E53F53 /* Button */,
@@ -717,6 +742,14 @@
 			path = ActionButton;
 			sourceTree = "<group>";
 		};
+		1AC7A7462582236300567FF8 /* Window */ = {
+			isa = PBXGroup;
+			children = (
+				1AC7A7472582237500567FF8 /* GliaWindow.swift */,
+			);
+			path = Window;
+			sourceTree = "<group>";
+		};
 		1AE15E36257A56D300A642C0 /* Texts */ = {
 			isa = PBXGroup;
 			children = (
@@ -997,11 +1030,13 @@
 			files = (
 				1A60AFD925669A1500E53F53 /* View.swift in Sources */,
 				1A60AFBC256682C800E53F53 /* SubFlowCoordinator.swift in Sources */,
+				1A6075E7258220E300569B0E /* UserImageStyle.swift in Sources */,
 				1AE15E38257A578B00A642C0 /* AlertMessageTexts.swift in Sources */,
 				1A7CA8212574D6760047CBBE /* QueueOperatorView.swift in Sources */,
 				1A4AD3C7256E863900468BFB /* ThemeColor.swift in Sources */,
 				1A63B2F3257A3F3D00508478 /* AlertViewController.swift in Sources */,
 				1A60B01D2567FCAD00E53F53 /* ButtonProperties.swift in Sources */,
+				1AC7A7482582237500567FF8 /* GliaWindow.swift in Sources */,
 				1A60AF7E25656F0400E53F53 /* Glia.swift in Sources */,
 				1A60AFB62566825400E53F53 /* ViewModel.swift in Sources */,
 				1A60AFB9256682AF00E53F53 /* FlowCoordinator.swift in Sources */,
@@ -1031,6 +1066,7 @@
 				1A60AF7A25656E0500E53F53 /* Theme.swift in Sources */,
 				1A4AD3B3256D2A7600468BFB /* ChatMessageStyle.swift in Sources */,
 				1A60B0082567F29900E53F53 /* HeaderStyle.swift in Sources */,
+				1A6075E02582209100569B0E /* UserImageView.swift in Sources */,
 				1AA738B925790DB400E1120F /* AlertActionButtonStyle.swift in Sources */,
 				1A60B0152567FC7000E53F53 /* Button.swift in Sources */,
 				1A4AD3CA256E864800468BFB /* ThemeColorStyle.swift in Sources */,

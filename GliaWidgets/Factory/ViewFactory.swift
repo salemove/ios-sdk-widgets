@@ -1,3 +1,5 @@
+import UIKit
+
 class ViewFactory {
     let theme: Theme
 
@@ -11,5 +13,10 @@ class ViewFactory {
 
     func makeAlertView() -> AlertView {
         return AlertView(with: theme.alert)
+    }
+
+    func makeMinimizedOperatorImageView(ofSize size: CGFloat) -> UserImageView {
+        return UserImageView(with: theme.minimizedOperator,
+                             size: size)
     }
 }
