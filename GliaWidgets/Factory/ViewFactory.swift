@@ -1,5 +1,5 @@
 class ViewFactory {
-    private let theme: Theme
+    let theme: Theme
 
     init(with theme: Theme) {
         self.theme = theme
@@ -7,5 +7,9 @@ class ViewFactory {
 
     func makeChatView() -> ChatView {
         return ChatView(with: theme.chat)
+    }
+
+    func makeAlertView() -> AlertView {
+        return AlertView(with: theme.alert)
     }
 }
