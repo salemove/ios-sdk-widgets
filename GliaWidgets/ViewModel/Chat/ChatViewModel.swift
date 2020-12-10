@@ -18,9 +18,11 @@ class ChatViewModel: ViewModel {
     var action: ((Action) -> Void)?
     var delegate: ((DelegateEvent) -> Void)?
 
+    private let interactor: Interactor
     private let alertTexts: AlertTexts
 
-    init(alertTexts: AlertTexts) {
+    init(interactor: Interactor, alertTexts: AlertTexts) {
+        self.interactor = interactor
         self.alertTexts = alertTexts
     }
 

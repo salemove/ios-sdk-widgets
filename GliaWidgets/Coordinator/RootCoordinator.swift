@@ -5,6 +5,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
 
     var delegate: ((DelegateEvent) -> Void)?
 
+    private let interactor: Interactor
     private let viewFactory: ViewFactory
     private let engagementKind: EngagementKind
     private let navigationController = NavigationController()
@@ -13,8 +14,10 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
     private var minimizedView: UIView?
     private let kMinimizedViewSize = CGSize(width: 80.0, height: 80.0)
 
-    init(viewFactory: ViewFactory,
+    init(interactor: Interactor,
+         viewFactory: ViewFactory,
          engagementKind: EngagementKind) {
+        self.interactor = interactor
         self.viewFactory = viewFactory
         self.engagementKind = engagementKind
         self.navigationPresenter = NavigationPresenter(with: navigationController)
@@ -37,7 +40,8 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
     }
 
     private func startChat() {
-        let coordinator = ChatCoordinator(viewFactory: viewFactory,
+        let coordinator = ChatCoordinator(interactor: interactor,
+                                          viewFactory: viewFactory,
                                           navigationPresenter: navigationPresenter)
         coordinator.delegate = { [weak self] event in
             switch event {

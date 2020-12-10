@@ -6,11 +6,14 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
 
     var delegate: ((DelegateEvent) -> Void)?
 
+    private let interactor: Interactor
     private let viewFactory: ViewFactory
     private let navigationPresenter: NavigationPresenter
 
-    init(viewFactory: ViewFactory,
+    init(interactor: Interactor,
+         viewFactory: ViewFactory,
          navigationPresenter: NavigationPresenter) {
+        self.interactor = interactor
         self.viewFactory = viewFactory
         self.navigationPresenter = navigationPresenter
     }
@@ -21,7 +24,8 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
     }
 
     private func makeChatViewController() -> ChatViewController {
-        let viewModel = ChatViewModel(alertTexts: viewFactory.theme.alertTexts)
+        let viewModel = ChatViewModel(interactor: interactor,
+                                      alertTexts: viewFactory.theme.alertTexts)
         viewModel.delegate = { [weak self] event in
             switch event {
             case .back:

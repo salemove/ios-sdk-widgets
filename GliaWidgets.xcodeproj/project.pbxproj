@@ -293,8 +293,8 @@
 				1AC7A74D258256FF00567FF8 /* Interactor */,
 				1A60AFC12566857200E53F53 /* Lib */,
 				1A60AF6C25656C3600E53F53 /* Resources */,
-				1AC7A7542582594200567FF8 /* Configuration.swift */,
 				1A60AF7D25656F0400E53F53 /* Glia.swift */,
+				1AC7A7542582594200567FF8 /* Configuration.swift */,
 				1A205D5B25655CB1003AA3CD /* GliaWidgets.h */,
 				1A205D5C25655CB1003AA3CD /* Info.plist */,
 			);

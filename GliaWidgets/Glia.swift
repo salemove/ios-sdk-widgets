@@ -1,4 +1,5 @@
 import UIKit
+import SalemoveSDK
 
 public enum EngagementKind {
     case chat
@@ -8,17 +9,22 @@ public enum EngagementKind {
 
 public class Glia {
     private var rootCoordinator: RootCoordinator?
-    private let interactor: Interactor
+    private let conf: Configuration
 
-    public init(conf: Configuration) throws {
-        self.interactor = try Interactor(with: conf)
+    public init(conf: Configuration) {
+        self.conf = conf
     }
 
     public func start(_ engagementKind: EngagementKind,
                       queueID: String,
-                      using theme: Theme = Theme()) {
+                      visitorContext: VisitorContext,
+                      using theme: Theme = Theme()) throws {
+        let interactor = try Interactor(with: conf,
+                                        queueID: queueID,
+                                        visitorContext: visitorContext)
         let viewFactory = ViewFactory(with: theme)
-        rootCoordinator = RootCoordinator(viewFactory: viewFactory,
+        rootCoordinator = RootCoordinator(interactor: interactor,
+                                          viewFactory: viewFactory,
                                           engagementKind: engagementKind)
         rootCoordinator?.start()
     }

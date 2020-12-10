@@ -51,15 +51,16 @@ extension ViewController {
         let queueID = settingsViewController.queueID
         let theme = settingsViewController.theme
 
-        do {
-            try glia = Glia(conf: conf)
-        } catch {
-            alert(message: "Failed to configure.\nCheck conf.")
-        }
+        glia = Glia(conf: conf)
 
-        glia.start(.chat,
-                   queueID: queueID,
-                   using: theme)
+        do {
+            try glia.start(.chat,
+                           queueID: queueID,
+                           visitorContext: VisitorContext(),
+                           using: theme)
+        } catch {
+            alert(message: "Failed to start.\nCheck conf.")
+        }
     }
 
     func alert(message: String) {

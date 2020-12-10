@@ -1,7 +1,14 @@
 import SalemoveSDK
 
 class Interactor {
-    init(with conf: Configuration) throws {
+    private let queueID: String
+    private let visitorContext: VisitorContext
+
+    init(with conf: Configuration,
+         queueID: String,
+         visitorContext: VisitorContext) throws {
+        self.queueID = queueID
+        self.visitorContext = visitorContext
         try configure(with: conf)
     }
 
@@ -10,6 +17,14 @@ class Interactor {
         try Salemove.sharedInstance.configure(apiToken: conf.apiToken)
         try Salemove.sharedInstance.configure(environment: conf.environment.url)
         try Salemove.sharedInstance.configure(site: conf.site)
+        Salemove.sharedInstance.configure(interactor: self)
+    }
+
+    func queueForEngagement() {
+        Salemove.sharedInstance.queueForEngagement(queueID: queueID,
+                                                   visitorContext: visitorContext) { (queueTicket, error) in
+
+        }
     }
 }
 
@@ -116,6 +131,6 @@ extension Interactor: Interactable {
     }
 
     func fail(error: SalemoveError) {
-
+        print(error)
     }
 }
