@@ -9,6 +9,7 @@ class GliaWindow: UIWindow {
     private var state: State = .maximized
     private var minimizedView: UIView
     private let minimizedSize: CGSize
+    private let kMinimizedViewEdgeGap: CGFloat = 10
     private var tapRecognizer: UITapGestureRecognizer?
     private var panRecognizer: UIPanGestureRecognizer?
 
@@ -16,7 +17,6 @@ class GliaWindow: UIWindow {
         self.minimizedView = minimizedView
         self.minimizedSize = minimizedSize
         super.init(frame: .zero)
-        clipsToBounds = true
         windowLevel = .alert
         setState(.maximized, animated: false)
     }
@@ -45,6 +45,7 @@ class GliaWindow: UIWindow {
                        initialSpringVelocity: 0.7,
                        options: .curveEaseInOut,
                        animations: {
+                        self.rootViewController?.view.alpha = 1.0
                         self.minimizedView.alpha = 0.0
                         self.frame = self.frame(for: .maximized)
                        }, completion: { _ in
@@ -56,8 +57,7 @@ class GliaWindow: UIWindow {
         minimizedView.alpha = 0.0
 
         addSubview(minimizedView)
-        minimizedView.autoPinEdge(toSuperviewEdge: .top)
-        minimizedView.autoPinEdge(toSuperviewEdge: .left)
+        minimizedView.autoPinEdgesToSuperviewEdges()
 
         UIView.animate(withDuration: animated ? 0.4 : 0.0,
                        delay: 0.0,
@@ -65,8 +65,10 @@ class GliaWindow: UIWindow {
                        initialSpringVelocity: 0.7,
                        options: .curveEaseInOut,
                        animations: {
+                        self.rootViewController?.view.alpha = 0.0
                         self.minimizedView.alpha = 1.0
-                        self.frame = self.frame(for: .minimized)
+                        let frame = self.frame(for: .minimized)
+                        self.frame = frame
                        }, completion: nil)
     }
 
@@ -77,8 +79,8 @@ class GliaWindow: UIWindow {
         case .maximized:
             return bounds
         case .minimized:
-            let origin = CGPoint(x: bounds.width - minimizedSize.width,
-                                 y: bounds.height - minimizedSize.height)
+            let origin = CGPoint(x: bounds.width - minimizedSize.width - kMinimizedViewEdgeGap,
+                                 y: bounds.height - minimizedSize.height - kMinimizedViewEdgeGap)
             return CGRect(origin: origin,
                           size: minimizedSize)
         }

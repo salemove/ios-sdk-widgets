@@ -32,6 +32,8 @@ class UserImageView: UIView {
     }
 
     private func setup() {
+        clipsToBounds = true
+
         placeholderImageView.image = style.placeholderImage
         placeholderImageView.tintColor = style.placeholderColor
         placeholderImageView.backgroundColor = style.backgroundColor
