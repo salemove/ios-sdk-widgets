@@ -52,8 +52,6 @@ extension ViewController {
 
         glia = Glia(conf: conf)
 
-        glia.start(.chat,
-                   from: self.navigationController ?? self,
-                   using: theme)
+        glia.start(.chat, using: theme)
     }
 }

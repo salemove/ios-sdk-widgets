@@ -1,9 +1,8 @@
 class ChatViewModel: ViewModel {
     enum Event {
-        case alertTapped
-        case confirmTapped
         case backTapped
         case closeTapped
+        case confirmedExitQueue
     }
 
     enum Action {
@@ -27,14 +26,21 @@ class ChatViewModel: ViewModel {
 
     public func event(_ event: Event) {
         switch event {
-        case .alertTapped:
-            action?(.showAlert(alertTexts.unexpectedError))
-        case .confirmTapped:
-            action?(.confirmExitQueue(alertTexts.leaveQueue))
         case .backTapped:
             delegate?(.back)
         case .closeTapped:
-            delegate?(.finished)
+            closeTapped()
+        case .confirmedExitQueue:
+            endSession()
         }
+    }
+
+    private func closeTapped() {
+        //TOOD check session status (in queue etc)
+        action?(.confirmExitQueue(alertTexts.leaveQueue))
+    }
+
+    private func endSession() {
+        delegate?(.finished)
     }
 }
