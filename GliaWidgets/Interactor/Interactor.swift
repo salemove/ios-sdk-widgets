@@ -21,7 +21,7 @@ class Interactor {
     typealias EventHandler = (InteractorEvent) -> Void
 
     private let queueID: String
-    private let visitorContext: SalemoveSDK.VisitorContext
+    private let visitorContext: VisitorContext
     private var observers = [() -> (AnyObject?, EventHandler)]()
     private var state: InteractorState = .initial {
         didSet { notify(.stateChanged(state)) }
@@ -31,7 +31,7 @@ class Interactor {
          queueID: String,
          visitorContext: VisitorContext) throws {
         self.queueID = queueID
-        self.visitorContext = visitorContext.apiContext
+        self.visitorContext = visitorContext
         try configure(with: conf)
     }
 

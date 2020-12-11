@@ -3,7 +3,7 @@ import UIKit
 class ChatView: View {
     let header: Header
     var numberOfRows: (() -> Int?)?
-    var itemForRow: ((Int) -> ChatEventItem?)?
+    //var itemForRow: ((Int) -> ChatEventItem?)?
 
     private let style: ChatStyle
     private let tableView = UITableView()
@@ -39,6 +39,6 @@ extension ChatView: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        <#code#>
+        return UITableViewCell()
     }
 }

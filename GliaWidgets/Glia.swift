@@ -10,6 +10,7 @@ public enum EngagementKind {
 public class Glia {
     private var rootCoordinator: RootCoordinator?
     private let conf: Configuration
+    private let appDelegate = SalemoveAppDelegate()
 
     public init(conf: Configuration) {
         self.conf = conf

@@ -1,6 +1,7 @@
 import UIKit
 import PureLayout
 import GliaWidgets
+import SalemoveSDK
 
 class ViewController: UIViewController {
     private var settingsViewController = SettingsViewController()
