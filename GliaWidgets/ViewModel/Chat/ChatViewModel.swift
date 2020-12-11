@@ -7,6 +7,11 @@ class ChatViewModel: ViewModel {
     }
 
     enum Action {
+        case queueWaiting
+        case queueConnecting(name: String)
+        case queueConnected(name: String)
+        case appendRows(Int)
+        case refreshChatItems
         case showAlert(AlertMessageTexts)
         case confirmExitQueue(AlertConfirmationTexts)
     }
@@ -21,6 +26,7 @@ class ChatViewModel: ViewModel {
 
     private let interactor: Interactor
     private let alertTexts: AlertTexts
+    private var chatItems = [ChatItem]()
 
     init(interactor: Interactor, alertTexts: AlertTexts) {
         self.interactor = interactor
@@ -46,6 +52,8 @@ class ChatViewModel: ViewModel {
     }
 
     private func start() {
+        appendItem(.init(kind: .queue))
+        action?(.queueWaiting)
         interactor.enqueueForEngagement()
     }
 
@@ -57,6 +65,19 @@ class ChatViewModel: ViewModel {
     private func endSession() {
         delegate?(.finished)
     }
+
+    private func appendItem(_ item: ChatItem) {
+        chatItems.append(item)
+        action?(.appendRows(1))
+    }
+}
+
+extension ChatViewModel {
+    var numberOfItems: Int { return chatItems.count }
+
+    func item(for row: Int) -> ChatItem {
+        return chatItems[row]
+    }
 }
 
 extension ChatViewModel {
@@ -67,9 +88,9 @@ extension ChatViewModel {
             case .initial:
                 break
             case .enqueued(_):
-                break
+                action?(.queueConnecting(name: "Blah"))
             case .engaged:
-                break
+                action?(.queueConnected(name: "Blah"))
             }
         case .error(let error):
             switch error {

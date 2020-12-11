@@ -32,9 +32,21 @@ class ChatViewController: ViewController, AlertPresenter {
     private func bind(viewModel: ChatViewModel, to view: ChatView) {
         view.header.leftItem = Button(kind: .back, tap: { viewModel.event(.backTapped) })
         view.header.rightItem = Button(kind: .close, tap: { viewModel.event(.closeTapped) })
+        view.numberOfRows = { return viewModel.numberOfItems }
+        view.itemForRow = { return viewModel.item(for: $0) }
 
         viewModel.action = { action in
             switch action {
+            case .queueWaiting:
+                view.queueView.setState(.waiting, animated: true)
+            case .queueConnecting(name: let name):
+                view.queueView.setState(.connecting(name: name), animated: true)
+            case .queueConnected(name: let name):
+                view.queueView.setState(.connected(name: name), animated: true)
+            case .appendRows(let count):
+                view.appendRows(count, animated: true)
+            case .refreshChatItems:
+                view.refreshItems()
             case .showAlert(let texts):
                 self.presentAlert(with: texts)
             case .confirmExitQueue(let texts):

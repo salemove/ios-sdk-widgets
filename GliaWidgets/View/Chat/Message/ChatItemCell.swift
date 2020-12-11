@@ -1,7 +1,7 @@
 import UIKit
 import PureLayout
 
-class ChatMessageCell: UITableViewCell {
+class ChatItemCell: UITableViewCell {
     enum Content {
         case none
         case queue(QueueView)

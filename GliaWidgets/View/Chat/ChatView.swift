@@ -2,12 +2,12 @@ import UIKit
 
 class ChatView: View {
     let header: Header
+    let queueView: QueueView
     var numberOfRows: (() -> Int?)?
-    //var itemForRow: ((Int) -> ChatEventItem?)?
+    var itemForRow: ((Int) -> ChatItem?)?
 
     private let style: ChatStyle
     private let tableView = UITableView()
-    private let queueView: QueueView
 
     init(with style: ChatStyle) {
         self.style = style
@@ -18,8 +18,30 @@ class ChatView: View {
         layout()
     }
 
+    func appendRows(_ count: Int, animated: Bool) {
+        if animated {
+            let indexPaths = (0 ..< count)
+                .map({ IndexPath(row: $0, section: 0) })
+            tableView.insertRows(at: indexPaths, with: .top)
+        } else {
+            tableView.reloadData()
+        }
+    }
+
+    func refreshItems() {
+        tableView.reloadData()
+    }
+
     private func setup() {
         backgroundColor = style.backgroundColor
+
+        tableView.backgroundColor = .white
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 100
+        tableView.separatorStyle = .none
+        tableView.register(cell: ChatItemCell.self)
     }
 
     private func layout() {
@@ -39,6 +61,20 @@ extension ChatView: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return UITableViewCell()
+        guard
+            let item = itemForRow?(indexPath.row),
+            let cell: ChatItemCell = tableView.dequeue(cellFor: indexPath)
+        else { return UITableViewCell() }
+
+        switch item.kind {
+        case .queue:
+            cell.content = .queue(queueView)
+        }
+
+        return cell
     }
+}
+
+extension ChatView: UITableViewDelegate {
+
 }
