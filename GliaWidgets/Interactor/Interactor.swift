@@ -6,11 +6,15 @@ enum InteractorState {
     case engaged
 }
 
-enum InteractorEvent {
-    case stateChanged(InteractorState)
+enum InteractorError {
     case failedToEnqueue(SalemoveError)
     case failedToExitQueue(SalemoveError)
     case error(SalemoveError)
+}
+
+enum InteractorEvent {
+    case stateChanged(InteractorState)
+    case error(InteractorError)
 }
 
 class Interactor {
@@ -66,7 +70,7 @@ extension Interactor {
         Salemove.sharedInstance.queueForEngagement(queueID: queueID,
                                                    visitorContext: visitorContext) { queueTicket, error in
             if let error = error {
-                self.notify(.failedToEnqueue(error))
+                self.notify(.error(.failedToEnqueue(error)))
             } else if let ticket = queueTicket {
                 self.state = .enqueued(ticket)
             }
@@ -78,7 +82,7 @@ extension Interactor {
         case .enqueued(let ticket):
             Salemove.sharedInstance.cancel(queueTicket: ticket) { _, error in
                 if let error = error {
-                    self.notify(.failedToExitQueue(error))
+                    self.notify(.error(.failedToExitQueue(error)))
                 } else {
                     self.state = .initial
                 }
@@ -180,12 +184,14 @@ extension Interactor: Interactable {
         print("Called: \(#function)")
         // Remove any spinners or activity indicators and proceed with the flow
         //endLoading()
+        state = .engaged
     }
 
     func end() {
         print("Called: \(#function)")
         // Remove any active sessions and do a cleanup and maybe dismiss the controller
         //cleanup()
+        state = .initial
     }
 
     func fail(with reason: String?) {

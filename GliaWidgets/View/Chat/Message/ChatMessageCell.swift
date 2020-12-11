@@ -2,12 +2,28 @@ import UIKit
 import PureLayout
 
 class ChatMessageCell: UITableViewCell {
-    var view: UIView? {
-        get { return contentView.subviews.first }
-        set {
-            contentView.subviews.first?.removeFromSuperview()
+    enum Content {
+        case none
+        case queue(QueueView)
 
-            if let view = newValue {
+        var view: UIView? {
+            switch self {
+            case .none:
+                return nil
+            case .queue(let view):
+                return view
+            }
+        }
+    }
+
+    var content: Content = .none {
+        didSet {
+            switch content {
+            case .none:
+                contentView.subviews.first?.removeFromSuperview()
+            default:
+                guard let view = content.view else { return }
+                contentView.subviews.first?.removeFromSuperview()
                 contentView.addSubview(view)
                 view.autoPinEdgesToSuperviewEdges()
             }
@@ -27,7 +43,7 @@ class ChatMessageCell: UITableViewCell {
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        view = nil
+        content = .none
     }
 
     private func setup() {
