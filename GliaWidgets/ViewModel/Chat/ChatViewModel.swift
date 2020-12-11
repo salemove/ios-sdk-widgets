@@ -53,13 +53,16 @@ class ChatViewModel: ViewModel {
 
     private func start() {
         appendItem(.init(kind: .queue))
-        action?(.queueWaiting)
         interactor.enqueueForEngagement()
     }
 
     private func closeTapped() {
-        //TOOD check session status (in queue etc)
-        action?(.confirmExitQueue(alertTexts.leaveQueue))
+        switch interactor.state {
+        case .enqueueing, .enqueued:
+            action?(.confirmExitQueue(alertTexts.leaveQueue))
+        default:
+            break
+        }
     }
 
     private func endSession() {
@@ -67,8 +70,12 @@ class ChatViewModel: ViewModel {
     }
 
     private func appendItem(_ item: ChatItem) {
-        chatItems.append(item)
-        action?(.appendRows(1))
+        appendItems([item])
+    }
+
+    private func appendItems(_ items: [ChatItem]) {
+        chatItems.append(contentsOf: items)
+        action?(.appendRows(items.count))
     }
 }
 
@@ -87,6 +94,10 @@ extension ChatViewModel {
             switch state {
             case .initial:
                 break
+            case .enqueueing:
+                action?(.queueWaiting)
+            case .queueExited:
+                delegate?(.finished)
             case .enqueued(_):
                 action?(.queueConnecting(name: "Blah"))
             case .engaged:

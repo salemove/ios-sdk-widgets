@@ -91,20 +91,21 @@ class QueueView: UIView {
 
     private func setup() {
         stackView.axis = .vertical
+        stackView.distribution = .fillProportionally
         stackView.spacing = 0
+        stackView.addArrangedSubviews([operatorView, statusView])
 
         setState(.initial, animated: false)
     }
 
     private func layout() {
-        stackView.addArrangedSubviews([operatorView, statusView])
-
         addSubview(stackView)
-        stackView.autoPinEdge(toSuperviewEdge: .top)
-        stackView.autoPinEdge(toSuperviewEdge: .bottom)
+        stackView.autoPinEdge(toSuperviewEdge: .top, withInset: 0, relation: .greaterThanOrEqual)
+        stackView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 0, relation: .greaterThanOrEqual)
         stackView.autoPinEdge(toSuperviewEdge: .left, withInset: 0, relation: .greaterThanOrEqual)
         stackView.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
-        stackView.autoAlignAxis(toSuperviewAxis: .vertical)
+        stackView.autoCenterInSuperview()
+        //stackView.autoAlignAxis(toSuperviewAxis: .vertical)
     }
 }
 

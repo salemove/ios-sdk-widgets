@@ -1,9 +1,9 @@
 import UIKit
 
 class QueueOperatorView: UIView {
+    let imageView: UserImageView
+
     private let style: QueueOperatorStyle
-    private let placeholderImageView = UIImageView()
-    private let imageView = UIImageView()
     private var animationView: QueueAnimationView
     private let kImageInset: CGFloat = 10
     private let kImageViewSize = CGSize(width: 80, height: 80)
@@ -11,6 +11,7 @@ class QueueOperatorView: UIView {
     init(with style: QueueOperatorStyle) {
         self.style = style
         self.animationView = QueueAnimationView(color: style.animationColor)
+        self.imageView = UserImageView(with: style.operatorImage)
         super.init(frame: .zero)
         setup()
         layout()
@@ -18,15 +19,6 @@ class QueueOperatorView: UIView {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-
-    func setImage(_ image: UIImage?, animated: Bool) {
-        UIView.transition(with: imageView,
-                          duration: animated ? 0.2 : 0.0,
-                          options: .transitionCrossDissolve,
-                          animations: {
-                            self.imageView.image = image
-                          }, completion: nil)
     }
 
     func startAnimating(animated: Bool) {
@@ -37,18 +29,7 @@ class QueueOperatorView: UIView {
         animationView.stopAnimating(animated: animated)
     }
 
-    private func setup() {
-        placeholderImageView.image = style.placeholderImage
-        placeholderImageView.tintColor = style.placeholderColor
-        placeholderImageView.backgroundColor = style.animationColor
-        placeholderImageView.clipsToBounds = true
-        placeholderImageView.contentMode = .center
-        placeholderImageView.layer.cornerRadius = kImageViewSize.width / 2.0
-
-        imageView.clipsToBounds = true
-        imageView.contentMode = .scaleAspectFill
-        imageView.layer.cornerRadius = kImageViewSize.width / 2.0
-    }
+    private func setup() {}
 
     private func layout() {
         addSubview(animationView)
@@ -58,18 +39,12 @@ class QueueOperatorView: UIView {
         animationView.autoPinEdge(toSuperviewEdge: .top, withInset: 0, relation: .greaterThanOrEqual)
         animationView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 0, relation: .greaterThanOrEqual)
 
-        addSubview(placeholderImageView)
-        placeholderImageView.autoCenterInSuperview()
-        placeholderImageView.autoSetDimensions(to: kImageViewSize)
-        placeholderImageView.autoPinEdge(toSuperviewEdge: .left, withInset: 0, relation: .greaterThanOrEqual)
-        placeholderImageView.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
-        placeholderImageView.autoPinEdge(toSuperviewEdge: .top, withInset: 0, relation: .greaterThanOrEqual)
-        placeholderImageView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 0, relation: .greaterThanOrEqual)
-
         addSubview(imageView)
-        imageView.autoMatch(.height, to: .height, of: placeholderImageView)
-        imageView.autoMatch(.width, to: .width, of: placeholderImageView)
-        imageView.autoAlignAxis(.horizontal, toSameAxisOf: placeholderImageView)
-        imageView.autoAlignAxis(.vertical, toSameAxisOf: placeholderImageView)
+        imageView.autoSetDimensions(to: kImageViewSize)
+        imageView.autoPinEdge(toSuperviewEdge: .left, withInset: 0, relation: .greaterThanOrEqual)
+        imageView.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
+        imageView.autoPinEdge(toSuperviewEdge: .top, withInset: 0, relation: .greaterThanOrEqual)
+        imageView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 0, relation: .greaterThanOrEqual)
+        imageView.autoCenterInSuperview()
     }
 }

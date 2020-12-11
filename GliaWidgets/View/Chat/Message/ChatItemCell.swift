@@ -26,6 +26,7 @@ class ChatItemCell: UITableViewCell {
                 contentView.subviews.first?.removeFromSuperview()
                 contentView.addSubview(view)
                 view.autoPinEdgesToSuperviewEdges()
+                contentView.setNeedsLayout()
             }
         }
     }
@@ -48,6 +49,7 @@ class ChatItemCell: UITableViewCell {
 
     private func setup() {
         selectionStyle = .none
+        contentView.backgroundColor = .lightGray
     }
 
     private func layout() {}

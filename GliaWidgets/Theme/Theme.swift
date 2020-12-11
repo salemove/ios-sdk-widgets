@@ -17,8 +17,10 @@ public class Theme {
                                  rightItemColor: color.baseLight,
                                  backgroundColor: color.primary)
 
-        let queueOperator = QueueOperatorStyle(placeholderImage: Asset.operatorPlaceholder.image,
-                                               placeholderColor: color.baseLight,
+        let operatorImage = UserImageStyle(placeholderImage: Asset.operatorPlaceholder.image,
+                                           placeholderColor: color.baseLight,
+                                           backgroundColor: color.primary)
+        let queueOperator = QueueOperatorStyle(operatorImage: operatorImage,
                                                animationColor: color.primary)
         let waiting = QueueStatusStyle(text1: Queue.Waiting.text1,
                                        text1Font: font.header1,

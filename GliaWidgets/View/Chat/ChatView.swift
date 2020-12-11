@@ -39,7 +39,7 @@ class ChatView: View {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = 100
+        tableView.estimatedRowHeight = 200
         tableView.separatorStyle = .none
         tableView.register(cell: ChatItemCell.self)
     }
@@ -52,6 +52,9 @@ class ChatView: View {
         addSubview(tableView)
         tableView.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .top)
         tableView.autoPinEdge(.top, to: .bottom, of: header)
+
+        addSubview(queueView)
+        queueView.autoPinEdgesToSuperviewEdges()
     }
 }
 
@@ -61,6 +64,7 @@ extension ChatView: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        return UITableViewCell()
         guard
             let item = itemForRow?(indexPath.row),
             let cell: ChatItemCell = tableView.dequeue(cellFor: indexPath)

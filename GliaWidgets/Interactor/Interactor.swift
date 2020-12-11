@@ -2,6 +2,8 @@ import SalemoveSDK
 
 enum InteractorState {
     case initial
+    case enqueueing
+    case queueExited
     case enqueued(QueueTicket)
     case engaged
 }
@@ -23,7 +25,7 @@ class Interactor {
     private let queueID: String
     private let visitorContext: VisitorContext
     private var observers = [() -> (AnyObject?, EventHandler)]()
-    private var state: InteractorState = .initial {
+    private(set) var state: InteractorState = .initial {
         didSet { notify(.stateChanged(state)) }
     }
 
@@ -67,9 +69,12 @@ class Interactor {
 
 extension Interactor {
     func enqueueForEngagement() {
+        print("Called: \(#function)")
+        state = .enqueueing
         Salemove.sharedInstance.queueForEngagement(queueID: queueID,
                                                    visitorContext: visitorContext) { queueTicket, error in
             if let error = error {
+                self.state = .initial
                 self.notify(.error(.failedToEnqueue(error)))
             } else if let ticket = queueTicket {
                 self.state = .enqueued(ticket)
@@ -77,14 +82,19 @@ extension Interactor {
         }
     }
 
-    func exitEngagementQueue() {
+    func exitQueue() {
+        print("Called: \(#function)")
         switch state {
+        case .enqueueing:
+            // TODO how to cancel queueForEngagement(...)?
+            // TODO end engagement?
+            self.state = .queueExited
         case .enqueued(let ticket):
             Salemove.sharedInstance.cancel(queueTicket: ticket) { _, error in
                 if let error = error {
                     self.notify(.error(.failedToExitQueue(error)))
                 } else {
-                    self.state = .initial
+                    self.state = .queueExited
                 }
             }
         default:
