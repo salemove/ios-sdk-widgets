@@ -90,6 +90,7 @@
 		1AC7A7482582237500567FF8 /* GliaWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC7A7472582237500567FF8 /* GliaWindow.swift */; };
 		1AC7A74F2582571100567FF8 /* Interactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC7A74E2582571100567FF8 /* Interactor.swift */; };
 		1AC7A7552582594200567FF8 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC7A7542582594200567FF8 /* Configuration.swift */; };
+		1AC7A7732583617C00567FF8 /* VisitorContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC7A7722583617B00567FF8 /* VisitorContext.swift */; };
 		1AE15E38257A578B00A642C0 /* AlertMessageTexts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE15E37257A578B00A642C0 /* AlertMessageTexts.swift */; };
 		1AE15E3B257A5CC900A642C0 /* AlertTexts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE15E3A257A5CC900A642C0 /* AlertTexts.swift */; };
 		1AE15E49257A6BD200A642C0 /* AlertConfirmationTexts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE15E48257A6BD200A642C0 /* AlertConfirmationTexts.swift */; };
@@ -218,6 +219,7 @@
 		1AC7A7472582237500567FF8 /* GliaWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GliaWindow.swift; sourceTree = "<group>"; };
 		1AC7A74E2582571100567FF8 /* Interactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interactor.swift; sourceTree = "<group>"; };
 		1AC7A7542582594200567FF8 /* Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
+		1AC7A7722583617B00567FF8 /* VisitorContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorContext.swift; sourceTree = "<group>"; };
 		1AE15E37257A578B00A642C0 /* AlertMessageTexts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertMessageTexts.swift; sourceTree = "<group>"; };
 		1AE15E3A257A5CC900A642C0 /* AlertTexts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertTexts.swift; sourceTree = "<group>"; };
 		1AE15E48257A6BD200A642C0 /* AlertConfirmationTexts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertConfirmationTexts.swift; sourceTree = "<group>"; };
@@ -295,6 +297,7 @@
 				1A60AF6C25656C3600E53F53 /* Resources */,
 				1A60AF7D25656F0400E53F53 /* Glia.swift */,
 				1AC7A7542582594200567FF8 /* Configuration.swift */,
+				1AC7A7722583617B00567FF8 /* VisitorContext.swift */,
 				1A205D5B25655CB1003AA3CD /* GliaWidgets.h */,
 				1A205D5C25655CB1003AA3CD /* Info.plist */,
 			);
@@ -1066,6 +1069,7 @@
 				1A60B02D256BF7FF00E53F53 /* ReceivedChatMessageView.swift in Sources */,
 				1A60AFBF2566834400E53F53 /* ViewController.swift in Sources */,
 				1A60AFF12566A4B300E53F53 /* NavigationPresenter.swift in Sources */,
+				1AC7A7732583617C00567FF8 /* VisitorContext.swift in Sources */,
 				1AC7A74F2582571100567FF8 /* Interactor.swift in Sources */,
 				1A60AF93256674F900E53F53 /* Color.swift in Sources */,
 				1A60B031256BF81500E53F53 /* SentChatMessageView.swift in Sources */,

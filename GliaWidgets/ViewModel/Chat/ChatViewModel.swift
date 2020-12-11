@@ -30,7 +30,7 @@ class ChatViewModel: ViewModel {
     public func event(_ event: Event) {
         switch event {
         case .viewDidLoad:
-            enqueueForEngagement()
+            start()
         case .backTapped:
             delegate?(.back)
         case .closeTapped:
@@ -40,8 +40,8 @@ class ChatViewModel: ViewModel {
         }
     }
 
-    private func enqueueForEngagement() {
-
+    private func start() {
+        interactor.enqueueForEngagement()
     }
 
     private func closeTapped() {
