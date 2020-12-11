@@ -3,9 +3,9 @@ import SalemoveSDK
 enum InteractorState {
     case initial
     case enqueueing
-    case queueExited
     case enqueued(QueueTicket)
     case engaged
+    case sessionEnded
 }
 
 enum InteractorError {
@@ -37,14 +37,6 @@ class Interactor {
         try configure(with: conf)
     }
 
-    private func configure(with conf: Configuration) throws {
-        try Salemove.sharedInstance.configure(appToken: conf.appToken)
-        try Salemove.sharedInstance.configure(apiToken: conf.apiToken)
-        try Salemove.sharedInstance.configure(environment: conf.environment.url)
-        try Salemove.sharedInstance.configure(site: conf.site)
-        Salemove.sharedInstance.configure(interactor: self)
-    }
-
     func addObserver(_ observer: AnyObject, handler: @escaping EventHandler) {
         guard !observers.contains(where: { $0().0 === observer }) else { return }
         observers.append({ [weak observer] in (observer, handler) })
@@ -52,6 +44,14 @@ class Interactor {
 
     func removeObserver(_ observer: AnyObject) {
         observers.removeAll(where: { $0().0 === observer })
+    }
+
+    private func configure(with conf: Configuration) throws {
+        try Salemove.sharedInstance.configure(appToken: conf.appToken)
+        try Salemove.sharedInstance.configure(apiToken: conf.apiToken)
+        try Salemove.sharedInstance.configure(environment: conf.environment.url)
+        try Salemove.sharedInstance.configure(site: conf.site)
+        Salemove.sharedInstance.configure(interactor: self)
     }
 
     private func notify(_ event: InteractorEvent) {
@@ -82,22 +82,29 @@ extension Interactor {
         }
     }
 
-    func exitQueue() {
+    func endSession() {
         print("Called: \(#function)")
         switch state {
         case .enqueueing:
             // TODO how to cancel queueForEngagement(...)?
             // TODO end engagement?
-            self.state = .queueExited
+            self.state = .sessionEnded
         case .enqueued(let ticket):
             Salemove.sharedInstance.cancel(queueTicket: ticket) { _, error in
                 if let error = error {
                     self.notify(.error(.failedToExitQueue(error)))
                 } else {
-                    self.state = .queueExited
+                    self.state = .sessionEnded
                 }
             }
-        default:
+        case .engaged:
+            // TODO end engagement
+            state = .sessionEnded
+            break
+        case .initial:
+            state = .sessionEnded
+            break
+        case .sessionEnded:
             break
         }
     }

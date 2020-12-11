@@ -42,7 +42,7 @@ class ChatViewModel: ViewModel {
     public func event(_ event: Event) {
         switch event {
         case .viewDidLoad:
-            start()
+            startSession()
         case .backTapped:
             delegate?(.back)
         case .closeTapped:
@@ -52,8 +52,12 @@ class ChatViewModel: ViewModel {
         }
     }
 
-    private func start() {
+    private func startSession() {
         interactor.enqueueForEngagement()
+    }
+
+    private func endSession() {
+        interactor.endSession()
     }
 
     private func closeTapped() {
@@ -65,19 +69,13 @@ class ChatViewModel: ViewModel {
         }
     }
 
-    private func endSession() {
-        delegate?(.finished)
-    }
-
     private func appendItem(_ item: ChatItem) {
         appendItems([item])
     }
 
     private func appendItems(_ items: [ChatItem]) {
         chatItems.append(contentsOf: items)
-        DispatchQueue.main.async {
-            self.action?(.appendRows(items.count))
-        }
+        action?(.appendRows(items.count))
     }
 }
 
@@ -98,12 +96,12 @@ extension ChatViewModel {
                 break
             case .enqueueing:
                 action?(.queueWaiting)
-            case .queueExited:
-                delegate?(.finished)
             case .enqueued(_):
                 action?(.queueConnecting(name: "Blah"))
             case .engaged:
                 action?(.queueConnected(name: "Blah"))
+            case .sessionEnded:
+                delegate?(.finished)
             }
         case .error(let error):
             switch error {
