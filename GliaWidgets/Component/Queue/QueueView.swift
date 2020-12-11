@@ -91,7 +91,6 @@ class QueueView: UIView {
 
     private func setup() {
         stackView.axis = .vertical
-        stackView.distribution = .fillProportionally
         stackView.spacing = 0
         stackView.addArrangedSubviews([operatorView, statusView])
 
@@ -105,7 +104,6 @@ class QueueView: UIView {
         stackView.autoPinEdge(toSuperviewEdge: .left, withInset: 0, relation: .greaterThanOrEqual)
         stackView.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
         stackView.autoCenterInSuperview()
-        //stackView.autoAlignAxis(toSuperviewAxis: .vertical)
     }
 }
 
