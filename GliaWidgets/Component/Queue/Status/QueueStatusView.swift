@@ -34,7 +34,7 @@ class QueueStatusView: UIView {
                        options: .curveEaseInOut,
                        animations: {
                         self.stackView.transform = .identity
-                        self.stackView.layoutIfNeeded()
+                        self.layoutIfNeeded()
                        }, completion: nil)
     }
 

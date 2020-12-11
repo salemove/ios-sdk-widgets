@@ -1,7 +1,5 @@
 struct ChatItem {
-    enum Kind {
-        case queue
-    }
+    enum Kind {}
 
     let kind: Kind
 }

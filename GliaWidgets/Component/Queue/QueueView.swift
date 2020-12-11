@@ -98,12 +98,14 @@ class QueueView: UIView {
     }
 
     private func layout() {
+        //autoSetDimension(.height, toSize: 200)
+
         addSubview(stackView)
-        stackView.autoPinEdge(toSuperviewEdge: .top, withInset: 0, relation: .greaterThanOrEqual)
-        stackView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 0, relation: .greaterThanOrEqual)
         stackView.autoPinEdge(toSuperviewEdge: .left, withInset: 0, relation: .greaterThanOrEqual)
         stackView.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
-        stackView.autoCenterInSuperview()
+        stackView.autoPinEdge(toSuperviewEdge: .top)
+        stackView.autoPinEdge(toSuperviewEdge: .bottom)
+        stackView.autoAlignAxis(toSuperviewAxis: .vertical)
     }
 }
 

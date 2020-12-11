@@ -1,8 +1,9 @@
 import UIKit
 
 class ChatView: View {
-    let header: Header
-    let queueView: QueueView
+    lazy var header: Header = { return Header(with: style.header) }()
+    lazy var queueView: QueueView = { return QueueView(with: style.queue) }()
+
     var numberOfRows: (() -> Int?)?
     var itemForRow: ((Int) -> ChatItem?)?
 
@@ -11,8 +12,6 @@ class ChatView: View {
 
     init(with style: ChatStyle) {
         self.style = style
-        self.header = Header(with: style.header)
-        self.queueView = QueueView(with: style.queue)
         super.init()
         setup()
         layout()
@@ -53,8 +52,9 @@ class ChatView: View {
         tableView.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .top)
         tableView.autoPinEdge(.top, to: .bottom, of: header)
 
-        addSubview(queueView)
+        tableView.tableHeaderView = queueView
         queueView.autoPinEdgesToSuperviewEdges()
+        queueView.autoAlignAxis(toSuperviewAxis: .vertical)
     }
 }
 
@@ -64,16 +64,12 @@ extension ChatView: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return UITableViewCell()
         guard
             let item = itemForRow?(indexPath.row),
             let cell: ChatItemCell = tableView.dequeue(cellFor: indexPath)
         else { return UITableViewCell() }
 
-        switch item.kind {
-        case .queue:
-            cell.content = .queue(queueView)
-        }
+        switch item.kind {}
 
         return cell
     }

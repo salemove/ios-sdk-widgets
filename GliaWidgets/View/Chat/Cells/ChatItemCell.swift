@@ -4,14 +4,11 @@ import PureLayout
 class ChatItemCell: UITableViewCell {
     enum Content {
         case none
-        case queue(QueueView)
 
         var view: UIView? {
             switch self {
             case .none:
                 return nil
-            case .queue(let view):
-                return view
             }
         }
     }
@@ -26,7 +23,6 @@ class ChatItemCell: UITableViewCell {
                 contentView.subviews.first?.removeFromSuperview()
                 contentView.addSubview(view)
                 view.autoPinEdgesToSuperviewEdges()
-                contentView.setNeedsLayout()
             }
         }
     }

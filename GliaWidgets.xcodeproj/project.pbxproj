@@ -525,6 +525,7 @@
 			isa = PBXGroup;
 			children = (
 				1A60B02B256BF7C200E53F53 /* Message */,
+				1AC7A7822583B65B00567FF8 /* Cells */,
 				1A60AFDC25669A4200E53F53 /* ChatView.swift */,
 				1A60AFE725669C5000E53F53 /* ChatStyle.swift */,
 			);
@@ -646,7 +647,6 @@
 				1A4AD3B2256D2A7600468BFB /* ChatMessageStyle.swift */,
 				1A60B030256BF81400E53F53 /* SentChatMessageView.swift */,
 				1A60B02C256BF7FF00E53F53 /* ReceivedChatMessageView.swift */,
-				1A60B049256C0E0100E53F53 /* ChatItemCell.swift */,
 			);
 			path = Message;
 			sourceTree = "<group>";
@@ -765,6 +765,14 @@
 				1AC7A74E2582571100567FF8 /* Interactor.swift */,
 			);
 			path = Interactor;
+			sourceTree = "<group>";
+		};
+		1AC7A7822583B65B00567FF8 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				1A60B049256C0E0100E53F53 /* ChatItemCell.swift */,
+			);
+			path = Cells;
 			sourceTree = "<group>";
 		};
 		1AE15E36257A56D300A642C0 /* Texts */ = {

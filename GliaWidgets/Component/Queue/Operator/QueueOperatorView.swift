@@ -28,10 +28,10 @@ class QueueOperatorView: UIView {
                                                size: kAnimationViewSize)
         self.animationView = animationView
         insertSubview(animationView, at: 0)
-        animationView.autoPinEdge(toSuperviewEdge: .top, withInset: 0, relation: .greaterThanOrEqual)
-        animationView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 0, relation: .greaterThanOrEqual)
         animationView.autoPinEdge(toSuperviewEdge: .left, withInset: 0, relation: .greaterThanOrEqual)
         animationView.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
+        animationView.autoPinEdge(toSuperviewEdge: .top)
+        animationView.autoPinEdge(toSuperviewEdge: .bottom)
         animationView.autoCenterInSuperview()
         animationView.startAnimating()
     }

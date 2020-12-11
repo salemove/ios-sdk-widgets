@@ -31,6 +31,7 @@ class ChatViewModel: ViewModel {
     init(interactor: Interactor, alertTexts: AlertTexts) {
         self.interactor = interactor
         self.alertTexts = alertTexts
+
         interactor.addObserver(self, handler: interactorEvent)
     }
 
@@ -52,7 +53,6 @@ class ChatViewModel: ViewModel {
     }
 
     private func start() {
-        appendItem(.init(kind: .queue))
         interactor.enqueueForEngagement()
     }
 
@@ -75,7 +75,9 @@ class ChatViewModel: ViewModel {
 
     private func appendItems(_ items: [ChatItem]) {
         chatItems.append(contentsOf: items)
-        action?(.appendRows(items.count))
+        DispatchQueue.main.async {
+            self.action?(.appendRows(items.count))
+        }
     }
 }
 
