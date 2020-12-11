@@ -1,14 +1,14 @@
 import SalemoveSDK
 
-enum QueueStatus {
-    case none
+enum InteractorState {
+    case initial
     case enqueued(QueueTicket)
-    case queueExited
+    case engaged
 }
 
 enum InteractorEvent {
+    case stateChanged(InteractorState)
     case failedToEnqueue(SalemoveError)
-    case queueStatusChanged(QueueStatus)
     case failedToExitQueue(SalemoveError)
     case error(SalemoveError)
 }
@@ -18,9 +18,9 @@ class Interactor {
 
     private let queueID: String
     private let visitorContext: SalemoveSDK.VisitorContext
-    private var observers = [()->(AnyObject?, EventHandler)]()
-    private var queueStatus: QueueStatus = .none {
-        didSet { notify(.queueStatusChanged(queueStatus)) }
+    private var observers = [() -> (AnyObject?, EventHandler)]()
+    private var state: InteractorState = .initial {
+        didSet { notify(.stateChanged(state)) }
     }
 
     init(with conf: Configuration,
@@ -59,27 +59,28 @@ class Interactor {
                 }
         })
     }
+}
 
+extension Interactor {
     func enqueueForEngagement() {
         Salemove.sharedInstance.queueForEngagement(queueID: queueID,
                                                    visitorContext: visitorContext) { queueTicket, error in
             if let error = error {
                 self.notify(.failedToEnqueue(error))
             } else if let ticket = queueTicket {
-                self.queueStatus = .enqueued(ticket)
+                self.state = .enqueued(ticket)
             }
-            print(queueTicket, error?.reason)
         }
     }
 
     func exitEngagementQueue() {
-        switch queueStatus {
+        switch state {
         case .enqueued(let ticket):
             Salemove.sharedInstance.cancel(queueTicket: ticket) { _, error in
                 if let error = error {
                     self.notify(.failedToExitQueue(error))
                 } else {
-                    self.queueStatus = .queueExited
+                    self.state = .initial
                 }
             }
         default:
