@@ -55,6 +55,10 @@ public enum L10n {
   public enum Chat {
     /// Chat
     public static let title = L10n.tr("Localizable", "chat.title")
+    public enum EndButton {
+      /// End
+      public static let title = L10n.tr("Localizable", "chat.endButton.title")
+    }
   }
 
   public enum Queue {

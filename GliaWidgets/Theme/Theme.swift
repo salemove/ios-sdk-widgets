@@ -51,22 +51,29 @@ public class Theme {
         let receivedMessage = ChatMessageStyle(messageFont: font.bodyText,
                                                messageColor: color.baseDark,
                                                backgroundColor: Color.lightGrey)
+        let endButton = ActionButtonStyle(title: Chat.EndButton.title,
+                                          titleFont: font.buttonLabel,
+                                          titleColor: color.baseLight,
+                                          backgroundColor: color.systemNegative)
         return ChatStyle(header: header,
                          queue: queue,
                          sentMessage: sentMessage,
                          receivedMessage: receivedMessage,
-                         backgroundColor: color.background)
+                         backgroundColor: color.background,
+                         endButton: endButton)
     }()
 
     public lazy var alert: AlertStyle = {
         typealias Alert = L10n.Alert
 
-        let negativeAction = AlertActionButtonStyle(titleFont: font.buttonLabel,
-                                                    titleColor: color.baseLight,
-                                                    backgroundColor: color.primary)
-        let positiveAction = AlertActionButtonStyle(titleFont: font.buttonLabel,
-                                                    titleColor: color.baseLight,
-                                                    backgroundColor: color.systemNegative)
+        let negativeAction = ActionButtonStyle(title: Alert.Action.no,
+                                               titleFont: font.buttonLabel,
+                                               titleColor: color.baseLight,
+                                               backgroundColor: color.primary)
+        let positiveAction = ActionButtonStyle(title: Alert.Action.yes,
+                                               titleFont: font.buttonLabel,
+                                               titleColor: color.baseLight,
+                                               backgroundColor: color.systemNegative)
         return AlertStyle(titleFont: font.header2,
                           titleColor: color.baseDark,
                           messageFont: font.bodyText,
@@ -74,9 +81,7 @@ public class Theme {
                           backgroundColor: color.background,
                           closeButtonColor: color.baseNormal,
                           positiveAction: positiveAction,
-                          negativeAction: negativeAction,
-                          yesActionTitle: Alert.Action.yes,
-                          noActionTitle: Alert.Action.no)
+                          negativeAction: negativeAction)
     }()
 
     public lazy var alertStrings: AlertStrings = {

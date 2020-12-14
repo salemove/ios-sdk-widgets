@@ -10,7 +10,7 @@ class Header: UIView {
     private var heightLayoutConstraint: NSLayoutConstraint?
     private let kContentInsets = UIEdgeInsets(top: 0, left: 10, bottom: 10, right: 10)
     private let kContentHeight: CGFloat = 30
-    private let kHeight: CGFloat = 48
+    private let kHeight: CGFloat = 58
 
     public init(with style: HeaderStyle) {
         self.style = style

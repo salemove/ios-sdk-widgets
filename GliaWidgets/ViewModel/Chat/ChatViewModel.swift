@@ -11,6 +11,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case queueWaiting
         case queueConnecting(name: String)
         case queueConnected(name: String)
+        case showEndButton
         case appendRows(Int)
         case refreshItems
         case confirm(AlertConfirmationStrings,
@@ -100,6 +101,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
                 action?(.queueConnecting(name: "Blah"))
             case .engaged:
                 action?(.queueConnected(name: "Blah"))
+                action?(.showEndButton)
             }
         case .error(let error):
             break

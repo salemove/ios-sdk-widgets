@@ -46,6 +46,10 @@ class ChatViewController: ViewController, AlertPresenter {
                 view.queueView.setState(.connecting(name: name), animated: true)
             case .queueConnected(name: let name):
                 view.queueView.setState(.connected(name: name), animated: true)
+            case .showEndButton:
+                let rightItem = ActionButton(with: self.viewFactory.theme.chat.endButton)
+                rightItem.tap = { viewModel.event(.closeTapped) }
+                view.header.setRightItem(rightItem, animated: true)
             case .appendRows(let count):
                 view.appendRows(count, animated: true)
             case .refreshItems:

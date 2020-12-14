@@ -90,12 +90,12 @@ class AlertViewController: ViewController {
             alertView.showsPoweredBy = true
             alertView.actionsAxis = .horizontal
 
-            let negativeButton = AlertActionButton(with: viewFactory.theme.alert.negativeAction)
+            let negativeButton = ActionButton(with: viewFactory.theme.alert.negativeAction)
             negativeButton.title = strings.negativeTitle
             negativeButton.tap = { [weak self] in
                 self?.dismiss(animated: true)
             }
-            let positiveButton = AlertActionButton(with: viewFactory.theme.alert.positiveAction)
+            let positiveButton = ActionButton(with: viewFactory.theme.alert.positiveAction)
             positiveButton.title = strings.positiveTitle
             positiveButton.tap = { [weak self] in
                 self?.dismiss(animated: true) {
