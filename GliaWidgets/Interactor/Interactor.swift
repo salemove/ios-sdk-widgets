@@ -9,7 +9,6 @@ enum InteractorState {
 
 enum InteractorEvent {
     case stateChanged(InteractorState)
-    case error(SalemoveError)
 }
 
 class Interactor {

@@ -110,8 +110,6 @@ class ChatViewModel: EngagementViewModel, ViewModel {
                 action?(.queueConnected(name: engagedOperator?.name))
                 action?(.showEndButton)
             }
-        case .error(let error):
-            break
         }
     }
 }
