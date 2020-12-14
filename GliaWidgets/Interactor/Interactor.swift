@@ -82,9 +82,10 @@ extension Interactor {
         print("Called: \(#function)")
         switch state {
         case .inactive:
-            break
+            success()
         case .enqueueing:
             self.state = .inactive
+            success()
         case .enqueued(let ticket):
             exitQueue(ticket: ticket,
                       success: success,
@@ -98,6 +99,7 @@ extension Interactor {
     private func exitQueue(ticket: QueueTicket,
                            success: @escaping () -> Void,
                            failure: @escaping (SalemoveError) -> Void) {
+        print("Called: \(#function)")
         Salemove.sharedInstance.cancel(queueTicket: ticket) { _, error in
             if let error = error {
                 failure(error)
@@ -110,6 +112,7 @@ extension Interactor {
 
     private func endEngagement(success: @escaping () -> Void,
                                failure: @escaping (SalemoveError) -> Void) {
+        print("Called: \(#function)")
         Salemove.sharedInstance.endEngagement { _, error in
             if let error = error {
                 failure(error)

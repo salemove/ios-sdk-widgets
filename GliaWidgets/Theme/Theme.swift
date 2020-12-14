@@ -82,10 +82,14 @@ public class Theme {
     public lazy var alertStrings: AlertStrings = {
         typealias Alert = L10n.Alert
 
-        let leaveQueue = AlertConfirmationStrings(title: Alert.Queue.Leave.title,
-                                                  message: Alert.Queue.Leave.message,
-                                                  negativeTitle: Alert.Queue.Leave.no,
-                                                  positiveTitle: Alert.Queue.Leave.yes)
+        let leaveQueue = AlertConfirmationStrings(title: Alert.LeaveQueue.title,
+                                                  message: Alert.LeaveQueue.message,
+                                                  negativeTitle: Alert.Action.no,
+                                                  positiveTitle: Alert.Action.yes)
+        let endEngagement = AlertConfirmationStrings(title: Alert.EndEngagement.title,
+                                                     message: Alert.EndEngagement.message,
+                                                     negativeTitle: Alert.Action.no,
+                                                     positiveTitle: Alert.Action.yes)
         let operatorsUnavailable = AlertMessageStrings(title: Alert.OperatorsUnavailable.title,
                                                        message: Alert.OperatorsUnavailable.message)
         let unexcpected = AlertMessageStrings(title: Alert.Unexpected.title,
@@ -94,6 +98,7 @@ public class Theme {
                                       message: Alert.ApiError.message)
 
         return AlertStrings(leaveQueue: leaveQueue,
+                            endEngagement: endEngagement,
                             operatorsUnavailable: operatorsUnavailable,
                             unexpectedError: unexcpected,
                             apiError: api)

@@ -26,23 +26,23 @@ public enum L10n {
       /// We're sorry, there has been an error.
       public static let title = L10n.tr("Localizable", "alert.apiError.title")
     }
+    public enum EndEngagement {
+      /// 
+      public static let message = L10n.tr("Localizable", "alert.endEngagement.message")
+      /// Are you sure you want to leave?
+      public static let title = L10n.tr("Localizable", "alert.endEngagement.title")
+    }
+    public enum LeaveQueue {
+      /// You will lose your place in the queue.
+      public static let message = L10n.tr("Localizable", "alert.leaveQueue.message")
+      /// Are you sure you want to leave?
+      public static let title = L10n.tr("Localizable", "alert.leaveQueue.title")
+    }
     public enum OperatorsUnavailable {
       /// Operators are no longer available.\nPlease try again later.
       public static let message = L10n.tr("Localizable", "alert.operatorsUnavailable.message")
       /// We’re sorry
       public static let title = L10n.tr("Localizable", "alert.operatorsUnavailable.title")
-    }
-    public enum Queue {
-      public enum Leave {
-        /// You will lose your place in the queue.
-        public static let message = L10n.tr("Localizable", "alert.queue.leave.message")
-        /// No
-        public static let no = L10n.tr("Localizable", "alert.queue.leave.no")
-        /// Are you sure you want to leave?
-        public static let title = L10n.tr("Localizable", "alert.queue.leave.title")
-        /// Yes
-        public static let yes = L10n.tr("Localizable", "alert.queue.leave.yes")
-      }
     }
     public enum Unexpected {
       /// Please try again later.

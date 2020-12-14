@@ -1,6 +1,6 @@
 import SalemoveSDK
 
-class ChatViewModel: ViewModel {
+class ChatViewModel: EngagementViewModel, ViewModel {
     enum Event {
         case viewDidLoad
         case backTapped
@@ -12,7 +12,7 @@ class ChatViewModel: ViewModel {
         case queueConnecting(name: String)
         case queueConnected(name: String)
         case appendRows(Int)
-        case refreshChatItems
+        case refreshItems
         case confirm(AlertConfirmationStrings,
                      confirmed: (() -> Void)?)
         case showAlert(AlertMessageStrings,
@@ -27,19 +27,10 @@ class ChatViewModel: ViewModel {
     var action: ((Action) -> Void)?
     var delegate: ((DelegateEvent) -> Void)?
 
-    private let interactor: Interactor
-    private let alertStrings: AlertStrings
-    private var chatItems = [ChatItem]()
+    private var items = [ChatItem]()
 
-    init(interactor: Interactor, alertStrings: AlertStrings) {
-        self.interactor = interactor
-        self.alertStrings = alertStrings
-
-        interactor.addObserver(self, handler: interactorEvent)
-    }
-
-    deinit {
-        interactor.removeObserver(self)
+    override init(interactor: Interactor, alertStrings: AlertStrings) {
+        super.init(interactor: interactor, alertStrings: alertStrings)
     }
 
     public func event(_ event: Event) {
@@ -61,29 +52,30 @@ class ChatViewModel: ViewModel {
             case is QueueError:
                 break
             default:
-                let strings = AlertMessageStrings(with: error,
-                                                  templateStrings: self.alertStrings.apiError)
-                let dismissed = { self.end() }
-                self.action?(.showAlert(strings, dismissed: dismissed))
+                self.action?(.showAlert(self.alertStrings(with: error),
+                                        dismissed: { self.end() }))
             }
         }
     }
 
     private func end() {
         interactor.endSession {
-
-        } failure: { error in
-
+            self.delegate?(.finished)
+        } failure: { _ in
+            self.delegate?(.finished)
         }
     }
 
     private func closeTapped() {
         switch interactor.state {
         case .enqueueing, .enqueued:
-            let confirmed = { self.end() }
-            action?(.confirm(alertStrings.leaveQueue, confirmed: confirmed))
+            action?(.confirm(alertStrings.leaveQueue,
+                             confirmed: { self.end() }))
+        case .engaged:
+            action?(.confirm(alertStrings.endEngagement,
+                             confirmed: { self.end() }))
         default:
-            break
+            end()
         }
     }
 
@@ -91,22 +83,12 @@ class ChatViewModel: ViewModel {
         appendItems([item])
     }
 
-    private func appendItems(_ items: [ChatItem]) {
-        chatItems.append(contentsOf: items)
-        action?(.appendRows(items.count))
+    private func appendItems(_ newItems: [ChatItem]) {
+        items.append(contentsOf: newItems)
+        action?(.appendRows(newItems.count))
     }
-}
 
-extension ChatViewModel {
-    var numberOfItems: Int { return chatItems.count }
-
-    func item(for row: Int) -> ChatItem {
-        return chatItems[row]
-    }
-}
-
-extension ChatViewModel {
-    func interactorEvent(_ event: InteractorEvent) {
+    override func interactorEvent(_ event: InteractorEvent) {
         switch event {
         case .stateChanged(let state):
             switch state {
@@ -122,5 +104,13 @@ extension ChatViewModel {
         case .error(let error):
             break
         }
+    }
+}
+
+extension ChatViewModel {
+    var numberOfItems: Int { return items.count }
+
+    func item(for row: Int) -> ChatItem {
+        return items[row]
     }
 }

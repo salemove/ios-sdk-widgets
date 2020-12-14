@@ -30,8 +30,11 @@ class ChatViewController: ViewController, AlertPresenter {
     override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
 
     private func bind(viewModel: ChatViewModel, to view: ChatView) {
-        view.header.leftItem = Button(kind: .back, tap: { viewModel.event(.backTapped) })
-        view.header.rightItem = Button(kind: .close, tap: { viewModel.event(.closeTapped) })
+        let leftItem = Button(kind: .back, tap: { viewModel.event(.backTapped) })
+        let rightItem = Button(kind: .close, tap: { viewModel.event(.closeTapped) })
+
+        view.header.setLeftItem(leftItem, animated: false)
+        view.header.setRightItem(rightItem, animated: false)
         view.numberOfRows = { return viewModel.numberOfItems }
         view.itemForRow = { return viewModel.item(for: $0) }
 
@@ -45,7 +48,7 @@ class ChatViewController: ViewController, AlertPresenter {
                 view.queueView.setState(.connected(name: name), animated: true)
             case .appendRows(let count):
                 view.appendRows(count, animated: true)
-            case .refreshChatItems:
+            case .refreshItems:
                 view.refreshItems()
             case .confirm(let strings, let confirmed):
                 self.presentConfirmation(with: strings) {

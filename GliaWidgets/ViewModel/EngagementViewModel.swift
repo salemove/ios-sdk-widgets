@@ -1,3 +1,5 @@
+import SalemoveSDK
+
 class EngagementViewModel {
     let interactor: Interactor
     let alertStrings: AlertStrings
@@ -14,4 +16,9 @@ class EngagementViewModel {
     }
 
     func interactorEvent(_ event: InteractorEvent) {}
+
+    func alertStrings(with error: SalemoveError) -> AlertMessageStrings {
+        return AlertMessageStrings(with: error,
+                                   templateStrings: self.alertStrings.apiError)
+    }
 }
