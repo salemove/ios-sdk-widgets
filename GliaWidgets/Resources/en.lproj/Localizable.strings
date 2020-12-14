@@ -18,6 +18,6 @@
 "alert.unexpected.title" = "We're sorry, there has been an unexpected error.";
 "alert.unexpected.message" = "Please try again later.";
 "alert.apiError.title" = "We're sorry, there has been an error.";
-"alert.apiError.message" = "{reason}";
+"alert.apiError.message" = "{message}";
 
 "chat.title" = "Chat";

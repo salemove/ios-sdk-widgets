@@ -7,16 +7,9 @@ enum InteractorState {
     case engaged
 }
 
-enum InteractorError {
-    case failedToEnqueue(SalemoveError)
-    case failedToExitQueue(SalemoveError)
-    case failedToEndEngagement(SalemoveError)
-    case error(SalemoveError)
-}
-
 enum InteractorEvent {
     case stateChanged(InteractorState)
-    case error(InteractorError)
+    case error(SalemoveError)
 }
 
 class Interactor {
@@ -68,21 +61,24 @@ class Interactor {
 }
 
 extension Interactor {
-    func enqueueForEngagement() {
+    func enqueueForEngagement(success: @escaping () -> Void,
+                              failure: @escaping (SalemoveError) -> Void) {
         print("Called: \(#function)")
         state = .enqueueing
         Salemove.sharedInstance.queueForEngagement(queueID: queueID,
                                                    visitorContext: visitorContext) { queueTicket, error in
             if let error = error {
                 self.state = .inactive
-                self.notify(.error(.failedToEnqueue(error)))
+                failure(error)
             } else if let ticket = queueTicket {
                 self.state = .enqueued(ticket)
+                success()
             }
         }
     }
 
-    func endSession() {
+    func endSession(success: @escaping () -> Void,
+                    failure: @escaping (SalemoveError) -> Void) {
         print("Called: \(#function)")
         switch state {
         case .inactive:
@@ -90,28 +86,36 @@ extension Interactor {
         case .enqueueing:
             self.state = .inactive
         case .enqueued(let ticket):
-            exitQueue(ticket: ticket)
+            exitQueue(ticket: ticket,
+                      success: success,
+                      failure: failure)
         case .engaged:
-            endEngagement()
+            endEngagement(success: success,
+                          failure: failure)
         }
     }
 
-    private func exitQueue(ticket: QueueTicket) {
+    private func exitQueue(ticket: QueueTicket,
+                           success: @escaping () -> Void,
+                           failure: @escaping (SalemoveError) -> Void) {
         Salemove.sharedInstance.cancel(queueTicket: ticket) { _, error in
             if let error = error {
-                self.notify(.error(.failedToExitQueue(error)))
+                failure(error)
             } else {
                 self.state = .inactive
+                success()
             }
         }
     }
 
-    private func endEngagement() {
+    private func endEngagement(success: @escaping () -> Void,
+                               failure: @escaping (SalemoveError) -> Void) {
         Salemove.sharedInstance.endEngagement { _, error in
             if let error = error {
-                self.notify(.error(.failedToEndEngagement(error)))
+                failure(error)
             } else {
                 self.state = .inactive
+                success()
             }
         }
     }

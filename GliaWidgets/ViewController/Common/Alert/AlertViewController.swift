@@ -2,17 +2,16 @@ import UIKit
 
 class AlertViewController: ViewController {
     enum Kind {
-        case message(AlertMessageStrings)
+        case message(AlertMessageStrings,
+                     dismissed: (() -> Void)?)
         case confirmation(AlertConfirmationStrings,
                           confirmed: () -> Void)
-        case apiMessage(AlertMessageStrings, reason: String)
     }
 
     private let viewFactory: ViewFactory
     private let kind: Kind
     private var alertView: AlertView?
     private let kAlertInsets = UIEdgeInsets(top: 0, left: 20, bottom: 30, right: 20)
-    private let kApiErrorReasonPlaceholder = "{reason}"
 
     init(kind: Kind, viewFactory: ViewFactory) {
         self.kind = kind
@@ -42,7 +41,6 @@ class AlertViewController: ViewController {
         guard alertView == nil else { return }
 
         let alertView = makeAlertView()
-        alertView.closeTapped = { [weak self] in self?.dismiss(animated: animated) }
         self.alertView = alertView
 
         view.addSubview(alertView)
@@ -77,10 +75,15 @@ class AlertViewController: ViewController {
         let alertView = viewFactory.makeAlertView()
 
         switch kind {
-        case .message(let strings):
+        case .message(let strings, let dismissed):
             alertView.title = strings.title
             alertView.message = strings.message
             alertView.showsCloseButton = true
+            alertView.closeTapped = { [weak self] in
+                self?.dismiss(animated: true) {
+                    dismissed?()
+                }
+            }
         case .confirmation(let strings, let confirmed):
             alertView.title = strings.title
             alertView.message = strings.message
@@ -101,11 +104,6 @@ class AlertViewController: ViewController {
             }
             alertView.addActionView(negativeButton)
             alertView.addActionView(positiveButton)
-        case .apiMessage(let strings, let reason):
-            alertView.title = strings.title
-            alertView.message = strings.message?.replacingOccurrences(of: kApiErrorReasonPlaceholder,
-                                                                      with: reason)
-            alertView.showsCloseButton = true
         }
 
         return alertView

@@ -1,9 +1,10 @@
+import SalemoveSDK
+
 class ChatViewModel: ViewModel {
     enum Event {
         case viewDidLoad
         case backTapped
         case closeTapped
-        case confirmedExitQueue
     }
 
     enum Action {
@@ -12,8 +13,10 @@ class ChatViewModel: ViewModel {
         case queueConnected(name: String)
         case appendRows(Int)
         case refreshChatItems
-        case showAlert(AlertMessageStrings)
-        case confirmExitQueue(AlertConfirmationStrings)
+        case confirm(AlertConfirmationStrings,
+                     confirmed: (() -> Void)?)
+        case showAlert(AlertMessageStrings,
+                       dismissed: (() -> Void)?)
     }
 
     enum DelegateEvent {
@@ -42,28 +45,43 @@ class ChatViewModel: ViewModel {
     public func event(_ event: Event) {
         switch event {
         case .viewDidLoad:
-            startSession()
+            enqueue()
         case .backTapped:
             delegate?(.back)
         case .closeTapped:
             closeTapped()
-        case .confirmedExitQueue:
-            endSession()
         }
     }
 
-    private func startSession() {
-        interactor.enqueueForEngagement()
+    private func enqueue() {
+        interactor.enqueueForEngagement {
+
+        } failure: { error in
+            switch error.error {
+            case is QueueError:
+                break
+            default:
+                let strings = AlertMessageStrings(with: error,
+                                                  templateStrings: self.alertStrings.apiError)
+                let dismissed = { self.end() }
+                self.action?(.showAlert(strings, dismissed: dismissed))
+            }
+        }
     }
 
-    private func endSession() {
-        interactor.endSession()
+    private func end() {
+        interactor.endSession {
+
+        } failure: { error in
+
+        }
     }
 
     private func closeTapped() {
         switch interactor.state {
         case .enqueueing, .enqueued:
-            action?(.confirmExitQueue(alertStrings.leaveQueue))
+            let confirmed = { self.end() }
+            action?(.confirm(alertStrings.leaveQueue, confirmed: confirmed))
         default:
             break
         }
@@ -100,18 +118,9 @@ extension ChatViewModel {
                 action?(.queueConnecting(name: "Blah"))
             case .engaged:
                 action?(.queueConnected(name: "Blah"))
-            case .sessionEnded:
-                delegate?(.finished)
             }
         case .error(let error):
-            switch error {
-            case .failedToEnqueue(_):
-                break
-            case .failedToExitQueue(_):
-                break
-            case .error(_):
-                break
-            }
+            break
         }
     }
 }

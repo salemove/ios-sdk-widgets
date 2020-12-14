@@ -21,7 +21,7 @@ public enum L10n {
       public static let yes = L10n.tr("Localizable", "alert.action.yes")
     }
     public enum ApiError {
-      /// {reason}
+      /// {message}
       public static let message = L10n.tr("Localizable", "alert.apiError.message")
       /// We're sorry, there has been an error.
       public static let title = L10n.tr("Localizable", "alert.apiError.title")
