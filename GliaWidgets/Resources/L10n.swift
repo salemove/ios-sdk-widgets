@@ -20,6 +20,18 @@ public enum L10n {
       /// Yes
       public static let yes = L10n.tr("Localizable", "alert.action.yes")
     }
+    public enum ApiError {
+      /// {reason}
+      public static let message = L10n.tr("Localizable", "alert.apiError.message")
+      /// We're sorry, there has been an error.
+      public static let title = L10n.tr("Localizable", "alert.apiError.title")
+    }
+    public enum OperatorsUnavailable {
+      /// Operators are no longer available.\nPlease try again later.
+      public static let message = L10n.tr("Localizable", "alert.operatorsUnavailable.message")
+      /// We’re sorry
+      public static let title = L10n.tr("Localizable", "alert.operatorsUnavailable.title")
+    }
     public enum Queue {
       public enum Leave {
         /// You will lose your place in the queue.

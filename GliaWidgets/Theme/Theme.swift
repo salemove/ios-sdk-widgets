@@ -82,15 +82,21 @@ public class Theme {
     public lazy var alertStrings: AlertStrings = {
         typealias Alert = L10n.Alert
 
-        let unexcpected = AlertMessageStrings(title: Alert.Unexpected.title,
-                                              message: Alert.Unexpected.message)
         let leaveQueue = AlertConfirmationStrings(title: Alert.Queue.Leave.title,
                                                   message: Alert.Queue.Leave.message,
                                                   negativeTitle: Alert.Queue.Leave.no,
                                                   positiveTitle: Alert.Queue.Leave.yes)
+        let operatorsUnavailable = AlertMessageStrings(title: Alert.OperatorsUnavailable.title,
+                                                       message: Alert.OperatorsUnavailable.message)
+        let unexcpected = AlertMessageStrings(title: Alert.Unexpected.title,
+                                              message: Alert.Unexpected.message)
+        let api = AlertMessageStrings(title: Alert.ApiError.title,
+                                      message: Alert.ApiError.message)
 
-        return AlertStrings(unexpectedError: unexcpected,
-                            leaveQueue: leaveQueue)
+        return AlertStrings(leaveQueue: leaveQueue,
+                            operatorsUnavailable: operatorsUnavailable,
+                            unexpectedError: unexcpected,
+                            apiError: api)
     }()
 
     public lazy var minimizedOperator: UserImageStyle = {

@@ -55,7 +55,7 @@ class ChatView: View {
         tableView.autoPinEdge(.top, to: .bottom, of: header)
 
         tableView.tableHeaderView = queueView
-        queueView.autoPinEdgesToSuperviewEdges()
+        queueView.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0))
         queueView.autoAlignAxis(toSuperviewAxis: .vertical)
     }
 }

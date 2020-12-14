@@ -5,12 +5,14 @@ class AlertViewController: ViewController {
         case message(AlertMessageStrings)
         case confirmation(AlertConfirmationStrings,
                           confirmed: () -> Void)
+        case apiMessage(AlertMessageStrings, reason: String)
     }
 
     private let viewFactory: ViewFactory
     private let kind: Kind
     private var alertView: AlertView?
     private let kAlertInsets = UIEdgeInsets(top: 0, left: 20, bottom: 30, right: 20)
+    private let kApiErrorReasonPlaceholder = "{reason}"
 
     init(kind: Kind, viewFactory: ViewFactory) {
         self.kind = kind
@@ -99,6 +101,11 @@ class AlertViewController: ViewController {
             }
             alertView.addActionView(negativeButton)
             alertView.addActionView(positiveButton)
+        case .apiMessage(let strings, let reason):
+            alertView.title = strings.title
+            alertView.message = strings.message?.replacingOccurrences(of: kApiErrorReasonPlaceholder,
+                                                                      with: reason)
+            alertView.showsCloseButton = true
         }
 
         return alertView

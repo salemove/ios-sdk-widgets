@@ -92,7 +92,7 @@ extension ChatViewModel {
         switch event {
         case .stateChanged(let state):
             switch state {
-            case .initial:
+            case .inactive:
                 break
             case .enqueueing:
                 action?(.queueWaiting)

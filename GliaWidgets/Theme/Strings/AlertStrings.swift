@@ -1,10 +1,16 @@
 public struct AlertStrings {
-    public var unexpectedError: AlertMessageStrings
     public var leaveQueue: AlertConfirmationStrings
+    public var operatorsUnavailable: AlertMessageStrings
+    public var unexpectedError: AlertMessageStrings
+    public var apiError: AlertMessageStrings
 
-    public init(unexpectedError: AlertMessageStrings,
-                leaveQueue: AlertConfirmationStrings) {
-        self.unexpectedError = unexpectedError
+    public init(leaveQueue: AlertConfirmationStrings,
+                operatorsUnavailable: AlertMessageStrings,
+                unexpectedError: AlertMessageStrings,
+                apiError: AlertMessageStrings) {
         self.leaveQueue = leaveQueue
+        self.operatorsUnavailable = operatorsUnavailable
+        self.unexpectedError = unexpectedError
+        self.apiError = apiError
     }
 }

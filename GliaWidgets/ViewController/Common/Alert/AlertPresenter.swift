@@ -21,4 +21,10 @@ extension AlertPresenter {
                                         viewFactory: viewFactory)
         present(alert, animated: true, completion: nil)
     }
+
+    func presentApiAlert(with strings: AlertMessageStrings, reason: String) {
+        let alert = AlertViewController(kind: .apiMessage(strings, reason: reason),
+                                        viewFactory: viewFactory)
+        present(alert, animated: true, completion: nil)
+    }
 }

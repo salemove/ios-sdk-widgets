@@ -1,16 +1,16 @@
 import SalemoveSDK
 
 enum InteractorState {
-    case initial
+    case inactive
     case enqueueing
     case enqueued(QueueTicket)
     case engaged
-    case sessionEnded
 }
 
 enum InteractorError {
     case failedToEnqueue(SalemoveError)
     case failedToExitQueue(SalemoveError)
+    case failedToEndEngagement(SalemoveError)
     case error(SalemoveError)
 }
 
@@ -25,7 +25,7 @@ class Interactor {
     private let queueID: String
     private let visitorContext: VisitorContext
     private var observers = [() -> (AnyObject?, EventHandler)]()
-    private(set) var state: InteractorState = .initial {
+    private(set) var state: InteractorState = .inactive {
         didSet { notify(.stateChanged(state)) }
     }
 
@@ -74,7 +74,7 @@ extension Interactor {
         Salemove.sharedInstance.queueForEngagement(queueID: queueID,
                                                    visitorContext: visitorContext) { queueTicket, error in
             if let error = error {
-                self.state = .initial
+                self.state = .inactive
                 self.notify(.error(.failedToEnqueue(error)))
             } else if let ticket = queueTicket {
                 self.state = .enqueued(ticket)
@@ -85,27 +85,34 @@ extension Interactor {
     func endSession() {
         print("Called: \(#function)")
         switch state {
+        case .inactive:
+            break
         case .enqueueing:
-            // TODO how to cancel queueForEngagement(...)?
-            // TODO end engagement?
-            self.state = .sessionEnded
+            self.state = .inactive
         case .enqueued(let ticket):
-            Salemove.sharedInstance.cancel(queueTicket: ticket) { _, error in
-                if let error = error {
-                    self.notify(.error(.failedToExitQueue(error)))
-                } else {
-                    self.state = .sessionEnded
-                }
-            }
+            exitQueue(ticket: ticket)
         case .engaged:
-            // TODO end engagement
-            state = .sessionEnded
-            break
-        case .initial:
-            state = .sessionEnded
-            break
-        case .sessionEnded:
-            break
+            endEngagement()
+        }
+    }
+
+    private func exitQueue(ticket: QueueTicket) {
+        Salemove.sharedInstance.cancel(queueTicket: ticket) { _, error in
+            if let error = error {
+                self.notify(.error(.failedToExitQueue(error)))
+            } else {
+                self.state = .inactive
+            }
+        }
+    }
+
+    private func endEngagement() {
+        Salemove.sharedInstance.endEngagement { _, error in
+            if let error = error {
+                self.notify(.error(.failedToEndEngagement(error)))
+            } else {
+                self.state = .inactive
+            }
         }
     }
 }
@@ -208,7 +215,7 @@ extension Interactor: Interactable {
         print("Called: \(#function)")
         // Remove any active sessions and do a cleanup and maybe dismiss the controller
         //cleanup()
-        state = .initial
+        state = .inactive
     }
 
     func fail(with reason: String?) {
