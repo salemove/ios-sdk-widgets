@@ -91,9 +91,9 @@
 		1AC7A74F2582571100567FF8 /* Interactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC7A74E2582571100567FF8 /* Interactor.swift */; };
 		1AC7A7552582594200567FF8 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC7A7542582594200567FF8 /* Configuration.swift */; };
 		1AC7A77B25838AE800567FF8 /* ChatItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC7A77A25838AE800567FF8 /* ChatItem.swift */; };
-		1AE15E38257A578B00A642C0 /* AlertMessageTexts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE15E37257A578B00A642C0 /* AlertMessageTexts.swift */; };
-		1AE15E3B257A5CC900A642C0 /* AlertTexts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE15E3A257A5CC900A642C0 /* AlertTexts.swift */; };
-		1AE15E49257A6BD200A642C0 /* AlertConfirmationTexts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE15E48257A6BD200A642C0 /* AlertConfirmationTexts.swift */; };
+		1AE15E38257A578B00A642C0 /* AlertMessageStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE15E37257A578B00A642C0 /* AlertMessageStrings.swift */; };
+		1AE15E3B257A5CC900A642C0 /* AlertStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE15E3A257A5CC900A642C0 /* AlertStrings.swift */; };
+		1AE15E49257A6BD200A642C0 /* AlertConfirmationStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE15E48257A6BD200A642C0 /* AlertConfirmationStrings.swift */; };
 		1C12BC08594FEF3073AAE5B8 /* Pods_GliaWidgets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A249CE317961801DDAD22AE /* Pods_GliaWidgets.framework */; };
 		65838FF5119F5496B099DD04 /* Pods_TestingApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2308CF5ACCB31E1CC49FED95 /* Pods_TestingApp.framework */; };
 /* End PBXBuildFile section */
@@ -220,9 +220,9 @@
 		1AC7A74E2582571100567FF8 /* Interactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interactor.swift; sourceTree = "<group>"; };
 		1AC7A7542582594200567FF8 /* Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
 		1AC7A77A25838AE800567FF8 /* ChatItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatItem.swift; sourceTree = "<group>"; };
-		1AE15E37257A578B00A642C0 /* AlertMessageTexts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertMessageTexts.swift; sourceTree = "<group>"; };
-		1AE15E3A257A5CC900A642C0 /* AlertTexts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertTexts.swift; sourceTree = "<group>"; };
-		1AE15E48257A6BD200A642C0 /* AlertConfirmationTexts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertConfirmationTexts.swift; sourceTree = "<group>"; };
+		1AE15E37257A578B00A642C0 /* AlertMessageStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertMessageStrings.swift; sourceTree = "<group>"; };
+		1AE15E3A257A5CC900A642C0 /* AlertStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertStrings.swift; sourceTree = "<group>"; };
+		1AE15E48257A6BD200A642C0 /* AlertConfirmationStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertConfirmationStrings.swift; sourceTree = "<group>"; };
 		2308CF5ACCB31E1CC49FED95 /* Pods_TestingApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TestingApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6BD7D3ECB379FC8A96BE4C05 /* Pods-GliaWidgets.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliaWidgets.debug.xcconfig"; path = "Target Support Files/Pods-GliaWidgets/Pods-GliaWidgets.debug.xcconfig"; sourceTree = "<group>"; };
 		913BCC7A8BE2CA12D31E2C26 /* Pods-TestingApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestingApp.release.xcconfig"; path = "Target Support Files/Pods-TestingApp/Pods-TestingApp.release.xcconfig"; sourceTree = "<group>"; };
@@ -454,7 +454,7 @@
 		1A60AF7825656DE700E53F53 /* Theme */ = {
 			isa = PBXGroup;
 			children = (
-				1AE15E40257A5F3500A642C0 /* Texts */,
+				1AE15E40257A5F3500A642C0 /* Strings */,
 				1A60AF7925656E0500E53F53 /* Theme.swift */,
 				1A4AD3C0256E74C600468BFB /* ThemeFont.swift */,
 				1A4AD3C3256E7A0C00468BFB /* ThemeFontStyle.swift */,
@@ -734,7 +734,7 @@
 		1AA738B025790D4B00E1120F /* Alert */ = {
 			isa = PBXGroup;
 			children = (
-				1AE15E36257A56D300A642C0 /* Texts */,
+				1AE15E36257A56D300A642C0 /* Strings */,
 				1AA738B425790D8700E1120F /* ActionButton */,
 				1AA738B125790D5A00E1120F /* AlertView.swift */,
 				1AA738BB25790DBE00E1120F /* AlertStyle.swift */,
@@ -775,21 +775,21 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
-		1AE15E36257A56D300A642C0 /* Texts */ = {
+		1AE15E36257A56D300A642C0 /* Strings */ = {
 			isa = PBXGroup;
 			children = (
-				1AE15E37257A578B00A642C0 /* AlertMessageTexts.swift */,
-				1AE15E48257A6BD200A642C0 /* AlertConfirmationTexts.swift */,
+				1AE15E37257A578B00A642C0 /* AlertMessageStrings.swift */,
+				1AE15E48257A6BD200A642C0 /* AlertConfirmationStrings.swift */,
 			);
-			path = Texts;
+			path = Strings;
 			sourceTree = "<group>";
 		};
-		1AE15E40257A5F3500A642C0 /* Texts */ = {
+		1AE15E40257A5F3500A642C0 /* Strings */ = {
 			isa = PBXGroup;
 			children = (
-				1AE15E3A257A5CC900A642C0 /* AlertTexts.swift */,
+				1AE15E3A257A5CC900A642C0 /* AlertStrings.swift */,
 			);
-			path = Texts;
+			path = Strings;
 			sourceTree = "<group>";
 		};
 		69BB38CE6B54F4C95ED474B6 /* Pods */ = {
@@ -1056,7 +1056,7 @@
 				1A60AFD925669A1500E53F53 /* View.swift in Sources */,
 				1A60AFBC256682C800E53F53 /* SubFlowCoordinator.swift in Sources */,
 				1A6075E7258220E300569B0E /* UserImageStyle.swift in Sources */,
-				1AE15E38257A578B00A642C0 /* AlertMessageTexts.swift in Sources */,
+				1AE15E38257A578B00A642C0 /* AlertMessageStrings.swift in Sources */,
 				1AC7A77B25838AE800567FF8 /* ChatItem.swift in Sources */,
 				1A7CA8212574D6760047CBBE /* QueueOperatorView.swift in Sources */,
 				1A4AD3C7256E863900468BFB /* ThemeColor.swift in Sources */,
@@ -1066,7 +1066,7 @@
 				1A60AF7E25656F0400E53F53 /* Glia.swift in Sources */,
 				1A60AFB62566825400E53F53 /* ViewModel.swift in Sources */,
 				1A60AFB9256682AF00E53F53 /* FlowCoordinator.swift in Sources */,
-				1AE15E3B257A5CC900A642C0 /* AlertTexts.swift in Sources */,
+				1AE15E3B257A5CC900A642C0 /* AlertStrings.swift in Sources */,
 				1A60AF9F25667CA800E53F53 /* FontProvider.swift in Sources */,
 				1A60AFCE2566958900E53F53 /* ViewFactory.swift in Sources */,
 				1A7CA82F25751B5A0047CBBE /* QueueOperatorStyle.swift in Sources */,
@@ -1106,7 +1106,7 @@
 				1A60B0042567F25600E53F53 /* Header.swift in Sources */,
 				1A60B047256C0B4500E53F53 /* ChatMessageContent.swift in Sources */,
 				1A63B2F6257A469A00508478 /* AlertPresenter.swift in Sources */,
-				1AE15E49257A6BD200A642C0 /* AlertConfirmationTexts.swift in Sources */,
+				1AE15E49257A6BD200A642C0 /* AlertConfirmationStrings.swift in Sources */,
 				1A60AFB22566821B00E53F53 /* Asset.swift in Sources */,
 				1A4AD3AF256D283700468BFB /* ChatMessageView.swift in Sources */,
 				1A60AFD52566992A00E53F53 /* ChatViewModel.swift in Sources */,

@@ -1,4 +1,4 @@
-public struct AlertMessageTexts {
+public struct AlertMessageStrings {
     public var title: String?
     public var message: String?
 }

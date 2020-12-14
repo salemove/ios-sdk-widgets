@@ -1,8 +1,8 @@
 import UIKit
 
 class ChatView: View {
-    lazy var header: Header = { return Header(with: style.header) }()
-    lazy var queueView: QueueView = { return QueueView(with: style.queue) }()
+    let header: Header
+    let queueView: QueueView
 
     var numberOfRows: (() -> Int?)?
     var itemForRow: ((Int) -> ChatItem?)?
@@ -12,6 +12,8 @@ class ChatView: View {
 
     init(with style: ChatStyle) {
         self.style = style
+        self.header = Header(with: style.header)
+        self.queueView = QueueView(with: style.queue)
         super.init()
         setup()
         layout()

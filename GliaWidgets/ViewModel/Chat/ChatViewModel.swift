@@ -12,8 +12,8 @@ class ChatViewModel: ViewModel {
         case queueConnected(name: String)
         case appendRows(Int)
         case refreshChatItems
-        case showAlert(AlertMessageTexts)
-        case confirmExitQueue(AlertConfirmationTexts)
+        case showAlert(AlertMessageStrings)
+        case confirmExitQueue(AlertConfirmationStrings)
     }
 
     enum DelegateEvent {
@@ -25,12 +25,12 @@ class ChatViewModel: ViewModel {
     var delegate: ((DelegateEvent) -> Void)?
 
     private let interactor: Interactor
-    private let alertTexts: AlertTexts
+    private let alertStrings: AlertStrings
     private var chatItems = [ChatItem]()
 
-    init(interactor: Interactor, alertTexts: AlertTexts) {
+    init(interactor: Interactor, alertStrings: AlertStrings) {
         self.interactor = interactor
-        self.alertTexts = alertTexts
+        self.alertStrings = alertStrings
 
         interactor.addObserver(self, handler: interactorEvent)
     }
@@ -63,7 +63,7 @@ class ChatViewModel: ViewModel {
     private func closeTapped() {
         switch interactor.state {
         case .enqueueing, .enqueued:
-            action?(.confirmExitQueue(alertTexts.leaveQueue))
+            action?(.confirmExitQueue(alertStrings.leaveQueue))
         default:
             break
         }

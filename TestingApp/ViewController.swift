@@ -68,7 +68,7 @@ extension ViewController {
 
     func alert(message: String) {
         let alert = UIAlertController(title: "", message: message, preferredStyle: .alert)
-        alert.addAction((UIAlertAction(title: "OK", style: .default, handler: { action -> Void in
+        alert.addAction((UIAlertAction(title: "OK", style: .default, handler: { _ in
             alert.dismiss(animated: true, completion: nil)
         })))
         present(alert, animated: true, completion: nil)

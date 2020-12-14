@@ -47,10 +47,10 @@ class ChatViewController: ViewController, AlertPresenter {
                 view.appendRows(count, animated: true)
             case .refreshChatItems:
                 view.refreshItems()
-            case .showAlert(let texts):
-                self.presentAlert(with: texts)
-            case .confirmExitQueue(let texts):
-                self.presentConfirmation(with: texts) {
+            case .showAlert(let strings):
+                self.presentAlert(with: strings)
+            case .confirmExitQueue(let strings):
+                self.presentConfirmation(with: strings) {
                     viewModel.event(.confirmedExitQueue)
                 }
             }

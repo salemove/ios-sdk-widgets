@@ -2,8 +2,8 @@ import UIKit
 
 class AlertViewController: ViewController {
     enum Kind {
-        case message(AlertMessageTexts)
-        case confirmation(AlertConfirmationTexts,
+        case message(AlertMessageStrings)
+        case confirmation(AlertConfirmationStrings,
                           confirmed: () -> Void)
     }
 
@@ -75,23 +75,23 @@ class AlertViewController: ViewController {
         let alertView = viewFactory.makeAlertView()
 
         switch kind {
-        case .message(let texts):
-            alertView.title = texts.title
-            alertView.message = texts.message
+        case .message(let strings):
+            alertView.title = strings.title
+            alertView.message = strings.message
             alertView.showsCloseButton = true
-        case .confirmation(let texts, let confirmed):
-            alertView.title = texts.title
-            alertView.message = texts.message
+        case .confirmation(let strings, let confirmed):
+            alertView.title = strings.title
+            alertView.message = strings.message
             alertView.showsPoweredBy = true
             alertView.actionsAxis = .horizontal
 
             let negativeButton = AlertActionButton(with: viewFactory.theme.alert.negativeAction)
-            negativeButton.title = texts.negativeTitle
+            negativeButton.title = strings.negativeTitle
             negativeButton.tap = { [weak self] in
                 self?.dismiss(animated: true)
             }
             let positiveButton = AlertActionButton(with: viewFactory.theme.alert.positiveAction)
-            positiveButton.title = texts.positiveTitle
+            positiveButton.title = strings.positiveTitle
             positiveButton.tap = { [weak self] in
                 self?.dismiss(animated: true) {
                     confirmed()

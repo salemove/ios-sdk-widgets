@@ -9,7 +9,7 @@ class GliaWindow: UIWindow {
     private var state: State = .maximized
     private var minimizedView: UIView
     private let minimizedSize: CGSize
-    private let kMinimizedViewEdgeGap: CGFloat = 10
+    private let kMinimizedViewEdgeInset: CGFloat = 10
     private var tapRecognizer: UITapGestureRecognizer?
     private var panRecognizer: UIPanGestureRecognizer?
 
@@ -79,8 +79,8 @@ class GliaWindow: UIWindow {
         case .maximized:
             return bounds
         case .minimized:
-            let origin = CGPoint(x: bounds.width - minimizedSize.width - kMinimizedViewEdgeGap,
-                                 y: bounds.height - minimizedSize.height - kMinimizedViewEdgeGap)
+            let origin = CGPoint(x: bounds.width - minimizedSize.width - kMinimizedViewEdgeInset,
+                                 y: bounds.height - minimizedSize.height - kMinimizedViewEdgeInset)
             return CGRect(origin: origin,
                           size: minimizedSize)
         }
