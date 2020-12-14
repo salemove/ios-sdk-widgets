@@ -2,7 +2,7 @@
 
 "queue.waiting.text1" = "CompanyName";
 "queue.waiting.text2" = "An MSR will be with you shortly.";
-"queue.connecting.text1" = "Connecting with {operatorName}";
+"queue.connecting.text1" = "Connecting with operator";
 "queue.connecting.text2" = "";
 "queue.connected.text1" = "{operatorName}";
 "queue.connected.text2" = "{operatorName} has joined the conversation.";

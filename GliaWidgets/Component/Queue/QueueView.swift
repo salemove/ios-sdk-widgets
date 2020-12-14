@@ -4,8 +4,8 @@ class QueueView: UIView {
     enum State: Equatable {
         case initial
         case waiting
-        case connecting(name: String)
-        case connected(name: String)
+        case connecting
+        case connected(name: String?)
     }
 
     let operatorView: QueueOperatorView
@@ -44,9 +44,8 @@ class QueueView: UIView {
             statusView.setStyle(style.waiting)
             stackView.setCustomSpacing(0, after: operatorView)
             show(animated: animated)
-        case .connecting(let name):
-            let text1 = style.connecting.text1?.replacingOccurrences(of: kOperatorNamePlaceholder,
-                                                                     with: name)
+        case .connecting:
+            let text1 = style.connecting.text1
             statusView.setText1(text1,
                                 text2: nil,
                                 animated: animated)
@@ -55,13 +54,19 @@ class QueueView: UIView {
             startConnectTimer()
         case .connected(let name):
             operatorView.stopAnimating(animated: animated)
-            let text1 = style.connected.text1?.replacingOccurrences(of: kOperatorNamePlaceholder,
-                                                                    with: name)
-            let text2 = style.connected.text2?.replacingOccurrences(of: kOperatorNamePlaceholder,
-                                                                    with: name)
-            statusView.setText1(text1,
-                                text2: text2,
-                                animated: animated)
+            if let name = name {
+                let text1 = style.connected.text1?.replacingOccurrences(of: kOperatorNamePlaceholder,
+                                                                        with: name)
+                let text2 = style.connected.text2?.replacingOccurrences(of: kOperatorNamePlaceholder,
+                                                                        with: name)
+                statusView.setText1(text1,
+                                    text2: text2,
+                                    animated: animated)
+            } else {
+                statusView.setText1(nil,
+                                    text2: nil,
+                                    animated: animated)
+            }
             statusView.setStyle(style.connected)
             stackView.setCustomSpacing(10, after: operatorView)
         }

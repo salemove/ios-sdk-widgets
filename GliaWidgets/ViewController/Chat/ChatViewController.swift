@@ -42,8 +42,8 @@ class ChatViewController: ViewController, AlertPresenter {
             switch action {
             case .queueWaiting:
                 view.queueView.setState(.waiting, animated: true)
-            case .queueConnecting(name: let name):
-                view.queueView.setState(.connecting(name: name), animated: true)
+            case .queueConnecting:
+                view.queueView.setState(.connecting, animated: true)
             case .queueConnected(name: let name):
                 view.queueView.setState(.connected(name: name), animated: true)
             case .showEndButton:

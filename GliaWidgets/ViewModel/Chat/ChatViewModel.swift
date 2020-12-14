@@ -9,8 +9,8 @@ class ChatViewModel: EngagementViewModel, ViewModel {
 
     enum Action {
         case queueWaiting
-        case queueConnecting(name: String)
-        case queueConnected(name: String)
+        case queueConnecting
+        case queueConnected(name: String?)
         case showEndButton
         case appendRows(Int)
         case refreshItems
@@ -50,8 +50,15 @@ class ChatViewModel: EngagementViewModel, ViewModel {
 
         } failure: { error in
             switch error.error {
-            case is QueueError:
-                break
+            case let queueError as QueueError:
+                switch queueError {
+                case .queueClosed, .queueFull:
+                    self.action?(.showAlert(self.alertStrings.operatorsUnavailable,
+                                            dismissed: { self.end() }))
+                default:
+                    self.action?(.showAlert(self.alertStrings(with: error),
+                                            dismissed: { self.end() }))
+                }
             default:
                 self.action?(.showAlert(self.alertStrings(with: error),
                                         dismissed: { self.end() }))
@@ -97,10 +104,10 @@ class ChatViewModel: EngagementViewModel, ViewModel {
                 delegate?(.finished)
             case .enqueueing:
                 action?(.queueWaiting)
-            case .enqueued(_):
-                action?(.queueConnecting(name: "Blah"))
-            case .engaged:
-                action?(.queueConnected(name: "Blah"))
+            case .enqueued:
+                action?(.queueConnecting)
+            case .engaged(let engagedOperator):
+                action?(.queueConnected(name: engagedOperator?.name))
                 action?(.showEndButton)
             }
         case .error(let error):

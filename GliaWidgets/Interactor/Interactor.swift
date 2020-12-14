@@ -4,7 +4,7 @@ enum InteractorState {
     case inactive
     case enqueueing
     case enqueued(QueueTicket)
-    case engaged
+    case engaged(Operator?)
 }
 
 enum InteractorEvent {
@@ -213,9 +213,10 @@ extension Interactor: Interactable {
 
     func start() {
         print("Called: \(#function)")
-        // Remove any spinners or activity indicators and proceed with the flow
-        //endLoading()
-        state = .engaged
+        Salemove.sharedInstance.requestEngagedOperator { operators, error in
+            let engagedOperator = operators?.first
+            self.state = .engaged(engagedOperator)
+        }
     }
 
     func end() {
