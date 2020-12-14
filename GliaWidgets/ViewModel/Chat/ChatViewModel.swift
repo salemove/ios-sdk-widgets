@@ -94,7 +94,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case .stateChanged(let state):
             switch state {
             case .inactive:
-                break
+                delegate?(.finished)
             case .enqueueing:
                 action?(.queueWaiting)
             case .enqueued(_):

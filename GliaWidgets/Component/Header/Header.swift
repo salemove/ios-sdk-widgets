@@ -54,26 +54,20 @@ class Header: UIView {
 
     private func setItem(_ item: UIView?, to container: UIView, animated: Bool) {
         let currentItem = container.subviews.first
-        let hideTransform = CGAffineTransform(scaleX: 0.1, y: 0.1)
-        let showTransform = CGAffineTransform.identity
-        item?.transform = hideTransform
 
-        if let item = item {
-            container.addSubview(item)
-            item.autoPinEdgesToSuperviewEdges()
+        UIView.animate(withDuration: animated ? 0.2 : 0.0) {
+            currentItem?.alpha = 0.0
+        } completion: { _ in
+            currentItem?.removeFromSuperview()
+            if let item = item {
+                item.alpha = 0.0
+                container.addSubview(item)
+                item.autoPinEdgesToSuperviewEdges()
+                UIView.animate(withDuration: animated ? 0.2 : 0.0) {
+                    item.alpha = 1.0
+                }
+            }
         }
-
-        UIView.animate(withDuration: animated ? 0.3 : 0.0,
-                       delay: 0.0,
-                       usingSpringWithDamping: 0.8,
-                       initialSpringVelocity: 0.5,
-                       options: .curveEaseInOut,
-                       animations: {
-                        currentItem?.transform = hideTransform
-                        item?.transform = showTransform
-                       }, completion: { _ in
-                        currentItem?.removeFromSuperview()
-                       })
     }
 
     private func layout() {
