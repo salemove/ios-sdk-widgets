@@ -10,7 +10,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     enum Action {
         case queueWaiting
         case queueConnecting
-        case queueConnected(name: String?)
+        case queueConnected(name: String?, imageUrl: String?)
         case showEndButton
         case appendRows(Int)
         case refreshItems
@@ -107,7 +107,8 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             case .enqueued:
                 action?(.queueConnecting)
             case .engaged(let engagedOperator):
-                action?(.queueConnected(name: engagedOperator?.name))
+                action?(.queueConnected(name: engagedOperator?.name,
+                                        imageUrl: engagedOperator?.picture?.url))
                 action?(.showEndButton)
             }
         }

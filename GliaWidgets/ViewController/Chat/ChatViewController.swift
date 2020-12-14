@@ -44,8 +44,8 @@ class ChatViewController: ViewController, AlertPresenter {
                 view.queueView.setState(.waiting, animated: true)
             case .queueConnecting:
                 view.queueView.setState(.connecting, animated: true)
-            case .queueConnected(name: let name):
-                view.queueView.setState(.connected(name: name), animated: true)
+            case .queueConnected(name: let name, imageUrl: let imageUrl):
+                view.queueView.setState(.connected(name: name, imageUrl: imageUrl), animated: true)
             case .showEndButton:
                 let rightItem = ActionButton(with: self.viewFactory.theme.chat.endButton)
                 rightItem.tap = { viewModel.event(.closeTapped) }

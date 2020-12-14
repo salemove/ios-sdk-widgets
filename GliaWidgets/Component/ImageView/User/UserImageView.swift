@@ -31,6 +31,10 @@ class UserImageView: UIView {
                           }, completion: nil)
     }
 
+    func setImage(fromUrl url: String?, animated: Bool) {
+        imageView.setImage(from: url, animated: animated)
+    }
+
     private func setup() {
         clipsToBounds = true
 

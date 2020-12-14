@@ -5,7 +5,7 @@ class QueueView: UIView {
         case initial
         case waiting
         case connecting
-        case connected(name: String?)
+        case connected(name: String?, imageUrl: String?)
     }
 
     let operatorView: QueueOperatorView
@@ -52,8 +52,9 @@ class QueueView: UIView {
             statusView.setStyle(style.connecting)
             stackView.setCustomSpacing(0, after: operatorView)
             startConnectTimer()
-        case .connected(let name):
+        case .connected(let name, let imageUrl):
             operatorView.stopAnimating(animated: animated)
+            operatorView.imageView.setImage(fromUrl: imageUrl, animated: true)
             if let name = name {
                 let text1 = style.connected.text1?.replacingOccurrences(of: kOperatorNamePlaceholder,
                                                                         with: name)
