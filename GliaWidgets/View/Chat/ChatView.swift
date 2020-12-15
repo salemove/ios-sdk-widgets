@@ -88,6 +88,7 @@ extension ChatView {
                 self?.tableView.contentOffset = offset
                 self?.layoutIfNeeded()
             }, completion: { _ -> Void in })
+            messageEntryView.setSendButtonVisible(true, animated: true)
         }
 
         keyboardObserver.keyboardWillHide = { [unowned self] properties in
@@ -98,6 +99,8 @@ extension ChatView {
                 self?.messageEntryViewBottomConstraint.constant = 0
                 self?.layoutIfNeeded()
             }, completion: { _ -> Void in })
+            messageEntryView.setSendButtonVisible(!messageEntryView.message.isEmpty,
+                                                  animated: true)
         }
     }
 }
@@ -124,5 +127,7 @@ extension ChatView: UITableViewDataSource {
 }
 
 extension ChatView: UITableViewDelegate {
-
+    public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        endEditing(true)
+    }
 }

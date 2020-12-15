@@ -1,9 +1,13 @@
 import UIKit
 
 public class ChatMessageEntryView: UIView {
-    var maxCharacters: Int = 1000
+    var maxCharacters: Int = 200
     var textMessageEntered: ((String) -> Void)?
     var pickMediaTapped: (() -> Void)?
+    var message: String {
+        get { return textView.text }
+        set { textView.text = newValue }
+    }
 
     private let style: ChatMessageEntryStyle
     private let separator = UIView()
@@ -12,9 +16,9 @@ public class ChatMessageEntryView: UIView {
     private let placeholderLabel = UILabel()
     private let pickMediaButton = Button(kind: .chatPickMedia)
     private let sendButton = Button(kind: .chatSend)
+    private let buttonsStackView = UIStackView()
     private var textViewHeightConstraint: NSLayoutConstraint!
-    private let kMinTextViewContainerHeight: CGFloat = 50
-    private let kMinTextViewHeight: CGFloat = 20
+    private let kMinTextViewHeight: CGFloat = 24
     private let kMaxTextViewHeight: CGFloat = 200
 
     public init(with style: ChatMessageEntryStyle) {
@@ -27,6 +31,13 @@ public class ChatMessageEntryView: UIView {
     @available(*, unavailable)
     required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    func setSendButtonVisible(_ visible: Bool, animated: Bool) {
+        UIView.animate(withDuration: animated ? 0.3 : 0.0) {
+            self.sendButton.isHidden = !visible
+            self.sendButton.alpha = visible ? 1.0 : 0.0
+        }
     }
 
     private func setup() {
@@ -53,48 +64,45 @@ public class ChatMessageEntryView: UIView {
         placeholderLabel.textColor = style.placeholderColor
 
         sendButton.tintColor = style.sendButtonColor
+        sendButton.isHidden = true
+        sendButton.alpha = 0.0
 
         pickMediaButton.tap = { [weak self] in self?.pickMediaTapped?() }
         sendButton.tap = { [weak self] in self?.sendTapped() }
+
+        buttonsStackView.axis = .horizontal
+        buttonsStackView.spacing = 24
+        buttonsStackView.addArrangedSubviews([pickMediaButton, sendButton])
     }
 
     private func layout() {
-        addSubview(separator)
-        separator.autoSetDimension(.height, toSize: 1)
-        separator.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .bottom)
-
-        messageContainerView.addSubview(pickMediaButton)
-        pickMediaButton.autoPinEdge(toSuperviewEdge: .top, withInset: 4)
-        pickMediaButton.autoPinEdge(toSuperviewEdge: .left, withInset: 4)
-
         messageContainerView.addSubview(textView)
         textViewHeightConstraint = textView.autoSetDimension(.height,
-                                                             toSize: kMinTextViewHeight,
-                                                             relation: .greaterThanOrEqual)
-        textView.autoPinEdge(.left, to: .right, of: pickMediaButton, withOffset: 16)
-        textView.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
+                                                             toSize: kMinTextViewHeight)
+        textView.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
         textView.autoPinEdge(toSuperviewEdge: .top, withInset: 13)
         textView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 13)
+        textView.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
+        textView.autoAlignAxis(toSuperviewAxis: .horizontal)
 
         textView.addSubview(placeholderLabel)
         placeholderLabel.autoPinEdge(toSuperviewEdge: .left)
         placeholderLabel.autoPinEdge(toSuperviewEdge: .top)
 
         addSubview(messageContainerView)
-        messageContainerView.autoSetDimension(.height,
-                                           toSize: kMinTextViewContainerHeight,
-                                           relation: .greaterThanOrEqual)
-        messageContainerView.autoPinEdge(toSuperviewEdge: .left, withInset: 20)
-        messageContainerView.autoPinEdge(toSuperviewEdge: .top, withInset: 16, relation: .lessThanOrEqual)
-        messageContainerView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 16, relation: .lessThanOrEqual)
+        messageContainerView.autoPinEdgesToSuperviewEdges()
 
-        addSubview(sendButton)
-        sendButton.autoPinEdge(toSuperviewEdge: .right, withInset: 20)
-        sendButton.autoPinEdge(.left, to: .right, of: messageContainerView)
-        sendButton.autoAlignAxis(.horizontal, toSameAxisOf: messageContainerView)
+        addSubview(buttonsStackView)
+        buttonsStackView.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
+        buttonsStackView.autoPinEdge(.left, to: .right, of: messageContainerView, withOffset: 16)
+        buttonsStackView.autoSetDimension(.height, toSize: 30)
+        buttonsStackView.autoAlignAxis(toSuperviewAxis: .horizontal)
+
+        addSubview(separator)
+        separator.autoSetDimension(.height, toSize: 1)
+        separator.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .bottom)
 
         updateTextFieldHeight()
-        updateSendButton()
     }
 
     private func updateTextFieldHeight() {
@@ -113,16 +121,11 @@ public class ChatMessageEntryView: UIView {
         textViewHeightConstraint.constant = newHeight
     }
 
-    private func updateSendButton() {
-        sendButton.isEnabled = !textView.text.isEmpty
-    }
-
     private func sendTapped() {
         let text = textView.text ?? ""
         textMessageEntered?(text)
         textView.text = ""
         updateTextFieldHeight()
-        updateSendButton()
     }
 
     @objc private func textViewContainerTap() {
@@ -138,7 +141,6 @@ extension ChatMessageEntryView: UITextViewDelegate {
 
     public func textViewDidChange(_ textView: UITextView) {
         updateTextFieldHeight()
-        updateSendButton()
     }
 
     public func textViewDidBeginEditing(_ textView: UITextView) {
