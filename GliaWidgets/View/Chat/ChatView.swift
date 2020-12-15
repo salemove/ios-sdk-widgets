@@ -67,10 +67,10 @@ class ChatView: View {
         tableView.autoPinEdge(toSuperviewEdge: .left)
         tableView.autoPinEdge(toSuperviewEdge: .right)
 
-        tableView.tableHeaderView = queueView
-        updateTableHeaderHeight()
-        //addSubview(queueView)
-        //queueView.autoCenterInSuperview()
+        //tableView.tableHeaderView = queueView
+        //updateTableHeaderHeight()
+        addSubview(queueView)
+        queueView.autoCenterInSuperview()
 
         addSubview(messageEntryView)
         messageEntryViewBottomConstraint = messageEntryView.autoPinEdge(toSuperviewSafeArea: .bottom)

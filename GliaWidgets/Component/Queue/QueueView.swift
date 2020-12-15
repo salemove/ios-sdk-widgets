@@ -13,7 +13,6 @@ class QueueView: UIView {
     private let style: QueueStyle
     private var state: State = .initial
     private let statusView = QueueStatusView()
-    //private let stackView = UIStackView()
     private let kOperatorNamePlaceholder = "{operatorName}"
     private var connectTimer: Timer?
     private var connectCounter: Int = 0
@@ -32,7 +31,7 @@ class QueueView: UIView {
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        print("HEIGHT: ", statusView.frame.size.height)
+        print("FRAME: ", statusView.frame)
     }
 
     func setState(_ state: State, animated: Bool) {
@@ -46,14 +45,12 @@ class QueueView: UIView {
             statusView.setText1(style.waiting.text1, animated: false)
             statusView.setText2(style.waiting.text2, animated: false)
             statusView.setStyle(style.waiting)
-            //stackView.setCustomSpacing(0, after: operatorView)
             show(animated: animated)
         case .connecting:
             let text1 = style.connecting.text1
             statusView.setText1(text1, animated: animated)
             statusView.setText2(nil, animated: animated)
             statusView.setStyle(style.connecting)
-            //stackView.setCustomSpacing(0, after: operatorView)
             startConnectTimer()
         case .connected(let name, let imageUrl):
             operatorView.stopAnimating(animated: animated)
@@ -70,7 +67,6 @@ class QueueView: UIView {
                 statusView.setText1(nil, animated: animated)
             }
             statusView.setStyle(style.connected)
-            //stackView.setCustomSpacing(10, after: operatorView)
         }
     }
 
@@ -97,12 +93,6 @@ class QueueView: UIView {
     }
 
     private func setup() {
-        self.transform = CGAffineTransform(scaleX: 0, y: 0)
-
-        /*stackView.axis = .vertical
-        stackView.spacing = 0
-        stackView.addArrangedSubviews([operatorView, statusView])*/
-
         setState(.initial, animated: false)
     }
 
@@ -112,18 +102,11 @@ class QueueView: UIView {
         operatorView.autoAlignAxis(toSuperviewAxis: .vertical)
 
         addSubview(statusView)
-        statusView.autoPinEdge(.top, to: .bottom, of: operatorView, withOffset: 10)
+        statusView.autoPinEdge(.top, to: .bottom, of: operatorView)
         statusView.autoPinEdge(toSuperviewEdge: .left, withInset: 0, relation: .greaterThanOrEqual)
         statusView.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
         statusView.autoPinEdge(toSuperviewEdge: .bottom)
-        statusView.autoAlignAxis(toSuperviewAxis: .vertical)
-
-        /*addSubview(stackView)
-        stackView.autoPinEdge(toSuperviewEdge: .left, withInset: 0, relation: .greaterThanOrEqual)
-        stackView.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
-        stackView.autoPinEdge(toSuperviewEdge: .top)
-        stackView.autoPinEdge(toSuperviewEdge: .bottom)
-        stackView.autoAlignAxis(toSuperviewAxis: .vertical)*/
+        //statusView.autoAlignAxis(toSuperviewAxis: .vertical)
     }
 }
 
