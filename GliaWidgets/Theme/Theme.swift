@@ -55,12 +55,21 @@ public class Theme {
                                           titleFont: font.buttonLabel,
                                           titleColor: color.baseLight,
                                           backgroundColor: color.systemNegative)
+        let messageEntry = ChatMessageEntryStyle(messageFont: font.bodyText,
+                                                 messageColor: color.baseDark,
+                                                 placeholder: Chat.Message.placeholder,
+                                                 placeholderFont: font.bodyText,
+                                                 placeholderColor: color.baseNormal,
+                                                 sendButtonColor: color.primary,
+                                                 separatorColor: color.baseShade,
+                                                 backgroundColor: color.background)
         return ChatStyle(header: header,
                          queue: queue,
                          sentMessage: sentMessage,
                          receivedMessage: receivedMessage,
                          backgroundColor: color.background,
-                         endButton: endButton)
+                         endButton: endButton,
+                         messageEntry: messageEntry)
     }()
 
     public lazy var alert: AlertStyle = {

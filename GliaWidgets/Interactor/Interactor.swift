@@ -9,6 +9,7 @@ enum InteractorState {
 
 enum InteractorEvent {
     case stateChanged(InteractorState)
+    case error(SalemoveError)
 }
 
 class Interactor {
@@ -185,15 +186,8 @@ extension Interactor: Interactable {
         state = .inactive
     }
 
-    func fail(with reason: String?) {
-        print("Called: \(#function)")
-        if let reason = reason {
-            print(reason)
-        }
-    }
-
     func fail(error: SalemoveError) {
         print("Called: \(#function)")
-        print(error)
+        notify(.error(error))
     }
 }

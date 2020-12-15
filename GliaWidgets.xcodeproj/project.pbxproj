@@ -29,6 +29,11 @@
 		1A4AD3D9256FE9D300468BFB /* SettingsTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4AD3D8256FE9D300468BFB /* SettingsTextCell.swift */; };
 		1A4AD3DC256FF67200468BFB /* SettingsFontCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4AD3DB256FF67200468BFB /* SettingsFontCell.swift */; };
 		1A56D53D257E24A400141BC8 /* PoweredBy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A56D53C257E24A400141BC8 /* PoweredBy.swift */; };
+		1A5F813C2588B72100A605DA /* ChatMessageEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5F813B2588B72100A605DA /* ChatMessageEntryView.swift */; };
+		1A5F81402588B7BD00A605DA /* ChatMessageEntryStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5F813F2588B7BD00A605DA /* ChatMessageEntryStyle.swift */; };
+		1A5F81442588BBD900A605DA /* ChatPickMediaButtonProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5F81432588BBD900A605DA /* ChatPickMediaButtonProperties.swift */; };
+		1A5F81482588BBF700A605DA /* ChatSendButtonProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5F81472588BBF700A605DA /* ChatSendButtonProperties.swift */; };
+		1A5F814D2588C0B800A605DA /* KeyboardObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5F814C2588C0B800A605DA /* KeyboardObserver.swift */; };
 		1A6075E02582209100569B0E /* UserImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6075DF2582209100569B0E /* UserImageView.swift */; };
 		1A6075E7258220E300569B0E /* UserImageStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6075E6258220E300569B0E /* UserImageStyle.swift */; };
 		1A60AF7A25656E0500E53F53 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60AF7925656E0500E53F53 /* Theme.swift */; };
@@ -160,6 +165,11 @@
 		1A4AD3DB256FF67200468BFB /* SettingsFontCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsFontCell.swift; sourceTree = "<group>"; };
 		1A56D53C257E24A400141BC8 /* PoweredBy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoweredBy.swift; sourceTree = "<group>"; };
 		1A56D5CF257E940900141BC8 /* PureLayout.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PureLayout.framework; path = Carthage/Build/iOS/PureLayout.framework; sourceTree = "<group>"; };
+		1A5F813B2588B72100A605DA /* ChatMessageEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageEntryView.swift; sourceTree = "<group>"; };
+		1A5F813F2588B7BD00A605DA /* ChatMessageEntryStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageEntryStyle.swift; sourceTree = "<group>"; };
+		1A5F81432588BBD900A605DA /* ChatPickMediaButtonProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatPickMediaButtonProperties.swift; sourceTree = "<group>"; };
+		1A5F81472588BBF700A605DA /* ChatSendButtonProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatSendButtonProperties.swift; sourceTree = "<group>"; };
+		1A5F814C2588C0B800A605DA /* KeyboardObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardObserver.swift; sourceTree = "<group>"; };
 		1A6075DF2582209100569B0E /* UserImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserImageView.swift; sourceTree = "<group>"; };
 		1A6075E6258220E300569B0E /* UserImageStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserImageStyle.swift; sourceTree = "<group>"; };
 		1A60AF7925656E0500E53F53 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
@@ -375,6 +385,23 @@
 			path = PoweredBy;
 			sourceTree = "<group>";
 		};
+		1A5F813A2588B70A00A605DA /* Entry */ = {
+			isa = PBXGroup;
+			children = (
+				1A5F813B2588B72100A605DA /* ChatMessageEntryView.swift */,
+				1A5F813F2588B7BD00A605DA /* ChatMessageEntryStyle.swift */,
+			);
+			path = Entry;
+			sourceTree = "<group>";
+		};
+		1A5F814B2588C0AD00A605DA /* Keyboard */ = {
+			isa = PBXGroup;
+			children = (
+				1A5F814C2588C0B800A605DA /* KeyboardObserver.swift */,
+			);
+			path = Keyboard;
+			sourceTree = "<group>";
+		};
 		1A6075DE2582207E00569B0E /* ImageView */ = {
 			isa = PBXGroup;
 			children = (
@@ -482,6 +509,7 @@
 		1A60AFC12566857200E53F53 /* Lib */ = {
 			isa = PBXGroup;
 			children = (
+				1A5F814B2588C0AD00A605DA /* Keyboard */,
 				1A60AFEF2566A4A700E53F53 /* Presenter */,
 				1A60AFC72566866800E53F53 /* ViewController */,
 				1A60AFD725669A0500E53F53 /* View */,
@@ -529,6 +557,7 @@
 		1A60AFD12566990F00E53F53 /* Chat */ = {
 			isa = PBXGroup;
 			children = (
+				1A5F813A2588B70A00A605DA /* Entry */,
 				1A60B02B256BF7C200E53F53 /* Message */,
 				1AC7A7822583B65B00567FF8 /* Cells */,
 				1A60AFDC25669A4200E53F53 /* ChatView.swift */,
@@ -630,6 +659,8 @@
 				1A60B01F2567FD1B00E53F53 /* BackButtonProperties.swift */,
 				1A60B0222567FD2D00E53F53 /* CloseButtonProperties.swift */,
 				1A63B2EC257A312700508478 /* AlertCloseButtonProperties.swift */,
+				1A5F81432588BBD900A605DA /* ChatPickMediaButtonProperties.swift */,
+				1A5F81472588BBF700A605DA /* ChatSendButtonProperties.swift */,
 			);
 			path = Properties;
 			sourceTree = "<group>";
@@ -1065,6 +1096,7 @@
 				1AE15E38257A578B00A642C0 /* AlertMessageStrings.swift in Sources */,
 				1AC7A77B25838AE800567FF8 /* ChatItem.swift in Sources */,
 				1A7CA8212574D6760047CBBE /* QueueOperatorView.swift in Sources */,
+				1A5F81442588BBD900A605DA /* ChatPickMediaButtonProperties.swift in Sources */,
 				1A4AD3C7256E863900468BFB /* ThemeColor.swift in Sources */,
 				1A63B2F3257A3F3D00508478 /* AlertViewController.swift in Sources */,
 				1A60B01D2567FCAD00E53F53 /* ButtonProperties.swift in Sources */,
@@ -1080,6 +1112,7 @@
 				1A7CA81D2574D6370047CBBE /* QueueView.swift in Sources */,
 				1A60AFE425669B0400E53F53 /* ChatCoordinator.swift in Sources */,
 				1AA738B625790D9900E1120F /* ActionButton.swift in Sources */,
+				1A5F813C2588B72100A605DA /* ChatMessageEntryView.swift in Sources */,
 				1A60B035256BF89D00E53F53 /* ChatMessageStatusView.swift in Sources */,
 				1A60B02D256BF7FF00E53F53 /* ReceivedChatMessageView.swift in Sources */,
 				1A60AFBF2566834400E53F53 /* ViewController.swift in Sources */,
@@ -1096,12 +1129,14 @@
 				1A56D53D257E24A400141BC8 /* PoweredBy.swift in Sources */,
 				1A60B0202567FD1B00E53F53 /* BackButtonProperties.swift in Sources */,
 				1A7CA8242574D68E0047CBBE /* QueueStatusView.swift in Sources */,
+				1A5F81402588B7BD00A605DA /* ChatMessageEntryStyle.swift in Sources */,
 				1A60AF7A25656E0500E53F53 /* Theme.swift in Sources */,
 				1A4AD3B3256D2A7600468BFB /* ChatMessageStyle.swift in Sources */,
 				1A60B0082567F29900E53F53 /* HeaderStyle.swift in Sources */,
 				1A6075E02582209100569B0E /* UserImageView.swift in Sources */,
 				1AC7A7AF258786CB00567FF8 /* EngagementViewModel.swift in Sources */,
 				1AA738B925790DB400E1120F /* ActionButtonStyle.swift in Sources */,
+				1A5F81482588BBF700A605DA /* ChatSendButtonProperties.swift in Sources */,
 				1A60B0152567FC7000E53F53 /* Button.swift in Sources */,
 				1A4AD3CA256E864800468BFB /* ThemeColorStyle.swift in Sources */,
 				1A7CA8272574D6F40047CBBE /* QueueStyle.swift in Sources */,
@@ -1110,6 +1145,7 @@
 				1A60AFDD25669A4200E53F53 /* ChatView.swift in Sources */,
 				1AA738AE2578E0D500E1120F /* QueueAnimationView.swift in Sources */,
 				1AC7A7BE2587B54800567FF8 /* UIImageView+Extensions.swift in Sources */,
+				1A5F814D2588C0B800A605DA /* KeyboardObserver.swift in Sources */,
 				1A60AFCA2566943F00E53F53 /* RootCoordinator.swift in Sources */,
 				1A60B0042567F25600E53F53 /* Header.swift in Sources */,
 				1A60B047256C0B4500E53F53 /* ChatMessageContent.swift in Sources */,

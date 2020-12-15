@@ -59,6 +59,10 @@ public enum L10n {
       /// End
       public static let title = L10n.tr("Localizable", "chat.endButton.title")
     }
+    public enum Message {
+      /// Enter Message
+      public static let placeholder = L10n.tr("Localizable", "chat.message.placeholder")
+    }
   }
 
   public enum Queue {

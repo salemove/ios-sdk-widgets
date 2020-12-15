@@ -111,6 +111,9 @@ class ChatViewModel: EngagementViewModel, ViewModel {
                                         imageUrl: engagedOperator?.picture?.url))
                 action?(.showEndButton)
             }
+        case .error(let error):
+            action?(.showAlert(alertStrings(with: error),
+                               dismissed: nil))
         }
     }
 }

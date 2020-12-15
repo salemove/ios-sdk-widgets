@@ -9,11 +9,15 @@ class ChatView: View {
 
     private let style: ChatStyle
     private let tableView = UITableView()
+    private let messageEntryView: ChatMessageEntryView
+    private var messageEntryViewBottomConstraint: NSLayoutConstraint!
+    private let keyboardObserver = KeyboardObserver()
 
     init(with style: ChatStyle) {
         self.style = style
         self.header = Header(with: style.header)
         self.queueView = QueueView(with: style.queue)
+        self.messageEntryView = ChatMessageEntryView(with: style.messageEntry)
         super.init()
         setup()
         layout()
@@ -43,6 +47,8 @@ class ChatView: View {
         tableView.estimatedRowHeight = 200
         tableView.separatorStyle = .none
         tableView.register(cell: ChatItemCell.self)
+
+        observeKeyboard()
     }
 
     private func layout() {
@@ -51,12 +57,48 @@ class ChatView: View {
                                             excludingEdge: .bottom)
 
         addSubview(tableView)
-        tableView.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .top)
         tableView.autoPinEdge(.top, to: .bottom, of: header)
+        tableView.autoPinEdge(toSuperviewEdge: .left)
+        tableView.autoPinEdge(toSuperviewEdge: .right)
 
         tableView.tableHeaderView = queueView
         queueView.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0))
         queueView.autoAlignAxis(toSuperviewAxis: .vertical)
+
+        addSubview(messageEntryView)
+        messageEntryViewBottomConstraint = messageEntryView.autoPinEdge(toSuperviewSafeArea: .bottom)
+        messageEntryView.autoPinEdge(toSuperviewEdge: .left)
+        messageEntryView.autoPinEdge(toSuperviewEdge: .right)
+        messageEntryView.autoPinEdge(.top, to: .bottom, of: tableView)
+    }
+}
+
+extension ChatView {
+    private func observeKeyboard() {
+        keyboardObserver.keyboardWillShow = { [unowned self] properties in
+            let y = self.tableView.contentSize.height - properties.finalFrame.height
+            let offset = CGPoint(x: 0, y: -y)
+
+            UIView.animate(withDuration: properties.duration,
+                           delay: 0.0,
+                           options: properties.animationOptions,
+                           animations: { [weak self] in
+                let bottomInset = UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0.0
+                self?.messageEntryViewBottomConstraint.constant = -properties.finalFrame.height + bottomInset
+                self?.tableView.contentOffset = offset
+                self?.layoutIfNeeded()
+            }, completion: { _ -> Void in })
+        }
+
+        keyboardObserver.keyboardWillHide = { [unowned self] properties in
+            UIView.animate(withDuration: properties.duration,
+                           delay: 0.0,
+                           options: properties.animationOptions,
+                           animations: { [weak self] in
+                self?.messageEntryViewBottomConstraint.constant = 0
+                self?.layoutIfNeeded()
+            }, completion: { _ -> Void in })
+        }
     }
 }
 
