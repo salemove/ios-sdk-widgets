@@ -32,7 +32,7 @@ class UserImageView: UIView {
     }
 
     func setImage(fromUrl url: String?, animated: Bool) {
-        imageView.setImage(from: url, animated: animated)
+        imageView.setImage(from: url, animated: animated, finished: nil)
     }
 
     private func setup() {

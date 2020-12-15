@@ -25,6 +25,14 @@ class ChatMessageUserView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    func setImage(fromUrl url: String?, animated: Bool) {
+        imageView.setImage(from: url, animated: animated) { image in
+            self.widthConstraint.constant = image == nil
+                ? 0
+                : self.kSize.width
+        }
+    }
+
     private func setup() {
         imageView.clipsToBounds = true
         imageView.contentMode = .scaleAspectFill

@@ -118,7 +118,16 @@ extension ChatView: UITableViewDataSource {
         switch item.kind {
         case .sentMessage:
             let view = SentChatMessageView(with: style.sentMessage)
+            view.appendContent(.text(item.message), animated: false)
             cell.content = .sentMessage(view)
+        case .receivedMessage:
+            let view = ReceivedChatMessageView(with: style.receivedMessage)
+            view.appendContent(.text(item.message), animated: false)
+            if item.showsSenderImage {
+                view.operatorImageView.setImage(fromUrl: item.senderImageUrl,
+                                                animated: true)
+            }
+            cell.content = .receivedMessage(view)
         }
 
         return cell

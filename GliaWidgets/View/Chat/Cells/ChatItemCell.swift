@@ -5,12 +5,15 @@ class ChatItemCell: UITableViewCell {
     enum Content {
         case none
         case sentMessage(SentChatMessageView)
+        case receivedMessage(ReceivedChatMessageView)
 
         var view: UIView? {
             switch self {
             case .none:
                 return nil
             case .sentMessage(let view):
+                return view
+            case .receivedMessage(let view):
                 return view
             }
         }

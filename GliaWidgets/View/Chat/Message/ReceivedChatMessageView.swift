@@ -1,7 +1,8 @@
 import UIKit
 
 class ReceivedChatMessageView: ChatMessageView {
-    private let operatorImageView = ChatMessageUserView()
+    let operatorImageView = ChatMessageUserView()
+
     private let kInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 88)
 
     override init(with style: ChatMessageStyle) {
