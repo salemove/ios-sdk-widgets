@@ -187,11 +187,9 @@ extension Interactor: Interactable {
 
     func fail(with reason: String?) {
         print("Called: \(#function)")
-        // Handle the failing engagement request and maybe log the reason or show it to the user
         if let reason = reason {
             print(reason)
         }
-        //cleanup()
     }
 
     func fail(error: SalemoveError) {
