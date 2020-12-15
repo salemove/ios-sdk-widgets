@@ -22,24 +22,12 @@ class QueueStatusView: UIView {
         label2.textColor = style.text2FontColor
     }
 
-    func setText1(_ text1: String?, text2: String?, animated: Bool) {
-        stackView.transform = CGAffineTransform(scaleX: 0, y: 0)
-        label1.text = text1
-        label2.text = text2
-
-        UIView.animate(withDuration: animated ? 0.5 : 0.0,
-                       delay: 0.0,
-                       usingSpringWithDamping: 0.8,
-                       initialSpringVelocity: 0.7,
-                       options: .curveEaseInOut,
-                       animations: {
-                        self.stackView.transform = .identity
-                        self.layoutIfNeeded()
-                       }, completion: nil)
+    func setText1(_ text: String?, animated: Bool) {
+        setText(text, to: label1, animated: animated)
     }
 
-    func setText2(_ text: String) {
-        label2.text = text
+    func setText2(_ text: String?, animated: Bool) {
+        setText(text, to: label2, animated: animated)
     }
 
     private func setup() {
@@ -54,5 +42,20 @@ class QueueStatusView: UIView {
     private func layout() {
         addSubview(stackView)
         stackView.autoPinEdgesToSuperviewEdges()
+    }
+
+    private func setText(_ text: String?, to label: UILabel, animated: Bool) {
+        label.text = text
+        label.transform = CGAffineTransform(scaleX: 0, y: 0)
+
+        UIView.animate(withDuration: animated ? 0.5 : 0.0,
+                       delay: 0.0,
+                       usingSpringWithDamping: 0.8,
+                       initialSpringVelocity: 0.7,
+                       options: .curveEaseInOut,
+                       animations: {
+                        label.transform = .identity
+                        self.layoutIfNeeded()
+                       }, completion: nil)
     }
 }

@@ -62,7 +62,11 @@ class Header: UIView {
             if let item = item {
                 item.alpha = 0.0
                 container.addSubview(item)
-                item.autoPinEdgesToSuperviewEdges()
+                item.autoPinEdge(toSuperviewEdge: .left, withInset: 0, relation: .greaterThanOrEqual)
+                item.autoPinEdge(toSuperviewEdge: .top, withInset: 0, relation: .greaterThanOrEqual)
+                item.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
+                item.autoPinEdge(toSuperviewEdge: .bottom, withInset: 0, relation: .greaterThanOrEqual)
+                item.autoCenterInSuperview()
                 UIView.animate(withDuration: animated ? 0.2 : 0.0) {
                     item.alpha = 1.0
                 }

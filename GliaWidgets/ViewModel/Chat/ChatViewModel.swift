@@ -117,6 +117,8 @@ class ChatViewModel: EngagementViewModel, ViewModel {
                 action?(.showEndButton)
                 action?(.setMessageEntryEnabled(true))
             }
+        case .receivedMessage(let message):
+            receivedMessage(message)
         case .error(let error):
             action?(.showAlert(alertStrings(with: error),
                                dismissed: nil))
@@ -127,6 +129,12 @@ class ChatViewModel: EngagementViewModel, ViewModel {
 extension ChatViewModel {
     private func send(_ message: String) {
 
+    }
+
+    private func receivedMessage(_ message: Message) {
+        let item = ChatItem(kind: .receivedMessage(message,
+                                                   interactor.engagedOperator))
+        appendItem(item)
     }
 }
 

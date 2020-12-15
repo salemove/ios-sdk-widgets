@@ -9,11 +9,21 @@ enum InteractorState {
 
 enum InteractorEvent {
     case stateChanged(InteractorState)
+    case receivedMessage(Message)
     case error(SalemoveError)
 }
 
 class Interactor {
     typealias EventHandler = (InteractorEvent) -> Void
+
+    var engagedOperator: Operator? {
+        switch state {
+        case .engaged(let engagedOperator):
+            return engagedOperator
+        default:
+            return nil
+        }
+    }
 
     private let queueID: String
     private let visitorContext: VisitorContext
@@ -179,6 +189,7 @@ extension Interactor: Interactable {
     func receive(message: Message) {
         print("Called: \(#function)")
         print("MESSAGE:", message.content)
+        notify(.receivedMessage(message))
     }
 
     func end() {

@@ -51,7 +51,6 @@ class ChatItemCell: UITableViewCell {
 
     private func setup() {
         selectionStyle = .none
-        contentView.backgroundColor = .lightGray
     }
 
     private func layout() {}

@@ -22,11 +22,18 @@ class ChatView: View {
         layout()
     }
 
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        updateTableHeaderHeight()
+    }
+
     func appendRows(_ count: Int, animated: Bool) {
+        guard let rowCount = numberOfRows?() else { return }
+
         if animated {
-            let indexPaths = (0 ..< count)
+            let indexPaths = (rowCount - count ..< rowCount)
                 .map({ IndexPath(row: $0, section: 0) })
-            tableView.insertRows(at: indexPaths, with: .top)
+            tableView.insertRows(at: indexPaths, with: .bottom)
         } else {
             tableView.reloadData()
         }
@@ -61,14 +68,19 @@ class ChatView: View {
         tableView.autoPinEdge(toSuperviewEdge: .right)
 
         tableView.tableHeaderView = queueView
-        queueView.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0))
-        queueView.autoAlignAxis(toSuperviewAxis: .vertical)
+        updateTableHeaderHeight()
+        //addSubview(queueView)
+        //queueView.autoCenterInSuperview()
 
         addSubview(messageEntryView)
         messageEntryViewBottomConstraint = messageEntryView.autoPinEdge(toSuperviewSafeArea: .bottom)
         messageEntryView.autoPinEdge(toSuperviewEdge: .left)
         messageEntryView.autoPinEdge(toSuperviewEdge: .right)
         messageEntryView.autoPinEdge(.top, to: .bottom, of: tableView)
+    }
+
+    private func updateTableHeaderHeight() {
+        tableView.tableHeaderView?.frame.size.height = queueView.frame.size.height
     }
 }
 

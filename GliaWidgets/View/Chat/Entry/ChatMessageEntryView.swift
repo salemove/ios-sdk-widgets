@@ -75,7 +75,7 @@ public class ChatMessageEntryView: UIView {
         sendButton.tap = { [weak self] in self?.sendTap() }
 
         buttonsStackView.axis = .horizontal
-        buttonsStackView.spacing = 24
+        buttonsStackView.spacing = 15
         buttonsStackView.addArrangedSubviews([pickMediaButton, sendButton])
     }
 
@@ -94,12 +94,14 @@ public class ChatMessageEntryView: UIView {
         placeholderLabel.autoPinEdge(toSuperviewEdge: .top)
 
         addSubview(messageContainerView)
-        messageContainerView.autoPinEdgesToSuperviewEdges()
+        messageContainerView.autoPinEdgesToSuperviewEdges(with: .zero,
+                                                          excludingEdge: .right)
 
         addSubview(buttonsStackView)
-        buttonsStackView.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
         buttonsStackView.autoPinEdge(.left, to: .right, of: messageContainerView, withOffset: 16)
-        buttonsStackView.autoSetDimension(.height, toSize: 30)
+        buttonsStackView.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
+        buttonsStackView.autoPinEdge(toSuperviewEdge: .top)
+        buttonsStackView.autoPinEdge(toSuperviewEdge: .bottom)
         buttonsStackView.autoAlignAxis(toSuperviewAxis: .horizontal)
 
         addSubview(separator)
