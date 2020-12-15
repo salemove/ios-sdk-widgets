@@ -104,8 +104,6 @@ class QueueView: UIView {
     }
 
     private func layout() {
-        //autoSetDimension(.height, toSize: 200)
-
         addSubview(stackView)
         stackView.autoPinEdge(toSuperviewEdge: .left, withInset: 0, relation: .greaterThanOrEqual)
         stackView.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
