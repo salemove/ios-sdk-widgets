@@ -1,5 +1,7 @@
 struct ChatItem {
-    enum Kind {}
+    enum Kind {
+        case sentMessage
+    }
 
     let kind: Kind
 }

@@ -126,102 +126,62 @@ extension Interactor {
 extension Interactor: Interactable {
     var onScreenSharingOffer: ScreenshareOfferBlock {
         print("Called: \(#function)")
-        // When the operator asks for sharing the screen, supply the answer
-        return { [unowned self] answer in
-            //self.showRequestingView(request: "Possibility to share screen", answer: answer)
-        }
+        return { _ in }
     }
 
     var onMediaUpgradeOffer: MediaUgradeOfferBlock {
         print("Called: \(#function)")
-        // When the operator asks for audio/video, supply the answer
-        return { [unowned self] _, answer in
-            //self.showRequestingView(request: "Posibility to enable media", answer: answer)
-        }
+        return { _, _ in }
     }
 
     var onEngagementRequest: RequestOfferBlock {
         print("Called: \(#function)")
-        // Handle the incoming engagement request
         return { answer in
-        // Supply the context that will be shown in the CoBrowsing area
             let context = SalemoveSDK.VisitorContext(type: .page, url: "wwww.example.com")
-            answer(context, true) {_, _ in }
+            answer(context, true) { _, _ in }
         }
     }
 
     var onOperatorTypingStatusUpdate: OperatorTypingStatusUpdate {
         print("Called: \(#function)")
-        // Handle the operator typing status during an engagement
-        return { _ in
-
-        }
+        return { _ in }
     }
 
     var onMessagesUpdated: MessagesUpdateBlock {
         print("Called: \(#function)")
-        // Handle the incoming messages list
-        return { [unowned self] messages in
-
-        }
+        return { _ in }
     }
 
     var onVisitorScreenSharingStateChange: VisitorScreenSharingStateChange {
         print("Called: \(#function)")
-         // Handle the screen sharing state
-        return { [unowned self] state, error in
-            if let error = error {
-                // Show or log the error
-            } else {
-                // Update the view by showing the stream
-                DispatchQueue.main.async {
-                }
-            }
-        }
+        return { _, _ in }
     }
 
     var onAudioStreamAdded: AudioStreamAddedBlock {
         print("Called: \(#function)")
-        // Handle the incoming audio stream block
-        return { [unowned self] stream, error in
-            if let stream = stream {
-                // Update the view by showing the stream
-                DispatchQueue.main.async {
-
-                }
-            } else if let error = error {
-                // Show or log the error
-            }
-        }
+        return { _, _ in }
     }
 
     var onVideoStreamAdded: VideoStreamAddedBlock {
         print("Called: \(#function)")
-         // Handle the incoming video stream block
-        return { [unowned self] stream, error in
-            if let stream = stream {
-                // Update the view by showing the stream
-                DispatchQueue.main.async {
-
-                }
-            } else if let error = error {
-                // Show or log the error
-            }
-        }
+        return { _, _ in }
     }
 
     func start() {
         print("Called: \(#function)")
-        Salemove.sharedInstance.requestEngagedOperator { operators, error in
+        Salemove.sharedInstance.requestEngagedOperator { operators, _ in
             let engagedOperator = operators?.first
             self.state = .engaged(engagedOperator)
         }
     }
 
+    func receive(message: Message) {
+        print("Called: \(#function)")
+        print("MESSAGE:", message.content)
+    }
+
     func end() {
         print("Called: \(#function)")
-        // Remove any active sessions and do a cleanup and maybe dismiss the controller
-        //cleanup()
         state = .inactive
     }
 
@@ -232,12 +192,6 @@ extension Interactor: Interactable {
             print(reason)
         }
         //cleanup()
-    }
-
-    func receive(message: Message) {
-        print("Called: \(#function)")
-        // Update the messages that are coming from the SDK and show them to to the user
-        print("MESSAGE:", message.content)
     }
 
     func fail(error: SalemoveError) {

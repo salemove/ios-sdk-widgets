@@ -71,7 +71,11 @@ extension ChatView: UITableViewDataSource {
             let cell: ChatItemCell = tableView.dequeue(cellFor: indexPath)
         else { return UITableViewCell() }
 
-        switch item.kind {}
+        switch item.kind {
+        case .sentMessage:
+            let view = SentChatMessageView(with: style.sentMessage)
+            cell.content = .sentMessage(view)
+        }
 
         return cell
     }

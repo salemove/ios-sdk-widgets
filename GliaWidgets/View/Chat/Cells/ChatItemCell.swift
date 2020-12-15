@@ -4,11 +4,14 @@ import PureLayout
 class ChatItemCell: UITableViewCell {
     enum Content {
         case none
+        case sentMessage(SentChatMessageView)
 
         var view: UIView? {
             switch self {
             case .none:
                 return nil
+            case .sentMessage(let view):
+                return view
             }
         }
     }
