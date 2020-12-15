@@ -67,10 +67,8 @@ class ChatView: View {
         tableView.autoPinEdge(toSuperviewEdge: .left)
         tableView.autoPinEdge(toSuperviewEdge: .right)
 
-        //tableView.tableHeaderView = queueView
-        //updateTableHeaderHeight()
-        addSubview(queueView)
-        queueView.autoCenterInSuperview()
+        tableView.tableHeaderView = queueView
+        updateTableHeaderHeight()
 
         addSubview(messageEntryView)
         messageEntryViewBottomConstraint = messageEntryView.autoPinEdge(toSuperviewSafeArea: .bottom)
@@ -80,7 +78,16 @@ class ChatView: View {
     }
 
     private func updateTableHeaderHeight() {
-        tableView.tableHeaderView?.frame.size.height = queueView.frame.size.height
+        guard let headerView = tableView.tableHeaderView else { return }
+
+        let height = queueView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
+        var headerFrame = queueView.frame
+
+        if height != headerFrame.size.height {
+            headerFrame.size.height = height
+            headerView.frame = headerFrame
+            tableView.tableHeaderView = queueView
+        }
     }
 }
 

@@ -29,11 +29,6 @@ class QueueView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        print("FRAME: ", statusView.frame)
-    }
-
     func setState(_ state: State, animated: Bool) {
         self.state = state
 
@@ -98,15 +93,15 @@ class QueueView: UIView {
 
     private func layout() {
         addSubview(operatorView)
-        operatorView.autoPinEdge(toSuperviewEdge: .top)
+        operatorView.autoPinEdge(toSuperviewEdge: .top, withInset: 10)
         operatorView.autoAlignAxis(toSuperviewAxis: .vertical)
 
         addSubview(statusView)
-        statusView.autoPinEdge(.top, to: .bottom, of: operatorView)
+        statusView.autoPinEdge(.top, to: .bottom, of: operatorView, withOffset: 10)
         statusView.autoPinEdge(toSuperviewEdge: .left, withInset: 0, relation: .greaterThanOrEqual)
         statusView.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
         statusView.autoPinEdge(toSuperviewEdge: .bottom)
-        //statusView.autoAlignAxis(toSuperviewAxis: .vertical)
+        statusView.autoAlignAxis(toSuperviewAxis: .vertical)
     }
 }
 

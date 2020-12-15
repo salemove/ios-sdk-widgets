@@ -40,7 +40,6 @@ class QueueStatusView: UIView {
     }
 
     private func layout() {
-        autoSetDimensions(to: CGSize(width: 300, height: 60))
         addSubview(stackView)
         stackView.autoPinEdgesToSuperviewEdges()
     }
