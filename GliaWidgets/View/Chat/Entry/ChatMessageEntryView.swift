@@ -8,6 +8,10 @@ public class ChatMessageEntryView: UIView {
         get { return textView.text }
         set { textView.text = newValue }
     }
+    var isEnabled: Bool {
+        get { return isUserInteractionEnabled }
+        set { isUserInteractionEnabled = newValue }
+    }
 
     private let style: ChatMessageEntryStyle
     private let separator = UIView()

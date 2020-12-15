@@ -50,6 +50,8 @@ class ChatViewController: ViewController, AlertPresenter {
                 let rightItem = ActionButton(with: self.viewFactory.theme.chat.endButton)
                 rightItem.tap = { viewModel.event(.closeTapped) }
                 view.header.setRightItem(rightItem, animated: true)
+            case .setMessageEntryEnabled(let enabled):
+                view.isMessageEntryEnabled = enabled
             case .appendRows(let count):
                 view.appendRows(count, animated: true)
             case .refreshItems:

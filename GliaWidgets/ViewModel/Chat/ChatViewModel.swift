@@ -12,6 +12,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case queueConnecting
         case queueConnected(name: String?, imageUrl: String?)
         case showEndButton
+        case setMessageEntryEnabled(Bool)
         case appendRows(Int)
         case refreshItems
         case confirm(AlertConfirmationStrings,
@@ -37,6 +38,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     public func event(_ event: Event) {
         switch event {
         case .viewDidLoad:
+            action?(.setMessageEntryEnabled(false))
             enqueue()
         case .backTapped:
             delegate?(.back)
@@ -110,6 +112,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
                 action?(.queueConnected(name: engagedOperator?.name,
                                         imageUrl: engagedOperator?.picture?.url))
                 action?(.showEndButton)
+                action?(.setMessageEntryEnabled(true))
             }
         case .error(let error):
             action?(.showAlert(alertStrings(with: error),
