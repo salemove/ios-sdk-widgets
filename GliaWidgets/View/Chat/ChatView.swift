@@ -3,16 +3,12 @@ import UIKit
 class ChatView: View {
     let header: Header
     let queueView: QueueView
+    let messageEntryView: ChatMessageEntryView
     var numberOfRows: (() -> Int?)?
     var itemForRow: ((Int) -> ChatItem?)?
-    var isMessageEntryEnabled: Bool {
-        get { return messageEntryView.isEnabled }
-        set { messageEntryView.isEnabled = newValue }
-    }
 
     private let style: ChatStyle
     private let tableView = UITableView()
-    private let messageEntryView: ChatMessageEntryView
     private var messageEntryViewBottomConstraint: NSLayoutConstraint!
     private let keyboardObserver = KeyboardObserver()
 

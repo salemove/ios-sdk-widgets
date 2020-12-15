@@ -96,6 +96,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
                        options: .curveEaseInOut) {
             window.alpha = 0.0
         } completion: { _ in
+            self.window?.endEditing(true)
             self.window = nil
             self.minimizedView = nil
         }

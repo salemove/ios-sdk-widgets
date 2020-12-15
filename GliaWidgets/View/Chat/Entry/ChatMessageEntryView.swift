@@ -2,7 +2,7 @@ import UIKit
 
 public class ChatMessageEntryView: UIView {
     var maxCharacters: Int = 200
-    var textMessageEntered: ((String) -> Void)?
+    var sendTapped: ((String) -> Void)?
     var pickMediaTapped: (() -> Void)?
     var message: String {
         get { return textView.text }
@@ -72,7 +72,7 @@ public class ChatMessageEntryView: UIView {
         sendButton.alpha = 0.0
 
         pickMediaButton.tap = { [weak self] in self?.pickMediaTapped?() }
-        sendButton.tap = { [weak self] in self?.sendTapped() }
+        sendButton.tap = { [weak self] in self?.sendTap() }
 
         buttonsStackView.axis = .horizontal
         buttonsStackView.spacing = 24
@@ -125,9 +125,9 @@ public class ChatMessageEntryView: UIView {
         textViewHeightConstraint.constant = newHeight
     }
 
-    private func sendTapped() {
+    private func sendTap() {
         let text = textView.text ?? ""
-        textMessageEntered?(text)
+        sendTapped?(text)
         textView.text = ""
         updateTextFieldHeight()
     }

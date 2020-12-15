@@ -37,6 +37,7 @@ class ChatViewController: ViewController, AlertPresenter {
         view.header.setRightItem(rightItem, animated: false)
         view.numberOfRows = { return viewModel.numberOfItems }
         view.itemForRow = { return viewModel.item(for: $0) }
+        view.messageEntryView.sendTapped = { viewModel.event(.sendTapped(message: $0)) }
 
         viewModel.action = { action in
             switch action {
@@ -51,7 +52,7 @@ class ChatViewController: ViewController, AlertPresenter {
                 rightItem.tap = { viewModel.event(.closeTapped) }
                 view.header.setRightItem(rightItem, animated: true)
             case .setMessageEntryEnabled(let enabled):
-                view.isMessageEntryEnabled = enabled
+                view.messageEntryView.isEnabled = enabled
             case .appendRows(let count):
                 view.appendRows(count, animated: true)
             case .refreshItems:

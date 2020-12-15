@@ -5,6 +5,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case viewDidLoad
         case backTapped
         case closeTapped
+        case sendTapped(message: String)
     }
 
     enum Action {
@@ -44,6 +45,8 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             delegate?(.back)
         case .closeTapped:
             closeTapped()
+        case .sendTapped(message: let message):
+            send(message)
         }
     }
 
@@ -118,6 +121,12 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             action?(.showAlert(alertStrings(with: error),
                                dismissed: nil))
         }
+    }
+}
+
+extension ChatViewModel {
+    private func send(_ message: String) {
+
     }
 }
 
