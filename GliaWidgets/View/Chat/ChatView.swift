@@ -4,9 +4,10 @@ class ChatView: View {
     let header: Header
     let queueView: QueueView
     let messageEntryView: ChatMessageEntryView
-    var numberOfRows: (() -> Int?)?
-    var itemForRow: ((Int) -> ChatItem?)?
-    var senderImageUrlForRow: ((Int) -> String?)?
+    var numberOfSections: (() -> Int?)?
+    var numberOfRows: ((Int) -> Int?)?
+    var itemForRow: ((Int, Int) -> ChatItem?)?
+    var senderImageUrlForRow: ((Int, Int) -> String?)?
 
     private let style: ChatStyle
     private let tableView = UITableView()
@@ -23,12 +24,12 @@ class ChatView: View {
         layout()
     }
 
-    func appendRows(_ count: Int, animated: Bool) {
-        guard let rowCount = numberOfRows?() else { return }
+    func appendRows(_ count: Int, to section: Int, animated: Bool) {
+        guard let rowCount = numberOfRows?(section) else { return }
 
         if animated {
             let indexPaths = (rowCount - count ..< rowCount)
-                .map({ IndexPath(row: $0, section: 0) })
+                .map({ IndexPath(row: $0, section: section) })
             tableView.insertRows(at: indexPaths, with: .bottom)
         } else {
             tableView.reloadData()
@@ -104,13 +105,17 @@ extension ChatView {
 }
 
 extension ChatView: UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return numberOfSections?() ?? 0
+    }
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return numberOfRows?() ?? 0
+        return numberOfRows?(section) ?? 0
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard
-            let item = itemForRow?(indexPath.row),
+            let item = itemForRow?(indexPath.row, indexPath.section),
             let cell: ChatItemCell = tableView.dequeue(cellFor: indexPath)
         else { return UITableViewCell() }
 
@@ -124,7 +129,7 @@ extension ChatView: UITableViewDataSource {
         case .operatorMessage(let message):
             let view = OperatorChatMessageView(with: style.operatorMessage)
             view.appendContent(.text(message.content), animated: false)
-            if let imageUrl = senderImageUrlForRow?(indexPath.row) {
+            if let imageUrl = senderImageUrlForRow?(indexPath.row, indexPath.section) {
                 view.operatorImageView.setImage(fromUrl: imageUrl, animated: true)
             }
             cell.content = .operatorMessage(view)

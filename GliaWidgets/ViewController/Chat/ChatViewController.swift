@@ -35,9 +35,10 @@ class ChatViewController: ViewController, AlertPresenter {
 
         view.header.setLeftItem(leftItem, animated: false)
         view.header.setRightItem(rightItem, animated: false)
-        view.numberOfRows = { return viewModel.numberOfItems }
-        view.itemForRow = { return viewModel.item(for: $0) }
-        view.senderImageUrlForRow = { return viewModel.senderImageUrl(for: $0) }
+        view.numberOfSections = { return viewModel.numberOfSections }
+        view.numberOfRows = { return viewModel.numberOfItems(in: $0) }
+        view.itemForRow = { return viewModel.item(for: $0, in: $1) }
+        view.senderImageUrlForRow = { return viewModel.senderImageUrl(for: $0, in: $1) }
         view.messageEntryView.sendTapped = { viewModel.event(.sendTapped(message: $0)) }
 
         viewModel.action = { action in
@@ -56,8 +57,8 @@ class ChatViewController: ViewController, AlertPresenter {
                 view.header.setRightItem(rightItem, animated: true)
             case .setMessageEntryEnabled(let enabled):
                 view.messageEntryView.isEnabled = enabled
-            case .appendRows(let count):
-                view.appendRows(count, animated: true)
+            case .appendRows(let count, let section):
+                view.appendRows(count, to: section, animated: true)
             case .refreshItems:
                 view.refreshItems()
             case .confirm(let strings, let confirmed):

@@ -14,7 +14,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case queueConnected(name: String?, imageUrl: String?)
         case showEndButton
         case setMessageEntryEnabled(Bool)
-        case appendRows(Int)
+        case appendRows(Int, to: Int)
         case refreshItems
         case confirm(AlertConfirmationStrings,
                      confirmed: (() -> Void)?)
@@ -27,10 +27,42 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case finished
     }
 
+    private class Section {
+        let index: Int
+
+        private var items = [ChatItem]()
+
+        var itemCount: Int { return items.count }
+
+        init(_ index: Int) {
+            self.index = index
+        }
+
+        subscript(index: Int) -> ChatItem {
+            get { return items[index] }
+            set(newValue) { items[index] = newValue }
+        }
+
+        func set(_ newItems: [ChatItem]) {
+            items.append(contentsOf: newItems)
+        }
+
+        func append(_ item: ChatItem) {
+            items.append(item)
+        }
+
+        func append(_ newItems: [ChatItem]) {
+            items.append(contentsOf: newItems)
+        }
+    }
+
     var action: ((Action) -> Void)?
     var delegate: ((DelegateEvent) -> Void)?
 
-    private var items = [ChatItem]()
+    private let sections = [Section(0), Section(1), Section(2)]
+    private var oldMessagesSection: Section { return sections[0] }
+    private var queueOperatorSection: Section { return sections[1] }
+    private var newMessagesSection: Section { return sections[2] }
 
     override init(interactor: Interactor, alertStrings: AlertStrings) {
         super.init(interactor: interactor, alertStrings: alertStrings)
@@ -51,7 +83,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
 
     private func start() {
         let item = ChatItem(kind: .queueOperator)
-        appendItem(item)
+        appendItem(item, to: queueOperatorSection)
         action?(.setMessageEntryEnabled(false))
         enqueue()
     }
@@ -98,13 +130,13 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         }
     }
 
-    private func appendItem(_ item: ChatItem) {
-        appendItems([item])
+    private func appendItem(_ item: ChatItem, to section: Section) {
+        appendItems([item], to: section)
     }
 
-    private func appendItems(_ newItems: [ChatItem]) {
-        items.append(contentsOf: newItems)
-        action?(.appendRows(newItems.count))
+    private func appendItems(_ items: [ChatItem], to section: Section) {
+        section.append(items)
+        action?(.appendRows(items.count, to: section.index))
     }
 
     override func interactorEvent(_ event: InteractorEvent) {
@@ -146,19 +178,24 @@ extension ChatViewModel {
 
     private func receivedMessage(_ message: Message) {
         guard let item = ChatItem(with: message) else { return }
-        appendItem(item)
+        appendItem(item, to: newMessagesSection)
     }
 }
 
 extension ChatViewModel {
-    var numberOfItems: Int { return items.count }
+    var numberOfSections: Int { return sections.count }
 
-    func item(for row: Int) -> ChatItem {
-        return items[row]
+    func numberOfItems(in section: Int) -> Int {
+        return sections[section].itemCount
     }
 
-    func senderImageUrl(for row: Int) -> String? {
-        let item = items[row]
+    func item(for row: Int, in section: Int) -> ChatItem {
+        return sections[section][row]
+    }
+
+    func senderImageUrl(for row: Int, in section: Int) -> String? {
+        guard sections[section] === queueOperatorSection else { return nil }
+        let item = sections[section][row]
 
         switch item.kind {
         case .operatorMessage:
