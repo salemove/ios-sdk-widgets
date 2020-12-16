@@ -125,6 +125,13 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             }
         case .receivedMessage(let message):
             receivedMessage(message)
+        case .messagesUpdated(let messages):
+            /*let engagedOperator = interactor.engagedOperator
+            let items: [ChatItem] = messages.map {
+                ChatItem(kind: .receivedMessage($0, engagedOperator))
+            }
+            appendItems(items)*/
+        break
         case .error(let error):
             action?(.showAlert(alertStrings(with: error),
                                dismissed: nil))
@@ -138,8 +145,7 @@ extension ChatViewModel {
     }
 
     private func receivedMessage(_ message: Message) {
-        let item = ChatItem(kind: .receivedMessage(message,
-                                                   interactor.engagedOperator))
+        guard let item = ChatItem(with: message) else { return }
         appendItem(item)
     }
 }
@@ -154,10 +160,11 @@ extension ChatViewModel {
     func senderImageUrl(for row: Int) -> String? {
         let item = items[row]
 
-        if case let .receivedMessage(_, engagedOperator) = item.kind {
-            return engagedOperator?.picture?.url
+        switch item.kind {
+        case .operatorMessage:
+            return interactor.engagedOperator?.picture?.url
+        default:
+            return nil
         }
-
-        return nil
     }
 }

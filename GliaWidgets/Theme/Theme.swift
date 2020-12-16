@@ -45,10 +45,10 @@ public class Theme {
                                connecting: connecting,
                                connected: connected)
 
-        let sentMessage = ChatMessageStyle(messageFont: font.bodyText,
-                                           messageColor: color.baseLight,
-                                           backgroundColor: color.primary)
-        let receivedMessage = ChatMessageStyle(messageFont: font.bodyText,
+        let visitorMessage = ChatMessageStyle(messageFont: font.bodyText,
+                                              messageColor: color.baseLight,
+                                              backgroundColor: color.primary)
+        let operatorMessage = ChatMessageStyle(messageFont: font.bodyText,
                                                messageColor: color.baseDark,
                                                backgroundColor: Color.lightGrey)
         let endButton = ActionButtonStyle(title: Chat.EndButton.title,
@@ -65,8 +65,8 @@ public class Theme {
                                                  backgroundColor: color.background)
         return ChatStyle(header: header,
                          queue: queue,
-                         sentMessage: sentMessage,
-                         receivedMessage: receivedMessage,
+                         visitorMessage: visitorMessage,
+                         operatorMessage: operatorMessage,
                          backgroundColor: color.background,
                          endButton: endButton,
                          messageEntry: messageEntry)

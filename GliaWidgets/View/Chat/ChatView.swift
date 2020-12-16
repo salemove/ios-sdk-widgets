@@ -117,17 +117,17 @@ extension ChatView: UITableViewDataSource {
         switch item.kind {
         case .queueOperator:
             cell.content = .queueOperator(queueView)
-        case .sentMessage(let message):
-            let view = SentChatMessageView(with: style.sentMessage)
+        case .visitorMessage(let message):
+            let view = VisitorChatMessageView(with: style.visitorMessage)
             view.appendContent(.text(message.content), animated: false)
-            cell.content = .sentMessage(view)
-        case .receivedMessage(let message, _):
-            let view = ReceivedChatMessageView(with: style.receivedMessage)
+            cell.content = .visitorMessage(view)
+        case .operatorMessage(let message):
+            let view = OperatorChatMessageView(with: style.operatorMessage)
             view.appendContent(.text(message.content), animated: false)
             if let imageUrl = senderImageUrlForRow?(indexPath.row) {
                 view.operatorImageView.setImage(fromUrl: imageUrl, animated: true)
             }
-            cell.content = .receivedMessage(view)
+            cell.content = .operatorMessage(view)
         }
 
         return cell

@@ -1,6 +1,6 @@
 import UIKit
 
-class SentChatMessageView: ChatMessageView {
+class VisitorChatMessageView: ChatMessageView {
     let statusView = ChatMessageStatusView()
 
     private let kInsets = UIEdgeInsets(top: 5, left: 88, bottom: 5, right: 16)

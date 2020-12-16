@@ -10,6 +10,7 @@ enum InteractorState {
 enum InteractorEvent {
     case stateChanged(InteractorState)
     case receivedMessage(Message)
+    case messagesUpdated([Message])
     case error(SalemoveError)
 }
 
@@ -160,7 +161,9 @@ extension Interactor: Interactable {
 
     var onMessagesUpdated: MessagesUpdateBlock {
         print("Called: \(#function)")
-        return { _ in }
+        return { messages in
+            self.notify(.messagesUpdated(messages))
+        }
     }
 
     var onVisitorScreenSharingStateChange: VisitorScreenSharingStateChange {
@@ -188,7 +191,6 @@ extension Interactor: Interactable {
 
     func receive(message: Message) {
         print("Called: \(#function)")
-        print("MESSAGE:", message.content)
         notify(.receivedMessage(message))
     }
 

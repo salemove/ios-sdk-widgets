@@ -99,7 +99,9 @@ class QueueView: UIView {
 
         addSubview(statusView)
         statusView.autoPinEdge(.top, to: .bottom, of: operatorView, withOffset: 10)
-        statusView.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .top)
+        statusView.autoPinEdge(toSuperviewEdge: .left)
+        statusView.autoPinEdge(toSuperviewEdge: .right)
+        statusView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 10)
     }
 }
 
