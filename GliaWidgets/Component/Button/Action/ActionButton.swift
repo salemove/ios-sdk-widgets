@@ -1,6 +1,6 @@
 import UIKit
 
-class AlertActionButton: UIButton {
+class ActionButton: UIButton {
     var tap: (() -> Void)?
 
     var title: String? {
@@ -8,12 +8,12 @@ class AlertActionButton: UIButton {
         set { setTitle(newValue, for: .normal) }
     }
 
-    private let style: AlertActionButtonStyle
+    private let style: ActionButtonStyle
     private let kHeight: CGFloat = 40.0
     private let kCornerRadius: CGFloat = 4.0
     private let kContentInsets = UIEdgeInsets(top: 6, left: 10, bottom: 6, right: 10)
 
-    public init(with style: AlertActionButtonStyle) {
+    public init(with style: ActionButtonStyle) {
         self.style = style
         super.init(frame: .zero)
         setup()
@@ -50,6 +50,7 @@ class AlertActionButton: UIButton {
         titleLabel?.font = style.titleFont
         titleLabel?.textColor = style.titleColor
         titleLabel?.textAlignment = .center
+        setTitle(style.title, for: .normal)
 
         addTarget(self, action: #selector(tapped), for: .touchUpInside)
     }

@@ -1,15 +1,12 @@
 import UIKit
 
 public struct QueueOperatorStyle {
-    public var placeholderImage: UIImage?
-    public var placeholderColor: UIColor
+    public var operatorImage: UserImageStyle
     public var animationColor: UIColor
 
-    public init(placeholderImage: UIImage?,
-                placeholderColor: UIColor,
+    public init(operatorImage: UserImageStyle,
                 animationColor: UIColor) {
-        self.placeholderImage = placeholderImage
-        self.placeholderColor = placeholderColor
+        self.operatorImage = operatorImage
         self.animationColor = animationColor
     }
 }

@@ -1,20 +1,21 @@
 class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
     enum DelegateEvent {
+        case back
         case finished
     }
 
     var delegate: ((DelegateEvent) -> Void)?
 
+    private let interactor: Interactor
     private let viewFactory: ViewFactory
     private let navigationPresenter: NavigationPresenter
-    private let presentationKind: PresentationKind
 
-    init(viewFactory: ViewFactory,
-         navigationPresenter: NavigationPresenter,
-         presentationKind: PresentationKind) {
+    init(interactor: Interactor,
+         viewFactory: ViewFactory,
+         navigationPresenter: NavigationPresenter) {
+        self.interactor = interactor
         self.viewFactory = viewFactory
         self.navigationPresenter = navigationPresenter
-        self.presentationKind = presentationKind
     }
 
     func start() -> ChatViewController {
@@ -23,15 +24,17 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
     }
 
     private func makeChatViewController() -> ChatViewController {
-        let viewModel = ChatViewModel(alertTexts: viewFactory.theme.alertTexts)
+        let viewModel = ChatViewModel(interactor: interactor,
+                                      alertStrings: viewFactory.theme.alertStrings)
         viewModel.delegate = { [weak self] event in
             switch event {
+            case .back:
+                self?.delegate?(.back)
             case .finished:
                 self?.delegate?(.finished)
             }
         }
         return ChatViewController(viewModel: viewModel,
-                                  viewFactory: viewFactory,
-                                  presentationKind: presentationKind)
+                                  viewFactory: viewFactory)
     }
 }

@@ -1,39 +1,124 @@
-class ChatViewModel: ViewModel {
+import SalemoveSDK
+
+class ChatViewModel: EngagementViewModel, ViewModel {
     enum Event {
-        case alertTapped
-        case confirmTapped
+        case viewDidLoad
         case backTapped
         case closeTapped
     }
 
     enum Action {
-        case showAlert(AlertMessageTexts)
-        case confirmExitQueue(AlertConfirmationTexts)
+        case queueWaiting
+        case queueConnecting
+        case queueConnected(name: String?, imageUrl: String?)
+        case showEndButton
+        case appendRows(Int)
+        case refreshItems
+        case confirm(AlertConfirmationStrings,
+                     confirmed: (() -> Void)?)
+        case showAlert(AlertMessageStrings,
+                       dismissed: (() -> Void)?)
     }
 
     enum DelegateEvent {
+        case back
         case finished
     }
 
     var action: ((Action) -> Void)?
     var delegate: ((DelegateEvent) -> Void)?
 
-    private let alertTexts: AlertTexts
+    private var items = [ChatItem]()
 
-    init(alertTexts: AlertTexts) {
-        self.alertTexts = alertTexts
+    override init(interactor: Interactor, alertStrings: AlertStrings) {
+        super.init(interactor: interactor, alertStrings: alertStrings)
     }
 
     public func event(_ event: Event) {
         switch event {
-        case .alertTapped:
-            action?(.showAlert(alertTexts.unexpectedError))
-        case .confirmTapped:
-            action?(.confirmExitQueue(alertTexts.leaveQueue))
+        case .viewDidLoad:
+            enqueue()
         case .backTapped:
-            delegate?(.finished)
+            delegate?(.back)
         case .closeTapped:
-            delegate?(.finished)
+            closeTapped()
         }
+    }
+
+    private func enqueue() {
+        interactor.enqueueForEngagement {
+
+        } failure: { error in
+            switch error.error {
+            case let queueError as QueueError:
+                switch queueError {
+                case .queueClosed, .queueFull:
+                    self.action?(.showAlert(self.alertStrings.operatorsUnavailable,
+                                            dismissed: { self.end() }))
+                default:
+                    self.action?(.showAlert(self.alertStrings(with: error),
+                                            dismissed: { self.end() }))
+                }
+            default:
+                self.action?(.showAlert(self.alertStrings(with: error),
+                                        dismissed: { self.end() }))
+            }
+        }
+    }
+
+    private func end() {
+        interactor.endSession {
+            self.delegate?(.finished)
+        } failure: { _ in
+            self.delegate?(.finished)
+        }
+    }
+
+    private func closeTapped() {
+        switch interactor.state {
+        case .enqueueing, .enqueued:
+            action?(.confirm(alertStrings.leaveQueue,
+                             confirmed: { self.end() }))
+        case .engaged:
+            action?(.confirm(alertStrings.endEngagement,
+                             confirmed: { self.end() }))
+        default:
+            end()
+        }
+    }
+
+    private func appendItem(_ item: ChatItem) {
+        appendItems([item])
+    }
+
+    private func appendItems(_ newItems: [ChatItem]) {
+        items.append(contentsOf: newItems)
+        action?(.appendRows(newItems.count))
+    }
+
+    override func interactorEvent(_ event: InteractorEvent) {
+        switch event {
+        case .stateChanged(let state):
+            switch state {
+            case .inactive:
+                delegate?(.finished)
+            case .enqueueing:
+                action?(.queueWaiting)
+            case .enqueued:
+                action?(.queueConnecting)
+            case .engaged(let engagedOperator):
+                action?(.queueConnected(name: engagedOperator?.name,
+                                        imageUrl: engagedOperator?.picture?.url))
+                action?(.showEndButton)
+            }
+        }
+    }
+}
+
+extension ChatViewModel {
+    var numberOfItems: Int { return items.count }
+
+    func item(for row: Int) -> ChatItem {
+        return items[row]
     }
 }

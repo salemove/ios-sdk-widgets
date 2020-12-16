@@ -2,21 +2,20 @@ import UIKit
 
 class QueueAnimationView: UIView {
     private let color: UIColor
+    private let size: CGFloat
     private let replicatorLayer = CAReplicatorLayer()
     private let circleLayer = CAShapeLayer()
-    private var heightConstraint: NSLayoutConstraint!
-    private var widthConstraint: NSLayoutConstraint!
-    private let kSize: CGFloat = 142
     private let kAnimationDuration: Double = 2.5
     private let kAnimationName = "animation"
 
-    private var activeBounds: CGRect {
+    private var animationBounds: CGRect {
         return CGRect(origin: .zero,
-                      size: CGSize(width: kSize, height: kSize))
+                      size: CGSize(width: size, height: size))
     }
 
-    init(color: UIColor) {
+    init(color: UIColor, size: CGFloat) {
         self.color = color
+        self.size = size
         super.init(frame: .zero)
         setup()
         layout()
@@ -26,47 +25,33 @@ class QueueAnimationView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func startAnimating(animated: Bool) {
-        UIView.animate(withDuration: animated ? 0.2 : 0.0) {
-            self.heightConstraint.constant = self.kSize
-            self.widthConstraint.constant = self.kSize
-            self.layoutIfNeeded()
-        } completion: { _ in
-            self.addAnimation()
-        }
+    func startAnimating() {
+        addAnimation()
     }
 
     func stopAnimating(animated: Bool) {
-        UIView.animate(withDuration: animated ? 0.2 : 0.0) {
-            self.heightConstraint.constant = 0
-            self.widthConstraint.constant = 0
-            self.layoutIfNeeded()
-        } completion: { _ in
-            self.removeAnimation()
-        }
+        removeAnimation()
     }
 
     private func setup() {
         replicatorLayer.instanceCount = 2
         replicatorLayer.instanceDelay = 0.3
-        replicatorLayer.frame = activeBounds
-        replicatorLayer.position = CGPoint(x: activeBounds.midX,
-                                           y: activeBounds.midY)
+        replicatorLayer.frame = animationBounds
+        replicatorLayer.position = CGPoint(x: animationBounds.midX,
+                                           y: animationBounds.midY)
 
         circleLayer.opacity = 0.0
         circleLayer.fillColor = color.cgColor
-        circleLayer.path = UIBezierPath(ovalIn: activeBounds).cgPath
-        circleLayer.position = CGPoint(x: activeBounds.midX,
-                                       y: activeBounds.midY)
-        circleLayer.frame = activeBounds
+        circleLayer.path = UIBezierPath(ovalIn: animationBounds).cgPath
+        circleLayer.frame = animationBounds
+        circleLayer.position = CGPoint(x: animationBounds.midX,
+                                       y: animationBounds.midY)
     }
 
     private func layout() {
-        widthConstraint = autoSetDimension(.width, toSize: 0)
-        heightConstraint = autoSetDimension(.height, toSize: 0)
+        autoSetDimensions(to: CGSize(width: size, height: size))
 
         replicatorLayer.addSublayer(circleLayer)
-
         layer.addSublayer(replicatorLayer)
     }
 

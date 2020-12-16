@@ -1,6 +1,7 @@
 import UIKit
 import PureLayout
 import GliaWidgets
+import SalemoveSDK
 
 class ViewController: UIViewController {
     private var settingsViewController = SettingsViewController()
@@ -48,12 +49,28 @@ extension ViewController {
 
     func presentChat() {
         let conf = settingsViewController.conf
+        let queueID = settingsViewController.queueID
         let theme = settingsViewController.theme
+        let visitorContext = VisitorContext(type: .page,
+                                            url: "https://www.salemoveinsurance.com")
 
         glia = Glia(conf: conf)
 
-        glia.start(.chat,
-                   from: self.navigationController ?? self,
-                   using: theme)
+        do {
+            try glia.start(.chat,
+                           queueID: queueID,
+                           visitorContext: visitorContext,
+                           using: theme)
+        } catch {
+            alert(message: "Failed to start.\nCheck conf.")
+        }
+    }
+
+    func alert(message: String) {
+        let alert = UIAlertController(title: "", message: message, preferredStyle: .alert)
+        alert.addAction((UIAlertAction(title: "OK", style: .default, handler: { _ in
+            alert.dismiss(animated: true, completion: nil)
+        })))
+        present(alert, animated: true, completion: nil)
     }
 }

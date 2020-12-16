@@ -1,18 +1,48 @@
+import UIKit
+
 class ChatView: View {
     let header: Header
+    let queueView: QueueView
+
+    var numberOfRows: (() -> Int?)?
+    var itemForRow: ((Int) -> ChatItem?)?
 
     private let style: ChatStyle
+    private let tableView = UITableView()
 
     init(with style: ChatStyle) {
         self.style = style
         self.header = Header(with: style.header)
+        self.queueView = QueueView(with: style.queue)
         super.init()
         setup()
         layout()
     }
 
+    func appendRows(_ count: Int, animated: Bool) {
+        if animated {
+            let indexPaths = (0 ..< count)
+                .map({ IndexPath(row: $0, section: 0) })
+            tableView.insertRows(at: indexPaths, with: .top)
+        } else {
+            tableView.reloadData()
+        }
+    }
+
+    func refreshItems() {
+        tableView.reloadData()
+    }
+
     private func setup() {
         backgroundColor = style.backgroundColor
+
+        tableView.backgroundColor = .white
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 200
+        tableView.separatorStyle = .none
+        tableView.register(cell: ChatItemCell.self)
     }
 
     private func layout() {
@@ -20,40 +50,37 @@ class ChatView: View {
         header.autoPinEdgesToSuperviewEdges(with: .zero,
                                             excludingEdge: .bottom)
 
-        let queueView = QueueView(with: style.queue)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.addSubview(queueView)
-            queueView.autoPinEdge(.top, to: .bottom, of: self.header, withOffset: 20)
-            queueView.autoPinEdge(toSuperviewEdge: .left, withInset: 0, relation: .greaterThanOrEqual)
-            queueView.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
-            queueView.autoAlignAxis(toSuperviewAxis: .vertical)
-            queueView.setState(.waiting, animated: true)
-        }
+        addSubview(tableView)
+        tableView.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .top)
+        tableView.autoPinEdge(.top, to: .bottom, of: header)
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-            queueView.setState(.connecting(name: "Kate"), animated: true)
-        }
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + 8) {
-            queueView.setState(.connected(name: "Kate"), animated: true)
-        }
-
-        let sent = SentChatMessageView(with: self.style.sentMessage)
-        sent.appendContent(.text("Hi, I need help and guidance with moving money from one account to another"), animated: false)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
-            self.addSubview(sent)
-            sent.autoPinEdge(toSuperviewEdge: .right)
-            sent.autoPinEdge(.top, to: .bottom, of: queueView, withOffset: 20)
-            sent.autoPinEdge(toSuperviewEdge: .left, withInset: 0, relation: .greaterThanOrEqual)
-        }
-
-        let received = ReceivedChatMessageView(with: self.style.receivedMessage)
-        received.appendContent(.text("Hi, Roger! I’d be glad to help you out. Could you specify the accounts that you want to use."), animated: false)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 13) {
-            self.addSubview(received)
-            received.autoPinEdge(toSuperviewEdge: .left)
-            received.autoPinEdge(.top, to: .bottom, of: sent)
-            received.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
-        }
+        tableView.tableHeaderView = queueView
+        queueView.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0))
+        queueView.autoAlignAxis(toSuperviewAxis: .vertical)
     }
+}
+
+extension ChatView: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return numberOfRows?() ?? 0
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard
+            let item = itemForRow?(indexPath.row),
+            let cell: ChatItemCell = tableView.dequeue(cellFor: indexPath)
+        else { return UITableViewCell() }
+
+        switch item.kind {
+        case .sentMessage:
+            let view = SentChatMessageView(with: style.sentMessage)
+            cell.content = .sentMessage(view)
+        }
+
+        return cell
+    }
+}
+
+extension ChatView: UITableViewDelegate {
+
 }

@@ -17,8 +17,10 @@ public class Theme {
                                  rightItemColor: color.baseLight,
                                  backgroundColor: color.primary)
 
-        let queueOperator = QueueOperatorStyle(placeholderImage: Asset.chatOperatorPlaceholder.image,
-                                               placeholderColor: color.baseLight,
+        let operatorImage = UserImageStyle(placeholderImage: Asset.operatorPlaceholder.image,
+                                           placeholderColor: color.baseLight,
+                                           backgroundColor: color.primary)
+        let queueOperator = QueueOperatorStyle(operatorImage: operatorImage,
                                                animationColor: color.primary)
         let waiting = QueueStatusStyle(text1: Queue.Waiting.text1,
                                        text1Font: font.header1,
@@ -49,22 +51,29 @@ public class Theme {
         let receivedMessage = ChatMessageStyle(messageFont: font.bodyText,
                                                messageColor: color.baseDark,
                                                backgroundColor: Color.lightGrey)
+        let endButton = ActionButtonStyle(title: Chat.EndButton.title,
+                                          titleFont: font.buttonLabel,
+                                          titleColor: color.baseLight,
+                                          backgroundColor: color.systemNegative)
         return ChatStyle(header: header,
                          queue: queue,
                          sentMessage: sentMessage,
                          receivedMessage: receivedMessage,
-                         backgroundColor: color.background)
+                         backgroundColor: color.background,
+                         endButton: endButton)
     }()
 
     public lazy var alert: AlertStyle = {
         typealias Alert = L10n.Alert
 
-        let negativeAction = AlertActionButtonStyle(titleFont: font.buttonLabel,
-                                                    titleColor: color.baseLight,
-                                                    backgroundColor: color.primary)
-        let positiveAction = AlertActionButtonStyle(titleFont: font.buttonLabel,
-                                                    titleColor: color.baseLight,
-                                                    backgroundColor: color.systemNegative)
+        let negativeAction = ActionButtonStyle(title: Alert.Action.no,
+                                               titleFont: font.buttonLabel,
+                                               titleColor: color.baseLight,
+                                               backgroundColor: color.primary)
+        let positiveAction = ActionButtonStyle(title: Alert.Action.yes,
+                                               titleFont: font.buttonLabel,
+                                               titleColor: color.baseLight,
+                                               backgroundColor: color.systemNegative)
         return AlertStyle(titleFont: font.header2,
                           titleColor: color.baseDark,
                           messageFont: font.bodyText,
@@ -72,23 +81,38 @@ public class Theme {
                           backgroundColor: color.background,
                           closeButtonColor: color.baseNormal,
                           positiveAction: positiveAction,
-                          negativeAction: negativeAction,
-                          yesActionTitle: Alert.Action.yes,
-                          noActionTitle: Alert.Action.no)
+                          negativeAction: negativeAction)
     }()
 
-    public lazy var alertTexts: AlertTexts = {
+    public lazy var alertStrings: AlertStrings = {
         typealias Alert = L10n.Alert
 
-        let unexcpected = AlertMessageTexts(title: Alert.Unexpected.title,
-                                            message: Alert.Unexpected.message)
-        let leaveQueue = AlertConfirmationTexts(title: Alert.Queue.Leave.title,
-                                                message: Alert.Queue.Leave.message,
-                                                negativeTitle: Alert.Queue.Leave.no,
-                                                positiveTitle: Alert.Queue.Leave.yes)
+        let leaveQueue = AlertConfirmationStrings(title: Alert.LeaveQueue.title,
+                                                  message: Alert.LeaveQueue.message,
+                                                  negativeTitle: Alert.Action.no,
+                                                  positiveTitle: Alert.Action.yes)
+        let endEngagement = AlertConfirmationStrings(title: Alert.EndEngagement.title,
+                                                     message: Alert.EndEngagement.message,
+                                                     negativeTitle: Alert.Action.no,
+                                                     positiveTitle: Alert.Action.yes)
+        let operatorsUnavailable = AlertMessageStrings(title: Alert.OperatorsUnavailable.title,
+                                                       message: Alert.OperatorsUnavailable.message)
+        let unexpected = AlertMessageStrings(title: Alert.Unexpected.title,
+                                             message: Alert.Unexpected.message)
+        let api = AlertMessageStrings(title: Alert.ApiError.title,
+                                      message: Alert.ApiError.message)
 
-        return AlertTexts(unexpectedError: unexcpected,
-                          leaveQueue: leaveQueue)
+        return AlertStrings(leaveQueue: leaveQueue,
+                            endEngagement: endEngagement,
+                            operatorsUnavailable: operatorsUnavailable,
+                            unexpectedError: unexpected,
+                            apiError: api)
+    }()
+
+    public lazy var minimizedOperator: UserImageStyle = {
+        return UserImageStyle(placeholderImage: Asset.operatorPlaceholder.image,
+                              placeholderColor: color.baseLight,
+                              backgroundColor: color.primary)
     }()
 
     public init(colorStyle: ThemeColorStyle = .default,
