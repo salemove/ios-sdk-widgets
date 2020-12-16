@@ -126,6 +126,12 @@ class ChatViewModel: EngagementViewModel, ViewModel {
                             animated: animated))
     }
 
+    private func setItems(_ items: [ChatItem],
+                          to section: Section<ChatItem>) {
+        section.set(items)
+        action?(.reloadAll)
+    }
+
     override func interactorEvent(_ event: InteractorEvent) {
         switch event {
         case .stateChanged(let state):
@@ -145,12 +151,9 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case .receivedMessage(let message):
             receivedMessage(message)
         case .messagesUpdated(let messages):
-            /*let engagedOperator = interactor.engagedOperator
-            let items: [ChatItem] = messages.map {
-                ChatItem(kind: .receivedMessage($0, engagedOperator))
-            }
-            appendItems(items)*/
-        break
+            let items = messages.compactMap({ ChatItem(with: $0) })
+            setItems(items, to: newMessagesSection)
+            action?(.scrollToBottom(animated: true))
         case .error(let error):
             action?(.showAlert(alertStrings(with: error),
                                dismissed: nil))

@@ -15,7 +15,7 @@ class Section<Item> {
     }
 
     func set(_ newItems: [Item]) {
-        items.append(contentsOf: newItems)
+        items = newItems
     }
 
     func append(_ item: Item) {
