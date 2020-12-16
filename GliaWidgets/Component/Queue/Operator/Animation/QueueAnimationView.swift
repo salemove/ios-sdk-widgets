@@ -49,7 +49,9 @@ class QueueAnimationView: UIView {
     }
 
     private func layout() {
-        autoSetDimensions(to: CGSize(width: size, height: size))
+        NSLayoutConstraint.autoSetPriority(.defaultHigh) {
+            autoSetDimensions(to: CGSize(width: size, height: size))
+        }
 
         replicatorLayer.addSublayer(circleLayer)
         layer.addSublayer(replicatorLayer)

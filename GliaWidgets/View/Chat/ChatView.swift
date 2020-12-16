@@ -6,6 +6,7 @@ class ChatView: View {
     let messageEntryView: ChatMessageEntryView
     var numberOfRows: (() -> Int?)?
     var itemForRow: ((Int) -> ChatItem?)?
+    var senderImageUrlForRow: ((Int) -> String?)?
 
     private let style: ChatStyle
     private let tableView = UITableView()
@@ -20,11 +21,6 @@ class ChatView: View {
         super.init()
         setup()
         layout()
-    }
-
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        updateTableHeaderHeight()
     }
 
     func appendRows(_ count: Int, animated: Bool) {
@@ -50,7 +46,7 @@ class ChatView: View {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = 200
+        tableView.estimatedRowHeight = UITableView.automaticDimension
         tableView.separatorStyle = .none
         tableView.register(cell: ChatItemCell.self)
 
@@ -67,27 +63,11 @@ class ChatView: View {
         tableView.autoPinEdge(toSuperviewEdge: .left)
         tableView.autoPinEdge(toSuperviewEdge: .right)
 
-        tableView.tableHeaderView = queueView
-        updateTableHeaderHeight()
-
         addSubview(messageEntryView)
         messageEntryViewBottomConstraint = messageEntryView.autoPinEdge(toSuperviewSafeArea: .bottom)
         messageEntryView.autoPinEdge(toSuperviewEdge: .left)
         messageEntryView.autoPinEdge(toSuperviewEdge: .right)
         messageEntryView.autoPinEdge(.top, to: .bottom, of: tableView)
-    }
-
-    private func updateTableHeaderHeight() {
-        guard let headerView = tableView.tableHeaderView else { return }
-
-        let height = queueView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
-        var headerFrame = queueView.frame
-
-        if height != headerFrame.size.height {
-            headerFrame.size.height = height
-            headerView.frame = headerFrame
-            tableView.tableHeaderView = queueView
-        }
     }
 }
 
@@ -135,16 +115,17 @@ extension ChatView: UITableViewDataSource {
         else { return UITableViewCell() }
 
         switch item.kind {
-        case .sentMessage:
+        case .queueOperator:
+            cell.content = .queueOperator(queueView)
+        case .sentMessage(let message):
             let view = SentChatMessageView(with: style.sentMessage)
-            view.appendContent(.text(item.message), animated: false)
+            view.appendContent(.text(message.content), animated: false)
             cell.content = .sentMessage(view)
-        case .receivedMessage:
+        case .receivedMessage(let message, _):
             let view = ReceivedChatMessageView(with: style.receivedMessage)
-            view.appendContent(.text(item.message), animated: false)
-            if item.showsSenderImage {
-                view.operatorImageView.setImage(fromUrl: item.senderImageUrl,
-                                                animated: true)
+            view.appendContent(.text(message.content), animated: false)
+            if let imageUrl = senderImageUrlForRow?(indexPath.row) {
+                view.operatorImageView.setImage(fromUrl: imageUrl, animated: true)
             }
             cell.content = .receivedMessage(view)
         }

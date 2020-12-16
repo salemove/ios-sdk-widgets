@@ -5,8 +5,6 @@ class QueueOperatorView: UIView {
 
     private let style: QueueOperatorStyle
     private var animationView: QueueAnimationView?
-    private var heightLayoutConstraint: NSLayoutConstraint!
-    private var widthLayoutConstraint: NSLayoutConstraint!
     private let kImageInset: CGFloat = 10
     private let kImageViewSize = CGSize(width: 80, height: 80)
     private let kAnimationViewSize: CGFloat = 142
@@ -30,17 +28,16 @@ class QueueOperatorView: UIView {
                                                size: kAnimationViewSize)
         self.animationView = animationView
 
-        heightLayoutConstraint.constant = kAnimationViewSize
-        widthLayoutConstraint.constant = kAnimationViewSize
-
         insertSubview(animationView, at: 0)
-        animationView.autoPinEdgesToSuperviewEdges()
+        animationView.autoPinEdge(toSuperviewEdge: .left, withInset: 0, relation: .greaterThanOrEqual)
+        animationView.autoPinEdge(toSuperviewEdge: .top, withInset: 0, relation: .greaterThanOrEqual)
+        animationView.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
+        animationView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 0, relation: .greaterThanOrEqual)
+        animationView.autoCenterInSuperview()
         animationView.startAnimating()
     }
 
     func stopAnimating(animated: Bool) {
-        heightLayoutConstraint.constant = kImageViewSize.height
-        widthLayoutConstraint.constant = kImageViewSize.width
         animationView?.removeFromSuperview()
         animationView = nil
     }
@@ -48,11 +45,15 @@ class QueueOperatorView: UIView {
     private func setup() {}
 
     private func layout() {
-        heightLayoutConstraint = autoSetDimension(.height, toSize: kImageViewSize.height)
-        widthLayoutConstraint = autoSetDimension(.width, toSize: kImageViewSize.width)
+        NSLayoutConstraint.autoSetPriority(.defaultHigh) {
+            imageView.autoSetDimensions(to: kImageViewSize)
+        }
 
         addSubview(imageView)
-        imageView.autoSetDimensions(to: kImageViewSize)
+        imageView.autoPinEdge(toSuperviewEdge: .left, withInset: 0, relation: .greaterThanOrEqual)
+        imageView.autoPinEdge(toSuperviewEdge: .top, withInset: 0, relation: .greaterThanOrEqual)
+        imageView.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
+        imageView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 0, relation: .greaterThanOrEqual)
         imageView.autoCenterInSuperview()
     }
 }

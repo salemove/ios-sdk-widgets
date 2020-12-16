@@ -39,8 +39,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     public func event(_ event: Event) {
         switch event {
         case .viewDidLoad:
-            action?(.setMessageEntryEnabled(false))
-            enqueue()
+            start()
         case .backTapped:
             delegate?(.back)
         case .closeTapped:
@@ -48,6 +47,13 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case .sendTapped(message: let message):
             send(message)
         }
+    }
+
+    private func start() {
+        let item = ChatItem(kind: .queueOperator)
+        appendItem(item)
+        action?(.setMessageEntryEnabled(false))
+        enqueue()
     }
 
     private func enqueue() {
@@ -143,5 +149,15 @@ extension ChatViewModel {
 
     func item(for row: Int) -> ChatItem {
         return items[row]
+    }
+
+    func senderImageUrl(for row: Int) -> String? {
+        let item = items[row]
+
+        if case let .receivedMessage(_, engagedOperator) = item.kind {
+            return engagedOperator?.picture?.url
+        }
+
+        return nil
     }
 }

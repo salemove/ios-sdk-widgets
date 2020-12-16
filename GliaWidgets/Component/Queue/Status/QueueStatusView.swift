@@ -55,7 +55,6 @@ class QueueStatusView: UIView {
                        options: .curveEaseInOut,
                        animations: {
                         label.transform = .identity
-                        //self.layoutIfNeeded()
                        }, completion: nil)
     }
 }

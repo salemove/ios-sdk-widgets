@@ -94,14 +94,12 @@ class QueueView: UIView {
     private func layout() {
         addSubview(operatorView)
         operatorView.autoPinEdge(toSuperviewEdge: .top, withInset: 10)
-        operatorView.autoAlignAxis(toSuperviewAxis: .vertical)
+        operatorView.autoPinEdge(toSuperviewEdge: .left)
+        operatorView.autoPinEdge(toSuperviewEdge: .right)
 
         addSubview(statusView)
         statusView.autoPinEdge(.top, to: .bottom, of: operatorView, withOffset: 10)
-        statusView.autoPinEdge(toSuperviewEdge: .left, withInset: 0, relation: .greaterThanOrEqual)
-        statusView.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
-        statusView.autoPinEdge(toSuperviewEdge: .bottom)
-        statusView.autoAlignAxis(toSuperviewAxis: .vertical)
+        statusView.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .top)
     }
 }
 

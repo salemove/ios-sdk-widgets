@@ -37,15 +37,18 @@ class ChatViewController: ViewController, AlertPresenter {
         view.header.setRightItem(rightItem, animated: false)
         view.numberOfRows = { return viewModel.numberOfItems }
         view.itemForRow = { return viewModel.item(for: $0) }
+        view.senderImageUrlForRow = { return viewModel.senderImageUrl(for: $0) }
         view.messageEntryView.sendTapped = { viewModel.event(.sendTapped(message: $0)) }
 
         viewModel.action = { action in
             switch action {
             case .queueWaiting:
+                view.refreshItems()
                 view.queueView.setState(.waiting, animated: true)
             case .queueConnecting:
                 view.queueView.setState(.connecting, animated: true)
             case .queueConnected(name: let name, imageUrl: let imageUrl):
+                view.refreshItems()
                 view.queueView.setState(.connected(name: name, imageUrl: imageUrl), animated: true)
             case .showEndButton:
                 let rightItem = ActionButton(with: self.viewFactory.theme.chat.endButton)
