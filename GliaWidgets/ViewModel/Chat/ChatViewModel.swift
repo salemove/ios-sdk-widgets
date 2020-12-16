@@ -14,8 +14,10 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case queueConnected(name: String?, imageUrl: String?)
         case showEndButton
         case setMessageEntryEnabled(Bool)
-        case appendRows(Int, to: Int)
-        case refreshItems
+        case appendRows(Int, to: Int, animated: Bool)
+        //case reloadSection(Int)
+        case reloadAll
+        case scrollToBottom(animated: Bool)
         case confirm(AlertConfirmationStrings,
                      confirmed: (() -> Void)?)
         case showAlert(AlertMessageStrings,
@@ -27,42 +29,17 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case finished
     }
 
-    private class Section {
-        let index: Int
-
-        private var items = [ChatItem]()
-
-        var itemCount: Int { return items.count }
-
-        init(_ index: Int) {
-            self.index = index
-        }
-
-        subscript(index: Int) -> ChatItem {
-            get { return items[index] }
-            set(newValue) { items[index] = newValue }
-        }
-
-        func set(_ newItems: [ChatItem]) {
-            items.append(contentsOf: newItems)
-        }
-
-        func append(_ item: ChatItem) {
-            items.append(item)
-        }
-
-        func append(_ newItems: [ChatItem]) {
-            items.append(contentsOf: newItems)
-        }
-    }
-
     var action: ((Action) -> Void)?
     var delegate: ((DelegateEvent) -> Void)?
 
-    private let sections = [Section(0), Section(1), Section(2)]
-    private var oldMessagesSection: Section { return sections[0] }
-    private var queueOperatorSection: Section { return sections[1] }
-    private var newMessagesSection: Section { return sections[2] }
+    private let sections = [
+        Section<ChatItem>(0),
+        Section<ChatItem>(1),
+        Section<ChatItem>(2)
+    ]
+    private var oldMessagesSection: Section<ChatItem> { return sections[0] }
+    private var queueOperatorSection: Section<ChatItem> { return sections[1] }
+    private var newMessagesSection: Section<ChatItem> { return sections[2] }
 
     override init(interactor: Interactor, alertStrings: AlertStrings) {
         super.init(interactor: interactor, alertStrings: alertStrings)
@@ -83,7 +60,9 @@ class ChatViewModel: EngagementViewModel, ViewModel {
 
     private func start() {
         let item = ChatItem(kind: .queueOperator)
-        appendItem(item, to: queueOperatorSection)
+        appendItem(item,
+                   to: queueOperatorSection,
+                   animated: false)
         action?(.setMessageEntryEnabled(false))
         enqueue()
     }
@@ -130,13 +109,21 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         }
     }
 
-    private func appendItem(_ item: ChatItem, to section: Section) {
-        appendItems([item], to: section)
+    private func appendItem(_ item: ChatItem,
+                            to section: Section<ChatItem>,
+                            animated: Bool) {
+        appendItems([item],
+                    to: section,
+                    animated: animated)
     }
 
-    private func appendItems(_ items: [ChatItem], to section: Section) {
+    private func appendItems(_ items: [ChatItem],
+                             to section: Section<ChatItem>,
+                             animated: Bool) {
         section.append(items)
-        action?(.appendRows(items.count, to: section.index))
+        action?(.appendRows(items.count,
+                            to: section.index,
+                            animated: animated))
     }
 
     override func interactorEvent(_ event: InteractorEvent) {
@@ -178,7 +165,10 @@ extension ChatViewModel {
 
     private func receivedMessage(_ message: Message) {
         guard let item = ChatItem(with: message) else { return }
-        appendItem(item, to: newMessagesSection)
+        appendItem(item,
+                   to: newMessagesSection,
+                   animated: true)
+        action?(.scrollToBottom(animated: true))
     }
 }
 

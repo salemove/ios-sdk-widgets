@@ -25,10 +25,10 @@ class ChatView: View {
     }
 
     func appendRows(_ count: Int, to section: Int, animated: Bool) {
-        guard let rowCount = numberOfRows?(section) else { return }
+        guard let rows = numberOfRows?(section) else { return }
 
         if animated {
-            let indexPaths = (rowCount - count ..< rowCount)
+            let indexPaths = (rows - count ..< rows)
                 .map({ IndexPath(row: $0, section: section) })
             tableView.insertRows(at: indexPaths, with: .bottom)
         } else {
@@ -36,7 +36,11 @@ class ChatView: View {
         }
     }
 
-    func refreshItems() {
+    func scrollToBottom(animated: Bool) {
+        tableView.scrollToBottom(animated: animated)
+    }
+
+    func reloadAll() {
         tableView.reloadData()
     }
 
