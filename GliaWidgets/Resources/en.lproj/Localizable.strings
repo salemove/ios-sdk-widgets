@@ -2,18 +2,28 @@
 
 "queue.waiting.text1" = "CompanyName";
 "queue.waiting.text2" = "An MSR will be with you shortly.";
-"queue.connecting.text1" = "Connecting with {operatorName}";
+"queue.connecting.text1" = "Connecting with operator";
 "queue.connecting.text2" = "";
 "queue.connected.text1" = "{operatorName}";
 "queue.connected.text2" = "{operatorName} has joined the conversation.";
 
 "alert.action.yes" = "Yes";
 "alert.action.no" = "No";
+
+"alert.leaveQueue.title" = "Are you sure you want to leave?";
+"alert.leaveQueue.message" = "You will lose your place in the queue.";
+
+"alert.endEngagement.title" = "Are you sure you want to leave?";
+"alert.endEngagement.message" = "";
+
+"alert.operatorsUnavailable.title" = "We’re sorry";
+"alert.operatorsUnavailable.message" = "Operators are no longer available.\nPlease try again later.";
+
 "alert.unexpected.title" = "We're sorry, there has been an unexpected error.";
 "alert.unexpected.message" = "Please try again later.";
-"alert.queue.leave.title" = "Are you sure you want to leave?";
-"alert.queue.leave.message" = "You will lose your place in the queue.";
-"alert.queue.leave.yes" = "Yes";
-"alert.queue.leave.no" = "No";
+
+"alert.apiError.title" = "We're sorry, there has been an error.";
+"alert.apiError.message" = "{message}";
 
 "chat.title" = "Chat";
+"chat.endButton.title" = "End";

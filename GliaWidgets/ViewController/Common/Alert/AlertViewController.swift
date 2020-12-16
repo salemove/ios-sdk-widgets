@@ -2,8 +2,9 @@ import UIKit
 
 class AlertViewController: ViewController {
     enum Kind {
-        case message(AlertMessageTexts)
-        case confirmation(AlertConfirmationTexts,
+        case message(AlertMessageStrings,
+                     dismissed: (() -> Void)?)
+        case confirmation(AlertConfirmationStrings,
                           confirmed: () -> Void)
     }
 
@@ -40,7 +41,6 @@ class AlertViewController: ViewController {
         guard alertView == nil else { return }
 
         let alertView = makeAlertView()
-        alertView.closeTapped = { [weak self] in self?.dismiss(animated: animated) }
         self.alertView = alertView
 
         view.addSubview(alertView)
@@ -75,23 +75,28 @@ class AlertViewController: ViewController {
         let alertView = viewFactory.makeAlertView()
 
         switch kind {
-        case .message(let texts):
-            alertView.title = texts.title
-            alertView.message = texts.message
+        case .message(let strings, let dismissed):
+            alertView.title = strings.title
+            alertView.message = strings.message
             alertView.showsCloseButton = true
-        case .confirmation(let texts, let confirmed):
-            alertView.title = texts.title
-            alertView.message = texts.message
+            alertView.closeTapped = { [weak self] in
+                self?.dismiss(animated: true) {
+                    dismissed?()
+                }
+            }
+        case .confirmation(let strings, let confirmed):
+            alertView.title = strings.title
+            alertView.message = strings.message
             alertView.showsPoweredBy = true
             alertView.actionsAxis = .horizontal
 
-            let negativeButton = AlertActionButton(with: viewFactory.theme.alert.negativeAction)
-            negativeButton.title = texts.negativeTitle
+            let negativeButton = ActionButton(with: viewFactory.theme.alert.negativeAction)
+            negativeButton.title = strings.negativeTitle
             negativeButton.tap = { [weak self] in
                 self?.dismiss(animated: true)
             }
-            let positiveButton = AlertActionButton(with: viewFactory.theme.alert.positiveAction)
-            positiveButton.title = texts.positiveTitle
+            let positiveButton = ActionButton(with: viewFactory.theme.alert.positiveAction)
+            positiveButton.title = strings.positiveTitle
             positiveButton.tap = { [weak self] in
                 self?.dismiss(animated: true) {
                     confirmed()

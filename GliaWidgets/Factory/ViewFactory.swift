@@ -1,3 +1,5 @@
+import UIKit
+
 class ViewFactory {
     let theme: Theme
 
@@ -11,5 +13,9 @@ class ViewFactory {
 
     func makeAlertView() -> AlertView {
         return AlertView(with: theme.alert)
+    }
+
+    func makeMinimizedOperatorImageView() -> UserImageView {
+        return UserImageView(with: theme.minimizedOperator)
     }
 }

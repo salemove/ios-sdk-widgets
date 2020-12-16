@@ -20,17 +20,29 @@ public enum L10n {
       /// Yes
       public static let yes = L10n.tr("Localizable", "alert.action.yes")
     }
-    public enum Queue {
-      public enum Leave {
-        /// You will lose your place in the queue.
-        public static let message = L10n.tr("Localizable", "alert.queue.leave.message")
-        /// No
-        public static let no = L10n.tr("Localizable", "alert.queue.leave.no")
-        /// Are you sure you want to leave?
-        public static let title = L10n.tr("Localizable", "alert.queue.leave.title")
-        /// Yes
-        public static let yes = L10n.tr("Localizable", "alert.queue.leave.yes")
-      }
+    public enum ApiError {
+      /// {message}
+      public static let message = L10n.tr("Localizable", "alert.apiError.message")
+      /// We're sorry, there has been an error.
+      public static let title = L10n.tr("Localizable", "alert.apiError.title")
+    }
+    public enum EndEngagement {
+      /// 
+      public static let message = L10n.tr("Localizable", "alert.endEngagement.message")
+      /// Are you sure you want to leave?
+      public static let title = L10n.tr("Localizable", "alert.endEngagement.title")
+    }
+    public enum LeaveQueue {
+      /// You will lose your place in the queue.
+      public static let message = L10n.tr("Localizable", "alert.leaveQueue.message")
+      /// Are you sure you want to leave?
+      public static let title = L10n.tr("Localizable", "alert.leaveQueue.title")
+    }
+    public enum OperatorsUnavailable {
+      /// Operators are no longer available.\nPlease try again later.
+      public static let message = L10n.tr("Localizable", "alert.operatorsUnavailable.message")
+      /// We’re sorry
+      public static let title = L10n.tr("Localizable", "alert.operatorsUnavailable.title")
     }
     public enum Unexpected {
       /// Please try again later.
@@ -43,6 +55,10 @@ public enum L10n {
   public enum Chat {
     /// Chat
     public static let title = L10n.tr("Localizable", "chat.title")
+    public enum EndButton {
+      /// End
+      public static let title = L10n.tr("Localizable", "chat.endButton.title")
+    }
   }
 
   public enum Queue {
@@ -53,7 +69,7 @@ public enum L10n {
       public static let text2 = L10n.tr("Localizable", "queue.connected.text2")
     }
     public enum Connecting {
-      /// Connecting with {operatorName}
+      /// Connecting with operator
       public static let text1 = L10n.tr("Localizable", "queue.connecting.text1")
       /// 
       public static let text2 = L10n.tr("Localizable", "queue.connecting.text2")

@@ -12,6 +12,7 @@ class SettingsViewController: UIViewController {
     private var appTokenCell: SettingsTextCell!
     private var apiTokenCell: SettingsTextCell!
     private var siteCell: SettingsTextCell!
+    private var queueIDCell: SettingsTextCell!
     private var primaryColorCell: SettingsColorCell!
     private var secondaryColorCell: SettingsColorCell!
     private var baseNormalColorCell: SettingsColorCell!
@@ -30,6 +31,7 @@ class SettingsViewController: UIViewController {
 
     var theme: Theme = Theme()
     var conf: Configuration { loadConf() }
+    var queueID: String { loadQueueID() }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,10 +64,15 @@ class SettingsViewController: UIViewController {
                                         text: conf.apiToken)
         siteCell = SettingsTextCell(title: "Site:",
                                     text: conf.site)
+        siteCell = SettingsTextCell(title: "Site:",
+                                    text: conf.site)
+        queueIDCell = SettingsTextCell(title: "Queue ID:",
+                                       text: queueID)
         var confCells = [SettingsCell]()
         confCells.append(appTokenCell)
         confCells.append(apiTokenCell)
         confCells.append(siteCell)
+        confCells.append(queueIDCell)
 
         let confSection = Section(title: "Glia conf",
                                   cells: confCells)
@@ -138,14 +145,20 @@ class SettingsViewController: UIViewController {
         let site = UserDefaults.standard.string(forKey: "conf.site") ?? ""
         return Configuration(appToken: appToken,
                              apiToken: apiToken,
-                             environment: .europe,
+                             environment: .beta,
                              site: site)
+    }
+
+    private func loadQueueID() -> String {
+        let queueID = UserDefaults.standard.string(forKey: "conf.queueID") ?? ""
+        return queueID
     }
 
     private func saveConf() {
         UserDefaults.standard.setValue(appTokenCell.textField.text ?? "", forKey: "conf.appToken")
         UserDefaults.standard.setValue(apiTokenCell.textField.text ?? "", forKey: "conf.apiToken")
         UserDefaults.standard.setValue(siteCell.textField.text ?? "", forKey: "conf.site")
+        UserDefaults.standard.setValue(queueIDCell.textField.text ?? "", forKey: "conf.queueID")
     }
 
     private func makeConf() -> Configuration {

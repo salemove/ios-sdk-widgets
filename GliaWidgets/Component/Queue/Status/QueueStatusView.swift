@@ -34,7 +34,7 @@ class QueueStatusView: UIView {
                        options: .curveEaseInOut,
                        animations: {
                         self.stackView.transform = .identity
-                        self.stackView.layoutIfNeeded()
+                        self.layoutIfNeeded()
                        }, completion: nil)
     }
 
@@ -45,14 +45,13 @@ class QueueStatusView: UIView {
     private func setup() {
         stackView.axis = .vertical
         stackView.spacing = 8
+        stackView.addArrangedSubviews([label1, label2])
 
         label1.textAlignment = .center
         label2.textAlignment = .center
     }
 
     private func layout() {
-        stackView.addArrangedSubviews([label1, label2])
-
         addSubview(stackView)
         stackView.autoPinEdgesToSuperviewEdges()
     }
