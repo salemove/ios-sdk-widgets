@@ -11,7 +11,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
     private let navigationController = NavigationController()
     private let navigationPresenter: NavigationPresenter
     private var window: GliaWindow?
-    private var minimizedView: UIView?
+    private var minimizedView: UserImageView?
     private let kMinimizedViewSize = CGSize(width: 80.0, height: 80.0)
 
     init(interactor: Interactor,
@@ -47,6 +47,8 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
             switch event {
             case .back:
                 self?.window?.setState(.minimized, animated: true)
+            case .operatorImage(url: let url):
+                self?.minimizedView?.setImage(fromUrl: url, animated: true)
             case .finished:
                 self?.popCoordinator()
                 self?.navigationPresenter.pop()

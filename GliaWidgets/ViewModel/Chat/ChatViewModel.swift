@@ -29,6 +29,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
 
     enum DelegateEvent {
         case back
+        case operatorImage(url: String?)
         case finished
     }
 
@@ -171,12 +172,13 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             case .enqueueing:
                 action?(.queueWaiting)
             case .enqueued:
-                action?(.queueConnecting)
+                break
             case .engaged(let engagedOperator):
                 action?(.queueConnected(name: engagedOperator?.name,
                                         imageUrl: engagedOperator?.picture?.url))
                 action?(.showEndButton)
                 action?(.setMessageEntryEnabled(true))
+                delegate?(.operatorImage(url: engagedOperator?.picture?.url))
             }
         case .receivedMessage(let message):
             receivedMessage(message)

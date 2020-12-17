@@ -44,6 +44,7 @@ class ChatView: View {
         let indexPath = IndexPath(row: row, section: section)
 
         guard
+            tableView.indexPathsForVisibleRows?.contains(indexPath) == true,
             let cell = tableView.cellForRow(at: indexPath) as? ChatItemCell,
             let item = itemForRow?(indexPath.row, indexPath.section)
         else { return }

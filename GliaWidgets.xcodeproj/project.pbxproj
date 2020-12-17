@@ -17,6 +17,7 @@
 		1A205DB5256566BB003AA3CD /* GliaWidgets.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1A205D5825655CB1003AA3CD /* GliaWidgets.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1A38A8A8258B652B0089DE7B /* OperatorChatMessageStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A38A8A7258B652B0089DE7B /* OperatorChatMessageStyle.swift */; };
 		1A38A8AC258B65D00089DE7B /* ChatMessageStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A38A8AB258B65D00089DE7B /* ChatMessageStyle.swift */; };
+		1A38A8BA258B94D60089DE7B /* ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A38A8B9258B94D60089DE7B /* ImageView.swift */; };
 		1A4AD3AF256D283700468BFB /* ChatMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4AD3AE256D283700468BFB /* ChatMessageView.swift */; };
 		1A4AD3B3256D2A7600468BFB /* VisitorChatMessageStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4AD3B2256D2A7600468BFB /* VisitorChatMessageStyle.swift */; };
 		1A4AD3BE256D37FD00468BFB /* UITableView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4AD3BD256D37FD00468BFB /* UITableView+Extensions.swift */; };
@@ -154,6 +155,7 @@
 		1A205DA6256564CE003AA3CD /* PureLayout.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PureLayout.framework; path = GliaWidgets/Frameworks/PureLayout.framework; sourceTree = "<group>"; };
 		1A38A8A7258B652B0089DE7B /* OperatorChatMessageStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperatorChatMessageStyle.swift; sourceTree = "<group>"; };
 		1A38A8AB258B65D00089DE7B /* ChatMessageStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageStyle.swift; sourceTree = "<group>"; };
+		1A38A8B9258B94D60089DE7B /* ImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageView.swift; sourceTree = "<group>"; };
 		1A4AD3AE256D283700468BFB /* ChatMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageView.swift; sourceTree = "<group>"; };
 		1A4AD3B2256D2A7600468BFB /* VisitorChatMessageStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorChatMessageStyle.swift; sourceTree = "<group>"; };
 		1A4AD3BD256D37FD00468BFB /* UITableView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Extensions.swift"; sourceTree = "<group>"; };
@@ -303,8 +305,8 @@
 			isa = PBXGroup;
 			children = (
 				1AC7A7462582236300567FF8 /* Window */,
-				1A60AF6725656BF200E53F53 /* ViewController */,
 				1A60AF6825656C0200E53F53 /* Coordinator */,
+				1A60AF6725656BF200E53F53 /* ViewController */,
 				1A60AF6925656C0A00E53F53 /* View */,
 				1A60AF6A25656C1E00E53F53 /* Component */,
 				1A60AF6B25656C2700E53F53 /* ViewModel */,
@@ -419,6 +421,7 @@
 			isa = PBXGroup;
 			children = (
 				1A6075E52582209A00569B0E /* User */,
+				1A38A8B9258B94D60089DE7B /* ImageView.swift */,
 			);
 			path = ImageView;
 			sourceTree = "<group>";
@@ -1126,6 +1129,7 @@
 				1A60AFF12566A4B300E53F53 /* NavigationPresenter.swift in Sources */,
 				1AC7A74F2582571100567FF8 /* Interactor.swift in Sources */,
 				1A60AF93256674F900E53F53 /* Color.swift in Sources */,
+				1A38A8BA258B94D60089DE7B /* ImageView.swift in Sources */,
 				1A60B031256BF81500E53F53 /* VisitorChatMessageView.swift in Sources */,
 				1A4AD3C4256E7A0C00468BFB /* ThemeFontStyle.swift in Sources */,
 				1AA738B225790D5A00E1120F /* AlertView.swift in Sources */,
