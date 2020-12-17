@@ -1,7 +1,8 @@
 import UIKit
 
 class ImageView: UIImageView {
-    var downloadID: String = ""
+    private static var cache = [String: UIImage]()
+    private var downloadID: String = ""
 
     func setImage(_ image: UIImage?, animated: Bool) {
         UIView.transition(with: self,
@@ -22,9 +23,14 @@ class ImageView: UIImageView {
             return
         }
 
+        if let image = ImageView.cache[urlString] {
+            setImage(image, animated: animated)
+            return
+        }
+
         let downloadID = UUID().uuidString
         self.downloadID = downloadID
-        
+
         DispatchQueue.global().async { [weak self] in
             guard
                 let data = try? Data(contentsOf: url),
@@ -34,6 +40,9 @@ class ImageView: UIImageView {
                 finished?(nil)
                 return
             }
+
+            ImageView.cache[urlString] = image
+
             DispatchQueue.main.async {
                 guard self?.downloadID == downloadID else { return }
                 self?.setImage(image, animated: animated)
