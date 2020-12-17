@@ -5,6 +5,7 @@ class ChatItemCell: UITableViewCell {
     enum Content {
         case none
         case queueOperator(QueueView)
+        case outgoingMessage(VisitorChatMessageView)
         case visitorMessage(VisitorChatMessageView)
         case operatorMessage(OperatorChatMessageView)
 
@@ -13,6 +14,8 @@ class ChatItemCell: UITableViewCell {
             case .none:
                 return nil
             case .queueOperator(let view):
+                return view
+            case .outgoingMessage(let view):
                 return view
             case .visitorMessage(let view):
                 return view

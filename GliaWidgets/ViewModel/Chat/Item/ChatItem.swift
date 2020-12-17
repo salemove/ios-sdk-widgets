@@ -3,6 +3,7 @@ import SalemoveSDK
 struct ChatItem {
     enum Kind {
         case queueOperator
+        case outgoingMessage(OutgoingMessage)
         case visitorMessage(Message)
         case operatorMessage(Message)
     }
@@ -11,6 +12,10 @@ struct ChatItem {
 
     init(kind: Kind) {
         self.kind = kind
+    }
+
+    init(with message: OutgoingMessage) {
+        kind = .outgoingMessage(message)
     }
 
     init?(with message: Message) {

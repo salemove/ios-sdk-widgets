@@ -7,7 +7,7 @@ class ChatView: View {
     var numberOfSections: (() -> Int?)?
     var numberOfRows: ((Int) -> Int?)?
     var itemForRow: ((Int, Int) -> ChatItem?)?
-    var senderImageUrlForRow: ((Int, Int) -> String?)?
+    var userImageUrlForRow: ((Int, Int) -> String?)?
 
     private let style: ChatStyle
     private let tableView = UITableView()
@@ -38,6 +38,11 @@ class ChatView: View {
 
     func scrollToBottom(animated: Bool) {
         tableView.scrollToBottom(animated: animated)
+    }
+
+    func reloadRow(_ row: Int, in section: Int) {
+        let indexPath = IndexPath(row: row, section: section)
+        tableView.reloadRows(at: [indexPath], with: .automatic)
     }
 
     func reloadAll() {
@@ -126,6 +131,10 @@ extension ChatView: UITableViewDataSource {
         switch item.kind {
         case .queueOperator:
             cell.content = .queueOperator(queueView)
+        case .outgoingMessage(let message):
+            let view = VisitorChatMessageView(with: style.visitorMessage)
+            view.appendContent(.text(message.content), animated: false)
+            cell.content = .outgoingMessage(view)
         case .visitorMessage(let message):
             let view = VisitorChatMessageView(with: style.visitorMessage)
             view.appendContent(.text(message.content), animated: false)
@@ -133,7 +142,7 @@ extension ChatView: UITableViewDataSource {
         case .operatorMessage(let message):
             let view = OperatorChatMessageView(with: style.operatorMessage)
             view.appendContent(.text(message.content), animated: false)
-            if let imageUrl = senderImageUrlForRow?(indexPath.row, indexPath.section) {
+            if let imageUrl = userImageUrlForRow?(indexPath.row, indexPath.section) {
                 view.operatorImageView.setImage(fromUrl: imageUrl, animated: true)
             }
             cell.content = .operatorMessage(view)

@@ -15,7 +15,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case showEndButton
         case setMessageEntryEnabled(Bool)
         case appendRows(Int, to: Int, animated: Bool)
-        //case reloadSection(Int)
+        case reloadRow(Int, in: Int)
         case reloadAll
         case scrollToBottom(animated: Bool)
         case confirm(AlertConfirmationStrings,
@@ -37,9 +37,9 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         Section<ChatItem>(1),
         Section<ChatItem>(2)
     ]
-    private var oldMessagesSection: Section<ChatItem> { return sections[0] }
+    private var historySection: Section<ChatItem> { return sections[0] }
     private var queueOperatorSection: Section<ChatItem> { return sections[1] }
-    private var newMessagesSection: Section<ChatItem> { return sections[2] }
+    private var messagesSection: Section<ChatItem> { return sections[2] }
 
     override init(interactor: Interactor, alertStrings: AlertStrings) {
         super.init(interactor: interactor, alertStrings: alertStrings)
@@ -132,6 +132,29 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         action?(.reloadAll)
     }
 
+    private func replace(_ outgoingMessage: OutgoingMessage,
+                         with message: Message,
+                         in section: Section<ChatItem>) {
+        guard let index = section.items
+                .enumerated()
+                .first(where: {
+                    switch $0.element.kind {
+                    case .outgoingMessage(let message):
+                        if message.id == outgoingMessage.id {
+                            return true
+                        } else {
+                            return false
+                        }
+                    default:
+                        return false
+                    }
+                })?.offset,
+              let item = ChatItem(with: message)
+        else { return }
+        section.replaceItem(at: index, with: item)
+        action?(.reloadRow(index, in: section.index))
+    }
+
     override func interactorEvent(_ event: InteractorEvent) {
         switch event {
         case .stateChanged(let state):
@@ -152,7 +175,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             receivedMessage(message)
         case .messagesUpdated(let messages):
             let items = messages.compactMap({ ChatItem(with: $0) })
-            setItems(items, to: newMessagesSection)
+            setItems(items, to: messagesSection)
             action?(.scrollToBottom(animated: true))
         case .error(let error):
             action?(.showAlert(alertStrings(with: error),
@@ -163,14 +186,27 @@ class ChatViewModel: EngagementViewModel, ViewModel {
 
 extension ChatViewModel {
     private func send(_ message: String) {
+        let outgoingMessage = OutgoingMessage(content: message)
+        let item = ChatItem(with: outgoingMessage)
+        appendItem(item, to: messagesSection, animated: true)
 
+        interactor.send(message) { message in
+            self.replace(outgoingMessage,
+                         with: message,
+                         in: self.messagesSection)
+            self.action?(.scrollToBottom(animated: true))
+        } failure: { _ in
+            self.action?(.showAlert(self.alertStrings.unexpectedError,
+                                    dismissed: nil))
+        }
     }
 
     private func receivedMessage(_ message: Message) {
-        guard let item = ChatItem(with: message) else { return }
-        appendItem(item,
-                   to: newMessagesSection,
-                   animated: true)
+        guard
+            message.sender != .visitor,
+            let item = ChatItem(with: message)
+        else { return }
+        appendItem(item, to: messagesSection, animated: true)
         action?(.scrollToBottom(animated: true))
     }
 }
@@ -186,9 +222,11 @@ extension ChatViewModel {
         return sections[section][row]
     }
 
-    func senderImageUrl(for row: Int, in section: Int) -> String? {
+    func userImageUrl(for row: Int, in section: Int) -> String? {
         guard sections[section] === queueOperatorSection else { return nil }
         let item = sections[section][row]
+
+        // return url for last message for each operator message in newMessages
 
         switch item.kind {
         case .operatorMessage:

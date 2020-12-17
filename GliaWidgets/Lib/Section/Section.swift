@@ -1,28 +1,32 @@
 class Section<Item> {
     let index: Int
+    var items: [Item] { return items_ }
+    var itemCount: Int { return items_.count }
 
-    private var items = [Item]()
-
-    var itemCount: Int { return items.count }
+    private var items_ = [Item]()
 
     init(_ index: Int) {
         self.index = index
     }
 
     subscript(index: Int) -> Item {
-        get { return items[index] }
-        set(newValue) { items[index] = newValue }
+        get { return items_[index] }
+        set(newValue) { items_[index] = newValue }
     }
 
     func set(_ newItems: [Item]) {
-        items = newItems
+        items_ = newItems
     }
 
     func append(_ item: Item) {
-        items.append(item)
+        items_.append(item)
     }
 
     func append(_ newItems: [Item]) {
-        items.append(contentsOf: newItems)
+        items_.append(contentsOf: newItems)
+    }
+
+    func replaceItem(at index: Int, with item: Item) {
+        items_[index] = item
     }
 }

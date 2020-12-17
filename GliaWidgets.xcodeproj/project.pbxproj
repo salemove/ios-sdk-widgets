@@ -35,6 +35,7 @@
 		1A5F81482588BBF700A605DA /* ChatSendButtonProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5F81472588BBF700A605DA /* ChatSendButtonProperties.swift */; };
 		1A5F814D2588C0B800A605DA /* KeyboardObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5F814C2588C0B800A605DA /* KeyboardObserver.swift */; };
 		1A5F815F258A43E600A605DA /* Section.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5F815E258A43E600A605DA /* Section.swift */; };
+		1A5F8182258B4F0E00A605DA /* OutgoingMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5F8181258B4F0E00A605DA /* OutgoingMessage.swift */; };
 		1A6075E02582209100569B0E /* UserImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6075DF2582209100569B0E /* UserImageView.swift */; };
 		1A6075E7258220E300569B0E /* UserImageStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6075E6258220E300569B0E /* UserImageStyle.swift */; };
 		1A60AF7A25656E0500E53F53 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60AF7925656E0500E53F53 /* Theme.swift */; };
@@ -172,6 +173,7 @@
 		1A5F81472588BBF700A605DA /* ChatSendButtonProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatSendButtonProperties.swift; sourceTree = "<group>"; };
 		1A5F814C2588C0B800A605DA /* KeyboardObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardObserver.swift; sourceTree = "<group>"; };
 		1A5F815E258A43E600A605DA /* Section.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Section.swift; sourceTree = "<group>"; };
+		1A5F8181258B4F0E00A605DA /* OutgoingMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutgoingMessage.swift; sourceTree = "<group>"; };
 		1A6075DF2582209100569B0E /* UserImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserImageView.swift; sourceTree = "<group>"; };
 		1A6075E6258220E300569B0E /* UserImageStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserImageStyle.swift; sourceTree = "<group>"; };
 		1A60AF7925656E0500E53F53 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
@@ -412,6 +414,15 @@
 			path = Section;
 			sourceTree = "<group>";
 		};
+		1A5F8180258B4EF900A605DA /* Item */ = {
+			isa = PBXGroup;
+			children = (
+				1AC7A77A25838AE800567FF8 /* ChatItem.swift */,
+				1A5F8181258B4F0E00A605DA /* OutgoingMessage.swift */,
+			);
+			path = Item;
+			sourceTree = "<group>";
+		};
 		1A6075DE2582207E00569B0E /* ImageView */ = {
 			isa = PBXGroup;
 			children = (
@@ -588,8 +599,8 @@
 		1A60AFD32566991C00E53F53 /* Chat */ = {
 			isa = PBXGroup;
 			children = (
+				1A5F8180258B4EF900A605DA /* Item */,
 				1A60AFD42566992A00E53F53 /* ChatViewModel.swift */,
-				1AC7A77A25838AE800567FF8 /* ChatItem.swift */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -1158,6 +1169,7 @@
 				1AA738AE2578E0D500E1120F /* QueueAnimationView.swift in Sources */,
 				1AC7A7BE2587B54800567FF8 /* UIImageView+Extensions.swift in Sources */,
 				1A5F814D2588C0B800A605DA /* KeyboardObserver.swift in Sources */,
+				1A5F8182258B4F0E00A605DA /* OutgoingMessage.swift in Sources */,
 				1A60AFCA2566943F00E53F53 /* RootCoordinator.swift in Sources */,
 				1A60B0042567F25600E53F53 /* Header.swift in Sources */,
 				1A60B047256C0B4500E53F53 /* ChatMessageContent.swift in Sources */,
