@@ -80,11 +80,11 @@ class ChatViewModel: EngagementViewModel, ViewModel {
                     self.action?(.showAlert(self.alertStrings.operatorsUnavailable,
                                             dismissed: { self.end() }))
                 default:
-                    self.action?(.showAlert(self.alertStrings(with: error),
+                    self.action?(.showAlert(self.alertStrings.unexpectedError,
                                             dismissed: { self.end() }))
                 }
             default:
-                self.action?(.showAlert(self.alertStrings(with: error),
+                self.action?(.showAlert(self.alertStrings.unexpectedError,
                                         dismissed: { self.end() }))
             }
         }
@@ -181,8 +181,8 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             let items = messages.compactMap({ ChatItem(with: $0) })
             setItems(items, to: messagesSection)
             action?(.scrollToBottom(animated: true))
-        case .error(let error):
-            action?(.showAlert(alertStrings(with: error),
+        case .error:
+            action?(.showAlert(alertStrings.unexpectedError,
                                dismissed: nil))
         }
     }
