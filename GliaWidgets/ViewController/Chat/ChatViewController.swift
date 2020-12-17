@@ -44,12 +44,12 @@ class ChatViewController: ViewController, AlertPresenter {
         viewModel.action = { action in
             switch action {
             case .queueWaiting:
-                view.reloadAll()
+                view.refreshAll()
                 view.queueView.setState(.waiting, animated: true)
             case .queueConnecting:
                 view.queueView.setState(.connecting, animated: true)
             case .queueConnected(name: let name, imageUrl: let imageUrl):
-                view.reloadAll()
+                view.refreshAll()
                 view.queueView.setState(.connected(name: name, imageUrl: imageUrl), animated: true)
             case .showEndButton:
                 let rightItem = ActionButton(with: self.viewFactory.theme.chat.endButton)
@@ -59,10 +59,10 @@ class ChatViewController: ViewController, AlertPresenter {
                 view.messageEntryView.isEnabled = enabled
             case .appendRows(let count, let section, let animated):
                 view.appendRows(count, to: section, animated: animated)
-            case .reloadRow(let row, in: let section):
-                view.reloadRow(row, in: section)
-            case .reloadAll:
-                view.reloadAll()
+            case .refreshRow(let row, in: let section):
+                view.refreshRow(row, in: section)
+            case .refreshAll:
+                view.refreshAll()
             case .scrollToBottom(animated: let animated):
                 view.scrollToBottom(animated: animated)
             case .confirm(let strings, let confirmed):

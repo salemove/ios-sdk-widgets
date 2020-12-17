@@ -40,12 +40,18 @@ class ChatView: View {
         tableView.scrollToBottom(animated: animated)
     }
 
-    func reloadRow(_ row: Int, in section: Int) {
+    func refreshRow(_ row: Int, in section: Int) {
         let indexPath = IndexPath(row: row, section: section)
-        tableView.reloadRows(at: [indexPath], with: .automatic)
+
+        guard
+            let cell = tableView.cellForRow(at: indexPath) as? ChatItemCell,
+            let item = itemForRow?(indexPath.row, indexPath.section)
+        else { return }
+
+        cell.content = content(for: item)
     }
 
-    func reloadAll() {
+    func refreshAll() {
         tableView.reloadData()
     }
 
@@ -78,6 +84,25 @@ class ChatView: View {
         messageEntryView.autoPinEdge(toSuperviewEdge: .left)
         messageEntryView.autoPinEdge(toSuperviewEdge: .right)
         messageEntryView.autoPinEdge(.top, to: .bottom, of: tableView)
+    }
+
+    private func content(for item: ChatItem) -> ChatItemCell.Content {
+        switch item.kind {
+        case .queueOperator:
+            return .queueOperator(queueView)
+        case .outgoingMessage(let message):
+            let view = VisitorChatMessageView(with: style.visitorMessage)
+            view.appendContent(.text(message.content), animated: false)
+            return .outgoingMessage(view)
+        case .visitorMessage(let message):
+            let view = VisitorChatMessageView(with: style.visitorMessage)
+            view.appendContent(.text(message.content), animated: false)
+            return .visitorMessage(view)
+        case .operatorMessage(let message):
+            let view = OperatorChatMessageView(with: style.operatorMessage)
+            view.appendContent(.text(message.content), animated: false)
+            return .operatorMessage(view)
+        }
     }
 }
 
@@ -128,24 +153,16 @@ extension ChatView: UITableViewDataSource {
             let cell: ChatItemCell = tableView.dequeue(cellFor: indexPath)
         else { return UITableViewCell() }
 
+        cell.content = content(for: item)
+
         switch item.kind {
-        case .queueOperator:
-            cell.content = .queueOperator(queueView)
-        case .outgoingMessage(let message):
-            let view = VisitorChatMessageView(with: style.visitorMessage)
-            view.appendContent(.text(message.content), animated: false)
-            cell.content = .outgoingMessage(view)
-        case .visitorMessage(let message):
-            let view = VisitorChatMessageView(with: style.visitorMessage)
-            view.appendContent(.text(message.content), animated: false)
-            cell.content = .visitorMessage(view)
         case .operatorMessage(let message):
-            let view = OperatorChatMessageView(with: style.operatorMessage)
-            view.appendContent(.text(message.content), animated: false)
-            if let imageUrl = userImageUrlForRow?(indexPath.row, indexPath.section) {
+            /*if let imageUrl = userImageUrlForRow?(indexPath.row, indexPath.section) {
                 view.operatorImageView.setImage(fromUrl: imageUrl, animated: true)
-            }
-            cell.content = .operatorMessage(view)
+            }*/
+            break
+        default:
+            break
         }
 
         return cell

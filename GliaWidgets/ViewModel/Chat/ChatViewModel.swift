@@ -15,8 +15,8 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case showEndButton
         case setMessageEntryEnabled(Bool)
         case appendRows(Int, to: Int, animated: Bool)
-        case reloadRow(Int, in: Int)
-        case reloadAll
+        case refreshRow(Int, in: Int)
+        case refreshAll
         case scrollToBottom(animated: Bool)
         case confirm(AlertConfirmationStrings,
                      confirmed: (() -> Void)?)
@@ -129,7 +129,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     private func setItems(_ items: [ChatItem],
                           to section: Section<ChatItem>) {
         section.set(items)
-        action?(.reloadAll)
+        action?(.refreshAll)
     }
 
     private func replace(_ outgoingMessage: OutgoingMessage,
@@ -152,7 +152,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
               let item = ChatItem(with: message)
         else { return }
         section.replaceItem(at: index, with: item)
-        action?(.reloadRow(index, in: section.index))
+        action?(.refreshRow(index, in: section.index))
     }
 
     override func interactorEvent(_ event: InteractorEvent) {

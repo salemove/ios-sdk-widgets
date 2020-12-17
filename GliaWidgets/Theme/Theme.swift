@@ -45,12 +45,12 @@ public class Theme {
                                connecting: connecting,
                                connected: connected)
 
-        let visitorMessage = ChatMessageStyle(messageFont: font.bodyText,
-                                              messageColor: color.baseLight,
-                                              backgroundColor: color.primary)
-        let operatorMessage = ChatMessageStyle(messageFont: font.bodyText,
-                                               messageColor: color.baseDark,
-                                               backgroundColor: Color.lightGrey)
+        let visitorMessage = VisitorChatMessageStyle(messageFont: font.bodyText,
+                                                     messageColor: color.baseLight,
+                                                     backgroundColor: color.primary)
+        let operatorMessage = OperatorChatMessageStyle(messageFont: font.bodyText,
+                                                       messageColor: color.baseDark,
+                                                       backgroundColor: Color.lightGrey)
         let endButton = ActionButtonStyle(title: Chat.EndButton.title,
                                           titleFont: font.buttonLabel,
                                           titleColor: color.baseLight,

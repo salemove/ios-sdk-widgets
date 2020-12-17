@@ -5,7 +5,7 @@ class VisitorChatMessageView: ChatMessageView {
 
     private let kInsets = UIEdgeInsets(top: 5, left: 88, bottom: 5, right: 16)
 
-    override init(with style: ChatMessageStyle) {
+    init(with style: VisitorChatMessageStyle) {
         super.init(with: style)
         setup()
         layout()

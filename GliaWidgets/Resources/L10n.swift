@@ -62,6 +62,10 @@ public enum L10n {
     public enum Message {
       /// Enter Message
       public static let placeholder = L10n.tr("Localizable", "chat.message.placeholder")
+      public enum Status {
+        /// Delivered
+        public static let delivered = L10n.tr("Localizable", "chat.message.status.delivered")
+      }
     }
   }
 

@@ -28,3 +28,4 @@
 "chat.title" = "Chat";
 "chat.endButton.title" = "End";
 "chat.message.placeholder" = "Enter Message";
+"chat.message.status.delivered" = "Delivered";

@@ -5,7 +5,7 @@ class OperatorChatMessageView: ChatMessageView {
 
     private let kInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 88)
 
-    override init(with style: ChatMessageStyle) {
+    init(with style: OperatorChatMessageStyle) {
         super.init(with: style)
         setup()
         layout()
