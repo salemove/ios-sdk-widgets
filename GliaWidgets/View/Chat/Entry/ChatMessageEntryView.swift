@@ -2,6 +2,7 @@ import UIKit
 
 public class ChatMessageEntryView: UIView {
     var maxCharacters: Int = 200
+    var textChanged: ((String) -> Void)?
     var sendTapped: ((String) -> Void)?
     var pickMediaTapped: (() -> Void)?
     var message: String {
@@ -147,6 +148,7 @@ extension ChatMessageEntryView: UITextViewDelegate {
 
     public func textViewDidChange(_ textView: UITextView) {
         updateTextFieldHeight()
+        textChanged?(textView.text)
     }
 
     public func textViewDidBeginEditing(_ textView: UITextView) {

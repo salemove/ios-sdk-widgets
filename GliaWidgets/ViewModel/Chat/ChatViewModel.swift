@@ -7,6 +7,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case viewDidLoad
         case backTapped
         case closeTapped
+        case messageTextChanged(String)
         case sendTapped(message: String)
     }
 
@@ -55,6 +56,8 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             delegate?(.back)
         case .closeTapped:
             closeTapped()
+        case .messageTextChanged(let message):
+            sendMessagePreview(message)
         case .sendTapped(message: let message):
             send(message)
         }
@@ -189,6 +192,10 @@ class ChatViewModel: EngagementViewModel, ViewModel {
 }
 
 extension ChatViewModel {
+    private func sendMessagePreview(_ message: String) {
+        interactor.sendMessagePreview(message)
+    }
+
     private func send(_ message: String) {
         let outgoingMessage = OutgoingMessage(content: message)
         let item = ChatItem(with: outgoingMessage)

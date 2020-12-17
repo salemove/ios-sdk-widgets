@@ -88,6 +88,10 @@ extension Interactor {
         }
     }
 
+    func sendMessagePreview(_ message: String) {
+        Salemove.sharedInstance.sendMessagePreview(message: message) { _, _ in }
+    }
+
     func send(_ message: String,
               success: @escaping (Message) -> Void,
               failure: @escaping (SalemoveError) -> Void) {
