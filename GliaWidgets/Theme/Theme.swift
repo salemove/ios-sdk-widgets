@@ -53,7 +53,8 @@ public class Theme {
                                                      delivered: Chat.Message.Status.delivered)
         let operatorMessage = OperatorChatMessageStyle(messageFont: font.bodyText,
                                                        messageColor: color.baseDark,
-                                                       backgroundColor: Color.lightGrey)
+                                                       backgroundColor: Color.lightGrey,
+                                                       operatorImage: operatorImage)
         let endButton = ActionButtonStyle(title: Chat.EndButton.title,
                                           titleFont: font.buttonLabel,
                                           titleColor: color.baseLight,

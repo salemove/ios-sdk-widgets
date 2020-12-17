@@ -19,7 +19,6 @@
 		1A38A8AC258B65D00089DE7B /* ChatMessageStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A38A8AB258B65D00089DE7B /* ChatMessageStyle.swift */; };
 		1A4AD3AF256D283700468BFB /* ChatMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4AD3AE256D283700468BFB /* ChatMessageView.swift */; };
 		1A4AD3B3256D2A7600468BFB /* VisitorChatMessageStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4AD3B2256D2A7600468BFB /* VisitorChatMessageStyle.swift */; };
-		1A4AD3BA256D31A600468BFB /* ChatMessageUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4AD3B9256D31A600468BFB /* ChatMessageUserView.swift */; };
 		1A4AD3BE256D37FD00468BFB /* UITableView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4AD3BD256D37FD00468BFB /* UITableView+Extensions.swift */; };
 		1A4AD3C1256E74C600468BFB /* ThemeFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4AD3C0256E74C600468BFB /* ThemeFont.swift */; };
 		1A4AD3C4256E7A0C00468BFB /* ThemeFontStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4AD3C3256E7A0C00468BFB /* ThemeFontStyle.swift */; };
@@ -157,7 +156,6 @@
 		1A38A8AB258B65D00089DE7B /* ChatMessageStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageStyle.swift; sourceTree = "<group>"; };
 		1A4AD3AE256D283700468BFB /* ChatMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageView.swift; sourceTree = "<group>"; };
 		1A4AD3B2256D2A7600468BFB /* VisitorChatMessageStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorChatMessageStyle.swift; sourceTree = "<group>"; };
-		1A4AD3B9256D31A600468BFB /* ChatMessageUserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageUserView.swift; sourceTree = "<group>"; };
 		1A4AD3BD256D37FD00468BFB /* UITableView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Extensions.swift"; sourceTree = "<group>"; };
 		1A4AD3C0256E74C600468BFB /* ThemeFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeFont.swift; sourceTree = "<group>"; };
 		1A4AD3C3256E7A0C00468BFB /* ThemeFontStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeFontStyle.swift; sourceTree = "<group>"; };
@@ -354,14 +352,6 @@
 				2308CF5ACCB31E1CC49FED95 /* Pods_TestingApp.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		1A4AD3B8256D319000468BFB /* User */ = {
-			isa = PBXGroup;
-			children = (
-				1A4AD3B9256D31A600468BFB /* ChatMessageUserView.swift */,
-			);
-			path = User;
 			sourceTree = "<group>";
 		};
 		1A4AD3CC256E8E6500468BFB /* Cells */ = {
@@ -702,7 +692,6 @@
 		1A60B02B256BF7C200E53F53 /* Message */ = {
 			isa = PBXGroup;
 			children = (
-				1A4AD3B8256D319000468BFB /* User */,
 				1A60B04F256D0D7400E53F53 /* Content */,
 				1A4AD3AE256D283700468BFB /* ChatMessageView.swift */,
 				1A38A8AB258B65D00089DE7B /* ChatMessageStyle.swift */,
@@ -1143,7 +1132,6 @@
 				1A38A8AC258B65D00089DE7B /* ChatMessageStyle.swift in Sources */,
 				1A60AFAF256680EF00E53F53 /* L10n.swift in Sources */,
 				1A60B0192567FC8A00E53F53 /* ButtonKind.swift in Sources */,
-				1A4AD3BA256D31A600468BFB /* ChatMessageUserView.swift in Sources */,
 				1A60B04D256D0CF600E53F53 /* ChatMessageContentView.swift in Sources */,
 				1A56D53D257E24A400141BC8 /* PoweredBy.swift in Sources */,
 				1A60B0202567FD1B00E53F53 /* BackButtonProperties.swift in Sources */,

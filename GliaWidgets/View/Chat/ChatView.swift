@@ -102,6 +102,7 @@ class ChatView: View {
         case .operatorMessage(let message):
             let view = OperatorChatMessageView(with: style.operatorMessage)
             view.appendContent(.text(message.content), animated: false)
+            view.showsOperatorImage = true
             return .operatorMessage(view)
         }
     }
