@@ -47,7 +47,10 @@ public class Theme {
 
         let visitorMessage = VisitorChatMessageStyle(messageFont: font.bodyText,
                                                      messageColor: color.baseLight,
-                                                     backgroundColor: color.primary)
+                                                     backgroundColor: color.primary,
+                                                     statusFont: font.caption,
+                                                     statusColor: color.baseNormal,
+                                                     delivered: Chat.Message.Status.delivered)
         let operatorMessage = OperatorChatMessageStyle(messageFont: font.bodyText,
                                                        messageColor: color.baseDark,
                                                        backgroundColor: Color.lightGrey)

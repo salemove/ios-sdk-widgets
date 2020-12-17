@@ -1,6 +1,8 @@
 import SalemoveSDK
 
 class ChatViewModel: EngagementViewModel, ViewModel {
+    typealias Strings = L10n.Chat
+
     enum Event {
         case viewDidLoad
         case backTapped
@@ -148,9 +150,11 @@ class ChatViewModel: EngagementViewModel, ViewModel {
                     default:
                         return false
                     }
-                })?.offset,
-              let item = ChatItem(with: message)
+                })?.offset
         else { return }
+
+        let item = ChatItem(kind: .visitorMessage(message,
+                                                  status: Strings.Message.Status.delivered))
         section.replaceItem(at: index, with: item)
         action?(.refreshRow(index, in: section.index))
     }
@@ -189,6 +193,7 @@ extension ChatViewModel {
         let outgoingMessage = OutgoingMessage(content: message)
         let item = ChatItem(with: outgoingMessage)
         appendItem(item, to: messagesSection, animated: true)
+        action?(.scrollToBottom(animated: true))
 
         interactor.send(message) { message in
             self.replace(outgoingMessage,

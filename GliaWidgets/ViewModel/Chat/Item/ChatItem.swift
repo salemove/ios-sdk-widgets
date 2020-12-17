@@ -4,7 +4,7 @@ struct ChatItem {
     enum Kind {
         case queueOperator
         case outgoingMessage(OutgoingMessage)
-        case visitorMessage(Message)
+        case visitorMessage(Message, status: String?)
         case operatorMessage(Message)
     }
 
@@ -21,7 +21,7 @@ struct ChatItem {
     init?(with message: Message) {
         switch message.sender {
         case .visitor:
-            kind = .visitorMessage(message)
+            kind = .visitorMessage(message, status: nil)
         case .operator:
             kind = .operatorMessage(message)
         case .omniguide:

@@ -94,9 +94,10 @@ class ChatView: View {
             let view = VisitorChatMessageView(with: style.visitorMessage)
             view.appendContent(.text(message.content), animated: false)
             return .outgoingMessage(view)
-        case .visitorMessage(let message):
+        case .visitorMessage(let message, status: let status):
             let view = VisitorChatMessageView(with: style.visitorMessage)
             view.appendContent(.text(message.content), animated: false)
+            view.status = status
             return .visitorMessage(view)
         case .operatorMessage(let message):
             let view = OperatorChatMessageView(with: style.operatorMessage)
@@ -110,7 +111,7 @@ extension ChatView {
     private func observeKeyboard() {
         keyboardObserver.keyboardWillShow = { [unowned self] properties in
             let y = self.tableView.contentSize.height - properties.finalFrame.height
-            let offset = CGPoint(x: 0, y: -y)
+            let offset = CGPoint(x: 0, y: y)
 
             UIView.animate(withDuration: properties.duration,
                            delay: 0.0,

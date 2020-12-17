@@ -61,6 +61,7 @@ class ChatViewController: ViewController, AlertPresenter {
                 view.appendRows(count, to: section, animated: animated)
             case .refreshRow(let row, in: let section):
                 view.refreshRow(row, in: section)
+                view.refreshAll()
             case .refreshAll:
                 view.refreshAll()
             case .scrollToBottom(animated: let animated):
