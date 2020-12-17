@@ -29,4 +29,9 @@ class Section<Item> {
     func replaceItem(at index: Int, with item: Item) {
         items_[index] = item
     }
+
+    func item(after index: Int) -> Item? {
+        guard index + 1 < itemCount else { return nil }
+        return items_[index + 1]
+    }
 }

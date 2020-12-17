@@ -5,7 +5,16 @@ struct ChatItem {
         case queueOperator
         case outgoingMessage(OutgoingMessage)
         case visitorMessage(Message, status: String?)
-        case operatorMessage(Message)
+        case operatorMessage(Message, showsImage: Bool, imageUrl: String?)
+    }
+
+    var isOperatorMessage: Bool {
+        switch kind {
+        case .operatorMessage:
+            return true
+        default:
+            return false
+        }
     }
 
     let kind: Kind
@@ -23,7 +32,7 @@ struct ChatItem {
         case .visitor:
             kind = .visitorMessage(message, status: nil)
         case .operator:
-            kind = .operatorMessage(message)
+            kind = .operatorMessage(message, showsImage: false, imageUrl: nil)
         case .omniguide:
             return nil
         case .system:

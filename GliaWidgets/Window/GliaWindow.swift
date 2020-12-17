@@ -54,8 +54,9 @@ class GliaWindow: UIWindow {
     }
 
     func minimize(animated: Bool) {
-        minimizedView.alpha = 0.0
+        endEditing(true)
 
+        minimizedView.alpha = 0.0
         addSubview(minimizedView)
         minimizedView.autoPinEdgesToSuperviewEdges()
 

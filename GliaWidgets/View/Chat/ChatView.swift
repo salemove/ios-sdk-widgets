@@ -7,7 +7,6 @@ class ChatView: View {
     var numberOfSections: (() -> Int?)?
     var numberOfRows: ((Int) -> Int?)?
     var itemForRow: ((Int, Int) -> ChatItem?)?
-    var userImageUrlForRow: ((Int, Int) -> String?)?
 
     private let style: ChatStyle
     private let tableView = UITableView()
@@ -100,10 +99,11 @@ class ChatView: View {
             view.appendContent(.text(message.content), animated: false)
             view.status = status
             return .visitorMessage(view)
-        case .operatorMessage(let message):
+        case .operatorMessage(let message, showsImage: let showsImage, imageUrl: let imageUrl):
             let view = OperatorChatMessageView(with: style.operatorMessage)
             view.appendContent(.text(message.content), animated: false)
-            view.showsOperatorImage = true
+            view.showsOperatorImage = showsImage
+            view.setOperatorImage(fromUrl: imageUrl, animated: false)
             return .operatorMessage(view)
         }
     }
@@ -157,16 +157,6 @@ extension ChatView: UITableViewDataSource {
         else { return UITableViewCell() }
 
         cell.content = content(for: item)
-
-        switch item.kind {
-        case .operatorMessage(let message):
-            /*if let imageUrl = userImageUrlForRow?(indexPath.row, indexPath.section) {
-                view.operatorImageView.setImage(fromUrl: imageUrl, animated: true)
-            }*/
-            break
-        default:
-            break
-        }
 
         return cell
     }

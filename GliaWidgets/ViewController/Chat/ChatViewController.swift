@@ -38,7 +38,6 @@ class ChatViewController: ViewController, AlertPresenter {
         view.numberOfSections = { return viewModel.numberOfSections }
         view.numberOfRows = { return viewModel.numberOfItems(in: $0) }
         view.itemForRow = { return viewModel.item(for: $0, in: $1) }
-        view.userImageUrlForRow = { return viewModel.userImageUrl(for: $0, in: $1) }
         view.messageEntryView.textChanged = { viewModel.event(.messageTextChanged($0)) }
         view.messageEntryView.sendTapped = { viewModel.event(.sendTapped(message: $0)) }
 

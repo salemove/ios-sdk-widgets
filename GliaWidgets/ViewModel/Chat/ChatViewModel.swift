@@ -222,6 +222,7 @@ extension ChatViewModel {
         else { return }
         appendItem(item, to: messagesSection, animated: true)
         action?(.scrollToBottom(animated: true))
+        action?(.refreshAll)
     }
 }
 
@@ -233,20 +234,25 @@ extension ChatViewModel {
     }
 
     func item(for row: Int, in section: Int) -> ChatItem {
-        return sections[section][row]
-    }
+        let section = sections[section]
+        let item = section[row]
 
-    func userImageUrl(for row: Int, in section: Int) -> String? {
-        guard sections[section] === queueOperatorSection else { return nil }
-        let item = sections[section][row]
-
-        // return url for last message for each operator message in newMessages
-
-        switch item.kind {
-        case .operatorMessage:
-            return interactor.engagedOperator?.picture?.url
-        default:
-            return nil
+        if section === messagesSection {
+            switch item.kind {
+            case .operatorMessage(let message, showsImage: _, imageUrl: _):
+                let nextItem = section.item(after: row)
+                if nextItem == nil || nextItem?.isOperatorMessage == false {
+                    let imageUrl = interactor.engagedOperator?.picture?.url
+                    let kind: ChatItem.Kind = .operatorMessage(message,
+                                                               showsImage: true,
+                                                               imageUrl: imageUrl)
+                    return ChatItem(kind: kind)
+                }
+            default:
+                break
+            }
         }
+
+        return item
     }
 }
