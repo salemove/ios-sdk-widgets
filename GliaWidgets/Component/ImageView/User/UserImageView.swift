@@ -3,7 +3,7 @@ import UIKit
 class UserImageView: UIView {
     private let style: UserImageStyle
     private let placeholderImageView = UIImageView()
-    private let imageView = UIImageView()
+    private let imageView = ImageView()
 
     init(with style: UserImageStyle) {
         self.style = style
@@ -24,12 +24,7 @@ class UserImageView: UIView {
     }
 
     func setImage(_ image: UIImage?, animated: Bool) {
-        UIView.transition(with: imageView,
-                          duration: animated ? 0.2 : 0.0,
-                          options: .transitionCrossDissolve,
-                          animations: {
-                            self.imageView.image = image
-                          }, completion: nil)
+        imageView.setImage(image, animated: animated)
     }
 
     func setImage(fromUrl url: String?, animated: Bool) {
