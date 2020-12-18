@@ -2,7 +2,6 @@ import UIKit
 
 class ChatView: View {
     let header: Header
-    let queueView: QueueView
     let messageEntryView: ChatMessageEntryView
     var numberOfSections: (() -> Int?)?
     var numberOfRows: ((Int) -> Int?)?
@@ -10,6 +9,7 @@ class ChatView: View {
 
     private let style: ChatStyle
     private let tableView = UITableView()
+    private let queueView: QueueView
     private var messageEntryViewBottomConstraint: NSLayoutConstraint!
     private let keyboardObserver = KeyboardObserver()
 
@@ -21,6 +21,11 @@ class ChatView: View {
         super.init()
         setup()
         layout()
+    }
+
+    func setQueueState(_ state: QueueView.State, animated: Bool) {
+        queueView.setState(state, animated: animated)
+        updateTableView(animated: animated)
     }
 
     func appendRows(_ count: Int, to section: Int, animated: Bool) {
@@ -39,7 +44,7 @@ class ChatView: View {
         tableView.scrollToBottom(animated: animated)
     }
 
-    func refreshRow(_ row: Int, in section: Int) {
+    func refreshRow(_ row: Int, in section: Int, animated: Bool) {
         let indexPath = IndexPath(row: row, section: section)
 
         guard
@@ -49,6 +54,7 @@ class ChatView: View {
         else { return }
 
         cell.content = content(for: item)
+        updateTableView(animated: animated)
     }
 
     func refreshAll() {
@@ -105,6 +111,18 @@ class ChatView: View {
             view.showsOperatorImage = showsImage
             view.setOperatorImage(fromUrl: imageUrl, animated: false)
             return .operatorMessage(view)
+        }
+    }
+
+    private func updateTableView(animated: Bool) {
+        if animated {
+            tableView.beginUpdates()
+            tableView.endUpdates()
+        } else {
+            UIView.performWithoutAnimation {
+                tableView.beginUpdates()
+                tableView.endUpdates()
+            }
         }
     }
 }

@@ -18,7 +18,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case showEndButton
         case setMessageEntryEnabled(Bool)
         case appendRows(Int, to: Int, animated: Bool)
-        case refreshRow(Int, in: Int)
+        case refreshRow(Int, in: Int, animated: Bool)
         case refreshAll
         case scrollToBottom(animated: Bool)
         case confirm(AlertConfirmationStrings,
@@ -157,10 +157,10 @@ class ChatViewModel: EngagementViewModel, ViewModel {
                 })?.offset
         else { return }
 
-        let item = ChatItem(kind: .visitorMessage(message,
-                                                  status: Strings.Message.Status.delivered))
+        let status = Strings.Message.Status.delivered
+        let item = ChatItem(kind: .visitorMessage(message, status: status))
         section.replaceItem(at: index, with: item)
-        action?(.refreshRow(index, in: section.index))
+        action?(.refreshRow(index, in: section.index, animated: false))
     }
 
     override func interactorEvent(_ event: InteractorEvent) {

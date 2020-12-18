@@ -12,7 +12,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
     private let navigationPresenter: NavigationPresenter
     private var window: GliaWindow?
     private var minimizedView: UserImageView?
-    private let kMinimizedViewSize = CGSize(width: 80.0, height: 80.0)
+    private let kMinimizedViewSize = CGSize(width: 60.0, height: 60.0)
 
     init(interactor: Interactor,
          viewFactory: ViewFactory,

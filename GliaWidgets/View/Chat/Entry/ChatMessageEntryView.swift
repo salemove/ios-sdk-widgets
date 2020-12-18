@@ -82,8 +82,11 @@ public class ChatMessageEntryView: UIView {
 
     private func layout() {
         messageContainerView.addSubview(textView)
-        textViewHeightConstraint = textView.autoSetDimension(.height,
-                                                             toSize: kMinTextViewHeight)
+        NSLayoutConstraint.autoSetPriority(.defaultHigh) {
+            textViewHeightConstraint = textView.autoSetDimension(.height,
+                                                                 toSize: kMinTextViewHeight)
+        }
+
         textView.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
         textView.autoPinEdge(toSuperviewEdge: .top, withInset: 13)
         textView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 13)

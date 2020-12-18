@@ -75,12 +75,17 @@ class Header: UIView {
     }
 
     private func layout() {
-        heightLayoutConstraint = autoSetDimension(.height, toSize: kHeight)
+        NSLayoutConstraint.autoSetPriority(.defaultHigh) {
+            heightLayoutConstraint = autoSetDimension(.height, toSize: kHeight)
+        }
+
         updateHeight()
 
         addSubview(contentView)
         contentView.autoPinEdgesToSuperviewEdges(with: kContentInsets, excludingEdge: .top)
-        contentView.autoSetDimension(.height, toSize: kContentHeight)
+        NSLayoutConstraint.autoSetPriority(.defaultHigh) {
+            contentView.autoSetDimension(.height, toSize: kContentHeight)
+        }
 
         contentView.addSubview(titleLabel)
         titleLabel.autoPinEdge(toSuperviewEdge: .left)
