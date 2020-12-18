@@ -144,16 +144,10 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         guard let index = section.items
                 .enumerated()
                 .first(where: {
-                    switch $0.element.kind {
-                    case .outgoingMessage(let message):
-                        if message.id == outgoingMessage.id {
-                            return true
-                        } else {
-                            return false
-                        }
-                    default:
-                        return false
-                    }
+                    guard
+                        case let .outgoingMessage(message) = $0.element.kind
+                    else { return false }
+                    return message.id == outgoingMessage.id
                 })?.offset
         else { return }
 
