@@ -22,24 +22,24 @@ public class Theme {
                                            backgroundColor: color.primary)
         let queueOperator = QueueOperatorStyle(operatorImage: operatorImage,
                                                animationColor: color.primary)
-        let waiting = QueueStatusStyle(text1: Queue.Waiting.text1,
-                                       text1Font: font.header1,
-                                       text1FontColor: color.baseDark,
-                                       text2: Queue.Waiting.text2,
-                                       text2Font: font.subtitle,
-                                       text2FontColor: color.baseNormal)
-        let connecting = QueueStatusStyle(text1: Queue.Connecting.text1,
-                                          text1Font: font.header2,
-                                          text1FontColor: color.baseDark,
-                                          text2: Queue.Connecting.text2,
-                                          text2Font: font.header2,
-                                          text2FontColor: color.baseDark)
-        let connected = QueueStatusStyle(text1: Queue.Connected.text1,
-                                         text1Font: font.header1,
-                                         text1FontColor: color.baseDark,
-                                         text2: Queue.Connected.text2,
-                                         text2Font: font.subtitle,
-                                         text2FontColor: color.primary)
+        let waiting = QueueStatusStyle(firstText: Queue.Waiting.firstText,
+                                       firstTextFont: font.header1,
+                                       firstTextFontColor: color.baseDark,
+                                       secondText: Queue.Waiting.secondText,
+                                       secondTextFont: font.subtitle,
+                                       secondTextFontColor: color.baseNormal)
+        let connecting = QueueStatusStyle(firstText: Queue.Connecting.firstText,
+                                          firstTextFont: font.header2,
+                                          firstTextFontColor: color.baseDark,
+                                          secondText: Queue.Connecting.secondText,
+                                          secondTextFont: font.header2,
+                                          secondTextFontColor: color.baseDark)
+        let connected = QueueStatusStyle(firstText: Queue.Connected.firstText,
+                                         firstTextFont: font.header1,
+                                         firstTextFontColor: color.baseDark,
+                                         secondText: Queue.Connected.secondText,
+                                         secondTextFont: font.subtitle,
+                                         secondTextFontColor: color.primary)
         let queue = QueueStyle(queueOperator: queueOperator,
                                waiting: waiting,
                                connecting: connecting,

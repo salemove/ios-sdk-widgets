@@ -37,29 +37,29 @@ class QueueView: UIView {
             hide(animated: animated)
         case .waiting:
             operatorView.startAnimating(animated: animated)
-            statusView.setText1(style.waiting.text1, animated: false)
-            statusView.setText2(style.waiting.text2, animated: false)
+            statusView.setFirstText(style.waiting.firstText, animated: false)
+            statusView.setSecondText(style.waiting.secondText, animated: false)
             statusView.setStyle(style.waiting)
             show(animated: animated)
         case .connecting:
-            let text1 = style.connecting.text1
-            statusView.setText1(text1, animated: animated)
-            statusView.setText2(nil, animated: animated)
+            let firstText = style.connecting.firstText
+            statusView.setFirstText(firstText, animated: animated)
+            statusView.setSecondText(nil, animated: animated)
             statusView.setStyle(style.connecting)
             startConnectTimer()
         case .connected(let name, let imageUrl):
             operatorView.stopAnimating(animated: animated)
             operatorView.imageView.setImage(fromUrl: imageUrl, animated: true)
             if let name = name {
-                let text1 = style.connected.text1?.replacingOccurrences(of: kOperatorNamePlaceholder,
-                                                                        with: name)
-                let text2 = style.connected.text2?.replacingOccurrences(of: kOperatorNamePlaceholder,
-                                                                        with: name)
-                statusView.setText1(text1, animated: animated)
-                statusView.setText2(text2, animated: animated)
+                let firstText = style.connected.firstText?.replacingOccurrences(of: kOperatorNamePlaceholder,
+                                                                                with: name)
+                let secondText = style.connected.secondText?.replacingOccurrences(of: kOperatorNamePlaceholder,
+                                                                                  with: name)
+                statusView.setFirstText(firstText, animated: animated)
+                statusView.setSecondText(secondText, animated: animated)
             } else {
-                statusView.setText1(nil, animated: animated)
-                statusView.setText1(nil, animated: animated)
+                statusView.setFirstText(nil, animated: animated)
+                statusView.setFirstText(nil, animated: animated)
             }
             statusView.setStyle(style.connected)
         }
@@ -112,7 +112,7 @@ private extension QueueView {
             switch self.state {
             case .connecting:
                 self.connectCounter += 1
-                self.statusView.setText2("\(self.connectCounter)", animated: true)
+                self.statusView.setSecondText("\(self.connectCounter)", animated: true)
             default:
                 self.connectTimer?.invalidate()
                 self.connectTimer = nil

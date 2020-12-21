@@ -1,11 +1,11 @@
 "poweredBy" = "Powered by";
 
-"queue.waiting.text1" = "CompanyName";
-"queue.waiting.text2" = "An MSR will be with you shortly.";
-"queue.connecting.text1" = "Connecting with operator";
-"queue.connecting.text2" = "";
-"queue.connected.text1" = "{operatorName}";
-"queue.connected.text2" = "{operatorName} has joined the conversation.";
+"queue.waiting.firstText" = "CompanyName";
+"queue.waiting.secondText" = "An MSR will be with you shortly.";
+"queue.connecting.firstText" = "Connecting with operator";
+"queue.connecting.secondText" = "";
+"queue.connected.firstText" = "{operatorName}";
+"queue.connected.secondText" = "{operatorName} has joined the conversation.";
 
 "alert.action.yes" = "Yes";
 "alert.action.no" = "No";

@@ -2,8 +2,8 @@ import UIKit
 
 class QueueStatusView: UIView {
     private let stackView = UIStackView()
-    private let label1 = UILabel()
-    private let label2 = UILabel()
+    private let firstLabel = UILabel()
+    private let secondLabel = UILabel()
 
     init() {
         super.init(frame: .zero)
@@ -16,27 +16,27 @@ class QueueStatusView: UIView {
     }
 
     func setStyle(_ style: QueueStatusStyle) {
-        label1.font = style.text1Font
-        label1.textColor = style.text1FontColor
-        label2.font = style.text2Font
-        label2.textColor = style.text2FontColor
+        firstLabel.font = style.firstTextFont
+        firstLabel.textColor = style.firstTextFontColor
+        secondLabel.font = style.secondTextFont
+        secondLabel.textColor = style.secondTextFontColor
     }
 
-    func setText1(_ text: String?, animated: Bool) {
-        setText(text, to: label1, animated: animated)
+    func setFirstText(_ text: String?, animated: Bool) {
+        setText(text, to: firstLabel, animated: animated)
     }
 
-    func setText2(_ text: String?, animated: Bool) {
-        setText(text, to: label2, animated: animated)
+    func setSecondText(_ text: String?, animated: Bool) {
+        setText(text, to: secondLabel, animated: animated)
     }
 
     private func setup() {
         stackView.axis = .vertical
         stackView.spacing = 8
-        stackView.addArrangedSubviews([label1, label2])
+        stackView.addArrangedSubviews([firstLabel, secondLabel])
 
-        label1.textAlignment = .center
-        label2.textAlignment = .center
+        firstLabel.textAlignment = .center
+        secondLabel.textAlignment = .center
     }
 
     private func layout() {

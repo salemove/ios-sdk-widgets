@@ -72,21 +72,21 @@ public enum L10n {
   public enum Queue {
     public enum Connected {
       /// {operatorName}
-      public static let text1 = L10n.tr("Localizable", "queue.connected.text1")
+      public static let firstText = L10n.tr("Localizable", "queue.connected.firstText")
       /// {operatorName} has joined the conversation.
-      public static let text2 = L10n.tr("Localizable", "queue.connected.text2")
+      public static let secondText = L10n.tr("Localizable", "queue.connected.secondText")
     }
     public enum Connecting {
       /// Connecting with operator
-      public static let text1 = L10n.tr("Localizable", "queue.connecting.text1")
+      public static let firstText = L10n.tr("Localizable", "queue.connecting.firstText")
       /// 
-      public static let text2 = L10n.tr("Localizable", "queue.connecting.text2")
+      public static let secondText = L10n.tr("Localizable", "queue.connecting.secondText")
     }
     public enum Waiting {
       /// CompanyName
-      public static let text1 = L10n.tr("Localizable", "queue.waiting.text1")
+      public static let firstText = L10n.tr("Localizable", "queue.waiting.firstText")
       /// An MSR will be with you shortly.
-      public static let text2 = L10n.tr("Localizable", "queue.waiting.text2")
+      public static let secondText = L10n.tr("Localizable", "queue.waiting.secondText")
     }
   }
 }
