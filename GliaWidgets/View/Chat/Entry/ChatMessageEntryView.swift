@@ -102,8 +102,10 @@ public class ChatMessageEntryView: UIView {
                                                           excludingEdge: .right)
 
         addSubview(buttonsStackView)
-        buttonsStackView.autoPinEdge(.left, to: .right, of: messageContainerView, withOffset: 16)
-        buttonsStackView.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
+        NSLayoutConstraint.autoSetPriority(.defaultHigh) {
+            buttonsStackView.autoPinEdge(.left, to: .right, of: messageContainerView, withOffset: 16)
+            buttonsStackView.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
+        }
         buttonsStackView.autoPinEdge(toSuperviewEdge: .top)
         buttonsStackView.autoPinEdge(toSuperviewEdge: .bottom)
         buttonsStackView.autoAlignAxis(toSuperviewAxis: .horizontal)
