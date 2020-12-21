@@ -28,6 +28,26 @@ class ChatView: View {
         updateTableView(animated: animated)
     }
 
+    func updateItemsUserImage(animated: Bool) {
+        tableView.indexPathsForVisibleRows?.forEach({
+            if let cell = tableView.cellForRow(at: $0) as? ChatItemCell,
+               let item = itemForRow?($0.row, $0.section) {
+                switch cell.content {
+                case .operatorMessage(let view):
+                    switch item.kind {
+                    case .operatorMessage(_, showsImage: let showsImage, imageUrl: let imageUrl):
+                        view.showsOperatorImage = showsImage
+                        view.setOperatorImage(fromUrl: imageUrl, animated: animated)
+                    default:
+                        break
+                    }
+                default:
+                    break
+                }
+            }
+        })
+    }
+
     func appendRows(_ count: Int, to section: Int, animated: Bool) {
         guard let rows = numberOfRows?(section) else { return }
 

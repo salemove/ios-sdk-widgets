@@ -21,6 +21,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case refreshRow(Int, in: Int, animated: Bool)
         case refreshAll
         case scrollToBottom(animated: Bool)
+        case updateItemsUserImage(animated: Bool)
         case confirm(AlertConfirmationStrings,
                      confirmed: (() -> Void)?)
         case showAlert(AlertMessageStrings,
@@ -144,9 +145,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         guard let index = section.items
                 .enumerated()
                 .first(where: {
-                    guard
-                        case let .outgoingMessage(message) = $0.element.kind
-                    else { return false }
+                    guard case let .outgoingMessage(message) = $0.element.kind else { return false }
                     return message.id == outgoingMessage.id
                 })?.offset
         else { return }
@@ -216,7 +215,7 @@ extension ChatViewModel {
         else { return }
         appendItem(item, to: messagesSection, animated: true)
         action?(.scrollToBottom(animated: true))
-        action?(.refreshAll)
+        action?(.updateItemsUserImage(animated: true))
     }
 }
 

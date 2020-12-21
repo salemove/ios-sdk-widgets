@@ -63,14 +63,12 @@ class ChatViewController: ViewController, AlertPresenter {
                 view.refreshAll()
             case .scrollToBottom(animated: let animated):
                 view.scrollToBottom(animated: animated)
+            case .updateItemsUserImage(animated: let animated):
+                view.updateItemsUserImage(animated: animated)
             case .confirm(let strings, let confirmed):
-                self.presentConfirmation(with: strings) {
-                    confirmed?()
-                }
+                self.presentConfirmation(with: strings) { confirmed?() }
             case .showAlert(let strings, let dismissed):
-                self.presentAlert(with: strings) {
-                    dismissed?()
-                }
+                self.presentAlert(with: strings) { dismissed?() }
             }
         }
     }
