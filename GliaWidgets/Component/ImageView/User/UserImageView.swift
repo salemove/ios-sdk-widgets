@@ -3,7 +3,7 @@ import UIKit
 class UserImageView: UIView {
     private let style: UserImageStyle
     private let placeholderImageView = UIImageView()
-    private let imageView = UIImageView()
+    private let imageView = ImageView()
 
     init(with style: UserImageStyle) {
         self.style = style
@@ -20,19 +20,15 @@ class UserImageView: UIView {
         super.layoutSubviews()
         setNeedsDisplay()
         layer.cornerRadius = bounds.height / 2.0
+        updatePlaceholderContentMode()
     }
 
     func setImage(_ image: UIImage?, animated: Bool) {
-        UIView.transition(with: imageView,
-                          duration: animated ? 0.2 : 0.0,
-                          options: .transitionCrossDissolve,
-                          animations: {
-                            self.imageView.image = image
-                          }, completion: nil)
+        imageView.setImage(image, animated: animated)
     }
 
     func setImage(fromUrl url: String?, animated: Bool) {
-        imageView.setImage(from: url, animated: animated)
+        imageView.setImage(from: url, animated: animated, finished: nil)
     }
 
     private func setup() {
@@ -41,10 +37,8 @@ class UserImageView: UIView {
         placeholderImageView.image = style.placeholderImage
         placeholderImageView.tintColor = style.placeholderColor
         placeholderImageView.backgroundColor = style.backgroundColor
-        placeholderImageView.clipsToBounds = true
-        placeholderImageView.contentMode = .center
+        updatePlaceholderContentMode()
 
-        imageView.clipsToBounds = true
         imageView.contentMode = .scaleAspectFill
     }
 
@@ -54,5 +48,16 @@ class UserImageView: UIView {
 
         addSubview(imageView)
         imageView.autoPinEdgesToSuperviewEdges()
+    }
+
+    private func updatePlaceholderContentMode() {
+        guard let image = placeholderImageView.image else { return }
+
+        if placeholderImageView.frame.size.width > image.size.width &&
+            placeholderImageView.frame.size.height > image.size.height {
+            placeholderImageView.contentMode = .center
+        } else {
+            placeholderImageView.contentMode = .scaleAspectFit
+        }
     }
 }

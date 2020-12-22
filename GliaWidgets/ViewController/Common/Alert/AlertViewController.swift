@@ -11,7 +11,7 @@ class AlertViewController: ViewController {
     private let viewFactory: ViewFactory
     private let kind: Kind
     private var alertView: AlertView?
-    private let kAlertInsets = UIEdgeInsets(top: 0, left: 20, bottom: 30, right: 20)
+    private let kAlertInsets = UIEdgeInsets(top: 0, left: 20, bottom: 10, right: 20)
 
     init(kind: Kind, viewFactory: ViewFactory) {
         self.kind = kind

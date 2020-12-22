@@ -35,33 +35,40 @@ class ChatViewController: ViewController, AlertPresenter {
 
         view.header.setLeftItem(leftItem, animated: false)
         view.header.setRightItem(rightItem, animated: false)
-        view.numberOfRows = { return viewModel.numberOfItems }
-        view.itemForRow = { return viewModel.item(for: $0) }
+        view.numberOfSections = { return viewModel.numberOfSections }
+        view.numberOfRows = { return viewModel.numberOfItems(in: $0) }
+        view.itemForRow = { return viewModel.item(for: $0, in: $1) }
+        view.messageEntryView.textChanged = { viewModel.event(.messageTextChanged($0)) }
+        view.messageEntryView.sendTapped = { viewModel.event(.sendTapped(message: $0)) }
 
         viewModel.action = { action in
             switch action {
             case .queueWaiting:
-                view.queueView.setState(.waiting, animated: true)
+                view.setQueueState(.waiting, animated: false)
             case .queueConnecting:
-                view.queueView.setState(.connecting, animated: true)
+                view.setQueueState(.connecting, animated: true)
             case .queueConnected(name: let name, imageUrl: let imageUrl):
-                view.queueView.setState(.connected(name: name, imageUrl: imageUrl), animated: true)
+                view.setQueueState(.connected(name: name, imageUrl: imageUrl), animated: true)
             case .showEndButton:
                 let rightItem = ActionButton(with: self.viewFactory.theme.chat.endButton)
                 rightItem.tap = { viewModel.event(.closeTapped) }
                 view.header.setRightItem(rightItem, animated: true)
-            case .appendRows(let count):
-                view.appendRows(count, animated: true)
-            case .refreshItems:
-                view.refreshItems()
+            case .setMessageEntryEnabled(let enabled):
+                view.messageEntryView.isEnabled = enabled
+            case .appendRows(let count, let section, let animated):
+                view.appendRows(count, to: section, animated: animated)
+            case .refreshRow(let row, in: let section, animated: let animated):
+                view.refreshRow(row, in: section, animated: animated)
+            case .refreshAll:
+                view.refreshAll()
+            case .scrollToBottom(animated: let animated):
+                view.scrollToBottom(animated: animated)
+            case .updateItemsUserImage(animated: let animated):
+                view.updateItemsUserImage(animated: animated)
             case .confirm(let strings, let confirmed):
-                self.presentConfirmation(with: strings) {
-                    confirmed?()
-                }
+                self.presentConfirmation(with: strings) { confirmed?() }
             case .showAlert(let strings, let dismissed):
-                self.presentAlert(with: strings) {
-                    dismissed?()
-                }
+                self.presentAlert(with: strings) { dismissed?() }
             }
         }
     }

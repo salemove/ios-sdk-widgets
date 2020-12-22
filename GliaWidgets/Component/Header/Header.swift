@@ -8,7 +8,7 @@ class Header: UIView {
     private let titleLabel = UILabel()
     private let contentView = UIView()
     private var heightLayoutConstraint: NSLayoutConstraint?
-    private let kContentInsets = UIEdgeInsets(top: 0, left: 10, bottom: 10, right: 10)
+    private let kContentInsets = UIEdgeInsets(top: 0, left: 16, bottom: 10, right: 16)
     private let kContentHeight: CGFloat = 30
     private let kHeight: CGFloat = 58
 
@@ -62,7 +62,11 @@ class Header: UIView {
             if let item = item {
                 item.alpha = 0.0
                 container.addSubview(item)
-                item.autoPinEdgesToSuperviewEdges()
+                item.autoPinEdge(toSuperviewEdge: .left, withInset: 0, relation: .greaterThanOrEqual)
+                item.autoPinEdge(toSuperviewEdge: .top, withInset: 0, relation: .greaterThanOrEqual)
+                item.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
+                item.autoPinEdge(toSuperviewEdge: .bottom, withInset: 0, relation: .greaterThanOrEqual)
+                item.autoCenterInSuperview()
                 UIView.animate(withDuration: animated ? 0.2 : 0.0) {
                     item.alpha = 1.0
                 }
@@ -71,12 +75,17 @@ class Header: UIView {
     }
 
     private func layout() {
-        heightLayoutConstraint = autoSetDimension(.height, toSize: kHeight)
+        NSLayoutConstraint.autoSetPriority(.defaultHigh) {
+            heightLayoutConstraint = autoSetDimension(.height, toSize: kHeight)
+        }
+
         updateHeight()
 
         addSubview(contentView)
         contentView.autoPinEdgesToSuperviewEdges(with: kContentInsets, excludingEdge: .top)
-        contentView.autoSetDimension(.height, toSize: kContentHeight)
+        NSLayoutConstraint.autoSetPriority(.defaultHigh) {
+            contentView.autoSetDimension(.height, toSize: kContentHeight)
+        }
 
         contentView.addSubview(titleLabel)
         titleLabel.autoPinEdge(toSuperviewEdge: .left)

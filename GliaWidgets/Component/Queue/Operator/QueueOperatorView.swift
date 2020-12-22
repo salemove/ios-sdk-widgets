@@ -27,11 +27,12 @@ class QueueOperatorView: UIView {
         let animationView = QueueAnimationView(color: style.animationColor,
                                                size: kAnimationViewSize)
         self.animationView = animationView
+
         insertSubview(animationView, at: 0)
         animationView.autoPinEdge(toSuperviewEdge: .left, withInset: 0, relation: .greaterThanOrEqual)
+        animationView.autoPinEdge(toSuperviewEdge: .top, withInset: 0, relation: .greaterThanOrEqual)
         animationView.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
-        animationView.autoPinEdge(toSuperviewEdge: .top)
-        animationView.autoPinEdge(toSuperviewEdge: .bottom)
+        animationView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 0, relation: .greaterThanOrEqual)
         animationView.autoCenterInSuperview()
         animationView.startAnimating()
     }
@@ -44,11 +45,14 @@ class QueueOperatorView: UIView {
     private func setup() {}
 
     private func layout() {
+        NSLayoutConstraint.autoSetPriority(.defaultHigh) {
+            imageView.autoSetDimensions(to: kImageViewSize)
+        }
+
         addSubview(imageView)
-        imageView.autoSetDimensions(to: kImageViewSize)
         imageView.autoPinEdge(toSuperviewEdge: .left, withInset: 0, relation: .greaterThanOrEqual)
-        imageView.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
         imageView.autoPinEdge(toSuperviewEdge: .top, withInset: 0, relation: .greaterThanOrEqual)
+        imageView.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
         imageView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 0, relation: .greaterThanOrEqual)
         imageView.autoCenterInSuperview()
     }

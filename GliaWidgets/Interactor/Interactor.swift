@@ -9,10 +9,22 @@ enum InteractorState {
 
 enum InteractorEvent {
     case stateChanged(InteractorState)
+    case receivedMessage(Message)
+    case messagesUpdated([Message])
+    case error(SalemoveError)
 }
 
 class Interactor {
     typealias EventHandler = (InteractorEvent) -> Void
+
+    var engagedOperator: Operator? {
+        switch state {
+        case .engaged(let engagedOperator):
+            return engagedOperator
+        default:
+            return nil
+        }
+    }
 
     private let queueID: String
     private let visitorContext: VisitorContext
@@ -72,6 +84,22 @@ extension Interactor {
             } else if let ticket = queueTicket {
                 self.state = .enqueued(ticket)
                 success()
+            }
+        }
+    }
+
+    func sendMessagePreview(_ message: String) {
+        Salemove.sharedInstance.sendMessagePreview(message: message) { _, _ in }
+    }
+
+    func send(_ message: String,
+              success: @escaping (Message) -> Void,
+              failure: @escaping (SalemoveError) -> Void) {
+        Salemove.sharedInstance.send(message: message) { message, error in
+            if let error = error {
+                failure(error)
+            } else if let message = message {
+                success(message)
             }
         }
     }
@@ -149,7 +177,9 @@ extension Interactor: Interactable {
 
     var onMessagesUpdated: MessagesUpdateBlock {
         print("Called: \(#function)")
-        return { _ in }
+        return { messages in
+            self.notify(.messagesUpdated(messages))
+        }
     }
 
     var onVisitorScreenSharingStateChange: VisitorScreenSharingStateChange {
@@ -177,7 +207,7 @@ extension Interactor: Interactable {
 
     func receive(message: Message) {
         print("Called: \(#function)")
-        print("MESSAGE:", message.content)
+        notify(.receivedMessage(message))
     }
 
     func end() {
@@ -185,15 +215,8 @@ extension Interactor: Interactable {
         state = .inactive
     }
 
-    func fail(with reason: String?) {
-        print("Called: \(#function)")
-        if let reason = reason {
-            print(reason)
-        }
-    }
-
     func fail(error: SalemoveError) {
         print("Called: \(#function)")
-        print(error)
+        notify(.error(error))
     }
 }

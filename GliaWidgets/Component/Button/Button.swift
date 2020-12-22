@@ -53,11 +53,15 @@ class Button: UIButton {
         }
 
         if let width = properties.width {
-            autoSetDimension(.width, toSize: width)
+            NSLayoutConstraint.autoSetPriority(.defaultHigh) {
+                autoSetDimension(.width, toSize: width)
+            }
         }
 
         if let height = properties.height {
-            autoSetDimension(.height, toSize: height)
+            NSLayoutConstraint.autoSetPriority(.defaultHigh) {
+                autoSetDimension(.height, toSize: height)
+            }
         }
 
         if let cornerRadius = properties.cornerRadius {

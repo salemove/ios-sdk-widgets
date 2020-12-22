@@ -4,13 +4,22 @@ import PureLayout
 class ChatItemCell: UITableViewCell {
     enum Content {
         case none
-        case sentMessage(SentChatMessageView)
+        case queueOperator(QueueView)
+        case outgoingMessage(VisitorChatMessageView)
+        case visitorMessage(VisitorChatMessageView)
+        case operatorMessage(OperatorChatMessageView)
 
         var view: UIView? {
             switch self {
             case .none:
                 return nil
-            case .sentMessage(let view):
+            case .queueOperator(let view):
+                return view
+            case .outgoingMessage(let view):
+                return view
+            case .visitorMessage(let view):
+                return view
+            case .operatorMessage(let view):
                 return view
             }
         }
@@ -48,7 +57,6 @@ class ChatItemCell: UITableViewCell {
 
     private func setup() {
         selectionStyle = .none
-        contentView.backgroundColor = .lightGray
     }
 
     private func layout() {}

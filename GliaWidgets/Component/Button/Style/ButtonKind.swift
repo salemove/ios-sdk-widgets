@@ -2,6 +2,8 @@ enum ButtonKind {
     case back
     case close
     case alertClose
+    case chatPickMedia
+    case chatSend
 }
 
 extension ButtonKind {
@@ -13,6 +15,10 @@ extension ButtonKind {
             return CloseButtonProperties()
         case .alertClose:
             return AlertCloseButtonProperties()
+        case .chatPickMedia:
+            return ChatPickMediaButtonProperties()
+        case .chatSend:
+            return ChatSendButtonProperties()
         }
     }
 }
