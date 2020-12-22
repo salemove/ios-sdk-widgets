@@ -8,7 +8,7 @@ class Header: UIView {
     private let titleLabel = UILabel()
     private let contentView = UIView()
     private var heightLayoutConstraint: NSLayoutConstraint?
-    private let kContentInsets = UIEdgeInsets(top: 0, left: 10, bottom: 10, right: 10)
+    private let kContentInsets = UIEdgeInsets(top: 0, left: 16, bottom: 10, right: 16)
     private let kContentHeight: CGFloat = 30
     private let kHeight: CGFloat = 58
 

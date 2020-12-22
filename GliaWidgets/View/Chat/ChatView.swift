@@ -102,13 +102,13 @@ class ChatView: View {
 
         addSubview(tableView)
         tableView.autoPinEdge(.top, to: .bottom, of: header)
-        tableView.autoPinEdge(toSuperviewEdge: .left)
-        tableView.autoPinEdge(toSuperviewEdge: .right)
+        tableView.autoPinEdge(toSuperviewSafeArea: .left)
+        tableView.autoPinEdge(toSuperviewSafeArea: .right)
 
         addSubview(messageEntryView)
         messageEntryViewBottomConstraint = messageEntryView.autoPinEdge(toSuperviewSafeArea: .bottom)
-        messageEntryView.autoPinEdge(toSuperviewEdge: .left)
-        messageEntryView.autoPinEdge(toSuperviewEdge: .right)
+        messageEntryView.autoPinEdge(toSuperviewSafeArea: .left)
+        messageEntryView.autoPinEdge(toSuperviewSafeArea: .right)
         messageEntryView.autoPinEdge(.top, to: .bottom, of: tableView)
     }
 

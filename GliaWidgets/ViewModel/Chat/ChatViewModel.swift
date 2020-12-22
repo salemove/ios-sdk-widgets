@@ -192,6 +192,8 @@ extension ChatViewModel {
     }
 
     private func send(_ message: String) {
+        guard !message.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
+
         let outgoingMessage = OutgoingMessage(content: message)
         let item = ChatItem(with: outgoingMessage)
         appendItem(item, to: messagesSection, animated: true)

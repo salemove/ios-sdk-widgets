@@ -110,15 +110,15 @@ public class Theme {
                                                      positiveTitle: Alert.Action.yes)
         let operatorsUnavailable = AlertMessageStrings(title: Alert.OperatorsUnavailable.title,
                                                        message: Alert.OperatorsUnavailable.message)
-        let unexcpected = AlertMessageStrings(title: Alert.Unexpected.title,
-                                              message: Alert.Unexpected.message)
+        let unexpected = AlertMessageStrings(title: Alert.Unexpected.title,
+                                             message: Alert.Unexpected.message)
         let api = AlertMessageStrings(title: Alert.ApiError.title,
                                       message: Alert.ApiError.message)
 
         return AlertStrings(leaveQueue: leaveQueue,
                             endEngagement: endEngagement,
                             operatorsUnavailable: operatorsUnavailable,
-                            unexpectedError: unexcpected,
+                            unexpectedError: unexpected,
                             apiError: api)
     }()
 
