@@ -30,11 +30,13 @@ class GliaWindow: UIWindow {
 
         switch state {
         case .maximized:
-            maximize(animated: animated)
+            removeShadow()
             removeGestureRecognizers()
+            maximize(animated: animated)
         case .minimized:
             minimize(animated: animated)
             addGestureRecognizers()
+            addShadow()
         }
     }
 
@@ -54,8 +56,9 @@ class GliaWindow: UIWindow {
     }
 
     func minimize(animated: Bool) {
-        minimizedView.alpha = 0.0
+        endEditing(true)
 
+        minimizedView.alpha = 0.0
         addSubview(minimizedView)
         minimizedView.autoPinEdgesToSuperviewEdges()
 
@@ -84,6 +87,19 @@ class GliaWindow: UIWindow {
             return CGRect(origin: origin,
                           size: minimizedSize)
         }
+    }
+
+    private func addShadow() {
+        layer.shadowColor = UIColor.black.cgColor
+        layer.shadowOffset = CGSize(width: 2.0, height: 5.0)
+        layer.shadowRadius = 5.0
+        layer.shadowOpacity = 0.4
+    }
+
+    private func removeShadow() {
+        layer.shadowOffset = .zero
+        layer.shadowRadius = 0.0
+        layer.shadowOpacity = 0.0
     }
 
     private func addGestureRecognizers() {

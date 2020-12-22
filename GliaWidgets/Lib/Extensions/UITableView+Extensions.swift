@@ -21,10 +21,14 @@ internal extension UITableView {
     }
 
     func scrollToBottom(animated: Bool) {
-        guard numberOfRows(inSection: 0) > 0 else { return }
+        guard
+            let section = (0 ..< numberOfSections)
+                .reversed()
+                .first(where: { numberOfRows(inSection: $0) > 0 })
+        else { return }
 
-        let rowCount = numberOfRows(inSection: 0)
-        let indexPath = IndexPath(row: rowCount - 1, section: 0)
+        let rowCount = numberOfRows(inSection: section)
+        let indexPath = IndexPath(row: rowCount - 1, section: section)
 
         DispatchQueue.main.async { [weak self] in
             self?.scrollToRow(at: indexPath, at: .bottom, animated: animated)

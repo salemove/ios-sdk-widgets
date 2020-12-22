@@ -1,6 +1,7 @@
 class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
     enum DelegateEvent {
         case back
+        case operatorImage(url: String?)
         case finished
     }
 
@@ -30,6 +31,8 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
             switch event {
             case .back:
                 self?.delegate?(.back)
+            case .operatorImage(url: let url):
+                self?.delegate?(.operatorImage(url: url))
             case .finished:
                 self?.delegate?(.finished)
             }

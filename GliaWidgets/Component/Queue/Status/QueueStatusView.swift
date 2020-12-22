@@ -2,8 +2,8 @@ import UIKit
 
 class QueueStatusView: UIView {
     private let stackView = UIStackView()
-    private let label1 = UILabel()
-    private let label2 = UILabel()
+    private let firstLabel = UILabel()
+    private let secondLabel = UILabel()
 
     init() {
         super.init(frame: .zero)
@@ -16,16 +16,37 @@ class QueueStatusView: UIView {
     }
 
     func setStyle(_ style: QueueStatusStyle) {
-        label1.font = style.text1Font
-        label1.textColor = style.text1FontColor
-        label2.font = style.text2Font
-        label2.textColor = style.text2FontColor
+        firstLabel.font = style.firstTextFont
+        firstLabel.textColor = style.firstTextFontColor
+        secondLabel.font = style.secondTextFont
+        secondLabel.textColor = style.secondTextFontColor
     }
 
-    func setText1(_ text1: String?, text2: String?, animated: Bool) {
-        stackView.transform = CGAffineTransform(scaleX: 0, y: 0)
-        label1.text = text1
-        label2.text = text2
+    func setFirstText(_ text: String?, animated: Bool) {
+        setText(text, to: firstLabel, animated: animated)
+    }
+
+    func setSecondText(_ text: String?, animated: Bool) {
+        setText(text, to: secondLabel, animated: animated)
+    }
+
+    private func setup() {
+        stackView.axis = .vertical
+        stackView.spacing = 8
+        stackView.addArrangedSubviews([firstLabel, secondLabel])
+
+        firstLabel.textAlignment = .center
+        secondLabel.textAlignment = .center
+    }
+
+    private func layout() {
+        addSubview(stackView)
+        stackView.autoPinEdgesToSuperviewEdges()
+    }
+
+    private func setText(_ text: String?, to label: UILabel, animated: Bool) {
+        label.text = text
+        label.transform = CGAffineTransform(scaleX: 0, y: 0)
 
         UIView.animate(withDuration: animated ? 0.5 : 0.0,
                        delay: 0.0,
@@ -33,26 +54,7 @@ class QueueStatusView: UIView {
                        initialSpringVelocity: 0.7,
                        options: .curveEaseInOut,
                        animations: {
-                        self.stackView.transform = .identity
-                        self.layoutIfNeeded()
+                        label.transform = .identity
                        }, completion: nil)
-    }
-
-    func setText2(_ text: String) {
-        label2.text = text
-    }
-
-    private func setup() {
-        stackView.axis = .vertical
-        stackView.spacing = 8
-        stackView.addArrangedSubviews([label1, label2])
-
-        label1.textAlignment = .center
-        label2.textAlignment = .center
-    }
-
-    private func layout() {
-        addSubview(stackView)
-        stackView.autoPinEdgesToSuperviewEdges()
     }
 }

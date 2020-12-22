@@ -4,7 +4,6 @@ typealias TouchAreaInsets = (dx: CGFloat, dy: CGFloat)
 
 protocol ButtonProperties {
     var title: String? { get }
-    var useImageSize: Bool { get }
     var width: CGFloat? { get }
     var height: CGFloat? { get }
     var cornerRadius: CGFloat? { get }
@@ -27,9 +26,8 @@ protocol ButtonProperties {
 
 extension ButtonProperties {
     var title: String? { return nil }
-    var useImageSize: Bool { return true }
-    var width: CGFloat? { return useImageSize ? image?.size.width : nil }
-    var height: CGFloat? { return useImageSize ? image?.size.height : nil }
+    var width: CGFloat? { return nil }
+    var height: CGFloat? { return nil }
     var cornerRadius: CGFloat? { return nil }
     var borderWidth: CGFloat? { return nil }
     var borderColor: UIColor? { return nil }

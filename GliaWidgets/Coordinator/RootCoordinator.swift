@@ -11,8 +11,8 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
     private let navigationController = NavigationController()
     private let navigationPresenter: NavigationPresenter
     private var window: GliaWindow?
-    private var minimizedView: UIView?
-    private let kMinimizedViewSize = CGSize(width: 80.0, height: 80.0)
+    private var minimizedView: UserImageView?
+    private let kMinimizedViewSize = CGSize(width: 60.0, height: 60.0)
 
     init(interactor: Interactor,
          viewFactory: ViewFactory,
@@ -47,6 +47,8 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
             switch event {
             case .back:
                 self?.window?.setState(.minimized, animated: true)
+            case .operatorImage(url: let url):
+                self?.minimizedView?.setImage(fromUrl: url, animated: true)
             case .finished:
                 self?.popCoordinator()
                 self?.navigationPresenter.pop()
@@ -96,6 +98,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
                        options: .curveEaseInOut) {
             window.alpha = 0.0
         } completion: { _ in
+            self.window?.endEditing(true)
             self.window = nil
             self.minimizedView = nil
         }
