@@ -36,8 +36,10 @@ class ImageView: UIImageView {
                 let data = try? Data(contentsOf: url),
                 let image = UIImage(data: data)
             else {
-                self?.setImage(nil, animated: animated)
-                finished?(nil)
+                DispatchQueue.main.async {
+                    self?.setImage(nil, animated: animated)
+                    finished?(nil)
+                }
                 return
             }
 
