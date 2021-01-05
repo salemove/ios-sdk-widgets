@@ -32,7 +32,9 @@ class ChatStorage {
         case failure
     }
 
-    private var queue: Queue?
+    private var queue: Queue? {
+        didSet { loadMessages() }
+    }
     private var `operator`: Operator?
     private var messages = [Message]()
     private var db: OpaquePointer?
@@ -90,24 +92,27 @@ class ChatStorage {
         exec(queueIDIndex)
     }
 
-    private func exec(_ sql: String) {
+    private func exec(_ sql: String, completion: ((Result) -> Void)? = nil) {
         prepare(sql) {
             switch $0 {
             case .success(let statement):
                 sqlite3_step(statement)
+                completion?(.success(statement))
             case .failure:
-                break
+                completion?(.failure)
             }
         }
     }
 
-    private func insert(_ sql: String, values: [Any], completion: (Result) -> Void) {
+    private func insert(_ sql: String, values: [Any?], completion: (Result) -> Void) {
         prepare(sql) {
             switch $0 {
             case .success(let statement):
                 values.enumerated().forEach({
                     let index = Int32($0.offset + 1)
                     switch $0.element {
+                    case nil:
+                        sqlite3_bind_null(statement, index)
                     case let value as Int32:
                         sqlite3_bind_int(statement, index, value)
                     case let value as Int64:
@@ -125,7 +130,7 @@ class ChatStorage {
                     completion(.failure)
                 }
             case .failure:
-                break
+                completion(.failure)
             }
         }
     }
@@ -155,7 +160,7 @@ extension ChatStorage {
     }
 
     private func loadQueue(withID queueID: String, completion: (Queue?) -> Void) {
-        prepare("SELECT id, queueID FROM Queue WHERE QueueID = '\(queueID)';") {
+        prepare("SELECT id, queueID FROM Queue WHERE queueID = '\(queueID)';") {
             switch $0 {
             case .success(let statement):
                 if sqlite3_step(statement) == SQLITE_ROW {
@@ -173,16 +178,47 @@ extension ChatStorage {
     }
 
     private func insertQueue(withID queueID: String, completion: (Queue?) -> Void) {
-        insert("INSERT INTO Queue(QueueID) VALUES (?);",
+        insert("INSERT INTO Queue(queueID) VALUES (?);",
                values: [queueID]) {
             switch $0 {
             case .success:
-                let queue = Queue(id: lastInsertedRowID,
-                                  queueID: queueID)
-                completion(queue)
+                completion(Queue(id: lastInsertedRowID,
+                                 queueID: queueID))
             case .failure:
                 completion(nil)
             }
         }
+    }
+}
+
+extension ChatStorage {
+    func setOperator(name: String, pictureUrl: String?) {
+        insertOperator(name: name, pictureUrl: pictureUrl) {
+            self.operator = $0
+        }
+    }
+
+    private func insertOperator(name: String, pictureUrl: String?, completion: (Operator?) -> Void) {
+        insert("INSERT INTO Operator(name, pictureUrl) VALUES (?,?);",
+               values: [name, pictureUrl]) {
+            switch $0 {
+            case .success:
+                completion(Operator(id: lastInsertedRowID,
+                                    name: name,
+                                    pictureUrl: pictureUrl))
+            case .failure:
+                completion(nil)
+            }
+        }
+    }
+}
+
+extension ChatStorage {
+    private func loadMessages() {
+        guard let queue = queue else {
+            messages = []
+            return
+        }
+
     }
 }
