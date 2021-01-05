@@ -198,6 +198,10 @@ extension ChatStorage {
         }
     }
 
+    func storedOperator(withID id: Int64) -> Operator? {
+        return nil // TODO
+    }
+
     private func insertOperator(name: String, pictureUrl: String?, completion: (Operator?) -> Void) {
         insert("INSERT INTO Operator(name, pictureUrl) VALUES (?,?);",
                values: [name, pictureUrl]) {
@@ -214,6 +218,14 @@ extension ChatStorage {
 }
 
 extension ChatStorage {
+    func storeMessage(id: String, content: String, sender: Message.Sender) {
+        // TODO
+    }
+
+    func messages(forQueue queueID: String) -> [Message] {
+        return [] // TODO
+    }
+
     private func loadMessages() {
         guard let queue = queue else {
             messages = []
