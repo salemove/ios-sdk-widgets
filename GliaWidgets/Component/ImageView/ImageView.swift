@@ -43,9 +43,9 @@ class ImageView: UIImageView {
                 return
             }
 
-            ImageView.cache[urlString] = image
-
             DispatchQueue.main.async {
+                ImageView.cache[urlString] = image
+
                 guard self?.downloadID == downloadID else { return }
                 self?.setImage(image, animated: animated)
                 finished?(image)

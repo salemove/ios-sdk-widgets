@@ -27,6 +27,11 @@ class ChatStorage {
         let timestamp: Int64
     }
 
+    private enum Result {
+        case success(OpaquePointer?)
+        case failure
+    }
+
     private var queue: Queue?
     private var `operator`: Operator?
     private var messages = [Message]()
@@ -79,16 +84,58 @@ class ChatStorage {
         let queueIDIndex = """
             CREATE UNIQUE INDEX index_queueid ON Queue(queueID);
         """
-        execSQL(queueTableSQL)
-        execSQL(operatorTableSQL)
-        execSQL(messagesTableSQL)
-        execSQL(queueIDIndex)
+        exec(queueTableSQL)
+        exec(operatorTableSQL)
+        exec(messagesTableSQL)
+        exec(queueIDIndex)
     }
 
-    private func execSQL(_ sql: String) {
+    private func exec(_ sql: String) {
+        prepare(sql) {
+            switch $0 {
+            case .success(let statement):
+                sqlite3_step(statement)
+            case .failure:
+                break
+            }
+        }
+    }
+
+    private func insert(_ sql: String, values: [Any], completion: (Result) -> Void) {
+        prepare(sql) {
+            switch $0 {
+            case .success(let statement):
+                values.enumerated().forEach({
+                    let index = Int32($0.offset + 1)
+                    switch $0.element {
+                    case let value as Int32:
+                        sqlite3_bind_int(statement, index, value)
+                    case let value as Int64:
+                        sqlite3_bind_int64(statement, index, value)
+                    case let value as String:
+                        sqlite3_bind_text(statement, index, (value as NSString).utf8String, -1, nil)
+                    default:
+                        break
+                    }
+                })
+
+                if sqlite3_step(statement) == SQLITE_DONE {
+                    completion(.success(statement))
+                } else {
+                    completion(.failure)
+                }
+            case .failure:
+                break
+            }
+        }
+    }
+
+    private func prepare(_ sql: String, completion: (Result) -> Void) {
         var statement: OpaquePointer?
         if sqlite3_prepare_v2(db, sql, -1, &statement, nil) == SQLITE_OK {
-            sqlite3_step(statement)
+            completion(.success(statement))
+        } else {
+            completion(.failure)
         }
         sqlite3_finalize(statement)
     }
@@ -96,47 +143,46 @@ class ChatStorage {
 
 extension ChatStorage {
     func setQueue(withID queueID: String) {
-        if let storedQueue = loadQueue(withID: queueID) {
-            queue = storedQueue
-        } else {
-            queue = insertQueue(withID: queueID)
-        }
-    }
-
-    private func loadQueue(withID queueID: String) -> Queue? {
-        let sql = "SELECT id, queueID FROM Queue WHERE QueueID = '\(queueID)';"
-        var statement: OpaquePointer?
-
-        if sqlite3_prepare_v2(db, sql, -1, &statement, nil) == SQLITE_OK {
-            if sqlite3_step(statement) == SQLITE_ROW {
-                let id = sqlite3_column_int64(statement, 0)
-                let queueID = String(describing: String(cString: sqlite3_column_text(statement, 1)))
-                return Queue(id: id, queueID: queueID)
-            }
-        }
-
-        sqlite3_finalize(statement)
-        
-        return nil
-    }
-
-    private func insertQueue(withID queueID: String) -> Queue? {
-        let sql = "INSERT INTO Queue(QueueID) VALUES (?);"
-        var statement: OpaquePointer?
-
-        if sqlite3_prepare_v2(db, sql, -1, &statement, nil) == SQLITE_OK {
-            sqlite3_bind_text(statement, 1, (queueID as NSString).utf8String, -1, nil)
-
-            if sqlite3_step(statement) == SQLITE_DONE {
-                return Queue(id: lastInsertedRowID,
-                             queueID: queueID)
+        loadQueue(withID: queueID) { queue in
+            if let queue = queue {
+                self.queue = queue
             } else {
-                return nil
+                insertQueue(withID: queueID) { queue in
+                    self.queue = queue
+                }
             }
         }
+    }
 
-        sqlite3_finalize(statement)
+    private func loadQueue(withID queueID: String, completion: (Queue?) -> Void) {
+        prepare("SELECT id, queueID FROM Queue WHERE QueueID = '\(queueID)';") {
+            switch $0 {
+            case .success(let statement):
+                if sqlite3_step(statement) == SQLITE_ROW {
+                    let id = sqlite3_column_int64(statement, 0)
+                    let queueID = String(describing: String(cString: sqlite3_column_text(statement, 1)))
+                    let queue = Queue(id: id, queueID: queueID)
+                    completion(queue)
+                } else {
+                    completion(nil)
+                }
+            case .failure:
+                completion(nil)
+            }
+        }
+    }
 
-        return nil
+    private func insertQueue(withID queueID: String, completion: (Queue?) -> Void) {
+        insert("INSERT INTO Queue(QueueID) VALUES (?);",
+               values: [queueID]) {
+            switch $0 {
+            case .success:
+                let queue = Queue(id: lastInsertedRowID,
+                                  queueID: queueID)
+                completion(queue)
+            case .failure:
+                completion(nil)
+            }
+        }
     }
 }
