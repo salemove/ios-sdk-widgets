@@ -1,3 +1,4 @@
+import SalemoveSDK
 import SQLite3
 
 class ChatStorage {
@@ -16,6 +17,17 @@ class ChatStorage {
         enum Sender: Int {
             case visitor = 0
             case `operator` = 1
+
+            init?(with sender: SalemoveSDK.MessageSender) {
+                switch sender {
+                case .visitor:
+                    self = .visitor
+                case .operator:
+                    self = .operator
+                default:
+                    return nil
+                }
+            }
         }
 
         let id: Int64
@@ -38,7 +50,7 @@ class ChatStorage {
     private var queue: Queue? {
         didSet { loadMessages() }
     }
-    private var `operator`: Operator?
+    private var currentOperator: Operator?
     private var messages = [Message]()
     private var operatorCache = [Int64: Operator]()
     private var db: OpaquePointer?
@@ -99,15 +111,19 @@ class ChatStorage {
         let queueIDIndex = """
             CREATE UNIQUE INDEX IF NOT EXISTS index_queueid ON Queue(queueID);
         """
-        let operatorNameIndex = """
+        let operatorNamePictureIndex = """
             CREATE UNIQUE INDEX IF NOT EXISTS index_operator_name ON Operator(name, pictureUrl);
+        """
+        let messageIDIndex = """
+            CREATE UNIQUE INDEX IF NOT EXISTS index_messages_messageID ON Message(messageID);
         """
 
         try exec(queueTableSQL)
         try exec(operatorTableSQL)
         try exec(messagesTableSQL)
         try exec(queueIDIndex)
-        try exec(operatorNameIndex)
+        try exec(operatorNamePictureIndex)
+        try exec(messageIDIndex)
     }
 
     private func exec(_ sql: String, completion: (() -> Void)? = nil) throws {
@@ -201,10 +217,10 @@ extension ChatStorage {
         do {
             try loadOperator(withID: name, pictureUrl: pictureUrl, completion: { storedOperator in
                 if let storedOperator = storedOperator {
-                    self.operator = storedOperator
+                    self.currentOperator = storedOperator
                 } else {
                     try insertOperator(name: name, pictureUrl: pictureUrl) {
-                        self.operator = $0
+                        self.currentOperator = $0
                     }
                 }
             })
@@ -268,8 +284,23 @@ extension ChatStorage {
 }
 
 extension ChatStorage {
-    func storeMessage(id: String, content: String, sender: Message.Sender) {
-        // TODO
+    func storeMessage(_ message: SalemoveSDK.Message) {
+        guard
+            let queueID = queue?.id,
+            let sender = Message.Sender(with: message.sender)
+        else { return }
+
+        let operatorID = sender == .operator
+            ? currentOperator?.id
+            : nil
+        let timestamp = Int64(NSDate().timeIntervalSince1970)
+
+        do {
+            try insert("INSERT INTO Message(messageID, queueID, operatorID, sender, content, timestamp) VALUES (?,?,?,?,?,?);",
+                       values: [message.id, queueID, operatorID, sender.rawValue, message.content, timestamp]) {}
+        } catch {
+            print("\(#function): \(lastErrorMessage)")
+        }
     }
 
     func messages(forQueue queueID: String) -> [Message] {
