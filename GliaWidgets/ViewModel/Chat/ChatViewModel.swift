@@ -169,8 +169,10 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             case .enqueued:
                 break
             case .engaged(let engagedOperator):
-                action?(.queueConnected(name: engagedOperator?.name,
-                                        imageUrl: engagedOperator?.picture?.url))
+                let name = engagedOperator?.name
+                let pictureUrl = engagedOperator?.picture?.url
+                storage.setOperator(name: name ?? "", pictureUrl: pictureUrl)
+                action?(.queueConnected(name: name, imageUrl: pictureUrl))
                 action?(.showEndButton)
                 action?(.setMessageEntryEnabled(true))
                 delegate?(.operatorImage(url: engagedOperator?.picture?.url))
