@@ -45,6 +45,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     private var historySection: Section<ChatItem> { return sections[0] }
     private var queueOperatorSection: Section<ChatItem> { return sections[1] }
     private var messagesSection: Section<ChatItem> { return sections[2] }
+    private let storage = ChatStorage()
 
     override init(interactor: Interactor, alertStrings: AlertStrings) {
         super.init(interactor: interactor, alertStrings: alertStrings)
@@ -71,6 +72,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
                    to: queueOperatorSection,
                    animated: false)
         action?(.setMessageEntryEnabled(false))
+        storage.setQueue(withID: interactor.queueID)
         enqueue()
     }
 

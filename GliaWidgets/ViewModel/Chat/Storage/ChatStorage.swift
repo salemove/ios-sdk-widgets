@@ -97,7 +97,7 @@ class ChatStorage {
             FOREIGN KEY(operatorID) REFERENCES Operator(id));
         """
         let queueIDIndex = """
-            CREATE UNIQUE INDEX index_queueid ON Queue(queueID);
+            CREATE UNIQUE INDEX IF NOT EXISTS index_queueid ON Queue(queueID);
         """
 
         try exec(queueTableSQL)
