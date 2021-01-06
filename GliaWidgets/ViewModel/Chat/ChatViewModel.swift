@@ -204,6 +204,7 @@ extension ChatViewModel {
         action?(.scrollToBottom(animated: true))
 
         interactor.send(message) { message in
+            self.sendMessagePreview("")
             self.replace(outgoingMessage,
                          with: message,
                          in: self.messagesSection)

@@ -14,9 +14,9 @@ class ChatStorage {
     }
 
     struct Message {
-        enum Sender: Int {
-            case visitor = 0
-            case `operator` = 1
+        enum Sender: String {
+            case visitor = "visitor"
+            case `operator` = "operator"
 
             init?(with sender: SalemoveSDK.MessageSender) {
                 switch sender {
@@ -63,7 +63,7 @@ class ChatStorage {
         dbURL = try? FileManager.default
             .url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
             .appendingPathComponent(kDBName)
-
+        print(dbURL?.path)
         do {
             try openDatabase()
             try createTables()
@@ -102,7 +102,7 @@ class ChatStorage {
             messageID STRING NOT NULL,
             queueID INTEGER NOT NULL,
             operatorID INTEGER,
-            sender INTEGER NOT NULL,
+            sender TEXT NOT NULL,
             content TEXT NOT NULL,
             timestamp INTEGER NOT NULL,
             FOREIGN KEY(queueID) REFERENCES Queue(id),
