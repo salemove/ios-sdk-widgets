@@ -99,11 +99,15 @@ class ChatStorage {
         let queueIDIndex = """
             CREATE UNIQUE INDEX IF NOT EXISTS index_queueid ON Queue(queueID);
         """
+        let operatorNameIndex = """
+            CREATE UNIQUE INDEX IF NOT EXISTS index_operator_name ON Operator(name, pictureUrl);
+        """
 
         try exec(queueTableSQL)
         try exec(operatorTableSQL)
         try exec(messagesTableSQL)
         try exec(queueIDIndex)
+        try exec(operatorNameIndex)
     }
 
     private func exec(_ sql: String, completion: (() -> Void)? = nil) throws {
@@ -195,9 +199,15 @@ extension ChatStorage {
 extension ChatStorage {
     func setOperator(name: String, pictureUrl: String?) {
         do {
-            try insertOperator(name: name, pictureUrl: pictureUrl) {
-                self.operator = $0
-            }
+            try loadOperator(withID: name, pictureUrl: pictureUrl, completion: { storedOperator in
+                if let storedOperator = storedOperator {
+                    self.operator = storedOperator
+                } else {
+                    try insertOperator(name: name, pictureUrl: pictureUrl) {
+                        self.operator = $0
+                    }
+                }
+            })
         } catch {
             print("\(#function): \(lastErrorMessage)")
         }
@@ -222,6 +232,29 @@ extension ChatStorage {
             }
 
             return storedOperator
+        }
+    }
+
+    private func loadOperator(withID name: String, pictureUrl: String?, completion: (Operator?) throws -> Void) throws {
+        let pictureUrlSQL: String = {
+            if let pictureUrl = pictureUrl {
+                return "pictureUrl = '\(pictureUrl)'"
+            } else {
+                return "pictureUrl IS NULL"
+            }
+        }()
+        try prepare("SELECT id, name, pictureUrl FROM Operator WHERE name = '\(name)' AND \(pictureUrlSQL);") {
+            if sqlite3_step($0) == SQLITE_ROW {
+                let id = sqlite3_column_int64($0, 0)
+                let name = String(cString: sqlite3_column_text($0, 1))
+                let pictureUrl = sqlite3_column_text($0, 2).map({ String(cString: $0) })
+                let storedOperator = Operator(id: id,
+                                              name: name,
+                                              pictureUrl: pictureUrl)
+                try completion(storedOperator)
+            } else {
+                try completion(nil)
+            }
         }
     }
 
