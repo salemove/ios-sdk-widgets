@@ -14,41 +14,28 @@ class ChatStorage {
     }
 
     struct Message {
-        enum Sender: String {
-            case visitor
-            case `operator`
-
-            init?(with sender: SalemoveSDK.MessageSender) {
-                switch sender {
-                case .visitor:
-                    self = .visitor
-                case .operator:
-                    self = .operator
-                default:
-                    return nil
-                }
-            }
-        }
-
-        let id: Int64
         let messageID: String
-        let queueID: Int64
         let operatorID: Int64?
-        let sender: Sender
+        let sender: MessageSender
         let content: String
-        let timestamp: Int64
     }
 
     private enum SQLiteError: Error {
         case openDatabase
         case prepare
-        case insert
+        case exec
     }
 
-    var storedMessages: [Message] { return messages }
+    var storedMessages: [Message] {
+        if messages.isEmpty {
+            loadMessages()
+        }
+
+        return messages
+    }
 
     private var queue: Queue? {
-        didSet { loadMessages() }
+        didSet { messages = [] }
     }
     private var currentOperator: Operator?
     private var messages = [Message]()
@@ -147,7 +134,7 @@ class ChatStorage {
             if sqlite3_step(statement) == SQLITE_DONE {
                 completion?()
             } else {
-                throw SQLiteError.insert
+                throw SQLiteError.exec
             }
         }
     }
@@ -226,21 +213,20 @@ extension ChatStorage {
         if let storedOperator = operatorCache[id] {
             return storedOperator
         } else {
-            var storedOperator: Operator?
             do {
                 try prepare("SELECT id, name, pictureUrl FROM Operator WHERE id = '\(id)';") {
                     if sqlite3_step($0) == SQLITE_ROW {
                         let id = sqlite3_column_int64($0, 0)
                         let name = String(cString: sqlite3_column_text($0, 1))
                         let pictureUrl = sqlite3_column_text($0, 1).map({ String(cString: $0) })
-                        storedOperator = Operator(id: id, name: name, pictureUrl: pictureUrl)
+                        operatorCache[id] = Operator(id: id, name: name, pictureUrl: pictureUrl)
                     }
                 }
             } catch {
                 print("\(#function): \(lastErrorMessage)")
             }
 
-            return storedOperator
+            return operatorCache[id]
         }
     }
 
@@ -278,19 +264,16 @@ extension ChatStorage {
 
 extension ChatStorage {
     func storeMessage(_ message: SalemoveSDK.Message) {
-        guard
-            let queueID = queue?.id,
-            let sender = Message.Sender(with: message.sender)
-        else { return }
+        guard let queueID = queue?.id else { return }
 
-        let operatorID = sender == .operator
+        let operatorID = message.sender == .operator
             ? currentOperator?.id
             : nil
         let timestamp = Int64(NSDate().timeIntervalSince1970)
 
         do {
             try exec("INSERT INTO Message(messageID, queueID, operatorID, sender, content, timestamp) VALUES (?,?,?,?,?,?);",
-                       values: [message.id, queueID, operatorID, sender.rawValue, message.content, timestamp]) {}
+                     values: [message.id, queueID, operatorID, message.sender.stringValue, message.content, timestamp]) {}
         } catch {
             print("\(#function): \(lastErrorMessage)")
         }
@@ -302,5 +285,22 @@ extension ChatStorage {
             return
         }
 
+        do {
+            try prepare("SELECT messageID, operatorID, content, sender FROM Message WHERE queueID = \(queue.id) ORDER BY id;") {
+                while sqlite3_step($0) == SQLITE_ROW {
+                    let messageID = String(cString: sqlite3_column_text($0, 0))
+                    let operatorID = sqlite3_column_int64($0, 1)
+                    let content = String(cString: sqlite3_column_text($0, 2))
+                    guard let sender = MessageSender(stringValue: String(cString: sqlite3_column_text($0, 3))) else { continue }
+                    let message = Message(messageID: messageID,
+                                          operatorID: operatorID,
+                                          sender: sender,
+                                          content: content)
+                    messages.append(message)
+                }
+            }
+        } catch {
+            print("\(#function): \(lastErrorMessage)")
+        }
     }
 }
