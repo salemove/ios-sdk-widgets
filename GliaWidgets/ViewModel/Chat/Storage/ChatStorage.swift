@@ -14,7 +14,7 @@ class ChatStorage {
     }
 
     struct Message {
-        let messageID: String
+        let id: String
         let operatorID: Int64?
         let sender: MessageSender
         let content: String
@@ -40,7 +40,7 @@ class ChatStorage {
         dbURL = try? FileManager.default
             .url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
             .appendingPathComponent(kDBName)
-        print(dbURL?.path)
+
         do {
             try openDatabase()
             try createTables()
@@ -285,11 +285,11 @@ extension ChatStorage {
             """
             try prepare(sql) {
                 while sqlite3_step($0) == SQLITE_ROW {
-                    let messageID = String(cString: sqlite3_column_text($0, 0))
+                    let id = String(cString: sqlite3_column_text($0, 0))
                     let operatorID = sqlite3_column_int64($0, 1)
                     let content = String(cString: sqlite3_column_text($0, 2))
                     guard let sender = MessageSender(stringValue: String(cString: sqlite3_column_text($0, 3))) else { continue }
-                    let message = Message(messageID: messageID,
+                    let message = Message(id: id,
                                           operatorID: operatorID,
                                           sender: sender,
                                           content: content)
@@ -301,5 +301,25 @@ extension ChatStorage {
         }
 
         return messages
+    }
+
+    func newMessages(_ messages: [SalemoveSDK.Message]) -> [SalemoveSDK.Message] {
+        let messageIDs = Set<String>(messages.map({ $0.id }))
+        var existingMessageIDs = Set<String>()
+
+        do {
+            try prepare("SELECT messageID FROM Message") {
+                while sqlite3_step($0) == SQLITE_ROW {
+                    let id = String(cString: sqlite3_column_text($0, 0))
+                    existingMessageIDs.insert(id)
+                }
+            }
+        } catch {
+            print("\(#function): \(lastErrorMessage)")
+        }
+
+        let newMessageIDs = messageIDs.subtracting(existingMessageIDs)
+
+        return messages.filter({ newMessageIDs.contains($0.id) })
     }
 }

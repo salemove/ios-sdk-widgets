@@ -190,10 +190,13 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case .receivedMessage(let message):
             receivedMessage(message)
         case .messagesUpdated(let messages):
-            let items = messages.compactMap({ ChatItem(with: $0) })
-            setItems(items, to: messagesSection)
-            storage.storeMessages(messages)
-            action?(.scrollToBottom(animated: true))
+            let newMessages = storage.newMessages(messages)
+            storage.storeMessages(newMessages)
+            if !newMessages.isEmpty {
+                let items = newMessages.compactMap({ ChatItem(with: $0) })
+                setItems(items, to: messagesSection)
+                action?(.scrollToBottom(animated: true))
+            }
         case .error:
             action?(.showAlert(alertStrings.unexpectedError,
                                dismissed: nil))

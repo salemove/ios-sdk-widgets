@@ -78,7 +78,7 @@ class ChatView: View {
     }
 
     func refreshSection(_ section: Int) {
-        tableView.reloadSections([section], with: .top)
+        tableView.reloadSections([section], with: .fade)
     }
 
     func refreshAll() {
@@ -175,6 +175,7 @@ extension ChatView {
                            options: properties.animationOptions,
                            animations: { [weak self] in
                 self?.messageEntryViewBottomConstraint.constant = 0
+                            self?.tableView.contentOffset = .zero
                 self?.layoutIfNeeded()
             }, completion: { _ -> Void in })
             messageEntryView.setSendButtonVisible(!messageEntryView.message.isEmpty,
