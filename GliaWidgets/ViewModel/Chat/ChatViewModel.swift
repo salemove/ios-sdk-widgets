@@ -72,6 +72,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
                    to: queueOperatorSection,
                    animated: false)
         action?(.setMessageEntryEnabled(false))
+        print("MESSAGES:", storage.messages(forQueue: interactor.queueID).count)
         storage.setQueue(withID: interactor.queueID)
         enqueue()
     }

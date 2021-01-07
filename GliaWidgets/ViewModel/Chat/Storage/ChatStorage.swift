@@ -26,17 +26,7 @@ class ChatStorage {
         case exec
     }
 
-    var storedMessages: [Message] {
-        if messages.isEmpty {
-            loadMessages()
-        }
-
-        return messages
-    }
-
-    private var queue: Queue? {
-        didSet { messages = [] }
-    }
+    private var queue: Queue?
     private var currentOperator: Operator?
     private var messages = [Message]()
     private var operatorCache = [Int64: Operator]()
@@ -279,14 +269,17 @@ extension ChatStorage {
         }
     }
 
-    private func loadMessages() {
-        guard let queue = queue else {
-            messages = []
-            return
-        }
+    func messages(forQueue queueID: String) -> [Message] {
+        var messages = [Message]()
 
         do {
-            try prepare("SELECT messageID, operatorID, content, sender FROM Message WHERE queueID = \(queue.id) ORDER BY id;") {
+            let sql = """
+            SELECT messageID, operatorID, content, sender
+            FROM Message JOIN Queue ON Message.queueID = Queue.id
+            WHERE Queue.queueID = '\(queueID)'
+            ORDER BY Message.id;
+            """
+            try prepare(sql) {
                 while sqlite3_step($0) == SQLITE_ROW {
                     let messageID = String(cString: sqlite3_column_text($0, 0))
                     let operatorID = sqlite3_column_int64($0, 1)
@@ -302,5 +295,7 @@ extension ChatStorage {
         } catch {
             print("\(#function): \(lastErrorMessage)")
         }
+
+        return messages
     }
 }
