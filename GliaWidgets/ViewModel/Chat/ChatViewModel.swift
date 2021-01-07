@@ -72,7 +72,6 @@ class ChatViewModel: EngagementViewModel, ViewModel {
                    to: queueOperatorSection,
                    animated: false)
         action?(.setMessageEntryEnabled(false))
-        print("MESSAGES:", storage.messages(forQueue: interactor.queueID).count)
         storage.setQueue(withID: interactor.queueID)
         enqueue()
     }
@@ -159,6 +158,13 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         action?(.refreshRow(index, in: section.index, animated: false))
     }
 
+    private func loadHistory() {
+        let messages = storage.messages(forQueue: interactor.queueID)
+        let items = messages.compactMap({ ChatItem(with: $0) })
+        historySection.set(items)
+        action?(.refreshAll)
+    }
+
     override func interactorEvent(_ event: InteractorEvent) {
         switch event {
         case .stateChanged(let state):
@@ -177,6 +183,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
                 action?(.showEndButton)
                 action?(.setMessageEntryEnabled(true))
                 delegate?(.operatorImage(url: engagedOperator?.picture?.url))
+                loadHistory()
             }
         case .receivedMessage(let message):
             receivedMessage(message)
