@@ -15,8 +15,8 @@ class ChatStorage {
 
     struct Message {
         enum Sender: String {
-            case visitor = "visitor"
-            case `operator` = "operator"
+            case visitor
+            case `operator`
 
             init?(with sender: SalemoveSDK.MessageSender) {
                 switch sender {
@@ -126,16 +126,9 @@ class ChatStorage {
         try exec(messageIDIndex)
     }
 
-    private func exec(_ sql: String, completion: (() -> Void)? = nil) throws {
-        try prepare(sql) {
-            sqlite3_step($0)
-            completion?()
-        }
-    }
-
-    private func insert(_ sql: String, values: [Any?], completion: () -> Void) throws {
+    private func exec(_ sql: String, values: [Any?]? = nil, completion: (() -> Void)? = nil) throws {
         try prepare(sql) { statement in
-            values.enumerated().forEach({
+            values?.enumerated().forEach({
                 let index = Int32($0.offset + 1)
                 switch $0.element {
                 case nil:
@@ -152,7 +145,7 @@ class ChatStorage {
             })
 
             if sqlite3_step(statement) == SQLITE_DONE {
-                completion()
+                completion?()
             } else {
                 throw SQLiteError.insert
             }
@@ -204,9 +197,9 @@ extension ChatStorage {
         }
     }
 
-    private func insertQueue(withID queueID: String, completion: (Queue?) -> Void) throws {
-        try insert("INSERT INTO Queue(queueID) VALUES (?);", values: [queueID]) {
-            completion(Queue(id: lastInsertedRowID,
+    private func insertQueue(withID queueID: String, completion: @escaping (Queue?) -> Void) throws {
+        try exec("INSERT INTO Queue(queueID) VALUES (?);", values: [queueID]) {
+            completion(Queue(id: self.lastInsertedRowID,
                              queueID: queueID))
         }
     }
@@ -274,9 +267,9 @@ extension ChatStorage {
         }
     }
 
-    private func insertOperator(name: String, pictureUrl: String?, completion: (Operator?) -> Void) throws {
-        try insert("INSERT INTO Operator(name, pictureUrl) VALUES (?,?);", values: [name, pictureUrl]) {
-            completion(Operator(id: lastInsertedRowID,
+    private func insertOperator(name: String, pictureUrl: String?, completion: @escaping (Operator?) -> Void) throws {
+        try exec("INSERT INTO Operator(name, pictureUrl) VALUES (?,?);", values: [name, pictureUrl]) {
+            completion(Operator(id: self.lastInsertedRowID,
                                 name: name,
                                 pictureUrl: pictureUrl))
         }
@@ -296,15 +289,11 @@ extension ChatStorage {
         let timestamp = Int64(NSDate().timeIntervalSince1970)
 
         do {
-            try insert("INSERT INTO Message(messageID, queueID, operatorID, sender, content, timestamp) VALUES (?,?,?,?,?,?);",
+            try exec("INSERT INTO Message(messageID, queueID, operatorID, sender, content, timestamp) VALUES (?,?,?,?,?,?);",
                        values: [message.id, queueID, operatorID, sender.rawValue, message.content, timestamp]) {}
         } catch {
             print("\(#function): \(lastErrorMessage)")
         }
-    }
-
-    func messages(forQueue queueID: String) -> [Message] {
-        return [] // TODO
     }
 
     private func loadMessages() {
