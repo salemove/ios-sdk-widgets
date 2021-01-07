@@ -19,6 +19,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case setMessageEntryEnabled(Bool)
         case appendRows(Int, to: Int, animated: Bool)
         case refreshRow(Int, in: Int, animated: Bool)
+        case refreshSection(Int)
         case refreshAll
         case scrollToBottom(animated: Bool)
         case updateItemsUserImage(animated: Bool)
@@ -162,7 +163,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         let messages = storage.messages(forQueue: interactor.queueID)
         let items = messages.compactMap({ ChatItem(with: $0) })
         historySection.set(items)
-        action?(.refreshAll)
+        action?(.refreshSection(historySection.index))
     }
 
     override func interactorEvent(_ event: InteractorEvent) {

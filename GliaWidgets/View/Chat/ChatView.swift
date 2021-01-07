@@ -77,6 +77,10 @@ class ChatView: View {
         updateTableView(animated: animated)
     }
 
+    func refreshSection(_ section: Int) {
+        tableView.reloadSections([section], with: .top)
+    }
+
     func refreshAll() {
         tableView.reloadData()
     }
