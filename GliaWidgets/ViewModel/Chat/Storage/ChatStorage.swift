@@ -269,6 +269,10 @@ extension ChatStorage {
         }
     }
 
+    func storeMessages(_ messages: [SalemoveSDK.Message]) {
+        messages.forEach({ storeMessage($0) })
+    }
+
     func messages(forQueue queueID: String) -> [Message] {
         var messages = [Message]()
 

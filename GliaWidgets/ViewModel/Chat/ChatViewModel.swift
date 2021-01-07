@@ -164,6 +164,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         let items = messages.compactMap({ ChatItem(with: $0) })
         historySection.set(items)
         action?(.refreshSection(historySection.index))
+        action?(.scrollToBottom(animated: true))
     }
 
     override func interactorEvent(_ event: InteractorEvent) {
@@ -191,6 +192,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case .messagesUpdated(let messages):
             let items = messages.compactMap({ ChatItem(with: $0) })
             setItems(items, to: messagesSection)
+            storage.storeMessages(messages)
             action?(.scrollToBottom(animated: true))
         case .error:
             action?(.showAlert(alertStrings.unexpectedError,
