@@ -64,35 +64,35 @@ class ChatStorage {
     private func createTables() throws {
         let queueTableSQL = """
             CREATE TABLE IF NOT EXISTS Queue(
-            id INTEGER PRIMARY KEY NOT NULL,
-            queueID TEXT NOT NULL);
+            ID INTEGER PRIMARY KEY NOT NULL,
+            QueueID TEXT NOT NULL);
         """
         let operatorTableSQL = """
             CREATE TABLE IF NOT EXISTS Operator(
-            id INTEGER PRIMARY KEY NOT NULL,
-            name TEXT NOT NULL,
-            pictureUrl TEXT);
+            ID INTEGER PRIMARY KEY NOT NULL,
+            Name TEXT NOT NULL,
+            PictureUrl TEXT);
         """
         let messagesTableSQL = """
             CREATE TABLE IF NOT EXISTS Message(
-            id INTEGER PRIMARY KEY NOT NULL,
-            messageID STRING NOT NULL,
-            queueID INTEGER NOT NULL,
-            operatorID INTEGER,
-            sender TEXT NOT NULL,
-            content TEXT NOT NULL,
-            timestamp INTEGER NOT NULL,
+            ID INTEGER PRIMARY KEY NOT NULL,
+            MessageID STRING NOT NULL,
+            WueueID INTEGER NOT NULL,
+            OperatorID INTEGER,
+            Sender TEXT NOT NULL,
+            Content TEXT NOT NULL,
+            Timestamp INTEGER NOT NULL,
             FOREIGN KEY(queueID) REFERENCES Queue(id),
             FOREIGN KEY(operatorID) REFERENCES Operator(id));
         """
         let queueIDIndex = """
-            CREATE UNIQUE INDEX IF NOT EXISTS index_queueid ON Queue(queueID);
+            CREATE UNIQUE INDEX IF NOT EXISTS index_queueid ON Queue(QueueID);
         """
         let operatorNamePictureIndex = """
-            CREATE UNIQUE INDEX IF NOT EXISTS index_operator_name ON Operator(name, pictureUrl);
+            CREATE UNIQUE INDEX IF NOT EXISTS index_operator_name ON Operator(Name, PictureUrl);
         """
         let messageIDIndex = """
-            CREATE UNIQUE INDEX IF NOT EXISTS index_messages_messageID ON Message(messageID);
+            CREATE UNIQUE INDEX IF NOT EXISTS index_messages_messageID ON Message(MessageID);
         """
 
         try exec(queueTableSQL)
@@ -162,7 +162,7 @@ extension ChatStorage {
     }
 
     private func loadQueue(withID queueID: String, completion: (Queue?) throws -> Void) throws {
-        try prepare("SELECT id, queueID FROM Queue WHERE queueID = '\(queueID)';") {
+        try prepare("SELECT ID, QueueID FROM Queue WHERE QueueID = '\(queueID)';") {
             if sqlite3_step($0) == SQLITE_ROW {
                 let id = sqlite3_column_int64($0, 0)
                 let queueID = String(cString: sqlite3_column_text($0, 1))
@@ -175,7 +175,7 @@ extension ChatStorage {
     }
 
     private func insertQueue(withID queueID: String, completion: @escaping (Queue?) -> Void) throws {
-        try exec("INSERT INTO Queue(queueID) VALUES (?);", values: [queueID]) {
+        try exec("INSERT INTO Queue(QueueID) VALUES (?);", values: [queueID]) {
             completion(Queue(id: self.lastInsertedRowID,
                              queueID: queueID))
         }
@@ -204,7 +204,7 @@ extension ChatStorage {
             return storedOperator
         } else {
             do {
-                try prepare("SELECT id, name, pictureUrl FROM Operator WHERE id = '\(id)';") {
+                try prepare("SELECT ID, Name, PictureUrl FROM Operator WHERE ID = '\(id)';") {
                     if sqlite3_step($0) == SQLITE_ROW {
                         let id = sqlite3_column_int64($0, 0)
                         let name = String(cString: sqlite3_column_text($0, 1))
@@ -223,12 +223,12 @@ extension ChatStorage {
     private func loadOperator(withID name: String, pictureUrl: String?, completion: (Operator?) throws -> Void) throws {
         let pictureUrlSQL: String = {
             if let pictureUrl = pictureUrl {
-                return "pictureUrl = '\(pictureUrl)'"
+                return "PictureUrl = '\(pictureUrl)'"
             } else {
-                return "pictureUrl IS NULL"
+                return "PictureUrl IS NULL"
             }
         }()
-        try prepare("SELECT id, name, pictureUrl FROM Operator WHERE name = '\(name)' AND \(pictureUrlSQL);") {
+        try prepare("SELECT ID, Name, PictureUrl FROM Operator WHERE Name = '\(name)' AND \(pictureUrlSQL);") {
             if sqlite3_step($0) == SQLITE_ROW {
                 let id = sqlite3_column_int64($0, 0)
                 let name = String(cString: sqlite3_column_text($0, 1))
@@ -244,7 +244,7 @@ extension ChatStorage {
     }
 
     private func insertOperator(name: String, pictureUrl: String?, completion: @escaping (Operator?) -> Void) throws {
-        try exec("INSERT INTO Operator(name, pictureUrl) VALUES (?,?);", values: [name, pictureUrl]) {
+        try exec("INSERT INTO Operator(Name, PictureUrl) VALUES (?,?);", values: [name, pictureUrl]) {
             completion(Operator(id: self.lastInsertedRowID,
                                 name: name,
                                 pictureUrl: pictureUrl))
@@ -262,7 +262,7 @@ extension ChatStorage {
         let timestamp = Int64(NSDate().timeIntervalSince1970)
 
         do {
-            try exec("INSERT INTO Message(messageID, queueID, operatorID, sender, content, timestamp) VALUES (?,?,?,?,?,?);",
+            try exec("INSERT INTO Message(MessageID, QueueID, OperatorID, Sender, Content, Timestamp) VALUES (?,?,?,?,?,?);",
                      values: [message.id, queueID, operatorID, message.sender.stringValue, message.content, timestamp]) {}
         } catch {
             print("\(#function): \(lastErrorMessage)")
@@ -278,10 +278,10 @@ extension ChatStorage {
 
         do {
             let sql = """
-            SELECT messageID, operatorID, content, sender
-            FROM Message JOIN Queue ON Message.queueID = Queue.id
-            WHERE Queue.queueID = '\(queueID)'
-            ORDER BY Message.id;
+            SELECT MessageID, OperatorID, Content, Sender
+            FROM Message JOIN Queue ON Message.QueueID = Queue.ID
+            WHERE Queue.QueueID = '\(queueID)'
+            ORDER BY Message.Timestamp;
             """
             try prepare(sql) {
                 while sqlite3_step($0) == SQLITE_ROW {
@@ -308,7 +308,8 @@ extension ChatStorage {
         var existingMessageIDs = Set<String>()
 
         do {
-            try prepare("SELECT messageID FROM Message") {
+            let ids = messageIDs.map({ "'\($0)'" }).joined(separator: ",")
+            try prepare("SELECT MessageID FROM Message WHERE MessageID IN (\(ids))") {
                 while sqlite3_step($0) == SQLITE_ROW {
                     let id = String(cString: sqlite3_column_text($0, 0))
                     existingMessageIDs.insert(id)
