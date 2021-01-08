@@ -45,7 +45,7 @@ class ChatStorage {
             try openDatabase()
             try createTables()
         } catch {
-            print("\(#function): \(lastErrorMessage)")
+            printLastErrorMessage()
         }
     }
 
@@ -142,6 +142,12 @@ class ChatStorage {
             throw SQLiteError.prepare
         }
     }
+
+    private func printLastErrorMessage() {
+        #if DEBUG
+        print(lastErrorMessage)
+        #endif
+    }
 }
 
 extension ChatStorage {
@@ -157,7 +163,7 @@ extension ChatStorage {
                 }
             }
         } catch {
-            print("\(#function): \(lastErrorMessage)")
+            printLastErrorMessage()
         }
     }
 
@@ -195,7 +201,7 @@ extension ChatStorage {
                 }
             })
         } catch {
-            print("\(#function): \(lastErrorMessage)")
+            printLastErrorMessage()
         }
     }
 
@@ -213,7 +219,7 @@ extension ChatStorage {
                     }
                 }
             } catch {
-                print("\(#function): \(lastErrorMessage)")
+                printLastErrorMessage()
             }
 
             return operatorCache[id]
@@ -265,7 +271,7 @@ extension ChatStorage {
             try exec("INSERT INTO Message(MessageID, QueueID, OperatorID, Sender, Content, Timestamp) VALUES (?,?,?,?,?,?);",
                      values: [message.id, queueID, operatorID, message.sender.stringValue, message.content, timestamp]) {}
         } catch {
-            print("\(#function): \(lastErrorMessage)")
+            printLastErrorMessage()
         }
     }
 
@@ -297,7 +303,7 @@ extension ChatStorage {
                 }
             }
         } catch {
-            print("\(#function): \(lastErrorMessage)")
+            printLastErrorMessage()
         }
 
         return messages
@@ -316,7 +322,7 @@ extension ChatStorage {
                 }
             }
         } catch {
-            print("\(#function): \(lastErrorMessage)")
+            printLastErrorMessage()
         }
 
         let newMessageIDs = messageIDs.subtracting(existingMessageIDs)
