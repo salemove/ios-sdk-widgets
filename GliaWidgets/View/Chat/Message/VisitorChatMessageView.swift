@@ -7,7 +7,7 @@ class VisitorChatMessageView: ChatMessageView {
     }
 
     private let statusLabel = UILabel()
-    private let kInsets = UIEdgeInsets(top: 5, left: 88, bottom: 5, right: 16)
+    private let kInsets = UIEdgeInsets(top: 2, left: 88, bottom: 2, right: 16)
 
     init(with style: VisitorChatMessageStyle) {
         super.init(with: style)
