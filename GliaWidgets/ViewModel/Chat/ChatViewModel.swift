@@ -191,8 +191,8 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             receivedMessage(message)
         case .messagesUpdated(let messages):
             let newMessages = storage.newMessages(messages)
-            storage.storeMessages(newMessages)
             if !newMessages.isEmpty {
+                storage.storeMessages(newMessages)
                 let items = newMessages.compactMap({ ChatItem(with: $0) })
                 setItems(items, to: messagesSection)
                 action?(.scrollToBottom(animated: true))
