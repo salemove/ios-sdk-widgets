@@ -34,7 +34,6 @@ class ChatStorage {
     private let dbURL: URL?
     private let kDBName = "GliaChat.sqlite"
     private var lastInsertedRowID: Int64 { return sqlite3_last_insert_rowid(db) }
-    private var lastErrorMessage: String { return sqlite3_errmsg(db).map({ String(cString: $0) }) ?? "UNKNOWN" }
 
     init() {
         dbURL = try? FileManager.default
@@ -145,6 +144,7 @@ class ChatStorage {
 
     private func printLastErrorMessage() {
         #if DEBUG
+        let lastErrorMessage = sqlite3_errmsg(db).map({ String(cString: $0) }) ?? "UNKNOWN DB ERROR"
         print(lastErrorMessage)
         #endif
     }
