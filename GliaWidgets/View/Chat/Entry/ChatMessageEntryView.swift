@@ -59,7 +59,7 @@ public class ChatMessageEntryView: UIView {
         textView.delegate = self
         textView.textContainerInset = .zero
         textView.textContainer.lineFragmentPadding = 0
-        textView.autocapitalizationType = .none
+        textView.autocapitalizationType = .sentences
         textView.isScrollEnabled = false
         textView.font = style.messageFont
         textView.textColor = style.messageColor
