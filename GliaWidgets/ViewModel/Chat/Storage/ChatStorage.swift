@@ -81,8 +81,8 @@ class ChatStorage {
             Sender TEXT NOT NULL,
             Content TEXT NOT NULL,
             Timestamp INTEGER NOT NULL,
-            FOREIGN KEY(queueID) REFERENCES Queue(id),
-            FOREIGN KEY(operatorID) REFERENCES Operator(id));
+            FOREIGN KEY(queueID) REFERENCES Queue(ID),
+            FOREIGN KEY(operatorID) REFERENCES Operator(ID));
         """
         let queueIDIndex = """
             CREATE UNIQUE INDEX IF NOT EXISTS index_queueid ON Queue(QueueID);
