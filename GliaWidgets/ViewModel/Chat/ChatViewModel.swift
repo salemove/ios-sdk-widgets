@@ -87,20 +87,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         interactor.enqueueForEngagement {
 
         } failure: { error in
-            switch error.error {
-            case let queueError as QueueError:
-                switch queueError {
-                case .queueClosed, .queueFull:
-                    self.showAlert(with: self.alertStrings.operatorsUnavailable,
-                                   dismissed: { self.end() })
-                default:
-                    self.showAlert(with: self.alertStrings.unexpectedError,
-                                   dismissed: { self.end() })
-                }
-            default:
-                self.showAlert(with: self.alertStrings.unexpectedError,
-                               dismissed: { self.end() })
-            }
+            self.handleError(error)
         }
     }
 
@@ -173,6 +160,23 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         action?(.scrollToBottom(animated: true))
     }
 
+    private func handleError(_ error: SalemoveError) {
+        switch error.error {
+        case let queueError as QueueError:
+            switch queueError {
+            case .queueClosed, .queueFull:
+                self.showAlert(with: self.alertStrings.operatorsUnavailable,
+                               dismissed: { self.end() })
+            default:
+                self.showAlert(with: self.alertStrings.unexpectedError,
+                               dismissed: { self.end() })
+            }
+        default:
+            self.showAlert(with: self.alertStrings.unexpectedError,
+                           dismissed: { self.end() })
+        }
+    }
+
     private func showAlert(with strings: AlertMessageStrings, dismissed: (() -> Void)?) {
         let dismissHandler = {
             self.alertState = .none
@@ -224,9 +228,8 @@ class ChatViewModel: EngagementViewModel, ViewModel {
                 setItems(items, to: messagesSection)
                 action?(.scrollToBottom(animated: true))
             }
-        case .error:
-            self.showAlert(with: self.alertStrings.unexpectedError,
-                           dismissed: nil)
+        case .error(let error):
+            self.handleError(error)
         }
     }
 }
