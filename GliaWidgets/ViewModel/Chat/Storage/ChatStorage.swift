@@ -76,7 +76,7 @@ class ChatStorage {
             CREATE TABLE IF NOT EXISTS Message(
             ID INTEGER PRIMARY KEY NOT NULL,
             MessageID STRING NOT NULL,
-            WueueID INTEGER NOT NULL,
+            QueueID INTEGER NOT NULL,
             OperatorID INTEGER,
             Sender TEXT NOT NULL,
             Content TEXT NOT NULL,

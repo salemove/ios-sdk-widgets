@@ -38,6 +38,11 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     var action: ((Action) -> Void)?
     var delegate: ((DelegateEvent) -> Void)?
 
+    private enum AlertState {
+        case presenting
+        case none
+    }
+
     private let sections = [
         Section<ChatItem>(0),
         Section<ChatItem>(1),
@@ -46,6 +51,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     private var historySection: Section<ChatItem> { return sections[0] }
     private var queueOperatorSection: Section<ChatItem> { return sections[1] }
     private var messagesSection: Section<ChatItem> { return sections[2] }
+    private var alertState: AlertState = .none
     private let storage = ChatStorage()
 
     override init(interactor: Interactor, alertStrings: AlertStrings) {
@@ -85,15 +91,15 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             case let queueError as QueueError:
                 switch queueError {
                 case .queueClosed, .queueFull:
-                    self.action?(.showAlert(self.alertStrings.operatorsUnavailable,
-                                            dismissed: { self.end() }))
+                    self.showAlert(with: self.alertStrings.operatorsUnavailable,
+                                   dismissed: { self.end() })
                 default:
-                    self.action?(.showAlert(self.alertStrings.unexpectedError,
-                                            dismissed: { self.end() }))
+                    self.showAlert(with: self.alertStrings.unexpectedError,
+                                   dismissed: { self.end() })
                 }
             default:
-                self.action?(.showAlert(self.alertStrings.unexpectedError,
-                                        dismissed: { self.end() }))
+                self.showAlert(with: self.alertStrings.unexpectedError,
+                               dismissed: { self.end() })
             }
         }
     }
@@ -167,12 +173,33 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         action?(.scrollToBottom(animated: true))
     }
 
+    private func showAlert(with strings: AlertMessageStrings, dismissed: (() -> Void)?) {
+        let dismissHandler = {
+            self.alertState = .none
+            dismissed?()
+
+            switch self.interactor.state {
+            case .inactive:
+                self.end()
+            default:
+                break
+            }
+        }
+
+        alertState = .presenting
+
+        action?(.showAlert(self.alertStrings.operatorsUnavailable,
+                                dismissed: { dismissHandler() }))
+    }
+
     override func interactorEvent(_ event: InteractorEvent) {
         switch event {
         case .stateChanged(let state):
             switch state {
             case .inactive:
-                delegate?(.finished)
+                if alertState == .none {
+                    delegate?(.finished)
+                }
             case .enqueueing:
                 action?(.queueWaiting)
             case .enqueued:
@@ -198,8 +225,8 @@ class ChatViewModel: EngagementViewModel, ViewModel {
                 action?(.scrollToBottom(animated: true))
             }
         case .error:
-            action?(.showAlert(alertStrings.unexpectedError,
-                               dismissed: nil))
+            self.showAlert(with: self.alertStrings.unexpectedError,
+                           dismissed: nil)
         }
     }
 }
@@ -224,8 +251,8 @@ extension ChatViewModel {
                          in: self.messagesSection)
             self.action?(.scrollToBottom(animated: true))
         } failure: { _ in
-            self.action?(.showAlert(self.alertStrings.unexpectedError,
-                                    dismissed: nil))
+            self.showAlert(with: self.alertStrings.unexpectedError,
+                           dismissed: nil)
         }
     }
 
