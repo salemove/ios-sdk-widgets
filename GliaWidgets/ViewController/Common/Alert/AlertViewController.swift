@@ -112,6 +112,7 @@ class AlertViewController: ViewController {
         case .mediaUpgrade(let strings, mediaTypes: let mediaTypes, accepted: let accepted, declined: let declined):
             alertView.title = strings.title
             alertView.showsPoweredBy = true
+            alertView.showsCloseButton = true
             alertView.actionsAxis = .vertical
 
             mediaTypes.enumerated().forEach({
