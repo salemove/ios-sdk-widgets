@@ -23,6 +23,10 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case refreshAll
         case scrollToBottom(animated: Bool)
         case updateItemsUserImage(animated: Bool)
+        case mediaUpgrade(AlertTitleStrings,
+                          mediaTypes: [MediaType],
+                          accepted: (Int) -> Void,
+                          declined: () -> Void)
         case confirm(AlertConfirmationStrings,
                      confirmed: (() -> Void)?)
         case showAlert(AlertMessageStrings,
@@ -160,6 +164,13 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         action?(.scrollToBottom(animated: true))
     }
 
+    private func offerMediaUpgrade(_ offer: MediaUpgradeOffer, answer: @escaping AnswerWithSuccessBlock) {
+        action?(.mediaUpgrade(alertStrings.upgradeMedia,
+                              mediaTypes: [offer.type],
+                              accepted: { _ in answer(true, nil) },
+                              declined: { answer(false, nil) }))
+    }
+
     private func handleError(_ error: SalemoveError) {
         switch error.error {
         case let queueError as QueueError:
@@ -229,7 +240,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
                 action?(.scrollToBottom(animated: true))
             }
         case .upgradeOffer(let offer, answer: let answer):
-            break
+            self.offerMediaUpgrade(offer, answer: answer)
         case .error(let error):
             self.handleError(error)
         }
