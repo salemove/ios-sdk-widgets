@@ -485,6 +485,7 @@
 		1A60AF6A25656C1E00E53F53 /* Component */ = {
 			isa = PBXGroup;
 			children = (
+				1A6EBB2025ADDB8500EE325D /* MediaUpgrade */,
 				1A6075DE2582207E00569B0E /* ImageView */,
 				1AA7389A2578DB6800E1120F /* Queue */,
 				1A60B0022567F1EB00E53F53 /* Header */,
@@ -746,7 +747,6 @@
 		1A63B2F0257A3F0F00508478 /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				1A6EBAFF25ADB7B200EE325D /* MediaUpgrade */,
 				1AA738B025790D4B00E1120F /* Alert */,
 			);
 			path = Common;
@@ -761,21 +761,13 @@
 			path = Alert;
 			sourceTree = "<group>";
 		};
-		1A6EBAFF25ADB7B200EE325D /* MediaUpgrade */ = {
-			isa = PBXGroup;
-			children = (
-				1A6EBB0A25ADB99E00EE325D /* Action */,
-			);
-			path = MediaUpgrade;
-			sourceTree = "<group>";
-		};
-		1A6EBB0A25ADB99E00EE325D /* Action */ = {
+		1A6EBB2025ADDB8500EE325D /* MediaUpgrade */ = {
 			isa = PBXGroup;
 			children = (
 				1A6EBB0225ADB82000EE325D /* MediaUpgradeActionView.swift */,
 				1A6EBB0625ADB84200EE325D /* MediaUpgradeActionStyle.swift */,
 			);
-			path = Action;
+			path = MediaUpgrade;
 			sourceTree = "<group>";
 		};
 		1A7CA83125751B670047CBBE /* Operator */ = {

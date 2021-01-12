@@ -2,7 +2,7 @@ import UIKit
 
 class MediaUpgradeActionView: UIView {
     var tap: (() -> Void)?
-    
+
     private let style: MediaUpgradeActionStyle
     private let imageView = UIImageView()
     private let titleLabel = UILabel()

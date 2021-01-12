@@ -1,4 +1,5 @@
 import UIKit
+import SalemoveSDK
 
 class AlertViewController: ViewController {
     enum Kind {
@@ -6,6 +7,10 @@ class AlertViewController: ViewController {
                      dismissed: (() -> Void)?)
         case confirmation(AlertConfirmationStrings,
                           confirmed: () -> Void)
+        case mediaUpgrade(AlertTitleStrings,
+                          mediaTypes: [MediaType],
+                          accepted: (Int) -> Void,
+                          declined: () -> Void)
     }
 
     private let viewFactory: ViewFactory
@@ -104,6 +109,24 @@ class AlertViewController: ViewController {
             }
             alertView.addActionView(negativeButton)
             alertView.addActionView(positiveButton)
+        case .mediaUpgrade(let strings, mediaTypes: let mediaTypes, accepted: let accepted, declined: let declined):
+            alertView.title = strings.title
+            alertView.showsPoweredBy = true
+            alertView.actionsAxis = .vertical
+
+            mediaTypes.enumerated().forEach({
+                if let actionView = self.actionView(for: $0.element) {
+                    let index = $0.offset
+                    actionView.tap = { accepted(index) }
+                    alertView.addActionView(actionView)
+                }
+            })
+
+            alertView.closeTapped = { [weak self] in
+                self?.dismiss(animated: true) {
+                    declined()
+                }
+            }
         }
 
         return alertView
@@ -112,5 +135,18 @@ class AlertViewController: ViewController {
     override func dismiss(animated: Bool, completion: (() -> Void)? = nil) {
         hideAlertView(animated: animated)
         super.dismiss(animated: animated, completion: completion)
+    }
+}
+
+private extension AlertViewController {
+    func actionView(for mediaType: MediaType) -> MediaUpgradeActionView? {
+        switch mediaType {
+        case .audio:
+            return MediaUpgradeActionView(with: viewFactory.theme.alert.audioUpgradeAction)
+        case .phone:
+            return MediaUpgradeActionView(with: viewFactory.theme.alert.phoneUpgradeAction)
+        default:
+            return nil
+        }
     }
 }
