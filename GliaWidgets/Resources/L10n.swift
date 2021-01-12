@@ -38,6 +38,22 @@ public enum L10n {
       /// Are you sure you want to leave?
       public static let title = L10n.tr("Localizable", "alert.leaveQueue.title")
     }
+    public enum MediaUpgrade {
+      /// {operatorName} has offered you to upgrade
+      public static let title = L10n.tr("Localizable", "alert.mediaUpgrade.title")
+      public enum Audio {
+        /// Speak through your device
+        public static let info = L10n.tr("Localizable", "alert.mediaUpgrade.audio.info")
+        /// Audio
+        public static let title = L10n.tr("Localizable", "alert.mediaUpgrade.audio.title")
+      }
+      public enum Phone {
+        /// Enter your number and we'll call you
+        public static let info = L10n.tr("Localizable", "alert.mediaUpgrade.phone.info")
+        /// Phone
+        public static let title = L10n.tr("Localizable", "alert.mediaUpgrade.phone.title")
+      }
+    }
     public enum OperatorsUnavailable {
       /// Operators are no longer available.\nPlease try again later.
       public static let message = L10n.tr("Localizable", "alert.operatorsUnavailable.message")
@@ -66,23 +82,6 @@ public enum L10n {
         /// Delivered
         public static let delivered = L10n.tr("Localizable", "chat.message.status.delivered")
       }
-    }
-  }
-
-  public enum MediaUpgrade {
-    /// {operatorName} has offered you to upgrade
-    public static let title = L10n.tr("Localizable", "mediaUpgrade.title")
-    public enum Audio {
-      /// Speak through your device
-      public static let info = L10n.tr("Localizable", "mediaUpgrade.audio.info")
-      /// Audio
-      public static let title = L10n.tr("Localizable", "mediaUpgrade.audio.title")
-    }
-    public enum Phone {
-      /// Enter your number and we'll call you
-      public static let info = L10n.tr("Localizable", "mediaUpgrade.phone.info")
-      /// Phone
-      public static let title = L10n.tr("Localizable", "mediaUpgrade.phone.title")
     }
   }
 

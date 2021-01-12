@@ -89,7 +89,7 @@
 		1A6EB05725A717CB0007081A /* ChatMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6EB05625A717CB0007081A /* ChatMessage.swift */; };
 		1A6EBB0325ADB82000EE325D /* MediaUpgradeActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6EBB0225ADB82000EE325D /* MediaUpgradeActionView.swift */; };
 		1A6EBB0725ADB84200EE325D /* MediaUpgradeActionStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6EBB0625ADB84200EE325D /* MediaUpgradeActionStyle.swift */; };
-		1A6EBB0C25ADB9BD00EE325D /* MediaUpgradeStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6EBB0B25ADB9BD00EE325D /* MediaUpgradeStyle.swift */; };
+		1A6EBB1B25ADD49E00EE325D /* AlertTitleStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6EBB1A25ADD49E00EE325D /* AlertTitleStrings.swift */; };
 		1A7CA81D2574D6370047CBBE /* QueueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7CA81C2574D6370047CBBE /* QueueView.swift */; };
 		1A7CA8212574D6760047CBBE /* QueueOperatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7CA8202574D6760047CBBE /* QueueOperatorView.swift */; };
 		1A7CA8242574D68E0047CBBE /* QueueStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7CA8232574D68E0047CBBE /* QueueStatusView.swift */; };
@@ -233,7 +233,7 @@
 		1A6EB05625A717CB0007081A /* ChatMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessage.swift; sourceTree = "<group>"; };
 		1A6EBB0225ADB82000EE325D /* MediaUpgradeActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaUpgradeActionView.swift; sourceTree = "<group>"; };
 		1A6EBB0625ADB84200EE325D /* MediaUpgradeActionStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaUpgradeActionStyle.swift; sourceTree = "<group>"; };
-		1A6EBB0B25ADB9BD00EE325D /* MediaUpgradeStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaUpgradeStyle.swift; sourceTree = "<group>"; };
+		1A6EBB1A25ADD49E00EE325D /* AlertTitleStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertTitleStrings.swift; sourceTree = "<group>"; };
 		1A7CA81C2574D6370047CBBE /* QueueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueView.swift; sourceTree = "<group>"; };
 		1A7CA8202574D6760047CBBE /* QueueOperatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueOperatorView.swift; sourceTree = "<group>"; };
 		1A7CA8232574D68E0047CBBE /* QueueStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueStatusView.swift; sourceTree = "<group>"; };
@@ -765,7 +765,6 @@
 			isa = PBXGroup;
 			children = (
 				1A6EBB0A25ADB99E00EE325D /* Action */,
-				1A6EBB0B25ADB9BD00EE325D /* MediaUpgradeStyle.swift */,
 			);
 			path = MediaUpgrade;
 			sourceTree = "<group>";
@@ -856,6 +855,7 @@
 				1AE15E3A257A5CC900A642C0 /* AlertStrings.swift */,
 				1AE15E37257A578B00A642C0 /* AlertMessageStrings.swift */,
 				1AE15E48257A6BD200A642C0 /* AlertConfirmationStrings.swift */,
+				1A6EBB1A25ADD49E00EE325D /* AlertTitleStrings.swift */,
 			);
 			path = Alert;
 			sourceTree = "<group>";
@@ -1157,7 +1157,6 @@
 				1AE15E3B257A5CC900A642C0 /* AlertStrings.swift in Sources */,
 				1A60AF9F25667CA800E53F53 /* FontProvider.swift in Sources */,
 				1A60AFCE2566958900E53F53 /* ViewFactory.swift in Sources */,
-				1A6EBB0C25ADB9BD00EE325D /* MediaUpgradeStyle.swift in Sources */,
 				1A7CA82F25751B5A0047CBBE /* QueueOperatorStyle.swift in Sources */,
 				1A60AF96256675C400E53F53 /* UIColor+Extensions.swift in Sources */,
 				1A7CA81D2574D6370047CBBE /* QueueView.swift in Sources */,
@@ -1192,6 +1191,7 @@
 				1AA738B925790DB400E1120F /* ActionButtonStyle.swift in Sources */,
 				1A5F81482588BBF700A605DA /* ChatSendButtonProperties.swift in Sources */,
 				1A60B0152567FC7000E53F53 /* Button.swift in Sources */,
+				1A6EBB1B25ADD49E00EE325D /* AlertTitleStrings.swift in Sources */,
 				1A6EBB0725ADB84200EE325D /* MediaUpgradeActionStyle.swift in Sources */,
 				1A4AD3CA256E864800468BFB /* ThemeColorStyle.swift in Sources */,
 				1A7CA8272574D6F40047CBBE /* QueueStyle.swift in Sources */,

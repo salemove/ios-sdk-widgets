@@ -9,7 +9,6 @@ public class Theme {
     public lazy var chat: ChatStyle = {
         typealias Chat = L10n.Chat
         typealias Queue = L10n.Queue
-        typealias MediaUpgrade = L10n.MediaUpgrade
 
         let header = HeaderStyle(title: Chat.title,
                                  titleFont: font.header2,
@@ -68,41 +67,13 @@ public class Theme {
                                                  sendButtonColor: color.primary,
                                                  separatorColor: color.baseShade,
                                                  backgroundColor: color.background)
-        let audioAction = MediaUpgradeActionStyle(title: MediaUpgrade.Audio.title,
-                                                  titleFont: font.header3,
-                                                  titleColor: color.baseDark,
-                                                  info: MediaUpgrade.Audio.info,
-                                                  infoFont: font.subtitle,
-                                                  infoColor: color.baseDark,
-                                                  borderColor: color.primary,
-                                                  backgroundColor: color.background,
-                                                  icon: Asset.upgradeAudio.image,
-                                                  iconColor: color.primary)
-        let phoneAction = MediaUpgradeActionStyle(title: MediaUpgrade.Phone.title,
-                                                  titleFont: font.header3,
-                                                  titleColor: color.baseDark,
-                                                  info: MediaUpgrade.Phone.info,
-                                                  infoFont: font.subtitle,
-                                                  infoColor: color.baseDark,
-                                                  borderColor: color.primary,
-                                                  backgroundColor: color.background,
-                                                  icon: Asset.upgradePhone.image,
-                                                  iconColor: color.primary)
-        let mediaUpgrade = MediaUpgradeStyle(title: MediaUpgrade.title,
-                                             titleFont: font.header2,
-                                             titleColor: color.baseDark,
-                                             backgroundColor: color.background,
-                                             closeButtonColor: color.baseNormal,
-                                             audioAction: audioAction,
-                                             phoneAction: phoneAction)
         return ChatStyle(header: header,
                          queue: queue,
                          visitorMessage: visitorMessage,
                          operatorMessage: operatorMessage,
                          backgroundColor: color.background,
                          endButton: endButton,
-                         messageEntry: messageEntry,
-                         mediaUpgrade: mediaUpgrade)
+                         messageEntry: messageEntry)
     }()
 
     public lazy var alert: AlertStyle = {
@@ -116,6 +87,26 @@ public class Theme {
                                                titleFont: font.buttonLabel,
                                                titleColor: color.baseLight,
                                                backgroundColor: color.systemNegative)
+        let audioAction = MediaUpgradeActionStyle(title: Alert.MediaUpgrade.Audio.title,
+                                                  titleFont: font.header3,
+                                                  titleColor: color.baseDark,
+                                                  info: Alert.MediaUpgrade.Audio.info,
+                                                  infoFont: font.subtitle,
+                                                  infoColor: color.baseDark,
+                                                  borderColor: color.primary,
+                                                  backgroundColor: color.background,
+                                                  icon: Asset.upgradeAudio.image,
+                                                  iconColor: color.primary)
+        let phoneAction = MediaUpgradeActionStyle(title: Alert.MediaUpgrade.Phone.title,
+                                                  titleFont: font.header3,
+                                                  titleColor: color.baseDark,
+                                                  info: Alert.MediaUpgrade.Phone.info,
+                                                  infoFont: font.subtitle,
+                                                  infoColor: color.baseDark,
+                                                  borderColor: color.primary,
+                                                  backgroundColor: color.background,
+                                                  icon: Asset.upgradePhone.image,
+                                                  iconColor: color.primary)
         return AlertStyle(titleFont: font.header2,
                           titleColor: color.baseDark,
                           messageFont: font.bodyText,
@@ -123,7 +114,9 @@ public class Theme {
                           backgroundColor: color.background,
                           closeButtonColor: color.baseNormal,
                           positiveAction: positiveAction,
-                          negativeAction: negativeAction)
+                          negativeAction: negativeAction,
+                          audioUpgradeAction: audioAction,
+                          phoneUpgradeAction: phoneAction)
     }()
 
     public lazy var alertStrings: AlertStrings = {
@@ -139,6 +132,7 @@ public class Theme {
                                                      positiveTitle: Alert.Action.yes)
         let operatorsUnavailable = AlertMessageStrings(title: Alert.OperatorsUnavailable.title,
                                                        message: Alert.OperatorsUnavailable.message)
+        let upgradeMedia = AlertTitleStrings(title: Alert.MediaUpgrade.title)
         let unexpected = AlertMessageStrings(title: Alert.Unexpected.title,
                                              message: Alert.Unexpected.message)
         let api = AlertMessageStrings(title: Alert.ApiError.title,
@@ -147,6 +141,7 @@ public class Theme {
         return AlertStrings(leaveQueue: leaveQueue,
                             endEngagement: endEngagement,
                             operatorsUnavailable: operatorsUnavailable,
+                            upgradeMedia: upgradeMedia,
                             unexpectedError: unexpected,
                             apiError: api)
     }()

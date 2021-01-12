@@ -7,12 +7,6 @@
 "queue.connected.firstText" = "{operatorName}";
 "queue.connected.secondText" = "{operatorName} has joined the conversation.";
 
-"mediaUpgrade.title" = "{operatorName} has offered you to upgrade";
-"mediaUpgrade.audio.title" = "Audio";
-"mediaUpgrade.audio.info" = "Speak through your device";
-"mediaUpgrade.phone.title" = "Phone";
-"mediaUpgrade.phone.info" = "Enter your number and we'll call you";
-
 "alert.action.yes" = "Yes";
 "alert.action.no" = "No";
 
@@ -30,6 +24,12 @@
 
 "alert.apiError.title" = "We're sorry, there has been an error.";
 "alert.apiError.message" = "{message}";
+
+"alert.mediaUpgrade.title" = "{operatorName} has offered you to upgrade";
+"alert.mediaUpgrade.audio.title" = "Audio";
+"alert.mediaUpgrade.audio.info" = "Speak through your device";
+"alert.mediaUpgrade.phone.title" = "Phone";
+"alert.mediaUpgrade.phone.info" = "Enter your number and we'll call you";
 
 "chat.title" = "Chat";
 "chat.endButton.title" = "End";
