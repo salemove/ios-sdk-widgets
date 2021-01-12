@@ -69,6 +69,23 @@ public enum L10n {
     }
   }
 
+  public enum MediaUpgrade {
+    /// {operatorName} has offered you to upgrade
+    public static let title = L10n.tr("Localizable", "mediaUpgrade.title")
+    public enum Audio {
+      /// Speak through your device
+      public static let info = L10n.tr("Localizable", "mediaUpgrade.audio.info")
+      /// Audio
+      public static let title = L10n.tr("Localizable", "mediaUpgrade.audio.title")
+    }
+    public enum Phone {
+      /// Enter your number and we'll call you
+      public static let info = L10n.tr("Localizable", "mediaUpgrade.phone.info")
+      /// Phone
+      public static let title = L10n.tr("Localizable", "mediaUpgrade.phone.title")
+    }
+  }
+
   public enum Queue {
     public enum Connected {
       /// {operatorName}

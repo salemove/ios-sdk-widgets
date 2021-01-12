@@ -11,6 +11,7 @@ enum InteractorEvent {
     case stateChanged(InteractorState)
     case receivedMessage(Message)
     case messagesUpdated([Message])
+    case upgradeOffer(MediaUpgradeOffer, answer: AnswerWithSuccessBlock)
     case error(SalemoveError)
 }
 
@@ -159,7 +160,9 @@ extension Interactor: Interactable {
 
     var onMediaUpgradeOffer: MediaUgradeOfferBlock {
         print("Called: \(#function)")
-        return { _, _ in }
+        return { offer, answer in
+            self.notify(.upgradeOffer(offer, answer: answer))
+        }
     }
 
     var onEngagementRequest: RequestOfferBlock {

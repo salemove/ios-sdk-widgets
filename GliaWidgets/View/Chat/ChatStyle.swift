@@ -8,6 +8,7 @@ public struct ChatStyle {
     public var backgroundColor: UIColor
     public var endButton: ActionButtonStyle
     public var messageEntry: ChatMessageEntryStyle
+    public var mediaUpgrade: MediaUpgradeStyle
 
     public init(header: HeaderStyle,
                 queue: QueueStyle,
@@ -15,7 +16,8 @@ public struct ChatStyle {
                 operatorMessage: OperatorChatMessageStyle,
                 backgroundColor: UIColor,
                 endButton: ActionButtonStyle,
-                messageEntry: ChatMessageEntryStyle) {
+                messageEntry: ChatMessageEntryStyle,
+                mediaUpgrade: MediaUpgradeStyle) {
         self.header = header
         self.queue = queue
         self.visitorMessage = visitorMessage
@@ -23,5 +25,6 @@ public struct ChatStyle {
         self.backgroundColor = backgroundColor
         self.endButton = endButton
         self.messageEntry = messageEntry
+        self.mediaUpgrade = mediaUpgrade
     }
 }

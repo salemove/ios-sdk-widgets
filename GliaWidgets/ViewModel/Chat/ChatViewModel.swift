@@ -228,6 +228,8 @@ class ChatViewModel: EngagementViewModel, ViewModel {
                 setItems(items, to: messagesSection)
                 action?(.scrollToBottom(animated: true))
             }
+        case .upgradeOffer(let offer, answer: let answer):
+            break
         case .error(let error):
             self.handleError(error)
         }

@@ -7,6 +7,12 @@
 "queue.connected.firstText" = "{operatorName}";
 "queue.connected.secondText" = "{operatorName} has joined the conversation.";
 
+"mediaUpgrade.title" = "{operatorName} has offered you to upgrade";
+"mediaUpgrade.audio.title" = "Audio";
+"mediaUpgrade.audio.info" = "Speak through your device";
+"mediaUpgrade.phone.title" = "Phone";
+"mediaUpgrade.phone.info" = "Enter your number and we'll call you";
+
 "alert.action.yes" = "Yes";
 "alert.action.no" = "No";
 

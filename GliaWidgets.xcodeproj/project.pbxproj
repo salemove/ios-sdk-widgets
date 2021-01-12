@@ -87,6 +87,9 @@
 		1A63B2F6257A469A00508478 /* AlertPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A63B2F5257A469A00508478 /* AlertPresenter.swift */; };
 		1A6EB04F25A707CC0007081A /* MessageSender+StringValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6EB04E25A707CC0007081A /* MessageSender+StringValue.swift */; };
 		1A6EB05725A717CB0007081A /* ChatMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6EB05625A717CB0007081A /* ChatMessage.swift */; };
+		1A6EBB0325ADB82000EE325D /* MediaUpgradeActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6EBB0225ADB82000EE325D /* MediaUpgradeActionView.swift */; };
+		1A6EBB0725ADB84200EE325D /* MediaUpgradeActionStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6EBB0625ADB84200EE325D /* MediaUpgradeActionStyle.swift */; };
+		1A6EBB0C25ADB9BD00EE325D /* MediaUpgradeStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6EBB0B25ADB9BD00EE325D /* MediaUpgradeStyle.swift */; };
 		1A7CA81D2574D6370047CBBE /* QueueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7CA81C2574D6370047CBBE /* QueueView.swift */; };
 		1A7CA8212574D6760047CBBE /* QueueOperatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7CA8202574D6760047CBBE /* QueueOperatorView.swift */; };
 		1A7CA8242574D68E0047CBBE /* QueueStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7CA8232574D68E0047CBBE /* QueueStatusView.swift */; };
@@ -228,6 +231,9 @@
 		1A63B2F5257A469A00508478 /* AlertPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPresenter.swift; sourceTree = "<group>"; };
 		1A6EB04E25A707CC0007081A /* MessageSender+StringValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MessageSender+StringValue.swift"; sourceTree = "<group>"; };
 		1A6EB05625A717CB0007081A /* ChatMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessage.swift; sourceTree = "<group>"; };
+		1A6EBB0225ADB82000EE325D /* MediaUpgradeActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaUpgradeActionView.swift; sourceTree = "<group>"; };
+		1A6EBB0625ADB84200EE325D /* MediaUpgradeActionStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaUpgradeActionStyle.swift; sourceTree = "<group>"; };
+		1A6EBB0B25ADB9BD00EE325D /* MediaUpgradeStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaUpgradeStyle.swift; sourceTree = "<group>"; };
 		1A7CA81C2574D6370047CBBE /* QueueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueView.swift; sourceTree = "<group>"; };
 		1A7CA8202574D6760047CBBE /* QueueOperatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueOperatorView.swift; sourceTree = "<group>"; };
 		1A7CA8232574D68E0047CBBE /* QueueStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueStatusView.swift; sourceTree = "<group>"; };
@@ -740,6 +746,7 @@
 		1A63B2F0257A3F0F00508478 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				1A6EBAFF25ADB7B200EE325D /* MediaUpgrade */,
 				1AA738B025790D4B00E1120F /* Alert */,
 			);
 			path = Common;
@@ -752,6 +759,24 @@
 				1A63B2F5257A469A00508478 /* AlertPresenter.swift */,
 			);
 			path = Alert;
+			sourceTree = "<group>";
+		};
+		1A6EBAFF25ADB7B200EE325D /* MediaUpgrade */ = {
+			isa = PBXGroup;
+			children = (
+				1A6EBB0A25ADB99E00EE325D /* Action */,
+				1A6EBB0B25ADB9BD00EE325D /* MediaUpgradeStyle.swift */,
+			);
+			path = MediaUpgrade;
+			sourceTree = "<group>";
+		};
+		1A6EBB0A25ADB99E00EE325D /* Action */ = {
+			isa = PBXGroup;
+			children = (
+				1A6EBB0225ADB82000EE325D /* MediaUpgradeActionView.swift */,
+				1A6EBB0625ADB84200EE325D /* MediaUpgradeActionStyle.swift */,
+			);
+			path = Action;
 			sourceTree = "<group>";
 		};
 		1A7CA83125751B670047CBBE /* Operator */ = {
@@ -1114,6 +1139,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1A60AFD925669A1500E53F53 /* View.swift in Sources */,
+				1A6EBB0325ADB82000EE325D /* MediaUpgradeActionView.swift in Sources */,
 				1A60AFBC256682C800E53F53 /* SubFlowCoordinator.swift in Sources */,
 				1A6075E7258220E300569B0E /* UserImageStyle.swift in Sources */,
 				1AE15E38257A578B00A642C0 /* AlertMessageStrings.swift in Sources */,
@@ -1131,6 +1157,7 @@
 				1AE15E3B257A5CC900A642C0 /* AlertStrings.swift in Sources */,
 				1A60AF9F25667CA800E53F53 /* FontProvider.swift in Sources */,
 				1A60AFCE2566958900E53F53 /* ViewFactory.swift in Sources */,
+				1A6EBB0C25ADB9BD00EE325D /* MediaUpgradeStyle.swift in Sources */,
 				1A7CA82F25751B5A0047CBBE /* QueueOperatorStyle.swift in Sources */,
 				1A60AF96256675C400E53F53 /* UIColor+Extensions.swift in Sources */,
 				1A7CA81D2574D6370047CBBE /* QueueView.swift in Sources */,
@@ -1165,6 +1192,7 @@
 				1AA738B925790DB400E1120F /* ActionButtonStyle.swift in Sources */,
 				1A5F81482588BBF700A605DA /* ChatSendButtonProperties.swift in Sources */,
 				1A60B0152567FC7000E53F53 /* Button.swift in Sources */,
+				1A6EBB0725ADB84200EE325D /* MediaUpgradeActionStyle.swift in Sources */,
 				1A4AD3CA256E864800468BFB /* ThemeColorStyle.swift in Sources */,
 				1A7CA8272574D6F40047CBBE /* QueueStyle.swift in Sources */,
 				1AC7A7552582594200567FF8 /* Configuration.swift in Sources */,
