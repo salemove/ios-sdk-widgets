@@ -74,6 +74,7 @@ public class Theme {
                                                   info: MediaUpgrade.Audio.info,
                                                   infoFont: font.subtitle,
                                                   infoColor: color.baseDark,
+                                                  borderColor: color.primary,
                                                   backgroundColor: color.background,
                                                   icon: Asset.upgradeAudio.image,
                                                   iconColor: color.primary)
@@ -83,6 +84,7 @@ public class Theme {
                                                   info: MediaUpgrade.Phone.info,
                                                   infoFont: font.subtitle,
                                                   infoColor: color.baseDark,
+                                                  borderColor: color.primary,
                                                   backgroundColor: color.background,
                                                   icon: Asset.upgradePhone.image,
                                                   iconColor: color.primary)
