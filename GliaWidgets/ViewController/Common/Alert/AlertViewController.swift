@@ -13,7 +13,8 @@ class AlertViewController: ViewController {
                           declined: () -> Void)
     }
 
-    private let viewFactory: ViewFactory
+    let viewFactory: ViewFactory
+
     private let kind: Kind
     private var alertView: AlertView?
     private let kAlertInsets = UIEdgeInsets(top: 0, left: 20, bottom: 10, right: 20)
@@ -77,77 +78,23 @@ class AlertViewController: ViewController {
     }
 
     private func makeAlertView() -> AlertView {
-        let alertView = viewFactory.makeAlertView()
-
         switch kind {
         case .message(let strings, let dismissed):
-            alertView.title = strings.title
-            alertView.message = strings.message
-            alertView.showsCloseButton = true
-            alertView.closeTapped = { [weak self] in
-                self?.dismiss(animated: true) {
-                    dismissed?()
-                }
-            }
+            return makeMessageAlertView(with: strings,
+                                        dismissed: dismissed)
         case .confirmation(let strings, let confirmed):
-            alertView.title = strings.title
-            alertView.message = strings.message
-            alertView.showsPoweredBy = true
-            alertView.actionsAxis = .horizontal
-
-            let negativeButton = ActionButton(with: viewFactory.theme.alert.negativeAction)
-            negativeButton.title = strings.negativeTitle
-            negativeButton.tap = { [weak self] in
-                self?.dismiss(animated: true)
-            }
-            let positiveButton = ActionButton(with: viewFactory.theme.alert.positiveAction)
-            positiveButton.title = strings.positiveTitle
-            positiveButton.tap = { [weak self] in
-                self?.dismiss(animated: true) {
-                    confirmed()
-                }
-            }
-            alertView.addActionView(negativeButton)
-            alertView.addActionView(positiveButton)
+            return makeConfirmationAlertView(with: strings,
+                                             confirmed: confirmed)
         case .mediaUpgrade(let strings, mediaTypes: let mediaTypes, accepted: let accepted, declined: let declined):
-            alertView.title = strings.title
-            alertView.showsPoweredBy = true
-            alertView.showsCloseButton = true
-            alertView.actionsAxis = .vertical
-
-            mediaTypes.enumerated().forEach({
-                if let actionView = self.actionView(for: $0.element) {
-                    let index = $0.offset
-                    actionView.tap = { accepted(index) }
-                    alertView.addActionView(actionView)
-                }
-            })
-
-            alertView.closeTapped = { [weak self] in
-                self?.dismiss(animated: true) {
-                    declined()
-                }
-            }
+            return makeMediaUpgradeAlertView(with: strings,
+                                             mediaTypes: mediaTypes,
+                                             accepted: accepted,
+                                             declined: declined)
         }
-
-        return alertView
     }
 
     override func dismiss(animated: Bool, completion: (() -> Void)? = nil) {
         hideAlertView(animated: animated)
         super.dismiss(animated: animated, completion: completion)
-    }
-}
-
-private extension AlertViewController {
-    func actionView(for mediaType: MediaType) -> MediaUpgradeActionView? {
-        switch mediaType {
-        case .audio:
-            return MediaUpgradeActionView(with: viewFactory.theme.alert.audioUpgradeAction)
-        case .phone:
-            return MediaUpgradeActionView(with: viewFactory.theme.alert.phoneUpgradeAction)
-        default:
-            return nil
-        }
     }
 }

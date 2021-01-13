@@ -165,7 +165,8 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     }
 
     private func offerMediaUpgrade(_ offer: MediaUpgradeOffer, answer: @escaping AnswerWithSuccessBlock) {
-        action?(.mediaUpgrade(alertStrings.upgradeMedia,
+        let operatorName = interactor.engagedOperator?.firstName ?? L10n.operator
+        action?(.mediaUpgrade(alertStrings.upgradeMedia.withOperatorName(operatorName),
                               mediaTypes: [offer.type],
                               accepted: { _ in answer(true, nil) },
                               declined: { answer(false, nil) }))
@@ -220,7 +221,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             case .enqueued:
                 break
             case .engaged(let engagedOperator):
-                let name = engagedOperator?.name
+                let name = engagedOperator?.firstName
                 let pictureUrl = engagedOperator?.picture?.url
                 storage.setOperator(name: name ?? "", pictureUrl: pictureUrl)
                 action?(.queueConnected(name: name, imageUrl: pictureUrl))

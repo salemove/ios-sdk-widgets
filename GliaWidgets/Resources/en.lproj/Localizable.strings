@@ -1,4 +1,5 @@
 "poweredBy" = "Powered by";
+"operator" = "Operator";
 
 "queue.waiting.firstText" = "CompanyName";
 "queue.waiting.secondText" = "An MSR will be with you shortly.";
