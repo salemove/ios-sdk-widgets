@@ -62,7 +62,7 @@ extension ViewController {
                            visitorContext: visitorContext,
                            using: theme)
         } catch {
-            alert(message: "Failed to start.\nCheck conf.")
+            alert(message: "Failed to start.\nCheck SDK params in Settings.")
         }
     }
 

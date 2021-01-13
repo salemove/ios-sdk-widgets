@@ -274,12 +274,11 @@ extension ChatViewModel {
     }
 
     private func receivedMessage(_ message: Message) {
+        storage.storeMessage(message)
+        
         switch message.sender {
-        case .visitor:
-            storage.storeMessage(message)
         case .operator:
             guard let item = ChatItem(with: message) else { break }
-            storage.storeMessage(message)
             appendItem(item, to: messagesSection, animated: true)
             action?(.scrollToBottom(animated: true))
             action?(.updateItemsUserImage(animated: true))
