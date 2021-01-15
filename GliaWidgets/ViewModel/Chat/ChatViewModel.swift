@@ -275,7 +275,7 @@ extension ChatViewModel {
 
     private func receivedMessage(_ message: Message) {
         storage.storeMessage(message)
-        
+
         switch message.sender {
         case .operator:
             guard let item = ChatItem(with: message) else { break }
