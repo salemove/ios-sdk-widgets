@@ -133,10 +133,13 @@ class GliaWindow: UIWindow {
         let translation = gesture.translation(in: self)
         guard let gestureView = gesture.view else { return }
 
-        gestureView.center = CGPoint(
-            x: gestureView.center.x + translation.x,
-            y: gestureView.center.y + translation.y
-        )
+        var frame = gestureView.frame
+        frame.origin.x += translation.x
+        frame.origin.y += translation.y
+
+        if UIScreen.main.bounds.contains(frame) {
+            gestureView.frame = frame
+        }
 
         gesture.setTranslation(.zero, in: self)
     }
