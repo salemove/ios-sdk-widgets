@@ -15,7 +15,8 @@ public class Theme {
                                  titleColor: color.baseLight,
                                  leftItemColor: color.baseLight,
                                  rightItemColor: color.baseLight,
-                                 backgroundColor: color.primary)
+                                 backgroundColor: color.primary,
+                                 preferredStatusBarStyle: .lightContent)
 
         let operatorImage = UserImageStyle(placeholderImage: Asset.operatorPlaceholder.image,
                                            placeholderColor: color.baseLight,
