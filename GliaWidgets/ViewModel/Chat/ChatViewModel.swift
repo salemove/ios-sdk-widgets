@@ -204,8 +204,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
 
         alertState = .presenting
 
-        action?(.showAlert(self.alertStrings.operatorsUnavailable,
-                                dismissed: { dismissHandler() }))
+        action?(.showAlert(strings, dismissed: { dismissHandler() }))
     }
 
     override func interactorEvent(_ event: InteractorEvent) {
