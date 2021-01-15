@@ -20,8 +20,15 @@ class GliaWindow: UIWindow {
     private var minimizedView: UIView
     private let minimizedSize: CGSize
     private let kMinimizedViewEdgeInset: CGFloat = 10
+    private let kMinimizedTopInset: CGFloat = 20
     private var tapRecognizer: UITapGestureRecognizer?
     private var panRecognizer: UIPanGestureRecognizer?
+    private var minimizedViewFrame: CGRect {
+        let origin = CGPoint(x: bounds.width - minimizedSize.width - kMinimizedViewEdgeInset,
+                             y: bounds.height - minimizedSize.height - kMinimizedViewEdgeInset - kMinimizedTopInset)
+        return CGRect(origin: origin,
+                      size: minimizedSize)
+    }
 
     init(delegate: GliaWindowDelegate?, minimizedView: UIView, minimizedSize: CGSize) {
         self.delegate = delegate
@@ -60,9 +67,10 @@ class GliaWindow: UIWindow {
                        initialSpringVelocity: 0.7,
                        options: .curveEaseInOut,
                        animations: {
-                        self.rootViewController?.view.alpha = 1.0
-                        self.minimizedView.alpha = 0.0
                         self.frame = self.frame(for: .maximized)
+                        self.rootViewController?.view.alpha = 1.0
+                        self.rootViewController?.setNeedsStatusBarAppearanceUpdate()
+                        self.minimizedView.alpha = 0.0
                        }, completion: { _ in
                         self.minimizedView.removeFromSuperview()
                        })
@@ -73,7 +81,7 @@ class GliaWindow: UIWindow {
 
         minimizedView.alpha = 0.0
         addSubview(minimizedView)
-        minimizedView.autoPinEdgesToSuperviewEdges()
+        minimizedView.frame = minimizedViewFrame
 
         UIView.animate(withDuration: animated ? 0.4 : 0.0,
                        delay: 0.0,
@@ -83,22 +91,19 @@ class GliaWindow: UIWindow {
                        animations: {
                         self.rootViewController?.view.alpha = 0.0
                         self.minimizedView.alpha = 1.0
-                        let frame = self.frame(for: .minimized)
-                        self.frame = frame
+                        self.frame = self.frame(for: .minimized)
                        }, completion: nil)
     }
 
     private func frame(for state: State) -> CGRect {
-        let bounds = UIScreen.main.bounds
+        var bounds = UIScreen.main.bounds
 
         switch state {
         case .maximized:
             return bounds
         case .minimized:
-            let origin = CGPoint(x: bounds.width - minimizedSize.width - kMinimizedViewEdgeInset,
-                                 y: bounds.height - minimizedSize.height - kMinimizedViewEdgeInset)
-            return CGRect(origin: origin,
-                          size: minimizedSize)
+            bounds.origin.y = kMinimizedTopInset
+            return bounds
         }
     }
 
@@ -118,11 +123,11 @@ class GliaWindow: UIWindow {
     private func addGestureRecognizers() {
         let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.tap(_:)))
         self.tapRecognizer = tapRecognizer
-        addGestureRecognizer(tapRecognizer)
+        minimizedView.addGestureRecognizer(tapRecognizer)
 
         let panRecognizer = UIPanGestureRecognizer(target: self, action: #selector(pan(_:)))
         self.panRecognizer = panRecognizer
-        addGestureRecognizer(panRecognizer)
+        minimizedView.addGestureRecognizer(panRecognizer)
     }
 
     private func removeGestureRecognizers() {
@@ -150,10 +155,28 @@ class GliaWindow: UIWindow {
         frame.origin.x += translation.x
         frame.origin.y += translation.y
 
-        if UIScreen.main.bounds.contains(frame) {
+        let insets = UIEdgeInsets(top: -kMinimizedViewEdgeInset,
+                                  left: -kMinimizedViewEdgeInset,
+                                  bottom: -kMinimizedViewEdgeInset - kMinimizedTopInset,
+                                  right: -kMinimizedViewEdgeInset)
+        let insetFrame = frame.inset(by: insets)
+
+        if UIScreen.main.bounds.contains(insetFrame) {
             gestureView.frame = frame
         }
 
         gesture.setTranslation(.zero, in: self)
+    }
+
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        guard state == .minimized else {
+            return super.hitTest(point, with: event)
+        }
+
+        if super.hitTest(point, with: event) == minimizedView {
+            return minimizedView
+        }
+
+        return nil
     }
 }
