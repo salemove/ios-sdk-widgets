@@ -113,7 +113,7 @@ class ChatView: View {
         messageEntryViewBottomConstraint = messageEntryView.autoPinEdge(toSuperviewSafeArea: .bottom)
         messageEntryView.autoPinEdge(toSuperviewSafeArea: .left)
         messageEntryView.autoPinEdge(toSuperviewSafeArea: .right)
-        messageEntryView.autoPinEdge(.top, to: .bottom, of: tableView)
+        messageEntryView.autoPinEdge(.top, to: .bottom, of: tableView, withOffset: 10)
     }
 
     private func content(for item: ChatItem) -> ChatItemCell.Content {

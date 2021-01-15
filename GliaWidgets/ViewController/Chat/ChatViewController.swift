@@ -27,7 +27,7 @@ class ChatViewController: ViewController, AlertPresenter, MediaUpgradePresenter 
         viewModel.event(.viewDidLoad)
     }
 
-    override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
+    override var preferredStatusBarStyle: UIStatusBarStyle { return viewFactory.theme.chat.header.preferredStatusBarStyle }
 
     private func bind(viewModel: ChatViewModel, to view: ChatView) {
         let leftItem = Button(kind: .back, tap: { viewModel.event(.backTapped) })
