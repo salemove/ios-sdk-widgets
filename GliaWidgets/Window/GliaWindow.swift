@@ -1,5 +1,14 @@
 import UIKit
 
+public enum GliaWindowEvent {
+    case minimized
+    case maximized
+}
+
+public protocol GliaWindowDelegate: class {
+    func event(_ event: GliaWindowEvent)
+}
+
 class GliaWindow: UIWindow {
     enum State {
         case maximized
@@ -7,13 +16,15 @@ class GliaWindow: UIWindow {
     }
 
     private var state: State = .maximized
+    private weak var delegate: GliaWindowDelegate?
     private var minimizedView: UIView
     private let minimizedSize: CGSize
     private let kMinimizedViewEdgeInset: CGFloat = 10
     private var tapRecognizer: UITapGestureRecognizer?
     private var panRecognizer: UIPanGestureRecognizer?
 
-    init(minimizedView: UIView, minimizedSize: CGSize) {
+    init(delegate: GliaWindowDelegate?, minimizedView: UIView, minimizedSize: CGSize) {
+        self.delegate = delegate
         self.minimizedView = minimizedView
         self.minimizedSize = minimizedSize
         super.init(frame: .zero)
@@ -33,8 +44,10 @@ class GliaWindow: UIWindow {
             removeShadow()
             removeGestureRecognizers()
             maximize(animated: animated)
+            delegate?.event(.maximized)
         case .minimized:
             minimize(animated: animated)
+            delegate?.event(.minimized)
             addGestureRecognizers()
             addShadow()
         }

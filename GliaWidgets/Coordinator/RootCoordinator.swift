@@ -7,6 +7,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
 
     private let interactor: Interactor
     private let viewFactory: ViewFactory
+    private weak var gliaDelegate: GliaDelegate?
     private let engagementKind: EngagementKind
     private let navigationController = NavigationController()
     private let navigationPresenter: NavigationPresenter
@@ -16,9 +17,11 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
 
     init(interactor: Interactor,
          viewFactory: ViewFactory,
+         gliaDelegate: GliaDelegate?,
          engagementKind: EngagementKind) {
         self.interactor = interactor
         self.viewFactory = viewFactory
+        self.gliaDelegate = gliaDelegate
         self.engagementKind = engagementKind
         self.navigationPresenter = NavigationPresenter(with: navigationController)
 
@@ -37,6 +40,12 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
         }
 
         presentWindow(animated: true)
+        gliaDelegate?.event(.started)
+    }
+
+    private func end() {
+        dismissWindow(animated: true)
+        gliaDelegate?.event(.ended)
     }
 
     private func startChat() {
@@ -52,7 +61,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
             case .finished:
                 self?.popCoordinator()
                 self?.navigationPresenter.pop()
-                self?.dismissWindow(animated: true)
+                self?.end()
             }
         }
 
@@ -63,7 +72,8 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
     }
 
     private func makeWindow(with minimizedView: UIView) -> GliaWindow {
-        let window = GliaWindow(minimizedView: minimizedView,
+        let window = GliaWindow(delegate: self,
+                                minimizedView: minimizedView,
                                 minimizedSize: kMinimizedViewSize)
         window.rootViewController = navigationController
         return window
@@ -101,6 +111,17 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
             self.window?.endEditing(true)
             self.window = nil
             self.minimizedView = nil
+        }
+    }
+}
+
+extension RootCoordinator: GliaWindowDelegate {
+    func event(_ event: GliaWindowEvent) {
+        switch event {
+        case .minimized:
+            gliaDelegate?.event(.minimized)
+        case .maximized:
+            gliaDelegate?.event(.maximized)
         }
     }
 }
