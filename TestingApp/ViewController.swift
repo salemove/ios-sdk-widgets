@@ -54,8 +54,7 @@ extension ViewController {
         let visitorContext = VisitorContext(type: .page,
                                             url: "https://www.salemoveinsurance.com")
 
-        glia = Glia(conf: conf,
-                    delegate: self)
+        glia = Glia(conf: conf)
 
         do {
             try glia.start(.chat,
@@ -73,16 +72,5 @@ extension ViewController {
             alert.dismiss(animated: true, completion: nil)
         })))
         present(alert, animated: true, completion: nil)
-    }
-}
-
-extension ViewController: GliaDelegate {
-    func event(_ event: GliaEvent) {
-        switch event {
-        case .minimized, .ended:
-            navigationController?.setNeedsStatusBarAppearanceUpdate()
-        default:
-            break
-        }
     }
 }
