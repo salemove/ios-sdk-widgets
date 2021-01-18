@@ -1,146 +1,110 @@
 import UIKit
 
+public enum GliaWindowEvent {
+    case minimized
+    case maximized
+}
+
+public protocol GliaWindowDelegate: class {
+    func event(_ event: GliaWindowEvent)
+}
+
 class GliaWindow: UIWindow {
-    enum State {
+    private enum State {
         case maximized
         case minimized
     }
 
     private var state: State = .maximized
-    private var minimizedView: UIView
-    private let minimizedSize: CGSize
-    private let kMinimizedViewEdgeInset: CGFloat = 10
-    private var tapRecognizer: UITapGestureRecognizer?
-    private var panRecognizer: UIPanGestureRecognizer?
+    private weak var delegate: GliaWindowDelegate?
+    private var bubbleWindow: BubbleWindow?
+    private var animationImageView: UIImageView?
 
-    init(minimizedView: UIView, minimizedSize: CGSize) {
-        self.minimizedView = minimizedView
-        self.minimizedSize = minimizedSize
+    init(delegate: GliaWindowDelegate?) {
+        self.delegate = delegate
         super.init(frame: .zero)
-        windowLevel = .alert
-        setState(.maximized, animated: false)
+        setup()
+        layout()
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func setState(_ state: State, animated: Bool) {
+    func maximize(animated: Bool) {
+        if let bubbleWindow = bubbleWindow {
+            animationImageView?.frame = bubbleWindow.frame
+        }
+
+        UIView.animate(withDuration: animated ? 0.4 : 0.0,
+                       delay: 0.0,
+                       usingSpringWithDamping: 0.8,
+                       initialSpringVelocity: 0.7,
+                       options: .curveEaseInOut,
+                       animations: {
+                        self.isHidden = false
+                        self.alpha = 1.0
+                        self.bubbleWindow?.alpha = 0.0
+                        self.animationImageView?.frame = CGRect(origin: .zero, size: self.bounds.size)
+                       }, completion: { _ in
+                        self.bubbleWindow = nil
+                        UIView.animate(withDuration: animated ? 0.1 : 0.0) {
+                            self.animationImageView?.alpha = 0.0
+                        } completion: { _ in
+                            self.animationImageView?.removeFromSuperview()
+                            self.animationImageView = nil
+                        }
+                       })
+        setState(.maximized)
+    }
+
+    func minimize(using bubbleView: BubbleView, animated: Bool) {
+        endEditing(true)
+
+        let bubbleWindow = BubbleWindow(bubbleView: bubbleView)
+        bubbleWindow.tap = { [weak self] in self?.maximize(animated: true) }
+        bubbleWindow.alpha = 0.0
+        bubbleWindow.isHidden = false
+        self.bubbleWindow = bubbleWindow
+
+        let animationImageView = UIImageView()
+        animationImageView.frame = CGRect(origin: .zero, size: bounds.size)
+        animationImageView.image = screenshot
+        self.animationImageView = animationImageView
+        addSubview(animationImageView)
+
+        UIView.animate(withDuration: animated ? 0.4 : 0.0,
+                       delay: 0.0,
+                       usingSpringWithDamping: 0.8,
+                       initialSpringVelocity: 0.7,
+                       options: .curveEaseInOut,
+                       animations: {
+                        bubbleWindow.alpha = 1.0
+                        animationImageView.frame = bubbleWindow.frame
+                        self.alpha = 0.0
+                       }, completion: { _ in
+                        self.isHidden = true
+                       })
+        setState(.minimized)
+    }
+
+    private func setup() {
+        windowLevel = .alert
+        maximize(animated: false)
+    }
+
+    private func layout() {
+        frame = UIScreen.main.bounds
+    }
+
+    private func setState(_ state: State) {
         self.state = state
 
         switch state {
         case .maximized:
-            removeShadow()
-            removeGestureRecognizers()
-            maximize(animated: animated)
+            delegate?.event(.maximized)
         case .minimized:
-            minimize(animated: animated)
-            addGestureRecognizers()
-            addShadow()
+            delegate?.event(.minimized)
         }
-    }
-
-    func maximize(animated: Bool) {
-        UIView.animate(withDuration: animated ? 0.4 : 0.0,
-                       delay: 0.0,
-                       usingSpringWithDamping: 0.8,
-                       initialSpringVelocity: 0.7,
-                       options: .curveEaseInOut,
-                       animations: {
-                        self.rootViewController?.view.alpha = 1.0
-                        self.minimizedView.alpha = 0.0
-                        self.frame = self.frame(for: .maximized)
-                       }, completion: { _ in
-                        self.minimizedView.removeFromSuperview()
-                       })
-    }
-
-    func minimize(animated: Bool) {
-        endEditing(true)
-
-        minimizedView.alpha = 0.0
-        addSubview(minimizedView)
-        minimizedView.autoPinEdgesToSuperviewEdges()
-
-        UIView.animate(withDuration: animated ? 0.4 : 0.0,
-                       delay: 0.0,
-                       usingSpringWithDamping: 0.8,
-                       initialSpringVelocity: 0.7,
-                       options: .curveEaseInOut,
-                       animations: {
-                        self.rootViewController?.view.alpha = 0.0
-                        self.minimizedView.alpha = 1.0
-                        let frame = self.frame(for: .minimized)
-                        self.frame = frame
-                       }, completion: nil)
-    }
-
-    private func frame(for state: State) -> CGRect {
-        let bounds = UIScreen.main.bounds
-
-        switch state {
-        case .maximized:
-            return bounds
-        case .minimized:
-            let origin = CGPoint(x: bounds.width - minimizedSize.width - kMinimizedViewEdgeInset,
-                                 y: bounds.height - minimizedSize.height - kMinimizedViewEdgeInset)
-            return CGRect(origin: origin,
-                          size: minimizedSize)
-        }
-    }
-
-    private func addShadow() {
-        layer.shadowColor = UIColor.black.cgColor
-        layer.shadowOffset = CGSize(width: 2.0, height: 5.0)
-        layer.shadowRadius = 5.0
-        layer.shadowOpacity = 0.4
-    }
-
-    private func removeShadow() {
-        layer.shadowOffset = .zero
-        layer.shadowRadius = 0.0
-        layer.shadowOpacity = 0.0
-    }
-
-    private func addGestureRecognizers() {
-        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.tap(_:)))
-        self.tapRecognizer = tapRecognizer
-        addGestureRecognizer(tapRecognizer)
-
-        let panRecognizer = UIPanGestureRecognizer(target: self, action: #selector(pan(_:)))
-        self.panRecognizer = panRecognizer
-        addGestureRecognizer(panRecognizer)
-    }
-
-    private func removeGestureRecognizers() {
-        if let tapRecognizer = tapRecognizer {
-            removeGestureRecognizer(tapRecognizer)
-        }
-
-        if let panRecognizer = panRecognizer {
-            removeGestureRecognizer(panRecognizer)
-        }
-
-        tapRecognizer = nil
-        panRecognizer = nil
-    }
-
-    @objc private func tap(_ sender: UITapGestureRecognizer) {
-        setState(.maximized, animated: true)
-    }
-
-    @objc func pan(_ gesture: UIPanGestureRecognizer) {
-        let translation = gesture.translation(in: self)
-        guard let gestureView = gesture.view else { return }
-
-        var frame = gestureView.frame
-        frame.origin.x += translation.x
-        frame.origin.y += translation.y
-
-        if UIScreen.main.bounds.contains(frame) {
-            gestureView.frame = frame
-        }
-
-        gesture.setTranslation(.zero, in: self)
     }
 }

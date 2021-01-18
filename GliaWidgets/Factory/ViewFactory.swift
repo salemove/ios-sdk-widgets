@@ -15,7 +15,7 @@ class ViewFactory {
         return AlertView(with: theme.alert)
     }
 
-    func makeMinimizedOperatorImageView() -> UserImageView {
-        return UserImageView(with: theme.minimizedOperator)
+    func makeBubbleView() -> BubbleView {
+        return BubbleView(with: theme.minimizedBubble)
     }
 }

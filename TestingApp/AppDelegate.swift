@@ -13,9 +13,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window = window
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
-
         salemoveDelegate.application(application, didFinishLaunchingWithOptions: launchOptions)
-
         return true
     }
 

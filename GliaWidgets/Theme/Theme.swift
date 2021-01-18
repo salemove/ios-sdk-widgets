@@ -15,8 +15,7 @@ public class Theme {
                                  titleColor: color.baseLight,
                                  leftItemColor: color.baseLight,
                                  rightItemColor: color.baseLight,
-                                 backgroundColor: color.primary,
-                                 preferredStatusBarStyle: .lightContent)
+                                 backgroundColor: color.primary)
 
         let operatorImage = UserImageStyle(placeholderImage: Asset.operatorPlaceholder.image,
                                            placeholderColor: color.baseLight,
@@ -74,7 +73,8 @@ public class Theme {
                          operatorMessage: operatorMessage,
                          backgroundColor: color.background,
                          endButton: endButton,
-                         messageEntry: messageEntry)
+                         messageEntry: messageEntry,
+                         preferredStatusBarStyle: .lightContent)
     }()
 
     public lazy var alert: AlertStyle = {
@@ -147,10 +147,11 @@ public class Theme {
                             apiError: api)
     }()
 
-    public lazy var minimizedOperator: UserImageStyle = {
-        return UserImageStyle(placeholderImage: Asset.operatorPlaceholder.image,
-                              placeholderColor: color.baseLight,
-                              backgroundColor: color.primary)
+    public lazy var minimizedBubble: BubbleStyle = {
+        let userImage = UserImageStyle(placeholderImage: Asset.operatorPlaceholder.image,
+                                       placeholderColor: color.baseLight,
+                                       backgroundColor: color.primary)
+        return BubbleStyle(userImage: userImage)
     }()
 
     public init(colorStyle: ThemeColorStyle = .default,
