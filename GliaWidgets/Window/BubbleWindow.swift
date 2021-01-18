@@ -6,6 +6,13 @@ class BubbleWindow: UIWindow {
     private let bubbleView: BubbleView
     private let kSize = CGSize(width: 60, height: 60)
     private let kEdgeInset: CGFloat = 10
+    private var initialFrame: CGRect {
+        let screenBounds = UIScreen.main.bounds
+        let safeAreaInsets = UIApplication.shared.windows.first?.safeAreaInsets ?? .zero
+        let origin = CGPoint(x: screenBounds.width - kSize.width - safeAreaInsets.right - kEdgeInset,
+                             y: screenBounds.height - kSize.height - safeAreaInsets.bottom - kEdgeInset)
+        return CGRect(origin: origin, size: kSize)
+    }
 
     init(bubbleView: BubbleView) {
         self.bubbleView = bubbleView
@@ -28,11 +35,7 @@ class BubbleWindow: UIWindow {
     }
 
     private func layout() {
-        let screenBounds = UIScreen.main.bounds
-        let safeAreaInsets = UIApplication.shared.windows.first?.safeAreaInsets ?? .zero
-        let origin = CGPoint(x: screenBounds.width - kSize.width - safeAreaInsets.right - kEdgeInset,
-                             y: screenBounds.height - kSize.height - safeAreaInsets.bottom - kEdgeInset)
-        frame = CGRect(origin: origin, size: kSize)
+        frame = initialFrame
 
         addSubview(bubbleView)
         bubbleView.frame = CGRect(origin: .zero, size: frame.size)

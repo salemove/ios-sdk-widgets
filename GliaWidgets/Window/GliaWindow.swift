@@ -18,6 +18,7 @@ class GliaWindow: UIWindow {
     private var state: State = .maximized
     private weak var delegate: GliaWindowDelegate?
     private var bubbleWindow: BubbleWindow?
+    private var animationImageView: UIImageView?
 
     init(delegate: GliaWindowDelegate?) {
         self.delegate = delegate
@@ -31,6 +32,10 @@ class GliaWindow: UIWindow {
     }
 
     func maximize(animated: Bool) {
+        if let bubbleWindow = bubbleWindow {
+            animationImageView?.frame = bubbleWindow.frame
+        }
+
         UIView.animate(withDuration: animated ? 0.4 : 0.0,
                        delay: 0.0,
                        usingSpringWithDamping: 0.8,
@@ -40,8 +45,11 @@ class GliaWindow: UIWindow {
                         self.isHidden = false
                         self.alpha = 1.0
                         self.bubbleWindow?.alpha = 0.0
+                        self.animationImageView?.frame = CGRect(origin: .zero, size: self.bounds.size)
                        }, completion: { _ in
                         self.bubbleWindow = nil
+                        self.animationImageView?.removeFromSuperview()
+                        self.animationImageView = nil
                        })
         setState(.maximized)
     }
@@ -55,6 +63,12 @@ class GliaWindow: UIWindow {
         bubbleWindow.isHidden = false
         self.bubbleWindow = bubbleWindow
 
+        let animationImageView = UIImageView()
+        animationImageView.frame = CGRect(origin: .zero, size: bounds.size)
+        animationImageView.image = screenshot
+        self.animationImageView = animationImageView
+        addSubview(animationImageView)
+
         UIView.animate(withDuration: animated ? 0.4 : 0.0,
                        delay: 0.0,
                        usingSpringWithDamping: 0.8,
@@ -62,6 +76,7 @@ class GliaWindow: UIWindow {
                        options: .curveEaseInOut,
                        animations: {
                         bubbleWindow.alpha = 1.0
+                        animationImageView.frame = bubbleWindow.frame
                         self.alpha = 0.0
                        }, completion: { _ in
                         self.isHidden = true

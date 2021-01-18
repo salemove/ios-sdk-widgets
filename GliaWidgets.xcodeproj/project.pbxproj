@@ -101,6 +101,7 @@
 		1ABD6C5525B574FF00D56EFA /* BubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD6C5425B574FF00D56EFA /* BubbleView.swift */; };
 		1ABD6C5925B5758000D56EFA /* BubbleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD6C5825B5758000D56EFA /* BubbleStyle.swift */; };
 		1ABD6C5D25B59D1C00D56EFA /* BubbleWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD6C5C25B59D1C00D56EFA /* BubbleWindow.swift */; };
+		1ABD6C6125B5ABA100D56EFA /* UIView+Screenshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD6C6025B5ABA100D56EFA /* UIView+Screenshot.swift */; };
 		1AC7A7482582237500567FF8 /* GliaWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC7A7472582237500567FF8 /* GliaWindow.swift */; };
 		1AC7A74F2582571100567FF8 /* Interactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC7A74E2582571100567FF8 /* Interactor.swift */; };
 		1AC7A7552582594200567FF8 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC7A7542582594200567FF8 /* Configuration.swift */; };
@@ -245,6 +246,7 @@
 		1ABD6C5425B574FF00D56EFA /* BubbleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleView.swift; sourceTree = "<group>"; };
 		1ABD6C5825B5758000D56EFA /* BubbleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleStyle.swift; sourceTree = "<group>"; };
 		1ABD6C5C25B59D1C00D56EFA /* BubbleWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleWindow.swift; sourceTree = "<group>"; };
+		1ABD6C6025B5ABA100D56EFA /* UIView+Screenshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Screenshot.swift"; sourceTree = "<group>"; };
 		1AC7A7472582237500567FF8 /* GliaWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GliaWindow.swift; sourceTree = "<group>"; };
 		1AC7A74E2582571100567FF8 /* Interactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interactor.swift; sourceTree = "<group>"; };
 		1AC7A7542582594200567FF8 /* Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
@@ -709,6 +711,7 @@
 			children = (
 				1A60B0262568070800E53F53 /* UIStackView+Extensions.swift */,
 				1A4AD3BD256D37FD00468BFB /* UITableView+Extensions.swift */,
+				1ABD6C6025B5ABA100D56EFA /* UIView+Screenshot.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1202,6 +1205,7 @@
 				1A4AD3AF256D283700468BFB /* ChatMessageView.swift in Sources */,
 				1A60AFD52566992A00E53F53 /* ChatViewModel.swift in Sources */,
 				1A60AFE025669A6100E53F53 /* ChatViewController.swift in Sources */,
+				1ABD6C6125B5ABA100D56EFA /* UIView+Screenshot.swift in Sources */,
 				1A60AF90256674F000E53F53 /* Font.swift in Sources */,
 				1AA738BC25790DBE00E1120F /* AlertStyle.swift in Sources */,
 				1A60B04A256C0E0100E53F53 /* ChatItemCell.swift in Sources */,
