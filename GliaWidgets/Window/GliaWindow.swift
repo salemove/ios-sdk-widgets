@@ -48,8 +48,12 @@ class GliaWindow: UIWindow {
                         self.animationImageView?.frame = CGRect(origin: .zero, size: self.bounds.size)
                        }, completion: { _ in
                         self.bubbleWindow = nil
-                        self.animationImageView?.removeFromSuperview()
-                        self.animationImageView = nil
+                        UIView.animate(withDuration: animated ? 0.1 : 0.0) {
+                            self.animationImageView?.alpha = 0.0
+                        } completion: { _ in
+                            self.animationImageView?.removeFromSuperview()
+                            self.animationImageView = nil
+                        }
                        })
         setState(.maximized)
     }

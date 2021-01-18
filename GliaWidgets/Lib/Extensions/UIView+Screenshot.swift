@@ -7,7 +7,7 @@ extension UIView {
         UIGraphicsBeginImageContextWithOptions(
             CGSize(width: bounds.width, height: bounds.height),
             false,
-            2
+            0
         )
 
         if let context = UIGraphicsGetCurrentContext() {
