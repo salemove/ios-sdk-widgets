@@ -98,6 +98,8 @@
 		1AA738B625790D9900E1120F /* ActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA738B525790D9900E1120F /* ActionButton.swift */; };
 		1AA738B925790DB400E1120F /* ActionButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA738B825790DB400E1120F /* ActionButtonStyle.swift */; };
 		1AA738BC25790DBE00E1120F /* AlertStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA738BB25790DBE00E1120F /* AlertStyle.swift */; };
+		1ABD6C5525B574FF00D56EFA /* BubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD6C5425B574FF00D56EFA /* BubbleView.swift */; };
+		1ABD6C5925B5758000D56EFA /* BubbleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD6C5825B5758000D56EFA /* BubbleStyle.swift */; };
 		1AC7A7482582237500567FF8 /* GliaWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC7A7472582237500567FF8 /* GliaWindow.swift */; };
 		1AC7A74F2582571100567FF8 /* Interactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC7A74E2582571100567FF8 /* Interactor.swift */; };
 		1AC7A7552582594200567FF8 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC7A7542582594200567FF8 /* Configuration.swift */; };
@@ -239,6 +241,8 @@
 		1AA738B525790D9900E1120F /* ActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButton.swift; sourceTree = "<group>"; };
 		1AA738B825790DB400E1120F /* ActionButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButtonStyle.swift; sourceTree = "<group>"; };
 		1AA738BB25790DBE00E1120F /* AlertStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertStyle.swift; sourceTree = "<group>"; };
+		1ABD6C5425B574FF00D56EFA /* BubbleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleView.swift; sourceTree = "<group>"; };
+		1ABD6C5825B5758000D56EFA /* BubbleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleStyle.swift; sourceTree = "<group>"; };
 		1AC7A7472582237500567FF8 /* GliaWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GliaWindow.swift; sourceTree = "<group>"; };
 		1AC7A74E2582571100567FF8 /* Interactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interactor.swift; sourceTree = "<group>"; };
 		1AC7A7542582594200567FF8 /* Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
@@ -479,6 +483,7 @@
 		1A60AF6A25656C1E00E53F53 /* Component */ = {
 			isa = PBXGroup;
 			children = (
+				1ABD6C5325B574EF00D56EFA /* Bubble */,
 				1A6075DE2582207E00569B0E /* ImageView */,
 				1AA7389A2578DB6800E1120F /* Queue */,
 				1A60B0022567F1EB00E53F53 /* Header */,
@@ -799,6 +804,15 @@
 				1AA738BB25790DBE00E1120F /* AlertStyle.swift */,
 			);
 			path = Alert;
+			sourceTree = "<group>";
+		};
+		1ABD6C5325B574EF00D56EFA /* Bubble */ = {
+			isa = PBXGroup;
+			children = (
+				1ABD6C5425B574FF00D56EFA /* BubbleView.swift */,
+				1ABD6C5825B5758000D56EFA /* BubbleStyle.swift */,
+			);
+			path = Bubble;
 			sourceTree = "<group>";
 		};
 		1AC7A7462582236300567FF8 /* Window */ = {
@@ -1134,6 +1148,7 @@
 				1A7CA82F25751B5A0047CBBE /* QueueOperatorStyle.swift in Sources */,
 				1A60AF96256675C400E53F53 /* UIColor+Extensions.swift in Sources */,
 				1A7CA81D2574D6370047CBBE /* QueueView.swift in Sources */,
+				1ABD6C5525B574FF00D56EFA /* BubbleView.swift in Sources */,
 				1A60AFE425669B0400E53F53 /* ChatCoordinator.swift in Sources */,
 				1AA738B625790D9900E1120F /* ActionButton.swift in Sources */,
 				1A5F813C2588B72100A605DA /* ChatMessageEntryView.swift in Sources */,
@@ -1165,6 +1180,7 @@
 				1AA738B925790DB400E1120F /* ActionButtonStyle.swift in Sources */,
 				1A5F81482588BBF700A605DA /* ChatSendButtonProperties.swift in Sources */,
 				1A60B0152567FC7000E53F53 /* Button.swift in Sources */,
+				1ABD6C5925B5758000D56EFA /* BubbleStyle.swift in Sources */,
 				1A4AD3CA256E864800468BFB /* ThemeColorStyle.swift in Sources */,
 				1A7CA8272574D6F40047CBBE /* QueueStyle.swift in Sources */,
 				1AC7A7552582594200567FF8 /* Configuration.swift in Sources */,

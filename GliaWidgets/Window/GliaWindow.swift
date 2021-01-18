@@ -10,54 +10,33 @@ public protocol GliaWindowDelegate: class {
 }
 
 class GliaWindow: UIWindow {
-    enum State {
+    private enum State {
         case maximized
         case minimized
     }
 
     private var state: State = .maximized
     private weak var delegate: GliaWindowDelegate?
-    private var minimizedView: UIView
-    private let minimizedSize: CGSize
-    private let kMinimizedViewEdgeInset: CGFloat = 10
+    private var bubbleView: BubbleView?
+    private let kBubbleViewSize = CGSize(width: 60, height: 60)
+    private let kBubbleViewEdgeInset: CGFloat = 10
     private let kMinimizedTopInset: CGFloat = 20
-    private var tapRecognizer: UITapGestureRecognizer?
     private var panRecognizer: UIPanGestureRecognizer?
-    private var minimizedViewFrame: CGRect {
-        let origin = CGPoint(x: bounds.width - minimizedSize.width - kMinimizedViewEdgeInset,
-                             y: bounds.height - minimizedSize.height - kMinimizedViewEdgeInset - kMinimizedTopInset)
+    private var initialBubbleViewFrame: CGRect {
+        let origin = CGPoint(x: bounds.width - kBubbleViewSize.width - kBubbleViewEdgeInset,
+                             y: bounds.height - kBubbleViewSize.height - kBubbleViewEdgeInset - kMinimizedTopInset)
         return CGRect(origin: origin,
-                      size: minimizedSize)
+                      size: kBubbleViewSize)
     }
 
-    init(delegate: GliaWindowDelegate?, minimizedView: UIView, minimizedSize: CGSize) {
+    init(delegate: GliaWindowDelegate?) {
         self.delegate = delegate
-        self.minimizedView = minimizedView
-        self.minimizedSize = minimizedSize
         super.init(frame: .zero)
-        windowLevel = .alert
-        setState(.maximized, animated: false)
+        setup()
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-
-    func setState(_ state: State, animated: Bool) {
-        self.state = state
-
-        switch state {
-        case .maximized:
-            removeShadow()
-            removeGestureRecognizers()
-            maximize(animated: animated)
-            delegate?.event(.maximized)
-        case .minimized:
-            minimize(animated: animated)
-            delegate?.event(.minimized)
-            addGestureRecognizers()
-            addShadow()
-        }
     }
 
     func maximize(animated: Bool) {
@@ -70,18 +49,22 @@ class GliaWindow: UIWindow {
                         self.frame = self.frame(for: .maximized)
                         self.rootViewController?.view.alpha = 1.0
                         self.rootViewController?.setNeedsStatusBarAppearanceUpdate()
-                        self.minimizedView.alpha = 0.0
+                        self.bubbleView?.alpha = 0.0
                        }, completion: { _ in
-                        self.minimizedView.removeFromSuperview()
+                        self.bubbleView?.removeFromSuperview()
+                        self.bubbleView = nil
                        })
+        setState(.maximized)
     }
 
-    func minimize(animated: Bool) {
+    func minimize(using bubbleView: BubbleView, animated: Bool) {
         endEditing(true)
 
-        minimizedView.alpha = 0.0
-        addSubview(minimizedView)
-        minimizedView.frame = minimizedViewFrame
+        bubbleView.alpha = 0.0
+        bubbleView.frame = initialBubbleViewFrame
+        bubbleView.tap = { [weak self] in self?.maximize(animated: true) }
+        self.bubbleView = bubbleView
+        addSubview(bubbleView)
 
         UIView.animate(withDuration: animated ? 0.4 : 0.0,
                        delay: 0.0,
@@ -89,10 +72,16 @@ class GliaWindow: UIWindow {
                        initialSpringVelocity: 0.7,
                        options: .curveEaseInOut,
                        animations: {
+                        bubbleView.alpha = 1.0
                         self.rootViewController?.view.alpha = 0.0
-                        self.minimizedView.alpha = 1.0
                         self.frame = self.frame(for: .minimized)
                        }, completion: nil)
+        setState(.minimized)
+    }
+
+    private func setup() {
+        windowLevel = .alert
+        maximize(animated: false)
     }
 
     private func frame(for state: State) -> CGRect {
@@ -107,44 +96,31 @@ class GliaWindow: UIWindow {
         }
     }
 
-    private func addShadow() {
-        layer.shadowColor = UIColor.black.cgColor
-        layer.shadowOffset = CGSize(width: 2.0, height: 5.0)
-        layer.shadowRadius = 5.0
-        layer.shadowOpacity = 0.4
-    }
+    private func setState(_ state: State) {
+        self.state = state
 
-    private func removeShadow() {
-        layer.shadowOffset = .zero
-        layer.shadowRadius = 0.0
-        layer.shadowOpacity = 0.0
+        switch state {
+        case .maximized:
+            removeGestureRecognizers()
+            delegate?.event(.maximized)
+        case .minimized:
+            delegate?.event(.minimized)
+            addGestureRecognizers()
+        }
     }
 
     private func addGestureRecognizers() {
-        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.tap(_:)))
-        self.tapRecognizer = tapRecognizer
-        minimizedView.addGestureRecognizer(tapRecognizer)
-
         let panRecognizer = UIPanGestureRecognizer(target: self, action: #selector(pan(_:)))
         self.panRecognizer = panRecognizer
-        minimizedView.addGestureRecognizer(panRecognizer)
+        bubbleView?.addGestureRecognizer(panRecognizer)
     }
 
     private func removeGestureRecognizers() {
-        if let tapRecognizer = tapRecognizer {
-            removeGestureRecognizer(tapRecognizer)
-        }
-
         if let panRecognizer = panRecognizer {
             removeGestureRecognizer(panRecognizer)
         }
 
-        tapRecognizer = nil
         panRecognizer = nil
-    }
-
-    @objc private func tap(_ sender: UITapGestureRecognizer) {
-        setState(.maximized, animated: true)
     }
 
     @objc func pan(_ gesture: UIPanGestureRecognizer) {
@@ -155,10 +131,10 @@ class GliaWindow: UIWindow {
         frame.origin.x += translation.x
         frame.origin.y += translation.y
 
-        let insets = UIEdgeInsets(top: -kMinimizedViewEdgeInset,
-                                  left: -kMinimizedViewEdgeInset,
-                                  bottom: -kMinimizedViewEdgeInset - kMinimizedTopInset,
-                                  right: -kMinimizedViewEdgeInset)
+        let insets = UIEdgeInsets(top: -kBubbleViewEdgeInset,
+                                  left: -kBubbleViewEdgeInset,
+                                  bottom: -kBubbleViewEdgeInset - kMinimizedTopInset,
+                                  right: -kBubbleViewEdgeInset)
         let insetFrame = frame.inset(by: insets)
 
         if UIScreen.main.bounds.contains(insetFrame) {
@@ -169,14 +145,15 @@ class GliaWindow: UIWindow {
     }
 
     override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-        guard state == .minimized else {
+        switch state {
+        case .maximized:
             return super.hitTest(point, with: event)
+        case .minimized:
+            if super.hitTest(point, with: event) == bubbleView {
+                return bubbleView
+            } else {
+                return nil
+            }
         }
-
-        if super.hitTest(point, with: event) == minimizedView {
-            return minimizedView
-        }
-
-        return nil
     }
 }

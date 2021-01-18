@@ -123,10 +123,11 @@ public class Theme {
                             apiError: api)
     }()
 
-    public lazy var minimizedOperator: UserImageStyle = {
-        return UserImageStyle(placeholderImage: Asset.operatorPlaceholder.image,
-                              placeholderColor: color.baseLight,
-                              backgroundColor: color.primary)
+    public lazy var minimizedBubble: BubbleStyle = {
+        let userImage = UserImageStyle(placeholderImage: Asset.operatorPlaceholder.image,
+                                       placeholderColor: color.baseLight,
+                                       backgroundColor: color.primary)
+        return BubbleStyle(userImage: userImage)
     }()
 
     public init(colorStyle: ThemeColorStyle = .default,

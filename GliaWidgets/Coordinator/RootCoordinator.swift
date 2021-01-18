@@ -12,8 +12,8 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
     private let navigationController = NavigationController()
     private let navigationPresenter: NavigationPresenter
     private var window: GliaWindow?
-    private var minimizedView: UserImageView?
-    private let kMinimizedViewSize = CGSize(width: 60.0, height: 60.0)
+    private var bubbleView: BubbleView?
+    private let kBubbleViewSize: CGFloat = 60.0
 
     init(interactor: Interactor,
          viewFactory: ViewFactory,
@@ -55,9 +55,9 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
         coordinator.delegate = { [weak self] event in
             switch event {
             case .back:
-                self?.window?.setState(.minimized, animated: true)
+                self?.minimizeWindow(animated: true)
             case .operatorImage(url: let url):
-                self?.minimizedView?.setImage(fromUrl: url, animated: true)
+                self?.bubbleView?.kind = .userImage(url: url)
             case .finished:
                 self?.popCoordinator()
                 self?.navigationPresenter.pop()
@@ -71,24 +71,14 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
         navigationPresenter.push(viewController, animated: false)
     }
 
-    private func makeWindow(with minimizedView: UIView) -> GliaWindow {
-        let window = GliaWindow(delegate: self,
-                                minimizedView: minimizedView,
-                                minimizedSize: kMinimizedViewSize)
-        window.rootViewController = navigationController
-        return window
-    }
-
     private func presentWindow(animated: Bool) {
         guard window == nil else { return }
 
-        let minimizedView = viewFactory.makeMinimizedOperatorImageView()
-        self.minimizedView = minimizedView
-
-        let window = makeWindow(with: minimizedView)
-        self.window = window
+        let window = GliaWindow(delegate: self)
+        window.rootViewController = navigationController
         window.isHidden = false
         window.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
+        self.window = window
 
         UIView.animate(withDuration: animated ? 0.5 : 0.0,
                        delay: 0.0,
@@ -98,6 +88,12 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
                        animations: {
                         window.transform = .identity
                        }, completion: nil)
+    }
+
+    private func minimizeWindow(animated: Bool) {
+        let bubbleView = viewFactory.makeBubbleView()
+        self.bubbleView = bubbleView
+        window?.minimize(using: bubbleView, animated: true)
     }
 
     private func dismissWindow(animated: Bool) {
@@ -110,7 +106,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
         } completion: { _ in
             self.window?.endEditing(true)
             self.window = nil
-            self.minimizedView = nil
+            self.bubbleView = nil
         }
     }
 }
