@@ -175,7 +175,6 @@ extension ChatView {
                            options: properties.animationOptions,
                            animations: { [weak self] in
                 self?.messageEntryViewBottomConstraint.constant = 0
-                self?.tableView.contentOffset = .zero
                 self?.layoutIfNeeded()
             }, completion: { _ -> Void in })
             messageEntryView.setSendButtonVisible(!messageEntryView.message.isEmpty,
