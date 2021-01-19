@@ -13,8 +13,8 @@
 "alert.leaveQueue.title" = "Are you sure you want to leave?";
 "alert.leaveQueue.message" = "You will lose your place in the queue.";
 
-"alert.endEngagement.title" = "Are you sure you want to leave?";
-"alert.endEngagement.message" = "";
+"alert.endEngagement.title" = "End Engagement?";
+"alert.endEngagement.message" = "Are you sure you want to end engagement?";
 
 "alert.operatorsUnavailable.title" = "We’re sorry";
 "alert.operatorsUnavailable.message" = "Operators are no longer available.\nPlease try again later.";

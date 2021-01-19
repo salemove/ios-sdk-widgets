@@ -77,6 +77,10 @@ class ChatView: View {
         updateTableView(animated: animated)
     }
 
+    func refreshSection(_ section: Int) {
+        tableView.reloadSections([section], with: .fade)
+    }
+
     func refreshAll() {
         tableView.reloadData()
     }
@@ -109,7 +113,7 @@ class ChatView: View {
         messageEntryViewBottomConstraint = messageEntryView.autoPinEdge(toSuperviewSafeArea: .bottom)
         messageEntryView.autoPinEdge(toSuperviewSafeArea: .left)
         messageEntryView.autoPinEdge(toSuperviewSafeArea: .right)
-        messageEntryView.autoPinEdge(.top, to: .bottom, of: tableView)
+        messageEntryView.autoPinEdge(.top, to: .bottom, of: tableView, withOffset: 10)
     }
 
     private func content(for item: ChatItem) -> ChatItemCell.Content {
@@ -171,6 +175,7 @@ extension ChatView {
                            options: properties.animationOptions,
                            animations: { [weak self] in
                 self?.messageEntryViewBottomConstraint.constant = 0
+                self?.tableView.contentOffset = .zero
                 self?.layoutIfNeeded()
             }, completion: { _ -> Void in })
             messageEntryView.setSendButtonVisible(!messageEntryView.message.isEmpty,

@@ -27,7 +27,7 @@ class ChatViewController: ViewController, AlertPresenter {
         viewModel.event(.viewDidLoad)
     }
 
-    override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
+    override var preferredStatusBarStyle: UIStatusBarStyle { return viewFactory.theme.chat.preferredStatusBarStyle }
 
     private func bind(viewModel: ChatViewModel, to view: ChatView) {
         let leftItem = Button(kind: .back, tap: { viewModel.event(.backTapped) })
@@ -59,6 +59,8 @@ class ChatViewController: ViewController, AlertPresenter {
                 view.appendRows(count, to: section, animated: animated)
             case .refreshRow(let row, in: let section, animated: let animated):
                 view.refreshRow(row, in: section, animated: animated)
+            case .refreshSection(let section):
+                view.refreshSection(section)
             case .refreshAll:
                 view.refreshAll()
             case .scrollToBottom(animated: let animated):

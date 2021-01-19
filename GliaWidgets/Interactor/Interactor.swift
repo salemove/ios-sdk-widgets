@@ -17,6 +17,7 @@ enum InteractorEvent {
 class Interactor {
     typealias EventHandler = (InteractorEvent) -> Void
 
+    let queueID: String
     var engagedOperator: Operator? {
         switch state {
         case .engaged(let engagedOperator):
@@ -26,7 +27,6 @@ class Interactor {
         }
     }
 
-    private let queueID: String
     private let visitorContext: VisitorContext
     private var observers = [() -> (AnyObject?, EventHandler)]()
     private(set) var state: InteractorState = .inactive {
