@@ -17,6 +17,10 @@ public enum L10n {
 
   public enum Alert {
     public enum Action {
+      /// Accept
+      public static let accept = L10n.tr("Localizable", "alert.action.accept")
+      /// Decline
+      public static let decline = L10n.tr("Localizable", "alert.action.decline")
       /// No
       public static let no = L10n.tr("Localizable", "alert.action.no")
       /// Yes
@@ -27,6 +31,10 @@ public enum L10n {
       public static let message = L10n.tr("Localizable", "alert.apiError.message")
       /// We're sorry, there has been an error.
       public static let title = L10n.tr("Localizable", "alert.apiError.title")
+    }
+    public enum AudioUpgrade {
+      /// {operatorName} has offered you to upgrade to audio
+      public static let title = L10n.tr("Localizable", "alert.audioUpgrade.title")
     }
     public enum EndEngagement {
       /// Are you sure you want to end engagement?

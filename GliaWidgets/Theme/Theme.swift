@@ -110,6 +110,7 @@ public class Theme {
                                                   iconColor: color.primary)
         return AlertStyle(titleFont: font.header2,
                           titleColor: color.baseDark,
+                          titleImageColor: color.primary,
                           messageFont: font.bodyText,
                           messageColor: color.baseDark,
                           backgroundColor: color.background,

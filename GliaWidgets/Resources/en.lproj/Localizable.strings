@@ -10,6 +10,8 @@
 
 "alert.action.yes" = "Yes";
 "alert.action.no" = "No";
+"alert.action.decline" = "Decline";
+"alert.action.accept" = "Accept";
 
 "alert.leaveQueue.title" = "Are you sure you want to leave?";
 "alert.leaveQueue.message" = "You will lose your place in the queue.";
@@ -31,6 +33,8 @@
 "alert.mediaUpgrade.audio.info" = "Speak through your device";
 "alert.mediaUpgrade.phone.title" = "Phone";
 "alert.mediaUpgrade.phone.info" = "Enter your number and we'll call you";
+
+"alert.audioUpgrade.title" = "{operatorName} has offered you to upgrade to audio";
 
 "chat.title" = "Chat";
 "chat.endButton.title" = "End";
