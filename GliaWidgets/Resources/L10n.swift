@@ -27,9 +27,9 @@ public enum L10n {
       public static let title = L10n.tr("Localizable", "alert.apiError.title")
     }
     public enum EndEngagement {
-      /// 
+      /// Are you sure you want to end engagement?
       public static let message = L10n.tr("Localizable", "alert.endEngagement.message")
-      /// Are you sure you want to leave?
+      /// End Engagement?
       public static let title = L10n.tr("Localizable", "alert.endEngagement.title")
     }
     public enum LeaveQueue {

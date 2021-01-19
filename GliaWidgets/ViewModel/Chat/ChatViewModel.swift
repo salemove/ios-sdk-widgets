@@ -19,6 +19,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case setMessageEntryEnabled(Bool)
         case appendRows(Int, to: Int, animated: Bool)
         case refreshRow(Int, in: Int, animated: Bool)
+        case refreshSection(Int)
         case refreshAll
         case scrollToBottom(animated: Bool)
         case updateItemsUserImage(animated: Bool)
@@ -37,6 +38,11 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     var action: ((Action) -> Void)?
     var delegate: ((DelegateEvent) -> Void)?
 
+    private enum AlertState {
+        case presenting
+        case none
+    }
+
     private let sections = [
         Section<ChatItem>(0),
         Section<ChatItem>(1),
@@ -45,6 +51,8 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     private var historySection: Section<ChatItem> { return sections[0] }
     private var queueOperatorSection: Section<ChatItem> { return sections[1] }
     private var messagesSection: Section<ChatItem> { return sections[2] }
+    private var alertState: AlertState = .none
+    private let storage = ChatStorage()
 
     override init(interactor: Interactor, alertStrings: AlertStrings) {
         super.init(interactor: interactor, alertStrings: alertStrings)
@@ -71,6 +79,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
                    to: queueOperatorSection,
                    animated: false)
         action?(.setMessageEntryEnabled(false))
+        storage.setQueue(withID: interactor.queueID)
         enqueue()
     }
 
@@ -78,20 +87,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         interactor.enqueueForEngagement {
 
         } failure: { error in
-            switch error.error {
-            case let queueError as QueueError:
-                switch queueError {
-                case .queueClosed, .queueFull:
-                    self.action?(.showAlert(self.alertStrings.operatorsUnavailable,
-                                            dismissed: { self.end() }))
-                default:
-                    self.action?(.showAlert(self.alertStrings.unexpectedError,
-                                            dismissed: { self.end() }))
-                }
-            default:
-                self.action?(.showAlert(self.alertStrings.unexpectedError,
-                                        dismissed: { self.end() }))
-            }
+            self.handleError(error)
         }
     }
 
@@ -156,32 +152,83 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         action?(.refreshRow(index, in: section.index, animated: false))
     }
 
+    private func loadHistory() {
+        let messages = storage.messages(forQueue: interactor.queueID)
+        let items = messages.compactMap({ ChatItem(with: $0) })
+        historySection.set(items)
+        action?(.refreshSection(historySection.index))
+        action?(.scrollToBottom(animated: true))
+    }
+
+    private func handleError(_ error: SalemoveError) {
+        switch error.error {
+        case let queueError as QueueError:
+            switch queueError {
+            case .queueClosed, .queueFull:
+                self.showAlert(with: self.alertStrings.operatorsUnavailable,
+                               dismissed: { self.end() })
+            default:
+                self.showAlert(with: self.alertStrings.unexpectedError,
+                               dismissed: { self.end() })
+            }
+        default:
+            self.showAlert(with: self.alertStrings.unexpectedError,
+                           dismissed: { self.end() })
+        }
+    }
+
+    private func showAlert(with strings: AlertMessageStrings, dismissed: (() -> Void)?) {
+        let dismissHandler = {
+            self.alertState = .none
+            dismissed?()
+
+            switch self.interactor.state {
+            case .inactive:
+                self.end()
+            default:
+                break
+            }
+        }
+
+        alertState = .presenting
+
+        action?(.showAlert(strings, dismissed: { dismissHandler() }))
+    }
+
     override func interactorEvent(_ event: InteractorEvent) {
         switch event {
         case .stateChanged(let state):
             switch state {
             case .inactive:
-                delegate?(.finished)
+                if alertState == .none {
+                    delegate?(.finished)
+                }
             case .enqueueing:
                 action?(.queueWaiting)
             case .enqueued:
                 break
             case .engaged(let engagedOperator):
-                action?(.queueConnected(name: engagedOperator?.name,
-                                        imageUrl: engagedOperator?.picture?.url))
+                let name = engagedOperator?.name
+                let pictureUrl = engagedOperator?.picture?.url
+                storage.setOperator(name: name ?? "", pictureUrl: pictureUrl)
+                action?(.queueConnected(name: name, imageUrl: pictureUrl))
                 action?(.showEndButton)
                 action?(.setMessageEntryEnabled(true))
                 delegate?(.operatorImage(url: engagedOperator?.picture?.url))
+                loadHistory()
             }
         case .receivedMessage(let message):
             receivedMessage(message)
         case .messagesUpdated(let messages):
-            let items = messages.compactMap({ ChatItem(with: $0) })
-            setItems(items, to: messagesSection)
-            action?(.scrollToBottom(animated: true))
-        case .error:
-            action?(.showAlert(alertStrings.unexpectedError,
-                               dismissed: nil))
+            let newMessages = storage.newMessages(messages)
+            if !newMessages.isEmpty {
+                storage.storeMessages(newMessages)
+                let items = newMessages.compactMap({ ChatItem(with: $0) })
+                setItems(items, to: messagesSection)
+                action?(.scrollToBottom(animated: true))
+            }
+        case .error(let error):
+            self.handleError(error)
         }
     }
 }
@@ -200,24 +247,30 @@ extension ChatViewModel {
         action?(.scrollToBottom(animated: true))
 
         interactor.send(message) { message in
+            self.sendMessagePreview("")
             self.replace(outgoingMessage,
                          with: message,
                          in: self.messagesSection)
             self.action?(.scrollToBottom(animated: true))
         } failure: { _ in
-            self.action?(.showAlert(self.alertStrings.unexpectedError,
-                                    dismissed: nil))
+            self.showAlert(with: self.alertStrings.unexpectedError,
+                           dismissed: nil)
         }
     }
 
     private func receivedMessage(_ message: Message) {
-        guard
-            message.sender != .visitor,
-            let item = ChatItem(with: message)
-        else { return }
-        appendItem(item, to: messagesSection, animated: true)
-        action?(.scrollToBottom(animated: true))
-        action?(.updateItemsUserImage(animated: true))
+        switch message.sender {
+        case .visitor:
+            storage.storeMessage(message)
+        case .operator:
+            guard let item = ChatItem(with: message) else { break }
+            storage.storeMessage(message)
+            appendItem(item, to: messagesSection, animated: true)
+            action?(.scrollToBottom(animated: true))
+            action?(.updateItemsUserImage(animated: true))
+        default:
+            break
+        }
     }
 }
 

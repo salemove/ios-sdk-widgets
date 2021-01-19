@@ -7,13 +7,26 @@ public enum EngagementKind {
     case videoCall
 }
 
+public enum GliaEvent {
+    case started
+    case ended
+    case minimized
+    case maximized
+}
+
+public protocol GliaDelegate: class {
+    func event(_ event: GliaEvent)
+}
+
 public class Glia {
     private var rootCoordinator: RootCoordinator?
     private let conf: Configuration
+    private weak var delegate: GliaDelegate?
     private let appDelegate = SalemoveAppDelegate()
 
-    public init(conf: Configuration) {
+    public init(conf: Configuration, delegate: GliaDelegate? = nil) {
         self.conf = conf
+        self.delegate = delegate
     }
 
     public func start(_ engagementKind: EngagementKind,
@@ -26,6 +39,7 @@ public class Glia {
         let viewFactory = ViewFactory(with: theme)
         rootCoordinator = RootCoordinator(interactor: interactor,
                                           viewFactory: viewFactory,
+                                          gliaDelegate: delegate,
                                           engagementKind: engagementKind)
         rootCoordinator?.start()
     }

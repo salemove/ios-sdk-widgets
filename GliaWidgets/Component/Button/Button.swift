@@ -27,7 +27,6 @@ class Button: UIButton {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // swiftlint:disable cyclomatic_complexity
     private func setup() {
         let properties = kind.properties
 
@@ -36,63 +35,32 @@ class Button: UIButton {
         setTitle(properties.title, for: .normal)
         setTitleColor(properties.fontColor, for: .normal)
 
-        if let contentEdgeInsets = properties.contentEdgeInsets {
-            self.contentEdgeInsets = contentEdgeInsets
-        }
-
-        if let imageEdgeInsets = properties.imageEdgeInsets {
-            self.imageEdgeInsets = imageEdgeInsets
-        }
-
-        if let contentHorizontalAlignment = properties.contentHorizontalAlignment {
-            self.contentHorizontalAlignment = contentHorizontalAlignment
-        }
-
-        if let contentVerticalAlignment = properties.contentVerticalAlignment {
-            self.contentVerticalAlignment = contentVerticalAlignment
-        }
-
-        if let width = properties.width {
+        properties.contentEdgeInsets.map { self.contentEdgeInsets = $0 }
+        properties.imageEdgeInsets.map { self.imageEdgeInsets = $0 }
+        properties.contentHorizontalAlignment.map { self.contentHorizontalAlignment = $0 }
+        properties.contentVerticalAlignment.map { self.contentVerticalAlignment = $0 }
+        properties.cornerRadius.map { layer.cornerRadius = $0 }
+        properties.borderWidth.map { layer.borderWidth = $0 }
+        properties.borderColor.map { layer.borderColor = $0.cgColor }
+        properties.shadowColor.map { layer.shadowColor = $0.cgColor }
+        properties.shadowOffset.map { layer.shadowOffset = $0 }
+        properties.shadowOpacity.map { layer.shadowOpacity = $0 }
+        properties.shadowRadius.map { layer.shadowRadius = $0 }
+        properties.width.map {
+            let width = $0
             NSLayoutConstraint.autoSetPriority(.defaultHigh) {
                 autoSetDimension(.width, toSize: width)
             }
         }
-
-        if let height = properties.height {
+        properties.height.map {
+            let height = $0
             NSLayoutConstraint.autoSetPriority(.defaultHigh) {
                 autoSetDimension(.height, toSize: height)
             }
         }
 
-        if let cornerRadius = properties.cornerRadius {
-            layer.cornerRadius = cornerRadius
-        }
-
-        if let borderWidth = properties.borderWidth {
-            layer.borderWidth = borderWidth
-        }
-
-        if let borderColor = properties.borderColor {
-            layer.borderColor = borderColor.cgColor
-        }
-
-        if let shadowColor = properties.shadowColor {
-            layer.shadowColor = shadowColor.cgColor
-        }
-
-        if let shadowOffset = properties.shadowOffset {
-            layer.shadowOffset = shadowOffset
-        }
-
-        if let shadowOpacity = properties.shadowOpacity {
-            layer.shadowOpacity = shadowOpacity
-        }
-
-        if let shadowRadius = properties.shadowRadius {
-            layer.shadowRadius = shadowRadius
-        }
-
         setImage(properties.image, for: .normal)
+        setImage(properties.image, for: .highlighted)
 
         addTarget(self, action: #selector(tapped), for: .touchUpInside)
     }

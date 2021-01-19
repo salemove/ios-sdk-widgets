@@ -4,8 +4,8 @@ struct ChatItem {
     enum Kind {
         case queueOperator
         case outgoingMessage(OutgoingMessage)
-        case visitorMessage(Message, status: String?)
-        case operatorMessage(Message, showsImage: Bool, imageUrl: String?)
+        case visitorMessage(ChatMessage, status: String?)
+        case operatorMessage(ChatMessage, showsImage: Bool, imageUrl: String?)
     }
 
     var isOperatorMessage: Bool {
@@ -27,7 +27,7 @@ struct ChatItem {
         kind = .outgoingMessage(message)
     }
 
-    init?(with message: Message) {
+    init?(with message: ChatMessage) {
         switch message.sender {
         case .visitor:
             kind = .visitorMessage(message, status: nil)
