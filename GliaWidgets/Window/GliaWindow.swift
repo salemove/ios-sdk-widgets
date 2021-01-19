@@ -20,6 +20,17 @@ class GliaWindow: UIWindow {
     private var bubbleWindow: BubbleWindow?
     private var animationImageView: UIImageView?
 
+    private var maximizeScreeshot: UIImage? {
+        frame.origin.x = UIScreen.main.bounds.size.width
+        isHidden = false
+        alpha = 1.0
+        let maximizeScreeshot = screenshot
+        alpha = 0.0
+        isHidden = true
+        frame = UIScreen.main.bounds
+        return maximizeScreeshot
+    }
+
     init(delegate: GliaWindowDelegate?) {
         self.delegate = delegate
         super.init(frame: .zero)
@@ -36,6 +47,9 @@ class GliaWindow: UIWindow {
             animationImageView?.frame = bubbleWindow.frame
         }
 
+        animationImageView?.image = maximizeScreeshot
+        animationImageView?.isHidden = false
+
         UIView.animate(withDuration: animated ? 0.4 : 0.0,
                        delay: 0.0,
                        usingSpringWithDamping: 0.8,
@@ -48,12 +62,8 @@ class GliaWindow: UIWindow {
                         self.animationImageView?.frame = CGRect(origin: .zero, size: self.bounds.size)
                        }, completion: { _ in
                         self.bubbleWindow = nil
-                        UIView.animate(withDuration: animated ? 0.1 : 0.0) {
-                            self.animationImageView?.alpha = 0.0
-                        } completion: { _ in
-                            self.animationImageView?.removeFromSuperview()
-                            self.animationImageView = nil
-                        }
+                        self.animationImageView?.removeFromSuperview()
+                        self.animationImageView = nil
                        })
         setState(.maximized)
     }
@@ -84,6 +94,7 @@ class GliaWindow: UIWindow {
                         self.alpha = 0.0
                        }, completion: { _ in
                         self.isHidden = true
+                        animationImageView.isHidden = true
                        })
         setState(.minimized)
     }
