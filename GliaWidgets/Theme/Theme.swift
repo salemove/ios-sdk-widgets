@@ -135,6 +135,10 @@ public class Theme {
         let mediaUpgrade = MediaUpgradeAlertConf(title: Alert.MediaUpgrade.title,
                                                  audioUpgradeAction: audioAction,
                                                  phoneUpgradeAction: phoneAction)
+        let audioUpgrade = AudioUpgradeAlertConf(title: Alert.AudioUpgrade.title,
+                                                 icon: nil,
+                                                 decline: Alert.Action.decline,
+                                                 accept: Alert.Action.accept)
         let unexpected = MessageAlertConf(title: Alert.Unexpected.title,
                                           message: Alert.Unexpected.message)
         let api = MessageAlertConf(title: Alert.ApiError.title,
@@ -144,6 +148,7 @@ public class Theme {
                         endEngagement: endEngagement,
                         operatorsUnavailable: operatorsUnavailable,
                         mediaUpgrade: mediaUpgrade,
+                        audioUpgrade: audioUpgrade,
                         unexpectedError: unexpected,
                         apiError: api)
     }()

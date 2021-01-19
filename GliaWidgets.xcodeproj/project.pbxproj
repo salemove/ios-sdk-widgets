@@ -112,6 +112,7 @@
 		1ABD6C8125B6E97400D56EFA /* MediaUpgradeAlertConf.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD6C8025B6E97400D56EFA /* MediaUpgradeAlertConf.swift */; };
 		1ABD6C8725B6EFD000D56EFA /* AudioUpgradeAlertConf.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD6C8625B6EFD000D56EFA /* AudioUpgradeAlertConf.swift */; };
 		1ABD6C9225B6F2D200D56EFA /* String+TemplateString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD6C9125B6F2D200D56EFA /* String+TemplateString.swift */; };
+		1ABD6C9625B6F46700D56EFA /* AlertViewController+AudioUpgrade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD6C9525B6F46700D56EFA /* AlertViewController+AudioUpgrade.swift */; };
 		1AC7A7482582237500567FF8 /* GliaWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC7A7472582237500567FF8 /* GliaWindow.swift */; };
 		1AC7A74F2582571100567FF8 /* Interactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC7A74E2582571100567FF8 /* Interactor.swift */; };
 		1AC7A7552582594200567FF8 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC7A7542582594200567FF8 /* Configuration.swift */; };
@@ -267,6 +268,7 @@
 		1ABD6C8025B6E97400D56EFA /* MediaUpgradeAlertConf.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaUpgradeAlertConf.swift; sourceTree = "<group>"; };
 		1ABD6C8625B6EFD000D56EFA /* AudioUpgradeAlertConf.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioUpgradeAlertConf.swift; sourceTree = "<group>"; };
 		1ABD6C9125B6F2D200D56EFA /* String+TemplateString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+TemplateString.swift"; sourceTree = "<group>"; };
+		1ABD6C9525B6F46700D56EFA /* AlertViewController+AudioUpgrade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlertViewController+AudioUpgrade.swift"; sourceTree = "<group>"; };
 		1AC7A7472582237500567FF8 /* GliaWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GliaWindow.swift; sourceTree = "<group>"; };
 		1AC7A74E2582571100567FF8 /* Interactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interactor.swift; sourceTree = "<group>"; };
 		1AC7A7542582594200567FF8 /* Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
@@ -787,6 +789,7 @@
 				1A4AF5CC25AEF4A0002CD0F4 /* AlertViewController+Message.swift */,
 				1A4AF5D225AEF543002CD0F4 /* AlertViewController+Confirmation.swift */,
 				1A4AF5D625AEF584002CD0F4 /* AlertViewController+MediaUpgrade.swift */,
+				1ABD6C9525B6F46700D56EFA /* AlertViewController+AudioUpgrade.swift */,
 			);
 			path = Alert;
 			sourceTree = "<group>";
@@ -1179,6 +1182,7 @@
 				1ABD6C5D25B59D1C00D56EFA /* BubbleWindow.swift in Sources */,
 				1AE15E38257A578B00A642C0 /* MessageAlertConf.swift in Sources */,
 				1AC7A77B25838AE800567FF8 /* ChatItem.swift in Sources */,
+				1ABD6C9625B6F46700D56EFA /* AlertViewController+AudioUpgrade.swift in Sources */,
 				1A38A8A8258B652B0089DE7B /* OperatorChatMessageStyle.swift in Sources */,
 				1A7CA8212574D6760047CBBE /* QueueOperatorView.swift in Sources */,
 				1A5F81442588BBD900A605DA /* ChatPickMediaButtonProperties.swift in Sources */,

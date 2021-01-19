@@ -3,6 +3,7 @@ public struct AlertConf {
     public var endEngagement: ConfirmationAlertConf
     public var operatorsUnavailable: MessageAlertConf
     public var mediaUpgrade: MediaUpgradeAlertConf
+    public var audioUpgrade: AudioUpgradeAlertConf
     public var unexpectedError: MessageAlertConf
     public var apiError: MessageAlertConf
 
@@ -10,12 +11,14 @@ public struct AlertConf {
                 endEngagement: ConfirmationAlertConf,
                 operatorsUnavailable: MessageAlertConf,
                 mediaUpgrade: MediaUpgradeAlertConf,
+                audioUpgrade: AudioUpgradeAlertConf,
                 unexpectedError: MessageAlertConf,
                 apiError: MessageAlertConf) {
         self.leaveQueue = leaveQueue
         self.endEngagement = endEngagement
         self.operatorsUnavailable = operatorsUnavailable
         self.mediaUpgrade = mediaUpgrade
+        self.audioUpgrade = audioUpgrade
         self.unexpectedError = unexpectedError
         self.apiError = apiError
     }

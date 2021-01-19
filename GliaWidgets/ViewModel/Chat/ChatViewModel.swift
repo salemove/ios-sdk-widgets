@@ -23,10 +23,9 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case refreshAll
         case scrollToBottom(animated: Bool)
         case updateItemsUserImage(animated: Bool)
-        case mediaUpgrade(MediaUpgradeAlertConf,
-                          mediaTypes: [MediaType],
-                          accepted: (Int) -> Void,
-                          declined: () -> Void)
+        case offerAudioUpgrade(AudioUpgradeAlertConf,
+                               accepted: () -> Void,
+                               declined: () -> Void)
         case confirm(ConfirmationAlertConf,
                      confirmed: (() -> Void)?)
         case showAlert(MessageAlertConf,
@@ -165,11 +164,16 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     }
 
     private func offerMediaUpgrade(_ offer: MediaUpgradeOffer, answer: @escaping AnswerWithSuccessBlock) {
-        let operatorName = interactor.engagedOperator?.firstName ?? L10n.operator
-        action?(.mediaUpgrade(alertConf.mediaUpgrade.withOperatorName(operatorName),
-                              mediaTypes: [offer.type],
-                              accepted: { _ in answer(true, nil) },
-                              declined: { answer(false, nil) }))
+        let operatorName = interactor.engagedOperator?.firstName
+
+        switch offer.type {
+        case .audio:
+            action?(.offerAudioUpgrade(alertConf.audioUpgrade.withOperatorName(operatorName),
+                                       accepted: { answer(true, nil) },
+                                       declined: { answer(false, nil) }))
+        default:
+            break
+        }
     }
 
     private func handleError(_ error: SalemoveError) {

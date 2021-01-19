@@ -67,8 +67,8 @@ class ChatViewController: ViewController, AlertPresenter, MediaUpgradePresenter 
                 view.scrollToBottom(animated: animated)
             case .updateItemsUserImage(animated: let animated):
                 view.updateItemsUserImage(animated: animated)
-            case .mediaUpgrade(let conf, mediaTypes: let mediaTypes, accepted: let accepted, declined: let declined):
-                self.offerMediaUpgrade(with: conf, mediaTypes: mediaTypes, accepted: accepted, declined: declined)
+            case .offerAudioUpgrade(let conf, accepted: let accepted, declined: let declined):
+                self.offerAudioUpgrade(with: conf, accepted: accepted, declined: declined)
             case .confirm(let conf, let confirmed):
                 self.presentConfirmation(with: conf) { confirmed?() }
             case .showAlert(let conf, let dismissed):
