@@ -13,7 +13,6 @@ class QueueView: UIView {
     private let style: QueueStyle
     private var state: State = .initial
     private let statusView = QueueStatusView()
-    private let kOperatorNamePlaceholder = "{operatorName}"
     private var connectTimer: Timer?
     private var connectCounter: Int = 0
 
@@ -51,10 +50,8 @@ class QueueView: UIView {
             operatorView.stopAnimating(animated: animated)
             operatorView.imageView.setImage(fromUrl: imageUrl, animated: true)
             if let name = name {
-                let firstText = style.connected.firstText?.replacingOccurrences(of: kOperatorNamePlaceholder,
-                                                                                with: name)
-                let secondText = style.connected.secondText?.replacingOccurrences(of: kOperatorNamePlaceholder,
-                                                                                  with: name)
+                let firstText = style.connected.firstText?.withOperatorName(name)
+                let secondText = style.connected.secondText?.withOperatorName(name)
                 statusView.setFirstText(firstText, animated: animated)
                 statusView.setSecondText(secondText, animated: animated)
             } else {

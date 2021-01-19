@@ -132,7 +132,7 @@ public class Theme {
                                                   backgroundColor: color.background,
                                                   icon: Asset.upgradePhone.image,
                                                   iconColor: color.primary)
-        let upgradeMedia = MediaUpgradeAlertConf(title: Alert.MediaUpgrade.title,
+        let mediaUpgrade = MediaUpgradeAlertConf(title: Alert.MediaUpgrade.title,
                                                  audioUpgradeAction: audioAction,
                                                  phoneUpgradeAction: phoneAction)
         let unexpected = MessageAlertConf(title: Alert.Unexpected.title,
@@ -143,7 +143,7 @@ public class Theme {
         return AlertConf(leaveQueue: leaveQueue,
                         endEngagement: endEngagement,
                         operatorsUnavailable: operatorsUnavailable,
-                        upgradeMedia: upgradeMedia,
+                        mediaUpgrade: mediaUpgrade,
                         unexpectedError: unexpected,
                         apiError: api)
     }()

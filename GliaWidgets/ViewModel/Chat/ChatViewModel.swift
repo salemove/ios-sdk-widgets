@@ -166,7 +166,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
 
     private func offerMediaUpgrade(_ offer: MediaUpgradeOffer, answer: @escaping AnswerWithSuccessBlock) {
         let operatorName = interactor.engagedOperator?.firstName ?? L10n.operator
-        action?(.mediaUpgrade(alertConf.upgradeMedia.withOperatorName(operatorName),
+        action?(.mediaUpgrade(alertConf.mediaUpgrade.withOperatorName(operatorName),
                               mediaTypes: [offer.type],
                               accepted: { _ in answer(true, nil) },
                               declined: { answer(false, nil) }))
