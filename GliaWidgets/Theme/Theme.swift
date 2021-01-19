@@ -121,31 +121,31 @@ public class Theme {
                           phoneUpgradeAction: phoneAction)
     }()
 
-    public lazy var alertStrings: AlertStrings = {
+    public lazy var alertConf: AlertConf = {
         typealias Alert = L10n.Alert
 
-        let leaveQueue = AlertConfirmationStrings(title: Alert.LeaveQueue.title,
-                                                  message: Alert.LeaveQueue.message,
+        let leaveQueue = ConfirmationAlertConf(title: Alert.LeaveQueue.title,
+                                               message: Alert.LeaveQueue.message,
+                                               negativeTitle: Alert.Action.no,
+                                               positiveTitle: Alert.Action.yes)
+        let endEngagement = ConfirmationAlertConf(title: Alert.EndEngagement.title,
+                                                  message: Alert.EndEngagement.message,
                                                   negativeTitle: Alert.Action.no,
                                                   positiveTitle: Alert.Action.yes)
-        let endEngagement = AlertConfirmationStrings(title: Alert.EndEngagement.title,
-                                                     message: Alert.EndEngagement.message,
-                                                     negativeTitle: Alert.Action.no,
-                                                     positiveTitle: Alert.Action.yes)
-        let operatorsUnavailable = AlertMessageStrings(title: Alert.OperatorsUnavailable.title,
-                                                       message: Alert.OperatorsUnavailable.message)
-        let upgradeMedia = AlertTitleStrings(title: Alert.MediaUpgrade.title)
-        let unexpected = AlertMessageStrings(title: Alert.Unexpected.title,
-                                             message: Alert.Unexpected.message)
-        let api = AlertMessageStrings(title: Alert.ApiError.title,
-                                      message: Alert.ApiError.message)
+        let operatorsUnavailable = MessageAlertConf(title: Alert.OperatorsUnavailable.title,
+                                                    message: Alert.OperatorsUnavailable.message)
+        let upgradeMedia = TitleAlertConf(title: Alert.MediaUpgrade.title)
+        let unexpected = MessageAlertConf(title: Alert.Unexpected.title,
+                                          message: Alert.Unexpected.message)
+        let api = MessageAlertConf(title: Alert.ApiError.title,
+                                   message: Alert.ApiError.message)
 
-        return AlertStrings(leaveQueue: leaveQueue,
-                            endEngagement: endEngagement,
-                            operatorsUnavailable: operatorsUnavailable,
-                            upgradeMedia: upgradeMedia,
-                            unexpectedError: unexpected,
-                            apiError: api)
+        return AlertConf(leaveQueue: leaveQueue,
+                        endEngagement: endEngagement,
+                        operatorsUnavailable: operatorsUnavailable,
+                        upgradeMedia: upgradeMedia,
+                        unexpectedError: unexpected,
+                        apiError: api)
     }()
 
     public lazy var minimizedBubble: BubbleStyle = {

@@ -3,11 +3,11 @@ import SalemoveSDK
 
 class AlertViewController: ViewController {
     enum Kind {
-        case message(AlertMessageStrings,
+        case message(MessageAlertConf,
                      dismissed: (() -> Void)?)
-        case confirmation(AlertConfirmationStrings,
+        case confirmation(ConfirmationAlertConf,
                           confirmed: () -> Void)
-        case mediaUpgrade(AlertTitleStrings,
+        case mediaUpgrade(TitleAlertConf,
                           mediaTypes: [MediaType],
                           accepted: (Int) -> Void,
                           declined: () -> Void)
@@ -79,14 +79,14 @@ class AlertViewController: ViewController {
 
     private func makeAlertView() -> AlertView {
         switch kind {
-        case .message(let strings, let dismissed):
-            return makeMessageAlertView(with: strings,
+        case .message(let conf, let dismissed):
+            return makeMessageAlertView(with: conf,
                                         dismissed: dismissed)
-        case .confirmation(let strings, let confirmed):
-            return makeConfirmationAlertView(with: strings,
+        case .confirmation(let conf, let confirmed):
+            return makeConfirmationAlertView(with: conf,
                                              confirmed: confirmed)
-        case .mediaUpgrade(let strings, mediaTypes: let mediaTypes, accepted: let accepted, declined: let declined):
-            return makeMediaUpgradeAlertView(with: strings,
+        case .mediaUpgrade(let conf, mediaTypes: let mediaTypes, accepted: let accepted, declined: let declined):
+            return makeMediaUpgradeAlertView(with: conf,
                                              mediaTypes: mediaTypes,
                                              accepted: accepted,
                                              declined: declined)

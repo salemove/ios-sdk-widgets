@@ -2,11 +2,11 @@ import SalemoveSDK
 
 class EngagementViewModel {
     let interactor: Interactor
-    let alertStrings: AlertStrings
+    let alertConf: AlertConf
 
-    init(interactor: Interactor, alertStrings: AlertStrings) {
+    init(interactor: Interactor, alertConf: AlertConf) {
         self.interactor = interactor
-        self.alertStrings = alertStrings
+        self.alertConf = alertConf
 
         interactor.addObserver(self, handler: interactorEvent)
     }
@@ -17,8 +17,8 @@ class EngagementViewModel {
 
     func interactorEvent(_ event: InteractorEvent) {}
 
-    func alertStrings(with error: SalemoveError) -> AlertMessageStrings {
-        return AlertMessageStrings(with: error,
-                                   templateStrings: self.alertStrings.apiError)
+    func alertConf(with error: SalemoveError) -> MessageAlertConf {
+        return MessageAlertConf(with: error,
+                                templateConf: self.alertConf.apiError)
     }
 }

@@ -1,9 +1,9 @@
 extension AlertViewController {
-    func makeMessageAlertView(with strings: AlertMessageStrings,
+    func makeMessageAlertView(with conf: MessageAlertConf,
                               dismissed: (() -> Void)?) -> AlertView {
         let alertView = viewFactory.makeAlertView()
-        alertView.title = strings.title
-        alertView.message = strings.message
+        alertView.title = conf.title
+        alertView.message = conf.message
         alertView.showsCloseButton = true
         alertView.closeTapped = { [weak self] in
             self?.dismiss(animated: true) {

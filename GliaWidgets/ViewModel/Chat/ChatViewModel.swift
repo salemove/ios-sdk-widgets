@@ -23,13 +23,13 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case refreshAll
         case scrollToBottom(animated: Bool)
         case updateItemsUserImage(animated: Bool)
-        case mediaUpgrade(AlertTitleStrings,
+        case mediaUpgrade(TitleAlertConf,
                           mediaTypes: [MediaType],
                           accepted: (Int) -> Void,
                           declined: () -> Void)
-        case confirm(AlertConfirmationStrings,
+        case confirm(ConfirmationAlertConf,
                      confirmed: (() -> Void)?)
-        case showAlert(AlertMessageStrings,
+        case showAlert(MessageAlertConf,
                        dismissed: (() -> Void)?)
     }
 
@@ -58,8 +58,8 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     private var alertState: AlertState = .none
     private let storage = ChatStorage()
 
-    override init(interactor: Interactor, alertStrings: AlertStrings) {
-        super.init(interactor: interactor, alertStrings: alertStrings)
+    override init(interactor: Interactor, alertConf: AlertConf) {
+        super.init(interactor: interactor, alertConf: alertConf)
     }
 
     public func event(_ event: Event) {
@@ -106,10 +106,10 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     private func closeTapped() {
         switch interactor.state {
         case .enqueueing, .enqueued:
-            action?(.confirm(alertStrings.leaveQueue,
+            action?(.confirm(alertConf.leaveQueue,
                              confirmed: { self.end() }))
         case .engaged:
-            action?(.confirm(alertStrings.endEngagement,
+            action?(.confirm(alertConf.endEngagement,
                              confirmed: { self.end() }))
         default:
             end()
@@ -166,7 +166,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
 
     private func offerMediaUpgrade(_ offer: MediaUpgradeOffer, answer: @escaping AnswerWithSuccessBlock) {
         let operatorName = interactor.engagedOperator?.firstName ?? L10n.operator
-        action?(.mediaUpgrade(alertStrings.upgradeMedia.withOperatorName(operatorName),
+        action?(.mediaUpgrade(alertConf.upgradeMedia.withOperatorName(operatorName),
                               mediaTypes: [offer.type],
                               accepted: { _ in answer(true, nil) },
                               declined: { answer(false, nil) }))
@@ -177,19 +177,19 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case let queueError as QueueError:
             switch queueError {
             case .queueClosed, .queueFull:
-                self.showAlert(with: self.alertStrings.operatorsUnavailable,
+                self.showAlert(with: self.alertConf.operatorsUnavailable,
                                dismissed: { self.end() })
             default:
-                self.showAlert(with: self.alertStrings.unexpectedError,
+                self.showAlert(with: self.alertConf.unexpectedError,
                                dismissed: { self.end() })
             }
         default:
-            self.showAlert(with: self.alertStrings.unexpectedError,
+            self.showAlert(with: self.alertConf.unexpectedError,
                            dismissed: { self.end() })
         }
     }
 
-    private func showAlert(with strings: AlertMessageStrings, dismissed: (() -> Void)?) {
+    private func showAlert(with conf: MessageAlertConf, dismissed: (() -> Void)?) {
         let dismissHandler = {
             self.alertState = .none
             dismissed?()
@@ -204,7 +204,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
 
         alertState = .presenting
 
-        action?(.showAlert(strings, dismissed: { dismissHandler() }))
+        action?(.showAlert(conf, dismissed: { dismissHandler() }))
     }
 
     override func interactorEvent(_ event: InteractorEvent) {
@@ -267,7 +267,7 @@ extension ChatViewModel {
                          in: self.messagesSection)
             self.action?(.scrollToBottom(animated: true))
         } failure: { _ in
-            self.showAlert(with: self.alertStrings.unexpectedError,
+            self.showAlert(with: self.alertConf.unexpectedError,
                            dismissed: nil)
         }
     }
