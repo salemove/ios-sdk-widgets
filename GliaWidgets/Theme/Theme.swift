@@ -136,7 +136,7 @@ public class Theme {
                                                  audioUpgradeAction: audioAction,
                                                  phoneUpgradeAction: phoneAction)
         let audioUpgrade = AudioUpgradeAlertConf(title: Alert.AudioUpgrade.title,
-                                                 icon: nil,
+                                                 titleImage: Asset.upgradeAudio.image,
                                                  decline: Alert.Action.decline,
                                                  accept: Alert.Action.accept)
         let unexpected = MessageAlertConf(title: Alert.Unexpected.title,

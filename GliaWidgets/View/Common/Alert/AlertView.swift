@@ -6,6 +6,24 @@ class AlertView: UIView {
         case negative
     }
 
+    var titleImage: UIImage? {
+        get { return titleImageView.image }
+        set {
+            titleImageView.image = newValue
+
+            if newValue == nil {
+                titleImageView.removeFromSuperview()
+            } else {
+                guard titleImageView.superview == nil else { return }
+                titleImageViewContainer.addSubview(titleImageView)
+                titleImageView.autoPinEdge(toSuperviewEdge: .top)
+                titleImageView.autoPinEdge(toSuperviewEdge: .bottom)
+                titleImageView.autoPinEdge(toSuperviewEdge: .left, withInset: 0, relation: .greaterThanOrEqual)
+                titleImageView.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
+                titleImageView.autoCenterInSuperview()
+            }
+        }
+    }
     var title: String? {
         get { return titleLabel.text }
         set { titleLabel.text = newValue }
@@ -42,12 +60,15 @@ class AlertView: UIView {
     var closeTapped: (() -> Void)?
 
     private let style: AlertStyle
+    private let titleImageView = UIImageView()
+    private let titleImageViewContainer = UIView()
     private let titleLabel = UILabel()
     private let messageLabel = UILabel()
     private let stackView = UIStackView()
     private let actionsStackView = UIStackView()
     private let kContentInsets = UIEdgeInsets(top: 28, left: 32, bottom: 28, right: 32)
     private let kCornerRadius: CGFloat = 30
+    private let kTitleImageViewSize = CGSize(width: 32, height: 32)
     private var poweredBy: PoweredBy?
     private var closeButton: Button?
 
@@ -91,10 +112,14 @@ class AlertView: UIView {
         stackView.axis = .vertical
         stackView.spacing = 16
         stackView.addArrangedSubviews([
+            titleImageViewContainer,
             titleLabel,
             messageLabel,
             actionsStackView
         ])
+
+        titleImageView.contentMode = .scaleAspectFit
+        titleImageView.tintColor = style.titleImageColor
 
         titleLabel.numberOfLines = 0
         titleLabel.font = style.titleFont
@@ -113,6 +138,8 @@ class AlertView: UIView {
     private func layout() {
         addSubview(stackView)
         stackView.autoPinEdgesToSuperviewEdges(with: kContentInsets)
+
+        titleImageView.autoSetDimensions(to: kTitleImageViewSize)
     }
 
     private func addCloseButton() {

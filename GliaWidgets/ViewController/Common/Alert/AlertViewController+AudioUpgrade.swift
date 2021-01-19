@@ -4,6 +4,7 @@ extension AlertViewController {
                                    declined: @escaping () -> Void) -> AlertView {
         let alertView = viewFactory.makeAlertView()
         alertView.title = conf.title
+        alertView.titleImage = conf.titleImage
         alertView.showsPoweredBy = true
         alertView.showsCloseButton = false
         alertView.actionsAxis = .horizontal
