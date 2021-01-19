@@ -7,7 +7,7 @@ class AlertViewController: ViewController {
                      dismissed: (() -> Void)?)
         case confirmation(ConfirmationAlertConf,
                           confirmed: () -> Void)
-        case mediaUpgrade(TitleAlertConf,
+        case mediaUpgrade(MediaUpgradeAlertConf,
                           mediaTypes: [MediaType],
                           accepted: (Int) -> Void,
                           declined: () -> Void)

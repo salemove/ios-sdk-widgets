@@ -93,7 +93,6 @@
 		1A6EB05725A717CB0007081A /* ChatMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6EB05625A717CB0007081A /* ChatMessage.swift */; };
 		1A6EBB0325ADB82000EE325D /* MediaUpgradeActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6EBB0225ADB82000EE325D /* MediaUpgradeActionView.swift */; };
 		1A6EBB0725ADB84200EE325D /* MediaUpgradeActionStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6EBB0625ADB84200EE325D /* MediaUpgradeActionStyle.swift */; };
-		1A6EBB1B25ADD49E00EE325D /* TitleAlertConf.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6EBB1A25ADD49E00EE325D /* TitleAlertConf.swift */; };
 		1A6EBB2525ADE36900EE325D /* MediaUpgradePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6EBB2425ADE36900EE325D /* MediaUpgradePresenter.swift */; };
 		1A7CA81D2574D6370047CBBE /* QueueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7CA81C2574D6370047CBBE /* QueueView.swift */; };
 		1A7CA8212574D6760047CBBE /* QueueOperatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7CA8202574D6760047CBBE /* QueueOperatorView.swift */; };
@@ -110,6 +109,7 @@
 		1ABD6C5925B5758000D56EFA /* BubbleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD6C5825B5758000D56EFA /* BubbleStyle.swift */; };
 		1ABD6C5D25B59D1C00D56EFA /* BubbleWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD6C5C25B59D1C00D56EFA /* BubbleWindow.swift */; };
 		1ABD6C6125B5ABA100D56EFA /* UIView+Screenshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD6C6025B5ABA100D56EFA /* UIView+Screenshot.swift */; };
+		1ABD6C8125B6E97400D56EFA /* MediaUpgradeAlertConf.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD6C8025B6E97400D56EFA /* MediaUpgradeAlertConf.swift */; };
 		1AC7A7482582237500567FF8 /* GliaWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC7A7472582237500567FF8 /* GliaWindow.swift */; };
 		1AC7A74F2582571100567FF8 /* Interactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC7A74E2582571100567FF8 /* Interactor.swift */; };
 		1AC7A7552582594200567FF8 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC7A7542582594200567FF8 /* Configuration.swift */; };
@@ -246,7 +246,6 @@
 		1A6EB05625A717CB0007081A /* ChatMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessage.swift; sourceTree = "<group>"; };
 		1A6EBB0225ADB82000EE325D /* MediaUpgradeActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaUpgradeActionView.swift; sourceTree = "<group>"; };
 		1A6EBB0625ADB84200EE325D /* MediaUpgradeActionStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaUpgradeActionStyle.swift; sourceTree = "<group>"; };
-		1A6EBB1A25ADD49E00EE325D /* TitleAlertConf.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleAlertConf.swift; sourceTree = "<group>"; };
 		1A6EBB2425ADE36900EE325D /* MediaUpgradePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaUpgradePresenter.swift; sourceTree = "<group>"; };
 		1A7CA81C2574D6370047CBBE /* QueueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueView.swift; sourceTree = "<group>"; };
 		1A7CA8202574D6760047CBBE /* QueueOperatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueOperatorView.swift; sourceTree = "<group>"; };
@@ -263,6 +262,7 @@
 		1ABD6C5825B5758000D56EFA /* BubbleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleStyle.swift; sourceTree = "<group>"; };
 		1ABD6C5C25B59D1C00D56EFA /* BubbleWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleWindow.swift; sourceTree = "<group>"; };
 		1ABD6C6025B5ABA100D56EFA /* UIView+Screenshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Screenshot.swift"; sourceTree = "<group>"; };
+		1ABD6C8025B6E97400D56EFA /* MediaUpgradeAlertConf.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaUpgradeAlertConf.swift; sourceTree = "<group>"; };
 		1AC7A7472582237500567FF8 /* GliaWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GliaWindow.swift; sourceTree = "<group>"; };
 		1AC7A74E2582571100567FF8 /* Interactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interactor.swift; sourceTree = "<group>"; };
 		1AC7A7542582594200567FF8 /* Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
@@ -890,7 +890,7 @@
 				1AE15E3A257A5CC900A642C0 /* AlertConf.swift */,
 				1AE15E37257A578B00A642C0 /* MessageAlertConf.swift */,
 				1AE15E48257A6BD200A642C0 /* ConfirmationAlertConf.swift */,
-				1A6EBB1A25ADD49E00EE325D /* TitleAlertConf.swift */,
+				1ABD6C8025B6E97400D56EFA /* MediaUpgradeAlertConf.swift */,
 			);
 			path = Alert;
 			sourceTree = "<group>";
@@ -1225,7 +1225,6 @@
 				1A5F81482588BBF700A605DA /* ChatSendButtonProperties.swift in Sources */,
 				1A60B0152567FC7000E53F53 /* Button.swift in Sources */,
 				1ABD6C5925B5758000D56EFA /* BubbleStyle.swift in Sources */,
-				1A6EBB1B25ADD49E00EE325D /* TitleAlertConf.swift in Sources */,
 				1A6EBB0725ADB84200EE325D /* MediaUpgradeActionStyle.swift in Sources */,
 				1A4AD3CA256E864800468BFB /* ThemeColorStyle.swift in Sources */,
 				1A7CA8272574D6F40047CBBE /* QueueStyle.swift in Sources */,
@@ -1233,6 +1232,7 @@
 				1AA738A72578DD0300E1120F /* QueueStatusStyle.swift in Sources */,
 				1A60AFDD25669A4200E53F53 /* ChatView.swift in Sources */,
 				1AA738AE2578E0D500E1120F /* QueueAnimationView.swift in Sources */,
+				1ABD6C8125B6E97400D56EFA /* MediaUpgradeAlertConf.swift in Sources */,
 				1A5F814D2588C0B800A605DA /* KeyboardObserver.swift in Sources */,
 				1A5F8182258B4F0E00A605DA /* OutgoingMessage.swift in Sources */,
 				1A60AFCA2566943F00E53F53 /* RootCoordinator.swift in Sources */,

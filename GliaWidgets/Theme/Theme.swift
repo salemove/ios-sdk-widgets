@@ -88,6 +88,30 @@ public class Theme {
                                                titleFont: font.buttonLabel,
                                                titleColor: color.baseLight,
                                                backgroundColor: color.systemNegative)
+        return AlertStyle(titleFont: font.header2,
+                          titleColor: color.baseDark,
+                          titleImageColor: color.primary,
+                          messageFont: font.bodyText,
+                          messageColor: color.baseDark,
+                          backgroundColor: color.background,
+                          closeButtonColor: color.baseNormal,
+                          positiveAction: positiveAction,
+                          negativeAction: negativeAction)
+    }()
+
+    public lazy var alertConf: AlertConf = {
+        typealias Alert = L10n.Alert
+
+        let leaveQueue = ConfirmationAlertConf(title: Alert.LeaveQueue.title,
+                                               message: Alert.LeaveQueue.message,
+                                               negativeTitle: Alert.Action.no,
+                                               positiveTitle: Alert.Action.yes)
+        let endEngagement = ConfirmationAlertConf(title: Alert.EndEngagement.title,
+                                                  message: Alert.EndEngagement.message,
+                                                  negativeTitle: Alert.Action.no,
+                                                  positiveTitle: Alert.Action.yes)
+        let operatorsUnavailable = MessageAlertConf(title: Alert.OperatorsUnavailable.title,
+                                                    message: Alert.OperatorsUnavailable.message)
         let audioAction = MediaUpgradeActionStyle(title: Alert.MediaUpgrade.Audio.title,
                                                   titleFont: font.header3,
                                                   titleColor: color.baseDark,
@@ -108,33 +132,9 @@ public class Theme {
                                                   backgroundColor: color.background,
                                                   icon: Asset.upgradePhone.image,
                                                   iconColor: color.primary)
-        return AlertStyle(titleFont: font.header2,
-                          titleColor: color.baseDark,
-                          titleImageColor: color.primary,
-                          messageFont: font.bodyText,
-                          messageColor: color.baseDark,
-                          backgroundColor: color.background,
-                          closeButtonColor: color.baseNormal,
-                          positiveAction: positiveAction,
-                          negativeAction: negativeAction,
-                          audioUpgradeAction: audioAction,
-                          phoneUpgradeAction: phoneAction)
-    }()
-
-    public lazy var alertConf: AlertConf = {
-        typealias Alert = L10n.Alert
-
-        let leaveQueue = ConfirmationAlertConf(title: Alert.LeaveQueue.title,
-                                               message: Alert.LeaveQueue.message,
-                                               negativeTitle: Alert.Action.no,
-                                               positiveTitle: Alert.Action.yes)
-        let endEngagement = ConfirmationAlertConf(title: Alert.EndEngagement.title,
-                                                  message: Alert.EndEngagement.message,
-                                                  negativeTitle: Alert.Action.no,
-                                                  positiveTitle: Alert.Action.yes)
-        let operatorsUnavailable = MessageAlertConf(title: Alert.OperatorsUnavailable.title,
-                                                    message: Alert.OperatorsUnavailable.message)
-        let upgradeMedia = TitleAlertConf(title: Alert.MediaUpgrade.title)
+        let upgradeMedia = MediaUpgradeAlertConf(title: Alert.MediaUpgrade.title,
+                                                 audioUpgradeAction: audioAction,
+                                                 phoneUpgradeAction: phoneAction)
         let unexpected = MessageAlertConf(title: Alert.Unexpected.title,
                                           message: Alert.Unexpected.message)
         let api = MessageAlertConf(title: Alert.ApiError.title,

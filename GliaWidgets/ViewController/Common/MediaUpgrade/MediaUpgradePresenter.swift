@@ -4,14 +4,14 @@ import SalemoveSDK
 protocol MediaUpgradePresenter where Self: UIViewController {
     var viewFactory: ViewFactory { get }
 
-    func offerMediaUpgrade(with conf: TitleAlertConf,
+    func offerMediaUpgrade(with conf: MediaUpgradeAlertConf,
                            mediaTypes: [MediaType],
                            accepted: @escaping (Int) -> Void,
                            declined: @escaping () -> Void)
 }
 
 extension AlertPresenter {
-    func offerMediaUpgrade(with conf: TitleAlertConf,
+    func offerMediaUpgrade(with conf: MediaUpgradeAlertConf,
                            mediaTypes: [MediaType],
                            accepted: @escaping (Int) -> Void,
                            declined: @escaping () -> Void) {

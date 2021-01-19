@@ -23,7 +23,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case refreshAll
         case scrollToBottom(animated: Bool)
         case updateItemsUserImage(animated: Bool)
-        case mediaUpgrade(TitleAlertConf,
+        case mediaUpgrade(MediaUpgradeAlertConf,
                           mediaTypes: [MediaType],
                           accepted: (Int) -> Void,
                           declined: () -> Void)

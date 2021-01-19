@@ -10,8 +10,6 @@ public struct AlertStyle {
     public var closeButtonColor: UIColor
     public var positiveAction: ActionButtonStyle
     public var negativeAction: ActionButtonStyle
-    public var audioUpgradeAction: MediaUpgradeActionStyle
-    public var phoneUpgradeAction: MediaUpgradeActionStyle
 
     public init(titleFont: UIFont,
                 titleColor: UIColor,
@@ -21,9 +19,7 @@ public struct AlertStyle {
                 backgroundColor: UIColor,
                 closeButtonColor: UIColor,
                 positiveAction: ActionButtonStyle,
-                negativeAction: ActionButtonStyle,
-                audioUpgradeAction: MediaUpgradeActionStyle,
-                phoneUpgradeAction: MediaUpgradeActionStyle) {
+                negativeAction: ActionButtonStyle) {
         self.titleFont = titleFont
         self.titleColor = titleColor
         self.titleImageColor = titleImageColor
@@ -33,7 +29,5 @@ public struct AlertStyle {
         self.closeButtonColor = closeButtonColor
         self.positiveAction = positiveAction
         self.negativeAction = negativeAction
-        self.audioUpgradeAction = audioUpgradeAction
-        self.phoneUpgradeAction = phoneUpgradeAction
     }
 }
