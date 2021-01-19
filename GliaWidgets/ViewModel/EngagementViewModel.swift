@@ -1,8 +1,14 @@
 import SalemoveSDK
 
 class EngagementViewModel {
+    enum AlertState {
+        case presenting
+        case none
+    }
+
     let interactor: Interactor
     let alertConf: AlertConf
+    var alertState: AlertState = .none
 
     init(interactor: Interactor, alertConf: AlertConf) {
         self.interactor = interactor

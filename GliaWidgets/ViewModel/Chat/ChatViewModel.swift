@@ -41,11 +41,6 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     var action: ((Action) -> Void)?
     var delegate: ((DelegateEvent) -> Void)?
 
-    private enum AlertState {
-        case presenting
-        case none
-    }
-
     private let sections = [
         Section<ChatItem>(0),
         Section<ChatItem>(1),
@@ -54,7 +49,6 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     private var historySection: Section<ChatItem> { return sections[0] }
     private var queueOperatorSection: Section<ChatItem> { return sections[1] }
     private var messagesSection: Section<ChatItem> { return sections[2] }
-    private var alertState: AlertState = .none
     private let storage = ChatStorage()
 
     override init(interactor: Interactor, alertConf: AlertConf) {
