@@ -24,6 +24,7 @@ class CallView: EngagementView {
         contentView.autoPinEdge(.top, to: .bottom, of: header)
         contentView.autoPinEdgesToSuperviewSafeArea(with: .zero, excludingEdge: .top)
 
+        backgroundColor = .black
         let chatButton = UIButton(type: .system)
         chatButton.setTitle("Chat", for: .normal)
         chatButton.addTarget(self, action: #selector(chatTap), for: .touchUpInside)

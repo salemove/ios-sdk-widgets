@@ -1,7 +1,10 @@
+import SalemoveSDK
+
 class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
     enum DelegateEvent {
         case back
         case operatorImage(url: String?)
+        case audioUpgradeAccepted(AnswerWithSuccessBlock)
         case finished
     }
 
@@ -35,6 +38,12 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
                 self?.delegate?(.operatorImage(url: url))
             case .finished:
                 self?.delegate?(.finished)
+            }
+        }
+        viewModel.delegate = { [weak self] event in
+            switch event {
+            case .audioUpgradeAccepted(let answer):
+                self?.delegate?(.audioUpgradeAccepted(answer))
             }
         }
         return ChatViewController(viewModel: viewModel,

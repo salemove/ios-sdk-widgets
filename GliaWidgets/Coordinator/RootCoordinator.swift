@@ -1,7 +1,14 @@
 import UIKit
+import SalemoveSDK
 
 class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
     enum DelegateEvent {}
+
+    private enum Engagement {
+        case none
+        case chat(ChatViewController)
+        case call(CallViewController, ChatViewController)
+    }
 
     var delegate: ((DelegateEvent) -> Void)?
 
@@ -9,6 +16,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
     private let viewFactory: ViewFactory
     private weak var gliaDelegate: GliaDelegate?
     private let engagementKind: EngagementKind
+    private var engagement: Engagement = .none
     private let navigationController = NavigationController()
     private let navigationPresenter: NavigationPresenter
     private var window: GliaWindow?
@@ -32,9 +40,14 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
     func start() {
         switch engagementKind {
         case .chat:
-            startChat()
+            let chatViewController = startChat()
+            engagement = .chat(chatViewController)
         case .audioCall:
-            break
+            let chatViewController = startChat()
+            let callViewController = startCall(.audio,
+                                               startAction: .default)
+            engagement = .call(callViewController,
+                               chatViewController)
         case .videoCall:
             break
         }
@@ -48,7 +61,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
         gliaDelegate?.event(.ended)
     }
 
-    private func startChat() {
+    private func startChat() -> ChatViewController {
         let coordinator = ChatCoordinator(interactor: interactor,
                                           viewFactory: viewFactory,
                                           navigationPresenter: navigationPresenter)
@@ -62,6 +75,8 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
                 self?.popCoordinator()
                 self?.navigationPresenter.pop()
                 self?.end()
+            case .audioUpgradeAccepted(let answer):
+                self?.audioUpgradeAccepted(answer: answer)
             }
         }
 
@@ -69,6 +84,38 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
 
         pushCoordinator(coordinator)
         navigationPresenter.push(viewController, animated: false)
+
+        return viewController
+    }
+
+    private func startCall(_ callKind: CallViewModel.CallKind,
+                           startAction: CallViewModel.StartAction) -> CallViewController {
+        let coordinator = CallCoordinator(interactor: interactor,
+                                          viewFactory: viewFactory,
+                                          navigationPresenter: navigationPresenter,
+                                          callKind: callKind,
+                                          startAction: startAction)
+        coordinator.delegate = { [weak self] event in
+            switch event {
+            case .back:
+                self?.minimizeWindow(animated: true)
+            case .operatorImage(url: let url):
+                self?.bubbleView?.kind = .userImage(url: url)
+            case .finished:
+                self?.popCoordinator()
+                self?.navigationPresenter.pop()
+                self?.end()
+            case .chat:
+                break // show chat
+            }
+        }
+
+        let viewController = coordinator.start()
+
+        pushCoordinator(coordinator)
+        navigationPresenter.push(viewController, animated: false)
+
+        return viewController
     }
 
     private func presentWindow(animated: Bool) {
@@ -107,6 +154,20 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
             self.window?.endEditing(true)
             self.window = nil
             self.bubbleView = nil
+        }
+    }
+}
+
+extension RootCoordinator {
+    private func audioUpgradeAccepted(answer: @escaping AnswerWithSuccessBlock) {
+        switch engagement {
+        case .chat(let chatViewController):
+            let callViewController = startCall(.audio,
+                                               startAction: .startAudio(answer))
+            engagement = .call(callViewController,
+                               chatViewController)
+        default:
+            break
         }
     }
 }

@@ -25,7 +25,9 @@ class ChatViewModel: EngagementViewModel, ViewModel {
                                declined: () -> Void)
     }
 
-    enum DelegateEvent {}
+    enum DelegateEvent {
+        case audioUpgradeAccepted(AnswerWithSuccessBlock)
+    }
 
     var action: ((Action) -> Void)?
     var delegate: ((DelegateEvent) -> Void)?
@@ -119,7 +121,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         switch offer.type {
         case .audio:
             action?(.offerAudioUpgrade(alertConf.audioUpgrade.withOperatorName(operatorName),
-                                       accepted: { answer(true, nil) },
+                                       accepted: { self.delegate?(.audioUpgradeAccepted(answer)) },
                                        declined: { answer(false, nil) }))
         default:
             break

@@ -16,10 +16,28 @@ class CallViewModel: EngagementViewModel, ViewModel {
         case chat
     }
 
+    enum CallKind {
+        case audio
+        case video
+    }
+
+    enum StartAction {
+        case `default`
+        case startAudio(AnswerWithSuccessBlock)
+    }
+
     var action: ((Action) -> Void)?
     var delegate: ((DelegateEvent) -> Void)?
 
-    override init(interactor: Interactor, alertConf: AlertConf) {
+    private var callKind: CallKind
+    private let startAction: StartAction
+
+    init(interactor: Interactor,
+         alertConf: AlertConf,
+         callKind: CallKind,
+         startAction: StartAction) {
+        self.callKind = callKind
+        self.startAction = startAction
         super.init(interactor: interactor, alertConf: alertConf)
     }
 
@@ -33,7 +51,14 @@ class CallViewModel: EngagementViewModel, ViewModel {
     }
 
     private func start() {
-
+        switch startAction {
+        case .default:
+            enqueue()
+        case .startAudio(let answer):
+            answer(true, nil)
+            // show connecting
+            // wait for audio connected event
+        }
     }
 
     override func interactorEvent(_ event: InteractorEvent) {
@@ -47,7 +72,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
             case .enqueueing:
                 action?(.queueWaiting)
             case .enqueued:
-                break
+                break // request audio/video
             case .engaged(let engagedOperator):
                 let name = engagedOperator?.firstName
                 let pictureUrl = engagedOperator?.picture?.url
