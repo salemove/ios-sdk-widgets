@@ -9,6 +9,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
         case queueWaiting
         case queueConnecting
         case queueConnected(name: String?, imageUrl: String?)
+        case showEndButton
     }
 
     enum DelegateEvent {}
@@ -28,7 +29,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
     }
 
     private func start() {
-        //enqueue()
+
     }
 
     override func interactorEvent(_ event: InteractorEvent) {
@@ -38,9 +39,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
         case .stateChanged(let state):
             switch state {
             case .inactive:
-                if alertState == .none {
-                    delegate?(.finished)
-                }
+                break
             case .enqueueing:
                 action?(.queueWaiting)
             case .enqueued:
@@ -48,9 +47,9 @@ class CallViewModel: EngagementViewModel, ViewModel {
             case .engaged(let engagedOperator):
                 let name = engagedOperator?.firstName
                 let pictureUrl = engagedOperator?.picture?.url
-                action?(.queueConnected(name: name, imageUrl: pictureUrl))
-                action?(.showEndButton)
-                delegate?(.operatorImage(url: engagedOperator?.picture?.url))
+                //action?(.queueConnected(name: name, imageUrl: pictureUrl))
+                //action?(.showEndButton)
+                //delegate?(.operatorImage(url: engagedOperator?.picture?.url))
             }
         default:
             break

@@ -7,7 +7,6 @@ class EngagementViewModel {
     }
 
     enum Action {
-        case showEndButton
         case confirm(ConfirmationAlertConf,
                      confirmed: (() -> Void)?)
         case showAlert(MessageAlertConf,
@@ -60,7 +59,32 @@ class EngagementViewModel {
         }
     }
 
-    private func endEngagement() {
+    func interactorEvent(_ event: InteractorEvent) {
+        switch event {
+        case .stateChanged(let state):
+            switch state {
+            case .inactive:
+                if alertState == .none {
+                    engagementDelegate?(.finished)
+                }
+            case .engaged(let engagedOperator):
+                engagementDelegate?(.operatorImage(url: engagedOperator?.picture?.url))
+            default:
+                break
+            }
+        case .error(let error):
+            self.handleError(error)
+        default:
+            break
+        }
+    }
+
+    func alertConf(with error: SalemoveError) -> MessageAlertConf {
+        return MessageAlertConf(with: error,
+                                templateConf: self.alertConf.apiError)
+    }
+
+    private func endSession() {
         interactor.endSession {
             self.engagementDelegate?(.finished)
         } failure: { _ in
@@ -72,12 +96,12 @@ class EngagementViewModel {
         switch interactor.state {
         case .enqueueing, .enqueued:
             engagementAction?(.confirm(alertConf.leaveQueue,
-                                       confirmed: { self.endEngagement() }))
+                                       confirmed: { self.endSession() }))
         case .engaged:
             engagementAction?(.confirm(alertConf.endEngagement,
-                                       confirmed: { self.endEngagement() }))
+                                       confirmed: { self.endSession() }))
         default:
-            endEngagement()
+            endSession()
         }
     }
 
@@ -87,25 +111,25 @@ class EngagementViewModel {
             switch queueError {
             case .queueClosed, .queueFull:
                 self.showAlert(with: self.alertConf.operatorsUnavailable,
-                               dismissed: { self.endEngagement() })
+                               dismissed: { self.endSession() })
             default:
                 self.showAlert(with: self.alertConf.unexpectedError,
-                               dismissed: { self.endEngagement() })
+                               dismissed: { self.endSession() })
             }
         default:
             self.showAlert(with: self.alertConf.unexpectedError,
-                           dismissed: { self.endEngagement() })
+                           dismissed: { self.endSession() })
         }
     }
 
-    private func showAlert(with conf: MessageAlertConf, dismissed: (() -> Void)?) {
+    func showAlert(with conf: MessageAlertConf, dismissed: (() -> Void)?) {
         let dismissHandler = {
             self.alertState = .none
             dismissed?()
 
             switch self.interactor.state {
             case .inactive:
-                self.endEngagement()
+                self.endSession()
             default:
                 break
             }
@@ -114,31 +138,5 @@ class EngagementViewModel {
         alertState = .presenting
 
         engagementAction?(.showAlert(conf, dismissed: { dismissHandler() }))
-    }
-
-    func alertConf(with error: SalemoveError) -> MessageAlertConf {
-        return MessageAlertConf(with: error,
-                                templateConf: self.alertConf.apiError)
-    }
-
-    func interactorEvent(_ event: InteractorEvent) {
-        switch event {
-        case .stateChanged(let state):
-            switch state {
-            case .inactive:
-                if alertState == .none {
-                    engagementDelegate?(.finished)
-                }
-            case .engaged(let engagedOperator):
-                engagementAction?(.showEndButton)
-                engagementDelegate?(.operatorImage(url: engagedOperator?.picture?.url))
-            default:
-                break
-            }
-        case .error(let error):
-            self.handleError(error)
-        default:
-            break
-        }
     }
 }

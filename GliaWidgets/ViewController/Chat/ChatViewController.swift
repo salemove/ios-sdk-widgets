@@ -1,14 +1,12 @@
 import UIKit
 
-class ChatViewController: ViewController, AlertPresenter, MediaUpgradePresenter {
-    internal let viewFactory: ViewFactory
+class ChatViewController: EngagementViewController, MediaUpgradePresenter {
     private let viewModel: ChatViewModel
 
     init(viewModel: ChatViewModel,
          viewFactory: ViewFactory) {
         self.viewModel = viewModel
-        self.viewFactory = viewFactory
-        super.init(nibName: nil, bundle: nil)
+        super.init(viewModel: viewModel, viewFactory: viewFactory)
     }
 
     required init?(coder: NSCoder) {
@@ -69,10 +67,6 @@ class ChatViewController: ViewController, AlertPresenter, MediaUpgradePresenter 
                 view.updateItemsUserImage(animated: animated)
             case .offerAudioUpgrade(let conf, accepted: let accepted, declined: let declined):
                 self.offerAudioUpgrade(with: conf, accepted: accepted, declined: declined)
-            case .confirm(let conf, let confirmed):
-                self.presentConfirmation(with: conf) { confirmed?() }
-            case .showAlert(let conf, let dismissed):
-                self.presentAlert(with: conf) { dismissed?() }
             }
         }
     }
