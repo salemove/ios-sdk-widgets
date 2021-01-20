@@ -525,8 +525,8 @@
 		1A60AF6B25656C2700E53F53 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				1ABD6CAA25B71D0900D56EFA /* Call */,
 				1A60AFD32566991C00E53F53 /* Chat */,
+				1ABD6CAA25B71D0900D56EFA /* Call */,
 				1AC7A7AE258786CB00567FF8 /* EngagementViewModel.swift */,
 			);
 			path = ViewModel;
