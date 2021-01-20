@@ -3,21 +3,19 @@ import UIKit
 class BubbleWindow: UIWindow {
     var tap: (() -> Void)?
 
-    private let bubbleView: BubbleView
     private let kSize = CGSize(width: 60, height: 60)
     private let kEdgeInset: CGFloat = 10
     private var initialFrame: CGRect {
-        let screenBounds = UIScreen.main.bounds
+        let bounds = UIApplication.shared.windows.first?.frame ?? UIScreen.main.bounds
         let safeAreaInsets = UIApplication.shared.windows.first?.safeAreaInsets ?? .zero
-        let origin = CGPoint(x: screenBounds.width - kSize.width - safeAreaInsets.right - kEdgeInset,
-                             y: screenBounds.height - kSize.height - safeAreaInsets.bottom - kEdgeInset)
+        let origin = CGPoint(x: bounds.width - kSize.width - safeAreaInsets.right - kEdgeInset,
+                             y: bounds.height - kSize.height - safeAreaInsets.bottom - kEdgeInset)
         return CGRect(origin: origin, size: kSize)
     }
 
     init(bubbleView: BubbleView) {
-        self.bubbleView = bubbleView
         super.init(frame: .zero)
-        setup()
+        setup(with: bubbleView)
         layout()
     }
 
@@ -25,8 +23,9 @@ class BubbleWindow: UIWindow {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func setup() {
-        windowLevel = .alert
+    private func setup(with bubbleView: BubbleView) {
+        windowLevel = .statusBar
+        rootViewController = BubbleViewController(bubbleView: bubbleView)
 
         bubbleView.tap = { [weak self] in self?.tap?() }
 
@@ -36,9 +35,6 @@ class BubbleWindow: UIWindow {
 
     private func layout() {
         frame = initialFrame
-
-        addSubview(bubbleView)
-        bubbleView.frame = CGRect(origin: .zero, size: frame.size)
     }
 
     @objc func pan(_ gesture: UIPanGestureRecognizer) {
@@ -63,5 +59,22 @@ class BubbleWindow: UIWindow {
 
         gesture.setTranslation(.zero, in: self)
     }
+}
 
+private class BubbleViewController: UIViewController {
+    private let bubbleView: BubbleView
+
+    init(bubbleView: BubbleView) {
+        self.bubbleView = bubbleView
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    public override func loadView() {
+        super.loadView()
+        self.view = bubbleView
+    }
 }
