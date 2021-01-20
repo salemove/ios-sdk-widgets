@@ -102,7 +102,7 @@ class Header: UIView {
     }
 
     private func updateHeight() {
-        let isPortrait = [.portrait, .portraitUpsideDown].contains(UIDevice.current.orientation)
+        let isPortrait = [.portrait, .portraitUpsideDown].contains(UIApplication.shared.statusBarOrientation)
         var height: CGFloat = kHeight
 
         if isPortrait {
