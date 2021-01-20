@@ -10,8 +10,7 @@ public class Theme {
         typealias Chat = L10n.Chat
         typealias Queue = L10n.Queue
 
-        let header = HeaderStyle(title: Chat.title,
-                                 titleFont: font.header2,
+        let header = HeaderStyle(titleFont: font.header2,
                                  titleColor: color.baseLight,
                                  leftItemColor: color.baseLight,
                                  rightItemColor: color.baseLight,
@@ -69,12 +68,64 @@ public class Theme {
                                                  backgroundColor: color.background)
         return ChatStyle(header: header,
                          queue: queue,
-                         visitorMessage: visitorMessage,
-                         operatorMessage: operatorMessage,
                          backgroundColor: color.background,
                          endButton: endButton,
-                         messageEntry: messageEntry,
-                         preferredStatusBarStyle: .lightContent)
+                         preferredStatusBarStyle: .lightContent,
+                         title: Chat.title,
+                         visitorMessage: visitorMessage,
+                         operatorMessage: operatorMessage,
+                         messageEntry: messageEntry)
+    }()
+
+    public lazy var call: CallStyle = {
+        typealias Call = L10n.Call
+        typealias Queue = L10n.Queue
+
+        let header = HeaderStyle(titleFont: font.header2,
+                                 titleColor: color.baseLight,
+                                 leftItemColor: color.baseLight,
+                                 rightItemColor: color.baseLight,
+                                 backgroundColor: .clear)
+
+        let operatorImage = UserImageStyle(placeholderImage: Asset.operatorPlaceholder.image,
+                                           placeholderColor: color.baseLight,
+                                           backgroundColor: color.primary)
+        let queueOperator = QueueOperatorStyle(operatorImage: operatorImage,
+                                               animationColor: color.primary)
+        let waiting = QueueStatusStyle(firstText: Queue.Waiting.firstText,
+                                       firstTextFont: font.header1,
+                                       firstTextFontColor: color.baseDark,
+                                       secondText: Queue.Waiting.secondText,
+                                       secondTextFont: font.subtitle,
+                                       secondTextFontColor: color.baseNormal)
+        let connecting = QueueStatusStyle(firstText: Queue.Connecting.firstText,
+                                          firstTextFont: font.header2,
+                                          firstTextFontColor: color.baseDark,
+                                          secondText: Queue.Connecting.secondText,
+                                          secondTextFont: font.header2,
+                                          secondTextFontColor: color.baseDark)
+        let connected = QueueStatusStyle(firstText: Queue.Connected.firstText,
+                                         firstTextFont: font.header1,
+                                         firstTextFontColor: color.baseDark,
+                                         secondText: Queue.Connected.secondText,
+                                         secondTextFont: font.subtitle,
+                                         secondTextFontColor: color.primary)
+        let queue = QueueStyle(queueOperator: queueOperator,
+                               waiting: waiting,
+                               connecting: connecting,
+                               connected: connected)
+
+        let endButton = ActionButtonStyle(title: Call.EndButton.title,
+                                          titleFont: font.buttonLabel,
+                                          titleColor: color.baseLight,
+                                          backgroundColor: color.systemNegative)
+        return CallStyle(header: header,
+                         queue: queue,
+                         backgroundColor: .clear,
+                         endButton: endButton,
+                         preferredStatusBarStyle: .lightContent,
+                         audioTitle: Call.Audio.title,
+                         videoTitle: Call.Video.title)
     }()
 
     public lazy var alert: AlertStyle = {

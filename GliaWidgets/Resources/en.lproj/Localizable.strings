@@ -40,3 +40,7 @@
 "chat.endButton.title" = "End";
 "chat.message.placeholder" = "Enter Message";
 "chat.message.status.delivered" = "Delivered";
+
+"call.audio.title" = "AUDIO CALL";
+"call.video.title" = "VIDEO CALL";
+"call.endButton.title" = "End";

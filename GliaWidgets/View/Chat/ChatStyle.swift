@@ -1,18 +1,21 @@
 import UIKit
 
 public class ChatStyle: EngagementStyle {
+    public var title: String
     public var visitorMessage: VisitorChatMessageStyle
     public var operatorMessage: OperatorChatMessageStyle
     public var messageEntry: ChatMessageEntryStyle
 
     public init(header: HeaderStyle,
                 queue: QueueStyle,
-                visitorMessage: VisitorChatMessageStyle,
-                operatorMessage: OperatorChatMessageStyle,
                 backgroundColor: UIColor,
                 endButton: ActionButtonStyle,
-                messageEntry: ChatMessageEntryStyle,
-                preferredStatusBarStyle: UIStatusBarStyle) {
+                preferredStatusBarStyle: UIStatusBarStyle,
+                title: String,
+                visitorMessage: VisitorChatMessageStyle,
+                operatorMessage: OperatorChatMessageStyle,
+                messageEntry: ChatMessageEntryStyle) {
+        self.title = title
         self.visitorMessage = visitorMessage
         self.operatorMessage = operatorMessage
         self.messageEntry = messageEntry

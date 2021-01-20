@@ -10,6 +10,9 @@
 		1A0C142925B84E5500B00695 /* EngagementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0C142825B84E5500B00695 /* EngagementViewController.swift */; };
 		1A0C142D25B8545600B00695 /* EngagementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0C142C25B8545600B00695 /* EngagementView.swift */; };
 		1A0C143125B8547200B00695 /* EngagementStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0C143025B8547200B00695 /* EngagementStyle.swift */; };
+		1A0C143625B85C3300B00695 /* CallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0C143525B85C3300B00695 /* CallView.swift */; };
+		1A0C143A25B85C3D00B00695 /* CallStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0C143925B85C3D00B00695 /* CallStyle.swift */; };
+		1A0C143F25B85DB400B00695 /* CallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0C143E25B85DB400B00695 /* CallViewController.swift */; };
 		1A205D6225655CB2003AA3CD /* GliaWidgets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A205D5825655CB1003AA3CD /* GliaWidgets.framework */; };
 		1A205D6725655CB2003AA3CD /* GliaWidgetsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A205D6625655CB2003AA3CD /* GliaWidgetsTests.swift */; };
 		1A205D6925655CB2003AA3CD /* GliaWidgets.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A205D5B25655CB1003AA3CD /* GliaWidgets.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -165,6 +168,9 @@
 		1A0C142825B84E5500B00695 /* EngagementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EngagementViewController.swift; sourceTree = "<group>"; };
 		1A0C142C25B8545600B00695 /* EngagementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EngagementView.swift; sourceTree = "<group>"; };
 		1A0C143025B8547200B00695 /* EngagementStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EngagementStyle.swift; sourceTree = "<group>"; };
+		1A0C143525B85C3300B00695 /* CallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallView.swift; sourceTree = "<group>"; };
+		1A0C143925B85C3D00B00695 /* CallStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallStyle.swift; sourceTree = "<group>"; };
+		1A0C143E25B85DB400B00695 /* CallViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallViewController.swift; sourceTree = "<group>"; };
 		1A205D5825655CB1003AA3CD /* GliaWidgets.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GliaWidgets.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A205D5B25655CB1003AA3CD /* GliaWidgets.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GliaWidgets.h; sourceTree = "<group>"; };
 		1A205D5C25655CB1003AA3CD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -321,6 +327,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1A0C143425B85C1E00B00695 /* Call */ = {
+			isa = PBXGroup;
+			children = (
+				1A0C143525B85C3300B00695 /* CallView.swift */,
+				1A0C143925B85C3D00B00695 /* CallStyle.swift */,
+			);
+			path = Call;
+			sourceTree = "<group>";
+		};
+		1A0C143D25B85DA300B00695 /* Call */ = {
+			isa = PBXGroup;
+			children = (
+				1A0C143E25B85DB400B00695 /* CallViewController.swift */,
+			);
+			path = Call;
+			sourceTree = "<group>";
+		};
 		1A205D4E25655CB1003AA3CD = {
 			isa = PBXGroup;
 			children = (
@@ -491,6 +514,7 @@
 			isa = PBXGroup;
 			children = (
 				1A60AFD22566991600E53F53 /* Chat */,
+				1A0C143D25B85DA300B00695 /* Call */,
 				1A63B2EF257A3EF100508478 /* Common */,
 				1A0C142825B84E5500B00695 /* EngagementViewController.swift */,
 			);
@@ -510,6 +534,7 @@
 			isa = PBXGroup;
 			children = (
 				1A60AFD12566990F00E53F53 /* Chat */,
+				1A0C143425B85C1E00B00695 /* Call */,
 				1A63B2F0257A3F0F00508478 /* Common */,
 				1A0C142C25B8545600B00695 /* EngagementView.swift */,
 				1A0C143025B8547200B00695 /* EngagementStyle.swift */,
@@ -1236,6 +1261,7 @@
 				1A4AD3C4256E7A0C00468BFB /* ThemeFontStyle.swift in Sources */,
 				1A6EB05725A717CB0007081A /* ChatMessage.swift in Sources */,
 				1AA738B225790D5A00E1120F /* AlertView.swift in Sources */,
+				1A0C143F25B85DB400B00695 /* CallViewController.swift in Sources */,
 				1A38A8AC258B65D00089DE7B /* ChatMessageStyle.swift in Sources */,
 				1A60AFAF256680EF00E53F53 /* L10n.swift in Sources */,
 				1A60B0192567FC8A00E53F53 /* ButtonKind.swift in Sources */,
@@ -1262,6 +1288,7 @@
 				1A0C143125B8547200B00695 /* EngagementStyle.swift in Sources */,
 				1A7CA8272574D6F40047CBBE /* QueueStyle.swift in Sources */,
 				1AC7A7552582594200567FF8 /* Configuration.swift in Sources */,
+				1A0C143625B85C3300B00695 /* CallView.swift in Sources */,
 				1AA738A72578DD0300E1120F /* QueueStatusStyle.swift in Sources */,
 				1A60AFDD25669A4200E53F53 /* ChatView.swift in Sources */,
 				1AA738AE2578E0D500E1120F /* QueueAnimationView.swift in Sources */,
@@ -1290,6 +1317,7 @@
 				1A60B0272568070800E53F53 /* UIStackView+Extensions.swift in Sources */,
 				1A60B0232567FD2D00E53F53 /* CloseButtonProperties.swift in Sources */,
 				1ABD6C8725B6EFD000D56EFA /* AudioUpgradeAlertConf.swift in Sources */,
+				1A0C143A25B85C3D00B00695 /* CallStyle.swift in Sources */,
 				1A60AFE825669C5000E53F53 /* ChatStyle.swift in Sources */,
 				1A4AF5C725AEEA42002CD0F4 /* Operator+Extensions.swift in Sources */,
 				1A54B83825A4723E00C9393E /* ChatStorage.swift in Sources */,

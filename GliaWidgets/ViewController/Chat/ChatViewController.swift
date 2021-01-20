@@ -38,9 +38,9 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter {
             switch action {
             case .queueWaiting:
                 view.setQueueState(.waiting, animated: false)
-            case .queueConnecting:
+            case .connecting:
                 view.setQueueState(.connecting, animated: true)
-            case .queueConnected(name: let name, imageUrl: let imageUrl):
+            case .connected(name: let name, imageUrl: let imageUrl):
                 view.setQueueState(.connected(name: name, imageUrl: imageUrl), animated: true)
             case .setMessageEntryEnabled(let enabled):
                 view.messageEntryView.isEnabled = enabled

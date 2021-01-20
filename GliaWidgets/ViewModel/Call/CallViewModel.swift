@@ -9,7 +9,6 @@ class CallViewModel: EngagementViewModel, ViewModel {
         case queueWaiting
         case queueConnecting
         case queueConnected(name: String?, imageUrl: String?)
-        case showEndButton
     }
 
     enum DelegateEvent {}

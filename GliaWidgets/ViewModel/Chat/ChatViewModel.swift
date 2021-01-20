@@ -11,8 +11,8 @@ class ChatViewModel: EngagementViewModel, ViewModel {
 
     enum Action {
         case queueWaiting
-        case queueConnecting
-        case queueConnected(name: String?, imageUrl: String?)
+        case connecting
+        case connected(name: String?, imageUrl: String?)
         case setMessageEntryEnabled(Bool)
         case appendRows(Int, to: Int, animated: Bool)
         case refreshRow(Int, in: Int, animated: Bool)
@@ -138,7 +138,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
                 let name = engagedOperator?.firstName
                 let pictureUrl = engagedOperator?.picture?.url
                 storage.setOperator(name: name ?? "", pictureUrl: pictureUrl)
-                action?(.queueConnected(name: name, imageUrl: pictureUrl))
+                action?(.connected(name: name, imageUrl: pictureUrl))
                 action?(.setMessageEntryEnabled(true))
                 loadHistory()
             default:

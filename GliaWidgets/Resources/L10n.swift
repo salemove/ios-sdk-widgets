@@ -78,6 +78,21 @@ public enum L10n {
     }
   }
 
+  public enum Call {
+    public enum Audio {
+      /// AUDIO CALL
+      public static let title = L10n.tr("Localizable", "call.audio.title")
+    }
+    public enum EndButton {
+      /// End
+      public static let title = L10n.tr("Localizable", "call.endButton.title")
+    }
+    public enum Video {
+      /// VIDEO CALL
+      public static let title = L10n.tr("Localizable", "call.video.title")
+    }
+  }
+
   public enum Chat {
     /// Chat
     public static let title = L10n.tr("Localizable", "chat.title")

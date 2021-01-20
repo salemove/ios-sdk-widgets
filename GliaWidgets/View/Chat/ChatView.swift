@@ -82,7 +82,7 @@ class ChatView: EngagementView {
     }
 
     private func setup() {
-        backgroundColor = style.backgroundColor
+        header.title = style.title
 
         tableView.backgroundColor = .white
         tableView.delegate = self
