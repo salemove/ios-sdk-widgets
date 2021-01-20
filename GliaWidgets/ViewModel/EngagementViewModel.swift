@@ -7,6 +7,7 @@ class EngagementViewModel {
     }
 
     enum Action {
+        case showEndButton
         case confirm(ConfirmationAlertConf,
                      confirmed: (() -> Void)?)
         case showAlert(MessageAlertConf,
@@ -68,6 +69,7 @@ class EngagementViewModel {
                     engagementDelegate?(.finished)
                 }
             case .engaged(let engagedOperator):
+                engagementAction?(.showEndButton)
                 engagementDelegate?(.operatorImage(url: engagedOperator?.picture?.url))
             default:
                 break

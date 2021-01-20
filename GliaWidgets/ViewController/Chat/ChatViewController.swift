@@ -28,11 +28,6 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter {
     override var preferredStatusBarStyle: UIStatusBarStyle { return viewFactory.theme.chat.preferredStatusBarStyle }
 
     private func bind(viewModel: ChatViewModel, to view: ChatView) {
-        let leftItem = Button(kind: .back, tap: { viewModel.event(.backTapped) })
-        let rightItem = Button(kind: .close, tap: { viewModel.event(.closeTapped) })
-
-        view.header.setLeftItem(leftItem, animated: false)
-        view.header.setRightItem(rightItem, animated: false)
         view.numberOfSections = { return viewModel.numberOfSections }
         view.numberOfRows = { return viewModel.numberOfItems(in: $0) }
         view.itemForRow = { return viewModel.item(for: $0, in: $1) }
@@ -47,10 +42,6 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter {
                 view.setQueueState(.connecting, animated: true)
             case .queueConnected(name: let name, imageUrl: let imageUrl):
                 view.setQueueState(.connected(name: name, imageUrl: imageUrl), animated: true)
-            case .showEndButton:
-                let rightItem = ActionButton(with: self.viewFactory.theme.chat.endButton)
-                rightItem.tap = { viewModel.event(.closeTapped) }
-                view.header.setRightItem(rightItem, animated: true)
             case .setMessageEntryEnabled(let enabled):
                 view.messageEntryView.isEnabled = enabled
             case .appendRows(let count, let section, let animated):
