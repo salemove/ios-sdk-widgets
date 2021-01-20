@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		1A0C142925B84E5500B00695 /* EngagementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0C142825B84E5500B00695 /* EngagementViewController.swift */; };
+		1A0C142D25B8545600B00695 /* EngagementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0C142C25B8545600B00695 /* EngagementView.swift */; };
+		1A0C143125B8547200B00695 /* EngagementStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0C143025B8547200B00695 /* EngagementStyle.swift */; };
 		1A205D6225655CB2003AA3CD /* GliaWidgets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A205D5825655CB1003AA3CD /* GliaWidgets.framework */; };
 		1A205D6725655CB2003AA3CD /* GliaWidgetsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A205D6625655CB2003AA3CD /* GliaWidgetsTests.swift */; };
 		1A205D6925655CB2003AA3CD /* GliaWidgets.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A205D5B25655CB1003AA3CD /* GliaWidgets.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -161,6 +163,8 @@
 /* Begin PBXFileReference section */
 		0A249CE317961801DDAD22AE /* Pods_GliaWidgets.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GliaWidgets.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A0C142825B84E5500B00695 /* EngagementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EngagementViewController.swift; sourceTree = "<group>"; };
+		1A0C142C25B8545600B00695 /* EngagementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EngagementView.swift; sourceTree = "<group>"; };
+		1A0C143025B8547200B00695 /* EngagementStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EngagementStyle.swift; sourceTree = "<group>"; };
 		1A205D5825655CB1003AA3CD /* GliaWidgets.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GliaWidgets.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A205D5B25655CB1003AA3CD /* GliaWidgets.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GliaWidgets.h; sourceTree = "<group>"; };
 		1A205D5C25655CB1003AA3CD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -507,6 +511,8 @@
 			children = (
 				1A60AFD12566990F00E53F53 /* Chat */,
 				1A63B2F0257A3F0F00508478 /* Common */,
+				1A0C142C25B8545600B00695 /* EngagementView.swift */,
+				1A0C143025B8547200B00695 /* EngagementStyle.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1253,12 +1259,14 @@
 				1ABD6C5925B5758000D56EFA /* BubbleStyle.swift in Sources */,
 				1A6EBB0725ADB84200EE325D /* MediaUpgradeActionStyle.swift in Sources */,
 				1A4AD3CA256E864800468BFB /* ThemeColorStyle.swift in Sources */,
+				1A0C143125B8547200B00695 /* EngagementStyle.swift in Sources */,
 				1A7CA8272574D6F40047CBBE /* QueueStyle.swift in Sources */,
 				1AC7A7552582594200567FF8 /* Configuration.swift in Sources */,
 				1AA738A72578DD0300E1120F /* QueueStatusStyle.swift in Sources */,
 				1A60AFDD25669A4200E53F53 /* ChatView.swift in Sources */,
 				1AA738AE2578E0D500E1120F /* QueueAnimationView.swift in Sources */,
 				1ABD6C8125B6E97400D56EFA /* MediaUpgradeAlertConf.swift in Sources */,
+				1A0C142D25B8545600B00695 /* EngagementView.swift in Sources */,
 				1A5F814D2588C0B800A605DA /* KeyboardObserver.swift in Sources */,
 				1A5F8182258B4F0E00A605DA /* OutgoingMessage.swift in Sources */,
 				1A60AFCA2566943F00E53F53 /* RootCoordinator.swift in Sources */,

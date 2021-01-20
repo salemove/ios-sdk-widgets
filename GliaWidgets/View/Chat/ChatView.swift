@@ -1,7 +1,6 @@
 import UIKit
 
-class ChatView: View {
-    let header: Header
+class ChatView: EngagementView {
     let messageEntryView: ChatMessageEntryView
     var numberOfSections: (() -> Int?)?
     var numberOfRows: ((Int) -> Int?)?
@@ -9,16 +8,13 @@ class ChatView: View {
 
     private let style: ChatStyle
     private let tableView = UITableView()
-    private let queueView: QueueView
     private var messageEntryViewBottomConstraint: NSLayoutConstraint!
     private let keyboardObserver = KeyboardObserver()
 
     init(with style: ChatStyle) {
         self.style = style
-        self.header = Header(with: style.header)
-        self.queueView = QueueView(with: style.queue)
         self.messageEntryView = ChatMessageEntryView(with: style.messageEntry)
-        super.init()
+        super.init(with: style)
         setup()
         layout()
     }

@@ -1,14 +1,9 @@
 import UIKit
 
-public struct ChatStyle {
-    public var header: HeaderStyle
-    public var queue: QueueStyle
+public class ChatStyle: EngagementStyle {
     public var visitorMessage: VisitorChatMessageStyle
     public var operatorMessage: OperatorChatMessageStyle
-    public var backgroundColor: UIColor
-    public var endButton: ActionButtonStyle
     public var messageEntry: ChatMessageEntryStyle
-    public var preferredStatusBarStyle: UIStatusBarStyle
 
     public init(header: HeaderStyle,
                 queue: QueueStyle,
@@ -18,13 +13,13 @@ public struct ChatStyle {
                 endButton: ActionButtonStyle,
                 messageEntry: ChatMessageEntryStyle,
                 preferredStatusBarStyle: UIStatusBarStyle) {
-        self.header = header
-        self.queue = queue
         self.visitorMessage = visitorMessage
         self.operatorMessage = operatorMessage
-        self.backgroundColor = backgroundColor
-        self.endButton = endButton
         self.messageEntry = messageEntry
-        self.preferredStatusBarStyle = preferredStatusBarStyle
+        super.init(header: header,
+                   queue: queue,
+                   backgroundColor: backgroundColor,
+                   endButton: endButton,
+                   preferredStatusBarStyle: preferredStatusBarStyle)
     }
 }
