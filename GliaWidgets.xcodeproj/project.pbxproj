@@ -13,6 +13,7 @@
 		1A0C143625B85C3300B00695 /* CallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0C143525B85C3300B00695 /* CallView.swift */; };
 		1A0C143A25B85C3D00B00695 /* CallStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0C143925B85C3D00B00695 /* CallStyle.swift */; };
 		1A0C143F25B85DB400B00695 /* CallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0C143E25B85DB400B00695 /* CallViewController.swift */; };
+		1A0C144425B868FC00B00695 /* CallCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0C144325B868FC00B00695 /* CallCoordinator.swift */; };
 		1A205D6225655CB2003AA3CD /* GliaWidgets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A205D5825655CB1003AA3CD /* GliaWidgets.framework */; };
 		1A205D6725655CB2003AA3CD /* GliaWidgetsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A205D6625655CB2003AA3CD /* GliaWidgetsTests.swift */; };
 		1A205D6925655CB2003AA3CD /* GliaWidgets.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A205D5B25655CB1003AA3CD /* GliaWidgets.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -171,6 +172,7 @@
 		1A0C143525B85C3300B00695 /* CallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallView.swift; sourceTree = "<group>"; };
 		1A0C143925B85C3D00B00695 /* CallStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallStyle.swift; sourceTree = "<group>"; };
 		1A0C143E25B85DB400B00695 /* CallViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallViewController.swift; sourceTree = "<group>"; };
+		1A0C144325B868FC00B00695 /* CallCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallCoordinator.swift; sourceTree = "<group>"; };
 		1A205D5825655CB1003AA3CD /* GliaWidgets.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GliaWidgets.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A205D5B25655CB1003AA3CD /* GliaWidgets.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GliaWidgets.h; sourceTree = "<group>"; };
 		1A205D5C25655CB1003AA3CD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -340,6 +342,14 @@
 			isa = PBXGroup;
 			children = (
 				1A0C143E25B85DB400B00695 /* CallViewController.swift */,
+			);
+			path = Call;
+			sourceTree = "<group>";
+		};
+		1A0C144225B868ED00B00695 /* Call */ = {
+			isa = PBXGroup;
+			children = (
+				1A0C144325B868FC00B00695 /* CallCoordinator.swift */,
 			);
 			path = Call;
 			sourceTree = "<group>";
@@ -525,6 +535,7 @@
 			isa = PBXGroup;
 			children = (
 				1A60AFE225669AF800E53F53 /* Chat */,
+				1A0C144225B868ED00B00695 /* Call */,
 				1A60AFC92566943F00E53F53 /* RootCoordinator.swift */,
 			);
 			path = Coordinator;
@@ -1249,6 +1260,7 @@
 				1A0C142925B84E5500B00695 /* EngagementViewController.swift in Sources */,
 				1A60AFE425669B0400E53F53 /* ChatCoordinator.swift in Sources */,
 				1AA738B625790D9900E1120F /* ActionButton.swift in Sources */,
+				1A0C144425B868FC00B00695 /* CallCoordinator.swift in Sources */,
 				1A5F813C2588B72100A605DA /* ChatMessageEntryView.swift in Sources */,
 				1A60B02D256BF7FF00E53F53 /* OperatorChatMessageView.swift in Sources */,
 				1A5F815F258A43E600A605DA /* Section.swift in Sources */,

@@ -28,6 +28,8 @@ class CallViewController: EngagementViewController, MediaUpgradePresenter {
     override var preferredStatusBarStyle: UIStatusBarStyle { return viewFactory.theme.call.preferredStatusBarStyle }
 
     private func bind(viewModel: CallViewModel, to view: CallView) {
+        view.chatTapped = { viewModel.event(.chatTapped) }
+
         viewModel.action = { action in
             switch action {
             case .queueWaiting:

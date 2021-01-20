@@ -3,6 +3,7 @@ import SalemoveSDK
 class CallViewModel: EngagementViewModel, ViewModel {
     enum Event {
         case viewDidLoad
+        case chatTapped
     }
 
     enum Action {
@@ -11,7 +12,9 @@ class CallViewModel: EngagementViewModel, ViewModel {
         case queueConnected(name: String?, imageUrl: String?)
     }
 
-    enum DelegateEvent {}
+    enum DelegateEvent {
+        case chat
+    }
 
     var action: ((Action) -> Void)?
     var delegate: ((DelegateEvent) -> Void)?
@@ -24,6 +27,8 @@ class CallViewModel: EngagementViewModel, ViewModel {
         switch event {
         case .viewDidLoad:
             start()
+        case .chatTapped:
+            delegate?(.chat)
         }
     }
 
