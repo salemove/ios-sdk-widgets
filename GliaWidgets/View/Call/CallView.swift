@@ -16,6 +16,11 @@ class CallView: EngagementView {
     private func setup() {}
 
     private func layout() {
+        let effect = UIBlurEffect(style: .dark)
+        let effectView = UIVisualEffectView(effect: effect)
+        addSubview(effectView)
+        effectView.autoPinEdgesToSuperviewEdges()
+
         addSubview(header)
         header.autoPinEdgesToSuperviewEdges(with: .zero,
                                             excludingEdge: .bottom)
@@ -24,7 +29,6 @@ class CallView: EngagementView {
         contentView.autoPinEdge(.top, to: .bottom, of: header)
         contentView.autoPinEdgesToSuperviewSafeArea(with: .zero, excludingEdge: .top)
 
-        backgroundColor = .black
         let chatButton = UIButton(type: .system)
         chatButton.setTitle("Chat", for: .normal)
         chatButton.addTarget(self, action: #selector(chatTap), for: .touchUpInside)
