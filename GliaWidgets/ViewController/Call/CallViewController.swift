@@ -38,6 +38,8 @@ class CallViewController: EngagementViewController, MediaUpgradePresenter {
                 break
             case .queueConnected(name: let name, imageUrl: let imageUrl):
                 break
+            case .setTitle(let title):
+                view.header.title = title
             }
         }
     }

@@ -139,7 +139,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
     private func dismissWindow(animated: Bool, completion: @escaping () -> Void) {
         guard let window = window else { return }
 
-        UIView.animate(withDuration: animated ? 0.4 : 0.0,
+        UIView.animate(withDuration: animated ? 0.5 : 0.0,
                        delay: 0.0,
                        options: .curveEaseInOut) {
             window.alpha = 0.0

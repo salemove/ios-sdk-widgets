@@ -35,7 +35,6 @@ class EngagementViewModel {
     init(interactor: Interactor, alertConf: AlertConf) {
         self.interactor = interactor
         self.alertConf = alertConf
-
         interactor.addObserver(self, handler: interactorEvent)
     }
 
@@ -43,13 +42,17 @@ class EngagementViewModel {
         interactor.removeObserver(self)
     }
 
-    public func event(_ event: Event) {
+    func event(_ event: Event) {
         switch event {
         case .backTapped:
             engagementDelegate?(.back)
         case .closeTapped:
             closeTapped()
         }
+    }
+
+    func start() {
+        update(for: interactor.state)
     }
 
     func enqueue() {
@@ -63,22 +66,54 @@ class EngagementViewModel {
     func interactorEvent(_ event: InteractorEvent) {
         switch event {
         case .stateChanged(let state):
-            switch state {
-            case .inactive:
-                if alertState == .none {
-                    engagementDelegate?(.finished)
-                }
-            case .engaged(let engagedOperator):
-                engagementAction?(.showEndButton)
-                engagementDelegate?(.engaged(operatorImageUrl: engagedOperator?.picture?.url))
-            default:
-                break
-            }
+            stateChanged(state)
         case .error(let error):
-            self.handleError(error)
+            handleError(error)
         default:
             break
         }
+    }
+
+    func update(for state: InteractorState) {
+        switch interactor.state {
+        case .engaged:
+            engagementAction?(.showEndButton)
+        default:
+            break
+        }
+    }
+
+    func stateChanged(_ state: InteractorState) {
+        update(for: state)
+
+        switch state {
+        case .inactive:
+            if alertState == .none {
+                engagementDelegate?(.finished)
+            }
+        case .engaged(let engagedOperator):
+            engagementDelegate?(.engaged(operatorImageUrl: engagedOperator?.picture?.url))
+        default:
+            break
+        }
+    }
+
+    func showAlert(with conf: MessageAlertConf, dismissed: (() -> Void)?) {
+        let dismissHandler = {
+            self.alertState = .none
+            dismissed?()
+
+            switch self.interactor.state {
+            case .inactive:
+                self.endSession()
+            default:
+                break
+            }
+        }
+
+        alertState = .presenting
+
+        engagementAction?(.showAlert(conf, dismissed: { dismissHandler() }))
     }
 
     func alertConf(with error: SalemoveError) -> MessageAlertConf {
@@ -122,23 +157,5 @@ class EngagementViewModel {
             self.showAlert(with: self.alertConf.unexpectedError,
                            dismissed: { self.endSession() })
         }
-    }
-
-    func showAlert(with conf: MessageAlertConf, dismissed: (() -> Void)?) {
-        let dismissHandler = {
-            self.alertState = .none
-            dismissed?()
-
-            switch self.interactor.state {
-            case .inactive:
-                self.endSession()
-            default:
-                break
-            }
-        }
-
-        alertState = .presenting
-
-        engagementAction?(.showAlert(conf, dismissed: { dismissHandler() }))
     }
 }

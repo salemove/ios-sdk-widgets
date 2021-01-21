@@ -81,7 +81,7 @@ public class Theme {
         typealias Call = L10n.Call
         typealias Queue = L10n.Queue
 
-        let header = HeaderStyle(titleFont: font.header2,
+        let header = HeaderStyle(titleFont: font.subtitle,
                                  titleColor: color.baseLight,
                                  leftItemColor: color.baseLight,
                                  rightItemColor: color.baseLight,

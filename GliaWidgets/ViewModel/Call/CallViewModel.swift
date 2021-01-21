@@ -1,6 +1,8 @@
 import SalemoveSDK
 
 class CallViewModel: EngagementViewModel, ViewModel {
+    private typealias Strings = L10n.Call
+
     enum Event {
         case viewDidLoad
         case chatTapped
@@ -10,6 +12,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
         case queueWaiting
         case queueConnecting
         case queueConnected(name: String?, imageUrl: String?)
+        case setTitle(String)
     }
 
     enum DelegateEvent {
@@ -29,7 +32,9 @@ class CallViewModel: EngagementViewModel, ViewModel {
     var action: ((Action) -> Void)?
     var delegate: ((DelegateEvent) -> Void)?
 
-    private var callKind: CallKind
+    private var callKind: CallKind {
+        didSet { update(for: callKind) }
+    }
     private let startAction: StartAction
 
     init(interactor: Interactor,
@@ -50,7 +55,11 @@ class CallViewModel: EngagementViewModel, ViewModel {
         }
     }
 
-    private func start() {
+    override func start() {
+        super.start()
+
+        update(for: callKind)
+
         switch startAction {
         case .default:
             enqueue()
@@ -61,25 +70,38 @@ class CallViewModel: EngagementViewModel, ViewModel {
         }
     }
 
+    override func update(for state: InteractorState) {
+        super.update(for: state)
+
+        switch state {
+        case .inactive:
+            break
+        case .enqueueing:
+            action?(.queueWaiting)
+        case .enqueued:
+            break // request audio/video
+        case .engaged(let engagedOperator):
+            let name = engagedOperator?.firstName
+            let pictureUrl = engagedOperator?.picture?.url
+            //action?(.queueConnected(name: name, imageUrl: pictureUrl))
+            //action?(.showEndButton)
+            //delegate?(.operatorImage(url: engagedOperator?.picture?.url))
+        }
+    }
+
+    private func update(for callKind: CallKind) {
+        switch callKind {
+        case .audio:
+            action?(.setTitle(Strings.Audio.title))
+        case .video:
+            action?(.setTitle(Strings.Video.title))
+        }
+    }
+
     override func interactorEvent(_ event: InteractorEvent) {
         super.interactorEvent(event)
 
         switch event {
-        case .stateChanged(let state):
-            switch state {
-            case .inactive:
-                break
-            case .enqueueing:
-                action?(.queueWaiting)
-            case .enqueued:
-                break // request audio/video
-            case .engaged(let engagedOperator):
-                let name = engagedOperator?.firstName
-                let pictureUrl = engagedOperator?.picture?.url
-                //action?(.queueConnected(name: name, imageUrl: pictureUrl))
-                //action?(.showEndButton)
-                //delegate?(.operatorImage(url: engagedOperator?.picture?.url))
-            }
         default:
             break
         }

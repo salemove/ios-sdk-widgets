@@ -57,7 +57,9 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         }
     }
 
-    private func start() {
+    override func start() {
+        super.start()
+
         let item = ChatItem(kind: .queueOperator)
         appendItem(item,
                    to: queueOperatorSection,
@@ -65,6 +67,24 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         action?(.setMessageEntryEnabled(false))
         storage.setQueue(withID: interactor.queueID)
         enqueue()
+    }
+
+    override func update(for state: InteractorState) {
+        super.update(for: state)
+
+        switch state {
+        case .enqueueing:
+            action?(.queueWaiting)
+        case .engaged(let engagedOperator):
+            let name = engagedOperator?.firstName
+            let pictureUrl = engagedOperator?.picture?.url
+            storage.setOperator(name: name ?? "", pictureUrl: pictureUrl)
+            action?(.connected(name: name, imageUrl: pictureUrl))
+            action?(.setMessageEntryEnabled(true))
+            loadHistory()
+        default:
+            break
+        }
     }
 
     private func appendItem(_ item: ChatItem,
@@ -132,32 +152,12 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         super.interactorEvent(event)
 
         switch event {
-        case .stateChanged(let state):
-            switch state {
-            case .enqueueing:
-                action?(.queueWaiting)
-            case .engaged(let engagedOperator):
-                let name = engagedOperator?.firstName
-                let pictureUrl = engagedOperator?.picture?.url
-                storage.setOperator(name: name ?? "", pictureUrl: pictureUrl)
-                action?(.connected(name: name, imageUrl: pictureUrl))
-                action?(.setMessageEntryEnabled(true))
-                loadHistory()
-            default:
-                break
-            }
         case .receivedMessage(let message):
             receivedMessage(message)
         case .messagesUpdated(let messages):
-            let newMessages = storage.newMessages(messages)
-            if !newMessages.isEmpty {
-                storage.storeMessages(newMessages)
-                let items = newMessages.compactMap({ ChatItem(with: $0) })
-                setItems(items, to: messagesSection)
-                action?(.scrollToBottom(animated: true))
-            }
+            messagesUpdated(messages)
         case .upgradeOffer(let offer, answer: let answer):
-            self.offerMediaUpgrade(offer, answer: answer)
+            offerMediaUpgrade(offer, answer: answer)
         default:
             break
         }
@@ -200,6 +200,16 @@ extension ChatViewModel {
             action?(.updateItemsUserImage(animated: true))
         default:
             break
+        }
+    }
+
+    private func messagesUpdated(_ messages: [Message]) {
+        let newMessages = storage.newMessages(messages)
+        if !newMessages.isEmpty {
+            storage.storeMessages(newMessages)
+            let items = newMessages.compactMap({ ChatItem(with: $0) })
+            setItems(items, to: messagesSection)
+            action?(.scrollToBottom(animated: true))
         }
     }
 }
