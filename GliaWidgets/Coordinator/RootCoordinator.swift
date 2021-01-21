@@ -59,6 +59,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
     private func end() {
         dismissWindow(animated: true)
         gliaDelegate?.event(.ended)
+        engagement = .none
     }
 
     private func startChat() -> ChatViewController {
