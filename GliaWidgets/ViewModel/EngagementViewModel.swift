@@ -16,7 +16,7 @@ class EngagementViewModel {
 
     enum DelegateEvent {
         case back
-        case operatorImage(url: String?)
+        case engaged(operatorImageUrl: String?)
         case finished
     }
 
@@ -70,7 +70,7 @@ class EngagementViewModel {
                 }
             case .engaged(let engagedOperator):
                 engagementAction?(.showEndButton)
-                engagementDelegate?(.operatorImage(url: engagedOperator?.picture?.url))
+                engagementDelegate?(.engaged(operatorImageUrl: engagedOperator?.picture?.url))
             default:
                 break
             }

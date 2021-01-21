@@ -20,7 +20,6 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
     private let navigationController = NavigationController()
     private let navigationPresenter: NavigationPresenter
     private var window: GliaWindow?
-    private var bubbleView: BubbleView?
     private let kBubbleViewSize: CGFloat = 60.0
 
     init(interactor: Interactor,
@@ -69,9 +68,9 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
         coordinator.delegate = { [weak self] event in
             switch event {
             case .back:
-                self?.minimizeWindow(animated: true)
-            case .operatorImage(url: let url):
-                self?.bubbleView?.kind = .userImage(url: url)
+                self?.window?.minimize(animated: true)
+            case .engaged(operatorImageUrl: let url):
+                self?.window?.bubbleKind = .userImage(url: url)
             case .finished:
                 self?.popCoordinator()
                 self?.navigationPresenter.pop()
@@ -99,9 +98,9 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
         coordinator.delegate = { [weak self] event in
             switch event {
             case .back:
-                self?.minimizeWindow(animated: true)
-            case .operatorImage(url: let url):
-                self?.bubbleView?.kind = .userImage(url: url)
+                self?.window?.minimize(animated: true)
+            case .engaged(operatorImageUrl: let url):
+                self?.window?.bubbleKind = .userImage(url: url)
             case .finished:
                 self?.popCoordinator()
                 self?.navigationPresenter.pop()
@@ -122,7 +121,8 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
     private func presentWindow(animated: Bool) {
         guard window == nil else { return }
 
-        let window = GliaWindow(delegate: self)
+        let bubbleView = viewFactory.makeBubbleView()
+        let window = GliaWindow(bubbleView: bubbleView, delegate: self)
         window.rootViewController = navigationController
         window.isHidden = false
         window.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
@@ -138,12 +138,6 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
                        }, completion: nil)
     }
 
-    private func minimizeWindow(animated: Bool) {
-        let bubbleView = viewFactory.makeBubbleView()
-        self.bubbleView = bubbleView
-        window?.minimize(using: bubbleView, animated: true)
-    }
-
     private func dismissWindow(animated: Bool) {
         guard let window = window else { return }
 
@@ -154,7 +148,6 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
         } completion: { _ in
             self.window?.endEditing(true)
             self.window = nil
-            self.bubbleView = nil
         }
     }
 }

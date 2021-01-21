@@ -10,6 +10,10 @@ public protocol GliaWindowDelegate: class {
 }
 
 class GliaWindow: UIWindow {
+    var bubbleKind: BubbleKind = .userImage(url: nil) {
+        didSet { bubbleWindow?.bubbleKind = bubbleKind }
+    }
+
     private enum State {
         case maximized
         case minimized
@@ -17,6 +21,7 @@ class GliaWindow: UIWindow {
 
     private var state: State = .maximized
     private weak var delegate: GliaWindowDelegate?
+    private let bubbleView: BubbleView
     private var bubbleWindow: BubbleWindow?
     private var animationImageView: UIImageView?
 
@@ -31,7 +36,8 @@ class GliaWindow: UIWindow {
         return maximizeScreeshot
     }
 
-    init(delegate: GliaWindowDelegate?) {
+    init(bubbleView: BubbleView, delegate: GliaWindowDelegate?) {
+        self.bubbleView = bubbleView
         self.delegate = delegate
         super.init(frame: .zero)
         setup()
@@ -68,8 +74,10 @@ class GliaWindow: UIWindow {
         setState(.maximized)
     }
 
-    func minimize(using bubbleView: BubbleView, animated: Bool) {
+    func minimize(animated: Bool) {
         endEditing(true)
+
+        bubbleView.kind = bubbleKind
 
         let bubbleWindow = BubbleWindow(bubbleView: bubbleView)
         bubbleWindow.tap = { [weak self] in self?.maximize(animated: true) }

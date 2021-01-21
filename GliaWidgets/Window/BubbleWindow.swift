@@ -1,8 +1,13 @@
 import UIKit
 
 class BubbleWindow: UIWindow {
+    var bubbleKind: BubbleKind {
+        get { return bubbleView.kind }
+        set { bubbleView.kind = newValue }
+    }
     var tap: (() -> Void)?
 
+    private let bubbleView: BubbleView
     private let kSize = CGSize(width: 60, height: 60)
     private let kEdgeInset: CGFloat = 10
     private var initialFrame: CGRect {
@@ -14,8 +19,9 @@ class BubbleWindow: UIWindow {
     }
 
     init(bubbleView: BubbleView) {
+        self.bubbleView = bubbleView
         super.init(frame: .zero)
-        setup(with: bubbleView)
+        setup()
         layout()
     }
 
@@ -23,7 +29,7 @@ class BubbleWindow: UIWindow {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func setup(with bubbleView: BubbleView) {
+    private func setup() {
         windowLevel = .statusBar
         rootViewController = BubbleViewController(bubbleView: bubbleView)
 

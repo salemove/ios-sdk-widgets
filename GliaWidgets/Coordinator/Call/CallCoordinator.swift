@@ -1,7 +1,7 @@
 class CallCoordinator: SubFlowCoordinator, FlowCoordinator {
     enum DelegateEvent {
         case back
-        case operatorImage(url: String?)
+        case engaged(operatorImageUrl: String?)
         case chat
         case finished
     }
@@ -42,8 +42,8 @@ class CallCoordinator: SubFlowCoordinator, FlowCoordinator {
             switch event {
             case .back:
                 self?.delegate?(.back)
-            case .operatorImage(url: let url):
-                self?.delegate?(.operatorImage(url: url))
+            case .engaged(operatorImageUrl: let url):
+                self?.delegate?(.engaged(operatorImageUrl: url))
             case .finished:
                 self?.delegate?(.finished)
             }

@@ -1,11 +1,11 @@
 import UIKit
 
-class BubbleView: UIView {
-    enum Kind {
-        case userImage(url: String?)
-    }
+enum BubbleKind {
+    case userImage(url: String?)
+}
 
-    var kind: Kind = .userImage(url: nil) {
+class BubbleView: UIView {
+    var kind: BubbleKind = .userImage(url: nil) {
         didSet { update(kind) }
     }
     var tap: (() -> Void)?
@@ -54,7 +54,7 @@ class BubbleView: UIView {
 
     private func layout() {}
 
-    private func update(_ kind: Kind) {
+    private func update(_ kind: BubbleKind) {
         switch kind {
         case .userImage(url: let url):
             guard userImageView == nil else {
