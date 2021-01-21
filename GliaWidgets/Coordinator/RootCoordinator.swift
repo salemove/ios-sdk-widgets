@@ -60,9 +60,13 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
     }
 
     private func end() {
-        dismissWindow(animated: true)
-        gliaDelegate?.event(.ended)
-        engagement = .none
+        window?.endEditing(true)
+        dismissWindow(animated: true) {
+            self.window = nil
+            self.gliaDelegate?.event(.ended)
+            self.engagement = .none
+            self.navigationPresenter.setViewControllers([], animated: false)
+        }
     }
 
     private func startChat() -> ChatViewController {
@@ -77,7 +81,6 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
                 self?.window?.bubbleKind = .userImage(url: url)
             case .finished:
                 self?.popCoordinator()
-                self?.navigationPresenter.pop()
                 self?.end()
             case .audioUpgradeAccepted(let answer):
                 self?.audioUpgradeAccepted(answer: answer)
@@ -103,7 +106,6 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
                 self?.window?.bubbleKind = .userImage(url: url)
             case .finished:
                 self?.popCoordinator()
-                self?.navigationPresenter.pop()
                 self?.end()
             case .chat:
                 break // show chat
@@ -134,7 +136,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
                        }, completion: nil)
     }
 
-    private func dismissWindow(animated: Bool) {
+    private func dismissWindow(animated: Bool, completion: @escaping () -> Void) {
         guard let window = window else { return }
 
         UIView.animate(withDuration: animated ? 0.4 : 0.0,
@@ -142,8 +144,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
                        options: .curveEaseInOut) {
             window.alpha = 0.0
         } completion: { _ in
-            self.window?.endEditing(true)
-            self.window = nil
+            completion()
         }
     }
 }
