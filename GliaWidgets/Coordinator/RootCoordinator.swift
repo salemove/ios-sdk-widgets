@@ -41,12 +41,16 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
         case .chat:
             let chatViewController = startChat()
             engagement = .chat(chatViewController)
+            navigationPresenter.setViewControllers([chatViewController],
+                                                   animated: false)
         case .audioCall:
             let chatViewController = startChat()
             let callViewController = startCall(.audio,
                                                startAction: .default)
             engagement = .call(callViewController,
                                chatViewController)
+            navigationPresenter.setViewControllers([chatViewController, callViewController],
+                                                   animated: false)
         case .videoCall:
             break
         }
@@ -79,13 +83,9 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
                 self?.audioUpgradeAccepted(answer: answer)
             }
         }
-
-        let viewController = coordinator.start()
-
         pushCoordinator(coordinator)
-        navigationPresenter.push(viewController, animated: false)
 
-        return viewController
+        return coordinator.start()
     }
 
     private func startCall(_ callKind: CallViewModel.CallKind,
@@ -109,13 +109,9 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
                 break // show chat
             }
         }
-
-        let viewController = coordinator.start()
-
         pushCoordinator(coordinator)
-        navigationPresenter.push(viewController, animated: false)
 
-        return viewController
+        return coordinator.start()
     }
 
     private func presentWindow(animated: Bool) {
@@ -160,6 +156,7 @@ extension RootCoordinator {
                                                startAction: .startAudio(answer))
             engagement = .call(callViewController,
                                chatViewController)
+            navigationPresenter.push(callViewController)
         default:
             break
         }
