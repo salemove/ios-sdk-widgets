@@ -108,7 +108,12 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
                 self?.popCoordinator()
                 self?.end()
             case .chat:
-                break // show chat
+                switch self?.engagement {
+                case .call(_, let chatViewController):
+                    self?.navigationPresenter.pop(to: chatViewController, animated: true)
+                default:
+                    break
+                }
             }
         }
         pushCoordinator(coordinator)
