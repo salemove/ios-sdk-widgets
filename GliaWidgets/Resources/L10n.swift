@@ -118,7 +118,7 @@ public enum L10n {
       public static let secondText = L10n.tr("Localizable", "queue.connected.secondText")
     }
     public enum Connecting {
-      /// Connecting with operator
+      /// Connecting with {operatorName}
       public static let firstText = L10n.tr("Localizable", "queue.connecting.firstText")
       /// 
       public static let secondText = L10n.tr("Localizable", "queue.connecting.secondText")

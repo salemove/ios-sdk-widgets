@@ -11,7 +11,6 @@ class ChatViewModel: EngagementViewModel, ViewModel {
 
     enum Action {
         case queueWaiting
-        case connecting
         case connected(name: String?, imageUrl: String?)
         case setMessageEntryEnabled(Bool)
         case appendRows(Int, to: Int, animated: Bool)

@@ -10,8 +10,8 @@ class CallViewModel: EngagementViewModel, ViewModel {
 
     enum Action {
         case queueWaiting
-        case queueConnecting
-        case queueConnected(name: String?, imageUrl: String?)
+        case connecting(name: String?, imageUrl: String?)
+        case removeQueueView
         case setTitle(String)
     }
 
@@ -57,7 +57,6 @@ class CallViewModel: EngagementViewModel, ViewModel {
 
     override func start() {
         super.start()
-
         update(for: callKind)
 
         switch startAction {
@@ -65,7 +64,8 @@ class CallViewModel: EngagementViewModel, ViewModel {
             enqueue()
         case .startAudio(let answer):
             answer(true, nil)
-            // show connecting
+            action?(.connecting(name: interactor.engagedOperator?.firstName,
+                                imageUrl: interactor.engagedOperator?.picture?.url))
             // wait for audio connected event
         }
     }
@@ -74,19 +74,20 @@ class CallViewModel: EngagementViewModel, ViewModel {
         super.update(for: state)
 
         switch state {
-        case .inactive:
-            break
         case .enqueueing:
             action?(.queueWaiting)
-        case .enqueued:
-            break // request audio/video
-        case .engaged(let engagedOperator):
-            let name = engagedOperator?.firstName
-            let pictureUrl = engagedOperator?.picture?.url
-            //action?(.queueConnected(name: name, imageUrl: pictureUrl))
-            //action?(.showEndButton)
-            //delegate?(.operatorImage(url: engagedOperator?.picture?.url))
+        case .engaged:
+            requestMediaUpgrade()
+        default:
+            break
         }
+    }
+
+    private func requestMediaUpgrade() {
+        let name = interactor.engagedOperator?.firstName
+        let imageUrl = interactor.engagedOperator?.picture?.url
+        action?(.connecting(name: name, imageUrl: imageUrl))
+        // request audio/video
     }
 
     private func update(for callKind: CallKind) {

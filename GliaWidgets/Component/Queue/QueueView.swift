@@ -4,7 +4,7 @@ class QueueView: UIView {
     enum State: Equatable {
         case initial
         case waiting
-        case connecting
+        case connecting(name: String?, imageUrl: String?)
         case connected(name: String?, imageUrl: String?)
     }
 
@@ -40,8 +40,9 @@ class QueueView: UIView {
             statusView.setSecondText(style.waiting.secondText, animated: false)
             statusView.setStyle(style.waiting)
             show(animated: animated)
-        case .connecting:
-            let firstText = style.connecting.firstText
+        case .connecting(let name, let imageUrl):
+            operatorView.imageView.setImage(fromUrl: imageUrl, animated: true)
+            let firstText = style.connecting.firstText?.withOperatorName(name)
             statusView.setFirstText(firstText, animated: animated)
             statusView.setSecondText(nil, animated: animated)
             statusView.setStyle(style.connecting)

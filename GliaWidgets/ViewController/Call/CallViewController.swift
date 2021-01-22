@@ -34,12 +34,12 @@ class CallViewController: EngagementViewController, MediaUpgradePresenter {
             switch action {
             case .queueWaiting:
                 break
-            case .queueConnecting:
-                break
-            case .queueConnected(name: let name, imageUrl: let imageUrl):
+            case .connecting(name: let name, imageUrl: let imageUrl):
                 break
             case .setTitle(let title):
                 view.header.title = title
+            case .removeQueueView:
+                break
             }
         }
     }

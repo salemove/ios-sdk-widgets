@@ -91,7 +91,7 @@ public class Theme {
                                            placeholderColor: color.baseLight,
                                            backgroundColor: color.primary)
         let queueOperator = QueueOperatorStyle(operatorImage: operatorImage,
-                                               animationColor: color.primary)
+                                               animationColor: .lightGray)
         let waiting = QueueStatusStyle(firstText: Queue.Waiting.firstText,
                                        firstTextFont: font.header1,
                                        firstTextFontColor: color.baseDark,
