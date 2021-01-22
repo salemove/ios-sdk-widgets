@@ -19,7 +19,7 @@ class ChatView: EngagementView {
         layout()
     }
 
-    func setConnectionState(_ state: ConnectView.State, animated: Bool) {
+    func setConnecState(_ state: ConnectView.State, animated: Bool) {
         connectView.setState(state, animated: animated)
         updateTableView(animated: animated)
     }

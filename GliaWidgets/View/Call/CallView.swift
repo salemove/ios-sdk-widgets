@@ -13,6 +13,19 @@ class CallView: EngagementView {
         layout()
     }
 
+    func setConnecState(_ state: ConnectView.State, animated: Bool) {
+        connectView.setState(state, animated: animated)
+    }
+
+    func hideConnectView(animated: Bool) {
+        UIView.transition(with: connectView,
+                          duration: animated ? 0.3 : 0.0,
+                          options: .transitionCrossDissolve,
+                          animations: {
+                            self.connectView.isHidden = true
+                          })
+    }
+
     private func setup() {}
 
     private func layout() {
@@ -28,6 +41,10 @@ class CallView: EngagementView {
         addSubview(contentView)
         contentView.autoPinEdge(.top, to: .bottom, of: header)
         contentView.autoPinEdgesToSuperviewSafeArea(with: .zero, excludingEdge: .top)
+
+        addSubview(connectView)
+        connectView.autoPinEdge(toSuperviewEdge: .top, withInset: 90)
+        connectView.autoAlignAxis(toSuperviewAxis: .vertical)
 
         let chatButton = UIButton(type: .system)
         chatButton.setTitle("Chat", for: .normal)

@@ -94,19 +94,19 @@ public class Theme {
                                                  animationColor: .lightGray)
         let queue = ConnectStatusStyle(firstText: Connect.Queue.firstText,
                                        firstTextFont: font.header1,
-                                       firstTextFontColor: color.baseDark,
+                                       firstTextFontColor: color.baseLight,
                                        secondText: Connect.Queue.secondText,
                                        secondTextFont: font.subtitle,
-                                       secondTextFontColor: color.baseNormal)
+                                       secondTextFontColor: color.baseLight)
         let connecting = ConnectStatusStyle(firstText: Connect.Connecting.firstText,
                                             firstTextFont: font.header2,
-                                            firstTextFontColor: color.baseDark,
+                                            firstTextFontColor: color.baseLight,
                                             secondText: Connect.Connecting.secondText,
                                             secondTextFont: font.header2,
-                                            secondTextFontColor: color.baseDark)
+                                            secondTextFontColor: color.baseLight)
         let connected = ConnectStatusStyle(firstText: Connect.Connected.firstText,
                                            firstTextFont: font.header1,
-                                           firstTextFontColor: color.baseDark,
+                                           firstTextFontColor: color.baseLight,
                                            secondText: Connect.Connected.secondText,
                                            secondTextFont: font.subtitle,
                                            secondTextFontColor: color.primary)

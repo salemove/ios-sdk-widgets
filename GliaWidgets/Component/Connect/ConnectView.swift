@@ -41,12 +41,14 @@ class ConnectView: UIView {
             statusView.setStyle(style.queue)
             show(animated: animated)
         case .connecting(let name, let imageUrl):
+            operatorView.startAnimating(animated: animated)
             operatorView.imageView.setImage(fromUrl: imageUrl, animated: true)
             let firstText = style.connecting.firstText?.withOperatorName(name)
             statusView.setFirstText(firstText, animated: animated)
             statusView.setSecondText(nil, animated: animated)
             statusView.setStyle(style.connecting)
             startConnectTimer()
+            show(animated: animated)
         case .connected(let name, let imageUrl):
             operatorView.stopAnimating(animated: animated)
             operatorView.imageView.setImage(fromUrl: imageUrl, animated: true)

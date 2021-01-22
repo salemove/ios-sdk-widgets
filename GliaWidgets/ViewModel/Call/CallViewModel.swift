@@ -77,7 +77,12 @@ class CallViewModel: EngagementViewModel, ViewModel {
         case .enqueueing:
             action?(.queue)
         case .engaged:
-            requestMedia()
+            switch startAction {
+            case .default:
+                requestMedia()
+            default:
+                break
+            }
         default:
             break
         }
@@ -99,7 +104,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
 
         interactor.request(mediaType) { [weak self] in
             self?.action?(.hideConnect)
-        } failure: { [weak self] (error, salemoveError) in
+        } failure: { [weak self] error, salemoveError in
             self?.action?(.hideConnect)
             if let error = error {
                 self?.showAlert(for: error)
