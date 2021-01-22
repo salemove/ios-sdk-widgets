@@ -11,7 +11,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
     enum Action {
         case queue
         case connecting(name: String?, imageUrl: String?)
-        case removeQueueView
+        case hideConnect
         case setTitle(String)
     }
 
@@ -77,17 +77,36 @@ class CallViewModel: EngagementViewModel, ViewModel {
         case .enqueueing:
             action?(.queue)
         case .engaged:
-            requestMediaUpgrade()
+            requestMedia()
         default:
             break
         }
     }
 
-    private func requestMediaUpgrade() {
+    private func requestMedia() {
         let name = interactor.engagedOperator?.firstName
         let imageUrl = interactor.engagedOperator?.picture?.url
         action?(.connecting(name: name, imageUrl: imageUrl))
-        // request audio/video
+
+        let mediaType: MediaType = {
+            switch callKind {
+            case .audio:
+                return .audio
+            case .video:
+                return .video
+            }
+        }()
+
+        interactor.request(mediaType) { [weak self] in
+            self?.action?(.hideConnect)
+        } failure: { [weak self] (error, salemoveError) in
+            self?.action?(.hideConnect)
+            if let error = error {
+                self?.showAlert(for: error)
+            } else if let error = salemoveError {
+                self?.showAlert(for: error)
+            }
+        }
     }
 
     private func update(for callKind: CallKind) {

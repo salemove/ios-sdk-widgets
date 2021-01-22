@@ -98,7 +98,7 @@ class EngagementViewModel {
         }
     }
 
-    func showAlert(with conf: MessageAlertConf, dismissed: (() -> Void)?) {
+    func showAlert(with conf: MessageAlertConf, dismissed: (() -> Void)? = nil) {
         let dismissHandler = {
             self.alertState = .none
             dismissed?()
@@ -114,6 +114,14 @@ class EngagementViewModel {
         alertState = .presenting
 
         engagementAction?(.showAlert(conf, dismissed: { dismissHandler() }))
+    }
+
+    func showAlert(for error: Error) {
+        showAlert(with: alertConf.unexpectedError)
+    }
+
+    func showAlert(for error: SalemoveError) {
+        showAlert(with: alertConf.unexpectedError)
     }
 
     func alertConf(with error: SalemoveError) -> MessageAlertConf {

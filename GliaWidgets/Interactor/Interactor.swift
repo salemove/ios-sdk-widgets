@@ -89,6 +89,25 @@ extension Interactor {
         }
     }
 
+    func request(_ media: MediaType,
+                 success: @escaping () -> Void,
+                 failure: @escaping (Error?, SalemoveError?) -> Void) {
+        do {
+            let offer = try MediaUpgradeOffer(type: media, direction: .twoWay)
+            Salemove.sharedInstance.requestMediaUpgrade(offer: offer) { isSuccess, error in
+                if let error = error {
+                    failure(nil, error)
+                } else if !isSuccess {
+                    failure(nil, nil)
+                } else {
+                    success()
+                }
+            }
+        } catch {
+            failure(error, nil)
+        }
+    }
+
     func sendMessagePreview(_ message: String) {
         Salemove.sharedInstance.sendMessagePreview(message: message) { _, _ in }
     }
