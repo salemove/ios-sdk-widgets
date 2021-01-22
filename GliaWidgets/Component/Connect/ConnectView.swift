@@ -1,24 +1,24 @@
 import UIKit
 
-class QueueView: UIView {
+class ConnectView: UIView {
     enum State: Equatable {
         case initial
-        case waiting
+        case queue
         case connecting(name: String?, imageUrl: String?)
         case connected(name: String?, imageUrl: String?)
     }
 
-    let operatorView: QueueOperatorView
+    let operatorView: ConnectOperatorView
 
-    private let style: QueueStyle
+    private let style: ConnectStyle
     private var state: State = .initial
-    private let statusView = QueueStatusView()
+    private let statusView = ConnectStatusView()
     private var connectTimer: Timer?
     private var connectCounter: Int = 0
 
-    init(with style: QueueStyle) {
+    init(with style: ConnectStyle) {
         self.style = style
-        self.operatorView = QueueOperatorView(with: style.queueOperator)
+        self.operatorView = ConnectOperatorView(with: style.connectOperator)
         super.init(frame: .zero)
         setup()
         layout()
@@ -34,11 +34,11 @@ class QueueView: UIView {
         switch state {
         case .initial:
             hide(animated: animated)
-        case .waiting:
+        case .queue:
             operatorView.startAnimating(animated: animated)
-            statusView.setFirstText(style.waiting.firstText, animated: false)
-            statusView.setSecondText(style.waiting.secondText, animated: false)
-            statusView.setStyle(style.waiting)
+            statusView.setFirstText(style.queue.firstText, animated: false)
+            statusView.setSecondText(style.queue.secondText, animated: false)
+            statusView.setStyle(style.queue)
             show(animated: animated)
         case .connecting(let name, let imageUrl):
             operatorView.imageView.setImage(fromUrl: imageUrl, animated: true)
@@ -103,7 +103,7 @@ class QueueView: UIView {
     }
 }
 
-private extension QueueView {
+private extension ConnectView {
     private func startConnectTimer() {
         guard connectTimer == nil else { return }
         connectTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in

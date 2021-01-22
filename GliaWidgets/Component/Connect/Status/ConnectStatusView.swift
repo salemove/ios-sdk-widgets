@@ -1,6 +1,6 @@
 import UIKit
 
-class QueueStatusView: UIView {
+class ConnectStatusView: UIView {
     private let stackView = UIStackView()
     private let firstLabel = UILabel()
     private let secondLabel = UILabel()
@@ -15,7 +15,7 @@ class QueueStatusView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func setStyle(_ style: QueueStatusStyle) {
+    func setStyle(_ style: ConnectStatusStyle) {
         firstLabel.font = style.firstTextFont
         firstLabel.textColor = style.firstTextFontColor
         secondLabel.font = style.secondTextFont

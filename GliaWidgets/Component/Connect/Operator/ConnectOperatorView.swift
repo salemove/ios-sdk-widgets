@@ -1,15 +1,15 @@
 import UIKit
 
-class QueueOperatorView: UIView {
+class ConnectOperatorView: UIView {
     let imageView: UserImageView
 
-    private let style: QueueOperatorStyle
-    private var animationView: QueueAnimationView?
+    private let style: ConnectOperatorStyle
+    private var animationView: ConnectAnimationView?
     private let kImageInset: CGFloat = 10
     private let kImageViewSize = CGSize(width: 80, height: 80)
     private let kAnimationViewSize: CGFloat = 142
 
-    init(with style: QueueOperatorStyle) {
+    init(with style: ConnectOperatorStyle) {
         self.style = style
         self.imageView = UserImageView(with: style.operatorImage)
         super.init(frame: .zero)
@@ -24,7 +24,7 @@ class QueueOperatorView: UIView {
     func startAnimating(animated: Bool) {
         guard animationView == nil else { return }
 
-        let animationView = QueueAnimationView(color: style.animationColor,
+        let animationView = ConnectAnimationView(color: style.animationColor,
                                                size: kAnimationViewSize)
         self.animationView = animationView
 

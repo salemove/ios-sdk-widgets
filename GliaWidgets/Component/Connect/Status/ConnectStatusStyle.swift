@@ -1,6 +1,6 @@
 import UIKit
 
-public struct QueueStatusStyle {
+public struct ConnectStatusStyle {
     public var firstText: String?
     public var firstTextFont: UIFont
     public var firstTextFontColor: UIColor

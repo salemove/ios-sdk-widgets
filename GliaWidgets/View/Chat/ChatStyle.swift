@@ -7,7 +7,7 @@ public class ChatStyle: EngagementStyle {
     public var messageEntry: ChatMessageEntryStyle
 
     public init(header: HeaderStyle,
-                queue: QueueStyle,
+                connect: ConnectStyle,
                 backgroundColor: UIColor,
                 endButton: ActionButtonStyle,
                 preferredStatusBarStyle: UIStatusBarStyle,
@@ -20,7 +20,7 @@ public class ChatStyle: EngagementStyle {
         self.operatorMessage = operatorMessage
         self.messageEntry = messageEntry
         super.init(header: header,
-                   queue: queue,
+                   connect: connect,
                    backgroundColor: backgroundColor,
                    endButton: endButton,
                    preferredStatusBarStyle: preferredStatusBarStyle)

@@ -5,7 +5,7 @@ public class CallStyle: EngagementStyle {
     public var videoTitle: String
 
     public init(header: HeaderStyle,
-                queue: QueueStyle,
+                connect: ConnectStyle,
                 backgroundColor: UIColor,
                 endButton: ActionButtonStyle,
                 preferredStatusBarStyle: UIStatusBarStyle,
@@ -14,7 +14,7 @@ public class CallStyle: EngagementStyle {
         self.audioTitle = audioTitle
         self.videoTitle = videoTitle
         super.init(header: header,
-                   queue: queue,
+                   connect: connect,
                    backgroundColor: backgroundColor,
                    endButton: endButton,
                    preferredStatusBarStyle: preferredStatusBarStyle)

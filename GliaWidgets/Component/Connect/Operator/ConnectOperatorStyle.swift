@@ -1,6 +1,6 @@
 import UIKit
 
-public struct QueueOperatorStyle {
+public struct ConnectOperatorStyle {
     public var operatorImage: UserImageStyle
     public var animationColor: UIColor
 

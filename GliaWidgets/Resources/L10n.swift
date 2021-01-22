@@ -110,24 +110,24 @@ public enum L10n {
     }
   }
 
-  public enum Queue {
+  public enum Connect {
     public enum Connected {
       /// {operatorName}
-      public static let firstText = L10n.tr("Localizable", "queue.connected.firstText")
+      public static let firstText = L10n.tr("Localizable", "connect.connected.firstText")
       /// {operatorName} has joined the conversation.
-      public static let secondText = L10n.tr("Localizable", "queue.connected.secondText")
+      public static let secondText = L10n.tr("Localizable", "connect.connected.secondText")
     }
     public enum Connecting {
       /// Connecting with {operatorName}
-      public static let firstText = L10n.tr("Localizable", "queue.connecting.firstText")
+      public static let firstText = L10n.tr("Localizable", "connect.connecting.firstText")
       /// 
-      public static let secondText = L10n.tr("Localizable", "queue.connecting.secondText")
+      public static let secondText = L10n.tr("Localizable", "connect.connecting.secondText")
     }
-    public enum Waiting {
+    public enum Queue {
       /// CompanyName
-      public static let firstText = L10n.tr("Localizable", "queue.waiting.firstText")
+      public static let firstText = L10n.tr("Localizable", "connect.queue.firstText")
       /// An MSR will be with you shortly.
-      public static let secondText = L10n.tr("Localizable", "queue.waiting.secondText")
+      public static let secondText = L10n.tr("Localizable", "connect.queue.secondText")
     }
   }
 }

@@ -2,14 +2,14 @@ import UIKit
 
 class EngagementView: View {
     let header: Header
-    let queueView: QueueView
+    let connectView: ConnectView
 
     private let style: EngagementStyle
 
     init(with style: EngagementStyle) {
         self.style = style
         self.header = Header(with: style.header)
-        self.queueView = QueueView(with: style.queue)
+        self.connectView = ConnectView(with: style.connect)
         super.init()
         setup()
         layout()

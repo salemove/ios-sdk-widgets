@@ -9,7 +9,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
     }
 
     enum Action {
-        case queueWaiting
+        case queue
         case connecting(name: String?, imageUrl: String?)
         case removeQueueView
         case setTitle(String)
@@ -75,7 +75,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
 
         switch state {
         case .enqueueing:
-            action?(.queueWaiting)
+            action?(.queue)
         case .engaged:
             requestMediaUpgrade()
         default:

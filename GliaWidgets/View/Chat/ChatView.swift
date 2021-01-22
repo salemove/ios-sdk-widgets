@@ -19,8 +19,8 @@ class ChatView: EngagementView {
         layout()
     }
 
-    func setQueueState(_ state: QueueView.State, animated: Bool) {
-        queueView.setState(state, animated: animated)
+    func setConnectionState(_ state: ConnectView.State, animated: Bool) {
+        connectView.setState(state, animated: animated)
         updateTableView(animated: animated)
     }
 
@@ -115,7 +115,7 @@ class ChatView: EngagementView {
     private func content(for item: ChatItem) -> ChatItemCell.Content {
         switch item.kind {
         case .queueOperator:
-            return .queueOperator(queueView)
+            return .queueOperator(connectView)
         case .outgoingMessage(let message):
             let view = VisitorChatMessageView(with: style.visitorMessage)
             view.appendContent(.text(message.content), animated: false)

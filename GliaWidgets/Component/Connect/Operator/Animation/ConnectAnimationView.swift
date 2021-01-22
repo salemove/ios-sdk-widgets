@@ -1,6 +1,6 @@
 import UIKit
 
-class QueueAnimationView: UIView {
+class ConnectAnimationView: UIView {
     private let color: UIColor
     private let size: CGFloat
     private let replicatorLayer = CAReplicatorLayer()

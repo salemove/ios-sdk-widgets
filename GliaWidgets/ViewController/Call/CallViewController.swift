@@ -32,7 +32,7 @@ class CallViewController: EngagementViewController, MediaUpgradePresenter {
 
         viewModel.action = { action in
             switch action {
-            case .queueWaiting:
+            case .queue:
                 break
             case .connecting(name: let name, imageUrl: let imageUrl):
                 break

@@ -4,7 +4,7 @@ import PureLayout
 class ChatItemCell: UITableViewCell {
     enum Content {
         case none
-        case queueOperator(QueueView)
+        case queueOperator(ConnectView)
         case outgoingMessage(VisitorChatMessageView)
         case visitorMessage(VisitorChatMessageView)
         case operatorMessage(OperatorChatMessageView)

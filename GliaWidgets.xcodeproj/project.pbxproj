@@ -101,13 +101,13 @@
 		1A6EBB0325ADB82000EE325D /* MediaUpgradeActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6EBB0225ADB82000EE325D /* MediaUpgradeActionView.swift */; };
 		1A6EBB0725ADB84200EE325D /* MediaUpgradeActionStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6EBB0625ADB84200EE325D /* MediaUpgradeActionStyle.swift */; };
 		1A6EBB2525ADE36900EE325D /* MediaUpgradePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6EBB2425ADE36900EE325D /* MediaUpgradePresenter.swift */; };
-		1A7CA81D2574D6370047CBBE /* QueueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7CA81C2574D6370047CBBE /* QueueView.swift */; };
-		1A7CA8212574D6760047CBBE /* QueueOperatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7CA8202574D6760047CBBE /* QueueOperatorView.swift */; };
-		1A7CA8242574D68E0047CBBE /* QueueStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7CA8232574D68E0047CBBE /* QueueStatusView.swift */; };
-		1A7CA8272574D6F40047CBBE /* QueueStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7CA8262574D6F40047CBBE /* QueueStyle.swift */; };
-		1A7CA82F25751B5A0047CBBE /* QueueOperatorStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7CA82E25751B5A0047CBBE /* QueueOperatorStyle.swift */; };
-		1AA738A72578DD0300E1120F /* QueueStatusStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA738A62578DD0300E1120F /* QueueStatusStyle.swift */; };
-		1AA738AE2578E0D500E1120F /* QueueAnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA738AD2578E0D500E1120F /* QueueAnimationView.swift */; };
+		1A7CA81D2574D6370047CBBE /* ConnectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7CA81C2574D6370047CBBE /* ConnectView.swift */; };
+		1A7CA8212574D6760047CBBE /* ConnectOperatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7CA8202574D6760047CBBE /* ConnectOperatorView.swift */; };
+		1A7CA8242574D68E0047CBBE /* ConnectStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7CA8232574D68E0047CBBE /* ConnectStatusView.swift */; };
+		1A7CA8272574D6F40047CBBE /* ConnectStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7CA8262574D6F40047CBBE /* ConnectStyle.swift */; };
+		1A7CA82F25751B5A0047CBBE /* ConnectOperatorStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7CA82E25751B5A0047CBBE /* ConnectOperatorStyle.swift */; };
+		1AA738A72578DD0300E1120F /* ConnectStatusStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA738A62578DD0300E1120F /* ConnectStatusStyle.swift */; };
+		1AA738AE2578E0D500E1120F /* ConnectAnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA738AD2578E0D500E1120F /* ConnectAnimationView.swift */; };
 		1AA738B225790D5A00E1120F /* AlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA738B125790D5A00E1120F /* AlertView.swift */; };
 		1AA738B625790D9900E1120F /* ActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA738B525790D9900E1120F /* ActionButton.swift */; };
 		1AA738B925790DB400E1120F /* ActionButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA738B825790DB400E1120F /* ActionButtonStyle.swift */; };
@@ -265,13 +265,13 @@
 		1A6EBB0225ADB82000EE325D /* MediaUpgradeActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaUpgradeActionView.swift; sourceTree = "<group>"; };
 		1A6EBB0625ADB84200EE325D /* MediaUpgradeActionStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaUpgradeActionStyle.swift; sourceTree = "<group>"; };
 		1A6EBB2425ADE36900EE325D /* MediaUpgradePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaUpgradePresenter.swift; sourceTree = "<group>"; };
-		1A7CA81C2574D6370047CBBE /* QueueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueView.swift; sourceTree = "<group>"; };
-		1A7CA8202574D6760047CBBE /* QueueOperatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueOperatorView.swift; sourceTree = "<group>"; };
-		1A7CA8232574D68E0047CBBE /* QueueStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueStatusView.swift; sourceTree = "<group>"; };
-		1A7CA8262574D6F40047CBBE /* QueueStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueStyle.swift; sourceTree = "<group>"; };
-		1A7CA82E25751B5A0047CBBE /* QueueOperatorStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueOperatorStyle.swift; sourceTree = "<group>"; };
-		1AA738A62578DD0300E1120F /* QueueStatusStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueStatusStyle.swift; sourceTree = "<group>"; };
-		1AA738AD2578E0D500E1120F /* QueueAnimationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueAnimationView.swift; sourceTree = "<group>"; };
+		1A7CA81C2574D6370047CBBE /* ConnectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectView.swift; sourceTree = "<group>"; };
+		1A7CA8202574D6760047CBBE /* ConnectOperatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectOperatorView.swift; sourceTree = "<group>"; };
+		1A7CA8232574D68E0047CBBE /* ConnectStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectStatusView.swift; sourceTree = "<group>"; };
+		1A7CA8262574D6F40047CBBE /* ConnectStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectStyle.swift; sourceTree = "<group>"; };
+		1A7CA82E25751B5A0047CBBE /* ConnectOperatorStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectOperatorStyle.swift; sourceTree = "<group>"; };
+		1AA738A62578DD0300E1120F /* ConnectStatusStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectStatusStyle.swift; sourceTree = "<group>"; };
+		1AA738AD2578E0D500E1120F /* ConnectAnimationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectAnimationView.swift; sourceTree = "<group>"; };
 		1AA738B125790D5A00E1120F /* AlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertView.swift; sourceTree = "<group>"; };
 		1AA738B525790D9900E1120F /* ActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButton.swift; sourceTree = "<group>"; };
 		1AA738B825790DB400E1120F /* ActionButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButtonStyle.swift; sourceTree = "<group>"; };
@@ -559,7 +559,7 @@
 				1ABD6C5325B574EF00D56EFA /* Bubble */,
 				1A6EBB2025ADDB8500EE325D /* MediaUpgrade */,
 				1A6075DE2582207E00569B0E /* ImageView */,
-				1AA7389A2578DB6800E1120F /* Queue */,
+				1AA7389A2578DB6800E1120F /* Connect */,
 				1A60B0022567F1EB00E53F53 /* Header */,
 				1A60B0122567FC2900E53F53 /* Button */,
 				1A56D53B257E248200141BC8 /* PoweredBy */,
@@ -863,8 +863,8 @@
 			isa = PBXGroup;
 			children = (
 				1AA738AC2578E0C500E1120F /* Animation */,
-				1A7CA8202574D6760047CBBE /* QueueOperatorView.swift */,
-				1A7CA82E25751B5A0047CBBE /* QueueOperatorStyle.swift */,
+				1A7CA8202574D6760047CBBE /* ConnectOperatorView.swift */,
+				1A7CA82E25751B5A0047CBBE /* ConnectOperatorStyle.swift */,
 			);
 			path = Operator;
 			sourceTree = "<group>";
@@ -872,27 +872,27 @@
 		1A7CA83225751B800047CBBE /* Status */ = {
 			isa = PBXGroup;
 			children = (
-				1A7CA8232574D68E0047CBBE /* QueueStatusView.swift */,
-				1AA738A62578DD0300E1120F /* QueueStatusStyle.swift */,
+				1A7CA8232574D68E0047CBBE /* ConnectStatusView.swift */,
+				1AA738A62578DD0300E1120F /* ConnectStatusStyle.swift */,
 			);
 			path = Status;
 			sourceTree = "<group>";
 		};
-		1AA7389A2578DB6800E1120F /* Queue */ = {
+		1AA7389A2578DB6800E1120F /* Connect */ = {
 			isa = PBXGroup;
 			children = (
 				1A7CA83125751B670047CBBE /* Operator */,
 				1A7CA83225751B800047CBBE /* Status */,
-				1A7CA81C2574D6370047CBBE /* QueueView.swift */,
-				1A7CA8262574D6F40047CBBE /* QueueStyle.swift */,
+				1A7CA81C2574D6370047CBBE /* ConnectView.swift */,
+				1A7CA8262574D6F40047CBBE /* ConnectStyle.swift */,
 			);
-			path = Queue;
+			path = Connect;
 			sourceTree = "<group>";
 		};
 		1AA738AC2578E0C500E1120F /* Animation */ = {
 			isa = PBXGroup;
 			children = (
-				1AA738AD2578E0D500E1120F /* QueueAnimationView.swift */,
+				1AA738AD2578E0D500E1120F /* ConnectAnimationView.swift */,
 			);
 			path = Animation;
 			sourceTree = "<group>";
@@ -1240,7 +1240,7 @@
 				1AC7A77B25838AE800567FF8 /* ChatItem.swift in Sources */,
 				1ABD6C9625B6F46700D56EFA /* AlertViewController+AudioUpgrade.swift in Sources */,
 				1A38A8A8258B652B0089DE7B /* OperatorChatMessageStyle.swift in Sources */,
-				1A7CA8212574D6760047CBBE /* QueueOperatorView.swift in Sources */,
+				1A7CA8212574D6760047CBBE /* ConnectOperatorView.swift in Sources */,
 				1A5F81442588BBD900A605DA /* ChatPickMediaButtonProperties.swift in Sources */,
 				1A4AD3C7256E863900468BFB /* ThemeColor.swift in Sources */,
 				1A63B2F3257A3F3D00508478 /* AlertViewController.swift in Sources */,
@@ -1253,9 +1253,9 @@
 				1AE15E3B257A5CC900A642C0 /* AlertConf.swift in Sources */,
 				1A60AF9F25667CA800E53F53 /* FontProvider.swift in Sources */,
 				1A60AFCE2566958900E53F53 /* ViewFactory.swift in Sources */,
-				1A7CA82F25751B5A0047CBBE /* QueueOperatorStyle.swift in Sources */,
+				1A7CA82F25751B5A0047CBBE /* ConnectOperatorStyle.swift in Sources */,
 				1A60AF96256675C400E53F53 /* UIColor+Extensions.swift in Sources */,
-				1A7CA81D2574D6370047CBBE /* QueueView.swift in Sources */,
+				1A7CA81D2574D6370047CBBE /* ConnectView.swift in Sources */,
 				1ABD6C5525B574FF00D56EFA /* BubbleView.swift in Sources */,
 				1A0C142925B84E5500B00695 /* EngagementViewController.swift in Sources */,
 				1A60AFE425669B0400E53F53 /* ChatCoordinator.swift in Sources */,
@@ -1282,7 +1282,7 @@
 				1A6EB04F25A707CC0007081A /* MessageSender+StringValue.swift in Sources */,
 				1A60B0202567FD1B00E53F53 /* BackButtonProperties.swift in Sources */,
 				1A4AF5CD25AEF4A0002CD0F4 /* AlertViewController+Message.swift in Sources */,
-				1A7CA8242574D68E0047CBBE /* QueueStatusView.swift in Sources */,
+				1A7CA8242574D68E0047CBBE /* ConnectStatusView.swift in Sources */,
 				1A5F81402588B7BD00A605DA /* ChatMessageEntryStyle.swift in Sources */,
 				1A60AF7A25656E0500E53F53 /* Theme.swift in Sources */,
 				1A4AD3B3256D2A7600468BFB /* VisitorChatMessageStyle.swift in Sources */,
@@ -1298,12 +1298,12 @@
 				1A6EBB0725ADB84200EE325D /* MediaUpgradeActionStyle.swift in Sources */,
 				1A4AD3CA256E864800468BFB /* ThemeColorStyle.swift in Sources */,
 				1A0C143125B8547200B00695 /* EngagementStyle.swift in Sources */,
-				1A7CA8272574D6F40047CBBE /* QueueStyle.swift in Sources */,
+				1A7CA8272574D6F40047CBBE /* ConnectStyle.swift in Sources */,
 				1AC7A7552582594200567FF8 /* Configuration.swift in Sources */,
 				1A0C143625B85C3300B00695 /* CallView.swift in Sources */,
-				1AA738A72578DD0300E1120F /* QueueStatusStyle.swift in Sources */,
+				1AA738A72578DD0300E1120F /* ConnectStatusStyle.swift in Sources */,
 				1A60AFDD25669A4200E53F53 /* ChatView.swift in Sources */,
-				1AA738AE2578E0D500E1120F /* QueueAnimationView.swift in Sources */,
+				1AA738AE2578E0D500E1120F /* ConnectAnimationView.swift in Sources */,
 				1ABD6C8125B6E97400D56EFA /* MediaUpgradeAlertConf.swift in Sources */,
 				1A0C142D25B8545600B00695 /* EngagementView.swift in Sources */,
 				1A5F814D2588C0B800A605DA /* KeyboardObserver.swift in Sources */,
