@@ -39,7 +39,7 @@ class CallViewController: EngagementViewController, MediaUpgradePresenter {
             case .connecting(name: let name, imageUrl: let imageUrl):
                 view.setConnecState(.connecting(name: name, imageUrl: imageUrl), animated: true)
             case .hideConnect:
-                view.hideConnectView(animated: true)
+                view.setConnecState(.none, animated: true)
             }
         }
     }

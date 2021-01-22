@@ -17,15 +17,6 @@ class CallView: EngagementView {
         connectView.setState(state, animated: animated)
     }
 
-    func hideConnectView(animated: Bool) {
-        UIView.transition(with: connectView,
-                          duration: animated ? 0.3 : 0.0,
-                          options: .transitionCrossDissolve,
-                          animations: {
-                            self.connectView.isHidden = true
-                          })
-    }
-
     private func setup() {}
 
     private func layout() {

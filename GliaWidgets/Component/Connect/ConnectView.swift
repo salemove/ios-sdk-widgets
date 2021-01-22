@@ -2,7 +2,7 @@ import UIKit
 
 class ConnectView: UIView {
     enum State: Equatable {
-        case initial
+        case none
         case queue
         case connecting(name: String?, imageUrl: String?)
         case connected(name: String?, imageUrl: String?)
@@ -11,7 +11,7 @@ class ConnectView: UIView {
     let operatorView: ConnectOperatorView
 
     private let style: ConnectStyle
-    private var state: State = .initial
+    private var state: State = .none
     private let statusView = ConnectStatusView()
     private var connectTimer: Timer?
     private var connectCounter: Int = 0
@@ -32,7 +32,7 @@ class ConnectView: UIView {
         self.state = state
 
         switch state {
-        case .initial:
+        case .none:
             hide(animated: animated)
         case .queue:
             operatorView.startAnimating(animated: animated)
@@ -88,7 +88,7 @@ class ConnectView: UIView {
     }
 
     private func setup() {
-        setState(.initial, animated: false)
+        setState(.none, animated: false)
     }
 
     private func layout() {
