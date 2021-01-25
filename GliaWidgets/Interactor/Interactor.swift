@@ -12,6 +12,8 @@ enum InteractorEvent {
     case receivedMessage(Message)
     case messagesUpdated([Message])
     case upgradeOffer(MediaUpgradeOffer, answer: AnswerWithSuccessBlock)
+    case audioStreamAdded(AudioStreamable)
+    case audioStreamError(SalemoveError)
     case error(SalemoveError)
 }
 
@@ -211,7 +213,13 @@ extension Interactor: Interactable {
 
     var onAudioStreamAdded: AudioStreamAddedBlock {
         print("Called: \(#function)")
-        return { _, _ in }
+        return { stream, error in
+            if let stream = stream {
+                self.notify(.audioStreamAdded(stream))
+            } else if let error = error {
+                self.notify(.audioStreamError(error))
+            }
+        }
     }
 
     var onVideoStreamAdded: VideoStreamAddedBlock {

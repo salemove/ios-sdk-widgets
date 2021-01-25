@@ -29,11 +29,21 @@ class CallViewModel: EngagementViewModel, ViewModel {
         case startAudio(AnswerWithSuccessBlock)
     }
 
+    private enum AudioState {
+        case none
+        case remote(AudioStreamable)
+        case local(AudioStreamable)
+        case twoWay(local: AudioStreamable, remote: AudioStreamable)
+    }
+
     var action: ((Action) -> Void)?
     var delegate: ((DelegateEvent) -> Void)?
 
     private var callKind: CallKind {
         didSet { update(for: callKind) }
+    }
+    private var audioState: AudioState = .none {
+        didSet { update(for: audioState) }
     }
     private let startAction: StartAction
 
@@ -88,6 +98,24 @@ class CallViewModel: EngagementViewModel, ViewModel {
         }
     }
 
+    private func update(for callKind: CallKind) {
+        switch callKind {
+        case .audio:
+            action?(.setTitle(Strings.Audio.title))
+        case .video:
+            action?(.setTitle(Strings.Video.title))
+        }
+    }
+
+    private func update(for audioState: AudioState) {
+        switch audioState {
+        case .twoWay:
+            action?(.hideConnect)
+        default:
+            break
+        }
+    }
+
     private func requestMedia() {
         let name = interactor.engagedOperator?.firstName
         let imageUrl = interactor.engagedOperator?.picture?.url
@@ -114,12 +142,29 @@ class CallViewModel: EngagementViewModel, ViewModel {
         }
     }
 
-    private func update(for callKind: CallKind) {
-        switch callKind {
-        case .audio:
-            action?(.setTitle(Strings.Audio.title))
-        case .video:
-            action?(.setTitle(Strings.Video.title))
+    private func updateAudioState(with stream: AudioStreamable) {
+        if stream.isRemote {
+            switch audioState {
+            case .none:
+                audioState = .remote(stream)
+            case .remote:
+                audioState = .remote(stream)
+            case .local(let local):
+                audioState = .twoWay(local: local, remote: stream)
+            case .twoWay(local: let local, remote: _):
+                audioState = .twoWay(local: local, remote: stream)
+            }
+        } else {
+            switch audioState {
+            case .none:
+                audioState = .local(stream)
+            case .remote(let remote):
+                audioState = .twoWay(local: stream, remote: remote)
+            case .local:
+                audioState = .local(stream)
+            case .twoWay(local: _, remote: let remote):
+                audioState = .twoWay(local: stream, remote: remote)
+            }
         }
     }
 
@@ -127,6 +172,11 @@ class CallViewModel: EngagementViewModel, ViewModel {
         super.interactorEvent(event)
 
         switch event {
+        case .audioStreamAdded(let stream):
+            updateAudioState(with: stream)
+        case .audioStreamError(let error):
+            action?(.hideConnect)
+            showAlert(for: error)
         default:
             break
         }

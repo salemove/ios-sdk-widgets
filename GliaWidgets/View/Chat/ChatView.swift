@@ -101,7 +101,7 @@ class ChatView: EngagementView {
                                             excludingEdge: .bottom)
 
         addSubview(tableView)
-        tableView.autoPinEdge(.top, to: .bottom, of: header)
+        tableView.autoPinEdge(.top, to: .bottom, of: header, withOffset: 10)
         tableView.autoPinEdge(toSuperviewSafeArea: .left)
         tableView.autoPinEdge(toSuperviewSafeArea: .right)
 
