@@ -130,8 +130,8 @@ class CallViewModel: EngagementViewModel, ViewModel {
             }
         }()
 
-        interactor.request(mediaType) { [weak self] in
-            self?.action?(.hideConnect)
+        interactor.request(mediaType) {
+
         } failure: { [weak self] error, salemoveError in
             self?.action?(.hideConnect)
             if let error = error {
