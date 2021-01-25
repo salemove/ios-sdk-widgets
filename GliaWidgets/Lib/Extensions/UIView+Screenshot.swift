@@ -9,12 +9,8 @@ extension UIView {
             false,
             0
         )
-
-        if let context = UIGraphicsGetCurrentContext() {
-            layer.render(in: context)
-            viewScreenshot = UIGraphicsGetImageFromCurrentImageContext()
-        }
-
+        drawHierarchy(in: bounds, afterScreenUpdates: true)
+        viewScreenshot = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
 
         return viewScreenshot

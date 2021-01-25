@@ -26,6 +26,11 @@ class GliaWindow: UIWindow {
     private var animationImageView: UIImageView?
 
     private var maximizeScreeshot: UIImage? {
+        let backImageView = UIImageView()
+        backImageView.image = UIApplication.shared.windows.first?.screenshot
+        backImageView.frame = CGRect(origin: .zero, size: bounds.size)
+        insertSubview(backImageView, at: 0)
+
         frame.origin.x = UIScreen.main.bounds.size.width
         isHidden = false
         alpha = 1.0
@@ -33,6 +38,9 @@ class GliaWindow: UIWindow {
         alpha = 0.0
         isHidden = true
         frame = UIScreen.main.bounds
+
+        backImageView.removeFromSuperview()
+
         return maximizeScreeshot
     }
 
@@ -49,12 +57,12 @@ class GliaWindow: UIWindow {
     }
 
     func maximize(animated: Bool) {
-        if let bubbleWindow = bubbleWindow {
-            animationImageView?.frame = bubbleWindow.frame
-        }
+        guard let animationImageView = animationImageView else { return }
 
-        animationImageView?.image = maximizeScreeshot
-        animationImageView?.isHidden = false
+        bubbleWindow.map({ animationImageView.frame = $0.frame })
+
+        animationImageView.image = maximizeScreeshot
+        animationImageView.isHidden = false
 
         UIView.animate(withDuration: animated ? 0.4 : 0.0,
                        delay: 0.0,
@@ -70,6 +78,7 @@ class GliaWindow: UIWindow {
                         self.bubbleWindow = nil
                         self.animationImageView?.removeFromSuperview()
                         self.animationImageView = nil
+                        self.animationImageView?.isUserInteractionEnabled = false
                        })
         setState(.maximized)
     }
