@@ -20,17 +20,13 @@ class EngagementViewModel {
         case finished
     }
 
-    enum AlertState {
-        case presenting
-        case none
-    }
-
     var engagementAction: ((Action) -> Void)?
     var engagementDelegate: ((DelegateEvent) -> Void)?
 
     let interactor: Interactor
     let alertConf: AlertConf
-    var alertState: AlertState = .none
+
+    private static var alertPresenters = Set<EngagementViewModel>()
 
     init(interactor: Interactor, alertConf: AlertConf) {
         self.interactor = interactor
@@ -88,7 +84,7 @@ class EngagementViewModel {
 
         switch state {
         case .inactive:
-            if alertState == .none {
+            if EngagementViewModel.alertPresenters.isEmpty {
                 engagementDelegate?(.finished)
             }
         case .engaged(let engagedOperator):
@@ -100,7 +96,7 @@ class EngagementViewModel {
 
     func showAlert(with conf: MessageAlertConf, dismissed: (() -> Void)? = nil) {
         let dismissHandler = {
-            self.alertState = .none
+            EngagementViewModel.alertPresenters.remove(self)
             dismissed?()
 
             switch self.interactor.state {
@@ -110,9 +106,7 @@ class EngagementViewModel {
                 break
             }
         }
-
-        alertState = .presenting
-
+        EngagementViewModel.alertPresenters.insert(self)
         engagementAction?(.showAlert(conf, dismissed: { dismissHandler() }))
     }
 
@@ -165,5 +159,15 @@ class EngagementViewModel {
             self.showAlert(with: self.alertConf.unexpectedError,
                            dismissed: { self.endSession() })
         }
+    }
+}
+
+extension EngagementViewModel: Hashable {
+    static func == (lhs: EngagementViewModel, rhs: EngagementViewModel) -> Bool {
+        return ObjectIdentifier(lhs) == ObjectIdentifier(rhs)
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(ObjectIdentifier(self))
     }
 }
