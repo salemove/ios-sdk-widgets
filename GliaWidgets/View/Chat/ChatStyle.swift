@@ -5,6 +5,7 @@ public class ChatStyle: EngagementStyle {
     public var visitorMessage: VisitorChatMessageStyle
     public var operatorMessage: OperatorChatMessageStyle
     public var messageEntry: ChatMessageEntryStyle
+    public var callBubble: BubbleStyle
 
     public init(header: HeaderStyle,
                 connect: ConnectStyle,
@@ -14,11 +15,13 @@ public class ChatStyle: EngagementStyle {
                 title: String,
                 visitorMessage: VisitorChatMessageStyle,
                 operatorMessage: OperatorChatMessageStyle,
-                messageEntry: ChatMessageEntryStyle) {
+                messageEntry: ChatMessageEntryStyle,
+                callBubble: BubbleStyle) {
         self.title = title
         self.visitorMessage = visitorMessage
         self.operatorMessage = operatorMessage
         self.messageEntry = messageEntry
+        self.callBubble = callBubble
         super.init(header: header,
                    connect: connect,
                    backgroundColor: backgroundColor,

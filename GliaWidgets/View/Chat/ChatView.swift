@@ -5,10 +5,12 @@ class ChatView: EngagementView {
     var numberOfSections: (() -> Int?)?
     var numberOfRows: ((Int) -> Int?)?
     var itemForRow: ((Int, Int) -> ChatItem?)?
+    var callTapped: (() -> Void)?
 
     private let style: ChatStyle
     private let tableView = UITableView()
     private var messageEntryViewBottomConstraint: NSLayoutConstraint!
+    private var callBubble: BubbleView?
     private let keyboardObserver = KeyboardObserver()
 
     init(with style: ChatStyle) {
@@ -79,6 +81,10 @@ class ChatView: EngagementView {
 
     func refreshAll() {
         tableView.reloadData()
+    }
+
+    func showCallBubble(animated: Bool) {
+        guard callBubble == nil else { return }
     }
 
     private func setup() {

@@ -66,6 +66,10 @@ public class Theme {
                                                  sendButtonColor: color.primary,
                                                  separatorColor: color.baseShade,
                                                  backgroundColor: color.background)
+        let userImage = UserImageStyle(placeholderImage: Asset.operatorPlaceholder.image,
+                                       placeholderColor: color.baseLight,
+                                       backgroundColor: color.primary)
+        let callBubble = BubbleStyle(userImage: userImage)
         return ChatStyle(header: header,
                          connect: connect,
                          backgroundColor: color.background,
@@ -74,7 +78,8 @@ public class Theme {
                          title: Chat.title,
                          visitorMessage: visitorMessage,
                          operatorMessage: operatorMessage,
-                         messageEntry: messageEntry)
+                         messageEntry: messageEntry,
+                         callBubble: callBubble)
     }()
 
     public lazy var call: CallStyle = {
