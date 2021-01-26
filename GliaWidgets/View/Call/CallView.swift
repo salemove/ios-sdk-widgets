@@ -38,7 +38,8 @@ class CallView: EngagementView {
         connectView.autoAlignAxis(toSuperviewAxis: .vertical)
 
         let chatButton = UIButton(type: .system)
-        chatButton.setTitle("Chat", for: .normal)
+        chatButton.setTitle("CHAT", for: .normal)
+        chatButton.setTitleColor(.white, for: .normal)
         chatButton.addTarget(self, action: #selector(chatTap), for: .touchUpInside)
         contentView.addSubview(chatButton)
         chatButton.autoCenterInSuperview()

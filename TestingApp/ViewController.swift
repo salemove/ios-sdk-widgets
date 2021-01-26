@@ -68,7 +68,7 @@ extension ViewController {
                            visitorContext: visitorContext,
                            using: theme)
         } catch {
-            alert(message: "Failed to start.\nCheck SDK params in Settings.")
+            alert(message: "Failed to start\nCheck Glia parameters in Settings")
         }
     }
 
