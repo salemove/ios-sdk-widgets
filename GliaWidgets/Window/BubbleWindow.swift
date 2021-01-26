@@ -34,20 +34,15 @@ class BubbleWindow: UIWindow {
         rootViewController = BubbleViewController(bubbleView: bubbleView)
 
         bubbleView.tap = { [weak self] in self?.tap?() }
-
-        let panRecognizer = UIPanGestureRecognizer(target: self, action: #selector(pan(_:)))
-        addGestureRecognizer(panRecognizer)
+        bubbleView.pan = { [weak self] in self?.pan($0) }
     }
 
     private func layout() {
         frame = initialFrame
     }
 
-    @objc func pan(_ gesture: UIPanGestureRecognizer) {
-        let translation = gesture.translation(in: self)
-        guard let gestureView = gesture.view else { return }
-
-        var frame = gestureView.frame
+    private func pan(_ translation: CGPoint) {
+        var frame = self.frame
         frame.origin.x += translation.x
         frame.origin.y += translation.y
 
@@ -60,10 +55,8 @@ class BubbleWindow: UIWindow {
         let bounds = UIScreen.main.bounds.inset(by: boundsInsets)
 
         if bounds.contains(insetFrame) {
-            gestureView.frame = frame
+            self.frame = frame
         }
-
-        gesture.setTranslation(.zero, in: self)
     }
 }
 

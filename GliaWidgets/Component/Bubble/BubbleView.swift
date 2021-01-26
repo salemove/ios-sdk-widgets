@@ -9,6 +9,7 @@ class BubbleView: UIView {
         didSet { update(kind) }
     }
     var tap: (() -> Void)?
+    var pan: ((CGPoint) -> Void)?
 
     private let style: BubbleStyle
     private var userImageView: UserImageView?
@@ -48,6 +49,8 @@ class BubbleView: UIView {
 
         let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapped))
         addGestureRecognizer(tapRecognizer)
+        let panRecognizer = UIPanGestureRecognizer(target: self, action: #selector(pan(_:)))
+        addGestureRecognizer(panRecognizer)
 
         update(kind)
     }
@@ -78,5 +81,12 @@ class BubbleView: UIView {
 
     @objc private func tapped() {
         tap?()
+    }
+
+    @objc func pan(_ gesture: UIPanGestureRecognizer) {
+        let translation = gesture.translation(in: self)
+        guard gesture.view != nil else { return }
+        pan?(translation)
+        gesture.setTranslation(.zero, in: self)
     }
 }
