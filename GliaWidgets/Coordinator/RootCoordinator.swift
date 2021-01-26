@@ -7,7 +7,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
     private enum Engagement {
         case none
         case chat(ChatViewController)
-        case call(CallViewController, ChatViewController)
+        case call(CallViewController, ChatViewController, Bool)
     }
 
     var delegate: ((DelegateEvent) -> Void)?
@@ -47,9 +47,11 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
             let chatViewController = startChat()
             let callViewController = startCall(.audio,
                                                startAction: .default)
+            let isUpgraded = false
             engagement = .call(callViewController,
-                               chatViewController)
-            navigationPresenter.setViewControllers([chatViewController, callViewController],
+                               chatViewController,
+                               isUpgraded)
+            navigationPresenter.setViewControllers([callViewController],
                                                    animated: false)
         case .videoCall:
             break
@@ -76,7 +78,18 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
         coordinator.delegate = { [weak self] event in
             switch event {
             case .back:
-                self?.window?.minimize(animated: true)
+                switch self?.engagement {
+                case .chat:
+                    self?.window?.minimize(animated: true)
+                case .call(let callViewController, _, let isUpgraded):
+                    if isUpgraded {
+                        self?.window?.minimize(animated: true)
+                    } else {
+                        self?.navigationPresenter.pop(to: callViewController, animated: true)
+                    }
+                default:
+                    break
+                }
             case .engaged(operatorImageUrl: let url):
                 self?.window?.bubbleKind = .userImage(url: url)
             case .finished:
@@ -101,7 +114,16 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
         coordinator.delegate = { [weak self] event in
             switch event {
             case .back:
-                self?.window?.minimize(animated: true)
+                switch self?.engagement {
+                case .call(_, let chatViewController, let isUpgraded):
+                    if isUpgraded {
+                        self?.navigationPresenter.pop(to: chatViewController, animated: true)
+                    } else {
+                        self?.window?.minimize(animated: true)
+                    }
+                default:
+                    break
+                }
             case .engaged(operatorImageUrl: let url):
                 self?.window?.bubbleKind = .userImage(url: url)
             case .finished:
@@ -109,8 +131,12 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
                 self?.end()
             case .chat:
                 switch self?.engagement {
-                case .call(_, let chatViewController):
-                    self?.navigationPresenter.pop(to: chatViewController, animated: true)
+                case .call(_, let chatViewController, let isUpgraded):
+                    if isUpgraded {
+                        self?.navigationPresenter.pop(to: chatViewController, animated: true)
+                    } else {
+                        self?.navigationPresenter.push(chatViewController, animated: true)
+                    }
                 default:
                     break
                 }
@@ -160,8 +186,10 @@ extension RootCoordinator {
         case .chat(let chatViewController):
             let callViewController = startCall(.audio,
                                                startAction: .startAudio(answer))
+            let isUpgraded = true
             engagement = .call(callViewController,
-                               chatViewController)
+                               chatViewController,
+                               isUpgraded)
             navigationPresenter.push(callViewController)
         default:
             break
