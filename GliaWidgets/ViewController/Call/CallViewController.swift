@@ -32,14 +32,16 @@ class CallViewController: EngagementViewController, MediaUpgradePresenter {
 
         viewModel.action = { action in
             switch action {
-            case .setTitle(let title):
-                view.header.title = title
             case .queue:
                 view.setConnecState(.queue, animated: false)
             case .connecting(name: let name, imageUrl: let imageUrl):
                 view.setConnecState(.connecting(name: name, imageUrl: imageUrl), animated: true)
             case .hideConnect:
                 view.setConnecState(.none, animated: true)
+            case .setTitle(let title):
+                view.header.title = title
+            case .setOperatorImage(url: let url):
+                view.operatorImageView.setImage(from: url, animated: true)
             }
         }
     }

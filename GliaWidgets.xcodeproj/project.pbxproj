@@ -14,6 +14,11 @@
 		1A0C143A25B85C3D00B00695 /* CallStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0C143925B85C3D00B00695 /* CallStyle.swift */; };
 		1A0C143F25B85DB400B00695 /* CallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0C143E25B85DB400B00695 /* CallViewController.swift */; };
 		1A0C144425B868FC00B00695 /* CallCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0C144325B868FC00B00695 /* CallCoordinator.swift */; };
+		1A0C9A6725C16DC400815406 /* Theme+Chat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0C9A6625C16DC400815406 /* Theme+Chat.swift */; };
+		1A0C9A6D25C16EED00815406 /* Theme+Call.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0C9A6C25C16EED00815406 /* Theme+Call.swift */; };
+		1A0C9A7125C16F4A00815406 /* Theme+Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0C9A7025C16F4A00815406 /* Theme+Alert.swift */; };
+		1A0C9A7925C16F9700815406 /* Theme+AlertConf.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0C9A7825C16F9700815406 /* Theme+AlertConf.swift */; };
+		1A0C9A7F25C1732F00815406 /* Theme+MinimizedBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0C9A7E25C1732F00815406 /* Theme+MinimizedBubble.swift */; };
 		1A205D6225655CB2003AA3CD /* GliaWidgets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A205D5825655CB1003AA3CD /* GliaWidgets.framework */; };
 		1A205D6725655CB2003AA3CD /* GliaWidgetsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A205D6625655CB2003AA3CD /* GliaWidgetsTests.swift */; };
 		1A205D6925655CB2003AA3CD /* GliaWidgets.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A205D5B25655CB1003AA3CD /* GliaWidgets.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -173,6 +178,11 @@
 		1A0C143925B85C3D00B00695 /* CallStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallStyle.swift; sourceTree = "<group>"; };
 		1A0C143E25B85DB400B00695 /* CallViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallViewController.swift; sourceTree = "<group>"; };
 		1A0C144325B868FC00B00695 /* CallCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallCoordinator.swift; sourceTree = "<group>"; };
+		1A0C9A6625C16DC400815406 /* Theme+Chat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Theme+Chat.swift"; sourceTree = "<group>"; };
+		1A0C9A6C25C16EED00815406 /* Theme+Call.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Theme+Call.swift"; sourceTree = "<group>"; };
+		1A0C9A7025C16F4A00815406 /* Theme+Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Theme+Alert.swift"; sourceTree = "<group>"; };
+		1A0C9A7825C16F9700815406 /* Theme+AlertConf.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Theme+AlertConf.swift"; sourceTree = "<group>"; };
+		1A0C9A7E25C1732F00815406 /* Theme+MinimizedBubble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Theme+MinimizedBubble.swift"; sourceTree = "<group>"; };
 		1A205D5825655CB1003AA3CD /* GliaWidgets.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GliaWidgets.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A205D5B25655CB1003AA3CD /* GliaWidgets.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GliaWidgets.h; sourceTree = "<group>"; };
 		1A205D5C25655CB1003AA3CD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -598,6 +608,11 @@
 			children = (
 				1AC7A7AB2587849200567FF8 /* Alert */,
 				1A60AF7925656E0500E53F53 /* Theme.swift */,
+				1A0C9A6625C16DC400815406 /* Theme+Chat.swift */,
+				1A0C9A6C25C16EED00815406 /* Theme+Call.swift */,
+				1A0C9A7025C16F4A00815406 /* Theme+Alert.swift */,
+				1A0C9A7825C16F9700815406 /* Theme+AlertConf.swift */,
+				1A0C9A7E25C1732F00815406 /* Theme+MinimizedBubble.swift */,
 				1A4AD3C0256E74C600468BFB /* ThemeFont.swift */,
 				1A4AD3C3256E7A0C00468BFB /* ThemeFontStyle.swift */,
 				1A4AD3C6256E863900468BFB /* ThemeColor.swift */,
@@ -1242,11 +1257,13 @@
 				1A38A8A8258B652B0089DE7B /* OperatorChatMessageStyle.swift in Sources */,
 				1A7CA8212574D6760047CBBE /* ConnectOperatorView.swift in Sources */,
 				1A5F81442588BBD900A605DA /* ChatPickMediaButtonProperties.swift in Sources */,
+				1A0C9A7925C16F9700815406 /* Theme+AlertConf.swift in Sources */,
 				1A4AD3C7256E863900468BFB /* ThemeColor.swift in Sources */,
 				1A63B2F3257A3F3D00508478 /* AlertViewController.swift in Sources */,
 				1A60B01D2567FCAD00E53F53 /* ButtonProperties.swift in Sources */,
 				1AC7A7482582237500567FF8 /* GliaWindow.swift in Sources */,
 				1A4AF5D325AEF543002CD0F4 /* AlertViewController+Confirmation.swift in Sources */,
+				1A0C9A7F25C1732F00815406 /* Theme+MinimizedBubble.swift in Sources */,
 				1A60AF7E25656F0400E53F53 /* Glia.swift in Sources */,
 				1A60AFB62566825400E53F53 /* ViewModel.swift in Sources */,
 				1A60AFB9256682AF00E53F53 /* FlowCoordinator.swift in Sources */,
@@ -1274,7 +1291,9 @@
 				1A6EB05725A717CB0007081A /* ChatMessage.swift in Sources */,
 				1AA738B225790D5A00E1120F /* AlertView.swift in Sources */,
 				1A0C143F25B85DB400B00695 /* CallViewController.swift in Sources */,
+				1A0C9A7125C16F4A00815406 /* Theme+Alert.swift in Sources */,
 				1A38A8AC258B65D00089DE7B /* ChatMessageStyle.swift in Sources */,
+				1A0C9A6D25C16EED00815406 /* Theme+Call.swift in Sources */,
 				1A60AFAF256680EF00E53F53 /* L10n.swift in Sources */,
 				1A60B0192567FC8A00E53F53 /* ButtonKind.swift in Sources */,
 				1A60B04D256D0CF600E53F53 /* ChatMessageContentView.swift in Sources */,
@@ -1303,6 +1322,7 @@
 				1A0C143625B85C3300B00695 /* CallView.swift in Sources */,
 				1AA738A72578DD0300E1120F /* ConnectStatusStyle.swift in Sources */,
 				1A60AFDD25669A4200E53F53 /* ChatView.swift in Sources */,
+				1A0C9A6725C16DC400815406 /* Theme+Chat.swift in Sources */,
 				1AA738AE2578E0D500E1120F /* ConnectAnimationView.swift in Sources */,
 				1ABD6C8125B6E97400D56EFA /* MediaUpgradeAlertConf.swift in Sources */,
 				1A0C142D25B8545600B00695 /* EngagementView.swift in Sources */,

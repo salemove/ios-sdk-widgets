@@ -13,7 +13,7 @@ class ImageView: UIImageView {
                           }, completion: nil)
     }
 
-    func setImage(from url: String?, animated: Bool, finished: ((UIImage?) -> Void)?) {
+    func setImage(from url: String?, animated: Bool, finished: ((UIImage?) -> Void)? = nil) {
         guard
             let urlString = url,
             let url = URL(string: urlString)

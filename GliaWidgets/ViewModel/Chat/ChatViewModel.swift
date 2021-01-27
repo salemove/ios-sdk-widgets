@@ -22,6 +22,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case offerAudioUpgrade(AudioUpgradeAlertConf,
                                accepted: () -> Void,
                                declined: () -> Void)
+        case showCallBubble
     }
 
     enum DelegateEvent {

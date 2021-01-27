@@ -13,6 +13,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
         case connecting(name: String?, imageUrl: String?)
         case hideConnect
         case setTitle(String)
+        case setOperatorImage(url: String?)
     }
 
     enum DelegateEvent {
@@ -76,7 +77,6 @@ class CallViewModel: EngagementViewModel, ViewModel {
             answer(true, nil)
             action?(.connecting(name: interactor.engagedOperator?.firstName,
                                 imageUrl: interactor.engagedOperator?.picture?.url))
-            // wait for audio connected event
         }
     }
 
@@ -111,6 +111,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
         switch audioState {
         case .twoWay:
             action?(.hideConnect)
+            action?(.setOperatorImage(url: interactor.engagedOperator?.picture?.url))
         default:
             break
         }

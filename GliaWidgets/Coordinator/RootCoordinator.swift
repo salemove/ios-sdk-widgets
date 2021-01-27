@@ -69,9 +69,10 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
         window?.endEditing(true)
         dismissWindow(animated: true) {
             self.window = nil
-            self.gliaDelegate?.event(.ended)
             self.engagement = .none
             self.navigationPresenter.setViewControllers([], animated: false)
+            self.removeAllCoordinators()
+            self.gliaDelegate?.event(.ended)
         }
     }
 
@@ -96,11 +97,11 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
                 }
             case .engaged(operatorImageUrl: let url):
                 self?.window?.bubbleKind = .userImage(url: url)
+            case .audioUpgradeAccepted(let answer):
+                self?.audioUpgradeAccepted(answer: answer)
             case .finished:
                 self?.popCoordinator()
                 self?.end()
-            case .audioUpgradeAccepted(let answer):
-                self?.audioUpgradeAccepted(answer: answer)
             }
         }
         pushCoordinator(coordinator)
@@ -130,9 +131,6 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
                 }
             case .engaged(operatorImageUrl: let url):
                 self?.window?.bubbleKind = .userImage(url: url)
-            case .finished:
-                self?.popCoordinator()
-                self?.end()
             case .chat:
                 switch self?.engagement {
                 case .call(_, let chatViewController, let upgradedFrom):
@@ -144,6 +142,9 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
                 default:
                     break
                 }
+            case .finished:
+                self?.popCoordinator()
+                self?.end()
             }
         }
         pushCoordinator(coordinator)
