@@ -7,7 +7,12 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
     private enum Engagement {
         case none
         case chat(ChatViewController)
-        case call(CallViewController, ChatViewController, Bool)
+        case call(CallViewController, ChatViewController, UpgradedFrom)
+    }
+
+    private enum UpgradedFrom {
+        case none
+        case chat
     }
 
     var delegate: ((DelegateEvent) -> Void)?
@@ -47,10 +52,9 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
             let chatViewController = startChat()
             let callViewController = startCall(.audio,
                                                startAction: .default)
-            let isUpgraded = false
             engagement = .call(callViewController,
                                chatViewController,
-                               isUpgraded)
+                               .none)
             navigationPresenter.setViewControllers([callViewController],
                                                    animated: false)
         case .videoCall:
@@ -81,8 +85,8 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
                 switch self?.engagement {
                 case .chat:
                     self?.window?.minimize(animated: true)
-                case .call(let callViewController, _, let isUpgraded):
-                    if isUpgraded {
+                case .call(let callViewController, _, let upgradedFrom):
+                    if upgradedFrom == .chat {
                         self?.window?.minimize(animated: true)
                     } else {
                         self?.navigationPresenter.pop(to: callViewController, animated: true)
@@ -115,8 +119,8 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
             switch event {
             case .back:
                 switch self?.engagement {
-                case .call(_, let chatViewController, let isUpgraded):
-                    if isUpgraded {
+                case .call(_, let chatViewController, let upgradedFrom):
+                    if upgradedFrom == .chat {
                         self?.navigationPresenter.pop(to: chatViewController, animated: true)
                     } else {
                         self?.window?.minimize(animated: true)
@@ -131,8 +135,8 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
                 self?.end()
             case .chat:
                 switch self?.engagement {
-                case .call(_, let chatViewController, let isUpgraded):
-                    if isUpgraded {
+                case .call(_, let chatViewController, let upgradedFrom):
+                    if upgradedFrom == .chat {
                         self?.navigationPresenter.pop(to: chatViewController, animated: true)
                     } else {
                         self?.navigationPresenter.push(chatViewController, animated: true)
@@ -186,10 +190,9 @@ extension RootCoordinator {
         case .chat(let chatViewController):
             let callViewController = startCall(.audio,
                                                startAction: .startAudio(answer))
-            let isUpgraded = true
             engagement = .call(callViewController,
                                chatViewController,
-                               isUpgraded)
+                               .chat)
             navigationPresenter.push(callViewController)
         default:
             break
