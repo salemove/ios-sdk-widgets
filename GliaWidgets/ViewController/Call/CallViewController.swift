@@ -38,6 +38,7 @@ class CallViewController: EngagementViewController, MediaUpgradePresenter {
                 view.setConnectState(.connecting(name: name, imageUrl: imageUrl), animated: true)
             case .connected(name: let name, imageUrl: let imageUrl):
                 view.setConnectState(.connected(name: name, imageUrl: imageUrl), animated: true)
+                view.connectView.operatorView.setSize(.large, animated: true)
             case .setTitle(let title):
                 view.header.title = title
             case .setCallDurationText(let text):

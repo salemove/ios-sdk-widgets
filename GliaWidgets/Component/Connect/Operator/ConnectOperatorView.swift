@@ -1,12 +1,36 @@
 import UIKit
 
 class ConnectOperatorView: UIView {
+    enum Size {
+        case normal
+        case large
+
+        var width: CGFloat {
+            switch self {
+            case .normal:
+                return 80
+            case .large:
+                return 120
+            }
+        }
+
+        var height: CGFloat {
+            switch self {
+            case .normal:
+                return 80
+            case .large:
+                return 120
+            }
+        }
+    }
+
     let imageView: UserImageView
 
     private let style: ConnectOperatorStyle
     private var animationView: ConnectAnimationView?
-    private let kImageInset: CGFloat = 10
-    private let kImageViewSize = CGSize(width: 80, height: 80)
+    private var size: Size = .normal
+    private var widthLayoutConstraint: NSLayoutConstraint!
+    private var heightLayoutConstraint: NSLayoutConstraint!
     private let kAnimationViewSize: CGFloat = 142
 
     init(with style: ConnectOperatorStyle) {
@@ -19,6 +43,16 @@ class ConnectOperatorView: UIView {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    func setSize(_ size: Size, animated: Bool) {
+        self.size = size
+        layoutIfNeeded()
+        UIView.animate(withDuration: animated ? 0.3 : 0.0) {
+            self.widthLayoutConstraint.constant = size.width
+            self.heightLayoutConstraint.constant = size.height
+            self.layoutIfNeeded()
+        }
     }
 
     func startAnimating(animated: Bool) {
@@ -46,7 +80,8 @@ class ConnectOperatorView: UIView {
 
     private func layout() {
         NSLayoutConstraint.autoSetPriority(.defaultHigh) {
-            imageView.autoSetDimensions(to: kImageViewSize)
+            widthLayoutConstraint = imageView.autoSetDimension(.width, toSize: size.width)
+            heightLayoutConstraint = imageView.autoSetDimension(.height, toSize: size.height)
         }
 
         addSubview(imageView)
