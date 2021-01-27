@@ -1,7 +1,6 @@
 extension Theme {
     var callStyle: CallStyle {
         typealias Call = L10n.Call
-        typealias Connect = L10n.Connect
 
         let header = HeaderStyle(titleFont: font.subtitle,
                                  titleColor: color.baseLight,
@@ -14,24 +13,24 @@ extension Theme {
                                            backgroundColor: color.primary)
         let queueOperator = ConnectOperatorStyle(operatorImage: operatorImage,
                                                  animationColor: .lightGray)
-        let queue = ConnectStatusStyle(firstText: Connect.Queue.firstText,
+        let queue = ConnectStatusStyle(firstText: Call.Connect.Queue.firstText,
                                        firstTextFont: font.header1,
                                        firstTextFontColor: color.baseLight,
-                                       secondText: Connect.Queue.secondText,
+                                       secondText: Call.Connect.Queue.secondText,
                                        secondTextFont: font.subtitle,
                                        secondTextFontColor: color.baseLight)
-        let connecting = ConnectStatusStyle(firstText: Connect.Connecting.firstText,
+        let connecting = ConnectStatusStyle(firstText: Call.Connect.Connecting.firstText,
                                             firstTextFont: font.header2,
                                             firstTextFontColor: color.baseLight,
-                                            secondText: Connect.Connecting.secondText,
+                                            secondText: Call.Connect.Connecting.secondText,
                                             secondTextFont: font.header2,
                                             secondTextFontColor: color.baseLight)
-        let connected = ConnectStatusStyle(firstText: Connect.Connected.firstText,
+        let connected = ConnectStatusStyle(firstText: Call.Connect.Connected.firstText,
                                            firstTextFont: font.header1,
                                            firstTextFontColor: color.baseLight,
-                                           secondText: Connect.Connected.secondText,
+                                           secondText: Call.Connect.Connected.secondText,
                                            secondTextFont: font.subtitle,
-                                           secondTextFontColor: color.primary)
+                                           secondTextFontColor: color.baseLight)
         let connect = ConnectStyle(queueOperator: queueOperator,
                                    queue: queue,
                                    connecting: connecting,
@@ -47,10 +46,6 @@ extension Theme {
                          endButton: endButton,
                          preferredStatusBarStyle: .lightContent,
                          audioTitle: Call.Audio.title,
-                         videoTitle: Call.Video.title,
-                         operatorNameFont: font.header1,
-                         operatorNameColor: color.baseLight,
-                         durationFont: font.bodyText,
-                         durationColor: color.baseLight)
+                         videoTitle: Call.Video.title)
     }
 }

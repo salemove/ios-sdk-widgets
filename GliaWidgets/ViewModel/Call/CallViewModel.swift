@@ -11,11 +11,9 @@ class CallViewModel: EngagementViewModel, ViewModel {
     enum Action {
         case queue
         case connecting(name: String?, imageUrl: String?)
-        case hideConnect
+        case connected(name: String?, imageUrl: String?)
+        case setCallDurationText(String)
         case setTitle(String)
-        case setOperatorName(String?)
-        case setOperatorImage(url: String?)
-        case setDuration(String?)
     }
 
     enum DelegateEvent {
@@ -112,13 +110,16 @@ class CallViewModel: EngagementViewModel, ViewModel {
     private func update(for audioState: AudioState) {
         switch audioState {
         case .twoWay:
-            action?(.hideConnect)
-            action?(.setOperatorName(interactor.engagedOperator?.firstName))
-            action?(.setOperatorImage(url: interactor.engagedOperator?.picture?.url))
-            action?(.setDuration("00:00"))
+            action?(.connected(name: interactor.engagedOperator?.firstName,
+                               imageUrl: interactor.engagedOperator?.picture?.url))
+            updateCallDuration()
         default:
             break
         }
+    }
+
+    private func updateCallDuration() {
+        action?(.setCallDurationText("00:00"))
     }
 
     private func requestMedia() {
@@ -138,7 +139,6 @@ class CallViewModel: EngagementViewModel, ViewModel {
         interactor.request(mediaType) {
 
         } failure: { [weak self] error, salemoveError in
-            self?.action?(.hideConnect)
             if let error = error {
                 self?.showAlert(for: error)
             } else if let error = salemoveError {
@@ -180,7 +180,6 @@ class CallViewModel: EngagementViewModel, ViewModel {
         case .audioStreamAdded(let stream):
             updateAudioState(with: stream)
         case .audioStreamError(let error):
-            action?(.hideConnect)
             showAlert(for: error)
         default:
             break

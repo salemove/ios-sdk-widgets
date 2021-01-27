@@ -1,7 +1,6 @@
 extension Theme {
     var chatStyle: ChatStyle {
         typealias Chat = L10n.Chat
-        typealias Connect = L10n.Connect
 
         let header = HeaderStyle(titleFont: font.header2,
                                  titleColor: color.baseLight,
@@ -14,22 +13,22 @@ extension Theme {
                                            backgroundColor: color.primary)
         let queueOperator = ConnectOperatorStyle(operatorImage: operatorImage,
                                                  animationColor: color.primary)
-        let queue = ConnectStatusStyle(firstText: Connect.Queue.firstText,
+        let queue = ConnectStatusStyle(firstText: Chat.Connect.Queue.firstText,
                                        firstTextFont: font.header1,
                                        firstTextFontColor: color.baseDark,
-                                       secondText: Connect.Queue.secondText,
+                                       secondText: Chat.Connect.Queue.secondText,
                                        secondTextFont: font.subtitle,
                                        secondTextFontColor: color.baseNormal)
-        let connecting = ConnectStatusStyle(firstText: Connect.Connecting.firstText,
+        let connecting = ConnectStatusStyle(firstText: Chat.Connect.Connecting.firstText,
                                             firstTextFont: font.header2,
                                             firstTextFontColor: color.baseDark,
-                                            secondText: Connect.Connecting.secondText,
+                                            secondText: Chat.Connect.Connecting.secondText,
                                             secondTextFont: font.header2,
                                             secondTextFontColor: color.baseDark)
-        let connected = ConnectStatusStyle(firstText: Connect.Connected.firstText,
+        let connected = ConnectStatusStyle(firstText: Chat.Connect.Connected.firstText,
                                            firstTextFont: font.header1,
                                            firstTextFontColor: color.baseDark,
-                                           secondText: Connect.Connected.secondText,
+                                           secondText: Chat.Connect.Connected.secondText,
                                            secondTextFont: font.subtitle,
                                            secondTextFontColor: color.primary)
         let connect = ConnectStyle(queueOperator: queueOperator,

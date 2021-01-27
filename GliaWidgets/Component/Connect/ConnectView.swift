@@ -9,10 +9,10 @@ class ConnectView: UIView {
     }
 
     let operatorView: ConnectOperatorView
+    let statusView = ConnectStatusView()
 
     private let style: ConnectStyle
     private var state: State = .none
-    private let statusView = ConnectStatusView()
     private var connectTimer: Timer?
     private var connectCounter: Int = 0
 

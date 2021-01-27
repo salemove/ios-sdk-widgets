@@ -83,6 +83,26 @@ public enum L10n {
       /// AUDIO CALL
       public static let title = L10n.tr("Localizable", "call.audio.title")
     }
+    public enum Connect {
+      public enum Connected {
+        /// {operatorName}
+        public static let firstText = L10n.tr("Localizable", "call.connect.connected.firstText")
+        /// {callDuration}
+        public static let secondText = L10n.tr("Localizable", "call.connect.connected.secondText")
+      }
+      public enum Connecting {
+        /// Connecting with {operatorName}
+        public static let firstText = L10n.tr("Localizable", "call.connect.connecting.firstText")
+        /// 
+        public static let secondText = L10n.tr("Localizable", "call.connect.connecting.secondText")
+      }
+      public enum Queue {
+        /// CompanyName
+        public static let firstText = L10n.tr("Localizable", "call.connect.queue.firstText")
+        /// An MSR will be with you shortly.
+        public static let secondText = L10n.tr("Localizable", "call.connect.queue.secondText")
+      }
+    }
     public enum EndButton {
       /// End
       public static let title = L10n.tr("Localizable", "call.endButton.title")
@@ -96,6 +116,26 @@ public enum L10n {
   public enum Chat {
     /// Chat
     public static let title = L10n.tr("Localizable", "chat.title")
+    public enum Connect {
+      public enum Connected {
+        /// {operatorName}
+        public static let firstText = L10n.tr("Localizable", "chat.connect.connected.firstText")
+        /// {operatorName} has joined the conversation.
+        public static let secondText = L10n.tr("Localizable", "chat.connect.connected.secondText")
+      }
+      public enum Connecting {
+        /// Connecting with {operatorName}
+        public static let firstText = L10n.tr("Localizable", "chat.connect.connecting.firstText")
+        /// 
+        public static let secondText = L10n.tr("Localizable", "chat.connect.connecting.secondText")
+      }
+      public enum Queue {
+        /// CompanyName
+        public static let firstText = L10n.tr("Localizable", "chat.connect.queue.firstText")
+        /// An MSR will be with you shortly.
+        public static let secondText = L10n.tr("Localizable", "chat.connect.queue.secondText")
+      }
+    }
     public enum EndButton {
       /// End
       public static let title = L10n.tr("Localizable", "chat.endButton.title")
@@ -107,27 +147,6 @@ public enum L10n {
         /// Delivered
         public static let delivered = L10n.tr("Localizable", "chat.message.status.delivered")
       }
-    }
-  }
-
-  public enum Connect {
-    public enum Connected {
-      /// {operatorName}
-      public static let firstText = L10n.tr("Localizable", "connect.connected.firstText")
-      /// {operatorName} has joined the conversation.
-      public static let secondText = L10n.tr("Localizable", "connect.connected.secondText")
-    }
-    public enum Connecting {
-      /// Connecting with {operatorName}
-      public static let firstText = L10n.tr("Localizable", "connect.connecting.firstText")
-      /// 
-      public static let secondText = L10n.tr("Localizable", "connect.connecting.secondText")
-    }
-    public enum Queue {
-      /// CompanyName
-      public static let firstText = L10n.tr("Localizable", "connect.queue.firstText")
-      /// An MSR will be with you shortly.
-      public static let secondText = L10n.tr("Localizable", "connect.queue.secondText")
     }
   }
 }
