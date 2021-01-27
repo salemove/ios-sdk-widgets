@@ -2,6 +2,8 @@ import UIKit
 
 class CallView: EngagementView {
     let operatorImageView = ImageView()
+    let operatorNameLabel = UILabel()
+    let durationLabel = UILabel()
     var chatTapped: (() -> Void)?
 
     private let style: CallStyle
@@ -20,9 +22,23 @@ class CallView: EngagementView {
     }
 
     private func setup() {
-        operatorImageView.contentMode = .scaleAspectFit
+        operatorNameLabel.font = style.operatorNameFont
+        operatorNameLabel.textColor = style.operatorNameColor
+        operatorNameLabel.textAlignment = .center
 
-        callStackView.addArrangedSubviews([operatorImageView])
+        durationLabel.font = style.durationFont
+        durationLabel.textColor = style.durationColor
+        durationLabel.textAlignment = .center
+
+        operatorImageView.contentMode = .scaleAspectFill
+        operatorImageView.clipsToBounds = true
+
+        callStackView.axis = .vertical
+        callStackView.addArrangedSubviews(
+            [operatorNameLabel,
+             durationLabel,
+             operatorImageView]
+        )
     }
 
     private func layout() {
@@ -46,8 +62,11 @@ class CallView: EngagementView {
         contentView.addSubview(callStackView)
         callStackView.autoPinEdge(toSuperviewEdge: .left)
         callStackView.autoPinEdge(toSuperviewEdge: .right)
-        callStackView.autoMatch(.height, to: .width, of: callStackView)
         callStackView.autoAlignAxis(toSuperviewAxis: .horizontal)
+        callStackView.setCustomSpacing(8, after: operatorNameLabel)
+        callStackView.setCustomSpacing(14, after: durationLabel)
+
+        operatorImageView.autoMatch(.height, to: .width, of: operatorImageView)
 
         let chatButton = UIButton(type: .system)
         chatButton.setTitle("CHAT", for: .normal)

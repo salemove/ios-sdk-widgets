@@ -40,8 +40,12 @@ class CallViewController: EngagementViewController, MediaUpgradePresenter {
                 view.setConnecState(.none, animated: true)
             case .setTitle(let title):
                 view.header.title = title
+            case .setOperatorName(let name):
+                view.operatorNameLabel.text = name
             case .setOperatorImage(url: let url):
                 view.operatorImageView.setImage(from: url, animated: true)
+            case .setDuration(let duration):
+                view.durationLabel.text = duration
             }
         }
     }
