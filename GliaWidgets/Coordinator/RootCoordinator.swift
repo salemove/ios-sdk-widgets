@@ -99,6 +99,13 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
                 self?.window?.bubbleKind = .userImage(url: url)
             case .audioUpgradeAccepted(let answer):
                 self?.audioUpgradeAccepted(answer: answer)
+            case .call:
+                switch self?.engagement {
+                case .call(let callViewController, _, _):
+                    self?.navigationPresenter.push(callViewController, animated: true)
+                default:
+                    break
+                }
             case .finished:
                 self?.popCoordinator()
                 self?.end()

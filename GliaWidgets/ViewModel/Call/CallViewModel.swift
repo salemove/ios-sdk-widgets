@@ -119,7 +119,8 @@ class CallViewModel: EngagementViewModel, ViewModel {
     }
 
     private func updateCallDuration() {
-        action?(.setCallDurationText("00:00"))
+        let text = Strings.Connect.Connected.secondText.withCallDuration("00:00")
+        action?(.setCallDurationText(text))
     }
 
     private func requestMedia() {

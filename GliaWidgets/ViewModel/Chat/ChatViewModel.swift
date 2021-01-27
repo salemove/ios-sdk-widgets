@@ -7,6 +7,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case viewDidLoad
         case messageTextChanged(String)
         case sendTapped(message: String)
+        case callBubbleTapped
     }
 
     enum Action {
@@ -27,6 +28,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
 
     enum DelegateEvent {
         case audioUpgradeAccepted(AnswerWithSuccessBlock)
+        case call
     }
 
     var action: ((Action) -> Void)?
@@ -54,6 +56,8 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             sendMessagePreview(message)
         case .sendTapped(message: let message):
             send(message)
+        case .callBubbleTapped:
+            delegate?(.call)
         }
     }
 
@@ -141,7 +145,10 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         switch offer.type {
         case .audio:
             action?(.offerAudioUpgrade(alertConf.audioUpgrade.withOperatorName(operatorName),
-                                       accepted: { self.delegate?(.audioUpgradeAccepted(answer)) },
+                                       accepted: {
+                                        self.delegate?(.audioUpgradeAccepted(answer))
+                                        self.action?(.showCallBubble)
+                                       },
                                        declined: { answer(false, nil) }))
         default:
             break

@@ -5,6 +5,7 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
         case back
         case engaged(operatorImageUrl: String?)
         case audioUpgradeAccepted(AnswerWithSuccessBlock)
+        case call
         case finished
     }
 
@@ -44,6 +45,8 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
             switch event {
             case .audioUpgradeAccepted(let answer):
                 self?.delegate?(.audioUpgradeAccepted(answer))
+            case .call:
+                self?.delegate?(.call)
             }
         }
         return ChatViewController(viewModel: viewModel,
