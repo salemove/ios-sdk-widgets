@@ -33,6 +33,7 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter {
         view.itemForRow = { return viewModel.item(for: $0, in: $1) }
         view.messageEntryView.textChanged = { viewModel.event(.messageTextChanged($0)) }
         view.messageEntryView.sendTapped = { viewModel.event(.sendTapped(message: $0)) }
+        view.callBubbleTapped = { viewModel.event(.callBubbleTapped) }
 
         viewModel.action = { action in
             switch action {
@@ -56,8 +57,8 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter {
                 view.updateItemsUserImage(animated: animated)
             case .offerAudioUpgrade(let conf, accepted: let accepted, declined: let declined):
                 self.offerAudioUpgrade(with: conf, accepted: accepted, declined: declined)
-            case .showCallBubble:
-                view.showCallBubble(animated: true)
+            case .showCallBubble(let imageUrl):
+                view.showCallBubble(with: imageUrl, animated: true)
             }
         }
     }

@@ -5,7 +5,7 @@ class ChatView: EngagementView {
     var numberOfSections: (() -> Int?)?
     var numberOfRows: ((Int) -> Int?)?
     var itemForRow: ((Int, Int) -> ChatItem?)?
-    var callTapped: (() -> Void)?
+    var callBubbleTapped: (() -> Void)?
 
     private let style: ChatStyle
     private let tableView = UITableView()
@@ -13,12 +13,26 @@ class ChatView: EngagementView {
     private var callBubble: BubbleView?
     private let keyboardObserver = KeyboardObserver()
 
+    private let kCallBubbleEdgeInset: CGFloat = 10
+    private let kCallBubbleSize = CGSize(width: 60, height: 60)
+    private var callBubbleBounds: CGRect {
+        return CGRect(x: safeAreaInsets.left + kCallBubbleEdgeInset,
+                      y: header.frame.size.height + kCallBubbleEdgeInset,
+                      width: frame.size.width - safeAreaInsets.right - kCallBubbleEdgeInset,
+                      height: messageEntryView.frame.origin.y - kCallBubbleEdgeInset)
+    }
+
     init(with style: ChatStyle) {
         self.style = style
         self.messageEntryView = ChatMessageEntryView(with: style.messageEntry)
         super.init(with: style)
         setup()
         layout()
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        moveCallBubbleVisible(animated: true)
     }
 
     func setConnectState(_ state: ConnectView.State, animated: Bool) {
@@ -81,10 +95,6 @@ class ChatView: EngagementView {
 
     func refreshAll() {
         tableView.reloadData()
-    }
-
-    func showCallBubble(animated: Bool) {
-        guard callBubble == nil else { return }
     }
 
     private func setup() {
@@ -150,6 +160,26 @@ class ChatView: EngagementView {
                 tableView.endUpdates()
             }
         }
+    }
+}
+
+extension ChatView {
+    func showCallBubble(with imageUrl: String?, animated: Bool) {
+        guard callBubble == nil else { return }
+
+        let callBubble = BubbleView(with: style.callBubble)
+        callBubble.kind = .userImage(url: imageUrl)
+        callBubble.tap = { [weak self] in self?.callBubbleTapped?() }
+        callBubble.frame = CGRect(origin: CGPoint(x: callBubbleBounds.width - kCallBubbleSize.width,
+                                                  y: callBubbleBounds.height - kCallBubbleSize.height),
+                                  size: kCallBubbleSize)
+        self.callBubble = callBubble
+        addSubview(callBubble)
+    }
+
+    private func moveCallBubbleVisible(animated: Bool) {
+        guard let callBubble = callBubble else { return }
+        bringSubviewToFront(callBubble)
     }
 }
 

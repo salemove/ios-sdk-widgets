@@ -23,7 +23,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case offerAudioUpgrade(AudioUpgradeAlertConf,
                                accepted: () -> Void,
                                declined: () -> Void)
-        case showCallBubble
+        case showCallBubble(imageUrl: String?)
     }
 
     enum DelegateEvent {
@@ -147,7 +147,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             action?(.offerAudioUpgrade(alertConf.audioUpgrade.withOperatorName(operatorName),
                                        accepted: {
                                         self.delegate?(.audioUpgradeAccepted(answer))
-                                        self.action?(.showCallBubble)
+                                        self.action?(.showCallBubble(imageUrl: self.interactor.engagedOperator?.picture?.url))
                                        },
                                        declined: { answer(false, nil) }))
         default:
