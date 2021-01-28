@@ -16,10 +16,11 @@ class ChatView: EngagementView {
     private let kCallBubbleEdgeInset: CGFloat = 10
     private let kCallBubbleSize = CGSize(width: 60, height: 60)
     private var callBubbleBounds: CGRect {
-        return CGRect(x: safeAreaInsets.left + kCallBubbleEdgeInset,
-                      y: header.frame.size.height + kCallBubbleEdgeInset,
-                      width: frame.size.width - safeAreaInsets.right - kCallBubbleEdgeInset,
-                      height: messageEntryView.frame.origin.y - kCallBubbleEdgeInset)
+        let x = safeAreaInsets.left + kCallBubbleEdgeInset
+        let y = header.frame.maxY + kCallBubbleEdgeInset
+        let width = frame.size.width - x - safeAreaInsets.right - kCallBubbleEdgeInset
+        let height = messageEntryView.frame.minY - header.frame.maxY - 2 * kCallBubbleEdgeInset
+        return CGRect(x: x, y: y, width: width, height: height)
     }
 
     init(with style: ChatStyle) {
@@ -166,20 +167,48 @@ class ChatView: EngagementView {
 extension ChatView {
     func showCallBubble(with imageUrl: String?, animated: Bool) {
         guard callBubble == nil else { return }
-
         let callBubble = BubbleView(with: style.callBubble)
         callBubble.kind = .userImage(url: imageUrl)
         callBubble.tap = { [weak self] in self?.callBubbleTapped?() }
-        callBubble.frame = CGRect(origin: CGPoint(x: callBubbleBounds.width - kCallBubbleSize.width,
-                                                  y: callBubbleBounds.height - kCallBubbleSize.height),
+        callBubble.pan = { [weak self] in self?.moveCallBubble($0, animated: true) }
+        callBubble.frame = CGRect(origin: CGPoint(x: callBubbleBounds.maxX - kCallBubbleSize.width,
+                                                  y: callBubbleBounds.maxY - kCallBubbleSize.height),
                                   size: kCallBubbleSize)
         self.callBubble = callBubble
         addSubview(callBubble)
     }
 
+    private func moveCallBubble(_ translation: CGPoint, animated: Bool) {
+        guard let callBubble = callBubble else { return }
+
+        var frame = callBubble.frame
+        frame.origin.x += translation.x
+        frame.origin.y += translation.y
+
+        if callBubbleBounds.contains(frame) {
+            callBubble.frame = frame
+        }
+    }
+
     private func moveCallBubbleVisible(animated: Bool) {
         guard let callBubble = callBubble else { return }
         bringSubviewToFront(callBubble)
+
+        var frame: CGRect = callBubble.frame
+
+        if callBubble.frame.minX < callBubbleBounds.minX {
+            frame.origin.x = callBubbleBounds.minX
+        }
+        if callBubble.frame.minY < callBubbleBounds.minY {
+            frame.origin.y = callBubbleBounds.minY
+        }
+        if callBubble.frame.maxX > callBubbleBounds.maxX {
+            frame.origin.x = callBubbleBounds.maxX - kCallBubbleSize.width
+        }
+        if callBubble.frame.maxY > callBubbleBounds.maxY {
+            frame.origin.y = callBubbleBounds.maxY - kCallBubbleSize.height
+        }
+        callBubble.frame = frame
     }
 }
 
@@ -188,7 +217,6 @@ extension ChatView {
         keyboardObserver.keyboardWillShow = { [unowned self] properties in
             let y = self.tableView.contentSize.height - properties.finalFrame.height
             let offset = CGPoint(x: 0, y: y)
-
             UIView.animate(withDuration: properties.duration,
                            delay: 0.0,
                            options: properties.animationOptions,
