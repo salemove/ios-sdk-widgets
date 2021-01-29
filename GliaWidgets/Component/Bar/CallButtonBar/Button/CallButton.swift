@@ -28,6 +28,7 @@ class CallButton: UIView {
     private let titleLabel = UILabel()
     private let circleView = UIView()
     private let kCircleSize: CGFloat = 60
+    private let kImageViewSize = CGSize(width: 21, height: 21)
 
     public init(kind: Kind, style: CallButtonStyle) {
         self.kind = kind
@@ -68,13 +69,12 @@ class CallButton: UIView {
         circleView.autoAlignAxis(toSuperviewAxis: .vertical)
 
         circleView.addSubview(imageView)
-        imageView.autoPinEdgesToSuperviewEdges()
+        imageView.autoSetDimensions(to: kImageViewSize)
+        imageView.autoCenterInSuperview()
 
         addSubview(titleLabel)
-        titleLabel.autoPinEdge(.top, to: .bottom, of: circleView)
-        titleLabel.autoPinEdge(toSuperviewEdge: .left, withInset: 0, relation: .greaterThanOrEqual)
-        titleLabel.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
-        titleLabel.autoPinEdge(toSuperviewEdge: .bottom)
+        titleLabel.autoPinEdge(.top, to: .bottom, of: circleView, withOffset: 4)
+        titleLabel.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .top)
     }
 
     private func update(for state: State) {

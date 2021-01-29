@@ -22,8 +22,8 @@ class CallButtonBar: UIView {
 
     private func setup() {
         stackView.axis = .horizontal
-        stackView.distribution = .equalCentering
-        stackView.spacing = 12
+        stackView.distribution = .fillEqually
+        stackView.spacing = 2
     }
 
     private func layout() {

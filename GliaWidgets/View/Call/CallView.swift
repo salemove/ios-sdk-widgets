@@ -20,7 +20,7 @@ class CallView: EngagementView {
     }
 
     private func setup() {
-        buttonBar.visibleButtons = [.chat]
+        buttonBar.visibleButtons = [.chat, .video, .mute, .speaker, .minimize]
     }
 
     private func layout() {
