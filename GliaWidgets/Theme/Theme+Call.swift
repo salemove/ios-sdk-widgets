@@ -40,12 +40,14 @@ extension Theme {
                                           titleFont: font.buttonLabel,
                                           titleColor: color.baseLight,
                                           backgroundColor: color.systemNegative)
+        let buttonBar = CallButtonBarStyle()
         return CallStyle(header: header,
                          connect: connect,
                          backgroundColor: .clear,
                          endButton: endButton,
                          preferredStatusBarStyle: .lightContent,
                          audioTitle: Call.Audio.title,
-                         videoTitle: Call.Video.title)
+                         videoTitle: Call.Video.title,
+                         buttonBar: buttonBar)
     }
 }

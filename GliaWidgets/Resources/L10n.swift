@@ -83,6 +83,28 @@ public enum L10n {
       /// AUDIO CALL
       public static let title = L10n.tr("Localizable", "call.audio.title")
     }
+    public enum Buttons {
+      public enum Chat {
+        /// Chat
+        public static let title = L10n.tr("Localizable", "call.buttons.chat.title")
+      }
+      public enum Minimize {
+        /// Minimize
+        public static let title = L10n.tr("Localizable", "call.buttons.minimize.title")
+      }
+      public enum Mute {
+        /// Mute
+        public static let title = L10n.tr("Localizable", "call.buttons.mute.title")
+      }
+      public enum Speaker {
+        /// Speaker
+        public static let title = L10n.tr("Localizable", "call.buttons.speaker.title")
+      }
+      public enum Video {
+        /// Video
+        public static let title = L10n.tr("Localizable", "call.buttons.video.title")
+      }
+    }
     public enum Connect {
       public enum Connected {
         /// {operatorName}

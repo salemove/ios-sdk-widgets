@@ -4,12 +4,14 @@ class CallButton: UIView {
     enum State {
         case active
         case inactive
-        case disabled
     }
 
     var tap: (() -> Void)?
-    var state: State = .disabled {
+    var state: State = .inactive {
         didSet { update(for: state) }
+    }
+    var isEnabled: Bool = true {
+        didSet { setIsEnabled(isEnabled) }
     }
 
     private let style: CallButtonStyle
@@ -38,6 +40,7 @@ class CallButton: UIView {
         imageView.contentMode = .scaleAspectFit
 
         titleLabel.textAlignment = .center
+        titleLabel.numberOfLines = 0
 
         update(for: state)
 
@@ -74,19 +77,21 @@ class CallButton: UIView {
         titleLabel.textColor = style.titleColor
     }
 
+    private func setIsEnabled(_ isEnabled: Bool) {
+        isUserInteractionEnabled = isEnabled
+        alpha = isEnabled ? 1.0 : 0.4
+    }
+
     private func style(for state: State) -> CallButtonStyle.StateStyle {
         switch state {
         case .active:
             return style.active
         case .inactive:
             return style.inactive
-        case .disabled:
-            return style.disabled
         }
     }
 
     @objc private func tapped() {
-        guard state != .disabled else { return }
         tap?()
     }
 }

@@ -49,3 +49,8 @@
 "call.connect.connecting.secondText" = "";
 "call.connect.connected.firstText" = "{operatorName}";
 "call.connect.connected.secondText" = "{callDuration}";
+"call.buttons.chat.title" = "Chat";
+"call.buttons.video.title" = "Video";
+"call.buttons.mute.title" = "Mute";
+"call.buttons.speaker.title" = "Speaker";
+"call.buttons.minimize.title" = "Minimize";

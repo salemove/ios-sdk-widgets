@@ -8,10 +8,8 @@ public struct CallButtonStyle {
         public let title: String
         public let titleFont: UIFont
         public let titleColor: UIColor
-
     }
 
     public var active: StateStyle
     public var inactive: StateStyle
-    public var disabled: StateStyle
 }
