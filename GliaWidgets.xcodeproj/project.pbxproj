@@ -19,6 +19,8 @@
 		1A0C9A7125C16F4A00815406 /* Theme+Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0C9A7025C16F4A00815406 /* Theme+Alert.swift */; };
 		1A0C9A7925C16F9700815406 /* Theme+AlertConf.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0C9A7825C16F9700815406 /* Theme+AlertConf.swift */; };
 		1A0C9A7F25C1732F00815406 /* Theme+MinimizedBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0C9A7E25C1732F00815406 /* Theme+MinimizedBubble.swift */; };
+		1A0C9A8625C4090D00815406 /* CallButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0C9A8525C4090D00815406 /* CallButton.swift */; };
+		1A0C9A8C25C4092400815406 /* CallButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0C9A8B25C4092400815406 /* CallButtonStyle.swift */; };
 		1A205D6225655CB2003AA3CD /* GliaWidgets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A205D5825655CB1003AA3CD /* GliaWidgets.framework */; };
 		1A205D6725655CB2003AA3CD /* GliaWidgetsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A205D6625655CB2003AA3CD /* GliaWidgetsTests.swift */; };
 		1A205D6925655CB2003AA3CD /* GliaWidgets.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A205D5B25655CB1003AA3CD /* GliaWidgets.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -183,6 +185,8 @@
 		1A0C9A7025C16F4A00815406 /* Theme+Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Theme+Alert.swift"; sourceTree = "<group>"; };
 		1A0C9A7825C16F9700815406 /* Theme+AlertConf.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Theme+AlertConf.swift"; sourceTree = "<group>"; };
 		1A0C9A7E25C1732F00815406 /* Theme+MinimizedBubble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Theme+MinimizedBubble.swift"; sourceTree = "<group>"; };
+		1A0C9A8525C4090D00815406 /* CallButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallButton.swift; sourceTree = "<group>"; };
+		1A0C9A8B25C4092400815406 /* CallButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallButtonStyle.swift; sourceTree = "<group>"; };
 		1A205D5825655CB1003AA3CD /* GliaWidgets.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GliaWidgets.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A205D5B25655CB1003AA3CD /* GliaWidgets.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GliaWidgets.h; sourceTree = "<group>"; };
 		1A205D5C25655CB1003AA3CD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -360,6 +364,15 @@
 			isa = PBXGroup;
 			children = (
 				1A0C144325B868FC00B00695 /* CallCoordinator.swift */,
+			);
+			path = Call;
+			sourceTree = "<group>";
+		};
+		1A0C9A8425C4090100815406 /* Call */ = {
+			isa = PBXGroup;
+			children = (
+				1A0C9A8525C4090D00815406 /* CallButton.swift */,
+				1A0C9A8B25C4092400815406 /* CallButtonStyle.swift */,
 			);
 			path = Call;
 			sourceTree = "<group>";
@@ -763,6 +776,7 @@
 		1A60B0122567FC2900E53F53 /* Button */ = {
 			isa = PBXGroup;
 			children = (
+				1A0C9A8425C4090100815406 /* Call */,
 				1AC7A7B42587A07D00567FF8 /* Action */,
 				1A60B0132567FC6400E53F53 /* Style */,
 				1A60B0142567FC7000E53F53 /* Button.swift */,
@@ -1248,6 +1262,7 @@
 				1A60AFD925669A1500E53F53 /* View.swift in Sources */,
 				1A6EBB0325ADB82000EE325D /* MediaUpgradeActionView.swift in Sources */,
 				1A60AFBC256682C800E53F53 /* SubFlowCoordinator.swift in Sources */,
+				1A0C9A8C25C4092400815406 /* CallButtonStyle.swift in Sources */,
 				1A4AF5D725AEF584002CD0F4 /* AlertViewController+MediaUpgrade.swift in Sources */,
 				1A6075E7258220E300569B0E /* UserImageStyle.swift in Sources */,
 				1ABD6C5D25B59D1C00D56EFA /* BubbleWindow.swift in Sources */,
@@ -1353,6 +1368,7 @@
 				1A60AFE825669C5000E53F53 /* ChatStyle.swift in Sources */,
 				1A4AF5C725AEEA42002CD0F4 /* Operator+Extensions.swift in Sources */,
 				1A54B83825A4723E00C9393E /* ChatStorage.swift in Sources */,
+				1A0C9A8625C4090D00815406 /* CallButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
