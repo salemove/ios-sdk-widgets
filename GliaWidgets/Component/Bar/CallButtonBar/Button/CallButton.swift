@@ -1,18 +1,27 @@
 import UIKit
 
 class CallButton: UIView {
+    enum Kind {
+        case chat
+        case video
+        case mute
+        case speaker
+        case minimize
+    }
+
     enum State {
         case active
         case inactive
     }
 
-    var tap: (() -> Void)?
+    var kind: Kind
     var state: State = .inactive {
         didSet { update(for: state) }
     }
     var isEnabled: Bool = true {
         didSet { setIsEnabled(isEnabled) }
     }
+    var tap: (() -> Void)?
 
     private let style: CallButtonStyle
     private let imageView = UIImageView()
@@ -20,7 +29,8 @@ class CallButton: UIView {
     private let circleView = UIView()
     private let kCircleSize: CGFloat = 60
 
-    public init(with style: CallButtonStyle) {
+    public init(kind: Kind, style: CallButtonStyle) {
+        self.kind = kind
         self.style = style
         super.init(frame: .zero)
         setup()

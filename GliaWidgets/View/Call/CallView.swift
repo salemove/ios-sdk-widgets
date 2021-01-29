@@ -5,9 +5,11 @@ class CallView: EngagementView {
 
     private let style: CallStyle
     private let contentView = UIView()
+    private let buttonBar: CallButtonBar
 
     init(with style: CallStyle) {
         self.style = style
+        self.buttonBar = CallButtonBar(with: style.buttonBar)
         super.init(with: style)
         setup()
         layout()
@@ -17,7 +19,9 @@ class CallView: EngagementView {
         connectView.setState(state, animated: animated)
     }
 
-    private func setup() {}
+    private func setup() {
+        buttonBar.visibleButtons = [.chat]
+    }
 
     private func layout() {
         let effect = UIBlurEffect(style: .dark)
@@ -36,6 +40,10 @@ class CallView: EngagementView {
         contentView.addSubview(connectView)
         connectView.autoPinEdge(toSuperviewEdge: .top, withInset: 30)
         connectView.autoAlignAxis(toSuperviewAxis: .vertical)
+
+        contentView.addSubview(buttonBar)
+        buttonBar.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 0, left: 0, bottom: 10, right: 0),
+                                               excludingEdge: .top)
 
         let chatButton = UIButton(type: .system)
         chatButton.setTitle("CHAT", for: .normal)

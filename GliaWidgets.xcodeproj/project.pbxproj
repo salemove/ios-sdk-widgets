@@ -372,18 +372,19 @@
 			path = Call;
 			sourceTree = "<group>";
 		};
-		1A0C9A8425C4090100815406 /* Call */ = {
+		1A0C9A8425C4090100815406 /* Button */ = {
 			isa = PBXGroup;
 			children = (
 				1A0C9A8525C4090D00815406 /* CallButton.swift */,
 				1A0C9A8B25C4092400815406 /* CallButtonStyle.swift */,
 			);
-			path = Call;
+			path = Button;
 			sourceTree = "<group>";
 		};
 		1A0C9A8F25C41AA300815406 /* CallButtonBar */ = {
 			isa = PBXGroup;
 			children = (
+				1A0C9A8425C4090100815406 /* Button */,
 				1A0C9A9025C41AB900815406 /* CallButtonBar.swift */,
 				1A0C9A9625C41D4D00815406 /* CallButtonBarStyle.swift */,
 			);
@@ -798,7 +799,6 @@
 		1A60B0122567FC2900E53F53 /* Button */ = {
 			isa = PBXGroup;
 			children = (
-				1A0C9A8425C4090100815406 /* Call */,
 				1AC7A7B42587A07D00567FF8 /* Action */,
 				1A60B0132567FC6400E53F53 /* Style */,
 				1A60B0142567FC7000E53F53 /* Button.swift */,
