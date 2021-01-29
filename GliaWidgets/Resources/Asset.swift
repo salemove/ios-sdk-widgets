@@ -23,6 +23,7 @@ public enum Asset {
   public static let callChat = ImageAsset(name: "call-chat")
   public static let callMiminize = ImageAsset(name: "call-miminize")
   public static let callMuteActive = ImageAsset(name: "call-mute-active")
+  public static let callMuteInactive = ImageAsset(name: "call-mute-inactive")
   public static let callSpeakerActive = ImageAsset(name: "call-speaker-active")
   public static let callSpeakerInactive = ImageAsset(name: "call-speaker-inactive")
   public static let callVideoActive = ImageAsset(name: "call-video-active")

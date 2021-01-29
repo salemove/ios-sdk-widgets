@@ -1,3 +1,5 @@
+import UIKit
+
 extension Theme {
     var callStyle: CallStyle {
         typealias Call = L10n.Call
@@ -40,7 +42,6 @@ extension Theme {
                                           titleFont: font.buttonLabel,
                                           titleColor: color.baseLight,
                                           backgroundColor: color.systemNegative)
-        let buttonBar = CallButtonBarStyle()
         return CallStyle(header: header,
                          connect: connect,
                          backgroundColor: .clear,
@@ -48,6 +49,85 @@ extension Theme {
                          preferredStatusBarStyle: .lightContent,
                          audioTitle: Call.Audio.title,
                          videoTitle: Call.Video.title,
-                         buttonBar: buttonBar)
+                         buttonBar: buttonBarStyle)
+    }
+
+    private var buttonBarStyle: CallButtonBarStyle {
+        typealias Buttons = L10n.Call.Buttons
+
+        let activeBackgroundColor = UIColor.black.withAlphaComponent(0.4)
+        let inactiveBackgroundColor = UIColor.black.withAlphaComponent(0.4)
+        let activeImageColor = color.baseLight
+        let inactiveImageColor = color.baseLight
+        let activeTitleFont = font.caption
+        let inactiveTitleFont = font.caption
+        let activeTitleColor = color.baseLight
+        let inactiveTitleColor = color.baseLight
+
+        let chatButton = CallButtonStyle(active: CallButtonStyle.StateStyle(backgroundColor: activeBackgroundColor,
+                                                                            image: Asset.callChat.image,
+                                                                            imageColor: activeImageColor,
+                                                                            title: Buttons.Chat.title,
+                                                                            titleFont: activeTitleFont,
+                                                                            titleColor: activeTitleColor),
+                                         inactive: CallButtonStyle.StateStyle(backgroundColor: inactiveBackgroundColor,
+                                                                              image: Asset.callChat.image,
+                                                                              imageColor: inactiveImageColor,
+                                                                              title: Buttons.Chat.title,
+                                                                              titleFont: inactiveTitleFont,
+                                                                              titleColor: inactiveTitleColor))
+        let videoButton = CallButtonStyle(active: CallButtonStyle.StateStyle(backgroundColor: activeBackgroundColor,
+                                                                             image: Asset.callVideoActive.image,
+                                                                             imageColor: activeImageColor,
+                                                                             title: Buttons.Video.title,
+                                                                             titleFont: activeTitleFont,
+                                                                             titleColor: activeTitleColor),
+                                          inactive: CallButtonStyle.StateStyle(backgroundColor: inactiveBackgroundColor,
+                                                                               image: Asset.callVideoInactive.image,
+                                                                               imageColor: inactiveImageColor,
+                                                                               title: Buttons.Video.title,
+                                                                               titleFont: inactiveTitleFont,
+                                                                               titleColor: inactiveTitleColor))
+        let muteButton = CallButtonStyle(active: CallButtonStyle.StateStyle(backgroundColor: activeBackgroundColor,
+                                                                            image: Asset.callMuteActive.image,
+                                                                            imageColor: activeImageColor,
+                                                                            title: Buttons.Mute.title,
+                                                                            titleFont: activeTitleFont,
+                                                                            titleColor: activeTitleColor),
+                                         inactive: CallButtonStyle.StateStyle(backgroundColor: inactiveBackgroundColor,
+                                                                              image: Asset.callMuteInactive.image,
+                                                                              imageColor: inactiveImageColor,
+                                                                              title: Buttons.Mute.title,
+                                                                              titleFont: inactiveTitleFont,
+                                                                              titleColor: inactiveTitleColor))
+        let speakerButton = CallButtonStyle(active: CallButtonStyle.StateStyle(backgroundColor: activeBackgroundColor,
+                                                                               image: Asset.callSpeakerActive.image,
+                                                                               imageColor: activeImageColor,
+                                                                               title: Buttons.Speaker.title,
+                                                                               titleFont: activeTitleFont,
+                                                                               titleColor: activeTitleColor),
+                                            inactive: CallButtonStyle.StateStyle(backgroundColor: inactiveBackgroundColor,
+                                                                                 image: Asset.callSpeakerInactive.image,
+                                                                                 imageColor: inactiveImageColor,
+                                                                                 title: Buttons.Speaker.title,
+                                                                                 titleFont: inactiveTitleFont,
+                                                                                 titleColor: inactiveTitleColor))
+        let minimizeButton = CallButtonStyle(active: CallButtonStyle.StateStyle(backgroundColor: activeBackgroundColor,
+                                                                                image: Asset.callMiminize.image,
+                                                                                imageColor: activeImageColor,
+                                                                                title: Buttons.Minimize.title,
+                                                                                titleFont: activeTitleFont,
+                                                                                titleColor: activeTitleColor),
+                                             inactive: CallButtonStyle.StateStyle(backgroundColor: inactiveBackgroundColor,
+                                                                                  image: Asset.callMiminize.image,
+                                                                                  imageColor: inactiveImageColor,
+                                                                                  title: Buttons.Minimize.title,
+                                                                                  titleFont: inactiveTitleFont,
+                                                                                  titleColor: inactiveTitleColor))
+        return CallButtonBarStyle(chatButton: chatButton,
+                                  videoButton: videoButton,
+                                  muteButton: muteButton,
+                                  speakerButton: speakerButton,
+                                  minimizeButton: minimizeButton)
     }
 }
