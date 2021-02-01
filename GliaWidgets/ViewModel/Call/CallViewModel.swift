@@ -22,6 +22,8 @@ class CallViewModel: EngagementViewModel, ViewModel {
         case connected(name: String?, imageUrl: String?)
         case setCallDurationText(String)
         case setTitle(String)
+        case showButtons([Button])
+        case setButton(Button, enabled: Bool)
     }
 
     enum DelegateEvent {
@@ -78,6 +80,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
     override func start() {
         super.start()
         update(for: callKind)
+        updateButtons()
 
         switch startAction {
         case .default:
@@ -91,6 +94,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
 
     override func update(for state: InteractorState) {
         super.update(for: state)
+        updateButtons()
 
         switch state {
         case .enqueueing:
@@ -111,8 +115,10 @@ class CallViewModel: EngagementViewModel, ViewModel {
         switch callKind {
         case .audio:
             action?(.setTitle(Strings.Audio.title))
+            action?(.showButtons([.chat, .mute, .speaker, .minimize]))
         case .video:
             action?(.setTitle(Strings.Video.title))
+            action?(.showButtons([.chat, .video, .mute, .speaker, .minimize]))
         }
     }
 
@@ -125,6 +131,19 @@ class CallViewModel: EngagementViewModel, ViewModel {
         default:
             break
         }
+    }
+
+    private func updateButtons() {
+        let chatEnabled = interactor.isEngaged
+        let videoEnabled = false
+        let muteEnabled = false
+        let speakerEnabled = false
+        let minimizeEnabled = true
+        action?(.setButton(.chat, enabled: chatEnabled))
+        action?(.setButton(.video, enabled: videoEnabled))
+        action?(.setButton(.mute, enabled: muteEnabled))
+        action?(.setButton(.speaker, enabled: speakerEnabled))
+        action?(.setButton(.minimize, enabled: minimizeEnabled))
     }
 
     private func updateCallDuration() {

@@ -8,6 +8,7 @@ class CallButtonBar: UIView {
 
     private let style: CallButtonBarStyle
     private let stackView = UIStackView()
+    private var buttons = [CallButton]()
 
     init(with style: CallButtonBarStyle) {
         self.style = style
@@ -18,6 +19,10 @@ class CallButtonBar: UIView {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    func setButton(_ kind: CallButton.Kind, enabled: Bool) {
+        button(for: kind)?.isEnabled = enabled
     }
 
     private func setup() {
@@ -33,10 +38,13 @@ class CallButtonBar: UIView {
 
     private func showButtons(_ buttonKinds: [CallButton.Kind]) {
         stackView.removeArrangedSubviews()
-        buttonKinds.forEach { kind in
+        buttons = buttonKinds.map({ kind in
             let button = makeButton(for: kind)
             button.tap = { [weak self] in self?.buttonTapped?(kind) }
-            let wrapper = wrap(button)
+            return button
+        })
+        buttons.forEach {
+            let wrapper = wrap($0)
             stackView.addArrangedSubview(wrapper)
         }
     }
@@ -75,5 +83,9 @@ class CallButtonBar: UIView {
         button.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
         button.autoAlignAxis(toSuperviewAxis: .vertical)
         return wrapper
+    }
+
+    private func button(for kind: CallButton.Kind) -> CallButton? {
+        return buttons.first(where: { $0.kind == kind })
     }
 }

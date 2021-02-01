@@ -19,9 +19,7 @@ class CallView: EngagementView {
         connectView.setState(state, animated: animated)
     }
 
-    private func setup() {
-        buttonBar.visibleButtons = [.chat, .video, .mute, .speaker, .minimize]
-    }
+    private func setup() {}
 
     private func layout() {
         let effect = UIBlurEffect(style: .dark)
@@ -42,7 +40,7 @@ class CallView: EngagementView {
         connectView.autoAlignAxis(toSuperviewAxis: .vertical)
 
         contentView.addSubview(buttonBar)
-        buttonBar.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 0, left: 0, bottom: 10, right: 0),
+        buttonBar.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 0, left: 0, bottom: 20, right: 0),
                                                excludingEdge: .top)
     }
 

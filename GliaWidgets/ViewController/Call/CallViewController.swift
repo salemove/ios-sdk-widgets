@@ -43,6 +43,12 @@ class CallViewController: EngagementViewController, MediaUpgradePresenter {
                 view.header.title = title
             case .setCallDurationText(let text):
                 view.connectView.statusView.setSecondText(text, animated: false)
+            case .showButtons(let buttons):
+                let buttons = buttons.map({ CallButton.Kind(with: $0) })
+                view.buttonBar.visibleButtons = buttons
+            case .setButton(let button, enabled: let enabled):
+                let button = CallButton.Kind(with: button)
+                view.buttonBar.setButton(button, enabled: enabled)
             }
         }
     }
@@ -51,6 +57,23 @@ class CallViewController: EngagementViewController, MediaUpgradePresenter {
 private extension CallViewModel.Button {
     init(with kind: CallButton.Kind) {
         switch kind {
+        case .chat:
+            self = .chat
+        case .video:
+            self = .video
+        case .mute:
+            self = .mute
+        case .speaker:
+            self = .speaker
+        case .minimize:
+            self = .minimize
+        }
+    }
+}
+
+private extension CallButton.Kind {
+    init(with button: CallViewModel.Button) {
+        switch button {
         case .chat:
             self = .chat
         case .video:

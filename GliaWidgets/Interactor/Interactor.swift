@@ -29,6 +29,14 @@ class Interactor {
             return nil
         }
     }
+    var isEngaged: Bool {
+        switch state {
+        case .engaged:
+            return true
+        default:
+            return false
+        }
+    }
 
     private let visitorContext: VisitorContext
     private var observers = [() -> (AnyObject?, EventHandler)]()
