@@ -1,6 +1,7 @@
 import UIKit
 
 class CallView: EngagementView {
+    let infoLabel = UILabel()
     let buttonBar: CallButtonBar
     var chatTapped: (() -> Void)?
 
@@ -19,7 +20,13 @@ class CallView: EngagementView {
         connectView.setState(state, animated: animated)
     }
 
-    private func setup() {}
+    private func setup() {
+        infoLabel.text = style.infoText
+        infoLabel.font = style.infoTextFont
+        infoLabel.textColor = style.infoTextColor
+        infoLabel.numberOfLines = 0
+        infoLabel.textAlignment = .center
+    }
 
     private func layout() {
         let effect = UIBlurEffect(style: .dark)
@@ -36,12 +43,17 @@ class CallView: EngagementView {
         contentView.autoPinEdgesToSuperviewSafeArea(with: .zero, excludingEdge: .top)
 
         contentView.addSubview(connectView)
-        connectView.autoPinEdge(toSuperviewEdge: .top, withInset: 30)
+        connectView.autoPinEdge(toSuperviewEdge: .top, withInset: 20)
         connectView.autoAlignAxis(toSuperviewAxis: .vertical)
 
         contentView.addSubview(buttonBar)
         buttonBar.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 0, left: 0, bottom: 20, right: 0),
                                                excludingEdge: .top)
+
+        contentView.addSubview(infoLabel)
+        infoLabel.autoPinEdge(.bottom, to: .top, of: buttonBar, withOffset: -38)
+        infoLabel.autoMatch(.width, to: .width, of: contentView, withMultiplier: 0.6)
+        infoLabel.autoAlignAxis(toSuperviewAxis: .vertical)
     }
 
     @objc private func chatTap() {

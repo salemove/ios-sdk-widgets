@@ -49,6 +49,9 @@ extension Theme {
                          preferredStatusBarStyle: .lightContent,
                          audioTitle: Call.Audio.title,
                          videoTitle: Call.Video.title,
+                         infoText: Call.info,
+                         infoTextFont: font.bodyText,
+                         infoTextColor: color.baseLight,
                          buttonBar: buttonBarStyle)
     }
 

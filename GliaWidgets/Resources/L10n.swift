@@ -79,6 +79,8 @@ public enum L10n {
   }
 
   public enum Call {
+    /// You can continue browsing and we’ll connect you automatically.
+    public static let info = L10n.tr("Localizable", "call.info")
     public enum Audio {
       /// AUDIO CALL
       public static let title = L10n.tr("Localizable", "call.audio.title")
