@@ -4,7 +4,7 @@ class CallButtonBar: UIView {
     var visibleButtons: [CallButton.Kind] = [] {
         didSet { showButtons(visibleButtons) }
     }
-    var tap: ((Button) -> Void)?
+    var buttonTapped: ((CallButton.Kind) -> Void)?
 
     private let style: CallButtonBarStyle
     private let stackView = UIStackView()
@@ -33,8 +33,9 @@ class CallButtonBar: UIView {
 
     private func showButtons(_ buttonKinds: [CallButton.Kind]) {
         stackView.removeArrangedSubviews()
-        buttonKinds.forEach {
-            let button = makeButton(for: $0)
+        buttonKinds.forEach { kind in
+            let button = makeButton(for: kind)
+            button.tap = { [weak self] in self?.buttonTapped?(kind) }
             let wrapper = wrap(button)
             stackView.addArrangedSubview(wrapper)
         }

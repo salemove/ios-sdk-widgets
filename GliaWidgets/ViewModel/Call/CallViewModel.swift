@@ -3,9 +3,17 @@ import SalemoveSDK
 class CallViewModel: EngagementViewModel, ViewModel {
     private typealias Strings = L10n.Call
 
+    enum Button {
+        case chat
+        case video
+        case mute
+        case speaker
+        case minimize
+    }
+
     enum Event {
         case viewDidLoad
-        case chatTapped
+        case buttonTapped(Button)
     }
 
     enum Action {
@@ -18,6 +26,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
 
     enum DelegateEvent {
         case chat
+        case minimize
     }
 
     enum CallKind {
@@ -61,8 +70,8 @@ class CallViewModel: EngagementViewModel, ViewModel {
         switch event {
         case .viewDidLoad:
             start()
-        case .chatTapped:
-            delegate?(.chat)
+        case .buttonTapped(let button):
+            buttonTapped(button)
         }
     }
 
@@ -121,6 +130,21 @@ class CallViewModel: EngagementViewModel, ViewModel {
     private func updateCallDuration() {
         let text = Strings.Connect.Connected.secondText.withCallDuration("00:00")
         action?(.setCallDurationText(text))
+    }
+
+    private func buttonTapped(_ button: Button) {
+        switch button {
+        case .chat:
+            delegate?(.chat)
+        case .video:
+            break
+        case .mute:
+            break
+        case .speaker:
+            break
+        case .minimize:
+            delegate?(.minimize)
+        }
     }
 
     private func requestMedia() {

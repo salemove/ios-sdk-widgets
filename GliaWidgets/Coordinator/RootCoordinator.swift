@@ -149,6 +149,8 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
                 default:
                     break
                 }
+            case .minimize:
+                self?.window?.minimize(animated: true)
             case .finished:
                 self?.popCoordinator()
                 self?.end()

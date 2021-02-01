@@ -28,7 +28,7 @@ class CallViewController: EngagementViewController, MediaUpgradePresenter {
     override var preferredStatusBarStyle: UIStatusBarStyle { return viewFactory.theme.call.preferredStatusBarStyle }
 
     private func bind(viewModel: CallViewModel, to view: CallView) {
-        view.chatTapped = { viewModel.event(.chatTapped) }
+        view.buttonBar.buttonTapped = { viewModel.event(.buttonTapped(.init(with: $0))) }
 
         viewModel.action = { action in
             switch action {
@@ -44,6 +44,23 @@ class CallViewController: EngagementViewController, MediaUpgradePresenter {
             case .setCallDurationText(let text):
                 view.connectView.statusView.setSecondText(text, animated: false)
             }
+        }
+    }
+}
+
+private extension CallViewModel.Button {
+    init(with kind: CallButton.Kind) {
+        switch kind {
+        case .chat:
+            self = .chat
+        case .video:
+            self = .video
+        case .mute:
+            self = .mute
+        case .speaker:
+            self = .speaker
+        case .minimize:
+            self = .minimize
         }
     }
 }

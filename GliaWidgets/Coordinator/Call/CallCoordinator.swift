@@ -3,6 +3,7 @@ class CallCoordinator: SubFlowCoordinator, FlowCoordinator {
         case back
         case engaged(operatorImageUrl: String?)
         case chat
+        case minimize
         case finished
     }
 
@@ -52,6 +53,8 @@ class CallCoordinator: SubFlowCoordinator, FlowCoordinator {
             switch event {
             case .chat:
                 self?.delegate?(.chat)
+            case .minimize:
+                self?.delegate?(.minimize)
             }
         }
         return CallViewController(viewModel: viewModel,
