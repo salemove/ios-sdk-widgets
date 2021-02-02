@@ -71,7 +71,6 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
         dismissWindow(animated: true) {
             self.window = nil
             self.engagement = .none
-            self.callStateProvider.value = .none
             self.navigationPresenter.setViewControllers([], animated: false)
             self.removeAllCoordinators()
             self.gliaDelegate?.event(.ended)
@@ -81,7 +80,8 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
     private func startChat() -> ChatViewController {
         let coordinator = ChatCoordinator(interactor: interactor,
                                           viewFactory: viewFactory,
-                                          navigationPresenter: navigationPresenter)
+                                          navigationPresenter: navigationPresenter,
+                                          callStateProvider: callStateProvider)
         coordinator.delegate = { [weak self] event in
             switch event {
             case .back:

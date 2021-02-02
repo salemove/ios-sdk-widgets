@@ -43,9 +43,16 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     private var queueOperatorSection: Section<ChatItem> { return sections[1] }
     private var messagesSection: Section<ChatItem> { return sections[2] }
     private let storage = ChatStorage()
+    private let callStateProvider: Provider<CallState>
 
-    override init(interactor: Interactor, alertConf: AlertConf) {
+    init(interactor: Interactor,
+         alertConf: AlertConf,
+         callStateProvider: Provider<CallState>) {
+        self.callStateProvider = callStateProvider
         super.init(interactor: interactor, alertConf: alertConf)
+        self.callStateProvider.addObserver(self) { state, _ in
+            self.callStateChanged(state)
+        }
     }
 
     public func event(_ event: Event) {
@@ -249,5 +256,20 @@ extension ChatViewModel {
         }
 
         return item
+    }
+}
+
+extension ChatViewModel {
+    private func callStateChanged(_ state: CallState) {
+        switch state {
+        case .none:
+            break
+        case .started:
+            break
+        case .progressed(_, duration: let duration):
+            break
+        case .ended:
+            break
+        }
     }
 }
