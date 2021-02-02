@@ -32,11 +32,6 @@ class CallViewModel: EngagementViewModel, ViewModel {
         case minimize
     }
 
-    enum CallKind {
-        case audio
-        case video
-    }
-
     enum StartAction {
         case `default`
         case startAudio(AnswerWithSuccessBlock)

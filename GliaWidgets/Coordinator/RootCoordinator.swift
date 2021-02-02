@@ -116,7 +116,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
         return coordinator.start()
     }
 
-    private func startCall(_ callKind: CallViewModel.CallKind,
+    private func startCall(_ callKind: CallKind,
                            startAction: CallViewModel.StartAction) -> CallViewController {
         let coordinator = CallCoordinator(interactor: interactor,
                                           viewFactory: viewFactory,

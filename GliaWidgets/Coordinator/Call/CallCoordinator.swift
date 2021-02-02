@@ -12,13 +12,13 @@ class CallCoordinator: SubFlowCoordinator, FlowCoordinator {
     private let interactor: Interactor
     private let viewFactory: ViewFactory
     private let navigationPresenter: NavigationPresenter
-    private let callKind: CallViewModel.CallKind
+    private let callKind: CallKind
     private let startAction: CallViewModel.StartAction
 
     init(interactor: Interactor,
          viewFactory: ViewFactory,
          navigationPresenter: NavigationPresenter,
-         callKind: CallViewModel.CallKind,
+         callKind: CallKind,
          startAction: CallViewModel.StartAction) {
         self.interactor = interactor
         self.viewFactory = viewFactory
@@ -33,7 +33,7 @@ class CallCoordinator: SubFlowCoordinator, FlowCoordinator {
         return viewController
     }
 
-    private func makeCallViewController(callKind: CallViewModel.CallKind,
+    private func makeCallViewController(callKind: CallKind,
                                         startAction: CallViewModel.StartAction) -> CallViewController {
         let viewModel = CallViewModel(interactor: interactor,
                                       alertConf: viewFactory.theme.alertConf,
