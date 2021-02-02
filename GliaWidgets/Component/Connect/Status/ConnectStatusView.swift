@@ -46,15 +46,17 @@ class ConnectStatusView: UIView {
 
     private func setText(_ text: String?, to label: UILabel, animated: Bool) {
         label.text = text
-        label.transform = CGAffineTransform(scaleX: 0, y: 0)
 
-        UIView.animate(withDuration: animated ? 0.5 : 0.0,
-                       delay: 0.0,
-                       usingSpringWithDamping: 0.8,
-                       initialSpringVelocity: 0.7,
-                       options: .curveEaseInOut,
-                       animations: {
-                        label.transform = .identity
-                       }, completion: nil)
+        if animated {
+            label.transform = CGAffineTransform(scaleX: 0, y: 0)
+            UIView.animate(withDuration: 0.5,
+                           delay: 0.0,
+                           usingSpringWithDamping: 0.8,
+                           initialSpringVelocity: 0.7,
+                           options: .curveEaseInOut,
+                           animations: {
+                            label.transform = .identity
+                           }, completion: nil)
+        }
     }
 }

@@ -54,6 +54,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
         didSet { update(for: audioState) }
     }
     private let startAction: StartAction
+    private let durationCounter = CallDurationCounter()
 
     init(interactor: Interactor,
          alertConf: AlertConf,
@@ -104,6 +105,8 @@ class CallViewModel: EngagementViewModel, ViewModel {
             default:
                 break
             }
+        case .inactive:
+            durationCounter.stop()
         default:
             break
         }
@@ -123,10 +126,10 @@ class CallViewModel: EngagementViewModel, ViewModel {
     private func update(for audioState: AudioState) {
         switch audioState {
         case .twoWay:
+            durationCounter.start(onUpdate: updatedCallDuration)
             action?(.connected(name: interactor.engagedOperator?.firstName,
                                imageUrl: interactor.engagedOperator?.picture?.url))
             action?(.setInfoTextVisible(false))
-            updateCallDuration()
         default:
             break
         }
@@ -143,11 +146,6 @@ class CallViewModel: EngagementViewModel, ViewModel {
         action?(.setButton(.mute, enabled: muteEnabled))
         action?(.setButton(.speaker, enabled: speakerEnabled))
         action?(.setButton(.minimize, enabled: minimizeEnabled))
-    }
-
-    private func updateCallDuration() {
-        let text = Strings.Connect.Connected.secondText.withCallDuration("00:00")
-        action?(.setCallDurationText(text))
     }
 
     private func buttonTapped(_ button: Button) {
@@ -214,6 +212,11 @@ class CallViewModel: EngagementViewModel, ViewModel {
                 audioState = .twoWay(local: stream, remote: remote)
             }
         }
+    }
+
+    private func updatedCallDuration(_ duration: Int) {
+        let text = Strings.Connect.Connected.secondText.withCallDuration(duration.asDurationString)
+        action?(.setCallDurationText(text))
     }
 
     override func interactorEvent(_ event: InteractorEvent) {

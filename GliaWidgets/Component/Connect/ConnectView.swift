@@ -54,7 +54,9 @@ class ConnectView: UIView {
             operatorView.imageView.setImage(fromUrl: imageUrl, animated: true)
             if let name = name {
                 let firstText = style.connected.firstText?.withOperatorName(name)
-                let secondText = style.connected.secondText?.withOperatorName(name)
+                let secondText = style.connected.secondText?
+                    .withOperatorName(name)
+                    .withCallDuration("00:00")
                 statusView.setFirstText(firstText, animated: animated)
                 statusView.setSecondText(secondText, animated: animated)
             } else {
