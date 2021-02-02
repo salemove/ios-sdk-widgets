@@ -58,6 +58,20 @@ extension Theme {
                                                  sendButtonColor: color.primary,
                                                  separatorColor: color.baseShade,
                                                  backgroundColor: color.background)
+        let audioUpgrade = ChatMediaUpgradeStyle(icon: Asset.upgradeAudio.image,
+                                                 iconColor: color.primary,
+                                                 text: Chat.Upgrade.Audio.text,
+                                                 textFont: font.bodyText,
+                                                 textColor: color.baseDark,
+                                                 durationFont: font.bodyText,
+                                                 durationColor: color.baseNormal)
+        let videoUpgrade = ChatMediaUpgradeStyle(icon: Asset.upgradeVideo.image,
+                                                 iconColor: color.primary,
+                                                 text: Chat.Upgrade.Video.text,
+                                                 textFont: font.bodyText,
+                                                 textColor: color.baseDark,
+                                                 durationFont: font.bodyText,
+                                                 durationColor: color.baseNormal)
         let userImage = UserImageStyle(placeholderImage: Asset.operatorPlaceholder.image,
                                        placeholderColor: color.baseLight,
                                        backgroundColor: color.primary)
@@ -71,6 +85,8 @@ extension Theme {
                          visitorMessage: visitorMessage,
                          operatorMessage: operatorMessage,
                          messageEntry: messageEntry,
+                         audioUpgrade: audioUpgrade,
+                         videoUpgrade: videoUpgrade,
                          callBubble: callBubble)
     }
 }

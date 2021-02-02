@@ -120,6 +120,8 @@
 		1A7CA8242574D68E0047CBBE /* ConnectStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7CA8232574D68E0047CBBE /* ConnectStatusView.swift */; };
 		1A7CA8272574D6F40047CBBE /* ConnectStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7CA8262574D6F40047CBBE /* ConnectStyle.swift */; };
 		1A7CA82F25751B5A0047CBBE /* ConnectOperatorStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7CA82E25751B5A0047CBBE /* ConnectOperatorStyle.swift */; };
+		1A8B61D225C974A1000D780E /* ChatMediaUpgradeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A8B61D125C974A1000D780E /* ChatMediaUpgradeView.swift */; };
+		1A8B61D625C974D0000D780E /* ChatMediaUpgradeStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A8B61D525C974D0000D780E /* ChatMediaUpgradeStyle.swift */; };
 		1AA738A72578DD0300E1120F /* ConnectStatusStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA738A62578DD0300E1120F /* ConnectStatusStyle.swift */; };
 		1AA738AE2578E0D500E1120F /* ConnectAnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA738AD2578E0D500E1120F /* ConnectAnimationView.swift */; };
 		1AA738B225790D5A00E1120F /* AlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA738B125790D5A00E1120F /* AlertView.swift */; };
@@ -298,6 +300,8 @@
 		1A7CA8232574D68E0047CBBE /* ConnectStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectStatusView.swift; sourceTree = "<group>"; };
 		1A7CA8262574D6F40047CBBE /* ConnectStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectStyle.swift; sourceTree = "<group>"; };
 		1A7CA82E25751B5A0047CBBE /* ConnectOperatorStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectOperatorStyle.swift; sourceTree = "<group>"; };
+		1A8B61D125C974A1000D780E /* ChatMediaUpgradeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMediaUpgradeView.swift; sourceTree = "<group>"; };
+		1A8B61D525C974D0000D780E /* ChatMediaUpgradeStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMediaUpgradeStyle.swift; sourceTree = "<group>"; };
 		1AA738A62578DD0300E1120F /* ConnectStatusStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectStatusStyle.swift; sourceTree = "<group>"; };
 		1AA738AD2578E0D500E1120F /* ConnectAnimationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectAnimationView.swift; sourceTree = "<group>"; };
 		1AA738B125790D5A00E1120F /* AlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertView.swift; sourceTree = "<group>"; };
@@ -762,6 +766,7 @@
 		1A60AFD12566990F00E53F53 /* Chat */ = {
 			isa = PBXGroup;
 			children = (
+				1A8B61D025C97481000D780E /* MediaUpgrade */,
 				1A5F813A2588B70A00A605DA /* Entry */,
 				1A60B02B256BF7C200E53F53 /* Message */,
 				1AC7A7822583B65B00567FF8 /* Cells */,
@@ -971,6 +976,15 @@
 				1AA738A62578DD0300E1120F /* ConnectStatusStyle.swift */,
 			);
 			path = Status;
+			sourceTree = "<group>";
+		};
+		1A8B61D025C97481000D780E /* MediaUpgrade */ = {
+			isa = PBXGroup;
+			children = (
+				1A8B61D125C974A1000D780E /* ChatMediaUpgradeView.swift */,
+				1A8B61D525C974D0000D780E /* ChatMediaUpgradeStyle.swift */,
+			);
+			path = MediaUpgrade;
 			sourceTree = "<group>";
 		};
 		1AA7389A2578DB6800E1120F /* Connect */ = {
@@ -1391,6 +1405,7 @@
 				1A4AF5CD25AEF4A0002CD0F4 /* AlertViewController+Message.swift in Sources */,
 				1A7CA8242574D68E0047CBBE /* ConnectStatusView.swift in Sources */,
 				1A5F81402588B7BD00A605DA /* ChatMessageEntryStyle.swift in Sources */,
+				1A8B61D625C974D0000D780E /* ChatMediaUpgradeStyle.swift in Sources */,
 				1A60AF7A25656E0500E53F53 /* Theme.swift in Sources */,
 				1A4AD3B3256D2A7600468BFB /* VisitorChatMessageStyle.swift in Sources */,
 				1A60B0082567F29900E53F53 /* HeaderStyle.swift in Sources */,
@@ -1414,6 +1429,7 @@
 				1A0C9A6725C16DC400815406 /* Theme+Chat.swift in Sources */,
 				1A0C9AC225C9400000815406 /* CallDurationCounter.swift in Sources */,
 				1AA738AE2578E0D500E1120F /* ConnectAnimationView.swift in Sources */,
+				1A8B61D225C974A1000D780E /* ChatMediaUpgradeView.swift in Sources */,
 				1ABD6C8125B6E97400D56EFA /* MediaUpgradeAlertConf.swift in Sources */,
 				1A0C142D25B8545600B00695 /* EngagementView.swift in Sources */,
 				1A5F814D2588C0B800A605DA /* KeyboardObserver.swift in Sources */,

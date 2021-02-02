@@ -35,6 +35,7 @@ public enum Asset {
   public static let gliaLogo = ImageAsset(name: "gliaLogo")
   public static let upgradeAudio = ImageAsset(name: "upgradeAudio")
   public static let upgradePhone = ImageAsset(name: "upgradePhone")
+  public static let upgradeVideo = ImageAsset(name: "upgradeVideo")
   public static let operatorPlaceholder = ImageAsset(name: "operatorPlaceholder")
 }
 // swiftlint:enable identifier_name line_length nesting type_body_length type_name

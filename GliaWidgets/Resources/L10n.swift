@@ -172,6 +172,16 @@ public enum L10n {
         public static let delivered = L10n.tr("Localizable", "chat.message.status.delivered")
       }
     }
+    public enum Upgrade {
+      public enum Audio {
+        /// Upgraded to Audio Call
+        public static let text = L10n.tr("Localizable", "chat.upgrade.audio.text")
+      }
+      public enum Video {
+        /// Upgraded to Video Call
+        public static let text = L10n.tr("Localizable", "chat.upgrade.video.text")
+      }
+    }
   }
 }
 // swiftlint:enable explicit_type_interface function_parameter_count identifier_name line_length
