@@ -8,6 +8,7 @@ public class ChatMediaUpgradeStyle {
     public var textColor: UIColor
     public var durationFont: UIFont
     public var durationColor: UIColor
+    public var borderColor: UIColor
 
     public init(icon: UIImage,
                 iconColor: UIColor,
@@ -15,7 +16,8 @@ public class ChatMediaUpgradeStyle {
                 textFont: UIFont,
                 textColor: UIColor,
                 durationFont: UIFont,
-                durationColor: UIColor) {
+                durationColor: UIColor,
+                borderColor: UIColor) {
         self.icon = icon
         self.iconColor = iconColor
         self.text = text
@@ -23,5 +25,6 @@ public class ChatMediaUpgradeStyle {
         self.textColor = textColor
         self.durationFont = durationFont
         self.durationColor = durationColor
+        self.borderColor = borderColor
     }
 }
