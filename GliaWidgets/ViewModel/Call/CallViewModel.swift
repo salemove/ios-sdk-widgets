@@ -54,15 +54,25 @@ class CallViewModel: EngagementViewModel, ViewModel {
         didSet { update(for: audioState) }
     }
     private let startAction: StartAction
-    private let durationCounter = CallDurationCounter()
+    private let callStateProvider: Provider<CallState>
+    private let callDurationCounter = CallDurationCounter()
 
     init(interactor: Interactor,
          alertConf: AlertConf,
          callKind: CallKind,
-         startAction: StartAction) {
+         startAction: StartAction,
+         callStateProvider: Provider<CallState>) {
         self.callKind = callKind
         self.startAction = startAction
+        self.callStateProvider = callStateProvider
         super.init(interactor: interactor, alertConf: alertConf)
+        self.callStateProvider.addObserver(self) { state, _ in
+            self.callStateChanged(state)
+        }
+    }
+
+    deinit {
+        callStateProvider.removeObserver(self)
     }
 
     public func event(_ event: Event) {
@@ -106,7 +116,8 @@ class CallViewModel: EngagementViewModel, ViewModel {
                 break
             }
         case .inactive:
-            durationCounter.stop()
+            callStateProvider.value = .ended(callKind)
+            callDurationCounter.stop()
         default:
             break
         }
@@ -126,7 +137,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
     private func update(for audioState: AudioState) {
         switch audioState {
         case .twoWay:
-            durationCounter.start(onUpdate: updatedCallDuration)
+            callStateProvider.value = .started(callKind)
             action?(.connected(name: interactor.engagedOperator?.firstName,
                                imageUrl: interactor.engagedOperator?.picture?.url))
             action?(.setInfoTextVisible(false))
@@ -214,9 +225,20 @@ class CallViewModel: EngagementViewModel, ViewModel {
         }
     }
 
-    private func updatedCallDuration(_ duration: Int) {
-        let text = Strings.Connect.Connected.secondText.withCallDuration(duration.asDurationString)
-        action?(.setCallDurationText(text))
+    private func callStateChanged(_ state: CallState) {
+        switch state {
+        case .none:
+            break
+        case .started:
+            callDurationCounter.start { duration in
+                self.callStateProvider.value = .progressed(self.callKind, duration: duration)
+            }
+        case .progressed(_, duration: let duration):
+            let text = Strings.Connect.Connected.secondText.withCallDuration(duration.asDurationString)
+            action?(.setCallDurationText(text))
+        case .ended:
+            break
+        }
     }
 
     override func interactorEvent(_ event: InteractorEvent) {

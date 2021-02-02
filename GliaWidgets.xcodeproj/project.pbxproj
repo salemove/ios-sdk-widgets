@@ -27,6 +27,7 @@
 		1A0C9ABB25C93F6400815406 /* CallState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0C9ABA25C93F6400815406 /* CallState.swift */; };
 		1A0C9AC225C9400000815406 /* CallDurationCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0C9AC125C9400000815406 /* CallDurationCounter.swift */; };
 		1A0C9AC825C9493D00815406 /* Int+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0C9AC725C9493D00815406 /* Int+Extensions.swift */; };
+		1A0C9AE025C9624500815406 /* Provider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0C9ADF25C9624500815406 /* Provider.swift */; };
 		1A205D6225655CB2003AA3CD /* GliaWidgets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A205D5825655CB1003AA3CD /* GliaWidgets.framework */; };
 		1A205D6725655CB2003AA3CD /* GliaWidgetsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A205D6625655CB2003AA3CD /* GliaWidgetsTests.swift */; };
 		1A205D6925655CB2003AA3CD /* GliaWidgets.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A205D5B25655CB1003AA3CD /* GliaWidgets.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -199,6 +200,7 @@
 		1A0C9ABA25C93F6400815406 /* CallState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallState.swift; sourceTree = "<group>"; };
 		1A0C9AC125C9400000815406 /* CallDurationCounter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallDurationCounter.swift; sourceTree = "<group>"; };
 		1A0C9AC725C9493D00815406 /* Int+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Extensions.swift"; sourceTree = "<group>"; };
+		1A0C9ADF25C9624500815406 /* Provider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Provider.swift; sourceTree = "<group>"; };
 		1A205D5825655CB1003AA3CD /* GliaWidgets.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GliaWidgets.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A205D5B25655CB1003AA3CD /* GliaWidgets.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GliaWidgets.h; sourceTree = "<group>"; };
 		1A205D5C25655CB1003AA3CD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -429,6 +431,14 @@
 				1A0C9AC125C9400000815406 /* CallDurationCounter.swift */,
 			);
 			path = Duration;
+			sourceTree = "<group>";
+		};
+		1A0C9ADE25C9623800815406 /* Provider */ = {
+			isa = PBXGroup;
+			children = (
+				1A0C9ADF25C9624500815406 /* Provider.swift */,
+			);
+			path = Provider;
 			sourceTree = "<group>";
 		};
 		1A205D4E25655CB1003AA3CD = {
@@ -702,6 +712,7 @@
 		1A60AFC12566857200E53F53 /* Lib */ = {
 			isa = PBXGroup;
 			children = (
+				1A0C9ADE25C9623800815406 /* Provider */,
 				1A5F815D258A43D900A605DA /* Section */,
 				1A5F814B2588C0AD00A605DA /* Keyboard */,
 				1A60AFEF2566A4A700E53F53 /* Presenter */,
@@ -1339,6 +1350,7 @@
 				1A0C9A7F25C1732F00815406 /* Theme+MinimizedBubble.swift in Sources */,
 				1A60AF7E25656F0400E53F53 /* Glia.swift in Sources */,
 				1A60AFB62566825400E53F53 /* ViewModel.swift in Sources */,
+				1A0C9AE025C9624500815406 /* Provider.swift in Sources */,
 				1A60AFB9256682AF00E53F53 /* FlowCoordinator.swift in Sources */,
 				1A0C9A9125C41AB900815406 /* CallButtonBar.swift in Sources */,
 				1AE15E3B257A5CC900A642C0 /* AlertConf.swift in Sources */,

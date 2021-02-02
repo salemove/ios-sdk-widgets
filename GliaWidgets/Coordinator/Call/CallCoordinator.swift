@@ -14,17 +14,20 @@ class CallCoordinator: SubFlowCoordinator, FlowCoordinator {
     private let navigationPresenter: NavigationPresenter
     private let callKind: CallKind
     private let startAction: CallViewModel.StartAction
+    private let callStateProvider: Provider<CallState>
 
     init(interactor: Interactor,
          viewFactory: ViewFactory,
          navigationPresenter: NavigationPresenter,
          callKind: CallKind,
-         startAction: CallViewModel.StartAction) {
+         startAction: CallViewModel.StartAction,
+         callStateProvider: Provider<CallState>) {
         self.interactor = interactor
         self.viewFactory = viewFactory
         self.navigationPresenter = navigationPresenter
         self.callKind = callKind
         self.startAction = startAction
+        self.callStateProvider = callStateProvider
     }
 
     func start() -> CallViewController {
@@ -38,7 +41,8 @@ class CallCoordinator: SubFlowCoordinator, FlowCoordinator {
         let viewModel = CallViewModel(interactor: interactor,
                                       alertConf: viewFactory.theme.alertConf,
                                       callKind: callKind,
-                                      startAction: startAction)
+                                      startAction: startAction,
+                                      callStateProvider: callStateProvider)
         viewModel.engagementDelegate = { [weak self] event in
             switch event {
             case .back:

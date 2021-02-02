@@ -22,6 +22,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
     private weak var gliaDelegate: GliaDelegate?
     private let engagementKind: EngagementKind
     private var engagement: Engagement = .none
+    private let callStateProvider = Provider<CallState>(with: .none)
     private let navigationController = NavigationController()
     private let navigationPresenter: NavigationPresenter
     private var window: GliaWindow?
@@ -70,6 +71,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
         dismissWindow(animated: true) {
             self.window = nil
             self.engagement = .none
+            self.callStateProvider.value = .none
             self.navigationPresenter.setViewControllers([], animated: false)
             self.removeAllCoordinators()
             self.gliaDelegate?.event(.ended)
@@ -122,7 +124,8 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
                                           viewFactory: viewFactory,
                                           navigationPresenter: navigationPresenter,
                                           callKind: callKind,
-                                          startAction: startAction)
+                                          startAction: startAction,
+                                          callStateProvider: callStateProvider)
         coordinator.delegate = { [weak self] event in
             switch event {
             case .back:
