@@ -40,10 +40,12 @@ class ChatCallUpgradeView: UIView {
         textLabel.text = style.text
         textLabel.font = style.textFont
         textLabel.textColor = style.textColor
+        textLabel.textAlignment = .center
 
         durationLabel.text = durationProvider.value.asDurationString
         durationLabel.font = style.durationFont
-        durationLabel.textColor = style.textColor
+        durationLabel.textColor = style.durationColor
+        durationLabel.textAlignment = .center
 
         durationProvider.addObserver(self) { duration, _ in
             self.durationLabel.text = duration.asDurationString
@@ -59,7 +61,11 @@ class ChatCallUpgradeView: UIView {
 
         let iconWrapper = UIView()
         iconWrapper.addSubview(iconImageView)
-        iconImageView.autoCenterInSuperview()
+        iconImageView.autoPinEdge(toSuperviewEdge: .top)
+        iconImageView.autoPinEdge(toSuperviewEdge: .bottom)
+        iconImageView.autoPinEdge(toSuperviewEdge: .left, withInset: 0, relation: .greaterThanOrEqual)
+        iconImageView.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
+        iconImageView.autoAlignAxis(toSuperviewAxis: .vertical)
 
         stackView.addArrangedSubviews(
             [iconWrapper, textLabel, durationLabel]

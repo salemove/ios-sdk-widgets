@@ -61,6 +61,9 @@ class CallViewModel: EngagementViewModel, ViewModel {
         self.call = call
         self.startAction = startAction
         super.init(interactor: interactor, alertConf: alertConf)
+        call.state.addObserver(self) { state, _ in
+            self.onStateChanged(state)
+        }
     }
 
     public func event(_ event: Event) {
@@ -213,7 +216,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
         }
     }
 
-    private func callStateChanged(_ state: CallState) {
+    private func onStateChanged(_ state: CallState) {
         switch state {
         case .none:
             break

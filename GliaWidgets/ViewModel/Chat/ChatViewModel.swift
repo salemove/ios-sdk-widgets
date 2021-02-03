@@ -263,18 +263,19 @@ extension ChatViewModel {
     private func onCall(_ call: Call?) {
         guard let call = call else { return }
 
-        // append item
-        // monitor state changes
-        
-        /*switch state {
-        case .none:
-            break
-        case .started:
-            break // append item
-        case .progressed(_, duration: let duration):
-            break // find last callUpgrade item, update duration
-        case .ended:
-            break
-        }*/
+        let durationProvider = Provider<Int>(with: 0)
+        let item = ChatItem(kind: .callUpgrade(call.kind,
+                                               durationProvider: durationProvider))
+        appendItem(item, to: messagesSection, animated: true)
+        action?(.scrollToBottom(animated: true))
+
+        call.state.addObserver(self) { state, _ in
+            switch state {
+            case .progressed(duration: let duration):
+                durationProvider.value = duration
+            default:
+                break
+            }
+        }
     }
 }
