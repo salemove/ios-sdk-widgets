@@ -41,8 +41,8 @@ class CallViewController: EngagementViewController, MediaUpgradePresenter {
                 view.connectView.operatorView.setSize(.large, animated: true)
             case .setTitle(let title):
                 view.header.title = title
-            case .setInfoTextVisible(let visible):
-                view.infoLabel.isHidden = !visible
+            case .setInfoText(let text):
+                view.infoLabel.text = text
             case .setCallDurationText(let text):
                 view.connectView.statusView.setSecondText(text, animated: false)
             case .showButtons(let buttons):

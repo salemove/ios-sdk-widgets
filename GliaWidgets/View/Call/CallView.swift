@@ -16,6 +16,10 @@ class CallView: EngagementView {
         layout()
     }
 
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
     func setConnectState(_ state: ConnectView.State, animated: Bool) {
         connectView.setState(state, animated: animated)
     }
@@ -26,6 +30,12 @@ class CallView: EngagementView {
         infoLabel.textColor = style.infoTextColor
         infoLabel.numberOfLines = 0
         infoLabel.textAlignment = .center
+
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(orientationChanged),
+                                               name: UIDevice.orientationDidChangeNotification,
+                                               object: nil)
+        adjustForOrientation()
     }
 
     private func layout() {
@@ -43,7 +53,7 @@ class CallView: EngagementView {
         contentView.autoPinEdgesToSuperviewSafeArea(with: .zero, excludingEdge: .top)
 
         contentView.addSubview(connectView)
-        connectView.autoPinEdge(toSuperviewEdge: .top, withInset: 20)
+        connectView.autoPinEdge(toSuperviewEdge: .top)
         connectView.autoAlignAxis(toSuperviewAxis: .vertical)
 
         contentView.addSubview(buttonBar)
@@ -56,7 +66,17 @@ class CallView: EngagementView {
         infoLabel.autoAlignAxis(toSuperviewAxis: .vertical)
     }
 
+    private func adjustForOrientation() {
+        let isLandscape = [.landscapeLeft, .landscapeRight]
+            .contains(UIApplication.shared.statusBarOrientation)
+        infoLabel.isHidden = isLandscape
+    }
+
     @objc private func chatTap() {
         chatTapped?()
+    }
+
+    @objc private func orientationChanged() {
+        adjustForOrientation()
     }
 }

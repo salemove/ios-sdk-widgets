@@ -22,7 +22,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
         case connected(name: String?, imageUrl: String?)
         case setCallDurationText(String)
         case setTitle(String)
-        case setInfoTextVisible(Bool)
+        case setInfoText(String?)
         case showButtons([Button])
         case setButton(Button, enabled: Bool)
     }
@@ -87,7 +87,6 @@ class CallViewModel: EngagementViewModel, ViewModel {
             answer(true, nil)
             action?(.connecting(name: interactor.engagedOperator?.firstName,
                                 imageUrl: interactor.engagedOperator?.picture?.url))
-            action?(.setInfoTextVisible(true))
         }
     }
 
@@ -98,7 +97,6 @@ class CallViewModel: EngagementViewModel, ViewModel {
         switch state {
         case .enqueueing:
             action?(.queue)
-            action?(.setInfoTextVisible(true))
         case .engaged:
             switch startAction {
             case .default:
@@ -131,7 +129,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
             call.state.value = .started
             action?(.connected(name: interactor.engagedOperator?.firstName,
                                imageUrl: interactor.engagedOperator?.picture?.url))
-            action?(.setInfoTextVisible(false))
+            action?(.setInfoText(nil))
         default:
             break
         }
