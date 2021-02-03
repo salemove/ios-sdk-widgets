@@ -95,8 +95,14 @@ public enum L10n {
         public static let title = L10n.tr("Localizable", "call.buttons.minimize.title")
       }
       public enum Mute {
-        /// Mute
-        public static let title = L10n.tr("Localizable", "call.buttons.mute.title")
+        public enum Active {
+          /// Unmute
+          public static let title = L10n.tr("Localizable", "call.buttons.mute.active.title")
+        }
+        public enum Inactive {
+          /// Mute
+          public static let title = L10n.tr("Localizable", "call.buttons.mute.inactive.title")
+        }
       }
       public enum Speaker {
         /// Speaker

@@ -25,6 +25,10 @@ class CallButtonBar: UIView {
         button(for: kind)?.isEnabled = enabled
     }
 
+    func setButton(_ kind: CallButton.Kind, state: CallButton.State) {
+        button(for: kind)?.state = state
+    }
+
     private func setup() {
         stackView.axis = .horizontal
         stackView.distribution = .fillEqually

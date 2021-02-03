@@ -17,6 +17,18 @@ enum CallAudioKind {
     case remote(AudioStreamable)
     case local(AudioStreamable)
     case twoWay(local: AudioStreamable, remote: AudioStreamable)
+
+    var hasLocalAudio: Bool { return localStream != nil }
+    var localStream: AudioStreamable? {
+        switch self {
+        case .local(let stream):
+            return stream
+        case .twoWay(local: let stream, _):
+            return stream
+        default:
+            return nil
+        }
+    }
 }
 
 class Call {

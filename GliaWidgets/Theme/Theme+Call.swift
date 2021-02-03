@@ -58,9 +58,9 @@ extension Theme {
     private var buttonBarStyle: CallButtonBarStyle {
         typealias Buttons = L10n.Call.Buttons
 
-        let activeBackgroundColor = UIColor.black.withAlphaComponent(0.4)
+        let activeBackgroundColor = UIColor.white.withAlphaComponent(0.9)
         let inactiveBackgroundColor = UIColor.black.withAlphaComponent(0.4)
-        let activeImageColor = color.baseLight
+        let activeImageColor = color.baseDark
         let inactiveImageColor = color.baseLight
         let activeTitleFont = font.caption
         let inactiveTitleFont = font.caption
@@ -94,13 +94,13 @@ extension Theme {
         let muteButton = CallButtonStyle(active: CallButtonStyle.StateStyle(backgroundColor: activeBackgroundColor,
                                                                             image: Asset.callMuteActive.image,
                                                                             imageColor: activeImageColor,
-                                                                            title: Buttons.Mute.title,
+                                                                            title: Buttons.Mute.Active.title,
                                                                             titleFont: activeTitleFont,
                                                                             titleColor: activeTitleColor),
                                          inactive: CallButtonStyle.StateStyle(backgroundColor: inactiveBackgroundColor,
                                                                               image: Asset.callMuteInactive.image,
                                                                               imageColor: inactiveImageColor,
-                                                                              title: Buttons.Mute.title,
+                                                                              title: Buttons.Mute.Inactive.title,
                                                                               titleFont: inactiveTitleFont,
                                                                               titleColor: inactiveTitleColor))
         let speakerButton = CallButtonStyle(active: CallButtonStyle.StateStyle(backgroundColor: activeBackgroundColor,

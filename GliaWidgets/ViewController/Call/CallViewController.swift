@@ -48,9 +48,13 @@ class CallViewController: EngagementViewController, MediaUpgradePresenter {
             case .showButtons(let buttons):
                 let buttons = buttons.map({ CallButton.Kind(with: $0) })
                 view.buttonBar.visibleButtons = buttons
-            case .setButton(let button, enabled: let enabled):
+            case .setButtonEnabled(let button, enabled: let enabled):
                 let button = CallButton.Kind(with: button)
                 view.buttonBar.setButton(button, enabled: enabled)
+            case .setButtonState(let button, state: let state):
+                let button = CallButton.Kind(with: button)
+                let state = CallButton.State(with: state)
+                view.buttonBar.setButton(button, state: state)
             }
         }
     }
@@ -86,6 +90,17 @@ private extension CallButton.Kind {
             self = .speaker
         case .minimize:
             self = .minimize
+        }
+    }
+}
+
+private extension CallButton.State {
+    init(with state: CallViewModel.ButtonState) {
+        switch state {
+        case .active:
+            self = .active
+        case .inactive:
+            self = .inactive
         }
     }
 }

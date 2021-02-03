@@ -54,6 +54,7 @@
 "call.info" = "You can continue browsing and we’ll connect you automatically.";
 "call.buttons.chat.title" = "Chat";
 "call.buttons.video.title" = "Video";
-"call.buttons.mute.title" = "Mute";
+"call.buttons.mute.inactive.title" = "Mute";
+"call.buttons.mute.active.title" = "Unmute";
 "call.buttons.speaker.title" = "Speaker";
 "call.buttons.minimize.title" = "Minimize";

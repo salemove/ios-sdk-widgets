@@ -11,6 +11,11 @@ class CallViewModel: EngagementViewModel, ViewModel {
         case minimize
     }
 
+    enum ButtonState {
+        case active
+        case inactive
+    }
+
     enum Event {
         case viewDidLoad
         case buttonTapped(Button)
@@ -24,7 +29,8 @@ class CallViewModel: EngagementViewModel, ViewModel {
         case setTitle(String)
         case setInfoText(String?)
         case showButtons([Button])
-        case setButton(Button, enabled: Bool)
+        case setButtonEnabled(Button, enabled: Bool)
+        case setButtonState(Button, state: ButtonState)
     }
 
     enum DelegateEvent {
@@ -119,14 +125,21 @@ class CallViewModel: EngagementViewModel, ViewModel {
     private func updateButtons() {
         let chatEnabled = interactor.isEngaged
         let videoEnabled = false
-        let muteEnabled = false
+        let muteEnabled = call.audio.value.hasLocalAudio
         let speakerEnabled = false
         let minimizeEnabled = true
-        action?(.setButton(.chat, enabled: chatEnabled))
-        action?(.setButton(.video, enabled: videoEnabled))
-        action?(.setButton(.mute, enabled: muteEnabled))
-        action?(.setButton(.speaker, enabled: speakerEnabled))
-        action?(.setButton(.minimize, enabled: minimizeEnabled))
+        action?(.setButtonEnabled(.chat, enabled: chatEnabled))
+        action?(.setButtonEnabled(.video, enabled: videoEnabled))
+        action?(.setButtonEnabled(.mute, enabled: muteEnabled))
+        action?(.setButtonEnabled(.speaker, enabled: speakerEnabled))
+        action?(.setButtonEnabled(.minimize, enabled: minimizeEnabled))
+
+        call.audio.value.localStream.map({
+            let muteState: ButtonState = $0.isMuted
+                ? .active
+                : .inactive
+            action?(.setButtonState(.mute, state: muteState))
+        })
     }
 
     private func buttonTapped(_ button: Button) {
@@ -136,7 +149,14 @@ class CallViewModel: EngagementViewModel, ViewModel {
         case .video:
             break
         case .mute:
-            break
+            call.audio.value.localStream.map {
+                if $0.isMuted {
+                    $0.unmute()
+                } else {
+                    $0.mute()
+                }
+            }
+            updateButtons()
         case .speaker:
             break
         case .minimize:
@@ -209,6 +229,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
         case .ended:
             break
         }
+        updateButtons()
     }
 
     private func onAudioChanged(_ audio: CallAudioKind) {
@@ -221,6 +242,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
         default:
             break
         }
+        updateButtons()
     }
 
     override func interactorEvent(_ event: InteractorEvent) {
