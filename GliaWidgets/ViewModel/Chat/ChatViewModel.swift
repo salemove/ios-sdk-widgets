@@ -43,15 +43,15 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     private var queueOperatorSection: Section<ChatItem> { return sections[1] }
     private var messagesSection: Section<ChatItem> { return sections[2] }
     private let storage = ChatStorage()
-    private let callStateProvider: Provider<CallState>
+    private let callProvider: Provider<Call?>
 
     init(interactor: Interactor,
          alertConf: AlertConf,
-         callStateProvider: Provider<CallState>) {
-        self.callStateProvider = callStateProvider
+         callProvider: Provider<Call?>) {
+        self.callProvider = callProvider
         super.init(interactor: interactor, alertConf: alertConf)
-        self.callStateProvider.addObserver(self) { state, _ in
-            self.callStateChanged(state)
+        self.callProvider.addObserver(self) { call, _ in
+            self.onCall(call)
         }
     }
 
@@ -260,8 +260,13 @@ extension ChatViewModel {
 }
 
 extension ChatViewModel {
-    private func callStateChanged(_ state: CallState) {
-        switch state {
+    private func onCall(_ call: Call?) {
+        guard let call = call else { return }
+
+        // append item
+        // monitor state changes
+        
+        /*switch state {
         case .none:
             break
         case .started:
@@ -270,6 +275,6 @@ extension ChatViewModel {
             break // find last callUpgrade item, update duration
         case .ended:
             break
-        }
+        }*/
     }
 }

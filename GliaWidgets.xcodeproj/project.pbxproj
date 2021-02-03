@@ -23,8 +23,6 @@
 		1A0C9A8C25C4092400815406 /* CallButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0C9A8B25C4092400815406 /* CallButtonStyle.swift */; };
 		1A0C9A9125C41AB900815406 /* CallButtonBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0C9A9025C41AB900815406 /* CallButtonBar.swift */; };
 		1A0C9A9725C41D4D00815406 /* CallButtonBarStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0C9A9625C41D4D00815406 /* CallButtonBarStyle.swift */; };
-		1A0C9AB425C93F3400815406 /* CallKind.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0C9AB325C93F3400815406 /* CallKind.swift */; };
-		1A0C9ABB25C93F6400815406 /* CallState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0C9ABA25C93F6400815406 /* CallState.swift */; };
 		1A0C9AC225C9400000815406 /* CallDurationCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0C9AC125C9400000815406 /* CallDurationCounter.swift */; };
 		1A0C9AC825C9493D00815406 /* Int+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0C9AC725C9493D00815406 /* Int+Extensions.swift */; };
 		1A0C9AE025C9624500815406 /* Provider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0C9ADF25C9624500815406 /* Provider.swift */; };
@@ -57,6 +55,7 @@
 		1A4AF5D725AEF584002CD0F4 /* AlertViewController+MediaUpgrade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4AF5D625AEF584002CD0F4 /* AlertViewController+MediaUpgrade.swift */; };
 		1A54B83825A4723E00C9393E /* ChatStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A54B83725A4723E00C9393E /* ChatStorage.swift */; };
 		1A56D53D257E24A400141BC8 /* PoweredBy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A56D53C257E24A400141BC8 /* PoweredBy.swift */; };
+		1A5F494B25CA86CA003E3678 /* Call.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5F494A25CA86CA003E3678 /* Call.swift */; };
 		1A5F813C2588B72100A605DA /* ChatMessageEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5F813B2588B72100A605DA /* ChatMessageEntryView.swift */; };
 		1A5F81402588B7BD00A605DA /* ChatMessageEntryStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5F813F2588B7BD00A605DA /* ChatMessageEntryStyle.swift */; };
 		1A5F81442588BBD900A605DA /* ChatPickMediaButtonProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5F81432588BBD900A605DA /* ChatPickMediaButtonProperties.swift */; };
@@ -198,8 +197,6 @@
 		1A0C9A8B25C4092400815406 /* CallButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallButtonStyle.swift; sourceTree = "<group>"; };
 		1A0C9A9025C41AB900815406 /* CallButtonBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallButtonBar.swift; sourceTree = "<group>"; };
 		1A0C9A9625C41D4D00815406 /* CallButtonBarStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallButtonBarStyle.swift; sourceTree = "<group>"; };
-		1A0C9AB325C93F3400815406 /* CallKind.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallKind.swift; sourceTree = "<group>"; };
-		1A0C9ABA25C93F6400815406 /* CallState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallState.swift; sourceTree = "<group>"; };
 		1A0C9AC125C9400000815406 /* CallDurationCounter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallDurationCounter.swift; sourceTree = "<group>"; };
 		1A0C9AC725C9493D00815406 /* Int+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Extensions.swift"; sourceTree = "<group>"; };
 		1A0C9ADF25C9624500815406 /* Provider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Provider.swift; sourceTree = "<group>"; };
@@ -237,6 +234,7 @@
 		1A54B83725A4723E00C9393E /* ChatStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatStorage.swift; sourceTree = "<group>"; };
 		1A56D53C257E24A400141BC8 /* PoweredBy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoweredBy.swift; sourceTree = "<group>"; };
 		1A56D5CF257E940900141BC8 /* PureLayout.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PureLayout.framework; path = Carthage/Build/iOS/PureLayout.framework; sourceTree = "<group>"; };
+		1A5F494A25CA86CA003E3678 /* Call.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Call.swift; sourceTree = "<group>"; };
 		1A5F813B2588B72100A605DA /* ChatMessageEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageEntryView.swift; sourceTree = "<group>"; };
 		1A5F813F2588B7BD00A605DA /* ChatMessageEntryStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageEntryStyle.swift; sourceTree = "<group>"; };
 		1A5F81432588BBD900A605DA /* ChatPickMediaButtonProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatPickMediaButtonProperties.swift; sourceTree = "<group>"; };
@@ -413,20 +411,12 @@
 			path = Bar;
 			sourceTree = "<group>";
 		};
-		1A0C9AB225C93F2600815406 /* Kind */ = {
+		1A0C9AB925C93F5100815406 /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				1A0C9AB325C93F3400815406 /* CallKind.swift */,
+				1A5F494A25CA86CA003E3678 /* Call.swift */,
 			);
-			path = Kind;
-			sourceTree = "<group>";
-		};
-		1A0C9AB925C93F5100815406 /* State */ = {
-			isa = PBXGroup;
-			children = (
-				1A0C9ABA25C93F6400815406 /* CallState.swift */,
-			);
-			path = State;
+			path = Data;
 			sourceTree = "<group>";
 		};
 		1A0C9AC025C93FC000815406 /* Duration */ = {
@@ -1028,8 +1018,7 @@
 			isa = PBXGroup;
 			children = (
 				1A0C9AC025C93FC000815406 /* Duration */,
-				1A0C9AB925C93F5100815406 /* State */,
-				1A0C9AB225C93F2600815406 /* Kind */,
+				1A0C9AB925C93F5100815406 /* Data */,
 				1ABD6CAB25B71D1B00D56EFA /* CallViewModel.swift */,
 			);
 			path = Call;
@@ -1397,7 +1386,6 @@
 				1A0C9A6D25C16EED00815406 /* Theme+Call.swift in Sources */,
 				1A60AFAF256680EF00E53F53 /* L10n.swift in Sources */,
 				1A60B0192567FC8A00E53F53 /* ButtonKind.swift in Sources */,
-				1A0C9ABB25C93F6400815406 /* CallState.swift in Sources */,
 				1A60B04D256D0CF600E53F53 /* ChatMessageContentView.swift in Sources */,
 				1A56D53D257E24A400141BC8 /* PoweredBy.swift in Sources */,
 				1A6EB04F25A707CC0007081A /* MessageSender+StringValue.swift in Sources */,
@@ -1419,7 +1407,6 @@
 				1ABD6C5925B5758000D56EFA /* BubbleStyle.swift in Sources */,
 				1A6EBB0725ADB84200EE325D /* MediaUpgradeActionStyle.swift in Sources */,
 				1A4AD3CA256E864800468BFB /* ThemeColorStyle.swift in Sources */,
-				1A0C9AB425C93F3400815406 /* CallKind.swift in Sources */,
 				1A0C143125B8547200B00695 /* EngagementStyle.swift in Sources */,
 				1A7CA8272574D6F40047CBBE /* ConnectStyle.swift in Sources */,
 				1AC7A7552582594200567FF8 /* Configuration.swift in Sources */,
@@ -1439,6 +1426,7 @@
 				1A60B0042567F25600E53F53 /* Header.swift in Sources */,
 				1A60B047256C0B4500E53F53 /* ChatMessageContent.swift in Sources */,
 				1A63B2F6257A469A00508478 /* AlertPresenter.swift in Sources */,
+				1A5F494B25CA86CA003E3678 /* Call.swift in Sources */,
 				1AE15E49257A6BD200A642C0 /* ConfirmationAlertConf.swift in Sources */,
 				1A60AFB22566821B00E53F53 /* Asset.swift in Sources */,
 				1A4AD3AF256D283700468BFB /* ChatMessageView.swift in Sources */,

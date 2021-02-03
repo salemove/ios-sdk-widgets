@@ -47,32 +47,20 @@ class CallViewModel: EngagementViewModel, ViewModel {
     var action: ((Action) -> Void)?
     var delegate: ((DelegateEvent) -> Void)?
 
-    private var callKind: CallKind {
-        didSet { update(for: callKind) }
-    }
+    private var call: Call
     private var audioState: AudioState = .none {
         didSet { update(for: audioState) }
     }
     private let startAction: StartAction
-    private let callStateProvider: Provider<CallState>
-    private let callDurationCounter = CallDurationCounter()
+    private let durationCounter = CallDurationCounter()
 
     init(interactor: Interactor,
          alertConf: AlertConf,
-         callKind: CallKind,
-         startAction: StartAction,
-         callStateProvider: Provider<CallState>) {
-        self.callKind = callKind
+         call: Call,
+         startAction: StartAction) {
+        self.call = call
         self.startAction = startAction
-        self.callStateProvider = callStateProvider
         super.init(interactor: interactor, alertConf: alertConf)
-        self.callStateProvider.addObserver(self) { state, _ in
-            self.callStateChanged(state)
-        }
-    }
-
-    deinit {
-        callStateProvider.removeObserver(self)
     }
 
     public func event(_ event: Event) {
@@ -86,7 +74,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
 
     override func start() {
         super.start()
-        update(for: callKind)
+        update(for: call.kind)
         updateButtons()
 
         switch startAction {
@@ -116,8 +104,8 @@ class CallViewModel: EngagementViewModel, ViewModel {
                 break
             }
         case .inactive:
-            callStateProvider.value = .ended(callKind)
-            callDurationCounter.stop()
+            call.state.value = .ended
+            durationCounter.stop()
         default:
             break
         }
@@ -137,7 +125,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
     private func update(for audioState: AudioState) {
         switch audioState {
         case .twoWay:
-            callStateProvider.value = .started(callKind)
+            call.state.value = .started
             action?(.connected(name: interactor.engagedOperator?.firstName,
                                imageUrl: interactor.engagedOperator?.picture?.url))
             action?(.setInfoTextVisible(false))
@@ -180,7 +168,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
         action?(.connecting(name: name, imageUrl: imageUrl))
 
         let mediaType: MediaType = {
-            switch callKind {
+            switch call.kind {
             case .audio:
                 return .audio
             case .video:
@@ -230,10 +218,10 @@ class CallViewModel: EngagementViewModel, ViewModel {
         case .none:
             break
         case .started:
-            callDurationCounter.start { duration in
-                self.callStateProvider.value = .progressed(self.callKind, duration: duration)
+            durationCounter.start { duration in
+                self.call.state.value = .progressed(duration: duration)
             }
-        case .progressed(_, duration: let duration):
+        case .progressed(duration: let duration):
             let text = Strings.Connect.Connected.secondText.withCallDuration(duration.asDurationString)
             action?(.setCallDurationText(text))
         case .ended:

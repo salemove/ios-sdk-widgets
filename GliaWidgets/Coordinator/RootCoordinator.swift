@@ -22,7 +22,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
     private weak var gliaDelegate: GliaDelegate?
     private let engagementKind: EngagementKind
     private var engagement: Engagement = .none
-    private let callStateProvider = Provider<CallState>(with: .none)
+    private let chatCallProvider = Provider<Call?>(with: nil)
     private let navigationController = NavigationController()
     private let navigationPresenter: NavigationPresenter
     private var window: GliaWindow?
@@ -50,9 +50,9 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
             navigationPresenter.setViewControllers([chatViewController],
                                                    animated: false)
         case .audioCall:
+            let call = Call(.audio)
             let chatViewController = startChat()
-            let callViewController = startCall(.audio,
-                                               startAction: .default)
+            let callViewController = startCall(call, withAction: .default)
             engagement = .call(callViewController,
                                chatViewController,
                                .none)
@@ -81,7 +81,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
         let coordinator = ChatCoordinator(interactor: interactor,
                                           viewFactory: viewFactory,
                                           navigationPresenter: navigationPresenter,
-                                          callStateProvider: callStateProvider)
+                                          callProvider: chatCallProvider)
         coordinator.delegate = { [weak self] event in
             switch event {
             case .back:
@@ -118,14 +118,13 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
         return coordinator.start()
     }
 
-    private func startCall(_ callKind: CallKind,
-                           startAction: CallViewModel.StartAction) -> CallViewController {
+    private func startCall(_ call: Call,
+                           withAction startAction: CallViewModel.StartAction) -> CallViewController {
         let coordinator = CallCoordinator(interactor: interactor,
                                           viewFactory: viewFactory,
                                           navigationPresenter: navigationPresenter,
-                                          callKind: callKind,
-                                          startAction: startAction,
-                                          callStateProvider: callStateProvider)
+                                          call: call,
+                                          startAction: startAction)
         coordinator.delegate = { [weak self] event in
             switch event {
             case .back:
@@ -201,11 +200,12 @@ extension RootCoordinator {
     private func audioUpgradeAccepted(answer: @escaping AnswerWithSuccessBlock) {
         switch engagement {
         case .chat(let chatViewController):
-            let callViewController = startCall(.audio,
-                                               startAction: .startAudio(answer))
+            let call = Call(.audio)
+            let callViewController = startCall(call, withAction: .startAudio(answer))
             engagement = .call(callViewController,
                                chatViewController,
                                .chat)
+            chatCallProvider.value = call
             navigationPresenter.push(callViewController)
         default:
             break

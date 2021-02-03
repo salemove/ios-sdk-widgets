@@ -12,37 +12,33 @@ class CallCoordinator: SubFlowCoordinator, FlowCoordinator {
     private let interactor: Interactor
     private let viewFactory: ViewFactory
     private let navigationPresenter: NavigationPresenter
-    private let callKind: CallKind
+    private let call: Call
     private let startAction: CallViewModel.StartAction
-    private let callStateProvider: Provider<CallState>
 
     init(interactor: Interactor,
          viewFactory: ViewFactory,
          navigationPresenter: NavigationPresenter,
-         callKind: CallKind,
-         startAction: CallViewModel.StartAction,
-         callStateProvider: Provider<CallState>) {
+         call: Call,
+         startAction: CallViewModel.StartAction) {
         self.interactor = interactor
         self.viewFactory = viewFactory
         self.navigationPresenter = navigationPresenter
-        self.callKind = callKind
+        self.call = call
         self.startAction = startAction
-        self.callStateProvider = callStateProvider
     }
 
     func start() -> CallViewController {
-        let viewController = makeCallViewController(callKind: callKind,
+        let viewController = makeCallViewController(call: call,
                                                     startAction: startAction)
         return viewController
     }
 
-    private func makeCallViewController(callKind: CallKind,
+    private func makeCallViewController(call: Call,
                                         startAction: CallViewModel.StartAction) -> CallViewController {
         let viewModel = CallViewModel(interactor: interactor,
                                       alertConf: viewFactory.theme.alertConf,
-                                      callKind: callKind,
-                                      startAction: startAction,
-                                      callStateProvider: callStateProvider)
+                                      call: call,
+                                      startAction: startAction)
         viewModel.engagementDelegate = { [weak self] event in
             switch event {
             case .back:

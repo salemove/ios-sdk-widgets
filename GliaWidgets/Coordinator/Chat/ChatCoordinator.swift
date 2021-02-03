@@ -14,16 +14,16 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
     private let interactor: Interactor
     private let viewFactory: ViewFactory
     private let navigationPresenter: NavigationPresenter
-    private let callStateProvider: Provider<CallState>
+    private let callProvider: Provider<Call?>
 
     init(interactor: Interactor,
          viewFactory: ViewFactory,
          navigationPresenter: NavigationPresenter,
-         callStateProvider: Provider<CallState>) {
+         callProvider: Provider<Call?>) {
         self.interactor = interactor
         self.viewFactory = viewFactory
         self.navigationPresenter = navigationPresenter
-        self.callStateProvider = callStateProvider
+        self.callProvider = callProvider
     }
 
     func start() -> ChatViewController {
@@ -34,7 +34,7 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
     private func makeChatViewController() -> ChatViewController {
         let viewModel = ChatViewModel(interactor: interactor,
                                       alertConf: viewFactory.theme.alertConf,
-                                      callStateProvider: callStateProvider)
+                                      callProvider: callProvider)
         viewModel.engagementDelegate = { [weak self] event in
             switch event {
             case .back:
