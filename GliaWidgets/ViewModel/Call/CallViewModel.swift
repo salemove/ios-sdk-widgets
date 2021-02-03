@@ -37,20 +37,10 @@ class CallViewModel: EngagementViewModel, ViewModel {
         case startAudio(AnswerWithSuccessBlock)
     }
 
-    private enum AudioState {
-        case none
-        case remote(AudioStreamable)
-        case local(AudioStreamable)
-        case twoWay(local: AudioStreamable, remote: AudioStreamable)
-    }
-
     var action: ((Action) -> Void)?
     var delegate: ((DelegateEvent) -> Void)?
 
     private var call: Call
-    private var audioState: AudioState = .none {
-        didSet { update(for: audioState) }
-    }
     private let startAction: StartAction
     private let durationCounter = CallDurationCounter()
 
@@ -63,6 +53,9 @@ class CallViewModel: EngagementViewModel, ViewModel {
         super.init(interactor: interactor, alertConf: alertConf)
         call.state.addObserver(self) { state, _ in
             self.onStateChanged(state)
+        }
+        call.audio.addObserver(self) { audio, _ in
+            self.onAudioChanged(audio)
         }
     }
 
@@ -123,18 +116,6 @@ class CallViewModel: EngagementViewModel, ViewModel {
         }
     }
 
-    private func update(for audioState: AudioState) {
-        switch audioState {
-        case .twoWay:
-            call.state.value = .started
-            action?(.connected(name: interactor.engagedOperator?.firstName,
-                               imageUrl: interactor.engagedOperator?.picture?.url))
-            action?(.setInfoText(nil))
-        default:
-            break
-        }
-    }
-
     private func updateButtons() {
         let chatEnabled = interactor.isEngaged
         let videoEnabled = false
@@ -188,28 +169,28 @@ class CallViewModel: EngagementViewModel, ViewModel {
         }
     }
 
-    private func updateAudioState(with stream: AudioStreamable) {
+    private func updateAudio(with stream: AudioStreamable) {
         if stream.isRemote {
-            switch audioState {
+            switch call.audio.value {
             case .none:
-                audioState = .remote(stream)
+                call.audio.value = .remote(stream)
             case .remote:
-                audioState = .remote(stream)
+                call.audio.value = .remote(stream)
             case .local(let local):
-                audioState = .twoWay(local: local, remote: stream)
+                call.audio.value = .twoWay(local: local, remote: stream)
             case .twoWay(local: let local, remote: _):
-                audioState = .twoWay(local: local, remote: stream)
+                call.audio.value = .twoWay(local: local, remote: stream)
             }
         } else {
-            switch audioState {
+            switch call.audio.value {
             case .none:
-                audioState = .local(stream)
+                call.audio.value = .local(stream)
             case .remote(let remote):
-                audioState = .twoWay(local: stream, remote: remote)
+                call.audio.value = .twoWay(local: stream, remote: remote)
             case .local:
-                audioState = .local(stream)
+                call.audio.value = .local(stream)
             case .twoWay(local: _, remote: let remote):
-                audioState = .twoWay(local: stream, remote: remote)
+                call.audio.value = .twoWay(local: stream, remote: remote)
             }
         }
     }
@@ -230,12 +211,24 @@ class CallViewModel: EngagementViewModel, ViewModel {
         }
     }
 
+    private func onAudioChanged(_ audio: CallAudioKind) {
+        switch audio {
+        case .twoWay:
+            call.state.value = .started
+            action?(.connected(name: interactor.engagedOperator?.firstName,
+                               imageUrl: interactor.engagedOperator?.picture?.url))
+            action?(.setInfoText(nil))
+        default:
+            break
+        }
+    }
+
     override func interactorEvent(_ event: InteractorEvent) {
         super.interactorEvent(event)
 
         switch event {
         case .audioStreamAdded(let stream):
-            updateAudioState(with: stream)
+            updateAudio(with: stream)
         case .audioStreamError(let error):
             showAlert(for: error)
         default:
