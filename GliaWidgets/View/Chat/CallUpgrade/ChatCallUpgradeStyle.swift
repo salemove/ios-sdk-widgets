@@ -1,6 +1,6 @@
 import UIKit
 
-public class ChatMediaUpgradeStyle {
+public class ChatCallUpgradeStyle {
     public var icon: UIImage
     public var iconColor: UIColor
     public var text: String

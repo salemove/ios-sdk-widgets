@@ -148,6 +148,13 @@ class ChatView: EngagementView {
             view.showsOperatorImage = showsImage
             view.setOperatorImage(fromUrl: imageUrl, animated: false)
             return .operatorMessage(view)
+        case .callUpgrade(let callKind, durationProvider: let durationProvider):
+            let callStyle = callKind == .audio
+                ? style.audioUpgrade
+                : style.videoUpgrade
+            let view = ChatCallUpgradeView(with: callStyle,
+                                           durationProvider: durationProvider)
+            return .callUpgrade(view)
         }
     }
 

@@ -58,22 +58,22 @@ extension Theme {
                                                  sendButtonColor: color.primary,
                                                  separatorColor: color.baseShade,
                                                  backgroundColor: color.background)
-        let audioUpgrade = ChatMediaUpgradeStyle(icon: Asset.upgradeAudio.image,
-                                                 iconColor: color.primary,
-                                                 text: Chat.Upgrade.Audio.text,
-                                                 textFont: font.bodyText,
-                                                 textColor: color.baseDark,
-                                                 durationFont: font.bodyText,
-                                                 durationColor: color.baseNormal,
-                                                 borderColor: color.baseShade)
-        let videoUpgrade = ChatMediaUpgradeStyle(icon: Asset.upgradeVideo.image,
-                                                 iconColor: color.primary,
-                                                 text: Chat.Upgrade.Video.text,
-                                                 textFont: font.bodyText,
-                                                 textColor: color.baseDark,
-                                                 durationFont: font.bodyText,
-                                                 durationColor: color.baseNormal,
-                                                 borderColor: color.baseShade)
+        let audioUpgrade = ChatCallUpgradeStyle(icon: Asset.upgradeAudio.image,
+                                                iconColor: color.primary,
+                                                text: Chat.Upgrade.Audio.text,
+                                                textFont: font.bodyText,
+                                                textColor: color.baseDark,
+                                                durationFont: font.bodyText,
+                                                durationColor: color.baseNormal,
+                                                borderColor: color.baseShade)
+        let videoUpgrade = ChatCallUpgradeStyle(icon: Asset.upgradeVideo.image,
+                                                iconColor: color.primary,
+                                                text: Chat.Upgrade.Video.text,
+                                                textFont: font.bodyText,
+                                                textColor: color.baseDark,
+                                                durationFont: font.bodyText,
+                                                durationColor: color.baseNormal,
+                                                borderColor: color.baseShade)
         let userImage = UserImageStyle(placeholderImage: Asset.operatorPlaceholder.image,
                                        placeholderColor: color.baseLight,
                                        backgroundColor: color.primary)

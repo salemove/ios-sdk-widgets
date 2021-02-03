@@ -1,7 +1,8 @@
 import UIKit
 
-class ChatMediaUpgradeView: UIView {
-    private let style: ChatMediaUpgradeStyle
+class ChatCallUpgradeView: UIView {
+    private let style: ChatCallUpgradeStyle
+    private let durationProvider: Provider<Int>
     private let contentView = UIView()
     private let stackView = UIStackView()
     private let iconImageView = UIImageView()
@@ -9,11 +10,16 @@ class ChatMediaUpgradeView: UIView {
     private let durationLabel = UILabel()
     private let kContentInsets = UIEdgeInsets(top: 8, left: 44, bottom: 8, right: 44)
 
-    init(with style: ChatMediaUpgradeStyle) {
+    init(with style: ChatCallUpgradeStyle, durationProvider: Provider<Int>) {
         self.style = style
+        self.durationProvider = durationProvider
         super.init(frame: .zero)
         setup()
         layout()
+    }
+
+    deinit {
+        durationProvider.removeObserver(self)
     }
 
     required init?(coder: NSCoder) {
@@ -35,8 +41,13 @@ class ChatMediaUpgradeView: UIView {
         textLabel.font = style.textFont
         textLabel.textColor = style.textColor
 
+        durationLabel.text = durationProvider.value.asDurationString
         durationLabel.font = style.durationFont
         durationLabel.textColor = style.textColor
+
+        durationProvider.addObserver(self) { duration, _ in
+            self.durationLabel.text = duration.asDurationString
+        }
     }
 
     private func layout() {

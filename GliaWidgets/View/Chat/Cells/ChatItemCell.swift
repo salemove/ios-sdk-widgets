@@ -8,6 +8,7 @@ class ChatItemCell: UITableViewCell {
         case outgoingMessage(VisitorChatMessageView)
         case visitorMessage(VisitorChatMessageView)
         case operatorMessage(OperatorChatMessageView)
+        case callUpgrade(ChatCallUpgradeView)
 
         var view: UIView? {
             switch self {
@@ -20,6 +21,8 @@ class ChatItemCell: UITableViewCell {
             case .visitorMessage(let view):
                 return view
             case .operatorMessage(let view):
+                return view
+            case .callUpgrade(let view):
                 return view
             }
         }

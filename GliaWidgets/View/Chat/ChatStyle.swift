@@ -5,8 +5,8 @@ public class ChatStyle: EngagementStyle {
     public var visitorMessage: VisitorChatMessageStyle
     public var operatorMessage: OperatorChatMessageStyle
     public var messageEntry: ChatMessageEntryStyle
-    public var audioUpgrade: ChatMediaUpgradeStyle
-    public var videoUpgrade: ChatMediaUpgradeStyle
+    public var audioUpgrade: ChatCallUpgradeStyle
+    public var videoUpgrade: ChatCallUpgradeStyle
     public var callBubble: BubbleStyle
 
     public init(header: HeaderStyle,
@@ -18,8 +18,8 @@ public class ChatStyle: EngagementStyle {
                 visitorMessage: VisitorChatMessageStyle,
                 operatorMessage: OperatorChatMessageStyle,
                 messageEntry: ChatMessageEntryStyle,
-                audioUpgrade: ChatMediaUpgradeStyle,
-                videoUpgrade: ChatMediaUpgradeStyle,
+                audioUpgrade: ChatCallUpgradeStyle,
+                videoUpgrade: ChatCallUpgradeStyle,
                 callBubble: BubbleStyle) {
         self.title = title
         self.visitorMessage = visitorMessage

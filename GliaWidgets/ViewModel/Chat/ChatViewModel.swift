@@ -265,9 +265,9 @@ extension ChatViewModel {
         case .none:
             break
         case .started:
-            break
+            break // append item
         case .progressed(_, duration: let duration):
-            break
+            break // find last callUpgrade item, update duration
         case .ended:
             break
         }

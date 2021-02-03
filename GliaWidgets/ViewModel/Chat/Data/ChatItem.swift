@@ -6,6 +6,7 @@ struct ChatItem {
         case outgoingMessage(OutgoingMessage)
         case visitorMessage(ChatMessage, status: String?)
         case operatorMessage(ChatMessage, showsImage: Bool, imageUrl: String?)
+        case callUpgrade(CallKind, durationProvider: Provider<Int>)
     }
 
     var isOperatorMessage: Bool {
