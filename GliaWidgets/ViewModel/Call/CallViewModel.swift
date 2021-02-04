@@ -63,6 +63,9 @@ class CallViewModel: EngagementViewModel, ViewModel {
         call.audio.addObserver(self) { audio, _ in
             self.onAudioChanged(audio)
         }
+        call.duration.addObserver(self) { duration, _ in
+            self.onDurationChanged(duration)
+        }
     }
 
     public func event(_ event: Event) {
@@ -221,11 +224,8 @@ class CallViewModel: EngagementViewModel, ViewModel {
             break
         case .started:
             durationCounter.start { duration in
-                self.call.state.value = .progressed(duration: duration)
+                self.call.duration.value = duration
             }
-        case .progressed(duration: let duration):
-            let text = Strings.Connect.Connected.secondText.withCallDuration(duration.asDurationString)
-            action?(.setCallDurationText(text))
         case .ended:
             break
         }
@@ -243,6 +243,11 @@ class CallViewModel: EngagementViewModel, ViewModel {
             break
         }
         updateButtons()
+    }
+
+    private func onDurationChanged(_ duration: Int) {
+        let text = Strings.Connect.Connected.secondText.withCallDuration(duration.asDurationString)
+        action?(.setCallDurationText(text))
     }
 
     override func interactorEvent(_ event: InteractorEvent) {

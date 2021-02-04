@@ -8,7 +8,6 @@ enum CallKind {
 enum CallState {
     case none
     case started
-    case progressed(duration: Int)
     case ended
 }
 
@@ -36,6 +35,7 @@ class Call {
     let kind: CallKind
     let state = Provider<CallState>(with: .none)
     let audio = Provider<CallAudioKind>(with: .none)
+    let duration = Provider<Int>(with: 0)
 
     init(_ kind: CallKind) {
         self.kind = kind

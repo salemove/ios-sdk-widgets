@@ -269,13 +269,8 @@ extension ChatViewModel {
         appendItem(item, to: messagesSection, animated: true)
         action?(.scrollToBottom(animated: true))
 
-        call.state.addObserver(self) { state, _ in
-            switch state {
-            case .progressed(duration: let duration):
-                durationProvider.value = duration
-            default:
-                break
-            }
+        call.duration.addObserver(self) { duration, _ in
+            durationProvider.value = duration
         }
     }
 }
