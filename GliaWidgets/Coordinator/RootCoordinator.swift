@@ -45,14 +45,14 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
     func start() {
         switch engagementKind {
         case .chat:
-            let chatViewController = startChat()
+            let chatViewController = startChat(withAction: .startEngagement)
             engagement = .chat(chatViewController)
             navigationPresenter.setViewControllers([chatViewController],
                                                    animated: false)
         case .audioCall:
             let call = Call(.audio)
-            let chatViewController = startChat()
-            let callViewController = startCall(call, withAction: .default)
+            let chatViewController = startChat(withAction: .none)
+            let callViewController = startCall(call, withAction: .startEngagement)
             engagement = .call(callViewController,
                                chatViewController,
                                .none)
@@ -77,11 +77,12 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
         }
     }
 
-    private func startChat() -> ChatViewController {
+    private func startChat(withAction startAction: ChatViewModel.StartAction) -> ChatViewController {
         let coordinator = ChatCoordinator(interactor: interactor,
                                           viewFactory: viewFactory,
                                           navigationPresenter: navigationPresenter,
-                                          callProvider: chatCallProvider)
+                                          callProvider: chatCallProvider,
+                                          startAction: startAction)
         coordinator.delegate = { [weak self] event in
             switch event {
             case .back:

@@ -15,6 +15,7 @@ class ConnectView: UIView {
     private var state: State = .none
     private var connectTimer: Timer?
     private var connectCounter: Int = 0
+    private var isShowing = false
 
     init(with style: ConnectStyle) {
         self.style = style
@@ -64,10 +65,12 @@ class ConnectView: UIView {
                 statusView.setFirstText(nil, animated: animated)
             }
             statusView.setStyle(style.connected)
+            show(animated: animated)
         }
     }
 
     private func show(animated: Bool) {
+        guard !isShowing else { return }
         UIView.animate(withDuration: animated ? 0.5 : 0.0,
                        delay: 0.0,
                        usingSpringWithDamping: 0.8,
@@ -76,6 +79,7 @@ class ConnectView: UIView {
                        animations: {
                         self.transform = .identity
                        }, completion: nil)
+        isShowing = true
     }
 
     private func hide(animated: Bool) {
@@ -87,6 +91,7 @@ class ConnectView: UIView {
                        animations: {
                         self.transform = CGAffineTransform(scaleX: 0, y: 0)
                        }, completion: nil)
+        isShowing = false
     }
 
     private func setup() {

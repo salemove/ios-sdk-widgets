@@ -31,9 +31,15 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case call
     }
 
+    enum StartAction {
+        case startEngagement
+        case none
+    }
+
     var action: ((Action) -> Void)?
     var delegate: ((DelegateEvent) -> Void)?
 
+    private let startAction: StartAction
     private let sections = [
         Section<ChatItem>(0),
         Section<ChatItem>(1),
@@ -47,8 +53,10 @@ class ChatViewModel: EngagementViewModel, ViewModel {
 
     init(interactor: Interactor,
          alertConf: AlertConf,
-         callProvider: Provider<Call?>) {
+         callProvider: Provider<Call?>,
+         startAction: StartAction) {
         self.callProvider = callProvider
+        self.startAction = startAction
         super.init(interactor: interactor, alertConf: alertConf)
         self.callProvider.addObserver(self) { call, _ in
             self.onCall(call)
@@ -77,7 +85,13 @@ class ChatViewModel: EngagementViewModel, ViewModel {
                    animated: false)
         action?(.setMessageEntryEnabled(false))
         storage.setQueue(withID: interactor.queueID)
-        enqueue()
+
+        switch startAction {
+        case .startEngagement:
+            enqueue()
+        case .none:
+            update(for: interactor.state)
+        }
     }
 
     override func update(for state: InteractorState) {

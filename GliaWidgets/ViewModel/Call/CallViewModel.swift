@@ -40,7 +40,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
     }
 
     enum StartAction {
-        case `default`
+        case startEngagement
         case startAudio(AnswerWithSuccessBlock)
     }
 
@@ -85,7 +85,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
         updateButtons()
 
         switch startAction {
-        case .default:
+        case .startEngagement:
             enqueue()
         case .startAudio(let answer):
             answer(true, nil)
@@ -103,7 +103,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
             action?(.queue)
         case .engaged:
             switch startAction {
-            case .default:
+            case .startEngagement:
                 requestMedia()
             default:
                 break
