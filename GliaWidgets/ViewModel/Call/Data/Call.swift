@@ -28,6 +28,17 @@ enum CallAudioKind {
             return nil
         }
     }
+    var hasRemoteAudio: Bool { return remoteStream != nil }
+    var remoteStream: AudioStreamable? {
+        switch self {
+        case .remote(let stream):
+            return stream
+        case .twoWay(_, remote: let stream):
+            return stream
+        default:
+            return nil
+        }
+    }
 }
 
 class Call {

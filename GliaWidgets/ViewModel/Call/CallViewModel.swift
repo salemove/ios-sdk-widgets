@@ -1,4 +1,5 @@
 import SalemoveSDK
+import AVFoundation
 
 class CallViewModel: EngagementViewModel, ViewModel {
     private typealias Strings = L10n.Call
@@ -46,9 +47,10 @@ class CallViewModel: EngagementViewModel, ViewModel {
     var action: ((Action) -> Void)?
     var delegate: ((DelegateEvent) -> Void)?
 
-    private var call: Call
+    private let call: Call
     private let startAction: StartAction
     private let durationCounter = CallDurationCounter()
+    private var audioPortOverride = AVAudioSession.PortOverride.none
 
     init(interactor: Interactor,
          alertConf: AlertConf,
@@ -122,48 +124,6 @@ class CallViewModel: EngagementViewModel, ViewModel {
         case .video:
             action?(.setTitle(Strings.Video.title))
             action?(.showButtons([.chat, .video, .mute, .speaker, .minimize]))
-        }
-    }
-
-    private func updateButtons() {
-        let chatEnabled = interactor.isEngaged
-        let videoEnabled = false
-        let muteEnabled = call.audio.value.hasLocalAudio
-        let speakerEnabled = false
-        let minimizeEnabled = true
-        action?(.setButtonEnabled(.chat, enabled: chatEnabled))
-        action?(.setButtonEnabled(.video, enabled: videoEnabled))
-        action?(.setButtonEnabled(.mute, enabled: muteEnabled))
-        action?(.setButtonEnabled(.speaker, enabled: speakerEnabled))
-        action?(.setButtonEnabled(.minimize, enabled: minimizeEnabled))
-
-        call.audio.value.localStream.map({
-            let muteState: ButtonState = $0.isMuted
-                ? .active
-                : .inactive
-            action?(.setButtonState(.mute, state: muteState))
-        })
-    }
-
-    private func buttonTapped(_ button: Button) {
-        switch button {
-        case .chat:
-            delegate?(.chat)
-        case .video:
-            break
-        case .mute:
-            call.audio.value.localStream.map {
-                if $0.isMuted {
-                    $0.unmute()
-                } else {
-                    $0.mute()
-                }
-            }
-            updateButtons()
-        case .speaker:
-            break
-        case .minimize:
-            delegate?(.minimize)
         }
     }
 
@@ -275,5 +235,78 @@ class CallViewModel: EngagementViewModel, ViewModel {
         default:
             break
         }
+    }
+}
+
+extension CallViewModel {
+    private func updateButtons() {
+        let chatEnabled = interactor.isEngaged
+        let videoEnabled = false
+        let muteEnabled = call.audio.value.hasLocalAudio
+        let speakerEnabled = call.audio.value.hasRemoteAudio
+        let minimizeEnabled = true
+        action?(.setButtonEnabled(.chat, enabled: chatEnabled))
+        action?(.setButtonEnabled(.video, enabled: videoEnabled))
+        action?(.setButtonEnabled(.mute, enabled: muteEnabled))
+        action?(.setButtonEnabled(.speaker, enabled: speakerEnabled))
+        action?(.setButtonEnabled(.minimize, enabled: minimizeEnabled))
+
+        let muteState: ButtonState = call.audio.value.localStream?.isMuted == true
+            ? .active
+            : .inactive
+        action?(.setButtonState(.mute, state: muteState))
+
+        let speakerState: ButtonState = audioPortOverride == .speaker
+            ? .active
+            : .inactive
+        action?(.setButtonState(.speaker, state: speakerState))
+    }
+
+    private func buttonTapped(_ button: Button) {
+        switch button {
+        case .chat:
+            delegate?(.chat)
+        case .video:
+            break
+        case .mute:
+            toggleMute()
+        case .speaker:
+            toggleSpeaker()
+        case .minimize:
+            delegate?(.minimize)
+        }
+    }
+
+    private func toggleMute() {
+        call.audio.value.localStream.map {
+            if $0.isMuted {
+                $0.unmute()
+            } else {
+                $0.mute()
+            }
+        }
+        updateButtons()
+    }
+
+    private func toggleSpeaker() {
+        let newOverride: AVAudioSession.PortOverride = {
+            switch audioPortOverride {
+            case .none:
+                return .speaker
+            case .speaker:
+                return .none
+            @unknown default:
+                return .none
+            }
+        }()
+
+        let session = AVAudioSession.sharedInstance()
+        do {
+            try session.overrideOutputAudioPort(newOverride)
+            audioPortOverride = newOverride
+        } catch {
+            print(error)
+        }
+        updateButtons()
     }
 }
