@@ -63,6 +63,7 @@ public class ChatMessageEntryView: UIView {
         textView.isScrollEnabled = false
         textView.font = style.messageFont
         textView.textColor = style.messageColor
+        textView.backgroundColor = .clear
 
         placeholderLabel.text = style.placeholder
         placeholderLabel.font = style.placeholderFont
