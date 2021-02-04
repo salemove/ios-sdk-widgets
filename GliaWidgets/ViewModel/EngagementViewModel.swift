@@ -12,6 +12,8 @@ class EngagementViewModel {
                      confirmed: (() -> Void)?)
         case showAlert(MessageAlertConf,
                        dismissed: (() -> Void)?)
+        case showSettingsAlert(SettingsAlertConf,
+                               cancelled: (() -> Void)?)
     }
 
     enum DelegateEvent {
@@ -116,6 +118,10 @@ class EngagementViewModel {
 
     func showAlert(for error: SalemoveError) {
         showAlert(with: alertConf.unexpectedError)
+    }
+
+    func showSettingsAlert(with conf: SettingsAlertConf, cancelled: (() -> Void)? = nil) {
+        engagementAction?(.showSettingsAlert(conf, cancelled: cancelled))
     }
 
     func alertConf(with error: SalemoveError) -> MessageAlertConf {

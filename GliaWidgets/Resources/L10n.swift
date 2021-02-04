@@ -19,10 +19,16 @@ public enum L10n {
     public enum Action {
       /// Accept
       public static let accept = L10n.tr("Localizable", "alert.action.accept")
+      /// Cancel
+      public static let cancel = L10n.tr("Localizable", "alert.action.cancel")
       /// Decline
       public static let decline = L10n.tr("Localizable", "alert.action.decline")
       /// No
       public static let no = L10n.tr("Localizable", "alert.action.no")
+      /// OK
+      public static let ok = L10n.tr("Localizable", "alert.action.ok")
+      /// Settings
+      public static let settings = L10n.tr("Localizable", "alert.action.settings")
       /// Yes
       public static let yes = L10n.tr("Localizable", "alert.action.yes")
     }
@@ -63,6 +69,12 @@ public enum L10n {
         /// Phone
         public static let title = L10n.tr("Localizable", "alert.mediaUpgrade.phone.title")
       }
+    }
+    public enum MicrophonePermission {
+      /// Allow access to you micrphone from device menu: “Settings” - “Privacy” - “Microphone”
+      public static let message = L10n.tr("Localizable", "alert.microphonePermission.message")
+      /// Unable to access microphone
+      public static let title = L10n.tr("Localizable", "alert.microphonePermission.title")
     }
     public enum OperatorsUnavailable {
       /// Operators are no longer available.\nPlease try again later.

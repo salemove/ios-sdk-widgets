@@ -4,6 +4,7 @@ public struct AlertConf {
     public var operatorsUnavailable: MessageAlertConf
     public var mediaUpgrade: MediaUpgradeAlertConf
     public var audioUpgrade: AudioUpgradeAlertConf
+    public var microphoneSettings: SettingsAlertConf
     public var unexpectedError: MessageAlertConf
     public var apiError: MessageAlertConf
 
@@ -12,6 +13,7 @@ public struct AlertConf {
                 operatorsUnavailable: MessageAlertConf,
                 mediaUpgrade: MediaUpgradeAlertConf,
                 audioUpgrade: AudioUpgradeAlertConf,
+                microphoneSettings: SettingsAlertConf,
                 unexpectedError: MessageAlertConf,
                 apiError: MessageAlertConf) {
         self.leaveQueue = leaveQueue
@@ -19,6 +21,7 @@ public struct AlertConf {
         self.operatorsUnavailable = operatorsUnavailable
         self.mediaUpgrade = mediaUpgrade
         self.audioUpgrade = audioUpgrade
+        self.microphoneSettings = microphoneSettings
         self.unexpectedError = unexpectedError
         self.apiError = apiError
     }

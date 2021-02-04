@@ -7,6 +7,8 @@ protocol AlertPresenter where Self: UIViewController {
                       dismissed: (() -> Void)?)
     func presentConfirmation(with conf: ConfirmationAlertConf,
                              confirmed: @escaping () -> Void)
+    func presentSettingsAlert(with conf: SettingsAlertConf,
+                              cancelled: (() -> Void)?)
 }
 
 extension AlertPresenter {
@@ -21,6 +23,23 @@ extension AlertPresenter {
                              confirmed: @escaping () -> Void) {
         let alert = AlertViewController(kind: .confirmation(conf, confirmed: confirmed),
                                         viewFactory: viewFactory)
+        present(alert, animated: true, completion: nil)
+    }
+
+    func presentSettingsAlert(with conf: SettingsAlertConf,
+                              cancelled: (() -> Void)? = nil) {
+        let alert = UIAlertController(title: conf.title,
+                                      message: conf.message,
+                                      preferredStyle: .alert)
+        let cancel = UIAlertAction(title: conf.cancelTitle, style: .cancel, handler: { _ in
+            cancelled?()
+        })
+        let settings = UIAlertAction(title: conf.settingsTitle, style: .default, handler: { _ in
+            guard let settingsURL = URL(string: UIApplication.openSettingsURLString) else { return }
+            UIApplication.shared.open(settingsURL)
+        })
+        alert.addAction(cancel)
+        alert.addAction(settings)
         present(alert, animated: true, completion: nil)
     }
 }

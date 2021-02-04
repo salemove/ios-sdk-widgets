@@ -38,6 +38,8 @@ class EngagementViewController: ViewController, AlertPresenter {
                 self.presentConfirmation(with: conf) { confirmed?() }
             case .showAlert(let conf, dismissed: let dismissed):
                 self.presentAlert(with: conf) { dismissed?() }
+            case .showSettingsAlert(let conf, cancelled: let cancelled):
+                self.presentSettingsAlert(with: conf, cancelled: cancelled)
             }
         }
     }

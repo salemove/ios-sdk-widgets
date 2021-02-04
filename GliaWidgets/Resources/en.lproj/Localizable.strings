@@ -5,6 +5,9 @@
 "alert.action.no" = "No";
 "alert.action.decline" = "Decline";
 "alert.action.accept" = "Accept";
+"alert.action.ok" = "OK";
+"alert.action.settings" = "Settings";
+"alert.action.cancel" = "Cancel";
 
 "alert.leaveQueue.title" = "Are you sure you want to leave?";
 "alert.leaveQueue.message" = "You will lose your place in the queue.";
@@ -28,6 +31,9 @@
 "alert.mediaUpgrade.phone.info" = "Enter your number and we'll call you";
 
 "alert.audioUpgrade.title" = "{operatorName} has offered you to upgrade to audio";
+
+"alert.microphonePermission.title" = "Unable to access microphone";
+"alert.microphonePermission.message" = "Allow access to you micrphone from device menu: “Settings” - “Privacy” - “Microphone”";
 
 "chat.title" = "Chat";
 "chat.endButton.title" = "End";

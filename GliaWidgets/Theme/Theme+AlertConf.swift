@@ -39,6 +39,10 @@ extension Theme {
                                                  titleImage: Asset.upgradeAudio.image,
                                                  decline: Alert.Action.decline,
                                                  accept: Alert.Action.accept)
+        let microphoneSettings = SettingsAlertConf(title: Alert.MicrophonePermission.title,
+                                                   message: Alert.MicrophonePermission.message,
+                                                   settingsTitle: Alert.Action.settings,
+                                                   cancelTitle: Alert.Action.cancel)
         let unexpected = MessageAlertConf(title: Alert.Unexpected.title,
                                           message: Alert.Unexpected.message)
         let api = MessageAlertConf(title: Alert.ApiError.title,
@@ -49,6 +53,7 @@ extension Theme {
                         operatorsUnavailable: operatorsUnavailable,
                         mediaUpgrade: mediaUpgrade,
                         audioUpgrade: audioUpgrade,
+                        microphoneSettings: microphoneSettings,
                         unexpectedError: unexpected,
                         apiError: api)
     }

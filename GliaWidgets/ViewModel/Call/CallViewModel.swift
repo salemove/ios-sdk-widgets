@@ -250,6 +250,20 @@ class CallViewModel: EngagementViewModel, ViewModel {
         action?(.setCallDurationText(text))
     }
 
+    private func handleMediaError(_ error: SalemoveError) {
+        switch error.error {
+        case let mediaError as MediaError:
+            switch mediaError {
+            case .permissionDenied:
+                self.showSettingsAlert(with: alertConf.microphoneSettings)
+            default:
+                showAlert(for: error)
+            }
+        default:
+            showAlert(for: error)
+        }
+    }
+
     override func interactorEvent(_ event: InteractorEvent) {
         super.interactorEvent(event)
 
@@ -257,7 +271,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
         case .audioStreamAdded(let stream):
             updateAudio(with: stream)
         case .audioStreamError(let error):
-            showAlert(for: error)
+            handleMediaError(error)
         default:
             break
         }
