@@ -102,11 +102,8 @@ class CallViewModel: EngagementViewModel, ViewModel {
         case .enqueueing:
             action?(.queue)
         case .engaged:
-            switch startAction {
-            case .startEngagement:
+            if case .startEngagement = startAction {
                 requestMedia()
-            default:
-                break
             }
         case .inactive:
             call.state.value = .ended
