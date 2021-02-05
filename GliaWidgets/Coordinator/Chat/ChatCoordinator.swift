@@ -14,13 +14,13 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
     private let interactor: Interactor
     private let viewFactory: ViewFactory
     private let navigationPresenter: NavigationPresenter
-    private let callProvider: Provider<Call?>
+    private let callProvider: ValueProvider<Call?>
     private let startAction: ChatViewModel.StartAction
 
     init(interactor: Interactor,
          viewFactory: ViewFactory,
          navigationPresenter: NavigationPresenter,
-         callProvider: Provider<Call?>,
+         callProvider: ValueProvider<Call?>,
          startAction: ChatViewModel.StartAction) {
         self.interactor = interactor
         self.viewFactory = viewFactory

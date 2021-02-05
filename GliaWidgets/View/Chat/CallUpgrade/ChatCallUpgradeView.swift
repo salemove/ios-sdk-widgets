@@ -2,7 +2,7 @@ import UIKit
 
 class ChatCallUpgradeView: UIView {
     private let style: ChatCallUpgradeStyle
-    private let durationProvider: Provider<Int>
+    private let durationProvider: ValueProvider<Int>
     private let contentView = UIView()
     private let stackView = UIStackView()
     private let iconImageView = UIImageView()
@@ -10,7 +10,7 @@ class ChatCallUpgradeView: UIView {
     private let durationLabel = UILabel()
     private let kContentInsets = UIEdgeInsets(top: 8, left: 44, bottom: 8, right: 44)
 
-    init(with style: ChatCallUpgradeStyle, durationProvider: Provider<Int>) {
+    init(with style: ChatCallUpgradeStyle, durationProvider: ValueProvider<Int>) {
         self.style = style
         self.durationProvider = durationProvider
         super.init(frame: .zero)

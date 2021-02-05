@@ -49,11 +49,11 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     private var queueOperatorSection: Section<ChatItem> { return sections[1] }
     private var messagesSection: Section<ChatItem> { return sections[2] }
     private let storage = ChatStorage()
-    private let callProvider: Provider<Call?>
+    private let callProvider: ValueProvider<Call?>
 
     init(interactor: Interactor,
          alertConfiguration: AlertConfiguration,
-         callProvider: Provider<Call?>,
+         callProvider: ValueProvider<Call?>,
          startAction: StartAction) {
         self.callProvider = callProvider
         self.startAction = startAction
@@ -277,7 +277,7 @@ extension ChatViewModel {
     private func onCall(_ call: Call?) {
         guard let call = call else { return }
 
-        let durationProvider = Provider<Int>(with: 0)
+        let durationProvider = ValueProvider<Int>(with: 0)
         let item = ChatItem(kind: .callUpgrade(call.kind,
                                                durationProvider: durationProvider))
         appendItem(item, to: messagesSection, animated: true)

@@ -22,7 +22,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
     private weak var gliaDelegate: GliaDelegate?
     private let engagementKind: EngagementKind
     private var engagement: Engagement = .none
-    private let chatCallProvider = Provider<Call?>(with: nil)
+    private let chatCallProvider = ValueProvider<Call?>(with: nil)
     private let navigationController = NavigationController()
     private let navigationPresenter: NavigationPresenter
     private var window: GliaWindow?

@@ -44,9 +44,9 @@ enum CallAudioKind {
 class Call {
     let id = UUID().uuidString
     let kind: CallKind
-    let state = Provider<CallState>(with: .none)
-    let audio = Provider<CallAudioKind>(with: .none)
-    let duration = Provider<Int>(with: 0)
+    let state = ValueProvider<CallState>(with: .none)
+    let audio = ValueProvider<CallAudioKind>(with: .none)
+    let duration = ValueProvider<Int>(with: 0)
 
     init(_ kind: CallKind) {
         self.kind = kind
