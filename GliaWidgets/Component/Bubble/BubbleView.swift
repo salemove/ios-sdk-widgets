@@ -1,14 +1,15 @@
 import UIKit
 
-class BubbleView: UIView {
-    enum Kind {
-        case userImage(url: String?)
-    }
+enum BubbleKind {
+    case userImage(url: String?)
+}
 
-    var kind: Kind = .userImage(url: nil) {
+class BubbleView: UIView {
+    var kind: BubbleKind = .userImage(url: nil) {
         didSet { update(kind) }
     }
     var tap: (() -> Void)?
+    var pan: ((CGPoint) -> Void)?
 
     private let style: BubbleStyle
     private var userImageView: UserImageView?
@@ -48,13 +49,15 @@ class BubbleView: UIView {
 
         let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapped))
         addGestureRecognizer(tapRecognizer)
+        let panRecognizer = UIPanGestureRecognizer(target: self, action: #selector(pan(_:)))
+        addGestureRecognizer(panRecognizer)
 
         update(kind)
     }
 
     private func layout() {}
 
-    private func update(_ kind: Kind) {
+    private func update(_ kind: BubbleKind) {
         switch kind {
         case .userImage(url: let url):
             guard userImageView == nil else {
@@ -78,5 +81,12 @@ class BubbleView: UIView {
 
     @objc private func tapped() {
         tap?()
+    }
+
+    @objc func pan(_ gesture: UIPanGestureRecognizer) {
+        let translation = gesture.translation(in: self)
+        guard gesture.view != nil else { return }
+        pan?(translation)
+        gesture.setTranslation(.zero, in: self)
     }
 }

@@ -1,14 +1,12 @@
 import UIKit
 
-class ChatViewController: ViewController, AlertPresenter {
-    internal let viewFactory: ViewFactory
+class ChatViewController: EngagementViewController, MediaUpgradePresenter {
     private let viewModel: ChatViewModel
 
     init(viewModel: ChatViewModel,
          viewFactory: ViewFactory) {
         self.viewModel = viewModel
-        self.viewFactory = viewFactory
-        super.init(nibName: nil, bundle: nil)
+        super.init(viewModel: viewModel, viewFactory: viewFactory)
     }
 
     required init?(coder: NSCoder) {
@@ -30,29 +28,19 @@ class ChatViewController: ViewController, AlertPresenter {
     override var preferredStatusBarStyle: UIStatusBarStyle { return viewFactory.theme.chat.preferredStatusBarStyle }
 
     private func bind(viewModel: ChatViewModel, to view: ChatView) {
-        let leftItem = Button(kind: .back, tap: { viewModel.event(.backTapped) })
-        let rightItem = Button(kind: .close, tap: { viewModel.event(.closeTapped) })
-
-        view.header.setLeftItem(leftItem, animated: false)
-        view.header.setRightItem(rightItem, animated: false)
         view.numberOfSections = { return viewModel.numberOfSections }
         view.numberOfRows = { return viewModel.numberOfItems(in: $0) }
         view.itemForRow = { return viewModel.item(for: $0, in: $1) }
         view.messageEntryView.textChanged = { viewModel.event(.messageTextChanged($0)) }
         view.messageEntryView.sendTapped = { viewModel.event(.sendTapped(message: $0)) }
+        view.callBubbleTapped = { viewModel.event(.callBubbleTapped) }
 
         viewModel.action = { action in
             switch action {
-            case .queueWaiting:
-                view.setQueueState(.waiting, animated: false)
-            case .queueConnecting:
-                view.setQueueState(.connecting, animated: true)
-            case .queueConnected(name: let name, imageUrl: let imageUrl):
-                view.setQueueState(.connected(name: name, imageUrl: imageUrl), animated: true)
-            case .showEndButton:
-                let rightItem = ActionButton(with: self.viewFactory.theme.chat.endButton)
-                rightItem.tap = { viewModel.event(.closeTapped) }
-                view.header.setRightItem(rightItem, animated: true)
+            case .queue:
+                view.setConnectState(.queue, animated: false)
+            case .connected(name: let name, imageUrl: let imageUrl):
+                view.setConnectState(.connected(name: name, imageUrl: imageUrl), animated: true)
             case .setMessageEntryEnabled(let enabled):
                 view.messageEntryView.isEnabled = enabled
             case .appendRows(let count, let section, let animated):
@@ -67,10 +55,10 @@ class ChatViewController: ViewController, AlertPresenter {
                 view.scrollToBottom(animated: animated)
             case .updateItemsUserImage(animated: let animated):
                 view.updateItemsUserImage(animated: animated)
-            case .confirm(let strings, let confirmed):
-                self.presentConfirmation(with: strings) { confirmed?() }
-            case .showAlert(let strings, let dismissed):
-                self.presentAlert(with: strings) { dismissed?() }
+            case .offerAudioUpgrade(let conf, accepted: let accepted, declined: let declined):
+                self.offerAudioUpgrade(with: conf, accepted: accepted, declined: declined)
+            case .showCallBubble(let imageUrl):
+                view.showCallBubble(with: imageUrl, animated: true)
             }
         }
     }

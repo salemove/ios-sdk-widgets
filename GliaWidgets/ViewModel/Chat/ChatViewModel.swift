@@ -5,17 +5,14 @@ class ChatViewModel: EngagementViewModel, ViewModel {
 
     enum Event {
         case viewDidLoad
-        case backTapped
-        case closeTapped
         case messageTextChanged(String)
         case sendTapped(message: String)
+        case callBubbleTapped
     }
 
     enum Action {
-        case queueWaiting
-        case queueConnecting
-        case queueConnected(name: String?, imageUrl: String?)
-        case showEndButton
+        case queue
+        case connected(name: String?, imageUrl: String?)
         case setMessageEntryEnabled(Bool)
         case appendRows(Int, to: Int, animated: Bool)
         case refreshRow(Int, in: Int, animated: Bool)
@@ -23,26 +20,26 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case refreshAll
         case scrollToBottom(animated: Bool)
         case updateItemsUserImage(animated: Bool)
-        case confirm(AlertConfirmationStrings,
-                     confirmed: (() -> Void)?)
-        case showAlert(AlertMessageStrings,
-                       dismissed: (() -> Void)?)
+        case offerAudioUpgrade(AudioUpgradeAlertConfiguration,
+                               accepted: () -> Void,
+                               declined: () -> Void)
+        case showCallBubble(imageUrl: String?)
     }
 
     enum DelegateEvent {
-        case back
-        case operatorImage(url: String?)
-        case finished
+        case audioUpgradeAccepted(AnswerWithSuccessBlock)
+        case call
+    }
+
+    enum StartAction {
+        case startEngagement
+        case none
     }
 
     var action: ((Action) -> Void)?
     var delegate: ((DelegateEvent) -> Void)?
 
-    private enum AlertState {
-        case presenting
-        case none
-    }
-
+    private let startAction: StartAction
     private let sections = [
         Section<ChatItem>(0),
         Section<ChatItem>(1),
@@ -51,64 +48,67 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     private var historySection: Section<ChatItem> { return sections[0] }
     private var queueOperatorSection: Section<ChatItem> { return sections[1] }
     private var messagesSection: Section<ChatItem> { return sections[2] }
-    private var alertState: AlertState = .none
     private let storage = ChatStorage()
+    private let callProvider: ValueProvider<Call?>
 
-    override init(interactor: Interactor, alertStrings: AlertStrings) {
-        super.init(interactor: interactor, alertStrings: alertStrings)
+    init(interactor: Interactor,
+         alertConfiguration: AlertConfiguration,
+         callProvider: ValueProvider<Call?>,
+         startAction: StartAction) {
+        self.callProvider = callProvider
+        self.startAction = startAction
+        super.init(interactor: interactor, alertConfiguration: alertConfiguration)
+        self.callProvider.addObserver(self) { call, _ in
+            self.onCall(call)
+        }
     }
 
     public func event(_ event: Event) {
         switch event {
         case .viewDidLoad:
             start()
-        case .backTapped:
-            delegate?(.back)
-        case .closeTapped:
-            closeTapped()
         case .messageTextChanged(let message):
             sendMessagePreview(message)
         case .sendTapped(message: let message):
             send(message)
+        case .callBubbleTapped:
+            delegate?(.call)
         }
     }
 
-    private func start() {
+    override func start() {
+        super.start()
+
         let item = ChatItem(kind: .queueOperator)
         appendItem(item,
                    to: queueOperatorSection,
                    animated: false)
         action?(.setMessageEntryEnabled(false))
         storage.setQueue(withID: interactor.queueID)
-        enqueue()
-    }
 
-    private func enqueue() {
-        interactor.enqueueForEngagement {
-
-        } failure: { error in
-            self.handleError(error)
+        switch startAction {
+        case .startEngagement:
+            enqueue()
+        case .none:
+            update(for: interactor.state)
         }
     }
 
-    private func end() {
-        interactor.endSession {
-            self.delegate?(.finished)
-        } failure: { _ in
-            self.delegate?(.finished)
-        }
-    }
+    override func update(for state: InteractorState) {
+        super.update(for: state)
 
-    private func closeTapped() {
-        switch interactor.state {
-        case .enqueueing, .enqueued:
-            action?(.confirm(alertStrings.leaveQueue,
-                             confirmed: { self.end() }))
-        case .engaged:
-            action?(.confirm(alertStrings.endEngagement,
-                             confirmed: { self.end() }))
+        switch state {
+        case .enqueueing:
+            action?(.queue)
+        case .engaged(let engagedOperator):
+            let name = engagedOperator?.firstName
+            let pictureUrl = engagedOperator?.picture?.url
+            storage.setOperator(name: name ?? "", pictureUrl: pictureUrl)
+            action?(.connected(name: name, imageUrl: pictureUrl))
+            action?(.setMessageEntryEnabled(true))
+            loadHistory()
         default:
-            end()
+            break
         }
     }
 
@@ -160,75 +160,34 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         action?(.scrollToBottom(animated: true))
     }
 
-    private func handleError(_ error: SalemoveError) {
-        switch error.error {
-        case let queueError as QueueError:
-            switch queueError {
-            case .queueClosed, .queueFull:
-                self.showAlert(with: self.alertStrings.operatorsUnavailable,
-                               dismissed: { self.end() })
-            default:
-                self.showAlert(with: self.alertStrings.unexpectedError,
-                               dismissed: { self.end() })
-            }
+    private func offerMediaUpgrade(_ offer: MediaUpgradeOffer, answer: @escaping AnswerWithSuccessBlock) {
+        let operatorName = interactor.engagedOperator?.firstName
+
+        switch offer.type {
+        case .audio:
+            action?(.offerAudioUpgrade(alertConfiguration.audioUpgrade.withOperatorName(operatorName),
+                                       accepted: {
+                                        self.delegate?(.audioUpgradeAccepted(answer))
+                                        self.action?(.showCallBubble(imageUrl: self.interactor.engagedOperator?.picture?.url))
+                                       },
+                                       declined: { answer(false, nil) }))
         default:
-            self.showAlert(with: self.alertStrings.unexpectedError,
-                           dismissed: { self.end() })
+            break
         }
-    }
-
-    private func showAlert(with strings: AlertMessageStrings, dismissed: (() -> Void)?) {
-        let dismissHandler = {
-            self.alertState = .none
-            dismissed?()
-
-            switch self.interactor.state {
-            case .inactive:
-                self.end()
-            default:
-                break
-            }
-        }
-
-        alertState = .presenting
-
-        action?(.showAlert(strings, dismissed: { dismissHandler() }))
     }
 
     override func interactorEvent(_ event: InteractorEvent) {
+        super.interactorEvent(event)
+
         switch event {
-        case .stateChanged(let state):
-            switch state {
-            case .inactive:
-                if alertState == .none {
-                    delegate?(.finished)
-                }
-            case .enqueueing:
-                action?(.queueWaiting)
-            case .enqueued:
-                break
-            case .engaged(let engagedOperator):
-                let name = engagedOperator?.name
-                let pictureUrl = engagedOperator?.picture?.url
-                storage.setOperator(name: name ?? "", pictureUrl: pictureUrl)
-                action?(.queueConnected(name: name, imageUrl: pictureUrl))
-                action?(.showEndButton)
-                action?(.setMessageEntryEnabled(true))
-                delegate?(.operatorImage(url: engagedOperator?.picture?.url))
-                loadHistory()
-            }
         case .receivedMessage(let message):
             receivedMessage(message)
         case .messagesUpdated(let messages):
-            let newMessages = storage.newMessages(messages)
-            if !newMessages.isEmpty {
-                storage.storeMessages(newMessages)
-                let items = newMessages.compactMap({ ChatItem(with: $0) })
-                setItems(items, to: messagesSection)
-                action?(.scrollToBottom(animated: true))
-            }
-        case .error(let error):
-            self.handleError(error)
+            messagesUpdated(messages)
+        case .upgradeOffer(let offer, answer: let answer):
+            offerMediaUpgrade(offer, answer: answer)
+        default:
+            break
         }
     }
 }
@@ -253,23 +212,32 @@ extension ChatViewModel {
                          in: self.messagesSection)
             self.action?(.scrollToBottom(animated: true))
         } failure: { _ in
-            self.showAlert(with: self.alertStrings.unexpectedError,
+            self.showAlert(with: self.alertConfiguration.unexpectedError,
                            dismissed: nil)
         }
     }
 
     private func receivedMessage(_ message: Message) {
+        storage.storeMessage(message)
+
         switch message.sender {
-        case .visitor:
-            storage.storeMessage(message)
         case .operator:
             guard let item = ChatItem(with: message) else { break }
-            storage.storeMessage(message)
             appendItem(item, to: messagesSection, animated: true)
             action?(.scrollToBottom(animated: true))
             action?(.updateItemsUserImage(animated: true))
         default:
             break
+        }
+    }
+
+    private func messagesUpdated(_ messages: [Message]) {
+        let newMessages = storage.newMessages(messages)
+        if !newMessages.isEmpty {
+            storage.storeMessages(newMessages)
+            let items = newMessages.compactMap({ ChatItem(with: $0) })
+            setItems(items, to: messagesSection)
+            action?(.scrollToBottom(animated: true))
         }
     }
 }
@@ -302,5 +270,21 @@ extension ChatViewModel {
         }
 
         return item
+    }
+}
+
+extension ChatViewModel {
+    private func onCall(_ call: Call?) {
+        guard let call = call else { return }
+
+        let durationProvider = ValueProvider<Int>(with: 0)
+        let item = ChatItem(kind: .callUpgrade(call.kind,
+                                               durationProvider: durationProvider))
+        appendItem(item, to: messagesSection, animated: true)
+        action?(.scrollToBottom(animated: true))
+
+        call.duration.addObserver(self) { duration, _ in
+            durationProvider.value = duration
+        }
     }
 }

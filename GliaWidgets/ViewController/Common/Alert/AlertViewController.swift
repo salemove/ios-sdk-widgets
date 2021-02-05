@@ -1,14 +1,23 @@
 import UIKit
+import SalemoveSDK
 
 class AlertViewController: ViewController {
     enum Kind {
-        case message(AlertMessageStrings,
+        case message(MessageAlertConfiguration,
                      dismissed: (() -> Void)?)
-        case confirmation(AlertConfirmationStrings,
+        case confirmation(ConfirmationAlertConfiguration,
                           confirmed: () -> Void)
+        case mediaUpgrade(MediaUpgradeAlertConfiguration,
+                          mediaTypes: [MediaType],
+                          accepted: (Int) -> Void,
+                          declined: () -> Void)
+        case audioUpgrade(AudioUpgradeAlertConfiguration,
+                          accepted: () -> Void,
+                          declined: () -> Void)
     }
 
-    private let viewFactory: ViewFactory
+    let viewFactory: ViewFactory
+
     private let kind: Kind
     private var alertView: AlertView?
     private let kAlertInsets = UIEdgeInsets(top: 0, left: 20, bottom: 10, right: 20)
@@ -72,41 +81,31 @@ class AlertViewController: ViewController {
     }
 
     private func makeAlertView() -> AlertView {
-        let alertView = viewFactory.makeAlertView()
-
         switch kind {
-        case .message(let strings, let dismissed):
-            alertView.title = strings.title
-            alertView.message = strings.message
-            alertView.showsCloseButton = true
-            alertView.closeTapped = { [weak self] in
-                self?.dismiss(animated: true) {
-                    dismissed?()
-                }
-            }
-        case .confirmation(let strings, let confirmed):
-            alertView.title = strings.title
-            alertView.message = strings.message
-            alertView.showsPoweredBy = true
-            alertView.actionsAxis = .horizontal
-
-            let negativeButton = ActionButton(with: viewFactory.theme.alert.negativeAction)
-            negativeButton.title = strings.negativeTitle
-            negativeButton.tap = { [weak self] in
-                self?.dismiss(animated: true)
-            }
-            let positiveButton = ActionButton(with: viewFactory.theme.alert.positiveAction)
-            positiveButton.title = strings.positiveTitle
-            positiveButton.tap = { [weak self] in
-                self?.dismiss(animated: true) {
-                    confirmed()
-                }
-            }
-            alertView.addActionView(negativeButton)
-            alertView.addActionView(positiveButton)
+        case .message(let conf, let dismissed):
+            return makeMessageAlertView(
+                with: conf,
+                dismissed: dismissed
+            )
+        case .confirmation(let conf, let confirmed):
+            return makeConfirmationAlertView(
+                with: conf,
+                confirmed: confirmed
+            )
+        case .mediaUpgrade(let conf, mediaTypes: let mediaTypes, accepted: let accepted, declined: let declined):
+            return makeMediaUpgradeAlertView(
+                with: conf,
+                mediaTypes: mediaTypes,
+                accepted: accepted,
+                declined: declined
+            )
+        case .audioUpgrade(let conf, accepted: let accepted, declined: let declined):
+            return makeAudioUpgradeAlertView(
+                with: conf,
+                accepted: accepted,
+                declined: declined
+            )
         }
-
-        return alertView
     }
 
     override func dismiss(animated: Bool, completion: (() -> Void)? = nil) {

@@ -1,14 +1,13 @@
 "poweredBy" = "Powered by";
-
-"queue.waiting.firstText" = "CompanyName";
-"queue.waiting.secondText" = "An MSR will be with you shortly.";
-"queue.connecting.firstText" = "Connecting with operator";
-"queue.connecting.secondText" = "";
-"queue.connected.firstText" = "{operatorName}";
-"queue.connected.secondText" = "{operatorName} has joined the conversation.";
+"operator" = "Operator";
 
 "alert.action.yes" = "Yes";
 "alert.action.no" = "No";
+"alert.action.decline" = "Decline";
+"alert.action.accept" = "Accept";
+"alert.action.ok" = "OK";
+"alert.action.settings" = "Settings";
+"alert.action.cancel" = "Cancel";
 
 "alert.leaveQueue.title" = "Are you sure you want to leave?";
 "alert.leaveQueue.message" = "You will lose your place in the queue.";
@@ -25,7 +24,43 @@
 "alert.apiError.title" = "We're sorry, there has been an error.";
 "alert.apiError.message" = "{message}";
 
+"alert.mediaUpgrade.title" = "{operatorName} has offered you to upgrade";
+"alert.mediaUpgrade.audio.title" = "Audio";
+"alert.mediaUpgrade.audio.info" = "Speak through your device";
+"alert.mediaUpgrade.phone.title" = "Phone";
+"alert.mediaUpgrade.phone.info" = "Enter your number and we'll call you";
+
+"alert.audioUpgrade.title" = "{operatorName} has offered you to upgrade to audio";
+
+"alert.microphonePermission.title" = "Unable to access microphone";
+"alert.microphonePermission.message" = "Allow access to you micrphone from device menu: “Settings” - “Privacy” - “Microphone”";
+
 "chat.title" = "Chat";
 "chat.endButton.title" = "End";
+"chat.connect.queue.firstText" = "CompanyName";
+"chat.connect.queue.secondText" = "An MSR will be with you shortly.";
+"chat.connect.connecting.firstText" = "Connecting with {operatorName}";
+"chat.connect.connecting.secondText" = "";
+"chat.connect.connected.firstText" = "{operatorName}";
+"chat.connect.connected.secondText" = "{operatorName} has joined the conversation.";
 "chat.message.placeholder" = "Enter Message";
 "chat.message.status.delivered" = "Delivered";
+"chat.upgrade.audio.text" = "Upgraded to Audio Call";
+"chat.upgrade.video.text" = "Upgraded to Video Call";
+
+"call.audio.title" = "AUDIO CALL";
+"call.video.title" = "VIDEO CALL";
+"call.endButton.title" = "End";
+"call.connect.queue.firstText" = "CompanyName";
+"call.connect.queue.secondText" = "An MSR will be with you shortly.";
+"call.connect.connecting.firstText" = "Connecting with {operatorName}";
+"call.connect.connecting.secondText" = "";
+"call.connect.connected.firstText" = "{operatorName}";
+"call.connect.connected.secondText" = "{callDuration}";
+"call.info" = "You can continue browsing and we’ll connect you automatically.";
+"call.buttons.chat.title" = "Chat";
+"call.buttons.video.title" = "Video";
+"call.buttons.mute.inactive.title" = "Mute";
+"call.buttons.mute.active.title" = "Unmute";
+"call.buttons.speaker.title" = "Speaker";
+"call.buttons.minimize.title" = "Minimize";

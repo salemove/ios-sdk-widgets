@@ -20,11 +20,22 @@ public typealias AssetImageTypeAlias = ImageAsset.Image
 // swiftlint:disable identifier_name line_length nesting type_body_length type_name
 public enum Asset {
   public static let alertClose = ImageAsset(name: "alertClose")
+  public static let callChat = ImageAsset(name: "call-chat")
+  public static let callMiminize = ImageAsset(name: "call-miminize")
+  public static let callMuteActive = ImageAsset(name: "call-mute-active")
+  public static let callMuteInactive = ImageAsset(name: "call-mute-inactive")
+  public static let callSpeakerActive = ImageAsset(name: "call-speaker-active")
+  public static let callSpeakerInactive = ImageAsset(name: "call-speaker-inactive")
+  public static let callVideoActive = ImageAsset(name: "call-video-active")
+  public static let callVideoInactive = ImageAsset(name: "call-video-inactive")
   public static let chatPickMedia = ImageAsset(name: "chatPickMedia")
   public static let chatSend = ImageAsset(name: "chatSend")
   public static let back = ImageAsset(name: "back")
   public static let close = ImageAsset(name: "close")
   public static let gliaLogo = ImageAsset(name: "gliaLogo")
+  public static let upgradeAudio = ImageAsset(name: "upgradeAudio")
+  public static let upgradePhone = ImageAsset(name: "upgradePhone")
+  public static let upgradeVideo = ImageAsset(name: "upgradeVideo")
   public static let operatorPlaceholder = ImageAsset(name: "operatorPlaceholder")
 }
 // swiftlint:enable identifier_name line_length nesting type_body_length type_name
