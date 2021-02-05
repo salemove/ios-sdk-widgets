@@ -83,20 +83,28 @@ class AlertViewController: ViewController {
     private func makeAlertView() -> AlertView {
         switch kind {
         case .message(let conf, let dismissed):
-            return makeMessageAlertView(with: conf,
-                                        dismissed: dismissed)
+            return makeMessageAlertView(
+                with: conf,
+                dismissed: dismissed
+            )
         case .confirmation(let conf, let confirmed):
-            return makeConfirmationAlertView(with: conf,
-                                             confirmed: confirmed)
+            return makeConfirmationAlertView(
+                with: conf,
+                confirmed: confirmed
+            )
         case .mediaUpgrade(let conf, mediaTypes: let mediaTypes, accepted: let accepted, declined: let declined):
-            return makeMediaUpgradeAlertView(with: conf,
-                                             mediaTypes: mediaTypes,
-                                             accepted: accepted,
-                                             declined: declined)
+            return makeMediaUpgradeAlertView(
+                with: conf,
+                mediaTypes: mediaTypes,
+                accepted: accepted,
+                declined: declined
+            )
         case .audioUpgrade(let conf, accepted: let accepted, declined: let declined):
-            return makeAudioUpgradeAlertView(with: conf,
-                                             accepted: accepted,
-                                             declined: declined)
+            return makeAudioUpgradeAlertView(
+                with: conf,
+                accepted: accepted,
+                declined: declined
+            )
         }
     }
 

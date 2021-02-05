@@ -78,11 +78,13 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
     }
 
     private func startChat(withAction startAction: ChatViewModel.StartAction) -> ChatViewController {
-        let coordinator = ChatCoordinator(interactor: interactor,
-                                          viewFactory: viewFactory,
-                                          navigationPresenter: navigationPresenter,
-                                          callProvider: chatCallProvider,
-                                          startAction: startAction)
+        let coordinator = ChatCoordinator(
+            interactor: interactor,
+            viewFactory: viewFactory,
+            navigationPresenter: navigationPresenter,
+            callProvider: chatCallProvider,
+            startAction: startAction
+        )
         coordinator.delegate = { [weak self] event in
             switch event {
             case .back:
@@ -121,11 +123,13 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
 
     private func startCall(_ call: Call,
                            withAction startAction: CallViewModel.StartAction) -> CallViewController {
-        let coordinator = CallCoordinator(interactor: interactor,
-                                          viewFactory: viewFactory,
-                                          navigationPresenter: navigationPresenter,
-                                          call: call,
-                                          startAction: startAction)
+        let coordinator = CallCoordinator(
+            interactor: interactor,
+            viewFactory: viewFactory,
+            navigationPresenter: navigationPresenter,
+            call: call,
+            startAction: startAction
+        )
         coordinator.delegate = { [weak self] event in
             switch event {
             case .back:

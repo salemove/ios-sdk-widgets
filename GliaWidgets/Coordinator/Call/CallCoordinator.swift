@@ -35,10 +35,12 @@ class CallCoordinator: SubFlowCoordinator, FlowCoordinator {
 
     private func makeCallViewController(call: Call,
                                         startAction: CallViewModel.StartAction) -> CallViewController {
-        let viewModel = CallViewModel(interactor: interactor,
-                                      alertConfiguration: viewFactory.theme.alertConfiguration,
-                                      call: call,
-                                      startAction: startAction)
+        let viewModel = CallViewModel(
+            interactor: interactor,
+            alertConfiguration: viewFactory.theme.alertConfiguration,
+            call: call,
+            startAction: startAction
+        )
         viewModel.engagementDelegate = { [weak self] event in
             switch event {
             case .back:

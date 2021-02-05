@@ -56,25 +56,45 @@ class CallButtonBar: UIView {
     private func makeButton(for kind: CallButton.Kind) -> CallButton {
         switch kind {
         case .chat:
-            return CallButton(kind: kind,
-                              style: CallButtonStyle(active: style.chatButton.active,
-                                                     inactive: style.chatButton.inactive))
+            return CallButton(
+                kind: kind,
+                style: CallButtonStyle(
+                    active: style.chatButton.active,
+                    inactive: style.chatButton.inactive
+                )
+            )
         case .video:
-            return CallButton(kind: kind,
-                              style: CallButtonStyle(active: style.videoButton.active,
-                                                     inactive: style.videoButton.inactive))
+            return CallButton(
+                kind: kind,
+                style: CallButtonStyle(
+                    active: style.videoButton.active,
+                    inactive: style.videoButton.inactive
+                )
+            )
         case .mute:
-            return CallButton(kind: kind,
-                              style: CallButtonStyle(active: style.muteButton.active,
-                                                     inactive: style.muteButton.inactive))
+            return CallButton(
+                kind: kind,
+                style: CallButtonStyle(
+                    active: style.muteButton.active,
+                    inactive: style.muteButton.inactive
+                )
+            )
         case .speaker:
-            return CallButton(kind: kind,
-                              style: CallButtonStyle(active: style.speakerButton.active,
-                                                     inactive: style.speakerButton.inactive))
+            return CallButton(
+                kind: kind,
+                style: CallButtonStyle(
+                    active: style.speakerButton.active,
+                    inactive: style.speakerButton.inactive
+                )
+            )
         case .minimize:
-            return CallButton(kind: kind,
-                              style: CallButtonStyle(active: style.minimizeButton.active,
-                                                     inactive: style.minimizeButton.inactive))
+            return CallButton(
+                kind: kind,
+                style: CallButtonStyle(
+                    active: style.minimizeButton.active,
+                    inactive: style.minimizeButton.inactive
+                )
+            )
         }
     }
 

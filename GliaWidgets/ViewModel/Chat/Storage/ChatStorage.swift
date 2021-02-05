@@ -239,9 +239,11 @@ extension ChatStorage {
                 let id = sqlite3_column_int64($0, 0)
                 let name = String(cString: sqlite3_column_text($0, 1))
                 let pictureUrl = sqlite3_column_text($0, 2).map({ String(cString: $0) })
-                let storedOperator = Operator(id: id,
-                                              name: name,
-                                              pictureUrl: pictureUrl)
+                let storedOperator = Operator(
+                    id: id,
+                    name: name,
+                    pictureUrl: pictureUrl
+                )
                 try completion(storedOperator)
             } else {
                 try completion(nil)
@@ -295,10 +297,12 @@ extension ChatStorage {
                     let operatorID = sqlite3_column_int64($0, 1)
                     let content = String(cString: sqlite3_column_text($0, 2))
                     guard let sender = MessageSender(stringValue: String(cString: sqlite3_column_text($0, 3))) else { continue }
-                    let message = Message(id: id,
-                                          operatorID: operatorID,
-                                          sender: sender,
-                                          content: content)
+                    let message = Message(
+                        id: id,
+                        operatorID: operatorID,
+                        sender: sender,
+                        content: content
+                    )
                     messages.append(message)
                 }
             }
