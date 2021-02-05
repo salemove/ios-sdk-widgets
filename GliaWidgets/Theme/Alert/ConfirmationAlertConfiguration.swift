@@ -1,4 +1,4 @@
-public struct ConfirmationAlertConf {
+public struct ConfirmationAlertConfiguration {
     public var title: String?
     public var message: String?
     public var negativeTitle: String?

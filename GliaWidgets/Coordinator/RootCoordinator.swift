@@ -174,7 +174,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
         window.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
         self.window = window
 
-        UIView.animate(withDuration: animated ? 0.5 : 0.0,
+        UIView.animate(withDuration: animated ? 0.4 : 0.0,
                        delay: 0.0,
                        usingSpringWithDamping: 0.8,
                        initialSpringVelocity: 0.5,

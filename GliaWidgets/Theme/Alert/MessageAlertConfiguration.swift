@@ -1,6 +1,6 @@
 import SalemoveSDK
 
-public struct MessageAlertConf {
+public struct MessageAlertConfiguration {
     public var title: String?
     public var message: String?
 
@@ -11,7 +11,7 @@ public struct MessageAlertConf {
         self.message = message
     }
 
-    init(with error: SalemoveError, templateConf: MessageAlertConf) {
+    init(with error: SalemoveError, templateConf: MessageAlertConfiguration) {
         self.title = templateConf.title
         self.message = templateConf.message?.replacingOccurrences(of: kMessagePlaceholder,
                                                                   with: error.reason)

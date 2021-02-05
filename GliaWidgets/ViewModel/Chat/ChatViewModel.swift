@@ -20,7 +20,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case refreshAll
         case scrollToBottom(animated: Bool)
         case updateItemsUserImage(animated: Bool)
-        case offerAudioUpgrade(AudioUpgradeAlertConf,
+        case offerAudioUpgrade(AudioUpgradeAlertConfiguration,
                                accepted: () -> Void,
                                declined: () -> Void)
         case showCallBubble(imageUrl: String?)
@@ -52,12 +52,12 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     private let callProvider: Provider<Call?>
 
     init(interactor: Interactor,
-         alertConf: AlertConf,
+         alertConfiguration: AlertConfiguration,
          callProvider: Provider<Call?>,
          startAction: StartAction) {
         self.callProvider = callProvider
         self.startAction = startAction
-        super.init(interactor: interactor, alertConf: alertConf)
+        super.init(interactor: interactor, alertConfiguration: alertConfiguration)
         self.callProvider.addObserver(self) { call, _ in
             self.onCall(call)
         }
@@ -165,7 +165,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
 
         switch offer.type {
         case .audio:
-            action?(.offerAudioUpgrade(alertConf.audioUpgrade.withOperatorName(operatorName),
+            action?(.offerAudioUpgrade(alertConfiguration.audioUpgrade.withOperatorName(operatorName),
                                        accepted: {
                                         self.delegate?(.audioUpgradeAccepted(answer))
                                         self.action?(.showCallBubble(imageUrl: self.interactor.engagedOperator?.picture?.url))
@@ -212,7 +212,7 @@ extension ChatViewModel {
                          in: self.messagesSection)
             self.action?(.scrollToBottom(animated: true))
         } failure: { _ in
-            self.showAlert(with: self.alertConf.unexpectedError,
+            self.showAlert(with: self.alertConfiguration.unexpectedError,
                            dismissed: nil)
         }
     }

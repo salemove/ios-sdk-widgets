@@ -1,5 +1,5 @@
 extension AlertViewController {
-    func makeMessageAlertView(with conf: MessageAlertConf,
+    func makeMessageAlertView(with conf: MessageAlertConfiguration,
                               dismissed: (() -> Void)?) -> AlertView {
         let alertView = viewFactory.makeAlertView()
         alertView.title = conf.title

@@ -8,7 +8,7 @@ public class Theme {
     public lazy var chat: ChatStyle = { return chatStyle }()
     public lazy var call: CallStyle = { return callStyle }()
     public lazy var alert: AlertStyle = { return alertStyle }()
-    public lazy var alertConf: AlertConf = { return alertConfStyle }()
+    public lazy var alertConfiguration: AlertConfiguration = { return alertConfigurationStyle }()
     public lazy var minimizedBubble: BubbleStyle = { return minimizedBubbleStyle }()
 
     public init(colorStyle: ThemeColorStyle = .default,

@@ -3,15 +3,15 @@ import SalemoveSDK
 
 class AlertViewController: ViewController {
     enum Kind {
-        case message(MessageAlertConf,
+        case message(MessageAlertConfiguration,
                      dismissed: (() -> Void)?)
-        case confirmation(ConfirmationAlertConf,
+        case confirmation(ConfirmationAlertConfiguration,
                           confirmed: () -> Void)
-        case mediaUpgrade(MediaUpgradeAlertConf,
+        case mediaUpgrade(MediaUpgradeAlertConfiguration,
                           mediaTypes: [MediaType],
                           accepted: (Int) -> Void,
                           declined: () -> Void)
-        case audioUpgrade(AudioUpgradeAlertConf,
+        case audioUpgrade(AudioUpgradeAlertConfiguration,
                           accepted: () -> Void,
                           declined: () -> Void)
     }

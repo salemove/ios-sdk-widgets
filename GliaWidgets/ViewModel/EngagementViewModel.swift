@@ -8,11 +8,11 @@ class EngagementViewModel {
 
     enum Action {
         case showEndButton
-        case confirm(ConfirmationAlertConf,
+        case confirm(ConfirmationAlertConfiguration,
                      confirmed: (() -> Void)?)
-        case showAlert(MessageAlertConf,
+        case showAlert(MessageAlertConfiguration,
                        dismissed: (() -> Void)?)
-        case showSettingsAlert(SettingsAlertConf,
+        case showSettingsAlert(SettingsAlertConfiguration,
                                cancelled: (() -> Void)?)
     }
 
@@ -26,13 +26,13 @@ class EngagementViewModel {
     var engagementDelegate: ((DelegateEvent) -> Void)?
 
     let interactor: Interactor
-    let alertConf: AlertConf
+    let alertConfiguration: AlertConfiguration
 
     private static var alertPresenters = Set<EngagementViewModel>()
 
-    init(interactor: Interactor, alertConf: AlertConf) {
+    init(interactor: Interactor, alertConfiguration: AlertConfiguration) {
         self.interactor = interactor
-        self.alertConf = alertConf
+        self.alertConfiguration = alertConfiguration
         interactor.addObserver(self, handler: interactorEvent)
     }
 
@@ -96,7 +96,7 @@ class EngagementViewModel {
         }
     }
 
-    func showAlert(with conf: MessageAlertConf, dismissed: (() -> Void)? = nil) {
+    func showAlert(with conf: MessageAlertConfiguration, dismissed: (() -> Void)? = nil) {
         let dismissHandler = {
             EngagementViewModel.alertPresenters.remove(self)
             dismissed?()
@@ -113,20 +113,20 @@ class EngagementViewModel {
     }
 
     func showAlert(for error: Error) {
-        showAlert(with: alertConf.unexpectedError)
+        showAlert(with: alertConfiguration.unexpectedError)
     }
 
     func showAlert(for error: SalemoveError) {
-        showAlert(with: alertConf.unexpectedError)
+        showAlert(with: alertConfiguration.unexpectedError)
     }
 
-    func showSettingsAlert(with conf: SettingsAlertConf, cancelled: (() -> Void)? = nil) {
+    func showSettingsAlert(with conf: SettingsAlertConfiguration, cancelled: (() -> Void)? = nil) {
         engagementAction?(.showSettingsAlert(conf, cancelled: cancelled))
     }
 
-    func alertConf(with error: SalemoveError) -> MessageAlertConf {
-        return MessageAlertConf(with: error,
-                                templateConf: self.alertConf.apiError)
+    func alertConfiguration(with error: SalemoveError) -> MessageAlertConfiguration {
+        return MessageAlertConfiguration(with: error,
+                                templateConf: self.alertConfiguration.apiError)
     }
 
     private func endSession() {
@@ -140,10 +140,10 @@ class EngagementViewModel {
     private func closeTapped() {
         switch interactor.state {
         case .enqueueing, .enqueued:
-            engagementAction?(.confirm(alertConf.leaveQueue,
+            engagementAction?(.confirm(alertConfiguration.leaveQueue,
                                        confirmed: { self.endSession() }))
         case .engaged:
-            engagementAction?(.confirm(alertConf.endEngagement,
+            engagementAction?(.confirm(alertConfiguration.endEngagement,
                                        confirmed: { self.endSession() }))
         default:
             endSession()
@@ -155,14 +155,14 @@ class EngagementViewModel {
         case let queueError as QueueError:
             switch queueError {
             case .queueClosed, .queueFull:
-                self.showAlert(with: self.alertConf.operatorsUnavailable,
+                self.showAlert(with: self.alertConfiguration.operatorsUnavailable,
                                dismissed: { self.endSession() })
             default:
-                self.showAlert(with: self.alertConf.unexpectedError,
+                self.showAlert(with: self.alertConfiguration.unexpectedError,
                                dismissed: { self.endSession() })
             }
         default:
-            self.showAlert(with: self.alertConf.unexpectedError,
+            self.showAlert(with: self.alertConfiguration.unexpectedError,
                            dismissed: { self.endSession() })
         }
     }

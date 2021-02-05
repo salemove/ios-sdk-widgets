@@ -53,12 +53,12 @@ class CallViewModel: EngagementViewModel, ViewModel {
     private var audioPortOverride = AVAudioSession.PortOverride.none
 
     init(interactor: Interactor,
-         alertConf: AlertConf,
+         alertConfiguration: AlertConfiguration,
          call: Call,
          startAction: StartAction) {
         self.call = call
         self.startAction = startAction
-        super.init(interactor: interactor, alertConf: alertConf)
+        super.init(interactor: interactor, alertConfiguration: alertConfiguration)
         call.state.addObserver(self) { state, _ in
             self.onStateChanged(state)
         }
@@ -215,7 +215,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
         case let mediaError as MediaError:
             switch mediaError {
             case .permissionDenied:
-                self.showSettingsAlert(with: alertConf.microphoneSettings)
+                self.showSettingsAlert(with: alertConfiguration.microphoneSettings)
             default:
                 showAlert(for: error)
             }

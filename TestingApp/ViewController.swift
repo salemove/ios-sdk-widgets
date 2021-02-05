@@ -60,7 +60,7 @@ extension ViewController {
         let visitorContext = VisitorContext(type: .page,
                                             url: "https://www.salemoveinsurance.com")
 
-        glia = Glia(conf: conf)
+        glia = Glia(configuration: conf)
 
         do {
             try glia.start(engagementKind,

@@ -1,7 +1,7 @@
 import SalemoveSDK
 
 extension AlertViewController {
-    func makeMediaUpgradeAlertView(with conf: MediaUpgradeAlertConf,
+    func makeMediaUpgradeAlertView(with conf: MediaUpgradeAlertConfiguration,
                                    mediaTypes: [MediaType],
                                    accepted: @escaping (Int) -> Void,
                                    declined: @escaping () -> Void) -> AlertView {
@@ -32,7 +32,7 @@ extension AlertViewController {
         return alertView
     }
 
-    private func actionView(for mediaType: MediaType, from conf: MediaUpgradeAlertConf) -> MediaUpgradeActionView? {
+    private func actionView(for mediaType: MediaType, from conf: MediaUpgradeAlertConfiguration) -> MediaUpgradeActionView? {
         switch mediaType {
         case .audio:
             return MediaUpgradeActionView(with: conf.audioUpgradeAction)

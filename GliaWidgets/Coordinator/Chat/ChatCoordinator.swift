@@ -36,7 +36,7 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
 
     private func makeChatViewController() -> ChatViewController {
         let viewModel = ChatViewModel(interactor: interactor,
-                                      alertConf: viewFactory.theme.alertConf,
+                                      alertConfiguration: viewFactory.theme.alertConfiguration,
                                       callProvider: callProvider,
                                       startAction: startAction)
         viewModel.engagementDelegate = { [weak self] event in
