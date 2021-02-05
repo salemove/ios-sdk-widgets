@@ -11,6 +11,9 @@ enum InteractorEvent {
     case stateChanged(InteractorState)
     case receivedMessage(Message)
     case messagesUpdated([Message])
+    case upgradeOffer(MediaUpgradeOffer, answer: AnswerWithSuccessBlock)
+    case audioStreamAdded(AudioStreamable)
+    case audioStreamError(SalemoveError)
     case error(SalemoveError)
 }
 
@@ -24,6 +27,14 @@ class Interactor {
             return engagedOperator
         default:
             return nil
+        }
+    }
+    var isEngaged: Bool {
+        switch state {
+        case .engaged:
+            return true
+        default:
+            return false
         }
     }
 
@@ -85,6 +96,25 @@ extension Interactor {
                 self.state = .enqueued(ticket)
                 success()
             }
+        }
+    }
+
+    func request(_ media: MediaType,
+                 success: @escaping () -> Void,
+                 failure: @escaping (Error?, SalemoveError?) -> Void) {
+        do {
+            let offer = try MediaUpgradeOffer(type: media, direction: .twoWay)
+            Salemove.sharedInstance.requestMediaUpgrade(offer: offer) { isSuccess, error in
+                if let error = error {
+                    failure(nil, error)
+                } else if !isSuccess {
+                    failure(nil, nil)
+                } else {
+                    success()
+                }
+            }
+        } catch {
+            failure(error, nil)
         }
     }
 
@@ -159,7 +189,9 @@ extension Interactor: Interactable {
 
     var onMediaUpgradeOffer: MediaUgradeOfferBlock {
         print("Called: \(#function)")
-        return { _, _ in }
+        return { offer, answer in
+            self.notify(.upgradeOffer(offer, answer: answer))
+        }
     }
 
     var onEngagementRequest: RequestOfferBlock {
@@ -189,7 +221,13 @@ extension Interactor: Interactable {
 
     var onAudioStreamAdded: AudioStreamAddedBlock {
         print("Called: \(#function)")
-        return { _, _ in }
+        return { stream, error in
+            if let stream = stream {
+                self.notify(.audioStreamAdded(stream))
+            } else if let error = error {
+                self.notify(.audioStreamError(error))
+            }
+        }
     }
 
     var onVideoStreamAdded: VideoStreamAddedBlock {

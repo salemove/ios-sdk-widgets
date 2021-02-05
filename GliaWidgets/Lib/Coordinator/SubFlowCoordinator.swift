@@ -9,4 +9,8 @@ class SubFlowCoordinator {
         guard !subFlowCoordinators.isEmpty else { return }
         subFlowCoordinators.removeLast()
     }
+
+    func removeAllCoordinators() {
+        subFlowCoordinators.removeAll()
+    }
 }

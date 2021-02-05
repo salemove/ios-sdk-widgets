@@ -2,6 +2,11 @@ import UIKit
 import PureLayout
 
 class Header: UIView {
+    var title: String? {
+        get { return titleLabel.text }
+        set { titleLabel.text = newValue }
+    }
+
     private let style: HeaderStyle
     private let leftItemContainer = UIView()
     private let rightItemContainer = UIView()
@@ -22,20 +27,6 @@ class Header: UIView {
     @available(*, unavailable)
     required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-
-    private func setup() {
-        backgroundColor = style.backgroundColor
-
-        titleLabel.font = style.titleFont
-        titleLabel.textColor = style.titleColor
-        titleLabel.textAlignment = .center
-        titleLabel.text = style.title
-
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(orientationChanged),
-                                               name: UIDevice.orientationDidChangeNotification,
-                                               object: nil)
     }
 
     deinit {
@@ -72,6 +63,19 @@ class Header: UIView {
                 }
             }
         }
+    }
+
+    private func setup() {
+        backgroundColor = style.backgroundColor
+
+        titleLabel.font = style.titleFont
+        titleLabel.textColor = style.titleColor
+        titleLabel.textAlignment = .center
+
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(orientationChanged),
+                                               name: UIDevice.orientationDidChangeNotification,
+                                               object: nil)
     }
 
     private func layout() {

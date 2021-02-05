@@ -24,8 +24,8 @@ public class Glia {
     private weak var delegate: GliaDelegate?
     private let appDelegate = SalemoveAppDelegate()
 
-    public init(conf: Configuration, delegate: GliaDelegate? = nil) {
-        self.conf = conf
+    public init(configuration: Configuration, delegate: GliaDelegate? = nil) {
+        self.conf = configuration
         self.delegate = delegate
     }
 

@@ -1,30 +1,43 @@
 import UIKit
 
-class ChatView: View {
-    let header: Header
+class ChatView: EngagementView {
     let messageEntryView: ChatMessageEntryView
     var numberOfSections: (() -> Int?)?
     var numberOfRows: ((Int) -> Int?)?
     var itemForRow: ((Int, Int) -> ChatItem?)?
+    var callBubbleTapped: (() -> Void)?
 
     private let style: ChatStyle
     private let tableView = UITableView()
-    private let queueView: QueueView
     private var messageEntryViewBottomConstraint: NSLayoutConstraint!
+    private var callBubble: BubbleView?
     private let keyboardObserver = KeyboardObserver()
+
+    private let kCallBubbleEdgeInset: CGFloat = 10
+    private let kCallBubbleSize = CGSize(width: 60, height: 60)
+    private var callBubbleBounds: CGRect {
+        let x = safeAreaInsets.left + kCallBubbleEdgeInset
+        let y = header.frame.maxY + kCallBubbleEdgeInset
+        let width = frame.size.width - x - safeAreaInsets.right - kCallBubbleEdgeInset
+        let height = messageEntryView.frame.minY - header.frame.maxY - 2 * kCallBubbleEdgeInset
+        return CGRect(x: x, y: y, width: width, height: height)
+    }
 
     init(with style: ChatStyle) {
         self.style = style
-        self.header = Header(with: style.header)
-        self.queueView = QueueView(with: style.queue)
         self.messageEntryView = ChatMessageEntryView(with: style.messageEntry)
-        super.init()
+        super.init(with: style)
         setup()
         layout()
     }
 
-    func setQueueState(_ state: QueueView.State, animated: Bool) {
-        queueView.setState(state, animated: animated)
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        moveCallBubbleVisible(animated: true)
+    }
+
+    func setConnectState(_ state: ConnectView.State, animated: Bool) {
+        connectView.setState(state, animated: animated)
         updateTableView(animated: animated)
     }
 
@@ -86,7 +99,7 @@ class ChatView: View {
     }
 
     private func setup() {
-        backgroundColor = style.backgroundColor
+        header.title = style.title
 
         tableView.backgroundColor = .white
         tableView.delegate = self
@@ -105,7 +118,7 @@ class ChatView: View {
                                             excludingEdge: .bottom)
 
         addSubview(tableView)
-        tableView.autoPinEdge(.top, to: .bottom, of: header)
+        tableView.autoPinEdge(.top, to: .bottom, of: header, withOffset: 10)
         tableView.autoPinEdge(toSuperviewSafeArea: .left)
         tableView.autoPinEdge(toSuperviewSafeArea: .right)
 
@@ -119,7 +132,7 @@ class ChatView: View {
     private func content(for item: ChatItem) -> ChatItemCell.Content {
         switch item.kind {
         case .queueOperator:
-            return .queueOperator(queueView)
+            return .queueOperator(connectView)
         case .outgoingMessage(let message):
             let view = VisitorChatMessageView(with: style.visitorMessage)
             view.appendContent(.text(message.content), animated: false)
@@ -135,6 +148,13 @@ class ChatView: View {
             view.showsOperatorImage = showsImage
             view.setOperatorImage(fromUrl: imageUrl, animated: false)
             return .operatorMessage(view)
+        case .callUpgrade(let callKind, durationProvider: let durationProvider):
+            let callStyle = callKind == .audio
+                ? style.audioUpgrade
+                : style.videoUpgrade
+            let view = ChatCallUpgradeView(with: callStyle,
+                                           durationProvider: durationProvider)
+            return .callUpgrade(view)
         }
     }
 
@@ -152,11 +172,58 @@ class ChatView: View {
 }
 
 extension ChatView {
+    func showCallBubble(with imageUrl: String?, animated: Bool) {
+        guard callBubble == nil else { return }
+        let callBubble = BubbleView(with: style.callBubble)
+        callBubble.kind = .userImage(url: imageUrl)
+        callBubble.tap = { [weak self] in self?.callBubbleTapped?() }
+        callBubble.pan = { [weak self] in self?.moveCallBubble($0, animated: true) }
+        callBubble.frame = CGRect(origin: CGPoint(x: callBubbleBounds.maxX - kCallBubbleSize.width,
+                                                  y: callBubbleBounds.maxY - kCallBubbleSize.height),
+                                  size: kCallBubbleSize)
+        self.callBubble = callBubble
+        addSubview(callBubble)
+    }
+
+    private func moveCallBubble(_ translation: CGPoint, animated: Bool) {
+        guard let callBubble = callBubble else { return }
+
+        var frame = callBubble.frame
+        frame.origin.x += translation.x
+        frame.origin.y += translation.y
+
+        if callBubbleBounds.contains(frame) {
+            callBubble.frame = frame
+        }
+    }
+
+    private func moveCallBubbleVisible(animated: Bool) {
+        guard let callBubble = callBubble else { return }
+        bringSubviewToFront(callBubble)
+
+        var frame: CGRect = callBubble.frame
+
+        if callBubble.frame.minX < callBubbleBounds.minX {
+            frame.origin.x = callBubbleBounds.minX
+        }
+        if callBubble.frame.minY < callBubbleBounds.minY {
+            frame.origin.y = callBubbleBounds.minY
+        }
+        if callBubble.frame.maxX > callBubbleBounds.maxX {
+            frame.origin.x = callBubbleBounds.maxX - kCallBubbleSize.width
+        }
+        if callBubble.frame.maxY > callBubbleBounds.maxY {
+            frame.origin.y = callBubbleBounds.maxY - kCallBubbleSize.height
+        }
+        callBubble.frame = frame
+    }
+}
+
+extension ChatView {
     private func observeKeyboard() {
         keyboardObserver.keyboardWillShow = { [unowned self] properties in
             let y = self.tableView.contentSize.height - properties.finalFrame.height
             let offset = CGPoint(x: 0, y: y)
-
             UIView.animate(withDuration: properties.duration,
                            delay: 0.0,
                            options: properties.animationOptions,

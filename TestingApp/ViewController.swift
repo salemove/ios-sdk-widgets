@@ -16,8 +16,10 @@ class ViewController: UIViewController {
                                         selector: #selector(settingsTapped))
         let chatButton = makeButton(title: "Chat",
                                     selector: #selector(chatTapped))
+        let audioButton = makeButton(title: "Audio call",
+                                     selector: #selector(audioTapped))
 
-        let buttonsStackView = UIStackView(arrangedSubviews: [settingsButton, chatButton])
+        let buttonsStackView = UIStackView(arrangedSubviews: [settingsButton, chatButton, audioButton])
         buttonsStackView.axis = .vertical
         buttonsStackView.spacing = 20
         view.addSubview(buttonsStackView)
@@ -36,7 +38,11 @@ class ViewController: UIViewController {
     }
 
     @objc private func chatTapped() {
-        presentChat()
+        presentGlia(.chat)
+    }
+
+    @objc private func audioTapped() {
+        presentGlia(.audioCall)
     }
 }
 
@@ -47,22 +53,22 @@ extension ViewController {
         present(navController, animated: true, completion: nil)
     }
 
-    func presentChat() {
+    func presentGlia(_ engagementKind: EngagementKind) {
         let conf = settingsViewController.conf
         let queueID = settingsViewController.queueID
         let theme = settingsViewController.theme
         let visitorContext = VisitorContext(type: .page,
                                             url: "https://www.salemoveinsurance.com")
 
-        glia = Glia(conf: conf)
+        glia = Glia(configuration: conf)
 
         do {
-            try glia.start(.chat,
+            try glia.start(engagementKind,
                            queueID: queueID,
                            visitorContext: visitorContext,
                            using: theme)
         } catch {
-            alert(message: "Failed to start.\nCheck conf.")
+            alert(message: "Failed to start\nCheck Glia parameters in Settings")
         }
     }
 

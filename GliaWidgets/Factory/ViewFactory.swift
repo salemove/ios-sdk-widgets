@@ -11,6 +11,10 @@ class ViewFactory {
         return ChatView(with: theme.chat)
     }
 
+    func makeCallView() -> CallView {
+        return CallView(with: theme.call)
+    }
+
     func makeAlertView() -> AlertView {
         return AlertView(with: theme.alert)
     }
