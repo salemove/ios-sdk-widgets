@@ -152,9 +152,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
     private func updateAudio(with stream: AudioStreamable) {
         if stream.isRemote {
             switch call.audio.value {
-            case .none:
-                call.audio.value = .remote(stream)
-            case .remote:
+            case .none, .remote:
                 call.audio.value = .remote(stream)
             case .local(let local):
                 call.audio.value = .twoWay(local: local, remote: stream)
@@ -163,12 +161,10 @@ class CallViewModel: EngagementViewModel, ViewModel {
             }
         } else {
             switch call.audio.value {
-            case .none:
+            case .none, .local:
                 call.audio.value = .local(stream)
             case .remote(let remote):
                 call.audio.value = .twoWay(local: stream, remote: remote)
-            case .local:
-                call.audio.value = .local(stream)
             case .twoWay(local: _, remote: let remote):
                 call.audio.value = .twoWay(local: stream, remote: remote)
             }
