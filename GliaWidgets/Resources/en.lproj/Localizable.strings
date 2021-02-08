@@ -31,6 +31,7 @@
 "alert.mediaUpgrade.phone.info" = "Enter your number and we'll call you";
 
 "alert.audioUpgrade.title" = "{operatorName} has offered you to upgrade to audio";
+"alert.videoUpgrade.title" = "{operatorName} has offered you to upgrade to video";
 
 "alert.microphonePermission.title" = "Unable to access microphone";
 "alert.microphonePermission.message" = "Allow access to you micrphone from device menu: “Settings” - “Privacy” - “Microphone”";

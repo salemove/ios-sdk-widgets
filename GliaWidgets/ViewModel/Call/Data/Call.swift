@@ -3,6 +3,17 @@ import SalemoveSDK
 enum CallKind {
     case audio
     case video
+
+    init?(with offer: MediaUpgradeOffer) {
+        switch offer.type {
+        case .audio:
+            self = .audio
+        case .video:
+            self = .video
+        default:
+            return nil
+        }
+    }
 }
 
 enum CallState {

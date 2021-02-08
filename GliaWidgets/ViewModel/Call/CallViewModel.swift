@@ -41,10 +41,8 @@ class CallViewModel: EngagementViewModel, ViewModel {
 
     enum StartAction {
         case startEngagement
-        case startCall(
-                offer: MediaUpgradeOffer,
-                answer: AnswerWithSuccessBlock
-             )
+        case startCall(offer: MediaUpgradeOffer,
+                       answer: AnswerWithSuccessBlock)
     }
 
     var action: ((Action) -> Void)?

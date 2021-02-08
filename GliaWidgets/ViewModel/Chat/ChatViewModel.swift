@@ -20,17 +20,15 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case refreshAll
         case scrollToBottom(animated: Bool)
         case updateItemsUserImage(animated: Bool)
-        case offerAudioUpgrade(AudioUpgradeAlertConfiguration,
+        case offerMediaUpgrade(SingleMediaUpgradeAlertConfiguration,
                                accepted: () -> Void,
                                declined: () -> Void)
         case showCallBubble(imageUrl: String?)
     }
 
     enum DelegateEvent {
-        case mediaUpgradeAccepted(
-                offer: MediaUpgradeOffer,
-                answer: AnswerWithSuccessBlock
-             )
+        case mediaUpgradeAccepted(offer: MediaUpgradeOffer,
+                                  answer: AnswerWithSuccessBlock)
         case call
     }
 
@@ -164,21 +162,28 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     }
 
     private func offerMediaUpgrade(_ offer: MediaUpgradeOffer, answer: @escaping AnswerWithSuccessBlock) {
-        let operatorName = interactor.engagedOperator?.firstName
+        switch offer.type {
+        case .audio:
+            offerMediaUpgrade(with: alertConfiguration.audioUpgrade, offer: offer, answer: answer)
+        case .video:
+            offerMediaUpgrade(with: alertConfiguration.videoUpgrade, offer: offer, answer: answer)
+        default:
+            break
+        }
+    }
 
+    private func offerMediaUpgrade(with configuration: SingleMediaUpgradeAlertConfiguration,
+                                   offer: MediaUpgradeOffer,
+                                   answer: @escaping AnswerWithSuccessBlock) {
+        let operatorName = interactor.engagedOperator?.firstName
         let onAccepted = {
             self.delegate?(.mediaUpgradeAccepted(offer: offer, answer: answer))
             self.action?(.showCallBubble(imageUrl: self.interactor.engagedOperator?.picture?.url))
         }
 
-        switch offer.type {
-        case .audio:
-            action?(.offerAudioUpgrade(alertConfiguration.audioUpgrade.withOperatorName(operatorName),
-                                       accepted: { onAccepted() },
-                                       declined: { answer(false, nil) }))
-        default:
-            break
-        }
+        action?(.offerMediaUpgrade(configuration.withOperatorName(operatorName),
+                                   accepted: { onAccepted() },
+                                   declined: { answer(false, nil) }))
     }
 
     override func interactorEvent(_ event: InteractorEvent) {

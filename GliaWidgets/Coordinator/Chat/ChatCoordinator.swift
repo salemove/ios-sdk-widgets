@@ -4,10 +4,8 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
     enum DelegateEvent {
         case back
         case engaged(operatorImageUrl: String?)
-        case mediaUpgradeAccepted(
-                offer: MediaUpgradeOffer,
-                answer: AnswerWithSuccessBlock
-             )
+        case mediaUpgradeAccepted(offer: MediaUpgradeOffer,
+                                  answer: AnswerWithSuccessBlock)
         case call
         case finished
     }

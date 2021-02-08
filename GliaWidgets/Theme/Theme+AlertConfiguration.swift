@@ -42,14 +42,20 @@ extension Theme {
             icon: Asset.upgradePhone.image,
             iconColor: color.primary
         )
-        let mediaUpgrade = MediaUpgradeAlertConfiguration(
+        let mediaUpgrade = MultipleMediaUpgradeAlertConfiguration(
             title: Alert.MediaUpgrade.title,
             audioUpgradeAction: audioAction,
             phoneUpgradeAction: phoneAction
         )
-        let audioUpgrade = AudioUpgradeAlertConfiguration(
+        let audioUpgrade = SingleMediaUpgradeAlertConfiguration(
             title: Alert.AudioUpgrade.title,
             titleImage: Asset.upgradeAudio.image,
+            decline: Alert.Action.decline,
+            accept: Alert.Action.accept
+        )
+        let videoUpgrade = SingleMediaUpgradeAlertConfiguration(
+            title: Alert.VideoUpgrade.title,
+            titleImage: Asset.upgradeVideo.image,
             decline: Alert.Action.decline,
             accept: Alert.Action.accept
         )
@@ -74,6 +80,7 @@ extension Theme {
             operatorsUnavailable: operatorsUnavailable,
             mediaUpgrade: mediaUpgrade,
             audioUpgrade: audioUpgrade,
+            videoUpgrade: videoUpgrade,
             microphoneSettings: microphoneSettings,
             unexpectedError: unexpected,
             apiError: api

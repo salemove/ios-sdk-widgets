@@ -205,7 +205,8 @@ extension RootCoordinator {
     private func mediaUpgradeAccepted(offer: MediaUpgradeOffer, answer: @escaping AnswerWithSuccessBlock) {
         switch engagement {
         case .chat(let chatViewController):
-            let call = Call(.audio)
+            guard let kind = CallKind(with: offer) else { return }
+            let call = Call(kind)
             let callViewController = startCall(call, withAction: .startCall(offer: offer, answer: answer))
             engagement = .call(callViewController,
                                chatViewController,

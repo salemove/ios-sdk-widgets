@@ -55,8 +55,8 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter {
                 view.scrollToBottom(animated: animated)
             case .updateItemsUserImage(animated: let animated):
                 view.updateItemsUserImage(animated: animated)
-            case .offerAudioUpgrade(let conf, accepted: let accepted, declined: let declined):
-                self.offerAudioUpgrade(with: conf, accepted: accepted, declined: declined)
+            case .offerMediaUpgrade(let conf, accepted: let accepted, declined: let declined):
+                self.offerMediaUpgrade(with: conf, accepted: accepted, declined: declined)
             case .showCallBubble(let imageUrl):
                 view.showCallBubble(with: imageUrl, animated: true)
             }

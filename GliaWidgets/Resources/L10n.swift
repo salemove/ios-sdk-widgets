@@ -88,6 +88,10 @@ public enum L10n {
       /// We're sorry, there has been an unexpected error.
       public static let title = L10n.tr("Localizable", "alert.unexpected.title")
     }
+    public enum VideoUpgrade {
+      /// {operatorName} has offered you to upgrade to video
+      public static let title = L10n.tr("Localizable", "alert.videoUpgrade.title")
+    }
   }
 
   public enum Call {

@@ -7,13 +7,13 @@ class AlertViewController: ViewController {
                      dismissed: (() -> Void)?)
         case confirmation(ConfirmationAlertConfiguration,
                           confirmed: () -> Void)
-        case mediaUpgrade(MediaUpgradeAlertConfiguration,
-                          mediaTypes: [MediaType],
-                          accepted: (Int) -> Void,
-                          declined: () -> Void)
-        case audioUpgrade(AudioUpgradeAlertConfiguration,
-                          accepted: () -> Void,
-                          declined: () -> Void)
+        case multipleMediaUpgrade(MultipleMediaUpgradeAlertConfiguration,
+                                  mediaTypes: [MediaType],
+                                  accepted: (Int) -> Void,
+                                  declined: () -> Void)
+        case singleMediaUpgrade(SingleMediaUpgradeAlertConfiguration,
+                                accepted: () -> Void,
+                                declined: () -> Void)
     }
 
     let viewFactory: ViewFactory
@@ -92,15 +92,15 @@ class AlertViewController: ViewController {
                 with: conf,
                 confirmed: confirmed
             )
-        case .mediaUpgrade(let conf, mediaTypes: let mediaTypes, accepted: let accepted, declined: let declined):
+        case .multipleMediaUpgrade(let conf, mediaTypes: let mediaTypes, accepted: let accepted, declined: let declined):
             return makeMediaUpgradeAlertView(
                 with: conf,
                 mediaTypes: mediaTypes,
                 accepted: accepted,
                 declined: declined
             )
-        case .audioUpgrade(let conf, accepted: let accepted, declined: let declined):
-            return makeAudioUpgradeAlertView(
+        case .singleMediaUpgrade(let conf, accepted: let accepted, declined: let declined):
+            return makeMediaUpgradeAlertView(
                 with: conf,
                 accepted: accepted,
                 declined: declined
