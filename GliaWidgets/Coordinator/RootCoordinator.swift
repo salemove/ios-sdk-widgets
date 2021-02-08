@@ -102,8 +102,8 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
                 }
             case .engaged(operatorImageUrl: let url):
                 self?.window?.bubbleKind = .userImage(url: url)
-            case .audioUpgradeAccepted(let answer):
-                self?.audioUpgradeAccepted(answer: answer)
+            case .mediaUpgradeAccepted(offer: let offer, answer: let answer):
+                self?.mediaUpgradeAccepted(offer: offer, answer: answer)
             case .call:
                 switch self?.engagement {
                 case .call(let callViewController, _, _):
@@ -202,11 +202,11 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
 }
 
 extension RootCoordinator {
-    private func audioUpgradeAccepted(answer: @escaping AnswerWithSuccessBlock) {
+    private func mediaUpgradeAccepted(offer: MediaUpgradeOffer, answer: @escaping AnswerWithSuccessBlock) {
         switch engagement {
         case .chat(let chatViewController):
             let call = Call(.audio)
-            let callViewController = startCall(call, withAction: .startAudio(answer))
+            let callViewController = startCall(call, withAction: .startCall(offer: offer, answer: answer))
             engagement = .call(callViewController,
                                chatViewController,
                                .chat)

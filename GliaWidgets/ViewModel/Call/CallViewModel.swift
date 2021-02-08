@@ -41,7 +41,10 @@ class CallViewModel: EngagementViewModel, ViewModel {
 
     enum StartAction {
         case startEngagement
-        case startAudio(AnswerWithSuccessBlock)
+        case startCall(
+                offer: MediaUpgradeOffer,
+                answer: AnswerWithSuccessBlock
+             )
     }
 
     var action: ((Action) -> Void)?
@@ -87,7 +90,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
         switch startAction {
         case .startEngagement:
             enqueue()
-        case .startAudio(let answer):
+        case .startCall(offer: _, answer: let answer):
             answer(true, nil)
             action?(.connecting(name: interactor.engagedOperator?.firstName,
                                 imageUrl: interactor.engagedOperator?.picture?.url))

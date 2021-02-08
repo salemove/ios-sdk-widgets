@@ -27,7 +27,10 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     }
 
     enum DelegateEvent {
-        case audioUpgradeAccepted(AnswerWithSuccessBlock)
+        case mediaUpgradeAccepted(
+                offer: MediaUpgradeOffer,
+                answer: AnswerWithSuccessBlock
+             )
         case call
     }
 
@@ -163,13 +166,15 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     private func offerMediaUpgrade(_ offer: MediaUpgradeOffer, answer: @escaping AnswerWithSuccessBlock) {
         let operatorName = interactor.engagedOperator?.firstName
 
+        let onAccepted = {
+            self.delegate?(.mediaUpgradeAccepted(offer: offer, answer: answer))
+            self.action?(.showCallBubble(imageUrl: self.interactor.engagedOperator?.picture?.url))
+        }
+
         switch offer.type {
         case .audio:
             action?(.offerAudioUpgrade(alertConfiguration.audioUpgrade.withOperatorName(operatorName),
-                                       accepted: {
-                                        self.delegate?(.audioUpgradeAccepted(answer))
-                                        self.action?(.showCallBubble(imageUrl: self.interactor.engagedOperator?.picture?.url))
-                                       },
+                                       accepted: { onAccepted() },
                                        declined: { answer(false, nil) }))
         default:
             break
