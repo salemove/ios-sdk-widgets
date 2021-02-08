@@ -63,6 +63,9 @@ class CallViewModel: EngagementViewModel, ViewModel {
         call.state.addObserver(self) { state, _ in
             self.onStateChanged(state)
         }
+        call.video.addObserver(self) { audio, _ in
+            self.onVideoChanged(audio)
+        }
         call.audio.addObserver(self) { audio, _ in
             self.onAudioChanged(audio)
         }
@@ -190,6 +193,21 @@ class CallViewModel: EngagementViewModel, ViewModel {
     private func onAudioChanged(_ audio: CallMediaKind<AudioStreamable>) {
         switch audio {
         case .twoWay:
+            //TODO
+            call.state.value = .started
+            action?(.connected(name: interactor.engagedOperator?.firstName,
+                               imageUrl: interactor.engagedOperator?.picture?.url))
+            action?(.setInfoText(nil))
+        default:
+            break
+        }
+        updateButtons()
+    }
+
+    private func onVideoChanged(_ audio: CallMediaKind<VideoStreamable>) {
+        switch audio {
+        case .twoWay:
+            // TODO
             call.state.value = .started
             action?(.connected(name: interactor.engagedOperator?.firstName,
                                imageUrl: interactor.engagedOperator?.picture?.url))
@@ -240,7 +258,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
 extension CallViewModel {
     private func updateButtons() {
         let chatEnabled = interactor.isEngaged
-        let videoEnabled = false
+        let videoEnabled = call.video.value.hasLocalStream
         let muteEnabled = call.audio.value.hasLocalStream
         let speakerEnabled = call.audio.value.hasRemoteStream
         let minimizeEnabled = true
@@ -250,14 +268,17 @@ extension CallViewModel {
         action?(.setButtonEnabled(.speaker, enabled: speakerEnabled))
         action?(.setButtonEnabled(.minimize, enabled: minimizeEnabled))
 
+        let videoState: ButtonState = call.video.value.localStream?.isPaused == true
+            ? .active
+            : .inactive
         let muteState: ButtonState = call.audio.value.localStream?.isMuted == true
             ? .active
             : .inactive
-        action?(.setButtonState(.mute, state: muteState))
-
         let speakerState: ButtonState = audioPortOverride == .speaker
             ? .active
             : .inactive
+        action?(.setButtonState(.video, state: videoState))
+        action?(.setButtonState(.mute, state: muteState))
         action?(.setButtonState(.speaker, state: speakerState))
     }
 
@@ -266,7 +287,7 @@ extension CallViewModel {
         case .chat:
             delegate?(.chat)
         case .video:
-            break
+            toggleVideo()
         case .mute:
             toggleMute()
         case .speaker:
@@ -274,6 +295,17 @@ extension CallViewModel {
         case .minimize:
             delegate?(.minimize)
         }
+    }
+
+    private func toggleVideo() {
+        call.video.value.localStream.map {
+            if $0.isPaused {
+                $0.resume()
+            } else {
+                $0.pause()
+            }
+        }
+        updateButtons()
     }
 
     private func toggleMute() {
