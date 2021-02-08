@@ -108,7 +108,6 @@ class CallViewModel: EngagementViewModel, ViewModel {
             }
         case .inactive:
             call.state.value = .ended
-            durationCounter.stop()
         default:
             break
         }
@@ -150,24 +149,26 @@ class CallViewModel: EngagementViewModel, ViewModel {
         }
     }
 
-    private func updateAudio(with stream: AudioStreamable) {
-        if stream.isRemote {
-            switch call.audio.value {
+    private func updateMediaKind<Streamable>(_ mediaKind: ValueProvider<CallMediaKind<Streamable>>,
+                                             with stream: Streamable,
+                                             isRemote: Bool) {
+        if isRemote {
+            switch mediaKind.value {
             case .none, .remote:
-                call.audio.value = .remote(stream)
+                mediaKind.value = .remote(stream)
             case .local(let local):
-                call.audio.value = .twoWay(local: local, remote: stream)
+                mediaKind.value = .twoWay(local: local, remote: stream)
             case .twoWay(local: let local, remote: _):
-                call.audio.value = .twoWay(local: local, remote: stream)
+                mediaKind.value = .twoWay(local: local, remote: stream)
             }
         } else {
-            switch call.audio.value {
+            switch mediaKind.value {
             case .none, .local:
-                call.audio.value = .local(stream)
+                mediaKind.value = .local(stream)
             case .remote(let remote):
-                call.audio.value = .twoWay(local: stream, remote: remote)
+                mediaKind.value = .twoWay(local: stream, remote: remote)
             case .twoWay(local: _, remote: let remote):
-                call.audio.value = .twoWay(local: stream, remote: remote)
+                mediaKind.value = .twoWay(local: stream, remote: remote)
             }
         }
     }
@@ -181,12 +182,12 @@ class CallViewModel: EngagementViewModel, ViewModel {
                 self.call.duration.value = duration
             }
         case .ended:
-            break
+            durationCounter.stop()
         }
         updateButtons()
     }
 
-    private func onAudioChanged(_ audio: CallAudioKind) {
+    private func onAudioChanged(_ audio: CallMediaKind<AudioStreamable>) {
         switch audio {
         case .twoWay:
             call.state.value = .started
@@ -223,8 +224,12 @@ class CallViewModel: EngagementViewModel, ViewModel {
 
         switch event {
         case .audioStreamAdded(let stream):
-            updateAudio(with: stream)
+            updateMediaKind(call.audio, with: stream, isRemote: stream.isRemote)
+        case .videoStreamAdded(let stream):
+            updateMediaKind(call.video, with: stream, isRemote: stream.isRemote)
         case .audioStreamError(let error):
+            handleMediaError(error)
+        case .videoStreamError(let error):
             handleMediaError(error)
         default:
             break
@@ -236,8 +241,8 @@ extension CallViewModel {
     private func updateButtons() {
         let chatEnabled = interactor.isEngaged
         let videoEnabled = false
-        let muteEnabled = call.audio.value.hasLocalAudio
-        let speakerEnabled = call.audio.value.hasRemoteAudio
+        let muteEnabled = call.audio.value.hasLocalStream
+        let speakerEnabled = call.audio.value.hasRemoteStream
         let minimizeEnabled = true
         action?(.setButtonEnabled(.chat, enabled: chatEnabled))
         action?(.setButtonEnabled(.video, enabled: videoEnabled))

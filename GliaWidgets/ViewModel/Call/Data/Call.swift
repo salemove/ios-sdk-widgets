@@ -22,14 +22,14 @@ enum CallState {
     case ended
 }
 
-enum CallAudioKind {
+enum CallMediaKind<Streamable> {
     case none
-    case remote(AudioStreamable)
-    case local(AudioStreamable)
-    case twoWay(local: AudioStreamable, remote: AudioStreamable)
+    case remote(Streamable)
+    case local(Streamable)
+    case twoWay(local: Streamable, remote: Streamable)
 
-    var hasLocalAudio: Bool { return localStream != nil }
-    var localStream: AudioStreamable? {
+    var hasLocalStream: Bool { return localStream != nil }
+    var localStream: Streamable? {
         switch self {
         case .local(let stream):
             return stream
@@ -39,8 +39,8 @@ enum CallAudioKind {
             return nil
         }
     }
-    var hasRemoteAudio: Bool { return remoteStream != nil }
-    var remoteStream: AudioStreamable? {
+    var hasRemoteStream: Bool { return remoteStream != nil }
+    var remoteStream: Streamable? {
         switch self {
         case .remote(let stream):
             return stream
@@ -56,7 +56,8 @@ class Call {
     let id = UUID().uuidString
     let kind: CallKind
     let state = ValueProvider<CallState>(with: .none)
-    let audio = ValueProvider<CallAudioKind>(with: .none)
+    let audio = ValueProvider<CallMediaKind<AudioStreamable>>(with: .none)
+    let video = ValueProvider<CallMediaKind<VideoStreamable>>(with: .none)
     let duration = ValueProvider<Int>(with: 0)
 
     init(_ kind: CallKind) {
