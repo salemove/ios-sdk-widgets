@@ -49,8 +49,11 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
             engagement = .chat(chatViewController)
             navigationPresenter.setViewControllers([chatViewController],
                                                    animated: false)
-        case .audioCall:
-            let call = Call(.audio)
+        case .audioCall, .videoCall:
+            let kind: CallKind = engagementKind == .audioCall
+                ? .audio
+                : .video
+            let call = Call(kind)
             let chatViewController = startChat(withAction: .none)
             let callViewController = startCall(call, withAction: .startEngagement)
             engagement = .call(callViewController,
@@ -58,8 +61,6 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
                                .none)
             navigationPresenter.setViewControllers([callViewController],
                                                    animated: false)
-        case .videoCall:
-            break
         }
 
         presentWindow(animated: true)
