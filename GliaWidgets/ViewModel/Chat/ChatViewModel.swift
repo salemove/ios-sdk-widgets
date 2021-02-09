@@ -185,7 +185,6 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             self.delegate?(.mediaUpgradeAccepted(offer: offer, answer: answer))
             self.action?(.showCallBubble(imageUrl: self.interactor.engagedOperator?.picture?.url))
         }
-        
         action?(.offerMediaUpgrade(configuration.withOperatorName(operatorName),
                                    accepted: { onAccepted() },
                                    declined: { answer(false, nil) }))
@@ -292,14 +291,25 @@ extension ChatViewModel {
     private func onCall(_ call: Call?) {
         guard let call = call else { return }
 
+        var item = appendCallUpgradeItem(with: call)
+
+        call.kind.addObserver(self) { _, _ in
+            call.duration.removeObserver(item)
+            item = self.appendCallUpgradeItem(with: call)
+        }
+    }
+
+    private func appendCallUpgradeItem(with call: Call) -> ChatItem {
         let durationProvider = ValueProvider<Int>(with: 0)
         let item = ChatItem(kind: .callUpgrade(call.kind.value,
                                                durationProvider: durationProvider))
         appendItem(item, to: messagesSection, animated: true)
         action?(.scrollToBottom(animated: true))
 
-        call.duration.addObserver(self) { duration, _ in
+        call.duration.addObserver(item) { duration, _ in
             durationProvider.value = duration
         }
+
+        return item
     }
 }

@@ -1,6 +1,6 @@
 import SalemoveSDK
 
-struct ChatItem {
+class ChatItem {
     enum Kind {
         case queueOperator
         case outgoingMessage(OutgoingMessage)

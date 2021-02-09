@@ -63,6 +63,9 @@ class CallViewModel: EngagementViewModel, ViewModel {
         self.call = call
         self.startAction = startAction
         super.init(interactor: interactor, alertConfiguration: alertConfiguration)
+        call.kind.addObserver(self) { kind, _ in
+            self.onKindChanged(kind)
+        }
         call.state.addObserver(self) { state, _ in
             self.onStateChanged(state)
         }
@@ -89,7 +92,6 @@ class CallViewModel: EngagementViewModel, ViewModel {
     override func start() {
         super.start()
         update(for: call.kind.value)
-        updateButtons()
 
         switch startAction {
         case .startEngagement:
@@ -103,7 +105,6 @@ class CallViewModel: EngagementViewModel, ViewModel {
 
     override func update(for state: InteractorState) {
         super.update(for: state)
-        updateButtons()
 
         switch state {
         case .enqueueing:
@@ -123,11 +124,10 @@ class CallViewModel: EngagementViewModel, ViewModel {
         switch callKind {
         case .audio:
             action?(.setTitle(Strings.Audio.title))
-            action?(.showButtons([.chat, .mute, .speaker, .minimize]))
         case .video:
             action?(.setTitle(Strings.Video.title))
-            action?(.showButtons([.chat, .video, .mute, .speaker, .minimize]))
         }
+        updateButtons()
     }
 
     private func requestMedia() {
@@ -223,14 +223,33 @@ class CallViewModel: EngagementViewModel, ViewModel {
                                    answer: @escaping AnswerWithSuccessBlock) {
         guard isViewActive else { return }
         let operatorName = interactor.engagedOperator?.firstName
-        let onAccepted = {
+        let onAccepted = { [weak self] in
             answer(true, nil)
+            self?.call.kind.value = .video
             // show Connecting
-            // set call kind to video
         }
         action?(.offerMediaUpgrade(configuration.withOperatorName(operatorName),
                                    accepted: { onAccepted() },
                                    declined: { answer(false, nil) }))
+    }
+
+    private func checkCallStart() {
+        switch call.kind.value {
+        case .audio:
+            switch call.audio.value {
+            case .twoWay:
+                call.state.value = .started
+            default:
+                break
+            }
+        case .video:
+            switch call.video.value {
+            case .remote:
+                call.state.value = .started
+            default:
+                break
+            }
+        }
     }
 
     override func interactorEvent(_ event: InteractorEvent) {
@@ -272,23 +291,8 @@ extension CallViewModel {
         updateButtons()
     }
 
-    private func checkCallStart() {
-        switch call.kind.value {
-        case .audio:
-            switch call.audio.value {
-            case .twoWay:
-                call.state.value = .started
-            default:
-                break
-            }
-        case .video:
-            switch call.video.value {
-            case .remote:
-                call.state.value = .started
-            default:
-                break
-            }
-        }
+    private func onKindChanged(_ kind: CallKind) {
+        update(for: kind)
     }
 
     private func onAudioChanged(_ audio: CallMediaKind<AudioStreamable>) {
@@ -296,7 +300,7 @@ extension CallViewModel {
         updateButtons()
     }
 
-    private func onVideoChanged(_ audio: CallMediaKind<VideoStreamable>) {
+    private func onVideoChanged(_ video: CallMediaKind<VideoStreamable>) {
         checkCallStart()
         updateButtons()
     }
@@ -309,29 +313,63 @@ extension CallViewModel {
 
 extension CallViewModel {
     private func updateButtons() {
-        let chatEnabled = interactor.isEngaged
-        let videoEnabled = call.video.value.hasLocalStream
-        let muteEnabled = call.audio.value.hasLocalStream
-        let speakerEnabled = call.audio.value.hasRemoteStream
-        let minimizeEnabled = true
-        action?(.setButtonEnabled(.chat, enabled: chatEnabled))
-        action?(.setButtonEnabled(.video, enabled: videoEnabled))
-        action?(.setButtonEnabled(.mute, enabled: muteEnabled))
-        action?(.setButtonEnabled(.speaker, enabled: speakerEnabled))
-        action?(.setButtonEnabled(.minimize, enabled: minimizeEnabled))
+        updateVisibleButtons()
+        updateChatButton()
+        updateVideoButton()
+        updateMuteButton()
+        updateSpeakerButton()
+        updateMinimizeButton()
+    }
 
-        let videoState: ButtonState = call.video.value.localStream?.isPaused == true
+    private func updateVisibleButtons() {
+        let buttons = self.buttons(for: call)
+        action?(.showButtons(buttons))
+    }
+
+    private func buttons(for call: Call) -> [Button] {
+        switch call.kind.value {
+        case .audio:
+            return [.chat, .mute, .speaker, .minimize]
+        case .video:
+            return [.chat, .video, .mute, .speaker, .minimize]
+        }
+    }
+
+    private func updateChatButton() {
+        let enabled = interactor.isEngaged
+        action?(.setButtonEnabled(.chat, enabled: enabled))
+    }
+
+    private func updateVideoButton() {
+        let enabled = call.video.value.hasLocalStream
+        let state: ButtonState = call.video.value.localStream.map {
+            $0.isPaused ? .inactive : .active
+        } ?? .inactive
+        action?(.setButtonEnabled(.video, enabled: enabled))
+        action?(.setButtonState(.video, state: state))
+    }
+
+    private func updateMuteButton() {
+        let enabled = call.audio.value.hasLocalStream
+        let state: ButtonState = call.audio.value.localStream?.isMuted == true
             ? .active
             : .inactive
-        let muteState: ButtonState = call.audio.value.localStream?.isMuted == true
+        action?(.setButtonEnabled(.mute, enabled: enabled))
+        action?(.setButtonState(.mute, state: state))
+    }
+
+    private func updateSpeakerButton() {
+        let enabled = call.audio.value.hasRemoteStream
+        let state: ButtonState = audioPortOverride == .speaker
             ? .active
             : .inactive
-        let speakerState: ButtonState = audioPortOverride == .speaker
-            ? .active
-            : .inactive
-        action?(.setButtonState(.video, state: videoState))
-        action?(.setButtonState(.mute, state: muteState))
-        action?(.setButtonState(.speaker, state: speakerState))
+        action?(.setButtonEnabled(.speaker, enabled: enabled))
+        action?(.setButtonState(.speaker, state: state))
+    }
+
+    private func updateMinimizeButton() {
+        let enabled = true
+        action?(.setButtonEnabled(.minimize, enabled: enabled))
     }
 
     private func buttonTapped(_ button: Button) {
@@ -357,7 +395,7 @@ extension CallViewModel {
                 $0.pause()
             }
         }
-        updateButtons()
+        updateVideoButton()
     }
 
     private func toggleMute() {
@@ -368,7 +406,7 @@ extension CallViewModel {
                 $0.mute()
             }
         }
-        updateButtons()
+        updateMuteButton()
     }
 
     private func toggleSpeaker() {
@@ -390,6 +428,6 @@ extension CallViewModel {
         } catch {
             print(error)
         }
-        updateButtons()
+        updateSpeakerButton()
     }
 }
