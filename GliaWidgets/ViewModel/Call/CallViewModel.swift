@@ -88,7 +88,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
 
     override func start() {
         super.start()
-        update(for: call.kind)
+        update(for: call.kind.value)
         updateButtons()
 
         switch startAction {
@@ -136,7 +136,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
         action?(.connecting(name: name, imageUrl: imageUrl))
 
         let mediaType: MediaType = {
-            switch call.kind {
+            switch call.kind.value {
             case .audio:
                 return .audio
             case .video:
@@ -223,8 +223,13 @@ class CallViewModel: EngagementViewModel, ViewModel {
                                    answer: @escaping AnswerWithSuccessBlock) {
         guard isViewActive else { return }
         let operatorName = interactor.engagedOperator?.firstName
+        let onAccepted = {
+            answer(true, nil)
+            // show Connecting
+            // set call kind to video
+        }
         action?(.offerMediaUpgrade(configuration.withOperatorName(operatorName),
-                                   accepted: { answer(true, nil) },
+                                   accepted: { onAccepted() },
                                    declined: { answer(false, nil) }))
     }
 
@@ -257,37 +262,42 @@ extension CallViewModel {
             durationCounter.start { duration in
                 self.call.duration.value = duration
             }
+            // TODO audio vs video call
+            action?(.connected(name: interactor.engagedOperator?.firstName,
+                               imageUrl: interactor.engagedOperator?.picture?.url))
+            action?(.setInfoText(nil))
         case .ended:
             durationCounter.stop()
         }
         updateButtons()
     }
 
-    private func onAudioChanged(_ audio: CallMediaKind<AudioStreamable>) {
-        switch audio {
-        case .twoWay:
-            //TODO
-            call.state.value = .started
-            action?(.connected(name: interactor.engagedOperator?.firstName,
-                               imageUrl: interactor.engagedOperator?.picture?.url))
-            action?(.setInfoText(nil))
-        default:
-            break
+    private func checkCallStart() {
+        switch call.kind.value {
+        case .audio:
+            switch call.audio.value {
+            case .twoWay:
+                call.state.value = .started
+            default:
+                break
+            }
+        case .video:
+            switch call.video.value {
+            case .remote:
+                call.state.value = .started
+            default:
+                break
+            }
         }
+    }
+
+    private func onAudioChanged(_ audio: CallMediaKind<AudioStreamable>) {
+        checkCallStart()
         updateButtons()
     }
 
     private func onVideoChanged(_ audio: CallMediaKind<VideoStreamable>) {
-        switch audio {
-        case .twoWay:
-            // TODO
-            call.state.value = .started
-            action?(.connected(name: interactor.engagedOperator?.firstName,
-                               imageUrl: interactor.engagedOperator?.picture?.url))
-            action?(.setInfoText(nil))
-        default:
-            break
-        }
+        checkCallStart()
         updateButtons()
     }
 

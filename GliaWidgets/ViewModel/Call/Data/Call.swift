@@ -54,13 +54,13 @@ enum CallMediaKind<Streamable> {
 
 class Call {
     let id = UUID().uuidString
-    let kind: CallKind
+    let kind = ValueProvider<CallKind>(with: .audio)
     let state = ValueProvider<CallState>(with: .none)
     let audio = ValueProvider<CallMediaKind<AudioStreamable>>(with: .none)
     let video = ValueProvider<CallMediaKind<VideoStreamable>>(with: .none)
     let duration = ValueProvider<Int>(with: 0)
 
     init(_ kind: CallKind) {
-        self.kind = kind
+        self.kind.value = kind
     }
 }
