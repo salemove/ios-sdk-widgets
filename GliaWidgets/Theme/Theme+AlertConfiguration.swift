@@ -65,6 +65,12 @@ extension Theme {
             settingsTitle: Alert.Action.settings,
             cancelTitle: Alert.Action.cancel
         )
+        let cameraSettings = SettingsAlertConfiguration(
+            title: Alert.CameraPermission.title,
+            message: Alert.CameraPermission.message,
+            settingsTitle: Alert.Action.settings,
+            cancelTitle: Alert.Action.cancel
+        )
         let unexpected = MessageAlertConfiguration(
             title: Alert.Unexpected.title,
             message: Alert.Unexpected.message
@@ -82,6 +88,7 @@ extension Theme {
             audioUpgrade: audioUpgrade,
             videoUpgrade: videoUpgrade,
             microphoneSettings: microphoneSettings,
+            cameraSettings: cameraSettings,
             unexpectedError: unexpected,
             apiError: api
         )

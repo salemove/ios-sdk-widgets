@@ -35,6 +35,8 @@
 
 "alert.microphonePermission.title" = "Unable to access microphone";
 "alert.microphonePermission.message" = "Allow access to you micrphone from device menu: “Settings” - “Privacy” - “Microphone”";
+"alert.cameraPermission.title" = "Unable to access camera";
+"alert.cameraPermission.message" = "Allow access to you micrphone from device menu: “Settings” - “Privacy” - “Camera”";
 
 "chat.title" = "Chat";
 "chat.endButton.title" = "End";

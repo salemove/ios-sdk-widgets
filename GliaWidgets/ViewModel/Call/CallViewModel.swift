@@ -179,12 +179,26 @@ class CallViewModel: EngagementViewModel, ViewModel {
         }
     }
 
-    private func handleMediaError(_ error: SalemoveError) {
+    private func handleAudioStreamError(_ error: SalemoveError) {
         switch error.error {
         case let mediaError as MediaError:
             switch mediaError {
             case .permissionDenied:
                 self.showSettingsAlert(with: alertConfiguration.microphoneSettings)
+            default:
+                showAlert(for: error)
+            }
+        default:
+            showAlert(for: error)
+        }
+    }
+
+    private func handleVideoStreamError(_ error: SalemoveError) {
+        switch error.error {
+        case let mediaError as MediaError:
+            switch mediaError {
+            case .permissionDenied:
+                self.showSettingsAlert(with: alertConfiguration.cameraSettings)
             default:
                 showAlert(for: error)
             }
@@ -223,9 +237,9 @@ class CallViewModel: EngagementViewModel, ViewModel {
         case .videoStreamAdded(let stream):
             updateMediaKind(call.video, with: stream, isRemote: stream.isRemote)
         case .audioStreamError(let error):
-            handleMediaError(error)
+            handleAudioStreamError(error)
         case .videoStreamError(let error):
-            handleMediaError(error)
+            handleVideoStreamError(error)
         case .upgradeOffer(let offer, answer: let answer):
             offerMediaUpgrade(offer, answer: answer)
         default:

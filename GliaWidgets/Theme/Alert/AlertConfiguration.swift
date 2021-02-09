@@ -6,6 +6,7 @@ public struct AlertConfiguration {
     public var audioUpgrade: SingleMediaUpgradeAlertConfiguration
     public var videoUpgrade: SingleMediaUpgradeAlertConfiguration
     public var microphoneSettings: SettingsAlertConfiguration
+    public var cameraSettings: SettingsAlertConfiguration
     public var unexpectedError: MessageAlertConfiguration
     public var apiError: MessageAlertConfiguration
 
@@ -16,6 +17,7 @@ public struct AlertConfiguration {
                 audioUpgrade: SingleMediaUpgradeAlertConfiguration,
                 videoUpgrade: SingleMediaUpgradeAlertConfiguration,
                 microphoneSettings: SettingsAlertConfiguration,
+                cameraSettings: SettingsAlertConfiguration,
                 unexpectedError: MessageAlertConfiguration,
                 apiError: MessageAlertConfiguration) {
         self.leaveQueue = leaveQueue
@@ -25,6 +27,7 @@ public struct AlertConfiguration {
         self.audioUpgrade = audioUpgrade
         self.videoUpgrade = videoUpgrade
         self.microphoneSettings = microphoneSettings
+        self.cameraSettings = cameraSettings
         self.unexpectedError = unexpectedError
         self.apiError = apiError
     }

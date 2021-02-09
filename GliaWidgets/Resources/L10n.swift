@@ -42,6 +42,12 @@ public enum L10n {
       /// {operatorName} has offered you to upgrade to audio
       public static let title = L10n.tr("Localizable", "alert.audioUpgrade.title")
     }
+    public enum CameraPermission {
+      /// Allow access to you micrphone from device menu: “Settings” - “Privacy” - “Camera”
+      public static let message = L10n.tr("Localizable", "alert.cameraPermission.message")
+      /// Unable to access camera
+      public static let title = L10n.tr("Localizable", "alert.cameraPermission.title")
+    }
     public enum EndEngagement {
       /// Are you sure you want to end engagement?
       public static let message = L10n.tr("Localizable", "alert.endEngagement.message")
