@@ -55,6 +55,8 @@ class CallViewController: EngagementViewController, MediaUpgradePresenter {
                 let button = CallButton.Kind(with: button)
                 let state = CallButton.State(with: state)
                 view.buttonBar.setButton(button, state: state)
+            case .offerMediaUpgrade(let conf, accepted: let accepted, declined: let declined):
+                self.offerMediaUpgrade(with: conf, accepted: accepted, declined: declined)
             }
         }
     }

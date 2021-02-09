@@ -32,6 +32,9 @@ class CallViewModel: EngagementViewModel, ViewModel {
         case showButtons([Button])
         case setButtonEnabled(Button, enabled: Bool)
         case setButtonState(Button, state: ButtonState)
+        case offerMediaUpgrade(SingleMediaUpgradeAlertConfiguration,
+                               accepted: () -> Void,
+                               declined: () -> Void)
     }
 
     enum DelegateEvent {
@@ -176,6 +179,62 @@ class CallViewModel: EngagementViewModel, ViewModel {
         }
     }
 
+    private func handleMediaError(_ error: SalemoveError) {
+        switch error.error {
+        case let mediaError as MediaError:
+            switch mediaError {
+            case .permissionDenied:
+                self.showSettingsAlert(with: alertConfiguration.microphoneSettings)
+            default:
+                showAlert(for: error)
+            }
+        default:
+            showAlert(for: error)
+        }
+    }
+
+    private func offerMediaUpgrade(_ offer: MediaUpgradeOffer, answer: @escaping AnswerWithSuccessBlock) {
+        switch offer.type {
+        case .video:
+            offerMediaUpgrade(with: alertConfiguration.videoUpgrade,
+                              offer: offer,
+                              answer: answer)
+        default:
+            break
+        }
+    }
+
+    private func offerMediaUpgrade(with configuration: SingleMediaUpgradeAlertConfiguration,
+                                   offer: MediaUpgradeOffer,
+                                   answer: @escaping AnswerWithSuccessBlock) {
+        guard isViewActive else { return }
+        let operatorName = interactor.engagedOperator?.firstName
+        action?(.offerMediaUpgrade(configuration.withOperatorName(operatorName),
+                                   accepted: { answer(true, nil) },
+                                   declined: { answer(false, nil) }))
+    }
+
+    override func interactorEvent(_ event: InteractorEvent) {
+        super.interactorEvent(event)
+
+        switch event {
+        case .audioStreamAdded(let stream):
+            updateMediaKind(call.audio, with: stream, isRemote: stream.isRemote)
+        case .videoStreamAdded(let stream):
+            updateMediaKind(call.video, with: stream, isRemote: stream.isRemote)
+        case .audioStreamError(let error):
+            handleMediaError(error)
+        case .videoStreamError(let error):
+            handleMediaError(error)
+        case .upgradeOffer(let offer, answer: let answer):
+            offerMediaUpgrade(offer, answer: answer)
+        default:
+            break
+        }
+    }
+}
+
+extension CallViewModel {
     private func onStateChanged(_ state: CallState) {
         switch state {
         case .none:
@@ -221,37 +280,6 @@ class CallViewModel: EngagementViewModel, ViewModel {
     private func onDurationChanged(_ duration: Int) {
         let text = Strings.Connect.Connected.secondText.withCallDuration(duration.asDurationString)
         action?(.setCallDurationText(text))
-    }
-
-    private func handleMediaError(_ error: SalemoveError) {
-        switch error.error {
-        case let mediaError as MediaError:
-            switch mediaError {
-            case .permissionDenied:
-                self.showSettingsAlert(with: alertConfiguration.microphoneSettings)
-            default:
-                showAlert(for: error)
-            }
-        default:
-            showAlert(for: error)
-        }
-    }
-
-    override func interactorEvent(_ event: InteractorEvent) {
-        super.interactorEvent(event)
-
-        switch event {
-        case .audioStreamAdded(let stream):
-            updateMediaKind(call.audio, with: stream, isRemote: stream.isRemote)
-        case .videoStreamAdded(let stream):
-            updateMediaKind(call.video, with: stream, isRemote: stream.isRemote)
-        case .audioStreamError(let error):
-            handleMediaError(error)
-        case .videoStreamError(let error):
-            handleMediaError(error)
-        default:
-            break
-        }
     }
 }
 

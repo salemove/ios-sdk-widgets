@@ -2,6 +2,8 @@ import SalemoveSDK
 
 class EngagementViewModel {
     enum Event {
+        case viewDidAppear
+        case viewDidDisappear
         case backTapped
         case closeTapped
     }
@@ -28,6 +30,7 @@ class EngagementViewModel {
     let interactor: Interactor
     let alertConfiguration: AlertConfiguration
 
+    private(set) var isViewActive = false
     private static var alertPresenters = Set<EngagementViewModel>()
 
     init(interactor: Interactor, alertConfiguration: AlertConfiguration) {
@@ -42,6 +45,10 @@ class EngagementViewModel {
 
     func event(_ event: Event) {
         switch event {
+        case .viewDidAppear:
+            isViewActive = true
+        case .viewDidDisappear:
+            isViewActive = false
         case .backTapped:
             engagementDelegate?(.back)
         case .closeTapped:

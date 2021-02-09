@@ -164,9 +164,13 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     private func offerMediaUpgrade(_ offer: MediaUpgradeOffer, answer: @escaping AnswerWithSuccessBlock) {
         switch offer.type {
         case .audio:
-            offerMediaUpgrade(with: alertConfiguration.audioUpgrade, offer: offer, answer: answer)
+            offerMediaUpgrade(with: alertConfiguration.audioUpgrade,
+                              offer: offer,
+                              answer: answer)
         case .video:
-            offerMediaUpgrade(with: alertConfiguration.videoUpgrade, offer: offer, answer: answer)
+            offerMediaUpgrade(with: alertConfiguration.videoUpgrade,
+                              offer: offer,
+                              answer: answer)
         default:
             break
         }
@@ -175,6 +179,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     private func offerMediaUpgrade(with configuration: SingleMediaUpgradeAlertConfiguration,
                                    offer: MediaUpgradeOffer,
                                    answer: @escaping AnswerWithSuccessBlock) {
+        guard isViewActive else { return }
         let operatorName = interactor.engagedOperator?.firstName
         let onAccepted = {
             self.delegate?(.mediaUpgradeAccepted(offer: offer, answer: answer))

@@ -22,6 +22,16 @@ class EngagementViewController: ViewController, AlertPresenter {
         }
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        viewModel.event(.viewDidAppear)
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        viewModel.event(.viewDidDisappear)
+    }
+
     private func bind(viewModel: EngagementViewModel, to view: EngagementView) {
         let leftItem = Button(kind: .back, tap: { viewModel.event(.backTapped) })
         let rightItem = Button(kind: .close, tap: { viewModel.event(.closeTapped) })
