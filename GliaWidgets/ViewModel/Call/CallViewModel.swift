@@ -144,7 +144,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
             }
         }()
 
-        interactor.request(mediaType) {
+        interactor.request(mediaType, direction: .twoWay) {
 
         } failure: { [weak self] error, salemoveError in
             if let error = error {
@@ -226,7 +226,6 @@ class CallViewModel: EngagementViewModel, ViewModel {
         let onAccepted = { [weak self] in
             answer(true, nil)
             self?.call.kind.value = .video
-            // show Connecting
         }
         action?(.offerMediaUpgrade(configuration.withOperatorName(operatorName),
                                    accepted: { onAccepted() },
@@ -293,6 +292,8 @@ extension CallViewModel {
 
     private func onKindChanged(_ kind: CallKind) {
         update(for: kind)
+
+        // if video then show Connecting etc
     }
 
     private func onAudioChanged(_ audio: CallMediaKind<AudioStreamable>) {

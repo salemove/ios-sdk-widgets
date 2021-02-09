@@ -102,10 +102,11 @@ extension Interactor {
     }
 
     func request(_ media: MediaType,
+                 direction: MediaDirection,
                  success: @escaping () -> Void,
                  failure: @escaping (Error?, SalemoveError?) -> Void) {
         do {
-            let offer = try MediaUpgradeOffer(type: media, direction: .twoWay)
+            let offer = try MediaUpgradeOffer(type: media, direction: direction)
             Salemove.sharedInstance.requestMediaUpgrade(offer: offer) { isSuccess, error in
                 if let error = error {
                     failure(nil, error)
