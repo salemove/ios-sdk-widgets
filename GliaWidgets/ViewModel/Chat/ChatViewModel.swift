@@ -291,25 +291,19 @@ extension ChatViewModel {
     private func onCall(_ call: Call?) {
         guard let call = call else { return }
 
-        var item = appendCallUpgradeItem(with: call)
-
-        call.kind.addObserver(self) { _, _ in
-            call.duration.removeObserver(item)
-            item = self.appendCallUpgradeItem(with: call)
-        }
-    }
-
-    private func appendCallUpgradeItem(with call: Call) -> ChatItem {
+        let kindProvider = ValueProvider<CallKind>(with: call.kind.value)
         let durationProvider = ValueProvider<Int>(with: 0)
-        let item = ChatItem(kind: .callUpgrade(call.kind.value,
+        let item = ChatItem(kind: .callUpgrade(kindProvider,
                                                durationProvider: durationProvider))
         appendItem(item, to: messagesSection, animated: true)
         action?(.scrollToBottom(animated: true))
 
+        call.kind.addObserver(self) { kind, _ in
+            kindProvider.value = kind
+        }
+
         call.duration.addObserver(item) { duration, _ in
             durationProvider.value = duration
         }
-
-        return item
     }
 }
