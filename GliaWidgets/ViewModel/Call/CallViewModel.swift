@@ -96,10 +96,11 @@ class CallViewModel: EngagementViewModel, ViewModel {
         switch startAction {
         case .startEngagement:
             enqueue()
-        case .startCall(offer: _, answer: let answer):
-            answer(true, nil)
+        case .startCall(offer: let offer, answer: let answer):
+            call.setNeededDirection(offer.direction, for: offer.type)
             action?(.connecting(name: interactor.engagedOperator?.firstName,
                                 imageUrl: interactor.engagedOperator?.picture?.url))
+            answer(true, nil)
         }
     }
 
@@ -114,7 +115,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
                 requestMedia()
             }
         case .ended:
-            call.state.value = .ended
+            call.end()
         default:
             break
         }
@@ -199,9 +200,9 @@ class CallViewModel: EngagementViewModel, ViewModel {
                                    answer: @escaping AnswerWithSuccessBlock) {
         guard isViewActive else { return }
         let operatorName = interactor.engagedOperator?.firstName
-        let onAccepted = { [weak self] in
+        let onAccepted = {
+            self.call.setNeededDirection(offer.direction, for: offer.type)
             answer(true, nil)
-            self?.call.kind.value = .video
         }
         action?(.offerMediaUpgrade(configuration.withOperatorName(operatorName),
                                    accepted: { onAccepted() },
@@ -238,6 +239,7 @@ extension CallViewModel {
                 self.call.duration.value = duration
             }
             // TODO audio vs video call
+            // on video keep showing Connecting...? also don't start counter yet?
             action?(.connected(name: interactor.engagedOperator?.firstName,
                                imageUrl: interactor.engagedOperator?.picture?.url))
             action?(.setInfoText(nil))
@@ -249,8 +251,6 @@ extension CallViewModel {
 
     private func onKindChanged(_ kind: CallKind) {
         update(for: kind)
-
-        // if video then show Connecting etc
     }
 
     private func onAudioChanged(_ audio: MediaStream<AudioStreamable>) {
@@ -259,6 +259,9 @@ extension CallViewModel {
 
     private func onVideoChanged(_ video: MediaStream<VideoStreamable>) {
         updateButtons()
+
+        // if has remote stream then hide connecting, show remote video view
+        // if has local stream then show
     }
 
     private func onDurationChanged(_ duration: Int) {

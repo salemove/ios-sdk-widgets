@@ -52,12 +52,13 @@ enum MediaStream<Streamable> {
     }
 }
 
-class Audio {
-    let stream = ValueProvider<MediaStream<AudioStreamable>>(with: .none)
-}
+class MediaChannel<Streamable> {
+    let stream = ValueProvider<MediaStream<Streamable>>(with: .none)
+    private(set) var neededDirection: MediaDirection = .twoWay
 
-class Video {
-    let stream = ValueProvider<MediaStream<VideoStreamable>>(with: .none)
+    func setNeededDirection(_ direction: MediaDirection) {
+        neededDirection = direction
+    }
 }
 
 class Call {
@@ -65,11 +66,22 @@ class Call {
     let kind = ValueProvider<CallKind>(with: .audio)
     let state = ValueProvider<CallState>(with: .none)
     let duration = ValueProvider<Int>(with: 0)
-    let audio = Audio()
-    let video = Video()
+    let audio = MediaChannel<AudioStreamable>()
+    let video = MediaChannel<VideoStreamable>()
 
     init(_ kind: CallKind) {
         self.kind.value = kind
+    }
+
+    func setNeededDirection(_ direction: MediaDirection, for type: MediaType) {
+        switch type {
+        case .audio:
+            audio.setNeededDirection(direction)
+        case .video:
+            video.setNeededDirection(direction)
+        default:
+            break
+        }
     }
 
     func updateAudioStream(with stream: AudioStreamable) {
@@ -82,6 +94,10 @@ class Call {
         updateMediaStream(video.stream,
                           with: stream,
                           isRemote: stream.isRemote)
+    }
+
+    func end() {
+        state.value = .ended
     }
 
     private func updateMediaStream<Streamable>(_ mediaStream: ValueProvider<MediaStream<Streamable>>,
@@ -107,10 +123,21 @@ class Call {
             }
         }
 
-        checkCallStarted()
+        updateKind()
+        updateStarted()
     }
 
-    private func checkCallStarted() {
+    private func updateKind() {
+        let kind: CallKind = video.stream.value.hasRemoteStream
+            ? .video
+            : .audio
+
+        if self.kind.value != kind {
+            self.kind.value = kind
+        }
+    }
+
+    private func updateStarted() {
         guard state.value == .none else { return }
 
         switch kind.value {
@@ -124,7 +151,13 @@ class Call {
         case .video:
             switch video.stream.value {
             case .remote:
-                state.value = .started
+                if video.neededDirection == .oneWay {
+                    state.value = .started
+                }
+            case .twoWay:
+                if video.neededDirection == .twoWay {
+                    state.value = .started
+                }
             default:
                 break
             }
