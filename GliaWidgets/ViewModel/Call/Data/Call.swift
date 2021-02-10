@@ -73,15 +73,9 @@ class Call {
         self.kind.value = kind
     }
 
-    func setNeededDirection(_ direction: MediaDirection, for type: MediaType) {
-        switch type {
-        case .audio:
-            audio.setNeededDirection(direction)
-        case .video:
-            video.setNeededDirection(direction)
-        default:
-            break
-        }
+    func update(with offer: MediaUpgradeOffer) {
+        setKind(for: offer.type)
+        setNeededDirection(offer.direction, for: offer.type)
     }
 
     func updateAudioStream(with stream: AudioStreamable) {
@@ -98,6 +92,28 @@ class Call {
 
     func end() {
         state.value = .ended
+    }
+
+    private func setKind(for type: MediaType) {
+        switch type {
+        case .audio:
+            kind.value = .audio
+        case .video:
+            kind.value = .video
+        default:
+            break
+        }
+    }
+
+    private func setNeededDirection(_ direction: MediaDirection, for type: MediaType) {
+        switch type {
+        case .audio:
+            audio.setNeededDirection(direction)
+        case .video:
+            video.setNeededDirection(direction)
+        default:
+            break
+        }
     }
 
     private func updateMediaStream<Streamable>(_ mediaStream: ValueProvider<MediaStream<Streamable>>,
@@ -123,18 +139,7 @@ class Call {
             }
         }
 
-        updateKind()
         updateStarted()
-    }
-
-    private func updateKind() {
-        let kind: CallKind = video.stream.value.hasRemoteStream
-            ? .video
-            : .audio
-
-        if self.kind.value != kind {
-            self.kind.value = kind
-        }
     }
 
     private func updateStarted() {

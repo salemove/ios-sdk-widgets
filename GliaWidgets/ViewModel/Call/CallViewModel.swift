@@ -97,7 +97,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
         case .startEngagement:
             enqueue()
         case .startCall(offer: let offer, answer: let answer):
-            call.setNeededDirection(offer.direction, for: offer.type)
+            call.update(with: offer)
             action?(.connecting(name: interactor.engagedOperator?.firstName,
                                 imageUrl: interactor.engagedOperator?.picture?.url))
             answer(true, nil)
@@ -201,7 +201,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
         guard isViewActive else { return }
         let operatorName = interactor.engagedOperator?.firstName
         let onAccepted = {
-            self.call.setNeededDirection(offer.direction, for: offer.type)
+            self.call.update(with: offer)
             answer(true, nil)
         }
         action?(.offerMediaUpgrade(configuration.withOperatorName(operatorName),
