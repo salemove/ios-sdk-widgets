@@ -301,7 +301,6 @@ extension ChatViewModel {
         call.kind.addObserver(self) { kind, _ in
             kindProvider.value = kind
         }
-
         call.duration.addObserver(item) { duration, _ in
             durationProvider.value = duration
         }

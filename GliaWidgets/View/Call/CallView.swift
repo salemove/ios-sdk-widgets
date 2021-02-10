@@ -3,6 +3,8 @@ import UIKit
 class CallView: EngagementView {
     let infoLabel = UILabel()
     let buttonBar: CallButtonBar
+    let localVideoView = VideoStreamView(.local)
+    let remoteVideoView = VideoStreamView(.remote)
     var chatTapped: (() -> Void)?
 
     private let style: CallStyle
