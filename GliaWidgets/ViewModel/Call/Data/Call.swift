@@ -64,9 +64,9 @@ class Call {
     let id = UUID().uuidString
     let kind = ValueProvider<CallKind>(with: .audio)
     let state = ValueProvider<CallState>(with: .none)
+    let duration = ValueProvider<Int>(with: 0)
     let audio = Audio()
     let video = Video()
-    let duration = ValueProvider<Int>(with: 0)
 
     init(_ kind: CallKind) {
         self.kind.value = kind
@@ -104,6 +104,29 @@ class Call {
                 mediaStream.value = .twoWay(local: stream, remote: remote)
             case .twoWay(local: _, remote: let remote):
                 mediaStream.value = .twoWay(local: stream, remote: remote)
+            }
+        }
+
+        checkCallStarted()
+    }
+
+    private func checkCallStarted() {
+        guard state.value == .none else { return }
+
+        switch kind.value {
+        case .audio:
+            switch audio.stream.value {
+            case .twoWay:
+                state.value = .started
+            default:
+                break
+            }
+        case .video:
+            switch video.stream.value {
+            case .remote:
+                state.value = .started
+            default:
+                break
             }
         }
     }

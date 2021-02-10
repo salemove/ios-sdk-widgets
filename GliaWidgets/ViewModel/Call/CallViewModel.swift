@@ -113,7 +113,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
             if case .startEngagement = startAction {
                 requestMedia()
             }
-        case .inactive:
+        case .ended:
             call.state.value = .ended
         default:
             break
@@ -208,25 +208,6 @@ class CallViewModel: EngagementViewModel, ViewModel {
                                    declined: { answer(false, nil) }))
     }
 
-    private func checkCallStart() {
-        switch call.kind.value {
-        case .audio:
-            switch call.audio.stream.value {
-            case .twoWay:
-                call.state.value = .started
-            default:
-                break
-            }
-        case .video:
-            switch call.video.stream.value {
-            case .remote:
-                call.state.value = .started
-            default:
-                break
-            }
-        }
-    }
-
     override func interactorEvent(_ event: InteractorEvent) {
         super.interactorEvent(event)
 
@@ -273,12 +254,10 @@ extension CallViewModel {
     }
 
     private func onAudioChanged(_ audio: MediaStream<AudioStreamable>) {
-        checkCallStart()
         updateButtons()
     }
 
     private func onVideoChanged(_ video: MediaStream<VideoStreamable>) {
-        checkCallStart()
         updateButtons()
     }
 

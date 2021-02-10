@@ -1,10 +1,11 @@
 import SalemoveSDK
 
 enum InteractorState {
-    case inactive
+    case none
     case enqueueing
     case enqueued(QueueTicket)
     case engaged(Operator?)
+    case ended
 }
 
 enum InteractorEvent {
@@ -42,7 +43,7 @@ class Interactor {
 
     private let visitorContext: VisitorContext
     private var observers = [() -> (AnyObject?, EventHandler)]()
-    private(set) var state: InteractorState = .inactive {
+    private(set) var state: InteractorState = .none {
         didSet { notify(.stateChanged(state)) }
     }
 
@@ -92,7 +93,7 @@ extension Interactor {
         Salemove.sharedInstance.queueForEngagement(queueID: queueID,
                                                    visitorContext: visitorContext) { queueTicket, error in
             if let error = error {
-                self.state = .inactive
+                self.state = .ended
                 failure(error)
             } else if let ticket = queueTicket {
                 self.state = .enqueued(ticket)
@@ -141,10 +142,10 @@ extension Interactor {
                     failure: @escaping (SalemoveError) -> Void) {
         print("Called: \(#function)")
         switch state {
-        case .inactive:
+        case .none, .ended:
             success()
         case .enqueueing:
-            self.state = .inactive
+            self.state = .ended
             success()
         case .enqueued(let ticket):
             exitQueue(ticket: ticket,
@@ -164,7 +165,7 @@ extension Interactor {
             if let error = error {
                 failure(error)
             } else {
-                self.state = .inactive
+                self.state = .ended
                 success()
             }
         }
@@ -177,7 +178,7 @@ extension Interactor {
             if let error = error {
                 failure(error)
             } else {
-                self.state = .inactive
+                self.state = .ended
                 success()
             }
         }
@@ -259,7 +260,7 @@ extension Interactor: Interactable {
 
     func end() {
         print("Called: \(#function)")
-        state = .inactive
+        state = .ended
     }
 
     func fail(error: SalemoveError) {

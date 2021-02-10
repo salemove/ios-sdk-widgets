@@ -92,31 +92,31 @@ class EngagementViewModel {
         update(for: state)
 
         switch state {
-        case .inactive:
+        case .engaged(let engagedOperator):
+            engagementDelegate?(.engaged(operatorImageUrl: engagedOperator?.picture?.url))
+        case .ended:
             if EngagementViewModel.alertPresenters.isEmpty {
                 engagementDelegate?(.finished)
             }
-        case .engaged(let engagedOperator):
-            engagementDelegate?(.engaged(operatorImageUrl: engagedOperator?.picture?.url))
         default:
             break
         }
     }
 
     func showAlert(with conf: MessageAlertConfiguration, dismissed: (() -> Void)? = nil) {
-        let dismissHandler = {
+        let onDismissed = {
             EngagementViewModel.alertPresenters.remove(self)
             dismissed?()
 
             switch self.interactor.state {
-            case .inactive:
+            case .ended:
                 self.endSession()
             default:
                 break
             }
         }
         EngagementViewModel.alertPresenters.insert(self)
-        engagementAction?(.showAlert(conf, dismissed: { dismissHandler() }))
+        engagementAction?(.showAlert(conf, dismissed: { onDismissed() }))
     }
 
     func showAlert(for error: Error) {
