@@ -22,7 +22,7 @@ enum CallState {
     case ended
 }
 
-enum CallMediaKind<Streamable> {
+enum MediaStream<Streamable> {
     case none
     case remote(Streamable)
     case local(Streamable)
@@ -52,15 +52,59 @@ enum CallMediaKind<Streamable> {
     }
 }
 
+class Audio {
+    let stream = ValueProvider<MediaStream<AudioStreamable>>(with: .none)
+}
+
+class Video {
+    let stream = ValueProvider<MediaStream<VideoStreamable>>(with: .none)
+}
+
 class Call {
     let id = UUID().uuidString
     let kind = ValueProvider<CallKind>(with: .audio)
     let state = ValueProvider<CallState>(with: .none)
-    let audio = ValueProvider<CallMediaKind<AudioStreamable>>(with: .none)
-    let video = ValueProvider<CallMediaKind<VideoStreamable>>(with: .none)
+    let audio = Audio()
+    let video = Video()
     let duration = ValueProvider<Int>(with: 0)
 
     init(_ kind: CallKind) {
         self.kind.value = kind
+    }
+
+    func updateAudioStream(with stream: AudioStreamable) {
+        updateMediaStream(audio.stream,
+                          with: stream,
+                          isRemote: stream.isRemote)
+    }
+
+    func updateVideoStream(with stream: VideoStreamable) {
+        updateMediaStream(video.stream,
+                          with: stream,
+                          isRemote: stream.isRemote)
+    }
+
+    private func updateMediaStream<Streamable>(_ mediaStream: ValueProvider<MediaStream<Streamable>>,
+                                               with stream: Streamable,
+                                               isRemote: Bool) {
+        if isRemote {
+            switch mediaStream.value {
+            case .none, .remote:
+                mediaStream.value = .remote(stream)
+            case .local(let local):
+                mediaStream.value = .twoWay(local: local, remote: stream)
+            case .twoWay(local: let local, remote: _):
+                mediaStream.value = .twoWay(local: local, remote: stream)
+            }
+        } else {
+            switch mediaStream.value {
+            case .none, .local:
+                mediaStream.value = .local(stream)
+            case .remote(let remote):
+                mediaStream.value = .twoWay(local: stream, remote: remote)
+            case .twoWay(local: _, remote: let remote):
+                mediaStream.value = .twoWay(local: stream, remote: remote)
+            }
+        }
     }
 }
