@@ -8,7 +8,6 @@ class CallView: EngagementView {
     var chatTapped: (() -> Void)?
 
     private let style: CallStyle
-    private let contentView = UIView()
 
     init(with style: CallStyle) {
         self.style = style
@@ -50,21 +49,17 @@ class CallView: EngagementView {
         header.autoPinEdgesToSuperviewEdges(with: .zero,
                                             excludingEdge: .bottom)
 
-        addSubview(contentView)
-        contentView.autoPinEdge(.top, to: .bottom, of: header)
-        contentView.autoPinEdgesToSuperviewSafeArea(with: .zero, excludingEdge: .top)
-
-        contentView.addSubview(connectView)
-        connectView.autoPinEdge(toSuperviewEdge: .top)
+        addSubview(connectView)
+        connectView.autoPinEdge(.top, to: .bottom, of: header)
         connectView.autoAlignAxis(toSuperviewAxis: .vertical)
 
-        contentView.addSubview(buttonBar)
-        buttonBar.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 0, left: 0, bottom: 20, right: 0),
-                                               excludingEdge: .top)
+        addSubview(buttonBar)
+        buttonBar.autoPinEdgesToSuperviewSafeArea(with: UIEdgeInsets(top: 0, left: 0, bottom: 20, right: 0),
+                                                  excludingEdge: .top)
 
-        contentView.addSubview(infoLabel)
+        addSubview(infoLabel)
         infoLabel.autoPinEdge(.bottom, to: .top, of: buttonBar, withOffset: -38)
-        infoLabel.autoMatch(.width, to: .width, of: contentView, withMultiplier: 0.6)
+        infoLabel.autoMatch(.width, to: .width, of: self, withMultiplier: 0.6)
         infoLabel.autoAlignAxis(toSuperviewAxis: .vertical)
     }
 
