@@ -1,6 +1,7 @@
 import UIKit
 
 class ChatView: EngagementView {
+    let tableView = UITableView()
     let messageEntryView: ChatMessageEntryView
     var numberOfSections: (() -> Int?)?
     var numberOfRows: ((Int) -> Int?)?
@@ -8,7 +9,6 @@ class ChatView: EngagementView {
     var callBubbleTapped: (() -> Void)?
 
     private let style: ChatStyle
-    private let tableView = UITableView()
     private var messageEntryViewBottomConstraint: NSLayoutConstraint!
     private var callBubble: BubbleView?
     private let keyboardObserver = KeyboardObserver()

@@ -2,6 +2,7 @@ import UIKit
 
 class ChatViewController: EngagementViewController, MediaUpgradePresenter {
     private let viewModel: ChatViewModel
+    private var lastVisibleRowIndexPath: IndexPath?
 
     init(viewModel: ChatViewModel,
          viewFactory: ViewFactory) {
@@ -26,6 +27,17 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter {
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle { return viewFactory.theme.chat.preferredStatusBarStyle }
+
+    override func willRotate(to toInterfaceOrientation: UIInterfaceOrientation, duration: TimeInterval) {
+        guard let view = view as? ChatView else { return }
+        lastVisibleRowIndexPath = view.tableView.indexPathsForVisibleRows?.last
+    }
+
+    override func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
+        guard let view = view as? ChatView else { return }
+        guard let indexPath = lastVisibleRowIndexPath else { return }
+        view.tableView.scrollToRow(at: indexPath, at: .bottom, animated: false)
+    }
 
     private func bind(viewModel: ChatViewModel, to view: ChatView) {
         view.numberOfSections = { return viewModel.numberOfSections }
