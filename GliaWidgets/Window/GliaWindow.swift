@@ -117,7 +117,7 @@ class GliaWindow: UIWindow {
     }
 
     private func setup() {
-        windowLevel = .alert
+        windowLevel = .statusBar - 1
         maximize(animated: false)
     }
 

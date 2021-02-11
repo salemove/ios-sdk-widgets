@@ -6,13 +6,13 @@ extension Theme {
             title: Alert.Action.no,
             titleFont: font.buttonLabel,
             titleColor: color.baseLight,
-            backgroundColor: color.primary
+            backgroundColor: color.systemNegative
         )
         let positiveAction = ActionButtonStyle(
             title: Alert.Action.yes,
             titleFont: font.buttonLabel,
             titleColor: color.baseLight,
-            backgroundColor: color.systemNegative
+            backgroundColor: color.primary
         )
         return AlertStyle(
             titleFont: font.header2,

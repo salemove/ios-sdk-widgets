@@ -26,6 +26,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
         case queue
         case connecting(name: String?, imageUrl: String?)
         case connected(name: String?, imageUrl: String?)
+        case showEndButton
         case setCallDurationText(String)
         case setTitle(String)
         case setInfoText(String?)
@@ -235,6 +236,7 @@ extension CallViewModel {
         case .none:
             break
         case .started:
+            action?(.showEndButton)
             durationCounter.start { duration in
                 self.call.duration.value = duration
             }

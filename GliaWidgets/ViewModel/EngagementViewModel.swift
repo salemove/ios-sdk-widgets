@@ -9,7 +9,6 @@ class EngagementViewModel {
     }
 
     enum Action {
-        case showEndButton
         case confirm(ConfirmationAlertConfiguration,
                      confirmed: (() -> Void)?)
         case showAlert(MessageAlertConfiguration,
@@ -79,14 +78,7 @@ class EngagementViewModel {
         }
     }
 
-    func update(for state: InteractorState) {
-        switch interactor.state {
-        case .engaged:
-            engagementAction?(.showEndButton)
-        default:
-            break
-        }
-    }
+    func update(for state: InteractorState) {}
 
     func stateChanged(_ state: InteractorState) {
         update(for: state)
