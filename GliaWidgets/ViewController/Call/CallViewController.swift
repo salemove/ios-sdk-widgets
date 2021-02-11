@@ -39,6 +39,10 @@ class CallViewController: EngagementViewController, MediaUpgradePresenter {
             case .connected(name: let name, imageUrl: let imageUrl):
                 view.setConnectState(.connected(name: name, imageUrl: imageUrl), animated: true)
                 view.connectView.operatorView.setSize(.large, animated: true)
+            case .showEndButton:
+                let rightItem = ActionButton(with: self.viewFactory.theme.chat.endButton)
+                rightItem.tap = { viewModel.event(.closeTapped) }
+                view.header.setRightItem(rightItem, animated: true)
             case .setTitle(let title):
                 view.header.title = title
             case .setInfoText(let text):
