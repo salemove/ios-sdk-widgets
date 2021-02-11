@@ -7,12 +7,21 @@ extension AlertViewController {
         alertView.showsPoweredBy = true
         alertView.actionsAxis = .horizontal
 
-        let negativeButton = ActionButton(with: viewFactory.theme.alert.negativeAction)
+        var negativeButtonStyle = viewFactory.theme.alert.negativeAction
+        var positiveButtonStyle = viewFactory.theme.alert.positiveAction
+
+        if conf.switchButtonBackgroundColors {
+            let negativeColor = negativeButtonStyle.backgroundColor
+            negativeButtonStyle.backgroundColor = positiveButtonStyle.backgroundColor
+            positiveButtonStyle.backgroundColor = negativeColor
+        }
+
+        let negativeButton = ActionButton(with: negativeButtonStyle)
         negativeButton.title = conf.negativeTitle
         negativeButton.tap = { [weak self] in
             self?.dismiss(animated: true)
         }
-        let positiveButton = ActionButton(with: viewFactory.theme.alert.positiveAction)
+        let positiveButton = ActionButton(with: positiveButtonStyle)
         positiveButton.title = conf.positiveTitle
         positiveButton.tap = { [weak self] in
             self?.dismiss(animated: true) {

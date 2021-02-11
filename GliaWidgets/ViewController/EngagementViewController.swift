@@ -30,10 +30,6 @@ class EngagementViewController: ViewController, AlertPresenter {
 
         viewModel.engagementAction = { action in
             switch action {
-            case .showEndButton:
-                let rightItem = ActionButton(with: self.viewFactory.theme.chat.endButton)
-                rightItem.tap = { viewModel.event(.closeTapped) }
-                view.header.setRightItem(rightItem, animated: true)
             case .confirm(let conf, confirmed: let confirmed):
                 self.presentConfirmation(with: conf) { confirmed?() }
             case .showAlert(let conf, dismissed: let dismissed):

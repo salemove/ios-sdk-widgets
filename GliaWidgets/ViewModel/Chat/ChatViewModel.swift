@@ -12,6 +12,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
 
     enum Action {
         case queue
+        case showEndButton
         case connected(name: String?, imageUrl: String?)
         case setMessageEntryEnabled(Bool)
         case appendRows(Int, to: Int, animated: Bool)
@@ -106,6 +107,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             storage.setOperator(name: name ?? "", pictureUrl: pictureUrl)
             action?(.connected(name: name, imageUrl: pictureUrl))
             action?(.setMessageEntryEnabled(true))
+            action?(.showEndButton)
             loadHistory()
         default:
             break

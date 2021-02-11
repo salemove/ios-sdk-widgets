@@ -8,8 +8,9 @@ class BubbleWindow: UIWindow {
     var tap: (() -> Void)?
 
     private let bubbleView: BubbleView
-    private let kSize = CGSize(width: 60, height: 60)
-    private let kEdgeInset: CGFloat = 10
+    private let kSize = CGSize(width: 80, height: 80)
+    private let kBubbleInset: CGFloat = 10
+    private let kEdgeInset: CGFloat = 0
     private var initialFrame: CGRect {
         let bounds = UIApplication.shared.windows.first?.frame ?? UIScreen.main.bounds
         let safeAreaInsets = UIApplication.shared.windows.first?.safeAreaInsets ?? .zero
@@ -31,7 +32,8 @@ class BubbleWindow: UIWindow {
 
     private func setup() {
         windowLevel = .statusBar
-        rootViewController = BubbleViewController(bubbleView: bubbleView)
+        rootViewController = BubbleViewController(bubbleView: bubbleView,
+                                                  edgeInset: kBubbleInset)
 
         bubbleView.tap = { [weak self] in self?.tap?() }
         bubbleView.pan = { [weak self] in self?.pan($0) }
@@ -62,9 +64,11 @@ class BubbleWindow: UIWindow {
 
 private class BubbleViewController: UIViewController {
     private let bubbleView: BubbleView
+    private let edgeInset: CGFloat
 
-    init(bubbleView: BubbleView) {
+    init(bubbleView: BubbleView, edgeInset: CGFloat) {
         self.bubbleView = bubbleView
+        self.edgeInset = edgeInset
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -72,8 +76,11 @@ private class BubbleViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    public override func loadView() {
-        super.loadView()
-        self.view = bubbleView
+    public override func viewDidLoad() {
+        super.viewDidLoad()
+
+        view.addSubview(bubbleView)
+        bubbleView.autoPinEdgesToSuperviewEdges(
+            with: UIEdgeInsets(top: edgeInset, left: edgeInset, bottom: edgeInset, right: edgeInset))
     }
 }
