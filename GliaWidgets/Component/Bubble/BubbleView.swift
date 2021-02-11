@@ -40,11 +40,10 @@ class BubbleView: UIView {
 
     private func setup() {
         clipsToBounds = false
-
         layer.masksToBounds = false
         layer.shadowColor = UIColor.black.cgColor
         layer.shadowOffset = CGSize(width: 2.0, height: 5.0)
-        layer.shadowRadius = 5.0
+        layer.shadowRadius = 3.0
         layer.shadowOpacity = 0.4
 
         let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapped))
