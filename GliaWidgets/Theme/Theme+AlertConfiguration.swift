@@ -6,13 +6,15 @@ extension Theme {
             title: Alert.LeaveQueue.title,
             message: Alert.LeaveQueue.message,
             negativeTitle: Alert.Action.no,
-            positiveTitle: Alert.Action.yes
+            positiveTitle: Alert.Action.yes,
+            switchButtonBackgroundColors: true
         )
         let endEngagement = ConfirmationAlertConfiguration(
             title: Alert.EndEngagement.title,
             message: Alert.EndEngagement.message,
             negativeTitle: Alert.Action.no,
-            positiveTitle: Alert.Action.yes
+            positiveTitle: Alert.Action.yes,
+            switchButtonBackgroundColors: true
         )
         let operatorsUnavailable = MessageAlertConfiguration(
             title: Alert.OperatorsUnavailable.title,

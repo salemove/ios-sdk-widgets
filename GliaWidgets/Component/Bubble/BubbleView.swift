@@ -40,10 +40,9 @@ class BubbleView: UIView {
 
     private func setup() {
         clipsToBounds = false
-
         layer.masksToBounds = false
         layer.shadowColor = UIColor.black.cgColor
-        layer.shadowOffset = CGSize(width: 2.0, height: 5.0)
+        layer.shadowOffset = CGSize(width: 2.0, height: 3.0)
         layer.shadowRadius = 5.0
         layer.shadowOpacity = 0.4
 
