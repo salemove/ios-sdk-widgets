@@ -38,6 +38,11 @@ public class ChatMessageEntryView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    public override func layoutSubviews() {
+        super.layoutSubviews()
+        updateTextFieldHeight()
+    }
+
     func setSendButtonVisible(_ visible: Bool, animated: Bool) {
         UIView.animate(withDuration: animated ? 0.3 : 0.0) {
             self.sendButton.isHidden = !visible
@@ -83,10 +88,8 @@ public class ChatMessageEntryView: UIView {
 
     private func layout() {
         messageContainerView.addSubview(textView)
-        NSLayoutConstraint.autoSetPriority(.defaultHigh) {
-            textViewHeightConstraint = textView.autoSetDimension(.height,
-                                                                 toSize: kMinTextViewHeight)
-        }
+        textViewHeightConstraint = textView.autoSetDimension(.height,
+                                                             toSize: kMinTextViewHeight)
 
         textView.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
         textView.autoPinEdge(toSuperviewEdge: .top, withInset: 13)
@@ -103,10 +106,8 @@ public class ChatMessageEntryView: UIView {
                                                           excludingEdge: .right)
 
         addSubview(buttonsStackView)
-        NSLayoutConstraint.autoSetPriority(.defaultHigh) {
-            buttonsStackView.autoPinEdge(.left, to: .right, of: messageContainerView, withOffset: 16)
-            buttonsStackView.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
-        }
+        buttonsStackView.autoPinEdge(.left, to: .right, of: messageContainerView, withOffset: 16)
+        buttonsStackView.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
         buttonsStackView.autoPinEdge(toSuperviewEdge: .top)
         buttonsStackView.autoPinEdge(toSuperviewEdge: .bottom)
         buttonsStackView.autoAlignAxis(toSuperviewAxis: .horizontal)

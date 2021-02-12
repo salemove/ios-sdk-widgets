@@ -47,16 +47,12 @@ class Button: UIButton {
         properties.shadowOpacity.map { layer.shadowOpacity = $0 }
         properties.shadowRadius.map { layer.shadowRadius = $0 }
         properties.width.map {
-            let width = $0
-            NSLayoutConstraint.autoSetPriority(.defaultHigh) {
-                autoSetDimension(.width, toSize: width)
-            }
+            let height = $0
+            autoSetDimension(.width, toSize: height)
         }
         properties.height.map {
             let height = $0
-            NSLayoutConstraint.autoSetPriority(.defaultHigh) {
-                autoSetDimension(.height, toSize: height)
-            }
+            autoSetDimension(.height, toSize: height)
         }
 
         setImage(properties.image, for: .normal)
