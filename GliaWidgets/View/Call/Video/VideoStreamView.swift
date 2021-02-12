@@ -7,17 +7,19 @@ class VideoStreamView: View {
         case remote
     }
 
-    private var streamView: StreamView? {
+    var streamView: StreamView? {
         get { return subviews.first as? StreamView }
         set {
             streamView?.removeFromSuperview()
 
             if let streamView = newValue {
+                streamView.scale = .aspectFill
                 addSubview(streamView)
                 streamView.autoPinEdgesToSuperviewEdges()
             }
         }
     }
+
     private let kind: Kind
 
     init(_ kind: Kind) {
@@ -29,10 +31,7 @@ class VideoStreamView: View {
 
     private func setup() {
         clipsToBounds = true
-
-        if kind == .local {
-            layer.cornerRadius = 6
-        }
+        layer.cornerRadius = kind == .local ? 6.0 : 0.0
     }
 
     private func layout() {}

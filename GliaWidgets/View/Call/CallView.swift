@@ -8,6 +8,9 @@ class CallView: EngagementView {
     var chatTapped: (() -> Void)?
 
     private let style: CallStyle
+    private var remoteVideoViewHeightMultiplier: NSLayoutConstraint!
+    private let kRemoteVideoViewPortraitHeightMultiplier: CGFloat = 0.3
+    private let kRemoteVideoViewlandscapeHeightMultiplier: CGFloat = 1.0
 
     init(with style: CallStyle) {
         self.style = style
@@ -48,6 +51,14 @@ class CallView: EngagementView {
         connectView.autoPinEdge(.top, to: .bottom, of: header)
         connectView.autoAlignAxis(toSuperviewAxis: .vertical)
 
+        insertSubview(remoteVideoView, belowSubview: header)
+        remoteVideoView.autoCenterInSuperview()
+        remoteVideoView.autoMatch(.width, to: .width, of: self)
+        remoteVideoViewHeightMultiplier = remoteVideoView.autoMatch(.height,
+                                                                    to: .height,
+                                                                    of: self,
+                                                                    withMultiplier: kRemoteVideoViewPortraitHeightMultiplier)
+
         addSubview(buttonBar)
         buttonBar.autoPinEdgesToSuperviewSafeArea(with: UIEdgeInsets(top: 0, left: 0, bottom: 20, right: 0),
                                                   excludingEdge: .top)
@@ -61,6 +72,9 @@ class CallView: EngagementView {
     private func adjustForOrientation() {
         let isLandscape = [.landscapeLeft, .landscapeRight]
             .contains(UIApplication.shared.statusBarOrientation)
+        remoteVideoViewHeightMultiplier.constant = isLandscape
+            ? kRemoteVideoViewlandscapeHeightMultiplier
+            : kRemoteVideoViewPortraitHeightMultiplier
         infoLabel.isHidden = isLandscape
     }
 

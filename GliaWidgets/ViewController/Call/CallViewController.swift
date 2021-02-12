@@ -39,6 +39,8 @@ class CallViewController: EngagementViewController, MediaUpgradePresenter {
             case .connected(name: let name, imageUrl: let imageUrl):
                 view.setConnectState(.connected(name: name, imageUrl: imageUrl), animated: true)
                 view.connectView.operatorView.setSize(.large, animated: true)
+            case .hideConnectView:
+                view.setConnectState(.none, animated: true)
             case .showEndButton:
                 let rightItem = ActionButton(with: self.viewFactory.theme.chat.endButton)
                 rightItem.tap = { viewModel.event(.closeTapped) }
@@ -61,6 +63,8 @@ class CallViewController: EngagementViewController, MediaUpgradePresenter {
                 view.buttonBar.setButton(button, state: state)
             case .offerMediaUpgrade(let conf, accepted: let accepted, declined: let declined):
                 self.offerMediaUpgrade(with: conf, accepted: accepted, declined: declined)
+            case .showRemoteVideo(let streamView):
+                view.remoteVideoView.streamView = streamView
             }
         }
     }

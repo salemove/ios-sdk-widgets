@@ -26,6 +26,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
         case queue
         case connecting(name: String?, imageUrl: String?)
         case connected(name: String?, imageUrl: String?)
+        case hideConnectView
         case showEndButton
         case setCallDurationText(String)
         case setTitle(String)
@@ -36,6 +37,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
         case offerMediaUpgrade(SingleMediaUpgradeAlertConfiguration,
                                accepted: () -> Void,
                                declined: () -> Void)
+        case showRemoteVideo(StreamView?)
     }
 
     enum DelegateEvent {
@@ -210,6 +212,31 @@ class CallViewModel: EngagementViewModel, ViewModel {
                                    declined: { answer(false, nil) }))
     }
 
+    private func callStarted() {
+        action?(.showEndButton)
+        action?(.setInfoText(nil))
+
+        durationCounter.start { duration in
+            self.call.duration.value = duration
+        }
+
+        switch call.kind.value {
+        case .audio:
+            action?(.connected(name: interactor.engagedOperator?.firstName,
+                               imageUrl: interactor.engagedOperator?.picture?.url))
+        case .video:
+            action?(.hideConnectView)
+            if let remoteStream = call.video.stream.value.remoteStream {
+                action?(.showRemoteVideo(remoteStream.getStreamView()))
+                remoteStream.playVideo()
+            }
+        }
+    }
+
+    private func callEnded() {
+        durationCounter.stop()
+    }
+
     override func interactorEvent(_ event: InteractorEvent) {
         super.interactorEvent(event)
 
@@ -236,17 +263,9 @@ extension CallViewModel {
         case .none:
             break
         case .started:
-            action?(.showEndButton)
-            durationCounter.start { duration in
-                self.call.duration.value = duration
-            }
-            // TODO audio vs video call
-            // on video keep showing Connecting...? also don't start counter yet?
-            action?(.connected(name: interactor.engagedOperator?.firstName,
-                               imageUrl: interactor.engagedOperator?.picture?.url))
-            action?(.setInfoText(nil))
+            callStarted()
         case .ended:
-            durationCounter.stop()
+            callEnded()
         }
         updateButtons()
     }
@@ -255,15 +274,12 @@ extension CallViewModel {
         update(for: kind)
     }
 
-    private func onAudioChanged(_ audio: MediaStream<AudioStreamable>) {
+    private func onAudioChanged(_ stream: MediaStream<AudioStreamable>) {
         updateButtons()
     }
 
-    private func onVideoChanged(_ video: MediaStream<VideoStreamable>) {
+    private func onVideoChanged(_ stream: MediaStream<VideoStreamable>) {
         updateButtons()
-
-        // if has remote stream then hide connecting, show remote video view
-        // if has local stream then show
     }
 
     private func onDurationChanged(_ duration: Int) {
