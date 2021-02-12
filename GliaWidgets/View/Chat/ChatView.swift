@@ -118,7 +118,7 @@ class ChatView: EngagementView {
                                             excludingEdge: .bottom)
 
         addSubview(tableView)
-        tableView.autoPinEdge(.top, to: .bottom, of: header, withOffset: 10)
+        tableView.autoPinEdge(.top, to: .bottom, of: header)
         tableView.autoPinEdge(toSuperviewSafeArea: .left)
         tableView.autoPinEdge(toSuperviewSafeArea: .right)
 
@@ -158,7 +158,7 @@ class ChatView: EngagementView {
         }
     }
 
-    private func updateTableView(animated: Bool) {
+    func updateTableView(animated: Bool) {
         if animated {
             tableView.beginUpdates()
             tableView.endUpdates()
@@ -222,13 +222,13 @@ extension ChatView {
 extension ChatView {
     private func observeKeyboard() {
         keyboardObserver.keyboardWillShow = { [unowned self] properties in
-            let y = self.tableView.contentSize.height - properties.finalFrame.height
+            let bottomInset = safeAreaInsets.bottom
+            let y = self.tableView.contentSize.height - properties.finalFrame.height + bottomInset
             let offset = CGPoint(x: 0, y: y)
             UIView.animate(withDuration: properties.duration,
                            delay: 0.0,
                            options: properties.animationOptions,
                            animations: { [weak self] in
-                let bottomInset = UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0.0
                 self?.messageEntryViewBottomConstraint.constant = -properties.finalFrame.height + bottomInset
                 self?.tableView.contentOffset = offset
                 self?.layoutIfNeeded()

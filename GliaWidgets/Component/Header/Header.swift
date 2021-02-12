@@ -29,8 +29,9 @@ class Header: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    deinit {
-        NotificationCenter.default.removeObserver(self)
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        updateHeight()
     }
 
     public func setLeftItem(_ item: UIView?, animated: Bool) {
@@ -71,25 +72,14 @@ class Header: UIView {
         titleLabel.font = style.titleFont
         titleLabel.textColor = style.titleColor
         titleLabel.textAlignment = .center
-
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(orientationChanged),
-                                               name: UIDevice.orientationDidChangeNotification,
-                                               object: nil)
     }
 
     private func layout() {
-        NSLayoutConstraint.autoSetPriority(.defaultHigh) {
-            heightLayoutConstraint = autoSetDimension(.height, toSize: kHeight)
-        }
-
-        updateHeight()
+        heightLayoutConstraint = autoSetDimension(.height, toSize: kHeight)
 
         addSubview(contentView)
         contentView.autoPinEdgesToSuperviewEdges(with: kContentInsets, excludingEdge: .top)
-        NSLayoutConstraint.autoSetPriority(.defaultHigh) {
-            contentView.autoSetDimension(.height, toSize: kContentHeight)
-        }
+        contentView.autoSetDimension(.height, toSize: kContentHeight)
 
         contentView.addSubview(titleLabel)
         titleLabel.autoPinEdge(toSuperviewEdge: .left)
@@ -103,22 +93,11 @@ class Header: UIView {
         contentView.addSubview(rightItemContainer)
         rightItemContainer.autoPinEdge(toSuperviewEdge: .right)
         rightItemContainer.autoAlignAxis(toSuperviewAxis: .horizontal)
+
+        updateHeight()
     }
 
     private func updateHeight() {
-        let isPortrait = [.portrait, .portraitUpsideDown].contains(UIApplication.shared.statusBarOrientation)
-        var height: CGFloat = kHeight
-
-        if isPortrait {
-            if let safeAreaTopInsets = UIApplication.shared.keyWindow?.safeAreaInsets.top {
-                height += safeAreaTopInsets
-            }
-        }
-
-        heightLayoutConstraint?.constant = height
-    }
-
-    @objc private func orientationChanged() {
-        updateHeight()
+        heightLayoutConstraint?.constant = kHeight + safeAreaInsets.top
     }
 }

@@ -32,6 +32,7 @@ class BubbleWindow: UIWindow {
 
     private func setup() {
         windowLevel = .statusBar
+        clipsToBounds = true
         rootViewController = BubbleViewController(bubbleView: bubbleView,
                                                   edgeInset: kBubbleInset)
 
