@@ -27,11 +27,9 @@ class VisitorChatMessageView: ChatMessageView {
 
     private func layout() {
         addSubview(contentViews)
-        NSLayoutConstraint.autoSetPriority(.defaultHigh) {
-            contentViews.autoPinEdge(toSuperviewEdge: .top, withInset: kInsets.top)
-            contentViews.autoPinEdge(toSuperviewEdge: .right, withInset: kInsets.right)
-            contentViews.autoPinEdge(toSuperviewEdge: .left, withInset: kInsets.left, relation: .greaterThanOrEqual)
-        }
+        contentViews.autoPinEdge(toSuperviewEdge: .top, withInset: kInsets.top)
+        contentViews.autoPinEdge(toSuperviewEdge: .right, withInset: kInsets.right)
+        contentViews.autoPinEdge(toSuperviewEdge: .left, withInset: kInsets.left, relation: .greaterThanOrEqual)
 
         addSubview(statusLabel)
         statusLabel.autoPinEdge(.top, to: .bottom, of: contentViews, withOffset: 2)

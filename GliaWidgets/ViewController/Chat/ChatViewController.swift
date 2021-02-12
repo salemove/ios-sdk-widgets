@@ -36,7 +36,8 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter {
     override func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
         guard let view = view as? ChatView else { return }
         guard let indexPath = lastVisibleRowIndexPath else { return }
-        view.tableView.scrollToRow(at: indexPath, at: .bottom, animated: false)
+        view.tableView.reloadData()
+        view.tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
     }
 
     private func bind(viewModel: ChatViewModel, to view: ChatView) {
