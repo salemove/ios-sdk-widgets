@@ -73,7 +73,7 @@ class Call {
         self.kind.value = kind
     }
 
-    func update(with offer: MediaUpgradeOffer) {
+    func upgrade(to offer: MediaUpgradeOffer) {
         setKind(for: offer.type)
         setNeededDirection(offer.direction, for: offer.type)
     }

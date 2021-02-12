@@ -10,8 +10,8 @@ class VideoStreamView: View {
     var streamView: StreamView? {
         get { return subviews.first as? StreamView }
         set {
+            guard newValue != streamView else { return }
             streamView?.removeFromSuperview()
-
             if let streamView = newValue {
                 streamView.scale = .aspectFill
                 addSubview(streamView)

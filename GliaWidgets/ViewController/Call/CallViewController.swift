@@ -63,8 +63,10 @@ class CallViewController: EngagementViewController, MediaUpgradePresenter {
                 view.buttonBar.setButton(button, state: state)
             case .offerMediaUpgrade(let conf, accepted: let accepted, declined: let declined):
                 self.offerMediaUpgrade(with: conf, accepted: accepted, declined: declined)
-            case .showRemoteVideo(let streamView):
+            case .setRemoteVideo(let streamView):
                 view.remoteVideoView.streamView = streamView
+            case .setLocalVideo(let streamView):
+                view.localVideoView.streamView = streamView
             }
         }
     }

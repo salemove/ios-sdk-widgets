@@ -43,6 +43,19 @@ class CallView: EngagementView {
         addSubview(effectView)
         effectView.autoPinEdgesToSuperviewEdges()
 
+        addSubview(remoteVideoView)
+        remoteVideoView.autoCenterInSuperview()
+        remoteVideoView.autoMatch(.width, to: .width, of: self)
+        remoteVideoViewHeightMultiplier = remoteVideoView.autoMatch(.height,
+                                                                    to: .height,
+                                                                    of: self,
+                                                                    withMultiplier: kRemoteVideoViewPortraitHeightMultiplier)
+
+        addSubview(localVideoView)
+        localVideoView.autoSetDimensions(to: CGSize(width: 100, height: 180))
+        localVideoView.autoPinEdge(toSuperviewEdge: .right, withInset: 10)
+        localVideoView.autoPinEdge(toSuperviewEdge: .top, withInset: 60)
+
         addSubview(header)
         header.autoPinEdgesToSuperviewEdges(with: .zero,
                                             excludingEdge: .bottom)
@@ -50,14 +63,6 @@ class CallView: EngagementView {
         addSubview(connectView)
         connectView.autoPinEdge(.top, to: .bottom, of: header)
         connectView.autoAlignAxis(toSuperviewAxis: .vertical)
-
-        insertSubview(remoteVideoView, belowSubview: header)
-        remoteVideoView.autoCenterInSuperview()
-        remoteVideoView.autoMatch(.width, to: .width, of: self)
-        remoteVideoViewHeightMultiplier = remoteVideoView.autoMatch(.height,
-                                                                    to: .height,
-                                                                    of: self,
-                                                                    withMultiplier: kRemoteVideoViewPortraitHeightMultiplier)
 
         addSubview(buttonBar)
         buttonBar.autoPinEdgesToSuperviewSafeArea(with: UIEdgeInsets(top: 0, left: 0, bottom: 20, right: 0),

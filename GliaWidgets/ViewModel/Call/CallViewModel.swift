@@ -37,7 +37,8 @@ class CallViewModel: EngagementViewModel, ViewModel {
         case offerMediaUpgrade(SingleMediaUpgradeAlertConfiguration,
                                accepted: () -> Void,
                                declined: () -> Void)
-        case showRemoteVideo(StreamView?)
+        case setRemoteVideo(StreamView?)
+        case setLocalVideo(StreamView?)
     }
 
     enum DelegateEvent {
@@ -100,7 +101,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
         case .startEngagement:
             enqueue()
         case .startCall(offer: let offer, answer: let answer):
-            call.update(with: offer)
+            call.upgrade(to: offer)
             action?(.connecting(name: interactor.engagedOperator?.firstName,
                                 imageUrl: interactor.engagedOperator?.picture?.url))
             answer(true, nil)
@@ -204,12 +205,48 @@ class CallViewModel: EngagementViewModel, ViewModel {
         guard isViewActive else { return }
         let operatorName = interactor.engagedOperator?.firstName
         let onAccepted = {
-            self.call.update(with: offer)
+            self.call.upgrade(to: offer)
             answer(true, nil)
         }
         action?(.offerMediaUpgrade(configuration.withOperatorName(operatorName),
                                    accepted: { onAccepted() },
                                    declined: { answer(false, nil) }))
+    }
+
+    private func showRemoteVideo(with stream: VideoStreamable) {
+        action?(.hideConnectView)
+        action?(.setRemoteVideo(stream.getStreamView()))
+        stream.playVideo()
+    }
+
+    private func showLocalVideo(with stream: VideoStreamable) {
+        action?(.hideConnectView)
+        action?(.setLocalVideo(stream.getStreamView()))
+        stream.playVideo()
+    }
+
+    private func hideRemoteVideo() {
+        action?(.setRemoteVideo(nil))
+    }
+
+    private func hideLocalVideo() {
+        action?(.setLocalVideo(nil))
+    }
+
+    private func updateRemoteVideoVisible() {
+        if let remoteStream = call.video.stream.value.remoteStream {
+            showRemoteVideo(with: remoteStream)
+        } else {
+            hideRemoteVideo()
+        }
+    }
+
+    private func updateLocalVideoVisible() {
+        if let localStream = call.video.stream.value.localStream, !localStream.isPaused {
+            showLocalVideo(with: localStream)
+        } else {
+            hideLocalVideo()
+        }
     }
 
     private func callStarted() {
@@ -225,11 +262,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
             action?(.connected(name: interactor.engagedOperator?.firstName,
                                imageUrl: interactor.engagedOperator?.picture?.url))
         case .video:
-            action?(.hideConnectView)
-            if let remoteStream = call.video.stream.value.remoteStream {
-                action?(.showRemoteVideo(remoteStream.getStreamView()))
-                remoteStream.playVideo()
-            }
+            break
         }
     }
 
@@ -280,6 +313,8 @@ extension CallViewModel {
 
     private func onVideoChanged(_ stream: MediaStream<VideoStreamable>) {
         updateButtons()
+        updateRemoteVideoVisible()
+        updateLocalVideoVisible()
     }
 
     private func onDurationChanged(_ duration: Int) {
@@ -373,6 +408,7 @@ extension CallViewModel {
             }
         }
         updateVideoButton()
+        updateLocalVideoVisible()
     }
 
     private func toggleMute() {
