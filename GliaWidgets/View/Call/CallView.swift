@@ -18,7 +18,9 @@ class CallView: EngagementView {
     private var mode: Mode = .audio
     private let topView = UIView()
     private let topStackView = UIStackView()
+    private var localVideoViewHeightConstraint: NSLayoutConstraint!
     private var remoteVideoViewHeightMultiplier: NSLayoutConstraint!
+    private let kLocalVideoViewDefaultHeight: CGFloat = 186
     private let kRemoteVideoViewPortraitHeightMultiplier: CGFloat = 0.3
     private let kRemoteVideoViewLandscapeHeightMultiplier: CGFloat = 1.0
 
@@ -28,6 +30,11 @@ class CallView: EngagementView {
         super.init(with: style)
         setup()
         layout()
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        adjustLocalVideoView()
     }
 
     func switchTo(_ mode: Mode, animated: Bool) {
@@ -100,9 +107,10 @@ class CallView: EngagementView {
                                                                     withMultiplier: kRemoteVideoViewPortraitHeightMultiplier)
 
         addSubview(localVideoView)
-        localVideoView.autoSetDimensions(to: CGSize(width: 100, height: 180))
-        localVideoView.autoPinEdge(toSuperviewEdge: .right, withInset: 10)
-        localVideoView.autoPinEdge(toSuperviewEdge: .top, withInset: 60)
+        localVideoViewHeightConstraint = localVideoView.autoSetDimension(.height,
+                                                                         toSize: kLocalVideoViewDefaultHeight)
+        localVideoView.autoPinEdge(toSuperviewSafeArea: .right, withInset: 10)
+        localVideoView.autoMatch(.width, to: .height, of: localVideoView, withMultiplier: 0.6)
 
         addSubview(header)
         header.autoPinEdgesToSuperviewEdges(with: .zero,
@@ -125,7 +133,18 @@ class CallView: EngagementView {
         infoLabel.autoMatch(.width, to: .width, of: self, withMultiplier: 0.6)
         infoLabel.autoAlignAxis(toSuperviewAxis: .vertical)
 
+        adjustLocalVideoView()
         switchTo(mode, animated: false)
+    }
+
+    private func adjustLocalVideoView() {
+        let kTopGap: CGFloat = 10
+        let kBottomGap: CGFloat = 10
+        // TODO: check orientation - set default height for landscape
+        let y = header.frame.maxY + kTopGap
+        let height = remoteVideoView.frame.minY - header.frame.maxY - kTopGap - kBottomGap
+        localVideoView.frame.origin.y = y
+        localVideoViewHeightConstraint.constant = height
     }
 
     @objc private func chatTap() {
