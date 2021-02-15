@@ -1,6 +1,8 @@
 import UIKit
 
 class CallDurationCounter {
+    var isActive: Bool { return timer != nil }
+
     private var onUpdate: ((Int) -> Void)?
     private var timer: Timer?
     private var backgroundedTime: Date?
@@ -32,7 +34,8 @@ class CallDurationCounter {
     }
 
     private func startTimer() {
-        stop()
+        guard !isActive else { return }
+
         duration = 0
         timer = Timer.scheduledTimer(timeInterval: 1.0,
                                      target: self,

@@ -20,6 +20,7 @@ enum CallKind {
 enum CallState {
     case none
     case started
+    case upgrading
     case ended
 }
 
@@ -78,6 +79,7 @@ class Call {
     func upgrade(to offer: MediaUpgradeOffer) {
         setKind(for: offer.type)
         setNeededDirection(offer.direction, for: offer.type)
+        state.value = .upgrading
     }
 
     func updateAudioStream(with stream: AudioStreamable) {
@@ -186,7 +188,7 @@ class Call {
     }
 
     private func updateStarted() {
-        guard state.value == .none else { return }
+        guard [.none, .upgrading].contains(state.value) else { return }
 
         switch kind.value {
         case .audio:

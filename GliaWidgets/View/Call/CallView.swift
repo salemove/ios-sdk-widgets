@@ -4,11 +4,13 @@ class CallView: EngagementView {
     enum Mode {
         case audio
         case video
+        case upgrading
     }
 
     let operatorNameLabel = UILabel()
     let durationLabel = UILabel()
-    let infoLabel = UILabel()
+    let topLabel = UILabel()
+    let bottomLabel = UILabel()
     let buttonBar: CallButtonBar
     let localVideoView = VideoStreamView(.local)
     let remoteVideoView = VideoStreamView(.remote)
@@ -51,6 +53,11 @@ class CallView: EngagementView {
             topStackView.isHidden = false
             remoteVideoView.isHidden = false
             localVideoView.isHidden = false
+        case .upgrading:
+            connectView.isHidden = false
+            topStackView.isHidden = true
+            remoteVideoView.isHidden = false
+            localVideoView.isHidden = false
         }
     }
 
@@ -68,7 +75,7 @@ class CallView: EngagementView {
 
         UIView.animate(withDuration: animated ? duration : 0.0) {
             self.topStackView.alpha = isLandscape ? 0.0 : 1.0
-            self.infoLabel.alpha = isLandscape ? 0.0 : 1.0
+            self.bottomLabel.alpha = isLandscape ? 0.0 : 1.0
         }
     }
 
@@ -85,11 +92,17 @@ class CallView: EngagementView {
         durationLabel.textColor = style.durationColor
         durationLabel.textAlignment = .center
 
-        infoLabel.text = style.infoText
-        infoLabel.font = style.infoTextFont
-        infoLabel.textColor = style.infoTextColor
-        infoLabel.numberOfLines = 0
-        infoLabel.textAlignment = .center
+        topLabel.text = style.topText
+        topLabel.font = style.topTextFont
+        topLabel.textColor = style.topTextColor
+        topLabel.numberOfLines = 0
+        topLabel.textAlignment = .center
+
+        bottomLabel.text = style.bottomText
+        bottomLabel.font = style.bottomTextFont
+        bottomLabel.textColor = style.bottomTextColor
+        bottomLabel.numberOfLines = 0
+        bottomLabel.textAlignment = .center
     }
 
     private func layout() {
@@ -116,6 +129,11 @@ class CallView: EngagementView {
         header.autoPinEdgesToSuperviewEdges(with: .zero,
                                             excludingEdge: .bottom)
 
+        addSubview(topLabel)
+        topLabel.autoPinEdge(.top, to: .bottom, of: header)
+        topLabel.autoPinEdge(toSuperviewSafeArea: .left, withInset: 20)
+        topLabel.autoPinEdge(toSuperviewSafeArea: .right, withInset: 20)
+
         addSubview(connectView)
         connectView.autoPinEdge(.top, to: .bottom, of: header)
         connectView.autoAlignAxis(toSuperviewAxis: .vertical)
@@ -128,10 +146,10 @@ class CallView: EngagementView {
         buttonBar.autoPinEdgesToSuperviewSafeArea(with: UIEdgeInsets(top: 0, left: 0, bottom: 20, right: 0),
                                                   excludingEdge: .top)
 
-        addSubview(infoLabel)
-        infoLabel.autoPinEdge(.bottom, to: .top, of: buttonBar, withOffset: -38)
-        infoLabel.autoMatch(.width, to: .width, of: self, withMultiplier: 0.6)
-        infoLabel.autoAlignAxis(toSuperviewAxis: .vertical)
+        addSubview(bottomLabel)
+        bottomLabel.autoPinEdge(.bottom, to: .top, of: buttonBar, withOffset: -38)
+        bottomLabel.autoMatch(.width, to: .width, of: self, withMultiplier: 0.6)
+        bottomLabel.autoAlignAxis(toSuperviewAxis: .vertical)
 
         adjustLocalVideoView()
         switchTo(mode, animated: false)

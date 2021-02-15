@@ -71,9 +71,12 @@ extension Theme {
             operatorNameColor: color.baseLight,
             durationFont: font.bodyText,
             durationColor: color.baseLight,
-            infoText: Call.info,
-            infoTextFont: font.bodyText,
-            infoTextColor: color.baseLight,
+            topText: Call.topText,
+            topTextFont: font.subtitle,
+            topTextColor: color.baseLight,
+            bottomText: Call.bottomText,
+            bottomTextFont: font.bodyText,
+            bottomTextColor: color.baseLight,
             buttonBar: buttonBarStyle
         )
     }

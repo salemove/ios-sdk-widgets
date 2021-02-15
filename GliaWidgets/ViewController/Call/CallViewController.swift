@@ -41,13 +41,18 @@ class CallViewController: EngagementViewController, MediaUpgradePresenter {
                 view.setConnectState(.queue, animated: false)
             case .connecting(name: let name, imageUrl: let imageUrl):
                 view.setConnectState(.connecting(name: name, imageUrl: imageUrl), animated: true)
+                view.connectView.operatorView.setSize(.normal, animated: true)
             case .connected(name: let name, imageUrl: let imageUrl):
                 view.setConnectState(.connected(name: name, imageUrl: imageUrl), animated: true)
                 view.connectView.operatorView.setSize(.large, animated: true)
-            case .setInfoLabelsHidden(let hidden):
-                view.infoLabel.isHidden = hidden
+            case .setTopTextHidden(let hidden):
+                view.topLabel.isHidden = hidden
+            case .setBottomTextHidden(let hidden):
+                view.bottomLabel.isHidden = hidden
             case .switchToVideoMode:
                 view.switchTo(.video, animated: true)
+            case .switchToUpgradeMode:
+                view.switchTo(.upgrading, animated: true)
             case .showEndButton:
                 let rightItem = ActionButton(with: self.viewFactory.theme.chat.endButton)
                 rightItem.tap = { viewModel.event(.closeTapped) }

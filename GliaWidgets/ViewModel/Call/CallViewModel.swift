@@ -26,9 +26,11 @@ class CallViewModel: EngagementViewModel, ViewModel {
         case connecting(name: String?, imageUrl: String?)
         case connected(name: String?, imageUrl: String?)
         case setOperatorName(String?)
-        case setInfoLabelsHidden(Bool)
+        case setTopTextHidden(Bool)
+        case setBottomTextHidden(Bool)
         case showEndButton
         case switchToVideoMode
+        case switchToUpgradeMode
         case setCallDurationText(String)
         case setTitle(String)
         case showButtons([Button])
@@ -101,8 +103,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
             enqueue()
         case .startCall(offer: let offer, answer: let answer):
             call.upgrade(to: offer)
-            action?(.connecting(name: interactor.engagedOperator?.firstName,
-                                imageUrl: interactor.engagedOperator?.picture?.url))
+            showConnecting()
             answer(true, nil)
         }
     }
@@ -130,16 +131,41 @@ class CallViewModel: EngagementViewModel, ViewModel {
         switch callKind {
         case .audio:
             action?(.setTitle(Strings.Audio.title))
+            action?(.setTopTextHidden(true))
         case .video:
             action?(.setTitle(Strings.Video.title))
         }
         updateButtons()
     }
 
+    private func showConnecting() {
+        action?(.connecting(name: interactor.engagedOperator?.firstName,
+                            imageUrl: interactor.engagedOperator?.picture?.url))
+
+        switch call.kind.value {
+        case .audio:
+            action?(.setTopTextHidden(true))
+        case .video:
+            action?(.setTopTextHidden(false))
+        }
+    }
+
+    private func showConnected() {
+        action?(.showEndButton)
+        action?(.setTopTextHidden(true))
+        action?(.setBottomTextHidden(true))
+
+        switch call.kind.value {
+        case .audio:
+            action?(.connected(name: interactor.engagedOperator?.firstName,
+                               imageUrl: interactor.engagedOperator?.picture?.url))
+        case .video:
+            break
+        }
+    }
+
     private func requestMedia() {
-        let name = interactor.engagedOperator?.firstName
-        let imageUrl = interactor.engagedOperator?.picture?.url
-        action?(.connecting(name: name, imageUrl: imageUrl))
+        showConnecting()
 
         let mediaType: MediaType = {
             switch call.kind.value {
@@ -214,27 +240,6 @@ class CallViewModel: EngagementViewModel, ViewModel {
                                    declined: { answer(false, nil) }))
     }
 
-    private func callStarted() {
-        action?(.showEndButton)
-        action?(.setInfoLabelsHidden(true))
-
-        durationCounter.start { duration in
-            self.call.duration.value = duration
-        }
-
-        switch call.kind.value {
-        case .audio:
-            action?(.connected(name: interactor.engagedOperator?.firstName,
-                               imageUrl: interactor.engagedOperator?.picture?.url))
-        case .video:
-            break
-        }
-    }
-
-    private func callEnded() {
-        durationCounter.stop()
-    }
-
     override func interactorEvent(_ event: InteractorEvent) {
         super.interactorEvent(event)
 
@@ -299,9 +304,16 @@ extension CallViewModel {
         case .none:
             break
         case .started:
-            callStarted()
+            showConnected()
+            durationCounter.start { duration in
+                guard self.call.state.value == .started else { return }
+                self.call.duration.value = duration
+            }
+        case .upgrading:
+            action?(.switchToUpgradeMode)
+            showConnecting()
         case .ended:
-            callEnded()
+            durationCounter.stop()
         }
         updateButtons()
     }

@@ -102,7 +102,9 @@ public enum L10n {
 
   public enum Call {
     /// You can continue browsing and we’ll connect you automatically.
-    public static let info = L10n.tr("Localizable", "call.info")
+    public static let bottomText = L10n.tr("Localizable", "call.bottomText")
+    /// (By default your video will be off)
+    public static let topText = L10n.tr("Localizable", "call.topText")
     public enum Audio {
       /// AUDIO CALL
       public static let title = L10n.tr("Localizable", "call.audio.title")

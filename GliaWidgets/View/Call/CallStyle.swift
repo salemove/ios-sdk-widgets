@@ -8,9 +8,12 @@ public class CallStyle: EngagementStyle {
     public var operatorNameColor: UIColor
     public var durationFont: UIFont
     public var durationColor: UIColor
-    public var infoText: String
-    public var infoTextFont: UIFont
-    public var infoTextColor: UIColor
+    public var topText: String
+    public var topTextFont: UIFont
+    public var topTextColor: UIColor
+    public var bottomText: String
+    public var bottomTextFont: UIFont
+    public var bottomTextColor: UIColor
     public var buttonBar: CallButtonBarStyle
 
     public init(header: HeaderStyle,
@@ -25,9 +28,12 @@ public class CallStyle: EngagementStyle {
                 operatorNameColor: UIColor,
                 durationFont: UIFont,
                 durationColor: UIColor,
-                infoText: String,
-                infoTextFont: UIFont,
-                infoTextColor: UIColor,
+                topText: String,
+                topTextFont: UIFont,
+                topTextColor: UIColor,
+                bottomText: String,
+                bottomTextFont: UIFont,
+                bottomTextColor: UIColor,
                 buttonBar: CallButtonBarStyle) {
         self.audioTitle = audioTitle
         self.videoTitle = videoTitle
@@ -36,10 +42,12 @@ public class CallStyle: EngagementStyle {
         self.operatorNameColor = operatorNameColor
         self.durationFont = durationFont
         self.durationColor = durationColor
-        self.infoText = infoText
-        self.infoText = infoText
-        self.infoTextFont = infoTextFont
-        self.infoTextColor = infoTextColor
+        self.topText = topText
+        self.topTextFont = topTextFont
+        self.topTextColor = topTextColor
+        self.bottomText = bottomText
+        self.bottomTextFont = bottomTextFont
+        self.bottomTextColor = bottomTextColor
         self.buttonBar = buttonBar
         super.init(header: header,
                    connect: connect,
