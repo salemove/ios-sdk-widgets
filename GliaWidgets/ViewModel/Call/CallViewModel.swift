@@ -1,5 +1,4 @@
 import SalemoveSDK
-import AVFoundation
 
 class CallViewModel: EngagementViewModel, ViewModel {
     private typealias Strings = L10n.Call
@@ -58,7 +57,6 @@ class CallViewModel: EngagementViewModel, ViewModel {
     private let call: Call
     private let startAction: StartAction
     private let durationCounter = CallDurationCounter()
-    private var audioPortOverride = AVAudioSession.PortOverride.none
 
     init(interactor: Interactor,
          alertConfiguration: AlertConfiguration,
@@ -372,7 +370,7 @@ extension CallViewModel {
 
     private func updateSpeakerButton() {
         let enabled = call.audio.stream.value.hasRemoteStream
-        let state: ButtonState = audioPortOverride == .speaker
+        let state: ButtonState = call.audioPortOverride == .speaker
             ? .active
             : .inactive
         action?(.setButtonEnabled(.speaker, enabled: enabled))
@@ -400,47 +398,18 @@ extension CallViewModel {
     }
 
     private func toggleVideo() {
-        call.video.stream.value.localStream.map {
-            if $0.isPaused {
-                $0.resume()
-            } else {
-                $0.pause()
-            }
-        }
+        call.toggleVideo()
         updateVideoButton()
         updateLocalVideoVisible()
     }
 
     private func toggleMute() {
-        call.audio.stream.value.localStream.map {
-            if $0.isMuted {
-                $0.unmute()
-            } else {
-                $0.mute()
-            }
-        }
+        call.toggleMute()
         updateMuteButton()
     }
 
     private func toggleSpeaker() {
-        let newOverride: AVAudioSession.PortOverride = {
-            switch audioPortOverride {
-            case .none:
-                return .speaker
-            case .speaker:
-                return .none
-            @unknown default:
-                return .none
-            }
-        }()
-
-        let session = AVAudioSession.sharedInstance()
-        do {
-            try session.overrideOutputAudioPort(newOverride)
-            audioPortOverride = newOverride
-        } catch {
-            print(error)
-        }
+        call.toggleSpeaker()
         updateSpeakerButton()
     }
 }

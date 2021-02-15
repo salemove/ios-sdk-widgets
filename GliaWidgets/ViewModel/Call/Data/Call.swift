@@ -1,4 +1,5 @@
 import SalemoveSDK
+import AVFoundation
 
 enum CallKind {
     case audio
@@ -68,6 +69,7 @@ class Call {
     let duration = ValueProvider<Int>(with: 0)
     let audio = MediaChannel<AudioStreamable>()
     let video = MediaChannel<VideoStreamable>()
+    private(set) var audioPortOverride = AVAudioSession.PortOverride.none
 
     init(_ kind: CallKind) {
         self.kind.value = kind
@@ -88,6 +90,47 @@ class Call {
         updateMediaStream(video.stream,
                           with: stream,
                           isRemote: stream.isRemote)
+    }
+
+    func toggleVideo() {
+        video.stream.value.localStream.map {
+            if $0.isPaused {
+                $0.resume()
+            } else {
+                $0.pause()
+            }
+        }
+    }
+
+    func toggleMute() {
+        audio.stream.value.localStream.map {
+            if $0.isMuted {
+                $0.unmute()
+            } else {
+                $0.mute()
+            }
+        }
+    }
+
+    func toggleSpeaker() {
+        let newOverride: AVAudioSession.PortOverride = {
+            switch audioPortOverride {
+            case .none:
+                return .speaker
+            case .speaker:
+                return .none
+            @unknown default:
+                return .none
+            }
+        }()
+
+        let session = AVAudioSession.sharedInstance()
+        do {
+            try session.overrideOutputAudioPort(newOverride)
+            audioPortOverride = newOverride
+        } catch {
+            print(error)
+        }
     }
 
     func end() {

@@ -10,7 +10,7 @@ class CallView: EngagementView {
     private let style: CallStyle
     private var remoteVideoViewHeightMultiplier: NSLayoutConstraint!
     private let kRemoteVideoViewPortraitHeightMultiplier: CGFloat = 0.3
-    private let kRemoteVideoViewlandscapeHeightMultiplier: CGFloat = 1.0
+    private let kRemoteVideoViewLandscapeHeightMultiplier: CGFloat = 1.0
 
     init(with style: CallStyle) {
         self.style = style
@@ -78,7 +78,7 @@ class CallView: EngagementView {
         let isLandscape = [.landscapeLeft, .landscapeRight]
             .contains(UIApplication.shared.statusBarOrientation)
         remoteVideoViewHeightMultiplier.constant = isLandscape
-            ? kRemoteVideoViewlandscapeHeightMultiplier
+            ? kRemoteVideoViewLandscapeHeightMultiplier
             : kRemoteVideoViewPortraitHeightMultiplier
         infoLabel.isHidden = isLandscape
     }
