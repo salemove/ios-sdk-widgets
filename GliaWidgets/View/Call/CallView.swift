@@ -30,19 +30,20 @@ class CallView: EngagementView {
         layout()
     }
 
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        adjustForOrientation()
-    }
-
-    func setMode(_ mode: Mode, animated: Bool) {
+    func switchTo(_ mode: Mode, animated: Bool) {
         self.mode = mode
 
         switch mode {
         case .audio:
-            break
+            connectView.isHidden = false
+            topStackView.isHidden = true
+            remoteVideoView.isHidden = true
+            localVideoView.isHidden = true
         case .video:
-            setConnectState(.none, animated: animated)
+            connectView.isHidden = true
+            topStackView.isHidden = false
+            remoteVideoView.isHidden = false
+            localVideoView.isHidden = false
         }
     }
 
@@ -50,14 +51,32 @@ class CallView: EngagementView {
         connectView.setState(state, animated: animated)
     }
 
+    func adjustForOrientation(_ orientation: UIInterfaceOrientation, animated: Bool, duration: TimeInterval) {
+        let isLandscape = [.landscapeLeft, .landscapeRight]
+            .contains(orientation)
+
+        remoteVideoViewHeightMultiplier.constant = isLandscape
+            ? kRemoteVideoViewLandscapeHeightMultiplier
+            : kRemoteVideoViewPortraitHeightMultiplier
+
+        UIView.animate(withDuration: animated ? duration : 0.0) {
+            self.topStackView.alpha = isLandscape ? 0.0 : 1.0
+            self.infoLabel.alpha = isLandscape ? 0.0 : 1.0
+        }
+    }
+
     private func setup() {
         topStackView.axis = .vertical
+        topStackView.spacing = 8
+        topStackView.addArrangedSubviews([operatorNameLabel, durationLabel])
 
         operatorNameLabel.font = style.operatorNameFont
         operatorNameLabel.textColor = style.operatorNameColor
+        operatorNameLabel.textAlignment = .center
 
         durationLabel.font = style.durationFont
         durationLabel.textColor = style.durationColor
+        durationLabel.textAlignment = .center
 
         infoLabel.text = style.infoText
         infoLabel.font = style.infoTextFont
@@ -93,6 +112,10 @@ class CallView: EngagementView {
         connectView.autoPinEdge(.top, to: .bottom, of: header)
         connectView.autoAlignAxis(toSuperviewAxis: .vertical)
 
+        addSubview(topStackView)
+        topStackView.autoPinEdge(.top, to: .bottom, of: header, withOffset: 50)
+        topStackView.autoAlignAxis(toSuperviewAxis: .vertical)
+
         addSubview(buttonBar)
         buttonBar.autoPinEdgesToSuperviewSafeArea(with: UIEdgeInsets(top: 0, left: 0, bottom: 20, right: 0),
                                                   excludingEdge: .top)
@@ -102,16 +125,7 @@ class CallView: EngagementView {
         infoLabel.autoMatch(.width, to: .width, of: self, withMultiplier: 0.6)
         infoLabel.autoAlignAxis(toSuperviewAxis: .vertical)
 
-        setMode(mode, animated: false)
-    }
-
-    private func adjustForOrientation() {
-        let isLandscape = [.landscapeLeft, .landscapeRight]
-            .contains(UIApplication.shared.statusBarOrientation)
-        remoteVideoViewHeightMultiplier.constant = isLandscape
-            ? kRemoteVideoViewLandscapeHeightMultiplier
-            : kRemoteVideoViewPortraitHeightMultiplier
-        infoLabel.isHidden = isLandscape
+        switchTo(mode, animated: false)
     }
 
     @objc private func chatTap() {

@@ -27,6 +27,11 @@ class CallViewController: EngagementViewController, MediaUpgradePresenter {
 
     override var preferredStatusBarStyle: UIStatusBarStyle { return viewFactory.theme.call.preferredStatusBarStyle }
 
+    override func willRotate(to toInterfaceOrientation: UIInterfaceOrientation, duration: TimeInterval) {
+        guard let view = view as? CallView else { return }
+        view.adjustForOrientation(toInterfaceOrientation, animated: true, duration: duration)
+    }
+
     private func bind(viewModel: CallViewModel, to view: CallView) {
         view.buttonBar.buttonTapped = { viewModel.event(.buttonTapped(.init(with: $0))) }
 
@@ -39,8 +44,10 @@ class CallViewController: EngagementViewController, MediaUpgradePresenter {
             case .connected(name: let name, imageUrl: let imageUrl):
                 view.setConnectState(.connected(name: name, imageUrl: imageUrl), animated: true)
                 view.connectView.operatorView.setSize(.large, animated: true)
-            case .hideConnectView:
-                view.setConnectState(.none, animated: true)
+            case .setInfoLabelsHidden(let hidden):
+                view.infoLabel.isHidden = hidden
+            case .switchToVideoMode:
+                view.switchTo(.video, animated: true)
             case .showEndButton:
                 let rightItem = ActionButton(with: self.viewFactory.theme.chat.endButton)
                 rightItem.tap = { viewModel.event(.closeTapped) }
@@ -49,8 +56,6 @@ class CallViewController: EngagementViewController, MediaUpgradePresenter {
                 view.header.title = title
             case .setOperatorName(let name):
                 view.operatorNameLabel.text = name
-            case .setInfoText(let text):
-                view.infoLabel.text = text
             case .setCallDurationText(let text):
                 view.durationLabel.text = text
                 view.connectView.statusView.setSecondText(text, animated: false)

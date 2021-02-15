@@ -26,11 +26,11 @@ class CallViewModel: EngagementViewModel, ViewModel {
         case connecting(name: String?, imageUrl: String?)
         case connected(name: String?, imageUrl: String?)
         case setOperatorName(String?)
-        case hideConnectView
+        case setInfoLabelsHidden(Bool)
         case showEndButton
+        case switchToVideoMode
         case setCallDurationText(String)
         case setTitle(String)
-        case setInfoText(String?)
         case showButtons([Button])
         case setButtonEnabled(Button, enabled: Bool)
         case setButtonState(Button, state: ButtonState)
@@ -216,7 +216,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
 
     private func callStarted() {
         action?(.showEndButton)
-        action?(.setInfoText(nil))
+        action?(.setInfoLabelsHidden(true))
 
         durationCounter.start { duration in
             self.call.duration.value = duration
@@ -257,13 +257,13 @@ class CallViewModel: EngagementViewModel, ViewModel {
 
 extension CallViewModel {
     private func showRemoteVideo(with stream: VideoStreamable) {
-        action?(.hideConnectView)
+        action?(.switchToVideoMode)
         action?(.setRemoteVideo(stream.getStreamView()))
         stream.playVideo()
     }
 
     private func showLocalVideo(with stream: VideoStreamable) {
-        action?(.hideConnectView)
+        action?(.switchToVideoMode)
         action?(.setLocalVideo(stream.getStreamView()))
         stream.playVideo()
     }
