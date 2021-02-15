@@ -1,6 +1,13 @@
 import UIKit
 
 class CallView: EngagementView {
+    enum Mode {
+        case audio
+        case video
+    }
+
+    let operatorNameLabel = UILabel()
+    let durationLabel = UILabel()
     let infoLabel = UILabel()
     let buttonBar: CallButtonBar
     let localVideoView = VideoStreamView(.local)
@@ -8,6 +15,9 @@ class CallView: EngagementView {
     var chatTapped: (() -> Void)?
 
     private let style: CallStyle
+    private var mode: Mode = .audio
+    private let topView = UIView()
+    private let topStackView = UIStackView()
     private var remoteVideoViewHeightMultiplier: NSLayoutConstraint!
     private let kRemoteVideoViewPortraitHeightMultiplier: CGFloat = 0.3
     private let kRemoteVideoViewLandscapeHeightMultiplier: CGFloat = 1.0
@@ -25,11 +35,30 @@ class CallView: EngagementView {
         adjustForOrientation()
     }
 
+    func setMode(_ mode: Mode, animated: Bool) {
+        self.mode = mode
+
+        switch mode {
+        case .audio:
+            break
+        case .video:
+            setConnectState(.none, animated: animated)
+        }
+    }
+
     func setConnectState(_ state: ConnectView.State, animated: Bool) {
         connectView.setState(state, animated: animated)
     }
 
     private func setup() {
+        topStackView.axis = .vertical
+
+        operatorNameLabel.font = style.operatorNameFont
+        operatorNameLabel.textColor = style.operatorNameColor
+
+        durationLabel.font = style.durationFont
+        durationLabel.textColor = style.durationColor
+
         infoLabel.text = style.infoText
         infoLabel.font = style.infoTextFont
         infoLabel.textColor = style.infoTextColor
@@ -72,6 +101,8 @@ class CallView: EngagementView {
         infoLabel.autoPinEdge(.bottom, to: .top, of: buttonBar, withOffset: -38)
         infoLabel.autoMatch(.width, to: .width, of: self, withMultiplier: 0.6)
         infoLabel.autoAlignAxis(toSuperviewAxis: .vertical)
+
+        setMode(mode, animated: false)
     }
 
     private func adjustForOrientation() {

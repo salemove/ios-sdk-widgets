@@ -60,6 +60,7 @@
 "call.connect.connecting.secondText" = "";
 "call.connect.connected.firstText" = "{operatorName}";
 "call.connect.connected.secondText" = "{callDuration}";
+"call.operator.name" = "{operatorName}";
 "call.info" = "You can continue browsing and we’ll connect you automatically.";
 "call.buttons.chat.title" = "Chat";
 "call.buttons.video.title" = "Video";

@@ -25,6 +25,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
         case queue
         case connecting(name: String?, imageUrl: String?)
         case connected(name: String?, imageUrl: String?)
+        case setOperatorName(String?)
         case hideConnectView
         case showEndButton
         case setCallDurationText(String)
@@ -116,6 +117,8 @@ class CallViewModel: EngagementViewModel, ViewModel {
             if case .startEngagement = startAction {
                 requestMedia()
             }
+            let operatorName = Strings.Operator.name.withOperatorName(interactor.engagedOperator?.firstName)
+            action?(.setOperatorName(operatorName))
         case .ended:
             call.end()
         default:
@@ -211,42 +214,6 @@ class CallViewModel: EngagementViewModel, ViewModel {
                                    declined: { answer(false, nil) }))
     }
 
-    private func showRemoteVideo(with stream: VideoStreamable) {
-        action?(.hideConnectView)
-        action?(.setRemoteVideo(stream.getStreamView()))
-        stream.playVideo()
-    }
-
-    private func showLocalVideo(with stream: VideoStreamable) {
-        action?(.hideConnectView)
-        action?(.setLocalVideo(stream.getStreamView()))
-        stream.playVideo()
-    }
-
-    private func hideRemoteVideo() {
-        action?(.setRemoteVideo(nil))
-    }
-
-    private func hideLocalVideo() {
-        action?(.setLocalVideo(nil))
-    }
-
-    private func updateRemoteVideoVisible() {
-        if let remoteStream = call.video.stream.value.remoteStream {
-            showRemoteVideo(with: remoteStream)
-        } else {
-            hideRemoteVideo()
-        }
-    }
-
-    private func updateLocalVideoVisible() {
-        if let localStream = call.video.stream.value.localStream, !localStream.isPaused {
-            showLocalVideo(with: localStream)
-        } else {
-            hideLocalVideo()
-        }
-    }
-
     private func callStarted() {
         action?(.showEndButton)
         action?(.setInfoText(nil))
@@ -284,6 +251,44 @@ class CallViewModel: EngagementViewModel, ViewModel {
             offerMediaUpgrade(offer, answer: answer)
         default:
             break
+        }
+    }
+}
+
+extension CallViewModel {
+    private func showRemoteVideo(with stream: VideoStreamable) {
+        action?(.hideConnectView)
+        action?(.setRemoteVideo(stream.getStreamView()))
+        stream.playVideo()
+    }
+
+    private func showLocalVideo(with stream: VideoStreamable) {
+        action?(.hideConnectView)
+        action?(.setLocalVideo(stream.getStreamView()))
+        stream.playVideo()
+    }
+
+    private func hideRemoteVideo() {
+        action?(.setRemoteVideo(nil))
+    }
+
+    private func hideLocalVideo() {
+        action?(.setLocalVideo(nil))
+    }
+
+    private func updateRemoteVideoVisible() {
+        if let remoteStream = call.video.stream.value.remoteStream {
+            showRemoteVideo(with: remoteStream)
+        } else {
+            hideRemoteVideo()
+        }
+    }
+
+    private func updateLocalVideoVisible() {
+        if let localStream = call.video.stream.value.localStream, !localStream.isPaused {
+            showLocalVideo(with: localStream)
+        } else {
+            hideLocalVideo()
         }
     }
 }

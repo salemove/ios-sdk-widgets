@@ -159,6 +159,10 @@ public enum L10n {
       /// End
       public static let title = L10n.tr("Localizable", "call.endButton.title")
     }
+    public enum Operator {
+      /// {operatorName}
+      public static let name = L10n.tr("Localizable", "call.operator.name")
+    }
     public enum Video {
       /// VIDEO CALL
       public static let title = L10n.tr("Localizable", "call.video.title")
