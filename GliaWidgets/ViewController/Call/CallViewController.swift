@@ -53,9 +53,9 @@ class CallViewController: EngagementViewController, MediaUpgradePresenter {
             case .setBottomTextHidden(let hidden):
                 view.bottomLabel.isHidden = hidden
             case .switchToVideoMode:
-                view.switchTo(.video, animated: true)
+                view.switchTo(.video)
             case .switchToUpgradeMode:
-                view.switchTo(.upgrading, animated: true)
+                view.switchTo(.upgrading)
             case .showEndButton:
                 let rightItem = ActionButton(with: self.viewFactory.theme.chat.endButton)
                 rightItem.tap = { viewModel.event(.closeTapped) }

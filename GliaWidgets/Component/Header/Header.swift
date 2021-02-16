@@ -2,9 +2,29 @@ import UIKit
 import PureLayout
 
 class Header: UIView {
+    enum Effect {
+        case none
+        case darkBlur
+    }
+
     var title: String? {
         get { return titleLabel.text }
         set { titleLabel.text = newValue }
+    }
+    var effect: Effect = .none {
+        didSet {
+            switch effect {
+            case .none:
+                effectView?.removeFromSuperview()
+                effectView = nil
+            case .darkBlur:
+                let effect = UIBlurEffect(style: .dark)
+                let effectView = UIVisualEffectView(effect: effect)
+                self.effectView = effectView
+                insertSubview(effectView, at: 0)
+                effectView.autoPinEdgesToSuperviewEdges()
+            }
+        }
     }
 
     private let style: HeaderStyle
@@ -12,6 +32,7 @@ class Header: UIView {
     private let rightItemContainer = UIView()
     private let titleLabel = UILabel()
     private let contentView = UIView()
+    private var effectView: UIVisualEffectView?
     private var heightLayoutConstraint: NSLayoutConstraint?
     private let kContentInsets = UIEdgeInsets(top: 0, left: 16, bottom: 10, right: 16)
     private let kContentHeight: CGFloat = 30

@@ -20,6 +20,8 @@ class CallView: EngagementView {
     private var mode: Mode = .audio
     private let topView = UIView()
     private let topStackView = UIStackView()
+    private var localVideoViewTopConstraint: NSLayoutConstraint!
+    private var localVideoViewRightConstraint: NSLayoutConstraint!
     private var localVideoViewHeightConstraint: NSLayoutConstraint!
     private var remoteVideoViewHeightMultiplier: NSLayoutConstraint!
     private let kLocalVideoViewDefaultHeight: CGFloat = 186
@@ -39,7 +41,7 @@ class CallView: EngagementView {
         adjustLocalVideoView()
     }
 
-    func switchTo(_ mode: Mode, animated: Bool) {
+    func switchTo(_ mode: Mode) {
         self.mode = mode
 
         switch mode {
@@ -69,9 +71,15 @@ class CallView: EngagementView {
         let isLandscape = [.landscapeLeft, .landscapeRight]
             .contains(orientation)
 
-        remoteVideoViewHeightMultiplier.constant = isLandscape
-            ? kRemoteVideoViewLandscapeHeightMultiplier
-            : kRemoteVideoViewPortraitHeightMultiplier
+        if isLandscape {
+            header.effect = .darkBlur
+            buttonBar.effect = .darkBlur
+            remoteVideoViewHeightMultiplier.constant = kRemoteVideoViewLandscapeHeightMultiplier
+        } else {
+            header.effect = .none
+            buttonBar.effect = .none
+            remoteVideoViewHeightMultiplier.constant = kRemoteVideoViewPortraitHeightMultiplier
+        }
 
         UIView.animate(withDuration: animated ? duration : 0.0) {
             self.topStackView.alpha = isLandscape ? 0.0 : 1.0
@@ -120,9 +128,10 @@ class CallView: EngagementView {
                                                                     withMultiplier: kRemoteVideoViewPortraitHeightMultiplier)
 
         addSubview(localVideoView)
+        localVideoViewTopConstraint = localVideoView.autoPinEdge(toSuperviewEdge: .top)
+        localVideoViewRightConstraint = localVideoView.autoPinEdge(toSuperviewEdge: .right)
         localVideoViewHeightConstraint = localVideoView.autoSetDimension(.height,
                                                                          toSize: kLocalVideoViewDefaultHeight)
-        localVideoView.autoPinEdge(toSuperviewSafeArea: .right, withInset: 10)
         localVideoView.autoMatch(.width, to: .height, of: localVideoView, withMultiplier: 0.6)
 
         addSubview(header)
@@ -143,26 +152,37 @@ class CallView: EngagementView {
         topStackView.autoAlignAxis(toSuperviewAxis: .vertical)
 
         addSubview(buttonBar)
-        buttonBar.autoPinEdgesToSuperviewSafeArea(with: UIEdgeInsets(top: 0, left: 0, bottom: 20, right: 0),
-                                                  excludingEdge: .top)
+        buttonBar.autoPinEdgesToSuperviewEdges(with: .zero,
+                                               excludingEdge: .top)
 
         addSubview(bottomLabel)
         bottomLabel.autoPinEdge(.bottom, to: .top, of: buttonBar, withOffset: -38)
         bottomLabel.autoMatch(.width, to: .width, of: self, withMultiplier: 0.6)
         bottomLabel.autoAlignAxis(toSuperviewAxis: .vertical)
 
+        adjustForOrientation(UIApplication.shared.statusBarOrientation,
+                             animated: false,
+                             duration: 0)
         adjustLocalVideoView()
-        switchTo(mode, animated: false)
+        switchTo(mode)
     }
 
-    private func adjustLocalVideoView() {
-        let kTopGap: CGFloat = 10
-        let kBottomGap: CGFloat = 10
-        // TODO: check orientation - set default height for landscape
-        let y = header.frame.maxY + kTopGap
-        let height = remoteVideoView.frame.minY - header.frame.maxY - (kTopGap + kBottomGap)
-        localVideoView.frame.origin.y = y
-        localVideoViewHeightConstraint.constant = height
+    private func adjustLocalVideoView() {localVideoView.backgroundColor = .lightGray
+        let isLandscape = [.landscapeLeft, .landscapeRight]
+            .contains(UIApplication.shared.statusBarOrientation)
+
+        if isLandscape {
+            localVideoViewTopConstraint.constant = 20
+            localVideoViewRightConstraint.constant = -20
+        } else {
+            let kTopInset: CGFloat = 10
+            let kBottomInset: CGFloat = 10
+            let height = remoteVideoView.frame.minY - header.frame.maxY - (kTopInset + kBottomInset)
+            let top = header.frame.maxY + kTopInset
+            localVideoViewHeightConstraint.constant = height
+            localVideoViewTopConstraint.constant = top
+            localVideoViewRightConstraint.constant = -10
+        }
     }
 
     @objc private func chatTap() {
