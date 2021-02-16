@@ -49,24 +49,24 @@ class CallViewModel: EngagementViewModel, ViewModel {
     }
 
     enum StartAction {
-        case startEngagement
-        case startCall(offer: MediaUpgradeOffer,
-                       answer: AnswerWithSuccessBlock)
+        case engagement
+        case call(offer: MediaUpgradeOffer,
+                  answer: AnswerWithSuccessBlock)
     }
 
     var action: ((Action) -> Void)?
     var delegate: ((DelegateEvent) -> Void)?
 
     private let call: Call
-    private let startAction: StartAction
+    private let startWith: StartAction
     private let durationCounter = CallDurationCounter()
 
     init(interactor: Interactor,
          alertConfiguration: AlertConfiguration,
          call: Call,
-         startAction: StartAction) {
+         startWith: StartAction) {
         self.call = call
-        self.startAction = startAction
+        self.startWith = startWith
         super.init(interactor: interactor, alertConfiguration: alertConfiguration)
         call.kind.addObserver(self) { kind, _ in
             self.onKindChanged(kind)
@@ -98,10 +98,10 @@ class CallViewModel: EngagementViewModel, ViewModel {
         super.start()
         update(for: call.kind.value)
 
-        switch startAction {
-        case .startEngagement:
+        switch startWith {
+        case .engagement:
             enqueue()
-        case .startCall(offer: let offer, answer: let answer):
+        case .call(offer: let offer, answer: let answer):
             call.upgrade(to: offer)
             showConnecting()
             answer(true, nil)
@@ -115,7 +115,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
         case .enqueueing:
             action?(.queue)
         case .engaged:
-            if case .startEngagement = startAction {
+            if case .engagement = startWith {
                 requestMedia()
             }
             let operatorName = Strings.Operator.name.withOperatorName(interactor.engagedOperator?.firstName)

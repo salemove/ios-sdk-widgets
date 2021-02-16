@@ -55,7 +55,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
                 : .video
             let call = Call(kind)
             let chatViewController = startChat(withAction: .none)
-            let callViewController = startCall(call, withAction: .startEngagement)
+            let callViewController = startCall(call, withAction: .engagement)
             engagement = .call(callViewController,
                                chatViewController,
                                .none)
@@ -208,7 +208,7 @@ extension RootCoordinator {
         case .chat(let chatViewController):
             guard let kind = CallKind(with: offer) else { return }
             let call = Call(kind)
-            let callViewController = startCall(call, withAction: .startCall(offer: offer, answer: answer))
+            let callViewController = startCall(call, withAction: .call(offer: offer, answer: answer))
             engagement = .call(callViewController,
                                chatViewController,
                                .chat)

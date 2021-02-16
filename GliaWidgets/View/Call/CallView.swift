@@ -68,8 +68,7 @@ class CallView: EngagementView {
     }
 
     func adjustForOrientation(_ orientation: UIInterfaceOrientation, animated: Bool, duration: TimeInterval) {
-        let isLandscape = [.landscapeLeft, .landscapeRight]
-            .contains(orientation)
+        let isLandscape = [.landscapeLeft, .landscapeRight].contains(orientation)
 
         if isLandscape {
             header.effect = .darkBlur
@@ -160,17 +159,12 @@ class CallView: EngagementView {
         bottomLabel.autoMatch(.width, to: .width, of: self, withMultiplier: 0.6)
         bottomLabel.autoAlignAxis(toSuperviewAxis: .vertical)
 
-        adjustForOrientation(UIApplication.shared.statusBarOrientation,
-                             animated: false,
-                             duration: 0)
+        adjustForOrientation(currentOrientation, animated: false, duration: 0)
         adjustLocalVideoView()
         switchTo(mode)
     }
 
     private func adjustLocalVideoView() {localVideoView.backgroundColor = .lightGray
-        let isLandscape = [.landscapeLeft, .landscapeRight]
-            .contains(UIApplication.shared.statusBarOrientation)
-
         if isLandscape {
             localVideoViewTopConstraint.constant = 20
             localVideoViewRightConstraint.constant = -20
