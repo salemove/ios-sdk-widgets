@@ -34,11 +34,13 @@ class EngagementViewController: ViewController, AlertPresenter {
 
     func showBackButton(with style: HeaderButtonStyle, in header: Header) {
         let back = HeaderButton(with: style, tap: { self.viewModel.event(.backTapped) })
+        back.contentHorizontalAlignment = .left
         header.setLeftItem(back, animated: false)
     }
 
     func showCloseButton(with style: HeaderButtonStyle, in header: Header) {
         let back = HeaderButton(with: style, tap: { self.viewModel.event(.closeTapped) })
+        back.contentHorizontalAlignment = .right
         header.setRightItem(back, animated: false)
     }
 

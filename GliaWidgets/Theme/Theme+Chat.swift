@@ -74,15 +74,24 @@ extension Theme {
             titleColor: color.baseLight,
             backgroundColor: color.systemNegative
         )
+        let mediaButton = MessageButtonStyle(
+            image: Asset.chatPickMedia.image,
+            color: color.baseNormal
+        )
+        let sendButton = MessageButtonStyle(
+            image: Asset.chatSend.image,
+            color: color.primary
+        )
         let messageEntry = ChatMessageEntryStyle(
             messageFont: font.bodyText,
             messageColor: color.baseDark,
             placeholder: Chat.Message.placeholder,
             placeholderFont: font.bodyText,
             placeholderColor: color.baseNormal,
-            sendButtonColor: color.primary,
             separatorColor: color.baseShade,
-            backgroundColor: color.background
+            backgroundColor: color.background,
+            mediaButton: mediaButton,
+            sendButton: sendButton
         )
         let audioUpgrade = ChatCallUpgradeStyle(
             icon: Asset.upgradeAudio.image,

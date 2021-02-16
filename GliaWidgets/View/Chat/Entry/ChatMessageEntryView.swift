@@ -19,8 +19,8 @@ public class ChatMessageEntryView: UIView {
     private let messageContainerView = UIView()
     private let textView = UITextView()
     private let placeholderLabel = UILabel()
-    private let pickMediaButton = Button(kind: .chatPickMedia)
-    private let sendButton = Button(kind: .chatSend)
+    private let pickMediaButton: MessageButton
+    private let sendButton: MessageButton
     private let buttonsStackView = UIStackView()
     private var textViewHeightConstraint: NSLayoutConstraint!
     private let kMinTextViewHeight: CGFloat = 24
@@ -28,6 +28,8 @@ public class ChatMessageEntryView: UIView {
 
     public init(with style: ChatMessageEntryStyle) {
         self.style = style
+        pickMediaButton = MessageButton(with: style.mediaButton)
+        sendButton = MessageButton(with: style.sendButton)
         super.init(frame: .zero)
         setup()
         layout()
@@ -74,7 +76,6 @@ public class ChatMessageEntryView: UIView {
         placeholderLabel.font = style.placeholderFont
         placeholderLabel.textColor = style.placeholderColor
 
-        sendButton.tintColor = style.sendButtonColor
         sendButton.isHidden = true
         sendButton.alpha = 0.0
 
