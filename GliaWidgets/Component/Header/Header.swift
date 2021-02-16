@@ -35,12 +35,10 @@ class Header: UIView {
     }
 
     public func setLeftItem(_ item: UIView?, animated: Bool) {
-        item?.tintColor = style.leftItemColor
         setItem(item, to: leftItemContainer, animated: animated)
     }
 
     public func setRightItem(_ item: UIView?, animated: Bool) {
-        item?.tintColor = style.rightItemColor
         setItem(item, to: rightItemContainer, animated: animated)
     }
 

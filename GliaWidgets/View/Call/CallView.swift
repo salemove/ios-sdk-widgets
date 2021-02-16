@@ -56,8 +56,8 @@ class CallView: EngagementView {
         case .upgrading:
             connectView.isHidden = false
             topStackView.isHidden = true
-            remoteVideoView.isHidden = false
-            localVideoView.isHidden = false
+            remoteVideoView.isHidden = true
+            localVideoView.isHidden = true
         }
     }
 
@@ -160,7 +160,7 @@ class CallView: EngagementView {
         let kBottomGap: CGFloat = 10
         // TODO: check orientation - set default height for landscape
         let y = header.frame.maxY + kTopGap
-        let height = remoteVideoView.frame.minY - header.frame.maxY - kTopGap - kBottomGap
+        let height = remoteVideoView.frame.minY - header.frame.maxY - (kTopGap + kBottomGap)
         localVideoView.frame.origin.y = y
         localVideoViewHeightConstraint.constant = height
     }

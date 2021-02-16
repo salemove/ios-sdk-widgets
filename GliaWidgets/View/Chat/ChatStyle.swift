@@ -2,6 +2,8 @@ import UIKit
 
 public class ChatStyle: EngagementStyle {
     public var title: String
+    public var backButton: HeaderButtonStyle
+    public var closeButton: HeaderButtonStyle
     public var visitorMessage: VisitorChatMessageStyle
     public var operatorMessage: OperatorChatMessageStyle
     public var messageEntry: ChatMessageEntryStyle
@@ -15,6 +17,8 @@ public class ChatStyle: EngagementStyle {
                 endButton: ActionButtonStyle,
                 preferredStatusBarStyle: UIStatusBarStyle,
                 title: String,
+                backButton: HeaderButtonStyle,
+                closeButton: HeaderButtonStyle,
                 visitorMessage: VisitorChatMessageStyle,
                 operatorMessage: OperatorChatMessageStyle,
                 messageEntry: ChatMessageEntryStyle,
@@ -22,6 +26,8 @@ public class ChatStyle: EngagementStyle {
                 videoUpgrade: ChatCallUpgradeStyle,
                 callBubble: BubbleStyle) {
         self.title = title
+        self.backButton = backButton
+        self.closeButton = closeButton
         self.visitorMessage = visitorMessage
         self.operatorMessage = operatorMessage
         self.messageEntry = messageEntry

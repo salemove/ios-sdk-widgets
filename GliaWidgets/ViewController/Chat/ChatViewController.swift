@@ -41,6 +41,9 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter {
     }
 
     private func bind(viewModel: ChatViewModel, to view: ChatView) {
+        showBackButton(with: viewFactory.theme.chat.backButton, in: view.header)
+        showCloseButton(with: viewFactory.theme.chat.closeButton, in: view.header)
+
         view.numberOfSections = { return viewModel.numberOfSections }
         view.numberOfRows = { return viewModel.numberOfItems(in: $0) }
         view.itemForRow = { return viewModel.item(for: $0, in: $1) }

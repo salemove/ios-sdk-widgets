@@ -3,6 +3,8 @@ import UIKit
 public class CallStyle: EngagementStyle {
     public var audioTitle: String
     public var videoTitle: String
+    public var backButton: HeaderButtonStyle
+    public var closeButton: HeaderButtonStyle
     public var operatorName: String
     public var operatorNameFont: UIFont
     public var operatorNameColor: UIColor
@@ -23,6 +25,8 @@ public class CallStyle: EngagementStyle {
                 preferredStatusBarStyle: UIStatusBarStyle,
                 audioTitle: String,
                 videoTitle: String,
+                backButton: HeaderButtonStyle,
+                closeButton: HeaderButtonStyle,
                 operatorName: String,
                 operatorNameFont: UIFont,
                 operatorNameColor: UIColor,
@@ -37,6 +41,8 @@ public class CallStyle: EngagementStyle {
                 buttonBar: CallButtonBarStyle) {
         self.audioTitle = audioTitle
         self.videoTitle = videoTitle
+        self.backButton = backButton
+        self.closeButton = closeButton
         self.operatorName = operatorName
         self.operatorNameFont = operatorNameFont
         self.operatorNameColor = operatorNameColor

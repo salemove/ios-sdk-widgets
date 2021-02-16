@@ -5,9 +5,15 @@ extension Theme {
         let header = HeaderStyle(
             titleFont: font.header2,
             titleColor: color.baseLight,
-            leftItemColor: color.baseLight,
-            rightItemColor: color.baseLight,
             backgroundColor: color.primary
+        )
+        let backButton = HeaderButtonStyle(
+            image: Asset.back.image,
+            color: color.baseLight
+        )
+        let closeButton = HeaderButtonStyle(
+            image: Asset.close.image,
+            color: color.baseLight
         )
         let operatorImage = UserImageStyle(
             placeholderImage: Asset.operatorPlaceholder.image,
@@ -48,7 +54,6 @@ extension Theme {
             connecting: connecting,
             connected: connected
         )
-
         let visitorMessage = VisitorChatMessageStyle(
             messageFont: font.bodyText,
             messageColor: color.baseLight,
@@ -114,6 +119,8 @@ extension Theme {
             endButton: endButton,
             preferredStatusBarStyle: .lightContent,
             title: Chat.title,
+            backButton: backButton,
+            closeButton: closeButton,
             visitorMessage: visitorMessage,
             operatorMessage: operatorMessage,
             messageEntry: messageEntry,

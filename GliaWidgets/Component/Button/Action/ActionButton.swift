@@ -13,7 +13,7 @@ class ActionButton: UIButton {
     private let kCornerRadius: CGFloat = 4.0
     private let kContentInsets = UIEdgeInsets(top: 6, left: 16, bottom: 6, right: 16)
 
-    public init(with style: ActionButtonStyle) {
+    init(with style: ActionButtonStyle) {
         self.style = style
         super.init(frame: .zero)
         setup()

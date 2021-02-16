@@ -32,12 +32,17 @@ class EngagementViewController: ViewController, AlertPresenter {
         viewModel.event(.viewDidDisappear)
     }
 
-    private func bind(viewModel: EngagementViewModel, to view: EngagementView) {
-        let leftItem = Button(kind: .back, tap: { viewModel.event(.backTapped) })
-        let rightItem = Button(kind: .close, tap: { viewModel.event(.closeTapped) })
-        view.header.setLeftItem(leftItem, animated: false)
-        view.header.setRightItem(rightItem, animated: false)
+    func showBackButton(with style: HeaderButtonStyle, in header: Header) {
+        let back = HeaderButton(with: style, tap: { self.viewModel.event(.backTapped) })
+        header.setLeftItem(back, animated: false)
+    }
 
+    func showCloseButton(with style: HeaderButtonStyle, in header: Header) {
+        let back = HeaderButton(with: style, tap: { self.viewModel.event(.closeTapped) })
+        header.setRightItem(back, animated: false)
+    }
+
+    private func bind(viewModel: EngagementViewModel, to view: EngagementView) {
         viewModel.engagementAction = { action in
             switch action {
             case .confirm(let conf, confirmed: let confirmed):

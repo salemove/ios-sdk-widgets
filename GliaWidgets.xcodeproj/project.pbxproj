@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1A0452DD25DBD0A4000DA0C1 /* HeaderButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0452DC25DBD0A4000DA0C1 /* HeaderButton.swift */; };
+		1A0452E325DBD0B4000DA0C1 /* HeaderButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0452E225DBD0B4000DA0C1 /* HeaderButtonStyle.swift */; };
 		1A0C142925B84E5500B00695 /* EngagementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0C142825B84E5500B00695 /* EngagementViewController.swift */; };
 		1A0C142D25B8545600B00695 /* EngagementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0C142C25B8545600B00695 /* EngagementView.swift */; };
 		1A0C143125B8547200B00695 /* EngagementStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0C143025B8547200B00695 /* EngagementStyle.swift */; };
@@ -183,6 +185,8 @@
 
 /* Begin PBXFileReference section */
 		0A249CE317961801DDAD22AE /* Pods_GliaWidgets.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GliaWidgets.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		1A0452DC25DBD0A4000DA0C1 /* HeaderButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderButton.swift; sourceTree = "<group>"; };
+		1A0452E225DBD0B4000DA0C1 /* HeaderButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderButtonStyle.swift; sourceTree = "<group>"; };
 		1A0C142825B84E5500B00695 /* EngagementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EngagementViewController.swift; sourceTree = "<group>"; };
 		1A0C142C25B8545600B00695 /* EngagementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EngagementView.swift; sourceTree = "<group>"; };
 		1A0C143025B8547200B00695 /* EngagementStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EngagementStyle.swift; sourceTree = "<group>"; };
@@ -363,6 +367,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1A0452DB25DBD08E000DA0C1 /* Header */ = {
+			isa = PBXGroup;
+			children = (
+				1A0452DC25DBD0A4000DA0C1 /* HeaderButton.swift */,
+				1A0452E225DBD0B4000DA0C1 /* HeaderButtonStyle.swift */,
+			);
+			path = Header;
+			sourceTree = "<group>";
+		};
 		1A0C143425B85C1E00B00695 /* Call */ = {
 			isa = PBXGroup;
 			children = (
@@ -842,6 +855,7 @@
 		1A60B0122567FC2900E53F53 /* Button */ = {
 			isa = PBXGroup;
 			children = (
+				1A0452DB25DBD08E000DA0C1 /* Header */,
 				1AC7A7B42587A07D00567FF8 /* Action */,
 				1A60B0132567FC6400E53F53 /* Style */,
 				1A60B0142567FC7000E53F53 /* Button.swift */,
@@ -1375,6 +1389,7 @@
 				1A60AF9F25667CA800E53F53 /* FontProvider.swift in Sources */,
 				1A60AFCE2566958900E53F53 /* ViewFactory.swift in Sources */,
 				1A7CA82F25751B5A0047CBBE /* ConnectOperatorStyle.swift in Sources */,
+				1A0452DD25DBD0A4000DA0C1 /* HeaderButton.swift in Sources */,
 				1A60AF96256675C400E53F53 /* UIColor+Extensions.swift in Sources */,
 				1A7CA81D2574D6370047CBBE /* ConnectView.swift in Sources */,
 				1ABD6C5525B574FF00D56EFA /* BubbleView.swift in Sources */,
@@ -1382,6 +1397,7 @@
 				1A60AFE425669B0400E53F53 /* ChatCoordinator.swift in Sources */,
 				1AA738B625790D9900E1120F /* ActionButton.swift in Sources */,
 				1A0C144425B868FC00B00695 /* CallCoordinator.swift in Sources */,
+				1A0452E325DBD0B4000DA0C1 /* HeaderButtonStyle.swift in Sources */,
 				1A5F813C2588B72100A605DA /* ChatMessageEntryView.swift in Sources */,
 				1A60B02D256BF7FF00E53F53 /* OperatorChatMessageView.swift in Sources */,
 				1A5F815F258A43E600A605DA /* Section.swift in Sources */,
