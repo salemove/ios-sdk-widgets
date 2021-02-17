@@ -218,7 +218,10 @@ class CallViewModel: EngagementViewModel, ViewModel {
     private func offerMediaUpgrade(_ offer: MediaUpgradeOffer, answer: @escaping AnswerWithSuccessBlock) {
         switch offer.type {
         case .video:
-            offerMediaUpgrade(with: alertConfiguration.videoUpgrade,
+            let configuration = offer.direction == .oneWay
+                ? alertConfiguration.oneWayVideoUpgrade
+                : alertConfiguration.twoWayVideoUpgrade
+            offerMediaUpgrade(with: configuration,
                               offer: offer,
                               answer: answer)
         default:

@@ -95,8 +95,14 @@ public enum L10n {
       public static let title = L10n.tr("Localizable", "alert.unexpected.title")
     }
     public enum VideoUpgrade {
-      /// {operatorName} has offered you to upgrade to video
-      public static let title = L10n.tr("Localizable", "alert.videoUpgrade.title")
+      public enum OneWay {
+        /// {operatorName} has offered you to see their video
+        public static let title = L10n.tr("Localizable", "alert.videoUpgrade.oneWay.title")
+      }
+      public enum TwoWay {
+        /// {operatorName} has offered you to upgrade to video
+        public static let title = L10n.tr("Localizable", "alert.videoUpgrade.twoWay.title")
+      }
     }
   }
 

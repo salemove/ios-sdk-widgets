@@ -55,8 +55,14 @@ extension Theme {
             decline: Alert.Action.decline,
             accept: Alert.Action.accept
         )
-        let videoUpgrade = SingleMediaUpgradeAlertConfiguration(
-            title: Alert.VideoUpgrade.title,
+        let oneWayVideoUpgrade = SingleMediaUpgradeAlertConfiguration(
+            title: Alert.VideoUpgrade.OneWay.title,
+            titleImage: Asset.upgradeVideo.image,
+            decline: Alert.Action.decline,
+            accept: Alert.Action.accept
+        )
+        let twoWayVideoUpgrade = SingleMediaUpgradeAlertConfiguration(
+            title: Alert.VideoUpgrade.TwoWay.title,
             titleImage: Asset.upgradeVideo.image,
             decline: Alert.Action.decline,
             accept: Alert.Action.accept
@@ -88,7 +94,8 @@ extension Theme {
             operatorsUnavailable: operatorsUnavailable,
             mediaUpgrade: mediaUpgrade,
             audioUpgrade: audioUpgrade,
-            videoUpgrade: videoUpgrade,
+            oneWayVideoUpgrade: oneWayVideoUpgrade,
+            twoWayVideoUpgrade: twoWayVideoUpgrade,
             microphoneSettings: microphoneSettings,
             cameraSettings: cameraSettings,
             unexpectedError: unexpected,

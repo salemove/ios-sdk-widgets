@@ -4,7 +4,8 @@ public struct AlertConfiguration {
     public var operatorsUnavailable: MessageAlertConfiguration
     public var mediaUpgrade: MultipleMediaUpgradeAlertConfiguration
     public var audioUpgrade: SingleMediaUpgradeAlertConfiguration
-    public var videoUpgrade: SingleMediaUpgradeAlertConfiguration
+    public var oneWayVideoUpgrade: SingleMediaUpgradeAlertConfiguration
+    public var twoWayVideoUpgrade: SingleMediaUpgradeAlertConfiguration
     public var microphoneSettings: SettingsAlertConfiguration
     public var cameraSettings: SettingsAlertConfiguration
     public var unexpectedError: MessageAlertConfiguration
@@ -15,7 +16,8 @@ public struct AlertConfiguration {
                 operatorsUnavailable: MessageAlertConfiguration,
                 mediaUpgrade: MultipleMediaUpgradeAlertConfiguration,
                 audioUpgrade: SingleMediaUpgradeAlertConfiguration,
-                videoUpgrade: SingleMediaUpgradeAlertConfiguration,
+                oneWayVideoUpgrade: SingleMediaUpgradeAlertConfiguration,
+                twoWayVideoUpgrade: SingleMediaUpgradeAlertConfiguration,
                 microphoneSettings: SettingsAlertConfiguration,
                 cameraSettings: SettingsAlertConfiguration,
                 unexpectedError: MessageAlertConfiguration,
@@ -25,7 +27,8 @@ public struct AlertConfiguration {
         self.operatorsUnavailable = operatorsUnavailable
         self.mediaUpgrade = mediaUpgrade
         self.audioUpgrade = audioUpgrade
-        self.videoUpgrade = videoUpgrade
+        self.oneWayVideoUpgrade = oneWayVideoUpgrade
+        self.twoWayVideoUpgrade = twoWayVideoUpgrade
         self.microphoneSettings = microphoneSettings
         self.cameraSettings = cameraSettings
         self.unexpectedError = unexpectedError

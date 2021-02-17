@@ -170,7 +170,10 @@ class ChatViewModel: EngagementViewModel, ViewModel {
                               offer: offer,
                               answer: answer)
         case .video:
-            offerMediaUpgrade(with: alertConfiguration.videoUpgrade,
+            let configuration = offer.direction == .oneWay
+                ? alertConfiguration.oneWayVideoUpgrade
+                : alertConfiguration.twoWayVideoUpgrade
+            offerMediaUpgrade(with: configuration,
                               offer: offer,
                               answer: answer)
         default:
