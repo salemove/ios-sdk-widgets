@@ -27,9 +27,9 @@ class CallViewController: EngagementViewController, MediaUpgradePresenter {
 
     override var preferredStatusBarStyle: UIStatusBarStyle { return viewFactory.theme.call.preferredStatusBarStyle }
 
-    override func willRotate(to toInterfaceOrientation: UIInterfaceOrientation, duration: TimeInterval) {
+    override func willRotate(to orientation: UIInterfaceOrientation, duration: TimeInterval) {
         guard let view = view as? CallView else { return }
-        view.adjustForOrientation(toInterfaceOrientation, animated: true, duration: duration)
+        view.willRotate(to: orientation, duration: duration)
     }
 
     private func bind(viewModel: CallViewModel, to view: CallView) {

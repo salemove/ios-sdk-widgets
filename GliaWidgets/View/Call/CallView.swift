@@ -20,6 +20,8 @@ class CallView: EngagementView {
     private var mode: Mode = .audio
     private let topView = UIView()
     private let topStackView = UIStackView()
+    private var headerTopConstraint: NSLayoutConstraint!
+    private var buttonBarBottomConstraint: NSLayoutConstraint!
     private var localVideoViewTopConstraint: NSLayoutConstraint!
     private var localVideoViewRightConstraint: NSLayoutConstraint!
     private var localVideoViewHeightConstraint: NSLayoutConstraint!
@@ -27,6 +29,7 @@ class CallView: EngagementView {
     private let kLocalVideoViewDefaultHeight: CGFloat = 186
     private let kRemoteVideoViewPortraitHeightMultiplier: CGFloat = 0.3
     private let kRemoteVideoViewLandscapeHeightMultiplier: CGFloat = 1.0
+    private let kBarsHideDelay: TimeInterval = 3.0
 
     init(with style: CallStyle) {
         self.style = style
@@ -38,7 +41,7 @@ class CallView: EngagementView {
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        adjustVideoViews()
+        adjustForCurrentOrientation()
     }
 
     func switchTo(_ mode: Mode) {
@@ -55,32 +58,32 @@ class CallView: EngagementView {
             topStackView.isHidden = false
             remoteVideoView.isHidden = false
             localVideoView.isHidden = false
+            if currentOrientation.isLandscape {
+                hideBarsAfterDelay()
+            }
         case .upgrading:
             connectView.isHidden = false
             topStackView.isHidden = true
             remoteVideoView.isHidden = true
             localVideoView.isHidden = true
         }
+
+        adjustForCurrentOrientation()
     }
 
     func setConnectState(_ state: ConnectView.State, animated: Bool) {
         connectView.setState(state, animated: animated)
     }
 
-    func adjustForOrientation(_ orientation: UIInterfaceOrientation, animated: Bool, duration: TimeInterval) {
-        let isLandscape = [.landscapeLeft, .landscapeRight].contains(orientation)
-
-        if isLandscape {
-            header.effect = .darkBlur
-            buttonBar.effect = .darkBlur
+    func willRotate(to orientation: UIInterfaceOrientation, duration: TimeInterval) {
+        if orientation.isLandscape {
+            if mode == .video {
+                hideBars(duration: duration)
+            }
         } else {
-            header.effect = .none
-            buttonBar.effect = .none
-        }
-
-        UIView.animate(withDuration: animated ? duration : 0.0) {
-            self.topStackView.alpha = isLandscape ? 0.0 : 1.0
-            self.bottomLabel.alpha = isLandscape ? 0.0 : 1.0
+            if mode == .video {
+                showBars( duration: duration)
+            }
         }
     }
 
@@ -108,6 +111,10 @@ class CallView: EngagementView {
         bottomLabel.textColor = style.bottomTextColor
         bottomLabel.numberOfLines = 0
         bottomLabel.textAlignment = .center
+
+        let tapRecognizer = UITapGestureRecognizer(target: self,
+                                                   action: #selector(tap))
+        addGestureRecognizer(tapRecognizer)
     }
 
     private func layout() {
@@ -127,11 +134,12 @@ class CallView: EngagementView {
         localVideoViewRightConstraint = localVideoView.autoPinEdge(toSuperviewEdge: .right)
         localVideoViewHeightConstraint = localVideoView.autoSetDimension(.height,
                                                                          toSize: kLocalVideoViewDefaultHeight)
-        localVideoView.autoMatch(.width, to: .height, of: localVideoView, withMultiplier: 0.6)
+        localVideoView.autoMatch(.width, to: .height, of: localVideoView, withMultiplier: 0.7)
 
         addSubview(header)
-        header.autoPinEdgesToSuperviewEdges(with: .zero,
-                                            excludingEdge: .bottom)
+        headerTopConstraint = header.autoPinEdge(toSuperviewEdge: .top)
+        header.autoPinEdge(toSuperviewEdge: .left)
+        header.autoPinEdge(toSuperviewEdge: .right)
 
         addSubview(topLabel)
         topLabel.autoPinEdge(.top, to: .bottom, of: header)
@@ -147,17 +155,35 @@ class CallView: EngagementView {
         topStackView.autoAlignAxis(toSuperviewAxis: .vertical)
 
         addSubview(buttonBar)
-        buttonBar.autoPinEdgesToSuperviewEdges(with: .zero,
-                                               excludingEdge: .top)
+        buttonBarBottomConstraint = buttonBar.autoPinEdge(toSuperviewEdge: .bottom)
+        buttonBar.autoPinEdge(toSuperviewEdge: .left)
+        buttonBar.autoPinEdge(toSuperviewEdge: .right)
 
         addSubview(bottomLabel)
         bottomLabel.autoPinEdge(.bottom, to: .top, of: buttonBar, withOffset: -38)
         bottomLabel.autoMatch(.width, to: .width, of: self, withMultiplier: 0.6)
         bottomLabel.autoAlignAxis(toSuperviewAxis: .vertical)
 
-        adjustForOrientation(currentOrientation, animated: false, duration: 0)
-        adjustVideoViews()
+        adjustForCurrentOrientation()
         switchTo(mode)
+    }
+
+    private func adjustForCurrentOrientation() {
+        if currentOrientation.isLandscape {
+            if mode == .video {
+                header.effect = .blur
+                buttonBar.effect = .blur
+            }
+            topStackView.alpha = 0.0
+            bottomLabel.alpha = 0.0
+        } else {
+            header.effect = .none
+            buttonBar.effect = .none
+            topStackView.alpha = 1.0
+            bottomLabel.alpha = 1.0
+        }
+
+        adjustVideoViews()
     }
 
     private func adjustVideoViews() {
@@ -166,7 +192,7 @@ class CallView: EngagementView {
     }
 
     private func adjustRemoteVideoView() {
-        if isLandscape {
+        if currentOrientation.isLandscape {
             remoteVideoViewHeightConstraint.constant = frame.size.height * kRemoteVideoViewLandscapeHeightMultiplier
         } else {
             remoteVideoViewHeightConstraint.constant = frame.size.height * kRemoteVideoViewPortraitHeightMultiplier
@@ -174,7 +200,7 @@ class CallView: EngagementView {
     }
 
     private func adjustLocalVideoView() {
-        if isLandscape {
+        if currentOrientation.isLandscape {
             localVideoViewTopConstraint.constant = 20
             localVideoViewRightConstraint.constant = -20
         } else {
@@ -189,7 +215,43 @@ class CallView: EngagementView {
         }
     }
 
+    private func showBars(duration: TimeInterval) {
+        layoutIfNeeded()
+        UIView.animate(withDuration: duration) {
+            self.headerTopConstraint.constant = 0
+            self.buttonBarBottomConstraint.constant = 0
+            self.layoutIfNeeded()
+        }
+    }
+
+    private func hideBars(duration: TimeInterval) {
+        layoutIfNeeded()
+        UIView.animate(withDuration: duration) {
+            self.headerTopConstraint.constant = -self.header.frame.size.height
+            self.buttonBarBottomConstraint.constant = self.buttonBar.frame.size.height
+            self.layoutIfNeeded()
+        }
+    }
+
+    private func hideLandscapeBars() {
+        guard currentOrientation.isLandscape else { return }
+        hideBars(duration: 0.3)
+    }
+
+    private func hideBarsAfterDelay() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + kBarsHideDelay) {
+            self.hideLandscapeBars()
+        }
+    }
+
     @objc private func chatTap() {
         chatTapped?()
+    }
+
+    @objc private func tap() {
+        if currentOrientation.isLandscape {
+            showBars(duration: 0.3)
+            hideBarsAfterDelay()
+        }
     }
 }

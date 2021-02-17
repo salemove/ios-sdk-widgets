@@ -4,9 +4,6 @@ public class View: UIView {
     var currentOrientation: UIInterfaceOrientation {
         return UIApplication.shared.statusBarOrientation
     }
-    var isLandscape: Bool {
-        return [.landscapeLeft, .landscapeRight].contains(currentOrientation)
-    }
 
     public init() {
         super.init(frame: .zero)

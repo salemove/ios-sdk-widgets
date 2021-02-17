@@ -4,7 +4,7 @@ import PureLayout
 class Header: UIView {
     enum Effect {
         case none
-        case darkBlur
+        case blur
     }
 
     var title: String? {
@@ -15,14 +15,9 @@ class Header: UIView {
         didSet {
             switch effect {
             case .none:
-                effectView?.removeFromSuperview()
-                effectView = nil
-            case .darkBlur:
-                let effect = UIBlurEffect(style: .dark)
-                let effectView = UIVisualEffectView(effect: effect)
-                self.effectView = effectView
-                insertSubview(effectView, at: 0)
-                effectView.autoPinEdgesToSuperviewEdges()
+                effectView.isHidden = true
+            case .blur:
+                effectView.isHidden = false
             }
         }
     }
@@ -32,7 +27,7 @@ class Header: UIView {
     private let rightItemContainer = UIView()
     private let titleLabel = UILabel()
     private let contentView = UIView()
-    private var effectView: UIVisualEffectView?
+    private var effectView = UIVisualEffectView(effect: UIBlurEffect(style: .prominent))
     private var heightConstraint: NSLayoutConstraint?
     private let kContentInsets = UIEdgeInsets(top: 0, left: 16, bottom: 10, right: 16)
     private let kContentHeight: CGFloat = 30
@@ -86,6 +81,7 @@ class Header: UIView {
     }
 
     private func setup() {
+        effect = .none
         backgroundColor = style.backgroundColor
 
         titleLabel.font = style.titleFont
@@ -95,6 +91,9 @@ class Header: UIView {
 
     private func layout() {
         heightConstraint = autoSetDimension(.height, toSize: kHeight)
+
+        addSubview(effectView)
+        effectView.autoPinEdgesToSuperviewEdges()
 
         addSubview(contentView)
         contentView.autoPinEdgesToSuperviewEdges(with: kContentInsets, excludingEdge: .top)

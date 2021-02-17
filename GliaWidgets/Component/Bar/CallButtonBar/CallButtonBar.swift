@@ -3,7 +3,7 @@ import UIKit
 class CallButtonBar: UIView {
     enum Effect {
         case none
-        case darkBlur
+        case blur
     }
 
     var visibleButtons: [CallButton.Kind] = [] {
@@ -14,14 +14,9 @@ class CallButtonBar: UIView {
         didSet {
             switch effect {
             case .none:
-                effectView?.removeFromSuperview()
-                effectView = nil
-            case .darkBlur:
-                let effect = UIBlurEffect(style: .dark)
-                let effectView = UIVisualEffectView(effect: effect)
-                self.effectView = effectView
-                insertSubview(effectView, at: 0)
-                effectView.autoPinEdgesToSuperviewEdges()
+                effectView.isHidden = true
+            case .blur:
+                effectView.isHidden = false
             }
         }
     }
@@ -29,7 +24,7 @@ class CallButtonBar: UIView {
     private let style: CallButtonBarStyle
     private let stackView = UIStackView()
     private var buttons = [CallButton]()
-    private var effectView: UIVisualEffectView?
+    private var effectView = UIVisualEffectView(effect: UIBlurEffect(style: .prominent))
     private var bottomSpaceConstraint: NSLayoutConstraint!
     private var kInsets = UIEdgeInsets(top: 3.0, left: 3.0, bottom: 3.0, right: 3.0)
 
@@ -58,12 +53,17 @@ class CallButtonBar: UIView {
     }
 
     private func setup() {
+        effect = .none
+
         stackView.axis = .horizontal
         stackView.distribution = .fillEqually
         stackView.spacing = 2
     }
 
     private func layout() {
+        addSubview(effectView)
+        effectView.autoPinEdgesToSuperviewEdges()
+
         addSubview(stackView)
         stackView.autoPinEdgesToSuperviewEdges(with: kInsets, excludingEdge: .bottom)
         bottomSpaceConstraint = stackView.autoPinEdge(toSuperviewEdge: .bottom)
