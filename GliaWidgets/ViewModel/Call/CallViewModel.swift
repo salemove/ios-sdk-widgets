@@ -3,7 +3,7 @@ import SalemoveSDK
 class CallViewModel: EngagementViewModel, ViewModel {
     private typealias Strings = L10n.Call
 
-    enum Button {
+    enum CallButton {
         case chat
         case video
         case mute
@@ -18,7 +18,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
 
     enum Event {
         case viewDidLoad
-        case buttonTapped(Button)
+        case callButtonTapped(CallButton)
     }
 
     enum Action {
@@ -33,9 +33,9 @@ class CallViewModel: EngagementViewModel, ViewModel {
         case switchToUpgradeMode
         case setCallDurationText(String)
         case setTitle(String)
-        case showButtons([Button])
-        case setButtonEnabled(Button, enabled: Bool)
-        case setButtonState(Button, state: ButtonState)
+        case showButtons([CallButton])
+        case setButtonEnabled(CallButton, enabled: Bool)
+        case setButtonState(CallButton, state: ButtonState)
         case offerMediaUpgrade(SingleMediaUpgradeAlertConfiguration,
                                accepted: () -> Void,
                                declined: () -> Void)
@@ -89,8 +89,8 @@ class CallViewModel: EngagementViewModel, ViewModel {
         switch event {
         case .viewDidLoad:
             start()
-        case .buttonTapped(let button):
-            buttonTapped(button)
+        case .callButtonTapped(let button):
+            callButtonTapped(button)
         }
     }
 
@@ -356,7 +356,7 @@ extension CallViewModel {
         action?(.showButtons(buttons))
     }
 
-    private func buttons(for call: Call) -> [Button] {
+    private func buttons(for call: Call) -> [CallButton] {
         switch call.kind.value {
         case .audio:
             return [.chat, .mute, .speaker, .minimize]
@@ -402,7 +402,7 @@ extension CallViewModel {
         action?(.setButtonEnabled(.minimize, enabled: enabled))
     }
 
-    private func buttonTapped(_ button: Button) {
+    private func callButtonTapped(_ button: CallButton) {
         switch button {
         case .chat:
             delegate?(.chat)

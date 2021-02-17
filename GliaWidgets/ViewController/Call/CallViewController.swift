@@ -36,7 +36,7 @@ class CallViewController: EngagementViewController, MediaUpgradePresenter {
         showBackButton(with: viewFactory.theme.call.backButton, in: view.header)
         showCloseButton(with: viewFactory.theme.call.closeButton, in: view.header)
 
-        view.buttonBar.buttonTapped = { viewModel.event(.buttonTapped(.init(with: $0))) }
+        view.callButtonTapped = { viewModel.event(.callButtonTapped(.init(with: $0))) }
 
         viewModel.action = { action in
             switch action {
@@ -88,7 +88,7 @@ class CallViewController: EngagementViewController, MediaUpgradePresenter {
     }
 }
 
-private extension CallViewModel.Button {
+private extension CallViewModel.CallButton {
     init(with kind: CallButton.Kind) {
         switch kind {
         case .chat:
@@ -106,7 +106,7 @@ private extension CallViewModel.Button {
 }
 
 private extension CallButton.Kind {
-    init(with button: CallViewModel.Button) {
+    init(with button: CallViewModel.CallButton) {
         switch button {
         case .chat:
             self = .chat

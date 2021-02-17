@@ -15,11 +15,13 @@ class CallView: EngagementView {
     let localVideoView = VideoStreamView(.local)
     let remoteVideoView = VideoStreamView(.remote)
     var chatTapped: (() -> Void)?
+    var callButtonTapped: ((CallButton.Kind) -> Void)?
 
     private let style: CallStyle
     private var mode: Mode = .audio
     private let topView = UIView()
     private let topStackView = UIStackView()
+    private var hideBarsWorkItem: DispatchWorkItem?
     private var headerTopConstraint: NSLayoutConstraint!
     private var buttonBarBottomConstraint: NSLayoutConstraint!
     private var localVideoViewTopConstraint: NSLayoutConstraint!
@@ -59,7 +61,7 @@ class CallView: EngagementView {
             remoteVideoView.isHidden = false
             localVideoView.isHidden = false
             if currentOrientation.isLandscape {
-                hideBarsAfterDelay()
+                hideLandscapeBarsAfterDelay()
             }
         case .upgrading:
             connectView.isHidden = false
@@ -111,6 +113,11 @@ class CallView: EngagementView {
         bottomLabel.textColor = style.bottomTextColor
         bottomLabel.numberOfLines = 0
         bottomLabel.textAlignment = .center
+
+        buttonBar.buttonTapped = { [weak self] in
+            self?.callButtonTapped?($0)
+            self?.hideLandscapeBarsAfterDelay()
+        }
 
         let tapRecognizer = UITapGestureRecognizer(target: self,
                                                    action: #selector(tap))
@@ -238,10 +245,12 @@ class CallView: EngagementView {
         hideBars(duration: 0.3)
     }
 
-    private func hideBarsAfterDelay() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + kBarsHideDelay) {
-            self.hideLandscapeBars()
-        }
+    private func hideLandscapeBarsAfterDelay() {
+        hideBarsWorkItem?.cancel()
+        let hideBarsWorkItem = DispatchWorkItem { self.hideLandscapeBars() }
+        self.hideBarsWorkItem = hideBarsWorkItem
+        DispatchQueue.main.asyncAfter(deadline: .now() + kBarsHideDelay,
+                                      execute: hideBarsWorkItem)
     }
 
     @objc private func chatTap() {
@@ -251,7 +260,7 @@ class CallView: EngagementView {
     @objc private func tap() {
         if currentOrientation.isLandscape {
             showBars(duration: 0.3)
-            hideBarsAfterDelay()
+            hideLandscapeBarsAfterDelay()
         }
     }
 }
