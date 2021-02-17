@@ -23,7 +23,7 @@ class CallView: EngagementView {
     private var localVideoViewTopConstraint: NSLayoutConstraint!
     private var localVideoViewRightConstraint: NSLayoutConstraint!
     private var localVideoViewHeightConstraint: NSLayoutConstraint!
-    private var remoteVideoViewHeightMultiplier: NSLayoutConstraint!
+    private var remoteVideoViewHeightConstraint: NSLayoutConstraint!
     private let kLocalVideoViewDefaultHeight: CGFloat = 186
     private let kRemoteVideoViewPortraitHeightMultiplier: CGFloat = 0.3
     private let kRemoteVideoViewLandscapeHeightMultiplier: CGFloat = 1.0
@@ -38,7 +38,7 @@ class CallView: EngagementView {
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        adjustLocalVideoView()
+        adjustVideoViews()
     }
 
     func switchTo(_ mode: Mode) {
@@ -73,11 +73,9 @@ class CallView: EngagementView {
         if isLandscape {
             header.effect = .darkBlur
             buttonBar.effect = .darkBlur
-            remoteVideoViewHeightMultiplier.constant = kRemoteVideoViewLandscapeHeightMultiplier
         } else {
             header.effect = .none
             buttonBar.effect = .none
-            remoteVideoViewHeightMultiplier.constant = kRemoteVideoViewPortraitHeightMultiplier
         }
 
         UIView.animate(withDuration: animated ? duration : 0.0) {
@@ -119,12 +117,10 @@ class CallView: EngagementView {
         effectView.autoPinEdgesToSuperviewEdges()
 
         addSubview(remoteVideoView)
-        remoteVideoView.autoCenterInSuperview()
-        remoteVideoView.autoMatch(.width, to: .width, of: self)
-        remoteVideoViewHeightMultiplier = remoteVideoView.autoMatch(.height,
-                                                                    to: .height,
-                                                                    of: self,
-                                                                    withMultiplier: kRemoteVideoViewPortraitHeightMultiplier)
+        remoteVideoView.autoAlignAxis(toSuperviewAxis: .horizontal)
+        remoteVideoView.autoPinEdge(toSuperviewEdge: .left)
+        remoteVideoView.autoPinEdge(toSuperviewEdge: .right)
+        remoteVideoViewHeightConstraint = remoteVideoView.autoSetDimension(.height, toSize: 0)
 
         addSubview(localVideoView)
         localVideoViewTopConstraint = localVideoView.autoPinEdge(toSuperviewEdge: .top)
@@ -160,22 +156,36 @@ class CallView: EngagementView {
         bottomLabel.autoAlignAxis(toSuperviewAxis: .vertical)
 
         adjustForOrientation(currentOrientation, animated: false, duration: 0)
-        adjustLocalVideoView()
+        adjustVideoViews()
         switchTo(mode)
     }
 
-    private func adjustLocalVideoView() {localVideoView.backgroundColor = .lightGray
+    private func adjustVideoViews() {
+        adjustRemoteVideoView()
+        adjustLocalVideoView()
+    }
+
+    private func adjustRemoteVideoView() {
+        if isLandscape {
+            remoteVideoViewHeightConstraint.constant = frame.size.height * kRemoteVideoViewLandscapeHeightMultiplier
+        } else {
+            remoteVideoViewHeightConstraint.constant = frame.size.height * kRemoteVideoViewPortraitHeightMultiplier
+        }
+    }
+
+    private func adjustLocalVideoView() {
         if isLandscape {
             localVideoViewTopConstraint.constant = 20
             localVideoViewRightConstraint.constant = -20
         } else {
             let kTopInset: CGFloat = 10
             let kBottomInset: CGFloat = 10
-            let height = remoteVideoView.frame.minY - header.frame.maxY - (kTopInset + kBottomInset)
+            let kRightInset: CGFloat = -10
             let top = header.frame.maxY + kTopInset
-            localVideoViewHeightConstraint.constant = height
+            let height = remoteVideoView.frame.minY - header.frame.maxY - (kTopInset + kBottomInset)
+            localVideoViewHeightConstraint.constant = height > 0 ? height : 0
             localVideoViewTopConstraint.constant = top
-            localVideoViewRightConstraint.constant = -10
+            localVideoViewRightConstraint.constant = kRightInset
         }
     }
 

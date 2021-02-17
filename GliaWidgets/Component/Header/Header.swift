@@ -33,7 +33,7 @@ class Header: UIView {
     private let titleLabel = UILabel()
     private let contentView = UIView()
     private var effectView: UIVisualEffectView?
-    private var heightLayoutConstraint: NSLayoutConstraint?
+    private var heightConstraint: NSLayoutConstraint?
     private let kContentInsets = UIEdgeInsets(top: 0, left: 16, bottom: 10, right: 16)
     private let kContentHeight: CGFloat = 30
     private let kHeight: CGFloat = 58
@@ -94,7 +94,7 @@ class Header: UIView {
     }
 
     private func layout() {
-        heightLayoutConstraint = autoSetDimension(.height, toSize: kHeight)
+        heightConstraint = autoSetDimension(.height, toSize: kHeight)
 
         addSubview(contentView)
         contentView.autoPinEdgesToSuperviewEdges(with: kContentInsets, excludingEdge: .top)
@@ -117,6 +117,6 @@ class Header: UIView {
     }
 
     private func updateHeight() {
-        heightLayoutConstraint?.constant = kHeight + safeAreaInsets.top
+        heightConstraint?.constant = kHeight + safeAreaInsets.top
     }
 }

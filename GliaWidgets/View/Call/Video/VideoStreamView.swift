@@ -13,7 +13,7 @@ class VideoStreamView: View {
             guard newValue != streamView else { return }
             streamView?.removeFromSuperview()
             if let streamView = newValue {
-                streamView.scale = .fill
+                streamView.scale = .aspectFill
                 addSubview(streamView)
                 streamView.autoPinEdgesToSuperviewEdges()
             }
