@@ -123,7 +123,7 @@ private extension CallButton.Kind {
 }
 
 private extension CallButton.State {
-    init(with state: CallViewModel.ButtonState) {
+    init(with state: CallViewModel.CallButtonState) {
         switch state {
         case .active:
             self = .active

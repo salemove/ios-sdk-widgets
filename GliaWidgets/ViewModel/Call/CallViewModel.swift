@@ -11,7 +11,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
         case minimize
     }
 
-    enum ButtonState {
+    enum CallButtonState {
         case active
         case inactive
     }
@@ -35,7 +35,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
         case setTitle(String)
         case showButtons([CallButton])
         case setButtonEnabled(CallButton, enabled: Bool)
-        case setButtonState(CallButton, state: ButtonState)
+        case setButtonState(CallButton, state: CallButtonState)
         case offerMediaUpgrade(SingleMediaUpgradeAlertConfiguration,
                                accepted: () -> Void,
                                declined: () -> Void)
@@ -165,8 +165,6 @@ class CallViewModel: EngagementViewModel, ViewModel {
     }
 
     private func requestMedia() {
-        showConnecting()
-
         let mediaType: MediaType = {
             switch call.kind.value {
             case .audio:
@@ -176,42 +174,14 @@ class CallViewModel: EngagementViewModel, ViewModel {
             }
         }()
 
+        showConnecting()
         interactor.request(mediaType, direction: .twoWay) {
-
         } failure: { [weak self] error, salemoveError in
             if let error = error {
                 self?.showAlert(for: error)
             } else if let error = salemoveError {
                 self?.showAlert(for: error)
             }
-        }
-    }
-
-    private func handleAudioStreamError(_ error: SalemoveError) {
-        switch error.error {
-        case let mediaError as MediaError:
-            switch mediaError {
-            case .permissionDenied:
-                self.showSettingsAlert(with: alertConfiguration.microphoneSettings)
-            default:
-                showAlert(for: error)
-            }
-        default:
-            showAlert(for: error)
-        }
-    }
-
-    private func handleVideoStreamError(_ error: SalemoveError) {
-        switch error.error {
-        case let mediaError as MediaError:
-            switch mediaError {
-            case .permissionDenied:
-                self.showSettingsAlert(with: alertConfiguration.cameraSettings)
-            default:
-                showAlert(for: error)
-            }
-        default:
-            showAlert(for: error)
         }
     }
 
@@ -241,6 +211,34 @@ class CallViewModel: EngagementViewModel, ViewModel {
         action?(.offerMediaUpgrade(configuration.withOperatorName(operatorName),
                                    accepted: { onAccepted() },
                                    declined: { answer(false, nil) }))
+    }
+
+    private func handleAudioStreamError(_ error: SalemoveError) {
+        switch error.error {
+        case let mediaError as MediaError:
+            switch mediaError {
+            case .permissionDenied:
+                self.showSettingsAlert(with: alertConfiguration.microphoneSettings)
+            default:
+                showAlert(for: error)
+            }
+        default:
+            showAlert(for: error)
+        }
+    }
+
+    private func handleVideoStreamError(_ error: SalemoveError) {
+        switch error.error {
+        case let mediaError as MediaError:
+            switch mediaError {
+            case .permissionDenied:
+                self.showSettingsAlert(with: alertConfiguration.cameraSettings)
+            default:
+                showAlert(for: error)
+            }
+        default:
+            showAlert(for: error)
+        }
     }
 
     override func interactorEvent(_ event: InteractorEvent) {
@@ -372,7 +370,7 @@ extension CallViewModel {
 
     private func updateVideoButton() {
         let enabled = call.video.stream.value.hasLocalStream
-        let state: ButtonState = call.video.stream.value.localStream.map {
+        let state: CallButtonState = call.video.stream.value.localStream.map {
             $0.isPaused ? .inactive : .active
         } ?? .inactive
         action?(.setButtonEnabled(.video, enabled: enabled))
@@ -381,7 +379,7 @@ extension CallViewModel {
 
     private func updateMuteButton() {
         let enabled = call.audio.stream.value.hasLocalStream
-        let state: ButtonState = call.audio.stream.value.localStream?.isMuted == true
+        let state: CallButtonState = call.audio.stream.value.localStream?.isMuted == true
             ? .active
             : .inactive
         action?(.setButtonEnabled(.mute, enabled: enabled))
@@ -390,7 +388,7 @@ extension CallViewModel {
 
     private func updateSpeakerButton() {
         let enabled = call.audio.stream.value.hasRemoteStream
-        let state: ButtonState = call.audioPortOverride == .speaker
+        let state: CallButtonState = call.audioPortOverride == .speaker
             ? .active
             : .inactive
         action?(.setButtonEnabled(.speaker, enabled: enabled))
