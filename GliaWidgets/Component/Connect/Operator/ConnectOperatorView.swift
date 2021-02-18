@@ -29,8 +29,8 @@ class ConnectOperatorView: UIView {
     private let style: ConnectOperatorStyle
     private var animationView: ConnectAnimationView?
     private var size: Size = .normal
-    private var widthLayoutConstraint: NSLayoutConstraint!
-    private var heightLayoutConstraint: NSLayoutConstraint!
+    private var widthConstraint: NSLayoutConstraint!
+    private var heightConstraint: NSLayoutConstraint!
     private let kAnimationViewSize: CGFloat = 142
 
     init(with style: ConnectOperatorStyle) {
@@ -49,8 +49,8 @@ class ConnectOperatorView: UIView {
         self.size = size
         layoutIfNeeded()
         UIView.animate(withDuration: animated ? 0.3 : 0.0) {
-            self.widthLayoutConstraint.constant = size.width
-            self.heightLayoutConstraint.constant = size.height
+            self.widthConstraint.constant = size.width
+            self.heightConstraint.constant = size.height
             self.layoutIfNeeded()
         }
     }
@@ -80,8 +80,8 @@ class ConnectOperatorView: UIView {
 
     private func layout() {
         NSLayoutConstraint.autoSetPriority(.defaultHigh) {
-            widthLayoutConstraint = imageView.autoSetDimension(.width, toSize: size.width)
-            heightLayoutConstraint = imageView.autoSetDimension(.height, toSize: size.height)
+            widthConstraint = imageView.autoSetDimension(.width, toSize: size.width)
+            heightConstraint = imageView.autoSetDimension(.height, toSize: size.height)
         }
 
         addSubview(imageView)

@@ -44,20 +44,38 @@ extension Theme {
             icon: Asset.upgradePhone.image,
             iconColor: color.primary
         )
-        let mediaUpgrade = MediaUpgradeAlertConfiguration(
+        let mediaUpgrade = MultipleMediaUpgradeAlertConfiguration(
             title: Alert.MediaUpgrade.title,
             audioUpgradeAction: audioAction,
             phoneUpgradeAction: phoneAction
         )
-        let audioUpgrade = AudioUpgradeAlertConfiguration(
+        let audioUpgrade = SingleMediaUpgradeAlertConfiguration(
             title: Alert.AudioUpgrade.title,
             titleImage: Asset.upgradeAudio.image,
+            decline: Alert.Action.decline,
+            accept: Alert.Action.accept
+        )
+        let oneWayVideoUpgrade = SingleMediaUpgradeAlertConfiguration(
+            title: Alert.VideoUpgrade.OneWay.title,
+            titleImage: Asset.upgradeVideo.image,
+            decline: Alert.Action.decline,
+            accept: Alert.Action.accept
+        )
+        let twoWayVideoUpgrade = SingleMediaUpgradeAlertConfiguration(
+            title: Alert.VideoUpgrade.TwoWay.title,
+            titleImage: Asset.upgradeVideo.image,
             decline: Alert.Action.decline,
             accept: Alert.Action.accept
         )
         let microphoneSettings = SettingsAlertConfiguration(
             title: Alert.MicrophonePermission.title,
             message: Alert.MicrophonePermission.message,
+            settingsTitle: Alert.Action.settings,
+            cancelTitle: Alert.Action.cancel
+        )
+        let cameraSettings = SettingsAlertConfiguration(
+            title: Alert.CameraPermission.title,
+            message: Alert.CameraPermission.message,
             settingsTitle: Alert.Action.settings,
             cancelTitle: Alert.Action.cancel
         )
@@ -76,7 +94,10 @@ extension Theme {
             operatorsUnavailable: operatorsUnavailable,
             mediaUpgrade: mediaUpgrade,
             audioUpgrade: audioUpgrade,
+            oneWayVideoUpgrade: oneWayVideoUpgrade,
+            twoWayVideoUpgrade: twoWayVideoUpgrade,
             microphoneSettings: microphoneSettings,
+            cameraSettings: cameraSettings,
             unexpectedError: unexpected,
             apiError: api
         )

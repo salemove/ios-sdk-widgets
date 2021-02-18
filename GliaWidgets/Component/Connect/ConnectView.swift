@@ -34,8 +34,10 @@ class ConnectView: UIView {
 
         switch state {
         case .none:
+            stopConnectTimer()
             hide(animated: animated)
         case .queue:
+            stopConnectTimer()
             operatorView.startAnimating(animated: animated)
             statusView.setFirstText(style.queue.firstText, animated: false)
             statusView.setSecondText(style.queue.secondText, animated: false)
@@ -51,6 +53,7 @@ class ConnectView: UIView {
             startConnectTimer()
             show(animated: animated)
         case .connected(let name, let imageUrl):
+            stopConnectTimer()
             operatorView.stopAnimating(animated: animated)
             operatorView.imageView.setImage(fromUrl: imageUrl, animated: true)
             if let name = name {
@@ -114,7 +117,8 @@ class ConnectView: UIView {
 
 private extension ConnectView {
     private func startConnectTimer() {
-        guard connectTimer == nil else { return }
+        stopConnectTimer()
+        connectCounter = 0
         connectTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
             switch self.state {
             case .connecting:
@@ -125,5 +129,10 @@ private extension ConnectView {
                 self.connectTimer = nil
             }
         }
+    }
+
+    private func stopConnectTimer() {
+        connectTimer?.invalidate()
+        connectTimer = nil
     }
 }

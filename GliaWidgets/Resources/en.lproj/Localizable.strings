@@ -31,9 +31,13 @@
 "alert.mediaUpgrade.phone.info" = "Enter your number and we'll call you";
 
 "alert.audioUpgrade.title" = "{operatorName} has offered you to upgrade to audio";
+"alert.videoUpgrade.oneWay.title" = "{operatorName} has offered you to see their video";
+"alert.videoUpgrade.twoWay.title" = "{operatorName} has offered you to upgrade to video";
 
 "alert.microphonePermission.title" = "Unable to access microphone";
 "alert.microphonePermission.message" = "Allow access to you micrphone from device menu: “Settings” - “Privacy” - “Microphone”";
+"alert.cameraPermission.title" = "Unable to access camera";
+"alert.cameraPermission.message" = "Allow access to you micrphone from device menu: “Settings” - “Privacy” - “Camera”";
 
 "chat.title" = "Chat";
 "chat.endButton.title" = "End";
@@ -57,7 +61,9 @@
 "call.connect.connecting.secondText" = "";
 "call.connect.connected.firstText" = "{operatorName}";
 "call.connect.connected.secondText" = "{callDuration}";
-"call.info" = "You can continue browsing and we’ll connect you automatically.";
+"call.operator.name" = "{operatorName}";
+"call.topText" = "(By default your video will be off)";
+"call.bottomText" = "You can continue browsing and we’ll connect you automatically.";
 "call.buttons.chat.title" = "Chat";
 "call.buttons.video.title" = "Video";
 "call.buttons.mute.inactive.title" = "Mute";

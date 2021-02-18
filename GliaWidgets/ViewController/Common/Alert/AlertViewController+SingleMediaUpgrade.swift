@@ -1,5 +1,5 @@
 extension AlertViewController {
-    func makeAudioUpgradeAlertView(with conf: AudioUpgradeAlertConfiguration,
+    func makeMediaUpgradeAlertView(with conf: SingleMediaUpgradeAlertConfiguration,
                                    accepted: @escaping () -> Void,
                                    declined: @escaping () -> Void) -> AlertView {
         let alertView = viewFactory.makeAlertView()

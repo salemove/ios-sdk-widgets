@@ -4,7 +4,8 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
     enum DelegateEvent {
         case back
         case engaged(operatorImageUrl: String?)
-        case audioUpgradeAccepted(AnswerWithSuccessBlock)
+        case mediaUpgradeAccepted(offer: MediaUpgradeOffer,
+                                  answer: AnswerWithSuccessBlock)
         case call
         case finished
     }
@@ -53,8 +54,8 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
         }
         viewModel.delegate = { [weak self] event in
             switch event {
-            case .audioUpgradeAccepted(let answer):
-                self?.delegate?(.audioUpgradeAccepted(answer))
+            case .mediaUpgradeAccepted(offer: let offer, answer: let answer):
+                self?.delegate?(.mediaUpgradeAccepted(offer: offer, answer: answer))
             case .call:
                 self?.delegate?(.call)
             }

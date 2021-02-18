@@ -7,11 +7,16 @@ extension Theme {
         let header = HeaderStyle(
             titleFont: font.subtitle,
             titleColor: color.baseLight,
-            leftItemColor: color.baseLight,
-            rightItemColor: color.baseLight,
             backgroundColor: .clear
         )
-
+        let backButton = HeaderButtonStyle(
+            image: Asset.back.image,
+            color: color.baseLight
+        )
+        let closeButton = HeaderButtonStyle(
+            image: Asset.close.image,
+            color: color.baseLight
+        )
         let operatorImage = UserImageStyle(
             placeholderImage: Asset.operatorPlaceholder.image,
             placeholderColor: color.baseLight,
@@ -66,9 +71,19 @@ extension Theme {
             preferredStatusBarStyle: .lightContent,
             audioTitle: Call.Audio.title,
             videoTitle: Call.Video.title,
-            infoText: Call.info,
-            infoTextFont: font.bodyText,
-            infoTextColor: color.baseLight,
+            backButton: backButton,
+            closeButton: closeButton,
+            operatorName: Call.Operator.name,
+            operatorNameFont: font.header1,
+            operatorNameColor: color.baseLight,
+            durationFont: font.bodyText,
+            durationColor: color.baseLight,
+            topText: Call.topText,
+            topTextFont: font.subtitle,
+            topTextColor: color.baseLight,
+            bottomText: Call.bottomText,
+            bottomTextFont: font.bodyText,
+            bottomTextColor: color.baseLight,
             buttonBar: buttonBarStyle
         )
     }

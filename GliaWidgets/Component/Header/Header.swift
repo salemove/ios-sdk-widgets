@@ -2,9 +2,24 @@ import UIKit
 import PureLayout
 
 class Header: UIView {
+    enum Effect {
+        case none
+        case blur
+    }
+
     var title: String? {
         get { return titleLabel.text }
         set { titleLabel.text = newValue }
+    }
+    var effect: Effect = .none {
+        didSet {
+            switch effect {
+            case .none:
+                effectView.isHidden = true
+            case .blur:
+                effectView.isHidden = false
+            }
+        }
     }
 
     private let style: HeaderStyle
@@ -12,7 +27,8 @@ class Header: UIView {
     private let rightItemContainer = UIView()
     private let titleLabel = UILabel()
     private let contentView = UIView()
-    private var heightLayoutConstraint: NSLayoutConstraint?
+    private var effectView = UIVisualEffectView(effect: UIBlurEffect(style: .prominent))
+    private var heightConstraint: NSLayoutConstraint?
     private let kContentInsets = UIEdgeInsets(top: 0, left: 16, bottom: 10, right: 16)
     private let kContentHeight: CGFloat = 30
     private let kHeight: CGFloat = 58
@@ -35,12 +51,10 @@ class Header: UIView {
     }
 
     public func setLeftItem(_ item: UIView?, animated: Bool) {
-        item?.tintColor = style.leftItemColor
         setItem(item, to: leftItemContainer, animated: animated)
     }
 
     public func setRightItem(_ item: UIView?, animated: Bool) {
-        item?.tintColor = style.rightItemColor
         setItem(item, to: rightItemContainer, animated: animated)
     }
 
@@ -67,6 +81,7 @@ class Header: UIView {
     }
 
     private func setup() {
+        effect = .none
         backgroundColor = style.backgroundColor
 
         titleLabel.font = style.titleFont
@@ -75,7 +90,10 @@ class Header: UIView {
     }
 
     private func layout() {
-        heightLayoutConstraint = autoSetDimension(.height, toSize: kHeight)
+        heightConstraint = autoSetDimension(.height, toSize: kHeight)
+
+        addSubview(effectView)
+        effectView.autoPinEdgesToSuperviewEdges()
 
         addSubview(contentView)
         contentView.autoPinEdgesToSuperviewEdges(with: kContentInsets, excludingEdge: .top)
@@ -98,6 +116,6 @@ class Header: UIView {
     }
 
     private func updateHeight() {
-        heightLayoutConstraint?.constant = kHeight + safeAreaInsets.top
+        heightConstraint?.constant = kHeight + safeAreaInsets.top
     }
 }

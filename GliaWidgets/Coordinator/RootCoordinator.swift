@@ -49,17 +49,18 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
             engagement = .chat(chatViewController)
             navigationPresenter.setViewControllers([chatViewController],
                                                    animated: false)
-        case .audioCall:
-            let call = Call(.audio)
+        case .audioCall, .videoCall:
+            let kind: CallKind = engagementKind == .audioCall
+                ? .audio
+                : .video
+            let call = Call(kind)
             let chatViewController = startChat(withAction: .none)
-            let callViewController = startCall(call, withAction: .startEngagement)
+            let callViewController = startCall(call, withAction: .engagement)
             engagement = .call(callViewController,
                                chatViewController,
                                .none)
             navigationPresenter.setViewControllers([callViewController],
                                                    animated: false)
-        case .videoCall:
-            break
         }
 
         presentWindow(animated: true)
@@ -102,8 +103,8 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
                 }
             case .engaged(operatorImageUrl: let url):
                 self?.window?.bubbleKind = .userImage(url: url)
-            case .audioUpgradeAccepted(let answer):
-                self?.audioUpgradeAccepted(answer: answer)
+            case .mediaUpgradeAccepted(offer: let offer, answer: let answer):
+                self?.mediaUpgradeAccepted(offer: offer, answer: answer)
             case .call:
                 switch self?.engagement {
                 case .call(let callViewController, _, _):
@@ -202,11 +203,12 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
 }
 
 extension RootCoordinator {
-    private func audioUpgradeAccepted(answer: @escaping AnswerWithSuccessBlock) {
+    private func mediaUpgradeAccepted(offer: MediaUpgradeOffer, answer: @escaping AnswerWithSuccessBlock) {
         switch engagement {
         case .chat(let chatViewController):
-            let call = Call(.audio)
-            let callViewController = startCall(call, withAction: .startAudio(answer))
+            guard let kind = CallKind(with: offer) else { return }
+            let call = Call(kind)
+            let callViewController = startCall(call, withAction: .call(offer: offer, answer: answer))
             engagement = .call(callViewController,
                                chatViewController,
                                .chat)

@@ -21,14 +21,15 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case refreshAll
         case scrollToBottom(animated: Bool)
         case updateItemsUserImage(animated: Bool)
-        case offerAudioUpgrade(AudioUpgradeAlertConfiguration,
+        case offerMediaUpgrade(SingleMediaUpgradeAlertConfiguration,
                                accepted: () -> Void,
                                declined: () -> Void)
         case showCallBubble(imageUrl: String?)
     }
 
     enum DelegateEvent {
-        case audioUpgradeAccepted(AnswerWithSuccessBlock)
+        case mediaUpgradeAccepted(offer: MediaUpgradeOffer,
+                                  answer: AnswerWithSuccessBlock)
         case call
     }
 
@@ -163,19 +164,35 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     }
 
     private func offerMediaUpgrade(_ offer: MediaUpgradeOffer, answer: @escaping AnswerWithSuccessBlock) {
-        let operatorName = interactor.engagedOperator?.firstName
-
         switch offer.type {
         case .audio:
-            action?(.offerAudioUpgrade(alertConfiguration.audioUpgrade.withOperatorName(operatorName),
-                                       accepted: {
-                                        self.delegate?(.audioUpgradeAccepted(answer))
-                                        self.action?(.showCallBubble(imageUrl: self.interactor.engagedOperator?.picture?.url))
-                                       },
-                                       declined: { answer(false, nil) }))
+            offerMediaUpgrade(with: alertConfiguration.audioUpgrade,
+                              offer: offer,
+                              answer: answer)
+        case .video:
+            let configuration = offer.direction == .oneWay
+                ? alertConfiguration.oneWayVideoUpgrade
+                : alertConfiguration.twoWayVideoUpgrade
+            offerMediaUpgrade(with: configuration,
+                              offer: offer,
+                              answer: answer)
         default:
             break
         }
+    }
+
+    private func offerMediaUpgrade(with configuration: SingleMediaUpgradeAlertConfiguration,
+                                   offer: MediaUpgradeOffer,
+                                   answer: @escaping AnswerWithSuccessBlock) {
+        guard isViewActive else { return }
+        let operatorName = interactor.engagedOperator?.firstName
+        let onAccepted = {
+            self.delegate?(.mediaUpgradeAccepted(offer: offer, answer: answer))
+            self.action?(.showCallBubble(imageUrl: self.interactor.engagedOperator?.picture?.url))
+        }
+        action?(.offerMediaUpgrade(configuration.withOperatorName(operatorName),
+                                   accepted: { onAccepted() },
+                                   declined: { answer(false, nil) }))
     }
 
     override func interactorEvent(_ event: InteractorEvent) {
@@ -279,13 +296,17 @@ extension ChatViewModel {
     private func onCall(_ call: Call?) {
         guard let call = call else { return }
 
+        let kindProvider = ValueProvider<CallKind>(with: call.kind.value)
         let durationProvider = ValueProvider<Int>(with: 0)
-        let item = ChatItem(kind: .callUpgrade(call.kind,
+        let item = ChatItem(kind: .callUpgrade(kindProvider,
                                                durationProvider: durationProvider))
         appendItem(item, to: messagesSection, animated: true)
         action?(.scrollToBottom(animated: true))
 
-        call.duration.addObserver(self) { duration, _ in
+        call.kind.addObserver(self) { kind, _ in
+            kindProvider.value = kind
+        }
+        call.duration.addObserver(item) { duration, _ in
             durationProvider.value = duration
         }
     }

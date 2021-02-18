@@ -27,8 +27,16 @@ class CallViewController: EngagementViewController, MediaUpgradePresenter {
 
     override var preferredStatusBarStyle: UIStatusBarStyle { return viewFactory.theme.call.preferredStatusBarStyle }
 
+    override func willRotate(to orientation: UIInterfaceOrientation, duration: TimeInterval) {
+        guard let view = view as? CallView else { return }
+        view.willRotate(to: orientation, duration: duration)
+    }
+
     private func bind(viewModel: CallViewModel, to view: CallView) {
-        view.buttonBar.buttonTapped = { viewModel.event(.buttonTapped(.init(with: $0))) }
+        showBackButton(with: viewFactory.theme.call.backButton, in: view.header)
+        showCloseButton(with: viewFactory.theme.call.closeButton, in: view.header)
+
+        view.callButtonTapped = { viewModel.event(.callButtonTapped(.init(with: $0))) }
 
         viewModel.action = { action in
             switch action {
@@ -36,18 +44,28 @@ class CallViewController: EngagementViewController, MediaUpgradePresenter {
                 view.setConnectState(.queue, animated: false)
             case .connecting(name: let name, imageUrl: let imageUrl):
                 view.setConnectState(.connecting(name: name, imageUrl: imageUrl), animated: true)
+                view.connectView.operatorView.setSize(.normal, animated: true)
             case .connected(name: let name, imageUrl: let imageUrl):
                 view.setConnectState(.connected(name: name, imageUrl: imageUrl), animated: true)
                 view.connectView.operatorView.setSize(.large, animated: true)
+            case .setTopTextHidden(let hidden):
+                view.topLabel.isHidden = hidden
+            case .setBottomTextHidden(let hidden):
+                view.bottomLabel.isHidden = hidden
+            case .switchToVideoMode:
+                view.switchTo(.video)
+            case .switchToUpgradeMode:
+                view.switchTo(.upgrading)
             case .showEndButton:
                 let rightItem = ActionButton(with: self.viewFactory.theme.chat.endButton)
                 rightItem.tap = { viewModel.event(.closeTapped) }
                 view.header.setRightItem(rightItem, animated: true)
             case .setTitle(let title):
                 view.header.title = title
-            case .setInfoText(let text):
-                view.infoLabel.text = text
+            case .setOperatorName(let name):
+                view.operatorNameLabel.text = name
             case .setCallDurationText(let text):
+                view.durationLabel.text = text
                 view.connectView.statusView.setSecondText(text, animated: false)
             case .showButtons(let buttons):
                 let buttons = buttons.map({ CallButton.Kind(with: $0) })
@@ -59,12 +77,18 @@ class CallViewController: EngagementViewController, MediaUpgradePresenter {
                 let button = CallButton.Kind(with: button)
                 let state = CallButton.State(with: state)
                 view.buttonBar.setButton(button, state: state)
+            case .offerMediaUpgrade(let conf, accepted: let accepted, declined: let declined):
+                self.offerMediaUpgrade(with: conf, accepted: accepted, declined: declined)
+            case .setRemoteVideo(let streamView):
+                view.remoteVideoView.streamView = streamView
+            case .setLocalVideo(let streamView):
+                view.localVideoView.streamView = streamView
             }
         }
     }
 }
 
-private extension CallViewModel.Button {
+private extension CallViewModel.CallButton {
     init(with kind: CallButton.Kind) {
         switch kind {
         case .chat:
@@ -82,7 +106,7 @@ private extension CallViewModel.Button {
 }
 
 private extension CallButton.Kind {
-    init(with button: CallViewModel.Button) {
+    init(with button: CallViewModel.CallButton) {
         switch button {
         case .chat:
             self = .chat
@@ -99,7 +123,7 @@ private extension CallButton.Kind {
 }
 
 private extension CallButton.State {
-    init(with state: CallViewModel.ButtonState) {
+    init(with state: CallViewModel.CallButtonState) {
         switch state {
         case .active:
             self = .active

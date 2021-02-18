@@ -1,12 +1,12 @@
 import SalemoveSDK
 
-struct ChatItem {
+class ChatItem {
     enum Kind {
         case queueOperator
         case outgoingMessage(OutgoingMessage)
         case visitorMessage(ChatMessage, status: String?)
         case operatorMessage(ChatMessage, showsImage: Bool, imageUrl: String?)
-        case callUpgrade(CallKind, durationProvider: ValueProvider<Int>)
+        case callUpgrade(ValueProvider<CallKind>, durationProvider: ValueProvider<Int>)
     }
 
     var isOperatorMessage: Bool {

@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1A0452DD25DBD0A4000DA0C1 /* HeaderButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0452DC25DBD0A4000DA0C1 /* HeaderButton.swift */; };
+		1A0452E325DBD0B4000DA0C1 /* HeaderButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0452E225DBD0B4000DA0C1 /* HeaderButtonStyle.swift */; };
+		1A0452EA25DBE259000DA0C1 /* MessageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0452E925DBE259000DA0C1 /* MessageButton.swift */; };
+		1A0452F025DBE268000DA0C1 /* MessageButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0452EF25DBE268000DA0C1 /* MessageButtonStyle.swift */; };
 		1A0C142925B84E5500B00695 /* EngagementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0C142825B84E5500B00695 /* EngagementViewController.swift */; };
 		1A0C142D25B8545600B00695 /* EngagementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0C142C25B8545600B00695 /* EngagementView.swift */; };
 		1A0C143125B8547200B00695 /* EngagementStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0C143025B8547200B00695 /* EngagementStyle.swift */; };
@@ -52,15 +56,13 @@
 		1A4AF5C725AEEA42002CD0F4 /* Operator+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4AF5C625AEEA42002CD0F4 /* Operator+Extensions.swift */; };
 		1A4AF5CD25AEF4A0002CD0F4 /* AlertViewController+Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4AF5CC25AEF4A0002CD0F4 /* AlertViewController+Message.swift */; };
 		1A4AF5D325AEF543002CD0F4 /* AlertViewController+Confirmation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4AF5D225AEF543002CD0F4 /* AlertViewController+Confirmation.swift */; };
-		1A4AF5D725AEF584002CD0F4 /* AlertViewController+MediaUpgrade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4AF5D625AEF584002CD0F4 /* AlertViewController+MediaUpgrade.swift */; };
+		1A4AF5D725AEF584002CD0F4 /* AlertViewController+MultipleMediaUpgrade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4AF5D625AEF584002CD0F4 /* AlertViewController+MultipleMediaUpgrade.swift */; };
 		1A54B83825A4723E00C9393E /* ChatStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A54B83725A4723E00C9393E /* ChatStorage.swift */; };
 		1A56D53D257E24A400141BC8 /* PoweredBy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A56D53C257E24A400141BC8 /* PoweredBy.swift */; };
 		1A5F494B25CA86CA003E3678 /* Call.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5F494A25CA86CA003E3678 /* Call.swift */; };
 		1A5F495525CBE84A003E3678 /* SettingsAlertConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5F495425CBE84A003E3678 /* SettingsAlertConfiguration.swift */; };
 		1A5F813C2588B72100A605DA /* ChatMessageEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5F813B2588B72100A605DA /* ChatMessageEntryView.swift */; };
 		1A5F81402588B7BD00A605DA /* ChatMessageEntryStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5F813F2588B7BD00A605DA /* ChatMessageEntryStyle.swift */; };
-		1A5F81442588BBD900A605DA /* ChatPickMediaButtonProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5F81432588BBD900A605DA /* ChatPickMediaButtonProperties.swift */; };
-		1A5F81482588BBF700A605DA /* ChatSendButtonProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5F81472588BBF700A605DA /* ChatSendButtonProperties.swift */; };
 		1A5F814D2588C0B800A605DA /* KeyboardObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5F814C2588C0B800A605DA /* KeyboardObserver.swift */; };
 		1A5F815F258A43E600A605DA /* Section.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5F815E258A43E600A605DA /* Section.swift */; };
 		1A5F8182258B4F0E00A605DA /* OutgoingMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5F8181258B4F0E00A605DA /* OutgoingMessage.swift */; };
@@ -99,7 +101,6 @@
 		1A60B0152567FC7000E53F53 /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60B0142567FC7000E53F53 /* Button.swift */; };
 		1A60B0192567FC8A00E53F53 /* ButtonKind.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60B0182567FC8A00E53F53 /* ButtonKind.swift */; };
 		1A60B01D2567FCAD00E53F53 /* ButtonProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60B01C2567FCAD00E53F53 /* ButtonProperties.swift */; };
-		1A60B0202567FD1B00E53F53 /* BackButtonProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60B01F2567FD1B00E53F53 /* BackButtonProperties.swift */; };
 		1A60B0232567FD2D00E53F53 /* CloseButtonProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60B0222567FD2D00E53F53 /* CloseButtonProperties.swift */; };
 		1A60B0272568070800E53F53 /* UIStackView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60B0262568070800E53F53 /* UIStackView+Extensions.swift */; };
 		1A60B02D256BF7FF00E53F53 /* OperatorChatMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60B02C256BF7FF00E53F53 /* OperatorChatMessageView.swift */; };
@@ -132,16 +133,17 @@
 		1ABD6C5925B5758000D56EFA /* BubbleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD6C5825B5758000D56EFA /* BubbleStyle.swift */; };
 		1ABD6C5D25B59D1C00D56EFA /* BubbleWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD6C5C25B59D1C00D56EFA /* BubbleWindow.swift */; };
 		1ABD6C6125B5ABA100D56EFA /* UIView+Screenshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD6C6025B5ABA100D56EFA /* UIView+Screenshot.swift */; };
-		1ABD6C8125B6E97400D56EFA /* MediaUpgradeAlertConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD6C8025B6E97400D56EFA /* MediaUpgradeAlertConfiguration.swift */; };
-		1ABD6C8725B6EFD000D56EFA /* AudioUpgradeAlertConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD6C8625B6EFD000D56EFA /* AudioUpgradeAlertConfiguration.swift */; };
+		1ABD6C8125B6E97400D56EFA /* MultipleMediaUpgradeAlertConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD6C8025B6E97400D56EFA /* MultipleMediaUpgradeAlertConfiguration.swift */; };
+		1ABD6C8725B6EFD000D56EFA /* SingleMediaUpgradeAlertConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD6C8625B6EFD000D56EFA /* SingleMediaUpgradeAlertConfiguration.swift */; };
 		1ABD6C9225B6F2D200D56EFA /* String+TemplateString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD6C9125B6F2D200D56EFA /* String+TemplateString.swift */; };
-		1ABD6C9625B6F46700D56EFA /* AlertViewController+AudioUpgrade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD6C9525B6F46700D56EFA /* AlertViewController+AudioUpgrade.swift */; };
+		1ABD6C9625B6F46700D56EFA /* AlertViewController+SingleMediaUpgrade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD6C9525B6F46700D56EFA /* AlertViewController+SingleMediaUpgrade.swift */; };
 		1ABD6CAC25B71D1B00D56EFA /* CallViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD6CAB25B71D1B00D56EFA /* CallViewModel.swift */; };
 		1AC7A7482582237500567FF8 /* GliaWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC7A7472582237500567FF8 /* GliaWindow.swift */; };
 		1AC7A74F2582571100567FF8 /* Interactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC7A74E2582571100567FF8 /* Interactor.swift */; };
 		1AC7A7552582594200567FF8 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC7A7542582594200567FF8 /* Configuration.swift */; };
 		1AC7A77B25838AE800567FF8 /* ChatItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC7A77A25838AE800567FF8 /* ChatItem.swift */; };
 		1AC7A7AF258786CB00567FF8 /* EngagementViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC7A7AE258786CB00567FF8 /* EngagementViewModel.swift */; };
+		1AC8AADD25D419CE00DAFE50 /* VideoStreamView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AC8AADC25D419CE00DAFE50 /* VideoStreamView.swift */; };
 		1AE15E38257A578B00A642C0 /* MessageAlertConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE15E37257A578B00A642C0 /* MessageAlertConfiguration.swift */; };
 		1AE15E3B257A5CC900A642C0 /* AlertConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE15E3A257A5CC900A642C0 /* AlertConfiguration.swift */; };
 		1AE15E49257A6BD200A642C0 /* ConfirmationAlertConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE15E48257A6BD200A642C0 /* ConfirmationAlertConfiguration.swift */; };
@@ -182,6 +184,10 @@
 
 /* Begin PBXFileReference section */
 		0A249CE317961801DDAD22AE /* Pods_GliaWidgets.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GliaWidgets.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		1A0452DC25DBD0A4000DA0C1 /* HeaderButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderButton.swift; sourceTree = "<group>"; };
+		1A0452E225DBD0B4000DA0C1 /* HeaderButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderButtonStyle.swift; sourceTree = "<group>"; };
+		1A0452E925DBE259000DA0C1 /* MessageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageButton.swift; sourceTree = "<group>"; };
+		1A0452EF25DBE268000DA0C1 /* MessageButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageButtonStyle.swift; sourceTree = "<group>"; };
 		1A0C142825B84E5500B00695 /* EngagementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EngagementViewController.swift; sourceTree = "<group>"; };
 		1A0C142C25B8545600B00695 /* EngagementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EngagementView.swift; sourceTree = "<group>"; };
 		1A0C143025B8547200B00695 /* EngagementStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EngagementStyle.swift; sourceTree = "<group>"; };
@@ -231,7 +237,7 @@
 		1A4AF5C625AEEA42002CD0F4 /* Operator+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Operator+Extensions.swift"; sourceTree = "<group>"; };
 		1A4AF5CC25AEF4A0002CD0F4 /* AlertViewController+Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlertViewController+Message.swift"; sourceTree = "<group>"; };
 		1A4AF5D225AEF543002CD0F4 /* AlertViewController+Confirmation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlertViewController+Confirmation.swift"; sourceTree = "<group>"; };
-		1A4AF5D625AEF584002CD0F4 /* AlertViewController+MediaUpgrade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlertViewController+MediaUpgrade.swift"; sourceTree = "<group>"; };
+		1A4AF5D625AEF584002CD0F4 /* AlertViewController+MultipleMediaUpgrade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlertViewController+MultipleMediaUpgrade.swift"; sourceTree = "<group>"; };
 		1A54B83725A4723E00C9393E /* ChatStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatStorage.swift; sourceTree = "<group>"; };
 		1A56D53C257E24A400141BC8 /* PoweredBy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoweredBy.swift; sourceTree = "<group>"; };
 		1A56D5CF257E940900141BC8 /* PureLayout.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PureLayout.framework; path = Carthage/Build/iOS/PureLayout.framework; sourceTree = "<group>"; };
@@ -239,8 +245,6 @@
 		1A5F495425CBE84A003E3678 /* SettingsAlertConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAlertConfiguration.swift; sourceTree = "<group>"; };
 		1A5F813B2588B72100A605DA /* ChatMessageEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageEntryView.swift; sourceTree = "<group>"; };
 		1A5F813F2588B7BD00A605DA /* ChatMessageEntryStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageEntryStyle.swift; sourceTree = "<group>"; };
-		1A5F81432588BBD900A605DA /* ChatPickMediaButtonProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatPickMediaButtonProperties.swift; sourceTree = "<group>"; };
-		1A5F81472588BBF700A605DA /* ChatSendButtonProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatSendButtonProperties.swift; sourceTree = "<group>"; };
 		1A5F814C2588C0B800A605DA /* KeyboardObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardObserver.swift; sourceTree = "<group>"; };
 		1A5F815E258A43E600A605DA /* Section.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Section.swift; sourceTree = "<group>"; };
 		1A5F8181258B4F0E00A605DA /* OutgoingMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutgoingMessage.swift; sourceTree = "<group>"; };
@@ -279,7 +283,6 @@
 		1A60B0142567FC7000E53F53 /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
 		1A60B0182567FC8A00E53F53 /* ButtonKind.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonKind.swift; sourceTree = "<group>"; };
 		1A60B01C2567FCAD00E53F53 /* ButtonProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonProperties.swift; sourceTree = "<group>"; };
-		1A60B01F2567FD1B00E53F53 /* BackButtonProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButtonProperties.swift; sourceTree = "<group>"; };
 		1A60B0222567FD2D00E53F53 /* CloseButtonProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseButtonProperties.swift; sourceTree = "<group>"; };
 		1A60B0262568070800E53F53 /* UIStackView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+Extensions.swift"; sourceTree = "<group>"; };
 		1A60B02C256BF7FF00E53F53 /* OperatorChatMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperatorChatMessageView.swift; sourceTree = "<group>"; };
@@ -312,16 +315,17 @@
 		1ABD6C5825B5758000D56EFA /* BubbleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleStyle.swift; sourceTree = "<group>"; };
 		1ABD6C5C25B59D1C00D56EFA /* BubbleWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleWindow.swift; sourceTree = "<group>"; };
 		1ABD6C6025B5ABA100D56EFA /* UIView+Screenshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Screenshot.swift"; sourceTree = "<group>"; };
-		1ABD6C8025B6E97400D56EFA /* MediaUpgradeAlertConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaUpgradeAlertConfiguration.swift; sourceTree = "<group>"; };
-		1ABD6C8625B6EFD000D56EFA /* AudioUpgradeAlertConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioUpgradeAlertConfiguration.swift; sourceTree = "<group>"; };
+		1ABD6C8025B6E97400D56EFA /* MultipleMediaUpgradeAlertConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleMediaUpgradeAlertConfiguration.swift; sourceTree = "<group>"; };
+		1ABD6C8625B6EFD000D56EFA /* SingleMediaUpgradeAlertConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleMediaUpgradeAlertConfiguration.swift; sourceTree = "<group>"; };
 		1ABD6C9125B6F2D200D56EFA /* String+TemplateString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+TemplateString.swift"; sourceTree = "<group>"; };
-		1ABD6C9525B6F46700D56EFA /* AlertViewController+AudioUpgrade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlertViewController+AudioUpgrade.swift"; sourceTree = "<group>"; };
+		1ABD6C9525B6F46700D56EFA /* AlertViewController+SingleMediaUpgrade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlertViewController+SingleMediaUpgrade.swift"; sourceTree = "<group>"; };
 		1ABD6CAB25B71D1B00D56EFA /* CallViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallViewModel.swift; sourceTree = "<group>"; };
 		1AC7A7472582237500567FF8 /* GliaWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GliaWindow.swift; sourceTree = "<group>"; };
 		1AC7A74E2582571100567FF8 /* Interactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interactor.swift; sourceTree = "<group>"; };
 		1AC7A7542582594200567FF8 /* Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
 		1AC7A77A25838AE800567FF8 /* ChatItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatItem.swift; sourceTree = "<group>"; };
 		1AC7A7AE258786CB00567FF8 /* EngagementViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EngagementViewModel.swift; sourceTree = "<group>"; };
+		1AC8AADC25D419CE00DAFE50 /* VideoStreamView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoStreamView.swift; sourceTree = "<group>"; };
 		1AE15E37257A578B00A642C0 /* MessageAlertConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageAlertConfiguration.swift; sourceTree = "<group>"; };
 		1AE15E3A257A5CC900A642C0 /* AlertConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertConfiguration.swift; sourceTree = "<group>"; };
 		1AE15E48257A6BD200A642C0 /* ConfirmationAlertConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationAlertConfiguration.swift; sourceTree = "<group>"; };
@@ -361,9 +365,28 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1A0452DB25DBD08E000DA0C1 /* Header */ = {
+			isa = PBXGroup;
+			children = (
+				1A0452DC25DBD0A4000DA0C1 /* HeaderButton.swift */,
+				1A0452E225DBD0B4000DA0C1 /* HeaderButtonStyle.swift */,
+			);
+			path = Header;
+			sourceTree = "<group>";
+		};
+		1A0452E825DBE231000DA0C1 /* Message */ = {
+			isa = PBXGroup;
+			children = (
+				1A0452E925DBE259000DA0C1 /* MessageButton.swift */,
+				1A0452EF25DBE268000DA0C1 /* MessageButtonStyle.swift */,
+			);
+			path = Message;
+			sourceTree = "<group>";
+		};
 		1A0C143425B85C1E00B00695 /* Call */ = {
 			isa = PBXGroup;
 			children = (
+				1AC8AADB25D419BC00DAFE50 /* Video */,
 				1A0C143525B85C3300B00695 /* CallView.swift */,
 				1A0C143925B85C3D00B00695 /* CallStyle.swift */,
 			);
@@ -758,7 +781,7 @@
 		1A60AFD12566990F00E53F53 /* Chat */ = {
 			isa = PBXGroup;
 			children = (
-				1A8B61D025C97481000D780E /* CallUpgrade */,
+				1A8B61D025C97481000D780E /* Upgrade */,
 				1A5F813A2588B70A00A605DA /* Entry */,
 				1A60B02B256BF7C200E53F53 /* Message */,
 				1AC7A7822583B65B00567FF8 /* Cells */,
@@ -839,6 +862,8 @@
 		1A60B0122567FC2900E53F53 /* Button */ = {
 			isa = PBXGroup;
 			children = (
+				1A0452E825DBE231000DA0C1 /* Message */,
+				1A0452DB25DBD08E000DA0C1 /* Header */,
 				1AC7A7B42587A07D00567FF8 /* Action */,
 				1A60B0132567FC6400E53F53 /* Style */,
 				1A60B0142567FC7000E53F53 /* Button.swift */,
@@ -859,11 +884,8 @@
 			isa = PBXGroup;
 			children = (
 				1A60B01C2567FCAD00E53F53 /* ButtonProperties.swift */,
-				1A60B01F2567FD1B00E53F53 /* BackButtonProperties.swift */,
 				1A60B0222567FD2D00E53F53 /* CloseButtonProperties.swift */,
 				1A63B2EC257A312700508478 /* AlertCloseButtonProperties.swift */,
-				1A5F81432588BBD900A605DA /* ChatPickMediaButtonProperties.swift */,
-				1A5F81472588BBF700A605DA /* ChatSendButtonProperties.swift */,
 			);
 			path = Properties;
 			sourceTree = "<group>";
@@ -928,8 +950,8 @@
 				1A63B2F2257A3F3D00508478 /* AlertViewController.swift */,
 				1A4AF5CC25AEF4A0002CD0F4 /* AlertViewController+Message.swift */,
 				1A4AF5D225AEF543002CD0F4 /* AlertViewController+Confirmation.swift */,
-				1A4AF5D625AEF584002CD0F4 /* AlertViewController+MediaUpgrade.swift */,
-				1ABD6C9525B6F46700D56EFA /* AlertViewController+AudioUpgrade.swift */,
+				1A4AF5D625AEF584002CD0F4 /* AlertViewController+MultipleMediaUpgrade.swift */,
+				1ABD6C9525B6F46700D56EFA /* AlertViewController+SingleMediaUpgrade.swift */,
 			);
 			path = Alert;
 			sourceTree = "<group>";
@@ -970,13 +992,13 @@
 			path = Status;
 			sourceTree = "<group>";
 		};
-		1A8B61D025C97481000D780E /* CallUpgrade */ = {
+		1A8B61D025C97481000D780E /* Upgrade */ = {
 			isa = PBXGroup;
 			children = (
 				1A8B61D125C974A1000D780E /* ChatCallUpgradeView.swift */,
 				1A8B61D525C974D0000D780E /* ChatCallUpgradeStyle.swift */,
 			);
-			path = CallUpgrade;
+			path = Upgrade;
 			sourceTree = "<group>";
 		};
 		1AA7389A2578DB6800E1120F /* Connect */ = {
@@ -1057,8 +1079,8 @@
 				1AE15E3A257A5CC900A642C0 /* AlertConfiguration.swift */,
 				1AE15E37257A578B00A642C0 /* MessageAlertConfiguration.swift */,
 				1AE15E48257A6BD200A642C0 /* ConfirmationAlertConfiguration.swift */,
-				1ABD6C8025B6E97400D56EFA /* MediaUpgradeAlertConfiguration.swift */,
-				1ABD6C8625B6EFD000D56EFA /* AudioUpgradeAlertConfiguration.swift */,
+				1ABD6C8025B6E97400D56EFA /* MultipleMediaUpgradeAlertConfiguration.swift */,
+				1ABD6C8625B6EFD000D56EFA /* SingleMediaUpgradeAlertConfiguration.swift */,
 				1A5F495425CBE84A003E3678 /* SettingsAlertConfiguration.swift */,
 			);
 			path = Alert;
@@ -1071,6 +1093,14 @@
 				1AA738B825790DB400E1120F /* ActionButtonStyle.swift */,
 			);
 			path = Action;
+			sourceTree = "<group>";
+		};
+		1AC8AADB25D419BC00DAFE50 /* Video */ = {
+			isa = PBXGroup;
+			children = (
+				1AC8AADC25D419CE00DAFE50 /* VideoStreamView.swift */,
+			);
+			path = Video;
 			sourceTree = "<group>";
 		};
 		69BB38CE6B54F4C95ED474B6 /* Pods */ = {
@@ -1338,16 +1368,16 @@
 				1A6EBB0325ADB82000EE325D /* MediaUpgradeActionView.swift in Sources */,
 				1A60AFBC256682C800E53F53 /* SubFlowCoordinator.swift in Sources */,
 				1A0C9A8C25C4092400815406 /* CallButtonStyle.swift in Sources */,
-				1A4AF5D725AEF584002CD0F4 /* AlertViewController+MediaUpgrade.swift in Sources */,
+				1A4AF5D725AEF584002CD0F4 /* AlertViewController+MultipleMediaUpgrade.swift in Sources */,
 				1A6075E7258220E300569B0E /* UserImageStyle.swift in Sources */,
 				1ABD6C5D25B59D1C00D56EFA /* BubbleWindow.swift in Sources */,
 				1AE15E38257A578B00A642C0 /* MessageAlertConfiguration.swift in Sources */,
 				1AC7A77B25838AE800567FF8 /* ChatItem.swift in Sources */,
-				1ABD6C9625B6F46700D56EFA /* AlertViewController+AudioUpgrade.swift in Sources */,
+				1ABD6C9625B6F46700D56EFA /* AlertViewController+SingleMediaUpgrade.swift in Sources */,
 				1A38A8A8258B652B0089DE7B /* OperatorChatMessageStyle.swift in Sources */,
 				1A7CA8212574D6760047CBBE /* ConnectOperatorView.swift in Sources */,
-				1A5F81442588BBD900A605DA /* ChatPickMediaButtonProperties.swift in Sources */,
 				1A0C9A7925C16F9700815406 /* Theme+AlertConfiguration.swift in Sources */,
+				1AC8AADD25D419CE00DAFE50 /* VideoStreamView.swift in Sources */,
 				1A4AD3C7256E863900468BFB /* ThemeColor.swift in Sources */,
 				1A63B2F3257A3F3D00508478 /* AlertViewController.swift in Sources */,
 				1A60B01D2567FCAD00E53F53 /* ButtonProperties.swift in Sources */,
@@ -1363,6 +1393,7 @@
 				1A60AF9F25667CA800E53F53 /* FontProvider.swift in Sources */,
 				1A60AFCE2566958900E53F53 /* ViewFactory.swift in Sources */,
 				1A7CA82F25751B5A0047CBBE /* ConnectOperatorStyle.swift in Sources */,
+				1A0452DD25DBD0A4000DA0C1 /* HeaderButton.swift in Sources */,
 				1A60AF96256675C400E53F53 /* UIColor+Extensions.swift in Sources */,
 				1A7CA81D2574D6370047CBBE /* ConnectView.swift in Sources */,
 				1ABD6C5525B574FF00D56EFA /* BubbleView.swift in Sources */,
@@ -1370,8 +1401,10 @@
 				1A60AFE425669B0400E53F53 /* ChatCoordinator.swift in Sources */,
 				1AA738B625790D9900E1120F /* ActionButton.swift in Sources */,
 				1A0C144425B868FC00B00695 /* CallCoordinator.swift in Sources */,
+				1A0452E325DBD0B4000DA0C1 /* HeaderButtonStyle.swift in Sources */,
 				1A5F813C2588B72100A605DA /* ChatMessageEntryView.swift in Sources */,
 				1A60B02D256BF7FF00E53F53 /* OperatorChatMessageView.swift in Sources */,
+				1A0452F025DBE268000DA0C1 /* MessageButtonStyle.swift in Sources */,
 				1A5F815F258A43E600A605DA /* Section.swift in Sources */,
 				1A60AFBF2566834400E53F53 /* ViewController.swift in Sources */,
 				1A60AFF12566A4B300E53F53 /* NavigationPresenter.swift in Sources */,
@@ -1392,7 +1425,6 @@
 				1A60B04D256D0CF600E53F53 /* ChatMessageContentView.swift in Sources */,
 				1A56D53D257E24A400141BC8 /* PoweredBy.swift in Sources */,
 				1A6EB04F25A707CC0007081A /* MessageSender+StringValue.swift in Sources */,
-				1A60B0202567FD1B00E53F53 /* BackButtonProperties.swift in Sources */,
 				1A4AF5CD25AEF4A0002CD0F4 /* AlertViewController+Message.swift in Sources */,
 				1A7CA8242574D68E0047CBBE /* ConnectStatusView.swift in Sources */,
 				1A5F81402588B7BD00A605DA /* ChatMessageEntryStyle.swift in Sources */,
@@ -1405,7 +1437,6 @@
 				1AC7A7AF258786CB00567FF8 /* EngagementViewModel.swift in Sources */,
 				1A6EBB2525ADE36900EE325D /* MediaUpgradePresenter.swift in Sources */,
 				1AA738B925790DB400E1120F /* ActionButtonStyle.swift in Sources */,
-				1A5F81482588BBF700A605DA /* ChatSendButtonProperties.swift in Sources */,
 				1A60B0152567FC7000E53F53 /* Button.swift in Sources */,
 				1ABD6C5925B5758000D56EFA /* BubbleStyle.swift in Sources */,
 				1A6EBB0725ADB84200EE325D /* MediaUpgradeActionStyle.swift in Sources */,
@@ -1420,7 +1451,7 @@
 				1A0C9AC225C9400000815406 /* CallDurationCounter.swift in Sources */,
 				1AA738AE2578E0D500E1120F /* ConnectAnimationView.swift in Sources */,
 				1A8B61D225C974A1000D780E /* ChatCallUpgradeView.swift in Sources */,
-				1ABD6C8125B6E97400D56EFA /* MediaUpgradeAlertConfiguration.swift in Sources */,
+				1ABD6C8125B6E97400D56EFA /* MultipleMediaUpgradeAlertConfiguration.swift in Sources */,
 				1A0C142D25B8545600B00695 /* EngagementView.swift in Sources */,
 				1A5F814D2588C0B800A605DA /* KeyboardObserver.swift in Sources */,
 				1A5F8182258B4F0E00A605DA /* OutgoingMessage.swift in Sources */,
@@ -1429,6 +1460,7 @@
 				1A60B0042567F25600E53F53 /* Header.swift in Sources */,
 				1A60B047256C0B4500E53F53 /* ChatMessageContent.swift in Sources */,
 				1A63B2F6257A469A00508478 /* AlertPresenter.swift in Sources */,
+				1A0452EA25DBE259000DA0C1 /* MessageButton.swift in Sources */,
 				1A5F494B25CA86CA003E3678 /* Call.swift in Sources */,
 				1AE15E49257A6BD200A642C0 /* ConfirmationAlertConfiguration.swift in Sources */,
 				1A60AFB22566821B00E53F53 /* Asset.swift in Sources */,
@@ -1447,7 +1479,7 @@
 				1A63B2ED257A312700508478 /* AlertCloseButtonProperties.swift in Sources */,
 				1A60B0272568070800E53F53 /* UIStackView+Extensions.swift in Sources */,
 				1A60B0232567FD2D00E53F53 /* CloseButtonProperties.swift in Sources */,
-				1ABD6C8725B6EFD000D56EFA /* AudioUpgradeAlertConfiguration.swift in Sources */,
+				1ABD6C8725B6EFD000D56EFA /* SingleMediaUpgradeAlertConfiguration.swift in Sources */,
 				1A0C143A25B85C3D00B00695 /* CallStyle.swift in Sources */,
 				1A60AFE825669C5000E53F53 /* ChatStyle.swift in Sources */,
 				1A4AF5C725AEEA42002CD0F4 /* Operator+Extensions.swift in Sources */,

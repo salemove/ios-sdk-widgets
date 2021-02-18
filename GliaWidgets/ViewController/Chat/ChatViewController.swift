@@ -41,6 +41,9 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter {
     }
 
     private func bind(viewModel: ChatViewModel, to view: ChatView) {
+        showBackButton(with: viewFactory.theme.chat.backButton, in: view.header)
+        showCloseButton(with: viewFactory.theme.chat.closeButton, in: view.header)
+
         view.numberOfSections = { return viewModel.numberOfSections }
         view.numberOfRows = { return viewModel.numberOfItems(in: $0) }
         view.itemForRow = { return viewModel.item(for: $0, in: $1) }
@@ -72,8 +75,8 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter {
                 view.scrollToBottom(animated: animated)
             case .updateItemsUserImage(animated: let animated):
                 view.updateItemsUserImage(animated: animated)
-            case .offerAudioUpgrade(let conf, accepted: let accepted, declined: let declined):
-                self.offerAudioUpgrade(with: conf, accepted: accepted, declined: declined)
+            case .offerMediaUpgrade(let conf, accepted: let accepted, declined: let declined):
+                self.offerMediaUpgrade(with: conf, accepted: accepted, declined: declined)
             case .showCallBubble(let imageUrl):
                 view.showCallBubble(with: imageUrl, animated: true)
             }

@@ -39,7 +39,7 @@ class CallCoordinator: SubFlowCoordinator, FlowCoordinator {
             interactor: interactor,
             alertConfiguration: viewFactory.theme.alertConfiguration,
             call: call,
-            startAction: startAction
+            startWith: startAction
         )
         viewModel.engagementDelegate = { [weak self] event in
             switch event {

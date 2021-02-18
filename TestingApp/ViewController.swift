@@ -18,8 +18,12 @@ class ViewController: UIViewController {
                                     selector: #selector(chatTapped))
         let audioButton = makeButton(title: "Audio call",
                                      selector: #selector(audioTapped))
+        let videoButton = makeButton(title: "Video call",
+                                     selector: #selector(videoTapped))
 
-        let buttonsStackView = UIStackView(arrangedSubviews: [settingsButton, chatButton, audioButton])
+        let buttonsStackView = UIStackView(
+            arrangedSubviews: [settingsButton, chatButton, audioButton, videoButton]
+        )
         buttonsStackView.axis = .vertical
         buttonsStackView.spacing = 20
         view.addSubview(buttonsStackView)
@@ -43,6 +47,10 @@ class ViewController: UIViewController {
 
     @objc private func audioTapped() {
         presentGlia(.audioCall)
+    }
+
+    @objc private func videoTapped() {
+        presentGlia(.videoCall)
     }
 }
 
