@@ -2,7 +2,14 @@ import UIKit
 
 public class View: UIView {
     var currentOrientation: UIInterfaceOrientation {
-        return UIApplication.shared.statusBarOrientation
+        guard
+            #available(iOS 13.0, *),
+            let orientation = UIApplication.shared.windows.first?.windowScene?.interfaceOrientation
+        else {
+            return UIApplication.shared.statusBarOrientation
+        }
+
+        return orientation
     }
 
     public init() {
