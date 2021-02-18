@@ -1,7 +1,10 @@
 import UIKit
 
 class ChatCallUpgradeView: UIView {
-    private let style: ChatCallUpgradeStyle
+    var style: ChatCallUpgradeStyle {
+        didSet { update(with: style) }
+    }
+
     private let durationProvider: ValueProvider<Int>
     private let contentView = UIView()
     private let stackView = UIStackView()
@@ -27,6 +30,14 @@ class ChatCallUpgradeView: UIView {
     }
 
     private func setup() {
+        update(with: style)
+
+        durationProvider.addObserver(self) { duration, _ in
+            self.durationLabel.text = duration.asDurationString
+        }
+    }
+
+    private func update(with style: ChatCallUpgradeStyle) {
         contentView.layer.cornerRadius = 8
         contentView.layer.borderWidth = 1
         contentView.layer.borderColor = style.borderColor.cgColor
@@ -46,10 +57,6 @@ class ChatCallUpgradeView: UIView {
         durationLabel.font = style.durationFont
         durationLabel.textColor = style.durationColor
         durationLabel.textAlignment = .center
-
-        durationProvider.addObserver(self) { duration, _ in
-            self.durationLabel.text = duration.asDurationString
-        }
     }
 
     private func layout() {

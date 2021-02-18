@@ -37,7 +37,7 @@ file_length:
   error: 1200
 
 function_body_length:
-  warning: 40
+  warning: 50
   error: 100
 
 reporter: "xcode" # reporter type (xcode, json, csv, checkstyle, junit, html, emoji)

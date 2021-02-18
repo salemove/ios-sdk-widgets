@@ -148,17 +148,24 @@ class ChatView: EngagementView {
             view.showsOperatorImage = showsImage
             view.setOperatorImage(fromUrl: imageUrl, animated: false)
             return .operatorMessage(view)
-        case .callUpgrade(let callKind, durationProvider: let durationProvider):
-            let callStyle = callKind == .audio
-                ? style.audioUpgrade
-                : style.videoUpgrade
+        case .callUpgrade(let kindProvider, durationProvider: let durationProvider):
+            let callStyle = callUpgradeStyle(for: kindProvider.value)
             let view = ChatCallUpgradeView(with: callStyle,
                                            durationProvider: durationProvider)
+            kindProvider.addObserver(self) { kind, _ in
+                view.style = self.callUpgradeStyle(for: kind)
+            }
             return .callUpgrade(view)
         }
     }
 
-    func updateTableView(animated: Bool) {
+    private func callUpgradeStyle(for callKind: CallKind) -> ChatCallUpgradeStyle {
+        return callKind == .audio
+            ? style.audioUpgrade
+            : style.videoUpgrade
+    }
+
+    private func updateTableView(animated: Bool) {
         if animated {
             tableView.beginUpdates()
             tableView.endUpdates()

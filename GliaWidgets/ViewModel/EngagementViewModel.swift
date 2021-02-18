@@ -2,6 +2,8 @@ import SalemoveSDK
 
 class EngagementViewModel {
     enum Event {
+        case viewDidAppear
+        case viewDidDisappear
         case backTapped
         case closeTapped
     }
@@ -27,6 +29,7 @@ class EngagementViewModel {
     let interactor: Interactor
     let alertConfiguration: AlertConfiguration
 
+    private(set) var isViewActive = false
     private static var alertPresenters = Set<EngagementViewModel>()
 
     init(interactor: Interactor, alertConfiguration: AlertConfiguration) {
@@ -41,6 +44,10 @@ class EngagementViewModel {
 
     func event(_ event: Event) {
         switch event {
+        case .viewDidAppear:
+            isViewActive = true
+        case .viewDidDisappear:
+            isViewActive = false
         case .backTapped:
             engagementDelegate?(.back)
         case .closeTapped:
@@ -77,31 +84,31 @@ class EngagementViewModel {
         update(for: state)
 
         switch state {
-        case .inactive:
+        case .engaged(let engagedOperator):
+            engagementDelegate?(.engaged(operatorImageUrl: engagedOperator?.picture?.url))
+        case .ended:
             if EngagementViewModel.alertPresenters.isEmpty {
                 engagementDelegate?(.finished)
             }
-        case .engaged(let engagedOperator):
-            engagementDelegate?(.engaged(operatorImageUrl: engagedOperator?.picture?.url))
         default:
             break
         }
     }
 
     func showAlert(with conf: MessageAlertConfiguration, dismissed: (() -> Void)? = nil) {
-        let dismissHandler = {
+        let onDismissed = {
             EngagementViewModel.alertPresenters.remove(self)
             dismissed?()
 
             switch self.interactor.state {
-            case .inactive:
+            case .ended:
                 self.endSession()
             default:
                 break
             }
         }
         EngagementViewModel.alertPresenters.insert(self)
-        engagementAction?(.showAlert(conf, dismissed: { dismissHandler() }))
+        engagementAction?(.showAlert(conf, dismissed: { onDismissed() }))
     }
 
     func showAlert(for error: Error) {

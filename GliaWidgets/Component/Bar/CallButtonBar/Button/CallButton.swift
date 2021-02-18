@@ -53,11 +53,11 @@ class CallButton: UIView {
         titleLabel.textAlignment = .center
         titleLabel.numberOfLines = 0
 
-        update(for: state)
-
         let tapRecognizer = UITapGestureRecognizer(target: self,
                                                    action: #selector(tapped))
         addGestureRecognizer(tapRecognizer)
+
+        update(for: state)
     }
 
     private func layout() {

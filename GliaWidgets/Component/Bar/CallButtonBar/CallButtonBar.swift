@@ -1,14 +1,32 @@
 import UIKit
 
 class CallButtonBar: UIView {
+    enum Effect {
+        case none
+        case blur
+    }
+
     var visibleButtons: [CallButton.Kind] = [] {
         didSet { showButtons(visibleButtons) }
     }
     var buttonTapped: ((CallButton.Kind) -> Void)?
+    var effect: Effect = .none {
+        didSet {
+            switch effect {
+            case .none:
+                effectView.isHidden = true
+            case .blur:
+                effectView.isHidden = false
+            }
+        }
+    }
 
     private let style: CallButtonBarStyle
     private let stackView = UIStackView()
     private var buttons = [CallButton]()
+    private var effectView = UIVisualEffectView(effect: UIBlurEffect(style: .prominent))
+    private var bottomSpaceConstraint: NSLayoutConstraint!
+    private var kInsets = UIEdgeInsets(top: 3.0, left: 3.0, bottom: 3.0, right: 3.0)
 
     init(with style: CallButtonBarStyle) {
         self.style = style
@@ -21,6 +39,11 @@ class CallButtonBar: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        adjustBottomSpacing()
+    }
+
     func setButton(_ kind: CallButton.Kind, enabled: Bool) {
         button(for: kind)?.isEnabled = enabled
     }
@@ -30,14 +53,20 @@ class CallButtonBar: UIView {
     }
 
     private func setup() {
+        effect = .none
+
         stackView.axis = .horizontal
         stackView.distribution = .fillEqually
         stackView.spacing = 2
     }
 
     private func layout() {
+        addSubview(effectView)
+        effectView.autoPinEdgesToSuperviewEdges()
+
         addSubview(stackView)
-        stackView.autoPinEdgesToSuperviewEdges()
+        stackView.autoPinEdgesToSuperviewEdges(with: kInsets, excludingEdge: .bottom)
+        bottomSpaceConstraint = stackView.autoPinEdge(toSuperviewEdge: .bottom)
     }
 
     private func showButtons(_ buttonKinds: [CallButton.Kind]) {
@@ -111,5 +140,9 @@ class CallButtonBar: UIView {
 
     private func button(for kind: CallButton.Kind) -> CallButton? {
         return buttons.first(where: { $0.kind == kind })
+    }
+
+    private func adjustBottomSpacing() {
+        bottomSpaceConstraint.constant = -(safeAreaInsets.bottom + kInsets.bottom)
     }
 }

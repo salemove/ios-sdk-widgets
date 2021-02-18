@@ -1,10 +1,11 @@
 import SalemoveSDK
 
 enum InteractorState {
-    case inactive
+    case none
     case enqueueing
     case enqueued(QueueTicket)
     case engaged(Operator?)
+    case ended
 }
 
 enum InteractorEvent {
@@ -14,6 +15,8 @@ enum InteractorEvent {
     case upgradeOffer(MediaUpgradeOffer, answer: AnswerWithSuccessBlock)
     case audioStreamAdded(AudioStreamable)
     case audioStreamError(SalemoveError)
+    case videoStreamAdded(VideoStreamable)
+    case videoStreamError(SalemoveError)
     case error(SalemoveError)
 }
 
@@ -40,7 +43,7 @@ class Interactor {
 
     private let visitorContext: VisitorContext
     private var observers = [() -> (AnyObject?, EventHandler)]()
-    private(set) var state: InteractorState = .inactive {
+    private(set) var state: InteractorState = .none {
         didSet { notify(.stateChanged(state)) }
     }
 
@@ -90,7 +93,7 @@ extension Interactor {
         Salemove.sharedInstance.queueForEngagement(queueID: queueID,
                                                    visitorContext: visitorContext) { queueTicket, error in
             if let error = error {
-                self.state = .inactive
+                self.state = .ended
                 failure(error)
             } else if let ticket = queueTicket {
                 self.state = .enqueued(ticket)
@@ -100,10 +103,11 @@ extension Interactor {
     }
 
     func request(_ media: MediaType,
+                 direction: MediaDirection,
                  success: @escaping () -> Void,
                  failure: @escaping (Error?, SalemoveError?) -> Void) {
         do {
-            let offer = try MediaUpgradeOffer(type: media, direction: .twoWay)
+            let offer = try MediaUpgradeOffer(type: media, direction: direction)
             Salemove.sharedInstance.requestMediaUpgrade(offer: offer) { isSuccess, error in
                 if let error = error {
                     failure(nil, error)
@@ -138,10 +142,10 @@ extension Interactor {
                     failure: @escaping (SalemoveError) -> Void) {
         print("Called: \(#function)")
         switch state {
-        case .inactive:
+        case .none, .ended:
             success()
         case .enqueueing:
-            self.state = .inactive
+            self.state = .ended
             success()
         case .enqueued(let ticket):
             exitQueue(ticket: ticket,
@@ -161,7 +165,7 @@ extension Interactor {
             if let error = error {
                 failure(error)
             } else {
-                self.state = .inactive
+                self.state = .ended
                 success()
             }
         }
@@ -174,7 +178,7 @@ extension Interactor {
             if let error = error {
                 failure(error)
             } else {
-                self.state = .inactive
+                self.state = .ended
                 success()
             }
         }
@@ -232,7 +236,13 @@ extension Interactor: Interactable {
 
     var onVideoStreamAdded: VideoStreamAddedBlock {
         print("Called: \(#function)")
-        return { _, _ in }
+        return { stream, error in
+            if let stream = stream {
+                self.notify(.videoStreamAdded(stream))
+            } else if let error = error {
+                self.notify(.videoStreamError(error))
+            }
+        }
     }
 
     func start() {
@@ -250,7 +260,7 @@ extension Interactor: Interactable {
 
     func end() {
         print("Called: \(#function)")
-        state = .inactive
+        state = .ended
     }
 
     func fail(error: SalemoveError) {

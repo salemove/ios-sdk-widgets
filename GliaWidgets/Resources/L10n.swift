@@ -42,6 +42,12 @@ public enum L10n {
       /// {operatorName} has offered you to upgrade to audio
       public static let title = L10n.tr("Localizable", "alert.audioUpgrade.title")
     }
+    public enum CameraPermission {
+      /// Allow access to you micrphone from device menu: “Settings” - “Privacy” - “Camera”
+      public static let message = L10n.tr("Localizable", "alert.cameraPermission.message")
+      /// Unable to access camera
+      public static let title = L10n.tr("Localizable", "alert.cameraPermission.title")
+    }
     public enum EndEngagement {
       /// Are you sure you want to end engagement?
       public static let message = L10n.tr("Localizable", "alert.endEngagement.message")
@@ -88,11 +94,23 @@ public enum L10n {
       /// We're sorry, there has been an unexpected error.
       public static let title = L10n.tr("Localizable", "alert.unexpected.title")
     }
+    public enum VideoUpgrade {
+      public enum OneWay {
+        /// {operatorName} has offered you to see their video
+        public static let title = L10n.tr("Localizable", "alert.videoUpgrade.oneWay.title")
+      }
+      public enum TwoWay {
+        /// {operatorName} has offered you to upgrade to video
+        public static let title = L10n.tr("Localizable", "alert.videoUpgrade.twoWay.title")
+      }
+    }
   }
 
   public enum Call {
     /// You can continue browsing and we’ll connect you automatically.
-    public static let info = L10n.tr("Localizable", "call.info")
+    public static let bottomText = L10n.tr("Localizable", "call.bottomText")
+    /// (By default your video will be off)
+    public static let topText = L10n.tr("Localizable", "call.topText")
     public enum Audio {
       /// AUDIO CALL
       public static let title = L10n.tr("Localizable", "call.audio.title")
@@ -148,6 +166,10 @@ public enum L10n {
     public enum EndButton {
       /// End
       public static let title = L10n.tr("Localizable", "call.endButton.title")
+    }
+    public enum Operator {
+      /// {operatorName}
+      public static let name = L10n.tr("Localizable", "call.operator.name")
     }
     public enum Video {
       /// VIDEO CALL

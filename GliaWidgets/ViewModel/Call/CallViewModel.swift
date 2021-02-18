@@ -1,10 +1,9 @@
 import SalemoveSDK
-import AVFoundation
 
 class CallViewModel: EngagementViewModel, ViewModel {
     private typealias Strings = L10n.Call
 
-    enum Button {
+    enum CallButton {
         case chat
         case video
         case mute
@@ -12,27 +11,36 @@ class CallViewModel: EngagementViewModel, ViewModel {
         case minimize
     }
 
-    enum ButtonState {
+    enum CallButtonState {
         case active
         case inactive
     }
 
     enum Event {
         case viewDidLoad
-        case buttonTapped(Button)
+        case callButtonTapped(CallButton)
     }
 
     enum Action {
         case queue
         case connecting(name: String?, imageUrl: String?)
         case connected(name: String?, imageUrl: String?)
+        case setOperatorName(String?)
+        case setTopTextHidden(Bool)
+        case setBottomTextHidden(Bool)
         case showEndButton
+        case switchToVideoMode
+        case switchToUpgradeMode
         case setCallDurationText(String)
         case setTitle(String)
-        case setInfoText(String?)
-        case showButtons([Button])
-        case setButtonEnabled(Button, enabled: Bool)
-        case setButtonState(Button, state: ButtonState)
+        case showButtons([CallButton])
+        case setButtonEnabled(CallButton, enabled: Bool)
+        case setButtonState(CallButton, state: CallButtonState)
+        case offerMediaUpgrade(SingleMediaUpgradeAlertConfiguration,
+                               accepted: () -> Void,
+                               declined: () -> Void)
+        case setRemoteVideo(StreamView?)
+        case setLocalVideo(StreamView?)
     }
 
     enum DelegateEvent {
@@ -41,29 +49,35 @@ class CallViewModel: EngagementViewModel, ViewModel {
     }
 
     enum StartAction {
-        case startEngagement
-        case startAudio(AnswerWithSuccessBlock)
+        case engagement
+        case call(offer: MediaUpgradeOffer,
+                  answer: AnswerWithSuccessBlock)
     }
 
     var action: ((Action) -> Void)?
     var delegate: ((DelegateEvent) -> Void)?
 
     private let call: Call
-    private let startAction: StartAction
+    private let startWith: StartAction
     private let durationCounter = CallDurationCounter()
-    private var audioPortOverride = AVAudioSession.PortOverride.none
 
     init(interactor: Interactor,
          alertConfiguration: AlertConfiguration,
          call: Call,
-         startAction: StartAction) {
+         startWith: StartAction) {
         self.call = call
-        self.startAction = startAction
+        self.startWith = startWith
         super.init(interactor: interactor, alertConfiguration: alertConfiguration)
+        call.kind.addObserver(self) { kind, _ in
+            self.onKindChanged(kind)
+        }
         call.state.addObserver(self) { state, _ in
             self.onStateChanged(state)
         }
-        call.audio.addObserver(self) { audio, _ in
+        call.video.stream.addObserver(self) { audio, _ in
+            self.onVideoChanged(audio)
+        }
+        call.audio.stream.addObserver(self) { audio, _ in
             self.onAudioChanged(audio)
         }
         call.duration.addObserver(self) { duration, _ in
@@ -75,40 +89,39 @@ class CallViewModel: EngagementViewModel, ViewModel {
         switch event {
         case .viewDidLoad:
             start()
-        case .buttonTapped(let button):
-            buttonTapped(button)
+        case .callButtonTapped(let button):
+            callButtonTapped(button)
         }
     }
 
     override func start() {
         super.start()
-        update(for: call.kind)
-        updateButtons()
+        update(for: call.kind.value)
 
-        switch startAction {
-        case .startEngagement:
+        switch startWith {
+        case .engagement:
             enqueue()
-        case .startAudio(let answer):
+        case .call(offer: let offer, answer: let answer):
+            call.upgrade(to: offer)
+            showConnecting()
             answer(true, nil)
-            action?(.connecting(name: interactor.engagedOperator?.firstName,
-                                imageUrl: interactor.engagedOperator?.picture?.url))
         }
     }
 
     override func update(for state: InteractorState) {
         super.update(for: state)
-        updateButtons()
 
         switch state {
         case .enqueueing:
             action?(.queue)
         case .engaged:
-            if case .startEngagement = startAction {
+            if case .engagement = startWith {
                 requestMedia()
             }
-        case .inactive:
-            call.state.value = .ended
-            durationCounter.stop()
+            let operatorName = Strings.Operator.name.withOperatorName(interactor.engagedOperator?.firstName)
+            action?(.setOperatorName(operatorName))
+        case .ended:
+            call.end()
         default:
             break
         }
@@ -118,20 +131,42 @@ class CallViewModel: EngagementViewModel, ViewModel {
         switch callKind {
         case .audio:
             action?(.setTitle(Strings.Audio.title))
-            action?(.showButtons([.chat, .mute, .speaker, .minimize]))
+            action?(.setTopTextHidden(true))
         case .video:
             action?(.setTitle(Strings.Video.title))
-            action?(.showButtons([.chat, .video, .mute, .speaker, .minimize]))
+        }
+        updateButtons()
+    }
+
+    private func showConnecting() {
+        action?(.connecting(name: interactor.engagedOperator?.firstName,
+                            imageUrl: interactor.engagedOperator?.picture?.url))
+
+        switch call.kind.value {
+        case .audio:
+            action?(.setTopTextHidden(true))
+        case .video:
+            action?(.setTopTextHidden(false))
+        }
+    }
+
+    private func showConnected() {
+        action?(.showEndButton)
+        action?(.setTopTextHidden(true))
+        action?(.setBottomTextHidden(true))
+
+        switch call.kind.value {
+        case .audio:
+            action?(.connected(name: interactor.engagedOperator?.firstName,
+                               imageUrl: interactor.engagedOperator?.picture?.url))
+        case .video:
+            break
         }
     }
 
     private func requestMedia() {
-        let name = interactor.engagedOperator?.firstName
-        let imageUrl = interactor.engagedOperator?.picture?.url
-        action?(.connecting(name: name, imageUrl: imageUrl))
-
         let mediaType: MediaType = {
-            switch call.kind {
+            switch call.kind.value {
             case .audio:
                 return .audio
             case .video:
@@ -139,8 +174,8 @@ class CallViewModel: EngagementViewModel, ViewModel {
             }
         }()
 
-        interactor.request(mediaType) {
-
+        showConnecting()
+        interactor.request(mediaType, direction: .twoWay) {
         } failure: { [weak self] error, salemoveError in
             if let error = error {
                 self?.showAlert(for: error)
@@ -150,62 +185,35 @@ class CallViewModel: EngagementViewModel, ViewModel {
         }
     }
 
-    private func updateAudio(with stream: AudioStreamable) {
-        if stream.isRemote {
-            switch call.audio.value {
-            case .none, .remote:
-                call.audio.value = .remote(stream)
-            case .local(let local):
-                call.audio.value = .twoWay(local: local, remote: stream)
-            case .twoWay(local: let local, remote: _):
-                call.audio.value = .twoWay(local: local, remote: stream)
-            }
-        } else {
-            switch call.audio.value {
-            case .none, .local:
-                call.audio.value = .local(stream)
-            case .remote(let remote):
-                call.audio.value = .twoWay(local: stream, remote: remote)
-            case .twoWay(local: _, remote: let remote):
-                call.audio.value = .twoWay(local: stream, remote: remote)
-            }
-        }
-    }
-
-    private func onStateChanged(_ state: CallState) {
-        switch state {
-        case .none:
-            break
-        case .started:
-            action?(.showEndButton)
-            durationCounter.start { duration in
-                self.call.duration.value = duration
-            }
-        case .ended:
-            break
-        }
-        updateButtons()
-    }
-
-    private func onAudioChanged(_ audio: CallAudioKind) {
-        switch audio {
-        case .twoWay:
-            call.state.value = .started
-            action?(.connected(name: interactor.engagedOperator?.firstName,
-                               imageUrl: interactor.engagedOperator?.picture?.url))
-            action?(.setInfoText(nil))
+    private func offerMediaUpgrade(_ offer: MediaUpgradeOffer, answer: @escaping AnswerWithSuccessBlock) {
+        switch offer.type {
+        case .video:
+            let configuration = offer.direction == .oneWay
+                ? alertConfiguration.oneWayVideoUpgrade
+                : alertConfiguration.twoWayVideoUpgrade
+            offerMediaUpgrade(with: configuration,
+                              offer: offer,
+                              answer: answer)
         default:
             break
         }
-        updateButtons()
     }
 
-    private func onDurationChanged(_ duration: Int) {
-        let text = Strings.Connect.Connected.secondText.withCallDuration(duration.asDurationString)
-        action?(.setCallDurationText(text))
+    private func offerMediaUpgrade(with configuration: SingleMediaUpgradeAlertConfiguration,
+                                   offer: MediaUpgradeOffer,
+                                   answer: @escaping AnswerWithSuccessBlock) {
+        guard isViewActive else { return }
+        let operatorName = interactor.engagedOperator?.firstName
+        let onAccepted = {
+            self.call.upgrade(to: offer)
+            answer(true, nil)
+        }
+        action?(.offerMediaUpgrade(configuration.withOperatorName(operatorName),
+                                   accepted: { onAccepted() },
+                                   declined: { answer(false, nil) }))
     }
 
-    private func handleMediaError(_ error: SalemoveError) {
+    private func handleAudioStreamError(_ error: SalemoveError) {
         switch error.error {
         case let mediaError as MediaError:
             switch mediaError {
@@ -219,14 +227,34 @@ class CallViewModel: EngagementViewModel, ViewModel {
         }
     }
 
+    private func handleVideoStreamError(_ error: SalemoveError) {
+        switch error.error {
+        case let mediaError as MediaError:
+            switch mediaError {
+            case .permissionDenied:
+                self.showSettingsAlert(with: alertConfiguration.cameraSettings)
+            default:
+                showAlert(for: error)
+            }
+        default:
+            showAlert(for: error)
+        }
+    }
+
     override func interactorEvent(_ event: InteractorEvent) {
         super.interactorEvent(event)
 
         switch event {
         case .audioStreamAdded(let stream):
-            updateAudio(with: stream)
+            call.updateAudioStream(with: stream)
+        case .videoStreamAdded(let stream):
+            call.updateVideoStream(with: stream)
         case .audioStreamError(let error):
-            handleMediaError(error)
+            handleAudioStreamError(error)
+        case .videoStreamError(let error):
+            handleVideoStreamError(error)
+        case .upgradeOffer(let offer, answer: let answer):
+            offerMediaUpgrade(offer, answer: answer)
         default:
             break
         }
@@ -234,35 +262,150 @@ class CallViewModel: EngagementViewModel, ViewModel {
 }
 
 extension CallViewModel {
-    private func updateButtons() {
-        let chatEnabled = interactor.isEngaged
-        let videoEnabled = false
-        let muteEnabled = call.audio.value.hasLocalAudio
-        let speakerEnabled = call.audio.value.hasRemoteAudio
-        let minimizeEnabled = true
-        action?(.setButtonEnabled(.chat, enabled: chatEnabled))
-        action?(.setButtonEnabled(.video, enabled: videoEnabled))
-        action?(.setButtonEnabled(.mute, enabled: muteEnabled))
-        action?(.setButtonEnabled(.speaker, enabled: speakerEnabled))
-        action?(.setButtonEnabled(.minimize, enabled: minimizeEnabled))
-
-        let muteState: ButtonState = call.audio.value.localStream?.isMuted == true
-            ? .active
-            : .inactive
-        action?(.setButtonState(.mute, state: muteState))
-
-        let speakerState: ButtonState = audioPortOverride == .speaker
-            ? .active
-            : .inactive
-        action?(.setButtonState(.speaker, state: speakerState))
+    private func showRemoteVideo(with stream: VideoStreamable) {
+        action?(.switchToVideoMode)
+        action?(.setRemoteVideo(stream.getStreamView()))
+        stream.playVideo()
     }
 
-    private func buttonTapped(_ button: Button) {
+    private func showLocalVideo(with stream: VideoStreamable) {
+        action?(.switchToVideoMode)
+        action?(.setLocalVideo(stream.getStreamView()))
+        stream.playVideo()
+    }
+
+    private func hideRemoteVideo() {
+        action?(.setRemoteVideo(nil))
+    }
+
+    private func hideLocalVideo() {
+        action?(.setLocalVideo(nil))
+    }
+
+    private func updateRemoteVideoVisible() {
+        if let remoteStream = call.video.stream.value.remoteStream {
+            showRemoteVideo(with: remoteStream)
+        } else {
+            hideRemoteVideo()
+        }
+    }
+
+    private func updateLocalVideoVisible() {
+        if let localStream = call.video.stream.value.localStream, !localStream.isPaused {
+            showLocalVideo(with: localStream)
+        } else {
+            hideLocalVideo()
+        }
+    }
+}
+
+extension CallViewModel {
+    private func onStateChanged(_ state: CallState) {
+        switch state {
+        case .none:
+            break
+        case .started:
+            showConnected()
+            durationCounter.start { duration in
+                guard self.call.state.value == .started else { return }
+                self.call.duration.value = duration
+            }
+        case .upgrading:
+            action?(.switchToUpgradeMode)
+            showConnecting()
+        case .ended:
+            durationCounter.stop()
+        }
+        updateButtons()
+    }
+
+    private func onKindChanged(_ kind: CallKind) {
+        update(for: kind)
+    }
+
+    private func onAudioChanged(_ stream: MediaStream<AudioStreamable>) {
+        updateButtons()
+    }
+
+    private func onVideoChanged(_ stream: MediaStream<VideoStreamable>) {
+        updateButtons()
+        updateRemoteVideoVisible()
+        updateLocalVideoVisible()
+    }
+
+    private func onDurationChanged(_ duration: Int) {
+        let text = Strings.Connect.Connected.secondText.withCallDuration(duration.asDurationString)
+        action?(.setCallDurationText(text))
+    }
+}
+
+extension CallViewModel {
+    private func updateButtons() {
+        updateVisibleButtons()
+        updateChatButton()
+        updateVideoButton()
+        updateMuteButton()
+        updateSpeakerButton()
+        updateMinimizeButton()
+    }
+
+    private func updateVisibleButtons() {
+        let buttons = self.buttons(for: call)
+        action?(.showButtons(buttons))
+    }
+
+    private func buttons(for call: Call) -> [CallButton] {
+        switch call.kind.value {
+        case .audio:
+            return [.chat, .mute, .speaker, .minimize]
+        case .video:
+            return [.chat, .video, .mute, .speaker, .minimize]
+        }
+    }
+
+    private func updateChatButton() {
+        let enabled = interactor.isEngaged
+        action?(.setButtonEnabled(.chat, enabled: enabled))
+    }
+
+    private func updateVideoButton() {
+        let enabled = call.video.stream.value.hasLocalStream
+        let state: CallButtonState = call.video.stream.value.localStream.map {
+            $0.isPaused ? .inactive : .active
+        } ?? .inactive
+        action?(.setButtonEnabled(.video, enabled: enabled))
+        action?(.setButtonState(.video, state: state))
+    }
+
+    private func updateMuteButton() {
+        let enabled = call.audio.stream.value.hasLocalStream
+        let state: CallButtonState = call.audio.stream.value.localStream?.isMuted == true
+            ? .active
+            : .inactive
+        action?(.setButtonEnabled(.mute, enabled: enabled))
+        action?(.setButtonState(.mute, state: state))
+    }
+
+    private func updateSpeakerButton() {
+        let enabled = call.audio.stream.value.hasRemoteStream
+        let state: CallButtonState = call.audioPortOverride == .speaker
+            ? .active
+            : .inactive
+        action?(.setButtonEnabled(.speaker, enabled: enabled))
+        action?(.setButtonState(.speaker, state: state))
+    }
+
+    private func updateMinimizeButton() {
+        let enabled = true
+        action?(.setButtonEnabled(.minimize, enabled: enabled))
+    }
+
+    private func callButtonTapped(_ button: CallButton) {
         switch button {
         case .chat:
             delegate?(.chat)
         case .video:
-            break
+            toggleVideo()
         case .mute:
             toggleMute()
         case .speaker:
@@ -272,36 +415,19 @@ extension CallViewModel {
         }
     }
 
+    private func toggleVideo() {
+        call.toggleVideo()
+        updateVideoButton()
+        updateLocalVideoVisible()
+    }
+
     private func toggleMute() {
-        call.audio.value.localStream.map {
-            if $0.isMuted {
-                $0.unmute()
-            } else {
-                $0.mute()
-            }
-        }
-        updateButtons()
+        call.toggleMute()
+        updateMuteButton()
     }
 
     private func toggleSpeaker() {
-        let newOverride: AVAudioSession.PortOverride = {
-            switch audioPortOverride {
-            case .none:
-                return .speaker
-            case .speaker:
-                return .none
-            @unknown default:
-                return .none
-            }
-        }()
-
-        let session = AVAudioSession.sharedInstance()
-        do {
-            try session.overrideOutputAudioPort(newOverride)
-            audioPortOverride = newOverride
-        } catch {
-            print(error)
-        }
-        updateButtons()
+        call.toggleSpeaker()
+        updateSpeakerButton()
     }
 }
