@@ -4,4 +4,5 @@ public struct CallButtonBarStyle {
     public var muteButton: CallButtonStyle
     public var speakerButton: CallButtonStyle
     public var minimizeButton: CallButtonStyle
+    public var badge: BadgeStyle
 }

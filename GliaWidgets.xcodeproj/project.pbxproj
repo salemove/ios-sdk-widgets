@@ -41,6 +41,8 @@
 		1A38A8A8258B652B0089DE7B /* OperatorChatMessageStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A38A8A7258B652B0089DE7B /* OperatorChatMessageStyle.swift */; };
 		1A38A8AC258B65D00089DE7B /* ChatMessageStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A38A8AB258B65D00089DE7B /* ChatMessageStyle.swift */; };
 		1A38A8BA258B94D60089DE7B /* ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A38A8B9258B94D60089DE7B /* ImageView.swift */; };
+		1A475BB325DE831F00296D55 /* BadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A475BB225DE831F00296D55 /* BadgeView.swift */; };
+		1A475BB725DE833200296D55 /* BadgeStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A475BB625DE833200296D55 /* BadgeStyle.swift */; };
 		1A4AD3AF256D283700468BFB /* ChatMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4AD3AE256D283700468BFB /* ChatMessageView.swift */; };
 		1A4AD3B3256D2A7600468BFB /* VisitorChatMessageStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4AD3B2256D2A7600468BFB /* VisitorChatMessageStyle.swift */; };
 		1A4AD3BE256D37FD00468BFB /* UITableView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4AD3BD256D37FD00468BFB /* UITableView+Extensions.swift */; };
@@ -222,6 +224,8 @@
 		1A38A8A7258B652B0089DE7B /* OperatorChatMessageStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperatorChatMessageStyle.swift; sourceTree = "<group>"; };
 		1A38A8AB258B65D00089DE7B /* ChatMessageStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageStyle.swift; sourceTree = "<group>"; };
 		1A38A8B9258B94D60089DE7B /* ImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageView.swift; sourceTree = "<group>"; };
+		1A475BB225DE831F00296D55 /* BadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeView.swift; sourceTree = "<group>"; };
+		1A475BB625DE833200296D55 /* BadgeStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeStyle.swift; sourceTree = "<group>"; };
 		1A4AD3AE256D283700468BFB /* ChatMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageView.swift; sourceTree = "<group>"; };
 		1A4AD3B2256D2A7600468BFB /* VisitorChatMessageStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorChatMessageStyle.swift; sourceTree = "<group>"; };
 		1A4AD3BD256D37FD00468BFB /* UITableView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Extensions.swift"; sourceTree = "<group>"; };
@@ -537,6 +541,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		1A475BB125DE831000296D55 /* Badge */ = {
+			isa = PBXGroup;
+			children = (
+				1A475BB225DE831F00296D55 /* BadgeView.swift */,
+				1A475BB625DE833200296D55 /* BadgeStyle.swift */,
+			);
+			path = Badge;
+			sourceTree = "<group>";
+		};
 		1A4AD3CC256E8E6500468BFB /* Cells */ = {
 			isa = PBXGroup;
 			children = (
@@ -662,6 +675,7 @@
 		1A60AF6A25656C1E00E53F53 /* Component */ = {
 			isa = PBXGroup;
 			children = (
+				1A475BB125DE831000296D55 /* Badge */,
 				1A0C9AA025C42C4F00815406 /* Bar */,
 				1ABD6C5325B574EF00D56EFA /* Bubble */,
 				1A6EBB2025ADDB8500EE325D /* MediaUpgrade */,
@@ -1374,6 +1388,7 @@
 				1AE15E38257A578B00A642C0 /* MessageAlertConfiguration.swift in Sources */,
 				1AC7A77B25838AE800567FF8 /* ChatItem.swift in Sources */,
 				1ABD6C9625B6F46700D56EFA /* AlertViewController+SingleMediaUpgrade.swift in Sources */,
+				1A475BB325DE831F00296D55 /* BadgeView.swift in Sources */,
 				1A38A8A8258B652B0089DE7B /* OperatorChatMessageStyle.swift in Sources */,
 				1A7CA8212574D6760047CBBE /* ConnectOperatorView.swift in Sources */,
 				1A0C9A7925C16F9700815406 /* Theme+AlertConfiguration.swift in Sources */,
@@ -1430,6 +1445,7 @@
 				1A5F81402588B7BD00A605DA /* ChatMessageEntryStyle.swift in Sources */,
 				1A8B61D625C974D0000D780E /* ChatCallUpgradeStyle.swift in Sources */,
 				1A60AF7A25656E0500E53F53 /* Theme.swift in Sources */,
+				1A475BB725DE833200296D55 /* BadgeStyle.swift in Sources */,
 				1A4AD3B3256D2A7600468BFB /* VisitorChatMessageStyle.swift in Sources */,
 				1A60B0082567F29900E53F53 /* HeaderStyle.swift in Sources */,
 				1ABD6CAC25B71D1B00D56EFA /* CallViewModel.swift in Sources */,

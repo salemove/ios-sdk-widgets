@@ -52,6 +52,10 @@ class CallButtonBar: UIView {
         button(for: kind)?.state = state
     }
 
+    func setButton(_ kind: CallButton.Kind, badgeItemCount: UInt) {
+        button(for: kind)?.setBadge(itemCount: badgeItemCount, style: style.badge)
+    }
+
     private func setup() {
         effect = .none
 

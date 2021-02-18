@@ -36,6 +36,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
         case showButtons([CallButton])
         case setButtonEnabled(CallButton, enabled: Bool)
         case setButtonState(CallButton, state: CallButtonState)
+        case setButtonBadge(CallButton, itemCount: UInt)
         case offerMediaUpgrade(SingleMediaUpgradeAlertConfiguration,
                                accepted: () -> Void,
                                declined: () -> Void)

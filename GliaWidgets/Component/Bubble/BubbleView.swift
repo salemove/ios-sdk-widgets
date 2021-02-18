@@ -13,6 +13,7 @@ class BubbleView: UIView {
 
     private let style: BubbleStyle
     private var userImageView: UserImageView?
+    private var badgeView: BadgeView?
 
     public init(with style: BubbleStyle) {
         self.style = style
@@ -36,6 +37,24 @@ class BubbleView: UIView {
             byRoundingCorners: .allCorners,
             cornerRadii: CGSize(width: cornerRadius, height: cornerRadius)
         ).cgPath
+    }
+
+    func setBadge(itemCount: UInt) {
+        guard let style = style.badge else { return }
+
+        if itemCount == 0 {
+            badgeView?.removeFromSuperview()
+            badgeView = nil
+        } else {
+            if badgeView == nil {
+                let badgeView = BadgeView(with: style)
+                self.badgeView = badgeView
+                addSubview(badgeView)
+                badgeView.autoPinEdge(.top, to: .top, of: self)
+                badgeView.autoPinEdge(.right, to: .right, of: self)
+            }
+        }
+        badgeView?.newItemCount = itemCount
     }
 
     private func setup() {
