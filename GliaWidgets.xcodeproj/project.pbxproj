@@ -43,6 +43,7 @@
 		1A38A8BA258B94D60089DE7B /* ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A38A8B9258B94D60089DE7B /* ImageView.swift */; };
 		1A475BB325DE831F00296D55 /* BadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A475BB225DE831F00296D55 /* BadgeView.swift */; };
 		1A475BB725DE833200296D55 /* BadgeStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A475BB625DE833200296D55 /* BadgeStyle.swift */; };
+		1A475BBC25DFA10100296D55 /* UnreadMessagesNotifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A475BBB25DFA10100296D55 /* UnreadMessagesNotifier.swift */; };
 		1A4AD3AF256D283700468BFB /* ChatMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4AD3AE256D283700468BFB /* ChatMessageView.swift */; };
 		1A4AD3B3256D2A7600468BFB /* VisitorChatMessageStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4AD3B2256D2A7600468BFB /* VisitorChatMessageStyle.swift */; };
 		1A4AD3BE256D37FD00468BFB /* UITableView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4AD3BD256D37FD00468BFB /* UITableView+Extensions.swift */; };
@@ -226,6 +227,7 @@
 		1A38A8B9258B94D60089DE7B /* ImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageView.swift; sourceTree = "<group>"; };
 		1A475BB225DE831F00296D55 /* BadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeView.swift; sourceTree = "<group>"; };
 		1A475BB625DE833200296D55 /* BadgeStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeStyle.swift; sourceTree = "<group>"; };
+		1A475BBB25DFA10100296D55 /* UnreadMessagesNotifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnreadMessagesNotifier.swift; sourceTree = "<group>"; };
 		1A4AD3AE256D283700468BFB /* ChatMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageView.swift; sourceTree = "<group>"; };
 		1A4AD3B2256D2A7600468BFB /* VisitorChatMessageStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorChatMessageStyle.swift; sourceTree = "<group>"; };
 		1A4AD3BD256D37FD00468BFB /* UITableView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Extensions.swift"; sourceTree = "<group>"; };
@@ -550,6 +552,14 @@
 			path = Badge;
 			sourceTree = "<group>";
 		};
+		1A475BBA25DFA09D00296D55 /* Unread */ = {
+			isa = PBXGroup;
+			children = (
+				1A475BBB25DFA10100296D55 /* UnreadMessagesNotifier.swift */,
+			);
+			path = Unread;
+			sourceTree = "<group>";
+		};
 		1A4AD3CC256E8E6500468BFB /* Cells */ = {
 			isa = PBXGroup;
 			children = (
@@ -816,6 +826,7 @@
 		1A60AFD32566991C00E53F53 /* Chat */ = {
 			isa = PBXGroup;
 			children = (
+				1A475BBA25DFA09D00296D55 /* Unread */,
 				1A54B83625A4722900C9393E /* Storage */,
 				1A5F8180258B4EF900A605DA /* Data */,
 				1A60AFD42566992A00E53F53 /* ChatViewModel.swift */,
@@ -1444,6 +1455,7 @@
 				1A7CA8242574D68E0047CBBE /* ConnectStatusView.swift in Sources */,
 				1A5F81402588B7BD00A605DA /* ChatMessageEntryStyle.swift in Sources */,
 				1A8B61D625C974D0000D780E /* ChatCallUpgradeStyle.swift in Sources */,
+				1A475BBC25DFA10100296D55 /* UnreadMessagesNotifier.swift in Sources */,
 				1A60AF7A25656E0500E53F53 /* Theme.swift in Sources */,
 				1A475BB725DE833200296D55 /* BadgeStyle.swift in Sources */,
 				1A4AD3B3256D2A7600468BFB /* VisitorChatMessageStyle.swift in Sources */,

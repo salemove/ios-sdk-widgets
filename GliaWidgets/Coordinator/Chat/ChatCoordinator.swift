@@ -16,17 +16,23 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
     private let viewFactory: ViewFactory
     private let navigationPresenter: NavigationPresenter
     private let callProvider: ValueProvider<Call?>
+    private let unreadMessages: ValueProvider<UInt>
+    private let isWindowVisible: ValueProvider<Bool>
     private let startAction: ChatViewModel.StartAction
 
     init(interactor: Interactor,
          viewFactory: ViewFactory,
          navigationPresenter: NavigationPresenter,
          callProvider: ValueProvider<Call?>,
+         unreadMessages: ValueProvider<UInt>,
+         isWindowVisible: ValueProvider<Bool>,
          startAction: ChatViewModel.StartAction) {
         self.interactor = interactor
         self.viewFactory = viewFactory
         self.navigationPresenter = navigationPresenter
         self.callProvider = callProvider
+        self.unreadMessages = unreadMessages
+        self.isWindowVisible = isWindowVisible
         self.startAction = startAction
     }
 
@@ -40,6 +46,8 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
             interactor: interactor,
             alertConfiguration: viewFactory.theme.alertConfiguration,
             callProvider: callProvider,
+            unreadMessages: unreadMessages,
+            isWindowVisible: isWindowVisible,
             startAction: startAction
         )
         viewModel.engagementDelegate = { [weak self] event in

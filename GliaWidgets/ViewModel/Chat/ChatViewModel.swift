@@ -51,15 +51,23 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     private var queueOperatorSection: Section<ChatItem> { return sections[1] }
     private var messagesSection: Section<ChatItem> { return sections[2] }
     private let storage = ChatStorage()
+    private var unreadMessages: UnreadMessagesNotifier!
     private let callProvider: ValueProvider<Call?>
 
     init(interactor: Interactor,
          alertConfiguration: AlertConfiguration,
          callProvider: ValueProvider<Call?>,
+         unreadMessages: ValueProvider<UInt>,
+         isWindowVisible: ValueProvider<Bool>,
          startAction: StartAction) {
         self.callProvider = callProvider
         self.startAction = startAction
         super.init(interactor: interactor, alertConfiguration: alertConfiguration)
+        self.unreadMessages = UnreadMessagesNotifier(
+            unreadMessages: unreadMessages,
+            isWindowVisible: isWindowVisible,
+            isViewVisible: isViewActive
+        )
         self.callProvider.addObserver(self) { call, _ in
             self.onCall(call)
         }
@@ -184,7 +192,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     private func offerMediaUpgrade(with configuration: SingleMediaUpgradeAlertConfiguration,
                                    offer: MediaUpgradeOffer,
                                    answer: @escaping AnswerWithSuccessBlock) {
-        guard isViewActive else { return }
+        guard isViewActive.value else { return }
         let operatorName = interactor.engagedOperator?.firstName
         let onAccepted = {
             self.delegate?(.mediaUpgradeAccepted(offer: offer, answer: answer))
@@ -238,6 +246,7 @@ extension ChatViewModel {
 
     private func receivedMessage(_ message: Message) {
         storage.storeMessage(message)
+        unreadMessages.messageReceived()
 
         switch message.sender {
         case .operator:

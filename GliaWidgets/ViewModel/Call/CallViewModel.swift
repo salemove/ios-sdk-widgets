@@ -203,7 +203,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
     private func offerMediaUpgrade(with configuration: SingleMediaUpgradeAlertConfiguration,
                                    offer: MediaUpgradeOffer,
                                    answer: @escaping AnswerWithSuccessBlock) {
-        guard isViewActive else { return }
+        guard isViewActive.value else { return }
         let operatorName = interactor.engagedOperator?.firstName
         let onAccepted = {
             self.call.upgrade(to: offer)
