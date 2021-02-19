@@ -51,7 +51,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     private var queueOperatorSection: Section<ChatItem> { return sections[1] }
     private var messagesSection: Section<ChatItem> { return sections[2] }
     private let storage = ChatStorage()
-    private var unreadMessages: UnreadMessagesNotifier!
+    private var unreadMessages: UnreadMessagesHandler!
     private let call: ValueProvider<Call?>
 
     init(interactor: Interactor,
@@ -63,7 +63,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         self.call = call
         self.startAction = startAction
         super.init(interactor: interactor, alertConfiguration: alertConfiguration)
-        self.unreadMessages = UnreadMessagesNotifier(
+        self.unreadMessages = UnreadMessagesHandler(
             unreadMessages: unreadMessages,
             isWindowVisible: isWindowVisible,
             isViewVisible: isViewActive

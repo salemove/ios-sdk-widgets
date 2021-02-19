@@ -1,4 +1,4 @@
-class UnreadMessagesNotifier {
+class UnreadMessagesHandler {
     private let unreadMessages: ValueProvider<Int>
     private let isWindowVisible: ValueProvider<Bool>
     private let isViewVisible: ValueProvider<Bool>
@@ -10,10 +10,10 @@ class UnreadMessagesNotifier {
         self.isWindowVisible = isWindowVisible
         self.isViewVisible = isViewVisible
         isWindowVisible.addObserver(self) { _, _ in
-            self.updateUnreadMessageCount()
+            self.checkVisible()
         }
         isViewVisible.addObserver(self) { _, _ in
-            self.updateUnreadMessageCount()
+            self.checkVisible()
         }
     }
 
@@ -28,7 +28,7 @@ class UnreadMessagesNotifier {
         }
     }
 
-    private func updateUnreadMessageCount() {
+    private func checkVisible() {
         if isWindowVisible.value && isViewVisible.value {
             unreadMessages.value = 0
         }
