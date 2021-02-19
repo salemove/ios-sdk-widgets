@@ -65,10 +65,14 @@ class CallViewModel: EngagementViewModel, ViewModel {
     init(interactor: Interactor,
          alertConfiguration: AlertConfiguration,
          call: Call,
+         unreadMessages: ValueProvider<UInt>,
          startWith: StartAction) {
         self.call = call
         self.startWith = startWith
         super.init(interactor: interactor, alertConfiguration: alertConfiguration)
+        unreadMessages.addObserver(self) { unreadCount, _ in
+            self.action?(.setButtonBadge(.chat, itemCount: unreadCount))
+        }
         call.kind.addObserver(self) { kind, _ in
             self.onKindChanged(kind)
         }

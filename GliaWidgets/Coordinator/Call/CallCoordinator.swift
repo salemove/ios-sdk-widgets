@@ -13,17 +13,20 @@ class CallCoordinator: SubFlowCoordinator, FlowCoordinator {
     private let viewFactory: ViewFactory
     private let navigationPresenter: NavigationPresenter
     private let call: Call
+    private let unreadMessages: ValueProvider<UInt>
     private let startAction: CallViewModel.StartAction
 
     init(interactor: Interactor,
          viewFactory: ViewFactory,
          navigationPresenter: NavigationPresenter,
          call: Call,
+         unreadMessages: ValueProvider<UInt>,
          startAction: CallViewModel.StartAction) {
         self.interactor = interactor
         self.viewFactory = viewFactory
         self.navigationPresenter = navigationPresenter
         self.call = call
+        self.unreadMessages = unreadMessages
         self.startAction = startAction
     }
 
@@ -39,6 +42,7 @@ class CallCoordinator: SubFlowCoordinator, FlowCoordinator {
             interactor: interactor,
             alertConfiguration: viewFactory.theme.alertConfiguration,
             call: call,
+            unreadMessages: unreadMessages,
             startWith: startAction
         )
         viewModel.engagementDelegate = { [weak self] event in

@@ -88,7 +88,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
             interactor: interactor,
             viewFactory: viewFactory,
             navigationPresenter: navigationPresenter,
-            callProvider: chatCallProvider,
+            call: chatCallProvider,
             unreadMessages: unreadMessages,
             isWindowVisible: isWindowVisible,
             startAction: startAction
@@ -136,6 +136,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
             viewFactory: viewFactory,
             navigationPresenter: navigationPresenter,
             call: call,
+            unreadMessages: unreadMessages,
             startAction: startAction
         )
         coordinator.delegate = { [weak self] event in
