@@ -36,7 +36,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
         case showButtons([CallButton])
         case setButtonEnabled(CallButton, enabled: Bool)
         case setButtonState(CallButton, state: CallButtonState)
-        case setButtonBadge(CallButton, itemCount: UInt)
+        case setButtonBadge(CallButton, itemCount: Int)
         case offerMediaUpgrade(SingleMediaUpgradeAlertConfiguration,
                                accepted: () -> Void,
                                declined: () -> Void)
@@ -65,7 +65,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
     init(interactor: Interactor,
          alertConfiguration: AlertConfiguration,
          call: Call,
-         unreadMessages: ValueProvider<UInt>,
+         unreadMessages: ValueProvider<Int>,
          startWith: StartAction) {
         self.call = call
         self.startWith = startWith

@@ -39,10 +39,10 @@ class BubbleView: UIView {
         ).cgPath
     }
 
-    func setBadge(itemCount: UInt) {
+    func setBadge(itemCount: Int) {
         guard let style = style.badge else { return }
 
-        if itemCount == 0 {
+        if itemCount <= 0 {
             badgeView?.removeFromSuperview()
             badgeView = nil
         } else {

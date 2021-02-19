@@ -23,7 +23,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
     private let engagementKind: EngagementKind
     private var engagement: Engagement = .none
     private let chatCallProvider = ValueProvider<Call?>(with: nil)
-    private let unreadMessages = ValueProvider<UInt>(with: 0)
+    private let unreadMessages = ValueProvider<Int>(with: 0)
     private let isWindowVisible = ValueProvider<Bool>(with: false)
     private let navigationController = NavigationController()
     private let navigationPresenter: NavigationPresenter

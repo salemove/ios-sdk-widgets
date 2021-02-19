@@ -44,8 +44,8 @@ class CallButton: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func setBadge(itemCount: UInt, style: BadgeStyle) {
-        if itemCount == 0 {
+    func setBadge(itemCount: Int, style: BadgeStyle) {
+        if itemCount <= 0 {
             badgeView?.removeFromSuperview()
             badgeView = nil
         } else {

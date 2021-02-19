@@ -16,7 +16,7 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
     private let viewFactory: ViewFactory
     private let navigationPresenter: NavigationPresenter
     private let call: ValueProvider<Call?>
-    private let unreadMessages: ValueProvider<UInt>
+    private let unreadMessages: ValueProvider<Int>
     private let isWindowVisible: ValueProvider<Bool>
     private let startAction: ChatViewModel.StartAction
 
@@ -24,7 +24,7 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
          viewFactory: ViewFactory,
          navigationPresenter: NavigationPresenter,
          call: ValueProvider<Call?>,
-         unreadMessages: ValueProvider<UInt>,
+         unreadMessages: ValueProvider<Int>,
          isWindowVisible: ValueProvider<Bool>,
          startAction: ChatViewModel.StartAction) {
         self.interactor = interactor

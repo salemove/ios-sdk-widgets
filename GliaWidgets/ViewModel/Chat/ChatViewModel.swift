@@ -57,7 +57,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     init(interactor: Interactor,
          alertConfiguration: AlertConfiguration,
          call: ValueProvider<Call?>,
-         unreadMessages: ValueProvider<UInt>,
+         unreadMessages: ValueProvider<Int>,
          isWindowVisible: ValueProvider<Bool>,
          startAction: StartAction) {
         self.call = call
@@ -246,7 +246,7 @@ extension ChatViewModel {
 
     private func receivedMessage(_ message: Message) {
         storage.storeMessage(message)
-        unreadMessages.messageReceived()
+        unreadMessages.received(1)
 
         switch message.sender {
         case .operator:
@@ -261,6 +261,8 @@ extension ChatViewModel {
 
     private func messagesUpdated(_ messages: [Message]) {
         let newMessages = storage.newMessages(messages)
+        unreadMessages.received(newMessages.count)
+
         if !newMessages.isEmpty {
             storage.storeMessages(newMessages)
             let items = newMessages.compactMap({ ChatItem(with: $0) })

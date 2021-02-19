@@ -1,9 +1,9 @@
 class UnreadMessagesNotifier {
-    private let unreadMessages: ValueProvider<UInt>
+    private let unreadMessages: ValueProvider<Int>
     private let isWindowVisible: ValueProvider<Bool>
     private let isViewVisible: ValueProvider<Bool>
 
-    init(unreadMessages: ValueProvider<UInt>,
+    init(unreadMessages: ValueProvider<Int>,
          isWindowVisible: ValueProvider<Bool>,
          isViewVisible: ValueProvider<Bool>) {
         self.unreadMessages = unreadMessages
@@ -22,9 +22,9 @@ class UnreadMessagesNotifier {
         isViewVisible.removeObserver(self)
     }
 
-    func messageReceived() {
+    func received(_ count: Int) {
         if !(isWindowVisible.value && isViewVisible.value) {
-            unreadMessages.value += 1
+            unreadMessages.value += count
         }
     }
 

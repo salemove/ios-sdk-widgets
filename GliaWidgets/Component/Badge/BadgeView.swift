@@ -1,9 +1,9 @@
 import UIKit
 
 class BadgeView: UIView {
-    var newItemCount: UInt = 0 {
+    var newItemCount: Int = 0 {
         didSet {
-            if newItemCount == 0 {
+            if newItemCount <= 0 {
                 isHidden = true
             } else {
                 isHidden = false
