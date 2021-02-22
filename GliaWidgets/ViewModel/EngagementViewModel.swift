@@ -46,6 +46,7 @@ class EngagementViewModel {
         switch event {
         case .viewDidAppear:
             isViewActive.value = true
+            viewDidAppear()
         case .viewDidDisappear:
             isViewActive.value = false
         case .backTapped:
@@ -54,6 +55,8 @@ class EngagementViewModel {
             closeTapped()
         }
     }
+
+    func viewDidAppear() {}
 
     func start() {
         update(for: interactor.state)

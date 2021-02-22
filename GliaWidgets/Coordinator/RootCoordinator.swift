@@ -46,7 +46,8 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
     func start() {
         switch engagementKind {
         case .chat:
-            let chatViewController = startChat(withAction: .startEngagement)
+            let chatViewController = startChat(withAction: .startEngagement,
+                                               showsCallBubble: false)
             engagement = .chat(chatViewController)
             navigationPresenter.setViewControllers([chatViewController],
                                                    animated: false)
@@ -55,7 +56,8 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
                 ? .audio
                 : .video
             let call = Call(kind)
-            let chatViewController = startChat(withAction: .none)
+            let chatViewController = startChat(withAction: .none,
+                                               showsCallBubble: true)
             let callViewController = startCall(call, withAction: .engagement)
             engagement = .call(callViewController,
                                chatViewController,
@@ -83,13 +85,14 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
         }
     }
 
-    private func startChat(withAction startAction: ChatViewModel.StartAction) -> ChatViewController {
+    private func startChat(withAction startAction: ChatViewModel.StartAction, showsCallBubble: Bool) -> ChatViewController {
         let coordinator = ChatCoordinator(
             interactor: interactor,
             viewFactory: viewFactory,
             navigationPresenter: navigationPresenter,
             call: chatCallProvider,
             unreadMessages: unreadMessages,
+            showsCallBubble: showsCallBubble,
             isWindowVisible: isWindowVisible,
             startAction: startAction
         )
@@ -114,8 +117,13 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
                 self?.mediaUpgradeAccepted(offer: offer, answer: answer)
             case .call:
                 switch self?.engagement {
-                case .call(let callViewController, _, _):
-                    self?.navigationPresenter.push(callViewController, animated: true)
+                case .call(let callViewController, _, let upgradedFrom):
+                    switch upgradedFrom {
+                    case .none:
+                        self?.navigationController.popToViewController(callViewController, animated: true)
+                    case .chat:
+                        self?.navigationPresenter.push(callViewController, animated: true)
+                    }
                 default:
                     break
                 }
