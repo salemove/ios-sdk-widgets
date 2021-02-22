@@ -71,6 +71,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         self.call.addObserver(self) { call, _ in
             self.onCall(call)
         }
+        storage.setQueue(withID: interactor.queueID)
     }
 
     public func event(_ event: Event) {
@@ -94,7 +95,6 @@ class ChatViewModel: EngagementViewModel, ViewModel {
                    to: queueOperatorSection,
                    animated: false)
         action?(.setMessageEntryEnabled(false))
-        storage.setQueue(withID: interactor.queueID)
 
         switch startAction {
         case .startEngagement:
@@ -245,6 +245,8 @@ extension ChatViewModel {
     }
 
     private func receivedMessage(_ message: Message) {
+        guard storage.isNewMessage(message) else { return }
+
         storage.storeMessage(message)
         unreadMessages.received(1)
 
