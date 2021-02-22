@@ -29,7 +29,7 @@ class EngagementViewModel {
     let interactor: Interactor
     let alertConfiguration: AlertConfiguration
 
-    private(set) var isViewActive = false
+    private(set) var isViewActive = ValueProvider<Bool>(with: false)
     private static var alertPresenters = Set<EngagementViewModel>()
 
     init(interactor: Interactor, alertConfiguration: AlertConfiguration) {
@@ -45,9 +45,9 @@ class EngagementViewModel {
     func event(_ event: Event) {
         switch event {
         case .viewDidAppear:
-            isViewActive = true
+            isViewActive.value = true
         case .viewDidDisappear:
-            isViewActive = false
+            isViewActive.value = false
         case .backTapped:
             engagementDelegate?(.back)
         case .closeTapped:

@@ -23,6 +23,8 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
     private let engagementKind: EngagementKind
     private var engagement: Engagement = .none
     private let chatCallProvider = ValueProvider<Call?>(with: nil)
+    private let unreadMessages = ValueProvider<Int>(with: 0)
+    private let isWindowVisible = ValueProvider<Bool>(with: false)
     private let navigationController = NavigationController()
     private let navigationPresenter: NavigationPresenter
     private var window: GliaWindow?
@@ -37,7 +39,6 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
         self.gliaDelegate = gliaDelegate
         self.engagementKind = engagementKind
         self.navigationPresenter = NavigationPresenter(with: navigationController)
-
         navigationController.modalPresentationStyle = .fullScreen
         navigationController.isNavigationBarHidden = true
     }
@@ -63,7 +64,11 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
                                                    animated: false)
         }
 
-        presentWindow(animated: true)
+        let bubbleView = viewFactory.makeBubbleView()
+        unreadMessages.addObserver(self) { unreadCount, _ in
+            bubbleView.setBadge(itemCount: unreadCount)
+        }
+        presentWindow(bubbleView: bubbleView, animated: true)
         gliaDelegate?.event(.started)
     }
 
@@ -83,7 +88,9 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
             interactor: interactor,
             viewFactory: viewFactory,
             navigationPresenter: navigationPresenter,
-            callProvider: chatCallProvider,
+            call: chatCallProvider,
+            unreadMessages: unreadMessages,
+            isWindowVisible: isWindowVisible,
             startAction: startAction
         )
         coordinator.delegate = { [weak self] event in
@@ -129,6 +136,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
             viewFactory: viewFactory,
             navigationPresenter: navigationPresenter,
             call: call,
+            unreadMessages: unreadMessages,
             startAction: startAction
         )
         coordinator.delegate = { [weak self] event in
@@ -169,15 +177,15 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
         return coordinator.start()
     }
 
-    private func presentWindow(animated: Bool) {
+    private func presentWindow(bubbleView: BubbleView, animated: Bool) {
         guard window == nil else { return }
 
-        let bubbleView = viewFactory.makeBubbleView()
         let window = GliaWindow(bubbleView: bubbleView, delegate: self)
         window.rootViewController = navigationController
         window.isHidden = false
         window.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
         self.window = window
+        isWindowVisible.value = true
 
         UIView.animate(withDuration: animated ? 0.4 : 0.0,
                        delay: 0.0,
@@ -191,7 +199,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
 
     private func dismissWindow(animated: Bool, completion: @escaping () -> Void) {
         guard let window = window else { return }
-
+        isWindowVisible.value = false
         UIView.animate(withDuration: animated ? 0.5 : 0.0,
                        delay: 0.0,
                        options: .curveEaseInOut) {
@@ -224,8 +232,10 @@ extension RootCoordinator: GliaWindowDelegate {
     func event(_ event: GliaWindowEvent) {
         switch event {
         case .minimized:
+            isWindowVisible.value = false
             gliaDelegate?.event(.minimized)
         case .maximized:
+            isWindowVisible.value = true
             gliaDelegate?.event(.maximized)
         }
     }

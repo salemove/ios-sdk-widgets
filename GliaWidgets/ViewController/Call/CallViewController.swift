@@ -77,6 +77,9 @@ class CallViewController: EngagementViewController, MediaUpgradePresenter {
                 let button = CallButton.Kind(with: button)
                 let state = CallButton.State(with: state)
                 view.buttonBar.setButton(button, state: state)
+            case .setButtonBadge(let button, itemCount: let itemCount):
+                let button = CallButton.Kind(with: button)
+                view.buttonBar.setButton(button, badgeItemCount: itemCount)
             case .offerMediaUpgrade(let conf, accepted: let accepted, declined: let declined):
                 self.offerMediaUpgrade(with: conf, accepted: accepted, declined: declined)
             case .setRemoteVideo(let streamView):

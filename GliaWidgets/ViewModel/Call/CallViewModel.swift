@@ -36,6 +36,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
         case showButtons([CallButton])
         case setButtonEnabled(CallButton, enabled: Bool)
         case setButtonState(CallButton, state: CallButtonState)
+        case setButtonBadge(CallButton, itemCount: Int)
         case offerMediaUpgrade(SingleMediaUpgradeAlertConfiguration,
                                accepted: () -> Void,
                                declined: () -> Void)
@@ -64,10 +65,14 @@ class CallViewModel: EngagementViewModel, ViewModel {
     init(interactor: Interactor,
          alertConfiguration: AlertConfiguration,
          call: Call,
+         unreadMessages: ValueProvider<Int>,
          startWith: StartAction) {
         self.call = call
         self.startWith = startWith
         super.init(interactor: interactor, alertConfiguration: alertConfiguration)
+        unreadMessages.addObserver(self) { unreadCount, _ in
+            self.action?(.setButtonBadge(.chat, itemCount: unreadCount))
+        }
         call.kind.addObserver(self) { kind, _ in
             self.onKindChanged(kind)
         }
@@ -202,7 +207,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
     private func offerMediaUpgrade(with configuration: SingleMediaUpgradeAlertConfiguration,
                                    offer: MediaUpgradeOffer,
                                    answer: @escaping AnswerWithSuccessBlock) {
-        guard isViewActive else { return }
+        guard isViewActive.value else { return }
         let operatorName = interactor.engagedOperator?.firstName
         let onAccepted = {
             self.call.upgrade(to: offer)
