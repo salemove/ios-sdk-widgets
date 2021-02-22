@@ -50,17 +50,20 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     private var historySection: Section<ChatItem> { return sections[0] }
     private var queueOperatorSection: Section<ChatItem> { return sections[1] }
     private var messagesSection: Section<ChatItem> { return sections[2] }
-    private let storage = ChatStorage()
-    private var unreadMessages: UnreadMessagesHandler!
     private let call: ValueProvider<Call?>
+    private var unreadMessages: UnreadMessagesHandler!
+    private let showsCallBubble: Bool
+    private let storage = ChatStorage()
 
     init(interactor: Interactor,
          alertConfiguration: AlertConfiguration,
          call: ValueProvider<Call?>,
          unreadMessages: ValueProvider<Int>,
+         showsCallBubble: Bool,
          isWindowVisible: ValueProvider<Bool>,
          startAction: StartAction) {
         self.call = call
+        self.showsCallBubble = showsCallBubble
         self.startAction = startAction
         super.init(interactor: interactor, alertConfiguration: alertConfiguration)
         self.unreadMessages = UnreadMessagesHandler(
@@ -84,6 +87,13 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             send(message)
         case .callBubbleTapped:
             delegate?(.call)
+        }
+    }
+
+    override func viewDidAppear() {
+        super.viewDidAppear()
+        if showsCallBubble {
+            showCallBubble()
         }
     }
 
@@ -196,7 +206,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         let operatorName = interactor.engagedOperator?.firstName
         let onAccepted = {
             self.delegate?(.mediaUpgradeAccepted(offer: offer, answer: answer))
-            self.action?(.showCallBubble(imageUrl: self.interactor.engagedOperator?.picture?.url))
+            self.showCallBubble()
         }
         action?(.offerMediaUpgrade(configuration.withOperatorName(operatorName),
                                    accepted: { onAccepted() },
@@ -322,5 +332,10 @@ extension ChatViewModel {
         call.duration.addObserver(item) { duration, _ in
             durationProvider.value = duration
         }
+    }
+
+    private func showCallBubble() {
+        let imageUrl = interactor.engagedOperator?.picture?.url
+        action?(.showCallBubble(imageUrl: imageUrl))
     }
 }
