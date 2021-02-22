@@ -190,12 +190,18 @@ extension Theme {
                 titleColor: inactiveTitleColor
             )
         )
+        let badge = BadgeStyle(
+            font: font.caption,
+            fontColor: color.baseLight,
+            backgroundColor: color.primary
+        )
         return CallButtonBarStyle(
             chatButton: chatButton,
             videoButton: videoButton,
             muteButton: muteButton,
             speakerButton: speakerButton,
-            minimizeButton: minimizeButton
+            minimizeButton: minimizeButton,
+            badge: badge
         )
     }
 }

@@ -51,18 +51,27 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     private var queueOperatorSection: Section<ChatItem> { return sections[1] }
     private var messagesSection: Section<ChatItem> { return sections[2] }
     private let storage = ChatStorage()
-    private let callProvider: ValueProvider<Call?>
+    private var unreadMessages: UnreadMessagesHandler!
+    private let call: ValueProvider<Call?>
 
     init(interactor: Interactor,
          alertConfiguration: AlertConfiguration,
-         callProvider: ValueProvider<Call?>,
+         call: ValueProvider<Call?>,
+         unreadMessages: ValueProvider<Int>,
+         isWindowVisible: ValueProvider<Bool>,
          startAction: StartAction) {
-        self.callProvider = callProvider
+        self.call = call
         self.startAction = startAction
         super.init(interactor: interactor, alertConfiguration: alertConfiguration)
-        self.callProvider.addObserver(self) { call, _ in
+        self.unreadMessages = UnreadMessagesHandler(
+            unreadMessages: unreadMessages,
+            isWindowVisible: isWindowVisible,
+            isViewVisible: isViewActive
+        )
+        self.call.addObserver(self) { call, _ in
             self.onCall(call)
         }
+        storage.setQueue(withID: interactor.queueID)
     }
 
     public func event(_ event: Event) {
@@ -86,7 +95,6 @@ class ChatViewModel: EngagementViewModel, ViewModel {
                    to: queueOperatorSection,
                    animated: false)
         action?(.setMessageEntryEnabled(false))
-        storage.setQueue(withID: interactor.queueID)
 
         switch startAction {
         case .startEngagement:
@@ -184,7 +192,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     private func offerMediaUpgrade(with configuration: SingleMediaUpgradeAlertConfiguration,
                                    offer: MediaUpgradeOffer,
                                    answer: @escaping AnswerWithSuccessBlock) {
-        guard isViewActive else { return }
+        guard isViewActive.value else { return }
         let operatorName = interactor.engagedOperator?.firstName
         let onAccepted = {
             self.delegate?(.mediaUpgradeAccepted(offer: offer, answer: answer))
@@ -237,7 +245,10 @@ extension ChatViewModel {
     }
 
     private func receivedMessage(_ message: Message) {
+        guard storage.isNewMessage(message) else { return }
+
         storage.storeMessage(message)
+        unreadMessages.received(1)
 
         switch message.sender {
         case .operator:
@@ -252,6 +263,8 @@ extension ChatViewModel {
 
     private func messagesUpdated(_ messages: [Message]) {
         let newMessages = storage.newMessages(messages)
+        unreadMessages.received(newMessages.count)
+
         if !newMessages.isEmpty {
             storage.storeMessages(newMessages)
             let items = newMessages.compactMap({ ChatItem(with: $0) })

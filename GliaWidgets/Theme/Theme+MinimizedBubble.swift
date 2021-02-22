@@ -5,6 +5,14 @@ extension Theme {
             placeholderColor: color.baseLight,
             backgroundColor: color.primary
         )
-        return BubbleStyle(userImage: userImage)
+        let badge = BadgeStyle(
+            font: font.caption,
+            fontColor: color.baseLight,
+            backgroundColor: color.primary
+        )
+        return BubbleStyle(
+            userImage: userImage,
+            badge: badge
+        )
     }
 }

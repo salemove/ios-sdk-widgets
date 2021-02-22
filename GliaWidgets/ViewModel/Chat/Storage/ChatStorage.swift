@@ -313,6 +313,10 @@ extension ChatStorage {
         return messages
     }
 
+    func isNewMessage(_ message: SalemoveSDK.Message) -> Bool {
+        return !newMessages([message]).isEmpty
+    }
+
     func newMessages(_ messages: [SalemoveSDK.Message]) -> [SalemoveSDK.Message] {
         let messageIDs = Set<String>(messages.map({ $0.id }))
         var existingMessageIDs = Set<String>()

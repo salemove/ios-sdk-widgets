@@ -27,6 +27,7 @@ class CallButton: UIView {
     private let imageView = UIImageView()
     private let titleLabel = UILabel()
     private let circleView = UIView()
+    private var badgeView: BadgeView?
     private let kCircleSize: CGFloat = 60
     private let kImageViewSize = CGSize(width: 21, height: 21)
 
@@ -41,6 +42,22 @@ class CallButton: UIView {
     @available(*, unavailable)
     required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    func setBadge(itemCount: Int, style: BadgeStyle) {
+        if itemCount <= 0 {
+            badgeView?.removeFromSuperview()
+            badgeView = nil
+        } else {
+            if badgeView == nil {
+                let badgeView = BadgeView(with: style)
+                self.badgeView = badgeView
+                addSubview(badgeView)
+                badgeView.autoPinEdge(.top, to: .top, of: imageView, withOffset: -badgeView.size / 2)
+                badgeView.autoPinEdge(.left, to: .right, of: imageView, withOffset: -badgeView.size / 2)
+            }
+        }
+        badgeView?.newItemCount = itemCount
     }
 
     private func setup() {
