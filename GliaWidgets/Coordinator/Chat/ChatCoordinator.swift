@@ -16,6 +16,7 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
     private let viewFactory: ViewFactory
     private let navigationPresenter: NavigationPresenter
     private let call: ValueProvider<Call?>
+    private let showsCallBubble: Bool
     private let unreadMessages: ValueProvider<Int>
     private let isWindowVisible: ValueProvider<Bool>
     private let startAction: ChatViewModel.StartAction
@@ -25,6 +26,7 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
          navigationPresenter: NavigationPresenter,
          call: ValueProvider<Call?>,
          unreadMessages: ValueProvider<Int>,
+         showsCallBubble: Bool,
          isWindowVisible: ValueProvider<Bool>,
          startAction: ChatViewModel.StartAction) {
         self.interactor = interactor
@@ -32,6 +34,7 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
         self.navigationPresenter = navigationPresenter
         self.call = call
         self.unreadMessages = unreadMessages
+        self.showsCallBubble = showsCallBubble
         self.isWindowVisible = isWindowVisible
         self.startAction = startAction
     }
@@ -47,6 +50,7 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
             alertConfiguration: viewFactory.theme.alertConfiguration,
             call: call,
             unreadMessages: unreadMessages,
+            showsCallBubble: showsCallBubble,
             isWindowVisible: isWindowVisible,
             startAction: startAction
         )

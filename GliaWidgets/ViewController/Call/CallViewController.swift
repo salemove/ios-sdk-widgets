@@ -32,6 +32,7 @@ class CallViewController: EngagementViewController, MediaUpgradePresenter {
         view.willRotate(to: orientation, duration: duration)
     }
 
+    // swiftlint:disable function_body_length
     private func bind(viewModel: CallViewModel, to view: CallView) {
         showBackButton(with: viewFactory.theme.call.backButton, in: view.header)
         showCloseButton(with: viewFactory.theme.call.closeButton, in: view.header)

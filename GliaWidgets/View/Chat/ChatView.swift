@@ -189,6 +189,7 @@ extension ChatView {
                                                   y: callBubbleBounds.maxY - kCallBubbleSize.height),
                                   size: kCallBubbleSize)
         self.callBubble = callBubble
+
         addSubview(callBubble)
     }
 
