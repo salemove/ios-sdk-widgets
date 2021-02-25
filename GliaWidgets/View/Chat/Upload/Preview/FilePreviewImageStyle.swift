@@ -1,6 +1,6 @@
 import UIKit
 
-public class FileImageStyle {
+public class FilePreviewImageStyle {
     public var fileFont: UIFont
     public var fileColor: UIColor
     public var errorIcon: UIImage
