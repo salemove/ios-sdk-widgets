@@ -56,7 +56,7 @@ public class FileUploadErrorStateStyle {
     public var infoFont: UIFont
     public var infoColor: UIColor
     public var infoFileSizeOverLimit: String
-    public var infoFnvalidFileType: String
+    public var infoInvalidFileType: String
     public var infoSafetyCheckFailed: String
 
     public init(text: String,
@@ -65,7 +65,7 @@ public class FileUploadErrorStateStyle {
                 infoFont: UIFont,
                 infoColor: UIColor,
                 infoFileSizeOverLimit: String,
-                infoFnvalidFileType: String,
+                infoInvalidFileType: String,
                 infoSafetyCheckFailed: String) {
         self.text = text
         self.font = font
@@ -73,7 +73,7 @@ public class FileUploadErrorStateStyle {
         self.infoFont = infoFont
         self.infoColor = infoColor
         self.infoFileSizeOverLimit = infoFileSizeOverLimit
-        self.infoFnvalidFileType = infoFnvalidFileType
+        self.infoInvalidFileType = infoInvalidFileType
         self.infoSafetyCheckFailed = infoSafetyCheckFailed
     }
 }
