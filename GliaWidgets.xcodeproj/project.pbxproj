@@ -30,6 +30,11 @@
 		1A0C9AC225C9400000815406 /* CallDurationCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0C9AC125C9400000815406 /* CallDurationCounter.swift */; };
 		1A0C9AC825C9493D00815406 /* Int+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0C9AC725C9493D00815406 /* Int+Extensions.swift */; };
 		1A0C9AE025C9624500815406 /* ValueProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0C9ADF25C9624500815406 /* ValueProvider.swift */; };
+		1A0EDF5625E786CE0076D1AD /* FileUploadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0EDF5525E786CE0076D1AD /* FileUploadView.swift */; };
+		1A0EDF5A25E786DB0076D1AD /* FileUploadStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0EDF5925E786DB0076D1AD /* FileUploadStyle.swift */; };
+		1A0EDF6525E795DD0076D1AD /* FileImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0EDF6425E795DD0076D1AD /* FileImageView.swift */; };
+		1A0EDF6925E795EB0076D1AD /* FileImageStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0EDF6825E795EB0076D1AD /* FileImageStyle.swift */; };
+		1A0EDF6D25E7AC100076D1AD /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0EDF6C25E7AC100076D1AD /* UIImage+Extensions.swift */; };
 		1A205D6225655CB2003AA3CD /* GliaWidgets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A205D5825655CB1003AA3CD /* GliaWidgets.framework */; };
 		1A205D6725655CB2003AA3CD /* GliaWidgetsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A205D6625655CB2003AA3CD /* GliaWidgetsTests.swift */; };
 		1A205D6925655CB2003AA3CD /* GliaWidgets.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A205D5B25655CB1003AA3CD /* GliaWidgets.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -210,6 +215,11 @@
 		1A0C9AC125C9400000815406 /* CallDurationCounter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallDurationCounter.swift; sourceTree = "<group>"; };
 		1A0C9AC725C9493D00815406 /* Int+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Extensions.swift"; sourceTree = "<group>"; };
 		1A0C9ADF25C9624500815406 /* ValueProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValueProvider.swift; sourceTree = "<group>"; };
+		1A0EDF5525E786CE0076D1AD /* FileUploadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUploadView.swift; sourceTree = "<group>"; };
+		1A0EDF5925E786DB0076D1AD /* FileUploadStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUploadStyle.swift; sourceTree = "<group>"; };
+		1A0EDF6425E795DD0076D1AD /* FileImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileImageView.swift; sourceTree = "<group>"; };
+		1A0EDF6825E795EB0076D1AD /* FileImageStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileImageStyle.swift; sourceTree = "<group>"; };
+		1A0EDF6C25E7AC100076D1AD /* UIImage+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extensions.swift"; sourceTree = "<group>"; };
 		1A205D5825655CB1003AA3CD /* GliaWidgets.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GliaWidgets.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A205D5B25655CB1003AA3CD /* GliaWidgets.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GliaWidgets.h; sourceTree = "<group>"; };
 		1A205D5C25655CB1003AA3CD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -464,6 +474,25 @@
 				1A0C9ADF25C9624500815406 /* ValueProvider.swift */,
 			);
 			path = Provider;
+			sourceTree = "<group>";
+		};
+		1A0EDF5425E786820076D1AD /* Upload */ = {
+			isa = PBXGroup;
+			children = (
+				1A0EDF6325E795C90076D1AD /* Image */,
+				1A0EDF5525E786CE0076D1AD /* FileUploadView.swift */,
+				1A0EDF5925E786DB0076D1AD /* FileUploadStyle.swift */,
+			);
+			path = Upload;
+			sourceTree = "<group>";
+		};
+		1A0EDF6325E795C90076D1AD /* Image */ = {
+			isa = PBXGroup;
+			children = (
+				1A0EDF6425E795DD0076D1AD /* FileImageView.swift */,
+				1A0EDF6825E795EB0076D1AD /* FileImageStyle.swift */,
+			);
+			path = Image;
 			sourceTree = "<group>";
 		};
 		1A205D4E25655CB1003AA3CD = {
@@ -805,6 +834,7 @@
 		1A60AFD12566990F00E53F53 /* Chat */ = {
 			isa = PBXGroup;
 			children = (
+				1A0EDF5425E786820076D1AD /* Upload */,
 				1A8B61D025C97481000D780E /* Upgrade */,
 				1A5F813A2588B70A00A605DA /* Entry */,
 				1A60B02B256BF7C200E53F53 /* Message */,
@@ -924,6 +954,7 @@
 				1A4AF5C625AEEA42002CD0F4 /* Operator+Extensions.swift */,
 				1ABD6C9125B6F2D200D56EFA /* String+TemplateString.swift */,
 				1A0C9AC725C9493D00815406 /* Int+Extensions.swift */,
+				1A0EDF6C25E7AC100076D1AD /* UIImage+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1404,6 +1435,7 @@
 				1A7CA8212574D6760047CBBE /* ConnectOperatorView.swift in Sources */,
 				1A0C9A7925C16F9700815406 /* Theme+AlertConfiguration.swift in Sources */,
 				1AC8AADD25D419CE00DAFE50 /* VideoStreamView.swift in Sources */,
+				1A0EDF6525E795DD0076D1AD /* FileImageView.swift in Sources */,
 				1A4AD3C7256E863900468BFB /* ThemeColor.swift in Sources */,
 				1A63B2F3257A3F3D00508478 /* AlertViewController.swift in Sources */,
 				1A60B01D2567FCAD00E53F53 /* ButtonProperties.swift in Sources */,
@@ -1461,6 +1493,7 @@
 				1A4AD3B3256D2A7600468BFB /* VisitorChatMessageStyle.swift in Sources */,
 				1A60B0082567F29900E53F53 /* HeaderStyle.swift in Sources */,
 				1ABD6CAC25B71D1B00D56EFA /* CallViewModel.swift in Sources */,
+				1A0EDF5A25E786DB0076D1AD /* FileUploadStyle.swift in Sources */,
 				1A6075E02582209100569B0E /* UserImageView.swift in Sources */,
 				1AC7A7AF258786CB00567FF8 /* EngagementViewModel.swift in Sources */,
 				1A6EBB2525ADE36900EE325D /* MediaUpgradePresenter.swift in Sources */,
@@ -1472,6 +1505,7 @@
 				1A0C143125B8547200B00695 /* EngagementStyle.swift in Sources */,
 				1A7CA8272574D6F40047CBBE /* ConnectStyle.swift in Sources */,
 				1AC7A7552582594200567FF8 /* Configuration.swift in Sources */,
+				1A0EDF5625E786CE0076D1AD /* FileUploadView.swift in Sources */,
 				1A0C143625B85C3300B00695 /* CallView.swift in Sources */,
 				1AA738A72578DD0300E1120F /* ConnectStatusStyle.swift in Sources */,
 				1A60AFDD25669A4200E53F53 /* ChatView.swift in Sources */,
@@ -1485,6 +1519,7 @@
 				1A5F8182258B4F0E00A605DA /* OutgoingMessage.swift in Sources */,
 				1A60AFCA2566943F00E53F53 /* RootCoordinator.swift in Sources */,
 				1ABD6C9225B6F2D200D56EFA /* String+TemplateString.swift in Sources */,
+				1A0EDF6925E795EB0076D1AD /* FileImageStyle.swift in Sources */,
 				1A60B0042567F25600E53F53 /* Header.swift in Sources */,
 				1A60B047256C0B4500E53F53 /* ChatMessageContent.swift in Sources */,
 				1A63B2F6257A469A00508478 /* AlertPresenter.swift in Sources */,
@@ -1493,6 +1528,7 @@
 				1AE15E49257A6BD200A642C0 /* ConfirmationAlertConfiguration.swift in Sources */,
 				1A60AFB22566821B00E53F53 /* Asset.swift in Sources */,
 				1A4AD3AF256D283700468BFB /* ChatMessageView.swift in Sources */,
+				1A0EDF6D25E7AC100076D1AD /* UIImage+Extensions.swift in Sources */,
 				1A60AFD52566992A00E53F53 /* ChatViewModel.swift in Sources */,
 				1A60AFE025669A6100E53F53 /* ChatViewController.swift in Sources */,
 				1ABD6C6125B5ABA100D56EFA /* UIView+Screenshot.swift in Sources */,
