@@ -90,14 +90,23 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter {
     private func picker() {
         guard let view = view as? ChatView else { return }
 
-        let l1 = UILabel()
-        let l2 = UIButton()
-        l1.text = "Blah"
-        l2.setTitle("Button here", for: .normal)
-        let stack = UIStackView(arrangedSubviews: [l1, l2])
-        stack.axis = .vertical
+        let item1 = ListItemStyle(title: "Photo",
+                                  titleFont: .systemFont(ofSize: 15),
+                                  titleColor: .black,
+                                  icon: Asset.callChat.image,
+                                  iconColor: .black)
+        let item2 = ListItemStyle(title: "Take photo",
+                                  titleFont: .systemFont(ofSize: 15),
+                                  titleColor: .black,
+                                  icon: Asset.chatSend.image,
+                                  iconColor: .black)
 
-        let controller = PopoverViewController(with: stack, presentFrom: view.messageEntryView.pickMediaButton)
+        let list = ItemListView(with: ItemListStyle(separatorColor: .lightGray, backgroundColor: .white))
+        list.items = [item1, item2]
+
+        let controller = PopoverViewController(with: list,
+                                               presentFrom: view.messageEntryView.pickMediaButton,
+                                               arrowDirection: [.down])
         present(controller, animated: true, completion: nil)
     }
 }

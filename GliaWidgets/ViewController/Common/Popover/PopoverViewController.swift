@@ -32,12 +32,21 @@ final class PopoverViewController: UIViewController {
         super.loadView()
         view.backgroundColor = contentView.backgroundColor
         view.addSubview(contentView)
-        contentView.autoPinEdgesToSuperviewEdges(with: contentInsets)
+        contentView.autoPinEdge(toSuperviewEdge: .left, withInset: contentInsets.left)
+        contentView.autoPinEdge(toSuperviewEdge: .top, withInset: contentInsets.top)
+        contentView.autoPinEdge(toSuperviewEdge: .right, withInset: contentInsets.right)
+        contentView.autoPinEdge(toSuperviewEdge: .bottom, withInset: contentInsets.bottom, relation: .greaterThanOrEqual)
         updatePreferredContentSize()
     }
 
     private func updatePreferredContentSize() {
-        preferredContentSize = view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+        var size = view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+
+        if size.width < minimumWidth {
+            size.width = minimumWidth
+        }
+
+        preferredContentSize = size
     }
 }
 

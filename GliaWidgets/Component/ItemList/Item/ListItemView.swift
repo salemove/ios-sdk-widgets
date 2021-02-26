@@ -44,6 +44,8 @@ class ListItemView: UIView {
     }
 
     private func layout() {
+        autoSetDimension(.height, toSize: kHeight)
+
         addSubview(stackView)
         stackView.autoPinEdgesToSuperviewEdges(with: kContentInsets)
     }
