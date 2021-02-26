@@ -1,6 +1,7 @@
 import UIKit
 
 public class ChatMessageEntryView: UIView {
+    let pickMediaButton: MessageButton
     var maxCharacters: Int = 200
     var textChanged: ((String) -> Void)?
     var sendTapped: ((String) -> Void)?
@@ -19,7 +20,6 @@ public class ChatMessageEntryView: UIView {
     private let messageContainerView = UIView()
     private let textView = UITextView()
     private let placeholderLabel = UILabel()
-    private let pickMediaButton: MessageButton
     private let sendButton: MessageButton
     private let buttonsStackView = UIStackView()
     private var textViewHeightConstraint: NSLayoutConstraint!

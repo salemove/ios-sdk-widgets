@@ -1,5 +1,7 @@
 import UIKit
 
+import MobileCoreServices
+
 class ChatViewController: EngagementViewController, MediaUpgradePresenter {
     private let viewModel: ChatViewModel
     private var lastVisibleRowIndexPath: IndexPath?
@@ -51,6 +53,8 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter {
         view.messageEntryView.sendTapped = { viewModel.event(.sendTapped(message: $0)) }
         view.callBubbleTapped = { viewModel.event(.callBubbleTapped) }
 
+        view.messageEntryView.pickMediaTapped = { self.picker() }
+
         viewModel.action = { action in
             switch action {
             case .queue:
@@ -81,5 +85,19 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter {
                 view.showCallBubble(with: imageUrl, animated: true)
             }
         }
+    }
+
+    private func picker() {
+        guard let view = view as? ChatView else { return }
+
+        let l1 = UILabel()
+        let l2 = UIButton()
+        l1.text = "Blah"
+        l2.setTitle("Button here", for: .normal)
+        let stack = UIStackView(arrangedSubviews: [l1, l2])
+        stack.axis = .vertical
+
+        let controller = PopoverViewController(with: stack, presentFrom: view.messageEntryView.pickMediaButton)
+        present(controller, animated: true, completion: nil)
     }
 }

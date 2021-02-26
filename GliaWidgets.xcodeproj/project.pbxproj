@@ -35,6 +35,7 @@
 		1A0EDF6525E795DD0076D1AD /* FilePreviewImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0EDF6425E795DD0076D1AD /* FilePreviewImageView.swift */; };
 		1A0EDF6925E795EB0076D1AD /* FilePreviewImageStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0EDF6825E795EB0076D1AD /* FilePreviewImageStyle.swift */; };
 		1A0EDF6D25E7AC100076D1AD /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0EDF6C25E7AC100076D1AD /* UIImage+Extensions.swift */; };
+		1A0EDF8225E8E0150076D1AD /* PopoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0EDF8125E8E0150076D1AD /* PopoverViewController.swift */; };
 		1A205D6225655CB2003AA3CD /* GliaWidgets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A205D5825655CB1003AA3CD /* GliaWidgets.framework */; };
 		1A205D6725655CB2003AA3CD /* GliaWidgetsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A205D6625655CB2003AA3CD /* GliaWidgetsTests.swift */; };
 		1A205D6925655CB2003AA3CD /* GliaWidgets.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A205D5B25655CB1003AA3CD /* GliaWidgets.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -220,6 +221,7 @@
 		1A0EDF6425E795DD0076D1AD /* FilePreviewImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilePreviewImageView.swift; sourceTree = "<group>"; };
 		1A0EDF6825E795EB0076D1AD /* FilePreviewImageStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilePreviewImageStyle.swift; sourceTree = "<group>"; };
 		1A0EDF6C25E7AC100076D1AD /* UIImage+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extensions.swift"; sourceTree = "<group>"; };
+		1A0EDF8125E8E0150076D1AD /* PopoverViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopoverViewController.swift; sourceTree = "<group>"; };
 		1A205D5825655CB1003AA3CD /* GliaWidgets.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GliaWidgets.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A205D5B25655CB1003AA3CD /* GliaWidgets.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GliaWidgets.h; sourceTree = "<group>"; };
 		1A205D5C25655CB1003AA3CD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -495,6 +497,14 @@
 			path = Preview;
 			sourceTree = "<group>";
 		};
+		1A0EDF8925E8E20A0076D1AD /* Popover */ = {
+			isa = PBXGroup;
+			children = (
+				1A0EDF8125E8E0150076D1AD /* PopoverViewController.swift */,
+			);
+			path = Popover;
+			sourceTree = "<group>";
+		};
 		1A205D4E25655CB1003AA3CD = {
 			isa = PBXGroup;
 			children = (
@@ -645,6 +655,7 @@
 		1A5F815D258A43D900A605DA /* Section */ = {
 			isa = PBXGroup;
 			children = (
+				1A5F814B2588C0AD00A605DA /* Keyboard */,
 				1A5F815E258A43E600A605DA /* Section.swift */,
 			);
 			path = Section;
@@ -786,7 +797,6 @@
 			children = (
 				1A0C9ADE25C9623800815406 /* Provider */,
 				1A5F815D258A43D900A605DA /* Section */,
-				1A5F814B2588C0AD00A605DA /* Keyboard */,
 				1A60AFEF2566A4A700E53F53 /* Presenter */,
 				1A60AFC72566866800E53F53 /* ViewController */,
 				1A60AFD725669A0500E53F53 /* View */,
@@ -985,6 +995,7 @@
 		1A63B2EF257A3EF100508478 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				1A0EDF8925E8E20A0076D1AD /* Popover */,
 				1A6EBB2325ADE35500EE325D /* MediaUpgrade */,
 				1A63B2F1257A3F2D00508478 /* Alert */,
 			);
@@ -1422,6 +1433,7 @@
 			files = (
 				1A60AFD925669A1500E53F53 /* View.swift in Sources */,
 				1A6EBB0325ADB82000EE325D /* MediaUpgradeActionView.swift in Sources */,
+				1A0EDF8225E8E0150076D1AD /* PopoverViewController.swift in Sources */,
 				1A60AFBC256682C800E53F53 /* SubFlowCoordinator.swift in Sources */,
 				1A0C9A8C25C4092400815406 /* CallButtonStyle.swift in Sources */,
 				1A4AF5D725AEF584002CD0F4 /* AlertViewController+MultipleMediaUpgrade.swift in Sources */,
