@@ -1,7 +1,7 @@
 import UIKit
 
 class ListItemView: UIView {
-    var tap: (() -> Void)?
+    var tap: ((ListItemKind) -> Void)?
 
     private let titleLabel = UILabel()
     private let stackView = UIStackView()
@@ -51,6 +51,6 @@ class ListItemView: UIView {
     }
 
     @objc private func tapped() {
-        tap?()
+        tap?(style.kind)
     }
 }

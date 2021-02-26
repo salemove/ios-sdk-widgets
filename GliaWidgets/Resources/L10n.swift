@@ -212,6 +212,14 @@ public enum L10n {
         public static let delivered = L10n.tr("Localizable", "chat.message.status.delivered")
       }
     }
+    public enum PickMedia {
+      /// Browse
+      public static let browse = L10n.tr("Localizable", "chat.pickMedia.browse")
+      /// Photo library
+      public static let photo = L10n.tr("Localizable", "chat.pickMedia.photo")
+      /// Take Photo or Video
+      public static let takePhoto = L10n.tr("Localizable", "chat.pickMedia.takePhoto")
+    }
     public enum Upgrade {
       public enum Audio {
         /// Upgraded to Audio Call

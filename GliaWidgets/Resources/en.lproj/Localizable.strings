@@ -51,6 +51,9 @@
 "chat.message.status.delivered" = "Delivered";
 "chat.upgrade.audio.text" = "Upgraded to Audio Call";
 "chat.upgrade.video.text" = "Upgraded to Video Call";
+"chat.pickMedia.photo" = "Photo library";
+"chat.pickMedia.takePhoto" = "Take Photo or Video";
+"chat.pickMedia.browse" = "Browse";
 
 "call.audio.title" = "AUDIO CALL";
 "call.video.title" = "VIDEO CALL";

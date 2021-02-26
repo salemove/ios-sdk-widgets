@@ -7,6 +7,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case viewDidLoad
         case messageTextChanged(String)
         case sendTapped(message: String)
+        case pickMediaTapped
         case callBubbleTapped
     }
 
@@ -21,6 +22,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case refreshAll
         case scrollToBottom(animated: Bool)
         case updateItemsUserImage(animated: Bool)
+        case presentMediaPicker(itemSelected: (ListItemKind) -> Void)
         case offerMediaUpgrade(SingleMediaUpgradeAlertConfiguration,
                                accepted: () -> Void,
                                declined: () -> Void)
@@ -85,6 +87,8 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             sendMessagePreview(message)
         case .sendTapped(message: let message):
             send(message)
+        case .pickMediaTapped:
+            presentMediaPicker()
         case .callBubbleTapped:
             delegate?(.call)
         }
@@ -179,6 +183,13 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         historySection.set(items)
         action?(.refreshSection(historySection.index))
         action?(.scrollToBottom(animated: true))
+    }
+
+    private func presentMediaPicker() {
+        let itemSelected = { (itemKind: ListItemKind) -> Void in
+
+        }
+        action?(.presentMediaPicker(itemSelected: { itemSelected($0) }))
     }
 
     private func offerMediaUpgrade(_ offer: MediaUpgradeOffer, answer: @escaping AnswerWithSuccessBlock) {

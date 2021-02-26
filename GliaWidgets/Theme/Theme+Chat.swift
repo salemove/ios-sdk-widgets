@@ -135,7 +135,47 @@ extension Theme {
             messageEntry: messageEntry,
             audioUpgrade: audioUpgrade,
             videoUpgrade: videoUpgrade,
-            callBubble: callBubble
+            callBubble: callBubble,
+            pickMedia: pickMedia
+        )
+    }
+
+    private var pickMedia: ItemListStyle {
+        typealias Chat = L10n.Chat.PickMedia
+
+        let itemFont = font.buttonLabel
+        let itemFontColor = color.baseDark
+        let itemIconColor = color.baseDark
+
+        let pickPhoto = ListItemStyle(
+            kind: .photoLibrary,
+            title: Chat.photo,
+            titleFont: itemFont,
+            titleColor: itemFontColor,
+            icon: Asset.callChat.image,
+            iconColor: itemIconColor
+        )
+        let takePhoto = ListItemStyle(
+            kind: .takePhoto,
+            title: Chat.takePhoto,
+            titleFont: itemFont,
+            titleColor: itemFontColor,
+            icon: Asset.callChat.image,
+            iconColor: itemIconColor
+        )
+        let browse = ListItemStyle(
+            kind: .browse,
+            title: Chat.browse,
+            titleFont: itemFont,
+            titleColor: itemFontColor,
+            icon: Asset.callChat.image,
+            iconColor: itemIconColor
+        )
+
+        return ItemListStyle(
+            items: [pickPhoto, takePhoto, browse],
+            separatorColor: color.baseShade,
+            backgroundColor: Color.lightGrey
         )
     }
 }

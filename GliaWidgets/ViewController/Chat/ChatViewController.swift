@@ -2,7 +2,7 @@ import UIKit
 
 import MobileCoreServices
 
-class ChatViewController: EngagementViewController, MediaUpgradePresenter {
+class ChatViewController: EngagementViewController, MediaUpgradePresenter, PopoverPresenter {
     private let viewModel: ChatViewModel
     private var lastVisibleRowIndexPath: IndexPath?
 
@@ -51,9 +51,8 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter {
         view.itemForRow = { return viewModel.item(for: $0, in: $1) }
         view.messageEntryView.textChanged = { viewModel.event(.messageTextChanged($0)) }
         view.messageEntryView.sendTapped = { viewModel.event(.sendTapped(message: $0)) }
+        view.messageEntryView.pickMediaTapped = { viewModel.event(.pickMediaTapped) }
         view.callBubbleTapped = { viewModel.event(.callBubbleTapped) }
-
-        view.messageEntryView.pickMediaTapped = { self.picker() }
 
         viewModel.action = { action in
             switch action {
@@ -79,6 +78,9 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter {
                 view.scrollToBottom(animated: animated)
             case .updateItemsUserImage(animated: let animated):
                 view.updateItemsUserImage(animated: animated)
+            case .presentMediaPicker(itemSelected: let itemSelected):
+                self.presentMediaPicker(from: view.messageEntryView.pickMediaButton,
+                                        itemSelected: itemSelected)
             case .offerMediaUpgrade(let conf, accepted: let accepted, declined: let declined):
                 self.offerMediaUpgrade(with: conf, accepted: accepted, declined: declined)
             case .showCallBubble(let imageUrl):
@@ -87,26 +89,14 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter {
         }
     }
 
-    private func picker() {
-        guard let view = view as? ChatView else { return }
-
-        let item1 = ListItemStyle(title: "Photo",
-                                  titleFont: .systemFont(ofSize: 15),
-                                  titleColor: .black,
-                                  icon: Asset.callChat.image,
-                                  iconColor: .black)
-        let item2 = ListItemStyle(title: "Take photo",
-                                  titleFont: .systemFont(ofSize: 15),
-                                  titleColor: .black,
-                                  icon: Asset.chatSend.image,
-                                  iconColor: .black)
-
-        let list = ItemListView(with: ItemListStyle(separatorColor: .lightGray, backgroundColor: .white))
-        list.items = [item1, item2]
-
-        let controller = PopoverViewController(with: list,
-                                               presentFrom: view.messageEntryView.pickMediaButton,
-                                               arrowDirection: [.down])
-        present(controller, animated: true, completion: nil)
+    private func presentMediaPicker(from sourceView: UIView,
+                                    itemSelected: @escaping (ListItemKind) -> Void) {
+        presentPopover(with: viewFactory.theme.chat.pickMedia,
+                       from: sourceView,
+                       arrowDirections: [.down],
+                       itemSelected: {
+                        self.dismiss(animated: true, completion: nil)
+                        itemSelected($0)
+                       })
     }
 }

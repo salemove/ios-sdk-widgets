@@ -8,7 +8,7 @@ final class PopoverViewController: UIViewController {
 
     init(with contentView: UIView,
          presentFrom sourceView: UIView,
-         arrowDirection: UIPopoverArrowDirection = .any,
+         arrowDirections: UIPopoverArrowDirection = .any,
          contentInsets: UIEdgeInsets = .zero,
          minimumWidth: CGFloat = 250) {
         self.contentView = contentView
@@ -19,9 +19,8 @@ final class PopoverViewController: UIViewController {
         modalPresentationStyle = .popover
         popoverPresentationController?.sourceView = sourceView
         popoverPresentationController?.sourceRect = sourceView.bounds
-        popoverPresentationController?.permittedArrowDirections = arrowDirection
+        popoverPresentationController?.permittedArrowDirections = arrowDirections
         popoverPresentationController?.delegate = self
-        popoverPresentationController?.passthroughViews = [contentView]
     }
 
     required init?(coder _: NSCoder) {

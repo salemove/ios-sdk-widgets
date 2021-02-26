@@ -4,7 +4,7 @@ class ItemListView: UIView {
     var items: [ListItemStyle] = [] {
         didSet { updateItems(items) }
     }
-    var itemTapped: ((Int) -> Void)?
+    var itemTapped: ((ListItemKind) -> Void)?
 
     private let stackView = UIStackView()
     private let style: ItemListStyle
@@ -22,8 +22,12 @@ class ItemListView: UIView {
     }
 
     private func setup() {
+        backgroundColor = style.backgroundColor
+
         stackView.axis = .vertical
         stackView.spacing = 0
+
+        items = style.items
     }
 
     private func layout() {
@@ -33,13 +37,11 @@ class ItemListView: UIView {
 
     private func updateItems(_ styles: [ListItemStyle]) {
         stackView.removeArrangedSubviews()
-        styles.enumerated().forEach({
-            let itemStyle = $0.element
-            let itemIndex = $0.offset
-            let itemView = ListItemView(with: itemStyle)
-            itemView.tap = { [weak self] in self?.itemTapped?(itemIndex) }
+        styles.forEach({
+            let itemView = ListItemView(with: $0)
+            itemView.tap = { [weak self] in self?.itemTapped?($0) }
             stackView.addArrangedSubview(itemView)
-            if $0.offset < styles.count - 1 {
+            if $0 !== styles.last {
                 let separator = makeSeparator(color: style.separatorColor)
                 stackView.addArrangedSubview(separator)
             }
