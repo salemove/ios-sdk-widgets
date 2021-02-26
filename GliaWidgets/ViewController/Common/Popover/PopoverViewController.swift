@@ -9,7 +9,7 @@ final class PopoverViewController: UIViewController {
     init(with contentView: UIView,
          presentFrom sourceView: UIView,
          arrowDirection: UIPopoverArrowDirection = .any,
-         contentInsets: UIEdgeInsets = .init(top: 15, left: 15, bottom: 15, right: 15),
+         contentInsets: UIEdgeInsets = .zero,
          minimumWidth: CGFloat = 250) {
         self.contentView = contentView
         self.sourceView = sourceView
