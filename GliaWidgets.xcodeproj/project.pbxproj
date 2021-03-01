@@ -53,6 +53,8 @@
 		1A4674B625E907320078FA1C /* ItemListStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4674B525E907320078FA1C /* ItemListStyle.swift */; };
 		1A4674BC25E91B930078FA1C /* PopoverPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4674BB25E91B930078FA1C /* PopoverPresenter.swift */; };
 		1A4674C225E92A710078FA1C /* ListItemKind.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4674C125E92A710078FA1C /* ListItemKind.swift */; };
+		1A4674C825ED084A0078FA1C /* MediaPickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4674C725ED084A0078FA1C /* MediaPickerViewModel.swift */; };
+		1A4674CD25ED08A30078FA1C /* MediaPickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4674CC25ED08A30078FA1C /* MediaPickerController.swift */; };
 		1A475BB325DE831F00296D55 /* BadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A475BB225DE831F00296D55 /* BadgeView.swift */; };
 		1A475BB725DE833200296D55 /* BadgeStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A475BB625DE833200296D55 /* BadgeStyle.swift */; };
 		1A475BBC25DFA10100296D55 /* UnreadMessagesHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A475BBB25DFA10100296D55 /* UnreadMessagesHandler.swift */; };
@@ -249,6 +251,8 @@
 		1A4674B525E907320078FA1C /* ItemListStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemListStyle.swift; sourceTree = "<group>"; };
 		1A4674BB25E91B930078FA1C /* PopoverPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverPresenter.swift; sourceTree = "<group>"; };
 		1A4674C125E92A710078FA1C /* ListItemKind.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListItemKind.swift; sourceTree = "<group>"; };
+		1A4674C725ED084A0078FA1C /* MediaPickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPickerViewModel.swift; sourceTree = "<group>"; };
+		1A4674CC25ED08A30078FA1C /* MediaPickerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPickerController.swift; sourceTree = "<group>"; };
 		1A475BB225DE831F00296D55 /* BadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeView.swift; sourceTree = "<group>"; };
 		1A475BB625DE833200296D55 /* BadgeStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeStyle.swift; sourceTree = "<group>"; };
 		1A475BBB25DFA10100296D55 /* UnreadMessagesHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnreadMessagesHandler.swift; sourceTree = "<group>"; };
@@ -615,6 +619,30 @@
 			path = Item;
 			sourceTree = "<group>";
 		};
+		1A4674C525ED08030078FA1C /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				1A4674C625ED083A0078FA1C /* MediaPicker */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		1A4674C625ED083A0078FA1C /* MediaPicker */ = {
+			isa = PBXGroup;
+			children = (
+				1A4674C725ED084A0078FA1C /* MediaPickerViewModel.swift */,
+			);
+			path = MediaPicker;
+			sourceTree = "<group>";
+		};
+		1A4674CB25ED088B0078FA1C /* MediaPicker */ = {
+			isa = PBXGroup;
+			children = (
+				1A4674CC25ED08A30078FA1C /* MediaPickerController.swift */,
+			);
+			path = MediaPicker;
+			sourceTree = "<group>";
+		};
 		1A475BB125DE831000296D55 /* Badge */ = {
 			isa = PBXGroup;
 			children = (
@@ -777,6 +805,7 @@
 			children = (
 				1A60AFD32566991C00E53F53 /* Chat */,
 				1ABD6CAA25B71D0900D56EFA /* Call */,
+				1A4674C525ED08030078FA1C /* Common */,
 				1AC7A7AE258786CB00567FF8 /* EngagementViewModel.swift */,
 			);
 			path = ViewModel;
@@ -1029,6 +1058,7 @@
 		1A63B2EF257A3EF100508478 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				1A4674CB25ED088B0078FA1C /* MediaPicker */,
 				1A0EDF8925E8E20A0076D1AD /* Popover */,
 				1A6EBB2325ADE35500EE325D /* MediaUpgrade */,
 				1A63B2F1257A3F2D00508478 /* Alert */,
@@ -1571,6 +1601,7 @@
 				1ABD6C9225B6F2D200D56EFA /* String+TemplateString.swift in Sources */,
 				1A0EDF6925E795EB0076D1AD /* FilePreviewImageStyle.swift in Sources */,
 				1A60B0042567F25600E53F53 /* Header.swift in Sources */,
+				1A4674CD25ED08A30078FA1C /* MediaPickerController.swift in Sources */,
 				1A60B047256C0B4500E53F53 /* ChatMessageContent.swift in Sources */,
 				1A63B2F6257A469A00508478 /* AlertPresenter.swift in Sources */,
 				1A0452EA25DBE259000DA0C1 /* MessageButton.swift in Sources */,
@@ -1600,6 +1631,7 @@
 				1A60AFE825669C5000E53F53 /* ChatStyle.swift in Sources */,
 				1A4AF5C725AEEA42002CD0F4 /* Operator+Extensions.swift in Sources */,
 				1A54B83825A4723E00C9393E /* ChatStorage.swift in Sources */,
+				1A4674C825ED084A0078FA1C /* MediaPickerViewModel.swift in Sources */,
 				1A0C9A8625C4090D00815406 /* CallButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
