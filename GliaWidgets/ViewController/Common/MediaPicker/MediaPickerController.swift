@@ -5,7 +5,7 @@ final class MediaPickerController: NSObject {
     private let viewModel: MediaPickerViewModel
     private var imagePicker: UIImagePickerController?
 
-    private var viewController: UIViewController {
+    private var viewController: UIImagePickerController {
         if let imagePicker = imagePicker {
             return imagePicker
         }
@@ -29,6 +29,13 @@ final class MediaPickerController: NSObject {
     }
 
     func viewController(_ completion: @escaping (UIViewController) -> Void) {
+        guard UIImagePickerController.isSourceTypeAvailable(
+                UIImagePickerController.SourceType(with: viewModel.source)
+        ) else {
+            viewModel.event(.sourceNotAvailable)
+            return
+        }
+
         switch viewModel.source {
         case .camera:
             checkCameraPermission(completion)

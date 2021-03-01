@@ -30,6 +30,8 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     }
 
     enum DelegateEvent {
+        case pickMedia(ValueProvider<PickedMedia>)
+        case takeMedia(ValueProvider<PickedMedia>)
         case mediaUpgradeAccepted(offer: MediaUpgradeOffer,
                                   answer: AnswerWithSuccessBlock)
         case call
@@ -186,8 +188,19 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     }
 
     private func presentMediaPicker() {
-        let itemSelected = { (itemKind: ListItemKind) -> Void in
-
+        let itemSelected = { (kind: ListItemKind) -> Void in
+            let mediaProvider = ValueProvider<PickedMedia>(with: .none)
+            mediaProvider.addObserver(self) { media, _ in
+                self.mediaPicked(media)
+            }
+            switch kind {
+            case .photoLibrary:
+                self.delegate?(.pickMedia(mediaProvider))
+            case .takePhoto:
+                self.delegate?(.takeMedia(mediaProvider))
+            case .browse:
+                break
+            }
         }
         action?(.presentMediaPicker(itemSelected: { itemSelected($0) }))
     }
@@ -292,6 +305,10 @@ extension ChatViewModel {
             setItems(items, to: messagesSection)
             action?(.scrollToBottom(animated: true))
         }
+    }
+
+    private func mediaPicked(_ media: PickedMedia) {
+        print("MEDIA", media)
     }
 }
 

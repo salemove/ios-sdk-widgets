@@ -20,6 +20,7 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
     private let unreadMessages: ValueProvider<Int>
     private let isWindowVisible: ValueProvider<Bool>
     private let startAction: ChatViewModel.StartAction
+    private var mediaPickerController: MediaPickerController?
 
     init(interactor: Interactor,
          viewFactory: ViewFactory,
@@ -66,6 +67,14 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
         }
         viewModel.delegate = { [weak self] event in
             switch event {
+            case .pickMedia(let mediaProvider):
+                self?.presentMediaPickerController(with: mediaProvider,
+                                                   source: .library,
+                                                   types: [.image, .movie])
+            case .takeMedia(let mediaProvider):
+                self?.presentMediaPickerController(with: mediaProvider,
+                                                   source: .camera,
+                                                   types: [.image, .movie])
             case .mediaUpgradeAccepted(offer: let offer, answer: let answer):
                 self?.delegate?(.mediaUpgradeAccepted(offer: offer, answer: answer))
             case .call:
@@ -74,5 +83,23 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
         }
         return ChatViewController(viewModel: viewModel,
                                   viewFactory: viewFactory)
+    }
+
+    private func presentMediaPickerController(with provider: ValueProvider<PickedMedia>,
+                                              source: MediaPickerViewModel.MediaSource,
+                                              types: [MediaPickerViewModel.MediaType]) {
+        let viewModel = MediaPickerViewModel(provider: provider, source: source, types: types)
+        viewModel.delegate = { [weak self] event in
+            switch event {
+            case .finished:
+                self?.mediaPickerController = nil
+            }
+        }
+
+        let controller = MediaPickerController(viewModel: viewModel)
+        self.mediaPickerController = controller
+        controller.viewController { [weak self] viewController in
+            self?.navigationPresenter.present(viewController)
+        }
     }
 }

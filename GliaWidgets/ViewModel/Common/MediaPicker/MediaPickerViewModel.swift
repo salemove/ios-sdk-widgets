@@ -16,6 +16,7 @@ public final class MediaPickerViewModel: ViewModel {
     }
 
     public enum Event {
+        case sourceNotAvailable
         case noCameraPermission
         case pickedImage(URL)
         case pickedMovie(URL)
@@ -47,6 +48,8 @@ public final class MediaPickerViewModel: ViewModel {
 
     public func event(_ event: Event) {
         switch event {
+        case .sourceNotAvailable:
+            delegate?(.finished)
         case .noCameraPermission:
             delegate?(.finished)
         case .pickedImage(let url):
