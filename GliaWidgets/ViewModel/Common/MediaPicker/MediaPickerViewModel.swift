@@ -4,6 +4,14 @@ public enum PickedMedia {
     case none
 }
 
+public enum MediaPickerEvent {
+    case none
+    case pickedMedia(PickedMedia)
+    case sourceNotAvailable
+    case noCameraPermission
+    case cancelled
+}
+
 public final class MediaPickerViewModel: ViewModel {
     public enum MediaSource {
         case camera
@@ -34,31 +42,34 @@ public final class MediaPickerViewModel: ViewModel {
     public var source: MediaSource { mediaSource }
     public var types: [MediaType] { mediaTypes }
 
-    private let mediaProvider: ValueProvider<PickedMedia>
+    private let eventProvider: ValueProvider<MediaPickerEvent>
     private let mediaSource: MediaSource
     private let mediaTypes: [MediaType]
 
-    public init(provider: ValueProvider<PickedMedia>,
-                source: MediaSource,
-                types: [MediaType] = [.image]) {
-        mediaProvider = provider
-        mediaSource = source
-        mediaTypes = types
+    public init(eventProvider: ValueProvider<MediaPickerEvent>,
+                mediaSource: MediaSource,
+                mediaTypes: [MediaType] = [.image]) {
+        self.eventProvider = eventProvider
+        self.mediaSource = mediaSource
+        self.mediaTypes = mediaTypes
     }
 
     public func event(_ event: Event) {
         switch event {
         case .sourceNotAvailable:
+            eventProvider.value = .sourceNotAvailable
             delegate?(.finished)
         case .noCameraPermission:
+            eventProvider.value = .noCameraPermission
             delegate?(.finished)
         case .pickedImage(let url):
-            mediaProvider.value = .image(url)
+            eventProvider.value = .pickedMedia(.image(url))
             delegate?(.finished)
         case .pickedMovie(let url):
-            mediaProvider.value = .movie(url)
+            eventProvider.value = .pickedMedia(.movie(url))
             delegate?(.finished)
         case .cancelled:
+            eventProvider.value = .cancelled
             delegate?(.finished)
         }
     }

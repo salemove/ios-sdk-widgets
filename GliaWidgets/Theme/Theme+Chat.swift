@@ -152,7 +152,7 @@ extension Theme {
             title: Chat.photo,
             titleFont: itemFont,
             titleColor: itemFontColor,
-            icon: Asset.callChat.image,
+            icon: Asset.callVideoActive.image,
             iconColor: itemIconColor
         )
         let takePhoto = ListItemStyle(
@@ -160,7 +160,7 @@ extension Theme {
             title: Chat.takePhoto,
             titleFont: itemFont,
             titleColor: itemFontColor,
-            icon: Asset.callChat.image,
+            icon: Asset.callVideoActive.image,
             iconColor: itemIconColor
         )
         let browse = ListItemStyle(
@@ -168,7 +168,7 @@ extension Theme {
             title: Chat.browse,
             titleFont: itemFont,
             titleColor: itemFontColor,
-            icon: Asset.callChat.image,
+            icon: Asset.callVideoActive.image,
             iconColor: itemIconColor
         )
 

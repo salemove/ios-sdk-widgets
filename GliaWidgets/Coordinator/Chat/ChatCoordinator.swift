@@ -67,14 +67,14 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
         }
         viewModel.delegate = { [weak self] event in
             switch event {
-            case .pickMedia(let mediaProvider):
-                self?.presentMediaPickerController(with: mediaProvider,
-                                                   source: .library,
-                                                   types: [.image, .movie])
-            case .takeMedia(let mediaProvider):
-                self?.presentMediaPickerController(with: mediaProvider,
-                                                   source: .camera,
-                                                   types: [.image, .movie])
+            case .pickMedia(let eventProvider):
+                self?.presentMediaPickerController(with: eventProvider,
+                                                   mediaSource: .library,
+                                                   mediaTypes: [.image, .movie])
+            case .takeMedia(let eventProvider):
+                self?.presentMediaPickerController(with: eventProvider,
+                                                   mediaSource: .camera,
+                                                   mediaTypes: [.image, .movie])
             case .mediaUpgradeAccepted(offer: let offer, answer: let answer):
                 self?.delegate?(.mediaUpgradeAccepted(offer: offer, answer: answer))
             case .call:
@@ -85,10 +85,12 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
                                   viewFactory: viewFactory)
     }
 
-    private func presentMediaPickerController(with provider: ValueProvider<PickedMedia>,
-                                              source: MediaPickerViewModel.MediaSource,
-                                              types: [MediaPickerViewModel.MediaType]) {
-        let viewModel = MediaPickerViewModel(provider: provider, source: source, types: types)
+    private func presentMediaPickerController(with eventProvider: ValueProvider<MediaPickerEvent>,
+                                              mediaSource: MediaPickerViewModel.MediaSource,
+                                              mediaTypes: [MediaPickerViewModel.MediaType]) {
+        let viewModel = MediaPickerViewModel(eventProvider: eventProvider,
+                                             mediaSource: mediaSource,
+                                             mediaTypes: mediaTypes)
         viewModel.delegate = { [weak self] event in
             switch event {
             case .finished:
