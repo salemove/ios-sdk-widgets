@@ -35,9 +35,12 @@
 "alert.videoUpgrade.twoWay.title" = "{operatorName} has offered you to upgrade to video";
 
 "alert.microphonePermission.title" = "Unable to access microphone";
-"alert.microphonePermission.message" = "Allow access to you micrphone from device menu: “Settings” - “Privacy” - “Microphone”";
+"alert.microphonePermission.message" = "Allow access to your microphone from device menu: “Settings” - “Privacy” - “Microphone”";
 "alert.cameraPermission.title" = "Unable to access camera";
-"alert.cameraPermission.message" = "Allow access to you micrphone from device menu: “Settings” - “Privacy” - “Camera”";
+"alert.cameraPermission.message" = "Allow access to your camera from device menu: “Settings” - “Privacy” - “Camera”";
+
+"alert.mediaSourceNotAvailable.title" = "Unable to access media source";
+"alert.mediaSourceNotAvailable.message" = "This media source is not available on your device";
 
 "chat.title" = "Chat";
 "chat.endButton.title" = "End";

@@ -197,9 +197,9 @@ class ChatViewModel: EngagementViewModel, ViewModel {
                 case .pickedMedia(let media):
                     self.mediaPicked(media)
                 case .sourceNotAvailable:
-                    break //TODO settings alert
+                    self.showAlert(with: self.alertConfiguration.mediaSourceNotAvailable, dismissed: nil)
                 case .noCameraPermission:
-                    break //TODO settings alert
+                    self.showSettingsAlert(with: self.alertConfiguration.cameraSettings)
                 }
             }
             switch kind {

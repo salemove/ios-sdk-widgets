@@ -43,7 +43,7 @@ public enum L10n {
       public static let title = L10n.tr("Localizable", "alert.audioUpgrade.title")
     }
     public enum CameraPermission {
-      /// Allow access to you micrphone from device menu: “Settings” - “Privacy” - “Camera”
+      /// Allow access to your camera from device menu: “Settings” - “Privacy” - “Camera”
       public static let message = L10n.tr("Localizable", "alert.cameraPermission.message")
       /// Unable to access camera
       public static let title = L10n.tr("Localizable", "alert.cameraPermission.title")
@@ -59,6 +59,12 @@ public enum L10n {
       public static let message = L10n.tr("Localizable", "alert.leaveQueue.message")
       /// Are you sure you want to leave?
       public static let title = L10n.tr("Localizable", "alert.leaveQueue.title")
+    }
+    public enum MediaSourceNotAvailable {
+      /// This media source is not available on your device
+      public static let message = L10n.tr("Localizable", "alert.mediaSourceNotAvailable.message")
+      /// Unable to access media source
+      public static let title = L10n.tr("Localizable", "alert.mediaSourceNotAvailable.title")
     }
     public enum MediaUpgrade {
       /// {operatorName} has offered you to upgrade
@@ -77,7 +83,7 @@ public enum L10n {
       }
     }
     public enum MicrophonePermission {
-      /// Allow access to you micrphone from device menu: “Settings” - “Privacy” - “Microphone”
+      /// Allow access to your microphone from device menu: “Settings” - “Privacy” - “Microphone”
       public static let message = L10n.tr("Localizable", "alert.microphonePermission.message")
       /// Unable to access microphone
       public static let title = L10n.tr("Localizable", "alert.microphonePermission.title")
