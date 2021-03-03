@@ -9,18 +9,24 @@ class FileUploadView: UIView {
     }
 
     enum Error {
-        case fileSizeOverLimit
-        case invalidFileType
+        case fileTooBig
+        case unsupportedFileType
         case safetyCheckFailed
+        case network
+        case generic
 
         func infoText(from style: FileUploadErrorStateStyle) -> String? {
             switch self {
-            case .fileSizeOverLimit:
-                return style.infoFileSizeOverLimit
-            case .invalidFileType:
-                return style.infoInvalidFileType
+            case .fileTooBig:
+                return style.infoFileTooBig
+            case .unsupportedFileType:
+                return style.infoUnsupportedFileType
             case .safetyCheckFailed:
                 return style.infoSafetyCheckFailed
+            case .network:
+                return style.infoNetworkError
+            case .generic:
+                return style.infoGenericError
             }
         }
     }
