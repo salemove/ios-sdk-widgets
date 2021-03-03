@@ -47,7 +47,7 @@
 		1A2DA71F25EF720400032611 /* FilePickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2DA71E25EF720400032611 /* FilePickerViewModel.swift */; };
 		1A2DA72625EF892600032611 /* FilePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2DA72525EF892600032611 /* FilePickerController.swift */; };
 		1A2DA72D25EF9DD900032611 /* FileUpload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2DA72C25EF9DD900032611 /* FileUpload.swift */; };
-		1A2DA73125EFA77E00032611 /* FileUploads.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2DA73025EFA77E00032611 /* FileUploads.swift */; };
+		1A2DA73125EFA77E00032611 /* FileUploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2DA73025EFA77E00032611 /* FileUploader.swift */; };
 		1A38A8A8258B652B0089DE7B /* OperatorChatMessageStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A38A8A7258B652B0089DE7B /* OperatorChatMessageStyle.swift */; };
 		1A38A8AC258B65D00089DE7B /* ChatMessageStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A38A8AB258B65D00089DE7B /* ChatMessageStyle.swift */; };
 		1A38A8BA258B94D60089DE7B /* ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A38A8B9258B94D60089DE7B /* ImageView.swift */; };
@@ -249,7 +249,7 @@
 		1A2DA71E25EF720400032611 /* FilePickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilePickerViewModel.swift; sourceTree = "<group>"; };
 		1A2DA72525EF892600032611 /* FilePickerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilePickerController.swift; sourceTree = "<group>"; };
 		1A2DA72C25EF9DD900032611 /* FileUpload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUpload.swift; sourceTree = "<group>"; };
-		1A2DA73025EFA77E00032611 /* FileUploads.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUploads.swift; sourceTree = "<group>"; };
+		1A2DA73025EFA77E00032611 /* FileUploader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUploader.swift; sourceTree = "<group>"; };
 		1A38A8A7258B652B0089DE7B /* OperatorChatMessageStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperatorChatMessageStyle.swift; sourceTree = "<group>"; };
 		1A38A8AB258B65D00089DE7B /* ChatMessageStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageStyle.swift; sourceTree = "<group>"; };
 		1A38A8B9258B94D60089DE7B /* ImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageView.swift; sourceTree = "<group>"; };
@@ -627,7 +627,7 @@
 			isa = PBXGroup;
 			children = (
 				1A2DA72C25EF9DD900032611 /* FileUpload.swift */,
-				1A2DA73025EFA77E00032611 /* FileUploads.swift */,
+				1A2DA73025EFA77E00032611 /* FileUploader.swift */,
 			);
 			path = Upload;
 			sourceTree = "<group>";
@@ -1663,7 +1663,7 @@
 				1A5F495525CBE84A003E3678 /* SettingsAlertConfiguration.swift in Sources */,
 				1A60AFEC2566A0E700E53F53 /* NavigationController.swift in Sources */,
 				1A63B2ED257A312700508478 /* AlertCloseButtonProperties.swift in Sources */,
-				1A2DA73125EFA77E00032611 /* FileUploads.swift in Sources */,
+				1A2DA73125EFA77E00032611 /* FileUploader.swift in Sources */,
 				1A60B0272568070800E53F53 /* UIStackView+Extensions.swift in Sources */,
 				1A60B0232567FD2D00E53F53 /* CloseButtonProperties.swift in Sources */,
 				1ABD6C8725B6EFD000D56EFA /* SingleMediaUpgradeAlertConfiguration.swift in Sources */,
