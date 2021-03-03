@@ -36,8 +36,8 @@ class FileUpload {
 
     enum State {
         case none
-        case uploading(progress: ValueProvider<Double>)
-        case uploaded(EngagementFileInformation)
+        case uploading(url: URL, progress: ValueProvider<Double>)
+        case uploaded(url: URL, file: EngagementFileInformation)
         case error(Error)
     }
 
@@ -52,17 +52,17 @@ class FileUpload {
     func startUpload() {
         let file = EngagementFile(url: url)
         let onProgress: EngagementFileProgressBlock = {
-            if case .uploading(progress: let progress) = self.state.value {
+            if case .uploading(_, progress: let progress) = self.state.value {
                 progress.value = $0.fractionCompleted
             }
         }
 
         let progress = ValueProvider<Double>(with: 0)
-        state.value = .uploading(progress: progress)
+        state.value = .uploading(url: url, progress: progress)
 
         let onCompletion: EngagementFileCompletionBlock = { file, error in
             if let file = file {
-                self.state.value = .uploaded(file)
+                self.state.value = .uploaded(url: self.url, file: file)
             } else if let error = error {
                 self.state.value = .error(Error(with: error))
             }
