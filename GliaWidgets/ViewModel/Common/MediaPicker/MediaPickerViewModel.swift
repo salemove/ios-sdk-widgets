@@ -1,10 +1,10 @@
-public enum PickedMedia {
+enum PickedMedia {
     case image(URL)
     case movie(URL)
     case none
 }
 
-public enum MediaPickerEvent {
+enum MediaPickerEvent {
     case none
     case pickedMedia(PickedMedia)
     case sourceNotAvailable
@@ -12,18 +12,18 @@ public enum MediaPickerEvent {
     case cancelled
 }
 
-public final class MediaPickerViewModel: ViewModel {
-    public enum MediaSource {
+class MediaPickerViewModel: ViewModel {
+    enum MediaSource {
         case camera
         case library
     }
 
-    public enum MediaType {
+    enum MediaType {
         case image
         case movie
     }
 
-    public enum Event {
+    enum Event {
         case sourceNotAvailable
         case noCameraPermission
         case pickedImage(URL)
@@ -31,30 +31,30 @@ public final class MediaPickerViewModel: ViewModel {
         case cancelled
     }
 
-    public enum Action {}
+    enum Action {}
 
-    public enum DelegateEvent {
+    enum DelegateEvent {
         case finished
     }
 
-    public var action: ((Action) -> Void)?
-    public var delegate: ((DelegateEvent) -> Void)?
-    public var source: MediaSource { mediaSource }
-    public var types: [MediaType] { mediaTypes }
+    var action: ((Action) -> Void)?
+    var delegate: ((DelegateEvent) -> Void)?
+    var source: MediaSource { mediaSource }
+    var types: [MediaType] { mediaTypes }
 
     private let eventProvider: ValueProvider<MediaPickerEvent>
     private let mediaSource: MediaSource
     private let mediaTypes: [MediaType]
 
-    public init(eventProvider: ValueProvider<MediaPickerEvent>,
-                mediaSource: MediaSource,
-                mediaTypes: [MediaType] = [.image]) {
+    init(eventProvider: ValueProvider<MediaPickerEvent>,
+         mediaSource: MediaSource,
+         mediaTypes: [MediaType] = [.image]) {
         self.eventProvider = eventProvider
         self.mediaSource = mediaSource
         self.mediaTypes = mediaTypes
     }
 
-    public func event(_ event: Event) {
+    func event(_ event: Event) {
         switch event {
         case .sourceNotAvailable:
             eventProvider.value = .sourceNotAvailable

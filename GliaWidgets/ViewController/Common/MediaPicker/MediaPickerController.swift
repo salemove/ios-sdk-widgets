@@ -6,9 +6,7 @@ final class MediaPickerController: NSObject {
     private var imagePicker: UIImagePickerController?
 
     private var viewController: UIImagePickerController {
-        if let imagePicker = imagePicker {
-            return imagePicker
-        }
+        if let imagePicker = imagePicker { return imagePicker }
 
         let source = UIImagePickerController.SourceType(with: viewModel.source)
         let media = mediaTypes(viewModel.types, for: source)

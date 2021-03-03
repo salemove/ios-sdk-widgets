@@ -44,6 +44,8 @@
 		1A205D8725655CEE003AA3CD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1A205D8525655CEE003AA3CD /* LaunchScreen.storyboard */; };
 		1A205DB4256566BB003AA3CD /* GliaWidgets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A205D5825655CB1003AA3CD /* GliaWidgets.framework */; };
 		1A205DB5256566BB003AA3CD /* GliaWidgets.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1A205D5825655CB1003AA3CD /* GliaWidgets.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		1A2DA71F25EF720400032611 /* FilePickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2DA71E25EF720400032611 /* FilePickerViewModel.swift */; };
+		1A2DA72625EF892600032611 /* FilePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2DA72525EF892600032611 /* FilePickerController.swift */; };
 		1A38A8A8258B652B0089DE7B /* OperatorChatMessageStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A38A8A7258B652B0089DE7B /* OperatorChatMessageStyle.swift */; };
 		1A38A8AC258B65D00089DE7B /* ChatMessageStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A38A8AB258B65D00089DE7B /* ChatMessageStyle.swift */; };
 		1A38A8BA258B94D60089DE7B /* ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A38A8B9258B94D60089DE7B /* ImageView.swift */; };
@@ -242,6 +244,8 @@
 		1A205D8625655CEE003AA3CD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1A205D8825655CEE003AA3CD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1A205DA6256564CE003AA3CD /* PureLayout.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PureLayout.framework; path = GliaWidgets/Frameworks/PureLayout.framework; sourceTree = "<group>"; };
+		1A2DA71E25EF720400032611 /* FilePickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilePickerViewModel.swift; sourceTree = "<group>"; };
+		1A2DA72525EF892600032611 /* FilePickerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilePickerController.swift; sourceTree = "<group>"; };
 		1A38A8A7258B652B0089DE7B /* OperatorChatMessageStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperatorChatMessageStyle.swift; sourceTree = "<group>"; };
 		1A38A8AB258B65D00089DE7B /* ChatMessageStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageStyle.swift; sourceTree = "<group>"; };
 		1A38A8B9258B94D60089DE7B /* ImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageView.swift; sourceTree = "<group>"; };
@@ -599,6 +603,22 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		1A2DA71D25EF71F100032611 /* FilePicker */ = {
+			isa = PBXGroup;
+			children = (
+				1A2DA71E25EF720400032611 /* FilePickerViewModel.swift */,
+			);
+			path = FilePicker;
+			sourceTree = "<group>";
+		};
+		1A2DA72425EF891300032611 /* FilePicker */ = {
+			isa = PBXGroup;
+			children = (
+				1A2DA72525EF892600032611 /* FilePickerController.swift */,
+			);
+			path = FilePicker;
+			sourceTree = "<group>";
+		};
 		1A4674A525E905960078FA1C /* ItemList */ = {
 			isa = PBXGroup;
 			children = (
@@ -622,6 +642,7 @@
 		1A4674C525ED08030078FA1C /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				1A2DA71D25EF71F100032611 /* FilePicker */,
 				1A4674C625ED083A0078FA1C /* MediaPicker */,
 			);
 			path = Common;
@@ -1058,6 +1079,7 @@
 		1A63B2EF257A3EF100508478 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				1A2DA72425EF891300032611 /* FilePicker */,
 				1A4674CB25ED088B0078FA1C /* MediaPicker */,
 				1A0EDF8925E8E20A0076D1AD /* Popover */,
 				1A6EBB2325ADE35500EE325D /* MediaUpgrade */,
@@ -1505,6 +1527,7 @@
 				1ABD6C5D25B59D1C00D56EFA /* BubbleWindow.swift in Sources */,
 				1AE15E38257A578B00A642C0 /* MessageAlertConfiguration.swift in Sources */,
 				1AC7A77B25838AE800567FF8 /* ChatItem.swift in Sources */,
+				1A2DA72625EF892600032611 /* FilePickerController.swift in Sources */,
 				1ABD6C9625B6F46700D56EFA /* AlertViewController+SingleMediaUpgrade.swift in Sources */,
 				1A475BB325DE831F00296D55 /* BadgeView.swift in Sources */,
 				1A38A8A8258B652B0089DE7B /* OperatorChatMessageStyle.swift in Sources */,
@@ -1577,6 +1600,7 @@
 				1AC7A7AF258786CB00567FF8 /* EngagementViewModel.swift in Sources */,
 				1A6EBB2525ADE36900EE325D /* MediaUpgradePresenter.swift in Sources */,
 				1AA738B925790DB400E1120F /* ActionButtonStyle.swift in Sources */,
+				1A2DA71F25EF720400032611 /* FilePickerViewModel.swift in Sources */,
 				1A60B0152567FC7000E53F53 /* Button.swift in Sources */,
 				1ABD6C5925B5758000D56EFA /* BubbleStyle.swift in Sources */,
 				1A6EBB0725ADB84200EE325D /* MediaUpgradeActionStyle.swift in Sources */,
