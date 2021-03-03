@@ -51,15 +51,12 @@ class FileUpload {
 
     func startUpload() {
         let file = EngagementFile(url: url)
+        let progress = ValueProvider<Double>(with: 0)
         let onProgress: EngagementFileProgressBlock = {
             if case .uploading(_, progress: let progress) = self.state.value {
                 progress.value = $0.fractionCompleted
             }
         }
-
-        let progress = ValueProvider<Double>(with: 0)
-        state.value = .uploading(url: url, progress: progress)
-
         let onCompletion: EngagementFileCompletionBlock = { file, error in
             if let file = file {
                 self.state.value = .uploaded(url: self.url, file: file)
@@ -67,6 +64,8 @@ class FileUpload {
                 self.state.value = .error(Error(with: error))
             }
         }
+
+        state.value = .uploading(url: url, progress: progress)
 
         Salemove.sharedInstance.uploadFileToEngagement(file,
                                                        progress: onProgress,

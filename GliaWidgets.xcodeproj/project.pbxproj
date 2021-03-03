@@ -48,6 +48,8 @@
 		1A2DA72625EF892600032611 /* FilePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2DA72525EF892600032611 /* FilePickerController.swift */; };
 		1A2DA72D25EF9DD900032611 /* FileUpload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2DA72C25EF9DD900032611 /* FileUpload.swift */; };
 		1A2DA73125EFA77E00032611 /* FileUploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2DA73025EFA77E00032611 /* FileUploader.swift */; };
+		1A2DA73725EFBFE700032611 /* FileUploadListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2DA73625EFBFE700032611 /* FileUploadListView.swift */; };
+		1A2DA73B25EFC00500032611 /* FileUploadListStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2DA73A25EFC00500032611 /* FileUploadListStyle.swift */; };
 		1A38A8A8258B652B0089DE7B /* OperatorChatMessageStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A38A8A7258B652B0089DE7B /* OperatorChatMessageStyle.swift */; };
 		1A38A8AC258B65D00089DE7B /* ChatMessageStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A38A8AB258B65D00089DE7B /* ChatMessageStyle.swift */; };
 		1A38A8BA258B94D60089DE7B /* ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A38A8B9258B94D60089DE7B /* ImageView.swift */; };
@@ -250,6 +252,8 @@
 		1A2DA72525EF892600032611 /* FilePickerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilePickerController.swift; sourceTree = "<group>"; };
 		1A2DA72C25EF9DD900032611 /* FileUpload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUpload.swift; sourceTree = "<group>"; };
 		1A2DA73025EFA77E00032611 /* FileUploader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUploader.swift; sourceTree = "<group>"; };
+		1A2DA73625EFBFE700032611 /* FileUploadListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUploadListView.swift; sourceTree = "<group>"; };
+		1A2DA73A25EFC00500032611 /* FileUploadListStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUploadListStyle.swift; sourceTree = "<group>"; };
 		1A38A8A7258B652B0089DE7B /* OperatorChatMessageStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperatorChatMessageStyle.swift; sourceTree = "<group>"; };
 		1A38A8AB258B65D00089DE7B /* ChatMessageStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageStyle.swift; sourceTree = "<group>"; };
 		1A38A8B9258B94D60089DE7B /* ImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageView.swift; sourceTree = "<group>"; };
@@ -508,6 +512,8 @@
 				1A0EDF6325E795C90076D1AD /* Preview */,
 				1A0EDF5525E786CE0076D1AD /* FileUploadView.swift */,
 				1A0EDF5925E786DB0076D1AD /* FileUploadStyle.swift */,
+				1A2DA73625EFBFE700032611 /* FileUploadListView.swift */,
+				1A2DA73A25EFC00500032611 /* FileUploadListStyle.swift */,
 			);
 			path = Upload;
 			sourceTree = "<group>";
@@ -1569,6 +1575,7 @@
 				1A4674B625E907320078FA1C /* ItemListStyle.swift in Sources */,
 				1A7CA81D2574D6370047CBBE /* ConnectView.swift in Sources */,
 				1ABD6C5525B574FF00D56EFA /* BubbleView.swift in Sources */,
+				1A2DA73B25EFC00500032611 /* FileUploadListStyle.swift in Sources */,
 				1A0C142925B84E5500B00695 /* EngagementViewController.swift in Sources */,
 				1A60AFE425669B0400E53F53 /* ChatCoordinator.swift in Sources */,
 				1AA738B625790D9900E1120F /* ActionButton.swift in Sources */,
@@ -1645,6 +1652,7 @@
 				1A63B2F6257A469A00508478 /* AlertPresenter.swift in Sources */,
 				1A0452EA25DBE259000DA0C1 /* MessageButton.swift in Sources */,
 				1A5F494B25CA86CA003E3678 /* Call.swift in Sources */,
+				1A2DA73725EFBFE700032611 /* FileUploadListView.swift in Sources */,
 				1AE15E49257A6BD200A642C0 /* ConfirmationAlertConfiguration.swift in Sources */,
 				1A60AFB22566821B00E53F53 /* Asset.swift in Sources */,
 				1A4AD3AF256D283700468BFB /* ChatMessageView.swift in Sources */,
