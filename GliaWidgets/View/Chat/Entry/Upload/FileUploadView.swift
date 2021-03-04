@@ -36,15 +36,16 @@ class FileUploadView: UIView {
     }
     var cancelTapped: (() -> Void)?
 
-    let height: CGFloat = 60
+    static let height: CGFloat = 60
 
+    private let contentView = UIView()
     private let infoLabel = UILabel()
     private let stateLabel = UILabel()
     private let previewImageView: FilePreviewImageView
     private let progressView = UIProgressView()
     private let cancelButton = UIButton()
-    private let stackView = UIStackView()
     private let style: FileUploadStyle
+    private let kContentInsets = UIEdgeInsets(top: 5, left: 10, bottom: 5, right: 10)
 
     init(with style: FileUploadStyle) {
         self.style = style
@@ -70,31 +71,38 @@ class FileUploadView: UIView {
         cancelButton.tintColor = style.cancelButtonColor
         cancelButton.setImage(style.cancelButtonImage, for: .normal)
         cancelButton.addTarget(self, action: #selector(cancel), for: .touchUpInside)
-
-        stackView.axis = .vertical
-        stackView.distribution = .fillEqually
-        stackView.addArrangedSubviews([infoLabel, stateLabel, progressView])
     }
 
     private func layout() {
-        autoSetDimension(.height, toSize: height)
-
+        autoSetDimension(.height, toSize: FileUploadView.height)
         progressView.autoSetDimension(.height, toSize: 8)
 
-        addSubview(previewImageView)
-        previewImageView.autoPinEdge(toSuperviewEdge: .left, withInset: 10)
+        addSubview(contentView)
+        contentView.autoPinEdgesToSuperviewEdges(with: kContentInsets)
+
+        contentView.addSubview(previewImageView)
+        previewImageView.autoPinEdge(toSuperviewEdge: .left)
         previewImageView.autoAlignAxis(toSuperviewAxis: .horizontal)
 
-        addSubview(cancelButton)
+        contentView.addSubview(cancelButton)
         cancelButton.autoSetDimensions(to: CGSize(width: 30, height: 30))
         cancelButton.autoPinEdge(toSuperviewEdge: .top)
         cancelButton.autoPinEdge(toSuperviewEdge: .right)
 
-        addSubview(stackView)
-        stackView.autoPinEdge(.left, to: .right, of: previewImageView, withOffset: 12)
-        stackView.autoPinEdge(.right, to: .left, of: cancelButton, withOffset: 12)
-        stackView.autoMatch(.height, to: .height, of: previewImageView)
-        stackView.autoAlignAxis(toSuperviewAxis: .horizontal)
+        contentView.addSubview(infoLabel)
+        infoLabel.autoPinEdge(.top, to: .top, of: previewImageView, withOffset: -4)
+        infoLabel.autoPinEdge(.left, to: .right, of: previewImageView, withOffset: 12)
+        infoLabel.autoPinEdge(.right, to: .left, of: cancelButton, withOffset: 12)
+
+        contentView.addSubview(stateLabel)
+        stateLabel.autoPinEdge(.top, to: .top, of: infoLabel, withOffset: 4)
+        stateLabel.autoPinEdge(.left, to: .right, of: previewImageView, withOffset: 12)
+        stateLabel.autoPinEdge(.right, to: .left, of: cancelButton, withOffset: 12)
+
+        contentView.addSubview(progressView)
+        progressView.autoPinEdge(.bottom, to: .bottom, of: previewImageView)
+        progressView.autoPinEdge(.left, to: .right, of: previewImageView, withOffset: 12)
+        progressView.autoPinEdge(.right, to: .left, of: cancelButton, withOffset: 12)
     }
 
     private func update(for state: State) {

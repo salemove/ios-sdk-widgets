@@ -57,6 +57,14 @@
 "chat.pickMedia.photo" = "Photo library";
 "chat.pickMedia.takePhoto" = "Take Photo or Video";
 "chat.pickMedia.browse" = "Browse";
+"chat.upload.uploading" = "Uploading file…";
+"chat.upload.uploaded" = "Ready to send";
+"chat.upload.failed" = "Uploading failed";
+"chat.upload.error.fileTooBig" = "File size over 25mb limit!";
+"chat.upload.error.unsupportedFileType" = "Invalid file type!";
+"chat.upload.error.safetyCheckFailed" = "Failed to check the safety of the file.";
+"chat.upload.error.network" = "Network error.";
+"chat.upload.error.generic" = "Failed to upload.";
 
 "call.audio.title" = "AUDIO CALL";
 "call.video.title" = "VIDEO CALL";

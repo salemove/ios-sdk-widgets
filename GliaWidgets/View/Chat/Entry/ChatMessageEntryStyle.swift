@@ -10,6 +10,7 @@ public struct ChatMessageEntryStyle {
     public var backgroundColor: UIColor
     public var mediaButton: MessageButtonStyle
     public var sendButton: MessageButtonStyle
+    public var uploadList: FileUploadListStyle
 
     public init(messageFont: UIFont,
                 messageColor: UIColor,
@@ -19,7 +20,8 @@ public struct ChatMessageEntryStyle {
                 separatorColor: UIColor,
                 backgroundColor: UIColor,
                 mediaButton: MessageButtonStyle,
-                sendButton: MessageButtonStyle) {
+                sendButton: MessageButtonStyle,
+                uploadList: FileUploadListStyle) {
         self.messageFont = messageFont
         self.messageColor = messageColor
         self.placeholder = placeholder
@@ -29,5 +31,6 @@ public struct ChatMessageEntryStyle {
         self.backgroundColor = backgroundColor
         self.mediaButton = mediaButton
         self.sendButton = sendButton
+        self.uploadList = uploadList
     }
 }

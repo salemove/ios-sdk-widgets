@@ -91,7 +91,8 @@ extension Theme {
             separatorColor: color.baseShade,
             backgroundColor: color.background,
             mediaButton: mediaButton,
-            sendButton: sendButton
+            sendButton: sendButton,
+            uploadList: uploadListStyle
         )
         let audioUpgrade = ChatCallUpgradeStyle(
             icon: Asset.upgradeAudio.image,
@@ -138,6 +139,57 @@ extension Theme {
             callBubble: callBubble,
             pickMedia: pickMedia
         )
+    }
+
+    private var uploadListStyle: FileUploadListStyle {
+        typealias Upload = L10n.Chat.Upload
+
+        let preview = FilePreviewImageStyle(
+            fileFont: font.subtitle,
+            fileColor: color.baseLight,
+            errorIcon: Asset.uploadError.image,
+            errorIconColor: color.systemNegative,
+            backgroundColor: color.primary,
+            errorBackgroundColor: Color.lightGrey
+        )
+        let uploading = FileUploadStateStyle(
+            text: Upload.uploading,
+            font: font.subtitle,
+            textColor: color.baseDark,
+            infoFont: font.caption,
+            infoColor: color.baseNormal
+        )
+        let uploaded = FileUploadStateStyle(
+            text: Upload.uploaded,
+            font: font.subtitle,
+            textColor: color.baseDark,
+            infoFont: font.caption,
+            infoColor: color.baseNormal
+        )
+        let error = FileUploadErrorStateStyle(
+            text: Upload.failed,
+            font: font.subtitle,
+            textColor: color.baseDark,
+            infoFont: font.caption,
+            infoColor: color.systemNegative,
+            infoFileTooBig: Upload.Error.fileTooBig,
+            infoUnsupportedFileType: Upload.Error.unsupportedFileType,
+            infoSafetyCheckFailed: Upload.Error.safetyCheckFailed,
+            infoNetworkError: Upload.Error.network,
+            infoGenericError: Upload.Error.generic
+        )
+        let upload = FileUploadStyle(
+            preview: preview,
+            uploading: uploading,
+            uploaded: uploaded,
+            error: error,
+            progressColor: color.primary,
+            progressBackgroundColor: Color.lightGrey,
+            cancelButtonImage: Asset.uploadCancel.image,
+            cancelButtonColor: color.baseNormal
+        )
+
+        return FileUploadListStyle(item: upload)
     }
 
     private var pickMedia: ItemListStyle {

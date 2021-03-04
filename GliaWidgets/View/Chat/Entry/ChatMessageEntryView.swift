@@ -17,6 +17,7 @@ public class ChatMessageEntryView: UIView {
 
     private let style: ChatMessageEntryStyle
     private let separator = UIView()
+    private let uploadListView: FileUploadListView
     private let messageContainerView = UIView()
     private let textView = UITextView()
     private let placeholderLabel = UILabel()
@@ -28,6 +29,7 @@ public class ChatMessageEntryView: UIView {
 
     public init(with style: ChatMessageEntryStyle) {
         self.style = style
+        uploadListView = FileUploadListView(with: style.uploadList)
         pickMediaButton = MessageButton(with: style.mediaButton)
         sendButton = MessageButton(with: style.sendButton)
         super.init(frame: .zero)
@@ -42,7 +44,7 @@ public class ChatMessageEntryView: UIView {
 
     public override func layoutSubviews() {
         super.layoutSubviews()
-        updateTextFieldHeight()
+        updateTextViewHeight()
     }
 
     func setSendButtonVisible(_ visible: Bool, animated: Bool) {
@@ -117,10 +119,16 @@ public class ChatMessageEntryView: UIView {
         separator.autoSetDimension(.height, toSize: 1)
         separator.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .bottom)
 
-        updateTextFieldHeight()
+        addSubview(uploadListView)
+        uploadListView.autoPinEdge(.top, to: .bottom, of: separator)
+        uploadListView.autoPinEdge(.bottom, to: .top, of: messageContainerView)
+        uploadListView.autoPinEdge(toSuperviewEdge: .left)
+        uploadListView.autoPinEdge(toSuperviewEdge: .right)
+
+        updateTextViewHeight()
     }
 
-    private func updateTextFieldHeight() {
+    private func updateTextViewHeight() {
         let size = CGSize(width: textView.frame.size.width,
                           height: CGFloat.greatestFiniteMagnitude)
         var newHeight = textView.sizeThatFits(size).height
@@ -140,7 +148,7 @@ public class ChatMessageEntryView: UIView {
         let text = textView.text ?? ""
         sendTapped?(text)
         textView.text = ""
-        updateTextFieldHeight()
+        updateTextViewHeight()
     }
 
     @objc private func textViewContainerTap() {
@@ -155,7 +163,7 @@ extension ChatMessageEntryView: UITextViewDelegate {
     }
 
     public func textViewDidChange(_ textView: UITextView) {
-        updateTextFieldHeight()
+        updateTextViewHeight()
         textChanged?(textView.text)
     }
 

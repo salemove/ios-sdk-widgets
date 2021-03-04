@@ -739,6 +739,7 @@
 		1A5F813A2588B70A00A605DA /* Entry */ = {
 			isa = PBXGroup;
 			children = (
+				1A0EDF5425E786820076D1AD /* Upload */,
 				1A5F813B2588B72100A605DA /* ChatMessageEntryView.swift */,
 				1A5F813F2588B7BD00A605DA /* ChatMessageEntryStyle.swift */,
 			);
@@ -947,7 +948,6 @@
 		1A60AFD12566990F00E53F53 /* Chat */ = {
 			isa = PBXGroup;
 			children = (
-				1A0EDF5425E786820076D1AD /* Upload */,
 				1A8B61D025C97481000D780E /* Upgrade */,
 				1A5F813A2588B70A00A605DA /* Entry */,
 				1A60B02B256BF7C200E53F53 /* Message */,

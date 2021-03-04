@@ -236,6 +236,26 @@ public enum L10n {
         public static let text = L10n.tr("Localizable", "chat.upgrade.video.text")
       }
     }
+    public enum Upload {
+      /// Uploading failed
+      public static let failed = L10n.tr("Localizable", "chat.upload.failed")
+      /// Ready to send
+      public static let uploaded = L10n.tr("Localizable", "chat.upload.uploaded")
+      /// Uploading file…
+      public static let uploading = L10n.tr("Localizable", "chat.upload.uploading")
+      public enum Error {
+        /// File size over 25mb limit!
+        public static let fileTooBig = L10n.tr("Localizable", "chat.upload.error.fileTooBig")
+        /// Failed to upload.
+        public static let generic = L10n.tr("Localizable", "chat.upload.error.generic")
+        /// Network error.
+        public static let network = L10n.tr("Localizable", "chat.upload.error.network")
+        /// Failed to check the safety of the file.
+        public static let safetyCheckFailed = L10n.tr("Localizable", "chat.upload.error.safetyCheckFailed")
+        /// Invalid file type!
+        public static let unsupportedFileType = L10n.tr("Localizable", "chat.upload.error.unsupportedFileType")
+      }
+    }
   }
 }
 // swiftlint:enable explicit_type_interface function_parameter_count identifier_name line_length

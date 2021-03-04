@@ -66,8 +66,8 @@ public class FileUploadErrorStateStyle {
                 textColor: UIColor,
                 infoFont: UIFont,
                 infoColor: UIColor,
-                infoFileSizeOverLimit: String,
-                infoInvalidFileType: String,
+                infoFileTooBig: String,
+                infoUnsupportedFileType: String,
                 infoSafetyCheckFailed: String,
                 infoNetworkError: String,
                 infoGenericError: String) {
@@ -76,8 +76,8 @@ public class FileUploadErrorStateStyle {
         self.textColor = textColor
         self.infoFont = infoFont
         self.infoColor = infoColor
-        self.infoFileTooBig = infoFileSizeOverLimit
-        self.infoUnsupportedFileType = infoInvalidFileType
+        self.infoFileTooBig = infoFileTooBig
+        self.infoUnsupportedFileType = infoUnsupportedFileType
         self.infoSafetyCheckFailed = infoSafetyCheckFailed
         self.infoNetworkError = infoNetworkError
         self.infoGenericError = infoGenericError
