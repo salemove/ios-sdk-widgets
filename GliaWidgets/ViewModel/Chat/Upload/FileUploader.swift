@@ -53,6 +53,11 @@ class FileUploader {
         upload.startUpload()
     }
 
+    func removeUpload(at index: Int) {
+        uploads.remove(at: index)
+        checkFinished()
+    }
+
     private func checkFinished() {
         let totalFinished = succeededUploads.count + failedUploads.count
         if totalFinished == count {

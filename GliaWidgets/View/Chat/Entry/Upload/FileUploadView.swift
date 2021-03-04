@@ -34,7 +34,7 @@ class FileUploadView: UIView {
     var state: State = .none {
         didSet { update(for: state) }
     }
-    var cancelTapped: (() -> Void)?
+    var removeTapped: (() -> Void)?
 
     static let height: CGFloat = 60
 
@@ -43,7 +43,7 @@ class FileUploadView: UIView {
     private let stateLabel = UILabel()
     private let previewImageView: FilePreviewImageView
     private let progressView = UIProgressView()
-    private let cancelButton = UIButton()
+    private let removeButton = UIButton()
     private let style: FileUploadStyle
     private let kContentInsets = UIEdgeInsets(top: 5, left: 10, bottom: 5, right: 10)
 
@@ -68,9 +68,9 @@ class FileUploadView: UIView {
         progressView.tintColor = style.progressColor
         progressView.backgroundColor = style.progressBackgroundColor
 
-        cancelButton.tintColor = style.cancelButtonColor
-        cancelButton.setImage(style.cancelButtonImage, for: .normal)
-        cancelButton.addTarget(self, action: #selector(cancel), for: .touchUpInside)
+        removeButton.tintColor = style.removeButtonColor
+        removeButton.setImage(style.removeButtonImage, for: .normal)
+        removeButton.addTarget(self, action: #selector(remove), for: .touchUpInside)
     }
 
     private func layout() {
@@ -84,25 +84,25 @@ class FileUploadView: UIView {
         previewImageView.autoPinEdge(toSuperviewEdge: .left)
         previewImageView.autoAlignAxis(toSuperviewAxis: .horizontal)
 
-        contentView.addSubview(cancelButton)
-        cancelButton.autoSetDimensions(to: CGSize(width: 30, height: 30))
-        cancelButton.autoPinEdge(toSuperviewEdge: .top)
-        cancelButton.autoPinEdge(toSuperviewEdge: .right)
+        contentView.addSubview(removeButton)
+        removeButton.autoSetDimensions(to: CGSize(width: 30, height: 30))
+        removeButton.autoPinEdge(toSuperviewEdge: .top)
+        removeButton.autoPinEdge(toSuperviewEdge: .right)
 
         contentView.addSubview(infoLabel)
         infoLabel.autoPinEdge(.top, to: .top, of: previewImageView, withOffset: -4)
         infoLabel.autoPinEdge(.left, to: .right, of: previewImageView, withOffset: 12)
-        infoLabel.autoPinEdge(.right, to: .left, of: cancelButton, withOffset: 12)
+        infoLabel.autoPinEdge(.right, to: .left, of: removeButton, withOffset: 12)
 
         contentView.addSubview(stateLabel)
         stateLabel.autoPinEdge(.top, to: .top, of: infoLabel, withOffset: 4)
         stateLabel.autoPinEdge(.left, to: .right, of: previewImageView, withOffset: 12)
-        stateLabel.autoPinEdge(.right, to: .left, of: cancelButton, withOffset: 12)
+        stateLabel.autoPinEdge(.right, to: .left, of: removeButton, withOffset: 12)
 
         contentView.addSubview(progressView)
         progressView.autoPinEdge(.bottom, to: .bottom, of: previewImageView)
         progressView.autoPinEdge(.left, to: .right, of: previewImageView, withOffset: 12)
-        progressView.autoPinEdge(.right, to: .left, of: cancelButton, withOffset: 12)
+        progressView.autoPinEdge(.right, to: .left, of: removeButton, withOffset: 12)
     }
 
     private func update(for state: State) {
@@ -146,7 +146,7 @@ class FileUploadView: UIView {
         }
     }
 
-    @objc private func cancel() {
-        cancelTapped?()
+    @objc private func remove() {
+        removeTapped?()
     }
 }

@@ -185,8 +185,8 @@ extension Theme {
             error: error,
             progressColor: color.primary,
             progressBackgroundColor: Color.lightGrey,
-            cancelButtonImage: Asset.uploadCancel.image,
-            cancelButtonColor: color.baseNormal
+            removeButtonImage: Asset.uploadRemove.image,
+            removeButtonColor: color.baseNormal
         )
 
         return FileUploadListStyle(item: upload)

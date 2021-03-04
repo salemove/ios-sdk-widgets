@@ -7,8 +7,8 @@ public class FileUploadStyle {
     public var error: FileUploadErrorStateStyle
     public var progressColor: UIColor
     public var progressBackgroundColor: UIColor
-    public var cancelButtonImage: UIImage
-    public var cancelButtonColor: UIColor
+    public var removeButtonImage: UIImage
+    public var removeButtonColor: UIColor
 
     public init(preview: FilePreviewImageStyle,
                 uploading: FileUploadStateStyle,
@@ -16,16 +16,16 @@ public class FileUploadStyle {
                 error: FileUploadErrorStateStyle,
                 progressColor: UIColor,
                 progressBackgroundColor: UIColor,
-                cancelButtonImage: UIImage,
-                cancelButtonColor: UIColor) {
+                removeButtonImage: UIImage,
+                removeButtonColor: UIColor) {
         self.preview = preview
         self.uploading = uploading
         self.uploaded = uploaded
         self.error = error
         self.progressColor = progressColor
         self.progressBackgroundColor = progressBackgroundColor
-        self.cancelButtonImage = cancelButtonImage
-        self.cancelButtonColor = cancelButtonColor
+        self.removeButtonImage = removeButtonImage
+        self.removeButtonColor = removeButtonColor
     }
 }
 
