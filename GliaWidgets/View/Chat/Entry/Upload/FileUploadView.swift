@@ -45,7 +45,7 @@ class FileUploadView: UIView {
     private let progressView = UIProgressView()
     private let removeButton = UIButton()
     private let style: FileUploadStyle
-    private let kContentInsets = UIEdgeInsets(top: 5, left: 10, bottom: 5, right: 10)
+    private let kContentInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
 
     init(with style: FileUploadStyle) {
         self.style = style
@@ -59,14 +59,10 @@ class FileUploadView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        progressView.layer.cornerRadius = 4
-    }
-
     private func setup() {
-        progressView.tintColor = style.progressColor
         progressView.backgroundColor = style.progressBackgroundColor
+        progressView.clipsToBounds = true
+        progressView.layer.cornerRadius = 4
 
         removeButton.tintColor = style.removeButtonColor
         removeButton.setImage(style.removeButtonImage, for: .normal)
@@ -90,12 +86,12 @@ class FileUploadView: UIView {
         removeButton.autoPinEdge(toSuperviewEdge: .right)
 
         contentView.addSubview(infoLabel)
-        infoLabel.autoPinEdge(.top, to: .top, of: previewImageView, withOffset: -4)
+        infoLabel.autoPinEdge(.top, to: .top, of: previewImageView, withOffset: 4)
         infoLabel.autoPinEdge(.left, to: .right, of: previewImageView, withOffset: 12)
         infoLabel.autoPinEdge(.right, to: .left, of: removeButton, withOffset: -12)
 
         contentView.addSubview(stateLabel)
-        stateLabel.autoPinEdge(.top, to: .top, of: infoLabel, withOffset: 4)
+        stateLabel.autoPinEdge(.top, to: .bottom, of: infoLabel, withOffset: 4)
         stateLabel.autoPinEdge(.left, to: .right, of: previewImageView, withOffset: 12)
         stateLabel.autoPinEdge(.right, to: .left, of: removeButton, withOffset: -12)
 
@@ -111,7 +107,6 @@ class FileUploadView: UIView {
             previewImageView.state = .none
             infoLabel.text = nil
             stateLabel.text = nil
-            progressView.isHidden = true
         case .uploading(url: let url, progress: let progress):
             previewImageView.state = .file(url: url)
             infoLabel.text = nil //TODO filename, size
@@ -120,7 +115,7 @@ class FileUploadView: UIView {
             stateLabel.text = style.uploading.text
             stateLabel.font = style.uploading.font
             stateLabel.textColor = style.uploading.textColor
-            progressView.isHidden = false
+            progressView.tintColor = style.progressColor
             progress.addObserver(self) { progress, _ in
                 self.progressView.progress = progress
             }
@@ -132,7 +127,7 @@ class FileUploadView: UIView {
             stateLabel.text = style.uploaded.text
             stateLabel.font = style.uploaded.font
             stateLabel.textColor = style.uploaded.textColor
-            progressView.isHidden = false
+            progressView.tintColor = style.progressColor
             progressView.progress = 1.0
         case .error(let error):
             previewImageView.state = .error
@@ -142,7 +137,8 @@ class FileUploadView: UIView {
             stateLabel.text = style.error.text
             stateLabel.font = style.error.font
             stateLabel.textColor = style.error.textColor
-            progressView.isHidden = true
+            progressView.tintColor = style.errorProgressColor
+            progressView.progress = 1.0
         }
     }
 

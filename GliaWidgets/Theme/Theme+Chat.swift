@@ -184,6 +184,7 @@ extension Theme {
             uploaded: uploaded,
             error: error,
             progressColor: color.primary,
+            errorProgressColor: color.systemNegative,
             progressBackgroundColor: Color.lightGrey,
             removeButtonImage: Asset.uploadRemove.image,
             removeButtonColor: color.baseNormal

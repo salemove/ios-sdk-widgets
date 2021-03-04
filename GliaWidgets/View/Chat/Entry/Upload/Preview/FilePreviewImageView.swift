@@ -74,6 +74,7 @@ class FilePreviewImageView: UIView {
         case .error:
             imageView.contentMode = .center
             imageView.image = style.errorIcon
+            imageView.tintColor = style.errorIconColor
             label.text = nil
             backgroundColor = style.errorBackgroundColor
         }

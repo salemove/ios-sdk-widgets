@@ -127,14 +127,6 @@ public class ChatMessageEntryView: UIView {
         buttonsStackView.autoPinEdge(toSuperviewEdge: .bottom)
 
         updateTextViewHeight()
-
-        uploadListView.backgroundColor = .red
-        let state = ValueProvider<FileUploadView.State>(with: .none)
-        state.value = .error(.fileTooBig)
-        uploadListView.addUploadView(with: state)
-        uploadListView.addUploadView(with: state)
-        uploadListView.addUploadView(with: state)
-        uploadListView.addUploadView(with: state)
     }
 
     private func updateTextViewHeight() {

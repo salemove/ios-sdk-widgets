@@ -23,6 +23,7 @@ class FileUploadListView: UIView {
 
     func addUploadView(with stateProvider: ValueProvider<FileUploadView.State>) {
         let uploadView = FileUploadView(with: style.item)
+        uploadView.state = stateProvider.value
         stackView.addArrangedSubview(uploadView)
         stateProvider.addObserver(self) { state, _ in
             uploadView.state = state
