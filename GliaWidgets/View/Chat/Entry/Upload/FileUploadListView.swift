@@ -6,6 +6,7 @@ class FileUploadListView: UIView {
     }
     private let scrollView = UIScrollView()
     private let stackView = UIStackView()
+    private var heightLayoutConstraint: NSLayoutConstraint!
     private let style: FileUploadListStyle
     private let kMaxUnscrollableViews = 3
 
@@ -20,16 +21,17 @@ class FileUploadListView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func addUploadView(state: ValueProvider<FileUploadView.State>) {
+    func addUploadView(with stateProvider: ValueProvider<FileUploadView.State>) {
         let uploadView = FileUploadView(with: style.item)
         stackView.addArrangedSubview(uploadView)
-        state.addObserver(self) { state, _ in
+        stateProvider.addObserver(self) { state, _ in
             uploadView.state = state
         }
+        updateHeight()
     }
 
     func removeUploadView(at index: Int) {
-
+        updateHeight()
     }
 
     private func setup() {
@@ -38,9 +40,7 @@ class FileUploadListView: UIView {
     }
 
     private func layout() {
-        autoSetDimension(.height,
-                         toSize: CGFloat(kMaxUnscrollableViews) * FileUploadView.height,
-                         relation: .lessThanOrEqual)
+        heightLayoutConstraint = autoSetDimension(.height, toSize: 0)
 
         addSubview(scrollView)
         scrollView.autoPinEdgesToSuperviewEdges(with: .zero)
@@ -52,5 +52,15 @@ class FileUploadListView: UIView {
 
         contentView.addSubview(stackView)
         stackView.autoPinEdgesToSuperviewEdges()
+    }
+
+    private func updateHeight() {
+        let maxHeight = CGFloat(kMaxUnscrollableViews) * FileUploadView.height
+        let height = CGFloat(uploadViews.count) * FileUploadView.height
+        if height <= maxHeight {
+            heightLayoutConstraint.constant = height
+        } else {
+            heightLayoutConstraint.constant = maxHeight
+        }
     }
 }

@@ -92,17 +92,17 @@ class FileUploadView: UIView {
         contentView.addSubview(infoLabel)
         infoLabel.autoPinEdge(.top, to: .top, of: previewImageView, withOffset: -4)
         infoLabel.autoPinEdge(.left, to: .right, of: previewImageView, withOffset: 12)
-        infoLabel.autoPinEdge(.right, to: .left, of: removeButton, withOffset: 12)
+        infoLabel.autoPinEdge(.right, to: .left, of: removeButton, withOffset: -12)
 
         contentView.addSubview(stateLabel)
         stateLabel.autoPinEdge(.top, to: .top, of: infoLabel, withOffset: 4)
         stateLabel.autoPinEdge(.left, to: .right, of: previewImageView, withOffset: 12)
-        stateLabel.autoPinEdge(.right, to: .left, of: removeButton, withOffset: 12)
+        stateLabel.autoPinEdge(.right, to: .left, of: removeButton, withOffset: -12)
 
         contentView.addSubview(progressView)
         progressView.autoPinEdge(.bottom, to: .bottom, of: previewImageView)
         progressView.autoPinEdge(.left, to: .right, of: previewImageView, withOffset: 12)
-        progressView.autoPinEdge(.right, to: .left, of: removeButton, withOffset: 12)
+        progressView.autoPinEdge(.right, to: .left, of: removeButton, withOffset: -12)
     }
 
     private func update(for state: State) {

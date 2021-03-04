@@ -104,28 +104,37 @@ public class ChatMessageEntryView: UIView {
         placeholderLabel.autoPinEdge(toSuperviewEdge: .left)
         placeholderLabel.autoPinEdge(toSuperviewEdge: .top)
 
-        addSubview(messageContainerView)
-        messageContainerView.autoPinEdgesToSuperviewEdges(with: .zero,
-                                                          excludingEdge: .right)
-
-        addSubview(buttonsStackView)
-        buttonsStackView.autoPinEdge(.left, to: .right, of: messageContainerView, withOffset: 16)
-        buttonsStackView.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
-        buttonsStackView.autoPinEdge(toSuperviewEdge: .top)
-        buttonsStackView.autoPinEdge(toSuperviewEdge: .bottom)
-        buttonsStackView.autoAlignAxis(toSuperviewAxis: .horizontal)
-
         addSubview(separator)
+        addSubview(uploadListView)
+        addSubview(messageContainerView)
+
         separator.autoSetDimension(.height, toSize: 1)
         separator.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .bottom)
 
-        addSubview(uploadListView)
         uploadListView.autoPinEdge(.top, to: .bottom, of: separator)
         uploadListView.autoPinEdge(.bottom, to: .top, of: messageContainerView)
         uploadListView.autoPinEdge(toSuperviewEdge: .left)
         uploadListView.autoPinEdge(toSuperviewEdge: .right)
 
+        messageContainerView.autoPinEdge(.top, to: .bottom, of: uploadListView)
+        messageContainerView.autoPinEdge(toSuperviewEdge: .left)
+        messageContainerView.autoPinEdge(toSuperviewEdge: .bottom)
+
+        addSubview(buttonsStackView)
+        buttonsStackView.autoSetDimension(.height, toSize: 50)
+        buttonsStackView.autoPinEdge(.left, to: .right, of: messageContainerView)
+        buttonsStackView.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
+        buttonsStackView.autoPinEdge(toSuperviewEdge: .bottom)
+
         updateTextViewHeight()
+
+        uploadListView.backgroundColor = .red
+        let state = ValueProvider<FileUploadView.State>(with: .none)
+        state.value = .error(.fileTooBig)
+        uploadListView.addUploadView(with: state)
+        uploadListView.addUploadView(with: state)
+        uploadListView.addUploadView(with: state)
+        uploadListView.addUploadView(with: state)
     }
 
     private func updateTextViewHeight() {
