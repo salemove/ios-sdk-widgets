@@ -252,7 +252,7 @@ extension ChatViewModel {
     }
 
     private func send(_ message: String) {
-        guard !message.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
+        guard validateMessageData(message: message) else { return }
 
         let attachment = uploader.attachment
         let outgoingMessage = OutgoingMessage(content: message)
@@ -272,6 +272,16 @@ extension ChatViewModel {
             self.showAlert(with: self.alertConfiguration.unexpectedError,
                            dismissed: nil)
         }
+    }
+
+    private func validateMessageData(message: String) -> Bool {
+        if message.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            return false
+        }
+        // TODO: Uploader must not have any in-progress uploads
+        //       Succeeded upload count must not be 0 OR message text must not be empty
+
+        return true
     }
 
     private func receivedMessage(_ message: Message) {
