@@ -52,6 +52,7 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter, Popov
         view.messageEntryView.textChanged = { viewModel.event(.messageTextChanged($0)) }
         view.messageEntryView.sendTapped = { viewModel.event(.sendTapped(message: $0)) }
         view.messageEntryView.pickMediaTapped = { viewModel.event(.pickMediaTapped) }
+        view.messageEntryView.uploadListView.removeTapped = { viewModel.event(.removeUploadTapped($0)) }
         view.callBubbleTapped = { viewModel.event(.callBubbleTapped) }
 
         viewModel.action = { action in

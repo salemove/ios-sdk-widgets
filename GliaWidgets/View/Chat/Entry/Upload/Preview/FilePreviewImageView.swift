@@ -89,10 +89,8 @@ class FilePreviewImageView: UIView {
                 representationTypes: .lowQualityThumbnail
             )
             QLThumbnailGenerator.shared.generateBestRepresentation(for: request) { thumbnail, _ in
-                if let thumbnail = thumbnail {
-                    completion(thumbnail.uiImage)
-                } else {
-                    completion(nil)
+                DispatchQueue.main.async {
+                    completion(thumbnail?.uiImage)
                 }
             }
         } else {

@@ -48,6 +48,7 @@ class FileUploader {
     }
 
     func removeUpload(at index: Int) {
+        guard uploads.indices ~= index else { return }
         uploads.remove(at: index)
         updateState()
     }
