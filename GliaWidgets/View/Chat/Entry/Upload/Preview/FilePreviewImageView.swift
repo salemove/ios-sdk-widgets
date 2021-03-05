@@ -11,7 +11,7 @@ class FilePreviewImageView: UIView {
     }
 
     var state: State = .none {
-        didSet { update(for: state) }
+        didSet { update() }
     }
 
     private let imageView = UIImageView()
@@ -38,7 +38,7 @@ class FilePreviewImageView: UIView {
         label.textColor = style.fileColor
         label.textAlignment = .center
 
-        update(for: state)
+        update()
     }
 
     private func layout() {
@@ -53,7 +53,7 @@ class FilePreviewImageView: UIView {
         label.autoAlignAxis(toSuperviewAxis: .horizontal)
     }
 
-    private func update(for state: State) {
+    private func update() {
         switch state {
         case .none:
             imageView.image = nil
@@ -65,11 +65,7 @@ class FilePreviewImageView: UIView {
             label.text = nil
             backgroundColor = style.backgroundColor
             previewImage(for: url) { image in
-                if let image = image {
-                    self.imageView.image = image
-                } else {
-                    self.label.text = self.fileExtension(for: url)
-                }
+                self.setPreviewImage(image, for: url)
             }
         case .error:
             imageView.contentMode = .center
@@ -77,6 +73,19 @@ class FilePreviewImageView: UIView {
             imageView.tintColor = style.errorIconColor
             label.text = nil
             backgroundColor = style.errorBackgroundColor
+        }
+    }
+
+    private func setPreviewImage(_ image: UIImage?, for url: URL) {
+        guard
+            case let .file(currentUrl) = state,
+            url == currentUrl
+        else { return }
+
+        if let image = image {
+            self.imageView.image = image
+        } else {
+            self.label.text = self.fileExtension(for: url)
         }
     }
 
