@@ -1,3 +1,5 @@
+import SalemoveSDK
+
 class FileUploader {
     enum State {
         case idle
@@ -24,6 +26,13 @@ class FileUploader {
                 return false
             }
         })
+    }
+    var attachment: Attachment? {
+        guard !succeededUploads.isEmpty else { return nil }
+        let files = succeededUploads
+            .compactMap({ $0.engagementFileInformation })
+            .map({ EngagementFile(id: $0.id) })
+        return Attachment(files: files)
     }
     var count: Int { return uploads.count }
     let state = ValueProvider<State>(with: .idle)

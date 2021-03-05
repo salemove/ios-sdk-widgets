@@ -25,6 +25,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case updateItemsUserImage(animated: Bool)
         case addUpload(stateProvider: ValueProvider<FileUpload.State>)
         case removeUpload(Int)
+        case removeAllUploads
         case presentMediaPicker(itemSelected: (ListItemKind) -> Void)
         case offerMediaUpgrade(SingleMediaUpgradeAlertConfiguration,
                                accepted: () -> Void,
@@ -253,12 +254,15 @@ extension ChatViewModel {
     private func send(_ message: String) {
         guard !message.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
 
+        let attachment = uploader.attachment
         let outgoingMessage = OutgoingMessage(content: message)
         let item = ChatItem(with: outgoingMessage)
         appendItem(item, to: messagesSection, animated: true)
+        uploader.removeAllUploads()
+        action?(.removeAllUploads)
         action?(.scrollToBottom(animated: true))
 
-        interactor.send(message) { message in
+        interactor.send(message, attachment: attachment) { message in
             self.sendMessagePreview("")
             self.replace(outgoingMessage,
                          with: message,

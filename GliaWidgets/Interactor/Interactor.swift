@@ -127,9 +127,11 @@ extension Interactor {
     }
 
     func send(_ message: String,
+              attachment: Attachment?,
               success: @escaping (Message) -> Void,
               failure: @escaping (SalemoveError) -> Void) {
-        Salemove.sharedInstance.send(message: message) { message, error in
+        Salemove.sharedInstance.send(message: message,
+                                     attachment: attachment) { message, error in
             if let error = error {
                 failure(error)
             } else if let message = message {

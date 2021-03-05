@@ -42,6 +42,11 @@ class FileUploadListView: UIView {
         updateHeight()
     }
 
+    func removeAllUploadViews() {
+        stackView.removeArrangedSubviews()
+        updateHeight()
+    }
+
     private func setup() {
         stackView.axis = .vertical
         stackView.spacing = 0

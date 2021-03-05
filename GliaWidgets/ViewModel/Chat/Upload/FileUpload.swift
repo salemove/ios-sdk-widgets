@@ -41,6 +41,15 @@ class FileUpload {
         case error(Error)
     }
 
+    var engagementFileInformation: EngagementFileInformation? {
+        switch state.value {
+        case .uploaded(url: _, file: let file):
+            return file
+        default:
+            return nil
+        }
+    }
+
     let state = ValueProvider<State>(with: .none)
 
     private let url: URL

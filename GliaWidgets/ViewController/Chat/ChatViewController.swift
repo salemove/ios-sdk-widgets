@@ -87,6 +87,8 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter, Popov
                 view.messageEntryView.uploadListView.addUploadView(with: viewStateProvider)
             case .removeUpload(let index):
                 view.messageEntryView.uploadListView.removeUploadView(at: index)
+            case .removeAllUploads:
+                view.messageEntryView.uploadListView.removeAllUploadViews()
             case .presentMediaPicker(itemSelected: let itemSelected):
                 self.presentMediaPicker(from: view.messageEntryView.pickMediaButton,
                                         itemSelected: itemSelected)
