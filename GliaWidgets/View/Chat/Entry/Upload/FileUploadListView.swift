@@ -1,6 +1,8 @@
 import UIKit
 
 class FileUploadListView: UIView {
+    var removeTapped: ((Int) -> Void)?
+
     private var uploadViews: [FileUploadView] {
         return stackView.arrangedSubviews.compactMap({ $0 as? FileUploadView })
     }
@@ -22,9 +24,11 @@ class FileUploadListView: UIView {
     }
 
     func addUploadView(with stateProvider: ValueProvider<FileUploadView.State>) {
+        let viewIndex = uploadViews.count
         let uploadView = FileUploadView(with: style.item)
         uploadView.state = stateProvider.value
-        stackView.addArrangedSubview(uploadView)
+        uploadView.removeTapped = { [weak self] in self?.removeTapped?(viewIndex) }
+        stackView.insertArrangedSubview(uploadView, at: 0)
         stateProvider.addObserver(self) { state, _ in
             uploadView.state = state
         }

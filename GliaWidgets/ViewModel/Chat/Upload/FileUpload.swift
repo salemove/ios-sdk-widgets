@@ -66,7 +66,6 @@ class FileUpload {
         }
 
         state.value = .uploading(url: url, progress: progress)
-
         Salemove.sharedInstance.uploadFileToEngagement(file,
                                                        progress: onProgress,
                                                        completion: onCompletion)

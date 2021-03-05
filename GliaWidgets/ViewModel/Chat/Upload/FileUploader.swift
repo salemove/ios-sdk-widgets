@@ -1,6 +1,6 @@
 class FileUploader {
     enum State {
-        case none
+        case idle
         case uploading
         case finished
     }
@@ -26,7 +26,7 @@ class FileUploader {
         })
     }
     var count: Int { return uploads.count }
-    let state = ValueProvider<State>(with: .none)
+    let state = ValueProvider<State>(with: .idle)
 
     private var uploads = [FileUpload]()
 
@@ -36,32 +36,43 @@ class FileUploader {
         return uploads[index]
     }
 
-    func addUpload(with url: URL) {
-        state.value = .uploading
+    func addUpload(with url: URL) -> FileUpload {
         let upload = FileUpload(with: url)
-        upload.state.addObserver(self) { state, _ in
-            switch state {
-            case .uploaded:
-                self.checkFinished()
-            case .error:
-                self.checkFinished()
-            default:
-                break
-            }
+        upload.state.addObserver(self) { _, _ in
+            self.updateState()
         }
         uploads.append(upload)
         upload.startUpload()
+        updateState()
+        return upload
     }
 
     func removeUpload(at index: Int) {
         uploads.remove(at: index)
-        checkFinished()
+        updateState()
     }
 
-    private func checkFinished() {
-        let totalFinished = succeededUploads.count + failedUploads.count
-        if totalFinished == count {
-            state.value = .finished
+    func removeAllUploads() {
+        uploads.removeAll()
+        updateState()
+    }
+
+    private func updateState() {
+        var newState: State = .idle
+
+        if uploads.isEmpty {
+            newState = .idle
+        } else {
+            let totalFinished = succeededUploads.count + failedUploads.count
+            if totalFinished == uploads.count {
+                state.value = .finished
+            } else {
+                newState = .uploading
+            }
+        }
+
+        if state.value != newState {
+            state.value = newState
         }
     }
 }

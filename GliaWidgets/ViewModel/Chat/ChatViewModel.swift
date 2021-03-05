@@ -7,6 +7,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case viewDidLoad
         case messageTextChanged(String)
         case sendTapped(message: String)
+        case removeUploadTapped(Int)
         case pickMediaTapped
         case callBubbleTapped
     }
@@ -22,6 +23,8 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case refreshAll
         case scrollToBottom(animated: Bool)
         case updateItemsUserImage(animated: Bool)
+        case addUpload(stateProvider: ValueProvider<FileUpload.State>)
+        case removeUpload(Int)
         case presentMediaPicker(itemSelected: (ListItemKind) -> Void)
         case offerMediaUpgrade(SingleMediaUpgradeAlertConfiguration,
                                accepted: () -> Void,
@@ -59,6 +62,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     private var unreadMessages: UnreadMessagesHandler!
     private let showsCallBubble: Bool
     private let storage = ChatStorage()
+    private let uploader = FileUploader()
 
     init(interactor: Interactor,
          alertConfiguration: AlertConfiguration,
@@ -79,6 +83,9 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         self.call.addObserver(self) { call, _ in
             self.onCall(call)
         }
+        self.uploader.state.addObserver(self) { state, _ in
+            self.onUploaderStateChanged(state)
+        }
         storage.setQueue(withID: interactor.queueID)
     }
 
@@ -90,6 +97,8 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             sendMessagePreview(message)
         case .sendTapped(message: let message):
             send(message)
+        case .removeUploadTapped(let index):
+            removeUpload(at: index)
         case .pickMediaTapped:
             presentMediaPicker()
         case .callBubbleTapped:
@@ -186,50 +195,6 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         historySection.set(items)
         action?(.refreshSection(historySection.index))
         action?(.scrollToBottom(animated: true))
-    }
-
-    private func presentMediaPicker() {
-        let itemSelected = { (kind: ListItemKind) -> Void in
-            let mediaProvider = ValueProvider<MediaPickerEvent>(with: .none)
-            mediaProvider.addObserver(self) { event, _ in
-                switch event {
-                case .none, .cancelled:
-                    break
-                case .pickedMedia(let media):
-                    self.mediaPicked(media)
-                case .sourceNotAvailable:
-                    self.showAlert(with: self.alertConfiguration.mediaSourceNotAvailable, dismissed: nil)
-                case .noCameraPermission:
-                    self.showSettingsAlert(with: self.alertConfiguration.cameraSettings)
-                }
-            }
-            let fileProvider = ValueProvider<FilePickerEvent>(with: .none)
-            fileProvider.addObserver(self) { event, _ in
-                switch event {
-                case .none, .cancelled:
-                    break
-                case .pickedFile(let url):
-                    self.filePicked(url)
-                }
-            }
-            switch kind {
-            case .photoLibrary:
-                self.delegate?(.pickMedia(mediaProvider))
-            case .takePhoto:
-                self.delegate?(.takeMedia(mediaProvider))
-            case .browse:
-                self.delegate?(.pickFile(fileProvider))
-            }
-        }
-        action?(.presentMediaPicker(itemSelected: { itemSelected($0) }))
-    }
-
-    private func mediaPicked(_ media: PickedMedia) {
-        print("MEDIA", media)
-    }
-
-    private func filePicked(_ url: URL) {
-        print("FILE", url)
     }
 
     private func offerMediaUpgrade(_ offer: MediaUpgradeOffer, answer: @escaping AnswerWithSuccessBlock) {
@@ -332,6 +297,73 @@ extension ChatViewModel {
             setItems(items, to: messagesSection)
             action?(.scrollToBottom(animated: true))
         }
+    }
+}
+
+extension ChatViewModel {
+    private func presentMediaPicker() {
+        let itemSelected = { (kind: ListItemKind) -> Void in
+            let mediaProvider = ValueProvider<MediaPickerEvent>(with: .none)
+            mediaProvider.addObserver(self) { event, _ in
+                switch event {
+                case .none, .cancelled:
+                    break
+                case .pickedMedia(let media):
+                    self.mediaPicked(media)
+                case .sourceNotAvailable:
+                    self.showAlert(with: self.alertConfiguration.mediaSourceNotAvailable, dismissed: nil)
+                case .noCameraPermission:
+                    self.showSettingsAlert(with: self.alertConfiguration.cameraSettings)
+                }
+            }
+            let fileProvider = ValueProvider<FilePickerEvent>(with: .none)
+            fileProvider.addObserver(self) { event, _ in
+                switch event {
+                case .none, .cancelled:
+                    break
+                case .pickedFile(let url):
+                    self.filePicked(url)
+                }
+            }
+            switch kind {
+            case .photoLibrary:
+                self.delegate?(.pickMedia(mediaProvider))
+            case .takePhoto:
+                self.delegate?(.takeMedia(mediaProvider))
+            case .browse:
+                self.delegate?(.pickFile(fileProvider))
+            }
+        }
+        action?(.presentMediaPicker(itemSelected: { itemSelected($0) }))
+    }
+
+    private func mediaPicked(_ media: PickedMedia) {
+        switch media {
+        case .image(let url):
+            addUpload(with: url)
+        case .movie(let url):
+            addUpload(with: url)
+        case .none:
+            break
+        }
+    }
+
+    private func filePicked(_ url: URL) {
+        addUpload(with: url)
+    }
+
+    private func addUpload(with url: URL) {
+        let upload = uploader.addUpload(with: url)
+        action?(.addUpload(stateProvider: upload.state))
+    }
+
+    private func removeUpload(at index: Int) {
+        uploader.removeUpload(at: index)
+        action?(.removeUpload(index))
+    }
+
+    private func onUploaderStateChanged(_ state: FileUploader.State) {
+
     }
 }
 

@@ -3,7 +3,7 @@ import UIKit
 class FileUploadView: UIView {
     enum State {
         case none
-        case uploading(url: URL, progress: ValueProvider<Float>)
+        case uploading(url: URL, progress: ValueProvider<Double>)
         case uploaded(url: URL)
         case error(Error)
     }
@@ -116,8 +116,9 @@ class FileUploadView: UIView {
             stateLabel.font = style.uploading.font
             stateLabel.textColor = style.uploading.textColor
             progressView.tintColor = style.progressColor
+            progressView.progress = Float(progress.value)
             progress.addObserver(self) { progress, _ in
-                self.progressView.progress = progress
+                self.progressView.progress = Float(progress)
             }
         case .uploaded(url: let url):
             previewImageView.state = .file(url: url)

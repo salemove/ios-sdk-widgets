@@ -2,6 +2,7 @@ import UIKit
 
 public class ChatMessageEntryView: UIView {
     let pickMediaButton: MessageButton
+    let uploadListView: FileUploadListView
     var maxCharacters: Int = 200
     var textChanged: ((String) -> Void)?
     var sendTapped: ((String) -> Void)?
@@ -17,7 +18,6 @@ public class ChatMessageEntryView: UIView {
 
     private let style: ChatMessageEntryStyle
     private let separator = UIView()
-    private let uploadListView: FileUploadListView
     private let messageContainerView = UIView()
     private let textView = UITextView()
     private let placeholderLabel = UILabel()

@@ -78,6 +78,14 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter, Popov
                 view.scrollToBottom(animated: animated)
             case .updateItemsUserImage(animated: let animated):
                 view.updateItemsUserImage(animated: animated)
+            case .addUpload(stateProvider: let stateProvider):
+                let viewStateProvider = ValueProvider<FileUploadView.State>(with: .init(with: stateProvider.value))
+                stateProvider.addObserver(self) { state, _ in
+                    viewStateProvider.value = .init(with: state)
+                }
+                view.messageEntryView.uploadListView.addUploadView(with: viewStateProvider)
+            case .removeUpload(let index):
+                view.messageEntryView.uploadListView.removeUploadView(at: index)
             case .presentMediaPicker(itemSelected: let itemSelected):
                 self.presentMediaPicker(from: view.messageEntryView.pickMediaButton,
                                         itemSelected: itemSelected)
@@ -98,5 +106,37 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter, Popov
                         self.dismiss(animated: true, completion: nil)
                         itemSelected($0)
                        })
+    }
+}
+
+extension FileUploadView.Error {
+    init(with error: FileUpload.Error) {
+        switch error {
+        case .fileTooBig:
+            self = .fileTooBig
+        case .unsupportedFileType:
+            self = .unsupportedFileType
+        case .safetyCheckFailed:
+            self = .safetyCheckFailed
+        case .network:
+            self = .network
+        case .generic:
+            self = .generic
+        }
+    }
+}
+
+extension FileUploadView.State {
+    init(with state: FileUpload.State) {
+        switch state {
+        case .none:
+            self = .none
+        case .uploading(url: let url, progress: let progress):
+            self = .uploading(url: url, progress: progress)
+        case .uploaded(url: let url, file: _):
+            self = .uploaded(url: url)
+        case .error(let error):
+            self = .error(FileUploadView.Error(with: error))
+        }
     }
 }
