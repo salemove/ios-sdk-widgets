@@ -26,7 +26,7 @@ extension ChatStorage {
             CREATE TABLE IF NOT EXISTS EngagementFile(
             ID INTEGER PRIMARY KEY NOT NULL,
             EngagementFileID STRING,
-            Url TEXT NOT NULL,
+            Url TEXT,
             ContentType TEXT,
             Name TEXT,
             Size REAL,
@@ -59,7 +59,7 @@ extension ChatStorage {
             OperatorID INTEGER,
             Sender TEXT NOT NULL,
             Content TEXT NOT NULL,
-            AttachmentID INTEGER NOT NULL,
+            AttachmentID INTEGER,
             Timestamp INTEGER NOT NULL,
             FOREIGN KEY(QueueID) REFERENCES Queue(ID),
             FOREIGN KEY(OperatorID) REFERENCES Operator(ID),

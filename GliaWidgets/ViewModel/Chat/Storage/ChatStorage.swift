@@ -117,6 +117,8 @@ class ChatStorage {
                 switch $0.element {
                 case nil:
                     sqlite3_bind_null(statement, index)
+                case let value as Int:
+                    sqlite3_bind_int(statement, index, Int32(value))
                 case let value as Int32:
                     sqlite3_bind_int(statement, index, value)
                 case let value as Int64:
@@ -383,7 +385,7 @@ extension ChatStorage {
         var attachmentID: Int64?
         var engagementFiles: [EngagementFile]?
         let type = AttachmentType(with: attachment.type)
-        try exec("INSERT INTO Attachment(Type) VALUES (?);", values: [type]) {
+        try exec("INSERT INTO Attachment(Type) VALUES (?);", values: [type?.rawValue]) {
             attachmentID = self.lastInsertedRowID
         }
         try storeEngagementFiles(attachment.files ?? [], completion: { files in
