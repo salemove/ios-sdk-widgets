@@ -25,7 +25,7 @@ extension ChatStorage {
         return """
             CREATE TABLE IF NOT EXISTS EngagementFile(
             ID INTEGER PRIMARY KEY NOT NULL,
-            EngagementFileID STRING,
+            EngagementFileID TEXT,
             Url TEXT,
             ContentType TEXT,
             Name TEXT,
@@ -54,7 +54,7 @@ extension ChatStorage {
         return """
             CREATE TABLE IF NOT EXISTS Message(
             ID INTEGER PRIMARY KEY NOT NULL,
-            MessageID STRING NOT NULL,
+            MessageID TEXT NOT NULL,
             QueueID INTEGER NOT NULL,
             OperatorID INTEGER,
             Sender TEXT NOT NULL,

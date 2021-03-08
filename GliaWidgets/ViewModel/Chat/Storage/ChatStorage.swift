@@ -313,22 +313,24 @@ extension ChatStorage {
         var files = [EngagementFile]()
         do {
             let sql = """
-            SELECT ID, EngagementFileID, Url, Name, Size
+            SELECT EngagementFile.ID, EngagementFile.EngagementFileID, EngagementFile.Url, EngagementFile.Name, EngagementFile.Size
             FROM EngagementFile JOIN AttachmentFile ON EngagementFile.ID = AttachmentFile.AttachmentID
             WHERE AttachmentFile.AttachmentID = '\(attachmentID)'
-            ORDER BY EngagementFileID;
+            ORDER BY EngagementFile.ID;
             """
             try prepare(sql) {
                 while sqlite3_step($0) == SQLITE_ROW {
                     let id = sqlite3_column_int64($0, 0)
-                    let fileID = String(cString: sqlite3_column_text($0, 1))
-                    let urlString = String(cString: sqlite3_column_text($0, 2))
-                    let name = String(cString: sqlite3_column_text($0, 3))
+                    let fileID = sqlite3_column_text($0, 1).map({ String(cString: $0) })
+                    let url = sqlite3_column_text($0, 2)
+                        .map({ String(cString: $0) })
+                        .map({ URL(string: $0) }) ?? nil
+                    let name = sqlite3_column_text($0, 3).map({ String(cString: $0) })
                     let size = sqlite3_column_double($0, 4)
                     let file = EngagementFile(
                         id: id,
                         fileID: fileID,
-                        url: URL(string: urlString),
+                        url: url,
                         name: name,
                         size: size
                     )
@@ -381,11 +383,16 @@ extension ChatStorage {
         return attachment
     }
 
-    private func storeAttachment(_ attachment: SalemoveSDK.Attachment, completion: @escaping (Attachment) -> Void) throws {
+    private func storeAttachment(_ attachment: SalemoveSDK.Attachment, completion: @escaping (Attachment?) -> Void) throws {
+        guard let type = AttachmentType(with: attachment.type) else {
+            completion(nil)
+            return
+        }
+
         var attachmentID: Int64?
         var engagementFiles: [EngagementFile]?
-        let type = AttachmentType(with: attachment.type)
-        try exec("INSERT INTO Attachment(Type) VALUES (?);", values: [type?.rawValue]) {
+
+        try exec("INSERT INTO Attachment(Type) VALUES (?);", values: [type.rawValue]) {
             attachmentID = self.lastInsertedRowID
         }
         try storeEngagementFiles(attachment.files ?? [], completion: { files in
@@ -405,6 +412,12 @@ extension ChatStorage {
                 }
             }
         })
+
+        if let id = attachmentID {
+            completion(Attachment(id: id,
+                                  type: type,
+                                  files: engagementFiles))
+        }
     }
 }
 
@@ -421,7 +434,7 @@ extension ChatStorage {
         do {
             if let attachment = message.attachment {
                 try storeAttachment(attachment, completion: { attachment in
-                    attachmentID = attachment.id
+                    attachmentID = attachment?.id
                 })
             }
             try exec("INSERT INTO Message(MessageID, QueueID, OperatorID, Sender, Content, AttachmentID, Timestamp) VALUES (?,?,?,?,?,?,?);",
