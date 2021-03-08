@@ -16,9 +16,16 @@ class ChatStorage {
     struct EngagementFile {
         let id: Int64
         let fileID: String?
-        let url: URL?
+        let urlString: String?
         let name: String?
         let size: Double?
+
+        var url: URL? {
+            guard let urlString = urlString else {
+                return nil
+            }
+            return URL(string: urlString)
+        }
     }
 
     enum AttachmentType: Int {
@@ -123,10 +130,12 @@ class ChatStorage {
                     sqlite3_bind_int(statement, index, value)
                 case let value as Int64:
                     sqlite3_bind_int64(statement, index, value)
+                case let value as Double:
+                    sqlite3_bind_double(statement, index, value)
                 case let value as String:
                     sqlite3_bind_text(statement, index, (value as NSString).utf8String, -1, nil)
                 default:
-                    break
+                    print("Unsupported data type \(type(of: $0.element)) for \(String(describing: $0.element)) in exec()")
                 }
             })
 
@@ -300,7 +309,8 @@ extension ChatStorage {
     }
 
     private func storeOperator(name: String, pictureUrl: String?, completion: @escaping (Operator?) -> Void) throws {
-        try exec("INSERT INTO Operator(Name, PictureUrl) VALUES (?,?);", values: [name, pictureUrl]) {
+        try exec("INSERT INTO Operator(Name, PictureUrl) VALUES (?,?);",
+                 values: [name, pictureUrl]) {
             completion(Operator(id: self.lastInsertedRowID,
                                 name: name,
                                 pictureUrl: pictureUrl))
@@ -313,24 +323,22 @@ extension ChatStorage {
         var files = [EngagementFile]()
         do {
             let sql = """
-            SELECT EngagementFile.ID, EngagementFile.EngagementFileID, EngagementFile.Url, EngagementFile.Name, EngagementFile.Size
-            FROM EngagementFile JOIN AttachmentFile ON EngagementFile.ID = AttachmentFile.AttachmentID
-            WHERE AttachmentFile.AttachmentID = '\(attachmentID)'
-            ORDER BY EngagementFile.ID;
+            SELECT ID, EngagementFileID, Url, Name, Size
+            FROM EngagementFile WHERE ID IN
+              (SELECT EngagementFileID FROM AttachmentFile WHERE AttachmentID = '\(attachmentID)')
+            ORDER BY ID;
             """
             try prepare(sql) {
                 while sqlite3_step($0) == SQLITE_ROW {
                     let id = sqlite3_column_int64($0, 0)
                     let fileID = sqlite3_column_text($0, 1).map({ String(cString: $0) })
-                    let url = sqlite3_column_text($0, 2)
-                        .map({ String(cString: $0) })
-                        .map({ URL(string: $0) }) ?? nil
+                    let urlString = sqlite3_column_text($0, 2).map({ String(cString: $0) })
                     let name = sqlite3_column_text($0, 3).map({ String(cString: $0) })
                     let size = sqlite3_column_double($0, 4)
                     let file = EngagementFile(
                         id: id,
                         fileID: fileID,
-                        url: url,
+                        urlString: urlString,
                         name: name,
                         size: size
                     )
@@ -344,10 +352,11 @@ extension ChatStorage {
     }
 
     private func storeEngagementFile(_ file: SalemoveSDK.EngagementFile, completion: @escaping (EngagementFile) -> Void) throws {
-        try exec("INSERT INTO EngagementFile(Url, Name, Size) VALUES (?,?,?);", values: [file.url, file.name, file.size]) {
+        try exec("INSERT INTO EngagementFile(Url, Name, Size) VALUES (?,?,?);",
+                 values: [file.url?.absoluteString, file.name , file.size ?? nil]) {
             completion(EngagementFile(id: self.lastInsertedRowID,
                                       fileID: file.id,
-                                      url: file.url,
+                                      urlString: file.url?.absoluteString,
                                       name: file.name,
                                       size: file.size))
         }
@@ -402,16 +411,6 @@ extension ChatStorage {
             try self.exec("INSERT INTO AttachmentFile(AttachmentID, EngagementFileID) VALUES (?,?);",
                           values: [attachmentID, file.id]) {}
         }
-        try attachment.files?.forEach({ file in
-            try self.storeEngagementFile(file) { file in
-                do {
-                    try self.exec("INSERT INTO AttachmentFile(AttachmentID, EngagementFileID) VALUES (?,?);",
-                                  values: [attachmentID, file.id]) {}
-                } catch {
-                    self.printLastErrorMessage()
-                }
-            }
-        })
 
         if let id = attachmentID {
             completion(Attachment(id: id,
