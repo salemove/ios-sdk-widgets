@@ -247,17 +247,17 @@ extension Interactor: Interactable {
         }
     }
 
+    func receive(message: Message) {
+        print("Called: \(#function)")
+        notify(.receivedMessage(message))
+    }
+
     func start() {
         print("Called: \(#function)")
         Salemove.sharedInstance.requestEngagedOperator { operators, _ in
             let engagedOperator = operators?.first
             self.state = .engaged(engagedOperator)
         }
-    }
-
-    func receive(message: Message) {
-        print("Called: \(#function)")
-        notify(.receivedMessage(message))
     }
 
     func end() {

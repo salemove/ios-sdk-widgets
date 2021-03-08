@@ -13,11 +13,29 @@ class ChatStorage {
         let pictureUrl: String?
     }
 
+    struct EngagementFile {
+        let id: Int64
+        let url: URL
+        let name: String?
+        let size: Double?
+    }
+
+    enum AttachmentType: Int {
+        case unknown = 0
+        case files = 1
+    }
+
+    struct Attachment {
+        let type: AttachmentType
+        let files: [EngagementFile]?
+    }
+
     struct Message {
         let id: String
         let operatorID: Int64?
         let sender: MessageSender
         let content: String
+        let attachment: Attachment?
     }
 
     private enum SQLiteError: Error {
@@ -33,6 +51,7 @@ class ChatStorage {
     private var db: OpaquePointer?
     private let dbURL: URL?
     private let kDBName = "GliaChat.sqlite"
+    private let kDBSchemaVersion: Int64 = 1
     private var lastInsertedRowID: Int64 { return sqlite3_last_insert_rowid(db) }
 
     init() {
@@ -43,6 +62,7 @@ class ChatStorage {
         do {
             try openDatabase()
             try createTables()
+            try migrateIfNeeded()
         } catch {
             printLastErrorMessage()
         }
@@ -61,41 +81,12 @@ class ChatStorage {
     }
 
     private func createTables() throws {
-        let queueTableSQL = """
-            CREATE TABLE IF NOT EXISTS Queue(
-            ID INTEGER PRIMARY KEY NOT NULL,
-            QueueID TEXT NOT NULL);
-        """
-        let operatorTableSQL = """
-            CREATE TABLE IF NOT EXISTS Operator(
-            ID INTEGER PRIMARY KEY NOT NULL,
-            Name TEXT NOT NULL,
-            PictureUrl TEXT);
-        """
-        let messagesTableSQL = """
-            CREATE TABLE IF NOT EXISTS Message(
-            ID INTEGER PRIMARY KEY NOT NULL,
-            MessageID STRING NOT NULL,
-            QueueID INTEGER NOT NULL,
-            OperatorID INTEGER,
-            Sender TEXT NOT NULL,
-            Content TEXT NOT NULL,
-            Timestamp INTEGER NOT NULL,
-            FOREIGN KEY(queueID) REFERENCES Queue(ID),
-            FOREIGN KEY(operatorID) REFERENCES Operator(ID));
-        """
-        let queueIDIndex = """
-            CREATE UNIQUE INDEX IF NOT EXISTS index_queueid ON Queue(QueueID);
-        """
-        let operatorNamePictureIndex = """
-            CREATE UNIQUE INDEX IF NOT EXISTS index_operator_name ON Operator(Name, PictureUrl);
-        """
-        let messageIDIndex = """
-            CREATE UNIQUE INDEX IF NOT EXISTS index_messages_messageID ON Message(MessageID);
-        """
-
+        try exec(dbSchemaTableSQL)
         try exec(queueTableSQL)
         try exec(operatorTableSQL)
+        try exec(engagementFileTableSQL)
+        try exec(attachmentTableSQL)
+        try exec(attachmentFileTableSQL)
         try exec(messagesTableSQL)
         try exec(queueIDIndex)
         try exec(operatorNamePictureIndex)
@@ -147,6 +138,44 @@ class ChatStorage {
         let lastErrorMessage = sqlite3_errmsg(db).map({ String(cString: $0) }) ?? "UNKNOWN DB ERROR"
         print(lastErrorMessage)
         #endif
+    }
+}
+
+extension ChatStorage {
+    private func migrateIfNeeded() throws {
+        try loadDBSchemaVersion { [self] version in
+            if let version = version {
+                if version < self.kDBSchemaVersion {
+                    try self.migrate(fromVersion: version, toVersion: self.kDBSchemaVersion)
+                }
+            } else {
+                try self.insertDBSchemaVersion(self.kDBSchemaVersion)
+            }
+        }
+    }
+
+    private func migrate(fromVersion: Int64, toVersion: Int64) throws {
+        // do any migration actions here
+        try updateDBSchemaVersion(to: toVersion)
+    }
+}
+
+extension ChatStorage {
+    private func loadDBSchemaVersion(completion: @escaping (Int64?) throws -> Void) throws {
+        try prepare("SELECT Version FROM DBSchema;") {
+            if sqlite3_step($0) == SQLITE_ROW {
+                let version = sqlite3_column_int64($0, 0)
+                try completion(version)
+            }
+        }
+    }
+
+    private func insertDBSchemaVersion(_ version: Int64) throws {
+        try exec("INSERT INTO DBSchema(Version) VALUES (?);", values: [version]) {}
+    }
+
+    private func updateDBSchemaVersion(to version: Int64) throws {
+        try exec("UPDATE DBSchema SET Version = ?;", values: [version]) {}
     }
 }
 
