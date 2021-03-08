@@ -50,7 +50,7 @@ extension ChatStorage {
             FOREIGN KEY(EngagementFileID) REFERENCES EngagementFile(ID));
         """
     }
-    var messagesTableSQL: String {
+    var messageTableSQL: String {
         return """
             CREATE TABLE IF NOT EXISTS Message(
             ID INTEGER PRIMARY KEY NOT NULL,
@@ -59,9 +59,11 @@ extension ChatStorage {
             OperatorID INTEGER,
             Sender TEXT NOT NULL,
             Content TEXT NOT NULL,
+            AttachmentID INTEGER NOT NULL,
             Timestamp INTEGER NOT NULL,
             FOREIGN KEY(QueueID) REFERENCES Queue(ID),
-            FOREIGN KEY(OperatorID) REFERENCES Operator(ID));
+            FOREIGN KEY(OperatorID) REFERENCES Operator(ID),
+            FOREIGN KEY(AttachmentID) REFERENCES Attachment(ID));
         """
     }
     var queueIDIndex: String {

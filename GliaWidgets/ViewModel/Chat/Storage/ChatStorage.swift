@@ -15,7 +15,7 @@ class ChatStorage {
 
     struct EngagementFile {
         let id: Int64
-        let url: URL
+        let url: URL?
         let name: String?
         let size: Double?
     }
@@ -87,7 +87,7 @@ class ChatStorage {
         try exec(engagementFileTableSQL)
         try exec(attachmentTableSQL)
         try exec(attachmentFileTableSQL)
-        try exec(messagesTableSQL)
+        try exec(messageTableSQL)
         try exec(queueIDIndex)
         try exec(operatorNamePictureIndex)
         try exec(messageIDIndex)
@@ -290,6 +290,58 @@ extension ChatStorage {
 }
 
 extension ChatStorage {
+    private func engagementFiles(forAttachment attachmentID: Int64) -> [EngagementFile] {
+        var files = [EngagementFile]()
+        do {
+            let sql = """
+            SELECT EngagementFileID, Url, Name, Size
+            FROM EngagementFile JOIN AttachmentFile ON EngagementFile.ID = AttachmentFile.AttachmentID
+            WHERE AttachmentFile.AttachmentID = '\(attachmentID)'
+            ORDER BY EngagementFileID;
+            """
+            try prepare(sql) {
+                while sqlite3_step($0) == SQLITE_ROW {
+                    let id = sqlite3_column_int64($0, 0)
+                    let urlString = String(cString: sqlite3_column_text($0, 1))
+                    let name = String(cString: sqlite3_column_text($0, 2))
+                    let size = sqlite3_column_double($0, 3)
+                    let file = EngagementFile(
+                        id: id,
+                        url: URL(string: urlString),
+                        name: name,
+                        size: size
+                    )
+                    files.append(file)
+                }
+            }
+        } catch {
+            printLastErrorMessage()
+        }
+        return files
+    }
+}
+
+extension ChatStorage {
+    private func attachment(withID id: Int64) -> Attachment? {
+        var attachment: Attachment?
+        do {
+            try prepare("SELECT ID, Type FROM Attachment WHERE ID = '\(id)';") {
+                if sqlite3_step($0) == SQLITE_ROW {
+                    let id = sqlite3_column_int64($0, 0)
+                    let rawType = Int(sqlite3_column_int64($0, 1))
+                    let type = AttachmentType(rawValue: rawType) ?? .unknown
+                    let files = engagementFiles(forAttachment: id)
+                    attachment = Attachment(type: type, files: files)
+                }
+            }
+        } catch {
+            printLastErrorMessage()
+        }
+        return attachment
+    }
+}
+
+extension ChatStorage {
     func storeMessage(_ message: SalemoveSDK.Message) {
         guard let queueID = queue?.id else { return }
 
@@ -312,10 +364,9 @@ extension ChatStorage {
 
     func messages(forQueue queueID: String) -> [Message] {
         var messages = [Message]()
-
         do {
             let sql = """
-            SELECT MessageID, OperatorID, Content, Sender
+            SELECT MessageID, OperatorID, Content, Sender, AttachmentID
             FROM Message JOIN Queue ON Message.QueueID = Queue.ID
             WHERE Queue.QueueID = '\(queueID)'
             ORDER BY Message.Timestamp;
@@ -326,11 +377,14 @@ extension ChatStorage {
                     let operatorID = sqlite3_column_int64($0, 1)
                     let content = String(cString: sqlite3_column_text($0, 2))
                     guard let sender = MessageSender(stringValue: String(cString: sqlite3_column_text($0, 3))) else { continue }
+                    let attachmentID = sqlite3_column_int64($0, 4)
+                    let attachment = self.attachment(withID: attachmentID)
                     let message = Message(
                         id: id,
                         operatorID: operatorID,
                         sender: sender,
-                        content: content
+                        content: content,
+                        attachment: attachment
                     )
                     messages.append(message)
                 }
@@ -338,7 +392,6 @@ extension ChatStorage {
         } catch {
             printLastErrorMessage()
         }
-
         return messages
     }
 
