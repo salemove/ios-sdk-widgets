@@ -39,6 +39,7 @@ class FileUploadListView: UIView {
         guard stackView.arrangedSubviews.indices ~= index else { return }
         let view = stackView.arrangedSubviews[index]
         stackView.removeArrangedSubview(view)
+        view.removeFromSuperview()
         updateHeight()
     }
 

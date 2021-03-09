@@ -68,8 +68,8 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     private let uploader = FileUploader()
     private var messageText = "" {
         didSet {
+            validateMessage()
             sendMessagePreview(messageText)
-            action?(.sendButtonHidden(!validateMessage()))
             action?(.setMessageText(messageText))
         }
     }
@@ -285,20 +285,14 @@ extension ChatViewModel {
         }
     }
 
+    @discardableResult
     private func validateMessage() -> Bool {
-        let message = messageText.trimmingCharacters(in: .whitespacesAndNewlines)
-
-        if uploader.state.value == .uploading {
-            
-        }
-
-        if message.isEmpty {
-            return false
-        }
-        // TODO: Uploader must not have any in-progress uploads
-        //       Succeeded upload count must not be 0 OR message text must not be empty
-
-        return true
+        guard uploader.state.value != .uploading else { return false }
+        let canSendText = !messageText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        let canSendAttachment = uploader.failedUploads.isEmpty && !uploader.succeededUploads.isEmpty
+        let isValid = canSendText || canSendAttachment
+        action?(.sendButtonHidden(!isValid))
+        return isValid
     }
 
     private func receivedMessage(_ message: Message) {
@@ -394,7 +388,7 @@ extension ChatViewModel {
     }
 
     private func onUploaderStateChanged(_ state: FileUploader.State) {
-
+        validateMessage()
     }
 }
 

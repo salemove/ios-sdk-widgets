@@ -75,7 +75,7 @@ class FileUploader {
         } else {
             let totalFinished = succeededUploads.count + failedUploads.count
             if totalFinished == uploads.count {
-                state.value = .finished
+                newState = .finished
             } else {
                 newState = .uploading
             }
