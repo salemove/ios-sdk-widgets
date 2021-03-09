@@ -5,11 +5,14 @@ public class ChatMessageEntryView: UIView {
     let uploadListView: FileUploadListView
     var maxCharacters: Int = 200
     var textChanged: ((String) -> Void)?
-    var sendTapped: ((String) -> Void)?
+    var sendTapped: (() -> Void)?
     var pickMediaTapped: (() -> Void)?
-    var message: String {
+    var messageText: String {
         get { return textView.text }
-        set { textView.text = newValue }
+        set {
+            textView.text = newValue
+            updateTextViewHeight()
+        }
     }
     var isEnabled: Bool {
         get { return isUserInteractionEnabled }
@@ -47,10 +50,10 @@ public class ChatMessageEntryView: UIView {
         updateTextViewHeight()
     }
 
-    func setSendButtonVisible(_ visible: Bool, animated: Bool) {
-        UIView.animate(withDuration: animated ? 0.3 : 0.0) {
-            self.sendButton.isHidden = !visible
-            self.sendButton.alpha = visible ? 1.0 : 0.0
+    func setSendButtonHidden(_ hidden: Bool, animated: Bool) {
+        UIView.animate(withDuration: animated ? 0.2 : 0.0) {
+            self.sendButton.isHidden = hidden
+            self.sendButton.alpha = hidden ? 0 : 1
         }
     }
 
@@ -79,7 +82,7 @@ public class ChatMessageEntryView: UIView {
         placeholderLabel.textColor = style.placeholderColor
 
         sendButton.isHidden = true
-        sendButton.alpha = 0.0
+        sendButton.alpha = 0
 
         pickMediaButton.tap = { [weak self] in self?.pickMediaTapped?() }
         sendButton.tap = { [weak self] in self?.sendTap() }
@@ -146,10 +149,7 @@ public class ChatMessageEntryView: UIView {
     }
 
     private func sendTap() {
-        let text = textView.text ?? ""
-        sendTapped?(text)
-        textView.text = ""
-        updateTextViewHeight()
+        sendTapped?()
     }
 
     @objc private func textViewContainerTap() {

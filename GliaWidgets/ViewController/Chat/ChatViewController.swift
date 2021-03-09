@@ -50,7 +50,7 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter, Popov
         view.numberOfRows = { return viewModel.numberOfItems(in: $0) }
         view.itemForRow = { return viewModel.item(for: $0, in: $1) }
         view.messageEntryView.textChanged = { viewModel.event(.messageTextChanged($0)) }
-        view.messageEntryView.sendTapped = { viewModel.event(.sendTapped(message: $0)) }
+        view.messageEntryView.sendTapped = { viewModel.event(.sendTapped) }
         view.messageEntryView.pickMediaTapped = { viewModel.event(.pickMediaTapped) }
         view.messageEntryView.uploadListView.removeTapped = { viewModel.event(.removeUploadTapped($0)) }
         view.callBubbleTapped = { viewModel.event(.callBubbleTapped) }
@@ -67,6 +67,10 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter, Popov
                 view.header.setRightItem(rightItem, animated: true)
             case .setMessageEntryEnabled(let enabled):
                 view.messageEntryView.isEnabled = enabled
+            case .setMessageText(let text):
+                view.messageEntryView.messageText = text
+            case .sendButtonHidden(let hidden):
+                view.messageEntryView.setSendButtonHidden(hidden, animated: true)
             case .appendRows(let count, let section, let animated):
                 view.appendRows(count, to: section, animated: animated)
             case .refreshRow(let row, in: let section, animated: let animated):

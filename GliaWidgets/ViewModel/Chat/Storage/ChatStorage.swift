@@ -352,8 +352,8 @@ extension ChatStorage {
     }
 
     private func storeEngagementFile(_ file: SalemoveSDK.EngagementFile, completion: @escaping (EngagementFile) -> Void) throws {
-        try exec("INSERT INTO EngagementFile(Url, Name, Size) VALUES (?,?,?);",
-                 values: [file.url?.absoluteString, file.name , file.size ?? nil]) {
+        try exec("INSERT INTO EngagementFile(Url, EngagementFileID, Name, Size) VALUES (?,?,?,?);",
+                 values: [file.url?.absoluteString, file.id, file.name, file.size ?? nil]) {
             completion(EngagementFile(id: self.lastInsertedRowID,
                                       fileID: file.id,
                                       urlString: file.url?.absoluteString,

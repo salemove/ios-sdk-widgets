@@ -6,7 +6,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     enum Event {
         case viewDidLoad
         case messageTextChanged(String)
-        case sendTapped(message: String)
+        case sendTapped
         case removeUploadTapped(Int)
         case pickMediaTapped
         case callBubbleTapped
@@ -17,6 +17,8 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case showEndButton
         case connected(name: String?, imageUrl: String?)
         case setMessageEntryEnabled(Bool)
+        case setMessageText(String)
+        case sendButtonHidden(Bool)
         case appendRows(Int, to: Int, animated: Bool)
         case refreshRow(Int, in: Int, animated: Bool)
         case refreshSection(Int)
@@ -64,6 +66,13 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     private let showsCallBubble: Bool
     private let storage = ChatStorage()
     private let uploader = FileUploader()
+    private var messageText = "" {
+        didSet {
+            sendMessagePreview(messageText)
+            action?(.sendButtonHidden(!validateMessage()))
+            action?(.setMessageText(messageText))
+        }
+    }
 
     init(interactor: Interactor,
          alertConfiguration: AlertConfiguration,
@@ -94,10 +103,10 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         switch event {
         case .viewDidLoad:
             start()
-        case .messageTextChanged(let message):
-            sendMessagePreview(message)
-        case .sendTapped(message: let message):
-            send(message)
+        case .messageTextChanged(let text):
+            messageText = text
+        case .sendTapped:
+            sendMessage()
         case .removeUploadTapped(let index):
             removeUpload(at: index)
         case .pickMediaTapped:
@@ -122,6 +131,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
                    to: queueOperatorSection,
                    animated: false)
         action?(.setMessageEntryEnabled(false))
+        action?(.sendButtonHidden(true))
 
         switch startAction {
         case .startEngagement:
@@ -251,31 +261,38 @@ extension ChatViewModel {
         interactor.sendMessagePreview(message)
     }
 
-    private func send(_ message: String) {
-        guard validateMessageData(message: message) else { return }
+    private func sendMessage() {
+        guard validateMessage() else { return }
 
         let attachment = uploader.attachment
-        let outgoingMessage = OutgoingMessage(content: message)
+        let outgoingMessage = OutgoingMessage(content: messageText)
         let item = ChatItem(with: outgoingMessage)
         appendItem(item, to: messagesSection, animated: true)
         uploader.removeAllUploads()
         action?(.removeAllUploads)
         action?(.scrollToBottom(animated: true))
 
-        interactor.send(message, attachment: attachment) { message in
-            self.sendMessagePreview("")
+        interactor.send(messageText, attachment: attachment) { message in
+            self.messageText = ""
             self.replace(outgoingMessage,
                          with: message,
                          in: self.messagesSection)
             self.action?(.scrollToBottom(animated: true))
         } failure: { _ in
+            self.messageText = ""
             self.showAlert(with: self.alertConfiguration.unexpectedError,
                            dismissed: nil)
         }
     }
 
-    private func validateMessageData(message: String) -> Bool {
-        if message.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+    private func validateMessage() -> Bool {
+        let message = messageText.trimmingCharacters(in: .whitespacesAndNewlines)
+
+        if uploader.state.value == .uploading {
+            
+        }
+
+        if message.isEmpty {
             return false
         }
         // TODO: Uploader must not have any in-progress uploads
