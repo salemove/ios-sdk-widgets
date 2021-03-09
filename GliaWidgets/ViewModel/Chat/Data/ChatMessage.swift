@@ -7,4 +7,4 @@ protocol ChatMessage {
 }
 
 extension Message: ChatMessage {}
-extension ChatStorage.Message: ChatMessage {}
+extension ChatStorageX.Message: ChatMessage {}

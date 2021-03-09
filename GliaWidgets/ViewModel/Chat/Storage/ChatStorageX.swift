@@ -26,52 +26,13 @@ class ChatStorageX {
         }
     }
 
-    enum AttachmentType: Int, Codable {
-        case files = 1
-        case singleChoice = 2
-        case singleChoiceResponse = 3
-
-        init?(with type: SalemoveSDK.AttachmentType?) {
-            switch type {
-            case .files:
-                self = .files
-            case .singleChoice:
-                self = .singleChoice
-            case .singleChoiceResponse:
-                self = .singleChoiceResponse
-            case nil:
-                return nil
-            }
-        }
-    }
-
     struct Attachment: Codable {
         let type: AttachmentType?
         let files: [EngagementFile]?
 
         init(with attachment: SalemoveSDK.Attachment) {
-            type = AttachmentType(with: attachment.type)
+            type = attachment.type
             files = attachment.files.map({ $0.map({ EngagementFile(with: $0) }) })
-        }
-    }
-
-    enum MessageSender: Int, Codable {
-        case visitor = 0
-        case `operator` = 1
-        case omniguide = 2
-        case system = 3
-
-        init(with sender: SalemoveSDK.MessageSender) {
-            switch sender {
-            case .visitor:
-                self = .visitor
-            case .operator:
-                self = .operator
-            case .omniguide:
-                self = .omniguide
-            case .system:
-                self = .system
-            }
         }
     }
 
@@ -79,7 +40,7 @@ class ChatStorageX {
         let id: String
         let queueID: String
         let `operator`: Operator?
-        let sender: MessageSender?
+        let sender: MessageSender
         let content: String
         let attachment: Attachment?
 
@@ -89,7 +50,7 @@ class ChatStorageX {
             id = message.id
             self.queueID = queueID
             self.operator = salemoveOperator
-            sender = MessageSender(with: message.sender)
+            sender = message.sender
             content = message.content
             attachment = message.attachment.map({ Attachment(with: $0) })
         }
@@ -231,17 +192,24 @@ extension ChatStorageX {
 }
 
 extension ChatStorageX {
-    func storeMessage(_ message: Message) {
-        try? storeObject(message, ofType: .message)
-        messages.append(message)
-    }
-
-    func storeMessages(_ messages: [Message]) {
-        messages.forEach({ storeMessage($0) })
-    }
-
     func messages(forQueue queueID: String) -> [Message] {
         return messages.filter({ $0.queueID == queueID })
+    }
+
+    func storeMessage(_ message: SalemoveSDK.Message,
+                      queueID: String,
+                      operator salemoveOperator: SalemoveSDK.Operator?) {
+        let salemoveOperator = message.sender == .operator
+            ? salemoveOperator.map({ Operator(with: $0) })
+            : nil
+        let message = Message(with: message, queueID: queueID, operator: salemoveOperator)
+        storeMessage(message)
+    }
+
+    func storeMessages(_ messages: [SalemoveSDK.Message],
+                       queueID: String,
+                       operator salemoveOperator: SalemoveSDK.Operator?) {
+        messages.forEach({ storeMessage($0, queueID: queueID, operator: salemoveOperator) })
     }
 
     func isNewMessage(_ message: SalemoveSDK.Message) -> Bool {
@@ -251,5 +219,10 @@ extension ChatStorageX {
     func newMessages(_ messages: [SalemoveSDK.Message]) -> [SalemoveSDK.Message] {
         let existingMessageIDs = messages.map({ $0.id })
         return messages.filter({ !existingMessageIDs.contains($0.id) })
+    }
+
+    private func storeMessage(_ message: Message) {
+        try? storeObject(message, ofType: .message)
+        messages.append(message)
     }
 }

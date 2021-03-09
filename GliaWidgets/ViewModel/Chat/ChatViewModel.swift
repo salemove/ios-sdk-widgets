@@ -64,7 +64,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     private let call: ValueProvider<Call?>
     private var unreadMessages: UnreadMessagesHandler!
     private let showsCallBubble: Bool
-    private let storage = ChatStorage()
+    private let storage = ChatStorageX()
     private let uploader = FileUploader()
     private var messageText = "" {
         didSet {
@@ -96,7 +96,6 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         self.uploader.state.addObserver(self) { state, _ in
             self.onUploaderStateChanged(state)
         }
-        storage.setQueue(withID: interactor.queueID)
     }
 
     public func event(_ event: Event) {
@@ -150,7 +149,6 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case .engaged(let engagedOperator):
             let name = engagedOperator?.firstName
             let pictureUrl = engagedOperator?.picture?.url
-            storage.setOperator(name: name ?? "", pictureUrl: pictureUrl)
             action?(.connected(name: name, imageUrl: pictureUrl))
             action?(.setMessageEntryEnabled(true))
             action?(.showEndButton)
@@ -298,7 +296,9 @@ extension ChatViewModel {
     private func receivedMessage(_ message: Message) {
         guard storage.isNewMessage(message) else { return }
 
-        storage.storeMessage(message)
+        storage.storeMessage(message,
+                             queueID: interactor.queueID,
+                             operator: interactor.engagedOperator)
         unreadMessages.received(1)
 
         switch message.sender {
@@ -317,7 +317,9 @@ extension ChatViewModel {
         unreadMessages.received(newMessages.count)
 
         if !newMessages.isEmpty {
-            storage.storeMessages(newMessages)
+            storage.storeMessages(newMessages,
+                                  queueID: interactor.queueID,
+                                  operator: interactor.engagedOperator)
             let items = newMessages.compactMap({ ChatItem(with: $0) })
             setItems(items, to: messagesSection)
             action?(.scrollToBottom(animated: true))
