@@ -177,7 +177,8 @@ extension ChatStorageX {
                     let json = String(cString: sqlite3_column_text($0, 0))
                     if let data = json.data(using: .utf8) {
                         do {
-                            objects = try JSONDecoder().decode([Object].self, from: data)
+                            let object = try JSONDecoder().decode(Object.self, from: data)
+                            objects.append(object)
                         } catch {
                             print(error)
                         }
@@ -213,7 +214,7 @@ extension ChatStorageX {
     }
 
     func isNewMessage(_ message: SalemoveSDK.Message) -> Bool {
-        return !newMessages([message]).isEmpty
+        return messages.first(where: { $0.id == message.id }) == nil
     }
 
     func newMessages(_ messages: [SalemoveSDK.Message]) -> [SalemoveSDK.Message] {
