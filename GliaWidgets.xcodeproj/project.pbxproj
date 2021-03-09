@@ -80,7 +80,6 @@
 		1A4AF5CD25AEF4A0002CD0F4 /* AlertViewController+Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4AF5CC25AEF4A0002CD0F4 /* AlertViewController+Message.swift */; };
 		1A4AF5D325AEF543002CD0F4 /* AlertViewController+Confirmation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4AF5D225AEF543002CD0F4 /* AlertViewController+Confirmation.swift */; };
 		1A4AF5D725AEF584002CD0F4 /* AlertViewController+MultipleMediaUpgrade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4AF5D625AEF584002CD0F4 /* AlertViewController+MultipleMediaUpgrade.swift */; };
-		1A54B83825A4723E00C9393E /* ChatStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A54B83725A4723E00C9393E /* ChatStorage.swift */; };
 		1A56D53D257E24A400141BC8 /* PoweredBy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A56D53C257E24A400141BC8 /* PoweredBy.swift */; };
 		1A5F494B25CA86CA003E3678 /* Call.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5F494A25CA86CA003E3678 /* Call.swift */; };
 		1A5F495525CBE84A003E3678 /* SettingsAlertConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5F495425CBE84A003E3678 /* SettingsAlertConfiguration.swift */; };
@@ -134,7 +133,6 @@
 		1A63B2ED257A312700508478 /* AlertCloseButtonProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A63B2EC257A312700508478 /* AlertCloseButtonProperties.swift */; };
 		1A63B2F3257A3F3D00508478 /* AlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A63B2F2257A3F3D00508478 /* AlertViewController.swift */; };
 		1A63B2F6257A469A00508478 /* AlertPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A63B2F5257A469A00508478 /* AlertPresenter.swift */; };
-		1A6EB04F25A707CC0007081A /* MessageSender+StringValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6EB04E25A707CC0007081A /* MessageSender+StringValue.swift */; };
 		1A6EB05725A717CB0007081A /* ChatMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6EB05625A717CB0007081A /* ChatMessage.swift */; };
 		1A6EBB0325ADB82000EE325D /* MediaUpgradeActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6EBB0225ADB82000EE325D /* MediaUpgradeActionView.swift */; };
 		1A6EBB0725ADB84200EE325D /* MediaUpgradeActionStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6EBB0625ADB84200EE325D /* MediaUpgradeActionStyle.swift */; };
@@ -171,10 +169,7 @@
 		1AE15E38257A578B00A642C0 /* MessageAlertConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE15E37257A578B00A642C0 /* MessageAlertConfiguration.swift */; };
 		1AE15E3B257A5CC900A642C0 /* AlertConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE15E3A257A5CC900A642C0 /* AlertConfiguration.swift */; };
 		1AE15E49257A6BD200A642C0 /* ConfirmationAlertConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE15E48257A6BD200A642C0 /* ConfirmationAlertConfiguration.swift */; };
-		1AFB1E4A25F6316900CA460D /* ChatStorage+SQL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFB1E4925F6316900CA460D /* ChatStorage+SQL.swift */; };
-		1AFB1E5025F7708E00CA460D /* ChatStorageX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFB1E4F25F7708E00CA460D /* ChatStorageX.swift */; };
-		1AFB1E5625F79ABD00CA460D /* MessageSender+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFB1E5525F79ABD00CA460D /* MessageSender+Codable.swift */; };
-		1AFB1E5A25F79B2200CA460D /* AttachmentType+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFB1E5925F79B2200CA460D /* AttachmentType+Codable.swift */; };
+		1AFB1E5025F7708E00CA460D /* ChatStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFB1E4F25F7708E00CA460D /* ChatStorage.swift */; };
 		1AFB1E5E25F7ADDA00CA460D /* ChatOperator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFB1E5D25F7ADDA00CA460D /* ChatOperator.swift */; };
 		1AFB1E6225F7AE1300CA460D /* ChatEngagementFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFB1E6125F7AE1300CA460D /* ChatEngagementFile.swift */; };
 		1AFB1E6825F7AE3C00CA460D /* ChatAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFB1E6725F7AE3C00CA460D /* ChatAttachment.swift */; };
@@ -292,7 +287,6 @@
 		1A4AF5CC25AEF4A0002CD0F4 /* AlertViewController+Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlertViewController+Message.swift"; sourceTree = "<group>"; };
 		1A4AF5D225AEF543002CD0F4 /* AlertViewController+Confirmation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlertViewController+Confirmation.swift"; sourceTree = "<group>"; };
 		1A4AF5D625AEF584002CD0F4 /* AlertViewController+MultipleMediaUpgrade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlertViewController+MultipleMediaUpgrade.swift"; sourceTree = "<group>"; };
-		1A54B83725A4723E00C9393E /* ChatStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatStorage.swift; sourceTree = "<group>"; };
 		1A56D53C257E24A400141BC8 /* PoweredBy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoweredBy.swift; sourceTree = "<group>"; };
 		1A56D5CF257E940900141BC8 /* PureLayout.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PureLayout.framework; path = Carthage/Build/iOS/PureLayout.framework; sourceTree = "<group>"; };
 		1A5F494A25CA86CA003E3678 /* Call.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Call.swift; sourceTree = "<group>"; };
@@ -347,7 +341,6 @@
 		1A63B2EC257A312700508478 /* AlertCloseButtonProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertCloseButtonProperties.swift; sourceTree = "<group>"; };
 		1A63B2F2257A3F3D00508478 /* AlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertViewController.swift; sourceTree = "<group>"; };
 		1A63B2F5257A469A00508478 /* AlertPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPresenter.swift; sourceTree = "<group>"; };
-		1A6EB04E25A707CC0007081A /* MessageSender+StringValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MessageSender+StringValue.swift"; sourceTree = "<group>"; };
 		1A6EB05625A717CB0007081A /* ChatMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessage.swift; sourceTree = "<group>"; };
 		1A6EBB0225ADB82000EE325D /* MediaUpgradeActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaUpgradeActionView.swift; sourceTree = "<group>"; };
 		1A6EBB0625ADB84200EE325D /* MediaUpgradeActionStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaUpgradeActionStyle.swift; sourceTree = "<group>"; };
@@ -384,10 +377,7 @@
 		1AE15E37257A578B00A642C0 /* MessageAlertConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageAlertConfiguration.swift; sourceTree = "<group>"; };
 		1AE15E3A257A5CC900A642C0 /* AlertConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertConfiguration.swift; sourceTree = "<group>"; };
 		1AE15E48257A6BD200A642C0 /* ConfirmationAlertConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationAlertConfiguration.swift; sourceTree = "<group>"; };
-		1AFB1E4925F6316900CA460D /* ChatStorage+SQL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatStorage+SQL.swift"; sourceTree = "<group>"; };
-		1AFB1E4F25F7708E00CA460D /* ChatStorageX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatStorageX.swift; sourceTree = "<group>"; };
-		1AFB1E5525F79ABD00CA460D /* MessageSender+Codable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MessageSender+Codable.swift"; sourceTree = "<group>"; };
-		1AFB1E5925F79B2200CA460D /* AttachmentType+Codable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AttachmentType+Codable.swift"; sourceTree = "<group>"; };
+		1AFB1E4F25F7708E00CA460D /* ChatStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatStorage.swift; sourceTree = "<group>"; };
 		1AFB1E5D25F7ADDA00CA460D /* ChatOperator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatOperator.swift; sourceTree = "<group>"; };
 		1AFB1E6125F7AE1300CA460D /* ChatEngagementFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatEngagementFile.swift; sourceTree = "<group>"; };
 		1AFB1E6725F7AE3C00CA460D /* ChatAttachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatAttachment.swift; sourceTree = "<group>"; };
@@ -738,12 +728,7 @@
 		1A54B83625A4722900C9393E /* Storage */ = {
 			isa = PBXGroup;
 			children = (
-				1AFB1E4F25F7708E00CA460D /* ChatStorageX.swift */,
-				1A54B83725A4723E00C9393E /* ChatStorage.swift */,
-				1AFB1E4925F6316900CA460D /* ChatStorage+SQL.swift */,
-				1A6EB04E25A707CC0007081A /* MessageSender+StringValue.swift */,
-				1AFB1E5525F79ABD00CA460D /* MessageSender+Codable.swift */,
-				1AFB1E5925F79B2200CA460D /* AttachmentType+Codable.swift */,
+				1AFB1E4F25F7708E00CA460D /* ChatStorage.swift */,
 			);
 			path = Storage;
 			sourceTree = "<group>";
@@ -1565,14 +1550,12 @@
 				1A6EBB0325ADB82000EE325D /* MediaUpgradeActionView.swift in Sources */,
 				1A0EDF8225E8E0150076D1AD /* PopoverViewController.swift in Sources */,
 				1A60AFBC256682C800E53F53 /* SubFlowCoordinator.swift in Sources */,
-				1AFB1E4A25F6316900CA460D /* ChatStorage+SQL.swift in Sources */,
 				1A0C9A8C25C4092400815406 /* CallButtonStyle.swift in Sources */,
 				1A4AF5D725AEF584002CD0F4 /* AlertViewController+MultipleMediaUpgrade.swift in Sources */,
 				1A6075E7258220E300569B0E /* UserImageStyle.swift in Sources */,
 				1ABD6C5D25B59D1C00D56EFA /* BubbleWindow.swift in Sources */,
 				1AE15E38257A578B00A642C0 /* MessageAlertConfiguration.swift in Sources */,
 				1AC7A77B25838AE800567FF8 /* ChatItem.swift in Sources */,
-				1AFB1E5A25F79B2200CA460D /* AttachmentType+Codable.swift in Sources */,
 				1A2DA72625EF892600032611 /* FilePickerController.swift in Sources */,
 				1ABD6C9625B6F46700D56EFA /* AlertViewController+SingleMediaUpgrade.swift in Sources */,
 				1A475BB325DE831F00296D55 /* BadgeView.swift in Sources */,
@@ -1625,13 +1608,12 @@
 				1A0C143F25B85DB400B00695 /* CallViewController.swift in Sources */,
 				1A0C9A7125C16F4A00815406 /* Theme+Alert.swift in Sources */,
 				1A38A8AC258B65D00089DE7B /* ChatMessageStyle.swift in Sources */,
-				1AFB1E5025F7708E00CA460D /* ChatStorageX.swift in Sources */,
+				1AFB1E5025F7708E00CA460D /* ChatStorage.swift in Sources */,
 				1A0C9A6D25C16EED00815406 /* Theme+Call.swift in Sources */,
 				1A60AFAF256680EF00E53F53 /* L10n.swift in Sources */,
 				1A60B0192567FC8A00E53F53 /* ButtonKind.swift in Sources */,
 				1A60B04D256D0CF600E53F53 /* ChatMessageContentView.swift in Sources */,
 				1A56D53D257E24A400141BC8 /* PoweredBy.swift in Sources */,
-				1A6EB04F25A707CC0007081A /* MessageSender+StringValue.swift in Sources */,
 				1A4AF5CD25AEF4A0002CD0F4 /* AlertViewController+Message.swift in Sources */,
 				1A7CA8242574D68E0047CBBE /* ConnectStatusView.swift in Sources */,
 				1A5F81402588B7BD00A605DA /* ChatMessageEntryStyle.swift in Sources */,
@@ -1663,7 +1645,6 @@
 				1A60AFDD25669A4200E53F53 /* ChatView.swift in Sources */,
 				1A0C9A6725C16DC400815406 /* Theme+Chat.swift in Sources */,
 				1A0C9AC225C9400000815406 /* CallDurationCounter.swift in Sources */,
-				1AFB1E5625F79ABD00CA460D /* MessageSender+Codable.swift in Sources */,
 				1AFB1E6225F7AE1300CA460D /* ChatEngagementFile.swift in Sources */,
 				1AA738AE2578E0D500E1120F /* ConnectAnimationView.swift in Sources */,
 				1A2DA72D25EF9DD900032611 /* FileUpload.swift in Sources */,
@@ -1709,7 +1690,6 @@
 				1A0C143A25B85C3D00B00695 /* CallStyle.swift in Sources */,
 				1A60AFE825669C5000E53F53 /* ChatStyle.swift in Sources */,
 				1A4AF5C725AEEA42002CD0F4 /* Operator+Extensions.swift in Sources */,
-				1A54B83825A4723E00C9393E /* ChatStorage.swift in Sources */,
 				1A4674C825ED084A0078FA1C /* MediaPickerViewModel.swift in Sources */,
 				1A0C9A8625C4090D00815406 /* CallButton.swift in Sources */,
 				1AFB1E5E25F7ADDA00CA460D /* ChatOperator.swift in Sources */,

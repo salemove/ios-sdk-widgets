@@ -64,7 +64,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     private let call: ValueProvider<Call?>
     private var unreadMessages: UnreadMessagesHandler!
     private let showsCallBubble: Bool
-    private let storage = ChatStorageX()
+    private let storage = ChatStorage()
     private let uploader = FileUploader()
     private var messageText = "" {
         didSet {
