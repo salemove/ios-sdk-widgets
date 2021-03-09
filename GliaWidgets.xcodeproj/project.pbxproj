@@ -172,6 +172,7 @@
 		1AE15E3B257A5CC900A642C0 /* AlertConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE15E3A257A5CC900A642C0 /* AlertConfiguration.swift */; };
 		1AE15E49257A6BD200A642C0 /* ConfirmationAlertConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE15E48257A6BD200A642C0 /* ConfirmationAlertConfiguration.swift */; };
 		1AFB1E4A25F6316900CA460D /* ChatStorage+SQL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFB1E4925F6316900CA460D /* ChatStorage+SQL.swift */; };
+		1AFB1E5025F7708E00CA460D /* ChatStorageX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFB1E4F25F7708E00CA460D /* ChatStorageX.swift */; };
 		1C12BC08594FEF3073AAE5B8 /* Pods_GliaWidgets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A249CE317961801DDAD22AE /* Pods_GliaWidgets.framework */; };
 		65838FF5119F5496B099DD04 /* Pods_TestingApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2308CF5ACCB31E1CC49FED95 /* Pods_TestingApp.framework */; };
 /* End PBXBuildFile section */
@@ -379,6 +380,7 @@
 		1AE15E3A257A5CC900A642C0 /* AlertConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertConfiguration.swift; sourceTree = "<group>"; };
 		1AE15E48257A6BD200A642C0 /* ConfirmationAlertConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationAlertConfiguration.swift; sourceTree = "<group>"; };
 		1AFB1E4925F6316900CA460D /* ChatStorage+SQL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatStorage+SQL.swift"; sourceTree = "<group>"; };
+		1AFB1E4F25F7708E00CA460D /* ChatStorageX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatStorageX.swift; sourceTree = "<group>"; };
 		2308CF5ACCB31E1CC49FED95 /* Pods_TestingApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TestingApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6BD7D3ECB379FC8A96BE4C05 /* Pods-GliaWidgets.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliaWidgets.debug.xcconfig"; path = "Target Support Files/Pods-GliaWidgets/Pods-GliaWidgets.debug.xcconfig"; sourceTree = "<group>"; };
 		913BCC7A8BE2CA12D31E2C26 /* Pods-TestingApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestingApp.release.xcconfig"; path = "Target Support Files/Pods-TestingApp/Pods-TestingApp.release.xcconfig"; sourceTree = "<group>"; };
@@ -726,6 +728,7 @@
 		1A54B83625A4722900C9393E /* Storage */ = {
 			isa = PBXGroup;
 			children = (
+				1AFB1E4F25F7708E00CA460D /* ChatStorageX.swift */,
 				1A54B83725A4723E00C9393E /* ChatStorage.swift */,
 				1AFB1E4925F6316900CA460D /* ChatStorage+SQL.swift */,
 				1A6EB04E25A707CC0007081A /* MessageSender+StringValue.swift */,
@@ -1606,6 +1609,7 @@
 				1A0C143F25B85DB400B00695 /* CallViewController.swift in Sources */,
 				1A0C9A7125C16F4A00815406 /* Theme+Alert.swift in Sources */,
 				1A38A8AC258B65D00089DE7B /* ChatMessageStyle.swift in Sources */,
+				1AFB1E5025F7708E00CA460D /* ChatStorageX.swift in Sources */,
 				1A0C9A6D25C16EED00815406 /* Theme+Call.swift in Sources */,
 				1A60AFAF256680EF00E53F53 /* L10n.swift in Sources */,
 				1A60B0192567FC8A00E53F53 /* ButtonKind.swift in Sources */,
