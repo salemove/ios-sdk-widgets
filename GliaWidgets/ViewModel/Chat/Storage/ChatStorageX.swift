@@ -2,60 +2,6 @@ import SalemoveSDK
 import SQLite3
 
 class ChatStorageX {
-    struct Operator: Codable {
-        let name: String
-        let pictureUrl: String?
-
-        init(with salemoveOperator: SalemoveSDK.Operator) {
-            name = salemoveOperator.name
-            pictureUrl = salemoveOperator.picture?.url
-        }
-    }
-
-    struct EngagementFile: Codable {
-        let id: String?
-        let url: URL?
-        let name: String?
-        let size: Double?
-
-        init(with file: SalemoveSDK.EngagementFile) {
-            id = file.id
-            url = file.url
-            name = file.name
-            size = file.size
-        }
-    }
-
-    struct Attachment: Codable {
-        let type: AttachmentType?
-        let files: [EngagementFile]?
-
-        init(with attachment: SalemoveSDK.Attachment) {
-            type = attachment.type
-            files = attachment.files.map({ $0.map({ EngagementFile(with: $0) }) })
-        }
-    }
-
-    struct Message: Codable {
-        let id: String
-        let queueID: String
-        let `operator`: Operator?
-        let sender: MessageSender
-        let content: String
-        let attachment: Attachment?
-
-        init(with message: SalemoveSDK.Message,
-             queueID: String,
-             operator salemoveOperator: Operator? = nil) {
-            id = message.id
-            self.queueID = queueID
-            self.operator = salemoveOperator
-            sender = message.sender
-            content = message.content
-            attachment = message.attachment.map({ Attachment(with: $0) })
-        }
-    }
-
     private enum RowType: Int {
         case message = 0
     }
@@ -66,7 +12,7 @@ class ChatStorageX {
         case exec
     }
 
-    private lazy var messages: [Message] = {
+    private lazy var messages: [ChatMessage] = {
         return loadObjects(ofType: .message)
     }()
     private let encoder = JSONEncoder()
@@ -193,7 +139,7 @@ extension ChatStorageX {
 }
 
 extension ChatStorageX {
-    func messages(forQueue queueID: String) -> [Message] {
+    func messages(forQueue queueID: String) -> [ChatMessage] {
         return messages.filter({ $0.queueID == queueID })
     }
 
@@ -201,9 +147,9 @@ extension ChatStorageX {
                       queueID: String,
                       operator salemoveOperator: SalemoveSDK.Operator?) {
         let salemoveOperator = message.sender == .operator
-            ? salemoveOperator.map({ Operator(with: $0) })
+            ? salemoveOperator
             : nil
-        let message = Message(with: message, queueID: queueID, operator: salemoveOperator)
+        let message = ChatMessage(with: message, queueID: queueID, operator: salemoveOperator)
         storeMessage(message)
     }
 
@@ -222,7 +168,7 @@ extension ChatStorageX {
         return messages.filter({ !existingMessageIDs.contains($0.id) })
     }
 
-    private func storeMessage(_ message: Message) {
+    private func storeMessage(_ message: ChatMessage) {
         try? storeObject(message, ofType: .message)
         messages.append(message)
     }

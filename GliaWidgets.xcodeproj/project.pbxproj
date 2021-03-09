@@ -175,6 +175,9 @@
 		1AFB1E5025F7708E00CA460D /* ChatStorageX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFB1E4F25F7708E00CA460D /* ChatStorageX.swift */; };
 		1AFB1E5625F79ABD00CA460D /* MessageSender+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFB1E5525F79ABD00CA460D /* MessageSender+Codable.swift */; };
 		1AFB1E5A25F79B2200CA460D /* AttachmentType+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFB1E5925F79B2200CA460D /* AttachmentType+Codable.swift */; };
+		1AFB1E5E25F7ADDA00CA460D /* ChatOperator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFB1E5D25F7ADDA00CA460D /* ChatOperator.swift */; };
+		1AFB1E6225F7AE1300CA460D /* ChatEngagementFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFB1E6125F7AE1300CA460D /* ChatEngagementFile.swift */; };
+		1AFB1E6825F7AE3C00CA460D /* ChatAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFB1E6725F7AE3C00CA460D /* ChatAttachment.swift */; };
 		1C12BC08594FEF3073AAE5B8 /* Pods_GliaWidgets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A249CE317961801DDAD22AE /* Pods_GliaWidgets.framework */; };
 		65838FF5119F5496B099DD04 /* Pods_TestingApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2308CF5ACCB31E1CC49FED95 /* Pods_TestingApp.framework */; };
 /* End PBXBuildFile section */
@@ -385,6 +388,9 @@
 		1AFB1E4F25F7708E00CA460D /* ChatStorageX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatStorageX.swift; sourceTree = "<group>"; };
 		1AFB1E5525F79ABD00CA460D /* MessageSender+Codable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MessageSender+Codable.swift"; sourceTree = "<group>"; };
 		1AFB1E5925F79B2200CA460D /* AttachmentType+Codable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AttachmentType+Codable.swift"; sourceTree = "<group>"; };
+		1AFB1E5D25F7ADDA00CA460D /* ChatOperator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatOperator.swift; sourceTree = "<group>"; };
+		1AFB1E6125F7AE1300CA460D /* ChatEngagementFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatEngagementFile.swift; sourceTree = "<group>"; };
+		1AFB1E6725F7AE3C00CA460D /* ChatAttachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatAttachment.swift; sourceTree = "<group>"; };
 		2308CF5ACCB31E1CC49FED95 /* Pods_TestingApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TestingApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6BD7D3ECB379FC8A96BE4C05 /* Pods-GliaWidgets.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliaWidgets.debug.xcconfig"; path = "Target Support Files/Pods-GliaWidgets/Pods-GliaWidgets.debug.xcconfig"; sourceTree = "<group>"; };
 		913BCC7A8BE2CA12D31E2C26 /* Pods-TestingApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestingApp.release.xcconfig"; path = "Target Support Files/Pods-TestingApp/Pods-TestingApp.release.xcconfig"; sourceTree = "<group>"; };
@@ -781,8 +787,11 @@
 			isa = PBXGroup;
 			children = (
 				1AC7A77A25838AE800567FF8 /* ChatItem.swift */,
-				1A5F8181258B4F0E00A605DA /* OutgoingMessage.swift */,
+				1AFB1E5D25F7ADDA00CA460D /* ChatOperator.swift */,
+				1AFB1E6125F7AE1300CA460D /* ChatEngagementFile.swift */,
+				1AFB1E6725F7AE3C00CA460D /* ChatAttachment.swift */,
 				1A6EB05625A717CB0007081A /* ChatMessage.swift */,
+				1A5F8181258B4F0E00A605DA /* OutgoingMessage.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -1655,6 +1664,7 @@
 				1A0C9A6725C16DC400815406 /* Theme+Chat.swift in Sources */,
 				1A0C9AC225C9400000815406 /* CallDurationCounter.swift in Sources */,
 				1AFB1E5625F79ABD00CA460D /* MessageSender+Codable.swift in Sources */,
+				1AFB1E6225F7AE1300CA460D /* ChatEngagementFile.swift in Sources */,
 				1AA738AE2578E0D500E1120F /* ConnectAnimationView.swift in Sources */,
 				1A2DA72D25EF9DD900032611 /* FileUpload.swift in Sources */,
 				1A8B61D225C974A1000D780E /* ChatCallUpgradeView.swift in Sources */,
@@ -1671,6 +1681,7 @@
 				1A63B2F6257A469A00508478 /* AlertPresenter.swift in Sources */,
 				1A0452EA25DBE259000DA0C1 /* MessageButton.swift in Sources */,
 				1A5F494B25CA86CA003E3678 /* Call.swift in Sources */,
+				1AFB1E6825F7AE3C00CA460D /* ChatAttachment.swift in Sources */,
 				1A2DA73725EFBFE700032611 /* FileUploadListView.swift in Sources */,
 				1AE15E49257A6BD200A642C0 /* ConfirmationAlertConfiguration.swift in Sources */,
 				1A60AFB22566821B00E53F53 /* Asset.swift in Sources */,
@@ -1701,6 +1712,7 @@
 				1A54B83825A4723E00C9393E /* ChatStorage.swift in Sources */,
 				1A4674C825ED084A0078FA1C /* MediaPickerViewModel.swift in Sources */,
 				1A0C9A8625C4090D00815406 /* CallButton.swift in Sources */,
+				1AFB1E5E25F7ADDA00CA460D /* ChatOperator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

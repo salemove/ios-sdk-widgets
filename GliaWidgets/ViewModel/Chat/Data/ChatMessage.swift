@@ -1,10 +1,41 @@
 import SalemoveSDK
 
-protocol ChatMessage {
-    var id: String { get }
-    var sender: MessageSender { get }
-    var content: String { get }
+enum ChatMessageSender: Int, Codable {
+    case visitor = 0
+    case `operator` = 1
+    case omniguide = 2
+    case system = 3
+
+    init(with sender: SalemoveSDK.MessageSender) {
+        switch sender {
+        case .visitor:
+            self = .visitor
+        case .operator:
+            self = .operator
+        case .omniguide:
+            self = .omniguide
+        case .system:
+            self = .system
+        }
+    }
 }
 
-extension Message: ChatMessage {}
-extension ChatStorageX.Message: ChatMessage {}
+class ChatMessage: Codable {
+    let id: String
+    let queueID: String?
+    let `operator`: ChatOperator?
+    let sender: ChatMessageSender
+    let content: String
+    let attachment: ChatAttachment?
+
+    init(with message: SalemoveSDK.Message,
+         queueID: String? = nil,
+         operator salemoveOperator: Operator? = nil) {
+        id = message.id
+        self.queueID = queueID
+        self.operator = salemoveOperator.map({ ChatOperator(with: $0) })
+        sender = ChatMessageSender(with: message.sender)
+        content = message.content
+        attachment = message.attachment.map({ ChatAttachment(with: $0) })
+    }
+}

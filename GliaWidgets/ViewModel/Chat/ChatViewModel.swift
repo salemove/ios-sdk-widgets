@@ -193,6 +193,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         else { return }
 
         let status = Strings.Message.Status.delivered
+        let message = ChatMessage(with: message)
         let item = ChatItem(kind: .visitorMessage(message, status: status))
         section.replaceItem(at: index, with: item)
         action?(.refreshRow(index, in: section.index, animated: false))
@@ -303,10 +304,12 @@ extension ChatViewModel {
 
         switch message.sender {
         case .operator:
-            guard let item = ChatItem(with: message) else { break }
-            appendItem(item, to: messagesSection, animated: true)
-            action?(.scrollToBottom(animated: true))
-            action?(.updateItemsUserImage(animated: true))
+            let message = ChatMessage(with: message)
+            if let item = ChatItem(with: message) {
+                appendItem(item, to: messagesSection, animated: true)
+                action?(.scrollToBottom(animated: true))
+                action?(.updateItemsUserImage(animated: true))
+            }
         default:
             break
         }
@@ -320,6 +323,7 @@ extension ChatViewModel {
             storage.storeMessages(newMessages,
                                   queueID: interactor.queueID,
                                   operator: interactor.engagedOperator)
+            let newMessages = newMessages.map({ ChatMessage(with: $0) })
             let items = newMessages.compactMap({ ChatItem(with: $0) })
             setItems(items, to: messagesSection)
             action?(.scrollToBottom(animated: true))
