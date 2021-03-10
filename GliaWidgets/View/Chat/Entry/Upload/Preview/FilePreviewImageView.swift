@@ -97,9 +97,9 @@ class FilePreviewImageView: UIView {
                 scale: UIScreen.main.scale,
                 representationTypes: .lowQualityThumbnail
             )
-            QLThumbnailGenerator.shared.generateBestRepresentation(for: request) { thumbnail, _ in
+            QLThumbnailGenerator.shared.generateRepresentations(for: request) { representation, _, _ in
                 DispatchQueue.main.async {
-                    completion(thumbnail?.uiImage)
+                    completion(representation?.uiImage)
                 }
             }
         } else {
