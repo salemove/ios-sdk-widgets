@@ -17,15 +17,13 @@ class ChatMessageView: UIView {
     func appendContent(_ content: ChatMessageContent, animated: Bool) {
         switch content {
         case .text(let text):
-            let messageLabel = UILabel()
-            messageLabel.font = style.messageFont
-            messageLabel.textColor = style.messageColor
-            messageLabel.numberOfLines = 0
-            messageLabel.text = text
-            let insets = UIEdgeInsets(top: 12, left: 16, bottom: 12, right: 16)
-            let contentView = ChatMessageContentView(with: messageLabel,
-                                                     insets: insets)
-            contentView.backgroundColor = style.backgroundColor
+            let textStyle = ChatTextContentStyle(
+                textFont: style.messageFont,
+                textColor: style.messageColor,
+                backgroundColor: style.backgroundColor
+            )
+            let contentView = ChatMessageTextContentView(with: textStyle)
+            contentView.text = text
             appendContentView(contentView, animated: animated)
         case .image:
             break

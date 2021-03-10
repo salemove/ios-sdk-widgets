@@ -127,9 +127,8 @@
 		1A60B0272568070800E53F53 /* UIStackView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60B0262568070800E53F53 /* UIStackView+Extensions.swift */; };
 		1A60B02D256BF7FF00E53F53 /* OperatorChatMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60B02C256BF7FF00E53F53 /* OperatorChatMessageView.swift */; };
 		1A60B031256BF81500E53F53 /* VisitorChatMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60B030256BF81400E53F53 /* VisitorChatMessageView.swift */; };
-		1A60B047256C0B4500E53F53 /* ChatMessageContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60B046256C0B4500E53F53 /* ChatMessageContent.swift */; };
 		1A60B04A256C0E0100E53F53 /* ChatItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60B049256C0E0100E53F53 /* ChatItemCell.swift */; };
-		1A60B04D256D0CF600E53F53 /* ChatMessageContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60B04C256D0CF600E53F53 /* ChatMessageContentView.swift */; };
+		1A62CA5B25F8B5F900E59567 /* ChatMessageContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A62CA5A25F8B5F900E59567 /* ChatMessageContent.swift */; };
 		1A63B2ED257A312700508478 /* AlertCloseButtonProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A63B2EC257A312700508478 /* AlertCloseButtonProperties.swift */; };
 		1A63B2F3257A3F3D00508478 /* AlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A63B2F2257A3F3D00508478 /* AlertViewController.swift */; };
 		1A63B2F6257A469A00508478 /* AlertPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A63B2F5257A469A00508478 /* AlertPresenter.swift */; };
@@ -173,6 +172,8 @@
 		1AFB1E5E25F7ADDA00CA460D /* ChatOperator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFB1E5D25F7ADDA00CA460D /* ChatOperator.swift */; };
 		1AFB1E6225F7AE1300CA460D /* ChatEngagementFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFB1E6125F7AE1300CA460D /* ChatEngagementFile.swift */; };
 		1AFB1E6825F7AE3C00CA460D /* ChatAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFB1E6725F7AE3C00CA460D /* ChatAttachment.swift */; };
+		1AFB1E7425F8B00B00CA460D /* ChatMessageTextContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFB1E7325F8B00B00CA460D /* ChatMessageTextContentView.swift */; };
+		1AFB1E7825F8B26800CA460D /* ChatMessageTextContentStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFB1E7725F8B26800CA460D /* ChatMessageTextContentStyle.swift */; };
 		1C12BC08594FEF3073AAE5B8 /* Pods_GliaWidgets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A249CE317961801DDAD22AE /* Pods_GliaWidgets.framework */; };
 		65838FF5119F5496B099DD04 /* Pods_TestingApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2308CF5ACCB31E1CC49FED95 /* Pods_TestingApp.framework */; };
 /* End PBXBuildFile section */
@@ -335,9 +336,8 @@
 		1A60B0262568070800E53F53 /* UIStackView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView+Extensions.swift"; sourceTree = "<group>"; };
 		1A60B02C256BF7FF00E53F53 /* OperatorChatMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperatorChatMessageView.swift; sourceTree = "<group>"; };
 		1A60B030256BF81400E53F53 /* VisitorChatMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorChatMessageView.swift; sourceTree = "<group>"; };
-		1A60B046256C0B4500E53F53 /* ChatMessageContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageContent.swift; sourceTree = "<group>"; };
 		1A60B049256C0E0100E53F53 /* ChatItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatItemCell.swift; sourceTree = "<group>"; };
-		1A60B04C256D0CF600E53F53 /* ChatMessageContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageContentView.swift; sourceTree = "<group>"; };
+		1A62CA5A25F8B5F900E59567 /* ChatMessageContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatMessageContent.swift; sourceTree = "<group>"; };
 		1A63B2EC257A312700508478 /* AlertCloseButtonProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertCloseButtonProperties.swift; sourceTree = "<group>"; };
 		1A63B2F2257A3F3D00508478 /* AlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertViewController.swift; sourceTree = "<group>"; };
 		1A63B2F5257A469A00508478 /* AlertPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPresenter.swift; sourceTree = "<group>"; };
@@ -381,6 +381,8 @@
 		1AFB1E5D25F7ADDA00CA460D /* ChatOperator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatOperator.swift; sourceTree = "<group>"; };
 		1AFB1E6125F7AE1300CA460D /* ChatEngagementFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatEngagementFile.swift; sourceTree = "<group>"; };
 		1AFB1E6725F7AE3C00CA460D /* ChatAttachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatAttachment.swift; sourceTree = "<group>"; };
+		1AFB1E7325F8B00B00CA460D /* ChatMessageTextContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageTextContentView.swift; sourceTree = "<group>"; };
+		1AFB1E7725F8B26800CA460D /* ChatMessageTextContentStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageTextContentStyle.swift; sourceTree = "<group>"; };
 		2308CF5ACCB31E1CC49FED95 /* Pods_TestingApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TestingApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6BD7D3ECB379FC8A96BE4C05 /* Pods-GliaWidgets.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliaWidgets.debug.xcconfig"; path = "Target Support Files/Pods-GliaWidgets/Pods-GliaWidgets.debug.xcconfig"; sourceTree = "<group>"; };
 		913BCC7A8BE2CA12D31E2C26 /* Pods-TestingApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestingApp.release.xcconfig"; path = "Target Support Files/Pods-TestingApp/Pods-TestingApp.release.xcconfig"; sourceTree = "<group>"; };
@@ -1099,8 +1101,9 @@
 		1A60B04F256D0D7400E53F53 /* Content */ = {
 			isa = PBXGroup;
 			children = (
-				1A60B04C256D0CF600E53F53 /* ChatMessageContentView.swift */,
-				1A60B046256C0B4500E53F53 /* ChatMessageContent.swift */,
+				1A62CA5A25F8B5F900E59567 /* ChatMessageContent.swift */,
+				1AFB1E7325F8B00B00CA460D /* ChatMessageTextContentView.swift */,
+				1AFB1E7725F8B26800CA460D /* ChatMessageTextContentStyle.swift */,
 			);
 			path = Content;
 			sourceTree = "<group>";
@@ -1561,6 +1564,7 @@
 				1A475BB325DE831F00296D55 /* BadgeView.swift in Sources */,
 				1A38A8A8258B652B0089DE7B /* OperatorChatMessageStyle.swift in Sources */,
 				1A7CA8212574D6760047CBBE /* ConnectOperatorView.swift in Sources */,
+				1A62CA5B25F8B5F900E59567 /* ChatMessageContent.swift in Sources */,
 				1A0C9A7925C16F9700815406 /* Theme+AlertConfiguration.swift in Sources */,
 				1AC8AADD25D419CE00DAFE50 /* VideoStreamView.swift in Sources */,
 				1A0EDF6525E795DD0076D1AD /* FilePreviewImageView.swift in Sources */,
@@ -1569,6 +1573,8 @@
 				1A60B01D2567FCAD00E53F53 /* ButtonProperties.swift in Sources */,
 				1AC7A7482582237500567FF8 /* GliaWindow.swift in Sources */,
 				1A4AF5D325AEF543002CD0F4 /* AlertViewController+Confirmation.swift in Sources */,
+				1AFB1E7825F8B26800CA460D /* ChatMessageTextContentStyle.swift in Sources */,
+				1AFB1E7425F8B00B00CA460D /* ChatMessageTextContentView.swift in Sources */,
 				1A0C9A7F25C1732F00815406 /* Theme+MinimizedBubble.swift in Sources */,
 				1A60AF7E25656F0400E53F53 /* Glia.swift in Sources */,
 				1A60AFB62566825400E53F53 /* ViewModel.swift in Sources */,
@@ -1612,7 +1618,6 @@
 				1A0C9A6D25C16EED00815406 /* Theme+Call.swift in Sources */,
 				1A60AFAF256680EF00E53F53 /* L10n.swift in Sources */,
 				1A60B0192567FC8A00E53F53 /* ButtonKind.swift in Sources */,
-				1A60B04D256D0CF600E53F53 /* ChatMessageContentView.swift in Sources */,
 				1A56D53D257E24A400141BC8 /* PoweredBy.swift in Sources */,
 				1A4AF5CD25AEF4A0002CD0F4 /* AlertViewController+Message.swift in Sources */,
 				1A7CA8242574D68E0047CBBE /* ConnectStatusView.swift in Sources */,
@@ -1658,7 +1663,6 @@
 				1A0EDF6925E795EB0076D1AD /* FilePreviewImageStyle.swift in Sources */,
 				1A60B0042567F25600E53F53 /* Header.swift in Sources */,
 				1A4674CD25ED08A30078FA1C /* MediaPickerController.swift in Sources */,
-				1A60B047256C0B4500E53F53 /* ChatMessageContent.swift in Sources */,
 				1A63B2F6257A469A00508478 /* AlertPresenter.swift in Sources */,
 				1A0452EA25DBE259000DA0C1 /* MessageButton.swift in Sources */,
 				1A5F494B25CA86CA003E3678 /* Call.swift in Sources */,
