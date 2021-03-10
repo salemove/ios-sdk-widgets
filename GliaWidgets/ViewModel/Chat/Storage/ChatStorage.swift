@@ -2,10 +2,6 @@ import SalemoveSDK
 import SQLite3
 
 class ChatStorage {
-    private enum RowType: Int {
-        case message = 0
-    }
-
     private enum SQLiteError: Error {
         case openDatabase
         case prepare
@@ -13,7 +9,7 @@ class ChatStorage {
     }
 
     private lazy var messages: [ChatMessage] = {
-        return loadObjects(ofType: .message)
+        return loadMessages()
     }()
     private let encoder = JSONEncoder()
     private var db: OpaquePointer?
@@ -27,7 +23,7 @@ class ChatStorage {
 
         do {
             try openDatabase()
-            try createDataTable()
+            try createMessagesTable()
         } catch {
             printLastErrorMessage()
         }
@@ -44,19 +40,19 @@ class ChatStorage {
         }
     }
 
-    private func createDataTable() throws {
-        let createDataTable = """
-            CREATE TABLE IF NOT EXISTS Data(
+    private func createMessagesTable() throws {
+        let createMessageTable = """
+            CREATE TABLE IF NOT EXISTS Message(
             ID INTEGER PRIMARY KEY NOT NULL,
-            Type INTEGER NOT NULL,
+            MessageID TEXT NOT NULL,
             JSON TEXT NOT NULL);
         """
-        let createDataTypeIndex = """
-            CREATE INDEX IF NOT EXISTS index_data_type ON Data(Type);
+        let createMessageIDIndex = """
+            CREATE UNIQUE INDEX IF NOT EXISTS index_message_messageid ON Message(MessageID);
         """
 
-        try exec(createDataTable)
-        try exec(createDataTypeIndex)
+        try exec(createMessageTable)
+        try exec(createMessageIDIndex)
     }
 
     private func exec(_ sql: String, values: [Any?]? = nil, completion: (() -> Void)? = nil) throws {
@@ -104,17 +100,17 @@ class ChatStorage {
 }
 
 extension ChatStorage {
-    private func storeObject<Object: Encodable>(_ object: Object, ofType type: RowType) throws {
-        let data = try encoder.encode(object)
+    private func storeMessage(_ message: ChatMessage) throws {
+        let data = try encoder.encode(message)
         if let json = String(data: data, encoding: .utf8) {
-            try exec("INSERT INTO Data(Type,JSON) VALUES (?,?);", values: [type.rawValue, json]) {}
+            try exec("INSERT INTO Message(MessageID, JSON) VALUES (?, ?);", values: [message.id, json]) {}
         }
     }
 
-    private func loadObjects<Object: Decodable>(ofType type: RowType) -> [Object] {
-        var objects = [Object]()
+    private func loadMessages() -> [ChatMessage] {
+        var messages = [ChatMessage]()
         let sql = """
-            SELECT JSON FROM Data WHERE Type = '\(type.rawValue)'
+            SELECT JSON FROM Message
             ORDER BY ID;
         """
         do {
@@ -123,8 +119,8 @@ extension ChatStorage {
                     let json = String(cString: sqlite3_column_text($0, 0))
                     if let data = json.data(using: .utf8) {
                         do {
-                            let object = try JSONDecoder().decode(Object.self, from: data)
-                            objects.append(object)
+                            let message = try JSONDecoder().decode(ChatMessage.self, from: data)
+                            messages.append(message)
                         } catch {
                             print(error)
                         }
@@ -134,7 +130,7 @@ extension ChatStorage {
         } catch {
             printLastErrorMessage()
         }
-        return objects
+        return messages
     }
 }
 
@@ -150,7 +146,8 @@ extension ChatStorage {
             ? salemoveOperator
             : nil
         let message = ChatMessage(with: message, queueID: queueID, operator: salemoveOperator)
-        storeMessage(message)
+        try? storeMessage(message)
+        messages.append(message)
     }
 
     func storeMessages(_ messages: [SalemoveSDK.Message],
@@ -166,10 +163,5 @@ extension ChatStorage {
     func newMessages(_ messages: [SalemoveSDK.Message]) -> [SalemoveSDK.Message] {
         let existingMessageIDs = messages.map({ $0.id })
         return messages.filter({ !existingMessageIDs.contains($0.id) })
-    }
-
-    private func storeMessage(_ message: ChatMessage) {
-        try? storeObject(message, ofType: .message)
-        messages.append(message)
     }
 }
