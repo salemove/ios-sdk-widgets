@@ -36,6 +36,7 @@
 		1A0EDF6925E795EB0076D1AD /* FilePreviewImageStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0EDF6825E795EB0076D1AD /* FilePreviewImageStyle.swift */; };
 		1A0EDF6D25E7AC100076D1AD /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0EDF6C25E7AC100076D1AD /* UIImage+Extensions.swift */; };
 		1A0EDF8225E8E0150076D1AD /* PopoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0EDF8125E8E0150076D1AD /* PopoverViewController.swift */; };
+		1A1E309625F8CA4400850E68 /* FileDownload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A1E309525F8CA4400850E68 /* FileDownload.swift */; };
 		1A205D6225655CB2003AA3CD /* GliaWidgets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A205D5825655CB1003AA3CD /* GliaWidgets.framework */; };
 		1A205D6725655CB2003AA3CD /* GliaWidgetsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A205D6625655CB2003AA3CD /* GliaWidgetsTests.swift */; };
 		1A205D6925655CB2003AA3CD /* GliaWidgets.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A205D5B25655CB1003AA3CD /* GliaWidgets.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -240,6 +241,7 @@
 		1A0EDF6825E795EB0076D1AD /* FilePreviewImageStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilePreviewImageStyle.swift; sourceTree = "<group>"; };
 		1A0EDF6C25E7AC100076D1AD /* UIImage+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extensions.swift"; sourceTree = "<group>"; };
 		1A0EDF8125E8E0150076D1AD /* PopoverViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopoverViewController.swift; sourceTree = "<group>"; };
+		1A1E309525F8CA4400850E68 /* FileDownload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileDownload.swift; sourceTree = "<group>"; };
 		1A205D5825655CB1003AA3CD /* GliaWidgets.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GliaWidgets.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A205D5B25655CB1003AA3CD /* GliaWidgets.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GliaWidgets.h; sourceTree = "<group>"; };
 		1A205D5C25655CB1003AA3CD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -542,6 +544,14 @@
 				1A0EDF8125E8E0150076D1AD /* PopoverViewController.swift */,
 			);
 			path = Popover;
+			sourceTree = "<group>";
+		};
+		1A1E309425F8CA3400850E68 /* Download */ = {
+			isa = PBXGroup;
+			children = (
+				1A1E309525F8CA4400850E68 /* FileDownload.swift */,
+			);
+			path = Download;
 			sourceTree = "<group>";
 		};
 		1A205D4E25655CB1003AA3CD = {
@@ -979,6 +989,7 @@
 		1A60AFD32566991C00E53F53 /* Chat */ = {
 			isa = PBXGroup;
 			children = (
+				1A1E309425F8CA3400850E68 /* Download */,
 				1A2DA72B25EF9B5B00032611 /* Upload */,
 				1A475BBA25DFA09D00296D55 /* Unread */,
 				1A54B83625A4722900C9393E /* Storage */,
@@ -1670,6 +1681,7 @@
 				1A2DA73725EFBFE700032611 /* FileUploadListView.swift in Sources */,
 				1AE15E49257A6BD200A642C0 /* ConfirmationAlertConfiguration.swift in Sources */,
 				1A60AFB22566821B00E53F53 /* Asset.swift in Sources */,
+				1A1E309625F8CA4400850E68 /* FileDownload.swift in Sources */,
 				1A4AD3AF256D283700468BFB /* ChatMessageView.swift in Sources */,
 				1A0EDF6D25E7AC100076D1AD /* UIImage+Extensions.swift in Sources */,
 				1A60AFD52566992A00E53F53 /* ChatViewModel.swift in Sources */,
