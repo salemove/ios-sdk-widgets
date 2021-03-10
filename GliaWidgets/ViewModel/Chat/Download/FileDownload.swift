@@ -24,25 +24,31 @@ class FileDownload {
     enum State {
         case none
         case downloading(file: EngagementFile, progress: ValueProvider<Double>)
-        case downloaded(file: EngagementFile, data: EngagementFileData)
+        case downloaded(file: EngagementFile)
         case error(Error)
     }
 
-    var engagementFileData: EngagementFileData? {
-        switch state.value {
-        case .downloaded(file: _, data: let data):
-            return data
-        default:
-            return nil
-        }
+    var localURL: URL? {
+        guard let id = file.id else { return nil }
+        return cache.url(for: id)
+    }
+    var localData: Data? {
+        guard let id = file.id else { return nil }
+        return cache.data(for: id)
     }
 
     let state = ValueProvider<State>(with: .none)
 
     private let file: EngagementFile
+    private let cache: Cache
 
-    init(with file: EngagementFile) {
+    init(with file: EngagementFile, cache: Cache) {
         self.file = file
+        self.cache = cache
+
+        if let id = file.id, cache.hasData(for: id) {
+            state.value = .downloaded(file: file)
+        }
     }
 
     func startDownload() {
@@ -59,7 +65,8 @@ class FileDownload {
         }
         let onCompletion: EngagementFileFetchCompletionBlock = { data, error in
             if let data = data {
-                self.state.value = .downloaded(file: self.file, data: data)
+                self.cache.store(data.data, for: fileID)
+                self.state.value = .downloaded(file: self.file)
             } else if let error = error {
                 self.state.value = .error(Error(with: error))
             }
