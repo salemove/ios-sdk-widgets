@@ -5,6 +5,7 @@ class FileDownload {
         case network
         case generic
         case missingFileID
+        case deleted
 
         init(with error: SalemoveError) {
             switch error.error {
@@ -46,7 +47,9 @@ class FileDownload {
         self.file = file
         self.cache = cache
 
-        if let id = file.id, cache.hasData(for: id) {
+        if file.isDeleted == true {
+            state.value = .error(.deleted)
+        } else if let id = file.id, cache.hasData(for: id) {
             state.value = .downloaded(file: file)
         }
     }
