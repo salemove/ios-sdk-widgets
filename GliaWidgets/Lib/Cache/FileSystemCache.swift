@@ -29,7 +29,7 @@ class FileSystemCache: Cache {
 
     func hasData(for key: String) -> Bool {
         let url = storageURL(for: key)
-        return FileManager.default.fileExists(atPath: url.absoluteString)
+        return FileManager.default.fileExists(atPath: url.path)
     }
 
     private func storageURL(for key: String) -> URL {
