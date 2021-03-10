@@ -38,6 +38,8 @@
 		1A0EDF8225E8E0150076D1AD /* PopoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0EDF8125E8E0150076D1AD /* PopoverViewController.swift */; };
 		1A1E309625F8CA4400850E68 /* FileDownload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A1E309525F8CA4400850E68 /* FileDownload.swift */; };
 		1A1E309B25F8E1F700850E68 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A1E309A25F8E1F700850E68 /* Cache.swift */; };
+		1A1E309F25F8E44300850E68 /* FileDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A1E309E25F8E44300850E68 /* FileDownloader.swift */; };
+		1A1E30A325F8E4A400850E68 /* FileSystemCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A1E30A225F8E4A400850E68 /* FileSystemCache.swift */; };
 		1A205D6225655CB2003AA3CD /* GliaWidgets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A205D5825655CB1003AA3CD /* GliaWidgets.framework */; };
 		1A205D6725655CB2003AA3CD /* GliaWidgetsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A205D6625655CB2003AA3CD /* GliaWidgetsTests.swift */; };
 		1A205D6925655CB2003AA3CD /* GliaWidgets.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A205D5B25655CB1003AA3CD /* GliaWidgets.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -244,6 +246,8 @@
 		1A0EDF8125E8E0150076D1AD /* PopoverViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopoverViewController.swift; sourceTree = "<group>"; };
 		1A1E309525F8CA4400850E68 /* FileDownload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileDownload.swift; sourceTree = "<group>"; };
 		1A1E309A25F8E1F700850E68 /* Cache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
+		1A1E309E25F8E44300850E68 /* FileDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileDownloader.swift; sourceTree = "<group>"; };
+		1A1E30A225F8E4A400850E68 /* FileSystemCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileSystemCache.swift; sourceTree = "<group>"; };
 		1A205D5825655CB1003AA3CD /* GliaWidgets.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GliaWidgets.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A205D5B25655CB1003AA3CD /* GliaWidgets.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GliaWidgets.h; sourceTree = "<group>"; };
 		1A205D5C25655CB1003AA3CD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -552,6 +556,7 @@
 			isa = PBXGroup;
 			children = (
 				1A1E309525F8CA4400850E68 /* FileDownload.swift */,
+				1A1E309E25F8E44300850E68 /* FileDownloader.swift */,
 			);
 			path = Download;
 			sourceTree = "<group>";
@@ -560,6 +565,7 @@
 			isa = PBXGroup;
 			children = (
 				1A1E309A25F8E1F700850E68 /* Cache.swift */,
+				1A1E30A225F8E4A400850E68 /* FileSystemCache.swift */,
 			);
 			path = Cache;
 			sourceTree = "<group>";
@@ -1581,6 +1587,7 @@
 				1ABD6C5D25B59D1C00D56EFA /* BubbleWindow.swift in Sources */,
 				1AE15E38257A578B00A642C0 /* MessageAlertConfiguration.swift in Sources */,
 				1AC7A77B25838AE800567FF8 /* ChatItem.swift in Sources */,
+				1A1E309F25F8E44300850E68 /* FileDownloader.swift in Sources */,
 				1A2DA72625EF892600032611 /* FilePickerController.swift in Sources */,
 				1ABD6C9625B6F46700D56EFA /* AlertViewController+SingleMediaUpgrade.swift in Sources */,
 				1A475BB325DE831F00296D55 /* BadgeView.swift in Sources */,
@@ -1699,6 +1706,7 @@
 				1A60AFD52566992A00E53F53 /* ChatViewModel.swift in Sources */,
 				1A60AFE025669A6100E53F53 /* ChatViewController.swift in Sources */,
 				1ABD6C6125B5ABA100D56EFA /* UIView+Screenshot.swift in Sources */,
+				1A1E30A325F8E4A400850E68 /* FileSystemCache.swift in Sources */,
 				1A60AF90256674F000E53F53 /* Font.swift in Sources */,
 				1A4674C225E92A710078FA1C /* ListItemKind.swift in Sources */,
 				1A4674AC25E905D00078FA1C /* ListItemView.swift in Sources */,
