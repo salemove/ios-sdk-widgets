@@ -35,7 +35,7 @@ class FileSystemStorage: DataStorage {
         try? data.write(to: url)
     }
 
-    func url(for key: String) -> URL? {
+    func url(for key: String) -> URL {
         return storageURL(for: key)
     }
 

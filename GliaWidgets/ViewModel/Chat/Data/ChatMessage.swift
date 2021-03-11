@@ -36,6 +36,6 @@ class ChatMessage: Codable {
         self.operator = salemoveOperator.map({ ChatOperator(with: $0) })
         sender = ChatMessageSender(with: message.sender)
         content = message.content
-        attachment = message.attachment.map({ ChatAttachment(with: $0) })
+        attachment = ChatAttachment(with: message.attachment)
     }
 }

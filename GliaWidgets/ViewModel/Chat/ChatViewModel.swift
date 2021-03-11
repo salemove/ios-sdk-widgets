@@ -265,7 +265,10 @@ extension ChatViewModel {
         guard validateMessage() else { return }
 
         let attachment = uploader.attachment
-        let outgoingMessage = OutgoingMessage(content: messageText)
+        let outgoingMessage = OutgoingMessage(
+            content: messageText,
+            attachment: ChatAttachment(with: attachment)
+        )
         let item = ChatItem(with: outgoingMessage)
         appendItem(item, to: messagesSection, animated: true)
         uploader.removeAllUploads()
@@ -435,12 +438,17 @@ extension ChatViewModel {
 
         switch item.kind {
         case .visitorMessage(let message, _), .operatorMessage(let message, _, _):
-            let downloads = downloader.downloads(for: message.attachment?.files,
-                                                 autoDownload: .images)
-            return downloads.map({ $0.state })
+            return downloadStates(for: message.attachment?.files)
+        case .outgoingMessage(let message):
+            return downloadStates(for: message.attachment?.files)
         default:
             return []
         }
+    }
+
+    private func downloadStates(for files: [ChatEngagementFile]?) -> [ValueProvider<FileDownload.State>] {
+        let downloads = downloader.downloads(for: files, autoDownload: .images)
+        return downloads.map({ $0.state })
     }
 }
 

@@ -23,7 +23,8 @@ class ChatAttachment: Codable {
     let type: ChatAttachmentType?
     let files: [ChatEngagementFile]?
 
-    init(with attachment: SalemoveSDK.Attachment) {
+    init?(with attachment: SalemoveSDK.Attachment?) {
+        guard let attachment = attachment else { return nil }
         type = ChatAttachmentType(with: attachment.type)
         files = attachment.files.map({ $0.map({ ChatEngagementFile(with: $0) }) })
     }
