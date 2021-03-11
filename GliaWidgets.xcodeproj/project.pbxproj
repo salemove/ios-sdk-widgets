@@ -40,6 +40,8 @@
 		1A1E309B25F8E1F700850E68 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A1E309A25F8E1F700850E68 /* Cache.swift */; };
 		1A1E309F25F8E44300850E68 /* FileDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A1E309E25F8E44300850E68 /* FileDownloader.swift */; };
 		1A1E30A325F8E4A400850E68 /* FileSystemCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A1E30A225F8E4A400850E68 /* FileSystemCache.swift */; };
+		1A1E30C725F9FDAB00850E68 /* ChatMessageImageFileContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A1E30C625F9FDAB00850E68 /* ChatMessageImageFileContentView.swift */; };
+		1A1E30CB25F9FDC400850E68 /* ChatMessageImageFileContentStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A1E30CA25F9FDC400850E68 /* ChatMessageImageFileContentStyle.swift */; };
 		1A205D6225655CB2003AA3CD /* GliaWidgets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A205D5825655CB1003AA3CD /* GliaWidgets.framework */; };
 		1A205D6725655CB2003AA3CD /* GliaWidgetsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A205D6625655CB2003AA3CD /* GliaWidgetsTests.swift */; };
 		1A205D6925655CB2003AA3CD /* GliaWidgets.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A205D5B25655CB1003AA3CD /* GliaWidgets.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -248,6 +250,8 @@
 		1A1E309A25F8E1F700850E68 /* Cache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
 		1A1E309E25F8E44300850E68 /* FileDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileDownloader.swift; sourceTree = "<group>"; };
 		1A1E30A225F8E4A400850E68 /* FileSystemCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileSystemCache.swift; sourceTree = "<group>"; };
+		1A1E30C625F9FDAB00850E68 /* ChatMessageImageFileContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageImageFileContentView.swift; sourceTree = "<group>"; };
+		1A1E30CA25F9FDC400850E68 /* ChatMessageImageFileContentStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageImageFileContentStyle.swift; sourceTree = "<group>"; };
 		1A205D5825655CB1003AA3CD /* GliaWidgets.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GliaWidgets.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A205D5B25655CB1003AA3CD /* GliaWidgets.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GliaWidgets.h; sourceTree = "<group>"; };
 		1A205D5C25655CB1003AA3CD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -568,6 +572,24 @@
 				1A1E30A225F8E4A400850E68 /* FileSystemCache.swift */,
 			);
 			path = Cache;
+			sourceTree = "<group>";
+		};
+		1A1E30CE25F9FDD000850E68 /* Text */ = {
+			isa = PBXGroup;
+			children = (
+				1AFB1E7325F8B00B00CA460D /* ChatMessageTextContentView.swift */,
+				1AFB1E7725F8B26800CA460D /* ChatMessageTextContentStyle.swift */,
+			);
+			path = Text;
+			sourceTree = "<group>";
+		};
+		1A1E30CF25F9FDE300850E68 /* ImageFile */ = {
+			isa = PBXGroup;
+			children = (
+				1A1E30C625F9FDAB00850E68 /* ChatMessageImageFileContentView.swift */,
+				1A1E30CA25F9FDC400850E68 /* ChatMessageImageFileContentStyle.swift */,
+			);
+			path = ImageFile;
 			sourceTree = "<group>";
 		};
 		1A205D4E25655CB1003AA3CD = {
@@ -1129,9 +1151,9 @@
 		1A60B04F256D0D7400E53F53 /* Content */ = {
 			isa = PBXGroup;
 			children = (
+				1A1E30CF25F9FDE300850E68 /* ImageFile */,
+				1A1E30CE25F9FDD000850E68 /* Text */,
 				1A62CA5A25F8B5F900E59567 /* ChatMessageContent.swift */,
-				1AFB1E7325F8B00B00CA460D /* ChatMessageTextContentView.swift */,
-				1AFB1E7725F8B26800CA460D /* ChatMessageTextContentStyle.swift */,
 			);
 			path = Content;
 			sourceTree = "<group>";
@@ -1634,6 +1656,7 @@
 				1A60AFBF2566834400E53F53 /* ViewController.swift in Sources */,
 				1A60AFF12566A4B300E53F53 /* NavigationPresenter.swift in Sources */,
 				1AC7A74F2582571100567FF8 /* Interactor.swift in Sources */,
+				1A1E30CB25F9FDC400850E68 /* ChatMessageImageFileContentStyle.swift in Sources */,
 				1A60AF93256674F900E53F53 /* Color.swift in Sources */,
 				1A38A8BA258B94D60089DE7B /* ImageView.swift in Sources */,
 				1A60B031256BF81500E53F53 /* VisitorChatMessageView.swift in Sources */,
@@ -1707,6 +1730,7 @@
 				1A60AFE025669A6100E53F53 /* ChatViewController.swift in Sources */,
 				1ABD6C6125B5ABA100D56EFA /* UIView+Screenshot.swift in Sources */,
 				1A1E30A325F8E4A400850E68 /* FileSystemCache.swift in Sources */,
+				1A1E30C725F9FDAB00850E68 /* ChatMessageImageFileContentView.swift in Sources */,
 				1A60AF90256674F000E53F53 /* Font.swift in Sources */,
 				1A4674C225E92A710078FA1C /* ListItemKind.swift in Sources */,
 				1A4674AC25E905D00078FA1C /* ListItemView.swift in Sources */,
