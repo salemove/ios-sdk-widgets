@@ -10,6 +10,7 @@ class ChatImageDownloadContentView: UIView {
     private let style: ChatImageDownloadContentStyle
     private let state: ValueProvider<State>
     private let kInsets = UIEdgeInsets.zero
+    private let kSize = CGSize(width: 240, height: 155)
 
     init(with style: ChatImageDownloadContentStyle,
          state: ValueProvider<State>) {
@@ -37,6 +38,8 @@ class ChatImageDownloadContentView: UIView {
     }
 
     private func layout() {
+        autoSetDimensions(to: kSize)
+
         addSubview(imageView)
         imageView.autoPinEdgesToSuperviewEdges(with: kInsets)
     }

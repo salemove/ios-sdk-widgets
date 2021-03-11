@@ -3,7 +3,7 @@ import UIKit
 class ChatTextContentView: UIView {
     var text: String? {
         get { return textLabel.text }
-        set { textLabel.text = newValue }
+        set { setText(newValue) }
     }
 
     private let textLabel = UILabel()
@@ -30,8 +30,17 @@ class ChatTextContentView: UIView {
         textLabel.numberOfLines = 0
     }
 
-    private func layout() {
-        addSubview(textLabel)
-        textLabel.autoPinEdgesToSuperviewEdges(with: kInsets)
+    private func layout() {}
+
+    private func setText(_ text: String?) {
+        if text == nil || text?.isEmpty == true {
+            textLabel.removeFromSuperview()
+        } else {
+            if textLabel.superview == nil {
+                addSubview(textLabel)
+                textLabel.autoPinEdgesToSuperviewEdges(with: kInsets)
+            }
+            textLabel.text = text
+        }
     }
 }

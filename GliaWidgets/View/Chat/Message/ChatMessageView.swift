@@ -21,7 +21,8 @@ class ChatMessageView: UIView {
             contentView.text = text
             appendContentView(contentView, animated: animated)
         case .imageDownload(let state):
-            break
+            let contentView = ChatImageDownloadContentView(with: style.imageDownload, state: state)
+            appendContentView(contentView, animated: animated)
         }
     }
 
