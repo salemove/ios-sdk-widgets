@@ -54,18 +54,24 @@ extension Theme {
             connecting: connecting,
             connected: connected
         )
+        let visitorText = ChatTextContentStyle(
+            textFont: font.bodyText,
+            textColor: color.baseLight,
+            backgroundColor: color.primary
+        )
         let visitorMessage = VisitorChatMessageStyle(
-            messageFont: font.bodyText,
-            messageColor: color.baseLight,
-            backgroundColor: color.primary,
+            text: visitorText,
             statusFont: font.caption,
             statusColor: color.baseNormal,
             delivered: Chat.Message.Status.delivered
         )
+        let operatorText = ChatTextContentStyle(
+            textFont: font.bodyText,
+            textColor: color.baseDark,
+            backgroundColor: Color.lightGrey
+        )
         let operatorMessage = OperatorChatMessageStyle(
-            messageFont: font.bodyText,
-            messageColor: color.baseDark,
-            backgroundColor: Color.lightGrey,
+            text: operatorText,
             operatorImage: operatorImage
         )
         let endButton = ActionButtonStyle(

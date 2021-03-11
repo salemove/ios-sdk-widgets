@@ -5,17 +5,13 @@ public class VisitorChatMessageStyle: ChatMessageStyle {
     public var statusColor: UIColor
     public var delivered: String
 
-    public init(messageFont: UIFont,
-                messageColor: UIColor,
-                backgroundColor: UIColor,
+    public init(text: ChatTextContentStyle,
                 statusFont: UIFont,
                 statusColor: UIColor,
                 delivered: String) {
         self.statusFont = statusFont
         self.statusColor = statusColor
         self.delivered = delivered
-        super.init(messageFont: messageFont,
-                   messageColor: messageColor,
-                   backgroundColor: backgroundColor)
+        super.init(text: text)
     }
 }
