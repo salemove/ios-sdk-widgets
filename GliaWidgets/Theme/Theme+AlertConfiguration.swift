@@ -16,6 +16,13 @@ extension Theme {
             positiveTitle: Alert.Action.yes,
             switchButtonBackgroundColors: true
         )
+        let endScreenShare = ConfirmationAlertConfiguration(
+            title: Alert.ScreenSharing.Stop.title,
+            message: Alert.ScreenSharing.Stop.message,
+            negativeTitle: Alert.Action.no,
+            positiveTitle: Alert.Action.yes,
+            switchButtonBackgroundColors: true
+        )
         let operatorsUnavailable = MessageAlertConfiguration(
             title: Alert.OperatorsUnavailable.title,
             message: Alert.OperatorsUnavailable.message
@@ -67,6 +74,13 @@ extension Theme {
             decline: Alert.Action.decline,
             accept: Alert.Action.accept
         )
+        let screenShareOffer = ScreenShareOfferAlertConfiguration(
+            title: Alert.ScreenSharing.Start.title,
+            message: Alert.ScreenSharing.Start.message,
+            titleImage: Asset.startScreenShare.image,
+            decline: Alert.Action.decline,
+            accept: Alert.Action.accept
+        )
         let microphoneSettings = SettingsAlertConfiguration(
             title: Alert.MicrophonePermission.title,
             message: Alert.MicrophonePermission.message,
@@ -96,6 +110,8 @@ extension Theme {
             audioUpgrade: audioUpgrade,
             oneWayVideoUpgrade: oneWayVideoUpgrade,
             twoWayVideoUpgrade: twoWayVideoUpgrade,
+            screenShareOffer: screenShareOffer,
+            endScreenShare: endScreenShare,
             microphoneSettings: microphoneSettings,
             cameraSettings: cameraSettings,
             unexpectedError: unexpected,

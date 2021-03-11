@@ -74,6 +74,10 @@ extension Theme {
             titleColor: color.baseLight,
             backgroundColor: color.systemNegative
         )
+        let endScreenShareButton = HeaderButtonStyle(
+            image: Asset.startScreenShare.image,
+            color: color.secondary
+        )
         let mediaButton = MessageButtonStyle(
             image: Asset.chatPickMedia.image,
             color: color.baseNormal
@@ -126,6 +130,7 @@ extension Theme {
             connect: connect,
             backgroundColor: color.background,
             endButton: endButton,
+            endScreenShareButton: endScreenShareButton,
             preferredStatusBarStyle: .lightContent,
             title: Chat.title,
             backButton: backButton,

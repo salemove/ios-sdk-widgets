@@ -1,6 +1,6 @@
 import UIKit
 
-class ChatViewController: EngagementViewController, MediaUpgradePresenter {
+class ChatViewController: EngagementViewController, MediaUpgradePresenter, ScreenShareOfferPresenter {
     private let viewModel: ChatViewModel
     private var lastVisibleRowIndexPath: IndexPath?
 
@@ -61,6 +61,12 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter {
                 let rightItem = ActionButton(with: self.viewFactory.theme.chat.endButton)
                 rightItem.tap = { viewModel.event(.closeTapped) }
                 view.header.setRightItem(rightItem, animated: true)
+            case .showEndScreenShareButton:
+                let endEngagementButton = ActionButton(with: self.viewFactory.theme.chat.endButton)
+                endEngagementButton.tap = { viewModel.event(.closeTapped) }
+                let endScreenShareButton = HeaderButton(with: self.viewFactory.theme.chat.endScreenShareButton)
+                endScreenShareButton.tap = { viewModel.event(.endScreenSharingTapped) }
+                view.header.setRightItems([endScreenShareButton, endEngagementButton], animated: true)
             case .setMessageEntryEnabled(let enabled):
                 view.messageEntryView.isEnabled = enabled
             case .appendRows(let count, let section, let animated):

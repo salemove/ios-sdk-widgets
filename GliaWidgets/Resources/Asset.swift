@@ -33,6 +33,7 @@ public enum Asset {
   public static let back = ImageAsset(name: "back")
   public static let close = ImageAsset(name: "close")
   public static let gliaLogo = ImageAsset(name: "gliaLogo")
+  public static let startScreenShare = ImageAsset(name: "startScreenShare")
   public static let upgradeAudio = ImageAsset(name: "upgradeAudio")
   public static let upgradePhone = ImageAsset(name: "upgradePhone")
   public static let upgradeVideo = ImageAsset(name: "upgradeVideo")

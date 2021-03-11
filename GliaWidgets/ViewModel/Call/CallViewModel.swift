@@ -29,6 +29,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
         case setTopTextHidden(Bool)
         case setBottomTextHidden(Bool)
         case showEndButton
+        case showEndScreenShareButton
         case switchToVideoMode
         case switchToUpgradeMode
         case setCallDurationText(String)
@@ -132,6 +133,21 @@ class CallViewModel: EngagementViewModel, ViewModel {
         }
     }
 
+    override func updateScreenSharingState(to state: VisitorScreenSharingState) {
+        super.updateScreenSharingState(to: state)
+        switch state.status {
+        case .sharing:
+            action?(.showEndScreenShareButton)
+        case .notSharing:
+            action?(.showEndButton)
+        }
+    }
+
+    override func endScreenSharing() {
+        super.endScreenSharing()
+        action?(.showEndButton)
+    }
+
     private func update(for callKind: CallKind) {
         switch callKind {
         case .audio:
@@ -190,6 +206,55 @@ class CallViewModel: EngagementViewModel, ViewModel {
         }
     }
 
+    private func handleAudioStreamError(_ error: SalemoveError) {
+        switch error.error {
+        case let mediaError as MediaError:
+            switch mediaError {
+            case .permissionDenied:
+                self.showSettingsAlert(with: alertConfiguration.microphoneSettings)
+            default:
+                showAlert(for: error)
+            }
+        default:
+            showAlert(for: error)
+        }
+    }
+
+    private func handleVideoStreamError(_ error: SalemoveError) {
+        switch error.error {
+        case let mediaError as MediaError:
+            switch mediaError {
+            case .permissionDenied:
+                showSettingsAlert(with: alertConfiguration.cameraSettings)
+            default:
+                showAlert(for: error)
+            }
+        default:
+            showAlert(for: error)
+        }
+    }
+
+    override func interactorEvent(_ event: InteractorEvent) {
+        super.interactorEvent(event)
+
+        switch event {
+        case .audioStreamAdded(let stream):
+            call.updateAudioStream(with: stream)
+        case .videoStreamAdded(let stream):
+            call.updateVideoStream(with: stream)
+        case .audioStreamError(let error):
+            handleAudioStreamError(error)
+        case .videoStreamError(let error):
+            handleVideoStreamError(error)
+        case .upgradeOffer(let offer, answer: let answer):
+            offerMediaUpgrade(offer, answer: answer)
+        default:
+            break
+        }
+    }
+}
+
+extension CallViewModel {
     private func offerMediaUpgrade(_ offer: MediaUpgradeOffer, answer: @escaping AnswerWithSuccessBlock) {
         switch offer.type {
         case .video:
@@ -216,53 +281,6 @@ class CallViewModel: EngagementViewModel, ViewModel {
         action?(.offerMediaUpgrade(configuration.withOperatorName(operatorName),
                                    accepted: { onAccepted() },
                                    declined: { answer(false, nil) }))
-    }
-
-    private func handleAudioStreamError(_ error: SalemoveError) {
-        switch error.error {
-        case let mediaError as MediaError:
-            switch mediaError {
-            case .permissionDenied:
-                self.showSettingsAlert(with: alertConfiguration.microphoneSettings)
-            default:
-                showAlert(for: error)
-            }
-        default:
-            showAlert(for: error)
-        }
-    }
-
-    private func handleVideoStreamError(_ error: SalemoveError) {
-        switch error.error {
-        case let mediaError as MediaError:
-            switch mediaError {
-            case .permissionDenied:
-                self.showSettingsAlert(with: alertConfiguration.cameraSettings)
-            default:
-                showAlert(for: error)
-            }
-        default:
-            showAlert(for: error)
-        }
-    }
-
-    override func interactorEvent(_ event: InteractorEvent) {
-        super.interactorEvent(event)
-
-        switch event {
-        case .audioStreamAdded(let stream):
-            call.updateAudioStream(with: stream)
-        case .videoStreamAdded(let stream):
-            call.updateVideoStream(with: stream)
-        case .audioStreamError(let error):
-            handleAudioStreamError(error)
-        case .videoStreamError(let error):
-            handleVideoStreamError(error)
-        case .upgradeOffer(let offer, answer: let answer):
-            offerMediaUpgrade(offer, answer: answer)
-        default:
-            break
-        }
     }
 }
 
