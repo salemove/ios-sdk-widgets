@@ -269,9 +269,7 @@ extension ChatView: UITableViewDataSource {
             let item = itemForRow?(indexPath.row, indexPath.section),
             let cell: ChatItemCell = tableView.dequeue(cellFor: indexPath)
         else { return UITableViewCell() }
-
         cell.content = content(for: item)
-
         return cell
     }
 }

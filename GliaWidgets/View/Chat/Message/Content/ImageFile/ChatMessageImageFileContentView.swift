@@ -2,11 +2,11 @@ import UIKit
 
 class ChatMessageImageFileContentView: UIView {
     enum State {
-        case none
+        case empty
         case image(url: URL)
     }
 
-    var state: State = .none {
+    var state: State = .empty {
         didSet { update(for: state) }
     }
 
@@ -39,7 +39,7 @@ class ChatMessageImageFileContentView: UIView {
 
     private func update(for state: State) {
         switch state {
-        case .none:
+        case .empty:
             imageView.image = nil
         case .image(url: let url):
             let image = UIImage(contentsOfFile: url.path)
