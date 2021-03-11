@@ -432,10 +432,7 @@ extension ChatViewModel {
         return item
     }
 
-    func downloadStates(for row: Int, in section: Int) -> [ValueProvider<FileDownload.State>] {
-        let section = sections[section]
-        let item = section[row]
-
+    func downloadStates(for item: ChatItem) -> [ValueProvider<FileDownload.State>] {
         switch item.kind {
         case .visitorMessage(let message, _), .operatorMessage(let message, _, _):
             return downloadStates(for: message.attachment?.files)

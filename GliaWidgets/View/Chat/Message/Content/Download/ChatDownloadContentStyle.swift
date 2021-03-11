@@ -1,6 +1,6 @@
 import UIKit
 
-public class ChatImageDownloadContentStyle {
+public class ChatDownloadContentStyle {
     public var backgroundColor: UIColor
 
     public init(backgroundColor: UIColor) {

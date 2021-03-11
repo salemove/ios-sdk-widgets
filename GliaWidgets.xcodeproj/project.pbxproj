@@ -50,6 +50,8 @@
 		1A205D8725655CEE003AA3CD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1A205D8525655CEE003AA3CD /* LaunchScreen.storyboard */; };
 		1A205DB4256566BB003AA3CD /* GliaWidgets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A205D5825655CB1003AA3CD /* GliaWidgets.framework */; };
 		1A205DB5256566BB003AA3CD /* GliaWidgets.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1A205D5825655CB1003AA3CD /* GliaWidgets.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		1A277A1225FA604E009FE131 /* ChatDownloadContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A277A1125FA604E009FE131 /* ChatDownloadContentView.swift */; };
+		1A277A1625FA60E1009FE131 /* ChatDownloadContentStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A277A1525FA60E1009FE131 /* ChatDownloadContentStyle.swift */; };
 		1A2DA71F25EF720400032611 /* FilePickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2DA71E25EF720400032611 /* FilePickerViewModel.swift */; };
 		1A2DA72625EF892600032611 /* FilePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2DA72525EF892600032611 /* FilePickerController.swift */; };
 		1A2DA72D25EF9DD900032611 /* FileUpload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2DA72C25EF9DD900032611 /* FileUpload.swift */; };
@@ -264,6 +266,8 @@
 		1A205D8625655CEE003AA3CD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1A205D8825655CEE003AA3CD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1A205DA6256564CE003AA3CD /* PureLayout.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PureLayout.framework; path = GliaWidgets/Frameworks/PureLayout.framework; sourceTree = "<group>"; };
+		1A277A1125FA604E009FE131 /* ChatDownloadContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatDownloadContentView.swift; sourceTree = "<group>"; };
+		1A277A1525FA60E1009FE131 /* ChatDownloadContentStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatDownloadContentStyle.swift; sourceTree = "<group>"; };
 		1A2DA71E25EF720400032611 /* FilePickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilePickerViewModel.swift; sourceTree = "<group>"; };
 		1A2DA72525EF892600032611 /* FilePickerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilePickerController.swift; sourceTree = "<group>"; };
 		1A2DA72C25EF9DD900032611 /* FileUpload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUpload.swift; sourceTree = "<group>"; };
@@ -667,6 +671,16 @@
 				2308CF5ACCB31E1CC49FED95 /* Pods_TestingApp.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		1A277A1025FA602D009FE131 /* Download */ = {
+			isa = PBXGroup;
+			children = (
+				1A1E30CF25F9FDE300850E68 /* ImageDownload */,
+				1A277A1125FA604E009FE131 /* ChatDownloadContentView.swift */,
+				1A277A1525FA60E1009FE131 /* ChatDownloadContentStyle.swift */,
+			);
+			path = Download;
 			sourceTree = "<group>";
 		};
 		1A2DA71D25EF71F100032611 /* FilePicker */ = {
@@ -1151,7 +1165,7 @@
 		1A60B04F256D0D7400E53F53 /* Content */ = {
 			isa = PBXGroup;
 			children = (
-				1A1E30CF25F9FDE300850E68 /* ImageDownload */,
+				1A277A1025FA602D009FE131 /* Download */,
 				1A1E30CE25F9FDD000850E68 /* Text */,
 				1A62CA5A25F8B5F900E59567 /* ChatMessageContent.swift */,
 			);
@@ -1612,6 +1626,7 @@
 				1A1E309F25F8E44300850E68 /* FileDownloader.swift in Sources */,
 				1A2DA72625EF892600032611 /* FilePickerController.swift in Sources */,
 				1ABD6C9625B6F46700D56EFA /* AlertViewController+SingleMediaUpgrade.swift in Sources */,
+				1A277A1625FA60E1009FE131 /* ChatDownloadContentStyle.swift in Sources */,
 				1A475BB325DE831F00296D55 /* BadgeView.swift in Sources */,
 				1A38A8A8258B652B0089DE7B /* OperatorChatMessageStyle.swift in Sources */,
 				1A7CA8212574D6760047CBBE /* ConnectOperatorView.swift in Sources */,
@@ -1718,6 +1733,7 @@
 				1A4674CD25ED08A30078FA1C /* MediaPickerController.swift in Sources */,
 				1A63B2F6257A469A00508478 /* AlertPresenter.swift in Sources */,
 				1A0452EA25DBE259000DA0C1 /* MessageButton.swift in Sources */,
+				1A277A1225FA604E009FE131 /* ChatDownloadContentView.swift in Sources */,
 				1A5F494B25CA86CA003E3678 /* Call.swift in Sources */,
 				1AFB1E6825F7AE3C00CA460D /* ChatAttachment.swift in Sources */,
 				1A2DA73725EFBFE700032611 /* FileUploadListView.swift in Sources */,
