@@ -2,7 +2,8 @@ import SalemoveSDK
 
 class FileDownloader {
     private var downloads = [String: FileDownload]()
-    private var cache = FileSystemCache()
+    private var storage = FileSystemStorage(directory: .documents,
+                                            expiration: .none)
 
     func download(for file: EngagementFile) -> FileDownload? {
         guard let fileID = file.id else { return nil }
@@ -10,7 +11,7 @@ class FileDownloader {
         if let download = downloads[fileID] {
             return download
         } else {
-            let download = FileDownload(with: file, cache: cache)
+            let download = FileDownload(with: file, storage: storage)
             downloads[fileID] = download
             return download
         }

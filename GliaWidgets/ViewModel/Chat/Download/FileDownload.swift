@@ -31,25 +31,25 @@ class FileDownload {
 
     var localURL: URL? {
         guard let id = file.id else { return nil }
-        return cache.url(for: id)
+        return storage.url(for: id)
     }
     var localData: Data? {
         guard let id = file.id else { return nil }
-        return cache.data(for: id)
+        return storage.data(for: id)
     }
 
     let state = ValueProvider<State>(with: .none)
 
     private let file: EngagementFile
-    private let cache: Cache
+    private let storage: DataStorage
 
-    init(with file: EngagementFile, cache: Cache) {
+    init(with file: EngagementFile, storage: DataStorage) {
         self.file = file
-        self.cache = cache
+        self.storage = storage
 
         if file.isDeleted == true {
             state.value = .error(.deleted)
-        } else if let id = file.id, cache.hasData(for: id) {
+        } else if let id = file.id, storage.hasData(for: id) {
             state.value = .downloaded(file: file)
         }
     }
@@ -68,7 +68,7 @@ class FileDownload {
         }
         let onCompletion: EngagementFileFetchCompletionBlock = { data, error in
             if let data = data {
-                self.cache.store(data.data, for: fileID)
+                self.storage.store(data.data, for: fileID)
                 self.state.value = .downloaded(file: self.file)
             } else if let error = error {
                 self.state.value = .error(Error(with: error))

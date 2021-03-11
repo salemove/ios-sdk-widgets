@@ -1,11 +1,28 @@
-class FileSystemCache: Cache {
-    private let storageURL: URL
-    private let kCacheDirectory = "GliaFileCache"
-    private let kExpirationSeconds: Double = 7 * 24 * 60 * 60
+class FileSystemStorage: DataStorage {
+    enum Directory {
+        case documents
 
-    init() {
-        storageURL = URL(fileURLWithPath: NSTemporaryDirectory())
-            .appendingPathComponent(kCacheDirectory)
+        var url: URL {
+            switch self {
+            case .documents:
+                let paths = FileManager.default
+                    .urls(for: .documentDirectory, in: .userDomainMask)
+                return paths[0]
+            }
+        }
+    }
+
+    enum Expiration {
+        case none
+        case seconds(Double)
+    }
+
+    private let directory: Directory
+    private let expiration: Expiration
+
+    init(directory: Directory, expiration: Expiration) {
+        self.directory = directory
+        self.expiration = expiration
         createStorage()
     }
 
@@ -33,24 +50,26 @@ class FileSystemCache: Cache {
     }
 
     private func storageURL(for key: String) -> URL {
-        return storageURL.appendingPathComponent(key)
+        return directory.url.appendingPathComponent(key)
     }
 
     private func createStorage() {
-        try? FileManager.default.createDirectory(at: storageURL,
+        try? FileManager.default.createDirectory(at: directory.url,
                                                  withIntermediateDirectories: true,
                                                  attributes: nil)
     }
 
     private func sweep() {
+        guard case .seconds(let expirationSeconds) = expiration else { return }
+
         let now = Date().timeIntervalSince1970
-        let files = try? FileManager.default.contentsOfDirectory(atPath: storageURL.path)
+        let files = try? FileManager.default.contentsOfDirectory(atPath: directory.url.path)
 
         files?.forEach {
-            let filePath = storageURL.appendingPathComponent($0).path
+            let filePath = directory.url.appendingPathComponent($0).path
             if let attributes = try? FileManager.default.attributesOfItem(atPath: filePath),
                let created = attributes[FileAttributeKey.creationDate] as? Date,
-               created.timeIntervalSince1970 + kExpirationSeconds < now {
+               created.timeIntervalSince1970 + expirationSeconds < now {
                 try? FileManager.default.removeItem(atPath: filePath)
             }
         }
