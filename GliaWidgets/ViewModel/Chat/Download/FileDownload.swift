@@ -24,8 +24,8 @@ class FileDownload {
 
     enum State {
         case none
-        case downloading(file: EngagementFile, progress: ValueProvider<Double>)
-        case downloaded(file: EngagementFile)
+        case downloading(file: ChatEngagementFile, progress: ValueProvider<Double>)
+        case downloaded(file: ChatEngagementFile)
         case error(Error)
     }
 
@@ -39,11 +39,11 @@ class FileDownload {
     }
 
     let state = ValueProvider<State>(with: .none)
+    let file: ChatEngagementFile
 
-    private let file: EngagementFile
     private let storage: DataStorage
 
-    init(with file: EngagementFile, storage: DataStorage) {
+    init(with file: ChatEngagementFile, storage: DataStorage) {
         self.file = file
         self.storage = storage
 

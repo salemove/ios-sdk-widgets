@@ -66,6 +66,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     private let showsCallBubble: Bool
     private let storage = ChatStorage()
     private let uploader = FileUploader()
+    private let downloader = FileDownloader()
     private var messageText = "" {
         didSet {
             validateMessage()
@@ -426,6 +427,20 @@ extension ChatViewModel {
         }
 
         return item
+    }
+
+    func downloadStates(for row: Int, in section: Int) -> [ValueProvider<FileDownload.State>] {
+        let section = sections[section]
+        let item = section[row]
+
+        switch item.kind {
+        case .visitorMessage(let message, _), .operatorMessage(let message, _, _):
+            let downloads = downloader.downloads(for: message.attachment?.files,
+                                                 autoDownload: .images)
+            return downloads.map({ $0.state })
+        default:
+            return []
+        }
     }
 }
 
