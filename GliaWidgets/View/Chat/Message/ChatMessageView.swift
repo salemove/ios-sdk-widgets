@@ -17,10 +17,10 @@ class ChatMessageView: UIView {
     func appendContent(_ content: ChatMessageContent, animated: Bool) {
         switch content {
         case .text(let text):
-            let contentView = ChatMessageTextContentView(with: style.text)
+            let contentView = ChatTextContentView(with: style.text)
             contentView.text = text
             appendContentView(contentView, animated: animated)
-        case .image:
+        case .imageDownload(let state):
             break
         }
     }

@@ -1,21 +1,20 @@
 import UIKit
 
-class ChatMessageImageFileContentView: UIView {
+class ChatImageDownloadContentView: UIView {
     enum State {
         case empty
         case image(url: URL)
     }
 
-    var state: State = .empty {
-        didSet { update(for: state) }
-    }
-
     private let imageView = UIImageView()
-    private let style: ChatMessageImageFileContentStyle
+    private let style: ChatImageDownloadContentStyle
+    private let state: ValueProvider<State>
     private let kInsets = UIEdgeInsets.zero
 
-    init(with style: ChatMessageImageFileContentStyle) {
+    init(with style: ChatImageDownloadContentStyle,
+         state: ValueProvider<State>) {
         self.style = style
+        self.state = state
         super.init(frame: .zero)
         setup()
         layout()
@@ -30,6 +29,11 @@ class ChatMessageImageFileContentView: UIView {
         layer.cornerRadius = 4
 
         imageView.contentMode = .scaleAspectFill
+
+        update(for: state.value)
+        state.addObserver(self) { state, _ in
+            self.update(for: state)
+        }
     }
 
     private func layout() {

@@ -31,9 +31,6 @@ class FileUploadView: UIView {
         }
     }
 
-    var state: State = .none {
-        didSet { update(for: state) }
-    }
     var removeTapped: (() -> Void)?
 
     static let height: CGFloat = 60
@@ -45,10 +42,12 @@ class FileUploadView: UIView {
     private let progressView = UIProgressView()
     private let removeButton = UIButton()
     private let style: FileUploadStyle
+    private let state: ValueProvider<State>
     private let kContentInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
 
-    init(with style: FileUploadStyle) {
+    init(with style: FileUploadStyle, state: ValueProvider<State>) {
         self.style = style
+        self.state = state
         self.previewImageView = FilePreviewImageView(with: style.preview)
         super.init(frame: .zero)
         setup()
@@ -69,6 +68,11 @@ class FileUploadView: UIView {
         removeButton.tintColor = style.removeButtonColor
         removeButton.setImage(style.removeButtonImage, for: .normal)
         removeButton.addTarget(self, action: #selector(remove), for: .touchUpInside)
+
+        update(for: state.value)
+        state.addObserver(self) { state, _ in
+            self.update(for: state)
+        }
     }
 
     private func layout() {

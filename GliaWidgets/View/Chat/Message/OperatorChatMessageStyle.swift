@@ -4,9 +4,9 @@ public class OperatorChatMessageStyle: ChatMessageStyle {
     public var operatorImage: UserImageStyle
 
     public init(text: ChatTextContentStyle,
-                imageFile: ChatMessageImageFileContentStyle,
+                imageDownload: ChatImageDownloadContentStyle,
                 operatorImage: UserImageStyle) {
         self.operatorImage = operatorImage
-        super.init(text: text, imageFile: imageFile)
+        super.init(text: text, imageDownload: imageDownload)
     }
 }

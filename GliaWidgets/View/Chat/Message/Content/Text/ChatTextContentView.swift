@@ -1,6 +1,6 @@
 import UIKit
 
-class ChatMessageTextContentView: UIView {
+class ChatTextContentView: UIView {
     var text: String? {
         get { return textLabel.text }
         set { textLabel.text = newValue }

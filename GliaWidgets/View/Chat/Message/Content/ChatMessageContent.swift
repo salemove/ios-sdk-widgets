@@ -2,5 +2,5 @@ import UIKit
 
 enum ChatMessageContent {
     case text(String)
-    case image(UIImage)
+    case imageDownload(ValueProvider<ChatImageDownloadContentView.State>)
 }

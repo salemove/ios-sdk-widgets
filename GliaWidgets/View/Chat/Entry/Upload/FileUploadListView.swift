@@ -23,15 +23,11 @@ class FileUploadListView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func addUploadView(with stateProvider: ValueProvider<FileUploadView.State>) {
+    func addUploadView(with state: ValueProvider<FileUploadView.State>) {
         let viewIndex = uploadViews.count
-        let uploadView = FileUploadView(with: style.item)
-        uploadView.state = stateProvider.value
+        let uploadView = FileUploadView(with: style.item, state: state)
         uploadView.removeTapped = { [weak self] in self?.removeTapped?(viewIndex) }
         stackView.insertArrangedSubview(uploadView, at: 0)
-        stateProvider.addObserver(self) { state, _ in
-            uploadView.state = state
-        }
         updateHeight()
     }
 
