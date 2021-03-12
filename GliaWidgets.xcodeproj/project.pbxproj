@@ -266,7 +266,6 @@
 		1A205D7E25655CEC003AA3CD /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		1A205D8625655CEE003AA3CD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1A205D8825655CEE003AA3CD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		1A205DA6256564CE003AA3CD /* PureLayout.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PureLayout.framework; path = GliaWidgets/Frameworks/PureLayout.framework; sourceTree = "<group>"; };
 		1A277A1125FA604E009FE131 /* ChatDownloadContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatDownloadContentView.swift; sourceTree = "<group>"; };
 		1A277A1525FA60E1009FE131 /* ChatDownloadContentStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatDownloadContentStyle.swift; sourceTree = "<group>"; };
 		1A2DA71E25EF720400032611 /* FilePickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilePickerViewModel.swift; sourceTree = "<group>"; };
@@ -306,7 +305,6 @@
 		1A4AF5D225AEF543002CD0F4 /* AlertViewController+Confirmation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlertViewController+Confirmation.swift"; sourceTree = "<group>"; };
 		1A4AF5D625AEF584002CD0F4 /* AlertViewController+MultipleMediaUpgrade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlertViewController+MultipleMediaUpgrade.swift"; sourceTree = "<group>"; };
 		1A56D53C257E24A400141BC8 /* PoweredBy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoweredBy.swift; sourceTree = "<group>"; };
-		1A56D5CF257E940900141BC8 /* PureLayout.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PureLayout.framework; path = Carthage/Build/iOS/PureLayout.framework; sourceTree = "<group>"; };
 		1A5F494A25CA86CA003E3678 /* Call.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Call.swift; sourceTree = "<group>"; };
 		1A5F495425CBE84A003E3678 /* SettingsAlertConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAlertConfiguration.swift; sourceTree = "<group>"; };
 		1A5F813B2588B72100A605DA /* ChatMessageEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageEntryView.swift; sourceTree = "<group>"; };
@@ -668,8 +666,6 @@
 		1A205DA5256564CE003AA3CD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				1A56D5CF257E940900141BC8 /* PureLayout.framework */,
-				1A205DA6256564CE003AA3CD /* PureLayout.framework */,
 				0A249CE317961801DDAD22AE /* Pods_GliaWidgets.framework */,
 				2308CF5ACCB31E1CC49FED95 /* Pods_TestingApp.framework */,
 			);
