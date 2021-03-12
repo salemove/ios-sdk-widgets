@@ -8,6 +8,15 @@ class ChatEngagementFile: Codable {
     let contentType: String?
     let isDeleted: Bool?
 
+    private enum CodingKeys: String, CodingKey {
+        case id
+        case url
+        case name
+        case size
+        case contentType
+        case isDeleted
+    }
+
     init(with file: SalemoveSDK.EngagementFile) {
         id = file.id
         url = file.url

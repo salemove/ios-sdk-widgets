@@ -27,6 +27,16 @@ class ChatMessage: Codable {
     let sender: ChatMessageSender
     let content: String
     let attachment: ChatAttachment?
+    var downloads: [FileDownload<ChatEngagementFile>]?
+
+    private enum CodingKeys: String, CodingKey {
+        case id
+        case queueID
+        case `operator`
+        case sender
+        case content
+        case attachment
+    }
 
     init(with message: SalemoveSDK.Message,
          queueID: String? = nil,

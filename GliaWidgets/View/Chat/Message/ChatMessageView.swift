@@ -20,9 +20,11 @@ class ChatMessageView: UIView {
             let contentView = ChatTextContentView(with: style.text)
             contentView.text = text
             appendContentView(contentView, animated: animated)
-        case .imageDownload(let state):
+        /*case .imageDownload(let state):
             let contentView = ChatImageDownloadContentView(with: style.imageDownload, state: state)
-            appendContentView(contentView, animated: animated)
+            appendContentView(contentView, animated: animated)*/
+        case .downloads(let downloads):
+            break
         }
     }
 

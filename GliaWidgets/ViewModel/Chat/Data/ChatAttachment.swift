@@ -23,6 +23,11 @@ class ChatAttachment: Codable {
     let type: ChatAttachmentType?
     let files: [ChatEngagementFile]?
 
+    private enum CodingKeys: String, CodingKey {
+        case type
+        case files
+    }
+
     init?(with attachment: SalemoveSDK.Attachment?) {
         guard let attachment = attachment else { return nil }
         type = ChatAttachmentType(with: attachment.type)

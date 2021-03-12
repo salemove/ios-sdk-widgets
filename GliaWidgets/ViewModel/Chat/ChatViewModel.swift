@@ -308,7 +308,8 @@ extension ChatViewModel {
 
         switch message.sender {
         case .operator:
-            let message = ChatMessage(with: message)
+            let message = ChatMessage(with: message,
+                                      operator: interactor.engagedOperator)
             if let item = ChatItem(with: message) {
                 appendItem(item, to: messagesSection, animated: true)
                 action?(.scrollToBottom(animated: true))
@@ -413,40 +414,33 @@ extension ChatViewModel {
         let section = sections[section]
         let item = section[row]
 
-        if section === messagesSection {
-            switch item.kind {
-            case .operatorMessage(let message, showsImage: _, imageUrl: _):
-                let nextItem = section.item(after: row)
-                if nextItem == nil || nextItem?.isOperatorMessage == false {
-                    let imageUrl = interactor.engagedOperator?.picture?.url
-                    let kind: ChatItem.Kind = .operatorMessage(message,
-                                                               showsImage: true,
-                                                               imageUrl: imageUrl)
-                    return ChatItem(kind: kind)
-                }
-            default:
-                break
-            }
-        }
-
-        return item
-    }
-
-    /*func downloadStates(for item: ChatItem) -> [ValueProvider<FileDownload.State>] {
         switch item.kind {
-        case .visitorMessage(let message, _), .operatorMessage(let message, _, _):
-            return downloadStates(for: message.attachment?.files)
+        case .operatorMessage(let message, _, _):
+            message.downloads = downloader.downloads(for: message.attachment?.files, autoDownload: .images)
+            if shouldShowOperatorImage(for: row, in: section) {
+                let imageUrl = message.operator?.pictureUrl
+                let kind: ChatItem.Kind = .operatorMessage(message,
+                                                           showsImage: true,
+                                                           imageUrl: imageUrl)
+                return ChatItem(kind: kind)
+            }
+            return item
+        case .visitorMessage(let message, _):
+            message.downloads = downloader.downloads(for: message.attachment?.files, autoDownload: .images)
+            return item
         case .outgoingMessage(let message):
-            return downloadStates(for: message.attachment?.files)
+            message.downloads = downloader.downloads(for: message.attachment?.files, autoDownload: .images)
+            return item
         default:
-            return []
+            return item
         }
     }
 
-    private func downloadStates(for files: [ChatEngagementFile]?) -> [ValueProvider<FileDownload.State>] {
-        let downloads = downloader.downloads(for: files, autoDownload: .images)
-        return downloads.map({ $0.state })
-    }*/
+    private func shouldShowOperatorImage(for row: Int, in section: Section<ChatItem>) -> Bool {
+        guard case .operatorMessage = section[row].kind else { return false }
+        let nextItem = section.item(after: row)
+        return nextItem == nil || nextItem?.isOperatorMessage == false
+    }
 }
 
 extension ChatViewModel {
