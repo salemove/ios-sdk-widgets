@@ -3,8 +3,8 @@ import UIKit
 class ChatDownloadContentView: UIView {
     enum State {
         case none
-        case downloading(url: URL, progress: ValueProvider<Double>)
-        case downloaded(url: URL)
+        case downloading(name: String?, size: Double?, progress: ValueProvider<Double>)
+        case downloaded(name: String?, size: Double?, url: URL)
         case error(Error)
     }
 

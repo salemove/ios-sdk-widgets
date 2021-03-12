@@ -68,6 +68,7 @@ class FileDownload<File: FileDownloadable> {
             }
         }
         let onCompletion: EngagementFileFetchCompletionBlock = { data, error in
+            print("FILE:",fileID, "DATA:", data, "ERROR:", error?.error?.localizedDescription)
             if let data = data {
                 self.storage.store(data.data, for: fileID)
                 self.state.value = .downloaded(file: self.file,

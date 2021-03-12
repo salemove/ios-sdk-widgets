@@ -35,7 +35,7 @@ class ChatImageDownloadContentView: ChatDownloadContentView {
 
     override func update(for state: State) {
         switch state {
-        case .downloaded(url: let url):
+        case .downloaded(_, _, url: let url):
             let image = UIImage(contentsOfFile: url.path)
             imageView.image = image
         default:

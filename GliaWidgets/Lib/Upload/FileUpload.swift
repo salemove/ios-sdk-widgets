@@ -67,13 +67,14 @@ class FileUpload {
             }
         }
         let onCompletion: EngagementFileCompletionBlock = { file, error in
+            print("UPLOADED:", file?.id)
             if let file = file {
                 self.state.value = .uploaded(url: self.url, file: file)
             } else if let error = error {
                 self.state.value = .error(Error(with: error))
             }
         }
-
+        print("UPLOADING:", file.id, file.contentType)
         state.value = .uploading(url: url, progress: progress)
         Salemove.sharedInstance.uploadFileToEngagement(file,
                                                        progress: onProgress,

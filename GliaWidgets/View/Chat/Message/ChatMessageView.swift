@@ -20,12 +20,14 @@ class ChatMessageView: UIView {
             let contentView = ChatTextContentView(with: style.text)
             contentView.text = text
             appendContentView(contentView, animated: animated)
-        /*case .imageDownload(let state):
-            let contentView = ChatImageDownloadContentView(with: style.imageDownload, state: state)
-            appendContentView(contentView, animated: animated)*/
         case .downloads(let downloads):
-            break
+            let contentViews = self.contentViews(for: downloads)
+            appendContentViews(contentViews, animated: animated)
         }
+    }
+
+    func appendContentViews(_ contentViews: [UIView], animated: Bool) {
+        contentViews.forEach({ appendContentView($0, animated: animated) })
     }
 
     func appendContentView(_ contentView: UIView, animated: Bool) {
@@ -45,5 +47,47 @@ class ChatMessageView: UIView {
     func setup() {
         contentViews.axis = .vertical
         contentViews.spacing = 4
+    }
+
+    private func contentViews(for downloads: [FileDownload<ChatEngagementFile>]) -> [ChatDownloadContentView] {
+        return downloads.compactMap({
+            let state = ValueProvider<ChatDownloadContentView.State>(with: .init(with: $0.state.value))
+            if $0.file.isImage {
+                let contentView = ChatImageDownloadContentView(with: style.imageDownload, state: state)
+                return contentView
+            } else {
+                return nil
+            }
+        })
+    }
+}
+
+private extension ChatDownloadContentView.State {
+    init(with state: FileDownload<ChatEngagementFile>.State) {
+        switch state {
+        case .none:
+            self = .none
+        case .downloading(file: let file, progress: let progress):
+            self = .downloading(name: file.name, size: file.size, progress: progress)
+        case .downloaded(file: let file, url: let url):
+            self = .downloaded(name: file.name, size: file.size, url: url)
+        case .error(let error):
+            self = .error(.init(with: error))
+        }
+    }
+}
+
+private extension ChatDownloadContentView.Error {
+    init(with error: FileDownload<ChatEngagementFile>.Error) {
+        switch error {
+        case .network:
+            self = .network
+        case .generic:
+            self = .generic
+        case .missingFileID:
+            self = .generic
+        case .deleted:
+            self = .generic
+        }
     }
 }

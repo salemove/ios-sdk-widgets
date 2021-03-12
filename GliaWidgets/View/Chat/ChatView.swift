@@ -136,15 +136,18 @@ class ChatView: EngagementView {
         case .outgoingMessage(let message):
             let view = VisitorChatMessageView(with: style.visitorMessage)
             view.appendContent(.text(message.content), animated: false)
+            view.appendContent(.downloads(message.downloads), animated: false)
             return .outgoingMessage(view)
         case .visitorMessage(let message, status: let status):
             let view = VisitorChatMessageView(with: style.visitorMessage)
             view.appendContent(.text(message.content), animated: false)
+            view.appendContent(.downloads(message.downloads), animated: false)
             view.status = status
             return .visitorMessage(view)
         case .operatorMessage(let message, showsImage: let showsImage, imageUrl: let imageUrl):
             let view = OperatorChatMessageView(with: style.operatorMessage)
             view.appendContent(.text(message.content), animated: false)
+            view.appendContent(.downloads(message.downloads), animated: false)
             view.showsOperatorImage = showsImage
             view.setOperatorImage(fromUrl: imageUrl, animated: false)
             return .operatorMessage(view)
