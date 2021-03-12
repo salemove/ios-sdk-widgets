@@ -1,6 +1,6 @@
 import SalemoveSDK
 
-class FileDownload {
+class FileDownload<File: FileDownloadable> {
     enum Error {
         case network
         case generic
@@ -24,8 +24,8 @@ class FileDownload {
 
     enum State {
         case none
-        case downloading(file: ChatEngagementFile, progress: ValueProvider<Double>)
-        case downloaded(file: ChatEngagementFile, url: URL)
+        case downloading(file: File, progress: ValueProvider<Double>)
+        case downloaded(file: File, url: URL)
         case error(Error)
     }
 
@@ -39,11 +39,11 @@ class FileDownload {
     }
 
     let state = ValueProvider<State>(with: .none)
-    let file: ChatEngagementFile
+    let file: File
 
     private let storage: DataStorage
 
-    init(with file: ChatEngagementFile, storage: DataStorage) {
+    init(with file: File, storage: DataStorage) {
         self.file = file
         self.storage = storage
 

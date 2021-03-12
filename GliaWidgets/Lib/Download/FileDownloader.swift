@@ -1,17 +1,17 @@
 import SalemoveSDK
 
-class FileDownloader {
+class FileDownloader<File: FileDownloadable> {
     enum AutoDownload {
         case nothing
         case images
     }
 
-    private var downloads = [String: FileDownload]()
+    private var downloads = [String: FileDownload<File>]()
     private var storage = FileSystemStorage(directory: .documents,
                                             expiration: .none)
 
-    func downloads(for files: [ChatEngagementFile]?,
-                   autoDownload: AutoDownload = .nothing) -> [FileDownload] {
+    func downloads(for files: [File]?,
+                   autoDownload: AutoDownload = .nothing) -> [FileDownload<File>] {
         guard let files = files else { return [] }
 
         let downloads = files.compactMap({ download(for: $0) })
@@ -26,19 +26,19 @@ class FileDownloader {
         return downloads
     }
 
-    func download(for file: ChatEngagementFile) -> FileDownload? {
+    func download(for file: File) -> FileDownload<File>? {
         guard let fileID = file.id else { return nil }
 
         if let download = downloads[fileID] {
             return download
         } else {
-            let download = FileDownload(with: file, storage: storage)
+            let download = FileDownload<File>(with: file, storage: storage)
             downloads[fileID] = download
             return download
         }
     }
 
-    private func downloadImages(for downloads: [FileDownload]) {
+    private func downloadImages(for downloads: [FileDownload<File>]) {
         downloads
             .filter({ $0.file.isImage })
             .filter({

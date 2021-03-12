@@ -27,3 +27,5 @@ extension ChatEngagementFile {
         return isImage
     }
 }
+
+extension ChatEngagementFile: FileDownloadable {}
