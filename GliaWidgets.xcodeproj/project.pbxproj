@@ -221,7 +221,6 @@
 		1A205D7E25655CEC003AA3CD /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		1A205D8625655CEE003AA3CD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1A205D8825655CEE003AA3CD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		1A205DA6256564CE003AA3CD /* PureLayout.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PureLayout.framework; path = GliaWidgets/Frameworks/PureLayout.framework; sourceTree = "<group>"; };
 		1A38A8A7258B652B0089DE7B /* OperatorChatMessageStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperatorChatMessageStyle.swift; sourceTree = "<group>"; };
 		1A38A8AB258B65D00089DE7B /* ChatMessageStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageStyle.swift; sourceTree = "<group>"; };
 		1A38A8B9258B94D60089DE7B /* ImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageView.swift; sourceTree = "<group>"; };
@@ -246,7 +245,6 @@
 		1A4AF5D625AEF584002CD0F4 /* AlertViewController+MultipleMediaUpgrade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlertViewController+MultipleMediaUpgrade.swift"; sourceTree = "<group>"; };
 		1A54B83725A4723E00C9393E /* ChatStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatStorage.swift; sourceTree = "<group>"; };
 		1A56D53C257E24A400141BC8 /* PoweredBy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoweredBy.swift; sourceTree = "<group>"; };
-		1A56D5CF257E940900141BC8 /* PureLayout.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PureLayout.framework; path = Carthage/Build/iOS/PureLayout.framework; sourceTree = "<group>"; };
 		1A5F494A25CA86CA003E3678 /* Call.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Call.swift; sourceTree = "<group>"; };
 		1A5F495425CBE84A003E3678 /* SettingsAlertConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAlertConfiguration.swift; sourceTree = "<group>"; };
 		1A5F813B2588B72100A605DA /* ChatMessageEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageEntryView.swift; sourceTree = "<group>"; };
@@ -535,8 +533,6 @@
 		1A205DA5256564CE003AA3CD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				1A56D5CF257E940900141BC8 /* PureLayout.framework */,
-				1A205DA6256564CE003AA3CD /* PureLayout.framework */,
 				0A249CE317961801DDAD22AE /* Pods_GliaWidgets.framework */,
 				2308CF5ACCB31E1CC49FED95 /* Pods_TestingApp.framework */,
 			);
