@@ -63,11 +63,16 @@ extension Theme {
             titleColor: color.baseLight,
             backgroundColor: color.systemNegative
         )
+        let endScreenShareButton = HeaderButtonStyle(
+            image: Asset.startScreenShare.image,
+            color: color.secondary
+        )
         return CallStyle(
             header: header,
             connect: connect,
             backgroundColor: .clear,
             endButton: endButton,
+            endScreenShareButton: endScreenShareButton,
             preferredStatusBarStyle: .lightContent,
             audioTitle: Call.Audio.title,
             videoTitle: Call.Video.title,

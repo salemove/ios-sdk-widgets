@@ -15,6 +15,7 @@ public class ChatStyle: EngagementStyle {
                 connect: ConnectStyle,
                 backgroundColor: UIColor,
                 endButton: ActionButtonStyle,
+                endScreenShareButton: HeaderButtonStyle,
                 preferredStatusBarStyle: UIStatusBarStyle,
                 title: String,
                 backButton: HeaderButtonStyle,
@@ -38,6 +39,7 @@ public class ChatStyle: EngagementStyle {
                    connect: connect,
                    backgroundColor: backgroundColor,
                    endButton: endButton,
+                   endScreenShareButton: endScreenShareButton,
                    preferredStatusBarStyle: preferredStatusBarStyle)
     }
 }

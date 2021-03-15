@@ -58,9 +58,15 @@ class CallViewController: EngagementViewController, MediaUpgradePresenter {
             case .switchToUpgradeMode:
                 view.switchTo(.upgrading)
             case .showEndButton:
-                let rightItem = ActionButton(with: self.viewFactory.theme.chat.endButton)
+                let rightItem = ActionButton(with: self.viewFactory.theme.call.endButton)
                 rightItem.tap = { viewModel.event(.closeTapped) }
                 view.header.setRightItem(rightItem, animated: true)
+            case .showEndScreenShareButton:
+                let endEngagementButton = ActionButton(with: self.viewFactory.theme.call.endButton)
+                endEngagementButton.tap = { viewModel.event(.closeTapped) }
+                let endScreenShareButton = HeaderButton(with: self.viewFactory.theme.call.endScreenShareButton)
+                endScreenShareButton.tap = { viewModel.event(.endScreenSharingTapped) }
+                view.header.setRightItems([endScreenShareButton, endEngagementButton], animated: true)
             case .setTitle(let title):
                 view.header.title = title
             case .setOperatorName(let name):
