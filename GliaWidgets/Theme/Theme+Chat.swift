@@ -59,12 +59,12 @@ extension Theme {
             textColor: color.baseLight,
             backgroundColor: color.primary
         )
-        let visitorImageDownload = ChatImageDownloadContentStyle(
+        let visitorImageFile = ChatImageFileContentStyle(
             backgroundColor: color.primary
         )
         let visitorMessage = VisitorChatMessageStyle(
             text: visitorText,
-            imageDownload: visitorImageDownload,
+            imageFile: visitorImageFile,
             statusFont: font.caption,
             statusColor: color.baseNormal,
             delivered: Chat.Message.Status.delivered
@@ -74,12 +74,12 @@ extension Theme {
             textColor: color.baseDark,
             backgroundColor: Color.lightGrey
         )
-        let operatorImageDownload = ChatImageDownloadContentStyle(
+        let operatorImageFile = ChatImageFileContentStyle(
             backgroundColor: Color.lightGrey
         )
         let operatorMessage = OperatorChatMessageStyle(
             text: operatorText,
-            imageDownload: operatorImageDownload,
+            imageFile: operatorImageFile,
             operatorImage: operatorImage
         )
         let endButton = ActionButtonStyle(

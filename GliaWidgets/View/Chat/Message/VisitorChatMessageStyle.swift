@@ -6,13 +6,13 @@ public class VisitorChatMessageStyle: ChatMessageStyle {
     public var delivered: String
 
     public init(text: ChatTextContentStyle,
-                imageDownload: ChatImageDownloadContentStyle,
+                imageFile: ChatImageFileContentStyle,
                 statusFont: UIFont,
                 statusColor: UIColor,
                 delivered: String) {
         self.statusFont = statusFont
         self.statusColor = statusColor
         self.delivered = delivered
-        super.init(text: text, imageDownload: imageDownload)
+        super.init(text: text, imageFile: imageFile)
     }
 }

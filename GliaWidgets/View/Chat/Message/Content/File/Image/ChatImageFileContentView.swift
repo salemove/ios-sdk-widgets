@@ -1,12 +1,12 @@
 import UIKit
 
-class ChatImageDownloadContentView: ChatDownloadContentView {
+class ChatImageFileContentView: ChatFileContentView {
     private let imageView = UIImageView()
-    private let style: ChatImageDownloadContentStyle
+    private let style: ChatImageFileContentStyle
     private let kInsets = UIEdgeInsets.zero
     private let kSize = CGSize(width: 240, height: 155)
 
-    init(with style: ChatImageDownloadContentStyle,
+    init(with style: ChatImageFileContentStyle,
          state: ValueProvider<State>) {
         self.style = style
         super.init(with: style, state: state)

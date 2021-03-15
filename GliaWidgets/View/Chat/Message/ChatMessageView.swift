@@ -20,6 +20,8 @@ class ChatMessageView: UIView {
             let contentView = ChatTextContentView(with: style.text)
             contentView.text = text
             appendContentView(contentView, animated: animated)
+        case .files(let files):
+            break
         case .downloads(let downloads):
             let contentViews = self.contentViews(for: downloads)
             appendContentViews(contentViews, animated: animated)
@@ -49,11 +51,11 @@ class ChatMessageView: UIView {
         contentViews.spacing = 4
     }
 
-    private func contentViews(for downloads: [FileDownload<ChatEngagementFile>]) -> [ChatDownloadContentView] {
+    private func contentViews(for downloads: [FileDownload<ChatEngagementFile>]) -> [ChatFileContentView] {
         return downloads.compactMap({
-            let state = ValueProvider<ChatDownloadContentView.State>(with: .init(with: $0.state.value))
+            let state = ValueProvider<ChatFileContentView.State>(with: .init(with: $0.state.value))
             if $0.file.isImage {
-                let contentView = ChatImageDownloadContentView(with: style.imageDownload, state: state)
+                let contentView = ChatImageFileContentView(with: style.imageFile, state: state)
                 return contentView
             } else {
                 return nil
@@ -62,7 +64,7 @@ class ChatMessageView: UIView {
     }
 }
 
-private extension ChatDownloadContentView.State {
+private extension ChatFileContentView.State {
     init(with state: FileDownload<ChatEngagementFile>.State) {
         switch state {
         case .none:
@@ -77,7 +79,7 @@ private extension ChatDownloadContentView.State {
     }
 }
 
-private extension ChatDownloadContentView.Error {
+private extension ChatFileContentView.Error {
     init(with error: FileDownload<ChatEngagementFile>.Error) {
         switch error {
         case .network:

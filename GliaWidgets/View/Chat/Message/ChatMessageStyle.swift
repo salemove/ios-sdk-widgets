@@ -2,11 +2,11 @@ import UIKit
 
 public class ChatMessageStyle {
     public var text: ChatTextContentStyle
-    public var imageDownload: ChatImageDownloadContentStyle
+    public var imageFile: ChatImageFileContentStyle
 
     public init(text: ChatTextContentStyle,
-                imageDownload: ChatImageDownloadContentStyle) {
+                imageFile: ChatImageFileContentStyle) {
         self.text = text
-        self.imageDownload = imageDownload
+        self.imageFile = imageFile
     }
 }

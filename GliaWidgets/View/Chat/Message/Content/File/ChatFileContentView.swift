@@ -1,6 +1,6 @@
 import UIKit
 
-class ChatDownloadContentView: UIView {
+class ChatFileContentView: UIView {
     enum State {
         case none
         case downloading(name: String?, size: Double?, progress: ValueProvider<Double>)
@@ -15,9 +15,9 @@ class ChatDownloadContentView: UIView {
 
     let state: ValueProvider<State>
 
-    private let style: ChatDownloadContentStyle
+    private let style: ChatFileContentStyle
 
-    init(with style: ChatDownloadContentStyle,
+    init(with style: ChatFileContentStyle,
          state: ValueProvider<State>) {
         self.style = style
         self.state = state
