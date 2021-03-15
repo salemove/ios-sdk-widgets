@@ -36,14 +36,14 @@ class FileUpload {
 
     enum State {
         case none
-        case uploading(url: URL, progress: ValueProvider<Double>)
-        case uploaded(url: URL, file: EngagementFileInformation)
+        case uploading(progress: ValueProvider<Double>)
+        case uploaded(file: EngagementFileInformation)
         case error(Error)
     }
 
     var engagementFileInformation: EngagementFileInformation? {
         switch state.value {
-        case .uploaded(url: _, file: let file):
+        case .uploaded(file: let file):
             return file
         default:
             return nil
@@ -51,41 +51,35 @@ class FileUpload {
     }
 
     let state = ValueProvider<State>(with: .none)
-    let url: URL
+    let localFile: LocalFile
 
     private let storage: DataStorage
 
-    init(with url: URL, storage: DataStorage) {
-        self.url = url
+    init(with localFile: LocalFile, storage: DataStorage) {
+        self.localFile = localFile
         self.storage = storage
     }
 
     func startUpload() {
-        let file = EngagementFile(url: url)
+        let file = EngagementFile(url: localFile.url)
         let progress = ValueProvider<Double>(with: 0)
         let onProgress: EngagementFileProgressBlock = {
-            if case .uploading(_, progress: let progress) = self.state.value {
+            if case .uploading(progress: let progress) = self.state.value {
                 progress.value = $0.fractionCompleted
             }
         }
-        let onCompletion: EngagementFileCompletionBlock = { file, error in
-            if let file = file {
-                self.storage.store(from: self.url, for: file.id)
-                self.state.value = .uploaded(url: self.url, file: file)
+        let onCompletion: EngagementFileCompletionBlock = { enagementFile, error in
+            if let enagementFile = enagementFile {
+                self.storage.store(from: self.localFile.url, for: enagementFile.id)
+                self.state.value = .uploaded(file: enagementFile)
             } else if let error = error {
                 self.state.value = .error(Error(with: error))
             }
         }
 
-        state.value = .uploading(url: url, progress: progress)
+        state.value = .uploading(progress: progress)
         Salemove.sharedInstance.uploadFileToEngagement(file,
                                                        progress: onProgress,
                                                        completion: onCompletion)
-    }
-}
-
-extension FileUpload: Equatable {
-    static func == (lhs: FileUpload, rhs: FileUpload) -> Bool {
-        return lhs.url == rhs.url
     }
 }

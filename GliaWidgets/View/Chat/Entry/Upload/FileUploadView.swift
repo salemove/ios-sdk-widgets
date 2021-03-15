@@ -1,7 +1,7 @@
 import UIKit
 
 class FileUploadView: UIView {
-    enum State {
+    /*enum State {
         case none
         case uploading(url: URL, progress: ValueProvider<Double>)
         case uploaded(url: URL)
@@ -29,7 +29,7 @@ class FileUploadView: UIView {
                 return style.infoGenericError
             }
         }
-    }
+    }*/
 
     var removeTapped: (() -> Void)?
 
@@ -42,12 +42,12 @@ class FileUploadView: UIView {
     private let progressView = UIProgressView()
     private let removeButton = UIButton()
     private let style: FileUploadStyle
-    private let state: ValueProvider<State>
+    private let upload: FileUpload
     private let kContentInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
 
-    init(with style: FileUploadStyle, state: ValueProvider<State>) {
+    init(with style: FileUploadStyle, upload: FileUpload) {
         self.style = style
-        self.state = state
+        self.upload = upload
         self.previewImageView = FilePreviewImageView(with: style.preview)
         super.init(frame: .zero)
         setup()
@@ -69,8 +69,8 @@ class FileUploadView: UIView {
         removeButton.setImage(style.removeButtonImage, for: .normal)
         removeButton.addTarget(self, action: #selector(remove), for: .touchUpInside)
 
-        update(for: state.value)
-        state.addObserver(self) { state, _ in
+        update(for: upload.state.value)
+        upload.state.addObserver(self) { state, _ in
             self.update(for: state)
         }
     }
@@ -107,15 +107,15 @@ class FileUploadView: UIView {
         progressView.autoPinEdge(.right, to: .left, of: removeButton, withOffset: -80)
     }
 
-    private func update(for state: State) {
+    private func update(for state: FileUpload.State) {
         switch state {
         case .none:
             previewImageView.state = .none
             infoLabel.text = nil
             stateLabel.text = nil
-        case .uploading(url: let url, progress: let progress):
-            previewImageView.state = .file(url: url)
-            infoLabel.text = fileInfoString(for: url)
+        case .uploading(progress: let progress):
+            previewImageView.state = .file(upload.localFile)
+            infoLabel.text = fileInfoString(for: upload.localFile)
             infoLabel.numberOfLines = 1
             infoLabel.font = style.uploading.infoFont
             infoLabel.textColor = style.uploading.infoColor
@@ -127,9 +127,9 @@ class FileUploadView: UIView {
             progress.addObserver(self) { progress, _ in
                 self.progressView.progress = Float(progress)
             }
-        case .uploaded(url: let url):
-            previewImageView.state = .file(url: url)
-            infoLabel.text = fileInfoString(for: url)
+        case .uploaded:
+            previewImageView.state = .file(upload.localFile)
+            infoLabel.text = fileInfoString(for: upload.localFile)
             infoLabel.numberOfLines = 1
             infoLabel.font = style.uploaded.infoFont
             infoLabel.textColor = style.uploaded.infoColor
@@ -140,7 +140,7 @@ class FileUploadView: UIView {
             progressView.progress = 1.0
         case .error(let error):
             previewImageView.state = .error
-            infoLabel.text = error.infoText(from: style.error)
+            infoLabel.text = errorText(from: style.error, for: error)
             infoLabel.numberOfLines = 2
             infoLabel.font = style.error.infoFont
             infoLabel.textColor = style.error.infoColor
@@ -152,9 +152,9 @@ class FileUploadView: UIView {
         }
     }
 
-    private func fileInfoString(for url: URL) -> String? {
-        let fileName = url.fileName
-        let fileSize = url.fileSizeString
+    private func fileInfoString(for file: LocalFile) -> String? {
+        let fileName = file.fileName
+        let fileSize = file.fileSizeString
 
         if let fileName = fileName, let fileSize = fileSize {
             return "\(fileName) • \(fileSize)"
@@ -164,6 +164,21 @@ class FileUploadView: UIView {
             return fileSize
         } else {
             return nil
+        }
+    }
+
+    private func errorText(from style: FileUploadErrorStateStyle, for error: FileUpload.Error) -> String {
+        switch error {
+        case .fileTooBig:
+            return style.infoFileTooBig
+        case .unsupportedFileType:
+            return style.infoUnsupportedFileType
+        case .safetyCheckFailed:
+            return style.infoSafetyCheckFailed
+        case .network:
+            return style.infoNetworkError
+        case .generic:
+            return style.infoGenericError
         }
     }
 

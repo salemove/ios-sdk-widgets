@@ -35,7 +35,7 @@ class FileUploader {
         return Attachment(files: files)
     }
     var localFiles: [LocalFile] {
-        return uploads.map({ LocalFile(with: $0.url) })
+        return uploads.map({ $0.localFile })
     }
     var count: Int { return uploads.count }
     let state = ValueProvider<State>(with: .idle)
@@ -46,7 +46,8 @@ class FileUploader {
     init() {}
 
     func addUpload(with url: URL) -> FileUpload {
-        let upload = FileUpload(with: url, storage: storage)
+        let localFile = LocalFile(with: url)
+        let upload = FileUpload(with: localFile, storage: storage)
         upload.state.addObserver(self) { _, _ in
             self.updateState()
         }
@@ -62,7 +63,7 @@ class FileUploader {
     }
 
     func removeUpload(_ upload: FileUpload) {
-        uploads.removeAll(where: { $0 == upload })
+        uploads.removeAll(where: { $0.localFile == upload.localFile })
         updateState()
     }
 

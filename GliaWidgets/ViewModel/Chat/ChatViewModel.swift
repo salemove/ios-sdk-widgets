@@ -25,7 +25,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case refreshAll
         case scrollToBottom(animated: Bool)
         case updateItemsUserImage(animated: Bool)
-        case addUpload(stateProvider: ValueProvider<FileUpload.State>)
+        case addUpload(FileUpload)
         case removeUpload(Int)
         case removeAllUploads
         case presentMediaPicker(itemSelected: (ListItemKind) -> Void)
@@ -391,7 +391,7 @@ extension ChatViewModel {
 
     private func addFile(with url: URL) {
         let upload = uploader.addUpload(with: url)
-        action?(.addUpload(stateProvider: upload.state))
+        action?(.addUpload(upload))
     }
 
     private func removeFile(at index: Int) {

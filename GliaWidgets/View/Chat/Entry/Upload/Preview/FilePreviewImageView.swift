@@ -6,7 +6,7 @@ import UIKit
 class FilePreviewImageView: UIView {
     enum State {
         case none
-        case file(url: URL)
+        case file(LocalFile)
         case error
     }
 
@@ -59,13 +59,13 @@ class FilePreviewImageView: UIView {
             imageView.image = nil
             label.text = nil
             backgroundColor = style.backgroundColor
-        case .file(url: let url):
+        case .file(let file):
             imageView.contentMode = .scaleAspectFill
             imageView.image = nil
             label.text = nil
             backgroundColor = style.backgroundColor
-            previewImage(for: url) { image in
-                self.setPreviewImage(image, for: url)
+            previewImage(for: file) { image in
+                self.setPreviewImage(image, for: file)
             }
         case .error:
             imageView.contentMode = .center
@@ -76,23 +76,23 @@ class FilePreviewImageView: UIView {
         }
     }
 
-    private func setPreviewImage(_ image: UIImage?, for url: URL) {
+    private func setPreviewImage(_ image: UIImage?, for file: LocalFile) {
         guard
-            case let .file(currentUrl) = state,
-            url == currentUrl
+            case let .file(currentFile) = state,
+            file == currentFile
         else { return }
 
         if let image = image {
             self.imageView.image = image
         } else {
-            self.label.text = self.fileExtension(for: url)
+            self.label.text = file.fileExtension.uppercased()
         }
     }
 
-    private func previewImage(for url: URL, completion: @escaping (UIImage?) -> Void) {
+    private func previewImage(for file: LocalFile, completion: @escaping (UIImage?) -> Void) {
         if #available(iOS 13.0, *) {
             let request = QLThumbnailGenerator.Request(
-                fileAt: url,
+                fileAt: file.url,
                 size: kSize,
                 scale: UIScreen.main.scale,
                 representationTypes: .lowQualityThumbnail
@@ -103,12 +103,8 @@ class FilePreviewImageView: UIView {
                 }
             }
         } else {
-            let image = UIImage(contentsOfFile: url.path)?.resized(to: kSize)
+            let image = UIImage(contentsOfFile: file.url.path)?.resized(to: kSize)
             completion(image)
         }
-    }
-
-    private func fileExtension(for url: URL) -> String? {
-        return url.pathExtension.uppercased()
     }
 }
