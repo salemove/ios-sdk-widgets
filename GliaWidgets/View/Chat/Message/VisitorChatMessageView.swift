@@ -10,7 +10,7 @@ class VisitorChatMessageView: ChatMessageView {
     private let kInsets = UIEdgeInsets(top: 2, left: 88, bottom: 2, right: 16)
 
     init(with style: VisitorChatMessageStyle) {
-        super.init(with: style)
+        super.init(with: style, contentAlignment: .right)
         setup(style: style)
         layout()
     }

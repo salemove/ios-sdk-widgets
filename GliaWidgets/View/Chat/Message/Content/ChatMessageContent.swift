@@ -5,3 +5,8 @@ enum ChatMessageContent {
     case files([LocalFile])
     case downloads([FileDownload<ChatEngagementFile>])
 }
+
+enum ChatMessageContentAlignment {
+    case left
+    case right
+}
