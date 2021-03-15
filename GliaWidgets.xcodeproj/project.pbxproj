@@ -185,9 +185,13 @@
 		1AFB1E7825F8B26800CA460D /* ChatTextContentStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFB1E7725F8B26800CA460D /* ChatTextContentStyle.swift */; };
 		1C12BC08594FEF3073AAE5B8 /* Pods_GliaWidgets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A249CE317961801DDAD22AE /* Pods_GliaWidgets.framework */; };
 		65838FF5119F5496B099DD04 /* Pods_TestingApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2308CF5ACCB31E1CC49FED95 /* Pods_TestingApp.framework */; };
+		C43D7A0D25FF92530064B1DA /* ChoiceCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43D7A0C25FF92530064B1DA /* ChoiceCardView.swift */; };
+		C43D7A1125FF92680064B1DA /* ChoiceCardStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43D7A1025FF92680064B1DA /* ChoiceCardStyle.swift */; };
+		C43D7A1525FF9A590064B1DA /* ChatChoiceCardOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43D7A1425FF9A590064B1DA /* ChatChoiceCardOption.swift */; };
 		C47901AF25ED2E70007EE195 /* ScreenShareOfferPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47901AE25ED2E70007EE195 /* ScreenShareOfferPresenter.swift */; };
 		C47901B325ED2F31007EE195 /* ScreenShareOfferAlertConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47901B225ED2F31007EE195 /* ScreenShareOfferAlertConfiguration.swift */; };
 		C47901B725ED2FB0007EE195 /* AlertViewController+ScreenShareOffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47901B625ED2FB0007EE195 /* AlertViewController+ScreenShareOffer.swift */; };
+		C49E232F25FFA360001A851C /* ChatChoiceOptionContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49E232E25FFA360001A851C /* ChatChoiceOptionContentView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -405,9 +409,13 @@
 		2308CF5ACCB31E1CC49FED95 /* Pods_TestingApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TestingApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6BD7D3ECB379FC8A96BE4C05 /* Pods-GliaWidgets.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliaWidgets.debug.xcconfig"; path = "Target Support Files/Pods-GliaWidgets/Pods-GliaWidgets.debug.xcconfig"; sourceTree = "<group>"; };
 		913BCC7A8BE2CA12D31E2C26 /* Pods-TestingApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestingApp.release.xcconfig"; path = "Target Support Files/Pods-TestingApp/Pods-TestingApp.release.xcconfig"; sourceTree = "<group>"; };
+		C43D7A0C25FF92530064B1DA /* ChoiceCardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChoiceCardView.swift; sourceTree = "<group>"; };
+		C43D7A1025FF92680064B1DA /* ChoiceCardStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoiceCardStyle.swift; sourceTree = "<group>"; };
+		C43D7A1425FF9A590064B1DA /* ChatChoiceCardOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatChoiceCardOption.swift; sourceTree = "<group>"; };
 		C47901AE25ED2E70007EE195 /* ScreenShareOfferPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenShareOfferPresenter.swift; sourceTree = "<group>"; };
 		C47901B225ED2F31007EE195 /* ScreenShareOfferAlertConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenShareOfferAlertConfiguration.swift; sourceTree = "<group>"; };
 		C47901B625ED2FB0007EE195 /* AlertViewController+ScreenShareOffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlertViewController+ScreenShareOffer.swift"; sourceTree = "<group>"; };
+		C49E232E25FFA360001A851C /* ChatChoiceOptionContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatChoiceOptionContentView.swift; sourceTree = "<group>"; };
 		C6D8984EDBCD7D69C93FA67C /* Pods-GliaWidgets.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliaWidgets.release.xcconfig"; path = "Target Support Files/Pods-GliaWidgets/Pods-GliaWidgets.release.xcconfig"; sourceTree = "<group>"; };
 		DDA5D47411FBD9F06A363BD5 /* Pods-TestingApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestingApp.debug.xcconfig"; path = "Target Support Files/Pods-TestingApp/Pods-TestingApp.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -590,6 +598,7 @@
 			children = (
 				1AFB1E7325F8B00B00CA460D /* ChatTextContentView.swift */,
 				1AFB1E7725F8B26800CA460D /* ChatTextContentStyle.swift */,
+				C49E232E25FFA360001A851C /* ChatChoiceOptionContentView.swift */,
 			);
 			path = Text;
 			sourceTree = "<group>";
@@ -846,6 +855,7 @@
 				1AFB1E6725F7AE3C00CA460D /* ChatAttachment.swift */,
 				1A6EB05625A717CB0007081A /* ChatMessage.swift */,
 				1A5F8181258B4F0E00A605DA /* OutgoingMessage.swift */,
+				C43D7A1425FF9A590064B1DA /* ChatChoiceCardOption.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -1163,6 +1173,8 @@
 				1A4AD3B2256D2A7600468BFB /* VisitorChatMessageStyle.swift */,
 				1A60B02C256BF7FF00E53F53 /* OperatorChatMessageView.swift */,
 				1A38A8A7258B652B0089DE7B /* OperatorChatMessageStyle.swift */,
+				C43D7A0C25FF92530064B1DA /* ChoiceCardView.swift */,
+				C43D7A1025FF92680064B1DA /* ChoiceCardStyle.swift */,
 			);
 			path = Message;
 			sourceTree = "<group>";
@@ -1681,7 +1693,9 @@
 				1A4674B625E907320078FA1C /* ItemListStyle.swift in Sources */,
 				1A7CA81D2574D6370047CBBE /* ConnectView.swift in Sources */,
 				1ABD6C5525B574FF00D56EFA /* BubbleView.swift in Sources */,
+				C43D7A1525FF9A590064B1DA /* ChatChoiceCardOption.swift in Sources */,
 				1A2DA73B25EFC00500032611 /* FileUploadListStyle.swift in Sources */,
+				C43D7A0D25FF92530064B1DA /* ChoiceCardView.swift in Sources */,
 				1A0C142925B84E5500B00695 /* EngagementViewController.swift in Sources */,
 				1A60AFE425669B0400E53F53 /* ChatCoordinator.swift in Sources */,
 				1AA738B625790D9900E1120F /* ActionButton.swift in Sources */,
@@ -1733,6 +1747,7 @@
 				1A2DA71F25EF720400032611 /* FilePickerViewModel.swift in Sources */,
 				1A60B0152567FC7000E53F53 /* Button.swift in Sources */,
 				1ABD6C5925B5758000D56EFA /* BubbleStyle.swift in Sources */,
+				C49E232F25FFA360001A851C /* ChatChoiceOptionContentView.swift in Sources */,
 				1A6EBB0725ADB84200EE325D /* MediaUpgradeActionStyle.swift in Sources */,
 				1A4AD3CA256E864800468BFB /* ThemeColorStyle.swift in Sources */,
 				1A0C143125B8547200B00695 /* EngagementStyle.swift in Sources */,
@@ -1766,6 +1781,7 @@
 				1AFB1E6825F7AE3C00CA460D /* ChatAttachment.swift in Sources */,
 				1A2DA73725EFBFE700032611 /* FileUploadListView.swift in Sources */,
 				1AE15E49257A6BD200A642C0 /* ConfirmationAlertConfiguration.swift in Sources */,
+				C43D7A1125FF92680064B1DA /* ChoiceCardStyle.swift in Sources */,
 				1A60AFB22566821B00E53F53 /* Asset.swift in Sources */,
 				1A1E309625F8CA4400850E68 /* FileDownload.swift in Sources */,
 				1A4AD3AF256D283700468BFB /* ChatMessageView.swift in Sources */,

@@ -26,6 +26,7 @@ public struct AlertConfiguration {
         endScreenShare: ConfirmationAlertConfiguration,
         microphoneSettings: SettingsAlertConfiguration,
         cameraSettings: SettingsAlertConfiguration,
+        mediaSourceNotAvailable: MessageAlertConfiguration,
         unexpectedError: MessageAlertConfiguration,
         apiError: MessageAlertConfiguration
     ) {

@@ -82,6 +82,25 @@ extension Theme {
             imageFile: operatorImageFile,
             operatorImage: operatorImage
         )
+        let choiceCardText = ChatTextContentStyle(
+            textFont: font.bodyText,
+            textColor: color.baseDark,
+            backgroundColor: color.baseLight
+        )
+        let choiceCardImageFile = ChatImageFileContentStyle(
+            backgroundColor: color.baseLight
+        )
+        let choiceCardButtons = ChatTextContentStyle(
+            textFont: font.bodyText,
+            textColor: color.baseDark,
+            backgroundColor: Color.lightGrey
+        )
+        let choiceCard = ChoiceCardStyle(
+            mainText: choiceCardText,
+            frameColor: color.primary,
+            imageFile: choiceCardImageFile,
+            choiceOption: choiceCardButtons
+        )
         let endButton = ActionButtonStyle(
             title: Chat.EndButton.title,
             titleFont: font.buttonLabel,
@@ -152,6 +171,7 @@ extension Theme {
             closeButton: closeButton,
             visitorMessage: visitorMessage,
             operatorMessage: operatorMessage,
+            choiceCard: choiceCard,
             messageEntry: messageEntry,
             audioUpgrade: audioUpgrade,
             videoUpgrade: videoUpgrade,

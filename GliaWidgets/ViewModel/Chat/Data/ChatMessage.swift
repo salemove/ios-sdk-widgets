@@ -29,6 +29,11 @@ class ChatMessage: Codable {
     let attachment: ChatAttachment?
     var downloads = [FileDownload<ChatEngagementFile>]()
 
+    var isChoiceCard: Bool {
+        guard let type = attachment?.type else { return false }
+        return type == .singleChoice
+    }
+
     private enum CodingKeys: String, CodingKey {
         case id
         case queueID

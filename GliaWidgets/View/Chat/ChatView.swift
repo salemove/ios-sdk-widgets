@@ -151,6 +151,13 @@ class ChatView: EngagementView {
             view.showsOperatorImage = showsImage
             view.setOperatorImage(fromUrl: imageUrl, animated: false)
             return .operatorMessage(view)
+        case .choiceCard(let message):
+            let view = ChoiceCardView(with: style.choiceCard)
+            view.appendContent(.text(message.content), animated: false)
+            if let options = message.attachment?.options {
+                view.appendContent(.choiceOptions(options), animated: false)
+            }
+            return .choiceCard(view)
         case .callUpgrade(let kindProvider, durationProvider: let durationProvider):
             let callStyle = callUpgradeStyle(for: kindProvider.value)
             let view = ChatCallUpgradeView(with: callStyle,

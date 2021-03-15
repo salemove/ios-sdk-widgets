@@ -22,15 +22,18 @@ enum ChatAttachmentType: Int, Codable {
 class ChatAttachment: Codable {
     let type: ChatAttachmentType?
     let files: [ChatEngagementFile]?
+    let options: [ChatChoiceCardOption]?
 
     private enum CodingKeys: String, CodingKey {
         case type
         case files
+        case options
     }
 
     init?(with attachment: SalemoveSDK.Attachment?) {
         guard let attachment = attachment else { return nil }
         type = ChatAttachmentType(with: attachment.type)
-        files = attachment.files.map({ $0.map({ ChatEngagementFile(with: $0) }) })
+        files = attachment.files.map { $0.map { ChatEngagementFile(with: $0) } }
+        options = attachment.options.map { $0.map { ChatChoiceCardOption(with: $0) } }
     }
 }

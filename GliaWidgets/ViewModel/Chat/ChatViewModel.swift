@@ -330,6 +330,12 @@ extension ChatViewModel {
     }
 
     private func receivedMessage(_ message: Message) {
+        if let options = message.attachment?.options {
+            for option in options {
+                print("Option: \(String(describing: option.text)) - \(String(describing: option.value))")
+            }
+        }
+
         guard storage.isNewMessage(message) else { return }
 
         storage.storeMessage(message,
