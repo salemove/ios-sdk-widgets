@@ -1,36 +1,6 @@
 import UIKit
 
 class FileUploadView: UIView {
-    /*enum State {
-        case none
-        case uploading(url: URL, progress: ValueProvider<Double>)
-        case uploaded(url: URL)
-        case error(Error)
-    }
-
-    enum Error {
-        case fileTooBig
-        case unsupportedFileType
-        case safetyCheckFailed
-        case network
-        case generic
-
-        func infoText(from style: FileUploadErrorStateStyle) -> String? {
-            switch self {
-            case .fileTooBig:
-                return style.infoFileTooBig
-            case .unsupportedFileType:
-                return style.infoUnsupportedFileType
-            case .safetyCheckFailed:
-                return style.infoSafetyCheckFailed
-            case .network:
-                return style.infoNetworkError
-            case .generic:
-                return style.infoGenericError
-            }
-        }
-    }*/
-
     var removeTapped: (() -> Void)?
 
     static let height: CGFloat = 60

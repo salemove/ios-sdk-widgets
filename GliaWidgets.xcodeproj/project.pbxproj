@@ -533,7 +533,6 @@
 		1A0EDF5425E786820076D1AD /* Upload */ = {
 			isa = PBXGroup;
 			children = (
-				1A0EDF6325E795C90076D1AD /* Preview */,
 				1A0EDF5525E786CE0076D1AD /* FileUploadView.swift */,
 				1A0EDF5925E786DB0076D1AD /* FileUploadStyle.swift */,
 				1A2DA73625EFBFE700032611 /* FileUploadListView.swift */,
@@ -542,13 +541,13 @@
 			path = Upload;
 			sourceTree = "<group>";
 		};
-		1A0EDF6325E795C90076D1AD /* Preview */ = {
+		1A0EDF6325E795C90076D1AD /* FilePreview */ = {
 			isa = PBXGroup;
 			children = (
 				1A0EDF6425E795DD0076D1AD /* FilePreviewImageView.swift */,
 				1A0EDF6825E795EB0076D1AD /* FilePreviewImageStyle.swift */,
 			);
-			path = Preview;
+			path = FilePreview;
 			sourceTree = "<group>";
 		};
 		1A0EDF8925E8E20A0076D1AD /* Popover */ = {
@@ -847,6 +846,7 @@
 		1A6075DE2582207E00569B0E /* ImageView */ = {
 			isa = PBXGroup;
 			children = (
+				1A0EDF6325E795C90076D1AD /* FilePreview */,
 				1A6075E52582209A00569B0E /* User */,
 				1A38A8B9258B94D60089DE7B /* ImageView.swift */,
 			);
