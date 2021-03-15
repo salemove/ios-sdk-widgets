@@ -35,20 +35,20 @@ class ChatImageFileContentView: ChatFileContentView {
     }
 
     override func update(for file: LocalFile) {
-        setImage(from: file.url)
+        setImage(from: file)
     }
 
     override func update(for downloadState: FileDownload<ChatEngagementFile>.State) {
         switch downloadState {
-        case .downloaded(file: _, url: let url):
-            setImage(from: url)
+        case .downloaded(file: let file):
+            setImage(from: file)
         default:
             imageView.image = nil
         }
     }
 
-    private func setImage(from url: URL) {
-        let image = UIImage(contentsOfFile: url.path)
+    private func setImage(from file: LocalFile) {
+        let image = UIImage(contentsOfFile: file.url.path)
         imageView.image = image
     }
 }
