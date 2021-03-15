@@ -1,26 +1,17 @@
 import UIKit
 
 class ChatFileContentView: UIView {
-    enum State {
-        case none
-        case downloading(name: String?, size: Double?, progress: ValueProvider<Double>)
-        case downloaded(name: String?, size: Double?, url: URL)
-        case error(Error)
+    enum Content {
+        case file(LocalFile)
+        case download(FileDownload<ChatEngagementFile>)
     }
-
-    enum Error {
-        case network
-        case generic
-    }
-
-    let state: ValueProvider<State>
 
     private let style: ChatFileContentStyle
+    private let content: Content
 
-    init(with style: ChatFileContentStyle,
-         state: ValueProvider<State>) {
+    init(with style: ChatFileContentStyle, content: Content) {
         self.style = style
-        self.state = state
+        self.content = content
         super.init(frame: .zero)
         setup()
         layout()
@@ -30,14 +21,20 @@ class ChatFileContentView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func update(for state: State) {}
+    func update(for file: LocalFile) {}
+    func update(for downloadState: FileDownload<ChatEngagementFile>.State) {}
 
     func setup() {
         backgroundColor = style.backgroundColor
 
-        update(for: state.value)
-        state.addObserver(self) { state, _ in
-            self.update(for: state)
+        switch content {
+        case .file(let file):
+            update(for: file)
+        case .download(let download):
+            update(for: download.state.value)
+            download.state.addObserver(self) { state, _ in
+                self.update(for: state)
+            }
         }
     }
 

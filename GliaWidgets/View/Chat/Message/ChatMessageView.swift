@@ -51,45 +51,25 @@ class ChatMessageView: UIView {
         contentViews.spacing = 4
     }
 
-    private func contentViews(for downloads: [FileDownload<ChatEngagementFile>]) -> [ChatFileContentView] {
-        return downloads.compactMap({
-            let state = ValueProvider<ChatFileContentView.State>(with: .init(with: $0.state.value))
-            if $0.file.isImage {
-                let contentView = ChatImageFileContentView(with: style.imageFile, state: state)
+    private func contentViews(for files: [LocalFile]) -> [ChatFileContentView] {
+        return files.compactMap({
+            if $0.isImage {
+                let contentView = ChatImageFileContentView(with: style.imageFile, content: .file($0))
                 return contentView
             } else {
                 return nil
             }
         })
     }
-}
 
-private extension ChatFileContentView.State {
-    init(with state: FileDownload<ChatEngagementFile>.State) {
-        switch state {
-        case .none:
-            self = .none
-        case .downloading(file: let file, progress: let progress):
-            self = .downloading(name: file.name, size: file.size, progress: progress)
-        case .downloaded(file: let file, url: let url):
-            self = .downloaded(name: file.name, size: file.size, url: url)
-        case .error(let error):
-            self = .error(.init(with: error))
-        }
-    }
-}
-
-private extension ChatFileContentView.Error {
-    init(with error: FileDownload<ChatEngagementFile>.Error) {
-        switch error {
-        case .network:
-            self = .network
-        case .generic:
-            self = .generic
-        case .missingFileID:
-            self = .generic
-        case .deleted:
-            self = .generic
-        }
+    private func contentViews(for downloads: [FileDownload<ChatEngagementFile>]) -> [ChatFileContentView] {
+        return downloads.compactMap({
+            if $0.file.isImage {
+                let contentView = ChatImageFileContentView(with: style.imageFile, content: .download($0))
+                return contentView
+            } else {
+                return nil
+            }
+        })
     }
 }

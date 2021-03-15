@@ -6,10 +6,9 @@ class ChatImageFileContentView: ChatFileContentView {
     private let kInsets = UIEdgeInsets.zero
     private let kSize = CGSize(width: 240, height: 155)
 
-    init(with style: ChatImageFileContentStyle,
-         state: ValueProvider<State>) {
+    init(with style: ChatImageFileContentStyle, content: Content) {
         self.style = style
-        super.init(with: style, state: state)
+        super.init(with: style, content: content)
         setup()
         layout()
     }
@@ -20,7 +19,9 @@ class ChatImageFileContentView: ChatFileContentView {
 
     override func setup() {
         super.setup()
+        clipsToBounds = true
         layer.cornerRadius = 4
+
         imageView.contentMode = .scaleAspectFill
     }
 
@@ -33,13 +34,21 @@ class ChatImageFileContentView: ChatFileContentView {
         imageView.autoPinEdgesToSuperviewEdges(with: kInsets)
     }
 
-    override func update(for state: State) {
-        switch state {
-        case .downloaded(_, _, url: let url):
-            let image = UIImage(contentsOfFile: url.path)
-            imageView.image = image
+    override func update(for file: LocalFile) {
+        setImage(from: file.url)
+    }
+
+    override func update(for downloadState: FileDownload<ChatEngagementFile>.State) {
+        switch downloadState {
+        case .downloaded(file: _, url: let url):
+            setImage(from: url)
         default:
             imageView.image = nil
         }
+    }
+
+    private func setImage(from url: URL) {
+        let image = UIImage(contentsOfFile: url.path)
+        imageView.image = image
     }
 }
