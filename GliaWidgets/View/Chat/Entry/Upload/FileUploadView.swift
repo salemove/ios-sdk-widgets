@@ -126,9 +126,9 @@ class FileUploadView: UIView {
         let fileName = file.fileName
         let fileSize = file.fileSizeString
 
-        if let fileName = fileName, let fileSize = fileSize {
+        if !fileName.isEmpty, let fileSize = fileSize {
             return "\(fileName) • \(fileSize)"
-        } else if let fileName = fileName {
+        } else if !fileName.isEmpty {
             return fileName
         } else if let fileSize = fileSize {
             return fileSize
