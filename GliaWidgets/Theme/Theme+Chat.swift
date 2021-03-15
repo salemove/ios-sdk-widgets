@@ -54,18 +54,32 @@ extension Theme {
             connecting: connecting,
             connected: connected
         )
+        let visitorText = ChatTextContentStyle(
+            textFont: font.bodyText,
+            textColor: color.baseLight,
+            backgroundColor: color.primary
+        )
+        let visitorImageFile = ChatImageFileContentStyle(
+            backgroundColor: color.primary
+        )
         let visitorMessage = VisitorChatMessageStyle(
-            messageFont: font.bodyText,
-            messageColor: color.baseLight,
-            backgroundColor: color.primary,
+            text: visitorText,
+            imageFile: visitorImageFile,
             statusFont: font.caption,
             statusColor: color.baseNormal,
             delivered: Chat.Message.Status.delivered
         )
+        let operatorText = ChatTextContentStyle(
+            textFont: font.bodyText,
+            textColor: color.baseDark,
+            backgroundColor: Color.lightGrey
+        )
+        let operatorImageFile = ChatImageFileContentStyle(
+            backgroundColor: Color.lightGrey
+        )
         let operatorMessage = OperatorChatMessageStyle(
-            messageFont: font.bodyText,
-            messageColor: color.baseDark,
-            backgroundColor: Color.lightGrey,
+            text: operatorText,
+            imageFile: operatorImageFile,
             operatorImage: operatorImage
         )
         let endButton = ActionButtonStyle(
@@ -95,7 +109,8 @@ extension Theme {
             separatorColor: color.baseShade,
             backgroundColor: color.background,
             mediaButton: mediaButton,
-            sendButton: sendButton
+            sendButton: sendButton,
+            uploadList: uploadListStyle
         )
         let audioUpgrade = ChatCallUpgradeStyle(
             icon: Asset.upgradeAudio.image,
@@ -140,7 +155,99 @@ extension Theme {
             messageEntry: messageEntry,
             audioUpgrade: audioUpgrade,
             videoUpgrade: videoUpgrade,
-            callBubble: callBubble
+            callBubble: callBubble,
+            pickMedia: pickMedia
+        )
+    }
+
+    private var uploadListStyle: FileUploadListStyle {
+        typealias Upload = L10n.Chat.Upload
+
+        let preview = FilePreviewImageStyle(
+            fileFont: font.subtitle,
+            fileColor: color.baseLight,
+            errorIcon: Asset.uploadError.image,
+            errorIconColor: color.systemNegative,
+            backgroundColor: color.primary,
+            errorBackgroundColor: Color.lightGrey
+        )
+        let uploading = FileUploadStateStyle(
+            text: Upload.uploading,
+            font: font.subtitle,
+            textColor: color.baseDark,
+            infoFont: font.caption,
+            infoColor: color.baseNormal
+        )
+        let uploaded = FileUploadStateStyle(
+            text: Upload.uploaded,
+            font: font.subtitle,
+            textColor: color.baseDark,
+            infoFont: font.caption,
+            infoColor: color.baseNormal
+        )
+        let error = FileUploadErrorStateStyle(
+            text: Upload.failed,
+            font: font.subtitle,
+            textColor: color.baseDark,
+            infoFont: font.caption,
+            infoColor: color.systemNegative,
+            infoFileTooBig: Upload.Error.fileTooBig,
+            infoUnsupportedFileType: Upload.Error.unsupportedFileType,
+            infoSafetyCheckFailed: Upload.Error.safetyCheckFailed,
+            infoNetworkError: Upload.Error.network,
+            infoGenericError: Upload.Error.generic
+        )
+        let upload = FileUploadStyle(
+            preview: preview,
+            uploading: uploading,
+            uploaded: uploaded,
+            error: error,
+            progressColor: color.primary,
+            errorProgressColor: color.systemNegative,
+            progressBackgroundColor: Color.lightGrey,
+            removeButtonImage: Asset.uploadRemove.image,
+            removeButtonColor: color.baseNormal
+        )
+
+        return FileUploadListStyle(item: upload)
+    }
+
+    private var pickMedia: ItemListStyle {
+        typealias Chat = L10n.Chat.PickMedia
+
+        let itemFont = font.buttonLabel
+        let itemFontColor = color.baseDark
+        let itemIconColor = color.baseDark
+
+        let pickPhoto = ListItemStyle(
+            kind: .photoLibrary,
+            title: Chat.photo,
+            titleFont: itemFont,
+            titleColor: itemFontColor,
+            icon: Asset.photoLibraryIcon.image,
+            iconColor: itemIconColor
+        )
+        let takePhoto = ListItemStyle(
+            kind: .takePhoto,
+            title: Chat.takePhoto,
+            titleFont: itemFont,
+            titleColor: itemFontColor,
+            icon: Asset.cameraIcon.image,
+            iconColor: itemIconColor
+        )
+        let browse = ListItemStyle(
+            kind: .browse,
+            title: Chat.browse,
+            titleFont: itemFont,
+            titleColor: itemFontColor,
+            icon: Asset.browseIcon.image,
+            iconColor: itemIconColor
+        )
+
+        return ItemListStyle(
+            items: [pickPhoto, takePhoto, browse],
+            separatorColor: color.baseShade,
+            backgroundColor: Color.lightGrey
         )
     }
 }

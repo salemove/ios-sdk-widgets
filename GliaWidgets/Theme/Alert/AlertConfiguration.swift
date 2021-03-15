@@ -10,6 +10,7 @@ public struct AlertConfiguration {
     public var endScreenShare: ConfirmationAlertConfiguration
     public var microphoneSettings: SettingsAlertConfiguration
     public var cameraSettings: SettingsAlertConfiguration
+    public var mediaSourceNotAvailable: MessageAlertConfiguration
     public var unexpectedError: MessageAlertConfiguration
     public var apiError: MessageAlertConfiguration
 
@@ -39,6 +40,7 @@ public struct AlertConfiguration {
         self.endScreenShare = endScreenShare
         self.microphoneSettings = microphoneSettings
         self.cameraSettings = cameraSettings
+        self.mediaSourceNotAvailable = mediaSourceNotAvailable
         self.unexpectedError = unexpectedError
         self.apiError = apiError
     }

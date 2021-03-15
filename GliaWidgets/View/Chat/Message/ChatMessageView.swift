@@ -17,19 +17,20 @@ class ChatMessageView: UIView {
     func appendContent(_ content: ChatMessageContent, animated: Bool) {
         switch content {
         case .text(let text):
-            let messageLabel = UILabel()
-            messageLabel.font = style.messageFont
-            messageLabel.textColor = style.messageColor
-            messageLabel.numberOfLines = 0
-            messageLabel.text = text
-            let insets = UIEdgeInsets(top: 12, left: 16, bottom: 12, right: 16)
-            let contentView = ChatMessageContentView(with: messageLabel,
-                                                     insets: insets)
-            contentView.backgroundColor = style.backgroundColor
+            let contentView = ChatTextContentView(with: style.text)
+            contentView.text = text
             appendContentView(contentView, animated: animated)
-        case .image:
-            break
+        case .files(let files):
+            let contentViews = self.contentViews(for: files)
+            appendContentViews(contentViews, animated: animated)
+        case .downloads(let downloads):
+            let contentViews = self.contentViews(for: downloads)
+            appendContentViews(contentViews, animated: animated)
         }
+    }
+
+    func appendContentViews(_ contentViews: [UIView], animated: Bool) {
+        contentViews.forEach({ appendContentView($0, animated: animated) })
     }
 
     func appendContentView(_ contentView: UIView, animated: Bool) {
@@ -49,5 +50,27 @@ class ChatMessageView: UIView {
     func setup() {
         contentViews.axis = .vertical
         contentViews.spacing = 4
+    }
+
+    private func contentViews(for files: [LocalFile]) -> [ChatFileContentView] {
+        return files.compactMap({
+            if $0.isImage {
+                let contentView = ChatImageFileContentView(with: style.imageFile, content: .file($0))
+                return contentView
+            } else {
+                return nil
+            }
+        })
+    }
+
+    private func contentViews(for downloads: [FileDownload<ChatEngagementFile>]) -> [ChatFileContentView] {
+        return downloads.compactMap({
+            if $0.file.isImage {
+                let contentView = ChatImageFileContentView(with: style.imageFile, content: .download($0))
+                return contentView
+            } else {
+                return nil
+            }
+        })
     }
 }

@@ -136,15 +136,18 @@ class ChatView: EngagementView {
         case .outgoingMessage(let message):
             let view = VisitorChatMessageView(with: style.visitorMessage)
             view.appendContent(.text(message.content), animated: false)
+            view.appendContent(.files(message.files), animated: false)
             return .outgoingMessage(view)
         case .visitorMessage(let message, status: let status):
             let view = VisitorChatMessageView(with: style.visitorMessage)
             view.appendContent(.text(message.content), animated: false)
+            view.appendContent(.downloads(message.downloads), animated: false)
             view.status = status
             return .visitorMessage(view)
         case .operatorMessage(let message, showsImage: let showsImage, imageUrl: let imageUrl):
             let view = OperatorChatMessageView(with: style.operatorMessage)
             view.appendContent(.text(message.content), animated: false)
+            view.appendContent(.downloads(message.downloads), animated: false)
             view.showsOperatorImage = showsImage
             view.setOperatorImage(fromUrl: imageUrl, animated: false)
             return .operatorMessage(view)
@@ -241,7 +244,6 @@ extension ChatView {
                 self?.tableView.contentOffset = offset
                 self?.layoutIfNeeded()
             }, completion: { _ -> Void in })
-            messageEntryView.setSendButtonVisible(true, animated: true)
         }
 
         keyboardObserver.keyboardWillHide = { [unowned self] properties in
@@ -252,8 +254,6 @@ extension ChatView {
                 self?.messageEntryViewBottomConstraint.constant = 0
                 self?.layoutIfNeeded()
             }, completion: { _ -> Void in })
-            messageEntryView.setSendButtonVisible(!messageEntryView.message.isEmpty,
-                                                  animated: true)
         }
     }
 }
@@ -272,9 +272,7 @@ extension ChatView: UITableViewDataSource {
             let item = itemForRow?(indexPath.row, indexPath.section),
             let cell: ChatItemCell = tableView.dequeue(cellFor: indexPath)
         else { return UITableViewCell() }
-
         cell.content = content(for: item)
-
         return cell
     }
 }

@@ -130,9 +130,11 @@ extension Interactor {
     }
 
     func send(_ message: String,
+              attachment: Attachment?,
               success: @escaping (Message) -> Void,
               failure: @escaping (SalemoveError) -> Void) {
-        Salemove.sharedInstance.send(message: message) { message, error in
+        Salemove.sharedInstance.send(message: message,
+                                     attachment: attachment) { message, error in
             if let error = error {
                 failure(error)
             } else if let message = message {
@@ -262,17 +264,17 @@ extension Interactor: Interactable {
         }
     }
 
+    func receive(message: Message) {
+        print("Called: \(#function)")
+        notify(.receivedMessage(message))
+    }
+
     func start() {
         print("Called: \(#function)")
         Salemove.sharedInstance.requestEngagedOperator { operators, _ in
             let engagedOperator = operators?.first
             self.state = .engaged(engagedOperator)
         }
-    }
-
-    func receive(message: Message) {
-        print("Called: \(#function)")
-        notify(.receivedMessage(message))
     }
 
     func end() {

@@ -2,5 +2,6 @@ import UIKit
 
 enum ChatMessageContent {
     case text(String)
-    case image(UIImage)
+    case files([LocalFile])
+    case downloads([FileDownload<ChatEngagementFile>])
 }

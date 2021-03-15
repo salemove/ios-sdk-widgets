@@ -43,7 +43,7 @@ public enum L10n {
       public static let title = L10n.tr("Localizable", "alert.audioUpgrade.title")
     }
     public enum CameraPermission {
-      /// Allow access to you micrphone from device menu: “Settings” - “Privacy” - “Camera”
+      /// Allow access to your camera from device menu: “Settings” - “Privacy” - “Camera”
       public static let message = L10n.tr("Localizable", "alert.cameraPermission.message")
       /// Unable to access camera
       public static let title = L10n.tr("Localizable", "alert.cameraPermission.title")
@@ -59,6 +59,12 @@ public enum L10n {
       public static let message = L10n.tr("Localizable", "alert.leaveQueue.message")
       /// Are you sure you want to leave?
       public static let title = L10n.tr("Localizable", "alert.leaveQueue.title")
+    }
+    public enum MediaSourceNotAvailable {
+      /// This media source is not available on your device
+      public static let message = L10n.tr("Localizable", "alert.mediaSourceNotAvailable.message")
+      /// Unable to access media source
+      public static let title = L10n.tr("Localizable", "alert.mediaSourceNotAvailable.title")
     }
     public enum MediaUpgrade {
       /// {operatorName} has offered you to upgrade
@@ -77,7 +83,7 @@ public enum L10n {
       }
     }
     public enum MicrophonePermission {
-      /// Allow access to you micrphone from device menu: “Settings” - “Privacy” - “Microphone”
+      /// Allow access to your microphone from device menu: “Settings” - “Privacy” - “Microphone”
       public static let message = L10n.tr("Localizable", "alert.microphonePermission.message")
       /// Unable to access microphone
       public static let title = L10n.tr("Localizable", "alert.microphonePermission.title")
@@ -226,6 +232,14 @@ public enum L10n {
         public static let delivered = L10n.tr("Localizable", "chat.message.status.delivered")
       }
     }
+    public enum PickMedia {
+      /// Browse
+      public static let browse = L10n.tr("Localizable", "chat.pickMedia.browse")
+      /// Photo library
+      public static let photo = L10n.tr("Localizable", "chat.pickMedia.photo")
+      /// Take Photo or Video
+      public static let takePhoto = L10n.tr("Localizable", "chat.pickMedia.takePhoto")
+    }
     public enum Upgrade {
       public enum Audio {
         /// Upgraded to Audio Call
@@ -234,6 +248,26 @@ public enum L10n {
       public enum Video {
         /// Upgraded to Video Call
         public static let text = L10n.tr("Localizable", "chat.upgrade.video.text")
+      }
+    }
+    public enum Upload {
+      /// Uploading failed
+      public static let failed = L10n.tr("Localizable", "chat.upload.failed")
+      /// Ready to send
+      public static let uploaded = L10n.tr("Localizable", "chat.upload.uploaded")
+      /// Uploading file…
+      public static let uploading = L10n.tr("Localizable", "chat.upload.uploading")
+      public enum Error {
+        /// File size over 25mb limit!
+        public static let fileTooBig = L10n.tr("Localizable", "chat.upload.error.fileTooBig")
+        /// Failed to upload.
+        public static let generic = L10n.tr("Localizable", "chat.upload.error.generic")
+        /// Network error.
+        public static let network = L10n.tr("Localizable", "chat.upload.error.network")
+        /// Failed to check the safety of the file.
+        public static let safetyCheckFailed = L10n.tr("Localizable", "chat.upload.error.safetyCheckFailed")
+        /// Invalid file type!
+        public static let unsupportedFileType = L10n.tr("Localizable", "chat.upload.error.unsupportedFileType")
       }
     }
   }

@@ -1,6 +1,7 @@
 import UIKit
+import MobileCoreServices
 
-class ChatViewController: EngagementViewController, MediaUpgradePresenter, ScreenShareOfferPresenter {
+class ChatViewController: EngagementViewController, MediaUpgradePresenter, ScreenShareOfferPresenter, PopoverPresenter {
     private let viewModel: ChatViewModel
     private var lastVisibleRowIndexPath: IndexPath?
 
@@ -48,7 +49,9 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter, Scree
         view.numberOfRows = { return viewModel.numberOfItems(in: $0) }
         view.itemForRow = { return viewModel.item(for: $0, in: $1) }
         view.messageEntryView.textChanged = { viewModel.event(.messageTextChanged($0)) }
-        view.messageEntryView.sendTapped = { viewModel.event(.sendTapped(message: $0)) }
+        view.messageEntryView.sendTapped = { viewModel.event(.sendTapped) }
+        view.messageEntryView.pickMediaTapped = { viewModel.event(.pickMediaTapped) }
+        view.messageEntryView.uploadListView.removeTapped = { viewModel.event(.removeUploadTapped($0)) }
         view.callBubbleTapped = { viewModel.event(.callBubbleTapped) }
 
         viewModel.action = { action in
@@ -69,6 +72,10 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter, Scree
                 view.header.setRightItems([endScreenShareButton, endEngagementButton], animated: true)
             case .setMessageEntryEnabled(let enabled):
                 view.messageEntryView.isEnabled = enabled
+            case .setMessageText(let text):
+                view.messageEntryView.messageText = text
+            case .sendButtonHidden(let hidden):
+                view.messageEntryView.showsSendButton = !hidden
             case .appendRows(let count, let section, let animated):
                 view.appendRows(count, to: section, animated: animated)
             case .refreshRow(let row, in: let section, animated: let animated):
@@ -81,11 +88,31 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter, Scree
                 view.scrollToBottom(animated: animated)
             case .updateItemsUserImage(animated: let animated):
                 view.updateItemsUserImage(animated: animated)
+            case .addUpload(let upload):
+                view.messageEntryView.uploadListView.addUploadView(with: upload)
+            case .removeUpload(let index):
+                view.messageEntryView.uploadListView.removeUploadView(at: index)
+            case .removeAllUploads:
+                view.messageEntryView.uploadListView.removeAllUploadViews()
+            case .presentMediaPicker(itemSelected: let itemSelected):
+                self.presentMediaPicker(from: view.messageEntryView.pickMediaButton,
+                                        itemSelected: itemSelected)
             case .offerMediaUpgrade(let conf, accepted: let accepted, declined: let declined):
                 self.offerMediaUpgrade(with: conf, accepted: accepted, declined: declined)
             case .showCallBubble(let imageUrl):
                 view.showCallBubble(with: imageUrl, animated: true)
             }
         }
+    }
+
+    private func presentMediaPicker(from sourceView: UIView,
+                                    itemSelected: @escaping (ListItemKind) -> Void) {
+        presentPopover(with: viewFactory.theme.chat.pickMedia,
+                       from: sourceView,
+                       arrowDirections: [.down],
+                       itemSelected: {
+                        self.dismiss(animated: true, completion: nil)
+                        itemSelected($0)
+                       })
     }
 }
