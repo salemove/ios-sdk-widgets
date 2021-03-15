@@ -1,11 +1,10 @@
 class OutgoingMessage {
     let id = UUID().uuidString
     let content: String
-    let attachment: ChatAttachment?
-    var files = [LocalFile]()
+    let files: [LocalFile]
 
-    init(content: String, attachment: ChatAttachment?) {
+    init(content: String, files: [LocalFile]) {
         self.content = content
-        self.attachment = attachment
+        self.files = files
     }
 }

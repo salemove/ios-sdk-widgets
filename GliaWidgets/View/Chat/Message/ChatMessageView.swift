@@ -21,7 +21,8 @@ class ChatMessageView: UIView {
             contentView.text = text
             appendContentView(contentView, animated: animated)
         case .files(let files):
-            break
+            let contentViews = self.contentViews(for: files)
+            appendContentViews(contentViews, animated: animated)
         case .downloads(let downloads):
             let contentViews = self.contentViews(for: downloads)
             appendContentViews(contentViews, animated: animated)

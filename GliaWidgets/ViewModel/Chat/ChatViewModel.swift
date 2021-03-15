@@ -65,7 +65,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     private var unreadMessages: UnreadMessagesHandler!
     private let showsCallBubble: Bool
     private let storage = ChatStorage()
-    private let files = LocalFiles()
+    private let localFiles = LocalFiles()
     private let uploader = FileUploader()
     private let downloader = FileDownloader<ChatEngagementFile>()
     private var messageText = "" {
@@ -266,9 +266,11 @@ extension ChatViewModel {
         guard validateMessage() else { return }
 
         let attachment = uploader.attachment
+        let fileUrls = attachment?.files?.compactMap({ $0.url }) ?? []
+        let attachmentFiles = localFiles.files(for: fileUrls)
         let outgoingMessage = OutgoingMessage(
             content: messageText,
-            attachment: ChatAttachment(with: attachment)
+            files: attachmentFiles
         )
         let item = ChatItem(with: outgoingMessage)
         appendItem(item, to: messagesSection, animated: true)
@@ -390,14 +392,14 @@ extension ChatViewModel {
     }
 
     private func addFile(with url: URL) {
-        files.addFile(with: url)
+        localFiles.addFile(with: url)
         let upload = uploader.addUpload(with: url)
         action?(.addUpload(stateProvider: upload.state))
     }
 
     private func removeFile(at index: Int) {
         guard let upload = uploader.upload(at: index) else { return }
-        files.removeFile(with: upload.url)
+        localFiles.removeFile(with: upload.url)
         uploader.removeUpload(upload)
         action?(.removeUpload(index))
     }
@@ -431,10 +433,6 @@ extension ChatViewModel {
             return item
         case .visitorMessage(let message, _):
             message.downloads = downloader.downloads(for: message.attachment?.files, autoDownload: .images)
-            return item
-        case .outgoingMessage(let message):
-            let urls = message.attachment?.files?.compactMap({ $0.url }) ?? []
-            message.files = files.files(for: urls)
             return item
         default:
             return item
