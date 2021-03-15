@@ -22,6 +22,7 @@ public class CallStyle: EngagementStyle {
                 connect: ConnectStyle,
                 backgroundColor: UIColor,
                 endButton: ActionButtonStyle,
+                endScreenShareButton: HeaderButtonStyle,
                 preferredStatusBarStyle: UIStatusBarStyle,
                 audioTitle: String,
                 videoTitle: String,
@@ -59,6 +60,7 @@ public class CallStyle: EngagementStyle {
                    connect: connect,
                    backgroundColor: backgroundColor,
                    endButton: endButton,
+                   endScreenShareButton: endScreenShareButton,
                    preferredStatusBarStyle: preferredStatusBarStyle)
     }
 }

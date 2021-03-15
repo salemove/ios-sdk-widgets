@@ -6,22 +6,28 @@ public struct AlertConfiguration {
     public var audioUpgrade: SingleMediaUpgradeAlertConfiguration
     public var oneWayVideoUpgrade: SingleMediaUpgradeAlertConfiguration
     public var twoWayVideoUpgrade: SingleMediaUpgradeAlertConfiguration
+    public var screenShareOffer: ScreenShareOfferAlertConfiguration
+    public var endScreenShare: ConfirmationAlertConfiguration
     public var microphoneSettings: SettingsAlertConfiguration
     public var cameraSettings: SettingsAlertConfiguration
     public var unexpectedError: MessageAlertConfiguration
     public var apiError: MessageAlertConfiguration
 
-    public init(leaveQueue: ConfirmationAlertConfiguration,
-                endEngagement: ConfirmationAlertConfiguration,
-                operatorsUnavailable: MessageAlertConfiguration,
-                mediaUpgrade: MultipleMediaUpgradeAlertConfiguration,
-                audioUpgrade: SingleMediaUpgradeAlertConfiguration,
-                oneWayVideoUpgrade: SingleMediaUpgradeAlertConfiguration,
-                twoWayVideoUpgrade: SingleMediaUpgradeAlertConfiguration,
-                microphoneSettings: SettingsAlertConfiguration,
-                cameraSettings: SettingsAlertConfiguration,
-                unexpectedError: MessageAlertConfiguration,
-                apiError: MessageAlertConfiguration) {
+    public init(
+        leaveQueue: ConfirmationAlertConfiguration,
+        endEngagement: ConfirmationAlertConfiguration,
+        operatorsUnavailable: MessageAlertConfiguration,
+        mediaUpgrade: MultipleMediaUpgradeAlertConfiguration,
+        audioUpgrade: SingleMediaUpgradeAlertConfiguration,
+        oneWayVideoUpgrade: SingleMediaUpgradeAlertConfiguration,
+        twoWayVideoUpgrade: SingleMediaUpgradeAlertConfiguration,
+        screenShareOffer: ScreenShareOfferAlertConfiguration,
+        endScreenShare: ConfirmationAlertConfiguration,
+        microphoneSettings: SettingsAlertConfiguration,
+        cameraSettings: SettingsAlertConfiguration,
+        unexpectedError: MessageAlertConfiguration,
+        apiError: MessageAlertConfiguration
+    ) {
         self.leaveQueue = leaveQueue
         self.endEngagement = endEngagement
         self.operatorsUnavailable = operatorsUnavailable
@@ -29,6 +35,8 @@ public struct AlertConfiguration {
         self.audioUpgrade = audioUpgrade
         self.oneWayVideoUpgrade = oneWayVideoUpgrade
         self.twoWayVideoUpgrade = twoWayVideoUpgrade
+        self.screenShareOffer = screenShareOffer
+        self.endScreenShare = endScreenShare
         self.microphoneSettings = microphoneSettings
         self.cameraSettings = cameraSettings
         self.unexpectedError = unexpectedError
