@@ -1,6 +1,7 @@
 import UIKit
 
 class FileUploadView: UIView {
+    let upload: FileUpload
     var removeTapped: (() -> Void)?
 
     static let height: CGFloat = 60
@@ -12,7 +13,6 @@ class FileUploadView: UIView {
     private let progressView = UIProgressView()
     private let removeButton = UIButton()
     private let style: FileUploadStyle
-    private let upload: FileUpload
     private let kContentInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
 
     init(with style: FileUploadStyle, upload: FileUpload) {

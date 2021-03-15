@@ -88,3 +88,9 @@ class FileUpload {
         storage.removeData(for: id)
     }
 }
+
+extension FileUpload: Equatable {
+    static func == (lhs: FileUpload, rhs: FileUpload) -> Bool {
+        return lhs.localFile == rhs.localFile
+    }
+}

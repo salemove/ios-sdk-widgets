@@ -7,7 +7,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case viewDidLoad
         case messageTextChanged(String)
         case sendTapped
-        case removeUploadTapped(Int)
+        case removeUploadTapped(FileUpload)
         case pickMediaTapped
         case callBubbleTapped
     }
@@ -26,7 +26,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case scrollToBottom(animated: Bool)
         case updateItemsUserImage(animated: Bool)
         case addUpload(FileUpload)
-        case removeUpload(Int)
+        case removeUpload(FileUpload)
         case removeAllUploads
         case presentMediaPicker(itemSelected: (ListItemKind) -> Void)
         case offerMediaUpgrade(SingleMediaUpgradeAlertConfiguration,
@@ -107,8 +107,8 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             messageText = text
         case .sendTapped:
             sendMessage()
-        case .removeUploadTapped(let index):
-            removeFile(at: index)
+        case .removeUploadTapped(let upload):
+            removeUpload(upload)
         case .pickMediaTapped:
             presentMediaPicker()
         case .callBubbleTapped:
@@ -379,27 +379,26 @@ extension ChatViewModel {
     private func mediaPicked(_ media: PickedMedia) {
         switch media {
         case .image(let url):
-            addFile(with: url)
+            addUpload(with: url)
         case .movie(let url):
-            addFile(with: url)
+            addUpload(with: url)
         case .none:
             break
         }
     }
 
     private func filePicked(_ url: URL) {
-        addFile(with: url)
+        addUpload(with: url)
     }
 
-    private func addFile(with url: URL) {
+    private func addUpload(with url: URL) {
         let upload = uploader.addUpload(with: url)
         action?(.addUpload(upload))
     }
 
-    private func removeFile(at index: Int) {
-        guard let upload = uploader.upload(at: index) else { return }
+    private func removeUpload(_ upload: FileUpload) {
         uploader.removeUpload(upload)
-        action?(.removeUpload(index))
+        action?(.removeUpload(upload))
     }
 
     private func onUploaderStateChanged(_ state: FileUploader.State) {

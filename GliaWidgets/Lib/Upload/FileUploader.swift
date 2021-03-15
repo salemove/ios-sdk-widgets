@@ -63,7 +63,7 @@ class FileUploader {
     }
 
     func removeUpload(_ upload: FileUpload) {
-        uploads.removeAll(where: { $0.localFile == upload.localFile })
+        uploads.removeAll(where: { $0 == upload })
         upload.removeLocalFile()
         updateState()
     }
