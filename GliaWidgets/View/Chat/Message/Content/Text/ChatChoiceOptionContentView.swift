@@ -27,6 +27,7 @@ class ChatChoiceOptionContentView: UIView {
 
         textLabel.font = style.textFont
         textLabel.textColor = style.textColor
+        textLabel.textAlignment = .center
         textLabel.numberOfLines = 0
     }
 

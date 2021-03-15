@@ -2,7 +2,8 @@ import UIKit
 
 final class ChoiceCardView: ChatMessageView {
     private let viewStyle: ChoiceCardStyle
-    private let kInsets = UIEdgeInsets(top: 8, left: 88, bottom: 8, right: 16)
+    private let kInsets = UIEdgeInsets(top: 8, left: 40, bottom: 8, right: 60)
+    private let kLayoutMargins = UIEdgeInsets(top: 12, left: 16, bottom: 16, right: 16)
 
     init(with style: ChoiceCardStyle) {
         viewStyle = style
@@ -19,12 +20,19 @@ final class ChoiceCardView: ChatMessageView {
     override func setup() {
         contentViews.axis = .vertical
         contentViews.spacing = 12
+
+        contentViews.layer.cornerRadius = 8
+        contentViews.layer.borderWidth = 1
+        contentViews.layer.borderColor = viewStyle.frameColor.cgColor
+
+        contentViews.isLayoutMarginsRelativeArrangement = true
+        contentViews.layoutMargins = kLayoutMargins
     }
 
     override func appendContent(_ content: ChatMessageContent, animated: Bool) {
         switch content {
         case .text(let text):
-            let contentView = ChatTextContentView(with: style.text)
+            let contentView = ChatTextContentView(with: style.text, withZeroInsets: true)
             contentView.text = text
             appendContentView(contentView, animated: animated)
         case .choiceOptions(let options):
@@ -37,9 +45,7 @@ final class ChoiceCardView: ChatMessageView {
 
     private func layout() {
         addSubview(contentViews)
-        contentViews.autoPinEdge(toSuperviewEdge: .top, withInset: kInsets.top)
-        contentViews.autoPinEdge(toSuperviewEdge: .right, withInset: kInsets.right)
-        contentViews.autoPinEdge(toSuperviewEdge: .left, withInset: kInsets.left, relation: .greaterThanOrEqual)
+        contentViews.autoPinEdgesToSuperviewEdges(with: kInsets)
     }
 
     private func contentViews(for options: [ChatChoiceCardOption]) -> [ChatChoiceOptionContentView] {

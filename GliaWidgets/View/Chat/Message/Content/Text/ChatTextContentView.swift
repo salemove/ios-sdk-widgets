@@ -8,10 +8,13 @@ class ChatTextContentView: UIView {
 
     private let textLabel = UILabel()
     private let style: ChatTextContentStyle
-    private let kInsets = UIEdgeInsets(top: 12, left: 16, bottom: 12, right: 16)
+    private let kInsets: UIEdgeInsets
 
-    init(with style: ChatTextContentStyle) {
+    init(with style: ChatTextContentStyle, withZeroInsets: Bool = false) {
         self.style = style
+        self.kInsets = withZeroInsets
+            ? UIEdgeInsets.zero
+            : UIEdgeInsets(top: 12, left: 16, bottom: 12, right: 16)
         super.init(frame: .zero)
         setup()
         layout()
