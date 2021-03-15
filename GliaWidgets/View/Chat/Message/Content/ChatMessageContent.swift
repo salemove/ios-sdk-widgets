@@ -6,3 +6,8 @@ enum ChatMessageContent {
     case downloads([FileDownload<ChatEngagementFile>])
     case choiceOptions([ChatChoiceCardOption])
 }
+
+enum ChatMessageContentAlignment {
+    case left
+    case right
+}

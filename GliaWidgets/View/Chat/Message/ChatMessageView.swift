@@ -4,8 +4,11 @@ class ChatMessageView: UIView {
     let style: ChatMessageStyle
     let contentViews = UIStackView()
 
-    init(with style: ChatMessageStyle) {
+    private let contentAlignment: ChatMessageContentAlignment
+
+    init(with style: ChatMessageStyle, contentAlignment: ChatMessageContentAlignment) {
         self.style = style
+        self.contentAlignment = contentAlignment
         super.init(frame: .zero)
         setup()
     }
@@ -17,7 +20,7 @@ class ChatMessageView: UIView {
     func appendContent(_ content: ChatMessageContent, animated: Bool) {
         switch content {
         case .text(let text):
-            let contentView = ChatTextContentView(with: style.text)
+            let contentView = ChatTextContentView(with: style.text, contentAlignment: contentAlignment)
             contentView.text = text
             appendContentView(contentView, animated: animated)
         case .files(let files):

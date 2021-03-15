@@ -82,4 +82,15 @@ class FileUpload {
                                                        progress: onProgress,
                                                        completion: onCompletion)
     }
+
+    func removeLocalFile() {
+        guard let id = engagementFileInformation?.id else { return }
+        storage.removeData(for: id)
+    }
+}
+
+extension FileUpload: Equatable {
+    static func == (lhs: FileUpload, rhs: FileUpload) -> Bool {
+        return lhs.localFile == rhs.localFile
+    }
 }

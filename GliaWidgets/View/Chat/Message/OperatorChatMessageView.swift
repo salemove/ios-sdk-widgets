@@ -24,7 +24,7 @@ class OperatorChatMessageView: ChatMessageView {
 
     init(with style: OperatorChatMessageStyle) {
         viewStyle = style
-        super.init(with: style)
+        super.init(with: style, contentAlignment: .left)
         setup()
         layout()
     }
