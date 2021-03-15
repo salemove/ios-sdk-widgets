@@ -51,8 +51,7 @@ class FileUpload {
     }
 
     let state = ValueProvider<State>(with: .none)
-
-    private let url: URL
+    let url: URL
 
     init(with url: URL) {
         self.url = url
@@ -79,5 +78,11 @@ class FileUpload {
         Salemove.sharedInstance.uploadFileToEngagement(file,
                                                        progress: onProgress,
                                                        completion: onCompletion)
+    }
+}
+
+extension FileUpload: Equatable {
+    static func == (lhs: FileUpload, rhs: FileUpload) -> Bool {
+        return lhs.url == rhs.url
     }
 }

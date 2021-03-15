@@ -41,10 +41,6 @@ class FileUploader {
 
     init() {}
 
-    subscript(index: Int) -> FileUpload {
-        return uploads[index]
-    }
-
     func addUpload(with url: URL) -> FileUpload {
         let upload = FileUpload(with: url)
         upload.state.addObserver(self) { _, _ in
@@ -56,9 +52,13 @@ class FileUploader {
         return upload
     }
 
-    func removeUpload(at index: Int) {
-        guard uploads.indices ~= index else { return }
-        uploads.remove(at: index)
+    func upload(at index: Int) -> FileUpload? {
+        guard uploads.indices ~= index else { return nil }
+        return uploads[index]
+    }
+
+    func removeUpload(_ upload: FileUpload) {
+        uploads.removeAll(where: { $0 == upload })
         updateState()
     }
 

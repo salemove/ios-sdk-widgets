@@ -65,6 +65,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     private var unreadMessages: UnreadMessagesHandler!
     private let showsCallBubble: Bool
     private let storage = ChatStorage()
+    private let files = LocalFiles()
     private let uploader = FileUploader()
     private let downloader = FileDownloader<ChatEngagementFile>()
     private var messageText = "" {
@@ -108,7 +109,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case .sendTapped:
             sendMessage()
         case .removeUploadTapped(let index):
-            removeUpload(at: index)
+            removeFile(at: index)
         case .pickMediaTapped:
             presentMediaPicker()
         case .callBubbleTapped:
@@ -376,25 +377,28 @@ extension ChatViewModel {
     private func mediaPicked(_ media: PickedMedia) {
         switch media {
         case .image(let url):
-            addUpload(with: url)
+            addFile(with: url)
         case .movie(let url):
-            addUpload(with: url)
+            addFile(with: url)
         case .none:
             break
         }
     }
 
     private func filePicked(_ url: URL) {
-        addUpload(with: url)
+        addFile(with: url)
     }
 
-    private func addUpload(with url: URL) {
+    private func addFile(with url: URL) {
+        files.addFile(with: url)
         let upload = uploader.addUpload(with: url)
         action?(.addUpload(stateProvider: upload.state))
     }
 
-    private func removeUpload(at index: Int) {
-        uploader.removeUpload(at: index)
+    private func removeFile(at index: Int) {
+        guard let upload = uploader.upload(at: index) else { return }
+        files.removeFile(with: upload.url)
+        uploader.removeUpload(upload)
         action?(.removeUpload(index))
     }
 
@@ -429,7 +433,8 @@ extension ChatViewModel {
             message.downloads = downloader.downloads(for: message.attachment?.files, autoDownload: .images)
             return item
         case .outgoingMessage(let message):
-            message.downloads = downloader.downloads(for: message.attachment?.files, autoDownload: .images)
+            let urls = message.attachment?.files?.compactMap({ $0.url }) ?? []
+            message.files = files.files(for: urls)
             return item
         default:
             return item

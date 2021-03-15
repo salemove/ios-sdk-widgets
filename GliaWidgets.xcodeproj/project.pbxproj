@@ -149,6 +149,8 @@
 		1A7CA8242574D68E0047CBBE /* ConnectStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7CA8232574D68E0047CBBE /* ConnectStatusView.swift */; };
 		1A7CA8272574D6F40047CBBE /* ConnectStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7CA8262574D6F40047CBBE /* ConnectStyle.swift */; };
 		1A7CA82F25751B5A0047CBBE /* ConnectOperatorStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7CA82E25751B5A0047CBBE /* ConnectOperatorStyle.swift */; };
+		1A8366B025FF40AB005FE7EE /* LocalFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A8366AF25FF40AB005FE7EE /* LocalFile.swift */; };
+		1A8366B425FF41D4005FE7EE /* LocalFiles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A8366B325FF41D4005FE7EE /* LocalFiles.swift */; };
 		1A83758325FB518700A98387 /* FileDownloadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A83758225FB518700A98387 /* FileDownloadable.swift */; };
 		1A8B61D225C974A1000D780E /* ChatCallUpgradeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A8B61D125C974A1000D780E /* ChatCallUpgradeView.swift */; };
 		1A8B61D625C974D0000D780E /* ChatCallUpgradeStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A8B61D525C974D0000D780E /* ChatCallUpgradeStyle.swift */; };
@@ -365,6 +367,8 @@
 		1A7CA8232574D68E0047CBBE /* ConnectStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectStatusView.swift; sourceTree = "<group>"; };
 		1A7CA8262574D6F40047CBBE /* ConnectStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectStyle.swift; sourceTree = "<group>"; };
 		1A7CA82E25751B5A0047CBBE /* ConnectOperatorStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectOperatorStyle.swift; sourceTree = "<group>"; };
+		1A8366AF25FF40AB005FE7EE /* LocalFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalFile.swift; sourceTree = "<group>"; };
+		1A8366B325FF41D4005FE7EE /* LocalFiles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalFiles.swift; sourceTree = "<group>"; };
 		1A83758225FB518700A98387 /* FileDownloadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileDownloadable.swift; sourceTree = "<group>"; };
 		1A8B61D125C974A1000D780E /* ChatCallUpgradeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCallUpgradeView.swift; sourceTree = "<group>"; };
 		1A8B61D525C974D0000D780E /* ChatCallUpgradeStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCallUpgradeStyle.swift; sourceTree = "<group>"; };
@@ -970,6 +974,7 @@
 		1A60AFC12566857200E53F53 /* Lib */ = {
 			isa = PBXGroup;
 			children = (
+				1A8366AE25FF409B005FE7EE /* File */,
 				1A2DA72B25EF9B5B00032611 /* Upload */,
 				1A1E309425F8CA3400850E68 /* Download */,
 				1A1E309925F8E1E900850E68 /* Storage */,
@@ -1238,6 +1243,15 @@
 				1AA738A62578DD0300E1120F /* ConnectStatusStyle.swift */,
 			);
 			path = Status;
+			sourceTree = "<group>";
+		};
+		1A8366AE25FF409B005FE7EE /* File */ = {
+			isa = PBXGroup;
+			children = (
+				1A8366AF25FF40AB005FE7EE /* LocalFile.swift */,
+				1A8366B325FF41D4005FE7EE /* LocalFiles.swift */,
+			);
+			path = File;
 			sourceTree = "<group>";
 		};
 		1A8B61D025C97481000D780E /* Upgrade */ = {
@@ -1679,6 +1693,7 @@
 				1A0C9AC825C9493D00815406 /* Int+Extensions.swift in Sources */,
 				1A6EB05725A717CB0007081A /* ChatMessage.swift in Sources */,
 				1AA738B225790D5A00E1120F /* AlertView.swift in Sources */,
+				1A8366B025FF40AB005FE7EE /* LocalFile.swift in Sources */,
 				1A0C143F25B85DB400B00695 /* CallViewController.swift in Sources */,
 				1A0C9A7125C16F4A00815406 /* Theme+Alert.swift in Sources */,
 				1A38A8AC258B65D00089DE7B /* ChatMessageStyle.swift in Sources */,
@@ -1714,6 +1729,7 @@
 				1A0EDF5625E786CE0076D1AD /* FileUploadView.swift in Sources */,
 				1A4674B225E907120078FA1C /* ListItemStyle.swift in Sources */,
 				1A0C143625B85C3300B00695 /* CallView.swift in Sources */,
+				1A8366B425FF41D4005FE7EE /* LocalFiles.swift in Sources */,
 				1AA738A72578DD0300E1120F /* ConnectStatusStyle.swift in Sources */,
 				1A60AFDD25669A4200E53F53 /* ChatView.swift in Sources */,
 				1A0C9A6725C16DC400815406 /* Theme+Chat.swift in Sources */,
