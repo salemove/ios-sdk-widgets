@@ -30,10 +30,8 @@ class ChatEngagementFile: Codable {
 extension ChatEngagementFile {
     var isImage: Bool {
         let contentType = self.contentType ?? ""
-        let fileExtension = name?.split(separator: ".").last?.lowercased() ?? ""
-        let isImage = contentType.hasPrefix("image") ||
-            ["jpg", "jpeg", "png", "gif", "tif", "tiff", "bmp"].contains(fileExtension)
-        return isImage
+        let fileName = name ?? ""
+        return contentType.hasPrefix("image") || fileName.hasImageFileExtension
     }
 }
 

@@ -19,8 +19,9 @@ class FileSystemStorage: DataStorage {
 
     private let directory: Directory
     private let expiration: Expiration
+    private let fileManager = FileManager()
 
-    init(directory: Directory, expiration: Expiration) {
+    init(directory: Directory, expiration: Expiration = .none) {
         self.directory = directory
         self.expiration = expiration
         createStorage()
@@ -35,6 +36,12 @@ class FileSystemStorage: DataStorage {
         try? data.write(to: url)
     }
 
+    func store(from url: URL, for key: String) {
+        let sourcePath = url.path
+        let targetPath = storageURL(for: key).path
+        try? fileManager.copyItem(atPath: sourcePath, toPath: targetPath)
+    }
+
     func url(for key: String) -> URL {
         return storageURL(for: key)
     }
@@ -46,7 +53,12 @@ class FileSystemStorage: DataStorage {
 
     func hasData(for key: String) -> Bool {
         let url = storageURL(for: key)
-        return FileManager.default.fileExists(atPath: url.path)
+        return fileManager.fileExists(atPath: url.path)
+    }
+
+    func removeData(for key: String) {
+        let url = storageURL(for: key)
+        try? fileManager.removeItem(atPath: url.path)
     }
 
     private func storageURL(for key: String) -> URL {
@@ -54,23 +66,23 @@ class FileSystemStorage: DataStorage {
     }
 
     private func createStorage() {
-        try? FileManager.default.createDirectory(at: directory.url,
-                                                 withIntermediateDirectories: true,
-                                                 attributes: nil)
+        try? fileManager.createDirectory(at: directory.url,
+                                         withIntermediateDirectories: true,
+                                         attributes: nil)
     }
 
     private func sweep() {
         guard case .seconds(let expirationSeconds) = expiration else { return }
 
         let now = Date().timeIntervalSince1970
-        let files = try? FileManager.default.contentsOfDirectory(atPath: directory.url.path)
+        let files = try? fileManager.contentsOfDirectory(atPath: directory.url.path)
 
         files?.forEach {
             let filePath = directory.url.appendingPathComponent($0).path
-            if let attributes = try? FileManager.default.attributesOfItem(atPath: filePath),
+            if let attributes = try? fileManager.attributesOfItem(atPath: filePath),
                let created = attributes[FileAttributeKey.creationDate] as? Date,
                created.timeIntervalSince1970 + expirationSeconds < now {
-                try? FileManager.default.removeItem(atPath: filePath)
+                try? fileManager.removeItem(atPath: filePath)
             }
         }
     }

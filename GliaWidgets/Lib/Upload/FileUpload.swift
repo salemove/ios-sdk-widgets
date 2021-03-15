@@ -53,8 +53,11 @@ class FileUpload {
     let state = ValueProvider<State>(with: .none)
     let url: URL
 
-    init(with url: URL) {
+    private let storage: DataStorage
+
+    init(with url: URL, storage: DataStorage) {
         self.url = url
+        self.storage = storage
     }
 
     func startUpload() {
@@ -67,6 +70,7 @@ class FileUpload {
         }
         let onCompletion: EngagementFileCompletionBlock = { file, error in
             if let file = file {
+                self.storage.store(from: self.url, for: file.id)
                 self.state.value = .uploaded(url: self.url, file: file)
             } else if let error = error {
                 self.state.value = .error(Error(with: error))

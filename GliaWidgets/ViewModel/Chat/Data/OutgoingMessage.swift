@@ -1,3 +1,5 @@
+import SalemoveSDK
+
 class OutgoingMessage {
     let id = UUID().uuidString
     let content: String

@@ -65,7 +65,6 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     private var unreadMessages: UnreadMessagesHandler!
     private let showsCallBubble: Bool
     private let storage = ChatStorage()
-    private let localFiles = LocalFiles()
     private let uploader = FileUploader()
     private let downloader = FileDownloader<ChatEngagementFile>()
     private var messageText = "" {
@@ -266,11 +265,10 @@ extension ChatViewModel {
         guard validateMessage() else { return }
 
         let attachment = uploader.attachment
-        let fileUrls = attachment?.files?.compactMap({ $0.url }) ?? []
-        let attachmentFiles = localFiles.files(for: fileUrls)
+        let files = uploader.localFiles
         let outgoingMessage = OutgoingMessage(
             content: messageText,
-            files: attachmentFiles
+            files: files
         )
         let item = ChatItem(with: outgoingMessage)
         appendItem(item, to: messagesSection, animated: true)
@@ -392,14 +390,12 @@ extension ChatViewModel {
     }
 
     private func addFile(with url: URL) {
-        localFiles.addFile(with: url)
         let upload = uploader.addUpload(with: url)
         action?(.addUpload(stateProvider: upload.state))
     }
 
     private func removeFile(at index: Int) {
         guard let upload = uploader.upload(at: index) else { return }
-        localFiles.removeFile(with: upload.url)
         uploader.removeUpload(upload)
         action?(.removeUpload(index))
     }

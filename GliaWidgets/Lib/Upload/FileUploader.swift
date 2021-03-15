@@ -34,15 +34,19 @@ class FileUploader {
             .map({ EngagementFile(id: $0.id) })
         return Attachment(files: files)
     }
+    var localFiles: [LocalFile] {
+        return uploads.map({ LocalFile(with: $0.url) })
+    }
     var count: Int { return uploads.count }
     let state = ValueProvider<State>(with: .idle)
 
     private var uploads = [FileUpload]()
+    private var storage = FileSystemStorage(directory: .documents)
 
     init() {}
 
     func addUpload(with url: URL) -> FileUpload {
-        let upload = FileUpload(with: url)
+        let upload = FileUpload(with: url, storage: storage)
         upload.state.addObserver(self) { _, _ in
             self.updateState()
         }

@@ -7,8 +7,7 @@ class FileDownloader<File: FileDownloadable> {
     }
 
     private var downloads = [String: FileDownload<File>]()
-    private var storage = FileSystemStorage(directory: .documents,
-                                            expiration: .none)
+    private var storage = FileSystemStorage(directory: .documents)
 
     func downloads(for files: [File]?,
                    autoDownload: AutoDownload = .nothing) -> [FileDownload<File>] {
