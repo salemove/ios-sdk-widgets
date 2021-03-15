@@ -7,7 +7,7 @@ final class ChoiceCardView: ChatMessageView {
 
     init(with style: ChoiceCardStyle) {
         viewStyle = style
-        super.init(with: style)
+        super.init(with: style, contentAlignment: .left)
         setup()
         layout()
     }
@@ -32,7 +32,11 @@ final class ChoiceCardView: ChatMessageView {
     override func appendContent(_ content: ChatMessageContent, animated: Bool) {
         switch content {
         case .text(let text):
-            let contentView = ChatTextContentView(with: style.text, withZeroInsets: true)
+            let contentView = ChatTextContentView(
+                with: style.text,
+                contentAlignment: .left,
+                withZeroInsets: true
+            )
             contentView.text = text
             appendContentView(contentView, animated: animated)
         case .choiceOptions(let options):

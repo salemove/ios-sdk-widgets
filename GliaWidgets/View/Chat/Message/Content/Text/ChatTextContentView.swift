@@ -48,7 +48,9 @@ class ChatTextContentView: UIView {
         switch contentAlignment {
         case .left:
             contentView.autoPinEdge(toSuperviewEdge: .left)
+            contentView.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
         case .right:
+            contentView.autoPinEdge(toSuperviewEdge: .left, withInset: 0, relation: .greaterThanOrEqual)
             contentView.autoPinEdge(toSuperviewEdge: .right)
         }
     }
