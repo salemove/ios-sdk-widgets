@@ -291,9 +291,11 @@ extension ChatViewModel {
 
     @discardableResult
     private func validateMessage() -> Bool {
-        guard uploader.state.value != .uploading else { return false }
         let canSendText = !messageText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-        let canSendAttachment = uploader.failedUploads.isEmpty && !uploader.succeededUploads.isEmpty
+        let canSendAttachment =
+            uploader.state.value != .uploading
+            && uploader.failedUploads.isEmpty
+            && !uploader.succeededUploads.isEmpty
         let isValid = canSendText || canSendAttachment
         action?(.sendButtonHidden(!isValid))
         return isValid

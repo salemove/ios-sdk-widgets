@@ -14,6 +14,10 @@ public class ChatMessageEntryView: UIView {
             updateTextViewHeight()
         }
     }
+    var showsSendButton: Bool {
+        get { return !sendButton.isHidden }
+        set { sendButton.isHidden = !newValue }
+    }
     var isEnabled: Bool {
         get { return isUserInteractionEnabled }
         set { isUserInteractionEnabled = newValue }
@@ -50,13 +54,6 @@ public class ChatMessageEntryView: UIView {
         updateTextViewHeight()
     }
 
-    func setSendButtonHidden(_ hidden: Bool, animated: Bool) {
-        UIView.animate(withDuration: animated ? 0.2 : 0.0) {
-            self.sendButton.isHidden = hidden
-            self.sendButton.alpha = hidden ? 0 : 1
-        }
-    }
-
     private func setup() {
         backgroundColor = style.backgroundColor
 
@@ -80,9 +77,6 @@ public class ChatMessageEntryView: UIView {
         placeholderLabel.text = style.placeholder
         placeholderLabel.font = style.placeholderFont
         placeholderLabel.textColor = style.placeholderColor
-
-        sendButton.isHidden = true
-        sendButton.alpha = 0
 
         pickMediaButton.tap = { [weak self] in self?.pickMediaTapped?() }
         sendButton.tap = { [weak self] in self?.sendTap() }

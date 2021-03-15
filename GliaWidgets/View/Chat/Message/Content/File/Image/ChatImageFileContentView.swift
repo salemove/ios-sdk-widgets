@@ -48,7 +48,11 @@ class ChatImageFileContentView: ChatFileContentView {
     }
 
     private func setImage(from file: LocalFile) {
-        let image = UIImage(contentsOfFile: file.url.path)
-        imageView.image = image
+        DispatchQueue.global(qos: .background).async {
+            let image = UIImage(contentsOfFile: file.url.path)
+            DispatchQueue.main.async {
+                self.imageView.image = image
+            }
+        }
     }
 }

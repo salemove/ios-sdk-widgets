@@ -70,7 +70,7 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter, Popov
             case .setMessageText(let text):
                 view.messageEntryView.messageText = text
             case .sendButtonHidden(let hidden):
-                view.messageEntryView.setSendButtonHidden(hidden, animated: true)
+                view.messageEntryView.showsSendButton = !hidden
             case .appendRows(let count, let section, let animated):
                 view.appendRows(count, to: section, animated: animated)
             case .refreshRow(let row, in: let section, animated: let animated):
