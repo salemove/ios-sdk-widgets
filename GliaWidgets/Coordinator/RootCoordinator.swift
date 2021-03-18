@@ -20,7 +20,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
     private let interactor: Interactor
     private let viewFactory: ViewFactory
     private weak var gliaDelegate: GliaDelegate?
-    private weak var gliaDataSource: GliaDataSource?
+    private weak var sceneProvider: SceneProvider?
     private let engagementKind: EngagementKind
     private var engagement: Engagement = .none
     private let chatCallProvider = ValueProvider<Call?>(with: nil)
@@ -34,12 +34,12 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
     init(interactor: Interactor,
          viewFactory: ViewFactory,
          gliaDelegate: GliaDelegate?,
-         gliaDataSource: GliaDataSource?,
+         sceneProvider: SceneProvider?,
          engagementKind: EngagementKind) {
         self.interactor = interactor
         self.viewFactory = viewFactory
         self.gliaDelegate = gliaDelegate
-        self.gliaDataSource = gliaDataSource
+        self.sceneProvider = sceneProvider
         self.engagementKind = engagementKind
         self.navigationPresenter = NavigationPresenter(with: navigationController)
         navigationController.modalPresentationStyle = .fullScreen
@@ -246,7 +246,7 @@ extension RootCoordinator {
 
     @available(iOS 13.0, *)
     private func windowScene() -> UIWindowScene? {
-        if let windowScene = gliaDataSource?.windowScene() {
+        if let windowScene = sceneProvider?.windowScene() {
             return windowScene
         } else {
             let scene = UIApplication.shared
