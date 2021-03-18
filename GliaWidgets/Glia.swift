@@ -19,17 +19,6 @@ public protocol GliaDataSource: class {
     func windowScene() -> UIWindowScene?
 }
 
-extension GliaDataSource {
-    @available(iOS 13.0, *)
-    func windowScene() -> UIWindowScene? {
-        let scene = UIApplication.shared
-            .connectedScenes
-            .filter { $0.activationState == .foregroundActive }
-            .first
-        return scene as? UIWindowScene
-    }
-}
-
 public protocol GliaDelegate: class {
     func event(_ event: GliaEvent)
 }
