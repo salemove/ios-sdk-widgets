@@ -3,7 +3,7 @@ import UIKit
 final class FilePickerController: NSObject {
     var viewController: UIDocumentPickerViewController {
         if let documentPicker = documentPicker { return documentPicker }
-        let documentPicker = UIDocumentPickerViewController(documentTypes: viewModel.allowedFiles.types, in: .open)
+        let documentPicker = UIDocumentPickerViewController(documentTypes: viewModel.allowedFiles.types, in: .import)
         documentPicker.delegate = self
         documentPicker.allowsMultipleSelection = false
         documentPicker.modalPresentationStyle = .fullScreen
