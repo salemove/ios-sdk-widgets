@@ -1,23 +1,17 @@
 class LocalFile {
-    var isImage: Bool { return url.path.hasImageFileExtension }
-    var fileExtension: String { return url.pathExtension }
-    var fileName: String? {
-        if url.lastPathComponent.isEmpty {
-            return nil
-        } else {
-            return url.lastPathComponent
-        }
-    }
-    var fileSize: Int64? {
+    lazy var isImage: Bool = { return url.path.hasImageFileExtension }()
+    lazy var fileExtension: String = { return url.pathExtension }()
+    lazy var fileName: String = { return url.lastPathComponent }()
+    lazy var fileSize: Int64? = {
         guard let attributes = try? FileManager.default.attributesOfItem(atPath: url.path) else { return nil }
         return attributes[.size] as? Int64
-    }
-    var fileSizeString: String? {
+    }()
+    lazy var fileSizeString: String? = {
         guard let fileSize = fileSize else { return nil }
         let formatter = ByteCountFormatter()
         formatter.countStyle = .file
         return formatter.string(fromByteCount: fileSize)
-    }
+    }()
 
     let url: URL
 

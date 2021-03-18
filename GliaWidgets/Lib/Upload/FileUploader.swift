@@ -7,6 +7,16 @@ class FileUploader {
         case finished
     }
 
+    var activeUploads: [FileUpload] {
+        return uploads.filter({
+            switch $0.state.value {
+            case .uploading:
+                return true
+            default:
+                return false
+            }
+        })
+    }
     var succeededUploads: [FileUpload] {
         return uploads.filter({
             switch $0.state.value {
@@ -79,8 +89,7 @@ class FileUploader {
         if uploads.isEmpty {
             newState = .idle
         } else {
-            let totalFinished = succeededUploads.count + failedUploads.count
-            if totalFinished == uploads.count {
+            if activeUploads.isEmpty {
                 newState = .finished
             } else {
                 newState = .uploading

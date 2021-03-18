@@ -1,7 +1,7 @@
 import UIKit
 import MobileCoreServices
 
-class ChatViewController: EngagementViewController, MediaUpgradePresenter, ScreenShareOfferPresenter, PopoverPresenter {
+class ChatViewController: EngagementViewController, MediaUpgradePresenter, PopoverPresenter, ScreenShareOfferPresenter {
     private let viewModel: ChatViewModel
     private var lastVisibleRowIndexPath: IndexPath?
 
