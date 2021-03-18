@@ -20,6 +20,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
     private let interactor: Interactor
     private let viewFactory: ViewFactory
     private weak var gliaDelegate: GliaDelegate?
+    private weak var sceneProvider: SceneProvider?
     private let engagementKind: EngagementKind
     private var engagement: Engagement = .none
     private let chatCallProvider = ValueProvider<Call?>(with: nil)
@@ -33,10 +34,12 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
     init(interactor: Interactor,
          viewFactory: ViewFactory,
          gliaDelegate: GliaDelegate?,
+         sceneProvider: SceneProvider?,
          engagementKind: EngagementKind) {
         self.interactor = interactor
         self.viewFactory = viewFactory
         self.gliaDelegate = gliaDelegate
+        self.sceneProvider = sceneProvider
         self.engagementKind = engagementKind
         self.navigationPresenter = NavigationPresenter(with: navigationController)
         navigationController.modalPresentationStyle = .fullScreen
@@ -184,11 +187,13 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
 
         return coordinator.start()
     }
+}
 
+extension RootCoordinator {
     private func presentWindow(bubbleView: BubbleView, animated: Bool) {
         guard window == nil else { return }
 
-        let window = GliaWindow(bubbleView: bubbleView, delegate: self)
+        let window = makeWindow(bubbleView: bubbleView)
         window.rootViewController = navigationController
         window.isHidden = false
         window.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
@@ -214,6 +219,41 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
             window.alpha = 0.0
         } completion: { _ in
             completion()
+        }
+    }
+
+    private func makeWindow(bubbleView: BubbleView) -> GliaWindow {
+        if #available(iOS 13.0, *) {
+            if let windowScene = windowScene() {
+                return GliaWindow(
+                    bubbleView: bubbleView,
+                    windowScene: windowScene,
+                    delegate: self
+                )
+            } else {
+                return GliaWindow(
+                    bubbleView: bubbleView,
+                    delegate: self
+                )
+            }
+        } else {
+            return GliaWindow(
+                bubbleView: bubbleView,
+                delegate: self
+            )
+        }
+    }
+
+    @available(iOS 13.0, *)
+    private func windowScene() -> UIWindowScene? {
+        if let windowScene = sceneProvider?.windowScene() {
+            return windowScene
+        } else {
+            let scene = UIApplication.shared
+                .connectedScenes
+                .filter { $0.activationState == .foregroundActive }
+                .first
+            return scene as? UIWindowScene
         }
     }
 }
