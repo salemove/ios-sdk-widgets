@@ -90,16 +90,18 @@ extension Theme {
         let choiceCardImageFile = ChatImageFileContentStyle(
             backgroundColor: color.baseLight
         )
-        let choiceCardButtons = ChatTextContentStyle(
+        let choiceCardOption = ChatChoiceOptionContentStyle(
             textFont: font.bodyText,
             textColor: color.baseDark,
-            backgroundColor: Color.lightGrey
+            highlightedTextColor: color.baseLight,
+            backgroundColor: Color.lightGrey,
+            highlightedBackgroundColor: color.primary
         )
         let choiceCard = ChoiceCardStyle(
             mainText: choiceCardText,
             frameColor: color.primary,
             imageFile: choiceCardImageFile,
-            choiceOption: choiceCardButtons
+            choiceOption: choiceCardOption
         )
         let endButton = ActionButtonStyle(
             title: Chat.EndButton.title,
