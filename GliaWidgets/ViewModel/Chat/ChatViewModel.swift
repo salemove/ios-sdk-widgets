@@ -15,6 +15,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     enum Action {
         case queue
         case showEndButton
+        case showEndScreenShareButton
         case connected(name: String?, imageUrl: String?)
         case setMessageEntryEnabled(Bool)
         case setMessageText(String)
@@ -159,38 +160,65 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         }
     }
 
-    private func appendItem(_ item: ChatItem,
-                            to section: Section<ChatItem>,
-                            animated: Bool) {
-        appendItems([item],
-                    to: section,
-                    animated: animated)
+    override func updateScreenSharingState(to state: VisitorScreenSharingState) {
+        super.updateScreenSharingState(to: state)
+        switch state.status {
+        case .sharing:
+            action?(.showEndScreenShareButton)
+        case .notSharing:
+            action?(.showEndButton)
+        }
     }
 
-    private func appendItems(_ items: [ChatItem],
-                             to section: Section<ChatItem>,
-                             animated: Bool) {
+    override func endScreenSharing() {
+        super.endScreenSharing()
+        action?(.showEndButton)
+    }
+
+    private func appendItem(
+        _ item: ChatItem,
+        to section: Section<ChatItem>,
+        animated: Bool
+    ) {
+        appendItems(
+            [item],
+            to: section,
+            animated: animated
+        )
+    }
+
+    private func appendItems(
+        _ items: [ChatItem],
+        to section: Section<ChatItem>,
+        animated: Bool
+    ) {
         section.append(items)
-        action?(.appendRows(items.count,
-                            to: section.index,
-                            animated: animated))
+        action?(.appendRows(
+            items.count,
+            to: section.index,
+            animated: animated
+        ))
     }
 
-    private func setItems(_ items: [ChatItem],
-                          to section: Section<ChatItem>) {
+    private func setItems(
+        _ items: [ChatItem],
+        to section: Section<ChatItem>
+    ) {
         section.set(items)
         action?(.refreshAll)
     }
 
-    private func replace(_ outgoingMessage: OutgoingMessage,
-                         with message: Message,
-                         in section: Section<ChatItem>) {
+    private func replace(
+        _ outgoingMessage: OutgoingMessage,
+        with message: Message,
+        in section: Section<ChatItem>
+    ) {
         guard let index = section.items
-                .enumerated()
-                .first(where: {
-                    guard case let .outgoingMessage(message) = $0.element.kind else { return false }
-                    return message.id == outgoingMessage.id
-                })?.offset
+            .enumerated()
+            .first(where: {
+                guard case .outgoingMessage(let message) = $0.element.kind else { return false }
+                return message.id == outgoingMessage.id
+            })?.offset
         else { return }
 
         let status = Strings.Message.Status.delivered
@@ -202,7 +230,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
 
     private func loadHistory() {
         let messages = storage.messages(forQueue: interactor.queueID)
-        let items = messages.compactMap({ ChatItem(with: $0) })
+        let items = messages.compactMap { ChatItem(with: $0) }
         historySection.set(items)
         action?(.refreshSection(historySection.index))
         action?(.scrollToBottom(animated: true))

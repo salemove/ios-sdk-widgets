@@ -53,6 +53,8 @@ class EngagementViewController: ViewController, AlertPresenter {
                 self.presentAlert(with: conf) { dismissed?() }
             case .showSettingsAlert(let conf, cancelled: let cancelled):
                 self.presentSettingsAlert(with: conf, cancelled: cancelled)
+            case .offerScreenShare(let conf, accepted: let accepted, declined: let declined):
+                self.offerScreenShare(with: conf, accepted: accepted, declined: declined)
             }
         }
     }

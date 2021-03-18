@@ -38,6 +38,7 @@ public enum Asset {
   public static let cameraIcon = ImageAsset(name: "cameraIcon")
   public static let photoLibraryIcon = ImageAsset(name: "photoLibraryIcon")
   public static let gliaLogo = ImageAsset(name: "gliaLogo")
+  public static let startScreenShare = ImageAsset(name: "startScreenShare")
   public static let upgradeAudio = ImageAsset(name: "upgradeAudio")
   public static let upgradePhone = ImageAsset(name: "upgradePhone")
   public static let upgradeVideo = ImageAsset(name: "upgradeVideo")

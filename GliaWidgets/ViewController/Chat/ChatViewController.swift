@@ -2,7 +2,7 @@ import UIKit
 
 import MobileCoreServices
 
-class ChatViewController: EngagementViewController, MediaUpgradePresenter, PopoverPresenter {
+class ChatViewController: EngagementViewController, MediaUpgradePresenter, PopoverPresenter, ScreenShareOfferPresenter {
     private let viewModel: ChatViewModel
     private var lastVisibleRowIndexPath: IndexPath?
 
@@ -65,6 +65,12 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter, Popov
                 let rightItem = ActionButton(with: self.viewFactory.theme.chat.endButton)
                 rightItem.tap = { viewModel.event(.closeTapped) }
                 view.header.setRightItem(rightItem, animated: true)
+            case .showEndScreenShareButton:
+                let endEngagementButton = ActionButton(with: self.viewFactory.theme.chat.endButton)
+                endEngagementButton.tap = { viewModel.event(.closeTapped) }
+                let endScreenShareButton = HeaderButton(with: self.viewFactory.theme.chat.endScreenShareButton)
+                endScreenShareButton.tap = { viewModel.event(.endScreenSharingTapped) }
+                view.header.setRightItems([endScreenShareButton, endEngagementButton], animated: true)
             case .setMessageEntryEnabled(let enabled):
                 view.messageEntryView.isEnabled = enabled
             case .setMessageText(let text):

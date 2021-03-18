@@ -19,6 +19,14 @@ class BubbleWindow: UIWindow {
         return CGRect(origin: origin, size: kSize)
     }
 
+    @available(iOS 13.0, *)
+    init(bubbleView: BubbleView, windowScene: UIWindowScene) {
+        self.bubbleView = bubbleView
+        super.init(windowScene: windowScene)
+        setup()
+        layout()
+    }
+
     init(bubbleView: BubbleView) {
         self.bubbleView = bubbleView
         super.init(frame: .zero)

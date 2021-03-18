@@ -6,6 +6,7 @@ class EngagementViewModel {
         case viewDidDisappear
         case backTapped
         case closeTapped
+        case endScreenSharingTapped
     }
 
     enum Action {
@@ -15,6 +16,11 @@ class EngagementViewModel {
                        dismissed: (() -> Void)?)
         case showSettingsAlert(SettingsAlertConfiguration,
                                cancelled: (() -> Void)?)
+        case offerScreenShare(
+            ScreenShareOfferAlertConfiguration,
+            accepted: () -> Void,
+            declined: () -> Void
+        )
     }
 
     enum DelegateEvent {
@@ -25,6 +31,7 @@ class EngagementViewModel {
 
     var engagementAction: ((Action) -> Void)?
     var engagementDelegate: ((DelegateEvent) -> Void)?
+    var screenSharingState: VisitorScreenSharingState?
 
     let interactor: Interactor
     let alertConfiguration: AlertConfiguration
@@ -53,6 +60,8 @@ class EngagementViewModel {
             engagementDelegate?(.back)
         case .closeTapped:
             closeTapped()
+        case .endScreenSharingTapped:
+            engagementAction?(.confirm(alertConfiguration.endScreenShare, confirmed: { self.endScreenSharing() }))
         }
     }
 
@@ -76,6 +85,10 @@ class EngagementViewModel {
             stateChanged(state)
         case .error(let error):
             handleError(error)
+        case .screenShareOffer(let answer):
+            offerScreenShare(answer: answer)
+        case .screenSharingStateChanged(to: let state):
+            updateScreenSharingState(to: state)
         default:
             break
         }
@@ -129,6 +142,25 @@ class EngagementViewModel {
     func alertConfiguration(with error: SalemoveError) -> MessageAlertConfiguration {
         return MessageAlertConfiguration(with: error,
                                 templateConf: self.alertConfiguration.apiError)
+    }
+
+    func updateScreenSharingState(to state: VisitorScreenSharingState) {
+        screenSharingState = state
+    }
+
+    func endScreenSharing() {
+        screenSharingState?.localScreen?.stopSharing()
+    }
+
+    private func offerScreenShare(answer: @escaping AnswerBlock) {
+        guard isViewActive.value else { return }
+        let operatorName = interactor.engagedOperator?.firstName
+        let configuration = alertConfiguration.screenShareOffer
+        engagementAction?(.offerScreenShare(
+            configuration.withOperatorName(operatorName),
+            accepted: { answer(true) },
+            declined: { answer(false) }
+        ))
     }
 
     private func endSession() {

@@ -42,6 +42,11 @@
 "alert.mediaSourceNotAvailable.title" = "Unable to access media source";
 "alert.mediaSourceNotAvailable.message" = "This media source is not available on your device";
 
+"alert.screenSharing.start.title" = "{operatorName} has asked you to share your screen";
+"alert.screenSharing.start.message" = "{operatorName} would like to see the screen of your device";
+"alert.screenSharing.stop.title" = "Stop screen sharing?";
+"alert.screenSharing.stop.message" = "Are you sure you want to stop sharing your screen?";
+
 "chat.title" = "Chat";
 "chat.endButton.title" = "End";
 "chat.connect.queue.firstText" = "CompanyName";

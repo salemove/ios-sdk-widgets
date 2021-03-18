@@ -58,6 +58,17 @@ class Header: UIView {
         setItem(item, to: rightItemContainer, animated: animated)
     }
 
+    public func setRightItems(_ items: [UIView]?, animated: Bool) {
+        var stack: UIStackView?
+        if let items = items {
+            stack = UIStackView(arrangedSubviews: items)
+            stack?.axis = .horizontal
+            stack?.spacing = 8
+            stack?.alignment = .center
+        }
+        setRightItem(stack, animated: animated)
+    }
+
     private func setItem(_ item: UIView?, to container: UIView, animated: Bool) {
         let currentItem = container.subviews.first
 

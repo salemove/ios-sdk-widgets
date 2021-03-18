@@ -17,6 +17,9 @@ enum InteractorEvent {
     case audioStreamError(SalemoveError)
     case videoStreamAdded(VideoStreamable)
     case videoStreamError(SalemoveError)
+    case screenShareOffer(answer: AnswerBlock)
+    case screenShareError(error: SalemoveError)
+    case screenSharingStateChanged(to: VisitorScreenSharingState)
     case error(SalemoveError)
 }
 
@@ -190,7 +193,9 @@ extension Interactor {
 extension Interactor: Interactable {
     var onScreenSharingOffer: ScreenshareOfferBlock {
         print("Called: \(#function)")
-        return { _ in }
+        return { answer in
+            self.notify(.screenShareOffer(answer: answer))
+        }
     }
 
     var onMediaUpgradeOffer: MediaUgradeOfferBlock {
@@ -222,7 +227,19 @@ extension Interactor: Interactable {
 
     var onVisitorScreenSharingStateChange: VisitorScreenSharingStateChange {
         print("Called: \(#function)")
-        return { _, _ in }
+        return { [unowned self] state, error in
+            if let error = error {
+                self.notify(.screenShareError(error: error))
+            } else {
+                switch state.status {
+                case .sharing:
+                    print("Screen sharing started")
+                case .notSharing:
+                    print("Screen sharing stopped")
+                }
+                self.notify(.screenSharingStateChanged(to: state))
+            }
+        }
     }
 
     var onAudioStreamAdded: AudioStreamAddedBlock {

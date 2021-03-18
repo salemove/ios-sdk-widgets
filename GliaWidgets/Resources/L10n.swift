@@ -94,6 +94,20 @@ public enum L10n {
       /// We’re sorry
       public static let title = L10n.tr("Localizable", "alert.operatorsUnavailable.title")
     }
+    public enum ScreenSharing {
+      public enum Start {
+        /// {operatorName} would like to see the screen of your device
+        public static let message = L10n.tr("Localizable", "alert.screenSharing.start.message")
+        /// {operatorName} has asked you to share your screen
+        public static let title = L10n.tr("Localizable", "alert.screenSharing.start.title")
+      }
+      public enum Stop {
+        /// Are you sure you want to stop sharing your screen?
+        public static let message = L10n.tr("Localizable", "alert.screenSharing.stop.message")
+        /// Stop screen sharing?
+        public static let title = L10n.tr("Localizable", "alert.screenSharing.stop.title")
+      }
+    }
     public enum Unexpected {
       /// Please try again later.
       public static let message = L10n.tr("Localizable", "alert.unexpected.message")

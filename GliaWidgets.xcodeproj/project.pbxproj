@@ -185,6 +185,9 @@
 		1AFB1E7825F8B26800CA460D /* ChatTextContentStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFB1E7725F8B26800CA460D /* ChatTextContentStyle.swift */; };
 		1C12BC08594FEF3073AAE5B8 /* Pods_GliaWidgets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A249CE317961801DDAD22AE /* Pods_GliaWidgets.framework */; };
 		65838FF5119F5496B099DD04 /* Pods_TestingApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2308CF5ACCB31E1CC49FED95 /* Pods_TestingApp.framework */; };
+		C47901AF25ED2E70007EE195 /* ScreenShareOfferPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47901AE25ED2E70007EE195 /* ScreenShareOfferPresenter.swift */; };
+		C47901B325ED2F31007EE195 /* ScreenShareOfferAlertConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47901B225ED2F31007EE195 /* ScreenShareOfferAlertConfiguration.swift */; };
+		C47901B725ED2FB0007EE195 /* AlertViewController+ScreenShareOffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47901B625ED2FB0007EE195 /* AlertViewController+ScreenShareOffer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -402,6 +405,9 @@
 		2308CF5ACCB31E1CC49FED95 /* Pods_TestingApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TestingApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6BD7D3ECB379FC8A96BE4C05 /* Pods-GliaWidgets.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliaWidgets.debug.xcconfig"; path = "Target Support Files/Pods-GliaWidgets/Pods-GliaWidgets.debug.xcconfig"; sourceTree = "<group>"; };
 		913BCC7A8BE2CA12D31E2C26 /* Pods-TestingApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestingApp.release.xcconfig"; path = "Target Support Files/Pods-TestingApp/Pods-TestingApp.release.xcconfig"; sourceTree = "<group>"; };
+		C47901AE25ED2E70007EE195 /* ScreenShareOfferPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenShareOfferPresenter.swift; sourceTree = "<group>"; };
+		C47901B225ED2F31007EE195 /* ScreenShareOfferAlertConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenShareOfferAlertConfiguration.swift; sourceTree = "<group>"; };
+		C47901B625ED2FB0007EE195 /* AlertViewController+ScreenShareOffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlertViewController+ScreenShareOffer.swift"; sourceTree = "<group>"; };
 		C6D8984EDBCD7D69C93FA67C /* Pods-GliaWidgets.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliaWidgets.release.xcconfig"; path = "Target Support Files/Pods-GliaWidgets/Pods-GliaWidgets.release.xcconfig"; sourceTree = "<group>"; };
 		DDA5D47411FBD9F06A363BD5 /* Pods-TestingApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestingApp.debug.xcconfig"; path = "Target Support Files/Pods-TestingApp/Pods-TestingApp.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1174,6 +1180,7 @@
 		1A63B2EF257A3EF100508478 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				C47901AD25ED2E59007EE195 /* ScreenShare */,
 				1A2DA72425EF891300032611 /* FilePicker */,
 				1A4674CB25ED088B0078FA1C /* MediaPicker */,
 				1A0EDF8925E8E20A0076D1AD /* Popover */,
@@ -1200,6 +1207,7 @@
 				1A4AF5D225AEF543002CD0F4 /* AlertViewController+Confirmation.swift */,
 				1A4AF5D625AEF584002CD0F4 /* AlertViewController+MultipleMediaUpgrade.swift */,
 				1ABD6C9525B6F46700D56EFA /* AlertViewController+SingleMediaUpgrade.swift */,
+				C47901B625ED2FB0007EE195 /* AlertViewController+ScreenShareOffer.swift */,
 			);
 			path = Alert;
 			sourceTree = "<group>";
@@ -1338,6 +1346,7 @@
 				1ABD6C8025B6E97400D56EFA /* MultipleMediaUpgradeAlertConfiguration.swift */,
 				1ABD6C8625B6EFD000D56EFA /* SingleMediaUpgradeAlertConfiguration.swift */,
 				1A5F495425CBE84A003E3678 /* SettingsAlertConfiguration.swift */,
+				C47901B225ED2F31007EE195 /* ScreenShareOfferAlertConfiguration.swift */,
 			);
 			path = Alert;
 			sourceTree = "<group>";
@@ -1368,6 +1377,14 @@
 				913BCC7A8BE2CA12D31E2C26 /* Pods-TestingApp.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		C47901AD25ED2E59007EE195 /* ScreenShare */ = {
+			isa = PBXGroup;
+			children = (
+				C47901AE25ED2E70007EE195 /* ScreenShareOfferPresenter.swift */,
+			);
+			path = ScreenShare;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1687,6 +1704,7 @@
 				1A0C9AC825C9493D00815406 /* Int+Extensions.swift in Sources */,
 				1A6EB05725A717CB0007081A /* ChatMessage.swift in Sources */,
 				1AA738B225790D5A00E1120F /* AlertView.swift in Sources */,
+				C47901B725ED2FB0007EE195 /* AlertViewController+ScreenShareOffer.swift in Sources */,
 				1A8366B025FF40AB005FE7EE /* LocalFile.swift in Sources */,
 				1A0C143F25B85DB400B00695 /* CallViewController.swift in Sources */,
 				1A0C9A7125C16F4A00815406 /* Theme+Alert.swift in Sources */,
@@ -1724,6 +1742,7 @@
 				1A4674B225E907120078FA1C /* ListItemStyle.swift in Sources */,
 				1A0C143625B85C3300B00695 /* CallView.swift in Sources */,
 				1AA738A72578DD0300E1120F /* ConnectStatusStyle.swift in Sources */,
+				C47901AF25ED2E70007EE195 /* ScreenShareOfferPresenter.swift in Sources */,
 				1A60AFDD25669A4200E53F53 /* ChatView.swift in Sources */,
 				1A0C9A6725C16DC400815406 /* Theme+Chat.swift in Sources */,
 				1A0C9AC225C9400000815406 /* CallDurationCounter.swift in Sources */,
@@ -1771,6 +1790,7 @@
 				1A60B0272568070800E53F53 /* UIStackView+Extensions.swift in Sources */,
 				1A60B0232567FD2D00E53F53 /* CloseButtonProperties.swift in Sources */,
 				1ABD6C8725B6EFD000D56EFA /* SingleMediaUpgradeAlertConfiguration.swift in Sources */,
+				C47901B325ED2F31007EE195 /* ScreenShareOfferAlertConfiguration.swift in Sources */,
 				1A0C143A25B85C3D00B00695 /* CallStyle.swift in Sources */,
 				1A60AFE825669C5000E53F53 /* ChatStyle.swift in Sources */,
 				1A4AF5C725AEEA42002CD0F4 /* Operator+Extensions.swift in Sources */,
@@ -2060,7 +2080,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Eigo Madaloja (DQ8F2W54Y2)";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = W3CJ6X343D;
 				ENABLE_BITCODE = NO;
@@ -2085,7 +2105,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Eigo Madaloja (DQ8F2W54Y2)";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = W3CJ6X343D;
 				ENABLE_BITCODE = NO;

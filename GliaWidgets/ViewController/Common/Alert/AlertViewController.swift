@@ -3,17 +3,30 @@ import SalemoveSDK
 
 class AlertViewController: ViewController {
     enum Kind {
-        case message(MessageAlertConfiguration,
-                     dismissed: (() -> Void)?)
-        case confirmation(ConfirmationAlertConfiguration,
-                          confirmed: () -> Void)
-        case multipleMediaUpgrade(MultipleMediaUpgradeAlertConfiguration,
-                                  mediaTypes: [MediaType],
-                                  accepted: (Int) -> Void,
-                                  declined: () -> Void)
-        case singleMediaUpgrade(SingleMediaUpgradeAlertConfiguration,
-                                accepted: () -> Void,
-                                declined: () -> Void)
+        case message(
+            MessageAlertConfiguration,
+            dismissed: (() -> Void)?
+        )
+        case confirmation(
+            ConfirmationAlertConfiguration,
+            confirmed: () -> Void
+        )
+        case multipleMediaUpgrade(
+            MultipleMediaUpgradeAlertConfiguration,
+            mediaTypes: [MediaType],
+            accepted: (Int) -> Void,
+            declined: () -> Void
+        )
+        case singleMediaUpgrade(
+            SingleMediaUpgradeAlertConfiguration,
+            accepted: () -> Void,
+            declined: () -> Void
+        )
+        case screenShareOffer(
+            ScreenShareOfferAlertConfiguration,
+            accepted: () -> Void,
+            declined: () -> Void
+        )
     }
 
     let viewFactory: ViewFactory
@@ -30,18 +43,19 @@ class AlertViewController: ViewController {
         self.modalTransitionStyle = .crossDissolve
     }
 
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    public override func loadView() {
+    override public func loadView() {
         super.loadView()
         let view = UIView()
         view.backgroundColor = UIColor.black.withAlphaComponent(0.2)
         self.view = view
     }
 
-    public override func viewWillAppear(_ animated: Bool) {
+    override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         showAlertView(animated: animated)
     }
@@ -101,6 +115,12 @@ class AlertViewController: ViewController {
             )
         case .singleMediaUpgrade(let conf, accepted: let accepted, declined: let declined):
             return makeMediaUpgradeAlertView(
+                with: conf,
+                accepted: accepted,
+                declined: declined
+            )
+        case .screenShareOffer(let conf, accepted: let accepted, declined: let declined):
+            return makeScreenShareOfferAlertView(
                 with: conf,
                 accepted: accepted,
                 declined: declined
