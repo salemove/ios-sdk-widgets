@@ -44,6 +44,15 @@ class GliaWindow: UIWindow {
         return maximizeScreeshot
     }
 
+    @available(iOS 13.0, *)
+    init(bubbleView: BubbleView, windowScene: UIWindowScene, delegate: GliaWindowDelegate?) {
+        self.bubbleView = bubbleView
+        self.delegate = delegate
+        super.init(windowScene: windowScene)
+        setup()
+        layout()
+    }
+
     init(bubbleView: BubbleView, delegate: GliaWindowDelegate?) {
         self.bubbleView = bubbleView
         self.delegate = delegate
@@ -88,7 +97,7 @@ class GliaWindow: UIWindow {
 
         bubbleView.kind = bubbleKind
 
-        let bubbleWindow = BubbleWindow(bubbleView: bubbleView)
+        let bubbleWindow = makeBubbleWindow()
         bubbleWindow.tap = { [weak self] in self?.maximize(animated: true) }
         bubbleWindow.alpha = 0.0
         bubbleWindow.isHidden = false
@@ -133,6 +142,21 @@ class GliaWindow: UIWindow {
             delegate?.event(.maximized)
         case .minimized:
             delegate?.event(.minimized)
+        }
+    }
+
+    private func makeBubbleWindow() -> BubbleWindow {
+        if #available(iOS 13.0, *) {
+            if let windowScene = windowScene {
+                return BubbleWindow(
+                    bubbleView: bubbleView,
+                    windowScene: windowScene
+                )
+            } else {
+                return BubbleWindow(bubbleView: bubbleView)
+            }
+        } else {
+            return BubbleWindow(bubbleView: bubbleView)
         }
     }
 }
