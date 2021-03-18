@@ -14,6 +14,22 @@ public enum GliaEvent {
     case maximized
 }
 
+public protocol GliaDataSource: class {
+    @available(iOS 13.0, *)
+    func windowScene() -> UIWindowScene?
+}
+
+extension GliaDataSource {
+    @available(iOS 13.0, *)
+    func windowScene() -> UIWindowScene? {
+        let scene = UIApplication.shared
+            .connectedScenes
+            .filter { $0.activationState == .foregroundActive }
+            .first
+        return scene as? UIWindowScene
+    }
+}
+
 public protocol GliaDelegate: class {
     func event(_ event: GliaEvent)
 }
@@ -22,11 +38,16 @@ public class Glia {
     private var rootCoordinator: RootCoordinator?
     private let conf: Configuration
     private weak var delegate: GliaDelegate?
+    private weak var dataSource: GliaDataSource?
     private let appDelegate = SalemoveAppDelegate()
 
-    public init(configuration: Configuration, delegate: GliaDelegate? = nil) {
+    public init(
+        configuration: Configuration,
+        delegate: GliaDelegate? = nil,
+        dataSource: GliaDataSource? = nil) {
         self.conf = configuration
         self.delegate = delegate
+        self.dataSource = dataSource
     }
 
     public func start(_ engagementKind: EngagementKind,
@@ -40,6 +61,7 @@ public class Glia {
         rootCoordinator = RootCoordinator(interactor: interactor,
                                           viewFactory: viewFactory,
                                           gliaDelegate: delegate,
+                                          gliaDataSource: dataSource,
                                           engagementKind: engagementKind)
         rootCoordinator?.start()
     }
