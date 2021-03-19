@@ -232,7 +232,7 @@ public enum L10n {
       public enum Failed {
         /// Retry
         public static let retry = L10n.tr("Localizable", "chat.download.failed.retry")
-        /// |
+        ///  | 
         public static let separator = L10n.tr("Localizable", "chat.download.failed.separator")
       }
     }

@@ -74,4 +74,57 @@ class ChatFileDownloadContentView: ChatFileContentView {
             break
         }
     }
+
+    private func stateText(for downloadState: FileDownload<ChatEngagementFile>.State) -> NSAttributedString {
+        switch downloadState {
+        case .none:
+            let attributes: [NSAttributedString.Key: Any] = [
+                .font: style.download.font,
+                .foregroundColor: style.download.textColor
+            ]
+            return .init(string: style.download.text, attributes: attributes)
+        case .downloading:
+            let attributes: [NSAttributedString.Key: Any] = [
+                .font: style.downloading.font,
+                .foregroundColor: style.downloading.textColor
+            ]
+            return .init(string: style.downloading.text, attributes: attributes)
+        case .downloaded:
+            let attributes: [NSAttributedString.Key: Any] = [
+                .font: style.open.font,
+                .foregroundColor: style.open.textColor
+            ]
+            return .init(string: style.open.text, attributes: attributes)
+        case .error:
+            let textAttributes: [NSAttributedString.Key: Any] = [
+                .font: style.error.font,
+                .foregroundColor: style.error.textColor
+            ]
+            let separatorAttributes: [NSAttributedString.Key: Any] = [
+                .font: style.error.separatorFont,
+                .foregroundColor: style.error.separatorTextColor
+            ]
+            let retryAttributes: [NSAttributedString.Key: Any] = [
+                .font: style.error.retryFont,
+                .foregroundColor: style.error.retryTextColor
+            ]
+            let text = NSAttributedString(
+                string: style.error.text,
+                attributes: textAttributes
+            )
+            let separator = NSAttributedString(
+                string: style.error.separatorText,
+                attributes: separatorAttributes
+            )
+            let retry = NSAttributedString(
+                string: style.error.retryText,
+                attributes: retryAttributes
+            )
+            let string = NSMutableAttributedString()
+            string.append(text)
+            string.append(separator)
+            string.append(retry)
+            return string
+        }
+    }
 }

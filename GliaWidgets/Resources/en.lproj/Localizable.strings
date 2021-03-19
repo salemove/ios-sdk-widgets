@@ -74,7 +74,7 @@
 "chat.download.downloading" = "Downloading file…";
 "chat.download.open" = "Open";
 "chat.download.failed" = "Download failed";
-"chat.download.failed.separator" = "|";
+"chat.download.failed.separator" = " | ";
 "chat.download.failed.retry" = "Retry";
 
 "call.audio.title" = "AUDIO CALL";
