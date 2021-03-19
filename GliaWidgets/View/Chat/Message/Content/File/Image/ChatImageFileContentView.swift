@@ -27,15 +27,10 @@ class ChatImageFileContentView: ChatFileContentView {
 
     override func layout() {
         super.layout()
-
         autoSetDimensions(to: kSize)
 
         addSubview(imageView)
         imageView.autoPinEdgesToSuperviewEdges(with: kInsets)
-    }
-
-    override func update(for file: LocalFile) {
-        setImage(from: file)
     }
 
     override func update(for downloadState: FileDownload<ChatEngagementFile>.State) {

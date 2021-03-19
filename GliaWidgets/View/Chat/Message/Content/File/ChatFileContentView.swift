@@ -21,7 +21,10 @@ class ChatFileContentView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func update(for file: LocalFile) {}
+    func update(for file: LocalFile) {
+        update(for: .downloaded(file))
+    }
+    
     func update(for downloadState: FileDownload<ChatEngagementFile>.State) {}
 
     func setup() {
