@@ -58,7 +58,7 @@ class ChatMessageView: UIView {
     private func contentViews(for files: [LocalFile]) -> [ChatFileContentView] {
         return files.compactMap({
             if $0.isImage {
-                let contentView = ChatImageFileContentView(with: style.imageFile, content: .file($0))
+                let contentView = ChatImageFileContentView(with: style.imageFile, content: .localFile($0))
                 return contentView
             } else {
                 return nil

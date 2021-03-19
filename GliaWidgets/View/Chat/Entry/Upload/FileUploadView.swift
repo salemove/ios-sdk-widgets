@@ -85,7 +85,7 @@ class FileUploadView: UIView {
             stateLabel.text = nil
         case .uploading(progress: let progress):
             previewImageView.state = .file(upload.localFile)
-            infoLabel.text = fileInfoString(for: upload.localFile)
+            infoLabel.text = upload.localFile.fileInfoString
             infoLabel.numberOfLines = 1
             infoLabel.font = style.uploading.infoFont
             infoLabel.textColor = style.uploading.infoColor
@@ -99,7 +99,7 @@ class FileUploadView: UIView {
             }
         case .uploaded:
             previewImageView.state = .file(upload.localFile)
-            infoLabel.text = fileInfoString(for: upload.localFile)
+            infoLabel.text = upload.localFile.fileInfoString
             infoLabel.numberOfLines = 1
             infoLabel.font = style.uploaded.infoFont
             infoLabel.textColor = style.uploaded.infoColor
@@ -119,21 +119,6 @@ class FileUploadView: UIView {
             stateLabel.textColor = style.error.textColor
             progressView.tintColor = style.errorProgressColor
             progressView.progress = 1.0
-        }
-    }
-
-    private func fileInfoString(for file: LocalFile) -> String? {
-        let fileName = file.fileName
-        let fileSize = file.fileSizeString
-
-        if !fileName.isEmpty, let fileSize = fileSize {
-            return "\(fileName) • \(fileSize)"
-        } else if !fileName.isEmpty {
-            return fileName
-        } else if let fileSize = fileSize {
-            return fileSize
-        } else {
-            return nil
         }
     }
 

@@ -2,7 +2,7 @@ import UIKit
 
 class ChatFileContentView: UIView {
     enum Content {
-        case file(LocalFile)
+        case localFile(LocalFile)
         case download(FileDownload<ChatEngagementFile>)
     }
 
@@ -21,17 +21,14 @@ class ChatFileContentView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func update(for file: LocalFile) {
-        update(for: .downloaded(file))
-    }
-    
+    func update(for file: LocalFile) {}
     func update(for downloadState: FileDownload<ChatEngagementFile>.State) {}
 
     func setup() {
         backgroundColor = style.backgroundColor
 
         switch content {
-        case .file(let file):
+        case .localFile(let file):
             update(for: file)
         case .download(let download):
             update(for: download.state.value)

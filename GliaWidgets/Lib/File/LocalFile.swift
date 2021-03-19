@@ -12,6 +12,17 @@ class LocalFile {
         formatter.countStyle = .file
         return formatter.string(fromByteCount: fileSize)
     }()
+    lazy var fileInfoString: String? = {
+        if !fileName.isEmpty, let fileSizeString = fileSizeString {
+            return "\(fileName) • \(fileSizeString)"
+        } else if !fileName.isEmpty {
+            return fileName
+        } else if let fileSizeString = fileSizeString {
+            return fileSizeString
+        } else {
+            return nil
+        }
+    }()
 
     let url: URL
 
