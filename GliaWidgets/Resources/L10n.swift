@@ -220,6 +220,22 @@ public enum L10n {
         public static let secondText = L10n.tr("Localizable", "chat.connect.queue.secondText")
       }
     }
+    public enum Download {
+      /// Download
+      public static let download = L10n.tr("Localizable", "chat.download.download")
+      /// Downloading file…
+      public static let downloading = L10n.tr("Localizable", "chat.download.downloading")
+      /// Download failed
+      public static let failed = L10n.tr("Localizable", "chat.download.failed")
+      /// Open
+      public static let `open` = L10n.tr("Localizable", "chat.download.open")
+      public enum Failed {
+        /// Retry
+        public static let retry = L10n.tr("Localizable", "chat.download.failed.retry")
+        /// |
+        public static let separator = L10n.tr("Localizable", "chat.download.failed.separator")
+      }
+    }
     public enum EndButton {
       /// End
       public static let title = L10n.tr("Localizable", "chat.endButton.title")

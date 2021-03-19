@@ -70,6 +70,12 @@
 "chat.upload.error.safetyCheckFailed" = "Failed to check the safety of the file.";
 "chat.upload.error.network" = "Network error.";
 "chat.upload.error.generic" = "Failed to upload.";
+"chat.download.download" = "Download";
+"chat.download.downloading" = "Downloading file…";
+"chat.download.open" = "Open";
+"chat.download.failed" = "Download failed";
+"chat.download.failed.separator" = "|";
+"chat.download.failed.retry" = "Retry";
 
 "call.audio.title" = "AUDIO CALL";
 "call.video.title" = "VIDEO CALL";

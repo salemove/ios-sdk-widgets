@@ -11,6 +11,7 @@ public class ChatStyle: EngagementStyle {
     public var videoUpgrade: ChatCallUpgradeStyle
     public var callBubble: BubbleStyle
     public var pickMedia: ItemListStyle
+    public var fileDownload: ChatFileDownloadStyle
 
     public init(header: HeaderStyle,
                 connect: ConnectStyle,
@@ -27,7 +28,8 @@ public class ChatStyle: EngagementStyle {
                 audioUpgrade: ChatCallUpgradeStyle,
                 videoUpgrade: ChatCallUpgradeStyle,
                 callBubble: BubbleStyle,
-                pickMedia: ItemListStyle) {
+                pickMedia: ItemListStyle,
+                fileDownload: ChatFileDownloadStyle) {
         self.title = title
         self.backButton = backButton
         self.closeButton = closeButton
@@ -38,6 +40,7 @@ public class ChatStyle: EngagementStyle {
         self.videoUpgrade = videoUpgrade
         self.callBubble = callBubble
         self.pickMedia = pickMedia
+        self.fileDownload = fileDownload
         super.init(header: header,
                    connect: connect,
                    backgroundColor: backgroundColor,

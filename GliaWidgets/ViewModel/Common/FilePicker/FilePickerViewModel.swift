@@ -15,9 +15,11 @@ class FilePickerViewModel: ViewModel {
             switch self {
             case .default:
                 return [
+                    "public.content",
                     "public.data",
+                    "public.archive",
                     "public.image",
-                    "public.movie"
+                    "public.text"
                 ]
             case .custom(let types):
                 return types

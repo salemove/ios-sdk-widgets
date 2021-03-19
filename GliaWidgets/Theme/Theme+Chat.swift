@@ -156,7 +156,8 @@ extension Theme {
             audioUpgrade: audioUpgrade,
             videoUpgrade: videoUpgrade,
             callBubble: callBubble,
-            pickMedia: pickMedia
+            pickMedia: pickMedia,
+            fileDownload: fileDownload
         )
     }
 
@@ -210,6 +211,62 @@ extension Theme {
         )
 
         return FileUploadListStyle(item: upload)
+    }
+
+    private var fileDownload: ChatFileDownloadStyle {
+        typealias Download = L10n.Chat.Download
+
+        let preview = FilePreviewImageStyle(
+            fileFont: font.subtitle,
+            fileColor: color.baseLight,
+            errorIcon: Asset.uploadError.image,
+            errorIconColor: color.systemNegative,
+            backgroundColor: color.primary,
+            errorBackgroundColor: Color.lightGrey
+        )
+        let download = ChatFileDownloadStateStyle(
+            text: Download.download,
+            font: font.subtitle,
+            textColor: color.baseDark,
+            infoFont: font.caption,
+            infoColor: color.baseNormal
+        )
+        let downloading = ChatFileDownloadStateStyle(
+            text: Download.downloading,
+            font: font.subtitle,
+            textColor: color.baseDark,
+            infoFont: font.caption,
+            infoColor: color.baseNormal
+        )
+        let open = ChatFileDownloadStateStyle(
+            text: Download.open,
+            font: font.subtitle,
+            textColor: color.baseDark,
+            infoFont: font.caption,
+            infoColor: color.baseNormal
+        )
+        let error = ChatFileDownloadErrorStateStyle(
+            text: Download.failed,
+            font: font.subtitle,
+            textColor: color.systemNegative,
+            separatorText: Download.Failed.separator,
+            separatorFont: font.subtitle,
+            separatorTextColor: color.baseDark,
+            retryText: Download.Failed.retry,
+            retryFont: font.subtitle,
+            retryTextColor: color.baseDark
+        )
+
+        return ChatFileDownloadStyle(
+            preview: preview,
+            download: download,
+            downloading: downloading,
+            open: open,
+            error: error,
+            progressColor: color.primary,
+            errorProgressColor: color.systemNegative,
+            progressBackgroundColor: Color.lightGrey
+        )
     }
 
     private var pickMedia: ItemListStyle {
