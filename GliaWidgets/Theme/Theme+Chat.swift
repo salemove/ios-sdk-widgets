@@ -65,6 +65,7 @@ extension Theme {
         let visitorMessage = VisitorChatMessageStyle(
             text: visitorText,
             imageFile: visitorImageFile,
+            fileDownload: fileDownload,
             statusFont: font.caption,
             statusColor: color.baseNormal,
             delivered: Chat.Message.Status.delivered
@@ -80,6 +81,7 @@ extension Theme {
         let operatorMessage = OperatorChatMessageStyle(
             text: operatorText,
             imageFile: operatorImageFile,
+            fileDownload: fileDownload,
             operatorImage: operatorImage
         )
         let endButton = ActionButtonStyle(
@@ -156,8 +158,7 @@ extension Theme {
             audioUpgrade: audioUpgrade,
             videoUpgrade: videoUpgrade,
             callBubble: callBubble,
-            pickMedia: pickMedia,
-            fileDownload: fileDownload
+            pickMedia: pickMedia
         )
     }
 
@@ -265,7 +266,9 @@ extension Theme {
             error: error,
             progressColor: color.primary,
             errorProgressColor: color.systemNegative,
-            progressBackgroundColor: Color.lightGrey
+            progressBackgroundColor: Color.lightGrey,
+            backgroundColor: .white,
+            borderColor: Color.lightGrey
         )
     }
 
