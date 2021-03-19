@@ -62,14 +62,18 @@ class ChatFileDownloadContentView: ChatFileContentView {
         progressView.autoPinEdge(toSuperviewEdge: .right)
     }
 
-    override func update(for file: LocalFile) {
+    override func update(with file: LocalFile) {
+        previewImageView.state = .file(file)
+        infoLabel.text = file.fileInfoString
+        stateLabel.isHidden = true
+        progressView.isHidden = true
         // this is shown for outgoing messages
         //  - just show file info with no state text
         //  - will turn to Open/Download when message is sent and outgoing message is replaced with visitor message
     }
 
-    override func update(for downloadState: FileDownload<ChatEngagementFile>.State) {
-        switch downloadState {
+    override func update(with download: FileDownload<ChatEngagementFile>) {
+        switch download.state.value {
         case .none:
             break
         case .downloading(progress: let progress):

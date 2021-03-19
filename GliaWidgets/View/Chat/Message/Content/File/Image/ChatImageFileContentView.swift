@@ -33,12 +33,12 @@ class ChatImageFileContentView: ChatFileContentView {
         imageView.autoPinEdgesToSuperviewEdges(with: kInsets)
     }
 
-    override func update(for file: LocalFile) {
+    override func update(with file: LocalFile) {
         setImage(from: file)
     }
 
-    override func update(for downloadState: FileDownload<ChatEngagementFile>.State) {
-        switch downloadState {
+    override func update(with download: FileDownload<ChatEngagementFile>) {
+        switch download.state.value {
         case .downloaded(file: let file):
             setImage(from: file)
         default:

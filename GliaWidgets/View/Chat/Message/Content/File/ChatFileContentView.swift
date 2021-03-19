@@ -21,19 +21,19 @@ class ChatFileContentView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func update(for file: LocalFile) {}
-    func update(for downloadState: FileDownload<ChatEngagementFile>.State) {}
+    func update(with file: LocalFile) {}
+    func update(with download: FileDownload<ChatEngagementFile>) {}
 
     func setup() {
         backgroundColor = style.backgroundColor
 
         switch content {
         case .localFile(let file):
-            update(for: file)
+            update(with: file)
         case .download(let download):
-            update(for: download.state.value)
-            download.state.addObserver(self) { state, _ in
-                self.update(for: state)
+            update(with: download)
+            download.state.addObserver(self) { _, _ in
+                self.update(with: download)
             }
         }
     }
