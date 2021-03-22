@@ -175,21 +175,21 @@ extension Theme {
         )
         let uploading = FileUploadStateStyle(
             text: Upload.uploading,
-            font: font.subtitle,
+            font: font.mediumSubtitle,
             textColor: color.baseDark,
             infoFont: font.caption,
             infoColor: color.baseNormal
         )
         let uploaded = FileUploadStateStyle(
             text: Upload.uploaded,
-            font: font.subtitle,
+            font: font.mediumSubtitle,
             textColor: color.baseDark,
             infoFont: font.caption,
             infoColor: color.baseNormal
         )
         let error = FileUploadErrorStateStyle(
             text: Upload.failed,
-            font: font.subtitle,
+            font: font.mediumSubtitle,
             textColor: color.baseDark,
             infoFont: font.caption,
             infoColor: color.systemNegative,
@@ -227,28 +227,28 @@ extension Theme {
         )
         let download = ChatFileDownloadStateStyle(
             text: Download.download,
-            font: font.subtitle,
+            font: font.mediumSubtitle,
             textColor: color.baseDark,
             infoFont: font.caption,
             infoColor: color.baseNormal
         )
         let downloading = ChatFileDownloadStateStyle(
             text: Download.downloading,
-            font: font.subtitle,
+            font: font.mediumSubtitle,
             textColor: color.baseDark,
             infoFont: font.caption,
             infoColor: color.baseNormal
         )
         let open = ChatFileDownloadStateStyle(
             text: Download.open,
-            font: font.subtitle,
+            font: font.mediumSubtitle,
             textColor: color.baseDark,
             infoFont: font.caption,
             infoColor: color.baseNormal
         )
         let error = ChatFileDownloadErrorStateStyle(
             text: Download.failed,
-            font: font.subtitle,
+            font: font.mediumSubtitle,
             textColor: color.systemNegative,
             infoFont: font.caption,
             infoColor: color.baseNormal,
@@ -256,7 +256,7 @@ extension Theme {
             separatorFont: font.subtitle,
             separatorTextColor: color.baseDark,
             retryText: Download.Failed.retry,
-            retryFont: font.subtitle,
+            retryFont: font.mediumSubtitle,
             retryTextColor: color.baseDark
         )
 
