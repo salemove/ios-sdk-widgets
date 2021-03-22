@@ -58,6 +58,8 @@ public class ChatFileDownloadErrorStateStyle {
     public var text: String
     public var font: UIFont
     public var textColor: UIColor
+    public var infoFont: UIFont
+    public var infoColor: UIColor
     public var separatorText: String
     public var separatorFont: UIFont
     public var separatorTextColor: UIColor
@@ -68,6 +70,8 @@ public class ChatFileDownloadErrorStateStyle {
     public init(text: String,
                 font: UIFont,
                 textColor: UIColor,
+                infoFont: UIFont,
+                infoColor: UIColor,
                 separatorText: String,
                 separatorFont: UIFont,
                 separatorTextColor: UIColor,
@@ -77,6 +81,8 @@ public class ChatFileDownloadErrorStateStyle {
         self.text = text
         self.font = font
         self.textColor = textColor
+        self.infoFont = infoFont
+        self.infoColor = infoColor
         self.separatorText = separatorText
         self.separatorFont = separatorFont
         self.separatorTextColor = separatorTextColor

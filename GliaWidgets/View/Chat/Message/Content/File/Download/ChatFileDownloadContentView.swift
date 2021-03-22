@@ -63,43 +63,64 @@ class ChatFileDownloadContentView: ChatFileContentView {
     }
 
     override func update(with file: LocalFile) {
-        let state: FileDownload<ChatEngagementFile>.State = .downloaded(file)
-        update(for: state)
+        fileImageView.kind = .file(file)
+        infoLabel.text = file.fileInfoString
+        infoLabel.font = style.open.infoFont
+        infoLabel.textColor = style.open.infoColor
+        stateLabel.text = style.open.text
+        stateLabel.font = style.open.font
+        stateLabel.textColor = style.open.textColor
+        progressView.isHidden = true
     }
 
     override func update(with download: FileDownload<ChatEngagementFile>) {
-        update(for: download.state.value)
-    }
-
-    private func update(for state: FileDownload<ChatEngagementFile>.State) {
-        switch state {
+        switch download.state.value {
         case .none:
-            fileImageView.kind = .none
-            infoLabel.text = nil
-            stateLabel.text = nil
+            fileImageView.kind = .fileExtension(download.file.fileExtension)
+            infoLabel.text = download.file.fileInfoString
+            infoLabel.font = style.download.infoFont
+            infoLabel.textColor = style.download.infoColor
+            stateLabel.attributedText = stateText(for: download.state.value)
+            stateLabel.font = style.download.font
+            stateLabel.textColor = style.download.textColor
             progressView.isHidden = true
         case .downloading(progress: let progress):
-            /*previewImageView.state = .file(.localFile)
-            infoLabel.text = fileInfoString(for: upload.localFile)
-            infoLabel.numberOfLines = 1
-            infoLabel.font = style.uploading.infoFont
-            infoLabel.textColor = style.uploading.infoColor
-            stateLabel.text = style.uploading.text
-            stateLabel.font = style.uploading.font
-            stateLabel.textColor = style.uploading.textColor
+            fileImageView.kind = .fileExtension(download.file.fileExtension)
+            infoLabel.text = download.file.fileInfoString
+            infoLabel.font = style.downloading.infoFont
+            infoLabel.textColor = style.downloading.infoColor
+            stateLabel.attributedText = stateText(for: download.state.value)
+            stateLabel.font = style.downloading.font
+            stateLabel.textColor = style.downloading.textColor
             progressView.tintColor = style.progressColor
             progressView.progress = Float(progress.value)
             progress.addObserver(self) { progress, _ in
                 self.progressView.progress = Float(progress)
-            }*/ break
+            }
         case .downloaded(let file):
-            break
-        case .error(_):
-            break
+            fileImageView.kind = .file(file)
+            infoLabel.text = download.file.fileInfoString
+            infoLabel.font = style.open.infoFont
+            infoLabel.textColor = style.open.infoColor
+            stateLabel.attributedText = stateText(for: download.state.value)
+            stateLabel.font = style.open.font
+            stateLabel.textColor = style.open.textColor
+            progressView.isHidden = true
+        case .error:
+            fileImageView.kind = .error
+            infoLabel.text = download.file.fileInfoString
+            infoLabel.font = style.error.infoFont
+            infoLabel.textColor = style.error.infoColor
+            stateLabel.attributedText = stateText(for: download.state.value)
+            stateLabel.font = style.error.font
+            stateLabel.textColor = style.error.textColor
+            progressView.isHidden = false
+            progressView.tintColor = style.errorProgressColor
+            progressView.progress = 1.0
         }
     }
 
-    private func stateText(for downloadState: FileDownload<ChatEngagementFile>.State) -> NSAttributedString {
+    private func stateText(for downloadState: FileDownload<ChatEngagementFile>.State) -> NSAttributedString? {
         switch downloadState {
         case .none:
             let attributes: [NSAttributedString.Key: Any] = [

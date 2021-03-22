@@ -72,7 +72,8 @@ class ChatMessageView: UIView {
                 let contentView = ChatImageFileContentView(with: style.imageFile, content: .download($0))
                 return contentView
             } else {
-                return nil
+                let contentView = ChatFileDownloadContentView(with: style.fileDownload, content: .download($0))
+                return contentView
             }
         })
     }

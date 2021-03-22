@@ -250,6 +250,8 @@ extension Theme {
             text: Download.failed,
             font: font.subtitle,
             textColor: color.systemNegative,
+            infoFont: font.caption,
+            infoColor: color.baseNormal,
             separatorText: Download.Failed.separator,
             separatorFont: font.subtitle,
             separatorTextColor: color.baseDark,
