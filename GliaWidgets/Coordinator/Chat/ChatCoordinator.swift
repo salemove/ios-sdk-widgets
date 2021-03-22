@@ -22,6 +22,7 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
     private let startAction: ChatViewModel.StartAction
     private var mediaPickerController: MediaPickerController?
     private var filePickerController: FilePickerController?
+    private var quickLookController: QuickLookController?
 
     init(interactor: Interactor,
          viewFactory: ViewFactory,
@@ -80,6 +81,8 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
                 self?.presentFilePickerController(with: eventProvider)
             case .mediaUpgradeAccepted(offer: let offer, answer: let answer):
                 self?.delegate?(.mediaUpgradeAccepted(offer: offer, answer: answer))
+            case .showFile(let file):
+                self?.presentQuickLookController(with: file)
             case .call:
                 self?.delegate?(.call)
             }
@@ -119,6 +122,19 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
 
         let controller = FilePickerController(viewModel: viewModel)
         self.filePickerController = controller
+        navigationPresenter.present(controller.viewController)
+    }
+
+    private func presentQuickLookController(with file: LocalFile) {
+        let viewModel = QuickLookViewModel(file: file)
+        viewModel.delegate = { [weak self] event in
+            switch event {
+            case .finished:
+                self?.quickLookController = nil
+            }
+        }
+        let controller = QuickLookController(viewModel: viewModel)
+        self.quickLookController = controller
         navigationPresenter.present(controller.viewController)
     }
 }

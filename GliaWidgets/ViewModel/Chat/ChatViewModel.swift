@@ -44,6 +44,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case pickFile(ValueProvider<FilePickerEvent>)
         case mediaUpgradeAccepted(offer: MediaUpgradeOffer,
                                   answer: AnswerWithSuccessBlock)
+        case showFile(LocalFile)
         case call
     }
 
@@ -442,7 +443,7 @@ extension ChatViewModel {
 
 extension ChatViewModel {
     private func fileTapped(_ file: LocalFile) {
-        // TODO open file
+        delegate?(.showFile(file))
     }
 
     private func downloadTapped(_ download: FileDownload<ChatEngagementFile>) {
@@ -451,8 +452,8 @@ extension ChatViewModel {
             download.startDownload()
         case .downloading:
             break
-        case .downloaded(_):
-            break // open file
+        case .downloaded(let file):
+            delegate?(.showFile(file))
         case .error:
             download.startDownload()
         }
