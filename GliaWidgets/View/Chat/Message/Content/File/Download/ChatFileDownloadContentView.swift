@@ -90,6 +90,7 @@ class ChatFileDownloadContentView: ChatFileContentView {
             stateLabel.attributedText = stateText(for: download.state.value)
             progressView.tintColor = style.progressColor
             progressView.progress = Float(progress.value)
+            progressView.isHidden = false
             progress.addObserver(self) { progress, _ in
                 self.progressView.progress = Float(progress)
             }
