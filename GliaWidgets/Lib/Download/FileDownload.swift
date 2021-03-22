@@ -32,6 +32,15 @@ class FileDownload<File: FileDownloadable> {
     let state = ValueProvider<State>(with: .none)
     let file: File
 
+    private var storageID: String? {
+        if let fileName = file.name {
+            return fileName
+        } else if let fileID = file.id {
+            return fileID
+        } else {
+            return nil
+        }
+    }
     private let storage: DataStorage
 
     init(with file: File, storage: DataStorage) {
@@ -40,8 +49,8 @@ class FileDownload<File: FileDownloadable> {
 
         if file.isDeleted == true {
             state.value = .error(.deleted)
-        } else if let id = file.id, storage.hasData(for: id) {
-            let url = storage.url(for: id)
+        } else if let storageID = storageID, storage.hasData(for: storageID) {
+            let url = storage.url(for: storageID)
             state.value = .downloaded(LocalFile(with: url))
         }
     }
@@ -59,9 +68,9 @@ class FileDownload<File: FileDownloadable> {
             }
         }
         let onCompletion: EngagementFileFetchCompletionBlock = { data, error in
-            if let data = data {
-                let url = self.storage.url(for: fileID)
-                self.storage.store(data.data, for: fileID)
+            if let data = data, let storageID = self.storageID {
+                let url = self.storage.url(for: storageID)
+                self.storage.store(data.data, for: storageID)
                 self.state.value = .downloaded(LocalFile(with: url))
             } else if let error = error {
                 self.state.value = .error(Error(with: error))
