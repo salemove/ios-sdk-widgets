@@ -3,11 +3,8 @@ import AVFoundation
 
 final class MediaPickerController: NSObject {
     private let viewModel: MediaPickerViewModel
-    private var imagePicker: UIImagePickerController?
 
     private var viewController: UIImagePickerController {
-        if let imagePicker = imagePicker { return imagePicker }
-
         let source = UIImagePickerController.SourceType(with: viewModel.source)
         let media = mediaTypes(viewModel.types, for: source)
         let imagePicker = UIImagePickerController()
@@ -16,8 +13,6 @@ final class MediaPickerController: NSObject {
         imagePicker.modalPresentationStyle = .fullScreen
         imagePicker.allowsEditing = true
         imagePicker.delegate = self
-
-        self.imagePicker = imagePicker
 
         return imagePicker
     }
@@ -89,14 +84,11 @@ extension MediaPickerController: UIImagePickerControllerDelegate, UINavigationCo
         } else if let url = info[.mediaURL] as? URL {
             viewModel.event(.pickedMovie(url))
         }
-
-        imagePicker = nil
     }
 
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true)
         viewModel.event(.cancelled)
-        imagePicker = nil
     }
 }
 
