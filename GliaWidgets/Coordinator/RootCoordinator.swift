@@ -246,8 +246,8 @@ extension RootCoordinator {
 
     @available(iOS 13.0, *)
     private func windowScene() -> UIWindowScene? {
-        if let windowScene = sceneProvider?.windowScene() {
-            return windowScene
+        if let sceneProvider = sceneProvider {
+            return sceneProvider.windowScene()
         } else {
             let scene = UIApplication.shared
                 .connectedScenes

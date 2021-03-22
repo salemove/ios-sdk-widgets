@@ -3,23 +3,24 @@ import UIKit
   import QuickLookThumbnailing
 #endif
 
-class FilePreviewImageView: UIView {
-    enum State {
+class FileImageView: UIView {
+    enum Kind {
         case none
         case file(LocalFile)
+        case fileExtension(String?)
         case error
     }
 
-    var state: State = .none {
+    var kind: Kind = .none {
         didSet { update() }
     }
 
     private let imageView = UIImageView()
     private let label = UILabel()
-    private let style: FilePreviewImageStyle
+    private let style: FileImageStyle
     private let kSize = CGSize(width: 52, height: 52)
 
-    init(with style: FilePreviewImageStyle) {
+    init(with style: FileImageStyle) {
         self.style = style
         super.init(frame: .zero)
         setup()
@@ -54,7 +55,7 @@ class FilePreviewImageView: UIView {
     }
 
     private func update() {
-        switch state {
+        switch kind {
         case .none:
             imageView.image = nil
             label.text = nil
@@ -67,6 +68,10 @@ class FilePreviewImageView: UIView {
             previewImage(for: file) { image in
                 self.setPreviewImage(image, for: file)
             }
+        case .fileExtension(let fileExtension):
+            imageView.image = nil
+            label.text = fileExtension
+            backgroundColor = style.backgroundColor
         case .error:
             imageView.contentMode = .center
             imageView.image = style.errorIcon
@@ -78,7 +83,7 @@ class FilePreviewImageView: UIView {
 
     private func setPreviewImage(_ image: UIImage?, for file: LocalFile) {
         guard
-            case let .file(currentFile) = state,
+            case let .file(currentFile) = kind,
             file == currentFile
         else { return }
 

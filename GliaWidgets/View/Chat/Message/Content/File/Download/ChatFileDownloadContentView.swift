@@ -4,7 +4,7 @@ class ChatFileDownloadContentView: ChatFileContentView {
     private let contentView = UIView()
     private let infoLabel = UILabel()
     private let stateLabel = UILabel()
-    private let previewImageView: FilePreviewImageView
+    private let fileImageView: FileImageView
     private let progressView = UIProgressView()
     private let style: ChatFileDownloadStyle
     private let kContentInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
@@ -12,7 +12,7 @@ class ChatFileDownloadContentView: ChatFileContentView {
 
     init(with style: ChatFileDownloadStyle, content: Content) {
         self.style = style
-        self.previewImageView = FilePreviewImageView(with: style.preview)
+        self.fileImageView = FileImageView(with: style.fileImage)
         super.init(with: style, content: content)
         setup()
         layout()
@@ -43,39 +43,41 @@ class ChatFileDownloadContentView: ChatFileContentView {
         addSubview(contentView)
         contentView.autoPinEdgesToSuperviewEdges(with: kContentInsets)
 
-        contentView.addSubview(previewImageView)
-        previewImageView.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .right)
+        contentView.addSubview(fileImageView)
+        fileImageView.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .right)
 
         contentView.addSubview(infoLabel)
-        infoLabel.autoPinEdge(.top, to: .top, of: previewImageView, withOffset: 4)
-        infoLabel.autoPinEdge(.left, to: .right, of: previewImageView, withOffset: 12)
+        infoLabel.autoPinEdge(.top, to: .top, of: fileImageView, withOffset: 4)
+        infoLabel.autoPinEdge(.left, to: .right, of: fileImageView, withOffset: 12)
         infoLabel.autoPinEdge(toSuperviewEdge: .right)
 
         contentView.addSubview(stateLabel)
         stateLabel.autoPinEdge(.top, to: .bottom, of: infoLabel, withOffset: 4)
-        stateLabel.autoPinEdge(.left, to: .right, of: previewImageView, withOffset: 12)
+        stateLabel.autoPinEdge(.left, to: .right, of: fileImageView, withOffset: 12)
         stateLabel.autoPinEdge(toSuperviewEdge: .right)
 
         contentView.addSubview(progressView)
-        progressView.autoPinEdge(.bottom, to: .bottom, of: previewImageView)
-        progressView.autoPinEdge(.left, to: .right, of: previewImageView, withOffset: 12)
+        progressView.autoPinEdge(.bottom, to: .bottom, of: fileImageView)
+        progressView.autoPinEdge(.left, to: .right, of: fileImageView, withOffset: 12)
         progressView.autoPinEdge(toSuperviewEdge: .right)
     }
 
     override func update(with file: LocalFile) {
-        previewImageView.state = .file(file)
-        infoLabel.text = file.fileInfoString
-        stateLabel.isHidden = true
-        progressView.isHidden = true
-        // this is shown for outgoing messages
-        //  - just show file info with no state text
-        //  - will turn to Open/Download when message is sent and outgoing message is replaced with visitor message
+        let state: FileDownload<ChatEngagementFile>.State = .downloaded(file)
+        update(for: state)
     }
 
     override func update(with download: FileDownload<ChatEngagementFile>) {
-        switch download.state.value {
+        update(for: download.state.value)
+    }
+
+    private func update(for state: FileDownload<ChatEngagementFile>.State) {
+        switch state {
         case .none:
-            break
+            fileImageView.kind = .none
+            infoLabel.text = nil
+            stateLabel.text = nil
+            progressView.isHidden = true
         case .downloading(progress: let progress):
             /*previewImageView.state = .file(.localFile)
             infoLabel.text = fileInfoString(for: upload.localFile)
@@ -90,7 +92,7 @@ class ChatFileDownloadContentView: ChatFileContentView {
             progress.addObserver(self) { progress, _ in
                 self.progressView.progress = Float(progress)
             }*/ break
-        case .downloaded(_):
+        case .downloaded(let file):
             break
         case .error(_):
             break

@@ -1,7 +1,7 @@
 import UIKit
 
 public class ChatFileDownloadStyle: ChatFileContentStyle {
-    public var preview: FilePreviewImageStyle
+    public var fileImage: FileImageStyle
     public var download: ChatFileDownloadStateStyle
     public var downloading: ChatFileDownloadStateStyle
     public var open: ChatFileDownloadStateStyle
@@ -11,7 +11,7 @@ public class ChatFileDownloadStyle: ChatFileContentStyle {
     public var progressBackgroundColor: UIColor
     public var borderColor: UIColor
 
-    public init(preview: FilePreviewImageStyle,
+    public init(fileImage: FileImageStyle,
                 download: ChatFileDownloadStateStyle,
                 downloading: ChatFileDownloadStateStyle,
                 open: ChatFileDownloadStateStyle,
@@ -21,7 +21,7 @@ public class ChatFileDownloadStyle: ChatFileContentStyle {
                 progressBackgroundColor: UIColor,
                 backgroundColor: UIColor,
                 borderColor: UIColor) {
-        self.preview = preview
+        self.fileImage = fileImage
         self.download = download
         self.downloading = downloading
         self.open = open
