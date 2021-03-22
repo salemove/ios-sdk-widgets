@@ -10,6 +10,8 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case removeUploadTapped(FileUpload)
         case pickMediaTapped
         case callBubbleTapped
+        case fileTapped(LocalFile)
+        case downloadTapped(FileDownload<ChatEngagementFile>)
     }
 
     enum Action {
@@ -114,6 +116,10 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             presentMediaPicker()
         case .callBubbleTapped:
             delegate?(.call)
+        case .fileTapped(let file):
+            fileTapped(file)
+        case .downloadTapped(let download):
+            downloadTapped(download)
         }
     }
 
@@ -431,6 +437,25 @@ extension ChatViewModel {
 
     private func onUploaderStateChanged(_ state: FileUploader.State) {
         validateMessage()
+    }
+}
+
+extension ChatViewModel {
+    private func fileTapped(_ file: LocalFile) {
+        // TODO open file
+    }
+
+    private func downloadTapped(_ download: FileDownload<ChatEngagementFile>) {
+        switch download.state.value {
+        case .none:
+            download.startDownload()
+        case .downloading:
+            break
+        case .downloaded(_):
+            break // open file
+        case .error:
+            download.startDownload()
+        }
     }
 }
 

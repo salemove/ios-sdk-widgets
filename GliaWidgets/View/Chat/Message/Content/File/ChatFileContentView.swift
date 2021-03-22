@@ -8,10 +8,12 @@ class ChatFileContentView: UIView {
 
     private let style: ChatFileContentStyle
     private let content: Content
+    private let tap: () -> Void
 
-    init(with style: ChatFileContentStyle, content: Content) {
+    init(with style: ChatFileContentStyle, content: Content, tap: @escaping () -> Void) {
         self.style = style
         self.content = content
+        self.tap = tap
         super.init(frame: .zero)
         setup()
         layout()
@@ -36,7 +38,15 @@ class ChatFileContentView: UIView {
                 self.update(with: download)
             }
         }
+
+        let tapRecognizer = UITapGestureRecognizer(target: self,
+                                                   action: #selector(tapped))
+        addGestureRecognizer(tapRecognizer)
     }
 
     func layout() {}
+
+    @objc private func tapped() {
+        tap()
+    }
 }

@@ -6,9 +6,9 @@ class ChatImageFileContentView: ChatFileContentView {
     private let kInsets = UIEdgeInsets.zero
     private let kSize = CGSize(width: 240, height: 155)
 
-    init(with style: ChatImageFileContentStyle, content: Content) {
+    init(with style: ChatImageFileContentStyle, content: Content, tap: @escaping () -> Void) {
         self.style = style
-        super.init(with: style, content: content)
+        super.init(with: style, content: content, tap: tap)
         setup()
         layout()
     }

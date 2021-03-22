@@ -6,6 +6,8 @@ class ChatView: EngagementView {
     var numberOfSections: (() -> Int?)?
     var numberOfRows: ((Int) -> Int?)?
     var itemForRow: ((Int, Int) -> ChatItem?)?
+    var fileTapped: ((LocalFile) -> Void)?
+    var downloadTapped: ((FileDownload<ChatEngagementFile>) -> Void)?
     var callBubbleTapped: (() -> Void)?
 
     private let style: ChatStyle
@@ -137,17 +139,20 @@ class ChatView: EngagementView {
             let view = VisitorChatMessageView(with: style.visitorMessage)
             view.appendContent(.text(message.content), animated: false)
             view.appendContent(.files(message.files), animated: false)
+            view.fileTapped = { [weak self] in self?.fileTapped?($0) }
             return .outgoingMessage(view)
         case .visitorMessage(let message, status: let status):
             let view = VisitorChatMessageView(with: style.visitorMessage)
             view.appendContent(.text(message.content), animated: false)
             view.appendContent(.downloads(message.downloads), animated: false)
+            view.downloadTapped = { [weak self] in self?.downloadTapped?($0) }
             view.status = status
             return .visitorMessage(view)
         case .operatorMessage(let message, showsImage: let showsImage, imageUrl: let imageUrl):
             let view = OperatorChatMessageView(with: style.operatorMessage)
             view.appendContent(.text(message.content), animated: false)
             view.appendContent(.downloads(message.downloads), animated: false)
+            view.downloadTapped = { [weak self] in self?.downloadTapped?($0) }
             view.showsOperatorImage = showsImage
             view.setOperatorImage(fromUrl: imageUrl, animated: false)
             return .operatorMessage(view)

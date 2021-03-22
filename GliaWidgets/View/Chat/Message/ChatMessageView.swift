@@ -3,6 +3,8 @@ import UIKit
 class ChatMessageView: UIView {
     let style: ChatMessageStyle
     let contentViews = UIStackView()
+    var fileTapped: ((LocalFile) -> Void)?
+    var downloadTapped: ((FileDownload<ChatEngagementFile>) -> Void)?
 
     private let contentAlignment: ChatMessageContentAlignment
 
@@ -42,7 +44,6 @@ class ChatMessageView: UIView {
 
         if animated {
             contentViews.layoutIfNeeded()
-
             UIView.animate(withDuration: 0.3) {
                 contentView.isHidden = false
                 self.contentViews.layoutIfNeeded()
@@ -56,24 +57,37 @@ class ChatMessageView: UIView {
     }
 
     private func contentViews(for files: [LocalFile]) -> [ChatFileContentView] {
-        return files.compactMap({
-            if $0.isImage {
-                let contentView = ChatImageFileContentView(with: style.imageFile, content: .localFile($0))
-                return contentView
+        return files.compactMap({ file in
+            if file.isImage {
+                return ChatImageFileContentView(
+                    with: style.imageFile,
+                    content: .localFile(file),
+                    tap: { [weak self] in self?.fileTapped?(file) }
+                )
             } else {
-                return nil
+                return ChatFileDownloadContentView(
+                    with: style.fileDownload,
+                    content: .localFile(file),
+                    tap: { [weak self] in self?.fileTapped?(file) }
+                )
             }
         })
     }
 
     private func contentViews(for downloads: [FileDownload<ChatEngagementFile>]) -> [ChatFileContentView] {
-        return downloads.compactMap({
-            if $0.file.isImage {
-                let contentView = ChatImageFileContentView(with: style.imageFile, content: .download($0))
-                return contentView
+        return downloads.compactMap({ download in
+            if download.file.isImage {
+                return ChatImageFileContentView(
+                    with: style.imageFile,
+                    content: .download(download),
+                    tap: { [weak self] in self?.downloadTapped?(download) }
+                )
             } else {
-                let contentView = ChatFileDownloadContentView(with: style.fileDownload, content: .download($0))
-                return contentView
+                return ChatFileDownloadContentView(
+                    with: style.fileDownload,
+                    content: .download(download),
+                    tap: { [weak self] in self?.downloadTapped?(download) }
+                )
             }
         })
     }

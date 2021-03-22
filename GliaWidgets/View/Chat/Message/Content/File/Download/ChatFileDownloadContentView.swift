@@ -10,10 +10,10 @@ class ChatFileDownloadContentView: ChatFileContentView {
     private let kContentInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
     private let kWidth: CGFloat = 271
 
-    init(with style: ChatFileDownloadStyle, content: Content) {
+    init(with style: ChatFileDownloadStyle, content: Content, tap: @escaping () -> Void) {
         self.style = style
         self.fileImageView = FileImageView(with: style.fileImage)
-        super.init(with: style, content: content)
+        super.init(with: style, content: content, tap: tap)
         setup()
         layout()
     }
