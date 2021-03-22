@@ -81,8 +81,6 @@ class ChatFileDownloadContentView: ChatFileContentView {
             infoLabel.font = style.download.infoFont
             infoLabel.textColor = style.download.infoColor
             stateLabel.attributedText = stateText(for: download.state.value)
-            stateLabel.font = style.download.font
-            stateLabel.textColor = style.download.textColor
             progressView.isHidden = true
         case .downloading(progress: let progress):
             fileImageView.kind = .fileExtension(download.file.fileExtension)
@@ -90,8 +88,6 @@ class ChatFileDownloadContentView: ChatFileContentView {
             infoLabel.font = style.downloading.infoFont
             infoLabel.textColor = style.downloading.infoColor
             stateLabel.attributedText = stateText(for: download.state.value)
-            stateLabel.font = style.downloading.font
-            stateLabel.textColor = style.downloading.textColor
             progressView.tintColor = style.progressColor
             progressView.progress = Float(progress.value)
             progress.addObserver(self) { progress, _ in
@@ -103,8 +99,6 @@ class ChatFileDownloadContentView: ChatFileContentView {
             infoLabel.font = style.open.infoFont
             infoLabel.textColor = style.open.infoColor
             stateLabel.attributedText = stateText(for: download.state.value)
-            stateLabel.font = style.open.font
-            stateLabel.textColor = style.open.textColor
             progressView.isHidden = true
         case .error:
             fileImageView.kind = .error
@@ -112,8 +106,6 @@ class ChatFileDownloadContentView: ChatFileContentView {
             infoLabel.font = style.error.infoFont
             infoLabel.textColor = style.error.infoColor
             stateLabel.attributedText = stateText(for: download.state.value)
-            stateLabel.font = style.error.font
-            stateLabel.textColor = style.error.textColor
             progressView.isHidden = false
             progressView.tintColor = style.errorProgressColor
             progressView.progress = 1.0
@@ -123,47 +115,50 @@ class ChatFileDownloadContentView: ChatFileContentView {
     private func stateText(for downloadState: FileDownload<ChatEngagementFile>.State) -> NSAttributedString? {
         switch downloadState {
         case .none:
-            let attributes: [NSAttributedString.Key: Any] = [
-                .font: style.download.font,
-                .foregroundColor: style.download.textColor
-            ]
-            return .init(string: style.download.text, attributes: attributes)
+            return .init(
+                string: style.download.text,
+                attributes: [
+                    .font: style.download.font,
+                    .foregroundColor: style.download.textColor
+                ]
+            )
         case .downloading:
-            let attributes: [NSAttributedString.Key: Any] = [
-                .font: style.downloading.font,
-                .foregroundColor: style.downloading.textColor
-            ]
-            return .init(string: style.downloading.text, attributes: attributes)
+            return .init(
+                string: style.downloading.text,
+                attributes: [
+                    .font: style.downloading.font,
+                    .foregroundColor: style.downloading.textColor
+                ]
+            )
         case .downloaded:
-            let attributes: [NSAttributedString.Key: Any] = [
-                .font: style.open.font,
-                .foregroundColor: style.open.textColor
-            ]
-            return .init(string: style.open.text, attributes: attributes)
+            return .init(
+                string: style.open.text,
+                attributes: [
+                    .font: style.open.font,
+                    .foregroundColor: style.open.textColor
+                ]
+            )
         case .error:
-            let textAttributes: [NSAttributedString.Key: Any] = [
-                .font: style.error.font,
-                .foregroundColor: style.error.textColor
-            ]
-            let separatorAttributes: [NSAttributedString.Key: Any] = [
-                .font: style.error.separatorFont,
-                .foregroundColor: style.error.separatorTextColor
-            ]
-            let retryAttributes: [NSAttributedString.Key: Any] = [
-                .font: style.error.retryFont,
-                .foregroundColor: style.error.retryTextColor
-            ]
             let text = NSAttributedString(
                 string: style.error.text,
-                attributes: textAttributes
+                attributes: [
+                    .font: style.error.font,
+                    .foregroundColor: style.error.textColor
+                ]
             )
             let separator = NSAttributedString(
                 string: style.error.separatorText,
-                attributes: separatorAttributes
+                attributes: [
+                    .font: style.error.separatorFont,
+                    .foregroundColor: style.error.separatorTextColor
+                ]
             )
             let retry = NSAttributedString(
                 string: style.error.retryText,
-                attributes: retryAttributes
+                attributes: [
+                    .font: style.error.retryFont,
+                    .foregroundColor: style.error.retryTextColor
+                ]
             )
             let string = NSMutableAttributedString()
             string.append(text)
