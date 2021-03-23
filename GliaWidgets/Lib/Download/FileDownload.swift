@@ -51,7 +51,8 @@ class FileDownload<File: FileDownloadable> {
             state.value = .error(.deleted)
         } else if let storageID = storageID, storage.hasData(for: storageID) {
             let url = storage.url(for: storageID)
-            state.value = .downloaded(LocalFile(with: url))
+            let file = LocalFile(with: url)
+            state.value = .downloaded(file)
         }
     }
 
