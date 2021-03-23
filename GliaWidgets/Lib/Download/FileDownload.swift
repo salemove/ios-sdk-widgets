@@ -70,8 +70,9 @@ class FileDownload<File: FileDownloadable> {
         let onCompletion: EngagementFileFetchCompletionBlock = { data, error in
             if let data = data, let storageID = self.storageID {
                 let url = self.storage.url(for: storageID)
+                let file = LocalFile(with: url)
                 self.storage.store(data.data, for: storageID)
-                self.state.value = .downloaded(LocalFile(with: url))
+                self.state.value = .downloaded(file)
             } else if let error = error {
                 self.state.value = .error(Error(with: error))
             }

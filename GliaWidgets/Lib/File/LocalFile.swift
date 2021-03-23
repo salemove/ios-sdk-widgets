@@ -1,5 +1,4 @@
 class LocalFile {
-    lazy var isImage: Bool = { return url.path.hasImageFileExtension }()
     lazy var fileExtension: String = { return url.pathExtension }()
     lazy var fileName: String = { return url.lastPathComponent }()
     lazy var fileSize: Int64? = {
@@ -22,6 +21,9 @@ class LocalFile {
         } else {
             return nil
         }
+    }()
+    lazy var isImage: Bool = {
+        return ["jpg", "jpeg", "png", "gif", "tif", "tiff", "bmp"].contains(fileExtension)
     }()
 
     let url: URL

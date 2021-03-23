@@ -70,7 +70,8 @@ class FileUpload {
         }
         let onCompletion: EngagementFileCompletionBlock = { enagementFile, error in
             if let enagementFile = enagementFile {
-                self.storage.store(from: self.localFile.url, for: enagementFile.id)
+                let storageID = self.localFile.url.lastPathComponent
+                self.storage.store(from: self.localFile.url, for: storageID)
                 self.state.value = .uploaded(file: enagementFile)
             } else if let error = error {
                 self.state.value = .error(Error(with: error))
