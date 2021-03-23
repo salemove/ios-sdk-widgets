@@ -4,7 +4,7 @@ class ChatMessageView: UIView {
     let style: ChatMessageStyle
     let contentViews = UIStackView()
     var fileTapped: ((LocalFile) -> Void)?
-    var downloadTapped: ((FileDownload<ChatEngagementFile>) -> Void)?
+    var downloadTapped: ((FileDownload) -> Void)?
 
     private let contentAlignment: ChatMessageContentAlignment
 
@@ -74,7 +74,7 @@ class ChatMessageView: UIView {
         })
     }
 
-    private func contentViews(for downloads: [FileDownload<ChatEngagementFile>]) -> [ChatFileContentView] {
+    private func contentViews(for downloads: [FileDownload]) -> [ChatFileContentView] {
         return downloads.compactMap({ download in
             if download.file.isImage {
                 return ChatImageFileContentView(

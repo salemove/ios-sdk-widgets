@@ -62,5 +62,3 @@ extension ChatEngagementFile {
         }
     }
 }
-
-extension ChatEngagementFile: FileDownloadable {}

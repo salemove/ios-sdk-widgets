@@ -73,7 +73,7 @@ class ChatFileDownloadContentView: ChatFileContentView {
         progressView.isHidden = true
     }
 
-    override func update(with download: FileDownload<ChatEngagementFile>) {
+    override func update(with download: FileDownload) {
         switch download.state.value {
         case .none:
             fileImageView.kind = .fileExtension(download.file.fileExtension)
@@ -113,7 +113,7 @@ class ChatFileDownloadContentView: ChatFileContentView {
         }
     }
 
-    private func stateText(for downloadState: FileDownload<ChatEngagementFile>.State) -> NSAttributedString? {
+    private func stateText(for downloadState: FileDownload.State) -> NSAttributedString? {
         switch downloadState {
         case .none:
             return .init(

@@ -37,7 +37,7 @@ class ChatImageFileContentView: ChatFileContentView {
         setImage(from: file)
     }
 
-    override func update(with download: FileDownload<ChatEngagementFile>) {
+    override func update(with download: FileDownload) {
         switch download.state.value {
         case .downloaded(file: let file):
             setImage(from: file)

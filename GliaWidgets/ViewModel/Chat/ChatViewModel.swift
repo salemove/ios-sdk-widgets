@@ -11,7 +11,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case pickMediaTapped
         case callBubbleTapped
         case fileTapped(LocalFile)
-        case downloadTapped(FileDownload<ChatEngagementFile>)
+        case downloadTapped(FileDownload)
     }
 
     enum Action {
@@ -70,7 +70,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     private let showsCallBubble: Bool
     private let storage = ChatStorage()
     private let uploader = FileUploader()
-    private let downloader = FileDownloader<ChatEngagementFile>()
+    private let downloader = FileDownloader()
     private var messageText = "" {
         didSet {
             validateMessage()
@@ -450,7 +450,7 @@ extension ChatViewModel {
         delegate?(.showFile(file))
     }
 
-    private func downloadTapped(_ download: FileDownload<ChatEngagementFile>) {
+    private func downloadTapped(_ download: FileDownload) {
         switch download.state.value {
         case .none:
             download.startDownload()

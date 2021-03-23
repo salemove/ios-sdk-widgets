@@ -7,7 +7,7 @@ class ChatView: EngagementView {
     var numberOfRows: ((Int) -> Int?)?
     var itemForRow: ((Int, Int) -> ChatItem?)?
     var fileTapped: ((LocalFile) -> Void)?
-    var downloadTapped: ((FileDownload<ChatEngagementFile>) -> Void)?
+    var downloadTapped: ((FileDownload) -> Void)?
     var callBubbleTapped: (() -> Void)?
 
     private let style: ChatStyle

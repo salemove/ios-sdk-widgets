@@ -3,7 +3,7 @@ import UIKit
 class ChatFileContentView: UIView {
     enum Content {
         case localFile(LocalFile)
-        case download(FileDownload<ChatEngagementFile>)
+        case download(FileDownload)
     }
 
     private let style: ChatFileContentStyle
@@ -24,7 +24,7 @@ class ChatFileContentView: UIView {
     }
 
     func update(with file: LocalFile) {}
-    func update(with download: FileDownload<ChatEngagementFile>) {}
+    func update(with download: FileDownload) {}
 
     func setup() {
         backgroundColor = style.backgroundColor

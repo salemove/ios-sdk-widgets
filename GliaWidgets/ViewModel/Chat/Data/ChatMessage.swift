@@ -27,7 +27,7 @@ class ChatMessage: Codable {
     let sender: ChatMessageSender
     let content: String
     let attachment: ChatAttachment?
-    var downloads = [FileDownload<ChatEngagementFile>]()
+    var downloads = [FileDownload]()
 
     private enum CodingKeys: String, CodingKey {
         case id

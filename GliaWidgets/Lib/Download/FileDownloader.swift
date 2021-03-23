@@ -1,16 +1,16 @@
 import SalemoveSDK
 
-class FileDownloader<File: FileDownloadable> {
+class FileDownloader {
     enum AutoDownload {
         case nothing
         case images
     }
 
-    private var downloads = [String: FileDownload<File>]()
+    private var downloads = [String: FileDownload]()
     private var storage = FileSystemStorage(directory: .documents)
 
-    func downloads(for files: [File]?,
-                   autoDownload: AutoDownload = .nothing) -> [FileDownload<File>] {
+    func downloads(for files: [ChatEngagementFile]?,
+                   autoDownload: AutoDownload = .nothing) -> [FileDownload] {
         guard let files = files else { return [] }
 
         let downloads = files.compactMap({ download(for: $0) })
@@ -25,7 +25,7 @@ class FileDownloader<File: FileDownloadable> {
         return downloads
     }
 
-    func download(for file: File) -> FileDownload<File>? {
+    func download(for file: ChatEngagementFile) -> FileDownload? {
         guard let fileID = file.id else { return nil }
 
         if let download = downloads[fileID] {
@@ -35,7 +35,7 @@ class FileDownloader<File: FileDownloadable> {
         }
     }
 
-    func addDownloads(for files: [File]?, with uploads: [FileUpload]) {
+    func addDownloads(for files: [ChatEngagementFile]?, with uploads: [FileUpload]) {
         guard let files = files else { return }
 
         files.forEach({ file in
@@ -46,13 +46,13 @@ class FileDownloader<File: FileDownloadable> {
     }
 
     @discardableResult
-    private func addDownload(for file: File, localFile: LocalFile? = nil) -> FileDownload<File>? {
+    private func addDownload(for file: ChatEngagementFile, localFile: LocalFile? = nil) -> FileDownload? {
         guard let fileID = file.id else { return nil }
 
         if let download = downloads[fileID] {
             return download
         } else {
-            let download = FileDownload<File>(
+            let download = FileDownload(
                 with: file,
                 storage: storage,
                 localFile: localFile
@@ -62,7 +62,7 @@ class FileDownloader<File: FileDownloadable> {
         }
     }
 
-    private func downloadImages(for downloads: [FileDownload<File>]) {
+    private func downloadImages(for downloads: [FileDownload]) {
         downloads
             .filter({ $0.file.isImage })
             .filter({
