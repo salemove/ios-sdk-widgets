@@ -8,7 +8,6 @@ class ChatFileDownloadContentView: ChatFileContentView {
     private let progressView = UIProgressView()
     private let style: ChatFileDownloadStyle
     private let kContentInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
-    private let kWidth: CGFloat = 271
 
     init(with style: ChatFileDownloadStyle, content: Content, tap: @escaping () -> Void) {
         self.style = style
@@ -37,7 +36,6 @@ class ChatFileDownloadContentView: ChatFileContentView {
 
     override func layout() {
         super.layout()
-        autoSetDimension(.width, toSize: kWidth)
         progressView.autoSetDimension(.height, toSize: 8)
 
         addSubview(contentView)

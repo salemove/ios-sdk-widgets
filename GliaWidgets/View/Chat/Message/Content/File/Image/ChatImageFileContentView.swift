@@ -4,7 +4,7 @@ class ChatImageFileContentView: ChatFileContentView {
     private let imageView = UIImageView()
     private let style: ChatImageFileContentStyle
     private let kInsets = UIEdgeInsets.zero
-    private let kImageViewSize = CGSize(width: 240, height: 155)
+    private let kHeight: CGFloat = 155
 
     init(with style: ChatImageFileContentStyle, content: Content, tap: @escaping () -> Void) {
         self.style = style
@@ -30,7 +30,7 @@ class ChatImageFileContentView: ChatFileContentView {
 
         addSubview(imageView)
         imageView.autoPinEdgesToSuperviewEdges(with: kInsets)
-        imageView.autoSetDimensions(to: kImageViewSize)
+        imageView.autoSetDimension(.height, toSize: kHeight)
     }
 
     override func update(with file: LocalFile) {
@@ -47,7 +47,8 @@ class ChatImageFileContentView: ChatFileContentView {
     }
 
     private func setImage(from file: LocalFile) {
-        file.thumbnail(for: kImageViewSize) { image in
+        let size = CGSize(width: kHeight, height: kHeight)
+        file.thumbnail(for: size) { image in
             self.setImage(image)
         }
     }
