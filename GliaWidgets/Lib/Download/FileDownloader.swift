@@ -31,7 +31,32 @@ class FileDownloader<File: FileDownloadable> {
         if let download = downloads[fileID] {
             return download
         } else {
-            let download = FileDownload<File>(with: file, storage: storage)
+            return addDownload(for: file)
+        }
+    }
+
+    func addDownloads(for files: [File]?, with uploads: [FileUpload]) {
+        guard let files = files else { return }
+
+        files.forEach({ file in
+            if let upload = uploads.first(where: { $0.engagementFileInformation?.id == file.id }) {
+                self.addDownload(for: file, localFile: upload.localFile)
+            }
+        })
+    }
+
+    @discardableResult
+    private func addDownload(for file: File, localFile: LocalFile? = nil) -> FileDownload<File>? {
+        guard let fileID = file.id else { return nil }
+
+        if let download = downloads[fileID] {
+            return download
+        } else {
+            let download = FileDownload<File>(
+                with: file,
+                storage: storage,
+                localFile: localFile
+            )
             downloads[fileID] = download
             return download
         }

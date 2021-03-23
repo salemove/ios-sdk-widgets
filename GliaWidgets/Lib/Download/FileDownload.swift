@@ -43,16 +43,18 @@ class FileDownload<File: FileDownloadable> {
     }
     private let storage: DataStorage
 
-    init(with file: File, storage: DataStorage) {
+    init(with file: File, storage: DataStorage, localFile: LocalFile? = nil) {
         self.file = file
         self.storage = storage
 
         if file.isDeleted == true {
             state.value = .error(.deleted)
+        } else if let localFile = localFile {
+            state.value = .downloaded(localFile)
         } else if let storageID = storageID, storage.hasData(for: storageID) {
             let url = storage.url(for: storageID)
-            let file = LocalFile(with: url)
-            state.value = .downloaded(file)
+            let localFile = LocalFile(with: url)
+            state.value = .downloaded(localFile)
         }
     }
 

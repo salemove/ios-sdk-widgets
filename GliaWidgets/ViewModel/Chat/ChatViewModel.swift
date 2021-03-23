@@ -215,26 +215,6 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         action?(.refreshAll)
     }
 
-    private func replace(
-        _ outgoingMessage: OutgoingMessage,
-        with message: Message,
-        in section: Section<ChatItem>
-    ) {
-        guard let index = section.items
-            .enumerated()
-            .first(where: {
-                guard case .outgoingMessage(let message) = $0.element.kind else { return false }
-                return message.id == outgoingMessage.id
-            })?.offset
-        else { return }
-
-        let status = Strings.Message.Status.delivered
-        let message = ChatMessage(with: message)
-        let item = ChatItem(kind: .visitorMessage(message, status: status))
-        section.replaceItem(at: index, with: item)
-        action?(.refreshRow(index, in: section.index, animated: false))
-    }
-
     private func loadHistory() {
         let messages = storage.messages(forQueue: interactor.queueID)
         let items = messages.compactMap { ChatItem(with: $0) }
@@ -300,7 +280,8 @@ extension ChatViewModel {
         guard validateMessage() else { return }
 
         let attachment = uploader.attachment
-        let files = uploader.localFiles
+        let uploads = uploader.succeededUploads
+        let files = uploads.map({ $0.localFile })
         let outgoingMessage = OutgoingMessage(
             content: messageText,
             files: files
@@ -314,6 +295,7 @@ extension ChatViewModel {
         interactor.send(messageText, attachment: attachment) { message in
             self.messageText = ""
             self.replace(outgoingMessage,
+                         uploads: uploads,
                          with: message,
                          in: self.messagesSection)
             self.action?(.scrollToBottom(animated: true))
@@ -322,6 +304,28 @@ extension ChatViewModel {
             self.showAlert(with: self.alertConfiguration.unexpectedError,
                            dismissed: nil)
         }
+    }
+
+    private func replace(
+        _ outgoingMessage: OutgoingMessage,
+        uploads: [FileUpload],
+        with message: Message,
+        in section: Section<ChatItem>
+    ) {
+        guard let index = section.items
+            .enumerated()
+            .first(where: {
+                guard case .outgoingMessage(let message) = $0.element.kind else { return false }
+                return message.id == outgoingMessage.id
+            })?.offset
+        else { return }
+
+        let status = Strings.Message.Status.delivered
+        let message = ChatMessage(with: message)
+        let item = ChatItem(kind: .visitorMessage(message, status: status))
+        downloader.addDownloads(for: message.attachment?.files, with: uploads)
+        section.replaceItem(at: index, with: item)
+        action?(.refreshRow(index, in: section.index, animated: false))
     }
 
     @discardableResult

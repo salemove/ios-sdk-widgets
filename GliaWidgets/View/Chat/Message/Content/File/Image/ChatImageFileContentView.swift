@@ -48,7 +48,11 @@ class ChatImageFileContentView: ChatFileContentView {
 
     private func setImage(from file: LocalFile) {
         file.thumbnail(for: kImageViewSize) { image in
-            self.imageView.image = image
+            self.setImage(image)
         }
+    }
+
+    private func setImage(_ image: UIImage?) {
+        imageView.image = image
     }
 }

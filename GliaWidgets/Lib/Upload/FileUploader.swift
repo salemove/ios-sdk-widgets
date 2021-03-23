@@ -44,9 +44,6 @@ class FileUploader {
             .map({ EngagementFile(id: $0.id) })
         return Attachment(files: files)
     }
-    var localFiles: [LocalFile] {
-        return uploads.map({ $0.localFile })
-    }
     var count: Int { return uploads.count }
     let state = ValueProvider<State>(with: .idle)
 

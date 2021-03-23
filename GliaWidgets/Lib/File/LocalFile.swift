@@ -45,7 +45,6 @@ extension LocalFile {
         }
 
         if let thumbnail = thumbnail {
-            print("USING CACHED")
             completion(thumbnail)
             return
         } else {
@@ -54,12 +53,12 @@ extension LocalFile {
             let targetSize = size.applying(scale)
             DispatchQueue.global(qos: .background).async {
                 guard let image = UIImage(contentsOfFile: self.url.path) else {
-                    completion(nil)
+                    DispatchQueue.main.async {
+                        completion(nil)
+                    }
                     return
                 }
-                print("SIZE:", image.size, "TARGET SIZE:", targetSize)
                 if image.size.width > targetSize.width, image.size.height > targetSize.height {
-                    print("RESIZING")
                     let image = self.resizeImage(image, size: targetSize)
                     self.thumbnail = image
                     DispatchQueue.main.async {
@@ -77,7 +76,7 @@ extension LocalFile {
 
     private func resizeImage(_ image: UIImage, size: CGSize) -> UIImage {
         let renderer = UIGraphicsImageRenderer(size: size)
-        return renderer.image { context in
+        return renderer.image { _ in
             image.draw(in: CGRect(origin: .zero, size: size))
         }
     }
