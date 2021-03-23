@@ -10,7 +10,7 @@ class ChatTextContentView: UIView {
     private let style: ChatTextContentStyle
     private let contentAlignment: ChatMessageContentAlignment
     private let contentView = UIView()
-    private let kInsets = UIEdgeInsets(top: 12, left: 16, bottom: 12, right: 16)
+    private let kTextInsets = UIEdgeInsets(top: 12, left: 16, bottom: 12, right: 16)
 
     init(with style: ChatTextContentStyle, contentAlignment: ChatMessageContentAlignment) {
         self.style = style
@@ -41,8 +41,10 @@ class ChatTextContentView: UIView {
         switch contentAlignment {
         case .left:
             contentView.autoPinEdge(toSuperviewEdge: .left)
+            contentView.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
         case .right:
             contentView.autoPinEdge(toSuperviewEdge: .right)
+            contentView.autoPinEdge(toSuperviewEdge: .left, withInset: 0, relation: .greaterThanOrEqual)
         }
     }
 
@@ -52,7 +54,7 @@ class ChatTextContentView: UIView {
         } else {
             if textLabel.superview == nil {
                 contentView.addSubview(textLabel)
-                textLabel.autoPinEdgesToSuperviewEdges(with: kInsets)
+                textLabel.autoPinEdgesToSuperviewEdges(with: kTextInsets)
             }
             textLabel.text = text
         }
