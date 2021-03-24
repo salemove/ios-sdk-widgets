@@ -35,7 +35,7 @@ class ChatMessageView: UIView {
     }
 
     func appendContentViews(_ contentViews: [UIView], animated: Bool) {
-        contentViews.forEach({ appendContentView($0, animated: animated) })
+        contentViews.forEach { appendContentView($0, animated: animated) }
     }
 
     func appendContentView(_ contentView: UIView, animated: Bool) {
@@ -57,7 +57,7 @@ class ChatMessageView: UIView {
     }
 
     private func contentViews(for files: [LocalFile]) -> [ChatFileContentView] {
-        return files.compactMap({ file in
+        return files.compactMap { file in
             if file.isImage {
                 return ChatImageFileContentView(
                     with: style.imageFile,
@@ -71,11 +71,11 @@ class ChatMessageView: UIView {
                     tap: { [weak self] in self?.fileTapped?(file) }
                 )
             }
-        })
+        }
     }
 
     private func contentViews(for downloads: [FileDownload]) -> [ChatFileContentView] {
-        return downloads.compactMap({ download in
+        return downloads.compactMap { download in
             if download.file.isImage {
                 return ChatImageFileContentView(
                     with: style.imageFile,
@@ -89,6 +89,6 @@ class ChatMessageView: UIView {
                     tap: { [weak self] in self?.downloadTapped?(download) }
                 )
             }
-        })
+        }
     }
 }

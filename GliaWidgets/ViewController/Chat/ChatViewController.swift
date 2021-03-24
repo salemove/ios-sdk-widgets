@@ -42,6 +42,7 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter, Popov
         view.tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
     }
 
+    // swiftlint:disable function_body_length
     private func bind(viewModel: ChatViewModel, to view: ChatView) {
         showBackButton(with: viewFactory.theme.chat.backButton, in: view.header)
         showCloseButton(with: viewFactory.theme.chat.closeButton, in: view.header)

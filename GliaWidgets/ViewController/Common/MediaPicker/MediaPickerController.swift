@@ -39,18 +39,18 @@ final class MediaPickerController: NSObject {
 
     private func mediaTypes(_ mediaTypes: [MediaPickerViewModel.MediaType],
                             for sourceType: UIImagePickerController.SourceType) -> [String] {
-        let types: [String] = mediaTypes.map({
+        let types: [String] = mediaTypes.map {
             switch $0 {
             case .image:
                 return "public.image"
             case .movie:
                 return "public.movie"
             }
-        })
+        }
 
         let availableMediaTypes = UIImagePickerController.availableMediaTypes(for: sourceType) ?? []
 
-        return types.filter({ availableMediaTypes.contains($0) })
+        return types.filter { availableMediaTypes.contains($0) }
     }
 
     private func checkCameraPermission(_ completion: @escaping (UIViewController) -> Void) {

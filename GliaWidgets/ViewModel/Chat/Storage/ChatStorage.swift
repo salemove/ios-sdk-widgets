@@ -57,7 +57,7 @@ class ChatStorage {
 
     private func exec(_ sql: String, values: [Any?]? = nil, completion: (() -> Void)? = nil) throws {
         try prepare(sql) { statement in
-            values?.enumerated().forEach({
+            values?.enumerated().forEach {
                 let index = Int32($0.offset + 1)
                 switch $0.element {
                 case nil:
@@ -69,7 +69,7 @@ class ChatStorage {
                 default:
                     print("Unsupported data type \(type(of: $0.element)) for \(String(describing: $0.element)) in exec()")
                 }
-            })
+            }
 
             if sqlite3_step(statement) == SQLITE_DONE {
                 completion?()
@@ -93,7 +93,7 @@ class ChatStorage {
 
     private func printLastErrorMessage() {
         #if DEBUG
-        let lastErrorMessage = sqlite3_errmsg(db).map({ String(cString: $0) }) ?? "UNKNOWN DB ERROR"
+        let lastErrorMessage = sqlite3_errmsg(db).map { String(cString: $0) } ?? "UNKNOWN DB ERROR"
         print(lastErrorMessage)
         #endif
     }
@@ -136,7 +136,7 @@ extension ChatStorage {
 
 extension ChatStorage {
     func messages(forQueue queueID: String) -> [ChatMessage] {
-        return messages.filter({ $0.queueID == queueID })
+        return messages.filter { $0.queueID == queueID }
     }
 
     func storeMessage(_ message: SalemoveSDK.Message,
@@ -153,7 +153,7 @@ extension ChatStorage {
     func storeMessages(_ messages: [SalemoveSDK.Message],
                        queueID: String,
                        operator salemoveOperator: SalemoveSDK.Operator?) {
-        messages.forEach({ storeMessage($0, queueID: queueID, operator: salemoveOperator) })
+        messages.forEach { storeMessage($0, queueID: queueID, operator: salemoveOperator) }
     }
 
     func isNewMessage(_ message: SalemoveSDK.Message) -> Bool {
@@ -161,7 +161,7 @@ extension ChatStorage {
     }
 
     func newMessages(_ messages: [SalemoveSDK.Message]) -> [SalemoveSDK.Message] {
-        let existingMessageIDs = messages.map({ $0.id })
-        return messages.filter({ !existingMessageIDs.contains($0.id) })
+        let existingMessageIDs = messages.map { $0.id }
+        return messages.filter { !existingMessageIDs.contains($0.id) }
     }
 }

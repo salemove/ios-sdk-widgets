@@ -43,7 +43,7 @@ class ChatMessage: Codable {
          operator salemoveOperator: Operator? = nil) {
         id = message.id
         self.queueID = queueID
-        self.operator = salemoveOperator.map({ ChatOperator(with: $0) })
+        self.operator = salemoveOperator.map { ChatOperator(with: $0) }
         sender = ChatMessageSender(with: message.sender)
         content = message.content
         attachment = ChatAttachment(with: message.attachment)

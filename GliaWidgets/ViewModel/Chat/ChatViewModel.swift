@@ -215,6 +215,23 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         action?(.refreshAll)
     }
 
+    override func interactorEvent(_ event: InteractorEvent) {
+        super.interactorEvent(event)
+
+        switch event {
+        case .receivedMessage(let message):
+            receivedMessage(message)
+        case .messagesUpdated(let messages):
+            messagesUpdated(messages)
+        case .upgradeOffer(let offer, answer: let answer):
+            offerMediaUpgrade(offer, answer: answer)
+        default:
+            break
+        }
+    }
+}
+
+extension ChatViewModel {
     private func loadHistory() {
         let messages = storage.messages(forQueue: interactor.queueID)
         let items = messages.compactMap { ChatItem(with: $0) }
@@ -222,7 +239,9 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         action?(.refreshSection(historySection.index))
         action?(.scrollToBottom(animated: true))
     }
+}
 
+extension ChatViewModel {
     private func offerMediaUpgrade(_ offer: MediaUpgradeOffer, answer: @escaping AnswerWithSuccessBlock) {
         switch offer.type {
         case .audio:
@@ -254,21 +273,6 @@ class ChatViewModel: EngagementViewModel, ViewModel {
                                    accepted: { onAccepted() },
                                    declined: { answer(false, nil) }))
     }
-
-    override func interactorEvent(_ event: InteractorEvent) {
-        super.interactorEvent(event)
-
-        switch event {
-        case .receivedMessage(let message):
-            receivedMessage(message)
-        case .messagesUpdated(let messages):
-            messagesUpdated(messages)
-        case .upgradeOffer(let offer, answer: let answer):
-            offerMediaUpgrade(offer, answer: answer)
-        default:
-            break
-        }
-    }
 }
 
 extension ChatViewModel {
@@ -281,7 +285,7 @@ extension ChatViewModel {
 
         let attachment = uploader.attachment
         let uploads = uploader.succeededUploads
-        let files = uploads.map({ $0.localFile })
+        let files = uploads.map { $0.localFile }
         let outgoingMessage = OutgoingMessage(
             content: messageText,
             files: files
@@ -370,8 +374,8 @@ extension ChatViewModel {
             storage.storeMessages(newMessages,
                                   queueID: interactor.queueID,
                                   operator: interactor.engagedOperator)
-            let newMessages = newMessages.map({ ChatMessage(with: $0) })
-            let items = newMessages.compactMap({ ChatItem(with: $0) })
+            let newMessages = newMessages.map { ChatMessage(with: $0) }
+            let items = newMessages.compactMap { ChatItem(with: $0) }
             setItems(items, to: messagesSection)
             action?(.scrollToBottom(animated: true))
         }

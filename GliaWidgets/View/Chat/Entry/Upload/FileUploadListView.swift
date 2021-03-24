@@ -4,7 +4,7 @@ class FileUploadListView: UIView {
     var removeTapped: ((FileUpload) -> Void)?
 
     private var uploadViews: [FileUploadView] {
-        return stackView.arrangedSubviews.compactMap({ $0 as? FileUploadView })
+        return stackView.arrangedSubviews.compactMap { $0 as? FileUploadView }
     }
     private let scrollView = UIScrollView()
     private let stackView = UIStackView()

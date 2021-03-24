@@ -75,7 +75,7 @@ class CallViewController: EngagementViewController, MediaUpgradePresenter {
                 view.durationLabel.text = text
                 view.connectView.statusView.setSecondText(text, animated: false)
             case .showButtons(let buttons):
-                let buttons = buttons.map({ CallButton.Kind(with: $0) })
+                let buttons = buttons.map { CallButton.Kind(with: $0) }
                 view.buttonBar.visibleButtons = buttons
             case .setButtonEnabled(let button, enabled: let enabled):
                 let button = CallButton.Kind(with: button)

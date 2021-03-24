@@ -8,40 +8,40 @@ class FileUploader {
     }
 
     var activeUploads: [FileUpload] {
-        return uploads.filter({
+        return uploads.filter {
             switch $0.state.value {
             case .uploading:
                 return true
             default:
                 return false
             }
-        })
+        }
     }
     var succeededUploads: [FileUpload] {
-        return uploads.filter({
+        return uploads.filter {
             switch $0.state.value {
             case .uploaded:
                 return true
             default:
                 return false
             }
-        })
+        }
     }
     var failedUploads: [FileUpload] {
-        return uploads.filter({
+        return uploads.filter {
             switch $0.state.value {
             case .error:
                 return true
             default:
                 return false
             }
-        })
+        }
     }
     var attachment: Attachment? {
         guard !succeededUploads.isEmpty else { return nil }
         let files = succeededUploads
-            .compactMap({ $0.engagementFileInformation })
-            .map({ EngagementFile(id: $0.id) })
+            .compactMap { $0.engagementFileInformation }
+            .map { EngagementFile(id: $0.id) }
         return Attachment(files: files)
     }
     var count: Int { return uploads.count }

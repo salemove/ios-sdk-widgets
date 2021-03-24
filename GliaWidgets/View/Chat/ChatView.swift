@@ -44,7 +44,7 @@ class ChatView: EngagementView {
     }
 
     func updateItemsUserImage(animated: Bool) {
-        tableView.indexPathsForVisibleRows?.forEach({
+        tableView.indexPathsForVisibleRows?.forEach {
             if let cell = tableView.cellForRow(at: $0) as? ChatItemCell,
                let item = itemForRow?($0.row, $0.section) {
                 switch cell.content {
@@ -60,7 +60,7 @@ class ChatView: EngagementView {
                     break
                 }
             }
-        })
+        }
     }
 
     func appendRows(_ count: Int, to section: Int, animated: Bool) {
@@ -68,7 +68,7 @@ class ChatView: EngagementView {
 
         if animated {
             let indexPaths = (rows - count ..< rows)
-                .map({ IndexPath(row: $0, section: section) })
+                .map { IndexPath(row: $0, section: section) }
             tableView.insertRows(at: indexPaths, with: .bottom)
         } else {
             tableView.reloadData()

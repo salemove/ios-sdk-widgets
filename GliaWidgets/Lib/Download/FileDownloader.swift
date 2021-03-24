@@ -13,7 +13,7 @@ class FileDownloader {
                    autoDownload: AutoDownload = .nothing) -> [FileDownload] {
         guard let files = files else { return [] }
 
-        let downloads = files.compactMap({ download(for: $0) })
+        let downloads = files.compactMap { download(for: $0) }
 
         switch autoDownload {
         case .images:
@@ -38,11 +38,11 @@ class FileDownloader {
     func addDownloads(for files: [ChatEngagementFile]?, with uploads: [FileUpload]) {
         guard let files = files else { return }
 
-        files.forEach({ file in
+        files.forEach { file in
             if let upload = uploads.first(where: { $0.engagementFileInformation?.id == file.id }) {
                 self.addDownload(for: file, localFile: upload.localFile)
             }
-        })
+        }
     }
 
     @discardableResult
@@ -64,15 +64,15 @@ class FileDownloader {
 
     private func downloadImages(for downloads: [FileDownload]) {
         downloads
-            .filter({ $0.file.isImage })
-            .filter({
+            .filter { $0.file.isImage }
+            .filter {
                 switch $0.state.value {
                 case .none, .error:
                     return true
                 case .downloading, .downloaded:
                     return false
                 }
-            })
-            .forEach({ $0.startDownload() })
+            }
+            .forEach { $0.startDownload() }
     }
 }

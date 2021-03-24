@@ -31,6 +31,6 @@ class ChatAttachment: Codable {
     init?(with attachment: SalemoveSDK.Attachment?) {
         guard let attachment = attachment else { return nil }
         type = ChatAttachmentType(with: attachment.type)
-        files = attachment.files.map({ $0.map({ ChatEngagementFile(with: $0) }) })
+        files = attachment.files.map { $0.map { ChatEngagementFile(with: $0) } }
     }
 }
