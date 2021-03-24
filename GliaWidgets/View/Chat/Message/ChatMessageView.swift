@@ -62,6 +62,7 @@ class ChatMessageView: UIView {
                 return ChatImageFileContentView(
                     with: style.imageFile,
                     content: .localFile(file),
+                    contentAlignment: contentAlignment,
                     tap: { [weak self] in self?.fileTapped?(file) }
                 )
             } else {
@@ -80,6 +81,7 @@ class ChatMessageView: UIView {
                 return ChatImageFileContentView(
                     with: style.imageFile,
                     content: .download(download),
+                    contentAlignment: contentAlignment,
                     tap: { [weak self] in self?.downloadTapped?(download) }
                 )
             } else {

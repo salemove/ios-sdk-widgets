@@ -1,13 +1,19 @@
 import UIKit
 
 class ChatImageFileContentView: ChatFileContentView {
+    private let contentView = UIView()
     private let imageView = UIImageView()
     private let style: ChatImageFileContentStyle
+    private let contentAlignment: ChatMessageContentAlignment
     private let kInsets = UIEdgeInsets.zero
     private let kHeight: CGFloat = 155
 
-    init(with style: ChatImageFileContentStyle, content: Content, tap: @escaping () -> Void) {
+    init(with style: ChatImageFileContentStyle,
+         content: Content,
+         contentAlignment: ChatMessageContentAlignment,
+         tap: @escaping () -> Void) {
         self.style = style
+        self.contentAlignment = contentAlignment
         super.init(with: style, content: content, tap: tap)
         setup()
         layout()
@@ -19,8 +25,10 @@ class ChatImageFileContentView: ChatFileContentView {
 
     override func setup() {
         super.setup()
-        clipsToBounds = true
-        layer.cornerRadius = 4
+
+        contentView.backgroundColor = style.backgroundColor
+        contentView.clipsToBounds = true
+        contentView.layer.cornerRadius = 4
 
         imageView.contentMode = .scaleAspectFill
     }
@@ -28,9 +36,22 @@ class ChatImageFileContentView: ChatFileContentView {
     override func layout() {
         super.layout()
 
-        addSubview(imageView)
-        imageView.autoPinEdgesToSuperviewEdges(with: kInsets)
-        imageView.autoSetDimension(.height, toSize: kHeight)
+        contentView.addSubview(imageView)
+        imageView.autoPinEdgesToSuperviewEdges()
+
+        addSubview(contentView)
+        contentView.autoSetDimension(.height, toSize: kHeight)
+        contentView.autoPinEdge(toSuperviewEdge: .top)
+        contentView.autoPinEdge(toSuperviewEdge: .bottom)
+
+        switch contentAlignment {
+        case .left:
+            contentView.autoPinEdge(toSuperviewEdge: .left)
+            contentView.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
+        case .right:
+            contentView.autoPinEdge(toSuperviewEdge: .right)
+            contentView.autoPinEdge(toSuperviewEdge: .left, withInset: 0, relation: .greaterThanOrEqual)
+        }
     }
 
     override func update(with file: LocalFile) {

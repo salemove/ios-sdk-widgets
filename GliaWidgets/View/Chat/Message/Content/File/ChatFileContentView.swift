@@ -27,8 +27,6 @@ class ChatFileContentView: UIView {
     func update(with download: FileDownload) {}
 
     func setup() {
-        backgroundColor = style.backgroundColor
-
         switch content {
         case .localFile(let file):
             update(with: file)

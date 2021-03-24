@@ -23,6 +23,7 @@ class ChatFileDownloadContentView: ChatFileContentView {
 
     override func setup() {
         super.setup()
+        backgroundColor = style.backgroundColor
         layer.cornerRadius = 4
         layer.borderWidth = 1
         layer.borderColor = style.borderColor.cgColor

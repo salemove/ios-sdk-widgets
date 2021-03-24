@@ -35,8 +35,8 @@ class ChatTextContentView: UIView {
 
     private func layout() {
         addSubview(contentView)
-        contentView.autoPinEdge(toSuperviewEdge: .top, withInset: 0)
-        contentView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 0)
+        contentView.autoPinEdge(toSuperviewEdge: .top)
+        contentView.autoPinEdge(toSuperviewEdge: .bottom)
 
         switch contentAlignment {
         case .left:
