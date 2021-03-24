@@ -40,9 +40,12 @@ class ChatImageFileContentView: ChatFileContentView {
         imageView.autoPinEdgesToSuperviewEdges()
 
         addSubview(contentView)
-        contentView.autoSetDimension(.height, toSize: kHeight)
         contentView.autoPinEdge(toSuperviewEdge: .top)
         contentView.autoPinEdge(toSuperviewEdge: .bottom)
+
+        NSLayoutConstraint.autoSetPriority(.defaultHigh) {
+            contentView.autoSetDimension(.height, toSize: kHeight)
+        }
 
         switch contentAlignment {
         case .left:

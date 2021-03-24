@@ -43,7 +43,10 @@ class FileImageView: UIView {
     }
 
     private func layout() {
-        autoSetDimensions(to: kSize)
+        NSLayoutConstraint.autoSetPriority(.defaultHigh) {
+            autoSetDimension(.height, toSize: kSize.height)
+        }
+        autoSetDimension(.width, toSize: kSize.width)
 
         addSubview(imageView)
         imageView.autoPinEdgesToSuperviewEdges()
