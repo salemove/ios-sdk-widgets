@@ -103,8 +103,10 @@ class FileImageView: UIView {
                 representationTypes: .lowQualityThumbnail
             )
             QLThumbnailGenerator.shared.generateRepresentations(for: request) { representation, _, _ in
+                let image = representation?.uiImage
+                    ?? UIImage(contentsOfFile: file.url.path)?.resized(to: self.kSize)
                 DispatchQueue.main.async {
-                    completion(representation?.uiImage)
+                    completion(image)
                 }
             }
         } else {

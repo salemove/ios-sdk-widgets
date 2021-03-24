@@ -47,7 +47,7 @@ class ChatImageFileContentView: ChatFileContentView {
     }
 
     private func setImage(from file: LocalFile) {
-        let size = CGSize(width: kHeight, height: kHeight)
+        let size = CGSize(width: 1.5 * kHeight, height: kHeight)
         file.thumbnail(for: size) { image in
             self.setImage(image)
         }

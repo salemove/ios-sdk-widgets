@@ -48,9 +48,6 @@ extension LocalFile {
             completion(thumbnail)
             return
         } else {
-            let scaleFactor = UIScreen.main.scale
-            let scale = CGAffineTransform(scaleX: scaleFactor, y: scaleFactor)
-            let targetSize = size.applying(scale)
             DispatchQueue.global(qos: .background).async {
                 guard let image = UIImage(contentsOfFile: self.url.path) else {
                     DispatchQueue.main.async {
@@ -58,26 +55,12 @@ extension LocalFile {
                     }
                     return
                 }
-                if image.size.width > targetSize.width, image.size.height > targetSize.height {
-                    let image = self.resizeImage(image, size: targetSize)
-                    self.thumbnail = image
-                    DispatchQueue.main.async {
-                        completion(image)
-                    }
-                } else {
-                    self.thumbnail = image
-                    DispatchQueue.main.async {
-                        completion(image)
-                    }
+                let thumbnail = image.resized(to: size)
+                self.thumbnail = thumbnail
+                DispatchQueue.main.async {
+                    completion(thumbnail)
                 }
             }
-        }
-    }
-
-    private func resizeImage(_ image: UIImage, size: CGSize) -> UIImage {
-        let renderer = UIGraphicsImageRenderer(size: size)
-        return renderer.image { _ in
-            image.draw(in: CGRect(origin: .zero, size: size))
         }
     }
 }
