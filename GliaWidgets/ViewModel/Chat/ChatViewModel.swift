@@ -39,9 +39,9 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     }
 
     enum DelegateEvent {
-        case pickMedia(ValueProvider<MediaPickerEvent>)
-        case takeMedia(ValueProvider<MediaPickerEvent>)
-        case pickFile(ValueProvider<FilePickerEvent>)
+        case pickMedia(ObservableValue<MediaPickerEvent>)
+        case takeMedia(ObservableValue<MediaPickerEvent>)
+        case pickFile(ObservableValue<FilePickerEvent>)
         case mediaUpgradeAccepted(offer: MediaUpgradeOffer,
                                   answer: AnswerWithSuccessBlock)
         case showFile(LocalFile)
@@ -65,7 +65,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     private var historySection: Section<ChatItem> { return sections[0] }
     private var queueOperatorSection: Section<ChatItem> { return sections[1] }
     private var messagesSection: Section<ChatItem> { return sections[2] }
-    private let call: ValueProvider<Call?>
+    private let call: ObservableValue<Call?>
     private var unreadMessages: UnreadMessagesHandler!
     private let showsCallBubble: Bool
     private let storage = ChatStorage()
@@ -81,10 +81,10 @@ class ChatViewModel: EngagementViewModel, ViewModel {
 
     init(interactor: Interactor,
          alertConfiguration: AlertConfiguration,
-         call: ValueProvider<Call?>,
-         unreadMessages: ValueProvider<Int>,
+         call: ObservableValue<Call?>,
+         unreadMessages: ObservableValue<Int>,
          showsCallBubble: Bool,
-         isWindowVisible: ValueProvider<Bool>,
+         isWindowVisible: ObservableValue<Bool>,
          startAction: StartAction) {
         self.call = call
         self.showsCallBubble = showsCallBubble
@@ -385,8 +385,8 @@ extension ChatViewModel {
 extension ChatViewModel {
     private func presentMediaPicker() {
         let itemSelected = { (kind: ListItemKind) -> Void in
-            let mediaProvider = ValueProvider<MediaPickerEvent>(with: .none)
-            mediaProvider.addObserver(self) { event, _ in
+            let media = ObservableValue<MediaPickerEvent>(with: .none)
+            media.addObserver(self) { event, _ in
                 switch event {
                 case .none, .cancelled:
                     break
@@ -398,8 +398,8 @@ extension ChatViewModel {
                     self.showSettingsAlert(with: self.alertConfiguration.cameraSettings)
                 }
             }
-            let fileProvider = ValueProvider<FilePickerEvent>(with: .none)
-            fileProvider.addObserver(self) { event, _ in
+            let file = ObservableValue<FilePickerEvent>(with: .none)
+            file.addObserver(self) { event, _ in
                 switch event {
                 case .none, .cancelled:
                     break
@@ -409,11 +409,11 @@ extension ChatViewModel {
             }
             switch kind {
             case .photoLibrary:
-                self.delegate?(.pickMedia(mediaProvider))
+                self.delegate?(.pickMedia(media))
             case .takePhoto:
-                self.delegate?(.takeMedia(mediaProvider))
+                self.delegate?(.takeMedia(media))
             case .browse:
-                self.delegate?(.pickFile(fileProvider))
+                self.delegate?(.pickFile(file))
             }
         }
         action?(.presentMediaPicker(itemSelected: { itemSelected($0) }))
@@ -509,18 +509,18 @@ extension ChatViewModel {
     private func onCall(_ call: Call?) {
         guard let call = call else { return }
 
-        let kindProvider = ValueProvider<CallKind>(with: call.kind.value)
-        let durationProvider = ValueProvider<Int>(with: 0)
-        let item = ChatItem(kind: .callUpgrade(kindProvider,
-                                               durationProvider: durationProvider))
+        let callKind = ObservableValue<CallKind>(with: call.kind.value)
+        let callDuration = ObservableValue<Int>(with: 0)
+        let item = ChatItem(kind: .callUpgrade(callKind,
+                                               duration: callDuration))
         appendItem(item, to: messagesSection, animated: true)
         action?(.scrollToBottom(animated: true))
 
         call.kind.addObserver(self) { kind, _ in
-            kindProvider.value = kind
+            callKind.value = kind
         }
         call.duration.addObserver(item) { duration, _ in
-            durationProvider.value = duration
+            callDuration.value = duration
         }
     }
 

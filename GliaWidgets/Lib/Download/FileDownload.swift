@@ -24,12 +24,12 @@ class FileDownload {
 
     enum State {
         case none
-        case downloading(progress: ValueProvider<Double>)
+        case downloading(progress: ObservableValue<Double>)
         case downloaded(LocalFile)
         case error(Error)
     }
 
-    let state = ValueProvider<State>(with: .none)
+    let state = ObservableValue<State>(with: .none)
     let file: ChatEngagementFile
 
     private var storageID: String? {
@@ -64,7 +64,7 @@ class FileDownload {
             return
         }
 
-        let progress = ValueProvider<Double>(with: 0)
+        let progress = ObservableValue<Double>(with: 0)
         let onProgress: EngagementFileProgressBlock = {
             if case .downloading(progress: let progress) = self.state.value {
                 progress.value = $0.fractionCompleted

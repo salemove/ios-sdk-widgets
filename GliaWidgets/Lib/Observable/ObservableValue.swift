@@ -1,4 +1,4 @@
-public class ValueProvider<T: Any> {
+public class ObservableValue<T: Any> {
     public typealias Update = (_ new: T, _ old: T) -> Void
 
     public var value: T {

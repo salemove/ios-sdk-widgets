@@ -45,7 +45,7 @@ class FileUploader {
         return Attachment(files: files)
     }
     var count: Int { return uploads.count }
-    let state = ValueProvider<State>(with: .idle)
+    let state = ObservableValue<State>(with: .idle)
 
     private var uploads = [FileUpload]()
     private var storage = FileSystemStorage(directory: .documents)

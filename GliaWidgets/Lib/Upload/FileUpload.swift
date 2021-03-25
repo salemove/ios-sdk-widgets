@@ -36,7 +36,7 @@ class FileUpload {
 
     enum State {
         case none
-        case uploading(progress: ValueProvider<Double>)
+        case uploading(progress: ObservableValue<Double>)
         case uploaded(file: EngagementFileInformation)
         case error(Error)
     }
@@ -50,7 +50,7 @@ class FileUpload {
         }
     }
 
-    let state = ValueProvider<State>(with: .none)
+    let state = ObservableValue<State>(with: .none)
     let localFile: LocalFile
 
     private let storage: DataStorage
@@ -62,7 +62,7 @@ class FileUpload {
 
     func startUpload() {
         let file = EngagementFile(url: localFile.url)
-        let progress = ValueProvider<Double>(with: 0)
+        let progress = ObservableValue<Double>(with: 0)
         let onProgress: EngagementFileProgressBlock = {
             if case .uploading(progress: let progress) = self.state.value {
                 progress.value = $0.fractionCompleted

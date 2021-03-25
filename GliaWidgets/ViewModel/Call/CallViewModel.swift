@@ -66,7 +66,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
     init(interactor: Interactor,
          alertConfiguration: AlertConfiguration,
          call: Call,
-         unreadMessages: ValueProvider<Int>,
+         unreadMessages: ObservableValue<Int>,
          startWith: StartAction) {
         self.call = call
         self.startWith = startWith

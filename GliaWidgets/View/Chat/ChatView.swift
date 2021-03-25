@@ -156,11 +156,11 @@ class ChatView: EngagementView {
             view.showsOperatorImage = showsImage
             view.setOperatorImage(fromUrl: imageUrl, animated: false)
             return .operatorMessage(view)
-        case .callUpgrade(let kindProvider, durationProvider: let durationProvider):
-            let callStyle = callUpgradeStyle(for: kindProvider.value)
+        case .callUpgrade(let kind, duration: let duration):
+            let callStyle = callUpgradeStyle(for: kind.value)
             let view = ChatCallUpgradeView(with: callStyle,
-                                           durationProvider: durationProvider)
-            kindProvider.addObserver(self) { kind, _ in
+                                           duration: duration)
+            kind.addObserver(self) { kind, _ in
                 view.style = self.callUpgradeStyle(for: kind)
             }
             return .callUpgrade(view)
