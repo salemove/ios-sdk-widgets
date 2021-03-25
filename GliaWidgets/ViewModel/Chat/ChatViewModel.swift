@@ -423,6 +423,8 @@ extension ChatViewModel {
         switch media {
         case .image(let url):
             addUpload(with: url)
+        case .photo(let data, format: let format):
+            addUpload(with: data, format: format)
         case .movie(let url):
             addUpload(with: url)
         case .none:
@@ -436,6 +438,11 @@ extension ChatViewModel {
 
     private func addUpload(with url: URL) {
         let upload = uploader.addUpload(with: url)
+        action?(.addUpload(upload))
+    }
+
+    private func addUpload(with data: Data, format: MediaFormat) {
+        guard let upload = uploader.addUpload(with: data, format: format) else { return }
         action?(.addUpload(upload))
     }
 

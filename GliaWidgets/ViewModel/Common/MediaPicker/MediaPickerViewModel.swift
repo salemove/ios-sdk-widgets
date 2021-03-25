@@ -1,7 +1,19 @@
 enum PickedMedia {
     case image(URL)
+    case photo(Data, format: MediaFormat)
     case movie(URL)
     case none
+}
+
+enum MediaFormat {
+    case jpeg(quality: Float)
+
+    var fileExtension: String {
+        switch self {
+        case .jpeg:
+            return "jpeg"
+        }
+    }
 }
 
 enum MediaPickerEvent {
@@ -27,6 +39,7 @@ class MediaPickerViewModel: ViewModel {
         case sourceNotAvailable
         case noCameraPermission
         case pickedImage(URL)
+        case pickedPhoto(Data, format: MediaFormat)
         case pickedMovie(URL)
         case cancelled
     }
@@ -39,8 +52,9 @@ class MediaPickerViewModel: ViewModel {
 
     var action: ((Action) -> Void)?
     var delegate: ((DelegateEvent) -> Void)?
-    var source: MediaSource { mediaSource }
-    var types: [MediaType] { mediaTypes }
+    var source: MediaSource { return mediaSource }
+    var types: [MediaType] { return mediaTypes }
+    var photoFormat: MediaFormat { return .jpeg(quality: 0.8) }
 
     private let pickerEvent: ObservableValue<MediaPickerEvent>
     private let mediaSource: MediaSource
@@ -64,6 +78,9 @@ class MediaPickerViewModel: ViewModel {
             delegate?(.finished)
         case .pickedImage(let url):
             pickerEvent.value = .pickedMedia(.image(url))
+            delegate?(.finished)
+        case .pickedPhoto(let data, format: let format):
+            pickerEvent.value = .pickedMedia(.photo(data, format: format))
             delegate?(.finished)
         case .pickedMovie(let url):
             pickerEvent.value = .pickedMedia(.movie(url))

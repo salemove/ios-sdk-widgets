@@ -25,7 +25,7 @@ class LocalFile {
         }
     }()
     lazy var isImage: Bool = {
-        return ["jpg", "jpeg", "png", "gif", "tif", "tiff", "bmp"].contains(fileExtension)
+        return ["jpg", "jpeg", "png", "gif"].contains(fileExtension)
     }()
 
     let url: URL

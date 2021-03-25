@@ -44,7 +44,6 @@ class FileUploadListView: UIView {
 
     private func setup() {
         stackView.axis = .vertical
-        stackView.spacing = 0
     }
 
     private func layout() {

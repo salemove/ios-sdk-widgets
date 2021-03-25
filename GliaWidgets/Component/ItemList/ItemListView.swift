@@ -25,7 +25,6 @@ class ItemListView: UIView {
         backgroundColor = style.backgroundColor
 
         stackView.axis = .vertical
-        stackView.spacing = 0
 
         items = style.items
     }

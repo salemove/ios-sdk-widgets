@@ -50,8 +50,6 @@ class FileUploader {
     private var uploads = [FileUpload]()
     private var storage = FileSystemStorage(directory: .documents)
 
-    init() {}
-
     func addUpload(with url: URL) -> FileUpload {
         let localFile = LocalFile(with: url)
         let upload = FileUpload(with: localFile, storage: storage)
@@ -62,6 +60,17 @@ class FileUploader {
         upload.startUpload()
         updateState()
         return upload
+    }
+
+    func addUpload(with data: Data, format: MediaFormat) -> FileUpload? {
+        let fileName = UUID().uuidString + "." + format.fileExtension
+        let url = storage.url(for: fileName)
+        do {
+            try data.write(to: url)
+            return addUpload(with: url)
+        } catch {
+            return nil
+        }
     }
 
     func upload(at index: Int) -> FileUpload? {
@@ -83,9 +92,7 @@ class FileUploader {
     private func updateState() {
         var newState: State = .idle
 
-        if uploads.isEmpty {
-            newState = .idle
-        } else {
+        if !uploads.isEmpty {
             if activeUploads.isEmpty {
                 newState = .finished
             } else {

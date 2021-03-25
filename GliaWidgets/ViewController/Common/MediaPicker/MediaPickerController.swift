@@ -11,7 +11,7 @@ final class MediaPickerController: NSObject {
         imagePicker.sourceType = source
         imagePicker.mediaTypes = media
         imagePicker.modalPresentationStyle = .fullScreen
-        imagePicker.allowsEditing = true
+        imagePicker.allowsEditing = false
         imagePicker.delegate = self
 
         return imagePicker
@@ -73,6 +73,17 @@ final class MediaPickerController: NSObject {
 
         completion(viewController)
     }
+
+    private func pickedPhoto(_ image: UIImage) {
+        let format = viewModel.photoFormat
+
+        switch format {
+        case .jpeg(quality: let quality):
+            if let data = image.jpegData(compressionQuality: CGFloat(quality)) {
+                viewModel.event(.pickedPhoto(data, format: format))
+            }
+        }
+    }
 }
 
 extension MediaPickerController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
@@ -81,6 +92,10 @@ extension MediaPickerController: UIImagePickerControllerDelegate, UINavigationCo
 
         if let url = info[.imageURL] as? URL {
             viewModel.event(.pickedImage(url))
+        } else if let image = info[.editedImage] as? UIImage {
+            pickedPhoto(image)
+        } else if let image = info[.originalImage] as? UIImage {
+            pickedPhoto(image)
         } else if let url = info[.mediaURL] as? URL {
             viewModel.event(.pickedMovie(url))
         }
