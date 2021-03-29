@@ -2,6 +2,7 @@ import UIKit
 import SalemoveSDK
 
 public enum EngagementKind {
+    case none
     case chat
     case audioCall
     case videoCall
@@ -9,6 +10,7 @@ public enum EngagementKind {
 
 public enum GliaEvent {
     case started
+    case engagementChanged(EngagementKind)
     case ended
     case minimized
     case maximized
@@ -20,6 +22,7 @@ public protocol SceneProvider: class {
 }
 
 public class Glia {
+    public var engagement: EngagementKind { return rootCoordinator?.engagementKind ?? .none }
     public var onEvent: ((GliaEvent) -> Void)?
 
     private var rootCoordinator: RootCoordinator?
@@ -62,6 +65,8 @@ public class Glia {
             switch event {
             case .started:
                 self?.onEvent?(.started)
+            case .engagementChanged(let engagementKind):
+                self?.onEvent?(.engagementChanged(engagementKind))
             case .ended:
                 self?.rootCoordinator = nil
                 self?.onEvent?(.ended)

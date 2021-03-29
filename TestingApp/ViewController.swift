@@ -69,6 +69,20 @@ extension ViewController {
                                             url: "https://www.salemoveinsurance.com")
 
         glia = Glia(configuration: conf)
+        glia.onEvent = { event in
+            switch event {
+            case .started:
+                print("STARTED")
+            case .engagementChanged(let kind):
+                print("CHANGED:", kind)
+            case .ended:
+                print("ENDED")
+            case .minimized:
+                print("MINIMIZED")
+            case .maximized:
+                print("MAXIMIZED")
+            }
+        }
 
         do {
             try glia.start(engagementKind,

@@ -4,6 +4,7 @@ import SalemoveSDK
 class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
     enum DelegateEvent {
         case started
+        case engagementChanged(EngagementKind)
         case ended
         case minimized
         case maximized
@@ -22,10 +23,13 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
 
     var delegate: ((DelegateEvent) -> Void)?
 
+    var engagementKind: EngagementKind {
+        didSet { delegate?(.engagementChanged(engagementKind)) }
+    }
+
     private let interactor: Interactor
     private let viewFactory: ViewFactory
     private weak var sceneProvider: SceneProvider?
-    private let engagementKind: EngagementKind
     private var engagement: Engagement = .none
     private let chatCallProvider = ValueProvider<Call?>(with: nil)
     private let unreadMessages = ValueProvider<Int>(with: 0)
@@ -50,6 +54,8 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
 
     func start() {
         switch engagementKind {
+        case .none:
+            break
         case .chat:
             let chatViewController = startChat(withAction: .startEngagement,
                                                showsCallBubble: false)
@@ -61,6 +67,9 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
                 ? .audio
                 : .video
             let call = Call(kind)
+            call.kind.addObserver(self) { kind, _ in
+                self.engagementKind = EngagementKind(with: call.kind.value)
+            }
             let chatViewController = startChat(withAction: .none,
                                                showsCallBubble: true)
             let callViewController = startCall(call, withAction: .engagement)
@@ -86,6 +95,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
             self.engagement = .none
             self.navigationPresenter.setViewControllers([], animated: false)
             self.removeAllCoordinators()
+            self.engagementKind = .none
             self.delegate?(.ended)
         }
     }
@@ -266,6 +276,9 @@ extension RootCoordinator {
         case .chat(let chatViewController):
             guard let kind = CallKind(with: offer) else { return }
             let call = Call(kind)
+            call.kind.addObserver(self) { kind, _ in
+                self.engagementKind = EngagementKind(with: call.kind.value)
+            }
             let callViewController = startCall(call, withAction: .call(offer: offer, answer: answer))
             engagement = .call(callViewController,
                                chatViewController,
@@ -287,6 +300,17 @@ extension RootCoordinator: GliaWindowDelegate {
         case .maximized:
             isWindowVisible.value = true
             delegate?(.maximized)
+        }
+    }
+}
+
+extension EngagementKind {
+    init(with kind: CallKind) {
+        switch kind {
+        case .audio:
+            self = .audioCall
+        case .video:
+            self = .videoCall
         }
     }
 }
