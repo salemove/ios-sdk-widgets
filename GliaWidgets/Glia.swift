@@ -19,23 +19,18 @@ public protocol SceneProvider: class {
     func windowScene() -> UIWindowScene?
 }
 
-public protocol GliaDelegate: class {
-    func event(_ event: GliaEvent)
-}
-
 public class Glia {
+    public var onEvent: ((GliaEvent) -> Void)?
+
     private var rootCoordinator: RootCoordinator?
     private let conf: Configuration
-    private weak var delegate: GliaDelegate?
     private weak var sceneProvider: SceneProvider?
     private let appDelegate = SalemoveAppDelegate()
 
     public init(
         configuration: Configuration,
-        delegate: GliaDelegate? = nil,
         sceneProvider: SceneProvider? = nil) {
         self.conf = configuration
-        self.delegate = delegate
         self.sceneProvider = sceneProvider
     }
 
@@ -43,15 +38,39 @@ public class Glia {
                       queueID: String,
                       visitorContext: VisitorContext,
                       using theme: Theme = Theme()) throws {
-        let interactor = try Interactor(with: conf,
-                                        queueID: queueID,
-                                        visitorContext: visitorContext)
+        let interactor = try Interactor(
+            with: conf,
+            queueID: queueID,
+            visitorContext: visitorContext
+        )
         let viewFactory = ViewFactory(with: theme)
-        rootCoordinator = RootCoordinator(interactor: interactor,
-                                          viewFactory: viewFactory,
-                                          gliaDelegate: delegate,
-                                          sceneProvider: sceneProvider,
-                                          engagementKind: engagementKind)
+        startRootCoordinator(with: interactor,
+                             viewFactory: viewFactory,
+                             engagementKind: engagementKind)
+    }
+
+    private func startRootCoordinator(with interactor: Interactor,
+                                      viewFactory: ViewFactory,
+                                      engagementKind: EngagementKind) {
+        rootCoordinator = RootCoordinator(
+            interactor: interactor,
+            viewFactory: viewFactory,
+            sceneProvider: sceneProvider,
+            engagementKind: engagementKind
+        )
+        rootCoordinator?.delegate = { [weak self] event in
+            switch event {
+            case .started:
+                self?.onEvent?(.started)
+            case .ended:
+                self?.rootCoordinator = nil
+                self?.onEvent?(.ended)
+            case .minimized:
+                self?.onEvent?(.minimized)
+            case .maximized:
+                self?.onEvent?(.maximized)
+            }
+        }
         rootCoordinator?.start()
     }
 }

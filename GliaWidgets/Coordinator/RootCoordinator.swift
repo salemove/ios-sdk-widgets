@@ -2,7 +2,12 @@ import UIKit
 import SalemoveSDK
 
 class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
-    enum DelegateEvent {}
+    enum DelegateEvent {
+        case started
+        case ended
+        case minimized
+        case maximized
+    }
 
     private enum Engagement {
         case none
@@ -19,7 +24,6 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
 
     private let interactor: Interactor
     private let viewFactory: ViewFactory
-    private weak var gliaDelegate: GliaDelegate?
     private weak var sceneProvider: SceneProvider?
     private let engagementKind: EngagementKind
     private var engagement: Engagement = .none
@@ -33,12 +37,10 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
 
     init(interactor: Interactor,
          viewFactory: ViewFactory,
-         gliaDelegate: GliaDelegate?,
          sceneProvider: SceneProvider?,
          engagementKind: EngagementKind) {
         self.interactor = interactor
         self.viewFactory = viewFactory
-        self.gliaDelegate = gliaDelegate
         self.sceneProvider = sceneProvider
         self.engagementKind = engagementKind
         self.navigationPresenter = NavigationPresenter(with: navigationController)
@@ -74,7 +76,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
             bubbleView.setBadge(itemCount: unreadCount)
         }
         presentWindow(bubbleView: bubbleView, animated: true)
-        gliaDelegate?.event(.started)
+        delegate?(.started)
     }
 
     private func end() {
@@ -84,7 +86,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
             self.engagement = .none
             self.navigationPresenter.setViewControllers([], animated: false)
             self.removeAllCoordinators()
-            self.gliaDelegate?.event(.ended)
+            self.delegate?(.ended)
         }
     }
 
@@ -281,10 +283,10 @@ extension RootCoordinator: GliaWindowDelegate {
         switch event {
         case .minimized:
             isWindowVisible.value = false
-            gliaDelegate?.event(.minimized)
+            delegate?(.minimized)
         case .maximized:
             isWindowVisible.value = true
-            gliaDelegate?.event(.maximized)
+            delegate?(.maximized)
         }
     }
 }
