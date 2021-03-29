@@ -236,6 +236,8 @@ extension Interactor: Interactable {
                     print("Screen sharing started")
                 case .notSharing:
                     print("Screen sharing stopped")
+                @unknown default:
+                    break
                 }
                 self.notify(.screenSharingStateChanged(to: state))
             }

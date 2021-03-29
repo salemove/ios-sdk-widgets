@@ -167,6 +167,8 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             action?(.showEndScreenShareButton)
         case .notSharing:
             action?(.showEndButton)
+        @unknown default:
+            break
         }
     }
 

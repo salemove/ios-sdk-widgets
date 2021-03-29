@@ -15,6 +15,8 @@ enum ChatAttachmentType: Int, Codable {
             self = .singleChoiceResponse
         case nil:
             return nil
+        @unknown default:
+            return nil
         }
     }
 }
