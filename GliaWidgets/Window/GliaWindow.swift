@@ -68,7 +68,7 @@ class GliaWindow: UIWindow {
     func maximize(animated: Bool) {
         guard let animationImageView = animationImageView else { return }
 
-        bubbleWindow.map({ animationImageView.frame = $0.frame })
+        bubbleWindow.map { animationImageView.frame = $0.frame }
 
         animationImageView.image = maximizeScreeshot
         animationImageView.isHidden = false

@@ -55,7 +55,7 @@ enum MediaStream<Streamable> {
 }
 
 class MediaChannel<Streamable> {
-    let stream = ValueProvider<MediaStream<Streamable>>(with: .none)
+    let stream = ObservableValue<MediaStream<Streamable>>(with: .none)
     private(set) var neededDirection: MediaDirection = .twoWay
 
     func setNeededDirection(_ direction: MediaDirection) {
@@ -65,9 +65,9 @@ class MediaChannel<Streamable> {
 
 class Call {
     let id = UUID().uuidString
-    let kind = ValueProvider<CallKind>(with: .audio)
-    let state = ValueProvider<CallState>(with: .none)
-    let duration = ValueProvider<Int>(with: 0)
+    let kind = ObservableValue<CallKind>(with: .audio)
+    let state = ObservableValue<CallState>(with: .none)
+    let duration = ObservableValue<Int>(with: 0)
     let audio = MediaChannel<AudioStreamable>()
     let video = MediaChannel<VideoStreamable>()
     private(set) var audioPortOverride = AVAudioSession.PortOverride.none
@@ -161,7 +161,7 @@ class Call {
         }
     }
 
-    private func updateMediaStream<Streamable>(_ mediaStream: ValueProvider<MediaStream<Streamable>>,
+    private func updateMediaStream<Streamable>(_ mediaStream: ObservableValue<MediaStream<Streamable>>,
                                                with stream: Streamable,
                                                isRemote: Bool) {
         if isRemote {

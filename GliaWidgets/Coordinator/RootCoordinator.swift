@@ -31,9 +31,9 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
     private let viewFactory: ViewFactory
     private weak var sceneProvider: SceneProvider?
     private var engagement: Engagement = .none
-    private let chatCallProvider = ValueProvider<Call?>(with: nil)
-    private let unreadMessages = ValueProvider<Int>(with: 0)
-    private let isWindowVisible = ValueProvider<Bool>(with: false)
+    private let chatCall = ObservableValue<Call?>(with: nil)
+    private let unreadMessages = ObservableValue<Int>(with: 0)
+    private let isWindowVisible = ObservableValue<Bool>(with: false)
     private let navigationController = NavigationController()
     private let navigationPresenter: NavigationPresenter
     private var window: GliaWindow?
@@ -105,7 +105,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
             interactor: interactor,
             viewFactory: viewFactory,
             navigationPresenter: navigationPresenter,
-            call: chatCallProvider,
+            call: chatCall,
             unreadMessages: unreadMessages,
             showsCallBubble: showsCallBubble,
             isWindowVisible: isWindowVisible,
@@ -258,8 +258,8 @@ extension RootCoordinator {
 
     @available(iOS 13.0, *)
     private func windowScene() -> UIWindowScene? {
-        if let windowScene = sceneProvider?.windowScene() {
-            return windowScene
+        if let sceneProvider = sceneProvider {
+            return sceneProvider.windowScene()
         } else {
             let scene = UIApplication.shared
                 .connectedScenes
@@ -283,7 +283,7 @@ extension RootCoordinator {
             engagement = .call(callViewController,
                                chatViewController,
                                .chat)
-            chatCallProvider.value = call
+            chatCall.value = call
             navigationPresenter.push(callViewController)
         default:
             break

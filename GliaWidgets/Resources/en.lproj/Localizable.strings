@@ -35,9 +35,12 @@
 "alert.videoUpgrade.twoWay.title" = "{operatorName} has offered you to upgrade to video";
 
 "alert.microphonePermission.title" = "Unable to access microphone";
-"alert.microphonePermission.message" = "Allow access to you micrphone from device menu: “Settings” - “Privacy” - “Microphone”";
+"alert.microphonePermission.message" = "Allow access to your microphone from device menu: “Settings” - “Privacy” - “Microphone”";
 "alert.cameraPermission.title" = "Unable to access camera";
-"alert.cameraPermission.message" = "Allow access to you micrphone from device menu: “Settings” - “Privacy” - “Camera”";
+"alert.cameraPermission.message" = "Allow access to your camera from device menu: “Settings” - “Privacy” - “Camera”";
+
+"alert.mediaSourceNotAvailable.title" = "Unable to access media source";
+"alert.mediaSourceNotAvailable.message" = "This media source is not available on your device";
 
 "alert.screenSharing.start.title" = "{operatorName} has asked you to share your screen";
 "alert.screenSharing.start.message" = "{operatorName} would like to see the screen of your device";
@@ -56,6 +59,23 @@
 "chat.message.status.delivered" = "Delivered";
 "chat.upgrade.audio.text" = "Upgraded to Audio Call";
 "chat.upgrade.video.text" = "Upgraded to Video Call";
+"chat.pickMedia.photo" = "Photo library";
+"chat.pickMedia.takePhoto" = "Take Photo or Video";
+"chat.pickMedia.browse" = "Browse";
+"chat.upload.uploading" = "Uploading file…";
+"chat.upload.uploaded" = "Ready to send";
+"chat.upload.failed" = "Uploading failed";
+"chat.upload.error.fileTooBig" = "File size over 25mb limit!";
+"chat.upload.error.unsupportedFileType" = "Invalid file type!";
+"chat.upload.error.safetyCheckFailed" = "Failed to check the safety of the file.";
+"chat.upload.error.network" = "Network error.";
+"chat.upload.error.generic" = "Failed to upload.";
+"chat.download.download" = "Download";
+"chat.download.downloading" = "Downloading file…";
+"chat.download.open" = "Open";
+"chat.download.failed" = "Download failed";
+"chat.download.failed.separator" = " | ";
+"chat.download.failed.retry" = "Retry";
 
 "call.audio.title" = "AUDIO CALL";
 "call.video.title" = "VIDEO CALL";

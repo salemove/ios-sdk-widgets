@@ -3,9 +3,14 @@ import UIKit
 class ChatMessageView: UIView {
     let style: ChatMessageStyle
     let contentViews = UIStackView()
+    var fileTapped: ((LocalFile) -> Void)?
+    var downloadTapped: ((FileDownload) -> Void)?
 
-    init(with style: ChatMessageStyle) {
+    private let contentAlignment: ChatMessageContentAlignment
+
+    init(with style: ChatMessageStyle, contentAlignment: ChatMessageContentAlignment) {
         self.style = style
+        self.contentAlignment = contentAlignment
         super.init(frame: .zero)
         setup()
     }
@@ -17,19 +22,20 @@ class ChatMessageView: UIView {
     func appendContent(_ content: ChatMessageContent, animated: Bool) {
         switch content {
         case .text(let text):
-            let messageLabel = UILabel()
-            messageLabel.font = style.messageFont
-            messageLabel.textColor = style.messageColor
-            messageLabel.numberOfLines = 0
-            messageLabel.text = text
-            let insets = UIEdgeInsets(top: 12, left: 16, bottom: 12, right: 16)
-            let contentView = ChatMessageContentView(with: messageLabel,
-                                                     insets: insets)
-            contentView.backgroundColor = style.backgroundColor
+            let contentView = ChatTextContentView(with: style.text, contentAlignment: contentAlignment)
+            contentView.text = text
             appendContentView(contentView, animated: animated)
-        case .image:
-            break
+        case .files(let files):
+            let contentViews = self.contentViews(for: files)
+            appendContentViews(contentViews, animated: animated)
+        case .downloads(let downloads):
+            let contentViews = self.contentViews(for: downloads)
+            appendContentViews(contentViews, animated: animated)
         }
+    }
+
+    func appendContentViews(_ contentViews: [UIView], animated: Bool) {
+        contentViews.forEach { appendContentView($0, animated: animated) }
     }
 
     func appendContentView(_ contentView: UIView, animated: Bool) {
@@ -38,7 +44,6 @@ class ChatMessageView: UIView {
 
         if animated {
             contentViews.layoutIfNeeded()
-
             UIView.animate(withDuration: 0.3) {
                 contentView.isHidden = false
                 self.contentViews.layoutIfNeeded()
@@ -49,5 +54,43 @@ class ChatMessageView: UIView {
     func setup() {
         contentViews.axis = .vertical
         contentViews.spacing = 4
+    }
+
+    private func contentViews(for files: [LocalFile]) -> [ChatFileContentView] {
+        return files.compactMap { file in
+            if file.isImage {
+                return ChatImageFileContentView(
+                    with: style.imageFile,
+                    content: .localFile(file),
+                    contentAlignment: contentAlignment,
+                    tap: { [weak self] in self?.fileTapped?(file) }
+                )
+            } else {
+                return ChatFileDownloadContentView(
+                    with: style.fileDownload,
+                    content: .localFile(file),
+                    tap: { [weak self] in self?.fileTapped?(file) }
+                )
+            }
+        }
+    }
+
+    private func contentViews(for downloads: [FileDownload]) -> [ChatFileContentView] {
+        return downloads.compactMap { download in
+            if download.file.isImage {
+                return ChatImageFileContentView(
+                    with: style.imageFile,
+                    content: .download(download),
+                    contentAlignment: contentAlignment,
+                    tap: { [weak self] in self?.downloadTapped?(download) }
+                )
+            } else {
+                return ChatFileDownloadContentView(
+                    with: style.fileDownload,
+                    content: .download(download),
+                    tap: { [weak self] in self?.downloadTapped?(download) }
+                )
+            }
+        }
     }
 }

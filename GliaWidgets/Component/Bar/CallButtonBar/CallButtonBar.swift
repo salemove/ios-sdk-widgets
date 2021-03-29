@@ -75,11 +75,11 @@ class CallButtonBar: UIView {
 
     private func showButtons(_ buttonKinds: [CallButton.Kind]) {
         stackView.removeArrangedSubviews()
-        buttons = buttonKinds.map({ kind in
+        buttons = buttonKinds.map { kind in
             let button = makeButton(for: kind)
             button.tap = { [weak self] in self?.buttonTapped?(kind) }
             return button
-        })
+        }
         buttons.forEach {
             let wrapper = wrap($0)
             stackView.addArrangedSubview(wrapper)

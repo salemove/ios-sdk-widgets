@@ -6,6 +6,8 @@ class ChatView: EngagementView {
     var numberOfSections: (() -> Int?)?
     var numberOfRows: ((Int) -> Int?)?
     var itemForRow: ((Int, Int) -> ChatItem?)?
+    var fileTapped: ((LocalFile) -> Void)?
+    var downloadTapped: ((FileDownload) -> Void)?
     var callBubbleTapped: (() -> Void)?
 
     private let style: ChatStyle
@@ -42,7 +44,7 @@ class ChatView: EngagementView {
     }
 
     func updateItemsUserImage(animated: Bool) {
-        tableView.indexPathsForVisibleRows?.forEach({
+        tableView.indexPathsForVisibleRows?.forEach {
             if let cell = tableView.cellForRow(at: $0) as? ChatItemCell,
                let item = itemForRow?($0.row, $0.section) {
                 switch cell.content {
@@ -58,7 +60,7 @@ class ChatView: EngagementView {
                     break
                 }
             }
-        })
+        }
     }
 
     func appendRows(_ count: Int, to section: Int, animated: Bool) {
@@ -66,7 +68,7 @@ class ChatView: EngagementView {
 
         if animated {
             let indexPaths = (rows - count ..< rows)
-                .map({ IndexPath(row: $0, section: section) })
+                .map { IndexPath(row: $0, section: section) }
             tableView.insertRows(at: indexPaths, with: .bottom)
         } else {
             tableView.reloadData()
@@ -136,23 +138,29 @@ class ChatView: EngagementView {
         case .outgoingMessage(let message):
             let view = VisitorChatMessageView(with: style.visitorMessage)
             view.appendContent(.text(message.content), animated: false)
+            view.appendContent(.files(message.files), animated: false)
+            view.fileTapped = { [weak self] in self?.fileTapped?($0) }
             return .outgoingMessage(view)
         case .visitorMessage(let message, status: let status):
             let view = VisitorChatMessageView(with: style.visitorMessage)
             view.appendContent(.text(message.content), animated: false)
+            view.appendContent(.downloads(message.downloads), animated: false)
+            view.downloadTapped = { [weak self] in self?.downloadTapped?($0) }
             view.status = status
             return .visitorMessage(view)
         case .operatorMessage(let message, showsImage: let showsImage, imageUrl: let imageUrl):
             let view = OperatorChatMessageView(with: style.operatorMessage)
             view.appendContent(.text(message.content), animated: false)
+            view.appendContent(.downloads(message.downloads), animated: false)
+            view.downloadTapped = { [weak self] in self?.downloadTapped?($0) }
             view.showsOperatorImage = showsImage
             view.setOperatorImage(fromUrl: imageUrl, animated: false)
             return .operatorMessage(view)
-        case .callUpgrade(let kindProvider, durationProvider: let durationProvider):
-            let callStyle = callUpgradeStyle(for: kindProvider.value)
+        case .callUpgrade(let kind, duration: let duration):
+            let callStyle = callUpgradeStyle(for: kind.value)
             let view = ChatCallUpgradeView(with: callStyle,
-                                           durationProvider: durationProvider)
-            kindProvider.addObserver(self) { kind, _ in
+                                           duration: duration)
+            kind.addObserver(self) { kind, _ in
                 view.style = self.callUpgradeStyle(for: kind)
             }
             return .callUpgrade(view)
@@ -241,7 +249,6 @@ extension ChatView {
                 self?.tableView.contentOffset = offset
                 self?.layoutIfNeeded()
             }, completion: { _ -> Void in })
-            messageEntryView.setSendButtonVisible(true, animated: true)
         }
 
         keyboardObserver.keyboardWillHide = { [unowned self] properties in
@@ -252,8 +259,6 @@ extension ChatView {
                 self?.messageEntryViewBottomConstraint.constant = 0
                 self?.layoutIfNeeded()
             }, completion: { _ -> Void in })
-            messageEntryView.setSendButtonVisible(!messageEntryView.message.isEmpty,
-                                                  animated: true)
         }
     }
 }
@@ -272,9 +277,7 @@ extension ChatView: UITableViewDataSource {
             let item = itemForRow?(indexPath.row, indexPath.section),
             let cell: ChatItemCell = tableView.dequeue(cellFor: indexPath)
         else { return UITableViewCell() }
-
         cell.content = content(for: item)
-
         return cell
     }
 }

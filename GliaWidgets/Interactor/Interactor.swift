@@ -60,7 +60,7 @@ class Interactor {
 
     func addObserver(_ observer: AnyObject, handler: @escaping EventHandler) {
         guard !observers.contains(where: { $0().0 === observer }) else { return }
-        observers.append({ [weak observer] in (observer, handler) })
+        observers.append { [weak observer] in (observer, handler) }
     }
 
     func removeObserver(_ observer: AnyObject) {
@@ -77,14 +77,14 @@ class Interactor {
 
     private func notify(_ event: InteractorEvent) {
         observers
-            .compactMap({ $0() })
-            .filter({ $0.0 != nil })
-            .forEach({
+            .compactMap { $0() }
+            .filter { $0.0 != nil }
+            .forEach {
                 let handler = $0.1
                 DispatchQueue.main.async {
                     handler(event)
                 }
-        })
+            }
     }
 }
 
@@ -130,9 +130,11 @@ extension Interactor {
     }
 
     func send(_ message: String,
+              attachment: Attachment?,
               success: @escaping (Message) -> Void,
               failure: @escaping (SalemoveError) -> Void) {
-        Salemove.sharedInstance.send(message: message) { message, error in
+        Salemove.sharedInstance.send(message: message,
+                                     attachment: attachment) { message, error in
             if let error = error {
                 failure(error)
             } else if let message = message {
@@ -262,17 +264,17 @@ extension Interactor: Interactable {
         }
     }
 
+    func receive(message: Message) {
+        print("Called: \(#function)")
+        notify(.receivedMessage(message))
+    }
+
     func start() {
         print("Called: \(#function)")
         Salemove.sharedInstance.requestEngagedOperator { operators, _ in
             let engagedOperator = operators?.first
             self.state = .engaged(engagedOperator)
         }
-    }
-
-    func receive(message: Message) {
-        print("Called: \(#function)")
-        notify(.receivedMessage(message))
     }
 
     func end() {

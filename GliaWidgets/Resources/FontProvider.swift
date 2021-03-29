@@ -21,7 +21,7 @@ internal class FontProvider {
     }
 
     private func loadFonts() {
-        fonts.forEach({ loadFont(named: $0) })
+        fonts.forEach { loadFont(named: $0) }
     }
 
     private func loadFont(named name: String) {
