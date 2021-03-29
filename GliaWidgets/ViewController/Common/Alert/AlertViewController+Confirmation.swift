@@ -4,7 +4,7 @@ extension AlertViewController {
         let alertView = viewFactory.makeAlertView()
         alertView.title = conf.title
         alertView.message = conf.message
-        alertView.showsPoweredBy = true
+        alertView.showsPoweredBy = conf.showsPoweredBy
         alertView.actionsAxis = .horizontal
 
         var negativeButtonStyle = viewFactory.theme.alert.negativeAction

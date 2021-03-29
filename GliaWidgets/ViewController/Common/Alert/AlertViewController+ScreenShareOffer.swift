@@ -8,7 +8,7 @@ extension AlertViewController {
         alertView.title = conf.title
         alertView.message = conf.message
         alertView.titleImage = conf.titleImage
-        alertView.showsPoweredBy = true
+        alertView.showsPoweredBy = conf.showsPoweredBy
         alertView.showsCloseButton = false
         alertView.actionsAxis = .horizontal
 

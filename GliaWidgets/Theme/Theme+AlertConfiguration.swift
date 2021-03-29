@@ -7,21 +7,24 @@ extension Theme {
             message: Alert.LeaveQueue.message,
             negativeTitle: Alert.Action.no,
             positiveTitle: Alert.Action.yes,
-            switchButtonBackgroundColors: true
+            switchButtonBackgroundColors: true,
+            showsPoweredBy: false
         )
         let endEngagement = ConfirmationAlertConfiguration(
             title: Alert.EndEngagement.title,
             message: Alert.EndEngagement.message,
             negativeTitle: Alert.Action.no,
             positiveTitle: Alert.Action.yes,
-            switchButtonBackgroundColors: true
+            switchButtonBackgroundColors: true,
+            showsPoweredBy: false
         )
         let endScreenShare = ConfirmationAlertConfiguration(
             title: Alert.ScreenSharing.Stop.title,
             message: Alert.ScreenSharing.Stop.message,
             negativeTitle: Alert.Action.no,
             positiveTitle: Alert.Action.yes,
-            switchButtonBackgroundColors: true
+            switchButtonBackgroundColors: true,
+            showsPoweredBy: showsPoweredBy
         )
         let operatorsUnavailable = MessageAlertConfiguration(
             title: Alert.OperatorsUnavailable.title,
@@ -54,32 +57,37 @@ extension Theme {
         let mediaUpgrade = MultipleMediaUpgradeAlertConfiguration(
             title: Alert.MediaUpgrade.title,
             audioUpgradeAction: audioAction,
-            phoneUpgradeAction: phoneAction
+            phoneUpgradeAction: phoneAction,
+            showsPoweredBy: showsPoweredBy
         )
         let audioUpgrade = SingleMediaUpgradeAlertConfiguration(
             title: Alert.AudioUpgrade.title,
             titleImage: Asset.upgradeAudio.image,
             decline: Alert.Action.decline,
-            accept: Alert.Action.accept
+            accept: Alert.Action.accept,
+            showsPoweredBy: showsPoweredBy
         )
         let oneWayVideoUpgrade = SingleMediaUpgradeAlertConfiguration(
             title: Alert.VideoUpgrade.OneWay.title,
             titleImage: Asset.upgradeVideo.image,
             decline: Alert.Action.decline,
-            accept: Alert.Action.accept
+            accept: Alert.Action.accept,
+            showsPoweredBy: showsPoweredBy
         )
         let twoWayVideoUpgrade = SingleMediaUpgradeAlertConfiguration(
             title: Alert.VideoUpgrade.TwoWay.title,
             titleImage: Asset.upgradeVideo.image,
             decline: Alert.Action.decline,
-            accept: Alert.Action.accept
+            accept: Alert.Action.accept,
+            showsPoweredBy: showsPoweredBy
         )
         let screenShareOffer = ScreenShareOfferAlertConfiguration(
             title: Alert.ScreenSharing.Start.title,
             message: Alert.ScreenSharing.Start.message,
             titleImage: Asset.startScreenShare.image,
             decline: Alert.Action.decline,
-            accept: Alert.Action.accept
+            accept: Alert.Action.accept,
+            showsPoweredBy: showsPoweredBy
         )
         let microphoneSettings = SettingsAlertConfiguration(
             title: Alert.MicrophonePermission.title,
