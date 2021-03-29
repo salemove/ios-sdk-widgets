@@ -36,7 +36,7 @@ class EngagementViewModel {
     let interactor: Interactor
     let alertConfiguration: AlertConfiguration
 
-    private(set) var isViewActive = ValueProvider<Bool>(with: false)
+    private(set) var isViewActive = ObservableValue<Bool>(with: false)
     private static var alertPresenters = Set<EngagementViewModel>()
 
     init(interactor: Interactor, alertConfiguration: AlertConfiguration) {

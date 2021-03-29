@@ -13,14 +13,14 @@ class CallCoordinator: SubFlowCoordinator, FlowCoordinator {
     private let viewFactory: ViewFactory
     private let navigationPresenter: NavigationPresenter
     private let call: Call
-    private let unreadMessages: ValueProvider<Int>
+    private let unreadMessages: ObservableValue<Int>
     private let startAction: CallViewModel.StartAction
 
     init(interactor: Interactor,
          viewFactory: ViewFactory,
          navigationPresenter: NavigationPresenter,
          call: Call,
-         unreadMessages: ValueProvider<Int>,
+         unreadMessages: ObservableValue<Int>,
          startAction: CallViewModel.StartAction) {
         self.interactor = interactor
         self.viewFactory = viewFactory

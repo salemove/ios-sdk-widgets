@@ -1,4 +1,4 @@
-public class ValueProvider<T: Any> {
+public class ObservableValue<T: Any> {
     public typealias Update = (_ new: T, _ old: T) -> Void
 
     public var value: T {
@@ -15,7 +15,7 @@ public class ValueProvider<T: Any> {
 
     public func addObserver(_ observer: AnyObject, update: @escaping Update) {
         guard !observers.contains(where: { $0().0 === observer }) else { return }
-        observers.append({ [weak observer] in (observer, update) })
+        observers.append { [weak observer] in (observer, update) }
     }
 
     public func removeObserver(_ observer: AnyObject) {
@@ -26,11 +26,14 @@ public class ValueProvider<T: Any> {
         let old = aValue
         aValue = new
 
-        observers.compactMap({ $0() }).filter({ $0.0 != nil }).forEach({
-            let update = $0.1
-            DispatchQueue.main.async {
-                update(new, old)
+        observers
+            .compactMap { $0() }
+            .filter { $0.0 != nil }
+            .forEach {
+                let update = $0.1
+                DispatchQueue.main.async {
+                    update(new, old)
+                }
             }
-        })
     }
 }

@@ -21,9 +21,9 @@ class SettingsFontCell: SettingsCell {
     private static let kFontSizes: [CGFloat] = Array(stride(from: 8.0, through: 30.0, by: 1.0))
     private static let kFonts: [UIFont] = {
         let fontNames = UIFont.familyNames
-            .flatMap({ UIFont.fontNames(forFamilyName: $0) })
+            .flatMap { UIFont.fontNames(forFamilyName: $0) }
         let fonts = fontNames
-            .compactMap({ UIFont(name: $0, size: 15) })
+            .compactMap { UIFont(name: $0, size: 15) }
         return fonts
     }()
 

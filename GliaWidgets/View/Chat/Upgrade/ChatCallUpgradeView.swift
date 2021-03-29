@@ -5,7 +5,7 @@ class ChatCallUpgradeView: UIView {
         didSet { update(with: style) }
     }
 
-    private let durationProvider: ValueProvider<Int>
+    private let duration: ObservableValue<Int>
     private let contentView = UIView()
     private let stackView = UIStackView()
     private let iconImageView = UIImageView()
@@ -13,16 +13,16 @@ class ChatCallUpgradeView: UIView {
     private let durationLabel = UILabel()
     private let kContentInsets = UIEdgeInsets(top: 8, left: 44, bottom: 8, right: 44)
 
-    init(with style: ChatCallUpgradeStyle, durationProvider: ValueProvider<Int>) {
+    init(with style: ChatCallUpgradeStyle, duration: ObservableValue<Int>) {
         self.style = style
-        self.durationProvider = durationProvider
+        self.duration = duration
         super.init(frame: .zero)
         setup()
         layout()
     }
 
     deinit {
-        durationProvider.removeObserver(self)
+        duration.removeObserver(self)
     }
 
     required init?(coder: NSCoder) {
@@ -32,7 +32,7 @@ class ChatCallUpgradeView: UIView {
     private func setup() {
         update(with: style)
 
-        durationProvider.addObserver(self) { duration, _ in
+        duration.addObserver(self) { duration, _ in
             self.durationLabel.text = duration.asDurationString
         }
     }
@@ -53,7 +53,7 @@ class ChatCallUpgradeView: UIView {
         textLabel.textColor = style.textColor
         textLabel.textAlignment = .center
 
-        durationLabel.text = durationProvider.value.asDurationString
+        durationLabel.text = duration.value.asDurationString
         durationLabel.font = style.durationFont
         durationLabel.textColor = style.durationColor
         durationLabel.textAlignment = .center

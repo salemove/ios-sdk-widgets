@@ -6,8 +6,12 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     enum Event {
         case viewDidLoad
         case messageTextChanged(String)
-        case sendTapped(message: String)
+        case sendTapped
+        case removeUploadTapped(FileUpload)
+        case pickMediaTapped
         case callBubbleTapped
+        case fileTapped(LocalFile)
+        case downloadTapped(FileDownload)
     }
 
     enum Action {
@@ -16,12 +20,18 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case showEndScreenShareButton
         case connected(name: String?, imageUrl: String?)
         case setMessageEntryEnabled(Bool)
+        case setMessageText(String)
+        case sendButtonHidden(Bool)
         case appendRows(Int, to: Int, animated: Bool)
         case refreshRow(Int, in: Int, animated: Bool)
         case refreshSection(Int)
         case refreshAll
         case scrollToBottom(animated: Bool)
         case updateItemsUserImage(animated: Bool)
+        case addUpload(FileUpload)
+        case removeUpload(FileUpload)
+        case removeAllUploads
+        case presentMediaPicker(itemSelected: (ListItemKind) -> Void)
         case offerMediaUpgrade(SingleMediaUpgradeAlertConfiguration,
                                accepted: () -> Void,
                                declined: () -> Void)
@@ -29,8 +39,12 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     }
 
     enum DelegateEvent {
+        case pickMedia(ObservableValue<MediaPickerEvent>)
+        case takeMedia(ObservableValue<MediaPickerEvent>)
+        case pickFile(ObservableValue<FilePickerEvent>)
         case mediaUpgradeAccepted(offer: MediaUpgradeOffer,
                                   answer: AnswerWithSuccessBlock)
+        case showFile(LocalFile)
         case call
     }
 
@@ -51,17 +65,26 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     private var historySection: Section<ChatItem> { return sections[0] }
     private var queueOperatorSection: Section<ChatItem> { return sections[1] }
     private var messagesSection: Section<ChatItem> { return sections[2] }
-    private let call: ValueProvider<Call?>
+    private let call: ObservableValue<Call?>
     private var unreadMessages: UnreadMessagesHandler!
     private let showsCallBubble: Bool
     private let storage = ChatStorage()
+    private let uploader = FileUploader()
+    private let downloader = FileDownloader()
+    private var messageText = "" {
+        didSet {
+            validateMessage()
+            sendMessagePreview(messageText)
+            action?(.setMessageText(messageText))
+        }
+    }
 
     init(interactor: Interactor,
          alertConfiguration: AlertConfiguration,
-         call: ValueProvider<Call?>,
-         unreadMessages: ValueProvider<Int>,
+         call: ObservableValue<Call?>,
+         unreadMessages: ObservableValue<Int>,
          showsCallBubble: Bool,
-         isWindowVisible: ValueProvider<Bool>,
+         isWindowVisible: ObservableValue<Bool>,
          startAction: StartAction) {
         self.call = call
         self.showsCallBubble = showsCallBubble
@@ -75,19 +98,29 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         self.call.addObserver(self) { call, _ in
             self.onCall(call)
         }
-        storage.setQueue(withID: interactor.queueID)
+        self.uploader.state.addObserver(self) { state, _ in
+            self.onUploaderStateChanged(state)
+        }
     }
 
     public func event(_ event: Event) {
         switch event {
         case .viewDidLoad:
             start()
-        case .messageTextChanged(let message):
-            sendMessagePreview(message)
-        case .sendTapped(message: let message):
-            send(message)
+        case .messageTextChanged(let text):
+            messageText = text
+        case .sendTapped:
+            sendMessage()
+        case .removeUploadTapped(let upload):
+            removeUpload(upload)
+        case .pickMediaTapped:
+            presentMediaPicker()
         case .callBubbleTapped:
             delegate?(.call)
+        case .fileTapped(let file):
+            fileTapped(file)
+        case .downloadTapped(let download):
+            downloadTapped(download)
         }
     }
 
@@ -106,6 +139,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
                    to: queueOperatorSection,
                    animated: false)
         action?(.setMessageEntryEnabled(false))
+        action?(.sendButtonHidden(true))
 
         switch startAction {
         case .startEngagement:
@@ -124,7 +158,6 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case .engaged(let engagedOperator):
             let name = engagedOperator?.firstName
             let pictureUrl = engagedOperator?.picture?.url
-            storage.setOperator(name: name ?? "", pictureUrl: pictureUrl)
             action?(.connected(name: name, imageUrl: pictureUrl))
             action?(.setMessageEntryEnabled(true))
             action?(.showEndButton)
@@ -182,25 +215,23 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         action?(.refreshAll)
     }
 
-    private func replace(
-        _ outgoingMessage: OutgoingMessage,
-        with message: Message,
-        in section: Section<ChatItem>
-    ) {
-        guard let index = section.items
-            .enumerated()
-            .first(where: {
-                guard case .outgoingMessage(let message) = $0.element.kind else { return false }
-                return message.id == outgoingMessage.id
-            })?.offset
-        else { return }
+    override func interactorEvent(_ event: InteractorEvent) {
+        super.interactorEvent(event)
 
-        let status = Strings.Message.Status.delivered
-        let item = ChatItem(kind: .visitorMessage(message, status: status))
-        section.replaceItem(at: index, with: item)
-        action?(.refreshRow(index, in: section.index, animated: false))
+        switch event {
+        case .receivedMessage(let message):
+            receivedMessage(message)
+        case .messagesUpdated(let messages):
+            messagesUpdated(messages)
+        case .upgradeOffer(let offer, answer: let answer):
+            offerMediaUpgrade(offer, answer: answer)
+        default:
+            break
+        }
     }
+}
 
+extension ChatViewModel {
     private func loadHistory() {
         let messages = storage.messages(forQueue: interactor.queueID)
         let items = messages.compactMap { ChatItem(with: $0) }
@@ -208,7 +239,9 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         action?(.refreshSection(historySection.index))
         action?(.scrollToBottom(animated: true))
     }
+}
 
+extension ChatViewModel {
     private func offerMediaUpgrade(_ offer: MediaUpgradeOffer, answer: @escaping AnswerWithSuccessBlock) {
         switch offer.type {
         case .audio:
@@ -240,21 +273,6 @@ class ChatViewModel: EngagementViewModel, ViewModel {
                                    accepted: { onAccepted() },
                                    declined: { answer(false, nil) }))
     }
-
-    override func interactorEvent(_ event: InteractorEvent) {
-        super.interactorEvent(event)
-
-        switch event {
-        case .receivedMessage(let message):
-            receivedMessage(message)
-        case .messagesUpdated(let messages):
-            messagesUpdated(messages)
-        case .upgradeOffer(let offer, answer: let answer):
-            offerMediaUpgrade(offer, answer: answer)
-        default:
-            break
-        }
-    }
 }
 
 extension ChatViewModel {
@@ -262,38 +280,87 @@ extension ChatViewModel {
         interactor.sendMessagePreview(message)
     }
 
-    private func send(_ message: String) {
-        guard !message.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
+    private func sendMessage() {
+        guard validateMessage() else { return }
 
-        let outgoingMessage = OutgoingMessage(content: message)
+        let attachment = uploader.attachment
+        let uploads = uploader.succeededUploads
+        let files = uploads.map { $0.localFile }
+        let outgoingMessage = OutgoingMessage(
+            content: messageText,
+            files: files
+        )
         let item = ChatItem(with: outgoingMessage)
         appendItem(item, to: messagesSection, animated: true)
+        uploader.removeAllUploads()
+        action?(.removeAllUploads)
         action?(.scrollToBottom(animated: true))
 
-        interactor.send(message) { message in
-            self.sendMessagePreview("")
+        interactor.send(messageText, attachment: attachment) { message in
+            self.messageText = ""
             self.replace(outgoingMessage,
+                         uploads: uploads,
                          with: message,
                          in: self.messagesSection)
             self.action?(.scrollToBottom(animated: true))
         } failure: { _ in
+            self.messageText = ""
             self.showAlert(with: self.alertConfiguration.unexpectedError,
                            dismissed: nil)
         }
     }
 
+    private func replace(
+        _ outgoingMessage: OutgoingMessage,
+        uploads: [FileUpload],
+        with message: Message,
+        in section: Section<ChatItem>
+    ) {
+        guard let index = section.items
+            .enumerated()
+            .first(where: {
+                guard case .outgoingMessage(let message) = $0.element.kind else { return false }
+                return message.id == outgoingMessage.id
+            })?.offset
+        else { return }
+
+        let status = Strings.Message.Status.delivered
+        let message = ChatMessage(with: message)
+        let item = ChatItem(kind: .visitorMessage(message, status: status))
+        downloader.addDownloads(for: message.attachment?.files, with: uploads)
+        section.replaceItem(at: index, with: item)
+        action?(.refreshRow(index, in: section.index, animated: false))
+    }
+
+    @discardableResult
+    private func validateMessage() -> Bool {
+        let canSendText = !messageText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        let canSendAttachment =
+            uploader.state.value != .uploading
+            && uploader.failedUploads.isEmpty
+            && !uploader.succeededUploads.isEmpty
+        let isValid = canSendText || canSendAttachment
+        action?(.sendButtonHidden(!isValid))
+        return isValid
+    }
+
     private func receivedMessage(_ message: Message) {
         guard storage.isNewMessage(message) else { return }
 
-        storage.storeMessage(message)
+        storage.storeMessage(message,
+                             queueID: interactor.queueID,
+                             operator: interactor.engagedOperator)
         unreadMessages.received(1)
 
         switch message.sender {
         case .operator:
-            guard let item = ChatItem(with: message) else { break }
-            appendItem(item, to: messagesSection, animated: true)
-            action?(.scrollToBottom(animated: true))
-            action?(.updateItemsUserImage(animated: true))
+            let message = ChatMessage(with: message,
+                                      operator: interactor.engagedOperator)
+            if let item = ChatItem(with: message) {
+                appendItem(item, to: messagesSection, animated: true)
+                action?(.scrollToBottom(animated: true))
+                action?(.updateItemsUserImage(animated: true))
+            }
         default:
             break
         }
@@ -304,10 +371,106 @@ extension ChatViewModel {
         unreadMessages.received(newMessages.count)
 
         if !newMessages.isEmpty {
-            storage.storeMessages(newMessages)
+            storage.storeMessages(newMessages,
+                                  queueID: interactor.queueID,
+                                  operator: interactor.engagedOperator)
+            let newMessages = newMessages.map { ChatMessage(with: $0) }
             let items = newMessages.compactMap { ChatItem(with: $0) }
             setItems(items, to: messagesSection)
             action?(.scrollToBottom(animated: true))
+        }
+    }
+}
+
+extension ChatViewModel {
+    private func presentMediaPicker() {
+        let itemSelected = { (kind: ListItemKind) -> Void in
+            let media = ObservableValue<MediaPickerEvent>(with: .none)
+            media.addObserver(self) { event, _ in
+                switch event {
+                case .none, .cancelled:
+                    break
+                case .pickedMedia(let media):
+                    self.mediaPicked(media)
+                case .sourceNotAvailable:
+                    self.showAlert(with: self.alertConfiguration.mediaSourceNotAvailable, dismissed: nil)
+                case .noCameraPermission:
+                    self.showSettingsAlert(with: self.alertConfiguration.cameraSettings)
+                }
+            }
+            let file = ObservableValue<FilePickerEvent>(with: .none)
+            file.addObserver(self) { event, _ in
+                switch event {
+                case .none, .cancelled:
+                    break
+                case .pickedFile(let url):
+                    self.filePicked(url)
+                }
+            }
+            switch kind {
+            case .photoLibrary:
+                self.delegate?(.pickMedia(media))
+            case .takePhoto:
+                self.delegate?(.takeMedia(media))
+            case .browse:
+                self.delegate?(.pickFile(file))
+            }
+        }
+        action?(.presentMediaPicker(itemSelected: { itemSelected($0) }))
+    }
+
+    private func mediaPicked(_ media: PickedMedia) {
+        switch media {
+        case .image(let url):
+            addUpload(with: url)
+        case .photo(let data, format: let format):
+            addUpload(with: data, format: format)
+        case .movie(let url):
+            addUpload(with: url)
+        case .none:
+            break
+        }
+    }
+
+    private func filePicked(_ url: URL) {
+        addUpload(with: url)
+    }
+
+    private func addUpload(with url: URL) {
+        let upload = uploader.addUpload(with: url)
+        action?(.addUpload(upload))
+    }
+
+    private func addUpload(with data: Data, format: MediaFormat) {
+        guard let upload = uploader.addUpload(with: data, format: format) else { return }
+        action?(.addUpload(upload))
+    }
+
+    private func removeUpload(_ upload: FileUpload) {
+        uploader.removeUpload(upload)
+        action?(.removeUpload(upload))
+    }
+
+    private func onUploaderStateChanged(_ state: FileUploader.State) {
+        validateMessage()
+    }
+}
+
+extension ChatViewModel {
+    private func fileTapped(_ file: LocalFile) {
+        delegate?(.showFile(file))
+    }
+
+    private func downloadTapped(_ download: FileDownload) {
+        switch download.state.value {
+        case .none:
+            download.startDownload()
+        case .downloading:
+            break
+        case .downloaded(let file):
+            delegate?(.showFile(file))
+        case .error:
+            download.startDownload()
         }
     }
 }
@@ -323,23 +486,29 @@ extension ChatViewModel {
         let section = sections[section]
         let item = section[row]
 
-        if section === messagesSection {
-            switch item.kind {
-            case .operatorMessage(let message, showsImage: _, imageUrl: _):
-                let nextItem = section.item(after: row)
-                if nextItem == nil || nextItem?.isOperatorMessage == false {
-                    let imageUrl = interactor.engagedOperator?.picture?.url
-                    let kind: ChatItem.Kind = .operatorMessage(message,
-                                                               showsImage: true,
-                                                               imageUrl: imageUrl)
-                    return ChatItem(kind: kind)
-                }
-            default:
-                break
+        switch item.kind {
+        case .operatorMessage(let message, _, _):
+            message.downloads = downloader.downloads(for: message.attachment?.files, autoDownload: .images)
+            if shouldShowOperatorImage(for: row, in: section) {
+                let imageUrl = message.operator?.pictureUrl
+                let kind: ChatItem.Kind = .operatorMessage(message,
+                                                           showsImage: true,
+                                                           imageUrl: imageUrl)
+                return ChatItem(kind: kind)
             }
+            return item
+        case .visitorMessage(let message, _):
+            message.downloads = downloader.downloads(for: message.attachment?.files, autoDownload: .images)
+            return item
+        default:
+            return item
         }
+    }
 
-        return item
+    private func shouldShowOperatorImage(for row: Int, in section: Section<ChatItem>) -> Bool {
+        guard case .operatorMessage = section[row].kind else { return false }
+        let nextItem = section.item(after: row)
+        return nextItem == nil || nextItem?.isOperatorMessage == false
     }
 }
 
@@ -347,18 +516,18 @@ extension ChatViewModel {
     private func onCall(_ call: Call?) {
         guard let call = call else { return }
 
-        let kindProvider = ValueProvider<CallKind>(with: call.kind.value)
-        let durationProvider = ValueProvider<Int>(with: 0)
-        let item = ChatItem(kind: .callUpgrade(kindProvider,
-                                               durationProvider: durationProvider))
+        let callKind = ObservableValue<CallKind>(with: call.kind.value)
+        let callDuration = ObservableValue<Int>(with: 0)
+        let item = ChatItem(kind: .callUpgrade(callKind,
+                                               duration: callDuration))
         appendItem(item, to: messagesSection, animated: true)
         action?(.scrollToBottom(animated: true))
 
         call.kind.addObserver(self) { kind, _ in
-            kindProvider.value = kind
+            callKind.value = kind
         }
         call.duration.addObserver(item) { duration, _ in
-            durationProvider.value = duration
+            callDuration.value = duration
         }
     }
 

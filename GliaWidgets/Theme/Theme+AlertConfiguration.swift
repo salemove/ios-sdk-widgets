@@ -101,6 +101,10 @@ extension Theme {
             settingsTitle: Alert.Action.settings,
             cancelTitle: Alert.Action.cancel
         )
+        let mediaSourceNotAvailable = MessageAlertConfiguration(
+            title: Alert.MediaSourceNotAvailable.title,
+            message: Alert.MediaSourceNotAvailable.message
+        )
         let unexpected = MessageAlertConfiguration(
             title: Alert.Unexpected.title,
             message: Alert.Unexpected.message
@@ -122,6 +126,7 @@ extension Theme {
             endScreenShare: endScreenShare,
             microphoneSettings: microphoneSettings,
             cameraSettings: cameraSettings,
+            mediaSourceNotAvailable: mediaSourceNotAvailable,
             unexpectedError: unexpected,
             apiError: api
         )
