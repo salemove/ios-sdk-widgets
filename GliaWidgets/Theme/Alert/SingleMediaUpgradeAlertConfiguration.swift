@@ -5,13 +5,15 @@ public struct SingleMediaUpgradeAlertConfiguration {
     public var titleImage: UIImage?
     public var decline: String
     public var accept: String
+    public var showsPoweredBy: Bool
 
     func withOperatorName(_ name: String?) -> SingleMediaUpgradeAlertConfiguration {
         return SingleMediaUpgradeAlertConfiguration(
             title: title.withOperatorName(name),
             titleImage: titleImage,
             decline: decline,
-            accept: accept
+            accept: accept,
+            showsPoweredBy: showsPoweredBy
         )
     }
 }

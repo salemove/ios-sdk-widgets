@@ -7,7 +7,7 @@ extension AlertViewController {
                                    declined: @escaping () -> Void) -> AlertView {
         let alertView = viewFactory.makeAlertView()
         alertView.title = conf.title
-        alertView.showsPoweredBy = true
+        alertView.showsPoweredBy = conf.showsPoweredBy
         alertView.showsCloseButton = true
         alertView.actionsAxis = .vertical
 
