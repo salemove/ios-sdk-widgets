@@ -22,39 +22,46 @@ public protocol SceneProvider: class {
 }
 
 public class Glia {
+    public static let shared = Glia()
     public var engagement: EngagementKind { return rootCoordinator?.engagementKind ?? .none }
     public var onEvent: ((GliaEvent) -> Void)?
 
     private var rootCoordinator: RootCoordinator?
-    private let conf: Configuration
-    private weak var sceneProvider: SceneProvider?
-    private let appDelegate = SalemoveAppDelegate()
 
-    public init(
+    private init() {}
+
+    public func start(
+        _ engagementKind: EngagementKind,
         configuration: Configuration,
-        sceneProvider: SceneProvider? = nil) {
-        self.conf = configuration
-        self.sceneProvider = sceneProvider
-    }
-
-    public func start(_ engagementKind: EngagementKind,
-                      queueID: String,
-                      visitorContext: VisitorContext,
-                      using theme: Theme = Theme()) throws {
+        queueID: String,
+        visitorContext: VisitorContext,
+        theme: Theme = Theme(),
+        sceneProvider: SceneProvider? = nil
+    ) throws {
+        guard engagement == .none else {
+            print("Warning: trying to start new Glia session while session is already active.")
+            return
+        }
         let interactor = try Interactor(
-            with: conf,
+            with: configuration,
             queueID: queueID,
             visitorContext: visitorContext
         )
         let viewFactory = ViewFactory(with: theme)
-        startRootCoordinator(with: interactor,
-                             viewFactory: viewFactory,
-                             engagementKind: engagementKind)
+        startRootCoordinator(
+            with: interactor,
+            viewFactory: viewFactory,
+            sceneProvider: sceneProvider,
+            engagementKind: engagementKind
+        )
     }
 
-    private func startRootCoordinator(with interactor: Interactor,
-                                      viewFactory: ViewFactory,
-                                      engagementKind: EngagementKind) {
+    private func startRootCoordinator(
+        with interactor: Interactor,
+        viewFactory: ViewFactory,
+        sceneProvider: SceneProvider?,
+        engagementKind: EngagementKind
+    ) {
         rootCoordinator = RootCoordinator(
             interactor: interactor,
             viewFactory: viewFactory,

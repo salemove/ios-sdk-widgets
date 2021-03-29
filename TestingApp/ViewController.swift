@@ -67,9 +67,7 @@ extension ViewController {
         let theme = settingsViewController.theme
         let visitorContext = VisitorContext(type: .page,
                                             url: "https://www.salemoveinsurance.com")
-
-        glia = Glia(configuration: conf)
-        glia.onEvent = { event in
+        Glia.shared.onEvent = { event in
             switch event {
             case .started:
                 print("STARTED")
@@ -85,10 +83,13 @@ extension ViewController {
         }
 
         do {
-            try glia.start(engagementKind,
-                           queueID: queueID,
-                           visitorContext: visitorContext,
-                           using: theme)
+            try Glia.shared.start(
+                engagementKind,
+                configuration: conf,
+                queueID: queueID,
+                visitorContext: visitorContext,
+                theme: theme
+            )
         } catch {
             alert(message: "Failed to start\nCheck Glia parameters in Settings")
         }
