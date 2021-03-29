@@ -11,7 +11,7 @@ extension AlertViewController {
         alertView.showsCloseButton = true
         alertView.actionsAxis = .vertical
 
-        mediaTypes.enumerated().forEach({
+        mediaTypes.enumerated().forEach {
             if let actionView = self.actionView(for: $0.element, from: conf) {
                 let index = $0.offset
                 actionView.tap = { [weak self] in
@@ -21,7 +21,7 @@ extension AlertViewController {
                 }
                 alertView.addActionView(actionView)
             }
-        })
+        }
 
         alertView.closeTapped = { [weak self] in
             self?.dismiss(animated: true) {

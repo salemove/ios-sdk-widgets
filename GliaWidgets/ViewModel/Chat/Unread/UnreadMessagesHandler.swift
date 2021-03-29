@@ -1,11 +1,11 @@
 class UnreadMessagesHandler {
-    private let unreadMessages: ValueProvider<Int>
-    private let isWindowVisible: ValueProvider<Bool>
-    private let isViewVisible: ValueProvider<Bool>
+    private let unreadMessages: ObservableValue<Int>
+    private let isWindowVisible: ObservableValue<Bool>
+    private let isViewVisible: ObservableValue<Bool>
 
-    init(unreadMessages: ValueProvider<Int>,
-         isWindowVisible: ValueProvider<Bool>,
-         isViewVisible: ValueProvider<Bool>) {
+    init(unreadMessages: ObservableValue<Int>,
+         isWindowVisible: ObservableValue<Bool>,
+         isViewVisible: ObservableValue<Bool>) {
         self.unreadMessages = unreadMessages
         self.isWindowVisible = isWindowVisible
         self.isViewVisible = isViewVisible
