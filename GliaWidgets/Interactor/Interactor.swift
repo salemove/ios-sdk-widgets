@@ -99,7 +99,9 @@ extension Interactor {
                 self.state = .ended
                 failure(error)
             } else if let ticket = queueTicket {
-                self.state = .enqueued(ticket)
+                if case .enqueueing = self.state {
+                    self.state = .enqueued(ticket)
+                }
                 success()
             }
         }
@@ -236,6 +238,8 @@ extension Interactor: Interactable {
                     print("Screen sharing started")
                 case .notSharing:
                     print("Screen sharing stopped")
+                @unknown default:
+                    break
                 }
                 self.notify(.screenSharingStateChanged(to: state))
             }
