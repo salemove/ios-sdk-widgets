@@ -1,7 +1,7 @@
 PODS:
   - Alamofire (5.4.1)
   - glia-webrtc/bitcode (0.0.3)
-  - ios-socket-client (9.1.0)
+  - ios-socket-client (9.2.0)
   - Macaw (0.9.7):
     - SWXMLHash
   - Moya (14.0.0):
@@ -9,30 +9,29 @@ PODS:
   - Moya/Core (14.0.0):
     - Alamofire (~> 5.0)
   - PureLayout (3.1.6)
-  - ReactiveSwift (6.2.1)
-  - SalemoveSDK (0.26.1):
+  - ReactiveSwift (6.5.0)
+  - SalemoveSDK (0.28.0):
     - glia-webrtc/bitcode (= 0.0.3)
-    - ios-socket-client (= 9.1.0)
+    - ios-socket-client (= 9.2.0)
     - Macaw (= 0.9.7)
     - Moya (= 14.0.0)
-    - ReactiveSwift (= 6.2.1)
+    - ReactiveSwift (= 6.5.0)
     - SwiftPhoenixClient (= 1.2.1)
-    - TwilioVoice (= 5.5.0.g)
+    - TwilioVoice (= 6.2.0)
   - Starscream (3.1.1)
   - SwiftPhoenixClient (1.2.1):
     - Starscream (~> 3.1.0)
   - SWXMLHash (5.0.1)
-  - TwilioVoice (5.5.0.g)
+  - TwilioVoice (6.2.0)
 
 DEPENDENCIES:
   - PureLayout (~> 3.1)
-  - SalemoveSDK (from `https://github.com/salemove/ios-bundle`, tag `0.26.1`)
+  - SalemoveSDK (from `https://github.com/salemove/ios-bundle`, tag `0.28.0`)
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
     - Alamofire
     - glia-webrtc
-    - ios-socket-client
     - Macaw
     - Moya
     - PureLayout
@@ -40,33 +39,34 @@ SPEC REPOS:
     - Starscream
     - SwiftPhoenixClient
     - SWXMLHash
-  https://github.com/salemove/glia-ios-podspecs.git:
     - TwilioVoice
+  https://github.com/salemove/glia-ios-podspecs.git:
+    - ios-socket-client
 
 EXTERNAL SOURCES:
   SalemoveSDK:
     :git: https://github.com/salemove/ios-bundle
-    :tag: 0.26.1
+    :tag: 0.28.0
 
 CHECKOUT OPTIONS:
   SalemoveSDK:
     :git: https://github.com/salemove/ios-bundle
-    :tag: 0.26.1
+    :tag: 0.28.0
 
 SPEC CHECKSUMS:
   Alamofire: 2291f7d21ca607c491dd17642e5d40fdcda0e65c
   glia-webrtc: a5c7e59ae752281d19734b4f918db9da39e8009d
-  ios-socket-client: 52860f6a2a49d3b526a9fed6e3ed0b26b0735f4c
+  ios-socket-client: 0b73bb34f666c7a3b42e32915da78332b4f49fce
   Macaw: 4a931baf9a9826b06d0d8ecf300014c962ab9d50
   Moya: 5b45dacb75adb009f97fde91c204c1e565d31916
   PureLayout: bd3c4ec3a3819ad387c99ebb72c6b129c3ed4d2d
-  ReactiveSwift: 07ddf579f4eb3ee3bd656214f0461aaf2c0fd639
-  SalemoveSDK: ebf0de40df5f223d4208eadbbc25b73275d72b92
+  ReactiveSwift: 8d159904084e908856cde90b2e28823f3c7e485f
+  SalemoveSDK: de384640fb38b5d0994b6ddb39225e7ea200cbd9
   Starscream: 4bb2f9942274833f7b4d296a55504dcfc7edb7b0
   SwiftPhoenixClient: 259aba446df6329d6bf9ac794dccb8228eedf19c
   SWXMLHash: 9cc0c2e4807926c74377724aa8722ee5707a0485
-  TwilioVoice: 44afe08ee486f9cef94afdcc3740801b5d666632
+  TwilioVoice: 5e6fd6b5e99dfec03dcb57331f7e7c77ad79f1f0
 
-PODFILE CHECKSUM: 8626f7363c2d981ba9ee3251551a027380557f28
+PODFILE CHECKSUM: 85a15fe5e775d1ff58a00a84174871b7a664142e
 
 COCOAPODS: 1.10.1

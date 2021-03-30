@@ -34,9 +34,7 @@ class ChatItem {
             kind = .visitorMessage(message, status: nil)
         case .operator:
             kind = .operatorMessage(message, showsImage: false, imageUrl: nil)
-        case .omniguide:
-            return nil
-        case .system:
+        case .omniguide, .system, .unknown:
             return nil
         }
     }

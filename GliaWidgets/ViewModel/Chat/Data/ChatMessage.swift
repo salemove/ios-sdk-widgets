@@ -5,6 +5,7 @@ enum ChatMessageSender: Int, Codable {
     case `operator` = 1
     case omniguide = 2
     case system = 3
+    case unknown = 100
 
     init(with sender: SalemoveSDK.MessageSender) {
         switch sender {
@@ -16,6 +17,8 @@ enum ChatMessageSender: Int, Codable {
             self = .omniguide
         case .system:
             self = .system
+        @unknown default:
+            self = .unknown
         }
     }
 }
