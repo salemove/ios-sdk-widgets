@@ -22,7 +22,7 @@ public protocol SceneProvider: class {
 }
 
 public class Glia {
-    public static let shared = Glia()
+    public static let sharedInstance = Glia()
     public var engagement: EngagementKind { return rootCoordinator?.engagementKind ?? .none }
     public var onEvent: ((GliaEvent) -> Void)?
 

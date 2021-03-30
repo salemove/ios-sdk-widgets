@@ -67,7 +67,7 @@ extension ViewController {
         let theme = settingsViewController.theme
         let visitorContext = VisitorContext(type: .page,
                                             url: "https://www.salemoveinsurance.com")
-        Glia.shared.onEvent = { event in
+        Glia.sharedInstance.onEvent = { event in
             switch event {
             case .started:
                 print("STARTED")
@@ -83,7 +83,7 @@ extension ViewController {
         }
 
         do {
-            try Glia.shared.start(
+            try Glia.sharedInstance.start(
                 engagementKind,
                 configuration: conf,
                 queueID: queueID,
