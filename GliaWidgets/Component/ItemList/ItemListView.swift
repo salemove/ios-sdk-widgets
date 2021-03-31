@@ -25,7 +25,6 @@ class ItemListView: UIView {
         backgroundColor = style.backgroundColor
 
         stackView.axis = .vertical
-        stackView.spacing = 0
 
         items = style.items
     }
@@ -37,7 +36,7 @@ class ItemListView: UIView {
 
     private func updateItems(_ styles: [ListItemStyle]) {
         stackView.removeArrangedSubviews()
-        styles.forEach({
+        styles.forEach {
             let itemView = ListItemView(with: $0)
             itemView.tap = { [weak self] in self?.itemTapped?($0) }
             stackView.addArrangedSubview(itemView)
@@ -45,7 +44,7 @@ class ItemListView: UIView {
                 let separator = makeSeparator(color: style.separatorColor)
                 stackView.addArrangedSubview(separator)
             }
-        })
+        }
     }
 
     private func makeSeparator(color: UIColor) -> UIView {

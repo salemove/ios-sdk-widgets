@@ -1,14 +1,20 @@
 import UIKit
 
 class ChatImageFileContentView: ChatFileContentView {
+    private let contentView = UIView()
     private let imageView = UIImageView()
     private let style: ChatImageFileContentStyle
+    private let contentAlignment: ChatMessageContentAlignment
     private let kInsets = UIEdgeInsets.zero
-    private let kSize = CGSize(width: 240, height: 155)
+    private let kHeight: CGFloat = 155
 
-    init(with style: ChatImageFileContentStyle, content: Content) {
+    init(with style: ChatImageFileContentStyle,
+         content: Content,
+         contentAlignment: ChatMessageContentAlignment,
+         tap: @escaping () -> Void) {
         self.style = style
-        super.init(with: style, content: content)
+        self.contentAlignment = contentAlignment
+        super.init(with: style, content: content, tap: tap)
         setup()
         layout()
     }
@@ -19,8 +25,10 @@ class ChatImageFileContentView: ChatFileContentView {
 
     override func setup() {
         super.setup()
-        clipsToBounds = true
-        layer.cornerRadius = 4
+
+        contentView.backgroundColor = style.backgroundColor
+        contentView.clipsToBounds = true
+        contentView.layer.cornerRadius = 4
 
         imageView.contentMode = .scaleAspectFill
     }
@@ -28,18 +36,33 @@ class ChatImageFileContentView: ChatFileContentView {
     override func layout() {
         super.layout()
 
-        autoSetDimensions(to: kSize)
+        contentView.addSubview(imageView)
+        imageView.autoPinEdgesToSuperviewEdges()
 
-        addSubview(imageView)
-        imageView.autoPinEdgesToSuperviewEdges(with: kInsets)
+        addSubview(contentView)
+        contentView.autoPinEdge(toSuperviewEdge: .top)
+        contentView.autoPinEdge(toSuperviewEdge: .bottom)
+
+        NSLayoutConstraint.autoSetPriority(.defaultHigh) {
+            contentView.autoSetDimension(.height, toSize: kHeight)
+        }
+
+        switch contentAlignment {
+        case .left:
+            contentView.autoPinEdge(toSuperviewEdge: .left)
+            contentView.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
+        case .right:
+            contentView.autoPinEdge(toSuperviewEdge: .right)
+            contentView.autoPinEdge(toSuperviewEdge: .left, withInset: 0, relation: .greaterThanOrEqual)
+        }
     }
 
-    override func update(for file: LocalFile) {
+    override func update(with file: LocalFile) {
         setImage(from: file)
     }
 
-    override func update(for downloadState: FileDownload<ChatEngagementFile>.State) {
-        switch downloadState {
+    override func update(with download: FileDownload) {
+        switch download.state.value {
         case .downloaded(file: let file):
             setImage(from: file)
         default:
@@ -48,11 +71,13 @@ class ChatImageFileContentView: ChatFileContentView {
     }
 
     private func setImage(from file: LocalFile) {
-        DispatchQueue.global(qos: .background).async {
-            let image = UIImage(contentsOfFile: file.url.path)
-            DispatchQueue.main.async {
-                self.imageView.image = image
-            }
+        let size = CGSize(width: 1.5 * kHeight, height: kHeight)
+        file.thumbnail(for: size) { image in
+            self.setImage(image)
         }
+    }
+
+    private func setImage(_ image: UIImage?) {
+        imageView.image = image
     }
 }

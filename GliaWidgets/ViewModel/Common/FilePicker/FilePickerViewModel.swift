@@ -15,9 +15,11 @@ class FilePickerViewModel: ViewModel {
             switch self {
             case .default:
                 return [
+                    "public.content",
                     "public.data",
+                    "public.archive",
                     "public.image",
-                    "public.movie"
+                    "public.text"
                 ]
             case .custom(let types):
                 return types
@@ -41,21 +43,21 @@ class FilePickerViewModel: ViewModel {
 
     let allowedFiles: FileTypes
 
-    private let eventProvider: ValueProvider<FilePickerEvent>
+    private let pickerEvent: ObservableValue<FilePickerEvent>
 
-    init(eventProvider: ValueProvider<FilePickerEvent>,
+    init(pickerEvent: ObservableValue<FilePickerEvent>,
          allowedFiles: FileTypes = .default) {
-        self.eventProvider = eventProvider
+        self.pickerEvent = pickerEvent
         self.allowedFiles = allowedFiles
     }
 
     func event(_ event: Event) {
         switch event {
         case .pickedFile(let url):
-            eventProvider.value = .pickedFile(url)
+            pickerEvent.value = .pickedFile(url)
             delegate?(.finished)
         case .cancelled:
-            eventProvider.value = .cancelled
+            pickerEvent.value = .cancelled
             delegate?(.finished)
         }
     }

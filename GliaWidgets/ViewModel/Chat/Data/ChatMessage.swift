@@ -5,6 +5,7 @@ enum ChatMessageSender: Int, Codable {
     case `operator` = 1
     case omniguide = 2
     case system = 3
+    case unknown = 100
 
     init(with sender: SalemoveSDK.MessageSender) {
         switch sender {
@@ -17,7 +18,7 @@ enum ChatMessageSender: Int, Codable {
         case .system:
             self = .system
         @unknown default:
-            self = .visitor
+            self = .unknown
         }
     }
 }
@@ -29,7 +30,7 @@ class ChatMessage: Codable {
     let sender: ChatMessageSender
     let content: String
     let attachment: ChatAttachment?
-    var downloads = [FileDownload<ChatEngagementFile>]()
+    var downloads = [FileDownload]()
 
     var isChoiceCard: Bool {
         guard let type = attachment?.type else { return false }
@@ -50,7 +51,7 @@ class ChatMessage: Codable {
          operator salemoveOperator: Operator? = nil) {
         id = message.id
         self.queueID = queueID
-        self.operator = salemoveOperator.map({ ChatOperator(with: $0) })
+        self.operator = salemoveOperator.map { ChatOperator(with: $0) }
         sender = ChatMessageSender(with: message.sender)
         content = message.content
         attachment = ChatAttachment(with: message.attachment)

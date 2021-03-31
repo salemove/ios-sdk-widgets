@@ -1,6 +1,6 @@
 import SalemoveSDK
 
-class FileDownload<File: FileDownloadable> {
+class FileDownload {
     enum Error {
         case network
         case generic
@@ -24,25 +24,37 @@ class FileDownload<File: FileDownloadable> {
 
     enum State {
         case none
-        case downloading(progress: ValueProvider<Double>)
+        case downloading(progress: ObservableValue<Double>)
         case downloaded(LocalFile)
         case error(Error)
     }
 
-    let state = ValueProvider<State>(with: .none)
-    let file: File
+    let state = ObservableValue<State>(with: .none)
+    let file: ChatEngagementFile
 
+    private var storageID: String? {
+        if let fileName = file.name {
+            return fileName
+        } else if let fileID = file.id {
+            return fileID
+        } else {
+            return nil
+        }
+    }
     private let storage: DataStorage
 
-    init(with file: File, storage: DataStorage) {
+    init(with file: ChatEngagementFile, storage: DataStorage, localFile: LocalFile? = nil) {
         self.file = file
         self.storage = storage
 
         if file.isDeleted == true {
             state.value = .error(.deleted)
-        } else if let id = file.id, storage.hasData(for: id) {
-            let url = storage.url(for: id)
-            state.value = .downloaded(LocalFile(with: url))
+        } else if let localFile = localFile {
+            state.value = .downloaded(localFile)
+        } else if let storageID = storageID, storage.hasData(for: storageID) {
+            let url = storage.url(for: storageID)
+            let localFile = LocalFile(with: url)
+            state.value = .downloaded(localFile)
         }
     }
 
@@ -52,17 +64,18 @@ class FileDownload<File: FileDownloadable> {
             return
         }
 
-        let progress = ValueProvider<Double>(with: 0)
+        let progress = ObservableValue<Double>(with: 0)
         let onProgress: EngagementFileProgressBlock = {
             if case .downloading(progress: let progress) = self.state.value {
                 progress.value = $0.fractionCompleted
             }
         }
         let onCompletion: EngagementFileFetchCompletionBlock = { data, error in
-            if let data = data {
-                let url = self.storage.url(for: fileID)
-                self.storage.store(data.data, for: fileID)
-                self.state.value = .downloaded(LocalFile(with: url))
+            if let data = data, let storageID = self.storageID {
+                let url = self.storage.url(for: storageID)
+                let file = LocalFile(with: url)
+                self.storage.store(data.data, for: storageID)
+                self.state.value = .downloaded(file)
             } else if let error = error {
                 self.state.value = .error(Error(with: error))
             }

@@ -10,7 +10,7 @@ class ChatTextContentView: UIView {
     private let style: ChatTextContentStyle
     private let contentAlignment: ChatMessageContentAlignment
     private let contentView = UIView()
-    private let kInsets: UIEdgeInsets
+    private let kTextInsets: UIEdgeInsets
 
     init(
         with style: ChatTextContentStyle,
@@ -19,7 +19,7 @@ class ChatTextContentView: UIView {
     ) {
         self.style = style
         self.contentAlignment = contentAlignment
-        self.kInsets = withZeroInsets
+        self.kTextInsets = withZeroInsets
             ? UIEdgeInsets.zero
             : UIEdgeInsets(top: 12, left: 16, bottom: 12, right: 16)
         super.init(frame: .zero)
@@ -42,16 +42,16 @@ class ChatTextContentView: UIView {
 
     private func layout() {
         addSubview(contentView)
-        contentView.autoPinEdge(toSuperviewEdge: .top, withInset: 0, relation: .greaterThanOrEqual)
-        contentView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 0, relation: .greaterThanOrEqual)
+        contentView.autoPinEdge(toSuperviewEdge: .top)
+        contentView.autoPinEdge(toSuperviewEdge: .bottom)
 
         switch contentAlignment {
         case .left:
             contentView.autoPinEdge(toSuperviewEdge: .left)
             contentView.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
         case .right:
-            contentView.autoPinEdge(toSuperviewEdge: .left, withInset: 0, relation: .greaterThanOrEqual)
             contentView.autoPinEdge(toSuperviewEdge: .right)
+            contentView.autoPinEdge(toSuperviewEdge: .left, withInset: 0, relation: .greaterThanOrEqual)
         }
     }
 
@@ -61,7 +61,7 @@ class ChatTextContentView: UIView {
         } else {
             if textLabel.superview == nil {
                 contentView.addSubview(textLabel)
-                textLabel.autoPinEdgesToSuperviewEdges(with: kInsets)
+                textLabel.autoPinEdgesToSuperviewEdges(with: kTextInsets)
             }
             textLabel.text = text
         }

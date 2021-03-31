@@ -7,12 +7,15 @@ public class VisitorChatMessageStyle: ChatMessageStyle {
 
     public init(text: ChatTextContentStyle,
                 imageFile: ChatImageFileContentStyle,
+                fileDownload: ChatFileDownloadStyle,
                 statusFont: UIFont,
                 statusColor: UIColor,
                 delivered: String) {
         self.statusFont = statusFont
         self.statusColor = statusColor
         self.delivered = delivered
-        super.init(text: text, imageFile: imageFile)
+        super.init(text: text,
+                   imageFile: imageFile,
+                   fileDownload: fileDownload)
     }
 }

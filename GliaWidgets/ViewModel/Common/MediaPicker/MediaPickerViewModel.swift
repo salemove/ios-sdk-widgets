@@ -1,7 +1,19 @@
 enum PickedMedia {
     case image(URL)
+    case photo(Data, format: MediaFormat)
     case movie(URL)
     case none
+}
+
+enum MediaFormat {
+    case jpeg(quality: Float)
+
+    var fileExtension: String {
+        switch self {
+        case .jpeg:
+            return "jpeg"
+        }
+    }
 }
 
 enum MediaPickerEvent {
@@ -27,6 +39,7 @@ class MediaPickerViewModel: ViewModel {
         case sourceNotAvailable
         case noCameraPermission
         case pickedImage(URL)
+        case pickedPhoto(Data, format: MediaFormat)
         case pickedMovie(URL)
         case cancelled
     }
@@ -39,17 +52,18 @@ class MediaPickerViewModel: ViewModel {
 
     var action: ((Action) -> Void)?
     var delegate: ((DelegateEvent) -> Void)?
-    var source: MediaSource { mediaSource }
-    var types: [MediaType] { mediaTypes }
+    var source: MediaSource { return mediaSource }
+    var types: [MediaType] { return mediaTypes }
+    var photoFormat: MediaFormat { return .jpeg(quality: 0.8) }
 
-    private let eventProvider: ValueProvider<MediaPickerEvent>
+    private let pickerEvent: ObservableValue<MediaPickerEvent>
     private let mediaSource: MediaSource
     private let mediaTypes: [MediaType]
 
-    init(eventProvider: ValueProvider<MediaPickerEvent>,
+    init(pickerEvent: ObservableValue<MediaPickerEvent>,
          mediaSource: MediaSource,
          mediaTypes: [MediaType] = [.image]) {
-        self.eventProvider = eventProvider
+        self.pickerEvent = pickerEvent
         self.mediaSource = mediaSource
         self.mediaTypes = mediaTypes
     }
@@ -57,19 +71,22 @@ class MediaPickerViewModel: ViewModel {
     func event(_ event: Event) {
         switch event {
         case .sourceNotAvailable:
-            eventProvider.value = .sourceNotAvailable
+            pickerEvent.value = .sourceNotAvailable
             delegate?(.finished)
         case .noCameraPermission:
-            eventProvider.value = .noCameraPermission
+            pickerEvent.value = .noCameraPermission
             delegate?(.finished)
         case .pickedImage(let url):
-            eventProvider.value = .pickedMedia(.image(url))
+            pickerEvent.value = .pickedMedia(.image(url))
+            delegate?(.finished)
+        case .pickedPhoto(let data, format: let format):
+            pickerEvent.value = .pickedMedia(.photo(data, format: format))
             delegate?(.finished)
         case .pickedMovie(let url):
-            eventProvider.value = .pickedMedia(.movie(url))
+            pickerEvent.value = .pickedMedia(.movie(url))
             delegate?(.finished)
         case .cancelled:
-            eventProvider.value = .cancelled
+            pickerEvent.value = .cancelled
             delegate?(.finished)
         }
     }

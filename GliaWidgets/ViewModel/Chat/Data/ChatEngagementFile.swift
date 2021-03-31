@@ -29,10 +29,36 @@ class ChatEngagementFile: Codable {
 
 extension ChatEngagementFile {
     var isImage: Bool {
-        let contentType = self.contentType ?? ""
-        let fileName = name ?? ""
-        return contentType.hasPrefix("image") || fileName.hasImageFileExtension
+        return contentType?.hasPrefix("image") == true
     }
 }
 
-extension ChatEngagementFile: FileDownloadable {}
+extension ChatEngagementFile {
+    var fileExtension: String? {
+        let components = name?.split(separator: ".") ?? []
+        if components.count > 1, let fileExtension = components.last {
+            return String(fileExtension)
+        } else {
+            return nil
+        }
+    }
+
+    var sizeString: String? {
+        guard let size = size else { return nil }
+        let formatter = ByteCountFormatter()
+        formatter.countStyle = .file
+        return formatter.string(fromByteCount: Int64(size))
+    }
+
+    var fileInfoString: String? {
+        if let name = name, let sizeString = sizeString {
+            return "\(name) • \(sizeString)"
+        } else if let name = name {
+            return name
+        } else if let sizeString = sizeString {
+            return sizeString
+        } else {
+            return nil
+        }
+    }
+}

@@ -2,16 +2,18 @@ import UIKit
 
 class ChatFileContentView: UIView {
     enum Content {
-        case file(LocalFile)
-        case download(FileDownload<ChatEngagementFile>)
+        case localFile(LocalFile)
+        case download(FileDownload)
     }
 
     private let style: ChatFileContentStyle
     private let content: Content
+    private let tap: () -> Void
 
-    init(with style: ChatFileContentStyle, content: Content) {
+    init(with style: ChatFileContentStyle, content: Content, tap: @escaping () -> Void) {
         self.style = style
         self.content = content
+        self.tap = tap
         super.init(frame: .zero)
         setup()
         layout()
@@ -21,22 +23,28 @@ class ChatFileContentView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func update(for file: LocalFile) {}
-    func update(for downloadState: FileDownload<ChatEngagementFile>.State) {}
+    func update(with file: LocalFile) {}
+    func update(with download: FileDownload) {}
 
     func setup() {
-        backgroundColor = style.backgroundColor
-
         switch content {
-        case .file(let file):
-            update(for: file)
+        case .localFile(let file):
+            update(with: file)
         case .download(let download):
-            update(for: download.state.value)
-            download.state.addObserver(self) { state, _ in
-                self.update(for: state)
+            update(with: download)
+            download.state.addObserver(self) { _, _ in
+                self.update(with: download)
             }
         }
+
+        let tapRecognizer = UITapGestureRecognizer(target: self,
+                                                   action: #selector(tapped))
+        addGestureRecognizer(tapRecognizer)
     }
 
     func layout() {}
+
+    @objc private func tapped() {
+        tap()
+    }
 }

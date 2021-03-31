@@ -10,6 +10,8 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case removeUploadTapped(FileUpload)
         case pickMediaTapped
         case callBubbleTapped
+        case fileTapped(LocalFile)
+        case downloadTapped(FileDownload)
     }
 
     enum Action {
@@ -37,11 +39,12 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     }
 
     enum DelegateEvent {
-        case pickMedia(ValueProvider<MediaPickerEvent>)
-        case takeMedia(ValueProvider<MediaPickerEvent>)
-        case pickFile(ValueProvider<FilePickerEvent>)
+        case pickMedia(ObservableValue<MediaPickerEvent>)
+        case takeMedia(ObservableValue<MediaPickerEvent>)
+        case pickFile(ObservableValue<FilePickerEvent>)
         case mediaUpgradeAccepted(offer: MediaUpgradeOffer,
                                   answer: AnswerWithSuccessBlock)
+        case showFile(LocalFile)
         case call
     }
 
@@ -62,12 +65,12 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     private var historySection: Section<ChatItem> { return sections[0] }
     private var queueOperatorSection: Section<ChatItem> { return sections[1] }
     private var messagesSection: Section<ChatItem> { return sections[2] }
-    private let call: ValueProvider<Call?>
+    private let call: ObservableValue<Call?>
     private var unreadMessages: UnreadMessagesHandler!
     private let showsCallBubble: Bool
     private let storage = ChatStorage()
     private let uploader = FileUploader()
-    private let downloader = FileDownloader<ChatEngagementFile>()
+    private let downloader = FileDownloader()
     private var messageText = "" {
         didSet {
             validateMessage()
@@ -78,10 +81,10 @@ class ChatViewModel: EngagementViewModel, ViewModel {
 
     init(interactor: Interactor,
          alertConfiguration: AlertConfiguration,
-         call: ValueProvider<Call?>,
-         unreadMessages: ValueProvider<Int>,
+         call: ObservableValue<Call?>,
+         unreadMessages: ObservableValue<Int>,
          showsCallBubble: Bool,
-         isWindowVisible: ValueProvider<Bool>,
+         isWindowVisible: ObservableValue<Bool>,
          startAction: StartAction) {
         self.call = call
         self.showsCallBubble = showsCallBubble
@@ -114,6 +117,10 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             presentMediaPicker()
         case .callBubbleTapped:
             delegate?(.call)
+        case .fileTapped(let file):
+            fileTapped(file)
+        case .downloadTapped(let download):
+            downloadTapped(download)
         }
     }
 
@@ -210,26 +217,23 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         action?(.refreshAll)
     }
 
-    private func replace(
-        _ outgoingMessage: OutgoingMessage,
-        with message: Message,
-        in section: Section<ChatItem>
-    ) {
-        guard let index = section.items
-            .enumerated()
-            .first(where: {
-                guard case .outgoingMessage(let message) = $0.element.kind else { return false }
-                return message.id == outgoingMessage.id
-            })?.offset
-        else { return }
+    override func interactorEvent(_ event: InteractorEvent) {
+        super.interactorEvent(event)
 
-        let status = Strings.Message.Status.delivered
-        let message = ChatMessage(with: message)
-        let item = ChatItem(kind: .visitorMessage(message, status: status))
-        section.replaceItem(at: index, with: item)
-        action?(.refreshRow(index, in: section.index, animated: false))
+        switch event {
+        case .receivedMessage(let message):
+            receivedMessage(message)
+        case .messagesUpdated(let messages):
+            messagesUpdated(messages)
+        case .upgradeOffer(let offer, answer: let answer):
+            offerMediaUpgrade(offer, answer: answer)
+        default:
+            break
+        }
     }
+}
 
+extension ChatViewModel {
     private func loadHistory() {
         let messages = storage.messages(forQueue: interactor.queueID)
         let items = messages.compactMap { ChatItem(with: $0) }
@@ -237,7 +241,9 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         action?(.refreshSection(historySection.index))
         action?(.scrollToBottom(animated: true))
     }
+}
 
+extension ChatViewModel {
     private func offerMediaUpgrade(_ offer: MediaUpgradeOffer, answer: @escaping AnswerWithSuccessBlock) {
         switch offer.type {
         case .audio:
@@ -269,21 +275,6 @@ class ChatViewModel: EngagementViewModel, ViewModel {
                                    accepted: { onAccepted() },
                                    declined: { answer(false, nil) }))
     }
-
-    override func interactorEvent(_ event: InteractorEvent) {
-        super.interactorEvent(event)
-
-        switch event {
-        case .receivedMessage(let message):
-            receivedMessage(message)
-        case .messagesUpdated(let messages):
-            messagesUpdated(messages)
-        case .upgradeOffer(let offer, answer: let answer):
-            offerMediaUpgrade(offer, answer: answer)
-        default:
-            break
-        }
-    }
 }
 
 extension ChatViewModel {
@@ -295,7 +286,8 @@ extension ChatViewModel {
         guard validateMessage() else { return }
 
         let attachment = uploader.attachment
-        let files = uploader.localFiles
+        let uploads = uploader.succeededUploads
+        let files = uploads.map { $0.localFile }
         let outgoingMessage = OutgoingMessage(
             content: messageText,
             files: files
@@ -309,6 +301,7 @@ extension ChatViewModel {
         interactor.send(messageText, attachment: attachment) { message in
             self.messageText = ""
             self.replace(outgoingMessage,
+                         uploads: uploads,
                          with: message,
                          in: self.messagesSection)
             self.action?(.scrollToBottom(animated: true))
@@ -317,6 +310,28 @@ extension ChatViewModel {
             self.showAlert(with: self.alertConfiguration.unexpectedError,
                            dismissed: nil)
         }
+    }
+
+    private func replace(
+        _ outgoingMessage: OutgoingMessage,
+        uploads: [FileUpload],
+        with message: Message,
+        in section: Section<ChatItem>
+    ) {
+        guard let index = section.items
+            .enumerated()
+            .first(where: {
+                guard case .outgoingMessage(let message) = $0.element.kind else { return false }
+                return message.id == outgoingMessage.id
+            })?.offset
+        else { return }
+
+        let status = Strings.Message.Status.delivered
+        let message = ChatMessage(with: message)
+        let item = ChatItem(kind: .visitorMessage(message, status: status))
+        downloader.addDownloads(for: message.attachment?.files, with: uploads)
+        section.replaceItem(at: index, with: item)
+        action?(.refreshRow(index, in: section.index, animated: false))
     }
 
     @discardableResult
@@ -367,8 +382,8 @@ extension ChatViewModel {
             storage.storeMessages(newMessages,
                                   queueID: interactor.queueID,
                                   operator: interactor.engagedOperator)
-            let newMessages = newMessages.map({ ChatMessage(with: $0) })
-            let items = newMessages.compactMap({ ChatItem(with: $0) })
+            let newMessages = newMessages.map { ChatMessage(with: $0) }
+            let items = newMessages.compactMap { ChatItem(with: $0) }
             setItems(items, to: messagesSection)
             action?(.scrollToBottom(animated: true))
         }
@@ -378,8 +393,8 @@ extension ChatViewModel {
 extension ChatViewModel {
     private func presentMediaPicker() {
         let itemSelected = { (kind: ListItemKind) -> Void in
-            let mediaProvider = ValueProvider<MediaPickerEvent>(with: .none)
-            mediaProvider.addObserver(self) { event, _ in
+            let media = ObservableValue<MediaPickerEvent>(with: .none)
+            media.addObserver(self) { event, _ in
                 switch event {
                 case .none, .cancelled:
                     break
@@ -391,8 +406,8 @@ extension ChatViewModel {
                     self.showSettingsAlert(with: self.alertConfiguration.cameraSettings)
                 }
             }
-            let fileProvider = ValueProvider<FilePickerEvent>(with: .none)
-            fileProvider.addObserver(self) { event, _ in
+            let file = ObservableValue<FilePickerEvent>(with: .none)
+            file.addObserver(self) { event, _ in
                 switch event {
                 case .none, .cancelled:
                     break
@@ -402,11 +417,11 @@ extension ChatViewModel {
             }
             switch kind {
             case .photoLibrary:
-                self.delegate?(.pickMedia(mediaProvider))
+                self.delegate?(.pickMedia(media))
             case .takePhoto:
-                self.delegate?(.takeMedia(mediaProvider))
+                self.delegate?(.takeMedia(media))
             case .browse:
-                self.delegate?(.pickFile(fileProvider))
+                self.delegate?(.pickFile(file))
             }
         }
         action?(.presentMediaPicker(itemSelected: { itemSelected($0) }))
@@ -416,6 +431,8 @@ extension ChatViewModel {
         switch media {
         case .image(let url):
             addUpload(with: url)
+        case .photo(let data, format: let format):
+            addUpload(with: data, format: format)
         case .movie(let url):
             addUpload(with: url)
         case .none:
@@ -432,6 +449,11 @@ extension ChatViewModel {
         action?(.addUpload(upload))
     }
 
+    private func addUpload(with data: Data, format: MediaFormat) {
+        guard let upload = uploader.addUpload(with: data, format: format) else { return }
+        action?(.addUpload(upload))
+    }
+
     private func removeUpload(_ upload: FileUpload) {
         uploader.removeUpload(upload)
         action?(.removeUpload(upload))
@@ -439,6 +461,25 @@ extension ChatViewModel {
 
     private func onUploaderStateChanged(_ state: FileUploader.State) {
         validateMessage()
+    }
+}
+
+extension ChatViewModel {
+    private func fileTapped(_ file: LocalFile) {
+        delegate?(.showFile(file))
+    }
+
+    private func downloadTapped(_ download: FileDownload) {
+        switch download.state.value {
+        case .none:
+            download.startDownload()
+        case .downloading:
+            break
+        case .downloaded(let file):
+            delegate?(.showFile(file))
+        case .error:
+            download.startDownload()
+        }
     }
 }
 
@@ -483,18 +524,18 @@ extension ChatViewModel {
     private func onCall(_ call: Call?) {
         guard let call = call else { return }
 
-        let kindProvider = ValueProvider<CallKind>(with: call.kind.value)
-        let durationProvider = ValueProvider<Int>(with: 0)
-        let item = ChatItem(kind: .callUpgrade(kindProvider,
-                                               durationProvider: durationProvider))
+        let callKind = ObservableValue<CallKind>(with: call.kind.value)
+        let callDuration = ObservableValue<Int>(with: 0)
+        let item = ChatItem(kind: .callUpgrade(callKind,
+                                               duration: callDuration))
         appendItem(item, to: messagesSection, animated: true)
         action?(.scrollToBottom(animated: true))
 
         call.kind.addObserver(self) { kind, _ in
-            kindProvider.value = kind
+            callKind.value = kind
         }
         call.duration.addObserver(item) { duration, _ in
-            durationProvider.value = duration
+            callDuration.value = duration
         }
     }
 

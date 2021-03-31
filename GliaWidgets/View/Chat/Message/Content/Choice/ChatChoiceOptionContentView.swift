@@ -12,7 +12,7 @@ class ChatChoiceOptionContentView: UIView {
     private let textLabel = UILabel()
     private let style: ChatChoiceOptionContentStyle
     private let kInsets = UIEdgeInsets(top: 10, left: 12, bottom: 10, right: 12)
-    
+
     init(with style: ChatChoiceOptionContentStyle) {
         self.style = style
         self.isHighlighted = false
@@ -24,7 +24,7 @@ class ChatChoiceOptionContentView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     private func setup() {
         backgroundColor = style.backgroundColor
         layer.cornerRadius = 4
@@ -46,7 +46,7 @@ class ChatChoiceOptionContentView: UIView {
             textLabel.text = text
         }
     }
-    
+
     private func updateStyle() {
         backgroundColor = isHighlighted ? style.highlightedBackgroundColor : style.backgroundColor
         textLabel.textColor = isHighlighted ? style.highlightedTextColor : style.textColor

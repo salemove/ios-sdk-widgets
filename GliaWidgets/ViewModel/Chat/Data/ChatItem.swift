@@ -7,7 +7,7 @@ class ChatItem {
         case visitorMessage(ChatMessage, status: String?)
         case operatorMessage(ChatMessage, showsImage: Bool, imageUrl: String?)
         case choiceCard(ChatMessage)
-        case callUpgrade(ValueProvider<CallKind>, durationProvider: ValueProvider<Int>)
+        case callUpgrade(ObservableValue<CallKind>, duration: ObservableValue<Int>)
     }
 
     var isOperatorMessage: Bool {
@@ -37,9 +37,7 @@ class ChatItem {
             kind = message.isChoiceCard
                 ? .choiceCard(message)
                 : .operatorMessage(message, showsImage: false, imageUrl: nil)
-        case .omniguide:
-            return nil
-        case .system:
+        case .omniguide, .system, .unknown:
             return nil
         }
     }

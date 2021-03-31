@@ -10,10 +10,13 @@ public class Theme {
     public lazy var alert: AlertStyle = { return alertStyle }()
     public lazy var alertConfiguration: AlertConfiguration = { return alertConfigurationStyle }()
     public lazy var minimizedBubble: BubbleStyle = { return minimizedBubbleStyle }()
+    public var showsPoweredBy: Bool
 
     public init(colorStyle: ThemeColorStyle = .default,
-                fontStyle: ThemeFontStyle = .default) {
+                fontStyle: ThemeFontStyle = .default,
+                showsPoweredBy: Bool = true) {
         self.color = colorStyle.color
         self.font = fontStyle.font
+        self.showsPoweredBy = showsPoweredBy
     }
 }

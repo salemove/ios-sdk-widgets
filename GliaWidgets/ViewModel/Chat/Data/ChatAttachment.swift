@@ -4,6 +4,7 @@ enum ChatAttachmentType: Int, Codable {
     case files = 0
     case singleChoice = 1
     case singleChoiceResponse = 2
+    case unknown = 100
 
     init?(with type: SalemoveSDK.AttachmentType?) {
         switch type {
@@ -16,7 +17,7 @@ enum ChatAttachmentType: Int, Codable {
         case nil:
             return nil
         @unknown default:
-            return nil
+            self = .unknown
         }
     }
 }

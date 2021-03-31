@@ -5,8 +5,11 @@ public class OperatorChatMessageStyle: ChatMessageStyle {
 
     public init(text: ChatTextContentStyle,
                 imageFile: ChatImageFileContentStyle,
+                fileDownload: ChatFileDownloadStyle,
                 operatorImage: UserImageStyle) {
         self.operatorImage = operatorImage
-        super.init(text: text, imageFile: imageFile)
+        super.init(text: text,
+                   imageFile: imageFile,
+                   fileDownload: fileDownload)
     }
 }

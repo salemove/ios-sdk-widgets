@@ -60,7 +60,7 @@ class Interactor {
 
     func addObserver(_ observer: AnyObject, handler: @escaping EventHandler) {
         guard !observers.contains(where: { $0().0 === observer }) else { return }
-        observers.append({ [weak observer] in (observer, handler) })
+        observers.append { [weak observer] in (observer, handler) }
     }
 
     func removeObserver(_ observer: AnyObject) {
@@ -77,14 +77,14 @@ class Interactor {
 
     private func notify(_ event: InteractorEvent) {
         observers
-            .compactMap({ $0() })
-            .filter({ $0.0 != nil })
-            .forEach({
+            .compactMap { $0() }
+            .filter { $0.0 != nil }
+            .forEach {
                 let handler = $0.1
                 DispatchQueue.main.async {
                     handler(event)
                 }
-        })
+            }
     }
 }
 
@@ -99,7 +99,9 @@ extension Interactor {
                 self.state = .ended
                 failure(error)
             } else if let ticket = queueTicket {
-                self.state = .enqueued(ticket)
+                if case .enqueueing = self.state {
+                    self.state = .enqueued(ticket)
+                }
                 success()
             }
         }

@@ -41,6 +41,7 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter, Popov
         view.tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
     }
 
+    // swiftlint:disable function_body_length
     private func bind(viewModel: ChatViewModel, to view: ChatView) {
         showBackButton(with: viewFactory.theme.chat.backButton, in: view.header)
         showCloseButton(with: viewFactory.theme.chat.closeButton, in: view.header)
@@ -52,6 +53,8 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter, Popov
         view.messageEntryView.sendTapped = { viewModel.event(.sendTapped) }
         view.messageEntryView.pickMediaTapped = { viewModel.event(.pickMediaTapped) }
         view.messageEntryView.uploadListView.removeTapped = { viewModel.event(.removeUploadTapped($0)) }
+        view.fileTapped = { viewModel.event(.fileTapped($0)) }
+        view.downloadTapped = { viewModel.event(.downloadTapped($0)) }
         view.callBubbleTapped = { viewModel.event(.callBubbleTapped) }
 
         viewModel.action = { action in

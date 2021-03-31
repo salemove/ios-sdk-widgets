@@ -8,10 +8,11 @@ public final class ChoiceCardStyle: ChatMessageStyle {
         mainText: ChatTextContentStyle,
         frameColor: UIColor,
         imageFile: ChatImageFileContentStyle,
+        fileDownload: ChatFileDownloadStyle,
         choiceOption: ChatChoiceOptionContentStyle
     ) {
         self.frameColor = frameColor
         self.choiceOption = choiceOption
-        super.init(text: mainText, imageFile: imageFile)
+        super.init(text: mainText, imageFile: imageFile, fileDownload: fileDownload)
     }
 }

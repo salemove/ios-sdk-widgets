@@ -3,21 +3,16 @@ import AVFoundation
 
 final class MediaPickerController: NSObject {
     private let viewModel: MediaPickerViewModel
-    private var imagePicker: UIImagePickerController?
 
     private var viewController: UIImagePickerController {
-        if let imagePicker = imagePicker { return imagePicker }
-
         let source = UIImagePickerController.SourceType(with: viewModel.source)
         let media = mediaTypes(viewModel.types, for: source)
         let imagePicker = UIImagePickerController()
         imagePicker.sourceType = source
         imagePicker.mediaTypes = media
         imagePicker.modalPresentationStyle = .fullScreen
-        imagePicker.allowsEditing = true
+        imagePicker.allowsEditing = false
         imagePicker.delegate = self
-
-        self.imagePicker = imagePicker
 
         return imagePicker
     }
@@ -44,18 +39,18 @@ final class MediaPickerController: NSObject {
 
     private func mediaTypes(_ mediaTypes: [MediaPickerViewModel.MediaType],
                             for sourceType: UIImagePickerController.SourceType) -> [String] {
-        let types: [String] = mediaTypes.map({
+        let types: [String] = mediaTypes.map {
             switch $0 {
             case .image:
                 return "public.image"
             case .movie:
                 return "public.movie"
             }
-        })
+        }
 
         let availableMediaTypes = UIImagePickerController.availableMediaTypes(for: sourceType) ?? []
 
-        return types.filter({ availableMediaTypes.contains($0) })
+        return types.filter { availableMediaTypes.contains($0) }
     }
 
     private func checkCameraPermission(_ completion: @escaping (UIViewController) -> Void) {
@@ -78,6 +73,17 @@ final class MediaPickerController: NSObject {
 
         completion(viewController)
     }
+
+    private func pickedPhoto(_ image: UIImage) {
+        let format = viewModel.photoFormat
+
+        switch format {
+        case .jpeg(quality: let quality):
+            if let data = image.jpegData(compressionQuality: CGFloat(quality)) {
+                viewModel.event(.pickedPhoto(data, format: format))
+            }
+        }
+    }
 }
 
 extension MediaPickerController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
@@ -86,17 +92,18 @@ extension MediaPickerController: UIImagePickerControllerDelegate, UINavigationCo
 
         if let url = info[.imageURL] as? URL {
             viewModel.event(.pickedImage(url))
+        } else if let image = info[.editedImage] as? UIImage {
+            pickedPhoto(image)
+        } else if let image = info[.originalImage] as? UIImage {
+            pickedPhoto(image)
         } else if let url = info[.mediaURL] as? URL {
             viewModel.event(.pickedMovie(url))
         }
-
-        imagePicker = nil
     }
 
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true)
         viewModel.event(.cancelled)
-        imagePicker = nil
     }
 }
 

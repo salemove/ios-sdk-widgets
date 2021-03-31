@@ -65,6 +65,7 @@ extension Theme {
         let visitorMessage = VisitorChatMessageStyle(
             text: visitorText,
             imageFile: visitorImageFile,
+            fileDownload: fileDownload,
             statusFont: font.caption,
             statusColor: color.baseNormal,
             delivered: Chat.Message.Status.delivered
@@ -80,6 +81,7 @@ extension Theme {
         let operatorMessage = OperatorChatMessageStyle(
             text: operatorText,
             imageFile: operatorImageFile,
+            fileDownload: fileDownload,
             operatorImage: operatorImage
         )
         let choiceCardText = ChatTextContentStyle(
@@ -101,6 +103,7 @@ extension Theme {
             mainText: choiceCardText,
             frameColor: color.primary,
             imageFile: choiceCardImageFile,
+            fileDownload: fileDownload,
             choiceOption: choiceCardOption
         )
         let endButton = ActionButtonStyle(
@@ -185,7 +188,7 @@ extension Theme {
     private var uploadListStyle: FileUploadListStyle {
         typealias Upload = L10n.Chat.Upload
 
-        let preview = FilePreviewImageStyle(
+        let fileImage = FileImageStyle(
             fileFont: font.subtitle,
             fileColor: color.baseLight,
             errorIcon: Asset.uploadError.image,
@@ -195,21 +198,21 @@ extension Theme {
         )
         let uploading = FileUploadStateStyle(
             text: Upload.uploading,
-            font: font.subtitle,
+            font: font.mediumSubtitle,
             textColor: color.baseDark,
             infoFont: font.caption,
             infoColor: color.baseNormal
         )
         let uploaded = FileUploadStateStyle(
             text: Upload.uploaded,
-            font: font.subtitle,
+            font: font.mediumSubtitle,
             textColor: color.baseDark,
             infoFont: font.caption,
             infoColor: color.baseNormal
         )
         let error = FileUploadErrorStateStyle(
             text: Upload.failed,
-            font: font.subtitle,
+            font: font.mediumSubtitle,
             textColor: color.baseDark,
             infoFont: font.caption,
             infoColor: color.systemNegative,
@@ -220,7 +223,7 @@ extension Theme {
             infoGenericError: Upload.Error.generic
         )
         let upload = FileUploadStyle(
-            preview: preview,
+            fileImage: fileImage,
             uploading: uploading,
             uploaded: uploaded,
             error: error,
@@ -232,6 +235,66 @@ extension Theme {
         )
 
         return FileUploadListStyle(item: upload)
+    }
+
+    private var fileDownload: ChatFileDownloadStyle {
+        typealias Download = L10n.Chat.Download
+
+        let fileImage = FileImageStyle(
+            fileFont: font.subtitle,
+            fileColor: color.baseLight,
+            errorIcon: Asset.uploadError.image,
+            errorIconColor: color.systemNegative,
+            backgroundColor: color.primary,
+            errorBackgroundColor: Color.lightGrey
+        )
+        let download = ChatFileDownloadStateStyle(
+            text: Download.download,
+            font: font.mediumSubtitle,
+            textColor: color.baseDark,
+            infoFont: font.caption,
+            infoColor: color.baseNormal
+        )
+        let downloading = ChatFileDownloadStateStyle(
+            text: Download.downloading,
+            font: font.mediumSubtitle,
+            textColor: color.baseDark,
+            infoFont: font.caption,
+            infoColor: color.baseNormal
+        )
+        let open = ChatFileDownloadStateStyle(
+            text: Download.open,
+            font: font.mediumSubtitle,
+            textColor: color.baseDark,
+            infoFont: font.caption,
+            infoColor: color.baseNormal
+        )
+        let error = ChatFileDownloadErrorStateStyle(
+            text: Download.failed,
+            font: font.mediumSubtitle,
+            textColor: color.systemNegative,
+            infoFont: font.caption,
+            infoColor: color.baseNormal,
+            separatorText: Download.Failed.separator,
+            separatorFont: font.subtitle,
+            separatorTextColor: color.baseDark,
+            retryText: Download.Failed.retry,
+            retryFont: font.mediumSubtitle,
+            retryTextColor: color.baseDark
+        )
+
+        return ChatFileDownloadStyle(
+            fileImage: fileImage,
+            download: download,
+            downloading: downloading,
+            open: open,
+            error: error,
+            progressColor: color.primary,
+            errorProgressColor: color.systemNegative,
+            progressBackgroundColor: Color.lightGrey,
+            backgroundColor: .white,
+            borderColor: Color.lightGrey
+        )
     }
 
     private var pickMedia: ItemListStyle {

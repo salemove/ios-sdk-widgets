@@ -36,7 +36,7 @@ class FileUpload {
 
     enum State {
         case none
-        case uploading(progress: ValueProvider<Double>)
+        case uploading(progress: ObservableValue<Double>)
         case uploaded(file: EngagementFileInformation)
         case error(Error)
     }
@@ -50,7 +50,7 @@ class FileUpload {
         }
     }
 
-    let state = ValueProvider<State>(with: .none)
+    let state = ObservableValue<State>(with: .none)
     let localFile: LocalFile
 
     private let storage: DataStorage
@@ -62,16 +62,17 @@ class FileUpload {
 
     func startUpload() {
         let file = EngagementFile(url: localFile.url)
-        let progress = ValueProvider<Double>(with: 0)
+        let progress = ObservableValue<Double>(with: 0)
         let onProgress: EngagementFileProgressBlock = {
             if case .uploading(progress: let progress) = self.state.value {
                 progress.value = $0.fractionCompleted
             }
         }
-        let onCompletion: EngagementFileCompletionBlock = { enagementFile, error in
-            if let enagementFile = enagementFile {
-                self.storage.store(from: self.localFile.url, for: enagementFile.id)
-                self.state.value = .uploaded(file: enagementFile)
+        let onCompletion: EngagementFileCompletionBlock = { engagementFile, error in
+            if let engagementFile = engagementFile {
+                let storageID = self.localFile.url.lastPathComponent
+                self.storage.store(from: self.localFile.url, for: storageID)
+                self.state.value = .uploaded(file: engagementFile)
             } else if let error = error {
                 self.state.value = .error(Error(with: error))
             }

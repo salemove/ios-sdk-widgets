@@ -1,7 +1,7 @@
 import UIKit
 
 public class FileUploadStyle {
-    public var preview: FilePreviewImageStyle
+    public var fileImage: FileImageStyle
     public var uploading: FileUploadStateStyle
     public var uploaded: FileUploadStateStyle
     public var error: FileUploadErrorStateStyle
@@ -11,7 +11,7 @@ public class FileUploadStyle {
     public var removeButtonImage: UIImage
     public var removeButtonColor: UIColor
 
-    public init(preview: FilePreviewImageStyle,
+    public init(fileImage: FileImageStyle,
                 uploading: FileUploadStateStyle,
                 uploaded: FileUploadStateStyle,
                 error: FileUploadErrorStateStyle,
@@ -20,7 +20,7 @@ public class FileUploadStyle {
                 progressBackgroundColor: UIColor,
                 removeButtonImage: UIImage,
                 removeButtonColor: UIColor) {
-        self.preview = preview
+        self.fileImage = fileImage
         self.uploading = uploading
         self.uploaded = uploaded
         self.error = error
