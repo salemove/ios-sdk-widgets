@@ -46,11 +46,19 @@ class FileUploader {
     }
     var count: Int { return uploads.count }
     let state = ObservableValue<State>(with: .idle)
+    let limitReached = ObservableValue<Bool>(with: false)
 
     private var uploads = [FileUpload]()
     private var storage = FileSystemStorage(directory: .documents)
+    private let maximumUploads: Int
 
-    func addUpload(with url: URL) -> FileUpload {
+    init(maximumUploads: Int) {
+        self.maximumUploads = maximumUploads
+        updateLimitReached()
+    }
+
+    func addUpload(with url: URL) -> FileUpload? {
+        guard !limitReached.value else { return nil }
         let localFile = LocalFile(with: url)
         let upload = FileUpload(with: localFile, storage: storage)
         upload.state.addObserver(self) { _, _ in
@@ -59,10 +67,12 @@ class FileUploader {
         uploads.append(upload)
         upload.startUpload()
         updateState()
+        updateLimitReached()
         return upload
     }
 
     func addUpload(with data: Data, format: MediaFormat) -> FileUpload? {
+        guard !limitReached.value else { return nil }
         let fileName = UUID().uuidString + "." + format.fileExtension
         let url = storage.url(for: fileName)
         do {
@@ -82,11 +92,13 @@ class FileUploader {
         uploads.removeAll(where: { $0 == upload })
         upload.removeLocalFile()
         updateState()
+        updateLimitReached()
     }
 
     func removeAllUploads() {
         uploads.removeAll()
         updateState()
+        updateLimitReached()
     }
 
     private func updateState() {
@@ -103,5 +115,9 @@ class FileUploader {
         if state.value != newState {
             state.value = newState
         }
+    }
+
+    private func updateLimitReached() {
+        limitReached.value = count == maximumUploads
     }
 }
