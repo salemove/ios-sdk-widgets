@@ -70,7 +70,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     private var unreadMessages: UnreadMessagesHandler!
     private let showsCallBubble: Bool
     private let storage = ChatStorage()
-    private let uploader = FileUploader(maximumUploads: 0)
+    private let uploader = FileUploader(maximumUploads: 25)
     private let downloader = FileDownloader()
     private var messageText = "" {
         didSet {
