@@ -80,14 +80,15 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         }
     }
 
-    init(interactor: Interactor,
-         alertConfiguration: AlertConfiguration,
-         call: ObservableValue<Call?>,
-         unreadMessages: ObservableValue<Int>,
-         showsCallBubble: Bool,
-         isWindowVisible: ObservableValue<Bool>,
-         startAction: StartAction)
-    {
+    init(
+        interactor: Interactor,
+        alertConfiguration: AlertConfiguration,
+        call: ObservableValue<Call?>,
+        unreadMessages: ObservableValue<Int>,
+        showsCallBubble: Bool,
+        isWindowVisible: ObservableValue<Bool>,
+        startAction: StartAction
+    ) {
         self.call = call
         self.showsCallBubble = showsCallBubble
         self.startAction = startAction
@@ -270,10 +271,11 @@ extension ChatViewModel {
         }
     }
 
-    private func offerMediaUpgrade(with configuration: SingleMediaUpgradeAlertConfiguration,
-                                   offer: MediaUpgradeOffer,
-                                   answer: @escaping AnswerWithSuccessBlock)
-    {
+    private func offerMediaUpgrade(
+        with configuration: SingleMediaUpgradeAlertConfiguration,
+        offer: MediaUpgradeOffer,
+        answer: @escaping AnswerWithSuccessBlock
+    ) {
         guard isViewActive.value else { return }
         let operatorName = interactor.engagedOperator?.firstName
         let onAccepted = {
