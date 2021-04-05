@@ -1,35 +1,69 @@
 import UIKit
 import SalemoveSDK
 
+/// Kind of an engagement.
 public enum EngagementKind {
+    /// No engagement
     case none
+    /// Chat
     case chat
+    /// Audio call
     case audioCall
+    /// Video call
     case videoCall
 }
 
+/// An event providing engagement state information.
 public enum GliaEvent {
+    /// Session was started
     case started
+    /// Engagement kind changed
     case engagementChanged(EngagementKind)
+    /// Session has ended
     case ended
+    /// Engagement window was minimized
     case minimized
+    /// Engagement window was maximized
     case maximized
 }
 
+/// Used to provide `UIWindowScene` to the framework.
 public protocol SceneProvider: class {
     @available(iOS 13.0, *)
     func windowScene() -> UIWindowScene?
 }
 
+/// Glia's engagement interface.
 public class Glia {
+    /// A singleton to access the Glia's interface.
     public static let sharedInstance = Glia()
+
+    /// Current engagement kind.
     public var engagement: EngagementKind { return rootCoordinator?.engagementKind ?? .none }
+
+    /// Used to monitor engagement state changes.
     public var onEvent: ((GliaEvent) -> Void)?
 
     private var rootCoordinator: RootCoordinator?
 
     private init() {}
 
+    /// Starts the engagement.
+    ///
+    /// - Parameters:
+    ///   - engagementKind: Kind of the engagement.
+    ///   - configuration: Engagement configuration.
+    ///   - queueID: Queue identifier.
+    ///   - visitorContext: Visitor context.
+    ///   - theme: A custom theme to use with the engagement.
+    ///   - sceneProvider: Used to provide `UIWindowScene` to the framework. Defaults to the first active foreground scene.
+    ///
+    /// - throws:
+    ///   - `ConfigurationError.invalidSite`
+    ///   - `ConfigurationError.invalidEnvironment`
+    ///   - `ConfigurationError.invalidAppToken`
+    ///   - `ConfigurationError.invalidApiToken`
+    ///
     public func start(
         _ engagementKind: EngagementKind,
         configuration: Configuration,
