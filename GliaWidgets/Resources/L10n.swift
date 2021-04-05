@@ -251,7 +251,7 @@ public enum L10n {
     public enum PickMedia {
       /// Browse
       public static let browse = L10n.tr("Localizable", "chat.pickMedia.browse")
-      /// Photo library
+      /// Photo Library
       public static let photo = L10n.tr("Localizable", "chat.pickMedia.photo")
       /// Take Photo or Video
       public static let takePhoto = L10n.tr("Localizable", "chat.pickMedia.takePhoto")

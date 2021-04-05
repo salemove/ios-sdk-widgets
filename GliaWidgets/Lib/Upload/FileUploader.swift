@@ -118,6 +118,6 @@ class FileUploader {
     }
 
     private func updateLimitReached() {
-        limitReached.value = count == maximumUploads
+        limitReached.value = count >= maximumUploads
     }
 }
