@@ -22,6 +22,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case setMessageEntryEnabled(Bool)
         case setMessageText(String)
         case sendButtonHidden(Bool)
+        case pickMediaButtonEnabled(Bool)
         case appendRows(Int, to: Int, animated: Bool)
         case refreshRow(Int, in: Int, animated: Bool)
         case refreshSection(Int)
@@ -69,7 +70,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     private var unreadMessages: UnreadMessagesHandler!
     private let showsCallBubble: Bool
     private let storage = ChatStorage()
-    private let uploader = FileUploader()
+    private let uploader = FileUploader(maximumUploads: 25)
     private let downloader = FileDownloader()
     private var messageText = "" {
         didSet {
@@ -100,6 +101,9 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         }
         self.uploader.state.addObserver(self) { state, _ in
             self.onUploaderStateChanged(state)
+        }
+        self.uploader.limitReached.addObserver(self) { limitReached, _ in
+            self.action?(.pickMediaButtonEnabled(!limitReached))
         }
     }
 
@@ -439,7 +443,7 @@ extension ChatViewModel {
     }
 
     private func addUpload(with url: URL) {
-        let upload = uploader.addUpload(with: url)
+        guard let upload = uploader.addUpload(with: url) else { return }
         action?(.addUpload(upload))
     }
 
