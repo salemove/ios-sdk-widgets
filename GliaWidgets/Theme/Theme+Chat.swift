@@ -104,6 +104,7 @@ extension Theme {
             frameColor: color.primary,
             imageFile: choiceCardImageFile,
             fileDownload: fileDownload,
+            operatorImage: operatorImage,
             choiceOption: choiceCardOption
         )
         let endButton = ActionButtonStyle(

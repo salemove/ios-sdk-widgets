@@ -31,7 +31,7 @@ class ChatMessageView: UIView {
         case .downloads(let downloads):
             let contentViews = self.contentViews(for: downloads)
             appendContentViews(contentViews, animated: animated)
-        case .choiceOptions(let options):
+        case .choiceCard(let choiceCard):
             // FIXME: this is done in another class. break for now
             break
         }

@@ -1,15 +1,15 @@
 import UIKit
 
-final class ChoiceCardView: ChatMessageView {
+final class ChoiceCardView: OperatorChatMessageView {
+    var onOptionTapped: ((ChatChoiceCardOption) -> Void)!
+
     private let viewStyle: ChoiceCardStyle
     private let kInsets = UIEdgeInsets(top: 8, left: 40, bottom: 8, right: 60)
     private let kLayoutMargins = UIEdgeInsets(top: 12, left: 16, bottom: 16, right: 16)
 
     init(with style: ChoiceCardStyle) {
         viewStyle = style
-        super.init(with: style, contentAlignment: .left)
-        setup()
-        layout()
+        super.init(with: style)
     }
 
     @available(*, unavailable)
@@ -31,32 +31,45 @@ final class ChoiceCardView: ChatMessageView {
 
     override func appendContent(_ content: ChatMessageContent, animated: Bool) {
         switch content {
-        case .text(let text):
-            let contentView = ChatTextContentView(
-                with: style.text,
-                contentAlignment: .left,
-                withZeroInsets: true
-            )
-            contentView.text = text
-            appendContentView(contentView, animated: animated)
-        case .choiceOptions(let options):
-            let contentViews = self.contentViews(for: options)
+        case .choiceCard(let choiceCard):
+            let contentViews = self.contentViews(for: choiceCard)
             appendContentViews(contentViews, animated: animated)
         default:
             break
         }
     }
 
-    private func layout() {
-        addSubview(contentViews)
-        contentViews.autoPinEdgesToSuperviewEdges(with: kInsets)
-    }
+    private func contentViews(for choiceCard: ChoiceCard) -> [UIView] {
+        var views = [UIView]()
+        let textView = ChatTextContentView(
+            with: style.text,
+            contentAlignment: .left,
+            withZeroInsets: true
+        )
+        textView.text = choiceCard.text
+        views.append(textView)
 
-    private func contentViews(for options: [ChatChoiceCardOption]) -> [ChatChoiceOptionContentView] {
-        return options.compactMap {
+//        if let imageUrl = choiceCard.imageUrl {
+//            let imageView = ImageView()
+//            imageView.contentMode = .scaleAspectFit
+//            imageView.translatesAutoresizingMaskIntoConstraints = false
+//            imageView.setImage(from: imageUrl, animated: true)
+//            views.append(imageView)
+//        }
+
+        guard let options = choiceCard.options else { return views }
+
+        let optionViews: [UIView] = options.compactMap { option in
             let optionView = ChatChoiceOptionContentView(with: viewStyle.choiceOption)
-            optionView.text = $0.text
+            optionView.text = option.text
+            optionView.onTap = { self.onOptionTapped(option) }
+            if let selectedValue = choiceCard.selectedOption, selectedValue == option.value {
+                optionView.isHighlighted = true
+            }
             return optionView
         }
+        views.append(contentsOf: optionViews)
+
+        return views
     }
 }

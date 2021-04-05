@@ -6,13 +6,13 @@ class ChatItem {
         case outgoingMessage(OutgoingMessage)
         case visitorMessage(ChatMessage, status: String?)
         case operatorMessage(ChatMessage, showsImage: Bool, imageUrl: String?)
-        case choiceCard(ChatMessage)
+        case choiceCard(ChatMessage, showsImage: Bool, imageUrl: String?)
         case callUpgrade(ObservableValue<CallKind>, duration: ObservableValue<Int>)
     }
 
     var isOperatorMessage: Bool {
         switch kind {
-        case .operatorMessage:
+        case .operatorMessage, .choiceCard:
             return true
         default:
             return false
@@ -35,7 +35,7 @@ class ChatItem {
             kind = .visitorMessage(message, status: nil)
         case .operator:
             kind = message.isChoiceCard
-                ? .choiceCard(message)
+                ? .choiceCard(message, showsImage: false, imageUrl: nil)
                 : .operatorMessage(message, showsImage: false, imageUrl: nil)
         case .omniguide, .system, .unknown:
             return nil

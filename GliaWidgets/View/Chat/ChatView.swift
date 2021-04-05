@@ -9,6 +9,7 @@ class ChatView: EngagementView {
     var fileTapped: ((LocalFile) -> Void)?
     var downloadTapped: ((FileDownload) -> Void)?
     var callBubbleTapped: (() -> Void)?
+    var choiceOptionSelected: ((ChatChoiceCardOption, String) -> Void)!
 
     private let style: ChatStyle
     private var messageEntryViewBottomConstraint: NSLayoutConstraint!
@@ -51,6 +52,14 @@ class ChatView: EngagementView {
                 case .operatorMessage(let view):
                     switch item.kind {
                     case .operatorMessage(_, showsImage: let showsImage, imageUrl: let imageUrl):
+                        view.showsOperatorImage = showsImage
+                        view.setOperatorImage(fromUrl: imageUrl, animated: animated)
+                    default:
+                        break
+                    }
+                case .choiceCard(let view):
+                    switch item.kind {
+                    case .choiceCard(_, showsImage: let showsImage, imageUrl: let imageUrl):
                         view.showsOperatorImage = showsImage
                         view.setOperatorImage(fromUrl: imageUrl, animated: animated)
                     default:
@@ -156,12 +165,13 @@ class ChatView: EngagementView {
             view.showsOperatorImage = showsImage
             view.setOperatorImage(fromUrl: imageUrl, animated: false)
             return .operatorMessage(view)
-        case .choiceCard(let message):
+        case .choiceCard(let message, showsImage: let showsImage, imageUrl: let imageUrl):
             let view = ChoiceCardView(with: style.choiceCard)
-            view.appendContent(.text(message.content), animated: false)
-            if let options = message.attachment?.options {
-                view.appendContent(.choiceOptions(options), animated: false)
-            }
+            let choiceCard = ChoiceCard(with: message)
+            view.showsOperatorImage = showsImage
+            view.setOperatorImage(fromUrl: imageUrl, animated: false)
+            view.onOptionTapped = { self.choiceOptionSelected($0, message.id) }
+            view.appendContent(.choiceCard(choiceCard), animated: false)
             return .choiceCard(view)
         case .callUpgrade(let kind, duration: let duration):
             let callStyle = callUpgradeStyle(for: kind.value)
