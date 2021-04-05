@@ -47,7 +47,10 @@ class OperatorChatMessageView: ChatMessageView {
         addSubview(contentViews)
         contentViews.autoPinEdge(.left, to: .right, of: operatorImageViewContainer, withOffset: 4)
         contentViews.autoPinEdge(toSuperviewEdge: .top, withInset: kInsets.top)
-        contentViews.autoPinEdge(toSuperviewEdge: .bottom, withInset: kInsets.bottom)
         contentViews.autoPinEdge(toSuperviewEdge: .right, withInset: kInsets.right, relation: .greaterThanOrEqual)
+
+        NSLayoutConstraint.autoSetPriority(.defaultHigh) {
+            contentViews.autoPinEdge(toSuperviewEdge: .bottom, withInset: kInsets.bottom)
+        }
     }
 }

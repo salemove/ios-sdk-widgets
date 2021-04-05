@@ -4,7 +4,6 @@ final class ChoiceCardView: OperatorChatMessageView {
     var onOptionTapped: ((ChatChoiceCardOption) -> Void)!
 
     private let viewStyle: ChoiceCardStyle
-    private let kInsets = UIEdgeInsets(top: 8, left: 40, bottom: 8, right: 60)
     private let kLayoutMargins = UIEdgeInsets(top: 12, left: 16, bottom: 16, right: 16)
 
     init(with style: ChoiceCardStyle) {
@@ -60,8 +59,7 @@ final class ChoiceCardView: OperatorChatMessageView {
         guard let options = choiceCard.options else { return views }
 
         let optionViews: [UIView] = options.compactMap { option in
-            let optionView = ChatChoiceOptionContentView(with: viewStyle.choiceOption)
-            optionView.text = option.text
+            let optionView = ChatChoiceOptionContentView(with: viewStyle.choiceOption, text: option.text)
             optionView.onTap = { self.onOptionTapped(option) }
             if let selectedValue = choiceCard.selectedOption, selectedValue == option.value {
                 optionView.isHighlighted = true
