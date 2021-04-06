@@ -25,7 +25,7 @@ enum ChatMessageSender: Int, Codable {
 
 class ChatMessage: Codable {
     let id: String
-    let queueID: String?
+    var queueID: String?
     let `operator`: ChatOperator?
     let sender: ChatMessageSender
     let content: String

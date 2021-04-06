@@ -615,6 +615,7 @@ extension ChatViewModel {
         ) = choiceCard.kind else { return }
 
         message.attachment?.selectedOption = selection
+        message.queueID = interactor.queueID
         let item = ChatItem(kind: .choiceCard(message, showsImage: showsImage, imageUrl: imageUrl))
 
         messagesSection.replaceItem(at: index, with: item)
