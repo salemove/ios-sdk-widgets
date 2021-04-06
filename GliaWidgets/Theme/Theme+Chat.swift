@@ -129,6 +129,7 @@ extension Theme {
             messageFont: font.bodyText,
             messageColor: color.baseDark,
             placeholder: Chat.Message.placeholder,
+            choiceCardPlaceholder: Chat.Message.choiceCardPlaceholder,
             placeholderFont: font.bodyText,
             placeholderColor: color.baseNormal,
             separatorColor: color.baseShade,

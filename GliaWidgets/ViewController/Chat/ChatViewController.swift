@@ -76,6 +76,8 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter, Popov
                 view.header.setRightItems([endScreenShareButton, endEngagementButton], animated: true)
             case .setMessageEntryEnabled(let enabled):
                 view.messageEntryView.isEnabled = enabled
+            case .setChoiceCardInputModeEnabled(let enabled):
+                view.messageEntryView.isChoiceCardModeEnabled = enabled
             case .setMessageText(let text):
                 view.messageEntryView.messageText = text
             case .sendButtonHidden(let hidden):

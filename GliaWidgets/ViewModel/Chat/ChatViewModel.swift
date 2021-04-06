@@ -21,6 +21,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case showEndScreenShareButton
         case connected(name: String?, imageUrl: String?)
         case setMessageEntryEnabled(Bool)
+        case setChoiceCardInputModeEnabled(Bool)
         case setMessageText(String)
         case sendButtonHidden(Bool)
         case appendRows(Int, to: Int, animated: Bool)
@@ -347,32 +348,6 @@ extension ChatViewModel {
         action?(.refreshRow(index, in: section.index, animated: false))
     }
 
-    private func respond(
-        to choiceCardId: String,
-        with selection: String?
-    ) {
-        guard let index = messagesSection.items
-            .enumerated()
-            .first(where: {
-                guard case .choiceCard(let message, _, _, _) = $0.element.kind else { return false }
-                return message.id == choiceCardId
-            })?.offset
-        else { return }
-
-        let choiceCard = messagesSection[index]
-
-        guard case .choiceCard(
-            let message,
-            showsImage: let showsImage,
-            imageUrl: let imageUrl,
-            _
-        ) = choiceCard.kind else { return }
-
-        let item = ChatItem(kind: .choiceCard(message, showsImage: showsImage, imageUrl: imageUrl, selectedOption: selection))
-        messagesSection.replaceItem(at: index, with: item)
-        action?(.refreshRow(index, in: messagesSection.index, animated: true))
-    }
-
     @discardableResult
     private func validateMessage() -> Bool {
         let canSendText = !messageText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
@@ -401,6 +376,8 @@ extension ChatViewModel {
                 appendItem(item, to: messagesSection, animated: true)
                 action?(.scrollToBottom(animated: true))
                 action?(.updateItemsUserImage(animated: true))
+
+                action?(.setChoiceCardInputModeEnabled(message.isChoiceCard))
             }
         default:
             break
@@ -612,5 +589,33 @@ extension ChatViewModel {
             guard let selection = message?.attachment?.selectedOption else { return }
             self.respond(to: messageId, with: selection)
         }
+    }
+
+    private func respond(
+        to choiceCardId: String,
+        with selection: String?
+    ) {
+        guard let index = messagesSection.items
+            .enumerated()
+            .first(where: {
+                guard case .choiceCard(let message, _, _, _) = $0.element.kind else { return false }
+                return message.id == choiceCardId
+            })?.offset
+        else { return }
+
+        let choiceCard = messagesSection[index]
+
+        guard case .choiceCard(
+            let message,
+            showsImage: let showsImage,
+            imageUrl: let imageUrl,
+            _
+        ) = choiceCard.kind else { return }
+
+        let item = ChatItem(kind: .choiceCard(message, showsImage: showsImage, imageUrl: imageUrl, selectedOption: selection))
+        messagesSection.replaceItem(at: index, with: item)
+        action?(.refreshRow(index, in: messagesSection.index, animated: true))
+
+        action?(.setChoiceCardInputModeEnabled(false))
     }
 }

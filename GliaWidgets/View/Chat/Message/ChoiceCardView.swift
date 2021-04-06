@@ -26,8 +26,6 @@ final class ChoiceCardView: OperatorChatMessageView {
 
         contentViews.isLayoutMarginsRelativeArrangement = true
         contentViews.layoutMargins = kLayoutMargins
-
-        contentViews.setContentHuggingPriority(.required, for: .vertical)
     }
 
     override func appendContent(_ content: ChatMessageContent, animated: Bool) {
