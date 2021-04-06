@@ -594,10 +594,7 @@ extension ChatViewModel {
         }
     }
 
-    private func respond(
-        to choiceCardId: String,
-        with selection: String?
-    ) {
+    private func respond(to choiceCardId: String, with selection: String?) {
         guard let index = messagesSection.items
             .enumerated()
             .first(where: {
