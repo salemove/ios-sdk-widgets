@@ -5,6 +5,7 @@ final class ChoiceCardView: OperatorChatMessageView {
 
     private let viewStyle: ChoiceCardStyle
     private let kLayoutMargins = UIEdgeInsets(top: 12, left: 16, bottom: 16, right: 16)
+    private let kImageHeight: CGFloat = 200.0
 
     init(with style: ChoiceCardStyle) {
         viewStyle = style
@@ -40,6 +41,17 @@ final class ChoiceCardView: OperatorChatMessageView {
 
     private func contentViews(for choiceCard: ChoiceCard) -> [UIView] {
         var views = [UIView]()
+
+        if let imageUrl = choiceCard.imageUrl {
+            let imageView = ImageView()
+            imageView.contentMode = .scaleAspectFill
+            imageView.layer.cornerRadius = 4
+            imageView.layer.masksToBounds = true
+            imageView.autoSetDimension(.height, toSize: kImageHeight)
+            imageView.setImage(from: imageUrl, animated: true)
+            views.append(imageView)
+        }
+
         let textView = ChatTextContentView(
             with: style.text,
             contentAlignment: .left,
@@ -47,14 +59,6 @@ final class ChoiceCardView: OperatorChatMessageView {
         )
         textView.text = choiceCard.text
         views.append(textView)
-
-        if let imageUrl = choiceCard.imageUrl {
-            let imageView = ImageView()
-            imageView.contentMode = .scaleAspectFit
-            imageView.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
-            imageView.setImage(from: imageUrl, animated: true)
-            views.append(imageView)
-        }
 
         guard let options = choiceCard.options else { return views }
 
