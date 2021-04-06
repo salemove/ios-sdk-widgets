@@ -1,8 +1,12 @@
 import UIKit
 
+/// Font style of a theme.
 public enum ThemeFontStyle {
+    /// Default font style
     case `default`
+    /// Default large font style - based on the default style with slightly larger fonts
     case defaultLarge
+    /// Custom font style
     case custom(ThemeFont)
 }
 
