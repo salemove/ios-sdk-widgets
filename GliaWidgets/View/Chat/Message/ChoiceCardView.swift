@@ -26,6 +26,8 @@ final class ChoiceCardView: OperatorChatMessageView {
 
         contentViews.isLayoutMarginsRelativeArrangement = true
         contentViews.layoutMargins = kLayoutMargins
+
+        contentViews.setContentHuggingPriority(.required, for: .vertical)
     }
 
     override func appendContent(_ content: ChatMessageContent, animated: Bool) {
@@ -48,22 +50,25 @@ final class ChoiceCardView: OperatorChatMessageView {
         textView.text = choiceCard.text
         views.append(textView)
 
-//        if let imageUrl = choiceCard.imageUrl {
-//            let imageView = ImageView()
-//            imageView.contentMode = .scaleAspectFit
-//            imageView.translatesAutoresizingMaskIntoConstraints = false
-//            imageView.setImage(from: imageUrl, animated: true)
-//            views.append(imageView)
-//        }
+        if let imageUrl = choiceCard.imageUrl {
+            let imageView = ImageView()
+            imageView.contentMode = .scaleAspectFit
+            imageView.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+            imageView.setImage(from: imageUrl, animated: true)
+            views.append(imageView)
+        }
 
         guard let options = choiceCard.options else { return views }
 
         let optionViews: [UIView] = options.compactMap { option in
             let optionView = ChatChoiceOptionContentView(with: viewStyle.choiceOption, text: option.text)
-            optionView.onTap = { self.onOptionTapped(option) }
-            if let selectedValue = choiceCard.selectedOption, selectedValue == option.value {
-                optionView.isHighlighted = true
+
+            if let selectedValue = choiceCard.selectedOption {
+                optionView.isHighlighted = (selectedValue == option.value)
+            } else {
+                optionView.onTap = { self.onOptionTapped(option) }
             }
+
             return optionView
         }
         views.append(contentsOf: optionViews)

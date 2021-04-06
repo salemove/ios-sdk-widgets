@@ -59,7 +59,7 @@ class ChatView: EngagementView {
                     }
                 case .choiceCard(let view):
                     switch item.kind {
-                    case .choiceCard(_, showsImage: let showsImage, imageUrl: let imageUrl):
+                    case .choiceCard(_, showsImage: let showsImage, imageUrl: let imageUrl, _):
                         view.showsOperatorImage = showsImage
                         view.setOperatorImage(fromUrl: imageUrl, animated: animated)
                     default:
@@ -165,9 +165,9 @@ class ChatView: EngagementView {
             view.showsOperatorImage = showsImage
             view.setOperatorImage(fromUrl: imageUrl, animated: false)
             return .operatorMessage(view)
-        case .choiceCard(let message, showsImage: let showsImage, imageUrl: let imageUrl):
+        case .choiceCard(let message, showsImage: let showsImage, imageUrl: let imageUrl, selectedOption: let selectedOption):
             let view = ChoiceCardView(with: style.choiceCard)
-            let choiceCard = ChoiceCard(with: message)
+            let choiceCard = ChoiceCard(with: message, selectedOption: selectedOption)
             view.showsOperatorImage = showsImage
             view.setOperatorImage(fromUrl: imageUrl, animated: false)
             view.onOptionTapped = { self.choiceOptionSelected($0, message.id) }

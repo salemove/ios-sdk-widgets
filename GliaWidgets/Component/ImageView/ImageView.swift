@@ -4,24 +4,8 @@ class ImageView: UIImageView {
     private static var cache = [String: UIImage]()
     private var downloadID: String = ""
 
-    private var layoutedWidth: CGFloat = 0
-
     override var intrinsicContentSize: CGSize {
-        layoutedWidth = bounds.width
-        if let image = self.image {
-            let viewWidth = bounds.width
-            let ratio = viewWidth / image.size.width
-            return CGSize(width: viewWidth, height: image.size.height * ratio)
-        }
-        return super.intrinsicContentSize
-    }
-
-    override func layoutSubviews() {
-        super.layoutSubviews()
-
-        if layoutedWidth != bounds.width {
-            invalidateIntrinsicContentSize()
-        }
+        return CGSize(width: 200, height: 100)
     }
 
     func setImage(_ image: UIImage?, animated: Bool) {
@@ -71,11 +55,5 @@ class ImageView: UIImageView {
                 finished?(image)
             }
         }
-    }
-}
-
-extension CGSize {
-    public var aspectRatio: CGFloat {
-        return width / height
     }
 }

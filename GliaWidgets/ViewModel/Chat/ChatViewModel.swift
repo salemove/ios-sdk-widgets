@@ -347,23 +347,30 @@ extension ChatViewModel {
         action?(.refreshRow(index, in: section.index, animated: false))
     }
 
-    private func replace(
-        _ choiceCardId: String,
-        with message: Message,
-        in section: Section<ChatItem>
+    private func respond(
+        to choiceCardId: String,
+        with selection: String?
     ) {
-        guard let index = section.items
+        guard let index = messagesSection.items
             .enumerated()
             .first(where: {
-                guard case .choiceCard(let message, _, _) = $0.element.kind else { return false }
+                guard case .choiceCard(let message, _, _, _) = $0.element.kind else { return false }
                 return message.id == choiceCardId
             })?.offset
         else { return }
 
-        let newMessage = ChatMessage(with: message)
-        let item = ChatItem(kind: .choiceCard(newMessage, showsImage: false, imageUrl: nil)) // FIXME:
-        section.replaceItem(at: index, with: item)
-        action?(.refreshRow(index, in: section.index, animated: false))
+        let choiceCard = messagesSection[index]
+
+        guard case .choiceCard(
+            let message,
+            showsImage: let showsImage,
+            imageUrl: let imageUrl,
+            _
+        ) = choiceCard.kind else { return }
+
+        let item = ChatItem(kind: .choiceCard(message, showsImage: showsImage, imageUrl: imageUrl, selectedOption: selection))
+        messagesSection.replaceItem(at: index, with: item)
+        action?(.refreshRow(index, in: messagesSection.index, animated: true))
     }
 
     @discardableResult
@@ -538,13 +545,14 @@ extension ChatViewModel {
         case .visitorMessage(let message, _):
             message.downloads = downloader.downloads(for: message.attachment?.files, autoDownload: .images)
             return item
-        case .choiceCard(let message, _, _):
+        case .choiceCard(let message, _, _, selectedOption: let selectedOption):
             if shouldShowOperatorImage(for: row, in: section) {
                 let imageUrl = message.operator?.pictureUrl
                 let kind: ChatItem.Kind = .choiceCard(
                     message,
                     showsImage: true,
-                    imageUrl: imageUrl
+                    imageUrl: imageUrl,
+                    selectedOption: selectedOption
                 )
                 return ChatItem(kind: kind)
             }
@@ -593,15 +601,16 @@ extension ChatViewModel {
 extension ChatViewModel {
     private func sendChoiceCardResponse(_ option: ChatChoiceCardOption, to messageId: String) {
         guard let value = option.value else { return }
-        print("Sending response to messageId \(messageId) with value \(value)")
         Salemove.sharedInstance.send(selectedOptionValue: value, messageId: messageId) { message, error in
-            if let error = error { print(error.reason) }
+            if error != nil {
+                self.showAlert(
+                    with: self.alertConfiguration.unexpectedError,
+                    dismissed: nil
+                )
+            }
 
-            guard let message = message else { return }
-
-            print("Selected option \(message.attachment?.selectedOption ?? "") for message with id \(message.id)")
-
-            self.replace(messageId, with: message, in: self.messagesSection)
+            guard let selection = message?.attachment?.selectedOption else { return }
+            self.respond(to: messageId, with: selection)
         }
     }
 }
