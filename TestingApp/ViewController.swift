@@ -81,7 +81,6 @@ extension ViewController {
                 print("MAXIMIZED")
             }
         }
-        let t: Theme
 
         do {
             try Glia.sharedInstance.start(
