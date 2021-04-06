@@ -11,10 +11,10 @@ final class ChoiceCard: Codable {
         case selectedOption
     }
 
-    init(with message: ChatMessage, selectedOption: String? = nil) {
+    init(with message: ChatMessage) {
         text = message.content
         imageUrl = message.attachment?.imageUrl
         options = message.attachment?.options
-        self.selectedOption = selectedOption ?? message.attachment?.selectedOption
+        self.selectedOption = message.attachment?.selectedOption
     }
 }

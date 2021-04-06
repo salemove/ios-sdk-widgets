@@ -526,14 +526,13 @@ extension ChatViewModel {
         case .visitorMessage(let message, _):
             message.downloads = downloader.downloads(for: message.attachment?.files, autoDownload: .images)
             return item
-        case .choiceCard(let message, _, _, selectedOption: let selectedOption):
+        case .choiceCard(let message, _, _):
             if shouldShowOperatorImage(for: row, in: section) {
                 let imageUrl = message.operator?.pictureUrl
                 let kind: ChatItem.Kind = .choiceCard(
                     message,
                     showsImage: true,
-                    imageUrl: imageUrl,
-                    selectedOption: selectedOption
+                    imageUrl: imageUrl
                 )
                 return ChatItem(kind: kind)
             }
@@ -602,7 +601,7 @@ extension ChatViewModel {
         guard let index = messagesSection.items
             .enumerated()
             .first(where: {
-                guard case .choiceCard(let message, _, _, _) = $0.element.kind else { return false }
+                guard case .choiceCard(let message, _, _) = $0.element.kind else { return false }
                 return message.id == choiceCardId
             })?.offset
         else { return }
@@ -612,14 +611,16 @@ extension ChatViewModel {
         guard case .choiceCard(
             let message,
             showsImage: let showsImage,
-            imageUrl: let imageUrl,
-            _
+            imageUrl: let imageUrl
         ) = choiceCard.kind else { return }
 
-        let item = ChatItem(kind: .choiceCard(message, showsImage: showsImage, imageUrl: imageUrl, selectedOption: selection))
-        messagesSection.replaceItem(at: index, with: item)
-        action?(.refreshRow(index, in: messagesSection.index, animated: true))
+        message.attachment?.selectedOption = selection
+        let item = ChatItem(kind: .choiceCard(message, showsImage: showsImage, imageUrl: imageUrl))
 
+        messagesSection.replaceItem(at: index, with: item)
+        storage.updateMessage(message)
+
+        action?(.refreshRow(index, in: messagesSection.index, animated: true))
         action?(.setChoiceCardInputModeEnabled(false))
     }
 }

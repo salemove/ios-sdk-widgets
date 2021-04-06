@@ -29,7 +29,7 @@ class ChatMessage: Codable {
     let `operator`: ChatOperator?
     let sender: ChatMessageSender
     let content: String
-    let attachment: ChatAttachment?
+    var attachment: ChatAttachment?
     var downloads = [FileDownload]()
 
     var isChoiceCard: Bool {

@@ -27,7 +27,7 @@ class ChatAttachment: Codable {
     let files: [ChatEngagementFile]?
     let imageUrl: String?
     let options: [ChatChoiceCardOption]?
-    let selectedOption: String?
+    var selectedOption: String?
 
     private enum CodingKeys: String, CodingKey {
         case type
