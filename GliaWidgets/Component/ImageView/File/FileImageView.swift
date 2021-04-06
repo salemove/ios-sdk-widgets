@@ -73,7 +73,7 @@ class FileImageView: UIView {
             }
         case .fileExtension(let fileExtension):
             imageView.image = nil
-            label.text = fileExtension
+            label.text = fileExtension?.uppercased()
             backgroundColor = style.backgroundColor
         case .error:
             imageView.contentMode = .center
