@@ -1,5 +1,6 @@
 import UIKit
 
+/// Base colors used in a theme.
 public struct ThemeColor {
     public var primary: UIColor
     public var secondary: UIColor

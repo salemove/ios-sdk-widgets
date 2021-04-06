@@ -1,5 +1,6 @@
 import UIKit
 
+/// Base fonts used in a theme.
 public struct ThemeFont {
     public var header1: UIFont
     public var header2: UIFont
