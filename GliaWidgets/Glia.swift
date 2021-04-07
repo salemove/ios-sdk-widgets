@@ -69,15 +69,15 @@ public protocol SceneProvider: class {
 ///     Glia.sharedInstance.onEvent = { event in
 ///         switch event {
 ///         case .started:
-///             print("STARTED")
+///             break
 ///         case .engagementChanged(let kind):
-///             print("CHANGED:", kind)
+///             break
 ///         case .ended:
-///             print("ENDED")
+///             break
 ///         case .minimized:
-///             print("MINIMIZED")
+///             break
 ///         case .maximized:
-///             print("MAXIMIZED")
+///             break
 ///         }
 ///     }
 ///
