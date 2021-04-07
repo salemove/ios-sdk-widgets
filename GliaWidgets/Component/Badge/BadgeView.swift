@@ -16,7 +16,7 @@ class BadgeView: UIView {
     private let style: BadgeStyle
     private let countLabel = UILabel()
 
-    public init(with style: BadgeStyle) {
+    init(with style: BadgeStyle) {
         self.style = style
         super.init(frame: .zero)
         setup()

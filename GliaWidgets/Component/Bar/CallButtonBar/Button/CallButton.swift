@@ -31,7 +31,7 @@ class CallButton: UIView {
     private let kCircleSize: CGFloat = 60
     private let kImageViewSize = CGSize(width: 21, height: 21)
 
-    public init(kind: Kind, style: CallButtonStyle) {
+    init(kind: Kind, style: CallButtonStyle) {
         self.kind = kind
         self.style = style
         super.init(frame: .zero)

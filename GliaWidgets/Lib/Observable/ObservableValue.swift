@@ -1,5 +1,5 @@
-public class ObservableValue<T: Any> {
-    public typealias Update = (_ new: T, _ old: T) -> Void
+class ObservableValue<T: Any> {
+    typealias Update = (_ new: T, _ old: T) -> Void
 
     public var value: T {
         get { aValue }
@@ -9,16 +9,16 @@ public class ObservableValue<T: Any> {
     private var aValue: T
     private var observers = [() -> (AnyObject?, Update)]()
 
-    public init(with object: T) {
+    init(with object: T) {
         self.aValue = object
     }
 
-    public func addObserver(_ observer: AnyObject, update: @escaping Update) {
+    func addObserver(_ observer: AnyObject, update: @escaping Update) {
         guard !observers.contains(where: { $0().0 === observer }) else { return }
         observers.append { [weak observer] in (observer, update) }
     }
 
-    public func removeObserver(_ observer: AnyObject) {
+    func removeObserver(_ observer: AnyObject) {
         observers.removeAll(where: { $0().0 === observer })
     }
 

@@ -1,6 +1,6 @@
 import UIKit
 
-public class ChatMessageEntryView: UIView {
+class ChatMessageEntryView: UIView {
     let pickMediaButton: MessageButton
     let uploadListView: FileUploadListView
     var maxCharacters: Int = 200

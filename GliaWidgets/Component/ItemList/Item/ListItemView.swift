@@ -9,7 +9,7 @@ class ListItemView: UIView {
     private let kContentInsets = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
     private let kHeight: CGFloat = 44
 
-    public init(with style: ListItemStyle) {
+    init(with style: ListItemStyle) {
         self.style = style
         super.init(frame: .zero)
         setup()
