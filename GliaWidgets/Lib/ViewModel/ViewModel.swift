@@ -1,4 +1,4 @@
-public protocol ViewModel {
+protocol ViewModel {
     associatedtype Event
     associatedtype Action
     associatedtype DelegateEvent

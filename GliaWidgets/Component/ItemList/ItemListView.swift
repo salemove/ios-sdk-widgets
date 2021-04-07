@@ -9,7 +9,7 @@ class ItemListView: UIView {
     private let stackView = UIStackView()
     private let style: ItemListStyle
 
-    public init(with style: ItemListStyle) {
+    init(with style: ItemListStyle) {
         self.style = style
         super.init(frame: .zero)
         setup()

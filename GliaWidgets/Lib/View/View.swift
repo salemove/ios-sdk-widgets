@@ -1,6 +1,6 @@
 import UIKit
 
-public class View: UIView {
+class View: UIView {
     var currentOrientation: UIInterfaceOrientation {
         guard
             #available(iOS 13.0, *),
@@ -12,7 +12,7 @@ public class View: UIView {
         return orientation
     }
 
-    public init() {
+    init() {
         super.init(frame: .zero)
     }
 

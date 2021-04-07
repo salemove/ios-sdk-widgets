@@ -72,7 +72,7 @@ class AlertView: UIView {
     private var poweredBy: PoweredBy?
     private var closeButton: Button?
 
-    public init(with style: AlertStyle) {
+    init(with style: AlertStyle) {
         self.style = style
         super.init(frame: .zero)
         setup()

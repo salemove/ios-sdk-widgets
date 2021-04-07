@@ -1,11 +1,11 @@
 import UIKit
 
-public enum GliaWindowEvent {
+enum GliaWindowEvent {
     case minimized
     case maximized
 }
 
-public protocol GliaWindowDelegate: class {
+protocol GliaWindowDelegate: class {
     func event(_ event: GliaWindowEvent)
 }
 
