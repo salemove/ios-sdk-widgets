@@ -1,6 +1,6 @@
 import UIKit
 
-/// Style of a  download view.
+/// Style of a chat attachment's download view.
 public class ChatFileDownloadStyle: ChatFileContentStyle {
     /// Style of the file's image.
     public var fileImage: FileImageStyle
