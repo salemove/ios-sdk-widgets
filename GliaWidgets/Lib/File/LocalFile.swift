@@ -31,7 +31,7 @@ class LocalFile {
     let url: URL
 
     private var thumbnail: UIImage?
-    private static var thumbnailQueue: OperationQueue = {
+    private static let thumbnailQueue: OperationQueue = {
         var queue = OperationQueue()
         queue.maxConcurrentOperationCount = 2
         return queue
