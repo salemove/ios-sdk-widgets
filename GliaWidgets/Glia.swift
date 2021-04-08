@@ -37,22 +37,26 @@ public protocol SceneProvider: class {
 ///
 /// ## Integration
 ///     1. Add Glia iOS SDK to you app
-///     2. Import `GliaWidgets` and `SalemoveSDK`:
+///     2. Add following privacy descriptions to your app's Info.plist:
+///         Privacy - Microphone Usage Description
+///         Privacy - Camera Usage Description
+///         Privacy - Photo Library Additions Usage Description
+///     3. Import `GliaWidgets` and `SalemoveSDK`:
 ///         import GliaWidgets
 ///         import SalemoveSDK
-///     3. Create configuration:
+///     4. Create configuration:
 ///         let conf = Configuration(
 ///             appToken: "appToken",
 ///             apiToken: "apiToken",
 ///             environment: .europe,
 ///             site: "site"
 ///         )
-///     4. Create visitor context:
+///     5. Create visitor context:
 ///         let visitorContext = VisitorContext(
 ///             type: .page,
 ///             url: "https://www.yoursite.com"
 ///         )
-///     5. Start the engagement:
+///     6. Start the engagement:
 ///         do {
 ///             try Glia.sharedInstance.start(
 ///                 .chat,
