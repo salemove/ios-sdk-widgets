@@ -1501,7 +1501,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1210;
-				LastUpgradeCheck = 1210;
+				LastUpgradeCheck = 1240;
 				TargetAttributes = {
 					1A205D5725655CB1003AA3CD = {
 						CreatedOnToolsVersion = 12.1;
@@ -2023,7 +2023,7 @@
 			baseConfigurationReference = AA7850ED199CD0EEB2FB417D /* Pods-GliaWidgets.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = XR3G5NDPNH;
@@ -2053,7 +2053,7 @@
 			baseConfigurationReference = 8A19BDC10127BAAF232B4722 /* Pods-GliaWidgets.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = XR3G5NDPNH;
