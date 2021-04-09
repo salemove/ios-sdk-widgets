@@ -136,6 +136,8 @@ class Call {
     }
 
     func end() {
+        audio.stream.value = .none
+        video.stream.value = .none
         state.value = .ended
     }
 
