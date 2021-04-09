@@ -50,7 +50,7 @@ final class PopoverViewController: UIViewController {
 }
 
 extension PopoverViewController: UIPopoverPresentationControllerDelegate {
-    func adaptivePresentationStyle(for _: UIPresentationController) -> UIModalPresentationStyle {
+    func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
         return .none
     }
 }
