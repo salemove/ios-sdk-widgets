@@ -1,6 +1,6 @@
 import UIKit
 
-/// Style of a upload list view.
+/// Style of an upload list view.
 public class FileUploadListStyle {
     /// Style of an item.
     public var item: FileUploadStyle

@@ -1,6 +1,6 @@
 import UIKit
 
-/// Style of a engagement connect view.
+/// Style of an engagement connect view.
 public struct ConnectStyle {
     /// Style of the operator view.
     public var connectOperator: ConnectOperatorStyle

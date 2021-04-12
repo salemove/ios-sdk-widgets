@@ -274,14 +274,14 @@ extension Theme {
         )
     }
 
-    private var pickMedia: ItemListStyle {
+    private var pickMedia: AttachmentSourceListStyle {
         typealias Chat = L10n.Chat.PickMedia
 
         let itemFont = font.buttonLabel
         let itemFontColor = color.baseDark
         let itemIconColor = color.baseDark
 
-        let pickPhoto = ListItemStyle(
+        let pickPhoto = AttachmentSourceItemStyle(
             kind: .photoLibrary,
             title: Chat.photo,
             titleFont: itemFont,
@@ -289,7 +289,7 @@ extension Theme {
             icon: Asset.photoLibraryIcon.image,
             iconColor: itemIconColor
         )
-        let takePhoto = ListItemStyle(
+        let takePhoto = AttachmentSourceItemStyle(
             kind: .takePhoto,
             title: Chat.takePhoto,
             titleFont: itemFont,
@@ -297,7 +297,7 @@ extension Theme {
             icon: Asset.cameraIcon.image,
             iconColor: itemIconColor
         )
-        let browse = ListItemStyle(
+        let browse = AttachmentSourceItemStyle(
             kind: .browse,
             title: Chat.browse,
             titleFont: itemFont,
@@ -306,7 +306,7 @@ extension Theme {
             iconColor: itemIconColor
         )
 
-        return ItemListStyle(
+        return AttachmentSourceListStyle(
             items: [pickPhoto, takePhoto, browse],
             separatorColor: color.baseShade,
             backgroundColor: Color.lightGrey

@@ -1,8 +1,8 @@
 import UIKit
 
-/// Style of a chat attachment's download view.
+/// Style of a chat attachment download view.
 public class ChatFileDownloadStyle: ChatFileContentStyle {
-    /// Style of the file's image.
+    /// Style of the file image.
     public var fileImage: FileImageStyle
 
     /// Style of the download state.
@@ -31,7 +31,7 @@ public class ChatFileDownloadStyle: ChatFileContentStyle {
 
     ///
     /// - Parameters:
-    ///   - fileImage: Style of the file's image.
+    ///   - fileImage: Style of the file image.
     ///   - download: Style of the download state.
     ///   - downloading: Style of the downloading state.
     ///   - open: Style of the  state when file is downloaded and can be opened.
@@ -65,7 +65,7 @@ public class ChatFileDownloadStyle: ChatFileContentStyle {
     }
 }
 
-/// Style of an download state.
+/// Style of a download state.
 public class ChatFileDownloadStateStyle {
     /// Text for the state.
     public var text: String
@@ -103,7 +103,7 @@ public class ChatFileDownloadStateStyle {
     }
 }
 
-/// Style of an download error state.
+/// Style of a download error state.
 public class ChatFileDownloadErrorStateStyle {
     /// Text for the state.
     public var text: String
@@ -120,7 +120,7 @@ public class ChatFileDownloadErrorStateStyle {
     /// Color of the information text.
     public var infoColor: UIColor
 
-    /// The text between the state text and rety text.
+    /// The text between the state text and retry text.
     public var separatorText: String
 
     /// Font of the separator text.
@@ -145,7 +145,7 @@ public class ChatFileDownloadErrorStateStyle {
     ///   - textColor: Color of the state text.
     ///   - infoFont: Font of the information text.
     ///   - infoColor: Color of the information text.
-    ///   - separatorText: The text between the state text and rety text.
+    ///   - separatorText: The text between the state text and retry text.
     ///   - separatorFont: Font of the separator text.
     ///   - separatorTextColor: Color of the separator text.
     ///   - retryText: Retry text.

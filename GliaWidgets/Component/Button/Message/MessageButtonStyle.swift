@@ -1,6 +1,6 @@
 import UIKit
 
-/// Style of a message button.
+/// Style of a button shown in the message input area.
 public struct MessageButtonStyle {
     /// Image of the button.
     public var image: UIImage

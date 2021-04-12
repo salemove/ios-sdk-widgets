@@ -2,7 +2,7 @@ import UIKit
 
 /// Style of a single upload view in the uploads list view.
 public class FileUploadStyle {
-    /// Style of the file's image.
+    /// Style of the file image.
     public var fileImage: FileImageStyle
 
     /// Style of the uploading state.
@@ -31,7 +31,7 @@ public class FileUploadStyle {
 
     ///
     /// - Parameters:
-    ///   - fileImage: Style of the file's image.
+    ///   - fileImage: Style of the file image.
     ///   - uploading: Style of the uploading state.
     ///   - uploaded: Style of the uploaded state.
     ///   - error: Style of the error state.
@@ -120,10 +120,10 @@ public class FileUploadErrorStateStyle {
     /// Information text to display when selected file is too big.
     public var infoFileTooBig: String
 
-    /// Information text to display when selected file's type is not supported.
+    /// Information text to display when selected file type is not supported.
     public var infoUnsupportedFileType: String
 
-    /// Information text to display when selected file's safety check failed.
+    /// Information text to display when selected file safety check failed.
     public var infoSafetyCheckFailed: String
 
     /// Information text to display on network related error.
@@ -140,8 +140,8 @@ public class FileUploadErrorStateStyle {
     ///   - infoFont: Font of the information text.
     ///   - infoColor: Color of the information text.
     ///   - infoFileTooBig: Information text to display when selected file is too big.
-    ///   - infoUnsupportedFileType: Information text to display when selected file's type is not supported.
-    ///   - infoSafetyCheckFailed: Information text to display when selected file's safety check failed.
+    ///   - infoUnsupportedFileType: Information text to display when selected file type is not supported.
+    ///   - infoSafetyCheckFailed: Information text to display when selected file safety check failed.
     ///   - infoNetworkError: Information text to display on network related error.
     ///   - infoGenericError: Information text to display on generic error.
     ///

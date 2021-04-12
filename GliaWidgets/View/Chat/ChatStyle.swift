@@ -30,7 +30,7 @@ public class ChatStyle: EngagementStyle {
     public var callBubble: BubbleStyle
 
     /// Style of the attachment media type picker.
-    public var pickMedia: ItemListStyle
+    public var pickMedia: AttachmentSourceListStyle
 
     ///
     /// - Parameters:
@@ -66,7 +66,7 @@ public class ChatStyle: EngagementStyle {
                 audioUpgrade: ChatCallUpgradeStyle,
                 videoUpgrade: ChatCallUpgradeStyle,
                 callBubble: BubbleStyle,
-                pickMedia: ItemListStyle) {
+                pickMedia: AttachmentSourceListStyle) {
         self.title = title
         self.backButton = backButton
         self.closeButton = closeButton

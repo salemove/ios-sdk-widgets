@@ -23,13 +23,13 @@ public class CallStyle: EngagementStyle {
     /// Color of the operator's name text.
     public var operatorNameColor: UIColor
 
-    /// Font of the call's duration text.
+    /// Font of the call duration text.
     public var durationFont: UIFont
 
-    /// Color of the call's duration text.
+    /// Color of the call duration text.
     public var durationColor: UIColor
 
-    /// The text shown on top section of the view.
+    /// The text shown in the top section of the view.
     public var topText: String
 
     /// Font of the top text.
@@ -38,7 +38,7 @@ public class CallStyle: EngagementStyle {
     /// Color of the top text.
     public var topTextColor: UIColor
 
-    /// The text shown on bottom section of the view.
+    /// The text shown in the bottom section of the view.
     public var bottomText: String
 
     /// Font of the bottom text.
@@ -65,12 +65,12 @@ public class CallStyle: EngagementStyle {
     ///   - operatorName: A text to display operator's name. Include `{operatorName}` template parameter in the string to display operator's name.
     ///   - operatorNameFont: Font of the operator's name text.
     ///   - operatorNameColor: Color of the operator's name text.
-    ///   - durationFont: Font of the call's duration text.
-    ///   - durationColor: Color of the call's duration text.
-    ///   - topText: The text shown on top section of the view.
+    ///   - durationFont: Font of the call duration text.
+    ///   - durationColor: Color of the call duration text.
+    ///   - topText: The text shown in the top section of the view.
     ///   - topTextFont: Font of the top text.
     ///   - topTextColor: Color of the top text.
-    ///   - bottomText: The text shown on bottom section of the view.
+    ///   - bottomText: The text shown in the bottom section of the view.
     ///   - bottomTextFont: Font of the bottom text.
     ///   - bottomTextColor: Color of the bottom text.
     ///   - buttonBar: Style of the button bar.

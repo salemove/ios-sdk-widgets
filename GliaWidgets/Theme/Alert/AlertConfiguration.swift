@@ -15,10 +15,10 @@ public struct AlertConfiguration {
     /// Configuration of the audio upgrade confirmation alert.
     public var audioUpgrade: SingleMediaUpgradeAlertConfiguration
 
-    /// Configuration of the one-way video confirmation alert.
+    /// Configuration of the one-way video upgrade confirmation alert.
     public var oneWayVideoUpgrade: SingleMediaUpgradeAlertConfiguration
 
-    /// Configuration of the two-way video confirmation alert.
+    /// Configuration of the two-way video upgrade confirmation alert.
     public var twoWayVideoUpgrade: SingleMediaUpgradeAlertConfiguration
 
     /// Configuration of the screen sharing start confirmation alert.
@@ -49,8 +49,8 @@ public struct AlertConfiguration {
     ///   - operatorsUnavailable: Configuration of the operator's unavailable alert.
     ///   - mediaUpgrade: Configuration of the media upgrade confirmation alert.
     ///   - audioUpgrade: Configuration of the audio upgrade confirmation alert.
-    ///   - oneWayVideoUpgrade: Configuration of the one-way video confirmation alert.
-    ///   - twoWayVideoUpgrade: Configuration of the two-way video confirmation alert.
+    ///   - oneWayVideoUpgrade: Configuration of the one-way video upgrade confirmation alert.
+    ///   - twoWayVideoUpgrade: Configuration of the two-way video upgrade confirmation alert.
     ///   - screenShareOffer: Configuration of the screen sharing start confirmation alert.
     ///   - endScreenShare: Configuration of the screen sharing end confirmation alert.
     ///   - microphoneSettings: Configuration of the microphone permission settings alert.

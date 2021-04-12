@@ -1,15 +1,15 @@
 import UIKit
 
-class ItemListView: UIView {
-    var items: [ListItemStyle] = [] {
+class AttachmentSourceListView: UIView {
+    var items: [AttachmentSourceItemStyle] = [] {
         didSet { updateItems(items) }
     }
-    var itemTapped: ((ListItemKind) -> Void)?
+    var itemTapped: ((AtttachmentSourceItemKind) -> Void)?
 
     private let stackView = UIStackView()
-    private let style: ItemListStyle
+    private let style: AttachmentSourceListStyle
 
-    init(with style: ItemListStyle) {
+    init(with style: AttachmentSourceListStyle) {
         self.style = style
         super.init(frame: .zero)
         setup()
@@ -34,10 +34,10 @@ class ItemListView: UIView {
         stackView.autoPinEdgesToSuperviewEdges()
     }
 
-    private func updateItems(_ styles: [ListItemStyle]) {
+    private func updateItems(_ styles: [AttachmentSourceItemStyle]) {
         stackView.removeArrangedSubviews()
         styles.forEach {
-            let itemView = ListItemView(with: $0)
+            let itemView = AttachmentSourceItemView(with: $0)
             itemView.tap = { [weak self] in self?.itemTapped?($0) }
             stackView.addArrangedSubview(itemView)
             if $0 !== styles.last {

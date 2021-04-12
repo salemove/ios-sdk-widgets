@@ -32,7 +32,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case addUpload(FileUpload)
         case removeUpload(FileUpload)
         case removeAllUploads
-        case presentMediaPicker(itemSelected: (ListItemKind) -> Void)
+        case presentMediaPicker(itemSelected: (AtttachmentSourceItemKind) -> Void)
         case offerMediaUpgrade(SingleMediaUpgradeAlertConfiguration,
                                accepted: () -> Void,
                                declined: () -> Void)
@@ -390,7 +390,7 @@ extension ChatViewModel {
 
 extension ChatViewModel {
     private func presentMediaPicker() {
-        let itemSelected = { (kind: ListItemKind) -> Void in
+        let itemSelected = { (kind: AtttachmentSourceItemKind) -> Void in
             let media = ObservableValue<MediaPickerEvent>(with: .none)
             media.addObserver(self) { event, _ in
                 switch event {
