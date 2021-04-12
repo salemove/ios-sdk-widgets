@@ -17,6 +17,7 @@ public class ChatMessageEntryView: UIView {
     var isChoiceCardModeEnabled: Bool {
         didSet {
             isEnabled = !isChoiceCardModeEnabled
+            textView.resignFirstResponder()
             placeholderLabel.text = isChoiceCardModeEnabled
                 ? style.choiceCardPlaceholder
                 : style.placeholder
