@@ -92,12 +92,14 @@ extension Theme {
         let choiceCardImageFile = ChatImageFileContentStyle(
             backgroundColor: color.baseLight
         )
-        let choiceCardOption = ChatChoiceOptionContentStyle(
+        let choiceCardOption = ChoiceCardOptionStyle(
             textFont: font.bodyText,
-            textColor: color.baseDark,
+            normalTextColor: color.baseDark,
+            normalBackgroundColor: Color.lightGrey,
             highlightedTextColor: color.baseLight,
-            backgroundColor: Color.lightGrey,
-            highlightedBackgroundColor: color.primary
+            highlightedBackgroundColor: color.primary,
+            disabledTextColor: Color.grey,
+            disabledBackgroundColor: Color.lightGrey
         )
         let choiceCard = ChoiceCardStyle(
             mainText: choiceCardText,

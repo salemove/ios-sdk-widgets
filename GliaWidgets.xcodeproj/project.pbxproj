@@ -184,7 +184,7 @@
 		C43D7A0D25FF92530064B1DA /* ChoiceCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43D7A0C25FF92530064B1DA /* ChoiceCardView.swift */; };
 		C43D7A1125FF92680064B1DA /* ChoiceCardStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43D7A1025FF92680064B1DA /* ChoiceCardStyle.swift */; };
 		C43D7A1525FF9A590064B1DA /* ChatChoiceCardOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43D7A1425FF9A590064B1DA /* ChatChoiceCardOption.swift */; };
-		C460C7782600BCF400449851 /* ChatChoiceOptionContentStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C460C7772600BCF400449851 /* ChatChoiceOptionContentStyle.swift */; };
+		C460C7782600BCF400449851 /* ChoiceCardOptionStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C460C7772600BCF400449851 /* ChoiceCardOptionStyle.swift */; };
 		C47901AF25ED2E70007EE195 /* ScreenShareOfferPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47901AE25ED2E70007EE195 /* ScreenShareOfferPresenter.swift */; };
 		C47901B325ED2F31007EE195 /* ScreenShareOfferAlertConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47901B225ED2F31007EE195 /* ScreenShareOfferAlertConfiguration.swift */; };
 		C47901B725ED2FB0007EE195 /* AlertViewController+ScreenShareOffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47901B625ED2FB0007EE195 /* AlertViewController+ScreenShareOffer.swift */; };
@@ -193,7 +193,7 @@
 		C49A29E42614A29700819269 /* FileImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49A29E22614A29700819269 /* FileImageView.swift */; };
 		C49A29EA2614A32600819269 /* ChatMessageContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49A29E92614A32600819269 /* ChatMessageContent.swift */; };
 		C49A29F22614A85E00819269 /* ChoiceCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49A29F12614A85E00819269 /* ChoiceCard.swift */; };
-		C49E232F25FFA360001A851C /* ChatChoiceOptionContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49E232E25FFA360001A851C /* ChatChoiceOptionContentView.swift */; };
+		C49E232F25FFA360001A851C /* ChoiceCardOptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49E232E25FFA360001A851C /* ChoiceCardOptionView.swift */; };
 		C4F176CD261D1543009D9F07 /* ChatFileDownloadContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F176CB261D1543009D9F07 /* ChatFileDownloadContentView.swift */; };
 		C4F176CE261D1543009D9F07 /* ChatFileDownloadContentStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F176CC261D1543009D9F07 /* ChatFileDownloadContentStyle.swift */; };
 		FD01A52B483418AB02DCFBFC /* Pods_GliaWidgets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85639A838514258D976E1B2A /* Pods_GliaWidgets.framework */; };
@@ -419,7 +419,7 @@
 		C43D7A0C25FF92530064B1DA /* ChoiceCardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChoiceCardView.swift; sourceTree = "<group>"; };
 		C43D7A1025FF92680064B1DA /* ChoiceCardStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoiceCardStyle.swift; sourceTree = "<group>"; };
 		C43D7A1425FF9A590064B1DA /* ChatChoiceCardOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatChoiceCardOption.swift; sourceTree = "<group>"; };
-		C460C7772600BCF400449851 /* ChatChoiceOptionContentStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatChoiceOptionContentStyle.swift; sourceTree = "<group>"; };
+		C460C7772600BCF400449851 /* ChoiceCardOptionStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoiceCardOptionStyle.swift; sourceTree = "<group>"; };
 		C47901AE25ED2E70007EE195 /* ScreenShareOfferPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenShareOfferPresenter.swift; sourceTree = "<group>"; };
 		C47901B225ED2F31007EE195 /* ScreenShareOfferAlertConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenShareOfferAlertConfiguration.swift; sourceTree = "<group>"; };
 		C47901B625ED2FB0007EE195 /* AlertViewController+ScreenShareOffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlertViewController+ScreenShareOffer.swift"; sourceTree = "<group>"; };
@@ -428,7 +428,7 @@
 		C49A29E22614A29700819269 /* FileImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileImageView.swift; sourceTree = "<group>"; };
 		C49A29E92614A32600819269 /* ChatMessageContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatMessageContent.swift; sourceTree = "<group>"; };
 		C49A29F12614A85E00819269 /* ChoiceCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoiceCard.swift; sourceTree = "<group>"; };
-		C49E232E25FFA360001A851C /* ChatChoiceOptionContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatChoiceOptionContentView.swift; sourceTree = "<group>"; };
+		C49E232E25FFA360001A851C /* ChoiceCardOptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoiceCardOptionView.swift; sourceTree = "<group>"; };
 		C4F176CB261D1543009D9F07 /* ChatFileDownloadContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFileDownloadContentView.swift; sourceTree = "<group>"; };
 		C4F176CC261D1543009D9F07 /* ChatFileDownloadContentStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFileDownloadContentStyle.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1410,8 +1410,8 @@
 		C460C7762600BCBD00449851 /* Choice */ = {
 			isa = PBXGroup;
 			children = (
-				C49E232E25FFA360001A851C /* ChatChoiceOptionContentView.swift */,
-				C460C7772600BCF400449851 /* ChatChoiceOptionContentStyle.swift */,
+				C49E232E25FFA360001A851C /* ChoiceCardOptionView.swift */,
+				C460C7772600BCF400449851 /* ChoiceCardOptionStyle.swift */,
 			);
 			path = Choice;
 			sourceTree = "<group>";
@@ -1811,7 +1811,7 @@
 				1A2DA71F25EF720400032611 /* FilePickerViewModel.swift in Sources */,
 				1A60B0152567FC7000E53F53 /* Button.swift in Sources */,
 				1ABD6C5925B5758000D56EFA /* BubbleStyle.swift in Sources */,
-				C49E232F25FFA360001A851C /* ChatChoiceOptionContentView.swift in Sources */,
+				C49E232F25FFA360001A851C /* ChoiceCardOptionView.swift in Sources */,
 				1A6EBB0725ADB84200EE325D /* MediaUpgradeActionStyle.swift in Sources */,
 				C4F176CD261D1543009D9F07 /* ChatFileDownloadContentView.swift in Sources */,
 				1A4AD3CA256E864800468BFB /* ThemeColorStyle.swift in Sources */,
@@ -1845,7 +1845,7 @@
 				1AFB1E6825F7AE3C00CA460D /* ChatAttachment.swift in Sources */,
 				1A2DA73725EFBFE700032611 /* FileUploadListView.swift in Sources */,
 				1AE15E49257A6BD200A642C0 /* ConfirmationAlertConfiguration.swift in Sources */,
-				C460C7782600BCF400449851 /* ChatChoiceOptionContentStyle.swift in Sources */,
+				C460C7782600BCF400449851 /* ChoiceCardOptionStyle.swift in Sources */,
 				C43D7A1125FF92680064B1DA /* ChoiceCardStyle.swift in Sources */,
 				1A60AFB22566821B00E53F53 /* Asset.swift in Sources */,
 				1A1E309625F8CA4400850E68 /* FileDownload.swift in Sources */,

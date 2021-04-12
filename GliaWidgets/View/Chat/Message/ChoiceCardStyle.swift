@@ -2,7 +2,7 @@ import UIKit
 
 public final class ChoiceCardStyle: OperatorChatMessageStyle {
     public var frameColor: UIColor
-    public var choiceOption: ChatChoiceOptionContentStyle
+    public var choiceOption: ChoiceCardOptionStyle
 
     public init(
         mainText: ChatTextContentStyle,
@@ -10,7 +10,7 @@ public final class ChoiceCardStyle: OperatorChatMessageStyle {
         imageFile: ChatImageFileContentStyle,
         fileDownload: ChatFileDownloadStyle,
         operatorImage: UserImageStyle,
-        choiceOption: ChatChoiceOptionContentStyle
+        choiceOption: ChoiceCardOptionStyle
     ) {
         self.frameColor = frameColor
         self.choiceOption = choiceOption

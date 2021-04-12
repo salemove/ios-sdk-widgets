@@ -248,7 +248,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
 extension ChatViewModel {
     private func loadHistory() {
         let messages = storage.messages(forQueue: interactor.queueID)
-        let items = messages.compactMap { ChatItem(with: $0) }
+        let items = messages.compactMap { ChatItem(with: $0, fromHistory: true) }
         historySection.set(items)
         action?(.refreshSection(historySection.index))
         action?(.scrollToBottom(animated: true))
@@ -526,13 +526,14 @@ extension ChatViewModel {
         case .visitorMessage(let message, _):
             message.downloads = downloader.downloads(for: message.attachment?.files, autoDownload: .images)
             return item
-        case .choiceCard(let message, _, _):
+        case .choiceCard(let message, _, _, let isActive):
             if shouldShowOperatorImage(for: row, in: section) {
                 let imageUrl = message.operator?.pictureUrl
                 let kind: ChatItem.Kind = .choiceCard(
                     message,
                     showsImage: true,
-                    imageUrl: imageUrl
+                    imageUrl: imageUrl,
+                    isActive: isActive
                 )
                 return ChatItem(kind: kind)
             }
@@ -581,6 +582,7 @@ extension ChatViewModel {
 extension ChatViewModel {
     private func sendChoiceCardResponse(_ option: ChatChoiceCardOption, to messageId: String) {
         guard let value = option.value else { return }
+        print("Sending option \(value) to message with id \(messageId)...")
         Salemove.sharedInstance.send(selectedOptionValue: value, messageId: messageId) { message, error in
             if error != nil {
                 self.showAlert(
@@ -589,7 +591,10 @@ extension ChatViewModel {
                 )
             }
 
-            guard let selection = message?.attachment?.selectedOption else { return }
+            guard let message = message else { return }
+            print("Confirmed: SDK received option \(message.attachment?.selectedOption ?? "") for message with id \(message.id)")
+
+            guard let selection = message.attachment?.selectedOption else { return }
             self.respond(to: messageId, with: selection)
         }
     }
@@ -598,7 +603,7 @@ extension ChatViewModel {
         guard let index = messagesSection.items
             .enumerated()
             .first(where: {
-                guard case .choiceCard(let message, _, _) = $0.element.kind else { return false }
+                guard case .choiceCard(let message, _, _, _) = $0.element.kind else { return false }
                 return message.id == choiceCardId
             })?.offset
         else { return }
@@ -607,13 +612,14 @@ extension ChatViewModel {
 
         guard case .choiceCard(
             let message,
-            showsImage: let showsImage,
-            imageUrl: let imageUrl
+            let showsImage,
+            let imageUrl,
+            _
         ) = choiceCard.kind else { return }
 
         message.attachment?.selectedOption = selection
         message.queueID = interactor.queueID
-        let item = ChatItem(kind: .choiceCard(message, showsImage: showsImage, imageUrl: imageUrl))
+        let item = ChatItem(kind: .choiceCard(message, showsImage: showsImage, imageUrl: imageUrl, isActive: false))
 
         messagesSection.replaceItem(at: index, with: item)
         storage.updateMessage(message)

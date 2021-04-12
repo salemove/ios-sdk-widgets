@@ -51,7 +51,7 @@ class ChatView: EngagementView {
                 switch cell.content {
                 case .operatorMessage(let view):
                     switch item.kind {
-                    case .operatorMessage(_, showsImage: let showsImage, imageUrl: let imageUrl):
+                    case .operatorMessage(_, let showsImage, let imageUrl):
                         view.showsOperatorImage = showsImage
                         view.setOperatorImage(fromUrl: imageUrl, animated: animated)
                     default:
@@ -59,7 +59,7 @@ class ChatView: EngagementView {
                     }
                 case .choiceCard(let view):
                     switch item.kind {
-                    case .choiceCard(_, showsImage: let showsImage, imageUrl: let imageUrl):
+                    case .choiceCard(_, let showsImage, let imageUrl, _):
                         view.showsOperatorImage = showsImage
                         view.setOperatorImage(fromUrl: imageUrl, animated: animated)
                     default:
@@ -150,14 +150,14 @@ class ChatView: EngagementView {
             view.appendContent(.files(message.files), animated: false)
             view.fileTapped = { [weak self] in self?.fileTapped?($0) }
             return .outgoingMessage(view)
-        case .visitorMessage(let message, status: let status):
+        case .visitorMessage(let message, let status):
             let view = VisitorChatMessageView(with: style.visitorMessage)
             view.appendContent(.text(message.content), animated: false)
             view.appendContent(.downloads(message.downloads), animated: false)
             view.downloadTapped = { [weak self] in self?.downloadTapped?($0) }
             view.status = status
             return .visitorMessage(view)
-        case .operatorMessage(let message, showsImage: let showsImage, imageUrl: let imageUrl):
+        case .operatorMessage(let message, let showsImage, let imageUrl):
             let view = OperatorChatMessageView(with: style.operatorMessage)
             view.appendContent(.text(message.content), animated: false)
             view.appendContent(.downloads(message.downloads), animated: false)
@@ -165,15 +165,15 @@ class ChatView: EngagementView {
             view.showsOperatorImage = showsImage
             view.setOperatorImage(fromUrl: imageUrl, animated: false)
             return .operatorMessage(view)
-        case .choiceCard(let message, showsImage: let showsImage, imageUrl: let imageUrl):
+        case .choiceCard(let message, let showsImage, let imageUrl, let isActive):
             let view = ChoiceCardView(with: style.choiceCard)
-            let choiceCard = ChoiceCard(with: message)
+            let choiceCard = ChoiceCard(with: message, isActive: isActive)
             view.showsOperatorImage = showsImage
             view.setOperatorImage(fromUrl: imageUrl, animated: false)
             view.onOptionTapped = { self.choiceOptionSelected($0, message.id) }
             view.appendContent(.choiceCard(choiceCard), animated: false)
             return .choiceCard(view)
-        case .callUpgrade(let kind, duration: let duration):
+        case .callUpgrade(let kind, let duration):
             let callStyle = callUpgradeStyle(for: kind.value)
             let view = ChatCallUpgradeView(with: callStyle,
                                            duration: duration)
@@ -262,10 +262,10 @@ extension ChatView {
                            delay: 0.0,
                            options: properties.animationOptions,
                            animations: { [weak self] in
-                self?.messageEntryViewBottomConstraint.constant = -properties.finalFrame.height + bottomInset
-                self?.tableView.contentOffset = offset
-                self?.layoutIfNeeded()
-            }, completion: { _ -> Void in })
+                               self?.messageEntryViewBottomConstraint.constant = -properties.finalFrame.height + bottomInset
+                               self?.tableView.contentOffset = offset
+                               self?.layoutIfNeeded()
+                           }, completion: { _ -> Void in })
         }
 
         keyboardObserver.keyboardWillHide = { [unowned self] properties in
@@ -273,9 +273,9 @@ extension ChatView {
                            delay: 0.0,
                            options: properties.animationOptions,
                            animations: { [weak self] in
-                self?.messageEntryViewBottomConstraint.constant = 0
-                self?.layoutIfNeeded()
-            }, completion: { _ -> Void in })
+                               self?.messageEntryViewBottomConstraint.constant = 0
+                               self?.layoutIfNeeded()
+                           }, completion: { _ -> Void in })
         }
     }
 }

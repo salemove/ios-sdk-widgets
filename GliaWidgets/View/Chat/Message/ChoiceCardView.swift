@@ -63,12 +63,16 @@ final class ChoiceCardView: OperatorChatMessageView {
         guard let options = choiceCard.options else { return views }
 
         let optionViews: [UIView] = options.compactMap { option in
-            let optionView = ChatChoiceOptionContentView(with: viewStyle.choiceOption, text: option.text)
+            let optionView = ChoiceCardOptionView(with: viewStyle.choiceOption, text: option.text)
 
             if let selectedValue = choiceCard.selectedOption {
-                optionView.isHighlighted = (selectedValue == option.value)
+                optionView.state = option.value == selectedValue
+                    ? .selected
+                    : .disabled
+            } else if choiceCard.isActive {
+                optionView.tap = { self.onOptionTapped(option) }
             } else {
-                optionView.onTap = { self.onOptionTapped(option) }
+                optionView.state = .disabled
             }
 
             return optionView
