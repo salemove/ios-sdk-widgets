@@ -1,6 +1,6 @@
 import UIKit
 
-/// Style of a action button.
+/// Style of an action button. This button contains a title placed on a rectangular background. Used in navigation bar (header).
 public struct ActionButtonStyle {
     /// Title of the button.
     public var title: String

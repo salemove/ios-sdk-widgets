@@ -1,11 +1,11 @@
 import UIKit
 
-/// Style of a file image view.
+/// Style of a file image preview. Appears in message input area before sending the files or in the incoming messages to preview downloads (except for images).
 public class FileImageStyle {
-    /// Font of the file text.
+    /// Font of the file extension label text.
     public var fileFont: UIFont
 
-    /// Color of the file text.
+    /// Color of the file extension label text.
     public var fileColor: UIColor
 
     /// Icon of the error state.
@@ -22,8 +22,8 @@ public class FileImageStyle {
 
     ///
     /// - Parameters:
-    ///   - fileFont: Font of the file text.
-    ///   - fileColor: Color of the file text.
+    ///   - fileFont: Font of the file extension label text.
+    ///   - fileColor: Color of the file extension label text.
     ///   - errorIcon: Icon of the error state.
     ///   - errorIconColor: Color of the error icon.
     ///   - backgroundColor: Background color of the view.

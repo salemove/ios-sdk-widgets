@@ -1,9 +1,9 @@
 import UIKit
 
-/// Style of a list item.
-public class ListItemStyle {
+/// Style of an attachment source list item.
+public class AttachmentSourceItemStyle {
     /// Kind of an item.
-    public var kind: ListItemKind
+    public var kind: AtttachmentSourceItemKind
 
     /// Title of the item.
     public var title: String
@@ -29,7 +29,7 @@ public class ListItemStyle {
     ///   - icon: Icon of the item.
     ///   - iconColor: Color of the icon.
     ///
-    public init(kind: ListItemKind,
+    public init(kind: AtttachmentSourceItemKind,
                 title: String,
                 titleFont: UIFont,
                 titleColor: UIColor,

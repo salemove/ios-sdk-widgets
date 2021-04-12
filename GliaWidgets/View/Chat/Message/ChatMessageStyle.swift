@@ -2,20 +2,20 @@ import UIKit
 
 /// Base style of a chat message.
 public class ChatMessageStyle {
-    /// Style of a text content.
+    /// Style of the text content.
     public var text: ChatTextContentStyle
 
-    /// Style of a image content.
+    /// Style of the image content.
     public var imageFile: ChatImageFileContentStyle
 
-    /// Style of a downloadable file content.
+    /// Style of the downloadable file content.
     public var fileDownload: ChatFileDownloadStyle
 
     ///
     /// - Parameters:
-    ///   - text: Style of a text content.
-    ///   - imageFile: Style of a image content.
-    ///   - fileDownload: Style of a downloadable file content.
+    ///   - text: Style of the text content.
+    ///   - imageFile: Style of the image content.
+    ///   - fileDownload: Style of the downloadable file content.
     ///
     public init(text: ChatTextContentStyle,
                 imageFile: ChatImageFileContentStyle,
