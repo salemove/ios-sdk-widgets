@@ -583,7 +583,9 @@ extension ChatViewModel {
     private func sendChoiceCardResponse(_ option: ChatChoiceCardOption, to messageId: String) {
         guard let value = option.value else { return }
         print("Sending option \(value) to message with id \(messageId)...")
-        Salemove.sharedInstance.send(selectedOptionValue: value, messageId: messageId) { message, error in
+        Salemove.sharedInstance.send(selectedOptionValue: value, messageId: messageId) { [weak self] message, error in
+            guard let self = self else { return }
+
             if error != nil {
                 self.showAlert(
                     with: self.alertConfiguration.unexpectedError,
@@ -591,10 +593,11 @@ extension ChatViewModel {
                 )
             }
 
-            guard let message = message else { return }
-            print("Confirmed: SDK received option \(message.attachment?.selectedOption ?? "") for message with id \(message.id)")
+            guard let message = message,
+                  let selection = message.attachment?.selectedOption
+            else { return }
 
-            guard let selection = message.attachment?.selectedOption else { return }
+            print("Confirmed: SDK received option \(selection) for message with id \(message.id)")
             self.respond(to: messageId, with: selection)
         }
     }

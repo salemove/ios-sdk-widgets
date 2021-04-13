@@ -55,7 +55,7 @@ final class ChoiceCardView: OperatorChatMessageView {
         let textView = ChatTextContentView(
             with: style.text,
             contentAlignment: .left,
-            withZeroInsets: true
+            insets: .zero
         )
         textView.text = choiceCard.text
         views.append(textView)

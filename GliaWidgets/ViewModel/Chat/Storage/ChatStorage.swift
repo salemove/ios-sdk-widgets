@@ -9,7 +9,7 @@ class ChatStorage {
     }
 
     private lazy var messages: [ChatMessage] = {
-        loadMessages()
+        return loadMessages()
     }()
 
     private let encoder = JSONEncoder()

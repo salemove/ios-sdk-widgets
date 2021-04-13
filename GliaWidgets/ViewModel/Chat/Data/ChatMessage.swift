@@ -33,8 +33,7 @@ class ChatMessage: Codable {
     var downloads = [FileDownload]()
 
     var isChoiceCard: Bool {
-        guard let type = attachment?.type else { return false }
-        return type == .singleChoice
+        return attachment?.type == .singleChoice
     }
 
     private enum CodingKeys: String, CodingKey {
