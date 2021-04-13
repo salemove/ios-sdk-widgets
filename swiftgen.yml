@@ -1,0 +1,18 @@
+strings:
+  inputs: GliaWidgets/Resources/en.lproj/Localizable.strings
+  outputs:
+    - templateName: structured-swift4
+      output: GliaWidgets/Resources/L10n.swift
+      params:
+        publicAccess: true
+        enumName: L10n
+
+xcassets:
+  inputs:
+    - GliaWidgets/Resources/Assets.xcassets
+  outputs:
+    - templateName: swift4
+      output: GliaWidgets/Resources/Asset.swift
+      params:
+        publicAccess: true
+
