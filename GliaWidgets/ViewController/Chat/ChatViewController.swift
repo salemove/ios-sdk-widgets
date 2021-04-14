@@ -1,5 +1,4 @@
 import UIKit
-
 import MobileCoreServices
 
 class ChatViewController: EngagementViewController, MediaUpgradePresenter, PopoverPresenter, ScreenShareOfferPresenter {
@@ -57,6 +56,7 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter, Popov
         view.fileTapped = { viewModel.event(.fileTapped($0)) }
         view.downloadTapped = { viewModel.event(.downloadTapped($0)) }
         view.callBubbleTapped = { viewModel.event(.callBubbleTapped) }
+        view.choiceOptionSelected = { viewModel.event(.choiceOptionSelected($0, $1)) }
 
         viewModel.action = { action in
             switch action {
@@ -76,6 +76,8 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter, Popov
                 view.header.setRightItems([endScreenShareButton, endEngagementButton], animated: true)
             case .setMessageEntryEnabled(let enabled):
                 view.messageEntryView.isEnabled = enabled
+            case .setChoiceCardInputModeEnabled(let enabled):
+                view.messageEntryView.isChoiceCardModeEnabled = enabled
             case .setMessageText(let text):
                 view.messageEntryView.messageText = text
             case .sendButtonHidden(let hidden):

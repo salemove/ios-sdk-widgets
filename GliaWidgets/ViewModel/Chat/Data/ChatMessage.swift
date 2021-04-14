@@ -25,12 +25,16 @@ enum ChatMessageSender: Int, Codable {
 
 class ChatMessage: Codable {
     let id: String
-    let queueID: String?
+    var queueID: String?
     let `operator`: ChatOperator?
     let sender: ChatMessageSender
     let content: String
-    let attachment: ChatAttachment?
+    var attachment: ChatAttachment?
     var downloads = [FileDownload]()
+
+    var isChoiceCard: Bool {
+        return attachment?.type == .singleChoice
+    }
 
     private enum CodingKeys: String, CodingKey {
         case id

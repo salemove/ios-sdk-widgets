@@ -19,7 +19,7 @@ class OperatorChatMessageView: ChatMessageView {
     private let viewStyle: OperatorChatMessageStyle
     private var operatorImageView: UserImageView?
     private var operatorImageViewContainer = UIView()
-    private let kInsets = UIEdgeInsets(top: 2, left: 5, bottom: 2, right: 88)
+    private let kInsets = UIEdgeInsets(top: 2, left: 5, bottom: 2, right: 60)
     private let kOperatorImageViewSize = CGSize(width: 28, height: 28)
 
     init(with style: OperatorChatMessageStyle) {
@@ -47,7 +47,10 @@ class OperatorChatMessageView: ChatMessageView {
         addSubview(contentViews)
         contentViews.autoPinEdge(.left, to: .right, of: operatorImageViewContainer, withOffset: 4)
         contentViews.autoPinEdge(toSuperviewEdge: .top, withInset: kInsets.top)
-        contentViews.autoPinEdge(toSuperviewEdge: .bottom, withInset: kInsets.bottom)
         contentViews.autoPinEdge(toSuperviewEdge: .right, withInset: kInsets.right, relation: .greaterThanOrEqual)
+
+        NSLayoutConstraint.autoSetPriority(.defaultHigh) {
+            contentViews.autoPinEdge(toSuperviewEdge: .bottom, withInset: kInsets.bottom)
+        }
     }
 }

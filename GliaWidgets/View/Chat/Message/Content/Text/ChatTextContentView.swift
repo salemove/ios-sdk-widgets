@@ -10,11 +10,16 @@ class ChatTextContentView: UIView {
     private let style: ChatTextContentStyle
     private let contentAlignment: ChatMessageContentAlignment
     private let contentView = UIView()
-    private let kTextInsets = UIEdgeInsets(top: 12, left: 16, bottom: 12, right: 16)
+    private let kTextInsets: UIEdgeInsets
 
-    init(with style: ChatTextContentStyle, contentAlignment: ChatMessageContentAlignment) {
+    init(
+        with style: ChatTextContentStyle,
+        contentAlignment: ChatMessageContentAlignment,
+        insets: UIEdgeInsets = UIEdgeInsets(top: 12, left: 16, bottom: 12, right: 16)
+    ) {
         self.style = style
         self.contentAlignment = contentAlignment
+        self.kTextInsets = insets
         super.init(frame: .zero)
         setup()
         layout()
