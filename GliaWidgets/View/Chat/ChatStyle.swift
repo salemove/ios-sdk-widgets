@@ -6,6 +6,7 @@ public class ChatStyle: EngagementStyle {
     public var closeButton: HeaderButtonStyle
     public var visitorMessage: VisitorChatMessageStyle
     public var operatorMessage: OperatorChatMessageStyle
+    public var choiceCard: ChoiceCardStyle
     public var messageEntry: ChatMessageEntryStyle
     public var audioUpgrade: ChatCallUpgradeStyle
     public var videoUpgrade: ChatCallUpgradeStyle
@@ -23,6 +24,7 @@ public class ChatStyle: EngagementStyle {
                 closeButton: HeaderButtonStyle,
                 visitorMessage: VisitorChatMessageStyle,
                 operatorMessage: OperatorChatMessageStyle,
+                choiceCard: ChoiceCardStyle,
                 messageEntry: ChatMessageEntryStyle,
                 audioUpgrade: ChatCallUpgradeStyle,
                 videoUpgrade: ChatCallUpgradeStyle,
@@ -33,6 +35,7 @@ public class ChatStyle: EngagementStyle {
         self.closeButton = closeButton
         self.visitorMessage = visitorMessage
         self.operatorMessage = operatorMessage
+        self.choiceCard = choiceCard
         self.messageEntry = messageEntry
         self.audioUpgrade = audioUpgrade
         self.videoUpgrade = videoUpgrade

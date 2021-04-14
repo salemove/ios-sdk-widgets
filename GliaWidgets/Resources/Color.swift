@@ -9,5 +9,6 @@ enum Color {
     static let baseShade = UIColor(hex: 0x6C7683, alpha: 0.5)
     static let baseDark = UIColor(hex: 0x2C0735)
     static let lightGrey = UIColor(hex: 0xF3F3F3)
+    static let grey = UIColor(hex: 0x999999)
     static let background: UIColor = .white
 }
