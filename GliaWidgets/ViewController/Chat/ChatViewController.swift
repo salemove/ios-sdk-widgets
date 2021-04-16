@@ -1,21 +1,22 @@
-import UIKit
 import MobileCoreServices
+import UIKit
 
-class ChatViewController: EngagementViewController, MediaUpgradePresenter, PopoverPresenter, ScreenShareOfferPresenter {
+class ChatViewController: EngagementViewController, MediaUpgradePresenter,
+    PopoverPresenter, ScreenShareOfferPresenter {
     private let viewModel: ChatViewModel
     private var lastVisibleRowIndexPath: IndexPath?
 
-    init(viewModel: ChatViewModel,
-         viewFactory: ViewFactory) {
+    init(viewModel: ChatViewModel, viewFactory: ViewFactory) {
         self.viewModel = viewModel
         super.init(viewModel: viewModel, viewFactory: viewFactory)
     }
 
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    public override func loadView() {
+    override public func loadView() {
         super.loadView()
         let view = viewFactory.makeChatView()
         self.view = view
@@ -27,7 +28,9 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter, Popov
         viewModel.event(.viewDidLoad)
     }
 
-    override var preferredStatusBarStyle: UIStatusBarStyle { return viewFactory.theme.chat.preferredStatusBarStyle }
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return viewFactory.theme.chat.preferredStatusBarStyle
+    }
 
     override func willRotate(to toInterfaceOrientation: UIInterfaceOrientation, duration: TimeInterval) {
         guard let view = view as? ChatView else { return }
@@ -62,7 +65,7 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter, Popov
             switch action {
             case .queue:
                 view.setConnectState(.queue, animated: false)
-            case .connected(name: let name, imageUrl: let imageUrl):
+            case .connected(let name, let imageUrl):
                 view.setConnectState(.connected(name: name, imageUrl: imageUrl), animated: true)
             case .showEndButton:
                 let rightItem = ActionButton(with: self.viewFactory.theme.chat.endButton)
@@ -86,15 +89,15 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter, Popov
                 view.messageEntryView.pickMediaButton.isEnabled = enabled
             case .appendRows(let count, let section, let animated):
                 view.appendRows(count, to: section, animated: animated)
-            case .refreshRow(let row, in: let section, animated: let animated):
+            case .refreshRow(let row, let section, let animated):
                 view.refreshRow(row, in: section, animated: animated)
             case .refreshSection(let section):
                 view.refreshSection(section)
             case .refreshAll:
                 view.refreshAll()
-            case .scrollToBottom(animated: let animated):
+            case .scrollToBottom(let animated):
                 view.scrollToBottom(animated: animated)
-            case .updateItemsUserImage(animated: let animated):
+            case .updateItemsUserImage(let animated):
                 view.updateItemsUserImage(animated: animated)
             case .addUpload(let upload):
                 view.messageEntryView.uploadListView.addUploadView(with: upload)
@@ -102,10 +105,12 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter, Popov
                 view.messageEntryView.uploadListView.removeUploadView(with: upload)
             case .removeAllUploads:
                 view.messageEntryView.uploadListView.removeAllUploadViews()
-            case .presentMediaPicker(itemSelected: let itemSelected):
-                self.presentMediaPicker(from: view.messageEntryView.pickMediaButton,
-                                        itemSelected: itemSelected)
-            case .offerMediaUpgrade(let conf, accepted: let accepted, declined: let declined):
+            case .presentMediaPicker(let itemSelected):
+                self.presentMediaPicker(
+                    from: view.messageEntryView.pickMediaButton,
+                    itemSelected: itemSelected
+                )
+            case .offerMediaUpgrade(let conf, let accepted, let declined):
                 self.offerMediaUpgrade(with: conf, accepted: accepted, declined: declined)
             case .showCallBubble(let imageUrl):
                 view.showCallBubble(with: imageUrl, animated: true)
@@ -113,14 +118,18 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter, Popov
         }
     }
 
-    private func presentMediaPicker(from sourceView: UIView,
-                                    itemSelected: @escaping (ListItemKind) -> Void) {
-        presentPopover(with: viewFactory.theme.chat.pickMedia,
-                       from: sourceView,
-                       arrowDirections: [.down],
-                       itemSelected: {
-                        self.dismiss(animated: true, completion: nil)
-                        itemSelected($0)
-                       })
+    private func presentMediaPicker(
+        from sourceView: UIView,
+        itemSelected: @escaping (ListItemKind) -> Void
+    ) {
+        presentPopover(
+            with: viewFactory.theme.chat.pickMedia,
+            from: sourceView,
+            arrowDirections: [.down],
+            itemSelected: {
+                self.dismiss(animated: true, completion: nil)
+                itemSelected($0)
+            }
+        )
     }
 }

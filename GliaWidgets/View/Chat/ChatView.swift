@@ -125,8 +125,10 @@ class ChatView: EngagementView {
 
     private func layout() {
         addSubview(header)
-        header.autoPinEdgesToSuperviewEdges(with: .zero,
-                                            excludingEdge: .bottom)
+        header.autoPinEdgesToSuperviewEdges(
+            with: .zero,
+            excludingEdge: .bottom
+        )
 
         addSubview(tableView)
         tableView.autoPinEdge(.top, to: .bottom, of: header)
@@ -210,9 +212,13 @@ extension ChatView {
         callBubble.kind = .userImage(url: imageUrl)
         callBubble.tap = { [weak self] in self?.callBubbleTapped?() }
         callBubble.pan = { [weak self] in self?.moveCallBubble($0, animated: true) }
-        callBubble.frame = CGRect(origin: CGPoint(x: callBubbleBounds.maxX - kCallBubbleSize.width,
-                                                  y: callBubbleBounds.maxY - kCallBubbleSize.height),
-                                  size: kCallBubbleSize)
+        callBubble.frame = CGRect(
+            origin: CGPoint(
+                x: callBubbleBounds.maxX - kCallBubbleSize.width,
+                y: callBubbleBounds.maxY - kCallBubbleSize.height
+            ),
+            size: kCallBubbleSize
+        )
         self.callBubble = callBubble
 
         addSubview(callBubble)
@@ -256,26 +262,30 @@ extension ChatView {
     private func observeKeyboard() {
         keyboardObserver.keyboardWillShow = { [unowned self] properties in
             let bottomInset = safeAreaInsets.bottom
-            let y = self.tableView.contentSize.height - properties.finalFrame.height + bottomInset
-            let offset = CGPoint(x: 0, y: y)
-            UIView.animate(withDuration: properties.duration,
-                           delay: 0.0,
-                           options: properties.animationOptions,
-                           animations: { [weak self] in
-                               self?.messageEntryViewBottomConstraint.constant = -properties.finalFrame.height + bottomInset
-                               self?.tableView.contentOffset = offset
-                               self?.layoutIfNeeded()
-                           }, completion: { _ -> Void in })
+            let offset = CGPoint(x: 0, y: self.tableView.contentSize.height)
+            let newEntryConstraint = -properties.finalFrame.height + bottomInset
+            UIView.animate(
+                withDuration: properties.duration,
+                delay: 0.0,
+                options: properties.animationOptions,
+                animations: { [weak self] in
+                    self?.messageEntryViewBottomConstraint.constant = newEntryConstraint
+                    self?.tableView.contentOffset = offset
+                    self?.layoutIfNeeded()
+                }
+            )
         }
 
         keyboardObserver.keyboardWillHide = { [unowned self] properties in
-            UIView.animate(withDuration: properties.duration,
-                           delay: 0.0,
-                           options: properties.animationOptions,
-                           animations: { [weak self] in
-                               self?.messageEntryViewBottomConstraint.constant = 0
-                               self?.layoutIfNeeded()
-                           }, completion: { _ -> Void in })
+            UIView.animate(
+                withDuration: properties.duration,
+                delay: 0.0,
+                options: properties.animationOptions,
+                animations: { [weak self] in
+                    self?.messageEntryViewBottomConstraint.constant = 0
+                    self?.layoutIfNeeded()
+                }
+            )
         }
     }
 }
