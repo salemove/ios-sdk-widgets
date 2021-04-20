@@ -17,6 +17,9 @@ public class ChatStyle: EngagementStyle {
     /// Style of the message sent by the operator.
     public var operatorMessage: OperatorChatMessageStyle
 
+    /// Style of the choice card sent to the visitor by the AI engine.
+    public var choiceCard: ChoiceCardStyle
+
     /// Style of the message entry area on the bottom of the view.
     public var messageEntry: ChatMessageEntryStyle
 
@@ -45,6 +48,7 @@ public class ChatStyle: EngagementStyle {
     ///   - closeButton: Close button style in the header.
     ///   - visitorMessage: Style of the message sent by the visitor.
     ///   - operatorMessage: Style of the message sent by the operator.
+    ///   - choiceCard: Style of the choice card sent to the visitor by the AI engine.
     ///   - messageEntry: Style of the message entry area on the bottom of the view.
     ///   - audioUpgrade: Style of the audio upgrade view.
     ///   - videoUpgrade: Style of the video upgrade view.
@@ -62,6 +66,7 @@ public class ChatStyle: EngagementStyle {
                 closeButton: HeaderButtonStyle,
                 visitorMessage: VisitorChatMessageStyle,
                 operatorMessage: OperatorChatMessageStyle,
+                choiceCard: ChoiceCardStyle,
                 messageEntry: ChatMessageEntryStyle,
                 audioUpgrade: ChatCallUpgradeStyle,
                 videoUpgrade: ChatCallUpgradeStyle,
@@ -72,6 +77,7 @@ public class ChatStyle: EngagementStyle {
         self.closeButton = closeButton
         self.visitorMessage = visitorMessage
         self.operatorMessage = operatorMessage
+        self.choiceCard = choiceCard
         self.messageEntry = messageEntry
         self.audioUpgrade = audioUpgrade
         self.videoUpgrade = videoUpgrade

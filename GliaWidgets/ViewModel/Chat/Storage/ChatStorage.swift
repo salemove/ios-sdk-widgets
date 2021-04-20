@@ -11,6 +11,7 @@ class ChatStorage {
     private lazy var messages: [ChatMessage] = {
         return loadMessages()
     }()
+
     private let encoder = JSONEncoder()
     private var db: OpaquePointer?
     private let dbURL: URL?
@@ -107,6 +108,13 @@ extension ChatStorage {
         }
     }
 
+    private func replaceMessage(_ message: ChatMessage) throws {
+        let data = try encoder.encode(message)
+        if let json = String(data: data, encoding: .utf8) {
+            try exec("REPLACE INTO Message(MessageID, JSON) VALUES (?, ?);", values: [message.id, json]) {}
+        }
+    }
+
     private func loadMessages() -> [ChatMessage] {
         var messages = [ChatMessage]()
         let sql = """
@@ -139,9 +147,18 @@ extension ChatStorage {
         return messages.filter { $0.queueID == queueID }
     }
 
-    func storeMessage(_ message: SalemoveSDK.Message,
-                      queueID: String,
-                      operator salemoveOperator: SalemoveSDK.Operator?) {
+    func updateMessage(_ message: ChatMessage) {
+        try? replaceMessage(message)
+
+        guard let index = messages.firstIndex(where: { $0.id == message.id }) else { return }
+        messages[index] = message
+    }
+
+    func storeMessage(
+        _ message: SalemoveSDK.Message,
+        queueID: String,
+        operator salemoveOperator: SalemoveSDK.Operator?
+    ) {
         let salemoveOperator = message.sender == .operator
             ? salemoveOperator
             : nil
@@ -150,9 +167,11 @@ extension ChatStorage {
         messages.append(message)
     }
 
-    func storeMessages(_ messages: [SalemoveSDK.Message],
-                       queueID: String,
-                       operator salemoveOperator: SalemoveSDK.Operator?) {
+    func storeMessages(
+        _ messages: [SalemoveSDK.Message],
+        queueID: String,
+        operator salemoveOperator: SalemoveSDK.Operator?
+    ) {
         messages.forEach { storeMessage($0, queueID: queueID, operator: salemoveOperator) }
     }
 

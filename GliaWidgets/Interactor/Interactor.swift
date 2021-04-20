@@ -269,7 +269,7 @@ extension Interactor: Interactable {
     }
 
     func receive(message: Message) {
-        print("Called: \(#function)")
+        print("Called: \(#function). Content: \(message.content)")
         notify(.receivedMessage(message))
     }
 

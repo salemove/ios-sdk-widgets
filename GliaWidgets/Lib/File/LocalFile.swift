@@ -31,6 +31,11 @@ class LocalFile {
     let url: URL
 
     private var thumbnail: UIImage?
+    private static let thumbnailQueue: OperationQueue = {
+        var queue = OperationQueue()
+        queue.maxConcurrentOperationCount = 2
+        return queue
+    }()
 
     init(with url: URL) {
         self.url = url
@@ -48,7 +53,7 @@ extension LocalFile {
             completion(thumbnail)
             return
         } else {
-            DispatchQueue.global(qos: .background).async {
+            LocalFile.thumbnailQueue.addOperation {
                 guard let image = UIImage(contentsOfFile: self.url.path) else {
                     DispatchQueue.main.async {
                         completion(nil)

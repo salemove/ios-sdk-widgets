@@ -11,6 +11,9 @@ public struct ChatMessageEntryStyle {
     /// Placeholder text of the message text view.
     public var placeholder: String
 
+    /// Font of the placeholder text used when a choice card is awaiting for the answer.
+    public var choiceCardPlaceholder: String
+
     /// Font of the placeholder text.
     public var placeholderFont: UIFont
 
@@ -37,6 +40,7 @@ public struct ChatMessageEntryStyle {
     ///   - messageFont: Font of the message text.
     ///   - messageColor: Color of the message text.
     ///   - placeholder: Placeholder text of the message text view.
+    ///   - choiceCardPlaceholder: Font of the placeholder text used when a choice card is awaiting for the answer.
     ///   - placeholderFont: Font of the placeholder text.
     ///   - placeholderColor: Color of the placeholder text.
     ///   - separatorColor: Color of the separator line.
@@ -48,6 +52,7 @@ public struct ChatMessageEntryStyle {
     public init(messageFont: UIFont,
                 messageColor: UIColor,
                 placeholder: String,
+                choiceCardPlaceholder: String,
                 placeholderFont: UIFont,
                 placeholderColor: UIColor,
                 separatorColor: UIColor,
@@ -58,6 +63,7 @@ public struct ChatMessageEntryStyle {
         self.messageFont = messageFont
         self.messageColor = messageColor
         self.placeholder = placeholder
+        self.choiceCardPlaceholder = choiceCardPlaceholder
         self.placeholderFont = placeholderFont
         self.placeholderColor = placeholderColor
         self.separatorColor = separatorColor
