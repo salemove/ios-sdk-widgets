@@ -20,7 +20,8 @@ extension Theme {
         let operatorImage = UserImageStyle(
             placeholderImage: Asset.operatorPlaceholder.image,
             placeholderColor: color.baseLight,
-            backgroundColor: color.primary
+            placeholderBackgroundColor: color.primary,
+            imageBackgroundColor: .clear
         )
         let queueOperator = ConnectOperatorStyle(
             operatorImage: operatorImage,

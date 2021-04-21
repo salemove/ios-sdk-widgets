@@ -12,6 +12,7 @@ class UserImageView: UIView {
         layout()
     }
 
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -24,11 +25,24 @@ class UserImageView: UIView {
     }
 
     func setImage(_ image: UIImage?, animated: Bool) {
+        if image != nil {
+            placeholderImageView.isHidden = true
+            imageView.isHidden = false
+        }
         imageView.setImage(image, animated: animated)
     }
 
     func setImage(fromUrl url: String?, animated: Bool) {
-        imageView.setImage(from: url, animated: animated, finished: nil)
+        imageView.setImage(
+            from: url,
+            animated: animated,
+            imageReceived: { [weak self] image in
+                if image != nil {
+                    self?.placeholderImageView.isHidden = true
+                    self?.imageView.isHidden = false
+                }
+            }
+        )
     }
 
     private func setup() {
@@ -36,10 +50,12 @@ class UserImageView: UIView {
 
         placeholderImageView.image = style.placeholderImage
         placeholderImageView.tintColor = style.placeholderColor
-        placeholderImageView.backgroundColor = style.backgroundColor
+        placeholderImageView.backgroundColor = style.placeholderBackgroundColor
         updatePlaceholderContentMode()
 
+        imageView.isHidden = true
         imageView.contentMode = .scaleAspectFill
+        imageView.backgroundColor = style.imageBackgroundColor
     }
 
     private func layout() {
