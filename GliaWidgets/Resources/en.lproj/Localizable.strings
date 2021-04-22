@@ -78,8 +78,8 @@
 "chat.download.failed.separator" = " | ";
 "chat.download.failed.retry" = "Retry";
 
-"call.audio.title" = "AUDIO CALL";
-"call.video.title" = "VIDEO CALL";
+"call.audio.title" = "Audio";
+"call.video.title" = "Video";
 "call.endButton.title" = "End";
 "call.connect.queue.firstText" = "CompanyName";
 "call.connect.queue.secondText" = "An MSR will be with you shortly.";
