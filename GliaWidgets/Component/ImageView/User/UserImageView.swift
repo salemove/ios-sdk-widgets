@@ -25,10 +25,7 @@ class UserImageView: UIView {
     }
 
     func setImage(_ image: UIImage?, animated: Bool) {
-        if image != nil {
-            placeholderImageView.isHidden = true
-            imageView.isHidden = false
-        }
+        changeImageVisibility(visible: image != nil)
         imageView.setImage(image, animated: animated)
     }
 
@@ -37,10 +34,7 @@ class UserImageView: UIView {
             from: url,
             animated: animated,
             imageReceived: { [weak self] image in
-                if image != nil {
-                    self?.placeholderImageView.isHidden = true
-                    self?.imageView.isHidden = false
-                }
+                self?.changeImageVisibility(visible: image != nil)
             }
         )
     }
@@ -75,5 +69,10 @@ class UserImageView: UIView {
         } else {
             placeholderImageView.contentMode = .scaleAspectFit
         }
+    }
+
+    private func changeImageVisibility(visible: Bool) {
+        placeholderImageView.isHidden = visible
+        imageView.isHidden = !visible
     }
 }
