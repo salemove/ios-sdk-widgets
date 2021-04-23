@@ -420,6 +420,7 @@
 		C43D7A1025FF92680064B1DA /* ChoiceCardStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoiceCardStyle.swift; sourceTree = "<group>"; };
 		C43D7A1425FF9A590064B1DA /* ChatChoiceCardOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatChoiceCardOption.swift; sourceTree = "<group>"; };
 		C460C7772600BCF400449851 /* ChoiceCardOptionStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoiceCardOptionStyle.swift; sourceTree = "<group>"; };
+		C46B2463262F05BE001245A1 /* TestingApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TestingApp.entitlements; sourceTree = "<group>"; };
 		C47901AE25ED2E70007EE195 /* ScreenShareOfferPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenShareOfferPresenter.swift; sourceTree = "<group>"; };
 		C47901B225ED2F31007EE195 /* ScreenShareOfferAlertConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenShareOfferAlertConfiguration.swift; sourceTree = "<group>"; };
 		C47901B625ED2FB0007EE195 /* AlertViewController+ScreenShareOffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlertViewController+ScreenShareOffer.swift"; sourceTree = "<group>"; };
@@ -670,6 +671,7 @@
 		1A205D7925655CEC003AA3CD /* TestingApp */ = {
 			isa = PBXGroup;
 			children = (
+				C46B2463262F05BE001245A1 /* TestingApp.entitlements */,
 				1A60AFF32567CDFB00E53F53 /* Settings */,
 				1A4AD3D4256FE7DA00468BFB /* Extensions */,
 				1A205D7A25655CEC003AA3CD /* AppDelegate.swift */,
@@ -2166,6 +2168,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = TestingApp/TestingApp.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = XR3G5NDPNH;
@@ -2191,6 +2194,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = TestingApp/TestingApp.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = XR3G5NDPNH;
