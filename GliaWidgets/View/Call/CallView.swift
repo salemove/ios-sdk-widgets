@@ -203,7 +203,7 @@ class CallView: EngagementView {
     private func adjustRemoteVideoView() {
         let multiplier = currentOrientation.isLandscape
             ? kRemoteVideoViewLandscapeHeightMultiplier
-            : kRemoteVideoViewLandscapeHeightMultiplier
+            : kRemoteVideoViewPortraitHeightMultiplier
         remoteVideoViewHeightConstraint.constant = frame.size.height * multiplier
     }
 
