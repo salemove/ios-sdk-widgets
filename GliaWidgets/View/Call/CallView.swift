@@ -85,6 +85,7 @@ class CallView: EngagementView {
         } else {
             showBars(duration: duration)
         }
+        buttonBar.adjustStackConstraints()
     }
 
     private func setup() {

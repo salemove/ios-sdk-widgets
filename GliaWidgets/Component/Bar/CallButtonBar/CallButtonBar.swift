@@ -1,6 +1,6 @@
 import UIKit
 
-class CallButtonBar: UIView {
+class CallButtonBar: View {
     enum Effect {
         case none
         case blur
@@ -26,22 +26,36 @@ class CallButtonBar: UIView {
     private var buttons = [CallButton]()
     private var effectView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
     private var bottomSpaceConstraint: NSLayoutConstraint!
+    private var leftConstraint: NSLayoutConstraint!
+    private var rightConstraint: NSLayoutConstraint!
+    private var verticalAlignConstrait: NSLayoutConstraint!
     private var kInsets = UIEdgeInsets(top: 7.0, left: 3.0, bottom: 7.0, right: 3.0)
 
     init(with style: CallButtonBarStyle) {
         self.style = style
-        super.init(frame: .zero)
+        super.init()
         setup()
         layout()
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        adjustStackConstraints()
     }
 
     override func layoutSubviews() {
         super.layoutSubviews()
         adjustBottomSpacing()
+    }
+
+    func adjustStackConstraints() {
+        if currentOrientation.isPortrait {
+            verticalAlignConstrait.autoRemove()
+            stackView.spacing = 2
+            leftConstraint.autoInstall()
+            rightConstraint.autoInstall()
+        } else {
+            leftConstraint.autoRemove()
+            rightConstraint.autoRemove()
+            stackView.spacing = 12
+            verticalAlignConstrait.autoInstall()
+        }
     }
 
     func setButton(_ kind: CallButton.Kind, enabled: Bool) {
@@ -61,7 +75,6 @@ class CallButtonBar: UIView {
 
         stackView.axis = .horizontal
         stackView.distribution = .fillEqually
-        stackView.spacing = 12
     }
 
     private func layout() {
@@ -70,7 +83,9 @@ class CallButtonBar: UIView {
 
         addSubview(stackView)
         stackView.autoPinEdge(toSuperviewEdge: .top, withInset: kInsets.top)
-        stackView.autoAlignAxis(toSuperviewAxis: .vertical)
+        leftConstraint = stackView.autoPinEdge(toSuperviewEdge: .left, withInset: kInsets.left)
+        rightConstraint = stackView.autoPinEdge(toSuperviewEdge: .right, withInset: kInsets.right)
+        verticalAlignConstrait = stackView.autoAlignAxis(toSuperviewAxis: .vertical)
         bottomSpaceConstraint = stackView.autoPinEdge(toSuperviewEdge: .bottom)
     }
 
