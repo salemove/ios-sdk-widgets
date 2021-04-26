@@ -61,6 +61,7 @@ class GliaWindow: UIWindow {
         layout()
     }
 
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -73,22 +74,25 @@ class GliaWindow: UIWindow {
         animationImageView.image = maximizeScreeshot
         animationImageView.isHidden = false
 
-        UIView.animate(withDuration: animated ? 0.4 : 0.0,
-                       delay: 0.0,
-                       usingSpringWithDamping: 0.8,
-                       initialSpringVelocity: 0.7,
-                       options: .curveEaseInOut,
-                       animations: {
-                        self.isHidden = false
-                        self.alpha = 1.0
-                        self.bubbleWindow?.alpha = 0.0
-                        self.animationImageView?.frame = CGRect(origin: .zero, size: self.bounds.size)
-                       }, completion: { _ in
-                        self.bubbleWindow = nil
-                        self.animationImageView?.removeFromSuperview()
-                        self.animationImageView = nil
-                        self.animationImageView?.isUserInteractionEnabled = false
-                       })
+        UIView.animate(
+            withDuration: animated ? 0.4 : 0.0,
+            delay: 0.0,
+            usingSpringWithDamping: 0.8,
+            initialSpringVelocity: 0.7,
+            options: .curveEaseInOut,
+            animations: {
+                self.isHidden = false
+                self.alpha = 1.0
+                self.bubbleWindow?.alpha = 0.0
+                self.animationImageView?.frame = CGRect(origin: .zero, size: self.bounds.size)
+            },
+            completion: { _ in
+                self.bubbleWindow = nil
+                self.animationImageView?.removeFromSuperview()
+                self.animationImageView = nil
+                self.animationImageView?.isUserInteractionEnabled = false
+            }
+        )
         setState(.maximized)
     }
 
@@ -109,19 +113,22 @@ class GliaWindow: UIWindow {
         self.animationImageView = animationImageView
         addSubview(animationImageView)
 
-        UIView.animate(withDuration: animated ? 0.4 : 0.0,
-                       delay: 0.0,
-                       usingSpringWithDamping: 0.8,
-                       initialSpringVelocity: 0.7,
-                       options: .curveEaseInOut,
-                       animations: {
-                        bubbleWindow.alpha = 1.0
-                        animationImageView.frame = bubbleWindow.frame
-                        self.alpha = 0.0
-                       }, completion: { _ in
-                        self.isHidden = true
-                        animationImageView.isHidden = true
-                       })
+        UIView.animate(
+            withDuration: animated ? 0.4 : 0.0,
+            delay: 0.0,
+            usingSpringWithDamping: 0.8,
+            initialSpringVelocity: 0.7,
+            options: .curveEaseInOut,
+            animations: {
+                bubbleWindow.alpha = 1.0
+                animationImageView.frame = bubbleWindow.frame
+                self.alpha = 0.0
+            },
+            completion: { _ in
+                self.isHidden = true
+                animationImageView.isHidden = true
+            }
+        )
         setState(.minimized)
     }
 
