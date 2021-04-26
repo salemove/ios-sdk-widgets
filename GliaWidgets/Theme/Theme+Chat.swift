@@ -18,7 +18,8 @@ extension Theme {
         let operatorImage = UserImageStyle(
             placeholderImage: Asset.operatorPlaceholder.image,
             placeholderColor: color.baseLight,
-            backgroundColor: color.primary
+            placeholderBackgroundColor: color.primary,
+            imageBackgroundColor: .clear
         )
         let queueOperator = ConnectOperatorStyle(
             operatorImage: operatorImage,
@@ -163,7 +164,8 @@ extension Theme {
         let userImage = UserImageStyle(
             placeholderImage: Asset.operatorPlaceholder.image,
             placeholderColor: color.baseLight,
-            backgroundColor: color.primary
+            placeholderBackgroundColor: color.primary,
+            imageBackgroundColor: .clear
         )
         let callBubble = BubbleStyle(
             userImage: userImage
