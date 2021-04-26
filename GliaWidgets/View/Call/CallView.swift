@@ -31,7 +31,7 @@ class CallView: EngagementView {
     private let kLocalVideoViewDefaultHeight: CGFloat = 186
     private let kRemoteVideoViewPortraitHeightMultiplier: CGFloat = 0.3
     private let kRemoteVideoViewLandscapeHeightMultiplier: CGFloat = 1.0
-    private let kBarsHideDelay: TimeInterval = 3.0
+    private let kBarsHideDelay: TimeInterval = 3.2
 
     init(with style: CallStyle) {
         self.style = style
@@ -79,7 +79,9 @@ class CallView: EngagementView {
 
     func willRotate(to orientation: UIInterfaceOrientation, duration: TimeInterval) {
         if orientation.isLandscape {
-            hideBars(duration: duration)
+            if mode == .video {
+                hideBars(duration: duration)
+            }
         } else {
             showBars(duration: duration)
         }
@@ -246,6 +248,7 @@ class CallView: EngagementView {
     }
 
     private func hideLandscapeBarsAfterDelay() {
+        guard mode == .video else { return }
         hideBarsWorkItem?.cancel()
         let hideBarsWorkItem = DispatchWorkItem { self.hideLandscapeBars() }
         self.hideBarsWorkItem = hideBarsWorkItem
