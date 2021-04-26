@@ -14,11 +14,17 @@ class ImageView: UIImageView {
         )
     }
 
-    func setImage(from url: String?, animated: Bool, finished: ((UIImage?) -> Void)? = nil) {
+    func setImage(
+        from url: String?,
+        animated: Bool,
+        imageReceived: ((UIImage?) -> Void)? = nil,
+        finished: ((UIImage?) -> Void)? = nil
+    ) {
         guard
             let urlString = url,
             let url = URL(string: urlString)
         else {
+            imageReceived?(nil)
             setImage(nil, animated: animated) { _ in
                 finished?(nil)
             }
@@ -26,6 +32,7 @@ class ImageView: UIImageView {
         }
 
         if let image = ImageView.cache[urlString] {
+            imageReceived?(image)
             setImage(image, animated: animated) { _ in
                 finished?(image)
             }
@@ -41,6 +48,7 @@ class ImageView: UIImageView {
                 let image = UIImage(data: data)
             else {
                 DispatchQueue.main.async {
+                    imageReceived?(nil)
                     self?.setImage(nil, animated: animated) { _ in
                         finished?(nil)
                     }
@@ -52,6 +60,7 @@ class ImageView: UIImageView {
                 ImageView.cache[urlString] = image
 
                 guard self?.downloadID == downloadID else { return }
+                imageReceived?(image)
                 self?.setImage(image, animated: animated) { _ in
                     finished?(image)
                 }
