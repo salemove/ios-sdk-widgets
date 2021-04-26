@@ -24,9 +24,9 @@ class CallButtonBar: UIView {
     private let style: CallButtonBarStyle
     private let stackView = UIStackView()
     private var buttons = [CallButton]()
-    private var effectView = UIVisualEffectView(effect: UIBlurEffect(style: .prominent))
+    private var effectView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
     private var bottomSpaceConstraint: NSLayoutConstraint!
-    private var kInsets = UIEdgeInsets(top: 3.0, left: 3.0, bottom: 3.0, right: 3.0)
+    private var kInsets = UIEdgeInsets(top: 7.0, left: 3.0, bottom: 7.0, right: 3.0)
 
     init(with style: CallButtonBarStyle) {
         self.style = style
@@ -61,7 +61,7 @@ class CallButtonBar: UIView {
 
         stackView.axis = .horizontal
         stackView.distribution = .fillEqually
-        stackView.spacing = 2
+        stackView.spacing = 12
     }
 
     private func layout() {
@@ -69,7 +69,8 @@ class CallButtonBar: UIView {
         effectView.autoPinEdgesToSuperviewEdges()
 
         addSubview(stackView)
-        stackView.autoPinEdgesToSuperviewEdges(with: kInsets, excludingEdge: .bottom)
+        stackView.autoPinEdge(toSuperviewEdge: .top, withInset: kInsets.top)
+        stackView.autoAlignAxis(toSuperviewAxis: .vertical)
         bottomSpaceConstraint = stackView.autoPinEdge(toSuperviewEdge: .bottom)
     }
 
