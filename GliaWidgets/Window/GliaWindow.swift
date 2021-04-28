@@ -5,7 +5,7 @@ public enum GliaWindowEvent {
     case maximized
 }
 
-public protocol GliaWindowDelegate: class {
+public protocol GliaWindowDelegate: AnyObject {
     func event(_ event: GliaWindowEvent)
 }
 

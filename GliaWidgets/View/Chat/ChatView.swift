@@ -3,6 +3,7 @@ import UIKit
 class ChatView: EngagementView {
     let tableView = UITableView()
     let messageEntryView: ChatMessageEntryView
+    let newMessageIndicatorView: NewMessageIndicatorView
     var numberOfSections: (() -> Int?)?
     var numberOfRows: ((Int) -> Int?)?
     var itemForRow: ((Int, Int) -> ChatItem?)?
@@ -16,6 +17,7 @@ class ChatView: EngagementView {
     private var callBubble: BubbleView?
     private let keyboardObserver = KeyboardObserver()
 
+    private let kNewMessageIndicatorInset: CGFloat = -16
     private let kCallBubbleEdgeInset: CGFloat = 10
     private let kCallBubbleSize = CGSize(width: 60, height: 60)
     private var callBubbleBounds: CGRect {
@@ -29,6 +31,7 @@ class ChatView: EngagementView {
     init(with style: ChatStyle) {
         self.style = style
         self.messageEntryView = ChatMessageEntryView(with: style.messageEntry)
+        self.newMessageIndicatorView = NewMessageIndicatorView(with: style.newMessageIndicator)
         super.init(with: style)
         setup()
         layout()
@@ -140,6 +143,15 @@ class ChatView: EngagementView {
         messageEntryView.autoPinEdge(toSuperviewSafeArea: .left)
         messageEntryView.autoPinEdge(toSuperviewSafeArea: .right)
         messageEntryView.autoPinEdge(.top, to: .bottom, of: tableView, withOffset: 10)
+
+        addSubview(newMessageIndicatorView)
+        newMessageIndicatorView.autoAlignAxis(toSuperviewAxis: .vertical)
+        newMessageIndicatorView.autoPinEdge(
+            .bottom,
+            to: .top,
+            of: messageEntryView,
+            withOffset: kNewMessageIndicatorInset
+        )
     }
 
     private func content(for item: ChatItem) -> ChatItemCell.Content {

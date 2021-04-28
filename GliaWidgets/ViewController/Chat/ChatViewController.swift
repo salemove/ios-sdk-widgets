@@ -67,6 +67,7 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter,
                 view.setConnectState(.queue, animated: false)
             case .connected(let name, let imageUrl):
                 view.setConnectState(.connected(name: name, imageUrl: imageUrl), animated: true)
+                view.newMessageIndicatorView.setImage(fromUrl: imageUrl, animated: true)
             case .showEndButton:
                 let rightItem = ActionButton(with: self.viewFactory.theme.chat.endButton)
                 rightItem.tap = { viewModel.event(.closeTapped) }
