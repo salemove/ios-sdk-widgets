@@ -71,8 +71,8 @@ let package = Package(
         ),
         .binaryTarget(
             name: "GliaWidgets",
-            url: "https://github.com/salemove/ios-sdk-widgets/releases/download/0.2.0/GliaWidgets.xcframework.zip",
-            checksum: "0916154440e7ac5f2d80a494ccc1d4cd06c90db53a05e9aa18b0ec1ee12dc058"
+            url: "https://github.com/salemove/ios-sdk-widgets/releases/download/0.3.0/GliaWidgets.xcframework.zip",
+            checksum: "1244e18e5011790ec69f6abf50bf8bb9c8395b3fa9bff78c7b1a1847fd9af8f1"
         ),
         .binaryTarget(
             name: "PureLayout",
