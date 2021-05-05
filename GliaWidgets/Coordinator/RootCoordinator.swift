@@ -34,7 +34,6 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
     private let chatCall = ObservableValue<Call?>(with: nil)
     private let unreadMessages = ObservableValue<Int>(with: 0)
     private let isWindowVisible = ObservableValue<Bool>(with: false)
-    private let isChatScrolledDown = ObservableValue<Bool>(with: true)
     private let navigationController = NavigationController()
     private let navigationPresenter: NavigationPresenter
     private var window: GliaWindow?
@@ -125,7 +124,6 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
             unreadMessages: unreadMessages,
             showsCallBubble: showsCallBubble,
             isWindowVisible: isWindowVisible,
-            isChatScrolledDown: isChatScrolledDown,
             startAction: startAction
         )
         coordinator.delegate = { [weak self] event in

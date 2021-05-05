@@ -76,6 +76,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     private var messagesSection: Section<ChatItem> { return sections[2] }
     private let call: ObservableValue<Call?>
     private var unreadMessages: UnreadMessagesHandler!
+    private let isChatScrolledToBottom = ObservableValue<Bool>(with: true)
     private let showsCallBubble: Bool
     private let storage = ChatStorage()
     private let uploader = FileUploader(maximumUploads: 25)
@@ -95,7 +96,6 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         unreadMessages: ObservableValue<Int>,
         showsCallBubble: Bool,
         isWindowVisible: ObservableValue<Bool>,
-        isChatScrolledDown: ObservableValue<Bool>,
         startAction: StartAction
     ) {
         self.call = call
@@ -109,7 +109,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             unreadMessages: unreadMessages,
             isWindowVisible: isWindowVisible,
             isViewVisible: isViewActive,
-            isChatScrolledDown: isChatScrolledDown
+            isChatScrolledToBottom: isChatScrolledToBottom
         )
         self.call.addObserver(self) { call, _ in
             self.onCall(call)
@@ -143,7 +143,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case .choiceOptionSelected(let option, let messageId):
             sendChoiceCardResponse(option, to: messageId)
         case .chatScrolled(let bottomReached):
-            unreadMessages.isChatScrolledDown.value = bottomReached
+            isChatScrolledToBottom.value = bottomReached
         }
     }
 
@@ -411,7 +411,7 @@ extension ChatViewModel {
                 action?(.updateItemsUserImage(animated: true))
 
                 action?(.setChoiceCardInputModeEnabled(message.isChoiceCard))
-                if unreadMessages.isChatScrolledDown.value {
+                if isChatScrolledToBottom.value {
                     action?(.scrollToBottom(animated: true))
                 }
             }

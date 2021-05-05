@@ -21,7 +21,6 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
     private let showsCallBubble: Bool
     private let unreadMessages: ObservableValue<Int>
     private let isWindowVisible: ObservableValue<Bool>
-    private let isChatScrolledDown: ObservableValue<Bool>
     private let startAction: ChatViewModel.StartAction
     private var mediaPickerController: MediaPickerController?
     private var filePickerController: FilePickerController?
@@ -35,7 +34,6 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
         unreadMessages: ObservableValue<Int>,
         showsCallBubble: Bool,
         isWindowVisible: ObservableValue<Bool>,
-        isChatScrolledDown: ObservableValue<Bool>,
         startAction: ChatViewModel.StartAction
     ) {
         self.interactor = interactor
@@ -45,7 +43,6 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
         self.unreadMessages = unreadMessages
         self.showsCallBubble = showsCallBubble
         self.isWindowVisible = isWindowVisible
-        self.isChatScrolledDown = isChatScrolledDown
         self.startAction = startAction
     }
 
@@ -62,7 +59,6 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
             unreadMessages: unreadMessages,
             showsCallBubble: showsCallBubble,
             isWindowVisible: isWindowVisible,
-            isChatScrolledDown: isChatScrolledDown,
             startAction: startAction
         )
         viewModel.engagementDelegate = { [weak self] event in

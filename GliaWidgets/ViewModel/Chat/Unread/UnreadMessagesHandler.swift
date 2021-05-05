@@ -2,18 +2,18 @@ class UnreadMessagesHandler {
     private let unreadMessages: ObservableValue<Int>
     private let isWindowVisible: ObservableValue<Bool>
     private let isViewVisible: ObservableValue<Bool>
-    let isChatScrolledDown: ObservableValue<Bool>
+    private let isChatScrolledDown: ObservableValue<Bool>
 
     init(
         unreadMessages: ObservableValue<Int>,
         isWindowVisible: ObservableValue<Bool>,
         isViewVisible: ObservableValue<Bool>,
-        isChatScrolledDown: ObservableValue<Bool>
+        isChatScrolledToBottom: ObservableValue<Bool>
     ) {
         self.unreadMessages = unreadMessages
         self.isWindowVisible = isWindowVisible
         self.isViewVisible = isViewVisible
-        self.isChatScrolledDown = isChatScrolledDown
+        self.isChatScrolledDown = isChatScrolledToBottom
         isWindowVisible.addObserver(self) { _, _ in
             self.checkVisible()
         }
@@ -40,13 +40,10 @@ class UnreadMessagesHandler {
     }
 
     private func checkVisible() {
-        print("Checking for visibility:")
-        print("windowVisible = \(isWindowVisible.value)")
-        print("viewVisible = \(isViewVisible.value)")
-        print("chatScrolledDown = \(isChatScrolledDown.value)")
-        if isWindowVisible.value, isViewVisible.value, isChatScrolledDown.value {
+        if isWindowVisible.value,
+           isViewVisible.value,
+           isChatScrolledDown.value {
             unreadMessages.value = 0
         }
-        print("Current unread messages: \(unreadMessages.value)")
     }
 }
