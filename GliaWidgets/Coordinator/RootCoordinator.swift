@@ -1,5 +1,5 @@
-import UIKit
 import SalemoveSDK
+import UIKit
 
 class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
     enum DelegateEvent {
@@ -34,15 +34,18 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
     private let chatCall = ObservableValue<Call?>(with: nil)
     private let unreadMessages = ObservableValue<Int>(with: 0)
     private let isWindowVisible = ObservableValue<Bool>(with: false)
+    private let isChatScrolledDown = ObservableValue<Bool>(with: true)
     private let navigationController = NavigationController()
     private let navigationPresenter: NavigationPresenter
     private var window: GliaWindow?
     private let kBubbleViewSize: CGFloat = 60.0
 
-    init(interactor: Interactor,
-         viewFactory: ViewFactory,
-         sceneProvider: SceneProvider?,
-         engagementKind: EngagementKind) {
+    init(
+        interactor: Interactor,
+        viewFactory: ViewFactory,
+        sceneProvider: SceneProvider?,
+        engagementKind: EngagementKind
+    ) {
         self.interactor = interactor
         self.viewFactory = viewFactory
         self.sceneProvider = sceneProvider
@@ -57,27 +60,37 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
         case .none:
             break
         case .chat:
-            let chatViewController = startChat(withAction: .startEngagement,
-                                               showsCallBubble: false)
+            let chatViewController = startChat(
+                withAction: .startEngagement,
+                showsCallBubble: false
+            )
             engagement = .chat(chatViewController)
-            navigationPresenter.setViewControllers([chatViewController],
-                                                   animated: false)
+            navigationPresenter.setViewControllers(
+                [chatViewController],
+                animated: false
+            )
         case .audioCall, .videoCall:
             let kind: CallKind = engagementKind == .audioCall
                 ? .audio
                 : .video
             let call = Call(kind)
-            call.kind.addObserver(self) { kind, _ in
+            call.kind.addObserver(self) { _, _ in
                 self.engagementKind = EngagementKind(with: call.kind.value)
             }
-            let chatViewController = startChat(withAction: .none,
-                                               showsCallBubble: true)
+            let chatViewController = startChat(
+                withAction: .none,
+                showsCallBubble: true
+            )
             let callViewController = startCall(call, withAction: .engagement)
-            engagement = .call(callViewController,
-                               chatViewController,
-                               .none)
-            navigationPresenter.setViewControllers([callViewController],
-                                                   animated: false)
+            engagement = .call(
+                callViewController,
+                chatViewController,
+                .none
+            )
+            navigationPresenter.setViewControllers(
+                [callViewController],
+                animated: false
+            )
         }
 
         let bubbleView = viewFactory.makeBubbleView()
@@ -100,7 +113,10 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
         }
     }
 
-    private func startChat(withAction startAction: ChatViewModel.StartAction, showsCallBubble: Bool) -> ChatViewController {
+    private func startChat(
+        withAction startAction: ChatViewModel.StartAction,
+        showsCallBubble: Bool
+    ) -> ChatViewController {
         let coordinator = ChatCoordinator(
             interactor: interactor,
             viewFactory: viewFactory,
@@ -109,6 +125,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
             unreadMessages: unreadMessages,
             showsCallBubble: showsCallBubble,
             isWindowVisible: isWindowVisible,
+            isChatScrolledDown: isChatScrolledDown,
             startAction: startAction
         )
         coordinator.delegate = { [weak self] event in
@@ -126,9 +143,9 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
                 default:
                     break
                 }
-            case .engaged(operatorImageUrl: let url):
-                self?.window?.bubbleKind = .userImage(url: url)
-            case .mediaUpgradeAccepted(offer: let offer, answer: let answer):
+            case .engaged(let operatorImageUrl):
+                self?.window?.bubbleKind = .userImage(url: operatorImageUrl)
+            case .mediaUpgradeAccepted(let offer, let answer):
                 self?.mediaUpgradeAccepted(offer: offer, answer: answer)
             case .call:
                 switch self?.engagement {
@@ -152,8 +169,10 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
         return coordinator.start()
     }
 
-    private func startCall(_ call: Call,
-                           withAction startAction: CallViewModel.StartAction) -> CallViewController {
+    private func startCall(
+        _ call: Call,
+        withAction startAction: CallViewModel.StartAction
+    ) -> CallViewController {
         let coordinator = CallCoordinator(
             interactor: interactor,
             viewFactory: viewFactory,
@@ -175,8 +194,8 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
                 default:
                     break
                 }
-            case .engaged(operatorImageUrl: let url):
-                self?.window?.bubbleKind = .userImage(url: url)
+            case .engaged(let operatorImageUrl):
+                self?.window?.bubbleKind = .userImage(url: operatorImageUrl)
             case .chat:
                 switch self?.engagement {
                 case .call(_, let chatViewController, let upgradedFrom):
@@ -212,26 +231,28 @@ extension RootCoordinator {
         self.window = window
         isWindowVisible.value = true
 
-        UIView.animate(withDuration: animated ? 0.4 : 0.0,
-                       delay: 0.0,
-                       usingSpringWithDamping: 0.8,
-                       initialSpringVelocity: 0.5,
-                       options: .curveEaseInOut,
-                       animations: {
-                        window.transform = .identity
-                       }, completion: nil)
+        UIView.animate(
+            withDuration: animated ? 0.4 : 0.0,
+            delay: 0.0,
+            usingSpringWithDamping: 0.8,
+            initialSpringVelocity: 0.5,
+            options: .curveEaseInOut,
+            animations: {
+                window.transform = .identity
+            }
+        )
     }
 
     private func dismissWindow(animated: Bool, completion: @escaping () -> Void) {
         guard let window = window else { return }
         isWindowVisible.value = false
-        UIView.animate(withDuration: animated ? 0.5 : 0.0,
-                       delay: 0.0,
-                       options: .curveEaseInOut) {
-            window.alpha = 0.0
-        } completion: { _ in
-            completion()
-        }
+        UIView.animate(
+            withDuration: animated ? 0.5 : 0.0,
+            delay: 0.0,
+            options: .curveEaseInOut,
+            animations: { window.alpha = 0.0 },
+            completion: { _ in completion() }
+        )
     }
 
     private func makeWindow(bubbleView: BubbleView) -> GliaWindow {
@@ -271,18 +292,23 @@ extension RootCoordinator {
 }
 
 extension RootCoordinator {
-    private func mediaUpgradeAccepted(offer: MediaUpgradeOffer, answer: @escaping AnswerWithSuccessBlock) {
+    private func mediaUpgradeAccepted(
+        offer: MediaUpgradeOffer,
+        answer: @escaping AnswerWithSuccessBlock
+    ) {
         switch engagement {
         case .chat(let chatViewController):
             guard let kind = CallKind(with: offer) else { return }
             let call = Call(kind)
-            call.kind.addObserver(self) { kind, _ in
+            call.kind.addObserver(self) { _, _ in
                 self.engagementKind = EngagementKind(with: call.kind.value)
             }
             let callViewController = startCall(call, withAction: .call(offer: offer, answer: answer))
-            engagement = .call(callViewController,
-                               chatViewController,
-                               .chat)
+            engagement = .call(
+                callViewController,
+                chatViewController,
+                .chat
+            )
             chatCall.value = call
             navigationPresenter.push(callViewController)
         default:

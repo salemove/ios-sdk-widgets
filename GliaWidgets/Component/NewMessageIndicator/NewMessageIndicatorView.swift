@@ -3,9 +3,16 @@ import UIKit
 final class NewMessageIndicatorView: View {
     var newItemCount: Int = 0 {
         didSet {
-            badgeView.newItemCount = newItemCount
+            if newItemCount <= 0 {
+                isHidden = true
+            } else {
+                isHidden = false
+                badgeView.newItemCount = newItemCount
+            }
         }
     }
+
+    var tap: (() -> Void)?
 
     private let style: NewMessageIndicatorStyle
 
@@ -35,7 +42,15 @@ final class NewMessageIndicatorView: View {
     }
 
     private func setup() {
+        isHidden = true
+
         backgroundView.image = Asset.newMessageIndicator.image
+
+        let tapRecognizer = UITapGestureRecognizer(
+            target: self,
+            action: #selector(tapped)
+        )
+        addGestureRecognizer(tapRecognizer)
     }
 
     private func layout() {
@@ -52,5 +67,9 @@ final class NewMessageIndicatorView: View {
         addSubview(badgeView)
         badgeView.autoPinEdge(toSuperviewEdge: .top, withInset: kBadgeInsets.top)
         badgeView.autoPinEdge(toSuperviewEdge: .right, withInset: kBadgeInsets.right)
+    }
+
+    @objc private func tapped() {
+        tap?()
     }
 }
