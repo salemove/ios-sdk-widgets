@@ -13,6 +13,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case fileTapped(LocalFile)
         case downloadTapped(FileDownload)
         case choiceOptionSelected(ChatChoiceCardOption, String)
+        case chatScrolled(Bool)
     }
 
     enum Action {
@@ -35,18 +36,23 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case removeUpload(FileUpload)
         case removeAllUploads
         case presentMediaPicker(itemSelected: (ListItemKind) -> Void)
-        case offerMediaUpgrade(SingleMediaUpgradeAlertConfiguration,
-                               accepted: () -> Void,
-                               declined: () -> Void)
+        case offerMediaUpgrade(
+            SingleMediaUpgradeAlertConfiguration,
+            accepted: () -> Void,
+            declined: () -> Void
+        )
         case showCallBubble(imageUrl: String?)
+        case updateNewMessageIndicator(itemCount: Int)
     }
 
     enum DelegateEvent {
         case pickMedia(ObservableValue<MediaPickerEvent>)
         case takeMedia(ObservableValue<MediaPickerEvent>)
         case pickFile(ObservableValue<FilePickerEvent>)
-        case mediaUpgradeAccepted(offer: MediaUpgradeOffer,
-                                  answer: AnswerWithSuccessBlock)
+        case mediaUpgradeAccepted(
+            offer: MediaUpgradeOffer,
+            answer: AnswerWithSuccessBlock
+        )
         case showFile(LocalFile)
         case call
     }
@@ -70,6 +76,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     private var messagesSection: Section<ChatItem> { return sections[2] }
     private let call: ObservableValue<Call?>
     private var unreadMessages: UnreadMessagesHandler!
+    private let isChatScrolledToBottom = ObservableValue<Bool>(with: true)
     private let showsCallBubble: Bool
     private let storage = ChatStorage()
     private let uploader = FileUploader(maximumUploads: 25)
@@ -95,10 +102,14 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         self.showsCallBubble = showsCallBubble
         self.startAction = startAction
         super.init(interactor: interactor, alertConfiguration: alertConfiguration)
+        unreadMessages.addObserver(self) { unreadCount, _ in
+            self.action?(.updateNewMessageIndicator(itemCount: unreadCount))
+        }
         self.unreadMessages = UnreadMessagesHandler(
             unreadMessages: unreadMessages,
             isWindowVisible: isWindowVisible,
-            isViewVisible: isViewActive
+            isViewVisible: isViewActive,
+            isChatScrolledToBottom: isChatScrolledToBottom
         )
         self.call.addObserver(self) { call, _ in
             self.onCall(call)
@@ -106,7 +117,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         uploader.state.addObserver(self) { state, _ in
             self.onUploaderStateChanged(state)
         }
-        self.uploader.limitReached.addObserver(self) { limitReached, _ in
+        uploader.limitReached.addObserver(self) { limitReached, _ in
             self.action?(.pickMediaButtonEnabled(!limitReached))
         }
     }
@@ -131,6 +142,8 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             downloadTapped(download)
         case .choiceOptionSelected(let option, let messageId):
             sendChoiceCardResponse(option, to: messageId)
+        case .chatScrolled(let bottomReached):
+            isChatScrolledToBottom.value = bottomReached
         }
     }
 
@@ -145,9 +158,11 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         super.start()
 
         let item = ChatItem(kind: .queueOperator)
-        appendItem(item,
-                   to: queueOperatorSection,
-                   animated: false)
+        appendItem(
+            item,
+            to: queueOperatorSection,
+            animated: false
+        )
         action?(.setMessageEntryEnabled(false))
         action?(.sendButtonHidden(true))
 
@@ -258,19 +273,26 @@ extension ChatViewModel {
 // MARK: Media Upgrade
 
 extension ChatViewModel {
-    private func offerMediaUpgrade(_ offer: MediaUpgradeOffer, answer: @escaping AnswerWithSuccessBlock) {
+    private func offerMediaUpgrade(
+        _ offer: MediaUpgradeOffer,
+        answer: @escaping AnswerWithSuccessBlock
+    ) {
         switch offer.type {
         case .audio:
-            offerMediaUpgrade(with: alertConfiguration.audioUpgrade,
-                              offer: offer,
-                              answer: answer)
+            offerMediaUpgrade(
+                with: alertConfiguration.audioUpgrade,
+                offer: offer,
+                answer: answer
+            )
         case .video:
             let configuration = offer.direction == .oneWay
                 ? alertConfiguration.oneWayVideoUpgrade
                 : alertConfiguration.twoWayVideoUpgrade
-            offerMediaUpgrade(with: configuration,
-                              offer: offer,
-                              answer: answer)
+            offerMediaUpgrade(
+                with: configuration,
+                offer: offer,
+                answer: answer
+            )
         default:
             break
         }
@@ -287,9 +309,11 @@ extension ChatViewModel {
             self.delegate?(.mediaUpgradeAccepted(offer: offer, answer: answer))
             self.showCallBubble()
         }
-        action?(.offerMediaUpgrade(configuration.withOperatorName(operatorName),
-                                   accepted: { onAccepted() },
-                                   declined: { answer(false, nil) }))
+        action?(.offerMediaUpgrade(
+            configuration.withOperatorName(operatorName),
+            accepted: { onAccepted() },
+            declined: { answer(false, nil) }
+        ))
     }
 }
 
@@ -318,10 +342,12 @@ extension ChatViewModel {
 
         interactor.send(messageText, attachment: attachment) { message in
             self.messageText = ""
-            self.replace(outgoingMessage,
-                         uploads: uploads,
-                         with: message,
-                         in: self.messagesSection)
+            self.replace(
+                outgoingMessage,
+                uploads: uploads,
+                with: message,
+                in: self.messagesSection
+            )
             self.action?(.scrollToBottom(animated: true))
         } failure: { _ in
             self.messageText = ""
@@ -367,21 +393,27 @@ extension ChatViewModel {
     private func receivedMessage(_ message: Message) {
         guard storage.isNewMessage(message) else { return }
 
-        storage.storeMessage(message,
-                             queueID: interactor.queueID,
-                             operator: interactor.engagedOperator)
+        storage.storeMessage(
+            message,
+            queueID: interactor.queueID,
+            operator: interactor.engagedOperator
+        )
         unreadMessages.received(1)
 
         switch message.sender {
         case .operator:
-            let message = ChatMessage(with: message,
-                                      operator: interactor.engagedOperator)
+            let message = ChatMessage(
+                with: message,
+                operator: interactor.engagedOperator
+            )
             if let item = ChatItem(with: message) {
                 appendItem(item, to: messagesSection, animated: true)
-                action?(.scrollToBottom(animated: true))
                 action?(.updateItemsUserImage(animated: true))
 
                 action?(.setChoiceCardInputModeEnabled(message.isChoiceCard))
+                if isChatScrolledToBottom.value {
+                    action?(.scrollToBottom(animated: true))
+                }
             }
         default:
             break
@@ -393,9 +425,11 @@ extension ChatViewModel {
         unreadMessages.received(newMessages.count)
 
         if !newMessages.isEmpty {
-            storage.storeMessages(newMessages,
-                                  queueID: interactor.queueID,
-                                  operator: interactor.engagedOperator)
+            storage.storeMessages(
+                newMessages,
+                queueID: interactor.queueID,
+                operator: interactor.engagedOperator
+            )
             let newMessages = newMessages.map { ChatMessage(with: $0) }
             let items = newMessages.compactMap { ChatItem(with: $0) }
             setItems(items, to: messagesSection)
@@ -417,7 +451,10 @@ extension ChatViewModel {
                 case .pickedMedia(let media):
                     self.mediaPicked(media)
                 case .sourceNotAvailable:
-                    self.showAlert(with: self.alertConfiguration.mediaSourceNotAvailable, dismissed: nil)
+                    self.showAlert(
+                        with: self.alertConfiguration.mediaSourceNotAvailable,
+                        dismissed: nil
+                    )
                 case .noCameraPermission:
                     self.showSettingsAlert(with: self.alertConfiguration.cameraSettings)
                 }
@@ -512,7 +549,10 @@ extension ChatViewModel {
 
         switch item.kind {
         case .operatorMessage(let message, _, _):
-            message.downloads = downloader.downloads(for: message.attachment?.files, autoDownload: .images)
+            message.downloads = downloader.downloads(
+                for: message.attachment?.files,
+                autoDownload: .images
+            )
             if shouldShowOperatorImage(for: row, in: section) {
                 let imageUrl = message.operator?.pictureUrl
                 let kind: ChatItem.Kind = .operatorMessage(
@@ -524,7 +564,10 @@ extension ChatViewModel {
             }
             return item
         case .visitorMessage(let message, _):
-            message.downloads = downloader.downloads(for: message.attachment?.files, autoDownload: .images)
+            message.downloads = downloader.downloads(
+                for: message.attachment?.files,
+                autoDownload: .images
+            )
             return item
         case .choiceCard(let message, _, _, let isActive):
             if shouldShowOperatorImage(for: row, in: section) {
@@ -543,7 +586,10 @@ extension ChatViewModel {
         }
     }
 
-    private func shouldShowOperatorImage(for row: Int, in section: Section<ChatItem>) -> Bool {
+    private func shouldShowOperatorImage(
+        for row: Int,
+        in section: Section<ChatItem>
+    ) -> Bool {
         guard section[row].isOperatorMessage else { return false }
         let nextItem = section.item(after: row)
         return nextItem == nil || nextItem?.isOperatorMessage == false
@@ -558,8 +604,7 @@ extension ChatViewModel {
 
         let callKind = ObservableValue<CallKind>(with: call.kind.value)
         let callDuration = ObservableValue<Int>(with: 0)
-        let item = ChatItem(kind: .callUpgrade(callKind,
-                                               duration: callDuration))
+        let item = ChatItem(kind: .callUpgrade(callKind, duration: callDuration))
         appendItem(item, to: messagesSection, animated: true)
         action?(.scrollToBottom(animated: true))
 
@@ -583,7 +628,10 @@ extension ChatViewModel {
     private func sendChoiceCardResponse(_ option: ChatChoiceCardOption, to messageId: String) {
         guard let value = option.value else { return }
         print("Sending option \(value) to message with id \(messageId)...")
-        Salemove.sharedInstance.send(selectedOptionValue: value, messageId: messageId) { [weak self] message, error in
+        Salemove.sharedInstance.send(
+            selectedOptionValue: value,
+            messageId: messageId
+        ) { [weak self] message, error in
             guard let self = self else { return }
 
             if error != nil {
@@ -606,7 +654,8 @@ extension ChatViewModel {
         guard let index = messagesSection.items
             .enumerated()
             .first(where: {
-                guard case .choiceCard(let message, _, _, _) = $0.element.kind else { return false }
+                guard case .choiceCard(let message, _, _, _) = $0.element.kind
+                else { return false }
                 return message.id == choiceCardId
             })?.offset
         else { return }
@@ -622,7 +671,12 @@ extension ChatViewModel {
 
         message.attachment?.selectedOption = selection
         message.queueID = interactor.queueID
-        let item = ChatItem(kind: .choiceCard(message, showsImage: showsImage, imageUrl: imageUrl, isActive: false))
+        let item = ChatItem(kind: .choiceCard(
+            message,
+            showsImage: showsImage,
+            imageUrl: imageUrl,
+            isActive: false
+        ))
 
         messagesSection.replaceItem(at: index, with: item)
         storage.updateMessage(message)
