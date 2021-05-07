@@ -132,7 +132,7 @@ public enum L10n {
     /// (By default your video will be off)
     public static let topText = L10n.tr("Localizable", "call.topText")
     public enum Audio {
-      /// AUDIO CALL
+      /// Audio
       public static let title = L10n.tr("Localizable", "call.audio.title")
     }
     public enum Buttons {
@@ -192,7 +192,7 @@ public enum L10n {
       public static let name = L10n.tr("Localizable", "call.operator.name")
     }
     public enum Video {
-      /// VIDEO CALL
+      /// Video
       public static let title = L10n.tr("Localizable", "call.video.title")
     }
   }

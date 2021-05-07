@@ -16,7 +16,7 @@ public enum GliaEvent {
     case maximized
 }
 
-public protocol SceneProvider: class {
+public protocol SceneProvider: AnyObject {
     @available(iOS 13.0, *)
     func windowScene() -> UIWindowScene?
 }

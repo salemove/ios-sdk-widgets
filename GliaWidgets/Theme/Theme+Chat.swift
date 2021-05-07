@@ -170,6 +170,15 @@ extension Theme {
         let callBubble = BubbleStyle(
             userImage: userImage
         )
+        let newMessageIndicator = NewMessageIndicatorStyle(
+            badgeFont: font.caption,
+            badgeTextColor: color.baseLight,
+            badgeColor: color.primary,
+            placeholderImage: Asset.operatorPlaceholder.image,
+            placeholderColor: color.baseLight,
+            placeholderBackgroundColor: color.primary,
+            imageBackgroundColor: .clear
+        )
         return ChatStyle(
             header: header,
             connect: connect,
@@ -187,7 +196,8 @@ extension Theme {
             audioUpgrade: audioUpgrade,
             videoUpgrade: videoUpgrade,
             callBubble: callBubble,
-            pickMedia: pickMedia
+            pickMedia: pickMedia,
+            newMessageIndicator: newMessageIndicator
         )
     }
 

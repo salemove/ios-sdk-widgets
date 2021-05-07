@@ -4,8 +4,10 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
     enum DelegateEvent {
         case back
         case engaged(operatorImageUrl: String?)
-        case mediaUpgradeAccepted(offer: MediaUpgradeOffer,
-                                  answer: AnswerWithSuccessBlock)
+        case mediaUpgradeAccepted(
+            offer: MediaUpgradeOffer,
+            answer: AnswerWithSuccessBlock
+        )
         case call
         case finished
     }
@@ -24,14 +26,16 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
     private var filePickerController: FilePickerController?
     private var quickLookController: QuickLookController?
 
-    init(interactor: Interactor,
-         viewFactory: ViewFactory,
-         navigationPresenter: NavigationPresenter,
-         call: ObservableValue<Call?>,
-         unreadMessages: ObservableValue<Int>,
-         showsCallBubble: Bool,
-         isWindowVisible: ObservableValue<Bool>,
-         startAction: ChatViewModel.StartAction) {
+    init(
+        interactor: Interactor,
+        viewFactory: ViewFactory,
+        navigationPresenter: NavigationPresenter,
+        call: ObservableValue<Call?>,
+        unreadMessages: ObservableValue<Int>,
+        showsCallBubble: Bool,
+        isWindowVisible: ObservableValue<Bool>,
+        startAction: ChatViewModel.StartAction
+    ) {
         self.interactor = interactor
         self.viewFactory = viewFactory
         self.navigationPresenter = navigationPresenter
@@ -61,7 +65,7 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
             switch event {
             case .back:
                 self?.delegate?(.back)
-            case .engaged(operatorImageUrl: let url):
+            case .engaged(let url):
                 self?.delegate?(.engaged(operatorImageUrl: url))
             case .finished:
                 self?.delegate?(.finished)
@@ -70,16 +74,20 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
         viewModel.delegate = { [weak self] event in
             switch event {
             case .pickMedia(let pickerEvent):
-                self?.presentMediaPickerController(with: pickerEvent,
-                                                   mediaSource: .library,
-                                                   mediaTypes: [.image, .movie])
+                self?.presentMediaPickerController(
+                    with: pickerEvent,
+                    mediaSource: .library,
+                    mediaTypes: [.image, .movie]
+                )
             case .takeMedia(let pickerEvent):
-                self?.presentMediaPickerController(with: pickerEvent,
-                                                   mediaSource: .camera,
-                                                   mediaTypes: [.image, .movie])
+                self?.presentMediaPickerController(
+                    with: pickerEvent,
+                    mediaSource: .camera,
+                    mediaTypes: [.image, .movie]
+                )
             case .pickFile(let pickerEvent):
                 self?.presentFilePickerController(with: pickerEvent)
-            case .mediaUpgradeAccepted(offer: let offer, answer: let answer):
+            case .mediaUpgradeAccepted(let offer, let answer):
                 self?.delegate?(.mediaUpgradeAccepted(offer: offer, answer: answer))
             case .showFile(let file):
                 self?.presentQuickLookController(with: file)
@@ -87,16 +95,19 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
                 self?.delegate?(.call)
             }
         }
-        return ChatViewController(viewModel: viewModel,
-                                  viewFactory: viewFactory)
+        return ChatViewController(viewModel: viewModel, viewFactory: viewFactory)
     }
 
-    private func presentMediaPickerController(with pickerEvent: ObservableValue<MediaPickerEvent>,
-                                              mediaSource: MediaPickerViewModel.MediaSource,
-                                              mediaTypes: [MediaPickerViewModel.MediaType]) {
-        let viewModel = MediaPickerViewModel(pickerEvent: pickerEvent,
-                                             mediaSource: mediaSource,
-                                             mediaTypes: mediaTypes)
+    private func presentMediaPickerController(
+        with pickerEvent: ObservableValue<MediaPickerEvent>,
+        mediaSource: MediaPickerViewModel.MediaSource,
+        mediaTypes: [MediaPickerViewModel.MediaType]
+    ) {
+        let viewModel = MediaPickerViewModel(
+            pickerEvent: pickerEvent,
+            mediaSource: mediaSource,
+            mediaTypes: mediaTypes
+        )
         viewModel.delegate = { [weak self] event in
             switch event {
             case .finished:
@@ -105,7 +116,7 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
         }
 
         let controller = MediaPickerController(viewModel: viewModel)
-        self.mediaPickerController = controller
+        mediaPickerController = controller
         controller.viewController { [weak self] viewController in
             self?.navigationPresenter.present(viewController)
         }
@@ -121,7 +132,7 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
         }
 
         let controller = FilePickerController(viewModel: viewModel)
-        self.filePickerController = controller
+        filePickerController = controller
         navigationPresenter.present(controller.viewController)
     }
 
@@ -134,7 +145,7 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
             }
         }
         let controller = QuickLookController(viewModel: viewModel)
-        self.quickLookController = controller
+        quickLookController = controller
         navigationPresenter.present(controller.viewController)
     }
 }
