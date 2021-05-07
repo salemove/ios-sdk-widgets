@@ -410,7 +410,9 @@ extension ChatViewModel {
                 appendItem(item, to: messagesSection, animated: true)
                 action?(.updateItemsUserImage(animated: true))
 
-                action?(.setChoiceCardInputModeEnabled(message.isChoiceCard))
+                if message.isChoiceCard {
+                    action?(.setChoiceCardInputModeEnabled(true))
+                }
                 if isChatScrolledToBottom.value {
                     action?(.scrollToBottom(animated: true))
                 }
