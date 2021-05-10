@@ -286,7 +286,6 @@ extension ChatView {
     private func observeKeyboard() {
         keyboardObserver.keyboardWillShow = { [unowned self] properties in
             let bottomInset = safeAreaInsets.bottom
-            let offset = CGPoint(x: 0, y: self.tableView.contentSize.height)
             let newEntryConstraint = -properties.finalFrame.height + bottomInset
             UIView.animate(
                 withDuration: properties.duration,
@@ -294,8 +293,10 @@ extension ChatView {
                 options: properties.animationOptions,
                 animations: { [weak self] in
                     self?.messageEntryViewBottomConstraint.constant = newEntryConstraint
-                    self?.tableView.contentOffset = offset
                     self?.layoutIfNeeded()
+                },
+                completion: { [weak self] _ in
+                    self?.tableView.scrollToBottom(animated: true)
                 }
             )
         }
