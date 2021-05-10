@@ -18,16 +18,20 @@ public class ChatMessageEntryView: UIView {
     var isChoiceCardModeEnabled: Bool {
         didSet {
             isEnabled = !isChoiceCardModeEnabled
-            textView.resignFirstResponder()
+            if isChoiceCardModeEnabled {
+                textView.resignFirstResponder()
+            }
             placeholderLabel.text = isChoiceCardModeEnabled
                 ? style.choiceCardPlaceholder
                 : style.placeholder
         }
     }
+
     var showsSendButton: Bool {
         get { return !sendButton.isHidden }
         set { sendButton.isHidden = !newValue }
     }
+
     var isEnabled: Bool {
         get { return isUserInteractionEnabled }
         set { isUserInteractionEnabled = newValue }
@@ -60,7 +64,7 @@ public class ChatMessageEntryView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    public override func layoutSubviews() {
+    override public func layoutSubviews() {
         super.layoutSubviews()
         updateTextViewHeight()
     }
@@ -72,8 +76,10 @@ public class ChatMessageEntryView: UIView {
 
         messageContainerView.backgroundColor = style.backgroundColor
 
-        let tapRecognizer = UITapGestureRecognizer(target: self,
-                                                   action: #selector(textViewContainerTap))
+        let tapRecognizer = UITapGestureRecognizer(
+            target: self,
+            action: #selector(textViewContainerTap)
+        )
         messageContainerView.addGestureRecognizer(tapRecognizer)
 
         textView.delegate = self
@@ -99,8 +105,10 @@ public class ChatMessageEntryView: UIView {
 
     private func layout() {
         messageContainerView.addSubview(textView)
-        textViewHeightConstraint = textView.autoSetDimension(.height,
-                                                             toSize: kMinTextViewHeight)
+        textViewHeightConstraint = textView.autoSetDimension(
+            .height,
+            toSize: kMinTextViewHeight
+        )
 
         textView.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
         textView.autoPinEdge(toSuperviewEdge: .top, withInset: 13)
@@ -138,8 +146,10 @@ public class ChatMessageEntryView: UIView {
     }
 
     private func updateTextViewHeight() {
-        let size = CGSize(width: textView.frame.size.width,
-                          height: CGFloat.greatestFiniteMagnitude)
+        let size = CGSize(
+            width: textView.frame.size.width,
+            height: CGFloat.greatestFiniteMagnitude
+        )
         var newHeight = textView.sizeThatFits(size).height
 
         textView.isScrollEnabled = newHeight > kMaxTextViewHeight
@@ -163,8 +173,15 @@ public class ChatMessageEntryView: UIView {
 }
 
 extension ChatMessageEntryView: UITextViewDelegate {
-    public func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        let newText = (textView.text as NSString).replacingCharacters(in: range, with: text)
+    public func textView(
+        _ textView: UITextView,
+        shouldChangeTextIn range: NSRange,
+        replacementText text: String
+    ) -> Bool {
+        let newText = (textView.text as NSString).replacingCharacters(
+            in: range,
+            with: text
+        )
         return newText.count < maxCharacters
     }
 
@@ -173,7 +190,7 @@ extension ChatMessageEntryView: UITextViewDelegate {
         textChanged?(textView.text)
     }
 
-    public func textViewDidBeginEditing(_ textView: UITextView) {
+    public func textViewDidBeginEditing(_: UITextView) {
         placeholderLabel.isHidden = true
     }
 
