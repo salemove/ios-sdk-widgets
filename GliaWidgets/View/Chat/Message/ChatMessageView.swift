@@ -31,6 +31,8 @@ class ChatMessageView: UIView {
         case .downloads(let downloads):
             let contentViews = self.contentViews(for: downloads)
             appendContentViews(contentViews, animated: animated)
+        default:
+            break
         }
     }
 

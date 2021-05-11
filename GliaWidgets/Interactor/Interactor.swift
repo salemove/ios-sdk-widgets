@@ -214,6 +214,10 @@ extension Interactor: Interactable {
             answer(context, true) { _, _ in }
         }
     }
+    
+    var onEngagementTransfer: EngagementTransferBlock {
+        return { _ in }
+    }
 
     var onOperatorTypingStatusUpdate: OperatorTypingStatusUpdate {
         print("Called: \(#function)")
@@ -269,7 +273,7 @@ extension Interactor: Interactable {
     }
 
     func receive(message: Message) {
-        print("Called: \(#function)")
+        print("Called: \(#function). Content: \(message.content)")
         notify(.receivedMessage(message))
     }
 
