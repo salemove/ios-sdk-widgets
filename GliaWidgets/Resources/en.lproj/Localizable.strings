@@ -56,6 +56,7 @@
 "chat.connect.connected.firstText" = "{operatorName}";
 "chat.connect.connected.secondText" = "{operatorName} has joined the conversation.";
 "chat.message.placeholder" = "Enter Message";
+"chat.message.choiceCardPlaceholder" = "Tap on the answer above";
 "chat.message.status.delivered" = "Delivered";
 "chat.upgrade.audio.text" = "Upgraded to Audio Call";
 "chat.upgrade.video.text" = "Upgraded to Video Call";
@@ -77,8 +78,8 @@
 "chat.download.failed.separator" = " | ";
 "chat.download.failed.retry" = "Retry";
 
-"call.audio.title" = "AUDIO CALL";
-"call.video.title" = "VIDEO CALL";
+"call.audio.title" = "Audio";
+"call.video.title" = "Video";
 "call.endButton.title" = "End";
 "call.connect.queue.firstText" = "CompanyName";
 "call.connect.queue.secondText" = "An MSR will be with you shortly.";

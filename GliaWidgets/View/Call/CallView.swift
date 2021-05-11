@@ -31,7 +31,7 @@ class CallView: EngagementView {
     private let kLocalVideoViewDefaultHeight: CGFloat = 186
     private let kRemoteVideoViewPortraitHeightMultiplier: CGFloat = 0.3
     private let kRemoteVideoViewLandscapeHeightMultiplier: CGFloat = 1.0
-    private let kBarsHideDelay: TimeInterval = 3.0
+    private let kBarsHideDelay: TimeInterval = 3.2
 
     init(with style: CallStyle) {
         self.style = style
@@ -83,10 +83,9 @@ class CallView: EngagementView {
                 hideBars(duration: duration)
             }
         } else {
-            if mode == .video {
-                showBars( duration: duration)
-            }
+            showBars(duration: duration)
         }
+        buttonBar.adjustStackConstraints()
     }
 
     private func setup() {
@@ -119,8 +118,10 @@ class CallView: EngagementView {
             self?.hideLandscapeBarsAfterDelay()
         }
 
-        let tapRecognizer = UITapGestureRecognizer(target: self,
-                                                   action: #selector(tap))
+        let tapRecognizer = UITapGestureRecognizer(
+            target: self,
+            action: #selector(tap)
+        )
         addGestureRecognizer(tapRecognizer)
     }
 
@@ -139,8 +140,10 @@ class CallView: EngagementView {
         addSubview(localVideoView)
         localVideoViewTopConstraint = localVideoView.autoPinEdge(toSuperviewEdge: .top)
         localVideoViewRightConstraint = localVideoView.autoPinEdge(toSuperviewEdge: .right)
-        localVideoViewHeightConstraint = localVideoView.autoSetDimension(.height,
-                                                                         toSize: kLocalVideoViewDefaultHeight)
+        localVideoViewHeightConstraint = localVideoView.autoSetDimension(
+            .height,
+            toSize: kLocalVideoViewDefaultHeight
+        )
         localVideoView.autoMatch(.width, to: .height, of: localVideoView, withMultiplier: 0.7)
 
         addSubview(header)
@@ -199,11 +202,10 @@ class CallView: EngagementView {
     }
 
     private func adjustRemoteVideoView() {
-        if currentOrientation.isLandscape {
-            remoteVideoViewHeightConstraint.constant = frame.size.height * kRemoteVideoViewLandscapeHeightMultiplier
-        } else {
-            remoteVideoViewHeightConstraint.constant = frame.size.height * kRemoteVideoViewPortraitHeightMultiplier
-        }
+        let multiplier = currentOrientation.isLandscape
+            ? kRemoteVideoViewLandscapeHeightMultiplier
+            : kRemoteVideoViewPortraitHeightMultiplier
+        remoteVideoViewHeightConstraint.constant = frame.size.height * multiplier
     }
 
     private func adjustLocalVideoView() {
@@ -233,8 +235,9 @@ class CallView: EngagementView {
 
     private func hideBars(duration: TimeInterval) {
         layoutIfNeeded()
+        let newHeaderConstraint = -header.frame.size.height + safeAreaInsets.top
         UIView.animate(withDuration: duration) {
-            self.headerTopConstraint.constant = -self.header.frame.size.height
+            self.headerTopConstraint.constant = newHeaderConstraint
             self.buttonBarBottomConstraint.constant = self.buttonBar.frame.size.height
             self.layoutIfNeeded()
         }
@@ -246,11 +249,14 @@ class CallView: EngagementView {
     }
 
     private func hideLandscapeBarsAfterDelay() {
+        guard mode == .video else { return }
         hideBarsWorkItem?.cancel()
         let hideBarsWorkItem = DispatchWorkItem { self.hideLandscapeBars() }
         self.hideBarsWorkItem = hideBarsWorkItem
-        DispatchQueue.main.asyncAfter(deadline: .now() + kBarsHideDelay,
-                                      execute: hideBarsWorkItem)
+        DispatchQueue.main.asyncAfter(
+            deadline: .now() + kBarsHideDelay,
+            execute: hideBarsWorkItem
+        )
     }
 
     @objc private func chatTap() {
