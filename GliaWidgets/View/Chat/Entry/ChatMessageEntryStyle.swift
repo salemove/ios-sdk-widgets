@@ -4,6 +4,7 @@ public struct ChatMessageEntryStyle {
     public var messageFont: UIFont
     public var messageColor: UIColor
     public var placeholder: String
+    public var choiceCardPlaceholder: String
     public var placeholderFont: UIFont
     public var placeholderColor: UIColor
     public var separatorColor: UIColor
@@ -15,6 +16,7 @@ public struct ChatMessageEntryStyle {
     public init(messageFont: UIFont,
                 messageColor: UIColor,
                 placeholder: String,
+                choiceCardPlaceholder: String,
                 placeholderFont: UIFont,
                 placeholderColor: UIColor,
                 separatorColor: UIColor,
@@ -25,6 +27,7 @@ public struct ChatMessageEntryStyle {
         self.messageFont = messageFont
         self.messageColor = messageColor
         self.placeholder = placeholder
+        self.choiceCardPlaceholder = choiceCardPlaceholder
         self.placeholderFont = placeholderFont
         self.placeholderColor = placeholderColor
         self.separatorColor = separatorColor

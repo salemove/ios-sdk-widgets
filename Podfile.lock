@@ -1,5 +1,5 @@
 PODS:
-  - Alamofire (5.4.1)
+  - Alamofire (5.4.3)
   - glia-webrtc/bitcode (0.0.3)
   - ios-socket-client (9.2.0)
   - Macaw (0.9.7):
@@ -10,7 +10,7 @@ PODS:
     - Alamofire (~> 5.0)
   - PureLayout (3.1.6)
   - ReactiveSwift (6.5.0)
-  - SalemoveSDK (0.28.0):
+  - SalemoveSDK (0.29.0):
     - glia-webrtc/bitcode (= 0.0.3)
     - ios-socket-client (= 9.2.0)
     - Macaw (= 0.9.7)
@@ -26,7 +26,7 @@ PODS:
 
 DEPENDENCIES:
   - PureLayout (~> 3.1)
-  - SalemoveSDK (from `https://github.com/salemove/ios-bundle`, tag `0.28.0`)
+  - SalemoveSDK (from `https://github.com/salemove/ios-bundle`, tag `0.29.0`)
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
@@ -46,27 +46,27 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   SalemoveSDK:
     :git: https://github.com/salemove/ios-bundle
-    :tag: 0.28.0
+    :tag: 0.29.0
 
 CHECKOUT OPTIONS:
   SalemoveSDK:
     :git: https://github.com/salemove/ios-bundle
-    :tag: 0.28.0
+    :tag: 0.29.0
 
 SPEC CHECKSUMS:
-  Alamofire: 2291f7d21ca607c491dd17642e5d40fdcda0e65c
+  Alamofire: e447a2774a40c996748296fa2c55112fdbbc42f9
   glia-webrtc: a5c7e59ae752281d19734b4f918db9da39e8009d
   ios-socket-client: 0b73bb34f666c7a3b42e32915da78332b4f49fce
   Macaw: 4a931baf9a9826b06d0d8ecf300014c962ab9d50
   Moya: 5b45dacb75adb009f97fde91c204c1e565d31916
   PureLayout: bd3c4ec3a3819ad387c99ebb72c6b129c3ed4d2d
   ReactiveSwift: 8d159904084e908856cde90b2e28823f3c7e485f
-  SalemoveSDK: de384640fb38b5d0994b6ddb39225e7ea200cbd9
+  SalemoveSDK: c7efee62b7911629ea8ed57897dda9c9eb5e0fb6
   Starscream: 4bb2f9942274833f7b4d296a55504dcfc7edb7b0
   SwiftPhoenixClient: 259aba446df6329d6bf9ac794dccb8228eedf19c
   SWXMLHash: 9cc0c2e4807926c74377724aa8722ee5707a0485
   TwilioVoice: 5e6fd6b5e99dfec03dcb57331f7e7c77ad79f1f0
 
-PODFILE CHECKSUM: 85a15fe5e775d1ff58a00a84174871b7a664142e
+PODFILE CHECKSUM: 960ba0fb9e0c9d90539d3a425f92b820278d1809
 
 COCOAPODS: 1.10.1

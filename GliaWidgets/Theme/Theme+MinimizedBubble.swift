@@ -3,7 +3,8 @@ extension Theme {
         let userImage = UserImageStyle(
             placeholderImage: Asset.operatorPlaceholder.image,
             placeholderColor: color.baseLight,
-            backgroundColor: color.primary
+            placeholderBackgroundColor: color.primary,
+            imageBackgroundColor: color.primary
         )
         let badge = BadgeStyle(
             font: font.caption,
