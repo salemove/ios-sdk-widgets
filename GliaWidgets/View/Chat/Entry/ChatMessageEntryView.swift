@@ -14,6 +14,16 @@ public class ChatMessageEntryView: UIView {
             updateTextViewHeight()
         }
     }
+
+    var isChoiceCardModeEnabled: Bool {
+        didSet {
+            isEnabled = !isChoiceCardModeEnabled
+            textView.resignFirstResponder()
+            placeholderLabel.text = isChoiceCardModeEnabled
+                ? style.choiceCardPlaceholder
+                : style.placeholder
+        }
+    }
     var showsSendButton: Bool {
         get { return !sendButton.isHidden }
         set { sendButton.isHidden = !newValue }
@@ -39,6 +49,7 @@ public class ChatMessageEntryView: UIView {
         uploadListView = FileUploadListView(with: style.uploadList)
         pickMediaButton = MessageButton(with: style.mediaButton)
         sendButton = MessageButton(with: style.sendButton)
+        isChoiceCardModeEnabled = false
         super.init(frame: .zero)
         setup()
         layout()

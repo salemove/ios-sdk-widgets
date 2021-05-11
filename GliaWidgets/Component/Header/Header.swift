@@ -27,7 +27,7 @@ class Header: UIView {
     private let rightItemContainer = UIView()
     private let titleLabel = UILabel()
     private let contentView = UIView()
-    private var effectView = UIVisualEffectView(effect: UIBlurEffect(style: .prominent))
+    private var effectView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
     private var heightConstraint: NSLayoutConstraint?
     private let kContentInsets = UIEdgeInsets(top: 0, left: 16, bottom: 10, right: 16)
     private let kContentHeight: CGFloat = 30
