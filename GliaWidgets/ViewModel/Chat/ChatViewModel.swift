@@ -315,16 +315,19 @@ extension ChatViewModel {
         uploader.removeAllUploads()
         action?(.removeAllUploads)
         action?(.scrollToBottom(animated: true))
+        let messageTextTemp = messageText
+        self.messageText = ""
 
-        interactor.send(messageText, attachment: attachment) { message in
-            self.messageText = ""
-            self.replace(outgoingMessage,
-                         uploads: uploads,
-                         with: message,
-                         in: self.messagesSection)
+        interactor.send(messageTextTemp, attachment: attachment) { message in
+            self.replace(
+                outgoingMessage,
+                uploads: uploads,
+                with: message,
+                in: self.messagesSection
+            )
+
             self.action?(.scrollToBottom(animated: true))
         } failure: { _ in
-            self.messageText = ""
             self.showAlert(with: self.alertConfiguration.unexpectedError,
                            dismissed: nil)
         }
