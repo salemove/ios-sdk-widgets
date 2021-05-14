@@ -101,8 +101,14 @@ class ChatView: EngagementView {
         updateTableView(animated: animated)
     }
 
-    func refreshSection(_ section: Int) {
-        tableView.reloadSections([section], with: .fade)
+    func refreshSection(_ section: Int, animated: Bool) {
+        if animated {
+            tableView.reloadSections([section], with: .fade)
+        } else {
+            UIView.performWithoutAnimation {
+                tableView.reloadSections([section], with: .none)
+            }
+        }
     }
 
     func refreshAll() {

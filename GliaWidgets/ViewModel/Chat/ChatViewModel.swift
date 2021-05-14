@@ -27,7 +27,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case pickMediaButtonEnabled(Bool)
         case appendRows(Int, to: Int, animated: Bool)
         case refreshRow(Int, in: Int, animated: Bool)
-        case refreshSection(Int)
+        case refreshSection(Int, animated: Bool)
         case refreshAll
         case scrollToBottom(animated: Bool)
         case updateItemsUserImage(animated: Bool)
@@ -256,7 +256,7 @@ extension ChatViewModel {
         let messages = storage.messages(forQueue: interactor.queueID)
         let items = messages.compactMap { ChatItem(with: $0, fromHistory: true) }
         historySection.set(items)
-        action?(.refreshSection(historySection.index))
+        action?(.refreshSection(historySection.index, animated: false))
         action?(.scrollToBottom(animated: true))
     }
 }
@@ -331,7 +331,7 @@ extension ChatViewModel {
         action?(.removeAllUploads)
         action?(.scrollToBottom(animated: true))
         let messageTextTemp = messageText
-        self.messageText = ""
+        messageText = ""
 
         interactor.send(messageTextTemp, attachment: attachment) { message in
             self.replace(
@@ -362,12 +362,24 @@ extension ChatViewModel {
             })?.offset
         else { return }
 
-        let status = Strings.Message.Status.delivered
-        let message = ChatMessage(with: message)
-        let item = ChatItem(kind: .visitorMessage(message, status: status))
-        downloader.addDownloads(for: message.attachment?.files, with: uploads)
+        let deliveredStatus = Strings.Message.Status.delivered
+
+        // Remove previous "Delivered" statuses
+        section.items
+            .enumerated()
+            .forEach { index, element in
+                if case .visitorMessage(let message, let status) = element.kind,
+                   status == deliveredStatus {
+                    let chatItem = ChatItem(kind: .visitorMessage(message, status: nil))
+                    section.replaceItem(at: index, with: chatItem)
+                }
+            }
+
+        let deliveredMessage = ChatMessage(with: message)
+        let item = ChatItem(kind: .visitorMessage(deliveredMessage, status: deliveredStatus))
+        downloader.addDownloads(for: deliveredMessage.attachment?.files, with: uploads)
         section.replaceItem(at: index, with: item)
-        action?(.refreshRow(index, in: section.index, animated: false))
+        action?(.refreshSection(section.index, animated: false))
     }
 
     @discardableResult
