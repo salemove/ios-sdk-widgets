@@ -500,6 +500,7 @@ extension ChatViewModel {
     private func removeUpload(_ upload: FileUpload) {
         uploader.removeUpload(upload)
         action?(.removeUpload(upload))
+        validateMessage()
     }
 
     private func onUploaderStateChanged(_ state: FileUploader.State) {
