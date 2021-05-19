@@ -27,7 +27,8 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case pickMediaButtonEnabled(Bool)
         case appendRows(Int, to: Int, animated: Bool)
         case refreshRow(Int, in: Int, animated: Bool)
-        case refreshSection(Int, animated: Bool)
+        case refreshRows([Int], in: Int, animated: Bool)
+        case refreshSection(Int)
         case refreshAll
         case scrollToBottom(animated: Bool)
         case updateItemsUserImage(animated: Bool)
@@ -256,7 +257,7 @@ extension ChatViewModel {
         let messages = storage.messages(forQueue: interactor.queueID)
         let items = messages.compactMap { ChatItem(with: $0, fromHistory: true) }
         historySection.set(items)
-        action?(.refreshSection(historySection.index, animated: false))
+        action?(.refreshSection(historySection.index))
         action?(.scrollToBottom(animated: true))
     }
 }
@@ -363,6 +364,7 @@ extension ChatViewModel {
         else { return }
 
         let deliveredStatus = Strings.Message.Status.delivered
+        var affectedRows = [Int]()
 
         // Remove previous "Delivered" statuses
         section.items
@@ -372,6 +374,7 @@ extension ChatViewModel {
                    status == deliveredStatus {
                     let chatItem = ChatItem(kind: .visitorMessage(message, status: nil))
                     section.replaceItem(at: index, with: chatItem)
+                    affectedRows.append(index)
                 }
             }
 
@@ -379,7 +382,8 @@ extension ChatViewModel {
         let item = ChatItem(kind: .visitorMessage(deliveredMessage, status: deliveredStatus))
         downloader.addDownloads(for: deliveredMessage.attachment?.files, with: uploads)
         section.replaceItem(at: index, with: item)
-        action?(.refreshSection(section.index, animated: false))
+        affectedRows.append(index)
+        action?(.refreshRows(affectedRows, in: section.index, animated: false))
     }
 
     @discardableResult

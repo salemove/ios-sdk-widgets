@@ -98,16 +98,22 @@ class ChatView: EngagementView {
         else { return }
 
         cell.content = content(for: item)
-        updateTableView(animated: animated)
+        tableView.reloadRows(at: [indexPath], with: animated ? .fade : .none)
     }
 
-    func refreshSection(_ section: Int, animated: Bool) {
+    func refreshRows(_ rows: [Int], in section: Int, animated: Bool) {
         if animated {
-            tableView.reloadSections([section], with: .fade)
+            updateTableViewRows(rows, in: section, animated: true)
         } else {
             UIView.performWithoutAnimation {
-                tableView.reloadSections([section], with: .none)
+                updateTableViewRows(rows, in: section, animated: false)
             }
+        }
+    }
+
+    func refreshSection(_ section: Int) {
+        UIView.performWithoutAnimation {
+            tableView.reloadSections([section], with: .none)
         }
     }
 
@@ -212,6 +218,14 @@ class ChatView: EngagementView {
                 tableView.endUpdates()
             }
         }
+    }
+
+    private func updateTableViewRows(_ rows: [Int], in section: Int, animated: Bool) {
+        tableView.beginUpdates()
+        for row in rows {
+            refreshRow(row, in: section, animated: animated)
+        }
+        tableView.endUpdates()
     }
 }
 
