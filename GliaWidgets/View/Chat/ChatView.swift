@@ -102,11 +102,19 @@ class ChatView: EngagementView {
     }
 
     func refreshRows(_ rows: [Int], in section: Int, animated: Bool) {
+        let refreshBlock = {
+            self.tableView.beginUpdates()
+            for row in rows {
+                self.refreshRow(row, in: section, animated: animated)
+            }
+            self.tableView.endUpdates()
+        }
+
         if animated {
-            updateTableViewRows(rows, in: section, animated: true)
+            refreshBlock()
         } else {
             UIView.performWithoutAnimation {
-                updateTableViewRows(rows, in: section, animated: false)
+                refreshBlock()
             }
         }
     }
@@ -218,14 +226,6 @@ class ChatView: EngagementView {
                 tableView.endUpdates()
             }
         }
-    }
-
-    private func updateTableViewRows(_ rows: [Int], in section: Int, animated: Bool) {
-        tableView.beginUpdates()
-        for row in rows {
-            refreshRow(row, in: section, animated: animated)
-        }
-        tableView.endUpdates()
     }
 }
 
