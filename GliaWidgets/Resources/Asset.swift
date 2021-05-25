@@ -32,6 +32,7 @@ public enum Asset {
   public static let uploadRemove = ImageAsset(name: "uploadRemove")
   public static let chatPickMedia = ImageAsset(name: "chatPickMedia")
   public static let chatSend = ImageAsset(name: "chatSend")
+  public static let newMessageIndicator = ImageAsset(name: "newMessageIndicator")
   public static let back = ImageAsset(name: "back")
   public static let close = ImageAsset(name: "close")
   public static let browseIcon = ImageAsset(name: "browseIcon")
