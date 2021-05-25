@@ -214,7 +214,7 @@ extension Interactor: Interactable {
             answer(context, true) { _, _ in }
         }
     }
-    
+
     var onEngagementTransfer: EngagementTransferBlock {
         return { _ in }
     }

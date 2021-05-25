@@ -27,6 +27,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case pickMediaButtonEnabled(Bool)
         case appendRows(Int, to: Int, animated: Bool)
         case refreshRow(Int, in: Int, animated: Bool)
+        case refreshRows([Int], in: Int, animated: Bool)
         case refreshSection(Int)
         case refreshAll
         case scrollToBottom(animated: Bool)
@@ -331,7 +332,7 @@ extension ChatViewModel {
         action?(.removeAllUploads)
         action?(.scrollToBottom(animated: true))
         let messageTextTemp = messageText
-        self.messageText = ""
+        messageText = ""
 
         interactor.send(messageTextTemp, attachment: attachment) { message in
             self.replace(
@@ -362,12 +363,27 @@ extension ChatViewModel {
             })?.offset
         else { return }
 
-        let status = Strings.Message.Status.delivered
-        let message = ChatMessage(with: message)
-        let item = ChatItem(kind: .visitorMessage(message, status: status))
-        downloader.addDownloads(for: message.attachment?.files, with: uploads)
+        let deliveredStatus = Strings.Message.Status.delivered
+        var affectedRows = [Int]()
+
+        // Remove previous "Delivered" statuses
+        section.items
+            .enumerated()
+            .forEach { index, element in
+                if case .visitorMessage(let message, let status) = element.kind,
+                   status == deliveredStatus {
+                    let chatItem = ChatItem(kind: .visitorMessage(message, status: nil))
+                    section.replaceItem(at: index, with: chatItem)
+                    affectedRows.append(index)
+                }
+            }
+
+        let deliveredMessage = ChatMessage(with: message)
+        let item = ChatItem(kind: .visitorMessage(deliveredMessage, status: deliveredStatus))
+        downloader.addDownloads(for: deliveredMessage.attachment?.files, with: uploads)
         section.replaceItem(at: index, with: item)
-        action?(.refreshRow(index, in: section.index, animated: false))
+        affectedRows.append(index)
+        action?(.refreshRows(affectedRows, in: section.index, animated: false))
     }
 
     @discardableResult
