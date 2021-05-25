@@ -91,6 +91,8 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter,
                 view.appendRows(count, to: section, animated: animated)
             case .refreshRow(let row, let section, let animated):
                 view.refreshRow(row, in: section, animated: animated)
+            case .refreshRows(let rows, let section, let animated):
+                view.refreshRows(rows, in: section, animated: animated)
             case .refreshSection(let section):
                 view.refreshSection(section)
             case .refreshAll:
