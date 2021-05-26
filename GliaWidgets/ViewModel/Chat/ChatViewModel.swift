@@ -267,7 +267,7 @@ extension ChatViewModel {
         let items = messages.compactMap { ChatItem(with: $0, fromHistory: true) }
         historySection.set(items)
         action?(.refreshSection(historySection.index))
-        action?(.scrollToBottom(animated: true))
+        action?(.scrollToBottom(animated: false))
     }
 }
 
