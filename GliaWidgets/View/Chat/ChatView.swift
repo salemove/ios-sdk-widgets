@@ -22,6 +22,7 @@ class ChatView: EngagementView {
     private let kNewMessageIndicatorInset: CGFloat = -3
     private let kCallBubbleEdgeInset: CGFloat = 10
     private let kCallBubbleSize = CGSize(width: 60, height: 60)
+    private let kChatTableViewInsets = UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0)
     private var callBubbleBounds: CGRect {
         let x = safeAreaInsets.left + kCallBubbleEdgeInset
         let y = header.frame.maxY + kCallBubbleEdgeInset
@@ -145,6 +146,7 @@ class ChatView: EngagementView {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = UITableView.automaticDimension
         tableView.separatorStyle = .none
+        tableView.contentInset = kChatTableViewInsets
         tableView.register(cell: ChatItemCell.self)
 
         newMessageIndicatorView.tap = { [weak self] in
@@ -361,7 +363,7 @@ extension ChatView: UITableViewDelegate {
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let chatEnd = scrollView.contentSize.height - scrollView.frame.size.height
-        if scrollView.contentOffset.y + 5 >= chatEnd {
+        if scrollView.contentOffset.y + 10 >= chatEnd {
             chatScrolledToTheEnd?(true)
         } else {
             chatScrolledToTheEnd?(false)

@@ -415,7 +415,6 @@ extension ChatViewModel {
             queueID: interactor.queueID,
             operator: interactor.engagedOperator
         )
-        unreadMessages.received(1)
 
         switch message.sender {
         case .operator:
@@ -431,6 +430,7 @@ extension ChatViewModel {
                 if isChatScrolledToBottom.value {
                     action?(.scrollToBottom(animated: true))
                 }
+                unreadMessages.received(1)
             }
         default:
             break
