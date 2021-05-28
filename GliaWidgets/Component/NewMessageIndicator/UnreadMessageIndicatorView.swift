@@ -1,6 +1,6 @@
 import UIKit
 
-final class NewMessageIndicatorView: View {
+final class UnreadMessageIndicatorView: View {
     var newItemCount: Int = 0 {
         didSet {
             if newItemCount <= 0 {
@@ -12,9 +12,9 @@ final class NewMessageIndicatorView: View {
         }
     }
 
-    var tap: (() -> Void)?
+    var tapped: (() -> Void)?
 
-    private let style: NewMessageIndicatorStyle
+    private let style: UnreadMessageIndicatorStyle
 
     private let backgroundView = UIImageView()
     private let userImageView: UserImageView
@@ -24,7 +24,7 @@ final class NewMessageIndicatorView: View {
     private let kUserImageSize = CGSize(width: 36, height: 36)
     private let kBadgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 5)
 
-    public init(with style: NewMessageIndicatorStyle) {
+    public init(with style: UnreadMessageIndicatorStyle) {
         self.style = style
         userImageView = UserImageView(with: style.userImage)
         badgeView = BadgeView(with: style.badge)
@@ -44,11 +44,11 @@ final class NewMessageIndicatorView: View {
     private func setup() {
         isHidden = true
 
-        backgroundView.image = Asset.newMessageIndicator.image
+        backgroundView.image = Asset.unreadMessageIndicator.image
 
         let tapRecognizer = UITapGestureRecognizer(
             target: self,
-            action: #selector(tapped)
+            action: #selector(onTap)
         )
         addGestureRecognizer(tapRecognizer)
     }
@@ -69,7 +69,7 @@ final class NewMessageIndicatorView: View {
         badgeView.autoPinEdge(toSuperviewEdge: .right, withInset: kBadgeInsets.right)
     }
 
-    @objc private func tapped() {
-        tap?()
+    @objc private func onTap() {
+        tapped?()
     }
 }

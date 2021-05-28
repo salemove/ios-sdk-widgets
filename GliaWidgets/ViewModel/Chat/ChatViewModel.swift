@@ -13,7 +13,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case fileTapped(LocalFile)
         case downloadTapped(FileDownload)
         case choiceOptionSelected(ChatChoiceCardOption, String)
-        case chatScrolled(Bool)
+        case chatScrolled(bottomReached: Bool)
     }
 
     enum Action {
@@ -43,7 +43,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             declined: () -> Void
         )
         case showCallBubble(imageUrl: String?)
-        case updateNewMessageIndicator(itemCount: Int)
+        case updateUnreadMessageIndicator(itemCount: Int)
     }
 
     enum DelegateEvent {
@@ -103,8 +103,8 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         self.showsCallBubble = showsCallBubble
         self.startAction = startAction
         super.init(interactor: interactor, alertConfiguration: alertConfiguration)
-        unreadMessages.addObserver(self) { unreadCount, _ in
-            self.action?(.updateNewMessageIndicator(itemCount: unreadCount))
+        unreadMessages.addObserver(self) { [weak self] unreadCount, _ in
+            self?.action?(.updateUnreadMessageIndicator(itemCount: unreadCount))
         }
         self.unreadMessages = UnreadMessagesHandler(
             unreadMessages: unreadMessages,

@@ -3,7 +3,7 @@ import UIKit
 class ChatView: EngagementView {
     let tableView = UITableView()
     let messageEntryView: ChatMessageEntryView
-    let newMessageIndicatorView: NewMessageIndicatorView
+    let unreadMessageIndicatorView: UnreadMessageIndicatorView
     var numberOfSections: (() -> Int?)?
     var numberOfRows: ((Int) -> Int?)?
     var itemForRow: ((Int, Int) -> ChatItem?)?
@@ -11,15 +11,14 @@ class ChatView: EngagementView {
     var downloadTapped: ((FileDownload) -> Void)?
     var callBubbleTapped: (() -> Void)?
     var choiceOptionSelected: ((ChatChoiceCardOption, String) -> Void)!
-    var newMessageIndicatorTapped: (() -> Void)?
-    var chatScrolledToTheEnd: ((Bool) -> Void)?
+    var chatScrolledToBottom: ((Bool) -> Void)?
 
     private let style: ChatStyle
     private var messageEntryViewBottomConstraint: NSLayoutConstraint!
     private var callBubble: BubbleView?
     private let keyboardObserver = KeyboardObserver()
 
-    private let kNewMessageIndicatorInset: CGFloat = -3
+    private let kUnreadMessageIndicatorInset: CGFloat = -3
     private let kCallBubbleEdgeInset: CGFloat = 10
     private let kCallBubbleSize = CGSize(width: 60, height: 60)
     private let kChatTableViewInsets = UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0)
@@ -34,8 +33,8 @@ class ChatView: EngagementView {
     init(with style: ChatStyle) {
         self.style = style
         self.messageEntryView = ChatMessageEntryView(with: style.messageEntry)
-        self.newMessageIndicatorView = NewMessageIndicatorView(
-            with: style.newMessageIndicator
+        self.unreadMessageIndicatorView = UnreadMessageIndicatorView(
+            with: style.unreadMessageIndicator
         )
         super.init(with: style)
         setup()
@@ -149,7 +148,7 @@ class ChatView: EngagementView {
         tableView.contentInset = kChatTableViewInsets
         tableView.register(cell: ChatItemCell.self)
 
-        newMessageIndicatorView.tap = { [weak self] in
+        unreadMessageIndicatorView.tapped = { [weak self] in
             self?.scrollToBottom(animated: true)
         }
 
@@ -176,13 +175,13 @@ class ChatView: EngagementView {
         messageEntryView.autoPinEdge(toSuperviewSafeArea: .right)
         messageEntryView.autoPinEdge(.top, to: .bottom, of: tableView)
 
-        addSubview(newMessageIndicatorView)
-        newMessageIndicatorView.autoAlignAxis(toSuperviewAxis: .vertical)
-        newMessageIndicatorView.autoPinEdge(
+        addSubview(unreadMessageIndicatorView)
+        unreadMessageIndicatorView.autoAlignAxis(toSuperviewAxis: .vertical)
+        unreadMessageIndicatorView.autoPinEdge(
             .bottom,
             to: .top,
             of: messageEntryView,
-            withOffset: kNewMessageIndicatorInset
+            withOffset: kUnreadMessageIndicatorInset
         )
     }
 
@@ -362,11 +361,12 @@ extension ChatView: UITableViewDelegate {
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let chatEnd = scrollView.contentSize.height - scrollView.frame.size.height
-        if scrollView.contentOffset.y + 10 >= chatEnd {
-            chatScrolledToTheEnd?(true)
+        let chatBottomOffset = scrollView.contentSize.height - scrollView.frame.size.height
+        let currentPositionOffset = scrollView.contentOffset.y + scrollView.contentInset.top
+        if currentPositionOffset >= chatBottomOffset {
+            chatScrolledToBottom?(true)
         } else {
-            chatScrolledToTheEnd?(false)
+            chatScrolledToBottom?(false)
         }
     }
 }

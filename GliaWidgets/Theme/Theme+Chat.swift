@@ -170,7 +170,7 @@ extension Theme {
         let callBubble = BubbleStyle(
             userImage: userImage
         )
-        let newMessageIndicator = NewMessageIndicatorStyle(
+        let unreadMessageIndicator = UnreadMessageIndicatorStyle(
             badgeFont: font.caption,
             badgeTextColor: color.baseLight,
             badgeColor: color.primary,
@@ -197,7 +197,7 @@ extension Theme {
             videoUpgrade: videoUpgrade,
             callBubble: callBubble,
             pickMedia: pickMedia,
-            newMessageIndicator: newMessageIndicator
+            unreadMessageIndicator: unreadMessageIndicator
         )
     }
 

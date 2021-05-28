@@ -12,7 +12,7 @@ public class ChatStyle: EngagementStyle {
     public var videoUpgrade: ChatCallUpgradeStyle
     public var callBubble: BubbleStyle
     public var pickMedia: ItemListStyle
-    public var newMessageIndicator: NewMessageIndicatorStyle
+    public var unreadMessageIndicator: UnreadMessageIndicatorStyle
 
     public init(
         header: HeaderStyle,
@@ -32,7 +32,7 @@ public class ChatStyle: EngagementStyle {
         videoUpgrade: ChatCallUpgradeStyle,
         callBubble: BubbleStyle,
         pickMedia: ItemListStyle,
-        newMessageIndicator: NewMessageIndicatorStyle
+        unreadMessageIndicator: UnreadMessageIndicatorStyle
     ) {
         self.title = title
         self.backButton = backButton
@@ -45,7 +45,7 @@ public class ChatStyle: EngagementStyle {
         self.videoUpgrade = videoUpgrade
         self.callBubble = callBubble
         self.pickMedia = pickMedia
-        self.newMessageIndicator = newMessageIndicator
+        self.unreadMessageIndicator = unreadMessageIndicator
         super.init(
             header: header,
             connect: connect,

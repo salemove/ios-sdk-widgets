@@ -1,6 +1,6 @@
 import UIKit
 
-public struct NewMessageIndicatorStyle {
+public struct UnreadMessageIndicatorStyle {
     public var badge: BadgeStyle
     public var userImage: UserImageStyle
 
