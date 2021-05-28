@@ -24,7 +24,7 @@ final class UnreadMessageIndicatorView: View {
     private let kUserImageSize = CGSize(width: 36, height: 36)
     private let kBadgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 5)
 
-    public init(with style: UnreadMessageIndicatorStyle) {
+    init(with style: UnreadMessageIndicatorStyle) {
         self.style = style
         userImageView = UserImageView(with: style.userImage)
         badgeView = BadgeView(with: style.badge)
