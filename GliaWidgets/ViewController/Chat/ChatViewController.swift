@@ -60,6 +60,7 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter,
         view.downloadTapped = { viewModel.event(.downloadTapped($0)) }
         view.callBubbleTapped = { viewModel.event(.callBubbleTapped) }
         view.choiceOptionSelected = { viewModel.event(.choiceOptionSelected($0, $1)) }
+        view.chatScrolledToBottom = { viewModel.event(.chatScrolled(bottomReached: $0)) }
 
         viewModel.action = { action in
             switch action {
@@ -67,6 +68,7 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter,
                 view.setConnectState(.queue, animated: false)
             case .connected(let name, let imageUrl):
                 view.setConnectState(.connected(name: name, imageUrl: imageUrl), animated: true)
+                view.unreadMessageIndicatorView.setImage(fromUrl: imageUrl, animated: true)
             case .showEndButton:
                 let rightItem = ActionButton(with: self.viewFactory.theme.chat.endButton)
                 rightItem.tap = { viewModel.event(.closeTapped) }
@@ -116,6 +118,8 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter,
                 self.offerMediaUpgrade(with: conf, accepted: accepted, declined: declined)
             case .showCallBubble(let imageUrl):
                 view.showCallBubble(with: imageUrl, animated: true)
+            case .updateUnreadMessageIndicator(let count):
+                view.unreadMessageIndicatorView.newItemCount = count
             }
         }
     }
