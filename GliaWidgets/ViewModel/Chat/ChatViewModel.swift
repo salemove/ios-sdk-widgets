@@ -13,6 +13,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case fileTapped(LocalFile)
         case downloadTapped(FileDownload)
         case choiceOptionSelected(ChatChoiceCardOption, String)
+        case chatScrolled(bottomReached: Bool)
     }
 
     enum Action {
@@ -42,6 +43,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             declined: () -> Void
         )
         case showCallBubble(imageUrl: String?)
+        case updateUnreadMessageIndicator(itemCount: Int)
     }
 
     enum DelegateEvent {
@@ -75,6 +77,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     private var messagesSection: Section<ChatItem> { return sections[2] }
     private let call: ObservableValue<Call?>
     private var unreadMessages: UnreadMessagesHandler!
+    private let isChatScrolledToBottom = ObservableValue<Bool>(with: true)
     private let showsCallBubble: Bool
     private let storage = ChatStorage()
     private let uploader = FileUploader(maximumUploads: 25)
@@ -100,10 +103,14 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         self.showsCallBubble = showsCallBubble
         self.startAction = startAction
         super.init(interactor: interactor, alertConfiguration: alertConfiguration)
+        unreadMessages.addObserver(self) { [weak self] unreadCount, _ in
+            self?.action?(.updateUnreadMessageIndicator(itemCount: unreadCount))
+        }
         self.unreadMessages = UnreadMessagesHandler(
             unreadMessages: unreadMessages,
             isWindowVisible: isWindowVisible,
-            isViewVisible: isViewActive
+            isViewVisible: isViewActive,
+            isChatScrolledToBottom: isChatScrolledToBottom
         )
         self.call.addObserver(self) { call, _ in
             self.onCall(call)
@@ -136,6 +143,8 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             downloadTapped(download)
         case .choiceOptionSelected(let option, let messageId):
             sendChoiceCardResponse(option, to: messageId)
+        case .chatScrolled(let bottomReached):
+            isChatScrolledToBottom.value = bottomReached
         }
     }
 
@@ -258,7 +267,7 @@ extension ChatViewModel {
         let items = messages.compactMap { ChatItem(with: $0, fromHistory: true) }
         historySection.set(items)
         action?(.refreshSection(historySection.index))
-        action?(.scrollToBottom(animated: true))
+        action?(.scrollToBottom(animated: false))
     }
 }
 
@@ -406,7 +415,6 @@ extension ChatViewModel {
             queueID: interactor.queueID,
             operator: interactor.engagedOperator
         )
-        unreadMessages.received(1)
 
         switch message.sender {
         case .operator:
@@ -416,10 +424,13 @@ extension ChatViewModel {
             )
             if let item = ChatItem(with: message) {
                 appendItem(item, to: messagesSection, animated: true)
-                action?(.scrollToBottom(animated: true))
                 action?(.updateItemsUserImage(animated: true))
 
                 action?(.setChoiceCardInputModeEnabled(message.isChoiceCard))
+                if isChatScrolledToBottom.value {
+                    action?(.scrollToBottom(animated: true))
+                }
+                unreadMessages.received(1)
             }
         default:
             break
