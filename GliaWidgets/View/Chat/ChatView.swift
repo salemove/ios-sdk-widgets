@@ -146,6 +146,7 @@ class ChatView: EngagementView {
         tableView.estimatedRowHeight = UITableView.automaticDimension
         tableView.separatorStyle = .none
         tableView.contentInset = kChatTableViewInsets
+        tableView.keyboardDismissMode = .onDrag
         tableView.register(cell: ChatItemCell.self)
 
         unreadMessageIndicatorView.tapped = { [weak self] in
@@ -153,6 +154,7 @@ class ChatView: EngagementView {
         }
 
         observeKeyboard()
+        addTapGesture()
     }
 
     private func layout() {
@@ -183,6 +185,24 @@ class ChatView: EngagementView {
             of: messageEntryView,
             withOffset: kUnreadMessageIndicatorInset
         )
+    }
+
+    private func addTapGesture() {
+        let tapGesture = UITapGestureRecognizer(
+            target: self,
+            action: #selector(dismissKeyboard)
+        )
+
+        tapGesture.cancelsTouchesInView = false
+
+        addGestureRecognizer(tapGesture)
+    }
+    
+    @objc
+    private func dismissKeyboard(sender: UITapGestureRecognizer) {
+        if sender.state == .ended {
+            endEditing(true)
+        }
     }
 
     private func content(for item: ChatItem) -> ChatItemCell.Content {
