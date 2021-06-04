@@ -36,7 +36,8 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
     private let isWindowVisible = ObservableValue<Bool>(with: false)
     private let navigationController = NavigationController()
     private let navigationPresenter: NavigationPresenter
-    private var window: GliaWindow?
+    // private var window: GliaWindow?
+    private var window: UIWindow?
     private let kBubbleViewSize: CGFloat = 60.0
 
     init(
@@ -131,10 +132,11 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
             case .back:
                 switch self?.engagement {
                 case .chat:
-                    self?.window?.minimize(animated: true)
+                    // self?.window?.minimize(animated: true)
+                break
                 case .call(let callViewController, _, let upgradedFrom):
                     if upgradedFrom == .chat {
-                        self?.window?.minimize(animated: true)
+                        // self?.window?.minimize(animated: true)
                     } else {
                         self?.navigationPresenter.pop(to: callViewController, animated: true)
                     }
@@ -142,7 +144,8 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
                     break
                 }
             case .engaged(let operatorImageUrl):
-                self?.window?.bubbleKind = .userImage(url: operatorImageUrl)
+                break
+                // self?.window?.bubbleKind = .userImage(url: operatorImageUrl)
             case .mediaUpgradeAccepted(let offer, let answer):
                 self?.mediaUpgradeAccepted(offer: offer, answer: answer)
             case .call:
@@ -187,13 +190,14 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
                     if upgradedFrom == .chat {
                         self?.navigationPresenter.pop(to: chatViewController, animated: true)
                     } else {
-                        self?.window?.minimize(animated: true)
+                        // self?.window?.minimize(animated: true)
                     }
                 default:
                     break
                 }
             case .engaged(let operatorImageUrl):
-                self?.window?.bubbleKind = .userImage(url: operatorImageUrl)
+                break
+                // self?.window?.bubbleKind = .userImage(url: operatorImageUrl)
             case .chat:
                 switch self?.engagement {
                 case .call(_, let chatViewController, let upgradedFrom):
@@ -206,7 +210,8 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
                     break
                 }
             case .minimize:
-                self?.window?.minimize(animated: true)
+                break
+                // self?.window?.minimize(animated: true)
             case .finished:
                 self?.popCoordinator()
                 self?.end()
@@ -220,37 +225,46 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
 
 extension RootCoordinator {
     private func presentWindow(bubbleView: BubbleView, animated: Bool) {
-        guard window == nil else { return }
+        // guard window == nil else { return }
 
-        let window = makeWindow(bubbleView: bubbleView)
-        window.rootViewController = navigationController
-        window.isHidden = false
-        window.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
+        // let window = makeWindow(bubbleView: bubbleView)
+        // window.rootViewController = navigationController
+        // window.isHidden = false
+        // window.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
+        // self.window = window
+        // isWindowVisible.value = true
+
+        guard let window = UIApplication.shared.windows.first(where: { $0.isKeyWindow })
+        else { return }
         self.window = window
-        isWindowVisible.value = true
+        window.rootViewController?.present(navigationController, animated: animated) { [weak self] in
+            self?.isWindowVisible.value = true
+        }
 
-        UIView.animate(
-            withDuration: animated ? 0.4 : 0.0,
-            delay: 0.0,
-            usingSpringWithDamping: 0.8,
-            initialSpringVelocity: 0.5,
-            options: .curveEaseInOut,
-            animations: {
-                window.transform = .identity
-            }
-        )
+//        UIView.animate(
+//            withDuration: animated ? 0.4 : 0.0,
+//            delay: 0.0,
+//            usingSpringWithDamping: 0.8,
+//            initialSpringVelocity: 0.5,
+//            options: .curveEaseInOut,
+//            animations: {
+//                window.transform = .identity
+//            }
+//        )
     }
 
     private func dismissWindow(animated: Bool, completion: @escaping () -> Void) {
         guard let window = window else { return }
-        isWindowVisible.value = false
-        UIView.animate(
-            withDuration: animated ? 0.5 : 0.0,
-            delay: 0.0,
-            options: .curveEaseInOut,
-            animations: { window.alpha = 0.0 },
-            completion: { _ in completion() }
-        )
+        window.rootViewController?.dismiss(animated: animated) { [weak self] in
+            self?.isWindowVisible.value = false§
+        }
+//        UIView.animate(
+//            withDuration: animated ? 0.5 : 0.0,
+//            delay: 0.0,
+//            options: .curveEaseInOut,
+//            animations: { window.alpha = 0.0 },
+//            completion: { _ in completion() }
+//        )
     }
 
     private func makeWindow(bubbleView: BubbleView) -> GliaWindow {
