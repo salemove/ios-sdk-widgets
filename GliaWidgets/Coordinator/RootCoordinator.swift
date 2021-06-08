@@ -36,8 +36,11 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
     private let isWindowVisible = ObservableValue<Bool>(with: false)
     private let navigationController = NavigationController()
     private let navigationPresenter: NavigationPresenter
-    // private var window: GliaWindow?
-    private var window: UIWindow?
+    private let presentingWindow = UIApplication.shared.windows.filter { $0.isKeyWindow }.first
+    private var presentingViewController: UIViewController? {
+        return presentingWindow?.topMostViewController()
+    }
+    private var gliaViewController: GliaViewController!
     private let kBubbleViewSize: CGFloat = 60.0
 
     init(
@@ -97,14 +100,19 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
         unreadMessages.addObserver(self) { unreadCount, _ in
             bubbleView.setBadge(itemCount: unreadCount)
         }
-        presentWindow(bubbleView: bubbleView, animated: true)
+        self.gliaViewController = GliaViewController(
+            bubbleView: bubbleView,
+            delegate: self
+        )
+        gliaViewController.modalPresentationStyle = .fullScreen
+        gliaViewController.insertNavigationController(navigationController)
+        presentWindow(animated: true)
         delegate?(.started)
     }
 
     private func end() {
-        window?.endEditing(true)
+        // window.endEditing(true) // FIXME
         dismissWindow(animated: true) {
-            self.window = nil
             self.engagement = .none
             self.navigationPresenter.setViewControllers([], animated: false)
             self.removeAllCoordinators()
@@ -132,11 +140,10 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
             case .back:
                 switch self?.engagement {
                 case .chat:
-                    // self?.window?.minimize(animated: true)
-                break
+                    self?.gliaViewController.minimize(animated: true)
                 case .call(let callViewController, _, let upgradedFrom):
                     if upgradedFrom == .chat {
-                        // self?.window?.minimize(animated: true)
+                        self?.gliaViewController.minimize(animated: true)
                     } else {
                         self?.navigationPresenter.pop(to: callViewController, animated: true)
                     }
@@ -144,8 +151,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
                     break
                 }
             case .engaged(let operatorImageUrl):
-                break
-                // self?.window?.bubbleKind = .userImage(url: operatorImageUrl)
+                self?.gliaViewController.bubbleKind = .userImage(url: operatorImageUrl)
             case .mediaUpgradeAccepted(let offer, let answer):
                 self?.mediaUpgradeAccepted(offer: offer, answer: answer)
             case .call:
@@ -190,14 +196,13 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
                     if upgradedFrom == .chat {
                         self?.navigationPresenter.pop(to: chatViewController, animated: true)
                     } else {
-                        // self?.window?.minimize(animated: true)
+                        self?.gliaViewController.minimize(animated: true)
                     }
                 default:
                     break
                 }
             case .engaged(let operatorImageUrl):
-                break
-                // self?.window?.bubbleKind = .userImage(url: operatorImageUrl)
+                self?.gliaViewController.bubbleKind = .userImage(url: operatorImageUrl)
             case .chat:
                 switch self?.engagement {
                 case .call(_, let chatViewController, let upgradedFrom):
@@ -210,8 +215,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
                     break
                 }
             case .minimize:
-                break
-                // self?.window?.minimize(animated: true)
+                self?.gliaViewController.minimize(animated: true)
             case .finished:
                 self?.popCoordinator()
                 self?.end()
@@ -224,81 +228,17 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
 }
 
 extension RootCoordinator {
-    private func presentWindow(bubbleView: BubbleView, animated: Bool) {
-        // guard window == nil else { return }
-
-        // let window = makeWindow(bubbleView: bubbleView)
-        // window.rootViewController = navigationController
-        // window.isHidden = false
-        // window.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
-        // self.window = window
-        // isWindowVisible.value = true
-
-        guard let window = UIApplication.shared.windows.first(where: { $0.isKeyWindow })
-        else { return }
-        self.window = window
-        window.rootViewController?.present(navigationController, animated: animated) { [weak self] in
+    private func presentWindow(animated: Bool, completion: (() -> Void)? = nil) {
+        presentingViewController?.present(gliaViewController, animated: animated) { [weak self] in
             self?.isWindowVisible.value = true
-        }
-
-//        UIView.animate(
-//            withDuration: animated ? 0.4 : 0.0,
-//            delay: 0.0,
-//            usingSpringWithDamping: 0.8,
-//            initialSpringVelocity: 0.5,
-//            options: .curveEaseInOut,
-//            animations: {
-//                window.transform = .identity
-//            }
-//        )
-    }
-
-    private func dismissWindow(animated: Bool, completion: @escaping () -> Void) {
-        guard let window = window else { return }
-        window.rootViewController?.dismiss(animated: animated) { [weak self] in
-            self?.isWindowVisible.value = false§
-        }
-//        UIView.animate(
-//            withDuration: animated ? 0.5 : 0.0,
-//            delay: 0.0,
-//            options: .curveEaseInOut,
-//            animations: { window.alpha = 0.0 },
-//            completion: { _ in completion() }
-//        )
-    }
-
-    private func makeWindow(bubbleView: BubbleView) -> GliaWindow {
-        if #available(iOS 13.0, *) {
-            if let windowScene = windowScene() {
-                return GliaWindow(
-                    bubbleView: bubbleView,
-                    windowScene: windowScene,
-                    delegate: self
-                )
-            } else {
-                return GliaWindow(
-                    bubbleView: bubbleView,
-                    delegate: self
-                )
-            }
-        } else {
-            return GliaWindow(
-                bubbleView: bubbleView,
-                delegate: self
-            )
+            completion?()
         }
     }
 
-    @available(iOS 13.0, *)
-    private func windowScene() -> UIWindowScene? {
-        if let sceneProvider = sceneProvider {
-            return sceneProvider.windowScene()
-        } else {
-            let scene = UIApplication.shared
-                .connectedScenes
-                .filter { $0.activationState == .foregroundActive }
-                .first
-            return scene as? UIWindowScene
+    private func dismissWindow(animated: Bool, completion: (() -> Void)? = nil) {
+        presentingViewController?.dismiss(animated: animated) { [weak self] in
+            self?.isWindowVisible.value = false
+            completion?()
         }
     }
 }
@@ -333,11 +273,15 @@ extension RootCoordinator: GliaWindowDelegate {
     func event(_ event: GliaWindowEvent) {
         switch event {
         case .minimized:
-            isWindowVisible.value = false
-            delegate?(.minimized)
+            dismissWindow(animated: false) { [weak self] in
+                self?.isWindowVisible.value = false
+                self?.delegate?(.minimized)
+            }
         case .maximized:
-            isWindowVisible.value = true
-            delegate?(.maximized)
+            presentWindow(animated: false) { [weak self] in
+                self?.isWindowVisible.value = true
+                self?.delegate?(.maximized)
+            }
         }
     }
 }
@@ -351,4 +295,28 @@ extension EngagementKind {
             self = .videoCall
         }
     }
+}
+
+extension UIViewController {
+    func topMostViewController() -> UIViewController {
+        if let presented = self.presentedViewController {
+            return presented.topMostViewController()
+        }
+
+        if let navigation = self as? UINavigationController {
+            return navigation.visibleViewController?.topMostViewController() ?? navigation
+        }
+
+        if let tab = self as? UITabBarController {
+            return tab.selectedViewController?.topMostViewController() ?? tab
+        }
+
+        return self
+    }
+}
+
+extension UIWindow {
+  func topMostViewController() -> UIViewController? {
+    return rootViewController?.topMostViewController()
+  }
 }

@@ -9,7 +9,7 @@ public protocol GliaWindowDelegate: AnyObject {
     func event(_ event: GliaWindowEvent)
 }
 
-class GliaWindow: UIWindow {
+class GliaViewController: UIViewController {
     var bubbleKind: BubbleKind = .userImage(url: nil) {
         didSet { bubbleWindow?.bubbleKind = bubbleKind }
     }
@@ -21,42 +21,19 @@ class GliaWindow: UIWindow {
 
     private var state: State = .maximized
     private weak var delegate: GliaWindowDelegate?
+    private var gliaNavigationController: UINavigationController!
     private let bubbleView: BubbleView
     private var bubbleWindow: BubbleWindow?
     private var animationImageView: UIImageView?
 
-    private var maximizeScreeshot: UIImage? {
-        let backImageView = UIImageView()
-        backImageView.image = UIApplication.shared.windows.first?.screenshot
-        backImageView.frame = CGRect(origin: .zero, size: bounds.size)
-        insertSubview(backImageView, at: 0)
-
-        frame.origin.x = UIScreen.main.bounds.size.width
-        isHidden = false
-        alpha = 1.0
-        let maximizeScreeshot = screenshot
-        alpha = 0.0
-        isHidden = true
-        frame = UIScreen.main.bounds
-
-        backImageView.removeFromSuperview()
-
-        return maximizeScreeshot
-    }
-
-    @available(iOS 13.0, *)
-    init(bubbleView: BubbleView, windowScene: UIWindowScene, delegate: GliaWindowDelegate?) {
-        self.bubbleView = bubbleView
-        self.delegate = delegate
-        super.init(windowScene: windowScene)
-        setup()
-        layout()
+    private var maximizeScreenshot: UIImage? {
+        UIApplication.shared.windows.first?.screenshot
     }
 
     init(bubbleView: BubbleView, delegate: GliaWindowDelegate?) {
         self.bubbleView = bubbleView
         self.delegate = delegate
-        super.init(frame: .zero)
+        super.init(nibName: nil, bundle: nil)
         setup()
         layout()
     }
@@ -66,12 +43,19 @@ class GliaWindow: UIWindow {
         fatalError("init(coder:) has not been implemented")
     }
 
+    func insertNavigationController(_ navigationController: UINavigationController) {
+        self.gliaNavigationController = navigationController
+        addChild(navigationController)
+        view.addSubview(navigationController.view)
+        navigationController.didMove(toParent: self)
+    }
+
     func maximize(animated: Bool) {
         guard let animationImageView = animationImageView else { return }
 
         bubbleWindow.map { animationImageView.frame = $0.frame }
 
-        animationImageView.image = maximizeScreeshot
+        animationImageView.image = maximizeScreenshot
         animationImageView.isHidden = false
 
         UIView.animate(
@@ -81,10 +65,8 @@ class GliaWindow: UIWindow {
             initialSpringVelocity: 0.7,
             options: .curveEaseInOut,
             animations: {
-                self.isHidden = false
-                self.alpha = 1.0
                 self.bubbleWindow?.alpha = 0.0
-                self.animationImageView?.frame = CGRect(origin: .zero, size: self.bounds.size)
+                self.animationImageView?.frame = CGRect(origin: .zero, size: self.view.frame.size)
             },
             completion: { _ in
                 self.bubbleWindow = nil
@@ -97,21 +79,19 @@ class GliaWindow: UIWindow {
     }
 
     func minimize(animated: Bool) {
-        endEditing(true)
-
         bubbleView.kind = bubbleKind
 
-        let bubbleWindow = makeBubbleWindow()
+        let bubbleWindow = BubbleWindow(bubbleView: bubbleView)
         bubbleWindow.tap = { [weak self] in self?.maximize(animated: true) }
         bubbleWindow.alpha = 0.0
         bubbleWindow.isHidden = false
         self.bubbleWindow = bubbleWindow
 
         let animationImageView = UIImageView()
-        animationImageView.frame = CGRect(origin: .zero, size: bounds.size)
-        animationImageView.image = screenshot
+        animationImageView.frame = CGRect(origin: .zero, size: self.view.frame.size)
+        animationImageView.image = maximizeScreenshot
         self.animationImageView = animationImageView
-        addSubview(animationImageView)
+        view.addSubview(animationImageView)
 
         UIView.animate(
             withDuration: animated ? 0.4 : 0.0,
@@ -122,10 +102,8 @@ class GliaWindow: UIWindow {
             animations: {
                 bubbleWindow.alpha = 1.0
                 animationImageView.frame = bubbleWindow.frame
-                self.alpha = 0.0
             },
             completion: { _ in
-                self.isHidden = true
                 animationImageView.isHidden = true
             }
         )
@@ -133,12 +111,7 @@ class GliaWindow: UIWindow {
     }
 
     private func setup() {
-        windowLevel = .statusBar - 1
         maximize(animated: false)
-    }
-
-    private func layout() {
-        frame = UIScreen.main.bounds
     }
 
     private func setState(_ state: State) {
@@ -149,21 +122,6 @@ class GliaWindow: UIWindow {
             delegate?.event(.maximized)
         case .minimized:
             delegate?.event(.minimized)
-        }
-    }
-
-    private func makeBubbleWindow() -> BubbleWindow {
-        if #available(iOS 13.0, *) {
-            if let windowScene = windowScene {
-                return BubbleWindow(
-                    bubbleView: bubbleView,
-                    windowScene: windowScene
-                )
-            } else {
-                return BubbleWindow(bubbleView: bubbleView)
-            }
-        } else {
-            return BubbleWindow(bubbleView: bubbleView)
         }
     }
 }
