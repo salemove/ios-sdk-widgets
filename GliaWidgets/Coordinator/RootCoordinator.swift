@@ -267,8 +267,8 @@ extension RootCoordinator {
     }
 }
 
-extension RootCoordinator: GliaWindowDelegate {
-    func event(_ event: GliaWindowEvent) {
+extension RootCoordinator: GliaViewControllerDelegate {
+    func event(_ event: GliaViewControllerEvent) {
         switch event {
         case .minimized:
             dismissWindow(animated: true) { [weak self] in

@@ -144,9 +144,9 @@ class SettingsViewController: UIViewController {
     }
 
     private func loadConf() -> Configuration {
-        let appToken = UserDefaults.standard.string(forKey: "conf.appToken") ?? ""
-        let apiToken = UserDefaults.standard.string(forKey: "conf.apiToken") ?? ""
-        let site = UserDefaults.standard.string(forKey: "conf.site") ?? ""
+        let appToken = UserDefaults.standard.string(forKey: "conf.appToken") ?? "xWa2EKJTN35En26o"
+        let apiToken = UserDefaults.standard.string(forKey: "conf.apiToken") ?? "y7YwrMG3Ws1pHWXhH5gzWg"
+        let site = UserDefaults.standard.string(forKey: "conf.site") ?? "72c76913-ff1b-48a6-b209-bbeb57bd8649"
         return Configuration(appToken: appToken,
                              apiToken: apiToken,
                              environment: .beta,
@@ -154,7 +154,7 @@ class SettingsViewController: UIViewController {
     }
 
     private func loadQueueID() -> String {
-        let queueID = UserDefaults.standard.string(forKey: "conf.queueID") ?? ""
+        let queueID = UserDefaults.standard.string(forKey: "conf.queueID") ?? "74d7ee4f-550d-4b7f-830e-a289a2b34451"
         return queueID
     }
 

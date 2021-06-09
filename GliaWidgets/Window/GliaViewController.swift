@@ -1,12 +1,12 @@
 import UIKit
 
-public enum GliaWindowEvent {
+public enum GliaViewControllerEvent {
     case minimized
     case maximized
 }
 
-public protocol GliaWindowDelegate: AnyObject {
-    func event(_ event: GliaWindowEvent)
+public protocol GliaViewControllerDelegate: AnyObject {
+    func event(_ event: GliaViewControllerEvent)
 }
 
 class GliaViewController: UIViewController {
@@ -20,7 +20,7 @@ class GliaViewController: UIViewController {
     }
 
     private var state: State = .maximized
-    private weak var delegate: GliaWindowDelegate?
+    private weak var delegate: GliaViewControllerDelegate?
     private var gliaNavigationController: UINavigationController!
     private let bubbleView: BubbleView
     private var bubbleWindow: BubbleWindow?
@@ -30,7 +30,7 @@ class GliaViewController: UIViewController {
         UIApplication.shared.windows.first?.screenshot
     }
 
-    init(bubbleView: BubbleView, delegate: GliaWindowDelegate?) {
+    init(bubbleView: BubbleView, delegate: GliaViewControllerDelegate?) {
         self.bubbleView = bubbleView
         self.delegate = delegate
         super.init(nibName: nil, bundle: nil)
