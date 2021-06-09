@@ -50,13 +50,6 @@ class GliaViewController: UIViewController {
     }
 
     func maximize(animated: Bool) {
-        guard let animationImageView = animationImageView else { return }
-
-        bubbleWindow.map { animationImageView.frame = $0.frame }
-
-        animationImageView.image = maximizeScreenshot
-        animationImageView.isHidden = false
-
         UIView.animate(
             withDuration: animated ? 0.4 : 0.0,
             delay: 0.0,
@@ -65,13 +58,10 @@ class GliaViewController: UIViewController {
             options: .curveEaseInOut,
             animations: {
                 self.bubbleWindow?.alpha = 0.0
-                self.animationImageView?.frame = CGRect(origin: .zero, size: self.view.frame.size)
             },
             completion: { _ in
                 self.bubbleWindow = nil
-                self.animationImageView?.removeFromSuperview()
-                self.animationImageView = nil
-                self.animationImageView?.isUserInteractionEnabled = false
+
             }
         )
         setState(.maximized)
@@ -86,12 +76,6 @@ class GliaViewController: UIViewController {
         bubbleWindow.isHidden = false
         self.bubbleWindow = bubbleWindow
 
-        let animationImageView = UIImageView()
-        animationImageView.frame = CGRect(origin: .zero, size: self.view.frame.size)
-        animationImageView.image = maximizeScreenshot
-        self.animationImageView = animationImageView
-        view.addSubview(animationImageView)
-
         UIView.animate(
             withDuration: animated ? 0.4 : 0.0,
             delay: 0.0,
@@ -100,19 +84,14 @@ class GliaViewController: UIViewController {
             options: .curveEaseInOut,
             animations: {
                 bubbleWindow.alpha = 1.0
-                animationImageView.frame = bubbleWindow.frame
-            },
-            completion: { _ in
-                animationImageView.isHidden = true
             }
         )
         setState(.minimized)
     }
 
     private func setup() {
-        transitioningDelegate = self
-        modalPresentationStyle = .custom
-        maximize(animated: false)
+        modalPresentationStyle = .fullScreen
+        modalTransitionStyle = .crossDissolve
     }
 
     private func setState(_ state: State) {
@@ -124,21 +103,5 @@ class GliaViewController: UIViewController {
         case .minimized:
             delegate?.event(.minimized)
         }
-    }
-}
-
-extension GliaViewController: UIViewControllerTransitioningDelegate {
-    func animationController(
-        forPresented presented: UIViewController,
-        presenting: UIViewController,
-        source: UIViewController
-    ) -> UIViewControllerAnimatedTransitioning? {
-        return BubbleTransitionAnimationController(duration: 0.4, transitionType: .present)
-    }
-
-    func animationController(
-        forDismissed dismissed: UIViewController
-    ) -> UIViewControllerAnimatedTransitioning? {
-        return BubbleTransitionAnimationController(duration: 0.4, transitionType: .dismiss)
     }
 }
