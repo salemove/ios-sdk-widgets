@@ -185,6 +185,7 @@
 		C43D7A1125FF92680064B1DA /* ChoiceCardStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43D7A1025FF92680064B1DA /* ChoiceCardStyle.swift */; };
 		C43D7A1525FF9A590064B1DA /* ChatChoiceCardOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43D7A1425FF9A590064B1DA /* ChatChoiceCardOption.swift */; };
 		C460C7782600BCF400449851 /* ChoiceCardOptionStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C460C7772600BCF400449851 /* ChoiceCardOptionStyle.swift */; };
+		C471471F266FE609000DF251 /* BubbleTransitionAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C471471E266FE609000DF251 /* BubbleTransitionAnimationController.swift */; };
 		C47901AF25ED2E70007EE195 /* ScreenShareOfferPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47901AE25ED2E70007EE195 /* ScreenShareOfferPresenter.swift */; };
 		C47901B325ED2F31007EE195 /* ScreenShareOfferAlertConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47901B225ED2F31007EE195 /* ScreenShareOfferAlertConfiguration.swift */; };
 		C47901B725ED2FB0007EE195 /* AlertViewController+ScreenShareOffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47901B625ED2FB0007EE195 /* AlertViewController+ScreenShareOffer.swift */; };
@@ -196,6 +197,7 @@
 		C49A29EA2614A32600819269 /* ChatMessageContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49A29E92614A32600819269 /* ChatMessageContent.swift */; };
 		C49A29F22614A85E00819269 /* ChoiceCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49A29F12614A85E00819269 /* ChoiceCard.swift */; };
 		C49E232F25FFA360001A851C /* ChoiceCardOptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49E232E25FFA360001A851C /* ChoiceCardOptionView.swift */; };
+		C4C2A1702670E848003AC039 /* UIViewController+TopmostVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C2A16F2670E848003AC039 /* UIViewController+TopmostVC.swift */; };
 		C4F176CD261D1543009D9F07 /* ChatFileDownloadContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F176CB261D1543009D9F07 /* ChatFileDownloadContentView.swift */; };
 		C4F176CE261D1543009D9F07 /* ChatFileDownloadContentStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F176CC261D1543009D9F07 /* ChatFileDownloadContentStyle.swift */; };
 		FD01A52B483418AB02DCFBFC /* Pods_GliaWidgets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85639A838514258D976E1B2A /* Pods_GliaWidgets.framework */; };
@@ -423,6 +425,7 @@
 		C43D7A1425FF9A590064B1DA /* ChatChoiceCardOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatChoiceCardOption.swift; sourceTree = "<group>"; };
 		C460C7772600BCF400449851 /* ChoiceCardOptionStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoiceCardOptionStyle.swift; sourceTree = "<group>"; };
 		C46B2463262F05BE001245A1 /* TestingApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TestingApp.entitlements; sourceTree = "<group>"; };
+		C471471E266FE609000DF251 /* BubbleTransitionAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleTransitionAnimationController.swift; sourceTree = "<group>"; };
 		C47901AE25ED2E70007EE195 /* ScreenShareOfferPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenShareOfferPresenter.swift; sourceTree = "<group>"; };
 		C47901B225ED2F31007EE195 /* ScreenShareOfferAlertConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenShareOfferAlertConfiguration.swift; sourceTree = "<group>"; };
 		C47901B625ED2FB0007EE195 /* AlertViewController+ScreenShareOffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlertViewController+ScreenShareOffer.swift"; sourceTree = "<group>"; };
@@ -434,6 +437,7 @@
 		C49A29E92614A32600819269 /* ChatMessageContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatMessageContent.swift; sourceTree = "<group>"; };
 		C49A29F12614A85E00819269 /* ChoiceCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoiceCard.swift; sourceTree = "<group>"; };
 		C49E232E25FFA360001A851C /* ChoiceCardOptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoiceCardOptionView.swift; sourceTree = "<group>"; };
+		C4C2A16F2670E848003AC039 /* UIViewController+TopmostVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+TopmostVC.swift"; sourceTree = "<group>"; };
 		C4F176CB261D1543009D9F07 /* ChatFileDownloadContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFileDownloadContentView.swift; sourceTree = "<group>"; };
 		C4F176CC261D1543009D9F07 /* ChatFileDownloadContentStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFileDownloadContentStyle.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1171,6 +1175,7 @@
 				1ABD6C9125B6F2D200D56EFA /* String+TemplateString.swift */,
 				1A0C9AC725C9493D00815406 /* Int+Extensions.swift */,
 				1A0EDF6C25E7AC100076D1AD /* UIImage+Extensions.swift */,
+				C4C2A16F2670E848003AC039 /* UIViewController+TopmostVC.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1324,6 +1329,7 @@
 			children = (
 				1ABD6C5425B574FF00D56EFA /* BubbleView.swift */,
 				1ABD6C5825B5758000D56EFA /* BubbleStyle.swift */,
+				C471471E266FE609000DF251 /* BubbleTransitionAnimationController.swift */,
 			);
 			path = Bubble;
 			sourceTree = "<group>";
@@ -1795,6 +1801,7 @@
 				C49A29DB2614A22600819269 /* QuickLookViewModel.swift in Sources */,
 				1A4AD3C4256E7A0C00468BFB /* ThemeFontStyle.swift in Sources */,
 				1A0C9AC825C9493D00815406 /* Int+Extensions.swift in Sources */,
+				C4C2A1702670E848003AC039 /* UIViewController+TopmostVC.swift in Sources */,
 				1A6EB05725A717CB0007081A /* ChatMessage.swift in Sources */,
 				1AA738B225790D5A00E1120F /* AlertView.swift in Sources */,
 				C47901B725ED2FB0007EE195 /* AlertViewController+ScreenShareOffer.swift in Sources */,
@@ -1869,6 +1876,7 @@
 				1A1E309625F8CA4400850E68 /* FileDownload.swift in Sources */,
 				1A4AD3AF256D283700468BFB /* ChatMessageView.swift in Sources */,
 				1A0EDF6D25E7AC100076D1AD /* UIImage+Extensions.swift in Sources */,
+				C471471F266FE609000DF251 /* BubbleTransitionAnimationController.swift in Sources */,
 				C49A29E32614A29700819269 /* FileImageStyle.swift in Sources */,
 				1A60AFD52566992A00E53F53 /* ChatViewModel.swift in Sources */,
 				1A60AFE025669A6100E53F53 /* ChatViewController.swift in Sources */,

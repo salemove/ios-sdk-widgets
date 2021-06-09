@@ -35,7 +35,6 @@ class GliaViewController: UIViewController {
         self.delegate = delegate
         super.init(nibName: nil, bundle: nil)
         setup()
-        layout()
     }
 
     @available(*, unavailable)
@@ -111,6 +110,8 @@ class GliaViewController: UIViewController {
     }
 
     private func setup() {
+        transitioningDelegate = self
+        modalPresentationStyle = .custom
         maximize(animated: false)
     }
 
@@ -123,5 +124,21 @@ class GliaViewController: UIViewController {
         case .minimized:
             delegate?.event(.minimized)
         }
+    }
+}
+
+extension GliaViewController: UIViewControllerTransitioningDelegate {
+    func animationController(
+        forPresented presented: UIViewController,
+        presenting: UIViewController,
+        source: UIViewController
+    ) -> UIViewControllerAnimatedTransitioning? {
+        return BubbleTransitionAnimationController(duration: 0.4, transitionType: .present)
+    }
+
+    func animationController(
+        forDismissed dismissed: UIViewController
+    ) -> UIViewControllerAnimatedTransitioning? {
+        return BubbleTransitionAnimationController(duration: 0.4, transitionType: .dismiss)
     }
 }

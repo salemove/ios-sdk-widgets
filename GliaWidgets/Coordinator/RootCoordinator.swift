@@ -104,14 +104,12 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
             bubbleView: bubbleView,
             delegate: self
         )
-        gliaViewController.modalPresentationStyle = .fullScreen
         gliaViewController.insertNavigationController(navigationController)
         presentWindow(animated: true)
         delegate?(.started)
     }
 
     private func end() {
-        // window.endEditing(true) // FIXME
         dismissWindow(animated: true) {
             self.engagement = .none
             self.navigationPresenter.setViewControllers([], animated: false)
@@ -273,12 +271,12 @@ extension RootCoordinator: GliaWindowDelegate {
     func event(_ event: GliaWindowEvent) {
         switch event {
         case .minimized:
-            dismissWindow(animated: false) { [weak self] in
+            dismissWindow(animated: true) { [weak self] in
                 self?.isWindowVisible.value = false
                 self?.delegate?(.minimized)
             }
         case .maximized:
-            presentWindow(animated: false) { [weak self] in
+            presentWindow(animated: true) { [weak self] in
                 self?.isWindowVisible.value = true
                 self?.delegate?(.maximized)
             }
@@ -295,28 +293,4 @@ extension EngagementKind {
             self = .videoCall
         }
     }
-}
-
-extension UIViewController {
-    func topMostViewController() -> UIViewController {
-        if let presented = self.presentedViewController {
-            return presented.topMostViewController()
-        }
-
-        if let navigation = self as? UINavigationController {
-            return navigation.visibleViewController?.topMostViewController() ?? navigation
-        }
-
-        if let tab = self as? UITabBarController {
-            return tab.selectedViewController?.topMostViewController() ?? tab
-        }
-
-        return self
-    }
-}
-
-extension UIWindow {
-  func topMostViewController() -> UIViewController? {
-    return rootViewController?.topMostViewController()
-  }
 }
