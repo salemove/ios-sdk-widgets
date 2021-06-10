@@ -194,7 +194,7 @@ class ChatView: EngagementView {
 
         tapGesture.cancelsTouchesInView = false
 
-        addGestureRecognizer(tapGesture)
+        tableView.addGestureRecognizer(tapGesture)
     }
     
     @objc
