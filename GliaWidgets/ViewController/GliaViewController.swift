@@ -14,14 +14,7 @@ class GliaViewController: UIViewController {
         didSet { bubbleWindow?.bubbleKind = bubbleKind }
     }
 
-    private enum State {
-        case maximized
-        case minimized
-    }
-
-    private var state: State = .maximized
     private weak var delegate: GliaViewControllerDelegate?
-    private var gliaNavigationController: UINavigationController!
     private let bubbleView: BubbleView
     private var bubbleWindow: BubbleWindow?
     private var animationImageView: UIImageView?
@@ -42,13 +35,6 @@ class GliaViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func insertNavigationController(_ navigationController: UINavigationController) {
-        self.gliaNavigationController = navigationController
-        addChild(navigationController)
-        view.addSubview(navigationController.view)
-        navigationController.didMove(toParent: self)
-    }
-
     func maximize(animated: Bool) {
         UIView.animate(
             withDuration: animated ? 0.4 : 0.0,
@@ -64,7 +50,7 @@ class GliaViewController: UIViewController {
 
             }
         )
-        setState(.maximized)
+        delegate?.event(.maximized)
     }
 
     func minimize(animated: Bool) {
@@ -86,22 +72,11 @@ class GliaViewController: UIViewController {
                 bubbleWindow.alpha = 1.0
             }
         )
-        setState(.minimized)
+        delegate?.event(.minimized)
     }
 
     private func setup() {
         modalPresentationStyle = .fullScreen
         modalTransitionStyle = .crossDissolve
-    }
-
-    private func setState(_ state: State) {
-        self.state = state
-
-        switch state {
-        case .maximized:
-            delegate?.event(.maximized)
-        case .minimized:
-            delegate?.event(.minimized)
-        }
     }
 }

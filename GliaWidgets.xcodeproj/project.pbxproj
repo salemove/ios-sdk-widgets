@@ -196,7 +196,7 @@
 		C49A29EA2614A32600819269 /* ChatMessageContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49A29E92614A32600819269 /* ChatMessageContent.swift */; };
 		C49A29F22614A85E00819269 /* ChoiceCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49A29F12614A85E00819269 /* ChoiceCard.swift */; };
 		C49E232F25FFA360001A851C /* ChoiceCardOptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49E232E25FFA360001A851C /* ChoiceCardOptionView.swift */; };
-		C4C2A1702670E848003AC039 /* UIViewController+TopmostVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C2A16F2670E848003AC039 /* UIViewController+TopmostVC.swift */; };
+		C4C2A1702670E848003AC039 /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C2A16F2670E848003AC039 /* UIViewController+Extensions.swift */; };
 		C4F176CD261D1543009D9F07 /* ChatFileDownloadContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F176CB261D1543009D9F07 /* ChatFileDownloadContentView.swift */; };
 		C4F176CE261D1543009D9F07 /* ChatFileDownloadContentStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F176CC261D1543009D9F07 /* ChatFileDownloadContentStyle.swift */; };
 		FD01A52B483418AB02DCFBFC /* Pods_GliaWidgets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85639A838514258D976E1B2A /* Pods_GliaWidgets.framework */; };
@@ -435,7 +435,7 @@
 		C49A29E92614A32600819269 /* ChatMessageContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatMessageContent.swift; sourceTree = "<group>"; };
 		C49A29F12614A85E00819269 /* ChoiceCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoiceCard.swift; sourceTree = "<group>"; };
 		C49E232E25FFA360001A851C /* ChoiceCardOptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoiceCardOptionView.swift; sourceTree = "<group>"; };
-		C4C2A16F2670E848003AC039 /* UIViewController+TopmostVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+TopmostVC.swift"; sourceTree = "<group>"; };
+		C4C2A16F2670E848003AC039 /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
 		C4F176CB261D1543009D9F07 /* ChatFileDownloadContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFileDownloadContentView.swift; sourceTree = "<group>"; };
 		C4F176CC261D1543009D9F07 /* ChatFileDownloadContentStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFileDownloadContentStyle.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -646,7 +646,6 @@
 		1A205D5A25655CB1003AA3CD /* GliaWidgets */ = {
 			isa = PBXGroup;
 			children = (
-				1AC7A7462582236300567FF8 /* Window */,
 				1A60AF6825656C0200E53F53 /* Coordinator */,
 				1A60AF6725656BF200E53F53 /* ViewController */,
 				1A60AF6925656C0A00E53F53 /* View */,
@@ -894,6 +893,7 @@
 		1A60AF6725656BF200E53F53 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				1AC7A7472582237500567FF8 /* GliaViewController.swift */,
 				1A60AFD22566991600E53F53 /* Chat */,
 				1A0C143D25B85DA300B00695 /* Call */,
 				1A63B2EF257A3EF100508478 /* Common */,
@@ -1173,7 +1173,7 @@
 				1ABD6C9125B6F2D200D56EFA /* String+TemplateString.swift */,
 				1A0C9AC725C9493D00815406 /* Int+Extensions.swift */,
 				1A0EDF6C25E7AC100076D1AD /* UIImage+Extensions.swift */,
-				C4C2A16F2670E848003AC039 /* UIViewController+TopmostVC.swift */,
+				C4C2A16F2670E848003AC039 /* UIViewController+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1325,6 +1325,7 @@
 		1ABD6C5325B574EF00D56EFA /* Bubble */ = {
 			isa = PBXGroup;
 			children = (
+				1ABD6C5C25B59D1C00D56EFA /* BubbleWindow.swift */,
 				1ABD6C5425B574FF00D56EFA /* BubbleView.swift */,
 				1ABD6C5825B5758000D56EFA /* BubbleStyle.swift */,
 			);
@@ -1339,15 +1340,6 @@
 				1ABD6CAB25B71D1B00D56EFA /* CallViewModel.swift */,
 			);
 			path = Call;
-			sourceTree = "<group>";
-		};
-		1AC7A7462582236300567FF8 /* Window */ = {
-			isa = PBXGroup;
-			children = (
-				1AC7A7472582237500567FF8 /* GliaViewController.swift */,
-				1ABD6C5C25B59D1C00D56EFA /* BubbleWindow.swift */,
-			);
-			path = Window;
 			sourceTree = "<group>";
 		};
 		1AC7A74D258256FF00567FF8 /* Interactor */ = {
@@ -1798,7 +1790,7 @@
 				C49A29DB2614A22600819269 /* QuickLookViewModel.swift in Sources */,
 				1A4AD3C4256E7A0C00468BFB /* ThemeFontStyle.swift in Sources */,
 				1A0C9AC825C9493D00815406 /* Int+Extensions.swift in Sources */,
-				C4C2A1702670E848003AC039 /* UIViewController+TopmostVC.swift in Sources */,
+				C4C2A1702670E848003AC039 /* UIViewController+Extensions.swift in Sources */,
 				1A6EB05725A717CB0007081A /* ChatMessage.swift in Sources */,
 				1AA738B225790D5A00E1120F /* AlertView.swift in Sources */,
 				C47901B725ED2FB0007EE195 /* AlertViewController+ScreenShareOffer.swift in Sources */,

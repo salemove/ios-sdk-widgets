@@ -40,7 +40,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
     private var presentingViewController: UIViewController? {
         return presentingWindow?.topMostViewController()
     }
-    private var gliaViewController: GliaViewController!
+    private var gliaViewController: GliaViewController?
     private let kBubbleViewSize: CGFloat = 60.0
 
     init(
@@ -104,13 +104,13 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
             bubbleView: bubbleView,
             delegate: self
         )
-        gliaViewController.insertNavigationController(navigationController)
-        presentWindow(animated: true)
+        gliaViewController?.insertChild(navigationController)
+        presentGliaViewController(animated: true)
         delegate?(.started)
     }
 
     private func end() {
-        dismissWindow(animated: true) {
+        dismissGliaViewController(animated: true) {
             self.engagement = .none
             self.navigationPresenter.setViewControllers([], animated: false)
             self.removeAllCoordinators()
@@ -138,10 +138,10 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
             case .back:
                 switch self?.engagement {
                 case .chat:
-                    self?.gliaViewController.minimize(animated: true)
+                    self?.gliaViewController?.minimize(animated: true)
                 case .call(let callViewController, _, let upgradedFrom):
                     if upgradedFrom == .chat {
-                        self?.gliaViewController.minimize(animated: true)
+                        self?.gliaViewController?.minimize(animated: true)
                     } else {
                         self?.navigationPresenter.pop(to: callViewController, animated: true)
                     }
@@ -149,7 +149,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
                     break
                 }
             case .engaged(let operatorImageUrl):
-                self?.gliaViewController.bubbleKind = .userImage(url: operatorImageUrl)
+                self?.gliaViewController?.bubbleKind = .userImage(url: operatorImageUrl)
             case .mediaUpgradeAccepted(let offer, let answer):
                 self?.mediaUpgradeAccepted(offer: offer, answer: answer)
             case .call:
@@ -194,13 +194,13 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
                     if upgradedFrom == .chat {
                         self?.navigationPresenter.pop(to: chatViewController, animated: true)
                     } else {
-                        self?.gliaViewController.minimize(animated: true)
+                        self?.gliaViewController?.minimize(animated: true)
                     }
                 default:
                     break
                 }
             case .engaged(let operatorImageUrl):
-                self?.gliaViewController.bubbleKind = .userImage(url: operatorImageUrl)
+                self?.gliaViewController?.bubbleKind = .userImage(url: operatorImageUrl)
             case .chat:
                 switch self?.engagement {
                 case .call(_, let chatViewController, let upgradedFrom):
@@ -213,7 +213,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
                     break
                 }
             case .minimize:
-                self?.gliaViewController.minimize(animated: true)
+                self?.gliaViewController?.minimize(animated: true)
             case .finished:
                 self?.popCoordinator()
                 self?.end()
@@ -226,14 +226,15 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
 }
 
 extension RootCoordinator {
-    private func presentWindow(animated: Bool, completion: (() -> Void)? = nil) {
+    private func presentGliaViewController(animated: Bool, completion: (() -> Void)? = nil) {
+        guard let gliaViewController = gliaViewController else { return }
         presentingViewController?.present(gliaViewController, animated: animated) { [weak self] in
             self?.isWindowVisible.value = true
             completion?()
         }
     }
 
-    private func dismissWindow(animated: Bool, completion: (() -> Void)? = nil) {
+    private func dismissGliaViewController(animated: Bool, completion: (() -> Void)? = nil) {
         presentingViewController?.dismiss(animated: animated) { [weak self] in
             self?.isWindowVisible.value = false
             completion?()
@@ -271,12 +272,12 @@ extension RootCoordinator: GliaViewControllerDelegate {
     func event(_ event: GliaViewControllerEvent) {
         switch event {
         case .minimized:
-            dismissWindow(animated: true) { [weak self] in
+            dismissGliaViewController(animated: true) { [weak self] in
                 self?.isWindowVisible.value = false
                 self?.delegate?(.minimized)
             }
         case .maximized:
-            presentWindow(animated: true) { [weak self] in
+            presentGliaViewController(animated: true) { [weak self] in
                 self?.isWindowVisible.value = true
                 self?.delegate?(.maximized)
             }
