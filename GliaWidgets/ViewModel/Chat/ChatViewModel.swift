@@ -427,12 +427,12 @@ extension ChatViewModel {
                 operator: interactor.engagedOperator
             )
             if let item = ChatItem(with: message) {
-                let isChatScrolledToBottom = isChatScrolledToBottom.value
+                let isChatBottomReached = isChatScrolledToBottom.value
                 appendItem(item, to: messagesSection, animated: true)
                 action?(.updateItemsUserImage(animated: true))
 
                 action?(.setChoiceCardInputModeEnabled(message.isChoiceCard))
-                if isChatScrolledToBottom {
+                if isChatBottomReached {
                     action?(.scrollToBottom(animated: true))
                 }
                 unreadMessages.received(1)
