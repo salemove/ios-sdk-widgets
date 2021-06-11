@@ -38,9 +38,11 @@ class CallViewModel: EngagementViewModel, ViewModel {
         case setButtonEnabled(CallButton, enabled: Bool)
         case setButtonState(CallButton, state: CallButtonState)
         case setButtonBadge(CallButton, itemCount: Int)
-        case offerMediaUpgrade(SingleMediaUpgradeAlertConfiguration,
-                               accepted: () -> Void,
-                               declined: () -> Void)
+        case offerMediaUpgrade(
+            SingleMediaUpgradeAlertConfiguration,
+            accepted: () -> Void,
+            declined: () -> Void
+        )
         case setRemoteVideo(StreamView?)
         case setLocalVideo(StreamView?)
     }
@@ -63,14 +65,21 @@ class CallViewModel: EngagementViewModel, ViewModel {
     private let startWith: StartAction
     private let durationCounter = CallDurationCounter()
 
-    init(interactor: Interactor,
-         alertConfiguration: AlertConfiguration,
-         call: Call,
-         unreadMessages: ObservableValue<Int>,
-         startWith: StartAction) {
+    init(
+        interactor: Interactor,
+        alertConfiguration: AlertConfiguration,
+        screenshareHandler: ScreenshareHandler,
+        call: Call,
+        unreadMessages: ObservableValue<Int>,
+        startWith: StartAction
+    ) {
         self.call = call
         self.startWith = startWith
-        super.init(interactor: interactor, alertConfiguration: alertConfiguration)
+        super.init(
+            interactor: interactor,
+            alertConfiguration: alertConfiguration,
+            screenshareHandler: screenshareHandler
+        )
         unreadMessages.addObserver(self) { unreadCount, _ in
             self.action?(.setButtonBadge(.chat, itemCount: unreadCount))
         }
@@ -124,7 +133,9 @@ class CallViewModel: EngagementViewModel, ViewModel {
             if case .engagement = startWith {
                 requestMedia()
             }
-            let operatorName = Strings.Operator.name.withOperatorName(interactor.engagedOperator?.firstName)
+            let operatorName = Strings.Operator.name.withOperatorName(
+                interactor.engagedOperator?.firstName
+            )
             action?(.setOperatorName(operatorName))
         case .ended:
             call.end()
@@ -162,8 +173,12 @@ class CallViewModel: EngagementViewModel, ViewModel {
     }
 
     private func showConnecting() {
-        action?(.connecting(name: interactor.engagedOperator?.firstName,
-                            imageUrl: interactor.engagedOperator?.picture?.url))
+        action?(
+            .connecting(
+                name: interactor.engagedOperator?.firstName,
+                imageUrl: interactor.engagedOperator?.picture?.url
+            )
+        )
 
         switch call.kind.value {
         case .audio:
@@ -180,8 +195,12 @@ class CallViewModel: EngagementViewModel, ViewModel {
 
         switch call.kind.value {
         case .audio:
-            action?(.connected(name: interactor.engagedOperator?.firstName,
-                               imageUrl: interactor.engagedOperator?.picture?.url))
+            action?(
+                .connected(
+                    name: interactor.engagedOperator?.firstName,
+                    imageUrl: interactor.engagedOperator?.picture?.url
+                )
+            )
         case .video:
             break
         }
@@ -198,14 +217,18 @@ class CallViewModel: EngagementViewModel, ViewModel {
         }()
 
         showConnecting()
-        interactor.request(mediaType, direction: .twoWay) {
-        } failure: { [weak self] error, salemoveError in
-            if let error = error {
-                self?.showAlert(for: error)
-            } else if let error = salemoveError {
-                self?.showAlert(for: error)
+        interactor.request(
+            mediaType,
+            direction: .twoWay,
+            success: {},
+            failure: { [weak self] error, salemoveError in
+                if let error = error {
+                    self?.showAlert(for: error)
+                } else if let error = salemoveError {
+                    self?.showAlert(for: error)
+                }
             }
-        }
+        )
     }
 
     private func handleAudioStreamError(_ error: SalemoveError) {
@@ -213,7 +236,9 @@ class CallViewModel: EngagementViewModel, ViewModel {
         case let mediaError as MediaError:
             switch mediaError {
             case .permissionDenied:
-                self.showSettingsAlert(with: alertConfiguration.microphoneSettings)
+                showSettingsAlert(
+                    with: alertConfiguration.microphoneSettings
+                )
             default:
                 showAlert(for: error)
             }
@@ -257,32 +282,43 @@ class CallViewModel: EngagementViewModel, ViewModel {
 }
 
 extension CallViewModel {
-    private func offerMediaUpgrade(_ offer: MediaUpgradeOffer, answer: @escaping AnswerWithSuccessBlock) {
+    private func offerMediaUpgrade(
+        _ offer: MediaUpgradeOffer,
+        answer: @escaping AnswerWithSuccessBlock
+    ) {
         switch offer.type {
         case .video:
             let configuration = offer.direction == .oneWay
                 ? alertConfiguration.oneWayVideoUpgrade
                 : alertConfiguration.twoWayVideoUpgrade
-            offerMediaUpgrade(with: configuration,
-                              offer: offer,
-                              answer: answer)
+            offerMediaUpgrade(
+                with: configuration,
+                offer: offer,
+                answer: answer
+            )
         default:
             break
         }
     }
 
-    private func offerMediaUpgrade(with configuration: SingleMediaUpgradeAlertConfiguration,
-                                   offer: MediaUpgradeOffer,
-                                   answer: @escaping AnswerWithSuccessBlock) {
+    private func offerMediaUpgrade(
+        with configuration: SingleMediaUpgradeAlertConfiguration,
+        offer: MediaUpgradeOffer,
+        answer: @escaping AnswerWithSuccessBlock
+    ) {
         guard isViewActive.value else { return }
         let operatorName = interactor.engagedOperator?.firstName
         let onAccepted = {
             self.call.upgrade(to: offer)
             answer(true, nil)
         }
-        action?(.offerMediaUpgrade(configuration.withOperatorName(operatorName),
-                                   accepted: { onAccepted() },
-                                   declined: { answer(false, nil) }))
+        action?(
+            .offerMediaUpgrade(
+                configuration.withOperatorName(operatorName),
+                accepted: { onAccepted() },
+                declined: { answer(false, nil) }
+            )
+        )
     }
 }
 
@@ -316,7 +352,8 @@ extension CallViewModel {
     }
 
     private func updateLocalVideoVisible() {
-        if let localStream = call.video.stream.value.localStream, !localStream.isPaused {
+        if let localStream = call.video.stream.value.localStream,
+           !localStream.isPaused {
             showLocalVideo(with: localStream)
         } else {
             hideLocalVideo()
@@ -359,7 +396,9 @@ extension CallViewModel {
     }
 
     private func onDurationChanged(_ duration: Int) {
-        let text = Strings.Connect.Connected.secondText.withCallDuration(duration.asDurationString)
+        let text = Strings.Connect.Connected.secondText.withCallDuration(
+            duration.asDurationString
+        )
         action?(.setCallDurationText(text))
     }
 }

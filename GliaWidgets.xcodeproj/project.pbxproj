@@ -181,6 +181,7 @@
 		1AFB1E7425F8B00B00CA460D /* ChatTextContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFB1E7325F8B00B00CA460D /* ChatTextContentView.swift */; };
 		1AFB1E7825F8B26800CA460D /* ChatTextContentStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFB1E7725F8B26800CA460D /* ChatTextContentStyle.swift */; };
 		534EEAAA3FCDDD78AAAEB33E /* Pods_TestingApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C45ADF8988F719DA1AC8444 /* Pods_TestingApp.framework */; };
+		C42463742673ABE10082C135 /* ScreenshareHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42463732673ABE10082C135 /* ScreenshareHandler.swift */; };
 		C43D7A0D25FF92530064B1DA /* ChoiceCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43D7A0C25FF92530064B1DA /* ChoiceCardView.swift */; };
 		C43D7A1125FF92680064B1DA /* ChoiceCardStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43D7A1025FF92680064B1DA /* ChoiceCardStyle.swift */; };
 		C43D7A1525FF9A590064B1DA /* ChatChoiceCardOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43D7A1425FF9A590064B1DA /* ChatChoiceCardOption.swift */; };
@@ -419,6 +420,7 @@
 		9C45ADF8988F719DA1AC8444 /* Pods_TestingApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TestingApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A099487F3CEB09E6C42C7AB4 /* Pods-TestingApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestingApp.debug.xcconfig"; path = "Target Support Files/Pods-TestingApp/Pods-TestingApp.debug.xcconfig"; sourceTree = "<group>"; };
 		B4AFA4664CEC40BB399698B2 /* Pods-GliaWidgets.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliaWidgets.debug.xcconfig"; path = "Target Support Files/Pods-GliaWidgets/Pods-GliaWidgets.debug.xcconfig"; sourceTree = "<group>"; };
+		C42463732673ABE10082C135 /* ScreenshareHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenshareHandler.swift; sourceTree = "<group>"; };
 		C43D7A0C25FF92530064B1DA /* ChoiceCardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChoiceCardView.swift; sourceTree = "<group>"; };
 		C43D7A1025FF92680064B1DA /* ChoiceCardStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoiceCardStyle.swift; sourceTree = "<group>"; };
 		C43D7A1425FF9A590064B1DA /* ChatChoiceCardOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatChoiceCardOption.swift; sourceTree = "<group>"; };
@@ -1000,6 +1002,7 @@
 		1A60AFC12566857200E53F53 /* Lib */ = {
 			isa = PBXGroup;
 			children = (
+				C42463722673ABCD0082C135 /* Screensharing */,
 				1A8366AE25FF409B005FE7EE /* File */,
 				1A2DA72B25EF9B5B00032611 /* Upload */,
 				1A1E309425F8CA3400850E68 /* Download */,
@@ -1409,6 +1412,14 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		C42463722673ABCD0082C135 /* Screensharing */ = {
+			isa = PBXGroup;
+			children = (
+				C42463732673ABE10082C135 /* ScreenshareHandler.swift */,
+			);
+			path = Screensharing;
+			sourceTree = "<group>";
+		};
 		C460C7762600BCBD00449851 /* Choice */ = {
 			isa = PBXGroup;
 			children = (
@@ -1803,6 +1814,7 @@
 				1A0C9A6D25C16EED00815406 /* Theme+Call.swift in Sources */,
 				1A60AFAF256680EF00E53F53 /* L10n.swift in Sources */,
 				1A60B0192567FC8A00E53F53 /* ButtonKind.swift in Sources */,
+				C42463742673ABE10082C135 /* ScreenshareHandler.swift in Sources */,
 				1A56D53D257E24A400141BC8 /* PoweredBy.swift in Sources */,
 				1A4AF5CD25AEF4A0002CD0F4 /* AlertViewController+Message.swift in Sources */,
 				1A7CA8242574D68E0047CBBE /* ConnectStatusView.swift in Sources */,

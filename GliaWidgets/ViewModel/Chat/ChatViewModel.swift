@@ -93,6 +93,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     init(
         interactor: Interactor,
         alertConfiguration: AlertConfiguration,
+        screenshareHandler: ScreenshareHandler,
         call: ObservableValue<Call?>,
         unreadMessages: ObservableValue<Int>,
         showsCallBubble: Bool,
@@ -102,7 +103,11 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         self.call = call
         self.showsCallBubble = showsCallBubble
         self.startAction = startAction
-        super.init(interactor: interactor, alertConfiguration: alertConfiguration)
+        super.init(
+            interactor: interactor,
+            alertConfiguration: alertConfiguration,
+            screenshareHandler: screenshareHandler
+        )
         unreadMessages.addObserver(self) { [weak self] unreadCount, _ in
             self?.action?(.updateUnreadMessageIndicator(itemCount: unreadCount))
         }
