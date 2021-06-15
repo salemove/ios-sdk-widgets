@@ -27,6 +27,8 @@ class EngagementViewModel {
             accepted: () -> Void,
             declined: () -> Void
         )
+        case showEndButton
+        case showEndScreenShareButton
     }
 
     enum DelegateEvent {
@@ -54,10 +56,14 @@ class EngagementViewModel {
         self.alertConfiguration = alertConfiguration
         self.screenShareHandler = screenShareHandler
         interactor.addObserver(self, handler: interactorEvent)
+        screenShareHandler.status.addObserver(self) { [weak self] status, _ in
+            self?.onScreenSharingStatusChange(status)
+        }
     }
 
     deinit {
         interactor.removeObserver(self)
+        screenShareHandler.status.removeObserver(self)
         screenShareHandler.cleanUp()
     }
 
@@ -179,6 +185,7 @@ class EngagementViewModel {
 
     func endScreenSharing() {
         screenShareHandler.stop()
+        engagementAction?(.showEndButton)
     }
 
     private func offerScreenShare(answer: @escaping AnswerBlock) {
@@ -242,6 +249,15 @@ class EngagementViewModel {
                 with: alertConfiguration.unexpectedError,
                 dismissed: { self.endSession() }
             )
+        }
+    }
+
+    private func onScreenSharingStatusChange(_ status: ScreenSharingStatus) {
+        switch status {
+        case .started:
+            engagementAction?(.showEndScreenShareButton)
+        default:
+            engagementAction?(.showEndButton)
         }
     }
 }

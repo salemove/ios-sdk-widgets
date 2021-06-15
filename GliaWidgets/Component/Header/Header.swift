@@ -70,24 +70,18 @@ class Header: UIView {
     }
 
     private func setItem(_ item: UIView?, to container: UIView, animated: Bool) {
-        let currentItem = container.subviews.first
+        container.subviews.forEach { $0.removeFromSuperview() }
 
+        guard let item = item else { return }
+        item.alpha = 0.0
+        container.addSubview(item)
+        item.autoPinEdge(toSuperviewEdge: .left, withInset: 0, relation: .greaterThanOrEqual)
+        item.autoPinEdge(toSuperviewEdge: .top, withInset: 0, relation: .greaterThanOrEqual)
+        item.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
+        item.autoPinEdge(toSuperviewEdge: .bottom, withInset: 0, relation: .greaterThanOrEqual)
+        item.autoCenterInSuperview()
         UIView.animate(withDuration: animated ? 0.2 : 0.0) {
-            currentItem?.alpha = 0.0
-        } completion: { _ in
-            currentItem?.removeFromSuperview()
-            if let item = item {
-                item.alpha = 0.0
-                container.addSubview(item)
-                item.autoPinEdge(toSuperviewEdge: .left, withInset: 0, relation: .greaterThanOrEqual)
-                item.autoPinEdge(toSuperviewEdge: .top, withInset: 0, relation: .greaterThanOrEqual)
-                item.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
-                item.autoPinEdge(toSuperviewEdge: .bottom, withInset: 0, relation: .greaterThanOrEqual)
-                item.autoCenterInSuperview()
-                UIView.animate(withDuration: animated ? 0.2 : 0.0) {
-                    item.alpha = 1.0
-                }
-            }
+            item.alpha = 1.0
         }
     }
 
