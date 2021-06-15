@@ -267,7 +267,15 @@ class ChatView: EngagementView {
             }
         }
     }
+
+    private func isBottomReached(for scrollView: UIScrollView) -> Bool {
+        let chatBottomOffset = scrollView.contentSize.height - scrollView.frame.size.height
+        let currentPositionOffset = scrollView.contentOffset.y + scrollView.contentInset.top
+        return currentPositionOffset >= chatBottomOffset
+    }
 }
+
+// MARK: Call Bubble
 
 extension ChatView {
     func showCallBubble(with imageUrl: String?, animated: Bool) {
@@ -322,6 +330,8 @@ extension ChatView {
     }
 }
 
+// MARK: Keyboard
+
 extension ChatView {
     private func observeKeyboard() {
         keyboardObserver.keyboardWillShow = { [unowned self] properties in
@@ -355,6 +365,8 @@ extension ChatView {
     }
 }
 
+// MARK: UITableViewDataSource
+
 extension ChatView: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return numberOfSections?() ?? 0
@@ -374,18 +386,14 @@ extension ChatView: UITableViewDataSource {
     }
 }
 
+// MARK: UITableViewDelegate
+
 extension ChatView: UITableViewDelegate {
     public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         endEditing(true)
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let chatBottomOffset = scrollView.contentSize.height - scrollView.frame.size.height
-        let currentPositionOffset = scrollView.contentOffset.y + scrollView.contentInset.top
-        if currentPositionOffset >= chatBottomOffset {
-            chatScrolledToBottom?(true)
-        } else {
-            chatScrolledToBottom?(false)
-        }
+        chatScrolledToBottom?(isBottomReached(for: scrollView))
     }
 }
