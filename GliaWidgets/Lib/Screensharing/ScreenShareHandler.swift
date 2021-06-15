@@ -1,6 +1,6 @@
 import SalemoveSDK
 
-class ScreenshareHandler {
+class ScreenShareHandler {
     private var visitorState: VisitorScreenSharingState?
 
     func updateState(to state: VisitorScreenSharingState?) {

@@ -68,7 +68,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
     init(
         interactor: Interactor,
         alertConfiguration: AlertConfiguration,
-        screenshareHandler: ScreenshareHandler,
+        screenShareHandler: ScreenShareHandler,
         call: Call,
         unreadMessages: ObservableValue<Int>,
         startWith: StartAction
@@ -78,7 +78,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
         super.init(
             interactor: interactor,
             alertConfiguration: alertConfiguration,
-            screenshareHandler: screenshareHandler
+            screenShareHandler: screenShareHandler
         )
         unreadMessages.addObserver(self) { unreadCount, _ in
             self.action?(.setButtonBadge(.chat, itemCount: unreadCount))

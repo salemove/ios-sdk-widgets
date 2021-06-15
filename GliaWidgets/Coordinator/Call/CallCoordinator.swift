@@ -14,7 +14,7 @@ class CallCoordinator: SubFlowCoordinator, FlowCoordinator {
     private let navigationPresenter: NavigationPresenter
     private let call: Call
     private let unreadMessages: ObservableValue<Int>
-    private let screenshareHandler: ScreenshareHandler
+    private let screenShareHandler: ScreenShareHandler
     private let startAction: CallViewModel.StartAction
 
     init(
@@ -23,7 +23,7 @@ class CallCoordinator: SubFlowCoordinator, FlowCoordinator {
         navigationPresenter: NavigationPresenter,
         call: Call,
         unreadMessages: ObservableValue<Int>,
-        screenshareHandler: ScreenshareHandler,
+        screenShareHandler: ScreenShareHandler,
         startAction: CallViewModel.StartAction
     ) {
         self.interactor = interactor
@@ -31,7 +31,7 @@ class CallCoordinator: SubFlowCoordinator, FlowCoordinator {
         self.navigationPresenter = navigationPresenter
         self.call = call
         self.unreadMessages = unreadMessages
-        self.screenshareHandler = screenshareHandler
+        self.screenShareHandler = screenShareHandler
         self.startAction = startAction
     }
 
@@ -50,7 +50,7 @@ class CallCoordinator: SubFlowCoordinator, FlowCoordinator {
         let viewModel = CallViewModel(
             interactor: interactor,
             alertConfiguration: viewFactory.theme.alertConfiguration,
-            screenshareHandler: screenshareHandler,
+            screenShareHandler: screenShareHandler,
             call: call,
             unreadMessages: unreadMessages,
             startWith: startAction
@@ -73,6 +73,9 @@ class CallCoordinator: SubFlowCoordinator, FlowCoordinator {
                 self?.delegate?(.minimize)
             }
         }
-        return CallViewController(viewModel: viewModel, viewFactory: viewFactory)
+        return CallViewController(
+            viewModel: viewModel,
+            viewFactory: viewFactory
+        )
     }
 }

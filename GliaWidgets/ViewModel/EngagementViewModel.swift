@@ -41,24 +41,24 @@ class EngagementViewModel {
     let interactor: Interactor
     let alertConfiguration: AlertConfiguration
 
-    private let screenshareHandler: ScreenshareHandler
+    private let screenShareHandler: ScreenShareHandler
     private(set) var isViewActive = ObservableValue<Bool>(with: false)
     private static var alertPresenters = Set<EngagementViewModel>()
 
     init(
         interactor: Interactor,
         alertConfiguration: AlertConfiguration,
-        screenshareHandler: ScreenshareHandler
+        screenShareHandler: ScreenShareHandler
     ) {
         self.interactor = interactor
         self.alertConfiguration = alertConfiguration
-        self.screenshareHandler = screenshareHandler
+        self.screenShareHandler = screenShareHandler
         interactor.addObserver(self, handler: interactorEvent)
     }
 
     deinit {
         interactor.removeObserver(self)
-        screenshareHandler.cleanUp()
+        screenShareHandler.cleanUp()
     }
 
     func event(_ event: Event) {
@@ -174,11 +174,11 @@ class EngagementViewModel {
     }
 
     func updateScreenSharingState(to state: VisitorScreenSharingState) {
-        screenshareHandler.updateState(to: state)
+        screenShareHandler.updateState(to: state)
     }
 
     func endScreenSharing() {
-        screenshareHandler.stop()
+        screenShareHandler.stop()
     }
 
     private func offerScreenShare(answer: @escaping AnswerBlock) {
@@ -198,7 +198,7 @@ class EngagementViewModel {
         } failure: { _ in
             self.engagementDelegate?(.finished)
         }
-        screenshareHandler.cleanUp()
+        screenShareHandler.cleanUp()
     }
 
     private func closeTapped() {

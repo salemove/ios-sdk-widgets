@@ -34,7 +34,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
     private let chatCall = ObservableValue<Call?>(with: nil)
     private let unreadMessages = ObservableValue<Int>(with: 0)
     private let isWindowVisible = ObservableValue<Bool>(with: false)
-    private let screenshareHandler = ScreenshareHandler()
+    private let screenShareHandler = ScreenShareHandler()
 
     private let navigationController = NavigationController()
     private let navigationPresenter: NavigationPresenter
@@ -132,7 +132,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
             call: chatCall,
             unreadMessages: unreadMessages,
             showsCallBubble: showsCallBubble,
-            screenshareHandler: screenshareHandler,
+            screenShareHandler: screenShareHandler,
             isWindowVisible: isWindowVisible,
             startAction: startAction
         )
@@ -187,7 +187,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
             navigationPresenter: navigationPresenter,
             call: call,
             unreadMessages: unreadMessages,
-            screenshareHandler: screenshareHandler,
+            screenShareHandler: screenShareHandler,
             startAction: startAction
         )
         coordinator.delegate = { [weak self] event in
