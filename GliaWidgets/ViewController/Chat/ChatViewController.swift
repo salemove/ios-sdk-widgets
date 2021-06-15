@@ -49,9 +49,9 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter,
         showBackButton(with: viewFactory.theme.chat.backButton, in: view.header)
         showCloseButton(with: viewFactory.theme.chat.closeButton, in: view.header)
 
-        view.numberOfSections = { return viewModel.numberOfSections }
-        view.numberOfRows = { return viewModel.numberOfItems(in: $0) }
-        view.itemForRow = { return viewModel.item(for: $0, in: $1) }
+        view.numberOfSections = { viewModel.numberOfSections }
+        view.numberOfRows = { viewModel.numberOfItems(in: $0) }
+        view.itemForRow = { viewModel.item(for: $0, in: $1) }
         view.messageEntryView.textChanged = { viewModel.event(.messageTextChanged($0)) }
         view.messageEntryView.sendTapped = { viewModel.event(.sendTapped) }
         view.messageEntryView.pickMediaTapped = { viewModel.event(.pickMediaTapped) }

@@ -3,17 +3,17 @@ import UIKit
 class CallViewController: EngagementViewController, MediaUpgradePresenter {
     private let viewModel: CallViewModel
 
-    init(viewModel: CallViewModel,
-         viewFactory: ViewFactory) {
+    init(viewModel: CallViewModel, viewFactory: ViewFactory) {
         self.viewModel = viewModel
         super.init(viewModel: viewModel, viewFactory: viewFactory)
     }
 
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    public override func loadView() {
+    override public func loadView() {
         super.loadView()
         let view = viewFactory.makeCallView()
         self.view = view
