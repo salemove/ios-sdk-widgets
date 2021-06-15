@@ -79,8 +79,8 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
                 ? .audio
                 : .video
             let call = Call(kind)
-            call.kind.addObserver(self) { _, _ in
-                self.engagementKind = EngagementKind(with: call.kind.value)
+            call.kind.addObserver(self) { [weak self] _, _ in
+                self?.engagementKind = EngagementKind(with: call.kind.value)
             }
             let chatViewController = startChat(
                 withAction: .none,
@@ -255,8 +255,8 @@ extension RootCoordinator {
         case .chat(let chatViewController):
             guard let kind = CallKind(with: offer) else { return }
             let call = Call(kind)
-            call.kind.addObserver(self) { _, _ in
-                self.engagementKind = EngagementKind(with: call.kind.value)
+            call.kind.addObserver(self) { [weak self] _, _ in
+                self?.engagementKind = EngagementKind(with: call.kind.value)
             }
             let callViewController = startCall(call, withAction: .call(offer: offer, answer: answer))
             engagement = .call(
