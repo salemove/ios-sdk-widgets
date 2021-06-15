@@ -42,6 +42,7 @@ class CallButtonBar: View {
     override func layoutSubviews() {
         super.layoutSubviews()
         adjustBottomSpacing()
+        adjustStackConstraints()
     }
 
     func adjustStackConstraints() {
