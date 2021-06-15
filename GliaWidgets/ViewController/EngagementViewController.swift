@@ -55,6 +55,16 @@ class EngagementViewController: ViewController, AlertPresenter {
                 self.presentSettingsAlert(with: conf, cancelled: cancelled)
             case .offerScreenShare(let conf, accepted: let accepted, declined: let declined):
                 self.offerScreenShare(with: conf, accepted: accepted, declined: declined)
+            case .showEndButton:
+                let endEngagementButton = ActionButton(with: self.viewFactory.theme.chat.endButton)
+                endEngagementButton.tap = { viewModel.event(.closeTapped) }
+                view.header.setRightItem(endEngagementButton, animated: true)
+            case .showEndScreenShareButton:
+                let endEngagementButton = ActionButton(with: self.viewFactory.theme.chat.endButton)
+                endEngagementButton.tap = { viewModel.event(.closeTapped) }
+                let endScreenShareButton = HeaderButton(with: self.viewFactory.theme.chat.endScreenShareButton)
+                endScreenShareButton.tap = { viewModel.event(.endScreenSharingTapped) }
+                view.header.setRightItems([endScreenShareButton, endEngagementButton], animated: true)
             }
         }
     }

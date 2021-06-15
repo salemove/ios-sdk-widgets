@@ -27,6 +27,8 @@ class EngagementViewModel {
             accepted: () -> Void,
             declined: () -> Void
         )
+        case showEndButton
+        case showEndScreenShareButton
     }
 
     enum DelegateEvent {
@@ -175,10 +177,19 @@ class EngagementViewModel {
 
     func updateScreenSharingState(to state: VisitorScreenSharingState) {
         screenShareHandler.updateState(to: state)
+        switch state.status {
+        case .sharing:
+            engagementAction?(.showEndScreenShareButton)
+        case .notSharing:
+            engagementAction?(.showEndButton)
+        @unknown default:
+            break
+        }
     }
 
     func endScreenSharing() {
         screenShareHandler.stop()
+        engagementAction?(.showEndButton)
     }
 
     private func offerScreenShare(answer: @escaping AnswerBlock) {

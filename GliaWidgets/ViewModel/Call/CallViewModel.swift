@@ -28,8 +28,6 @@ class CallViewModel: EngagementViewModel, ViewModel {
         case setOperatorName(String?)
         case setTopTextHidden(Bool)
         case setBottomTextHidden(Bool)
-        case showEndButton
-        case showEndScreenShareButton
         case switchToVideoMode
         case switchToUpgradeMode
         case setCallDurationText(String)
@@ -144,23 +142,6 @@ class CallViewModel: EngagementViewModel, ViewModel {
         }
     }
 
-    override func updateScreenSharingState(to state: VisitorScreenSharingState) {
-        super.updateScreenSharingState(to: state)
-        switch state.status {
-        case .sharing:
-            action?(.showEndScreenShareButton)
-        case .notSharing:
-            action?(.showEndButton)
-        @unknown default:
-            break
-        }
-    }
-
-    override func endScreenSharing() {
-        super.endScreenSharing()
-        action?(.showEndButton)
-    }
-
     private func update(for callKind: CallKind) {
         switch callKind {
         case .audio:
@@ -189,7 +170,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
     }
 
     private func showConnected() {
-        action?(.showEndButton)
+        engagementAction?(.showEndButton)
         action?(.setTopTextHidden(true))
         action?(.setBottomTextHidden(true))
 

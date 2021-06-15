@@ -18,8 +18,6 @@ class ChatViewModel: EngagementViewModel, ViewModel {
 
     enum Action {
         case queue
-        case showEndButton
-        case showEndScreenShareButton
         case connected(name: String?, imageUrl: String?)
         case setMessageEntryEnabled(Bool)
         case setChoiceCardInputModeEnabled(Bool)
@@ -191,7 +189,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             let pictureUrl = engagedOperator?.picture?.url
             action?(.connected(name: name, imageUrl: pictureUrl))
             action?(.setMessageEntryEnabled(true))
-            action?(.showEndButton)
+            engagementAction?(.showEndButton)
             loadHistory()
         default:
             break
@@ -211,23 +209,6 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         default:
             break
         }
-    }
-
-    override func updateScreenSharingState(to state: VisitorScreenSharingState) {
-        super.updateScreenSharingState(to: state)
-        switch state.status {
-        case .sharing:
-            action?(.showEndScreenShareButton)
-        case .notSharing:
-            action?(.showEndButton)
-        @unknown default:
-            break
-        }
-    }
-
-    override func endScreenSharing() {
-        super.endScreenSharing()
-        action?(.showEndButton)
     }
 }
 
