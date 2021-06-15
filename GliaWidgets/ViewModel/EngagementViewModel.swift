@@ -10,12 +10,18 @@ class EngagementViewModel {
     }
 
     enum Action {
-        case confirm(ConfirmationAlertConfiguration,
-                     confirmed: (() -> Void)?)
-        case showAlert(MessageAlertConfiguration,
-                       dismissed: (() -> Void)?)
-        case showSettingsAlert(SettingsAlertConfiguration,
-                               cancelled: (() -> Void)?)
+        case confirm(
+            ConfirmationAlertConfiguration,
+            confirmed: (() -> Void)?
+        )
+        case showAlert(
+            MessageAlertConfiguration,
+            dismissed: (() -> Void)?
+        )
+        case showSettingsAlert(
+            SettingsAlertConfiguration,
+            cancelled: (() -> Void)?
+        )
         case offerScreenShare(
             ScreenShareOfferAlertConfiguration,
             accepted: () -> Void,
@@ -47,6 +53,7 @@ class EngagementViewModel {
 
     deinit {
         interactor.removeObserver(self)
+        cleanUp()
     }
 
     func event(_ event: Event) {
@@ -61,7 +68,12 @@ class EngagementViewModel {
         case .closeTapped:
             closeTapped()
         case .endScreenSharingTapped:
-            engagementAction?(.confirm(alertConfiguration.endScreenShare, confirmed: { self.endScreenSharing() }))
+            engagementAction?(
+                .confirm(
+                    alertConfiguration.endScreenShare,
+                    confirmed: { self.endScreenSharing() }
+                )
+            )
         }
     }
 
@@ -72,9 +84,7 @@ class EngagementViewModel {
     }
 
     func enqueue() {
-        interactor.enqueueForEngagement {
-
-        } failure: { error in
+        interactor.enqueueForEngagement {} failure: { error in
             self.handleError(error)
         }
     }
@@ -101,7 +111,11 @@ class EngagementViewModel {
 
         switch state {
         case .engaged(let engagedOperator):
-            engagementDelegate?(.engaged(operatorImageUrl: engagedOperator?.picture?.url))
+            engagementDelegate?(
+                .engaged(
+                    operatorImageUrl: engagedOperator?.picture?.url
+                )
+            )
         case .ended:
             if EngagementViewModel.alertPresenters.isEmpty {
                 engagementDelegate?(.finished)
@@ -111,7 +125,10 @@ class EngagementViewModel {
         }
     }
 
-    func showAlert(with conf: MessageAlertConfiguration, dismissed: (() -> Void)? = nil) {
+    func showAlert(
+        with conf: MessageAlertConfiguration,
+        dismissed: (() -> Void)? = nil
+    ) {
         let onDismissed = {
             EngagementViewModel.alertPresenters.remove(self)
             dismissed?()
@@ -135,13 +152,20 @@ class EngagementViewModel {
         showAlert(with: alertConfiguration.unexpectedError)
     }
 
-    func showSettingsAlert(with conf: SettingsAlertConfiguration, cancelled: (() -> Void)? = nil) {
+    func showSettingsAlert(
+        with conf: SettingsAlertConfiguration,
+        cancelled: (() -> Void)? = nil
+    ) {
         engagementAction?(.showSettingsAlert(conf, cancelled: cancelled))
     }
 
-    func alertConfiguration(with error: SalemoveError) -> MessageAlertConfiguration {
-        return MessageAlertConfiguration(with: error,
-                                templateConf: self.alertConfiguration.apiError)
+    func alertConfiguration(
+        with error: SalemoveError
+    ) -> MessageAlertConfiguration {
+        return MessageAlertConfiguration(
+            with: error,
+            templateConf: alertConfiguration.apiError
+        )
     }
 
     func updateScreenSharingState(to state: VisitorScreenSharingState) {
@@ -150,6 +174,7 @@ class EngagementViewModel {
 
     func endScreenSharing() {
         screenSharingState?.localScreen?.stopSharing()
+        screenSharingState = nil
     }
 
     private func offerScreenShare(answer: @escaping AnswerBlock) {
@@ -169,16 +194,25 @@ class EngagementViewModel {
         } failure: { _ in
             self.engagementDelegate?(.finished)
         }
+        cleanUp()
     }
 
     private func closeTapped() {
         switch interactor.state {
         case .enqueueing, .enqueued:
-            engagementAction?(.confirm(alertConfiguration.leaveQueue,
-                                       confirmed: { self.endSession() }))
+            engagementAction?(
+                .confirm(
+                    alertConfiguration.leaveQueue,
+                    confirmed: { self.endSession() }
+                )
+            )
         case .engaged:
-            engagementAction?(.confirm(alertConfiguration.endEngagement,
-                                       confirmed: { self.endSession() }))
+            engagementAction?(
+                .confirm(
+                    alertConfiguration.endEngagement,
+                    confirmed: { self.endSession() }
+                )
+            )
         default:
             endSession()
         }
@@ -189,16 +223,26 @@ class EngagementViewModel {
         case let queueError as QueueError:
             switch queueError {
             case .queueClosed, .queueFull:
-                self.showAlert(with: self.alertConfiguration.operatorsUnavailable,
-                               dismissed: { self.endSession() })
+                showAlert(
+                    with: alertConfiguration.operatorsUnavailable,
+                    dismissed: { self.endSession() }
+                )
             default:
-                self.showAlert(with: self.alertConfiguration.unexpectedError,
-                               dismissed: { self.endSession() })
+                showAlert(
+                    with: alertConfiguration.unexpectedError,
+                    dismissed: { self.endSession() }
+                )
             }
         default:
-            self.showAlert(with: self.alertConfiguration.unexpectedError,
-                           dismissed: { self.endSession() })
+            showAlert(
+                with: alertConfiguration.unexpectedError,
+                dismissed: { self.endSession() }
+            )
         }
+    }
+
+    private func cleanUp() {
+        screenSharingState = nil
     }
 }
 
