@@ -76,7 +76,7 @@ class GliaViewController: UIViewController {
     }
 
     private func setup() {
-        modalPresentationStyle = .fullScreen
+        modalPresentationStyle = .overFullScreen
         modalTransitionStyle = .crossDissolve
     }
 }
