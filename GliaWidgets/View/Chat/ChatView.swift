@@ -196,7 +196,7 @@ class ChatView: EngagementView {
 
         tableView.addGestureRecognizer(tapGesture)
     }
-    
+
     @objc
     private func dismissKeyboard(sender: UITapGestureRecognizer) {
         if sender.state == .ended {

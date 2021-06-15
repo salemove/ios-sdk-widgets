@@ -37,23 +37,28 @@ class EngagementViewModel {
 
     var engagementAction: ((Action) -> Void)?
     var engagementDelegate: ((DelegateEvent) -> Void)?
-    var screenSharingState: VisitorScreenSharingState?
 
     let interactor: Interactor
     let alertConfiguration: AlertConfiguration
 
+    private let screenShareHandler: ScreenShareHandler
     private(set) var isViewActive = ObservableValue<Bool>(with: false)
     private static var alertPresenters = Set<EngagementViewModel>()
 
-    init(interactor: Interactor, alertConfiguration: AlertConfiguration) {
+    init(
+        interactor: Interactor,
+        alertConfiguration: AlertConfiguration,
+        screenShareHandler: ScreenShareHandler
+    ) {
         self.interactor = interactor
         self.alertConfiguration = alertConfiguration
+        self.screenShareHandler = screenShareHandler
         interactor.addObserver(self, handler: interactorEvent)
     }
 
     deinit {
         interactor.removeObserver(self)
-        cleanUp()
+        screenShareHandler.cleanUp()
     }
 
     func event(_ event: Event) {
@@ -97,7 +102,7 @@ class EngagementViewModel {
             handleError(error)
         case .screenShareOffer(let answer):
             offerScreenShare(answer: answer)
-        case .screenSharingStateChanged(to: let state):
+        case .screenSharingStateChanged(let state):
             updateScreenSharingState(to: state)
         default:
             break
@@ -169,12 +174,11 @@ class EngagementViewModel {
     }
 
     func updateScreenSharingState(to state: VisitorScreenSharingState) {
-        screenSharingState = state
+        screenShareHandler.updateState(to: state)
     }
 
     func endScreenSharing() {
-        screenSharingState?.localScreen?.stopSharing()
-        screenSharingState = nil
+        screenShareHandler.stop()
     }
 
     private func offerScreenShare(answer: @escaping AnswerBlock) {
@@ -194,7 +198,7 @@ class EngagementViewModel {
         } failure: { _ in
             self.engagementDelegate?(.finished)
         }
-        cleanUp()
+        screenShareHandler.cleanUp()
     }
 
     private func closeTapped() {
@@ -239,10 +243,6 @@ class EngagementViewModel {
                 dismissed: { self.endSession() }
             )
         }
-    }
-
-    private func cleanUp() {
-        screenSharingState = nil
     }
 }
 
