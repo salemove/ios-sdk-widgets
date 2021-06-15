@@ -32,8 +32,8 @@ class ChatCallUpgradeView: UIView {
     private func setup() {
         update(with: style)
 
-        duration.addObserver(self) { duration, _ in
-            self.durationLabel.text = duration.asDurationString
+        duration.addObserver(self) { [weak self] duration, _ in
+            self?.durationLabel.text = duration.asDurationString
         }
     }
 

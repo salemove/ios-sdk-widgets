@@ -32,8 +32,8 @@ class ChatFileContentView: UIView {
             update(with: file)
         case .download(let download):
             update(with: download)
-            download.state.addObserver(self) { _, _ in
-                self.update(with: download)
+            download.state.addObserver(self) { [weak self] _, _ in
+                self?.update(with: download)
             }
         }
 

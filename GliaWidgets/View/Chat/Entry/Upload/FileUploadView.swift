@@ -40,8 +40,8 @@ class FileUploadView: UIView {
         removeButton.addTarget(self, action: #selector(remove), for: .touchUpInside)
 
         update(for: upload.state.value)
-        upload.state.addObserver(self) { state, _ in
-            self.update(for: state)
+        upload.state.addObserver(self) { [weak self] state, _ in
+            self?.update(for: state)
         }
     }
 
@@ -94,8 +94,8 @@ class FileUploadView: UIView {
             stateLabel.textColor = style.uploading.textColor
             progressView.tintColor = style.progressColor
             progressView.progress = Float(progress.value)
-            progress.addObserver(self) { progress, _ in
-                self.progressView.progress = Float(progress)
+            progress.addObserver(self) { [weak self] progress, _ in
+                self?.progressView.progress = Float(progress)
             }
         case .uploaded:
             fileImageView.kind = .file(upload.localFile)

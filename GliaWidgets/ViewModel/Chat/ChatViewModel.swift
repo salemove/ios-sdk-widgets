@@ -115,14 +115,14 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             isViewVisible: isViewActive,
             isChatScrolledToBottom: isChatScrolledToBottom
         )
-        self.call.addObserver(self) { call, _ in
-            self.onCall(call)
+        self.call.addObserver(self) { [weak self] call, _ in
+            self?.onCall(call)
         }
-        uploader.state.addObserver(self) { state, _ in
-            self.onUploaderStateChanged(state)
+        uploader.state.addObserver(self) { [weak self] state, _ in
+            self?.onUploaderStateChanged(state)
         }
-        uploader.limitReached.addObserver(self) { limitReached, _ in
-            self.action?(.pickMediaButtonEnabled(!limitReached))
+        uploader.limitReached.addObserver(self) { [weak self] limitReached, _ in
+            self?.action?(.pickMediaButtonEnabled(!limitReached))
         }
     }
 
@@ -452,7 +452,8 @@ extension ChatViewModel {
     private func presentMediaPicker() {
         let itemSelected = { (kind: ListItemKind) -> Void in
             let media = ObservableValue<MediaPickerEvent>(with: .none)
-            media.addObserver(self) { event, _ in
+            media.addObserver(self) { [weak self] event, _ in
+                guard let self = self else { return }
                 switch event {
                 case .none, .cancelled:
                     break
@@ -468,12 +469,12 @@ extension ChatViewModel {
                 }
             }
             let file = ObservableValue<FilePickerEvent>(with: .none)
-            file.addObserver(self) { event, _ in
+            file.addObserver(self) { [weak self] event, _ in
                 switch event {
                 case .none, .cancelled:
                     break
                 case .pickedFile(let url):
-                    self.filePicked(url)
+                    self?.filePicked(url)
                 }
             }
             switch kind {

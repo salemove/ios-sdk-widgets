@@ -78,23 +78,23 @@ class CallViewModel: EngagementViewModel, ViewModel {
             alertConfiguration: alertConfiguration,
             screenShareHandler: screenShareHandler
         )
-        unreadMessages.addObserver(self) { unreadCount, _ in
-            self.action?(.setButtonBadge(.chat, itemCount: unreadCount))
+        unreadMessages.addObserver(self) { [weak self] unreadCount, _ in
+            self?.action?(.setButtonBadge(.chat, itemCount: unreadCount))
         }
-        call.kind.addObserver(self) { kind, _ in
-            self.onKindChanged(kind)
+        call.kind.addObserver(self) { [weak self] kind, _ in
+            self?.onKindChanged(kind)
         }
-        call.state.addObserver(self) { state, _ in
-            self.onStateChanged(state)
+        call.state.addObserver(self) { [weak self] state, _ in
+            self?.onStateChanged(state)
         }
-        call.video.stream.addObserver(self) { audio, _ in
-            self.onVideoChanged(audio)
+        call.video.stream.addObserver(self) { [weak self] audio, _ in
+            self?.onVideoChanged(audio)
         }
-        call.audio.stream.addObserver(self) { audio, _ in
-            self.onAudioChanged(audio)
+        call.audio.stream.addObserver(self) { [weak self] audio, _ in
+            self?.onAudioChanged(audio)
         }
-        call.duration.addObserver(self) { duration, _ in
-            self.onDurationChanged(duration)
+        call.duration.addObserver(self) { [weak self] duration, _ in
+            self?.onDurationChanged(duration)
         }
     }
 
