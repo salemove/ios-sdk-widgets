@@ -56,10 +56,14 @@ class EngagementViewModel {
         self.alertConfiguration = alertConfiguration
         self.screenShareHandler = screenShareHandler
         interactor.addObserver(self, handler: interactorEvent)
+        screenShareHandler.status.addObserver(self) { status, _ in
+            self.onScreenSharingStatusChange(status)
+        }
     }
 
     deinit {
         interactor.removeObserver(self)
+        screenShareHandler.status.removeObserver(self)
         screenShareHandler.cleanUp()
     }
 
@@ -177,14 +181,6 @@ class EngagementViewModel {
 
     func updateScreenSharingState(to state: VisitorScreenSharingState) {
         screenShareHandler.updateState(to: state)
-        switch state.status {
-        case .sharing:
-            engagementAction?(.showEndScreenShareButton)
-        case .notSharing:
-            engagementAction?(.showEndButton)
-        @unknown default:
-            break
-        }
     }
 
     func endScreenSharing() {
@@ -253,6 +249,15 @@ class EngagementViewModel {
                 with: alertConfiguration.unexpectedError,
                 dismissed: { self.endSession() }
             )
+        }
+    }
+
+    private func onScreenSharingStatusChange(_ status: ScreenSharingStatus) {
+        switch status {
+        case .started:
+            engagementAction?(.showEndScreenShareButton)
+        default:
+            engagementAction?(.showEndButton)
         }
     }
 }
