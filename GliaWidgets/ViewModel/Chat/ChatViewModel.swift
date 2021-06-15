@@ -198,6 +198,21 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         }
     }
 
+    override func interactorEvent(_ event: InteractorEvent) {
+        super.interactorEvent(event)
+
+        switch event {
+        case .receivedMessage(let message):
+            receivedMessage(message)
+        case .messagesUpdated(let messages):
+            messagesUpdated(messages)
+        case .upgradeOffer(let offer, answer: let answer):
+            offerMediaUpgrade(offer, answer: answer)
+        default:
+            break
+        }
+    }
+
     override func updateScreenSharingState(to state: VisitorScreenSharingState) {
         super.updateScreenSharingState(to: state)
         switch state.status {
@@ -214,7 +229,11 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         super.endScreenSharing()
         action?(.showEndButton)
     }
+}
 
+// MARK: Section management
+
+extension ChatViewModel {
     private func appendItem(
         _ item: ChatItem,
         to section: Section<ChatItem>,
@@ -246,21 +265,6 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     ) {
         section.set(items)
         action?(.refreshAll)
-    }
-
-    override func interactorEvent(_ event: InteractorEvent) {
-        super.interactorEvent(event)
-
-        switch event {
-        case .receivedMessage(let message):
-            receivedMessage(message)
-        case .messagesUpdated(let messages):
-            messagesUpdated(messages)
-        case .upgradeOffer(let offer, answer: let answer):
-            offerMediaUpgrade(offer, answer: answer)
-        default:
-            break
-        }
     }
 }
 
@@ -428,11 +432,12 @@ extension ChatViewModel {
                 operator: interactor.engagedOperator
             )
             if let item = ChatItem(with: message) {
+                let isChatBottomReached = isChatScrolledToBottom.value
                 appendItem(item, to: messagesSection, animated: true)
                 action?(.updateItemsUserImage(animated: true))
 
                 action?(.setChoiceCardInputModeEnabled(message.isChoiceCard))
-                if isChatScrolledToBottom.value {
+                if isChatBottomReached {
                     action?(.scrollToBottom(animated: true))
                 }
                 unreadMessages.received(1)
