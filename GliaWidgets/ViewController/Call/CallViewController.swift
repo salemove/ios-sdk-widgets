@@ -3,17 +3,17 @@ import UIKit
 class CallViewController: EngagementViewController, MediaUpgradePresenter {
     private let viewModel: CallViewModel
 
-    init(viewModel: CallViewModel,
-         viewFactory: ViewFactory) {
+    init(viewModel: CallViewModel, viewFactory: ViewFactory) {
         self.viewModel = viewModel
         super.init(viewModel: viewModel, viewFactory: viewFactory)
     }
 
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    public override func loadView() {
+    override public func loadView() {
         super.loadView()
         let view = viewFactory.makeCallView()
         self.view = view
@@ -32,7 +32,6 @@ class CallViewController: EngagementViewController, MediaUpgradePresenter {
         view.willRotate(to: orientation, duration: duration)
     }
 
-    // swiftlint:disable function_body_length
     private func bind(viewModel: CallViewModel, to view: CallView) {
         showBackButton(with: viewFactory.theme.call.backButton, in: view.header)
         showCloseButton(with: viewFactory.theme.call.closeButton, in: view.header)
@@ -57,16 +56,6 @@ class CallViewController: EngagementViewController, MediaUpgradePresenter {
                 view.switchTo(.video)
             case .switchToUpgradeMode:
                 view.switchTo(.upgrading)
-            case .showEndButton:
-                let rightItem = ActionButton(with: self.viewFactory.theme.call.endButton)
-                rightItem.tap = { viewModel.event(.closeTapped) }
-                view.header.setRightItem(rightItem, animated: true)
-            case .showEndScreenShareButton:
-                let endEngagementButton = ActionButton(with: self.viewFactory.theme.call.endButton)
-                endEngagementButton.tap = { viewModel.event(.closeTapped) }
-                let endScreenShareButton = HeaderButton(with: self.viewFactory.theme.call.endScreenShareButton)
-                endScreenShareButton.tap = { viewModel.event(.endScreenSharingTapped) }
-                view.header.setRightItems([endScreenShareButton, endEngagementButton], animated: true)
             case .setTitle(let title):
                 view.header.title = title
             case .setOperatorName(let name):
