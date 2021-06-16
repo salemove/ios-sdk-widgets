@@ -90,8 +90,8 @@ class ChatFileDownloadContentView: ChatFileContentView {
             progressView.tintColor = style.progressColor
             progressView.progress = Float(progress.value)
             progressView.isHidden = false
-            progress.addObserver(self) { progress, _ in
-                self.progressView.progress = Float(progress)
+            progress.addObserver(self) { [weak self] progress, _ in
+                self?.progressView.progress = Float(progress)
             }
         case .downloaded(let file):
             fileImageView.kind = .file(file)

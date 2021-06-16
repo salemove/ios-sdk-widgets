@@ -10,17 +10,25 @@ class EngagementViewModel {
     }
 
     enum Action {
-        case confirm(ConfirmationAlertConfiguration,
-                     confirmed: (() -> Void)?)
-        case showAlert(MessageAlertConfiguration,
-                       dismissed: (() -> Void)?)
-        case showSettingsAlert(SettingsAlertConfiguration,
-                               cancelled: (() -> Void)?)
+        case confirm(
+            ConfirmationAlertConfiguration,
+            confirmed: (() -> Void)?
+        )
+        case showAlert(
+            MessageAlertConfiguration,
+            dismissed: (() -> Void)?
+        )
+        case showSettingsAlert(
+            SettingsAlertConfiguration,
+            cancelled: (() -> Void)?
+        )
         case offerScreenShare(
             ScreenShareOfferAlertConfiguration,
             accepted: () -> Void,
             declined: () -> Void
         )
+        case showEndButton
+        case showEndScreenShareButton
     }
 
     enum DelegateEvent {
@@ -31,22 +39,32 @@ class EngagementViewModel {
 
     var engagementAction: ((Action) -> Void)?
     var engagementDelegate: ((DelegateEvent) -> Void)?
-    var screenSharingState: VisitorScreenSharingState?
 
     let interactor: Interactor
     let alertConfiguration: AlertConfiguration
 
+    private let screenShareHandler: ScreenShareHandler
     private(set) var isViewActive = ObservableValue<Bool>(with: false)
     private static var alertPresenters = Set<EngagementViewModel>()
 
-    init(interactor: Interactor, alertConfiguration: AlertConfiguration) {
+    init(
+        interactor: Interactor,
+        alertConfiguration: AlertConfiguration,
+        screenShareHandler: ScreenShareHandler
+    ) {
         self.interactor = interactor
         self.alertConfiguration = alertConfiguration
+        self.screenShareHandler = screenShareHandler
         interactor.addObserver(self, handler: interactorEvent)
+        screenShareHandler.status.addObserver(self) { [weak self] status, _ in
+            self?.onScreenSharingStatusChange(status)
+        }
     }
 
     deinit {
         interactor.removeObserver(self)
+        screenShareHandler.status.removeObserver(self)
+        screenShareHandler.cleanUp()
     }
 
     func event(_ event: Event) {
@@ -61,7 +79,12 @@ class EngagementViewModel {
         case .closeTapped:
             closeTapped()
         case .endScreenSharingTapped:
-            engagementAction?(.confirm(alertConfiguration.endScreenShare, confirmed: { self.endScreenSharing() }))
+            engagementAction?(
+                .confirm(
+                    alertConfiguration.endScreenShare,
+                    confirmed: { self.endScreenSharing() }
+                )
+            )
         }
     }
 
@@ -72,9 +95,7 @@ class EngagementViewModel {
     }
 
     func enqueue() {
-        interactor.enqueueForEngagement {
-
-        } failure: { error in
+        interactor.enqueueForEngagement {} failure: { error in
             self.handleError(error)
         }
     }
@@ -87,7 +108,7 @@ class EngagementViewModel {
             handleError(error)
         case .screenShareOffer(let answer):
             offerScreenShare(answer: answer)
-        case .screenSharingStateChanged(to: let state):
+        case .screenSharingStateChanged(let state):
             updateScreenSharingState(to: state)
         default:
             break
@@ -101,7 +122,11 @@ class EngagementViewModel {
 
         switch state {
         case .engaged(let engagedOperator):
-            engagementDelegate?(.engaged(operatorImageUrl: engagedOperator?.picture?.url))
+            engagementDelegate?(
+                .engaged(
+                    operatorImageUrl: engagedOperator?.picture?.url
+                )
+            )
         case .ended:
             if EngagementViewModel.alertPresenters.isEmpty {
                 engagementDelegate?(.finished)
@@ -111,7 +136,10 @@ class EngagementViewModel {
         }
     }
 
-    func showAlert(with conf: MessageAlertConfiguration, dismissed: (() -> Void)? = nil) {
+    func showAlert(
+        with conf: MessageAlertConfiguration,
+        dismissed: (() -> Void)? = nil
+    ) {
         let onDismissed = {
             EngagementViewModel.alertPresenters.remove(self)
             dismissed?()
@@ -135,21 +163,29 @@ class EngagementViewModel {
         showAlert(with: alertConfiguration.unexpectedError)
     }
 
-    func showSettingsAlert(with conf: SettingsAlertConfiguration, cancelled: (() -> Void)? = nil) {
+    func showSettingsAlert(
+        with conf: SettingsAlertConfiguration,
+        cancelled: (() -> Void)? = nil
+    ) {
         engagementAction?(.showSettingsAlert(conf, cancelled: cancelled))
     }
 
-    func alertConfiguration(with error: SalemoveError) -> MessageAlertConfiguration {
-        return MessageAlertConfiguration(with: error,
-                                templateConf: self.alertConfiguration.apiError)
+    func alertConfiguration(
+        with error: SalemoveError
+    ) -> MessageAlertConfiguration {
+        return MessageAlertConfiguration(
+            with: error,
+            templateConf: alertConfiguration.apiError
+        )
     }
 
     func updateScreenSharingState(to state: VisitorScreenSharingState) {
-        screenSharingState = state
+        screenShareHandler.updateState(to: state)
     }
 
     func endScreenSharing() {
-        screenSharingState?.localScreen?.stopSharing()
+        screenShareHandler.stop()
+        engagementAction?(.showEndButton)
     }
 
     private func offerScreenShare(answer: @escaping AnswerBlock) {
@@ -169,16 +205,25 @@ class EngagementViewModel {
         } failure: { _ in
             self.engagementDelegate?(.finished)
         }
+        screenShareHandler.cleanUp()
     }
 
     private func closeTapped() {
         switch interactor.state {
         case .enqueueing, .enqueued:
-            engagementAction?(.confirm(alertConfiguration.leaveQueue,
-                                       confirmed: { self.endSession() }))
+            engagementAction?(
+                .confirm(
+                    alertConfiguration.leaveQueue,
+                    confirmed: { self.endSession() }
+                )
+            )
         case .engaged:
-            engagementAction?(.confirm(alertConfiguration.endEngagement,
-                                       confirmed: { self.endSession() }))
+            engagementAction?(
+                .confirm(
+                    alertConfiguration.endEngagement,
+                    confirmed: { self.endSession() }
+                )
+            )
         default:
             endSession()
         }
@@ -189,15 +234,30 @@ class EngagementViewModel {
         case let queueError as QueueError:
             switch queueError {
             case .queueClosed, .queueFull:
-                self.showAlert(with: self.alertConfiguration.operatorsUnavailable,
-                               dismissed: { self.endSession() })
+                showAlert(
+                    with: alertConfiguration.operatorsUnavailable,
+                    dismissed: { self.endSession() }
+                )
             default:
-                self.showAlert(with: self.alertConfiguration.unexpectedError,
-                               dismissed: { self.endSession() })
+                showAlert(
+                    with: alertConfiguration.unexpectedError,
+                    dismissed: { self.endSession() }
+                )
             }
         default:
-            self.showAlert(with: self.alertConfiguration.unexpectedError,
-                           dismissed: { self.endSession() })
+            showAlert(
+                with: alertConfiguration.unexpectedError,
+                dismissed: { self.endSession() }
+            )
+        }
+    }
+
+    private func onScreenSharingStatusChange(_ status: ScreenSharingStatus) {
+        switch status {
+        case .started:
+            engagementAction?(.showEndScreenShareButton)
+        default:
+            engagementAction?(.showEndButton)
         }
     }
 }

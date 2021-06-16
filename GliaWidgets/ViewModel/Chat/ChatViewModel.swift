@@ -18,8 +18,6 @@ class ChatViewModel: EngagementViewModel, ViewModel {
 
     enum Action {
         case queue
-        case showEndButton
-        case showEndScreenShareButton
         case connected(name: String?, imageUrl: String?)
         case setMessageEntryEnabled(Bool)
         case setChoiceCardInputModeEnabled(Bool)
@@ -93,6 +91,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     init(
         interactor: Interactor,
         alertConfiguration: AlertConfiguration,
+        screenShareHandler: ScreenShareHandler,
         call: ObservableValue<Call?>,
         unreadMessages: ObservableValue<Int>,
         showsCallBubble: Bool,
@@ -102,7 +101,11 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         self.call = call
         self.showsCallBubble = showsCallBubble
         self.startAction = startAction
-        super.init(interactor: interactor, alertConfiguration: alertConfiguration)
+        super.init(
+            interactor: interactor,
+            alertConfiguration: alertConfiguration,
+            screenShareHandler: screenShareHandler
+        )
         unreadMessages.addObserver(self) { [weak self] unreadCount, _ in
             self?.action?(.updateUnreadMessageIndicator(itemCount: unreadCount))
         }
@@ -112,14 +115,14 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             isViewVisible: isViewActive,
             isChatScrolledToBottom: isChatScrolledToBottom
         )
-        self.call.addObserver(self) { call, _ in
-            self.onCall(call)
+        self.call.addObserver(self) { [weak self] call, _ in
+            self?.onCall(call)
         }
-        uploader.state.addObserver(self) { state, _ in
-            self.onUploaderStateChanged(state)
+        uploader.state.addObserver(self) { [weak self] state, _ in
+            self?.onUploaderStateChanged(state)
         }
-        uploader.limitReached.addObserver(self) { limitReached, _ in
-            self.action?(.pickMediaButtonEnabled(!limitReached))
+        uploader.limitReached.addObserver(self) { [weak self] limitReached, _ in
+            self?.action?(.pickMediaButtonEnabled(!limitReached))
         }
     }
 
@@ -186,30 +189,32 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             let pictureUrl = engagedOperator?.picture?.url
             action?(.connected(name: name, imageUrl: pictureUrl))
             action?(.setMessageEntryEnabled(true))
-            action?(.showEndButton)
+            engagementAction?(.showEndButton)
             loadHistory()
         default:
             break
         }
     }
 
-    override func updateScreenSharingState(to state: VisitorScreenSharingState) {
-        super.updateScreenSharingState(to: state)
-        switch state.status {
-        case .sharing:
-            action?(.showEndScreenShareButton)
-        case .notSharing:
-            action?(.showEndButton)
-        @unknown default:
+    override func interactorEvent(_ event: InteractorEvent) {
+        super.interactorEvent(event)
+
+        switch event {
+        case .receivedMessage(let message):
+            receivedMessage(message)
+        case .messagesUpdated(let messages):
+            messagesUpdated(messages)
+        case .upgradeOffer(let offer, answer: let answer):
+            offerMediaUpgrade(offer, answer: answer)
+        default:
             break
         }
     }
+}
 
-    override func endScreenSharing() {
-        super.endScreenSharing()
-        action?(.showEndButton)
-    }
+// MARK: Section management
 
+extension ChatViewModel {
     private func appendItem(
         _ item: ChatItem,
         to section: Section<ChatItem>,
@@ -241,21 +246,6 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     ) {
         section.set(items)
         action?(.refreshAll)
-    }
-
-    override func interactorEvent(_ event: InteractorEvent) {
-        super.interactorEvent(event)
-
-        switch event {
-        case .receivedMessage(let message):
-            receivedMessage(message)
-        case .messagesUpdated(let messages):
-            messagesUpdated(messages)
-        case .upgradeOffer(let offer, answer: let answer):
-            offerMediaUpgrade(offer, answer: answer)
-        default:
-            break
-        }
     }
 }
 
@@ -423,11 +413,12 @@ extension ChatViewModel {
                 operator: interactor.engagedOperator
             )
             if let item = ChatItem(with: message) {
+                let isChatBottomReached = isChatScrolledToBottom.value
                 appendItem(item, to: messagesSection, animated: true)
                 action?(.updateItemsUserImage(animated: true))
 
                 action?(.setChoiceCardInputModeEnabled(message.isChoiceCard))
-                if isChatScrolledToBottom.value {
+                if isChatBottomReached {
                     action?(.scrollToBottom(animated: true))
                 }
                 unreadMessages.received(1)
@@ -461,7 +452,8 @@ extension ChatViewModel {
     private func presentMediaPicker() {
         let itemSelected = { (kind: ListItemKind) -> Void in
             let media = ObservableValue<MediaPickerEvent>(with: .none)
-            media.addObserver(self) { event, _ in
+            media.addObserver(self) { [weak self] event, _ in
+                guard let self = self else { return }
                 switch event {
                 case .none, .cancelled:
                     break
@@ -477,12 +469,12 @@ extension ChatViewModel {
                 }
             }
             let file = ObservableValue<FilePickerEvent>(with: .none)
-            file.addObserver(self) { event, _ in
+            file.addObserver(self) { [weak self] event, _ in
                 switch event {
                 case .none, .cancelled:
                     break
                 case .pickedFile(let url):
-                    self.filePicked(url)
+                    self?.filePicked(url)
                 }
             }
             switch kind {

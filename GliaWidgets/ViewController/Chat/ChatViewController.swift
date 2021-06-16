@@ -49,9 +49,9 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter,
         showBackButton(with: viewFactory.theme.chat.backButton, in: view.header)
         showCloseButton(with: viewFactory.theme.chat.closeButton, in: view.header)
 
-        view.numberOfSections = { return viewModel.numberOfSections }
-        view.numberOfRows = { return viewModel.numberOfItems(in: $0) }
-        view.itemForRow = { return viewModel.item(for: $0, in: $1) }
+        view.numberOfSections = { viewModel.numberOfSections }
+        view.numberOfRows = { viewModel.numberOfItems(in: $0) }
+        view.itemForRow = { viewModel.item(for: $0, in: $1) }
         view.messageEntryView.textChanged = { viewModel.event(.messageTextChanged($0)) }
         view.messageEntryView.sendTapped = { viewModel.event(.sendTapped) }
         view.messageEntryView.pickMediaTapped = { viewModel.event(.pickMediaTapped) }
@@ -69,16 +69,6 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter,
             case .connected(let name, let imageUrl):
                 view.setConnectState(.connected(name: name, imageUrl: imageUrl), animated: true)
                 view.unreadMessageIndicatorView.setImage(fromUrl: imageUrl, animated: true)
-            case .showEndButton:
-                let rightItem = ActionButton(with: self.viewFactory.theme.chat.endButton)
-                rightItem.tap = { viewModel.event(.closeTapped) }
-                view.header.setRightItem(rightItem, animated: true)
-            case .showEndScreenShareButton:
-                let endEngagementButton = ActionButton(with: self.viewFactory.theme.chat.endButton)
-                endEngagementButton.tap = { viewModel.event(.closeTapped) }
-                let endScreenShareButton = HeaderButton(with: self.viewFactory.theme.chat.endScreenShareButton)
-                endScreenShareButton.tap = { viewModel.event(.endScreenSharingTapped) }
-                view.header.setRightItems([endScreenShareButton, endEngagementButton], animated: true)
             case .setMessageEntryEnabled(let enabled):
                 view.messageEntryView.isEnabled = enabled
             case .setChoiceCardInputModeEnabled(let enabled):
