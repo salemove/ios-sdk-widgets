@@ -8,11 +8,6 @@ class CallViewController: EngagementViewController, MediaUpgradePresenter {
         super.init(viewModel: viewModel, viewFactory: viewFactory)
     }
 
-    @available(*, unavailable)
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
     override public func loadView() {
         super.loadView()
         let view = viewFactory.makeCallView()
