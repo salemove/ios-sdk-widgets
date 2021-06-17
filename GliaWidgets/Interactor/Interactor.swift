@@ -215,6 +215,10 @@ extension Interactor: Interactable {
         }
     }
 
+    var onEngagementTransfer: EngagementTransferBlock {
+        return { _ in }
+    }
+
     var onOperatorTypingStatusUpdate: OperatorTypingStatusUpdate {
         print("Called: \(#function)")
         return { _ in }

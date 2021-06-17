@@ -28,7 +28,7 @@ public enum GliaEvent {
 }
 
 /// Used to provide `UIWindowScene` to the framework.
-public protocol SceneProvider: class {
+public protocol SceneProvider: AnyObject {
     @available(iOS 13.0, *)
     func windowScene() -> UIWindowScene?
 }

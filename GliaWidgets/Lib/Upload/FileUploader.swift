@@ -61,8 +61,8 @@ class FileUploader {
         guard !limitReached.value else { return nil }
         let localFile = LocalFile(with: url)
         let upload = FileUpload(with: localFile, storage: storage)
-        upload.state.addObserver(self) { _, _ in
-            self.updateState()
+        upload.state.addObserver(self) { [weak self] _, _ in
+            self?.updateState()
         }
         uploads.append(upload)
         upload.startUpload()

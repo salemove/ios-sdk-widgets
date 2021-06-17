@@ -17,9 +17,11 @@ public struct BadgeStyle {
     ///   - fontColor: Color of the text.
     ///   - backgroundColor: Background color of the view.
     ///
-    public init(font: UIFont,
-                fontColor: UIColor,
-                backgroundColor: UIColor) {
+    public init(
+        font: UIFont,
+        fontColor: UIColor,
+        backgroundColor: UIColor
+    ) {
         self.font = font
         self.fontColor = fontColor
         self.backgroundColor = backgroundColor

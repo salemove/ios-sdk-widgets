@@ -49,9 +49,9 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter,
         showBackButton(with: viewFactory.theme.chat.backButton, in: view.header)
         showCloseButton(with: viewFactory.theme.chat.closeButton, in: view.header)
 
-        view.numberOfSections = { return viewModel.numberOfSections }
-        view.numberOfRows = { return viewModel.numberOfItems(in: $0) }
-        view.itemForRow = { return viewModel.item(for: $0, in: $1) }
+        view.numberOfSections = { viewModel.numberOfSections }
+        view.numberOfRows = { viewModel.numberOfItems(in: $0) }
+        view.itemForRow = { viewModel.item(for: $0, in: $1) }
         view.messageEntryView.textChanged = { viewModel.event(.messageTextChanged($0)) }
         view.messageEntryView.sendTapped = { viewModel.event(.sendTapped) }
         view.messageEntryView.pickMediaTapped = { viewModel.event(.pickMediaTapped) }
@@ -60,6 +60,7 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter,
         view.downloadTapped = { viewModel.event(.downloadTapped($0)) }
         view.callBubbleTapped = { viewModel.event(.callBubbleTapped) }
         view.choiceOptionSelected = { viewModel.event(.choiceOptionSelected($0, $1)) }
+        view.chatScrolledToBottom = { viewModel.event(.chatScrolled(bottomReached: $0)) }
 
         viewModel.action = { action in
             switch action {
@@ -67,16 +68,7 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter,
                 view.setConnectState(.queue, animated: false)
             case .connected(let name, let imageUrl):
                 view.setConnectState(.connected(name: name, imageUrl: imageUrl), animated: true)
-            case .showEndButton:
-                let rightItem = ActionButton(with: self.viewFactory.theme.chat.endButton)
-                rightItem.tap = { viewModel.event(.closeTapped) }
-                view.header.setRightItem(rightItem, animated: true)
-            case .showEndScreenShareButton:
-                let endEngagementButton = ActionButton(with: self.viewFactory.theme.chat.endButton)
-                endEngagementButton.tap = { viewModel.event(.closeTapped) }
-                let endScreenShareButton = HeaderButton(with: self.viewFactory.theme.chat.endScreenShareButton)
-                endScreenShareButton.tap = { viewModel.event(.endScreenSharingTapped) }
-                view.header.setRightItems([endScreenShareButton, endEngagementButton], animated: true)
+                view.unreadMessageIndicatorView.setImage(fromUrl: imageUrl, animated: true)
             case .setMessageEntryEnabled(let enabled):
                 view.messageEntryView.isEnabled = enabled
             case .setChoiceCardInputModeEnabled(let enabled):
@@ -91,6 +83,8 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter,
                 view.appendRows(count, to: section, animated: animated)
             case .refreshRow(let row, let section, let animated):
                 view.refreshRow(row, in: section, animated: animated)
+            case .refreshRows(let rows, let section, let animated):
+                view.refreshRows(rows, in: section, animated: animated)
             case .refreshSection(let section):
                 view.refreshSection(section)
             case .refreshAll:
@@ -114,6 +108,8 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter,
                 self.offerMediaUpgrade(with: conf, accepted: accepted, declined: declined)
             case .showCallBubble(let imageUrl):
                 view.showCallBubble(with: imageUrl, animated: true)
+            case .updateUnreadMessageIndicator(let count):
+                view.unreadMessageIndicatorView.newItemCount = count
             }
         }
     }

@@ -14,33 +14,43 @@ class CallCoordinator: SubFlowCoordinator, FlowCoordinator {
     private let navigationPresenter: NavigationPresenter
     private let call: Call
     private let unreadMessages: ObservableValue<Int>
+    private let screenShareHandler: ScreenShareHandler
     private let startAction: CallViewModel.StartAction
 
-    init(interactor: Interactor,
-         viewFactory: ViewFactory,
-         navigationPresenter: NavigationPresenter,
-         call: Call,
-         unreadMessages: ObservableValue<Int>,
-         startAction: CallViewModel.StartAction) {
+    init(
+        interactor: Interactor,
+        viewFactory: ViewFactory,
+        navigationPresenter: NavigationPresenter,
+        call: Call,
+        unreadMessages: ObservableValue<Int>,
+        screenShareHandler: ScreenShareHandler,
+        startAction: CallViewModel.StartAction
+    ) {
         self.interactor = interactor
         self.viewFactory = viewFactory
         self.navigationPresenter = navigationPresenter
         self.call = call
         self.unreadMessages = unreadMessages
+        self.screenShareHandler = screenShareHandler
         self.startAction = startAction
     }
 
     func start() -> CallViewController {
-        let viewController = makeCallViewController(call: call,
-                                                    startAction: startAction)
+        let viewController = makeCallViewController(
+            call: call,
+            startAction: startAction
+        )
         return viewController
     }
 
-    private func makeCallViewController(call: Call,
-                                        startAction: CallViewModel.StartAction) -> CallViewController {
+    private func makeCallViewController(
+        call: Call,
+        startAction: CallViewModel.StartAction
+    ) -> CallViewController {
         let viewModel = CallViewModel(
             interactor: interactor,
             alertConfiguration: viewFactory.theme.alertConfiguration,
+            screenShareHandler: screenShareHandler,
             call: call,
             unreadMessages: unreadMessages,
             startWith: startAction
@@ -63,7 +73,9 @@ class CallCoordinator: SubFlowCoordinator, FlowCoordinator {
                 self?.delegate?(.minimize)
             }
         }
-        return CallViewController(viewModel: viewModel,
-                                  viewFactory: viewFactory)
+        return CallViewController(
+            viewModel: viewModel,
+            viewFactory: viewFactory
+        )
     }
 }

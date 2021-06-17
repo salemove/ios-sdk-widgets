@@ -1,4 +1,4 @@
-protocol FlowCoordinator: class {
+protocol FlowCoordinator: AnyObject {
     associatedtype ViewController
     associatedtype DelegateEvent
 

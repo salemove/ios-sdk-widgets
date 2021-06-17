@@ -35,6 +35,9 @@ public class ChatStyle: EngagementStyle {
     /// Style of the attachment media type picker.
     public var pickMedia: AttachmentSourceListStyle
 
+    /// Style of the unread message indicator.
+    public var unreadMessageIndicator: UnreadMessageIndicatorStyle
+
     ///
     /// - Parameters:
     ///   - header: Style of the view's header (navigation bar area).
@@ -54,24 +57,28 @@ public class ChatStyle: EngagementStyle {
     ///   - videoUpgrade: Style of the video upgrade view.
     ///   - callBubble: Style of the call bubble in chat (shown after upgrade to call).
     ///   - pickMedia: Style of the attachment media type picker.
+    ///   - unreadMessageIndicator: Style of the unread message indicator.
     ///
-    public init(header: HeaderStyle,
-                connect: ConnectStyle,
-                backgroundColor: UIColor,
-                endButton: ActionButtonStyle,
-                endScreenShareButton: HeaderButtonStyle,
-                preferredStatusBarStyle: UIStatusBarStyle,
-                title: String,
-                backButton: HeaderButtonStyle,
-                closeButton: HeaderButtonStyle,
-                visitorMessage: VisitorChatMessageStyle,
-                operatorMessage: OperatorChatMessageStyle,
-                choiceCard: ChoiceCardStyle,
-                messageEntry: ChatMessageEntryStyle,
-                audioUpgrade: ChatCallUpgradeStyle,
-                videoUpgrade: ChatCallUpgradeStyle,
-                callBubble: BubbleStyle,
-                pickMedia: AttachmentSourceListStyle) {
+    public init(
+        header: HeaderStyle,
+        connect: ConnectStyle,
+        backgroundColor: UIColor,
+        endButton: ActionButtonStyle,
+        endScreenShareButton: HeaderButtonStyle,
+        preferredStatusBarStyle: UIStatusBarStyle,
+        title: String,
+        backButton: HeaderButtonStyle,
+        closeButton: HeaderButtonStyle,
+        visitorMessage: VisitorChatMessageStyle,
+        operatorMessage: OperatorChatMessageStyle,
+        choiceCard: ChoiceCardStyle,
+        messageEntry: ChatMessageEntryStyle,
+        audioUpgrade: ChatCallUpgradeStyle,
+        videoUpgrade: ChatCallUpgradeStyle,
+        callBubble: BubbleStyle,
+        pickMedia: AttachmentSourceListStyle,
+        unreadMessageIndicator: UnreadMessageIndicatorStyle
+    ) {
         self.title = title
         self.backButton = backButton
         self.closeButton = closeButton
@@ -83,11 +90,14 @@ public class ChatStyle: EngagementStyle {
         self.videoUpgrade = videoUpgrade
         self.callBubble = callBubble
         self.pickMedia = pickMedia
-        super.init(header: header,
-                   connect: connect,
-                   backgroundColor: backgroundColor,
-                   endButton: endButton,
-                   endScreenShareButton: endScreenShareButton,
-                   preferredStatusBarStyle: preferredStatusBarStyle)
+        self.unreadMessageIndicator = unreadMessageIndicator
+        super.init(
+            header: header,
+            connect: connect,
+            backgroundColor: backgroundColor,
+            endButton: endButton,
+            endScreenShareButton: endScreenShareButton,
+            preferredStatusBarStyle: preferredStatusBarStyle
+        )
     }
 }
