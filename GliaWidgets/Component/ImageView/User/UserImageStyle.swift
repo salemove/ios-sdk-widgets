@@ -8,20 +8,27 @@ public struct UserImageStyle {
     /// Color of the placeholder image.
     public var placeholderColor: UIColor
 
-    /// Background color of the view.
-    public var backgroundColor: UIColor
+    /// Color of the placeholder background.
+    public var placeholderBackgroundColor: UIColor
 
-    ///
+    /// Background color of the image (in case it has transparency).
+    public var imageBackgroundColor: UIColor
+
+    /// 
     /// - Parameters:
     ///   - placeholderImage: Placeholder image.
     ///   - placeholderColor: Color of the placeholder image.
-    ///   - backgroundColor: Background color of the view.
-    ///
-    public init(placeholderImage: UIImage?,
-                placeholderColor: UIColor,
-                backgroundColor: UIColor) {
+    ///   - placeholderBackgroundColor: Color of the placeholder background.
+    ///   - imageBackgroundColor: Background color of the image (in case it has transparency).
+    public init(
+        placeholderImage: UIImage?,
+        placeholderColor: UIColor,
+        placeholderBackgroundColor: UIColor,
+        imageBackgroundColor: UIColor
+    ) {
         self.placeholderImage = placeholderImage
         self.placeholderColor = placeholderColor
-        self.backgroundColor = backgroundColor
+        self.placeholderBackgroundColor = placeholderBackgroundColor
+        self.imageBackgroundColor = imageBackgroundColor
     }
 }

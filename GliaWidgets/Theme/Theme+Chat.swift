@@ -18,7 +18,8 @@ extension Theme {
         let operatorImage = UserImageStyle(
             placeholderImage: Asset.operatorPlaceholder.image,
             placeholderColor: color.baseLight,
-            backgroundColor: color.primary
+            placeholderBackgroundColor: color.primary,
+            imageBackgroundColor: .clear
         )
         let queueOperator = ConnectOperatorStyle(
             operatorImage: operatorImage,
@@ -163,10 +164,20 @@ extension Theme {
         let userImage = UserImageStyle(
             placeholderImage: Asset.operatorPlaceholder.image,
             placeholderColor: color.baseLight,
-            backgroundColor: color.primary
+            placeholderBackgroundColor: color.primary,
+            imageBackgroundColor: .clear
         )
         let callBubble = BubbleStyle(
             userImage: userImage
+        )
+        let unreadMessageIndicator = UnreadMessageIndicatorStyle(
+            badgeFont: font.caption,
+            badgeTextColor: color.baseLight,
+            badgeColor: color.primary,
+            placeholderImage: Asset.operatorPlaceholder.image,
+            placeholderColor: color.baseLight,
+            placeholderBackgroundColor: color.primary,
+            imageBackgroundColor: .clear
         )
         return ChatStyle(
             header: header,
@@ -185,7 +196,8 @@ extension Theme {
             audioUpgrade: audioUpgrade,
             videoUpgrade: videoUpgrade,
             callBubble: callBubble,
-            pickMedia: pickMedia
+            pickMedia: pickMedia,
+            unreadMessageIndicator: unreadMessageIndicator
         )
     }
 
