@@ -1,6 +1,6 @@
 import UIKit
 
-/// Configuration of a screen sharing confirmation alert.
+/// Configuration of the screen sharing confirmation alert.
 public struct ScreenShareOfferAlertConfiguration {
     /// Title of the alert.
     public var title: String

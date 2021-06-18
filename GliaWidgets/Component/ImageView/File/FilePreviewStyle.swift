@@ -1,7 +1,9 @@
 import UIKit
 
-/// Style of a file image preview. Appears in message input area before sending the files or in the incoming messages to preview downloads (except for images).
-public class FileImageStyle {
+/// Style of a file preview.
+///
+/// Appears in message input area before sending the files or in the incoming messages to preview downloads (except for images).
+public class FilePreviewStyle {
     /// Font of the file extension label text.
     public var fileFont: UIFont
 
@@ -29,12 +31,14 @@ public class FileImageStyle {
     ///   - backgroundColor: Background color of the view.
     ///   - errorBackgroundColor: Background color of the view in the error state.
     ///
-    public init(fileFont: UIFont,
-                fileColor: UIColor,
-                errorIcon: UIImage,
-                errorIconColor: UIColor,
-                backgroundColor: UIColor,
-                errorBackgroundColor: UIColor) {
+    public init(
+        fileFont: UIFont,
+        fileColor: UIColor,
+        errorIcon: UIImage,
+        errorIconColor: UIColor,
+        backgroundColor: UIColor,
+        errorBackgroundColor: UIColor
+    ) {
         self.fileFont = fileFont
         self.fileColor = fileColor
         self.errorIcon = errorIcon

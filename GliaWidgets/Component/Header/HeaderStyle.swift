@@ -17,9 +17,11 @@ public struct HeaderStyle {
     ///   - titleColor: Color of the title text.
     ///   - backgroundColor: Background color of the view.
     ///
-    public init(titleFont: UIFont,
-                titleColor: UIColor,
-                backgroundColor: UIColor) {
+    public init(
+        titleFont: UIFont,
+        titleColor: UIColor,
+        backgroundColor: UIColor
+    ) {
         self.titleFont = titleFont
         self.titleColor = titleColor
         self.backgroundColor = backgroundColor

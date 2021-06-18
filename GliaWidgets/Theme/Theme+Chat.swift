@@ -204,7 +204,7 @@ extension Theme {
     private var uploadListStyle: FileUploadListStyle {
         typealias Upload = L10n.Chat.Upload
 
-        let fileImage = FileImageStyle(
+        let filePreview = FilePreviewStyle(
             fileFont: font.subtitle,
             fileColor: color.baseLight,
             errorIcon: Asset.uploadError.image,
@@ -239,7 +239,7 @@ extension Theme {
             infoGenericError: Upload.Error.generic
         )
         let upload = FileUploadStyle(
-            fileImage: fileImage,
+            filePreview: filePreview,
             uploading: uploading,
             uploaded: uploaded,
             error: error,
@@ -256,7 +256,7 @@ extension Theme {
     private var fileDownload: ChatFileDownloadStyle {
         typealias Download = L10n.Chat.Download
 
-        let fileImage = FileImageStyle(
+        let filePreview = FilePreviewStyle(
             fileFont: font.subtitle,
             fileColor: color.baseLight,
             errorIcon: Asset.uploadError.image,
@@ -300,7 +300,7 @@ extension Theme {
         )
 
         return ChatFileDownloadStyle(
-            fileImage: fileImage,
+            filePreview: filePreview,
             download: download,
             downloading: downloading,
             open: open,
@@ -316,7 +316,7 @@ extension Theme {
     private var pickMedia: AttachmentSourceListStyle {
         typealias Chat = L10n.Chat.PickMedia
 
-        let itemFont = font.buttonLabel
+        let itemFont = font.bodyText
         let itemFontColor = color.baseDark
         let itemIconColor = color.baseDark
 

@@ -1,8 +1,8 @@
 import UIKit
 
-/// Style of a button shown in call button bar.
+/// Style of a button shown in call view bottom button bar (i.e. "Chat", "Video", "Mute", "Speaker" and "Minimize").
 public struct CallButtonStyle {
-    /// Style of a button's state.
+    /// Style of a call button ("Chat", "Video", "Mute", "Speaker" and "Minimize") in a specific state - active or inactive.
     public struct StateStyle {
         /// Background color of the button.
         public let backgroundColor: UIColor
@@ -23,9 +23,9 @@ public struct CallButtonStyle {
         public let titleColor: UIColor
     }
 
-    /// Style of active state.
+    /// Style of active (i.e. can be pressed) state.
     public var active: StateStyle
 
-    /// Style of inactive state.
+    /// Style of inactive (i.e. can not be pressed) state.
     public var inactive: StateStyle
 }

@@ -192,8 +192,8 @@
 		C499A57E26382FAA009962AC /* UnreadMessageIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C499A57D26382FAA009962AC /* UnreadMessageIndicatorView.swift */; };
 		C499A58426382FBE009962AC /* UnreadMessageIndicatorStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C499A58326382FBE009962AC /* UnreadMessageIndicatorStyle.swift */; };
 		C49A29DB2614A22600819269 /* QuickLookViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49A29DA2614A22600819269 /* QuickLookViewModel.swift */; };
-		C49A29E32614A29700819269 /* FileImageStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49A29E12614A29700819269 /* FileImageStyle.swift */; };
-		C49A29E42614A29700819269 /* FileImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49A29E22614A29700819269 /* FileImageView.swift */; };
+		C49A29E32614A29700819269 /* FilePreviewStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49A29E12614A29700819269 /* FilePreviewStyle.swift */; };
+		C49A29E42614A29700819269 /* FilePreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49A29E22614A29700819269 /* FilePreviewView.swift */; };
 		C49A29EA2614A32600819269 /* ChatMessageContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49A29E92614A32600819269 /* ChatMessageContent.swift */; };
 		C49A29F22614A85E00819269 /* ChoiceCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49A29F12614A85E00819269 /* ChoiceCard.swift */; };
 		C49E232F25FFA360001A851C /* ChoiceCardOptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49E232E25FFA360001A851C /* ChoiceCardOptionView.swift */; };
@@ -432,8 +432,8 @@
 		C499A57D26382FAA009962AC /* UnreadMessageIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnreadMessageIndicatorView.swift; sourceTree = "<group>"; };
 		C499A58326382FBE009962AC /* UnreadMessageIndicatorStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnreadMessageIndicatorStyle.swift; sourceTree = "<group>"; };
 		C49A29DA2614A22600819269 /* QuickLookViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuickLookViewModel.swift; sourceTree = "<group>"; };
-		C49A29E12614A29700819269 /* FileImageStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileImageStyle.swift; sourceTree = "<group>"; };
-		C49A29E22614A29700819269 /* FileImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileImageView.swift; sourceTree = "<group>"; };
+		C49A29E12614A29700819269 /* FilePreviewStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilePreviewStyle.swift; sourceTree = "<group>"; };
+		C49A29E22614A29700819269 /* FilePreviewView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilePreviewView.swift; sourceTree = "<group>"; };
 		C49A29E92614A32600819269 /* ChatMessageContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatMessageContent.swift; sourceTree = "<group>"; };
 		C49A29F12614A85E00819269 /* ChoiceCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoiceCard.swift; sourceTree = "<group>"; };
 		C49E232E25FFA360001A851C /* ChoiceCardOptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoiceCardOptionView.swift; sourceTree = "<group>"; };
@@ -1467,8 +1467,8 @@
 		C49A29E02614A29700819269 /* File */ = {
 			isa = PBXGroup;
 			children = (
-				C49A29E12614A29700819269 /* FileImageStyle.swift */,
-				C49A29E22614A29700819269 /* FileImageView.swift */,
+				C49A29E12614A29700819269 /* FilePreviewStyle.swift */,
+				C49A29E22614A29700819269 /* FilePreviewView.swift */,
 			);
 			path = File;
 			sourceTree = "<group>";
@@ -1788,7 +1788,7 @@
 				1A4674A725E905AC0078FA1C /* AttachmentSourceListView.swift in Sources */,
 				1A60B02D256BF7FF00E53F53 /* OperatorChatMessageView.swift in Sources */,
 				1A0452F025DBE268000DA0C1 /* MessageButtonStyle.swift in Sources */,
-				C49A29E42614A29700819269 /* FileImageView.swift in Sources */,
+				C49A29E42614A29700819269 /* FilePreviewView.swift in Sources */,
 				1A5F815F258A43E600A605DA /* Section.swift in Sources */,
 				1A60AFBF2566834400E53F53 /* ViewController.swift in Sources */,
 				1A60AFF12566A4B300E53F53 /* NavigationPresenter.swift in Sources */,
@@ -1877,7 +1877,7 @@
 				1A1E309625F8CA4400850E68 /* FileDownload.swift in Sources */,
 				1A4AD3AF256D283700468BFB /* ChatMessageView.swift in Sources */,
 				1A0EDF6D25E7AC100076D1AD /* UIImage+Extensions.swift in Sources */,
-				C49A29E32614A29700819269 /* FileImageStyle.swift in Sources */,
+				C49A29E32614A29700819269 /* FilePreviewStyle.swift in Sources */,
 				1A60AFD52566992A00E53F53 /* ChatViewModel.swift in Sources */,
 				1A60AFE025669A6100E53F53 /* ChatViewController.swift in Sources */,
 				1ABD6C6125B5ABA100D56EFA /* UIView+Screenshot.swift in Sources */,

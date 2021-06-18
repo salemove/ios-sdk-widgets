@@ -4,6 +4,7 @@ import UIKit
 ///
 /// A theme can be created with a `ThemeColorStyle` and `ThemeFontStyle`.
 /// After creation, theme's appearance can be customized through its customizable properties.
+///
 /// ## Customizable properties:
 ///   - `color`:  Base colors used in theme.
 ///   - `font`:  Base font styles used in theme.
@@ -15,10 +16,10 @@ import UIKit
 ///   - `showsPoweredBy`:  Controls the visibility of the "Powered by" text and image.
 ///
 public class Theme {
-    /// Base colors used in theme.
+    /// Base colors used in the theme.
     public let color: ThemeColor
 
-    /// Base font styles used in theme.
+    /// Base font styles used in the theme.
     public let font: ThemeFont
 
     /// Chat view style.
@@ -30,7 +31,7 @@ public class Theme {
     /// Alert view style.
     public lazy var alert: AlertStyle = { return alertStyle }()
 
-    /// Configurations for alerts.
+    /// Configurations for the alerts.
     public lazy var alertConfiguration: AlertConfiguration = { return alertConfigurationStyle }()
 
     /// Style of the minimized bubble.
@@ -46,9 +47,11 @@ public class Theme {
     ///   - fontStyle: Font style for the theme. Defaults to `default` style.
     ///   - showsPoweredBy: Controls the visibility of the "Powered by" text and image.
     ///
-    public init(colorStyle: ThemeColorStyle = .default,
-                fontStyle: ThemeFontStyle = .default,
-                showsPoweredBy: Bool = true) {
+    public init(
+        colorStyle: ThemeColorStyle = .default,
+        fontStyle: ThemeFontStyle = .default,
+        showsPoweredBy: Bool = true
+    ) {
         self.color = colorStyle.color
         self.font = fontStyle.font
         self.showsPoweredBy = showsPoweredBy

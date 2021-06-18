@@ -2,10 +2,10 @@ import UIKit
 
 /// Style of the call view.
 public class CallStyle: EngagementStyle {
-    /// Title for audio call.
+    /// Title for the audio call.
     public var audioTitle: String
 
-    /// Title for video call.
+    /// Title for the video call.
     public var videoTitle: String
 
     /// Back button style in the header.
@@ -47,7 +47,7 @@ public class CallStyle: EngagementStyle {
     /// Color of the bottom text.
     public var bottomTextColor: UIColor
 
-    /// Style of the button bar.
+    /// Style of the call view bottom button bar (with buttons like "Chat", "Video", "Mute", "Speaker" and "Minimize").
     public var buttonBar: CallButtonBarStyle
 
     ///
@@ -75,28 +75,30 @@ public class CallStyle: EngagementStyle {
     ///   - bottomTextColor: Color of the bottom text.
     ///   - buttonBar: Style of the button bar.
     ///
-    public init(header: HeaderStyle,
-                connect: ConnectStyle,
-                backgroundColor: UIColor,
-                endButton: ActionButtonStyle,
-                endScreenShareButton: HeaderButtonStyle,
-                preferredStatusBarStyle: UIStatusBarStyle,
-                audioTitle: String,
-                videoTitle: String,
-                backButton: HeaderButtonStyle,
-                closeButton: HeaderButtonStyle,
-                operatorName: String,
-                operatorNameFont: UIFont,
-                operatorNameColor: UIColor,
-                durationFont: UIFont,
-                durationColor: UIColor,
-                topText: String,
-                topTextFont: UIFont,
-                topTextColor: UIColor,
-                bottomText: String,
-                bottomTextFont: UIFont,
-                bottomTextColor: UIColor,
-                buttonBar: CallButtonBarStyle) {
+    public init(
+        header: HeaderStyle,
+        connect: ConnectStyle,
+        backgroundColor: UIColor,
+        endButton: ActionButtonStyle,
+        endScreenShareButton: HeaderButtonStyle,
+        preferredStatusBarStyle: UIStatusBarStyle,
+        audioTitle: String,
+        videoTitle: String,
+        backButton: HeaderButtonStyle,
+        closeButton: HeaderButtonStyle,
+        operatorName: String,
+        operatorNameFont: UIFont,
+        operatorNameColor: UIColor,
+        durationFont: UIFont,
+        durationColor: UIColor,
+        topText: String,
+        topTextFont: UIFont,
+        topTextColor: UIColor,
+        bottomText: String,
+        bottomTextFont: UIFont,
+        bottomTextColor: UIColor,
+        buttonBar: CallButtonBarStyle
+    ) {
         self.audioTitle = audioTitle
         self.videoTitle = videoTitle
         self.backButton = backButton
@@ -113,11 +115,13 @@ public class CallStyle: EngagementStyle {
         self.bottomTextFont = bottomTextFont
         self.bottomTextColor = bottomTextColor
         self.buttonBar = buttonBar
-        super.init(header: header,
-                   connect: connect,
-                   backgroundColor: backgroundColor,
-                   endButton: endButton,
-                   endScreenShareButton: endScreenShareButton,
-                   preferredStatusBarStyle: preferredStatusBarStyle)
+        super.init(
+            header: header,
+            connect: connect,
+            backgroundColor: backgroundColor,
+            endButton: endButton,
+            endScreenShareButton: endScreenShareButton,
+            preferredStatusBarStyle: preferredStatusBarStyle
+        )
     }
 }

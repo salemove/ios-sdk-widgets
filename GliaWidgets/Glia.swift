@@ -1,7 +1,7 @@
 import UIKit
 import SalemoveSDK
 
-/// Kind of an engagement.
+/// Engagement media type.
 public enum EngagementKind {
     /// No engagement
     case none
@@ -17,7 +17,7 @@ public enum EngagementKind {
 public enum GliaEvent {
     /// Session was started
     case started
-    /// Engagement kind changed
+    /// Engagement media type changed
     case engagementChanged(EngagementKind)
     /// Session has ended
     case ended
@@ -36,7 +36,7 @@ public protocol SceneProvider: AnyObject {
 /// Glia's engagement interface.
 ///
 /// ## Integration
-///     1. Add Glia iOS SDK to you app
+///     1. Add Glia iOS SDK to your app.
 ///     2. Add following privacy descriptions to your app's Info.plist:
 ///         Privacy - Microphone Usage Description
 ///         Privacy - Camera Usage Description
@@ -116,7 +116,7 @@ public class Glia {
     /// A singleton to access the Glia's interface.
     public static let sharedInstance = Glia()
 
-    /// Current engagement kind.
+    /// Current engagement media type.
     public var engagement: EngagementKind { return rootCoordinator?.engagementKind ?? .none }
 
     /// Used to monitor engagement state changes.
@@ -129,7 +129,7 @@ public class Glia {
     /// Starts the engagement.
     ///
     /// - Parameters:
-    ///   - engagementKind: Kind of the engagement.
+    ///   - engagementKind: Engagement media type.
     ///   - configuration: Engagement configuration.
     ///   - queueID: Queue identifier.
     ///   - visitorContext: Visitor context.

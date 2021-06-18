@@ -17,9 +17,11 @@ public class ChatMessageStyle {
     ///   - imageFile: Style of the image content.
     ///   - fileDownload: Style of the downloadable file content.
     ///
-    public init(text: ChatTextContentStyle,
-                imageFile: ChatImageFileContentStyle,
-                fileDownload: ChatFileDownloadStyle) {
+    public init(
+        text: ChatTextContentStyle,
+        imageFile: ChatImageFileContentStyle,
+        fileDownload: ChatFileDownloadStyle
+    ) {
         self.text = text
         self.imageFile = imageFile
         self.fileDownload = fileDownload

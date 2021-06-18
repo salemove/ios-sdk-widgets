@@ -1,4 +1,4 @@
-/// Configuration of an alert that offers to go to app's settings in the Settings app.
+/// Configuration of the alert that offers to go to the app's settings in the Settings app.
 public struct SettingsAlertConfiguration {
     /// Title of the alert.
     public var title: String

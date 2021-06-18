@@ -2,8 +2,8 @@ import UIKit
 
 /// Style of a chat attachment download view.
 public class ChatFileDownloadStyle: ChatFileContentStyle {
-    /// Style of the file image.
-    public var fileImage: FileImageStyle
+    /// Style of the file preview.
+    public var filePreview: FilePreviewStyle
 
     /// Style of the download state.
     public var download: ChatFileDownloadStateStyle
@@ -11,7 +11,7 @@ public class ChatFileDownloadStyle: ChatFileContentStyle {
     /// Style of the downloading state.
     public var downloading: ChatFileDownloadStateStyle
 
-    /// Style of the  state when file is downloaded and can be opened.
+    /// Style of the state when file is downloaded and can be opened.
     public var open: ChatFileDownloadStateStyle
 
     /// Style of the error state.
@@ -31,10 +31,10 @@ public class ChatFileDownloadStyle: ChatFileContentStyle {
 
     ///
     /// - Parameters:
-    ///   - fileImage: Style of the file image.
+    ///   - filePreview: Style of the file preview.
     ///   - download: Style of the download state.
     ///   - downloading: Style of the downloading state.
-    ///   - open: Style of the  state when file is downloaded and can be opened.
+    ///   - open: Style of the state when file is downloaded and can be opened.
     ///   - error: Style of the error state.
     ///   - progressColor: Foreground color of the upload progress bar.
     ///   - errorProgressColor: Foreground color of the upload progress bar in error state.
@@ -42,17 +42,19 @@ public class ChatFileDownloadStyle: ChatFileContentStyle {
     ///   - backgroundColor: Background color of the view.
     ///   - borderColor: Border color of the view.
     ///
-    public init(fileImage: FileImageStyle,
-                download: ChatFileDownloadStateStyle,
-                downloading: ChatFileDownloadStateStyle,
-                open: ChatFileDownloadStateStyle,
-                error: ChatFileDownloadErrorStateStyle,
-                progressColor: UIColor,
-                errorProgressColor: UIColor,
-                progressBackgroundColor: UIColor,
-                backgroundColor: UIColor,
-                borderColor: UIColor) {
-        self.fileImage = fileImage
+    public init(
+        filePreview: FilePreviewStyle,
+        download: ChatFileDownloadStateStyle,
+        downloading: ChatFileDownloadStateStyle,
+        open: ChatFileDownloadStateStyle,
+        error: ChatFileDownloadErrorStateStyle,
+        progressColor: UIColor,
+        errorProgressColor: UIColor,
+        progressBackgroundColor: UIColor,
+        backgroundColor: UIColor,
+        borderColor: UIColor
+    ) {
+        self.filePreview = filePreview
         self.download = download
         self.downloading = downloading
         self.open = open
@@ -76,7 +78,7 @@ public class ChatFileDownloadStateStyle {
     /// Color of the state text.
     public var textColor: UIColor
 
-    /// Font of the file info information text.
+    /// Font of the file information text.
     public var infoFont: UIFont
 
     /// Color of the file information text.
@@ -87,14 +89,16 @@ public class ChatFileDownloadStateStyle {
     ///   - text: Text for the state.
     ///   - font: Font of the state text.
     ///   - textColor: Color of the state text.
-    ///   - infoFont: Font of the file info information text.
+    ///   - infoFont: Font of the file information text.
     ///   - infoColor: Color of the file information text.
     ///
-    public init(text: String,
-                font: UIFont,
-                textColor: UIColor,
-                infoFont: UIFont,
-                infoColor: UIColor) {
+    public init(
+        text: String,
+        font: UIFont,
+        textColor: UIColor,
+        infoFont: UIFont,
+        infoColor: UIColor
+    ) {
         self.text = text
         self.font = font
         self.textColor = textColor
@@ -152,17 +156,19 @@ public class ChatFileDownloadErrorStateStyle {
     ///   - retryFont: Font of the retry text.
     ///   - retryTextColor: Color of the retry text.
     ///
-    public init(text: String,
-                font: UIFont,
-                textColor: UIColor,
-                infoFont: UIFont,
-                infoColor: UIColor,
-                separatorText: String,
-                separatorFont: UIFont,
-                separatorTextColor: UIColor,
-                retryText: String,
-                retryFont: UIFont,
-                retryTextColor: UIColor) {
+    public init(
+        text: String,
+        font: UIFont,
+        textColor: UIColor,
+        infoFont: UIFont,
+        infoColor: UIColor,
+        separatorText: String,
+        separatorFont: UIFont,
+        separatorTextColor: UIColor,
+        retryText: String,
+        retryFont: UIFont,
+        retryTextColor: UIColor
+    ) {
         self.text = text
         self.font = font
         self.textColor = textColor

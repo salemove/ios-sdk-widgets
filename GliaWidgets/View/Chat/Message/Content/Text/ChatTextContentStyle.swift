@@ -17,9 +17,11 @@ public class ChatTextContentStyle {
     ///   - textColor: Color of the message text.
     ///   - backgroundColor: Background color of the content view.
     ///
-    public init(textFont: UIFont,
-                textColor: UIColor,
-                backgroundColor: UIColor) {
+    public init(
+        textFont: UIFont,
+        textColor: UIColor,
+        backgroundColor: UIColor
+    ) {
         self.textFont = textFont
         self.textColor = textColor
         self.backgroundColor = backgroundColor

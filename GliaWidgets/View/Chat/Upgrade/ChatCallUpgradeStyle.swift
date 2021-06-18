@@ -37,14 +37,16 @@ public class ChatCallUpgradeStyle {
     ///   - durationColor: Color of the duration counter text.
     ///   - borderColor: Border color of the view.
     ///
-    public init(icon: UIImage,
-                iconColor: UIColor,
-                text: String,
-                textFont: UIFont,
-                textColor: UIColor,
-                durationFont: UIFont,
-                durationColor: UIColor,
-                borderColor: UIColor) {
+    public init(
+        icon: UIImage,
+        iconColor: UIColor,
+        text: String,
+        textFont: UIFont,
+        textColor: UIColor,
+        durationFont: UIFont,
+        durationColor: UIColor,
+        borderColor: UIColor
+    ) {
         self.icon = icon
         self.iconColor = iconColor
         self.text = text
