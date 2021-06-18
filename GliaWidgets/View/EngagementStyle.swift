@@ -29,12 +29,14 @@ public class EngagementStyle {
     ///   - endScreenShareButton: Style of the screen sharing ending button.
     ///   - preferredStatusBarStyle: Preferred style of the status bar.
     ///
-    public init(header: HeaderStyle,
-                connect: ConnectStyle,
-                backgroundColor: UIColor,
-                endButton: ActionButtonStyle,
-                endScreenShareButton: HeaderButtonStyle,
-                preferredStatusBarStyle: UIStatusBarStyle) {
+    public init(
+        header: HeaderStyle,
+        connect: ConnectStyle,
+        backgroundColor: UIColor,
+        endButton: ActionButtonStyle,
+        endScreenShareButton: HeaderButtonStyle,
+        preferredStatusBarStyle: UIStatusBarStyle
+    ) {
         self.header = header
         self.connect = connect
         self.backgroundColor = backgroundColor

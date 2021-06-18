@@ -33,7 +33,7 @@ public struct AlertConfiguration {
     /// Configuration of the camera permission settings alert.
     public var cameraSettings: SettingsAlertConfiguration
 
-    /// Configuration of the unavailable media source (camera etc) alert.
+    /// Configuration of the unavailable media source (camera, etc) alert.
     public var mediaSourceNotAvailable: MessageAlertConfiguration
 
     /// Configuration of the unexpected error alert.
@@ -55,7 +55,7 @@ public struct AlertConfiguration {
     ///   - endScreenShare: Configuration of the screen sharing end confirmation alert.
     ///   - microphoneSettings: Configuration of the microphone permission settings alert.
     ///   - cameraSettings: Configuration of the camera permission settings alert.
-    ///   - mediaSourceNotAvailable: Configuration of the unavailable media source (camera etc) alert.
+    ///   - mediaSourceNotAvailable: Configuration of the unavailable media source (camera, etc) alert.
     ///   - unexpectedError: Configuration of the unexpected error alert.
     ///   - apiError: Configuration of the API error alert.
     ///

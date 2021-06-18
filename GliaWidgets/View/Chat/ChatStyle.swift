@@ -32,7 +32,7 @@ public class ChatStyle: EngagementStyle {
     /// Style of the call bubble in chat (shown after upgrade to call).
     public var callBubble: BubbleStyle
 
-    /// Style of the attachment media type picker.
+    /// Style of the list that contains the chat attachment sources. Appears in the media upload menu popover in the message input area in chat.
     public var pickMedia: AttachmentSourceListStyle
 
     /// Style of the unread message indicator.

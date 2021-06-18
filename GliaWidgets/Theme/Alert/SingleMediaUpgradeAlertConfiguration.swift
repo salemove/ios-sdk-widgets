@@ -1,6 +1,6 @@
 import UIKit
 
-/// Configuration of a media upgrade confirmation alert.
+/// Configuration of the media upgrade confirmation alert.
 public struct SingleMediaUpgradeAlertConfiguration {
     /// Title of the alert.
     public var title: String

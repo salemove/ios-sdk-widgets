@@ -20,17 +20,21 @@ public class VisitorChatMessageStyle: ChatMessageStyle {
     ///   - statusColor: Color of the message status text.
     ///   - delivered: Text of the message delivered status.
     ///
-    public init(text: ChatTextContentStyle,
-                imageFile: ChatImageFileContentStyle,
-                fileDownload: ChatFileDownloadStyle,
-                statusFont: UIFont,
-                statusColor: UIColor,
-                delivered: String) {
+    public init(
+        text: ChatTextContentStyle,
+        imageFile: ChatImageFileContentStyle,
+        fileDownload: ChatFileDownloadStyle,
+        statusFont: UIFont,
+        statusColor: UIColor,
+        delivered: String
+    ) {
         self.statusFont = statusFont
         self.statusColor = statusColor
         self.delivered = delivered
-        super.init(text: text,
-                   imageFile: imageFile,
-                   fileDownload: fileDownload)
+        super.init(
+            text: text,
+            imageFile: imageFile,
+            fileDownload: fileDownload
+        )
     }
 }

@@ -41,15 +41,17 @@ public struct AlertStyle {
     ///   - positiveAction: Style of a positive action button.
     ///   - negativeAction: Style of a negative action button.
     ///
-    public init(titleFont: UIFont,
-                titleColor: UIColor,
-                titleImageColor: UIColor,
-                messageFont: UIFont,
-                messageColor: UIColor,
-                backgroundColor: UIColor,
-                closeButtonColor: UIColor,
-                positiveAction: ActionButtonStyle,
-                negativeAction: ActionButtonStyle) {
+    public init(
+        titleFont: UIFont,
+        titleColor: UIColor,
+        titleImageColor: UIColor,
+        messageFont: UIFont,
+        messageColor: UIColor,
+        backgroundColor: UIColor,
+        closeButtonColor: UIColor,
+        positiveAction: ActionButtonStyle,
+        negativeAction: ActionButtonStyle
+    ) {
         self.titleFont = titleFont
         self.titleColor = titleColor
         self.titleImageColor = titleImageColor

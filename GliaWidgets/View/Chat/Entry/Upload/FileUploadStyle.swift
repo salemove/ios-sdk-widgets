@@ -2,8 +2,8 @@ import UIKit
 
 /// Style of a single upload view in the uploads list view.
 public class FileUploadStyle {
-    /// Style of the file image.
-    public var fileImage: FileImageStyle
+    /// Style of the file preview.
+    public var filePreview: FilePreviewStyle
 
     /// Style of the uploading state.
     public var uploading: FileUploadStateStyle
@@ -31,7 +31,7 @@ public class FileUploadStyle {
 
     ///
     /// - Parameters:
-    ///   - fileImage: Style of the file image.
+    ///   - filePreview: Style of the file preview.
     ///   - uploading: Style of the uploading state.
     ///   - uploaded: Style of the uploaded state.
     ///   - error: Style of the error state.
@@ -41,16 +41,18 @@ public class FileUploadStyle {
     ///   - removeButtonImage: Image of the remove button.
     ///   - removeButtonColor: Color of the remove button image.
     ///
-    public init(fileImage: FileImageStyle,
-                uploading: FileUploadStateStyle,
-                uploaded: FileUploadStateStyle,
-                error: FileUploadErrorStateStyle,
-                progressColor: UIColor,
-                errorProgressColor: UIColor,
-                progressBackgroundColor: UIColor,
-                removeButtonImage: UIImage,
-                removeButtonColor: UIColor) {
-        self.fileImage = fileImage
+    public init(
+        filePreview: FilePreviewStyle,
+        uploading: FileUploadStateStyle,
+        uploaded: FileUploadStateStyle,
+        error: FileUploadErrorStateStyle,
+        progressColor: UIColor,
+        errorProgressColor: UIColor,
+        progressBackgroundColor: UIColor,
+        removeButtonImage: UIImage,
+        removeButtonColor: UIColor
+    ) {
+        self.filePreview = filePreview
         self.uploading = uploading
         self.uploaded = uploaded
         self.error = error
@@ -87,11 +89,13 @@ public class FileUploadStateStyle {
     ///   - infoFont: Font of the file info information text.
     ///   - infoColor: Color of the file information text.
     ///
-    public init(text: String,
-                font: UIFont,
-                textColor: UIColor,
-                infoFont: UIFont,
-                infoColor: UIColor) {
+    public init(
+        text: String,
+        font: UIFont,
+        textColor: UIColor,
+        infoFont: UIFont,
+        infoColor: UIColor
+    ) {
         self.text = text
         self.font = font
         self.textColor = textColor
@@ -145,16 +149,18 @@ public class FileUploadErrorStateStyle {
     ///   - infoNetworkError: Information text to display on network related error.
     ///   - infoGenericError: Information text to display on generic error.
     ///
-    public init(text: String,
-                font: UIFont,
-                textColor: UIColor,
-                infoFont: UIFont,
-                infoColor: UIColor,
-                infoFileTooBig: String,
-                infoUnsupportedFileType: String,
-                infoSafetyCheckFailed: String,
-                infoNetworkError: String,
-                infoGenericError: String) {
+    public init(
+        text: String,
+        font: UIFont,
+        textColor: UIColor,
+        infoFont: UIFont,
+        infoColor: UIColor,
+        infoFileTooBig: String,
+        infoUnsupportedFileType: String,
+        infoSafetyCheckFailed: String,
+        infoNetworkError: String,
+        infoGenericError: String
+    ) {
         self.text = text
         self.font = font
         self.textColor = textColor

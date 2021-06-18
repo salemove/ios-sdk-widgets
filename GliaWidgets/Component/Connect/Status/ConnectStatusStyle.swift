@@ -1,6 +1,6 @@
 import UIKit
 
-/// Style of a connect status. These are used when visitor is in enqueued, connecting and connected state.
+/// Style of a connect status. These are used when visitor is in enqueued, connecting, and connected state.
 public struct ConnectStatusStyle {
     /// First status text. Include `{operatorName}` template parameter in the string to display operator's name.
     public var firstText: String?
@@ -29,12 +29,14 @@ public struct ConnectStatusStyle {
     ///   - secondTextFont: Font of the second status text.
     ///   - secondTextFontColor: Color of the second status text.
     ///
-    public init(firstText: String?,
-                firstTextFont: UIFont,
-                firstTextFontColor: UIColor,
-                secondText: String?,
-                secondTextFont: UIFont,
-                secondTextFontColor: UIColor) {
+    public init(
+        firstText: String?,
+        firstTextFont: UIFont,
+        firstTextFontColor: UIColor,
+        secondText: String?,
+        secondTextFont: UIFont,
+        secondTextFontColor: UIColor
+    ) {
         self.firstText = firstText
         self.firstTextFont = firstTextFont
         self.firstTextFontColor = firstTextFontColor
