@@ -44,14 +44,6 @@ let package = Package(
             dependencies: [
                 "SalemoveSDK",
                 "GliaWidgets",
-                "Alamofire",
-                "Moya",
-                "Macaw",
-                "ReactiveSwift",
-                "SocketIO",
-                "SwiftPhoenixClient",
-                "Starscream",
-                "SWXMLHash",
                 "TwilioVoice",
                 "WebRTC",
                 "PureLayout"
