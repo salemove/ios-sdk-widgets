@@ -1,72 +1,37 @@
 PODS:
-  - Alamofire (5.4.3)
   - glia-webrtc/bitcode (0.0.3)
-  - ios-socket-client (9.2.0)
-  - Macaw (0.9.7):
-    - SWXMLHash
-  - Moya (14.0.0):
-    - Moya/Core (= 14.0.0)
-  - Moya/Core (14.0.0):
-    - Alamofire (~> 5.0)
   - PureLayout (3.1.8)
-  - ReactiveSwift (6.5.0)
-  - SalemoveSDK (0.29.4):
+  - SalemoveSDK (0.29.5):
     - glia-webrtc/bitcode (= 0.0.3)
-    - ios-socket-client (= 9.2.0)
-    - Macaw (= 0.9.7)
-    - Moya (= 14.0.0)
-    - ReactiveSwift (= 6.5.0)
-    - SwiftPhoenixClient (= 1.2.1)
     - TwilioVoice (= 6.2.0)
-  - Starscream (3.1.1)
-  - SwiftPhoenixClient (1.2.1):
-    - Starscream (~> 3.1.0)
-  - SWXMLHash (5.0.1)
   - TwilioVoice (6.2.0)
 
 DEPENDENCIES:
   - PureLayout (~> 3.1)
-  - SalemoveSDK (from `https://github.com/salemove/ios-bundle`, tag `0.29.4`)
+  - SalemoveSDK (from `https://github.com/salemove/ios-bundle`, tag `0.29.5`)
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
-    - Alamofire
     - glia-webrtc
-    - Macaw
-    - Moya
     - PureLayout
-    - ReactiveSwift
-    - Starscream
-    - SwiftPhoenixClient
-    - SWXMLHash
     - TwilioVoice
-  https://github.com/salemove/glia-ios-podspecs.git:
-    - ios-socket-client
 
 EXTERNAL SOURCES:
   SalemoveSDK:
     :git: https://github.com/salemove/ios-bundle
-    :tag: 0.29.4
+    :tag: 0.29.5
 
 CHECKOUT OPTIONS:
   SalemoveSDK:
     :git: https://github.com/salemove/ios-bundle
-    :tag: 0.29.4
+    :tag: 0.29.5
 
 SPEC CHECKSUMS:
-  Alamofire: e447a2774a40c996748296fa2c55112fdbbc42f9
   glia-webrtc: a5c7e59ae752281d19734b4f918db9da39e8009d
-  ios-socket-client: 0b73bb34f666c7a3b42e32915da78332b4f49fce
-  Macaw: 4a931baf9a9826b06d0d8ecf300014c962ab9d50
-  Moya: 5b45dacb75adb009f97fde91c204c1e565d31916
   PureLayout: a4afb3d79dd958564ce33d22c89f407280d8e6a8
-  ReactiveSwift: 8d159904084e908856cde90b2e28823f3c7e485f
-  SalemoveSDK: 37883bc645da4d38383b7695b9149082d97a651e
-  Starscream: 4bb2f9942274833f7b4d296a55504dcfc7edb7b0
-  SwiftPhoenixClient: 259aba446df6329d6bf9ac794dccb8228eedf19c
-  SWXMLHash: 9cc0c2e4807926c74377724aa8722ee5707a0485
+  SalemoveSDK: 22418809bf0cf5260d7b6c0f10d904fba5b4eb04
   TwilioVoice: 5e6fd6b5e99dfec03dcb57331f7e7c77ad79f1f0
 
-PODFILE CHECKSUM: 0e356b6c98649f2ce8f016bbd1b1416e31475392
+PODFILE CHECKSUM: f1b91d712b51c6609d87ffaba7e4a704b5072657
 
 COCOAPODS: 1.10.0
