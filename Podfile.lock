@@ -1,14 +1,14 @@
 PODS:
   - glia-webrtc/bitcode (0.0.3)
   - PureLayout (3.1.8)
-  - SalemoveSDK (0.29.5):
+  - SalemoveSDK (0.29.6):
     - glia-webrtc/bitcode (= 0.0.3)
     - TwilioVoice (= 6.2.0)
   - TwilioVoice (6.2.0)
 
 DEPENDENCIES:
   - PureLayout (~> 3.1)
-  - SalemoveSDK (from `https://github.com/salemove/ios-bundle`, tag `0.29.5`)
+  - SalemoveSDK (from `https://github.com/salemove/ios-bundle`, tag `0.29.6`)
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
@@ -19,19 +19,19 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   SalemoveSDK:
     :git: https://github.com/salemove/ios-bundle
-    :tag: 0.29.5
+    :tag: 0.29.6
 
 CHECKOUT OPTIONS:
   SalemoveSDK:
     :git: https://github.com/salemove/ios-bundle
-    :tag: 0.29.5
+    :tag: 0.29.6
 
 SPEC CHECKSUMS:
   glia-webrtc: a5c7e59ae752281d19734b4f918db9da39e8009d
   PureLayout: a4afb3d79dd958564ce33d22c89f407280d8e6a8
-  SalemoveSDK: 22418809bf0cf5260d7b6c0f10d904fba5b4eb04
+  SalemoveSDK: 98efa597a1b0018dad0a7aafa7961f3ab156266b
   TwilioVoice: 5e6fd6b5e99dfec03dcb57331f7e7c77ad79f1f0
 
-PODFILE CHECKSUM: f1b91d712b51c6609d87ffaba7e4a704b5072657
+PODFILE CHECKSUM: 30dffa39e040c50af43d8eb1e530122b042398ce
 
 COCOAPODS: 1.10.0
