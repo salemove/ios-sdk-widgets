@@ -102,10 +102,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
         unreadMessages.addObserver(self) { unreadCount, _ in
             bubbleView.setBadge(itemCount: unreadCount)
         }
-        self.gliaViewController = GliaViewController(
-            bubbleView: bubbleView,
-            delegate: self
-        )
+        self.gliaViewController = makeGliaView(bubbleView: bubbleView)
         gliaViewController?.insertChild(navigationController)
         presentGliaViewController(animated: true)
         delegate?(.started)
@@ -226,6 +223,28 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
         pushCoordinator(coordinator)
 
         return coordinator.start()
+    }
+
+    private func makeGliaView(bubbleView: BubbleView) -> GliaViewController {
+        if #available(iOS 13.0, *) {
+            if let sceneProvider = sceneProvider {
+                return GliaViewController(
+                    bubbleView: bubbleView,
+                    delegate: self,
+                    sceneProvider: sceneProvider
+                )
+            } else {
+                return GliaViewController(
+                    bubbleView: bubbleView,
+                    delegate: self
+                )
+            }
+        } else {
+            return GliaViewController(
+                bubbleView: bubbleView,
+                delegate: self
+            )
+        }
     }
 }
 
