@@ -11,45 +11,21 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         title = "Glia UI testing"
         view.backgroundColor = .white
-
-        let settingsButton = makeButton(title: "Settings",
-                                        selector: #selector(settingsTapped))
-        let chatButton = makeButton(title: "Chat",
-                                    selector: #selector(chatTapped))
-        let audioButton = makeButton(title: "Audio call",
-                                     selector: #selector(audioTapped))
-        let videoButton = makeButton(title: "Video call",
-                                     selector: #selector(videoTapped))
-
-        let buttonsStackView = UIStackView(
-            arrangedSubviews: [settingsButton, chatButton, audioButton, videoButton]
-        )
-        buttonsStackView.axis = .vertical
-        buttonsStackView.spacing = 20
-        view.addSubview(buttonsStackView)
-        buttonsStackView.autoCenterInSuperview()
     }
 
-    private func makeButton(title: String, selector: Selector) -> UIButton {
-        let button = UIButton(type: .system)
-        button.setTitle(title, for: .normal)
-        button.addTarget(self, action: selector, for: .touchUpInside)
-        return button
-    }
-
-    @objc private func settingsTapped() {
+    @IBAction private func settingsTapped() {
         presentSettings()
     }
 
-    @objc private func chatTapped() {
+    @IBAction private func chatTapped() {
         presentGlia(.chat)
     }
 
-    @objc private func audioTapped() {
+    @IBAction private func audioTapped() {
         presentGlia(.audioCall)
     }
 
-    @objc private func videoTapped() {
+    @IBAction private func videoTapped() {
         presentGlia(.videoCall)
     }
 }

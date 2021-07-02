@@ -17,6 +17,7 @@ class GliaViewController: UIViewController {
     private weak var delegate: GliaViewControllerDelegate?
     private let bubbleView: BubbleView
     private var bubbleWindow: BubbleWindow?
+    private var sceneProvider: SceneProvider?
     private var animationImageView: UIImageView?
 
     private var maximizeScreenshot: UIImage? {
@@ -26,6 +27,19 @@ class GliaViewController: UIViewController {
     init(bubbleView: BubbleView, delegate: GliaViewControllerDelegate?) {
         self.bubbleView = bubbleView
         self.delegate = delegate
+        super.init(nibName: nil, bundle: nil)
+        setup()
+    }
+
+    @available(iOS 13.0, *)
+    init(
+        bubbleView: BubbleView,
+        delegate: GliaViewControllerDelegate?,
+        sceneProvider: SceneProvider
+    ) {
+        self.bubbleView = bubbleView
+        self.delegate = delegate
+        self.sceneProvider = sceneProvider
         super.init(nibName: nil, bundle: nil)
         setup()
     }
@@ -56,7 +70,7 @@ class GliaViewController: UIViewController {
     func minimize(animated: Bool) {
         bubbleView.kind = bubbleKind
 
-        let bubbleWindow = BubbleWindow(bubbleView: bubbleView)
+        let bubbleWindow = makeBubbleWindow()
         bubbleWindow.tap = { [weak self] in self?.maximize(animated: true) }
         bubbleWindow.alpha = 0.0
         bubbleWindow.isHidden = false
@@ -79,4 +93,33 @@ class GliaViewController: UIViewController {
         modalPresentationStyle = .overFullScreen
         modalTransitionStyle = .crossDissolve
     }
+
+    private func makeBubbleWindow() -> BubbleWindow {
+        if #available(iOS 13.0, *) {
+            if let windowScene = windowScene() {
+                return BubbleWindow(
+                    bubbleView: bubbleView,
+                    windowScene: windowScene
+                )
+            } else {
+                return BubbleWindow(bubbleView: bubbleView)
+            }
+        } else {
+            return BubbleWindow(bubbleView: bubbleView)
+        }
+    }
+
+    @available(iOS 13.0, *)
+    private func windowScene() -> UIWindowScene? {
+        if let windowScene = sceneProvider?.windowScene() {
+            return windowScene
+        } else {
+            let scene = UIApplication.shared
+                .connectedScenes
+                .filter { $0.activationState == .foregroundActive }
+                .first
+            return scene as? UIWindowScene
+        }
+    }
+
 }
