@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Y6W-OH-hqX">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="s0d-6b-0kx">
+            <objects>
+                <viewController id="Y6W-OH-hqX" customClass="ViewController" customModule="TestingApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="A3Y-Xf-Ufg">
+                                <rect key="frame" x="0.0" y="358" width="414" height="180"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FAP-5O-GCi">
+                                        <rect key="frame" x="164.5" y="0.0" width="85" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="F8f-dQ-RxV"/>
+                                        </constraints>
+                                        <state key="normal" title="Glia settings"/>
+                                        <connections>
+                                            <action selector="settingsTapped" destination="Y6W-OH-hqX" eventType="touchUpInside" id="X6L-Kc-4XZ"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zmv-pl-N2H">
+                                        <rect key="frame" x="173" y="50" width="68" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="9bb-ZJ-g4f"/>
+                                        </constraints>
+                                        <state key="normal" title="Start chat"/>
+                                        <connections>
+                                            <action selector="chatTapped" destination="Y6W-OH-hqX" eventType="touchUpInside" id="GkY-py-VQr"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="USF-zD-dZ5">
+                                        <rect key="frame" x="173.5" y="100" width="67" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="PFk-Yr-vcD"/>
+                                        </constraints>
+                                        <state key="normal" title="Audio call"/>
+                                        <connections>
+                                            <action selector="audioTapped" destination="Y6W-OH-hqX" eventType="touchUpInside" id="Mwu-UC-VQz"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tG2-uU-gYf">
+                                        <rect key="frame" x="173.5" y="150" width="67" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="Hga-kH-fOK"/>
+                                        </constraints>
+                                        <state key="normal" title="Video call"/>
+                                        <connections>
+                                            <action selector="videoTapped" destination="Y6W-OH-hqX" eventType="touchUpInside" id="gAa-VI-Ha1"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="A3Y-Xf-Ufg" secondAttribute="trailing" id="8pF-OV-n0R"/>
+                            <constraint firstItem="A3Y-Xf-Ufg" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="A7O-6m-VGg"/>
+                            <constraint firstItem="A3Y-Xf-Ufg" firstAttribute="centerY" secondItem="5EZ-qb-Rvc" secondAttribute="centerY" id="IjI-Fr-kUn"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="132" y="94"/>
+        </scene>
+    </scenes>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
