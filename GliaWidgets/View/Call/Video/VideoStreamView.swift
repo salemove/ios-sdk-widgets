@@ -16,6 +16,7 @@ class VideoStreamView: View {
                 streamView.scale = .aspectFill
                 addSubview(streamView)
                 streamView.autoPinEdgesToSuperviewEdges()
+                streamView.layoutIfNeeded()
             }
         }
     }
