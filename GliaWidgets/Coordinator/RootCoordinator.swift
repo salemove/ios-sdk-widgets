@@ -38,10 +38,8 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
 
     private let navigationController = NavigationController()
     private let navigationPresenter: NavigationPresenter
+    private let gliaPresenter = GliaPresenter()
     private let presentingWindow = UIApplication.shared.windows.filter { $0.isKeyWindow }.first
-    private var presentingViewController: UIViewController? {
-        return presentingWindow?.topMostViewController()
-    }
     private var gliaViewController: GliaViewController?
     private let kBubbleViewSize: CGFloat = 60.0
 
@@ -251,14 +249,15 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
 extension RootCoordinator {
     private func presentGliaViewController(animated: Bool, completion: (() -> Void)? = nil) {
         guard let gliaViewController = gliaViewController else { return }
-        presentingViewController?.present(gliaViewController, animated: animated) { [weak self] in
+        gliaPresenter.present(gliaViewController, animated: animated) { [weak self] in
             self?.isWindowVisible.value = true
             completion?()
         }
     }
 
     private func dismissGliaViewController(animated: Bool, completion: (() -> Void)? = nil) {
-        presentingViewController?.dismiss(animated: animated) { [weak self] in
+        guard let gliaViewController = gliaViewController else { return }
+        gliaPresenter.dismiss(gliaViewController, animated: animated) { [weak self] in
             self?.isWindowVisible.value = false
             completion?()
         }
