@@ -39,7 +39,6 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
     private let navigationController = NavigationController()
     private let navigationPresenter: NavigationPresenter
     private let gliaPresenter = GliaPresenter()
-    private let presentingWindow = UIApplication.shared.windows.filter { $0.isKeyWindow }.first
     private var gliaViewController: GliaViewController?
     private let kBubbleViewSize: CGFloat = 60.0
 
