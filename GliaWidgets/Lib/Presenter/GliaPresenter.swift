@@ -1,4 +1,5 @@
 import UIKit
+
 internal final class GliaPresenter {
     private var window: UIWindow? {
         if #available(iOS 13, *) {
@@ -8,7 +9,7 @@ internal final class GliaPresenter {
         }
     }
 
-    internal var root: UIViewController {
+    private var topMostViewController: UIViewController {
         guard let window = window else {
             fatalError("Could not find key UIWindow to present on")
         }
@@ -24,11 +25,26 @@ internal final class GliaPresenter {
         return presenter
     }
 
-    internal func present(_ viewController: UIViewController, animated: Bool, completion: (() -> Void)? = nil) {
-        root.present(viewController, animated: animated, completion: completion)
+    func present(
+        _ viewController: UIViewController,
+        animated: Bool,
+        completion: (() -> Void)? = nil
+    ) {
+        topMostViewController.present(
+            viewController,
+            animated: animated,
+            completion: completion
+        )
     }
 
-    internal func dismiss(_ viewController: UIViewController, animated: Bool, completion: (() -> Void)?) {
-        viewController.presentingViewController?.dismiss(animated: animated, completion: completion)
+    func dismiss(
+        _ viewController: UIViewController,
+        animated: Bool,
+        completion: (() -> Void)?
+    ) {
+        viewController.presentingViewController?.dismiss(
+            animated: animated,
+            completion: completion
+        )
     }
 }
