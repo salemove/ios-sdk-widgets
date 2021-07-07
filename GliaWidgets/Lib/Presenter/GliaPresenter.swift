@@ -1,6 +1,6 @@
 import UIKit
 
-internal final class GliaPresenter {
+final class GliaPresenter {
     private let sceneProvider: SceneProvider?
 
     private lazy var window: UIWindow? = {
