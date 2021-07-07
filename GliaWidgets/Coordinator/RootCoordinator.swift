@@ -38,7 +38,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
 
     private let navigationController = NavigationController()
     private let navigationPresenter: NavigationPresenter
-    private let gliaPresenter = GliaPresenter()
+    private let gliaPresenter: GliaPresenter
     private var gliaViewController: GliaViewController?
     private let kBubbleViewSize: CGFloat = 60.0
 
@@ -52,6 +52,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
         self.viewFactory = viewFactory
         self.sceneProvider = sceneProvider
         self.engagementKind = engagementKind
+        self.gliaPresenter = GliaPresenter(sceneProvider: sceneProvider)
         self.navigationPresenter = NavigationPresenter(with: navigationController)
         navigationController.modalPresentationStyle = .fullScreen
         navigationController.isNavigationBarHidden = true

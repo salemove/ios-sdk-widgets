@@ -1,13 +1,19 @@
 import UIKit
 
 internal final class GliaPresenter {
-    private var window: UIWindow? {
+    private let sceneProvider: SceneProvider?
+
+    private lazy var window: UIWindow? = {
         if #available(iOS 13, *) {
-            return UIApplication.shared.windows.first { $0.isKeyWindow }
+            if let sceneProvider = sceneProvider {
+                return sceneProvider.windowScene()?.windows.first { $0.isKeyWindow }
+            } else {
+                return UIApplication.shared.windows.first { $0.isKeyWindow }
+            }
         } else {
             return UIApplication.shared.keyWindow
         }
-    }
+    }()
 
     private var topMostViewController: UIViewController {
         guard let window = window else {
@@ -23,6 +29,10 @@ internal final class GliaPresenter {
         }
 
         return presenter
+    }
+
+    init(sceneProvider: SceneProvider?) {
+        self.sceneProvider = sceneProvider
     }
 
     func present(
