@@ -7,17 +7,9 @@ class VideoStreamView: View {
         case remote
     }
 
-    var streamView: StreamView? {
-        get { return subviews.first as? StreamView }
-        set {
-            guard newValue != streamView else { return }
-            streamView?.removeFromSuperview()
-            if let streamView = newValue {
-                streamView.scale = .aspectFill
-                addSubview(streamView)
-                streamView.autoPinEdgesToSuperviewEdges()
-                streamView.layoutIfNeeded()
-            }
+    weak var streamView: StreamView? {
+        didSet {
+            replace(oldStreamView: oldValue, with: streamView)
         }
     }
 
@@ -27,7 +19,6 @@ class VideoStreamView: View {
         self.kind = kind
         super.init()
         setup()
-        layout()
     }
 
     private func setup() {
@@ -35,5 +26,15 @@ class VideoStreamView: View {
         layer.cornerRadius = kind == .local ? 6.0 : 0.0
     }
 
-    private func layout() {}
+    private func replace(
+        oldStreamView: StreamView?,
+        with streamView: StreamView?
+    ) {
+        oldStreamView?.removeFromSuperview()
+        guard let streamView = streamView else { return }
+        streamView.scale = .aspectFill
+        addSubview(streamView)
+        streamView.autoPinEdgesToSuperviewEdges()
+        streamView.layoutIfNeeded()
+    }
 }
