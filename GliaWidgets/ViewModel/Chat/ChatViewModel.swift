@@ -75,6 +75,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     private var messagesSection: Section<ChatItem> { return sections[2] }
     private let call: ObservableValue<Call?>
     private var unreadMessages: UnreadMessagesHandler!
+    private let screenShareHandler: ScreenShareHandler
     private let isChatScrolledToBottom = ObservableValue<Bool>(with: true)
     private let showsCallBubble: Bool
     private let storage = ChatStorage()
@@ -101,6 +102,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         self.call = call
         self.showsCallBubble = showsCallBubble
         self.startAction = startAction
+        self.screenShareHandler = screenShareHandler
         super.init(
             interactor: interactor,
             alertConfiguration: alertConfiguration,
@@ -189,7 +191,14 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             let pictureUrl = engagedOperator?.picture?.url
             action?(.connected(name: name, imageUrl: pictureUrl))
             action?(.setMessageEntryEnabled(true))
-            engagementAction?(.showEndButton)
+
+            switch screenShareHandler.status.value {
+            case .started:
+                engagementAction?(.showEndScreenShareButton)
+            case .stopped:
+                engagementAction?(.showEndButton)
+            }
+
             loadHistory()
         default:
             break
