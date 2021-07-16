@@ -26,8 +26,8 @@ let package = Package(
         ),
         .binaryTarget(
             name: "Moya",
-            url: "https://github.com/salemove/ios-bundle/releases/download/0.27.0/Moya.xcframework.zip",
-            checksum: "8c1c501966d6dc4124ef9166b6687dce79ad3cbd98d1533eafaa8648b94ade40"
+            url: "https://github.com/dukhovnyi/ios-sdk-widgets/releases/download/0.49.0/Moya.xcframework.zip",
+            checksum: "8b83edcf4fa1ac5c5d884ff3e1fef08b6d7a883553f16c0d08f78bacb917ca16"
         ),
         .binaryTarget(
             name: "ReactiveSwift",
