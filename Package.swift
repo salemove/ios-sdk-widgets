@@ -26,13 +26,13 @@ let package = Package(
         ),
         .binaryTarget(
             name: "SalemoveSDK",
-            url: "https://github.com/salemove/ios-bundle/releases/download/0.29.6/SalemoveSDK.xcframework.zip",
-            checksum: "d4e04e0fe665e2d5eb15d5897548d5aac3a7fc8e41356ff854fc238e7887081e"
+            url: "https://github.com/salemove/ios-bundle/releases/download/0.30.0/SalemoveSDK.xcframework.zip",
+            checksum: "6d9beb6fa22f02ae1f20aa7d8259744becf83ff354e5ea7e01310ae30a390cfe"
         ),
         .binaryTarget(
             name: "GliaWidgets",
-            url: "https://github.com/salemove/ios-sdk-widgets/releases/download/0.4.8/GliaWidgets.xcframework.zip",
-            checksum: "6b39996176fbc2a96c37d082d8a899d2e5b7cd99dba0a2ee853ad12bbc821cd6"
+            url: "https://github.com/salemove/ios-sdk-widgets/releases/download/0.5.0/GliaWidgets.xcframework.zip",
+            checksum: "d7a63774d8d1595103015a3e56436fe8e48ff211bcbefdd7db206cfa48d88145"
         ),
         .binaryTarget(
             name: "PureLayout",

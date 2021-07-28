@@ -7,13 +7,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var salemoveDelegate = SalemoveAppDelegate()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        salemoveDelegate.application(application, didFinishLaunchingWithOptions: launchOptions)
+        salemoveDelegate.application(
+            application,
+            didFinishLaunchingWithOptions: launchOptions
+        )
         return true
     }
 
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         print("Registered for remote notifications")
-        salemoveDelegate.application(application, didRegisterForRemoteNotificationsWithDeviceToken: deviceToken)
+        Salemove.sharedInstance.pushNotifications.application(
+            application,
+            didRegisterForRemoteNotificationsWithDeviceToken: deviceToken
+        )
     }
 
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
