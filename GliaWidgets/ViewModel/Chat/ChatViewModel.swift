@@ -336,8 +336,8 @@ extension ChatViewModel {
         )
         let item = ChatItem(with: outgoingMessage)
         appendItem(item, to: messagesSection, animated: true)
-        uploader.removeAllUploads()
-        action?(.removeAllUploads)
+        uploader.succeededUploads.forEach { action?(.removeUpload($0)) }
+        uploader.removeSucceededUploads()
         action?(.scrollToBottom(animated: true))
         let messageTextTemp = messageText
         messageText = ""
