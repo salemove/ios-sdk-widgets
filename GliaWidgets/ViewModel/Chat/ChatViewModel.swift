@@ -379,11 +379,11 @@ extension ChatViewModel {
         if interactor.isEngaged {
             let item = ChatItem(with: outgoingMessage)
             appendItem(item, to: messagesSection, animated: true)
-            
-            uploader.removeAllUploads()
-            action?(.removeAllUploads)
+            uploader.succeededUploads.forEach { action?(.removeUpload($0)) }
+            uploader.removeSucceededUploads()
             action?(.scrollToBottom(animated: true))
             let messageTextTemp = messageText
+            messageText = ""
 
             interactor.send(messageTextTemp, attachment: attachment) { [weak self] message in
                 guard let self = self else { return }
@@ -408,7 +408,8 @@ extension ChatViewModel {
             let messageItem = ChatItem(with: outgoingMessage)
             appendItem(messageItem, to: pendingSection, animated: true)
             
-            uploader.removeAllUploads()
+            uploader.succeededUploads.forEach { action?(.removeUpload($0)) }
+            uploader.removeSucceededUploads()
             action?(.removeAllUploads)
 
             pendingMessages.append(outgoingMessage)

@@ -95,8 +95,15 @@ class FileUploader {
         updateLimitReached()
     }
 
-    func removeAllUploads() {
-        uploads.removeAll()
+    func removeSucceededUploads() {
+        uploads.removeAll(where: { upload in
+            switch upload.state.value {
+            case .uploaded:
+                return true
+            default:
+                return false
+            }
+        })
         updateState()
         updateLimitReached()
     }
