@@ -219,7 +219,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             }
             
             pendingMessages.forEach({ [weak self] outgoingMessage in
-                self?.interactor.send(outgoingMessage.content, attachment: nil) { message in
+                self?.interactor.send(outgoingMessage.content, attachment: nil) { [weak self] message in
                     guard let self = self else { return }
                     
                     self.replace(
@@ -230,7 +230,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
                     )
 
                     self.action?(.scrollToBottom(animated: true))
-                } failure: { _ in
+                } failure: { [weak self] _ in
                     guard let self = self else { return }
 
                     self.showAlert(
@@ -385,7 +385,9 @@ extension ChatViewModel {
             action?(.scrollToBottom(animated: true))
             let messageTextTemp = messageText
 
-            interactor.send(messageTextTemp, attachment: attachment) { message in
+            interactor.send(messageTextTemp, attachment: attachment) { [weak self] message in
+                guard let self = self else { return }
+                
                 self.replace(
                     outgoingMessage,
                     uploads: uploads,
@@ -394,7 +396,9 @@ extension ChatViewModel {
                 )
 
                 self.action?(.scrollToBottom(animated: true))
-            } failure: { _ in
+            } failure: { [weak self] _ in
+                guard let self = self else { return }
+
                 self.showAlert(
                     with: self.alertConfiguration.unexpectedError,
                     dismissed: nil

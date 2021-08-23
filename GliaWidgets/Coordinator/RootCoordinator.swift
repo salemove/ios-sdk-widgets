@@ -135,7 +135,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
             case .back:
                 switch self?.engagement {
                 case .chat:
-                    if !(self?.interactor.isEngaged ?? false) {
+                    if case .none? = self?.interactor.state {
                         self?.popCoordinator()
                         self?.end()
                     } else {
