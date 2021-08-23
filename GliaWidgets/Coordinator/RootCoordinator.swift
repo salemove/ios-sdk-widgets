@@ -64,7 +64,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
             break
         case .chat:
             let chatViewController = startChat(
-                withAction: .startEngagement,
+                withAction: .none,
                 showsCallBubble: false
             )
             engagement = .chat(chatViewController)
@@ -102,18 +102,17 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
         }
         self.gliaViewController = makeGliaView(bubbleView: bubbleView)
         gliaViewController?.insertChild(navigationController)
-        presentGliaViewController(animated: true)
+        event(.maximized)
         delegate?(.started)
     }
 
     private func end() {
-        dismissGliaViewController(animated: true) {
-            self.engagement = .none
-            self.navigationPresenter.setViewControllers([], animated: false)
-            self.removeAllCoordinators()
-            self.engagementKind = .none
-            self.delegate?(.ended)
-        }
+        event(.minimized)
+        engagement = .none
+        navigationPresenter.setViewControllers([], animated: false)
+        removeAllCoordinators()
+        engagementKind = .none
+        delegate?(.ended)
     }
 
     private func startChat(
@@ -136,7 +135,13 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
             case .back:
                 switch self?.engagement {
                 case .chat:
-                    self?.gliaViewController?.minimize(animated: true)
+                    if !(self?.interactor.isEngaged ?? false) {
+                        self?.popCoordinator()
+                        self?.end()
+                    } else {
+                        self?.gliaViewController?.minimize(animated: true)
+                    }
+                    
                 case .call(let callViewController, _, let upgradedFrom):
                     if upgradedFrom == .chat {
                         self?.gliaViewController?.minimize(animated: true)
@@ -144,7 +149,8 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
                         self?.navigationPresenter.pop(to: callViewController, animated: true)
                     }
                 default:
-                    break
+                    self?.popCoordinator()
+                    self?.end()
                 }
             case .engaged(let operatorImageUrl):
                 self?.gliaViewController?.bubbleKind = .userImage(url: operatorImageUrl)
