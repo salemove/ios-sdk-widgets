@@ -237,7 +237,6 @@ SWIFT_CLASS("_TtC11GliaWidgets20ChatMessageEntryView")
 
 
 
-
 SWIFT_CLASS("_TtC11GliaWidgets4View")
 @interface View : UIView
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
