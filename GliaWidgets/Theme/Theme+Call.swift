@@ -5,7 +5,7 @@ extension Theme {
         typealias Call = L10n.Call
 
         let header = HeaderStyle(
-            titleFont: font.subtitle,
+            titleFont: font.header2,
             titleColor: color.baseLight,
             backgroundColor: .clear
         )
