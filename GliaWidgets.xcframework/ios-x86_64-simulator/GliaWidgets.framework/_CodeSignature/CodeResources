@@ -6,11 +6,11 @@
 	<dict>
 		<key>Assets.car</key>
 		<data>
-		l+eqJm1jK5dmn/VxTvnE12Zd6Ww=
+		m42M94N8xVXpn2yzVYGiJBdYHw4=
 		</data>
 		<key>Headers/GliaWidgets-Swift.h</key>
 		<data>
-		jAMlE0Kt0eO2qajDxN0NQtPq24s=
+		i6rs2lGhoo3O1d3YA+/jGT5AdEw=
 		</data>
 		<key>Headers/GliaWidgets.h</key>
 		<data>
@@ -18,7 +18,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		3miOVS7vB+I9mni9YHok0aWQOsw=
+		acvEurlmIy0kmx3tvGmxHpITAdc=
 		</data>
 		<key>Modules/GliaWidgets.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
 		<data>
@@ -30,7 +30,7 @@
 		</data>
 		<key>Modules/GliaWidgets.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		BeYrmkAiSFDOh+awCQAof73IAfM=
+		AS+DQN2ptz1761Qy9S7apRQD//4=
 		</data>
 		<key>Modules/GliaWidgets.swiftmodule/x86_64.swiftdoc</key>
 		<data>
@@ -42,7 +42,7 @@
 		</data>
 		<key>Modules/GliaWidgets.swiftmodule/x86_64.swiftmodule</key>
 		<data>
-		BeYrmkAiSFDOh+awCQAof73IAfM=
+		AS+DQN2ptz1761Qy9S7apRQD//4=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -76,14 +76,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			91q7NJCQDp+K76KTYDELEs2wjbdUYuJFm4TIWOukNBA=
+			458lIJOb64zojF9kUoviZaHu3MJKqZD9WkekNprooaE=
 			</data>
 		</dict>
 		<key>Headers/GliaWidgets-Swift.h</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			e7EezTl7AlFT/QRd8DxOQUTMGywCasHpUerzyv427LA=
+			ByLyORaD1HDT+Gv5QBx75Swh5SdBfjHR+1CUNwtxw8M=
 			</data>
 		</dict>
 		<key>Headers/GliaWidgets.h</key>
@@ -111,7 +111,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			GIiaNxn2kzohYk9ub0l/y7PEYx8T9SwPbTh0VNlUZIU=
+			RdOHC80wtNOWaMg69ZkAwLulWm6b5CGiH8tPU0rwgeA=
 			</data>
 		</dict>
 		<key>Modules/GliaWidgets.swiftmodule/x86_64.swiftdoc</key>
@@ -132,7 +132,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			GIiaNxn2kzohYk9ub0l/y7PEYx8T9SwPbTh0VNlUZIU=
+			RdOHC80wtNOWaMg69ZkAwLulWm6b5CGiH8tPU0rwgeA=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
