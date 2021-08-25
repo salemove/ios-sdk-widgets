@@ -35,15 +35,15 @@ class ChatItemCell: UITableViewCell {
         didSet {
             switch content {
             case .none:
-                contentView.subviews.first?.removeFromSuperview()
+                containerView.removeArrangedSubviews()
             default:
                 guard let view = content.view else { return }
-                contentView.subviews.first?.removeFromSuperview()
-                contentView.addSubview(view)
-                view.autoPinEdgesToSuperviewEdges()
+                containerView.replaceArrangedSubviews(with: [view])
             }
         }
     }
+    
+    private let containerView = UIStackView()
 
     public override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -66,5 +66,8 @@ class ChatItemCell: UITableViewCell {
         selectionStyle = .none
     }
 
-    private func layout() {}
+    private func layout() {
+        contentView.addSubview(containerView)
+        containerView.autoPinEdgesToSuperviewEdges()
+    }
 }
