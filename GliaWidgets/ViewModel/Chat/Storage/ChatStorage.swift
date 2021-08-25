@@ -60,6 +60,7 @@ class ChatStorage {
         try prepare(sql) { statement in
             values?.enumerated().forEach {
                 let index = Int32($0.offset + 1)
+                
                 switch $0.element {
                 case nil:
                     sqlite3_bind_null(statement, index)
@@ -121,10 +122,12 @@ extension ChatStorage {
             SELECT JSON FROM Message
             ORDER BY ID;
         """
+        
         do {
             try prepare(sql) {
                 while sqlite3_step($0) == SQLITE_ROW {
                     let json = String(cString: sqlite3_column_text($0, 0))
+                    
                     if let data = json.data(using: .utf8) {
                         do {
                             let message = try JSONDecoder().decode(ChatMessage.self, from: data)
@@ -143,6 +146,10 @@ extension ChatStorage {
 }
 
 extension ChatStorage {
+    func isEmpty() -> Bool {
+        return messages.isEmpty
+    }
+    
     func messages(forQueue queueID: String) -> [ChatMessage] {
         return messages.filter { $0.queueID == queueID }
     }
