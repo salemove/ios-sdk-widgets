@@ -17,7 +17,7 @@ target 'GliaWidgets' do
   use_frameworks!
 
   pod 'PureLayout', '~> 3.1'
-  pod 'SalemoveSDK', :git => 'https://github.com/salemove/ios-bundle', :tag => "0.30.1"
+  pod 'SalemoveSDK', :git => 'https://github.com/salemove/ios-bundle', :tag => "0.30.2"
 end
 
 post_install do |installer|
