@@ -249,7 +249,7 @@ class CallView: EngagementView {
     }
 
     private func hideLandscapeBarsAfterDelay() {
-        guard mode == .video else { return }
+        guard mode == .video, currentOrientation.isLandscape else { return }
         hideBarsWorkItem?.cancel()
         let hideBarsWorkItem = DispatchWorkItem { self.hideLandscapeBars() }
         self.hideBarsWorkItem = hideBarsWorkItem
