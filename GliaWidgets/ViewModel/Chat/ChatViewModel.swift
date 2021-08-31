@@ -416,12 +416,9 @@ extension ChatViewModel {
             
             let queueItem = ChatItem(kind: .queueOperator)
            
-            appendItem(
-                queueItem,
-                to: queueOperatorSection,
-                animated: false
-            )
+            queueOperatorSection.set([queueItem])
             
+            action?(.refreshSection(2))
             action?(.scrollToBottom(animated: true))
 
             enqueue()
