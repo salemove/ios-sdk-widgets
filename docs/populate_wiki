@@ -32,7 +32,7 @@ do
       else
         MARKDOWN_FILE="`basename ${SIDEBAR_DIR}`.md"
   fi
-  echo "end if"  
+  echo "end if - MARKDOWN_FILE = $MARKDOWN_FILE"  
 
   grep -oE '^##+ .*$' "${MARKDOWN_FILE}" | awk '{
     original_len = length($0)
