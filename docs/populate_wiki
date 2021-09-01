@@ -40,7 +40,7 @@ do
   echo "Printing replace.txt"  
   cat replace.txt 
 
-  sed -i '' -e 's/'"${GENERATE_MATCH}"'/cat replace.txt' "${SIDEBAR_FILE}"
+  sed -i '' -e 's/'"${GENERATE_MATCH}"'/cat replace.txt/' "${SIDEBAR_FILE}"
   rm replace.txt
   popd
 done
