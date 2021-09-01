@@ -38,10 +38,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
 
     private let navigationController = NavigationController()
     private let navigationPresenter: NavigationPresenter
-    private let presentingWindow = UIApplication.shared.windows.filter { $0.isKeyWindow }.first
-    private var presentingViewController: UIViewController? {
-        return presentingWindow?.topMostViewController()
-    }
+    private let gliaPresenter: GliaPresenter
     private var gliaViewController: GliaViewController?
     private let kBubbleViewSize: CGFloat = 60.0
 
@@ -55,6 +52,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
         self.viewFactory = viewFactory
         self.sceneProvider = sceneProvider
         self.engagementKind = engagementKind
+        self.gliaPresenter = GliaPresenter(sceneProvider: sceneProvider)
         self.navigationPresenter = NavigationPresenter(with: navigationController)
         navigationController.modalPresentationStyle = .fullScreen
         navigationController.isNavigationBarHidden = true
@@ -66,7 +64,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
             break
         case .chat:
             let chatViewController = startChat(
-                withAction: .startEngagement,
+                withAction: .none,
                 showsCallBubble: false
             )
             engagement = .chat(chatViewController)
@@ -102,23 +100,19 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
         unreadMessages.addObserver(self) { unreadCount, _ in
             bubbleView.setBadge(itemCount: unreadCount)
         }
-        self.gliaViewController = GliaViewController(
-            bubbleView: bubbleView,
-            delegate: self
-        )
+        self.gliaViewController = makeGliaView(bubbleView: bubbleView)
         gliaViewController?.insertChild(navigationController)
-        presentGliaViewController(animated: true)
+        event(.maximized)
         delegate?(.started)
     }
 
     private func end() {
-        dismissGliaViewController(animated: true) {
-            self.engagement = .none
-            self.navigationPresenter.setViewControllers([], animated: false)
-            self.removeAllCoordinators()
-            self.engagementKind = .none
-            self.delegate?(.ended)
-        }
+        event(.minimized)
+        engagement = .none
+        navigationPresenter.setViewControllers([], animated: false)
+        removeAllCoordinators()
+        engagementKind = .none
+        delegate?(.ended)
     }
 
     private func startChat(
@@ -141,7 +135,13 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
             case .back:
                 switch self?.engagement {
                 case .chat:
-                    self?.gliaViewController?.minimize(animated: true)
+                    if case .none? = self?.interactor.state {
+                        self?.popCoordinator()
+                        self?.end()
+                    } else {
+                        self?.gliaViewController?.minimize(animated: true)
+                    }
+                    
                 case .call(let callViewController, _, let upgradedFrom):
                     if upgradedFrom == .chat {
                         self?.gliaViewController?.minimize(animated: true)
@@ -149,7 +149,8 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
                         self?.navigationPresenter.pop(to: callViewController, animated: true)
                     }
                 default:
-                    break
+                    self?.popCoordinator()
+                    self?.end()
                 }
             case .engaged(let operatorImageUrl):
                 self?.gliaViewController?.bubbleKind = .userImage(url: operatorImageUrl)
@@ -227,19 +228,42 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
 
         return coordinator.start()
     }
+
+    private func makeGliaView(bubbleView: BubbleView) -> GliaViewController {
+        if #available(iOS 13.0, *) {
+            if let sceneProvider = sceneProvider {
+                return GliaViewController(
+                    bubbleView: bubbleView,
+                    delegate: self,
+                    sceneProvider: sceneProvider
+                )
+            } else {
+                return GliaViewController(
+                    bubbleView: bubbleView,
+                    delegate: self
+                )
+            }
+        } else {
+            return GliaViewController(
+                bubbleView: bubbleView,
+                delegate: self
+            )
+        }
+    }
 }
 
 extension RootCoordinator {
     private func presentGliaViewController(animated: Bool, completion: (() -> Void)? = nil) {
         guard let gliaViewController = gliaViewController else { return }
-        presentingViewController?.present(gliaViewController, animated: animated) { [weak self] in
+        gliaPresenter.present(gliaViewController, animated: animated) { [weak self] in
             self?.isWindowVisible.value = true
             completion?()
         }
     }
 
     private func dismissGliaViewController(animated: Bool, completion: (() -> Void)? = nil) {
-        presentingViewController?.dismiss(animated: animated) { [weak self] in
+        guard let gliaViewController = gliaViewController else { return }
+        gliaPresenter.dismiss(gliaViewController, animated: animated) { [weak self] in
             self?.isWindowVisible.value = false
             completion?()
         }

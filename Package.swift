@@ -15,46 +15,6 @@ let package = Package(
     ],
     targets: [
         .binaryTarget(
-            name: "Alamofire",
-            url: "https://github.com/salemove/ios-bundle/releases/download/0.27.0/Alamofire.xcframework.zip",
-            checksum: "38e51133ea91f33aa933eeabe52c066a2e4ef9aa4716163e33975cf326289a55"
-        ),
-        .binaryTarget(
-            name: "Macaw",
-            url: "https://github.com/salemove/ios-bundle/releases/download/0.27.0/Macaw.xcframework.zip",
-            checksum: "474bbf16a032927225c21a58626a90b18369d628ab9a25f438a8ec2043c478cb"
-        ),
-        .binaryTarget(
-            name: "Moya",
-            url: "https://github.com/salemove/ios-bundle/releases/download/0.27.0/Moya.xcframework.zip",
-            checksum: "8c1c501966d6dc4124ef9166b6687dce79ad3cbd98d1533eafaa8648b94ade40"
-        ),
-        .binaryTarget(
-            name: "ReactiveSwift",
-            url: "https://github.com/salemove/ios-bundle/releases/download/0.27.0/ReactiveSwift.xcframework.zip",
-            checksum: "f1322d3e07b01a4f2b1329b7ed43494259fba740c666231422b373ec50dc1e7d"
-        ),
-        .binaryTarget(
-            name: "SocketIO",
-            url: "https://github.com/salemove/ios-bundle/releases/download/0.27.0/SocketIO.xcframework.zip",
-            checksum: "119a21a9d7d0b9a20b0705e5c639cb57cc1d93ee08874a89dd53b8ca23905ad6"
-        ),
-        .binaryTarget(
-            name: "Starscream",
-            url: "https://github.com/salemove/ios-bundle/releases/download/0.27.0/Starscream.xcframework.zip",
-            checksum: "74c26814b5b9dac878a4d7a4012d4d496c498d6066375d0cf7ee65a1c435cd2c"
-        ),
-        .binaryTarget(
-            name: "SwiftPhoenixClient",
-            url: "https://github.com/salemove/ios-bundle/releases/download/0.27.0/SwiftPhoenixClient.xcframework.zip",
-            checksum: "a4393ea48dd0502a5495c38408f0d49b4e6b6345765cf569a2037acfe04a4340"
-        ),
-        .binaryTarget(
-            name: "SWXMLHash",
-            url: "https://github.com/salemove/ios-bundle/releases/download/0.27.0/SWXMLHash.xcframework.zip",
-            checksum: "fbeb88db6565c7843d6ee5f4e64d1030b1ebcc7fa7ca4b66e9ec1af56d1ad199"
-        ),
-        .binaryTarget(
             name: "TwilioVoice",
             url: "https://github.com/salemove/ios-bundle/releases/download/0.27.0/TwilioVoice.xcframework.zip",
             checksum: "039b38797721ed272abdb69780cd3239961786d94175b6846036dad4c4a5b636"
@@ -66,13 +26,13 @@ let package = Package(
         ),
         .binaryTarget(
             name: "SalemoveSDK",
-            url: "https://github.com/salemove/ios-bundle/releases/download/0.29.3/SalemoveSDK.xcframework.zip",
-            checksum: "c13b3ffcad2a8d5b4b7698d51884abade01d80ecb120481cd5da9b4004fa66fd"
+            url: "https://github.com/salemove/ios-bundle/releases/download/0.30.2/SalemoveSDK.xcframework.zip",
+            checksum: "b0ff624f6105a2ee636b23b01b31da4b97e00680413c51af789fbb42d47a3f2e"
         ),
         .binaryTarget(
             name: "GliaWidgets",
-            url: "https://github.com/salemove/ios-sdk-widgets/releases/download/0.4.2/GliaWidgets.xcframework.zip",
-            checksum: "898df09f00e569bcc17da66cfc4d94e43bdb1f0d93f3b804b4d02214ce11d696"
+            url: "https://github.com/salemove/ios-sdk-widgets/releases/download/0.5.2/GliaWidgets.xcframework.zip",
+            checksum: "94162a10130eca2a4f657f4e9027cf8d4d895224f8d1e647e210481ba27b5359"
         ),
         .binaryTarget(
             name: "PureLayout",
@@ -84,14 +44,6 @@ let package = Package(
             dependencies: [
                 "SalemoveSDK",
                 "GliaWidgets",
-                "Alamofire",
-                "Moya",
-                "Macaw",
-                "ReactiveSwift",
-                "SocketIO",
-                "SwiftPhoenixClient",
-                "Starscream",
-                "SWXMLHash",
                 "TwilioVoice",
                 "WebRTC",
                 "PureLayout"

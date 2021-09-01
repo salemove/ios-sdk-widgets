@@ -68,13 +68,16 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     private let sections = [
         Section<ChatItem>(0),
         Section<ChatItem>(1),
-        Section<ChatItem>(2)
+        Section<ChatItem>(2),
+        Section<ChatItem>(3)
     ]
-    private var historySection: Section<ChatItem> { return sections[0] }
-    private var queueOperatorSection: Section<ChatItem> { return sections[1] }
-    private var messagesSection: Section<ChatItem> { return sections[2] }
+    private var historySection: Section<ChatItem> { sections[0] }
+    private var pendingSection: Section<ChatItem> { sections[1] }
+    private var queueOperatorSection: Section<ChatItem> { sections[2] }
+    private var messagesSection: Section<ChatItem> { sections[3] }
     private let call: ObservableValue<Call?>
     private var unreadMessages: UnreadMessagesHandler!
+    private let screenShareHandler: ScreenShareHandler
     private let isChatScrolledToBottom = ObservableValue<Bool>(with: true)
     private let showsCallBubble: Bool
     private let storage = ChatStorage()
@@ -87,6 +90,8 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             action?(.setMessageText(messageText))
         }
     }
+    
+    private var pendingMessages: [OutgoingMessage] = []
 
     init(
         interactor: Interactor,
@@ -101,6 +106,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         self.call = call
         self.showsCallBubble = showsCallBubble
         self.startAction = startAction
+        self.screenShareHandler = screenShareHandler
         super.init(
             interactor: interactor,
             alertConfiguration: alertConfiguration,
@@ -153,6 +159,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
 
     override func viewDidAppear() {
         super.viewDidAppear()
+        
         if showsCallBubble {
             showCallBubble()
         }
@@ -161,20 +168,32 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     override func start() {
         super.start()
 
-        let item = ChatItem(kind: .queueOperator)
-        appendItem(
-            item,
-            to: queueOperatorSection,
-            animated: false
-        )
-        action?(.setMessageEntryEnabled(false))
-        action?(.sendButtonHidden(true))
-
         switch startAction {
         case .startEngagement:
+            let item = ChatItem(kind: .queueOperator)
+           
+            appendItem(
+                item,
+                to: queueOperatorSection,
+                animated: false
+            )
+            
             enqueue()
         case .none:
-            update(for: interactor.state)
+            if !storage.isEmpty() {
+                loadHistory()
+                update(for: interactor.state)
+            } else {
+                let item = ChatItem(kind: .queueOperator)
+               
+                appendItem(
+                    item,
+                    to: queueOperatorSection,
+                    animated: false
+                )
+                
+                enqueue()
+            }
         }
     }
 
@@ -184,12 +203,43 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         switch state {
         case .enqueueing:
             action?(.queue)
+            action?(.scrollToBottom(animated: false))
+            
         case .engaged(let engagedOperator):
             let name = engagedOperator?.firstName
             let pictureUrl = engagedOperator?.picture?.url
             action?(.connected(name: name, imageUrl: pictureUrl))
             action?(.setMessageEntryEnabled(true))
-            engagementAction?(.showEndButton)
+
+            switch screenShareHandler.status.value {
+            case .started:
+                engagementAction?(.showEndScreenShareButton)
+            case .stopped:
+                engagementAction?(.showEndButton)
+            }
+            
+            pendingMessages.forEach({ [weak self] outgoingMessage in
+                self?.interactor.send(outgoingMessage.content, attachment: nil) { [weak self] message in
+                    guard let self = self else { return }
+                    
+                    self.replace(
+                        outgoingMessage,
+                        uploads: [],
+                        with: message,
+                        in: self.messagesSection
+                    )
+
+                    self.action?(.scrollToBottom(animated: true))
+                } failure: { [weak self] _ in
+                    guard let self = self else { return }
+
+                    self.showAlert(
+                        with: (self.alertConfiguration.unexpectedError),
+                        dismissed: nil
+                    )
+                }
+            })
+
             loadHistory()
         default:
             break
@@ -325,27 +375,56 @@ extension ChatViewModel {
             content: messageText,
             files: files
         )
-        let item = ChatItem(with: outgoingMessage)
-        appendItem(item, to: messagesSection, animated: true)
-        uploader.removeAllUploads()
-        action?(.removeAllUploads)
-        action?(.scrollToBottom(animated: true))
-        let messageTextTemp = messageText
-        messageText = ""
+        
+        if interactor.isEngaged {
+            let item = ChatItem(with: outgoingMessage)
+            appendItem(item, to: messagesSection, animated: true)
+            uploader.succeededUploads.forEach { action?(.removeUpload($0)) }
+            uploader.removeSucceededUploads()
+            action?(.scrollToBottom(animated: true))
+            let messageTextTemp = messageText
+            messageText = ""
 
-        interactor.send(messageTextTemp, attachment: attachment) { message in
-            self.replace(
-                outgoingMessage,
-                uploads: uploads,
-                with: message,
-                in: self.messagesSection
-            )
+            interactor.send(messageTextTemp, attachment: attachment) { [weak self] message in
+                guard let self = self else { return }
+                
+                self.replace(
+                    outgoingMessage,
+                    uploads: uploads,
+                    with: message,
+                    in: self.pendingSection
+                )
 
-            self.action?(.scrollToBottom(animated: true))
-        } failure: { _ in
-            self.showAlert(with: self.alertConfiguration.unexpectedError,
-                           dismissed: nil)
+                self.action?(.scrollToBottom(animated: true))
+            } failure: { [weak self] _ in
+                guard let self = self else { return }
+
+                self.showAlert(
+                    with: self.alertConfiguration.unexpectedError,
+                    dismissed: nil
+                )
+            }
+        } else {
+            let messageItem = ChatItem(with: outgoingMessage)
+            appendItem(messageItem, to: pendingSection, animated: true)
+            
+            uploader.succeededUploads.forEach { action?(.removeUpload($0)) }
+            uploader.removeSucceededUploads()
+            action?(.removeAllUploads)
+
+            pendingMessages.append(outgoingMessage)
+            
+            let queueItem = ChatItem(kind: .queueOperator)
+           
+            queueOperatorSection.set([queueItem])
+            
+            action?(.refreshSection(2))
+            action?(.scrollToBottom(animated: true))
+
+            enqueue()
         }
+        
+        messageText = ""
     }
 
     private func replace(

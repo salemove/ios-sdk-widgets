@@ -62,6 +62,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
     private let call: Call
     private let startWith: StartAction
     private let durationCounter = CallDurationCounter()
+    private let screenShareHandler: ScreenShareHandler
 
     init(
         interactor: Interactor,
@@ -73,6 +74,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
     ) {
         self.call = call
         self.startWith = startWith
+        self.screenShareHandler = screenShareHandler
         super.init(
             interactor: interactor,
             alertConfiguration: alertConfiguration,
@@ -170,9 +172,15 @@ class CallViewModel: EngagementViewModel, ViewModel {
     }
 
     private func showConnected() {
-        engagementAction?(.showEndButton)
         action?(.setTopTextHidden(true))
         action?(.setBottomTextHidden(true))
+
+        switch screenShareHandler.status.value {
+        case .started:
+            engagementAction?(.showEndScreenShareButton)
+        case .stopped:
+            engagementAction?(.showEndButton)
+        }
 
         switch call.kind.value {
         case .audio:
