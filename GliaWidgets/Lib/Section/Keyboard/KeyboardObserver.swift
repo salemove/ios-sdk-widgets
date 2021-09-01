@@ -1,12 +1,12 @@
 import UIKit
 
-public final class KeyboardObserver {
-    public struct Properties {
+final class KeyboardObserver {
+    struct Properties {
         public let duration: Double
         public let finalFrame: CGRect
         public let animationOptions: UIView.AnimationOptions
 
-        public init?(with notification: Notification) {
+        init?(with notification: Notification) {
             guard
                 let userInfo = notification.userInfo,
                 let animationCurve = userInfo[UIResponder.keyboardAnimationCurveUserInfoKey] as? NSNumber,
@@ -20,11 +20,11 @@ public final class KeyboardObserver {
         }
     }
 
-    public var currentKeyboardHeight: CGFloat = 0
-    public var keyboardWillShow: ((Properties) -> Void)?
-    public var keyboardWillHide: ((Properties) -> Void)?
+    var currentKeyboardHeight: CGFloat = 0
+    var keyboardWillShow: ((Properties) -> Void)?
+    var keyboardWillHide: ((Properties) -> Void)?
 
-    public init() {
+    init() {
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(keyboardWillShow(notification:)),
