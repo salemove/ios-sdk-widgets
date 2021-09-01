@@ -28,6 +28,7 @@ class CallViewController: EngagementViewController, MediaUpgradePresenter {
     }
 
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         guard let view = view as? CallView else { return }
         view.checkBarsOrientation()
     }
