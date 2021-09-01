@@ -100,7 +100,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
         }
     }
 
-    public func event(_ event: Event) {
+    func event(_ event: Event) {
         switch event {
         case .viewDidLoad:
             start()

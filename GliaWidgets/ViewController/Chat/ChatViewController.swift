@@ -111,7 +111,7 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter,
 
     private func presentMediaPicker(
         from sourceView: UIView,
-        itemSelected: @escaping (ListItemKind) -> Void
+        itemSelected: @escaping (AtttachmentSourceItemKind) -> Void
     ) {
         presentPopover(
             with: viewFactory.theme.chat.pickMedia,
