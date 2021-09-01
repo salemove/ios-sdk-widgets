@@ -27,6 +27,12 @@ class CallViewController: EngagementViewController, MediaUpgradePresenter {
         view.willRotate(to: orientation, duration: duration)
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        guard let view = view as? CallView else { return }
+        view.checkBarsOrientation()
+    }
+
     private func bind(viewModel: CallViewModel, to view: CallView) {
         showBackButton(with: viewFactory.theme.call.backButton, in: view.header)
         showCloseButton(with: viewFactory.theme.call.closeButton, in: view.header)
