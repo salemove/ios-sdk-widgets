@@ -1,5 +1,7 @@
+# Cloning repo wiki
 git clone git@github.com:salemove/ios-sdk-widgets.wiki.git /tmp/wiki
 
+# Adding new doc files
 cd docs
 cp -r /tmp/wiki/.git ./
 git config user.email "vladyslav.kupriienko@mooncascade.com"
@@ -7,4 +9,47 @@ git config user.name "Vladyslav Kupriienko"
 git add .
 git commit -m "Update integration guide" || changes=none
 
+# Populating sidebar
+set -euf -o pipefail
+
+SIDEBAR_FILE="__Sidebar.md"
+GENERATE_MATCH="{{SIDEBAR_GENERATE}}"
+
+cd docs
+
+for SIDEBAR_PATH in $(find . \
+  -type f -name "${SIDEBAR_FILE}" \
+  -exec grep -l "${GENERATE_MATCH}" {} \;
+)
+do
+    SIDEBAR_DIR="$(dirname ${SIDEBAR_PATH})"
+    pushd "${SIDEBAR_DIR}"
+
+    if [ "${SIDEBAR_DIR}" == "." ]
+        then
+          MARKDOWN_FILE=Home.md
+        else
+          MARKDOWN_FILE="`basename ${SIDEBAR_DIR}`.md"
+    fi
+
+    grep -oE '^##+ .*$' "${MARKDOWN_FILE}" | awk '{
+      original_len = length($0)
+      sub(/^#+ /,"")
+      indent = sprintf("%"(original_len - length($0) - 2)"s","")
+      gsub(" ", "\\&nbsp;\\&nbsp;", indent)
+      gsub(" ", "", indent)
+      link = tolower($0)
+      gsub(/[^a-zA-Z0-9 _-]/, "", link)
+      gsub(" ", "-", link)
+      entry = indent "["$0"](#"link")  "
+      print entry
+    }' > replace.txt
+
+    sed -i 's/'"${GENERATE_MATCH}"'/cat replace.txt/e' "${SIDEBAR_FILE}"
+    rm replace.txt
+
+    popd
+done
+
+# Pushing to repo
 git push
