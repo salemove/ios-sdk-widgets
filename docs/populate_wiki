@@ -15,8 +15,6 @@ set -euf -o pipefail
 SIDEBAR_FILE="__Sidebar.md"
 GENERATE_MATCH="{{SIDEBAR_GENERATE}}"
 
-cd docs
-
 for SIDEBAR_PATH in $(find . \
   -type f -name "${SIDEBAR_FILE}" \
   -exec grep -l "${GENERATE_MATCH}" {} \;
