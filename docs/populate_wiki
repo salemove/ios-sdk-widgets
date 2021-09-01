@@ -45,6 +45,8 @@ do
     entry = indent "["$0"](#"link")  "
     print entry
   }' > replace.txt
+  echo "Printing replace.txt"  
+  cat replace.txt 
 
   sed -i 's/'"${GENERATE_MATCH}"'/cat replace.txt/e' "${SIDEBAR_FILE}"
   rm replace.txt
