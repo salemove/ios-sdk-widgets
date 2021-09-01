@@ -2,19 +2,18 @@
 git clone git@github.com:salemove/ios-sdk-widgets.wiki.git /tmp/wiki
 
 # Populating sidebar
-echo "Starting..." 
 set -euf -o pipefail
 
 SIDEBAR_FILE="__Sidebar.md"
 GENERATE_MATCH="{{SIDEBAR_GENERATE}}"
 
-echo "Entering loop..." 
+cd docs
+
 for SIDEBAR_PATH in $(find . \
   -type f -name "${SIDEBAR_FILE}" \
   -exec grep -l "${GENERATE_MATCH}" {} \;
 )
 do
-  echo "Loop iteration on $SIDEBAR_PATH" 
   SIDEBAR_DIR="$(dirname ${SIDEBAR_PATH})"
   pushd "${SIDEBAR_DIR}"
 
@@ -47,7 +46,6 @@ do
 done
 
 # Adding new doc files
-cd docs
 cp -r /tmp/wiki/.git ./
 git config user.email "vladyslav.kupriienko@mooncascade.com"
 git config user.name "Vladyslav Kupriienko"
