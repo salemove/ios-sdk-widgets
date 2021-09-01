@@ -1,4 +1,4 @@
-git clone https://github.com/salemove/ios-sdk-widgets.wiki.git /tmp/wiki
+git clone git@github.com:salemove/ios-sdk-widgets.wiki.git /tmp/wiki
 
 cd docs
 cp -r /tmp/wiki/.git ./
