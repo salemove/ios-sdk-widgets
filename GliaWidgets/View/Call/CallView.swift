@@ -90,6 +90,7 @@ class CallView: EngagementView {
     }
 
     func checkBarsOrientation() {
+        guard mode == .video else { return }
         if barsAreHidden {
             let newHeaderConstraint = -header.frame.size.height + safeAreaInsets.top
             headerTopConstraint.constant = newHeaderConstraint
