@@ -1,0 +1,10 @@
+git clone https://github.com/salemove/ios-sdk-widgets.wiki.git /tmp/wiki
+
+cd docs
+cp -r /tmp/wiki/.git ./
+git config user.email "vladyslav.kupriienko@mooncascade.com"
+git config user.name "Vladyslav Kupriienko"
+git add .
+git commit -m "Update integration guide" || changes=none
+
+git push

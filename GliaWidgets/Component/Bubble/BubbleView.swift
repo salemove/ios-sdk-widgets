@@ -15,7 +15,7 @@ class BubbleView: UIView {
     private var userImageView: UserImageView?
     private var badgeView: BadgeView?
 
-    public init(with style: BubbleStyle) {
+    init(with style: BubbleStyle) {
         self.style = style
         super.init(frame: .zero)
         setup()

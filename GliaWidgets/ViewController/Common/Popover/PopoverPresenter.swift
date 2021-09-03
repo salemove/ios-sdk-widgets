@@ -1,18 +1,18 @@
 import UIKit
 
 protocol PopoverPresenter where Self: UIViewController {
-    func presentPopover(with style: ItemListStyle,
+    func presentPopover(with style: AttachmentSourceListStyle,
                         from sourceView: UIView,
                         arrowDirections: UIPopoverArrowDirection,
-                        itemSelected: @escaping (ListItemKind) -> Void)
+                        itemSelected: @escaping (AtttachmentSourceItemKind) -> Void)
 }
 
 extension PopoverPresenter {
-    func presentPopover(with style: ItemListStyle,
+    func presentPopover(with style: AttachmentSourceListStyle,
                         from sourceView: UIView,
                         arrowDirections: UIPopoverArrowDirection,
-                        itemSelected: @escaping (ListItemKind) -> Void) {
-        let listLiew = ItemListView(with: style)
+                        itemSelected: @escaping (AtttachmentSourceItemKind) -> Void) {
+        let listLiew = AttachmentSourceListView(with: style)
         listLiew.itemTapped = { itemSelected($0) }
         let controller = PopoverViewController(with: listLiew,
                                                presentFrom: sourceView,
