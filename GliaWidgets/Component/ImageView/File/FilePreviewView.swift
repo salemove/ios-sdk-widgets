@@ -3,7 +3,7 @@ import UIKit
   import QuickLookThumbnailing
 #endif
 
-class FileImageView: UIView {
+class FilePreviewView: UIView {
     enum Kind {
         case none
         case file(LocalFile)
@@ -17,10 +17,10 @@ class FileImageView: UIView {
 
     private let imageView = UIImageView()
     private let label = UILabel()
-    private let style: FileImageStyle
+    private let style: FilePreviewStyle
     private let kSize = CGSize(width: 52, height: 52)
 
-    init(with style: FileImageStyle) {
+    init(with style: FilePreviewStyle) {
         self.style = style
         super.init(frame: .zero)
         setup()

@@ -1,5 +1,6 @@
 import UIKit
 
+// TODO: docs
 public struct UnreadMessageIndicatorStyle {
     public var badge: BadgeStyle
     public var userImage: UserImageStyle

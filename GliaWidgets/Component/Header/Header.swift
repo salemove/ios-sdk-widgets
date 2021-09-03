@@ -33,7 +33,7 @@ class Header: UIView {
     private let kContentHeight: CGFloat = 30
     private let kHeight: CGFloat = 58
 
-    public init(with style: HeaderStyle) {
+    init(with style: HeaderStyle) {
         self.style = style
         super.init(frame: .zero)
         setup()
@@ -50,15 +50,15 @@ class Header: UIView {
         updateHeight()
     }
 
-    public func setLeftItem(_ item: UIView?, animated: Bool) {
+    func setLeftItem(_ item: UIView?, animated: Bool) {
         setItem(item, to: leftItemContainer, animated: animated)
     }
 
-    public func setRightItem(_ item: UIView?, animated: Bool) {
+    func setRightItem(_ item: UIView?, animated: Bool) {
         setItem(item, to: rightItemContainer, animated: animated)
     }
 
-    public func setRightItems(_ items: [UIView]?, animated: Bool) {
+    func setRightItems(_ items: [UIView]?, animated: Bool) {
         var stack: UIStackView?
         if let items = items {
             stack = UIStackView(arrangedSubviews: items)

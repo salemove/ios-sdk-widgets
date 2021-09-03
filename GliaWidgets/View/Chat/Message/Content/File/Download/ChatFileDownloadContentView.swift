@@ -4,14 +4,14 @@ class ChatFileDownloadContentView: ChatFileContentView {
     private let contentView = UIView()
     private let infoLabel = UILabel()
     private let stateLabel = UILabel()
-    private let fileImageView: FileImageView
+    private let filePreviewView: FilePreviewView
     private let progressView = UIProgressView()
     private let style: ChatFileDownloadStyle
     private let kContentInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
 
     init(with style: ChatFileDownloadStyle, content: Content, tap: @escaping () -> Void) {
         self.style = style
-        self.fileImageView = FileImageView(with: style.fileImage)
+        self.filePreviewView = FilePreviewView(with: style.filePreview)
         super.init(with: style, content: content, tap: tap)
         setup()
         layout()
@@ -42,27 +42,27 @@ class ChatFileDownloadContentView: ChatFileContentView {
         addSubview(contentView)
         contentView.autoPinEdgesToSuperviewEdges(with: kContentInsets)
 
-        contentView.addSubview(fileImageView)
-        fileImageView.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .right)
+        contentView.addSubview(filePreviewView)
+        filePreviewView.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .right)
 
         contentView.addSubview(infoLabel)
-        infoLabel.autoPinEdge(.top, to: .top, of: fileImageView, withOffset: 4)
-        infoLabel.autoPinEdge(.left, to: .right, of: fileImageView, withOffset: 12)
+        infoLabel.autoPinEdge(.top, to: .top, of: filePreviewView, withOffset: 4)
+        infoLabel.autoPinEdge(.left, to: .right, of: filePreviewView, withOffset: 12)
         infoLabel.autoPinEdge(toSuperviewEdge: .right)
 
         contentView.addSubview(stateLabel)
         stateLabel.autoPinEdge(.top, to: .bottom, of: infoLabel, withOffset: 4)
-        stateLabel.autoPinEdge(.left, to: .right, of: fileImageView, withOffset: 12)
+        stateLabel.autoPinEdge(.left, to: .right, of: filePreviewView, withOffset: 12)
         stateLabel.autoPinEdge(toSuperviewEdge: .right)
 
         contentView.addSubview(progressView)
-        progressView.autoPinEdge(.bottom, to: .bottom, of: fileImageView)
-        progressView.autoPinEdge(.left, to: .right, of: fileImageView, withOffset: 12)
+        progressView.autoPinEdge(.bottom, to: .bottom, of: filePreviewView)
+        progressView.autoPinEdge(.left, to: .right, of: filePreviewView, withOffset: 12)
         progressView.autoPinEdge(toSuperviewEdge: .right)
     }
 
     override func update(with file: LocalFile) {
-        fileImageView.kind = .file(file)
+        filePreviewView.kind = .file(file)
         infoLabel.text = file.fileInfoString
         infoLabel.font = style.open.infoFont
         infoLabel.textColor = style.open.infoColor
@@ -75,14 +75,14 @@ class ChatFileDownloadContentView: ChatFileContentView {
     override func update(with download: FileDownload) {
         switch download.state.value {
         case .none:
-            fileImageView.kind = .fileExtension(download.file.fileExtension)
+            filePreviewView.kind = .fileExtension(download.file.fileExtension)
             infoLabel.text = download.file.fileInfoString
             infoLabel.font = style.download.infoFont
             infoLabel.textColor = style.download.infoColor
             stateLabel.attributedText = stateText(for: download.state.value)
             progressView.isHidden = true
         case .downloading(progress: let progress):
-            fileImageView.kind = .fileExtension(download.file.fileExtension)
+            filePreviewView.kind = .fileExtension(download.file.fileExtension)
             infoLabel.text = download.file.fileInfoString
             infoLabel.font = style.downloading.infoFont
             infoLabel.textColor = style.downloading.infoColor
@@ -94,14 +94,14 @@ class ChatFileDownloadContentView: ChatFileContentView {
                 self?.progressView.progress = Float(progress)
             }
         case .downloaded(let file):
-            fileImageView.kind = .file(file)
+            filePreviewView.kind = .file(file)
             infoLabel.text = download.file.fileInfoString
             infoLabel.font = style.open.infoFont
             infoLabel.textColor = style.open.infoColor
             stateLabel.attributedText = stateText(for: download.state.value)
             progressView.isHidden = true
         case .error:
-            fileImageView.kind = .error
+            filePreviewView.kind = .error
             infoLabel.text = download.file.fileInfoString
             infoLabel.font = style.error.infoFont
             infoLabel.textColor = style.error.infoColor

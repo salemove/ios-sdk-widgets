@@ -1,15 +1,15 @@
 import UIKit
 
-class ListItemView: UIView {
-    var tap: ((ListItemKind) -> Void)?
+class AttachmentSourceItemView: UIView {
+    var tap: ((AtttachmentSourceItemKind) -> Void)?
 
     private let titleLabel = UILabel()
     private let stackView = UIStackView()
-    private let style: ListItemStyle
+    private let style: AttachmentSourceItemStyle
     private let kContentInsets = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
     private let kHeight: CGFloat = 44
 
-    public init(with style: ListItemStyle) {
+    init(with style: AttachmentSourceItemStyle) {
         self.style = style
         super.init(frame: .zero)
         setup()

@@ -204,7 +204,7 @@ extension Theme {
     private var uploadListStyle: FileUploadListStyle {
         typealias Upload = L10n.Chat.Upload
 
-        let fileImage = FileImageStyle(
+        let filePreview = FilePreviewStyle(
             fileFont: font.subtitle,
             fileColor: color.baseLight,
             errorIcon: Asset.uploadError.image,
@@ -239,7 +239,7 @@ extension Theme {
             infoGenericError: Upload.Error.generic
         )
         let upload = FileUploadStyle(
-            fileImage: fileImage,
+            filePreview: filePreview,
             uploading: uploading,
             uploaded: uploaded,
             error: error,
@@ -256,7 +256,7 @@ extension Theme {
     private var fileDownload: ChatFileDownloadStyle {
         typealias Download = L10n.Chat.Download
 
-        let fileImage = FileImageStyle(
+        let filePreview = FilePreviewStyle(
             fileFont: font.subtitle,
             fileColor: color.baseLight,
             errorIcon: Asset.uploadError.image,
@@ -300,7 +300,7 @@ extension Theme {
         )
 
         return ChatFileDownloadStyle(
-            fileImage: fileImage,
+            filePreview: filePreview,
             download: download,
             downloading: downloading,
             open: open,
@@ -313,14 +313,14 @@ extension Theme {
         )
     }
 
-    private var pickMedia: ItemListStyle {
+    private var pickMedia: AttachmentSourceListStyle {
         typealias Chat = L10n.Chat.PickMedia
 
-        let itemFont = font.buttonLabel
+        let itemFont = font.bodyText
         let itemFontColor = color.baseDark
         let itemIconColor = color.baseDark
 
-        let pickPhoto = ListItemStyle(
+        let pickPhoto = AttachmentSourceItemStyle(
             kind: .photoLibrary,
             title: Chat.photo,
             titleFont: itemFont,
@@ -328,7 +328,7 @@ extension Theme {
             icon: Asset.photoLibraryIcon.image,
             iconColor: itemIconColor
         )
-        let takePhoto = ListItemStyle(
+        let takePhoto = AttachmentSourceItemStyle(
             kind: .takePhoto,
             title: Chat.takePhoto,
             titleFont: itemFont,
@@ -336,7 +336,7 @@ extension Theme {
             icon: Asset.cameraIcon.image,
             iconColor: itemIconColor
         )
-        let browse = ListItemStyle(
+        let browse = AttachmentSourceItemStyle(
             kind: .browse,
             title: Chat.browse,
             titleFont: itemFont,
@@ -345,7 +345,7 @@ extension Theme {
             iconColor: itemIconColor
         )
 
-        return ItemListStyle(
+        return AttachmentSourceListStyle(
             items: [pickPhoto, takePhoto, browse],
             separatorColor: color.baseShade,
             backgroundColor: Color.lightGrey
