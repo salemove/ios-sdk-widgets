@@ -17,7 +17,7 @@ for DIR in $(find . -name '*.md' ! -name '*Sidebar*' -exec dirname {} \; | sort 
 do
   if [ "$DIR" != "." ]
   then
-    echo "** $(basename $DIR)" >> replace.txt
+    echo "**$(basename $DIR)**" >> replace.txt
     pushd $DIR
   fi
 
