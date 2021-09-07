@@ -9,7 +9,7 @@ set -euf -o pipefail
 cd docs
 
 REPLACE_PATH=`echo $(pwd)/replace.txt`
-rm __Sidebar.md
+rm __Sidebar.md || true
 cp __Sidebar-bkp __Sidebar.md
 > $REPLACE_PATH
 
