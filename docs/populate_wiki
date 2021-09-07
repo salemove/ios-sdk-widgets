@@ -1,49 +1,50 @@
+#!/bin/bash
+
 # Cloning repo wiki
 git clone git@github.com:salemove/ios-sdk-widgets.wiki.git /tmp/wiki
 
 # Populating sidebar
 set -euf -o pipefail
 
-SIDEBAR_FILE="__Sidebar.md"
-GENERATE_MATCH="{{SIDEBAR_GENERATE}}"
-
 cd docs
 
-for SIDEBAR_PATH in $(find . \
-  -type f -name "${SIDEBAR_FILE}" \
-  -exec grep -l "${GENERATE_MATCH}" {} \;
-)
+REPLACE_PATH=`echo $(pwd)/replace.txt`
+rm __Sidebar.md
+cp __Sidebar-bkp __Sidebar.md
+> $REPLACE_PATH
+
+for DIR in $(find . -name '*.md' ! -name '*Sidebar*' -exec dirname {} \; | sort -u)
 do
-  SIDEBAR_DIR="$(dirname ${SIDEBAR_PATH})"
-  pushd "${SIDEBAR_DIR}"
-
-  if [ "${SIDEBAR_DIR}" == "." ]
-      then
-        MARKDOWN_FILE=Home.md
-      else
-        MARKDOWN_FILE="`basename ${SIDEBAR_DIR}`.md"
+  if [ "$DIR" != "." ]
+  then
+    echo "** $(basename $DIR)" >> replace.txt
+    pushd $DIR
   fi
-  echo "end if - MARKDOWN_FILE = $MARKDOWN_FILE"  
 
-  grep -oE '^##+ .*$' "${MARKDOWN_FILE}" | awk '{
-    original_len = length($0)
-    sub(/^#+ /,"")
-    indent = sprintf("%"(original_len - length($0) - 2)"s","")
-    gsub(" ", "\\&nbsp;\\&nbsp;", indent)
-    gsub(" ", "", indent)
-    link = tolower($0)
-    gsub(/[^a-zA-Z0-9 _-]/, "", link)
-    gsub(" ", "-", link)
-    entry = indent "["$0"](#"link")  "
-    print entry
-  }' > replace.txt
-  echo "Printing replace.txt"  
-  cat replace.txt 
-
-  sed -i '' -e 's/'"${GENERATE_MATCH}"'/$(cat replace.txt)/' "${SIDEBAR_FILE}"
-  rm replace.txt
-  popd
+  for FILE in $( find . -maxdepth 1 -name '*.md' ! -name '*Sidebar*' \
+    -exec grep -l "## " {} \;
+  )
+  do
+    grep -oE '^##+ .*$' $FILE | awk -v f=$FILE '{
+      sub(/^#+ /,"")
+      link = tolower(f)
+      gsub(".md", "", link)
+      gsub(/[^a-zA-Z0-9 _-]/, "", link)
+      gsub(" ", "-", link)
+      entry = "- ["$0"]("link")  "
+      print entry
+    }' >> $REPLACE_PATH
+  done
+  
+  echo >> $REPLACE_PATH
+  if [ "$DIR" != "." ]
+  then
+    popd
+  fi
 done
+
+perl -pi -e 's/{{SIDEBAR_GENERATE}}/`cat replace.txt`/e' __Sidebar.md
+rm replace.txt
 
 # Adding new doc files
 cp -r /tmp/wiki/.git ./
