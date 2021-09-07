@@ -16,30 +16,35 @@ internal class FontProvider {
     }
 
     func font(named: String, size: CGFloat) -> UIFont {
-        // swiftlint:disable force_unwrapping
-        return UIFont(name: named, size: size)!
+        return UIFont(name: named, size: size) ?? .systemFont(ofSize: size)
     }
 
     private func loadFonts() {
-        fonts.forEach { loadFont(named: $0) }
+        _ = fonts.first(where: { !loadFont(named: $0) })
     }
 
-    private func loadFont(named name: String) {
+    private func loadFont(named name: String) -> Bool {
         let bundle = Bundle(for: BundleToken.self)
 
-        guard let pathForResourceString = bundle.path(forResource: name, ofType: "ttf"),
+        guard
+            let pathForResourceString = bundle.path(forResource: name, ofType: "ttf"),
             let fontData = NSData(contentsOfFile: pathForResourceString),
             let dataProvider = CGDataProvider(data: fontData),
-            let fontRef = CGFont(dataProvider) else {
-                fatalError("Could not load fonts. Perhaps they are not inculded in the bundle?")
+            let fontRef = CGFont(dataProvider)
+        else {
+            print("Could not load font='\(name)'. Perhaps they are not inculded in the bundle?")
+            return false
         }
 
         var errorRef: Unmanaged<CFError>?
         let registrationResult = CTFontManagerRegisterGraphicsFont(fontRef, &errorRef)
 
         if !registrationResult {
-            fatalError("Could not load fonts")
+            print("Font='\(name)' has not been registered properly. Error='\(errorRef.debugDescription)'.")
+            return false
         }
+
+        return true
     }
 }
 

@@ -23,6 +23,23 @@ xed GliaWidgets.xcworkspace
 ```
 
 
+## Cocoapods
+
+For integration, the `GliaWidgets` into your project via [CocoaPods](https://cocoapods.org/) modify your `Podfile`
+```
+# Podfile
+
+source 'https://github.com/CocoaPods/Specs.git'
+source 'https://github.com/salemove/glia-ios-podspecs.git'
+
+user_frameworks!
+
+target 'YOUR_TARGET_NAME' do
+    pod 'GliaWidgets', git: 'https://github.com/salemove/ios-sdk-widgets', tag: 'SDK_VERSION'
+end
+
+```
+
 ## Communication
 
 If you have any questions regarding our developer documentation please file a ticket in [Glia Jira Service Desk](https://salemove.atlassian.net/servicedesk/customer/portal/1). If you do not have access to that, then please contact your Success Manager for access.
