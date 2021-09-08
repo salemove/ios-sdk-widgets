@@ -1,5 +1,6 @@
 import UIKit
 
+// TODO: documentation
 public struct MediaUpgradeActionStyle {
     public var title: String
     public var titleFont: UIFont
@@ -12,16 +13,18 @@ public struct MediaUpgradeActionStyle {
     public var icon: UIImage
     public var iconColor: UIColor
 
-    public init(title: String,
-                titleFont: UIFont,
-                titleColor: UIColor,
-                info: String,
-                infoFont: UIFont,
-                infoColor: UIColor,
-                borderColor: UIColor,
-                backgroundColor: UIColor,
-                icon: UIImage,
-                iconColor: UIColor) {
+    public init(
+        title: String,
+        titleFont: UIFont,
+        titleColor: UIColor,
+        info: String,
+        infoFont: UIFont,
+        infoColor: UIColor,
+        borderColor: UIColor,
+        backgroundColor: UIColor,
+        icon: UIImage,
+        iconColor: UIColor
+    ) {
         self.title = title
         self.titleFont = titleFont
         self.titleColor = titleColor

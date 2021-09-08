@@ -9,7 +9,7 @@ class PoweredBy: UIView {
     private let logoImageView = UIImageView()
     private let stackView = UIStackView()
 
-    public init() {
+    init() {
         super.init(frame: .zero)
         setup()
         layout()

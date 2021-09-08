@@ -42,7 +42,7 @@ class ChatItemCell: UITableViewCell {
             }
         }
     }
-    
+
     private let containerView = UIStackView()
 
     public override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {

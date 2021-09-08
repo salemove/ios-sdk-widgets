@@ -34,7 +34,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case addUpload(FileUpload)
         case removeUpload(FileUpload)
         case removeAllUploads
-        case presentMediaPicker(itemSelected: (ListItemKind) -> Void)
+        case presentMediaPicker(itemSelected: (AtttachmentSourceItemKind) -> Void)
         case offerMediaUpgrade(
             SingleMediaUpgradeAlertConfiguration,
             accepted: () -> Void,
@@ -90,7 +90,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             action?(.setMessageText(messageText))
         }
     }
-    
+
     private var pendingMessages: [OutgoingMessage] = []
 
     init(
@@ -132,7 +132,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         }
     }
 
-    public func event(_ event: Event) {
+    func event(_ event: Event) {
         switch event {
         case .viewDidLoad:
             start()
@@ -159,7 +159,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
 
     override func viewDidAppear() {
         super.viewDidAppear()
-        
+
         if showsCallBubble {
             showCallBubble()
         }
@@ -171,13 +171,13 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         switch startAction {
         case .startEngagement:
             let item = ChatItem(kind: .queueOperator)
-           
+
             appendItem(
                 item,
                 to: queueOperatorSection,
                 animated: false
             )
-            
+
             enqueue()
         case .none:
             if !storage.isEmpty() {
@@ -185,13 +185,13 @@ class ChatViewModel: EngagementViewModel, ViewModel {
                 update(for: interactor.state)
             } else {
                 let item = ChatItem(kind: .queueOperator)
-               
+
                 appendItem(
                     item,
                     to: queueOperatorSection,
                     animated: false
                 )
-                
+
                 enqueue()
             }
         }
@@ -204,7 +204,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case .enqueueing:
             action?(.queue)
             action?(.scrollToBottom(animated: false))
-            
+
         case .engaged(let engagedOperator):
             let name = engagedOperator?.firstName
             let pictureUrl = engagedOperator?.picture?.url
@@ -217,11 +217,11 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             case .stopped:
                 engagementAction?(.showEndButton)
             }
-            
+
             pendingMessages.forEach({ [weak self] outgoingMessage in
                 self?.interactor.send(outgoingMessage.content, attachment: nil) { [weak self] message in
                     guard let self = self else { return }
-                    
+
                     self.replace(
                         outgoingMessage,
                         uploads: [],
@@ -375,7 +375,7 @@ extension ChatViewModel {
             content: messageText,
             files: files
         )
-        
+
         if interactor.isEngaged {
             let item = ChatItem(with: outgoingMessage)
             appendItem(item, to: messagesSection, animated: true)
@@ -387,7 +387,7 @@ extension ChatViewModel {
 
             interactor.send(messageTextTemp, attachment: attachment) { [weak self] message in
                 guard let self = self else { return }
-                
+
                 self.replace(
                     outgoingMessage,
                     uploads: uploads,
@@ -407,26 +407,22 @@ extension ChatViewModel {
         } else {
             let messageItem = ChatItem(with: outgoingMessage)
             appendItem(messageItem, to: pendingSection, animated: true)
-            
+
             uploader.succeededUploads.forEach { action?(.removeUpload($0)) }
             uploader.removeSucceededUploads()
             action?(.removeAllUploads)
 
             pendingMessages.append(outgoingMessage)
-            
+
             let queueItem = ChatItem(kind: .queueOperator)
-           
-            appendItem(
-                queueItem,
-                to: queueOperatorSection,
-                animated: false
-            )
-            
+
+            queueOperatorSection.set([queueItem])
+            action?(.refreshSection(2))
             action?(.scrollToBottom(animated: true))
 
             enqueue()
         }
-        
+
         messageText = ""
     }
 
@@ -532,7 +528,7 @@ extension ChatViewModel {
 
 extension ChatViewModel {
     private func presentMediaPicker() {
-        let itemSelected = { (kind: ListItemKind) -> Void in
+        let itemSelected = { (kind: AtttachmentSourceItemKind) -> Void in
             let media = ObservableValue<MediaPickerEvent>(with: .none)
             media.addObserver(self) { [weak self] event, _ in
                 guard let self = self else { return }

@@ -141,8 +141,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
                         self?.end()
                     } else {
                         self?.gliaViewController?.minimize(animated: true)
-                    }
-                    
+                    }                    
                 case .call(let callViewController, _, let upgradedFrom, _):
                     if upgradedFrom == .chat {
                         self?.gliaViewController?.minimize(animated: true)
