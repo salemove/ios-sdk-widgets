@@ -13,7 +13,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
     private enum Engagement {
         case none
         case chat(ChatViewController)
-        case call(CallViewController, ChatViewController, UpgradedFrom)
+        case call(CallViewController, ChatViewController, UpgradedFrom, Call)
     }
 
     private enum UpgradedFrom {
@@ -88,7 +88,8 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
             engagement = .call(
                 callViewController,
                 chatViewController,
-                .none
+                .none,
+                call
             )
             navigationPresenter.setViewControllers(
                 [callViewController],
@@ -140,9 +141,8 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
                         self?.end()
                     } else {
                         self?.gliaViewController?.minimize(animated: true)
-                    }
-
-                case .call(let callViewController, _, let upgradedFrom):
+                    }                    
+                case .call(let callViewController, _, let upgradedFrom, _):
                     if upgradedFrom == .chat {
                         self?.gliaViewController?.minimize(animated: true)
                     } else {
@@ -155,10 +155,10 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
             case .engaged(let operatorImageUrl):
                 self?.gliaViewController?.bubbleKind = .userImage(url: operatorImageUrl)
             case .mediaUpgradeAccepted(let offer, let answer):
-                self?.mediaUpgradeAccepted(offer: offer, answer: answer)
+                self?.chatMediaUpgradeAccepted(offer: offer, answer: answer)
             case .call:
                 switch self?.engagement {
-                case .call(let callViewController, _, let upgradedFrom):
+                case .call(let callViewController, _, let upgradedFrom, _):
                     switch upgradedFrom {
                     case .none:
                         self?.navigationController.popToViewController(callViewController, animated: true)
@@ -195,7 +195,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
             switch event {
             case .back:
                 switch self?.engagement {
-                case .call(_, let chatViewController, let upgradedFrom):
+                case .call(_, let chatViewController, let upgradedFrom, _):
                     if upgradedFrom == .chat {
                         self?.navigationPresenter.pop(to: chatViewController, animated: true)
                     } else {
@@ -208,7 +208,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
                 self?.gliaViewController?.bubbleKind = .userImage(url: operatorImageUrl)
             case .chat:
                 switch self?.engagement {
-                case .call(_, let chatViewController, let upgradedFrom):
+                case .call(_, let chatViewController, let upgradedFrom, _):
                     if upgradedFrom == .chat {
                         self?.navigationPresenter.pop(to: chatViewController, animated: true)
                     } else {
@@ -271,7 +271,7 @@ extension RootCoordinator {
 }
 
 extension RootCoordinator {
-    private func mediaUpgradeAccepted(
+    private func chatMediaUpgradeAccepted(
         offer: MediaUpgradeOffer,
         answer: @escaping AnswerWithSuccessBlock
     ) {
@@ -286,11 +286,18 @@ extension RootCoordinator {
             engagement = .call(
                 callViewController,
                 chatViewController,
-                .chat
+                .chat,
+                call
             )
             chatCall.value = call
             navigationPresenter.push(callViewController)
-        default:
+            
+        case .call(_, _, _, let call):
+            call.upgrade(to: offer)
+            navigationPresenter.pop()
+            answer(true, nil)
+
+        case .none:
             break
         }
     }
