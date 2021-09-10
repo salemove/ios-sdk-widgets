@@ -8,13 +8,13 @@ public struct ChatMessageEntryStyle {
     /// Color of the message text.
     public var messageColor: UIColor
 
-    /// Placeholder text used when user is engaged.
-    public var placeholder: String
+    /// Placeholder text of the message input view used when the user is engaged.
+    public var enterMessagePlaceholder: String
     
-    /// Placeholder text used when user input is required to start engagement.
-    public var connectPlaceholder: String
+    /// Placeholder text of the message input view used when user input is required to start engagement.
+    public var startEngagementPlaceholder: String
 
-    /// Font of the placeholder text used when a choice card is awaiting for the answer.
+    /// Placeholder text of the message input view used when a choice card is awaiting for the answer.
     public var choiceCardPlaceholder: String
 
     /// Font of the placeholder text.
@@ -42,9 +42,9 @@ public struct ChatMessageEntryStyle {
     /// - Parameters:
     ///   - messageFont: Font of the message text.
     ///   - messageColor: Color of the message text.
-    ///   - placeholder: Placeholder text used when user input is required to start engagement.
-    ///   - connectPlaceholder: Placeholder text used when user is engaged.
-    ///   - choiceCardPlaceholder: Font of the placeholder text used when a choice card is awaiting for the answer.
+    ///   - enterMessagePlaceholder: Placeholder text of the message input view used when the user is engaged.
+    ///   - startEngagementPlaceholder:Placeholder text of the message input view used when user input is required to start engagement.
+    ///   - choiceCardPlaceholder: Placeholder text of the message input view used when a choice card is awaiting for the answer.
     ///   - placeholderFont: Font of the placeholder text.
     ///   - placeholderColor: Color of the placeholder text.
     ///   - separatorColor: Color of the separator line.
@@ -53,22 +53,24 @@ public struct ChatMessageEntryStyle {
     ///   - sendButton: Style of the send button.
     ///   - uploadList: Style of the media upload menu popover.
     ///
-    public init(messageFont: UIFont,
-                messageColor: UIColor,
-                placeholder: String,
-                connectPlaceholder: String,
-                choiceCardPlaceholder: String,
-                placeholderFont: UIFont,
-                placeholderColor: UIColor,
-                separatorColor: UIColor,
-                backgroundColor: UIColor,
-                mediaButton: MessageButtonStyle,
-                sendButton: MessageButtonStyle,
-                uploadList: FileUploadListStyle) {
+    public init(
+        messageFont: UIFont,
+        messageColor: UIColor,
+        enterMessagePlaceholder: String,
+        startEngagementPlaceholder: String,
+        choiceCardPlaceholder: String,
+        placeholderFont: UIFont,
+        placeholderColor: UIColor,
+        separatorColor: UIColor,
+        backgroundColor: UIColor,
+        mediaButton: MessageButtonStyle,
+        sendButton: MessageButtonStyle,
+        uploadList: FileUploadListStyle
+    ) {
         self.messageFont = messageFont
         self.messageColor = messageColor
-        self.placeholder = placeholder
-        self.connectPlaceholder = connectPlaceholder
+        self.enterMessagePlaceholder = enterMessagePlaceholder
+        self.startEngagementPlaceholder = startEngagementPlaceholder
         self.choiceCardPlaceholder = choiceCardPlaceholder
         self.placeholderFont = placeholderFont
         self.placeholderColor = placeholderColor

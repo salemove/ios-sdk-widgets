@@ -144,7 +144,7 @@ class ChatMessageEntryView: UIView {
         messageContainerView.autoPinEdge(.top, to: .bottom, of: uploadListView)
         messageContainerView.autoPinEdge(toSuperviewEdge: .left)
         messageContainerView.autoPinEdge(toSuperviewEdge: .bottom)
-        
+
         addSubview(buttonsStackView)
         buttonsStackView.autoSetDimension(.height, toSize: 50)
         buttonsStackView.autoPinEdge(.left, to: .right, of: messageContainerView)
@@ -160,9 +160,9 @@ class ChatMessageEntryView: UIView {
         if isChoiceCardModeEnabled {
             text = style.choiceCardPlaceholder
         } else if !isConnected {
-            text = style.connectPlaceholder
+            text = style.startEngagementPlaceholder
         } else {
-            text = style.placeholder
+            text = style.enterMessagePlaceholder
         }
         
         placeholderLabel.text = text
