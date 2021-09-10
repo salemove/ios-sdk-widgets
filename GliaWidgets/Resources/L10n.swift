@@ -243,6 +243,8 @@ public enum L10n {
     public enum Message {
       /// Tap on the answer above
       public static let choiceCardPlaceholder = L10n.tr("Localizable", "chat.message.choiceCardPlaceholder")
+      /// Enter message to start a new engagement
+      public static let connectPlaceholder = L10n.tr("Localizable", "chat.message.connectPlaceholder")
       /// Enter Message
       public static let placeholder = L10n.tr("Localizable", "chat.message.placeholder")
       public enum Status {
