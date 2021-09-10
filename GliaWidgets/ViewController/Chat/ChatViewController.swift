@@ -64,6 +64,7 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter,
             case .connected(let name, let imageUrl):
                 view.setConnectState(.connected(name: name, imageUrl: imageUrl), animated: true)
                 view.unreadMessageIndicatorView.setImage(fromUrl: imageUrl, animated: true)
+                view.messageEntryView.isConnected = true
             case .setMessageEntryEnabled(let enabled):
                 view.messageEntryView.isEnabled = enabled
             case .setChoiceCardInputModeEnabled(let enabled):

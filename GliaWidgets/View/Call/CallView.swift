@@ -32,6 +32,7 @@ class CallView: EngagementView {
     private let kRemoteVideoViewPortraitHeightMultiplier: CGFloat = 0.3
     private let kRemoteVideoViewLandscapeHeightMultiplier: CGFloat = 1.0
     private let kBarsHideDelay: TimeInterval = 3.2
+    private var barsAreHidden: Bool = false
 
     init(with style: CallStyle) {
         self.style = style
@@ -86,6 +87,18 @@ class CallView: EngagementView {
             showBars(duration: duration)
         }
         buttonBar.adjustStackConstraints()
+    }
+
+    func checkBarsOrientation() {
+        guard mode == .video else { return }
+        if barsAreHidden {
+            let newHeaderConstraint = -header.frame.size.height + safeAreaInsets.top
+            headerTopConstraint.constant = newHeaderConstraint
+            buttonBarBottomConstraint.constant = buttonBar.frame.size.height
+        } else {
+            headerTopConstraint.constant = 0
+            buttonBarBottomConstraint.constant = 0
+        }
     }
 
     private func setup() {
@@ -231,6 +244,7 @@ class CallView: EngagementView {
             self.buttonBarBottomConstraint.constant = 0
             self.layoutIfNeeded()
         }
+        barsAreHidden = true
     }
 
     private func hideBars(duration: TimeInterval) {
@@ -241,6 +255,7 @@ class CallView: EngagementView {
             self.buttonBarBottomConstraint.constant = self.buttonBar.frame.size.height
             self.layoutIfNeeded()
         }
+        barsAreHidden = false
     }
 
     private func hideLandscapeBars() {

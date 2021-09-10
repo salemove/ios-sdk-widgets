@@ -131,7 +131,8 @@ extension Theme {
         let messageEntry = ChatMessageEntryStyle(
             messageFont: font.bodyText,
             messageColor: color.baseDark,
-            placeholder: Chat.Message.placeholder,
+            enterMessagePlaceholder: Chat.Message.enterMessagePlaceholder,
+            startEngagementPlaceholder: Chat.Message.startEngagementPlaceholder,
             choiceCardPlaceholder: Chat.Message.choiceCardPlaceholder,
             placeholderFont: font.bodyText,
             placeholderColor: color.baseNormal,

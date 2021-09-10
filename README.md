@@ -22,6 +22,7 @@ pod install
 xed GliaWidgets.xcworkspace
 ```
 
+
 ## Cocoapods
 
 For integration, the `GliaWidgets` into your project via [CocoaPods](https://cocoapods.org/) modify your `Podfile`
