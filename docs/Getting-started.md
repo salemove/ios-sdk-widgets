@@ -93,5 +93,3 @@ do {
 ```
 
 You should now see the chat, which will automatically try to connect to the Glia Hub, where an operator can accept an incoming engagement request from you.
-
-[[images/getting_started.png]]
