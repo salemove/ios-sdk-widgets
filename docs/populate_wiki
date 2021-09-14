@@ -21,22 +21,32 @@ do
     pushd $DIR
   fi
 
+  > dir_sorted.txt
+  > dir_replace.txt
+
   for FILE in $( find . -maxdepth 1 -name '*.md' ! -name '*Sidebar*' \
-    -exec grep -l "## " {} \;
+    -exec grep -l "# " {} \;
   )
   do
-    grep -oE '^##+ .*$' $FILE | awk -v f=$FILE '{
-      sub(/^#+ /,"")
+    echo $(grep -oE '\[order\]: \# (.*)' $FILE | tr -d '[order]: # ()') \
+     $(grep -oE '^# .*$' $FILE | awk -v f=$FILE '{
+      sub(/^# /,"")
       link = tolower(f)
       gsub(".md", "", link)
       gsub(/[^a-zA-Z0-9 _-]/, "", link)
       gsub(" ", "-", link)
       entry = "- ["$0"]("link")  "
       print entry
-    }' >> $REPLACE_PATH
+    }') >> "dir_replace.txt"
   done
-  
-  echo >> $REPLACE_PATH
+  sort -n -o dir_sorted.txt dir_replace.txt
+  sed -i '' -E 's/^[0-9]+ -/-/g' dir_sorted.txt
+
+  printf '%s\n\n' "$(cat dir_sorted.txt)" >> $REPLACE_PATH
+
+  rm dir_sorted.txt
+  rm dir_replace.txt
+
   if [ "$DIR" != "." ]
   then
     popd

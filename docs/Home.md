@@ -1,4 +1,6 @@
-## Glia Widgets SDK
+
+[order]: # (1)
+# Glia Widgets SDK
 
 ![](https://files.readme.io/a1b262c-small-Glia-logo-light.png)
 
