@@ -62,7 +62,7 @@ cp -r /tmp/wiki/.git ./
 git config user.email "vladyslav.kupriienko@mooncascade.com"
 git config user.name "Vladyslav Kupriienko"
 git add .
-git commit -m "${GIT_CLONE_COMMIT_MESSAGE_SUBJECT}" || changes=none
+git commit -m "Update integration guide" || changes=none
 
 # Pushing to repo
 git push
