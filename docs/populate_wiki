@@ -58,6 +58,7 @@ rm replace.txt
 
 # Adding new doc files
 cp -r /tmp/wiki/.git ./
+echo "$GIT_CLONE_COMMIT_AUTHOR_EMAIL" "$GIT_CLONE_COMMIT_AUTHOR_NAME" "$GIT_CLONE_COMMIT_MESSAGE_SUBJECT"
 git config user.email "$GIT_CLONE_COMMIT_AUTHOR_EMAIL"
 git config user.name "$GIT_CLONE_COMMIT_AUTHOR_NAME"
 git add .
