@@ -1,10 +1,57 @@
-git clone https://github.com/salemove/ios-sdk-widgets.wiki.git /tmp/wiki
+#!/bin/bash
+
+# Cloning repo wiki
+git clone git@github.com:salemove/ios-sdk-widgets.wiki.git /tmp/wiki
+
+# Populating sidebar
+set -euf -o pipefail
 
 cd docs
+
+REPLACE_PATH=`echo $(pwd)/replace.txt`
+rm __Sidebar.md || true
+cp __Sidebar-bkp __Sidebar.md
+> $REPLACE_PATH
+
+for DIR in $(find . -name '*.md' ! -name '*Sidebar*' -exec dirname {} \; | sort -u)
+do
+  if [ "$DIR" != "." ]
+  then
+    echo "**$(basename $DIR)**" >> replace.txt
+    pushd $DIR
+  fi
+
+  for FILE in $( find . -maxdepth 1 -name '*.md' ! -name '*Sidebar*' \
+    -exec grep -l "## " {} \;
+  )
+  do
+    grep -oE '^##+ .*$' $FILE | awk -v f=$FILE '{
+      sub(/^#+ /,"")
+      link = tolower(f)
+      gsub(".md", "", link)
+      gsub(/[^a-zA-Z0-9 _-]/, "", link)
+      gsub(" ", "-", link)
+      entry = "- ["$0"]("link")  "
+      print entry
+    }' >> $REPLACE_PATH
+  done
+  
+  echo >> $REPLACE_PATH
+  if [ "$DIR" != "." ]
+  then
+    popd
+  fi
+done
+
+perl -pi -e 's/{{SIDEBAR_GENERATE}}/`cat replace.txt`/e' __Sidebar.md
+rm replace.txt
+
+# Adding new doc files
 cp -r /tmp/wiki/.git ./
 git config user.email "vladyslav.kupriienko@mooncascade.com"
 git config user.name "Vladyslav Kupriienko"
 git add .
 git commit -m "Update integration guide" || changes=none
 
+# Pushing to repo
 git push
