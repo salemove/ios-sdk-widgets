@@ -28,4 +28,6 @@ let chatStyle = ChatStyle(
 
 Below is a visual representation of some of the customization properties of the GliaWidgets chat.
 
-[[images/chat_customization.png]]
+<p align="center">
+  <img width="500" src="/images/chat_customization.png">
+</p>
