@@ -11,7 +11,9 @@ The GliaWidgets iOS SDK allows customizing its colors, icons and text appearance
 It is also possible to avoid creating a custom Theme in which case the Widgets will stay in their default appearance.
 For example, chat default look:
 
-[[images/chat_general_look.png]]
+<p align="center">
+  <img width="500" src="./images/chat_general_look.png">
+</p>
 
 To read more about customization, navigate to the [Creating a Theme](creating-a-theme) page and other pages in the Customization section.
 

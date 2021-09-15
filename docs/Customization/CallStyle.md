@@ -32,4 +32,6 @@ let callStyle = CallStyle(
 
 The general default look of the audio call view:
 
-[[images/call_general_view.png]]
+<p align="center">
+  <img width="500" src="./images/call_general_view.png">
+</p>
