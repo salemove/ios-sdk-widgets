@@ -21,10 +21,13 @@ class Header: UIView {
             }
         }
     }
-
+    var backButton: HeaderButton
+    var closeButton: HeaderButton
+    var endButton: ActionButton
+    var endScreenSharingButton: HeaderButton
     private let style: HeaderStyle
     private let leftItemContainer = UIView()
-    private let rightItemContainer = UIView()
+    private let rightItemContainer = UIStackView()
     private let titleLabel = UILabel()
     private let contentView = UIView()
     private var effectView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
@@ -35,6 +38,10 @@ class Header: UIView {
 
     init(with style: HeaderStyle) {
         self.style = style
+        self.backButton = HeaderButton(with: style.backButton)
+        self.closeButton = HeaderButton(with: style.closeButton)
+        self.endButton = ActionButton(with: style.endButton)
+        self.endScreenSharingButton = HeaderButton(with: style.endScreenShareButton)
         super.init(frame: .zero)
         setup()
         layout()
@@ -50,23 +57,31 @@ class Header: UIView {
         updateHeight()
     }
 
-    func setLeftItem(_ item: UIView?, animated: Bool) {
-        setItem(item, to: leftItemContainer, animated: animated)
+    public func setLeftItem(animated: Bool) {
+        setItem(backButton, to: leftItemContainer, animated: animated)
     }
 
-    func setRightItem(_ item: UIView?, animated: Bool) {
-        setItem(item, to: rightItemContainer, animated: animated)
+    public func showCloseButton() {
+        endButton.isHidden = true
+        endScreenSharingButton.isHidden = true
+        closeButton.isHidden = false
     }
 
-    func setRightItems(_ items: [UIView]?, animated: Bool) {
-        var stack: UIStackView?
-        if let items = items {
-            stack = UIStackView(arrangedSubviews: items)
-            stack?.axis = .horizontal
-            stack?.spacing = 8
-            stack?.alignment = .center
-        }
-        setRightItem(stack, animated: animated)
+    func setEndButtons() {
+        endButton.isHidden = true
+        endScreenSharingButton.isHidden = true
+    }
+
+    func showEndButton() {
+        endButton.isHidden = false
+        closeButton.isHidden = true
+        endScreenSharingButton.isHidden = true
+    }
+
+    func showEndScreenSharingButton() {
+        endButton.isHidden = false
+        endScreenSharingButton.isHidden = false
+        closeButton.isHidden = true
     }
 
     private func setItem(_ item: UIView?, to container: UIView, animated: Bool) {
@@ -92,6 +107,10 @@ class Header: UIView {
         titleLabel.font = style.titleFont
         titleLabel.textColor = style.titleColor
         titleLabel.textAlignment = .center
+
+        rightItemContainer.axis = .horizontal
+        rightItemContainer.spacing = 8
+        rightItemContainer.alignment = .center
     }
 
     private func layout() {
@@ -113,6 +132,7 @@ class Header: UIView {
         leftItemContainer.autoPinEdge(toSuperviewEdge: .left)
         leftItemContainer.autoAlignAxis(toSuperviewAxis: .horizontal)
 
+        rightItemContainer.addArrangedSubviews([endScreenSharingButton, endButton, closeButton])
         contentView.addSubview(rightItemContainer)
         rightItemContainer.autoPinEdge(toSuperviewEdge: .right)
         rightItemContainer.autoAlignAxis(toSuperviewAxis: .horizontal)

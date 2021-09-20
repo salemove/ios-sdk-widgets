@@ -34,8 +34,8 @@ class CallViewController: EngagementViewController, MediaUpgradePresenter {
     }
 
     private func bind(viewModel: CallViewModel, to view: CallView) {
-        showBackButton(with: viewFactory.theme.call.backButton, in: view.header)
-        showCloseButton(with: viewFactory.theme.call.closeButton, in: view.header)
+        showBackButton(in: view.header)
+        showCloseButton(in: view.header)
 
         view.callButtonTapped = { viewModel.event(.callButtonTapped(.init(with: $0))) }
 

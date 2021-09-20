@@ -10,6 +10,10 @@ public struct HeaderStyle {
 
     /// Background color of the view.
     public var backgroundColor: UIColor
+    public var backButton: HeaderButtonStyle
+    public var closeButton: HeaderButtonStyle
+    public var endButton: ActionButtonStyle
+    public var endScreenShareButton: HeaderButtonStyle
 
     ///
     /// - Parameters:
@@ -20,10 +24,18 @@ public struct HeaderStyle {
     public init(
         titleFont: UIFont,
         titleColor: UIColor,
-        backgroundColor: UIColor
+        backgroundColor: UIColor,
+        backButton: HeaderButtonStyle,
+        closeButton: HeaderButtonStyle,
+        endButton: ActionButtonStyle,
+        endScreenShareButton: HeaderButtonStyle
     ) {
         self.titleFont = titleFont
         self.titleColor = titleColor
         self.backgroundColor = backgroundColor
+        self.backButton = backButton
+        self.closeButton = closeButton
+        self.endButton = endButton
+        self.endScreenShareButton = endScreenShareButton
     }
 }
