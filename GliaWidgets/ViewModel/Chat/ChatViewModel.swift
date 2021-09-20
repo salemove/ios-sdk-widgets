@@ -42,6 +42,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         )
         case showCallBubble(imageUrl: String?)
         case updateUnreadMessageIndicator(itemCount: Int)
+        case operatorTypingIndicatorHidden(Bool)
     }
 
     enum DelegateEvent {
@@ -256,6 +257,8 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             messagesUpdated(messages)
         case .upgradeOffer(let offer, answer: let answer):
             offerMediaUpgrade(offer, answer: answer)
+        case .typingStatusUpdated(let status):
+            typingStatusUpdated(status)
         default:
             break
         }
@@ -520,6 +523,14 @@ extension ChatViewModel {
             let items = newMessages.compactMap { ChatItem(with: $0) }
             setItems(items, to: messagesSection)
             action?(.scrollToBottom(animated: true))
+        }
+    }
+    
+    private func typingStatusUpdated(_ status: OperatorTypingStatus) {
+        if status.isTyping {
+            (action?(.operatorTypingIndicatorHidden(false)))
+        } else {
+            (action?(.operatorTypingIndicatorHidden(true)))
         }
     }
 }

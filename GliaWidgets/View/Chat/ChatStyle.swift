@@ -37,6 +37,7 @@ public class ChatStyle: EngagementStyle {
 
     /// Style of the unread message indicator.
     public var unreadMessageIndicator: UnreadMessageIndicatorStyle
+    public var operatorTypingIndicator: OperatorTypingIndicatorStyle
 
     ///
     /// - Parameters:
@@ -77,7 +78,8 @@ public class ChatStyle: EngagementStyle {
         videoUpgrade: ChatCallUpgradeStyle,
         callBubble: BubbleStyle,
         pickMedia: AttachmentSourceListStyle,
-        unreadMessageIndicator: UnreadMessageIndicatorStyle
+        unreadMessageIndicator: UnreadMessageIndicatorStyle,
+        operatorTypingIndicator: OperatorTypingIndicatorStyle
     ) {
         self.title = title
         self.backButton = backButton
@@ -91,6 +93,7 @@ public class ChatStyle: EngagementStyle {
         self.callBubble = callBubble
         self.pickMedia = pickMedia
         self.unreadMessageIndicator = unreadMessageIndicator
+        self.operatorTypingIndicator = operatorTypingIndicator
         super.init(
             header: header,
             connect: connect,

@@ -106,6 +106,13 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter,
                 view.showCallBubble(with: imageUrl, animated: true)
             case .updateUnreadMessageIndicator(let count):
                 view.unreadMessageIndicatorView.newItemCount = count
+            case .operatorTypingIndicatorHidden(let status):
+                if view.chatScrollViewIsAtTheBottom {
+                    view.scrollToBottom(animated: status)
+                    view.updateTypingIndicator(status: status)
+                } else {
+                    view.updateTypingIndicator(status: status)
+                }
             }
         }
     }
