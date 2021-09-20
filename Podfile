@@ -18,6 +18,7 @@ target 'GliaWidgets' do
 
   pod 'PureLayout', '~> 3.1'
   pod 'SalemoveSDK'
+  pod 'lottie-ios'
 end
 
 post_install do |installer|
