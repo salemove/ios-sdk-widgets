@@ -13,6 +13,8 @@ class GliaViewController: UIViewController {
     var bubbleKind: BubbleKind = .userImage(url: nil) {
         didSet { bubbleWindow?.bubbleKind = bubbleKind }
     }
+    
+    let transition = Transition()
 
     private weak var delegate: GliaViewControllerDelegate?
     private let bubbleView: BubbleView
@@ -48,7 +50,7 @@ class GliaViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     func maximize(animated: Bool) {
         UIView.animate(
             withDuration: animated ? 0.4 : 0.0,
@@ -92,6 +94,7 @@ class GliaViewController: UIViewController {
     private func setup() {
         modalPresentationStyle = .overFullScreen
         modalTransitionStyle = .crossDissolve
+        transitioningDelegate = self
     }
 
     private func makeBubbleWindow() -> BubbleWindow {
@@ -121,5 +124,20 @@ class GliaViewController: UIViewController {
             return scene as? UIWindowScene
         }
     }
+}
 
+// MARK: - UIViewControllerTransitioningDelegate
+
+extension GliaViewController: UIViewControllerTransitioningDelegate {
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        transition.transitionMode = .present
+        transition.startingPoint = bubbleWindow?.center ?? view.center
+        return transition
+    }
+    
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        transition.transitionMode = .dismiss
+        transition.startingPoint = bubbleWindow?.center ?? bubbleView.center
+        return transition
+    }
 }
