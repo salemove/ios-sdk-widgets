@@ -21,11 +21,11 @@ class ChatMessageEntryView: UIView {
             if isChoiceCardModeEnabled {
                 textView.resignFirstResponder()
             }
-            
+
             updatePlaceholderText()
         }
     }
-    
+
     var isConnected: Bool {
         didSet {
             updatePlaceholderText()
@@ -100,12 +100,12 @@ class ChatMessageEntryView: UIView {
         placeholderLabel.font = style.placeholderFont
         placeholderLabel.textColor = style.placeholderColor
         updatePlaceholderText()
-        
+
         pickMediaButton.tap = { [weak self] in self?.pickMediaTapped?() }
         sendButton.tap = { [weak self] in self?.sendTap() }
-        
+
         showsSendButton = false
-        
+
         buttonsStackView.axis = .horizontal
         buttonsStackView.spacing = 15
         buttonsStackView.addArrangedSubviews([pickMediaButton, sendButton])
@@ -128,7 +128,7 @@ class ChatMessageEntryView: UIView {
         placeholderLabel.autoPinEdge(toSuperviewEdge: .left)
         placeholderLabel.autoPinEdge(toSuperviewEdge: .top)
         placeholderLabel.autoPinEdge(toSuperviewEdge: .right)
-        
+
         addSubview(separator)
         addSubview(uploadListView)
         addSubview(messageContainerView)
@@ -153,10 +153,10 @@ class ChatMessageEntryView: UIView {
 
         updateTextViewHeight()
     }
-    
+
     private func updatePlaceholderText() {
         var text: String
-        
+
         if isChoiceCardModeEnabled {
             text = style.choiceCardPlaceholder
         } else if !isConnected {
@@ -164,7 +164,7 @@ class ChatMessageEntryView: UIView {
         } else {
             text = style.enterMessagePlaceholder
         }
-        
+
         placeholderLabel.text = text
     }
 

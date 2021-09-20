@@ -26,7 +26,6 @@ public struct ThemeFont {
     /// Button label text font. By default, used in "End" buttons in chat and call view headers and buttons in alerts. Default is Roboto Regular 16.
     public var buttonLabel: UIFont
 
-
     ///
     /// - Parameters:
     ///   - header1: Biggest header font. By default, used in top label of connection view during queue and for operator's name during audio or video call. Default is Roboto Bold 24.

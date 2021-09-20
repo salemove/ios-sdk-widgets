@@ -8,12 +8,6 @@ public class CallStyle: EngagementStyle {
     /// Title for the video call.
     public var videoTitle: String
 
-    /// Back button style in the header.
-    public var backButton: HeaderButtonStyle
-
-    /// Close button style in the header.
-    public var closeButton: HeaderButtonStyle
-
     /// A text to display operator's name. Include `{operatorName}` template parameter in the string to display operator's name.
     public var operatorName: String
 
@@ -55,13 +49,9 @@ public class CallStyle: EngagementStyle {
     ///   - header: Style of the view's header (navigation bar area).
     ///   - connect: Styles for different engagement connection states.
     ///   - backgroundColor: View's background color.
-    ///   - endButton: Style of the engagement ending button.
-    ///   - endScreenShareButton: Style of the screen sharing ending button.
     ///   - preferredStatusBarStyle: Preferred style of the status bar.
     ///   - audioTitle: Title for audio call.
     ///   - videoTitle: Title for video call.
-    ///   - backButton: Back button style in the header.
-    ///   - closeButton: Close button style in the header.
     ///   - operatorName: A text to display operator's name. Include `{operatorName}` template parameter in the string to display operator's name.
     ///   - operatorNameFont: Font of the operator's name text.
     ///   - operatorNameColor: Color of the operator's name text.
@@ -79,13 +69,9 @@ public class CallStyle: EngagementStyle {
         header: HeaderStyle,
         connect: ConnectStyle,
         backgroundColor: UIColor,
-        endButton: ActionButtonStyle,
-        endScreenShareButton: HeaderButtonStyle,
         preferredStatusBarStyle: UIStatusBarStyle,
         audioTitle: String,
         videoTitle: String,
-        backButton: HeaderButtonStyle,
-        closeButton: HeaderButtonStyle,
         operatorName: String,
         operatorNameFont: UIFont,
         operatorNameColor: UIColor,
@@ -101,8 +87,6 @@ public class CallStyle: EngagementStyle {
     ) {
         self.audioTitle = audioTitle
         self.videoTitle = videoTitle
-        self.backButton = backButton
-        self.closeButton = closeButton
         self.operatorName = operatorName
         self.operatorNameFont = operatorNameFont
         self.operatorNameColor = operatorNameColor
@@ -119,8 +103,6 @@ public class CallStyle: EngagementStyle {
             header: header,
             connect: connect,
             backgroundColor: backgroundColor,
-            endButton: endButton,
-            endScreenShareButton: endScreenShareButton,
             preferredStatusBarStyle: preferredStatusBarStyle
         )
     }

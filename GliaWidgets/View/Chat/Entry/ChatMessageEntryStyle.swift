@@ -10,7 +10,7 @@ public struct ChatMessageEntryStyle {
 
     /// Placeholder text of the message input view used when the user is engaged.
     public var enterMessagePlaceholder: String
-    
+
     /// Placeholder text of the message input view used when user input is required to start engagement.
     public var startEngagementPlaceholder: String
 

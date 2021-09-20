@@ -14,9 +14,8 @@ class HeaderButton: UIButton {
     private let style: HeaderButtonStyle
     private let kSize = CGSize(width: 30, height: 30)
 
-    init(with style: HeaderButtonStyle, tap: (() -> Void)? = nil) {
+    init(with style: HeaderButtonStyle) {
         self.style = style
-        self.tap = tap
         super.init(frame: .zero)
         setup()
         layout()
