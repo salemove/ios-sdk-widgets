@@ -32,19 +32,12 @@ class EngagementViewController: ViewController, AlertPresenter {
         viewModel.event(.viewDidDisappear)
     }
 
-    func showBackButton(in header: Header) {
-        header.backButton.tap = { self.viewModel.event(.backTapped) }
-        header.setLeftItem(animated: false)
-    }
-
-    func showCloseButton(in header: Header) {
-        header.closeButton.tap = { self.viewModel.event(.closeTapped) }
-        header.showCloseButton()
-    }
-
     private func bind(viewModel: EngagementViewModel, to view: EngagementView) {
         view.header.endButton.tap = { self.viewModel.event(.closeTapped) }
-        view.header.endScreenSharingButton.tap = { self.viewModel.event(.endScreenSharingTapped) }
+        view.header.endScreenShareButton.tap = { self.viewModel.event(.endScreenSharingTapped) }
+        view.header.backButton.tap = { self.viewModel.event(.backTapped) }
+        view.header.closeButton.tap = { self.viewModel.event(.closeTapped) }
+
         viewModel.engagementAction = { action in
             switch action {
             case .confirm(let conf, confirmed: let confirmed):

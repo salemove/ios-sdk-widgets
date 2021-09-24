@@ -41,8 +41,8 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter,
 
     // swiftlint:disable function_body_length
     private func bind(viewModel: ChatViewModel, to view: ChatView) {
-        showBackButton(in: view.header)
-        showCloseButton(in: view.header)
+        view.header.showBackButton()
+        view.header.showCloseButton()
 
         view.numberOfSections = { viewModel.numberOfSections }
         view.numberOfRows = { viewModel.numberOfItems(in: $0) }

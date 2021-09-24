@@ -1,12 +1,6 @@
 import SalemoveSDK
 
 class EngagementViewModel {
-    enum RightButtons {
-        case closeButton
-        case endButton
-        case endSharingButton
-    }
-
     enum Event {
         case viewDidAppear
         case viewDidDisappear

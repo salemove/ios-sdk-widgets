@@ -24,7 +24,8 @@ class Header: UIView {
     var backButton: HeaderButton
     var closeButton: HeaderButton
     var endButton: ActionButton
-    var endScreenSharingButton: HeaderButton
+    var endScreenShareButton: HeaderButton
+
     private let style: HeaderStyle
     private let leftItemContainer = UIView()
     private let rightItemContainer = UIStackView()
@@ -41,7 +42,7 @@ class Header: UIView {
         self.backButton = HeaderButton(with: style.backButton)
         self.closeButton = HeaderButton(with: style.closeButton)
         self.endButton = ActionButton(with: style.endButton)
-        self.endScreenSharingButton = HeaderButton(with: style.endScreenShareButton)
+        self.endScreenShareButton = HeaderButton(with: style.endScreenShareButton)
         super.init(frame: .zero)
         setup()
         layout()
@@ -57,47 +58,26 @@ class Header: UIView {
         updateHeight()
     }
 
-    public func setLeftItem(animated: Bool) {
-        setItem(backButton, to: leftItemContainer, animated: animated)
+    func showBackButton() {
+        backButton.isHidden = false
     }
 
-    public func showCloseButton() {
+    func showCloseButton() {
         endButton.isHidden = true
-        endScreenSharingButton.isHidden = true
+        endScreenShareButton.isHidden = true
         closeButton.isHidden = false
-    }
-
-    func setEndButtons() {
-        endButton.isHidden = true
-        endScreenSharingButton.isHidden = true
     }
 
     func showEndButton() {
         endButton.isHidden = false
         closeButton.isHidden = true
-        endScreenSharingButton.isHidden = true
+        endScreenShareButton.isHidden = true
     }
 
     func showEndScreenSharingButton() {
         endButton.isHidden = false
-        endScreenSharingButton.isHidden = false
+        endScreenShareButton.isHidden = false
         closeButton.isHidden = true
-    }
-
-    private func setItem(_ item: UIView?, to container: UIView, animated: Bool) {
-        container.subviews.forEach { $0.removeFromSuperview() }
-
-        guard let item = item else { return }
-        item.alpha = 0.0
-        container.addSubview(item)
-        item.autoPinEdge(toSuperviewEdge: .left, withInset: 0, relation: .greaterThanOrEqual)
-        item.autoPinEdge(toSuperviewEdge: .top, withInset: 0, relation: .greaterThanOrEqual)
-        item.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
-        item.autoPinEdge(toSuperviewEdge: .bottom, withInset: 0, relation: .greaterThanOrEqual)
-        item.autoCenterInSuperview()
-        UIView.animate(withDuration: animated ? 0.2 : 0.0) {
-            item.alpha = 1.0
-        }
     }
 
     private func setup() {
@@ -128,11 +108,11 @@ class Header: UIView {
         titleLabel.autoPinEdge(toSuperviewEdge: .right)
         titleLabel.autoAlignAxis(toSuperviewAxis: .horizontal)
 
-        contentView.addSubview(leftItemContainer)
-        leftItemContainer.autoPinEdge(toSuperviewEdge: .left)
-        leftItemContainer.autoAlignAxis(toSuperviewAxis: .horizontal)
+        contentView.addSubview(backButton)
+        backButton.autoPinEdge(toSuperviewEdge: .left)
+        backButton.autoAlignAxis(toSuperviewAxis: .horizontal)
 
-        rightItemContainer.addArrangedSubviews([endScreenSharingButton, endButton, closeButton])
+        rightItemContainer.addArrangedSubviews([endScreenShareButton, endButton, closeButton])
         contentView.addSubview(rightItemContainer)
         rightItemContainer.autoPinEdge(toSuperviewEdge: .right)
         rightItemContainer.autoAlignAxis(toSuperviewAxis: .horizontal)
