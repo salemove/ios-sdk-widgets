@@ -64,6 +64,7 @@ class ChoiceCardOptionView: UIView {
             applyStyle(style.selected)
         case .disabled:
             applyStyle(style.disabled)
+            setBorderLinesForTabs()
         }
     }
 
@@ -72,6 +73,11 @@ class ChoiceCardOptionView: UIView {
             self.layer.backgroundColor = style.backgroundColor.cgColor
             self.textLabel.textColor = style.textColor
         }
+    }
+
+    private func setBorderLinesForTabs() {
+        layer.borderColor = style.disabledTabsBorderColor.cgColor
+        layer.borderWidth = 1
     }
 
     @objc private func onTap() {

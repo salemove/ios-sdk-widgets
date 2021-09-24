@@ -99,6 +99,7 @@ extension Theme {
             normalBackgroundColor: Color.lightGrey,
             highlightedTextColor: color.baseLight,
             highlightedBackgroundColor: color.primary,
+            disabledTabsBorderColor: Color.baseShade,
             disabledTextColor: Color.grey,
             disabledBackgroundColor: Color.lightGrey
         )

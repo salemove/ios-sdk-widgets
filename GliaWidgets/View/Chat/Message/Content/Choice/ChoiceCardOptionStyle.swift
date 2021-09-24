@@ -10,6 +10,8 @@ public final class ChoiceCardOptionStyle {
 
     /// Style of an option in a disabled state - choice card has already been answered by the visitor or the choice card became inactive (e.g. engagement ended).
     public var disabled: ChatTextContentStyle
+    
+    public var disabledTabsBorderColor: UIColor
 
     ///
     /// - Parameters:
@@ -26,6 +28,7 @@ public final class ChoiceCardOptionStyle {
         normalBackgroundColor: UIColor,
         highlightedTextColor: UIColor,
         highlightedBackgroundColor: UIColor,
+        disabledTabsBorderColor: UIColor,
         disabledTextColor: UIColor,
         disabledBackgroundColor: UIColor
     ) {
@@ -44,5 +47,6 @@ public final class ChoiceCardOptionStyle {
             textColor: disabledTextColor,
             backgroundColor: disabledBackgroundColor
         )
+        self.disabledTabsBorderColor = disabledTabsBorderColor
     }
 }
