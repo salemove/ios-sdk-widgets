@@ -12,6 +12,7 @@ enum InteractorEvent {
     case stateChanged(InteractorState)
     case receivedMessage(Message)
     case messagesUpdated([Message])
+    case typingStatusUpdated(OperatorTypingStatus)
     case upgradeOffer(MediaUpgradeOffer, answer: AnswerWithSuccessBlock)
     case audioStreamAdded(AudioStreamable)
     case audioStreamError(SalemoveError)
@@ -221,7 +222,9 @@ extension Interactor: Interactable {
 
     var onOperatorTypingStatusUpdate: OperatorTypingStatusUpdate {
         print("Called: \(#function)")
-        return { _ in }
+        return { operatorTypingStatus in
+            self.notify(.typingStatusUpdated(operatorTypingStatus))
+        }
     }
 
     var onMessagesUpdated: MessagesUpdateBlock {
