@@ -109,10 +109,8 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter,
             case .setOperatorTypingIndicatorVisibilityTo(let isVisible, let isChatScrolledToBottom):
                 if isChatScrolledToBottom {
                     view.scrollToBottom(animated: true)
-                    view.updateTypingIndicatorVisibility(to: isVisible)
-                } else {
-                    view.updateTypingIndicatorVisibility(to: isVisible)
                 }
+                view.updateTypingIndicatorVisibility(to: isVisible)
             }
         }
     }

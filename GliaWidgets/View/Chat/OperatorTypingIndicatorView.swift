@@ -37,7 +37,7 @@ final class OperatorTypingIndicatorView: UIView {
         animationView.animation = animation
 
         let keypath = AnimationKeypath(
-                     keys: ["**", "Fill 1", "Color"]
+            keys: ["**", "Fill 1", "Color"]
         )
         let colorValueProvider = ColorValueProvider(style.color.lottieColorValue)
         animationView.setValueProvider(colorValueProvider, keypath: keypath)
