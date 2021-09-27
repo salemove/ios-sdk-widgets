@@ -11,12 +11,23 @@ class BubbleView: UIView {
     var tap: (() -> Void)?
     var pan: ((CGPoint) -> Void)?
 
+    var innerSmallerFrame: CGRect {
+        didSet {
+            let xDifference = frame.width - innerSmallerFrame.width
+            let yDifference = frame.height - innerSmallerFrame.height
+
+            frame.origin.x = innerSmallerFrame.origin.x - xDifference / 2
+            frame.origin.y = innerSmallerFrame.origin.y - yDifference / 2
+        }
+    }
+
     private let style: BubbleStyle
     private var userImageView: UserImageView?
     private var badgeView: BadgeView?
 
     init(with style: BubbleStyle) {
         self.style = style
+        self.innerSmallerFrame = CGRect.zero
         super.init(frame: .zero)
         setup()
         layout()
@@ -55,6 +66,21 @@ class BubbleView: UIView {
             }
         }
         badgeView?.newItemCount = itemCount
+    }
+
+    func adjustInnerFrame(to bounds: CGRect) {
+        innerSmallerFrame = frame
+
+        if bounds.width < frame.width {
+            let difference = frame.width - bounds.width
+            innerSmallerFrame.size.width = bounds.width
+            innerSmallerFrame.origin.x += difference / 2
+        }
+        if bounds.height < frame.height {
+            let difference = frame.height - bounds.height
+            innerSmallerFrame.size.height = bounds.height
+            innerSmallerFrame.origin.y += difference / 2
+        }
     }
 
     private func setup() {

@@ -89,18 +89,6 @@ class CallView: EngagementView {
         buttonBar.adjustStackConstraints()
     }
 
-    func checkBarsOrientation() {
-        guard mode == .video else { return }
-        if barsAreHidden {
-            let newHeaderConstraint = -header.frame.size.height + safeAreaInsets.top
-            headerTopConstraint.constant = newHeaderConstraint
-            buttonBarBottomConstraint.constant = buttonBar.frame.size.height
-        } else {
-            headerTopConstraint.constant = 0
-            buttonBarBottomConstraint.constant = 0
-        }
-    }
-
     private func setup() {
         topStackView.axis = .vertical
         topStackView.spacing = 8
@@ -237,6 +225,33 @@ class CallView: EngagementView {
         }
     }
 
+    @objc private func chatTap() {
+        chatTapped?()
+    }
+
+    @objc private func tap() {
+        if currentOrientation.isLandscape {
+            showBars(duration: 0.3)
+            hideLandscapeBarsAfterDelay()
+        }
+    }
+}
+
+// MARK: Landscape header & buttons bar logic
+
+extension CallView {
+    func checkBarsOrientation() {
+        guard mode == .video else { return }
+        if barsAreHidden {
+            let newHeaderConstraint = -header.frame.size.height + safeAreaInsets.top
+            headerTopConstraint.constant = newHeaderConstraint
+            buttonBarBottomConstraint.constant = buttonBar.frame.size.height
+        } else {
+            headerTopConstraint.constant = 0
+            buttonBarBottomConstraint.constant = 0
+        }
+    }
+
     private func showBars(duration: TimeInterval) {
         layoutIfNeeded()
         UIView.animate(withDuration: duration) {
@@ -272,16 +287,5 @@ class CallView: EngagementView {
             deadline: .now() + kBarsHideDelay,
             execute: hideBarsWorkItem
         )
-    }
-
-    @objc private func chatTap() {
-        chatTapped?()
-    }
-
-    @objc private func tap() {
-        if currentOrientation.isLandscape {
-            showBars(duration: 0.3)
-            hideLandscapeBarsAfterDelay()
-        }
     }
 }
