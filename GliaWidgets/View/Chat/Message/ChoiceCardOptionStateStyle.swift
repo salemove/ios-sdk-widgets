@@ -1,6 +1,6 @@
 import UIKit
 
-/// Styles of the choice card's options state.
+/// Style of the choice card's option state.
 public final class ChoiceCardOptionStateStyle: ChatTextContentStyle {
     /// Color of an option's border.
     public var borderColor: UIColor?
