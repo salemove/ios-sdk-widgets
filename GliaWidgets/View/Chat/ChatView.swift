@@ -1,11 +1,11 @@
 import UIKit
 
 class ChatView: EngagementView {
-    let stackForTableViewAndIndicatorView = UIStackView()
+    let tableAndIndicatorStack = UIStackView()
     let tableView = UITableView()
     let messageEntryView: ChatMessageEntryView
     let unreadMessageIndicatorView: UnreadMessageIndicatorView
-    var typingIndicatorView: OperatorTypingIndicatorView
+    let typingIndicatorView: OperatorTypingIndicatorView
     var numberOfSections: (() -> Int?)?
     var numberOfRows: ((Int) -> Int?)?
     var itemForRow: ((Int, Int) -> ChatItem?)?
@@ -14,7 +14,6 @@ class ChatView: EngagementView {
     var callBubbleTapped: (() -> Void)?
     var choiceOptionSelected: ((ChatChoiceCardOption, String) -> Void)!
     var chatScrolledToBottom: ((Bool) -> Void)?
-    var chatScrollViewIsAtTheBottom = false
 
     private let style: ChatStyle
     private var messageEntryViewBottomConstraint: NSLayoutConstraint!
@@ -50,9 +49,9 @@ class ChatView: EngagementView {
         super.layoutSubviews()
         moveCallBubbleVisible(animated: true)
     }
-    
-    func updateTypingIndicator(status: Bool) {
-        typingIndicatorView.isHidden = status
+
+    func updateTypingIndicatorVisibility(to visible: Bool) {
+        typingIndicatorView.isHidden = visible
     }
 
     func setConnectState(_ state: ConnectView.State, animated: Bool) {
@@ -147,7 +146,7 @@ class ChatView: EngagementView {
 
     private func setup() {
         header.title = style.title
-        
+
         tableView.backgroundColor = .white
         tableView.delegate = self
         tableView.dataSource = self
@@ -160,8 +159,8 @@ class ChatView: EngagementView {
         unreadMessageIndicatorView.tapped = { [weak self] in
             self?.scrollToBottom(animated: true)
         }
-        
-        stackForTableViewAndIndicatorView.axis = .vertical
+
+        tableAndIndicatorStack.axis = .vertical
 
         observeKeyboard()
         addKeyboardDismissalTapGesture()
@@ -177,19 +176,19 @@ class ChatView: EngagementView {
 
         typingIndicatorView.autoSetDimensions(to: kOperatorTypingIndicatorViewSize)
 
-        stackForTableViewAndIndicatorView.addArrangedSubviews([tableView, typingIndicatorView])
-        addSubview(stackForTableViewAndIndicatorView)
-        stackForTableViewAndIndicatorView.autoPinEdge(.top, to: .bottom, of: header)
-        stackForTableViewAndIndicatorView.autoPinEdge(toSuperviewSafeArea: .left)
-        stackForTableViewAndIndicatorView.autoPinEdge(toSuperviewSafeArea: .right)
-        
+        tableAndIndicatorStack.addArrangedSubviews([tableView, typingIndicatorView])
+        addSubview(tableAndIndicatorStack)
+        tableAndIndicatorStack.autoPinEdge(.top, to: .bottom, of: header)
+        tableAndIndicatorStack.autoPinEdge(toSuperviewSafeArea: .left)
+        tableAndIndicatorStack.autoPinEdge(toSuperviewSafeArea: .right)
+
         addSubview(messageEntryView)
         messageEntryViewBottomConstraint = messageEntryView.autoPinEdge(
             toSuperviewSafeArea: .bottom
         )
         messageEntryView.autoPinEdge(toSuperviewSafeArea: .left)
         messageEntryView.autoPinEdge(toSuperviewSafeArea: .right)
-        messageEntryView.autoPinEdge(.top, to: .bottom, of: stackForTableViewAndIndicatorView)
+        messageEntryView.autoPinEdge(.top, to: .bottom, of: tableAndIndicatorStack)
 
         addSubview(unreadMessageIndicatorView)
         unreadMessageIndicatorView.autoAlignAxis(toSuperviewAxis: .vertical)
@@ -283,10 +282,10 @@ class ChatView: EngagementView {
         }
     }
 
-    func isBottomReached(for scrollView: UIScrollView) -> Bool {
+    private func isBottomReached(for scrollView: UIScrollView) -> Bool {
         let chatBottomOffset = scrollView.contentSize.height - scrollView.frame.size.height
         let currentPositionOffset = scrollView.contentOffset.y + scrollView.contentInset.top
-        
+
         return currentPositionOffset >= chatBottomOffset
     }
 }
@@ -411,6 +410,5 @@ extension ChatView: UITableViewDelegate {
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         chatScrolledToBottom?(isBottomReached(for: scrollView))
-        chatScrollViewIsAtTheBottom = isBottomReached(for: scrollView)
     }
 }

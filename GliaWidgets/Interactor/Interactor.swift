@@ -222,7 +222,8 @@ extension Interactor: Interactable {
 
     var onOperatorTypingStatusUpdate: OperatorTypingStatusUpdate {
         print("Called: \(#function)")
-        return { operatorTypingStatus in self.notify(.typingStatusUpdated(operatorTypingStatus))
+        return { operatorTypingStatus in
+            self.notify(.typingStatusUpdated(operatorTypingStatus))
         }
     }
 

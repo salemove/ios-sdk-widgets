@@ -37,6 +37,8 @@ public class ChatStyle: EngagementStyle {
 
     /// Style of the unread message indicator.
     public var unreadMessageIndicator: UnreadMessageIndicatorStyle
+
+    /// Style of the view that indicates that the operator is currently typing.
     public var operatorTypingIndicator: OperatorTypingIndicatorStyle
 
     ///
@@ -59,6 +61,7 @@ public class ChatStyle: EngagementStyle {
     ///   - callBubble: Style of the call bubble in chat (shown after upgrade to call).
     ///   - pickMedia: Style of the attachment media type picker.
     ///   - unreadMessageIndicator: Style of the unread message indicator.
+    ///   - operatorTypingIndicator: Style of the view that indicates that the operator is currently typing.
     ///
     public init(
         header: HeaderStyle,
