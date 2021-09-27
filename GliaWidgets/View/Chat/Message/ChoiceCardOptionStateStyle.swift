@@ -18,11 +18,11 @@ public final class ChoiceCardOptionStateStyle: ChatTextContentStyle {
         backgroundColor: UIColor,
         borderColor: UIColor?
     ) {
+        self.borderColor = borderColor
         super.init(
             textFont: textFont,
             textColor: textColor,
             backgroundColor: backgroundColor
         )
-        self.borderColor = borderColor
     }
 }
