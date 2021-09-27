@@ -97,11 +97,11 @@ extension Theme {
             textFont: font.bodyText,
             normalTextColor: color.baseDark,
             normalBackgroundColor: Color.lightGrey,
-            highlightedTextColor: color.baseLight,
-            highlightedBackgroundColor: color.primary,
-            disabledTabsBorderColor: Color.baseShade,
+            selectedTextColor: color.baseLight,
+            selectedBackgroundColor: color.primary,
             disabledTextColor: Color.grey,
-            disabledBackgroundColor: Color.lightGrey
+            disabledBackgroundColor: Color.lightGrey,
+            disabledBorderColor: Color.baseShade
         )
         let choiceCard = ChoiceCardStyle(
             mainText: choiceCardText,

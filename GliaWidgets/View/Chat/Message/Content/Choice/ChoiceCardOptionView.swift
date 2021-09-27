@@ -53,7 +53,6 @@ class ChoiceCardOptionView: UIView {
 
         addSubview(choiceButton)
         choiceButton.autoPinEdgesToSuperviewEdges()
-
     }
 
     private func updateStyle() {
@@ -64,20 +63,18 @@ class ChoiceCardOptionView: UIView {
             applyStyle(style.selected)
         case .disabled:
             applyStyle(style.disabled)
-            setBorderLinesForTabs()
         }
     }
 
-    private func applyStyle(_ style: ChatTextContentStyle) {
+    private func applyStyle(_ style: ChoiceCardOptionStateStyle) {
         UIView.transition(with: textLabel, duration: 0.2, options: .transitionCrossDissolve) {
             self.layer.backgroundColor = style.backgroundColor.cgColor
             self.textLabel.textColor = style.textColor
+            if let borderColor = style.borderColor {
+                self.layer.borderColor = borderColor.cgColor
+                self.layer.borderWidth = 1
+            }
         }
-    }
-
-    private func setBorderLinesForTabs() {
-        layer.borderColor = style.disabledTabsBorderColor.cgColor
-        layer.borderWidth = 1
     }
 
     @objc private func onTap() {
