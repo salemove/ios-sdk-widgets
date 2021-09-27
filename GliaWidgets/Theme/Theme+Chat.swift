@@ -2,11 +2,6 @@ extension Theme {
     var chatStyle: ChatStyle {
         typealias Chat = L10n.Chat
 
-        let header = HeaderStyle(
-            titleFont: font.header2,
-            titleColor: color.baseLight,
-            backgroundColor: color.primary
-        )
         let backButton = HeaderButtonStyle(
             image: Asset.back.image,
             color: color.baseLight
@@ -14,6 +9,25 @@ extension Theme {
         let closeButton = HeaderButtonStyle(
             image: Asset.close.image,
             color: color.baseLight
+        )
+        let endButton = ActionButtonStyle(
+            title: Chat.EndButton.title,
+            titleFont: font.buttonLabel,
+            titleColor: color.baseLight,
+            backgroundColor: color.systemNegative
+        )
+        let endScreenShareButton = HeaderButtonStyle(
+            image: Asset.startScreenShare.image,
+            color: color.secondary
+        )
+        let header = HeaderStyle(
+            titleFont: font.header2,
+            titleColor: color.baseLight,
+            backgroundColor: color.primary,
+            backButton: backButton,
+            closeButton: closeButton,
+            endButton: endButton,
+            endScreenShareButton: endScreenShareButton
         )
         let operatorImage = UserImageStyle(
             placeholderImage: Asset.operatorPlaceholder.image,
@@ -110,16 +124,6 @@ extension Theme {
             operatorImage: operatorImage,
             choiceOption: choiceCardOption
         )
-        let endButton = ActionButtonStyle(
-            title: Chat.EndButton.title,
-            titleFont: font.buttonLabel,
-            titleColor: color.baseLight,
-            backgroundColor: color.systemNegative
-        )
-        let endScreenShareButton = HeaderButtonStyle(
-            image: Asset.startScreenShare.image,
-            color: color.secondary
-        )
         let mediaButton = MessageButtonStyle(
             image: Asset.chatPickMedia.image,
             color: color.baseNormal
@@ -184,12 +188,8 @@ extension Theme {
             header: header,
             connect: connect,
             backgroundColor: color.background,
-            endButton: endButton,
-            endScreenShareButton: endScreenShareButton,
             preferredStatusBarStyle: .lightContent,
             title: Chat.title,
-            backButton: backButton,
-            closeButton: closeButton,
             visitorMessage: visitorMessage,
             operatorMessage: operatorMessage,
             choiceCard: choiceCard,
