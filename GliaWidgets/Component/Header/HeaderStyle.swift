@@ -11,10 +11,10 @@ public struct HeaderStyle {
     /// Background color of the view.
     public var backgroundColor: UIColor
 
-    /// Back button style in the header.
+    /// Style of the back button.
     public var backButton: HeaderButtonStyle
 
-    /// Close button style in the header.
+    /// Style of the queue closing button.
     public var closeButton: HeaderButtonStyle
 
     /// Style of the engagement ending button.
@@ -28,8 +28,8 @@ public struct HeaderStyle {
     ///   - titleFont: Font of the title text.
     ///   - titleColor: Color of the title text.
     ///   - backgroundColor: Background color of the view.
-    ///   - backButton: Back button style in the header.
-    ///   - closeButton: Close button style in the header.
+    ///   - backButton: Style of the back button.
+    ///   - closeButton: Style of the queue closing button.
     ///   - endButton: Style of the engagement ending button.
     ///   - endScreenShareButton: Style of the screen sharing ending button.
     ///
