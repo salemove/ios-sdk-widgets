@@ -2,7 +2,15 @@ import UIKit
 
 class LocalFile {
     lazy var fileExtension: String = { return url.pathExtension }()
-    lazy var fileName: String = { return url.lastPathComponent }()
+    lazy var fileName: String = {
+        let snippet = url.lastPathComponent
+        var name = ""
+        if let range = snippet.range(of: "CODE:") {
+            name = String(snippet[range.upperBound...])
+        }
+        return name
+        
+    }()
     lazy var fileSize: Int64? = {
         guard let attributes = try? FileManager.default.attributesOfItem(atPath: url.path) else { return nil }
         return attributes[.size] as? Int64

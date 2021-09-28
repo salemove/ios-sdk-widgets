@@ -14,10 +14,10 @@ class QuickLookViewModel: ViewModel {
     var action: ((Action) -> Void)?
     var delegate: ((DelegateEvent) -> Void)?
 
-    private let items: [QLPreviewItem]
+    private let items: [QuickLookPreviewItem]
 
     init(files: [LocalFile]) {
-        self.items = files.map { $0.url as QLPreviewItem }
+        self.items = files.map { .init(url: $0.url, title: $0.fileName) }
     }
 
     convenience init(file: LocalFile) {
