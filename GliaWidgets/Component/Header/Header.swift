@@ -21,10 +21,14 @@ class Header: UIView {
             }
         }
     }
+    var backButton: HeaderButton
+    var closeButton: HeaderButton
+    var endButton: ActionButton
+    var endScreenShareButton: HeaderButton
 
     private let style: HeaderStyle
     private let leftItemContainer = UIView()
-    private let rightItemContainer = UIView()
+    private let rightItemContainer = UIStackView()
     private let titleLabel = UILabel()
     private let contentView = UIView()
     private var effectView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
@@ -35,6 +39,10 @@ class Header: UIView {
 
     init(with style: HeaderStyle) {
         self.style = style
+        self.backButton = HeaderButton(with: style.backButton)
+        self.closeButton = HeaderButton(with: style.closeButton)
+        self.endButton = ActionButton(with: style.endButton)
+        self.endScreenShareButton = HeaderButton(with: style.endScreenShareButton)
         super.init(frame: .zero)
         setup()
         layout()
@@ -50,39 +58,26 @@ class Header: UIView {
         updateHeight()
     }
 
-    func setLeftItem(_ item: UIView?, animated: Bool) {
-        setItem(item, to: leftItemContainer, animated: animated)
+    func showBackButton() {
+        backButton.isHidden = false
     }
 
-    func setRightItem(_ item: UIView?, animated: Bool) {
-        setItem(item, to: rightItemContainer, animated: animated)
+    func showCloseButton() {
+        endButton.isHidden = true
+        endScreenShareButton.isHidden = true
+        closeButton.isHidden = false
     }
 
-    func setRightItems(_ items: [UIView]?, animated: Bool) {
-        var stack: UIStackView?
-        if let items = items {
-            stack = UIStackView(arrangedSubviews: items)
-            stack?.axis = .horizontal
-            stack?.spacing = 8
-            stack?.alignment = .center
-        }
-        setRightItem(stack, animated: animated)
+    func showEndButton() {
+        endButton.isHidden = false
+        closeButton.isHidden = true
+        endScreenShareButton.isHidden = true
     }
 
-    private func setItem(_ item: UIView?, to container: UIView, animated: Bool) {
-        container.subviews.forEach { $0.removeFromSuperview() }
-
-        guard let item = item else { return }
-        item.alpha = 0.0
-        container.addSubview(item)
-        item.autoPinEdge(toSuperviewEdge: .left, withInset: 0, relation: .greaterThanOrEqual)
-        item.autoPinEdge(toSuperviewEdge: .top, withInset: 0, relation: .greaterThanOrEqual)
-        item.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
-        item.autoPinEdge(toSuperviewEdge: .bottom, withInset: 0, relation: .greaterThanOrEqual)
-        item.autoCenterInSuperview()
-        UIView.animate(withDuration: animated ? 0.2 : 0.0) {
-            item.alpha = 1.0
-        }
+    func showEndScreenSharingButton() {
+        endButton.isHidden = false
+        endScreenShareButton.isHidden = false
+        closeButton.isHidden = true
     }
 
     private func setup() {
@@ -92,6 +87,10 @@ class Header: UIView {
         titleLabel.font = style.titleFont
         titleLabel.textColor = style.titleColor
         titleLabel.textAlignment = .center
+
+        rightItemContainer.axis = .horizontal
+        rightItemContainer.spacing = 8
+        rightItemContainer.alignment = .center
     }
 
     private func layout() {
@@ -109,10 +108,11 @@ class Header: UIView {
         titleLabel.autoPinEdge(toSuperviewEdge: .right)
         titleLabel.autoAlignAxis(toSuperviewAxis: .horizontal)
 
-        contentView.addSubview(leftItemContainer)
-        leftItemContainer.autoPinEdge(toSuperviewEdge: .left)
-        leftItemContainer.autoAlignAxis(toSuperviewAxis: .horizontal)
+        contentView.addSubview(backButton)
+        backButton.autoPinEdge(toSuperviewEdge: .left)
+        backButton.autoAlignAxis(toSuperviewAxis: .horizontal)
 
+        rightItemContainer.addArrangedSubviews([endScreenShareButton, endButton, closeButton])
         contentView.addSubview(rightItemContainer)
         rightItemContainer.autoPinEdge(toSuperviewEdge: .right)
         rightItemContainer.autoAlignAxis(toSuperviewAxis: .horizontal)

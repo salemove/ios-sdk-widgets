@@ -256,8 +256,8 @@ class EngagementViewModel {
         switch status {
         case .started:
             engagementAction?(.showEndScreenShareButton)
-        default:
-            engagementAction?(.showEndButton)
+        case .stopped:
+            return
         }
     }
 }
