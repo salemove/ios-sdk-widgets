@@ -14,7 +14,6 @@ class CallView: EngagementView {
     let buttonBar: CallButtonBar
     let localVideoView = VideoStreamView(.local)
     let remoteVideoView = VideoStreamView(.remote)
-    var chatTapped: (() -> Void)?
     var callButtonTapped: ((CallButton.Kind) -> Void)?
 
     private let style: CallStyle
@@ -223,10 +222,6 @@ class CallView: EngagementView {
             localVideoViewTopConstraint.constant = top
             localVideoViewRightConstraint.constant = kRightInset
         }
-    }
-
-    @objc private func chatTap() {
-        chatTapped?()
     }
 
     @objc private func tap() {

@@ -68,17 +68,17 @@ class BubbleView: UIView {
         badgeView?.newItemCount = itemCount
     }
 
-    func adjustInnerFrame(to bounds: CGRect) {
+    func adjustInnerFrame(to callBubbleBounds: CGRect) {
         innerSmallerFrame = frame
 
-        if bounds.width < frame.width {
-            let difference = frame.width - bounds.width
-            innerSmallerFrame.size.width = bounds.width
+        if callBubbleBounds.width < frame.width {
+            let difference = frame.width - callBubbleBounds.width
+            innerSmallerFrame.size.width = callBubbleBounds.width
             innerSmallerFrame.origin.x += difference / 2
         }
-        if bounds.height < frame.height {
-            let difference = frame.height - bounds.height
-            innerSmallerFrame.size.height = bounds.height
+        if callBubbleBounds.height < frame.height {
+            let difference = frame.height - callBubbleBounds.height
+            innerSmallerFrame.size.height = callBubbleBounds.height
             innerSmallerFrame.origin.y += difference / 2
         }
     }
