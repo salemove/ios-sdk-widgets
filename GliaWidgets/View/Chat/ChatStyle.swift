@@ -32,6 +32,9 @@ public class ChatStyle: EngagementStyle {
     /// Style of the unread message indicator.
     public var unreadMessageIndicator: UnreadMessageIndicatorStyle
 
+    /// Style of the view that indicates that the operator is currently typing.
+    public var operatorTypingIndicator: OperatorTypingIndicatorStyle
+
     ///
     /// - Parameters:
     ///   - header: Style of the view's header (navigation bar area).
@@ -48,6 +51,7 @@ public class ChatStyle: EngagementStyle {
     ///   - callBubble: Style of the call bubble in chat (shown after upgrade to call).
     ///   - pickMedia: Style of the attachment media type picker.
     ///   - unreadMessageIndicator: Style of the unread message indicator.
+    ///   - operatorTypingIndicator: Style of the view that indicates that the operator is currently typing.
     ///
     public init(
         header: HeaderStyle,
@@ -63,7 +67,8 @@ public class ChatStyle: EngagementStyle {
         videoUpgrade: ChatCallUpgradeStyle,
         callBubble: BubbleStyle,
         pickMedia: AttachmentSourceListStyle,
-        unreadMessageIndicator: UnreadMessageIndicatorStyle
+        unreadMessageIndicator: UnreadMessageIndicatorStyle,
+        operatorTypingIndicator: OperatorTypingIndicatorStyle
     ) {
         self.title = title
         self.visitorMessage = visitorMessage
@@ -75,6 +80,7 @@ public class ChatStyle: EngagementStyle {
         self.callBubble = callBubble
         self.pickMedia = pickMedia
         self.unreadMessageIndicator = unreadMessageIndicator
+        self.operatorTypingIndicator = operatorTypingIndicator
         super.init(
             header: header,
             connect: connect,

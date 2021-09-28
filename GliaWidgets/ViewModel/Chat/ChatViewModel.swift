@@ -42,6 +42,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         )
         case showCallBubble(imageUrl: String?)
         case updateUnreadMessageIndicator(itemCount: Int)
+        case setOperatorTypingIndicatorVisibilityTo(Bool, _ isChatScrolledToBottom: Bool)
     }
 
     enum DelegateEvent {
@@ -256,6 +257,8 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             messagesUpdated(messages)
         case .upgradeOffer(let offer, answer: let answer):
             offerMediaUpgrade(offer, answer: answer)
+        case .typingStatusUpdated(let status):
+            typingStatusUpdated(status)
         default:
             break
         }
@@ -521,6 +524,10 @@ extension ChatViewModel {
             setItems(items, to: messagesSection)
             action?(.scrollToBottom(animated: true))
         }
+    }
+
+    private func typingStatusUpdated(_ status: OperatorTypingStatus) {
+        action?(.setOperatorTypingIndicatorVisibilityTo(!status.isTyping, isChatScrolledToBottom.value))
     }
 }
 
