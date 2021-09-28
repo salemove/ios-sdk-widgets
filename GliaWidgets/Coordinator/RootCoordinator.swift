@@ -141,7 +141,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
                         self?.end()
                     } else {
                         self?.gliaViewController?.minimize(animated: true)
-                    }                    
+                    }
                 case .call(let callViewController, _, let upgradedFrom, _):
                     if upgradedFrom == .chat {
                         self?.gliaViewController?.minimize(animated: true)
@@ -291,7 +291,7 @@ extension RootCoordinator {
             )
             chatCall.value = call
             navigationPresenter.push(callViewController)
-            
+
         case .call(_, _, _, let call):
             call.upgrade(to: offer)
             navigationPresenter.pop()
