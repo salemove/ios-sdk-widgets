@@ -99,6 +99,9 @@ extension Theme {
             fileDownload: fileDownload,
             operatorImage: operatorImage
         )
+        let operatorTypingIndicator = OperatorTypingIndicatorStyle(
+            color: color.primary
+        )
         let choiceCardText = ChatTextContentStyle(
             textFont: font.bodyText,
             textColor: color.baseDark,
@@ -212,7 +215,8 @@ extension Theme {
             videoUpgrade: videoUpgrade,
             callBubble: callBubble,
             pickMedia: pickMedia,
-            unreadMessageIndicator: unreadMessageIndicator
+            unreadMessageIndicator: unreadMessageIndicator,
+            operatorTypingIndicator: operatorTypingIndicator
         )
     }
 
