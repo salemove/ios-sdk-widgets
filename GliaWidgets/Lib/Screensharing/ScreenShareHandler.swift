@@ -34,6 +34,5 @@ class ScreenShareHandler {
 
     func cleanUp() {
         visitorState = nil
-        status.value = .stopped
     }
 }
