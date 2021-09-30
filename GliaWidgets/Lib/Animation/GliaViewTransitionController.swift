@@ -50,7 +50,7 @@ final class GliaViewTransitionController: NSObject, UIViewControllerAnimatedTran
                 presentedView.transform = .identity
                 presentedView.alpha = 1
             },
-            completion: { (success: Bool) in
+            completion: { success in
                 transitionContext.completeTransition(success)
             }
         )
