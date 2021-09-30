@@ -257,7 +257,7 @@ class EngagementViewModel {
         case .started:
             engagementAction?(.showEndScreenShareButton)
         case .stopped:
-            return
+            engagementAction?(.showEndButton)
         }
     }
 }
