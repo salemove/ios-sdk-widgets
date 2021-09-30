@@ -14,17 +14,11 @@ class GliaViewController: UIViewController {
         didSet { bubbleWindow?.bubbleKind = bubbleKind }
     }
 
-    let transition = GliaTransition()
-
     private weak var delegate: GliaViewControllerDelegate?
     private let bubbleView: BubbleView
     private var bubbleWindow: BubbleWindow?
     private var sceneProvider: SceneProvider?
     private var animationImageView: UIImageView?
-
-    private var maximizeScreenshot: UIImage? {
-        UIApplication.shared.windows.first?.screenshot
-    }
 
     init(bubbleView: BubbleView, delegate: GliaViewControllerDelegate?) {
         self.bubbleView = bubbleView
@@ -93,7 +87,6 @@ class GliaViewController: UIViewController {
 
     private func setup() {
         modalPresentationStyle = .overFullScreen
-        modalTransitionStyle = .crossDissolve
         transitioningDelegate = self
     }
 
@@ -129,15 +122,23 @@ class GliaViewController: UIViewController {
 // MARK: - UIViewControllerTransitioningDelegate
 
 extension GliaViewController: UIViewControllerTransitioningDelegate {
-    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        transition.transitionMode = .present
-        transition.startingPoint = bubbleWindow?.center ?? view.center
-        return transition
+    func animationController(
+        forPresented presented: UIViewController,
+        presenting: UIViewController,
+        source: UIViewController
+    ) -> UIViewControllerAnimatedTransitioning? {
+        return GliaViewTransitionController(
+            originCenterPoint: bubbleWindow?.center ?? view.center,
+            transitionMode: .present
+        )
     }
 
-    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        transition.transitionMode = .dismiss
-        transition.startingPoint = bubbleWindow?.center ?? bubbleView.center
-        return transition
+    func animationController(
+        forDismissed dismissed: UIViewController
+    ) -> UIViewControllerAnimatedTransitioning? {
+        return GliaViewTransitionController(
+            originCenterPoint: bubbleWindow?.center ?? view.center,
+            transitionMode: .dismiss
+        )
     }
 }

@@ -101,19 +101,21 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
         unreadMessages.addObserver(self) { unreadCount, _ in
             bubbleView.setBadge(itemCount: unreadCount)
         }
-        self.gliaViewController = makeGliaView(bubbleView: bubbleView)
+        gliaViewController = makeGliaView(bubbleView: bubbleView)
         gliaViewController?.insertChild(navigationController)
         event(.maximized)
         delegate?(.started)
     }
 
     private func end() {
-        event(.minimized)
-        engagement = .none
-        navigationPresenter.setViewControllers([], animated: false)
-        removeAllCoordinators()
-        engagementKind = .none
-        delegate?(.ended)
+        dismissGliaViewController(animated: true) { [weak self] in
+            self?.event(.minimized)
+            self?.engagement = .none
+            self?.navigationPresenter.setViewControllers([], animated: false)
+            self?.removeAllCoordinators()
+            self?.engagementKind = .none
+            self?.delegate?(.ended)
+        }
     }
 
     private func startChat(
