@@ -550,14 +550,6 @@
 			path = CallButtonBar;
 			sourceTree = "<group>";
 		};
-		1A0C9AA025C42C4F00815406 /* Bar */ = {
-			isa = PBXGroup;
-			children = (
-				1A0C9A8F25C41AA300815406 /* CallButtonBar */,
-			);
-			path = Bar;
-			sourceTree = "<group>";
-		};
 		1A0C9AB925C93F5100815406 /* Data */ = {
 			isa = PBXGroup;
 			children = (
@@ -641,7 +633,6 @@
 		1A205D4E25655CB1003AA3CD = {
 			isa = PBXGroup;
 			children = (
-				6EA3512526DE9F3400BF5941 /* operator-typing-indicator.json */,
 				1A205D7925655CEC003AA3CD /* TestingApp */,
 				1A205D5A25655CB1003AA3CD /* GliaWidgets */,
 				1A205D6525655CB2003AA3CD /* GliaWidgetsTests */,
@@ -914,10 +905,10 @@
 		1A60AF6725656BF200E53F53 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
-				1AC7A7472582237500567FF8 /* GliaViewController.swift */,
 				1A60AFD22566991600E53F53 /* Chat */,
 				1A0C143D25B85DA300B00695 /* Call */,
 				1A63B2EF257A3EF100508478 /* Common */,
+				1AC7A7472582237500567FF8 /* GliaViewController.swift */,
 				1A0C142825B84E5500B00695 /* EngagementViewController.swift */,
 			);
 			path = ViewController;
@@ -950,9 +941,10 @@
 			isa = PBXGroup;
 			children = (
 				1A4674A525E905960078FA1C /* AttachmentList */,
-				C499A57C26382F80009962AC /* NewMessageIndicator */,
+				C499A57C26382F80009962AC /* UnreadMessageIndicator */,
+				C46560C427047A3B007B17EB /* OperatorTypingIndicator */,
 				1A475BB125DE831000296D55 /* Badge */,
-				1A0C9AA025C42C4F00815406 /* Bar */,
+				1A0C9A8F25C41AA300815406 /* CallButtonBar */,
 				1ABD6C5325B574EF00D56EFA /* Bubble */,
 				1A6EBB2025ADDB8500EE325D /* MediaUpgrade */,
 				1A6075DE2582207E00569B0E /* ImageView */,
@@ -987,6 +979,7 @@
 				1A60AF95256675C400E53F53 /* UIColor+Extensions.swift */,
 				1A60AFA225667EA300E53F53 /* Assets.xcassets */,
 				1A60AFAC2566806000E53F53 /* Localizable.strings */,
+				6EA3512526DE9F3400BF5941 /* operator-typing-indicator.json */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -1082,8 +1075,6 @@
 				1AC7A7822583B65B00567FF8 /* Cells */,
 				1A60AFDC25669A4200E53F53 /* ChatView.swift */,
 				1A60AFE725669C5000E53F53 /* ChatStyle.swift */,
-				6E9C01AC26D3B8B500EBE1D4 /* OperatorTypingIndicatorView.swift */,
-				6E9C01AE26D3BE2300EBE1D4 /* OperatorTypingIndicatorStyle.swift */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -1214,9 +1205,6 @@
 				1A4AD3B2256D2A7600468BFB /* VisitorChatMessageStyle.swift */,
 				1A60B02C256BF7FF00E53F53 /* OperatorChatMessageView.swift */,
 				1A38A8A7258B652B0089DE7B /* OperatorChatMessageStyle.swift */,
-				C43D7A0C25FF92530064B1DA /* ChoiceCardView.swift */,
-				C43D7A1025FF92680064B1DA /* ChoiceCardStyle.swift */,
-				6EEAD84D2701A8C10074C191 /* ChoiceCardOptionStateStyle.swift */,
 			);
 			path = Message;
 			sourceTree = "<group>";
@@ -1226,7 +1214,7 @@
 			children = (
 				1A277A1025FA602D009FE131 /* File */,
 				1A1E30CE25F9FDD000850E68 /* Text */,
-				C460C7762600BCBD00449851 /* Choice */,
+				C460C7762600BCBD00449851 /* ChoiceCard */,
 				C49A29E92614A32600819269 /* ChatMessageContent.swift */,
 			);
 			path = Content;
@@ -1444,13 +1432,25 @@
 			path = Screensharing;
 			sourceTree = "<group>";
 		};
-		C460C7762600BCBD00449851 /* Choice */ = {
+		C460C7762600BCBD00449851 /* ChoiceCard */ = {
 			isa = PBXGroup;
 			children = (
 				C49E232E25FFA360001A851C /* ChoiceCardOptionView.swift */,
 				C460C7772600BCF400449851 /* ChoiceCardOptionStyle.swift */,
+				6EEAD84D2701A8C10074C191 /* ChoiceCardOptionStateStyle.swift */,
+				C43D7A0C25FF92530064B1DA /* ChoiceCardView.swift */,
+				C43D7A1025FF92680064B1DA /* ChoiceCardStyle.swift */,
 			);
-			path = Choice;
+			path = ChoiceCard;
+			sourceTree = "<group>";
+		};
+		C46560C427047A3B007B17EB /* OperatorTypingIndicator */ = {
+			isa = PBXGroup;
+			children = (
+				6E9C01AC26D3B8B500EBE1D4 /* OperatorTypingIndicatorView.swift */,
+				6E9C01AE26D3BE2300EBE1D4 /* OperatorTypingIndicatorStyle.swift */,
+			);
+			path = OperatorTypingIndicator;
 			sourceTree = "<group>";
 		};
 		C47901AD25ED2E59007EE195 /* ScreenShare */ = {
@@ -1461,13 +1461,13 @@
 			path = ScreenShare;
 			sourceTree = "<group>";
 		};
-		C499A57C26382F80009962AC /* NewMessageIndicator */ = {
+		C499A57C26382F80009962AC /* UnreadMessageIndicator */ = {
 			isa = PBXGroup;
 			children = (
 				C499A57D26382FAA009962AC /* UnreadMessageIndicatorView.swift */,
 				C499A58326382FBE009962AC /* UnreadMessageIndicatorStyle.swift */,
 			);
-			path = NewMessageIndicator;
+			path = UnreadMessageIndicator;
 			sourceTree = "<group>";
 		};
 		C49A29AD2614A06300819269 /* Recovered References */ = {
@@ -2221,7 +2221,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A099487F3CEB09E6C42C7AB4 /* Pods-TestingApp.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = TestingApp/TestingApp.entitlements;
@@ -2247,7 +2246,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 9B8252BE9AE93B4EA9A50E55 /* Pods-TestingApp.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = TestingApp/TestingApp.entitlements;
