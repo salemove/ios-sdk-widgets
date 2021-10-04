@@ -2,15 +2,19 @@ import UIKit
 
 class ChatTextContentView: UIView {
     var text: String? {
-        get { return textLabel.text }
+        get { return textView.text }
         set { setText(newValue) }
     }
 
-    private let textLabel = UILabel()
+    private let textView = UITextView()
     private let style: ChatTextContentStyle
     private let contentAlignment: ChatMessageContentAlignment
     private let contentView = UIView()
     private let kTextInsets: UIEdgeInsets
+    private var textViewHeightConstraint: NSLayoutConstraint!
+    private let kMinTextViewHeight: CGFloat = 22
+    private let kMaxTextViewHeight: CGFloat = 300
+    var textChanged: ((String) -> Void)?
 
     init(
         with style: ChatTextContentStyle,
@@ -33,9 +37,17 @@ class ChatTextContentView: UIView {
         contentView.backgroundColor = style.backgroundColor
         contentView.layer.cornerRadius = 10
 
-        textLabel.font = style.textFont
-        textLabel.textColor = style.textColor
-        textLabel.numberOfLines = 0
+        textView.textContainerInset = .zero
+        textView.textContainer.lineFragmentPadding = 0
+        textView.isScrollEnabled = false
+        textView.isUserInteractionEnabled = true
+        textView.isEditable = false
+        textView.isSelectable = true
+        textView.dataDetectorTypes = .all
+        textView.linkTextAttributes = [.underlineStyle: NSUnderlineStyle.single.rawValue]
+        textView.font = style.textFont
+        textView.backgroundColor = .clear
+        textView.textColor = style.textColor
     }
 
     private func layout() {
@@ -55,13 +67,35 @@ class ChatTextContentView: UIView {
 
     private func setText(_ text: String?) {
         if text == nil || text?.isEmpty == true {
-            textLabel.removeFromSuperview()
+            textView.removeFromSuperview()
         } else {
-            if textLabel.superview == nil {
-                contentView.addSubview(textLabel)
-                textLabel.autoPinEdgesToSuperviewEdges(with: kTextInsets)
+            if textView.superview == nil {
+                contentView.addSubview(textView)
+                textViewHeightConstraint = textView.autoSetDimension(
+                    .height,
+                    toSize: kMinTextViewHeight
+                )
+                textView.autoPinEdgesToSuperviewEdges(with: kTextInsets)
+                updateTextViewHeight()
             }
-            textLabel.text = text
+            textView.text = text
+            updateTextViewHeight()
         }
+    }
+
+    private func updateTextViewHeight() {
+        let size = CGSize(
+            width: textView.frame.size.width,
+            height: textView.contentSize.height
+        )
+        var newHeight = textView.sizeThatFits(size).height
+
+        if newHeight > kMaxTextViewHeight {
+            newHeight = kMaxTextViewHeight
+        } else if newHeight < kMinTextViewHeight {
+            newHeight = kMinTextViewHeight
+        }
+
+        textViewHeightConstraint.constant = newHeight
     }
 }
