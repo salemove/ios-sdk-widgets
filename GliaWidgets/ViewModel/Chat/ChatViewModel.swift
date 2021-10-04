@@ -42,7 +42,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         )
         case showCallBubble(imageUrl: String?)
         case updateUnreadMessageIndicator(itemCount: Int)
-        case setOperatorTypingIndicatorVisibilityTo(Bool, _ isChatScrolledToBottom: Bool)
+        case setOperatorTypingIndicatorIsHiddenTo(Bool, _ isChatScrolledToBottom: Bool)
     }
 
     enum DelegateEvent {
@@ -219,7 +219,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
                 engagementAction?(.showEndButton)
             }
 
-            pendingMessages.forEach({ [weak self] outgoingMessage in
+            pendingMessages.forEach { [weak self] outgoingMessage in
                 self?.interactor.send(outgoingMessage.content, attachment: nil) { [weak self] message in
                     guard let self = self else { return }
 
@@ -235,11 +235,11 @@ class ChatViewModel: EngagementViewModel, ViewModel {
                     guard let self = self else { return }
 
                     self.showAlert(
-                        with: (self.alertConfiguration.unexpectedError),
+                        with: self.alertConfiguration.unexpectedError,
                         dismissed: nil
                     )
                 }
-            })
+            }
 
             loadHistory()
         default:
@@ -527,7 +527,9 @@ extension ChatViewModel {
     }
 
     private func typingStatusUpdated(_ status: OperatorTypingStatus) {
-        action?(.setOperatorTypingIndicatorVisibilityTo(!status.isTyping, isChatScrolledToBottom.value))
+        action?(.setOperatorTypingIndicatorIsHiddenTo(
+            !status.isTyping, isChatScrolledToBottom.value
+        ))
     }
 }
 

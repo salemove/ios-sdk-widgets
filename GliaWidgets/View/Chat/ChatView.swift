@@ -50,8 +50,8 @@ class ChatView: EngagementView {
         moveCallBubbleVisible(animated: true)
     }
 
-    func updateTypingIndicatorVisibility(to visible: Bool) {
-        typingIndicatorView.isHidden = visible
+    func setOperatorTypingIndicatorIsHidden(to isHidden: Bool) {
+        typingIndicatorView.isHidden = isHidden
     }
 
     func setConnectState(_ state: ConnectView.State, animated: Bool) {
