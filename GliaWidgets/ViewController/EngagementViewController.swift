@@ -33,10 +33,10 @@ class EngagementViewController: ViewController, AlertPresenter {
     }
 
     private func bind(viewModel: EngagementViewModel, to view: EngagementView) {
-        view.header.endButton.tap = { self.viewModel.event(.closeTapped) }
-        view.header.endScreenShareButton.tap = { self.viewModel.event(.endScreenSharingTapped) }
-        view.header.backButton.tap = { self.viewModel.event(.backTapped) }
-        view.header.closeButton.tap = { self.viewModel.event(.closeTapped) }
+        view.header.endButton.tap = { [weak self] in self?.viewModel.event(.closeTapped) }
+        view.header.endScreenShareButton.tap = { [weak self] in self?.viewModel.event(.endScreenSharingTapped) }
+        view.header.backButton.tap = { [weak self] in self?.viewModel.event(.backTapped) }
+        view.header.closeButton.tap = { [weak self] in self?.viewModel.event(.closeTapped) }
 
         viewModel.engagementAction = { action in
             switch action {
