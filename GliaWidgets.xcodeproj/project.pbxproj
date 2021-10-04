@@ -159,7 +159,6 @@
 		1ABD6C5525B574FF00D56EFA /* BubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD6C5425B574FF00D56EFA /* BubbleView.swift */; };
 		1ABD6C5925B5758000D56EFA /* BubbleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD6C5825B5758000D56EFA /* BubbleStyle.swift */; };
 		1ABD6C5D25B59D1C00D56EFA /* BubbleWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD6C5C25B59D1C00D56EFA /* BubbleWindow.swift */; };
-		1ABD6C6125B5ABA100D56EFA /* UIView+Screenshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD6C6025B5ABA100D56EFA /* UIView+Screenshot.swift */; };
 		1ABD6C8125B6E97400D56EFA /* MultipleMediaUpgradeAlertConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD6C8025B6E97400D56EFA /* MultipleMediaUpgradeAlertConfiguration.swift */; };
 		1ABD6C8725B6EFD000D56EFA /* SingleMediaUpgradeAlertConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD6C8625B6EFD000D56EFA /* SingleMediaUpgradeAlertConfiguration.swift */; };
 		1ABD6C9225B6F2D200D56EFA /* String+TemplateString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD6C9125B6F2D200D56EFA /* String+TemplateString.swift */; };
@@ -181,6 +180,11 @@
 		1AFB1E7425F8B00B00CA460D /* ChatTextContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFB1E7325F8B00B00CA460D /* ChatTextContentView.swift */; };
 		1AFB1E7825F8B26800CA460D /* ChatTextContentStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFB1E7725F8B26800CA460D /* ChatTextContentStyle.swift */; };
 		534EEAAA3FCDDD78AAAEB33E /* Pods_TestingApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C45ADF8988F719DA1AC8444 /* Pods_TestingApp.framework */; };
+		6E9C01AD26D3B8B500EBE1D4 /* OperatorTypingIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E9C01AC26D3B8B500EBE1D4 /* OperatorTypingIndicatorView.swift */; };
+		6E9C01AF26D3BE2300EBE1D4 /* OperatorTypingIndicatorStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E9C01AE26D3BE2300EBE1D4 /* OperatorTypingIndicatorStyle.swift */; };
+		6EA3512626DE9F3400BF5941 /* operator-typing-indicator.json in Resources */ = {isa = PBXBuildFile; fileRef = 6EA3512526DE9F3400BF5941 /* operator-typing-indicator.json */; };
+		6EA3516926E139DA00BF5941 /* GliaViewTransitionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EA3516826E139DA00BF5941 /* GliaViewTransitionController.swift */; };
+		6EEAD84E2701A8C10074C191 /* ChoiceCardOptionStateStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EEAD84D2701A8C10074C191 /* ChoiceCardOptionStateStyle.swift */; };
 		C4119E04268F411D004DFEFB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4119E03268F411D004DFEFB /* SceneDelegate.swift */; };
 		C4119E06268F41D1004DFEFB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C4119E05268F41D1004DFEFB /* Main.storyboard */; };
 		C42463742673ABE10082C135 /* ScreenShareHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42463732673ABE10082C135 /* ScreenShareHandler.swift */; };
@@ -396,7 +400,6 @@
 		1ABD6C5425B574FF00D56EFA /* BubbleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleView.swift; sourceTree = "<group>"; };
 		1ABD6C5825B5758000D56EFA /* BubbleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleStyle.swift; sourceTree = "<group>"; };
 		1ABD6C5C25B59D1C00D56EFA /* BubbleWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleWindow.swift; sourceTree = "<group>"; };
-		1ABD6C6025B5ABA100D56EFA /* UIView+Screenshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Screenshot.swift"; sourceTree = "<group>"; };
 		1ABD6C8025B6E97400D56EFA /* MultipleMediaUpgradeAlertConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleMediaUpgradeAlertConfiguration.swift; sourceTree = "<group>"; };
 		1ABD6C8625B6EFD000D56EFA /* SingleMediaUpgradeAlertConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleMediaUpgradeAlertConfiguration.swift; sourceTree = "<group>"; };
 		1ABD6C9125B6F2D200D56EFA /* String+TemplateString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+TemplateString.swift"; sourceTree = "<group>"; };
@@ -418,6 +421,11 @@
 		1AFB1E7325F8B00B00CA460D /* ChatTextContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTextContentView.swift; sourceTree = "<group>"; };
 		1AFB1E7725F8B26800CA460D /* ChatTextContentStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTextContentStyle.swift; sourceTree = "<group>"; };
 		34707AE4070DC82EFBA9C844 /* Pods-GliaWidgets.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliaWidgets.release.xcconfig"; path = "Target Support Files/Pods-GliaWidgets/Pods-GliaWidgets.release.xcconfig"; sourceTree = "<group>"; };
+		6E9C01AC26D3B8B500EBE1D4 /* OperatorTypingIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperatorTypingIndicatorView.swift; sourceTree = "<group>"; };
+		6E9C01AE26D3BE2300EBE1D4 /* OperatorTypingIndicatorStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperatorTypingIndicatorStyle.swift; sourceTree = "<group>"; };
+		6EA3512526DE9F3400BF5941 /* operator-typing-indicator.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "operator-typing-indicator.json"; sourceTree = "<group>"; };
+		6EA3516826E139DA00BF5941 /* GliaViewTransitionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GliaViewTransitionController.swift; sourceTree = "<group>"; };
+		6EEAD84D2701A8C10074C191 /* ChoiceCardOptionStateStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoiceCardOptionStateStyle.swift; sourceTree = "<group>"; };
 		85639A838514258D976E1B2A /* Pods_GliaWidgets.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GliaWidgets.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B8252BE9AE93B4EA9A50E55 /* Pods-TestingApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestingApp.release.xcconfig"; path = "Target Support Files/Pods-TestingApp/Pods-TestingApp.release.xcconfig"; sourceTree = "<group>"; };
 		9C45ADF8988F719DA1AC8444 /* Pods_TestingApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TestingApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -538,14 +546,6 @@
 				1A0C9A9625C41D4D00815406 /* CallButtonBarStyle.swift */,
 			);
 			path = CallButtonBar;
-			sourceTree = "<group>";
-		};
-		1A0C9AA025C42C4F00815406 /* Bar */ = {
-			isa = PBXGroup;
-			children = (
-				1A0C9A8F25C41AA300815406 /* CallButtonBar */,
-			);
-			path = Bar;
 			sourceTree = "<group>";
 		};
 		1A0C9AB925C93F5100815406 /* Data */ = {
@@ -903,10 +903,10 @@
 		1A60AF6725656BF200E53F53 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
-				1AC7A7472582237500567FF8 /* GliaViewController.swift */,
 				1A60AFD22566991600E53F53 /* Chat */,
 				1A0C143D25B85DA300B00695 /* Call */,
 				1A63B2EF257A3EF100508478 /* Common */,
+				1AC7A7472582237500567FF8 /* GliaViewController.swift */,
 				1A0C142825B84E5500B00695 /* EngagementViewController.swift */,
 			);
 			path = ViewController;
@@ -938,9 +938,10 @@
 			isa = PBXGroup;
 			children = (
 				1A4674A525E905960078FA1C /* AttachmentList */,
-				C499A57C26382F80009962AC /* NewMessageIndicator */,
+				C499A57C26382F80009962AC /* UnreadMessageIndicator */,
+				C46560C427047A3B007B17EB /* OperatorTypingIndicator */,
 				1A475BB125DE831000296D55 /* Badge */,
-				1A0C9AA025C42C4F00815406 /* Bar */,
+				1A0C9A8F25C41AA300815406 /* CallButtonBar */,
 				1ABD6C5325B574EF00D56EFA /* Bubble */,
 				1A6EBB2025ADDB8500EE325D /* MediaUpgrade */,
 				1A6075DE2582207E00569B0E /* ImageView */,
@@ -975,6 +976,7 @@
 				1A60AF95256675C400E53F53 /* UIColor+Extensions.swift */,
 				1A60AFA225667EA300E53F53 /* Assets.xcassets */,
 				1A60AFAC2566806000E53F53 /* Localizable.strings */,
+				6EA3512526DE9F3400BF5941 /* operator-typing-indicator.json */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -1010,6 +1012,7 @@
 		1A60AFC12566857200E53F53 /* Lib */ = {
 			isa = PBXGroup;
 			children = (
+				C4794E6E270673FC00F989F7 /* Animation */,
 				C42463722673ABCD0082C135 /* Screensharing */,
 				1A8366AE25FF409B005FE7EE /* File */,
 				1A2DA72B25EF9B5B00032611 /* Upload */,
@@ -1180,7 +1183,6 @@
 			children = (
 				1A60B0262568070800E53F53 /* UIStackView+Extensions.swift */,
 				1A4AD3BD256D37FD00468BFB /* UITableView+Extensions.swift */,
-				1ABD6C6025B5ABA100D56EFA /* UIView+Screenshot.swift */,
 				1A4AF5C625AEEA42002CD0F4 /* Operator+Extensions.swift */,
 				1ABD6C9125B6F2D200D56EFA /* String+TemplateString.swift */,
 				1A0C9AC725C9493D00815406 /* Int+Extensions.swift */,
@@ -1200,8 +1202,6 @@
 				1A4AD3B2256D2A7600468BFB /* VisitorChatMessageStyle.swift */,
 				1A60B02C256BF7FF00E53F53 /* OperatorChatMessageView.swift */,
 				1A38A8A7258B652B0089DE7B /* OperatorChatMessageStyle.swift */,
-				C43D7A0C25FF92530064B1DA /* ChoiceCardView.swift */,
-				C43D7A1025FF92680064B1DA /* ChoiceCardStyle.swift */,
 			);
 			path = Message;
 			sourceTree = "<group>";
@@ -1211,7 +1211,7 @@
 			children = (
 				1A277A1025FA602D009FE131 /* File */,
 				1A1E30CE25F9FDD000850E68 /* Text */,
-				C460C7762600BCBD00449851 /* Choice */,
+				C460C7762600BCBD00449851 /* ChoiceCard */,
 				C49A29E92614A32600819269 /* ChatMessageContent.swift */,
 			);
 			path = Content;
@@ -1429,13 +1429,25 @@
 			path = Screensharing;
 			sourceTree = "<group>";
 		};
-		C460C7762600BCBD00449851 /* Choice */ = {
+		C460C7762600BCBD00449851 /* ChoiceCard */ = {
 			isa = PBXGroup;
 			children = (
 				C49E232E25FFA360001A851C /* ChoiceCardOptionView.swift */,
 				C460C7772600BCF400449851 /* ChoiceCardOptionStyle.swift */,
+				6EEAD84D2701A8C10074C191 /* ChoiceCardOptionStateStyle.swift */,
+				C43D7A0C25FF92530064B1DA /* ChoiceCardView.swift */,
+				C43D7A1025FF92680064B1DA /* ChoiceCardStyle.swift */,
 			);
-			path = Choice;
+			path = ChoiceCard;
+			sourceTree = "<group>";
+		};
+		C46560C427047A3B007B17EB /* OperatorTypingIndicator */ = {
+			isa = PBXGroup;
+			children = (
+				6E9C01AC26D3B8B500EBE1D4 /* OperatorTypingIndicatorView.swift */,
+				6E9C01AE26D3BE2300EBE1D4 /* OperatorTypingIndicatorStyle.swift */,
+			);
+			path = OperatorTypingIndicator;
 			sourceTree = "<group>";
 		};
 		C47901AD25ED2E59007EE195 /* ScreenShare */ = {
@@ -1446,13 +1458,21 @@
 			path = ScreenShare;
 			sourceTree = "<group>";
 		};
-		C499A57C26382F80009962AC /* NewMessageIndicator */ = {
+		C4794E6E270673FC00F989F7 /* Animation */ = {
+			isa = PBXGroup;
+			children = (
+				6EA3516826E139DA00BF5941 /* GliaViewTransitionController.swift */,
+			);
+			path = Animation;
+			sourceTree = "<group>";
+		};
+		C499A57C26382F80009962AC /* UnreadMessageIndicator */ = {
 			isa = PBXGroup;
 			children = (
 				C499A57D26382FAA009962AC /* UnreadMessageIndicatorView.swift */,
 				C499A58326382FBE009962AC /* UnreadMessageIndicatorStyle.swift */,
 			);
-			path = NewMessageIndicator;
+			path = UnreadMessageIndicator;
 			sourceTree = "<group>";
 		};
 		C49A29AD2614A06300819269 /* Recovered References */ = {
@@ -1615,6 +1635,7 @@
 				1A60AF9C2566798D00E53F53 /* Roboto-Regular.ttf in Resources */,
 				1A60AFAA2566806000E53F53 /* Localizable.strings in Resources */,
 				1A60AFA325667EA300E53F53 /* Assets.xcassets in Resources */,
+				6EA3512626DE9F3400BF5941 /* operator-typing-indicator.json in Resources */,
 				1A60AF9B2566798D00E53F53 /* Roboto-Bold.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1742,6 +1763,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6E9C01AF26D3BE2300EBE1D4 /* OperatorTypingIndicatorStyle.swift in Sources */,
 				1A60AFD925669A1500E53F53 /* View.swift in Sources */,
 				1A6EBB0325ADB82000EE325D /* MediaUpgradeActionView.swift in Sources */,
 				1A0EDF8225E8E0150076D1AD /* PopoverViewController.swift in Sources */,
@@ -1827,6 +1849,7 @@
 				1A60B0192567FC8A00E53F53 /* ButtonKind.swift in Sources */,
 				C42463742673ABE10082C135 /* ScreenShareHandler.swift in Sources */,
 				1A56D53D257E24A400141BC8 /* PoweredBy.swift in Sources */,
+				6EEAD84E2701A8C10074C191 /* ChoiceCardOptionStateStyle.swift in Sources */,
 				1A4AF5CD25AEF4A0002CD0F4 /* AlertViewController+Message.swift in Sources */,
 				1A7CA8242574D68E0047CBBE /* ConnectStatusView.swift in Sources */,
 				1A5F81402588B7BD00A605DA /* ChatMessageEntryStyle.swift in Sources */,
@@ -1878,6 +1901,7 @@
 				1A63B2F6257A469A00508478 /* AlertPresenter.swift in Sources */,
 				1A0452EA25DBE259000DA0C1 /* MessageButton.swift in Sources */,
 				1A277A1225FA604E009FE131 /* ChatFileContentView.swift in Sources */,
+				6E9C01AD26D3B8B500EBE1D4 /* OperatorTypingIndicatorView.swift in Sources */,
 				1A5F494B25CA86CA003E3678 /* Call.swift in Sources */,
 				1AFB1E6825F7AE3C00CA460D /* ChatAttachment.swift in Sources */,
 				1A2DA73725EFBFE700032611 /* FileUploadListView.swift in Sources */,
@@ -1891,8 +1915,8 @@
 				C49A29E32614A29700819269 /* FilePreviewStyle.swift in Sources */,
 				1A60AFD52566992A00E53F53 /* ChatViewModel.swift in Sources */,
 				1A60AFE025669A6100E53F53 /* ChatViewController.swift in Sources */,
-				1ABD6C6125B5ABA100D56EFA /* UIView+Screenshot.swift in Sources */,
 				1A1E30A325F8E4A400850E68 /* FileSystemStorage.swift in Sources */,
+				6EA3516926E139DA00BF5941 /* GliaViewTransitionController.swift in Sources */,
 				1A1E30C725F9FDAB00850E68 /* ChatImageFileContentView.swift in Sources */,
 				1A60AF90256674F000E53F53 /* Font.swift in Sources */,
 				1A4674C225E92A710078FA1C /* AtttachmentSourceItemKind.swift in Sources */,
@@ -2201,7 +2225,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A099487F3CEB09E6C42C7AB4 /* Pods-TestingApp.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = TestingApp/TestingApp.entitlements;
@@ -2227,7 +2250,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 9B8252BE9AE93B4EA9A50E55 /* Pods-TestingApp.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = TestingApp/TestingApp.entitlements;

@@ -32,19 +32,12 @@ class EngagementViewController: ViewController, AlertPresenter {
         viewModel.event(.viewDidDisappear)
     }
 
-    func showBackButton(with style: HeaderButtonStyle, in header: Header) {
-        let back = HeaderButton(with: style, tap: { self.viewModel.event(.backTapped) })
-        back.contentHorizontalAlignment = .left
-        header.setLeftItem(back, animated: false)
-    }
-
-    func showCloseButton(with style: HeaderButtonStyle, in header: Header) {
-        let back = HeaderButton(with: style, tap: { self.viewModel.event(.closeTapped) })
-        back.contentHorizontalAlignment = .right
-        header.setRightItem(back, animated: false)
-    }
-
     private func bind(viewModel: EngagementViewModel, to view: EngagementView) {
+        view.header.endButton.tap = { [weak self] in self?.viewModel.event(.closeTapped) }
+        view.header.endScreenShareButton.tap = { [weak self] in self?.viewModel.event(.endScreenSharingTapped) }
+        view.header.backButton.tap = { [weak self] in self?.viewModel.event(.backTapped) }
+        view.header.closeButton.tap = { [weak self] in self?.viewModel.event(.closeTapped) }
+
         viewModel.engagementAction = { action in
             switch action {
             case .confirm(let conf, confirmed: let confirmed):
@@ -56,15 +49,9 @@ class EngagementViewController: ViewController, AlertPresenter {
             case .offerScreenShare(let conf, accepted: let accepted, declined: let declined):
                 self.offerScreenShare(with: conf, accepted: accepted, declined: declined)
             case .showEndButton:
-                let endEngagementButton = ActionButton(with: self.viewFactory.theme.chat.endButton)
-                endEngagementButton.tap = { viewModel.event(.closeTapped) }
-                view.header.setRightItem(endEngagementButton, animated: true)
+                view.header.showEndButton()
             case .showEndScreenShareButton:
-                let endEngagementButton = ActionButton(with: self.viewFactory.theme.chat.endButton)
-                endEngagementButton.tap = { viewModel.event(.closeTapped) }
-                let endScreenShareButton = HeaderButton(with: self.viewFactory.theme.chat.endScreenShareButton)
-                endScreenShareButton.tap = { viewModel.event(.endScreenSharingTapped) }
-                view.header.setRightItems([endScreenShareButton, endEngagementButton], animated: true)
+                view.header.showEndScreenSharingButton()
             }
         }
     }

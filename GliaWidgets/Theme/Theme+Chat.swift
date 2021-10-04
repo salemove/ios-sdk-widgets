@@ -2,11 +2,6 @@ extension Theme {
     var chatStyle: ChatStyle {
         typealias Chat = L10n.Chat
 
-        let header = HeaderStyle(
-            titleFont: font.header2,
-            titleColor: color.baseLight,
-            backgroundColor: color.primary
-        )
         let backButton = HeaderButtonStyle(
             image: Asset.back.image,
             color: color.baseLight
@@ -14,6 +9,25 @@ extension Theme {
         let closeButton = HeaderButtonStyle(
             image: Asset.close.image,
             color: color.baseLight
+        )
+        let endButton = ActionButtonStyle(
+            title: Chat.EndButton.title,
+            titleFont: font.buttonLabel,
+            titleColor: color.baseLight,
+            backgroundColor: color.systemNegative
+        )
+        let endScreenShareButton = HeaderButtonStyle(
+            image: Asset.startScreenShare.image,
+            color: color.secondary
+        )
+        let header = HeaderStyle(
+            titleFont: font.header2,
+            titleColor: color.baseLight,
+            backgroundColor: color.primary,
+            backButton: backButton,
+            closeButton: closeButton,
+            endButton: endButton,
+            endScreenShareButton: endScreenShareButton
         )
         let operatorImage = UserImageStyle(
             placeholderImage: Asset.operatorPlaceholder.image,
@@ -85,6 +99,9 @@ extension Theme {
             fileDownload: fileDownload,
             operatorImage: operatorImage
         )
+        let operatorTypingIndicator = OperatorTypingIndicatorStyle(
+            color: color.primary
+        )
         let choiceCardText = ChatTextContentStyle(
             textFont: font.bodyText,
             textColor: color.baseDark,
@@ -93,14 +110,28 @@ extension Theme {
         let choiceCardImageFile = ChatImageFileContentStyle(
             backgroundColor: color.baseLight
         )
-        let choiceCardOption = ChoiceCardOptionStyle(
+        let choiceCardOptionNormalState = ChoiceCardOptionStateStyle(
             textFont: font.bodyText,
-            normalTextColor: color.baseDark,
-            normalBackgroundColor: Color.lightGrey,
-            highlightedTextColor: color.baseLight,
-            highlightedBackgroundColor: color.primary,
-            disabledTextColor: Color.grey,
-            disabledBackgroundColor: Color.lightGrey
+            textColor: color.baseDark,
+            backgroundColor: Color.lightGrey,
+            borderColor: nil
+        )
+        let choiceCardOptionSelectedState = ChoiceCardOptionStateStyle(
+            textFont: font.bodyText,
+            textColor: color.baseLight,
+            backgroundColor: color.primary,
+            borderColor: nil
+        )
+        let choiceCardOptionDisabledState = ChoiceCardOptionStateStyle(
+            textFont: font.bodyText,
+            textColor: Color.grey,
+            backgroundColor: Color.lightGrey,
+            borderColor: Color.baseShade
+        )
+        let choiceCardOption = ChoiceCardOptionStyle(
+            normal: choiceCardOptionNormalState,
+            selected: choiceCardOptionSelectedState,
+            disabled: choiceCardOptionDisabledState
         )
         let choiceCard = ChoiceCardStyle(
             mainText: choiceCardText,
@@ -109,16 +140,6 @@ extension Theme {
             fileDownload: fileDownload,
             operatorImage: operatorImage,
             choiceOption: choiceCardOption
-        )
-        let endButton = ActionButtonStyle(
-            title: Chat.EndButton.title,
-            titleFont: font.buttonLabel,
-            titleColor: color.baseLight,
-            backgroundColor: color.systemNegative
-        )
-        let endScreenShareButton = HeaderButtonStyle(
-            image: Asset.startScreenShare.image,
-            color: color.secondary
         )
         let mediaButton = MessageButtonStyle(
             image: Asset.chatPickMedia.image,
@@ -184,12 +205,8 @@ extension Theme {
             header: header,
             connect: connect,
             backgroundColor: color.background,
-            endButton: endButton,
-            endScreenShareButton: endScreenShareButton,
             preferredStatusBarStyle: .lightContent,
             title: Chat.title,
-            backButton: backButton,
-            closeButton: closeButton,
             visitorMessage: visitorMessage,
             operatorMessage: operatorMessage,
             choiceCard: choiceCard,
@@ -198,7 +215,8 @@ extension Theme {
             videoUpgrade: videoUpgrade,
             callBubble: callBubble,
             pickMedia: pickMedia,
-            unreadMessageIndicator: unreadMessageIndicator
+            unreadMessageIndicator: unreadMessageIndicator,
+            operatorTypingIndicator: operatorTypingIndicator
         )
     }
 

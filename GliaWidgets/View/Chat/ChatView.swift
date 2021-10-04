@@ -1,9 +1,11 @@
 import UIKit
 
 class ChatView: EngagementView {
+    let tableAndIndicatorStack = UIStackView()
     let tableView = UITableView()
     let messageEntryView: ChatMessageEntryView
     let unreadMessageIndicatorView: UnreadMessageIndicatorView
+    let typingIndicatorView: OperatorTypingIndicatorView
     var numberOfSections: (() -> Int?)?
     var numberOfRows: ((Int) -> Int?)?
     var itemForRow: ((Int, Int) -> ChatItem?)?
@@ -22,6 +24,7 @@ class ChatView: EngagementView {
     private let kCallBubbleEdgeInset: CGFloat = 10
     private let kCallBubbleSize = CGSize(width: 60, height: 60)
     private let kChatTableViewInsets = UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0)
+    private let kOperatorTypingIndicatorViewSize = CGSize(width: 28, height: 28)
     private var callBubbleBounds: CGRect {
         let x = safeAreaInsets.left + kCallBubbleEdgeInset
         let y = header.frame.maxY + kCallBubbleEdgeInset
@@ -36,6 +39,7 @@ class ChatView: EngagementView {
         self.unreadMessageIndicatorView = UnreadMessageIndicatorView(
             with: style.unreadMessageIndicator
         )
+        self.typingIndicatorView = OperatorTypingIndicatorView(style: style.operatorTypingIndicator)
         super.init(with: style)
         setup()
         layout()
@@ -44,6 +48,10 @@ class ChatView: EngagementView {
     override func layoutSubviews() {
         super.layoutSubviews()
         moveCallBubbleVisible(animated: true)
+    }
+
+    func setOperatorTypingIndicatorIsHidden(to isHidden: Bool) {
+        typingIndicatorView.isHidden = isHidden
     }
 
     func setConnectState(_ state: ConnectView.State, animated: Bool) {
@@ -152,8 +160,11 @@ class ChatView: EngagementView {
             self?.scrollToBottom(animated: true)
         }
 
+        tableAndIndicatorStack.axis = .vertical
+
         observeKeyboard()
         addKeyboardDismissalTapGesture()
+        typingIndicatorView.isHidden = true
     }
 
     private func layout() {
@@ -163,10 +174,13 @@ class ChatView: EngagementView {
             excludingEdge: .bottom
         )
 
-        addSubview(tableView)
-        tableView.autoPinEdge(.top, to: .bottom, of: header)
-        tableView.autoPinEdge(toSuperviewSafeArea: .left)
-        tableView.autoPinEdge(toSuperviewSafeArea: .right)
+        typingIndicatorView.autoSetDimensions(to: kOperatorTypingIndicatorViewSize)
+
+        tableAndIndicatorStack.addArrangedSubviews([tableView, typingIndicatorView])
+        addSubview(tableAndIndicatorStack)
+        tableAndIndicatorStack.autoPinEdge(.top, to: .bottom, of: header)
+        tableAndIndicatorStack.autoPinEdge(toSuperviewSafeArea: .left)
+        tableAndIndicatorStack.autoPinEdge(toSuperviewSafeArea: .right)
 
         addSubview(messageEntryView)
         messageEntryViewBottomConstraint = messageEntryView.autoPinEdge(
@@ -174,7 +188,7 @@ class ChatView: EngagementView {
         )
         messageEntryView.autoPinEdge(toSuperviewSafeArea: .left)
         messageEntryView.autoPinEdge(toSuperviewSafeArea: .right)
-        messageEntryView.autoPinEdge(.top, to: .bottom, of: tableView)
+        messageEntryView.autoPinEdge(.top, to: .bottom, of: tableAndIndicatorStack)
 
         addSubview(unreadMessageIndicatorView)
         unreadMessageIndicatorView.autoAlignAxis(toSuperviewAxis: .vertical)
@@ -271,6 +285,7 @@ class ChatView: EngagementView {
     private func isBottomReached(for scrollView: UIScrollView) -> Bool {
         let chatBottomOffset = scrollView.contentSize.height - scrollView.frame.size.height
         let currentPositionOffset = scrollView.contentOffset.y + scrollView.contentInset.top
+
         return currentPositionOffset >= chatBottomOffset
     }
 }
