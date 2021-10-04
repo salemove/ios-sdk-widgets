@@ -17,30 +17,30 @@ final class ChoiceCardView: OperatorChatMessageView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func setup() {
-        contentViews.axis = .vertical
-        contentViews.spacing = 12
-
-        contentViews.layer.cornerRadius = 8
-        contentViews.layer.borderWidth = 1
-        contentViews.layer.borderColor = viewStyle.frameColor.cgColor
-
-        contentViews.isLayoutMarginsRelativeArrangement = true
-        contentViews.layoutMargins = kLayoutMargins
-    }
-
     override func appendContent(_ content: ChatMessageContent, animated: Bool) {
         switch content {
         case .choiceCard(let choiceCard):
-            let contentViews = self.contentViews(for: choiceCard)
-            appendContentViews(contentViews, animated: animated)
+            let contentView = self.contentView(for: choiceCard)
+            appendContentView(contentView, animated: animated)
         default:
             break
         }
     }
 
-    private func contentViews(for choiceCard: ChoiceCard) -> [UIView] {
-        var views = [UIView]()
+    private func contentView(for choiceCard: ChoiceCard) -> UIView {
+        let containerView = UIView()
+
+        containerView.layer.cornerRadius = 8
+        containerView.layer.borderWidth = 1
+        containerView.layer.borderColor = viewStyle.frameColor.cgColor
+
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.spacing = 12
+        stackView.isLayoutMarginsRelativeArrangement = true
+        stackView.layoutMargins = kLayoutMargins
+        containerView.addSubview(stackView)
+        stackView.autoPinEdgesToSuperviewEdges()
 
         if let imageUrl = choiceCard.imageUrl {
             let imageView = ImageView()
@@ -49,7 +49,7 @@ final class ChoiceCardView: OperatorChatMessageView {
             imageView.layer.masksToBounds = true
             imageView.autoSetDimension(.height, toSize: kImageHeight)
             imageView.setImage(from: imageUrl, animated: true)
-            views.append(imageView)
+            stackView.addArrangedSubview(imageView)
         }
 
         let textView = ChatTextContentView(
@@ -58,9 +58,9 @@ final class ChoiceCardView: OperatorChatMessageView {
             insets: .zero
         )
         textView.text = choiceCard.text
-        views.append(textView)
+        stackView.addArrangedSubview(textView)
 
-        guard let options = choiceCard.options else { return views }
+        guard let options = choiceCard.options else { return containerView }
 
         let optionViews: [UIView] = options.compactMap { option in
             let optionView = ChoiceCardOptionView(with: viewStyle.choiceOption, text: option.text)
@@ -77,8 +77,8 @@ final class ChoiceCardView: OperatorChatMessageView {
 
             return optionView
         }
-        views.append(contentsOf: optionViews)
+        stackView.addArrangedSubviews(optionViews)
 
-        return views
+        return containerView
     }
 }

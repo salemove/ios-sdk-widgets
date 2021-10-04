@@ -12,6 +12,7 @@ enum InteractorEvent {
     case stateChanged(InteractorState)
     case receivedMessage(Message)
     case messagesUpdated([Message])
+    case typingStatusUpdated(OperatorTypingStatus)
     case upgradeOffer(MediaUpgradeOffer, answer: AnswerWithSuccessBlock)
     case audioStreamAdded(AudioStreamable)
     case audioStreamError(SalemoveError)
@@ -35,6 +36,7 @@ class Interactor {
             return nil
         }
     }
+
     var isEngaged: Bool {
         switch state {
         case .engaged:
@@ -50,9 +52,11 @@ class Interactor {
         didSet { notify(.stateChanged(state)) }
     }
 
-    init(with conf: Configuration,
-         queueID: String,
-         visitorContext: VisitorContext) throws {
+    init(
+        with conf: Configuration,
+        queueID: String,
+        visitorContext: VisitorContext
+    ) throws {
         self.queueID = queueID
         self.visitorContext = visitorContext
         try configure(with: conf)
@@ -89,31 +93,39 @@ class Interactor {
 }
 
 extension Interactor {
-    func enqueueForEngagement(success: @escaping () -> Void,
-                              failure: @escaping (SalemoveError) -> Void) {
+    func enqueueForEngagement(
+        success: @escaping () -> Void,
+        failure: @escaping (SalemoveError) -> Void
+    ) {
         print("Called: \(#function)")
         state = .enqueueing
-        Salemove.sharedInstance.queueForEngagement(queueID: queueID,
-                                                   visitorContext: visitorContext) { queueTicket, error in
+        Salemove.sharedInstance.queueForEngagement(
+            queueID: queueID,
+            visitorContext: visitorContext
+        ) { [weak self] queueTicket, error in
             if let error = error {
-                self.state = .ended
+                self?.state = .ended
                 failure(error)
             } else if let ticket = queueTicket {
-                if case .enqueueing = self.state {
-                    self.state = .enqueued(ticket)
+                if case .enqueueing = self?.state {
+                    self?.state = .enqueued(ticket)
                 }
                 success()
             }
         }
     }
 
-    func request(_ media: MediaType,
-                 direction: MediaDirection,
-                 success: @escaping () -> Void,
-                 failure: @escaping (Error?, SalemoveError?) -> Void) {
+    func request(
+        _ media: MediaType,
+        direction: MediaDirection,
+        success: @escaping () -> Void,
+        failure: @escaping (Error?, SalemoveError?) -> Void
+    ) {
         do {
             let offer = try MediaUpgradeOffer(type: media, direction: direction)
-            Salemove.sharedInstance.requestMediaUpgrade(offer: offer) { isSuccess, error in
+            Salemove.sharedInstance.requestMediaUpgrade(
+                offer: offer
+            ) { isSuccess, error in
                 if let error = error {
                     failure(nil, error)
                 } else if !isSuccess {
@@ -131,12 +143,16 @@ extension Interactor {
         Salemove.sharedInstance.sendMessagePreview(message: message) { _, _ in }
     }
 
-    func send(_ message: String,
-              attachment: Attachment?,
-              success: @escaping (Message) -> Void,
-              failure: @escaping (SalemoveError) -> Void) {
-        Salemove.sharedInstance.send(message: message,
-                                     attachment: attachment) { message, error in
+    func send(
+        _ message: String,
+        attachment: Attachment?,
+        success: @escaping (Message) -> Void,
+        failure: @escaping (SalemoveError) -> Void
+    ) {
+        Salemove.sharedInstance.send(
+            message: message,
+            attachment: attachment
+        ) { message, error in
             if let error = error {
                 failure(error)
             } else if let message = message {
@@ -145,47 +161,59 @@ extension Interactor {
         }
     }
 
-    func endSession(success: @escaping () -> Void,
-                    failure: @escaping (SalemoveError) -> Void) {
+    func endSession(
+        success: @escaping () -> Void,
+        failure: @escaping (SalemoveError) -> Void
+    ) {
         print("Called: \(#function)")
         switch state {
         case .none, .ended:
             success()
         case .enqueueing:
-            self.state = .ended
+            state = .ended
             success()
         case .enqueued(let ticket):
-            exitQueue(ticket: ticket,
-                      success: success,
-                      failure: failure)
+            exitQueue(
+                ticket: ticket,
+                success: success,
+                failure: failure
+            )
         case .engaged:
-            endEngagement(success: success,
-                          failure: failure)
+            endEngagement(
+                success: success,
+                failure: failure
+            )
         }
     }
 
-    private func exitQueue(ticket: QueueTicket,
-                           success: @escaping () -> Void,
-                           failure: @escaping (SalemoveError) -> Void) {
+    private func exitQueue(
+        ticket: QueueTicket,
+        success: @escaping () -> Void,
+        failure: @escaping (SalemoveError) -> Void
+    ) {
         print("Called: \(#function)")
-        Salemove.sharedInstance.cancel(queueTicket: ticket) { _, error in
+        Salemove.sharedInstance.cancel(
+            queueTicket: ticket
+        ) { [weak self] _, error in
             if let error = error {
                 failure(error)
             } else {
-                self.state = .ended
+                self?.state = .ended
                 success()
             }
         }
     }
 
-    private func endEngagement(success: @escaping () -> Void,
-                               failure: @escaping (SalemoveError) -> Void) {
+    private func endEngagement(
+        success: @escaping () -> Void,
+        failure: @escaping (SalemoveError) -> Void
+    ) {
         print("Called: \(#function)")
-        Salemove.sharedInstance.endEngagement { _, error in
+        Salemove.sharedInstance.endEngagement { [weak self] _, error in
             if let error = error {
                 failure(error)
             } else {
-                self.state = .ended
+                self?.state = .ended
                 success()
             }
         }
@@ -195,15 +223,15 @@ extension Interactor {
 extension Interactor: Interactable {
     var onScreenSharingOffer: ScreenshareOfferBlock {
         print("Called: \(#function)")
-        return { answer in
-            self.notify(.screenShareOffer(answer: answer))
+        return { [weak self] answer in
+            self?.notify(.screenShareOffer(answer: answer))
         }
     }
 
     var onMediaUpgradeOffer: MediaUgradeOfferBlock {
         print("Called: \(#function)")
-        return { offer, answer in
-            self.notify(.upgradeOffer(offer, answer: answer))
+        return { [weak self] offer, answer in
+            self?.notify(.upgradeOffer(offer, answer: answer))
         }
     }
 
@@ -221,21 +249,23 @@ extension Interactor: Interactable {
 
     var onOperatorTypingStatusUpdate: OperatorTypingStatusUpdate {
         print("Called: \(#function)")
-        return { _ in }
+        return { [weak self] operatorTypingStatus in
+            self?.notify(.typingStatusUpdated(operatorTypingStatus))
+        }
     }
 
     var onMessagesUpdated: MessagesUpdateBlock {
         print("Called: \(#function)")
-        return { messages in
-            self.notify(.messagesUpdated(messages))
+        return { [weak self] messages in
+            self?.notify(.messagesUpdated(messages))
         }
     }
 
     var onVisitorScreenSharingStateChange: VisitorScreenSharingStateChange {
         print("Called: \(#function)")
-        return { [unowned self] state, error in
+        return { [weak self] state, error in
             if let error = error {
-                self.notify(.screenShareError(error: error))
+                self?.notify(.screenShareError(error: error))
             } else {
                 switch state.status {
                 case .sharing:
@@ -245,29 +275,29 @@ extension Interactor: Interactable {
                 @unknown default:
                     break
                 }
-                self.notify(.screenSharingStateChanged(to: state))
+                self?.notify(.screenSharingStateChanged(to: state))
             }
         }
     }
 
     var onAudioStreamAdded: AudioStreamAddedBlock {
         print("Called: \(#function)")
-        return { stream, error in
+        return { [weak self] stream, error in
             if let stream = stream {
-                self.notify(.audioStreamAdded(stream))
+                self?.notify(.audioStreamAdded(stream))
             } else if let error = error {
-                self.notify(.audioStreamError(error))
+                self?.notify(.audioStreamError(error))
             }
         }
     }
 
     var onVideoStreamAdded: VideoStreamAddedBlock {
         print("Called: \(#function)")
-        return { stream, error in
+        return { [weak self] stream, error in
             if let stream = stream {
-                self.notify(.videoStreamAdded(stream))
+                self?.notify(.videoStreamAdded(stream))
             } else if let error = error {
-                self.notify(.videoStreamError(error))
+                self?.notify(.videoStreamError(error))
             }
         }
     }
@@ -279,9 +309,9 @@ extension Interactor: Interactable {
 
     func start() {
         print("Called: \(#function)")
-        Salemove.sharedInstance.requestEngagedOperator { operators, _ in
+        Salemove.sharedInstance.requestEngagedOperator { [weak self] operators, _ in
             let engagedOperator = operators?.first
-            self.state = .engaged(engagedOperator)
+            self?.state = .engaged(engagedOperator)
         }
     }
 

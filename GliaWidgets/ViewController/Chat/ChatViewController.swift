@@ -41,8 +41,8 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter,
 
     // swiftlint:disable function_body_length
     private func bind(viewModel: ChatViewModel, to view: ChatView) {
-        showBackButton(with: viewFactory.theme.chat.backButton, in: view.header)
-        showCloseButton(with: viewFactory.theme.chat.closeButton, in: view.header)
+        view.header.showBackButton()
+        view.header.showCloseButton()
 
         view.numberOfSections = { viewModel.numberOfSections }
         view.numberOfRows = { viewModel.numberOfItems(in: $0) }
@@ -106,6 +106,11 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter,
                 view.showCallBubble(with: imageUrl, animated: true)
             case .updateUnreadMessageIndicator(let count):
                 view.unreadMessageIndicatorView.newItemCount = count
+            case .setOperatorTypingIndicatorIsHiddenTo(let isHidden, let isChatScrolledToBottom):
+                if isChatScrolledToBottom {
+                    view.scrollToBottom(animated: true)
+                }
+                view.setOperatorTypingIndicatorIsHidden(to: isHidden)
             }
         }
     }
