@@ -8,7 +8,7 @@ PODS:
   - TwilioVoice (6.2.0)
 
 DEPENDENCIES:
-  - lottie-ios
+  - lottie-ios (= 3.2.3)
   - PureLayout (~> 3.1)
   - SalemoveSDK
 
@@ -28,6 +28,6 @@ SPEC CHECKSUMS:
   SalemoveSDK: 8b733d16ea8bb7b7d5b4c534607bd586baf23a33
   TwilioVoice: 5e6fd6b5e99dfec03dcb57331f7e7c77ad79f1f0
 
-PODFILE CHECKSUM: 70ed2a2dfde645dd146e4e987f896ab255e708ed
+PODFILE CHECKSUM: 02f95f2cc3c8cf305a0d1b9d19eae34ddaa10146
 
 COCOAPODS: 1.10.2
