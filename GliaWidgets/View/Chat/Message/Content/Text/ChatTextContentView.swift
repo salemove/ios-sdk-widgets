@@ -41,7 +41,7 @@ class ChatTextContentView: UIView {
         textView.isSelectable = true
         textView.textContainerInset = .zero
         textView.textContainer.lineFragmentPadding = 0
-        textView.dataDetectorTypes = .all
+        textView.dataDetectorTypes = .link
         textView.linkTextAttributes = [.underlineStyle: NSUnderlineStyle.single.rawValue]
         textView.font = style.textFont
         textView.backgroundColor = .clear
