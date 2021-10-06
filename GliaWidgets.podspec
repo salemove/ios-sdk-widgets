@@ -15,5 +15,5 @@ Pod::Spec.new do |s|
   
     s.dependency 'SalemoveSDK', '0.30.2'
     s.dependency 'PureLayout', '~>3.1'
-    s.dependency 'lottie-ios', '~>3.2.1'
+    s.dependency 'lottie-ios', '3.2.3'
   end
