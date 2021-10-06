@@ -159,7 +159,7 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
     private func presentWebViewController(with url: URL) {
         let configuration = SFSafariViewController.Configuration()
         configuration.entersReaderIfAvailable = true
-        let safariVC = SFSafariViewController(url: url, configuration: configuration)
-        navigationPresenter.present(safariVC)
+        let safariViewController = SFSafariViewController(url: url, configuration: configuration)
+        navigationPresenter.present(safariViewController)
     }
 }
