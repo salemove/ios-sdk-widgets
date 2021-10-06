@@ -11,10 +11,6 @@ class ChatTextContentView: UIView {
     private let contentAlignment: ChatMessageContentAlignment
     private let contentView = UIView()
     private let kTextInsets: UIEdgeInsets
-    private var textViewHeightConstraint: NSLayoutConstraint!
-    private let kMinTextViewHeight: CGFloat = 22
-    private let kMaxTextViewHeight: CGFloat = 300
-    var textChanged: ((String) -> Void)?
 
     init(
         with style: ChatTextContentStyle,
@@ -37,12 +33,12 @@ class ChatTextContentView: UIView {
         contentView.backgroundColor = style.backgroundColor
         contentView.layer.cornerRadius = 10
 
-        textView.textContainerInset = .zero
-        textView.textContainer.lineFragmentPadding = 0
         textView.isScrollEnabled = false
         textView.isUserInteractionEnabled = true
         textView.isEditable = false
         textView.isSelectable = true
+        textView.textContainerInset = .zero
+        textView.textContainer.lineFragmentPadding = 0
         textView.dataDetectorTypes = .all
         textView.linkTextAttributes = [.underlineStyle: NSUnderlineStyle.single.rawValue]
         textView.font = style.textFont
@@ -71,31 +67,9 @@ class ChatTextContentView: UIView {
         } else {
             if textView.superview == nil {
                 contentView.addSubview(textView)
-                textViewHeightConstraint = textView.autoSetDimension(
-                    .height,
-                    toSize: kMinTextViewHeight
-                )
                 textView.autoPinEdgesToSuperviewEdges(with: kTextInsets)
-                updateTextViewHeight()
             }
             textView.text = text
-            updateTextViewHeight()
         }
-    }
-
-    private func updateTextViewHeight() {
-        let size = CGSize(
-            width: textView.frame.size.width,
-            height: textView.contentSize.height
-        )
-        var newHeight = textView.sizeThatFits(size).height
-
-        if newHeight > kMaxTextViewHeight {
-            newHeight = kMaxTextViewHeight
-        } else if newHeight < kMinTextViewHeight {
-            newHeight = kMinTextViewHeight
-        }
-
-        textViewHeightConstraint.constant = newHeight
     }
 }
