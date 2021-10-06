@@ -1,4 +1,5 @@
 import SalemoveSDK
+import SafariServices
 
 class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
     enum DelegateEvent {
@@ -97,6 +98,8 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
                 self?.presentQuickLookController(with: file)
             case .call:
                 self?.delegate?(.call)
+            case .openLink(let url):
+                self?.presentWebViewController(with: url)
             }
         }
         return ChatViewController(viewModel: viewModel, viewFactory: viewFactory)
@@ -151,5 +154,12 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
         let controller = QuickLookController(viewModel: viewModel)
         quickLookController = controller
         navigationPresenter.present(controller.viewController)
+    }
+
+    private func presentWebViewController(with url: URL) {
+        let configuration = SFSafariViewController.Configuration()
+        configuration.entersReaderIfAvailable = true
+        let safariVC = SFSafariViewController(url: url, configuration: configuration)
+        navigationPresenter.present(safariVC)
     }
 }

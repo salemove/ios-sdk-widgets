@@ -5,6 +5,7 @@ class ChatMessageView: UIView {
     let contentViews = UIStackView()
     var fileTapped: ((LocalFile) -> Void)?
     var downloadTapped: ((FileDownload) -> Void)?
+    var linkTapped: ((URL) -> Void)?
 
     private let contentAlignment: ChatMessageContentAlignment
 
@@ -24,6 +25,9 @@ class ChatMessageView: UIView {
         case .text(let text):
             let contentView = ChatTextContentView(with: style.text, contentAlignment: contentAlignment)
             contentView.text = text
+            contentView.didTapLink = { [weak self] in
+                self?.linkTapped?($0)
+            }
             appendContentView(contentView, animated: animated)
         case .files(let files):
             let contentViews = self.contentViews(for: files)
