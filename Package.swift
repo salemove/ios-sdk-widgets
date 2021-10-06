@@ -13,9 +13,6 @@ let package = Package(
             targets: ["GliaWidgetsSDK"]
         )
     ],
-    dependencies: [
-        .package(name: "Lottie", url: "https://github.com/airbnb/lottie-ios.git", from: "3.2.1")
-    ],
     targets: [
         .binaryTarget(
             name: "TwilioVoice",
@@ -42,6 +39,11 @@ let package = Package(
             url: "https://github.com/salemove/ios-sdk-widgets/releases/download/0.1.0/PureLayout.xcframework.zip",
             checksum: "ba40b3770921a77ed8be07836ec8b89f6d93bab623f46b54d8c2a05b74a44ef0"
         ),
+        .binaryTarget(
+            name: "Lottie",
+            url: "https://github.com/salemove/ios-sdk-widgets/releases/download/0.5.6/Lottie.xcframework.zip",
+            checksum: "59dcfe3e2f8fd4754e09c6ede76c05331324f0d78aeace90d2d35b158d619093"
+        )
         .target(
             name: "GliaWidgetsSDK",
             dependencies: [
