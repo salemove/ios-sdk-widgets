@@ -43,7 +43,7 @@ let package = Package(
             name: "Lottie",
             url: "https://github.com/salemove/ios-sdk-widgets/releases/download/0.5.6/Lottie.xcframework.zip",
             checksum: "59dcfe3e2f8fd4754e09c6ede76c05331324f0d78aeace90d2d35b158d619093"
-        )
+        ),
         .target(
             name: "GliaWidgetsSDK",
             dependencies: [
