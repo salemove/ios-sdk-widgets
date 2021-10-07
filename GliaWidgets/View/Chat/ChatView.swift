@@ -29,7 +29,10 @@ class ChatView: EngagementView {
         let x = safeAreaInsets.left + kCallBubbleEdgeInset
         let y = header.frame.maxY + kCallBubbleEdgeInset
         let width = frame.size.width - x - safeAreaInsets.right - kCallBubbleEdgeInset
-        let height = messageEntryView.frame.minY - header.frame.maxY - 2 * kCallBubbleEdgeInset
+        var height = messageEntryView.frame.minY - header.frame.maxY - 2 * kCallBubbleEdgeInset
+        if height < 1 {
+            height = messageEntryView.frame.maxY - header.frame.maxY - 2 * kCallBubbleEdgeInset
+        }
         return CGRect(x: x, y: y, width: width, height: height)
     }
 
