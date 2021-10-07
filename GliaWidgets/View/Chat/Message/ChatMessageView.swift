@@ -25,7 +25,7 @@ class ChatMessageView: UIView {
         case .text(let text):
             let contentView = ChatTextContentView(with: style.text, contentAlignment: contentAlignment)
             contentView.text = text
-            contentView.didTapLink = { [weak self] in
+            contentView.linkTapped = { [weak self] in
                 self?.linkTapped?($0)
             }
             appendContentView(contentView, animated: animated)

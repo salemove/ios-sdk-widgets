@@ -234,8 +234,7 @@ class ChatView: EngagementView {
             view.appendContent(.text(message.content), animated: false)
             view.appendContent(.downloads(message.downloads), animated: false)
             view.downloadTapped = { [weak self] in self?.downloadTapped?($0) }
-            view.linkTapped = { [weak self] in
-                self?.linkTapped?($0) }
+            view.linkTapped = { [weak self] in self?.linkTapped?($0) }
             view.status = status
             return .visitorMessage(view)
         case .operatorMessage(let message, let showsImage, let imageUrl):
@@ -243,8 +242,7 @@ class ChatView: EngagementView {
             view.appendContent(.text(message.content), animated: false)
             view.appendContent(.downloads(message.downloads), animated: false)
             view.downloadTapped = { [weak self] in self?.downloadTapped?($0) }
-            view.linkTapped = { [weak self] in
-                self?.linkTapped?($0) }
+            view.linkTapped = { [weak self] in self?.linkTapped?($0) }
             view.showsOperatorImage = showsImage
             view.setOperatorImage(fromUrl: imageUrl, animated: false)
             return .operatorMessage(view)

@@ -5,7 +5,7 @@ class ChatTextContentView: UIView {
         get { return textView.text }
         set { setText(newValue) }
     }
-    var didTapLink: ((URL) -> Void)?
+    var linkTapped: ((URL) -> Void)?
 
     private let textView = UITextView()
     private let style: ChatTextContentStyle
@@ -38,7 +38,6 @@ class ChatTextContentView: UIView {
         textView.isScrollEnabled = false
         textView.isUserInteractionEnabled = true
         textView.isEditable = false
-        textView.isSelectable = true
         textView.textContainerInset = .zero
         textView.textContainer.lineFragmentPadding = 0
         textView.dataDetectorTypes = .link
@@ -77,8 +76,13 @@ class ChatTextContentView: UIView {
 }
 
 extension ChatTextContentView: UITextViewDelegate {
-    func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
-        didTapLink?(URL)
+    func textView(
+        _ textView: UITextView,
+        shouldInteractWith URL: URL,
+        in characterRange: NSRange,
+        interaction: UITextItemInteraction
+    ) -> Bool {
+        linkTapped?(URL)
         return false
     }
 }
