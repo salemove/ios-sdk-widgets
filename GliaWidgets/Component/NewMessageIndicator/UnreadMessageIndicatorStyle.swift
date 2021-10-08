@@ -1,6 +1,6 @@
 import UIKit
 
-/// Style of the unread message indicator that appears in the chat view when a new message appears and the user has scrolled up and is not seeing the end of the chat.
+/// Style of the unread message indicator. It appears in the chat view when a new message is received and the user has scrolled up and is not seeing the end of the chat.
 /// It consists of the operator's image in a frame and a badge indicating the number of unread messages.
 /// Tapping on this indicator will bring the user to the latest messages.
 public struct UnreadMessageIndicatorStyle {
