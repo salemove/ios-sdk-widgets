@@ -14,6 +14,10 @@ class EngagementViewModel {
             ConfirmationAlertConfiguration,
             confirmed: (() -> Void)?
         )
+        case showSingleActionAlert(
+            SingleActionAlertConfiguration,
+            confirmed: (() -> Void)?
+        )
         case showAlert(
             MessageAlertConfiguration,
             dismissed: (() -> Void)?
@@ -128,9 +132,13 @@ class EngagementViewModel {
                 )
             )
         case .ended:
-            if EngagementViewModel.alertPresenters.isEmpty {
-                engagementDelegate?(.finished)
-            }
+            EngagementViewModel.alertPresenters.insert(self)
+            engagementAction?(
+                .showSingleActionAlert(
+                    alertConfiguration.operatorEndedEngagement,
+                    confirmed: { self.endSession() }
+                )
+            )
         default:
             break
         }

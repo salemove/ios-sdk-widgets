@@ -6,6 +6,9 @@ public struct AlertConfiguration {
     /// Configuration of the engagement ending confirmation alert.
     public var endEngagement: ConfirmationAlertConfiguration
 
+    /// Configuration of the operator ending engagement.
+    public var operatorEndedEngagement: SingleActionAlertConfiguration
+
     /// Configuration of the operator's unavailable alert.
     public var operatorsUnavailable: MessageAlertConfiguration
 
@@ -46,6 +49,7 @@ public struct AlertConfiguration {
     /// - Parameters:
     ///   - leaveQueue: Configuration of the queue leaving confirmation alert.
     ///   - endEngagement: Configuration of the engagement ending confirmation alert.
+    ///   - operatorEndedEngagement: Configuration of the operator ending engagement
     ///   - operatorsUnavailable: Configuration of the operator's unavailable alert.
     ///   - mediaUpgrade: Configuration of the media upgrade confirmation alert.
     ///   - audioUpgrade: Configuration of the audio upgrade confirmation alert.
@@ -62,6 +66,7 @@ public struct AlertConfiguration {
     public init(
         leaveQueue: ConfirmationAlertConfiguration,
         endEngagement: ConfirmationAlertConfiguration,
+        operatorEndedEngagement: SingleActionAlertConfiguration,
         operatorsUnavailable: MessageAlertConfiguration,
         mediaUpgrade: MultipleMediaUpgradeAlertConfiguration,
         audioUpgrade: SingleMediaUpgradeAlertConfiguration,
@@ -77,6 +82,7 @@ public struct AlertConfiguration {
     ) {
         self.leaveQueue = leaveQueue
         self.endEngagement = endEngagement
+        self.operatorEndedEngagement = operatorEndedEngagement
         self.operatorsUnavailable = operatorsUnavailable
         self.mediaUpgrade = mediaUpgrade
         self.audioUpgrade = audioUpgrade

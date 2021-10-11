@@ -7,6 +7,8 @@ protocol AlertPresenter where Self: UIViewController {
                       dismissed: (() -> Void)?)
     func presentConfirmation(with conf: ConfirmationAlertConfiguration,
                              confirmed: @escaping () -> Void)
+    func presentSingleActionAlert(with conf: SingleActionAlertConfiguration,
+                                  confirmed: @escaping () -> Void)
     func presentSettingsAlert(with conf: SettingsAlertConfiguration,
                               cancelled: (() -> Void)?)
 }
@@ -25,6 +27,15 @@ extension AlertPresenter {
                              confirmed: @escaping () -> Void) {
         let alert = AlertViewController(
             kind: .confirmation(conf, confirmed: confirmed),
+            viewFactory: viewFactory
+        )
+        present(alert, animated: true, completion: nil)
+    }
+
+    func presentSingleActionAlert(with conf: SingleActionAlertConfiguration,
+                                  confirmed: @escaping () -> Void) {
+        let alert = AlertViewController(
+            kind: .singleAction(conf, confirmed: confirmed),
             viewFactory: viewFactory
         )
         present(alert, animated: true, completion: nil)

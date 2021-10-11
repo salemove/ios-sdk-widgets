@@ -18,6 +18,11 @@ extension Theme {
             switchButtonBackgroundColors: true,
             showsPoweredBy: false
         )
+        let operatorEndedEngagement = SingleActionAlertConfiguration(
+            title: Alert.OperatorEndedEngagement.title,
+            message: Alert.OperatorEndedEngagement.message,
+            buttonTitle: Alert.Action.ok
+        )
         let endScreenShare = ConfirmationAlertConfiguration(
             title: Alert.ScreenSharing.Stop.title,
             message: Alert.ScreenSharing.Stop.message,
@@ -117,6 +122,7 @@ extension Theme {
         return AlertConfiguration(
             leaveQueue: leaveQueue,
             endEngagement: endEngagement,
+            operatorEndedEngagement: operatorEndedEngagement,
             operatorsUnavailable: operatorsUnavailable,
             mediaUpgrade: mediaUpgrade,
             audioUpgrade: audioUpgrade,

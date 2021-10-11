@@ -1,0 +1,12 @@
+/// Configuration of the confirmation alert.
+public struct SingleActionAlertConfiguration {
+    /// Title of the alert.
+    public var title: String?
+
+    /// Message of the alert.
+    public var message: String?
+
+    /// Title of the button.
+    public var buttonTitle: String?
+
+}
