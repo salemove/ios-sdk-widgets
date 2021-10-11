@@ -1,4 +1,4 @@
-/// Configuration of the confirmation alert.
+/// Configuration of the operator ending the engagement alert.
 public struct SingleActionAlertConfiguration {
     /// Title of the alert.
     public var title: String?
@@ -8,5 +8,4 @@ public struct SingleActionAlertConfiguration {
 
     /// Title of the button.
     public var buttonTitle: String?
-
 }

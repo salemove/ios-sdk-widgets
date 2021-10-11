@@ -6,7 +6,7 @@ public struct AlertConfiguration {
     /// Configuration of the engagement ending confirmation alert.
     public var endEngagement: ConfirmationAlertConfiguration
 
-    /// Configuration of the operator ending engagement.
+    /// Configuration of the operator ending the engagement alert.
     public var operatorEndedEngagement: SingleActionAlertConfiguration
 
     /// Configuration of the operator's unavailable alert.
@@ -49,7 +49,7 @@ public struct AlertConfiguration {
     /// - Parameters:
     ///   - leaveQueue: Configuration of the queue leaving confirmation alert.
     ///   - endEngagement: Configuration of the engagement ending confirmation alert.
-    ///   - operatorEndedEngagement: Configuration of the operator ending engagement
+    ///   - operatorEndedEngagement: Configuration of the operator ending the engagement alert.
     ///   - operatorsUnavailable: Configuration of the operator's unavailable alert.
     ///   - mediaUpgrade: Configuration of the media upgrade confirmation alert.
     ///   - audioUpgrade: Configuration of the audio upgrade confirmation alert.
