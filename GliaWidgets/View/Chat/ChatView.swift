@@ -228,6 +228,7 @@ class ChatView: EngagementView {
             view.appendContent(.text(message.content), animated: false)
             view.appendContent(.files(message.files), animated: false)
             view.fileTapped = { [weak self] in self?.fileTapped?($0) }
+            view.linkTapped = { [weak self] in self?.linkTapped?($0) }
             return .outgoingMessage(view)
         case .visitorMessage(let message, let status):
             let view = VisitorChatMessageView(with: style.visitorMessage)
