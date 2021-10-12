@@ -2,11 +2,12 @@ import UIKit
 
 class ChatTextContentView: UIView {
     var text: String? {
-        get { return textLabel.text }
+        get { return textView.text }
         set { setText(newValue) }
     }
+    var linkTapped: ((URL) -> Void)?
 
-    private let textLabel = UILabel()
+    private let textView = UITextView()
     private let style: ChatTextContentStyle
     private let contentAlignment: ChatMessageContentAlignment
     private let contentView = UIView()
@@ -33,9 +34,17 @@ class ChatTextContentView: UIView {
         contentView.backgroundColor = style.backgroundColor
         contentView.layer.cornerRadius = 10
 
-        textLabel.font = style.textFont
-        textLabel.textColor = style.textColor
-        textLabel.numberOfLines = 0
+        textView.delegate = self
+        textView.isScrollEnabled = false
+        textView.isUserInteractionEnabled = true
+        textView.isEditable = false
+        textView.textContainerInset = .zero
+        textView.textContainer.lineFragmentPadding = 0
+        textView.dataDetectorTypes = .link
+        textView.linkTextAttributes = [.underlineStyle: NSUnderlineStyle.single.rawValue]
+        textView.font = style.textFont
+        textView.backgroundColor = .clear
+        textView.textColor = style.textColor
     }
 
     private func layout() {
@@ -55,13 +64,25 @@ class ChatTextContentView: UIView {
 
     private func setText(_ text: String?) {
         if text == nil || text?.isEmpty == true {
-            textLabel.removeFromSuperview()
+            textView.removeFromSuperview()
         } else {
-            if textLabel.superview == nil {
-                contentView.addSubview(textLabel)
-                textLabel.autoPinEdgesToSuperviewEdges(with: kTextInsets)
+            if textView.superview == nil {
+                contentView.addSubview(textView)
+                textView.autoPinEdgesToSuperviewEdges(with: kTextInsets)
             }
-            textLabel.text = text
+            textView.text = text
         }
+    }
+}
+
+extension ChatTextContentView: UITextViewDelegate {
+    func textView(
+        _ textView: UITextView,
+        shouldInteractWith URL: URL,
+        in characterRange: NSRange,
+        interaction: UITextItemInteraction
+    ) -> Bool {
+        linkTapped?(URL)
+        return false
     }
 }

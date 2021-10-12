@@ -14,6 +14,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case downloadTapped(FileDownload)
         case choiceOptionSelected(ChatChoiceCardOption, String)
         case chatScrolled(bottomReached: Bool)
+        case linkTapped(URL)
     }
 
     enum Action {
@@ -55,6 +56,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         )
         case showFile(LocalFile)
         case call
+        case openLink(URL)
     }
 
     enum StartAction {
@@ -155,6 +157,8 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             sendChoiceCardResponse(option, to: messageId)
         case .chatScrolled(let bottomReached):
             isChatScrolledToBottom.value = bottomReached
+        case .linkTapped(let url):
+            linkTapped(url)
         }
     }
 
@@ -615,6 +619,10 @@ extension ChatViewModel {
 
     private func fileTapped(_ file: LocalFile) {
         delegate?(.showFile(file))
+    }
+
+    private func linkTapped(_ url: URL) {
+        delegate?(.openLink(url))
     }
 
     private func downloadTapped(_ download: FileDownload) {
