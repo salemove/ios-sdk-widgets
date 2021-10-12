@@ -40,7 +40,7 @@ class ChatTextContentView: UIView {
         textView.isEditable = false
         textView.textContainerInset = .zero
         textView.textContainer.lineFragmentPadding = 0
-        textView.dataDetectorTypes = .link
+        textView.dataDetectorTypes = .all
         textView.linkTextAttributes = [.underlineStyle: NSUnderlineStyle.single.rawValue]
         textView.font = style.textFont
         textView.backgroundColor = .clear
@@ -82,7 +82,11 @@ extension ChatTextContentView: UITextViewDelegate {
         in characterRange: NSRange,
         interaction: UITextItemInteraction
     ) -> Bool {
-        linkTapped?(URL)
-        return false
+        if URL.scheme == "tel" || URL.scheme == "mailto" {
+            return true
+        } else {
+            linkTapped?(URL)
+            return false
+        }
     }
 }
