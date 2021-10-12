@@ -34,7 +34,7 @@ class FileDownload {
 
     private var storageID: String? {
         if let fileID = file.id, let fileName = file.name {
-            return fileID + "CODE:" + fileName
+            return "\(fileID)/\(fileName)"
         } else {
             return nil
         }

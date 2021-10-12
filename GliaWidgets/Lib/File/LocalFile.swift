@@ -62,7 +62,7 @@ extension LocalFile {
             return
         } else {
             LocalFile.thumbnailQueue.addOperation {
-                guard let image = UIImage(contentsOfFile: self.url.path) else {
+                guard let image = UIImage(contentsOfFile: self.url.standardizedFileURL.path) else {
                     DispatchQueue.main.async {
                         completion(nil)
                     }
