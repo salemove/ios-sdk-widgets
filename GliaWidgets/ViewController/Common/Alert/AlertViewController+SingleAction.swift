@@ -1,6 +1,8 @@
 extension AlertViewController {
-    func makeSingleActionAlertView(with conf: SingleActionAlertConfiguration,
-                                   confirmed: @escaping () -> Void) -> AlertView {
+    func makeSingleActionAlertView(
+        with conf: SingleActionAlertConfiguration,
+        actionTapped: @escaping () -> Void
+    ) -> AlertView {
         let alertView = viewFactory.makeAlertView()
         alertView.title = conf.title
         alertView.message = conf.message
@@ -12,7 +14,7 @@ extension AlertViewController {
         button.title = conf.buttonTitle
         button.tap = { [weak self] in
             self?.dismiss(animated: true)
-            confirmed()
+            actionTapped()
         }
         alertView.addActionView(button)
 

@@ -3,19 +3,29 @@ import UIKit
 protocol AlertPresenter where Self: UIViewController {
     var viewFactory: ViewFactory { get }
 
-    func presentAlert(with conf: MessageAlertConfiguration,
-                      dismissed: (() -> Void)?)
-    func presentConfirmation(with conf: ConfirmationAlertConfiguration,
-                             confirmed: @escaping () -> Void)
-    func presentSingleActionAlert(with conf: SingleActionAlertConfiguration,
-                                  confirmed: @escaping () -> Void)
-    func presentSettingsAlert(with conf: SettingsAlertConfiguration,
-                              cancelled: (() -> Void)?)
+    func presentAlert(
+        with conf: MessageAlertConfiguration,
+        dismissed: (() -> Void)?
+    )
+    func presentConfirmation(
+        with conf: ConfirmationAlertConfiguration,
+        confirmed: @escaping () -> Void
+    )
+    func presentSingleActionAlert(
+        with conf: SingleActionAlertConfiguration,
+        actionTapped: @escaping () -> Void
+    )
+    func presentSettingsAlert(
+        with conf: SettingsAlertConfiguration,
+        cancelled: (() -> Void)?
+    )
 }
 
 extension AlertPresenter {
-    func presentAlert(with conf: MessageAlertConfiguration,
-                      dismissed: (() -> Void)? = nil) {
+    func presentAlert(
+        with conf: MessageAlertConfiguration,
+        dismissed: (() -> Void)? = nil
+    ) {
         let alert = AlertViewController(
             kind: .message(conf, dismissed: dismissed),
             viewFactory: viewFactory
@@ -23,8 +33,10 @@ extension AlertPresenter {
         present(alert, animated: true, completion: nil)
     }
 
-    func presentConfirmation(with conf: ConfirmationAlertConfiguration,
-                             confirmed: @escaping () -> Void) {
+    func presentConfirmation(
+        with conf: ConfirmationAlertConfiguration,
+        confirmed: @escaping () -> Void
+    ) {
         let alert = AlertViewController(
             kind: .confirmation(conf, confirmed: confirmed),
             viewFactory: viewFactory
@@ -32,17 +44,21 @@ extension AlertPresenter {
         present(alert, animated: true, completion: nil)
     }
 
-    func presentSingleActionAlert(with conf: SingleActionAlertConfiguration,
-                                  confirmed: @escaping () -> Void) {
+    func presentSingleActionAlert(
+        with conf: SingleActionAlertConfiguration,
+        actionTapped: @escaping () -> Void
+    ) {
         let alert = AlertViewController(
-            kind: .singleAction(conf, confirmed: confirmed),
+            kind: .singleAction(conf, actionTapped: actionTapped),
             viewFactory: viewFactory
         )
         present(alert, animated: true, completion: nil)
     }
 
-    func presentSettingsAlert(with conf: SettingsAlertConfiguration,
-                              cancelled: (() -> Void)? = nil) {
+    func presentSettingsAlert(
+        with conf: SettingsAlertConfiguration,
+        cancelled: (() -> Void)? = nil
+    ) {
         let alert = UIAlertController(
             title: conf.title,
             message: conf.message,
