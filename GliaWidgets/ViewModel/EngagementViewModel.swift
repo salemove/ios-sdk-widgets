@@ -134,9 +134,7 @@ class EngagementViewModel {
             )
         case .ended:
             if isEngagementEnded {
-                if EngagementViewModel.alertPresenters.isEmpty {
-                        engagementDelegate?(.finished)
-                }
+                engagementDelegate?(.finished)
             } else {
                 EngagementViewModel.alertPresenters.insert(self)
                 engagementAction?(
