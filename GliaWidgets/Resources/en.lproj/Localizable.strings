@@ -15,6 +15,9 @@
 "alert.endEngagement.title" = "End Engagement?";
 "alert.endEngagement.message" = "Are you sure you want to end engagement?";
 
+"alert.operatorEndedEngagement.title" = "Engagement Ended";
+"alert.operatorEndedEngagement.message" = "This engagement has ended.\nThank you!";
+
 "alert.operatorsUnavailable.title" = "We’re sorry";
 "alert.operatorsUnavailable.message" = "Operators are no longer available.\nPlease try again later.";
 
