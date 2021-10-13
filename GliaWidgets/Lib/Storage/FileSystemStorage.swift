@@ -33,6 +33,14 @@ class FileSystemStorage: DataStorage {
 
     func store(_ data: Data, for key: String) {
         let url = storageURL(for: key)
+
+        if !fileManager.fileExists(atPath: url.deletingPathExtension().path) {
+            try? fileManager.createDirectory(at: url, withIntermediateDirectories: true, attributes: nil)
+        }
+        if fileManager.fileExists(atPath: url.path) {
+            try? fileManager.removeItem(at: url)
+        }
+        
         try? data.write(to: url)
     }
 
