@@ -31,13 +31,18 @@ let package = Package(
         ),
         .binaryTarget(
             name: "GliaWidgets",
-            url: "https://github.com/salemove/ios-sdk-widgets/releases/download/0.5.5/GliaWidgets.xcframework.zip",
-            checksum: "a0bee8787c8890212a7073bcffad2297e8c6262832a18eb17c3c814f05715e68"
+            url: "https://github.com/salemove/ios-sdk-widgets/releases/download/0.5.6/GliaWidgets.xcframework.zip",
+            checksum: "50d82000a2198b7fe37c6e6114120301cc42fa9920ef12599d6655b2586e9a5b"
         ),
         .binaryTarget(
             name: "PureLayout",
             url: "https://github.com/salemove/ios-sdk-widgets/releases/download/0.1.0/PureLayout.xcframework.zip",
             checksum: "ba40b3770921a77ed8be07836ec8b89f6d93bab623f46b54d8c2a05b74a44ef0"
+        ),
+        .binaryTarget(
+            name: "Lottie",
+            url: "https://github.com/salemove/ios-sdk-widgets/releases/download/0.5.6/Lottie.xcframework.zip",
+            checksum: "59dcfe3e2f8fd4754e09c6ede76c05331324f0d78aeace90d2d35b158d619093"
         ),
         .target(
             name: "GliaWidgetsSDK",
@@ -46,7 +51,8 @@ let package = Package(
                 "GliaWidgets",
                 "TwilioVoice",
                 "WebRTC",
-                "PureLayout"
+                "PureLayout",
+                "Lottie"
             ]
         )
     ]
