@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
     s.name             = 'GliaWidgets'
-    s.version          = '0.5.3'
+    s.version          = '0.5.6'
     s.summary          = 'The Glia iOS Widgets library'
     s.description      = 'The Glia Widgets library allows to integrate easily a UI/UX for Glia\'s Digital Customer Service platform'
     s.homepage         = 'https://github.com/salemove/ios-sdk-widgets'
@@ -15,4 +15,5 @@ Pod::Spec.new do |s|
   
     s.dependency 'SalemoveSDK', '0.30.2'
     s.dependency 'PureLayout', '~>3.1'
+    s.dependency 'lottie-ios', '3.2.3'
   end
