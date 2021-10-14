@@ -11,6 +11,10 @@ class AlertViewController: ViewController {
             ConfirmationAlertConfiguration,
             confirmed: () -> Void
         )
+        case singleAction(
+            SingleActionAlertConfiguration,
+            actionTapped: () -> Void
+        )
         case multipleMediaUpgrade(
             MultipleMediaUpgradeAlertConfiguration,
             mediaTypes: [MediaType],
@@ -105,6 +109,11 @@ class AlertViewController: ViewController {
             return makeConfirmationAlertView(
                 with: conf,
                 confirmed: confirmed
+            )
+        case .singleAction(let conf, let actionTapped):
+            return makeSingleActionAlertView(
+                with: conf,
+                actionTapped: actionTapped
             )
         case .multipleMediaUpgrade(let conf, mediaTypes: let mediaTypes, accepted: let accepted, declined: let declined):
             return makeMediaUpgradeAlertView(

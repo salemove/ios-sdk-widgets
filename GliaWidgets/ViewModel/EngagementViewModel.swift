@@ -14,6 +14,10 @@ class EngagementViewModel {
             ConfirmationAlertConfiguration,
             confirmed: (() -> Void)?
         )
+        case showSingleActionAlert(
+            SingleActionAlertConfiguration,
+            actionTapped: (() -> Void)?
+        )
         case showAlert(
             MessageAlertConfiguration,
             dismissed: (() -> Void)?
@@ -46,6 +50,7 @@ class EngagementViewModel {
     private let screenShareHandler: ScreenShareHandler
     private(set) var isViewActive = ObservableValue<Bool>(with: false)
     private static var alertPresenters = Set<EngagementViewModel>()
+    private var isEngagementEnded = false
 
     init(
         interactor: Interactor,
@@ -128,8 +133,20 @@ class EngagementViewModel {
                 )
             )
         case .ended:
-            if EngagementViewModel.alertPresenters.isEmpty {
-                engagementDelegate?(.finished)
+            if isEngagementEnded {
+                if EngagementViewModel.alertPresenters.isEmpty {
+                        engagementDelegate?(.finished)
+                }
+            } else {
+                EngagementViewModel.alertPresenters.insert(self)
+                engagementAction?(
+                    .showSingleActionAlert(
+                        alertConfiguration.operatorEndedEngagement,
+                        actionTapped: { [weak self] in
+                                self?.endSession()
+                        }
+                    )
+                )
             }
         default:
             break
@@ -214,14 +231,19 @@ class EngagementViewModel {
             engagementAction?(
                 .confirm(
                     alertConfiguration.leaveQueue,
-                    confirmed: { self.endSession() }
+                    confirmed: { [weak self] in
+                        self?.endSession()
+                    }
                 )
             )
         case .engaged:
             engagementAction?(
                 .confirm(
                     alertConfiguration.endEngagement,
-                    confirmed: { self.endSession() }
+                    confirmed: { [weak self] in
+                        self?.endSession()
+                        self?.isEngagementEnded = true
+                    }
                 )
             )
         default:
