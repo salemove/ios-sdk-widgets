@@ -56,6 +56,7 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter,
         view.callBubbleTapped = { viewModel.event(.callBubbleTapped) }
         view.choiceOptionSelected = { viewModel.event(.choiceOptionSelected($0, $1)) }
         view.chatScrolledToBottom = { viewModel.event(.chatScrolled(bottomReached: $0)) }
+        view.linkTapped = { viewModel.event(.linkTapped($0)) }
 
         viewModel.action = { action in
             switch action {

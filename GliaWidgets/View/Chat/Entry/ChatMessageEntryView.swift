@@ -22,6 +22,7 @@ class ChatMessageEntryView: UIView {
                 textView.resignFirstResponder()
             }
 
+            updatePickMediaButtonVisibility()
             updatePlaceholderText()
         }
     }
@@ -29,6 +30,7 @@ class ChatMessageEntryView: UIView {
     var isConnected: Bool {
         didSet {
             updatePlaceholderText()
+            updatePickMediaButtonVisibility()
         }
     }
 
@@ -102,8 +104,9 @@ class ChatMessageEntryView: UIView {
         updatePlaceholderText()
 
         pickMediaButton.tap = { [weak self] in self?.pickMediaTapped?() }
-        sendButton.tap = { [weak self] in self?.sendTap() }
+        updatePickMediaButtonVisibility()
 
+        sendButton.tap = { [weak self] in self?.sendTap() }
         showsSendButton = false
 
         buttonsStackView.axis = .horizontal
@@ -144,6 +147,7 @@ class ChatMessageEntryView: UIView {
         messageContainerView.autoPinEdge(.top, to: .bottom, of: uploadListView)
         messageContainerView.autoPinEdge(toSuperviewEdge: .left)
         messageContainerView.autoPinEdge(toSuperviewEdge: .bottom)
+        messageContainerView.autoPinEdge(toSuperviewEdge: .right)
 
         addSubview(buttonsStackView)
         buttonsStackView.autoSetDimension(.height, toSize: 50)
@@ -166,6 +170,14 @@ class ChatMessageEntryView: UIView {
         }
 
         placeholderLabel.text = text
+    }
+
+    private func updatePickMediaButtonVisibility() {
+        if isChoiceCardModeEnabled {
+            pickMediaButton.isHidden = true
+        } else {
+            pickMediaButton.isHidden = !isConnected
+        }
     }
 
     private func updateTextViewHeight() {

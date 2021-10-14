@@ -180,6 +180,8 @@
 		1AFB1E7425F8B00B00CA460D /* ChatTextContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFB1E7325F8B00B00CA460D /* ChatTextContentView.swift */; };
 		1AFB1E7825F8B26800CA460D /* ChatTextContentStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFB1E7725F8B26800CA460D /* ChatTextContentStyle.swift */; };
 		534EEAAA3FCDDD78AAAEB33E /* Pods_TestingApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C45ADF8988F719DA1AC8444 /* Pods_TestingApp.framework */; };
+		6E60DD5627146C9D001422EF /* AlertViewController+SingleAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E60DD5527146C9D001422EF /* AlertViewController+SingleAction.swift */; };
+		6E60DD5827146DDB001422EF /* SingleActionAlertConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E60DD5727146DDB001422EF /* SingleActionAlertConfiguration.swift */; };
 		6E9C01AD26D3B8B500EBE1D4 /* OperatorTypingIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E9C01AC26D3B8B500EBE1D4 /* OperatorTypingIndicatorView.swift */; };
 		6E9C01AF26D3BE2300EBE1D4 /* OperatorTypingIndicatorStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E9C01AE26D3BE2300EBE1D4 /* OperatorTypingIndicatorStyle.swift */; };
 		6EA3512626DE9F3400BF5941 /* operator-typing-indicator.json in Resources */ = {isa = PBXBuildFile; fileRef = 6EA3512526DE9F3400BF5941 /* operator-typing-indicator.json */; };
@@ -421,6 +423,8 @@
 		1AFB1E7325F8B00B00CA460D /* ChatTextContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTextContentView.swift; sourceTree = "<group>"; };
 		1AFB1E7725F8B26800CA460D /* ChatTextContentStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTextContentStyle.swift; sourceTree = "<group>"; };
 		34707AE4070DC82EFBA9C844 /* Pods-GliaWidgets.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliaWidgets.release.xcconfig"; path = "Target Support Files/Pods-GliaWidgets/Pods-GliaWidgets.release.xcconfig"; sourceTree = "<group>"; };
+		6E60DD5527146C9D001422EF /* AlertViewController+SingleAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlertViewController+SingleAction.swift"; sourceTree = "<group>"; };
+		6E60DD5727146DDB001422EF /* SingleActionAlertConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleActionAlertConfiguration.swift; sourceTree = "<group>"; };
 		6E9C01AC26D3B8B500EBE1D4 /* OperatorTypingIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperatorTypingIndicatorView.swift; sourceTree = "<group>"; };
 		6E9C01AE26D3BE2300EBE1D4 /* OperatorTypingIndicatorStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperatorTypingIndicatorStyle.swift; sourceTree = "<group>"; };
 		6EA3512526DE9F3400BF5941 /* operator-typing-indicator.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "operator-typing-indicator.json"; sourceTree = "<group>"; };
@@ -1249,6 +1253,7 @@
 				1A4AF5D625AEF584002CD0F4 /* AlertViewController+MultipleMediaUpgrade.swift */,
 				1ABD6C9525B6F46700D56EFA /* AlertViewController+SingleMediaUpgrade.swift */,
 				C47901B625ED2FB0007EE195 /* AlertViewController+ScreenShareOffer.swift */,
+				6E60DD5527146C9D001422EF /* AlertViewController+SingleAction.swift */,
 			);
 			path = Alert;
 			sourceTree = "<group>";
@@ -1380,6 +1385,7 @@
 				1ABD6C8625B6EFD000D56EFA /* SingleMediaUpgradeAlertConfiguration.swift */,
 				1A5F495425CBE84A003E3678 /* SettingsAlertConfiguration.swift */,
 				C47901B225ED2F31007EE195 /* ScreenShareOfferAlertConfiguration.swift */,
+				6E60DD5727146DDB001422EF /* SingleActionAlertConfiguration.swift */,
 			);
 			path = Alert;
 			sourceTree = "<group>";
@@ -1824,6 +1830,7 @@
 				C49A29E42614A29700819269 /* FilePreviewView.swift in Sources */,
 				1A5F815F258A43E600A605DA /* Section.swift in Sources */,
 				1A60AFBF2566834400E53F53 /* ViewController.swift in Sources */,
+				6E60DD5627146C9D001422EF /* AlertViewController+SingleAction.swift in Sources */,
 				1A60AFF12566A4B300E53F53 /* NavigationPresenter.swift in Sources */,
 				1AC7A74F2582571100567FF8 /* Interactor.swift in Sources */,
 				1A1E30CB25F9FDC400850E68 /* ChatImageFileContentStyle.swift in Sources */,
@@ -1912,6 +1919,7 @@
 				1A1E309625F8CA4400850E68 /* FileDownload.swift in Sources */,
 				1A4AD3AF256D283700468BFB /* ChatMessageView.swift in Sources */,
 				1A0EDF6D25E7AC100076D1AD /* UIImage+Extensions.swift in Sources */,
+				6E60DD5827146DDB001422EF /* SingleActionAlertConfiguration.swift in Sources */,
 				C49A29E32614A29700819269 /* FilePreviewStyle.swift in Sources */,
 				1A60AFD52566992A00E53F53 /* ChatViewModel.swift in Sources */,
 				1A60AFE025669A6100E53F53 /* ChatViewController.swift in Sources */,

@@ -1,6 +1,8 @@
 extension AlertViewController {
-    func makeConfirmationAlertView(with conf: ConfirmationAlertConfiguration,
-                                   confirmed: @escaping () -> Void) -> AlertView {
+    func makeConfirmationAlertView(
+        with conf: ConfirmationAlertConfiguration,
+        confirmed: @escaping () -> Void
+    ) -> AlertView {
         let alertView = viewFactory.makeAlertView()
         alertView.title = conf.title
         alertView.message = conf.message
