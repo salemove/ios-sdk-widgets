@@ -2,7 +2,7 @@
 [order]: # (7)
 # AlertConfiguration
 
-`alert: AlertConfiguration` is a property of `Theme` that is responsible for specific UI elements of alerts that appear in GliaWidgets, such as media upgrade or screen sharing offer. It allows to customize the title, message and button labels (if present) of each specific alert.
+`alert: AlertConfiguration` is a property of `Theme` that is responsible for the content of alerts that appear in GliaWidgets, such as media upgrade, error messages or screen sharing offer. It allows to customize the title, icon, message and button labels (if present) of each specific alert.
 
 `AlertConfiguration` consists of several properties of different types:
 - `ConfirmationAlertConfiguration`: "Leave queue", "End engagement", "End screen share" confirmation alerts.
@@ -12,7 +12,9 @@
 - `ScreenShareOfferAlertConfiguration`: "Allow screen share" offer alert.
 - `SettingsAlertConfiguration`: camera/microphone permission issue alert.
 
-It can be created via the following initializer and assigned to `alertConfiguration` property of `Theme`:
+There is a default chat configuration in GliaWidgets. It means that all of the alerts' configuration properties have default values. For example, `endEngagement.title` is "End engagement?", `screenShareOffer.message` is "{operatorName} would like to see the screen of your device" and `leaveQueue.negativeTitle` is "No".
+
+It can be created with the following initializer:
 ```swift
 let alertConfiguration = AlertConfiguration(
     leaveQueue: ConfirmationAlertConfiguration,
@@ -31,3 +33,26 @@ let alertConfiguration = AlertConfiguration(
     apiError: MessageAlertConfiguration
 )
 ```
+
+It can then be assigned to the `alertConfiguration` property of the `Theme`:
+```swift
+let theme = Theme()
+
+theme.alertConfiguration = alertConfiguration
+```
+
+A more in-depth description of each individual property of the `AlertConfiguration` can be found in the documentation comments in Xcode itself.
+
+It is also possible to customize individual components directly, without creating an entire `AlertConfiguration` or `Theme` yourself. This can be achieved by calling an empty initializer for `Theme` and changing its properties directly:
+```swift
+let theme = Theme() // create a default Theme
+
+theme.alertConfiguration.leaveQueue.title = "Leave?"
+theme.alertConfiguration.screenShareOffer.titleImage = UIImage(named:"screen")
+```
+
+Below is the default configuration of the audio upgrade alert in the chat initiated from the Glia Hub:
+
+<p align="center">
+  <img width="500" src="./images/alert_general_look.png">
+</p>
