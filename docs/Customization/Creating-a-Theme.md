@@ -16,3 +16,5 @@ let theme = Theme(
 ```
 
 After creation, theme's appearance can be customized through its properties. More information about them can be found in other pages from the Customization category.
+
+**NB!** `Theme`'s initializer also has a `showsPoweredBy` parameter. It controls whether the dialogs show the "Powered by Glia" logo at the bottom. The use of this parameter must be agreed with the Glia representatives. Default value is `true`.

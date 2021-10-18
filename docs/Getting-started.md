@@ -4,16 +4,15 @@
 
 ## Credentials
 Before moving on to the actual integration make sure you have the following credentials from Glia:
-* **API token**
 * **App token**
 * **Site ID**
 
-You will also need to provide a **Context URL**, which will give the operator the information regarding the context of what URL you are accessing the engagement from (usually your application's main site ID, i.e. www.glia.com).
+You will also need to provide the **Visitor Context**. Visitor context specifies a content that can be shown to an Operator during an Engagement on the place of CoBrowsing section in Operator App. The only supported type for now is `.page`, which accepts a URL of a web page.
 
 ## Glia Hub Setup
 Make sure you have the following information from the Glia Hub:
-* The **region** in which your app will be located.
-* The SDK will require using queues, where one or more operators can engage with customers. You will require a **Queue ID** in order for the app to understand in which queue you will be located.
+* The **region** ("environment") in which your app will be located (Europe or USA).
+* The SDK will require using queues, where one or more operators can engage with customers. You will require a **Queue ID** in order for the app to understand which queue is should use.
 
 ## Integration
 
@@ -58,8 +57,8 @@ import GliaWidgets
 import SalemoveSDK
 ```
 
-#### Configuring and Starting Glia
-Firstly you must configure the GliaWidgets class.
+#### Configuring and Customizing Glia
+Firstly you must configure the Glia class.
 The API token, app token, site ID and region will need to be added into your app:
 ```swift
 let configuration = Configuration(
@@ -78,6 +77,30 @@ let visitorContext = VisitorContext(
 )
 ```
 
+To listen Glia's events, use `onEvent`:
+```swift
+Glia.sharedInstance.onEvent = { event in
+    switch event {
+    case .started:
+        break
+    case .engagementChanged(let kind):
+        break
+    case .ended:
+        break
+    case .minimized:
+        break
+    case .maximized:
+        break
+    }
+}
+```
+
+The GliaWidgets offer an extensive amount of customization. It is described in more detail on a [Creating a Theme](creating-a-theme) page. If you wish to keep the default appearance, call an empty initializer of `Theme`:
+```swift
+let theme = Theme()
+```
+
+#### Starting Glia
 Finally, you can start the engagement:
 ```swift
 do {
@@ -85,7 +108,8 @@ do {
         .chat,
         configuration: configuration,
         queueID: "queueID",
-        visitorContext: visitorContext
+        visitorContext: visitorContext,
+        theme: theme
     )
 } catch {
     // Handle the configuration error
