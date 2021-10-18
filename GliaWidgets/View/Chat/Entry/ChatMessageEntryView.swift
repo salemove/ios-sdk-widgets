@@ -21,14 +21,16 @@ class ChatMessageEntryView: UIView {
             if isChoiceCardModeEnabled {
                 textView.resignFirstResponder()
             }
-            
+
+            updatePickMediaButtonVisibility()
             updatePlaceholderText()
         }
     }
-    
+
     var isConnected: Bool {
         didSet {
             updatePlaceholderText()
+            updatePickMediaButtonVisibility()
         }
     }
 
@@ -100,12 +102,13 @@ class ChatMessageEntryView: UIView {
         placeholderLabel.font = style.placeholderFont
         placeholderLabel.textColor = style.placeholderColor
         updatePlaceholderText()
-        
+
         pickMediaButton.tap = { [weak self] in self?.pickMediaTapped?() }
+        updatePickMediaButtonVisibility()
+
         sendButton.tap = { [weak self] in self?.sendTap() }
-        
         showsSendButton = false
-        
+
         buttonsStackView.axis = .horizontal
         buttonsStackView.spacing = 15
         buttonsStackView.addArrangedSubviews([pickMediaButton, sendButton])
@@ -128,7 +131,7 @@ class ChatMessageEntryView: UIView {
         placeholderLabel.autoPinEdge(toSuperviewEdge: .left)
         placeholderLabel.autoPinEdge(toSuperviewEdge: .top)
         placeholderLabel.autoPinEdge(toSuperviewEdge: .right)
-        
+
         addSubview(separator)
         addSubview(uploadListView)
         addSubview(messageContainerView)
@@ -144,6 +147,7 @@ class ChatMessageEntryView: UIView {
         messageContainerView.autoPinEdge(.top, to: .bottom, of: uploadListView)
         messageContainerView.autoPinEdge(toSuperviewEdge: .left)
         messageContainerView.autoPinEdge(toSuperviewEdge: .bottom)
+        messageContainerView.autoPinEdge(toSuperviewEdge: .right)
 
         addSubview(buttonsStackView)
         buttonsStackView.autoSetDimension(.height, toSize: 50)
@@ -153,10 +157,10 @@ class ChatMessageEntryView: UIView {
 
         updateTextViewHeight()
     }
-    
+
     private func updatePlaceholderText() {
         var text: String
-        
+
         if isChoiceCardModeEnabled {
             text = style.choiceCardPlaceholder
         } else if !isConnected {
@@ -164,8 +168,16 @@ class ChatMessageEntryView: UIView {
         } else {
             text = style.enterMessagePlaceholder
         }
-        
+
         placeholderLabel.text = text
+    }
+
+    private func updatePickMediaButtonVisibility() {
+        if isChoiceCardModeEnabled {
+            pickMediaButton.isHidden = true
+        } else {
+            pickMediaButton.isHidden = !isConnected
+        }
     }
 
     private func updateTextViewHeight() {

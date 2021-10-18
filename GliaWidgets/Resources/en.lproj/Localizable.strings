@@ -15,6 +15,9 @@
 "alert.endEngagement.title" = "End Engagement?";
 "alert.endEngagement.message" = "Are you sure you want to end engagement?";
 
+"alert.operatorEndedEngagement.title" = "Engagement Ended";
+"alert.operatorEndedEngagement.message" = "This engagement has ended.\nThank you!";
+
 "alert.operatorsUnavailable.title" = "We’re sorry";
 "alert.operatorsUnavailable.message" = "Operators are no longer available.\nPlease try again later.";
 
@@ -56,7 +59,7 @@
 "chat.connect.connected.firstText" = "{operatorName}";
 "chat.connect.connected.secondText" = "{operatorName} has joined the conversation.";
 "chat.message.enterMessagePlaceholder" = "Enter Message";
-"chat.message.startEngagementPlaceholder" = "Enter message to start a new engagement";
+"chat.message.startEngagementPlaceholder" = "Send a message to start chatting";
 "chat.message.choiceCardPlaceholder" = "Tap on the answer above";
 "chat.message.status.delivered" = "Delivered";
 "chat.upgrade.audio.text" = "Upgraded to Audio Call";

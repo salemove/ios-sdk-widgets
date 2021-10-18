@@ -20,10 +20,6 @@ class GliaViewController: UIViewController {
     private var sceneProvider: SceneProvider?
     private var animationImageView: UIImageView?
 
-    private var maximizeScreenshot: UIImage? {
-        UIApplication.shared.windows.first?.screenshot
-    }
-
     init(bubbleView: BubbleView, delegate: GliaViewControllerDelegate?) {
         self.bubbleView = bubbleView
         self.delegate = delegate
@@ -91,7 +87,7 @@ class GliaViewController: UIViewController {
 
     private func setup() {
         modalPresentationStyle = .overFullScreen
-        modalTransitionStyle = .crossDissolve
+        transitioningDelegate = self
     }
 
     private func makeBubbleWindow() -> BubbleWindow {
@@ -121,5 +117,28 @@ class GliaViewController: UIViewController {
             return scene as? UIWindowScene
         }
     }
+}
 
+// MARK: - UIViewControllerTransitioningDelegate
+
+extension GliaViewController: UIViewControllerTransitioningDelegate {
+    func animationController(
+        forPresented presented: UIViewController,
+        presenting: UIViewController,
+        source: UIViewController
+    ) -> UIViewControllerAnimatedTransitioning? {
+        return GliaViewTransitionController(
+            originCenterPoint: bubbleWindow?.center ?? view.center,
+            transitionMode: .present
+        )
+    }
+
+    func animationController(
+        forDismissed dismissed: UIViewController
+    ) -> UIViewControllerAnimatedTransitioning? {
+        return GliaViewTransitionController(
+            originCenterPoint: bubbleWindow?.center ?? view.center,
+            transitionMode: .dismiss
+        )
+    }
 }

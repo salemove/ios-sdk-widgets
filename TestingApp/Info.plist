@@ -15,7 +15,7 @@
 	<key>CFBundlePackageType</key>
 	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.5.3</string>
+	<string>0.5.6</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
@@ -23,7 +23,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>This app needs camera for audio/video calls and photo sending</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>This app needs microphone for audio/video calls</string>
+	<string>This app needs microphone for audio/video calls and for recording video</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Save attachments</string>
 	<key>UIApplicationSceneManifest</key>
