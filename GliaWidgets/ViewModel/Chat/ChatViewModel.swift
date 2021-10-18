@@ -14,6 +14,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case downloadTapped(FileDownload)
         case choiceOptionSelected(ChatChoiceCardOption, String)
         case chatScrolled(bottomReached: Bool)
+        case linkTapped(URL)
     }
 
     enum Action {
@@ -42,6 +43,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         )
         case showCallBubble(imageUrl: String?)
         case updateUnreadMessageIndicator(itemCount: Int)
+        case setOperatorTypingIndicatorIsHiddenTo(Bool, _ isChatScrolledToBottom: Bool)
     }
 
     enum DelegateEvent {
@@ -54,6 +56,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         )
         case showFile(LocalFile)
         case call
+        case openLink(URL)
     }
 
     enum StartAction {
@@ -154,6 +157,8 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             sendChoiceCardResponse(option, to: messageId)
         case .chatScrolled(let bottomReached):
             isChatScrolledToBottom.value = bottomReached
+        case .linkTapped(let url):
+            linkTapped(url)
         }
     }
 
@@ -218,7 +223,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
                 engagementAction?(.showEndButton)
             }
 
-            pendingMessages.forEach({ [weak self] outgoingMessage in
+            pendingMessages.forEach { [weak self] outgoingMessage in
                 self?.interactor.send(outgoingMessage.content, attachment: nil) { [weak self] message in
                     guard let self = self else { return }
 
@@ -234,11 +239,11 @@ class ChatViewModel: EngagementViewModel, ViewModel {
                     guard let self = self else { return }
 
                     self.showAlert(
-                        with: (self.alertConfiguration.unexpectedError),
+                        with: self.alertConfiguration.unexpectedError,
                         dismissed: nil
                     )
                 }
-            })
+            }
 
             loadHistory()
         default:
@@ -256,6 +261,8 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             messagesUpdated(messages)
         case .upgradeOffer(let offer, answer: let answer):
             offerMediaUpgrade(offer, answer: answer)
+        case .typingStatusUpdated(let status):
+            typingStatusUpdated(status)
         default:
             break
         }
@@ -522,6 +529,12 @@ extension ChatViewModel {
             action?(.scrollToBottom(animated: true))
         }
     }
+
+    private func typingStatusUpdated(_ status: OperatorTypingStatus) {
+        action?(.setOperatorTypingIndicatorIsHiddenTo(
+            !status.isTyping, isChatScrolledToBottom.value
+        ))
+    }
 }
 
 // MARK: File Attachments
@@ -606,6 +619,10 @@ extension ChatViewModel {
 
     private func fileTapped(_ file: LocalFile) {
         delegate?(.showFile(file))
+    }
+
+    private func linkTapped(_ url: URL) {
+        delegate?(.openLink(url))
     }
 
     private func downloadTapped(_ download: FileDownload) {

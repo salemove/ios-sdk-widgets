@@ -3,12 +3,6 @@ import UIKit
 extension Theme {
     var callStyle: CallStyle {
         typealias Call = L10n.Call
-
-        let header = HeaderStyle(
-            titleFont: font.header2,
-            titleColor: color.baseLight,
-            backgroundColor: .clear
-        )
         let backButton = HeaderButtonStyle(
             image: Asset.back.image,
             color: color.baseLight
@@ -16,6 +10,25 @@ extension Theme {
         let closeButton = HeaderButtonStyle(
             image: Asset.close.image,
             color: color.baseLight
+        )
+        let endButton = ActionButtonStyle(
+            title: Call.EndButton.title,
+            titleFont: font.buttonLabel,
+            titleColor: color.baseLight,
+            backgroundColor: color.systemNegative
+        )
+        let endScreenShareButton = HeaderButtonStyle(
+            image: Asset.startScreenShare.image,
+            color: color.secondary
+        )
+        let header = HeaderStyle(
+            titleFont: font.header2,
+            titleColor: color.baseLight,
+            backgroundColor: .clear,
+            backButton: backButton,
+            closeButton: closeButton,
+            endButton: endButton,
+            endScreenShareButton: endScreenShareButton
         )
         let operatorImage = UserImageStyle(
             placeholderImage: Asset.operatorPlaceholder.image,
@@ -57,28 +70,13 @@ extension Theme {
             connecting: connecting,
             connected: connected
         )
-
-        let endButton = ActionButtonStyle(
-            title: Call.EndButton.title,
-            titleFont: font.buttonLabel,
-            titleColor: color.baseLight,
-            backgroundColor: color.systemNegative
-        )
-        let endScreenShareButton = HeaderButtonStyle(
-            image: Asset.startScreenShare.image,
-            color: color.secondary
-        )
         return CallStyle(
             header: header,
             connect: connect,
             backgroundColor: .clear,
-            endButton: endButton,
-            endScreenShareButton: endScreenShareButton,
             preferredStatusBarStyle: .lightContent,
             audioTitle: Call.Audio.title,
             videoTitle: Call.Video.title,
-            backButton: backButton,
-            closeButton: closeButton,
             operatorName: Call.Operator.name,
             operatorNameFont: font.header1,
             operatorNameColor: color.baseLight,

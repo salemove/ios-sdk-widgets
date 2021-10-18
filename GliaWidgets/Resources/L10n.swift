@@ -88,6 +88,12 @@ public enum L10n {
       /// Unable to access microphone
       public static let title = L10n.tr("Localizable", "alert.microphonePermission.title")
     }
+    public enum OperatorEndedEngagement {
+      /// This engagement has ended.\nThank you!
+      public static let message = L10n.tr("Localizable", "alert.operatorEndedEngagement.message")
+      /// Engagement Ended
+      public static let title = L10n.tr("Localizable", "alert.operatorEndedEngagement.title")
+    }
     public enum OperatorsUnavailable {
       /// Operators are no longer available.\nPlease try again later.
       public static let message = L10n.tr("Localizable", "alert.operatorsUnavailable.message")
@@ -245,7 +251,7 @@ public enum L10n {
       public static let choiceCardPlaceholder = L10n.tr("Localizable", "chat.message.choiceCardPlaceholder")
       /// Enter Message
       public static let enterMessagePlaceholder = L10n.tr("Localizable", "chat.message.enterMessagePlaceholder")
-      /// Enter message to start a new engagement
+      /// Send a message to start chatting
       public static let startEngagementPlaceholder = L10n.tr("Localizable", "chat.message.startEngagementPlaceholder")
       public enum Status {
         /// Delivered

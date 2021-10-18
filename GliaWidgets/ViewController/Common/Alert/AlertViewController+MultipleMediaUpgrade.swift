@@ -1,10 +1,12 @@
 import SalemoveSDK
 
 extension AlertViewController {
-    func makeMediaUpgradeAlertView(with conf: MultipleMediaUpgradeAlertConfiguration,
-                                   mediaTypes: [MediaType],
-                                   accepted: @escaping (Int) -> Void,
-                                   declined: @escaping () -> Void) -> AlertView {
+    func makeMediaUpgradeAlertView(
+        with conf: MultipleMediaUpgradeAlertConfiguration,
+        mediaTypes: [MediaType],
+        accepted: @escaping (Int) -> Void,
+        declined: @escaping () -> Void
+    ) -> AlertView {
         let alertView = viewFactory.makeAlertView()
         alertView.title = conf.title
         alertView.showsPoweredBy = conf.showsPoweredBy
