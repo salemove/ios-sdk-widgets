@@ -106,7 +106,7 @@ class EngagementViewModel {
                 .showSingleActionAlert(
                     alertConfiguration.operatorEndedEngagement,
                     actionTapped: { [weak self] in
-                            self?.endSession()
+                        self?.endSession()
                     }
                 )
             )
@@ -161,7 +161,7 @@ class EngagementViewModel {
                     .showSingleActionAlert(
                         alertConfiguration.operatorEndedEngagement,
                         actionTapped: { [weak self] in
-                                self?.endSession()
+                            self?.endSession()
                         }
                     )
                 )
