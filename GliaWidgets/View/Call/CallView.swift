@@ -80,7 +80,7 @@ class CallView: EngagementView {
     func willRotate(to orientation: UIInterfaceOrientation, duration: TimeInterval) {
         if orientation.isLandscape {
             if mode == .video {
-                hideBars(duration: duration)
+                hideLandscapeBarsAfterDelay()
             }
         } else {
             showBars(duration: duration)
@@ -90,8 +90,12 @@ class CallView: EngagementView {
 
     func checkBarsOrientation() {
         guard mode == .video else { return }
-        headerTopConstraint.constant = 0
-        buttonBarBottomConstraint.constant = 0
+        if currentOrientation.isLandscape {
+            hideLandscapeBarsAfterDelay()
+        } else {
+            headerTopConstraint.constant = 0
+            buttonBarBottomConstraint.constant = 0
+        }
     }
 
     private func setup() {
