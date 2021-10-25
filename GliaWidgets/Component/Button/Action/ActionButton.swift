@@ -48,7 +48,7 @@ class ActionButton: UIButton {
         layer.shadowOpacity = 0.2
 
         titleLabel?.font = style.titleFont
-        titleLabel?.textColor = style.titleColor
+        setTitleColor(style.titleColor, for: .normal)
         titleLabel?.textAlignment = .center
         setTitle(style.title, for: .normal)
 
