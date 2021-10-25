@@ -151,6 +151,11 @@ class EngagementViewModel {
                 )
             )
         case .ended:
+            engagementDelegate?(
+                .engaged(
+                    operatorImageUrl: nil
+                )
+            )
             if isEngagementEndedByVisitor {
                 if EngagementViewModel.alertPresenters.isEmpty {
                         engagementDelegate?(.finished)
