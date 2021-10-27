@@ -156,10 +156,9 @@ class EngagementViewModel {
                     operatorImageUrl: nil
                 )
             )
+
             if isEngagementEndedByVisitor {
-                if EngagementViewModel.alertPresenters.isEmpty {
-                        engagementDelegate?(.finished)
-                }
+                engagementDelegate?(.finished)
             } else {
                 EngagementViewModel.alertPresenters.insert(self)
                 engagementAction?(
