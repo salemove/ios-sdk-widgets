@@ -2,6 +2,7 @@ import SalemoveSDK
 
 class EngagementViewModel {
     enum Event {
+        case viewWillAppear
         case viewDidAppear
         case viewDidDisappear
         case backTapped
@@ -50,7 +51,8 @@ class EngagementViewModel {
     private let screenShareHandler: ScreenShareHandler
     private(set) var isViewActive = ObservableValue<Bool>(with: false)
     private static var alertPresenters = Set<EngagementViewModel>()
-    private var isEngagementEnded = false
+    private var isEngagementEndedByVisitor = false
+    private var isEngagementEndedByOperator = false
 
     init(
         interactor: Interactor,
@@ -74,6 +76,8 @@ class EngagementViewModel {
 
     func event(_ event: Event) {
         switch event {
+        case .viewWillAppear:
+            viewWillAppear()
         case .viewDidAppear:
             isViewActive.value = true
             viewDidAppear()
@@ -94,6 +98,20 @@ class EngagementViewModel {
     }
 
     func viewDidAppear() {}
+
+    func viewWillAppear() {
+        if isEngagementEndedByOperator {
+            EngagementViewModel.alertPresenters.insert(self)
+            engagementAction?(
+                .showSingleActionAlert(
+                    alertConfiguration.operatorEndedEngagement,
+                    actionTapped: { [weak self] in
+                        self?.endSession()
+                    }
+                )
+            )
+        }
+    }
 
     func start() {
         update(for: interactor.state)
@@ -133,7 +151,13 @@ class EngagementViewModel {
                 )
             )
         case .ended:
-            if isEngagementEnded {
+            engagementDelegate?(
+                .engaged(
+                    operatorImageUrl: nil
+                )
+            )
+
+            if isEngagementEndedByVisitor {
                 engagementDelegate?(.finished)
             } else {
                 EngagementViewModel.alertPresenters.insert(self)
@@ -141,10 +165,11 @@ class EngagementViewModel {
                     .showSingleActionAlert(
                         alertConfiguration.operatorEndedEngagement,
                         actionTapped: { [weak self] in
-                                self?.endSession()
+                            self?.endSession()
                         }
                     )
                 )
+                isEngagementEndedByOperator = true
             }
         default:
             break
@@ -240,7 +265,7 @@ class EngagementViewModel {
                     alertConfiguration.endEngagement,
                     confirmed: { [weak self] in
                         self?.endSession()
-                        self?.isEngagementEnded = true
+                        self?.isEngagementEndedByVisitor = true
                     }
                 )
             )
