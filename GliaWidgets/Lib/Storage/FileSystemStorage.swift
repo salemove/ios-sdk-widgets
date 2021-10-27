@@ -37,6 +37,7 @@ class FileSystemStorage: DataStorage {
         if !fileManager.fileExists(atPath: url.deletingPathExtension().path) {
             try? fileManager.createDirectory(at: url, withIntermediateDirectories: true, attributes: nil)
         }
+        
         if fileManager.fileExists(atPath: url.path) {
             try? fileManager.removeItem(at: url)
         }
@@ -46,8 +47,17 @@ class FileSystemStorage: DataStorage {
 
     func store(from url: URL, for key: String) {
         let sourcePath = url.path
-        let targetPath = storageURL(for: key).path
-        try? fileManager.copyItem(atPath: sourcePath, toPath: targetPath)
+        let targetUrl = storageURL(for: key)
+        
+        if !fileManager.fileExists(atPath: targetUrl.deletingPathExtension().path) {
+            try? fileManager.createDirectory(at: targetUrl, withIntermediateDirectories: true, attributes: nil)
+        }
+        
+        if fileManager.fileExists(atPath: targetUrl.path) {
+            try? fileManager.removeItem(at: targetUrl)
+        }
+        
+        try? fileManager.copyItem(atPath: sourcePath, toPath: targetUrl.path)
     }
 
     func url(for key: String) -> URL {
@@ -70,7 +80,21 @@ class FileSystemStorage: DataStorage {
     }
 
     private func storageURL(for key: String) -> URL {
-        return directory.url.appendingPathComponent(key)
+        let components = key.split(separator: "/")
+        var baseUrl = directory.url
+        
+        for directoryComponent in components.indices.dropLast() {
+            baseUrl = baseUrl.appendingPathComponent(
+                String(components[directoryComponent]),
+                isDirectory: true
+            )
+        }
+        
+        if let lastComponent = components.last {
+            return baseUrl.appendingPathComponent(String(lastComponent))
+        } else {
+            return baseUrl.appendingPathComponent(key)
+        }
     }
 
     private func createStorage() {
