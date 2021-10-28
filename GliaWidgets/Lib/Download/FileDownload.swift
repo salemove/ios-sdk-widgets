@@ -33,10 +33,8 @@ class FileDownload {
     let file: ChatEngagementFile
 
     private var storageID: String? {
-        if let fileName = file.name {
-            return fileName
-        } else if let fileID = file.id {
-            return fileID
+        if let fileID = file.id, let fileName = file.name {
+            return "\(fileID)/\(fileName)"
         } else {
             return nil
         }

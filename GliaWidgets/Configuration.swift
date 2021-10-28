@@ -23,8 +23,10 @@ public enum Environment {
 public struct Configuration {
     /// Application token
     public let appToken: String
-    /// API token
-    public let apiToken: String
+    /// Deprecated.
+    /// The current provided api token
+    @available(*, deprecated, message: "Api token is not supported.")
+    public let apiToken: String = ""
     /// Environment
     public let environment: Environment
     /// Site
@@ -38,12 +40,31 @@ public struct Configuration {
     ///   - environment: The environment to use.
     ///   - site: The site to use.
     ///
-    public init(appToken: String,
-                apiToken: String,
-                environment: Environment,
-                site: String) {
+    @available(*, deprecated, message: "Deprecated. Please use Configuration(appToken:environment:site:) instead")
+    public init(
+        appToken: String,
+        apiToken: String,
+        environment: Environment,
+        site: String
+    ) {
         self.appToken = appToken
-        self.apiToken = apiToken
+        self.environment = environment
+        self.site = site
+    }
+    
+    /// Initializes the configuration.
+    ///
+    /// - Parameters:
+    ///   - appToken: The application token.
+    ///   - environment: The environment to use.
+    ///   - site: The site to use.
+    ///
+    public init(
+        appToken: String,
+        environment: Environment,
+        site: String
+    ) {
+        self.appToken = appToken
         self.environment = environment
         self.site = site
     }

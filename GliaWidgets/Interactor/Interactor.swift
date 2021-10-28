@@ -84,7 +84,6 @@ class Interactor {
 
     private func configure(with conf: Configuration) throws {
         try Salemove.sharedInstance.configure(appToken: conf.appToken)
-        try Salemove.sharedInstance.configure(apiToken: conf.apiToken)
         try Salemove.sharedInstance.configure(environment: conf.environment.url)
         try Salemove.sharedInstance.configure(site: conf.site)
         Salemove.sharedInstance.configure(interactor: self)
