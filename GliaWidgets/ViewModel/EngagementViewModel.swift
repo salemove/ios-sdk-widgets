@@ -265,7 +265,6 @@ class EngagementViewModel {
                     alertConfiguration.endEngagement,
                     confirmed: { [weak self] in
                         self?.endSession()
-                        self?.interactor.isEngagementEndedByVisitor = true
                     }
                 )
             )

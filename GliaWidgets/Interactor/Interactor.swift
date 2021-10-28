@@ -51,13 +51,13 @@ class Interactor {
             return false
         }
     }
-    var isEngagementEndedByVisitor = false
 
     private let visitorContext: VisitorContext
     private var observers = [() -> (AnyObject?, EventHandler)]()
+    private var isEngagementEndedByVisitor = false
     private(set) var state: InteractorState = .none {
         didSet {
-            if oldValue != .ended(.byOperator) {
+            if oldValue != state {
                 notify(.stateChanged(state))
             }
         }
@@ -176,6 +176,8 @@ extension Interactor {
         failure: @escaping (SalemoveError) -> Void
     ) {
         print("Called: \(#function)")
+        isEngagementEndedByVisitor = true
+
         switch state {
         case .none:
             success()
