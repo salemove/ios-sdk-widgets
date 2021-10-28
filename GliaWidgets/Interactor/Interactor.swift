@@ -5,7 +5,13 @@ enum InteractorState {
     case enqueueing
     case enqueued(QueueTicket)
     case engaged(Operator?)
-    case ended
+    case ended(EndEngagementReason)
+}
+
+enum EndEngagementReason {
+    case byOperator
+    case byVisitor
+    case byError
 }
 
 enum InteractorEvent {
@@ -45,11 +51,16 @@ class Interactor {
             return false
         }
     }
+    var isEngagementEndedByVisitor = false
 
     private let visitorContext: VisitorContext
     private var observers = [() -> (AnyObject?, EventHandler)]()
     private(set) var state: InteractorState = .none {
-        didSet { notify(.stateChanged(state)) }
+        didSet {
+            if oldValue != .ended(.byOperator) {
+                notify(.stateChanged(state))
+            }
+        }
     }
 
     init(
@@ -104,7 +115,7 @@ extension Interactor {
             visitorContext: visitorContext
         ) { [weak self] queueTicket, error in
             if let error = error {
-                self?.state = .ended
+                self?.state = .ended(.byError)
                 failure(error)
             } else if let ticket = queueTicket {
                 if case .enqueueing = self?.state {
@@ -167,10 +178,10 @@ extension Interactor {
     ) {
         print("Called: \(#function)")
         switch state {
-        case .none, .ended:
+        case .none:
             success()
         case .enqueueing:
-            state = .ended
+            state = .ended(.byVisitor)
             success()
         case .enqueued(let ticket):
             exitQueue(
@@ -183,6 +194,9 @@ extension Interactor {
                 success: success,
                 failure: failure
             )
+        case .ended(let reason):
+            state = .ended(reason)
+            success()
         }
     }
 
@@ -198,7 +212,7 @@ extension Interactor {
             if let error = error {
                 failure(error)
             } else {
-                self?.state = .ended
+                self?.state = .ended(.byVisitor)
                 success()
             }
         }
@@ -213,7 +227,7 @@ extension Interactor {
             if let error = error {
                 failure(error)
             } else {
-                self?.state = .ended
+                self?.state = .ended(.byVisitor)
                 success()
             }
         }
@@ -317,11 +331,30 @@ extension Interactor: Interactable {
 
     func end() {
         print("Called: \(#function)")
-        state = .ended
+        if isEngagementEndedByVisitor {
+            state = .ended(.byVisitor)
+        } else {
+            state = .ended(.byOperator)
+        }
     }
 
     func fail(error: SalemoveError) {
         print("Called: \(#function)")
         notify(.error(error))
+    }
+}
+
+extension InteractorState: Equatable {
+    static func == (lhs: InteractorState, rhs: InteractorState) -> Bool {
+        switch (lhs, rhs) {
+        case (.none, .none),
+             (.enqueueing, .enqueueing),
+             (.engaged, .engaged),
+             (.enqueued, .enqueued),
+             (.ended, .ended):
+            return true
+        default:
+            return false
+        }
     }
 }
