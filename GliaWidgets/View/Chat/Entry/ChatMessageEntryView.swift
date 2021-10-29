@@ -147,10 +147,10 @@ class ChatMessageEntryView: UIView {
         messageContainerView.autoPinEdge(.top, to: .bottom, of: uploadListView)
         messageContainerView.autoPinEdge(toSuperviewEdge: .left)
         messageContainerView.autoPinEdge(toSuperviewEdge: .bottom)
-        messageContainerView.autoPinEdge(toSuperviewEdge: .right)
 
         addSubview(buttonsStackView)
         buttonsStackView.autoSetDimension(.height, toSize: 50)
+        buttonsStackView.autoSetDimension(.width, toSize: 72, relation: .lessThanOrEqual)
         buttonsStackView.autoPinEdge(.left, to: .right, of: messageContainerView)
         buttonsStackView.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
         buttonsStackView.autoPinEdge(toSuperviewEdge: .bottom)
