@@ -18,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="A3Y-Xf-Ufg">
-                                <rect key="frame" x="0.0" y="358" width="414" height="180"/>
+                                <rect key="frame" x="0.0" y="333" width="414" height="230"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FAP-5O-GCi">
                                         <rect key="frame" x="164.5" y="0.0" width="85" height="30"/>
@@ -58,6 +58,16 @@
                                         <state key="normal" title="Video call"/>
                                         <connections>
                                             <action selector="videoTapped" destination="Y6W-OH-hqX" eventType="touchUpInside" id="gAa-VI-Ha1"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P9U-ba-KVy">
+                                        <rect key="frame" x="161" y="200" width="92" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="mbg-qw-hCC"/>
+                                        </constraints>
+                                        <state key="normal" title="Clear session"/>
+                                        <connections>
+                                            <action selector="clearSession" destination="Y6W-OH-hqX" eventType="touchUpInside" id="XjZ-Yk-UVX"/>
                                         </connections>
                                     </button>
                                 </subviews>
