@@ -30,7 +30,7 @@ class ViewController: UIViewController {
     }
 
     @IBAction private func clearSession() {
-        Salemove.sharedInstance.clearSession()
+        Glia.sharedInstance.clearVisitorSession()
     }
 }
 
