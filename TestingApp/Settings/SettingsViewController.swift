@@ -10,7 +10,6 @@ class SettingsViewController: UIViewController {
     private let tableView = UITableView(frame: .zero, style: .grouped)
     private var sections = [Section]()
     private var appTokenCell: SettingsTextCell!
-    private var apiTokenCell: SettingsTextCell!
     private var siteCell: SettingsTextCell!
     private var queueIDCell: SettingsTextCell!
     private var primaryColorCell: SettingsColorCell!
@@ -61,8 +60,6 @@ class SettingsViewController: UIViewController {
     private func createCells() {
         appTokenCell = SettingsTextCell(title: "App token:",
                                         text: conf.appToken)
-        apiTokenCell = SettingsTextCell(title: "API token:",
-                                        text: conf.apiToken)
         siteCell = SettingsTextCell(title: "Site:",
                                     text: conf.site)
         siteCell = SettingsTextCell(title: "Site:",
@@ -71,7 +68,6 @@ class SettingsViewController: UIViewController {
                                        text: queueID)
         var confCells = [SettingsCell]()
         confCells.append(appTokenCell)
-        confCells.append(apiTokenCell)
         confCells.append(siteCell)
         confCells.append(queueIDCell)
 
@@ -145,10 +141,8 @@ class SettingsViewController: UIViewController {
 
     private func loadConf() -> Configuration {
         let appToken = UserDefaults.standard.string(forKey: "conf.appToken") ?? ""
-        let apiToken = UserDefaults.standard.string(forKey: "conf.apiToken") ?? ""
         let site = UserDefaults.standard.string(forKey: "conf.site") ?? ""
         return Configuration(appToken: appToken,
-                             apiToken: apiToken,
                              environment: .beta,
                              site: site)
     }
@@ -160,14 +154,12 @@ class SettingsViewController: UIViewController {
 
     private func saveConf() {
         UserDefaults.standard.setValue(appTokenCell.textField.text ?? "", forKey: "conf.appToken")
-        UserDefaults.standard.setValue(apiTokenCell.textField.text ?? "", forKey: "conf.apiToken")
         UserDefaults.standard.setValue(siteCell.textField.text ?? "", forKey: "conf.site")
         UserDefaults.standard.setValue(queueIDCell.textField.text ?? "", forKey: "conf.queueID")
     }
 
     private func makeConf() -> Configuration {
         return Configuration(appToken: appTokenCell.textField.text ?? "",
-                             apiToken: apiTokenCell.textField.text ?? "",
                              environment: .europe,
                              site: siteCell.textField.text ?? "")
     }
