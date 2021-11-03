@@ -47,7 +47,6 @@ public protocol SceneProvider: AnyObject {
 ///     4. Create configuration:
 ///         let conf = Configuration(
 ///             appToken: "appToken",
-///             apiToken: "apiToken",
 ///             environment: .europe,
 ///             site: "site"
 ///         )
@@ -140,7 +139,6 @@ public class Glia {
     ///   - `ConfigurationError.invalidSite`
     ///   - `ConfigurationError.invalidEnvironment`
     ///   - `ConfigurationError.invalidAppToken`
-    ///   - `ConfigurationError.invalidApiToken`
     ///
     public func start(
         _ engagementKind: EngagementKind,

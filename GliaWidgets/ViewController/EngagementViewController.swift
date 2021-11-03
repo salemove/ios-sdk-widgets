@@ -15,6 +15,11 @@ class EngagementViewController: ViewController, AlertPresenter {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.event(.viewWillAppear)
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         if let view = self.view as? EngagementView {
