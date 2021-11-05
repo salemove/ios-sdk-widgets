@@ -41,12 +41,14 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
     private let gliaPresenter: GliaPresenter
     private var gliaViewController: GliaViewController?
     private let kBubbleViewSize: CGFloat = 60.0
+    private let features: Features
 
     init(
         interactor: Interactor,
         viewFactory: ViewFactory,
         sceneProvider: SceneProvider?,
-        engagementKind: EngagementKind
+        engagementKind: EngagementKind,
+        features: Features
     ) {
         self.interactor = interactor
         self.viewFactory = viewFactory
@@ -54,6 +56,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
         self.engagementKind = engagementKind
         self.gliaPresenter = GliaPresenter(sceneProvider: sceneProvider)
         self.navigationPresenter = NavigationPresenter(with: navigationController)
+        self.features = features
         navigationController.modalPresentationStyle = .fullScreen
         navigationController.isNavigationBarHidden = true
     }
@@ -106,9 +109,12 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
             )
         }
 
-        let bubbleView = viewFactory.makeBubbleView()
-        unreadMessages.addObserver(self) { unreadCount, _ in
-            bubbleView.setBadge(itemCount: unreadCount)
+        var bubbleView: BubbleView?
+        if features ~= .bubbleView {
+            bubbleView = viewFactory.makeBubbleView()
+            unreadMessages.addObserver(self) { unreadCount, _ in
+                bubbleView?.setBadge(itemCount: unreadCount)
+            }
         }
         gliaViewController = makeGliaView(bubbleView: bubbleView)
         gliaViewController?.insertChild(navigationController)
@@ -240,7 +246,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
         return coordinator.start()
     }
 
-    private func makeGliaView(bubbleView: BubbleView) -> GliaViewController {
+    private func makeGliaView(bubbleView: BubbleView?) -> GliaViewController {
         if #available(iOS 13.0, *) {
             if let sceneProvider = sceneProvider {
                 return GliaViewController(

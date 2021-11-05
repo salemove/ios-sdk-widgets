@@ -15,12 +15,15 @@ class GliaViewController: UIViewController {
     }
 
     private weak var delegate: GliaViewControllerDelegate?
-    private let bubbleView: BubbleView
+    private let bubbleView: BubbleView?
     private var bubbleWindow: BubbleWindow?
     private var sceneProvider: SceneProvider?
     private var animationImageView: UIImageView?
 
-    init(bubbleView: BubbleView, delegate: GliaViewControllerDelegate?) {
+    init(
+        bubbleView: BubbleView? = nil,
+        delegate: GliaViewControllerDelegate?
+    ) {
         self.bubbleView = bubbleView
         self.delegate = delegate
         super.init(nibName: nil, bundle: nil)
@@ -29,7 +32,7 @@ class GliaViewController: UIViewController {
 
     @available(iOS 13.0, *)
     init(
-        bubbleView: BubbleView,
+        bubbleView: BubbleView?,
         delegate: GliaViewControllerDelegate?,
         sceneProvider: SceneProvider
     ) {
@@ -57,16 +60,19 @@ class GliaViewController: UIViewController {
             },
             completion: { _ in
                 self.bubbleWindow = nil
-
             }
         )
         delegate?.event(.maximized)
     }
 
     func minimize(animated: Bool) {
+        defer { delegate?.event(.minimized) }
+        guard let bubbleView = bubbleView else {
+            return
+        }
         bubbleView.kind = bubbleKind
 
-        let bubbleWindow = makeBubbleWindow()
+        let bubbleWindow = makeBubbleWindow(bubbleView: bubbleView)
         bubbleWindow.tap = { [weak self] in self?.maximize(animated: true) }
         bubbleWindow.alpha = 0.0
         bubbleWindow.isHidden = false
@@ -82,7 +88,6 @@ class GliaViewController: UIViewController {
                 bubbleWindow.alpha = 1.0
             }
         )
-        delegate?.event(.minimized)
     }
 
     private func setup() {
@@ -90,7 +95,7 @@ class GliaViewController: UIViewController {
         transitioningDelegate = self
     }
 
-    private func makeBubbleWindow() -> BubbleWindow {
+    private func makeBubbleWindow(bubbleView: BubbleView) -> BubbleWindow {
         if #available(iOS 13.0, *) {
             if let windowScene = windowScene() {
                 return BubbleWindow(

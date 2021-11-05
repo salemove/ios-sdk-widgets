@@ -29,6 +29,10 @@ class ViewController: UIViewController {
         presentGlia(.videoCall)
     }
 
+    @IBAction private func resumeTapped() {
+        try? Glia.sharedInstance.resume()
+    }
+
     @IBAction private func clearSession() {
         Glia.sharedInstance.clearVisitorSession()
     }
@@ -68,8 +72,13 @@ extension ViewController {
                 configuration: conf,
                 queueID: queueID,
                 visitorContext: visitorContext,
-                theme: theme
+                theme: theme,
+                features: settingsViewController.features
             )
+        } catch GliaError.engagementExists {
+            alert(message: "Failed to start\nEngagement is ongoing, please use 'Resume' button")
+        } catch GliaError.engagementNotExist {
+            alert(message: "Failed to start\nNo ongoing engagement. Please start a new one with 'Start chat' button")
         } catch {
             alert(message: "Failed to start\nCheck Glia parameters in Settings")
         }
