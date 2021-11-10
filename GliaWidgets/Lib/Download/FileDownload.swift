@@ -62,9 +62,7 @@ class FileDownload {
             return
         }
 
-        let engagementFile = SalemoveSDK.EngagementFile(
-            url: fileUrl
-        )
+        let engagementFile = EngagementFile(url: fileUrl)
 
         let progress = ObservableValue<Double>(with: 0)
         let onProgress: EngagementFileProgressBlock = {
