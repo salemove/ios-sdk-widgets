@@ -115,10 +115,14 @@ class EngagementViewModel {
         update(for: interactor.state)
     }
 
-    func enqueue() {
-        interactor.enqueueForEngagement {} failure: { error in
-            self.handleError(error)
-        }
+    func enqueue(mediaType: MediaType) {
+        interactor.enqueueForEngagement(
+            mediaType: mediaType,
+            success: {},
+            failure: { error in
+                self.handleError(error)
+            }
+        )
     }
 
     func interactorEvent(_ event: InteractorEvent) {
