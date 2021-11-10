@@ -39,15 +39,16 @@ class FileDownload {
             return nil
         }
     }
-
     private let storage: DataStorage
 
-    init(with file: ChatEngagementFile, storage: DataStorage) {
+    init(with file: ChatEngagementFile, storage: DataStorage, localFile: LocalFile? = nil) {
         self.file = file
         self.storage = storage
 
         if file.isDeleted == true {
             state.value = .error(.deleted)
+        } else if let localFile = localFile {
+            state.value = .downloaded(localFile)
         } else if let storageID = storageID, storage.hasData(for: storageID) {
             let url = storage.url(for: storageID)
             let localFile = LocalFile(with: url)

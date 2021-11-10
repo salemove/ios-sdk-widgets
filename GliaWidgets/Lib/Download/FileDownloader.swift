@@ -35,16 +35,18 @@ class FileDownloader {
         }
     }
 
-    func addDownloads(for files: [ChatEngagementFile]?) {
+    func addDownloads(for files: [ChatEngagementFile]?, with uploads: [FileUpload]) {
         guard let files = files else { return }
 
-        files.forEach { [weak self] in
-            self?.addDownload(for: $0)
+        files.forEach { file in
+            if let upload = uploads.first(where: { $0.engagementFileInformation?.id == file.id }) {
+                self.addDownload(for: file, localFile: upload.localFile)
+            }
         }
     }
 
     @discardableResult
-    private func addDownload(for file: ChatEngagementFile) -> FileDownload? {
+    private func addDownload(for file: ChatEngagementFile, localFile: LocalFile? = nil) -> FileDownload? {
         guard let fileID = file.id else { return nil }
 
         if let download = downloads[fileID] {
@@ -52,7 +54,8 @@ class FileDownloader {
         } else {
             let download = FileDownload(
                 with: file,
-                storage: storage
+                storage: storage,
+                localFile: localFile
             )
             downloads[fileID] = download
             return download
