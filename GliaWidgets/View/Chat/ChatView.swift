@@ -323,7 +323,7 @@ extension ChatView {
         frame.origin.x += translation.x
         frame.origin.y += translation.y
 
-        if callBubbleBounds.contains(callBubble.innerSmallerFrame) {
+        if callBubbleBounds.contains(frame) {
             callBubble.innerSmallerFrame = frame
         }
     }
