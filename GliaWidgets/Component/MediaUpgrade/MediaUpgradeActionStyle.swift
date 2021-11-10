@@ -10,7 +10,7 @@ public struct MediaUpgradeActionStyle {
     public var infoColor: UIColor
     public var borderColor: UIColor
     public var backgroundColor: UIColor
-    public var icon: UIImage
+    public var icon: UIImage?
     public var iconColor: UIColor
 
     public init(
@@ -22,7 +22,7 @@ public struct MediaUpgradeActionStyle {
         infoColor: UIColor,
         borderColor: UIColor,
         backgroundColor: UIColor,
-        icon: UIImage,
+        icon: UIImage?,
         iconColor: UIColor
     ) {
         self.title = title

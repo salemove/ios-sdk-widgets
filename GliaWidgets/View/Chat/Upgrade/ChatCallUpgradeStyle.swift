@@ -3,7 +3,7 @@ import UIKit
 /// Style of the call upgrade view. Shown after engagement is upgraded to a call.
 public class ChatCallUpgradeStyle {
     /// An icon indicating upgraded engagement kind.
-    public var icon: UIImage
+    public var icon: UIImage?
 
     /// Color of the icon image.
     public var iconColor: UIColor
@@ -38,7 +38,7 @@ public class ChatCallUpgradeStyle {
     ///   - borderColor: Border color of the view.
     ///
     public init(
-        icon: UIImage,
+        icon: UIImage?,
         iconColor: UIColor,
         text: String,
         textFont: UIFont,

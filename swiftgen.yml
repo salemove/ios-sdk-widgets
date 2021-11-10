@@ -7,12 +7,3 @@ strings:
         publicAccess: true
         enumName: L10n
 
-xcassets:
-  inputs:
-    - GliaWidgets/Resources/Assets.xcassets
-  outputs:
-    - templateName: swift4
-      output: GliaWidgets/Resources/Asset.swift
-      params:
-        publicAccess: true
-

@@ -24,7 +24,7 @@ class PoweredBy: UIView {
         label.text = L10n.poweredBy
         label.font = Font.regular(12)
 
-        logoImageView.image = Asset.gliaLogo.image
+        logoImageView.image = Asset.gliaLogo
 
         stackView.axis = .horizontal
         stackView.alignment = .center

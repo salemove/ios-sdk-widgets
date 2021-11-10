@@ -24,7 +24,7 @@ public class FileUploadStyle {
     public var progressBackgroundColor: UIColor
 
     /// Image of the remove button.
-    public var removeButtonImage: UIImage
+    public var removeButtonImage: UIImage?
 
     /// Color of the remove button image.
     public var removeButtonColor: UIColor
@@ -49,7 +49,7 @@ public class FileUploadStyle {
         progressColor: UIColor,
         errorProgressColor: UIColor,
         progressBackgroundColor: UIColor,
-        removeButtonImage: UIImage,
+        removeButtonImage: UIImage?,
         removeButtonColor: UIColor
     ) {
         self.filePreview = filePreview
