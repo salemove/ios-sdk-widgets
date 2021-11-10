@@ -3,11 +3,11 @@ extension Theme {
         typealias Chat = L10n.Chat
 
         let backButton = HeaderButtonStyle(
-            image: Asset.back,
+            image: Asset.back.image,
             color: color.baseLight
         )
         let closeButton = HeaderButtonStyle(
-            image: Asset.close,
+            image: Asset.close.image,
             color: color.baseLight
         )
         let endButton = ActionButtonStyle(
@@ -17,7 +17,7 @@ extension Theme {
             backgroundColor: color.systemNegative
         )
         let endScreenShareButton = HeaderButtonStyle(
-            image: Asset.startScreenShare,
+            image: Asset.startScreenShare.image,
             color: color.secondary
         )
         let header = HeaderStyle(
@@ -30,7 +30,7 @@ extension Theme {
             endScreenShareButton: endScreenShareButton
         )
         let operatorImage = UserImageStyle(
-            placeholderImage: Asset.operatorPlaceholder,
+            placeholderImage: Asset.operatorPlaceholder.image,
             placeholderColor: color.baseLight,
             placeholderBackgroundColor: color.primary,
             imageBackgroundColor: .clear
@@ -142,11 +142,11 @@ extension Theme {
             choiceOption: choiceCardOption
         )
         let mediaButton = MessageButtonStyle(
-            image: Asset.chatPickMedia,
+            image: Asset.chatPickMedia.image,
             color: color.baseNormal
         )
         let sendButton = MessageButtonStyle(
-            image: Asset.chatSend,
+            image: Asset.chatSend.image,
             color: color.primary
         )
         let messageEntry = ChatMessageEntryStyle(
@@ -164,7 +164,7 @@ extension Theme {
             uploadList: uploadListStyle
         )
         let audioUpgrade = ChatCallUpgradeStyle(
-            icon: Asset.upgradeAudio,
+            icon: Asset.upgradeAudio.image,
             iconColor: color.primary,
             text: Chat.Upgrade.Audio.text,
             textFont: font.bodyText,
@@ -174,7 +174,7 @@ extension Theme {
             borderColor: color.baseShade
         )
         let videoUpgrade = ChatCallUpgradeStyle(
-            icon: Asset.upgradeVideo,
+            icon: Asset.upgradeVideo.image,
             iconColor: color.primary,
             text: Chat.Upgrade.Video.text,
             textFont: font.bodyText,
@@ -184,7 +184,7 @@ extension Theme {
             borderColor: color.baseShade
         )
         let userImage = UserImageStyle(
-            placeholderImage: Asset.operatorPlaceholder,
+            placeholderImage: Asset.operatorPlaceholder.image,
             placeholderColor: color.baseLight,
             placeholderBackgroundColor: color.primary,
             imageBackgroundColor: .clear
@@ -196,7 +196,7 @@ extension Theme {
             badgeFont: font.caption,
             badgeTextColor: color.baseLight,
             badgeColor: color.primary,
-            placeholderImage: Asset.operatorPlaceholder,
+            placeholderImage: Asset.operatorPlaceholder.image,
             placeholderColor: color.baseLight,
             placeholderBackgroundColor: color.primary,
             imageBackgroundColor: .clear
@@ -226,7 +226,7 @@ extension Theme {
         let filePreview = FilePreviewStyle(
             fileFont: font.subtitle,
             fileColor: color.baseLight,
-            errorIcon: Asset.uploadError,
+            errorIcon: Asset.uploadError.image,
             errorIconColor: color.systemNegative,
             backgroundColor: color.primary,
             errorBackgroundColor: Color.lightGrey
@@ -265,7 +265,7 @@ extension Theme {
             progressColor: color.primary,
             errorProgressColor: color.systemNegative,
             progressBackgroundColor: Color.lightGrey,
-            removeButtonImage: Asset.uploadRemove,
+            removeButtonImage: Asset.uploadRemove.image,
             removeButtonColor: color.baseNormal
         )
 
@@ -278,7 +278,7 @@ extension Theme {
         let filePreview = FilePreviewStyle(
             fileFont: font.subtitle,
             fileColor: color.baseLight,
-            errorIcon: Asset.uploadError,
+            errorIcon: Asset.uploadError.image,
             errorIconColor: color.systemNegative,
             backgroundColor: color.primary,
             errorBackgroundColor: Color.lightGrey
@@ -344,7 +344,7 @@ extension Theme {
             title: Chat.photo,
             titleFont: itemFont,
             titleColor: itemFontColor,
-            icon: Asset.photoLibraryIcon,
+            icon: Asset.photoLibraryIcon.image,
             iconColor: itemIconColor
         )
         let takePhoto = AttachmentSourceItemStyle(
@@ -352,7 +352,7 @@ extension Theme {
             title: Chat.takePhoto,
             titleFont: itemFont,
             titleColor: itemFontColor,
-            icon: Asset.cameraIcon,
+            icon: Asset.cameraIcon.image,
             iconColor: itemIconColor
         )
         let browse = AttachmentSourceItemStyle(
@@ -360,7 +360,7 @@ extension Theme {
             title: Chat.browse,
             titleFont: itemFont,
             titleColor: itemFontColor,
-            icon: Asset.browseIcon,
+            icon: Asset.browseIcon.image,
             iconColor: itemIconColor
         )
 

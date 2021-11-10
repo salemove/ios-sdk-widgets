@@ -6,7 +6,7 @@ public struct SingleMediaUpgradeAlertConfiguration {
     public var title: String
 
     /// Image to show in the title.
-    public var titleImage: UIImage?
+    public var titleImage: UIImage
 
     /// Text of the decline action button.
     public var decline: String

@@ -44,7 +44,7 @@ extension Theme {
             infoColor: color.baseDark,
             borderColor: color.primary,
             backgroundColor: color.background,
-            icon: Asset.upgradeAudio,
+            icon: Asset.upgradeAudio.image,
             iconColor: color.primary
         )
         let phoneAction = MediaUpgradeActionStyle(
@@ -56,7 +56,7 @@ extension Theme {
             infoColor: color.baseDark,
             borderColor: color.primary,
             backgroundColor: color.background,
-            icon: Asset.upgradePhone,
+            icon: Asset.upgradePhone.image,
             iconColor: color.primary
         )
         let mediaUpgrade = MultipleMediaUpgradeAlertConfiguration(
@@ -67,21 +67,21 @@ extension Theme {
         )
         let audioUpgrade = SingleMediaUpgradeAlertConfiguration(
             title: Alert.AudioUpgrade.title,
-            titleImage: Asset.upgradeAudio,
+            titleImage: Asset.upgradeAudio.image,
             decline: Alert.Action.decline,
             accept: Alert.Action.accept,
             showsPoweredBy: showsPoweredBy
         )
         let oneWayVideoUpgrade = SingleMediaUpgradeAlertConfiguration(
             title: Alert.VideoUpgrade.OneWay.title,
-            titleImage: Asset.upgradeVideo,
+            titleImage: Asset.upgradeVideo.image,
             decline: Alert.Action.decline,
             accept: Alert.Action.accept,
             showsPoweredBy: showsPoweredBy
         )
         let twoWayVideoUpgrade = SingleMediaUpgradeAlertConfiguration(
             title: Alert.VideoUpgrade.TwoWay.title,
-            titleImage: Asset.upgradeVideo,
+            titleImage: Asset.upgradeVideo.image,
             decline: Alert.Action.decline,
             accept: Alert.Action.accept,
             showsPoweredBy: showsPoweredBy
@@ -89,7 +89,7 @@ extension Theme {
         let screenShareOffer = ScreenShareOfferAlertConfiguration(
             title: Alert.ScreenSharing.Start.title,
             message: Alert.ScreenSharing.Start.message,
-            titleImage: Asset.startScreenShare,
+            titleImage: Asset.startScreenShare.image,
             decline: Alert.Action.decline,
             accept: Alert.Action.accept,
             showsPoweredBy: showsPoweredBy

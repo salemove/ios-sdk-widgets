@@ -8,7 +8,7 @@ public struct CallButtonStyle {
         public let backgroundColor: UIColor
 
         /// Image of the button.
-        public let image: UIImage?
+        public let image: UIImage
 
         /// Color of the image.
         public let imageColor: UIColor

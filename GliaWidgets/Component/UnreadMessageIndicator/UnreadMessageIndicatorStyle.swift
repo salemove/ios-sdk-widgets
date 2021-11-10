@@ -9,7 +9,7 @@ public struct UnreadMessageIndicatorStyle {
         badgeFont: UIFont,
         badgeTextColor: UIColor,
         badgeColor: UIColor,
-        placeholderImage: UIImage?,
+        placeholderImage: UIImage,
         placeholderColor: UIColor,
         placeholderBackgroundColor: UIColor,
         imageBackgroundColor: UIColor

@@ -1,39 +1,141 @@
-import UIKit
 
-enum Asset {
-    static let alertClose: UIImage? = UIImage(named: "alertClose", in: BundleToken.bundle, compatibleWith: nil)
-    static let callChat: UIImage? = UIImage(named: "call-chat", in: BundleToken.bundle, compatibleWith: nil)
-    static let callMiminize: UIImage? = UIImage(named: "call-miminize", in: BundleToken.bundle, compatibleWith: nil)
-    static let callMuteActive: UIImage? = UIImage(named: "call-mute-active", in: BundleToken.bundle, compatibleWith: nil)
-    static let callMuteInactive: UIImage? = UIImage(named: "call-mute-inactive", in: BundleToken.bundle, compatibleWith: nil)
-    static let callSpeakerActive: UIImage? = UIImage(named: "call-speaker-active", in: BundleToken.bundle, compatibleWith: nil)
-    static let callSpeakerInactive: UIImage? = UIImage(named: "call-speaker-inactive", in: BundleToken.bundle, compatibleWith: nil)
-    static let callVideoActive: UIImage? = UIImage(named: "call-video-active", in: BundleToken.bundle, compatibleWith: nil)
-    static let callVideoInactive: UIImage? = UIImage(named: "call-video-inactive", in: BundleToken.bundle, compatibleWith: nil)
-    static let uploadError: UIImage? = UIImage(named: "uploadError", in: BundleToken.bundle, compatibleWith: nil)
-    static let uploadRemove: UIImage? = UIImage(named: "uploadRemove", in: BundleToken.bundle, compatibleWith: nil)
-    static let chatPickMedia: UIImage? = UIImage(named: "chatPickMedia", in: BundleToken.bundle, compatibleWith: nil)
-    static let chatSend: UIImage? = UIImage(named: "chatSend", in: BundleToken.bundle, compatibleWith: nil)
-    static let unreadMessageIndicator: UIImage? = UIImage(named: "unreadMessageIndicator", in: BundleToken.bundle, compatibleWith: nil)
-    static let back: UIImage? = UIImage(named: "back", in: BundleToken.bundle, compatibleWith: nil)
-    static let close: UIImage? = UIImage(named: "close", in: BundleToken.bundle, compatibleWith: nil)
-    static let browseIcon: UIImage? = UIImage(named: "browseIcon", in: BundleToken.bundle, compatibleWith: nil)
-    static let cameraIcon: UIImage? = UIImage(named: "cameraIcon", in: BundleToken.bundle, compatibleWith: nil)
-    static let photoLibraryIcon: UIImage? = UIImage(named: "photoLibraryIcon", in: BundleToken.bundle, compatibleWith: nil)
-    static let gliaLogo: UIImage? = UIImage(named: "gliaLogo", in: BundleToken.bundle, compatibleWith: nil)
-    static let startScreenShare: UIImage? = UIImage(named: "startScreenShare", in: BundleToken.bundle, compatibleWith: nil)
-    static let upgradeAudio: UIImage? = UIImage(named: "upgradeAudio", in: BundleToken.bundle, compatibleWith: nil)
-    static let upgradePhone: UIImage? = UIImage(named: "upgradePhone", in: BundleToken.bundle, compatibleWith: nil)
-    static let upgradeVideo: UIImage? = UIImage(named: "upgradeVideo", in: BundleToken.bundle, compatibleWith: nil)
-    static let operatorPlaceholder: UIImage? = UIImage(named: "operatorPlaceholder", in: BundleToken.bundle, compatibleWith: nil)
-}
+#if os(OSX)
+  import AppKit.NSImage
+  public typealias AssetColorTypeAlias = NSColor
+  public typealias Image = NSImage
+#elseif os(iOS) || os(tvOS) || os(watchOS)
+  import UIKit.UIImage
+  public typealias AssetColorTypeAlias = UIColor
+  public typealias Image = UIImage
+#endif
 
-private final class BundleToken {
-  static let bundle: Bundle = {
-    #if SWIFT_PACKAGE
-    return Bundle.module
-    #else
-    return Bundle(for: BundleToken.self)
+// swiftlint:disable superfluous_disable_command
+// swiftlint:disable file_length
+
+@available(*, deprecated, renamed: "ImageAsset")
+public typealias AssetType = ImageAsset
+
+public struct ImageAsset {
+  public fileprivate(set) var name: String
+
+  public var image: Image {
+    let bundle = Bundle(for: BundleToken.self)
+    #if os(iOS) || os(tvOS)
+    let image = Image(named: name, in: bundle, compatibleWith: nil)
+    #elseif os(OSX)
+    let image = bundle.image(forResource: NSImage.Name(name))
+    #elseif os(watchOS)
+    let image = Image(named: name)
     #endif
-  }()
+    guard let result = image else {
+        assertionFailure("Unable to load image named \(name).")
+        return Image()
+    }
+    return result
+  }
 }
+
+public struct ColorAsset {
+  public fileprivate(set) var name: String
+
+  @available(iOS 11.0, tvOS 11.0, watchOS 4.0, OSX 10.13, *)
+  public var color: AssetColorTypeAlias {
+    return AssetColorTypeAlias(asset: self)
+  }
+}
+
+// swiftlint:disable identifier_name line_length nesting type_body_length type_name
+public enum Asset {
+    public static let alertClose = ImageAsset(name: "alertClose")
+      public static let callChat = ImageAsset(name: "call-chat")
+      public static let callMiminize = ImageAsset(name: "call-miminize")
+      public static let callMuteActive = ImageAsset(name: "call-mute-active")
+      public static let callMuteInactive = ImageAsset(name: "call-mute-inactive")
+      public static let callSpeakerActive = ImageAsset(name: "call-speaker-active")
+      public static let callSpeakerInactive = ImageAsset(name: "call-speaker-inactive")
+      public static let callVideoActive = ImageAsset(name: "call-video-active")
+      public static let callVideoInactive = ImageAsset(name: "call-video-inactive")
+      public static let uploadError = ImageAsset(name: "uploadError")
+      public static let uploadRemove = ImageAsset(name: "uploadRemove")
+    public static let chatPickMedia = ImageAsset(name: "chatPickMedia")
+    public static let chatSend = ImageAsset(name: "chatSend")
+    public static let unreadMessageIndicator = ImageAsset(name: "unreadMessageIndicator")
+    public static let back = ImageAsset(name: "back")
+    public static let close = ImageAsset(name: "close")
+    public static let browseIcon = ImageAsset(name: "browseIcon")
+    public static let cameraIcon = ImageAsset(name: "cameraIcon")
+    public static let photoLibraryIcon = ImageAsset(name: "photoLibraryIcon")
+    public static let gliaLogo = ImageAsset(name: "gliaLogo")
+    public static let startScreenShare = ImageAsset(name: "startScreenShare")
+    public static let upgradeAudio = ImageAsset(name: "upgradeAudio")
+    public static let upgradePhone = ImageAsset(name: "upgradePhone")
+    public static let upgradeVideo = ImageAsset(name: "upgradeVideo")
+    public static let operatorPlaceholder = ImageAsset(name: "operatorPlaceholder")
+
+  // swiftlint:disable trailing_comma
+  public static let allColors: [ColorAsset] = [
+  ]
+  public static let allImages: [ImageAsset] = [
+      alertClose,
+      callChat,
+      callMiminize,
+      callMuteActive,
+      callMuteInactive,
+      callSpeakerActive,
+      callSpeakerInactive,
+      callVideoActive,
+      callVideoInactive,
+      uploadError,
+      uploadRemove,
+      chatPickMedia,
+      chatSend,
+      unreadMessageIndicator,
+      back,
+      close,
+      browseIcon,
+      cameraIcon,
+      photoLibraryIcon,
+      gliaLogo,
+      startScreenShare,
+      upgradeAudio,
+      upgradePhone,
+      upgradeVideo,
+      operatorPlaceholder,
+    ]
+    // swiftlint:enable trailing_comma
+    @available(*, deprecated, renamed: "allImages")
+    public static let allValues: [AssetType] = allImages
+}
+// swiftlint:enable identifier_name line_length nesting type_body_length type_name
+
+public extension Image {
+  @available(iOS 1.0, tvOS 1.0, watchOS 1.0, *)
+  @available(OSX, deprecated,
+    message: "This initializer is unsafe on macOS, please use the ImageAsset.image property")
+  convenience init!(asset: ImageAsset) {
+    #if os(iOS) || os(tvOS)
+    let bundle = Bundle(for: BundleToken.self)
+    self.init(named: asset.name, in: bundle, compatibleWith: nil)
+    #elseif os(OSX)
+    self.init(named: NSImage.Name(asset.name))
+    #elseif os(watchOS)
+    self.init(named: asset.name)
+    #endif
+  }
+}
+
+public extension AssetColorTypeAlias {
+  @available(iOS 11.0, tvOS 11.0, watchOS 4.0, OSX 10.13, *)
+  convenience init!(asset: ColorAsset) {
+    let bundle = Bundle(for: BundleToken.self)
+    #if os(iOS) || os(tvOS)
+    self.init(named: asset.name, in: bundle, compatibleWith: nil)
+    #elseif os(OSX)
+    self.init(named: NSColor.Name(asset.name), bundle: bundle)
+    #elseif os(watchOS)
+    self.init(named: asset.name)
+    #endif
+  }
+}
+
+private final class BundleToken {}

@@ -44,7 +44,7 @@ final class UnreadMessageIndicatorView: View {
     private func setup() {
         isHidden = true
 
-        backgroundView.image = Asset.unreadMessageIndicator
+        backgroundView.image = Asset.unreadMessageIndicator.image
 
         let tapRecognizer = UITapGestureRecognizer(
             target: self,

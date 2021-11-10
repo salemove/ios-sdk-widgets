@@ -11,7 +11,7 @@ public class FilePreviewStyle {
     public var fileColor: UIColor
 
     /// Icon of the error state.
-    public var errorIcon: UIImage?
+    public var errorIcon: UIImage
 
     /// Color of the error icon.
     public var errorIconColor: UIColor
@@ -34,7 +34,7 @@ public class FilePreviewStyle {
     public init(
         fileFont: UIFont,
         fileColor: UIColor,
-        errorIcon: UIImage?,
+        errorIcon: UIImage,
         errorIconColor: UIColor,
         backgroundColor: UIColor,
         errorBackgroundColor: UIColor

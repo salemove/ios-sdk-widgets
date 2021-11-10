@@ -4,11 +4,11 @@ extension Theme {
     var callStyle: CallStyle {
         typealias Call = L10n.Call
         let backButton = HeaderButtonStyle(
-            image: Asset.back,
+            image: Asset.back.image,
             color: color.baseLight
         )
         let closeButton = HeaderButtonStyle(
-            image: Asset.close,
+            image: Asset.close.image,
             color: color.baseLight
         )
         let endButton = ActionButtonStyle(
@@ -18,7 +18,7 @@ extension Theme {
             backgroundColor: color.systemNegative
         )
         let endScreenShareButton = HeaderButtonStyle(
-            image: Asset.startScreenShare,
+            image: Asset.startScreenShare.image,
             color: color.secondary
         )
         let header = HeaderStyle(
@@ -31,7 +31,7 @@ extension Theme {
             endScreenShareButton: endScreenShareButton
         )
         let operatorImage = UserImageStyle(
-            placeholderImage: Asset.operatorPlaceholder,
+            placeholderImage: Asset.operatorPlaceholder.image,
             placeholderColor: color.baseLight,
             placeholderBackgroundColor: color.primary,
             imageBackgroundColor: .clear
@@ -107,7 +107,7 @@ extension Theme {
         let chatButton = CallButtonStyle(
             active: CallButtonStyle.StateStyle(
                 backgroundColor: activeBackgroundColor,
-                image: Asset.callChat,
+                image: Asset.callChat.image,
                 imageColor: activeImageColor,
                 title: Buttons.Chat.title,
                 titleFont: activeTitleFont,
@@ -115,7 +115,7 @@ extension Theme {
             ),
             inactive: CallButtonStyle.StateStyle(
                 backgroundColor: inactiveBackgroundColor,
-                image: Asset.callChat,
+                image: Asset.callChat.image,
                 imageColor: inactiveImageColor,
                 title: Buttons.Chat.title,
                 titleFont: inactiveTitleFont,
@@ -125,7 +125,7 @@ extension Theme {
         let videoButton = CallButtonStyle(
             active: CallButtonStyle.StateStyle(
                 backgroundColor: activeBackgroundColor,
-                image: Asset.callVideoActive,
+                image: Asset.callVideoActive.image,
                 imageColor: activeImageColor,
                 title: Buttons.Video.title,
                 titleFont: activeTitleFont,
@@ -133,7 +133,7 @@ extension Theme {
             ),
             inactive: CallButtonStyle.StateStyle(
                 backgroundColor: inactiveBackgroundColor,
-                image: Asset.callVideoInactive,
+                image: Asset.callVideoInactive.image,
                 imageColor: inactiveImageColor,
                 title: Buttons.Video.title,
                 titleFont: inactiveTitleFont,
@@ -143,7 +143,7 @@ extension Theme {
         let muteButton = CallButtonStyle(
             active: CallButtonStyle.StateStyle(
                 backgroundColor: activeBackgroundColor,
-                image: Asset.callMuteActive,
+                image: Asset.callMuteActive.image,
                 imageColor: activeImageColor,
                 title: Buttons.Mute.Active.title,
                 titleFont: activeTitleFont,
@@ -151,7 +151,7 @@ extension Theme {
             ),
             inactive: CallButtonStyle.StateStyle(
                 backgroundColor: inactiveBackgroundColor,
-                image: Asset.callMuteInactive,
+                image: Asset.callMuteInactive.image,
                 imageColor: inactiveImageColor,
                 title: Buttons.Mute.Inactive.title,
                 titleFont: inactiveTitleFont,
@@ -161,7 +161,7 @@ extension Theme {
         let speakerButton = CallButtonStyle(
             active: CallButtonStyle.StateStyle(
                 backgroundColor: activeBackgroundColor,
-                image: Asset.callSpeakerActive,
+                image: Asset.callSpeakerActive.image,
                 imageColor: activeImageColor,
                 title: Buttons.Speaker.title,
                 titleFont: activeTitleFont,
@@ -169,7 +169,7 @@ extension Theme {
             ),
             inactive: CallButtonStyle.StateStyle(
                 backgroundColor: inactiveBackgroundColor,
-                image: Asset.callSpeakerInactive,
+                image: Asset.callSpeakerInactive.image,
                 imageColor: inactiveImageColor,
                 title: Buttons.Speaker.title,
                 titleFont: inactiveTitleFont,
@@ -179,7 +179,7 @@ extension Theme {
         let minimizeButton = CallButtonStyle(
             active: CallButtonStyle.StateStyle(
                 backgroundColor: activeBackgroundColor,
-                image: Asset.callMiminize,
+                image: Asset.callMiminize.image,
                 imageColor: activeImageColor,
                 title: Buttons.Minimize.title,
                 titleFont: activeTitleFont,
@@ -187,7 +187,7 @@ extension Theme {
             ),
             inactive: CallButtonStyle.StateStyle(
                 backgroundColor: inactiveBackgroundColor,
-                image: Asset.callMiminize,
+                image: Asset.callMiminize.image,
                 imageColor: inactiveImageColor,
                 title: Buttons.Minimize.title,
                 titleFont: inactiveTitleFont,

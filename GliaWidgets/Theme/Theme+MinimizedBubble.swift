@@ -1,7 +1,7 @@
 extension Theme {
     var minimizedBubbleStyle: BubbleStyle {
         let userImage = UserImageStyle(
-            placeholderImage: Asset.operatorPlaceholder,
+            placeholderImage: Asset.operatorPlaceholder.image,
             placeholderColor: color.baseLight,
             placeholderBackgroundColor: color.primary,
             imageBackgroundColor: color.primary
