@@ -119,8 +119,8 @@ class EngagementViewModel {
         interactor.enqueueForEngagement(
             mediaType: mediaType,
             success: {},
-            failure: { error in
-                self.handleError(error)
+            failure: { [weak self] error in
+                self?.handleError(error)
             }
         )
     }
