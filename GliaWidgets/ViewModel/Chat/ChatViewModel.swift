@@ -399,7 +399,7 @@ extension ChatViewModel {
                     outgoingMessage,
                     uploads: uploads,
                     with: message,
-                    in: self.pendingSection
+                    in: self.messagesSection
                 )
 
                 self.action?(.scrollToBottom(animated: true))
@@ -464,7 +464,7 @@ extension ChatViewModel {
 
         let deliveredMessage = ChatMessage(with: message)
         let item = ChatItem(kind: .visitorMessage(deliveredMessage, status: deliveredStatus))
-        downloader.addDownloads(for: deliveredMessage.attachment?.files, with: uploads)
+        downloader.addDownloads(for: deliveredMessage.attachment?.files)
         section.replaceItem(at: index, with: item)
         affectedRows.append(index)
         action?(.refreshRows(affectedRows, in: section.index, animated: false))
