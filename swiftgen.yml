@@ -7,3 +7,11 @@ strings:
         publicAccess: true
         enumName: L10n
 
+xcassets:
+  inputs:
+    - GliaWidgets/Resources/Assets.xcassets
+  outputs:
+    - templatePath: swiftgen-template.stencil
+      output: GliaWidgets/Resources/Asset.swift
+      params:
+        publicAccess: true
