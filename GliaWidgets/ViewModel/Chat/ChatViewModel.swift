@@ -95,6 +95,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     }
 
     private var pendingMessages: [OutgoingMessage] = []
+    private var isViewLoaded: Bool = false
 
     init(
         interactor: Interactor,
@@ -139,6 +140,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         switch event {
         case .viewDidLoad:
             start()
+            isViewLoaded = true
         case .messageTextChanged(let text):
             messageText = text
         case .sendTapped:
@@ -173,22 +175,10 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     override func start() {
         super.start()
 
-        switch startAction {
-        case .startEngagement:
-            let item = ChatItem(kind: .queueOperator)
+        loadHistory()
 
-            appendItem(
-                item,
-                to: queueOperatorSection,
-                animated: false
-            )
-
-            enqueue()
-        case .none:
-            if !storage.isEmpty() {
-                loadHistory()
-                update(for: interactor.state)
-            } else {
+        if case .startEngagement = startAction {
+            if storage.isEmpty() {
                 let item = ChatItem(kind: .queueOperator)
 
                 appendItem(
@@ -200,6 +190,8 @@ class ChatViewModel: EngagementViewModel, ViewModel {
                 enqueue()
             }
         }
+
+        update(for: interactor.state)
     }
 
     override func update(for state: InteractorState) {
@@ -245,7 +237,6 @@ class ChatViewModel: EngagementViewModel, ViewModel {
                 }
             }
 
-            loadHistory()
         default:
             break
         }
@@ -491,6 +482,8 @@ extension ChatViewModel {
             operator: interactor.engagedOperator
         )
 
+        guard isViewLoaded else { return }
+
         switch message.sender {
         case .operator:
             let message = ChatMessage(
@@ -499,10 +492,11 @@ extension ChatViewModel {
             )
             if let item = ChatItem(with: message) {
                 let isChatBottomReached = isChatScrolledToBottom.value
+
                 appendItem(item, to: messagesSection, animated: true)
                 action?(.updateItemsUserImage(animated: true))
-
                 action?(.setChoiceCardInputModeEnabled(message.isChoiceCard))
+
                 if isChatBottomReached {
                     action?(.scrollToBottom(animated: true))
                 }
