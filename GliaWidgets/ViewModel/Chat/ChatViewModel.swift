@@ -744,7 +744,6 @@ extension ChatViewModel {
                     let selection = message.attachment?.selectedOption
                 else { return }
 
-                print("Confirmed: SDK received option \(selection) for message with id \(message.id)")
                 self.respond(to: messageId, with: selection)
 
             case .failure:
