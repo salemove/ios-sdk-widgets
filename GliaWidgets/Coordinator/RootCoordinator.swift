@@ -64,7 +64,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
             break
         case .chat:
             let chatViewController = startChat(
-                withAction: .none,
+                withAction: .startEngagement,
                 showsCallBubble: false
             )
             engagement = .chat(chatViewController)
