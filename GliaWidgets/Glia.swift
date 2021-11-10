@@ -64,7 +64,7 @@ public protocol SceneProvider: AnyObject {
 ///                 visitorContext: visitorContext
 ///             )
 ///         } catch {
-///             // configuration error
+///             // ConfigurationError or GliaError
 ///         }
 ///
 /// To listen Glia's events, use `onEvent`:
@@ -139,6 +139,7 @@ public class Glia {
     ///   - `ConfigurationError.invalidSite`
     ///   - `ConfigurationError.invalidEnvironment`
     ///   - `ConfigurationError.invalidAppToken`
+    ///   - `GliaError.engagementExists`
     ///
     public func start(
         _ engagementKind: EngagementKind,
@@ -149,9 +150,9 @@ public class Glia {
         sceneProvider: SceneProvider? = nil
     ) throws {
         guard engagement == .none else {
-            print("Warning: trying to start new Glia session while session is already active.")
-            return
+            throw GliaError.engagementExists
         }
+
         let interactor = try Interactor(
             with: configuration,
             queueID: queueID,

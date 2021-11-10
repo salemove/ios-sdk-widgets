@@ -732,7 +732,6 @@ extension ChatViewModel {
 extension ChatViewModel {
     private func sendChoiceCardResponse(_ option: ChatChoiceCardOption, to messageId: String) {
         guard let value = option.value else { return }
-        print("Sending option \(value) to message with id \(messageId)...")
         Salemove.sharedInstance.send(
             selectedOptionValue: value,
             messageId: messageId
@@ -750,7 +749,6 @@ extension ChatViewModel {
                   let selection = message.attachment?.selectedOption
             else { return }
 
-            print("Confirmed: SDK received option \(selection) for message with id \(message.id)")
             self.respond(to: messageId, with: selection)
         }
     }

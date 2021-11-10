@@ -69,7 +69,7 @@ class ChatStorage {
                 case let value as String:
                     sqlite3_bind_text(statement, index, (value as NSString).utf8String, -1, nil)
                 default:
-                    print("Unsupported data type \(type(of: $0.element)) for \(String(describing: $0.element)) in exec()")
+                    assertionFailure("Unsupported data type \(type(of: $0.element)) for \(String(describing: $0.element)) in exec()")
                 }
             }
 
