@@ -187,7 +187,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
                     animated: false
                 )
 
-                enqueue()
+                enqueue(mediaType: .text)
             }
         }
 
@@ -418,7 +418,7 @@ extension ChatViewModel {
             action?(.refreshSection(2))
             action?(.scrollToBottom(animated: true))
 
-            enqueue()
+            enqueue(mediaType: .text)
         }
 
         messageText = ""

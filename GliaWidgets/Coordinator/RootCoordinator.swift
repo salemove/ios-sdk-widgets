@@ -76,6 +76,10 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
             let kind: CallKind = engagementKind == .audioCall
                 ? .audio
                 : .video
+
+            let mediaType: MediaType = engagementKind == .audioCall
+                ? .audio
+                : .video
             let call = Call(kind)
             call.kind.addObserver(self) { [weak self] _, _ in
                 self?.engagementKind = EngagementKind(with: call.kind.value)
@@ -84,7 +88,12 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
                 withAction: .none,
                 showsCallBubble: true
             )
-            let callViewController = startCall(call, withAction: .engagement)
+
+            let callViewController = startCall(
+                call,
+                withAction: .engagement(mediaType: mediaType)
+            )
+
             engagement = .call(
                 callViewController,
                 chatViewController,
