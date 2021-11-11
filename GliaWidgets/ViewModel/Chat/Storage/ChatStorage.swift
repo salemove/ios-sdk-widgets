@@ -2,6 +2,12 @@ import SalemoveSDK
 import SQLite3
 
 class ChatStorage {
+
+    static let dbName = "GliaChat.sqlite"
+    static let dbUrl = try? FileManager.default
+        .url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+        .appendingPathComponent(dbName)
+
     private enum SQLiteError: Error {
         case openDatabase
         case prepare
@@ -14,13 +20,8 @@ class ChatStorage {
 
     private let encoder = JSONEncoder()
     private var db: OpaquePointer?
-    private let dbURL: URL?
-    private let kDBName = "GliaChat.sqlite"
 
     init() {
-        dbURL = try? FileManager.default
-            .url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
-            .appendingPathComponent(kDBName)
 
         do {
             try openDatabase()
@@ -35,7 +36,7 @@ class ChatStorage {
     }
 
     private func openDatabase() throws {
-        guard let dbPath = dbURL?.path else { return }
+        guard let dbPath = Self.dbUrl?.path else { return }
         if sqlite3_open(dbPath, &db) != SQLITE_OK {
             throw SQLiteError.openDatabase
         }

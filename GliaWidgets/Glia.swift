@@ -195,4 +195,20 @@ public class Glia {
         }
         rootCoordinator?.start()
     }
+
+    /// Clear visitor session
+    public func clearVisitorSession() {
+        Salemove.sharedInstance.clearSession()
+
+        guard
+            let dbUrl = ChatStorage.dbUrl,
+            FileManager.default.fileExists(atPath: dbUrl.standardizedFileURL.path)
+        else { return }
+
+        do {
+            try FileManager.default.removeItem(at: dbUrl)
+        } catch {
+            print("DB has not been removed due to: '\(error)'.")
+        }
+    }
 }

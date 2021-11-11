@@ -28,6 +28,10 @@ class ViewController: UIViewController {
     @IBAction private func videoTapped() {
         presentGlia(.videoCall)
     }
+
+    @IBAction private func clearSession() {
+        Glia.sharedInstance.clearVisitorSession()
+    }
 }
 
 extension ViewController {
