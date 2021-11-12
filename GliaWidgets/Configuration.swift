@@ -51,7 +51,7 @@ public struct Configuration {
         self.environment = environment
         self.site = site
     }
-    
+
     /// Initializes the configuration.
     ///
     /// - Parameters:

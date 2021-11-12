@@ -728,24 +728,24 @@ extension ChatViewModel {
         guard let value = option.value else { return }
         print("Sending option \(value) to message with id \(messageId)...")
         Salemove.sharedInstance.send(
-            selectedOptionValue: value,
-            messageId: messageId
-        ) { [weak self] message, error in
+            selectedOptionValue: value
+        ) { [weak self] result in
             guard let self = self else { return }
 
-            if error != nil {
+            switch result {
+            case .success(let message):
+                guard
+                    let selection = message.attachment?.selectedOption
+                else { return }
+
+                self.respond(to: messageId, with: selection)
+
+            case .failure:
                 self.showAlert(
                     with: self.alertConfiguration.unexpectedError,
                     dismissed: nil
                 )
             }
-
-            guard let message = message,
-                  let selection = message.attachment?.selectedOption
-            else { return }
-
-            print("Confirmed: SDK received option \(selection) for message with id \(message.id)")
-            self.respond(to: messageId, with: selection)
         }
     }
 
