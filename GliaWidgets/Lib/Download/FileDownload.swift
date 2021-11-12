@@ -4,7 +4,7 @@ class FileDownload {
     enum Error {
         case network
         case generic
-        case missingFileID
+        case missingFileURL
         case deleted
 
         init(with error: SalemoveError) {
@@ -55,10 +55,12 @@ class FileDownload {
     }
 
     func startDownload() {
-        guard let fileID = file.id else {
-            state.value = .error(.missingFileID)
+        guard let fileUrl = file.url else {
+            state.value = .error(.missingFileURL)
             return
         }
+
+        let engagementFile = EngagementFile(url: fileUrl)
 
         let progress = ObservableValue<Double>(with: 0)
         let onProgress: EngagementFileProgressBlock = {
@@ -78,8 +80,11 @@ class FileDownload {
         }
 
         state.value = .downloading(progress: progress)
-        Salemove.sharedInstance.fetchFile(fileID,
-                                          progress: onProgress,
-                                          completion: onCompletion)
+
+        Salemove.sharedInstance.fetchFile(
+            engagementFile: engagementFile,
+            progress: onProgress,
+            completion: onCompletion
+        )
     }
 }
