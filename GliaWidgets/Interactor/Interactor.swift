@@ -108,7 +108,6 @@ extension Interactor {
         success: @escaping () -> Void,
         failure: @escaping (SalemoveError) -> Void
     ) {
-        print("Called: \(#function)")
         state = .enqueueing
 
         var options: EngagementOptions? = nil
@@ -185,7 +184,6 @@ extension Interactor {
         success: @escaping () -> Void,
         failure: @escaping (SalemoveError) -> Void
     ) {
-        print("Called: \(#function)")
         isEngagementEndedByVisitor = true
 
         switch state {
@@ -216,7 +214,6 @@ extension Interactor {
         success: @escaping () -> Void,
         failure: @escaping (SalemoveError) -> Void
     ) {
-        print("Called: \(#function)")
         Salemove.sharedInstance.cancel(
             queueTicket: ticket
         ) { [weak self] _, error in
@@ -233,7 +230,6 @@ extension Interactor {
         success: @escaping () -> Void,
         failure: @escaping (SalemoveError) -> Void
     ) {
-        print("Called: \(#function)")
         Salemove.sharedInstance.endEngagement { [weak self] _, error in
             if let error = error {
                 failure(error)
@@ -247,21 +243,18 @@ extension Interactor {
 
 extension Interactor: Interactable {
     var onScreenSharingOffer: ScreenshareOfferBlock {
-        print("Called: \(#function)")
         return { [weak self] answer in
             self?.notify(.screenShareOffer(answer: answer))
         }
     }
 
     var onMediaUpgradeOffer: MediaUgradeOfferBlock {
-        print("Called: \(#function)")
         return { [weak self] offer, answer in
             self?.notify(.upgradeOffer(offer, answer: answer))
         }
     }
 
     var onEngagementRequest: RequestOfferBlock {
-        print("Called: \(#function)")
         return { answer in
             let context = SalemoveSDK.VisitorContext(type: .page, url: "wwww.example.com")
             answer(context, true) { _, _ in }
@@ -273,40 +266,28 @@ extension Interactor: Interactable {
     }
 
     var onOperatorTypingStatusUpdate: OperatorTypingStatusUpdate {
-        print("Called: \(#function)")
         return { [weak self] operatorTypingStatus in
             self?.notify(.typingStatusUpdated(operatorTypingStatus))
         }
     }
 
     var onMessagesUpdated: MessagesUpdateBlock {
-        print("Called: \(#function)")
         return { [weak self] messages in
             self?.notify(.messagesUpdated(messages))
         }
     }
 
     var onVisitorScreenSharingStateChange: VisitorScreenSharingStateChange {
-        print("Called: \(#function)")
         return { [weak self] state, error in
             if let error = error {
                 self?.notify(.screenShareError(error: error))
             } else {
-                switch state.status {
-                case .sharing:
-                    print("Screen sharing started")
-                case .notSharing:
-                    print("Screen sharing stopped")
-                @unknown default:
-                    break
-                }
                 self?.notify(.screenSharingStateChanged(to: state))
             }
         }
     }
 
     var onAudioStreamAdded: AudioStreamAddedBlock {
-        print("Called: \(#function)")
         return { [weak self] stream, error in
             if let stream = stream {
                 self?.notify(.audioStreamAdded(stream))
@@ -317,7 +298,6 @@ extension Interactor: Interactable {
     }
 
     var onVideoStreamAdded: VideoStreamAddedBlock {
-        print("Called: \(#function)")
         return { [weak self] stream, error in
             if let stream = stream {
                 self?.notify(.videoStreamAdded(stream))
@@ -328,12 +308,10 @@ extension Interactor: Interactable {
     }
 
     func receive(message: Message) {
-        print("Called: \(#function). Content: \(message.content)")
         notify(.receivedMessage(message))
     }
 
     func start() {
-        print("Called: \(#function)")
         Salemove.sharedInstance.requestEngagedOperator { [weak self] operators, _ in
             let engagedOperator = operators?.first
             self?.state = .engaged(engagedOperator)
@@ -341,7 +319,6 @@ extension Interactor: Interactable {
     }
 
     func end() {
-        print("Called: \(#function)")
         if isEngagementEndedByVisitor {
             state = .ended(.byVisitor)
         } else {
@@ -350,7 +327,6 @@ extension Interactor: Interactable {
     }
 
     func fail(error: SalemoveError) {
-        print("Called: \(#function)")
         notify(.error(error))
     }
 }

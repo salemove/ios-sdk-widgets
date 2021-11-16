@@ -726,7 +726,6 @@ extension ChatViewModel {
 extension ChatViewModel {
     private func sendChoiceCardResponse(_ option: ChatChoiceCardOption, to messageId: String) {
         guard let value = option.value else { return }
-        print("Sending option \(value) to message with id \(messageId)...")
         Salemove.sharedInstance.send(
             selectedOptionValue: value
         ) { [weak self] result in
