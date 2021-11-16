@@ -104,13 +104,23 @@ class Interactor {
 
 extension Interactor {
     func enqueueForEngagement(
+        mediaType: MediaType,
         success: @escaping () -> Void,
         failure: @escaping (SalemoveError) -> Void
     ) {
         state = .enqueueing
+
+        var options: EngagementOptions? = nil
+
+        if mediaType == .audio || mediaType == .video {
+            options = .init(mediaDirection: .twoWay)
+        }
+
         Salemove.sharedInstance.queueForEngagement(
             queueID: queueID,
-            visitorContext: visitorContext
+            visitorContext: visitorContext,
+            mediaType: mediaType,
+            options: options
         ) { [weak self] queueTicket, error in
             if let error = error {
                 self?.state = .ended(.byError)

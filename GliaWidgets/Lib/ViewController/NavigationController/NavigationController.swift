@@ -12,9 +12,10 @@ class NavigationController: UINavigationController {
             transition.subtype = .fromRight
             view.layer.add(transition, forKey: nil)
         }
-        
+
         super.pushViewController(viewController, animated: false)
     }
+
     @discardableResult
     override func popViewController(animated: Bool) -> UIViewController? {
         if animated {
@@ -23,13 +24,12 @@ class NavigationController: UINavigationController {
             transition.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
             transition.type = .push
             transition.subtype = .fromLeft
-            
             view.layer.add(transition, forKey: nil)
         }
-        
+
         return super.popViewController(animated: false)
     }
-    
+
     @discardableResult
     override func popToRootViewController(animated: Bool) -> [UIViewController]? {
         if animated {
@@ -38,10 +38,9 @@ class NavigationController: UINavigationController {
             transition.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
             transition.type = .push
             transition.subtype = .fromLeft
-            
             view.layer.add(transition, forKey: nil)
         }
-        
+
         return super.popToRootViewController(animated: false)
     }
 }

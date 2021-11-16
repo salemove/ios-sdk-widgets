@@ -11,8 +11,7 @@ xcassets:
   inputs:
     - GliaWidgets/Resources/Assets.xcassets
   outputs:
-    - templateName: swift4
+    - templatePath: swiftgen-template.stencil
       output: GliaWidgets/Resources/Asset.swift
       params:
         publicAccess: true
-
