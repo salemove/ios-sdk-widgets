@@ -173,7 +173,7 @@ public class Glia {
         guard engagement != .none else {
             throw GliaError.engagementNotExist
         }
-        rootCoordinator?.event(.maximized)
+        rootCoordinator?.maximize()
     }
 
     private func startRootCoordinator(

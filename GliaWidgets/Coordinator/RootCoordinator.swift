@@ -109,14 +109,15 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
             )
         }
 
-        var bubbleView: BubbleView?
-        if features ~= .bubbleView {
-            bubbleView = viewFactory.makeBubbleView()
-            unreadMessages.addObserver(self) { unreadCount, _ in
-                bubbleView?.setBadge(itemCount: unreadCount)
-            }
+        let bubbleView = viewFactory.makeBubbleView()
+        unreadMessages.addObserver(self) { unreadCount, _ in
+            bubbleView.setBadge(itemCount: unreadCount)
         }
-        gliaViewController = makeGliaView(bubbleView: bubbleView)
+
+        gliaViewController = makeGliaView(
+            bubbleView: bubbleView,
+            features: features
+        )
         gliaViewController?.insertChild(navigationController)
         event(.maximized)
         delegate?(.started)
@@ -246,24 +247,30 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
         return coordinator.start()
     }
 
-    private func makeGliaView(bubbleView: BubbleView?) -> GliaViewController {
+    private func makeGliaView(
+        bubbleView: BubbleView,
+        features: Features
+    ) -> GliaViewController {
         if #available(iOS 13.0, *) {
             if let sceneProvider = sceneProvider {
                 return GliaViewController(
                     bubbleView: bubbleView,
                     delegate: self,
-                    sceneProvider: sceneProvider
+                    sceneProvider: sceneProvider,
+                    features: features
                 )
             } else {
                 return GliaViewController(
                     bubbleView: bubbleView,
-                    delegate: self
+                    delegate: self,
+                    features: features
                 )
             }
         } else {
             return GliaViewController(
                 bubbleView: bubbleView,
-                delegate: self
+                delegate: self,
+                features: features
             )
         }
     }
@@ -334,6 +341,13 @@ extension RootCoordinator: GliaViewControllerDelegate {
                 self?.delegate?(.maximized)
             }
         }
+    }
+}
+
+extension RootCoordinator {
+
+    func maximize() {
+        gliaViewController?.maximize(animated: true)
     }
 }
 

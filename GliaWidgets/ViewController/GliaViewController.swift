@@ -19,13 +19,16 @@ class GliaViewController: UIViewController {
     private var bubbleWindow: BubbleWindow?
     private var sceneProvider: SceneProvider?
     private var animationImageView: UIImageView?
+    private let features: Features
 
     init(
-        bubbleView: BubbleView? = nil,
-        delegate: GliaViewControllerDelegate?
+        bubbleView: BubbleView,
+        delegate: GliaViewControllerDelegate?,
+        features: Features
     ) {
         self.bubbleView = bubbleView
         self.delegate = delegate
+        self.features = features
         super.init(nibName: nil, bundle: nil)
         setup()
     }
@@ -34,11 +37,13 @@ class GliaViewController: UIViewController {
     init(
         bubbleView: BubbleView?,
         delegate: GliaViewControllerDelegate?,
-        sceneProvider: SceneProvider
+        sceneProvider: SceneProvider,
+        features: Features
     ) {
         self.bubbleView = bubbleView
         self.delegate = delegate
         self.sceneProvider = sceneProvider
+        self.features = features
         super.init(nibName: nil, bundle: nil)
         setup()
     }
@@ -85,7 +90,7 @@ class GliaViewController: UIViewController {
             initialSpringVelocity: 0.7,
             options: .curveEaseInOut,
             animations: {
-                bubbleWindow.alpha = 1.0
+                bubbleWindow.alpha = self.features.contains(.bubbleView) ? 1.0 : 0.0
             }
         )
     }
