@@ -12,6 +12,7 @@ class SettingsViewController: UIViewController {
     private var appTokenCell: SettingsTextCell!
     private var siteCell: SettingsTextCell!
     private var queueIDCell: SettingsTextCell!
+    private var bubbleFeatureCell: SettingsSwitchCell!
     private var primaryColorCell: SettingsColorCell!
     private var secondaryColorCell: SettingsColorCell!
     private var baseNormalColorCell: SettingsColorCell!
@@ -32,6 +33,7 @@ class SettingsViewController: UIViewController {
     var theme: Theme = Theme()
     var conf: Configuration { loadConf() }
     var queueID: String { loadQueueID() }
+    var features: Features { loadFeatures() }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -71,8 +73,19 @@ class SettingsViewController: UIViewController {
         confCells.append(siteCell)
         confCells.append(queueIDCell)
 
-        let confSection = Section(title: "Glia conf",
-                                  cells: confCells)
+        let confSection = Section(
+            title: "Glia conf",
+            cells: confCells
+        )
+
+        bubbleFeatureCell = SettingsSwitchCell(
+            title: "Present \"Bubble\" overlay in engagement time",
+            isOn: features ~= .bubbleView
+        )
+        let featuresSection = Section(
+            title: "Features",
+            cells: [bubbleFeatureCell]
+        )
 
         primaryColorCell = SettingsColorCell(title: "Primary:",
                                              color: theme.color.primary)
@@ -133,6 +146,7 @@ class SettingsViewController: UIViewController {
                                   cells: fontCells)
 
         sections.append(confSection)
+        sections.append(featuresSection)
         sections.append(colorSection)
         sections.append(fontSection)
 
@@ -152,10 +166,23 @@ class SettingsViewController: UIViewController {
         return queueID
     }
 
+    private func loadFeatures() -> Features {
+        guard let savedValue = UserDefaults.standard.value(forKey: "conf.features") as? Int else {
+            return .all
+        }
+        return Features(rawValue: savedValue)
+    }
+
     private func saveConf() {
         UserDefaults.standard.setValue(appTokenCell.textField.text ?? "", forKey: "conf.appToken")
         UserDefaults.standard.setValue(siteCell.textField.text ?? "", forKey: "conf.site")
         UserDefaults.standard.setValue(queueIDCell.textField.text ?? "", forKey: "conf.queueID")
+
+        var features = Features.all
+        if !bubbleFeatureCell.switcher.isOn {
+            features.remove(.bubbleView)
+        }
+        UserDefaults.standard.setValue(features.rawValue, forKey: "conf.features")
     }
 
     private func makeConf() -> Configuration {

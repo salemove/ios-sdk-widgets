@@ -147,6 +147,7 @@ public class Glia {
         queueID: String,
         visitorContext: VisitorContext,
         theme: Theme = Theme(),
+        features: Features = .all,
         sceneProvider: SceneProvider? = nil
     ) throws {
         guard engagement == .none else {
@@ -163,21 +164,31 @@ public class Glia {
             with: interactor,
             viewFactory: viewFactory,
             sceneProvider: sceneProvider,
-            engagementKind: engagementKind
+            engagementKind: engagementKind,
+            features: features
         )
+    }
+
+    public func resume() throws {
+        guard engagement != .none else {
+            throw GliaError.engagementNotExist
+        }
+        rootCoordinator?.event(.maximized)
     }
 
     private func startRootCoordinator(
         with interactor: Interactor,
         viewFactory: ViewFactory,
         sceneProvider: SceneProvider?,
-        engagementKind: EngagementKind
+        engagementKind: EngagementKind,
+        features: Features
     ) {
         rootCoordinator = RootCoordinator(
             interactor: interactor,
             viewFactory: viewFactory,
             sceneProvider: sceneProvider,
-            engagementKind: engagementKind
+            engagementKind: engagementKind,
+            features: features
         )
         rootCoordinator?.delegate = { [weak self] event in
             switch event {
