@@ -127,11 +127,12 @@ class Call {
         }()
 
         let session = AVAudioSession.sharedInstance()
+
         do {
             try session.overrideOutputAudioPort(newOverride)
             audioPortOverride = newOverride
         } catch {
-            print(error)
+            assertionFailure(error.localizedDescription)
         }
     }
 
