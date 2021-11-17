@@ -482,8 +482,6 @@ extension ChatViewModel {
             operator: interactor.engagedOperator
         )
 
-        guard isViewLoaded else { return }
-
         switch message.sender {
         case .operator:
             let message = ChatMessage(
@@ -491,6 +489,10 @@ extension ChatViewModel {
                 operator: interactor.engagedOperator
             )
             if let item = ChatItem(with: message) {
+                unreadMessages.received(1)
+
+                guard isViewLoaded else { return }
+
                 let isChatBottomReached = isChatScrolledToBottom.value
 
                 appendItem(item, to: messagesSection, animated: true)
@@ -500,7 +502,6 @@ extension ChatViewModel {
                 if isChatBottomReached {
                     action?(.scrollToBottom(animated: true))
                 }
-                unreadMessages.received(1)
             }
         default:
             break
