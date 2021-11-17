@@ -45,7 +45,7 @@ class ActionButton: UIButton {
         layer.shadowColor = UIColor.black.cgColor
         layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
         layer.shadowRadius = 2.0
-        layer.shadowOpacity = 0.2
+        layer.shadowOpacity = style.backgroundColor == .clear ? 0.0 : 0.2
 
         titleLabel?.font = style.titleFont
         setTitleColor(style.titleColor, for: .normal)
