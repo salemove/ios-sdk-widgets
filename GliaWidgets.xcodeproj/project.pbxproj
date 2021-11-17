@@ -180,6 +180,8 @@
 		1AFB1E7425F8B00B00CA460D /* ChatTextContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFB1E7325F8B00B00CA460D /* ChatTextContentView.swift */; };
 		1AFB1E7825F8B26800CA460D /* ChatTextContentStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFB1E7725F8B26800CA460D /* ChatTextContentStyle.swift */; };
 		534EEAAA3FCDDD78AAAEB33E /* Pods_TestingApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C45ADF8988F719DA1AC8444 /* Pods_TestingApp.framework */; };
+		6B2BFCE2274297F100B68506 /* SettingsSwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B2BFCE1274297F100B68506 /* SettingsSwitchCell.swift */; };
+		6B48213E2735873300F2900A /* Feature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B48213D2735873300F2900A /* Feature.swift */; };
 		6E60DD5627146C9D001422EF /* AlertViewController+SingleAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E60DD5527146C9D001422EF /* AlertViewController+SingleAction.swift */; };
 		6E60DD5827146DDB001422EF /* SingleActionAlertConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E60DD5727146DDB001422EF /* SingleActionAlertConfiguration.swift */; };
 		6E9C01AD26D3B8B500EBE1D4 /* OperatorTypingIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E9C01AC26D3B8B500EBE1D4 /* OperatorTypingIndicatorView.swift */; };
@@ -424,6 +426,8 @@
 		1AFB1E7325F8B00B00CA460D /* ChatTextContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTextContentView.swift; sourceTree = "<group>"; };
 		1AFB1E7725F8B26800CA460D /* ChatTextContentStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTextContentStyle.swift; sourceTree = "<group>"; };
 		34707AE4070DC82EFBA9C844 /* Pods-GliaWidgets.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliaWidgets.release.xcconfig"; path = "Target Support Files/Pods-GliaWidgets/Pods-GliaWidgets.release.xcconfig"; sourceTree = "<group>"; };
+		6B2BFCE1274297F100B68506 /* SettingsSwitchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSwitchCell.swift; sourceTree = "<group>"; };
+		6B48213D2735873300F2900A /* Feature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feature.swift; sourceTree = "<group>"; };
 		6E60DD5527146C9D001422EF /* AlertViewController+SingleAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlertViewController+SingleAction.swift"; sourceTree = "<group>"; };
 		6E60DD5727146DDB001422EF /* SingleActionAlertConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleActionAlertConfiguration.swift; sourceTree = "<group>"; };
 		6E9C01AC26D3B8B500EBE1D4 /* OperatorTypingIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperatorTypingIndicatorView.swift; sourceTree = "<group>"; };
@@ -675,6 +679,7 @@
 				1AC7A7542582594200567FF8 /* Configuration.swift */,
 				1A205D5B25655CB1003AA3CD /* GliaWidgets.h */,
 				1A205D5C25655CB1003AA3CD /* Info.plist */,
+				6B48213D2735873300F2900A /* Feature.swift */,
 			);
 			path = GliaWidgets;
 			sourceTree = "<group>";
@@ -810,6 +815,7 @@
 				1A4AD3D0256E92F300468BFB /* SettingsColorCell.swift */,
 				1A4AD3D8256FE9D300468BFB /* SettingsTextCell.swift */,
 				1A4AD3DB256FF67200468BFB /* SettingsFontCell.swift */,
+				6B2BFCE1274297F100B68506 /* SettingsSwitchCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -1924,6 +1930,7 @@
 				1A0C142D25B8545600B00695 /* EngagementView.swift in Sources */,
 				1A5F814D2588C0B800A605DA /* KeyboardObserver.swift in Sources */,
 				1A5F8182258B4F0E00A605DA /* OutgoingMessage.swift in Sources */,
+				6B48213E2735873300F2900A /* Feature.swift in Sources */,
 				1A60AFCA2566943F00E53F53 /* RootCoordinator.swift in Sources */,
 				1ABD6C9225B6F2D200D56EFA /* String+TemplateString.swift in Sources */,
 				1A60B0042567F25600E53F53 /* Header.swift in Sources */,
@@ -1994,6 +2001,7 @@
 				1A205D7B25655CEC003AA3CD /* AppDelegate.swift in Sources */,
 				1A4AD3D1256E92F300468BFB /* SettingsColorCell.swift in Sources */,
 				1A4AD3CE256E8F5500468BFB /* SettingsCell.swift in Sources */,
+				6B2BFCE2274297F100B68506 /* SettingsSwitchCell.swift in Sources */,
 				1A60AFF52567CE1300E53F53 /* SettingsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

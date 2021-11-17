@@ -41,12 +41,14 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
     private let gliaPresenter: GliaPresenter
     private var gliaViewController: GliaViewController?
     private let kBubbleViewSize: CGFloat = 60.0
+    private let features: Features
 
     init(
         interactor: Interactor,
         viewFactory: ViewFactory,
         sceneProvider: SceneProvider?,
-        engagementKind: EngagementKind
+        engagementKind: EngagementKind,
+        features: Features
     ) {
         self.interactor = interactor
         self.viewFactory = viewFactory
@@ -54,6 +56,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
         self.engagementKind = engagementKind
         self.gliaPresenter = GliaPresenter(sceneProvider: sceneProvider)
         self.navigationPresenter = NavigationPresenter(with: navigationController)
+        self.features = features
         navigationController.modalPresentationStyle = .fullScreen
         navigationController.isNavigationBarHidden = true
     }
@@ -110,7 +113,11 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
         unreadMessages.addObserver(self) { unreadCount, _ in
             bubbleView.setBadge(itemCount: unreadCount)
         }
-        gliaViewController = makeGliaView(bubbleView: bubbleView)
+
+        gliaViewController = makeGliaView(
+            bubbleView: bubbleView,
+            features: features
+        )
         gliaViewController?.insertChild(navigationController)
         event(.maximized)
         delegate?(.started)
@@ -240,24 +247,30 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
         return coordinator.start()
     }
 
-    private func makeGliaView(bubbleView: BubbleView) -> GliaViewController {
+    private func makeGliaView(
+        bubbleView: BubbleView,
+        features: Features
+    ) -> GliaViewController {
         if #available(iOS 13.0, *) {
             if let sceneProvider = sceneProvider {
                 return GliaViewController(
                     bubbleView: bubbleView,
                     delegate: self,
-                    sceneProvider: sceneProvider
+                    sceneProvider: sceneProvider,
+                    features: features
                 )
             } else {
                 return GliaViewController(
                     bubbleView: bubbleView,
-                    delegate: self
+                    delegate: self,
+                    features: features
                 )
             }
         } else {
             return GliaViewController(
                 bubbleView: bubbleView,
-                delegate: self
+                delegate: self,
+                features: features
             )
         }
     }
@@ -328,6 +341,13 @@ extension RootCoordinator: GliaViewControllerDelegate {
                 self?.delegate?(.maximized)
             }
         }
+    }
+}
+
+extension RootCoordinator {
+
+    func maximize() {
+        gliaViewController?.maximize(animated: true)
     }
 }
 
