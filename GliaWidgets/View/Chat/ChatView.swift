@@ -30,7 +30,10 @@ class ChatView: EngagementView {
         let x = safeAreaInsets.left + kCallBubbleEdgeInset
         let y = header.frame.maxY + kCallBubbleEdgeInset
         let width = frame.size.width - x - safeAreaInsets.right - kCallBubbleEdgeInset
-        let height = messageEntryView.frame.minY - header.frame.maxY - 2 * kCallBubbleEdgeInset
+        var height = messageEntryView.frame.minY - header.frame.maxY - 2 * kCallBubbleEdgeInset
+        if height < 1 {
+            height = messageEntryView.frame.maxY - header.frame.maxY - 2 * kCallBubbleEdgeInset
+        }
         return CGRect(x: x, y: y, width: width, height: height)
     }
 
@@ -48,7 +51,7 @@ class ChatView: EngagementView {
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        moveCallBubbleVisible(animated: true)
+        moveCallBubbleVisible()
     }
 
     func setOperatorTypingIndicatorIsHidden(to isHidden: Bool) {
@@ -318,34 +321,38 @@ extension ChatView {
     private func moveCallBubble(_ translation: CGPoint, animated: Bool) {
         guard let callBubble = callBubble else { return }
 
-        var frame = callBubble.frame
+        callBubble.adjustInnerFrame(to: callBubbleBounds)
+
+        var frame = callBubble.innerSmallerFrame
         frame.origin.x += translation.x
         frame.origin.y += translation.y
 
         if callBubbleBounds.contains(frame) {
-            callBubble.frame = frame
+            callBubble.innerSmallerFrame = frame
         }
     }
 
-    private func moveCallBubbleVisible(animated: Bool) {
+    private func moveCallBubbleVisible() {
         guard let callBubble = callBubble else { return }
         bringSubviewToFront(callBubble)
 
-        var frame: CGRect = callBubble.frame
+        callBubble.adjustInnerFrame(to: callBubbleBounds)
+        var frame: CGRect = callBubble.innerSmallerFrame
 
-        if callBubble.frame.minX < callBubbleBounds.minX {
+        if callBubble.innerSmallerFrame.minX < callBubbleBounds.minX {
             frame.origin.x = callBubbleBounds.minX
         }
-        if callBubble.frame.minY < callBubbleBounds.minY {
+        if callBubble.innerSmallerFrame.minY < callBubbleBounds.minY {
             frame.origin.y = callBubbleBounds.minY
         }
-        if callBubble.frame.maxX > callBubbleBounds.maxX {
-            frame.origin.x = callBubbleBounds.maxX - kCallBubbleSize.width
+        if callBubble.innerSmallerFrame.maxX > callBubbleBounds.maxX {
+            frame.origin.x = callBubbleBounds.maxX - callBubble.innerSmallerFrame.width
         }
-        if callBubble.frame.maxY > callBubbleBounds.maxY {
-            frame.origin.y = callBubbleBounds.maxY - kCallBubbleSize.height
+        if callBubble.innerSmallerFrame.maxY > callBubbleBounds.maxY {
+            frame.origin.y = callBubbleBounds.maxY - callBubble.innerSmallerFrame.height
         }
-        callBubble.frame = frame
+
+        callBubble.innerSmallerFrame = frame
     }
 }
 

@@ -95,6 +95,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     }
 
     private var pendingMessages: [OutgoingMessage] = []
+    private var isViewLoaded: Bool = false
 
     init(
         interactor: Interactor,
@@ -139,6 +140,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         switch event {
         case .viewDidLoad:
             start()
+            isViewLoaded = true
         case .messageTextChanged(let text):
             messageText = text
         case .sendTapped:
@@ -173,22 +175,10 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     override func start() {
         super.start()
 
-        switch startAction {
-        case .startEngagement:
-            let item = ChatItem(kind: .queueOperator)
+        loadHistory()
 
-            appendItem(
-                item,
-                to: queueOperatorSection,
-                animated: false
-            )
-
-            enqueue()
-        case .none:
-            if !storage.isEmpty() {
-                loadHistory()
-                update(for: interactor.state)
-            } else {
+        if case .startEngagement = startAction {
+            if storage.isEmpty() {
                 let item = ChatItem(kind: .queueOperator)
 
                 appendItem(
@@ -197,9 +187,11 @@ class ChatViewModel: EngagementViewModel, ViewModel {
                     animated: false
                 )
 
-                enqueue()
+                enqueue(mediaType: .text)
             }
         }
+
+        update(for: interactor.state)
     }
 
     override func update(for state: InteractorState) {
@@ -245,7 +237,6 @@ class ChatViewModel: EngagementViewModel, ViewModel {
                 }
             }
 
-            loadHistory()
         default:
             break
         }
@@ -399,7 +390,7 @@ extension ChatViewModel {
                     outgoingMessage,
                     uploads: uploads,
                     with: message,
-                    in: self.pendingSection
+                    in: self.messagesSection
                 )
 
                 self.action?(.scrollToBottom(animated: true))
@@ -427,7 +418,7 @@ extension ChatViewModel {
             action?(.refreshSection(2))
             action?(.scrollToBottom(animated: true))
 
-            enqueue()
+            enqueue(mediaType: .text)
         }
 
         messageText = ""
@@ -464,7 +455,7 @@ extension ChatViewModel {
 
         let deliveredMessage = ChatMessage(with: message)
         let item = ChatItem(kind: .visitorMessage(deliveredMessage, status: deliveredStatus))
-        downloader.addDownloads(for: deliveredMessage.attachment?.files, with: uploads)
+        downloader.addDownloads(for: deliveredMessage.attachment?.files)
         section.replaceItem(at: index, with: item)
         affectedRows.append(index)
         action?(.refreshRows(affectedRows, in: section.index, animated: false))
@@ -498,15 +489,19 @@ extension ChatViewModel {
                 operator: interactor.engagedOperator
             )
             if let item = ChatItem(with: message) {
+                unreadMessages.received(1)
+
+                guard isViewLoaded else { return }
+
                 let isChatBottomReached = isChatScrolledToBottom.value
+
                 appendItem(item, to: messagesSection, animated: true)
                 action?(.updateItemsUserImage(animated: true))
-
                 action?(.setChoiceCardInputModeEnabled(message.isChoiceCard))
+
                 if isChatBottomReached {
                     action?(.scrollToBottom(animated: true))
                 }
-                unreadMessages.received(1)
             }
         default:
             break
@@ -732,26 +727,25 @@ extension ChatViewModel {
 extension ChatViewModel {
     private func sendChoiceCardResponse(_ option: ChatChoiceCardOption, to messageId: String) {
         guard let value = option.value else { return }
-        print("Sending option \(value) to message with id \(messageId)...")
         Salemove.sharedInstance.send(
-            selectedOptionValue: value,
-            messageId: messageId
-        ) { [weak self] message, error in
+            selectedOptionValue: value
+        ) { [weak self] result in
             guard let self = self else { return }
 
-            if error != nil {
+            switch result {
+            case .success(let message):
+                guard
+                    let selection = message.attachment?.selectedOption
+                else { return }
+
+                self.respond(to: messageId, with: selection)
+
+            case .failure:
                 self.showAlert(
                     with: self.alertConfiguration.unexpectedError,
                     dismissed: nil
                 )
             }
-
-            guard let message = message,
-                  let selection = message.attachment?.selectedOption
-            else { return }
-
-            print("Confirmed: SDK received option \(selection) for message with id \(message.id)")
-            self.respond(to: messageId, with: selection)
         }
     }
 

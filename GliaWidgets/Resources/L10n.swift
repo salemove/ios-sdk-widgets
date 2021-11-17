@@ -89,13 +89,15 @@ public enum L10n {
       public static let title = L10n.tr("Localizable", "alert.microphonePermission.title")
     }
     public enum OperatorEndedEngagement {
-      /// This engagement has ended.\nThank you!
+      /// This engagement has ended.
+      /// Thank you!
       public static let message = L10n.tr("Localizable", "alert.operatorEndedEngagement.message")
       /// Engagement Ended
       public static let title = L10n.tr("Localizable", "alert.operatorEndedEngagement.title")
     }
     public enum OperatorsUnavailable {
-      /// Operators are no longer available.\nPlease try again later.
+      /// Operators are no longer available.
+      /// Please try again later.
       public static let message = L10n.tr("Localizable", "alert.operatorsUnavailable.message")
       /// We’re sorry
       public static let title = L10n.tr("Localizable", "alert.operatorsUnavailable.title")
