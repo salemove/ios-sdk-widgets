@@ -64,7 +64,7 @@ public protocol SceneProvider: AnyObject {
 ///                 visitorContext: visitorContext
 ///             )
 ///         } catch {
-///             // configuration error
+///             // ConfigurationError or GliaError
 ///         }
 ///
 /// To listen Glia's events, use `onEvent`:
@@ -139,6 +139,7 @@ public class Glia {
     ///   - `ConfigurationError.invalidSite`
     ///   - `ConfigurationError.invalidEnvironment`
     ///   - `ConfigurationError.invalidAppToken`
+    ///   - `GliaError.engagementExists`
     ///
     public func start(
         _ engagementKind: EngagementKind,
@@ -146,12 +147,13 @@ public class Glia {
         queueID: String,
         visitorContext: VisitorContext,
         theme: Theme = Theme(),
+        features: Features = .all,
         sceneProvider: SceneProvider? = nil
     ) throws {
         guard engagement == .none else {
-            print("Warning: trying to start new Glia session while session is already active.")
-            return
+            throw GliaError.engagementExists
         }
+
         let interactor = try Interactor(
             with: configuration,
             queueID: queueID,
@@ -162,21 +164,31 @@ public class Glia {
             with: interactor,
             viewFactory: viewFactory,
             sceneProvider: sceneProvider,
-            engagementKind: engagementKind
+            engagementKind: engagementKind,
+            features: features
         )
+    }
+
+    public func resume() throws {
+        guard engagement != .none else {
+            throw GliaError.engagementNotExist
+        }
+        rootCoordinator?.maximize()
     }
 
     private func startRootCoordinator(
         with interactor: Interactor,
         viewFactory: ViewFactory,
         sceneProvider: SceneProvider?,
-        engagementKind: EngagementKind
+        engagementKind: EngagementKind,
+        features: Features
     ) {
         rootCoordinator = RootCoordinator(
             interactor: interactor,
             viewFactory: viewFactory,
             sceneProvider: sceneProvider,
-            engagementKind: engagementKind
+            engagementKind: engagementKind,
+            features: features
         )
         rootCoordinator?.delegate = { [weak self] event in
             switch event {
@@ -194,5 +206,21 @@ public class Glia {
             }
         }
         rootCoordinator?.start()
+    }
+
+    /// Clear visitor session
+    public func clearVisitorSession() {
+        Salemove.sharedInstance.clearSession()
+
+        guard
+            let dbUrl = ChatStorage.dbUrl,
+            FileManager.default.fileExists(atPath: dbUrl.standardizedFileURL.path)
+        else { return }
+
+        do {
+            try FileManager.default.removeItem(at: dbUrl)
+        } catch {
+            print("DB has not been removed due to: '\(error)'.")
+        }
     }
 }

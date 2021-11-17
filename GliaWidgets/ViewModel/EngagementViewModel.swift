@@ -51,8 +51,6 @@ class EngagementViewModel {
     private let screenShareHandler: ScreenShareHandler
     private(set) var isViewActive = ObservableValue<Bool>(with: false)
     private static var alertPresenters = Set<EngagementViewModel>()
-    private var isEngagementEndedByVisitor = false
-    private var isEngagementEndedByOperator = false
 
     init(
         interactor: Interactor,
@@ -100,7 +98,7 @@ class EngagementViewModel {
     func viewDidAppear() {}
 
     func viewWillAppear() {
-        if isEngagementEndedByOperator {
+        if interactor.state == .ended(.byOperator) {
             EngagementViewModel.alertPresenters.insert(self)
             engagementAction?(
                 .showSingleActionAlert(
@@ -117,10 +115,14 @@ class EngagementViewModel {
         update(for: interactor.state)
     }
 
-    func enqueue() {
-        interactor.enqueueForEngagement {} failure: { error in
-            self.handleError(error)
-        }
+    func enqueue(mediaType: MediaType) {
+        interactor.enqueueForEngagement(
+            mediaType: mediaType,
+            success: {},
+            failure: { [weak self] error in
+                self?.handleError(error)
+            }
+        )
     }
 
     func interactorEvent(_ event: InteractorEvent) {
@@ -150,16 +152,17 @@ class EngagementViewModel {
                     operatorImageUrl: engagedOperator?.picture?.url
                 )
             )
-        case .ended:
+        case .ended(let reason):
             engagementDelegate?(
                 .engaged(
                     operatorImageUrl: nil
                 )
             )
 
-            if isEngagementEndedByVisitor {
+            switch reason {
+            case .byVisitor:
                 engagementDelegate?(.finished)
-            } else {
+            case .byOperator:
                 EngagementViewModel.alertPresenters.insert(self)
                 engagementAction?(
                     .showSingleActionAlert(
@@ -169,7 +172,8 @@ class EngagementViewModel {
                         }
                     )
                 )
-                isEngagementEndedByOperator = true
+            case .byError:
+                break
             }
         default:
             break
@@ -265,7 +269,6 @@ class EngagementViewModel {
                     alertConfiguration.endEngagement,
                     confirmed: { [weak self] in
                         self?.endSession()
-                        self?.isEngagementEndedByVisitor = true
                     }
                 )
             )
