@@ -51,7 +51,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
     }
 
     enum StartAction {
-        case engagement
+        case engagement(mediaType: MediaType)
         case call(offer: MediaUpgradeOffer,
                   answer: AnswerWithSuccessBlock)
     }
@@ -114,8 +114,9 @@ class CallViewModel: EngagementViewModel, ViewModel {
         update(for: call.kind.value)
 
         switch startWith {
-        case .engagement:
-            enqueue()
+        case .engagement(let mediaType):
+            enqueue(mediaType: mediaType)
+
         case .call(offer: let offer, answer: let answer):
             call.upgrade(to: offer)
             showConnecting()
@@ -131,11 +132,13 @@ class CallViewModel: EngagementViewModel, ViewModel {
             action?(.queue)
         case .engaged:
             if case .engagement = startWith {
-                requestMedia()
+                showConnecting()
             }
+
             let operatorName = Strings.Operator.name.withOperatorName(
                 interactor.engagedOperator?.firstName
             )
+
             action?(.setOperatorName(operatorName))
         case .ended:
             call.end()
@@ -193,31 +196,6 @@ class CallViewModel: EngagementViewModel, ViewModel {
         case .video:
             break
         }
-    }
-
-    private func requestMedia() {
-        let mediaType: MediaType = {
-            switch call.kind.value {
-            case .audio:
-                return .audio
-            case .video:
-                return .video
-            }
-        }()
-
-        showConnecting()
-        interactor.request(
-            mediaType,
-            direction: .twoWay,
-            success: {},
-            failure: { [weak self] error, salemoveError in
-                if let error = error {
-                    self?.showAlert(for: error)
-                } else if let error = salemoveError {
-                    self?.showAlert(for: error)
-                }
-            }
-        )
     }
 
     private func handleAudioStreamError(_ error: SalemoveError) {

@@ -70,6 +70,7 @@ final class ChoiceCardView: OperatorChatMessageView {
                     ? .selected
                     : .disabled
             } else if choiceCard.isActive {
+                optionView.state = .normal
                 optionView.tap = { self.onOptionTapped(option) }
             } else {
                 optionView.state = .disabled

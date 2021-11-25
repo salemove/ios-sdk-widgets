@@ -17,7 +17,7 @@ class QuickLookViewModel: ViewModel {
     private let items: [QLPreviewItem]
 
     init(files: [LocalFile]) {
-        self.items = files.map { $0.url as QLPreviewItem }
+        self.items = files.map { $0.url as NSURL }
     }
 
     convenience init(file: LocalFile) {
