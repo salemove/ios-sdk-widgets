@@ -2,6 +2,7 @@ import SalemoveSDK
 
 class EngagementViewModel {
     enum Event {
+        case viewWillAppear
         case viewDidAppear
         case viewDidDisappear
         case backTapped
@@ -50,7 +51,6 @@ class EngagementViewModel {
     private let screenShareHandler: ScreenShareHandler
     private(set) var isViewActive = ObservableValue<Bool>(with: false)
     private static var alertPresenters = Set<EngagementViewModel>()
-    private var isEngagementEnded = false
 
     init(
         interactor: Interactor,
@@ -74,6 +74,8 @@ class EngagementViewModel {
 
     func event(_ event: Event) {
         switch event {
+        case .viewWillAppear:
+            viewWillAppear()
         case .viewDidAppear:
             isViewActive.value = true
             viewDidAppear()
@@ -95,14 +97,32 @@ class EngagementViewModel {
 
     func viewDidAppear() {}
 
+    func viewWillAppear() {
+        if interactor.state == .ended(.byOperator) {
+            EngagementViewModel.alertPresenters.insert(self)
+            engagementAction?(
+                .showSingleActionAlert(
+                    alertConfiguration.operatorEndedEngagement,
+                    actionTapped: { [weak self] in
+                        self?.endSession()
+                    }
+                )
+            )
+        }
+    }
+
     func start() {
         update(for: interactor.state)
     }
 
-    func enqueue() {
-        interactor.enqueueForEngagement {} failure: { error in
-            self.handleError(error)
-        }
+    func enqueue(mediaType: MediaType) {
+        interactor.enqueueForEngagement(
+            mediaType: mediaType,
+            success: {},
+            failure: { [weak self] error in
+                self?.handleError(error)
+            }
+        )
     }
 
     func interactorEvent(_ event: InteractorEvent) {
@@ -132,21 +152,28 @@ class EngagementViewModel {
                     operatorImageUrl: engagedOperator?.picture?.url
                 )
             )
-        case .ended:
-            if isEngagementEnded {
-                if EngagementViewModel.alertPresenters.isEmpty {
-                        engagementDelegate?(.finished)
-                }
-            } else {
+        case .ended(let reason):
+            engagementDelegate?(
+                .engaged(
+                    operatorImageUrl: nil
+                )
+            )
+
+            switch reason {
+            case .byVisitor:
+                engagementDelegate?(.finished)
+            case .byOperator:
                 EngagementViewModel.alertPresenters.insert(self)
                 engagementAction?(
                     .showSingleActionAlert(
                         alertConfiguration.operatorEndedEngagement,
                         actionTapped: { [weak self] in
-                                self?.endSession()
+                            self?.endSession()
                         }
                     )
                 )
+            case .byError:
+                break
             }
         default:
             break
@@ -242,7 +269,6 @@ class EngagementViewModel {
                     alertConfiguration.endEngagement,
                     confirmed: { [weak self] in
                         self?.endSession()
-                        self?.isEngagementEnded = true
                     }
                 )
             )

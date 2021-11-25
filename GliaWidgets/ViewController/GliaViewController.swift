@@ -15,27 +15,35 @@ class GliaViewController: UIViewController {
     }
 
     private weak var delegate: GliaViewControllerDelegate?
-    private let bubbleView: BubbleView
+    private let bubbleView: BubbleView?
     private var bubbleWindow: BubbleWindow?
     private var sceneProvider: SceneProvider?
     private var animationImageView: UIImageView?
+    private let features: Features
 
-    init(bubbleView: BubbleView, delegate: GliaViewControllerDelegate?) {
+    init(
+        bubbleView: BubbleView,
+        delegate: GliaViewControllerDelegate?,
+        features: Features
+    ) {
         self.bubbleView = bubbleView
         self.delegate = delegate
+        self.features = features
         super.init(nibName: nil, bundle: nil)
         setup()
     }
 
     @available(iOS 13.0, *)
     init(
-        bubbleView: BubbleView,
+        bubbleView: BubbleView?,
         delegate: GliaViewControllerDelegate?,
-        sceneProvider: SceneProvider
+        sceneProvider: SceneProvider,
+        features: Features
     ) {
         self.bubbleView = bubbleView
         self.delegate = delegate
         self.sceneProvider = sceneProvider
+        self.features = features
         super.init(nibName: nil, bundle: nil)
         setup()
     }
@@ -57,16 +65,19 @@ class GliaViewController: UIViewController {
             },
             completion: { _ in
                 self.bubbleWindow = nil
-
             }
         )
         delegate?.event(.maximized)
     }
 
     func minimize(animated: Bool) {
+        defer { delegate?.event(.minimized) }
+        guard let bubbleView = bubbleView else {
+            return
+        }
         bubbleView.kind = bubbleKind
 
-        let bubbleWindow = makeBubbleWindow()
+        let bubbleWindow = makeBubbleWindow(bubbleView: bubbleView)
         bubbleWindow.tap = { [weak self] in self?.maximize(animated: true) }
         bubbleWindow.alpha = 0.0
         bubbleWindow.isHidden = false
@@ -79,10 +90,9 @@ class GliaViewController: UIViewController {
             initialSpringVelocity: 0.7,
             options: .curveEaseInOut,
             animations: {
-                bubbleWindow.alpha = 1.0
+                bubbleWindow.alpha = self.features.contains(.bubbleView) ? 1.0 : 0.0
             }
         )
-        delegate?.event(.minimized)
     }
 
     private func setup() {
@@ -90,7 +100,7 @@ class GliaViewController: UIViewController {
         transitioningDelegate = self
     }
 
-    private func makeBubbleWindow() -> BubbleWindow {
+    private func makeBubbleWindow(bubbleView: BubbleView) -> BubbleWindow {
         if #available(iOS 13.0, *) {
             if let windowScene = windowScene() {
                 return BubbleWindow(

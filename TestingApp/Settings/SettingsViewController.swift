@@ -10,9 +10,9 @@ class SettingsViewController: UIViewController {
     private let tableView = UITableView(frame: .zero, style: .grouped)
     private var sections = [Section]()
     private var appTokenCell: SettingsTextCell!
-    private var apiTokenCell: SettingsTextCell!
     private var siteCell: SettingsTextCell!
     private var queueIDCell: SettingsTextCell!
+    private var bubbleFeatureCell: SettingsSwitchCell!
     private var primaryColorCell: SettingsColorCell!
     private var secondaryColorCell: SettingsColorCell!
     private var baseNormalColorCell: SettingsColorCell!
@@ -33,6 +33,7 @@ class SettingsViewController: UIViewController {
     var theme: Theme = Theme()
     var conf: Configuration { loadConf() }
     var queueID: String { loadQueueID() }
+    var features: Features { loadFeatures() }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,8 +62,6 @@ class SettingsViewController: UIViewController {
     private func createCells() {
         appTokenCell = SettingsTextCell(title: "App token:",
                                         text: conf.appToken)
-        apiTokenCell = SettingsTextCell(title: "API token:",
-                                        text: conf.apiToken)
         siteCell = SettingsTextCell(title: "Site:",
                                     text: conf.site)
         siteCell = SettingsTextCell(title: "Site:",
@@ -71,12 +70,22 @@ class SettingsViewController: UIViewController {
                                        text: queueID)
         var confCells = [SettingsCell]()
         confCells.append(appTokenCell)
-        confCells.append(apiTokenCell)
         confCells.append(siteCell)
         confCells.append(queueIDCell)
 
-        let confSection = Section(title: "Glia conf",
-                                  cells: confCells)
+        let confSection = Section(
+            title: "Glia conf",
+            cells: confCells
+        )
+
+        bubbleFeatureCell = SettingsSwitchCell(
+            title: "Present \"Bubble\" overlay in engagement time",
+            isOn: features ~= .bubbleView
+        )
+        let featuresSection = Section(
+            title: "Features",
+            cells: [bubbleFeatureCell]
+        )
 
         primaryColorCell = SettingsColorCell(title: "Primary:",
                                              color: theme.color.primary)
@@ -137,6 +146,7 @@ class SettingsViewController: UIViewController {
                                   cells: fontCells)
 
         sections.append(confSection)
+        sections.append(featuresSection)
         sections.append(colorSection)
         sections.append(fontSection)
 
@@ -145,10 +155,8 @@ class SettingsViewController: UIViewController {
 
     private func loadConf() -> Configuration {
         let appToken = UserDefaults.standard.string(forKey: "conf.appToken") ?? ""
-        let apiToken = UserDefaults.standard.string(forKey: "conf.apiToken") ?? ""
         let site = UserDefaults.standard.string(forKey: "conf.site") ?? ""
         return Configuration(appToken: appToken,
-                             apiToken: apiToken,
                              environment: .beta,
                              site: site)
     }
@@ -158,16 +166,27 @@ class SettingsViewController: UIViewController {
         return queueID
     }
 
+    private func loadFeatures() -> Features {
+        guard let savedValue = UserDefaults.standard.value(forKey: "conf.features") as? Int else {
+            return .all
+        }
+        return Features(rawValue: savedValue)
+    }
+
     private func saveConf() {
         UserDefaults.standard.setValue(appTokenCell.textField.text ?? "", forKey: "conf.appToken")
-        UserDefaults.standard.setValue(apiTokenCell.textField.text ?? "", forKey: "conf.apiToken")
         UserDefaults.standard.setValue(siteCell.textField.text ?? "", forKey: "conf.site")
         UserDefaults.standard.setValue(queueIDCell.textField.text ?? "", forKey: "conf.queueID")
+
+        var features = Features.all
+        if !bubbleFeatureCell.switcher.isOn {
+            features.remove(.bubbleView)
+        }
+        UserDefaults.standard.setValue(features.rawValue, forKey: "conf.features")
     }
 
     private func makeConf() -> Configuration {
         return Configuration(appToken: appTokenCell.textField.text ?? "",
-                             apiToken: apiTokenCell.textField.text ?? "",
                              environment: .europe,
                              site: siteCell.textField.text ?? "")
     }
