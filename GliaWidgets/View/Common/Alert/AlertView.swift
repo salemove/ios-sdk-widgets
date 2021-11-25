@@ -50,13 +50,11 @@ class AlertView: UIView {
             }
         }
     }
+
     var actionCount: Int {
         return actionsStackView.arrangedSubviews.count
     }
-    var actionsAxis: NSLayoutConstraint.Axis {
-        get { return actionsStackView.axis }
-        set { actionsStackView.axis = newValue }
-    }
+
     var closeTapped: (() -> Void)?
 
     private let style: AlertStyle
@@ -133,6 +131,7 @@ class AlertView: UIView {
 
         actionsStackView.spacing = 11
         actionsStackView.distribution = .fillEqually
+        actionsStackView.axis = style.actionAxis
     }
 
     private func layout() {
