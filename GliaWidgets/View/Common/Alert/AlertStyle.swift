@@ -23,6 +23,9 @@ public struct AlertStyle {
     /// Color of the close button.
     public var closeButtonColor: UIColor
 
+    /// Direction of the action buttons.
+    public var actionAxis: NSLayoutConstraint.Axis
+
     /// Style of a positive action button.
     public var positiveAction: ActionButtonStyle
 
@@ -38,6 +41,7 @@ public struct AlertStyle {
     ///   - messageColor: Color of the message text.
     ///   - backgroundColor: Background color of the view.
     ///   - closeButtonColor: Color of the close button.
+    ///   - actionAxis: Direction of the action buttons.
     ///   - positiveAction: Style of a positive action button.
     ///   - negativeAction: Style of a negative action button.
     ///
@@ -49,6 +53,7 @@ public struct AlertStyle {
         messageColor: UIColor,
         backgroundColor: UIColor,
         closeButtonColor: UIColor,
+        actionAxis: NSLayoutConstraint.Axis,
         positiveAction: ActionButtonStyle,
         negativeAction: ActionButtonStyle
     ) {
@@ -59,6 +64,7 @@ public struct AlertStyle {
         self.messageColor = messageColor
         self.backgroundColor = backgroundColor
         self.closeButtonColor = closeButtonColor
+        self.actionAxis = actionAxis
         self.positiveAction = positiveAction
         self.negativeAction = negativeAction
     }
