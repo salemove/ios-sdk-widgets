@@ -6,7 +6,6 @@ extension AlertViewController {
         let alertView = viewFactory.makeAlertView()
         alertView.title = conf.title
         alertView.message = conf.message
-        alertView.actionsAxis = .horizontal
 
         let buttonStyle = viewFactory.theme.alert.positiveAction
 
