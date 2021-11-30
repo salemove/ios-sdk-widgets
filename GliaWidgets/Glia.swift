@@ -125,6 +125,15 @@ public class Glia {
 
     private init() {}
 
+
+    /// Setup SDK using specific engagement configuration without starting the engagement.
+    /// - Parameter configuration: Engagement configuration.
+    public func configure(with configuration: Configuration) throws {
+        try Salemove.sharedInstance.configure(appToken: configuration.appToken)
+        try Salemove.sharedInstance.configure(environment: configuration.environment.url)
+        try Salemove.sharedInstance.configure(site: configuration.site)
+    }
+
     /// Starts the engagement.
     ///
     /// - Parameters:
