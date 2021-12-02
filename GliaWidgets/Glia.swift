@@ -129,7 +129,7 @@ public class Glia {
     /// Setup SDK using specific engagement configuration without starting the engagement.
     /// - Parameters:
     ///   - configuration: Engagement configuration.
-    ///   - queueID: Queue identifier.
+    ///   - queueId: Queue identifier.
     ///   - visitorContext: Visitor context.
     public func configure(
         with configuration: Configuration,
