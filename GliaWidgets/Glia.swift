@@ -207,22 +207,17 @@ public class Glia {
         features: Features = .all,
         sceneProvider: SceneProvider? = nil
     ) throws {
-        guard engagement == .none else {
-            throw GliaError.engagementExists
-        }
-
-        let interactor = try Interactor(
+        try configure(
             with: configuration,
             queueID: queueID,
             visitorContext: visitorContext
         )
-        let viewFactory = ViewFactory(with: theme)
-        startRootCoordinator(
-            with: interactor,
-            viewFactory: viewFactory,
-            sceneProvider: sceneProvider,
+
+        try startEngagement(
             engagementKind: engagementKind,
-            features: features
+            theme: theme,
+            features: features,
+            sceneProvider: sceneProvider
         )
     }
 
