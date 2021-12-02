@@ -16,3 +16,20 @@ final class SettingsSwitchCell: SettingsCell {
                                               excludingEdge: .left)
     }
 }
+
+final class SettingsSegmentedCell: SettingsCell {
+    let segmentedControl: UISegmentedControl
+
+    init(title: String, items: String...) {
+        self.segmentedControl = .init(items: items.map(NSString.init(string:)))
+        super.init(title: title)
+        layout()
+    }
+
+    private func layout() {
+        contentView.addSubview(segmentedControl)
+        segmentedControl.autoPinEdge(.left, to: .right, of: titleLabel, withOffset: 10, relation: .greaterThanOrEqual)
+        segmentedControl.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 20),
+                                              excludingEdge: .left)
+    }
+}
