@@ -133,12 +133,12 @@ public class Glia {
     ///   - visitorContext: Visitor context.
     public func configure(
         with configuration: Configuration,
-        queueID: String,
+        queueId: String,
         visitorContext: VisitorContext
     ) throws {
         interactor = try Interactor(
             with: configuration,
-            queueID: queueID,
+            queueID: queueId,
             visitorContext: visitorContext
         )
     }
@@ -213,7 +213,7 @@ public class Glia {
     ) throws {
         try configure(
             with: configuration,
-            queueID: queueID,
+            queueId: queueID,
             visitorContext: visitorContext
         )
 
