@@ -122,8 +122,69 @@ public class Glia {
     public var onEvent: ((GliaEvent) -> Void)?
 
     private var rootCoordinator: RootCoordinator?
+    private var interactor: Interactor?
 
     private init() {}
+
+    /// Setup SDK using specific engagement configuration without starting the engagement.
+    /// - Parameters:
+    ///   - configuration: Engagement configuration.
+    ///   - queueId: Queue identifier.
+    ///   - visitorContext: Visitor context.
+    public func configure(
+        with configuration: Configuration,
+        queueId: String,
+        visitorContext: VisitorContext
+    ) throws {
+        interactor = try Interactor(
+            with: configuration,
+            queueID: queueId,
+            visitorContext: visitorContext
+        )
+    }
+
+    /// Starts the engagement.
+    ///
+    /// - Parameters:
+    ///   - engagementKind: Engagement media type.
+    ///   - theme: A custom theme to use with the engagement.
+    ///   - visitorContext: Visitor context.
+    ///   - features: Set of features to be enabled in the SDK.
+    ///   - sceneProvider: Used to provide `UIWindowScene` to the framework. Defaults to the first active foreground scene.
+    ///
+    /// - throws:
+    ///   - `SalemoveSDK.ConfigurationError.invalidSite`
+    ///   - `SalemoveSDK.ConfigurationError.invalidEnvironment`
+    ///   - `SalemoveSDK.ConfigurationError.invalidAppToken`
+    ///   - `GliaError.engagementExists
+    ///   - `GliaError.sdkIsNotConfigured`
+    ///
+    /// - Important: Note, that `configure(with:queueID:visitorContext:)` must be called initially prior to this method,
+    /// because `GliaError.sdkIsNotConfigured` will occur otherwise.
+    ///
+    public func startEngagement(
+        engagementKind: EngagementKind,
+        theme: Theme = Theme(),
+        features: Features = .all,
+        sceneProvider: SceneProvider? = nil
+    ) throws {
+        guard engagement == .none else {
+            throw GliaError.engagementExists
+        }
+
+        guard let interactor = self.interactor else {
+            throw GliaError.sdkIsNotConfigured
+        }
+
+        let viewFactory = ViewFactory(with: theme)
+        startRootCoordinator(
+            with: interactor,
+            viewFactory: viewFactory,
+            sceneProvider: sceneProvider,
+            engagementKind: engagementKind,
+            features: features
+        )
+    }
 
     /// Starts the engagement.
     ///
@@ -136,9 +197,9 @@ public class Glia {
     ///   - sceneProvider: Used to provide `UIWindowScene` to the framework. Defaults to the first active foreground scene.
     ///
     /// - throws:
-    ///   - `ConfigurationError.invalidSite`
-    ///   - `ConfigurationError.invalidEnvironment`
-    ///   - `ConfigurationError.invalidAppToken`
+    ///   - `SalemoveSDK.ConfigurationError.invalidSite`
+    ///   - `SalemoveSDK.ConfigurationError.invalidEnvironment`
+    ///   - `SalemoveSDK.ConfigurationError.invalidAppToken`
     ///   - `GliaError.engagementExists`
     ///
     public func start(
@@ -150,22 +211,17 @@ public class Glia {
         features: Features = .all,
         sceneProvider: SceneProvider? = nil
     ) throws {
-        guard engagement == .none else {
-            throw GliaError.engagementExists
-        }
-
-        let interactor = try Interactor(
+        try configure(
             with: configuration,
-            queueID: queueID,
+            queueId: queueID,
             visitorContext: visitorContext
         )
-        let viewFactory = ViewFactory(with: theme)
-        startRootCoordinator(
-            with: interactor,
-            viewFactory: viewFactory,
-            sceneProvider: sceneProvider,
+
+        try startEngagement(
             engagementKind: engagementKind,
-            features: features
+            theme: theme,
+            features: features,
+            sceneProvider: sceneProvider
         )
     }
 
@@ -222,5 +278,75 @@ public class Glia {
         } catch {
             print("DB has not been removed due to: '\(error)'.")
         }
+    }
+
+    /// Fetch current Visitor's information.
+    ///
+    /// The information provided by this endpoint is available to all the Operators observing or interacting with the
+    /// Visitor. This means that this endpoint can be used to provide additional context about the Visitor to the
+    /// Operators.
+    ///
+    /// - Parameters:
+    ///   - completion: A callback that will return the update result or `SalemoveError`
+    ///
+    /// If the request is unsuccessful for any reason then the completion will have an Error.
+    /// The Error may have one of the following causes:
+    ///
+    /// - `SalemoveSDK.GeneralError.internalError`
+    /// - `SalemoveSDK.GeneralError.networkError`
+    /// - `SalemoveSDK.ConfigurationError.invalidSite`
+    /// - `SalemoveSDK.ConfigurationError.invalidEnvironment`
+    /// - `SalemoveSDK.ConfigurationError.invalidAppToken`
+    /// - `SalemoveSDK.ConfigurationError.invalidApiToken`
+    /// - `GliaError.sdkIsNotConfigured`
+    ///
+    /// - Important: Note, that in case of engagement has not been started yet, `configure(with:queueID:visitorContext:)` must be called initially prior to this method,
+    /// because `GliaError.sdkIsNotConfigured` will occur otherwise.
+    ///
+    public func fetchVisitorInfo(completion: @escaping (Result<Salemove.VisitorInfo, Error>) -> Void) {
+        guard interactor != nil else {
+            completion(.failure(GliaError.sdkIsNotConfigured))
+            return
+        }
+        Salemove.sharedInstance.fetchVisitorInfo(completion)
+    }
+
+    /// Update current Visitor's information.
+    ///
+    /// The information provided by this endpoint is available to all the Operators observing or interacting with the
+    /// Visitor. This means that this endpoint can be used to provide additional context about the Visitor to the
+    /// Operators.
+    ///
+    /// In a similar manner custom attributes can be also be used to provide additional context. For example, if your
+    /// site separates paying users from free users, then setting a custom attribute of 'user_type' with a value of
+    /// either 'free' or 'paying' depending on the Visitor's account can help Operators prioritize different Visitors.
+    ///
+    /// - Parameters:
+    ///   - info: The information for updating Visitor
+    ///   - completion: A callback that will return the update result or `SalemoveError`
+    ///
+    /// If the request is unsuccessful for any reason then the completion will have an Error.
+    /// The Error may have one of the following causes:
+    ///
+    /// - `SalemoveSDK.GeneralError.internalError`
+    /// - `SalemoveSDK.GeneralError.networkError`
+    /// - `SalemoveSDK.ConfigurationError.invalidSite`
+    /// - `SalemoveSDK.ConfigurationError.invalidEnvironment`
+    /// - `SalemoveSDK.ConfigurationError.invalidAppToken`
+    /// - `SalemoveSDK.ConfigurationError.invalidApiToken`
+    /// - `GliaError.sdkIsNotConfigured`
+    ///
+    /// - Important: Note, that in case of engagement has not been started yet, `configure(with:queueID:visitorContext:)` must be called initially prior to this method,
+    /// because `GliaError.sdkIsNotConfigured` will occur otherwise.
+    ///
+    public func updateVisitorInfo(
+        _ info: VisitorInfoUpdate,
+        completion: @escaping (Result<Bool, Error>) -> Void
+    ) {
+        guard interactor != nil else {
+            completion(.failure(GliaError.sdkIsNotConfigured))
+            return
+        }
+        Salemove.sharedInstance.updateVisitorInfo(info, completion: completion)
     }
 }
