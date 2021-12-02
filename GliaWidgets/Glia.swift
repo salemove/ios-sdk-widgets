@@ -153,10 +153,14 @@ public class Glia {
     ///   - sceneProvider: Used to provide `UIWindowScene` to the framework. Defaults to the first active foreground scene.
     ///
     /// - throws:
-    ///   - `ConfigurationError.invalidSite`
-    ///   - `ConfigurationError.invalidEnvironment`
-    ///   - `ConfigurationError.invalidAppToken`
-    ///   - `GliaError.engagementExists`
+    ///   - `SalemoveSDK.ConfigurationError.invalidSite`
+    ///   - `SalemoveSDK.ConfigurationError.invalidEnvironment`
+    ///   - `SalemoveSDK.ConfigurationError.invalidAppToken`
+    ///   - `GliaError.engagementExists
+    ///   - `GliaError.sdkIsNotConfigured`
+    ///
+    /// - Important: Note, that `configure(with:queueID:visitorContext:)` must be called initially prior to this method,
+    /// because `GliaError.sdkIsNotConfigured` will occur otherwise.
     ///
     public func startEngagement(
         engagementKind: EngagementKind,
@@ -193,9 +197,9 @@ public class Glia {
     ///   - sceneProvider: Used to provide `UIWindowScene` to the framework. Defaults to the first active foreground scene.
     ///
     /// - throws:
-    ///   - `ConfigurationError.invalidSite`
-    ///   - `ConfigurationError.invalidEnvironment`
-    ///   - `ConfigurationError.invalidAppToken`
+    ///   - `SalemoveSDK.ConfigurationError.invalidSite`
+    ///   - `SalemoveSDK.ConfigurationError.invalidEnvironment`
+    ///   - `SalemoveSDK.ConfigurationError.invalidAppToken`
     ///   - `GliaError.engagementExists`
     ///
     public func start(
@@ -288,14 +292,22 @@ public class Glia {
     /// If the request is unsuccessful for any reason then the completion will have an Error.
     /// The Error may have one of the following causes:
     ///
-    /// - `GeneralError.internalError`
-    /// - `GeneralError.networkError`
-    /// - `ConfigurationError.invalidSite`
-    /// - `ConfigurationError.invalidEnvironment`
-    /// - `ConfigurationError.invalidAppToken`
-    /// - `ConfigurationError.invalidApiToken`
+    /// - `SalemoveSDK.GeneralError.internalError`
+    /// - `SalemoveSDK.GeneralError.networkError`
+    /// - `SalemoveSDK.ConfigurationError.invalidSite`
+    /// - `SalemoveSDK.ConfigurationError.invalidEnvironment`
+    /// - `SalemoveSDK.ConfigurationError.invalidAppToken`
+    /// - `SalemoveSDK.ConfigurationError.invalidApiToken`
+    /// - `GliaError.sdkIsNotConfigured`
+    ///
+    /// - Important: Note, that in case of engagement has not been started yet, `configure(with:queueID:visitorContext:)` must be called initially prior to this method,
+    /// because `GliaError.sdkIsNotConfigured` will occur otherwise.
     ///
     public func fetchVisitorInfo(completion: @escaping (Result<Salemove.VisitorInfo, Error>) -> Void) {
+        guard interactor != nil else {
+            completion(.failure(GliaError.sdkIsNotConfigured))
+            return
+        }
         Salemove.sharedInstance.fetchVisitorInfo(completion)
     }
 
@@ -322,11 +334,19 @@ public class Glia {
     /// - `SalemoveSDK.ConfigurationError.invalidEnvironment`
     /// - `SalemoveSDK.ConfigurationError.invalidAppToken`
     /// - `SalemoveSDK.ConfigurationError.invalidApiToken`
+    /// - `GliaError.sdkIsNotConfigured`
+    ///
+    /// - Important: Note, that in case of engagement has not been started yet, `configure(with:queueID:visitorContext:)` must be called initially prior to this method,
+    /// because `GliaError.sdkIsNotConfigured` will occur otherwise.
     ///
     public func updateVisitorInfo(
         _ info: VisitorInfoUpdate,
         completion: @escaping (Result<Bool, Error>) -> Void
     ) {
+        guard interactor != nil else {
+            completion(.failure(GliaError.sdkIsNotConfigured))
+            return
+        }
         Salemove.sharedInstance.updateVisitorInfo(info, completion: completion)
     }
 }
