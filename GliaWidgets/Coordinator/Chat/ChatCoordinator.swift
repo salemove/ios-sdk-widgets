@@ -79,11 +79,17 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
         viewModel.delegate = { [weak self] event in
             switch event {
             case .pickMedia(let pickerEvent):
-                self?.presentMediaPickerController(
-                    with: pickerEvent,
-                    mediaSource: .library,
-                    mediaTypes: [.image, .movie]
-                )
+                if #available(iOS 14.0, *) {
+                    self?.presentPhotoVideoPicker(
+                        with: pickerEvent
+                    )
+                } else {
+                    self?.presentMediaPickerController(
+                        with: pickerEvent,
+                        mediaSource: .library,
+                        mediaTypes: [.image, .movie]
+                    )
+                }
             case .takeMedia(let pickerEvent):
                 self?.presentMediaPickerController(
                     with: pickerEvent,
@@ -103,6 +109,42 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
             }
         }
         return ChatViewController(viewModel: viewModel, viewFactory: viewFactory)
+    }
+
+    @available(iOS 14, *)
+    private func presentPhotoVideoPicker(
+        with pickerEvent: ObservableValue<MediaPickerEvent>
+    ) {
+        let useCase: PhotoVideoPickerUseCase = PhotoVideoPickerUseCaseImpl(
+            dataStorage: FileSystemStorage(directory: .documents)
+        )
+
+        let coordinator = PhotoVideoPickerCoordinator(
+            useCase: useCase
+        )
+
+        let viewController = coordinator.start()
+
+        coordinator.delegate = { [weak self] in
+            switch $0 {
+            case .dismiss:
+                viewController.dismiss(
+                    animated: true,
+                    completion: { [weak self] in
+                        self?.popCoordinator()
+                    }
+                )
+
+            case .mediaPicked(let url):
+                pickerEvent.value = .pickedMedia(.image(url))
+
+            case .error(let error):
+                assertionFailure(error.localizedDescription)
+            }
+        }
+
+        pushCoordinator(coordinator)
+        navigationPresenter.present(viewController)
     }
 
     private func presentMediaPickerController(
