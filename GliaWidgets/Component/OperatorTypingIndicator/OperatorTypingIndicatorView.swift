@@ -35,6 +35,7 @@ final class OperatorTypingIndicatorView: UIView {
             bundle: Bundle(for: OperatorTypingIndicatorView.self)
         )
         animationView.animation = animation
+        animationView.backgroundBehavior = .pauseAndRestore
 
         let keypath = AnimationKeypath(
             keys: ["**", "Fill 1", "Color"]
