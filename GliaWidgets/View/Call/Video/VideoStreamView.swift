@@ -32,7 +32,7 @@ class VideoStreamView: View {
     ) {
         oldStreamView?.removeFromSuperview()
         guard let streamView = streamView else { return }
-        streamView.scale = .aspectFill
+        streamView.scale = .aspectFit
         addSubview(streamView)
         streamView.autoPinEdgesToSuperviewEdges()
         streamView.layoutIfNeeded()
