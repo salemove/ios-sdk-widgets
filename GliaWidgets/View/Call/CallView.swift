@@ -27,8 +27,9 @@ class CallView: EngagementView {
     private var localVideoViewRightConstraint: NSLayoutConstraint!
     private var localVideoViewHeightConstraint: NSLayoutConstraint!
     private var remoteVideoViewHeightConstraint: NSLayoutConstraint!
-    private var remoteVideoViewWidthConstraint: NSLayoutConstraint!
     private let kLocalVideoViewDefaultHeight: CGFloat = 186
+    private let kRemoteVideoViewPortraitHeightMultiplier: CGFloat = 0.3
+    private let kRemoteVideoViewLandscapeHeightMultiplier: CGFloat = 1.0
     private let kBarsHideDelay: TimeInterval = 3.2
 
     init(with style: CallStyle) {
@@ -141,9 +142,9 @@ class CallView: EngagementView {
 
         addSubview(remoteVideoView)
         remoteVideoView.autoAlignAxis(toSuperviewAxis: .horizontal)
-        remoteVideoView.autoAlignAxis(toSuperviewAxis: .vertical)
+        remoteVideoView.autoPinEdge(toSuperviewEdge: .left)
+        remoteVideoView.autoPinEdge(toSuperviewEdge: .right)
         remoteVideoViewHeightConstraint = remoteVideoView.autoSetDimension(.height, toSize: 0)
-        remoteVideoViewWidthConstraint = remoteVideoView.autoSetDimension(.width, toSize: 0)
 
         addSubview(localVideoView)
         localVideoViewTopConstraint = localVideoView.autoPinEdge(toSuperviewEdge: .top)
@@ -210,8 +211,10 @@ class CallView: EngagementView {
     }
 
     private func adjustRemoteVideoView() {
-        remoteVideoViewHeightConstraint.constant = frame.size.height
-        remoteVideoViewWidthConstraint.constant = frame.size.width
+        let multiplier = currentOrientation.isLandscape
+            ? kRemoteVideoViewLandscapeHeightMultiplier
+            : kRemoteVideoViewPortraitHeightMultiplier
+        remoteVideoViewHeightConstraint.constant = frame.size.height * multiplier
     }
 
     private func adjustLocalVideoView() {
