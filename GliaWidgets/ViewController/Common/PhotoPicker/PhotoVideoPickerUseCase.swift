@@ -49,7 +49,6 @@ final class PhotoVideoPickerUseCaseImpl: PhotoVideoPickerUseCase {
                         let url = url,
                         let storedUrl = self.savePickedMedia(url: url)
                     {
-                        print(storedUrl)
                         success(storedUrl)
                     }
                 }
