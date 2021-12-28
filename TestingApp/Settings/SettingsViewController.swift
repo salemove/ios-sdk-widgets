@@ -9,7 +9,10 @@ private struct Section {
 class SettingsViewController: UIViewController {
     private let tableView = UITableView(frame: .zero, style: .grouped)
     private var sections = [Section]()
+    private var authorizationMethodCell: SettingsSegmentedCell!
     private var appTokenCell: SettingsTextCell!
+    private var siteApiKeyIdCell: SettingsTextCell!
+    private var siteApiKeySecretCell: SettingsTextCell!
     private var siteCell: SettingsTextCell!
     private var queueIDCell: SettingsTextCell!
     private var bubbleFeatureCell: SettingsSwitchCell!
@@ -29,6 +32,11 @@ class SettingsViewController: UIViewController {
     private var mediumSubtitleFontCell: SettingsFontCell!
     private var captionFontCell: SettingsFontCell!
     private var buttonLabelFontCell: SettingsFontCell!
+
+    private var configurationSection = Section(
+        title: "Glia configuration",
+        cells: []
+    )
 
     var theme: Theme = Theme()
     var conf: Configuration { loadConf() }
@@ -56,26 +64,45 @@ class SettingsViewController: UIViewController {
         tableView.autoPinEdgesToSuperviewSafeArea()
 
         createCells()
+        updateConfigurationSection()
     }
 
     // swiftlint:disable function_body_length
     private func createCells() {
-        appTokenCell = SettingsTextCell(title: "App token:",
-                                        text: conf.appToken)
-        siteCell = SettingsTextCell(title: "Site:",
-                                    text: conf.site)
-        siteCell = SettingsTextCell(title: "Site:",
-                                    text: conf.site)
-        queueIDCell = SettingsTextCell(title: "Queue ID:",
-                                       text: queueID)
-        var confCells = [SettingsCell]()
-        confCells.append(appTokenCell)
-        confCells.append(siteCell)
-        confCells.append(queueIDCell)
-
-        let confSection = Section(
-            title: "Glia conf",
-            cells: confCells
+        authorizationMethodCell = SettingsSegmentedCell(
+            title: "Site authorization method",
+            items: "app-token", "site-api-key"
+        )
+        authorizationMethodCell.segmentedControl.addTarget(
+            self,
+            action: #selector(authMethodDidChange(sender:)),
+            for: .valueChanged
+        )
+        switch conf.authorizationMethod {
+        case .appToken:
+            authorizationMethodCell.segmentedControl.selectedSegmentIndex = 0
+        case .siteApiKey:
+            authorizationMethodCell.segmentedControl.selectedSegmentIndex = 1
+        }
+        appTokenCell = SettingsTextCell(
+            title: "App token:",
+            text: conf.appToken
+        )
+        siteApiKeyIdCell = SettingsTextCell(
+            title: "Identifier:",
+            text: conf.siteApiKeyId
+        )
+        siteApiKeySecretCell = SettingsTextCell(
+            title: "Secret:",
+            text: conf.siteApiKeySecret
+        )
+        siteCell = SettingsTextCell(
+            title: "Site:",
+            text: conf.site
+        )
+        queueIDCell = SettingsTextCell(
+            title: "Queue ID:",
+            text: queueID
         )
 
         bubbleFeatureCell = SettingsSwitchCell(
@@ -145,7 +172,7 @@ class SettingsViewController: UIViewController {
         let fontSection = Section(title: "Fonts",
                                   cells: fontCells)
 
-        sections.append(confSection)
+        sections.append(configurationSection)
         sections.append(featuresSection)
         sections.append(colorSection)
         sections.append(fontSection)
@@ -153,12 +180,44 @@ class SettingsViewController: UIViewController {
         tableView.reloadData()
     }
 
+    @objc
+    func authMethodDidChange(sender: UISegmentedControl) {
+        updateConfigurationSection()
+        tableView.reloadData()
+    }
+
+    private func updateConfigurationSection() {
+        var cells = [SettingsCell]()
+        cells.append(authorizationMethodCell)
+        switch authorizationMethodCell.segmentedControl.selectedSegmentIndex {
+        case 0:
+            cells.append(appTokenCell)
+        case 1:
+            cells.append(siteApiKeyIdCell)
+            cells.append(siteApiKeySecretCell)
+        default:
+            break
+        }
+        cells.append(siteCell)
+        cells.append(queueIDCell)
+        configurationSection = Section(
+            title: "Glia configuration",
+            cells: cells
+        )
+        sections[0] = configurationSection
+    }
+
     private func loadConf() -> Configuration {
+        let authorizationMethod = UserDefaults.standard.integer(forKey: "conf.authorizationMethod")
         let appToken = UserDefaults.standard.string(forKey: "conf.appToken") ?? ""
+        let siteApiKeyId = UserDefaults.standard.string(forKey: "conf.siteApiKeyId") ?? ""
+        let siteApiKeySecret = UserDefaults.standard.string(forKey: "conf.siteApiKeySecret") ?? ""
         let site = UserDefaults.standard.string(forKey: "conf.site") ?? ""
-        return Configuration(appToken: appToken,
-                             environment: .beta,
-                             site: site)
+        return Configuration(
+            authorizationMethod: authorizationMethod == 0 ? .appToken(appToken) : .siteApiKey(id: siteApiKeyId, secret: siteApiKeySecret),
+            environment: .beta,
+            site: site
+        )
     }
 
     private func loadQueueID() -> String {
@@ -174,7 +233,13 @@ class SettingsViewController: UIViewController {
     }
 
     private func saveConf() {
+        UserDefaults.standard.setValue(
+            authorizationMethodCell.segmentedControl.selectedSegmentIndex,
+            forKey: "conf.authorizationMethod"
+        )
         UserDefaults.standard.setValue(appTokenCell.textField.text ?? "", forKey: "conf.appToken")
+        UserDefaults.standard.setValue(siteApiKeyIdCell.textField.text ?? "", forKey: "conf.siteApiKeyId")
+        UserDefaults.standard.setValue(siteApiKeySecretCell.textField.text ?? "", forKey: "conf.siteApiKeySecret")
         UserDefaults.standard.setValue(siteCell.textField.text ?? "", forKey: "conf.site")
         UserDefaults.standard.setValue(queueIDCell.textField.text ?? "", forKey: "conf.queueID")
 
@@ -242,3 +307,24 @@ extension SettingsViewController: UITableViewDataSource {
 }
 
 extension SettingsViewController: UITableViewDelegate {}
+
+private extension Configuration {
+
+    var siteApiKeyId: String {
+        switch authorizationMethod {
+        case .siteApiKey(let id, _):
+            return id
+        default:
+            return ""
+        }
+    }
+
+    var siteApiKeySecret: String {
+        switch authorizationMethod {
+        case .siteApiKey(_, let secret):
+            return secret
+        default:
+            return ""
+        }
+    }
+}
