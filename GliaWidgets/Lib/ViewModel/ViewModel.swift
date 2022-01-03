@@ -1,3 +1,5 @@
+import Foundation
+
 protocol ViewModel {
     associatedtype Event
     associatedtype Action

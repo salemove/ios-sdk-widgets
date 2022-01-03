@@ -1,3 +1,5 @@
+import UIKit
+
 extension AlertViewController {
     func makeScreenShareOfferAlertView(
         with conf: ScreenShareOfferAlertConfiguration,

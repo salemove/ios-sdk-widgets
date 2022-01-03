@@ -1,3 +1,5 @@
+import Foundation
+
 final class ChoiceCard: Codable {
     let text: String
     let imageUrl: String?

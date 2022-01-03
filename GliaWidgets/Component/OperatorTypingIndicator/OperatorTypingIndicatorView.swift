@@ -16,9 +16,14 @@ final class OperatorTypingIndicatorView: UIView {
     private let backgroundView = UIView()
     private let kViewSize = CGSize(width: 28, height: 28)
     private let kLeftInset: CGFloat = 10
+    private let bundleManaging: BundleManaging
 
-    init(style: OperatorTypingIndicatorStyle) {
+    init(
+        style: OperatorTypingIndicatorStyle,
+        bundleManaging: BundleManaging = .live
+    ) {
         self.style = style
+        self.bundleManaging = bundleManaging
         super.init(frame: .zero)
         setup()
         layout()
@@ -32,7 +37,7 @@ final class OperatorTypingIndicatorView: UIView {
     private func setup() {
         let animation = Animation.named(
             "operator-typing-indicator",
-            bundle: Bundle(for: OperatorTypingIndicatorView.self)
+            bundle: bundleManaging.current()
         )
         animationView.animation = animation
         animationView.backgroundBehavior = .pauseAndRestore

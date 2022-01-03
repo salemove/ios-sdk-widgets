@@ -1,3 +1,4 @@
+import Foundation
 import SalemoveSDK
 
 enum ChatMessageSender: Int, Codable {
