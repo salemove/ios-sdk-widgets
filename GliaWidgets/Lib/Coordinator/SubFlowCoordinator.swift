@@ -1,3 +1,5 @@
+import Foundation
+
 class SubFlowCoordinator {
     private var subFlowCoordinators = [Any]()
 

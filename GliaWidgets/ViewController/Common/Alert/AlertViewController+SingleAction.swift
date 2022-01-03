@@ -1,3 +1,5 @@
+import UIKit
+
 extension AlertViewController {
     func makeSingleActionAlertView(
         with conf: SingleActionAlertConfiguration,

@@ -3,15 +3,15 @@ import UIKit
 internal class FontProvider {
     static let shared = FontProvider()
 
-    private var fonts: [String] {
-        return [
-            "Roboto-Regular",
-            "Roboto-Bold",
-            "Roboto-Medium"
-        ]
-    }
+    private let fonts = [
+        "Roboto-Regular",
+        "Roboto-Bold",
+        "Roboto-Medium"
+    ]
+    private let bundleManaging: BundleManaging
 
-    init() {
+    init(bundleManaging: BundleManaging = .live) {
+        self.bundleManaging = bundleManaging
         loadFonts()
     }
 
@@ -24,10 +24,8 @@ internal class FontProvider {
     }
 
     private func loadFont(named name: String) -> Bool {
-        let bundle = Bundle(for: BundleToken.self)
-
         guard
-            let pathForResourceString = bundle.path(forResource: name, ofType: "ttf"),
+            let pathForResourceString = bundleManaging.current().path(forResource: name, ofType: "ttf"),
             let fontData = NSData(contentsOfFile: pathForResourceString),
             let dataProvider = CGDataProvider(data: fontData),
             let fontRef = CGFont(dataProvider)
@@ -47,5 +45,3 @@ internal class FontProvider {
         return true
     }
 }
-
-private final class BundleToken {}

@@ -1,5 +1,6 @@
 import SalemoveSDK
 import SafariServices
+import UIKit
 
 class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
     enum DelegateEvent {
