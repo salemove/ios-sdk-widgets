@@ -1,3 +1,5 @@
+import Foundation
+
 class Section<Item> {
     let index: Int
     var items: [Item] { return items_ }

@@ -1,3 +1,5 @@
+import UIKit
+
 extension AlertViewController {
     func makeConfirmationAlertView(
         with conf: ConfirmationAlertConfiguration,

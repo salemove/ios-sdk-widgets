@@ -1,3 +1,5 @@
+import Foundation
+
 protocol FlowCoordinator: AnyObject {
     associatedtype ViewController
     associatedtype DelegateEvent

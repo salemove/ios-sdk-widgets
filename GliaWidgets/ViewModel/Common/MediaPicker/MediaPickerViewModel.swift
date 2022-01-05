@@ -1,3 +1,5 @@
+import Foundation
+
 enum PickedMedia {
     case image(URL)
     case photo(Data, format: MediaFormat)
