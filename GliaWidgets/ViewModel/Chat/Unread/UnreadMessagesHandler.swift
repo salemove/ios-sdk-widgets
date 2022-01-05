@@ -1,3 +1,5 @@
+import Foundation
+
 class UnreadMessagesHandler {
     private let unreadMessages: ObservableValue<Int>
     private let isWindowVisible: ObservableValue<Bool>

@@ -1,3 +1,5 @@
+import Foundation
+
 protocol DataStorage {
     func store(_ data: Data, for key: String)
     func store(from url: URL, for key: String)
