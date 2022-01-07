@@ -1,3 +1,5 @@
+import Foundation
+
 class FileSystemStorage: DataStorage {
     enum Directory {
         case documents
