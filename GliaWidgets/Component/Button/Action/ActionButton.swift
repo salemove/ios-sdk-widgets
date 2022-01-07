@@ -10,7 +10,6 @@ class ActionButton: UIButton {
 
     private let style: ActionButtonStyle
     private let kHeight: CGFloat = 40.0
-    private let kCornerRadius: CGFloat = 4.0
     private let kContentInsets = UIEdgeInsets(top: 6, left: 16, bottom: 6, right: 16)
 
     init(with style: ActionButtonStyle) {
@@ -27,11 +26,16 @@ class ActionButton: UIButton {
 
     override func layoutSubviews() {
         super.layoutSubviews()
+
         setNeedsDisplay()
+
         layer.shadowPath = UIBezierPath(
             roundedRect: bounds,
             byRoundingCorners: .allCorners,
-            cornerRadii: CGSize(width: kCornerRadius, height: kCornerRadius)
+            cornerRadii: CGSize(
+                width: style.cornerRaidus ?? 0.0,
+                height: style.cornerRaidus ?? 0.0
+            )
         ).cgPath
     }
 
@@ -41,11 +45,16 @@ class ActionButton: UIButton {
         clipsToBounds = true
 
         layer.masksToBounds = false
-        layer.cornerRadius = kCornerRadius
-        layer.shadowColor = UIColor.black.cgColor
-        layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
-        layer.shadowRadius = 2.0
-        layer.shadowOpacity = style.backgroundColor == .clear ? 0.0 : 0.2
+
+        layer.cornerRadius = style.cornerRaidus ?? 0.0
+
+        layer.borderColor = style.borderColor?.cgColor
+        layer.borderWidth = style.borderWidth ?? 0.0
+
+        layer.shadowColor = style.shadowColor?.cgColor
+        layer.shadowOffset = style.shadowOffset ?? .zero
+        layer.shadowOpacity = style.shadowOpacity ?? (style.backgroundColor == .clear ? 0.0 : 0.2)
+        layer.shadowRadius = style.shadowRadius ?? 0.0
 
         titleLabel?.font = style.titleFont
         setTitleColor(style.titleColor, for: .normal)

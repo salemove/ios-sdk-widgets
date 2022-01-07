@@ -1,3 +1,5 @@
+import UIKit
+
 extension AlertViewController {
     func makeMessageAlertView(
         with conf: MessageAlertConfiguration,

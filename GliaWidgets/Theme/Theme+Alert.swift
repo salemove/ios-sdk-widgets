@@ -22,6 +22,7 @@ extension Theme {
             messageColor: color.baseDark,
             backgroundColor: color.background,
             closeButtonColor: color.baseNormal,
+            actionAxis: .horizontal,
             positiveAction: positiveAction,
             negativeAction: negativeAction
         )

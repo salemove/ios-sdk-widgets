@@ -34,83 +34,6 @@ public protocol SceneProvider: AnyObject {
 }
 
 /// Glia's engagement interface.
-///
-/// ## Integration
-///     1. Add Glia iOS SDK to your app.
-///     2. Add following privacy descriptions to your app's Info.plist:
-///         Privacy - Microphone Usage Description
-///         Privacy - Camera Usage Description
-///         Privacy - Photo Library Additions Usage Description
-///     3. Import `GliaWidgets` and `SalemoveSDK`:
-///         import GliaWidgets
-///         import SalemoveSDK
-///     4. Create configuration:
-///         let conf = Configuration(
-///             appToken: "appToken",
-///             environment: .europe,
-///             site: "site"
-///         )
-///     5. Create visitor context:
-///         let visitorContext = VisitorContext(
-///             type: .page,
-///             url: "https://www.yoursite.com"
-///         )
-///     6. Start the engagement:
-///         do {
-///             try Glia.sharedInstance.start(
-///                 .chat,
-///                 configuration: conf,
-///                 queueID: "queueID",
-///                 visitorContext: visitorContext
-///             )
-///         } catch {
-///             // ConfigurationError or GliaError
-///         }
-///
-/// To listen Glia's events, use `onEvent`:
-///
-///     Glia.sharedInstance.onEvent = { event in
-///         switch event {
-///         case .started:
-///             break
-///         case .engagementChanged(let kind):
-///             break
-///         case .ended:
-///             break
-///         case .minimized:
-///             break
-///         case .maximized:
-///             break
-///         }
-///     }
-///
-/// To use custom colors and fonts, create a new theme with `ThemeColor` and `ThemeFont`:
-///
-///     let color = ThemeColor(
-///         primary: primaryColorCell.color,
-///         ...
-///     )
-///     let font = ThemeFont(
-///         header1: header1FontCell.selectedFont,
-///         ...
-///     )
-///
-///     let colorStyle: ThemeColorStyle = .custom(color)
-///     let fontStyle: ThemeFontStyle = .custom(font)
-///
-///     let theme = Theme(
-///         colorStyle: colorStyle,
-///         fontStyle: fontStyle
-///     )
-///
-/// and pass it to the `start(...)` method.
-///
-/// To customize a theme, you can override its properties. For example:
-///
-///     let theme = Theme()
-///     theme.chat.backButton = HeaderButtonStyle(image: UIImage(), color: .red)
-///     theme.chat.messageEntry.messageColor = .blue
-///
 public class Glia {
     /// A singleton to access the Glia's interface.
     public static let sharedInstance = Glia()
@@ -136,8 +59,14 @@ public class Glia {
         queueId: String,
         visitorContext: VisitorContext
     ) throws {
-        interactor = try Interactor(
-            with: configuration,
+
+        let sdkConfiguration = try Salemove.Configuration(
+            siteId: configuration.site,
+            region: configuration.environment.region,
+            authorizingMethod: configuration.authorizationMethod.coreAuthorizationMethod
+        )
+        interactor = Interactor(
+            with: sdkConfiguration,
             queueID: queueId,
             visitorContext: visitorContext
         )
@@ -199,6 +128,8 @@ public class Glia {
     /// - throws:
     ///   - `SalemoveSDK.ConfigurationError.invalidSite`
     ///   - `SalemoveSDK.ConfigurationError.invalidEnvironment`
+    ///   - `SalemoveSDK.ConfigurationError.invalidRegionEndpoint`
+    ///   - `SalemoveSDK.ConfigurationError.invalidSiteApiKey`
     ///   - `SalemoveSDK.ConfigurationError.invalidAppToken`
     ///   - `GliaError.engagementExists`
     ///

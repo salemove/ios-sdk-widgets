@@ -1,3 +1,4 @@
+import Foundation
 import SalemoveSDK
 
 enum InteractorState {
@@ -64,13 +65,13 @@ class Interactor {
     }
 
     init(
-        with conf: Configuration,
+        with conf: Salemove.Configuration,
         queueID: String,
         visitorContext: VisitorContext
-    ) throws {
+    ) {
         self.queueID = queueID
         self.visitorContext = visitorContext
-        try configure(with: conf)
+        configure(with: conf)
     }
 
     func addObserver(_ observer: AnyObject, handler: @escaping EventHandler) {
@@ -82,10 +83,10 @@ class Interactor {
         observers.removeAll(where: { $0().0 === observer })
     }
 
-    private func configure(with conf: Configuration) throws {
-        try Salemove.sharedInstance.configure(appToken: conf.appToken)
-        try Salemove.sharedInstance.configure(environment: conf.environment.url)
-        try Salemove.sharedInstance.configure(site: conf.site)
+    private func configure(with conf: Salemove.Configuration) {
+        Salemove.sharedInstance.configure(with: conf) {
+            // SDK is initialized and ready to use.
+        }
         Salemove.sharedInstance.configure(interactor: self)
     }
 
