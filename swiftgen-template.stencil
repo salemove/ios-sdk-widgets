@@ -2,6 +2,9 @@
 {% set colorAlias %}{{param.colorAliasName|default:"AssetColorTypeAlias"}}{% endset %}
 {% set imageAlias %}{{param.imageAliasName|default:"Image"}}{% endset %}
 {% set accessModifier %}{% if param.publicAccess %}public{% else %}internal{% endif %}{% endset %}
+
+private let bundleManaging: BundleManaging = .live
+
 #if os(OSX)
   import AppKit.NSImage
   {{accessModifier}} typealias {{colorAlias}} = NSColor
@@ -24,7 +27,7 @@
   {{accessModifier}} fileprivate(set) var name: String
 
   {{accessModifier}} var image: {{imageAlias}} {
-    let bundle = Bundle(for: BundleToken.self)
+    let bundle = bundleManaging.current()
     #if os(iOS) || os(tvOS)
     let image = {{imageAlias}}(named: name, in: bundle, compatibleWith: nil)
     #elseif os(OSX)
@@ -109,7 +112,7 @@
     message: "This initializer is unsafe on macOS, please use the {{imageType}}.image property")
   convenience init!(asset: {{imageType}}) {
     #if os(iOS) || os(tvOS)
-    let bundle = Bundle(for: BundleToken.self)
+    let bundle = bundleManaging.current()
     self.init(named: asset.name, in: bundle, compatibleWith: nil)
     #elseif os(OSX)
     self.init(named: NSImage.Name(asset.name))
@@ -122,7 +125,7 @@
 {{accessModifier}} extension {{colorAlias}} {
   @available(iOS 11.0, tvOS 11.0, watchOS 4.0, OSX 10.13, *)
   convenience init!(asset: {{colorType}}) {
-    let bundle = Bundle(for: BundleToken.self)
+    let bundle = bundleManaging.current()
     #if os(iOS) || os(tvOS)
     self.init(named: asset.name, in: bundle, compatibleWith: nil)
     #elseif os(OSX)
@@ -133,7 +136,6 @@
   }
 }
 
-private final class BundleToken {}
 {% else %}
 // No assets found
 {% endif %}

@@ -85,7 +85,6 @@
 		1A4AF5C725AEEA42002CD0F4 /* Operator+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4AF5C625AEEA42002CD0F4 /* Operator+Extensions.swift */; };
 		1A4AF5CD25AEF4A0002CD0F4 /* AlertViewController+Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4AF5CC25AEF4A0002CD0F4 /* AlertViewController+Message.swift */; };
 		1A4AF5D325AEF543002CD0F4 /* AlertViewController+Confirmation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4AF5D225AEF543002CD0F4 /* AlertViewController+Confirmation.swift */; };
-		1A4AF5D725AEF584002CD0F4 /* AlertViewController+MultipleMediaUpgrade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4AF5D625AEF584002CD0F4 /* AlertViewController+MultipleMediaUpgrade.swift */; };
 		1A56D53D257E24A400141BC8 /* PoweredBy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A56D53C257E24A400141BC8 /* PoweredBy.swift */; };
 		1A5892B12608C68000E183CC /* QuickLookController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5892B02608C68000E183CC /* QuickLookController.swift */; };
 		1A5F494B25CA86CA003E3678 /* Call.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5F494A25CA86CA003E3678 /* Call.swift */; };
@@ -189,6 +188,7 @@
 		6EA3512626DE9F3400BF5941 /* operator-typing-indicator.json in Resources */ = {isa = PBXBuildFile; fileRef = 6EA3512526DE9F3400BF5941 /* operator-typing-indicator.json */; };
 		6EA3516926E139DA00BF5941 /* GliaViewTransitionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EA3516826E139DA00BF5941 /* GliaViewTransitionController.swift */; };
 		6EEAD84E2701A8C10074C191 /* ChoiceCardOptionStateStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EEAD84D2701A8C10074C191 /* ChoiceCardOptionStateStyle.swift */; };
+		756087E127837EC000158604 /* BundleManaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756087E027837EC000158604 /* BundleManaging.swift */; };
 		C4119E04268F411D004DFEFB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4119E03268F411D004DFEFB /* SceneDelegate.swift */; };
 		C4119E06268F41D1004DFEFB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C4119E05268F41D1004DFEFB /* Main.storyboard */; };
 		C42463742673ABE10082C135 /* ScreenShareHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42463732673ABE10082C135 /* ScreenShareHandler.swift */; };
@@ -328,7 +328,6 @@
 		1A4AF5C625AEEA42002CD0F4 /* Operator+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Operator+Extensions.swift"; sourceTree = "<group>"; };
 		1A4AF5CC25AEF4A0002CD0F4 /* AlertViewController+Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlertViewController+Message.swift"; sourceTree = "<group>"; };
 		1A4AF5D225AEF543002CD0F4 /* AlertViewController+Confirmation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlertViewController+Confirmation.swift"; sourceTree = "<group>"; };
-		1A4AF5D625AEF584002CD0F4 /* AlertViewController+MultipleMediaUpgrade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlertViewController+MultipleMediaUpgrade.swift"; sourceTree = "<group>"; };
 		1A56D53C257E24A400141BC8 /* PoweredBy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoweredBy.swift; sourceTree = "<group>"; };
 		1A5892AB2608C48000E183CC /* QuickLookViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLookViewModel.swift; sourceTree = "<group>"; };
 		1A5892B02608C68000E183CC /* QuickLookController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLookController.swift; sourceTree = "<group>"; };
@@ -435,6 +434,7 @@
 		6EA3512526DE9F3400BF5941 /* operator-typing-indicator.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "operator-typing-indicator.json"; sourceTree = "<group>"; };
 		6EA3516826E139DA00BF5941 /* GliaViewTransitionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GliaViewTransitionController.swift; sourceTree = "<group>"; };
 		6EEAD84D2701A8C10074C191 /* ChoiceCardOptionStateStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoiceCardOptionStateStyle.swift; sourceTree = "<group>"; };
+		756087E027837EC000158604 /* BundleManaging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleManaging.swift; sourceTree = "<group>"; };
 		85639A838514258D976E1B2A /* Pods_GliaWidgets.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GliaWidgets.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B8252BE9AE93B4EA9A50E55 /* Pods-TestingApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestingApp.release.xcconfig"; path = "Target Support Files/Pods-TestingApp/Pods-TestingApp.release.xcconfig"; sourceTree = "<group>"; };
 		9C45ADF8988F719DA1AC8444 /* Pods_TestingApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TestingApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -664,6 +664,13 @@
 		1A205D5A25655CB1003AA3CD /* GliaWidgets */ = {
 			isa = PBXGroup;
 			children = (
+				756087DF27837EB100158604 /* BundleManaging */,
+				1A60AFB12566821B00E53F53 /* Asset.swift */,
+				1A60AF8F256674F000E53F53 /* Font.swift */,
+				1A60AF9E25667CA800E53F53 /* FontProvider.swift */,
+				1A60AF92256674F900E53F53 /* Color.swift */,
+				1A60AFAE256680EF00E53F53 /* L10n.swift */,
+				1A60AF95256675C400E53F53 /* UIColor+Extensions.swift */,
 				1A60AF6825656C0200E53F53 /* Coordinator */,
 				1A60AF6725656BF200E53F53 /* ViewController */,
 				1A60AF6925656C0A00E53F53 /* View */,
@@ -981,12 +988,6 @@
 			isa = PBXGroup;
 			children = (
 				1A60AF982566789F00E53F53 /* Font */,
-				1A60AFB12566821B00E53F53 /* Asset.swift */,
-				1A60AF8F256674F000E53F53 /* Font.swift */,
-				1A60AF9E25667CA800E53F53 /* FontProvider.swift */,
-				1A60AF92256674F900E53F53 /* Color.swift */,
-				1A60AFAE256680EF00E53F53 /* L10n.swift */,
-				1A60AF95256675C400E53F53 /* UIColor+Extensions.swift */,
 				1A60AFA225667EA300E53F53 /* Assets.xcassets */,
 				1A60AFAC2566806000E53F53 /* Localizable.strings */,
 				6EA3512526DE9F3400BF5941 /* operator-typing-indicator.json */,
@@ -1259,7 +1260,6 @@
 				1A63B2F2257A3F3D00508478 /* AlertViewController.swift */,
 				1A4AF5CC25AEF4A0002CD0F4 /* AlertViewController+Message.swift */,
 				1A4AF5D225AEF543002CD0F4 /* AlertViewController+Confirmation.swift */,
-				1A4AF5D625AEF584002CD0F4 /* AlertViewController+MultipleMediaUpgrade.swift */,
 				1ABD6C9525B6F46700D56EFA /* AlertViewController+SingleMediaUpgrade.swift */,
 				C47901B625ED2FB0007EE195 /* AlertViewController+ScreenShareOffer.swift */,
 				6E60DD5527146C9D001422EF /* AlertViewController+SingleAction.swift */,
@@ -1434,6 +1434,14 @@
 				9B8252BE9AE93B4EA9A50E55 /* Pods-TestingApp.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		756087DF27837EB100158604 /* BundleManaging */ = {
+			isa = PBXGroup;
+			children = (
+				756087E027837EC000158604 /* BundleManaging.swift */,
+			);
+			path = BundleManaging;
 			sourceTree = "<group>";
 		};
 		C42463722673ABCD0082C135 /* Screensharing */ = {
@@ -1803,7 +1811,6 @@
 				1A0EDF8225E8E0150076D1AD /* PopoverViewController.swift in Sources */,
 				1A60AFBC256682C800E53F53 /* SubFlowCoordinator.swift in Sources */,
 				1A0C9A8C25C4092400815406 /* CallButtonStyle.swift in Sources */,
-				1A4AF5D725AEF584002CD0F4 /* AlertViewController+MultipleMediaUpgrade.swift in Sources */,
 				1A6075E7258220E300569B0E /* UserImageStyle.swift in Sources */,
 				1ABD6C5D25B59D1C00D56EFA /* BubbleWindow.swift in Sources */,
 				1AE15E38257A578B00A642C0 /* MessageAlertConfiguration.swift in Sources */,
@@ -1956,6 +1963,7 @@
 				1A1E30A325F8E4A400850E68 /* FileSystemStorage.swift in Sources */,
 				6EA3516926E139DA00BF5941 /* GliaViewTransitionController.swift in Sources */,
 				1A1E30C725F9FDAB00850E68 /* ChatImageFileContentView.swift in Sources */,
+				756087E127837EC000158604 /* BundleManaging.swift in Sources */,
 				1A60AF90256674F000E53F53 /* Font.swift in Sources */,
 				1A4674C225E92A710078FA1C /* AtttachmentSourceItemKind.swift in Sources */,
 				1A4674AC25E905D00078FA1C /* AttachmentSourceItemView.swift in Sources */,

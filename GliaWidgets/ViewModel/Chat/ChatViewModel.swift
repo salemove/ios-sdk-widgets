@@ -1,3 +1,4 @@
+import Foundation
 import SalemoveSDK
 
 class ChatViewModel: EngagementViewModel, ViewModel {

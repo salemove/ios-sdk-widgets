@@ -28,12 +28,10 @@ class ChatView: EngagementView {
     private let kOperatorTypingIndicatorViewSize = CGSize(width: 28, height: 28)
     private var callBubbleBounds: CGRect {
         let x = safeAreaInsets.left + kCallBubbleEdgeInset
-        let y = header.frame.maxY + kCallBubbleEdgeInset
-        let width = frame.size.width - x - safeAreaInsets.right - kCallBubbleEdgeInset
-        var height = messageEntryView.frame.minY - header.frame.maxY - 2 * kCallBubbleEdgeInset
-        if height < 1 {
-            height = messageEntryView.frame.maxY - header.frame.maxY - 2 * kCallBubbleEdgeInset
-        }
+        let y = safeAreaInsets.top + kCallBubbleEdgeInset
+        let width = frame.width - safeAreaInsets.left - safeAreaInsets.right - 2 * kCallBubbleEdgeInset
+        let height = messageEntryView.frame.maxY - safeAreaInsets.top - 2 * kCallBubbleEdgeInset
+
         return CGRect(x: x, y: y, width: width, height: height)
     }
 
@@ -321,14 +319,12 @@ extension ChatView {
     private func moveCallBubble(_ translation: CGPoint, animated: Bool) {
         guard let callBubble = callBubble else { return }
 
-        callBubble.adjustInnerFrame(to: callBubbleBounds)
-
-        var frame = callBubble.innerSmallerFrame
+        var frame = callBubble.frame
         frame.origin.x += translation.x
         frame.origin.y += translation.y
 
         if callBubbleBounds.contains(frame) {
-            callBubble.innerSmallerFrame = frame
+            callBubble.frame = frame
         }
     }
 
@@ -336,23 +332,22 @@ extension ChatView {
         guard let callBubble = callBubble else { return }
         bringSubviewToFront(callBubble)
 
-        callBubble.adjustInnerFrame(to: callBubbleBounds)
-        var frame: CGRect = callBubble.innerSmallerFrame
+        var frame: CGRect = callBubble.frame
 
-        if callBubble.innerSmallerFrame.minX < callBubbleBounds.minX {
+        if callBubble.frame.minX < callBubbleBounds.minX {
             frame.origin.x = callBubbleBounds.minX
         }
-        if callBubble.innerSmallerFrame.minY < callBubbleBounds.minY {
+        if callBubble.frame.minY < callBubbleBounds.minY {
             frame.origin.y = callBubbleBounds.minY
         }
-        if callBubble.innerSmallerFrame.maxX > callBubbleBounds.maxX {
-            frame.origin.x = callBubbleBounds.maxX - callBubble.innerSmallerFrame.width
+        if callBubble.frame.maxX > callBubbleBounds.maxX {
+            frame.origin.x = callBubbleBounds.maxX - callBubble.frame.width
         }
-        if callBubble.innerSmallerFrame.maxY > callBubbleBounds.maxY {
-            frame.origin.y = callBubbleBounds.maxY - callBubble.innerSmallerFrame.height
+        if callBubble.frame.maxY > callBubbleBounds.maxY {
+            frame.origin.y = callBubbleBounds.maxY - callBubble.frame.height
         }
 
-        callBubble.innerSmallerFrame = frame
+        callBubble.frame = frame
     }
 }
 

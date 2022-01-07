@@ -1,3 +1,5 @@
+import UIKit
+
 extension AlertViewController {
     func makeScreenShareOfferAlertView(
         with conf: ScreenShareOfferAlertConfiguration,
@@ -10,7 +12,6 @@ extension AlertViewController {
         alertView.titleImage = conf.titleImage
         alertView.showsPoweredBy = conf.showsPoweredBy
         alertView.showsCloseButton = false
-        alertView.actionsAxis = .horizontal
 
         let declineButton = ActionButton(with: viewFactory.theme.alert.negativeAction)
         declineButton.title = conf.decline

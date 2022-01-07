@@ -1,3 +1,5 @@
+import Foundation
+
 class ObservableValue<T: Any> {
     typealias Update = (_ new: T, _ old: T) -> Void
 
