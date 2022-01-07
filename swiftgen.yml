@@ -2,7 +2,7 @@ strings:
   inputs: GliaWidgets/Resources/en.lproj/Localizable.strings
   outputs:
     - templateName: structured-swift4
-      output: GliaWidgets/Resources/L10n.swift
+      output: GliaWidgets/L10n.swift
       params:
         publicAccess: true
         enumName: L10n
@@ -12,6 +12,6 @@ xcassets:
     - GliaWidgets/Resources/Assets.xcassets
   outputs:
     - templatePath: swiftgen-template.stencil
-      output: GliaWidgets/Resources/Asset.swift
+      output: GliaWidgets/Asset.swift
       params:
         publicAccess: true

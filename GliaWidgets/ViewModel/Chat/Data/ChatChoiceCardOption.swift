@@ -1,3 +1,4 @@
+import Foundation
 import SalemoveSDK
 
 final class ChatChoiceCardOption: Codable {

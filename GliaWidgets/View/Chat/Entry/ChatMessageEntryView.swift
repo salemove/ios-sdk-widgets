@@ -11,6 +11,7 @@ class ChatMessageEntryView: UIView {
         get { return textView.text }
         set {
             textView.text = newValue
+            placeholderLabel.isHidden = !textView.text.isEmpty
             updateTextViewHeight()
         }
     }
