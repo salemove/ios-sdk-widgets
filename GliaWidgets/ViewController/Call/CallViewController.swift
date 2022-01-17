@@ -1,6 +1,6 @@
 import UIKit
 
-class CallViewController: EngagementViewController, MediaUpgradePresenter {
+class CallViewController: EngagementViewController {
     private let viewModel: CallViewModel
 
     init(viewModel: CallViewModel, viewFactory: ViewFactory) {
@@ -77,8 +77,6 @@ class CallViewController: EngagementViewController, MediaUpgradePresenter {
             case .setButtonBadge(let button, itemCount: let itemCount):
                 let button = CallButton.Kind(with: button)
                 view.buttonBar.setButton(button, badgeItemCount: itemCount)
-            case .offerMediaUpgrade(let conf, accepted: let accepted, declined: let declined):
-                self.offerMediaUpgrade(with: conf, accepted: accepted, declined: declined)
             case .setRemoteVideo(let streamView):
                 view.remoteVideoView.streamView = streamView
             case .setLocalVideo(let streamView):

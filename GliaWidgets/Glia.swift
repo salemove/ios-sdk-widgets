@@ -39,12 +39,12 @@ public class Glia {
     public static let sharedInstance = Glia()
 
     /// Current engagement media type.
-    public var engagement: EngagementKind { return rootCoordinator?.engagementKind ?? .none }
+    public var engagement: EngagementKind { rootCoordinator?.engagementKind ?? .none }
 
     /// Used to monitor engagement state changes.
     public var onEvent: ((GliaEvent) -> Void)?
 
-    private var rootCoordinator: RootCoordinator?
+    private var rootCoordinator: AppCoordinator?
     private var interactor: Interactor?
 
     private init() {}
@@ -59,12 +59,12 @@ public class Glia {
         queueId: String,
         visitorContext: VisitorContext
     ) throws {
-
         let sdkConfiguration = try Salemove.Configuration(
             siteId: configuration.site,
             region: configuration.environment.region,
             authorizingMethod: configuration.authorizationMethod.coreAuthorizationMethod
         )
+
         interactor = Interactor(
             with: sdkConfiguration,
             queueID: queueId,
@@ -106,6 +106,7 @@ public class Glia {
         }
 
         let viewFactory = ViewFactory(with: theme)
+
         startRootCoordinator(
             with: interactor,
             viewFactory: viewFactory,
@@ -160,6 +161,7 @@ public class Glia {
         guard engagement != .none else {
             throw GliaError.engagementNotExist
         }
+
         rootCoordinator?.maximize()
     }
 
@@ -170,13 +172,16 @@ public class Glia {
         engagementKind: EngagementKind,
         features: Features
     ) {
-        rootCoordinator = RootCoordinator(
+        rootCoordinator = AppCoordinator(
+            engagementKind: engagementKind,
             interactor: interactor,
             viewFactory: viewFactory,
-            sceneProvider: sceneProvider,
-            engagementKind: engagementKind,
-            features: features
+            features: features,
+            sceneProvider: sceneProvider
         )
+
+        // TODO: fix events
+        /*
         rootCoordinator?.delegate = { [weak self] event in
             switch event {
             case .started:
@@ -192,6 +197,8 @@ public class Glia {
                 self?.onEvent?(.maximized)
             }
         }
+         */
+        
         rootCoordinator?.start()
     }
 
@@ -239,6 +246,7 @@ public class Glia {
             completion(.failure(GliaError.sdkIsNotConfigured))
             return
         }
+
         Salemove.sharedInstance.fetchVisitorInfo(completion)
     }
 

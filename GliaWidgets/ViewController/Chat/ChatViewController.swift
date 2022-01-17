@@ -1,8 +1,7 @@
 import MobileCoreServices
 import UIKit
 
-class ChatViewController: EngagementViewController, MediaUpgradePresenter,
-    PopoverPresenter, ScreenShareOfferPresenter {
+class ChatViewController: EngagementViewController, PopoverPresenter {
     private let viewModel: ChatViewModel
     private var lastVisibleRowIndexPath: IndexPath?
 
@@ -57,6 +56,7 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter,
         view.choiceOptionSelected = { viewModel.event(.choiceOptionSelected($0, $1)) }
         view.chatScrolledToBottom = { viewModel.event(.chatScrolled(bottomReached: $0)) }
         view.linkTapped = { viewModel.event(.linkTapped($0)) }
+        view.willDisplayItem = { viewModel.event(.willDisplayItem($0)) }
 
         viewModel.action = { action in
             switch action {
@@ -101,8 +101,6 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter,
                     from: view.messageEntryView.pickMediaButton,
                     itemSelected: itemSelected
                 )
-            case .offerMediaUpgrade(let conf, let accepted, let declined):
-                self.offerMediaUpgrade(with: conf, accepted: accepted, declined: declined)
             case .showCallBubble(let imageUrl):
                 view.showCallBubble(with: imageUrl, animated: true)
             case .updateUnreadMessageIndicator(let count):
@@ -124,8 +122,8 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter,
             with: viewFactory.theme.chat.pickMedia,
             from: sourceView,
             arrowDirections: [.down],
-            itemSelected: {
-                self.dismiss(animated: true, completion: nil)
+            itemSelected: { [weak self] in
+                self?.dismiss(animated: true, completion: nil)
                 itemSelected($0)
             }
         )

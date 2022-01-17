@@ -1,173 +1,105 @@
 import UIKit
+import PureLayout
 
-class AlertView: UIView {
-    enum ActionKind {
-        case positive
-        case negative
-    }
+final class AlertView: UIView {
+    var dismiss: (() -> Void)?
 
-    var titleImage: UIImage? {
-        get { return titleImageView.image }
-        set {
-            titleImageView.image = newValue
-
-            if newValue == nil {
-                titleImageView.removeFromSuperview()
-            } else {
-                guard titleImageView.superview == nil else { return }
-                titleImageViewContainer.addSubview(titleImageView)
-                titleImageView.autoPinEdge(toSuperviewEdge: .top)
-                titleImageView.autoPinEdge(toSuperviewEdge: .bottom)
-                titleImageView.autoPinEdge(toSuperviewEdge: .left, withInset: 0, relation: .greaterThanOrEqual)
-                titleImageView.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
-                titleImageView.autoCenterInSuperview()
-            }
-        }
-    }
-    var title: String? {
-        get { return titleLabel.text }
-        set { titleLabel.text = newValue }
-    }
-    var message: String? {
-        get { return messageLabel.text }
-        set { messageLabel.text = newValue }
-    }
-    var showsCloseButton: Bool = false {
-        didSet {
-            if showsCloseButton {
-                addCloseButton()
-            } else {
-                removeCloseButton()
-            }
-        }
-    }
-    var showsPoweredBy: Bool = false {
-        didSet {
-            if showsPoweredBy {
-                addPoweredBy()
-            } else {
-                removePoweredBy()
-            }
-        }
-    }
-
-    var actionCount: Int {
-        return actionsStackView.arrangedSubviews.count
-    }
-
-    var closeTapped: (() -> Void)?
-
-    private let style: AlertStyle
-    private let titleImageView = UIImageView()
-    private let titleImageViewContainer = UIView()
-    private let titleLabel = UILabel()
-    private let messageLabel = UILabel()
+    private let alertStyle: AlertStyle
+    private let contentView = UIView()
     private let stackView = UIStackView()
-    private let actionsStackView = UIStackView()
-    private let kContentInsets = UIEdgeInsets(top: 28, left: 32, bottom: 28, right: 32)
-    private let kCornerRadius: CGFloat = 30
-    private let kTitleImageViewSize = CGSize(width: 32, height: 32)
-    private var poweredBy: PoweredBy?
-    private var closeButton: Button?
 
-    init(with style: AlertStyle) {
-        self.style = style
+    init(alertStyle: AlertStyle) {
+        self.alertStyle = alertStyle
+
         super.init(frame: .zero)
+
         setup()
         layout()
     }
 
     @available(*, unavailable)
-    required init?(coder _: NSCoder) {
+    required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        setNeedsDisplay()
-        layer.shadowPath = UIBezierPath(
-            roundedRect: bounds,
-            byRoundingCorners: .allCorners,
-            cornerRadii: CGSize(width: kCornerRadius, height: kCornerRadius)
-        ).cgPath
-    }
-
-    func addActionView(_ actionView: UIView) {
-        actionsStackView.addArrangedSubview(actionView)
-    }
-
     private func setup() {
-        backgroundColor = style.backgroundColor
-        clipsToBounds = true
+        backgroundColor = .black.withAlphaComponent(0.25)
 
-        layer.masksToBounds = false
-        layer.cornerRadius = kCornerRadius
-        layer.shadowColor = UIColor.black.withAlphaComponent(0.2).cgColor
-        layer.shadowOffset = CGSize(width: 0.0, height: 10.0)
-        layer.shadowRadius = 30.0
-        layer.shadowOpacity = 1.0
+        contentView.backgroundColor = alertStyle.backgroundColor
+        contentView.layer.cornerRadius = 24
 
         stackView.axis = .vertical
         stackView.spacing = 16
-        stackView.addArrangedSubviews([
-            titleImageViewContainer,
-            titleLabel,
-            messageLabel,
-            actionsStackView
-        ])
-
-        titleImageView.contentMode = .scaleAspectFit
-        titleImageView.tintColor = style.titleImageColor
-
-        titleLabel.numberOfLines = 0
-        titleLabel.font = style.titleFont
-        titleLabel.textColor = style.titleColor
-        titleLabel.textAlignment = .center
-
-        messageLabel.numberOfLines = 0
-        messageLabel.font = style.messageFont
-        messageLabel.textColor = style.messageColor
-        messageLabel.textAlignment = .center
-
-        actionsStackView.spacing = 11
-        actionsStackView.distribution = .fillEqually
-        actionsStackView.axis = style.actionAxis
     }
 
     private func layout() {
-        addSubview(stackView)
-        stackView.autoPinEdgesToSuperviewEdges(with: kContentInsets)
+        addSubview(contentView)
+        contentView.autoPinEdgesToSuperviewSafeArea(with: .uniform(10), excludingEdge: .top)
+        contentView.autoPinEdge(toSuperviewSafeArea: .top, withInset: 10, relation: .greaterThanOrEqual)
 
-        titleImageView.autoSetDimensions(to: kTitleImageViewSize)
+        contentView.addSubview(stackView)
+        stackView.autoPinEdgesToSuperviewEdges(with: .horizontal(32) + .vertical(24))
     }
 
-    private func addCloseButton() {
-        guard closeButton == nil else { return }
+    func configure(for showsCloseButton: Bool) {
+        if showsCloseButton {
+            let closeButton = Button(
+                kind: .alertClose,
+                tap: { [weak self] in self?.dismiss?() }
+            )
 
-        let closeButton = Button(kind: .alertClose,
-                                 tap: { [weak self] in self?.closeTapped?() })
-        closeButton.tintColor = style.closeButtonColor
-        self.closeButton = closeButton
-        addSubview(closeButton)
-        closeButton.autoPinEdge(toSuperviewEdge: .right, withInset: 10)
-        closeButton.autoPinEdge(toSuperviewEdge: .bottom, withInset: 10)
+            closeButton.tintColor = alertStyle.closeButtonColor
+            addSubview(closeButton)
+            closeButton.autoPinEdge(toSuperviewEdge: .right, withInset: 10)
+            closeButton.autoPinEdge(toSuperviewEdge: .bottom, withInset: 10)
+        }
     }
 
-    private func removeCloseButton() {
-        closeButton?.removeFromSuperview()
+    func configure(for items: [AlertItem]) {
+        items.forEach { item in
+            let view = createView(for: item)
+
+            if
+                item.isActionsItem,
+                let lastView = stackView.arrangedSubviews.last
+            {
+                stackView.setCustomSpacing(24, after: lastView)
+            } else
+                if case .poweredByGlia = item,
+                let lastView = stackView.arrangedSubviews.last
+            {
+                stackView.setCustomSpacing(24, after: lastView)
+            }
+
+            stackView.addArrangedSubview(view)
+        }
     }
 
-    private func addPoweredBy() {
-        guard poweredBy == nil else { return }
+    private func createView(for item: AlertItem) -> UIView {
+        switch item {
+        case let .title(text):
+            return AlertTitleItemView(
+                text: text,
+                alertStyle: alertStyle
+            )
 
-        let poweredBy = PoweredBy()
-        self.poweredBy = poweredBy
+        case let .message(text):
+            return AlertMessageItemView(
+                text: text,
+                alertStyle: alertStyle
+            )
 
-        stackView.addArrangedSubview(poweredBy)
-        stackView.setCustomSpacing(23, after: actionsStackView)
-    }
+        case let .illustration(image):
+            return AlertIllustrationItemView(image: image)
 
-    private func removePoweredBy() {
-        poweredBy?.removeFromSuperview()
+        case let .actions(actions):
+            return AlertActionsItemView(
+                actions: actions,
+                alertStyle: alertStyle
+            )
+
+        case .poweredByGlia:
+            return PoweredByGliaView()
+        }
     }
 }

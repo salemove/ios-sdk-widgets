@@ -15,6 +15,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case choiceOptionSelected(ChatChoiceCardOption, String)
         case chatScrolled(bottomReached: Bool)
         case linkTapped(URL)
+        case willDisplayItem(ChatItem)
     }
 
     enum Action {
@@ -36,11 +37,6 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case removeUpload(FileUpload)
         case removeAllUploads
         case presentMediaPicker(itemSelected: (AtttachmentSourceItemKind) -> Void)
-        case offerMediaUpgrade(
-            SingleMediaUpgradeAlertConfiguration,
-            accepted: () -> Void,
-            declined: () -> Void
-        )
         case showCallBubble(imageUrl: String?)
         case updateUnreadMessageIndicator(itemCount: Int)
         case setOperatorTypingIndicatorIsHiddenTo(Bool, _ isChatScrolledToBottom: Bool)
@@ -50,12 +46,8 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case pickMedia(ObservableValue<MediaPickerEvent>)
         case takeMedia(ObservableValue<MediaPickerEvent>)
         case pickFile(ObservableValue<FilePickerEvent>)
-        case mediaUpgradeAccepted(
-            offer: MediaUpgradeOffer,
-            answer: AnswerWithSuccessBlock
-        )
         case showFile(LocalFile)
-        case call
+        case callBubbleTapped
         case openLink(URL)
     }
 
@@ -78,8 +70,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     private var pendingSection: Section<ChatItem> { sections[1] }
     private var queueOperatorSection: Section<ChatItem> { sections[2] }
     private var messagesSection: Section<ChatItem> { sections[3] }
-    private let call: ObservableValue<Call?>
-    private var unreadMessages: UnreadMessagesHandler!
+    private let messageDispatcher: MessageDispatcher
     private let screenShareHandler: ScreenShareHandler
     private let isChatScrolledToBottom = ObservableValue<Bool>(with: true)
     private let showsCallBubble: Bool
@@ -101,39 +92,36 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         interactor: Interactor,
         alertConfiguration: AlertConfiguration,
         screenShareHandler: ScreenShareHandler,
-        call: ObservableValue<Call?>,
-        unreadMessages: ObservableValue<Int>,
+        messageDispatcher: MessageDispatcher,
         showsCallBubble: Bool,
-        isWindowVisible: ObservableValue<Bool>,
         startAction: StartAction
     ) {
-        self.call = call
         self.showsCallBubble = showsCallBubble
         self.startAction = startAction
         self.screenShareHandler = screenShareHandler
+        self.messageDispatcher = messageDispatcher
+
         super.init(
             interactor: interactor,
-            alertConfiguration: alertConfiguration,
             screenShareHandler: screenShareHandler
         )
-        unreadMessages.addObserver(self) { [weak self] unreadCount, _ in
-            self?.action?(.updateUnreadMessageIndicator(itemCount: unreadCount))
-        }
-        self.unreadMessages = UnreadMessagesHandler(
-            unreadMessages: unreadMessages,
-            isWindowVisible: isWindowVisible,
-            isViewVisible: isViewActive,
-            isChatScrolledToBottom: isChatScrolledToBottom
-        )
-        self.call.addObserver(self) { [weak self] call, _ in
-            self?.onCall(call)
-        }
+
         uploader.state.addObserver(self) { [weak self] state, _ in
             self?.onUploaderStateChanged(state)
         }
         uploader.limitReached.addObserver(self) { [weak self] limitReached, _ in
             self?.action?(.pickMediaButtonEnabled(!limitReached))
         }
+
+        messageDispatcher.messageReceived.addObserver(self) { [weak self] message, _ in
+            self?.receivedMessage(message)
+        }
+    }
+
+    deinit {
+        uploader.limitReached.removeObserver(self)
+        uploader.state.removeObserver(self)
+        messageDispatcher.unreadMessagesCount.removeObserver(self)
     }
 
     func event(_ event: Event) {
@@ -150,7 +138,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case .pickMediaTapped:
             presentMediaPicker()
         case .callBubbleTapped:
-            delegate?(.call)
+            delegate?(.callBubbleTapped)
         case .fileTapped(let file):
             fileTapped(file)
         case .downloadTapped(let download):
@@ -161,6 +149,8 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             isChatScrolledToBottom.value = bottomReached
         case .linkTapped(let url):
             linkTapped(url)
+        case .willDisplayItem(let item):
+            willDisplayItem(item)
         }
     }
 
@@ -228,11 +218,8 @@ class ChatViewModel: EngagementViewModel, ViewModel {
 
                     self.action?(.scrollToBottom(animated: true))
                 } failure: { [weak self] _ in
-                    guard let self = self else { return }
-
-                    self.showAlert(
-                        with: self.alertConfiguration.unexpectedError,
-                        dismissed: nil
+                    self?.engagementDelegate?(
+                        .alert(.unexpectedError)
                     )
                 }
             }
@@ -246,12 +233,8 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         super.interactorEvent(event)
 
         switch event {
-        case .receivedMessage(let message):
-            receivedMessage(message)
         case .messagesUpdated(let messages):
             messagesUpdated(messages)
-        case .upgradeOffer(let offer, answer: let answer):
-            offerMediaUpgrade(offer, answer: answer)
         case .typingStatusUpdated(let status):
             typingStatusUpdated(status)
         default:
@@ -309,56 +292,22 @@ extension ChatViewModel {
     }
 }
 
-// MARK: Media Upgrade
+// MARK: Message
 
 extension ChatViewModel {
-    private func offerMediaUpgrade(
-        _ offer: MediaUpgradeOffer,
-        answer: @escaping AnswerWithSuccessBlock
-    ) {
-        switch offer.type {
-        case .audio:
-            offerMediaUpgrade(
-                with: alertConfiguration.audioUpgrade,
-                offer: offer,
-                answer: answer
-            )
-        case .video:
-            let configuration = offer.direction == .oneWay
-                ? alertConfiguration.oneWayVideoUpgrade
-                : alertConfiguration.twoWayVideoUpgrade
-            offerMediaUpgrade(
-                with: configuration,
-                offer: offer,
-                answer: answer
-            )
+    private func willDisplayItem(_ item: ChatItem) {
+        switch item.kind {
+        case .operatorMessage(let message, _, _):
+            messageDispatcher.markMessageAsRead(messageId: message.id)
+
+        case .choiceCard(let message, _, _, _):
+            messageDispatcher.markMessageAsRead(messageId: message.id)
+
         default:
             break
         }
     }
 
-    private func offerMediaUpgrade(
-        with configuration: SingleMediaUpgradeAlertConfiguration,
-        offer: MediaUpgradeOffer,
-        answer: @escaping AnswerWithSuccessBlock
-    ) {
-        guard isViewActive.value else { return }
-        let operatorName = interactor.engagedOperator?.firstName
-        let onAccepted = {
-            self.delegate?(.mediaUpgradeAccepted(offer: offer, answer: answer))
-            self.showCallBubble()
-        }
-        action?(.offerMediaUpgrade(
-            configuration.withOperatorName(operatorName),
-            accepted: { onAccepted() },
-            declined: { answer(false, nil) }
-        ))
-    }
-}
-
-// MARK: Message
-
-extension ChatViewModel {
     private func sendMessagePreview(_ message: String) {
         interactor.sendMessagePreview(message)
     }
@@ -395,11 +344,8 @@ extension ChatViewModel {
 
                 self.action?(.scrollToBottom(animated: true))
             } failure: { [weak self] _ in
-                guard let self = self else { return }
-
-                self.showAlert(
-                    with: self.alertConfiguration.unexpectedError,
-                    dismissed: nil
+                self?.engagementDelegate?(
+                    .alert(.unexpectedError)
                 )
             }
         } else {
@@ -473,14 +419,10 @@ extension ChatViewModel {
         return isValid
     }
 
-    private func receivedMessage(_ message: Message) {
-        guard storage.isNewMessage(message) else { return }
-
-        storage.storeMessage(
-            message,
-            queueID: interactor.queueID,
-            operator: interactor.engagedOperator
-        )
+    private func receivedMessage(_ message: Message?) {
+        guard let message = message else {
+            return
+        }
 
         switch message.sender {
         case .operator:
@@ -489,8 +431,6 @@ extension ChatViewModel {
                 operator: interactor.engagedOperator
             )
             if let item = ChatItem(with: message) {
-                unreadMessages.received(1)
-
                 guard isViewLoaded else { return }
 
                 let isChatBottomReached = isChatScrolledToBottom.value
@@ -510,7 +450,6 @@ extension ChatViewModel {
 
     private func messagesUpdated(_ messages: [Message]) {
         let newMessages = storage.newMessages(messages)
-        unreadMessages.received(newMessages.count)
 
         if !newMessages.isEmpty {
             storage.storeMessages(
@@ -538,40 +477,51 @@ extension ChatViewModel {
     private func presentMediaPicker() {
         let itemSelected = { (kind: AtttachmentSourceItemKind) -> Void in
             let media = ObservableValue<MediaPickerEvent>(with: .none)
+
             media.addObserver(self) { [weak self] event, _ in
-                guard let self = self else { return }
                 switch event {
                 case .none, .cancelled:
                     break
+
                 case .pickedMedia(let media):
-                    self.mediaPicked(media)
+                    self?.mediaPicked(media)
+
                 case .sourceNotAvailable:
-                    self.showAlert(
-                        with: self.alertConfiguration.mediaSourceNotAvailable,
-                        dismissed: nil
+                    self?.engagementDelegate?(
+                        .alert(.mediaSourceError)
                     )
+
                 case .noCameraPermission:
-                    self.showSettingsAlert(with: self.alertConfiguration.cameraSettings)
+                    self?.engagementDelegate?(
+                        .alert(.cameraSettings)
+                    )
                 }
             }
+
             let file = ObservableValue<FilePickerEvent>(with: .none)
+
             file.addObserver(self) { [weak self] event, _ in
                 switch event {
                 case .none, .cancelled:
                     break
+
                 case .pickedFile(let url):
                     self?.filePicked(url)
                 }
             }
+
             switch kind {
             case .photoLibrary:
                 self.delegate?(.pickMedia(media))
+
             case .takePhoto:
                 self.delegate?(.takeMedia(media))
+
             case .browse:
                 self.delegate?(.pickFile(file))
             }
         }
+
         action?(.presentMediaPicker(itemSelected: { itemSelected($0) }))
     }
 
@@ -699,23 +649,6 @@ extension ChatViewModel {
 // MARK: Call
 
 extension ChatViewModel {
-    private func onCall(_ call: Call?) {
-        guard let call = call else { return }
-
-        let callKind = ObservableValue<CallKind>(with: call.kind.value)
-        let callDuration = ObservableValue<Int>(with: 0)
-        let item = ChatItem(kind: .callUpgrade(callKind, duration: callDuration))
-        appendItem(item, to: messagesSection, animated: true)
-        action?(.scrollToBottom(animated: true))
-
-        call.kind.addObserver(self) { kind, _ in
-            callKind.value = kind
-        }
-        call.duration.addObserver(item) { duration, _ in
-            callDuration.value = duration
-        }
-    }
-
     private func showCallBubble() {
         let imageUrl = interactor.engagedOperator?.picture?.url
         action?(.showCallBubble(imageUrl: imageUrl))
@@ -727,23 +660,21 @@ extension ChatViewModel {
 extension ChatViewModel {
     private func sendChoiceCardResponse(_ option: ChatChoiceCardOption, to messageId: String) {
         guard let value = option.value else { return }
+
         Salemove.sharedInstance.send(
             selectedOptionValue: value
         ) { [weak self] result in
-            guard let self = self else { return }
-
             switch result {
             case .success(let message):
                 guard
                     let selection = message.attachment?.selectedOption
                 else { return }
 
-                self.respond(to: messageId, with: selection)
+                self?.respond(to: messageId, with: selection)
 
             case .failure:
-                self.showAlert(
-                    with: self.alertConfiguration.unexpectedError,
-                    dismissed: nil
+                self?.engagementDelegate?(
+                    .alert(.unexpectedError)
                 )
             }
         }

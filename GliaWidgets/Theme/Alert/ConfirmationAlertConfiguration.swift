@@ -13,6 +13,7 @@ public struct ConfirmationAlertConfiguration {
     public var positiveTitle: String?
 
     /// Indicates whether the action button's colors should be switched.
+    @available(*, deprecated, message: "Not used")
     public var switchButtonBackgroundColors = false
 
     /// Controls the appearance of the "Powered by" text and logo in the alert.

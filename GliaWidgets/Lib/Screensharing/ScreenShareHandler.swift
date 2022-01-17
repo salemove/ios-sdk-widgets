@@ -6,20 +6,28 @@ enum ScreenSharingStatus {
 }
 
 class ScreenShareHandler {
-    let status = ObservableValue<ScreenSharingStatus>(with: .stopped)
+    var status: Observable<ScreenSharingStatus> {
+        return statusSubject
+    }
+
+    private let statusSubject = CurrentValueSubject<ScreenSharingStatus>(.stopped)
     private var visitorState: VisitorScreenSharingState?
 
     func updateState(to state: VisitorScreenSharingState?) {
         visitorState = state
+
         guard let state = state else {
-            status.value = .stopped
+            statusSubject.send(.stopped)
             return
         }
+
         switch state.status {
         case .sharing:
-            status.value = .started
+            statusSubject.send(.started)
+
         case .notSharing:
-            status.value = .stopped
+            statusSubject.send(.stopped)
+
         @unknown default:
             break
         }
@@ -28,7 +36,7 @@ class ScreenShareHandler {
     func stop(completion: (() -> Void)? = nil) {
         visitorState?.localScreen?.stopSharing()
         visitorState = nil
-        status.value = .stopped
+        statusSubject.send(.stopped)
         completion?()
     }
 

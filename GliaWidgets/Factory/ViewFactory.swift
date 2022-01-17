@@ -16,7 +16,7 @@ class ViewFactory {
     }
 
     func makeAlertView() -> AlertView {
-        return AlertView(with: theme.alert)
+        return AlertView(alertStyle: theme.alert)
     }
 
     func makeBubbleView() -> BubbleView {

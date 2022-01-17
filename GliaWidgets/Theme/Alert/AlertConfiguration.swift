@@ -13,6 +13,7 @@ public struct AlertConfiguration {
     public var operatorsUnavailable: MessageAlertConfiguration
 
     /// Configuration of the media upgrade confirmation alert.
+    @available(*, deprecated, message: "Not used")
     public var mediaUpgrade: MultipleMediaUpgradeAlertConfiguration
 
     /// Configuration of the audio upgrade confirmation alert.

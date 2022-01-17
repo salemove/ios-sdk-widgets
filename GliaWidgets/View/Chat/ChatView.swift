@@ -15,6 +15,7 @@ class ChatView: EngagementView {
     var choiceOptionSelected: ((ChatChoiceCardOption, String) -> Void)!
     var chatScrolledToBottom: ((Bool) -> Void)?
     var linkTapped: ((URL) -> Void)?
+    var willDisplayItem: ((ChatItem) -> Void)?
 
     private let style: ChatStyle
     private var messageEntryViewBottomConstraint: NSLayoutConstraint!
@@ -416,5 +417,17 @@ extension ChatView: UITableViewDelegate {
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         chatScrolledToBottom?(isBottomReached(for: scrollView))
+    }
+
+    func tableView(
+        _ tableView: UITableView,
+        willDisplay cell: UITableViewCell,
+        forRowAt indexPath: IndexPath
+    ) {
+        guard
+            let item = itemForRow?(indexPath.row, indexPath.section)
+        else { return }
+
+        willDisplayItem?(item)
     }
 }

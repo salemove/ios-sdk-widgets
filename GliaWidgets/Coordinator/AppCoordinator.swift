@@ -1,19 +1,19 @@
 import UIKit
 
 final class AppCoordinator: UIViewControllerCoordinator {
-    struct Delegate {
-        var end: (() -> Void)?
+    enum Delegate {
+        case finished
     }
 
-    var delegate = Delegate()
+    var delegate: ((Delegate) -> Void)?
+    var engagementKind: EngagementKind
 
-    private let engagementKind: EngagementKind
     private let interactor: Interactor
     private let viewFactory: ViewFactory
     private let features: Features
     private let sceneProvider: SceneProvider?
     private let screenShareHandler: ScreenShareHandler
-    private let unreadMessagesHandler: UnreadMessagesHandler
+    private let messageDispatcher: MessageDispatcher
 
     private var gliaViewController: GliaViewController?
 
@@ -54,7 +54,10 @@ final class AppCoordinator: UIViewControllerCoordinator {
         self.features = features
         self.sceneProvider = sceneProvider
         self.screenShareHandler = ScreenShareHandler()
-        self.unreadMessagesHandler = UnreadMessagesHandler()
+        self.messageDispatcher = MessageDispatcher(
+            interactor: interactor,
+            chatStorage: ChatStorage()
+        )
     }
 
     @discardableResult
@@ -67,16 +70,39 @@ final class AppCoordinator: UIViewControllerCoordinator {
         return viewController
     }
 
+    func end() {
+        gliaViewController?.dismiss(
+            animated: true,
+            completion: { [weak self] in
+                self?.delegate?(.finished)
+                self?.engagementKind = .none
+            }
+        )
+    }
+
     private func presentEngagement() {
         let coordinator = EngagementCoordinator(
             interactor: interactor,
             viewFactory: viewFactory,
             screenShareHandler: screenShareHandler,
-            unreadMessagesHandler: unreadMessagesHandler,
-            engagementKind: engagementKind
+            engagementKind: engagementKind,
+            messageDispatcher: messageDispatcher
         )
 
         let viewController = coordinate(to: coordinator)
+
+        coordinator.delegate = { [weak self] in
+            switch $0 {
+            case .minimize:
+                self?.gliaViewController?.minimize(animated: true)
+
+            case .engaged(operatorImageUrl: let operatorImageUrl):
+                self?.gliaViewController?.bubbleKind = .userImage(url: operatorImageUrl)
+
+            case .finished:
+                self?.end()
+            }
+        }
 
         gliaViewController?.insertChild(viewController)
         gliaViewController?.maximize(animated: true)
@@ -110,5 +136,11 @@ extension AppCoordinator: GliaViewControllerDelegate {
             guard let gliaViewController = gliaViewController else { return }
             presenter.present(gliaViewController, animated: true)
         }
+    }
+}
+
+extension AppCoordinator {
+    func maximize() {
+        gliaViewController?.maximize(animated: true)
     }
 }

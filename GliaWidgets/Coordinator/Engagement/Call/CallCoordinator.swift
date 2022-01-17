@@ -4,11 +4,11 @@ import SalemoveSDK
 class CallCoordinator: UIViewControllerCoordinator {
     enum Delegate {
         case chat
+        case back
         case minimize
-        case endScreenShareAlert(confirmed: (() -> Void))
-        case startScreenShareAlert(operatorName: String, answer: AnswerBlock)
-        case leaveQueueAlert(confirmed: (() -> Void))
-        case endEngagementAlert(confirmed: (() -> Void))
+        case engaged(operatorImageUrl: String?)
+        case finished
+        case alert(Alert)
     }
 
     var delegate: ((Delegate) -> Void)?
@@ -17,53 +17,55 @@ class CallCoordinator: UIViewControllerCoordinator {
     private let viewFactory: ViewFactory
     private let call: Call
     private let screenShareHandler: ScreenShareHandler
-    private let unreadMessagesHandler: UnreadMessagesHandler
+    private let unreadMessagesCounter: UnreadMessagesCounter
+    private let startAction: CallViewModel.StartAction
 
     init(
         interactor: Interactor,
         viewFactory: ViewFactory,
         call: Call,
         screenShareHandler: ScreenShareHandler,
-        unreadMessagesHandler: UnreadMessagesHandler
+        unreadMessagesCounter: UnreadMessagesCounter,
+        startAction: CallViewModel.StartAction
     ) {
         self.interactor = interactor
         self.viewFactory = viewFactory
         self.call = call
         self.screenShareHandler = screenShareHandler
-        self.unreadMessagesHandler = unreadMessagesHandler
+        self.unreadMessagesCounter = unreadMessagesCounter
+        self.startAction = startAction
     }
 
     override func start() -> UIViewController {
         let viewModel = CallViewModel(
             interactor: interactor,
             screenShareHandler: screenShareHandler,
-            unreadMessagesHandler: unreadMessagesHandler,
-            call: call
+            unreadMessagesCounter: unreadMessagesCounter,
+            call: call,
+            startAction: startAction
         )
 
-        viewModel.alertDelegate = { [weak self] in
+        viewModel.engagementDelegate = { [weak self] in
             switch $0 {
-            case .leaveQueueAlert(let confirmationBlock):
-                self?.delegate?(.leaveQueueAlert(confirmed: confirmationBlock))
+            case .back:
+                self?.delegate?(.back)
 
-            case .endEngagementAlert(let confirmationBlock):
-                self?.delegate?(.endEngagementAlert(confirmed: confirmationBlock))
+            case .engaged(let operatorImageUrl):
+                self?.delegate?(.engaged(operatorImageUrl: operatorImageUrl))
 
-            case .startScreenShareAlert(let operatorName, let answer):
-                self?.delegate?(.startScreenShareAlert(operatorName: operatorName, answer: answer))
+            case .finished:
+                self?.delegate?(.finished)
 
-            case .endScreenShareAlert(let confirmationBlock):
-                self?.delegate?(.endScreenShareAlert(confirmed: confirmationBlock))
-
-            case .mediaUpgradeAlert:
-                break
+            case .alert(let alert):
+                self?.delegate?(.alert(alert))
             }
         }
-        
+
         viewModel.delegate = { [weak self] event in
             switch event {
             case .chat:
                 self?.delegate?(.chat)
+
             case .minimize:
                 self?.delegate?(.minimize)
             }

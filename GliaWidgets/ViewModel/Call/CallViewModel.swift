@@ -36,11 +36,6 @@ class CallViewModel: EngagementViewModel, ViewModel {
         case setButtonEnabled(CallButton, enabled: Bool)
         case setButtonState(CallButton, state: CallButtonState)
         case setButtonBadge(CallButton, itemCount: Int)
-        case offerMediaUpgrade(
-            SingleMediaUpgradeAlertConfiguration,
-            accepted: () -> Void,
-            declined: () -> Void
-        )
         case setRemoteVideo(StreamView?)
         case setLocalVideo(StreamView?)
     }
@@ -51,9 +46,8 @@ class CallViewModel: EngagementViewModel, ViewModel {
     }
 
     enum StartAction {
-        case engagement(mediaType: MediaType)
-        case call(offer: MediaUpgradeOffer,
-                  answer: AnswerWithSuccessBlock)
+        case startEngagement(mediaType: MediaType)
+        case fromUpgrade
     }
 
     var action: ((Action) -> Void)?
@@ -63,26 +57,25 @@ class CallViewModel: EngagementViewModel, ViewModel {
     private let startWith: StartAction
     private let durationCounter = CallDurationCounter()
     private let screenShareHandler: ScreenShareHandler
+    private let unreadMessagesCounter: UnreadMessagesCounter
 
     init(
         interactor: Interactor,
-        alertConfiguration: AlertConfiguration,
         screenShareHandler: ScreenShareHandler,
+        unreadMessagesCounter: UnreadMessagesCounter,
         call: Call,
-        unreadMessages: ObservableValue<Int>,
-        startWith: StartAction
+        startAction: StartAction
     ) {
         self.call = call
-        self.startWith = startWith
         self.screenShareHandler = screenShareHandler
+        self.unreadMessagesCounter = unreadMessagesCounter
+        self.startWith = startAction
+
         super.init(
             interactor: interactor,
-            alertConfiguration: alertConfiguration,
             screenShareHandler: screenShareHandler
         )
-        unreadMessages.addObserver(self) { [weak self] unreadCount, _ in
-            self?.action?(.setButtonBadge(.chat, itemCount: unreadCount))
-        }
+
         call.kind.addObserver(self) { [weak self] kind, _ in
             self?.onKindChanged(kind)
         }
@@ -98,12 +91,25 @@ class CallViewModel: EngagementViewModel, ViewModel {
         call.duration.addObserver(self) { [weak self] duration, _ in
             self?.onDurationChanged(duration)
         }
+        unreadMessagesCounter.unreadMessagesCount.addObserver(self) { [weak self] count, _ in
+            self?.action?(.setButtonBadge(.chat, itemCount: count))
+        }
+    }
+
+    deinit {
+        call.kind.removeObserver(self)
+        call.state.removeObserver(self)
+        call.video.stream.removeObserver(self)
+        call.audio.stream.removeObserver(self)
+        call.duration.removeObserver(self)
+        unreadMessagesCounter.unreadMessagesCount.removeObserver(self)
     }
 
     func event(_ event: Event) {
         switch event {
         case .viewDidLoad:
             start()
+
         case .callButtonTapped(let button):
             callButtonTapped(button)
         }
@@ -114,13 +120,11 @@ class CallViewModel: EngagementViewModel, ViewModel {
         update(for: call.kind.value)
 
         switch startWith {
-        case .engagement(let mediaType):
+        case .startEngagement(let mediaType):
             enqueue(mediaType: mediaType)
 
-        case .call(offer: let offer, answer: let answer):
-            call.upgrade(to: offer)
+        case .fromUpgrade:
             showConnecting()
-            answer(true, nil)
         }
     }
 
@@ -131,7 +135,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
         case .enqueueing:
             action?(.queue)
         case .engaged:
-            if case .engagement = startWith {
+            if case .startEngagement = startWith {
                 showConnecting()
             }
 
@@ -203,14 +207,16 @@ class CallViewModel: EngagementViewModel, ViewModel {
         case let mediaError as MediaError:
             switch mediaError {
             case .permissionDenied:
-                showSettingsAlert(
-                    with: alertConfiguration.microphoneSettings
+                engagementDelegate?(
+                    .alert(.microphoneSettings)
                 )
+
             default:
-                showAlert(for: error)
+                handleError(error)
             }
+
         default:
-            showAlert(for: error)
+            handleError(error)
         }
     }
 
@@ -219,12 +225,16 @@ class CallViewModel: EngagementViewModel, ViewModel {
         case let mediaError as MediaError:
             switch mediaError {
             case .permissionDenied:
-                showSettingsAlert(with: alertConfiguration.cameraSettings)
+                engagementDelegate?(
+                    .alert(.cameraSettings)
+                )
+
             default:
-                showAlert(for: error)
+                handleError(error)
             }
+
         default:
-            showAlert(for: error)
+            handleError(error)
         }
     }
 
@@ -240,52 +250,9 @@ class CallViewModel: EngagementViewModel, ViewModel {
             handleAudioStreamError(error)
         case .videoStreamError(let error):
             handleVideoStreamError(error)
-        case .upgradeOffer(let offer, answer: let answer):
-            offerMediaUpgrade(offer, answer: answer)
         default:
             break
         }
-    }
-}
-
-extension CallViewModel {
-    private func offerMediaUpgrade(
-        _ offer: MediaUpgradeOffer,
-        answer: @escaping AnswerWithSuccessBlock
-    ) {
-        switch offer.type {
-        case .video:
-            let configuration = offer.direction == .oneWay
-                ? alertConfiguration.oneWayVideoUpgrade
-                : alertConfiguration.twoWayVideoUpgrade
-            offerMediaUpgrade(
-                with: configuration,
-                offer: offer,
-                answer: answer
-            )
-        default:
-            break
-        }
-    }
-
-    private func offerMediaUpgrade(
-        with configuration: SingleMediaUpgradeAlertConfiguration,
-        offer: MediaUpgradeOffer,
-        answer: @escaping AnswerWithSuccessBlock
-    ) {
-        guard isViewActive.value else { return }
-        let operatorName = interactor.engagedOperator?.firstName
-        let onAccepted = {
-            self.call.upgrade(to: offer)
-            answer(true, nil)
-        }
-        action?(
-            .offerMediaUpgrade(
-                configuration.withOperatorName(operatorName),
-                accepted: { onAccepted() },
-                declined: { answer(false, nil) }
-            )
-        )
     }
 }
 

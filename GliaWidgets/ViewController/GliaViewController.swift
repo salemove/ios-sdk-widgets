@@ -14,12 +14,14 @@ class GliaViewController: UIViewController {
         didSet { bubbleWindow?.bubbleKind = bubbleKind }
     }
 
-    private weak var delegate: GliaViewControllerDelegate?
     private let bubbleView: BubbleView?
+    private let features: Features
+
     private var bubbleWindow: BubbleWindow?
     private var sceneProvider: SceneProvider?
     private var animationImageView: UIImageView?
-    private let features: Features
+
+    private weak var delegate: GliaViewControllerDelegate?
 
     init(
         bubbleView: BubbleView,
@@ -29,7 +31,9 @@ class GliaViewController: UIViewController {
         self.bubbleView = bubbleView
         self.delegate = delegate
         self.features = features
+
         super.init(nibName: nil, bundle: nil)
+
         setup()
     }
 
@@ -44,7 +48,9 @@ class GliaViewController: UIViewController {
         self.delegate = delegate
         self.sceneProvider = sceneProvider
         self.features = features
+
         super.init(nibName: nil, bundle: nil)
+
         setup()
     }
 
@@ -67,14 +73,17 @@ class GliaViewController: UIViewController {
                 self.bubbleWindow = nil
             }
         )
+
         delegate?.event(.maximized)
     }
 
     func minimize(animated: Bool) {
         defer { delegate?.event(.minimized) }
+
         guard let bubbleView = bubbleView else {
             return
         }
+
         bubbleView.kind = bubbleKind
 
         let bubbleWindow = makeBubbleWindow(bubbleView: bubbleView)
@@ -124,6 +133,7 @@ class GliaViewController: UIViewController {
                 .connectedScenes
                 .filter { $0.activationState == .foregroundActive }
                 .first
+
             return scene as? UIWindowScene
         }
     }

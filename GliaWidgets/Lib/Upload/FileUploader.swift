@@ -45,6 +45,7 @@ class FileUploader {
         return Attachment(files: files)
     }
     var count: Int { return uploads.count }
+
     let state = ObservableValue<State>(with: .idle)
     let limitReached = ObservableValue<Bool>(with: false)
 

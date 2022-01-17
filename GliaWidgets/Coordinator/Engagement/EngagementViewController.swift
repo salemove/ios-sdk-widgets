@@ -45,11 +45,9 @@ class EngagementViewController: ViewController {
 
         viewModel.engagementAction = { action in
             switch action {
-            case .showSettingsAlert(let conf, cancelled: let cancelled):
-                // TODO
-                break
             case .showEndButton:
                 view.header.showEndButton()
+
             case .showEndScreenShareButton:
                 view.header.showEndScreenSharingButton()
             }

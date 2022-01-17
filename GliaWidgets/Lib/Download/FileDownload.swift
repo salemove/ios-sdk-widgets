@@ -24,13 +24,18 @@ class FileDownload {
 
     enum State {
         case none
-        case downloading(progress: ObservableValue<Double>)
+        case downloading(progress: Observable<Double>)
         case downloaded(LocalFile)
         case error(Error)
     }
 
-    let state = ObservableValue<State>(with: .none)
+    var state: Observable<State> {
+        stateSubject
+    }
+
     let file: ChatEngagementFile
+
+    private let stateSubject = CurrentValueSubject<State>(.none)
 
     private var storageID: String? {
         if let fileID = file.id, let fileName = file.name {
@@ -46,40 +51,41 @@ class FileDownload {
         self.storage = storage
 
         if file.isDeleted == true {
-            state.value = .error(.deleted)
+            stateSubject.send(.error(.deleted))
         } else if let storageID = storageID, storage.hasData(for: storageID) {
             let url = storage.url(for: storageID)
             let localFile = LocalFile(with: url)
-            state.value = .downloaded(localFile)
+            stateSubject.send(.downloaded(localFile))
         }
     }
 
     func startDownload() {
         guard let fileUrl = file.url else {
-            state.value = .error(.missingFileURL)
+            stateSubject.value = .error(.missingFileURL)
             return
         }
 
         let engagementFile = EngagementFile(url: fileUrl)
+        let progressSubject = CurrentValueSubject<Double>(0)
 
-        let progress = ObservableValue<Double>(with: 0)
         let onProgress: EngagementFileProgressBlock = {
-            if case .downloading(progress: let progress) = self.state.value {
-                progress.value = $0.fractionCompleted
+            if case .downloading = self.stateSubject.value {
+                progressSubject.send($0.fractionCompleted)
             }
         }
+
         let onCompletion: EngagementFileFetchCompletionBlock = { data, error in
             if let data = data, let storageID = self.storageID {
                 let url = self.storage.url(for: storageID)
                 let file = LocalFile(with: url)
                 self.storage.store(data.data, for: storageID)
-                self.state.value = .downloaded(file)
+                self.stateSubject.send(.downloaded(file))
             } else if let error = error {
-                self.state.value = .error(Error(with: error))
+                self.stateSubject.send(.error(Error(with: error)))
             }
         }
 
-        state.value = .downloading(progress: progress)
+        stateSubject.send(.downloading(progress: progressSubject))
 
         Salemove.sharedInstance.fetchFile(
             engagementFile: engagementFile,

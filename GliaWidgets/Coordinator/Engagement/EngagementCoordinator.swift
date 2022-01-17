@@ -4,6 +4,8 @@ import SalemoveSDK
 final class EngagementCoordinator: UIViewControllerCoordinator {
     enum Delegate {
         case minimize
+        case engaged(operatorImageUrl: String?)
+        case finished
     }
 
     var delegate: ((Delegate) -> Void)?
@@ -11,8 +13,8 @@ final class EngagementCoordinator: UIViewControllerCoordinator {
     private let interactor: Interactor
     private let viewFactory: ViewFactory
     private let screenShareHandler: ScreenShareHandler
-    private let unreadMessagesHandler: UnreadMessagesHandler
     private let engagementKind: EngagementKind
+    private let messageDispatcher: MessageDispatcher
 
     private weak var presenter: UINavigationController?
     private var alertPresenter: AlertPresenter?
@@ -21,14 +23,14 @@ final class EngagementCoordinator: UIViewControllerCoordinator {
         interactor: Interactor,
         viewFactory: ViewFactory,
         screenShareHandler: ScreenShareHandler,
-        unreadMessagesHandler: UnreadMessagesHandler,
-        engagementKind: EngagementKind
+        engagementKind: EngagementKind,
+        messageDispatcher: MessageDispatcher
     ) {
         self.interactor = interactor
         self.viewFactory = viewFactory
         self.screenShareHandler = screenShareHandler
-        self.unreadMessagesHandler = unreadMessagesHandler
         self.engagementKind = engagementKind
+        self.messageDispatcher = messageDispatcher
 
         super.init()
     }
@@ -52,103 +54,96 @@ final class EngagementCoordinator: UIViewControllerCoordinator {
     private func createRootViewController() -> Coordinated {
         switch engagementKind {
         case .chat:
-            return createChat(showsCallBubble: false)
+            return createChat(startAction: .startEngagement)
 
         case .audioCall:
-            return createCall(ofKind: .audio)
+            return createCall(ofKind: .audio, startAction: .startEngagement(mediaType: .audio))
 
         case .videoCall:
-            return createCall(ofKind: .video)
+            return createCall(ofKind: .video, startAction: .startEngagement(mediaType: .video))
 
         case .none:
-            fatalError("EngagementKind cannot be none. Remove once none is deprecated")
+            fatalError("EngagementKind cannot be none.")
         }
     }
 
-    private func createChat(showsCallBubble: Bool) -> Coordinated {
-        // TODO: startAction
+    private func createChat(
+        startAction: ChatViewModel.StartAction
+    ) -> Coordinated {
         let coordinator = ChatCoordinator(
             interactor: interactor,
             viewFactory: viewFactory,
-            showsCallBubble: showsCallBubble,
+            showsCallBubble: startAction == .none,
             screenShareHandler: screenShareHandler,
-            unreadMessagesHandler: unreadMessagesHandler,
-            startAction: .none
+            messageDispatcher: messageDispatcher,
+            startAction: startAction
         )
 
         coordinator.delegate = { [weak self] in
             switch $0 {
             case .back:
+                if self?.presenter?.viewControllers.count == 1 {
+                    self?.delegate?(.minimize)
+                } else {
+                    self?.presenter?.popViewController(animated: true)
+                }
+
+            case .callBubbleTapped:
                 self?.presenter?.popViewController(animated: true)
 
-            case .call:
-                self?.presenter?.popViewController(animated: true)
-
-            case .engaged(operatorImageUrl: let operatorImageUrl):
-                break
-
-            case .mediaUpgradeAccepted(offer: let offer, answer: let answer):
-                break
+            case .engaged(let operatorImageUrl):
+                self?.delegate?(.engaged(operatorImageUrl: operatorImageUrl))
 
             case .finished:
-                break
+                self?.delegate?(.finished)
 
-            case .leaveQueueAlert(let confirmationBlock):
-                self?.presentExitQueue(confirmed: confirmationBlock)
-
-            case .endEngagementAlert(let confirmationBlock):
-                self?.presentEndEngagement(confirmed: confirmationBlock)
-
-            case .startScreenShareAlert(let operatorName, let answer):
-                self?.presentStartScreenShare(
-                    operatorName: operatorName,
-                    answer: answer
-                )
-
-            case .endScreenShareAlert(let confirmationBlock):
-                self?.presentEndScreenShare(confirmed: confirmationBlock)
-
-            case .mediaUpgradeAlert(let offer, let answerBlock):
-                self?.presentMediaUpgrade(offer: offer, answer: answerBlock)
+            case .alert(let alert):
+                self?.presentAlert(alert: alert)
             }
         }
 
         return coordinate(to: coordinator)
     }
 
-    private func createCall(ofKind callKind: CallKind) -> Coordinated {
+    private func createCall(
+        ofKind callKind: CallKind,
+        startAction: CallViewModel.StartAction
+    ) -> Coordinated {
+        let call = Call(callKind)
         let coordinator = CallCoordinator(
             interactor: interactor,
             viewFactory: viewFactory,
-            call: Call(callKind),
+            call: call,
             screenShareHandler: screenShareHandler,
-            unreadMessagesHandler: unreadMessagesHandler
+            unreadMessagesCounter: messageDispatcher,
+            startAction: startAction
         )
 
         coordinator.delegate = { [weak self] in
             switch $0 {
             case .chat:
-                if let viewController = self?.createChat(showsCallBubble: true) {
+                if let viewController = self?.createChat(startAction: .none) {
                     self?.presenter?.pushViewController(viewController, animated: true)
                 }
 
             case .minimize:
                 self?.delegate?(.minimize)
 
-            case .leaveQueueAlert(let confirmationBlock):
-                self?.presentExitQueue(confirmed: confirmationBlock)
+            case .back:
+                if self?.presenter?.viewControllers.count == 1 {
+                    self?.delegate?(.minimize)
+                } else {
+                    self?.presenter?.popViewController(animated: true)
+                }
 
-            case .endEngagementAlert(let confirmationBlock):
-                self?.presentEndEngagement(confirmed: confirmationBlock)
+            case .engaged(operatorImageUrl: let operatorImageUrl):
+                self?.delegate?(.engaged(operatorImageUrl: operatorImageUrl))
 
-            case .startScreenShareAlert(let operatorName, let answer):
-                self?.presentStartScreenShare(
-                    operatorName: operatorName,
-                    answer: answer
-                )
+            case .finished:
+                self?.delegate?(.finished)
 
-            case .endScreenShareAlert(let confirmationBlock):
-                self?.presentEndScreenShare(confirmed: confirmationBlock)
+            case .alert(let alert):
+                self?.presentAlert(alert: alert)
             }
         }
 
@@ -157,9 +152,201 @@ final class EngagementCoordinator: UIViewControllerCoordinator {
 }
 
 extension EngagementCoordinator {
+    private func presentAlert(alert: Alert) {
+        switch alert {
+        case .leaveQueueAlert(let confirmed):
+            presentExitQueue(confirmed: confirmed)
+
+        case .endEngagementAlert(let confirmed):
+            presentEndEngagement(confirmed: confirmed)
+
+        case .operatorEndedEngagement:
+            presentOperatorEndedEngagement()
+
+        case .mediaUpgradeAlert(let offer, let answer, let operatorName):
+            presentMediaUpgrade(offer: offer, answer: answer, operatorName: operatorName)
+
+        case .mediaSourceError:
+            presentMediaSourceErrorAlert()
+
+        case .endScreenShareAlert(let confirmed):
+            presentEndScreenShare(confirmed: confirmed)
+
+        case .startScreenShareAlert(let answer, let operatorName):
+            presentStartScreenShare(answer: answer, operatorName: operatorName)
+
+        case .cameraSettings:
+            break
+
+        case .microphoneSettings:
+            break
+
+        case .operatorsUnavailable:
+            presentOperatorsUnavailable()
+
+        case .unexpectedError:
+            presentUnexpectedError()
+
+        case .apiError:
+            presentApiError()
+        }
+    }
+}
+
+extension EngagementCoordinator {
+    private func presentOperatorEndedEngagement() {
+        let properties = EngagementEndedAlertProperties(
+            configuration: viewFactory.theme.alertConfiguration.operatorEndedEngagement
+        )
+
+        let coordinator = AlertCoordinator(
+            properties: properties,
+            viewFactory: viewFactory
+        )
+
+        let viewController = coordinate(to: coordinator)
+
+        properties.action.handler = { [weak self] in
+            self?.alertPresenter?.dismiss(
+                view: viewController,
+                animated: true,
+                completion: { [weak self] in
+                    self?.delegate?(.finished)
+                }
+            )
+        }
+
+        alertPresenter?.present(
+            view: viewController,
+            animated: true,
+            completion: nil
+        )
+    }
+
+    private func presentMediaSourceErrorAlert() {
+        let properties = MediaSourceErrorAlertProperties(
+            configuration: viewFactory.theme.alertConfiguration.mediaSourceNotAvailable
+        )
+
+        let coordinator = AlertCoordinator(
+            properties: properties,
+            viewFactory: viewFactory
+        )
+
+        let viewController = coordinate(to: coordinator)
+
+        coordinator.delegate = { [weak self] in
+            switch $0 {
+            case .dismiss:
+                self?.alertPresenter?.dismiss(
+                    view: viewController,
+                    animated: true,
+                    completion: nil
+                )
+            }
+        }
+
+        alertPresenter?.present(
+            view: viewController,
+            animated: true,
+            completion: nil
+        )
+    }
+
+    private func presentOperatorsUnavailable() {
+        let properties = OperatorsUnavailableAlertProperties(
+            configuration: viewFactory.theme.alertConfiguration.operatorsUnavailable
+        )
+
+        let coordinator = AlertCoordinator(
+            properties: properties,
+            viewFactory: viewFactory
+        )
+
+        let viewController = coordinate(to: coordinator)
+
+        coordinator.delegate = { [weak self] in
+            switch $0 {
+            case .dismiss:
+                self?.alertPresenter?.dismiss(
+                    view: viewController,
+                    animated: true,
+                    completion: nil
+                )
+            }
+        }
+
+        alertPresenter?.present(
+            view: viewController,
+            animated: true,
+            completion: nil
+        )
+    }
+
+    private func presentUnexpectedError() {
+        let properties = UnexpectedErrorAlertProperties(
+            configuration: viewFactory.theme.alertConfiguration.unexpectedError
+        )
+
+        let coordinator = AlertCoordinator(
+            properties: properties,
+            viewFactory: viewFactory
+        )
+
+        let viewController = coordinate(to: coordinator)
+
+        coordinator.delegate = { [weak self] in
+            switch $0 {
+            case .dismiss:
+                self?.alertPresenter?.dismiss(
+                    view: viewController,
+                    animated: true,
+                    completion: nil
+                )
+            }
+        }
+
+        alertPresenter?.present(
+            view: viewController,
+            animated: true,
+            completion: nil
+        )
+    }
+
+    private func presentApiError() {
+        let properties = APIErrorAlertProperties(
+            configuration: viewFactory.theme.alertConfiguration.apiError
+        )
+
+        let coordinator = AlertCoordinator(
+            properties: properties,
+            viewFactory: viewFactory
+        )
+
+        let viewController = coordinate(to: coordinator)
+
+        coordinator.delegate = { [weak self] in
+            switch $0 {
+            case .dismiss:
+                self?.alertPresenter?.dismiss(
+                    view: viewController,
+                    animated: true,
+                    completion: nil
+                )
+            }
+        }
+
+        alertPresenter?.present(
+            view: viewController,
+            animated: true,
+            completion: nil
+        )
+    }
+
     private func presentMediaUpgrade(
         offer: MediaUpgradeOffer,
-        answer: @escaping AnswerWithSuccessBlock
+        answer: @escaping AnswerWithSuccessBlock,
+        operatorName: String
     ) {
         var properties: MediaUpgradeProperties
 
@@ -167,19 +354,19 @@ extension EngagementCoordinator {
         case (.audio, _):
             properties = MediaUpgradeToAudioAlerProperties(
                 configuration: viewFactory.theme.alertConfiguration.audioUpgrade,
-                operatorName: "Kuldar-Daniel"
+                operatorName: operatorName
             )
 
         case (.video, .oneWay):
-            properties = MediaUpgradeToAudioAlerProperties(
+            properties = MediaUpgradeToOneWayVideoAlertProperties(
                 configuration: viewFactory.theme.alertConfiguration.oneWayVideoUpgrade,
-                operatorName: "Kuldar-Daniel"
+                operatorName: operatorName
             )
 
         case (.video, .twoWay):
-            properties = MediaUpgradeToAudioAlerProperties(
+            properties = MediaUpgradeToTwoWayVideoAlertProperties(
                 configuration: viewFactory.theme.alertConfiguration.twoWayVideoUpgrade,
-                operatorName: "Kuldar-Daniel"
+                operatorName: operatorName
             )
 
         default:
@@ -209,7 +396,12 @@ extension EngagementCoordinator {
                     answer(true, nil)
 
                     self.presenter?.setViewControllers(
-                        [self.createCall(ofKind: callKind)],
+                        [
+                            self.createCall(
+                                ofKind: callKind,
+                                startAction: .fromUpgrade
+                            )
+                        ],
                         animated: true
                     )
                 }
@@ -234,8 +426,8 @@ extension EngagementCoordinator {
     }
 
     private func presentStartScreenShare(
-        operatorName: String,
-        answer: @escaping AnswerBlock
+        answer: @escaping AnswerBlock,
+        operatorName: String
     ) {
         let properties = StartScreenShareAlertProperties(
             configuration: viewFactory.theme.alertConfiguration.screenShareOffer,
@@ -258,7 +450,6 @@ extension EngagementCoordinator {
         }
 
         properties.declineAction.handler = { [weak self] in
-            print("decline")
             self?.alertPresenter?.dismiss(
                 view: viewController,
                 animated: true,
