@@ -180,25 +180,26 @@ public class Glia {
             sceneProvider: sceneProvider
         )
 
-        // TODO: fix events
-        /*
-        rootCoordinator?.delegate = { [weak self] event in
-            switch event {
+        rootCoordinator?.delegate = { [weak self] in
+            switch $0 {
             case .started:
                 self?.onEvent?(.started)
-            case .engagementChanged(let engagementKind):
-                self?.onEvent?(.engagementChanged(engagementKind))
+
             case .ended:
                 self?.rootCoordinator = nil
                 self?.onEvent?(.ended)
+
             case .minimized:
                 self?.onEvent?(.minimized)
+
             case .maximized:
                 self?.onEvent?(.maximized)
+
+            case .engagementChanged(let engagementKind):
+                self?.onEvent?(.engagementChanged(engagementKind))
             }
         }
-         */
-        
+
         rootCoordinator?.start()
     }
 

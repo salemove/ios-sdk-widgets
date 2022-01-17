@@ -5,15 +5,21 @@ final class EngagementCoordinator: UIViewControllerCoordinator {
     enum Delegate {
         case minimize
         case engaged(operatorImageUrl: String?)
-        case finished
+        case started
+        case ended
+        case engagementChanged(EngagementKind)
     }
 
     var delegate: ((Delegate) -> Void)?
+    var engagementKind: EngagementKind {
+        didSet {
+            delegate?(.engagementChanged(engagementKind))
+        }
+    }
 
     private let interactor: Interactor
     private let viewFactory: ViewFactory
     private let screenShareHandler: ScreenShareHandler
-    private let engagementKind: EngagementKind
     private let messageDispatcher: MessageDispatcher
 
     private weak var presenter: UINavigationController?
@@ -36,6 +42,10 @@ final class EngagementCoordinator: UIViewControllerCoordinator {
     }
 
     override func start() -> Coordinated {
+        defer {
+            delegate?(.started)
+        }
+
         let rootViewController = createRootViewController()
         let navigationController = EngagementNavigationController(
             rootViewController: rootViewController
@@ -103,7 +113,7 @@ final class EngagementCoordinator: UIViewControllerCoordinator {
                 self?.delegate?(.engaged(operatorImageUrl: operatorImageUrl))
 
             case .finished:
-                self?.delegate?(.finished)
+                self?.delegate?(.ended)
 
             case .alert(let alert):
                 self?.presentAlert(alert: alert)
@@ -153,7 +163,7 @@ final class EngagementCoordinator: UIViewControllerCoordinator {
                 self?.delegate?(.engaged(operatorImageUrl: operatorImageUrl))
 
             case .finished:
-                self?.delegate?(.finished)
+                self?.delegate?(.ended)
 
             case .alert(let alert):
                 self?.presentAlert(alert: alert)
@@ -224,7 +234,7 @@ extension EngagementCoordinator {
                 view: viewController,
                 animated: true,
                 completion: { [weak self] in
-                    self?.delegate?(.finished)
+                    self?.delegate?(.ended)
                 }
             )
         }
@@ -400,7 +410,8 @@ extension EngagementCoordinator {
                 completion: { [weak self] in
                     guard
                         let self = self,
-                        let callKind = CallKind(with: offer)
+                        let callKind = CallKind(with: offer),
+                        let engagementKind = EngagementKind(offer: offer)
                     else {
                         answer(false, nil)
                         return
@@ -418,6 +429,8 @@ extension EngagementCoordinator {
                         ],
                         animated: true
                     )
+
+                    self.engagementKind = engagementKind
                 }
             )
         }
@@ -581,5 +594,23 @@ extension EngagementCoordinator {
             animated: true,
             completion: nil
         )
+    }
+}
+
+extension EngagementKind {
+    init?(offer: MediaUpgradeOffer) {
+        switch offer.type {
+        case .audio:
+            self = .audioCall
+
+        case .video:
+            self = .videoCall
+
+        case .text:
+            self = .chat
+
+        default:
+            return nil
+        }
     }
 }

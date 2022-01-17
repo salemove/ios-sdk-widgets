@@ -2,11 +2,19 @@ import UIKit
 
 final class AppCoordinator: UIViewControllerCoordinator {
     enum Delegate {
-        case finished
+        case started
+        case ended
+        case engagementChanged(EngagementKind)
+        case minimized
+        case maximized
     }
 
     var delegate: ((Delegate) -> Void)?
-    var engagementKind: EngagementKind
+    var engagementKind: EngagementKind {
+        didSet {
+            delegate?(.engagementChanged(engagementKind))
+        }
+    }
 
     private let interactor: Interactor
     private let viewFactory: ViewFactory
@@ -74,7 +82,7 @@ final class AppCoordinator: UIViewControllerCoordinator {
         gliaViewController?.dismiss(
             animated: true,
             completion: { [weak self] in
-                self?.delegate?(.finished)
+                self?.delegate?(.ended)
                 self?.engagementKind = .none
             }
         )
@@ -89,8 +97,6 @@ final class AppCoordinator: UIViewControllerCoordinator {
             messageDispatcher: messageDispatcher
         )
 
-        let viewController = coordinate(to: coordinator)
-
         coordinator.delegate = { [weak self] in
             switch $0 {
             case .minimize:
@@ -99,10 +105,18 @@ final class AppCoordinator: UIViewControllerCoordinator {
             case .engaged(operatorImageUrl: let operatorImageUrl):
                 self?.gliaViewController?.bubbleKind = .userImage(url: operatorImageUrl)
 
-            case .finished:
+            case .started:
+                self?.delegate?(.started)
+
+            case .ended:
                 self?.end()
+
+            case .engagementChanged(let engagementKind):
+                self?.engagementKind = engagementKind
             }
         }
+
+        let viewController = coordinate(to: coordinator)
 
         gliaViewController?.insertChild(viewController)
         gliaViewController?.maximize(animated: true)
@@ -131,10 +145,12 @@ extension AppCoordinator: GliaViewControllerDelegate {
         switch event {
         case .minimized:
             gliaViewController?.presentingViewController?.dismiss(animated: true)
+            delegate?(.minimized)
 
         case .maximized:
             guard let gliaViewController = gliaViewController else { return }
             presenter.present(gliaViewController, animated: true)
+            delegate?(.maximized)
         }
     }
 }
