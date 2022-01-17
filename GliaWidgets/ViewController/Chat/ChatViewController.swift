@@ -58,7 +58,7 @@ class ChatViewController: EngagementViewController, PopoverPresenter {
         view.linkTapped = { viewModel.event(.linkTapped($0)) }
         view.willDisplayItem = { viewModel.event(.willDisplayItem($0)) }
 
-        viewModel.action = { action in
+        viewModel.action = { [weak self] action in
             switch action {
             case .queue:
                 view.setConnectState(.queue, animated: false)
@@ -97,7 +97,7 @@ class ChatViewController: EngagementViewController, PopoverPresenter {
             case .removeAllUploads:
                 view.messageEntryView.uploadListView.removeAllUploadViews()
             case .presentMediaPicker(let itemSelected):
-                self.presentMediaPicker(
+                self?.presentMediaPicker(
                     from: view.messageEntryView.pickMediaButton,
                     itemSelected: itemSelected
                 )
@@ -109,6 +109,7 @@ class ChatViewController: EngagementViewController, PopoverPresenter {
                 if isChatScrolledToBottom {
                     view.scrollToBottom(animated: true)
                 }
+
                 view.setOperatorTypingIndicatorIsHidden(to: isHidden)
             }
         }

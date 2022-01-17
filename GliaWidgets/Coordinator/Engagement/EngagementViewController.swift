@@ -7,6 +7,7 @@ class EngagementViewController: ViewController {
     init(viewModel: EngagementViewModel, viewFactory: ViewFactory) {
         self.viewModel = viewModel
         self.viewFactory = viewFactory
+        
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -22,6 +23,7 @@ class EngagementViewController: ViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         if let view = self.view as? EngagementView {
             bind(viewModel: viewModel, to: view)
         }
@@ -38,10 +40,10 @@ class EngagementViewController: ViewController {
     }
 
     private func bind(viewModel: EngagementViewModel, to view: EngagementView) {
-        view.header.endButton.tap = { [weak self] in self?.viewModel.event(.closeTapped) }
-        view.header.endScreenShareButton.tap = { [weak self] in self?.viewModel.event(.endScreenSharingTapped) }
-        view.header.backButton.tap = { [weak self] in self?.viewModel.event(.backTapped) }
-        view.header.closeButton.tap = { [weak self] in self?.viewModel.event(.closeTapped) }
+        view.header.endButton.tap = { viewModel.event(.closeTapped) }
+        view.header.endScreenShareButton.tap = { viewModel.event(.endScreenSharingTapped) }
+        view.header.backButton.tap = { viewModel.event(.backTapped) }
+        view.header.closeButton.tap = { viewModel.event(.closeTapped) }
 
         viewModel.engagementAction = { action in
             switch action {

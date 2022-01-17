@@ -55,47 +55,61 @@ enum MediaStream<Streamable> {
 }
 
 class MediaChannel<Streamable> {
-    let stream = ObservableValue<MediaStream<Streamable>>(with: .none)
-    private(set) var neededDirection: MediaDirection = .twoWay
-
-    func setNeededDirection(_ direction: MediaDirection) {
-        neededDirection = direction
+    var stream: Observable<MediaStream<Streamable>> {
+        streamSubject
     }
+
+    fileprivate let streamSubject = CurrentValueSubject<MediaStream<Streamable>>(.none)
 }
 
 class Call {
     let id = UUID().uuidString
-    let kind = ObservableValue<CallKind>(with: .audio)
-    let state = ObservableValue<CallState>(with: .none)
-    let duration = ObservableValue<Int>(with: 0)
     let audio = MediaChannel<AudioStreamable>()
     let video = MediaChannel<VideoStreamable>()
+
+    var kind: Observable<CallKind> {
+        kindSubject
+    }
+
+    var state: Observable<CallState> {
+        stateSubject
+    }
+
+    var duration: Observable<Int> {
+        durationSubject
+    }
+
+    private let kindSubject = CurrentValueSubject<CallKind>(.audio)
+    private let stateSubject = CurrentValueSubject<CallState>(.none)
+    private let durationSubject = CurrentValueSubject<Int>(0)
     private(set) var audioPortOverride = AVAudioSession.PortOverride.none
 
     init(_ kind: CallKind) {
-        self.kind.value = kind
-    }
-
-    func upgrade(to offer: MediaUpgradeOffer) {
-        setKind(for: offer.type)
-        setNeededDirection(offer.direction, for: offer.type)
-        state.value = .upgrading
+        self.kindSubject.send(kind)
     }
 
     func updateAudioStream(with stream: AudioStreamable) {
-        updateMediaStream(audio.stream,
-                          with: stream,
-                          isRemote: stream.isRemote)
+        updateMediaStreamFor(
+            channel: audio,
+            with: stream,
+            isRemote: stream.isRemote
+        )
     }
 
     func updateVideoStream(with stream: VideoStreamable) {
-        updateMediaStream(video.stream,
-                          with: stream,
-                          isRemote: stream.isRemote)
+        updateMediaStreamFor(
+            channel: video,
+            with: stream,
+            isRemote: stream.isRemote
+        )
+    }
+
+    func updateDuration(with duration: Int) {
+        durationSubject.send(duration)
     }
 
     func toggleVideo() {
-        video.stream.value.localStream.map {
+        video.stream.value?.localStream.map {
             if $0.isPaused {
                 $0.resume()
             } else {
@@ -105,7 +119,7 @@ class Call {
     }
 
     func toggleMute() {
-        audio.stream.value.localStream.map {
+        audio.stream.value?.localStream.map {
             if $0.isMuted {
                 $0.unmute()
             } else {
@@ -137,82 +151,41 @@ class Call {
     }
 
     func end() {
-        audio.stream.value = .none
-        video.stream.value = .none
-        state.value = .ended
+        audio.streamSubject.send(.none)
+        video.streamSubject.send(.none)
+        stateSubject.send(.ended)
     }
 
-    private func setKind(for type: MediaType) {
-        switch type {
-        case .audio:
-            kind.value = .audio
-        case .video:
-            kind.value = .video
-        default:
-            break
-        }
-    }
+    private func updateMediaStreamFor<Streamable>(
+        channel: MediaChannel<Streamable>,
+        with stream: Streamable,
+        isRemote: Bool
+    ) {
+        guard
+            let channelStream = channel.stream.value
+        else { return }
 
-    private func setNeededDirection(_ direction: MediaDirection, for type: MediaType) {
-        switch type {
-        case .audio:
-            audio.setNeededDirection(direction)
-        case .video:
-            video.setNeededDirection(direction)
-        default:
-            break
-        }
-    }
-
-    private func updateMediaStream<Streamable>(_ mediaStream: ObservableValue<MediaStream<Streamable>>,
-                                               with stream: Streamable,
-                                               isRemote: Bool) {
         if isRemote {
-            switch mediaStream.value {
+            switch channelStream {
             case .none, .remote:
-                mediaStream.value = .remote(stream)
+                channel.streamSubject.send(.remote(stream))
+
             case .local(let local):
-                mediaStream.value = .twoWay(local: local, remote: stream)
+                channel.streamSubject.send(.twoWay(local: local, remote: stream))
+
             case .twoWay(local: let local, remote: _):
-                mediaStream.value = .twoWay(local: local, remote: stream)
+                channel.streamSubject.send(.twoWay(local: local, remote: stream))
             }
         } else {
-            switch mediaStream.value {
+            switch channelStream {
             case .none, .local:
-                mediaStream.value = .local(stream)
+                channel.streamSubject.send(.local(stream))
+
             case .remote(let remote):
-                mediaStream.value = .twoWay(local: stream, remote: remote)
+                channel.streamSubject.send(.twoWay(local: stream, remote: remote))
+
             case .twoWay(local: _, remote: let remote):
-                mediaStream.value = .twoWay(local: stream, remote: remote)
-            }
-        }
-
-        updateStarted()
-    }
-
-    private func updateStarted() {
-        guard [.none, .upgrading].contains(state.value) else { return }
-
-        switch kind.value {
-        case .audio:
-            switch audio.stream.value {
-            case .twoWay:
-                state.value = .started
-            default:
-                break
-            }
-        case .video:
-            switch video.stream.value {
-            case .remote:
-                if video.neededDirection == .oneWay {
-                    state.value = .started
-                }
-            case .twoWay:
-                if video.neededDirection == .twoWay {
-                    state.value = .started
-                }
-            default:
-                break
+                channel.streamSubject.send(.twoWay(local: stream, remote: remote))
             }
         }
     }

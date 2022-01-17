@@ -56,11 +56,11 @@ class MediaPickerViewModel: ViewModel {
     var types: [MediaType] { return mediaTypes }
     var photoFormat: MediaFormat { return .jpeg(quality: 0.8) }
 
-    private let pickerEvent: ObservableValue<MediaPickerEvent>
+    private let pickerEvent: CurrentValueSubject<MediaPickerEvent>
     private let mediaSource: MediaSource
     private let mediaTypes: [MediaType]
 
-    init(pickerEvent: ObservableValue<MediaPickerEvent>,
+    init(pickerEvent: CurrentValueSubject<MediaPickerEvent>,
          mediaSource: MediaSource,
          mediaTypes: [MediaType] = [.image]) {
         self.pickerEvent = pickerEvent
@@ -71,22 +71,22 @@ class MediaPickerViewModel: ViewModel {
     func event(_ event: Event) {
         switch event {
         case .sourceNotAvailable:
-            pickerEvent.value = .sourceNotAvailable
+            pickerEvent.send(.sourceNotAvailable)
             delegate?(.finished)
         case .noCameraPermission:
-            pickerEvent.value = .noCameraPermission
+            pickerEvent.send(.noCameraPermission)
             delegate?(.finished)
         case .pickedImage(let url):
-            pickerEvent.value = .pickedMedia(.image(url))
+            pickerEvent.send(.pickedMedia(.image(url)))
             delegate?(.finished)
         case .pickedPhoto(let data, format: let format):
-            pickerEvent.value = .pickedMedia(.photo(data, format: format))
+            pickerEvent.send(.pickedMedia(.photo(data, format: format)))
             delegate?(.finished)
         case .pickedMovie(let url):
-            pickerEvent.value = .pickedMedia(.movie(url))
+            pickerEvent.send(.pickedMedia(.movie(url)))
             delegate?(.finished)
         case .cancelled:
-            pickerEvent.value = .cancelled
+            pickerEvent.send(.cancelled)
             delegate?(.finished)
         }
     }

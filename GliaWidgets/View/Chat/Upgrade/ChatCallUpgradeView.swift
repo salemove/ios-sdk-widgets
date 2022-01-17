@@ -5,24 +5,23 @@ class ChatCallUpgradeView: UIView {
         didSet { update(with: style) }
     }
 
-    private let duration: ObservableValue<Int>
+    private let duration: Observable<Int>
     private let contentView = UIView()
     private let stackView = UIStackView()
     private let iconImageView = UIImageView()
     private let textLabel = UILabel()
     private let durationLabel = UILabel()
     private let kContentInsets = UIEdgeInsets(top: 8, left: 44, bottom: 8, right: 44)
+    private var disposables: [Disposable] = []
 
-    init(with style: ChatCallUpgradeStyle, duration: ObservableValue<Int>) {
+    init(with style: ChatCallUpgradeStyle, duration: Observable<Int>) {
         self.style = style
         self.duration = duration
+
         super.init(frame: .zero)
+
         setup()
         layout()
-    }
-
-    deinit {
-        duration.removeObserver(self)
     }
 
     required init?(coder: NSCoder) {
@@ -32,9 +31,11 @@ class ChatCallUpgradeView: UIView {
     private func setup() {
         update(with: style)
 
-        duration.addObserver(self) { [weak self] duration, _ in
-            self?.durationLabel.text = duration.asDurationString
-        }
+        duration
+            .observe({ [weak self] in
+                self?.durationLabel.text = $0.asDurationString
+            })
+            .add(to: &disposables)
     }
 
     private func update(with style: ChatCallUpgradeStyle) {
@@ -53,7 +54,7 @@ class ChatCallUpgradeView: UIView {
         textLabel.textColor = style.textColor
         textLabel.textAlignment = .center
 
-        durationLabel.text = duration.value.asDurationString
+        durationLabel.text = (duration.value ?? 0).asDurationString
         durationLabel.font = style.durationFont
         durationLabel.textColor = style.durationColor
         durationLabel.textAlignment = .center

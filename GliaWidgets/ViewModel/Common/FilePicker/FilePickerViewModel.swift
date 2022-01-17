@@ -43,10 +43,12 @@ class FilePickerViewModel: ViewModel {
 
     let allowedFiles: FileTypes
 
-    private let pickerEvent: ObservableValue<FilePickerEvent>
+    private let pickerEvent: CurrentValueSubject<FilePickerEvent>
 
-    init(pickerEvent: ObservableValue<FilePickerEvent>,
-         allowedFiles: FileTypes = .default) {
+    init(
+        pickerEvent: CurrentValueSubject<FilePickerEvent>,
+        allowedFiles: FileTypes = .default
+    ) {
         self.pickerEvent = pickerEvent
         self.allowedFiles = allowedFiles
     }
@@ -54,10 +56,11 @@ class FilePickerViewModel: ViewModel {
     func event(_ event: Event) {
         switch event {
         case .pickedFile(let url):
-            pickerEvent.value = .pickedFile(url)
+            pickerEvent.send(.pickedFile(url))
             delegate?(.finished)
+
         case .cancelled:
-            pickerEvent.value = .cancelled
+            pickerEvent.send(.cancelled)
             delegate?(.finished)
         }
     }

@@ -35,6 +35,7 @@ class ChatView: EngagementView {
 
         return CGRect(x: x, y: y, width: width, height: height)
     }
+    private var disposables: [Disposable] = []
 
     init(with style: ChatStyle) {
         self.style = style
@@ -120,12 +121,14 @@ class ChatView: EngagementView {
     }
 
     func refreshRows(_ rows: [Int], in section: Int, animated: Bool) {
-        let refreshBlock = {
-            self.tableView.beginUpdates()
+        let refreshBlock = { [weak self] in
+            self?.tableView.beginUpdates()
+
             for row in rows {
-                self.refreshRow(row, in: section, animated: animated)
+                self?.refreshRow(row, in: section, animated: animated)
             }
-            self.tableView.endUpdates()
+
+            self?.tableView.endUpdates()
         }
 
         if animated {
@@ -258,14 +261,16 @@ class ChatView: EngagementView {
             view.appendContent(.choiceCard(choiceCard), animated: false)
             return .choiceCard(view)
         case .callUpgrade(let kind, let duration):
-            let callStyle = callUpgradeStyle(for: kind.value)
+            let callStyle = callUpgradeStyle(for: kind.value!)
             let view = ChatCallUpgradeView(
                 with: callStyle,
                 duration: duration
             )
-            kind.addObserver(self) { kind, _ in
-                view.style = self.callUpgradeStyle(for: kind)
-            }
+
+            kind.observe({ [weak self] in
+                view.style = self?.callUpgradeStyle(for: $0) ?? callStyle
+            }).add(to: &disposables)
+
             return .callUpgrade(view)
         }
     }

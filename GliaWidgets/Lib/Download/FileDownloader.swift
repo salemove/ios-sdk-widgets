@@ -63,9 +63,14 @@ class FileDownloader {
         downloads
             .filter { $0.file.isImage }
             .filter {
-                switch $0.state.value {
+                guard
+                    let state = $0.state.value
+                else { return false }
+
+                switch state {
                 case .none, .error:
                     return true
+
                 case .downloading, .downloaded:
                     return false
                 }

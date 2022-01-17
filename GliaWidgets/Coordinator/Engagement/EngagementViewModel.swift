@@ -28,6 +28,7 @@ class EngagementViewModel {
     let interactor: Interactor
 
     private let screenShareHandler: ScreenShareHandler
+    private var disposables: [Disposable] = []
 
     init(
         interactor: Interactor,
@@ -36,14 +37,16 @@ class EngagementViewModel {
         self.interactor = interactor
         self.screenShareHandler = screenShareHandler
         interactor.addObserver(self, handler: interactorEvent)
-        screenShareHandler.status.addObserver(self) { [weak self] status, _ in
-            self?.onScreenSharingStatusChange(status)
-        }
+
+        screenShareHandler.status
+            .observe({ [weak self] in
+                self?.onScreenSharingStatusChange($0)
+            })
+            .add(to: &disposables)
     }
 
     deinit {
         interactor.removeObserver(self)
-        screenShareHandler.status.removeObserver(self)
         screenShareHandler.cleanUp()
     }
 
@@ -199,6 +202,7 @@ class EngagementViewModel {
         } failure: { _ in
             self.engagementDelegate?(.finished)
         }
+
         screenShareHandler.cleanUp()
     }
 
@@ -252,6 +256,7 @@ class EngagementViewModel {
         switch status {
         case .started:
             engagementAction?(.showEndScreenShareButton)
+
         case .stopped:
             engagementAction?(.showEndButton)
         }

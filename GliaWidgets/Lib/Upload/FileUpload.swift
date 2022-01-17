@@ -36,7 +36,7 @@ class FileUpload {
 
     enum State {
         case none
-        case uploading(progress: ObservableValue<Double>)
+        case uploading(progress: Observable<Double>)
         case uploaded(file: EngagementFileInformation)
         case error(Error)
     }
@@ -50,10 +50,14 @@ class FileUpload {
         }
     }
 
-    let state = ObservableValue<State>(with: .none)
+    var state: Observable<State> {
+        return stateSubject
+    }
+
     let localFile: LocalFile
 
     private let storage: DataStorage
+    private let stateSubject = CurrentValueSubject<State>(.none)
 
     init(with localFile: LocalFile, storage: DataStorage) {
         self.localFile = localFile
@@ -62,26 +66,31 @@ class FileUpload {
 
     func startUpload() {
         let file = EngagementFile(url: localFile.url)
-        let progress = ObservableValue<Double>(with: 0)
+        let progressSubject = CurrentValueSubject<Double>(0)
+
         let onProgress: EngagementFileProgressBlock = {
-            if case .uploading(progress: let progress) = self.state.value {
-                progress.value = $0.fractionCompleted
+            if case .uploading = self.state.value {
+                progressSubject.value = $0.fractionCompleted
             }
         }
+
         let onCompletion: EngagementFileCompletionBlock = { engagementFile, error in
             if let engagementFile = engagementFile {
                 let storageID = "\(engagementFile.id)/\(self.localFile.url.lastPathComponent)"
                 self.storage.store(from: self.localFile.url, for: storageID)
-                self.state.value = .uploaded(file: engagementFile)
+                self.stateSubject.send(.uploaded(file: engagementFile))
             } else if let error = error {
-                self.state.value = .error(Error(with: error))
+                self.stateSubject.send(.error(Error(with: error)))
             }
         }
 
-        state.value = .uploading(progress: progress)
-        Salemove.sharedInstance.uploadFileToEngagement(file,
-                                                       progress: onProgress,
-                                                       completion: onCompletion)
+        stateSubject.send(.uploading(progress: progressSubject))
+
+        Salemove.sharedInstance.uploadFileToEngagement(
+            file,
+            progress: onProgress,
+            completion: onCompletion
+        )
     }
 
     func removeLocalFile() {

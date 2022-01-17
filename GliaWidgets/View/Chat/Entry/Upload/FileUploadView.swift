@@ -14,6 +14,7 @@ class FileUploadView: UIView {
     private let removeButton = UIButton()
     private let style: FileUploadStyle
     private let kContentInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+    private var disposables: [Disposable] = []
 
     init(with style: FileUploadStyle, upload: FileUpload) {
         self.style = style
@@ -22,10 +23,6 @@ class FileUploadView: UIView {
         super.init(frame: .zero)
         setup()
         layout()
-    }
-
-    deinit {
-        upload.state.removeObserver(self)
     }
 
     required init?(coder: NSCoder) {
@@ -43,10 +40,12 @@ class FileUploadView: UIView {
         removeButton.setImage(style.removeButtonImage, for: .normal)
         removeButton.addTarget(self, action: #selector(remove), for: .touchUpInside)
 
-        update(for: upload.state.value)
-        upload.state.addObserver(self) { [weak self] state, _ in
-            self?.update(for: state)
-        }
+        update(for: upload.state.value ?? .none)
+        upload.state
+            .observe({ [weak self] in
+                self?.update(for: $0)
+            })
+            .add(to: &disposables)
     }
 
     private func layout() {
@@ -97,10 +96,12 @@ class FileUploadView: UIView {
             stateLabel.font = style.uploading.font
             stateLabel.textColor = style.uploading.textColor
             progressView.tintColor = style.progressColor
-            progressView.progress = Float(progress.value)
-            progress.addObserver(self) { [weak self] progress, _ in
-                self?.progressView.progress = Float(progress)
-            }
+            progressView.progress = Float(progress.value ?? 0)
+            progress
+                .observe({ [weak self] in
+                    self?.progressView.progress = Float($0)
+                })
+                .add(to: &disposables)
         case .uploaded:
             filePreviewView.kind = .file(upload.localFile)
             infoLabel.text = upload.localFile.fileInfoString

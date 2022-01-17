@@ -9,16 +9,20 @@ class ChatFileContentView: UIView {
     private let style: ChatFileContentStyle
     private let content: Content
     private let tap: () -> Void
+    private var disposables: [Disposable] = []
 
     init(with style: ChatFileContentStyle, content: Content, tap: @escaping () -> Void) {
         self.style = style
         self.content = content
         self.tap = tap
+
         super.init(frame: .zero)
+
         setup()
         layout()
     }
 
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -30,11 +34,15 @@ class ChatFileContentView: UIView {
         switch content {
         case .localFile(let file):
             update(with: file)
+
         case .download(let download):
             update(with: download)
-            download.state.addObserver(self) { [weak self] _, _ in
-                self?.update(with: download)
-            }
+
+            download.state
+                .observe({ [weak self] _ in
+                    self?.update(with: download)
+                })
+                .add(to: &disposables)
         }
 
         let tapRecognizer = UITapGestureRecognizer(target: self,

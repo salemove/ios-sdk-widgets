@@ -108,7 +108,7 @@ final class ChatCoordinator: UIViewControllerCoordinator {
     }
 
     private func presentMediaPickerController(
-        with pickerEvent: ObservableValue<MediaPickerEvent>,
+        with pickerEvent: CurrentValueSubject<MediaPickerEvent>,
         mediaSource: MediaPickerViewModel.MediaSource,
         mediaTypes: [MediaPickerViewModel.MediaType]
     ) {
@@ -117,6 +117,8 @@ final class ChatCoordinator: UIViewControllerCoordinator {
             mediaSource: mediaSource,
             mediaTypes: mediaTypes
         )
+        let controller = MediaPickerController(viewModel: viewModel)
+
         viewModel.delegate = { [weak self] event in
             switch event {
             case .finished:
@@ -124,15 +126,18 @@ final class ChatCoordinator: UIViewControllerCoordinator {
             }
         }
 
-        let controller = MediaPickerController(viewModel: viewModel)
         mediaPickerController = controller
         controller.viewController { [weak self] viewController in
             self?.presenter?.present(viewController, animated: true)
         }
     }
 
-    private func presentFilePickerController(with pickerEvent: ObservableValue<FilePickerEvent>) {
+    private func presentFilePickerController(
+        with pickerEvent: CurrentValueSubject<FilePickerEvent>
+    ) {
         let viewModel = FilePickerViewModel(pickerEvent: pickerEvent)
+        let controller = FilePickerController(viewModel: viewModel)
+
         viewModel.delegate = { [weak self] event in
             switch event {
             case .finished:
@@ -140,20 +145,21 @@ final class ChatCoordinator: UIViewControllerCoordinator {
             }
         }
 
-        let controller = FilePickerController(viewModel: viewModel)
         filePickerController = controller
         presenter?.present(controller.viewController, animated: true)
     }
 
     private func presentQuickLookController(with file: LocalFile) {
         let viewModel = QuickLookViewModel(file: file)
+        let controller = QuickLookController(viewModel: viewModel)
+
         viewModel.delegate = { [weak self] event in
             switch event {
             case .finished:
                 self?.quickLookController = nil
             }
         }
-        let controller = QuickLookController(viewModel: viewModel)
+
         quickLookController = controller
         presenter?.present(controller.viewController, animated: true)
     }

@@ -9,6 +9,8 @@ class ChatFileDownloadContentView: ChatFileContentView {
     private let style: ChatFileDownloadStyle
     private let kContentInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
 
+    private var disposables: [Disposable] = []
+
     init(with style: ChatFileDownloadStyle, content: Content, tap: @escaping () -> Void) {
         self.style = style
         self.filePreviewView = FilePreviewView(with: style.filePreview)
@@ -73,39 +75,48 @@ class ChatFileDownloadContentView: ChatFileContentView {
     }
 
     override func update(with download: FileDownload) {
-        switch download.state.value {
+        guard let state = download.state.value else {
+            return
+        }
+
+        switch state {
         case .none:
             filePreviewView.kind = .fileExtension(download.file.fileExtension)
             infoLabel.text = download.file.fileInfoString
             infoLabel.font = style.download.infoFont
             infoLabel.textColor = style.download.infoColor
-            stateLabel.attributedText = stateText(for: download.state.value)
+            stateLabel.attributedText = stateText(for: state)
             progressView.isHidden = true
+
         case .downloading(progress: let progress):
             filePreviewView.kind = .fileExtension(download.file.fileExtension)
             infoLabel.text = download.file.fileInfoString
             infoLabel.font = style.downloading.infoFont
             infoLabel.textColor = style.downloading.infoColor
-            stateLabel.attributedText = stateText(for: download.state.value)
+            stateLabel.attributedText = stateText(for: state)
             progressView.tintColor = style.progressColor
-            progressView.progress = Float(progress.value)
+            progressView.progress = Float(progress.value ?? 0)
             progressView.isHidden = false
-            progress.addObserver(self) { [weak self] progress, _ in
-                self?.progressView.progress = Float(progress)
-            }
+            progress
+                .observe({ [weak self] in
+                    self?.progressView.progress = Float($0)
+                })
+                .add(to: &disposables)
+
         case .downloaded(let file):
             filePreviewView.kind = .file(file)
             infoLabel.text = download.file.fileInfoString
             infoLabel.font = style.open.infoFont
             infoLabel.textColor = style.open.infoColor
-            stateLabel.attributedText = stateText(for: download.state.value)
+            stateLabel.attributedText = stateText(for: state)
             progressView.isHidden = true
+
         case .error:
             filePreviewView.kind = .error
             infoLabel.text = download.file.fileInfoString
             infoLabel.font = style.error.infoFont
             infoLabel.textColor = style.error.infoColor
-            stateLabel.attributedText = stateText(for: download.state.value)
+            stateLabel.attributedText = stateText(for: state)
             progressView.isHidden = false
             progressView.tintColor = style.errorProgressColor
             progressView.progress = 1.0

@@ -23,16 +23,19 @@ final class AlertViewController: UIViewController {
         let view = viewFactory.makeAlertView()
         self.view = view
 
-        var input = AlertViewModel.Input(
-            dismiss: view.dismiss
-        )
+        var input = AlertViewModel.Input()
         let output = viewModel.transform(&input)
 
+        bind(view, to: input)
         bind(output, to: view)
     }
 
     private func bind(_ output: AlertViewModel.Output, to view: AlertView) {
         view.configure(for: output.properties.items)
         view.configure(for: output.properties.showsCloseButton)
+    }
+
+    private func bind(_ view: AlertView, to input: AlertViewModel.Input) {
+        view.dismiss = { input.dismiss?() }
     }
 }

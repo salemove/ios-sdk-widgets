@@ -44,14 +44,23 @@ class FileUploader {
             .map { EngagementFile(id: $0.id) }
         return Attachment(files: files)
     }
+
     var count: Int { return uploads.count }
 
-    let state = ObservableValue<State>(with: .idle)
-    let limitReached = ObservableValue<Bool>(with: false)
+    var state: Observable<State> {
+        stateSubject
+    }
 
+    var limitReached: Observable<Bool> {
+        limitReachedSubject
+    }
+
+    private let stateSubject = CurrentValueSubject<State>(.idle)
+    private let limitReachedSubject = CurrentValueSubject<Bool>(false)
     private var uploads = [FileUpload]()
     private var storage = FileSystemStorage(directory: .documents)
     private let maximumUploads: Int
+    private var disposables: [Disposable] = []
 
     init(maximumUploads: Int) {
         self.maximumUploads = maximumUploads
@@ -59,12 +68,17 @@ class FileUploader {
     }
 
     func addUpload(with url: URL) -> FileUpload? {
-        guard !limitReached.value else { return nil }
+        guard !limitReachedSubject.value else { return nil }
+
         let localFile = LocalFile(with: url)
         let upload = FileUpload(with: localFile, storage: storage)
-        upload.state.addObserver(self) { [weak self] _, _ in
-            self?.updateState()
-        }
+
+        upload.state
+            .observe({ [weak self] _ in
+                self?.updateState()
+            })
+            .add(to: &disposables)
+
         uploads.append(upload)
         upload.startUpload()
         updateState()
@@ -73,9 +87,11 @@ class FileUploader {
     }
 
     func addUpload(with data: Data, format: MediaFormat) -> FileUpload? {
-        guard !limitReached.value else { return nil }
+        guard !limitReachedSubject.value else { return nil }
+
         let fileName = UUID().uuidString + "." + format.fileExtension
         let url = storage.url(for: fileName)
+
         do {
             try data.write(to: url)
             return addUpload(with: url)
@@ -105,6 +121,7 @@ class FileUploader {
                 return false
             }
         })
+        
         updateState()
         updateLimitReached()
     }
@@ -120,12 +137,12 @@ class FileUploader {
             }
         }
 
-        if state.value != newState {
-            state.value = newState
+        if stateSubject.value != newState {
+            stateSubject.value = newState
         }
     }
 
     private func updateLimitReached() {
-        limitReached.value = count >= maximumUploads
+        limitReachedSubject.value = count >= maximumUploads
     }
 }

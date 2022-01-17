@@ -9,8 +9,6 @@ extension UIViewController {
     }
 }
 
-import UIKit
-
 extension UIViewController {
     private final class DeallocatingProxy {
         var deallocating: (() -> Void)?

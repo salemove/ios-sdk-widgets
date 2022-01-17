@@ -43,9 +43,9 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     }
 
     enum DelegateEvent {
-        case pickMedia(ObservableValue<MediaPickerEvent>)
-        case takeMedia(ObservableValue<MediaPickerEvent>)
-        case pickFile(ObservableValue<FilePickerEvent>)
+        case pickMedia(CurrentValueSubject<MediaPickerEvent>)
+        case takeMedia(CurrentValueSubject<MediaPickerEvent>)
+        case pickFile(CurrentValueSubject<FilePickerEvent>)
         case showFile(LocalFile)
         case callBubbleTapped
         case openLink(URL)
@@ -72,7 +72,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     private var messagesSection: Section<ChatItem> { sections[3] }
     private let messageDispatcher: MessageDispatcher
     private let screenShareHandler: ScreenShareHandler
-    private let isChatScrolledToBottom = ObservableValue<Bool>(with: true)
+    private let isChatScrolledToBottom = CurrentValueSubject<Bool>(true)
     private let showsCallBubble: Bool
     private let storage = ChatStorage()
     private let uploader = FileUploader(maximumUploads: 25)
@@ -87,6 +87,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
 
     private var pendingMessages: [OutgoingMessage] = []
     private var isViewLoaded: Bool = false
+    private var disposables: [Disposable] = []
 
     init(
         interactor: Interactor,
@@ -106,22 +107,23 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             screenShareHandler: screenShareHandler
         )
 
-        uploader.state.addObserver(self) { [weak self] state, _ in
-            self?.onUploaderStateChanged(state)
-        }
-        uploader.limitReached.addObserver(self) { [weak self] limitReached, _ in
-            self?.action?(.pickMediaButtonEnabled(!limitReached))
-        }
+        uploader.state
+            .observe({ [weak self] in
+                self?.onUploaderStateChanged($0)
+            })
+            .add(to: &disposables)
 
-        messageDispatcher.messageReceived.addObserver(self) { [weak self] message, _ in
-            self?.receivedMessage(message)
-        }
-    }
+        uploader.limitReached
+            .observe({ [weak self] in
+                self?.action?(.pickMediaButtonEnabled(!$0))
+            })
+            .add(to: &disposables)
 
-    deinit {
-        uploader.limitReached.removeObserver(self)
-        uploader.state.removeObserver(self)
-        messageDispatcher.unreadMessagesCount.removeObserver(self)
+        messageDispatcher.messageReceived
+            .observe({ [weak self] in
+                self?.receivedMessage($0)
+            })
+            .add(to: &disposables)
     }
 
     func event(_ event: Event) {
@@ -198,11 +200,14 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             action?(.connected(name: name, imageUrl: pictureUrl))
             action?(.setMessageEntryEnabled(true))
 
-            switch screenShareHandler.status.value {
-            case .started:
-                engagementAction?(.showEndScreenShareButton)
-            case .stopped:
-                engagementAction?(.showEndButton)
+            if let screenShareStatus = screenShareHandler.status.value {
+                switch screenShareStatus {
+                case .started:
+                    engagementAction?(.showEndScreenShareButton)
+
+                case .stopped:
+                    engagementAction?(.showEndButton)
+                }
             }
 
             pendingMessages.forEach { [weak self] outgoingMessage in
@@ -475,40 +480,46 @@ extension ChatViewModel {
 
 extension ChatViewModel {
     private func presentMediaPicker() {
-        let itemSelected = { (kind: AtttachmentSourceItemKind) -> Void in
-            let media = ObservableValue<MediaPickerEvent>(with: .none)
+        let itemSelected = { [weak self] (kind: AtttachmentSourceItemKind) -> Void in
+            guard let self = self else { return }
 
-            media.addObserver(self) { [weak self] event, _ in
-                switch event {
-                case .none, .cancelled:
-                    break
+            let media = CurrentValueSubject<MediaPickerEvent>(.none)
 
-                case .pickedMedia(let media):
-                    self?.mediaPicked(media)
+            media
+                .observe({ [weak self] in
+                    switch $0 {
+                    case .none, .cancelled:
+                        break
 
-                case .sourceNotAvailable:
-                    self?.engagementDelegate?(
-                        .alert(.mediaSourceError)
-                    )
+                    case .pickedMedia(let media):
+                        self?.mediaPicked(media)
 
-                case .noCameraPermission:
-                    self?.engagementDelegate?(
-                        .alert(.cameraSettings)
-                    )
-                }
-            }
+                    case .sourceNotAvailable:
+                        self?.engagementDelegate?(
+                            .alert(.mediaSourceError)
+                        )
 
-            let file = ObservableValue<FilePickerEvent>(with: .none)
+                    case .noCameraPermission:
+                        self?.engagementDelegate?(
+                            .alert(.cameraSettings)
+                        )
+                    }
+                })
+                .add(to: &self.disposables)
 
-            file.addObserver(self) { [weak self] event, _ in
-                switch event {
-                case .none, .cancelled:
-                    break
+            let file = CurrentValueSubject<FilePickerEvent>(.none)
 
-                case .pickedFile(let url):
-                    self?.filePicked(url)
-                }
-            }
+            file
+                .observe({ [weak self] in
+                    switch $0 {
+                    case .none, .cancelled:
+                        break
+
+                    case .pickedFile(let url):
+                        self?.filePicked(url)
+                    }
+                })
+                .add(to: &self.disposables)
 
             switch kind {
             case .photoLibrary:
@@ -571,13 +582,20 @@ extension ChatViewModel {
     }
 
     private func downloadTapped(_ download: FileDownload) {
-        switch download.state.value {
+        guard
+            let state = download.state.value
+        else { return }
+
+        switch state {
         case .none:
             download.startDownload()
+
         case .downloading:
             break
+
         case .downloaded(let file):
             delegate?(.showFile(file))
+
         case .error:
             download.startDownload()
         }
@@ -603,6 +621,7 @@ extension ChatViewModel {
                 for: message.attachment?.files,
                 autoDownload: .images
             )
+
             if shouldShowOperatorImage(for: row, in: section) {
                 let imageUrl = message.operator?.pictureUrl
                 let kind: ChatItem.Kind = .operatorMessage(
@@ -612,13 +631,17 @@ extension ChatViewModel {
                 )
                 return ChatItem(kind: kind)
             }
+
             return item
+
         case .visitorMessage(let message, _):
             message.downloads = downloader.downloads(
                 for: message.attachment?.files,
                 autoDownload: .images
             )
+
             return item
+
         case .choiceCard(let message, _, _, let isActive):
             if shouldShowOperatorImage(for: row, in: section) {
                 let imageUrl = message.operator?.pictureUrl
@@ -630,7 +653,9 @@ extension ChatViewModel {
                 )
                 return ChatItem(kind: kind)
             }
+
             return item
+
         default:
             return item
         }
@@ -642,6 +667,7 @@ extension ChatViewModel {
     ) -> Bool {
         guard section[row].isOperatorMessage else { return false }
         let nextItem = section.item(after: row)
+
         return nextItem == nil || nextItem?.isOperatorMessage == false
     }
 }

@@ -6,15 +6,23 @@ enum MessageState {
 }
 
 protocol UnreadMessagesCounter {
-    var unreadMessagesCount: ObservableValue<Int> { get }
+    var unreadMessagesCount: Observable<Int> { get }
 }
 
 final class MessageDispatcher: UnreadMessagesCounter {
-    var unreadMessagesCount = ObservableValue<Int>(with: 0)
-    var messageReceived = ObservableValue<SalemoveSDK.Message?>(with: nil)
+    var unreadMessagesCount: Observable<Int> {
+        unreadMessagesCountSubject
+    }
+
+    var messageReceived: Observable<SalemoveSDK.Message> {
+        messageReceivedSubject
+    }
 
     private let interactor: Interactor
     private let chatStorage: ChatStorage
+    private let unreadMessagesCountSubject = CurrentValueSubject<Int>(0)
+    private let messageReceivedSubject = PublishSubject<SalemoveSDK.Message>()
+
     private var messages: [Message: MessageState] = [:]
 
     init(
@@ -34,7 +42,7 @@ final class MessageDispatcher: UnreadMessagesCounter {
 
         messages[message] = .read
 
-        unreadMessagesCount.value = numberOfUnreadMessages()
+        unreadMessagesCountSubject.send(numberOfUnreadMessages())
     }
 
     private func onMessageReceived(message: SalemoveSDK.Message) {
@@ -47,9 +55,9 @@ final class MessageDispatcher: UnreadMessagesCounter {
         )
 
         messages[message] = .received
- 
-        messageReceived.value = message
-        unreadMessagesCount.value = numberOfUnreadMessages()
+
+        messageReceivedSubject.send(message)
+        unreadMessagesCountSubject.send(numberOfUnreadMessages())
     }
 
     private func setup() {
