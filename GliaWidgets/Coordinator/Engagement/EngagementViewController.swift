@@ -26,6 +26,7 @@ class EngagementViewController: ViewController {
 
         if let view = self.view as? EngagementView {
             bind(viewModel: viewModel, to: view)
+            bind(view: view, to: viewModel)
         }
     }
 
@@ -40,19 +41,29 @@ class EngagementViewController: ViewController {
     }
 
     private func bind(viewModel: EngagementViewModel, to view: EngagementView) {
-        view.header.endButton.tap = { viewModel.event(.closeTapped) }
-        view.header.endScreenShareButton.tap = { viewModel.event(.endScreenSharingTapped) }
-        view.header.backButton.tap = { viewModel.event(.backTapped) }
-        view.header.closeButton.tap = { viewModel.event(.closeTapped) }
-
-        viewModel.engagementAction = { action in
+        viewModel.engagementAction = { [weak view] action in
             switch action {
             case .showEndButton:
-                view.header.showEndButton()
+                view?.header.showEndButton()
 
             case .showEndScreenShareButton:
-                view.header.showEndScreenSharingButton()
+                view?.header.showEndScreenSharingButton()
             }
+        }
+    }
+
+    private func bind(view: EngagementView, to viewModel: EngagementViewModel) {
+        view.header.endButton.tap = { [weak viewModel] in
+            viewModel?.event(.closeTapped)
+        }
+        view.header.endScreenShareButton.tap = { [weak viewModel] in
+            viewModel?.event(.endScreenSharingTapped)
+        }
+        view.header.backButton.tap = { [weak viewModel] in
+            viewModel?.event(.backTapped)
+        }
+        view.header.closeButton.tap = { [weak viewModel] in
+            viewModel?.event(.closeTapped)
         }
     }
 }

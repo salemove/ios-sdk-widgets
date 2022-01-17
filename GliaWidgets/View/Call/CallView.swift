@@ -89,6 +89,7 @@ class CallView: EngagementView {
 
     func checkBarsOrientation() {
         guard mode == .video else { return }
+
         if currentOrientation.isLandscape {
             hideLandscapeBarsAfterDelay()
         } else {
@@ -235,17 +236,21 @@ class CallView: EngagementView {
 
     private func showBars(duration: TimeInterval) {
         layoutIfNeeded()
-        UIView.animate(withDuration: duration) {
-            self.headerTopConstraint.constant = 0
-            self.buttonBarBottomConstraint.constant = 0
-            self.layoutIfNeeded()
+
+        UIView.animate(withDuration: duration) { [weak self] in
+            self?.headerTopConstraint.constant = 0
+            self?.buttonBarBottomConstraint.constant = 0
+            self?.layoutIfNeeded()
         }
     }
 
     private func hideBars(duration: TimeInterval) {
         layoutIfNeeded()
         let newHeaderConstraint = -header.frame.size.height + safeAreaInsets.top
-        UIView.animate(withDuration: duration) {
+
+        UIView.animate(withDuration: duration) { [weak self] in
+            guard let self = self else { return }
+
             self.headerTopConstraint.constant = newHeaderConstraint
             self.buttonBarBottomConstraint.constant = self.buttonBar.frame.size.height
             self.layoutIfNeeded()
@@ -260,8 +265,12 @@ class CallView: EngagementView {
     private func hideLandscapeBarsAfterDelay() {
         guard mode == .video else { return }
         hideBarsWorkItem?.cancel()
-        let hideBarsWorkItem = DispatchWorkItem { self.hideLandscapeBars() }
+
+        let hideBarsWorkItem = DispatchWorkItem { [weak self] in
+            self?.hideLandscapeBars()
+        }
         self.hideBarsWorkItem = hideBarsWorkItem
+
         DispatchQueue.main.asyncAfter(
             deadline: .now() + kBarsHideDelay,
             execute: hideBarsWorkItem

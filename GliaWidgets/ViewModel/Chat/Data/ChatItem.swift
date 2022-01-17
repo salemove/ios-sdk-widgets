@@ -7,7 +7,6 @@ class ChatItem {
         case visitorMessage(ChatMessage, status: String?)
         case operatorMessage(ChatMessage, showsImage: Bool, imageUrl: String?)
         case choiceCard(ChatMessage, showsImage: Bool, imageUrl: String?, isActive: Bool)
-        case callUpgrade(Observable<CallKind>, duration: Observable<Int>)
     }
 
     var isOperatorMessage: Bool {

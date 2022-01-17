@@ -31,8 +31,6 @@ enum InteractorEvent {
 }
 
 class Interactor {
-    typealias EventHandler = (InteractorEvent) -> Void
-
     let queueID: String
     var engagedOperator: Operator? {
         switch state {
@@ -52,13 +50,18 @@ class Interactor {
         }
     }
 
+    var event: Observable<InteractorEvent> {
+        eventSubject
+    }
+
     private let visitorContext: VisitorContext
-    private var observers = [() -> (AnyObject?, EventHandler)]()
     private var isEngagementEndedByVisitor = false
+    private let eventSubject = PublishSubject<InteractorEvent>()
+
     private(set) var state: InteractorState = .none {
         didSet {
             if oldValue != state {
-                notify(.stateChanged(state))
+                eventSubject.send(.stateChanged(state))
             }
         }
     }
@@ -73,32 +76,11 @@ class Interactor {
         configure(with: conf)
     }
 
-    func addObserver(_ observer: AnyObject, handler: @escaping EventHandler) {
-        guard !observers.contains(where: { $0().0 === observer }) else { return }
-        observers.append { [weak observer] in (observer, handler) }
-    }
-
-    func removeObserver(_ observer: AnyObject) {
-        observers.removeAll(where: { $0().0 === observer })
-    }
-
     private func configure(with conf: Salemove.Configuration) {
         Salemove.sharedInstance.configure(with: conf) {
             // SDK is initialized and ready to use.
         }
         Salemove.sharedInstance.configure(interactor: self)
-    }
-
-    private func notify(_ event: InteractorEvent) {
-        observers
-            .compactMap { $0() }
-            .filter { $0.0 != nil }
-            .forEach {
-                let handler = $0.1
-                DispatchQueue.main.async {
-                    handler(event)
-                }
-            }
     }
 }
 
@@ -244,13 +226,13 @@ extension Interactor {
 extension Interactor: Interactable {
     var onScreenSharingOffer: ScreenshareOfferBlock {
         return { [weak self] answer in
-            self?.notify(.screenShareOffer(answer: answer))
+            self?.eventSubject.send(.screenShareOffer(answer: answer))
         }
     }
 
     var onMediaUpgradeOffer: MediaUgradeOfferBlock {
         return { [weak self] offer, answer in
-            self?.notify(.upgradeOffer(offer, answer: answer))
+            self?.eventSubject.send(.upgradeOffer(offer, answer: answer))
         }
     }
 
@@ -267,22 +249,22 @@ extension Interactor: Interactable {
 
     var onOperatorTypingStatusUpdate: OperatorTypingStatusUpdate {
         return { [weak self] operatorTypingStatus in
-            self?.notify(.typingStatusUpdated(operatorTypingStatus))
+            self?.eventSubject.send(.typingStatusUpdated(operatorTypingStatus))
         }
     }
 
     var onMessagesUpdated: MessagesUpdateBlock {
         return { [weak self] messages in
-            self?.notify(.messagesUpdated(messages))
+            self?.eventSubject.send(.messagesUpdated(messages))
         }
     }
 
     var onVisitorScreenSharingStateChange: VisitorScreenSharingStateChange {
         return { [weak self] state, error in
             if let error = error {
-                self?.notify(.screenShareError(error: error))
+                self?.eventSubject.send(.screenShareError(error: error))
             } else {
-                self?.notify(.screenSharingStateChanged(to: state))
+                self?.eventSubject.send(.screenSharingStateChanged(to: state))
             }
         }
     }
@@ -290,9 +272,9 @@ extension Interactor: Interactable {
     var onAudioStreamAdded: AudioStreamAddedBlock {
         return { [weak self] stream, error in
             if let stream = stream {
-                self?.notify(.audioStreamAdded(stream))
+                self?.eventSubject.send(.audioStreamAdded(stream))
             } else if let error = error {
-                self?.notify(.audioStreamError(error))
+                self?.eventSubject.send(.audioStreamError(error))
             }
         }
     }
@@ -300,15 +282,15 @@ extension Interactor: Interactable {
     var onVideoStreamAdded: VideoStreamAddedBlock {
         return { [weak self] stream, error in
             if let stream = stream {
-                self?.notify(.videoStreamAdded(stream))
+                self?.eventSubject.send(.videoStreamAdded(stream))
             } else if let error = error {
-                self?.notify(.videoStreamError(error))
+                self?.eventSubject.send(.videoStreamError(error))
             }
         }
     }
 
     func receive(message: Message) {
-        notify(.receivedMessage(message))
+        eventSubject.send(.receivedMessage(message))
     }
 
     func start() {
@@ -327,7 +309,7 @@ extension Interactor: Interactable {
     }
 
     func fail(error: SalemoveError) {
-        notify(.error(error))
+        eventSubject.send(.error(error))
     }
 }
 

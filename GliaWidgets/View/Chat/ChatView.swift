@@ -35,7 +35,6 @@ class ChatView: EngagementView {
 
         return CGRect(x: x, y: y, width: width, height: height)
     }
-    private var disposables: [Disposable] = []
 
     init(with style: ChatStyle) {
         self.style = style
@@ -260,18 +259,6 @@ class ChatView: EngagementView {
             view.onOptionTapped = { self.choiceOptionSelected($0, message.id) }
             view.appendContent(.choiceCard(choiceCard), animated: false)
             return .choiceCard(view)
-        case .callUpgrade(let kind, let duration):
-            let callStyle = callUpgradeStyle(for: kind.value!)
-            let view = ChatCallUpgradeView(
-                with: callStyle,
-                duration: duration
-            )
-
-            kind.observe({ [weak self] in
-                view.style = self?.callUpgradeStyle(for: $0) ?? callStyle
-            }).add(to: &disposables)
-
-            return .callUpgrade(view)
         }
     }
 

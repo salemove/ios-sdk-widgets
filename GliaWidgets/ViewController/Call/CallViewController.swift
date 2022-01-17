@@ -10,9 +10,12 @@ class CallViewController: EngagementViewController {
 
     override public func loadView() {
         super.loadView()
+
         let view = viewFactory.makeCallView()
         self.view = view
+
         bind(viewModel: viewModel, to: view)
+        bind(view: view, to: viewModel)
     }
 
     override func viewDidLoad() {
@@ -34,54 +37,58 @@ class CallViewController: EngagementViewController {
     }
 
     private func bind(viewModel: CallViewModel, to view: CallView) {
-        view.header.showBackButton()
-        view.header.showCloseButton()
-
-        view.callButtonTapped = { viewModel.event(.callButtonTapped(.init(with: $0))) }
-
-        viewModel.action = { action in
+        viewModel.action = { [weak view] action in
             switch action {
             case .queue:
-                view.setConnectState(.queue, animated: false)
+                view?.setConnectState(.queue, animated: false)
             case .connecting(name: let name, imageUrl: let imageUrl):
-                view.setConnectState(.connecting(name: name, imageUrl: imageUrl), animated: true)
-                view.connectView.operatorView.setSize(.normal, animated: true)
+                view?.setConnectState(.connecting(name: name, imageUrl: imageUrl), animated: true)
+                view?.connectView.operatorView.setSize(.normal, animated: true)
             case .connected(name: let name, imageUrl: let imageUrl):
-                view.setConnectState(.connected(name: name, imageUrl: imageUrl), animated: true)
-                view.connectView.operatorView.setSize(.large, animated: true)
+                view?.setConnectState(.connected(name: name, imageUrl: imageUrl), animated: true)
+                view?.connectView.operatorView.setSize(.large, animated: true)
             case .setTopTextHidden(let hidden):
-                view.topLabel.isHidden = hidden
+                view?.topLabel.isHidden = hidden
             case .setBottomTextHidden(let hidden):
-                view.bottomLabel.isHidden = hidden
+                view?.bottomLabel.isHidden = hidden
             case .switchToVideoMode:
-                view.switchTo(.video)
+                view?.switchTo(.video)
             case .switchToUpgradeMode:
-                view.switchTo(.upgrading)
+                view?.switchTo(.upgrading)
             case .setTitle(let title):
-                view.header.title = title
+                view?.header.title = title
             case .setOperatorName(let name):
-                view.operatorNameLabel.text = name
+                view?.operatorNameLabel.text = name
             case .setCallDurationText(let text):
-                view.durationLabel.text = text
-                view.connectView.statusView.setSecondText(text, animated: false)
+                view?.durationLabel.text = text
+                view?.connectView.statusView.setSecondText(text, animated: false)
             case .showButtons(let buttons):
                 let buttons = buttons.map { CallButton.Kind(with: $0) }
-                view.buttonBar.visibleButtons = buttons
+                view?.buttonBar.visibleButtons = buttons
             case .setButtonEnabled(let button, enabled: let enabled):
                 let button = CallButton.Kind(with: button)
-                view.buttonBar.setButton(button, enabled: enabled)
+                view?.buttonBar.setButton(button, enabled: enabled)
             case .setButtonState(let button, state: let state):
                 let button = CallButton.Kind(with: button)
                 let state = CallButton.State(with: state)
-                view.buttonBar.setButton(button, state: state)
+                view?.buttonBar.setButton(button, state: state)
             case .setButtonBadge(let button, itemCount: let itemCount):
                 let button = CallButton.Kind(with: button)
-                view.buttonBar.setButton(button, badgeItemCount: itemCount)
+                view?.buttonBar.setButton(button, badgeItemCount: itemCount)
             case .setRemoteVideo(let streamView):
-                view.remoteVideoView.streamView = streamView
+                view?.remoteVideoView.streamView = streamView
             case .setLocalVideo(let streamView):
-                view.localVideoView.streamView = streamView
+                view?.localVideoView.streamView = streamView
             }
+        }
+    }
+
+    private func bind(view: CallView, to viewModel: CallViewModel) {
+        view.header.showBackButton()
+        view.header.showCloseButton()
+
+        view.callButtonTapped = { [weak viewModel] in
+            viewModel?.event(.callButtonTapped(.init(with: $0)))
         }
     }
 }

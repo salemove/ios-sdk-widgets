@@ -66,11 +66,11 @@ class GliaViewController: UIViewController {
             usingSpringWithDamping: 0.8,
             initialSpringVelocity: 0.7,
             options: .curveEaseInOut,
-            animations: {
-                self.bubbleWindow?.alpha = 0.0
+            animations: { [weak self] in
+                self?.bubbleWindow?.alpha = 0.0
             },
-            completion: { _ in
-                self.bubbleWindow = nil
+            completion: { [weak self] _ in
+                self?.bubbleWindow = nil
             }
         )
 
@@ -98,7 +98,9 @@ class GliaViewController: UIViewController {
             usingSpringWithDamping: 0.8,
             initialSpringVelocity: 0.7,
             options: .curveEaseInOut,
-            animations: {
+            animations: { [weak self] in
+                guard let self = self else { return }
+
                 bubbleWindow.alpha = self.features.contains(.bubbleView) ? 1.0 : 0.0
             }
         )

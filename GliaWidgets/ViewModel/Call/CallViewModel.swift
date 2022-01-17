@@ -77,12 +77,6 @@ class CallViewModel: EngagementViewModel, ViewModel {
             screenShareHandler: screenShareHandler
         )
 
-        call.kind
-            .observe({ [weak self] in
-                self?.onKindChanged($0)
-            })
-            .add(to: &disposables)
-
         call.state
             .observe({ [weak self] in
                 self?.onStateChanged($0)
@@ -127,9 +121,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
     override func start() {
         super.start()
 
-        if let callKind = call.kind.value {
-            update(for: callKind)
-        }
+        update(for: call.callKind)
 
         switch startWith {
         case .startEngagement(let mediaType):
@@ -182,14 +174,12 @@ class CallViewModel: EngagementViewModel, ViewModel {
             )
         )
 
-        if let callKind = call.kind.value {
-            switch callKind {
-            case .audio:
-                action?(.setTopTextHidden(true))
+        switch call.callKind {
+        case .audio:
+            action?(.setTopTextHidden(true))
 
-            case .video:
-                action?(.setTopTextHidden(false))
-            }
+        case .video:
+            action?(.setTopTextHidden(false))
         }
     }
 
@@ -207,18 +197,16 @@ class CallViewModel: EngagementViewModel, ViewModel {
             }
         }
 
-        if let callKind = call.kind.value {
-            switch callKind {
-            case .audio:
-                action?(
-                    .connected(
-                        name: interactor.engagedOperator?.firstName,
-                        imageUrl: interactor.engagedOperator?.picture?.url
-                    )
+        switch call.callKind {
+        case .audio:
+            action?(
+                .connected(
+                    name: interactor.engagedOperator?.firstName,
+                    imageUrl: interactor.engagedOperator?.picture?.url
                 )
-            case .video:
-                break
-            }
+            )
+        case .video:
+            break
         }
     }
 
@@ -346,10 +334,6 @@ extension CallViewModel {
         updateButtons()
     }
 
-    private func onKindChanged(_ kind: CallKind) {
-        update(for: kind)
-    }
-
     private func onAudioChanged(_ stream: MediaStream<AudioStreamable>) {
         updateButtons()
     }
@@ -384,16 +368,12 @@ extension CallViewModel {
     }
 
     private func buttons(for call: Call) -> [CallButton] {
-        if let callKind = call.kind.value {
-            switch callKind {
-            case .audio:
-                return [.chat, .mute, .speaker, .minimize]
+        switch call.callKind {
+        case .audio:
+            return [.chat, .mute, .speaker, .minimize]
 
-            case .video:
-                return [.chat, .video, .mute, .speaker, .minimize]
-            }
-        } else {
-            return []
+        case .video:
+            return [.chat, .video, .mute, .speaker, .minimize]
         }
     }
 

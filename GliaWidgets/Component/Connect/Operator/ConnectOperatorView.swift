@@ -48,10 +48,11 @@ class ConnectOperatorView: UIView {
     func setSize(_ size: Size, animated: Bool) {
         self.size = size
         layoutIfNeeded()
-        UIView.animate(withDuration: animated ? 0.3 : 0.0) {
-            self.widthConstraint.constant = size.width
-            self.heightConstraint.constant = size.height
-            self.layoutIfNeeded()
+
+        UIView.animate(withDuration: animated ? 0.3 : 0.0) { [weak self] in
+            self?.widthConstraint.constant = size.width
+            self?.heightConstraint.constant = size.height
+            self?.layoutIfNeeded()
         }
     }
 

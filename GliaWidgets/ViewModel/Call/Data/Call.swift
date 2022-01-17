@@ -66,10 +66,8 @@ class Call {
     let id = UUID().uuidString
     let audio = MediaChannel<AudioStreamable>()
     let video = MediaChannel<VideoStreamable>()
-
-    var kind: Observable<CallKind> {
-        kindSubject
-    }
+    let callKind: CallKind
+    let mediaDirection: MediaDirection
 
     var state: Observable<CallState> {
         stateSubject
@@ -79,13 +77,16 @@ class Call {
         durationSubject
     }
 
-    private let kindSubject = CurrentValueSubject<CallKind>(.audio)
     private let stateSubject = CurrentValueSubject<CallState>(.none)
     private let durationSubject = CurrentValueSubject<Int>(0)
     private(set) var audioPortOverride = AVAudioSession.PortOverride.none
 
-    init(_ kind: CallKind) {
-        self.kindSubject.send(kind)
+    init(
+        callKind: CallKind,
+        mediaDirection: MediaDirection
+    ) {
+        self.callKind = callKind
+        self.mediaDirection = mediaDirection
     }
 
     func updateAudioStream(with stream: AudioStreamable) {
@@ -188,5 +189,38 @@ class Call {
                 channel.streamSubject.send(.twoWay(local: stream, remote: remote))
             }
         }
+
+        updateStarted()
+    }
+
+    private func updateStarted() {
+       guard [.none, .upgrading].contains(stateSubject.value) else { return }
+
+        switch callKind {
+        case .audio:
+           switch audio.stream.value {
+           case .twoWay:
+               stateSubject.send(.started)
+
+           default:
+               break
+           }
+
+        case .video:
+           switch video.stream.value {
+           case .remote:
+               if mediaDirection == .oneWay {
+                   stateSubject.send(.started)
+               }
+
+           case .twoWay:
+               if mediaDirection == .twoWay {
+                   stateSubject.send(.started)
+               }
+
+           default:
+               break
+           }
+       }
     }
 }

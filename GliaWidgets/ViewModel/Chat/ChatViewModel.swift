@@ -308,6 +308,9 @@ extension ChatViewModel {
         case .choiceCard(let message, _, _, _):
             messageDispatcher.markMessageAsRead(messageId: message.id)
 
+        case .visitorMessage(let message, _):
+            messageDispatcher.markMessageAsRead(messageId: message.id)
+
         default:
             break
         }

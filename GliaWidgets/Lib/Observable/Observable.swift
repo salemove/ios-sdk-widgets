@@ -35,7 +35,9 @@ class Observable<T> {
 
     fileprivate func notifyObservers(with value: T) {
         observers.values.forEach { observer in
-            observer(value)
+            DispatchQueue.main.async { [observer] in
+                observer(value)
+            }
         }
     }
 }
@@ -81,7 +83,11 @@ class CurrentValueSubject<T>: Observable<T> {
     override func observe(_ observer: @escaping Observer) -> Disposable {
         let disposable = super.observe(observer)
 
-        observer(_value)
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+
+            observer(self._value)
+        }
 
         return disposable
     }

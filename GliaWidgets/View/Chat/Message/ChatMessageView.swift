@@ -48,9 +48,9 @@ class ChatMessageView: UIView {
 
         if animated {
             contentViews.layoutIfNeeded()
-            UIView.animate(withDuration: 0.3) {
+            UIView.animate(withDuration: 0.3) { [weak self] in
                 contentView.isHidden = false
-                self.contentViews.layoutIfNeeded()
+                self?.contentViews.layoutIfNeeded()
             }
         }
     }

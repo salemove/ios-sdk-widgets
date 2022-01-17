@@ -7,6 +7,11 @@ class CallDurationCounter {
     private var timer: Timer?
     private var startTime: TimeInterval?
 
+    deinit {
+        timer?.invalidate()
+        timer = nil
+    }
+
     func start(onUpdate: @escaping (Int) -> Void) {
         self.onUpdate = onUpdate
 

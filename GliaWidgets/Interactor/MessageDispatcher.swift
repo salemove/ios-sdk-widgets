@@ -24,6 +24,7 @@ final class MessageDispatcher: UnreadMessagesCounter {
     private let messageReceivedSubject = PublishSubject<SalemoveSDK.Message>()
 
     private var messages: [Message: MessageState] = [:]
+    private var disposables: [Disposable] = []
 
     init(
         interactor: Interactor,
@@ -61,15 +62,17 @@ final class MessageDispatcher: UnreadMessagesCounter {
     }
 
     private func setup() {
-        interactor.addObserver(self, handler: { [weak self] in
-            switch $0 {
-            case .receivedMessage(let message):
-                self?.onMessageReceived(message: message)
+        interactor.event
+            .observe({ [weak self] in
+                switch $0 {
+                case .receivedMessage(let message):
+                    self?.onMessageReceived(message: message)
 
-            default:
-                break
-            }
-        })
+                default:
+                    break
+                }
+            })
+            .add(to: &disposables)
     }
 
     private func numberOfUnreadMessages() -> Int {

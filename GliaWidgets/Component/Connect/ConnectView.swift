@@ -74,26 +74,35 @@ class ConnectView: UIView {
 
     private func show(animated: Bool) {
         guard !isShowing else { return }
-        UIView.animate(withDuration: animated ? 0.5 : 0.0,
-                       delay: 0.0,
-                       usingSpringWithDamping: 0.8,
-                       initialSpringVelocity: 0.7,
-                       options: .curveEaseInOut,
-                       animations: {
-                        self.transform = .identity
-                       }, completion: nil)
+
+        UIView.animate(
+            withDuration: animated ? 0.5 : 0.0,
+            delay: 0.0,
+            usingSpringWithDamping: 0.8,
+            initialSpringVelocity: 0.7,
+            options: .curveEaseInOut,
+            animations: { [weak self] in
+                self?.transform = .identity
+            },
+            completion: nil
+        )
+
         isShowing = true
     }
 
     private func hide(animated: Bool) {
-        UIView.animate(withDuration: animated ? 0.5 : 0.0,
-                       delay: 0.0,
-                       usingSpringWithDamping: 0.8,
-                       initialSpringVelocity: 0.7,
-                       options: .curveEaseInOut,
-                       animations: {
-                        self.transform = CGAffineTransform(scaleX: 0, y: 0)
-                       }, completion: nil)
+        UIView.animate(
+            withDuration: animated ? 0.5 : 0.0,
+            delay: 0.0,
+            usingSpringWithDamping: 0.8,
+            initialSpringVelocity: 0.7,
+            options: .curveEaseInOut,
+            animations: { [weak self] in
+                self?.transform = CGAffineTransform(scaleX: 0, y: 0)
+            },
+            completion: nil
+        )
+
         isShowing = false
     }
 
@@ -119,7 +128,9 @@ private extension ConnectView {
     private func startConnectTimer() {
         stopConnectTimer()
         connectCounter = 0
-        connectTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+        connectTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
+            guard let self = self else { return }
+
             switch self.state {
             case .connecting:
                 self.connectCounter += 1

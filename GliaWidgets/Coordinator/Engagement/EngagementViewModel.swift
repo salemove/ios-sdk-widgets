@@ -36,7 +36,12 @@ class EngagementViewModel {
     ) {
         self.interactor = interactor
         self.screenShareHandler = screenShareHandler
-        interactor.addObserver(self, handler: interactorEvent)
+
+        interactor.event
+            .observe({ [weak self] in
+                self?.interactorEvent($0)
+            })
+            .add(to: &disposables)
 
         screenShareHandler.status
             .observe({ [weak self] in
@@ -46,7 +51,6 @@ class EngagementViewModel {
     }
 
     deinit {
-        interactor.removeObserver(self)
         screenShareHandler.cleanUp()
     }
 

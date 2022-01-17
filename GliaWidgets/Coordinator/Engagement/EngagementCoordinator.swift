@@ -57,10 +57,18 @@ final class EngagementCoordinator: UIViewControllerCoordinator {
             return createChat(startAction: .startEngagement)
 
         case .audioCall:
-            return createCall(ofKind: .audio, startAction: .startEngagement(mediaType: .audio))
+            return createCall(
+                ofKind: .audio,
+                mediaDirection: .twoWay,
+                startAction: .startEngagement(mediaType: .audio)
+            )
 
         case .videoCall:
-            return createCall(ofKind: .video, startAction: .startEngagement(mediaType: .video))
+            return createCall(
+                ofKind: .video,
+                mediaDirection: .oneWay,
+                startAction: .startEngagement(mediaType: .video)
+            )
 
         case .none:
             fatalError("EngagementKind cannot be none.")
@@ -107,9 +115,14 @@ final class EngagementCoordinator: UIViewControllerCoordinator {
 
     private func createCall(
         ofKind callKind: CallKind,
+        mediaDirection: MediaDirection,
         startAction: CallViewModel.StartAction
     ) -> Coordinated {
-        let call = Call(callKind)
+        let call = Call(
+            callKind: callKind,
+            mediaDirection: mediaDirection
+        )
+
         let coordinator = CallCoordinator(
             interactor: interactor,
             viewFactory: viewFactory,
@@ -399,6 +412,7 @@ extension EngagementCoordinator {
                         [
                             self.createCall(
                                 ofKind: callKind,
+                                mediaDirection: offer.direction,
                                 startAction: .fromUpgrade
                             )
                         ],
