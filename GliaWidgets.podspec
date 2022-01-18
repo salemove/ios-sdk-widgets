@@ -15,7 +15,7 @@ Pod::Spec.new do |s|
 
     s.resources             = ['GliaWidgets/Resources/*.{xcassets}', 'GliaWidgets/Resources/**/*.{strings}', 'GliaWidgets/Resources/Font/*.{ttf}']
     
-    s.dependency 'SalemoveSDK', '0.31.0'
+    s.dependency 'SalemoveSDK', '0.32.2'
     s.dependency 'PureLayout', '~>3.1'
     s.dependency 'lottie-ios', '3.2.3'
 end
