@@ -23,13 +23,8 @@ class CallView: EngagementView {
     private var hideBarsWorkItem: DispatchWorkItem?
     private var headerTopConstraint: NSLayoutConstraint!
     private var buttonBarBottomConstraint: NSLayoutConstraint!
-    private var localVideoViewTopConstraint: NSLayoutConstraint!
-    private var localVideoViewRightConstraint: NSLayoutConstraint!
-    private var localVideoViewHeightConstraint: NSLayoutConstraint!
-    private var localVideoViewWidthConstraint: NSLayoutConstraint!
     private var remoteVideoViewHeightConstraint: NSLayoutConstraint!
     private var remoteVideoViewWidthConstraint: NSLayoutConstraint!
-    private let kLocalVideoViewDefaultHeight: CGFloat = 186
     private let kBarsHideDelay: TimeInterval = 3.2
     private var localVideoBounds: CGRect {
         let x = safeAreaInsets.left + 10
