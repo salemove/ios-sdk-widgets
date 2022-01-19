@@ -56,7 +56,7 @@ class VideoStreamView: UIView {
     }
 
     @objc
-    func pan(_ gesture: UIPanGestureRecognizer) {
+    private func pan(_ gesture: UIPanGestureRecognizer) {
         guard gesture.view != nil else { return }
 
         let translation = gesture.translation(in: self)
