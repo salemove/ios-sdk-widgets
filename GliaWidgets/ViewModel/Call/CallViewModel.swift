@@ -153,7 +153,15 @@ class CallViewModel: EngagementViewModel, ViewModel {
         case .audio:
             action?(.setTitle(Strings.Audio.title))
             action?(.setTopTextHidden(true))
-        case .video:
+        case .video(let direction):
+            switch direction {
+            case .oneWay:
+                action?(.setTopTextHidden(false))
+
+            default:
+                action?(.setTopTextHidden(true))
+            }
+
             action?(.setTitle(Strings.Video.title))
         }
         updateButtons()
@@ -170,8 +178,15 @@ class CallViewModel: EngagementViewModel, ViewModel {
         switch call.kind.value {
         case .audio:
             action?(.setTopTextHidden(true))
-        case .video:
-            action?(.setTopTextHidden(false))
+
+        case .video(let direction):
+            switch direction {
+            case .oneWay:
+                action?(.setTopTextHidden(false))
+
+            default:
+                action?(.setTopTextHidden(true))
+            }
         }
     }
 

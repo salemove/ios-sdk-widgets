@@ -78,7 +78,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
         case .audioCall, .videoCall:
             let kind: CallKind = engagementKind == .audioCall
                 ? .audio
-                : .video
+                : .video(direction: .oneWay)
 
             let mediaType: MediaType = engagementKind == .audioCall
                 ? .audio
