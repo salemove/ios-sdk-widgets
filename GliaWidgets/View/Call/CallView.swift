@@ -26,11 +26,19 @@ class CallView: EngagementView {
     private var localVideoViewTopConstraint: NSLayoutConstraint!
     private var localVideoViewRightConstraint: NSLayoutConstraint!
     private var localVideoViewHeightConstraint: NSLayoutConstraint!
+    private var localVideoViewWidthConstraint: NSLayoutConstraint!
     private var remoteVideoViewHeightConstraint: NSLayoutConstraint!
+    private var remoteVideoViewWidthConstraint: NSLayoutConstraint!
     private let kLocalVideoViewDefaultHeight: CGFloat = 186
-    private let kRemoteVideoViewPortraitHeightMultiplier: CGFloat = 0.3
-    private let kRemoteVideoViewLandscapeHeightMultiplier: CGFloat = 1.0
     private let kBarsHideDelay: TimeInterval = 3.2
+    private var localVideoBounds: CGRect {
+        let x = safeAreaInsets.left + 10
+        let y = header.frame.maxY + 10
+        let width = frame.width - safeAreaInsets.left - safeAreaInsets.right - 2 * 10
+        let height = buttonBar.frame.minY - header.frame.maxY - 2 * 10
+
+        return CGRect(x: x, y: y, width: width, height: height)
+    }
 
     init(with style: CallStyle) {
         self.style = style
@@ -43,6 +51,7 @@ class CallView: EngagementView {
     override func layoutSubviews() {
         super.layoutSubviews()
         adjustForCurrentOrientation()
+        adjustLocalVideoFrameAfterLayout()
     }
 
     func switchTo(_ mode: Mode) {
@@ -84,11 +93,17 @@ class CallView: EngagementView {
         } else {
             showBars(duration: duration)
         }
+
         buttonBar.adjustStackConstraints()
+    }
+
+    func didRotate() {
+        adjustLocalVideoFrameAfterOrientationChange()
     }
 
     func checkBarsOrientation() {
         guard mode == .video else { return }
+
         if currentOrientation.isLandscape {
             hideLandscapeBarsAfterDelay()
         } else {
@@ -132,6 +147,14 @@ class CallView: EngagementView {
             action: #selector(tap)
         )
         addGestureRecognizer(tapRecognizer)
+
+        localVideoView.show = { [weak self] in
+            self?.setLocalVideoFrame(isVisible: $0)
+        }
+
+        localVideoView.pan = { [weak self] in
+            self?.adjustLocalVideoFrameAfterPanGesture(translation: $0)
+        }
     }
 
     private func layout() {
@@ -142,18 +165,9 @@ class CallView: EngagementView {
 
         addSubview(remoteVideoView)
         remoteVideoView.autoAlignAxis(toSuperviewAxis: .horizontal)
-        remoteVideoView.autoPinEdge(toSuperviewEdge: .left)
-        remoteVideoView.autoPinEdge(toSuperviewEdge: .right)
+        remoteVideoView.autoAlignAxis(toSuperviewAxis: .vertical)
         remoteVideoViewHeightConstraint = remoteVideoView.autoSetDimension(.height, toSize: 0)
-
-        addSubview(localVideoView)
-        localVideoViewTopConstraint = localVideoView.autoPinEdge(toSuperviewEdge: .top)
-        localVideoViewRightConstraint = localVideoView.autoPinEdge(toSuperviewEdge: .right)
-        localVideoViewHeightConstraint = localVideoView.autoSetDimension(
-            .height,
-            toSize: kLocalVideoViewDefaultHeight
-        )
-        localVideoView.autoMatch(.width, to: .height, of: localVideoView, withMultiplier: 0.7)
+        remoteVideoViewWidthConstraint = remoteVideoView.autoSetDimension(.width, toSize: 0)
 
         addSubview(header)
         headerTopConstraint = header.autoPinEdge(toSuperviewEdge: .top)
@@ -183,6 +197,8 @@ class CallView: EngagementView {
         bottomLabel.autoMatch(.width, to: .width, of: self, withMultiplier: 0.6)
         bottomLabel.autoAlignAxis(toSuperviewAxis: .vertical)
 
+        addSubview(localVideoView)
+
         adjustForCurrentOrientation()
         switchTo(mode)
     }
@@ -207,30 +223,11 @@ class CallView: EngagementView {
 
     private func adjustVideoViews() {
         adjustRemoteVideoView()
-        adjustLocalVideoView()
     }
 
     private func adjustRemoteVideoView() {
-        let multiplier = currentOrientation.isLandscape
-            ? kRemoteVideoViewLandscapeHeightMultiplier
-            : kRemoteVideoViewPortraitHeightMultiplier
-        remoteVideoViewHeightConstraint.constant = frame.size.height * multiplier
-    }
-
-    private func adjustLocalVideoView() {
-        if currentOrientation.isLandscape {
-            localVideoViewTopConstraint.constant = 20
-            localVideoViewRightConstraint.constant = -20
-        } else {
-            let kTopInset: CGFloat = 10
-            let kBottomInset: CGFloat = 10
-            let kRightInset: CGFloat = -10
-            let top = header.frame.maxY + kTopInset
-            let height = remoteVideoView.frame.minY - header.frame.maxY - (kTopInset + kBottomInset)
-            localVideoViewHeightConstraint.constant = height > 0 ? height : 0
-            localVideoViewTopConstraint.constant = top
-            localVideoViewRightConstraint.constant = kRightInset
-        }
+        remoteVideoViewHeightConstraint.constant = frame.size.height
+        remoteVideoViewWidthConstraint.constant = frame.size.width
     }
 
     private func showBars(duration: TimeInterval) {
@@ -273,5 +270,80 @@ class CallView: EngagementView {
             showBars(duration: 0.3)
             hideLandscapeBarsAfterDelay()
         }
+    }
+}
+
+// MARK: Local Video
+
+extension CallView {
+    private func setLocalVideoFrame(isVisible: Bool) {
+        if isVisible {
+            let screenSize: CGRect = UIScreen.main.bounds
+
+            let size = CGSize(
+                width: screenSize.width * 0.3,
+                height: screenSize.height * 0.3
+            )
+
+            localVideoView.frame = CGRect(
+                origin: CGPoint(
+                    x: localVideoBounds.maxX - size.width,
+                    y: localVideoBounds.maxY - size.height
+                ),
+                size: size
+            )
+        }
+    }
+
+    private func adjustLocalVideoFrameAfterOrientationChange() {
+        let screenSize: CGRect = UIScreen.main.bounds
+
+        let size = CGSize(
+            width: screenSize.width * 0.3,
+            height: screenSize.height * 0.3
+        )
+
+        localVideoView.frame = CGRect(
+            origin: CGPoint(
+                x: localVideoBounds.maxX - size.width,
+                y: localVideoBounds.maxY - size.height
+            ),
+            size: size
+        )
+    }
+
+    private func adjustLocalVideoFrameAfterPanGesture(translation: CGPoint) {
+        var frame = localVideoView.frame
+
+        frame.origin.x += translation.x
+        frame.origin.y += translation.y
+
+        localVideoView.frame = frame
+
+        if localVideoBounds.contains(frame) {
+            localVideoView.frame = frame
+        }
+    }
+
+    private func adjustLocalVideoFrameAfterLayout() {
+        var frame: CGRect = localVideoView.frame
+
+        if localVideoView.frame.minX < localVideoBounds.minX {
+            frame.origin.x = localVideoBounds.minX
+        }
+
+        if localVideoView.frame.minY < localVideoBounds.minY {
+            frame.origin.y = localVideoBounds.minY
+        }
+
+        if localVideoView.frame.maxX > localVideoBounds.maxX {
+            frame.origin.x = localVideoBounds.maxX - localVideoView.frame.width
+        }
+
+        if localVideoView.frame.maxY > localVideoBounds.maxY {
+            frame.origin.y = localVideoBounds.maxY - localVideoView.frame.height
+        }
+
+        localVideoView.frame = frame
     }
 }

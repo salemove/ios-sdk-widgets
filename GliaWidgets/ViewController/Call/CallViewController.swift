@@ -8,16 +8,29 @@ class CallViewController: EngagementViewController, MediaUpgradePresenter {
         super.init(viewModel: viewModel, viewFactory: viewFactory)
     }
 
+    deinit {
+         NotificationCenter.default.removeObserver(self)
+    }
+
     override public func loadView() {
         super.loadView()
+
         let view = viewFactory.makeCallView()
         self.view = view
+
         bind(viewModel: viewModel, to: view)
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         viewModel.event(.viewDidLoad)
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(CallViewController.deviceDidRotate),
+            name: UIDevice.orientationDidChangeNotification, object: nil
+        )
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle { return viewFactory.theme.call.preferredStatusBarStyle }
@@ -31,6 +44,12 @@ class CallViewController: EngagementViewController, MediaUpgradePresenter {
         super.viewWillAppear(animated)
         guard let view = view as? CallView else { return }
         view.checkBarsOrientation()
+    }
+
+    @objc
+    private func deviceDidRotate() {
+        guard let view = view as? CallView else { return }
+        view.didRotate()
     }
 
     private func bind(viewModel: CallViewModel, to view: CallView) {
