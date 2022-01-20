@@ -209,8 +209,15 @@ class CallViewModel: EngagementViewModel, ViewModel {
                     imageUrl: interactor.engagedOperator?.picture?.url
                 )
             )
-        case .video:
-            break
+
+        case .video(let direction):
+            switch direction {
+            case .twoWay:
+                toggleVideo()
+
+            default:
+                break
+            }
         }
     }
 
