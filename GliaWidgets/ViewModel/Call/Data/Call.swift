@@ -4,16 +4,31 @@ import AVFoundation
 
 enum CallKind {
     case audio
-    case video
+    case video(direction: MediaDirection)
 
     init?(with offer: MediaUpgradeOffer) {
         switch offer.type {
         case .audio:
             self = .audio
         case .video:
-            self = .video
+            self = .video(direction: offer.direction)
         default:
             return nil
+        }
+    }
+}
+
+extension CallKind: Equatable {
+    static func == (lhs: CallKind, rhs: CallKind) -> Bool {
+        switch (lhs, rhs) {
+        case (.audio, .audio):
+            return true
+
+        case (.video(let lhsDirection), .video(let rhsDirection)):
+            return lhsDirection == rhsDirection
+
+        default:
+            return false
         }
     }
 }
@@ -78,7 +93,7 @@ class Call {
     }
 
     func upgrade(to offer: MediaUpgradeOffer) {
-        setKind(for: offer.type)
+        setKind(for: offer.type, direction: offer.direction)
         setNeededDirection(offer.direction, for: offer.type)
         state.value = .upgrading
     }
@@ -143,12 +158,12 @@ class Call {
         state.value = .ended
     }
 
-    private func setKind(for type: MediaType) {
+    private func setKind(for type: MediaType, direction: MediaDirection) {
         switch type {
         case .audio:
             kind.value = .audio
         case .video:
-            kind.value = .video
+            kind.value = .video(direction: direction)
         default:
             break
         }
