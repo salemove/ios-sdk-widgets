@@ -9,7 +9,7 @@ class VideoStreamView: UIView {
     var pan: ((CGPoint) -> Void)?
     var show: ((Bool) -> Void)?
 
-    weak var streamView: CoreSdkClient.StreamView? {
+    weak var streamView: StreamView? {
         didSet {
             replace(oldStreamView: oldValue, with: streamView)
         }
