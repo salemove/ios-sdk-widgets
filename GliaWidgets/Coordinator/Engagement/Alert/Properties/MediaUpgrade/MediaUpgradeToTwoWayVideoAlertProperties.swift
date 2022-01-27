@@ -11,7 +11,7 @@ class MediaUpgradeToTwoWayVideoAlertProperties: MediaUpgradeProperties {
     var showsCloseButton: Bool {
         false
     }
-    
+
     var declineAction: AlertAction
     var acceptAction: AlertAction
 

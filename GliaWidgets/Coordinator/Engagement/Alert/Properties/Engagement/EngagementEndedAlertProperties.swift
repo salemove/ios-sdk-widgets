@@ -7,9 +7,7 @@ class EngagementEndedAlertProperties: AlertProperties {
         ]
     }
 
-    var showsCloseButton: Bool {
-        false
-    }
+    let showsCloseButton: Bool = false
 
     var action: AlertAction
 

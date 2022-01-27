@@ -21,7 +21,7 @@ class UIViewControllerCoordinator: Coordinator {
 
         let viewController = coordinator.start()
 
-        viewController.deallocating = { [weak self] in
+        viewController.onDeinit = { [weak self] in
             // Free from memory
             self?.children[coordinator.id] = nil
         }

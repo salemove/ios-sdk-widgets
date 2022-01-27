@@ -7,9 +7,7 @@ class ExitQueueAlertProperties: AlertProperties {
         ]
     }
 
-    var showsCloseButton: Bool {
-        false
-    }
+    let showsCloseButton: Bool = false
 
     var noAction: AlertAction
     var yesAction: AlertAction

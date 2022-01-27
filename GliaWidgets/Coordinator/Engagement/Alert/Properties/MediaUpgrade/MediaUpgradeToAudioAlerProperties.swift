@@ -5,12 +5,10 @@ class MediaUpgradeToAudioAlerProperties: MediaUpgradeProperties {
             .title(configuration.title.withOperatorName(operatorName)),
             .actions([declineAction, acceptAction]),
             configuration.showsPoweredBy ? .poweredByGlia : nil
-        ].compactMap({ $0 })
+        ].compactMap { $0 }
     }
 
-    var showsCloseButton: Bool {
-        false
-    }
+    let showsCloseButton: Bool = false
 
     var declineAction: AlertAction
     var acceptAction: AlertAction

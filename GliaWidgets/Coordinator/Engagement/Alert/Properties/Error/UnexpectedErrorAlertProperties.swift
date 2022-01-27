@@ -6,9 +6,7 @@ class UnexpectedErrorAlertProperties: AlertProperties {
         ]
     }
 
-    var showsCloseButton: Bool {
-        true
-    }
+    let showsCloseButton: Bool = true
 
     private let configuration: MessageAlertConfiguration
 

@@ -20,58 +20,50 @@ final class AlertPresenter {
 
         presented.append(view)
 
-        let presentOn = (getSourceToPresentOn() ?? rootViewController)
+        let presentOn = getSourceToPresentOn() ?? rootViewController
         presentOn?.present(view, animated: animated, completion: completion)
     }
 
     func dismiss(view: UIViewController?, animated: Bool, completion: (() -> Void)?) {
-        if let view = view,
+        guard
+            let view = view,
             let index = index(of: view),
-            let viewController = presented[safe: index] {
-                viewController.presentingViewController?
-                    .dismiss(animated: animated, completion: { [weak self] in
-                        if viewController.view.window == nil {
-                            completion?()
-                            self?.presented.remove(at: index)
-                        }
-                    })
+            let viewController = presented[safe: index]
+        else { return }
+
+        viewController.presentingViewController?.dismiss(animated: animated) { [weak self] in
+            if viewController.view.window == nil {
+                completion?()
+                self?.presented.remove(at: index)
+            }
         }
     }
 
     public func dismissAll(animated: Bool, completion: (() -> Void)?) {
-        if let viewController = presented.first {
-            viewController.presentingViewController?
-                .dismiss(animated: animated, completion: { [weak self] in
-                    completion?()
-                    self?.presented.removeAll()
-                })
+        guard let viewController = presented.first else { return }
+
+        viewController.presentingViewController?.dismiss(animated: animated) { [weak self] in
+            completion?()
+            self?.presented.removeAll()
         }
     }
 
     private func getSourceToPresentOn() -> UIViewController? {
-        return presented
-            .filter({ isInWindowHierarchy($0) })
-            .filter({ !isBeingDismissed($0) })
+        presented
+            .filter { isInWindowHierarchy($0) }
+            .filter { !isBeingDismissed($0) }
             .last
     }
 
     private func isInWindowHierarchy(_ viewController: UIViewController) -> Bool {
-        return viewController.view.window != nil
+        viewController.view.window != nil
     }
 
     private func isBeingDismissed(_ viewController: UIViewController) -> Bool {
-        return viewController.isBeingDismissed
+        viewController.isBeingDismissed
     }
 
     private func index(of view: UIViewController) -> Int? {
-        return presented.firstIndex(where: { $0 == view })
-    }
-}
-
-private extension Array {
-    subscript(safe index: Int) -> Element? {
-        return indices.contains(index)
-            ? self[index]
-            : nil
+        presented.firstIndex(where: { $0 == view })
     }
 }

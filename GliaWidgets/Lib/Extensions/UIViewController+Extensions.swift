@@ -11,10 +11,10 @@ extension UIViewController {
 
 extension UIViewController {
     private final class DeallocatingProxy {
-        var deallocating: (() -> Void)?
+        var onDeinit: (() -> Void)?
 
         deinit {
-            deallocating?()
+            onDeinit?()
         }
     }
 
@@ -22,16 +22,16 @@ extension UIViewController {
         static var deallocatingProxy = "deallocatingProxy"
     }
 
-    var deallocating: (() -> Void)? {
+    var onDeinit: (() -> Void)? {
         get {
-            deallocatingProxy?.deallocating
+            deallocatingProxy?.onDeinit
         }
         set {
             if deallocatingProxy == nil {
                 deallocatingProxy = DeallocatingProxy()
             }
 
-            deallocatingProxy?.deallocating = newValue
+            deallocatingProxy?.onDeinit = newValue
         }
     }
 

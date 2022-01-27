@@ -79,7 +79,7 @@ final class AppCoordinator: UIViewControllerCoordinator {
     }
 
     func end() {
-        gliaViewController?.dismiss(
+        gliaViewController?.presentingViewController?.dismiss(
             animated: true,
             completion: { [weak self] in
                 self?.delegate?(.ended)

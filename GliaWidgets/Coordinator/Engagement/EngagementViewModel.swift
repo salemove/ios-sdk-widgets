@@ -237,18 +237,12 @@ class EngagementViewModel {
 
     func handleError(_ error: SalemoveError) {
         switch error.error {
-        case let queueError as QueueError:
-            switch queueError {
-            case .queueClosed, .queueFull:
-                engagementDelegate?(
-                    .alert(.operatorsUnavailable)
-                )
-
-            default:
-                engagementDelegate?(
-                    .alert(.unexpectedError)
-                )
-            }
+        case
+            let queueError as QueueError where queueError == .queueClosed,
+            let queueError as QueueError where queueError == .queueFull:
+            engagementDelegate?(
+                .alert(.operatorsUnavailable)
+            )
         default:
             engagementDelegate?(
                 .alert(.unexpectedError)

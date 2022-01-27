@@ -1,13 +1,14 @@
 import UIKit
 
 class EngagementViewController: ViewController {
-    internal let viewFactory: ViewFactory
+    let viewFactory: ViewFactory
+
     private let viewModel: EngagementViewModel
 
     init(viewModel: EngagementViewModel, viewFactory: ViewFactory) {
         self.viewModel = viewModel
         self.viewFactory = viewFactory
-        
+
         super.init(nibName: nil, bundle: nil)
     }
 

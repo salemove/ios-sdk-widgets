@@ -6,10 +6,8 @@ class EndEngagementAlertProperties: AlertProperties {
             .actions([noAction, yesAction])
         ]
     }
-    
-    var showsCloseButton: Bool {
-        false
-    }
+
+    let showsCloseButton: Bool = false
 
     var noAction: AlertAction
     var yesAction: AlertAction

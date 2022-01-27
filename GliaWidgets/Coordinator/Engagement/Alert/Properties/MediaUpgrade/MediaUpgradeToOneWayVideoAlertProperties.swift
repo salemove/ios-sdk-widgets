@@ -8,10 +8,8 @@ class MediaUpgradeToOneWayVideoAlertProperties: MediaUpgradeProperties {
         ].compactMap({ $0 })
     }
 
-    var showsCloseButton: Bool {
-        false
-    }
-    
+    let showsCloseButton: Bool = false
+
     var declineAction: AlertAction
     var acceptAction: AlertAction
 
