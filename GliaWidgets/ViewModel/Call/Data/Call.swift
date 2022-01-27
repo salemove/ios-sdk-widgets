@@ -3,7 +3,7 @@ import AVFoundation
 
 enum CallKind {
     case audio
-    case video(direction: CoreSdkClient.MediaDirection)
+    case video(direction: MediaDirection)
 
     init?(with offer: CoreSdkClient.MediaUpgradeOffer) {
         switch offer.type {
@@ -91,7 +91,7 @@ class Call {
         self.kind.value = kind
     }
 
-    func upgrade(to offer: CoreSdkClient.MediaUpgradeOffer) {
+    func upgrade(to offer: MediaUpgradeOffer) {
         setKind(for: offer.type, direction: offer.direction)
         setNeededDirection(offer.direction, for: offer.type)
         state.value = .upgrading
@@ -157,7 +157,7 @@ class Call {
         state.value = .ended
     }
 
-    private func setKind(for type: CoreSdkClient.MediaType, direction: CoreSdkClient.MediaDirection) {
+    private func setKind(for type: MediaType, direction: MediaDirection) {
         switch type {
         case .audio:
             kind.value = .audio
