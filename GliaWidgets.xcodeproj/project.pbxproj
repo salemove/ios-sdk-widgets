@@ -193,7 +193,6 @@
 		C4F176CD261D1543009D9F07 /* ChatFileDownloadContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F176CB261D1543009D9F07 /* ChatFileDownloadContentView.swift */; };
 		C4F176CE261D1543009D9F07 /* ChatFileDownloadContentStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F176CC261D1543009D9F07 /* ChatFileDownloadContentStyle.swift */; };
 		EB0C9EB927A2DAE700914F09 /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0C9EB827A2DAE700914F09 /* Array+Extensions.swift */; };
-		EB736D5E27A7FDB9002125DB /* CoordinatorError.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB736D5D27A7FDB9002125DB /* CoordinatorError.swift */; };
 		EB750F53273BA9BB00BE5FBD /* GliaError.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB750F52273BA9BB00BE5FBD /* GliaError.swift */; };
 		EB75DF842795465D0004ABB7 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB75DF832795465D0004ABB7 /* Alert.swift */; };
 		EB75DF86279547CE0004ABB7 /* OperatorsUnavailableAlertProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB75DF85279547CE0004ABB7 /* OperatorsUnavailableAlertProperties.swift */; };
@@ -464,7 +463,6 @@
 		C4F176CB261D1543009D9F07 /* ChatFileDownloadContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFileDownloadContentView.swift; sourceTree = "<group>"; };
 		C4F176CC261D1543009D9F07 /* ChatFileDownloadContentStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFileDownloadContentStyle.swift; sourceTree = "<group>"; };
 		EB0C9EB827A2DAE700914F09 /* Array+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extensions.swift"; sourceTree = "<group>"; };
-		EB736D5D27A7FDB9002125DB /* CoordinatorError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatorError.swift; sourceTree = "<group>"; };
 		EB750F52273BA9BB00BE5FBD /* GliaError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GliaError.swift; sourceTree = "<group>"; };
 		EB75DF832795465D0004ABB7 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		EB75DF85279547CE0004ABB7 /* OperatorsUnavailableAlertProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperatorsUnavailableAlertProperties.swift; sourceTree = "<group>"; };
@@ -1082,7 +1080,6 @@
 			children = (
 				EBEB37572782E95200A0F853 /* Coordinator.swift */,
 				EBEB375A2782E97000A0F853 /* UIViewControllerCoordinator.swift */,
-				EB736D5D27A7FDB9002125DB /* CoordinatorError.swift */,
 			);
 			path = Coordinator;
 			sourceTree = "<group>";
@@ -2005,7 +2002,6 @@
 				1A60B0082567F29900E53F53 /* HeaderStyle.swift in Sources */,
 				1A4674BC25E91B930078FA1C /* PopoverPresenter.swift in Sources */,
 				1ABD6CAC25B71D1B00D56EFA /* CallViewModel.swift in Sources */,
-				EB736D5E27A7FDB9002125DB /* CoordinatorError.swift in Sources */,
 				EB0C9EB927A2DAE700914F09 /* Array+Extensions.swift in Sources */,
 				1A0EDF5A25E786DB0076D1AD /* FileUploadStyle.swift in Sources */,
 				1A6075E02582209100569B0E /* UserImageView.swift in Sources */,
