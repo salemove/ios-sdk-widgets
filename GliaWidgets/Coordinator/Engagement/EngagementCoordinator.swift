@@ -199,10 +199,10 @@ extension EngagementCoordinator {
             presentStartScreenShare(answer: answer, operatorName: operatorName)
 
         case .cameraSettings:
-            break
+            presentSettingsAlert(configuration: viewFactory.theme.alertConfiguration.cameraSettings)
 
         case .microphoneSettings:
-            break
+            presentSettingsAlert(configuration: viewFactory.theme.alertConfiguration.microphoneSettings)
 
         case .operatorsUnavailable:
             presentOperatorsUnavailable()
@@ -217,6 +217,28 @@ extension EngagementCoordinator {
 }
 
 extension EngagementCoordinator {
+    private func presentSettingsAlert(configuration: SettingsAlertConfiguration) {
+        let alert = UIAlertController(
+            title: configuration.title,
+            message: configuration.message,
+            preferredStyle: .alert
+        )
+
+        let cancel = UIAlertAction(title: configuration.cancelTitle, style: .cancel, handler: nil)
+        let settings = UIAlertAction(title: configuration.settingsTitle, style: .default, handler: { _ in
+            guard
+                let settingsURL = URL(string: UIApplication.openSettingsURLString)
+            else { return }
+
+            UIApplication.shared.open(settingsURL)
+        })
+
+        alert.addAction(cancel)
+        alert.addAction(settings)
+
+        presenter?.present(alert, animated: true, completion: nil)
+    }
+
     private func presentOperatorEndedEngagement() {
         let properties = EngagementEndedAlertProperties(
             configuration: viewFactory.theme.alertConfiguration.operatorEndedEngagement
