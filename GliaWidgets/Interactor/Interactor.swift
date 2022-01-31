@@ -92,7 +92,7 @@ extension Interactor {
     ) {
         state = .enqueueing
 
-        var options: EngagementOptions? = nil
+        var options: EngagementOptions?
 
         if mediaType == .audio || mediaType == .video {
             options = .init(mediaDirection: .twoWay)

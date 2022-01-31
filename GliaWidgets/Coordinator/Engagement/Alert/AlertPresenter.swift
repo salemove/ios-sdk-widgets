@@ -14,11 +14,10 @@ final class AlertPresenter {
     }
 
     func present(view: UIViewController, animated: Bool, completion: (() -> Void)?) {
-        if rootViewController == nil {
-            fatalError("Attempting to use presenter with deallocated view")
+        guard rootViewController != nil else {
+            assertionFailure("Attempting to use presenter with deallocated view")
+            return
         }
-
-        presented.append(view)
 
         let presentOn = getSourceToPresentOn() ?? rootViewController
         presentOn?.present(view, animated: animated, completion: completion)

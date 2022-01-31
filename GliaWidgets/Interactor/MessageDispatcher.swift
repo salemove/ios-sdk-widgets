@@ -76,8 +76,8 @@ final class MessageDispatcher: UnreadMessagesCounter {
     }
 
     private func numberOfUnreadMessages() -> Int {
-        messages.filter({
+        messages.filter {
             $0.key.sender == .operator && $0.value == .received
-        }).count
+        }.count
     }
 }

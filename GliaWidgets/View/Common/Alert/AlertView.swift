@@ -51,7 +51,7 @@ final class AlertView: UIView {
             closeButton.tintColor = alertStyle.closeButtonColor
             addSubview(closeButton)
             closeButton.autoPinEdge(toSuperviewEdge: .right, withInset: 23)
-            closeButton.autoPinEdge(toSuperviewEdge: .bottom, withInset: 24)
+            closeButton.autoPinEdge(toSuperviewSafeArea: .bottom, withInset: 24)
         }
     }
 

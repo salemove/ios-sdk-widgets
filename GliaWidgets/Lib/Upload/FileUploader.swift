@@ -121,7 +121,7 @@ class FileUploader {
                 return false
             }
         })
-        
+
         updateState()
         updateLimitReached()
     }
