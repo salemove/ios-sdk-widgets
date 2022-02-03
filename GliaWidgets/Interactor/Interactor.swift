@@ -1,11 +1,10 @@
 import Foundation
-import SalemoveSDK
 
 enum InteractorState {
     case none
     case enqueueing
-    case enqueued(QueueTicket)
-    case engaged(Operator?)
+    case enqueued(CoreSdkClient.QueueTicket)
+    case engaged(CoreSdkClient.Operator?)
     case ended(EndEngagementReason)
 }
 
@@ -17,25 +16,25 @@ enum EndEngagementReason {
 
 enum InteractorEvent {
     case stateChanged(InteractorState)
-    case receivedMessage(Message)
-    case messagesUpdated([Message])
-    case typingStatusUpdated(OperatorTypingStatus)
-    case upgradeOffer(MediaUpgradeOffer, answer: AnswerWithSuccessBlock)
-    case audioStreamAdded(AudioStreamable)
-    case audioStreamError(SalemoveError)
-    case videoStreamAdded(VideoStreamable)
-    case videoStreamError(SalemoveError)
-    case screenShareOffer(answer: AnswerBlock)
-    case screenShareError(error: SalemoveError)
-    case screenSharingStateChanged(to: VisitorScreenSharingState)
-    case error(SalemoveError)
+    case receivedMessage(CoreSdkClient.Message)
+    case messagesUpdated([CoreSdkClient.Message])
+    case typingStatusUpdated(CoreSdkClient.OperatorTypingStatus)
+    case upgradeOffer(CoreSdkClient.MediaUpgradeOffer, answer: CoreSdkClient.AnswerWithSuccessBlock)
+    case audioStreamAdded(CoreSdkClient.AudioStreamable)
+    case audioStreamError(CoreSdkClient.SalemoveError)
+    case videoStreamAdded(CoreSdkClient.VideoStreamable)
+    case videoStreamError(CoreSdkClient.SalemoveError)
+    case screenShareOffer(answer: CoreSdkClient.AnswerBlock)
+    case screenShareError(error: CoreSdkClient.SalemoveError)
+    case screenSharingStateChanged(to: CoreSdkClient.VisitorScreenSharingState)
+    case error(CoreSdkClient.SalemoveError)
 }
 
 class Interactor {
     typealias EventHandler = (InteractorEvent) -> Void
 
     let queueID: String
-    var engagedOperator: Operator? {
+    var engagedOperator: CoreSdkClient.Operator? {
         switch state {
         case .engaged(let engagedOperator):
             return engagedOperator
@@ -53,7 +52,7 @@ class Interactor {
         }
     }
 
-    private let visitorContext: VisitorContext
+    private let visitorContext: CoreSdkClient.VisitorContext
     private var observers = [() -> (AnyObject?, EventHandler)]()
     private var isEngagementEndedByVisitor = false
     private(set) var state: InteractorState = .none {
@@ -65,9 +64,9 @@ class Interactor {
     }
 
     init(
-        with conf: Salemove.Configuration,
+        with conf: CoreSdkClient.Salemove.Configuration,
         queueID: String,
-        visitorContext: VisitorContext
+        visitorContext: CoreSdkClient.VisitorContext
     ) {
         self.queueID = queueID
         self.visitorContext = visitorContext
@@ -83,11 +82,11 @@ class Interactor {
         observers.removeAll(where: { $0().0 === observer })
     }
 
-    private func configure(with conf: Salemove.Configuration) {
-        Salemove.sharedInstance.configure(with: conf) {
+    private func configure(with conf: CoreSdkClient.Salemove.Configuration) {
+        CoreSdkClient.Salemove.sharedInstance.configure(with: conf) {
             // SDK is initialized and ready to use.
         }
-        Salemove.sharedInstance.configure(interactor: self)
+        CoreSdkClient.Salemove.sharedInstance.configure(interactor: self)
     }
 
     private func notify(_ event: InteractorEvent) {
@@ -105,19 +104,19 @@ class Interactor {
 
 extension Interactor {
     func enqueueForEngagement(
-        mediaType: MediaType,
+        mediaType: CoreSdkClient.MediaType,
         success: @escaping () -> Void,
-        failure: @escaping (SalemoveError) -> Void
+        failure: @escaping (CoreSdkClient.SalemoveError) -> Void
     ) {
         state = .enqueueing
 
-        var options: EngagementOptions? = nil
+        var options: CoreSdkClient.EngagementOptions? = nil
 
         if mediaType == .audio || mediaType == .video {
             options = .init(mediaDirection: .twoWay)
         }
 
-        Salemove.sharedInstance.queueForEngagement(
+        CoreSdkClient.Salemove.sharedInstance.queueForEngagement(
             queueID: queueID,
             visitorContext: visitorContext,
             mediaType: mediaType,
@@ -136,14 +135,14 @@ extension Interactor {
     }
 
     func request(
-        _ media: MediaType,
-        direction: MediaDirection,
+        _ media: CoreSdkClient.MediaType,
+        direction: CoreSdkClient.MediaDirection,
         success: @escaping () -> Void,
-        failure: @escaping (Error?, SalemoveError?) -> Void
+        failure: @escaping (Error?, CoreSdkClient.SalemoveError?) -> Void
     ) {
         do {
-            let offer = try MediaUpgradeOffer(type: media, direction: direction)
-            Salemove.sharedInstance.requestMediaUpgrade(
+            let offer = try CoreSdkClient.MediaUpgradeOffer(type: media, direction: direction)
+            CoreSdkClient.Salemove.sharedInstance.requestMediaUpgrade(
                 offer: offer
             ) { isSuccess, error in
                 if let error = error {
@@ -160,16 +159,16 @@ extension Interactor {
     }
 
     func sendMessagePreview(_ message: String) {
-        Salemove.sharedInstance.sendMessagePreview(message: message) { _, _ in }
+        CoreSdkClient.Salemove.sharedInstance.sendMessagePreview(message: message) { _, _ in }
     }
 
     func send(
         _ message: String,
-        attachment: Attachment?,
-        success: @escaping (Message) -> Void,
-        failure: @escaping (SalemoveError) -> Void
+        attachment: CoreSdkClient.Attachment?,
+        success: @escaping (CoreSdkClient.Message) -> Void,
+        failure: @escaping (CoreSdkClient.SalemoveError) -> Void
     ) {
-        Salemove.sharedInstance.send(
+        CoreSdkClient.Salemove.sharedInstance.send(
             message: message,
             attachment: attachment
         ) { message, error in
@@ -183,7 +182,7 @@ extension Interactor {
 
     func endSession(
         success: @escaping () -> Void,
-        failure: @escaping (SalemoveError) -> Void
+        failure: @escaping (CoreSdkClient.SalemoveError) -> Void
     ) {
         isEngagementEndedByVisitor = true
 
@@ -211,11 +210,11 @@ extension Interactor {
     }
 
     private func exitQueue(
-        ticket: QueueTicket,
+        ticket: CoreSdkClient.QueueTicket,
         success: @escaping () -> Void,
-        failure: @escaping (SalemoveError) -> Void
+        failure: @escaping (CoreSdkClient.SalemoveError) -> Void
     ) {
-        Salemove.sharedInstance.cancel(
+        CoreSdkClient.Salemove.sharedInstance.cancel(
             queueTicket: ticket
         ) { [weak self] _, error in
             if let error = error {
@@ -229,9 +228,9 @@ extension Interactor {
 
     private func endEngagement(
         success: @escaping () -> Void,
-        failure: @escaping (SalemoveError) -> Void
+        failure: @escaping (CoreSdkClient.SalemoveError) -> Void
     ) {
-        Salemove.sharedInstance.endEngagement { [weak self] _, error in
+        CoreSdkClient.Salemove.sharedInstance.endEngagement { [weak self] _, error in
             if let error = error {
                 failure(error)
             } else {
@@ -242,43 +241,43 @@ extension Interactor {
     }
 }
 
-extension Interactor: Interactable {
-    var onScreenSharingOffer: ScreenshareOfferBlock {
+extension Interactor: CoreSdkClient.Interactable {
+    var onScreenSharingOffer: CoreSdkClient.ScreenshareOfferBlock {
         return { [weak self] answer in
             self?.notify(.screenShareOffer(answer: answer))
         }
     }
 
-    var onMediaUpgradeOffer: MediaUgradeOfferBlock {
+    var onMediaUpgradeOffer: CoreSdkClient.MediaUgradeOfferBlock {
         return { [weak self] offer, answer in
             self?.notify(.upgradeOffer(offer, answer: answer))
         }
     }
 
-    var onEngagementRequest: RequestOfferBlock {
+    var onEngagementRequest: CoreSdkClient.RequestOfferBlock {
         return { answer in
-            let context = SalemoveSDK.VisitorContext(type: .page, url: "wwww.example.com")
+            let context = CoreSdkClient.VisitorContext(type: .page, url: "wwww.example.com")
             answer(context, true) { _, _ in }
         }
     }
 
-    var onEngagementTransfer: EngagementTransferBlock {
+    var onEngagementTransfer: CoreSdkClient.EngagementTransferBlock {
         return { _ in }
     }
 
-    var onOperatorTypingStatusUpdate: OperatorTypingStatusUpdate {
+    var onOperatorTypingStatusUpdate: CoreSdkClient.OperatorTypingStatusUpdate {
         return { [weak self] operatorTypingStatus in
             self?.notify(.typingStatusUpdated(operatorTypingStatus))
         }
     }
 
-    var onMessagesUpdated: MessagesUpdateBlock {
+    var onMessagesUpdated: CoreSdkClient.MessagesUpdateBlock {
         return { [weak self] messages in
             self?.notify(.messagesUpdated(messages))
         }
     }
 
-    var onVisitorScreenSharingStateChange: VisitorScreenSharingStateChange {
+    var onVisitorScreenSharingStateChange: CoreSdkClient.VisitorScreenSharingStateChange {
         return { [weak self] state, error in
             if let error = error {
                 self?.notify(.screenShareError(error: error))
@@ -288,7 +287,7 @@ extension Interactor: Interactable {
         }
     }
 
-    var onAudioStreamAdded: AudioStreamAddedBlock {
+    var onAudioStreamAdded: CoreSdkClient.AudioStreamAddedBlock {
         return { [weak self] stream, error in
             if let stream = stream {
                 self?.notify(.audioStreamAdded(stream))
@@ -298,7 +297,7 @@ extension Interactor: Interactable {
         }
     }
 
-    var onVideoStreamAdded: VideoStreamAddedBlock {
+    var onVideoStreamAdded: CoreSdkClient.VideoStreamAddedBlock {
         return { [weak self] stream, error in
             if let stream = stream {
                 self?.notify(.videoStreamAdded(stream))
@@ -308,12 +307,12 @@ extension Interactor: Interactable {
         }
     }
 
-    func receive(message: Message) {
+    func receive(message: CoreSdkClient.Message) {
         notify(.receivedMessage(message))
     }
 
     func start() {
-        Salemove.sharedInstance.requestEngagedOperator { [weak self] operators, _ in
+        CoreSdkClient.Salemove.sharedInstance.requestEngagedOperator { [weak self] operators, _ in
             let engagedOperator = operators?.first
             self?.state = .engaged(engagedOperator)
         }
@@ -327,7 +326,7 @@ extension Interactor: Interactable {
         }
     }
 
-    func fail(error: SalemoveError) {
+    func fail(error: CoreSdkClient.SalemoveError) {
         notify(.error(error))
     }
 }

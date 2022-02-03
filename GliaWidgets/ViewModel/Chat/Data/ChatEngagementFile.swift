@@ -1,5 +1,4 @@
 import Foundation
-import SalemoveSDK
 
 class ChatEngagementFile: Codable {
     let id: String?
@@ -18,7 +17,7 @@ class ChatEngagementFile: Codable {
         case isDeleted
     }
 
-    init(with file: SalemoveSDK.EngagementFile) {
+    init(with file: CoreSdkClient.EngagementFile) {
         id = file.id
         url = file.url
         name = file.name
