@@ -1,5 +1,4 @@
 import Foundation
-import SalemoveSDK
 
 enum ChatMessageSender: Int, Codable {
     case visitor = 0
@@ -8,7 +7,7 @@ enum ChatMessageSender: Int, Codable {
     case system = 3
     case unknown = 100
 
-    init(with sender: SalemoveSDK.MessageSender) {
+    init(with sender: CoreSdkClient.MessageSender) {
         switch sender {
         case .visitor:
             self = .visitor
@@ -46,9 +45,9 @@ class ChatMessage: Codable {
         case attachment
     }
 
-    init(with message: SalemoveSDK.Message,
+    init(with message: CoreSdkClient.Message,
          queueID: String? = nil,
-         operator salemoveOperator: Operator? = nil) {
+         operator salemoveOperator: CoreSdkClient.Operator? = nil) {
         id = message.id
         self.queueID = queueID
         self.operator = salemoveOperator.map { ChatOperator(with: $0) }

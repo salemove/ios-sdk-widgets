@@ -1,5 +1,4 @@
 import Foundation
-import SalemoveSDK
 
 class ChatOperator: Codable {
     let name: String
@@ -10,7 +9,7 @@ class ChatOperator: Codable {
         case pictureUrl
     }
 
-    init(with salemoveOperator: SalemoveSDK.Operator) {
+    init(with salemoveOperator: CoreSdkClient.Operator) {
         name = salemoveOperator.name
         pictureUrl = salemoveOperator.picture?.url
     }

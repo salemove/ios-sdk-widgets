@@ -1,5 +1,4 @@
 import UIKit
-import SalemoveSDK
 
 class VideoStreamView: UIView {
     enum Kind {
@@ -10,7 +9,7 @@ class VideoStreamView: UIView {
     var pan: ((CGPoint) -> Void)?
     var show: ((Bool) -> Void)?
 
-    weak var streamView: StreamView? {
+    weak var streamView: CoreSdkClient.StreamView? {
         didSet {
             replace(oldStreamView: oldValue, with: streamView)
         }
@@ -40,8 +39,8 @@ class VideoStreamView: UIView {
     }
 
     private func replace(
-        oldStreamView: StreamView?,
-        with streamView: StreamView?
+        oldStreamView: CoreSdkClient.StreamView?,
+        with streamView: CoreSdkClient.StreamView?
     ) {
         oldStreamView?.removeFromSuperview()
         guard let streamView = streamView else {
