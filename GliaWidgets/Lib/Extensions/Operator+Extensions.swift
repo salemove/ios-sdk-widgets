@@ -1,6 +1,4 @@
-import SalemoveSDK
-
-extension Operator {
+extension CoreSdkClient.Operator {
     var firstName: String? {
         guard let first = name.split(separator: " ").first else { return nil }
         return String(first)

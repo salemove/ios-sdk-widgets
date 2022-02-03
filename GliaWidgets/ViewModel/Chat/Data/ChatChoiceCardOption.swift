@@ -1,5 +1,4 @@
 import Foundation
-import SalemoveSDK
 
 final class ChatChoiceCardOption: Codable {
     let text: String?
@@ -10,7 +9,7 @@ final class ChatChoiceCardOption: Codable {
         case value
     }
 
-    init(with option: SalemoveSDK.SingleChoiceOption) {
+    init(with option: CoreSdkClient.SingleChoiceOption) {
         text = option.text
         value = option.value
     }

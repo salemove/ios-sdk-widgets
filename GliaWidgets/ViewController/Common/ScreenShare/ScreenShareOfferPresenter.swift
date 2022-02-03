@@ -1,4 +1,3 @@
-import SalemoveSDK
 import UIKit
 
 protocol ScreenShareOfferPresenter where Self: UIViewController {
