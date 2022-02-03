@@ -1,4 +1,3 @@
-import SalemoveSDK
 import UIKit
 
 class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
@@ -80,7 +79,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
                 ? .audio
                 : .video(direction: .twoWay)
 
-            let mediaType: MediaType = engagementKind == .audioCall
+            let mediaType: CoreSdkClient.MediaType = engagementKind == .audioCall
                 ? .audio
                 : .video
             let call = Call(kind)
@@ -296,8 +295,8 @@ extension RootCoordinator {
 
 extension RootCoordinator {
     private func chatMediaUpgradeAccepted(
-        offer: MediaUpgradeOffer,
-        answer: @escaping AnswerWithSuccessBlock
+        offer: CoreSdkClient.MediaUpgradeOffer,
+        answer: @escaping CoreSdkClient.AnswerWithSuccessBlock
     ) {
         switch engagement {
         case .chat(let chatViewController):

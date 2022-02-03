@@ -1,5 +1,3 @@
-import SalemoveSDK
-
 enum ScreenSharingStatus {
     case started
     case stopped
@@ -7,9 +5,9 @@ enum ScreenSharingStatus {
 
 class ScreenShareHandler {
     let status = ObservableValue<ScreenSharingStatus>(with: .stopped)
-    private var visitorState: VisitorScreenSharingState?
+    private var visitorState: CoreSdkClient.VisitorScreenSharingState?
 
-    func updateState(to state: VisitorScreenSharingState?) {
+    func updateState(to state: CoreSdkClient.VisitorScreenSharingState?) {
         visitorState = state
         guard let state = state else {
             status.value = .stopped

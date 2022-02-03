@@ -1,5 +1,4 @@
 import Foundation
-import SalemoveSDK
 
 class EngagementViewModel {
     enum Event {
@@ -116,7 +115,7 @@ class EngagementViewModel {
         update(for: interactor.state)
     }
 
-    func enqueue(mediaType: MediaType) {
+    func enqueue(mediaType: CoreSdkClient.MediaType) {
         interactor.enqueueForEngagement(
             mediaType: mediaType,
             success: {},
@@ -204,7 +203,7 @@ class EngagementViewModel {
         showAlert(with: alertConfiguration.unexpectedError)
     }
 
-    func showAlert(for error: SalemoveError) {
+    func showAlert(for error: CoreSdkClient.SalemoveError) {
         showAlert(with: alertConfiguration.unexpectedError)
     }
 
@@ -216,7 +215,7 @@ class EngagementViewModel {
     }
 
     func alertConfiguration(
-        with error: SalemoveError
+        with error: CoreSdkClient.SalemoveError
     ) -> MessageAlertConfiguration {
         return MessageAlertConfiguration(
             with: error,
@@ -224,7 +223,7 @@ class EngagementViewModel {
         )
     }
 
-    func updateScreenSharingState(to state: VisitorScreenSharingState) {
+    func updateScreenSharingState(to state: CoreSdkClient.VisitorScreenSharingState) {
         screenShareHandler.updateState(to: state)
     }
 
@@ -233,7 +232,7 @@ class EngagementViewModel {
         engagementAction?(.showEndButton)
     }
 
-    private func offerScreenShare(answer: @escaping AnswerBlock) {
+    private func offerScreenShare(answer: @escaping CoreSdkClient.AnswerBlock) {
         guard isViewActive.value else { return }
         let operatorName = interactor.engagedOperator?.firstName
         let configuration = alertConfiguration.screenShareOffer
@@ -278,9 +277,9 @@ class EngagementViewModel {
         }
     }
 
-    private func handleError(_ error: SalemoveError) {
+    private func handleError(_ error: CoreSdkClient.SalemoveError) {
         switch error.error {
-        case let queueError as QueueError:
+        case let queueError as CoreSdkClient.QueueError:
             switch queueError {
             case .queueClosed, .queueFull:
                 showAlert(

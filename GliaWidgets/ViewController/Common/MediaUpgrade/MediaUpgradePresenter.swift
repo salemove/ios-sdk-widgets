@@ -1,5 +1,4 @@
 import UIKit
-import SalemoveSDK
 
 protocol MediaUpgradePresenter where Self: UIViewController {
     var viewFactory: ViewFactory { get }
