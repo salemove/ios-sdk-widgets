@@ -1,5 +1,4 @@
 import UIKit
-import SalemoveSDK
 
 class AlertViewController: ViewController {
     enum Kind {

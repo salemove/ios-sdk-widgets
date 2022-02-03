@@ -1,4 +1,3 @@
-import SalemoveSDK
 import SafariServices
 import UIKit
 
@@ -7,8 +6,8 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
         case back
         case engaged(operatorImageUrl: String?)
         case mediaUpgradeAccepted(
-            offer: MediaUpgradeOffer,
-            answer: AnswerWithSuccessBlock
+            offer: CoreSdkClient.MediaUpgradeOffer,
+            answer: CoreSdkClient.AnswerWithSuccessBlock
         )
         case call
         case finished

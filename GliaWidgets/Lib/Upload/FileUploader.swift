@@ -1,5 +1,3 @@
-import SalemoveSDK
-
 class FileUploader {
     enum State {
         case idle
@@ -37,12 +35,12 @@ class FileUploader {
             }
         }
     }
-    var attachment: Attachment? {
+    var attachment: CoreSdkClient.Attachment? {
         guard !succeededUploads.isEmpty else { return nil }
         let files = succeededUploads
             .compactMap { $0.engagementFileInformation }
-            .map { EngagementFile(id: $0.id) }
-        return Attachment(files: files)
+            .map { CoreSdkClient.EngagementFile(id: $0.id) }
+        return CoreSdkClient.Attachment(files: files)
     }
     var count: Int { return uploads.count }
     let state = ObservableValue<State>(with: .idle)
