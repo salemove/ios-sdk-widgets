@@ -84,8 +84,8 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     private let isChatScrolledToBottom = ObservableValue<Bool>(with: true)
     private let showsCallBubble: Bool
     private let storage = ChatStorage()
-    private let uploader = FileUploader(maximumUploads: 25)
-    private let downloader = FileDownloader()
+    private let uploader: FileUploader
+    private let downloader: FileDownloader
     private var messageText = "" {
         didSet {
             validateMessage()
@@ -96,6 +96,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
 
     private var pendingMessages: [OutgoingMessage] = []
     private var isViewLoaded: Bool = false
+    private var environment: Environment
 
     init(
         interactor: Interactor,
@@ -105,12 +106,16 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         unreadMessages: ObservableValue<Int>,
         showsCallBubble: Bool,
         isWindowVisible: ObservableValue<Bool>,
-        startAction: StartAction
+        startAction: StartAction,
+        environment: Environment
     ) {
         self.call = call
         self.showsCallBubble = showsCallBubble
         self.startAction = startAction
         self.screenShareHandler = screenShareHandler
+        self.environment = environment
+        self.uploader = FileUploader(maximumUploads: 25, environment: .init(uploadFileToEngagement: environment.uploadFileToEngagement))
+        self.downloader = FileDownloader(environment: .init(fetchFile: environment.fetchFile))
         super.init(
             interactor: interactor,
             alertConfiguration: alertConfiguration,
@@ -727,9 +732,7 @@ extension ChatViewModel {
 extension ChatViewModel {
     private func sendChoiceCardResponse(_ option: ChatChoiceCardOption, to messageId: String) {
         guard let value = option.value else { return }
-        CoreSdkClient.Salemove.sharedInstance.send(
-            selectedOptionValue: value
-        ) { [weak self] result in
+        environment.sendSelectedOptionValue(value) { [weak self] result in
             guard let self = self else { return }
 
             switch result {
@@ -782,5 +785,13 @@ extension ChatViewModel {
 
         action?(.refreshRow(index, in: messagesSection.index, animated: true))
         action?(.setChoiceCardInputModeEnabled(false))
+    }
+}
+
+extension ChatViewModel {
+    struct Environment {
+        var fetchFile: CoreSdkClient.FetchFile
+        var sendSelectedOptionValue: CoreSdkClient.SendSelectedOptionValue
+        var uploadFileToEngagement: CoreSdkClient.UploadFileToEngagement
     }
 }
