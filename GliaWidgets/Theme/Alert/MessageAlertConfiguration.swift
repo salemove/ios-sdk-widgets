@@ -1,5 +1,3 @@
-import SalemoveSDK
-
 /// Configuration of a generic alert.
 public struct MessageAlertConfiguration {
     /// Title of the alert.
@@ -20,7 +18,7 @@ public struct MessageAlertConfiguration {
         self.message = message
     }
 
-    init(with error: SalemoveError, templateConf: MessageAlertConfiguration) {
+    init(with error: CoreSdkClient.SalemoveError, templateConf: MessageAlertConfiguration) {
         self.title = templateConf.title
         self.message = templateConf.message?.replacingOccurrences(of: kMessagePlaceholder,
                                                                   with: error.reason)

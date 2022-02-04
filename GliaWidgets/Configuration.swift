@@ -1,5 +1,3 @@
-import SalemoveSDK
-
 /// Glia's environment. Use the one that our account manager has assigned to you.
 public enum Environment {
     /// Europe
@@ -9,7 +7,7 @@ public enum Environment {
     /// Beta environment. For development use.
     case beta
 
-    var region: Salemove.Region {
+    var region: CoreSdkClient.Salemove.Region {
         switch self {
         case .usa:
             return .us
@@ -107,7 +105,7 @@ public extension Configuration {
         /// Site API key authorization
         case siteApiKey(id: String, secret: String)
 
-        var coreAuthorizationMethod: Salemove.AuthorizationMethod {
+        var coreAuthorizationMethod: CoreSdkClient.Salemove.AuthorizationMethod {
             switch self {
             case .siteApiKey(let id, let secret):
                 return .siteApiKey(id: id, secret: secret)

@@ -1,5 +1,4 @@
 import Foundation
-import SalemoveSDK
 
 class CallViewModel: EngagementViewModel, ViewModel {
     private typealias Strings = L10n.Call
@@ -42,8 +41,8 @@ class CallViewModel: EngagementViewModel, ViewModel {
             accepted: () -> Void,
             declined: () -> Void
         )
-        case setRemoteVideo(StreamView?)
-        case setLocalVideo(StreamView?)
+        case setRemoteVideo(CoreSdkClient.StreamView?)
+        case setLocalVideo(CoreSdkClient.StreamView?)
     }
 
     enum DelegateEvent {
@@ -52,9 +51,9 @@ class CallViewModel: EngagementViewModel, ViewModel {
     }
 
     enum StartAction {
-        case engagement(mediaType: MediaType)
-        case call(offer: MediaUpgradeOffer,
-                  answer: AnswerWithSuccessBlock)
+        case engagement(mediaType: CoreSdkClient.MediaType)
+        case call(offer: CoreSdkClient.MediaUpgradeOffer,
+                  answer: CoreSdkClient.AnswerWithSuccessBlock)
     }
 
     var action: ((Action) -> Void)?
@@ -221,9 +220,9 @@ class CallViewModel: EngagementViewModel, ViewModel {
         }
     }
 
-    private func handleAudioStreamError(_ error: SalemoveError) {
+    private func handleAudioStreamError(_ error: CoreSdkClient.SalemoveError) {
         switch error.error {
-        case let mediaError as MediaError:
+        case let mediaError as CoreSdkClient.MediaError:
             switch mediaError {
             case .permissionDenied:
                 showSettingsAlert(
@@ -237,9 +236,9 @@ class CallViewModel: EngagementViewModel, ViewModel {
         }
     }
 
-    private func handleVideoStreamError(_ error: SalemoveError) {
+    private func handleVideoStreamError(_ error: CoreSdkClient.SalemoveError) {
         switch error.error {
-        case let mediaError as MediaError:
+        case let mediaError as CoreSdkClient.MediaError:
             switch mediaError {
             case .permissionDenied:
                 showSettingsAlert(with: alertConfiguration.cameraSettings)
@@ -273,8 +272,8 @@ class CallViewModel: EngagementViewModel, ViewModel {
 
 extension CallViewModel {
     private func offerMediaUpgrade(
-        _ offer: MediaUpgradeOffer,
-        answer: @escaping AnswerWithSuccessBlock
+        _ offer: CoreSdkClient.MediaUpgradeOffer,
+        answer: @escaping CoreSdkClient.AnswerWithSuccessBlock
     ) {
         switch offer.type {
         case .video:
@@ -293,8 +292,8 @@ extension CallViewModel {
 
     private func offerMediaUpgrade(
         with configuration: SingleMediaUpgradeAlertConfiguration,
-        offer: MediaUpgradeOffer,
-        answer: @escaping AnswerWithSuccessBlock
+        offer: CoreSdkClient.MediaUpgradeOffer,
+        answer: @escaping CoreSdkClient.AnswerWithSuccessBlock
     ) {
         guard isViewActive.value else { return }
         let operatorName = interactor.engagedOperator?.firstName
@@ -313,13 +312,13 @@ extension CallViewModel {
 }
 
 extension CallViewModel {
-    private func showRemoteVideo(with stream: VideoStreamable) {
+    private func showRemoteVideo(with stream: CoreSdkClient.VideoStreamable) {
         action?(.switchToVideoMode)
         action?(.setRemoteVideo(stream.getStreamView()))
         stream.playVideo()
     }
 
-    private func showLocalVideo(with stream: VideoStreamable) {
+    private func showLocalVideo(with stream: CoreSdkClient.VideoStreamable) {
         action?(.switchToVideoMode)
         action?(.setLocalVideo(stream.getStreamView()))
         stream.playVideo()
@@ -375,11 +374,11 @@ extension CallViewModel {
         update(for: kind)
     }
 
-    private func onAudioChanged(_ stream: MediaStream<AudioStreamable>) {
+    private func onAudioChanged(_ stream: MediaStream<CoreSdkClient.AudioStreamable>) {
         updateButtons()
     }
 
-    private func onVideoChanged(_ stream: MediaStream<VideoStreamable>) {
+    private func onVideoChanged(_ stream: MediaStream<CoreSdkClient.VideoStreamable>) {
         updateButtons()
         updateRemoteVideoVisible()
         updateLocalVideoVisible()

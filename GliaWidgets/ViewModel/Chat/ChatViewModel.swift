@@ -1,5 +1,4 @@
 import Foundation
-import SalemoveSDK
 
 class ChatViewModel: EngagementViewModel, ViewModel {
     typealias Strings = L10n.Chat
@@ -52,8 +51,8 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         case takeMedia(ObservableValue<MediaPickerEvent>)
         case pickFile(ObservableValue<FilePickerEvent>)
         case mediaUpgradeAccepted(
-            offer: MediaUpgradeOffer,
-            answer: AnswerWithSuccessBlock
+            offer: CoreSdkClient.MediaUpgradeOffer,
+            answer: CoreSdkClient.AnswerWithSuccessBlock
         )
         case showFile(LocalFile)
         case call
@@ -314,8 +313,8 @@ extension ChatViewModel {
 
 extension ChatViewModel {
     private func offerMediaUpgrade(
-        _ offer: MediaUpgradeOffer,
-        answer: @escaping AnswerWithSuccessBlock
+        _ offer: CoreSdkClient.MediaUpgradeOffer,
+        answer: @escaping CoreSdkClient.AnswerWithSuccessBlock
     ) {
         switch offer.type {
         case .audio:
@@ -340,8 +339,8 @@ extension ChatViewModel {
 
     private func offerMediaUpgrade(
         with configuration: SingleMediaUpgradeAlertConfiguration,
-        offer: MediaUpgradeOffer,
-        answer: @escaping AnswerWithSuccessBlock
+        offer: CoreSdkClient.MediaUpgradeOffer,
+        answer: @escaping CoreSdkClient.AnswerWithSuccessBlock
     ) {
         guard isViewActive.value else { return }
         let operatorName = interactor.engagedOperator?.firstName
@@ -428,7 +427,7 @@ extension ChatViewModel {
     private func replace(
         _ outgoingMessage: OutgoingMessage,
         uploads: [FileUpload],
-        with message: Message,
+        with message: CoreSdkClient.Message,
         in section: Section<ChatItem>
     ) {
         guard let index = section.items
@@ -474,7 +473,7 @@ extension ChatViewModel {
         return isValid
     }
 
-    private func receivedMessage(_ message: Message) {
+    private func receivedMessage(_ message: CoreSdkClient.Message) {
         guard storage.isNewMessage(message) else { return }
 
         storage.storeMessage(
@@ -509,7 +508,7 @@ extension ChatViewModel {
         }
     }
 
-    private func messagesUpdated(_ messages: [Message]) {
+    private func messagesUpdated(_ messages: [CoreSdkClient.Message]) {
         let newMessages = storage.newMessages(messages)
         unreadMessages.received(newMessages.count)
 
@@ -526,7 +525,7 @@ extension ChatViewModel {
         }
     }
 
-    private func typingStatusUpdated(_ status: OperatorTypingStatus) {
+    private func typingStatusUpdated(_ status: CoreSdkClient.OperatorTypingStatus) {
         action?(.setOperatorTypingIndicatorIsHiddenTo(
             !status.isTyping, isChatScrolledToBottom.value
         ))
@@ -728,7 +727,7 @@ extension ChatViewModel {
 extension ChatViewModel {
     private func sendChoiceCardResponse(_ option: ChatChoiceCardOption, to messageId: String) {
         guard let value = option.value else { return }
-        Salemove.sharedInstance.send(
+        CoreSdkClient.Salemove.sharedInstance.send(
             selectedOptionValue: value
         ) { [weak self] result in
             guard let self = self else { return }
