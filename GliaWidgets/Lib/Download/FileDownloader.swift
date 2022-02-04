@@ -1,5 +1,3 @@
-import SalemoveSDK
-
 class FileDownloader {
     enum AutoDownload {
         case nothing

@@ -1,5 +1,4 @@
 import Foundation
-import SalemoveSDK
 import SQLite3
 
 class ChatStorage {
@@ -164,9 +163,9 @@ extension ChatStorage {
     }
 
     func storeMessage(
-        _ message: SalemoveSDK.Message,
+        _ message: CoreSdkClient.Message,
         queueID: String,
-        operator salemoveOperator: SalemoveSDK.Operator?
+        operator salemoveOperator: CoreSdkClient.Operator?
     ) {
         let salemoveOperator = message.sender == .operator
             ? salemoveOperator
@@ -177,18 +176,18 @@ extension ChatStorage {
     }
 
     func storeMessages(
-        _ messages: [SalemoveSDK.Message],
+        _ messages: [CoreSdkClient.Message],
         queueID: String,
-        operator salemoveOperator: SalemoveSDK.Operator?
+        operator salemoveOperator: CoreSdkClient.Operator?
     ) {
         messages.forEach { storeMessage($0, queueID: queueID, operator: salemoveOperator) }
     }
 
-    func isNewMessage(_ message: SalemoveSDK.Message) -> Bool {
+    func isNewMessage(_ message: CoreSdkClient.Message) -> Bool {
         return messages.first(where: { $0.id == message.id }) == nil
     }
 
-    func newMessages(_ messages: [SalemoveSDK.Message]) -> [SalemoveSDK.Message] {
+    func newMessages(_ messages: [CoreSdkClient.Message]) -> [CoreSdkClient.Message] {
         let existingMessageIDs = messages.map { $0.id }
         return messages.filter { !existingMessageIDs.contains($0.id) }
     }

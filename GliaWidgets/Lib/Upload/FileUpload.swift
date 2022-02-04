@@ -1,5 +1,3 @@
-import SalemoveSDK
-
 class FileUpload {
     enum Error {
         case fileTooBig
@@ -8,16 +6,16 @@ class FileUpload {
         case network
         case generic
 
-        init(with error: SalemoveError) {
+        init(with error: CoreSdkClient.SalemoveError) {
             switch error.error {
-            case let genericError as GeneralError:
+            case let genericError as CoreSdkClient.GeneralError:
                 switch genericError {
                 case .networkError:
                     self = .network
                 default:
                     self = .generic
                 }
-            case let fileError as FileError:
+            case let fileError as CoreSdkClient.FileError:
                 switch fileError {
                 case .fileTooBig:
                     self = .fileTooBig
@@ -37,11 +35,11 @@ class FileUpload {
     enum State {
         case none
         case uploading(progress: ObservableValue<Double>)
-        case uploaded(file: EngagementFileInformation)
+        case uploaded(file: CoreSdkClient.EngagementFileInformation)
         case error(Error)
     }
 
-    var engagementFileInformation: EngagementFileInformation? {
+    var engagementFileInformation: CoreSdkClient.EngagementFileInformation? {
         switch state.value {
         case .uploaded(file: let file):
             return file
@@ -61,14 +59,14 @@ class FileUpload {
     }
 
     func startUpload() {
-        let file = EngagementFile(url: localFile.url)
+        let file = CoreSdkClient.EngagementFile(url: localFile.url)
         let progress = ObservableValue<Double>(with: 0)
-        let onProgress: EngagementFileProgressBlock = {
+        let onProgress: CoreSdkClient.EngagementFileProgressBlock = {
             if case .uploading(progress: let progress) = self.state.value {
                 progress.value = $0.fractionCompleted
             }
         }
-        let onCompletion: EngagementFileCompletionBlock = { engagementFile, error in
+        let onCompletion: CoreSdkClient.EngagementFileCompletionBlock = { engagementFile, error in
             if let engagementFile = engagementFile {
                 let storageID = "\(engagementFile.id)/\(self.localFile.url.lastPathComponent)"
                 self.storage.store(from: self.localFile.url, for: storageID)
@@ -79,7 +77,7 @@ class FileUpload {
         }
 
         state.value = .uploading(progress: progress)
-        Salemove.sharedInstance.uploadFileToEngagement(file,
+        CoreSdkClient.Salemove.sharedInstance.uploadFileToEngagement(file,
                                                        progress: onProgress,
                                                        completion: onCompletion)
     }

@@ -1,5 +1,4 @@
 import Foundation
-import SalemoveSDK
 
 enum ChatAttachmentType: Int, Codable {
     case files = 0
@@ -7,7 +6,7 @@ enum ChatAttachmentType: Int, Codable {
     case singleChoiceResponse = 2
     case unknown = 100
 
-    init?(with type: SalemoveSDK.AttachmentType?) {
+    init?(with type: CoreSdkClient.AttachmentType?) {
         switch type {
         case .files:
             self = .files
@@ -38,7 +37,7 @@ class ChatAttachment: Codable {
         case selectedOption
     }
 
-    init?(with attachment: SalemoveSDK.Attachment?) {
+    init?(with attachment: CoreSdkClient.Attachment?) {
         guard let attachment = attachment else { return nil }
         type = ChatAttachmentType(with: attachment.type)
         files = attachment.files.map { $0.map { ChatEngagementFile(with: $0) } }

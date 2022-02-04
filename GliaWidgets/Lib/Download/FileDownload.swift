@@ -1,5 +1,3 @@
-import SalemoveSDK
-
 class FileDownload {
     enum Error {
         case network
@@ -7,9 +5,9 @@ class FileDownload {
         case missingFileURL
         case deleted
 
-        init(with error: SalemoveError) {
+        init(with error: CoreSdkClient.SalemoveError) {
             switch error.error {
-            case let genericError as GeneralError:
+            case let genericError as CoreSdkClient.GeneralError:
                 switch genericError {
                 case .networkError:
                     self = .network
@@ -60,15 +58,15 @@ class FileDownload {
             return
         }
 
-        let engagementFile = EngagementFile(url: fileUrl)
+        let engagementFile = CoreSdkClient.EngagementFile(url: fileUrl)
 
         let progress = ObservableValue<Double>(with: 0)
-        let onProgress: EngagementFileProgressBlock = {
+        let onProgress: CoreSdkClient.EngagementFileProgressBlock = {
             if case .downloading(progress: let progress) = self.state.value {
                 progress.value = $0.fractionCompleted
             }
         }
-        let onCompletion: EngagementFileFetchCompletionBlock = { data, error in
+        let onCompletion: CoreSdkClient.EngagementFileFetchCompletionBlock = { data, error in
             if let data = data, let storageID = self.storageID {
                 let url = self.storage.url(for: storageID)
                 let file = LocalFile(with: url)
@@ -81,7 +79,7 @@ class FileDownload {
 
         state.value = .downloading(progress: progress)
 
-        Salemove.sharedInstance.fetchFile(
+        CoreSdkClient.Salemove.sharedInstance.fetchFile(
             engagementFile: engagementFile,
             progress: onProgress,
             completion: onCompletion

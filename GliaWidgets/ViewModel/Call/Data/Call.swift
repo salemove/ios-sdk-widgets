@@ -1,12 +1,11 @@
 import Foundation
-import SalemoveSDK
 import AVFoundation
 
 enum CallKind {
     case audio
-    case video(direction: MediaDirection)
+    case video(direction: CoreSdkClient.MediaDirection)
 
-    init?(with offer: MediaUpgradeOffer) {
+    init?(with offer: CoreSdkClient.MediaUpgradeOffer) {
         switch offer.type {
         case .audio:
             self = .audio
@@ -72,9 +71,9 @@ enum MediaStream<Streamable> {
 
 class MediaChannel<Streamable> {
     let stream = ObservableValue<MediaStream<Streamable>>(with: .none)
-    private(set) var neededDirection: MediaDirection = .twoWay
+    private(set) var neededDirection: CoreSdkClient.MediaDirection = .twoWay
 
-    func setNeededDirection(_ direction: MediaDirection) {
+    func setNeededDirection(_ direction: CoreSdkClient.MediaDirection) {
         neededDirection = direction
     }
 }
@@ -84,27 +83,27 @@ class Call {
     let kind = ObservableValue<CallKind>(with: .audio)
     let state = ObservableValue<CallState>(with: .none)
     let duration = ObservableValue<Int>(with: 0)
-    let audio = MediaChannel<AudioStreamable>()
-    let video = MediaChannel<VideoStreamable>()
+    let audio = MediaChannel<CoreSdkClient.AudioStreamable>()
+    let video = MediaChannel<CoreSdkClient.VideoStreamable>()
     private(set) var audioPortOverride = AVAudioSession.PortOverride.none
 
     init(_ kind: CallKind) {
         self.kind.value = kind
     }
 
-    func upgrade(to offer: MediaUpgradeOffer) {
+    func upgrade(to offer: CoreSdkClient.MediaUpgradeOffer) {
         setKind(for: offer.type, direction: offer.direction)
         setNeededDirection(offer.direction, for: offer.type)
         state.value = .upgrading
     }
 
-    func updateAudioStream(with stream: AudioStreamable) {
+    func updateAudioStream(with stream: CoreSdkClient.AudioStreamable) {
         updateMediaStream(audio.stream,
                           with: stream,
                           isRemote: stream.isRemote)
     }
 
-    func updateVideoStream(with stream: VideoStreamable) {
+    func updateVideoStream(with stream: CoreSdkClient.VideoStreamable) {
         updateMediaStream(video.stream,
                           with: stream,
                           isRemote: stream.isRemote)
@@ -158,7 +157,7 @@ class Call {
         state.value = .ended
     }
 
-    private func setKind(for type: MediaType, direction: MediaDirection) {
+    private func setKind(for type: CoreSdkClient.MediaType, direction: CoreSdkClient.MediaDirection) {
         switch type {
         case .audio:
             kind.value = .audio
@@ -169,7 +168,7 @@ class Call {
         }
     }
 
-    private func setNeededDirection(_ direction: MediaDirection, for type: MediaType) {
+    private func setNeededDirection(_ direction: CoreSdkClient.MediaDirection, for type: CoreSdkClient.MediaType) {
         switch type {
         case .audio:
             audio.setNeededDirection(direction)
