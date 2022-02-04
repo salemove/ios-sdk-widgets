@@ -49,16 +49,18 @@ class FileUploader {
     private var uploads = [FileUpload]()
     private var storage = FileSystemStorage(directory: .documents)
     private let maximumUploads: Int
+    private let environment: Environment
 
-    init(maximumUploads: Int) {
+    init(maximumUploads: Int, environment: Environment) {
         self.maximumUploads = maximumUploads
+        self.environment = environment
         updateLimitReached()
     }
 
     func addUpload(with url: URL) -> FileUpload? {
         guard !limitReached.value else { return nil }
         let localFile = LocalFile(with: url)
-        let upload = FileUpload(with: localFile, storage: storage)
+        let upload = FileUpload(with: localFile, storage: storage, environment: .init(uploadFileToEngagement: environment.uploadFileToEngagement))
         upload.state.addObserver(self) { [weak self] _, _ in
             self?.updateState()
         }
@@ -124,5 +126,11 @@ class FileUploader {
 
     private func updateLimitReached() {
         limitReached.value = count >= maximumUploads
+    }
+}
+
+extension FileUploader {
+    struct Environment {
+        var uploadFileToEngagement: CoreSdkClient.UploadFileToEngagement
     }
 }

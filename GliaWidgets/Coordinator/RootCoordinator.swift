@@ -41,13 +41,15 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
     private var gliaViewController: GliaViewController?
     private let kBubbleViewSize: CGFloat = 60.0
     private let features: Features
+    private let environment: Environment
 
     init(
         interactor: Interactor,
         viewFactory: ViewFactory,
         sceneProvider: SceneProvider?,
         engagementKind: EngagementKind,
-        features: Features
+        features: Features,
+        environment: Environment
     ) {
         self.interactor = interactor
         self.viewFactory = viewFactory
@@ -56,6 +58,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
         self.gliaPresenter = GliaPresenter(sceneProvider: sceneProvider)
         self.navigationPresenter = NavigationPresenter(with: navigationController)
         self.features = features
+        self.environment = environment
         navigationController.modalPresentationStyle = .fullScreen
         navigationController.isNavigationBarHidden = true
     }
@@ -82,7 +85,13 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
             let mediaType: CoreSdkClient.MediaType = engagementKind == .audioCall
                 ? .audio
                 : .video
-            let call = Call(kind)
+            let call = Call(
+                kind,
+                environment: .init(
+                    audioSession: environment.audioSession,
+                    uuid: environment.uuid
+                )
+            )
             call.kind.addObserver(self) { [weak self] _, _ in
                 self?.engagementKind = EngagementKind(with: call.kind.value)
             }
@@ -146,7 +155,12 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
             showsCallBubble: showsCallBubble,
             screenShareHandler: screenShareHandler,
             isWindowVisible: isWindowVisible,
-            startAction: startAction
+            startAction: startAction,
+            environment: .init(
+                fetchFile: environment.fetchFile,
+                sendSelectedOptionValue: environment.sendSelectedOptionValue,
+                uploadFileToEngagement: environment.uploadFileToEngagement
+            )
         )
         coordinator.delegate = { [weak self] event in
             switch event {
@@ -301,7 +315,13 @@ extension RootCoordinator {
         switch engagement {
         case .chat(let chatViewController):
             guard let kind = CallKind(with: offer) else { return }
-            let call = Call(kind)
+            let call = Call(
+                kind,
+                environment: .init(
+                    audioSession: environment.audioSession,
+                    uuid: environment.uuid
+                )
+            )
             call.kind.addObserver(self) { [weak self] _, _ in
                 self?.engagementKind = EngagementKind(with: call.kind.value)
             }
@@ -358,5 +378,15 @@ extension EngagementKind {
         case .video:
             self = .videoCall
         }
+    }
+}
+
+extension RootCoordinator {
+    struct Environment {
+        var fetchFile: CoreSdkClient.FetchFile
+        var sendSelectedOptionValue: CoreSdkClient.SendSelectedOptionValue
+        var uploadFileToEngagement: CoreSdkClient.UploadFileToEngagement
+        var audioSession: Glia.Environment.AudioSession
+        var uuid: () -> UUID
     }
 }
