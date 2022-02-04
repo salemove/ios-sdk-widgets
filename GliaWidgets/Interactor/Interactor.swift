@@ -62,14 +62,17 @@ class Interactor {
             }
         }
     }
+    private var environment: Environment
 
     init(
         with conf: CoreSdkClient.Salemove.Configuration,
         queueID: String,
-        visitorContext: CoreSdkClient.VisitorContext
+        visitorContext: CoreSdkClient.VisitorContext,
+        environment: Environment
     ) {
         self.queueID = queueID
         self.visitorContext = visitorContext
+        self.environment = environment
         configure(with: conf)
     }
 
@@ -83,10 +86,10 @@ class Interactor {
     }
 
     private func configure(with conf: CoreSdkClient.Salemove.Configuration) {
-        CoreSdkClient.Salemove.sharedInstance.configure(with: conf) {
+        environment.coreSdk.configureWithConfiguration(conf) {
             // SDK is initialized and ready to use.
         }
-        CoreSdkClient.Salemove.sharedInstance.configure(interactor: self)
+        environment.coreSdk.configureWithInteractor(self)
     }
 
     private func notify(_ event: InteractorEvent) {
@@ -116,11 +119,14 @@ extension Interactor {
             options = .init(mediaDirection: .twoWay)
         }
 
-        CoreSdkClient.Salemove.sharedInstance.queueForEngagement(
-            queueID: queueID,
-            visitorContext: visitorContext,
-            mediaType: mediaType,
-            options: options
+        environment.coreSdk.queueForEngagement(
+            queueID,
+            visitorContext,
+            // shouldCloseAllQueues is `true` by default core sdk,
+            // here it is passed explicitly
+            true,
+            mediaType,
+            options
         ) { [weak self] queueTicket, error in
             if let error = error {
                 self?.state = .ended(.byError)
@@ -142,8 +148,8 @@ extension Interactor {
     ) {
         do {
             let offer = try CoreSdkClient.MediaUpgradeOffer(type: media, direction: direction)
-            CoreSdkClient.Salemove.sharedInstance.requestMediaUpgrade(
-                offer: offer
+            environment.coreSdk.requestMediaUpgradeWithOffer(
+                offer
             ) { isSuccess, error in
                 if let error = error {
                     failure(nil, error)
@@ -159,7 +165,7 @@ extension Interactor {
     }
 
     func sendMessagePreview(_ message: String) {
-        CoreSdkClient.Salemove.sharedInstance.sendMessagePreview(message: message) { _, _ in }
+        environment.coreSdk.sendMessagePreview(message) { _, _ in }
     }
 
     func send(
@@ -168,9 +174,9 @@ extension Interactor {
         success: @escaping (CoreSdkClient.Message) -> Void,
         failure: @escaping (CoreSdkClient.SalemoveError) -> Void
     ) {
-        CoreSdkClient.Salemove.sharedInstance.send(
-            message: message,
-            attachment: attachment
+        environment.coreSdk.sendMessageWithAttachment(
+            message,
+            attachment
         ) { message, error in
             if let error = error {
                 failure(error)
@@ -214,9 +220,7 @@ extension Interactor {
         success: @escaping () -> Void,
         failure: @escaping (CoreSdkClient.SalemoveError) -> Void
     ) {
-        CoreSdkClient.Salemove.sharedInstance.cancel(
-            queueTicket: ticket
-        ) { [weak self] _, error in
+        environment.coreSdk.cancelQueueTicket(ticket) { [weak self] _, error in
             if let error = error {
                 failure(error)
             } else {
@@ -230,7 +234,7 @@ extension Interactor {
         success: @escaping () -> Void,
         failure: @escaping (CoreSdkClient.SalemoveError) -> Void
     ) {
-        CoreSdkClient.Salemove.sharedInstance.endEngagement { [weak self] _, error in
+        environment.coreSdk.endEngagement { [weak self] _, error in
             if let error = error {
                 failure(error)
             } else {
@@ -312,7 +316,7 @@ extension Interactor: CoreSdkClient.Interactable {
     }
 
     func start() {
-        CoreSdkClient.Salemove.sharedInstance.requestEngagedOperator { [weak self] operators, _ in
+        environment.coreSdk.requestEngagedOperator { [weak self] operators, _ in
             let engagedOperator = operators?.first
             self?.state = .engaged(engagedOperator)
         }
@@ -343,5 +347,11 @@ extension InteractorState: Equatable {
         default:
             return false
         }
+    }
+}
+
+extension Interactor {
+    struct Environment {
+        var coreSdk: CoreSdkClient
     }
 }

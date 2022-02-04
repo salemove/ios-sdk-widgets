@@ -6,6 +6,11 @@ class FileDownloader {
 
     private var downloads = [String: FileDownload]()
     private var storage = FileSystemStorage(directory: .documents)
+    private var environment: Environment
+
+    init(environment: Environment) {
+        self.environment = environment
+    }
 
     func downloads(for files: [ChatEngagementFile]?,
                    autoDownload: AutoDownload = .nothing) -> [FileDownload] {
@@ -50,7 +55,8 @@ class FileDownloader {
         } else {
             let download = FileDownload(
                 with: file,
-                storage: storage
+                storage: storage,
+                environment: .init(fetchFile: environment.fetchFile)
             )
             downloads[fileID] = download
             return download
@@ -69,5 +75,11 @@ class FileDownloader {
                 }
             }
             .forEach { $0.startDownload() }
+    }
+}
+
+extension FileDownloader {
+    struct Environment {
+        var fetchFile: CoreSdkClient.FetchFile
     }
 }
