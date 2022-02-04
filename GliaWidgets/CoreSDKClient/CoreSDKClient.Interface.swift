@@ -4,6 +4,88 @@ import UIKit
 struct CoreSdkClient {
     var pushNotifications: PushNotifications
     var createAppDelegate: () -> AppDelegate
+    var clearSession: () -> Void
+
+    typealias FetchVisitorInfo = (_ completion: @escaping (Result<Self.Salemove.VisitorInfo, Error>) -> Void) -> Void
+    var fetchVisitorInfo: FetchVisitorInfo
+
+    typealias UpdateVisitorInfo = (
+        _ info: Self.VisitorInfoUpdate,
+        _ completion: @escaping (Result<Bool, Error>) -> Void
+    ) -> Void
+    var updateVisitorInfo: UpdateVisitorInfo
+
+    @available(*, deprecated, message: "Use `CoreSdkClient.Salemove.send(option:completion:)` instead.")
+    typealias SendSelectedOptionValue = (
+        _ selectedOptionValue: String,
+        _ completion: @escaping (Result<Self.Message, Error>) -> Void
+    ) -> Void
+    var sendSelectedOptionValue: SendSelectedOptionValue
+
+    typealias ConfigureWithConfiguration = (
+        _ sdkConfiguration: Self.Salemove.Configuration,
+        _ completion: (() -> Void)?
+    ) -> Void
+    var configureWithConfiguration: ConfigureWithConfiguration
+
+    typealias ConfigureWithInteractor = (_ interactor: Self.Interactable) -> Void
+    var configureWithInteractor: ConfigureWithInteractor
+
+    typealias QueueForEngagement = (
+        _ queueID: String,
+        _ visitorContext: Self.VisitorContext,
+        _ shouldCloseAllQueues: Bool,
+        _ mediaType: Self.MediaType,
+        _ options: Self.EngagementOptions?,
+        _ completion: @escaping Self.QueueTicketBlock
+    ) -> Void
+    var queueForEngagement: QueueForEngagement
+
+    typealias RequestMediaUpgradeWithOffer = (
+        _ offer: Self.MediaUpgradeOffer,
+        _ completion: @escaping Self.SuccessBlock
+    ) -> Void
+    var requestMediaUpgradeWithOffer: RequestMediaUpgradeWithOffer
+
+    typealias SendMessagePreview = (
+        _ message: String,
+        _ completion: @escaping Self.SuccessBlock
+    ) -> Void
+    var sendMessagePreview: SendMessagePreview
+
+    typealias SendMessageWithAttachment = (
+        _ message: String,
+        _ attachment: Self.Attachment?,
+        _ completion: @escaping Self.MessageBlock
+    ) -> Void
+    var sendMessageWithAttachment: SendMessageWithAttachment
+
+    typealias CancelQueueTicket = (
+        _ queueTicket: Self.QueueTicket,
+        _ completion: @escaping SalemoveSDK.SuccessBlock
+    ) -> Void
+    var cancelQueueTicket: CancelQueueTicket
+
+    typealias EndEngagement = (_ completion: @escaping Self.SuccessBlock) -> Void
+    var endEngagement: EndEngagement
+
+    typealias RequestEngagedOperator = (_ completion: @escaping Self.OperatorBlock) -> Void
+    var requestEngagedOperator: RequestEngagedOperator
+
+    typealias UploadFileToEngagement = (
+        _ file: Self.EngagementFile,
+        _ progress: Self.EngagementFileProgressBlock?,
+        _ completion: @escaping Self.EngagementFileCompletionBlock
+    ) -> Void
+    var uploadFileToEngagement: UploadFileToEngagement
+
+    typealias FetchFile = (
+        _ engagementFile: Self.EngagementFile,
+        _ progress: Self.EngagementFileProgressBlock?,
+        _ completion: @escaping Self.EngagementFileFetchCompletionBlock
+    ) -> Void
+    var fetchFile: FetchFile
+
 }
 
 extension CoreSdkClient {
@@ -50,21 +132,26 @@ extension CoreSdkClient {
     typealias MediaUpgradeOffer = SalemoveSDK.MediaUpgradeOffer
     typealias Message = SalemoveSDK.Message
     typealias MessageSender = SalemoveSDK.MessageSender
+    typealias MessageBlock = SalemoveSDK.MessageBlock
     typealias MessagesUpdateBlock = SalemoveSDK.MessagesUpdateBlock
     typealias Operator = SalemoveSDK.Operator
+    typealias OperatorBlock = SalemoveSDK.OperatorBlock
     typealias OperatorTypingStatus = SalemoveSDK.OperatorTypingStatus
     typealias OperatorTypingStatusUpdate = SalemoveSDK.OperatorTypingStatusUpdate
     typealias QueueError = SalemoveSDK.QueueError
     typealias QueueTicket = SalemoveSDK.QueueTicket
+    typealias QueueTicketBlock = SalemoveSDK.QueueTicketBlock
     typealias RequestOfferBlock = SalemoveSDK.RequestOfferBlock
     typealias Salemove = SalemoveSDK.Salemove
     typealias SalemoveError = SalemoveSDK.SalemoveError
     typealias ScreenshareOfferBlock = SalemoveSDK.ScreenshareOfferBlock
     typealias SingleChoiceOption = SalemoveSDK.SingleChoiceOption
     typealias StreamView = SalemoveSDK.StreamView
+    typealias SuccessBlock = SalemoveSDK.SuccessBlock
     typealias VideoStreamable = SalemoveSDK.VideoStreamable
     typealias VideoStreamAddedBlock = SalemoveSDK.VideoStreamAddedBlock
     typealias VisitorContext = SalemoveSDK.VisitorContext
+    typealias VisitorInfoUpdate = SalemoveSDK.VisitorInfoUpdate
     typealias VisitorScreenSharingState = SalemoveSDK.VisitorScreenSharingState
     typealias VisitorScreenSharingStateChange = SalemoveSDK.VisitorScreenSharingStateChange
 }

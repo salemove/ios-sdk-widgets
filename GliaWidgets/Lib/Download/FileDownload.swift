@@ -38,10 +38,12 @@ class FileDownload {
         }
     }
     private let storage: DataStorage
+    private let environment: Environment
 
-    init(with file: ChatEngagementFile, storage: DataStorage) {
+    init(with file: ChatEngagementFile, storage: DataStorage, environment: Environment) {
         self.file = file
         self.storage = storage
+        self.environment = environment
 
         if file.isDeleted == true {
             state.value = .error(.deleted)
@@ -79,10 +81,16 @@ class FileDownload {
 
         state.value = .downloading(progress: progress)
 
-        CoreSdkClient.Salemove.sharedInstance.fetchFile(
-            engagementFile: engagementFile,
-            progress: onProgress,
-            completion: onCompletion
+        environment.fetchFile(
+            engagementFile,
+            onProgress,
+            onCompletion
         )
+    }
+}
+
+extension FileDownload {
+    struct Environment {
+        var fetchFile: CoreSdkClient.FetchFile
     }
 }
