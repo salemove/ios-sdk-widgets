@@ -36,7 +36,7 @@ public protocol SceneProvider: AnyObject {
 /// Glia's engagement interface.
 public class Glia {
     /// A singleton to access the Glia's interface.
-    public static let sharedInstance = Glia()
+    public static let sharedInstance = Glia(environment: .live)
 
     /// Current engagement media type.
     public var engagement: EngagementKind { return rootCoordinator?.engagementKind ?? .none }
@@ -46,8 +46,11 @@ public class Glia {
 
     private var rootCoordinator: RootCoordinator?
     private var interactor: Interactor?
+    private var environment: Environment
 
-    private init() {}
+    init(environment: Environment) {
+        self.environment = environment
+    }
 
     /// Setup SDK using specific engagement configuration without starting the engagement.
     /// - Parameters:
@@ -68,7 +71,8 @@ public class Glia {
         interactor = Interactor(
             with: sdkConfiguration,
             queueID: queueId,
-            visitorContext: visitorContext
+            visitorContext: visitorContext,
+            environment: .init(coreSdk: environment.coreSdk)
         )
     }
 
@@ -175,7 +179,14 @@ public class Glia {
             viewFactory: viewFactory,
             sceneProvider: sceneProvider,
             engagementKind: engagementKind,
-            features: features
+            features: features,
+            environment: .init(
+                fetchFile: environment.coreSdk.fetchFile,
+                sendSelectedOptionValue: environment.coreSdk.sendSelectedOptionValue,
+                uploadFileToEngagement: environment.coreSdk.uploadFileToEngagement,
+                audioSession: environment.audioSession,
+                uuid: environment.uuid
+            )
         )
         rootCoordinator?.delegate = { [weak self] event in
             switch event {
@@ -197,15 +208,15 @@ public class Glia {
 
     /// Clear visitor session
     public func clearVisitorSession() {
-        Salemove.sharedInstance.clearSession()
+        environment.coreSdk.clearSession()
 
         guard
             let dbUrl = ChatStorage.dbUrl,
-            FileManager.default.fileExists(atPath: dbUrl.standardizedFileURL.path)
+            environment.fileManager.fileExistsAtPath(dbUrl.standardizedFileURL.path)
         else { return }
 
         do {
-            try FileManager.default.removeItem(at: dbUrl)
+            try environment.fileManager.removeItemAtURL(dbUrl)
         } catch {
             print("DB has not been removed due to: '\(error)'.")
         }
@@ -239,7 +250,7 @@ public class Glia {
             completion(.failure(GliaError.sdkIsNotConfigured))
             return
         }
-        Salemove.sharedInstance.fetchVisitorInfo(completion)
+        environment.coreSdk.fetchVisitorInfo(completion)
     }
 
     /// Update current Visitor's information.
@@ -278,6 +289,6 @@ public class Glia {
             completion(.failure(GliaError.sdkIsNotConfigured))
             return
         }
-        Salemove.sharedInstance.updateVisitorInfo(info, completion: completion)
+        environment.coreSdk.updateVisitorInfo(info, completion)
     }
 }

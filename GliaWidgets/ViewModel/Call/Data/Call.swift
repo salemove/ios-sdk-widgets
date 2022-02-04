@@ -79,16 +79,19 @@ class MediaChannel<Streamable> {
 }
 
 class Call {
-    let id = UUID().uuidString
+    let id: String
     let kind = ObservableValue<CallKind>(with: .audio)
     let state = ObservableValue<CallState>(with: .none)
     let duration = ObservableValue<Int>(with: 0)
     let audio = MediaChannel<CoreSdkClient.AudioStreamable>()
     let video = MediaChannel<CoreSdkClient.VideoStreamable>()
     private(set) var audioPortOverride = AVAudioSession.PortOverride.none
+    var environment: Environment
 
-    init(_ kind: CallKind) {
+    init(_ kind: CallKind, environment: Environment) {
+        self.id = environment.uuid().uuidString
         self.kind.value = kind
+        self.environment = environment
     }
 
     func upgrade(to offer: CoreSdkClient.MediaUpgradeOffer) {
@@ -141,7 +144,7 @@ class Call {
             }
         }()
 
-        let session = AVAudioSession.sharedInstance()
+        let session = environment.audioSession
 
         do {
             try session.overrideOutputAudioPort(newOverride)
@@ -230,5 +233,12 @@ class Call {
                 break
             }
         }
+    }
+}
+
+extension Call {
+    struct Environment {
+        var audioSession: Glia.Environment.AudioSession
+        var uuid: () -> UUID
     }
 }
