@@ -69,6 +69,7 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
             isWindowVisible: isWindowVisible,
             startAction: startAction,
             environment: .init(
+                chatStorage: environment.chatStorage,
                 fetchFile: environment.fetchFile,
                 sendSelectedOptionValue: environment.sendSelectedOptionValue,
                 uploadFileToEngagement: environment.uploadFileToEngagement
@@ -174,6 +175,7 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
 
 extension ChatCoordinator {
     struct Environment {
+        var chatStorage: Glia.Environment.ChatStorage
         var fetchFile: CoreSdkClient.FetchFile
         var sendSelectedOptionValue: CoreSdkClient.SendSelectedOptionValue
         var uploadFileToEngagement: CoreSdkClient.UploadFileToEngagement

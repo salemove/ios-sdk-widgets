@@ -1,16 +1,9 @@
 extension Glia.Environment {
     static let mock = Self(
         coreSdk: .mock,
-        fileManager: .mock,
+        chatStorage: .mock,
         audioSession: .mock,
         uuid: { .mock }
-    )
-}
-
-extension Glia.Environment.FileManager {
-    static let mock = Self(
-        fileExistsAtPath: { _ in false },
-        removeItemAtURL: { _ in }
     )
 }
 
@@ -24,4 +17,18 @@ extension UUID {
 
 extension URL {
     static let mock = Self(string: "https://mock.mock").unsafelyUnwrapped
+}
+
+extension Glia.Environment.ChatStorage {
+    static let mock = Self(
+        databaseUrl: { nil },
+        dropDatabase: {},
+        isEmpty: { false },
+        messages: { _ in return [] },
+        updateMessage: { _ in },
+        storeMessage: { _, _, _ in },
+        storeMessages: { _, _, _ in },
+        isNewMessage: { _ in return true },
+        newMessages: { _ in return [] }
+    )
 }
