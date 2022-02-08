@@ -4,19 +4,50 @@ import Foundation
 extension Glia {
     struct Environment {
         var coreSdk: CoreSdkClient
-        var fileManager: FileManager
+        var chatStorage: ChatStorage
         var audioSession: AudioSession
         var uuid: () -> UUID
     }
 }
 
 extension Glia.Environment {
-    struct FileManager {
-        var fileExistsAtPath: (String) -> Bool
-        var removeItemAtURL: (URL) throws -> Void
-    }
-
     struct AudioSession {
         var overrideOutputAudioPort: (AVAudioSession.PortOverride) throws -> Void
+    }
+}
+
+extension Glia.Environment {
+    struct ChatStorage {
+        var databaseUrl: () -> URL?
+        var dropDatabase: () -> Void
+        var isEmpty: () -> Bool
+
+        var messages: (
+            _ queueId: String
+        ) -> [ChatMessage]
+
+        var updateMessage: (
+            _ message: ChatMessage
+        ) -> Void
+
+        var storeMessage: (
+            _ message: CoreSdkClient.Message,
+            _ queueId: String,
+            _ operator: CoreSdkClient.Operator?
+        ) -> Void
+
+        var storeMessages: (
+            _ messages: [CoreSdkClient.Message],
+            _ queueId: String,
+            _ operator: CoreSdkClient.Operator?
+        ) -> Void
+
+        var isNewMessage: (
+            _ message: CoreSdkClient.Message
+        ) -> Bool
+
+        var newMessages: (
+            _ messages: [CoreSdkClient.Message]
+        ) -> [CoreSdkClient.Message]
     }
 }
