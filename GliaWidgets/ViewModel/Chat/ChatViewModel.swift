@@ -83,7 +83,6 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     private let screenShareHandler: ScreenShareHandler
     private let isChatScrolledToBottom = ObservableValue<Bool>(with: true)
     private let showsCallBubble: Bool
-    private let storage = ChatStorage()
     private let uploader: FileUploader
     private let downloader: FileDownloader
     private var messageText = "" {
@@ -182,18 +181,16 @@ class ChatViewModel: EngagementViewModel, ViewModel {
 
         loadHistory()
 
-        if case .startEngagement = startAction {
-            if storage.isEmpty() {
-                let item = ChatItem(kind: .queueOperator)
+        if case .startEngagement = startAction, environment.chatStorage.isEmpty() {
+            let item = ChatItem(kind: .queueOperator)
 
-                appendItem(
-                    item,
-                    to: queueOperatorSection,
-                    animated: false
-                )
+            appendItem(
+                item,
+                to: queueOperatorSection,
+                animated: false
+            )
 
-                enqueue(mediaType: .text)
-            }
+            enqueue(mediaType: .text)
         }
 
         update(for: interactor.state)
@@ -306,7 +303,7 @@ extension ChatViewModel {
 
 extension ChatViewModel {
     private func loadHistory() {
-        let messages = storage.messages(forQueue: interactor.queueID)
+        let messages = environment.chatStorage.messages(interactor.queueID)
         let items = messages.compactMap { ChatItem(with: $0, fromHistory: true) }
         historySection.set(items)
         action?(.refreshSection(historySection.index))
@@ -479,12 +476,12 @@ extension ChatViewModel {
     }
 
     private func receivedMessage(_ message: CoreSdkClient.Message) {
-        guard storage.isNewMessage(message) else { return }
+        guard environment.chatStorage.isNewMessage(message) else { return }
 
-        storage.storeMessage(
+        environment.chatStorage.storeMessage(
             message,
-            queueID: interactor.queueID,
-            operator: interactor.engagedOperator
+            interactor.queueID,
+            interactor.engagedOperator
         )
 
         switch message.sender {
@@ -514,14 +511,14 @@ extension ChatViewModel {
     }
 
     private func messagesUpdated(_ messages: [CoreSdkClient.Message]) {
-        let newMessages = storage.newMessages(messages)
+        let newMessages = environment.chatStorage.newMessages(messages)
         unreadMessages.received(newMessages.count)
 
         if !newMessages.isEmpty {
-            storage.storeMessages(
+            environment.chatStorage.storeMessages(
                 newMessages,
-                queueID: interactor.queueID,
-                operator: interactor.engagedOperator
+                interactor.queueID,
+                interactor.engagedOperator
             )
             let newMessages = newMessages.map { ChatMessage(with: $0) }
             let items = newMessages.compactMap { ChatItem(with: $0) }
@@ -781,7 +778,7 @@ extension ChatViewModel {
         ))
 
         messagesSection.replaceItem(at: index, with: item)
-        storage.updateMessage(message)
+        environment.chatStorage.updateMessage(message)
 
         action?(.refreshRow(index, in: messagesSection.index, animated: true))
         action?(.setChoiceCardInputModeEnabled(false))
@@ -790,6 +787,7 @@ extension ChatViewModel {
 
 extension ChatViewModel {
     struct Environment {
+        var chatStorage: Glia.Environment.ChatStorage
         var fetchFile: CoreSdkClient.FetchFile
         var sendSelectedOptionValue: CoreSdkClient.SendSelectedOptionValue
         var uploadFileToEngagement: CoreSdkClient.UploadFileToEngagement
