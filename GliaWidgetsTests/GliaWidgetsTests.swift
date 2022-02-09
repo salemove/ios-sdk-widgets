@@ -1,5 +1,6 @@
-import XCTest
+import AccessibilitySnapshot
 @testable import GliaWidgets
+import XCTest
 
 class GliaWidgetsTests: XCTestCase {
 
