@@ -1,4 +1,11 @@
 PODS:
+  - AccessibilitySnapshot (0.5.0):
+    - AccessibilitySnapshot/Core (= 0.5.0)
+    - AccessibilitySnapshot/SnapshotTesting (= 0.5.0)
+  - AccessibilitySnapshot/Core (0.5.0)
+  - AccessibilitySnapshot/SnapshotTesting (0.5.0):
+    - AccessibilitySnapshot/Core
+    - SnapshotTesting (~> 1.0)
   - glia-webrtc/bitcode (0.0.3)
   - lottie-ios (3.2.3)
   - PureLayout (3.1.9)
@@ -10,21 +17,25 @@ PODS:
     - Starscream (= 3.1.1-xcf)
     - SwiftPhoenixClient (= 1.2.1-xcf)
     - TwilioVoice (= 6.2.0)
+  - SnapshotTesting (1.9.0)
   - SocketIO (9.2.0-xcf)
   - Starscream (3.1.1-xcf)
   - SwiftPhoenixClient (1.2.1-xcf)
   - TwilioVoice (6.2.0)
 
 DEPENDENCIES:
+  - AccessibilitySnapshot (= 0.5.0)
   - lottie-ios (= 3.2.3)
   - PureLayout (~> 3.1)
   - SalemoveSDK
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
+    - AccessibilitySnapshot
     - glia-webrtc
     - lottie-ios
     - PureLayout
+    - SnapshotTesting
     - TwilioVoice
   https://github.com/salemove/glia-ios-podspecs.git:
     - ReactiveSwift
@@ -34,16 +45,18 @@ SPEC REPOS:
     - SwiftPhoenixClient
 
 SPEC CHECKSUMS:
+  AccessibilitySnapshot: a91e4a69f870188b51f43863d9fc7269d07cdd93
   glia-webrtc: a5c7e59ae752281d19734b4f918db9da39e8009d
   lottie-ios: c058aeafa76daa4cf64d773554bccc8385d0150e
   PureLayout: 5fb5e5429519627d60d079ccb1eaa7265ce7cf88
   ReactiveSwift: 377d0a5621761a57c61829541b2ee0b9fdcd98f2
   SalemoveSDK: dd14c39308aeff846055d6a0bb3dfd1972daa155
+  SnapshotTesting: 6141c48b6aa76ead61431ca665c14ab9a066c53b
   SocketIO: 07583ad0005148194dcdfb89feda88b2180e1391
   Starscream: 54f05f3e7aa58f5ad1d5b4339ab55784bc74a35f
   SwiftPhoenixClient: 77dadbfee8eecd7a41cc8cccdd883dd0df093ddb
   TwilioVoice: 5e6fd6b5e99dfec03dcb57331f7e7c77ad79f1f0
 
-PODFILE CHECKSUM: 02f95f2cc3c8cf305a0d1b9d19eae34ddaa10146
+PODFILE CHECKSUM: 895b263ada78f18509192880bbf18229bdfe4e71
 
 COCOAPODS: 1.11.2
