@@ -27,6 +27,7 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
     private var mediaPickerController: MediaPickerController?
     private var filePickerController: FilePickerController?
     private var quickLookController: QuickLookController?
+    private let environment: Environment
 
     init(
         interactor: Interactor,
@@ -37,7 +38,8 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
         showsCallBubble: Bool,
         screenShareHandler: ScreenShareHandler,
         isWindowVisible: ObservableValue<Bool>,
-        startAction: ChatViewModel.StartAction
+        startAction: ChatViewModel.StartAction,
+        environment: Environment
     ) {
         self.interactor = interactor
         self.viewFactory = viewFactory
@@ -48,6 +50,7 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
         self.screenShareHandler = screenShareHandler
         self.isWindowVisible = isWindowVisible
         self.startAction = startAction
+        self.environment = environment
     }
 
     func start() -> ChatViewController {
@@ -64,7 +67,12 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
             unreadMessages: unreadMessages,
             showsCallBubble: showsCallBubble,
             isWindowVisible: isWindowVisible,
-            startAction: startAction
+            startAction: startAction,
+            environment: .init(
+                fetchFile: environment.fetchFile,
+                sendSelectedOptionValue: environment.sendSelectedOptionValue,
+                uploadFileToEngagement: environment.uploadFileToEngagement
+            )
         )
         viewModel.engagementDelegate = { [weak self] event in
             switch event {
@@ -161,5 +169,13 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
         configuration.entersReaderIfAvailable = true
         let safariViewController = SFSafariViewController(url: url, configuration: configuration)
         navigationPresenter.present(safariViewController)
+    }
+}
+
+extension ChatCoordinator {
+    struct Environment {
+        var fetchFile: CoreSdkClient.FetchFile
+        var sendSelectedOptionValue: CoreSdkClient.SendSelectedOptionValue
+        var uploadFileToEngagement: CoreSdkClient.UploadFileToEngagement
     }
 }

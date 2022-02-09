@@ -52,10 +52,12 @@ class FileUpload {
     let localFile: LocalFile
 
     private let storage: DataStorage
+    private let environment: Environment
 
-    init(with localFile: LocalFile, storage: DataStorage) {
+    init(with localFile: LocalFile, storage: DataStorage, environment: Environment) {
         self.localFile = localFile
         self.storage = storage
+        self.environment = environment
     }
 
     func startUpload() {
@@ -77,9 +79,11 @@ class FileUpload {
         }
 
         state.value = .uploading(progress: progress)
-        CoreSdkClient.Salemove.sharedInstance.uploadFileToEngagement(file,
-                                                       progress: onProgress,
-                                                       completion: onCompletion)
+        environment.uploadFileToEngagement(
+            file,
+            onProgress,
+            onCompletion
+        )
     }
 
     func removeLocalFile() {
@@ -91,5 +95,11 @@ class FileUpload {
 extension FileUpload: Equatable {
     static func == (lhs: FileUpload, rhs: FileUpload) -> Bool {
         return lhs.localFile == rhs.localFile
+    }
+}
+
+extension FileUpload {
+    struct Environment {
+        var uploadFileToEngagement: CoreSdkClient.UploadFileToEngagement
     }
 }
