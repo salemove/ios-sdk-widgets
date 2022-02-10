@@ -44,3 +44,18 @@ extension FoundationBased.Data {
         }
     )
 }
+
+extension FoundationBased.OperationQueue {
+    static let failing = Self(
+        setMaxConcurrentOperationCount: { _ in
+            fail("\(Self.self).setMaxConcurrentOperationCount")
+        },
+        getMaxConcurrentOperationCount: {
+            fail("\(Self.self).getMaxConcurrentOperationCount")
+            return .zero
+        },
+        addOperation: { _ in
+            fail("\(Self.self).addOperation")
+        }
+    )
+}

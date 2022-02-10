@@ -80,8 +80,10 @@ class CallViewController: EngagementViewController, MediaUpgradePresenter {
                 view.header.title = title
             case .setOperatorName(let name):
                 view.operatorNameLabel.text = name
+                view.operatorNameLabel.accessibilityLabel = name
             case .setCallDurationText(let text):
                 view.durationLabel.text = text
+                view.durationLabel.accessibilityLabel = text
                 view.connectView.statusView.setSecondText(text, animated: false)
             case .showButtons(let buttons):
                 let buttons = buttons.map { CallButton.Kind(with: $0) }

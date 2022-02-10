@@ -45,7 +45,8 @@ class ConnectOperatorView: UIView {
             environment: .init(
                 data: environment.data,
                 uuid: environment.uuid,
-                gcd: environment.gcd
+                gcd: environment.gcd,
+                imageViewCache: environment.imageViewCache
             )
         )
         super.init(frame: .zero)
@@ -88,7 +89,12 @@ class ConnectOperatorView: UIView {
         animationView = nil
     }
 
-    private func setup() {}
+    private func setup() {
+        isAccessibilityElement = true
+        accessibilityTraits = .image
+        accessibilityLabel = "Avatar"
+        accessibilityHint = "Displays operator avatar or placeholder."
+    }
 
     private func layout() {
         NSLayoutConstraint.autoSetPriority(.defaultHigh) {
@@ -110,5 +116,6 @@ extension ConnectOperatorView {
         var data: FoundationBased.Data
         var uuid: () -> UUID
         var gcd: GCD
+        var imageViewCache: ImageView.Cache
     }
 }

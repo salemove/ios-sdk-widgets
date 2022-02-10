@@ -19,7 +19,8 @@ class EngagementView: View {
             environment: .init(
                 data: environment.data,
                 uuid: environment.uuid,
-                gcd: environment.gcd
+                gcd: environment.gcd,
+                imageViewCache: environment.imageViewCache
             )
         )
         super.init()
@@ -39,5 +40,6 @@ extension EngagementView {
         var data: FoundationBased.Data
         var uuid: () -> UUID
         var gcd: GCD
+        var imageViewCache: ImageView.Cache
     }
 }

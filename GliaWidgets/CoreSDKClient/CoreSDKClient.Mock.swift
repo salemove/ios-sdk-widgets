@@ -54,4 +54,57 @@ extension CoreSdkClient.EngagementFile {
         )
     }
 }
+
+extension CoreSdkClient.Salemove.Configuration {
+    // swiftlint:disable force_try
+    static func mock() -> Self {
+        try! .init(
+            siteId: "mockSiteId",
+            region: .us,
+            authorizingMethod: .mock
+        )
+    }
+    // swiftlint:enable force_try
+}
+
+extension CoreSdkClient.Salemove.AuthorizationMethod {
+    static let mock = Self.siteApiKey(id: "mockSiteApiKeyId", secret: "mockSiteApiKeySecret")
+
+}
+
+extension CoreSdkClient.VisitorContext {
+    static let mock = CoreSdkClient.VisitorContext(type: CoreSdkClient.ContextType.page, url: "mockUrl")
+}
+
+extension CoreSdkClient.EngagementFileInformation {
+    static func mock(
+        id: String = "mockId",
+        isSecurityScanningRequired: Bool = false,
+        url: String? = "https://mock.mock/file.mock"
+    ) throws -> CoreSdkClient.EngagementFileInformation {
+
+        let jsonString = jsonFields(
+            [
+                url.map { jsonField("url", value: $0) },
+                jsonField("fileId", value: id),
+                jsonField("securityScanningRequired", value: isSecurityScanningRequired)
+            ].compactMap { $0 }
+        )
+
+        return try mockFromJSONString(jsonString)
+    }
+}
+
+extension CoreSdkClient.SingleChoiceOption {
+    static func mock(text: String?, value: String?) throws -> CoreSdkClient.SingleChoiceOption {
+        try mockFromJSONString(
+            jsonFields(
+                [
+                    text.map { jsonField("text", value: $0) },
+                    value.map { jsonField("value", value: $0) }
+                ].compactMap { $0 }
+            )
+        )
+    }
+}
 #endif

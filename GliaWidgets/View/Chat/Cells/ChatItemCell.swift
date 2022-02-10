@@ -64,6 +64,9 @@ class ChatItemCell: UITableViewCell {
     private func setup() {
         backgroundColor = .clear
         selectionStyle = .none
+        isAccessibilityElement = false
+        containerView.isAccessibilityElement = false
+        contentView.isAccessibilityElement = false
     }
 
     private func layout() {

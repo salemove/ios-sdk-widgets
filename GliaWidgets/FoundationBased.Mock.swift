@@ -21,6 +21,16 @@ extension FoundationBased.Data {
     )
 }
 
+extension FoundationBased.OperationQueue {
+    static func mock() -> Self {
+        .init(
+            setMaxConcurrentOperationCount: { _ in },
+            getMaxConcurrentOperationCount: { .zero },
+            addOperation: { _ in }
+        )
+    }
+}
+
 // MARK: - Foundation
 extension Foundation.Date {
     static let mock = Self(timeIntervalSince1970: .zero)
@@ -32,6 +42,16 @@ extension Foundation.Data {
 
 extension UUID {
     static let mock = Self(uuidString: "deadbeef-dead-beef-dead-beefdeadbeef").unsafelyUnwrapped
+
+    // swiftlint:disable force_unwrapping
+    static var incrementing: () -> UUID {
+        var uuid = 0
+        return {
+            defer { uuid += 1 }
+            return Self(uuidString: "00000000-0000-0000-0000-\(String(format: "%012x", uuid))")!
+        }
+    }
+    // swiftlint:enable force_unwrapping
 }
 
 extension URL {

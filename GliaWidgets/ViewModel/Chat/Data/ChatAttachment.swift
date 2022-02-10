@@ -45,4 +45,20 @@ class ChatAttachment: Codable {
         options = attachment.options.map { $0.map { ChatChoiceCardOption(with: $0) } }
         selectedOption = attachment.selectedOption
     }
+
+    #if DEBUG
+    init(
+        type: ChatAttachmentType?,
+        files: [ChatEngagementFile]?,
+        imageUrl: String?,
+        options: [ChatChoiceCardOption]?,
+        selectedOption: String?
+    ) {
+        self.type = type
+        self.files = files
+        self.imageUrl = imageUrl
+        self.options = options
+        self.selectedOption = selectedOption
+    }
+    #endif
 }

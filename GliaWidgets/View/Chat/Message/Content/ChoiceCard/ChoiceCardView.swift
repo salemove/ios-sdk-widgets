@@ -17,7 +17,8 @@ final class ChoiceCardView: OperatorChatMessageView {
             environment: .init(
                 data: environment.data,
                 uuid: environment.uuid,
-                gcd: environment.gcd
+                gcd: environment.gcd,
+                imageViewCache: environment.imageViewCache
             )
         )
     }
@@ -57,7 +58,8 @@ final class ChoiceCardView: OperatorChatMessageView {
                 environment: .init(
                     data: environment.data,
                     uuid: environment.uuid,
-                    gcd: environment.gcd
+                    gcd: environment.gcd,
+                    imageViewCache: environment.imageViewCache
                 )
             )
             imageView.contentMode = .scaleAspectFill
@@ -66,6 +68,7 @@ final class ChoiceCardView: OperatorChatMessageView {
             imageView.autoSetDimension(.height, toSize: kImageHeight)
             imageView.setImage(from: imageUrl, animated: true)
             stackView.addArrangedSubview(imageView)
+            setupAccessibilityProperties(for: imageView)
         }
 
         let textView = ChatTextContentView(
@@ -105,5 +108,13 @@ extension ChoiceCardView {
         var data: FoundationBased.Data
         var uuid: () -> UUID
         var gcd: GCD
+        var imageViewCache: ImageView.Cache
+    }
+}
+
+extension ChoiceCardView {
+    func setupAccessibilityProperties(for imageView: ImageView) {
+        imageView.isAccessibilityElement = true
+        imageView.accessibilityLabel = "Choice card"
     }
 }

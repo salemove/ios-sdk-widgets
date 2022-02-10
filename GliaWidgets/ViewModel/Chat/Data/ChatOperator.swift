@@ -13,4 +13,12 @@ class ChatOperator: Codable {
         name = salemoveOperator.name
         pictureUrl = salemoveOperator.picture?.url
     }
+
+    init(
+        name: String,
+        pictureUrl: String?
+    ) {
+        self.name = name
+        self.pictureUrl = pictureUrl
+    }
 }
