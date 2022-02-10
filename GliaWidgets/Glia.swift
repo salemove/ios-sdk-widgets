@@ -181,6 +181,7 @@ public class Glia {
             engagementKind: engagementKind,
             features: features,
             environment: .init(
+                chatStorage: environment.chatStorage,
                 fetchFile: environment.coreSdk.fetchFile,
                 sendSelectedOptionValue: environment.coreSdk.sendSelectedOptionValue,
                 uploadFileToEngagement: environment.coreSdk.uploadFileToEngagement,
@@ -209,17 +210,7 @@ public class Glia {
     /// Clear visitor session
     public func clearVisitorSession() {
         environment.coreSdk.clearSession()
-
-        guard
-            let dbUrl = ChatStorage.dbUrl,
-            environment.fileManager.fileExistsAtPath(dbUrl.standardizedFileURL.path)
-        else { return }
-
-        do {
-            try environment.fileManager.removeItemAtURL(dbUrl)
-        } catch {
-            print("DB has not been removed due to: '\(error)'.")
-        }
+        environment.chatStorage.dropDatabase()
     }
 
     /// Fetch current Visitor's information.
