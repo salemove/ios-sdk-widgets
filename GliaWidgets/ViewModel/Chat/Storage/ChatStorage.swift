@@ -3,11 +3,6 @@ import SQLite3
 
 class ChatStorage {
 
-    static let dbName = "GliaChat.sqlite"
-    static let dbUrl = try? FileManager.default
-        .url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
-        .appendingPathComponent(dbName)
-
     private enum SQLiteError: Error {
         case openDatabase
         case prepare
@@ -18,11 +13,12 @@ class ChatStorage {
         return loadMessages()
     }()
 
+    private let dbUrl: URL?
     private let encoder = JSONEncoder()
     private var db: OpaquePointer?
 
-    init() {
-
+    init(dbUrl: URL?) {
+        self.dbUrl = dbUrl
         do {
             try openDatabase()
             try createMessagesTable()
@@ -36,7 +32,7 @@ class ChatStorage {
     }
 
     private func openDatabase() throws {
-        guard let dbPath = Self.dbUrl?.path else { return }
+        guard let dbPath = dbUrl?.path else { return }
         if sqlite3_open(dbPath, &db) != SQLITE_OK {
             throw SQLiteError.openDatabase
         }
