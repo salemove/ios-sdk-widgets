@@ -114,7 +114,8 @@ public class Glia {
             environment: .init(
                 data: environment.data,
                 uuid: environment.uuid,
-                gcd: environment.gcd
+                gcd: environment.gcd,
+                imageViewCache: environment.imageViewCache
             )
         )
         startRootCoordinator(
@@ -196,7 +197,12 @@ public class Glia {
                 uuid: environment.uuid,
                 fileManager: environment.fileManager,
                 data: environment.data,
-                date: environment.date
+                date: environment.date,
+                gcd: environment.gcd,
+                localFileThumbnailQueue: environment.localFileThumbnailQueue,
+                uiImage: environment.uiImage,
+                createFileDownload: environment.createFileDownload,
+                fromHistory: environment.fromHistory
             )
         )
         rootCoordinator?.delegate = { [weak self] event in

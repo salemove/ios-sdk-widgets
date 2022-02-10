@@ -10,7 +10,8 @@ class OperatorChatMessageView: ChatMessageView {
                     environment: .init(
                         data: environment.data,
                         uuid: environment.uuid,
-                        gcd: environment.gcd
+                        gcd: environment.gcd,
+                        imageViewCache: environment.imageViewCache
                     )
                 )
                 self.operatorImageView = operatorImageView
@@ -72,5 +73,6 @@ extension OperatorChatMessageView {
         var data: FoundationBased.Data
         var uuid: () -> UUID
         var gcd: GCD
+        var imageViewCache: ImageView.Cache
     }
 }

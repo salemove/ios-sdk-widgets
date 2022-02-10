@@ -4,7 +4,7 @@ class LocalFile {
     lazy var fileExtension: String = { return url.pathExtension }()
     lazy var fileName: String = { return url.lastPathComponent }()
     lazy var fileSize: Int64? = {
-        guard let attributes = try? FileManager.default.attributesOfItem(atPath: url.path) else { return nil }
+        guard let attributes = try? environment.fileManager.attributesOfItemAtPath(url.path)  else { return nil }
         return attributes[.size] as? Int64
     }()
     lazy var fileSizeString: String? = {
@@ -32,14 +32,12 @@ class LocalFile {
     let url: URL
 
     private var thumbnail: UIImage?
-    private static let thumbnailQueue: OperationQueue = {
-        var queue = OperationQueue()
-        queue.maxConcurrentOperationCount = 2
-        return queue
-    }()
 
-    init(with url: URL) {
+    var environment: Environment
+
+    init(with url: URL, environment: Environment) {
         self.url = url
+        self.environment = environment
     }
 }
 
@@ -54,16 +52,19 @@ extension LocalFile {
             completion(thumbnail)
             return
         } else {
-            LocalFile.thumbnailQueue.addOperation {
-                guard let image = UIImage(contentsOfFile: self.url.standardizedFileURL.path) else {
-                    DispatchQueue.main.async {
+            environment.localFileThumbnailQueue.addOperation { [weak self] in
+                guard let self = self else { return }
+                guard let image = self.environment.uiImage.imageWithContentsOfFileAtPath(
+                    self.url.standardizedFileURL.path
+                ) else {
+                    self.environment.gcd.mainQueue.async {
                         completion(nil)
                     }
                     return
                 }
                 let thumbnail = image.resized(to: size)
                 self.thumbnail = thumbnail
-                DispatchQueue.main.async {
+                self.environment.gcd.mainQueue.async {
                     completion(thumbnail)
                 }
             }
@@ -74,5 +75,15 @@ extension LocalFile {
 extension LocalFile: Equatable {
     static func == (lhs: LocalFile, rhs: LocalFile) -> Bool {
         return lhs.url == rhs.url
+    }
+}
+
+extension LocalFile {
+    struct AccessibilityProperties {
+        var value: String?
+    }
+
+    var accessibilityProperties: AccessibilityProperties {
+        return .init(value: fileInfoString)
     }
 }

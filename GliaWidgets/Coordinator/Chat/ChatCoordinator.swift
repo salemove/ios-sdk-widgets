@@ -58,6 +58,7 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
         return viewController
     }
 
+    // swiftlint:disable function_body_length
     private func makeChatViewController() -> ChatViewController {
         let viewModel = ChatViewModel(
             interactor: interactor,
@@ -75,7 +76,12 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
                 uploadFileToEngagement: environment.uploadFileToEngagement,
                 fileManager: environment.fileManager,
                 data: environment.data,
-                date: environment.date
+                date: environment.date,
+                gcd: environment.gcd,
+                localFileThumbnailQueue: environment.localFileThumbnailQueue,
+                uiImage: environment.uiImage,
+                createFileDownload: environment.createFileDownload,
+                fromHistory: environment.fromHistory
             )
         )
         viewModel.engagementDelegate = { [weak self] event in
@@ -116,6 +122,7 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
         }
         return ChatViewController(viewModel: viewModel, viewFactory: viewFactory)
     }
+    // swiftlint:enable function_body_length
 
     private func presentMediaPickerController(
         with pickerEvent: ObservableValue<MediaPickerEvent>,
@@ -185,5 +192,10 @@ extension ChatCoordinator {
         var fileManager: FoundationBased.FileManager
         var data: FoundationBased.Data
         var date: () -> Date
+        var gcd: GCD
+        var localFileThumbnailQueue: FoundationBased.OperationQueue
+        var uiImage: UIKitBased.UIImage
+        var createFileDownload: FileDownloader.CreateFileDownload
+        var fromHistory: () -> Bool
     }
 }

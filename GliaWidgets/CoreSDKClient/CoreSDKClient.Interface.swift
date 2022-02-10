@@ -118,8 +118,10 @@ extension CoreSdkClient {
     typealias AttachmentType = SalemoveSDK.AttachmentType
     typealias AudioStreamable = SalemoveSDK.AudioStreamable
     typealias AudioStreamAddedBlock = SalemoveSDK.AudioStreamAddedBlock
+    typealias ContextType = SalemoveSDK.ContextType
     typealias EngagementFile = SalemoveSDK.EngagementFile
     typealias EngagementFileCompletionBlock = SalemoveSDK.EngagementFileCompletionBlock
+    typealias EngagementFileData = SalemoveSDK.EngagementFileData
     typealias EngagementFileFetchCompletionBlock = SalemoveSDK.EngagementFileFetchCompletionBlock
     typealias EngagementFileInformation = SalemoveSDK.EngagementFileInformation
     typealias EngagementFileProgressBlock = SalemoveSDK.EngagementFileProgressBlock

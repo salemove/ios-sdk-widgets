@@ -49,16 +49,23 @@ class ChatView: EngagementView {
             environment: .init(
                 data: environment.data,
                 uuid: environment.uuid,
-                gcd: environment.gcd
+                gcd: environment.gcd,
+                imageViewCache: environment.imageViewCache
             )
         )
-        self.typingIndicatorView = OperatorTypingIndicatorView(style: style.operatorTypingIndicator)
+
+        #warning("Find way how to provide operator name")
+        self.typingIndicatorView = OperatorTypingIndicatorView(
+            style: style.operatorTypingIndicator,
+            accessibilityProperties: .init(operatorName: "Operator")
+        )
         super.init(
             with: style,
             environment: .init(
                 data: environment.data,
                 uuid: environment.uuid,
-                gcd: environment.gcd
+                gcd: environment.gcd,
+                imageViewCache: environment.imageViewCache
             )
         )
         setup()
@@ -247,15 +254,22 @@ extension ChatView {
             return .queueOperator(connectView)
         case .outgoingMessage(let message):
             let view = VisitorChatMessageView(with: style.visitorMessage)
-            view.appendContent(.text(message.content), animated: false)
-            view.appendContent(.files(message.files), animated: false)
+            view.appendContent(.text(message.content, accessibility: Self.visitorAccessibilityOutgoingMessage(for: message)), animated: false)
+            view.appendContent(
+                .files(
+                    message.files,
+                    accessibility: .init(from: .visitor)
+                ),
+                animated: false
+            )
             view.fileTapped = { [weak self] in self?.fileTapped?($0) }
             view.linkTapped = { [weak self] in self?.linkTapped?($0) }
             return .outgoingMessage(view)
         case .visitorMessage(let message, let status):
             let view = VisitorChatMessageView(with: style.visitorMessage)
-            view.appendContent(.text(message.content), animated: false)
-            view.appendContent(.downloads(message.downloads), animated: false)
+            view.appendContent(.text(message.content, accessibility: Self.visitorAccessibilityMessage(for: message)), animated: false)
+            view.appendContent(.downloads(message.downloads,
+                                          accessibility: .init(from: .visitor)), animated: false)
             view.downloadTapped = { [weak self] in self?.downloadTapped?($0) }
             view.linkTapped = { [weak self] in self?.linkTapped?($0) }
             view.status = status
@@ -266,11 +280,19 @@ extension ChatView {
                 environment: .init(
                     data: environment.data,
                     uuid: environment.uuid,
-                    gcd: environment.gcd
+                    gcd: environment.gcd,
+                    imageViewCache: environment.imageViewCache
                 )
             )
-            view.appendContent(.text(message.content), animated: false)
-            view.appendContent(.downloads(message.downloads), animated: false)
+            view.appendContent(.text(message.content, accessibility: Self.operatorAccessibilityMessage(for: message)), animated: false)
+#warning("Provide proper localized 'Operator'")
+            view.appendContent(
+                .downloads(
+                    message.downloads,
+
+                    accessibility: .init(from: .operator(message.operator?.name ?? "Operator"))),
+                animated: false
+            )
             view.downloadTapped = { [weak self] in self?.downloadTapped?($0) }
             view.linkTapped = { [weak self] in self?.linkTapped?($0) }
             view.showsOperatorImage = showsImage
@@ -282,7 +304,8 @@ extension ChatView {
                 environment: .init(
                     data: environment.data,
                     uuid: environment.uuid,
-                    gcd: environment.gcd
+                    gcd: environment.gcd,
+                    imageViewCache: environment.imageViewCache
                 )
             )
             let choiceCard = ChoiceCard(with: message, isActive: isActive)
@@ -341,7 +364,8 @@ extension ChatView {
             environment: .init(
                 data: environment.data,
                 uuid: environment.uuid,
-                gcd: environment.gcd
+                gcd: environment.gcd,
+                imageViewCache: environment.imageViewCache
             )
         )
         callBubble.kind = .userImage(url: imageUrl)
@@ -462,10 +486,21 @@ extension ChatView: UITableViewDelegate {
     }
 }
 
+// MARK: - Accessibility
 extension ChatView {
-    struct Environment {
-        var data: FoundationBased.Data
-        var uuid: () -> UUID
-        var gcd: GCD
+    static func operatorAccessibilityMessage(for chatMessage: ChatMessage) -> ChatMessageContent.TextAccessibilityProperties {
+        .init(label: chatMessage.operator?.name ?? "Operator", value: chatMessage.content)
+    }
+
+    static func visitorAccessibilityMessage(for chatMessage: ChatMessage) -> ChatMessageContent.TextAccessibilityProperties {
+        .init(label: "You", value: chatMessage.content)
+    }
+
+    static func visitorAccessibilityOutgoingMessage(for outgoingMessage: OutgoingMessage) -> ChatMessageContent.TextAccessibilityProperties {
+        .init(label: "You", value: outgoingMessage.content)
+    }
+
+    struct AccessibilityProperties {
+        let operatorName: String
     }
 }

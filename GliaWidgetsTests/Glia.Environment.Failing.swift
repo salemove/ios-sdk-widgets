@@ -14,7 +14,15 @@ extension Glia.Environment {
         },
         fileManager: .failing,
         data: .failing,
-        gcd: .failing
+        gcd: .failing,
+        imageViewCache: .failing,
+        localFileThumbnailQueue: .failing,
+        uiImage: .failing,
+        createFileDownload: { _, _, _ in .failing },
+        fromHistory: {
+            fail("\(Self.self).fromHistory")
+            return true
+        }
     )
 }
 
