@@ -1,22 +1,18 @@
+#if DEBUG
 extension Glia.Environment {
     static let mock = Self(
         coreSdk: .mock,
         chatStorage: .mock,
         audioSession: .mock,
-        uuid: { .mock }
+        uuid: { .mock },
+        date: { .mock },
+        fileManager: .mock,
+        data: .mock
     )
 }
 
 extension Glia.Environment.AudioSession {
     static let mock = Self(overrideOutputAudioPort: { _ in })
-}
-
-extension UUID {
-    static let mock = Self(uuidString: "deadbeef-dead-beef-dead-beefdeadbeef").unsafelyUnwrapped
-}
-
-extension URL {
-    static let mock = Self(string: "https://mock.mock").unsafelyUnwrapped
 }
 
 extension Glia.Environment.ChatStorage {
@@ -32,3 +28,4 @@ extension Glia.Environment.ChatStorage {
         newMessages: { _ in return [] }
     )
 }
+#endif
