@@ -7,6 +7,9 @@ extension Glia {
         var chatStorage: ChatStorage
         var audioSession: AudioSession
         var uuid: () -> UUID
+        var date: () -> Date
+        var fileManager: FoundationBased.FileManager
+        var data: FoundationBased.Data
     }
 }
 
@@ -51,3 +54,4 @@ extension Glia.Environment {
         ) -> [CoreSdkClient.Message]
     }
 }
+

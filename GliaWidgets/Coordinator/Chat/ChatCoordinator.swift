@@ -72,7 +72,10 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
                 chatStorage: environment.chatStorage,
                 fetchFile: environment.fetchFile,
                 sendSelectedOptionValue: environment.sendSelectedOptionValue,
-                uploadFileToEngagement: environment.uploadFileToEngagement
+                uploadFileToEngagement: environment.uploadFileToEngagement,
+                fileManager: environment.fileManager,
+                data: environment.data,
+                date: environment.date
             )
         )
         viewModel.engagementDelegate = { [weak self] event in
@@ -179,5 +182,8 @@ extension ChatCoordinator {
         var fetchFile: CoreSdkClient.FetchFile
         var sendSelectedOptionValue: CoreSdkClient.SendSelectedOptionValue
         var uploadFileToEngagement: CoreSdkClient.UploadFileToEngagement
+        var fileManager: FoundationBased.FileManager
+        var data: FoundationBased.Data
+        var date: () -> Date
     }
 }

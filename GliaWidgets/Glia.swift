@@ -186,7 +186,10 @@ public class Glia {
                 sendSelectedOptionValue: environment.coreSdk.sendSelectedOptionValue,
                 uploadFileToEngagement: environment.coreSdk.uploadFileToEngagement,
                 audioSession: environment.audioSession,
-                uuid: environment.uuid
+                uuid: environment.uuid,
+                fileManager: environment.fileManager,
+                data: environment.data,
+                date: environment.date
             )
         )
         rootCoordinator?.delegate = { [weak self] event in
