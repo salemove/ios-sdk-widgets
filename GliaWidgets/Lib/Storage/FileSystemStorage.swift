@@ -2,13 +2,15 @@ import Foundation
 
 class FileSystemStorage: DataStorage {
     enum Directory {
-        case documents
+        case documents(FoundationBased.FileManager)
 
         var url: URL {
             switch self {
-            case .documents:
-                let paths = FileManager.default
-                    .urls(for: .documentDirectory, in: .userDomainMask)
+            case let .documents(fileManager):
+                let paths = fileManager.urlsForDirectoryInDomainMask(
+                        .documentDirectory,
+                        .userDomainMask
+                )
                 return paths[0]
             }
         }
@@ -21,11 +23,16 @@ class FileSystemStorage: DataStorage {
 
     private let directory: Directory
     private let expiration: Expiration
-    private let fileManager = FileManager()
+    var environment: Environment
 
-    init(directory: Directory, expiration: Expiration = .none) {
+    init(
+        directory: Directory,
+        expiration: Expiration = .none,
+        environment: Environment
+    ) {
         self.directory = directory
         self.expiration = expiration
+        self.environment = environment
         createStorage()
     }
 
@@ -36,30 +43,38 @@ class FileSystemStorage: DataStorage {
     func store(_ data: Data, for key: String) {
         let url = storageURL(for: key)
 
-        if !fileManager.fileExists(atPath: url.deletingPathExtension().path) {
-            try? fileManager.createDirectory(at: url, withIntermediateDirectories: true, attributes: nil)
+        if !environment.fileManager.fileExistsAtPath(url.deletingPathExtension().path) {
+            try? environment.fileManager.createDirectoryAtUrlWithIntermediateDirectories(
+                url, // atURL
+                true, // withIntermediateDirectories
+                nil // attributes
+            )
         }
 
-        if fileManager.fileExists(atPath: url.path) {
-            try? fileManager.removeItem(at: url)
+        if environment.fileManager.fileExistsAtPath(url.path) {
+            try? environment.fileManager.removeItemAtUrl(url)
         }
 
-        try? data.write(to: url)
+        try? environment.data.writeDataToUrl(data, url)
     }
 
     func store(from url: URL, for key: String) {
         let sourcePath = url.path
         let targetUrl = storageURL(for: key)
 
-        if !fileManager.fileExists(atPath: targetUrl.deletingPathExtension().path) {
-            try? fileManager.createDirectory(at: targetUrl, withIntermediateDirectories: true, attributes: nil)
+        if !environment.fileManager.fileExistsAtPath(targetUrl.deletingPathExtension().path) {
+            try? environment.fileManager.createDirectoryAtUrlWithIntermediateDirectories(
+                targetUrl, // atURL
+                true, // withIntermediateDirectories
+                nil // attributes
+            )
         }
 
-        if fileManager.fileExists(atPath: targetUrl.path) {
-            try? fileManager.removeItem(at: targetUrl)
+        if environment.fileManager.fileExistsAtPath(targetUrl.path) {
+            try? environment.fileManager.removeItemAtUrl(targetUrl)
         }
 
-        try? fileManager.copyItem(atPath: sourcePath, toPath: targetUrl.path)
+        try? environment.fileManager.copyItemAtPath(sourcePath, targetUrl.path)
     }
 
     func url(for key: String) -> URL {
@@ -68,17 +83,17 @@ class FileSystemStorage: DataStorage {
 
     func data(for key: String) -> Data? {
         let url = storageURL(for: key)
-        return try? Data(contentsOf: url)
+        return try? environment.data.dataWithContentsOfFileUrl(url)
     }
 
     func hasData(for key: String) -> Bool {
         let url = storageURL(for: key)
-        return fileManager.fileExists(atPath: url.path)
+        return environment.fileManager.fileExistsAtPath(url.path)
     }
 
     func removeData(for key: String) {
         let url = storageURL(for: key)
-        try? fileManager.removeItem(atPath: url.path)
+        try? environment.fileManager.removeItemAtPath(url.path)
     }
 
     private func storageURL(for key: String) -> URL {
@@ -100,24 +115,34 @@ class FileSystemStorage: DataStorage {
     }
 
     private func createStorage() {
-        try? fileManager.createDirectory(at: directory.url,
-                                         withIntermediateDirectories: true,
-                                         attributes: nil)
+        try? environment.fileManager.createDirectoryAtUrlWithIntermediateDirectories(
+            directory.url, // atURL
+            true, // withIntermediateDirectories
+            nil // attributes
+        )
     }
 
     private func sweep() {
         guard case .seconds(let expirationSeconds) = expiration else { return }
 
-        let now = Date().timeIntervalSince1970
-        let files = try? fileManager.contentsOfDirectory(atPath: directory.url.path)
+        let now = environment.date().timeIntervalSince1970
+        let files = try? environment.fileManager.contentsOfDirectoryAtPath(directory.url.path)
 
         files?.forEach {
             let filePath = directory.url.appendingPathComponent($0).path
-            if let attributes = try? fileManager.attributesOfItem(atPath: filePath),
+            if let attributes = try? environment.fileManager.attributesOfItemAtPath(filePath),
                let created = attributes[FileAttributeKey.creationDate] as? Date,
                created.timeIntervalSince1970 + expirationSeconds < now {
-                try? fileManager.removeItem(atPath: filePath)
+                try? environment.fileManager.removeItemAtPath(filePath)
             }
         }
+    }
+}
+
+extension FileSystemStorage {
+    struct Environment {
+        var fileManager: FoundationBased.FileManager
+        var data: FoundationBased.Data
+        var date: () -> Date
     }
 }

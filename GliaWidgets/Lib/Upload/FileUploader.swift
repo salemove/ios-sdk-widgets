@@ -47,13 +47,21 @@ class FileUploader {
     let limitReached = ObservableValue<Bool>(with: false)
 
     private var uploads = [FileUpload]()
-    private var storage = FileSystemStorage(directory: .documents)
+    private var storage: FileSystemStorage
     private let maximumUploads: Int
     private let environment: Environment
 
     init(maximumUploads: Int, environment: Environment) {
         self.maximumUploads = maximumUploads
         self.environment = environment
+        self.storage = FileSystemStorage(
+            directory: .documents(environment.fileManager),
+            environment: .init(
+                fileManager: environment.fileManager,
+                data: environment.data,
+                date: environment.date
+            )
+        )
         updateLimitReached()
     }
 
@@ -132,5 +140,8 @@ class FileUploader {
 extension FileUploader {
     struct Environment {
         var uploadFileToEngagement: CoreSdkClient.UploadFileToEngagement
+        var fileManager: FoundationBased.FileManager
+        var data: FoundationBased.Data
+        var date: () -> Date
     }
 }
