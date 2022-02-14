@@ -160,7 +160,10 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
                 chatStorage: environment.chatStorage,
                 fetchFile: environment.fetchFile,
                 sendSelectedOptionValue: environment.sendSelectedOptionValue,
-                uploadFileToEngagement: environment.uploadFileToEngagement
+                uploadFileToEngagement: environment.uploadFileToEngagement,
+                fileManager: environment.fileManager,
+                data: environment.data,
+                date: environment.date
             )
         )
         coordinator.delegate = { [weak self] event in
@@ -390,5 +393,8 @@ extension RootCoordinator {
         var uploadFileToEngagement: CoreSdkClient.UploadFileToEngagement
         var audioSession: Glia.Environment.AudioSession
         var uuid: () -> UUID
+        var fileManager: FoundationBased.FileManager
+        var data: FoundationBased.Data
+        var date: () -> Date
     }
 }

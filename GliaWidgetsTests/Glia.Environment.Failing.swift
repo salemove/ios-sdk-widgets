@@ -8,7 +8,12 @@ extension Glia.Environment {
         uuid: {
             fail("\(Self.self).uuid")
             return .mock
-        }
+        }, date: {
+            fail("\(Self.self).date")
+            return .mock
+        },
+        fileManager: .failing,
+        data: .failing
     )
 }
 
@@ -47,8 +52,9 @@ extension Glia.Environment.ChatStorage {
         storeMessages: { _, _, _ in
             fail("\(Self.self).storeMessages")
         },
-        isNewMessage: { _ in return true
+        isNewMessage: { _ in
             fail("\(Self.self).isNewMessage")
+            return true
         },
         newMessages: { _ in
             fail("\(Self.self).newMessages")

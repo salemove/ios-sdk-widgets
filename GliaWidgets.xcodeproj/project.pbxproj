@@ -42,7 +42,6 @@
 		1A1E30C725F9FDAB00850E68 /* ChatImageFileContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A1E30C625F9FDAB00850E68 /* ChatImageFileContentView.swift */; };
 		1A1E30CB25F9FDC400850E68 /* ChatImageFileContentStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A1E30CA25F9FDC400850E68 /* ChatImageFileContentStyle.swift */; };
 		1A205D6225655CB2003AA3CD /* GliaWidgets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A205D5825655CB1003AA3CD /* GliaWidgets.framework */; };
-		1A205D6725655CB2003AA3CD /* GliaWidgetsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A205D6625655CB2003AA3CD /* GliaWidgetsTests.swift */; };
 		1A205D6925655CB2003AA3CD /* GliaWidgets.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A205D5B25655CB1003AA3CD /* GliaWidgets.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1A205D7B25655CEC003AA3CD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A205D7A25655CEC003AA3CD /* AppDelegate.swift */; };
 		1A205D7F25655CEC003AA3CD /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A205D7E25655CEC003AA3CD /* ViewController.swift */; };
@@ -191,6 +190,15 @@
 		6EEAD84E2701A8C10074C191 /* ChoiceCardOptionStateStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EEAD84D2701A8C10074C191 /* ChoiceCardOptionStateStyle.swift */; };
 		756087E127837EC000158604 /* BundleManaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756087E027837EC000158604 /* BundleManaging.swift */; };
 		9A3E1D8427B67F1B005634EB /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3E1D8327B67F1B005634EB /* Helper.swift */; };
+		9A3E1D8A27B6B824005634EB /* FileDownload.Environment.Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3E1D8927B6B824005634EB /* FileDownload.Environment.Interface.swift */; };
+		9A3E1D8C27B6B888005634EB /* FileDownload.Environment.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3E1D8B27B6B888005634EB /* FileDownload.Environment.Mock.swift */; };
+		9A3E1D9427B6C29C005634EB /* ChatEngagementFile.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3E1D9327B6C29C005634EB /* ChatEngagementFile.Mock.swift */; };
+		9A3E1D9727B6C7E9005634EB /* FoundationBased.Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3E1D9627B6C7E9005634EB /* FoundationBased.Interface.swift */; };
+		9A3E1D9927B6D0DB005634EB /* FoundationBased.Live.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3E1D9827B6D0DB005634EB /* FoundationBased.Live.swift */; };
+		9A3E1D9B27B73246005634EB /* FoundationBased.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3E1D9A27B73246005634EB /* FoundationBased.Mock.swift */; };
+		9A3E1D9D27BA7741005634EB /* FoundationBased.Failing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3E1D9C27BA7741005634EB /* FoundationBased.Failing.swift */; };
+		9A3E1DA027BA7B9F005634EB /* FileSystemStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3E1D9F27BA7B9F005634EB /* FileSystemStorageTests.swift */; };
+		9A3E1DA227BA7D00005634EB /* FileSystemStorage.Environment.Failing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3E1DA127BA7D00005634EB /* FileSystemStorage.Environment.Failing.swift */; };
 		9A66172727A94587001C8E03 /* CoreSDKClient.Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A66172627A94587001C8E03 /* CoreSDKClient.Interface.swift */; };
 		9A66172A27A94826001C8E03 /* CoreSDKClient.Live.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A66172927A94826001C8E03 /* CoreSDKClient.Live.swift */; };
 		9A66172C27A94A4B001C8E03 /* CoreSDKClient.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A66172B27A94A4B001C8E03 /* CoreSDKClient.Mock.swift */; };
@@ -301,7 +309,6 @@
 		1A205D5B25655CB1003AA3CD /* GliaWidgets.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GliaWidgets.h; sourceTree = "<group>"; };
 		1A205D5C25655CB1003AA3CD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1A205D6125655CB2003AA3CD /* GliaWidgetsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GliaWidgetsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		1A205D6625655CB2003AA3CD /* GliaWidgetsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GliaWidgetsTests.swift; sourceTree = "<group>"; };
 		1A205D6825655CB2003AA3CD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1A205D7825655CEC003AA3CD /* TestingApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestingApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A205D7A25655CEC003AA3CD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -456,6 +463,15 @@
 		85639A838514258D976E1B2A /* Pods_GliaWidgets.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GliaWidgets.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		97422AD1FF7D9E4B3E887116 /* Pods_GliaWidgetsTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GliaWidgetsTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A3E1D8327B67F1B005634EB /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
+		9A3E1D8927B6B824005634EB /* FileDownload.Environment.Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileDownload.Environment.Interface.swift; sourceTree = "<group>"; };
+		9A3E1D8B27B6B888005634EB /* FileDownload.Environment.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileDownload.Environment.Mock.swift; sourceTree = "<group>"; };
+		9A3E1D9327B6C29C005634EB /* ChatEngagementFile.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatEngagementFile.Mock.swift; sourceTree = "<group>"; };
+		9A3E1D9627B6C7E9005634EB /* FoundationBased.Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoundationBased.Interface.swift; sourceTree = "<group>"; };
+		9A3E1D9827B6D0DB005634EB /* FoundationBased.Live.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoundationBased.Live.swift; sourceTree = "<group>"; };
+		9A3E1D9A27B73246005634EB /* FoundationBased.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoundationBased.Mock.swift; sourceTree = "<group>"; };
+		9A3E1D9C27BA7741005634EB /* FoundationBased.Failing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoundationBased.Failing.swift; sourceTree = "<group>"; };
+		9A3E1D9F27BA7B9F005634EB /* FileSystemStorageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileSystemStorageTests.swift; sourceTree = "<group>"; };
+		9A3E1DA127BA7D00005634EB /* FileSystemStorage.Environment.Failing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileSystemStorage.Environment.Failing.swift; sourceTree = "<group>"; };
 		9A66172627A94587001C8E03 /* CoreSDKClient.Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreSDKClient.Interface.swift; sourceTree = "<group>"; };
 		9A66172927A94826001C8E03 /* CoreSDKClient.Live.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreSDKClient.Live.swift; sourceTree = "<group>"; };
 		9A66172B27A94A4B001C8E03 /* CoreSDKClient.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreSDKClient.Mock.swift; sourceTree = "<group>"; };
@@ -636,6 +652,8 @@
 			isa = PBXGroup;
 			children = (
 				1A1E309525F8CA4400850E68 /* FileDownload.swift */,
+				9A3E1D8927B6B824005634EB /* FileDownload.Environment.Interface.swift */,
+				9A3E1D8B27B6B888005634EB /* FileDownload.Environment.Mock.swift */,
 				1A1E309E25F8E44300850E68 /* FileDownloader.swift */,
 			);
 			path = Download;
@@ -644,8 +662,8 @@
 		1A1E309925F8E1E900850E68 /* Storage */ = {
 			isa = PBXGroup;
 			children = (
-				1A1E309A25F8E1F700850E68 /* DataStorage.swift */,
 				1A1E30A225F8E4A400850E68 /* FileSystemStorage.swift */,
+				1A1E309A25F8E1F700850E68 /* DataStorage.swift */,
 			);
 			path = Storage;
 			sourceTree = "<group>";
@@ -721,6 +739,9 @@
 				1A205D5B25655CB1003AA3CD /* GliaWidgets.h */,
 				1A205D5C25655CB1003AA3CD /* Info.plist */,
 				6B48213D2735873300F2900A /* Feature.swift */,
+				9A3E1D9627B6C7E9005634EB /* FoundationBased.Interface.swift */,
+				9A3E1D9827B6D0DB005634EB /* FoundationBased.Live.swift */,
+				9A3E1D9A27B73246005634EB /* FoundationBased.Mock.swift */,
 			);
 			path = GliaWidgets;
 			sourceTree = "<group>";
@@ -728,11 +749,12 @@
 		1A205D6525655CB2003AA3CD /* GliaWidgetsTests */ = {
 			isa = PBXGroup;
 			children = (
-				1A205D6625655CB2003AA3CD /* GliaWidgetsTests.swift */,
+				9A3E1D8527B6B668005634EB /* Lib */,
 				1A205D6825655CB2003AA3CD /* Info.plist */,
 				9ACC25D127B4727500BC5335 /* CoreSDKClient.Failing.swift */,
 				9ACC25D327B474E800BC5335 /* Glia.Environment.Failing.swift */,
 				9A3E1D8327B67F1B005634EB /* Helper.swift */,
+				9A3E1D9C27BA7741005634EB /* FoundationBased.Failing.swift */,
 			);
 			path = GliaWidgetsTests;
 			sourceTree = "<group>";
@@ -926,9 +948,10 @@
 		1A5F8180258B4EF900A605DA /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				1AFB1E6125F7AE1300CA460D /* ChatEngagementFile.swift */,
+				9A3E1D9327B6C29C005634EB /* ChatEngagementFile.Mock.swift */,
 				1AC7A77A25838AE800567FF8 /* ChatItem.swift */,
 				1AFB1E5D25F7ADDA00CA460D /* ChatOperator.swift */,
-				1AFB1E6125F7AE1300CA460D /* ChatEngagementFile.swift */,
 				1AFB1E6725F7AE3C00CA460D /* ChatAttachment.swift */,
 				1A6EB05625A717CB0007081A /* ChatMessage.swift */,
 				1A5F8181258B4F0E00A605DA /* OutgoingMessage.swift */,
@@ -1484,6 +1507,23 @@
 			path = BundleManaging;
 			sourceTree = "<group>";
 		};
+		9A3E1D8527B6B668005634EB /* Lib */ = {
+			isa = PBXGroup;
+			children = (
+				9A3E1D9E27BA7B80005634EB /* Storage */,
+			);
+			path = Lib;
+			sourceTree = "<group>";
+		};
+		9A3E1D9E27BA7B80005634EB /* Storage */ = {
+			isa = PBXGroup;
+			children = (
+				9A3E1D9F27BA7B9F005634EB /* FileSystemStorageTests.swift */,
+				9A3E1DA127BA7D00005634EB /* FileSystemStorage.Environment.Failing.swift */,
+			);
+			path = Storage;
+			sourceTree = "<group>";
+		};
 		9A66172827A945A2001C8E03 /* CoreSDKClient */ = {
 			isa = PBXGroup;
 			children = (
@@ -1909,6 +1949,7 @@
 				1ABD6C5D25B59D1C00D56EFA /* BubbleWindow.swift in Sources */,
 				1AE15E38257A578B00A642C0 /* MessageAlertConfiguration.swift in Sources */,
 				1AC7A77B25838AE800567FF8 /* ChatItem.swift in Sources */,
+				9A3E1D8C27B6B888005634EB /* FileDownload.Environment.Mock.swift in Sources */,
 				1A1E309F25F8E44300850E68 /* FileDownloader.swift in Sources */,
 				1A2DA72625EF892600032611 /* FilePickerController.swift in Sources */,
 				1ABD6C9625B6F46700D56EFA /* AlertViewController+SingleMediaUpgrade.swift in Sources */,
@@ -1922,6 +1963,7 @@
 				9A83D78327B18DF000681C9F /* Glia.Environment.Mock.swift in Sources */,
 				1A63B2F3257A3F3D00508478 /* AlertViewController.swift in Sources */,
 				C499A58426382FBE009962AC /* UnreadMessageIndicatorStyle.swift in Sources */,
+				9A3E1D9727B6C7E9005634EB /* FoundationBased.Interface.swift in Sources */,
 				1A60B01D2567FCAD00E53F53 /* ButtonProperties.swift in Sources */,
 				1AC7A7482582237500567FF8 /* GliaViewController.swift in Sources */,
 				1A4AF5D325AEF543002CD0F4 /* AlertViewController+Confirmation.swift in Sources */,
@@ -1937,6 +1979,7 @@
 				1AE15E3B257A5CC900A642C0 /* AlertConfiguration.swift in Sources */,
 				1A60AF9F25667CA800E53F53 /* FontProvider.swift in Sources */,
 				1A60AFCE2566958900E53F53 /* ViewFactory.swift in Sources */,
+				9A3E1D9927B6D0DB005634EB /* FoundationBased.Live.swift in Sources */,
 				1A7CA82F25751B5A0047CBBE /* ConnectOperatorStyle.swift in Sources */,
 				1A0452DD25DBD0A4000DA0C1 /* HeaderButton.swift in Sources */,
 				1A60AF96256675C400E53F53 /* UIColor+Extensions.swift in Sources */,
@@ -1944,6 +1987,7 @@
 				1A7CA81D2574D6370047CBBE /* ConnectView.swift in Sources */,
 				1ABD6C5525B574FF00D56EFA /* BubbleView.swift in Sources */,
 				C43D7A1525FF9A590064B1DA /* ChatChoiceCardOption.swift in Sources */,
+				9A3E1D9427B6C29C005634EB /* ChatEngagementFile.Mock.swift in Sources */,
 				1A2DA73B25EFC00500032611 /* FileUploadListStyle.swift in Sources */,
 				9A83D78127B18DB600681C9F /* Glia.Environment.Live.swift in Sources */,
 				C4F176CE261D1543009D9F07 /* ChatFileDownloadContentStyle.swift in Sources */,
@@ -1979,6 +2023,7 @@
 				1AA738B225790D5A00E1120F /* AlertView.swift in Sources */,
 				C47901B725ED2FB0007EE195 /* AlertViewController+ScreenShareOffer.swift in Sources */,
 				1A8366B025FF40AB005FE7EE /* LocalFile.swift in Sources */,
+				9A3E1D8A27B6B824005634EB /* FileDownload.Environment.Interface.swift in Sources */,
 				1A0C143F25B85DB400B00695 /* CallViewController.swift in Sources */,
 				1A0C9A7125C16F4A00815406 /* Theme+Alert.swift in Sources */,
 				1A38A8AC258B65D00089DE7B /* ChatMessageStyle.swift in Sources */,
@@ -2080,6 +2125,7 @@
 				1ABD6C8725B6EFD000D56EFA /* SingleMediaUpgradeAlertConfiguration.swift in Sources */,
 				C47901B325ED2F31007EE195 /* ScreenShareOfferAlertConfiguration.swift in Sources */,
 				1A0C143A25B85C3D00B00695 /* CallStyle.swift in Sources */,
+				9A3E1D9B27B73246005634EB /* FoundationBased.Mock.swift in Sources */,
 				1A60AFE825669C5000E53F53 /* ChatStyle.swift in Sources */,
 				1A4AF5C725AEEA42002CD0F4 /* Operator+Extensions.swift in Sources */,
 				1A4674C825ED084A0078FA1C /* MediaPickerViewModel.swift in Sources */,
@@ -2093,8 +2139,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				9ACC25D427B474E800BC5335 /* Glia.Environment.Failing.swift in Sources */,
-				1A205D6725655CB2003AA3CD /* GliaWidgetsTests.swift in Sources */,
+				9A3E1DA227BA7D00005634EB /* FileSystemStorage.Environment.Failing.swift in Sources */,
+				9A3E1DA027BA7B9F005634EB /* FileSystemStorageTests.swift in Sources */,
 				9ACC25D227B4727500BC5335 /* CoreSDKClient.Failing.swift in Sources */,
+				9A3E1D9D27BA7741005634EB /* FoundationBased.Failing.swift in Sources */,
 				9A3E1D8427B67F1B005634EB /* Helper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
