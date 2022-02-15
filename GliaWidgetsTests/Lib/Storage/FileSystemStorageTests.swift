@@ -229,7 +229,7 @@ class FileSystemStorageTests: XCTestCase {
         XCTAssertEqual(removedUrlResult, expectedFileUrl)
     }
 
-    func test_storeFromUrlForKeyCreatesIntermediateDirsForFilePathIfNeeded () {
+    func test_storeFromUrlForKeyCreatesIntermediateDirsForFilePathIfNeeded() {
         var fileManager = FoundationBased.FileManager.failing
         let expectedDirUrl = URL.mockFilePath
         fileManager.urlsForDirectoryInDomainMask = { _, _ in
