@@ -113,8 +113,24 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         self.startAction = startAction
         self.screenShareHandler = screenShareHandler
         self.environment = environment
-        self.uploader = FileUploader(maximumUploads: 25, environment: .init(uploadFileToEngagement: environment.uploadFileToEngagement))
-        self.downloader = FileDownloader(environment: .init(fetchFile: environment.fetchFile))
+        self.uploader = FileUploader(
+            maximumUploads: 25,
+            environment: .init(
+                uploadFileToEngagement: environment.uploadFileToEngagement,
+                fileManager: environment.fileManager,
+                data: environment.data,
+                date: environment.date
+            )
+        )
+        self.downloader = FileDownloader(
+            environment: .init(
+                fetchFile: environment.fetchFile,
+                fileManager: environment.fileManager,
+                data: environment.data,
+                date: environment.date
+
+            )
+        )
         super.init(
             interactor: interactor,
             alertConfiguration: alertConfiguration,
@@ -791,5 +807,8 @@ extension ChatViewModel {
         var fetchFile: CoreSdkClient.FetchFile
         var sendSelectedOptionValue: CoreSdkClient.SendSelectedOptionValue
         var uploadFileToEngagement: CoreSdkClient.UploadFileToEngagement
+        var fileManager: FoundationBased.FileManager
+        var data: FoundationBased.Data
+        var date: () -> Date
     }
 }

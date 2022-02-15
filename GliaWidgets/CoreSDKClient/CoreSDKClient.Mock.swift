@@ -1,3 +1,6 @@
+#if DEBUG
+import Foundation
+
 extension CoreSdkClient {
     static let mock = Self(
         pushNotifications: .mock,
@@ -30,3 +33,24 @@ extension CoreSdkClient.AppDelegate {
         applicationDidBecomeActive: { _ in }
     )
 }
+
+extension CoreSdkClient.EngagementFile {
+    static func mock(id: String = "") -> CoreSdkClient.EngagementFile {
+        .init(id: id)
+    }
+
+    static func mock(url: URL = .mock) -> CoreSdkClient.EngagementFile {
+        .init(url: url)
+    }
+
+    static func mock(
+        name: String = "",
+        url: URL = .mock
+    ) -> CoreSdkClient.EngagementFile {
+        .init(
+            name: name,
+            url: url
+        )
+    }
+}
+#endif
