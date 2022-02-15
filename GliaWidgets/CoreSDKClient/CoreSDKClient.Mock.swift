@@ -1,4 +1,6 @@
+#if DEBUG
 import Foundation
+
 extension CoreSdkClient {
     static let mock = Self(
         pushNotifications: .mock,
@@ -51,3 +53,4 @@ extension CoreSdkClient.EngagementFile {
         )
     }
 }
+#endif
