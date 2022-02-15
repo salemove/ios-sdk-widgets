@@ -3,29 +3,37 @@ import XCTest
 class FileSystemStorageTests: XCTestCase {
     func test_init_createsDirectoryWithExpectedParams() {
         var fileManager = FoundationBased.FileManager.failing
-        let expectedDirURL = URL.mockFilePath
+        let expectedDirUrl = URL.mockFilePath
         fileManager.urlsForDirectoryInDomainMask = { _, _ in
-            [expectedDirURL]
+            [expectedDirUrl]
+        }
+        var resultCreateDirUrl = URL(fileURLWithPath: "/")
+        var shouldCreateIntermDirs = false
+        var fileAttribs: [FileAttributeKey: Any]? = [:]
+
+        fileManager.createDirectoryAtUrlWithIntermediateDirectories = { url, createIntermediate, attribs in
+            resultCreateDirUrl = url
+            shouldCreateIntermDirs = createIntermediate
+            fileAttribs = attribs
         }
 
-        fileManager.createDirectoryAtUrlWithIntermediateDirectories = { url, createIntermadiate, attribs in
-            XCTAssertEqual(url, expectedDirURL)
-            XCTAssertTrue(createIntermadiate)
-            XCTAssertNil(attribs)
-        }
         var env = FileSystemStorage.Environment.failing
         env.fileManager = fileManager
         _ = FileSystemStorage(
             directory: .documents(fileManager),
             environment: env
         )
+
+        XCTAssertEqual(resultCreateDirUrl, expectedDirUrl)
+        XCTAssertTrue(shouldCreateIntermDirs)
+        XCTAssertNil(fileAttribs)
     }
 
     func test_deinit_deletesFilesIfExpired() {
         var fileManager = FoundationBased.FileManager.failing
-        let expectedDirURL = URL.mockFilePath
+        let expectedDirUrl = URL.mockFilePath
         fileManager.urlsForDirectoryInDomainMask = { _, _ in
-            [expectedDirURL]
+            [expectedDirUrl]
         }
         fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
         let expectedFile = "file.mock"
@@ -39,8 +47,10 @@ class FileSystemStorageTests: XCTestCase {
             [FileAttributeKey.creationDate: fileDate]
         }
 
+        var itemToBeRemoved = ""
+
         fileManager.removeItemAtPath = { item in
-            XCTAssertEqual(item, expectedDirURL.appendingPathComponent(expectedFile).path)
+            itemToBeRemoved = item
             contents.removeLast()
         }
 
@@ -58,15 +68,17 @@ class FileSystemStorageTests: XCTestCase {
             directory: .documents(fileManager),
             environment: env
         )
+
         _ = fileStorage
+        XCTAssertEqual(itemToBeRemoved, expectedDirUrl.appendingPathComponent(expectedFile).path)
         XCTAssertTrue(contents.isEmpty)
     }
 
     func test_deinit_leavesFilesUntouchedIfNotExpired() {
         var fileManager = FoundationBased.FileManager.failing
-        let expectedDirURL = URL.mockFilePath
+        let expectedDirUrl = URL.mockFilePath
         fileManager.urlsForDirectoryInDomainMask = { _, _ in
-            [expectedDirURL]
+            [expectedDirUrl]
         }
         fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
         let expectedFile = "file.mock"
@@ -99,9 +111,9 @@ class FileSystemStorageTests: XCTestCase {
 
     func test_storeDataForKeyRemovesExistingFileAndWriteDataToFileUrl() {
         var fileManager = FoundationBased.FileManager.failing
-        let expectedDirURL = URL.mockFilePath
+        let expectedDirUrl = URL.mockFilePath
         fileManager.urlsForDirectoryInDomainMask = { _, _ in
-            [expectedDirURL]
+            [expectedDirUrl]
         }
         fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
 
@@ -122,28 +134,28 @@ class FileSystemStorageTests: XCTestCase {
             return true
         }
 
-        var resultUrl = URL.mock
+        var resultUrl = URL(fileURLWithPath: "/")
         fileStorage.environment.fileManager.removeItemAtUrl = { url in
             resultUrl = url
         }
 
-        var resultWriteUrl = URL.mock
+        var resultWriteUrl = URL(fileURLWithPath: "/")
         fileStorage.environment.data.writeDataToUrl = { _, url in
             resultWriteUrl = url
         }
 
         fileStorage.store(.mock, for: expectedKey)
 
-        XCTAssertEqual(resultPath, expectedDirURL.appendingPathComponent(expectedKey).path)
-        XCTAssertEqual(resultUrl, expectedDirURL.appendingPathComponent(expectedKey))
-        XCTAssertEqual(resultWriteUrl, expectedDirURL.appendingPathComponent(expectedKey))
+        XCTAssertEqual(resultPath, expectedDirUrl.appendingPathComponent(expectedKey).path)
+        XCTAssertEqual(resultUrl, expectedDirUrl.appendingPathComponent(expectedKey))
+        XCTAssertEqual(resultWriteUrl, expectedDirUrl.appendingPathComponent(expectedKey))
     }
 
     func test_storeDataForKeyCreatesDirectoryForKeyIfNeeded() {
         var fileManager = FoundationBased.FileManager.failing
-        let expectedDirURL = URL.mockFilePath
+        let expectedDirUrl = URL.mockFilePath
         fileManager.urlsForDirectoryInDomainMask = { _, _ in
-            [expectedDirURL]
+            [expectedDirUrl]
         }
         fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
 
@@ -175,16 +187,16 @@ class FileSystemStorageTests: XCTestCase {
         fileStorage.environment.fileManager.removeItemAtUrl = { _ in }
         fileStorage.environment.data.writeDataToUrl = { _, _ in }
         fileStorage.store(.mock, for: expectedKey)
-        XCTAssertEqual(expectedCreateDirUrl, expectedDirURL.appendingPathComponent(expectedKey))
+        XCTAssertEqual(expectedCreateDirUrl, expectedDirUrl.appendingPathComponent(expectedKey))
         XCTAssertTrue(createIntermediateDirs)
         XCTAssertNil(fileAttribs)
     }
 
     func test_storeFromUrlForKeyRemovesExistingFileAndCopiesFileToPath() {
         var fileManager = FoundationBased.FileManager.failing
-        let expectedDirURL = URL.mockFilePath
+        let expectedDirUrl = URL.mockFilePath
         fileManager.urlsForDirectoryInDomainMask = { _, _ in
-            [expectedDirURL]
+            [expectedDirUrl]
         }
         fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
 
@@ -200,7 +212,7 @@ class FileSystemStorageTests: XCTestCase {
         fileStorage.environment.fileManager = .failing
         fileStorage.environment.fileManager.fileExistsAtPath = { _ in true }
         let expectedKey = "mockFileKey"
-        let expectedFileUrl = expectedDirURL.appendingPathComponent(expectedKey)
+        let expectedFileUrl = expectedDirUrl.appendingPathComponent(expectedKey)
         var copiedPathResult = ""
         var removedUrlResult = URL.mockFilePath
         fileStorage.environment.fileManager.removeItemAtUrl = { url in
@@ -218,9 +230,9 @@ class FileSystemStorageTests: XCTestCase {
 
     func test_storeFromUrlForKeyCreatesIntermediateDirsForFilePathIfNeeded () {
         var fileManager = FoundationBased.FileManager.failing
-        let expectedDirURL = URL.mockFilePath
+        let expectedDirUrl = URL.mockFilePath
         fileManager.urlsForDirectoryInDomainMask = { _, _ in
-            [expectedDirURL]
+            [expectedDirUrl]
         }
         fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
 
@@ -236,7 +248,7 @@ class FileSystemStorageTests: XCTestCase {
         fileStorage.environment.fileManager = .failing
         fileStorage.environment.fileManager.fileExistsAtPath = { _ in false }
         let expectedKey = "mockFileKey"
-        let expectedFileUrl = expectedDirURL.appendingPathComponent(expectedKey)
+        let expectedFileUrl = expectedDirUrl.appendingPathComponent(expectedKey)
         var copiedPathResult = ""
         var resultCreateDirUrl = URL.mockFilePath
         var shouldCreateIntemediate = false
@@ -256,5 +268,119 @@ class FileSystemStorageTests: XCTestCase {
         XCTAssertEqual(resultCreateDirUrl, expectedFileUrl)
         XCTAssertTrue(shouldCreateIntemediate)
         XCTAssertNil(fileAttribs)
+    }
+
+    func test_urlForKeyReturnsExpectedUrl() {
+        var fileManager = FoundationBased.FileManager.failing
+        let expectedDirUrl = URL.mockFilePath
+        fileManager.urlsForDirectoryInDomainMask = { _, _ in
+            [expectedDirUrl]
+        }
+        fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
+
+        var env = FileSystemStorage.Environment.failing
+        env.fileManager = fileManager
+
+        let fileStorage = FileSystemStorage(
+            directory: .documents(fileManager),
+            expiration: .none,
+            environment: env
+        )
+
+        let key = "mockKey"
+        XCTAssertEqual(fileStorage.url(for: key), expectedDirUrl.appendingPathComponent(key))
+    }
+
+    func test_hasDataForKeyReturnsData() {
+        var fileManager = FoundationBased.FileManager.failing
+        let expectedDirUrl = URL.mockFilePath
+        fileManager.urlsForDirectoryInDomainMask = { _, _ in
+            [expectedDirUrl]
+        }
+        fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
+
+        var env = FileSystemStorage.Environment.failing
+        env.fileManager = fileManager
+
+        let fileStorage = FileSystemStorage(
+            directory: .documents(fileManager),
+            expiration: .none,
+            environment: env
+        )
+
+        let key = "mockKey"
+        let expectedData = Data.mock
+        fileStorage.environment.data.dataWithContentsOfFileUrl = { _ in expectedData }
+        XCTAssertEqual(fileStorage.data(for: key), expectedData)
+    }
+
+    func test_hasDataReturnsTrueIfFileExists() {
+        var fileManager = FoundationBased.FileManager.failing
+        let expectedDirUrl = URL.mockFilePath
+        fileManager.urlsForDirectoryInDomainMask = { _, _ in
+            [expectedDirUrl]
+        }
+        fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
+
+        var env = FileSystemStorage.Environment.failing
+        env.fileManager = fileManager
+
+        let fileStorage = FileSystemStorage(
+            directory: .documents(fileManager),
+            expiration: .none,
+            environment: env
+        )
+
+        let key = "mockKey"
+        fileStorage.environment.fileManager.fileExistsAtPath = { _ in true }
+        XCTAssertTrue(fileStorage.hasData(for: key))
+    }
+
+    func test_hasDataReturnsFalseIfFileDoesNotExist() {
+        var fileManager = FoundationBased.FileManager.failing
+        let expectedDirUrl = URL.mockFilePath
+        fileManager.urlsForDirectoryInDomainMask = { _, _ in
+            [expectedDirUrl]
+        }
+        fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
+
+        var env = FileSystemStorage.Environment.failing
+        env.fileManager = fileManager
+
+        let fileStorage = FileSystemStorage(
+            directory: .documents(fileManager),
+            expiration: .none,
+            environment: env
+        )
+
+        let key = "mockKey"
+        fileStorage.environment.fileManager.fileExistsAtPath = { _ in false }
+        XCTAssertFalse(fileStorage.hasData(for: key))
+    }
+
+    func test_removeDataRemovesFile() {
+        var fileManager = FoundationBased.FileManager.failing
+        let expectedDirUrl = URL.mockFilePath
+        fileManager.urlsForDirectoryInDomainMask = { _, _ in
+            [expectedDirUrl]
+        }
+        fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
+
+        var env = FileSystemStorage.Environment.failing
+        env.fileManager = fileManager
+
+        let fileStorage = FileSystemStorage(
+            directory: .documents(fileManager),
+            expiration: .none,
+            environment: env
+        )
+
+        let key = "mockKey"
+        var fileToBeRemoved = ""
+        fileStorage.environment.fileManager.removeItemAtPath = { path in
+            fileToBeRemoved = path
+        }
+        fileStorage.removeData(for: key)
+        XCTAssertEqual(fileToBeRemoved, expectedDirUrl.appendingPathComponent(key).path)
     }
 }
