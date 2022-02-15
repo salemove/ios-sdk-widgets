@@ -5,11 +5,19 @@ class FileDownloader {
     }
 
     private var downloads = [String: FileDownload]()
-    private var storage = FileSystemStorage(directory: .documents)
+    private var storage: FileSystemStorage
     private var environment: Environment
 
     init(environment: Environment) {
         self.environment = environment
+        self.storage = FileSystemStorage(
+            directory: .documents(environment.fileManager),
+            environment: .init(
+                fileManager: environment.fileManager,
+                data: environment.data,
+                date: environment.date
+            )
+        )
     }
 
     func downloads(for files: [ChatEngagementFile]?,
@@ -81,5 +89,8 @@ class FileDownloader {
 extension FileDownloader {
     struct Environment {
         var fetchFile: CoreSdkClient.FetchFile
+        var fileManager: FoundationBased.FileManager
+        var data: FoundationBased.Data
+        var date: () -> Date
     }
 }

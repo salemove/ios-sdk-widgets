@@ -25,6 +25,22 @@ class ChatEngagementFile: Codable {
         contentType = file.contentType
         isDeleted = file.isDeleted
     }
+
+    init(
+        id: String,
+        url: URL?,
+        name: String?,
+        size: Double?,
+        contentType: String?,
+        isDeleted: Bool?
+    ) {
+        self.id = id
+        self.url = url
+        self.name = name
+        self.size = size
+        self.contentType = contentType
+        self.isDeleted = isDeleted
+    }
 }
 
 extension ChatEngagementFile {

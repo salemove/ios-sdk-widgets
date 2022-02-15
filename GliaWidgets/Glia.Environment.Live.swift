@@ -6,7 +6,10 @@ extension Glia.Environment {
         coreSdk: .live,
         chatStorage: .live,
         audioSession: .live,
-        uuid: UUID.init
+        uuid: UUID.init,
+        date: Date.init,
+        fileManager: .live,
+        data: .live
     )
 }
 
