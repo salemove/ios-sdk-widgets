@@ -2,7 +2,7 @@ import UIKit
 import SalemoveSDK
 
 /// Engagement media type.
-public enum EngagementKind {
+public enum EngagementKind: Equatable {
     /// No engagement
     case none
     /// Chat
@@ -14,7 +14,7 @@ public enum EngagementKind {
 }
 
 /// An event providing engagement state information.
-public enum GliaEvent {
+public enum GliaEvent: Equatable {
     /// Session was started
     case started
     /// Engagement media type changed
@@ -44,8 +44,8 @@ public class Glia {
     /// Used to monitor engagement state changes.
     public var onEvent: ((GliaEvent) -> Void)?
 
-    private var rootCoordinator: RootCoordinator?
-    private var interactor: Interactor?
+    var rootCoordinator: RootCoordinator?
+    var interactor: Interactor?
     private var environment: Environment
 
     init(environment: Environment) {
@@ -284,5 +284,27 @@ public class Glia {
             return
         }
         environment.coreSdk.updateVisitorInfo(info, completion)
+    }
+
+    /// Ends active engagement if existing and closes Widgets SDK UI (includes bubble).
+    public func endEngagement(_ completion: @escaping (Result<Void, Error>) -> Void) {
+
+        defer {
+            onEvent?(.ended)
+            rootCoordinator = nil
+        }
+
+        guard interactor != nil else {
+            completion(.failure(GliaError.sdkIsNotConfigured))
+            return
+        }
+
+        interactor?.endSession(
+            success: {
+                completion(.success(()))
+            }, failure: {
+                completion(.failure($0))
+            }
+        )
     }
 }
