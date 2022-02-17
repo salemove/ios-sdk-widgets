@@ -285,4 +285,18 @@ public class Glia {
         }
         environment.coreSdk.updateVisitorInfo(info, completion)
     }
+
+    /// Ends active engagement if existing and closes Widgets SDK UI (includes bubble).
+    public func endEngagement(_ completion: @escaping (Result<Void, SalemoveError>) -> Void) {
+
+        interactor?.endSession(
+            success: {
+                completion(.success(()))
+            }, failure: {
+                completion(.failure($0))
+            }
+        )
+        onEvent?(.ended)
+        rootCoordinator = nil
+    }
 }
