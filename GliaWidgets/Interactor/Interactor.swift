@@ -55,6 +55,7 @@ class Interactor {
     private let visitorContext: CoreSdkClient.VisitorContext
     private var observers = [() -> (AnyObject?, EventHandler)]()
     private var isEngagementEndedByVisitor = false
+    private let sdkConfiguration: CoreSdkClient.Salemove.Configuration
     private(set) var state: InteractorState = .none {
         didSet {
             if oldValue != state {
@@ -72,8 +73,8 @@ class Interactor {
     ) {
         self.queueID = queueID
         self.visitorContext = visitorContext
+        self.sdkConfiguration = conf
         self.environment = environment
-        configure(with: conf)
     }
 
     func addObserver(_ observer: AnyObject, handler: @escaping EventHandler) {
@@ -83,13 +84,6 @@ class Interactor {
 
     func removeObserver(_ observer: AnyObject) {
         observers.removeAll(where: { $0().0 === observer })
-    }
-
-    private func configure(with conf: CoreSdkClient.Salemove.Configuration) {
-        environment.coreSdk.configureWithConfiguration(conf) {
-            // SDK is initialized and ready to use.
-        }
-        environment.coreSdk.configureWithInteractor(self)
     }
 
     private func notify(_ event: InteractorEvent) {
@@ -103,6 +97,14 @@ class Interactor {
                 }
             }
     }
+
+    private func withConfiguration(_ action: @escaping () -> Void) {
+
+        environment.coreSdk.configureWithInteractor(self)
+        environment.coreSdk.configureWithConfiguration(sdkConfiguration) {
+            action()
+        }
+    }
 }
 
 extension Interactor {
@@ -113,29 +115,30 @@ extension Interactor {
     ) {
         state = .enqueueing
 
-        var options: CoreSdkClient.EngagementOptions? = nil
+        let options = mediaType == .audio || mediaType == .video
+        ? CoreSdkClient.EngagementOptions(mediaDirection: .twoWay)
+            : nil
 
-        if mediaType == .audio || mediaType == .video {
-            options = .init(mediaDirection: .twoWay)
-        }
-
-        environment.coreSdk.queueForEngagement(
-            queueID,
-            visitorContext,
-            // shouldCloseAllQueues is `true` by default core sdk,
-            // here it is passed explicitly
-            true,
-            mediaType,
-            options
-        ) { [weak self] queueTicket, error in
-            if let error = error {
-                self?.state = .ended(.byError)
-                failure(error)
-            } else if let ticket = queueTicket {
-                if case .enqueueing = self?.state {
-                    self?.state = .enqueued(ticket)
+        withConfiguration { [weak self] in
+            guard let self = self else { return }
+            self.environment.coreSdk.queueForEngagement(
+                self.queueID,
+                self.visitorContext,
+                // shouldCloseAllQueues is `true` by default core sdk,
+                // here it is passed explicitly
+                true,
+                mediaType,
+                options
+            ) { [weak self] queueTicket, error in
+                if let error = error {
+                    self?.state = .ended(.byError)
+                    failure(error)
+                } else if let ticket = queueTicket {
+                    if case .enqueueing = self?.state {
+                        self?.state = .enqueued(ticket)
+                    }
+                    success()
                 }
-                success()
             }
         }
     }
@@ -146,21 +149,24 @@ extension Interactor {
         success: @escaping () -> Void,
         failure: @escaping (Error?, CoreSdkClient.SalemoveError?) -> Void
     ) {
-        do {
-            let offer = try CoreSdkClient.MediaUpgradeOffer(type: media, direction: direction)
-            environment.coreSdk.requestMediaUpgradeWithOffer(
-                offer
-            ) { isSuccess, error in
-                if let error = error {
-                    failure(nil, error)
-                } else if !isSuccess {
-                    failure(nil, nil)
-                } else {
-                    success()
+        withConfiguration { [weak self] in
+            do {
+                let offer = try CoreSdkClient.MediaUpgradeOffer(
+                    type: media,
+                    direction: direction
+                )
+                self?.environment.coreSdk.requestMediaUpgradeWithOffer(offer) { isSuccess, error in
+                    if let error = error {
+                        failure(nil, error)
+                    } else if !isSuccess {
+                        failure(nil, nil)
+                    } else {
+                        success()
+                    }
                 }
+            } catch {
+                failure(error, nil)
             }
-        } catch {
-            failure(error, nil)
         }
     }
 
@@ -174,14 +180,16 @@ extension Interactor {
         success: @escaping (CoreSdkClient.Message) -> Void,
         failure: @escaping (CoreSdkClient.SalemoveError) -> Void
     ) {
-        environment.coreSdk.sendMessageWithAttachment(
-            message,
-            attachment
-        ) { message, error in
-            if let error = error {
-                failure(error)
-            } else if let message = message {
-                success(message)
+        withConfiguration { [weak self] in
+            self?.environment.coreSdk.sendMessageWithAttachment(
+                message,
+                attachment
+            ) { message, error in
+                if let error = error {
+                    failure(error)
+                } else if let message = message {
+                    success(message)
+                }
             }
         }
     }
