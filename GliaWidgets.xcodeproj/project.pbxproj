@@ -188,6 +188,7 @@
 		6EA3512626DE9F3400BF5941 /* operator-typing-indicator.json in Resources */ = {isa = PBXBuildFile; fileRef = 6EA3512526DE9F3400BF5941 /* operator-typing-indicator.json */; };
 		6EA3516926E139DA00BF5941 /* GliaViewTransitionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EA3516826E139DA00BF5941 /* GliaViewTransitionController.swift */; };
 		6EEAD84E2701A8C10074C191 /* ChoiceCardOptionStateStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EEAD84D2701A8C10074C191 /* ChoiceCardOptionStateStyle.swift */; };
+		7512A57727BE8A6700319DF1 /* InteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7512A57627BE8A6700319DF1 /* InteractorTests.swift */; };
 		756087E127837EC000158604 /* BundleManaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756087E027837EC000158604 /* BundleManaging.swift */; };
 		9A3E1D8427B67F1B005634EB /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3E1D8327B67F1B005634EB /* Helper.swift */; };
 		9A3E1D8A27B6B824005634EB /* FileDownload.Environment.Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3E1D8927B6B824005634EB /* FileDownload.Environment.Interface.swift */; };
@@ -459,6 +460,7 @@
 		6EA3512526DE9F3400BF5941 /* operator-typing-indicator.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "operator-typing-indicator.json"; sourceTree = "<group>"; };
 		6EA3516826E139DA00BF5941 /* GliaViewTransitionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GliaViewTransitionController.swift; sourceTree = "<group>"; };
 		6EEAD84D2701A8C10074C191 /* ChoiceCardOptionStateStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoiceCardOptionStateStyle.swift; sourceTree = "<group>"; };
+		7512A57627BE8A6700319DF1 /* InteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractorTests.swift; sourceTree = "<group>"; };
 		756087E027837EC000158604 /* BundleManaging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleManaging.swift; sourceTree = "<group>"; };
 		85639A838514258D976E1B2A /* Pods_GliaWidgets.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GliaWidgets.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		97422AD1FF7D9E4B3E887116 /* Pods_GliaWidgetsTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GliaWidgetsTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -755,6 +757,7 @@
 				9ACC25D327B474E800BC5335 /* Glia.Environment.Failing.swift */,
 				9A3E1D8327B67F1B005634EB /* Helper.swift */,
 				9A3E1D9C27BA7741005634EB /* FoundationBased.Failing.swift */,
+				7512A57627BE8A6700319DF1 /* InteractorTests.swift */,
 			);
 			path = GliaWidgetsTests;
 			sourceTree = "<group>";
@@ -2138,6 +2141,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7512A57727BE8A6700319DF1 /* InteractorTests.swift in Sources */,
 				9ACC25D427B474E800BC5335 /* Glia.Environment.Failing.swift in Sources */,
 				9A3E1DA227BA7D00005634EB /* FileSystemStorage.Environment.Failing.swift in Sources */,
 				9A3E1DA027BA7B9F005634EB /* FileSystemStorageTests.swift in Sources */,
