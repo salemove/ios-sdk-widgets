@@ -33,8 +33,14 @@ class ViewController: UIViewController {
         try? Glia.sharedInstance.resume()
     }
 
-    @IBAction private func clearSession() {
+    @IBAction private func clearSessionTapped() {
         Glia.sharedInstance.clearVisitorSession()
+    }
+
+    @IBAction private func endEngagementTapped() {
+        Glia.sharedInstance.endEngagement { result in
+            print("End engagement operation has been executed. Result='\(result)'.")
+        }
     }
 }
 
