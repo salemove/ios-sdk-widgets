@@ -23,25 +23,12 @@ extension Glia.Environment.ChatStorage {
         let dbUrl = try? FileManager.default
             .url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
             .appendingPathComponent(dbName)
-        let fileManager = FileManager.default
 
         let chatStorage = ChatStorage(dbUrl: dbUrl)
 
         return .init(
             databaseUrl: { dbUrl },
-            dropDatabase: {
-
-                guard
-                    let dbUrl = dbUrl,
-                    fileManager.fileExists(atPath: dbUrl.standardizedFileURL.path)
-                else { return }
-
-                do {
-                    try fileManager.removeItem(at: dbUrl)
-                } catch {
-                    print("DB has not been removed due to: '\(error)'.")
-                }
-            },
+            dropDatabase: chatStorage.dropDatabase,
             isEmpty: chatStorage.isEmpty,
             messages: chatStorage.messages,
             updateMessage: chatStorage.updateMessage,
