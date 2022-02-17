@@ -16,19 +16,25 @@ class ChatStorage {
     private let dbUrl: URL?
     private let encoder = JSONEncoder()
     private var db: OpaquePointer?
+    private let fileManager: FileManager
 
-    init(dbUrl: URL?) {
+    init(dbUrl: URL?, fileManager: FileManager = .default) {
         self.dbUrl = dbUrl
+        self.fileManager = fileManager
+        createDatabase()
+    }
+
+    deinit {
+        sqlite3_close(db)
+    }
+
+    private func createDatabase() {
         do {
             try openDatabase()
             try createMessagesTable()
         } catch {
             printLastErrorMessage()
         }
-    }
-
-    deinit {
-        sqlite3_close(db)
     }
 
     private func openDatabase() throws {
@@ -143,6 +149,26 @@ extension ChatStorage {
 }
 
 extension ChatStorage {
+
+    func dropDatabase() {
+
+        messages.removeAll()
+
+        guard
+            let dbUrl = dbUrl,
+            fileManager.fileExists(atPath: dbUrl.standardizedFileURL.path)
+        else { return }
+
+        do {
+            sqlite3_close(db)
+            try fileManager.removeItem(at: dbUrl)
+        } catch {
+            print("DB has not been removed due to: '\(error)'.")
+        }
+
+        createDatabase()
+    }
+
     func isEmpty() -> Bool {
         return messages.isEmpty
     }
