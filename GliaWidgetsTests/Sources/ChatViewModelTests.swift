@@ -1,10 +1,3 @@
-//
-//  ChatViewModelTests.swift
-//  GliaWidgetsTests
-//
-//  Created by Yurii Dukhovnyi on 18.02.2022.
-//
-
 import XCTest
 
 @testable import GliaWidgets
