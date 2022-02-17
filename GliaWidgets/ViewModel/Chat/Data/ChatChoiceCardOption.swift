@@ -4,13 +4,15 @@ final class ChatChoiceCardOption: Codable {
     let text: String?
     let value: String?
 
-    private enum CodingKeys: String, CodingKey {
-        case text
-        case value
-    }
+    private let originOption: CoreSdkClient.SingleChoiceOption?
 
     init(with option: CoreSdkClient.SingleChoiceOption) {
-        text = option.text
-        value = option.value
+        self.originOption = option
+        self.text = option.text
+        self.value = option.value
+    }
+
+    func asSingleChoiceOption() -> CoreSdkClient.SingleChoiceOption? {
+        originOption
     }
 }
