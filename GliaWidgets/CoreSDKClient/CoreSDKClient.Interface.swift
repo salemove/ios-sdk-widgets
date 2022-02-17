@@ -15,9 +15,8 @@ struct CoreSdkClient {
     ) -> Void
     var updateVisitorInfo: UpdateVisitorInfo
 
-    @available(*, deprecated, message: "Use `CoreSdkClient.Salemove.send(option:completion:)` instead.")
     typealias SendSelectedOptionValue = (
-        _ selectedOptionValue: String,
+        _ singleChoiceOption: SingleChoiceOption,
         _ completion: @escaping (Result<Self.Message, Error>) -> Void
     ) -> Void
     var sendSelectedOptionValue: SendSelectedOptionValue

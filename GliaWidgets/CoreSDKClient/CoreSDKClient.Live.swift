@@ -8,7 +8,7 @@ extension CoreSdkClient {
             clearSession: Salemove.sharedInstance.clearSession,
             fetchVisitorInfo: Salemove.sharedInstance.fetchVisitorInfo(_:),
             updateVisitorInfo: Salemove.sharedInstance.updateVisitorInfo(_:completion:),
-            sendSelectedOptionValue: Salemove.sharedInstance.send(selectedOptionValue:completion:),
+            sendSelectedOptionValue: Salemove.sharedInstance.send(option:completion:),
             configureWithConfiguration: Salemove.sharedInstance.configure(with:completion:),
             configureWithInteractor: Salemove.sharedInstance.configure(interactor:),
             queueForEngagement: Salemove.sharedInstance

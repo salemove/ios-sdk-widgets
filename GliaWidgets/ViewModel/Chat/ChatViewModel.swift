@@ -743,9 +743,10 @@ extension ChatViewModel {
 // MARK: Choice Card
 
 extension ChatViewModel {
-    private func sendChoiceCardResponse(_ option: ChatChoiceCardOption, to messageId: String) {
-        guard let value = option.value else { return }
-        environment.sendSelectedOptionValue(value) { [weak self] result in
+    func sendChoiceCardResponse(_ option: ChatChoiceCardOption, to messageId: String) {
+
+        guard let option = option.asSingleChoiceOption() else { return }
+        environment.sendSelectedOptionValue(option) { [weak self] result in
             guard let self = self else { return }
 
             switch result {
