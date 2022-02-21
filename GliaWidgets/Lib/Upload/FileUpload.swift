@@ -1,3 +1,5 @@
+import Foundation
+
 class FileUpload {
     enum Error {
         case fileTooBig
@@ -53,6 +55,7 @@ class FileUpload {
 
     private let storage: DataStorage
     private let environment: Environment
+    private let uuid = UUID()
 
     init(with localFile: LocalFile, storage: DataStorage, environment: Environment) {
         self.localFile = localFile
@@ -94,7 +97,7 @@ class FileUpload {
 
 extension FileUpload: Equatable {
     static func == (lhs: FileUpload, rhs: FileUpload) -> Bool {
-        return lhs.localFile == rhs.localFile
+        return lhs.uuid == rhs.uuid
     }
 }
 
