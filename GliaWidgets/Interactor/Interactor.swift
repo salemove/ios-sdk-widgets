@@ -357,9 +357,3 @@ extension InteractorState: Equatable {
         }
     }
 }
-
-extension Interactor {
-    struct Environment {
-        var coreSdk: CoreSdkClient
-    }
-}

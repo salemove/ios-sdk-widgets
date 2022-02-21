@@ -53,4 +53,24 @@ extension CoreSdkClient.EngagementFile {
         )
     }
 }
+
+extension CoreSdkClient.Salemove.Configuration {
+    static func mock() -> Self {
+        try! .init(
+            siteId: "mockSiteId",
+            region: .us,
+            authorizingMethod: .mock
+        )
+    }
+}
+
+extension CoreSdkClient.Salemove.AuthorizationMethod {
+    static let mock = Self.siteApiKey(id: "mockSiteApiKeyId", secret: "mockSiteApiKeySecret")
+
+}
+
+extension CoreSdkClient.VisitorContext {
+    static let mock = CoreSdkClient.VisitorContext(type: CoreSdkClient.ContextType.page, url: "mockUrl")
+}
+
 #endif
