@@ -42,3 +42,9 @@ function_body_length:
   error: 100
 
 reporter: "xcode" # reporter type (xcode, json, csv, checkstyle, junit, html, emoji)
+
+included:
+  - GliaWidgets
+
+excluded:
+  - GliaWidgets/Asset.swift

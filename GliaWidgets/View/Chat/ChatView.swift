@@ -145,7 +145,9 @@ class ChatView: EngagementView {
     func refreshAll() {
         tableView.reloadData()
     }
+}
 
+extension ChatView {
     private func setup() {
         header.title = style.title
 
@@ -220,6 +222,7 @@ class ChatView: EngagementView {
         }
     }
 
+    // swiftlint:disable function_body_length
     private func content(for item: ChatItem) -> ChatItemCell.Content {
         switch item.kind {
         case .queueOperator:
@@ -268,6 +271,7 @@ class ChatView: EngagementView {
             return .callUpgrade(view)
         }
     }
+    // swiftlint:enable function_body_length
 
     private func callUpgradeStyle(for callKind: CallKind) -> ChatCallUpgradeStyle {
         return callKind == .audio

@@ -10,7 +10,6 @@ public struct UnreadMessageIndicatorStyle {
     /// Style of the operator's image that appears in the indicator's main frame.
     public var userImage: UserImageStyle
 
-
     ///
     /// - Parameters:
     ///   - badgeFont: Font of the text that appears on the badge that indicates the number of unread messages.

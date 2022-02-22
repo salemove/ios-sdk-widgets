@@ -1,68 +1,6 @@
 import Foundation
 
 class ChatViewModel: EngagementViewModel, ViewModel {
-    typealias Strings = L10n.Chat
-
-    enum Event {
-        case viewDidLoad
-        case messageTextChanged(String)
-        case sendTapped
-        case removeUploadTapped(FileUpload)
-        case pickMediaTapped
-        case callBubbleTapped
-        case fileTapped(LocalFile)
-        case downloadTapped(FileDownload)
-        case choiceOptionSelected(ChatChoiceCardOption, String)
-        case chatScrolled(bottomReached: Bool)
-        case linkTapped(URL)
-    }
-
-    enum Action {
-        case queue
-        case connected(name: String?, imageUrl: String?)
-        case setMessageEntryEnabled(Bool)
-        case setChoiceCardInputModeEnabled(Bool)
-        case setMessageText(String)
-        case sendButtonHidden(Bool)
-        case pickMediaButtonEnabled(Bool)
-        case appendRows(Int, to: Int, animated: Bool)
-        case refreshRow(Int, in: Int, animated: Bool)
-        case refreshRows([Int], in: Int, animated: Bool)
-        case refreshSection(Int)
-        case refreshAll
-        case scrollToBottom(animated: Bool)
-        case updateItemsUserImage(animated: Bool)
-        case addUpload(FileUpload)
-        case removeUpload(FileUpload)
-        case removeAllUploads
-        case presentMediaPicker(itemSelected: (AtttachmentSourceItemKind) -> Void)
-        case offerMediaUpgrade(
-            SingleMediaUpgradeAlertConfiguration,
-            accepted: () -> Void,
-            declined: () -> Void
-        )
-        case showCallBubble(imageUrl: String?)
-        case updateUnreadMessageIndicator(itemCount: Int)
-        case setOperatorTypingIndicatorIsHiddenTo(Bool, _ isChatScrolledToBottom: Bool)
-    }
-
-    enum DelegateEvent {
-        case pickMedia(ObservableValue<MediaPickerEvent>)
-        case takeMedia(ObservableValue<MediaPickerEvent>)
-        case pickFile(ObservableValue<FilePickerEvent>)
-        case mediaUpgradeAccepted(
-            offer: CoreSdkClient.MediaUpgradeOffer,
-            answer: CoreSdkClient.AnswerWithSuccessBlock
-        )
-        case showFile(LocalFile)
-        case call
-        case openLink(URL)
-    }
-
-    enum StartAction {
-        case startEngagement
-        case none
-    }
 
     var action: ((Action) -> Void)?
     var delegate: ((DelegateEvent) -> Void)?
@@ -811,5 +749,71 @@ extension ChatViewModel {
         var fileManager: FoundationBased.FileManager
         var data: FoundationBased.Data
         var date: () -> Date
+    }
+}
+
+extension ChatViewModel {
+
+    typealias Strings = L10n.Chat
+
+    enum Event {
+        case viewDidLoad
+        case messageTextChanged(String)
+        case sendTapped
+        case removeUploadTapped(FileUpload)
+        case pickMediaTapped
+        case callBubbleTapped
+        case fileTapped(LocalFile)
+        case downloadTapped(FileDownload)
+        case choiceOptionSelected(ChatChoiceCardOption, String)
+        case chatScrolled(bottomReached: Bool)
+        case linkTapped(URL)
+    }
+
+    enum Action {
+        case queue
+        case connected(name: String?, imageUrl: String?)
+        case setMessageEntryEnabled(Bool)
+        case setChoiceCardInputModeEnabled(Bool)
+        case setMessageText(String)
+        case sendButtonHidden(Bool)
+        case pickMediaButtonEnabled(Bool)
+        case appendRows(Int, to: Int, animated: Bool)
+        case refreshRow(Int, in: Int, animated: Bool)
+        case refreshRows([Int], in: Int, animated: Bool)
+        case refreshSection(Int)
+        case refreshAll
+        case scrollToBottom(animated: Bool)
+        case updateItemsUserImage(animated: Bool)
+        case addUpload(FileUpload)
+        case removeUpload(FileUpload)
+        case removeAllUploads
+        case presentMediaPicker(itemSelected: (AtttachmentSourceItemKind) -> Void)
+        case offerMediaUpgrade(
+            SingleMediaUpgradeAlertConfiguration,
+            accepted: () -> Void,
+            declined: () -> Void
+        )
+        case showCallBubble(imageUrl: String?)
+        case updateUnreadMessageIndicator(itemCount: Int)
+        case setOperatorTypingIndicatorIsHiddenTo(Bool, _ isChatScrolledToBottom: Bool)
+    }
+
+    enum DelegateEvent {
+        case pickMedia(ObservableValue<MediaPickerEvent>)
+        case takeMedia(ObservableValue<MediaPickerEvent>)
+        case pickFile(ObservableValue<FilePickerEvent>)
+        case mediaUpgradeAccepted(
+            offer: CoreSdkClient.MediaUpgradeOffer,
+            answer: CoreSdkClient.AnswerWithSuccessBlock
+        )
+        case showFile(LocalFile)
+        case call
+        case openLink(URL)
+    }
+
+    enum StartAction {
+        case startEngagement
+        case none
     }
 }

@@ -1,46 +1,6 @@
 import Foundation
 
 class EngagementViewModel {
-    enum Event {
-        case viewWillAppear
-        case viewDidAppear
-        case viewDidDisappear
-        case backTapped
-        case closeTapped
-        case endScreenSharingTapped
-    }
-
-    enum Action {
-        case confirm(
-            ConfirmationAlertConfiguration,
-            confirmed: (() -> Void)?
-        )
-        case showSingleActionAlert(
-            SingleActionAlertConfiguration,
-            actionTapped: (() -> Void)?
-        )
-        case showAlert(
-            MessageAlertConfiguration,
-            dismissed: (() -> Void)?
-        )
-        case showSettingsAlert(
-            SettingsAlertConfiguration,
-            cancelled: (() -> Void)?
-        )
-        case offerScreenShare(
-            ScreenShareOfferAlertConfiguration,
-            accepted: () -> Void,
-            declined: () -> Void
-        )
-        case showEndButton
-        case showEndScreenShareButton
-    }
-
-    enum DelegateEvent {
-        case back
-        case engaged(operatorImageUrl: String?)
-        case finished
-    }
 
     var engagementAction: ((Action) -> Void)?
     var engagementDelegate: ((DelegateEvent) -> Void)?
@@ -317,5 +277,49 @@ extension EngagementViewModel: Hashable {
 
     func hash(into hasher: inout Hasher) {
         hasher.combine(ObjectIdentifier(self))
+    }
+}
+
+extension EngagementViewModel {
+
+    enum Event {
+        case viewWillAppear
+        case viewDidAppear
+        case viewDidDisappear
+        case backTapped
+        case closeTapped
+        case endScreenSharingTapped
+    }
+
+    enum Action {
+        case confirm(
+            ConfirmationAlertConfiguration,
+            confirmed: (() -> Void)?
+        )
+        case showSingleActionAlert(
+            SingleActionAlertConfiguration,
+            actionTapped: (() -> Void)?
+        )
+        case showAlert(
+            MessageAlertConfiguration,
+            dismissed: (() -> Void)?
+        )
+        case showSettingsAlert(
+            SettingsAlertConfiguration,
+            cancelled: (() -> Void)?
+        )
+        case offerScreenShare(
+            ScreenShareOfferAlertConfiguration,
+            accepted: () -> Void,
+            declined: () -> Void
+        )
+        case showEndButton
+        case showEndScreenShareButton
+    }
+
+    enum DelegateEvent {
+        case back
+        case engaged(operatorImageUrl: String?)
+        case finished
     }
 }
