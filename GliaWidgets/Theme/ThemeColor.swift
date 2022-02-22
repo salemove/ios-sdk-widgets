@@ -26,7 +26,6 @@ public struct ThemeColor {
     /// Negative system color. By default used as a background color for "End Engagement" button, negative action button in alerts and as file download/upload error icon, progress bar and text color.
     public var systemNegative: UIColor
 
-
     ///
     /// - Parameters:
     ///   - primary: Primary color used by Widgets. By default used as a header background, visitor chat message background, positive alert button background and in many other places.

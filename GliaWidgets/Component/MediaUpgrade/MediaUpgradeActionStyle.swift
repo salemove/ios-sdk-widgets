@@ -32,7 +32,6 @@ public struct MediaUpgradeActionStyle {
     /// Color (tint) of the icon.
     public var iconColor: UIColor
 
-
     ///
     /// - Parameters:
     ///   - title: Title of the media upgrade action. Displayed to the left of the icon, at the top of the view.

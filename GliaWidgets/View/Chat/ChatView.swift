@@ -145,7 +145,9 @@ class ChatView: EngagementView {
     func refreshAll() {
         tableView.reloadData()
     }
+}
 
+extension ChatView {
     private func setup() {
         header.title = style.title
 
