@@ -1,24 +1,6 @@
 import UIKit
 
 class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
-    enum DelegateEvent {
-        case started
-        case engagementChanged(EngagementKind)
-        case ended
-        case minimized
-        case maximized
-    }
-
-    private enum Engagement {
-        case none
-        case chat(ChatViewController)
-        case call(CallViewController, ChatViewController, UpgradedFrom, Call)
-    }
-
-    private enum UpgradedFrom {
-        case none
-        case chat
-    }
 
     var delegate: ((DelegateEvent) -> Void)?
 
@@ -130,7 +112,9 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
         event(.maximized)
         delegate?(.started)
     }
+}
 
+extension RootCoordinator {
     private func end() {
         dismissGliaViewController(animated: true) { [weak self] in
             self?.event(.minimized)
@@ -167,50 +151,54 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
             )
         )
         coordinator.delegate = { [weak self] event in
-            switch event {
-            case .back:
-                switch self?.engagement {
-                case .chat:
-                    if case .none? = self?.interactor.state {
-                        self?.popCoordinator()
-                        self?.end()
-                    } else {
-                        self?.gliaViewController?.minimize(animated: true)
-                    }
-                case .call(let callViewController, _, let upgradedFrom, _):
-                    if upgradedFrom == .chat {
-                        self?.gliaViewController?.minimize(animated: true)
-                    } else {
-                        self?.navigationPresenter.pop(to: callViewController, animated: true)
-                    }
-                default:
-                    self?.popCoordinator()
-                    self?.end()
-                }
-            case .engaged(let operatorImageUrl):
-                self?.gliaViewController?.bubbleKind = .userImage(url: operatorImageUrl)
-            case .mediaUpgradeAccepted(let offer, let answer):
-                self?.chatMediaUpgradeAccepted(offer: offer, answer: answer)
-            case .call:
-                switch self?.engagement {
-                case .call(let callViewController, _, let upgradedFrom, _):
-                    switch upgradedFrom {
-                    case .none:
-                        self?.navigationController.popToViewController(callViewController, animated: true)
-                    case .chat:
-                        self?.navigationPresenter.push(callViewController, animated: true)
-                    }
-                default:
-                    break
-                }
-            case .finished:
-                self?.popCoordinator()
-                self?.end()
-            }
+            self?.handleCoordinatorEvent(event: event)
         }
         pushCoordinator(coordinator)
 
         return coordinator.start()
+    }
+
+    private func handleCoordinatorEvent(event: ChatCoordinator.DelegateEvent) {
+        switch event {
+        case .back:
+            switch engagement {
+            case .chat:
+                if case .none = interactor.state {
+                    popCoordinator()
+                    end()
+                } else {
+                    gliaViewController?.minimize(animated: true)
+                }
+            case .call(let callViewController, _, let upgradedFrom, _):
+                if upgradedFrom == .chat {
+                    gliaViewController?.minimize(animated: true)
+                } else {
+                    navigationPresenter.pop(to: callViewController, animated: true)
+                }
+            default:
+                popCoordinator()
+                end()
+            }
+        case .engaged(let operatorImageUrl):
+            gliaViewController?.bubbleKind = .userImage(url: operatorImageUrl)
+        case .mediaUpgradeAccepted(let offer, let answer):
+            chatMediaUpgradeAccepted(offer: offer, answer: answer)
+        case .call:
+            switch engagement {
+            case .call(let callViewController, _, let upgradedFrom, _):
+                switch upgradedFrom {
+                case .none:
+                    navigationController.popToViewController(callViewController, animated: true)
+                case .chat:
+                    navigationPresenter.push(callViewController, animated: true)
+                }
+            default:
+                break
+            }
+        case .finished:
+            popCoordinator()
+            end()
+        }
     }
 
     private func startCall(
@@ -396,5 +384,26 @@ extension RootCoordinator {
         var fileManager: FoundationBased.FileManager
         var data: FoundationBased.Data
         var date: () -> Date
+    }
+}
+
+extension RootCoordinator {
+    enum DelegateEvent {
+        case started
+        case engagementChanged(EngagementKind)
+        case ended
+        case minimized
+        case maximized
+    }
+
+    private enum Engagement {
+        case none
+        case chat(ChatViewController)
+        case call(CallViewController, ChatViewController, UpgradedFrom, Call)
+    }
+
+    private enum UpgradedFrom {
+        case none
+        case chat
     }
 }
