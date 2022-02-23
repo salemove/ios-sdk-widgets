@@ -13,7 +13,8 @@ extension Glia.Environment {
             return .mock
         },
         fileManager: .failing,
-        data: .failing
+        data: .failing,
+        gcd: .failing
     )
 }
 

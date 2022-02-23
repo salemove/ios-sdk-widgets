@@ -35,14 +35,32 @@ class ChatView: EngagementView {
         return CGRect(x: x, y: y, width: width, height: height)
     }
 
-    init(with style: ChatStyle) {
+    private let environment: Environment
+
+    init(
+        with style: ChatStyle,
+        environment: Environment
+    ) {
         self.style = style
+        self.environment = environment
         self.messageEntryView = ChatMessageEntryView(with: style.messageEntry)
         self.unreadMessageIndicatorView = UnreadMessageIndicatorView(
-            with: style.unreadMessageIndicator
+            with: style.unreadMessageIndicator,
+            environment: .init(
+                data: environment.data,
+                uuid: environment.uuid,
+                gcd: environment.gcd
+            )
         )
         self.typingIndicatorView = OperatorTypingIndicatorView(style: style.operatorTypingIndicator)
-        super.init(with: style)
+        super.init(
+            with: style,
+            environment: .init(
+                data: environment.data,
+                uuid: environment.uuid,
+                gcd: environment.gcd
+            )
+        )
         setup()
         layout()
     }
@@ -240,7 +258,14 @@ class ChatView: EngagementView {
             view.status = status
             return .visitorMessage(view)
         case .operatorMessage(let message, let showsImage, let imageUrl):
-            let view = OperatorChatMessageView(with: style.operatorMessage)
+            let view = OperatorChatMessageView(
+                with: style.operatorMessage,
+                environment: .init(
+                    data: environment.data,
+                    uuid: environment.uuid,
+                    gcd: environment.gcd
+                )
+            )
             view.appendContent(.text(message.content), animated: false)
             view.appendContent(.downloads(message.downloads), animated: false)
             view.downloadTapped = { [weak self] in self?.downloadTapped?($0) }
@@ -249,7 +274,14 @@ class ChatView: EngagementView {
             view.setOperatorImage(fromUrl: imageUrl, animated: false)
             return .operatorMessage(view)
         case .choiceCard(let message, let showsImage, let imageUrl, let isActive):
-            let view = ChoiceCardView(with: style.choiceCard)
+            let view = ChoiceCardView(
+                with: style.choiceCard,
+                environment: .init(
+                    data: environment.data,
+                    uuid: environment.uuid,
+                    gcd: environment.gcd
+                )
+            )
             let choiceCard = ChoiceCard(with: message, isActive: isActive)
             view.showsOperatorImage = showsImage
             view.setOperatorImage(fromUrl: imageUrl, animated: false)
@@ -300,7 +332,14 @@ class ChatView: EngagementView {
 extension ChatView {
     func showCallBubble(with imageUrl: String?, animated: Bool) {
         guard callBubble == nil else { return }
-        let callBubble = BubbleView(with: style.callBubble)
+        let callBubble = BubbleView(
+            with: style.callBubble,
+            environment: .init(
+                data: environment.data,
+                uuid: environment.uuid,
+                gcd: environment.gcd
+            )
+        )
         callBubble.kind = .userImage(url: imageUrl)
         callBubble.tap = { [weak self] in self?.callBubbleTapped?() }
         callBubble.pan = { [weak self] in self?.moveCallBubble($0, animated: true) }
@@ -416,5 +455,13 @@ extension ChatView: UITableViewDelegate {
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         chatScrolledToBottom?(isBottomReached(for: scrollView))
+    }
+}
+
+extension ChatView {
+    struct Environment {
+        var data: FoundationBased.Data
+        var uuid: () -> UUID
+        var gcd: GCD
     }
 }

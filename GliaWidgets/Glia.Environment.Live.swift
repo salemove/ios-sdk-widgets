@@ -9,7 +9,8 @@ extension Glia.Environment {
         uuid: UUID.init,
         date: Date.init,
         fileManager: .live,
-        data: .live
+        data: .live,
+        gcd: .live
     )
 }
 

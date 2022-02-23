@@ -34,11 +34,23 @@ class CallView: EngagementView {
 
         return CGRect(x: x, y: y, width: width, height: height)
     }
+    private let environment: Environment
 
-    init(with style: CallStyle) {
+    init(
+        with style: CallStyle,
+        environment: Environment
+    ) {
         self.style = style
+        self.environment = environment
         self.buttonBar = CallButtonBar(with: style.buttonBar)
-        super.init(with: style)
+        super.init(
+            with: style,
+            environment: .init(
+                data: environment.data,
+                uuid: environment.uuid,
+                gcd: environment.gcd
+            )
+        )
         setup()
         layout()
     }
@@ -340,5 +352,13 @@ extension CallView {
         }
 
         localVideoView.frame = frame
+    }
+}
+
+extension CallView {
+    struct Environment {
+        var data: FoundationBased.Data
+        var uuid: () -> UUID
+        var gcd: GCD
     }
 }

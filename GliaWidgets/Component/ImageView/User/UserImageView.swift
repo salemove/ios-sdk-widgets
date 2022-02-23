@@ -3,10 +3,22 @@ import UIKit
 class UserImageView: UIView {
     private let style: UserImageStyle
     private let placeholderImageView = UIImageView()
-    private let imageView = ImageView()
+    private let imageView: ImageView
+    private let environment: Environment
 
-    init(with style: UserImageStyle) {
+    init(
+        with style: UserImageStyle,
+        environment: Environment
+    ) {
         self.style = style
+        self.environment = environment
+        self.imageView = ImageView(
+            environment: .init(
+                data: environment.data,
+                uuid: environment.uuid,
+                gcd: environment.gcd
+            )
+        )
         super.init(frame: .zero)
         setup()
         layout()
@@ -74,5 +86,13 @@ class UserImageView: UIView {
     private func changeImageVisibility(visible: Bool) {
         placeholderImageView.isHidden = visible
         imageView.isHidden = !visible
+    }
+}
+
+extension UserImageView {
+    struct Environment {
+        var data: FoundationBased.Data
+        var uuid: () -> UUID
+        var gcd: GCD
     }
 }
