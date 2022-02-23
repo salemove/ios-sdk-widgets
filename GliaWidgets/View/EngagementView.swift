@@ -5,11 +5,23 @@ class EngagementView: View {
     let connectView: ConnectView
 
     private let style: EngagementStyle
+    private let environment: Environment
 
-    init(with style: EngagementStyle) {
+    init(
+        with style: EngagementStyle,
+        environment: Environment
+    ) {
         self.style = style
         self.header = Header(with: style.header)
-        self.connectView = ConnectView(with: style.connect)
+        self.environment = environment
+        self.connectView = ConnectView(
+            with: style.connect,
+            environment: .init(
+                data: environment.data,
+                uuid: environment.uuid,
+                gcd: environment.gcd
+            )
+        )
         super.init()
         setup()
         layout()
@@ -20,4 +32,12 @@ class EngagementView: View {
     }
 
     private func layout() {}
+}
+
+extension EngagementView {
+    struct Environment {
+        var data: FoundationBased.Data
+        var uuid: () -> UUID
+        var gcd: GCD
+    }
 }

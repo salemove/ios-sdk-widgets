@@ -16,10 +16,22 @@ class ConnectView: UIView {
     private var connectTimer: Timer?
     private var connectCounter: Int = 0
     private var isShowing = false
+    private let environment: Environment
 
-    init(with style: ConnectStyle) {
+    init(
+        with style: ConnectStyle,
+        environment: Environment
+    ) {
         self.style = style
-        self.operatorView = ConnectOperatorView(with: style.connectOperator)
+        self.environment = environment
+        self.operatorView = ConnectOperatorView(
+            with: style.connectOperator,
+            environment: .init(
+                data: environment.data,
+                uuid: environment.uuid,
+                gcd: environment.gcd
+            )
+        )
         super.init(frame: .zero)
         setup()
         layout()
@@ -134,5 +146,13 @@ private extension ConnectView {
     private func stopConnectTimer() {
         connectTimer?.invalidate()
         connectTimer = nil
+    }
+}
+
+extension ConnectView {
+    struct Environment {
+        var data: FoundationBased.Data
+        var uuid: () -> UUID
+        var gcd: GCD
     }
 }
