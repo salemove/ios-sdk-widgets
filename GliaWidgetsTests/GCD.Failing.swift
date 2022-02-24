@@ -2,8 +2,8 @@
 
 extension GCD {
     static let failing = Self(
-        mainQueue: .failing,
-        globalQueue: .failing
+        mainQueue: .init(async: { _ in fail("\(Self.self).mainQueue.async") }),
+        globalQueue: .init(async: { _ in fail("\(Self.self).globalQueue.async") })
     )
 }
 
