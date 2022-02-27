@@ -45,8 +45,8 @@ class FileUploader {
     var count: Int { return uploads.count }
     let state = ObservableValue<State>(with: .idle)
     let limitReached = ObservableValue<Bool>(with: false)
+    var uploads = [FileUpload]()
 
-    private var uploads = [FileUpload]()
     private var storage: FileSystemStorage
     private let maximumUploads: Int
     private let environment: Environment
@@ -67,8 +67,17 @@ class FileUploader {
 
     func addUpload(with url: URL) -> FileUpload? {
         guard !limitReached.value else { return nil }
+
         let localFile = LocalFile(with: url)
-        let upload = FileUpload(with: localFile, storage: storage, environment: .init(uploadFileToEngagement: environment.uploadFileToEngagement))
+        let upload = FileUpload(
+            with: localFile,
+            storage: storage,
+            environment: .init(
+                uploadFileToEngagement: environment.uploadFileToEngagement,
+                uuid: environment.uuid
+            )
+        )
+
         upload.state.addObserver(self) { [weak self] _, _ in
             self?.updateState()
         }
@@ -97,7 +106,7 @@ class FileUploader {
     }
 
     func removeUpload(_ upload: FileUpload) {
-        uploads.removeAll(where: { $0 == upload })
+        uploads.removeAll(where: { $0.uuid == upload.uuid })
         upload.removeLocalFile()
         updateState()
         updateLimitReached()
@@ -143,5 +152,6 @@ extension FileUploader {
         var fileManager: FoundationBased.FileManager
         var data: FoundationBased.Data
         var date: () -> Date
+        var uuid: () -> UUID
     }
 }

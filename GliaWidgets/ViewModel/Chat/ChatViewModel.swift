@@ -119,7 +119,8 @@ class ChatViewModel: EngagementViewModel, ViewModel {
                 uploadFileToEngagement: environment.uploadFileToEngagement,
                 fileManager: environment.fileManager,
                 data: environment.data,
-                date: environment.date
+                date: environment.date,
+                uuid: environment.uuid
             )
         )
         self.downloader = FileDownloader(
@@ -810,5 +811,6 @@ extension ChatViewModel {
         var fileManager: FoundationBased.FileManager
         var data: FoundationBased.Data
         var date: () -> Date
+        var uuid: () -> UUID
     }
 }

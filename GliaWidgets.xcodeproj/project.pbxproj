@@ -230,6 +230,8 @@
 		C4C2A1702670E848003AC039 /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C2A16F2670E848003AC039 /* UIViewController+Extensions.swift */; };
 		C4F176CD261D1543009D9F07 /* ChatFileDownloadContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F176CB261D1543009D9F07 /* ChatFileDownloadContentView.swift */; };
 		C4F176CE261D1543009D9F07 /* ChatFileDownloadContentStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F176CC261D1543009D9F07 /* ChatFileDownloadContentStyle.swift */; };
+		EB22C26027C53F0E00FD307F /* FileUploaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB22C25F27C53F0E00FD307F /* FileUploaderTests.swift */; };
+		EB22C26227CB870100FD307F /* FileUploader.Environment.Failing.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB22C26127CB870100FD307F /* FileUploader.Environment.Failing.swift */; };
 		EB750F53273BA9BB00BE5FBD /* GliaError.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB750F52273BA9BB00BE5FBD /* GliaError.swift */; };
 		FD01A52B483418AB02DCFBFC /* Pods_GliaWidgets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85639A838514258D976E1B2A /* Pods_GliaWidgets.framework */; };
 /* End PBXBuildFile section */
@@ -509,6 +511,8 @@
 		C4C2A16F2670E848003AC039 /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
 		C4F176CB261D1543009D9F07 /* ChatFileDownloadContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFileDownloadContentView.swift; sourceTree = "<group>"; };
 		C4F176CC261D1543009D9F07 /* ChatFileDownloadContentStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFileDownloadContentStyle.swift; sourceTree = "<group>"; };
+		EB22C25F27C53F0E00FD307F /* FileUploaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUploaderTests.swift; sourceTree = "<group>"; };
+		EB22C26127CB870100FD307F /* FileUploader.Environment.Failing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUploader.Environment.Failing.swift; sourceTree = "<group>"; };
 		EB750F52273BA9BB00BE5FBD /* GliaError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GliaError.swift; sourceTree = "<group>"; };
 		F08274A374F775EE39BFBDB1 /* Pods-GliaWidgetsTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliaWidgetsTests.debug.xcconfig"; path = "Target Support Files/Pods-GliaWidgetsTests/Pods-GliaWidgetsTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1513,6 +1517,7 @@
 		9A3E1D8527B6B668005634EB /* Lib */ = {
 			isa = PBXGroup;
 			children = (
+				EB22C25E27C53EFA00FD307F /* Upload */,
 				9A3E1D9E27BA7B80005634EB /* Storage */,
 			);
 			path = Lib;
@@ -1625,6 +1630,15 @@
 				C4F176CC261D1543009D9F07 /* ChatFileDownloadContentStyle.swift */,
 			);
 			path = Download;
+			sourceTree = "<group>";
+		};
+		EB22C25E27C53EFA00FD307F /* Upload */ = {
+			isa = PBXGroup;
+			children = (
+				EB22C25F27C53F0E00FD307F /* FileUploaderTests.swift */,
+				EB22C26127CB870100FD307F /* FileUploader.Environment.Failing.swift */,
+			);
+			path = Upload;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -2146,6 +2160,8 @@
 				9A3E1DA227BA7D00005634EB /* FileSystemStorage.Environment.Failing.swift in Sources */,
 				9A3E1DA027BA7B9F005634EB /* FileSystemStorageTests.swift in Sources */,
 				9ACC25D227B4727500BC5335 /* CoreSDKClient.Failing.swift in Sources */,
+				EB22C26027C53F0E00FD307F /* FileUploaderTests.swift in Sources */,
+				EB22C26227CB870100FD307F /* FileUploader.Environment.Failing.swift in Sources */,
 				9A3E1D9D27BA7741005634EB /* FoundationBased.Failing.swift in Sources */,
 				9A3E1D8427B67F1B005634EB /* Helper.swift in Sources */,
 			);

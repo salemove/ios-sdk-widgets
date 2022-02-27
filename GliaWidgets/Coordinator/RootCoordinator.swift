@@ -163,7 +163,8 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
                 uploadFileToEngagement: environment.uploadFileToEngagement,
                 fileManager: environment.fileManager,
                 data: environment.data,
-                date: environment.date
+                date: environment.date,
+                uuid: environment.uuid
             )
         )
         coordinator.delegate = { [weak self] event in

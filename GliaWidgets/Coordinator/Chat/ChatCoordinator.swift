@@ -75,7 +75,8 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
                 uploadFileToEngagement: environment.uploadFileToEngagement,
                 fileManager: environment.fileManager,
                 data: environment.data,
-                date: environment.date
+                date: environment.date,
+                uuid: environment.uuid
             )
         )
         viewModel.engagementDelegate = { [weak self] event in
@@ -185,5 +186,6 @@ extension ChatCoordinator {
         var fileManager: FoundationBased.FileManager
         var data: FoundationBased.Data
         var date: () -> Date
+        var uuid: () -> UUID
     }
 }
