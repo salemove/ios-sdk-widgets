@@ -21,6 +21,11 @@ target 'GliaWidgets' do
   pod 'lottie-ios', '3.2.3'
 end
 
+target 'GliaWidgetsTests' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+end
+
 target 'SnapshotTests' do
   use_frameworks!
 
