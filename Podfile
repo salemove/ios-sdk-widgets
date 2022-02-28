@@ -22,6 +22,11 @@ target 'GliaWidgets' do
 end
 
 target 'GliaWidgetsTests' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+end
+
+target 'SnapshotTests' do
   use_frameworks!
 
   pod 'AccessibilitySnapshot', '0.5.0'
