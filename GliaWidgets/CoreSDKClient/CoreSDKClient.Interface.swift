@@ -85,6 +85,10 @@ struct CoreSdkClient {
     ) -> Void
     var fetchFile: FetchFile
 
+    typealias GetCurrentEngagement = (
+        () -> SalemoveSDK.Engagement?
+    )
+    var getCurrentEngagement: GetCurrentEngagement
 }
 
 extension CoreSdkClient {
