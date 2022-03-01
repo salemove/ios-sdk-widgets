@@ -10,6 +10,7 @@ extension Glia {
         var date: () -> Date
         var fileManager: FoundationBased.FileManager
         var data: FoundationBased.Data
+        var gcd: GCD
     }
 }
 
