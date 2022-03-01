@@ -14,9 +14,14 @@ class BubbleView: UIView {
     private let style: BubbleStyle
     private var userImageView: UserImageView?
     private var badgeView: BadgeView?
+    private let environment: Environment
 
-    init(with style: BubbleStyle) {
+    init(
+        with style: BubbleStyle,
+        environment: Environment
+    ) {
         self.style = style
+        self.environment = environment
         super.init(frame: .zero)
         setup()
         layout()
@@ -82,7 +87,14 @@ class BubbleView: UIView {
                 userImageView?.setImage(fromUrl: url, animated: true)
                 break
             }
-            let userImageView = UserImageView(with: style.userImage)
+            let userImageView = UserImageView(
+                with: style.userImage,
+                environment: .init(
+                    data: environment.data,
+                    uuid: environment.uuid,
+                    gcd: environment.gcd
+                )
+            )
             userImageView.setImage(fromUrl: url, animated: true)
             self.userImageView = userImageView
             setView(userImageView)
@@ -106,5 +118,13 @@ class BubbleView: UIView {
         guard gesture.view != nil else { return }
         pan?(translation)
         gesture.setTranslation(.zero, in: self)
+    }
+}
+
+extension BubbleView {
+    struct Environment {
+        var data: FoundationBased.Data
+        var uuid: () -> UUID
+        var gcd: GCD
     }
 }

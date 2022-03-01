@@ -109,7 +109,14 @@ public class Glia {
             throw GliaError.sdkIsNotConfigured
         }
 
-        let viewFactory = ViewFactory(with: theme)
+        let viewFactory = ViewFactory(
+            with: theme,
+            environment: .init(
+                data: environment.data,
+                uuid: environment.uuid,
+                gcd: environment.gcd
+            )
+        )
         startRootCoordinator(
             with: interactor,
             viewFactory: viewFactory,

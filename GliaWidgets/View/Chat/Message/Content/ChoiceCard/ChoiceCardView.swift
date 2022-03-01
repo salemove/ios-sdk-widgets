@@ -7,9 +7,19 @@ final class ChoiceCardView: OperatorChatMessageView {
     private let kLayoutMargins = UIEdgeInsets(top: 12, left: 16, bottom: 16, right: 16)
     private let kImageHeight: CGFloat = 200.0
 
-    init(with style: ChoiceCardStyle) {
+    private let environment: Environment
+
+    init(with style: ChoiceCardStyle, environment: Environment) {
         viewStyle = style
-        super.init(with: style)
+        self.environment = environment
+        super.init(
+            with: style,
+            environment: .init(
+                data: environment.data,
+                uuid: environment.uuid,
+                gcd: environment.gcd
+            )
+        )
     }
 
     @available(*, unavailable)
@@ -43,7 +53,13 @@ final class ChoiceCardView: OperatorChatMessageView {
         stackView.autoPinEdgesToSuperviewEdges()
 
         if let imageUrl = choiceCard.imageUrl {
-            let imageView = ImageView()
+            let imageView = ImageView(
+                environment: .init(
+                    data: environment.data,
+                    uuid: environment.uuid,
+                    gcd: environment.gcd
+                )
+            )
             imageView.contentMode = .scaleAspectFill
             imageView.layer.cornerRadius = 4
             imageView.layer.masksToBounds = true
@@ -81,5 +97,13 @@ final class ChoiceCardView: OperatorChatMessageView {
         stackView.addArrangedSubviews(optionViews)
 
         return containerView
+    }
+}
+
+extension ChoiceCardView {
+    struct Environment {
+        var data: FoundationBased.Data
+        var uuid: () -> UUID
+        var gcd: GCD
     }
 }

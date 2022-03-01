@@ -7,7 +7,8 @@ extension Glia.Environment {
         uuid: { .mock },
         date: { .mock },
         fileManager: .mock,
-        data: .mock
+        data: .mock,
+        gcd: .mock
     )
 }
 
