@@ -1,4 +1,5 @@
 @testable import GliaWidgets
+
 extension FileUploader.Environment {
     static let failing = Self(
         uploadFileToEngagement: CoreSdkClient.failing.uploadFileToEngagement,
