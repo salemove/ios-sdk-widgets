@@ -1,3 +1,5 @@
+import Foundation
+
 /// Glia's environment. Use the one that our account manager has assigned to you.
 public enum Environment {
     /// Europe
