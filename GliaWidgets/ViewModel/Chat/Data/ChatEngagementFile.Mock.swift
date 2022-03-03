@@ -1,3 +1,6 @@
+#if DEBUG
+import Foundation
+
 extension ChatEngagementFile {
     static func mock(
         id: String = "",
@@ -17,3 +20,4 @@ extension ChatEngagementFile {
         )
     }
 }
+#endif
