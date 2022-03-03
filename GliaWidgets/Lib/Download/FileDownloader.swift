@@ -1,3 +1,5 @@
+import Foundation
+
 class FileDownloader {
     enum AutoDownload {
         case nothing

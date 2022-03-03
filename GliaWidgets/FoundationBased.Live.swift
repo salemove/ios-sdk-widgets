@@ -1,3 +1,5 @@
+import Foundation
+
 extension FoundationBased.FileManager {
     static let live = Self(
         urlsForDirectoryInDomainMask: FileManager.default.urls(for:in:),
