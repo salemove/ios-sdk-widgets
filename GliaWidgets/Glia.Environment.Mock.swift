@@ -1,4 +1,6 @@
 #if DEBUG
+import Foundation
+
 extension Glia.Environment {
     static let mock = Self(
         coreSdk: .mock,
