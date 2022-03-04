@@ -21,7 +21,7 @@ target 'GliaWidgets' do
   pod 'lottie-ios', '3.2.3'
 end
 
-target 'SnapshotTests' do
+target 'GliaWidgetsTests' do
   use_frameworks!
 
   pod 'AccessibilitySnapshot', '0.5.0'
