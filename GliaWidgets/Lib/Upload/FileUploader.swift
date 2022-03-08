@@ -1,3 +1,5 @@
+import Foundation
+
 class FileUploader {
     enum State {
         case idle
