@@ -1,4 +1,6 @@
 #if DEBUG
+import Foundation
+
 extension FoundationBased.FileManager {
     static let mock = Self(
         urlsForDirectoryInDomainMask: { _, _ in [] },
