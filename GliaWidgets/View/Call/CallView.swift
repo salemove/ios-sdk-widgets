@@ -138,7 +138,7 @@ class CallView: EngagementView {
         }
     }
 
-    private func setup() {
+    override func setup() {
         topStackView.axis = .vertical
         topStackView.spacing = 8
         topStackView.addArrangedSubviews([operatorNameLabel, durationLabel])

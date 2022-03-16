@@ -7,19 +7,22 @@ class EngagementViewModel {
 
     let interactor: Interactor
     let alertConfiguration: AlertConfiguration
+    let environment: Environment
+    let screenShareHandler: ScreenShareHandler
 
-    private let screenShareHandler: ScreenShareHandler
     private(set) var isViewActive = ObservableValue<Bool>(with: false)
     private static var alertPresenters = Set<EngagementViewModel>()
 
     init(
         interactor: Interactor,
         alertConfiguration: AlertConfiguration,
-        screenShareHandler: ScreenShareHandler
+        screenShareHandler: ScreenShareHandler,
+        environment: Environment
     ) {
         self.interactor = interactor
         self.alertConfiguration = alertConfiguration
         self.screenShareHandler = screenShareHandler
+        self.environment = environment
         interactor.addObserver(self, handler: interactorEvent)
         screenShareHandler.status.addObserver(self) { [weak self] status, _ in
             self?.onScreenSharingStatusChange(status)
@@ -121,7 +124,7 @@ class EngagementViewModel {
 
             switch reason {
             case .byVisitor:
-                engagementDelegate?(.finished)
+                engagementDelegate?(.finished(nil, nil))
             case .byOperator:
                 EngagementViewModel.alertPresenters.insert(self)
                 engagementAction?(
@@ -135,6 +138,9 @@ class EngagementViewModel {
             case .byError:
                 break
             }
+        case .endedWithSurvey(let engagementId, let survey):
+            engagementDelegate?(.finished(engagementId, survey))
+
         default:
             break
         }
@@ -205,9 +211,9 @@ class EngagementViewModel {
 
     private func endSession() {
         interactor.endSession {
-            self.engagementDelegate?(.finished)
+            self.engagementDelegate?(.finished(nil, nil))
         } failure: { _ in
-            self.engagementDelegate?(.finished)
+            self.engagementDelegate?(.finished(nil, nil))
         }
         screenShareHandler.cleanUp()
     }
@@ -320,6 +326,6 @@ extension EngagementViewModel {
     enum DelegateEvent {
         case back
         case engaged(operatorImageUrl: String?)
-        case finished
+        case finished(String?, CoreSdkClient.Survey?)
     }
 }

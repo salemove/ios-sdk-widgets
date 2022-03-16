@@ -62,23 +62,23 @@ class CallViewModel: EngagementViewModel, ViewModel {
     private let call: Call
     private let startWith: StartAction
     private let durationCounter = CallDurationCounter()
-    private let screenShareHandler: ScreenShareHandler
 
     init(
         interactor: Interactor,
         alertConfiguration: AlertConfiguration,
         screenShareHandler: ScreenShareHandler,
+        environment: Environment,
         call: Call,
         unreadMessages: ObservableValue<Int>,
         startWith: StartAction
     ) {
         self.call = call
         self.startWith = startWith
-        self.screenShareHandler = screenShareHandler
         super.init(
             interactor: interactor,
             alertConfiguration: alertConfiguration,
-            screenShareHandler: screenShareHandler
+            screenShareHandler: screenShareHandler,
+            environment: environment
         )
         unreadMessages.addObserver(self) { [weak self] unreadCount, _ in
             self?.action?(.setButtonBadge(.chat, itemCount: unreadCount))

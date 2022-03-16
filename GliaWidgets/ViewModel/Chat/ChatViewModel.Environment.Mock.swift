@@ -18,7 +18,8 @@ extension ChatViewModel.Environment {
                     environment: env
                 )
         },
-        fromHistory: { true }
+        fromHistory: { true },
+        getCurrentEngagement: { return nil }
     )
 }
 #endif

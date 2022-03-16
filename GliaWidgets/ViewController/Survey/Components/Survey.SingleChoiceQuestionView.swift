@@ -1,0 +1,109 @@
+import SalemoveSDK
+import UIKit
+
+extension Survey {
+    final class SingleChoiceQuestionView: View {
+        var props: Props {
+            didSet { render() }
+        }
+
+        // MARK: - UI components
+
+        let title = UILabel().make {
+            $0.numberOfLines = 0
+        }
+        let optionsStack = UIStackView.make(.vertical, spacing: 24, distribution: .equalSpacing)()
+        let validationError = ValidationErrorView()
+        lazy var contentStack = UIStackView.make(.vertical, spacing: 16)(
+            title,
+            optionsStack,
+            validationError
+        )
+
+        // MARK: - Lifycycle
+
+        init(props: Props) {
+            self.props = props
+            super.init()
+        }
+
+        override func setup() {
+            super.setup()
+            addSubview(contentStack)
+            render()
+        }
+
+        override func defineLayout() {
+            super.defineLayout()
+            NSLayoutConstraint.activate([
+                contentStack.topAnchor.constraint(equalTo: topAnchor),
+                contentStack.leadingAnchor.constraint(equalTo: leadingAnchor),
+                contentStack.trailingAnchor.constraint(equalTo: trailingAnchor),
+                contentStack.bottomAnchor.constraint(equalTo: bottomAnchor)
+            ])
+        }
+
+        func render() {
+            let delta = optionsStack.arrangedSubviews.count - props.options.count
+            switch delta {
+            case 0:
+                break
+            default:
+                (0..<abs(delta)).forEach { _ in
+                    optionsStack.addArrangedSubview(CheckboxView())
+                }
+            }
+
+            title.attributedText = .withRequiredSymbol(
+                isRequired: props.isRequired,
+                text: props.title
+            )
+            zip(props.options, optionsStack.arrangedSubviews)
+                .forEach { opt, view in
+                    guard let checkboxView = view as? CheckboxView else { return }
+                    checkboxView.props = .init(
+                        title: opt.name,
+                        state: props.selected == opt ? .selected : .active
+                    ) {
+                        opt.select(opt)
+                    }
+                }
+            validationError.isHidden = !props.showValidationError
+        }
+    }
+}
+
+extension Survey.SingleChoiceQuestionView {
+    struct Props: SurveyQuestionPropsProtocol {
+        let id: String
+        let title: String
+        let isRequired: Bool
+        var showValidationError: Bool
+        var options: [Survey.Option<String>]
+        var selected: Survey.Option<String>?
+        var answerContainer: CoreSdkClient.SurveyAnswerContainer?
+
+        var isValid: Bool {
+            guard isRequired else { return true }
+            return selected != nil
+        }
+
+        init(
+            id: String,
+            title: String,
+            isRequired: Bool,
+            showValidationError: Bool = false,
+            options: [Survey.Option<String>] = [],
+            selected: Survey.Option<String>? = nil,
+            answerContainer: CoreSdkClient.SurveyAnswerContainer? = nil
+        ) {
+            self.id = id
+            self.title = title
+            self.isRequired = isRequired
+            self.showValidationError = showValidationError
+            self.options = options
+            self.selected = selected
+            self.answerContainer = answerContainer
+        }
+    }
+}

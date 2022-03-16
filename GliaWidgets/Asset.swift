@@ -75,6 +75,9 @@ public enum Asset {
     public static let upgradeVideo = ImageAsset(name: "upgradeVideo")
     public static let mockImage = ImageAsset(name: "mock-image")
     public static let operatorPlaceholder = ImageAsset(name: "operatorPlaceholder")
+    public static let surveyCheckboxChecked = ImageAsset(name: "survey-checkbox-checked")
+    public static let surveyCheckbox = ImageAsset(name: "survey-checkbox")
+    public static let surveyValidationError = ImageAsset(name: "survey-validation-error")
 
   // swiftlint:disable trailing_comma
   public static let allColors: [ColorAsset] = [
@@ -106,6 +109,9 @@ public enum Asset {
       upgradeVideo,
       mockImage,
       operatorPlaceholder,
+      surveyCheckboxChecked,
+      surveyCheckbox,
+      surveyValidationError,
     ]
     // swiftlint:enable trailing_comma
     @available(*, deprecated, renamed: "allImages")

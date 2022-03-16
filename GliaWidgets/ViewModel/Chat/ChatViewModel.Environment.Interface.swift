@@ -1,6 +1,6 @@
 import Foundation
 
-extension ChatViewModel {
+extension EngagementViewModel {
     struct Environment {
         var chatStorage: Glia.Environment.ChatStorage
         var fetchFile: CoreSdkClient.FetchFile
@@ -14,5 +14,6 @@ extension ChatViewModel {
         var uiImage: UIKitBased.UIImage
         var createFileDownload: FileDownloader.CreateFileDownload
         var fromHistory: () -> Bool
+        var getCurrentEngagement: CoreSdkClient.GetCurrentEngagement
     }
 }
