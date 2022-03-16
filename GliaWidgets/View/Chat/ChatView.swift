@@ -170,10 +170,8 @@ class ChatView: EngagementView {
     func refreshAll() {
         tableView.reloadData()
     }
-}
 
-extension ChatView {
-    private func setup() {
+    override func setup() {
         header.title = style.title
 
         tableView.backgroundColor = .white
@@ -195,6 +193,9 @@ extension ChatView {
         addKeyboardDismissalTapGesture()
         typingIndicatorView.isHidden = true
     }
+}
+
+extension ChatView {
 
     private func layout() {
         addSubview(header)
@@ -285,7 +286,7 @@ extension ChatView {
                 )
             )
             view.appendContent(.text(message.content, accessibility: Self.operatorAccessibilityMessage(for: message)), animated: false)
-#warning("Provide proper localized 'Operator'")
+            #warning("Provide proper localized 'Operator'")
             view.appendContent(
                 .downloads(
                     message.downloads,

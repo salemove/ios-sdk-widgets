@@ -44,7 +44,8 @@ class ChatViewModelTests: XCTestCase {
                         environment: .failing
                     )
                 },
-                fromHistory: { true }
+                fromHistory: { true },
+                getCurrentEngagement: { nil }
             )
         )
 

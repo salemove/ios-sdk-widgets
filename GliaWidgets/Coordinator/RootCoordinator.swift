@@ -152,7 +152,8 @@ extension RootCoordinator {
                 localFileThumbnailQueue: environment.localFileThumbnailQueue,
                 uiImage: environment.uiImage,
                 createFileDownload: environment.createFileDownload,
-                fromHistory: environment.fromHistory
+                fromHistory: environment.fromHistory,
+                getCurrentEngagement: environment.getCurrentEngagement
             )
         )
         coordinator.delegate = { [weak self] event in
@@ -200,12 +201,25 @@ extension RootCoordinator {
             default:
                 break
             }
-        case .finished:
+        case .finished(let engagementId, let survey):
             popCoordinator()
-            end()
+            if let survey = survey, let engagementId = engagementId {
+                let viewController = Survey.ViewController()
+                viewController.props = .live(
+                    sdkSurvey: survey,
+                    engagementId: engagementId,
+                    submitSurveyAnswer: self.environment.submitSurveyAnswer,
+                    updateProps: { viewController.props = $0 },
+                    completion: { [weak self] in self?.end() }
+                )
+                self.gliaPresenter.present(viewController, animated: true)
+            } else {
+                self.end()
+            }
         }
     }
 
+    // swiftlint:disable function_body_length
     private func startCall(
         _ call: Call,
         withAction startAction: CallViewModel.StartAction
@@ -217,45 +231,74 @@ extension RootCoordinator {
             call: call,
             unreadMessages: unreadMessages,
             screenShareHandler: screenShareHandler,
-            startAction: startAction
+            startAction: startAction,
+            environment: .init(
+                chatStorage: environment.chatStorage,
+                fetchFile: environment.fetchFile,
+                sendSelectedOptionValue: environment.sendSelectedOptionValue,
+                uploadFileToEngagement: environment.uploadFileToEngagement,
+                fileManager: environment.fileManager,
+                data: environment.data,
+                date: environment.date,
+                gcd: environment.gcd,
+                localFileThumbnailQueue: environment.localFileThumbnailQueue,
+                uiImage: environment.uiImage,
+                createFileDownload: environment.createFileDownload,
+                fromHistory: environment.fromHistory,
+                getCurrentEngagement: environment.getCurrentEngagement
+            )
         )
         coordinator.delegate = { [weak self] event in
+            guard let self = self else { return }
             switch event {
             case .back:
-                switch self?.engagement {
+                switch self.engagement {
                 case .call(_, let chatViewController, let upgradedFrom, _):
                     if upgradedFrom == .chat {
-                        self?.navigationPresenter.pop(to: chatViewController, animated: true)
+                        self.navigationPresenter.pop(to: chatViewController, animated: true)
                     } else {
-                        self?.gliaViewController?.minimize(animated: true)
+                        self.gliaViewController?.minimize(animated: true)
                     }
                 default:
                     break
                 }
             case .engaged(let operatorImageUrl):
-                self?.gliaViewController?.bubbleKind = .userImage(url: operatorImageUrl)
+                self.gliaViewController?.bubbleKind = .userImage(url: operatorImageUrl)
             case .chat:
-                switch self?.engagement {
+                switch self.engagement {
                 case .call(_, let chatViewController, let upgradedFrom, _):
                     if upgradedFrom == .chat {
-                        self?.navigationPresenter.pop(to: chatViewController, animated: true)
+                        self.navigationPresenter.pop(to: chatViewController, animated: true)
                     } else {
-                        self?.navigationPresenter.push(chatViewController, animated: true)
+                        self.navigationPresenter.push(chatViewController, animated: true)
                     }
                 default:
                     break
                 }
             case .minimize:
-                self?.gliaViewController?.minimize(animated: true)
-            case .finished:
-                self?.popCoordinator()
-                self?.end()
+                self.gliaViewController?.minimize(animated: true)
+            case .finished(let engagementId, let survey):
+                self.popCoordinator()
+                if let survey = survey, let engagementId = engagementId {
+                    let viewController = Survey.ViewController()
+                    viewController.props = .live(
+                        sdkSurvey: survey,
+                        engagementId: engagementId,
+                        submitSurveyAnswer: self.environment.submitSurveyAnswer,
+                        updateProps: { viewController.props = $0 },
+                        completion: { [weak self] in self?.end() }
+                    )
+                    self.gliaPresenter.present(viewController, animated: true)
+                } else {
+                    self.end()
+                }
             }
         }
         pushCoordinator(coordinator)
 
         return coordinator.start()
     }
+    // swiftlint:enable function_body_length
 
     private func makeGliaView(
         bubbleView: BubbleView,
@@ -394,6 +437,8 @@ extension RootCoordinator {
         var uiImage: UIKitBased.UIImage
         var createFileDownload: FileDownloader.CreateFileDownload
         var fromHistory: () -> Bool
+        var getCurrentEngagement: CoreSdkClient.GetCurrentEngagement
+        var submitSurveyAnswer: CoreSdkClient.SubmitSurveyAnswer
     }
 }
 

@@ -6,6 +6,7 @@ enum InteractorState {
     case enqueued(CoreSdkClient.QueueTicket)
     case engaged(CoreSdkClient.Operator?)
     case ended(EndEngagementReason)
+    case endedWithSurvey(String, CoreSdkClient.Survey)
 }
 
 enum EndEngagementReason {
@@ -220,6 +221,9 @@ extension Interactor {
         case .ended(let reason):
             state = .ended(reason)
             success()
+        case .endedWithSurvey(let engagementId, let survey):
+            state = .endedWithSurvey(engagementId, survey)
+            success()
         }
     }
 
@@ -331,14 +335,16 @@ extension Interactor: CoreSdkClient.Interactable {
     }
 
     func end() {
-        // Example how to fetch survey:
-        //  guard let engagement = environment.coreSdk.getCurrentEngagement() else { return }
-        //  engagement.getSurvey { print("\($0)") }
-
-        if isEngagementEndedByVisitor {
-            state = .ended(.byVisitor)
-        } else {
-            state = .ended(.byOperator)
+        guard let engagement = environment.coreSdk.getCurrentEngagement() else {
+            state = isEngagementEndedByVisitor == true ? .ended(.byVisitor) : .ended(.byOperator)
+            return
+        }
+        engagement.getSurvey { [weak self] result in
+            if case .success(let survey) = result, let safeSurvey = survey {
+                self?.state = .endedWithSurvey(engagement.id, safeSurvey)
+            } else {
+                self?.state = self?.isEngagementEndedByVisitor == true ? .ended(.byVisitor) : .ended(.byOperator)
+            }
         }
     }
 

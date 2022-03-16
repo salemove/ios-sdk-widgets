@@ -19,7 +19,8 @@ extension CoreSdkClient {
         requestEngagedOperator: { _ in fail("\(Self.self).requestEngagedOperator") },
         uploadFileToEngagement: { _, _, _ in fail("\(Self.self).uploadFileToEngagement") },
         fetchFile: { _, _, _ in fail("\(Self.self).fetchFile") },
-        getCurrentEngagement: { return nil }
+        getCurrentEngagement: { return nil },
+        submitSurveyAnswer: { _, _, _, _ in }
     )
 }
 

@@ -18,7 +18,6 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     private var messagesSection: Section<ChatItem> { sections[3] }
     private let call: ObservableValue<Call?>
     private var unreadMessages: UnreadMessagesHandler!
-    private let screenShareHandler: ScreenShareHandler
     private let isChatScrolledToBottom = ObservableValue<Bool>(with: true)
     private let showsCallBubble: Bool
     private let uploader: FileUploader
@@ -33,7 +32,6 @@ class ChatViewModel: EngagementViewModel, ViewModel {
 
     private var pendingMessages: [OutgoingMessage] = []
     private var isViewLoaded: Bool = false
-    private var environment: Environment
 
     init(
         interactor: Interactor,
@@ -49,8 +47,6 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         self.call = call
         self.showsCallBubble = showsCallBubble
         self.startAction = startAction
-        self.screenShareHandler = screenShareHandler
-        self.environment = environment
         self.uploader = FileUploader(
             maximumUploads: 25,
             environment: .init(
@@ -78,7 +74,8 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         super.init(
             interactor: interactor,
             alertConfiguration: alertConfiguration,
-            screenShareHandler: screenShareHandler
+            screenShareHandler: screenShareHandler,
+            environment: environment
         )
         unreadMessages.addObserver(self) { [weak self] unreadCount, _ in
             self?.action?(.updateUnreadMessageIndicator(itemCount: unreadCount))

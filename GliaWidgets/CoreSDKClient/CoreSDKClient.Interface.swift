@@ -89,6 +89,16 @@ struct CoreSdkClient {
         () -> SalemoveSDK.Engagement?
     )
     var getCurrentEngagement: GetCurrentEngagement
+
+    typealias SubmitSurveyAnswer = (
+        (
+            _ answers: [SalemoveSDK.Survey.Answer],
+            _ surveyId: SalemoveSDK.Survey.Id,
+            _ engagementId: String,
+            _ completion: @escaping (Result<Void, SalemoveSDK.SalemoveError>) -> Void
+        ) -> Void
+    )
+    var submitSurveyAnswer: SubmitSurveyAnswer
 }
 
 extension CoreSdkClient {
@@ -159,4 +169,6 @@ extension CoreSdkClient {
     typealias VisitorInfoUpdate = SalemoveSDK.VisitorInfoUpdate
     typealias VisitorScreenSharingState = SalemoveSDK.VisitorScreenSharingState
     typealias VisitorScreenSharingStateChange = SalemoveSDK.VisitorScreenSharingStateChange
+    typealias Survey = SalemoveSDK.Survey
+    typealias SurveyAnswerContainer = SalemoveSDK.Survey.Answer.ValueContainer
 }
