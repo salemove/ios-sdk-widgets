@@ -39,4 +39,10 @@ enum FoundationBased {
             _ contentsOfUrl: URL
         ) throws -> Foundation.Data
     }
+
+    struct OperationQueue {
+        var setMaxConcurrentOperationCount: (Int) -> Void
+        var getMaxConcurrentOperationCount: () -> Int
+        var addOperation: (_ block: @escaping () -> Void) -> Void
+    }
 }

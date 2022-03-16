@@ -147,7 +147,12 @@ extension RootCoordinator {
                 uploadFileToEngagement: environment.uploadFileToEngagement,
                 fileManager: environment.fileManager,
                 data: environment.data,
-                date: environment.date
+                date: environment.date,
+                gcd: environment.gcd,
+                localFileThumbnailQueue: environment.localFileThumbnailQueue,
+                uiImage: environment.uiImage,
+                createFileDownload: environment.createFileDownload,
+                fromHistory: environment.fromHistory
             )
         )
         coordinator.delegate = { [weak self] event in
@@ -384,6 +389,11 @@ extension RootCoordinator {
         var fileManager: FoundationBased.FileManager
         var data: FoundationBased.Data
         var date: () -> Date
+        var gcd: GCD
+        var localFileThumbnailQueue: FoundationBased.OperationQueue
+        var uiImage: UIKitBased.UIImage
+        var createFileDownload: FileDownloader.CreateFileDownload
+        var fromHistory: () -> Bool
     }
 }
 

@@ -74,6 +74,10 @@ class BubbleView: UIView {
         addGestureRecognizer(tapRecognizer)
         let panRecognizer = UIPanGestureRecognizer(target: self, action: #selector(pan(_:)))
         addGestureRecognizer(panRecognizer)
+        isAccessibilityElement = true
+        accessibilityTraits = [.button]
+        accessibilityLabel = "Operator Avatar"
+        accessibilityHint = "Deactivates minimize."
 
         update(kind)
     }
@@ -92,7 +96,8 @@ class BubbleView: UIView {
                 environment: .init(
                     data: environment.data,
                     uuid: environment.uuid,
-                    gcd: environment.gcd
+                    gcd: environment.gcd,
+                    imageViewCache: environment.imageViewCache
                 )
             )
             userImageView.setImage(fromUrl: url, animated: true)
@@ -126,5 +131,6 @@ extension BubbleView {
         var data: FoundationBased.Data
         var uuid: () -> UUID
         var gcd: GCD
+        var imageViewCache: ImageView.Cache
     }
 }

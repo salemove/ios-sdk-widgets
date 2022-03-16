@@ -11,9 +11,10 @@ class FileUploadView: UIView {
     private let stateLabel = UILabel()
     private let filePreviewView: FilePreviewView
     private let progressView = UIProgressView()
-    private let removeButton = UIButton()
+    let removeButton = UIButton()
     private let style: FileUploadStyle
     private let kContentInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+    private let kRemoveButtonSize = CGSize(width: 30, height: 30)
 
     init(with style: FileUploadStyle, upload: FileUpload) {
         self.style = style
@@ -43,6 +44,8 @@ class FileUploadView: UIView {
         upload.state.addObserver(self) { [weak self] state, _ in
             self?.update(for: state)
         }
+        removeButton.accessibilityLabel = "Remove upload"
+        isAccessibilityElement = true
     }
 
     private func layout() {
@@ -57,7 +60,7 @@ class FileUploadView: UIView {
         filePreviewView.autoAlignAxis(toSuperviewAxis: .horizontal)
 
         contentView.addSubview(removeButton)
-        removeButton.autoSetDimensions(to: CGSize(width: 30, height: 30))
+        removeButton.autoSetDimensions(to: kRemoveButtonSize)
         removeButton.autoPinEdge(toSuperviewEdge: .top)
         removeButton.autoPinEdge(toSuperviewEdge: .right)
 
@@ -120,6 +123,8 @@ class FileUploadView: UIView {
             progressView.tintColor = style.errorProgressColor
             progressView.progress = 1.0
         }
+        accessibilityLabel = stateLabel.text
+        accessibilityValue = infoLabel.text
     }
 
     private func errorText(from style: FileUploadErrorStateStyle, for error: FileUpload.Error) -> String {
@@ -139,5 +144,13 @@ class FileUploadView: UIView {
 
     @objc private func remove() {
         removeTapped?()
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        var accFrame = self.frame
+        let insetX = kContentInsets.left + kContentInsets.right + kRemoveButtonSize.width
+        accFrame.size.width -= insetX
+        accessibilityFrame = UIAccessibility.convertToScreenCoordinates(accFrame, in: self)
     }
 }

@@ -26,6 +26,7 @@ class ChatEngagementFile: Codable {
         isDeleted = file.isDeleted
     }
 
+#if DEBUG
     init(
         id: String,
         url: URL?,
@@ -41,6 +42,7 @@ class ChatEngagementFile: Codable {
         self.contentType = contentType
         self.isDeleted = isDeleted
     }
+#endif
 }
 
 extension ChatEngagementFile {

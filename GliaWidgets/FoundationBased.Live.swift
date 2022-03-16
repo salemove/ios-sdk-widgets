@@ -19,3 +19,14 @@ extension FoundationBased.Data {
         dataWithContentsOfFileUrl: { url in try Foundation.Data(contentsOf: url) }
     )
 }
+
+extension FoundationBased.OperationQueue {
+    static func live() -> Self {
+        let operationQueue = OperationQueue()
+        return .init(
+            setMaxConcurrentOperationCount: { operationQueue.maxConcurrentOperationCount = $0 },
+            getMaxConcurrentOperationCount: { operationQueue.maxConcurrentOperationCount },
+            addOperation: operationQueue.addOperation(_:)
+        )
+    }
+}

@@ -73,6 +73,7 @@ public enum Asset {
     public static let upgradeAudio = ImageAsset(name: "upgradeAudio")
     public static let upgradePhone = ImageAsset(name: "upgradePhone")
     public static let upgradeVideo = ImageAsset(name: "upgradeVideo")
+    public static let mockImage = ImageAsset(name: "mock-image")
     public static let operatorPlaceholder = ImageAsset(name: "operatorPlaceholder")
 
   // swiftlint:disable trailing_comma
@@ -103,6 +104,7 @@ public enum Asset {
       upgradeAudio,
       upgradePhone,
       upgradeVideo,
+      mockImage,
       operatorPlaceholder,
     ]
     // swiftlint:enable trailing_comma

@@ -49,7 +49,15 @@ class FileDownload {
             state.value = .error(.deleted)
         } else if let storageID = storageID, storage.hasData(for: storageID) {
             let url = storage.url(for: storageID)
-            let localFile = LocalFile(with: url)
+            let localFile = LocalFile(
+                with: url,
+                environment: .init(
+                    fileManager: environment.fileManager,
+                    gcd: environment.gcd,
+                    localFileThumbnailQueue: environment.localFileThumbnailQueue,
+                    uiImage: environment.uiImage
+                )
+            )
             state.value = .downloaded(localFile)
         }
     }
@@ -71,7 +79,15 @@ class FileDownload {
         let onCompletion: CoreSdkClient.EngagementFileFetchCompletionBlock = { data, error in
             if let data = data, let storageID = self.storageID {
                 let url = self.storage.url(for: storageID)
-                let file = LocalFile(with: url)
+                let file = LocalFile(
+                    with: url,
+                    environment: .init(
+                        fileManager: self.environment.fileManager,
+                        gcd: self.environment.gcd,
+                        localFileThumbnailQueue: self.environment.localFileThumbnailQueue,
+                        uiImage: self.environment.uiImage
+                    )
+                )
                 self.storage.store(data.data, for: storageID)
                 self.state.value = .downloaded(file)
             } else if let error = error {
@@ -86,5 +102,15 @@ class FileDownload {
             onProgress,
             onCompletion
         )
+    }
+}
+
+extension FileDownload {
+    struct AccessibilityProperties {
+        var value: String?
+    }
+
+    var accessibilityProperties: AccessibilityProperties {
+        .init(value: file.fileInfoString)
     }
 }

@@ -29,7 +29,8 @@ class ConnectView: UIView {
             environment: .init(
                 data: environment.data,
                 uuid: environment.uuid,
-                gcd: environment.gcd
+                gcd: environment.gcd,
+                imageViewCache: environment.imageViewCache
             )
         )
         super.init(frame: .zero)
@@ -111,6 +112,7 @@ class ConnectView: UIView {
 
     private func setup() {
         setState(.none, animated: false)
+        accessibilityElements = [operatorView, statusView]
     }
 
     private func layout() {
@@ -154,5 +156,6 @@ extension ConnectView {
         var data: FoundationBased.Data
         var uuid: () -> UUID
         var gcd: GCD
+        var imageViewCache: ImageView.Cache
     }
 }

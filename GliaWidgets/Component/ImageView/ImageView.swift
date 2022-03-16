@@ -1,7 +1,6 @@
 import UIKit
 
 class ImageView: UIImageView {
-    private static var cache = [String: UIImage]()
     private var downloadID: String = ""
     private var environment: Environment
 
@@ -41,7 +40,7 @@ class ImageView: UIImageView {
             return
         }
 
-        if let image = ImageView.cache[urlString] {
+        if let image = environment.imageViewCache.getImageForKey(urlString) {
             imageReceived?(image)
             setImage(image, animated: animated) { _ in
                 finished?(image)
@@ -66,7 +65,7 @@ class ImageView: UIImageView {
             }
 
             self?.environment.gcd.mainQueue.async {
-                ImageView.cache[urlString] = image
+                self?.environment.imageViewCache.setImageForKey(image, urlString)
 
                 guard self?.downloadID == downloadID else { return }
                 imageReceived?(image)
@@ -83,5 +82,6 @@ extension ImageView {
         var data: FoundationBased.Data
         var uuid: () -> UUID
         var gcd: GCD
+        var imageViewCache: Cache
     }
 }

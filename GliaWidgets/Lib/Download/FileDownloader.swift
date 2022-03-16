@@ -63,11 +63,18 @@ class FileDownloader {
         if let download = downloads[fileID] {
             return download
         } else {
-            let download = FileDownload(
-                with: file,
-                storage: storage,
-                environment: .init(fetchFile: environment.fetchFile)
+            let download = environment.createFileDownload(
+                file,
+                storage,
+                .init(
+                    fetchFile: environment.fetchFile,
+                    fileManager: environment.fileManager,
+                    gcd: environment.gcd,
+                    localFileThumbnailQueue: environment.localFileThumbnailQueue,
+                    uiImage: environment.uiImage
+                )
             )
+
             downloads[fileID] = download
             return download
         }
@@ -89,10 +96,19 @@ class FileDownloader {
 }
 
 extension FileDownloader {
+    typealias CreateFileDownload = (
+        _ file: ChatEngagementFile,
+        _ storage: DataStorage,
+        _ environment: FileDownload.Environment
+    ) -> FileDownload
     struct Environment {
         var fetchFile: CoreSdkClient.FetchFile
         var fileManager: FoundationBased.FileManager
         var data: FoundationBased.Data
         var date: () -> Date
+        var gcd: GCD
+        var localFileThumbnailQueue: FoundationBased.OperationQueue
+        var uiImage: UIKitBased.UIImage
+        var createFileDownload: CreateFileDownload
     }
 }

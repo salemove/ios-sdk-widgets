@@ -9,6 +9,7 @@ final class UnreadMessageIndicatorView: View {
                 isHidden = false
                 badgeView.newItemCount = newItemCount
             }
+            updateAccessibilityProperties()
         }
     }
 
@@ -36,7 +37,8 @@ final class UnreadMessageIndicatorView: View {
             environment: .init(
                 data: environment.data,
                 uuid: environment.uuid,
-                gcd: environment.gcd
+                gcd: environment.gcd,
+                imageViewCache: environment.imageViewCache
             )
         )
         badgeView = BadgeView(with: style.badge)
@@ -63,6 +65,9 @@ final class UnreadMessageIndicatorView: View {
             action: #selector(onTap)
         )
         addGestureRecognizer(tapRecognizer)
+
+        isAccessibilityElement = true
+        accessibilityTraits = [.button]
     }
 
     private func layout() {
@@ -84,6 +89,11 @@ final class UnreadMessageIndicatorView: View {
     @objc private func onTap() {
         tapped?()
     }
+
+    private func updateAccessibilityProperties() {
+        accessibilityLabel = "Unread messages"
+        accessibilityValue = "\(newItemCount)"
+    }
 }
 
 extension UnreadMessageIndicatorView {
@@ -91,5 +101,6 @@ extension UnreadMessageIndicatorView {
         var data: FoundationBased.Data
         var uuid: () -> UUID
         var gcd: GCD
+        var imageViewCache: ImageView.Cache
     }
 }
