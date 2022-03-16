@@ -43,6 +43,7 @@ class ChoiceCardOptionView: UIView {
         textLabel.textColor = style.normal.textColor
         textLabel.textAlignment = .center
         textLabel.numberOfLines = 0
+        textLabel.isAccessibilityElement = false
 
         choiceButton.addTarget(self, action: #selector(onTap), for: .touchUpInside)
     }
@@ -64,6 +65,7 @@ class ChoiceCardOptionView: UIView {
         case .disabled:
             applyStyle(style.disabled)
         }
+        updateAccessibilityProperties()
     }
 
     private func applyStyle(_ style: ChoiceCardOptionStateStyle) {
@@ -79,5 +81,19 @@ class ChoiceCardOptionView: UIView {
 
     @objc private func onTap() {
         tap?()
+    }
+}
+
+extension ChoiceCardOptionView {
+    func updateAccessibilityProperties() {
+        choiceButton.accessibilityLabel = text
+        switch state {
+        case .normal:
+            choiceButton.accessibilityValue = nil
+        case .selected:
+            choiceButton.accessibilityValue = "Selected"
+        case .disabled:
+            choiceButton.accessibilityValue = "Disabled"
+        }
     }
 }

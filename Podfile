@@ -23,6 +23,10 @@ end
 
 target 'GliaWidgetsTests' do
   use_frameworks!
+end
+
+target 'SnapshotTests' do
+  use_frameworks!
 
   pod 'AccessibilitySnapshot', '0.5.0'
 end

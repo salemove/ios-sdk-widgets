@@ -33,7 +33,18 @@ class ChatViewModelTests: XCTestCase {
                 uploadFileToEngagement: { _, _, _ in },
                 fileManager: fileManager,
                 data: .failing,
-                date: { Date.mock }
+                date: { Date.mock },
+                gcd: .failing,
+                localFileThumbnailQueue: .failing,
+                uiImage: .failing,
+                createFileDownload: { _, _, _ in
+                    .mock(
+                        file: .mock(),
+                        storage: FileSystemStorage.failing,
+                        environment: .failing
+                    )
+                },
+                fromHistory: { true }
             )
         )
 

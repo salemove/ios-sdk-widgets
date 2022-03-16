@@ -1,5 +1,6 @@
 import UIKit
 
+// swiftlint:disable type_body_length
 class CallView: EngagementView {
     enum Mode {
         case audio
@@ -7,18 +8,35 @@ class CallView: EngagementView {
         case upgrading
     }
 
-    let operatorNameLabel = UILabel()
-    let durationLabel = UILabel()
+    let operatorNameLabel: UILabel = {
+        let label = UILabel()
+        label.accessibilityHint = "Displays operator name."
+        return label
+    }()
+    let durationLabel: UILabel = {
+        let label = UILabel()
+        label.accessibilityHint = "Displays call duration."
+        return label
+    }()
     let topLabel = UILabel()
     let bottomLabel = UILabel()
     let buttonBar: CallButtonBar
-    let localVideoView = VideoStreamView(.local)
-    let remoteVideoView = VideoStreamView(.remote)
+    let localVideoView: VideoStreamView = {
+        let streamView = VideoStreamView(.local)
+        streamView.accessibilityLabel = "Your Video"
+        return streamView
+    }()
+    let remoteVideoView: VideoStreamView = {
+        let streamView = VideoStreamView(.remote)
+        // Consider to provide Operator name instead of generic 'Operator's'
+        streamView.accessibilityLabel = "Operator's Video"
+        return streamView
+    }()
     var callButtonTapped: ((CallButton.Kind) -> Void)?
 
     private let style: CallStyle
     private var mode: Mode = .audio
-    private let topView = UIView()
+    private let topView = UIView() // does not seem to be used
     private let topStackView = UIStackView()
     private var hideBarsWorkItem: DispatchWorkItem?
     private var headerTopConstraint: NSLayoutConstraint!
@@ -48,7 +66,8 @@ class CallView: EngagementView {
             environment: .init(
                 data: environment.data,
                 uuid: environment.uuid,
-                gcd: environment.gcd
+                gcd: environment.gcd,
+                imageViewCache: environment.imageViewCache
             )
         )
         setup()
@@ -162,6 +181,9 @@ class CallView: EngagementView {
         localVideoView.pan = { [weak self] in
             self?.adjustLocalVideoFrameAfterPanGesture(translation: $0)
         }
+
+        header.backButton.accessibilityLabel = "Back"
+        header.backButton.accessibilityHint = "Activates minimize."
     }
 
     private func layout() {
@@ -279,6 +301,7 @@ class CallView: EngagementView {
         }
     }
 }
+// swiftlint:enable type_body_length
 
 // MARK: Local Video
 
@@ -360,5 +383,6 @@ extension CallView {
         var data: FoundationBased.Data
         var uuid: () -> UUID
         var gcd: GCD
+        var imageViewCache: ImageView.Cache
     }
 }

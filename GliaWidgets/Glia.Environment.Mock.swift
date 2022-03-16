@@ -10,7 +10,12 @@ extension Glia.Environment {
         date: { .mock },
         fileManager: .mock,
         data: .mock,
-        gcd: .mock
+        gcd: .mock,
+        imageViewCache: .mock,
+        localFileThumbnailQueue: .mock(),
+        uiImage: .mock,
+        createFileDownload: { _, _, _ in .mock() },
+        fromHistory: { true }
     )
 }
 

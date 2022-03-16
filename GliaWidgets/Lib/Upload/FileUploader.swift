@@ -69,7 +69,15 @@ class FileUploader {
 
     func addUpload(with url: URL) -> FileUpload? {
         guard !limitReached.value else { return nil }
-        let localFile = LocalFile(with: url)
+        let localFile = LocalFile(
+            with: url,
+            environment: .init(
+                fileManager: environment.fileManager,
+                gcd: environment.gcd,
+                localFileThumbnailQueue: environment.localFileThumbnailQueue,
+                uiImage: environment.uiImage
+            )
+        )
         let upload = FileUpload(with: localFile, storage: storage, environment: .init(uploadFileToEngagement: environment.uploadFileToEngagement))
         upload.state.addObserver(self) { [weak self] _, _ in
             self?.updateState()
@@ -145,5 +153,8 @@ extension FileUploader {
         var fileManager: FoundationBased.FileManager
         var data: FoundationBased.Data
         var date: () -> Date
+        var gcd: GCD
+        var localFileThumbnailQueue: FoundationBased.OperationQueue
+        var uiImage: UIKitBased.UIImage
     }
 }

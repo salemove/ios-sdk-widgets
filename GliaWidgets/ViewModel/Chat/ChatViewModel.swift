@@ -57,7 +57,10 @@ class ChatViewModel: EngagementViewModel, ViewModel {
                 uploadFileToEngagement: environment.uploadFileToEngagement,
                 fileManager: environment.fileManager,
                 data: environment.data,
-                date: environment.date
+                date: environment.date,
+                gcd: environment.gcd,
+                localFileThumbnailQueue: environment.localFileThumbnailQueue,
+                uiImage: environment.uiImage
             )
         )
         self.downloader = FileDownloader(
@@ -65,8 +68,11 @@ class ChatViewModel: EngagementViewModel, ViewModel {
                 fetchFile: environment.fetchFile,
                 fileManager: environment.fileManager,
                 data: environment.data,
-                date: environment.date
-
+                date: environment.date,
+                gcd: environment.gcd,
+                localFileThumbnailQueue: environment.localFileThumbnailQueue,
+                uiImage: environment.uiImage,
+                createFileDownload: environment.createFileDownload
             )
         )
         super.init(
@@ -258,7 +264,7 @@ extension ChatViewModel {
 extension ChatViewModel {
     private func loadHistory() {
         let messages = environment.chatStorage.messages(interactor.queueID)
-        let items = messages.compactMap { ChatItem(with: $0, fromHistory: true) }
+        let items = messages.compactMap { ChatItem(with: $0, fromHistory: environment.fromHistory()) }
         historySection.set(items)
         action?(.refreshSection(historySection.index))
         action?(.scrollToBottom(animated: false))
@@ -737,18 +743,6 @@ extension ChatViewModel {
 
         action?(.refreshRow(index, in: messagesSection.index, animated: true))
         action?(.setChoiceCardInputModeEnabled(false))
-    }
-}
-
-extension ChatViewModel {
-    struct Environment {
-        var chatStorage: Glia.Environment.ChatStorage
-        var fetchFile: CoreSdkClient.FetchFile
-        var sendSelectedOptionValue: CoreSdkClient.SendSelectedOptionValue
-        var uploadFileToEngagement: CoreSdkClient.UploadFileToEngagement
-        var fileManager: FoundationBased.FileManager
-        var data: FoundationBased.Data
-        var date: () -> Date
     }
 }
 

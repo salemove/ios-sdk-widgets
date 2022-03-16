@@ -28,6 +28,7 @@ class FileUploadListView: UIView {
         uploadView.removeTapped = { [weak self] in self?.removeTapped?(upload) }
         stackView.insertArrangedSubview(uploadView, at: 0)
         updateHeight()
+        addAccessibilityProperties(for: uploadView)
     }
 
     func removeUploadView(with upload: FileUpload) {
@@ -35,15 +36,18 @@ class FileUploadListView: UIView {
         stackView.removeArrangedSubview(uploadView)
         uploadView.removeFromSuperview()
         updateHeight()
+        removeAccessibilityProperties(for: uploadView)
     }
 
     func removeAllUploadViews() {
         stackView.removeArrangedSubviews()
+        removeAccessibilityPropertiesForAllUploadViews()
         updateHeight()
     }
 
     private func setup() {
         stackView.axis = .vertical
+        stackView.accessibilityElements = []
     }
 
     private func layout() {
@@ -69,5 +73,23 @@ class FileUploadListView: UIView {
         } else {
             heightLayoutConstraint.constant = maxHeight
         }
+    }
+
+    func addAccessibilityProperties(for fileUploadView: FileUploadView) {
+        stackView.accessibilityElements?.append(fileUploadView)
+        stackView.accessibilityElements?.append(fileUploadView.removeButton)
+    }
+
+    func removeAccessibilityProperties(for fileUploadView: FileUploadView) {
+        stackView.accessibilityElements?.removeAll(
+            where: {
+                guard let view = $0 as? UIView else { return false }
+                return view === fileUploadView || view === fileUploadView.removeButton
+            }
+        )
+    }
+
+    func removeAccessibilityPropertiesForAllUploadViews() {
+        stackView.accessibilityElements?.removeAll()
     }
 }

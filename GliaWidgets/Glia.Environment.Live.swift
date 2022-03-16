@@ -10,7 +10,16 @@ extension Glia.Environment {
         date: Date.init,
         fileManager: .live,
         data: .live,
-        gcd: .live
+        gcd: .live,
+        imageViewCache: .live,
+        localFileThumbnailQueue: {
+            let queue: FoundationBased.OperationQueue = .live()
+            queue.setMaxConcurrentOperationCount(2)
+            return queue
+        }(),
+        uiImage: .live,
+        createFileDownload: FileDownload.init(with:storage:environment:),
+        fromHistory: { true }
     )
 }
 
