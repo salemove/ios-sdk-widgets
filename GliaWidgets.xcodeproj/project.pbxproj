@@ -229,6 +229,7 @@
 		9A3E1D9D27BA7741005634EB /* FoundationBased.Failing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3E1D9C27BA7741005634EB /* FoundationBased.Failing.swift */; };
 		9A3E1DA027BA7B9F005634EB /* FileSystemStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3E1D9F27BA7B9F005634EB /* FileSystemStorageTests.swift */; };
 		9A3E1DA227BA7D00005634EB /* FileSystemStorage.Environment.Failing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A3E1DA127BA7D00005634EB /* FileSystemStorage.Environment.Failing.swift */; };
+		9A41B66A27E2439000CF9F69 /* Call.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A41B66927E2439000CF9F69 /* Call.Mock.swift */; };
 		9A66172727A94587001C8E03 /* CoreSDKClient.Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A66172627A94587001C8E03 /* CoreSDKClient.Interface.swift */; };
 		9A66172A27A94826001C8E03 /* CoreSDKClient.Live.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A66172927A94826001C8E03 /* CoreSDKClient.Live.swift */; };
 		9A66172C27A94A4B001C8E03 /* CoreSDKClient.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A66172B27A94A4B001C8E03 /* CoreSDKClient.Mock.swift */; };
@@ -257,6 +258,9 @@
 		9AB196EA27C5390100FD60AB /* ChatAttachment.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB196E927C5390100FD60AB /* ChatAttachment.Mock.swift */; };
 		9ACC25D227B4727500BC5335 /* CoreSDKClient.Failing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ACC25D127B4727500BC5335 /* CoreSDKClient.Failing.swift */; };
 		9ACC25D427B474E800BC5335 /* Glia.Environment.Failing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ACC25D327B474E800BC5335 /* Glia.Environment.Failing.swift */; };
+		9AE9E4B127E0E45200BFE239 /* CallViewController.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE9E4B027E0E45200BFE239 /* CallViewController.Mock.swift */; };
+		9AE9E4B327E0E60F00BFE239 /* CallViewModel.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE9E4B227E0E60F00BFE239 /* CallViewModel.Mock.swift */; };
+		9AE9E4B527E0EE2E00BFE239 /* CallViewControllerVoiceOverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE9E4B427E0EE2E00BFE239 /* CallViewControllerVoiceOverTests.swift */; };
 		9AE9E4B727E1E30500BFE239 /* MockHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE9E4B627E1E30500BFE239 /* MockHelpers.swift */; };
 		C4119E04268F411D004DFEFB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4119E03268F411D004DFEFB /* SceneDelegate.swift */; };
 		C4119E06268F41D1004DFEFB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C4119E05268F41D1004DFEFB /* Main.storyboard */; };
@@ -561,6 +565,7 @@
 		9A3E1D9C27BA7741005634EB /* FoundationBased.Failing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoundationBased.Failing.swift; sourceTree = "<group>"; };
 		9A3E1D9F27BA7B9F005634EB /* FileSystemStorageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileSystemStorageTests.swift; sourceTree = "<group>"; };
 		9A3E1DA127BA7D00005634EB /* FileSystemStorage.Environment.Failing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileSystemStorage.Environment.Failing.swift; sourceTree = "<group>"; };
+		9A41B66927E2439000CF9F69 /* Call.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Call.Mock.swift; sourceTree = "<group>"; };
 		9A66172627A94587001C8E03 /* CoreSDKClient.Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreSDKClient.Interface.swift; sourceTree = "<group>"; };
 		9A66172927A94826001C8E03 /* CoreSDKClient.Live.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreSDKClient.Live.swift; sourceTree = "<group>"; };
 		9A66172B27A94A4B001C8E03 /* CoreSDKClient.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreSDKClient.Mock.swift; sourceTree = "<group>"; };
@@ -590,6 +595,9 @@
 		9AB196E927C5390100FD60AB /* ChatAttachment.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatAttachment.Mock.swift; sourceTree = "<group>"; };
 		9ACC25D127B4727500BC5335 /* CoreSDKClient.Failing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreSDKClient.Failing.swift; sourceTree = "<group>"; };
 		9ACC25D327B474E800BC5335 /* Glia.Environment.Failing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Glia.Environment.Failing.swift; sourceTree = "<group>"; };
+		9AE9E4B027E0E45200BFE239 /* CallViewController.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallViewController.Mock.swift; sourceTree = "<group>"; };
+		9AE9E4B227E0E60F00BFE239 /* CallViewModel.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallViewModel.Mock.swift; sourceTree = "<group>"; };
+		9AE9E4B427E0EE2E00BFE239 /* CallViewControllerVoiceOverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallViewControllerVoiceOverTests.swift; sourceTree = "<group>"; };
 		9AE9E4B627E1E30500BFE239 /* MockHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockHelpers.swift; sourceTree = "<group>"; };
 		9B8252BE9AE93B4EA9A50E55 /* Pods-TestingApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestingApp.release.xcconfig"; path = "Target Support Files/Pods-TestingApp/Pods-TestingApp.release.xcconfig"; sourceTree = "<group>"; };
 		9C45ADF8988F719DA1AC8444 /* Pods_TestingApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TestingApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -693,6 +701,7 @@
 			isa = PBXGroup;
 			children = (
 				1A0C143E25B85DB400B00695 /* CallViewController.swift */,
+				9AE9E4B027E0E45200BFE239 /* CallViewController.Mock.swift */,
 			);
 			path = Call;
 			sourceTree = "<group>";
@@ -728,6 +737,7 @@
 			isa = PBXGroup;
 			children = (
 				1A5F494A25CA86CA003E3678 /* Call.swift */,
+				9A41B66927E2439000CF9F69 /* Call.Mock.swift */,
 				9AB196DB27C3FFCC00FD60AB /* Call.Environment.Interface.swift */,
 				9AB196DD27C3FFF400FD60AB /* Call.Environment.Mock.swift */,
 			);
@@ -1585,6 +1595,7 @@
 				1A0C9AC025C93FC000815406 /* Duration */,
 				1A0C9AB925C93F5100815406 /* Data */,
 				1ABD6CAB25B71D1B00D56EFA /* CallViewModel.swift */,
+				9AE9E4B227E0E60F00BFE239 /* CallViewModel.Mock.swift */,
 			);
 			path = Call;
 			sourceTree = "<group>";
@@ -1699,6 +1710,7 @@
 			children = (
 				9A1992D627D61F8100161AAE /* ChatViewControllerVoiceOverTests.swift */,
 				9A1992D727D61F8100161AAE /* SnapshotTestCase.swift */,
+				9AE9E4B427E0EE2E00BFE239 /* CallViewControllerVoiceOverTests.swift */,
 			);
 			path = SnapshotTests;
 			sourceTree = "<group>";
@@ -2353,6 +2365,7 @@
 				1A0EDF5A25E786DB0076D1AD /* FileUploadStyle.swift in Sources */,
 				1A6075E02582209100569B0E /* UserImageView.swift in Sources */,
 				1AC7A7AF258786CB00567FF8 /* EngagementViewModel.swift in Sources */,
+				9AE9E4B327E0E60F00BFE239 /* CallViewModel.Mock.swift in Sources */,
 				1A6EBB2525ADE36900EE325D /* MediaUpgradePresenter.swift in Sources */,
 				1AA738B925790DB400E1120F /* ActionButtonStyle.swift in Sources */,
 				1A2DA71F25EF720400032611 /* FilePickerViewModel.swift in Sources */,
@@ -2390,6 +2403,7 @@
 				9A66172C27A94A4B001C8E03 /* CoreSDKClient.Mock.swift in Sources */,
 				1A5F8182258B4F0E00A605DA /* OutgoingMessage.swift in Sources */,
 				9A19926E27D3BB7800161AAE /* Theme.Mock.swift in Sources */,
+				9AE9E4B127E0E45200BFE239 /* CallViewController.Mock.swift in Sources */,
 				6B48213E2735873300F2900A /* Feature.swift in Sources */,
 				1A60AFCA2566943F00E53F53 /* RootCoordinator.swift in Sources */,
 				1ABD6C9225B6F2D200D56EFA /* String+TemplateString.swift in Sources */,
@@ -2424,6 +2438,7 @@
 				1A1E30C725F9FDAB00850E68 /* ChatImageFileContentView.swift in Sources */,
 				756087E127837EC000158604 /* BundleManaging.swift in Sources */,
 				1A60AF90256674F000E53F53 /* Font.swift in Sources */,
+				9A41B66A27E2439000CF9F69 /* Call.Mock.swift in Sources */,
 				1A4674C225E92A710078FA1C /* AtttachmentSourceItemKind.swift in Sources */,
 				9A1992EB27D6C0F000161AAE /* FileSystemStorage.Mock.swift in Sources */,
 				1A4674AC25E905D00078FA1C /* AttachmentSourceItemView.swift in Sources */,
@@ -2500,6 +2515,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9AE9E4B527E0EE2E00BFE239 /* CallViewControllerVoiceOverTests.swift in Sources */,
 				9A1992D827D61F8100161AAE /* ChatViewControllerVoiceOverTests.swift in Sources */,
 				9A1992D927D61F8100161AAE /* SnapshotTestCase.swift in Sources */,
 			);
