@@ -289,6 +289,10 @@ extension Interactor: CoreSdkClient.Interactable {
         return { _ in }
     }
 
+    var onEngagementTransferring: CoreSdkClient.EngagementTransferringBlock {
+        { }
+    }
+
     var onOperatorTypingStatusUpdate: CoreSdkClient.OperatorTypingStatusUpdate {
         return { [weak self] operatorTypingStatus in
             self?.notify(.typingStatusUpdated(operatorTypingStatus))
@@ -343,15 +347,7 @@ extension Interactor: CoreSdkClient.Interactable {
     }
 
     func end() {
-        // Example how to fetch survey:
-        //  guard let engagement = environment.coreSdk.getCurrentEngagement() else { return }
-        //  engagement.getSurvey { print("\($0)") }
-
-        if isEngagementEndedByVisitor {
-            state = .ended(.byVisitor)
-        } else {
-            state = .ended(.byOperator)
-        }
+        state = isEngagementEndedByVisitor == true ? .ended(.byVisitor) : .ended(.byOperator)
     }
 
     func fail(error: CoreSdkClient.SalemoveError) {

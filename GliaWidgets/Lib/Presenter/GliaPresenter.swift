@@ -52,7 +52,11 @@ final class GliaPresenter {
         animated: Bool,
         completion: (() -> Void)?
     ) {
-        viewController.presentingViewController?.dismiss(
+        guard let presentingViewController = viewController.presentingViewController else {
+            completion?()
+            return
+        }
+        presentingViewController.dismiss(
             animated: animated,
             completion: completion
         )

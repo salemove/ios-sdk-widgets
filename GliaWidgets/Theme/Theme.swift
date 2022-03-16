@@ -37,6 +37,12 @@ public class Theme {
     /// Style of the minimized bubble.
     public lazy var minimizedBubble: BubbleStyle = { return minimizedBubbleStyle }()
 
+    /// Survey view style.
+    public lazy var survey: SurveyStyle = .default(
+        color: color,
+        font: font
+    )
+
     /// Controls the visibility of the "Powered by" text and image.
     public var showsPoweredBy: Bool
 
