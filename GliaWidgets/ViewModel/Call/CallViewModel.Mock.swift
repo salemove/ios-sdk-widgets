@@ -13,10 +13,10 @@ extension CallViewModel {
             interactor: interactor,
             alertConfiguration: alertConfiguration,
             screenShareHandler: screenShareHandler,
+            environment: environment,
             call: call,
             unreadMessages: unreadMessages,
-            startWith: startWith,
-            environment: environment
+            startWith: startWith
         )
     }
 }

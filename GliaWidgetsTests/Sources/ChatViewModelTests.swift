@@ -45,7 +45,9 @@ class ChatViewModelTests: XCTestCase {
                     )
                 },
                 fromHistory: { true },
-                fetchSiteConfigurations: { _ in }
+                fetchSiteConfigurations: { _ in },
+                getCurrentEngagement: { nil },
+                timerProviding: .mock
             )
         )
 

@@ -103,3 +103,10 @@
 "call.onHold.topText" = "On Hold";
 "call.onHold.bottomText" = "You can continue browsing while you are on hold";
 "call.onHold.localVideoStreamLabelText" = "You";
+
+"survey.action.cancel" = "Cancel";
+"survey.action.submit" = "Submit";
+"survey.action.yes" = "Yes";
+"survey.action.no" = "No";
+"survey.header.visitorSurvey" = "Visitor Survey";
+"survey.action.validationError" = "Please provide an answer.";
