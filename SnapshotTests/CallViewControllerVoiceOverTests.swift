@@ -31,7 +31,7 @@ class CallViewControllerVoiceOverTests: SnapshotTestCase {
         )
     }
 
-    func test_mockVideoCallConnectingState() throws {
+    func _test_mockVideoCallConnectingState() throws {
         let viewController = try CallViewController.mockVideoCallConnectingState()
         assertSnapshot(
             matching: viewController,
@@ -40,8 +40,17 @@ class CallViewControllerVoiceOverTests: SnapshotTestCase {
         )
     }
 
-    func test_mockVideoCallConnectedState() throws {
-        let viewController = try CallViewController.mockAudioCallConnectedState()
+    func _test_mockVideoCallConnectedState() throws {
+        let viewController = try CallViewController.mockVideoCallConnectedState()
+        assertSnapshot(
+            matching: viewController,
+            as: .accessibilityImage,
+            named: nameForDevice()
+        )
+    }
+
+    func _test_mockVideoCallQueueState() throws {
+        let viewController = try CallViewController.mockVideoCallQueueState()
         assertSnapshot(
             matching: viewController,
             as: .accessibilityImage,
