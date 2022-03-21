@@ -151,6 +151,7 @@ extension CoreSdkClient {
     typealias SalemoveError = SalemoveSDK.SalemoveError
     typealias ScreenshareOfferBlock = SalemoveSDK.ScreenshareOfferBlock
     typealias SingleChoiceOption = SalemoveSDK.SingleChoiceOption
+    typealias StreamableOnHoldHandler = SalemoveSDK.StreamableOnHoldHandler
     typealias StreamView = SalemoveSDK.StreamView
     typealias SuccessBlock = SalemoveSDK.SuccessBlock
     typealias VideoStreamable = SalemoveSDK.VideoStreamable

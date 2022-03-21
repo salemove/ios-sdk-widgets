@@ -105,4 +105,106 @@ extension CoreSdkClient.SingleChoiceOption {
         )
     }
 }
+
+extension CoreSdkClient {
+    class MockVideoStreamable: CoreSdkClient.VideoStreamable {
+        internal init(
+            onHold: CoreSdkClient.StreamableOnHoldHandler?,
+            getStreamViewFunc: @escaping () -> CoreSdkClient.StreamView,
+            playVideoFunc: @escaping () -> Void,
+            pauseFunc: @escaping () -> Void,
+            resumeFunc: @escaping () -> Void,
+            stopFunc: @escaping () -> Void,
+            getIsPausedFunc: @escaping () -> Bool,
+            setIsPausedFunc: @escaping (Bool) -> Void,
+            getIsRemoteFunc: @escaping () -> Bool,
+            setIsRemoteFunc: @escaping (Bool) -> Void
+        ) {
+            self.onHold = onHold
+            self.getStreamViewFunc = getStreamViewFunc
+            self.playVideoFunc = playVideoFunc
+            self.pauseFunc = pauseFunc
+            self.resumeFunc = resumeFunc
+            self.stopFunc = stopFunc
+            self.getIsPausedFunc = getIsPausedFunc
+            self.setIsPausedFunc = setIsPausedFunc
+            self.getIsRemoteFunc = getIsRemoteFunc
+            self.setIsRemoteFunc = setIsRemoteFunc
+        }
+
+        func getStreamView() -> CoreSdkClient.StreamView {
+            .init()
+        }
+
+        func playVideo() {
+            playVideoFunc()
+        }
+        func pause() {
+            pauseFunc()
+        }
+        func resume() {
+            resumeFunc()
+        }
+        func stop() {
+            stopFunc()
+        }
+
+        var isPaused: Bool {
+            get {
+                getIsPausedFunc()
+            }
+
+            set {
+                setIsPausedFunc(newValue)
+            }
+        }
+
+        var isRemote: Bool {
+            get {
+                getIsRemoteFunc()
+            }
+
+            set {
+                setIsRemoteFunc(newValue)
+            }
+        }
+
+        var onHold: CoreSdkClient.StreamableOnHoldHandler?
+        var getStreamViewFunc: () -> CoreSdkClient.StreamView
+        var playVideoFunc: () -> Void
+        var pauseFunc: () -> Void
+        var resumeFunc: () -> Void
+        var stopFunc: () -> Void
+        var getIsPausedFunc: () -> Bool
+        var setIsPausedFunc: (Bool) -> Void
+        var getIsRemoteFunc: () -> Bool
+        var setIsRemoteFunc: (Bool) -> Void
+
+        static func mock(
+            onHold: CoreSdkClient.StreamableOnHoldHandler? = nil,
+            getStreamViewFunc: @escaping () -> CoreSdkClient.StreamView = { .init() },
+            playVideoFunc: @escaping () -> Void = {},
+            pauseFunc: @escaping () -> Void = {} ,
+            resumeFunc: @escaping () -> Void = {},
+            stopFunc: @escaping () -> Void = {},
+            getIsPausedFunc: @escaping () -> Bool = { false },
+            setIsPausedFunc: @escaping (Bool) -> Void = { _ in },
+            getIsRemoteFunc: @escaping () -> Bool = { false },
+            setIsRemoteFunc: @escaping (Bool) -> Void = { _ in }
+        ) -> MockVideoStreamable {
+            .init(
+                onHold: onHold,
+                getStreamViewFunc: getStreamViewFunc,
+                playVideoFunc: playVideoFunc,
+                pauseFunc: pauseFunc,
+                resumeFunc: resumeFunc,
+                stopFunc: stopFunc,
+                getIsPausedFunc: getIsPausedFunc,
+                setIsPausedFunc: setIsPausedFunc,
+                getIsRemoteFunc: getIsRemoteFunc,
+                setIsRemoteFunc: setIsRemoteFunc
+            )
+        }
+    }
+}
 #endif
