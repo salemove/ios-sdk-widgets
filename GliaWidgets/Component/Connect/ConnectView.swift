@@ -13,7 +13,7 @@ class ConnectView: UIView {
 
     private let style: ConnectStyle
     private var state: State = .none
-    private var connectTimer: Timer?
+    private var connectTimer: FoundationBased.Timer?
     private var connectCounter: Int = 0
     private var isShowing = false
     private let environment: Environment
@@ -133,7 +133,7 @@ private extension ConnectView {
     private func startConnectTimer() {
         stopConnectTimer()
         connectCounter = 0
-        connectTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+        connectTimer = environment.timerProviding.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
             switch self.state {
             case .connecting:
                 self.connectCounter += 1
@@ -157,5 +157,6 @@ extension ConnectView {
         var uuid: () -> UUID
         var gcd: GCD
         var imageViewCache: ImageView.Cache
+        var timerProviding: FoundationBased.Timer.Providing
     }
 }
