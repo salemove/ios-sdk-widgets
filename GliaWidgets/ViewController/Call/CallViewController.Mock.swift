@@ -153,14 +153,20 @@ extension CallViewController {
             startWith: startAction
         )
         let theme = Theme.mock()
-        let viewFactEnv = ViewFactory.Environment.mock
+        var viewFactEnv = ViewFactory.Environment.mock
+        viewFactEnv.imageViewCache.getImageForKey = { _ in .mock }
         let viewFactory: ViewFactory = .mock(
             theme: theme,
             environment: viewFactEnv
         )
         let viewController = CallViewController.mock(viewModel: viewModel, viewFactory: viewFactory)
         viewController.view.frame = UIScreen.main.bounds
-        viewModel.action?(.connecting(name: "Blobby Blob", imageUrl: nil))
+        let operatorImageURL = URL.mock
+            .appendingPathComponent("operator")
+            .appendingPathComponent("123")
+            .appendingPathComponent("avatar")
+            .appendingPathExtension("png")
+        viewModel.action?(.connecting(name: "Blobby Blob", imageUrl: operatorImageURL.absoluteString))
         return viewController
     }
 
@@ -242,8 +248,6 @@ extension CallViewController {
         viewModel.action?(.setButtonEnabled(.chat, enabled: true))
         viewModel.action?(.setButtonEnabled(.mute, enabled: true))
         viewModel.action?(.setButtonEnabled(.speaker, enabled: true))
-
-
 
         call.updateVideoStream(with: CoreSdkClient.MockVideoStreamable.mock())
         return viewController

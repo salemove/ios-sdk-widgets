@@ -59,3 +59,22 @@ extension FoundationBased.OperationQueue {
         }
     )
 }
+
+extension FoundationBased.Timer {
+    static let failing = Self(
+        invalidate: { fail("\(Self.self).invalidate") }
+    )
+}
+
+extension FoundationBased.Timer.Providing {
+    static let failing = Self(
+        scheduledTimerWithTimeIntervalAndTarget: { _, _, _, _, _ in
+            fail("\(Self.self).scheduledTimerWithTimeIntervalAndTarget")
+            return .failing
+        },
+        scheduledTimerWithTimeIntervalAndRepeats: { _, _, _ in
+            fail("\(Self.self).scheduledTimerWithTimeIntervalAndRepeats")
+            return .failing
+        }
+    )
+}
