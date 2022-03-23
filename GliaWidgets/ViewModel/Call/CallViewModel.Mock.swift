@@ -6,7 +6,8 @@ extension CallViewModel {
         screenShareHandler: ScreenShareHandler = .init(),
         call: Call = .init(.audio, environment: .mock),
         unreadMessages: ObservableValue<Int> = .init(with: .zero),
-        startWith: StartAction = .engagement(mediaType: .audio)
+        startWith: StartAction = .engagement(mediaType: .audio),
+        environment: CallViewModel.Environment = .mock
     ) -> CallViewModel {
         .init(
             interactor: interactor,
@@ -14,7 +15,8 @@ extension CallViewModel {
             screenShareHandler: screenShareHandler,
             call: call,
             unreadMessages: unreadMessages,
-            startWith: startWith
+            startWith: startWith,
+            environment: environment
         )
     }
 }

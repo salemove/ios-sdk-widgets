@@ -203,7 +203,8 @@ public class Glia {
                 localFileThumbnailQueue: environment.localFileThumbnailQueue,
                 uiImage: environment.uiImage,
                 createFileDownload: environment.createFileDownload,
-                fromHistory: environment.fromHistory
+                fromHistory: environment.fromHistory,
+                timerProviding: environment.timerProviding
             )
         )
         rootCoordinator?.delegate = { [weak self] event in

@@ -61,8 +61,9 @@ class CallViewModel: EngagementViewModel, ViewModel {
 
     private let call: Call
     private let startWith: StartAction
-    private let durationCounter = CallDurationCounter()
+    private let durationCounter: CallDurationCounter
     private let screenShareHandler: ScreenShareHandler
+    private let environment: Environment
 
     init(
         interactor: Interactor,
@@ -70,11 +71,14 @@ class CallViewModel: EngagementViewModel, ViewModel {
         screenShareHandler: ScreenShareHandler,
         call: Call,
         unreadMessages: ObservableValue<Int>,
-        startWith: StartAction
+        startWith: StartAction,
+        environment: Environment
     ) {
         self.call = call
         self.startWith = startWith
         self.screenShareHandler = screenShareHandler
+        self.environment = environment
+        self.durationCounter = CallDurationCounter(environment: .init(timerProviding: environment.timerProviding))
         super.init(
             interactor: interactor,
             alertConfiguration: alertConfiguration,

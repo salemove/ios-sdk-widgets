@@ -5,14 +5,19 @@ class CallDurationCounter {
     var isActive: Bool { timer != nil }
 
     private var onUpdate: ((Int) -> Void)?
-    private var timer: Timer?
+    private var timer: FoundationBased.Timer?
     private var startTime: TimeInterval?
+    private var environment: Environment
+
+    init(environment: Environment) {
+        self.environment = environment
+    }
 
     func start(onUpdate: @escaping (Int) -> Void) {
         self.onUpdate = onUpdate
 
         startTime = Date().timeIntervalSince1970
-        timer = Timer.scheduledTimer(
+        timer = environment.timerProviding.scheduledTimer(
             timeInterval: 1.0,
             target: self,
             selector: #selector(update),
@@ -37,5 +42,11 @@ class CallDurationCounter {
         let duration = Int(currentTime - startTime)
 
         onUpdate?(duration)
+    }
+}
+
+extension CallDurationCounter {
+    struct Environment {
+        var timerProviding: FoundationBased.Timer.Providing
     }
 }
