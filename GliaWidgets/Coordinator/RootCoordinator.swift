@@ -217,7 +217,8 @@ extension RootCoordinator {
             call: call,
             unreadMessages: unreadMessages,
             screenShareHandler: screenShareHandler,
-            startAction: startAction
+            startAction: startAction,
+            environment: .init(timerProviding: environment.timerProviding)
         )
         coordinator.delegate = { [weak self] event in
             switch event {
@@ -394,6 +395,7 @@ extension RootCoordinator {
         var uiImage: UIKitBased.UIImage
         var createFileDownload: FileDownloader.CreateFileDownload
         var fromHistory: () -> Bool
+        var timerProviding: FoundationBased.Timer.Providing
     }
 }
 

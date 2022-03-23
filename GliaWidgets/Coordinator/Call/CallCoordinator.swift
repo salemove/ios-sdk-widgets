@@ -18,6 +18,7 @@ class CallCoordinator: SubFlowCoordinator, FlowCoordinator {
     private let unreadMessages: ObservableValue<Int>
     private let screenShareHandler: ScreenShareHandler
     private let startAction: CallViewModel.StartAction
+    private let environment: Environment
 
     init(
         interactor: Interactor,
@@ -26,7 +27,8 @@ class CallCoordinator: SubFlowCoordinator, FlowCoordinator {
         call: Call,
         unreadMessages: ObservableValue<Int>,
         screenShareHandler: ScreenShareHandler,
-        startAction: CallViewModel.StartAction
+        startAction: CallViewModel.StartAction,
+        environment: Environment
     ) {
         self.interactor = interactor
         self.viewFactory = viewFactory
@@ -35,6 +37,7 @@ class CallCoordinator: SubFlowCoordinator, FlowCoordinator {
         self.unreadMessages = unreadMessages
         self.screenShareHandler = screenShareHandler
         self.startAction = startAction
+        self.environment = environment
     }
 
     func start() -> CallViewController {
@@ -55,7 +58,8 @@ class CallCoordinator: SubFlowCoordinator, FlowCoordinator {
             screenShareHandler: screenShareHandler,
             call: call,
             unreadMessages: unreadMessages,
-            startWith: startAction
+            startWith: startAction,
+            environment: .init(timerProviding: environment.timerProviding)
         )
         viewModel.engagementDelegate = { [weak self] event in
             switch event {
@@ -79,5 +83,11 @@ class CallCoordinator: SubFlowCoordinator, FlowCoordinator {
             viewModel: viewModel,
             viewFactory: viewFactory
         )
+    }
+}
+
+extension CallCoordinator {
+    struct Environment {
+        var timerProviding: FoundationBased.Timer.Providing
     }
 }
