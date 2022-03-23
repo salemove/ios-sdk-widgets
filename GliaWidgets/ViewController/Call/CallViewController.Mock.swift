@@ -155,6 +155,13 @@ extension CallViewController {
         let theme = Theme.mock()
         var viewFactEnv = ViewFactory.Environment.mock
         viewFactEnv.imageViewCache.getImageForKey = { _ in .mock }
+        viewFactEnv.timerProviding.scheduledTimerWithTimeIntervalAndRepeats = { _, _, callback in
+            // make timer fire 3 times
+            for _ in 0 ..< 3 {
+                callback(.mock)
+            }
+            return .mock
+        }
         let viewFactory: ViewFactory = .mock(
             theme: theme,
             environment: viewFactEnv
