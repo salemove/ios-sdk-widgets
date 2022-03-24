@@ -78,7 +78,12 @@ class CallViewModel: EngagementViewModel, ViewModel {
         self.startWith = startWith
         self.screenShareHandler = screenShareHandler
         self.environment = environment
-        self.durationCounter = CallDurationCounter(environment: .init(timerProviding: environment.timerProviding))
+        self.durationCounter = CallDurationCounter(
+            environment: .init(
+                timerProviding: environment.timerProviding,
+                date: environment.date
+            )
+        )
         super.init(
             interactor: interactor,
             alertConfiguration: alertConfiguration,

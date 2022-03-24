@@ -233,13 +233,19 @@ extension CallViewController {
         let call = Call.mock(kind: callKind, environment: callEnv)
         let unreadMessages = ObservableValue<Int>.init(with: .zero)
         let startAction = CallViewModel.StartAction.engagement(mediaType: .video)
+        var callViewModelEnv = CallViewModel.Environment.mock
+        callViewModelEnv.timerProviding.scheduledTimerWithTimeIntervalAndTarget = { _, target, _, _, _ in
+            (target as? GliaWidgets.CallDurationCounter)?.update()
+            return .mock
+        }
         let viewModel = CallViewModel.mock(
             interactor: interactor,
             alertConfiguration: alertConf,
             screenShareHandler: screenShareHandler,
             call: call,
             unreadMessages: unreadMessages,
-            startWith: startAction
+            startWith: startAction,
+            environment: callViewModelEnv
         )
         let theme = Theme.mock()
         let viewFactEnv = ViewFactory.Environment.mock
@@ -257,6 +263,7 @@ extension CallViewController {
         viewModel.action?(.setButtonEnabled(.speaker, enabled: true))
 
         call.updateVideoStream(with: CoreSdkClient.MockVideoStreamable.mock())
+        call.state.value = .started
         return viewController
     }
 }
