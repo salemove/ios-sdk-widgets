@@ -59,7 +59,10 @@ class CallCoordinator: SubFlowCoordinator, FlowCoordinator {
             call: call,
             unreadMessages: unreadMessages,
             startWith: startAction,
-            environment: .init(timerProviding: environment.timerProviding)
+            environment: .init(
+                timerProviding: environment.timerProviding,
+                date: environment.date
+            )
         )
         viewModel.engagementDelegate = { [weak self] event in
             switch event {
@@ -89,5 +92,6 @@ class CallCoordinator: SubFlowCoordinator, FlowCoordinator {
 extension CallCoordinator {
     struct Environment {
         var timerProviding: FoundationBased.Timer.Providing
+        var date: () -> Date
     }
 }

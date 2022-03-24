@@ -218,7 +218,10 @@ extension RootCoordinator {
             unreadMessages: unreadMessages,
             screenShareHandler: screenShareHandler,
             startAction: startAction,
-            environment: .init(timerProviding: environment.timerProviding)
+            environment: .init(
+                timerProviding: environment.timerProviding,
+                date: environment.date
+            )
         )
         coordinator.delegate = { [weak self] event in
             switch event {
