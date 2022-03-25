@@ -1,4 +1,6 @@
 #if DEBUG
+import Foundation
+
 func jsonField(_ key: String, value: String) -> String {
     """
     "\(key)": "\(value)"
