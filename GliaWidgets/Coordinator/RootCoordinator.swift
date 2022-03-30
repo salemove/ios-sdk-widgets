@@ -204,11 +204,12 @@ extension RootCoordinator {
         case .finished(let engagementId, let survey):
             popCoordinator()
             if let survey = survey, let engagementId = engagementId {
-                let viewController = Survey.ViewController()
+                let viewController = Survey.ViewController(theme: viewFactory.theme)
                 viewController.props = .live(
                     sdkSurvey: survey,
                     engagementId: engagementId,
                     submitSurveyAnswer: self.environment.submitSurveyAnswer,
+                    cancel: { [weak self] in viewController.dismiss(animated: true); self?.end() },
                     updateProps: { viewController.props = $0 },
                     completion: { [weak self] in self?.end() }
                 )
@@ -280,11 +281,12 @@ extension RootCoordinator {
             case .finished(let engagementId, let survey):
                 self.popCoordinator()
                 if let survey = survey, let engagementId = engagementId {
-                    let viewController = Survey.ViewController()
+                    let viewController = Survey.ViewController(theme: self.viewFactory.theme)
                     viewController.props = .live(
                         sdkSurvey: survey,
                         engagementId: engagementId,
                         submitSurveyAnswer: self.environment.submitSurveyAnswer,
+                        cancel: { [weak self] in viewController.dismiss(animated: true); self?.end() },
                         updateProps: { viewController.props = $0 },
                         completion: { [weak self] in self?.end() }
                     )

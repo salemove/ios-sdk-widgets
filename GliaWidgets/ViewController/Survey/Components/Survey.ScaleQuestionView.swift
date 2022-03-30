@@ -23,8 +23,12 @@ extension Survey {
 
         // MARK: - Lifycycle
 
-        init(props: Props) {
+        init(
+            props: Props,
+            style: Theme.SurveyStyle.ScaleQuestion
+        ) {
             self.props = props
+            self.style = style
             super.init()
         }
 
@@ -50,7 +54,7 @@ extension Survey {
             case 1...:
                 var constraints = [NSLayoutConstraint](); defer { NSLayoutConstraint.activate(constraints) }
                 (0..<delta).forEach { _ in
-                    let buttonView = ButtonView()
+                    let buttonView = ButtonView(style: style.option)
                     constraints.append(buttonView.widthAnchor.constraint(equalToConstant: 48))
                     constraints.append(buttonView.heightAnchor.constraint(equalToConstant: 52))
                     optionsStack.addArrangedSubview(buttonView)
@@ -61,6 +65,9 @@ extension Survey {
             }
 
             title.attributedText = .withRequiredSymbol(
+                foregroundColor: .init(hex: style.title.color),
+                fontSize: style.title.fontSize,
+                fontWeight: style.title.fontWeight,
                 isRequired: props.isRequired,
                 text: props.title
             )
@@ -74,6 +81,10 @@ extension Survey {
                 }
             validationError.isHidden = !props.showValidationError
         }
+
+        // MARK: - Private
+
+        private let style: Theme.SurveyStyle.ScaleQuestion
     }
 }
 

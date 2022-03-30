@@ -14,17 +14,18 @@ extension Survey {
         }
 
         let value = UILabel().makeView {
-            $0.clipsToBounds = true
             $0.textAlignment = .center
-            $0.layer.cornerRadius = 4
-            $0.layer.borderWidth = 1
-            $0.layer.borderColor = UIColor.gray.cgColor
+            $0.clipsToBounds = true
         }
 
         var props: Props { didSet { render() } }
 
-        init(props: Props = .init(title: "", state: .active, onSelection: {})) {
+        init(
+            props: Props = .init(title: "", state: .active, onSelection: {}),
+            style: Theme.SurveyStyle.OptionButton
+        ) {
             self.props = props
+            self.style = style
             super.init()
         }
 
@@ -50,23 +51,48 @@ extension Survey {
 
         func render() {
             value.text = props.title
+            updateUi()
+        }
+
+        func updateUi() {
             switch props.state {
             case .active:
-                value.layer.borderColor = UIColor.blue.cgColor
-                value.backgroundColor = .clear
-                value.textColor = .black
+                value.layer.cornerRadius = style.normalLayer.cornerRadius
+                value.layer.borderWidth = style.normalLayer.borderWidth
+                value.layer.borderColor = UIColor(hex: style.normalLayer.borderColor).cgColor
+                if let hex = style.normalLayer.background {
+                    value.backgroundColor = UIColor(hex: hex)
+                } else {
+                    value.backgroundColor = .clear
+                }
+                value.textColor = .init(hex: style.normalText.color)
             case .highlighted:
-                value.layer.borderColor = UIColor.red.cgColor
-                value.backgroundColor = .clear
-                value.textColor = .red
+                value.layer.cornerRadius = style.highlightedLayer.cornerRadius
+                value.layer.borderWidth = style.highlightedLayer.borderWidth
+                value.layer.borderColor = UIColor(hex: style.highlightedLayer.borderColor).cgColor
+                if let hex = style.highlightedLayer.background {
+                    value.backgroundColor = UIColor(hex: hex)
+                } else {
+                    value.backgroundColor = .clear
+                }
+                value.textColor = .init(hex: style.highlightedText.color)
             case .selected:
-                value.layer.borderColor = UIColor.blue.cgColor
-                value.backgroundColor = UIColor.blue
-                value.textColor = .white
+
+                value.layer.cornerRadius = style.selectedLayer.cornerRadius
+                value.layer.borderWidth = style.selectedLayer.borderWidth
+                value.layer.borderColor = UIColor(hex: style.selectedLayer.borderColor).cgColor
+                if let hex = style.selectedLayer.background {
+                    value.backgroundColor = UIColor(hex: hex)
+                } else {
+                    value.backgroundColor = .clear
+                }
+                value.textColor = .init(hex: style.selectedText.color)
             }
         }
 
         // MARK: - Private
+
+        private let style: Theme.SurveyStyle.OptionButton
 
         @objc private func tapGestureAction(sender: UITapGestureRecognizer) {
             props.onSelection()

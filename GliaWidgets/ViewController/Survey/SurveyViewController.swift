@@ -29,8 +29,12 @@ extension Survey {
         @available(*, unavailable)
         required init?(coder: NSCoder) { preconditionFailure() }
 
-        init(props: Props = .init()) {
+        init(
+            props: Props = .init(),
+            theme: Theme
+        ) {
             self.props = props
+            self.theme = theme
             super.init(nibName: nil, bundle: nil)
             modalPresentationStyle = .overCurrentContext
             modalTransitionStyle = .crossDissolve
@@ -62,9 +66,12 @@ extension Survey {
         func render() {
             contentView.header.text = props.header
             props.questionsProps.count == contentView.surveyItemsStack.arrangedSubviews.count ? updateProps() : reloadProps()
+            contentView.updateUi(theme: theme)
         }
 
         // MARK: - Private
+
+        private let theme: Theme
 
         // swiftlint:disable force_cast
         private var contentView: ContentView { view as! ContentView }
@@ -74,7 +81,7 @@ extension Survey {
             contentView.surveyItemsStack.removeArrangedSubviews()
             contentView.surveyItemsStack.addArrangedSubviews(
                 props.questionsProps
-                    .compactMap { $0.makeQuestionView() }
+                    .compactMap { $0.makeQuestionView(theme: theme) }
             )
         }
 
@@ -110,15 +117,15 @@ extension Survey {
 }
 
 extension Survey.QuestionPropsProtocol {
-    func makeQuestionView() -> UIView? {
+    func makeQuestionView(theme: Theme) -> UIView? {
         if let inputProps = self as? Survey.InputQuestionView.Props {
-            return Survey.InputQuestionView(props: inputProps)
+            return Survey.InputQuestionView(props: inputProps, style: theme.survey.inputQuestion)
         } else if let scaleProps = self as? Survey.ScaleQuestionView.Props {
-            return Survey.ScaleQuestionView(props: scaleProps)
+            return Survey.ScaleQuestionView(props: scaleProps, style: theme.survey.scaleQuestion)
         } else if let booleanProps = self as? Survey.BooleanQuestionView.Props {
-            return Survey.BooleanQuestionView(props: booleanProps)
+            return Survey.BooleanQuestionView(props: booleanProps, style: theme.survey.booleanQuestion)
         } else if let singleProps = self as? Survey.SingleChoiceQuestionView.Props {
-            return Survey.SingleChoiceQuestionView(props: singleProps)
+            return Survey.SingleChoiceQuestionView(props: singleProps, style: theme.survey.singleQuestion)
         }
         return nil
     }

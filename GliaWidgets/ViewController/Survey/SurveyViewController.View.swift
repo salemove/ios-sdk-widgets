@@ -5,15 +5,11 @@ extension Survey {
 
         // MARK: - Survey questions container
 
-        let header = UILabel().make {
-            $0.font = .systemFont(ofSize: 24)
-            $0.text = "🤷‍♂️"
+        lazy var header = UILabel().make {
             $0.numberOfLines = 0
             $0.textAlignment = .center
         }
         let scrollView = UIScrollView().makeView {
-            $0.backgroundColor = .white
-            $0.layer.cornerRadius = 30
             $0.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         }
         lazy var surveyItemsStack = UIStackView.make(.vertical, spacing: 24)()
@@ -25,7 +21,6 @@ extension Survey {
         // MARK: - Button container
 
         let buttonContainer = UIView().makeView {
-            $0.backgroundColor = .white
             $0.layer.masksToBounds = false
             $0.layer.shadowColor = UIColor.black.cgColor
             $0.layer.shadowOpacity = 0.15
@@ -34,15 +29,9 @@ extension Survey {
         }
         let cancelButton = UIButton(type: .custom).make {
             $0.setTitle("Cancel", for: .normal)
-            $0.backgroundColor = .init(hex: "#D11149")
-            $0.titleLabel?.font = .systemFont(ofSize: 16)
-            $0.layer.cornerRadius = 4
         }
         let submitButton = UIButton(type: .custom).make {
             $0.setTitle("Submit", for: .normal)
-            $0.backgroundColor = .init(hex: "#0F6BFF")
-            $0.titleLabel?.font = .systemFont(ofSize: 16)
-            $0.layer.cornerRadius = 4
         }
         lazy var buttonStackView = UIStackView.make(.horizontal, spacing: 16)(
             cancelButton,
@@ -119,6 +108,30 @@ extension Survey {
             constraints.constraints(with: .bottom).first?.constant = 0
         }
 
+        func updateUi(theme: Theme) {
+            header.font = .systemFont(ofSize: theme.survey.title.fontSize)
+            if let hex = theme.survey.layer.background {
+                scrollView.backgroundColor = .init(hex: hex)
+                buttonContainer.backgroundColor = .init(hex: hex)
+            }
+            scrollView.layer.cornerRadius = theme.survey.layer.cornerRadius
+            cancelButton.backgroundColor = .init(hex: theme.survey.cancellButton.background)
+            cancelButton.layer.cornerRadius = theme.survey.cancellButton.cornerRadius
+            cancelButton.titleLabel?.font = .systemFont(
+                ofSize: theme.survey.cancellButton.title.fontSize,
+                weight: .init(rawValue: theme.survey.cancellButton.title.fontWeight)
+            )
+            cancelButton.setTitleColor(.init(hex: theme.survey.cancellButton.title.color), for: .normal)
+
+            submitButton.backgroundColor = .init(hex: theme.survey.submitButton.background)
+            submitButton.layer.cornerRadius = theme.survey.submitButton.cornerRadius
+            submitButton.titleLabel?.font = .systemFont(
+                ofSize: theme.survey.submitButton.title.fontSize,
+                weight: .init(theme.survey.submitButton.title.fontWeight)
+            )
+            submitButton.setTitleColor(.init(hex: theme.survey.submitButton.title.color), for: .normal)
+        }
+
         // MARK: - Private
 
         private static let contentPadding: CGFloat = 24
@@ -126,8 +139,20 @@ extension Survey {
 }
 
 extension NSAttributedString {
-    static func withRequiredSymbol(isRequired: Bool, text: String) -> NSAttributedString {
-        let mutableString = NSMutableAttributedString(string: text)
+    static func withRequiredSymbol(
+        foregroundColor: UIColor,
+        fontSize: CGFloat,
+        fontWeight: CGFloat,
+        isRequired: Bool,
+        text: String
+    ) -> NSAttributedString {
+        let mutableString = NSMutableAttributedString(
+            string: text,
+            attributes: [
+                .foregroundColor: foregroundColor,
+                    .font: UIFont.systemFont(ofSize: fontSize, weight: .init(fontWeight))
+            ]
+        )
         if isRequired {
             mutableString.append(.init(string: " *", attributes: [.foregroundColor: UIColor.red]))
         }

@@ -22,8 +22,12 @@ extension Survey {
 
         // MARK: - Lifycycle
 
-        init(props: Props) {
+        init(
+            props: Props,
+            style: Theme.SurveyStyle.SingleQuestion
+        ) {
             self.props = props
+            self.style = style
             super.init()
         }
 
@@ -50,11 +54,14 @@ extension Survey {
                 break
             default:
                 (0..<abs(delta)).forEach { _ in
-                    optionsStack.addArrangedSubview(CheckboxView())
+                    optionsStack.addArrangedSubview(CheckboxView(style: style.optionText))
                 }
             }
 
             title.attributedText = .withRequiredSymbol(
+                foregroundColor: .init(hex: style.title.color),
+                fontSize: style.title.fontSize,
+                fontWeight: style.title.fontWeight,
                 isRequired: props.isRequired,
                 text: props.title
             )
@@ -70,6 +77,10 @@ extension Survey {
                 }
             validationError.isHidden = !props.showValidationError
         }
+
+        // MARK: - Private
+
+        private let style: Theme.SurveyStyle.SingleQuestion
     }
 }
 

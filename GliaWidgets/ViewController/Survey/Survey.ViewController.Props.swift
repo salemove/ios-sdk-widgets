@@ -6,13 +6,14 @@ extension Survey.ViewController.Props {
         sdkSurvey: CoreSdkClient.Survey,
         engagementId: String,
         submitSurveyAnswer: @escaping CoreSdkClient.SubmitSurveyAnswer,
+        cancel: @escaping () -> Void,
         updateProps: @escaping (Self) -> Void,
         completion: @escaping () -> Void
     ) -> Self {
         var props = Survey.ViewController.Props(
             header: "Visitor Survey",
             submit: { _ in },
-            cancel: {}
+            cancel: cancel
         )
 
         var questions = [String: SurveyQuestionPropsProtocol]()
@@ -72,7 +73,7 @@ extension Survey.ViewController.Props {
             }
 
             submitSurveyAnswer(
-                props.toCoreSdkAnswers(),
+                currentProps.toCoreSdkAnswers(),
                 sdkSurvey.id,
                 engagementId
             ) { _ in

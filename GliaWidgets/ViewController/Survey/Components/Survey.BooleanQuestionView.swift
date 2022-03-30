@@ -20,8 +20,12 @@ extension Survey {
             validationError
         )
 
-        init(props: Props) {
+        init(
+            props: Props,
+            style: Theme.SurveyStyle.BooleanQuestion
+        ) {
             self.props = props
+            self.style = style
             super.init()
         }
 
@@ -46,17 +50,20 @@ extension Survey {
             case 1...:
                 var constraints = [NSLayoutConstraint](); defer { NSLayoutConstraint.activate(constraints) }
                 (0..<abs(delta)).forEach { _ in
-                    let buttonView = ButtonView()
+                    let buttonView = ButtonView(style: style.option)
                     constraints.append(buttonView.widthAnchor.constraint(equalToConstant: 48))
                     constraints.append(buttonView.heightAnchor.constraint(equalToConstant: 52))
                     optionsStack.addArrangedSubview(buttonView)
                 }
             case ..<0:
-                optionsStack.arrangedSubviews.prefix(abs(delta)).forEach { $0.removeFromSuperview() }
+                optionsStack.arrangedSubviews.suffix(abs(delta)).forEach { $0.removeFromSuperview() }
             default: break
             }
 
             title.attributedText = .withRequiredSymbol(
+                foregroundColor: .init(hex: style.title.color),
+                fontSize: style.title.fontSize,
+                fontWeight: style.title.fontWeight,
                 isRequired: props.isRequired,
                 text: props.title
             )
@@ -68,8 +75,13 @@ extension Survey {
                         option.select(option)
                     }
                 }
+            optionsStack.addArrangedSubview(UIView())
             validationError.isHidden = !props.showValidationError
         }
+
+        // MARK: - Private
+
+        private let style: Theme.SurveyStyle.BooleanQuestion
     }
 }
 

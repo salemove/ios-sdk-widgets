@@ -36,8 +36,12 @@ extension Survey {
 
         var props: Props { didSet { render() } }
 
-        init(props: Props = .init()) {
+        init(
+            props: Props = .init(),
+            style: Theme.Text
+        ) {
             self.props = props
+            self.style = style
             super.init()
         }
 
@@ -75,9 +79,13 @@ extension Survey {
             case .highlighted:
                 imageView.image = Asset.surveyCheckboxChecked.image
             }
+            value.font = .systemFont(ofSize: style.fontSize, weight: .init(style.fontWeight))
+            value.textColor = .init(hex: style.color)
         }
 
         // MARK: - Private
+
+        private let style: Theme.Text
 
         @objc private func tapGestureAction(sender: UITapGestureRecognizer) {
             props.onSelection()

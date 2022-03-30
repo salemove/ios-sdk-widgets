@@ -12,9 +12,7 @@ extension Survey {
             $0.numberOfLines = 0
         }
         let textView = UITextView().make {
-            $0.layer.cornerRadius = 4
-            $0.layer.borderWidth = 1
-            $0.layer.borderColor = UIColor.darkGray.cgColor
+            $0.clipsToBounds = true
         }
         let validationError = ValidationErrorView()
         lazy var contentStack = UIStackView.make(.vertical, spacing: 16)(
@@ -23,8 +21,12 @@ extension Survey {
             validationError
         )
 
-        init(props: Props) {
+        init(
+            props: Props,
+            style: Theme.SurveyStyle.InputQuestion
+        ) {
             self.props = props
+            self.style = style
             super.init()
         }
 
@@ -48,12 +50,28 @@ extension Survey {
 
         func render() {
             title.attributedText = .withRequiredSymbol(
+                foregroundColor: .init(hex: style.title.color),
+                fontSize: style.title.fontSize,
+                fontWeight: style.title.fontWeight,
                 isRequired: props.isRequired,
                 text: props.title
             )
             textView.text = props.value
             validationError.isHidden = !props.showValidationError
+            textView.layer.cornerRadius = props.showValidationError ?
+                style.option.highlightedLayer.cornerRadius :
+                style.option.normalLayer.cornerRadius
+            textView.layer.borderColor = props.showValidationError ?
+                UIColor(hex: style.option.highlightedLayer.borderColor).cgColor :
+                UIColor(hex: style.option.normalLayer.borderColor).cgColor
+            textView.layer.borderWidth = props.showValidationError ?
+                style.option.highlightedLayer.borderWidth :
+                style.option.normalLayer.borderWidth
         }
+
+        // MARK: - Private
+
+        private let style: Theme.SurveyStyle.InputQuestion
     }
 }
 
