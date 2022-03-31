@@ -55,11 +55,10 @@ class CallView: EngagementView {
     }()
 
     lazy var secondLabel: UILabel = {
-        let label = UILabel()
-        #warning("""
-                 Need to take into account that this label is also used for visitor on hold,
-                 by introducing separate accessibility hints for each state (on-hold/call-duration).
-                 """)
+        let label = UILabel() 
+//	MARK:
+//		Need to take into account that this label is also used for visitor on hold,
+//		by introducing separate accessibility hints for each state (on-hold/call-duration).
         label.accessibilityHint = style.accessibility.durationHint
         return label
     }()
