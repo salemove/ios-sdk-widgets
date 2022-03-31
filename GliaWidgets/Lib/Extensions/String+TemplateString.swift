@@ -7,4 +7,16 @@ extension String {
     func withCallDuration(_ duration: String) -> String {
         return replacingOccurrences(of: "{callDuration}", with: duration)
     }
+
+    func withFileSender(_ name: String) -> String {
+        return replacingOccurrences(of: "{fileSender}", with: name)
+    }
+
+    func withBadgeValue(_ value: String) -> String {
+        return replacingOccurrences(of: "{badgeValue}", with: value)
+    }
+
+    func withButtonTitle(_ title: String) -> String {
+        return replacingOccurrences(of: "{buttonTitle}", with: title)
+    }
 }

@@ -26,6 +26,9 @@ public class ChatCallUpgradeStyle {
     /// Border color of the view.
     public var borderColor: UIColor
 
+    /// Accessibility related properties.
+    public var accessibility: Accessibility
+
     ///
     /// - Parameters:
     ///   - icon: An icon indicating upgraded engagement kind.
@@ -36,6 +39,7 @@ public class ChatCallUpgradeStyle {
     ///   - durationFont: Font of the duration counter text.
     ///   - durationColor: Color of the duration counter text.
     ///   - borderColor: Border color of the view.
+    ///   - accessibility: Accessibility related properties.
     ///
     public init(
         icon: UIImage,
@@ -45,7 +49,8 @@ public class ChatCallUpgradeStyle {
         textColor: UIColor,
         durationFont: UIFont,
         durationColor: UIColor,
-        borderColor: UIColor
+        borderColor: UIColor,
+        accessibility: Accessibility
     ) {
         self.icon = icon
         self.iconColor = iconColor
@@ -55,5 +60,6 @@ public class ChatCallUpgradeStyle {
         self.durationFont = durationFont
         self.durationColor = durationColor
         self.borderColor = borderColor
+        self.accessibility = accessibility
     }
 }
