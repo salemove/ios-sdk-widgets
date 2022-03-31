@@ -198,7 +198,12 @@ extension ChatViewController {
         var chatViewModelEnv = ChatViewModel.Environment.mock
         chatViewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
         chatViewModelEnv.chatStorage.isEmpty = { true }
-        let chatViewModel = ChatViewModel.mock(environment: chatViewModelEnv)
+        var interEnv = Interactor.Environment.mock
+        interEnv.coreSdk.configureWithConfiguration = { _, callback in
+            callback?()
+        }
+        let interactor = Interactor.mock(environment: interEnv)
+        let chatViewModel = ChatViewModel.mock(interactor: interactor, environment: chatViewModelEnv)
         let controller: ChatViewController = .mock(chatViewModel: chatViewModel)
         controller.view.frame = UIScreen.main.bounds
         chatViewModel.action?(.setMessageText("Input Message Mock"))
@@ -296,7 +301,9 @@ extension ChatViewController {
 
         chatViewModel.action?(.sendButtonHidden(false))
         chatViewModel.action?(.updateUnreadMessageIndicator(itemCount: 5))
+        chatViewModel.action?(.setChoiceCardInputModeEnabled(false))
         chatViewModel.action?(.connected(name: "Mocked Operator Name", imageUrl: localFileURL.absoluteString))
+        chatViewModel.action?(.setIsAttachmentButtonHidden(false))
         chatViewModel.action?(.pickMediaButtonEnabled(true))
         chatViewModel.action?(.setOperatorTypingIndicatorIsHiddenTo(false, false))
 
@@ -355,6 +362,57 @@ extension ChatViewController {
         )
         controller.view.frame = UIScreen.main.bounds
         chatViewModel.action?(.setMessageText("Input Message Mock"))
+        return controller
+    }
+
+    // MARK: - Visitor File Download States
+    static func mockVisitorFileDownloadStates(completion: ([ChatMessage]) -> Void) throws -> ChatViewController {
+        var chatViewModelEnv = ChatViewModel.Environment.mock
+        chatViewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
+        let messages: [ChatMessage] =
+        (0 ..< 4).map { idx in
+            ChatMessage.mock(
+                id: "messageId\(idx)",
+                queueID: "queueId",
+                operator: .mock(
+                    name: "John Smith",
+                    pictureUrl: URL.mock.appendingPathComponent("opImage").appendingPathExtension("png").absoluteString
+                ),
+                sender: .operator,
+                content: "",
+                attachment: .mock(
+                    type: .files,
+                    files: [
+                        .mock(
+                            id: "fileId\(idx)",
+                            url: .mock,
+                            name: "File \(idx).pdf",
+                            size: 1024 * Double(idx),
+                            contentType: "application/pdf",
+                            isDeleted: false
+                        )
+                    ],
+                    imageUrl: nil,
+                    options: nil,
+                    selectedOption: nil
+                ),
+                downloads: []
+            )
+
+        }
+
+        chatViewModelEnv.chatStorage.messages = { _ in
+            messages
+        }
+        var interEnv = Interactor.Environment.mock
+        interEnv.coreSdk.configureWithConfiguration = { _, callback in
+            callback?()
+        }
+        let interactor = Interactor.mock(environment: interEnv)
+        let chatViewModel = ChatViewModel.mock(interactor: interactor, environment: chatViewModelEnv)
+        let controller: ChatViewController = .mock(chatViewModel: chatViewModel)
+        controller.view.frame = UIScreen.main.bounds
+        completion(messages)
         return controller
     }
 }

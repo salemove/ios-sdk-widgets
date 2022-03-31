@@ -105,8 +105,8 @@ class BubbleView: UIView {
         addGestureRecognizer(panRecognizer)
         isAccessibilityElement = true
         accessibilityTraits = [.button]
-        accessibilityLabel = "Operator Avatar"
-        accessibilityHint = "Deactivates minimize."
+        accessibilityLabel = style.accessibility.label
+        accessibilityHint = style.accessibility.hint
 
         update(kind)
     }

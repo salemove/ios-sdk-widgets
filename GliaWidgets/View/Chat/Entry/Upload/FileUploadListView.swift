@@ -47,6 +47,9 @@ class FileUploadListView: UIView {
 
     private func setup() {
         stackView.axis = .vertical
+        // Assign empty array, because `accessibilityElements` is nil initially,
+        // and we need to append to/remove from it when views
+        // are added to/removed from stack view
         stackView.accessibilityElements = []
     }
 
@@ -75,11 +78,15 @@ class FileUploadListView: UIView {
         }
     }
 
+    /// Make `fileUploadView` and `fileUploadView.removeButton` "visible"
+    /// for VoiceOver.
     func addAccessibilityProperties(for fileUploadView: FileUploadView) {
         stackView.accessibilityElements?.append(fileUploadView)
         stackView.accessibilityElements?.append(fileUploadView.removeButton)
     }
 
+    /// Remove fileUploadView` and `fileUploadView.removeButton` from
+    /// `accessibilityElements`.
     func removeAccessibilityProperties(for fileUploadView: FileUploadView) {
         stackView.accessibilityElements?.removeAll(
             where: {
@@ -89,6 +96,7 @@ class FileUploadListView: UIView {
         )
     }
 
+    /// Clear all `accessibilityElements`at once.
     func removeAccessibilityPropertiesForAllUploadViews() {
         stackView.accessibilityElements?.removeAll()
     }

@@ -16,6 +16,24 @@ public enum L10n {
   public static let poweredBy = L10n.tr("Localizable", "poweredBy")
 
   public enum Alert {
+    public enum Accessibility {
+      public enum Action {
+        /// Accept
+        public static let accept = L10n.tr("Localizable", "alert.accessibility.action.accept")
+        /// Cancel
+        public static let cancel = L10n.tr("Localizable", "alert.accessibility.action.cancel")
+        /// Decline
+        public static let decline = L10n.tr("Localizable", "alert.accessibility.action.decline")
+        /// No
+        public static let no = L10n.tr("Localizable", "alert.accessibility.action.no")
+        /// OK
+        public static let ok = L10n.tr("Localizable", "alert.accessibility.action.ok")
+        /// Settings
+        public static let settings = L10n.tr("Localizable", "alert.accessibility.action.settings")
+        /// Yes
+        public static let yes = L10n.tr("Localizable", "alert.accessibility.action.yes")
+      }
+    }
     public enum Action {
       /// Accept
       public static let accept = L10n.tr("Localizable", "alert.action.accept")
@@ -139,6 +157,188 @@ public enum L10n {
     public static let bottomText = L10n.tr("Localizable", "call.bottomText")
     /// (By default your video will be off)
     public static let topText = L10n.tr("Localizable", "call.topText")
+    public enum Accessibility {
+      public enum Bubble {
+        /// Deactivates minimize.
+        public static let hint = L10n.tr("Localizable", "call.accessibility.bubble.hint")
+        /// Operator Avatar
+        public static let label = L10n.tr("Localizable", "call.accessibility.bubble.label")
+      }
+      public enum Buttons {
+        public enum Chat {
+          /// {buttonTitle}, {badgeValue}
+          public static let titleAndBadgeValue = L10n.tr("Localizable", "call.accessibility.buttons.chat.titleAndBadgeValue")
+          public enum Active {
+            /// Selected
+            public static let label = L10n.tr("Localizable", "call.accessibility.buttons.chat.active.label")
+          }
+          public enum BadgeValue {
+            /// {badgeValue} unread messages
+            public static let multipleItems = L10n.tr("Localizable", "call.accessibility.buttons.chat.badgeValue.multipleItems")
+            /// {badgeValue} unread message
+            public static let singleItem = L10n.tr("Localizable", "call.accessibility.buttons.chat.badgeValue.singleItem")
+          }
+          public enum Inactive {
+            /// 
+            public static let label = L10n.tr("Localizable", "call.accessibility.buttons.chat.inactive.label")
+          }
+        }
+        public enum Minimize {
+          /// {buttonTitle}, {badgeValue}
+          public static let titleAndBadgeValue = L10n.tr("Localizable", "call.accessibility.buttons.minimize.titleAndBadgeValue")
+          public enum Active {
+            /// Selected
+            public static let label = L10n.tr("Localizable", "call.accessibility.buttons.minimize.active.label")
+          }
+          public enum BadgeValue {
+            /// 
+            public static let multipleItems = L10n.tr("Localizable", "call.accessibility.buttons.minimize.badgeValue.multipleItems")
+            /// 
+            public static let singleItem = L10n.tr("Localizable", "call.accessibility.buttons.minimize.badgeValue.singleItem")
+          }
+          public enum Inactive {
+            /// 
+            public static let label = L10n.tr("Localizable", "call.accessibility.buttons.minimize.inactive.label")
+          }
+        }
+        public enum Mute {
+          /// {buttonTitle}, {badgeValue}
+          public static let titleAndBadgeValue = L10n.tr("Localizable", "call.accessibility.buttons.mute.titleAndBadgeValue")
+          public enum Active {
+            /// Selected
+            public static let label = L10n.tr("Localizable", "call.accessibility.buttons.mute.active.label")
+          }
+          public enum BadgeValue {
+            /// 
+            public static let multipleItems = L10n.tr("Localizable", "call.accessibility.buttons.mute.badgeValue.multipleItems")
+            /// 
+            public static let singleItem = L10n.tr("Localizable", "call.accessibility.buttons.mute.badgeValue.singleItem")
+          }
+          public enum Inactive {
+            /// 
+            public static let label = L10n.tr("Localizable", "call.accessibility.buttons.mute.inactive.label")
+          }
+        }
+        public enum Speaker {
+          /// {buttonTitle}, {badgeValue}
+          public static let titleAndBadgeValue = L10n.tr("Localizable", "call.accessibility.buttons.speaker.titleAndBadgeValue")
+          public enum Active {
+            /// Selected
+            public static let label = L10n.tr("Localizable", "call.accessibility.buttons.speaker.active.label")
+          }
+          public enum BadgeValue {
+            /// 
+            public static let multipleItems = L10n.tr("Localizable", "call.accessibility.buttons.speaker.badgeValue.multipleItems")
+            /// 
+            public static let singleItem = L10n.tr("Localizable", "call.accessibility.buttons.speaker.badgeValue.singleItem")
+          }
+          public enum Inactive {
+            /// 
+            public static let label = L10n.tr("Localizable", "call.accessibility.buttons.speaker.inactive.label")
+          }
+        }
+        public enum Video {
+          /// {buttonTitle}, {badgeValue}
+          public static let titleAndBadgeValue = L10n.tr("Localizable", "call.accessibility.buttons.video.titleAndBadgeValue")
+          public enum Active {
+            /// Selected
+            public static let label = L10n.tr("Localizable", "call.accessibility.buttons.video.active.label")
+          }
+          public enum BadgeValue {
+            /// 
+            public static let multipleItems = L10n.tr("Localizable", "call.accessibility.buttons.video.badgeValue.multipleItems")
+            /// 
+            public static let singleItem = L10n.tr("Localizable", "call.accessibility.buttons.video.badgeValue.singleItem")
+          }
+          public enum Inactive {
+            /// 
+            public static let label = L10n.tr("Localizable", "call.accessibility.buttons.video.inactive.label")
+          }
+        }
+      }
+      public enum CallDuration {
+        /// Displays call duration.
+        public static let hint = L10n.tr("Localizable", "call.accessibility.callDuration.hint")
+      }
+      public enum Connect {
+        public enum Connected {
+          public enum FirstText {
+            /// Displays operator name.
+            public static let hint = L10n.tr("Localizable", "call.accessibility.connect.connected.firstText.hint")
+          }
+          public enum SecondText {
+            /// Displays call duration.
+            public static let hint = L10n.tr("Localizable", "call.accessibility.connect.connected.secondText.hint")
+          }
+        }
+        public enum Connecting {
+          public enum FirstText {
+            /// Displays operator name.
+            public static let hint = L10n.tr("Localizable", "call.accessibility.connect.connecting.firstText.hint")
+          }
+          public enum SecondText {
+            /// Displays call duration.
+            public static let hint = L10n.tr("Localizable", "call.accessibility.connect.connecting.secondText.hint")
+          }
+        }
+        public enum Queue {
+          public enum FirstText {
+            /// Displays operator name.
+            public static let hint = L10n.tr("Localizable", "call.accessibility.connect.queue.firstText.hint")
+          }
+          public enum SecondText {
+            /// Displays call duration.
+            public static let hint = L10n.tr("Localizable", "call.accessibility.connect.queue.secondText.hint")
+          }
+        }
+      }
+      public enum Header {
+        public enum BackButton {
+          /// Activates minimize.
+          public static let hint = L10n.tr("Localizable", "call.accessibility.header.backButton.hint")
+          /// Back
+          public static let label = L10n.tr("Localizable", "call.accessibility.header.backButton.label")
+        }
+        public enum CloseButton {
+          /// 
+          public static let hint = L10n.tr("Localizable", "call.accessibility.header.closeButton.hint")
+          /// Close
+          public static let label = L10n.tr("Localizable", "call.accessibility.header.closeButton.label")
+        }
+        public enum EndButton {
+          /// End
+          public static let label = L10n.tr("Localizable", "call.accessibility.header.endButton.label")
+        }
+        public enum EndScreenShareButton {
+          /// 
+          public static let hint = L10n.tr("Localizable", "call.accessibility.header.endScreenShareButton.hint")
+          /// End
+          public static let label = L10n.tr("Localizable", "call.accessibility.header.endScreenShareButton.label")
+        }
+      }
+      public enum Operator {
+        public enum Avatar {
+          /// Displays operator avatar or placeholder.
+          public static let hint = L10n.tr("Localizable", "call.accessibility.operator.avatar.hint")
+          /// Avatar
+          public static let label = L10n.tr("Localizable", "call.accessibility.operator.avatar.label")
+        }
+      }
+      public enum OperatorName {
+        /// Displays operator name.
+        public static let hint = L10n.tr("Localizable", "call.accessibility.operatorName.hint")
+      }
+      public enum Video {
+        public enum Operator {
+          /// Operator's Video
+          public static let label = L10n.tr("Localizable", "call.accessibility.video.operator.label")
+        }
+        public enum Visitor {
+          /// Your Video
+          public static let label = L10n.tr("Localizable", "call.accessibility.video.visitor.label")
+        }
+      }
+    }
     public enum Audio {
       /// Audio
       public static let title = L10n.tr("Localizable", "call.audio.title")
@@ -216,6 +416,156 @@ public enum L10n {
   public enum Chat {
     /// Chat
     public static let title = L10n.tr("Localizable", "chat.title")
+    public enum Accessibility {
+      /// You
+      public static let visitorName = L10n.tr("Localizable", "chat.accessibility.visitorName")
+      public enum ChatCallUpgrade {
+        public enum Audio {
+          public enum Duration {
+            /// Displays call duration.
+            public static let hint = L10n.tr("Localizable", "chat.accessibility.chatCallUpgrade.audio.duration.hint")
+          }
+        }
+        public enum Video {
+          public enum Duration {
+            /// Displays call duration.
+            public static let hint = L10n.tr("Localizable", "chat.accessibility.chatCallUpgrade.video.duration.hint")
+          }
+        }
+      }
+      public enum Connect {
+        public enum Connected {
+          public enum FirstText {
+            /// Displays operator name.
+            public static let hint = L10n.tr("Localizable", "chat.accessibility.connect.connected.firstText.hint")
+          }
+          public enum SecondText {
+            /// Displays call duration.
+            public static let hint = L10n.tr("Localizable", "chat.accessibility.connect.connected.secondText.hint")
+          }
+        }
+        public enum Connecting {
+          public enum FirstText {
+            /// Displays operator name.
+            public static let hint = L10n.tr("Localizable", "chat.accessibility.connect.connecting.firstText.hint")
+          }
+          public enum SecondText {
+            /// Displays call duration.
+            public static let hint = L10n.tr("Localizable", "chat.accessibility.connect.connecting.secondText.hint")
+          }
+        }
+        public enum Queue {
+          public enum FirstText {
+            /// Displays operator name.
+            public static let hint = L10n.tr("Localizable", "chat.accessibility.connect.queue.firstText.hint")
+          }
+          public enum SecondText {
+            /// Displays call duration.
+            public static let hint = L10n.tr("Localizable", "chat.accessibility.connect.queue.secondText.hint")
+          }
+        }
+      }
+      public enum Download {
+        public enum State {
+          /// {downloadedFileName}, {downloadedFileState}
+          public static let downloaded = L10n.tr("Localizable", "chat.accessibility.download.state.downloaded")
+          /// {downloadedFileName}, {downloadedFileState} {downloadPercentValue}%%
+          public static let downloading = L10n.tr("Localizable", "chat.accessibility.download.state.downloading")
+          /// {downloadedFileName}, {downloadedFileState}
+          public static let error = L10n.tr("Localizable", "chat.accessibility.download.state.error")
+          /// {downloadedFileName}, {downloadedFileState}
+          public static let `none` = L10n.tr("Localizable", "chat.accessibility.download.state.none")
+        }
+      }
+      public enum Header {
+        public enum BackButton {
+          /// 
+          public static let hint = L10n.tr("Localizable", "chat.accessibility.header.backButton.hint")
+          /// back
+          public static let label = L10n.tr("Localizable", "chat.accessibility.header.backButton.label")
+        }
+        public enum CloseButton {
+          /// 
+          public static let hint = L10n.tr("Localizable", "chat.accessibility.header.closeButton.hint")
+          /// Close
+          public static let label = L10n.tr("Localizable", "chat.accessibility.header.closeButton.label")
+        }
+        public enum EndButton {
+          /// End
+          public static let label = L10n.tr("Localizable", "chat.accessibility.header.endButton.label")
+        }
+        public enum EndScreenShareButton {
+          /// 
+          public static let hint = L10n.tr("Localizable", "chat.accessibility.header.endScreenShareButton.hint")
+          /// End
+          public static let label = L10n.tr("Localizable", "chat.accessibility.header.endScreenShareButton.label")
+        }
+      }
+      public enum Message {
+        /// Attachment from {fileSender}
+        public static let attachmentMessageLabel = L10n.tr("Localizable", "chat.accessibility.message.attachmentMessageLabel")
+        /// You
+        public static let you = L10n.tr("Localizable", "chat.accessibility.message.you")
+        public enum ChoiceCard {
+          public enum ButtonState {
+            /// Disabled
+            public static let disabled = L10n.tr("Localizable", "chat.accessibility.message.choiceCard.buttonState.disabled")
+            /// 
+            public static let normal = L10n.tr("Localizable", "chat.accessibility.message.choiceCard.buttonState.normal")
+            /// Selected
+            public static let selected = L10n.tr("Localizable", "chat.accessibility.message.choiceCard.buttonState.selected")
+          }
+          public enum Image {
+            /// Choice card
+            public static let label = L10n.tr("Localizable", "chat.accessibility.message.choiceCard.image.label")
+          }
+        }
+        public enum MessageInput {
+          /// Message
+          public static let label = L10n.tr("Localizable", "chat.accessibility.message.messageInput.label")
+        }
+        public enum Operator {
+          public enum TypingIndicator {
+            /// {operatorName} is typing
+            public static let label = L10n.tr("Localizable", "chat.accessibility.message.operator.typingIndicator.label")
+          }
+        }
+        public enum SendButton {
+          /// Send
+          public static let label = L10n.tr("Localizable", "chat.accessibility.message.sendButton.label")
+        }
+        public enum UnreadMessagesIndicator {
+          /// Unread messages
+          public static let label = L10n.tr("Localizable", "chat.accessibility.message.unreadMessagesIndicator.label")
+        }
+      }
+      public enum Operator {
+        public enum Avatar {
+          /// Displays operator avatar or placeholder.
+          public static let hint = L10n.tr("Localizable", "chat.accessibility.operator.avatar.hint")
+          /// Avatar
+          public static let label = L10n.tr("Localizable", "chat.accessibility.operator.avatar.label")
+        }
+      }
+      public enum PickMedia {
+        public enum PickAttachmentButton {
+          /// Pick attachment
+          public static let label = L10n.tr("Localizable", "chat.accessibility.pickMedia.pickAttachmentButton.label")
+        }
+      }
+      public enum Upload {
+        public enum Progress {
+          /// {uploadedFileName}, {uploadPercentValue}%%
+          public static let fileNameWithProgressValue = L10n.tr("Localizable", "chat.accessibility.upload.progress.fileNameWithProgressValue")
+          /// {uploadPercentValue}%%
+          public static let percentValue = L10n.tr("Localizable", "chat.accessibility.upload.progress.percentValue")
+        }
+        public enum RemoveUpload {
+          /// Remove upload
+          public static let label = L10n.tr("Localizable", "chat.accessibility.upload.removeUpload.label")
+        }
+      }
+    }
     public enum Connect {
       public enum Connected {
         /// {operatorName}

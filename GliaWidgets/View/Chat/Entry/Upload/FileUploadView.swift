@@ -44,7 +44,7 @@ class FileUploadView: UIView {
         upload.state.addObserver(self) { [weak self] state, _ in
             self?.update(for: state)
         }
-        removeButton.accessibilityLabel = "Remove upload"
+        removeButton.accessibilityLabel = style.accessiblity.removeButtonAccessibilityLabel
         isAccessibilityElement = true
     }
 
@@ -80,12 +80,14 @@ class FileUploadView: UIView {
         progressView.autoPinEdge(.right, to: .left, of: removeButton, withOffset: -80)
     }
 
+    // swiftlint:disable function_body_length
     private func update(for state: FileUpload.State) {
         switch state {
         case .none:
             filePreviewView.kind = .none
             infoLabel.text = nil
             stateLabel.text = nil
+            accessibilityValue = nil
         case .uploading(progress: let progress):
             filePreviewView.kind = .file(upload.localFile)
             infoLabel.text = upload.localFile.fileInfoString
@@ -97,8 +99,20 @@ class FileUploadView: UIView {
             stateLabel.textColor = style.uploading.textColor
             progressView.tintColor = style.progressColor
             progressView.progress = Float(progress.value)
-            progress.addObserver(self) { [weak self] progress, _ in
+            let provideProgressText: (Double) -> String = { "\(Int($0 * 100))" }
+            accessibilityValue = Self.accessibleProgress(
+                provideProgressText(progress.value),
+                to: infoLabel.text,
+                accessibility: style.accessiblity
+            )
+
+            progress.addObserver(self) { [weak self, accessibility = style.accessiblity] progress, _ in
                 self?.progressView.progress = Float(progress)
+                self?.accessibilityValue = Self.accessibleProgress(
+                    provideProgressText(progress),
+                    to: self?.infoLabel.text,
+                    accessibility: accessibility
+                )
             }
         case .uploaded:
             filePreviewView.kind = .file(upload.localFile)
@@ -111,6 +125,11 @@ class FileUploadView: UIView {
             stateLabel.textColor = style.uploaded.textColor
             progressView.tintColor = style.progressColor
             progressView.progress = 1.0
+            accessibilityValue = Self.accessibleProgress(
+                "100",
+                to: infoLabel.text,
+                accessibility: style.accessiblity
+            )
         case .error(let error):
             filePreviewView.kind = .error
             infoLabel.text = errorText(from: style.error, for: error)
@@ -122,10 +141,11 @@ class FileUploadView: UIView {
             stateLabel.textColor = style.error.textColor
             progressView.tintColor = style.errorProgressColor
             progressView.progress = 1.0
+            accessibilityValue = infoLabel.text
         }
         accessibilityLabel = stateLabel.text
-        accessibilityValue = infoLabel.text
     }
+    // swiftlint:enable function_body_length
 
     private func errorText(from style: FileUploadErrorStateStyle, for error: FileUpload.Error) -> String {
         switch error {
@@ -148,9 +168,28 @@ class FileUploadView: UIView {
 
     override func layoutSubviews() {
         super.layoutSubviews()
+        // Make FileUploadView `accessibilityFrame` smaller
+        // to allow VoiceOver to "see" `removeButton`
         var accFrame = self.frame
         let insetX = kContentInsets.left + kContentInsets.right + kRemoveButtonSize.width
         accFrame.size.width -= insetX
         accessibilityFrame = UIAccessibility.convertToScreenCoordinates(accFrame, in: self)
+    }
+
+    static func accessibleProgress(_ progress: String, to source: String?, accessibility: FileUploadStyle.Accessibility) -> String? {
+        // treat empty progress string as if it is `nil`
+        let nonEmptyProgress = progress.isEmpty ? nil : progress
+        switch (nonEmptyProgress, source) {
+        case (.none, .none):
+            return nil
+        case let (.some(percentValue), .some(fileName)):
+            return accessibility.fileNameWithProgressValue
+                .withUploadedFileName(fileName)
+                .withUploadPercentValue(percentValue)
+        case let (.none, .some(percentValue)):
+            return accessibility.progressPercentValue.withUploadPercentValue(percentValue)
+        case let (.some(fileName), .none):
+            return fileName
+        }
     }
 }
