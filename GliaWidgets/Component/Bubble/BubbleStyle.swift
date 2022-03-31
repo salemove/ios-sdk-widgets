@@ -6,16 +6,21 @@ public class BubbleStyle {
     /// Style of a badge shown on the bubble.
     public var badge: BadgeStyle?
 
+    /// Accessibility related properties.
+    public var accessibility: Accessibility
+
     ///
     /// - Parameters:
     ///   - userImage: Style of a user's image shown in the bubble.
     ///   - badge: Style of a badge shown on the bubble.
-    ///
+    ///   - accessibility: Accessibility related properties.
     public init(
         userImage: UserImageStyle,
-        badge: BadgeStyle? = nil
+        badge: BadgeStyle? = nil,
+        accessibility: Accessibility
     ) {
         self.userImage = userImage
         self.badge = badge
+        self.accessibility = accessibility
     }
 }

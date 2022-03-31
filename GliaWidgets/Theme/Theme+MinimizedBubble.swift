@@ -13,7 +13,11 @@ extension Theme {
         )
         return BubbleStyle(
             userImage: userImage,
-            badge: badge
+            badge: badge,
+            accessibility: .init(
+                label: L10n.Call.Accessibility.Bubble.label,
+                hint: L10n.Call.Accessibility.Bubble.hint
+            )
         )
     }
 }

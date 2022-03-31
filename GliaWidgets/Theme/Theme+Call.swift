@@ -3,23 +3,37 @@ import UIKit
 extension Theme {
     var callStyle: CallStyle {
         typealias Call = L10n.Call
+        typealias Accessibility = Call.Accessibility
         let backButton = HeaderButtonStyle(
             image: Asset.back.image,
-            color: color.baseLight
+            color: color.baseLight,
+            accessibility: .init(
+                label: Accessibility.Header.BackButton.label,
+                hint: Accessibility.Header.BackButton.hint
+            )
         )
         let closeButton = HeaderButtonStyle(
             image: Asset.close.image,
-            color: color.baseLight
+            color: color.baseLight,
+            accessibility: .init(
+                label: Accessibility.Header.CloseButton.label,
+                hint: Accessibility.Header.CloseButton.hint
+            )
         )
         let endButton = ActionButtonStyle(
             title: Call.EndButton.title,
             titleFont: font.buttonLabel,
             titleColor: color.baseLight,
-            backgroundColor: color.systemNegative
+            backgroundColor: color.systemNegative,
+            accessibility: .init(label: Accessibility.Header.EndButton.label)
         )
         let endScreenShareButton = HeaderButtonStyle(
             image: Asset.startScreenShare.image,
-            color: color.secondary
+            color: color.secondary,
+            accessibility: .init(
+                label: Accessibility.Header.EndScreenShareButton.label,
+                hint: Accessibility.Header.EndScreenShareButton.hint
+            )
         )
         let header = HeaderStyle(
             titleFont: font.header2,
@@ -38,7 +52,11 @@ extension Theme {
         )
         let queueOperator = ConnectOperatorStyle(
             operatorImage: operatorImage,
-            animationColor: .lightGray
+            animationColor: .lightGray,
+            accessibility: .init(
+                label: Accessibility.Operator.Avatar.label,
+                hint: Accessibility.Operator.Avatar.hint
+            )
         )
         let queue = ConnectStatusStyle(
             firstText: Call.Connect.Queue.firstText,
@@ -46,7 +64,11 @@ extension Theme {
             firstTextFontColor: color.baseLight,
             secondText: Call.Connect.Queue.secondText,
             secondTextFont: font.subtitle,
-            secondTextFontColor: color.baseLight
+            secondTextFontColor: color.baseLight,
+            accessibility: .init(
+                firstTextHint: Accessibility.Connect.Queue.FirstText.hint,
+                secondTextHint: Accessibility.Connect.Queue.SecondText.hint
+            )
         )
         let connecting = ConnectStatusStyle(
             firstText: Call.Connect.Connecting.firstText,
@@ -54,7 +76,11 @@ extension Theme {
             firstTextFontColor: color.baseLight,
             secondText: Call.Connect.Connecting.secondText,
             secondTextFont: font.header2,
-            secondTextFontColor: color.baseLight
+            secondTextFontColor: color.baseLight,
+            accessibility: .init(
+                firstTextHint: Accessibility.Connect.Connecting.FirstText.hint,
+                secondTextHint: Accessibility.Connect.Connecting.SecondText.hint
+            )
         )
         let connected = ConnectStatusStyle(
             firstText: Call.Connect.Connected.firstText,
@@ -62,7 +88,11 @@ extension Theme {
             firstTextFontColor: color.baseLight,
             secondText: Call.Connect.Connected.secondText,
             secondTextFont: font.subtitle,
-            secondTextFontColor: color.baseLight
+            secondTextFontColor: color.baseLight,
+            accessibility: .init(
+                firstTextHint: Accessibility.Connect.Connected.FirstText.hint,
+                secondTextHint: Accessibility.Connect.Connected.SecondText.hint
+            )
         )
         let connect = ConnectStyle(
             queueOperator: queueOperator,
@@ -88,12 +118,19 @@ extension Theme {
             bottomText: Call.bottomText,
             bottomTextFont: font.bodyText,
             bottomTextColor: color.baseLight,
-            buttonBar: buttonBarStyle
+            buttonBar: buttonBarStyle,
+            accessibility: .init(
+                operatorNameHint: Accessibility.OperatorName.hint,
+                durationHint: Accessibility.CallDuration.hint,
+                localVideoLabel: Accessibility.Video.Visitor.label,
+                remoteVideoLabel: Accessibility.Video.Operator.label
+            )
         )
     }
 
     private var buttonBarStyle: CallButtonBarStyle {
         typealias Buttons = L10n.Call.Buttons
+        typealias Accessibility = L10n.Call.Accessibility
 
         let activeBackgroundColor = UIColor.white.withAlphaComponent(0.9)
         let inactiveBackgroundColor = UIColor.black.withAlphaComponent(0.4)
@@ -111,7 +148,10 @@ extension Theme {
                 imageColor: activeImageColor,
                 title: Buttons.Chat.title,
                 titleFont: activeTitleFont,
-                titleColor: activeTitleColor
+                titleColor: activeTitleColor,
+                accessibility: .init(
+                    label: Accessibility.Buttons.Chat.Active.label
+                )
             ),
             inactive: CallButtonStyle.StateStyle(
                 backgroundColor: inactiveBackgroundColor,
@@ -119,7 +159,15 @@ extension Theme {
                 imageColor: inactiveImageColor,
                 title: Buttons.Chat.title,
                 titleFont: inactiveTitleFont,
-                titleColor: inactiveTitleColor
+                titleColor: inactiveTitleColor,
+                accessibility: .init(
+                    label: Accessibility.Buttons.Chat.Inactive.label
+                )
+            ),
+            accessibility: .init(
+                singleItemBadgeValue: Accessibility.Buttons.Chat.BadgeValue.singleItem,
+                multipleItemsBadgeValue: Accessibility.Buttons.Chat.BadgeValue.multipleItems,
+                titleAndBadgeValue: Accessibility.Buttons.Chat.titleAndBadgeValue
             )
         )
         let videoButton = CallButtonStyle(
@@ -129,7 +177,10 @@ extension Theme {
                 imageColor: activeImageColor,
                 title: Buttons.Video.title,
                 titleFont: activeTitleFont,
-                titleColor: activeTitleColor
+                titleColor: activeTitleColor,
+                accessibility: .init(
+                    label: Accessibility.Buttons.Video.Active.label
+                )
             ),
             inactive: CallButtonStyle.StateStyle(
                 backgroundColor: inactiveBackgroundColor,
@@ -137,7 +188,15 @@ extension Theme {
                 imageColor: inactiveImageColor,
                 title: Buttons.Video.title,
                 titleFont: inactiveTitleFont,
-                titleColor: inactiveTitleColor
+                titleColor: inactiveTitleColor,
+                accessibility: .init(
+                    label: Accessibility.Buttons.Video.Inactive.label
+                )
+            ),
+            accessibility: .init(
+                singleItemBadgeValue: Accessibility.Buttons.Video.BadgeValue.singleItem,
+                multipleItemsBadgeValue: Accessibility.Buttons.Video.BadgeValue.multipleItems,
+                titleAndBadgeValue: Accessibility.Buttons.Video.titleAndBadgeValue
             )
         )
         let muteButton = CallButtonStyle(
@@ -147,7 +206,10 @@ extension Theme {
                 imageColor: activeImageColor,
                 title: Buttons.Mute.Active.title,
                 titleFont: activeTitleFont,
-                titleColor: activeTitleColor
+                titleColor: activeTitleColor,
+                accessibility: .init(
+                    label: Accessibility.Buttons.Mute.Active.label
+                )
             ),
             inactive: CallButtonStyle.StateStyle(
                 backgroundColor: inactiveBackgroundColor,
@@ -155,7 +217,15 @@ extension Theme {
                 imageColor: inactiveImageColor,
                 title: Buttons.Mute.Inactive.title,
                 titleFont: inactiveTitleFont,
-                titleColor: inactiveTitleColor
+                titleColor: inactiveTitleColor,
+                accessibility: .init(
+                    label: Accessibility.Buttons.Mute.Inactive.label
+                )
+            ),
+            accessibility: .init(
+                singleItemBadgeValue: Accessibility.Buttons.Mute.BadgeValue.singleItem,
+                multipleItemsBadgeValue: Accessibility.Buttons.Mute.BadgeValue.multipleItems,
+                titleAndBadgeValue: Accessibility.Buttons.Mute.titleAndBadgeValue
             )
         )
         let speakerButton = CallButtonStyle(
@@ -165,7 +235,10 @@ extension Theme {
                 imageColor: activeImageColor,
                 title: Buttons.Speaker.title,
                 titleFont: activeTitleFont,
-                titleColor: activeTitleColor
+                titleColor: activeTitleColor,
+                accessibility: .init(
+                    label: Accessibility.Buttons.Speaker.Active.label
+                )
             ),
             inactive: CallButtonStyle.StateStyle(
                 backgroundColor: inactiveBackgroundColor,
@@ -173,7 +246,15 @@ extension Theme {
                 imageColor: inactiveImageColor,
                 title: Buttons.Speaker.title,
                 titleFont: inactiveTitleFont,
-                titleColor: inactiveTitleColor
+                titleColor: inactiveTitleColor,
+                accessibility: .init(
+                    label: Accessibility.Buttons.Speaker.Inactive.label
+                )
+            ),
+            accessibility: .init(
+                singleItemBadgeValue: Accessibility.Buttons.Speaker.BadgeValue.singleItem,
+                multipleItemsBadgeValue: Accessibility.Buttons.Speaker.BadgeValue.multipleItems,
+                titleAndBadgeValue: Accessibility.Buttons.Speaker.titleAndBadgeValue
             )
         )
         let minimizeButton = CallButtonStyle(
@@ -183,7 +264,10 @@ extension Theme {
                 imageColor: activeImageColor,
                 title: Buttons.Minimize.title,
                 titleFont: activeTitleFont,
-                titleColor: activeTitleColor
+                titleColor: activeTitleColor,
+                accessibility: .init(
+                    label: Accessibility.Buttons.Minimize.Active.label
+                )
             ),
             inactive: CallButtonStyle.StateStyle(
                 backgroundColor: inactiveBackgroundColor,
@@ -191,7 +275,15 @@ extension Theme {
                 imageColor: inactiveImageColor,
                 title: Buttons.Minimize.title,
                 titleFont: inactiveTitleFont,
-                titleColor: inactiveTitleColor
+                titleColor: inactiveTitleColor,
+                accessibility: .init(
+                    label: Accessibility.Buttons.Minimize.Inactive.label
+                )
+            ),
+            accessibility: .init(
+                singleItemBadgeValue: Accessibility.Buttons.Minimize.BadgeValue.singleItem,
+                multipleItemsBadgeValue: Accessibility.Buttons.Minimize.BadgeValue.multipleItems,
+                titleAndBadgeValue: Accessibility.Buttons.Minimize.titleAndBadgeValue
             )
         )
         let badge = BadgeStyle(
