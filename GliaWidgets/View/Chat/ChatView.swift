@@ -266,7 +266,16 @@ extension ChatView {
                     uiApplication: environment.uiApplication
                 )
             )
-            view.appendContent(.text(message.content, accessibility: Self.visitorAccessibilityOutgoingMessage(for: message)), animated: false)
+            view.appendContent(
+				.text(
+					message.content, 
+                    accessibility: Self.visitorAccessibilityOutgoingMessage(
+                        for: message,
+                        visitor: style.accessibility.visitor
+                    )
+				),
+				animated: false
+			)
             view.appendContent(
                 .files(
                     message.files,
@@ -284,9 +293,23 @@ extension ChatView {
                     uiApplication: environment.uiApplication
                 )
             )
-            view.appendContent(.text(message.content, accessibility: Self.visitorAccessibilityMessage(for: message)), animated: false)
-            view.appendContent(.downloads(message.downloads,
-                                          accessibility: .init(from: .visitor)), animated: false)
+            view.appendContent(
+                .text(
+                    message.content,
+                    accessibility: Self.visitorAccessibilityMessage(
+                        for: message,
+                        visitor: style.accessibility.visitor
+                    )
+                ),
+                animated: false
+            )
+            view.appendContent(
+                .downloads(
+                    message.downloads,
+                    accessibility: .init(from: .visitor)
+                ),
+                animated: false
+            )
             view.downloadTapped = { [weak self] in self?.downloadTapped?($0) }
             view.linkTapped = { [weak self] in self?.linkTapped?($0) }
             view.status = status
@@ -517,15 +540,30 @@ extension ChatView: UITableViewDelegate {
 
 // MARK: - Accessibility
 extension ChatView {
-    static func operatorAccessibilityMessage(for chatMessage: ChatMessage, `operator`: String) -> ChatMessageContent.TextAccessibilityProperties {
+    static func operatorAccessibilityMessage(
+        for chatMessage: ChatMessage,
+        `operator`: String
+    ) -> ChatMessageContent.TextAccessibilityProperties {
         .init(label: chatMessage.operator?.name ?? `operator`, value: chatMessage.content)
     }
 
-    static func visitorAccessibilityMessage(for chatMessage: ChatMessage, visitor: String) -> ChatMessageContent.TextAccessibilityProperties {
-        .init(label: visitor, value: chatMessage.content)
+    static func visitorAccessibilityMessage(
+        for chatMessage: ChatMessage,
+        visitor: String
+    ) -> ChatMessageContent.TextAccessibilityProperties {
+        .init(
+            label: visitor,
+            value: chatMessage.content
+        )
     }
 
-    static func visitorAccessibilityOutgoingMessage(for outgoingMessage: OutgoingMessage, visitor: String) -> ChatMessageContent.TextAccessibilityProperties {
-        .init(label: visitor, value: outgoingMessage.content)
+    static func visitorAccessibilityOutgoingMessage(
+        for outgoingMessage: OutgoingMessage,
+        visitor: String
+    ) -> ChatMessageContent.TextAccessibilityProperties {
+        .init(
+            label: visitor,
+            value: outgoingMessage.content
+        )
     }
 }
