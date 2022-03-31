@@ -1,3 +1,5 @@
+import Foundation
+
 extension FileSystemStorage {
     struct Environment {
         var fileManager: FoundationBased.FileManager

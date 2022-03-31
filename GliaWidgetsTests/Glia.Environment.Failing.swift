@@ -22,7 +22,8 @@ extension Glia.Environment {
         fromHistory: {
             fail("\(Self.self).fromHistory")
             return true
-        }
+        },
+        timerProviding: .failing
     )
 }
 

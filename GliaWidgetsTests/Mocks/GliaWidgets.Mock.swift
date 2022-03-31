@@ -4,9 +4,9 @@ import UIKit
 
 extension Interactor {
 
-    static func mock() -> Interactor {
+    static func mock() throws -> Interactor {
         .init(
-            with: .mock(),
+            with: try .mock(),
             queueID: "4CC83BDF-1C04-4B05-87B3-4D558B8F6999",
             visitorContext: .mock(),
             environment: .init(coreSdk: .failing)

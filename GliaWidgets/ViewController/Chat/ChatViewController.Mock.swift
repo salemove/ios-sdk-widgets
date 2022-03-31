@@ -193,6 +193,7 @@ extension ChatViewController {
         return .mock(chatViewModel: chatViewModel, viewFactory: viewFactory)
     }
 
+    // MARK: - Visitor Uploaded File States
     static func mockVisitorFileUploadStates() throws -> ChatViewController {
         var chatViewModelEnv = ChatViewModel.Environment.mock
         chatViewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
@@ -302,6 +303,7 @@ extension ChatViewController {
         return controller
     }
 
+    // MARK: - Choice Card States
     static func mockChoiceCard() throws -> ChatViewController {
         var chatViewModelEnv = ChatViewModel.Environment.mock
         chatViewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }

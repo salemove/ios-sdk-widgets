@@ -16,7 +16,7 @@ class ChatViewModelTests: XCTestCase {
         fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
 
         viewModel = .init(
-            interactor: .mock(),
+            interactor: try .mock(),
             alertConfiguration: .mock(),
             screenShareHandler: ScreenShareHandler(),
             call: .init(with: nil),

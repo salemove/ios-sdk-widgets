@@ -1,4 +1,6 @@
 #if DEBUG
+import Foundation
+
 func jsonField(_ key: String, value: String) -> String {
     """
     "\(key)": "\(value)"
@@ -26,13 +28,14 @@ func jsonFields(_ keysValues: [String]) -> String {
 }
 
 // If the only available interface is the one that
-// uses decoding, so in order to get desired mock,
+// uses decoding, then in order to get desired mock,
 // we create JSON on the fly and decode it
 func mockFromJSONString<T: Decodable>(
     _ jsonString: String,
     type: T.Type = T.self,
     funcName: StaticString = #function,
-    line: UInt = #line) throws -> T {
+    line: UInt = #line
+) throws -> T {
     guard let data = jsonString.data(using: .utf8) else {
         throw NSError(
             domain: "mockFromJSONString",
