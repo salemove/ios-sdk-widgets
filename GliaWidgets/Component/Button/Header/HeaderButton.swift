@@ -31,6 +31,8 @@ class HeaderButton: UIButton {
         setImage(style.image, for: .normal)
         setImage(style.image, for: .highlighted)
         addTarget(self, action: #selector(tapped), for: .touchUpInside)
+        accessibilityLabel = style.accessibility.label
+        accessibilityHint = style.accessibility.hint
     }
 
     private func layout() {

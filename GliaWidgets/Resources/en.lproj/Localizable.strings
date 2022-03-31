@@ -9,6 +9,14 @@
 "alert.action.settings" = "Settings";
 "alert.action.cancel" = "Cancel";
 
+"alert.accessibility.action.yes" = "Yes";
+"alert.accessibility.action.no" = "No";
+"alert.accessibility.action.decline" = "Decline";
+"alert.accessibility.action.accept" = "Accept";
+"alert.accessibility.action.ok" = "OK";
+"alert.accessibility.action.settings" = "Settings";
+"alert.accessibility.action.cancel" = "Cancel";
+
 "alert.leaveQueue.title" = "Are you sure you want to leave?";
 "alert.leaveQueue.message" = "You will lose your place in the queue.";
 
@@ -82,6 +90,45 @@
 "chat.download.failed.separator" = " | ";
 "chat.download.failed.retry" = "Retry";
 
+"chat.accessibility.upload.removeUpload.label" = "Remove upload";
+"chat.accessibility.upload.progress.percentValue" = "{uploadPercentValue}%%";
+"chat.accessibility.upload.progress.fileNameWithProgressValue" = "{uploadedFileName}, {uploadPercentValue}%%";
+
+"chat.accessibility.download.state.none" = "{downloadedFileName}, {downloadedFileState}";
+"chat.accessibility.download.state.downloading" = "{downloadedFileName}, {downloadedFileState} {downloadPercentValue}%%";
+"chat.accessibility.download.state.downloaded" = "{downloadedFileName}, {downloadedFileState}";
+"chat.accessibility.download.state.error" = "{downloadedFileName}, {downloadedFileState}";
+
+"chat.accessibility.message.messageInput.label" = "Message";
+"chat.accessibility.pickMedia.pickAttachmentButton.label" = "Pick attachment";
+"chat.accessibility.message.sendButton.label" = "Send";
+"chat.accessibility.message.attachmentMessageLabel" = "Attachment from {fileSender}";
+"chat.accessibility.message.you" = "You";
+"chat.accessibility.message.choiceCard.buttonState.normal" = "";
+"chat.accessibility.message.choiceCard.buttonState.selected" = "Selected";
+"chat.accessibility.message.choiceCard.buttonState.disabled" = "Disabled";
+"chat.accessibility.header.backButton.label" = "back";
+"chat.accessibility.header.backButton.hint" = "";
+"chat.accessibility.header.endButton.label" = "End";
+"chat.accessibility.header.closeButton.label" = "Close";
+"chat.accessibility.header.closeButton.hint" = "";
+"chat.accessibility.header.endScreenShareButton.label" = "End";
+"chat.accessibility.header.endScreenShareButton.hint" = "";
+"chat.accessibility.message.choiceCard.image.label" = "Choice card";
+"chat.accessibility.message.unreadMessagesIndicator.label" = "Unread messages";
+"chat.accessibility.message.operator.typingIndicator.label" = "{operatorName} is typing";
+"chat.accessibility.operator.avatar.label" = "Avatar";
+"chat.accessibility.operator.avatar.hint" = "Displays operator avatar or placeholder.";
+"chat.accessibility.connect.queue.firstText.hint" = "Displays operator name.";
+"chat.accessibility.connect.queue.secondText.hint" = "Displays call duration.";
+"chat.accessibility.connect.connecting.firstText.hint" = "Displays operator name.";
+"chat.accessibility.connect.connecting.secondText.hint" = "Displays call duration.";
+"chat.accessibility.connect.connected.firstText.hint" = "Displays operator name.";
+"chat.accessibility.connect.connected.secondText.hint" = "Displays call duration.";
+"chat.accessibility.visitorName" = "You";
+"chat.accessibility.chatCallUpgrade.audio.duration.hint" = "Displays call duration.";
+"chat.accessibility.chatCallUpgrade.video.duration.hint" = "Displays call duration.";
+
 "call.audio.title" = "Audio";
 "call.video.title" = "Video";
 "call.endButton.title" = "End";
@@ -104,6 +151,52 @@
 "call.onHold.bottomText" = "You can continue browsing while you are on hold";
 "call.onHold.localVideoStreamLabelText" = "You";
 
+"call.accessibility.header.backButton.label" = "Back";
+"call.accessibility.header.backButton.hint" = "Activates minimize.";
+"call.accessibility.header.endButton.label" = "End";
+"call.accessibility.header.closeButton.label" = "Close";
+"call.accessibility.header.closeButton.hint" = "";
+"call.accessibility.header.endScreenShareButton.label" = "End";
+"call.accessibility.header.endScreenShareButton.hint" = "";
+"call.accessibility.bubble.label" = "Operator Avatar";
+"call.accessibility.bubble.hint" = "Deactivates minimize.";
+"call.accessibility.operatorName.hint" = "Displays operator name.";
+"call.accessibility.callDuration.hint" = "Displays call duration.";
+"call.accessibility.video.operator.label" = "Operator's Video";
+"call.accessibility.video.visitor.label" = "Your Video";
+"call.accessibility.operator.avatar.label" = "Avatar";
+"call.accessibility.operator.avatar.hint" = "Displays operator avatar or placeholder.";
+"call.accessibility.connect.queue.firstText.hint" = "Displays operator name.";
+"call.accessibility.connect.queue.secondText.hint" = "Displays call duration.";
+"call.accessibility.connect.connecting.firstText.hint" = "Displays operator name.";
+"call.accessibility.connect.connecting.secondText.hint" = "Displays call duration.";
+"call.accessibility.connect.connected.firstText.hint" = "Displays operator name.";
+"call.accessibility.connect.connected.secondText.hint" = "Displays call duration.";
+"call.accessibility.buttons.chat.active.label" = "Selected";
+"call.accessibility.buttons.chat.inactive.label" = "";
+"call.accessibility.buttons.chat.badgeValue.singleItem" = "{badgeValue} unread message";
+"call.accessibility.buttons.chat.badgeValue.multipleItems" = "{badgeValue} unread messages";
+"call.accessibility.buttons.chat.titleAndBadgeValue" = "{buttonTitle}, {badgeValue}";
+"call.accessibility.buttons.video.active.label" = "Selected";
+"call.accessibility.buttons.video.inactive.label" = "";
+"call.accessibility.buttons.video.badgeValue.singleItem" = "";
+"call.accessibility.buttons.video.badgeValue.multipleItems" = "";
+"call.accessibility.buttons.video.titleAndBadgeValue" = "{buttonTitle}, {badgeValue}";
+"call.accessibility.buttons.mute.active.label" = "Selected";
+"call.accessibility.buttons.mute.inactive.label" = "";
+"call.accessibility.buttons.mute.badgeValue.singleItem" = "";
+"call.accessibility.buttons.mute.badgeValue.multipleItems" = "";
+"call.accessibility.buttons.mute.titleAndBadgeValue" = "{buttonTitle}, {badgeValue}";
+"call.accessibility.buttons.speaker.active.label" = "Selected";
+"call.accessibility.buttons.speaker.inactive.label" = "";
+"call.accessibility.buttons.speaker.badgeValue.singleItem" = "";
+"call.accessibility.buttons.speaker.badgeValue.multipleItems" = "";
+"call.accessibility.buttons.speaker.titleAndBadgeValue" = "{buttonTitle}, {badgeValue}";
+"call.accessibility.buttons.minimize.active.label" = "Selected";
+"call.accessibility.buttons.minimize.inactive.label" = "";
+"call.accessibility.buttons.minimize.badgeValue.singleItem" = "";
+"call.accessibility.buttons.minimize.badgeValue.multipleItems" = "";
+"call.accessibility.buttons.minimize.titleAndBadgeValue" = "{buttonTitle}, {badgeValue}";
 "survey.action.cancel" = "Cancel";
 "survey.action.submit" = "Submit";
 "survey.action.yes" = "Yes";

@@ -20,6 +20,8 @@ class ConnectStatusView: UIView {
         firstLabel.textColor = style.firstTextFontColor
         secondLabel.font = style.secondTextFont
         secondLabel.textColor = style.secondTextFontColor
+        firstLabel.accessibilityHint = style.accessibility.firstTextHint
+        secondLabel.accessibilityHint = style.accessibility.secondTextHint
     }
 
     func setFirstText(_ text: String?, animated: Bool) {
@@ -36,9 +38,7 @@ class ConnectStatusView: UIView {
         stackView.addArrangedSubviews([firstLabel, secondLabel])
 
         firstLabel.textAlignment = .center
-        firstLabel.accessibilityHint = "Displays operator name."
         secondLabel.textAlignment = .center
-        secondLabel.accessibilityHint = "Displays call duration."
     }
 
     private func layout() {

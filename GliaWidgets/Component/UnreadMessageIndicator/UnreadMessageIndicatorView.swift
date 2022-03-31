@@ -91,7 +91,7 @@ final class UnreadMessageIndicatorView: View {
     }
 
     private func updateAccessibilityProperties() {
-        accessibilityLabel = "Unread messages"
+        accessibilityLabel = style.accessibility.label
         accessibilityValue = "\(newItemCount)"
     }
 }

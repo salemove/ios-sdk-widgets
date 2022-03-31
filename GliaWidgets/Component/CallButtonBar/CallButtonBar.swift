@@ -111,7 +111,8 @@ class CallButtonBar: View {
                 kind: kind,
                 style: CallButtonStyle(
                     active: style.chatButton.active,
-                    inactive: style.chatButton.inactive
+                    inactive: style.chatButton.inactive,
+                    accessibility: style.chatButton.accessibility
                 )
             )
         case .video:
@@ -119,7 +120,8 @@ class CallButtonBar: View {
                 kind: kind,
                 style: CallButtonStyle(
                     active: style.videoButton.active,
-                    inactive: style.videoButton.inactive
+                    inactive: style.videoButton.inactive,
+                    accessibility: style.videoButton.accessibility
                 )
             )
         case .mute:
@@ -127,7 +129,8 @@ class CallButtonBar: View {
                 kind: kind,
                 style: CallButtonStyle(
                     active: style.muteButton.active,
-                    inactive: style.muteButton.inactive
+                    inactive: style.muteButton.inactive,
+                    accessibility: style.muteButton.accessibility
                 )
             )
         case .speaker:
@@ -135,7 +138,8 @@ class CallButtonBar: View {
                 kind: kind,
                 style: CallButtonStyle(
                     active: style.speakerButton.active,
-                    inactive: style.speakerButton.inactive
+                    inactive: style.speakerButton.inactive,
+                    accessibility: style.speakerButton.accessibility
                 )
             )
         case .minimize:
@@ -143,7 +147,8 @@ class CallButtonBar: View {
                 kind: kind,
                 style: CallButtonStyle(
                     active: style.minimizeButton.active,
-                    inactive: style.minimizeButton.inactive
+                    inactive: style.minimizeButton.inactive,
+                    accessibility: style.minimizeButton.accessibility
                 )
             )
         }
