@@ -54,10 +54,9 @@ class ChatView: EngagementView {
             )
         )
 
-        #warning("Find way how to provide operator name")
         self.typingIndicatorView = OperatorTypingIndicatorView(
             style: style.operatorTypingIndicator,
-            accessibilityProperties: .init(operatorName: "Operator")
+            accessibilityProperties: .init(operatorName: style.accessibility.operator)
         )
         super.init(
             with: style,
@@ -119,7 +118,12 @@ class ChatView: EngagementView {
                 switch cell.content {
                 case .operatorMessage(let view):
                     switch item.kind {
-                    case .operatorMessage(_, let showsImage, let imageUrl):
+                    case .operatorMessage(let message, let showsImage, let imageUrl):
+                        // forward operator name to typing indicator's accessibility
+                        if let operatorName = message.operator?.name {
+                            typingIndicatorView.accessibilityProperties.operatorName = operatorName
+                        }
+
                         view.showsOperatorImage = showsImage
                         view.setOperatorImage(fromUrl: imageUrl, animated: animated)
                     default:
@@ -298,13 +302,20 @@ extension ChatView {
                     uiApplication: environment.uiApplication
                 )
             )
-            view.appendContent(.text(message.content, accessibility: Self.operatorAccessibilityMessage(for: message)), animated: false)
-            #warning("Provide proper localized 'Operator'")
+            view.appendContent(
+                .text(
+                    message.content,
+                    accessibility: Self.operatorAccessibilityMessage(
+                        for: message,
+                        operator: style.accessibility.operator
+                    )
+                ),
+                animated: false
+            )
             view.appendContent(
                 .downloads(
                     message.downloads,
-
-                    accessibility: .init(from: .operator(message.operator?.name ?? "Operator"))),
+                    accessibility: .init(from: .operator(message.operator?.name ?? style.accessibility.operator))),
                 animated: false
             )
             view.downloadTapped = { [weak self] in self?.downloadTapped?($0) }
@@ -506,19 +517,15 @@ extension ChatView: UITableViewDelegate {
 
 // MARK: - Accessibility
 extension ChatView {
-    static func operatorAccessibilityMessage(for chatMessage: ChatMessage) -> ChatMessageContent.TextAccessibilityProperties {
-        .init(label: chatMessage.operator?.name ?? "Operator", value: chatMessage.content)
+    static func operatorAccessibilityMessage(for chatMessage: ChatMessage, `operator`: String) -> ChatMessageContent.TextAccessibilityProperties {
+        .init(label: chatMessage.operator?.name ?? `operator`, value: chatMessage.content)
     }
 
-    static func visitorAccessibilityMessage(for chatMessage: ChatMessage) -> ChatMessageContent.TextAccessibilityProperties {
-        .init(label: "You", value: chatMessage.content)
+    static func visitorAccessibilityMessage(for chatMessage: ChatMessage, visitor: String) -> ChatMessageContent.TextAccessibilityProperties {
+        .init(label: visitor, value: chatMessage.content)
     }
 
-    static func visitorAccessibilityOutgoingMessage(for outgoingMessage: OutgoingMessage) -> ChatMessageContent.TextAccessibilityProperties {
-        .init(label: "You", value: outgoingMessage.content)
-    }
-
-    struct AccessibilityProperties {
-        let operatorName: String
+    static func visitorAccessibilityOutgoingMessage(for outgoingMessage: OutgoingMessage, visitor: String) -> ChatMessageContent.TextAccessibilityProperties {
+        .init(label: visitor, value: outgoingMessage.content)
     }
 }

@@ -35,6 +35,9 @@ public class ChatStyle: EngagementStyle {
     /// Style of the view that indicates that the operator is currently typing.
     public var operatorTypingIndicator: OperatorTypingIndicatorStyle
 
+    /// Accessibility related properties.
+    public var accessibility: Accessibility
+
     ///
     /// - Parameters:
     ///   - header: Style of the view's header (navigation bar area).
@@ -52,6 +55,7 @@ public class ChatStyle: EngagementStyle {
     ///   - pickMedia: Style of the attachment media type picker.
     ///   - unreadMessageIndicator: Style of the unread message indicator.
     ///   - operatorTypingIndicator: Style of the view that indicates that the operator is currently typing.
+    ///   - accessibility: Accessibility related properties.
     ///
     public init(
         header: HeaderStyle,
@@ -68,7 +72,8 @@ public class ChatStyle: EngagementStyle {
         callBubble: BubbleStyle,
         pickMedia: AttachmentSourceListStyle,
         unreadMessageIndicator: UnreadMessageIndicatorStyle,
-        operatorTypingIndicator: OperatorTypingIndicatorStyle
+        operatorTypingIndicator: OperatorTypingIndicatorStyle,
+        accessibility: Accessibility
     ) {
         self.title = title
         self.visitorMessage = visitorMessage
@@ -81,6 +86,7 @@ public class ChatStyle: EngagementStyle {
         self.pickMedia = pickMedia
         self.unreadMessageIndicator = unreadMessageIndicator
         self.operatorTypingIndicator = operatorTypingIndicator
+        self.accessibility = accessibility
         super.init(
             header: header,
             connect: connect,
