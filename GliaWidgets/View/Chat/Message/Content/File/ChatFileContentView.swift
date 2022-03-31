@@ -52,17 +52,17 @@ class ChatFileContentView: UIView {
                                                    action: #selector(tapped))
         addGestureRecognizer(tapRecognizer)
 
-        let owner: String
+        let sender: String
 
         switch accessibilityProperties.from {
         case let .operator(operatorName):
-            owner = operatorName
+            sender = operatorName
         case .visitor:
-            owner = "You"
+            sender = style.accessibility.youAccessibilityPlaceholder
         }
         isAccessibilityElement = true
         accessibilityElements = []
-        accessibilityLabel = "Attachment from \(owner)"
+        accessibilityLabel = style.accessibility.contentAccessibilityLabel.withFileSender(sender)
         accessibilityValue = fileValue
     }
 

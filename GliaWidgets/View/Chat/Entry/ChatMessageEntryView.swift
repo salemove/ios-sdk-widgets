@@ -106,18 +106,18 @@ class ChatMessageEntryView: UIView {
         textView.font = style.messageFont
         textView.textColor = style.messageColor
         textView.backgroundColor = .clear
-        textView.accessibilityLabel = "Message"
+        textView.accessibilityLabel = style.accessibility.messageInputAccessibilityLabel
 
         placeholderLabel.font = style.placeholderFont
         placeholderLabel.textColor = style.placeholderColor
         updatePlaceholderText()
 
         pickMediaButton.tap = { [weak self] in self?.pickMediaTapped?() }
-        pickMediaButton.accessibilityLabel = "Pick media"
+        pickMediaButton.accessibilityLabel = style.mediaButton.accessibility.accessibilityLabel
         updatePickMediaButtonVisibility()
 
         sendButton.tap = { [weak self] in self?.sendTap() }
-        sendButton.accessibilityLabel = "Send"
+        sendButton.accessibilityLabel = style.sendButton.accessibility.accessibilityLabel
         showsSendButton = false
 
         buttonsStackView.axis = .horizontal

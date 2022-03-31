@@ -52,7 +52,8 @@ public class ChatFileDownloadStyle: ChatFileContentStyle {
         errorProgressColor: UIColor,
         progressBackgroundColor: UIColor,
         backgroundColor: UIColor,
-        borderColor: UIColor
+        borderColor: UIColor,
+        accessibility: Accessibility
     ) {
         self.filePreview = filePreview
         self.download = download
@@ -63,7 +64,10 @@ public class ChatFileDownloadStyle: ChatFileContentStyle {
         self.errorProgressColor = errorProgressColor
         self.progressBackgroundColor = progressBackgroundColor
         self.borderColor = borderColor
-        super.init(backgroundColor: backgroundColor)
+        super.init(
+            backgroundColor: backgroundColor,
+            accessibility: accessibility
+        )
     }
 }
 

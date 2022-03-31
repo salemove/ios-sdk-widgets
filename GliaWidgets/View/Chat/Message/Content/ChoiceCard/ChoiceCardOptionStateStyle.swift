@@ -4,6 +4,8 @@ import UIKit
 public final class ChoiceCardOptionStateStyle: ChatTextContentStyle {
     /// Color of an option's border.
     public var borderColor: UIColor?
+    /// Accessibility related properties.
+    public var accessibility: Accessibility
 
     ///
     /// - Parameters:
@@ -11,14 +13,16 @@ public final class ChoiceCardOptionStateStyle: ChatTextContentStyle {
     ///   - textColor: Color of an option's text.
     ///   - backgroundColor: Color of an option's background.
     ///   - borderColor: Color of an option's border.
-    ///
+    ///   - accessibility: Accessibility related properties.
     public init(
         textFont: UIFont,
         textColor: UIColor,
         backgroundColor: UIColor,
-        borderColor: UIColor?
+        borderColor: UIColor?,
+        accessibility: Accessibility
     ) {
         self.borderColor = borderColor
+        self.accessibility = accessibility
         super.init(
             textFont: textFont,
             textColor: textColor,
