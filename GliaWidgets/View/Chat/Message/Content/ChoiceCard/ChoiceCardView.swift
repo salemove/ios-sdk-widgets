@@ -115,6 +115,6 @@ extension ChoiceCardView {
 extension ChoiceCardView {
     func setupAccessibilityProperties(for imageView: ImageView) {
         imageView.isAccessibilityElement = true
-        imageView.accessibilityLabel = "Choice card"
+        imageView.accessibilityLabel = viewStyle.accessibility.imageLabel
     }
 }

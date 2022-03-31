@@ -48,31 +48,35 @@ class CallView: EngagementView {
         }
     }
 
-    let operatorNameLabel: UILabel = {
+    lazy var operatorNameLabel: UILabel = {
         let label = UILabel()
-        label.accessibilityHint = "Displays operator name."
+        label.accessibilityHint = style.accessibility.operatorNameHint
         return label
     }()
-    let secondLabel: UILabel = {
+
+    lazy var durationLabel: UILabel = {
         let label = UILabel()
-        label.accessibilityHint = "Displays call duration."
+        label.accessibilityHint = style.accessibility.durationHint
         return label
     }()
 
     let topLabel = UILabel()
     let bottomLabel = UILabel()
     let buttonBar: CallButtonBar
-    let localVideoView: VideoStreamView = {
+
+    lazy var localVideoView: VideoStreamView = {
         let streamView = VideoStreamView(.local)
-        streamView.accessibilityLabel = "Your Video"
+        streamView.accessibilityLabel = style.accessibility.localVideoLabel
         return streamView
     }()
-    let remoteVideoView: VideoStreamView = {
+
+    lazy var remoteVideoView: VideoStreamView = {
         let streamView = VideoStreamView(.remote)
         // Consider to provide Operator name instead of generic 'Operator's'
-        streamView.accessibilityLabel = "Operator's Video"
+        streamView.accessibilityLabel = style.accessibility.remoteVideoLabel
         return streamView
     }()
+
     var callButtonTapped: ((CallButton.Kind) -> Void)?
     let topStackView = UIStackView()
 

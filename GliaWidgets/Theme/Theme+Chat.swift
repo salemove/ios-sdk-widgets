@@ -1,6 +1,7 @@
 extension Theme {
     var chatStyle: ChatStyle {
         typealias Chat = L10n.Chat
+        typealias Accessibility = Chat.Accessibility
 
         let onHoldOverlay = OnHoldOverlayStyle(
             image: Asset.callOnHold.image,
@@ -9,21 +10,34 @@ extension Theme {
         )
         let backButton = HeaderButtonStyle(
             image: Asset.back.image,
-            color: color.baseLight
+            color: color.baseLight,
+            accessibility: .init(
+                label: Accessibility.Header.BackButton.label,
+                hint: Accessibility.Header.BackButton.hint
+            )
         )
         let closeButton = HeaderButtonStyle(
             image: Asset.close.image,
-            color: color.baseLight
+            color: color.baseLight,
+            accessibility: .init(
+                label: Accessibility.Header.CloseButton.label,
+                hint: Accessibility.Header.CloseButton.hint
+            )
         )
         let endButton = ActionButtonStyle(
             title: Chat.EndButton.title,
             titleFont: font.buttonLabel,
             titleColor: color.baseLight,
-            backgroundColor: color.systemNegative
+            backgroundColor: color.systemNegative,
+            accessibility: .init(label: Accessibility.Header.EndButton.label)
         )
         let endScreenShareButton = HeaderButtonStyle(
             image: Asset.startScreenShare.image,
-            color: color.secondary
+            color: color.secondary,
+            accessibility: .init(
+                label: Accessibility.Header.EndScreenShareButton.label,
+                hint: Accessibility.Header.EndScreenShareButton.hint
+            )
         )
         let header = HeaderStyle(
             titleFont: font.header2,
@@ -43,7 +57,11 @@ extension Theme {
         let queueOperator = ConnectOperatorStyle(
             operatorImage: operatorImage,
             animationColor: color.primary,
-            onHoldOverlay: onHoldOverlay
+            onHoldOverlay: onHoldOverlay,
+            accessibility: .init(
+                label: Accessibility.Operator.Avatar.label,
+                hint: Accessibility.Operator.Avatar.hint
+            )
         )
         let queue = ConnectStatusStyle(
             firstText: Chat.Connect.Queue.firstText,
@@ -51,7 +69,11 @@ extension Theme {
             firstTextFontColor: color.baseDark,
             secondText: Chat.Connect.Queue.secondText,
             secondTextFont: font.subtitle,
-            secondTextFontColor: color.baseNormal
+            secondTextFontColor: color.baseNormal,
+            accessibility: .init(
+                firstTextHint: Accessibility.Connect.Queue.FirstText.hint,
+                secondTextHint: Accessibility.Connect.Queue.SecondText.hint
+            )
         )
         let connecting = ConnectStatusStyle(
             firstText: Chat.Connect.Connecting.firstText,
@@ -59,7 +81,11 @@ extension Theme {
             firstTextFontColor: color.baseDark,
             secondText: Chat.Connect.Connecting.secondText,
             secondTextFont: font.header2,
-            secondTextFontColor: color.baseDark
+            secondTextFontColor: color.baseDark,
+            accessibility: .init(
+                firstTextHint: Accessibility.Connect.Connecting.FirstText.hint,
+                secondTextHint: Accessibility.Connect.Connecting.SecondText.hint
+            )
         )
         let connected = ConnectStatusStyle(
             firstText: Chat.Connect.Connected.firstText,
@@ -67,7 +93,11 @@ extension Theme {
             firstTextFontColor: color.baseDark,
             secondText: Chat.Connect.Connected.secondText,
             secondTextFont: font.subtitle,
-            secondTextFontColor: color.primary
+            secondTextFontColor: color.primary,
+            accessibility: .init(
+                firstTextHint: Accessibility.Connect.Connected.FirstText.hint,
+                secondTextHint: Accessibility.Connect.Connected.SecondText.hint
+            )
         )
         let connect = ConnectStyle(
             queueOperator: queueOperator,
@@ -81,7 +111,11 @@ extension Theme {
             backgroundColor: color.primary
         )
         let visitorImageFile = ChatImageFileContentStyle(
-            backgroundColor: color.primary
+            backgroundColor: color.primary,
+            accessibility: .init(
+                contentAccessibilityLabel: Accessibility.Message.attachmentMessageLabel,
+                youAccessibilityPlaceholder: Accessibility.Message.you
+            )
         )
         let visitorMessage = VisitorChatMessageStyle(
             text: visitorText,
@@ -97,7 +131,11 @@ extension Theme {
             backgroundColor: Color.lightGrey
         )
         let operatorImageFile = ChatImageFileContentStyle(
-            backgroundColor: Color.lightGrey
+            backgroundColor: Color.lightGrey,
+            accessibility: .init(
+                contentAccessibilityLabel: Accessibility.Message.attachmentMessageLabel,
+                youAccessibilityPlaceholder: Accessibility.Message.you
+            )
         )
         let operatorMessage = OperatorChatMessageStyle(
             text: operatorText,
@@ -106,7 +144,8 @@ extension Theme {
             operatorImage: operatorImage
         )
         let operatorTypingIndicator = OperatorTypingIndicatorStyle(
-            color: color.primary
+            color: color.primary,
+            accessibility: .init(label: Accessibility.Message.Operator.TypingIndicator.label)
         )
         let choiceCardText = ChatTextContentStyle(
             textFont: font.bodyText,
@@ -114,25 +153,32 @@ extension Theme {
             backgroundColor: color.baseLight
         )
         let choiceCardImageFile = ChatImageFileContentStyle(
-            backgroundColor: color.baseLight
+            backgroundColor: color.baseLight,
+            accessibility: .init(
+                contentAccessibilityLabel: Accessibility.Message.attachmentMessageLabel,
+                youAccessibilityPlaceholder: Accessibility.Message.you
+            )
         )
         let choiceCardOptionNormalState = ChoiceCardOptionStateStyle(
             textFont: font.bodyText,
             textColor: color.baseDark,
             backgroundColor: Color.lightGrey,
-            borderColor: nil
+            borderColor: nil,
+            accessibility: .init(value: Accessibility.Message.ChoiceCard.ButtonState.normal)
         )
         let choiceCardOptionSelectedState = ChoiceCardOptionStateStyle(
             textFont: font.bodyText,
             textColor: color.baseLight,
             backgroundColor: color.primary,
-            borderColor: nil
+            borderColor: nil,
+            accessibility: .init(value: Accessibility.Message.ChoiceCard.ButtonState.selected)
         )
         let choiceCardOptionDisabledState = ChoiceCardOptionStateStyle(
             textFont: font.bodyText,
             textColor: Color.grey,
             backgroundColor: Color.lightGrey,
-            borderColor: Color.baseShade
+            borderColor: Color.baseShade,
+            accessibility: .init(value: Accessibility.Message.ChoiceCard.ButtonState.disabled)
         )
         let choiceCardOption = ChoiceCardOptionStyle(
             normal: choiceCardOptionNormalState,
@@ -145,15 +191,18 @@ extension Theme {
             imageFile: choiceCardImageFile,
             fileDownload: fileDownload,
             operatorImage: operatorImage,
-            choiceOption: choiceCardOption
+            choiceOption: choiceCardOption,
+            accessibility: .init(imageLabel: Accessibility.Message.ChoiceCard.Image.label)
         )
         let mediaButton = MessageButtonStyle(
             image: Asset.chatPickMedia.image,
-            color: color.baseNormal
+            color: color.baseNormal,
+            accessibility: .init(accessibilityLabel: Accessibility.PickMedia.PickAttachmentButton.label)
         )
         let sendButton = MessageButtonStyle(
             image: Asset.chatSend.image,
-            color: color.primary
+            color: color.primary,
+            accessibility: .init(accessibilityLabel: Accessibility.Message.SendButton.label)
         )
         let messageEntry = ChatMessageEntryStyle(
             messageFont: font.bodyText,
@@ -167,7 +216,8 @@ extension Theme {
             backgroundColor: color.background,
             mediaButton: mediaButton,
             sendButton: sendButton,
-            uploadList: uploadListStyle
+            uploadList: uploadListStyle,
+            accessibility: .init(messageInputAccessibilityLabel: Accessibility.Message.MessageInput.label)
         )
         let audioUpgrade = ChatCallUpgradeStyle(
             icon: Asset.upgradeAudio.image,
@@ -177,7 +227,8 @@ extension Theme {
             textColor: color.baseDark,
             durationFont: font.bodyText,
             durationColor: color.baseNormal,
-            borderColor: color.baseShade
+            borderColor: color.baseShade,
+            accessibility: .init(durationTextHint: Accessibility.ChatCallUpgrade.Audio.Duration.hint)
         )
         let videoUpgrade = ChatCallUpgradeStyle(
             icon: Asset.upgradeVideo.image,
@@ -187,7 +238,8 @@ extension Theme {
             textColor: color.baseDark,
             durationFont: font.bodyText,
             durationColor: color.baseNormal,
-            borderColor: color.baseShade
+            borderColor: color.baseShade,
+            accessibility: .init(durationTextHint: Accessibility.ChatCallUpgrade.Video.Duration.hint)
         )
         let userImage = UserImageStyle(
             placeholderImage: Asset.operatorPlaceholder.image,
@@ -196,7 +248,11 @@ extension Theme {
             imageBackgroundColor: .clear
         )
         let callBubble = BubbleStyle(
-            userImage: userImage
+            userImage: userImage,
+            accessibility: .init(
+                label: L10n.Call.Accessibility.Bubble.label,
+                hint: L10n.Call.Accessibility.Bubble.hint
+            )
         )
         let unreadMessageIndicator = UnreadMessageIndicatorStyle(
             badgeFont: font.caption,
@@ -205,7 +261,8 @@ extension Theme {
             placeholderImage: Asset.operatorPlaceholder.image,
             placeholderColor: color.baseLight,
             placeholderBackgroundColor: color.primary,
-            imageBackgroundColor: .clear
+            imageBackgroundColor: .clear,
+            accessibility: .init(label: Accessibility.Message.UnreadMessagesIndicator.label)
         )
         return ChatStyle(
             header: header,
@@ -222,12 +279,17 @@ extension Theme {
             callBubble: callBubble,
             pickMedia: pickMedia,
             unreadMessageIndicator: unreadMessageIndicator,
-            operatorTypingIndicator: operatorTypingIndicator
+            operatorTypingIndicator: operatorTypingIndicator,
+            accessibility: .init(
+                operator: L10n.operator,
+                visitor: Accessibility.visitorName
+            )
         )
     }
 
     private var uploadListStyle: FileUploadListStyle {
         typealias Upload = L10n.Chat.Upload
+        typealias Accessibility = L10n.Chat.Accessibility.Upload
 
         let filePreview = FilePreviewStyle(
             fileFont: font.subtitle,
@@ -272,7 +334,8 @@ extension Theme {
             errorProgressColor: color.systemNegative,
             progressBackgroundColor: Color.lightGrey,
             removeButtonImage: Asset.uploadRemove.image,
-            removeButtonColor: color.baseNormal
+            removeButtonColor: color.baseNormal,
+            accessiblity: .init(removeButtonAccessibilityLabel: Accessibility.RemoveUpload.label)
         )
 
         return FileUploadListStyle(item: upload)
@@ -280,6 +343,7 @@ extension Theme {
 
     private var fileDownload: ChatFileDownloadStyle {
         typealias Download = L10n.Chat.Download
+        typealias Accessibility = L10n.Chat.Accessibility
 
         let filePreview = FilePreviewStyle(
             fileFont: font.subtitle,
@@ -334,7 +398,11 @@ extension Theme {
             errorProgressColor: color.systemNegative,
             progressBackgroundColor: Color.lightGrey,
             backgroundColor: .white,
-            borderColor: Color.lightGrey
+            borderColor: Color.lightGrey,
+            accessibility: .init(
+                contentAccessibilityLabel: Accessibility.Message.attachmentMessageLabel,
+                youAccessibilityPlaceholder: Accessibility.Message.you
+            )
         )
     }
 

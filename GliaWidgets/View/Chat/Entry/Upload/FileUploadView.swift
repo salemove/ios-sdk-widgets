@@ -44,7 +44,7 @@ class FileUploadView: UIView {
         upload.state.addObserver(self) { [weak self] state, _ in
             self?.update(for: state)
         }
-        removeButton.accessibilityLabel = "Remove upload"
+        removeButton.accessibilityLabel = style.accessiblity.removeButtonAccessibilityLabel
         isAccessibilityElement = true
     }
 
@@ -148,6 +148,8 @@ class FileUploadView: UIView {
 
     override func layoutSubviews() {
         super.layoutSubviews()
+        // Make FileUploadView `accessibilityFrame` smaller
+        // to allow VoiceOver to "see" `removeButton`
         var accFrame = self.frame
         let insetX = kContentInsets.left + kContentInsets.right + kRemoveButtonSize.width
         accFrame.size.width -= insetX

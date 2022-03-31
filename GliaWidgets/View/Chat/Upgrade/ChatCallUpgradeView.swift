@@ -57,6 +57,7 @@ class ChatCallUpgradeView: UIView {
         durationLabel.font = style.durationFont
         durationLabel.textColor = style.durationColor
         durationLabel.textAlignment = .center
+        durationLabel.accessibilityHint = style.accessibility.durationTextHint
     }
 
     private func layout() {
