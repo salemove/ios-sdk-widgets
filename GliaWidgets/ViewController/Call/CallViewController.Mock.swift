@@ -92,7 +92,10 @@ extension CallViewController {
         let conf = try CoreSdkClient.Salemove.Configuration.mock()
         let queueId = UUID.mock.uuidString
         let viewContext = CoreSdkClient.VisitorContext.mock
-        let interactorEnv = Interactor.Environment.mock
+        var interactorEnv = Interactor.Environment.mock
+        interactorEnv.coreSdk.configureWithConfiguration = { _, callback in
+            callback?()
+        }
         let interactor = Interactor.mock(
             configuration: conf,
             queueID: queueId,
@@ -273,15 +276,16 @@ extension CallViewController {
         )
         let viewController = CallViewController.mock(viewModel: viewModel, viewFactory: viewFactory)
         viewController.view.frame = UIScreen.main.bounds
-        viewModel.action?(.connected(name: "Blobby Blob", imageUrl: nil))
-        viewModel.action?(.switchToVideoMode)
-        viewModel.action?(.setButtonEnabled(.video, enabled: true))
-        viewModel.action?(.setButtonEnabled(.chat, enabled: true))
-        viewModel.action?(.setButtonEnabled(.mute, enabled: true))
-        viewModel.action?(.setButtonEnabled(.speaker, enabled: true))
 
         call.updateVideoStream(with: CoreSdkClient.MockVideoStreamable.mock())
         call.state.value = .started
+        viewModel.action?(.connected(name: "Blobby Blob", imageUrl: nil))
+        viewModel.action?(.setButtonEnabled(.chat, enabled: true))
+        viewModel.action?(.setButtonBadge(.chat, itemCount: 1))
+        viewModel.action?(.switchToVideoMode)
+        viewModel.action?(.setButtonEnabled(.video, enabled: true))
+        viewModel.action?(.setButtonEnabled(.mute, enabled: true))
+        viewModel.action?(.setButtonEnabled(.speaker, enabled: true))
         return viewController
     }
 }

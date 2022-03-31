@@ -35,6 +35,9 @@ public struct ActionButtonStyle {
     /// Border color of the button.
     public var borderColor: UIColor?
 
+    /// Accessibility related properties.
+    public var accessibility: Accessibility
+
     ///
     /// - Parameters:
     ///   - title: Title of the button.
@@ -48,6 +51,7 @@ public struct ActionButtonStyle {
     ///   - shadowOpacity: Shadow opacity of the button.
     ///   - borderWidth: Border width of the button.
     ///   - borderColor: Border color of the button.
+    ///   - accessibility: Accessibility related properties.
     ///
     public init(
         title: String,
@@ -60,7 +64,8 @@ public struct ActionButtonStyle {
         shadowRadius: CGFloat? = 2.0,
         shadowOpacity: Float? = nil,
         borderWidth: CGFloat? = nil,
-        borderColor: UIColor? = nil
+        borderColor: UIColor? = nil,
+        accessibility: Accessibility
     ) {
         self.title = title
         self.titleFont = titleFont
@@ -73,5 +78,6 @@ public struct ActionButtonStyle {
         self.shadowOpacity = shadowOpacity
         self.borderWidth = borderWidth
         self.borderColor = borderColor
+        self.accessibility = accessibility
     }
 }

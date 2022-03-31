@@ -89,11 +89,11 @@ extension ChoiceCardOptionView {
         choiceButton.accessibilityLabel = text
         switch state {
         case .normal:
-            choiceButton.accessibilityValue = nil
+            choiceButton.accessibilityValue = style.normal.accessibility.value
         case .selected:
-            choiceButton.accessibilityValue = "Selected"
+            choiceButton.accessibilityValue = style.selected.accessibility.value
         case .disabled:
-            choiceButton.accessibilityValue = "Disabled"
+            choiceButton.accessibilityValue = style.disabled.accessibility.value
         }
     }
 }
