@@ -1,13 +1,11 @@
 #if DEBUG
-import Foundation
-
-extension LocalFile {
+extension Call {
     static func mock(
-        url: URL = .mock,
+        kind: CallKind = .audio,
         environment: Environment = .mock
-    ) -> LocalFile {
+    ) -> Call {
         .init(
-            with: url,
+            kind,
             environment: environment
         )
     }

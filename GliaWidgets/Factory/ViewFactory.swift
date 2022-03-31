@@ -19,7 +19,8 @@ class ViewFactory {
                 data: environment.data,
                 uuid: environment.uuid,
                 gcd: environment.gcd,
-                imageViewCache: environment.imageViewCache
+                imageViewCache: environment.imageViewCache,
+                timerProviding: environment.timerProviding
             )
         )
     }
@@ -31,7 +32,8 @@ class ViewFactory {
                 data: environment.data,
                 uuid: environment.uuid,
                 gcd: environment.gcd,
-                imageViewCache: environment.imageViewCache
+                imageViewCache: environment.imageViewCache,
+                timerProviding: environment.timerProviding
             )
         )
     }

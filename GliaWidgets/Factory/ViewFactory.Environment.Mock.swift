@@ -4,7 +4,8 @@ extension ViewFactory.Environment {
         data: .mock,
         uuid: { .mock },
         gcd: .mock,
-        imageViewCache: .mock
+        imageViewCache: .mock,
+        timerProviding: .mock
     )
 }
 #endif

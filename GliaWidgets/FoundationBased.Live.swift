@@ -30,3 +30,33 @@ extension FoundationBased.OperationQueue {
         )
     }
 }
+
+extension FoundationBased.Timer.Providing {
+    static let live: Self = {
+        let provider = Self(
+            scheduledTimerWithTimeIntervalAndTarget: { timeInterval, target, selector, userInfo, repeats in
+                let liveTimer = Foundation.Timer
+                    .scheduledTimer(
+                        timeInterval: timeInterval,
+                        target: target,
+                        selector: selector,
+                        userInfo: userInfo,
+                        repeats: repeats
+                    )
+                return .init(invalidate: liveTimer.invalidate)
+            },
+            scheduledTimerWithTimeIntervalAndRepeats: { timeInterval, repeats, block in
+                let liveTimer = Foundation.Timer
+                    .scheduledTimer(
+                        withTimeInterval: timeInterval,
+                        repeats: repeats,
+                        block: { live in
+                            block(.init(invalidate: live.invalidate))
+                        }
+                    )
+                return .init(invalidate: liveTimer.invalidate)
+            }
+        )
+        return provider
+    }()
+}

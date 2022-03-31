@@ -3,7 +3,9 @@ import Foundation
 
 extension Interactor {
     static func mock(
-        configuration: CoreSdkClient.Salemove.Configuration = .mock(),
+        // swiftlint:disable force_try
+        configuration: CoreSdkClient.Salemove.Configuration = try! .mock(),
+        // swiftlint:enable force_try
         queueID: String = UUID.mock.uuidString,
         visitorContext: CoreSdkClient.VisitorContext = .mock,
         environment: Environment = .mock

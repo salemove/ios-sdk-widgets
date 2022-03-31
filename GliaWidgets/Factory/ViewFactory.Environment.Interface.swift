@@ -6,5 +6,6 @@ extension ViewFactory {
         var uuid: () -> UUID
         var gcd: GCD
         var imageViewCache: ImageView.Cache
+        var timerProviding: FoundationBased.Timer.Providing
     }
 }

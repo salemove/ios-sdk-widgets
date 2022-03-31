@@ -31,6 +31,21 @@ extension FoundationBased.OperationQueue {
     }
 }
 
+extension FoundationBased.Timer {
+    static let mock = Self(invalidate: {})
+}
+
+extension FoundationBased.Timer.Providing {
+    static let mock = Self(
+        scheduledTimerWithTimeIntervalAndTarget: { _, _, _, _, _ in
+            .mock
+        },
+        scheduledTimerWithTimeIntervalAndRepeats: { _, _, _ in
+            .mock
+        }
+    )
+}
+
 // MARK: - Foundation
 extension Foundation.Date {
     static let mock = Self(timeIntervalSince1970: .zero)
