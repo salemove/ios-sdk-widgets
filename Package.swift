@@ -14,6 +14,10 @@ let package = Package(
             targets: ["GliaWidgetsSDK"]
         )
     ],
+    dependencies: [
+        .package(url: "https://github.com/airbnb/lottie-ios", from: "3.3.0"),
+        .package(url: "https://github.com/PureLayout/PureLayout", from: "3.1.9")
+    ],
     targets: [
         .binaryTarget(
             name: "ReactiveSwift",
@@ -37,13 +41,13 @@ let package = Package(
         ),
         .binaryTarget(
             name: "TwilioVoice",
-            url: "https://github.com/salemove/ios-bundle/releases/download/0.27.0/TwilioVoice.xcframework.zip",
-            checksum: "039b38797721ed272abdb69780cd3239961786d94175b6846036dad4c4a5b636"
+            url: "https://github.com/salemove/ios-bundle/releases/download/0.33.0/TwilioVoice.xcframework.zip",
+            checksum: "34288e0876a8840fa51d3813046cf1f40a5939079bea23ace5afe6e752f12f9e"
         ),
         .binaryTarget(
             name: "WebRTC",
-            url: "https://github.com/salemove/ios-bundle/releases/download/0.27.0/WebRTC.xcframework.zip",
-            checksum: "996f02aff0f0ade1a16f0d8798150e58a126934ebdfd20610421931bfa459859"
+            url: "https://github.com/salemove/ios-bundle/releases/download/0.33.0/WebRTC.xcframework.zip",
+            checksum: "f76e410f608d96989ba0312e099697703a37b4414f8f46bb9e30c3d9b4291a52"
         ),
         .binaryTarget(
             name: "SalemoveSDK",
@@ -52,6 +56,10 @@ let package = Package(
         ),
         .target(
             name: "GliaWidgets",
+            dependencies: [
+                .product(name: "Lottie", package: "lottie-ios"),
+                .product(name: "PureLayout", package: "PureLayout")
+            ],
             path: "GliaWidgets",
             exclude: [
                 "Cartfile.resolved",
@@ -62,30 +70,18 @@ let package = Package(
                 .process("Resources")
             ]
         ),
-        .binaryTarget(
-            name: "PureLayout",
-            url: "https://github.com/salemove/ios-sdk-widgets/releases/download/0.1.0/PureLayout.xcframework.zip",
-            checksum: "ba40b3770921a77ed8be07836ec8b89f6d93bab623f46b54d8c2a05b74a44ef0"
-        ),
-        .binaryTarget(
-            name: "Lottie",
-            url: "https://github.com/salemove/ios-sdk-widgets/releases/download/0.5.6/Lottie.xcframework.zip",
-            checksum: "59dcfe3e2f8fd4754e09c6ede76c05331324f0d78aeace90d2d35b158d619093"
-        ),
         .target(
             name: "GliaWidgetsSDK",
             dependencies: [
-                "SalemoveSDK",
                 "ReactiveSwift",
                 "SocketIO",
                 "SwiftPhoenixClient",
                 "Starscream",
                 "TwilioVoice",
                 "WebRTC",
+                "SalemoveSDK",
 
-                "GliaWidgets",
-                "PureLayout",
-                "Lottie"
+                "GliaWidgets"
             ]
         )
     ]
