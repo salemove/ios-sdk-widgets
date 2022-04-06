@@ -36,7 +36,9 @@ class ConnectStatusView: UIView {
         stackView.addArrangedSubviews([firstLabel, secondLabel])
 
         firstLabel.textAlignment = .center
+        firstLabel.accessibilityHint = "Displays operator name."
         secondLabel.textAlignment = .center
+        secondLabel.accessibilityHint = "Displays call duration."
     }
 
     private func layout() {

@@ -13,7 +13,17 @@ extension Glia.Environment {
             return .mock
         },
         fileManager: .failing,
-        data: .failing
+        data: .failing,
+        gcd: .failing,
+        imageViewCache: .failing,
+        localFileThumbnailQueue: .failing,
+        uiImage: .failing,
+        createFileDownload: { _, _, _ in .failing },
+        fromHistory: {
+            fail("\(Self.self).fromHistory")
+            return true
+        },
+        timerProviding: .failing
     )
 }
 

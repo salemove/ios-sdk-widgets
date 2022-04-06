@@ -33,8 +33,20 @@ class ObservableValue<T: Any> {
             .filter { $0.0 != nil }
             .forEach {
                 let update = $0.1
-                DispatchQueue.main.async {
+                // Avoid unnecessary thread hop (causing code to run asynchronously),
+                // if current thread is already main.
+                // Since initial assumption of this class
+                // was that `update` closure
+                // must always run on main queue, I added
+                // this check. But we must use some
+                // battle-tested solutuion like ReactiveSwift or Combine.
+                // That will allow us to use proper schedulers for UI, unit tests etc.
+                if Thread.isMainThread {
                     update(new, old)
+                } else {
+                    DispatchQueue.main.async {
+                        update(new, old)
+                    }
                 }
             }
     }

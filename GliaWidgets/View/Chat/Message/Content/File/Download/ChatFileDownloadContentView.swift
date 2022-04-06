@@ -9,10 +9,20 @@ class ChatFileDownloadContentView: ChatFileContentView {
     private let style: ChatFileDownloadStyle
     private let kContentInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
 
-    init(with style: ChatFileDownloadStyle, content: Content, tap: @escaping () -> Void) {
+    init(
+        with style: ChatFileDownloadStyle,
+        content: Content,
+        accessibilityProperties: ChatFileContentView.AccessibilityProperties,
+        tap: @escaping () -> Void
+    ) {
         self.style = style
         self.filePreviewView = FilePreviewView(with: style.filePreview)
-        super.init(with: style, content: content, tap: tap)
+        super.init(
+            with: style,
+            content: content,
+            accessibilityProperties: accessibilityProperties,
+            tap: tap
+        )
         setup()
         layout()
     }

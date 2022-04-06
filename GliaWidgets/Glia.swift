@@ -109,7 +109,16 @@ public class Glia {
             throw GliaError.sdkIsNotConfigured
         }
 
-        let viewFactory = ViewFactory(with: theme)
+        let viewFactory = ViewFactory(
+            with: theme,
+            environment: .init(
+                data: environment.data,
+                uuid: environment.uuid,
+                gcd: environment.gcd,
+                imageViewCache: environment.imageViewCache,
+                timerProviding: environment.timerProviding
+            )
+        )
         startRootCoordinator(
             with: interactor,
             viewFactory: viewFactory,
@@ -189,7 +198,13 @@ public class Glia {
                 uuid: environment.uuid,
                 fileManager: environment.fileManager,
                 data: environment.data,
-                date: environment.date
+                date: environment.date,
+                gcd: environment.gcd,
+                localFileThumbnailQueue: environment.localFileThumbnailQueue,
+                uiImage: environment.uiImage,
+                createFileDownload: environment.createFileDownload,
+                fromHistory: environment.fromHistory,
+                timerProviding: environment.timerProviding
             )
         )
         rootCoordinator?.delegate = { [weak self] event in

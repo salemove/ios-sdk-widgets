@@ -5,7 +5,15 @@ class OperatorChatMessageView: ChatMessageView {
         didSet {
             if showsOperatorImage {
                 guard operatorImageView == nil else { return }
-                let operatorImageView = UserImageView(with: viewStyle.operatorImage)
+                let operatorImageView = UserImageView(
+                    with: viewStyle.operatorImage,
+                    environment: .init(
+                        data: environment.data,
+                        uuid: environment.uuid,
+                        gcd: environment.gcd,
+                        imageViewCache: environment.imageViewCache
+                    )
+                )
                 self.operatorImageView = operatorImageView
                 operatorImageViewContainer.addSubview(operatorImageView)
                 operatorImageView.autoPinEdgesToSuperviewEdges()
@@ -21,9 +29,14 @@ class OperatorChatMessageView: ChatMessageView {
     private var operatorImageViewContainer = UIView()
     private let kInsets = UIEdgeInsets(top: 2, left: 10, bottom: 2, right: 60)
     private let kOperatorImageViewSize = CGSize(width: 28, height: 28)
+    private let environment: Environment
 
-    init(with style: OperatorChatMessageStyle) {
+    init(
+        with style: OperatorChatMessageStyle,
+        environment: Environment
+    ) {
         viewStyle = style
+        self.environment = environment
         super.init(with: style, contentAlignment: .left)
         setup()
         layout()
@@ -52,5 +65,14 @@ class OperatorChatMessageView: ChatMessageView {
         NSLayoutConstraint.autoSetPriority(.defaultHigh) {
             contentViews.autoPinEdge(toSuperviewEdge: .bottom, withInset: kInsets.bottom)
         }
+    }
+}
+
+extension OperatorChatMessageView {
+    struct Environment {
+        var data: FoundationBased.Data
+        var uuid: () -> UUID
+        var gcd: GCD
+        var imageViewCache: ImageView.Cache
     }
 }

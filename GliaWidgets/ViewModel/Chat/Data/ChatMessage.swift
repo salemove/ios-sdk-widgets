@@ -55,4 +55,24 @@ class ChatMessage: Codable {
         content = message.content
         attachment = ChatAttachment(with: message.attachment)
     }
+
+    #if DEBUG
+    init(
+        id: String,
+        queueID: String?,
+        `operator`: ChatOperator?,
+        sender: ChatMessageSender,
+        content: String,
+        attachment: ChatAttachment?,
+        downloads: [FileDownload]
+    ) {
+        self.id = id
+        self.queueID = queueID
+        self.operator = `operator`
+        self.sender = sender
+        self.content = content
+        self.attachment = attachment
+        self.downloads = downloads
+    }
+    #endif
 }

@@ -10,6 +10,13 @@ extension Glia {
         var date: () -> Date
         var fileManager: FoundationBased.FileManager
         var data: FoundationBased.Data
+        var gcd: GCD
+        var imageViewCache: ImageView.Cache
+        var localFileThumbnailQueue: FoundationBased.OperationQueue
+        var uiImage: UIKitBased.UIImage
+        var createFileDownload: FileDownloader.CreateFileDownload
+        var fromHistory: () -> Bool
+        var timerProviding: FoundationBased.Timer.Providing
     }
 }
 
