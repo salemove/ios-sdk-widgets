@@ -9,7 +9,18 @@ extension Glia.Environment {
         uuid: UUID.init,
         date: Date.init,
         fileManager: .live,
-        data: .live
+        data: .live,
+        gcd: .live,
+        imageViewCache: .live,
+        localFileThumbnailQueue: {
+            let queue: FoundationBased.OperationQueue = .live()
+            queue.setMaxConcurrentOperationCount(2)
+            return queue
+        }(),
+        uiImage: .live,
+        createFileDownload: FileDownload.init(with:storage:environment:),
+        fromHistory: { true },
+        timerProviding: .live
     )
 }
 

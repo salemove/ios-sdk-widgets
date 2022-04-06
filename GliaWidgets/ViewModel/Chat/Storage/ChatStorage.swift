@@ -10,7 +10,7 @@ class ChatStorage {
     }
 
     private lazy var messages: [ChatMessage] = {
-        return loadMessages()
+        loadMessages()
     }()
 
     private let dbUrl: URL?

@@ -13,13 +13,26 @@ class ConnectView: UIView {
 
     private let style: ConnectStyle
     private var state: State = .none
-    private var connectTimer: Timer?
+    private var connectTimer: FoundationBased.Timer?
     private var connectCounter: Int = 0
     private var isShowing = false
+    private let environment: Environment
 
-    init(with style: ConnectStyle) {
+    init(
+        with style: ConnectStyle,
+        environment: Environment
+    ) {
         self.style = style
-        self.operatorView = ConnectOperatorView(with: style.connectOperator)
+        self.environment = environment
+        self.operatorView = ConnectOperatorView(
+            with: style.connectOperator,
+            environment: .init(
+                data: environment.data,
+                uuid: environment.uuid,
+                gcd: environment.gcd,
+                imageViewCache: environment.imageViewCache
+            )
+        )
         super.init(frame: .zero)
         setup()
         layout()
@@ -99,6 +112,7 @@ class ConnectView: UIView {
 
     private func setup() {
         setState(.none, animated: false)
+        accessibilityElements = [operatorView, statusView]
     }
 
     private func layout() {
@@ -119,7 +133,7 @@ private extension ConnectView {
     private func startConnectTimer() {
         stopConnectTimer()
         connectCounter = 0
-        connectTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+        connectTimer = environment.timerProviding.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
             switch self.state {
             case .connecting:
                 self.connectCounter += 1
@@ -134,5 +148,15 @@ private extension ConnectView {
     private func stopConnectTimer() {
         connectTimer?.invalidate()
         connectTimer = nil
+    }
+}
+
+extension ConnectView {
+    struct Environment {
+        var data: FoundationBased.Data
+        var uuid: () -> UUID
+        var gcd: GCD
+        var imageViewCache: ImageView.Cache
+        var timerProviding: FoundationBased.Timer.Providing
     }
 }

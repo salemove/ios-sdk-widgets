@@ -331,6 +331,10 @@ extension Interactor: CoreSdkClient.Interactable {
     }
 
     func end() {
+        // Example how to fetch survey:
+        //  guard let engagement = environment.coreSdk.getCurrentEngagement() else { return }
+        //  engagement.getSurvey { print("\($0)") }
+
         if isEngagementEndedByVisitor {
             state = .ended(.byVisitor)
         } else {
@@ -355,11 +359,5 @@ extension InteractorState: Equatable {
         default:
             return false
         }
-    }
-}
-
-extension Interactor {
-    struct Environment {
-        var coreSdk: CoreSdkClient
     }
 }

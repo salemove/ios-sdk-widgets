@@ -9,6 +9,7 @@ final class UnreadMessageIndicatorView: View {
                 isHidden = false
                 badgeView.newItemCount = newItemCount
             }
+            updateAccessibilityProperties()
         }
     }
 
@@ -23,10 +24,23 @@ final class UnreadMessageIndicatorView: View {
     private let kSize = CGSize(width: 58, height: 66) // Shadows included
     private let kUserImageSize = CGSize(width: 36, height: 36)
     private let kBadgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 5)
+    private let environment: Environment
 
-    init(with style: UnreadMessageIndicatorStyle) {
+    init(
+        with style: UnreadMessageIndicatorStyle,
+        environment: Environment
+    ) {
         self.style = style
-        userImageView = UserImageView(with: style.userImage)
+        self.environment = environment
+        userImageView = UserImageView(
+            with: style.userImage,
+            environment: .init(
+                data: environment.data,
+                uuid: environment.uuid,
+                gcd: environment.gcd,
+                imageViewCache: environment.imageViewCache
+            )
+        )
         badgeView = BadgeView(with: style.badge)
         super.init()
         setup()
@@ -51,6 +65,9 @@ final class UnreadMessageIndicatorView: View {
             action: #selector(onTap)
         )
         addGestureRecognizer(tapRecognizer)
+
+        isAccessibilityElement = true
+        accessibilityTraits = [.button]
     }
 
     private func layout() {
@@ -71,5 +88,19 @@ final class UnreadMessageIndicatorView: View {
 
     @objc private func onTap() {
         tapped?()
+    }
+
+    private func updateAccessibilityProperties() {
+        accessibilityLabel = "Unread messages"
+        accessibilityValue = "\(newItemCount)"
+    }
+}
+
+extension UnreadMessageIndicatorView {
+    struct Environment {
+        var data: FoundationBased.Data
+        var uuid: () -> UUID
+        var gcd: GCD
+        var imageViewCache: ImageView.Cache
     }
 }

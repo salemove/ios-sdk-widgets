@@ -39,4 +39,59 @@ enum FoundationBased {
             _ contentsOfUrl: URL
         ) throws -> Foundation.Data
     }
+
+    struct OperationQueue {
+        var setMaxConcurrentOperationCount: (Int) -> Void
+        var getMaxConcurrentOperationCount: () -> Int
+        var addOperation: (_ block: @escaping () -> Void) -> Void
+    }
+
+    struct Timer {
+        struct Providing {
+            var scheduledTimerWithTimeIntervalAndTarget: (
+                _ timeInterval: TimeInterval,
+                _ target: Any,
+                _ selector: Selector,
+                _ userInfo: Any?,
+                _ repeats: Bool
+            ) -> Timer
+
+            var scheduledTimerWithTimeIntervalAndRepeats: (
+                _ interval: TimeInterval,
+                _ repeats: Bool,
+                _ block: @escaping (Timer) -> Void
+            ) -> Timer
+        }
+
+        var invalidate: () -> Void
+    }
+}
+
+extension FoundationBased.Timer.Providing {
+    // Because `createScheduledTimerWithTimeInterval` takes 5
+    // arguments, it makes sense to use some boilerplate
+    // to restore usability by using similar interface
+    // as in original `Foundation.Timer`
+    func scheduledTimer(
+        timeInterval ti: TimeInterval,
+        target aTarget: Any,
+        selector aSelector: Selector,
+        userInfo: Any?,
+        repeats yesOrNo: Bool) -> FoundationBased.Timer {
+            scheduledTimerWithTimeIntervalAndTarget(
+                ti,
+                aTarget,
+                aSelector,
+                userInfo,
+                yesOrNo
+            )
+    }
+
+    func scheduledTimer(withTimeInterval interval: TimeInterval, repeats: Bool, block: @escaping (FoundationBased.Timer) -> Void) -> FoundationBased.Timer {
+        scheduledTimerWithTimeIntervalAndRepeats(
+            interval,
+            repeats,
+            block
+        )
+    }
 }

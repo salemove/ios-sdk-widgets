@@ -1,8 +1,17 @@
 import UIKit
 
 class ImageView: UIImageView {
-    private static var cache = [String: UIImage]()
     private var downloadID: String = ""
+    private var environment: Environment
+
+    init(frame: CGRect = .zero, environment: Environment) {
+        self.environment = environment
+        super.init(frame: frame)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     func setImage(_ image: UIImage?, animated: Bool, completionHandler: ((Bool) -> Void)? = nil) {
         UIView.transition(
@@ -31,7 +40,7 @@ class ImageView: UIImageView {
             return
         }
 
-        if let image = ImageView.cache[urlString] {
+        if let image = environment.imageViewCache.getImageForKey(urlString) {
             imageReceived?(image)
             setImage(image, animated: animated) { _ in
                 finished?(image)
@@ -39,15 +48,14 @@ class ImageView: UIImageView {
             return
         }
 
-        let downloadID = UUID().uuidString
+        let downloadID = environment.uuid().uuidString
         self.downloadID = downloadID
-
-        DispatchQueue.global().async { [weak self] in
+        environment.gcd.globalQueue.async { [weak self] in
             guard
-                let data = try? Data(contentsOf: url),
+                let data = try? self?.environment.data.dataWithContentsOfFileUrl(url),
                 let image = UIImage(data: data)
             else {
-                DispatchQueue.main.async {
+                self?.environment.gcd.mainQueue.async {
                     imageReceived?(nil)
                     self?.setImage(nil, animated: animated) { _ in
                         finished?(nil)
@@ -56,8 +64,8 @@ class ImageView: UIImageView {
                 return
             }
 
-            DispatchQueue.main.async {
-                ImageView.cache[urlString] = image
+            self?.environment.gcd.mainQueue.async {
+                self?.environment.imageViewCache.setImageForKey(image, urlString)
 
                 guard self?.downloadID == downloadID else { return }
                 imageReceived?(image)
@@ -66,5 +74,14 @@ class ImageView: UIImageView {
                 }
             }
         }
+    }
+}
+
+extension ImageView {
+    struct Environment {
+        var data: FoundationBased.Data
+        var uuid: () -> UUID
+        var gcd: GCD
+        var imageViewCache: Cache
     }
 }

@@ -62,6 +62,8 @@ class ActionButton: UIButton {
         setTitle(style.title, for: .normal)
 
         addTarget(self, action: #selector(tapped), for: .touchUpInside)
+
+        accessibilityLabel = style.title
     }
 
     private func layout() {

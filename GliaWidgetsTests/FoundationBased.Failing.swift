@@ -44,3 +44,37 @@ extension FoundationBased.Data {
         }
     )
 }
+
+extension FoundationBased.OperationQueue {
+    static let failing = Self(
+        setMaxConcurrentOperationCount: { _ in
+            fail("\(Self.self).setMaxConcurrentOperationCount")
+        },
+        getMaxConcurrentOperationCount: {
+            fail("\(Self.self).getMaxConcurrentOperationCount")
+            return .zero
+        },
+        addOperation: { _ in
+            fail("\(Self.self).addOperation")
+        }
+    )
+}
+
+extension FoundationBased.Timer {
+    static let failing = Self(
+        invalidate: { fail("\(Self.self).invalidate") }
+    )
+}
+
+extension FoundationBased.Timer.Providing {
+    static let failing = Self(
+        scheduledTimerWithTimeIntervalAndTarget: { _, _, _, _, _ in
+            fail("\(Self.self).scheduledTimerWithTimeIntervalAndTarget")
+            return .failing
+        },
+        scheduledTimerWithTimeIntervalAndRepeats: { _, _, _ in
+            fail("\(Self.self).scheduledTimerWithTimeIntervalAndRepeats")
+            return .failing
+        }
+    )
+}

@@ -32,10 +32,23 @@ class ConnectOperatorView: UIView {
     private var widthConstraint: NSLayoutConstraint!
     private var heightConstraint: NSLayoutConstraint!
     private let kAnimationViewSize: CGFloat = 142
+    private let environment: Environment
 
-    init(with style: ConnectOperatorStyle) {
+    init(
+        with style: ConnectOperatorStyle,
+        environment: Environment
+    ) {
         self.style = style
-        self.imageView = UserImageView(with: style.operatorImage)
+        self.environment = environment
+        self.imageView = UserImageView(
+            with: style.operatorImage,
+            environment: .init(
+                data: environment.data,
+                uuid: environment.uuid,
+                gcd: environment.gcd,
+                imageViewCache: environment.imageViewCache
+            )
+        )
         super.init(frame: .zero)
         setup()
         layout()
@@ -76,7 +89,12 @@ class ConnectOperatorView: UIView {
         animationView = nil
     }
 
-    private func setup() {}
+    private func setup() {
+        isAccessibilityElement = true
+        accessibilityTraits = .image
+        accessibilityLabel = "Avatar"
+        accessibilityHint = "Displays operator avatar or placeholder."
+    }
 
     private func layout() {
         NSLayoutConstraint.autoSetPriority(.defaultHigh) {
@@ -90,5 +108,14 @@ class ConnectOperatorView: UIView {
         imageView.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
         imageView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 0, relation: .greaterThanOrEqual)
         imageView.autoCenterInSuperview()
+    }
+}
+
+extension ConnectOperatorView {
+    struct Environment {
+        var data: FoundationBased.Data
+        var uuid: () -> UUID
+        var gcd: GCD
+        var imageViewCache: ImageView.Cache
     }
 }
