@@ -19,3 +19,44 @@ extension FoundationBased.Data {
         dataWithContentsOfFileUrl: { url in try Foundation.Data(contentsOf: url) }
     )
 }
+
+extension FoundationBased.OperationQueue {
+    static func live() -> Self {
+        let operationQueue = OperationQueue()
+        return .init(
+            setMaxConcurrentOperationCount: { operationQueue.maxConcurrentOperationCount = $0 },
+            getMaxConcurrentOperationCount: { operationQueue.maxConcurrentOperationCount },
+            addOperation: operationQueue.addOperation(_:)
+        )
+    }
+}
+
+extension FoundationBased.Timer.Providing {
+    static let live: Self = {
+        let provider = Self(
+            scheduledTimerWithTimeIntervalAndTarget: { timeInterval, target, selector, userInfo, repeats in
+                let liveTimer = Foundation.Timer
+                    .scheduledTimer(
+                        timeInterval: timeInterval,
+                        target: target,
+                        selector: selector,
+                        userInfo: userInfo,
+                        repeats: repeats
+                    )
+                return .init(invalidate: liveTimer.invalidate)
+            },
+            scheduledTimerWithTimeIntervalAndRepeats: { timeInterval, repeats, block in
+                let liveTimer = Foundation.Timer
+                    .scheduledTimer(
+                        withTimeInterval: timeInterval,
+                        repeats: repeats,
+                        block: { live in
+                            block(.init(invalidate: live.invalidate))
+                        }
+                    )
+                return .init(invalidate: liveTimer.invalidate)
+            }
+        )
+        return provider
+    }()
+}

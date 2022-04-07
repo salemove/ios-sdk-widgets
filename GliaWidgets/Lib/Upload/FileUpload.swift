@@ -97,9 +97,3 @@ extension FileUpload: Equatable {
         return lhs.localFile == rhs.localFile
     }
 }
-
-extension FileUpload {
-    struct Environment {
-        var uploadFileToEngagement: CoreSdkClient.UploadFileToEngagement
-    }
-}

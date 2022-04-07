@@ -23,6 +23,10 @@ end
 
 target 'GliaWidgetsTests' do
   use_frameworks!
+end
+
+target 'SnapshotTests' do
+  use_frameworks!
 
   pod 'AccessibilitySnapshot', '0.5.0'
 end
@@ -32,7 +36,6 @@ post_install do |installer|
         target.build_configurations.each do |config|
             config.build_settings['ONLY_ACTIVE_ARCH'] = 'NO'
             config.build_settings['BUILD_LIBRARY_FOR_DISTRIBUTION'] = 'YES'
-            config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
             config.build_settings.delete 'IPHONEOS_DEPLOYMENT_TARGET'
         end
     end
