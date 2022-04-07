@@ -534,6 +534,12 @@ public enum L10n {
         }
       }
       public enum Upload {
+        public enum Progress {
+          /// {uploadedFileName}, {uploadPercentValue}%%
+          public static let fileNameWithProgressValue = L10n.tr("Localizable", "chat.accessibility.upload.progress.fileNameWithProgressValue")
+          /// {uploadPercentValue}%%
+          public static let percentValue = L10n.tr("Localizable", "chat.accessibility.upload.progress.percentValue")
+        }
         public enum RemoveUpload {
           /// Remove upload
           public static let label = L10n.tr("Localizable", "chat.accessibility.upload.removeUpload.label")
