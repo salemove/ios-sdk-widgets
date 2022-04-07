@@ -17,13 +17,16 @@ final class OperatorTypingIndicatorView: UIView {
     private let kViewSize = CGSize(width: 28, height: 28)
     private let kLeftInset: CGFloat = 10
     private let bundleManaging: BundleManaging
+    private let accessibilityProperties: AccessibilityProperties
 
     init(
         style: OperatorTypingIndicatorStyle,
-        bundleManaging: BundleManaging = .live
+        bundleManaging: BundleManaging = .live,
+        accessibilityProperties: AccessibilityProperties
     ) {
         self.style = style
         self.bundleManaging = bundleManaging
+        self.accessibilityProperties = accessibilityProperties
         super.init(frame: .zero)
         setup()
         layout()
@@ -50,11 +53,19 @@ final class OperatorTypingIndicatorView: UIView {
 
         animationView.contentMode = .scaleAspectFit
         animationView.loopMode = .loop
+        isAccessibilityElement = true
+        accessibilityLabel = "\(accessibilityProperties.operatorName) is typing"
     }
 
     private func layout() {
         addSubview(animationView)
         animationView.autoSetDimensions(to: kViewSize)
         animationView.autoPinEdge(toSuperviewEdge: .left, withInset: kLeftInset)
+    }
+}
+
+extension OperatorTypingIndicatorView {
+    struct AccessibilityProperties {
+        var operatorName: String
     }
 }

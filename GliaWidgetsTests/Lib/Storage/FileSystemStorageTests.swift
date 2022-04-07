@@ -92,6 +92,10 @@ class FileSystemStorageTests: XCTestCase {
         fileManager.attributesOfItemAtPath = { _ in
             [FileAttributeKey.creationDate: fileDate]
         }
+        var isRemoveCalled = false
+        fileManager.removeItemAtPath = { item in
+            isRemoveCalled = true
+        }
 
         var env = FileSystemStorage.Environment.failing
         env.fileManager = fileManager
@@ -108,6 +112,7 @@ class FileSystemStorageTests: XCTestCase {
             environment: env
         )
         _ = fileStorage
+        XCTAssertFalse(isRemoveCalled)
     }
 
     func test_storeDataForKeyRemovesExistingFileAndWriteDataToFileUrl() {

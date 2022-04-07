@@ -11,10 +11,16 @@ class ChatImageFileContentView: ChatFileContentView {
     init(with style: ChatImageFileContentStyle,
          content: Content,
          contentAlignment: ChatMessageContentAlignment,
+         accessibilityProperties: ChatFileContentView.AccessibilityProperties,
          tap: @escaping () -> Void) {
         self.style = style
         self.contentAlignment = contentAlignment
-        super.init(with: style, content: content, tap: tap)
+        super.init(
+            with: style,
+            content: content,
+            accessibilityProperties: accessibilityProperties,
+            tap: tap
+        )
         setup()
         layout()
     }

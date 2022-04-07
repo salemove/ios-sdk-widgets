@@ -35,14 +35,40 @@ class ChatView: EngagementView {
         return CGRect(x: x, y: y, width: width, height: height)
     }
 
-    init(with style: ChatStyle) {
+    private let environment: Environment
+
+    init(
+        with style: ChatStyle,
+        environment: Environment
+    ) {
         self.style = style
+        self.environment = environment
         self.messageEntryView = ChatMessageEntryView(with: style.messageEntry)
         self.unreadMessageIndicatorView = UnreadMessageIndicatorView(
-            with: style.unreadMessageIndicator
+            with: style.unreadMessageIndicator,
+            environment: .init(
+                data: environment.data,
+                uuid: environment.uuid,
+                gcd: environment.gcd,
+                imageViewCache: environment.imageViewCache
+            )
         )
-        self.typingIndicatorView = OperatorTypingIndicatorView(style: style.operatorTypingIndicator)
-        super.init(with: style)
+
+        #warning("Find way how to provide operator name")
+        self.typingIndicatorView = OperatorTypingIndicatorView(
+            style: style.operatorTypingIndicator,
+            accessibilityProperties: .init(operatorName: "Operator")
+        )
+        super.init(
+            with: style,
+            environment: .init(
+                data: environment.data,
+                uuid: environment.uuid,
+                gcd: environment.gcd,
+                imageViewCache: environment.imageViewCache,
+                timerProviding: environment.timerProviding
+            )
+        )
         setup()
         layout()
     }
@@ -222,36 +248,67 @@ extension ChatView {
         }
     }
 
+    // swiftlint:disable function_body_length
     private func content(for item: ChatItem) -> ChatItemCell.Content {
         switch item.kind {
         case .queueOperator:
             return .queueOperator(connectView)
         case .outgoingMessage(let message):
             let view = VisitorChatMessageView(with: style.visitorMessage)
-            view.appendContent(.text(message.content), animated: false)
-            view.appendContent(.files(message.files), animated: false)
+            view.appendContent(.text(message.content, accessibility: Self.visitorAccessibilityOutgoingMessage(for: message)), animated: false)
+            view.appendContent(
+                .files(
+                    message.files,
+                    accessibility: .init(from: .visitor)
+                ),
+                animated: false
+            )
             view.fileTapped = { [weak self] in self?.fileTapped?($0) }
             view.linkTapped = { [weak self] in self?.linkTapped?($0) }
             return .outgoingMessage(view)
         case .visitorMessage(let message, let status):
             let view = VisitorChatMessageView(with: style.visitorMessage)
-            view.appendContent(.text(message.content), animated: false)
-            view.appendContent(.downloads(message.downloads), animated: false)
+            view.appendContent(.text(message.content, accessibility: Self.visitorAccessibilityMessage(for: message)), animated: false)
+            view.appendContent(.downloads(message.downloads,
+                                          accessibility: .init(from: .visitor)), animated: false)
             view.downloadTapped = { [weak self] in self?.downloadTapped?($0) }
             view.linkTapped = { [weak self] in self?.linkTapped?($0) }
             view.status = status
             return .visitorMessage(view)
         case .operatorMessage(let message, let showsImage, let imageUrl):
-            let view = OperatorChatMessageView(with: style.operatorMessage)
-            view.appendContent(.text(message.content), animated: false)
-            view.appendContent(.downloads(message.downloads), animated: false)
+            let view = OperatorChatMessageView(
+                with: style.operatorMessage,
+                environment: .init(
+                    data: environment.data,
+                    uuid: environment.uuid,
+                    gcd: environment.gcd,
+                    imageViewCache: environment.imageViewCache
+                )
+            )
+            view.appendContent(.text(message.content, accessibility: Self.operatorAccessibilityMessage(for: message)), animated: false)
+#warning("Provide proper localized 'Operator'")
+            view.appendContent(
+                .downloads(
+                    message.downloads,
+
+                    accessibility: .init(from: .operator(message.operator?.name ?? "Operator"))),
+                animated: false
+            )
             view.downloadTapped = { [weak self] in self?.downloadTapped?($0) }
             view.linkTapped = { [weak self] in self?.linkTapped?($0) }
             view.showsOperatorImage = showsImage
             view.setOperatorImage(fromUrl: imageUrl, animated: false)
             return .operatorMessage(view)
         case .choiceCard(let message, let showsImage, let imageUrl, let isActive):
-            let view = ChoiceCardView(with: style.choiceCard)
+            let view = ChoiceCardView(
+                with: style.choiceCard,
+                environment: .init(
+                    data: environment.data,
+                    uuid: environment.uuid,
+                    gcd: environment.gcd,
+                    imageViewCache: environment.imageViewCache
+                )
+            )
             let choiceCard = ChoiceCard(with: message, isActive: isActive)
             view.showsOperatorImage = showsImage
             view.setOperatorImage(fromUrl: imageUrl, animated: false)
@@ -270,6 +327,7 @@ extension ChatView {
             return .callUpgrade(view)
         }
     }
+    // swiftlint:enable function_body_length
 
     private func callUpgradeStyle(for callKind: CallKind) -> ChatCallUpgradeStyle {
         return callKind == .audio
@@ -302,7 +360,15 @@ extension ChatView {
 extension ChatView {
     func showCallBubble(with imageUrl: String?, animated: Bool) {
         guard callBubble == nil else { return }
-        let callBubble = BubbleView(with: style.callBubble)
+        let callBubble = BubbleView(
+            with: style.callBubble,
+            environment: .init(
+                data: environment.data,
+                uuid: environment.uuid,
+                gcd: environment.gcd,
+                imageViewCache: environment.imageViewCache
+            )
+        )
         callBubble.kind = .userImage(url: imageUrl)
         callBubble.tap = { [weak self] in self?.callBubbleTapped?() }
         callBubble.pan = { [weak self] in self?.moveCallBubble($0, animated: true) }
@@ -418,5 +484,24 @@ extension ChatView: UITableViewDelegate {
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         chatScrolledToBottom?(isBottomReached(for: scrollView))
+    }
+}
+
+// MARK: - Accessibility
+extension ChatView {
+    static func operatorAccessibilityMessage(for chatMessage: ChatMessage) -> ChatMessageContent.TextAccessibilityProperties {
+        .init(label: chatMessage.operator?.name ?? "Operator", value: chatMessage.content)
+    }
+
+    static func visitorAccessibilityMessage(for chatMessage: ChatMessage) -> ChatMessageContent.TextAccessibilityProperties {
+        .init(label: "You", value: chatMessage.content)
+    }
+
+    static func visitorAccessibilityOutgoingMessage(for outgoingMessage: OutgoingMessage) -> ChatMessageContent.TextAccessibilityProperties {
+        .init(label: "You", value: outgoingMessage.content)
+    }
+
+    struct AccessibilityProperties {
+        let operatorName: String
     }
 }

@@ -34,7 +34,7 @@ class GliaTests: XCTestCase {
         var calls = [Call]()
 
         let sdk = Glia(environment: .failing)
-        sdk.interactor = .mock()
+        sdk.interactor = try .mock()
         sdk.onEvent = {
             calls.append(.onEvent($0))
         }

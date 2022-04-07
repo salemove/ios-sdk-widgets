@@ -36,6 +36,8 @@ class VideoStreamView: UIView {
 
         let panRecognizer = UIPanGestureRecognizer(target: self, action: #selector(pan(_:)))
         addGestureRecognizer(panRecognizer)
+
+        isAccessibilityElement = true
     }
 
     private func replace(

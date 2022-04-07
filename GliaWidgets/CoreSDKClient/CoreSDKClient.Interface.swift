@@ -85,6 +85,10 @@ struct CoreSdkClient {
     ) -> Void
     var fetchFile: FetchFile
 
+    typealias GetCurrentEngagement = (
+        () -> SalemoveSDK.Engagement?
+    )
+    var getCurrentEngagement: GetCurrentEngagement
 }
 
 extension CoreSdkClient {
@@ -114,8 +118,10 @@ extension CoreSdkClient {
     typealias AttachmentType = SalemoveSDK.AttachmentType
     typealias AudioStreamable = SalemoveSDK.AudioStreamable
     typealias AudioStreamAddedBlock = SalemoveSDK.AudioStreamAddedBlock
+    typealias ContextType = SalemoveSDK.ContextType
     typealias EngagementFile = SalemoveSDK.EngagementFile
     typealias EngagementFileCompletionBlock = SalemoveSDK.EngagementFileCompletionBlock
+    typealias EngagementFileData = SalemoveSDK.EngagementFileData
     typealias EngagementFileFetchCompletionBlock = SalemoveSDK.EngagementFileFetchCompletionBlock
     typealias EngagementFileInformation = SalemoveSDK.EngagementFileInformation
     typealias EngagementFileProgressBlock = SalemoveSDK.EngagementFileProgressBlock
@@ -145,6 +151,7 @@ extension CoreSdkClient {
     typealias SalemoveError = SalemoveSDK.SalemoveError
     typealias ScreenshareOfferBlock = SalemoveSDK.ScreenshareOfferBlock
     typealias SingleChoiceOption = SalemoveSDK.SingleChoiceOption
+    typealias StreamableOnHoldHandler = SalemoveSDK.StreamableOnHoldHandler
     typealias StreamView = SalemoveSDK.StreamView
     typealias SuccessBlock = SalemoveSDK.SuccessBlock
     typealias VideoStreamable = SalemoveSDK.VideoStreamable
