@@ -18,7 +18,7 @@ extension UIColor {
 
         getRed(&r, green: &g, blue: &b, alpha: &a)
 
-        let rgb: Int = (Int)(r * 255) << 16 | (Int)(g * 255) << 8 | (Int)(b * 255) << 0
+        let rgb: UInt = (UInt)(r * 255) << 16 | (UInt)(g * 255) << 8 | (UInt)(b * 255) << 0
 
         return NSString(format: "#%06x", rgb) as String
      }
