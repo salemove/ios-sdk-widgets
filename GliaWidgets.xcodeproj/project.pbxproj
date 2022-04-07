@@ -1969,6 +1969,7 @@
 					};
 					1A205D6025655CB2003AA3CD = {
 						CreatedOnToolsVersion = 12.1;
+						TestTargetID = 1A205D7725655CEC003AA3CD;
 					};
 					1A205D7725655CEC003AA3CD = {
 						CreatedOnToolsVersion = 12.1;
@@ -2772,6 +2773,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestingApp.app/TestingApp";
 			};
 			name = Debug;
 		};
@@ -2790,6 +2792,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestingApp.app/TestingApp";
 			};
 			name = Release;
 		};
