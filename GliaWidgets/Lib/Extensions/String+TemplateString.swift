@@ -19,4 +19,12 @@ extension String {
     func withButtonTitle(_ title: String) -> String {
         return replacingOccurrences(of: "{buttonTitle}", with: title)
     }
+
+    func withUploadedFileName(_ fileName: String) -> String {
+        replacingOccurrences(of: "{uploadedFileName}", with: fileName)
+    }
+
+    func withUploadPercentValue(_ value: String) -> String {
+        replacingOccurrences(of: "{uploadPercentValue}", with: value)
+    }
 }

@@ -335,7 +335,11 @@ extension Theme {
             progressBackgroundColor: Color.lightGrey,
             removeButtonImage: Asset.uploadRemove.image,
             removeButtonColor: color.baseNormal,
-            accessiblity: .init(removeButtonAccessibilityLabel: Accessibility.RemoveUpload.label)
+            accessiblity: .init(
+                removeButtonAccessibilityLabel: Accessibility.RemoveUpload.label,
+                progressPercentValue: Accessibility.Progress.percentValue,
+                fileNameWithProgressValue: Accessibility.Progress.fileNameWithProgressValue
+            )
         )
 
         return FileUploadListStyle(item: upload)
