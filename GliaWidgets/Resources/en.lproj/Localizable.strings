@@ -91,6 +91,8 @@
 "chat.download.failed.retry" = "Retry";
 
 "chat.accessibility.upload.removeUpload.label" = "Remove upload";
+"chat.accessibility.upload.progress.percentValue" = "{uploadPercentValue}%%";
+"chat.accessibility.upload.progress.fileNameWithProgressValue" = "{uploadedFileName}, {uploadPercentValue}%%";
 "chat.accessibility.message.messageInput.label" = "Message";
 "chat.accessibility.pickMedia.pickAttachmentButton.label" = "Pick attachment";
 "chat.accessibility.message.sendButton.label" = "Send";
