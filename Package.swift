@@ -1,5 +1,4 @@
 // swift-tools-version:5.3
-
 import PackageDescription
 
 let package = Package(
@@ -51,7 +50,7 @@ let package = Package(
         ),
         .binaryTarget(
             name: "SalemoveSDK",
-            url: "https://github.com/salemove/ios-bundle/releases/download/0.32.3/SalemoveSDK.xcframework.zip",
+            url: "https://github.com/salemove/ios-bundle/releases/download/0.33.0/SalemoveSDK.xcframework.zip",
             checksum: "daab8fd294ed3bce48587c27fd3da2a432922fb4c539ba7a3f50aaa6dd30b543"
         ),
         .target(
@@ -73,14 +72,13 @@ let package = Package(
         .target(
             name: "GliaWidgetsSDK",
             dependencies: [
+                "SalemoveSDK",
                 "ReactiveSwift",
                 "SocketIO",
                 "SwiftPhoenixClient",
                 "Starscream",
                 "TwilioVoice",
                 "WebRTC",
-                "SalemoveSDK",
-
                 "GliaWidgets"
             ]
         )
