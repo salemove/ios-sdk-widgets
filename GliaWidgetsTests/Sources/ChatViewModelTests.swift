@@ -1,6 +1,6 @@
-import XCTest
-
 @testable import GliaWidgets
+import SalemoveSDK
+import XCTest
 
 class ChatViewModelTests: XCTestCase {
 
@@ -52,9 +52,30 @@ class ChatViewModelTests: XCTestCase {
 
         XCTAssertEqual(calls, [.sendSelectedOptionValue])
     }
-}
 
-import SalemoveSDK
+    func test__startCallsSDKConfigureWithInteractorAndСonfigureWithConfiguration() throws {
+        var interactorEnv = Interactor.Environment.init(coreSdk: .failing)
+        enum Calls {
+            case configureWithConfiguration, configureWithInteractor
+        }
+        var calls: [Calls] = []
+        interactorEnv.coreSdk.configureWithConfiguration = { _, _ in
+            calls.append(.configureWithConfiguration)
+        }
+        interactorEnv.coreSdk.configureWithInteractor = { _ in
+            calls.append(.configureWithInteractor)
+        }
+        let interactor = Interactor.mock(environment: interactorEnv)
+        var viewModelEnv = ChatViewModel.Environment.failing
+        viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
+        viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
+        viewModelEnv.chatStorage.messages = { _ in [] }
+        viewModelEnv.fromHistory = { true }
+        let viewModel = ChatViewModel.mock(interactor: interactor, environment: viewModelEnv)
+        viewModel.start()
+        XCTAssertEqual(calls, [.configureWithInteractor, .configureWithConfiguration])
+    }
+}
 
 extension ChatChoiceCardOption {
     static let mock: ChatChoiceCardOption = {
