@@ -98,7 +98,7 @@ class Interactor {
             }
     }
 
-    private func withConfiguration(_ action: @escaping () -> Void) {
+    func withConfiguration(_ action: @escaping () -> Void) {
 
         environment.coreSdk.configureWithInteractor(self)
         environment.coreSdk.configureWithConfiguration(sdkConfiguration) {
