@@ -81,6 +81,54 @@ class CallView: EngagementView {
         adjustLocalVideoFrameAfterLayout()
     }
 
+    override func setup() {
+        topStackView.axis = .vertical
+        topStackView.spacing = 8
+        topStackView.addArrangedSubviews([operatorNameLabel, durationLabel])
+
+        operatorNameLabel.font = style.operatorNameFont
+        operatorNameLabel.textColor = style.operatorNameColor
+        operatorNameLabel.textAlignment = .center
+
+        durationLabel.font = style.durationFont
+        durationLabel.textColor = style.durationColor
+        durationLabel.textAlignment = .center
+
+        topLabel.text = style.topText
+        topLabel.font = style.topTextFont
+        topLabel.textColor = style.topTextColor
+        topLabel.numberOfLines = 0
+        topLabel.textAlignment = .center
+
+        bottomLabel.text = style.bottomText
+        bottomLabel.font = style.bottomTextFont
+        bottomLabel.textColor = style.bottomTextColor
+        bottomLabel.numberOfLines = 0
+        bottomLabel.textAlignment = .center
+
+        buttonBar.buttonTapped = { [weak self] in
+            self?.callButtonTapped?($0)
+            self?.hideLandscapeBarsAfterDelay()
+        }
+
+        let tapRecognizer = UITapGestureRecognizer(
+            target: self,
+            action: #selector(tap)
+        )
+        addGestureRecognizer(tapRecognizer)
+
+        localVideoView.show = { [weak self] in
+            self?.setLocalVideoFrame(isVisible: $0)
+        }
+
+        localVideoView.pan = { [weak self] in
+            self?.adjustLocalVideoFrameAfterPanGesture(translation: $0)
+        }
+
+        header.backButton.accessibilityLabel = "Back"
+        header.backButton.accessibilityHint = "Activates minimize."
+    }
+
     func switchTo(_ mode: Mode) {
         self.mode = mode
 
@@ -137,54 +185,6 @@ class CallView: EngagementView {
             headerTopConstraint.constant = 0
             buttonBarBottomConstraint.constant = 0
         }
-    }
-
-    private func setup() {
-        topStackView.axis = .vertical
-        topStackView.spacing = 8
-        topStackView.addArrangedSubviews([operatorNameLabel, durationLabel])
-
-        operatorNameLabel.font = style.operatorNameFont
-        operatorNameLabel.textColor = style.operatorNameColor
-        operatorNameLabel.textAlignment = .center
-
-        durationLabel.font = style.durationFont
-        durationLabel.textColor = style.durationColor
-        durationLabel.textAlignment = .center
-
-        topLabel.text = style.topText
-        topLabel.font = style.topTextFont
-        topLabel.textColor = style.topTextColor
-        topLabel.numberOfLines = 0
-        topLabel.textAlignment = .center
-
-        bottomLabel.text = style.bottomText
-        bottomLabel.font = style.bottomTextFont
-        bottomLabel.textColor = style.bottomTextColor
-        bottomLabel.numberOfLines = 0
-        bottomLabel.textAlignment = .center
-
-        buttonBar.buttonTapped = { [weak self] in
-            self?.callButtonTapped?($0)
-            self?.hideLandscapeBarsAfterDelay()
-        }
-
-        let tapRecognizer = UITapGestureRecognizer(
-            target: self,
-            action: #selector(tap)
-        )
-        addGestureRecognizer(tapRecognizer)
-
-        localVideoView.show = { [weak self] in
-            self?.setLocalVideoFrame(isVisible: $0)
-        }
-
-        localVideoView.pan = { [weak self] in
-            self?.adjustLocalVideoFrameAfterPanGesture(translation: $0)
-        }
-
-        header.backButton.accessibilityLabel = "Back"
-        header.backButton.accessibilityHint = "Activates minimize."
     }
 
     private func layout() {

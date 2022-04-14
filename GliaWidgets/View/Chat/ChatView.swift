@@ -78,6 +78,30 @@ class ChatView: EngagementView {
         moveCallBubbleVisible()
     }
 
+    override func setup() {
+        super.setup()
+        header.title = style.title
+
+        tableView.backgroundColor = .clear
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = UITableView.automaticDimension
+        tableView.separatorStyle = .none
+        tableView.contentInset = kChatTableViewInsets
+        tableView.register(cell: ChatItemCell.self)
+
+        unreadMessageIndicatorView.tapped = { [weak self] in
+            self?.scrollToBottom(animated: true)
+        }
+
+        tableAndIndicatorStack.axis = .vertical
+
+        observeKeyboard()
+        addKeyboardDismissalTapGesture()
+        typingIndicatorView.isHidden = true
+    }
+
     func setOperatorTypingIndicatorIsHidden(to isHidden: Bool) {
         typingIndicatorView.isHidden = isHidden
     }
@@ -174,29 +198,6 @@ class ChatView: EngagementView {
 }
 
 extension ChatView {
-    private func setup() {
-        header.title = style.title
-
-        tableView.backgroundColor = .white
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = UITableView.automaticDimension
-        tableView.separatorStyle = .none
-        tableView.contentInset = kChatTableViewInsets
-        tableView.register(cell: ChatItemCell.self)
-
-        unreadMessageIndicatorView.tapped = { [weak self] in
-            self?.scrollToBottom(animated: true)
-        }
-
-        tableAndIndicatorStack.axis = .vertical
-
-        observeKeyboard()
-        addKeyboardDismissalTapGesture()
-        typingIndicatorView.isHidden = true
-    }
-
     private func layout() {
         addSubview(header)
         header.autoPinEdgesToSuperviewEdges(
