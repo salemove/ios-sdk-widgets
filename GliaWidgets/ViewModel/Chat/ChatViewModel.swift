@@ -140,20 +140,26 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         super.start()
 
         loadHistory()
+        // At this point we need to be sure that CoreSDK is configured.
+        // This will restore engagement if one was not completed earlier.
+        // Otherwise in case of ongoing engagement, visitor will not receive
+        // messages from operator until message is sent from visitor.
+        interactor.withConfiguration { [weak self] in
+            guard let self = self else { return }
+            if case .startEngagement = self.startAction, self.environment.chatStorage.isEmpty() {
+                let item = ChatItem(kind: .queueOperator)
 
-        if case .startEngagement = startAction, environment.chatStorage.isEmpty() {
-            let item = ChatItem(kind: .queueOperator)
+                self.appendItem(
+                    item,
+                    to: self.queueOperatorSection,
+                    animated: false
+                )
 
-            appendItem(
-                item,
-                to: queueOperatorSection,
-                animated: false
-            )
+                self.enqueue(mediaType: .text)
+            }
 
-            enqueue(mediaType: .text)
+            self.update(for: self.interactor.state)
         }
-
-        update(for: interactor.state)
     }
 
     override func update(for state: InteractorState) {
