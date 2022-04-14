@@ -1,13 +1,13 @@
 #if DEBUG
 extension ChatMessage {
     static func mock(
-        id: String,
-        queueID: String?,
-        `operator`: ChatOperator?,
-        sender: ChatMessageSender,
-        content: String,
-        attachment: ChatAttachment?,
-        downloads: [FileDownload]
+        id: String = "",
+        queueID: String? = nil,
+        `operator`: ChatOperator? = nil,
+        sender: ChatMessageSender = .visitor,
+        content: String = "",
+        attachment: ChatAttachment? = nil,
+        downloads: [FileDownload] = []
     ) -> ChatMessage {
         .init(
             id: id,
