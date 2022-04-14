@@ -29,7 +29,7 @@ class EngagementView: View {
         layout()
     }
 
-    private func setup() {
+    func setup() {
         backgroundColor = style.backgroundColor
     }
 
