@@ -406,6 +406,12 @@ extension Theme {
             accessibility: .init(
                 contentAccessibilityLabel: Accessibility.Message.attachmentMessageLabel,
                 youAccessibilityPlaceholder: Accessibility.Message.you
+            ),
+            downloadAccessibility: .init(
+                noneState: Accessibility.Download.State.none,
+                downloadingState: Accessibility.Download.State.downloading,
+                downloadedState: Accessibility.Download.State.downloaded,
+                errorState: Accessibility.Download.State.error
             )
         )
     }

@@ -54,8 +54,12 @@ class CallView: EngagementView {
         return label
     }()
 
-    lazy var durationLabel: UILabel = {
+    lazy var secondLabel: UILabel = {
         let label = UILabel()
+        #warning("""
+                 Need to take into account that this label is also used for visitor on hold,
+                 by introducing separate accessibility hints for each state (on-hold/call-duration).
+                 """)
         label.accessibilityHint = style.accessibility.durationHint
         return label
     }()
@@ -170,7 +174,7 @@ class CallView: EngagementView {
         localVideoView.pan = { [weak self] in
             self?.adjustLocalVideoFrameAfterPanGesture(translation: $0)
         }
-
+        #warning("Provide localization for accessibility.")
         header.backButton.accessibilityLabel = "Back"
         header.backButton.accessibilityHint = "Activates minimize."
     }
