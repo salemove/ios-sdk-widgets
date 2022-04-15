@@ -18,7 +18,8 @@ extension ChatViewModel.Environment {
                     environment: env
                 )
         },
-        fromHistory: { true }
+        fromHistory: { true },
+        fetchSiteConfigurations: { _ in }
     )
 }
 #endif

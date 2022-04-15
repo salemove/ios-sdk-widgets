@@ -112,6 +112,8 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter,
                     view.scrollToBottom(animated: true)
                 }
                 view.setOperatorTypingIndicatorIsHidden(to: isHidden)
+            case .setIsAttachmentButtonHidden(let isHidden):
+                view.messageEntryView.isAttachmentButtonHidden = isHidden
             }
         }
     }

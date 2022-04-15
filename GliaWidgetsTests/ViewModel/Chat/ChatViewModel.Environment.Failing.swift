@@ -28,6 +28,9 @@ extension ChatViewModel.Environment {
         fromHistory: {
             fail("\(Self.self).fromHistory")
             return true
+        },
+        fetchSiteConfigurations: { _ in
+            fail("\(Self.self).fetchSiteConfigurations")
         }
     )
 }
