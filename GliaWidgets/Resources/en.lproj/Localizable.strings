@@ -93,6 +93,12 @@
 "chat.accessibility.upload.removeUpload.label" = "Remove upload";
 "chat.accessibility.upload.progress.percentValue" = "{uploadPercentValue}%%";
 "chat.accessibility.upload.progress.fileNameWithProgressValue" = "{uploadedFileName}, {uploadPercentValue}%%";
+
+"chat.accessibility.download.state.none" = "{downloadedFileName}, {downloadedFileState}";
+"chat.accessibility.download.state.downloading" = "{downloadedFileName}, {downloadedFileState} {downloadPercentValue}%%";
+"chat.accessibility.download.state.downloaded" = "{downloadedFileName}, {downloadedFileState}";
+"chat.accessibility.download.state.error" = "{downloadedFileName}, {downloadedFileState}";
+
 "chat.accessibility.message.messageInput.label" = "Message";
 "chat.accessibility.pickMedia.pickAttachmentButton.label" = "Pick attachment";
 "chat.accessibility.message.sendButton.label" = "Send";

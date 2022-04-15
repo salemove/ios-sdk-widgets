@@ -465,6 +465,18 @@ public enum L10n {
           }
         }
       }
+      public enum Download {
+        public enum State {
+          /// {downloadedFileName}, {downloadedFileState}
+          public static let downloaded = L10n.tr("Localizable", "chat.accessibility.download.state.downloaded")
+          /// {downloadedFileName}, {downloadedFileState} {downloadPercentValue}%%
+          public static let downloading = L10n.tr("Localizable", "chat.accessibility.download.state.downloading")
+          /// {downloadedFileName}, {downloadedFileState}
+          public static let error = L10n.tr("Localizable", "chat.accessibility.download.state.error")
+          /// {downloadedFileName}, {downloadedFileState}
+          public static let `none` = L10n.tr("Localizable", "chat.accessibility.download.state.none")
+        }
+      }
       public enum Header {
         public enum BackButton {
           /// 

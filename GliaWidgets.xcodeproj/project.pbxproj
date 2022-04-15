@@ -272,6 +272,9 @@
 		9A83D77F27B181C500681C9F /* Glia.Environment.Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A83D77E27B181C500681C9F /* Glia.Environment.Interface.swift */; };
 		9A83D78127B18DB600681C9F /* Glia.Environment.Live.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A83D78027B18DB600681C9F /* Glia.Environment.Live.swift */; };
 		9A83D78327B18DF000681C9F /* Glia.Environment.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A83D78227B18DF000681C9F /* Glia.Environment.Mock.swift */; };
+		9AA3CBA627EB306100C00712 /* CallViewModel.Environment.Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA3CBA527EB306100C00712 /* CallViewModel.Environment.Interface.swift */; };
+		9AA3CBA827EB31A300C00712 /* CallViewModel.Environment.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA3CBA727EB31A300C00712 /* CallViewModel.Environment.Mock.swift */; };
+		9AB061C1280EFE09008960FA /* ChatFileDownloadStyle.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB061C0280EFE09008960FA /* ChatFileDownloadStyle.Accessibility.swift */; };
 		9AB196D227C3D74300FD60AB /* Interactor.Environment.Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB196D127C3D74300FD60AB /* Interactor.Environment.Interface.swift */; };
 		9AB196D427C3D7FD00FD60AB /* Interactor.Environment.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB196D327C3D7FD00FD60AB /* Interactor.Environment.Mock.swift */; };
 		9AB196D627C3E1E400FD60AB /* ChatViewModel.Environment.Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB196D527C3E1E400FD60AB /* ChatViewModel.Environment.Interface.swift */; };
@@ -654,6 +657,9 @@
 		9A83D77E27B181C500681C9F /* Glia.Environment.Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Glia.Environment.Interface.swift; sourceTree = "<group>"; };
 		9A83D78027B18DB600681C9F /* Glia.Environment.Live.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Glia.Environment.Live.swift; sourceTree = "<group>"; };
 		9A83D78227B18DF000681C9F /* Glia.Environment.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Glia.Environment.Mock.swift; sourceTree = "<group>"; };
+		9AA3CBA527EB306100C00712 /* CallViewModel.Environment.Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallViewModel.Environment.Interface.swift; sourceTree = "<group>"; };
+		9AA3CBA727EB31A300C00712 /* CallViewModel.Environment.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallViewModel.Environment.Mock.swift; sourceTree = "<group>"; };
+		9AB061C0280EFE09008960FA /* ChatFileDownloadStyle.Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatFileDownloadStyle.Accessibility.swift; sourceTree = "<group>"; };
 		9AB196D127C3D74300FD60AB /* Interactor.Environment.Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interactor.Environment.Interface.swift; sourceTree = "<group>"; };
 		9AB196D327C3D7FD00FD60AB /* Interactor.Environment.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interactor.Environment.Mock.swift; sourceTree = "<group>"; };
 		9AB196D527C3E1E400FD60AB /* ChatViewModel.Environment.Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.Environment.Interface.swift; sourceTree = "<group>"; };
@@ -2030,6 +2036,7 @@
 			children = (
 				C4F176CB261D1543009D9F07 /* ChatFileDownloadContentView.swift */,
 				C4F176CC261D1543009D9F07 /* ChatFileDownloadContentStyle.swift */,
+				9AB061C0280EFE09008960FA /* ChatFileDownloadStyle.Accessibility.swift */,
 			);
 			path = Download;
 			sourceTree = "<group>";
@@ -2595,6 +2602,7 @@
 				9AB196DE27C3FFF400FD60AB /* Call.Environment.Mock.swift in Sources */,
 				1A0C143125B8547200B00695 /* EngagementStyle.swift in Sources */,
 				9A186A3727F5D38D0055886D /* ChatMessageEntryStyle.Accessibility.swift in Sources */,
+				9AB061C1280EFE09008960FA /* ChatFileDownloadStyle.Accessibility.swift in Sources */,
 				1A7CA8272574D6F40047CBBE /* ConnectStyle.swift in Sources */,
 				9AB3401F27FB56B7006E0FE2 /* ConnectStatusStyle.Accessibility.swift in Sources */,
 				1AC7A7552582594200567FF8 /* Configuration.swift in Sources */,
