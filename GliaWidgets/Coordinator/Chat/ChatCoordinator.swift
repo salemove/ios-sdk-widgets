@@ -81,7 +81,8 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
                 localFileThumbnailQueue: environment.localFileThumbnailQueue,
                 uiImage: environment.uiImage,
                 createFileDownload: environment.createFileDownload,
-                fromHistory: environment.fromHistory
+                fromHistory: environment.fromHistory,
+                fetchSiteConfigurations: environment.fetchSiteConfigurations
             )
         )
         viewModel.engagementDelegate = { [weak self] event in
@@ -197,5 +198,6 @@ extension ChatCoordinator {
         var uiImage: UIKitBased.UIImage
         var createFileDownload: FileDownloader.CreateFileDownload
         var fromHistory: () -> Bool
+        var fetchSiteConfigurations: CoreSdkClient.FetchSiteConfigurations
     }
 }

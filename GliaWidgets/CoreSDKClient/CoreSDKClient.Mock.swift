@@ -20,7 +20,8 @@ extension CoreSdkClient {
         requestEngagedOperator: { _ in },
         uploadFileToEngagement: { _, _, _ in },
         fetchFile: { _, _, _ in },
-        getCurrentEngagement: { return nil }
+        getCurrentEngagement: { return nil },
+        fetchSiteConfigurations: { _ in }
     )
 }
 

@@ -21,7 +21,8 @@ extension CoreSdkClient {
             requestEngagedOperator: Salemove.sharedInstance.requestEngagedOperator(completion:),
             uploadFileToEngagement: Salemove.sharedInstance.uploadFileToEngagement(_:progress:completion:),
             fetchFile: Salemove.sharedInstance.fetchFile(engagementFile:progress:completion:),
-            getCurrentEngagement: Salemove.sharedInstance.getCurrentEngagement
+            getCurrentEngagement: Salemove.sharedInstance.getCurrentEngagement,
+            fetchSiteConfigurations: Salemove.sharedInstance.fetchSiteConfiguration(_:)
         )
     }()
 }
