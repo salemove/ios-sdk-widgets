@@ -92,7 +92,10 @@ extension CallViewController {
         let conf = try CoreSdkClient.Salemove.Configuration.mock()
         let queueId = UUID.mock.uuidString
         let viewContext = CoreSdkClient.VisitorContext.mock
-        let interactorEnv = Interactor.Environment.mock
+        var interactorEnv = Interactor.Environment.mock
+        interactorEnv.coreSdk.configureWithConfiguration = { _, callback in
+            callback?()
+        }
         let interactor = Interactor.mock(
             configuration: conf,
             queueID: queueId,
