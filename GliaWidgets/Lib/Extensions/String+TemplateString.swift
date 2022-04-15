@@ -27,4 +27,16 @@ extension String {
     func withUploadPercentValue(_ value: String) -> String {
         replacingOccurrences(of: "{uploadPercentValue}", with: value)
     }
+
+    func withDownloadedFileName(_ fileName: String) -> String {
+        replacingOccurrences(of: "{downloadedFileName}", with: fileName)
+    }
+
+    func withDownloadPercentValue(_ value: String) -> String {
+        replacingOccurrences(of: "{downloadPercentValue}", with: value)
+    }
+
+    func withDownloadedFileState(_ value: String) -> String {
+        replacingOccurrences(of: "{downloadedFileState}", with: value)
+    }
 }
