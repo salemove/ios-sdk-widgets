@@ -104,6 +104,22 @@ extension CallViewController {
         let callKind = CallKind.audio
         let callEnv = Call.Environment.mock
         let call = Call.mock(kind: callKind, environment: callEnv)
+        let remoteAudioStream = CoreSdkClient.MockAudioStreamable.mock(
+            muteFunc: {},
+            unmuteFunc: {},
+            getIsMutedFunc: { false },
+            setIsMutedFunc: { _ in },
+            getIsRemoteFunc: { true },
+            setIsRemoteFunc: { _ in }
+        )
+        let localAudioStream = CoreSdkClient.MockAudioStreamable.mock(
+            muteFunc: {},
+            unmuteFunc: {},
+            getIsMutedFunc: { false },
+            setIsMutedFunc: { _ in },
+            getIsRemoteFunc: { false },
+            setIsRemoteFunc: { _ in }
+        )
         let unreadMessages = ObservableValue<Int>.init(with: .zero)
         let startAction = CallViewModel.StartAction.engagement(mediaType: .audio)
         let viewModel = CallViewModel.mock(
@@ -122,6 +138,8 @@ extension CallViewController {
         )
         let viewController = CallViewController.mock(viewModel: viewModel, viewFactory: viewFactory)
         viewController.view.frame = UIScreen.main.bounds
+        call.updateAudioStream(with: remoteAudioStream)
+        call.updateAudioStream(with: localAudioStream)
         viewModel.action?(.connected(name: "Blob The Operator", imageUrl: nil))
         return viewController
     }

@@ -6,16 +6,21 @@ public class BubbleStyle {
     /// Style of a badge shown on the bubble.
     public var badge: BadgeStyle?
 
+    /// Style of a visitor's on hold state overlay.
+    public var onHoldOverlay: OnHoldOverlayStyle
     ///
     /// - Parameters:
     ///   - userImage: Style of a user's image shown in the bubble.
     ///   - badge: Style of a badge shown on the bubble.
+    ///   - onHoldOverlay: Style of a visitor's on hold state overlay.
     ///
     public init(
         userImage: UserImageStyle,
-        badge: BadgeStyle? = nil
+        badge: BadgeStyle? = nil,
+        onHoldOverlay: OnHoldOverlayStyle = .bubble
     ) {
         self.userImage = userImage
         self.badge = badge
+        self.onHoldOverlay = onHoldOverlay
     }
 }

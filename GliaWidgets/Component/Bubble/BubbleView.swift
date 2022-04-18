@@ -8,12 +8,22 @@ class BubbleView: UIView {
     var kind: BubbleKind = .userImage(url: nil) {
         didSet { update(kind) }
     }
+
+    var isVisitorOnHold: Bool = false {
+        didSet {
+            isVisitorOnHold
+                ? showOnHoldView()
+                : hideOnHoldView()
+        }
+    }
+
     var tap: (() -> Void)?
     var pan: ((CGPoint) -> Void)?
 
     private let style: BubbleStyle
     private var userImageView: UserImageView?
     private var badgeView: BadgeView?
+    private var onHoldView: OnHoldOverlayView?
     private let environment: Environment
 
     init(
@@ -42,6 +52,25 @@ class BubbleView: UIView {
             byRoundingCorners: .allCorners,
             cornerRadii: CGSize(width: cornerRadius, height: cornerRadius)
         ).cgPath
+    }
+
+    func showOnHoldView() {
+        onHoldView?.removeFromSuperview()
+
+        guard
+            let userImageView = userImageView
+        else { return }
+
+        let onHoldView = OnHoldOverlayView(style: style.onHoldOverlay)
+        self.onHoldView = onHoldView
+
+        userImageView.addSubview(onHoldView)
+        onHoldView.autoPinEdgesToSuperviewEdges()
+    }
+
+    func hideOnHoldView() {
+        onHoldView?.removeFromSuperview()
+        onHoldView = nil
     }
 
     func setBadge(itemCount: Int) {

@@ -8,16 +8,57 @@ class CallView: EngagementView {
         case upgrading
     }
 
+    var callDuration: String? {
+        didSet {
+            guard !isVisitrOnHold else { return }
+
+            secondLabel.text = callDuration
+            secondLabel.accessibilityLabel = callDuration
+
+            connectView.statusView.setSecondText(callDuration, animated: false)
+        }
+    }
+
+    var isVisitrOnHold: Bool = false {
+        didSet {
+            connectView.operatorView.isVisitorOnHold = isVisitrOnHold
+
+            if isVisitrOnHold {
+                secondLabel.text = style.onHoldStyle.onHoldText
+                secondLabel.accessibilityLabel = style.onHoldStyle.onHoldText
+                connectView.statusView.setSecondText(style.onHoldStyle.onHoldText, animated: false)
+            } else {
+                secondLabel.text = callDuration
+                secondLabel.accessibilityLabel = callDuration
+                connectView.statusView.setSecondText(callDuration, animated: false)
+            }
+
+            if case .video = mode {
+                connectView.isHidden = !isVisitrOnHold
+                topStackView.isHidden = isVisitrOnHold
+                remoteVideoView.isHidden = isVisitrOnHold
+            }
+
+            bottomLabel.text = isVisitrOnHold
+                ? style.onHoldStyle.descriptionText
+                : nil
+
+            bottomLabel.isHidden = !isVisitrOnHold
+            localVideoView.label.isHidden = !isVisitrOnHold
+        }
+    }
+
     let operatorNameLabel: UILabel = {
         let label = UILabel()
         label.accessibilityHint = "Displays operator name."
         return label
     }()
-    let durationLabel: UILabel = {
+    let secondLabel: UILabel = {
         let label = UILabel()
         label.accessibilityHint = "Displays call duration."
         return label
     }()
+
     let topLabel = UILabel()
     let bottomLabel = UILabel()
     let buttonBar: CallButtonBar
@@ -33,11 +74,11 @@ class CallView: EngagementView {
         return streamView
     }()
     var callButtonTapped: ((CallButton.Kind) -> Void)?
+    let topStackView = UIStackView()
 
     private let style: CallStyle
     private var mode: Mode = .audio
     private let topView = UIView() // does not seem to be used
-    private let topStackView = UIStackView()
     private var hideBarsWorkItem: DispatchWorkItem?
     private var headerTopConstraint: NSLayoutConstraint!
     private var buttonBarBottomConstraint: NSLayoutConstraint!
@@ -91,9 +132,9 @@ class CallView: EngagementView {
             remoteVideoView.isHidden = true
             localVideoView.isHidden = true
         case .video:
-            connectView.isHidden = true
-            topStackView.isHidden = false
-            remoteVideoView.isHidden = false
+            connectView.isHidden = !isVisitrOnHold
+            topStackView.isHidden = isVisitrOnHold
+            remoteVideoView.isHidden = isVisitrOnHold
             localVideoView.isHidden = false
             if currentOrientation.isLandscape {
                 hideLandscapeBarsAfterDelay()
@@ -142,15 +183,15 @@ class CallView: EngagementView {
     private func setup() {
         topStackView.axis = .vertical
         topStackView.spacing = 8
-        topStackView.addArrangedSubviews([operatorNameLabel, durationLabel])
+        topStackView.addArrangedSubviews([operatorNameLabel, secondLabel])
 
         operatorNameLabel.font = style.operatorNameFont
         operatorNameLabel.textColor = style.operatorNameColor
         operatorNameLabel.textAlignment = .center
 
-        durationLabel.font = style.durationFont
-        durationLabel.textColor = style.durationColor
-        durationLabel.textAlignment = .center
+        secondLabel.font = style.durationFont
+        secondLabel.textColor = style.durationColor
+        secondLabel.textAlignment = .center
 
         topLabel.text = style.topText
         topLabel.font = style.topTextFont
@@ -163,6 +204,10 @@ class CallView: EngagementView {
         bottomLabel.textColor = style.bottomTextColor
         bottomLabel.numberOfLines = 0
         bottomLabel.textAlignment = .center
+
+        localVideoView.label.text = style.onHoldStyle.localVideoStreamLabelText
+        localVideoView.label.font = style.onHoldStyle.localVideoStreamLabelFont
+        localVideoView.label.textColor = style.onHoldStyle.localVideoStreamLabelColor
 
         buttonBar.buttonTapped = { [weak self] in
             self?.callButtonTapped?($0)

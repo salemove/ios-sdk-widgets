@@ -195,6 +195,14 @@ public enum L10n {
       /// End
       public static let title = L10n.tr("Localizable", "call.endButton.title")
     }
+    public enum OnHold {
+      /// You can continue browsing while you are on hold
+      public static let bottomText = L10n.tr("Localizable", "call.onHold.bottomText")
+      /// You
+      public static let localVideoStreamLabelText = L10n.tr("Localizable", "call.onHold.localVideoStreamLabelText")
+      /// On Hold
+      public static let topText = L10n.tr("Localizable", "call.onHold.topText")
+    }
     public enum Operator {
       /// {operatorName}
       public static let name = L10n.tr("Localizable", "call.operator.name")
