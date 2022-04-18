@@ -152,7 +152,8 @@ extension RootCoordinator {
                 localFileThumbnailQueue: environment.localFileThumbnailQueue,
                 uiImage: environment.uiImage,
                 createFileDownload: environment.createFileDownload,
-                fromHistory: environment.fromHistory
+                fromHistory: environment.fromHistory,
+                fetchSiteConfigurations: environment.fetchSiteConfigurations
             )
         )
         coordinator.delegate = { [weak self] event in
@@ -399,6 +400,7 @@ extension RootCoordinator {
         var createFileDownload: FileDownloader.CreateFileDownload
         var fromHistory: () -> Bool
         var timerProviding: FoundationBased.Timer.Providing
+        var fetchSiteConfigurations: CoreSdkClient.FetchSiteConfigurations
     }
 }
 

@@ -170,6 +170,8 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             action?(.queue)
             action?(.scrollToBottom(animated: false))
 
+            fetchSiteConfigurations()
+
         case .engaged(let engagedOperator):
             let name = engagedOperator?.firstName
             let pictureUrl = engagedOperator?.picture?.url
@@ -752,6 +754,26 @@ extension ChatViewModel {
     }
 }
 
+// MARK: Site Confgurations
+
+extension ChatViewModel {
+    func fetchSiteConfigurations() {
+        environment.fetchSiteConfigurations { [weak self] result in
+            guard let self = self else { return }
+
+            switch result {
+            case .success(let site):
+                self.action?(.setIsAttachmentButtonHidden(!site.allowedFileSenders.visitor))
+            case .failure:
+                self.showAlert(
+                    with: self.alertConfiguration.unexpectedError,
+                    dismissed: nil
+                )
+            }
+        }
+    }
+}
+
 extension ChatViewModel {
 
     typealias Strings = L10n.Chat
@@ -797,6 +819,7 @@ extension ChatViewModel {
         case showCallBubble(imageUrl: String?)
         case updateUnreadMessageIndicator(itemCount: Int)
         case setOperatorTypingIndicatorIsHiddenTo(Bool, _ isChatScrolledToBottom: Bool)
+        case setIsAttachmentButtonHidden(Bool)
     }
 
     enum DelegateEvent {

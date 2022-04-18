@@ -14,5 +14,6 @@ extension ChatViewModel {
         var uiImage: UIKitBased.UIImage
         var createFileDownload: FileDownloader.CreateFileDownload
         var fromHistory: () -> Bool
+        var fetchSiteConfigurations: CoreSdkClient.FetchSiteConfigurations
     }
 }
