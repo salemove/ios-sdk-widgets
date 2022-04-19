@@ -95,6 +95,10 @@ class GliaViewController: UIViewController {
         )
     }
 
+    func setBubbleBadge(itemCount: Int) {
+        bubbleView?.setBadge(itemCount: itemCount)
+    }
+
     private func setup() {
         modalPresentationStyle = .overFullScreen
         transitioningDelegate = self

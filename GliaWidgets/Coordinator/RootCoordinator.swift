@@ -1,29 +1,54 @@
 import UIKit
 
-class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
+final class RootCoordinator: UIViewControllerCoordinator {
+    enum DelegateEvent {
+        case started
+        case engagementChanged(EngagementKind)
+        case ended
+        case minimized
+        case maximized
+    }
 
     var delegate: ((DelegateEvent) -> Void)?
 
     var engagementKind: EngagementKind {
-        didSet { delegate?(.engagementChanged(engagementKind)) }
+        didSet {
+            delegate?(.engagementChanged(engagementKind))
+        }
+    }
+
+    private lazy var window: UIWindow? = {
+        if #available(iOS 13, *), let sceneProvider = sceneProvider {
+            return sceneProvider.windowScene()?.windows.filter(\.isKeyWindow).first
+        } else {
+            return UIApplication.shared.keyWindow
+        }
+    }()
+
+    private var presenter: UIViewController {
+        guard let window = window else {
+            fatalError("Could not find key UIWindow to present on")
+        }
+
+        guard var presenter = window.rootViewController else {
+            fatalError("Could not find UIViewController to present on")
+        }
+
+        while let presentedViewController = presenter.presentedViewController {
+            presenter = presentedViewController
+        }
+
+        return presenter
     }
 
     private let interactor: Interactor
     private let viewFactory: ViewFactory
-    private weak var sceneProvider: SceneProvider?
-    private var engagement: Engagement = .none
-    private let chatCall = ObservableValue<Call?>(with: nil)
-    private let unreadMessages = ObservableValue<Int>(with: 0)
-    private let isWindowVisible = ObservableValue<Bool>(with: false)
-    private let screenShareHandler = ScreenShareHandler()
-
-    private let navigationController = NavigationController()
-    private let navigationPresenter: NavigationPresenter
-    private let gliaPresenter: GliaPresenter
-    private var gliaViewController: GliaViewController?
-    private let kBubbleViewSize: CGFloat = 60.0
     private let features: Features
     private let environment: Environment
+    private let isWindowVisible = ObservableValue<Bool>(with: false)
+
+    private var gliaViewController: GliaViewController?
+    private weak var sceneProvider: SceneProvider?
 
     init(
         interactor: Interactor,
@@ -35,119 +60,44 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
     ) {
         self.interactor = interactor
         self.viewFactory = viewFactory
-        self.sceneProvider = sceneProvider
         self.engagementKind = engagementKind
-        self.gliaPresenter = GliaPresenter(sceneProvider: sceneProvider)
-        self.navigationPresenter = NavigationPresenter(with: navigationController)
         self.features = features
         self.environment = environment
-        navigationController.modalPresentationStyle = .fullScreen
-        navigationController.isNavigationBarHidden = true
-    }
 
-    func start() {
-        switch engagementKind {
-        case .none:
-            break
-        case .chat:
-            let chatViewController = startChat(
-                withAction: .startEngagement,
-                showsCallBubble: false
+        super.init(
+            environment: .init(
+                uuid: environment.uuid
             )
-            engagement = .chat(chatViewController)
-            navigationPresenter.setViewControllers(
-                [chatViewController],
-                animated: false
-            )
-        case .audioCall, .videoCall:
-            let kind: CallKind = engagementKind == .audioCall
-                ? .audio
-                : .video(direction: .twoWay)
-
-            let mediaType: CoreSdkClient.MediaType = engagementKind == .audioCall
-                ? .audio
-                : .video
-            let call = Call(
-                kind,
-                environment: .init(
-                    audioSession: environment.audioSession,
-                    uuid: environment.uuid
-                )
-            )
-            call.kind.addObserver(self) { [weak self] _, _ in
-                self?.engagementKind = EngagementKind(with: call.kind.value)
-            }
-            let chatViewController = startChat(
-                withAction: .none,
-                showsCallBubble: true
-            )
-
-            let callViewController = startCall(
-                call,
-                withAction: .engagement(mediaType: mediaType)
-            )
-
-            engagement = .call(
-                callViewController,
-                chatViewController,
-                .none,
-                call
-            )
-            navigationPresenter.setViewControllers(
-                [callViewController],
-                animated: false
-            )
-        }
-
-        let bubbleView = viewFactory.makeBubbleView()
-        unreadMessages.addObserver(self) { unreadCount, _ in
-            bubbleView.setBadge(itemCount: unreadCount)
-        }
-
-        gliaViewController = makeGliaView(
-            bubbleView: bubbleView,
-            features: features
         )
-        gliaViewController?.insertChild(navigationController)
-        event(.maximized)
-        delegate?(.started)
-    }
-}
-
-extension RootCoordinator {
-    private func end() {
-        dismissGliaViewController(animated: true) { [weak self] in
-            self?.event(.minimized)
-            self?.engagement = .none
-            self?.navigationPresenter.setViewControllers([], animated: false)
-            self?.removeAllCoordinators()
-            self?.engagementKind = .none
-            self?.delegate?(.ended)
-        }
     }
 
-    private func startChat(
-        withAction startAction: ChatViewModel.StartAction,
-        showsCallBubble: Bool
-    ) -> ChatViewController {
-        let coordinator = ChatCoordinator(
+    @discardableResult
+    override func start() -> UIViewController {
+        let viewController = createGliaViewController()
+        self.gliaViewController = viewController
+
+        presentEngagement()
+
+        return viewController
+    }
+
+    private func presentEngagement() {
+        let coordinator = EngagementCoordinator(
             interactor: interactor,
-            viewFactory: viewFactory,
-            navigationPresenter: navigationPresenter,
-            call: chatCall,
-            unreadMessages: unreadMessages,
-            showsCallBubble: showsCallBubble,
-            screenShareHandler: screenShareHandler,
+            engagementKind: engagementKind,
             isWindowVisible: isWindowVisible,
-            startAction: startAction,
+            viewFactory: viewFactory,
             environment: .init(
                 chatStorage: environment.chatStorage,
                 fetchFile: environment.fetchFile,
                 sendSelectedOptionValue: environment.sendSelectedOptionValue,
                 uploadFileToEngagement: environment.uploadFileToEngagement,
+                audioSession: environment.audioSession,
+                uuid: environment.uuid,
                 fileManager: environment.fileManager,
                 data: environment.data,
                 date: environment.date,
+                timerProviding: environment.timerProviding,
                 gcd: environment.gcd,
                 localFileThumbnailQueue: environment.localFileThumbnailQueue,
                 uiImage: environment.uiImage,
@@ -155,194 +105,49 @@ extension RootCoordinator {
                 fromHistory: environment.fromHistory
             )
         )
-        coordinator.delegate = { [weak self] event in
-            self?.handleCoordinatorEvent(event: event)
-        }
-        pushCoordinator(coordinator)
 
-        return coordinator.start()
-    }
+        let viewController = coordinate(to: coordinator)
 
-    private func handleCoordinatorEvent(event: ChatCoordinator.DelegateEvent) {
-        switch event {
-        case .back:
-            switch engagement {
-            case .chat:
-                if case .none = interactor.state {
-                    popCoordinator()
-                    end()
-                } else {
-                    gliaViewController?.minimize(animated: true)
-                }
-            case .call(let callViewController, _, let upgradedFrom, _):
-                if upgradedFrom == .chat {
-                    gliaViewController?.minimize(animated: true)
-                } else {
-                    navigationPresenter.pop(to: callViewController, animated: true)
-                }
-            default:
-                popCoordinator()
-                end()
-            }
-        case .engaged(let operatorImageUrl):
-            gliaViewController?.bubbleKind = .userImage(url: operatorImageUrl)
-        case .mediaUpgradeAccepted(let offer, let answer):
-            chatMediaUpgradeAccepted(offer: offer, answer: answer)
-        case .call:
-            switch engagement {
-            case .call(let callViewController, _, let upgradedFrom, _):
-                switch upgradedFrom {
-                case .none:
-                    navigationController.popToViewController(callViewController, animated: true)
-                case .chat:
-                    navigationPresenter.push(callViewController, animated: true)
-                }
-            default:
-                break
-            }
-        case .finished:
-            popCoordinator()
-            end()
-        }
-    }
-
-    private func startCall(
-        _ call: Call,
-        withAction startAction: CallViewModel.StartAction
-    ) -> CallViewController {
-        let coordinator = CallCoordinator(
-            interactor: interactor,
-            viewFactory: viewFactory,
-            navigationPresenter: navigationPresenter,
-            call: call,
-            unreadMessages: unreadMessages,
-            screenShareHandler: screenShareHandler,
-            startAction: startAction,
-            environment: .init(
-                timerProviding: environment.timerProviding,
-                date: environment.date
-            )
-        )
-        coordinator.delegate = { [weak self] event in
-            switch event {
-            case .back:
-                switch self?.engagement {
-                case .call(_, let chatViewController, let upgradedFrom, _):
-                    if upgradedFrom == .chat {
-                        self?.navigationPresenter.pop(to: chatViewController, animated: true)
-                    } else {
-                        self?.gliaViewController?.minimize(animated: true)
-                    }
-                default:
-                    break
-                }
-            case .engaged(let operatorImageUrl):
-                self?.gliaViewController?.bubbleKind = .userImage(url: operatorImageUrl)
-            case .chat:
-                switch self?.engagement {
-                case .call(_, let chatViewController, let upgradedFrom, _):
-                    if upgradedFrom == .chat {
-                        self?.navigationPresenter.pop(to: chatViewController, animated: true)
-                    } else {
-                        self?.navigationPresenter.push(chatViewController, animated: true)
-                    }
-                default:
-                    break
-                }
+        coordinator.delegate = { [weak self] in
+            switch $0 {
             case .minimize:
                 self?.gliaViewController?.minimize(animated: true)
-            case .finished:
-                self?.popCoordinator()
+
+            case .engaged(operatorImageUrl: let operatorImageUrl):
+                self?.gliaViewController?.bubbleKind = .userImage(url: operatorImageUrl)
+
+            case .started:
+                self?.delegate?(.started)
+
+            case .ended:
                 self?.end()
+
+            case .engagementChanged(let engagementKind):
+                self?.engagementKind = engagementKind
+
+            case .unreadMessagesCount(let itemCount):
+                self?.gliaViewController?.setBubbleBadge(itemCount: itemCount)
             }
         }
-        pushCoordinator(coordinator)
 
-        return coordinator.start()
+        gliaViewController?.insertChild(viewController)
+        gliaViewController?.maximize(animated: true)
     }
 
-    private func makeGliaView(
-        bubbleView: BubbleView,
-        features: Features
-    ) -> GliaViewController {
-        if #available(iOS 13.0, *) {
-            if let sceneProvider = sceneProvider {
-                return GliaViewController(
-                    bubbleView: bubbleView,
-                    delegate: self,
-                    sceneProvider: sceneProvider,
-                    features: features
-                )
-            } else {
-                return GliaViewController(
-                    bubbleView: bubbleView,
-                    delegate: self,
-                    features: features
-                )
-            }
+    private func createGliaViewController() -> GliaViewController {
+        if #available(iOS 13.0, *), let sceneProvider = sceneProvider {
+            return GliaViewController(
+                bubbleView: viewFactory.makeBubbleView(),
+                delegate: self,
+                sceneProvider: sceneProvider,
+                features: features
+            )
         } else {
             return GliaViewController(
-                bubbleView: bubbleView,
+                bubbleView: viewFactory.makeBubbleView(),
                 delegate: self,
                 features: features
             )
-        }
-    }
-}
-
-extension RootCoordinator {
-    private func presentGliaViewController(animated: Bool, completion: (() -> Void)? = nil) {
-        guard let gliaViewController = gliaViewController else { return }
-        gliaPresenter.present(gliaViewController, animated: animated) { [weak self] in
-            self?.isWindowVisible.value = true
-            completion?()
-        }
-    }
-
-    private func dismissGliaViewController(animated: Bool, completion: (() -> Void)? = nil) {
-        guard let gliaViewController = gliaViewController else { return }
-        gliaPresenter.dismiss(gliaViewController, animated: animated) { [weak self] in
-            self?.isWindowVisible.value = false
-            completion?()
-        }
-    }
-}
-
-extension RootCoordinator {
-    private func chatMediaUpgradeAccepted(
-        offer: CoreSdkClient.MediaUpgradeOffer,
-        answer: @escaping CoreSdkClient.AnswerWithSuccessBlock
-    ) {
-        switch engagement {
-        case .chat(let chatViewController):
-            guard let kind = CallKind(with: offer) else { return }
-            let call = Call(
-                kind,
-                environment: .init(
-                    audioSession: environment.audioSession,
-                    uuid: environment.uuid
-                )
-            )
-            call.kind.addObserver(self) { [weak self] _, _ in
-                self?.engagementKind = EngagementKind(with: call.kind.value)
-            }
-            let callViewController = startCall(call, withAction: .call(offer: offer, answer: answer))
-            engagement = .call(
-                callViewController,
-                chatViewController,
-                .chat,
-                call
-            )
-            chatCall.value = call
-            navigationPresenter.push(callViewController)
-
-        case .call(_, _, _, let call):
-            call.upgrade(to: offer)
-            navigationPresenter.pop()
-            answer(true, nil)
-
-        case .none:
-            break
         }
     }
 }
@@ -351,34 +156,45 @@ extension RootCoordinator: GliaViewControllerDelegate {
     func event(_ event: GliaViewControllerEvent) {
         switch event {
         case .minimized:
-            dismissGliaViewController(animated: true) { [weak self] in
-                self?.isWindowVisible.value = false
-                self?.delegate?(.minimized)
-            }
+            gliaViewController?.presentingViewController?.dismiss(
+                animated: true,
+                completion: { [weak self] in
+                    self?.isWindowVisible.value = false
+                    self?.delegate?(.minimized)
+                }
+            )
+
         case .maximized:
-            presentGliaViewController(animated: true) { [weak self] in
-                self?.isWindowVisible.value = true
-                self?.delegate?(.maximized)
-            }
+            guard let gliaViewController = gliaViewController else { return }
+
+            presenter.present(
+                gliaViewController,
+                animated: true,
+                completion: { [weak self] in
+                    self?.isWindowVisible.value = true
+                    self?.delegate?(.maximized)
+                }
+            )
         }
     }
 }
 
 extension RootCoordinator {
-
     func maximize() {
         gliaViewController?.maximize(animated: true)
     }
 }
 
-extension EngagementKind {
-    init(with kind: CallKind) {
-        switch kind {
-        case .audio:
-            self = .audioCall
-        case .video:
-            self = .videoCall
-        }
+extension RootCoordinator {
+    func end() {
+        gliaViewController?.presentingViewController?.dismiss(
+            animated: true,
+            completion: { [weak self] in
+                self?.delegate?(.ended)
+                self?.engagementKind = .none
+                self?.isWindowVisible.value = false
+            }
+        )
     }
 }
 
@@ -399,26 +215,5 @@ extension RootCoordinator {
         var createFileDownload: FileDownloader.CreateFileDownload
         var fromHistory: () -> Bool
         var timerProviding: FoundationBased.Timer.Providing
-    }
-}
-
-extension RootCoordinator {
-    enum DelegateEvent {
-        case started
-        case engagementChanged(EngagementKind)
-        case ended
-        case minimized
-        case maximized
-    }
-
-    private enum Engagement {
-        case none
-        case chat(ChatViewController)
-        case call(CallViewController, ChatViewController, UpgradedFrom, Call)
-    }
-
-    private enum UpgradedFrom {
-        case none
-        case chat
     }
 }
