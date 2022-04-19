@@ -19,11 +19,10 @@ class ChatViewModelTests: XCTestCase {
             interactor: try .mock(),
             alertConfiguration: .mock(),
             screenShareHandler: ScreenShareHandler(),
-            call: .init(with: nil),
             unreadMessages: .init(with: 0),
-            showsCallBubble: true,
             isWindowVisible: .init(with: true),
-            startAction: .none,
+            showsCallBubble: true,
+            startAction: .none(call: nil),
             environment: .init(
                 chatStorage: .failing,
                 fetchFile: { _, _, _ in },

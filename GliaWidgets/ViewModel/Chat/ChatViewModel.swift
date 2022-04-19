@@ -1,7 +1,6 @@
 import Foundation
 
 class ChatViewModel: EngagementViewModel, ViewModel {
-
     var action: ((Action) -> Void)?
     var delegate: ((DelegateEvent) -> Void)?
 
@@ -16,7 +15,6 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     private var pendingSection: Section<ChatItem> { sections[1] }
     private var queueOperatorSection: Section<ChatItem> { sections[2] }
     private var messagesSection: Section<ChatItem> { sections[3] }
-    private let call: ObservableValue<Call?>
     private var unreadMessages: UnreadMessagesHandler!
     private let screenShareHandler: ScreenShareHandler
     private let isChatScrolledToBottom = ObservableValue<Bool>(with: true)
@@ -39,14 +37,12 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         interactor: Interactor,
         alertConfiguration: AlertConfiguration,
         screenShareHandler: ScreenShareHandler,
-        call: ObservableValue<Call?>,
         unreadMessages: ObservableValue<Int>,
-        showsCallBubble: Bool,
         isWindowVisible: ObservableValue<Bool>,
+        showsCallBubble: Bool,
         startAction: StartAction,
         environment: Environment
     ) {
-        self.call = call
         self.showsCallBubble = showsCallBubble
         self.startAction = startAction
         self.screenShareHandler = screenShareHandler
@@ -89,9 +85,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             isViewVisible: isViewActive,
             isChatScrolledToBottom: isChatScrolledToBottom
         )
-        self.call.addObserver(self) { [weak self] call, _ in
-            self?.onCall(call)
-        }
+
         uploader.state.addObserver(self) { [weak self] state, _ in
             self?.onUploaderStateChanged(state)
         }
@@ -141,16 +135,22 @@ class ChatViewModel: EngagementViewModel, ViewModel {
 
         loadHistory()
 
-        if case .startEngagement = startAction, environment.chatStorage.isEmpty() {
-            let item = ChatItem(kind: .queueOperator)
+        switch startAction {
+        case .startEngagement:
+            if environment.chatStorage.isEmpty() {
+                let item = ChatItem(kind: .queueOperator)
 
-            appendItem(
-                item,
-                to: queueOperatorSection,
-                animated: false
-            )
+                appendItem(
+                    item,
+                    to: queueOperatorSection,
+                    animated: false
+                )
 
-            enqueue(mediaType: .text)
+                enqueue(mediaType: .text)
+            }
+
+        case .none(let call):
+            onCall(call)
         }
 
         update(for: interactor.state)
@@ -747,7 +747,6 @@ extension ChatViewModel {
 }
 
 extension ChatViewModel {
-
     typealias Strings = L10n.Chat
 
     enum Event {
@@ -808,6 +807,6 @@ extension ChatViewModel {
 
     enum StartAction {
         case startEngagement
-        case none
+        case none(call: Call?)
     }
 }

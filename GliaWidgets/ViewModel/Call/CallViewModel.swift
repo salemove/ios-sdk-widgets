@@ -48,6 +48,10 @@ class CallViewModel: EngagementViewModel, ViewModel {
     enum DelegateEvent {
         case chat
         case minimize
+        case mediaUpgradeAccepted(
+            offer: CoreSdkClient.MediaUpgradeOffer,
+            answer: CoreSdkClient.AnswerWithSuccessBlock
+        )
     }
 
     enum StartAction {
@@ -307,8 +311,7 @@ extension CallViewModel {
         guard isViewActive.value else { return }
         let operatorName = interactor.engagedOperator?.firstName
         let onAccepted = {
-            self.call.upgrade(to: offer)
-            answer(true, nil)
+            self.delegate?(.mediaUpgradeAccepted(offer: offer, answer: answer))
         }
         action?(
             .offerMediaUpgrade(

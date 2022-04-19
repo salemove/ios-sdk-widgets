@@ -109,8 +109,6 @@
 		1A60AFAF256680EF00E53F53 /* L10n.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60AFAE256680EF00E53F53 /* L10n.swift */; };
 		1A60AFB22566821B00E53F53 /* Asset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60AFB12566821B00E53F53 /* Asset.swift */; };
 		1A60AFB62566825400E53F53 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60AFB52566825400E53F53 /* ViewModel.swift */; };
-		1A60AFB9256682AF00E53F53 /* FlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60AFB8256682AF00E53F53 /* FlowCoordinator.swift */; };
-		1A60AFBC256682C800E53F53 /* SubFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60AFBB256682C800E53F53 /* SubFlowCoordinator.swift */; };
 		1A60AFBF2566834400E53F53 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60AFBE2566834400E53F53 /* ViewController.swift */; };
 		1A60AFCA2566943F00E53F53 /* RootCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60AFC92566943F00E53F53 /* RootCoordinator.swift */; };
 		1A60AFCE2566958900E53F53 /* ViewFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60AFCD2566958900E53F53 /* ViewFactory.swift */; };
@@ -120,8 +118,6 @@
 		1A60AFE025669A6100E53F53 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60AFDF25669A6100E53F53 /* ChatViewController.swift */; };
 		1A60AFE425669B0400E53F53 /* ChatCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60AFE325669B0400E53F53 /* ChatCoordinator.swift */; };
 		1A60AFE825669C5000E53F53 /* ChatStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60AFE725669C5000E53F53 /* ChatStyle.swift */; };
-		1A60AFEC2566A0E700E53F53 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60AFEB2566A0E700E53F53 /* NavigationController.swift */; };
-		1A60AFF12566A4B300E53F53 /* NavigationPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60AFF02566A4B300E53F53 /* NavigationPresenter.swift */; };
 		1A60AFF52567CE1300E53F53 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60AFF42567CE1300E53F53 /* SettingsViewController.swift */; };
 		1A60B0042567F25600E53F53 /* Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60B0032567F25600E53F53 /* Header.swift */; };
 		1A60B0082567F29900E53F53 /* HeaderStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60B0072567F29900E53F53 /* HeaderStyle.swift */; };
@@ -267,7 +263,6 @@
 		C4119E04268F411D004DFEFB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4119E03268F411D004DFEFB /* SceneDelegate.swift */; };
 		C4119E06268F41D1004DFEFB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C4119E05268F41D1004DFEFB /* Main.storyboard */; };
 		C42463742673ABE10082C135 /* ScreenShareHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42463732673ABE10082C135 /* ScreenShareHandler.swift */; };
-		C43C12F92694B14900C37E1B /* GliaPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43C12F82694B14900C37E1B /* GliaPresenter.swift */; };
 		C43D7A0D25FF92530064B1DA /* ChoiceCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43D7A0C25FF92530064B1DA /* ChoiceCardView.swift */; };
 		C43D7A1125FF92680064B1DA /* ChoiceCardStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43D7A1025FF92680064B1DA /* ChoiceCardStyle.swift */; };
 		C43D7A1525FF9A590064B1DA /* ChatChoiceCardOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43D7A1425FF9A590064B1DA /* ChatChoiceCardOption.swift */; };
@@ -286,7 +281,14 @@
 		C4C2A1702670E848003AC039 /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C2A16F2670E848003AC039 /* UIViewController+Extensions.swift */; };
 		C4F176CD261D1543009D9F07 /* ChatFileDownloadContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F176CB261D1543009D9F07 /* ChatFileDownloadContentView.swift */; };
 		C4F176CE261D1543009D9F07 /* ChatFileDownloadContentStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F176CC261D1543009D9F07 /* ChatFileDownloadContentStyle.swift */; };
+		EB22C26427CC04A100FD307F /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB22C26327CC04A100FD307F /* Coordinator.swift */; };
+		EB22C26627CC04B300FD307F /* UIViewControllerCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB22C26527CC04B300FD307F /* UIViewControllerCoordinator.swift */; };
+		EB22C26927CC064E00FD307F /* EngagementNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB22C26827CC064E00FD307F /* EngagementNavigationController.swift */; };
+		EB22C26C27CC067100FD307F /* EngagementCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB22C26B27CC067100FD307F /* EngagementCoordinator.swift */; };
 		EB750F53273BA9BB00BE5FBD /* GliaError.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB750F52273BA9BB00BE5FBD /* GliaError.swift */; };
+		EBE12F8627CF5AC800CB16B5 /* UIViewControllerCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE12F8527CF5AC800CB16B5 /* UIViewControllerCoordinatorTests.swift */; };
+		EBE12F8827CF5B9300CB16B5 /* UIViewControllerCoordinator.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE12F8727CF5B9300CB16B5 /* UIViewControllerCoordinator.Mock.swift */; };
+		EBE12F8A27CF69E100CB16B5 /* UIViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE12F8927CF69E100CB16B5 /* UIViewControllerTests.swift */; };
 		FD01A52B483418AB02DCFBFC /* Pods_GliaWidgets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85639A838514258D976E1B2A /* Pods_GliaWidgets.framework */; };
 /* End PBXBuildFile section */
 
@@ -442,8 +444,6 @@
 		1A60AFAE256680EF00E53F53 /* L10n.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = L10n.swift; sourceTree = "<group>"; };
 		1A60AFB12566821B00E53F53 /* Asset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Asset.swift; sourceTree = "<group>"; };
 		1A60AFB52566825400E53F53 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
-		1A60AFB8256682AF00E53F53 /* FlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowCoordinator.swift; sourceTree = "<group>"; };
-		1A60AFBB256682C800E53F53 /* SubFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubFlowCoordinator.swift; sourceTree = "<group>"; };
 		1A60AFBE2566834400E53F53 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		1A60AFC92566943F00E53F53 /* RootCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCoordinator.swift; sourceTree = "<group>"; };
 		1A60AFCD2566958900E53F53 /* ViewFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewFactory.swift; sourceTree = "<group>"; };
@@ -453,8 +453,6 @@
 		1A60AFDF25669A6100E53F53 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		1A60AFE325669B0400E53F53 /* ChatCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCoordinator.swift; sourceTree = "<group>"; };
 		1A60AFE725669C5000E53F53 /* ChatStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatStyle.swift; sourceTree = "<group>"; };
-		1A60AFEB2566A0E700E53F53 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
-		1A60AFF02566A4B300E53F53 /* NavigationPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationPresenter.swift; sourceTree = "<group>"; };
 		1A60AFF42567CE1300E53F53 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		1A60B0032567F25600E53F53 /* Header.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Header.swift; sourceTree = "<group>"; };
 		1A60B0072567F29900E53F53 /* HeaderStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderStyle.swift; sourceTree = "<group>"; };
@@ -610,7 +608,6 @@
 		C4119E03268F411D004DFEFB /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		C4119E05268F41D1004DFEFB /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		C42463732673ABE10082C135 /* ScreenShareHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenShareHandler.swift; sourceTree = "<group>"; };
-		C43C12F82694B14900C37E1B /* GliaPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GliaPresenter.swift; sourceTree = "<group>"; };
 		C43D7A0C25FF92530064B1DA /* ChoiceCardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChoiceCardView.swift; sourceTree = "<group>"; };
 		C43D7A1025FF92680064B1DA /* ChoiceCardStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoiceCardStyle.swift; sourceTree = "<group>"; };
 		C43D7A1425FF9A590064B1DA /* ChatChoiceCardOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatChoiceCardOption.swift; sourceTree = "<group>"; };
@@ -630,9 +627,18 @@
 		C4C2A16F2670E848003AC039 /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
 		C4F176CB261D1543009D9F07 /* ChatFileDownloadContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFileDownloadContentView.swift; sourceTree = "<group>"; };
 		C4F176CC261D1543009D9F07 /* ChatFileDownloadContentStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFileDownloadContentStyle.swift; sourceTree = "<group>"; };
+		EB22C26327CC04A100FD307F /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
+		EB22C26527CC04B300FD307F /* UIViewControllerCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerCoordinator.swift; sourceTree = "<group>"; };
+		EB22C26827CC064E00FD307F /* EngagementNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EngagementNavigationController.swift; sourceTree = "<group>"; };
+		EB22C26B27CC067100FD307F /* EngagementCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EngagementCoordinator.swift; sourceTree = "<group>"; };
+		E8FCB6B6BC4EC7EB018E962F /* Pods-GliaWidgetsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliaWidgetsTests.release.xcconfig"; path = "Target Support Files/Pods-GliaWidgetsTests/Pods-GliaWidgetsTests.release.xcconfig"; sourceTree = "<group>"; };
 		E8AC4FC1B06236D5EE552DEA /* Pods-SnapshotTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SnapshotTests.debug.xcconfig"; path = "Target Support Files/Pods-SnapshotTests/Pods-SnapshotTests.debug.xcconfig"; sourceTree = "<group>"; };
 		EB750F52273BA9BB00BE5FBD /* GliaError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GliaError.swift; sourceTree = "<group>"; };
+		EBE12F8527CF5AC800CB16B5 /* UIViewControllerCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerCoordinatorTests.swift; sourceTree = "<group>"; };
+		EBE12F8727CF5B9300CB16B5 /* UIViewControllerCoordinator.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerCoordinator.Mock.swift; sourceTree = "<group>"; };
+		EBE12F8927CF69E100CB16B5 /* UIViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerTests.swift; sourceTree = "<group>"; };
 		F08274A374F775EE39BFBDB1 /* Pods-GliaWidgetsTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliaWidgetsTests.debug.xcconfig"; path = "Target Support Files/Pods-GliaWidgetsTests/Pods-GliaWidgetsTests.debug.xcconfig"; sourceTree = "<group>"; };
+		FE691E4F6320FA58EBF78C83 /* Pods_SnapshotTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SnapshotTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1147,6 +1153,7 @@
 		1A60AF6725656BF200E53F53 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				EB22C26727CC064900FD307F /* Engagement */,
 				1A60AFD22566991600E53F53 /* Chat */,
 				1A0C143D25B85DA300B00695 /* Call */,
 				1A63B2EF257A3EF100508478 /* Common */,
@@ -1159,8 +1166,7 @@
 		1A60AF6825656C0200E53F53 /* Coordinator */ = {
 			isa = PBXGroup;
 			children = (
-				1A60AFE225669AF800E53F53 /* Chat */,
-				1A0C144225B868ED00B00695 /* Call */,
+				EB22C26A27CC066700FD307F /* Engagement */,
 				1A60AFC92566943F00E53F53 /* RootCoordinator.swift */,
 			);
 			path = Coordinator;
@@ -1259,7 +1265,6 @@
 				1A1E309925F8E1E900850E68 /* Storage */,
 				1A0C9ADE25C9623800815406 /* Observable */,
 				1A5F815D258A43D900A605DA /* Section */,
-				1A60AFEF2566A4A700E53F53 /* Presenter */,
 				1A60AFC72566866800E53F53 /* ViewController */,
 				1A60AFD725669A0500E53F53 /* View */,
 				1A60AFC62566865F00E53F53 /* Coordinator */,
@@ -1280,8 +1285,8 @@
 		1A60AFC62566865F00E53F53 /* Coordinator */ = {
 			isa = PBXGroup;
 			children = (
-				1A60AFB8256682AF00E53F53 /* FlowCoordinator.swift */,
-				1A60AFBB256682C800E53F53 /* SubFlowCoordinator.swift */,
+				EB22C26327CC04A100FD307F /* Coordinator.swift */,
+				EB22C26527CC04B300FD307F /* UIViewControllerCoordinator.swift */,
 			);
 			path = Coordinator;
 			sourceTree = "<group>";
@@ -1289,7 +1294,6 @@
 		1A60AFC72566866800E53F53 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
-				1A60AFEA2566A0C200E53F53 /* NavigationController */,
 				1A60AFBE2566834400E53F53 /* ViewController.swift */,
 			);
 			path = ViewController;
@@ -1356,23 +1360,6 @@
 				1A60AFE325669B0400E53F53 /* ChatCoordinator.swift */,
 			);
 			path = Chat;
-			sourceTree = "<group>";
-		};
-		1A60AFEA2566A0C200E53F53 /* NavigationController */ = {
-			isa = PBXGroup;
-			children = (
-				1A60AFEB2566A0E700E53F53 /* NavigationController.swift */,
-			);
-			path = NavigationController;
-			sourceTree = "<group>";
-		};
-		1A60AFEF2566A4A700E53F53 /* Presenter */ = {
-			isa = PBXGroup;
-			children = (
-				1A60AFF02566A4B300E53F53 /* NavigationPresenter.swift */,
-				C43C12F82694B14900C37E1B /* GliaPresenter.swift */,
-			);
-			path = Presenter;
 			sourceTree = "<group>";
 		};
 		1A60AFF32567CDFB00E53F53 /* Settings */ = {
@@ -1699,6 +1686,7 @@
 			children = (
 				7512A57C27BFA37D00319DF1 /* CoreSdkClient.Salemove.swift */,
 				7512A57E27BFA39700319DF1 /* GliaWidgets.Mock.swift */,
+				EBE12F8727CF5B9300CB16B5 /* UIViewControllerCoordinator.Mock.swift */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -1724,6 +1712,7 @@
 		9A3E1D8527B6B668005634EB /* Lib */ = {
 			isa = PBXGroup;
 			children = (
+				EBE12F8427CF5ABC00CB16B5 /* Coordinator */,
 				9A8130C027D9091800220BBD /* Download */,
 				9A3E1D9E27BA7B80005634EB /* Storage */,
 			);
@@ -1854,6 +1843,33 @@
 				C4F176CC261D1543009D9F07 /* ChatFileDownloadContentStyle.swift */,
 			);
 			path = Download;
+			sourceTree = "<group>";
+		};
+		EB22C26727CC064900FD307F /* Engagement */ = {
+			isa = PBXGroup;
+			children = (
+				EB22C26827CC064E00FD307F /* EngagementNavigationController.swift */,
+			);
+			path = Engagement;
+			sourceTree = "<group>";
+		};
+		EB22C26A27CC066700FD307F /* Engagement */ = {
+			isa = PBXGroup;
+			children = (
+				1A0C144225B868ED00B00695 /* Call */,
+				1A60AFE225669AF800E53F53 /* Chat */,
+				EB22C26B27CC067100FD307F /* EngagementCoordinator.swift */,
+			);
+			path = Engagement;
+			sourceTree = "<group>";
+		};
+		EBE12F8427CF5ABC00CB16B5 /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				EBE12F8527CF5AC800CB16B5 /* UIViewControllerCoordinatorTests.swift */,
+				EBE12F8927CF69E100CB16B5 /* UIViewControllerTests.swift */,
+			);
+			path = Coordinator;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -2248,7 +2264,6 @@
 				9AB196E627C510DA00FD60AB /* ChatMessage.Mock.swift in Sources */,
 				9A19926A27D3BA8700161AAE /* ViewFactory.Environment.Interface.swift in Sources */,
 				1A0EDF8225E8E0150076D1AD /* PopoverViewController.swift in Sources */,
-				1A60AFBC256682C800E53F53 /* SubFlowCoordinator.swift in Sources */,
 				1A0C9A8C25C4092400815406 /* CallButtonStyle.swift in Sources */,
 				9AA3CBA827EB31A300C00712 /* CallViewModel.Environment.Mock.swift in Sources */,
 				1A6075E7258220E300569B0E /* UserImageStyle.swift in Sources */,
@@ -2262,6 +2277,7 @@
 				1ABD6C9625B6F46700D56EFA /* AlertViewController+SingleMediaUpgrade.swift in Sources */,
 				1A277A1625FA60E1009FE131 /* ChatFileContentStyle.swift in Sources */,
 				1A475BB325DE831F00296D55 /* BadgeView.swift in Sources */,
+				EB22C26627CC04B300FD307F /* UIViewControllerCoordinator.swift in Sources */,
 				1A38A8A8258B652B0089DE7B /* OperatorChatMessageStyle.swift in Sources */,
 				1A7CA8212574D6760047CBBE /* ConnectOperatorView.swift in Sources */,
 				9AB196D427C3D7FD00FD60AB /* Interactor.Environment.Mock.swift in Sources */,
@@ -2286,14 +2302,15 @@
 				1A60AF7E25656F0400E53F53 /* Glia.swift in Sources */,
 				1A60AFB62566825400E53F53 /* ViewModel.swift in Sources */,
 				1A0C9AE025C9624500815406 /* ObservableValue.swift in Sources */,
-				1A60AFB9256682AF00E53F53 /* FlowCoordinator.swift in Sources */,
 				9A66172A27A94826001C8E03 /* CoreSDKClient.Live.swift in Sources */,
 				9A8130BB27D7A41000220BBD /* FileUpload.Environment.Interface.swift in Sources */,
 				1A0C9A9125C41AB900815406 /* CallButtonBar.swift in Sources */,
 				1AE15E3B257A5CC900A642C0 /* AlertConfiguration.swift in Sources */,
 				9A8130B927D757F900220BBD /* LocalFile.Mock.swift in Sources */,
 				1A60AF9F25667CA800E53F53 /* FontProvider.swift in Sources */,
+				EB22C26427CC04A100FD307F /* Coordinator.swift in Sources */,
 				1A60AFCE2566958900E53F53 /* ViewFactory.swift in Sources */,
+				EB22C26C27CC067100FD307F /* EngagementCoordinator.swift in Sources */,
 				9A3E1D9927B6D0DB005634EB /* FoundationBased.Live.swift in Sources */,
 				1A7CA82F25751B5A0047CBBE /* ConnectOperatorStyle.swift in Sources */,
 				9AB196D227C3D74300FD60AB /* Interactor.Environment.Interface.swift in Sources */,
@@ -2319,13 +2336,11 @@
 				1A4674A725E905AC0078FA1C /* AttachmentSourceListView.swift in Sources */,
 				9A19926C27D3BA8700161AAE /* ViewFactory.Mock.swift in Sources */,
 				1A60B02D256BF7FF00E53F53 /* OperatorChatMessageView.swift in Sources */,
-				C43C12F92694B14900C37E1B /* GliaPresenter.swift in Sources */,
 				1A0452F025DBE268000DA0C1 /* MessageButtonStyle.swift in Sources */,
 				C49A29E42614A29700819269 /* FilePreviewView.swift in Sources */,
 				1A5F815F258A43E600A605DA /* Section.swift in Sources */,
 				1A60AFBF2566834400E53F53 /* ViewController.swift in Sources */,
 				6E60DD5627146C9D001422EF /* AlertViewController+SingleAction.swift in Sources */,
-				1A60AFF12566A4B300E53F53 /* NavigationPresenter.swift in Sources */,
 				1AC7A74F2582571100567FF8 /* Interactor.swift in Sources */,
 				1A1E30CB25F9FDC400850E68 /* ChatImageFileContentStyle.swift in Sources */,
 				1A60AF93256674F900E53F53 /* Color.swift in Sources */,
@@ -2360,6 +2375,7 @@
 				1A4AF5CD25AEF4A0002CD0F4 /* AlertViewController+Message.swift in Sources */,
 				1A7CA8242574D68E0047CBBE /* ConnectStatusView.swift in Sources */,
 				1A5F81402588B7BD00A605DA /* ChatMessageEntryStyle.swift in Sources */,
+				EB22C26927CC064E00FD307F /* EngagementNavigationController.swift in Sources */,
 				1A8B61D625C974D0000D780E /* ChatCallUpgradeStyle.swift in Sources */,
 				1A475BBC25DFA10100296D55 /* UnreadMessagesHandler.swift in Sources */,
 				9A1992E327D6669900161AAE /* UIKitBased.Interface.swift in Sources */,
@@ -2459,7 +2475,6 @@
 				9A19926327D3BA3A00161AAE /* GCD.Mock.swift in Sources */,
 				1A4AD3C1256E74C600468BFB /* ThemeFont.swift in Sources */,
 				1A5F495525CBE84A003E3678 /* SettingsAlertConfiguration.swift in Sources */,
-				1A60AFEC2566A0E700E53F53 /* NavigationController.swift in Sources */,
 				1A63B2ED257A312700508478 /* AlertCloseButtonProperties.swift in Sources */,
 				1A2DA73125EFA77E00032611 /* FileUploader.swift in Sources */,
 				1A60B0272568070800E53F53 /* UIStackView+Extensions.swift in Sources */,
@@ -2490,13 +2505,16 @@
 				9A8130C427D9099F00220BBD /* FileDownload.Environment.Failing.swift in Sources */,
 				7512A5A727C3926500319DF1 /* GliaTests.swift in Sources */,
 				9A3E1DA227BA7D00005634EB /* FileSystemStorage.Environment.Failing.swift in Sources */,
+				EBE12F8A27CF69E100CB16B5 /* UIViewControllerTests.swift in Sources */,
 				9A1992E127D6313500161AAE /* ImageView.Cache.Failing.swift in Sources */,
 				9A3E1DA027BA7B9F005634EB /* FileSystemStorageTests.swift in Sources */,
 				7512A57D27BFA37D00319DF1 /* CoreSdkClient.Salemove.swift in Sources */,
 				7512A57F27BFA39700319DF1 /* GliaWidgets.Mock.swift in Sources */,
 				9ACC25D227B4727500BC5335 /* CoreSDKClient.Failing.swift in Sources */,
+				EBE12F8827CF5B9300CB16B5 /* UIViewControllerCoordinator.Mock.swift in Sources */,
 				9A1992E727D66C7400161AAE /* UIKitBased.Failing.swift in Sources */,
 				9A3E1D9D27BA7741005634EB /* FoundationBased.Failing.swift in Sources */,
+				EBE12F8627CF5AC800CB16B5 /* UIViewControllerCoordinatorTests.swift in Sources */,
 				9A3E1D8427B67F1B005634EB /* Helper.swift in Sources */,
 				9A8130C627D90B3800220BBD /* FileSystemStorage.Failing.swift in Sources */,
 				7512A57A27BF9FCD00319DF1 /* ChatViewModelTests.swift in Sources */,

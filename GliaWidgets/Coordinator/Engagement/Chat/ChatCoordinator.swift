@@ -1,7 +1,7 @@
 import SafariServices
 import UIKit
 
-class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
+final class ChatCoordinator: UIViewControllerCoordinator {
     enum DelegateEvent {
         case back
         case engaged(operatorImageUrl: String?)
@@ -17,11 +17,9 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
 
     private let interactor: Interactor
     private let viewFactory: ViewFactory
-    private let navigationPresenter: NavigationPresenter
-    private let call: ObservableValue<Call?>
+    private let isWindowVisible: ObservableValue<Bool>
     private let showsCallBubble: Bool
     private let unreadMessages: ObservableValue<Int>
-    private let isWindowVisible: ObservableValue<Bool>
     private let startAction: ChatViewModel.StartAction
     private let screenShareHandler: ScreenShareHandler
     private var mediaPickerController: MediaPickerController?
@@ -29,45 +27,43 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
     private var quickLookController: QuickLookController?
     private let environment: Environment
 
+    private weak var presenter: UIViewController?
+
     init(
         interactor: Interactor,
         viewFactory: ViewFactory,
-        navigationPresenter: NavigationPresenter,
-        call: ObservableValue<Call?>,
         unreadMessages: ObservableValue<Int>,
+        isWindowVisible: ObservableValue<Bool>,
         showsCallBubble: Bool,
         screenShareHandler: ScreenShareHandler,
-        isWindowVisible: ObservableValue<Bool>,
         startAction: ChatViewModel.StartAction,
         environment: Environment
     ) {
         self.interactor = interactor
         self.viewFactory = viewFactory
-        self.navigationPresenter = navigationPresenter
-        self.call = call
         self.unreadMessages = unreadMessages
+        self.isWindowVisible = isWindowVisible
         self.showsCallBubble = showsCallBubble
         self.screenShareHandler = screenShareHandler
-        self.isWindowVisible = isWindowVisible
         self.startAction = startAction
         self.environment = environment
-    }
 
-    func start() -> ChatViewController {
-        let viewController = makeChatViewController()
-        return viewController
+        super.init(
+            environment: .init(
+                uuid: environment.uuid
+            )
+        )
     }
 
     // swiftlint:disable function_body_length
-    private func makeChatViewController() -> ChatViewController {
+    override func start() -> UIViewController {
         let viewModel = ChatViewModel(
             interactor: interactor,
             alertConfiguration: viewFactory.theme.alertConfiguration,
             screenShareHandler: screenShareHandler,
-            call: call,
             unreadMessages: unreadMessages,
-            showsCallBubble: showsCallBubble,
             isWindowVisible: isWindowVisible,
+            showsCallBubble: showsCallBubble,
             startAction: startAction,
             environment: .init(
                 chatStorage: environment.chatStorage,
@@ -120,7 +116,11 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
                 self?.presentWebViewController(with: url)
             }
         }
-        return ChatViewController(viewModel: viewModel, viewFactory: viewFactory)
+
+        let viewController = ChatViewController(viewModel: viewModel, viewFactory: viewFactory)
+        self.presenter = viewController
+
+        return viewController
     }
     // swiftlint:enable function_body_length
 
@@ -144,7 +144,7 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
         let controller = MediaPickerController(viewModel: viewModel)
         mediaPickerController = controller
         controller.viewController { [weak self] viewController in
-            self?.navigationPresenter.present(viewController)
+            self?.presenter?.present(viewController, animated: true)
         }
     }
 
@@ -159,7 +159,7 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
 
         let controller = FilePickerController(viewModel: viewModel)
         filePickerController = controller
-        navigationPresenter.present(controller.viewController)
+        presenter?.present(controller.viewController, animated: true)
     }
 
     private func presentQuickLookController(with file: LocalFile) {
@@ -172,14 +172,14 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
         }
         let controller = QuickLookController(viewModel: viewModel)
         quickLookController = controller
-        navigationPresenter.present(controller.viewController)
+        presenter?.present(controller.viewController, animated: true)
     }
 
     private func presentWebViewController(with url: URL) {
         let configuration = SFSafariViewController.Configuration()
         configuration.entersReaderIfAvailable = true
         let safariViewController = SFSafariViewController(url: url, configuration: configuration)
-        navigationPresenter.present(safariViewController)
+        presenter?.present(safariViewController, animated: true)
     }
 }
 
@@ -197,5 +197,6 @@ extension ChatCoordinator {
         var uiImage: UIKitBased.UIImage
         var createFileDownload: FileDownloader.CreateFileDownload
         var fromHistory: () -> Bool
+        var uuid: () -> UUID
     }
 }
