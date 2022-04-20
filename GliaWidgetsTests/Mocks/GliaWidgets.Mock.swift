@@ -9,7 +9,10 @@ extension Interactor {
             with: try .mock(),
             queueID: "4CC83BDF-1C04-4B05-87B3-4D558B8F6999",
             visitorContext: .mock(),
-            environment: .init(coreSdk: .failing)
+            environment: .init(
+                coreSdk: .failing,
+                gcd: .mock
+            )
         )
     }
 }

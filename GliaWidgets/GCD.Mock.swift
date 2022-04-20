@@ -12,3 +12,14 @@ extension GCD.DispatchQueue {
         }
     )
 }
+
+extension GCD.MainQueue {
+    static let mock = Self(
+        async: { callback in
+            callback()
+        },
+        asyncIfNeeded: { callback in
+            callback()
+        }
+    )
+}
