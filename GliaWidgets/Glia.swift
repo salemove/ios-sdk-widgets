@@ -72,7 +72,10 @@ public class Glia {
             with: sdkConfiguration,
             queueID: queueId,
             visitorContext: visitorContext,
-            environment: .init(coreSdk: environment.coreSdk)
+            environment: .init(
+                coreSdk: environment.coreSdk,
+                gcd: environment.gcd
+            )
         )
     }
 

@@ -44,7 +44,7 @@ extension ChatViewController {
             var localFileEnv = LocalFile.Environment.mock
             localFileEnv.localFileThumbnailQueue.addOperation = { $0() }
             localFileEnv.gcd.globalQueue = .init(async: { $0() })
-            localFileEnv.gcd.mainQueue = .init(async: { $0() })
+            localFileEnv.gcd.mainQueue = .init(async: { $0() }, asyncIfNeeded: { $0() })
             localFileEnv.uiImage.imageWithContentsOfFileAtPath = { _ in .mock }
             fileDownload.state.value = .downloaded(
                 .mock(

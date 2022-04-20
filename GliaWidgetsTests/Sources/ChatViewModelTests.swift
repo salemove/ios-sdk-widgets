@@ -58,7 +58,10 @@ class ChatViewModelTests: XCTestCase {
     }
 
     func test__startCallsSDKConfigureWithInteractorAndСonfigureWithConfiguration() throws {
-        var interactorEnv = Interactor.Environment.init(coreSdk: .failing)
+        var interactorEnv = Interactor.Environment.init(
+            coreSdk: .failing,
+            gcd: .failing
+        )
         enum Calls {
             case configureWithConfiguration, configureWithInteractor
         }

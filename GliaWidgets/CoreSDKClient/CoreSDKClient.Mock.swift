@@ -1,5 +1,6 @@
 #if DEBUG
 import Foundation
+import SalemoveSDK
 
 extension CoreSdkClient {
     static let mock = Self(
@@ -24,6 +25,22 @@ extension CoreSdkClient {
         fetchSiteConfigurations: { _ in },
         submitSurveyAnswer: { _, _, _, _ in }
     )
+}
+
+extension CoreSdkClient.Operator {
+    static func mock(
+        id: String = "mockId",
+        name: String = "Mock Operator",
+        picture: SalemoveSDK.OperatorPicture? = nil,
+        availableMedia: [CoreSdkClient.MediaType]? = [.text, .audio, .video]
+    ) -> CoreSdkClient.Operator {
+        CoreSdkClient.Operator(
+            id: id,
+            name: name,
+            picture: picture,
+            availableMedia: availableMedia
+        )
+    }
 }
 
 extension CoreSdkClient.PushNotifications {
