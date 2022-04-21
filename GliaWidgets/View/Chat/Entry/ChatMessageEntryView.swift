@@ -68,7 +68,7 @@ class ChatMessageEntryView: UIView {
         pickMediaButton = MessageButton(with: style.mediaButton)
         sendButton = MessageButton(with: style.sendButton)
         isChoiceCardModeEnabled = false
-        isAttachmentButtonHidden = false
+        isAttachmentButtonHidden = true
         isConnected = false
         super.init(frame: .zero)
         setup()
