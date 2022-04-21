@@ -170,8 +170,6 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             action?(.queue)
             action?(.scrollToBottom(animated: false))
 
-            fetchSiteConfigurations()
-
         case .engaged(let engagedOperator):
             let name = engagedOperator?.firstName
             let pictureUrl = engagedOperator?.picture?.url
@@ -184,6 +182,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             case .stopped:
                 engagementAction?(.showEndButton)
             }
+            fetchSiteConfigurations()
 
             pendingMessages.forEach { [weak self] outgoingMessage in
                 self?.interactor.send(outgoingMessage.content, attachment: nil) { [weak self] message in
