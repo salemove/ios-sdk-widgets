@@ -78,6 +78,46 @@ class ChatViewModelTests: XCTestCase {
         viewModel.start()
         XCTAssertEqual(calls, [.configureWithInteractor, .configureWithConfiguration])
     }
+    
+    func test_onInteractorStateEngagedClearsChatQueueSection() throws {
+        var viewModelEnv = ChatViewModel.Environment.failing
+        viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
+        viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
+
+        let interactor: Interactor = try .mock()
+        let viewModel: ChatViewModel = .mock(interactor: interactor, environment: viewModelEnv)
+        let queueSectionIndex: Int = viewModel.queueOperatorSection.index
+        let mockOperator: CoreSdkClient.Operator = .mock()
+
+        XCTAssertEqual(0, viewModel.numberOfItems(in: queueSectionIndex))
+        viewModel.update(for: .enqueueing)
+        XCTAssertEqual(1, viewModel.numberOfItems(in: queueSectionIndex))
+        viewModel.update(for: .engaged(mockOperator))
+        XCTAssertEqual(0, viewModel.numberOfItems(in: queueSectionIndex))
+    }
+    
+    func test_onEngagementTransferAddsOperatorConnectedChatItemToTheEndOfChat() throws {
+        var interactorEnv: Interactor.Environment = .failing
+        interactorEnv.gcd.mainQueue.asyncIfNeeded = { $0() }
+        var viewModelEnv = ChatViewModel.Environment.failing
+        viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
+        viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
+        viewModelEnv.chatStorage.messages = { _ in [] }
+        viewModelEnv.fromHistory = { true }
+
+        let interactor: Interactor = .mock(environment: interactorEnv)
+        let viewModel: ChatViewModel = .mock(interactor: interactor, environment: viewModelEnv)
+        let mockOperator: CoreSdkClient.Operator = .mock()
+        let mockItemKind: ChatItem.Kind = .operatorConnected(name: mockOperator.firstName, imageUrl: mockOperator.picture?.url)
+
+        interactor.onEngagementTransfer([mockOperator])
+
+        let lastSectionIndex = viewModel.numberOfSections - 1
+        let lastSectionLastItemIndex = viewModel.numberOfItems(in: lastSectionIndex) - 1
+        let lastItemKind = viewModel.item(for: lastSectionLastItemIndex, in: lastSectionIndex).kind
+
+        XCTAssertEqual(lastItemKind, mockItemKind)
+    }
 }
 
 extension ChatChoiceCardOption {

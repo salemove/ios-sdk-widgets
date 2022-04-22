@@ -326,6 +326,22 @@ extension ChatView {
                 view.style = self.callUpgradeStyle(for: kind)
             }
             return .callUpgrade(view)
+        case .operatorConnected(let name, let imageUrl):
+            let connectView = ConnectView(
+                with: style.connect,
+                environment: .init(
+                    data: environment.data,
+                    uuid: environment.uuid,
+                    gcd: environment.gcd,
+                    imageViewCache: environment.imageViewCache,
+                    timerProviding: environment.timerProviding)
+            )
+            connectView.operatorView.isHidden = imageUrl == nil
+            connectView.setState(
+                .connected(name: name, imageUrl: imageUrl),
+                animated: false
+            )
+            return .queueOperator(connectView)
         }
     }
     // swiftlint:enable function_body_length
