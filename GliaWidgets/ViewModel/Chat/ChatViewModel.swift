@@ -12,10 +12,11 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         Section<ChatItem>(2),
         Section<ChatItem>(3)
     ]
-    private var historySection: Section<ChatItem> { sections[0] }
-    private var pendingSection: Section<ChatItem> { sections[1] }
-    private var queueOperatorSection: Section<ChatItem> { sections[2] }
-    private var messagesSection: Section<ChatItem> { sections[3] }
+    var historySection: Section<ChatItem> { sections[0] }
+    var pendingSection: Section<ChatItem> { sections[1] }
+    var queueOperatorSection: Section<ChatItem> { sections[2] }
+    var messagesSection: Section<ChatItem> { sections[3] }
+
     private let call: ObservableValue<Call?>
     private var unreadMessages: UnreadMessagesHandler!
     private let isChatScrolledToBottom = ObservableValue<Bool>(with: true)
@@ -144,14 +145,6 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         interactor.withConfiguration { [weak self] in
             guard let self = self else { return }
             if case .startEngagement = self.startAction, self.environment.chatStorage.isEmpty() {
-                let item = ChatItem(kind: .queueOperator)
-
-                self.appendItem(
-                    item,
-                    to: self.queueOperatorSection,
-                    animated: false
-                )
-
                 self.enqueue(mediaType: .text)
             }
 
@@ -164,13 +157,29 @@ class ChatViewModel: EngagementViewModel, ViewModel {
 
         switch state {
         case .enqueueing:
+            let item = ChatItem(kind: .queueOperator)
+
+            appendItem(
+                item,
+                to: queueOperatorSection,
+                animated: false
+            )
+
             action?(.queue)
             action?(.scrollToBottom(animated: false))
 
         case .engaged(let engagedOperator):
             let name = engagedOperator?.firstName
             let pictureUrl = engagedOperator?.picture?.url
-            action?(.connected(name: name, imageUrl: pictureUrl))
+            let chatItem = ChatItem(kind: .operatorConnected(name: name, imageUrl: pictureUrl))
+
+            setItems([], to: queueOperatorSection)
+            appendItem(
+                chatItem,
+                to: messagesSection,
+                animated: false
+            )
+
             action?(.setMessageEntryEnabled(true))
 
             switch screenShareHandler.status.value {
