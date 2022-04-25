@@ -82,9 +82,7 @@ class CallViewController: EngagementViewController, MediaUpgradePresenter {
                 view.operatorNameLabel.text = name
                 view.operatorNameLabel.accessibilityLabel = name
             case .setCallDurationText(let text):
-                view.durationLabel.text = text
-                view.durationLabel.accessibilityLabel = text
-                view.connectView.statusView.setSecondText(text, animated: false)
+                view.callDuration = text
             case .showButtons(let buttons):
                 let buttons = buttons.map { CallButton.Kind(with: $0) }
                 view.buttonBar.visibleButtons = buttons
@@ -104,6 +102,8 @@ class CallViewController: EngagementViewController, MediaUpgradePresenter {
                 view.remoteVideoView.streamView = streamView
             case .setLocalVideo(let streamView):
                 view.localVideoView.streamView = streamView
+            case .setVisitorOnHold(let isOnHold):
+                view.isVisitrOnHold = isOnHold
             }
         }
     }

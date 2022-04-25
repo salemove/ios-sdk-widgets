@@ -3,6 +3,12 @@ import UIKit
 extension Theme {
     var callStyle: CallStyle {
         typealias Call = L10n.Call
+
+        let onHoldOverlay = OnHoldOverlayStyle(
+            image: Asset.callOnHold.image,
+            imageColor: .white,
+            imageSize: .init(width: 40, height: 40)
+        )
         let backButton = HeaderButtonStyle(
             image: Asset.back.image,
             color: color.baseLight
@@ -38,7 +44,8 @@ extension Theme {
         )
         let queueOperator = ConnectOperatorStyle(
             operatorImage: operatorImage,
-            animationColor: .lightGray
+            animationColor: .lightGray,
+            onHoldOverlay: onHoldOverlay
         )
         let queue = ConnectStatusStyle(
             firstText: Call.Connect.Queue.firstText,
@@ -70,6 +77,14 @@ extension Theme {
             connecting: connecting,
             connected: connected
         )
+        let onHoldStyle = CallStyle.OnHoldStyle(
+            onHoldText: Call.OnHold.topText,
+            descriptionText: Call.OnHold.bottomText,
+            localVideoStreamLabelText: Call.OnHold.localVideoStreamLabelText,
+            localVideoStreamLabelFont: font.mediumSubtitle,
+            localVideoStreamLabelColor: color.baseLight
+        )
+
         return CallStyle(
             header: header,
             connect: connect,
@@ -88,7 +103,8 @@ extension Theme {
             bottomText: Call.bottomText,
             bottomTextFont: font.bodyText,
             bottomTextColor: color.baseLight,
-            buttonBar: buttonBarStyle
+            buttonBar: buttonBarStyle,
+            onHoldStyle: onHoldStyle
         )
     }
 

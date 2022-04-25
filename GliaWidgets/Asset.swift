@@ -58,6 +58,7 @@ public enum Asset {
       public static let callSpeakerInactive = ImageAsset(name: "call-speaker-inactive")
       public static let callVideoActive = ImageAsset(name: "call-video-active")
       public static let callVideoInactive = ImageAsset(name: "call-video-inactive")
+      public static let callOnHold = ImageAsset(name: "call-on-hold")
       public static let uploadError = ImageAsset(name: "uploadError")
       public static let uploadRemove = ImageAsset(name: "uploadRemove")
     public static let chatPickMedia = ImageAsset(name: "chatPickMedia")
@@ -89,6 +90,7 @@ public enum Asset {
       callSpeakerInactive,
       callVideoActive,
       callVideoInactive,
+      callOnHold,
       uploadError,
       uploadRemove,
       chatPickMedia,
