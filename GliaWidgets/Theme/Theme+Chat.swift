@@ -2,6 +2,11 @@ extension Theme {
     var chatStyle: ChatStyle {
         typealias Chat = L10n.Chat
 
+        let onHoldOverlay = OnHoldOverlayStyle(
+            image: Asset.callOnHold.image,
+            imageColor: .white,
+            imageSize: .init(width: 40, height: 40)
+        )
         let backButton = HeaderButtonStyle(
             image: Asset.back.image,
             color: color.baseLight
@@ -37,7 +42,8 @@ extension Theme {
         )
         let queueOperator = ConnectOperatorStyle(
             operatorImage: operatorImage,
-            animationColor: color.primary
+            animationColor: color.primary,
+            onHoldOverlay: onHoldOverlay
         )
         let queue = ConnectStatusStyle(
             firstText: Chat.Connect.Queue.firstText,
