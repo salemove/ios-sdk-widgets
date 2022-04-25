@@ -6,6 +6,7 @@ class VideoStreamView: UIView {
         case remote
     }
 
+    let label = UILabel()
     var pan: ((CGPoint) -> Void)?
     var show: ((Bool) -> Void)?
 
@@ -38,6 +39,8 @@ class VideoStreamView: UIView {
         addGestureRecognizer(panRecognizer)
 
         isAccessibilityElement = true
+
+        label.isHidden = true
     }
 
     private func replace(
@@ -45,6 +48,8 @@ class VideoStreamView: UIView {
         with streamView: CoreSdkClient.StreamView?
     ) {
         oldStreamView?.removeFromSuperview()
+        label.removeFromSuperview()
+
         guard let streamView = streamView else {
             show?(false)
             return
@@ -53,6 +58,8 @@ class VideoStreamView: UIView {
         addSubview(streamView)
         streamView.autoPinEdgesToSuperviewEdges()
         streamView.layoutIfNeeded()
+        addSubview(label)
+        label.autoCenterInSuperview()
         show?(true)
     }
 

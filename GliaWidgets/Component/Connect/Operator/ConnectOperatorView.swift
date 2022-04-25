@@ -26,8 +26,18 @@ class ConnectOperatorView: UIView {
 
     let imageView: UserImageView
 
+    var isVisitorOnHold: Bool = false {
+        didSet {
+            isVisitorOnHold
+                ? showOnHoldView()
+                : hideOnHoldView()
+        }
+    }
+
     private let style: ConnectOperatorStyle
     private var animationView: ConnectAnimationView?
+    private var onHoldView: OnHoldOverlayView?
+
     private var size: Size = .normal
     private var widthConstraint: NSLayoutConstraint!
     private var heightConstraint: NSLayoutConstraint!
@@ -87,6 +97,21 @@ class ConnectOperatorView: UIView {
     func stopAnimating(animated: Bool) {
         animationView?.removeFromSuperview()
         animationView = nil
+    }
+
+    func showOnHoldView() {
+        onHoldView?.removeFromSuperview()
+
+        let onHoldView = OnHoldOverlayView(style: style.onHoldOverlay)
+        self.onHoldView = onHoldView
+
+        imageView.addSubview(onHoldView)
+        onHoldView.autoPinEdgesToSuperviewEdges()
+    }
+
+    func hideOnHoldView() {
+        onHoldView?.removeFromSuperview()
+        onHoldView = nil
     }
 
     private func setup() {
