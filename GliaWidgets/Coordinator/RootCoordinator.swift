@@ -255,6 +255,8 @@ extension RootCoordinator {
             case .finished:
                 self?.popCoordinator()
                 self?.end()
+            case .visitorOnHoldUpdated(let isOnHold):
+                self?.gliaViewController?.setVisitorHoldState(isOnHold: isOnHold)
             }
         }
         pushCoordinator(coordinator)
