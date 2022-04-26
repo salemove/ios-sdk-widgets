@@ -85,10 +85,11 @@ struct CoreSdkClient {
     ) -> Void
     var fetchFile: FetchFile
 
-    typealias GetCurrentEngagement = (
-        () -> SalemoveSDK.Engagement?
-    )
+    typealias GetCurrentEngagement = () -> Self.Engagement?
     var getCurrentEngagement: GetCurrentEngagement
+
+    typealias FetchSiteConfigurations = (_ completion: @escaping (Result<Self.Site, Error>) -> Void) -> Void
+    var fetchSiteConfigurations: FetchSiteConfigurations
 }
 
 extension CoreSdkClient {
@@ -160,4 +161,6 @@ extension CoreSdkClient {
     typealias VisitorInfoUpdate = SalemoveSDK.VisitorInfoUpdate
     typealias VisitorScreenSharingState = SalemoveSDK.VisitorScreenSharingState
     typealias VisitorScreenSharingStateChange = SalemoveSDK.VisitorScreenSharingStateChange
+    typealias Engagement = SalemoveSDK.Engagement
+    typealias Site = SalemoveSDK.Site
 }

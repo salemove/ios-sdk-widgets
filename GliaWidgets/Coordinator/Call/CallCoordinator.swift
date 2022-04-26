@@ -4,6 +4,7 @@ class CallCoordinator: SubFlowCoordinator, FlowCoordinator {
     enum DelegateEvent {
         case back
         case engaged(operatorImageUrl: String?)
+        case visitorOnHoldUpdated(isOnHold: Bool)
         case chat
         case minimize
         case finished
@@ -80,6 +81,8 @@ class CallCoordinator: SubFlowCoordinator, FlowCoordinator {
                 self?.delegate?(.chat)
             case .minimize:
                 self?.delegate?(.minimize)
+            case .visitorOnHoldUpdated(let isOnHold):
+                self?.delegate?(.visitorOnHoldUpdated(isOnHold: isOnHold))
             }
         }
         return CallViewController(

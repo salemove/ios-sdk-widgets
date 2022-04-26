@@ -32,6 +32,18 @@ extension CallKind: Equatable {
     }
 }
 
+extension CallKind {
+    var mediaDirection: CoreSdkClient.MediaDirection {
+        switch self {
+        case .audio:
+            return .twoWay
+
+        case .video(let direction):
+            return direction
+        }
+    }
+}
+
 enum CallState {
     case none
     case started
@@ -85,13 +97,19 @@ class Call {
     let duration = ObservableValue<Int>(with: 0)
     let audio = MediaChannel<CoreSdkClient.AudioStreamable>()
     let video = MediaChannel<CoreSdkClient.VideoStreamable>()
-    private(set) var audioPortOverride = AVAudioSession.PortOverride.none
+    let isVisitorOnHold = ObservableValue<Bool>(with: false)
+
     var environment: Environment
+    private(set) var audioPortOverride = AVAudioSession.PortOverride.none
+    private(set) var hasVisitorMutedAudio: Bool
+    private(set) var hasVisitorTurnedOffVideo: Bool
 
     init(_ kind: CallKind, environment: Environment) {
         self.id = environment.uuid().uuidString
         self.kind.value = kind
         self.environment = environment
+        self.hasVisitorMutedAudio = kind.mediaDirection == .oneWay
+        self.hasVisitorTurnedOffVideo = kind.mediaDirection == .oneWay
     }
 
     func upgrade(to offer: CoreSdkClient.MediaUpgradeOffer) {
@@ -104,19 +122,33 @@ class Call {
         updateMediaStream(audio.stream,
                           with: stream,
                           isRemote: stream.isRemote)
+
+        if stream.isRemote {
+            stream.onHold = { [weak self] in
+                self?.isVisitorOnHold.value = $0
+            }
+        }
     }
 
     func updateVideoStream(with stream: CoreSdkClient.VideoStreamable) {
         updateMediaStream(video.stream,
                           with: stream,
                           isRemote: stream.isRemote)
+
+        if stream.isRemote {
+            stream.onHold = { [weak self] in
+                self?.isVisitorOnHold.value = $0
+            }
+        }
     }
 
     func toggleVideo() {
         video.stream.value.localStream.map {
             if $0.isPaused {
+                self.hasVisitorTurnedOffVideo = false
                 $0.resume()
             } else {
+                self.hasVisitorTurnedOffVideo = true
                 $0.pause()
             }
         }
@@ -125,8 +157,10 @@ class Call {
     func toggleMute() {
         audio.stream.value.localStream.map {
             if $0.isMuted {
+                self.hasVisitorMutedAudio = false
                 $0.unmute()
             } else {
+                self.hasVisitorMutedAudio = true
                 $0.mute()
             }
         }

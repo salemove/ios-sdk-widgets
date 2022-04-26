@@ -28,6 +28,12 @@ class ChatMessageEntryView: UIView {
         }
     }
 
+    var isAttachmentButtonHidden: Bool {
+        didSet {
+            updatePickMediaButtonVisibility()
+        }
+    }
+
     var isConnected: Bool {
         didSet {
             updatePlaceholderText()
@@ -62,6 +68,7 @@ class ChatMessageEntryView: UIView {
         pickMediaButton = MessageButton(with: style.mediaButton)
         sendButton = MessageButton(with: style.sendButton)
         isChoiceCardModeEnabled = false
+        isAttachmentButtonHidden = true
         isConnected = false
         super.init(frame: .zero)
         setup()
@@ -177,10 +184,10 @@ class ChatMessageEntryView: UIView {
     }
 
     private func updatePickMediaButtonVisibility() {
-        if isChoiceCardModeEnabled {
+        if isChoiceCardModeEnabled || !isConnected {
             pickMediaButton.isHidden = true
         } else {
-            pickMediaButton.isHidden = !isConnected
+            pickMediaButton.isHidden = isAttachmentButtonHidden
         }
     }
 

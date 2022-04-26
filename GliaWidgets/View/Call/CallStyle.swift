@@ -44,6 +44,9 @@ public class CallStyle: EngagementStyle {
     /// Style of the call view bottom button bar (with buttons like "Chat", "Video", "Mute", "Speaker" and "Minimize").
     public var buttonBar: CallButtonBarStyle
 
+    /// Style of the call view when the visitor is put on hold.
+    public var onHoldStyle: OnHoldStyle
+
     ///
     /// - Parameters:
     ///   - header: Style of the view's header (navigation bar area).
@@ -64,6 +67,7 @@ public class CallStyle: EngagementStyle {
     ///   - bottomTextFont: Font of the bottom text.
     ///   - bottomTextColor: Color of the bottom text.
     ///   - buttonBar: Style of the button bar.
+    ///   - onHoldStyle: Style of the call view when the visitor is put on hold.
     ///
     public init(
         header: HeaderStyle,
@@ -83,7 +87,8 @@ public class CallStyle: EngagementStyle {
         bottomText: String,
         bottomTextFont: UIFont,
         bottomTextColor: UIColor,
-        buttonBar: CallButtonBarStyle
+        buttonBar: CallButtonBarStyle,
+        onHoldStyle: OnHoldStyle
     ) {
         self.audioTitle = audioTitle
         self.videoTitle = videoTitle
@@ -99,11 +104,53 @@ public class CallStyle: EngagementStyle {
         self.bottomTextFont = bottomTextFont
         self.bottomTextColor = bottomTextColor
         self.buttonBar = buttonBar
+        self.onHoldStyle = onHoldStyle
         super.init(
             header: header,
             connect: connect,
             backgroundColor: backgroundColor,
             preferredStatusBarStyle: preferredStatusBarStyle
         )
+    }
+}
+
+extension CallStyle {
+    public struct OnHoldStyle {
+        /// The text shown in the top section of the call view when visitor is put on hold
+        public var onHoldText: String
+
+        /// The text shown in the bottom section of the call view when visitor is put on hold
+        public var descriptionText: String
+
+        /// The text shown in the local video stream view when visitor is put on hold
+        public var localVideoStreamLabelText: String
+
+        /// The text font for the label in the local video stream view when visitor is put on hold
+        public var localVideoStreamLabelFont: UIFont
+
+        /// The text color for the label in the local video stream view when visitor is put on hold
+        public var localVideoStreamLabelColor: UIColor
+
+        ///
+        /// - Parameters:
+        ///   - topText: The text shown in the top section of the call view when visitor is put on hold
+        ///   - bottomText: The text shown in the bottom section of the call view when visitor is put on hold
+        ///   - localVideoStreamText: The text shown in the local video stream view when visitor is put on hold
+        ///   - localVideoStreamLabelFont: The text font for the label in the local video stream view when visitor is put on hold
+        ///   - localVideoStreamLabelColor: The text color for the label in the local video stream view when visitor is put on hold
+        ///
+        public init(
+            onHoldText: String,
+            descriptionText: String,
+            localVideoStreamLabelText: String,
+            localVideoStreamLabelFont: UIFont,
+            localVideoStreamLabelColor: UIColor
+        ) {
+            self.onHoldText = onHoldText
+            self.descriptionText = descriptionText
+            self.localVideoStreamLabelText = localVideoStreamLabelText
+            self.localVideoStreamLabelFont = localVideoStreamLabelFont
+            self.localVideoStreamLabelColor = localVideoStreamLabelColor
+        }
     }
 }
