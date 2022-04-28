@@ -52,6 +52,9 @@ class Interactor {
         }
     }
 
+    /// Flag indicating if configuration was already performed.
+    var isConfigurationPerformed: Bool = false
+
     private let visitorContext: CoreSdkClient.VisitorContext
     private var observers = [() -> (AnyObject?, EventHandler)]()
     private var isEngagementEndedByVisitor = false
@@ -99,10 +102,19 @@ class Interactor {
     }
 
     func withConfiguration(_ action: @escaping () -> Void) {
-
         environment.coreSdk.configureWithInteractor(self)
-        environment.coreSdk.configureWithConfiguration(sdkConfiguration) {
+        // Perform configuration only if it was not done previously.
+        // Otherwise side effects may occur. For example `onHold` callback
+        // stops being triggered for audio stream.
+        if isConfigurationPerformed {
+            // Early out if configuration is already performed. 
             action()
+        } else {
+            // Mark configuration applied and perfrom configuration.
+            isConfigurationPerformed = true
+            environment.coreSdk.configureWithConfiguration(sdkConfiguration) {
+                action()
+            }
         }
     }
 }
