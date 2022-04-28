@@ -277,6 +277,10 @@ extension Interactor: CoreSdkClient.Interactable {
         return { _ in }
     }
 
+    var onEngagementTransferring: CoreSdkClient.EngagementTransferringBlock {
+        { print("Engagement is transferring ...") }
+    }
+
     var onOperatorTypingStatusUpdate: CoreSdkClient.OperatorTypingStatusUpdate {
         return { [weak self] operatorTypingStatus in
             self?.notify(.typingStatusUpdated(operatorTypingStatus))
