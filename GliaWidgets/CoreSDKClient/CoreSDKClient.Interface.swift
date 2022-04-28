@@ -127,6 +127,7 @@ extension CoreSdkClient {
     typealias EngagementFileProgressBlock = SalemoveSDK.EngagementFileProgressBlock
     typealias EngagementOptions = SalemoveSDK.EngagementOptions
     typealias EngagementTransferBlock = SalemoveSDK.EngagementTransferBlock
+    typealias EngagementTransferringBlock = SalemoveSDK.EngagementTransferringBlock
     typealias FileError = SalemoveSDK.FileError
     typealias GeneralError = SalemoveSDK.GeneralError
     typealias Interactable = SalemoveSDK.Interactable
