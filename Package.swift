@@ -50,8 +50,8 @@ let package = Package(
         ),
         .binaryTarget(
             name: "SalemoveSDK",
-            url: "https://github.com/salemove/ios-bundle/releases/download/0.33.1/SalemoveSDK.xcframework.zip",
-            checksum: "6f911b712accb0d91c927d5c2c4fb60a4fb26255c71a7ad51da45e4744122158"
+            url: "https://github.com/salemove/ios-bundle/releases/download/0.33.2/SalemoveSDK.xcframework.zip",
+            checksum: "5f39fbbeabbd0bd19bc71699e22d4c1fd7bcc30ae29cd101542e9ecd68a4c0e8"
         ),
         .target(
             name: "GliaWidgets",
