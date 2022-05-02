@@ -9,7 +9,7 @@ PODS:
   - lottie-ios (3.2.3)
   - PureLayout (3.1.9)
   - ReactiveSwift (6.5.0-xcf)
-  - SalemoveSDK (0.33.1):
+  - SalemoveSDK (0.33.2):
     - ReactiveSwift (= 6.5.0-xcf)
     - SocketIO (= 9.2.0-xcf)
     - Starscream (= 3.1.1-xcf)
@@ -49,7 +49,7 @@ SPEC CHECKSUMS:
   lottie-ios: c058aeafa76daa4cf64d773554bccc8385d0150e
   PureLayout: 5fb5e5429519627d60d079ccb1eaa7265ce7cf88
   ReactiveSwift: 377d0a5621761a57c61829541b2ee0b9fdcd98f2
-  SalemoveSDK: f3d5264b0173b9651b195eeedc25392313d4cefd
+  SalemoveSDK: aeb7c7606673d56bb41bc845b7e28f21c5c0d948
   SnapshotTesting: 6141c48b6aa76ead61431ca665c14ab9a066c53b
   SocketIO: 07583ad0005148194dcdfb89feda88b2180e1391
   Starscream: 54f05f3e7aa58f5ad1d5b4339ab55784bc74a35f
@@ -59,4 +59,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 0438e9734a3d7130551551522238a1e9f4b2b513
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.11.3

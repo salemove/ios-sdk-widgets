@@ -50,6 +50,9 @@ public class Glia {
 
     init(environment: Environment) {
         self.environment = environment
+        #if DEBUG
+        Logger.threshold = .trace
+        #endif
     }
 
     /// Setup SDK using specific engagement configuration without starting the engagement.

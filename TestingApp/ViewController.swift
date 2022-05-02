@@ -3,6 +3,8 @@ import PureLayout
 import GliaWidgets
 import SalemoveSDK
 
+private let logger = Logger.live(name: "ViewController")
+
 class ViewController: UIViewController {
     private var settingsViewController = SettingsViewController()
     private var glia: Glia!
@@ -39,7 +41,7 @@ class ViewController: UIViewController {
 
     @IBAction private func endEngagementTapped() {
         Glia.sharedInstance.endEngagement { result in
-            print("End engagement operation has been executed. Result='\(result)'.")
+            logger.debug("End engagement operation has been executed. Result='\(result)'.")
         }
     }
 }
@@ -55,20 +57,22 @@ extension ViewController {
         let conf = settingsViewController.conf
         let queueID = settingsViewController.queueID
         let theme = settingsViewController.theme
-        let visitorContext = VisitorContext(type: .page,
-                                            url: "https://www.salemoveinsurance.com")
+        let visitorContext = VisitorContext(
+            type: .page,
+            url: "https://www.salemoveinsurance.com"
+        )
         Glia.sharedInstance.onEvent = { event in
             switch event {
             case .started:
-                print("STARTED")
+                logger.debug("STARTED")
             case .engagementChanged(let kind):
-                print("CHANGED:", kind)
+                logger.debug("CHANGED: \(kind)")
             case .ended:
-                print("ENDED")
+                logger.debug("ENDED")
             case .minimized:
-                print("MINIMIZED")
+                logger.debug("MINIMIZED")
             case .maximized:
-                print("MAXIMIZED")
+                logger.debug("MAXIMIZED")
             }
         }
 

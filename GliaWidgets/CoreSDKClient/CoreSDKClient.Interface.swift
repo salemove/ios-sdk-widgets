@@ -163,4 +163,5 @@ extension CoreSdkClient {
     typealias VisitorScreenSharingStateChange = SalemoveSDK.VisitorScreenSharingStateChange
     typealias Engagement = SalemoveSDK.Engagement
     typealias Site = SalemoveSDK.Site
+    typealias EngagementTransferringBlock = SalemoveSDK.EngagementTransferringBlock
 }

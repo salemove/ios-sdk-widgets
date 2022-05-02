@@ -1,5 +1,7 @@
 import UIKit
 
+private let logger = Logger.live(name: "RootCoordinator")
+
 class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
 
     var delegate: ((DelegateEvent) -> Void)?
@@ -43,6 +45,12 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
         self.environment = environment
         navigationController.modalPresentationStyle = .fullScreen
         navigationController.isNavigationBarHidden = true
+
+        logger.debug("RootCoordinator has been constructed.")
+    }
+
+    deinit {
+        logger.debug("~RootCoordinator has been destructed.")
     }
 
     func start() {
@@ -116,6 +124,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
 
 extension RootCoordinator {
     private func end() {
+        logger.debug("Dismissing Glia view controller...")
         dismissGliaViewController(animated: true) { [weak self] in
             self?.event(.minimized)
             self?.engagement = .none

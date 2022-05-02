@@ -1,5 +1,7 @@
 import Foundation
 
+private let logger = Logger.live(name: "EngagementViewModel")
+
 class EngagementViewModel {
 
     var engagementAction: ((Action) -> Void)?
@@ -24,15 +26,21 @@ class EngagementViewModel {
         screenShareHandler.status.addObserver(self) { [weak self] status, _ in
             self?.onScreenSharingStatusChange(status)
         }
+
+        logger.debug("EngagementViewModel has been constructed.")
     }
 
     deinit {
         interactor.removeObserver(self)
         screenShareHandler.status.removeObserver(self)
         screenShareHandler.cleanUp()
+
+        logger.debug("~EngagementViewModel has been destructed.")
     }
 
     func event(_ event: Event) {
+
+        logger.debug("Received event='\(event)'.")
         switch event {
         case .viewWillAppear:
             viewWillAppear()

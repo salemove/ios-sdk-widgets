@@ -1,6 +1,8 @@
 import Foundation
 import SQLite3
 
+private let logger = Logger.live(name: "ChatStorage")
+
 class ChatStorage {
 
     private enum SQLiteError: Error {
@@ -22,10 +24,14 @@ class ChatStorage {
         self.dbUrl = dbUrl
         self.fileManager = fileManager
         createDatabase()
+
+        logger.debug("ChatStorage has been constructed.")
     }
 
     deinit {
         sqlite3_close(db)
+
+        logger.debug("~ChatStorage has been destructed.")
     }
 
     private func createDatabase() {
@@ -99,7 +105,7 @@ class ChatStorage {
     private func printLastErrorMessage() {
         #if DEBUG
         let lastErrorMessage = sqlite3_errmsg(db).map { String(cString: $0) } ?? "UNKNOWN DB ERROR"
-        print(lastErrorMessage)
+        logger.error("The most last error in sqlite3 is '\(lastErrorMessage)'.")
         #endif
     }
 }
@@ -136,7 +142,7 @@ extension ChatStorage {
                             let message = try JSONDecoder().decode(ChatMessage.self, from: data)
                             messages.append(message)
                         } catch {
-                            print(error)
+                            logger.error("Message failed to decode from sqlite3 with error='\(error)'.")
                         }
                     }
                 }
@@ -163,7 +169,7 @@ extension ChatStorage {
             sqlite3_close(db)
             try fileManager.removeItem(at: dbUrl)
         } catch {
-            print("DB has not been removed due to: '\(error)'.")
+            logger.error("Remove DB has been failed with error='\(error)'.")
         }
 
         createDatabase()

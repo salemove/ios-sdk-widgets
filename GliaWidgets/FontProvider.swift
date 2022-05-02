@@ -1,6 +1,8 @@
 import UIKit
 
-internal class FontProvider {
+private let logger = Logger.live(name: "FontProvider")
+
+class FontProvider {
     static let shared = FontProvider()
 
     private let fonts = [
@@ -19,6 +21,8 @@ internal class FontProvider {
         return UIFont(name: named, size: size) ?? .systemFont(ofSize: size)
     }
 
+    // MARK: - Private
+
     private func loadFonts() {
         _ = fonts.first(where: { !loadFont(named: $0) })
     }
@@ -30,7 +34,7 @@ internal class FontProvider {
             let dataProvider = CGDataProvider(data: fontData),
             let fontRef = CGFont(dataProvider)
         else {
-            print("Could not load font='\(name)'. Perhaps they are not inculded in the bundle?")
+            logger.error("Font '\(name)' can't be loaded. Perhaps they are not inculded in the bundle?")
             return false
         }
 
@@ -38,7 +42,7 @@ internal class FontProvider {
         let registrationResult = CTFontManagerRegisterGraphicsFont(fontRef, &errorRef)
 
         if !registrationResult {
-            print("Font='\(name)' has not been registered properly. Error='\(errorRef.debugDescription)'.")
+            logger.error("Font='\(name)' has not been registered properly. Error='\(errorRef.debugDescription)'.")
             return false
         }
 

@@ -30,7 +30,9 @@ enum InteractorEvent {
     case error(CoreSdkClient.SalemoveError)
 }
 
-class Interactor {
+private let logger = Logger.live(name: "Interfactor")
+
+final class Interactor {
     typealias EventHandler = (InteractorEvent) -> Void
 
     let queueID: String
@@ -78,6 +80,12 @@ class Interactor {
         self.visitorContext = visitorContext
         self.sdkConfiguration = conf
         self.environment = environment
+
+        logger.debug("Interfactor has been constructed.")
+    }
+
+    deinit {
+        logger.debug("~Interfactor has been destructed.")
     }
 
     func addObserver(_ observer: AnyObject, handler: @escaping EventHandler) {
@@ -107,7 +115,7 @@ class Interactor {
         // Otherwise side effects may occur. For example `onHold` callback
         // stops being triggered for audio stream.
         if isConfigurationPerformed {
-            // Early out if configuration is already performed. 
+            // Early out if configuration is already performed.
             action()
         } else {
             // Mark configuration applied and perfrom configuration.
@@ -129,7 +137,7 @@ extension Interactor {
 
         let options = mediaType == .audio || mediaType == .video
         ? CoreSdkClient.EngagementOptions(mediaDirection: .twoWay)
-            : nil
+        : nil
 
         withConfiguration { [weak self] in
             guard let self = self else { return }
@@ -210,6 +218,8 @@ extension Interactor {
         success: @escaping () -> Void,
         failure: @escaping (CoreSdkClient.SalemoveError) -> Void
     ) {
+
+        logger.debug("End session initiated. Current state='\(state)'.")
         isEngagementEndedByVisitor = true
 
         switch state {
@@ -289,6 +299,10 @@ extension Interactor: CoreSdkClient.Interactable {
         return { _ in }
     }
 
+    var onEngagementTransferring: CoreSdkClient.EngagementTransferringBlock {
+        {}
+    }
+
     var onOperatorTypingStatusUpdate: CoreSdkClient.OperatorTypingStatusUpdate {
         return { [weak self] operatorTypingStatus in
             self?.notify(.typingStatusUpdated(operatorTypingStatus))
@@ -343,15 +357,8 @@ extension Interactor: CoreSdkClient.Interactable {
     }
 
     func end() {
-        // Example how to fetch survey:
-        //  guard let engagement = environment.coreSdk.getCurrentEngagement() else { return }
-        //  engagement.getSurvey { print("\($0)") }
-
-        if isEngagementEndedByVisitor {
-            state = .ended(.byVisitor)
-        } else {
-            state = .ended(.byOperator)
-        }
+        logger.debug("Engagement has been ended.")
+        state = isEngagementEndedByVisitor == true ? .ended(.byVisitor) : .ended(.byOperator)
     }
 
     func fail(error: CoreSdkClient.SalemoveError) {
@@ -363,10 +370,10 @@ extension InteractorState: Equatable {
     static func == (lhs: InteractorState, rhs: InteractorState) -> Bool {
         switch (lhs, rhs) {
         case (.none, .none),
-             (.enqueueing, .enqueueing),
-             (.engaged, .engaged),
-             (.enqueued, .enqueued),
-             (.ended, .ended):
+            (.enqueueing, .enqueueing),
+            (.engaged, .engaged),
+            (.enqueued, .enqueued),
+            (.ended, .ended):
             return true
         default:
             return false
