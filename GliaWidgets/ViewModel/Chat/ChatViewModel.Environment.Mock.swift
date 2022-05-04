@@ -19,7 +19,9 @@ extension ChatViewModel.Environment {
                 )
         },
         fromHistory: { true },
-        fetchSiteConfigurations: { _ in }
+        fetchSiteConfigurations: { _ in },
+        getCurrentEngagement: { return nil },
+        timerProviding: .mock
     )
 }
 #endif

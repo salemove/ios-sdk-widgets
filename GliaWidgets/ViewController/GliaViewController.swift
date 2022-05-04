@@ -74,6 +74,11 @@ class GliaViewController: UIViewController {
         delegate?.event(.maximized)
     }
 
+    func removeBubbleWindow() {
+        bubbleWindow?.alpha = 0.0
+        bubbleWindow = nil
+    }
+
     func minimize(animated: Bool) {
         defer { delegate?.event(.minimized) }
         guard let bubbleView = bubbleView else {
