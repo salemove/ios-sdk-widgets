@@ -55,7 +55,7 @@ final class UnreadMessageIndicatorView: View {
         userImageView.setImage(fromUrl: url, animated: animated)
     }
 
-    private func setup() {
+    override func setup() {
         isHidden = true
 
         backgroundView.image = Asset.unreadMessageIndicator.image
