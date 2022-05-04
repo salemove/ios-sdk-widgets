@@ -10,7 +10,7 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
             answer: CoreSdkClient.AnswerWithSuccessBlock
         )
         case call
-        case finished
+        case finished(String?, CoreSdkClient.Survey?)
     }
 
     var delegate: ((DelegateEvent) -> Void)?
@@ -82,7 +82,9 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
                 uiImage: environment.uiImage,
                 createFileDownload: environment.createFileDownload,
                 fromHistory: environment.fromHistory,
-                fetchSiteConfigurations: environment.fetchSiteConfigurations
+                fetchSiteConfigurations: environment.fetchSiteConfigurations,
+                getCurrentEngagement: environment.getCurrentEngagement,
+                timerProviding: .live
             )
         )
         viewModel.engagementDelegate = { [weak self] event in
@@ -91,8 +93,8 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
                 self?.delegate?(.back)
             case .engaged(let url):
                 self?.delegate?(.engaged(operatorImageUrl: url))
-            case .finished:
-                self?.delegate?(.finished)
+            case .finished(let engagementId, let survey):
+                self?.delegate?(.finished(engagementId, survey))
             }
         }
         viewModel.delegate = { [weak self] event in
@@ -199,5 +201,7 @@ extension ChatCoordinator {
         var createFileDownload: FileDownloader.CreateFileDownload
         var fromHistory: () -> Bool
         var fetchSiteConfigurations: CoreSdkClient.FetchSiteConfigurations
+        var getCurrentEngagement: CoreSdkClient.GetCurrentEngagement
+        var submitSurveyAnswer: CoreSdkClient.SubmitSurveyAnswer
     }
 }

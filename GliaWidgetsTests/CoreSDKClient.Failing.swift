@@ -20,7 +20,8 @@ extension CoreSdkClient {
         uploadFileToEngagement: { _, _, _ in fail("\(Self.self).uploadFileToEngagement") },
         fetchFile: { _, _, _ in fail("\(Self.self).fetchFile") },
         getCurrentEngagement: { return nil },
-        fetchSiteConfigurations: { _ in fail("\(Self.self).fetchSiteConfigurations") }
+        fetchSiteConfigurations: { _ in fail("\(Self.self).fetchSiteConfigurations") },
+        submitSurveyAnswer: { _, _, _, _ in }
     )
 }
 

@@ -21,7 +21,8 @@ extension CoreSdkClient {
         uploadFileToEngagement: { _, _, _ in },
         fetchFile: { _, _, _ in },
         getCurrentEngagement: { return nil },
-        fetchSiteConfigurations: { _ in }
+        fetchSiteConfigurations: { _ in },
+        submitSurveyAnswer: { _, _, _, _ in }
     )
 }
 
