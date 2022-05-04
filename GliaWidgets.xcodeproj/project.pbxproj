@@ -194,8 +194,27 @@
 		7512A57D27BFA37D00319DF1 /* CoreSdkClient.Salemove.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7512A57C27BFA37D00319DF1 /* CoreSdkClient.Salemove.swift */; };
 		7512A57F27BFA39700319DF1 /* GliaWidgets.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7512A57E27BFA39700319DF1 /* GliaWidgets.Mock.swift */; };
 		7512A5A727C3926500319DF1 /* GliaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7512A5A627C3926500319DF1 /* GliaTests.swift */; };
+		7529F2B427E1D503004D3581 /* Survey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7529F2B327E1D503004D3581 /* Survey.swift */; };
+		7529F2B627E1EB9A004D3581 /* Survey.ButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7529F2B527E1EB9A004D3581 /* Survey.ButtonView.swift */; };
 		753A56B927CFEB730050D8E6 /* ChatViewModel.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB196DF27C401F600FD60AB /* ChatViewModel.Mock.swift */; };
+		754CC61227E2767A005676E9 /* Survey.BooleanQuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AF8D0827DD0DE1009EEE2C /* Survey.BooleanQuestionView.swift */; };
+		754CC61327E27BE2005676E9 /* Survey.SingleChoiceQuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AF8D0A27DD1DD3009EEE2C /* Survey.SingleChoiceQuestionView.swift */; };
+		754CC61527E27C42005676E9 /* Survey.Checkbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754CC61427E27C42005676E9 /* Survey.Checkbox.swift */; };
+		754CC61627E2816F005676E9 /* Survey.InputQuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AF8D0C27DD464A009EEE2C /* Survey.InputQuestionView.swift */; };
 		756087E127837EC000158604 /* BundleManaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756087E027837EC000158604 /* BundleManaging.swift */; };
+		75AF8CEF27DAA819009EEE2C /* SurveyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AF8CEE27DAA819009EEE2C /* SurveyViewController.swift */; };
+		75AF8CF127DBB1F9009EEE2C /* SurveyViewController.View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AF8CF027DBB1F9009EEE2C /* SurveyViewController.View.swift */; };
+		75AF8CF427DBB3C8009EEE2C /* Makeable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AF8CF327DBB3C8009EEE2C /* Makeable.swift */; };
+		75AF8CF627DBB837009EEE2C /* NSLayoutConstraint.Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AF8CF527DBB837009EEE2C /* NSLayoutConstraint.Extensions.swift */; };
+		75AF8CF827DBC086009EEE2C /* UIStackView.Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AF8CF727DBC086009EEE2C /* UIStackView.Extensions.swift */; };
+		75AF8D0427DBF07D009EEE2C /* Survey.ScaleQuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AF8D0327DBF07D009EEE2C /* Survey.ScaleQuestionView.swift */; };
+		75AF8D1027DFF4B3009EEE2C /* Survey.ValidationErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AF8D0E27DE8305009EEE2C /* Survey.ValidationErrorView.swift */; };
+		75F58EE127E7D5300065BA2D /* Survey.ViewController.Props.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F58EE027E7D5300065BA2D /* Survey.ViewController.Props.swift */; };
+		75FF151427F3A2D600FE7BE2 /* Theme+Survey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FF151327F3A2D600FE7BE2 /* Theme+Survey.swift */; };
+		75FF151727F4E13900FE7BE2 /* Theme.Survey.BooleanQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FF151627F4E13900FE7BE2 /* Theme.Survey.BooleanQuestion.swift */; };
+		75FF151927F4F01800FE7BE2 /* Theme.Survey.ScaleQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FF151827F4F01800FE7BE2 /* Theme.Survey.ScaleQuestion.swift */; };
+		75FF151B27F4F52D00FE7BE2 /* Theme.Survey.SingleQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FF151A27F4F52D00FE7BE2 /* Theme.Survey.SingleQuestion.swift */; };
+		75FF151D27F4F8E000FE7BE2 /* Theme.Survey.InputQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FF151C27F4F8E000FE7BE2 /* Theme.Survey.InputQuestion.swift */; };
 		9A0B7D1727DA6B74006D8637 /* Interactor.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A0B7D1627DA6B74006D8637 /* Interactor.Mock.swift */; };
 		9A19926327D3BA3A00161AAE /* GCD.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A19925F27D3BA3900161AAE /* GCD.Mock.swift */; };
 		9A19926427D3BA3A00161AAE /* GCD.Live.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A19926027D3BA3900161AAE /* GCD.Live.swift */; };
@@ -245,8 +264,6 @@
 		9A83D77F27B181C500681C9F /* Glia.Environment.Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A83D77E27B181C500681C9F /* Glia.Environment.Interface.swift */; };
 		9A83D78127B18DB600681C9F /* Glia.Environment.Live.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A83D78027B18DB600681C9F /* Glia.Environment.Live.swift */; };
 		9A83D78327B18DF000681C9F /* Glia.Environment.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A83D78227B18DF000681C9F /* Glia.Environment.Mock.swift */; };
-		9AA3CBA627EB306100C00712 /* CallViewModel.Environment.Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA3CBA527EB306100C00712 /* CallViewModel.Environment.Interface.swift */; };
-		9AA3CBA827EB31A300C00712 /* CallViewModel.Environment.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA3CBA727EB31A300C00712 /* CallViewModel.Environment.Mock.swift */; };
 		9AB196D227C3D74300FD60AB /* Interactor.Environment.Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB196D127C3D74300FD60AB /* Interactor.Environment.Interface.swift */; };
 		9AB196D427C3D7FD00FD60AB /* Interactor.Environment.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB196D327C3D7FD00FD60AB /* Interactor.Environment.Mock.swift */; };
 		9AB196D627C3E1E400FD60AB /* ChatViewModel.Environment.Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB196D527C3E1E400FD60AB /* ChatViewModel.Environment.Interface.swift */; };
@@ -536,7 +553,26 @@
 		7512A57C27BFA37D00319DF1 /* CoreSdkClient.Salemove.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreSdkClient.Salemove.swift; sourceTree = "<group>"; };
 		7512A57E27BFA39700319DF1 /* GliaWidgets.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GliaWidgets.Mock.swift; sourceTree = "<group>"; };
 		7512A5A627C3926500319DF1 /* GliaTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GliaTests.swift; sourceTree = "<group>"; };
+		7529F2B327E1D503004D3581 /* Survey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Survey.swift; sourceTree = "<group>"; };
+		7529F2B527E1EB9A004D3581 /* Survey.ButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Survey.ButtonView.swift; sourceTree = "<group>"; };
+		754CC61427E27C42005676E9 /* Survey.Checkbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Survey.Checkbox.swift; sourceTree = "<group>"; };
 		756087E027837EC000158604 /* BundleManaging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleManaging.swift; sourceTree = "<group>"; };
+		75AF8CEE27DAA819009EEE2C /* SurveyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurveyViewController.swift; sourceTree = "<group>"; };
+		75AF8CF027DBB1F9009EEE2C /* SurveyViewController.View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurveyViewController.View.swift; sourceTree = "<group>"; };
+		75AF8CF327DBB3C8009EEE2C /* Makeable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Makeable.swift; sourceTree = "<group>"; };
+		75AF8CF527DBB837009EEE2C /* NSLayoutConstraint.Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSLayoutConstraint.Extensions.swift; sourceTree = "<group>"; };
+		75AF8CF727DBC086009EEE2C /* UIStackView.Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIStackView.Extensions.swift; sourceTree = "<group>"; };
+		75AF8D0327DBF07D009EEE2C /* Survey.ScaleQuestionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Survey.ScaleQuestionView.swift; sourceTree = "<group>"; };
+		75AF8D0827DD0DE1009EEE2C /* Survey.BooleanQuestionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Survey.BooleanQuestionView.swift; sourceTree = "<group>"; };
+		75AF8D0A27DD1DD3009EEE2C /* Survey.SingleChoiceQuestionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Survey.SingleChoiceQuestionView.swift; sourceTree = "<group>"; };
+		75AF8D0C27DD464A009EEE2C /* Survey.InputQuestionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Survey.InputQuestionView.swift; sourceTree = "<group>"; };
+		75AF8D0E27DE8305009EEE2C /* Survey.ValidationErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Survey.ValidationErrorView.swift; sourceTree = "<group>"; };
+		75F58EE027E7D5300065BA2D /* Survey.ViewController.Props.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Survey.ViewController.Props.swift; sourceTree = "<group>"; };
+		75FF151327F3A2D600FE7BE2 /* Theme+Survey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Theme+Survey.swift"; sourceTree = "<group>"; };
+		75FF151627F4E13900FE7BE2 /* Theme.Survey.BooleanQuestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.Survey.BooleanQuestion.swift; sourceTree = "<group>"; };
+		75FF151827F4F01800FE7BE2 /* Theme.Survey.ScaleQuestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.Survey.ScaleQuestion.swift; sourceTree = "<group>"; };
+		75FF151A27F4F52D00FE7BE2 /* Theme.Survey.SingleQuestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.Survey.SingleQuestion.swift; sourceTree = "<group>"; };
+		75FF151C27F4F8E000FE7BE2 /* Theme.Survey.InputQuestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.Survey.InputQuestion.swift; sourceTree = "<group>"; };
 		85639A838514258D976E1B2A /* Pods_GliaWidgets.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GliaWidgets.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		932C53D761BB62F6C162A714 /* Pods_SnapshotTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SnapshotTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		97422AD1FF7D9E4B3E887116 /* Pods_GliaWidgetsTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GliaWidgetsTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -590,8 +626,6 @@
 		9A83D77E27B181C500681C9F /* Glia.Environment.Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Glia.Environment.Interface.swift; sourceTree = "<group>"; };
 		9A83D78027B18DB600681C9F /* Glia.Environment.Live.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Glia.Environment.Live.swift; sourceTree = "<group>"; };
 		9A83D78227B18DF000681C9F /* Glia.Environment.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Glia.Environment.Mock.swift; sourceTree = "<group>"; };
-		9AA3CBA527EB306100C00712 /* CallViewModel.Environment.Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallViewModel.Environment.Interface.swift; sourceTree = "<group>"; };
-		9AA3CBA727EB31A300C00712 /* CallViewModel.Environment.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallViewModel.Environment.Mock.swift; sourceTree = "<group>"; };
 		9AB196D127C3D74300FD60AB /* Interactor.Environment.Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interactor.Environment.Interface.swift; sourceTree = "<group>"; };
 		9AB196D327C3D7FD00FD60AB /* Interactor.Environment.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interactor.Environment.Mock.swift; sourceTree = "<group>"; };
 		9AB196D527C3E1E400FD60AB /* ChatViewModel.Environment.Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.Environment.Interface.swift; sourceTree = "<group>"; };
@@ -868,6 +902,7 @@
 		1A205D5A25655CB1003AA3CD /* GliaWidgets */ = {
 			isa = PBXGroup;
 			children = (
+				75AF8CF227DBB3BE009EEE2C /* Layout */,
 				9A66172827A945A2001C8E03 /* CoreSDKClient */,
 				756087DF27837EB100158604 /* BundleManaging */,
 				1A60AFB12566821B00E53F53 /* Asset.swift */,
@@ -1162,6 +1197,7 @@
 		1A60AF6725656BF200E53F53 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				75AF8CED27DA3D41009EEE2C /* Survey */,
 				1A60AFD22566991600E53F53 /* Chat */,
 				1A0C143D25B85DA300B00695 /* Call */,
 				1A63B2EF257A3EF100508478 /* Common */,
@@ -1239,6 +1275,7 @@
 			isa = PBXGroup;
 			children = (
 				1AC7A7AB2587849200567FF8 /* Alert */,
+				75FF151527F4E11000FE7BE2 /* Survey */,
 				1A60AF7925656E0500E53F53 /* Theme.swift */,
 				9A19926D27D3BB7800161AAE /* Theme.Mock.swift */,
 				1A0C9A6625C16DC400815406 /* Theme+Chat.swift */,
@@ -1616,8 +1653,6 @@
 				1A0C9AB925C93F5100815406 /* Data */,
 				1ABD6CAB25B71D1B00D56EFA /* CallViewModel.swift */,
 				9AE9E4B227E0E60F00BFE239 /* CallViewModel.Mock.swift */,
-				9AA3CBA527EB306100C00712 /* CallViewModel.Environment.Interface.swift */,
-				9AA3CBA727EB31A300C00712 /* CallViewModel.Environment.Mock.swift */,
 			);
 			path = Call;
 			sourceTree = "<group>";
@@ -1727,6 +1762,54 @@
 				756087E027837EC000158604 /* BundleManaging.swift */,
 			);
 			path = BundleManaging;
+			sourceTree = "<group>";
+		};
+		75AF8CED27DA3D41009EEE2C /* Survey */ = {
+			isa = PBXGroup;
+			children = (
+				75AF8D0227DBF069009EEE2C /* Components */,
+				75AF8CEE27DAA819009EEE2C /* SurveyViewController.swift */,
+				75AF8CF027DBB1F9009EEE2C /* SurveyViewController.View.swift */,
+				75F58EE027E7D5300065BA2D /* Survey.ViewController.Props.swift */,
+				7529F2B327E1D503004D3581 /* Survey.swift */,
+			);
+			path = Survey;
+			sourceTree = "<group>";
+		};
+		75AF8CF227DBB3BE009EEE2C /* Layout */ = {
+			isa = PBXGroup;
+			children = (
+				75AF8CF327DBB3C8009EEE2C /* Makeable.swift */,
+				75AF8CF527DBB837009EEE2C /* NSLayoutConstraint.Extensions.swift */,
+				75AF8CF727DBC086009EEE2C /* UIStackView.Extensions.swift */,
+			);
+			path = Layout;
+			sourceTree = "<group>";
+		};
+		75AF8D0227DBF069009EEE2C /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				75AF8D0327DBF07D009EEE2C /* Survey.ScaleQuestionView.swift */,
+				75AF8D0827DD0DE1009EEE2C /* Survey.BooleanQuestionView.swift */,
+				75AF8D0A27DD1DD3009EEE2C /* Survey.SingleChoiceQuestionView.swift */,
+				75AF8D0C27DD464A009EEE2C /* Survey.InputQuestionView.swift */,
+				75AF8D0E27DE8305009EEE2C /* Survey.ValidationErrorView.swift */,
+				7529F2B527E1EB9A004D3581 /* Survey.ButtonView.swift */,
+				754CC61427E27C42005676E9 /* Survey.Checkbox.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		75FF151527F4E11000FE7BE2 /* Survey */ = {
+			isa = PBXGroup;
+			children = (
+				75FF151327F3A2D600FE7BE2 /* Theme+Survey.swift */,
+				75FF151627F4E13900FE7BE2 /* Theme.Survey.BooleanQuestion.swift */,
+				75FF151C27F4F8E000FE7BE2 /* Theme.Survey.InputQuestion.swift */,
+				75FF151A27F4F52D00FE7BE2 /* Theme.Survey.SingleQuestion.swift */,
+				75FF151827F4F01800FE7BE2 /* Theme.Survey.ScaleQuestion.swift */,
+			);
+			path = Survey;
 			sourceTree = "<group>";
 		};
 		9A1992CE27D61F5400161AAE /* SnapshotTests */ = {
@@ -2295,10 +2378,10 @@
 				1A0EDF8225E8E0150076D1AD /* PopoverViewController.swift in Sources */,
 				1A60AFBC256682C800E53F53 /* SubFlowCoordinator.swift in Sources */,
 				1A0C9A8C25C4092400815406 /* CallButtonStyle.swift in Sources */,
-				9AA3CBA827EB31A300C00712 /* CallViewModel.Environment.Mock.swift in Sources */,
 				1A6075E7258220E300569B0E /* UserImageStyle.swift in Sources */,
 				1ABD6C5D25B59D1C00D56EFA /* BubbleWindow.swift in Sources */,
 				1AE15E38257A578B00A642C0 /* MessageAlertConfiguration.swift in Sources */,
+				75FF151D27F4F8E000FE7BE2 /* Theme.Survey.InputQuestion.swift in Sources */,
 				1AC7A77B25838AE800567FF8 /* ChatItem.swift in Sources */,
 				9A3E1D8C27B6B888005634EB /* FileDownload.Environment.Mock.swift in Sources */,
 				1A1E309F25F8E44300850E68 /* FileDownloader.swift in Sources */,
@@ -2312,7 +2395,6 @@
 				9AB196D427C3D7FD00FD60AB /* Interactor.Environment.Mock.swift in Sources */,
 				1A0C9A7925C16F9700815406 /* Theme+AlertConfiguration.swift in Sources */,
 				1AC8AADD25D419CE00DAFE50 /* VideoStreamView.swift in Sources */,
-				9AA3CBA627EB306100C00712 /* CallViewModel.Environment.Interface.swift in Sources */,
 				1A4AD3C7256E863900468BFB /* ThemeColor.swift in Sources */,
 				9A83D78327B18DF000681C9F /* Glia.Environment.Mock.swift in Sources */,
 				9A1992DB27D6241400161AAE /* ImageView.Cache.Interface.swift in Sources */,
@@ -2323,6 +2405,7 @@
 				9A3E1D9727B6C7E9005634EB /* FoundationBased.Interface.swift in Sources */,
 				1A60B01D2567FCAD00E53F53 /* ButtonProperties.swift in Sources */,
 				1AC7A7482582237500567FF8 /* GliaViewController.swift in Sources */,
+				75AF8D0427DBF07D009EEE2C /* Survey.ScaleQuestionView.swift in Sources */,
 				1A4AF5D325AEF543002CD0F4 /* AlertViewController+Confirmation.swift in Sources */,
 				1AFB1E7825F8B26800CA460D /* ChatTextContentStyle.swift in Sources */,
 				1AFB1E7425F8B00B00CA460D /* ChatTextContentView.swift in Sources */,
@@ -2336,6 +2419,7 @@
 				9A8130BB27D7A41000220BBD /* FileUpload.Environment.Interface.swift in Sources */,
 				1A0C9A9125C41AB900815406 /* CallButtonBar.swift in Sources */,
 				1AE15E3B257A5CC900A642C0 /* AlertConfiguration.swift in Sources */,
+				75AF8D1027DFF4B3009EEE2C /* Survey.ValidationErrorView.swift in Sources */,
 				9A8130B927D757F900220BBD /* LocalFile.Mock.swift in Sources */,
 				1A60AF9F25667CA800E53F53 /* FontProvider.swift in Sources */,
 				1A60AFCE2566958900E53F53 /* ViewFactory.swift in Sources */,
@@ -2343,6 +2427,7 @@
 				1A7CA82F25751B5A0047CBBE /* ConnectOperatorStyle.swift in Sources */,
 				9AB196D227C3D74300FD60AB /* Interactor.Environment.Interface.swift in Sources */,
 				1A0452DD25DBD0A4000DA0C1 /* HeaderButton.swift in Sources */,
+				75AF8CEF27DAA819009EEE2C /* SurveyViewController.swift in Sources */,
 				1A60AF96256675C400E53F53 /* UIColor+Extensions.swift in Sources */,
 				1A4674B625E907320078FA1C /* AttachmentSourceListStyle.swift in Sources */,
 				1A7CA81D2574D6370047CBBE /* ConnectView.swift in Sources */,
@@ -2368,6 +2453,7 @@
 				C43C12F92694B14900C37E1B /* GliaPresenter.swift in Sources */,
 				1A0452F025DBE268000DA0C1 /* MessageButtonStyle.swift in Sources */,
 				EB2CBB1227D89F7D004F178E /* OnHoldOverlayStyle.swift in Sources */,
+				7529F2B627E1EB9A004D3581 /* Survey.ButtonView.swift in Sources */,
 				C49A29E42614A29700819269 /* FilePreviewView.swift in Sources */,
 				1A5F815F258A43E600A605DA /* Section.swift in Sources */,
 				1A60AFBF2566834400E53F53 /* ViewController.swift in Sources */,
@@ -2377,6 +2463,7 @@
 				1A1E30CB25F9FDC400850E68 /* ChatImageFileContentStyle.swift in Sources */,
 				1A60AF93256674F900E53F53 /* Color.swift in Sources */,
 				1A38A8BA258B94D60089DE7B /* ImageView.swift in Sources */,
+				75AF8CF827DBC086009EEE2C /* UIStackView.Extensions.swift in Sources */,
 				9AB196E227C4045B00FD60AB /* ChatViewController.Mock.swift in Sources */,
 				1A60B031256BF81500E53F53 /* VisitorChatMessageView.swift in Sources */,
 				1A5892B12608C68000E183CC /* QuickLookController.swift in Sources */,
@@ -2427,10 +2514,15 @@
 				1A2DA71F25EF720400032611 /* FilePickerViewModel.swift in Sources */,
 				1A60B0152567FC7000E53F53 /* Button.swift in Sources */,
 				9A1992E927D6BCD700161AAE /* FileDownload.Mock.swift in Sources */,
+				75FF151927F4F01800FE7BE2 /* Theme.Survey.ScaleQuestion.swift in Sources */,
 				1ABD6C5925B5758000D56EFA /* BubbleStyle.swift in Sources */,
+				75AF8CF627DBB837009EEE2C /* NSLayoutConstraint.Extensions.swift in Sources */,
+				75AF8CF127DBB1F9009EEE2C /* SurveyViewController.View.swift in Sources */,
 				C49E232F25FFA360001A851C /* ChoiceCardOptionView.swift in Sources */,
 				1A6EBB0725ADB84200EE325D /* MediaUpgradeActionStyle.swift in Sources */,
 				C4F176CD261D1543009D9F07 /* ChatFileDownloadContentView.swift in Sources */,
+				75F58EE127E7D5300065BA2D /* Survey.ViewController.Props.swift in Sources */,
+				754CC61527E27C42005676E9 /* Survey.Checkbox.swift in Sources */,
 				1A4AD3CA256E864800468BFB /* ThemeColorStyle.swift in Sources */,
 				9AB196DE27C3FFF400FD60AB /* Call.Environment.Mock.swift in Sources */,
 				1A0C143125B8547200B00695 /* EngagementStyle.swift in Sources */,
@@ -2442,12 +2534,15 @@
 				1AA738A72578DD0300E1120F /* ConnectStatusStyle.swift in Sources */,
 				C47901AF25ED2E70007EE195 /* ScreenShareOfferPresenter.swift in Sources */,
 				9A19926427D3BA3A00161AAE /* GCD.Live.swift in Sources */,
+				75FF151B27F4F52D00FE7BE2 /* Theme.Survey.SingleQuestion.swift in Sources */,
 				1A60AFDD25669A4200E53F53 /* ChatView.swift in Sources */,
+				754CC61327E27BE2005676E9 /* Survey.SingleChoiceQuestionView.swift in Sources */,
 				1A0C9A6725C16DC400815406 /* Theme+Chat.swift in Sources */,
 				1A0C9AC225C9400000815406 /* CallDurationCounter.swift in Sources */,
 				9A19926527D3BA3A00161AAE /* UIKitBased.Mock.swift in Sources */,
 				1AFB1E6225F7AE1300CA460D /* ChatEngagementFile.swift in Sources */,
 				1AA738AE2578E0D500E1120F /* ConnectAnimationView.swift in Sources */,
+				754CC61627E2816F005676E9 /* Survey.InputQuestionView.swift in Sources */,
 				9A1992DF27D62C2E00161AAE /* ImageView.Cache.Mock.swift in Sources */,
 				1A2DA72D25EF9DD900032611 /* FileUpload.swift in Sources */,
 				C499A57E26382FAA009962AC /* UnreadMessageIndicatorView.swift in Sources */,
@@ -2465,11 +2560,13 @@
 				1ABD6C9225B6F2D200D56EFA /* String+TemplateString.swift in Sources */,
 				1A60B0042567F25600E53F53 /* Header.swift in Sources */,
 				1A4674CD25ED08A30078FA1C /* MediaPickerController.swift in Sources */,
+				75AF8CF427DBB3C8009EEE2C /* Makeable.swift in Sources */,
 				1A63B2F6257A469A00508478 /* AlertPresenter.swift in Sources */,
 				1A0452EA25DBE259000DA0C1 /* MessageButton.swift in Sources */,
 				9A19926627D3BA3A00161AAE /* GCD.Interface.swift in Sources */,
 				1A277A1225FA604E009FE131 /* ChatFileContentView.swift in Sources */,
 				6E9C01AD26D3B8B500EBE1D4 /* OperatorTypingIndicatorView.swift in Sources */,
+				7529F2B427E1D503004D3581 /* Survey.swift in Sources */,
 				1A5F494B25CA86CA003E3678 /* Call.swift in Sources */,
 				9A1992ED27D6C19E00161AAE /* FileSystemStorage.Environment.Mock.swift in Sources */,
 				1AFB1E6825F7AE3C00CA460D /* ChatAttachment.swift in Sources */,
@@ -2481,6 +2578,7 @@
 				9A8130BF27D7AEF700220BBD /* FileUpload.Mock.swift in Sources */,
 				9A8130BD27D7A53300220BBD /* FileUpload.Environment.Mock.swift in Sources */,
 				1A60AFB22566821B00E53F53 /* Asset.swift in Sources */,
+				75FF151727F4E13900FE7BE2 /* Theme.Survey.BooleanQuestion.swift in Sources */,
 				1A1E309625F8CA4400850E68 /* FileDownload.swift in Sources */,
 				EB2CBB1527D8DB95004F178E /* OnHoldOverlayVisualEffectView.swift in Sources */,
 				1A4AD3AF256D283700468BFB /* ChatMessageView.swift in Sources */,
@@ -2491,6 +2589,7 @@
 				1A60AFE025669A6100E53F53 /* ChatViewController.swift in Sources */,
 				9A0B7D1727DA6B74006D8637 /* Interactor.Mock.swift in Sources */,
 				1A1E30A325F8E4A400850E68 /* FileSystemStorage.swift in Sources */,
+				754CC61227E2767A005676E9 /* Survey.BooleanQuestionView.swift in Sources */,
 				6EA3516926E139DA00BF5941 /* GliaViewTransitionController.swift in Sources */,
 				1A1E30C725F9FDAB00850E68 /* ChatImageFileContentView.swift in Sources */,
 				756087E127837EC000158604 /* BundleManaging.swift in Sources */,
@@ -2517,6 +2616,7 @@
 				C47901B325ED2F31007EE195 /* ScreenShareOfferAlertConfiguration.swift in Sources */,
 				1A0C143A25B85C3D00B00695 /* CallStyle.swift in Sources */,
 				9A3E1D9B27B73246005634EB /* FoundationBased.Mock.swift in Sources */,
+				75FF151427F3A2D600FE7BE2 /* Theme+Survey.swift in Sources */,
 				1A60AFE825669C5000E53F53 /* ChatStyle.swift in Sources */,
 				1A4AF5C725AEEA42002CD0F4 /* Operator+Extensions.swift in Sources */,
 				1A4674C825ED084A0078FA1C /* MediaPickerViewModel.swift in Sources */,

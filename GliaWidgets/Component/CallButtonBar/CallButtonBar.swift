@@ -71,7 +71,8 @@ class CallButtonBar: View {
         button(for: kind)?.setBadge(itemCount: badgeItemCount, style: style.badge)
     }
 
-    private func setup() {
+    override func setup() {
+        super.setup()
         effect = .none
 
         stackView.axis = .horizontal

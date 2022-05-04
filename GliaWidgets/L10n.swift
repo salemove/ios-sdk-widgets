@@ -307,6 +307,21 @@ public enum L10n {
       }
     }
   }
+
+  public enum Survey {
+    public enum Action {
+      /// Cancel
+      public static let cancel = L10n.tr("Localizable", "survey.action.cancel")
+      /// No
+      public static let no = L10n.tr("Localizable", "survey.action.no")
+      /// Submit
+      public static let submit = L10n.tr("Localizable", "survey.action.submit")
+      /// Please provide an answer.
+      public static let validationError = L10n.tr("Localizable", "survey.action.validationError")
+      /// Yes
+      public static let yes = L10n.tr("Localizable", "survey.action.yes")
+    }
+  }
 }
 // swiftlint:enable explicit_type_interface function_parameter_count identifier_name line_length
 // swiftlint:enable nesting type_body_length type_name vertical_whitespace_opening_braces
