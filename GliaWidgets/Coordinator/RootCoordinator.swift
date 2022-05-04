@@ -5,7 +5,9 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
     var delegate: ((DelegateEvent) -> Void)?
 
     var engagementKind: EngagementKind {
-        didSet { delegate?(.engagementChanged(engagementKind)) }
+        didSet {
+            delegate?(.engagementChanged(engagementKind))
+        }
     }
 
     private let interactor: Interactor
@@ -154,7 +156,8 @@ extension RootCoordinator {
                 createFileDownload: environment.createFileDownload,
                 fromHistory: environment.fromHistory,
                 fetchSiteConfigurations: environment.fetchSiteConfigurations,
-                getCurrentEngagement: environment.getCurrentEngagement
+                getCurrentEngagement: environment.getCurrentEngagement,
+                submitSurveyAnswer: environment.submitSurveyAnswer
             )
         )
         coordinator.delegate = { [weak self] event in
@@ -210,10 +213,19 @@ extension RootCoordinator {
                     sdkSurvey: survey,
                     engagementId: engagementId,
                     submitSurveyAnswer: self.environment.submitSurveyAnswer,
-                    cancel: { [weak self] in viewController.dismiss(animated: true); self?.end() },
+                    cancel: { [weak self] in
+                        viewController.dismiss(animated: true) {
+                            self?.end()
+                        }
+                    },
                     updateProps: { viewController.props = $0 },
-                    completion: { [weak self] in self?.end() }
+                    completion: { [weak self] in
+                        viewController.dismiss(animated: true) {
+                            self?.end()
+                        }
+                    }
                 )
+                self.gliaViewController?.removeBubbleWindow()
                 self.gliaPresenter.present(viewController, animated: true)
             } else {
                 self.end()
@@ -249,7 +261,8 @@ extension RootCoordinator {
                 fromHistory: environment.fromHistory,
                 fetchSiteConfigurations: environment.fetchSiteConfigurations,
                 getCurrentEngagement: environment.getCurrentEngagement,
-                timerProviding: environment.timerProviding
+                timerProviding: environment.timerProviding,
+                submitSurveyAnswer: environment.submitSurveyAnswer
             )
         )
         coordinator.delegate = { [weak self] event in
@@ -289,10 +302,19 @@ extension RootCoordinator {
                         sdkSurvey: survey,
                         engagementId: engagementId,
                         submitSurveyAnswer: self.environment.submitSurveyAnswer,
-                        cancel: { [weak self] in viewController.dismiss(animated: true); self?.end() },
+                        cancel: { [weak self] in
+                            viewController.dismiss(animated: true) {
+                                self?.end()
+                            }
+                        },
                         updateProps: { viewController.props = $0 },
-                        completion: { [weak self] in self?.end() }
+                        completion: { [weak self] in
+                            viewController.dismiss(animated: true) {
+                                self?.end()
+                            }
+                        }
                     )
+                    self.gliaViewController?.removeBubbleWindow()
                     self.gliaPresenter.present(viewController, animated: true)
                 } else {
                     self.end()

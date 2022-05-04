@@ -11,7 +11,7 @@ extension Survey.ViewController.Props {
         completion: @escaping () -> Void
     ) -> Self {
         var props = Survey.ViewController.Props(
-            header: L10n.Survey.Header.visitorSurvey,
+            header: sdkSurvey.title,
             submit: { _ in },
             cancel: cancel
         )

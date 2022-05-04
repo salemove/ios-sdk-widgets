@@ -321,10 +321,6 @@ public enum L10n {
       /// Yes
       public static let yes = L10n.tr("Localizable", "survey.action.yes")
     }
-    public enum Header {
-      /// Visitor Survey
-      public static let visitorSurvey = L10n.tr("Localizable", "survey.header.visitorSurvey")
-    }
   }
 }
 // swiftlint:enable explicit_type_interface function_parameter_count identifier_name line_length

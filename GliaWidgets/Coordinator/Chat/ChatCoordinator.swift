@@ -202,5 +202,6 @@ extension ChatCoordinator {
         var fromHistory: () -> Bool
         var fetchSiteConfigurations: CoreSdkClient.FetchSiteConfigurations
         var getCurrentEngagement: CoreSdkClient.GetCurrentEngagement
+        var submitSurveyAnswer: CoreSdkClient.SubmitSurveyAnswer
     }
 }

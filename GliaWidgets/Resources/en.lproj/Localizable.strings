@@ -108,5 +108,4 @@
 "survey.action.submit" = "Submit";
 "survey.action.yes" = "Yes";
 "survey.action.no" = "No";
-"survey.header.visitorSurvey" = "Visitor Survey";
 "survey.action.validationError" = "Please provide an answer.";

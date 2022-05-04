@@ -122,5 +122,6 @@ extension CallCoordinator {
         var fetchSiteConfigurations: CoreSdkClient.FetchSiteConfigurations
         var getCurrentEngagement: CoreSdkClient.GetCurrentEngagement
         var timerProviding: FoundationBased.Timer.Providing
+        var submitSurveyAnswer: CoreSdkClient.SubmitSurveyAnswer
     }
 }
