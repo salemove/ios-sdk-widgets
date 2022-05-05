@@ -7,7 +7,7 @@ class CallCoordinator: SubFlowCoordinator, FlowCoordinator {
         case visitorOnHoldUpdated(isOnHold: Bool)
         case chat
         case minimize
-        case finished(String?, CoreSdkClient.Survey?)
+        case finished
     }
 
     var delegate: ((DelegateEvent) -> Void)?
@@ -84,8 +84,8 @@ class CallCoordinator: SubFlowCoordinator, FlowCoordinator {
                 self?.delegate?(.back)
             case .engaged(operatorImageUrl: let url):
                 self?.delegate?(.engaged(operatorImageUrl: url))
-            case let .finished(engagementId, survey):
-                self?.delegate?(.finished(engagementId, survey))
+            case .finished:
+                self?.delegate?(.finished)
             }
         }
         viewModel.delegate = { [weak self] event in

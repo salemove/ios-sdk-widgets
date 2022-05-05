@@ -1,6 +1,5 @@
 import Foundation
 
-// swiftlint:disable type_body_length
 class EngagementViewModel {
 
     var engagementAction: ((Action) -> Void)?
@@ -107,7 +106,6 @@ class EngagementViewModel {
 
     func update(for state: InteractorState) {}
 
-    // swiftlint:disable function_body_length
     func stateChanged(_ state: InteractorState) {
         update(for: state)
 
@@ -122,77 +120,39 @@ class EngagementViewModel {
 
         case .ended(let reason) where reason == .byVisitor:
 
-            let noSurveyOp = { [weak self] in
-                self?.engagementDelegate?(
-                    .engaged(
-                        operatorImageUrl: nil
-                    )
+            engagementDelegate?(
+                .engaged(
+                    operatorImageUrl: nil
                 )
-                self?.engagementDelegate?(.finished(nil, nil))
-            }
-
-            if let activeEngagement = activeEngagement {
-                activeEngagement.getSurvey { [weak self] result in
-                    guard
-                        case .success(let survey) = result,
-                        let survey = survey
-                    else {
-                        noSurveyOp()
-                        return
-                    }
-
-                    self?.engagementDelegate?(
-                        .engaged(
-                            operatorImageUrl: nil
-                        )
-                    )
-                    self?.engagementDelegate?(.finished(activeEngagement.id, survey))
-                }
-            } else {
-                noSurveyOp()
-            }
+            )
+            engagementDelegate?(.finished)
 
         case .ended(let reason) where reason == .byOperator:
 
-            let noSurveyOp = { [weak self] (showAlert: Bool) -> Void in
+            self.engagementDelegate?(
+                .engaged(
+                    operatorImageUrl: nil
+                )
+            )
+
+            interactor.currentEngagement?.getSurvey(completion: { [weak self] result in
+
                 guard let self = self else { return }
-                self.engagementDelegate?(
-                    .engaged(
-                        operatorImageUrl: nil
+                guard case .success(let survey) = result, survey == nil else {
+                    self.endSession()
+                    return
+                }
+
+                EngagementViewModel.alertPresenters.insert(self)
+                self.engagementAction?(
+                    .showSingleActionAlert(
+                        self.alertConfiguration.operatorEndedEngagement,
+                        actionTapped: { [weak self] in
+                            self?.endSession()
+                        }
                     )
                 )
-                if showAlert { EngagementViewModel.alertPresenters.insert(self)
-                    self.engagementAction?(
-                        .showSingleActionAlert(
-                            self.alertConfiguration.operatorEndedEngagement,
-                            actionTapped: { [weak self] in
-                                self?.endSession()
-                            }
-                        )
-                    )
-                }
-            }
-
-            if let activeEngagement = activeEngagement {
-                activeEngagement.getSurvey { [weak self] result in
-                    guard
-                        case .success(let survey) = result,
-                        let survey = survey
-                    else {
-                        noSurveyOp(true)
-                        return
-                    }
-
-                    self?.interactor.endSession {
-                        self?.engagementDelegate?(.finished(activeEngagement.id, survey))
-                    } failure: { _ in
-                        self?.engagementDelegate?(.finished(activeEngagement.id, survey))
-                    }
-                    self?.screenShareHandler.cleanUp()
-                }
-            } else {
-                noSurveyOp(true)
-            }
+            })
 
         default:
             break
@@ -264,31 +224,12 @@ class EngagementViewModel {
     }
 
     private func endSession() {
-        let op = { [weak self] (engagementId: String?, survey: CoreSdkClient.Survey?) -> Void in
-            self?.interactor.endSession {
-                self?.engagementDelegate?(.finished(engagementId, survey))
-            } failure: { _ in
-                self?.engagementDelegate?(.finished(engagementId, survey))
-            }
-            self?.screenShareHandler.cleanUp()
+        interactor.endSession {
+            self.engagementDelegate?(.finished)
+        } failure: { _ in
+            self.engagementDelegate?(.finished)
         }
-
-        if let activeEngagement = activeEngagement {
-            activeEngagement.getSurvey { result in
-                guard
-                    case .success(let survey) = result,
-                    let survey = survey
-                else {
-                    op(nil, nil)
-                    return
-                }
-
-                op(activeEngagement.id, survey)
-
-            }
-        } else {
-            op(nil, nil)
-        }
+        self.screenShareHandler.cleanUp()
     }
 
     private func closeTapped() {
@@ -399,7 +340,6 @@ extension EngagementViewModel {
     enum DelegateEvent {
         case back
         case engaged(operatorImageUrl: String?)
-        case finished(String?, CoreSdkClient.Survey?)
+        case finished
     }
 }
-// swiftlint:enable type_body_length
