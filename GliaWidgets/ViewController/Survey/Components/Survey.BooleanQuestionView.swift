@@ -40,7 +40,8 @@ extension Survey {
             NSLayoutConstraint.activate([
                 contentStack.topAnchor.constraint(equalTo: topAnchor),
                 contentStack.leadingAnchor.constraint(equalTo: leadingAnchor),
-                contentStack.bottomAnchor.constraint(equalTo: bottomAnchor)
+                contentStack.bottomAnchor.constraint(equalTo: bottomAnchor),
+                contentStack.bottomAnchor.constraint(greaterThanOrEqualTo: bottomAnchor, constant: 16)
             ])
         }
 
