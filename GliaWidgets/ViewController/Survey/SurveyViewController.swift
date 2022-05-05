@@ -8,17 +8,20 @@ extension Survey {
             var questionsProps: [QuestionPropsProtocol]
             var submit: (Props) -> Void
             var cancell: () -> Void
+            var endEditing: () -> Void
 
             init(
                 header: String = "",
                 props: [QuestionPropsProtocol] = [],
                 submit: @escaping (Props) -> Void = { _ in },
-                cancel: @escaping () -> Void = {}
+                cancel: @escaping () -> Void = {},
+                endEditing: @escaping () -> Void = {}
             ) {
                 self.header = header
                 self.questionsProps = props
                 self.submit = submit
                 self.cancell = cancel
+                self.endEditing = endEditing
             }
         }
 
@@ -67,6 +70,7 @@ extension Survey {
             contentView.header.text = props.header
             props.questionsProps.count == contentView.surveyItemsStack.arrangedSubviews.count ? updateProps() : reloadProps()
             contentView.updateUi(theme: theme)
+            contentView.endEditing = props.endEditing
         }
 
         // MARK: - Private
