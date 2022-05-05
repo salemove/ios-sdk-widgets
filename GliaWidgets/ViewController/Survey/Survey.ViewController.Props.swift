@@ -7,13 +7,15 @@ extension Survey.ViewController.Props {
         engagementId: String,
         submitSurveyAnswer: @escaping CoreSdkClient.SubmitSurveyAnswer,
         cancel: @escaping () -> Void,
+        endEditing: @escaping () -> Void,
         updateProps: @escaping (Self) -> Void,
         completion: @escaping () -> Void
     ) -> Self {
         var props = Survey.ViewController.Props(
             header: sdkSurvey.title,
             submit: { _ in },
-            cancel: cancel
+            cancel: cancel,
+            endEditing: endEditing
         )
 
         var questions = [String: SurveyQuestionPropsProtocol]()
@@ -27,7 +29,7 @@ extension Survey.ViewController.Props {
                     sdkQuestion: sdkQuestion,
                     getQuestion: { questions[$0] },
                     getQuestions: { questionsOrder.compactMap { questions[$0] } },
-                    setQuestion: { questions[$0] = $1 },
+                    setQuestion: { questions[$0] = $1; props.endEditing() },
                     updateProps: updateProps
                 )
 
@@ -37,7 +39,7 @@ extension Survey.ViewController.Props {
                     sdkQuestion: sdkQuestion,
                     getQuestion: { questions[$0] },
                     getQuestions: { questionsOrder.compactMap { questions[$0] } },
-                    setQuestion: { questions[$0] = $1 },
+                    setQuestion: { questions[$0] = $1; props.endEditing() },
                     updateProps: updateProps
                 )
 
@@ -56,7 +58,7 @@ extension Survey.ViewController.Props {
                     sdkQuestion: sdkQuestion,
                     getQuestion: { questions[$0] },
                     getQuestions: { questionsOrder.compactMap { questions[$0] } },
-                    setQuestion: { questions[$0] = $1 },
+                    setQuestion: { questions[$0] = $1; props.endEditing() },
                     updateProps: updateProps
                 )
 
