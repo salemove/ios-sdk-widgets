@@ -52,6 +52,8 @@ class Interactor {
         }
     }
 
+    var currentEngagement: CoreSdkClient.Engagement?
+
     /// Flag indicating if configuration was already performed.
     var isConfigurationPerformed: Bool = false
 
@@ -254,11 +256,10 @@ extension Interactor {
         success: @escaping () -> Void,
         failure: @escaping (CoreSdkClient.SalemoveError) -> Void
     ) {
-        environment.coreSdk.endEngagement { [weak self] _, error in
+        environment.coreSdk.endEngagement { _, error in
             if let error = error {
                 failure(error)
             } else {
-                self?.state = .ended(.byVisitor)
                 success()
             }
         }
@@ -344,9 +345,12 @@ extension Interactor: CoreSdkClient.Interactable {
             let engagedOperator = operators?.first
             self?.state = .engaged(engagedOperator)
         }
+        currentEngagement = environment.coreSdk.getCurrentEngagement()
     }
 
     func end() {
+
+        currentEngagement = environment.coreSdk.getCurrentEngagement()
         state = isEngagementEndedByVisitor == true ? .ended(.byVisitor) : .ended(.byOperator)
     }
 

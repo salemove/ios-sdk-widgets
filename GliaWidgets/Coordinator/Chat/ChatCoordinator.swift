@@ -10,7 +10,7 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
             answer: CoreSdkClient.AnswerWithSuccessBlock
         )
         case call
-        case finished(String?, CoreSdkClient.Survey?)
+        case finished
     }
 
     var delegate: ((DelegateEvent) -> Void)?
@@ -93,8 +93,8 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
                 self?.delegate?(.back)
             case .engaged(let url):
                 self?.delegate?(.engaged(operatorImageUrl: url))
-            case .finished(let engagementId, let survey):
-                self?.delegate?(.finished(engagementId, survey))
+            case .finished:
+                self?.delegate?(.finished)
             }
         }
         viewModel.delegate = { [weak self] event in
