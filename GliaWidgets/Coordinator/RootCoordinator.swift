@@ -168,6 +168,7 @@ extension RootCoordinator {
         return coordinator.start()
     }
 
+    // swiftlint:disable function_body_length
     private func handleCoordinatorEvent(event: ChatCoordinator.DelegateEvent) {
         switch event {
         case .back:
@@ -218,6 +219,7 @@ extension RootCoordinator {
                             self?.end()
                         }
                     },
+                    endEditing: { viewController.view.endEditing(true) },
                     updateProps: { viewController.props = $0 },
                     completion: { [weak self] in
                         viewController.dismiss(animated: true) {
@@ -233,7 +235,6 @@ extension RootCoordinator {
         }
     }
 
-    // swiftlint:disable function_body_length
     private func startCall(
         _ call: Call,
         withAction startAction: CallViewModel.StartAction
@@ -307,6 +308,7 @@ extension RootCoordinator {
                                 self?.end()
                             }
                         },
+                        endEditing: { viewController.view.endEditing(true) },
                         updateProps: { viewController.props = $0 },
                         completion: { [weak self] in
                             viewController.dismiss(animated: true) {
