@@ -36,7 +36,7 @@ extension Survey {
             self.props = props
             self.theme = theme
             super.init(nibName: nil, bundle: nil)
-            modalPresentationStyle = .overCurrentContext
+            modalPresentationStyle = .overFullScreen
             modalTransitionStyle = .crossDissolve
         }
 
