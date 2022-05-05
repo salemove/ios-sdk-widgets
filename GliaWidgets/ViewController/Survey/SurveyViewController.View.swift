@@ -38,6 +38,8 @@ extension Survey {
             submitButton
         ).makeView()
 
+        var endEditing: () -> Void = {}
+
         override func setup() {
             super.setup()
 
@@ -51,7 +53,7 @@ extension Survey {
 
         @objc
         private func tapToHideKeyboard(gesture: UITapGestureRecognizer) {
-            endEditing(true)
+            endEditing()
         }
 
         override func defineLayout() {
