@@ -118,13 +118,58 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
 
 extension RootCoordinator {
     private func end() {
-        dismissGliaViewController(animated: true) { [weak self] in
-            self?.event(.minimized)
-            self?.engagement = .none
-            self?.navigationPresenter.setViewControllers([], animated: false)
-            self?.removeAllCoordinators()
-            self?.engagementKind = .none
-            self?.delegate?(.ended)
+
+        let dismissGliaViewController = { [weak self] in
+            self?.dismissGliaViewController(animated: true) { [weak self] in
+                self?.event(.minimized)
+                self?.engagement = .none
+                self?.navigationPresenter.setViewControllers([], animated: false)
+                self?.removeAllCoordinators()
+                self?.engagementKind = .none
+                self?.delegate?(.ended)
+            }
+        }
+
+        let presentSurvey = { [weak self] (engagementId: String, survey: CoreSdkClient.Survey) in
+            guard let self = self else { return }
+            let viewController = Survey.ViewController(theme: self.viewFactory.theme)
+            viewController.props = .live(
+                sdkSurvey: survey,
+                engagementId: engagementId,
+                submitSurveyAnswer: self.environment.submitSurveyAnswer,
+                cancel: {
+                    viewController.dismiss(animated: true) {
+                        dismissGliaViewController()
+                    }
+                },
+                endEditing: { viewController.view.endEditing(true) },
+                updateProps: { viewController.props = $0 },
+                completion: {
+                    viewController.dismiss(animated: true) {
+                        dismissGliaViewController()
+                    }
+                }
+            )
+            self.gliaViewController?.removeBubbleWindow()
+            self.gliaPresenter.present(viewController, animated: true)
+        }
+
+        guard let engagement = interactor.currentEngagement else {
+            dismissGliaViewController()
+            return
+        }
+
+        engagement.getSurvey { result in
+
+            guard
+                case .success(let survey) = result,
+                let survey = survey
+            else {
+                dismissGliaViewController()
+                return
+            }
+
+            presentSurvey(engagement.id, survey)
         }
     }
 
@@ -161,7 +206,7 @@ extension RootCoordinator {
             )
         )
         coordinator.delegate = { [weak self] event in
-            self?.handleCoordinatorEvent(event: event)
+            self?.handleChatCoordinatorEvent(event: event)
         }
         pushCoordinator(coordinator)
 
@@ -169,7 +214,7 @@ extension RootCoordinator {
     }
 
     // swiftlint:disable function_body_length
-    private func handleCoordinatorEvent(event: ChatCoordinator.DelegateEvent) {
+    private func handleChatCoordinatorEvent(event: ChatCoordinator.DelegateEvent) {
         switch event {
         case .back:
             switch engagement {
@@ -206,32 +251,9 @@ extension RootCoordinator {
             default:
                 break
             }
-        case .finished(let engagementId, let survey):
+        case .finished:
             popCoordinator()
-            if let survey = survey, let engagementId = engagementId {
-                let viewController = Survey.ViewController(theme: viewFactory.theme)
-                viewController.props = .live(
-                    sdkSurvey: survey,
-                    engagementId: engagementId,
-                    submitSurveyAnswer: self.environment.submitSurveyAnswer,
-                    cancel: { [weak self] in
-                        viewController.dismiss(animated: true) {
-                            self?.end()
-                        }
-                    },
-                    endEditing: { viewController.view.endEditing(true) },
-                    updateProps: { viewController.props = $0 },
-                    completion: { [weak self] in
-                        viewController.dismiss(animated: true) {
-                            self?.end()
-                        }
-                    }
-                )
-                self.gliaViewController?.removeBubbleWindow()
-                self.gliaPresenter.present(viewController, animated: true)
-            } else {
-                self.end()
-            }
+            self.end()
         }
     }
 
@@ -295,32 +317,9 @@ extension RootCoordinator {
                 }
             case .minimize:
                 self.gliaViewController?.minimize(animated: true)
-            case .finished(let engagementId, let survey):
+            case .finished:
                 self.popCoordinator()
-                if let survey = survey, let engagementId = engagementId {
-                    let viewController = Survey.ViewController(theme: self.viewFactory.theme)
-                    viewController.props = .live(
-                        sdkSurvey: survey,
-                        engagementId: engagementId,
-                        submitSurveyAnswer: self.environment.submitSurveyAnswer,
-                        cancel: { [weak self] in
-                            viewController.dismiss(animated: true) {
-                                self?.end()
-                            }
-                        },
-                        endEditing: { viewController.view.endEditing(true) },
-                        updateProps: { viewController.props = $0 },
-                        completion: { [weak self] in
-                            viewController.dismiss(animated: true) {
-                                self?.end()
-                            }
-                        }
-                    )
-                    self.gliaViewController?.removeBubbleWindow()
-                    self.gliaPresenter.present(viewController, animated: true)
-                } else {
-                    self.end()
-                }
+                self.end()
             case .visitorOnHoldUpdated(let isOnHold):
                 self.gliaViewController?.setVisitorHoldState(isOnHold: isOnHold)
             }
