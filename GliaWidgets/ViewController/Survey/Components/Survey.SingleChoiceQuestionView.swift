@@ -41,8 +41,8 @@ extension Survey {
             super.defineLayout()
             NSLayoutConstraint.activate([
                 contentStack.topAnchor.constraint(equalTo: topAnchor),
-                contentStack.leadingAnchor.constraint(equalTo: leadingAnchor),
-                contentStack.trailingAnchor.constraint(equalTo: trailingAnchor),
+                contentStack.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
+                contentStack.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
                 contentStack.bottomAnchor.constraint(equalTo: bottomAnchor)
             ])
         }
