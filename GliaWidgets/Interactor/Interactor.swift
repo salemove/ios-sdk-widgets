@@ -53,6 +53,11 @@ class Interactor {
         }
     }
 
+    var currentEngagement: CoreSdkClient.Engagement?
+
+    /// Flag indicating if configuration was already performed.
+    var isConfigurationPerformed: Bool = false
+
     private let visitorContext: CoreSdkClient.VisitorContext
     private var observers = [() -> (AnyObject?, EventHandler)]()
     private var isEngagementEndedByVisitor = false
@@ -101,10 +106,19 @@ class Interactor {
     }
 
     func withConfiguration(_ action: @escaping () -> Void) {
-
         environment.coreSdk.configureWithInteractor(self)
-        environment.coreSdk.configureWithConfiguration(sdkConfiguration) {
+        // Perform configuration only if it was not done previously.
+        // Otherwise side effects may occur. For example `onHold` callback
+        // stops being triggered for audio stream.
+        if isConfigurationPerformed {
+            // Early out if configuration is already performed. 
             action()
+        } else {
+            // Mark configuration applied and perfrom configuration.
+            isConfigurationPerformed = true
+            environment.coreSdk.configureWithConfiguration(sdkConfiguration) {
+                action()
+            }
         }
     }
 }
@@ -244,11 +258,10 @@ extension Interactor {
         success: @escaping () -> Void,
         failure: @escaping (CoreSdkClient.SalemoveError) -> Void
     ) {
-        environment.coreSdk.endEngagement { [weak self] _, error in
+        environment.coreSdk.endEngagement { _, error in
             if let error = error {
                 failure(error)
             } else {
-                self?.state = .ended(.byVisitor)
                 success()
             }
         }
@@ -282,6 +295,10 @@ extension Interactor: CoreSdkClient.Interactable {
             self?.state = .engaged(engagedOperator)
             self?.notify(.engagementTransferred(engagedOperator))
         }
+    }
+
+    var onEngagementTransferring: CoreSdkClient.EngagementTransferringBlock {
+        { }
     }
 
     var onOperatorTypingStatusUpdate: CoreSdkClient.OperatorTypingStatusUpdate {
@@ -335,18 +352,13 @@ extension Interactor: CoreSdkClient.Interactable {
             let engagedOperator = operators?.first
             self?.state = .engaged(engagedOperator)
         }
+        currentEngagement = environment.coreSdk.getCurrentEngagement()
     }
 
     func end() {
-        // Example how to fetch survey:
-        //  guard let engagement = environment.coreSdk.getCurrentEngagement() else { return }
-        //  engagement.getSurvey { print("\($0)") }
 
-        if isEngagementEndedByVisitor {
-            state = .ended(.byVisitor)
-        } else {
-            state = .ended(.byOperator)
-        }
+        currentEngagement = environment.coreSdk.getCurrentEngagement()
+        state = isEngagementEndedByVisitor == true ? .ended(.byVisitor) : .ended(.byOperator)
     }
 
     func fail(error: CoreSdkClient.SalemoveError) {

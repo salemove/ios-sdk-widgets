@@ -53,6 +53,10 @@ class GliaViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    func setVisitorHoldState(isOnHold: Bool) {
+        bubbleView?.isVisitorOnHold = isOnHold
+    }
+
     func maximize(animated: Bool) {
         UIView.animate(
             withDuration: animated ? 0.4 : 0.0,
@@ -68,6 +72,11 @@ class GliaViewController: UIViewController {
             }
         )
         delegate?.event(.maximized)
+    }
+
+    func removeBubbleWindow() {
+        bubbleWindow?.alpha = 0.0
+        bubbleWindow = nil
     }
 
     func minimize(animated: Bool) {

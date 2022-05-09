@@ -7,19 +7,23 @@ class EngagementViewModel {
 
     let interactor: Interactor
     let alertConfiguration: AlertConfiguration
+    let environment: Environment
+    let screenShareHandler: ScreenShareHandler
+    var activeEngagement: CoreSdkClient.Engagement?
 
-    private let screenShareHandler: ScreenShareHandler
     private(set) var isViewActive = ObservableValue<Bool>(with: false)
     private static var alertPresenters = Set<EngagementViewModel>()
 
     init(
         interactor: Interactor,
         alertConfiguration: AlertConfiguration,
-        screenShareHandler: ScreenShareHandler
+        screenShareHandler: ScreenShareHandler,
+        environment: Environment
     ) {
         self.interactor = interactor
         self.alertConfiguration = alertConfiguration
         self.screenShareHandler = screenShareHandler
+        self.environment = environment
         interactor.addObserver(self, handler: interactorEvent)
         screenShareHandler.status.addObserver(self) { [weak self] status, _ in
             self?.onScreenSharingStatusChange(status)
@@ -112,33 +116,49 @@ class EngagementViewModel {
                     operatorImageUrl: engagedOperator?.picture?.url
                 )
             )
-        case .ended(let reason):
+            activeEngagement = environment.getCurrentEngagement()
+
+        case .ended(let reason) where reason == .byVisitor:
+
             engagementDelegate?(
                 .engaged(
                     operatorImageUrl: nil
                 )
             )
+            engagementDelegate?(.finished)
 
-            switch reason {
-            case .byVisitor:
-                engagementDelegate?(.finished)
-            case .byOperator:
+        case .ended(let reason) where reason == .byOperator:
+
+            self.engagementDelegate?(
+                .engaged(
+                    operatorImageUrl: nil
+                )
+            )
+
+            interactor.currentEngagement?.getSurvey(completion: { [weak self] result in
+
+                guard let self = self else { return }
+                guard case .success(let survey) = result, survey == nil else {
+                    self.endSession()
+                    return
+                }
+
                 EngagementViewModel.alertPresenters.insert(self)
-                engagementAction?(
+                self.engagementAction?(
                     .showSingleActionAlert(
-                        alertConfiguration.operatorEndedEngagement,
+                        self.alertConfiguration.operatorEndedEngagement,
                         actionTapped: { [weak self] in
                             self?.endSession()
                         }
                     )
                 )
-            case .byError:
-                break
-            }
+            })
+
         default:
             break
         }
     }
+    // swiftlint:enable function_body_length
 
     func showAlert(
         with conf: MessageAlertConfiguration,
@@ -209,7 +229,7 @@ class EngagementViewModel {
         } failure: { _ in
             self.engagementDelegate?(.finished)
         }
-        screenShareHandler.cleanUp()
+        self.screenShareHandler.cleanUp()
     }
 
     private func closeTapped() {

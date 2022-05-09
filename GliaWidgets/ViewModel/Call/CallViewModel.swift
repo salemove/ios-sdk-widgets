@@ -3,81 +3,24 @@ import Foundation
 class CallViewModel: EngagementViewModel, ViewModel {
     private typealias Strings = L10n.Call
 
-    enum CallButton {
-        case chat
-        case video
-        case mute
-        case speaker
-        case minimize
-    }
-
-    enum CallButtonState {
-        case active
-        case inactive
-    }
-
-    enum Event {
-        case viewDidLoad
-        case callButtonTapped(CallButton)
-    }
-
-    enum Action {
-        case queue
-        case connecting(name: String?, imageUrl: String?)
-        case connected(name: String?, imageUrl: String?)
-        case setOperatorName(String?)
-        case setTopTextHidden(Bool)
-        case setBottomTextHidden(Bool)
-        case switchToVideoMode
-        case switchToUpgradeMode
-        case setCallDurationText(String)
-        case setTitle(String)
-        case showButtons([CallButton])
-        case setButtonEnabled(CallButton, enabled: Bool)
-        case setButtonState(CallButton, state: CallButtonState)
-        case setButtonBadge(CallButton, itemCount: Int)
-        case offerMediaUpgrade(
-            SingleMediaUpgradeAlertConfiguration,
-            accepted: () -> Void,
-            declined: () -> Void
-        )
-        case setRemoteVideo(CoreSdkClient.StreamView?)
-        case setLocalVideo(CoreSdkClient.StreamView?)
-    }
-
-    enum DelegateEvent {
-        case chat
-        case minimize
-    }
-
-    enum StartAction {
-        case engagement(mediaType: CoreSdkClient.MediaType)
-        case call(offer: CoreSdkClient.MediaUpgradeOffer,
-                  answer: CoreSdkClient.AnswerWithSuccessBlock)
-    }
-
     var action: ((Action) -> Void)?
     var delegate: ((DelegateEvent) -> Void)?
 
     private let call: Call
     private let startWith: StartAction
     private let durationCounter: CallDurationCounter
-    private let screenShareHandler: ScreenShareHandler
-    private let environment: Environment
 
     init(
         interactor: Interactor,
         alertConfiguration: AlertConfiguration,
         screenShareHandler: ScreenShareHandler,
+        environment: EngagementViewModel.Environment,
         call: Call,
         unreadMessages: ObservableValue<Int>,
-        startWith: StartAction,
-        environment: Environment
+        startWith: StartAction
     ) {
         self.call = call
         self.startWith = startWith
-        self.screenShareHandler = screenShareHandler
-        self.environment = environment
         self.durationCounter = CallDurationCounter(
             environment: .init(
                 timerProviding: environment.timerProviding,
@@ -87,7 +30,8 @@ class CallViewModel: EngagementViewModel, ViewModel {
         super.init(
             interactor: interactor,
             alertConfiguration: alertConfiguration,
-            screenShareHandler: screenShareHandler
+            screenShareHandler: screenShareHandler,
+            environment: environment
         )
         unreadMessages.addObserver(self) { [weak self] unreadCount, _ in
             self?.action?(.setButtonBadge(.chat, itemCount: unreadCount))
@@ -106,6 +50,11 @@ class CallViewModel: EngagementViewModel, ViewModel {
         }
         call.duration.addObserver(self) { [weak self] duration, _ in
             self?.onDurationChanged(duration)
+        }
+        call.isVisitorOnHold.addObserver(self) { [weak self] isOnHold, oldValue in
+            guard isOnHold != oldValue else { return }
+
+            self?.setVisitorOnHold(isOnHold)
         }
     }
 
@@ -156,6 +105,34 @@ class CallViewModel: EngagementViewModel, ViewModel {
         }
     }
 
+    private func setVisitorOnHold(_ isOnHold: Bool) {
+        if isOnHold {
+            call.video.stream.value.localStream?.pause()
+            call.audio.stream.value.localStream?.mute()
+            action?(.setButtonState(.mute, state: .active))
+        } else {
+            if !call.hasVisitorMutedAudio {
+                call.audio.stream.value.localStream?.unmute()
+                action?(.setButtonState(.mute, state: .inactive))
+            } else {
+                action?(.setButtonState(.mute, state: .active))
+            }
+
+            if !call.hasVisitorTurnedOffVideo {
+                call.video.stream.value.localStream?.resume()
+                action?(.setButtonState(.video, state: .active))
+            } else {
+                action?(.setButtonState(.video, state: .inactive))
+            }
+        }
+
+        action?(.setButtonEnabled(.mute, enabled: !isOnHold))
+        action?(.setButtonEnabled(.video, enabled: !isOnHold))
+        action?(.setVisitorOnHold(isOnHold: isOnHold))
+
+        delegate?(.visitorOnHoldUpdated(isOnHold: isOnHold))
+    }
+
     private func update(for callKind: CallKind) {
         switch callKind {
         case .audio:
@@ -199,9 +176,6 @@ class CallViewModel: EngagementViewModel, ViewModel {
     }
 
     private func showConnected() {
-        action?(.setTopTextHidden(true))
-        action?(.setBottomTextHidden(true))
-
         switch screenShareHandler.status.value {
         case .started:
             engagementAction?(.showEndScreenShareButton)
@@ -209,23 +183,30 @@ class CallViewModel: EngagementViewModel, ViewModel {
             engagementAction?(.showEndButton)
         }
 
-        switch call.kind.value {
-        case .audio:
-            action?(
-                .connected(
-                    name: interactor.engagedOperator?.firstName,
-                    imageUrl: interactor.engagedOperator?.picture?.url
-                )
+        action?(
+            .connected(
+                name: interactor.engagedOperator?.firstName,
+                imageUrl: interactor.engagedOperator?.picture?.url
             )
+        )
 
+        action?(.setTopTextHidden(true))
+        action?(.setBottomTextHidden(true))
+
+        switch call.kind.value {
         case .video(let direction):
             switch direction {
             case .twoWay:
-                toggleVideo()
+                call.video.stream.value.localStream.map {
+                    showLocalVideo(with: $0)
+                }
 
             default:
                 break
             }
+
+        case .audio:
+            break
         }
     }
 
@@ -491,5 +472,62 @@ extension CallViewModel {
     private func toggleSpeaker() {
         call.toggleSpeaker()
         updateSpeakerButton()
+    }
+}
+
+extension CallViewModel {
+    enum CallButton {
+        case chat
+        case video
+        case mute
+        case speaker
+        case minimize
+    }
+
+    enum CallButtonState {
+        case active
+        case inactive
+    }
+
+    enum Event {
+        case viewDidLoad
+        case callButtonTapped(CallButton)
+    }
+
+    enum Action {
+        case queue
+        case connecting(name: String?, imageUrl: String?)
+        case connected(name: String?, imageUrl: String?)
+        case setOperatorName(String?)
+        case setTopTextHidden(Bool)
+        case setBottomTextHidden(Bool)
+        case switchToVideoMode
+        case switchToUpgradeMode
+        case setCallDurationText(String)
+        case setTitle(String)
+        case showButtons([CallButton])
+        case setButtonEnabled(CallButton, enabled: Bool)
+        case setButtonState(CallButton, state: CallButtonState)
+        case setButtonBadge(CallButton, itemCount: Int)
+        case offerMediaUpgrade(
+            SingleMediaUpgradeAlertConfiguration,
+            accepted: () -> Void,
+            declined: () -> Void
+        )
+        case setRemoteVideo(CoreSdkClient.StreamView?)
+        case setLocalVideo(CoreSdkClient.StreamView?)
+        case setVisitorOnHold(isOnHold: Bool)
+    }
+
+    enum DelegateEvent {
+        case chat
+        case minimize
+        case visitorOnHoldUpdated(isOnHold: Bool)
+    }
+
+    enum StartAction {
+        case engagement(mediaType: CoreSdkClient.MediaType)
+        case call(offer: CoreSdkClient.MediaUpgradeOffer,
+                  answer: CoreSdkClient.AnswerWithSuccessBlock)
     }
 }

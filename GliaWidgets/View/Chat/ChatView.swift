@@ -287,7 +287,7 @@ extension ChatView {
                 )
             )
             view.appendContent(.text(message.content, accessibility: Self.operatorAccessibilityMessage(for: message)), animated: false)
-#warning("Provide proper localized 'Operator'")
+            #warning("Provide proper localized 'Operator'")
             view.appendContent(
                 .downloads(
                     message.downloads,

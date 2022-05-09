@@ -19,7 +19,6 @@ class ChatViewModel: EngagementViewModel, ViewModel {
 
     private let call: ObservableValue<Call?>
     private var unreadMessages: UnreadMessagesHandler!
-    private let screenShareHandler: ScreenShareHandler
     private let isChatScrolledToBottom = ObservableValue<Bool>(with: true)
     private let showsCallBubble: Bool
     private let uploader: FileUploader
@@ -34,7 +33,6 @@ class ChatViewModel: EngagementViewModel, ViewModel {
 
     private var pendingMessages: [OutgoingMessage] = []
     private var isViewLoaded: Bool = false
-    private var environment: Environment
 
     init(
         interactor: Interactor,
@@ -50,8 +48,6 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         self.call = call
         self.showsCallBubble = showsCallBubble
         self.startAction = startAction
-        self.screenShareHandler = screenShareHandler
-        self.environment = environment
         self.uploader = FileUploader(
             maximumUploads: 25,
             environment: .init(
@@ -79,7 +75,8 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         super.init(
             interactor: interactor,
             alertConfiguration: alertConfiguration,
-            screenShareHandler: screenShareHandler
+            screenShareHandler: screenShareHandler,
+            environment: environment
         )
         unreadMessages.addObserver(self) { [weak self] unreadCount, _ in
             self?.action?(.updateUnreadMessageIndicator(itemCount: unreadCount))
@@ -191,6 +188,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             case .stopped:
                 engagementAction?(.showEndButton)
             }
+            fetchSiteConfigurations()
 
             pendingMessages.forEach { [weak self] outgoingMessage in
                 self?.interactor.send(outgoingMessage.content, attachment: nil) { [weak self] message in
@@ -761,6 +759,26 @@ extension ChatViewModel {
     }
 }
 
+// MARK: Site Confgurations
+
+extension ChatViewModel {
+    func fetchSiteConfigurations() {
+        environment.fetchSiteConfigurations { [weak self] result in
+            guard let self = self else { return }
+
+            switch result {
+            case .success(let site):
+                self.action?(.setIsAttachmentButtonHidden(!site.allowedFileSenders.visitor))
+            case .failure:
+                self.showAlert(
+                    with: self.alertConfiguration.unexpectedError,
+                    dismissed: nil
+                )
+            }
+        }
+    }
+}
+
 extension ChatViewModel {
 
     typealias Strings = L10n.Chat
@@ -806,6 +824,7 @@ extension ChatViewModel {
         case showCallBubble(imageUrl: String?)
         case updateUnreadMessageIndicator(itemCount: Int)
         case setOperatorTypingIndicatorIsHiddenTo(Bool, _ isChatScrolledToBottom: Bool)
+        case setIsAttachmentButtonHidden(Bool)
     }
 
     enum DelegateEvent {

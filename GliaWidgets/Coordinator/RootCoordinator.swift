@@ -5,7 +5,9 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
     var delegate: ((DelegateEvent) -> Void)?
 
     var engagementKind: EngagementKind {
-        didSet { delegate?(.engagementChanged(engagementKind)) }
+        didSet {
+            delegate?(.engagementChanged(engagementKind))
+        }
     }
 
     private let interactor: Interactor
@@ -116,13 +118,58 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
 
 extension RootCoordinator {
     private func end() {
-        dismissGliaViewController(animated: true) { [weak self] in
-            self?.event(.minimized)
-            self?.engagement = .none
-            self?.navigationPresenter.setViewControllers([], animated: false)
-            self?.removeAllCoordinators()
-            self?.engagementKind = .none
-            self?.delegate?(.ended)
+
+        let dismissGliaViewController = { [weak self] in
+            self?.dismissGliaViewController(animated: true) { [weak self] in
+                self?.event(.minimized)
+                self?.engagement = .none
+                self?.navigationPresenter.setViewControllers([], animated: false)
+                self?.removeAllCoordinators()
+                self?.engagementKind = .none
+                self?.delegate?(.ended)
+            }
+        }
+
+        let presentSurvey = { [weak self] (engagementId: String, survey: CoreSdkClient.Survey) in
+            guard let self = self else { return }
+            let viewController = Survey.ViewController(theme: self.viewFactory.theme)
+            viewController.props = .live(
+                sdkSurvey: survey,
+                engagementId: engagementId,
+                submitSurveyAnswer: self.environment.submitSurveyAnswer,
+                cancel: {
+                    viewController.dismiss(animated: true) {
+                        dismissGliaViewController()
+                    }
+                },
+                endEditing: { viewController.view.endEditing(true) },
+                updateProps: { viewController.props = $0 },
+                completion: {
+                    viewController.dismiss(animated: true) {
+                        dismissGliaViewController()
+                    }
+                }
+            )
+            self.gliaViewController?.removeBubbleWindow()
+            self.gliaPresenter.present(viewController, animated: true)
+        }
+
+        guard let engagement = interactor.currentEngagement else {
+            dismissGliaViewController()
+            return
+        }
+
+        engagement.getSurvey { result in
+
+            guard
+                case .success(let survey) = result,
+                let survey = survey
+            else {
+                dismissGliaViewController()
+                return
+            }
+
+            presentSurvey(engagement.id, survey)
         }
     }
 
@@ -152,18 +199,22 @@ extension RootCoordinator {
                 localFileThumbnailQueue: environment.localFileThumbnailQueue,
                 uiImage: environment.uiImage,
                 createFileDownload: environment.createFileDownload,
-                fromHistory: environment.fromHistory
+                fromHistory: environment.fromHistory,
+                fetchSiteConfigurations: environment.fetchSiteConfigurations,
+                getCurrentEngagement: environment.getCurrentEngagement,
+                submitSurveyAnswer: environment.submitSurveyAnswer
             )
         )
         coordinator.delegate = { [weak self] event in
-            self?.handleCoordinatorEvent(event: event)
+            self?.handleChatCoordinatorEvent(event: event)
         }
         pushCoordinator(coordinator)
 
         return coordinator.start()
     }
 
-    private func handleCoordinatorEvent(event: ChatCoordinator.DelegateEvent) {
+    // swiftlint:disable function_body_length
+    private func handleChatCoordinatorEvent(event: ChatCoordinator.DelegateEvent) {
         switch event {
         case .back:
             switch engagement {
@@ -202,7 +253,7 @@ extension RootCoordinator {
             }
         case .finished:
             popCoordinator()
-            end()
+            self.end()
         }
     }
 
@@ -219,47 +270,65 @@ extension RootCoordinator {
             screenShareHandler: screenShareHandler,
             startAction: startAction,
             environment: .init(
+                chatStorage: environment.chatStorage,
+                fetchFile: environment.fetchFile,
+                sendSelectedOptionValue: environment.sendSelectedOptionValue,
+                uploadFileToEngagement: environment.uploadFileToEngagement,
+                fileManager: environment.fileManager,
+                data: environment.data,
+                date: environment.date,
+                gcd: environment.gcd,
+                localFileThumbnailQueue: environment.localFileThumbnailQueue,
+                uiImage: environment.uiImage,
+                createFileDownload: environment.createFileDownload,
+                fromHistory: environment.fromHistory,
+                fetchSiteConfigurations: environment.fetchSiteConfigurations,
+                getCurrentEngagement: environment.getCurrentEngagement,
                 timerProviding: environment.timerProviding,
-                date: environment.date
+                submitSurveyAnswer: environment.submitSurveyAnswer
             )
         )
         coordinator.delegate = { [weak self] event in
+            guard let self = self else { return }
             switch event {
             case .back:
-                switch self?.engagement {
+                switch self.engagement {
                 case .call(_, let chatViewController, let upgradedFrom, _):
                     if upgradedFrom == .chat {
-                        self?.navigationPresenter.pop(to: chatViewController, animated: true)
+                        self.navigationPresenter.pop(to: chatViewController, animated: true)
                     } else {
-                        self?.gliaViewController?.minimize(animated: true)
+                        self.gliaViewController?.minimize(animated: true)
                     }
                 default:
                     break
                 }
             case .engaged(let operatorImageUrl):
-                self?.gliaViewController?.bubbleKind = .userImage(url: operatorImageUrl)
+                self.gliaViewController?.bubbleKind = .userImage(url: operatorImageUrl)
             case .chat:
-                switch self?.engagement {
+                switch self.engagement {
                 case .call(_, let chatViewController, let upgradedFrom, _):
                     if upgradedFrom == .chat {
-                        self?.navigationPresenter.pop(to: chatViewController, animated: true)
+                        self.navigationPresenter.pop(to: chatViewController, animated: true)
                     } else {
-                        self?.navigationPresenter.push(chatViewController, animated: true)
+                        self.navigationPresenter.push(chatViewController, animated: true)
                     }
                 default:
                     break
                 }
             case .minimize:
-                self?.gliaViewController?.minimize(animated: true)
+                self.gliaViewController?.minimize(animated: true)
             case .finished:
-                self?.popCoordinator()
-                self?.end()
+                self.popCoordinator()
+                self.end()
+            case .visitorOnHoldUpdated(let isOnHold):
+                self.gliaViewController?.setVisitorHoldState(isOnHold: isOnHold)
             }
         }
         pushCoordinator(coordinator)
 
         return coordinator.start()
     }
+    // swiftlint:enable function_body_length
 
     private func makeGliaView(
         bubbleView: BubbleView,
@@ -399,6 +468,9 @@ extension RootCoordinator {
         var createFileDownload: FileDownloader.CreateFileDownload
         var fromHistory: () -> Bool
         var timerProviding: FoundationBased.Timer.Providing
+        var fetchSiteConfigurations: CoreSdkClient.FetchSiteConfigurations
+        var getCurrentEngagement: CoreSdkClient.GetCurrentEngagement
+        var submitSurveyAnswer: CoreSdkClient.SubmitSurveyAnswer
     }
 }
 

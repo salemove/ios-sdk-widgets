@@ -44,7 +44,10 @@ class ChatViewModelTests: XCTestCase {
                         environment: .failing
                     )
                 },
-                fromHistory: { true }
+                fromHistory: { true },
+                fetchSiteConfigurations: { _ in },
+                getCurrentEngagement: { nil },
+                timerProviding: .mock
             )
         )
 
@@ -83,6 +86,7 @@ class ChatViewModelTests: XCTestCase {
         var viewModelEnv = ChatViewModel.Environment.failing
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
+        viewModelEnv.fetchSiteConfigurations = { _ in }
 
         let interactor: Interactor = try .mock()
         let viewModel: ChatViewModel = .mock(interactor: interactor, environment: viewModelEnv)
@@ -104,6 +108,7 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
         viewModelEnv.chatStorage.messages = { _ in [] }
         viewModelEnv.fromHistory = { true }
+        viewModelEnv.fetchSiteConfigurations = { _ in }
 
         let interactor: Interactor = .mock(environment: interactorEnv)
         let viewModel: ChatViewModel = .mock(interactor: interactor, environment: viewModelEnv)
@@ -117,6 +122,48 @@ class ChatViewModelTests: XCTestCase {
         let lastItemKind = viewModel.item(for: lastSectionLastItemIndex, in: lastSectionIndex).kind
 
         XCTAssertEqual(lastItemKind, mockItemKind)
+    }
+
+    func test__updateDoesNotCallSDKFetchSiteConfigurationsOnEnqueueingState() throws {
+        // Given
+        enum Calls { case fetchSiteConfigurations }
+        var calls: [Calls] = []
+        let interactorEnv = Interactor.Environment.init(coreSdk: .failing, gcd: .failing)
+        let interactor = Interactor.mock(environment: interactorEnv)
+        var viewModelEnv = ChatViewModel.Environment.failing
+        viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
+        viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
+        viewModelEnv.fetchSiteConfigurations = { _ in
+            calls.append(.fetchSiteConfigurations)
+        }
+        let viewModel = ChatViewModel.mock(interactor: interactor, environment: viewModelEnv)
+        
+        // When
+        viewModel.update(for: .enqueueing)
+        
+        // Then
+        XCTAssertEqual(calls, [])
+    }
+    
+    func test__updateCallsSDKFetchSiteConfigurationsOnEngagedState() throws {
+        // Given
+        enum Calls { case fetchSiteConfigurations }
+        var calls: [Calls] = []
+        let interactorEnv = Interactor.Environment.init(coreSdk: .failing, gcd: .failing)
+        let interactor = Interactor.mock(environment: interactorEnv)
+        var viewModelEnv = ChatViewModel.Environment.failing
+        viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
+        viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
+        viewModelEnv.fetchSiteConfigurations = { _ in
+            calls.append(.fetchSiteConfigurations)
+        }
+        let viewModel = ChatViewModel.mock(interactor: interactor, environment: viewModelEnv)
+        
+        // When
+        viewModel.update(for: .engaged(nil))
+        
+        // Then
+        XCTAssertEqual(calls, [.fetchSiteConfigurations])
     }
 }
 

@@ -21,7 +21,9 @@ extension CoreSdkClient {
         requestEngagedOperator: { _ in },
         uploadFileToEngagement: { _, _, _ in },
         fetchFile: { _, _, _ in },
-        getCurrentEngagement: { return nil }
+        getCurrentEngagement: { return nil },
+        fetchSiteConfigurations: { _ in },
+        submitSurveyAnswer: { _, _, _, _ in }
     )
 }
 
@@ -120,6 +122,73 @@ extension CoreSdkClient.SingleChoiceOption {
                 ].compactMap { $0 }
             )
         )
+    }
+}
+
+extension CoreSdkClient {
+    class MockAudioStreamable: CoreSdkClient.AudioStreamable {
+        var onHold: CoreSdkClient.StreamableOnHoldHandler?
+        var muteFunc: () -> Void
+        var unmuteFunc: () -> Void
+        var getIsMutedFunc: () -> Bool
+        var setIsMutedFunc: (Bool) -> Void
+        var getIsRemoteFunc: () -> Bool
+        var setIsRemoteFunc: (Bool) -> Void
+
+        var isMuted: Bool {
+            get { getIsMutedFunc() }
+            set { setIsMutedFunc(newValue) }
+        }
+        var isRemote: Bool {
+            get { getIsRemoteFunc() }
+            set { setIsRemoteFunc(newValue) }
+        }
+
+        internal init(
+            onHold: CoreSdkClient.StreamableOnHoldHandler?,
+            muteFunc: @escaping () -> Void,
+            unmuteFunc: @escaping () -> Void,
+            getIsMutedFunc: @escaping () -> Bool,
+            setIsMutedFunc: @escaping (Bool) -> Void,
+            getIsRemoteFunc: @escaping () -> Bool,
+            setIsRemoteFunc: @escaping (Bool) -> Void
+        ) {
+            self.onHold = onHold
+            self.muteFunc = muteFunc
+            self.unmuteFunc = unmuteFunc
+            self.getIsMutedFunc = getIsMutedFunc
+            self.setIsMutedFunc = setIsMutedFunc
+            self.getIsRemoteFunc = getIsRemoteFunc
+            self.setIsRemoteFunc = setIsRemoteFunc
+        }
+
+        func mute() {
+            muteFunc()
+        }
+
+        func unmute() {
+            unmuteFunc()
+        }
+
+        static func mock(
+            onHold: CoreSdkClient.StreamableOnHoldHandler? = nil,
+            muteFunc: @escaping () -> Void = {} ,
+            unmuteFunc: @escaping () -> Void = {},
+            getIsMutedFunc: @escaping () -> Bool = { false },
+            setIsMutedFunc: @escaping (Bool) -> Void = { _ in },
+            getIsRemoteFunc: @escaping () -> Bool = { false },
+            setIsRemoteFunc: @escaping (Bool) -> Void = { _ in }
+        ) -> MockAudioStreamable {
+            .init(
+                onHold: onHold,
+                muteFunc: muteFunc,
+                unmuteFunc: unmuteFunc,
+                getIsMutedFunc: getIsMutedFunc,
+                setIsMutedFunc: setIsMutedFunc,
+                getIsRemoteFunc: getIsRemoteFunc,
+                setIsRemoteFunc: setIsRemoteFunc
+            )
+        }
     }
 }
 

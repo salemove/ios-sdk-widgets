@@ -58,6 +58,7 @@ public enum Asset {
       public static let callSpeakerInactive = ImageAsset(name: "call-speaker-inactive")
       public static let callVideoActive = ImageAsset(name: "call-video-active")
       public static let callVideoInactive = ImageAsset(name: "call-video-inactive")
+      public static let callOnHold = ImageAsset(name: "call-on-hold")
       public static let uploadError = ImageAsset(name: "uploadError")
       public static let uploadRemove = ImageAsset(name: "uploadRemove")
     public static let chatPickMedia = ImageAsset(name: "chatPickMedia")
@@ -75,6 +76,9 @@ public enum Asset {
     public static let upgradeVideo = ImageAsset(name: "upgradeVideo")
     public static let mockImage = ImageAsset(name: "mock-image")
     public static let operatorPlaceholder = ImageAsset(name: "operatorPlaceholder")
+    public static let surveyCheckboxChecked = ImageAsset(name: "survey-checkbox-checked")
+    public static let surveyCheckbox = ImageAsset(name: "survey-checkbox")
+    public static let surveyValidationError = ImageAsset(name: "survey-validation-error")
 
   // swiftlint:disable trailing_comma
   public static let allColors: [ColorAsset] = [
@@ -89,6 +93,7 @@ public enum Asset {
       callSpeakerInactive,
       callVideoActive,
       callVideoInactive,
+      callOnHold,
       uploadError,
       uploadRemove,
       chatPickMedia,
@@ -106,6 +111,9 @@ public enum Asset {
       upgradeVideo,
       mockImage,
       operatorPlaceholder,
+      surveyCheckboxChecked,
+      surveyCheckbox,
+      surveyValidationError,
     ]
     // swiftlint:enable trailing_comma
     @available(*, deprecated, renamed: "allImages")
