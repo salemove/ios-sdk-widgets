@@ -92,7 +92,7 @@ class Interactor {
         observers.removeAll(where: { $0().0 === observer })
     }
 
-    private func notify(_ event: InteractorEvent) {
+    func notify(_ event: InteractorEvent) {
         observers
             .compactMap { $0() }
             .filter { $0.0 != nil }

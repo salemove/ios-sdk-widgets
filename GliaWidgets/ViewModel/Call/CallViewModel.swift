@@ -254,6 +254,8 @@ class CallViewModel: EngagementViewModel, ViewModel {
             handleVideoStreamError(error)
         case .upgradeOffer(let offer, answer: let answer):
             offerMediaUpgrade(offer, answer: answer)
+        case .engagementTransferred:
+            call.transfer()
         default:
             break
         }
@@ -351,7 +353,7 @@ extension CallViewModel {
                 guard self.call.state.value == .started else { return }
                 self.call.duration.value = duration
             }
-        case .upgrading:
+        case .connecting:
             action?(.switchToUpgradeMode)
             showConnecting()
         case .ended:

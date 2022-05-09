@@ -181,4 +181,57 @@ class CallViewModelTests: XCTestCase {
         XCTAssertTrue(isLocalAudioStreamMuted)
         XCTAssertTrue(isLocalVideoStreamPaused)
     }
+    
+    func test_engagementTransferredReleasesRemoteAndLocalVideoAndShowsConnectingState() throws {
+        enum Calls {
+            case setLocalVideoNil
+            case setRemoteVideoNil
+            case showConnecting
+        }
+        var calls: [Calls] = []
+
+        var interactorEnv: Interactor.Environment = .failing
+        interactorEnv.gcd.mainQueue.asyncIfNeeded = { $0() }
+        let interactor: Interactor = .mock(environment: interactorEnv)
+        let mockOperator: CoreSdkClient.Operator = .mock()
+
+        call = .init(
+            .video(direction: .twoWay),
+            environment: .mock
+        )
+
+        viewModel = .init(
+            interactor: interactor,
+            alertConfiguration: .mock(),
+            screenShareHandler: ScreenShareHandler(),
+            environment: .mock,
+            call: call,
+            unreadMessages: .init(with: 0),
+            startWith: .engagement(mediaType: .video)
+        )
+
+        viewModel.action = { action in
+            switch action {
+            case .setLocalVideo(let video):
+                if video == nil {
+                    calls.append(.setLocalVideoNil)
+                }
+                
+            case .setRemoteVideo(let video):
+                if video == nil {
+                    calls.append(.setRemoteVideoNil)
+                }
+                
+            case .connecting:
+                calls.append(.showConnecting)
+                
+            default:
+                break
+            }
+        }
+
+        interactor.notify(.engagementTransferred(mockOperator))
+
+        XCTAssertEqual([.setRemoteVideoNil, .setLocalVideoNil, .showConnecting], calls)
+    }
 }
