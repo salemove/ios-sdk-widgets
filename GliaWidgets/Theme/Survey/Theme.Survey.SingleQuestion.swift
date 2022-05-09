@@ -13,7 +13,7 @@ public extension Theme.SurveyStyle {
                 title: .init(
                     color: color.baseDark.hex,
                     fontSize: font.bodyText.pointSize,
-                    fontWeight: 0.5
+                    fontWeight: 0.4
                 ),
                 optionText: .init(
                     color: color.baseDark.hex,
