@@ -29,7 +29,8 @@ class EngagementView: View {
         layout()
     }
 
-    func setup() {
+    override func setup() {
+        super.setup()
         backgroundColor = style.backgroundColor
     }
 

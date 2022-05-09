@@ -51,7 +51,7 @@ class InteractorTests: XCTestCase {
             .queueForEngagement
         ])
     }
-    
+
     func test_onEngagementTransfer() throws {
         enum Call: Equatable {
             case stateChanged(InteractorState)
@@ -87,5 +87,53 @@ class InteractorTests: XCTestCase {
             .stateChanged(.engaged(mockOperator)),
             .engagementTransferred(mockOperator)
         ])
+    }
+
+    func test__isConfigurationPerformedIsInitiallyFalse() {
+        XCTAssertFalse(Interactor.mock(environment: .failing).isConfigurationPerformed)
+    }
+
+    func test__isConfigurationPerformedBecomesTrue() throws {
+        var interactorEnv = Interactor.Environment.failing
+        interactorEnv.coreSdk.configureWithInteractor = { _ in }
+        interactorEnv.coreSdk.configureWithConfiguration = { _, _ in }
+        let interactor = Interactor.mock(environment: interactorEnv)
+        interactor.withConfiguration {}
+        XCTAssertTrue(interactor.isConfigurationPerformed)
+    }
+
+    func test__configureWithConfigurationPerformedOnce() {
+        enum Call {
+            case configureWithConfiguration
+        }
+        var calls: [Call] = []
+        var interactorEnv = Interactor.Environment.failing
+        interactorEnv.coreSdk.configureWithInteractor = { _ in }
+        interactorEnv.coreSdk.configureWithConfiguration = { _, _ in
+            calls.append(.configureWithConfiguration)
+        }
+        let interactor = Interactor.mock(environment: interactorEnv)
+        for _ in 0 ..< 1000 {
+            interactor.withConfiguration {}
+        }
+        XCTAssertEqual(calls, [.configureWithConfiguration])
+    }
+
+    func test_withConfigurationInvokesCompletionForFirstAndNextCalls() {
+        enum Callback {
+            case withConfiguration
+        }
+        var callbacks: [Callback] = []
+        var interactorEnv = Interactor.Environment.failing
+        interactorEnv.coreSdk.configureWithInteractor = { _ in }
+        interactorEnv.coreSdk.configureWithConfiguration = { $1?() }
+        let interactor = Interactor.mock(environment: interactorEnv)
+        for _ in 0 ..< 3 {
+            interactor.withConfiguration {
+                callbacks.append(.withConfiguration)
+            }
+        }
+
+        XCTAssertEqual(callbacks, [.withConfiguration, .withConfiguration, .withConfiguration])
     }
 }

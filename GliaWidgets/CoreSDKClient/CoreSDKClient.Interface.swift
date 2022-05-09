@@ -90,6 +90,16 @@ struct CoreSdkClient {
 
     typealias FetchSiteConfigurations = (_ completion: @escaping (Result<Self.Site, Error>) -> Void) -> Void
     var fetchSiteConfigurations: FetchSiteConfigurations
+
+    typealias SubmitSurveyAnswer = (
+        (
+            _ answers: [SalemoveSDK.Survey.Answer],
+            _ surveyId: SalemoveSDK.Survey.Id,
+            _ engagementId: String,
+            _ completion: @escaping (Result<Void, SalemoveSDK.SalemoveError>) -> Void
+        ) -> Void
+    )
+    var submitSurveyAnswer: SubmitSurveyAnswer
 }
 
 extension CoreSdkClient {
@@ -163,4 +173,7 @@ extension CoreSdkClient {
     typealias VisitorScreenSharingStateChange = SalemoveSDK.VisitorScreenSharingStateChange
     typealias Engagement = SalemoveSDK.Engagement
     typealias Site = SalemoveSDK.Site
+    typealias Survey = SalemoveSDK.Survey
+    typealias SurveyAnswerContainer = SalemoveSDK.Survey.Answer.ValueContainer
+    typealias EngagementTransferringBlock = SalemoveSDK.EngagementTransferringBlock
 }

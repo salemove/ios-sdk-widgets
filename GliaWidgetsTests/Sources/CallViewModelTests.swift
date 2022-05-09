@@ -21,10 +21,10 @@ class CallViewModelTests: XCTestCase {
             interactor: try .mock(),
             alertConfiguration: .mock(),
             screenShareHandler: ScreenShareHandler(),
+            environment: .mock,
             call: call,
             unreadMessages: .init(with: 0),
-            startWith: .engagement(mediaType: .video),
-            environment: .mock
+            startWith: .engagement(mediaType: .video)
         )
 
         viewModel.action = {
@@ -113,10 +113,10 @@ class CallViewModelTests: XCTestCase {
             interactor: try .mock(),
             alertConfiguration: .mock(),
             screenShareHandler: ScreenShareHandler(),
+            environment: .mock,
             call: call,
             unreadMessages: .init(with: 0),
-            startWith: .engagement(mediaType: .video),
-            environment: .mock
+            startWith: .engagement(mediaType: .video)
         )
 
         let remoteAudioStream = CoreSdkClient.MockAudioStreamable.mock(

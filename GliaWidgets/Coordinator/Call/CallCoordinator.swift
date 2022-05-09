@@ -57,13 +57,26 @@ class CallCoordinator: SubFlowCoordinator, FlowCoordinator {
             interactor: interactor,
             alertConfiguration: viewFactory.theme.alertConfiguration,
             screenShareHandler: screenShareHandler,
+            environment: .init(
+                chatStorage: environment.chatStorage,
+                fetchFile: environment.fetchFile,
+                sendSelectedOptionValue: environment.sendSelectedOptionValue,
+                uploadFileToEngagement: environment.uploadFileToEngagement,
+                fileManager: environment.fileManager,
+                data: environment.data,
+                date: environment.date,
+                gcd: environment.gcd,
+                localFileThumbnailQueue: environment.localFileThumbnailQueue,
+                uiImage: environment.uiImage,
+                createFileDownload: environment.createFileDownload,
+                fromHistory: environment.fromHistory,
+                fetchSiteConfigurations: environment.fetchSiteConfigurations,
+                getCurrentEngagement: environment.getCurrentEngagement,
+                timerProviding: environment.timerProviding
+            ),
             call: call,
             unreadMessages: unreadMessages,
-            startWith: startAction,
-            environment: .init(
-                timerProviding: environment.timerProviding,
-                date: environment.date
-            )
+            startWith: startAction
         )
         viewModel.engagementDelegate = { [weak self] event in
             switch event {
@@ -94,7 +107,21 @@ class CallCoordinator: SubFlowCoordinator, FlowCoordinator {
 
 extension CallCoordinator {
     struct Environment {
-        var timerProviding: FoundationBased.Timer.Providing
+        var chatStorage: Glia.Environment.ChatStorage
+        var fetchFile: CoreSdkClient.FetchFile
+        var sendSelectedOptionValue: CoreSdkClient.SendSelectedOptionValue
+        var uploadFileToEngagement: CoreSdkClient.UploadFileToEngagement
+        var fileManager: FoundationBased.FileManager
+        var data: FoundationBased.Data
         var date: () -> Date
+        var gcd: GCD
+        var localFileThumbnailQueue: FoundationBased.OperationQueue
+        var uiImage: UIKitBased.UIImage
+        var createFileDownload: FileDownloader.CreateFileDownload
+        var fromHistory: () -> Bool
+        var fetchSiteConfigurations: CoreSdkClient.FetchSiteConfigurations
+        var getCurrentEngagement: CoreSdkClient.GetCurrentEngagement
+        var timerProviding: FoundationBased.Timer.Providing
+        var submitSurveyAnswer: CoreSdkClient.SubmitSurveyAnswer
     }
 }
