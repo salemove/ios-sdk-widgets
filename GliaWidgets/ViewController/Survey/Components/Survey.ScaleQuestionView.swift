@@ -13,11 +13,12 @@ extension Survey {
         let title = UILabel().make {
             $0.numberOfLines = 0
         }
-        let optionsStack = UIStackView.make(.horizontal, distribution: .equalSpacing)()
+        let optionsStackContainer = UIView()
+        let optionsStack = UIStackView.make(.horizontal, spacing: 16)()
         let validationError = ValidationErrorView()
         lazy var contentStack = UIStackView.make(.vertical, spacing: 16)(
             title,
-            optionsStack,
+            optionsStackContainer,
             validationError
         )
 
@@ -35,6 +36,7 @@ extension Survey {
         override func setup() {
             super.setup()
             addSubview(contentStack)
+            optionsStackContainer.addSubview(optionsStack)
             render()
         }
 
@@ -44,7 +46,12 @@ extension Survey {
                 contentStack.topAnchor.constraint(equalTo: topAnchor),
                 contentStack.leadingAnchor.constraint(equalTo: leadingAnchor),
                 contentStack.trailingAnchor.constraint(equalTo: trailingAnchor),
-                contentStack.bottomAnchor.constraint(equalTo: bottomAnchor)
+                contentStack.bottomAnchor.constraint(equalTo: bottomAnchor),
+
+                optionsStack.topAnchor.constraint(equalTo: optionsStackContainer.topAnchor),
+                optionsStack.leadingAnchor.constraint(equalTo: optionsStackContainer.leadingAnchor),
+                optionsStack.trailingAnchor.constraint(lessThanOrEqualTo: optionsStackContainer.trailingAnchor),
+                optionsStack.bottomAnchor.constraint(equalTo: optionsStackContainer.bottomAnchor)
             ])
         }
 
