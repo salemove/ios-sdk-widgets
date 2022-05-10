@@ -211,6 +211,12 @@ class CallViewModelTests: XCTestCase {
             case .connecting:
                 calls.append(.showConnecting)
                 
+            case .setRemoteVideo(let video):
+                XCTAssertNil(video)
+                
+            case .setLocalVideo(let video):
+                XCTAssertNil(video)
+
             default:
                 break
             }
