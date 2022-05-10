@@ -17,6 +17,7 @@ class ConnectView: UIView {
     private var connectCounter: Int = 0
     private var isShowing = false
     private let environment: Environment
+    private let stackView = UIStackView()
 
     init(
         with style: ConnectStyle,
@@ -113,19 +114,18 @@ class ConnectView: UIView {
     private func setup() {
         setState(.none, animated: false)
         accessibilityElements = [operatorView, statusView]
+
+        stackView.axis = .vertical
+        stackView.spacing = 10
     }
 
     private func layout() {
-        addSubview(operatorView)
-        operatorView.autoPinEdge(toSuperviewEdge: .top, withInset: 10)
-        operatorView.autoPinEdge(toSuperviewEdge: .left)
-        operatorView.autoPinEdge(toSuperviewEdge: .right)
-
-        addSubview(statusView)
-        statusView.autoPinEdge(.top, to: .bottom, of: operatorView, withOffset: 10)
-        statusView.autoPinEdge(toSuperviewEdge: .left)
-        statusView.autoPinEdge(toSuperviewEdge: .right)
-        statusView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 10)
+        addSubview(stackView)
+        stackView.autoPinEdgesToSuperviewEdges(with: .init(top: 10, left: 0, bottom: 10, right: 0))
+        stackView.addArrangedSubviews([
+            operatorView,
+            statusView
+        ])
     }
 }
 
