@@ -82,3 +82,10 @@ fastlane/test_output
 # https://github.com/johnno1962/injectionforxcode
 
 iOSInjectionProject/
+
+# SnapshotTesting
+#
+# Image based snapshots are to be retrieved separately from deidcated repo with Git LFS.
+# The reason Git LFS is not used for current repo is because Swift Package Manager fails to work properly
+# with it.
+SnapshotTests/__Snapshots__/
