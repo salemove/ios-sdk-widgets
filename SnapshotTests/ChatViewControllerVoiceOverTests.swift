@@ -12,7 +12,11 @@ class ChatViewControllerVoiceOverTests: SnapshotTestCase {
 
     func test_visitorUploadedFileStates() throws {
         let viewController = try ChatViewController.mockVisitorFileUploadStates()
-        assertSnapshot(matching: viewController, as: .accessibilityImage, named: nameForDevice())
+        assertSnapshot(
+            matching: viewController,
+            as: .accessibilityImage(precision: SnapshotTestCase.possiblePrecision),
+            named: nameForDevice()
+        )
     }
 
     func test_choiceCard() throws {
@@ -32,6 +36,10 @@ class ChatViewControllerVoiceOverTests: SnapshotTestCase {
         chatMessages[1].downloads[0].state.value = .downloading(progress: .init(with: 0.5))
         chatMessages[2].downloads[0].state.value = .downloaded(.mock())
         chatMessages[3].downloads[0].state.value = .error(.deleted)
-        assertSnapshot(matching: viewController, as: .accessibilityImage, named: self.nameForDevice())
+        assertSnapshot(
+            matching: viewController,
+            as: .accessibilityImage(precision: SnapshotTestCase.possiblePrecision),
+            named: self.nameForDevice()
+        )
     }
 }
