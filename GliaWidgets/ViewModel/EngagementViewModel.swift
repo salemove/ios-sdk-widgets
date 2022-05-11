@@ -63,15 +63,23 @@ class EngagementViewModel {
 
     func viewWillAppear() {
         if interactor.state == .ended(.byOperator) {
-            EngagementViewModel.alertPresenters.insert(self)
-            engagementAction?(
-                .showSingleActionAlert(
-                    alertConfiguration.operatorEndedEngagement,
-                    actionTapped: { [weak self] in
-                        self?.endSession()
-                    }
-                )
-            )
+            interactor.currentEngagement?.getSurvey { [weak self] result in
+                guard let self = self else { return }
+                switch result {
+                case .success(let survey) where survey != nil:
+                    return
+                default:
+                    EngagementViewModel.alertPresenters.insert(self)
+                    self.engagementAction?(
+                        .showSingleActionAlert(
+                            self.alertConfiguration.operatorEndedEngagement,
+                            actionTapped: { [weak self] in
+                                self?.endSession()
+                            }
+                        )
+                    )
+                }
+            }
         }
     }
 
