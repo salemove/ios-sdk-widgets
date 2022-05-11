@@ -166,7 +166,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             )
 
             action?(.queue)
-            action?(.scrollToBottom(animated: false))
+            action?(.scrollToBottom(animated: true))
 
         case .engaged(let engagedOperator):
             let name = engagedOperator?.firstName
@@ -229,9 +229,35 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             offerMediaUpgrade(offer, answer: answer)
         case .typingStatusUpdated(let status):
             typingStatusUpdated(status)
+        case .engagementTransferring:
+            onEngagementTransferring()
+        case .engagementTransferred:
+            onEngagementTransferred()
         default:
             break
         }
+    }
+}
+
+extension ChatViewModel {
+    private func onEngagementTransferring() {
+        action?(.setMessageEntryEnabled(false))
+        appendItem(.init(kind: .transferring), to: messagesSection, animated: true)
+        action?(.scrollToBottom(animated: true))
+    }
+
+    private func onEngagementTransferred() {
+        action?(.setMessageEntryEnabled(true))
+
+        guard let transferringItemIndex = messagesSection.items.firstIndex(where: {
+            switch $0.kind {
+            case .transferring: return true
+            default: return false
+            }
+        }) else { return }
+
+        messagesSection.remoteItem(at: transferringItemIndex)
+        action?(.refreshSection(messagesSection.index))
     }
 }
 
@@ -800,6 +826,7 @@ extension ChatViewModel {
     enum Action {
         case queue
         case connected(name: String?, imageUrl: String?)
+        case transferring
         case setMessageEntryEnabled(Bool)
         case setChoiceCardInputModeEnabled(Bool)
         case setMessageText(String)

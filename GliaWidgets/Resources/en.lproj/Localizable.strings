@@ -58,6 +58,7 @@
 "chat.connect.connecting.secondText" = "";
 "chat.connect.connected.firstText" = "{operatorName}";
 "chat.connect.connected.secondText" = "{operatorName} has joined the conversation.";
+"chat.connect.transferring.firstText" = "Transferring";
 "chat.message.enterMessagePlaceholder" = "Enter Message";
 "chat.message.startEngagementPlaceholder" = "Send a message to start chatting";
 "chat.message.choiceCardPlaceholder" = "Tap on the answer above";
@@ -91,6 +92,7 @@
 "call.connect.connecting.secondText" = "";
 "call.connect.connected.firstText" = "{operatorName}";
 "call.connect.connected.secondText" = "{callDuration}";
+"call.connect.transferring.firstText" = "Transferring";
 "call.operator.name" = "{operatorName}";
 "call.topText" = "(By default your video will be off)";
 "call.bottomText" = "You can continue browsing and we’ll connect you automatically.";

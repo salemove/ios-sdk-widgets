@@ -6,6 +6,7 @@ class ConnectView: UIView {
         case queue
         case connecting(name: String?, imageUrl: String?)
         case connected(name: String?, imageUrl: String?)
+        case transferring
     }
 
     let operatorView: ConnectOperatorView
@@ -52,6 +53,7 @@ class ConnectView: UIView {
             hide(animated: animated)
         case .queue:
             stopConnectTimer()
+            operatorView.imageView.setPlaceholderImage(style.connectOperator.operatorImage.placeholderImage)
             operatorView.startAnimating(animated: animated)
             statusView.setFirstText(style.queue.firstText, animated: false)
             statusView.setSecondText(style.queue.secondText, animated: false)
@@ -59,7 +61,8 @@ class ConnectView: UIView {
             show(animated: animated)
         case .connecting(let name, let imageUrl):
             operatorView.startAnimating(animated: animated)
-            operatorView.imageView.setImage(fromUrl: imageUrl, animated: true)
+            operatorView.imageView.setPlaceholderImage(style.connectOperator.operatorImage.transferringImage)
+            operatorView.imageView.setOperatorImage(fromUrl: imageUrl, animated: true)
             let firstText = style.connecting.firstText?.withOperatorName(name)
             statusView.setFirstText(firstText, animated: animated)
             statusView.setSecondText(nil, animated: animated)
@@ -69,7 +72,8 @@ class ConnectView: UIView {
         case .connected(let name, let imageUrl):
             stopConnectTimer()
             operatorView.stopAnimating(animated: animated)
-            operatorView.imageView.setImage(fromUrl: imageUrl, animated: true)
+            operatorView.imageView.setPlaceholderImage(style.connectOperator.operatorImage.transferringImage)
+            operatorView.imageView.setOperatorImage(fromUrl: imageUrl, animated: true)
             if let name = name {
                 let firstText = style.connected.firstText?.withOperatorName(name)
                 let secondText = style.connected.secondText?
@@ -82,6 +86,16 @@ class ConnectView: UIView {
                 statusView.setFirstText(nil, animated: animated)
             }
             statusView.setStyle(style.connected)
+            show(animated: animated)
+        case .transferring:
+            stopConnectTimer()
+            operatorView.setSize(.normal, animated: true)
+            operatorView.startAnimating(animated: animated)
+            operatorView.imageView.setOperatorImage(nil, animated: true)
+            operatorView.imageView.setPlaceholderImage(style.connectOperator.operatorImage.transferringImage)
+            statusView.setFirstText(style.transferring.firstText, animated: true)
+            statusView.setSecondText(style.transferring.secondText, animated: true)
+            statusView.setStyle(style.transferring)
             show(animated: animated)
         }
     }

@@ -18,7 +18,7 @@ public struct UnreadMessageIndicatorStyle {
     ///   - placeholderImage: Image that acts as a placeholder if the operator has no picture set.
     ///   - placeholderColor: Color of the placeholder's image if the operator has no picture set.
     ///   - placeholderBackgroundColor: Background color of the placeholder's image if the operator has no picture set.
-    ///   - imageBackgroundColor: Background olor of the operator's image. Visible when the operator's image contains transparent parts.
+    ///   - imageBackgroundColor: Background color of the operator's image. Visible when the operator's image contains transparent parts.
     public init(
         badgeFont: UIFont,
         badgeTextColor: UIColor,
@@ -26,7 +26,8 @@ public struct UnreadMessageIndicatorStyle {
         placeholderImage: UIImage?,
         placeholderColor: UIColor,
         placeholderBackgroundColor: UIColor,
-        imageBackgroundColor: UIColor
+        imageBackgroundColor: UIColor,
+        transferringImage: UIImage
     ) {
         self.badge = BadgeStyle(
             font: badgeFont,
@@ -37,7 +38,8 @@ public struct UnreadMessageIndicatorStyle {
             placeholderImage: placeholderImage,
             placeholderColor: placeholderColor,
             placeholderBackgroundColor: placeholderBackgroundColor,
-            imageBackgroundColor: imageBackgroundColor
+            imageBackgroundColor: imageBackgroundColor,
+            transferringImage: transferringImage
         )
     }
 }

@@ -117,7 +117,7 @@ class BubbleView: UIView {
         switch kind {
         case .userImage(url: let url):
             guard userImageView == nil else {
-                userImageView?.setImage(fromUrl: url, animated: true)
+                userImageView?.setOperatorImage(fromUrl: url, animated: true)
                 break
             }
             let userImageView = UserImageView(
@@ -129,7 +129,7 @@ class BubbleView: UIView {
                     imageViewCache: environment.imageViewCache
                 )
             )
-            userImageView.setImage(fromUrl: url, animated: true)
+            userImageView.setOperatorImage(fromUrl: url, animated: true)
             self.userImageView = userImageView
             setView(userImageView)
         }

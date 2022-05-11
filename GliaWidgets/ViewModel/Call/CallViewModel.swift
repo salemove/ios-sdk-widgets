@@ -255,10 +255,23 @@ class CallViewModel: EngagementViewModel, ViewModel {
         case .upgradeOffer(let offer, answer: let answer):
             offerMediaUpgrade(offer, answer: answer)
         case .engagementTransferred:
-            call.transfer()
+            onEngagementTransferred()
+        case .engagementTransferring:
+            onEngagementTransferring()
         default:
             break
         }
+    }
+}
+
+extension CallViewModel {
+    private func onEngagementTransferred() {
+        call.transfer()
+    }
+
+    private func onEngagementTransferring() {
+        durationCounter.stop()
+        action?(.transferring)
     }
 }
 
@@ -500,6 +513,7 @@ extension CallViewModel {
         case queue
         case connecting(name: String?, imageUrl: String?)
         case connected(name: String?, imageUrl: String?)
+        case transferring
         case setOperatorName(String?)
         case setTopTextHidden(Bool)
         case setBottomTextHidden(Bool)

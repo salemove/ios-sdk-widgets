@@ -38,7 +38,8 @@ extension Theme {
             placeholderImage: Asset.operatorPlaceholder.image,
             placeholderColor: color.baseLight,
             placeholderBackgroundColor: color.primary,
-            imageBackgroundColor: .clear
+            imageBackgroundColor: .clear,
+            transferringImage: Asset.operatorTransferring.image
         )
         let queueOperator = ConnectOperatorStyle(
             operatorImage: operatorImage,
@@ -69,11 +70,20 @@ extension Theme {
             secondTextFont: font.subtitle,
             secondTextFontColor: color.primary
         )
+        let transferring = ConnectStatusStyle(
+            firstText: Chat.Connect.Transferring.firstText,
+            firstTextFont: font.header1,
+            firstTextFontColor: color.baseDark,
+            secondText: nil,
+            secondTextFont: font.subtitle,
+            secondTextFontColor: color.primary
+        )
         let connect = ConnectStyle(
             queueOperator: queueOperator,
             queue: queue,
             connecting: connecting,
-            connected: connected
+            connected: connected,
+            transferring: transferring
         )
         let visitorText = ChatTextContentStyle(
             textFont: font.bodyText,
@@ -193,7 +203,8 @@ extension Theme {
             placeholderImage: Asset.operatorPlaceholder.image,
             placeholderColor: color.baseLight,
             placeholderBackgroundColor: color.primary,
-            imageBackgroundColor: .clear
+            imageBackgroundColor: .clear,
+            transferringImage: Asset.operatorTransferring.image
         )
         let callBubble = BubbleStyle(
             userImage: userImage
@@ -205,7 +216,8 @@ extension Theme {
             placeholderImage: Asset.operatorPlaceholder.image,
             placeholderColor: color.baseLight,
             placeholderBackgroundColor: color.primary,
-            imageBackgroundColor: .clear
+            imageBackgroundColor: .clear,
+            transferringImage: Asset.operatorTransferring.image
         )
         return ChatStyle(
             header: header,

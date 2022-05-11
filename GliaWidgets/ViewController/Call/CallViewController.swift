@@ -104,6 +104,8 @@ class CallViewController: EngagementViewController, MediaUpgradePresenter {
                 view.localVideoView.streamView = streamView
             case .setVisitorOnHold(let isOnHold):
                 view.isVisitrOnHold = isOnHold
+            case .transferring:
+                view.setConnectState(.transferring, animated: true)
             }
         }
     }

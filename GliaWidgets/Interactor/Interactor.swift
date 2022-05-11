@@ -29,6 +29,7 @@ enum InteractorEvent {
     case screenSharingStateChanged(to: CoreSdkClient.VisitorScreenSharingState)
     case error(CoreSdkClient.SalemoveError)
     case engagementTransferred(CoreSdkClient.Operator?)
+    case engagementTransferring
 }
 
 class Interactor {
@@ -298,7 +299,9 @@ extension Interactor: CoreSdkClient.Interactable {
     }
 
     var onEngagementTransferring: CoreSdkClient.EngagementTransferringBlock {
-        { }
+        return { [weak self] in
+            self?.notify(.engagementTransferring)
+        }
     }
 
     var onOperatorTypingStatusUpdate: CoreSdkClient.OperatorTypingStatusUpdate {
