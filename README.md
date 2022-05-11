@@ -18,6 +18,7 @@ To build the Example application please follow this instruction:
 ```sh
 git clone --depth 1 git@github.com:salemove/ios-sdk-widgets.git
 cd ios-sdk-widgets
+make clone-snapshots
 pod install
 xed GliaWidgets.xcworkspace
 ```

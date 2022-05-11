@@ -2225,6 +2225,7 @@
 				9A1992CA27D61F5400161AAE /* Frameworks */,
 				9A1992CB27D61F5400161AAE /* Resources */,
 				695DAB985F3593D6095AC0D0 /* [CP] Embed Pods Frameworks */,
+				9A1BD2C2282932F500089691 /* Write SnapshotTests/Changes.diff */,
 			);
 			buildRules = (
 			);
@@ -2414,6 +2415,24 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SnapshotTests/Pods-SnapshotTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		9A1BD2C2282932F500089691 /* Write SnapshotTests/Changes.diff */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Write SnapshotTests/Changes.diff";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "make write-diff\n";
 		};
 		AF28D0B0E2CB093804A42EC2 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
