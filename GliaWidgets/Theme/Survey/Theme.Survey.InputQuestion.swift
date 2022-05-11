@@ -4,6 +4,8 @@ public extension Theme.SurveyStyle {
     struct InputQuestion {
         public var title: Theme.Text
         public var option: OptionButton
+        public var background: Theme.Layer
+        public var textColor: String
 
         static func `default`(
             color: ThemeColor,
@@ -47,7 +49,14 @@ public extension Theme.SurveyStyle {
                         borderWidth: 1,
                         cornerRadius: 4
                     )
-                )
+                ),
+                background: Theme.Layer(
+                    background: color.background.hex,
+                    borderColor: color.baseNormal.hex,
+                    borderWidth: 1,
+                    cornerRadius: 5
+                ),
+                textColor: color.baseDark.hex
             )
         }
     }
