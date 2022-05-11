@@ -28,7 +28,6 @@ install-lfs:
 write-diff:
 	@echo " ✍️  Writing changes (if any) to file..."
 	@command cd SnapshotTests/__Snapshots__ && git diff --name-only > ./../Changes.diff
-	@command cd SnapshotTests/__Snapshots__ && git diff --name-only > ./../Changes.diff
 
 integrate-githooks:
 	@echo " Setting core.hooksPath in local git config "
