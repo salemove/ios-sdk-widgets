@@ -52,6 +52,7 @@ class CallViewController: EngagementViewController, MediaUpgradePresenter {
         view.didRotate()
     }
 
+    // swiftlint:disable function_body_length
     private func bind(viewModel: CallViewModel, to view: CallView) {
         view.header.showBackButton()
         view.header.showCloseButton()
@@ -109,6 +110,7 @@ class CallViewController: EngagementViewController, MediaUpgradePresenter {
             }
         }
     }
+    // swiftlint:enable function_body_length
 }
 
 private extension CallViewModel.CallButton {
