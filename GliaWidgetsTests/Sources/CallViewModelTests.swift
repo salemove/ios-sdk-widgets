@@ -181,4 +181,127 @@ class CallViewModelTests: XCTestCase {
         XCTAssertTrue(isLocalAudioStreamMuted)
         XCTAssertTrue(isLocalVideoStreamPaused)
     }
+    
+    func test_engagementTransferredReleasesRemoteAndLocalVideoAndShowsConnectingState() throws {
+        enum Calls { case showConnecting }
+        var calls: [Calls] = []
+
+        var interactorEnv: Interactor.Environment = .failing
+        interactorEnv.gcd.mainQueue.asyncIfNeeded = { $0() }
+        let interactor: Interactor = .mock(environment: interactorEnv)
+        let mockOperator: CoreSdkClient.Operator = .mock()
+
+        call = .init(
+            .video(direction: .twoWay),
+            environment: .mock
+        )
+
+        viewModel = .init(
+            interactor: interactor,
+            alertConfiguration: .mock(),
+            screenShareHandler: ScreenShareHandler(),
+            environment: .mock,
+            call: call,
+            unreadMessages: .init(with: 0),
+            startWith: .engagement(mediaType: .video)
+        )
+
+        viewModel.action = { action in
+            switch action {
+            case .connecting:
+                calls.append(.showConnecting)
+                
+            case .setRemoteVideo(let video):
+                XCTAssertNil(video)
+                
+            case .setLocalVideo(let video):
+                XCTAssertNil(video)
+
+            default:
+                break
+            }
+        }
+
+        interactor.notify(.engagementTransferred(mockOperator))
+
+        XCTAssertEqual([.showConnecting], calls)
+    }
+    
+    func test_engagementTransferReleasesStreams() throws {
+        var interactorEnv: Interactor.Environment = .failing
+        interactorEnv.gcd.mainQueue.asyncIfNeeded = { $0() }
+        let interactor: Interactor = .mock(environment: interactorEnv)
+        let mockOperator: CoreSdkClient.Operator = .mock()
+        let remoteAudioStream = CoreSdkClient.MockAudioStreamable.mock(
+            muteFunc: {},
+            unmuteFunc: {},
+            getIsMutedFunc: { false },
+            setIsMutedFunc: { _ in },
+            getIsRemoteFunc: { true },
+            setIsRemoteFunc: { _ in }
+        )
+        let remoteVideoStream = CoreSdkClient.MockVideoStreamable.mock(
+            getStreamViewFunc: { .init() },
+            playVideoFunc: {},
+            pauseFunc: {},
+            resumeFunc: {},
+            stopFunc: {},
+            getIsPausedFunc: { false },
+            setIsPausedFunc: { _ in },
+            getIsRemoteFunc: { true },
+            setIsRemoteFunc: { _ in }
+        )
+        let localAudioStream = CoreSdkClient.MockAudioStreamable.mock(
+            muteFunc: {},
+            unmuteFunc: {},
+            getIsMutedFunc: { false },
+            setIsMutedFunc: { _ in },
+            getIsRemoteFunc: { false },
+            setIsRemoteFunc: { _ in }
+        )
+        let localVideoStream = CoreSdkClient.MockVideoStreamable.mock(
+            getStreamViewFunc: { .init() },
+            playVideoFunc: {},
+            pauseFunc: {},
+            resumeFunc: {},
+            stopFunc: {},
+            getIsPausedFunc: { false },
+            setIsPausedFunc: { _ in },
+            getIsRemoteFunc: { false },
+            setIsRemoteFunc: { _ in }
+        )
+
+        call = .init(
+            .video(direction: .twoWay),
+            environment: .mock
+        )
+
+        viewModel = .init(
+            interactor: interactor,
+            alertConfiguration: .mock(),
+            screenShareHandler: ScreenShareHandler(),
+            environment: .mock,
+            call: call,
+            unreadMessages: .init(with: 0),
+            startWith: .engagement(mediaType: .video)
+        )
+
+        call.updateVideoStream(with: localVideoStream)
+        call.updateVideoStream(with: remoteVideoStream)
+        call.updateAudioStream(with: localAudioStream)
+        call.updateAudioStream(with: remoteAudioStream)
+
+        XCTAssertEqual(call.state.value, .started)
+        XCTAssertFalse(call.audio.stream.value.localStream == nil)
+        XCTAssertFalse(call.audio.stream.value.remoteStream == nil)
+        XCTAssertFalse(call.video.stream.value.localStream == nil)
+        XCTAssertFalse(call.video.stream.value.remoteStream == nil)
+        
+        interactor.notify(.engagementTransferred(mockOperator))
+
+        XCTAssertNil(call.video.stream.value.localStream)
+        XCTAssertNil(call.video.stream.value.remoteStream)
+        XCTAssertNil(call.audio.stream.value.localStream)
+        XCTAssertNil(call.audio.stream.value.remoteStream)
+    }
 }
