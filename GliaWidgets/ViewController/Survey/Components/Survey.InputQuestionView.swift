@@ -67,6 +67,10 @@ extension Survey {
             textView.layer.borderWidth = props.showValidationError ?
                 style.option.highlightedLayer.borderWidth :
                 style.option.normalLayer.borderWidth
+            if let backgroundColor = style.background.background {
+                textView.backgroundColor = UIColor(hex: backgroundColor)
+            }
+            textView.textColor = UIColor(hex: style.textColor)
         }
 
         // MARK: - Private
