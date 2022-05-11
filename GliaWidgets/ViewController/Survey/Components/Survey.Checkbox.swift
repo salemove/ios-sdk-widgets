@@ -23,14 +23,15 @@ extension Survey {
             }
         }
 
-        let imageView = UIImageView().make {
+        let imageViewContainer = UIView()
+        let imageView = UIImageView().makeView {
             $0.image = Asset.surveyCheckbox.image
         }
         let value = UILabel().makeView {
             $0.numberOfLines = 0
         }
         lazy var contentStack = UIStackView.make(.horizontal, spacing: 8)(
-            imageView,
+            imageViewContainer,
             value
         )
 
@@ -49,6 +50,7 @@ extension Survey {
             super.setup()
 
             addSubview(contentStack)
+            imageViewContainer.addSubview(imageView)
             let gesture = UITapGestureRecognizer(target: self, action: #selector(tapGestureAction))
             addGestureRecognizer(gesture)
 
@@ -61,6 +63,10 @@ extension Survey {
             NSLayoutConstraint.activate([
                 imageView.widthAnchor.constraint(equalToConstant: 24),
                 imageView.heightAnchor.constraint(equalToConstant: 24),
+                imageView.topAnchor.constraint(equalTo: imageViewContainer.topAnchor),
+                imageView.leadingAnchor.constraint(equalTo: imageViewContainer.leadingAnchor),
+                imageView.trailingAnchor.constraint(equalTo: imageViewContainer.trailingAnchor),
+                imageView.trailingAnchor.constraint(lessThanOrEqualTo: imageViewContainer.trailingAnchor),
 
                 contentStack.topAnchor.constraint(equalTo: topAnchor),
                 contentStack.leadingAnchor.constraint(equalTo: leadingAnchor),
