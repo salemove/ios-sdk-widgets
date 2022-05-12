@@ -7,7 +7,7 @@ public struct ConnectOperatorStyle {
 
     /// Color of the animated concentric circles extending from the operator's image.
     public var animationColor: UIColor
-    
+
 	/// Accessibility related properties.
     public var accessibility: Accessibility
 
