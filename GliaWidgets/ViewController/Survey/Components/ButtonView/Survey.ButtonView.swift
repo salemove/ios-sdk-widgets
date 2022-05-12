@@ -11,6 +11,18 @@ extension Survey {
             let title: String
             let state: State
             let onSelection: () -> Void
+
+            var accessibility: Accessibility {
+                var label: String {
+                    switch state {
+                    case .selected:
+                        return L10n.Survey.Accessibility.Question.OptionButton.Selected.label.withButtonTitle(title)
+                    case .active, .highlighted:
+                        return L10n.Survey.Accessibility.Question.OptionButton.Unselected.label.withButtonTitle(title)
+                    }
+                }
+                return .init(label: label)
+            }
         }
 
         let value = UILabel().makeView {
@@ -37,6 +49,8 @@ extension Survey {
             addGestureRecognizer(gesture)
 
             render()
+            isAccessibilityElement = true
+            accessibilityTraits = .button
         }
 
         override func defineLayout() {
@@ -55,6 +69,7 @@ extension Survey {
         }
 
         func updateUi() {
+            accessibilityLabel = props.accessibility.label
             switch props.state {
             case .active:
                 value.layer.cornerRadius = style.normalLayer.cornerRadius
@@ -79,7 +94,6 @@ extension Survey {
                 value.textColor = .init(hex: style.highlightedText.color)
                 value.font = .systemFont(ofSize: style.highlightedText.fontSize, weight: .init(rawValue: style.highlightedText.fontWeight))
             case .selected:
-
                 value.layer.cornerRadius = style.selectedLayer.cornerRadius
                 value.layer.borderWidth = style.selectedLayer.borderWidth
                 value.layer.borderColor = UIColor(hex: style.selectedLayer.borderColor).cgColor
