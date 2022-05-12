@@ -19,6 +19,9 @@ extension Survey {
         override func setup() {
             super.setup()
             addSubview(validationMessageHStack)
+            accessibilityLabel = L10n.Survey.Accessibility.Validation.Title.label
+            accessibilityElements = [validationMessageHStack]
+            isAccessibilityElement = true
         }
 
         override func defineLayout() {

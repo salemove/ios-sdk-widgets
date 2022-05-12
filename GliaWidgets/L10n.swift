@@ -659,6 +659,40 @@ public enum L10n {
   }
 
   public enum Survey {
+    public enum Accessibility {
+      public enum Footer {
+        public enum CancelButton {
+          /// Cancel
+          public static let label = L10n.tr("Localizable", "survey.accessibility.footer.cancelButton.label")
+        }
+        public enum SubmitButton {
+          /// Submit
+          public static let label = L10n.tr("Localizable", "survey.accessibility.footer.submitButton.label")
+        }
+      }
+      public enum Question {
+        public enum OptionButton {
+          public enum Selected {
+            /// Selected: {buttonTitle}
+            public static let label = L10n.tr("Localizable", "survey.accessibility.question.optionButton.selected.label")
+          }
+          public enum Unselected {
+            /// Unselected: {buttonTitle}
+            public static let label = L10n.tr("Localizable", "survey.accessibility.question.optionButton.unselected.label")
+          }
+        }
+        public enum Title {
+          /// Required
+          public static let value = L10n.tr("Localizable", "survey.accessibility.question.title.value")
+        }
+      }
+      public enum Validation {
+        public enum Title {
+          /// Please provide an answer for question above
+          public static let label = L10n.tr("Localizable", "survey.accessibility.validation.title.label")
+        }
+      }
+    }
     public enum Action {
       /// Cancel
       public static let cancel = L10n.tr("Localizable", "survey.action.cancel")

@@ -71,6 +71,7 @@ extension Survey {
 
         func render() {
             contentView.header.text = props.header
+            contentView.header.accessibilityLabel = props.header
             props.questionsProps.count == contentView.surveyItemsStack.arrangedSubviews.count ? updateProps() : reloadProps()
             contentView.updateUi(theme: theme)
             contentView.endEditing = props.endEditing

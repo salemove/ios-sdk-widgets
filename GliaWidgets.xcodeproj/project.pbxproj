@@ -215,6 +215,15 @@
 		75FF151927F4F01800FE7BE2 /* Theme.Survey.ScaleQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FF151827F4F01800FE7BE2 /* Theme.Survey.ScaleQuestion.swift */; };
 		75FF151B27F4F52D00FE7BE2 /* Theme.Survey.SingleQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FF151A27F4F52D00FE7BE2 /* Theme.Survey.SingleQuestion.swift */; };
 		75FF151D27F4F8E000FE7BE2 /* Theme.Survey.InputQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FF151C27F4F8E000FE7BE2 /* Theme.Survey.InputQuestion.swift */; };
+		8458769F2823FD18007AC3DF /* SurveyViewControllerVoiceOverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8458769E2823FD18007AC3DF /* SurveyViewControllerVoiceOverTests.swift */; };
+		845876A22823FF34007AC3DF /* Survey.ViewController.Props.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845876A12823FF34007AC3DF /* Survey.ViewController.Props.Mock.swift */; };
+		845876A5282A9015007AC3DF /* ScaleQuestionView.Props.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845876A4282A9015007AC3DF /* ScaleQuestionView.Props.Accessibility.swift */; };
+		845876A8282A94CF007AC3DF /* BooleanQuestionView.Props.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845876A7282A94CF007AC3DF /* BooleanQuestionView.Props.Accessibility.swift */; };
+		845876AB282A959C007AC3DF /* SingleChoiceQuestionView.Props.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845876AA282A959C007AC3DF /* SingleChoiceQuestionView.Props.Accessibility.swift */; };
+		845876AE282A95DE007AC3DF /* InputQuestionView.Props.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845876AD282A95DE007AC3DF /* InputQuestionView.Props.Accessibility.swift */; };
+		845876B1282A9EAF007AC3DF /* CheckboxView.Props.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845876B0282A9EAF007AC3DF /* CheckboxView.Props.Accessibility.swift */; };
+		845876B4282AA296007AC3DF /* ButtonView.Props.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845876B3282AA296007AC3DF /* ButtonView.Props.Accessibility.swift */; };
+		84CFB7732822700000167258 /* Theme.Button.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CFB7722822700000167258 /* Theme.Button.Accessibility.swift */; };
 		845E2F6A28365AD000C04D56 /* CoreSDKClient.Operator.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845E2F6928365AD000C04D56 /* CoreSDKClient.Operator.Mock.swift */; };
 		9A0B7D1727DA6B74006D8637 /* Interactor.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A0B7D1627DA6B74006D8637 /* Interactor.Mock.swift */; };
 		9A186A3527F5CF3C0055886D /* FileUploadStyle.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A186A3427F5CF3C0055886D /* FileUploadStyle.Accessibility.swift */; };
@@ -273,8 +282,6 @@
 		9A83D77F27B181C500681C9F /* Glia.Environment.Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A83D77E27B181C500681C9F /* Glia.Environment.Interface.swift */; };
 		9A83D78127B18DB600681C9F /* Glia.Environment.Live.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A83D78027B18DB600681C9F /* Glia.Environment.Live.swift */; };
 		9A83D78327B18DF000681C9F /* Glia.Environment.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A83D78227B18DF000681C9F /* Glia.Environment.Mock.swift */; };
-		9AA3CBA627EB306100C00712 /* CallViewModel.Environment.Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA3CBA527EB306100C00712 /* CallViewModel.Environment.Interface.swift */; };
-		9AA3CBA827EB31A300C00712 /* CallViewModel.Environment.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA3CBA727EB31A300C00712 /* CallViewModel.Environment.Mock.swift */; };
 		9AB061C1280EFE09008960FA /* ChatFileDownloadStyle.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB061C0280EFE09008960FA /* ChatFileDownloadStyle.Accessibility.swift */; };
 		9AB196D227C3D74300FD60AB /* Interactor.Environment.Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB196D127C3D74300FD60AB /* Interactor.Environment.Interface.swift */; };
 		9AB196D427C3D7FD00FD60AB /* Interactor.Environment.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB196D327C3D7FD00FD60AB /* Interactor.Environment.Mock.swift */; };
@@ -598,6 +605,15 @@
 		75FF151827F4F01800FE7BE2 /* Theme.Survey.ScaleQuestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.Survey.ScaleQuestion.swift; sourceTree = "<group>"; };
 		75FF151A27F4F52D00FE7BE2 /* Theme.Survey.SingleQuestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.Survey.SingleQuestion.swift; sourceTree = "<group>"; };
 		75FF151C27F4F8E000FE7BE2 /* Theme.Survey.InputQuestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.Survey.InputQuestion.swift; sourceTree = "<group>"; };
+		8458769E2823FD18007AC3DF /* SurveyViewControllerVoiceOverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurveyViewControllerVoiceOverTests.swift; sourceTree = "<group>"; };
+		845876A12823FF34007AC3DF /* Survey.ViewController.Props.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Survey.ViewController.Props.Mock.swift; sourceTree = "<group>"; };
+		845876A4282A9015007AC3DF /* ScaleQuestionView.Props.Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleQuestionView.Props.Accessibility.swift; sourceTree = "<group>"; };
+		845876A7282A94CF007AC3DF /* BooleanQuestionView.Props.Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BooleanQuestionView.Props.Accessibility.swift; sourceTree = "<group>"; };
+		845876AA282A959C007AC3DF /* SingleChoiceQuestionView.Props.Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleChoiceQuestionView.Props.Accessibility.swift; sourceTree = "<group>"; };
+		845876AD282A95DE007AC3DF /* InputQuestionView.Props.Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputQuestionView.Props.Accessibility.swift; sourceTree = "<group>"; };
+		845876B0282A9EAF007AC3DF /* CheckboxView.Props.Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckboxView.Props.Accessibility.swift; sourceTree = "<group>"; };
+		845876B3282AA296007AC3DF /* ButtonView.Props.Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonView.Props.Accessibility.swift; sourceTree = "<group>"; };
+		84CFB7722822700000167258 /* Theme.Button.Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.Button.Accessibility.swift; sourceTree = "<group>"; };
 		845E2F6928365AD000C04D56 /* CoreSDKClient.Operator.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreSDKClient.Operator.Mock.swift; sourceTree = "<group>"; };
 		85639A838514258D976E1B2A /* Pods_GliaWidgets.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GliaWidgets.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		932C53D761BB62F6C162A714 /* Pods_SnapshotTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SnapshotTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -660,8 +676,6 @@
 		9A83D77E27B181C500681C9F /* Glia.Environment.Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Glia.Environment.Interface.swift; sourceTree = "<group>"; };
 		9A83D78027B18DB600681C9F /* Glia.Environment.Live.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Glia.Environment.Live.swift; sourceTree = "<group>"; };
 		9A83D78227B18DF000681C9F /* Glia.Environment.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Glia.Environment.Mock.swift; sourceTree = "<group>"; };
-		9AA3CBA527EB306100C00712 /* CallViewModel.Environment.Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallViewModel.Environment.Interface.swift; sourceTree = "<group>"; };
-		9AA3CBA727EB31A300C00712 /* CallViewModel.Environment.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallViewModel.Environment.Mock.swift; sourceTree = "<group>"; };
 		9AB061C0280EFE09008960FA /* ChatFileDownloadStyle.Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatFileDownloadStyle.Accessibility.swift; sourceTree = "<group>"; };
 		9AB196D127C3D74300FD60AB /* Interactor.Environment.Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interactor.Environment.Interface.swift; sourceTree = "<group>"; };
 		9AB196D327C3D7FD00FD60AB /* Interactor.Environment.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interactor.Environment.Mock.swift; sourceTree = "<group>"; };
@@ -1833,6 +1847,7 @@
 		75AF8CED27DA3D41009EEE2C /* Survey */ = {
 			isa = PBXGroup;
 			children = (
+				845876A02823FF21007AC3DF /* Mocks */,
 				75AF8D0227DBF069009EEE2C /* Components */,
 				75AF8CEE27DAA819009EEE2C /* SurveyViewController.swift */,
 				75AF8CF027DBB1F9009EEE2C /* SurveyViewController.View.swift */,
@@ -1855,13 +1870,13 @@
 		75AF8D0227DBF069009EEE2C /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				75AF8D0327DBF07D009EEE2C /* Survey.ScaleQuestionView.swift */,
-				75AF8D0827DD0DE1009EEE2C /* Survey.BooleanQuestionView.swift */,
-				75AF8D0A27DD1DD3009EEE2C /* Survey.SingleChoiceQuestionView.swift */,
-				75AF8D0C27DD464A009EEE2C /* Survey.InputQuestionView.swift */,
+				845876B2282AA27F007AC3DF /* ButtonView */,
+				845876AF282A9E89007AC3DF /* CheckboxView */,
+				845876AC282A95CB007AC3DF /* InputQuestionView */,
+				845876A9282A952C007AC3DF /* SingleChoiceQuestionView */,
+				845876A6282A94AA007AC3DF /* BooleanQuestionView */,
+				845876A3282A8FEF007AC3DF /* ScaleQuestionView */,
 				75AF8D0E27DE8305009EEE2C /* Survey.ValidationErrorView.swift */,
-				7529F2B527E1EB9A004D3581 /* Survey.ButtonView.swift */,
-				754CC61427E27C42005676E9 /* Survey.Checkbox.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1869,6 +1884,7 @@
 		75FF151527F4E11000FE7BE2 /* Survey */ = {
 			isa = PBXGroup;
 			children = (
+				84CFB76F2821878900167258 /* Theme.Survey.Accessibility */,
 				75FF151327F3A2D600FE7BE2 /* Theme+Survey.swift */,
 				75FF151627F4E13900FE7BE2 /* Theme.Survey.BooleanQuestion.swift */,
 				75FF151C27F4F8E000FE7BE2 /* Theme.Survey.InputQuestion.swift */,
@@ -1876,6 +1892,76 @@
 				75FF151827F4F01800FE7BE2 /* Theme.Survey.ScaleQuestion.swift */,
 			);
 			path = Survey;
+			sourceTree = "<group>";
+		};
+		845876A02823FF21007AC3DF /* Mocks */ = {
+			isa = PBXGroup;
+			children = (
+				845876A12823FF34007AC3DF /* Survey.ViewController.Props.Mock.swift */,
+			);
+			path = Mocks;
+			sourceTree = "<group>";
+		};
+		845876A3282A8FEF007AC3DF /* ScaleQuestionView */ = {
+			isa = PBXGroup;
+			children = (
+				75AF8D0327DBF07D009EEE2C /* Survey.ScaleQuestionView.swift */,
+				845876A4282A9015007AC3DF /* ScaleQuestionView.Props.Accessibility.swift */,
+			);
+			path = ScaleQuestionView;
+			sourceTree = "<group>";
+		};
+		845876A6282A94AA007AC3DF /* BooleanQuestionView */ = {
+			isa = PBXGroup;
+			children = (
+				75AF8D0827DD0DE1009EEE2C /* Survey.BooleanQuestionView.swift */,
+				845876A7282A94CF007AC3DF /* BooleanQuestionView.Props.Accessibility.swift */,
+			);
+			path = BooleanQuestionView;
+			sourceTree = "<group>";
+		};
+		845876A9282A952C007AC3DF /* SingleChoiceQuestionView */ = {
+			isa = PBXGroup;
+			children = (
+				75AF8D0A27DD1DD3009EEE2C /* Survey.SingleChoiceQuestionView.swift */,
+				845876AA282A959C007AC3DF /* SingleChoiceQuestionView.Props.Accessibility.swift */,
+			);
+			path = SingleChoiceQuestionView;
+			sourceTree = "<group>";
+		};
+		845876AC282A95CB007AC3DF /* InputQuestionView */ = {
+			isa = PBXGroup;
+			children = (
+				75AF8D0C27DD464A009EEE2C /* Survey.InputQuestionView.swift */,
+				845876AD282A95DE007AC3DF /* InputQuestionView.Props.Accessibility.swift */,
+			);
+			path = InputQuestionView;
+			sourceTree = "<group>";
+		};
+		845876AF282A9E89007AC3DF /* CheckboxView */ = {
+			isa = PBXGroup;
+			children = (
+				754CC61427E27C42005676E9 /* Survey.Checkbox.swift */,
+				845876B0282A9EAF007AC3DF /* CheckboxView.Props.Accessibility.swift */,
+			);
+			path = CheckboxView;
+			sourceTree = "<group>";
+		};
+		845876B2282AA27F007AC3DF /* ButtonView */ = {
+			isa = PBXGroup;
+			children = (
+				7529F2B527E1EB9A004D3581 /* Survey.ButtonView.swift */,
+				845876B3282AA296007AC3DF /* ButtonView.Props.Accessibility.swift */,
+			);
+			path = ButtonView;
+			sourceTree = "<group>";
+		};
+		84CFB76F2821878900167258 /* Theme.Survey.Accessibility */ = {
+			isa = PBXGroup;
+			children = (
+				84CFB7722822700000167258 /* Theme.Button.Accessibility.swift */,
+			);
+			path = Theme.Survey.Accessibility;
 			sourceTree = "<group>";
 		};
 		9A1992CE27D61F5400161AAE /* SnapshotTests */ = {
@@ -1886,6 +1972,7 @@
 				9AE9E4B427E0EE2E00BFE239 /* CallViewControllerVoiceOverTests.swift */,
 				9AB3401227F71D5D006E0FE2 /* BubbleViewVoiceOverTests.swift */,
 				9AB3402828002422006E0FE2 /* ChatCallUpgradeViewVoiceOverTests.swift */,
+				8458769E2823FD18007AC3DF /* SurveyViewControllerVoiceOverTests.swift */,
 			);
 			path = SnapshotTests;
 			sourceTree = "<group>";
@@ -2483,10 +2570,12 @@
 				1A4AF5D325AEF543002CD0F4 /* AlertViewController+Confirmation.swift in Sources */,
 				1AFB1E7825F8B26800CA460D /* ChatTextContentStyle.swift in Sources */,
 				1AFB1E7425F8B00B00CA460D /* ChatTextContentView.swift in Sources */,
+				845876AE282A95DE007AC3DF /* InputQuestionView.Props.Accessibility.swift in Sources */,
 				753A56B927CFEB730050D8E6 /* ChatViewModel.Mock.swift in Sources */,
 				1A0C9A7F25C1732F00815406 /* Theme+MinimizedBubble.swift in Sources */,
 				1A60AF7E25656F0400E53F53 /* Glia.swift in Sources */,
 				1A60AFB62566825400E53F53 /* ViewModel.swift in Sources */,
+				845876B4282AA296007AC3DF /* ButtonView.Props.Accessibility.swift in Sources */,
 				1A0C9AE025C9624500815406 /* ObservableValue.swift in Sources */,
 				1A60AFB9256682AF00E53F53 /* FlowCoordinator.swift in Sources */,
 				9A66172A27A94826001C8E03 /* CoreSDKClient.Live.swift in Sources */,
@@ -2504,6 +2593,7 @@
 				1A0452DD25DBD0A4000DA0C1 /* HeaderButton.swift in Sources */,
 				75AF8CEF27DAA819009EEE2C /* SurveyViewController.swift in Sources */,
 				1A60AF96256675C400E53F53 /* UIColor+Extensions.swift in Sources */,
+				845876A22823FF34007AC3DF /* Survey.ViewController.Props.Mock.swift in Sources */,
 				1A4674B625E907320078FA1C /* AttachmentSourceListStyle.swift in Sources */,
 				1A7CA81D2574D6370047CBBE /* ConnectView.swift in Sources */,
 				1ABD6C5525B574FF00D56EFA /* BubbleView.swift in Sources */,
@@ -2512,6 +2602,7 @@
 				1A2DA73B25EFC00500032611 /* FileUploadListStyle.swift in Sources */,
 				9A83D78127B18DB600681C9F /* Glia.Environment.Live.swift in Sources */,
 				C4F176CE261D1543009D9F07 /* ChatFileDownloadContentStyle.swift in Sources */,
+				845876A5282A9015007AC3DF /* ScaleQuestionView.Props.Accessibility.swift in Sources */,
 				C43D7A0D25FF92530064B1DA /* ChoiceCardView.swift in Sources */,
 				1A0C142925B84E5500B00695 /* EngagementViewController.swift in Sources */,
 				1A60AFE425669B0400E53F53 /* ChatCoordinator.swift in Sources */,
@@ -2568,6 +2659,7 @@
 				C42463742673ABE10082C135 /* ScreenShareHandler.swift in Sources */,
 				1A56D53D257E24A400141BC8 /* PoweredBy.swift in Sources */,
 				6EEAD84E2701A8C10074C191 /* ChoiceCardOptionStateStyle.swift in Sources */,
+				845876B1282A9EAF007AC3DF /* CheckboxView.Props.Accessibility.swift in Sources */,
 				1A4AF5CD25AEF4A0002CD0F4 /* AlertViewController+Message.swift in Sources */,
 				1A7CA8242574D68E0047CBBE /* ConnectStatusView.swift in Sources */,
 				1A5F81402588B7BD00A605DA /* ChatMessageEntryStyle.swift in Sources */,
@@ -2576,6 +2668,7 @@
 				9AB3402B28002EE9006E0FE2 /* ChatCallUpgradeStyle.Accessibility.swift in Sources */,
 				9A1992E327D6669900161AAE /* UIKitBased.Interface.swift in Sources */,
 				1A60AF7A25656E0500E53F53 /* Theme.swift in Sources */,
+				84CFB7732822700000167258 /* Theme.Button.Accessibility.swift in Sources */,
 				1A475BB725DE833200296D55 /* BadgeStyle.swift in Sources */,
 				1A4AD3B3256D2A7600468BFB /* VisitorChatMessageStyle.swift in Sources */,
 				9AB196DC27C3FFCC00FD60AB /* Call.Environment.Interface.swift in Sources */,
@@ -2588,6 +2681,7 @@
 				1A6075E02582209100569B0E /* UserImageView.swift in Sources */,
 				1AC7A7AF258786CB00567FF8 /* EngagementViewModel.swift in Sources */,
 				9AE9E4B327E0E60F00BFE239 /* CallViewModel.Mock.swift in Sources */,
+				845876A8282A94CF007AC3DF /* BooleanQuestionView.Props.Accessibility.swift in Sources */,
 				1A6EBB2525ADE36900EE325D /* MediaUpgradePresenter.swift in Sources */,
 				1AA738B925790DB400E1120F /* ActionButtonStyle.swift in Sources */,
 				1A2DA71F25EF720400032611 /* FilePickerViewModel.swift in Sources */,
@@ -2651,6 +2745,7 @@
 				1A0452EA25DBE259000DA0C1 /* MessageButton.swift in Sources */,
 				9A19926627D3BA3A00161AAE /* GCD.Interface.swift in Sources */,
 				1A277A1225FA604E009FE131 /* ChatFileContentView.swift in Sources */,
+				845876AB282A959C007AC3DF /* SingleChoiceQuestionView.Props.Accessibility.swift in Sources */,
 				9AB3402327FC859E006E0FE2 /* CallButtonStyle.StateStyle.Accessibility.swift in Sources */,
 				6E9C01AD26D3B8B500EBE1D4 /* OperatorTypingIndicatorView.swift in Sources */,
 				7529F2B427E1D503004D3581 /* Survey.swift in Sources */,
@@ -2773,6 +2868,7 @@
 				9AE9E4B527E0EE2E00BFE239 /* CallViewControllerVoiceOverTests.swift in Sources */,
 				9AB3401327F71D5D006E0FE2 /* BubbleViewVoiceOverTests.swift in Sources */,
 				9A1992D827D61F8100161AAE /* ChatViewControllerVoiceOverTests.swift in Sources */,
+				8458769F2823FD18007AC3DF /* SurveyViewControllerVoiceOverTests.swift in Sources */,
 				9AB3402928002422006E0FE2 /* ChatCallUpgradeViewVoiceOverTests.swift in Sources */,
 				9A1992D927D61F8100161AAE /* SnapshotTestCase.swift in Sources */,
 			);
