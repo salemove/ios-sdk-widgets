@@ -34,19 +34,24 @@ extension Theme {
         public var borderWidth: CGFloat = 0
         /// Button border hex color.
         public var borderColor: String?
+        /// Accessibility related properties.
+        public var accessibility: Accessibility
+
         /// Initializes `Button` style instance.
         public init(
             background: String,
             title: Theme.Text,
             cornerRadius: CGFloat,
             borderWidth: CGFloat = 0,
-            borderColor: String? = nil
+            borderColor: String? = nil,
+            accessibility: Accessibility
         ) {
             self.background = background
             self.title = title
             self.cornerRadius = cornerRadius
             self.borderWidth = borderWidth
             self.borderColor = borderColor
+            self.accessibility = accessibility
         }
     }
 
@@ -167,13 +172,23 @@ extension Theme.SurveyStyle {
             ),
             submitButton: .init(
                 background: color.primary.hex,
-                title: .init(color: color.baseLight.hex, fontSize: 16, fontWeight: 0.1),
-                cornerRadius: 4
+                title: .init(
+                    color: color.baseLight.hex,
+                    fontSize: 16,
+                    fontWeight: 0.1
+                ),
+                cornerRadius: 4,
+                accessibility: .init(label: L10n.Survey.Accessibility.Footer.SubmitButton.label)
             ),
             cancellButton: .init(
                 background: color.systemNegative.hex,
-                title: .init(color: color.baseLight.hex, fontSize: 16, fontWeight: 0.1),
-                cornerRadius: 4
+                title: .init(
+                    color: color.baseLight.hex,
+                    fontSize: 16,
+                    fontWeight: 0.1
+                ),
+                cornerRadius: 4,
+                accessibility: .init(label: L10n.Survey.Accessibility.Footer.CancelButton.label)
             ),
             booleanQuestion: .default(color: color, font: font),
             scaleQuestion: .default(color: color, font: font),

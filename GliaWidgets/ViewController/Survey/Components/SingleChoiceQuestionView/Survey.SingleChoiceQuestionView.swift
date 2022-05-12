@@ -1,7 +1,8 @@
+import SalemoveSDK
 import UIKit
 
 extension Survey {
-    final class InputQuestionView: View {
+    final class SingleChoiceQuestionView: View {
         var props: Props {
             didSet { render() }
         }
@@ -11,19 +12,19 @@ extension Survey {
         let title = UILabel().make {
             $0.numberOfLines = 0
         }
-        let textView = UITextView().make {
-            $0.clipsToBounds = true
-        }
+        let optionsStack = UIStackView.make(.vertical, spacing: 24, distribution: .equalSpacing)()
         let validationError = ValidationErrorView()
         lazy var contentStack = UIStackView.make(.vertical, spacing: 16)(
             title,
-            textView,
+            optionsStack,
             validationError
         )
 
+        // MARK: - Lifycycle
+
         init(
             props: Props,
-            style: Theme.SurveyStyle.InputQuestion
+            style: Theme.SurveyStyle.SingleQuestion
         ) {
             self.props = props
             self.style = style
@@ -33,7 +34,6 @@ extension Survey {
         override func setup() {
             super.setup()
             addSubview(contentStack)
-            textView.delegate = self
             render()
         }
 
@@ -43,12 +43,21 @@ extension Survey {
                 contentStack.topAnchor.constraint(equalTo: topAnchor),
                 contentStack.leadingAnchor.constraint(equalTo: leadingAnchor),
                 contentStack.trailingAnchor.constraint(equalTo: trailingAnchor),
-                contentStack.bottomAnchor.constraint(equalTo: bottomAnchor),
-                textView.heightAnchor.constraint(equalToConstant: 96)
+                contentStack.bottomAnchor.constraint(equalTo: bottomAnchor)
             ])
         }
 
         func render() {
+            let delta = optionsStack.arrangedSubviews.count - props.options.count
+            switch delta {
+            case 0:
+                break
+            default:
+                (0..<abs(delta)).forEach { _ in
+                    optionsStack.addArrangedSubview(CheckboxView(style: style.optionText))
+                }
+            }
+
             title.attributedText = .withRequiredSymbol(
                 foregroundColor: .init(hex: style.title.color),
                 fontSize: style.title.fontSize,
@@ -56,62 +65,63 @@ extension Survey {
                 isRequired: props.isRequired,
                 text: props.title
             )
-            textView.text = props.value
+
+            title.accessibilityLabel = props.title
+            title.accessibilityValue = props.accessibility.value
+
+            zip(props.options, optionsStack.arrangedSubviews)
+                .forEach { opt, view in
+                    guard let checkboxView = view as? CheckboxView else { return }
+                    checkboxView.props = .init(
+                        title: opt.name,
+                        state: props.selected == opt ? .selected : .active
+                    ) {
+                        opt.select(opt)
+                    }
+                }
             validationError.isHidden = !props.showValidationError
-            textView.layer.cornerRadius = props.showValidationError ?
-                style.option.highlightedLayer.cornerRadius :
-                style.option.normalLayer.cornerRadius
-            textView.layer.borderColor = props.showValidationError ?
-                UIColor(hex: style.option.highlightedLayer.borderColor).cgColor :
-                UIColor(hex: style.option.normalLayer.borderColor).cgColor
-            textView.layer.borderWidth = props.showValidationError ?
-                style.option.highlightedLayer.borderWidth :
-                style.option.normalLayer.borderWidth
         }
 
         // MARK: - Private
 
-        private let style: Theme.SurveyStyle.InputQuestion
+        private let style: Theme.SurveyStyle.SingleQuestion
     }
 }
 
-extension Survey.InputQuestionView {
-    struct Props: Survey.QuestionPropsProtocol {
+extension Survey.SingleChoiceQuestionView {
+    struct Props: SurveyQuestionPropsProtocol {
         let id: String
-        var title: String
-        var value: String
-        var isRequired: Bool
+        let title: String
+        let isRequired: Bool
         var showValidationError: Bool
-        var textDidChange: (String) -> Void
+        var options: [Survey.Option<String>]
+        var selected: Survey.Option<String>?
         var answerContainer: CoreSdkClient.SurveyAnswerContainer?
+        let accessibility: Accessibility
 
         var isValid: Bool {
             guard isRequired else { return true }
-            return value.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == false
+            return selected != nil
         }
 
         init(
             id: String,
             title: String,
-            value: String = "",
-            isRequired: Bool = false,
+            isRequired: Bool,
             showValidationError: Bool = false,
-            textDidChange: @escaping (String) -> Void = { _ in },
-            answerContainer: CoreSdkClient.SurveyAnswerContainer? = nil
+            options: [Survey.Option<String>] = [],
+            selected: Survey.Option<String>? = nil,
+            answerContainer: CoreSdkClient.SurveyAnswerContainer? = nil,
+            accessibility: Accessibility
         ) {
             self.id = id
             self.title = title
-            self.value = value
             self.isRequired = isRequired
             self.showValidationError = showValidationError
-            self.textDidChange = textDidChange
+            self.options = options
+            self.selected = selected
             self.answerContainer = answerContainer
+            self.accessibility = accessibility
         }
-    }
-}
-
-extension Survey.InputQuestionView: UITextViewDelegate {
-    func textViewDidChange(_ textView: UITextView) {
-        props.textDidChange(textView.text)
     }
 }

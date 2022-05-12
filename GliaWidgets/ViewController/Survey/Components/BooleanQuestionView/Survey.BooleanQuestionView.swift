@@ -67,6 +67,10 @@ extension Survey {
                 isRequired: props.isRequired,
                 text: props.title
             )
+
+            title.accessibilityLabel = props.title
+            title.accessibilityValue = props.accessibility.value
+
             zip(props.options, optionsStack.arrangedSubviews)
                 .forEach { option, view in
                     guard let buttonView = view as? ButtonView else { return }
@@ -94,6 +98,7 @@ extension Survey.BooleanQuestionView {
         var options: [Survey.Option<Bool>]
         var selected: Survey.Option<Bool>?
         var answerContainer: CoreSdkClient.SurveyAnswerContainer?
+        let accessibility: Accessibility
 
         var isValid: Bool {
             guard isRequired else { return true }
@@ -107,7 +112,8 @@ extension Survey.BooleanQuestionView {
             showValidationError: Bool = false,
             options: [Survey.Option<Bool>] = [],
             selected: Survey.Option<Bool>? = nil,
-            answerContainer: CoreSdkClient.SurveyAnswerContainer? = nil
+            answerContainer: CoreSdkClient.SurveyAnswerContainer? = nil,
+            accessibility: Accessibility
         ) {
             self.id = id
             self.title = title
@@ -116,6 +122,7 @@ extension Survey.BooleanQuestionView {
             self.options = options
             self.selected = selected
             self.answerContainer = answerContainer
+            self.accessibility = accessibility
         }
     }
 }
