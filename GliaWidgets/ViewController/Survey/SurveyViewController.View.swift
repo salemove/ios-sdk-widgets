@@ -133,6 +133,8 @@ extension Survey {
                 weight: .init(theme.survey.submitButton.title.fontWeight)
             )
             submitButton.setTitleColor(.init(hex: theme.survey.submitButton.title.color), for: .normal)
+            cancelButton.accessibilityLabel = theme.survey.cancellButton.accessibility.label
+            submitButton.accessibilityLabel = theme.survey.submitButton.accessibility.label
         }
 
         // MARK: - Private

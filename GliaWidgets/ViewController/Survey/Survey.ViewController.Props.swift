@@ -121,10 +121,15 @@ extension Survey.ViewController.Props {
         updateProps: @escaping (Self) -> Void
     ) -> Survey.ScaleQuestionView.Props {
 
+        let accessibilityValue = sdkQuestion.required
+        ? L10n.Survey.Accessibility.Question.Title.value
+        : nil
+
         var scaleProps = Survey.ScaleQuestionView.Props(
             id: sdkQuestion.id.rawValue,
             title: sdkQuestion.text,
-            isRequired: sdkQuestion.required
+            isRequired: sdkQuestion.required,
+            accessibility: .init(value: accessibilityValue)
         )
         let handleScaleOptionSelection = { (option: Survey.Option<Int>) in
             guard var optionProps = getQuestion(sdkQuestion.id.rawValue) as? Survey.ScaleQuestionView.Props else { return }
@@ -156,10 +161,15 @@ extension Survey.ViewController.Props {
         updateProps: @escaping (Self) -> Void
     ) -> Survey.BooleanQuestionView.Props {
 
+        let accessibilityValue = sdkQuestion.required
+        ? L10n.Survey.Accessibility.Question.Title.value
+        : nil
+
         var booleanProps = Survey.BooleanQuestionView.Props(
             id: sdkQuestion.id.rawValue,
             title: sdkQuestion.text,
-            isRequired: sdkQuestion.required
+            isRequired: sdkQuestion.required,
+            accessibility: .init(value: accessibilityValue)
         )
         let handleBooleanOptionSelection = { (option: Survey.Option<Bool>) in
             guard var optionProps = getQuestion(sdkQuestion.id.rawValue) as? Survey.BooleanQuestionView.Props else { return }
@@ -188,10 +198,15 @@ extension Survey.ViewController.Props {
         updateProps: @escaping (Self) -> Void
     ) -> Survey.SingleChoiceQuestionView.Props {
 
+        let accessibilityValue = sdkQuestion.required
+        ? L10n.Survey.Accessibility.Question.Title.value
+        : nil
+
         var scaleProps = Survey.SingleChoiceQuestionView.Props(
             id: sdkQuestion.id.rawValue,
             title: sdkQuestion.text,
-            isRequired: sdkQuestion.required
+            isRequired: sdkQuestion.required,
+            accessibility: .init(value: accessibilityValue)
         )
         let handleSingleOptionSelection = { (option: Survey.Option<String>) in
             guard var optionProps = getQuestion(sdkQuestion.id.rawValue) as? Survey.SingleChoiceQuestionView.Props else { return }
@@ -224,10 +239,15 @@ extension Survey.ViewController.Props {
         updateProps: @escaping (Self) -> Void
     ) -> Survey.InputQuestionView.Props {
 
+        let accessibilityValue = sdkQuestion.required
+        ? L10n.Survey.Accessibility.Question.Title.value
+        : nil
+
         var inputProps = Survey.InputQuestionView.Props(
             id: sdkQuestion.id.rawValue,
             title: sdkQuestion.text,
-            isRequired: sdkQuestion.required
+            isRequired: sdkQuestion.required,
+            accessibility: .init(value: accessibilityValue)
         )
         inputProps.textDidChange = { newValue in
             guard var newQuestion = getQuestion(sdkQuestion.id.rawValue) as? Survey.InputQuestionView.Props else { return }
