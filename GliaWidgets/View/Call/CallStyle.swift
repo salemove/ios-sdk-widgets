@@ -46,7 +46,7 @@ public class CallStyle: EngagementStyle {
 
     /// Style of the call view when the visitor is put on hold.
     public var onHoldStyle: OnHoldStyle
-    
+
 	/// Accessiblity properties for CallStyle.
     public var accessibility: Accessibility
 
