@@ -125,6 +125,8 @@ extension Survey {
 
             cancelButton.update(with: theme.survey.cancellButton)
             submitButton.update(with: theme.survey.submitButton)
+            cancelButton.accessibilityLabel = theme.survey.cancellButton.accessibility.label
+            submitButton.accessibilityLabel = theme.survey.submitButton.accessibility.label
         }
 
         // MARK: - Private

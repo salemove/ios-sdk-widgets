@@ -38,8 +38,11 @@ extension Theme {
         public var borderWidth: CGFloat = 0
         /// Button border hex color.
         public var borderColor: String?
-
+        /// Button shadow.
         public var shadow: Shadow
+        /// Accessibility related properties.
+        public var accessibility: Accessibility
+
         /// Initializes `Button` style instance.
         public init(
             background: String?,
@@ -47,7 +50,8 @@ extension Theme {
             cornerRadius: CGFloat,
             borderWidth: CGFloat = 0,
             borderColor: String? = nil,
-            shadow: Shadow = .standard
+            shadow: Shadow = .standard,
+            accessibility: Accessibility
         ) {
             self.background = background
             self.title = title
@@ -55,10 +59,12 @@ extension Theme {
             self.borderWidth = borderWidth
             self.borderColor = borderColor
             self.shadow = shadow
+            self.accessibility = accessibility
         }
 
         public init(
-            acitonButtonStyle: ActionButtonStyle
+            acitonButtonStyle: ActionButtonStyle,
+            accessibility: Accessibility
         ) {
             self.background = acitonButtonStyle.backgroundColor == .clear ? nil : acitonButtonStyle.backgroundColor.hex
             self.title = .init(
@@ -76,6 +82,7 @@ extension Theme {
                 opacity: acitonButtonStyle.shadowOpacity ?? Shadow.standard.opacity,
                 radius: acitonButtonStyle.shadowRadius ?? Shadow.standard.radius
             )
+            self.accessibility = accessibility
         }
     }
 
@@ -214,8 +221,14 @@ extension Theme.SurveyStyle {
                 fontSize: 20,
                 fontWeight: 0.3
             ),
-            submitButton: .init(acitonButtonStyle: alertStyle.positiveAction),
-            cancellButton: .init(acitonButtonStyle: alertStyle.negativeAction),
+            submitButton: .init(
+                acitonButtonStyle: alertStyle.positiveAction,
+                accessibility: .init(label: L10n.Survey.Accessibility.Footer.SubmitButton.label)
+            ),
+            cancellButton: .init(
+                acitonButtonStyle: alertStyle.negativeAction,
+                accessibility: .init(label: L10n.Survey.Accessibility.Footer.CancelButton.label)
+            ),
             booleanQuestion: .default(color: color, font: font),
             scaleQuestion: .default(color: color, font: font),
             singleQuestion: .default(color: color, font: font),
