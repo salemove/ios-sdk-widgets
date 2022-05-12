@@ -197,8 +197,16 @@
 "call.accessibility.buttons.minimize.badgeValue.singleItem" = "";
 "call.accessibility.buttons.minimize.badgeValue.multipleItems" = "";
 "call.accessibility.buttons.minimize.titleAndBadgeValue" = "{buttonTitle}, {badgeValue}";
+
 "survey.action.cancel" = "Cancel";
 "survey.action.submit" = "Submit";
 "survey.action.yes" = "Yes";
 "survey.action.no" = "No";
 "survey.action.validationError" = "Please provide an answer.";
+
+"survey.accessibility.footer.cancelButton.label" = "Cancel";
+"survey.accessibility.footer.submitButton.label" = "Submit";
+"survey.accessibility.question.title.value" = "Required";
+"survey.accessibility.question.optionButton.selected.label" = "Selected: {buttonTitle}";
+"survey.accessibility.question.optionButton.unselected.label" = "Unselected: {buttonTitle}";
+"survey.accessibility.validation.title.label" = "Please provide an answer for question above";
