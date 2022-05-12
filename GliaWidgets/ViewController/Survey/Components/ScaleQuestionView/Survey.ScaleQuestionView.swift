@@ -2,7 +2,8 @@ import SalemoveSDK
 import UIKit
 
 extension Survey {
-    final class SingleChoiceQuestionView: View {
+    final class ScaleQuestionView: View {
+
         var props: Props {
             didSet { render() }
         }
@@ -12,11 +13,12 @@ extension Survey {
         let title = UILabel().make {
             $0.numberOfLines = 0
         }
-        let optionsStack = UIStackView.make(.vertical, spacing: 24, distribution: .equalSpacing)()
+        let optionsStackContainer = UIView()
+        let optionsStack = UIStackView.make(.horizontal, spacing: 16)()
         let validationError = ValidationErrorView()
         lazy var contentStack = UIStackView.make(.vertical, spacing: 16)(
             title,
-            optionsStack,
+            optionsStackContainer,
             validationError
         )
 
@@ -24,7 +26,7 @@ extension Survey {
 
         init(
             props: Props,
-            style: Theme.SurveyStyle.SingleQuestion
+            style: Theme.SurveyStyle.ScaleQuestion
         ) {
             self.props = props
             self.style = style
@@ -34,6 +36,7 @@ extension Survey {
         override func setup() {
             super.setup()
             addSubview(contentStack)
+            optionsStackContainer.addSubview(optionsStack)
             render()
         }
 
@@ -43,19 +46,29 @@ extension Survey {
                 contentStack.topAnchor.constraint(equalTo: topAnchor),
                 contentStack.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
                 contentStack.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
-                contentStack.bottomAnchor.constraint(equalTo: bottomAnchor)
+                contentStack.bottomAnchor.constraint(equalTo: bottomAnchor),
+
+                optionsStack.topAnchor.constraint(equalTo: optionsStackContainer.topAnchor),
+                optionsStack.leadingAnchor.constraint(equalTo: optionsStackContainer.leadingAnchor),
+                optionsStack.trailingAnchor.constraint(lessThanOrEqualTo: optionsStackContainer.trailingAnchor),
+                optionsStack.bottomAnchor.constraint(equalTo: optionsStackContainer.bottomAnchor)
             ])
         }
 
         func render() {
-            let delta = optionsStack.arrangedSubviews.count - props.options.count
+            let delta = props.options.count - optionsStack.arrangedSubviews.count
             switch delta {
-            case 0:
-                break
-            default:
-                (0..<abs(delta)).forEach { _ in
-                    optionsStack.addArrangedSubview(CheckboxView(style: style.optionText))
+            case 1...:
+                var constraints = [NSLayoutConstraint](); defer { NSLayoutConstraint.activate(constraints) }
+                (0..<delta).forEach { _ in
+                    let buttonView = ButtonView(style: style.option)
+                    constraints.append(buttonView.widthAnchor.constraint(equalToConstant: 48))
+                    constraints.append(buttonView.heightAnchor.constraint(equalToConstant: 52))
+                    optionsStack.addArrangedSubview(buttonView)
                 }
+            case ..<0:
+                optionsStack.arrangedSubviews.prefix(abs(delta)).forEach { $0.removeFromSuperview() }
+            default: break
             }
 
             title.attributedText = .withRequiredSymbol(
@@ -65,14 +78,16 @@ extension Survey {
                 isRequired: props.isRequired,
                 text: props.title
             )
+
+            title.accessibilityLabel = props.title
+            title.accessibilityValue = props.accessibility.value
+
             zip(props.options, optionsStack.arrangedSubviews)
-                .forEach { opt, view in
-                    guard let checkboxView = view as? CheckboxView else { return }
-                    checkboxView.props = .init(
-                        title: opt.name,
-                        state: props.selected == opt ? .selected : .active
-                    ) {
-                        opt.select(opt)
+                .forEach { option, view in
+                    guard let buttonView = view as? ButtonView else { return }
+                    let viewState: ButtonView.State = option == props.selected ? .selected : props.showValidationError ? .highlighted : .active
+                    buttonView.props = .init(title: option.name, state: viewState) {
+                        option.select(option)
                     }
                 }
             validationError.isHidden = !props.showValidationError
@@ -80,19 +95,20 @@ extension Survey {
 
         // MARK: - Private
 
-        private let style: Theme.SurveyStyle.SingleQuestion
+        private let style: Theme.SurveyStyle.ScaleQuestion
     }
 }
 
-extension Survey.SingleChoiceQuestionView {
+extension Survey.ScaleQuestionView {
     struct Props: SurveyQuestionPropsProtocol {
         let id: String
         let title: String
         let isRequired: Bool
         var showValidationError: Bool
-        var options: [Survey.Option<String>]
-        var selected: Survey.Option<String>?
+        var options: [Survey.Option<Int>]
+        var selected: Survey.Option<Int>?
         var answerContainer: CoreSdkClient.SurveyAnswerContainer?
+        let accessibility: Accessibility
 
         var isValid: Bool {
             guard isRequired else { return true }
@@ -104,9 +120,10 @@ extension Survey.SingleChoiceQuestionView {
             title: String,
             isRequired: Bool,
             showValidationError: Bool = false,
-            options: [Survey.Option<String>] = [],
-            selected: Survey.Option<String>? = nil,
-            answerContainer: CoreSdkClient.SurveyAnswerContainer? = nil
+            options: [Survey.Option<Int>] = [],
+            selected: Survey.Option<Int>? = nil,
+            answerContainer: CoreSdkClient.SurveyAnswerContainer? = nil,
+            accessibility: Accessibility
         ) {
             self.id = id
             self.title = title
@@ -115,6 +132,7 @@ extension Survey.SingleChoiceQuestionView {
             self.options = options
             self.selected = selected
             self.answerContainer = answerContainer
+            self.accessibility = accessibility
         }
     }
 }

@@ -56,6 +56,10 @@ extension Survey {
                 isRequired: props.isRequired,
                 text: props.title
             )
+
+            title.accessibilityLabel = props.title
+            title.accessibilityValue = props.accessibility.value
+
             textView.text = props.value
             validationError.isHidden = !props.showValidationError
             textView.layer.cornerRadius = props.showValidationError ?
@@ -88,6 +92,7 @@ extension Survey.InputQuestionView {
         var showValidationError: Bool
         var textDidChange: (String) -> Void
         var answerContainer: CoreSdkClient.SurveyAnswerContainer?
+        let accessibility: Accessibility
 
         var isValid: Bool {
             guard isRequired else { return true }
@@ -101,7 +106,8 @@ extension Survey.InputQuestionView {
             isRequired: Bool = false,
             showValidationError: Bool = false,
             textDidChange: @escaping (String) -> Void = { _ in },
-            answerContainer: CoreSdkClient.SurveyAnswerContainer? = nil
+            answerContainer: CoreSdkClient.SurveyAnswerContainer? = nil,
+            accessibility: Accessibility
         ) {
             self.id = id
             self.title = title
@@ -110,6 +116,7 @@ extension Survey.InputQuestionView {
             self.showValidationError = showValidationError
             self.textDidChange = textDidChange
             self.answerContainer = answerContainer
+            self.accessibility = accessibility
         }
     }
 }

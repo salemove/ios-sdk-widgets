@@ -2,7 +2,7 @@ import SalemoveSDK
 import UIKit
 
 extension Survey {
-    final class BooleanQuestionView: View {
+    final class SingleChoiceQuestionView: View {
         var props: Props {
             didSet { render() }
         }
@@ -12,7 +12,7 @@ extension Survey {
         let title = UILabel().make {
             $0.numberOfLines = 0
         }
-        let optionsStack = UIStackView.make(.horizontal, spacing: 24)()
+        let optionsStack = UIStackView.make(.vertical, spacing: 24, distribution: .equalSpacing)()
         let validationError = ValidationErrorView()
         lazy var contentStack = UIStackView.make(.vertical, spacing: 16)(
             title,
@@ -20,9 +20,11 @@ extension Survey {
             validationError
         )
 
+        // MARK: - Lifycycle
+
         init(
             props: Props,
-            style: Theme.SurveyStyle.BooleanQuestion
+            style: Theme.SurveyStyle.SingleQuestion
         ) {
             self.props = props
             self.style = style
@@ -40,25 +42,20 @@ extension Survey {
             NSLayoutConstraint.activate([
                 contentStack.topAnchor.constraint(equalTo: topAnchor),
                 contentStack.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
-                contentStack.bottomAnchor.constraint(equalTo: bottomAnchor),
-                contentStack.trailingAnchor.constraint(greaterThanOrEqualTo: safeAreaLayoutGuide.trailingAnchor, constant: 16)
+                contentStack.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
+                contentStack.bottomAnchor.constraint(equalTo: bottomAnchor)
             ])
         }
 
         func render() {
-            let delta = props.options.count - optionsStack.arrangedSubviews.count
+            let delta = optionsStack.arrangedSubviews.count - props.options.count
             switch delta {
-            case 1...:
-                var constraints = [NSLayoutConstraint](); defer { NSLayoutConstraint.activate(constraints) }
+            case 0:
+                break
+            default:
                 (0..<abs(delta)).forEach { _ in
-                    let buttonView = ButtonView(style: style.option)
-                    constraints.append(buttonView.widthAnchor.constraint(equalToConstant: 48))
-                    constraints.append(buttonView.heightAnchor.constraint(equalToConstant: 52))
-                    optionsStack.addArrangedSubview(buttonView)
+                    optionsStack.addArrangedSubview(CheckboxView(style: style.optionText))
                 }
-            case ..<0:
-                optionsStack.arrangedSubviews.suffix(abs(delta)).forEach { $0.removeFromSuperview() }
-            default: break
             }
 
             title.attributedText = .withRequiredSymbol(
@@ -68,33 +65,39 @@ extension Survey {
                 isRequired: props.isRequired,
                 text: props.title
             )
+
+            title.accessibilityLabel = props.title
+            title.accessibilityValue = props.accessibility.value
+
             zip(props.options, optionsStack.arrangedSubviews)
-                .forEach { option, view in
-                    guard let buttonView = view as? ButtonView else { return }
-                    let viewState: ButtonView.State = option == props.selected ? .selected : props.showValidationError ? .highlighted : .active
-                    buttonView.props = .init(title: option.name, state: viewState) {
-                        option.select(option)
+                .forEach { opt, view in
+                    guard let checkboxView = view as? CheckboxView else { return }
+                    checkboxView.props = .init(
+                        title: opt.name,
+                        state: props.selected == opt ? .selected : .active
+                    ) {
+                        opt.select(opt)
                     }
                 }
-            optionsStack.addArrangedSubview(UIView())
             validationError.isHidden = !props.showValidationError
         }
 
         // MARK: - Private
 
-        private let style: Theme.SurveyStyle.BooleanQuestion
+        private let style: Theme.SurveyStyle.SingleQuestion
     }
 }
 
-extension Survey.BooleanQuestionView {
+extension Survey.SingleChoiceQuestionView {
     struct Props: SurveyQuestionPropsProtocol {
         let id: String
         let title: String
         let isRequired: Bool
         var showValidationError: Bool
-        var options: [Survey.Option<Bool>]
-        var selected: Survey.Option<Bool>?
+        var options: [Survey.Option<String>]
+        var selected: Survey.Option<String>?
         var answerContainer: CoreSdkClient.SurveyAnswerContainer?
+        let accessibility: Accessibility
 
         var isValid: Bool {
             guard isRequired else { return true }
@@ -106,9 +109,10 @@ extension Survey.BooleanQuestionView {
             title: String,
             isRequired: Bool,
             showValidationError: Bool = false,
-            options: [Survey.Option<Bool>] = [],
-            selected: Survey.Option<Bool>? = nil,
-            answerContainer: CoreSdkClient.SurveyAnswerContainer? = nil
+            options: [Survey.Option<String>] = [],
+            selected: Survey.Option<String>? = nil,
+            answerContainer: CoreSdkClient.SurveyAnswerContainer? = nil,
+            accessibility: Accessibility
         ) {
             self.id = id
             self.title = title
@@ -117,6 +121,7 @@ extension Survey.BooleanQuestionView {
             self.options = options
             self.selected = selected
             self.answerContainer = answerContainer
+            self.accessibility = accessibility
         }
     }
 }

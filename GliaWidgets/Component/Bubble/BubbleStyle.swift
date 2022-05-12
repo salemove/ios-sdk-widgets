@@ -8,7 +8,7 @@ public class BubbleStyle {
 
     /// Style of a visitor's on hold state overlay.
     public var onHoldOverlay: OnHoldOverlayStyle
-    
+
 	/// Accessibility related properties.
     public var accessibility: Accessibility
 

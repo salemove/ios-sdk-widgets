@@ -12,6 +12,18 @@ extension Survey {
             let state: State
             let onSelection: () -> Void
 
+            var accessibility: Accessibility {
+                var label: String {
+                    switch state {
+                    case .selected:
+                        return L10n.Survey.Accessibility.Question.OptionButton.Selected.label.withButtonTitle(title)
+                    case .active, .highlighted:
+                        return L10n.Survey.Accessibility.Question.OptionButton.Unselected.label.withButtonTitle(title)
+                    }
+                }
+                return .init(label: label)
+            }
+
             init(
                 title: String = "",
                 state: State = .active,
@@ -55,6 +67,10 @@ extension Survey {
             addGestureRecognizer(gesture)
 
             render()
+
+            accessibilityElements = [imageView, value]
+            accessibilityTraits = .button
+            isAccessibilityElement = true
         }
 
         override func defineLayout() {
@@ -77,6 +93,7 @@ extension Survey {
 
         func render() {
             value.text = props.title
+            accessibilityLabel = props.accessibility.label
             switch props.state {
             case .selected:
                 imageView.image = Asset.surveyCheckboxChecked.image
