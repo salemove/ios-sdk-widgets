@@ -342,6 +342,21 @@ extension ChatView {
                 animated: false
             )
             return .queueOperator(connectView)
+        case .transferring:
+            let connectView = ConnectView(
+                with: style.connect,
+                environment: .init(
+                    data: environment.data,
+                    uuid: environment.uuid,
+                    gcd: environment.gcd,
+                    imageViewCache: environment.imageViewCache,
+                    timerProviding: environment.timerProviding)
+            )
+            connectView.setState(
+                .transferring,
+                animated: false
+            )
+            return .queueOperator(connectView)
         }
     }
     // swiftlint:enable function_body_length

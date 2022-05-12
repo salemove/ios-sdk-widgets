@@ -36,4 +36,8 @@ class Section<Item> {
         guard index + 1 < itemCount else { return nil }
         return items_[index + 1]
     }
+
+    func remoteItem(at index: Int) {
+        items_.remove(at: index)
+    }
 }

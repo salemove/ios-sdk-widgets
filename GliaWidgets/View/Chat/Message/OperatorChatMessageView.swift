@@ -47,7 +47,7 @@ class OperatorChatMessageView: ChatMessageView {
     }
 
     func setOperatorImage(fromUrl url: String?, animated: Bool) {
-        operatorImageView?.setImage(fromUrl: url, animated: animated)
+        operatorImageView?.setOperatorImage(fromUrl: url, animated: animated)
     }
 
     private func layout() {

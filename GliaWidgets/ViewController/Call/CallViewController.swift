@@ -52,6 +52,7 @@ class CallViewController: EngagementViewController, MediaUpgradePresenter {
         view.didRotate()
     }
 
+    // swiftlint:disable function_body_length
     private func bind(viewModel: CallViewModel, to view: CallView) {
         view.header.showBackButton()
         view.header.showCloseButton()
@@ -104,9 +105,12 @@ class CallViewController: EngagementViewController, MediaUpgradePresenter {
                 view.localVideoView.streamView = streamView
             case .setVisitorOnHold(let isOnHold):
                 view.isVisitrOnHold = isOnHold
+            case .transferring:
+                view.setConnectState(.transferring, animated: true)
             }
         }
     }
+    // swiftlint:enable function_body_length
 }
 
 private extension CallViewModel.CallButton {

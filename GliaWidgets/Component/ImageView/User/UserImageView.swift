@@ -3,7 +3,7 @@ import UIKit
 class UserImageView: UIView {
     private let style: UserImageStyle
     private let placeholderImageView = UIImageView()
-    private let imageView: ImageView
+    private let operatorImageView: ImageView
     private let environment: Environment
 
     init(
@@ -12,7 +12,7 @@ class UserImageView: UIView {
     ) {
         self.style = style
         self.environment = environment
-        self.imageView = ImageView(
+        self.operatorImageView = ImageView(
             environment: .init(
                 data: environment.data,
                 uuid: environment.uuid,
@@ -37,17 +37,21 @@ class UserImageView: UIView {
         updatePlaceholderContentMode()
     }
 
-    func setImage(_ image: UIImage?, animated: Bool) {
-        changeImageVisibility(visible: image != nil)
-        imageView.setImage(image, animated: animated)
+    func setPlaceholderImage(_ image: UIImage?) {
+        placeholderImageView.image = image
     }
 
-    func setImage(fromUrl url: String?, animated: Bool) {
-        imageView.setImage(
+    func setOperatorImage(_ image: UIImage?, animated: Bool) {
+        changeOperatorImageVisibility(visible: image != nil)
+        operatorImageView.setImage(image, animated: animated)
+    }
+
+    func setOperatorImage(fromUrl url: String?, animated: Bool) {
+        operatorImageView.setImage(
             from: url,
             animated: animated,
             imageReceived: { [weak self] image in
-                self?.changeImageVisibility(visible: image != nil)
+                self?.changeOperatorImageVisibility(visible: image != nil)
             }
         )
     }
@@ -55,22 +59,21 @@ class UserImageView: UIView {
     private func setup() {
         clipsToBounds = true
 
-        placeholderImageView.image = style.placeholderImage
         placeholderImageView.tintColor = style.placeholderColor
         placeholderImageView.backgroundColor = style.placeholderBackgroundColor
         updatePlaceholderContentMode()
 
-        imageView.isHidden = true
-        imageView.contentMode = .scaleAspectFill
-        imageView.backgroundColor = style.imageBackgroundColor
+        operatorImageView.isHidden = true
+        operatorImageView.contentMode = .scaleAspectFill
+        operatorImageView.backgroundColor = style.imageBackgroundColor
     }
 
     private func layout() {
         addSubview(placeholderImageView)
         placeholderImageView.autoPinEdgesToSuperviewEdges()
 
-        addSubview(imageView)
-        imageView.autoPinEdgesToSuperviewEdges()
+        addSubview(operatorImageView)
+        operatorImageView.autoPinEdgesToSuperviewEdges()
     }
 
     private func updatePlaceholderContentMode() {
@@ -84,9 +87,9 @@ class UserImageView: UIView {
         }
     }
 
-    private func changeImageVisibility(visible: Bool) {
+    private func changeOperatorImageVisibility(visible: Bool) {
         placeholderImageView.isHidden = visible
-        imageView.isHidden = !visible
+        operatorImageView.isHidden = !visible
     }
 }
 

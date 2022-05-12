@@ -43,5 +43,6 @@ extension ChatItem {
         case choiceCard(ChatMessage, showsImage: Bool, imageUrl: String?, isActive: Bool)
         case callUpgrade(ObservableValue<CallKind>, duration: ObservableValue<Int>)
         case operatorConnected(name: String?, imageUrl: String?)
+        case transferring
     }
 }
