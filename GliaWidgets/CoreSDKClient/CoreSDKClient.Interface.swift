@@ -176,5 +176,4 @@ extension CoreSdkClient {
     typealias Site = SalemoveSDK.Site
     typealias Survey = SalemoveSDK.Survey
     typealias SurveyAnswerContainer = SalemoveSDK.Survey.Answer.ValueContainer
-    typealias EngagementTransferringBlock = SalemoveSDK.EngagementTransferringBlock
 }
