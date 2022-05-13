@@ -26,6 +26,9 @@ extension ChatItem.Kind: Equatable {
             return lhsName == rhsName
                 && lhsImageUrl == rhsImageUrl
 
+        case (.transferring, .transferring):
+            return true
+
         default:
             return false
         }

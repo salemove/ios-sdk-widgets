@@ -37,7 +37,7 @@ class Section<Item> {
         return items_[index + 1]
     }
 
-    func remoteItem(at index: Int) {
+    func removeItem(at index: Int) {
         items_.remove(at: index)
     }
 }

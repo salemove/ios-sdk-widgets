@@ -254,7 +254,7 @@ extension ChatViewModel {
             }
         }) else { return }
 
-        messagesSection.remoteItem(at: transferringItemIndex)
+        messagesSection.removeItem(at: transferringItemIndex)
         action?(.refreshSection(messagesSection.index))
     }
 }
