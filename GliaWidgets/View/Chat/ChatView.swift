@@ -375,6 +375,12 @@ extension ChatView {
 // MARK: Call Bubble
 
 extension ChatView {
+    func setCallBubbleImage(with imageUrl: String?) {
+        guard let callBubble = callBubble else { return }
+
+        callBubble.kind = .userImage(url: imageUrl)
+    }
+
     func showCallBubble(with imageUrl: String?, animated: Bool) {
         guard callBubble == nil else { return }
         let callBubble = BubbleView(

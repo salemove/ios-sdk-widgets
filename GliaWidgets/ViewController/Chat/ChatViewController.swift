@@ -114,6 +114,10 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter,
                 view.setOperatorTypingIndicatorIsHidden(to: isHidden)
             case .setIsAttachmentButtonHidden(let isHidden):
                 view.messageEntryView.isAttachmentButtonHidden = isHidden
+            case .transferring:
+                view.setConnectState(.transferring, animated: true)
+            case .setCallBubbleImage(let imageUrl):
+                view.setCallBubbleImage(with: imageUrl)
             }
         }
     }
