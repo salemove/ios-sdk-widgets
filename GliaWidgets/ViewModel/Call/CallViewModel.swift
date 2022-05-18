@@ -268,10 +268,11 @@ class CallViewModel: EngagementViewModel, ViewModel {
 
 extension CallViewModel {
     private func onEngagementTransferred() {
-        call.transfer()
+        update(for: interactor.state)
     }
 
     private func onEngagementTransferring() {
+        call.transfer()
         durationCounter.stop()
         action?(.transferring)
     }
