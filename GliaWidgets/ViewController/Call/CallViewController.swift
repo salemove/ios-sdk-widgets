@@ -13,8 +13,6 @@ class CallViewController: EngagementViewController, MediaUpgradePresenter {
     }
 
     override public func loadView() {
-        super.loadView()
-
         let view = viewFactory.makeCallView()
         self.view = view
 

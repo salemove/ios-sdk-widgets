@@ -61,6 +61,7 @@ class UserImageView: UIView {
 
         placeholderImageView.tintColor = style.placeholderColor
         placeholderImageView.backgroundColor = style.placeholderBackgroundColor
+        placeholderImageView.image = style.placeholderImage
         updatePlaceholderContentMode()
 
         operatorImageView.isHidden = true

@@ -12,9 +12,9 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter,
     }
 
     override public func loadView() {
-        super.loadView()
         let view = viewFactory.makeChatView()
         self.view = view
+
         bind(viewModel: viewModel, to: view)
     }
 

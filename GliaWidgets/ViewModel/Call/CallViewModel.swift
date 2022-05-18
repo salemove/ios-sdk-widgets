@@ -69,7 +69,9 @@ class CallViewModel: EngagementViewModel, ViewModel {
 
     override func start() {
         super.start()
+
         update(for: call.kind.value)
+        update(for: interactor.state)
 
         switch startWith {
         case .engagement(let mediaType):
