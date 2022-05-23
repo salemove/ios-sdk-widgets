@@ -340,7 +340,8 @@ extension ChatViewModel {
             files: files
         )
 
-        if interactor.isEngaged {
+        switch interactor.state {
+        case .engaged:
             let item = ChatItem(with: outgoingMessage)
             appendItem(item, to: messagesSection, animated: true)
             uploader.succeededUploads.forEach { action?(.removeUpload($0)) }
@@ -368,26 +369,37 @@ extension ChatViewModel {
                     dismissed: nil
                 )
             }
-        } else {
-            let messageItem = ChatItem(with: outgoingMessage)
+
+        case .enqueued:
+            handle(pendingMessage: outgoingMessage)
+
+        case .enqueueing, .ended, .none:
+            handle(pendingMessage: outgoingMessage)
+            enqueue(mediaType: .text)
+        }
+
+        messageText = ""
+    }
+
+    private func handle(pendingMessage: OutgoingMessage) {
+        switch interactor.state {
+        case .engaged: return
+        case .enqueueing, .enqueued, .ended, .none:
+            let messageItem = ChatItem(with: pendingMessage)
             appendItem(messageItem, to: pendingSection, animated: true)
 
             uploader.succeededUploads.forEach { action?(.removeUpload($0)) }
             uploader.removeSucceededUploads()
             action?(.removeAllUploads)
 
-            pendingMessages.append(outgoingMessage)
+            pendingMessages.append(pendingMessage)
 
             let queueItem = ChatItem(kind: .queueOperator)
 
             queueOperatorSection.set([queueItem])
             action?(.refreshSection(2))
             action?(.scrollToBottom(animated: true))
-
-            enqueue(mediaType: .text)
         }
-
-        messageText = ""
     }
 
     private func replace(
