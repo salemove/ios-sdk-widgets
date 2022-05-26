@@ -24,19 +24,9 @@ let package = Package(
             checksum: "f1322d3e07b01a4f2b1329b7ed43494259fba740c666231422b373ec50dc1e7d"
         ),
         .binaryTarget(
-            name: "SocketIO",
-            url: "https://github.com/salemove/glia-ios-podspecs/releases/download/1.0/SocketIO.xcframework.zip",
-            checksum: "119a21a9d7d0b9a20b0705e5c639cb57cc1d93ee08874a89dd53b8ca23905ad6"
-        ),
-        .binaryTarget(
-            name: "Starscream",
-            url: "https://github.com/salemove/glia-ios-podspecs/releases/download/1.0/Starscream.xcframework.zip",
-            checksum: "bd400c148711147d78c9c549e05f0ca7b4afdd486f387496080fb5aed8580260"
-        ),
-        .binaryTarget(
-            name: "SwiftPhoenixClient",
-            url: "https://github.com/salemove/glia-ios-podspecs/releases/download/1.0/SwiftPhoenixClient.xcframework.zip",
-            checksum: "0efab6ac7d72a8242af69095d72d51a12f33438447a7e41f9edf84e15a08c7bb"
+            name: "GliaCoreDependency",
+            url: "https://github.com/salemove/glia-ios-podspecs/releases/download/1.0/GliaCoreDependency.xcframework.zip",
+            checksum: "bc770dbc55b188884c128a77f4c8fddf6c872d24eeff274e410bd3206d125e77"
         ),
         .binaryTarget(
             name: "TwilioVoice",
@@ -50,8 +40,8 @@ let package = Package(
         ),
         .binaryTarget(
             name: "SalemoveSDK",
-            url: "https://github.com/salemove/ios-bundle/releases/download/0.33.2/SalemoveSDK.xcframework.zip",
-            checksum: "5f39fbbeabbd0bd19bc71699e22d4c1fd7bcc30ae29cd101542e9ecd68a4c0e8"
+            url: "https://github.com/salemove/ios-bundle/releases/download/0.33.3/SalemoveSDK.xcframework.zip",
+            checksum: "6022b274530da0aa8edecbfa35492f7df2a7c4e3c6975a39b7e2b96fe96a934c"
         ),
         .target(
             name: "GliaWidgets",
@@ -74,9 +64,7 @@ let package = Package(
             dependencies: [
                 "SalemoveSDK",
                 "ReactiveSwift",
-                "SocketIO",
-                "SwiftPhoenixClient",
-                "Starscream",
+                "GliaCoreDependency",
                 "TwilioVoice",
                 "WebRTC",
                 "GliaWidgets"
