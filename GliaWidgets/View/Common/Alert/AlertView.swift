@@ -132,6 +132,15 @@ class AlertView: UIView {
         actionsStackView.spacing = 11
         actionsStackView.distribution = .fillEqually
         actionsStackView.axis = style.actionAxis
+
+        setFontScalingEnabled(
+            style.accessibility.isFontScalingEnabled,
+            for: titleLabel
+        )
+        setFontScalingEnabled(
+            style.accessibility.isFontScalingEnabled,
+            for: messageLabel
+        )
     }
 
     private func layout() {
@@ -160,7 +169,7 @@ class AlertView: UIView {
     private func addPoweredBy() {
         guard poweredBy == nil else { return }
 
-        let poweredBy = PoweredBy()
+        let poweredBy = PoweredBy(style: style.poweredBy)
         self.poweredBy = poweredBy
 
         stackView.addArrangedSubview(poweredBy)

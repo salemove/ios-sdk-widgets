@@ -39,6 +39,10 @@ class ChatFileDownloadContentView: ChatFileContentView {
         layer.borderColor = style.borderColor.cgColor
 
         infoLabel.lineBreakMode = .byTruncatingMiddle
+        setFontScalingEnabled(
+            style.accessibility.isFontScalingEnabled,
+            for: infoLabel
+        )
 
         progressView.backgroundColor = style.progressBackgroundColor
         progressView.clipsToBounds = true

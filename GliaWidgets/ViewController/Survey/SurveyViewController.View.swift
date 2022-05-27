@@ -111,10 +111,7 @@ extension Survey {
         }
 
         func updateUi(theme: Theme) {
-            header.font = .systemFont(
-                ofSize: theme.survey.title.fontSize,
-                weight: .init(rawValue: theme.survey.title.fontWeight)
-            )
+            header.font = theme.survey.title.font
             header.textColor = .init(hex: theme.survey.title.color)
             header.textAlignment = theme.survey.title.alignment
             if let hex = theme.survey.layer.background {
@@ -127,6 +124,21 @@ extension Survey {
             submitButton.update(with: theme.survey.submitButton)
             cancelButton.accessibilityLabel = theme.survey.cancellButton.accessibility.label
             submitButton.accessibilityLabel = theme.survey.submitButton.accessibility.label
+
+            header.accessibilityTraits = .header
+
+            setFontScalingEnabled(
+                theme.survey.accessibility.isFontScalingEnabled,
+                for: header
+            )
+            setFontScalingEnabled(
+                theme.survey.accessibility.isFontScalingEnabled,
+                for: cancelButton
+            )
+            setFontScalingEnabled(
+                theme.survey.accessibility.isFontScalingEnabled,
+                for: submitButton
+            )
         }
 
         // MARK: - Private
@@ -138,8 +150,7 @@ extension Survey {
 extension NSAttributedString {
     static func withRequiredSymbol(
         foregroundColor: UIColor,
-        fontSize: CGFloat,
-        fontWeight: CGFloat,
+        font: UIFont,
         isRequired: Bool,
         text: String
     ) -> NSAttributedString {
@@ -147,11 +158,19 @@ extension NSAttributedString {
             string: text,
             attributes: [
                 .foregroundColor: foregroundColor,
-                    .font: UIFont.systemFont(ofSize: fontSize, weight: .init(fontWeight))
+                .font: font
             ]
         )
         if isRequired {
-            mutableString.append(.init(string: " *", attributes: [.foregroundColor: UIColor.red]))
+            mutableString.append(
+                .init(
+                    string: L10n.Survey.Question.Title.asterisk,
+                    attributes: [
+                        .foregroundColor: UIColor.red,
+                        .font: font
+                    ]
+                )
+            )
         }
         return mutableString
     }
@@ -173,7 +192,7 @@ extension UIButton {
         layer.shadowOpacity = style.shadow.opacity
         layer.shadowRadius = style.shadow.radius
 
-        titleLabel?.font = .systemFont(ofSize: style.title.fontSize, weight: .init(style.title.fontWeight))
+        titleLabel?.font = style.title.font
         setTitleColor(.init(hex: style.title.color), for: .normal)
         titleLabel?.textAlignment = .center
     }

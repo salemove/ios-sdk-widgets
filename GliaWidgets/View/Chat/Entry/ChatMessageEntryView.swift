@@ -123,6 +123,14 @@ class ChatMessageEntryView: UIView {
         buttonsStackView.axis = .horizontal
         buttonsStackView.spacing = 15
         buttonsStackView.addArrangedSubviews([pickMediaButton, sendButton])
+        setFontScalingEnabled(
+            style.accessibility.isFontScalingEnabled,
+            for: textView
+        )
+        setFontScalingEnabled(
+            style.accessibility.isFontScalingEnabled,
+            for: placeholderLabel
+        )
     }
 
     private func layout() {

@@ -50,9 +50,6 @@ public class CallStyle: EngagementStyle {
 	/// Accessiblity properties for CallStyle.
     public var accessibility: Accessibility
 
-	/// Accessiblity properties for CallStyle.
-    public var accessibility: Accessibility
-
     ///
     /// - Parameters:
     ///   - header: Style of the view's header (navigation bar area).

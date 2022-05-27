@@ -67,6 +67,11 @@ class ChatTextContentView: UIView {
         textView.backgroundColor = .clear
         textView.textColor = style.textColor
         textView.isAccessibilityElement = false
+
+        setFontScalingEnabled(
+            style.accessibility.isFontScalingEnabled,
+            for: textView
+        )
     }
 
     private func layout() {
@@ -148,7 +153,8 @@ extension ChatTextContentView {
             with: ChatTextContentStyle(
                 textFont: .systemFont(ofSize: 10),
                 textColor: .black,
-                backgroundColor: .black
+                backgroundColor: .black,
+                accessibility: .unsupported
             ),
             contentAlignment: .left,
             environment: environment,

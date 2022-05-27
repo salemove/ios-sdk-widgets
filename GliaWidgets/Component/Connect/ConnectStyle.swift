@@ -14,22 +14,28 @@ public struct ConnectStyle {
     /// Style of the connected state. The view in this state will be shown to the visitor when the operator has picked up the engagement and is successfully connected to the visitor.
     public var connected: ConnectStatusStyle
 
+    /// Style of the onHold state. The view in this state will be shown to the visitor when the operator has successfully connected to the visitor and has put visitor on hold.
+    public var onHold: ConnectStatusStyle
+
     ///
     /// - Parameters:
     ///   - queueOperator: Style of the operator view.
     ///   - queue: Style of the in-queue state. The view in this state will be shown to the visitor when they have requested an engagement and are waiting in a queue to be connected to an operator.
     ///   - connecting: Style of the connecting state. The view in this state will be shown to the visitor when the operator has picked up the engagement but is still connecting to the visitor.
     ///   - connected: Style of the connected state. The view in this state will be shown to the visitor when the operator has picked up the engagement and is successfully connected to the visitor.
+    ///   - onHold: Style of the onHold state. The view in this state will be shown to the visitor when the operator has successfully connected to the visitor and has put visitor on hold.
     ///
     public init(
         queueOperator: ConnectOperatorStyle,
         queue: ConnectStatusStyle,
         connecting: ConnectStatusStyle,
-        connected: ConnectStatusStyle
+        connected: ConnectStatusStyle,
+        onHold: ConnectStatusStyle
     ) {
         self.connectOperator = queueOperator
         self.queue = queue
         self.connecting = connecting
         self.connected = connected
+        self.onHold = onHold
     }
 }
