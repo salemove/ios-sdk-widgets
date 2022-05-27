@@ -336,7 +336,6 @@ extension ChatView {
                     imageViewCache: environment.imageViewCache,
                     timerProviding: environment.timerProviding)
             )
-            connectView.operatorView.isHidden = imageUrl == nil
             connectView.setState(
                 .connected(name: name, imageUrl: imageUrl),
                 animated: false

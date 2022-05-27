@@ -61,7 +61,7 @@ class ConnectView: UIView {
             show(animated: animated)
         case .connecting(let name, let imageUrl):
             operatorView.startAnimating(animated: animated)
-            operatorView.imageView.setPlaceholderImage(style.connectOperator.operatorImage.transferringImage)
+            operatorView.imageView.setPlaceholderImage(style.connectOperator.operatorImage.placeholderImage)
             operatorView.imageView.setOperatorImage(fromUrl: imageUrl, animated: true)
             let firstText = style.connecting.firstText?.withOperatorName(name)
             statusView.setFirstText(firstText, animated: animated)
@@ -72,7 +72,7 @@ class ConnectView: UIView {
         case .connected(let name, let imageUrl):
             stopConnectTimer()
             operatorView.stopAnimating(animated: animated)
-            operatorView.imageView.setPlaceholderImage(style.connectOperator.operatorImage.transferringImage)
+            operatorView.imageView.setPlaceholderImage(style.connectOperator.operatorImage.placeholderImage)
             operatorView.imageView.setOperatorImage(fromUrl: imageUrl, animated: true)
             if let name = name {
                 let firstText = style.connected.firstText?.withOperatorName(name)
