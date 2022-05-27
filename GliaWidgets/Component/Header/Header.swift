@@ -99,7 +99,10 @@ class Header: UIView {
 
         closeButton.accessibilityLabel = style.closeButton.accessibility.label
         endButton.accessibilityLabel = style.endButton.accessibility.label
-
+        setFontScalingEnabled(
+            style.accessibility.isFontScalingEnabled,
+            for: titleLabel
+        )
     }
 
     private func layout() {

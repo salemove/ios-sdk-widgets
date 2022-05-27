@@ -9,6 +9,8 @@ enum ChatMessageContent {
     struct TextAccessibilityProperties {
         let label: String
         let value: String
+        /// Flag that provides font dynamic type by setting `adjustsFontForContentSizeCategory` for component that supports it.
+        let isFontScalingEnabled: Bool
     }
 }
 

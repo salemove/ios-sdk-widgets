@@ -203,10 +203,12 @@
 "survey.action.yes" = "Yes";
 "survey.action.no" = "No";
 "survey.action.validationError" = "Please provide an answer.";
+"survey.question.title.asterisk" = " *";
 
 "survey.accessibility.footer.cancelButton.label" = "Cancel";
 "survey.accessibility.footer.submitButton.label" = "Submit";
 "survey.accessibility.question.title.value" = "Required";
+"survey.accessibility.question.textField.hint" = "Enter the answer";
 "survey.accessibility.question.optionButton.selected.label" = "Selected: {buttonTitle}";
 "survey.accessibility.question.optionButton.unselected.label" = "Unselected: {buttonTitle}";
 "survey.accessibility.validation.title.label" = "Please provide an answer for question above";

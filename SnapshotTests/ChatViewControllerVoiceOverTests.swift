@@ -7,7 +7,11 @@ class ChatViewControllerVoiceOverTests: SnapshotTestCase {
     func test_messagesFromHistory() {
         let viewController = ChatViewController.mockHistoryMessagesScreen()
         viewController.view.frame = UIScreen.main.bounds
-        assertSnapshot(matching: viewController, as: .accessibilityImage, named: nameForDevice())
+        assertSnapshot(
+            matching: viewController,
+            as: .accessibilityImage(precision: SnapshotTestCase.possiblePrecision),
+            named: nameForDevice()
+        )
     }
 
     func test_visitorUploadedFileStates() throws {
@@ -21,7 +25,11 @@ class ChatViewControllerVoiceOverTests: SnapshotTestCase {
 
     func test_choiceCard() throws {
         let viewController = try ChatViewController.mockChoiceCard()
-        assertSnapshot(matching: viewController, as: .accessibilityImage, named: nameForDevice())
+        assertSnapshot(
+            matching: viewController,
+            as: .accessibilityImage(precision: SnapshotTestCase.possiblePrecision),
+            named: nameForDevice()
+        )
     }
 
     func test_visitorFileDownloadStates() throws {

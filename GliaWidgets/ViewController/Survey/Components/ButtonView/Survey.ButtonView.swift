@@ -51,6 +51,12 @@ extension Survey {
             render()
             isAccessibilityElement = true
             accessibilityTraits = .button
+
+            value.font = style.font
+            setFontScalingEnabled(
+                style.accessibility.isFontScalingEnabled,
+                for: value
+            )
         }
 
         override func defineLayout() {
@@ -81,7 +87,7 @@ extension Survey {
                     value.backgroundColor = .clear
                 }
                 value.textColor = .init(hex: style.normalText.color)
-                value.font = .systemFont(ofSize: style.normalText.fontSize, weight: .init(rawValue: style.normalText.fontWeight))
+                value.font = style.normalText.font
             case .highlighted:
                 value.layer.cornerRadius = style.highlightedLayer.cornerRadius
                 value.layer.borderWidth = style.highlightedLayer.borderWidth
@@ -92,7 +98,7 @@ extension Survey {
                     value.backgroundColor = .clear
                 }
                 value.textColor = .init(hex: style.highlightedText.color)
-                value.font = .systemFont(ofSize: style.highlightedText.fontSize, weight: .init(rawValue: style.highlightedText.fontWeight))
+                value.font = style.highlightedText.font
             case .selected:
                 value.layer.cornerRadius = style.selectedLayer.cornerRadius
                 value.layer.borderWidth = style.selectedLayer.borderWidth
@@ -103,7 +109,7 @@ extension Survey {
                     value.backgroundColor = .clear
                 }
                 value.textColor = .init(hex: style.selectedText.color)
-                value.font = .systemFont(ofSize: style.selectedText.fontSize, weight: .init(rawValue: style.selectedText.fontWeight))
+                value.font = style.selectedText.font
             }
         }
 

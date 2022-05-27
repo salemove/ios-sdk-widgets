@@ -22,6 +22,14 @@ class ConnectStatusView: UIView {
         secondLabel.textColor = style.secondTextFontColor
         firstLabel.accessibilityHint = style.accessibility.firstTextHint
         secondLabel.accessibilityHint = style.accessibility.secondTextHint
+        setFontScalingEnabled(
+            style.accessibility.isFontScalingEnabled,
+            for: firstLabel
+        )
+        setFontScalingEnabled(
+            style.accessibility.isFontScalingEnabled,
+            for: secondLabel
+        )
     }
 
     func setFirstText(_ text: String?, animated: Bool) {

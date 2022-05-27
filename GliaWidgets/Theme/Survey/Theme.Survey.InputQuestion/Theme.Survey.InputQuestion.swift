@@ -2,10 +2,18 @@ import Foundation
 
 public extension Theme.SurveyStyle {
     struct InputQuestion {
+        /// Title style.
         public var title: Theme.Text
+        /// OptionButton style.
         public var option: OptionButton
+        /// Background style.
         public var background: Theme.Layer
-        public var textColor: String
+        /// Text style.
+        public var text: Theme.Text
+        /// Validation error style.
+        public var error: ValidationError
+        /// Accessibility related properties.
+        public var accessibility: Accessibility
 
         static func `default`(
             color: ThemeColor,
@@ -14,14 +22,12 @@ public extension Theme.SurveyStyle {
             .init(
                 title: .init(
                     color: color.baseDark.hex,
-                    fontSize: font.bodyText.pointSize,
-                    fontWeight: 0.4
+                    font: font.mediumSubtitle1
                 ),
                 option: .init(
                     normalText: .init(
                         color: color.baseDark.hex,
-                        fontSize: font.bodyText.pointSize,
-                        fontWeight: 0.3
+                        font: font.bodyText
                     ),
                     normalLayer: .init(
                         borderColor: color.baseNormal.hex,
@@ -30,8 +36,7 @@ public extension Theme.SurveyStyle {
                     ),
                     selectedText: .init(
                         color: color.baseLight.hex,
-                        fontSize: font.bodyText.pointSize,
-                        fontWeight: 0.3
+                        font: font.bodyText
                     ),
                     selectedLayer: .init(
                         background: color.primary.hex,
@@ -41,14 +46,15 @@ public extension Theme.SurveyStyle {
                     ),
                     highlightedText: .init(
                         color: color.systemNegative.hex,
-                        fontSize: font.bodyText.pointSize,
-                        fontWeight: 0.3
+                        font: font.bodyText
                     ),
                     highlightedLayer: .init(
                         borderColor: color.systemNegative.hex,
                         borderWidth: 1,
                         cornerRadius: 4
-                    )
+                    ),
+                    font: font.caption,
+                    accessibility: .init(isFontScalingEnabled: true)
                 ),
                 background: Theme.Layer(
                     background: color.background.hex,
@@ -56,7 +62,12 @@ public extension Theme.SurveyStyle {
                     borderWidth: 1,
                     cornerRadius: 5
                 ),
-                textColor: color.baseDark.hex
+                text: .init(
+                    color: color.baseDark.hex,
+                    font: font.subtitle
+                ),
+                error: .default(color: color, font: font),
+                accessibility: .init(isFontScalingEnabled: true)
             )
         }
     }

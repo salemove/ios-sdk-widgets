@@ -9,6 +9,8 @@ extension CallStyle {
         public var localVideoLabel: String
         /// Accessibility label for remote (operator) video.
         public var remoteVideoLabel: String
+        /// Flag that provides font dynamic type by setting `adjustsFontForContentSizeCategory` for component that supports it.
+        public var isFontScalingEnabled: Bool
 
         ///
         /// - Parameters:
@@ -16,16 +18,19 @@ extension CallStyle {
         ///   - durationHint: Accessibility hint for call duration label.
         ///   - localVideoLabel: Accessibility label for local (visitor) video.
         ///   - remoteVideoLabel: Accessibility label for remote (operator) video.
+        ///   - isFontScalingEnabled: Flag that provides font dynamic type by setting `adjustsFontForContentSizeCategory` for component that supports it.
         public init(
             operatorNameHint: String,
             durationHint: String,
             localVideoLabel: String,
-            remoteVideoLabel: String
+            remoteVideoLabel: String,
+            isFontScalingEnabled: Bool
         ) {
             self.operatorNameHint = operatorNameHint
             self.durationHint = durationHint
             self.localVideoLabel = localVideoLabel
             self.remoteVideoLabel = remoteVideoLabel
+            self.isFontScalingEnabled = isFontScalingEnabled
         }
 
         /// Accessibility is not supported intentionally.
@@ -33,7 +38,8 @@ extension CallStyle {
             operatorNameHint: "",
             durationHint: "",
             localVideoLabel: "",
-            remoteVideoLabel: ""
+            remoteVideoLabel: "",
+            isFontScalingEnabled: false
         )
     }
 }

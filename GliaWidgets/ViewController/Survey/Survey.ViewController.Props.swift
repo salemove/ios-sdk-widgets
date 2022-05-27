@@ -248,7 +248,10 @@ extension Survey.ViewController.Props {
             id: sdkQuestion.id.rawValue,
             title: sdkQuestion.text,
             isRequired: sdkQuestion.required,
-            accessibility: .init(value: accessibilityValue)
+            accessibility: .init(
+                titleValue: accessibilityValue,
+                fieldHint: L10n.Survey.Accessibility.Question.TextField.hint
+            )
         )
         inputProps.textDidChange = { newValue in
             guard var newQuestion = getQuestion(sdkQuestion.id.rawValue) as? Survey.InputQuestionView.Props else { return }
