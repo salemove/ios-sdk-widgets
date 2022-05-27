@@ -15,4 +15,10 @@ class SurveyViewControllerVoiceOverTests: SnapshotTestCase {
         viewController.view.frame = UIScreen.main.bounds
         assertSnapshot(matching: viewController, as: .accessibilityImage, named: nameForDevice())
     }
+
+    func test_emptySurveyErrorState() {
+        let viewController = Survey.ViewController(viewFactory: .mock(), props: .errorPropsMock())
+        viewController.view.frame = UIScreen.main.bounds
+        assertSnapshot(matching: viewController, as: .accessibilityImage, named: nameForDevice())
+    }
 }

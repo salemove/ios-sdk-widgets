@@ -29,7 +29,8 @@ class SettingsViewController: UIViewController {
     private var header3FontCell: SettingsFontCell!
     private var bodyTextFontCell: SettingsFontCell!
     private var subtitleFontCell: SettingsFontCell!
-    private var mediumSubtitleFontCell: SettingsFontCell!
+    private var mediumSubtitle1FontCell: SettingsFontCell!
+    private var mediumSubtitle2FontCell: SettingsFontCell!
     private var captionFontCell: SettingsFontCell!
     private var buttonLabelFontCell: SettingsFontCell!
 
@@ -153,8 +154,10 @@ class SettingsViewController: UIViewController {
                                             defaultFont: theme.font.bodyText)
         subtitleFontCell = SettingsFontCell(title: "Subtitle",
                                             defaultFont: theme.font.subtitle)
-        mediumSubtitleFontCell = SettingsFontCell(title: "Medium subtitle",
-                                                  defaultFont: theme.font.mediumSubtitle)
+        mediumSubtitle1FontCell = SettingsFontCell(title: "Medium subtitle1",
+                                                   defaultFont: theme.font.mediumSubtitle1)
+        mediumSubtitle2FontCell = SettingsFontCell(title: "Medium subtitle2",
+                                                   defaultFont: theme.font.mediumSubtitle2)
         captionFontCell = SettingsFontCell(title: "Caption",
                                             defaultFont: theme.font.caption)
         buttonLabelFontCell = SettingsFontCell(title: "Button label",
@@ -165,7 +168,8 @@ class SettingsViewController: UIViewController {
         fontCells.append(header3FontCell)
         fontCells.append(bodyTextFontCell)
         fontCells.append(subtitleFontCell)
-        fontCells.append(mediumSubtitleFontCell)
+        fontCells.append(mediumSubtitle1FontCell)
+        fontCells.append(mediumSubtitle2FontCell)
         fontCells.append(captionFontCell)
         fontCells.append(buttonLabelFontCell)
 
@@ -270,7 +274,8 @@ class SettingsViewController: UIViewController {
                              header3: header3FontCell.selectedFont,
                              bodyText: bodyTextFontCell.selectedFont,
                              subtitle: subtitleFontCell.selectedFont,
-                             mediumSubtitle: mediumSubtitleFontCell.selectedFont,
+                             mediumSubtitle1: mediumSubtitle1FontCell.selectedFont,
+                             mediumSubtitle2: mediumSubtitle2FontCell.selectedFont,
                              caption: captionFontCell.selectedFont,
                              buttonLabel: buttonLabelFontCell.selectedFont)
 

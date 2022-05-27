@@ -681,6 +681,10 @@ public enum L10n {
             public static let label = L10n.tr("Localizable", "survey.accessibility.question.optionButton.unselected.label")
           }
         }
+        public enum TextField {
+          /// Enter the answer
+          public static let hint = L10n.tr("Localizable", "survey.accessibility.question.textField.hint")
+        }
         public enum Title {
           /// Required
           public static let value = L10n.tr("Localizable", "survey.accessibility.question.title.value")

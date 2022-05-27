@@ -56,9 +56,8 @@ class CallView: EngagementView {
 
     lazy var secondLabel: UILabel = {
         let label = UILabel() 
-//	MARK:
-//		Need to take into account that this label is also used for visitor on hold,
-//		by introducing separate accessibility hints for each state (on-hold/call-duration).
+//	Note: Need to take into account that this label is also used for visitor on hold,
+//		  by introducing separate accessibility hints for each state (on-hold/call-duration).
         label.accessibilityHint = style.accessibility.durationHint
         return label
     }()
@@ -138,22 +137,38 @@ class CallView: EngagementView {
         operatorNameLabel.font = style.operatorNameFont
         operatorNameLabel.textColor = style.operatorNameColor
         operatorNameLabel.textAlignment = .center
+        setFontScalingEnabled(
+            style.accessibility.isFontScalingEnabled,
+            for: operatorNameLabel
+        )
 
         secondLabel.font = style.durationFont
         secondLabel.textColor = style.durationColor
         secondLabel.textAlignment = .center
+        setFontScalingEnabled(
+            style.accessibility.isFontScalingEnabled,
+            for: secondLabel
+        )
 
         topLabel.text = style.topText
         topLabel.font = style.topTextFont
         topLabel.textColor = style.topTextColor
         topLabel.numberOfLines = 0
         topLabel.textAlignment = .center
+        setFontScalingEnabled(
+            style.accessibility.isFontScalingEnabled,
+            for: topLabel
+        )
 
         bottomLabel.text = style.bottomText
         bottomLabel.font = style.bottomTextFont
         bottomLabel.textColor = style.bottomTextColor
         bottomLabel.numberOfLines = 0
         bottomLabel.textAlignment = .center
+        setFontScalingEnabled(
+            style.accessibility.isFontScalingEnabled,
+            for: bottomLabel
+        )
 
         buttonBar.buttonTapped = { [weak self] in
             self?.callButtonTapped?($0)

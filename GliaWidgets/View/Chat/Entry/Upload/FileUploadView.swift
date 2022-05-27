@@ -44,8 +44,17 @@ class FileUploadView: UIView {
         upload.state.addObserver(self) { [weak self] state, _ in
             self?.update(for: state)
         }
-        removeButton.accessibilityLabel = style.accessiblity.removeButtonAccessibilityLabel
+        removeButton.accessibilityLabel = style.accessibility.removeButtonAccessibilityLabel
         isAccessibilityElement = true
+
+        setFontScalingEnabled(
+            style.accessibility.isFontScalingEnabled,
+            for: infoLabel
+        )
+        setFontScalingEnabled(
+            style.accessibility.isFontScalingEnabled,
+            for: stateLabel
+        )
     }
 
     private func layout() {
@@ -103,10 +112,10 @@ class FileUploadView: UIView {
             accessibilityValue = Self.accessibleProgress(
                 provideProgressText(progress.value),
                 to: infoLabel.text,
-                accessibility: style.accessiblity
+                accessibility: style.accessibility
             )
 
-            progress.addObserver(self) { [weak self, accessibility = style.accessiblity] progress, _ in
+            progress.addObserver(self) { [weak self, accessibility = style.accessibility] progress, _ in
                 self?.progressView.progress = Float(progress)
                 self?.accessibilityValue = Self.accessibleProgress(
                     provideProgressText(progress),
@@ -128,7 +137,7 @@ class FileUploadView: UIView {
             accessibilityValue = Self.accessibleProgress(
                 "100",
                 to: infoLabel.text,
-                accessibility: style.accessiblity
+                accessibility: style.accessibility
             )
         case .error(let error):
             filePreviewView.kind = .error

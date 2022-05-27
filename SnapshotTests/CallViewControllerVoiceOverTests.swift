@@ -8,7 +8,7 @@ class CallViewControllerVoiceOverTests: SnapshotTestCase {
         let viewController = try CallViewController.mockAudioCallQueueState()
         assertSnapshot(
             matching: viewController,
-            as: .accessibilityImage,
+            as: .accessibilityImage(precision: SnapshotTestCase.possiblePrecision),
             named: nameForDevice()
         )
     }
@@ -17,7 +17,7 @@ class CallViewControllerVoiceOverTests: SnapshotTestCase {
         let viewController = try CallViewController.mockAudioCallConnectingState()
         assertSnapshot(
             matching: viewController,
-            as: .accessibilityImage,
+            as: .accessibilityImage(precision: SnapshotTestCase.possiblePrecision),
             named: nameForDevice()
         )
     }
@@ -26,7 +26,7 @@ class CallViewControllerVoiceOverTests: SnapshotTestCase {
         let viewController = try CallViewController.mockAudioCallConnectedState()
         assertSnapshot(
             matching: viewController,
-            as: .accessibilityImage,
+            as: .accessibilityImage(precision: SnapshotTestCase.possiblePrecision),
             named: nameForDevice()
         )
     }
@@ -35,7 +35,7 @@ class CallViewControllerVoiceOverTests: SnapshotTestCase {
         let viewController = try CallViewController.mockVideoCallConnectingState()
         assertSnapshot(
             matching: viewController,
-            as: .accessibilityImage,
+            as: .accessibilityImage(precision: SnapshotTestCase.possiblePrecision),
             named: nameForDevice()
         )
     }
@@ -44,7 +44,7 @@ class CallViewControllerVoiceOverTests: SnapshotTestCase {
         let viewController = try CallViewController.mockVideoCallQueueState()
         assertSnapshot(
             matching: viewController,
-            as: .accessibilityImage,
+            as: .accessibilityImage(precision: SnapshotTestCase.possiblePrecision),
             named: nameForDevice()
         )
     }
@@ -53,7 +53,7 @@ class CallViewControllerVoiceOverTests: SnapshotTestCase {
         let viewController = try CallViewController.mockVideoCallConnectedState()
         assertSnapshot(
             matching: viewController,
-            as: .accessibilityImage,
+            as: .accessibilityImage(precision: SnapshotTestCase.possiblePrecision),
             named: nameForDevice()
         )
     }

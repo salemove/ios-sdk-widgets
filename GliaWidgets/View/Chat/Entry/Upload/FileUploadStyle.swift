@@ -30,7 +30,7 @@ public class FileUploadStyle {
     public var removeButtonColor: UIColor
 
     /// Accessibility related properties.
-    public var accessiblity: Accessibility
+    public var accessibility: Accessibility
 
     ///
     /// - Parameters:
@@ -43,7 +43,7 @@ public class FileUploadStyle {
     ///   - progressBackgroundColor: Background color of the upload progress bar.
     ///   - removeButtonImage: Image of the remove button.
     ///   - removeButtonColor: Color of the remove button image.
-    ///   - accessiblity: Accessibility related properties.
+    ///   - accessibility: Accessibility related properties.
     public init(
         filePreview: FilePreviewStyle,
         uploading: FileUploadStateStyle,
@@ -54,7 +54,7 @@ public class FileUploadStyle {
         progressBackgroundColor: UIColor,
         removeButtonImage: UIImage,
         removeButtonColor: UIColor,
-        accessiblity: Accessibility
+        accessibility: Accessibility
     ) {
         self.filePreview = filePreview
         self.uploading = uploading
@@ -65,7 +65,7 @@ public class FileUploadStyle {
         self.progressBackgroundColor = progressBackgroundColor
         self.removeButtonImage = removeButtonImage
         self.removeButtonColor = removeButtonColor
-        self.accessiblity = accessiblity
+        self.accessibility = accessibility
     }
 }
 
