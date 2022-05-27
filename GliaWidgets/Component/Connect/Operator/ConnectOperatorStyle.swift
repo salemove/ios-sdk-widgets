@@ -11,9 +11,6 @@ public struct ConnectOperatorStyle {
 	/// Accessibility related properties.
     public var accessibility: Accessibility
 
-	/// Accessibility related properties.
-    public var accessibility: Accessibility
-
     /// Style of the visitor on hold overlay view.
     public var onHoldOverlay: OnHoldOverlayStyle
 

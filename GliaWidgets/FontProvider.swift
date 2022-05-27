@@ -3,10 +3,10 @@ import UIKit
 internal class FontProvider {
     static let shared = FontProvider()
 
-    private let fonts = [
-        "Roboto-Regular",
-        "Roboto-Bold",
-        "Roboto-Medium"
+    private let fonts: [FontName] = [
+        .robotoRegular,
+        .robotoBold,
+        .robotoMedium
     ]
     private let bundleManaging: BundleManaging
 
@@ -19,8 +19,17 @@ internal class FontProvider {
         return UIFont(name: named, size: size) ?? .systemFont(ofSize: size)
     }
 
+    /// Optionally provides font with name and size.
+    /// - Parameters:
+    ///   - named: Font name.
+    ///   - size: Font size,
+    /// - Returns: Font instance of specified name and size or `nil`.
+    func optionalFont(named: String, size: CGFloat) -> UIFont? {
+        return UIFont(name: named, size: size)
+    }
+
     private func loadFonts() {
-        _ = fonts.first(where: { !loadFont(named: $0) })
+        _ = fonts.first(where: { !loadFont(named: $0.rawValue) })
     }
 
     private func loadFont(named name: String) -> Bool {
@@ -43,5 +52,17 @@ internal class FontProvider {
         }
 
         return true
+    }
+}
+
+extension FontProvider {
+    enum FontName: String {
+        case robotoRegular = "Roboto-Regular"
+        case robotoMedium = "Roboto-Medium"
+        case robotoBold = "Roboto-Bold"
+    }
+
+    func font(named: FontName, size: CGFloat) -> UIFont {
+        return font(named: named.rawValue, size: size)
     }
 }

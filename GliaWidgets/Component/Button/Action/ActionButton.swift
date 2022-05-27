@@ -5,7 +5,10 @@ class ActionButton: UIButton {
 
     var title: String? {
         get { return title(for: .normal) }
-        set { setTitle(newValue, for: .normal) }
+        set {
+            setTitle(newValue, for: .normal)
+            accessibilityLabel = newValue
+        }
     }
 
     private let style: ActionButtonStyle
@@ -63,7 +66,10 @@ class ActionButton: UIButton {
 
         addTarget(self, action: #selector(tapped), for: .touchUpInside)
 
-        accessibilityLabel = style.title
+        setFontScalingEnabled(
+            style.accessibility.isFontScalingEnabled,
+            for: self
+        )
     }
 
     private func layout() {

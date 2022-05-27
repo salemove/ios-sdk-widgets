@@ -20,6 +20,9 @@ public class AttachmentSourceItemStyle {
     /// Color of the icon.
     public var iconColor: UIColor?
 
+    /// Accessibility related properties.
+    public var accessibility: Accessibility
+
     ///
     /// - Parameters:
     ///   - kind: Kind of an item shown in the attachment source list view (e.g. Photo Library, Take Photo or Browse).
@@ -28,6 +31,7 @@ public class AttachmentSourceItemStyle {
     ///   - titleColor: Color of the title.
     ///   - icon: Icon of the item. Default is one of three icons (Take Photo, Photo Library or Browse) corresponding to the kind of attachment.
     ///   - iconColor: Color of the icon.
+    ///   - accessibility: Accessibility related properties.
     ///
     public init(
         kind: AtttachmentSourceItemKind,
@@ -35,7 +39,8 @@ public class AttachmentSourceItemStyle {
         titleFont: UIFont,
         titleColor: UIColor,
         icon: UIImage?,
-        iconColor: UIColor?
+        iconColor: UIColor?,
+        accessibility: Accessibility
     ) {
         self.kind = kind
         self.title = title
@@ -43,5 +48,6 @@ public class AttachmentSourceItemStyle {
         self.titleColor = titleColor
         self.icon = icon
         self.iconColor = iconColor
+        self.accessibility = accessibility
     }
 }
