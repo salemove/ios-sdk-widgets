@@ -51,6 +51,12 @@ extension Survey {
             render()
             isAccessibilityElement = true
             accessibilityTraits = .button
+
+            value.font = style.font
+            setFontScalingEnabled(
+                style.accessibility.isFontScalingEnabled,
+                for: value
+            )
         }
 
         override func defineLayout() {

@@ -64,6 +64,11 @@ class ChatTextContentView: UIView {
         textView.backgroundColor = .clear
         textView.textColor = style.textColor
         textView.isAccessibilityElement = false
+
+        setFontScalingEnabled(
+            style.accessibility.isFontScalingEnabled,
+            for: textView
+        )
     }
 
     private func layout() {

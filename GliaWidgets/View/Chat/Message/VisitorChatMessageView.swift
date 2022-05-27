@@ -23,6 +23,10 @@ class VisitorChatMessageView: ChatMessageView {
         super.setup()
         statusLabel.font = style.statusFont
         statusLabel.textColor = style.statusColor
+        setFontScalingEnabled(
+            style.accessibility.isFontScalingEnabled,
+            for: statusLabel
+        )
     }
 
     private func layout() {

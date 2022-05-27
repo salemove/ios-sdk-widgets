@@ -26,6 +26,11 @@ class AttachmentSourceItemView: UIView {
         titleLabel.font = style.titleFont
         titleLabel.textColor = style.titleColor
 
+        setFontScalingEnabled(
+            style.accessibility.isFontScalingEnabled,
+            for: titleLabel
+        )
+
         stackView.axis = .horizontal
         stackView.spacing = 10
         stackView.addArrangedSubview(titleLabel)

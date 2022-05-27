@@ -13,7 +13,7 @@ extension Survey {
             $0.numberOfLines = 0
         }
         let optionsStack = UIStackView.make(.vertical, spacing: 24, distribution: .equalSpacing)()
-        let validationError = ValidationErrorView()
+        lazy var validationError = ValidationErrorView(style: style.error)
         lazy var contentStack = UIStackView.make(.vertical, spacing: 16)(
             title,
             optionsStack,
@@ -54,14 +54,17 @@ extension Survey {
                 break
             default:
                 (0..<abs(delta)).forEach { _ in
-                    optionsStack.addArrangedSubview(CheckboxView(style: style.optionText))
+                    optionsStack.addArrangedSubview(CheckboxView(style: style.option))
                 }
             }
 
+            setFontScalingEnabled(
+                style.accessibility.isFontScalingEnabled,
+                for: title
+            )
             title.attributedText = .withRequiredSymbol(
                 foregroundColor: .init(hex: style.title.color),
-                fontSize: style.title.fontSize,
-                fontWeight: style.title.fontWeight,
+                font: style.title.font,
                 isRequired: props.isRequired,
                 text: props.title
             )

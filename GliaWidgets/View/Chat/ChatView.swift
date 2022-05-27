@@ -265,7 +265,8 @@ extension ChatView {
                     message.content,
                     accessibility: Self.visitorAccessibilityOutgoingMessage(
                         for: message,
-                        visitor: style.accessibility.visitor
+                        visitor: style.accessibility.visitor,
+                        isFontScalingEnabled: style.accessibility.isFontScalingEnabled
                     )
                 ),
                 animated: false
@@ -287,7 +288,8 @@ extension ChatView {
                     message.content,
                     accessibility: Self.visitorAccessibilityMessage(
                         for: message,
-                           visitor: style.accessibility.visitor
+                        visitor: style.accessibility.visitor,
+                        isFontScalingEnabled: style.accessibility.isFontScalingEnabled
                     )
                 ),
                 animated: false
@@ -313,7 +315,8 @@ extension ChatView {
                     message.content,
                     accessibility: Self.operatorAccessibilityMessage(
                         for: message,
-                        operator: style.accessibility.operator
+                        operator: style.accessibility.operator,
+                        isFontScalingEnabled: style.accessibility.isFontScalingEnabled
                     )
                 ),
                 animated: false
@@ -519,15 +522,39 @@ extension ChatView: UITableViewDelegate {
 
 // MARK: - Accessibility
 extension ChatView {
-    static func operatorAccessibilityMessage(for chatMessage: ChatMessage, `operator`: String) -> ChatMessageContent.TextAccessibilityProperties {
-        .init(label: chatMessage.operator?.name ?? `operator`, value: chatMessage.content)
+    static func operatorAccessibilityMessage(
+        for chatMessage: ChatMessage,
+        `operator`: String,
+        isFontScalingEnabled: Bool
+    ) -> ChatMessageContent.TextAccessibilityProperties {
+        .init(
+            label: chatMessage.operator?.name ?? `operator`,
+            value: chatMessage.content,
+            isFontScalingEnabled: isFontScalingEnabled
+        )
     }
 
-    static func visitorAccessibilityMessage(for chatMessage: ChatMessage, visitor: String) -> ChatMessageContent.TextAccessibilityProperties {
-        .init(label: visitor, value: chatMessage.content)
+    static func visitorAccessibilityMessage(
+        for chatMessage: ChatMessage,
+        visitor: String,
+        isFontScalingEnabled: Bool
+    ) -> ChatMessageContent.TextAccessibilityProperties {
+        .init(
+            label: visitor,
+            value: chatMessage.content,
+            isFontScalingEnabled: isFontScalingEnabled
+        )
     }
 
-    static func visitorAccessibilityOutgoingMessage(for outgoingMessage: OutgoingMessage, visitor: String) -> ChatMessageContent.TextAccessibilityProperties {
-        .init(label: visitor, value: outgoingMessage.content)
+    static func visitorAccessibilityOutgoingMessage(
+        for outgoingMessage: OutgoingMessage,
+        visitor: String,
+        isFontScalingEnabled: Bool
+    ) -> ChatMessageContent.TextAccessibilityProperties {
+        .init(
+            label: visitor,
+            value: outgoingMessage.content,
+            isFontScalingEnabled: isFontScalingEnabled
+        )
     }
 }

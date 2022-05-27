@@ -111,7 +111,7 @@ extension Survey {
         }
 
         func updateUi(theme: Theme) {
-            header.font = .systemFont(ofSize: theme.survey.title.fontSize)
+            header.font = theme.survey.title.font
             header.textColor = .init(hex: theme.survey.title.color)
             if let hex = theme.survey.layer.background {
                 scrollView.backgroundColor = .init(hex: hex)
@@ -123,6 +123,21 @@ extension Survey {
             submitButton.update(with: theme.survey.submitButton)
             cancelButton.accessibilityLabel = theme.survey.cancellButton.accessibility.label
             submitButton.accessibilityLabel = theme.survey.submitButton.accessibility.label
+
+            header.accessibilityTraits = .header
+
+            setFontScalingEnabled(
+                theme.survey.accessibility.isFontScalingEnabled,
+                for: header
+            )
+            setFontScalingEnabled(
+                theme.survey.accessibility.isFontScalingEnabled,
+                for: cancelButton
+            )
+            setFontScalingEnabled(
+                theme.survey.accessibility.isFontScalingEnabled,
+                for: submitButton
+            )
         }
 
         // MARK: - Private
@@ -134,8 +149,7 @@ extension Survey {
 extension NSAttributedString {
     static func withRequiredSymbol(
         foregroundColor: UIColor,
-        fontSize: CGFloat,
-        fontWeight: CGFloat,
+        font: UIFont,
         isRequired: Bool,
         text: String
     ) -> NSAttributedString {
@@ -143,11 +157,19 @@ extension NSAttributedString {
             string: text,
             attributes: [
                 .foregroundColor: foregroundColor,
-                    .font: UIFont.systemFont(ofSize: fontSize, weight: .init(fontWeight))
+                .font: font
             ]
         )
         if isRequired {
-            mutableString.append(.init(string: " *", attributes: [.foregroundColor: UIColor.red]))
+            mutableString.append(
+                .init(
+                    string: " *",
+                    attributes: [
+                        .foregroundColor: UIColor.red,
+                        .font: font
+                    ]
+                )
+            )
         }
         return mutableString
     }

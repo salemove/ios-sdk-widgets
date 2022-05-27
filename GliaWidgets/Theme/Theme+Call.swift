@@ -31,7 +31,10 @@ extension Theme {
             titleFont: font.buttonLabel,
             titleColor: color.baseLight,
             backgroundColor: color.systemNegative,
-            accessibility: .init(label: Accessibility.Header.EndButton.label)
+            accessibility: .init(
+                label: Accessibility.Header.EndButton.label,
+                isFontScalingEnabled: true
+            )
         )
         let endScreenShareButton = HeaderButtonStyle(
             image: Asset.startScreenShare.image,
@@ -48,7 +51,8 @@ extension Theme {
             backButton: backButton,
             closeButton: closeButton,
             endButton: endButton,
-            endScreenShareButton: endScreenShareButton
+            endScreenShareButton: endScreenShareButton,
+            accessibility: .init(isFontScalingEnabled: true)
         )
         let operatorImage = UserImageStyle(
             placeholderImage: Asset.operatorPlaceholder.image,
@@ -74,7 +78,8 @@ extension Theme {
             secondTextFontColor: color.baseLight,
             accessibility: .init(
                 firstTextHint: Accessibility.Connect.Queue.FirstText.hint,
-                secondTextHint: Accessibility.Connect.Queue.SecondText.hint
+                secondTextHint: Accessibility.Connect.Queue.SecondText.hint,
+                isFontScalingEnabled: true
             )
         )
         let connecting = ConnectStatusStyle(
@@ -86,7 +91,8 @@ extension Theme {
             secondTextFontColor: color.baseLight,
             accessibility: .init(
                 firstTextHint: Accessibility.Connect.Connecting.FirstText.hint,
-                secondTextHint: Accessibility.Connect.Connecting.SecondText.hint
+                secondTextHint: Accessibility.Connect.Connecting.SecondText.hint,
+                isFontScalingEnabled: true
             )
         )
         let connected = ConnectStatusStyle(
@@ -98,7 +104,8 @@ extension Theme {
             secondTextFontColor: color.baseLight,
             accessibility: .init(
                 firstTextHint: Accessibility.Connect.Connected.FirstText.hint,
-                secondTextHint: Accessibility.Connect.Connected.SecondText.hint
+                secondTextHint: Accessibility.Connect.Connected.SecondText.hint,
+                isFontScalingEnabled: true
             )
         )
         let connect = ConnectStyle(
@@ -111,7 +118,7 @@ extension Theme {
             onHoldText: Call.OnHold.topText,
             descriptionText: Call.OnHold.bottomText,
             localVideoStreamLabelText: Call.OnHold.localVideoStreamLabelText,
-            localVideoStreamLabelFont: font.mediumSubtitle,
+            localVideoStreamLabelFont: font.mediumSubtitle2,
             localVideoStreamLabelColor: color.baseLight
         )
 
@@ -139,7 +146,8 @@ extension Theme {
                 operatorNameHint: Accessibility.OperatorName.hint,
                 durationHint: Accessibility.CallDuration.hint,
                 localVideoLabel: Accessibility.Video.Visitor.label,
-                remoteVideoLabel: Accessibility.Video.Operator.label
+                remoteVideoLabel: Accessibility.Video.Operator.label,
+                isFontScalingEnabled: true
             )
         )
     }
@@ -183,7 +191,8 @@ extension Theme {
             accessibility: .init(
                 singleItemBadgeValue: Accessibility.Buttons.Chat.BadgeValue.singleItem,
                 multipleItemsBadgeValue: Accessibility.Buttons.Chat.BadgeValue.multipleItems,
-                titleAndBadgeValue: Accessibility.Buttons.Chat.titleAndBadgeValue
+                titleAndBadgeValue: Accessibility.Buttons.Chat.titleAndBadgeValue,
+                isFontScalingEnabled: true
             )
         )
         let videoButton = CallButtonStyle(
@@ -212,7 +221,8 @@ extension Theme {
             accessibility: .init(
                 singleItemBadgeValue: Accessibility.Buttons.Video.BadgeValue.singleItem,
                 multipleItemsBadgeValue: Accessibility.Buttons.Video.BadgeValue.multipleItems,
-                titleAndBadgeValue: Accessibility.Buttons.Video.titleAndBadgeValue
+                titleAndBadgeValue: Accessibility.Buttons.Video.titleAndBadgeValue,
+                isFontScalingEnabled: true
             )
         )
         let muteButton = CallButtonStyle(
@@ -241,7 +251,8 @@ extension Theme {
             accessibility: .init(
                 singleItemBadgeValue: Accessibility.Buttons.Mute.BadgeValue.singleItem,
                 multipleItemsBadgeValue: Accessibility.Buttons.Mute.BadgeValue.multipleItems,
-                titleAndBadgeValue: Accessibility.Buttons.Mute.titleAndBadgeValue
+                titleAndBadgeValue: Accessibility.Buttons.Mute.titleAndBadgeValue,
+                isFontScalingEnabled: true
             )
         )
         let speakerButton = CallButtonStyle(
@@ -270,7 +281,8 @@ extension Theme {
             accessibility: .init(
                 singleItemBadgeValue: Accessibility.Buttons.Speaker.BadgeValue.singleItem,
                 multipleItemsBadgeValue: Accessibility.Buttons.Speaker.BadgeValue.multipleItems,
-                titleAndBadgeValue: Accessibility.Buttons.Speaker.titleAndBadgeValue
+                titleAndBadgeValue: Accessibility.Buttons.Speaker.titleAndBadgeValue,
+                isFontScalingEnabled: true
             )
         )
         let minimizeButton = CallButtonStyle(
@@ -299,7 +311,8 @@ extension Theme {
             accessibility: .init(
                 singleItemBadgeValue: Accessibility.Buttons.Minimize.BadgeValue.singleItem,
                 multipleItemsBadgeValue: Accessibility.Buttons.Minimize.BadgeValue.multipleItems,
-                titleAndBadgeValue: Accessibility.Buttons.Minimize.titleAndBadgeValue
+                titleAndBadgeValue: Accessibility.Buttons.Minimize.titleAndBadgeValue,
+                isFontScalingEnabled: true
             )
         )
         let badge = BadgeStyle(

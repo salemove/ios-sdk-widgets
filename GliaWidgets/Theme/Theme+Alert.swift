@@ -8,14 +8,25 @@ extension Theme {
             titleFont: font.buttonLabel,
             titleColor: color.baseLight,
             backgroundColor: color.systemNegative,
-            accessibility: .init(label: Accessibility.Action.no)
+            accessibility: .init(
+                label: Accessibility.Action.no,
+                isFontScalingEnabled: true
+            )
         )
         let positiveAction = ActionButtonStyle(
             title: Alert.Action.yes,
             titleFont: font.buttonLabel,
             titleColor: color.baseLight,
             backgroundColor: color.primary,
-            accessibility: .init(label: Accessibility.Action.yes)
+            accessibility: .init(
+                label: Accessibility.Action.yes,
+                isFontScalingEnabled: true
+            )
+        )
+        let poweredBy = PoweredByStyle(
+            text: L10n.poweredBy,
+            font: font.caption,
+            accessibility: .init(isFontScalingEnabled: true)
         )
         return AlertStyle(
             titleFont: font.header2,
@@ -27,7 +38,9 @@ extension Theme {
             closeButtonColor: color.baseNormal,
             actionAxis: .horizontal,
             positiveAction: positiveAction,
-            negativeAction: negativeAction
+            negativeAction: negativeAction,
+            poweredBy: poweredBy,
+            accessibility: .init(isFontScalingEnabled: true)
         )
     }
 }

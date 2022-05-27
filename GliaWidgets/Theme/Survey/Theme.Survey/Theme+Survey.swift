@@ -6,19 +6,16 @@ extension Theme {
     public struct Text {
         /// Foreground hex color.
         public var color: String
-        /// Font size.
-        public var fontSize: CGFloat
-        /// Font weight.
-        public var fontWeight: CGFloat
+        /// Font.
+        public var font: UIFont
+
         /// Initializes `Text` style instance.
         public init(
             color: String,
-            fontSize: CGFloat,
-            fontWeight: CGFloat
+            font: UIFont
         ) {
             self.color = color
-            self.fontSize = fontSize
-            self.fontWeight = fontWeight
+            self.font = font
         }
     }
 
@@ -142,6 +139,8 @@ extension Theme {
         public var singleQuestion: SingleQuestion
         /// "Input" question view style.
         public var inputQuestion: InputQuestion
+        /// Accessibility related properties.
+        public var accessibility: Accessibility
         /// Initializes `SurveyStyle` instance.
         public init(
             layer: Theme.Layer,
@@ -151,7 +150,8 @@ extension Theme {
             booleanQuestion: Theme.SurveyStyle.BooleanQuestion,
             scaleQuestion: Theme.SurveyStyle.ScaleQuestion,
             singleQuestion: Theme.SurveyStyle.SingleQuestion,
-            inputQuestion: Theme.SurveyStyle.InputQuestion
+            inputQuestion: Theme.SurveyStyle.InputQuestion,
+            accessibility: Accessibility
         ) {
             self.layer = layer
             self.title = title
@@ -161,40 +161,7 @@ extension Theme {
             self.scaleQuestion = scaleQuestion
             self.singleQuestion = singleQuestion
             self.inputQuestion = inputQuestion
-        }
-    }
-}
-
-extension Theme.SurveyStyle {
-    /// Survey option button style.
-    public struct OptionButton {
-        /// Title text for normal state.
-        public var normalText: Theme.Text
-        /// Option layer for normal state.
-        public var normalLayer: Theme.Layer
-        /// Title text style when option is selected.
-        public var selectedText: Theme.Text
-        /// Layer style when option is selected.
-        public var selectedLayer: Theme.Layer
-        /// Title text style when option is highlighted.
-        public var highlightedText: Theme.Text
-        /// Layer style when option is highlighted.
-        public var highlightedLayer: Theme.Layer
-        /// Initializes `OptionButton` style instance.
-        public init(
-            normalText: Theme.Text,
-            normalLayer: Theme.Layer,
-            selectedText: Theme.Text,
-            selectedLayer: Theme.Layer,
-            highlightedText: Theme.Text,
-            highlightedLayer: Theme.Layer
-        ) {
-            self.normalText = normalText
-            self.normalLayer = normalLayer
-            self.selectedText = selectedText
-            self.selectedLayer = selectedLayer
-            self.highlightedText = highlightedText
-            self.highlightedLayer = highlightedLayer
+            self.accessibility = accessibility
         }
     }
 }
@@ -206,6 +173,8 @@ extension Theme.SurveyStyle {
         alertStyle: AlertStyle
     ) -> Self {
 
+        let font = ThemeFontStyle.default.font
+
         return .init(
             layer: .init(
                 background: color.background.hex,
@@ -214,8 +183,7 @@ extension Theme.SurveyStyle {
             ),
             title: .init(
                 color: color.baseNormal.hex,
-                fontSize: 20,
-                fontWeight: 0.3
+                font: font.header2
             ),
             submitButton: .init(
                 acitonButtonStyle: alertStyle.positiveAction,
@@ -228,7 +196,8 @@ extension Theme.SurveyStyle {
             booleanQuestion: .default(color: color, font: font),
             scaleQuestion: .default(color: color, font: font),
             singleQuestion: .default(color: color, font: font),
-            inputQuestion: .default(color: color, font: font)
+            inputQuestion: .default(color: color, font: font),
+            accessibility: .init(isFontScalingEnabled: true)
         )
     }
 }
