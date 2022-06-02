@@ -118,21 +118,9 @@ extension Survey {
                 buttonContainer.backgroundColor = .init(hex: hex)
             }
             scrollView.layer.cornerRadius = theme.survey.layer.cornerRadius
-            cancelButton.backgroundColor = .init(hex: theme.survey.cancellButton.background)
-            cancelButton.layer.cornerRadius = theme.survey.cancellButton.cornerRadius
-            cancelButton.titleLabel?.font = .systemFont(
-                ofSize: theme.survey.cancellButton.title.fontSize,
-                weight: .init(rawValue: theme.survey.cancellButton.title.fontWeight)
-            )
-            cancelButton.setTitleColor(.init(hex: theme.survey.cancellButton.title.color), for: .normal)
 
-            submitButton.backgroundColor = .init(hex: theme.survey.submitButton.background)
-            submitButton.layer.cornerRadius = theme.survey.submitButton.cornerRadius
-            submitButton.titleLabel?.font = .systemFont(
-                ofSize: theme.survey.submitButton.title.fontSize,
-                weight: .init(theme.survey.submitButton.title.fontWeight)
-            )
-            submitButton.setTitleColor(.init(hex: theme.survey.submitButton.title.color), for: .normal)
+            cancelButton.update(with: theme.survey.cancellButton)
+            submitButton.update(with: theme.survey.submitButton)
         }
 
         // MARK: - Private
@@ -160,5 +148,27 @@ extension NSAttributedString {
             mutableString.append(.init(string: " *", attributes: [.foregroundColor: UIColor.red]))
         }
         return mutableString
+    }
+}
+
+extension UIButton {
+    func update(with style: Theme.Button) {
+        style.background.map { backgroundColor = UIColor(hex: $0) }
+        contentEdgeInsets = .init(top: 6, left: 16, bottom: 6, right: 16)
+        clipsToBounds = true
+        layer.masksToBounds = false
+        layer.cornerRadius = style.cornerRadius
+
+        style.borderColor.map { layer.borderColor = UIColor(hex: $0).cgColor }
+        layer.borderWidth = style.borderWidth
+
+        layer.shadowColor = UIColor(hex: style.shadow.color).cgColor
+        layer.shadowOffset = style.shadow.offset
+        layer.shadowOpacity = style.shadow.opacity
+        layer.shadowRadius = style.shadow.radius
+
+        titleLabel?.font = .systemFont(ofSize: style.title.fontSize, weight: .init(style.title.fontWeight))
+        setTitleColor(.init(hex: style.title.color), for: .normal)
+        titleLabel?.textAlignment = .center
     }
 }
