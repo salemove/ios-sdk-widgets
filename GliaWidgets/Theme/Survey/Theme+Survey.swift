@@ -25,7 +25,7 @@ extension Theme {
     /// Button style.
     public struct Button {
         /// Background hex color.
-        public var background: String
+        public var background: String?
         /// Title style.
         public var title: Text
         /// Button corner radius.
@@ -34,20 +34,64 @@ extension Theme {
         public var borderWidth: CGFloat = 0
         /// Button border hex color.
         public var borderColor: String?
+
+        public var shadow: Shadow
         /// Initializes `Button` style instance.
         public init(
-            background: String,
+            background: String?,
             title: Theme.Text,
             cornerRadius: CGFloat,
             borderWidth: CGFloat = 0,
-            borderColor: String? = nil
+            borderColor: String? = nil,
+            shadow: Shadow = .standard
         ) {
             self.background = background
             self.title = title
             self.cornerRadius = cornerRadius
             self.borderWidth = borderWidth
             self.borderColor = borderColor
+            self.shadow = shadow
         }
+
+        public init(
+            acitonButtonStyle: ActionButtonStyle
+        ) {
+            self.background = acitonButtonStyle.backgroundColor == .clear ? nil : acitonButtonStyle.backgroundColor.hex
+            self.title = .init(
+                color: acitonButtonStyle.titleColor.hex,
+                fontSize: acitonButtonStyle.titleFont.pointSize,
+                fontWeight: acitonButtonStyle.titleFont.weight(orDefault: 0.2)
+            )
+            self.cornerRadius = acitonButtonStyle.cornerRaidus ?? 0
+            self.borderWidth = acitonButtonStyle.borderWidth ?? 0
+            self.borderColor = acitonButtonStyle.borderColor?.hex
+
+            self.shadow = .init(
+                color: acitonButtonStyle.shadowColor?.hex ?? Shadow.standard.color,
+                offset: acitonButtonStyle.shadowOffset ?? Shadow.standard.offset,
+                opacity: acitonButtonStyle.shadowOpacity ?? Shadow.standard.opacity,
+                radius: acitonButtonStyle.shadowRadius ?? Shadow.standard.radius
+            )
+        }
+    }
+
+    /// Shadow style.
+    public struct Shadow {
+        /// Shadow color.
+        public let color: String
+        /// Shadow offset.
+        public let offset: CGSize
+        /// Shadow opacity.
+        public let opacity: Float
+        /// Shadow radius.
+        public let radius: CGFloat
+
+        public static let standard: Shadow = .init(
+            color: "0x000000",
+            offset: .init(width: 0.0, height: 2.0),
+            opacity: 0.3,
+            radius: 2.0
+        )
     }
 
     /// Abstract layer style.
@@ -151,7 +195,8 @@ extension Theme.SurveyStyle {
 extension Theme.SurveyStyle {
     public static func `default`(
         color: ThemeColor,
-        font: ThemeFont
+        font: ThemeFont,
+        alertStyle: AlertStyle
     ) -> Self {
 
         return .init(
@@ -165,20 +210,23 @@ extension Theme.SurveyStyle {
                 fontSize: 20,
                 fontWeight: 0.3
             ),
-            submitButton: .init(
-                background: color.primary.hex,
-                title: .init(color: color.baseLight.hex, fontSize: 16, fontWeight: 0.1),
-                cornerRadius: 4
-            ),
-            cancellButton: .init(
-                background: color.systemNegative.hex,
-                title: .init(color: color.baseLight.hex, fontSize: 16, fontWeight: 0.1),
-                cornerRadius: 4
-            ),
+            submitButton: .init(acitonButtonStyle: alertStyle.positiveAction),
+            cancellButton: .init(acitonButtonStyle: alertStyle.negativeAction),
             booleanQuestion: .default(color: color, font: font),
             scaleQuestion: .default(color: color, font: font),
             singleQuestion: .default(color: color, font: font),
             inputQuestion: .default(color: color, font: font)
         )
+    }
+}
+
+extension UIFont {
+    func weight(orDefault defaultValue: CGFloat) -> CGFloat {
+        guard let face = fontDescriptor.object(forKey: .face) as? String else { return defaultValue }
+        switch face.lowercased() {
+        case "bold":    return 0.5
+        case "thin":    return 0.05
+        default:        return 0.2
+        }
     }
 }

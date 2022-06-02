@@ -40,7 +40,8 @@ public class Theme {
     /// Survey view style.
     public lazy var survey: SurveyStyle = .default(
         color: color,
-        font: font
+        font: font,
+        alertStyle: alert
     )
 
     /// Controls the visibility of the "Powered by" text and image.
