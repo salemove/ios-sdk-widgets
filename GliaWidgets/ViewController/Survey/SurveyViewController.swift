@@ -1,7 +1,7 @@
 import UIKit
 
 extension Survey {
-    final class ViewController: UIViewController {
+    final class ViewController: UIViewController, AlertPresenter {
 
         struct Props {
             let header: String
@@ -25,6 +25,8 @@ extension Survey {
             }
         }
 
+        let viewFactory: ViewFactory
+
         var props: Props {
             didSet { render() }
         }
@@ -33,11 +35,12 @@ extension Survey {
         required init?(coder: NSCoder) { preconditionFailure() }
 
         init(
-            props: Props = .init(),
-            theme: Theme
+            viewFactory: ViewFactory,
+            props: Props = .init()
         ) {
+            self.viewFactory = viewFactory
             self.props = props
-            self.theme = theme
+            self.theme = viewFactory.theme
             super.init(nibName: nil, bundle: nil)
             modalPresentationStyle = .overFullScreen
             modalTransitionStyle = .crossDissolve
