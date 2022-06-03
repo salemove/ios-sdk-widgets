@@ -132,7 +132,9 @@ extension RootCoordinator {
 
         let presentSurvey = { [weak self] (engagementId: String, survey: CoreSdkClient.Survey) in
             guard let self = self else { return }
-            let viewController = Survey.ViewController(theme: self.viewFactory.theme)
+            let viewController = Survey.ViewController(
+                viewFactory: self.viewFactory
+            )
             viewController.props = .live(
                 sdkSurvey: survey,
                 engagementId: engagementId,
@@ -144,6 +146,11 @@ extension RootCoordinator {
                 },
                 endEditing: { viewController.view.endEditing(true) },
                 updateProps: { viewController.props = $0 },
+                onError: { _ in
+                    viewController.presentAlert(
+                        with: self.viewFactory.theme.alertConfiguration.unexpectedError
+                    )
+                },
                 completion: {
                     viewController.dismiss(animated: true) {
                         dismissGliaViewController()
