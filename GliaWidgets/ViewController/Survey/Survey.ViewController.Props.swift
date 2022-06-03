@@ -9,6 +9,7 @@ extension Survey.ViewController.Props {
         cancel: @escaping () -> Void,
         endEditing: @escaping () -> Void,
         updateProps: @escaping (Self) -> Void,
+        onError: @escaping (Error) -> Void,
         completion: @escaping () -> Void
     ) -> Self {
         var props = Survey.ViewController.Props(
@@ -78,9 +79,9 @@ extension Survey.ViewController.Props {
                 currentProps.toCoreSdkAnswers(),
                 sdkSurvey.id,
                 engagementId
-            ) { _ in
-                #warning("The survey result has not been handled. It will be improved properly in the future.")
-                completion()
+            ) { result in
+                guard case .failure(let error) = result else { return completion() }
+                onError(error)
             }
         }
         return props
