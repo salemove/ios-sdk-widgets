@@ -54,7 +54,7 @@ extension Survey {
                 break
             default:
                 (0..<abs(delta)).forEach { _ in
-                    optionsStack.addArrangedSubview(CheckboxView(style: style.optionText))
+                    optionsStack.addArrangedSubview(CheckboxView(style: style.optionText, checkedTintColor: .init(hex: style.tintColor)))
                 }
             }
 
