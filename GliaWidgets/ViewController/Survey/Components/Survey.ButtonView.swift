@@ -66,6 +66,7 @@ extension Survey {
                     value.backgroundColor = .clear
                 }
                 value.textColor = .init(hex: style.normalText.color)
+                value.font = .systemFont(ofSize: style.normalText.fontSize, weight: .init(rawValue: style.normalText.fontWeight))
             case .highlighted:
                 value.layer.cornerRadius = style.highlightedLayer.cornerRadius
                 value.layer.borderWidth = style.highlightedLayer.borderWidth
@@ -76,6 +77,7 @@ extension Survey {
                     value.backgroundColor = .clear
                 }
                 value.textColor = .init(hex: style.highlightedText.color)
+                value.font = .systemFont(ofSize: style.highlightedText.fontSize, weight: .init(rawValue: style.highlightedText.fontWeight))
             case .selected:
 
                 value.layer.cornerRadius = style.selectedLayer.cornerRadius
@@ -87,6 +89,7 @@ extension Survey {
                     value.backgroundColor = .clear
                 }
                 value.textColor = .init(hex: style.selectedText.color)
+                value.font = .systemFont(ofSize: style.selectedText.fontSize, weight: .init(rawValue: style.selectedText.fontWeight))
             }
         }
 
