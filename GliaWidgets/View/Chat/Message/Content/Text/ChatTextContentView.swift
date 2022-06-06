@@ -58,7 +58,7 @@ class ChatTextContentView: UIView {
         textView.isEditable = false
         textView.textContainerInset = .zero
         textView.textContainer.lineFragmentPadding = 0
-        textView.dataDetectorTypes = .all
+        textView.dataDetectorTypes = [.link, .phoneNumber]
         textView.linkTextAttributes = [.underlineStyle: NSUnderlineStyle.single.rawValue]
         textView.font = style.textFont
         textView.backgroundColor = .clear
@@ -101,11 +101,30 @@ extension ChatTextContentView: UITextViewDelegate {
         in characterRange: NSRange,
         interaction: UITextItemInteraction
     ) -> Bool {
-        if URL.scheme == "tel" || URL.scheme == "mailto" {
-            return true
+        if URL.scheme == "tel" {
+            openPhoneDialer(url: URL)
+        } else if URL.scheme == "mailto" {
+            openEmailClient(url: URL)
         } else {
             linkTapped?(URL)
-            return false
+        }
+
+        return false
+    }
+
+    private func openPhoneDialer(url: URL) {
+        let phone = url.absoluteString.replacingOccurrences(of: "tel:", with: "")
+
+        if let callUrl = URL(string: "tel://\(phone)"), UIApplication.shared.canOpenURL(callUrl) {
+            UIApplication.shared.open(callUrl)
+        }
+    }
+
+    private func openEmailClient(url: URL) {
+        let email = url.absoluteString.replacingOccurrences(of: "mailto:", with: "")
+
+        if let emailUrl = URL(string: "mailto://\(email)"), UIApplication.shared.canOpenURL(emailUrl) {
+            UIApplication.shared.open(emailUrl)
         }
     }
 }
