@@ -17,6 +17,7 @@ extension Glia {
         var createFileDownload: FileDownloader.CreateFileDownload
         var fromHistory: () -> Bool
         var timerProviding: FoundationBased.Timer.Providing
+        var uiApplication: UIKitBased.UIApplication
     }
 }
 

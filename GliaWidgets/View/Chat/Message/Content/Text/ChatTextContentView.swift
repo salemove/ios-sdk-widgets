@@ -30,14 +30,17 @@ class ChatTextContentView: UIView {
     private let contentAlignment: ChatMessageContentAlignment
     private let contentView = UIView()
     private let kTextInsets: UIEdgeInsets
+    private let environment: Environment
 
     init(
         with style: ChatTextContentStyle,
         contentAlignment: ChatMessageContentAlignment,
+        environment: Environment,
         insets: UIEdgeInsets = UIEdgeInsets(top: 12, left: 16, bottom: 12, right: 16)
     ) {
         self.style = style
         self.contentAlignment = contentAlignment
+        self.environment = environment
         self.kTextInsets = insets
         super.init(frame: .zero)
         setup()
@@ -115,17 +118,23 @@ extension ChatTextContentView: UITextViewDelegate {
     private func openPhoneDialer(url: URL) {
         let phone = url.absoluteString.replacingOccurrences(of: "tel:", with: "")
 
-        if let callUrl = URL(string: "tel://\(phone)"), UIApplication.shared.canOpenURL(callUrl) {
-            UIApplication.shared.open(callUrl)
+        if let callUrl = URL(string: "tel://\(phone)"), environment.uiApplication.canOpenURL(callUrl) {
+            environment.uiApplication.open(callUrl)
         }
     }
 
     private func openEmailClient(url: URL) {
         let email = url.absoluteString.replacingOccurrences(of: "mailto:", with: "")
 
-        if let emailUrl = URL(string: "mailto://\(email)"), UIApplication.shared.canOpenURL(emailUrl) {
-            UIApplication.shared.open(emailUrl)
+        if let emailUrl = URL(string: "mailto://\(email)"), environment.uiApplication.canOpenURL(emailUrl) {
+            environment.uiApplication.open(emailUrl)
         }
+    }
+}
+
+extension ChatTextContentView {
+    struct Environment {
+        var uiApplication: UIKitBased.UIApplication
     }
 }
 

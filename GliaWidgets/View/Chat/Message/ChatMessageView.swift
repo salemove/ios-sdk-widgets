@@ -8,10 +8,16 @@ class ChatMessageView: UIView {
     var linkTapped: ((URL) -> Void)?
 
     private let contentAlignment: ChatMessageContentAlignment
+    private let environment: Environment
 
-    init(with style: ChatMessageStyle, contentAlignment: ChatMessageContentAlignment) {
+    init(
+        with style: ChatMessageStyle,
+        contentAlignment: ChatMessageContentAlignment,
+        environment: Environment
+    ) {
         self.style = style
         self.contentAlignment = contentAlignment
+        self.environment = environment
         super.init(frame: .zero)
         setup()
     }
@@ -23,7 +29,13 @@ class ChatMessageView: UIView {
     func appendContent(_ content: ChatMessageContent, animated: Bool) {
         switch content {
         case let .text(text, accProperties):
-            let contentView = ChatTextContentView(with: style.text, contentAlignment: contentAlignment)
+            let contentView = ChatTextContentView(
+                with: style.text,
+                contentAlignment: contentAlignment,
+                environment: .init(
+                    uiApplication: environment.uiApplication
+                )
+            )
             contentView.text = text
             contentView.linkTapped = { [weak self] in self?.linkTapped?($0) }
             contentView.accessibilityProperties = .init(label: accProperties.label, value: accProperties.value)
@@ -121,5 +133,11 @@ class ChatMessageView: UIView {
                 )
             }
         }
+    }
+}
+
+extension ChatMessageView {
+    struct Environment {
+        var uiApplication: UIKitBased.UIApplication
     }
 }
