@@ -70,6 +70,10 @@ extension Survey {
             if let backgroundColor = style.background.background {
                 textView.backgroundColor = UIColor(hex: backgroundColor)
             }
+            textView.font = .systemFont(
+                ofSize: style.option.normalText.fontSize,
+                weight: .init(rawValue: style.option.normalText.fontWeight)
+            )
             textView.textColor = UIColor(hex: style.textColor)
         }
 
