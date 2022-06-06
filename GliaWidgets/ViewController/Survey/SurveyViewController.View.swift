@@ -111,8 +111,12 @@ extension Survey {
         }
 
         func updateUi(theme: Theme) {
-            header.font = .systemFont(ofSize: theme.survey.title.fontSize)
+            header.font = .systemFont(
+                ofSize: theme.survey.title.fontSize,
+                weight: .init(rawValue: theme.survey.title.fontWeight)
+            )
             header.textColor = .init(hex: theme.survey.title.color)
+            header.textAlignment = theme.survey.title.alignment
             if let hex = theme.survey.layer.background {
                 scrollView.backgroundColor = .init(hex: hex)
                 buttonContainer.backgroundColor = .init(hex: hex)

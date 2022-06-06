@@ -10,15 +10,19 @@ extension Theme {
         public var fontSize: CGFloat
         /// Font weight.
         public var fontWeight: CGFloat
+        /// Text aligmment.
+        public var alignment: NSTextAlignment
         /// Initializes `Text` style instance.
         public init(
             color: String,
             fontSize: CGFloat,
-            fontWeight: CGFloat
+            fontWeight: CGFloat,
+            alignment: NSTextAlignment = .center
         ) {
             self.color = color
             self.fontSize = fontSize
             self.fontWeight = fontWeight
+            self.alignment = alignment
         }
     }
 
