@@ -27,6 +27,9 @@ extension Survey {
         let imageView = UIImageView().makeView {
             $0.image = Asset.surveyCheckbox.image
         }
+        let checkImageView = UIImageView().makeView {
+            $0.image = Asset.surveyCheckboxChecked.image
+        }
         let value = UILabel().makeView {
             $0.numberOfLines = 0
         }
@@ -39,10 +42,12 @@ extension Survey {
 
         init(
             props: Props = .init(),
-            style: Theme.Text
+            style: Theme.Text,
+            checkedTintColor: UIColor
         ) {
             self.props = props
             self.style = style
+            self.checkedTintColor = checkedTintColor
             super.init()
         }
 
@@ -51,6 +56,7 @@ extension Survey {
 
             addSubview(contentStack)
             imageViewContainer.addSubview(imageView)
+            imageView.addSubview(checkImageView)
             let gesture = UITapGestureRecognizer(target: self, action: #selector(tapGestureAction))
             addGestureRecognizer(gesture)
 
@@ -61,8 +67,10 @@ extension Survey {
             super.defineLayout()
 
             NSLayoutConstraint.activate([
-                imageView.widthAnchor.constraint(equalToConstant: 24),
-                imageView.heightAnchor.constraint(equalToConstant: 24),
+                imageView.widthAnchor.constraint(greaterThanOrEqualToConstant: 24),
+                imageView.heightAnchor.constraint(greaterThanOrEqualToConstant: 24),
+                checkImageView.centerXAnchor.constraint(equalTo: imageView.centerXAnchor),
+                checkImageView.centerYAnchor.constraint(equalTo: imageView.centerYAnchor),
                 imageView.topAnchor.constraint(equalTo: imageViewContainer.topAnchor),
                 imageView.leadingAnchor.constraint(equalTo: imageViewContainer.leadingAnchor),
                 imageView.trailingAnchor.constraint(equalTo: imageViewContainer.trailingAnchor),
@@ -79,19 +87,21 @@ extension Survey {
             value.text = props.title
             switch props.state {
             case .selected:
-                imageView.image = Asset.surveyCheckboxChecked.image
+                checkImageView.image = Asset.surveyCheckboxChecked.image
             case .active:
-                imageView.image = Asset.surveyCheckbox.image
+                checkImageView.image = nil
             case .highlighted:
-                imageView.image = Asset.surveyCheckboxChecked.image
+                checkImageView.image = Asset.surveyCheckboxChecked.image
             }
             value.font = .systemFont(ofSize: style.fontSize, weight: .init(style.fontWeight))
             value.textColor = .init(hex: style.color)
+            checkImageView.tintColor = checkedTintColor
         }
 
         // MARK: - Private
 
         private let style: Theme.Text
+        private let checkedTintColor: UIColor
 
         @objc private func tapGestureAction(sender: UITapGestureRecognizer) {
             props.onSelection()
