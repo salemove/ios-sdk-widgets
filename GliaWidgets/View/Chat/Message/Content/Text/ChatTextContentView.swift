@@ -104,10 +104,8 @@ extension ChatTextContentView: UITextViewDelegate {
         in characterRange: NSRange,
         interaction: UITextItemInteraction
     ) -> Bool {
-        if URL.scheme == "tel" {
-            openPhoneDialer(url: URL)
-        } else if URL.scheme == "mailto" {
-            openEmailClient(url: URL)
+        if URL.scheme == "tel" || URL.scheme == "mailto" {
+            openUrl(url: URL)
         } else {
             linkTapped?(URL)
         }
@@ -115,20 +113,10 @@ extension ChatTextContentView: UITextViewDelegate {
         return false
     }
 
-    private func openPhoneDialer(url: URL) {
-        let phone = url.absoluteString.replacingOccurrences(of: "tel:", with: "")
+    private func openUrl(url: URL) {
+        guard environment.uiApplication.canOpenURL(url) else { return }
 
-        if let callUrl = URL(string: "tel://\(phone)"), environment.uiApplication.canOpenURL(callUrl) {
-            environment.uiApplication.open(callUrl)
-        }
-    }
-
-    private func openEmailClient(url: URL) {
-        let email = url.absoluteString.replacingOccurrences(of: "mailto:", with: "")
-
-        if let emailUrl = URL(string: "mailto://\(email)"), environment.uiApplication.canOpenURL(emailUrl) {
-            environment.uiApplication.open(emailUrl)
-        }
+        environment.uiApplication.open(url)
     }
 }
 
