@@ -405,8 +405,14 @@ extension RootCoordinator {
             chatCall.value = call
             navigationPresenter.push(callViewController)
 
-        case .call(let callViewController, _, _, let call):
+        case .call(let callViewController, let chatViewController, _, let call):
             call.upgrade(to: offer)
+            engagement = .call(
+                callViewController,
+                chatViewController,
+                .none,
+                call
+            )
             navigationPresenter.setViewControllers(
                 [callViewController],
                 animated: true
