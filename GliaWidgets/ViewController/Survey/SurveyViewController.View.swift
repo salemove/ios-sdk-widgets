@@ -191,7 +191,7 @@ extension UIButton {
         layer.shadowOpacity = style.shadow.opacity
         layer.shadowRadius = style.shadow.radius
 
-        titleLabel?.font = .systemFont(ofSize: style.title.fontSize, weight: .init(style.title.fontWeight))
+        titleLabel?.font = style.title.font
         setTitleColor(.init(hex: style.title.color), for: .normal)
         titleLabel?.textAlignment = .center
     }

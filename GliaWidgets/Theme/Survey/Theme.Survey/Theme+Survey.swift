@@ -62,8 +62,7 @@ extension Theme {
             self.background = acitonButtonStyle.backgroundColor == .clear ? nil : acitonButtonStyle.backgroundColor.hex
             self.title = .init(
                 color: acitonButtonStyle.titleColor.hex,
-                fontSize: acitonButtonStyle.titleFont.pointSize,
-                fontWeight: acitonButtonStyle.titleFont.weight(orDefault: 0.2)
+                font: acitonButtonStyle.titleFont
             )
             self.cornerRadius = acitonButtonStyle.cornerRaidus ?? 0
             self.borderWidth = acitonButtonStyle.borderWidth ?? 0
