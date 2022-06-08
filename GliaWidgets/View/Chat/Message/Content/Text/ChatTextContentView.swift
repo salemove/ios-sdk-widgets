@@ -109,12 +109,21 @@ extension ChatTextContentView: UITextViewDelegate {
     }
 
     func handleUrl(url: URL) {
-        if url.scheme == "tel" || url.scheme == "mailto" {
-            guard environment.uiApplication.canOpenURL(url) else { return }
+        switch url.scheme?.lowercased() {
+        case "tel",
+            "mailto":
+            guard
+                environment.uiApplication.canOpenURL(url)
+            else { return }
 
             environment.uiApplication.open(url)
-        } else {
+
+        case "http",
+            "https":
             linkTapped?(url)
+
+        default:
+            return
         }
     }
 }

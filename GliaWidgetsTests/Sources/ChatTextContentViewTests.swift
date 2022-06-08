@@ -65,4 +65,32 @@ class ChatTextContentViewTests: XCTestCase {
 
         XCTAssertEqual(calls, [.linkTapped(linkUrl)])
     }
+    
+    func test_handleUrlWithRandomSchemeDoesNothing() throws {
+        enum Call: Equatable {
+            case linkTapped(URL)
+            case openUrl(URL)
+        }
+    
+        var calls: [Call] = []
+
+        var environment = ChatTextContentView.Environment(
+            uiApplication: .failing
+        )
+    
+        environment.uiApplication.canOpenURL = { _ in true }
+        environment.uiApplication.open = {
+            calls.append(.openUrl($0))
+        }
+
+        view = .mock(environment: environment)
+        view.linkTapped = {
+            calls.append(.linkTapped($0))
+        }
+
+        let linkUrl = URL(string: "mock:mock")!
+        view.handleUrl(url: linkUrl)
+
+        XCTAssertEqual(calls, [])
+    }
 }
