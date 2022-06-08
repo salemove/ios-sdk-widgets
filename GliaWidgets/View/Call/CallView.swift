@@ -27,10 +27,12 @@ class CallView: EngagementView {
                 secondLabel.text = style.onHoldStyle.onHoldText
                 secondLabel.accessibilityLabel = style.onHoldStyle.onHoldText
                 connectView.statusView.setSecondText(style.onHoldStyle.onHoldText, animated: false)
+                connectView.statusView.setStyle(style.connect.onHold)
             } else {
                 secondLabel.text = callDuration
                 secondLabel.accessibilityLabel = callDuration
                 connectView.statusView.setSecondText(callDuration, animated: false)
+                connectView.statusView.setStyle(style.connect.connected)
             }
 
             if case .video = mode {
@@ -54,13 +56,7 @@ class CallView: EngagementView {
         return label
     }()
 
-    lazy var secondLabel: UILabel = {
-        let label = UILabel() 
-//	Note: Need to take into account that this label is also used for visitor on hold,
-//		  by introducing separate accessibility hints for each state (on-hold/call-duration).
-        label.accessibilityHint = style.accessibility.durationHint
-        return label
-    }()
+    lazy var secondLabel = UILabel()
 
     let topLabel = UILabel()
     let bottomLabel = UILabel()
@@ -188,9 +184,9 @@ class CallView: EngagementView {
         localVideoView.pan = { [weak self] in
             self?.adjustLocalVideoFrameAfterPanGesture(translation: $0)
         }
-        #warning("Provide localization for accessibility.")
-        header.backButton.accessibilityLabel = "Back"
-        header.backButton.accessibilityHint = "Activates minimize."
+
+        header.backButton.accessibilityLabel = style.header.backButton.accessibility.label
+        header.backButton.accessibilityHint = style.header.backButton.accessibility.hint
     }
 
     func switchTo(_ mode: Mode) {

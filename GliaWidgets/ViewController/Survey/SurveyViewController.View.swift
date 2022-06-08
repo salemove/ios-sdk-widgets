@@ -164,7 +164,7 @@ extension NSAttributedString {
         if isRequired {
             mutableString.append(
                 .init(
-                    string: " *",
+                    string: L10n.Survey.Question.Title.asterisk,
                     attributes: [
                         .foregroundColor: UIColor.red,
                         .font: font

@@ -106,11 +106,25 @@ extension Theme {
                 isFontScalingEnabled: true
             )
         )
+        let onHold = ConnectStatusStyle(
+            firstText: Chat.Connect.Connected.firstText,
+            firstTextFont: font.header1,
+            firstTextFontColor: color.baseLight,
+            secondText: Chat.Connect.Connected.secondText,
+            secondTextFont: font.subtitle,
+            secondTextFontColor: color.baseLight,
+            accessibility: .init(
+                firstTextHint: Accessibility.Connect.Connected.FirstText.hint,
+                secondTextHint: nil,
+                isFontScalingEnabled: true
+            )
+        )
         let connect = ConnectStyle(
             queueOperator: queueOperator,
             queue: queue,
             connecting: connecting,
-            connected: connected
+            connected: connected,
+            onHold: onHold
         )
         let visitorText = ChatTextContentStyle(
             textFont: font.bodyText,

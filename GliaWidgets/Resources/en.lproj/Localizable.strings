@@ -203,6 +203,7 @@
 "survey.action.yes" = "Yes";
 "survey.action.no" = "No";
 "survey.action.validationError" = "Please provide an answer.";
+"survey.question.title.asterisk" = " *";
 
 "survey.accessibility.footer.cancelButton.label" = "Cancel";
 "survey.accessibility.footer.submitButton.label" = "Submit";

@@ -94,7 +94,6 @@ extension FontScaling.Description {
 
 extension FontScaling.Style {
     func themeFontDescription() -> FontScaling.Description {
-        #warning("TODO: remove hints-comments")
         switch self {
         case .body:
             return .init(name: .robotoRegular, size: 16) // bodyText ?? Font.regular(16)

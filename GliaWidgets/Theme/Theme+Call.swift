@@ -108,11 +108,25 @@ extension Theme {
                 isFontScalingEnabled: true
             )
         )
+        let onHold = ConnectStatusStyle(
+            firstText: Call.Connect.Connected.firstText,
+            firstTextFont: font.header1,
+            firstTextFontColor: color.baseLight,
+            secondText: Call.Connect.Connected.secondText,
+            secondTextFont: font.subtitle,
+            secondTextFontColor: color.baseLight,
+            accessibility: .init(
+                firstTextHint: Accessibility.Connect.Connected.FirstText.hint,
+                secondTextHint: nil,
+                isFontScalingEnabled: true
+            )
+        )
         let connect = ConnectStyle(
             queueOperator: queueOperator,
             queue: queue,
             connecting: connecting,
-            connected: connected
+            connected: connected,
+            onHold: onHold
         )
         let onHoldStyle = CallStyle.OnHoldStyle(
             onHoldText: Call.OnHold.topText,
