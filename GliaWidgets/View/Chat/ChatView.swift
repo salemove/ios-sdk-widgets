@@ -322,8 +322,11 @@ extension ChatView {
                 with: callStyle,
                 duration: duration
             )
-            kind.addObserver(self) { kind, _ in
+            kind.addObserver(self) { [weak self] kind, _ in
+                guard let self = self else { return }
+    
                 view.style = self.callUpgradeStyle(for: kind)
+                self.tableView.reloadData()
             }
             return .callUpgrade(view)
         }
