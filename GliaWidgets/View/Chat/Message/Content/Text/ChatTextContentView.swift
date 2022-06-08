@@ -104,19 +104,18 @@ extension ChatTextContentView: UITextViewDelegate {
         in characterRange: NSRange,
         interaction: UITextItemInteraction
     ) -> Bool {
-        if URL.scheme == "tel" || URL.scheme == "mailto" {
-            openUrl(url: URL)
-        } else {
-            linkTapped?(URL)
-        }
-
+        handleUrl(url: URL)
         return false
     }
 
-    private func openUrl(url: URL) {
-        guard environment.uiApplication.canOpenURL(url) else { return }
+    func handleUrl(url: URL) {
+        if url.scheme == "tel" || url.scheme == "mailto" {
+            guard environment.uiApplication.canOpenURL(url) else { return }
 
-        environment.uiApplication.open(url)
+            environment.uiApplication.open(url)
+        } else {
+            linkTapped?(url)
+        }
     }
 }
 
@@ -132,3 +131,20 @@ extension ChatTextContentView {
         var value: String?
     }
 }
+
+#if DEBUG
+extension ChatTextContentView {
+    static func mock(environment: Environment) -> ChatTextContentView {
+        ChatTextContentView(
+            with: ChatTextContentStyle(
+                textFont: .systemFont(ofSize: 10),
+                textColor: .black,
+                backgroundColor: .black
+            ),
+            contentAlignment: .left,
+            environment: environment,
+            insets: .zero
+        )
+    }
+}
+#endif
