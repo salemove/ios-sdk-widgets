@@ -88,8 +88,8 @@ class ChatTextContentViewTests: XCTestCase {
             calls.append(.linkTapped($0))
         }
 
-        let linkUrl = URL(string: "mock:mock")!
-        view.handleUrl(url: linkUrl)
+        let mockUrl = URL(string: "mock:mock")!
+        view.handleUrl(url: mockUrl)
 
         XCTAssertEqual(calls, [])
     }
