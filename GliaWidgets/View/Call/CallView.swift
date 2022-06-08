@@ -55,7 +55,7 @@ class CallView: EngagementView {
     }()
 
     lazy var secondLabel: UILabel = {
-        let label = UILabel() 
+        let label = UILabel()
 //	Note: Need to take into account that this label is also used for visitor on hold,
 //		  by introducing separate accessibility hints for each state (on-hold/call-duration).
         label.accessibilityHint = style.accessibility.durationHint
@@ -274,7 +274,13 @@ class CallView: EngagementView {
 
         addSubview(connectView)
         connectView.autoPinEdge(.top, to: .bottom, of: header)
+        connectView.autoPinEdge(toSuperviewMargin: .left, relation: .greaterThanOrEqual)
+        connectView.autoPinEdge(toSuperviewMargin: .right, relation: .greaterThanOrEqual)
         connectView.autoAlignAxis(toSuperviewAxis: .vertical)
+
+        NSLayoutConstraint.autoSetPriority(.defaultHigh) {
+            connectView.operatorView.autoSetDimension(.height, toSize: 120)
+        }
 
         addSubview(topStackView)
         topStackView.autoPinEdge(.top, to: .bottom, of: header, withOffset: 50)
@@ -286,9 +292,21 @@ class CallView: EngagementView {
         buttonBar.autoPinEdge(toSuperviewEdge: .right)
 
         addSubview(bottomLabel)
+        bottomLabel.adjustsFontSizeToFitWidth = true
+        bottomLabel.setContentCompressionResistancePriority(
+            .fittingSizeLevel,
+            for: .vertical
+        )
         bottomLabel.autoPinEdge(.bottom, to: .top, of: buttonBar, withOffset: -38)
         bottomLabel.autoMatch(.width, to: .width, of: self, withMultiplier: 0.6)
         bottomLabel.autoAlignAxis(toSuperviewAxis: .vertical)
+        bottomLabel.autoPinEdge(
+            .top,
+            to: .bottom,
+            of: connectView,
+            withOffset: 10,
+            relation: .greaterThanOrEqual
+        )
 
         addSubview(localVideoView)
 

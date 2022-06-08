@@ -33,6 +33,8 @@ extension Survey {
             validationMessage.font = style.font
             validationMessage.text = style.message
 
+            validationMessageHStack.alignment = .center
+
             setFontScalingEnabled(
                 style.accessibility.isFontScalingEnabled,
                 for: validationMessage

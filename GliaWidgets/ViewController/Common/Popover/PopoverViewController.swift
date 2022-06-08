@@ -38,6 +38,11 @@ final class PopoverViewController: UIViewController {
         updatePreferredContentSize()
     }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        updatePreferredContentSize()
+    }
+
     private func updatePreferredContentSize() {
         var size = view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
 

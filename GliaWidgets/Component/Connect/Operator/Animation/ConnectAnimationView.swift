@@ -49,9 +49,7 @@ class ConnectAnimationView: UIView {
     }
 
     private func layout() {
-        NSLayoutConstraint.autoSetPriority(.defaultHigh) {
-            autoSetDimensions(to: CGSize(width: size, height: size))
-        }
+        autoSetDimensions(to: CGSize(width: size, height: size))
 
         replicatorLayer.addSublayer(circleLayer)
         layer.addSublayer(replicatorLayer)

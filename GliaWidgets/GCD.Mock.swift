@@ -9,6 +9,9 @@ extension GCD.DispatchQueue {
     static let mock = Self(
         async: { callback in
             callback()
+        },
+        asyncAfterDeadline: { _, callback in
+            callback()
         }
     )
 }

@@ -41,7 +41,7 @@ extension Survey {
                 contentStack.topAnchor.constraint(equalTo: topAnchor),
                 contentStack.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
                 contentStack.bottomAnchor.constraint(equalTo: bottomAnchor),
-                contentStack.trailingAnchor.constraint(greaterThanOrEqualTo: safeAreaLayoutGuide.trailingAnchor, constant: 16)
+                contentStack.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor)
             ])
         }
 
@@ -52,7 +52,7 @@ extension Survey {
                 var constraints = [NSLayoutConstraint](); defer { NSLayoutConstraint.activate(constraints) }
                 (0..<abs(delta)).forEach { _ in
                     let buttonView = ButtonView(style: style.option)
-                    constraints.append(buttonView.widthAnchor.constraint(equalToConstant: 48))
+                    constraints.append(buttonView.widthAnchor.constraint(greaterThanOrEqualToConstant: 48))
                     constraints.append(buttonView.heightAnchor.constraint(equalToConstant: 52))
                     optionsStack.addArrangedSubview(buttonView)
                 }
