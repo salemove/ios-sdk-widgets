@@ -109,7 +109,8 @@ class CallView: EngagementView {
                 uuid: environment.uuid,
                 gcd: environment.gcd,
                 imageViewCache: environment.imageViewCache,
-                timerProviding: environment.timerProviding
+                timerProviding: environment.timerProviding,
+                uiApplication: environment.uiApplication
             )
         )
         setup()
@@ -427,5 +428,6 @@ extension CallView {
         var gcd: GCD
         var imageViewCache: ImageView.Cache
         var timerProviding: FoundationBased.Timer.Providing
+        var uiApplication: UIKitBased.UIApplication
     }
 }

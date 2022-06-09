@@ -66,7 +66,8 @@ class ChatView: EngagementView {
                 uuid: environment.uuid,
                 gcd: environment.gcd,
                 imageViewCache: environment.imageViewCache,
-                timerProviding: environment.timerProviding
+                timerProviding: environment.timerProviding,
+                uiApplication: environment.uiApplication
             )
         )
         setup()
@@ -255,7 +256,12 @@ extension ChatView {
         case .queueOperator:
             return .queueOperator(connectView)
         case .outgoingMessage(let message):
-            let view = VisitorChatMessageView(with: style.visitorMessage)
+            let view = VisitorChatMessageView(
+                with: style.visitorMessage,
+                environment: .init(
+                    uiApplication: environment.uiApplication
+                )
+            )
             view.appendContent(.text(message.content, accessibility: Self.visitorAccessibilityOutgoingMessage(for: message)), animated: false)
             view.appendContent(
                 .files(
@@ -268,7 +274,12 @@ extension ChatView {
             view.linkTapped = { [weak self] in self?.linkTapped?($0) }
             return .outgoingMessage(view)
         case .visitorMessage(let message, let status):
-            let view = VisitorChatMessageView(with: style.visitorMessage)
+            let view = VisitorChatMessageView(
+                with: style.visitorMessage,
+                environment: .init(
+                    uiApplication: environment.uiApplication
+                )
+            )
             view.appendContent(.text(message.content, accessibility: Self.visitorAccessibilityMessage(for: message)), animated: false)
             view.appendContent(.downloads(message.downloads,
                                           accessibility: .init(from: .visitor)), animated: false)
@@ -283,7 +294,8 @@ extension ChatView {
                     data: environment.data,
                     uuid: environment.uuid,
                     gcd: environment.gcd,
-                    imageViewCache: environment.imageViewCache
+                    imageViewCache: environment.imageViewCache,
+                    uiApplication: environment.uiApplication
                 )
             )
             view.appendContent(.text(message.content, accessibility: Self.operatorAccessibilityMessage(for: message)), animated: false)
@@ -307,7 +319,8 @@ extension ChatView {
                     data: environment.data,
                     uuid: environment.uuid,
                     gcd: environment.gcd,
-                    imageViewCache: environment.imageViewCache
+                    imageViewCache: environment.imageViewCache,
+                    uiApplication: environment.uiApplication
                 )
             )
             let choiceCard = ChoiceCard(with: message, isActive: isActive)
