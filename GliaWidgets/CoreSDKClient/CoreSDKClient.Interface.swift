@@ -32,7 +32,7 @@ struct CoreSdkClient {
 
     typealias QueueForEngagement = (
         _ queueID: String,
-        _ visitorContext: Self.VisitorContext,
+        _ visitorContext: Self.VisitorContext?,
         _ shouldCloseAllQueues: Bool,
         _ mediaType: Self.MediaType,
         _ options: Self.EngagementOptions?,
@@ -129,7 +129,6 @@ extension CoreSdkClient {
     typealias AttachmentType = SalemoveSDK.AttachmentType
     typealias AudioStreamable = SalemoveSDK.AudioStreamable
     typealias AudioStreamAddedBlock = SalemoveSDK.AudioStreamAddedBlock
-    typealias ContextType = SalemoveSDK.ContextType
     typealias EngagementFile = SalemoveSDK.EngagementFile
     typealias EngagementFileCompletionBlock = SalemoveSDK.EngagementFileCompletionBlock
     typealias EngagementFileData = SalemoveSDK.EngagementFileData
@@ -152,6 +151,7 @@ extension CoreSdkClient {
     typealias MessageBlock = SalemoveSDK.MessageBlock
     typealias MessagesUpdateBlock = SalemoveSDK.MessagesUpdateBlock
     typealias Operator = SalemoveSDK.Operator
+    typealias OperatorPicture = SalemoveSDK.OperatorPicture
     typealias OperatorBlock = SalemoveSDK.OperatorBlock
     typealias OperatorTypingStatus = SalemoveSDK.OperatorTypingStatus
     typealias OperatorTypingStatusUpdate = SalemoveSDK.OperatorTypingStatusUpdate
@@ -169,6 +169,7 @@ extension CoreSdkClient {
     typealias VideoStreamable = SalemoveSDK.VideoStreamable
     typealias VideoStreamAddedBlock = SalemoveSDK.VideoStreamAddedBlock
     typealias VisitorContext = SalemoveSDK.VisitorContext
+    typealias ContextType = SalemoveSDK.VisitorContext.ContextType
     typealias VisitorInfoUpdate = SalemoveSDK.VisitorInfoUpdate
     typealias VisitorScreenSharingState = SalemoveSDK.VisitorScreenSharingState
     typealias VisitorScreenSharingStateChange = SalemoveSDK.VisitorScreenSharingStateChange

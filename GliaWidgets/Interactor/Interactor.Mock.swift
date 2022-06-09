@@ -7,7 +7,7 @@ extension Interactor {
         configuration: CoreSdkClient.Salemove.Configuration = try! .mock(),
         // swiftlint:enable force_try
         queueID: String = UUID.mock.uuidString,
-        visitorContext: CoreSdkClient.VisitorContext = .mock,
+        visitorContext: CoreSdkClient.VisitorContext? = .mock,
         environment: Environment = .mock
     ) -> Interactor {
         .init(

@@ -55,8 +55,11 @@ extension ViewController {
         let conf = settingsViewController.conf
         let queueID = settingsViewController.queueID
         let theme = settingsViewController.theme
-        let visitorContext = VisitorContext(type: .page,
-                                            url: "https://www.salemoveinsurance.com")
+        let visitorContext: SalemoveSDK.VisitorContext? = conf.visitorContext
+            .map(\.assetId)
+            .map(SalemoveSDK.VisitorContext.AssetId.init(rawValue:))
+            .map(SalemoveSDK.VisitorContext.ContextType.assetId)
+            .map(SalemoveSDK.VisitorContext.init)
         Glia.sharedInstance.onEvent = { event in
             switch event {
             case .started:
