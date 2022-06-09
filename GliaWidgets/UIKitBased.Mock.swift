@@ -7,6 +7,13 @@ extension UIKitBased.UIImage {
     )
 }
 
+extension UIKitBased.UIApplication {
+    static let mock = Self(
+        open: { _ in },
+        canOpenURL: { _ in false }
+    )
+}
+
 extension UIImage {
     static let mock = UIImage(
         named: "mock-image",

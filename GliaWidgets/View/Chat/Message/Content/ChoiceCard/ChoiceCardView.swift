@@ -18,7 +18,8 @@ final class ChoiceCardView: OperatorChatMessageView {
                 data: environment.data,
                 uuid: environment.uuid,
                 gcd: environment.gcd,
-                imageViewCache: environment.imageViewCache
+                imageViewCache: environment.imageViewCache,
+                uiApplication: environment.uiApplication
             )
         )
     }
@@ -74,6 +75,9 @@ final class ChoiceCardView: OperatorChatMessageView {
         let textView = ChatTextContentView(
             with: style.text,
             contentAlignment: .left,
+            environment: .init(
+                uiApplication: environment.uiApplication
+            ),
             insets: .zero
         )
         textView.text = choiceCard.text
@@ -109,6 +113,7 @@ extension ChoiceCardView {
         var uuid: () -> UUID
         var gcd: GCD
         var imageViewCache: ImageView.Cache
+        var uiApplication: UIKitBased.UIApplication
     }
 }
 

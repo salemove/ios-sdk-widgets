@@ -312,6 +312,7 @@
 		EB2CBB1227D89F7D004F178E /* OnHoldOverlayStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB2CBB1127D89F7D004F178E /* OnHoldOverlayStyle.swift */; };
 		EB2CBB1527D8DB95004F178E /* OnHoldOverlayVisualEffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB2CBB1427D8DB95004F178E /* OnHoldOverlayVisualEffectView.swift */; };
 		EB750F53273BA9BB00BE5FBD /* GliaError.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB750F52273BA9BB00BE5FBD /* GliaError.swift */; };
+		EB95491C2850757400F567F0 /* ChatTextContentViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB95491B2850757400F567F0 /* ChatTextContentViewTests.swift */; };
 		FD01A52B483418AB02DCFBFC /* Pods_GliaWidgets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85639A838514258D976E1B2A /* Pods_GliaWidgets.framework */; };
 /* End PBXBuildFile section */
 
@@ -682,6 +683,7 @@
 		EB2CBB1127D89F7D004F178E /* OnHoldOverlayStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnHoldOverlayStyle.swift; sourceTree = "<group>"; };
 		EB2CBB1427D8DB95004F178E /* OnHoldOverlayVisualEffectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnHoldOverlayVisualEffectView.swift; sourceTree = "<group>"; };
 		EB750F52273BA9BB00BE5FBD /* GliaError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GliaError.swift; sourceTree = "<group>"; };
+		EB95491B2850757400F567F0 /* ChatTextContentViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTextContentViewTests.swift; sourceTree = "<group>"; };
 		F08274A374F775EE39BFBDB1 /* Pods-GliaWidgetsTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliaWidgetsTests.debug.xcconfig"; path = "Target Support Files/Pods-GliaWidgetsTests/Pods-GliaWidgetsTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1745,6 +1747,7 @@
 				7512A5A627C3926500319DF1 /* GliaTests.swift */,
 				EB27E71C27FEBB620090B895 /* CallViewModelTests.swift */,
 				EB03B00D27FFF6DD0058F6B1 /* CallViewTests.swift */,
+				EB95491B2850757400F567F0 /* ChatTextContentViewTests.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -2640,6 +2643,7 @@
 				9A8130C227D9095200220BBD /* FileDownload.Failing.swift in Sources */,
 				9A19927027D3BCAE00161AAE /* GCD.Failing.swift in Sources */,
 				9A8130C427D9099F00220BBD /* FileDownload.Environment.Failing.swift in Sources */,
+				EB95491C2850757400F567F0 /* ChatTextContentViewTests.swift in Sources */,
 				7512A5A727C3926500319DF1 /* GliaTests.swift in Sources */,
 				9A3E1DA227BA7D00005634EB /* FileSystemStorage.Environment.Failing.swift in Sources */,
 				9A1992E127D6313500161AAE /* ImageView.Cache.Failing.swift in Sources */,

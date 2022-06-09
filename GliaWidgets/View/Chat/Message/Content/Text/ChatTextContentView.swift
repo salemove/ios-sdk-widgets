@@ -30,14 +30,17 @@ class ChatTextContentView: UIView {
     private let contentAlignment: ChatMessageContentAlignment
     private let contentView = UIView()
     private let kTextInsets: UIEdgeInsets
+    private let environment: Environment
 
     init(
         with style: ChatTextContentStyle,
         contentAlignment: ChatMessageContentAlignment,
+        environment: Environment,
         insets: UIEdgeInsets = UIEdgeInsets(top: 12, left: 16, bottom: 12, right: 16)
     ) {
         self.style = style
         self.contentAlignment = contentAlignment
+        self.environment = environment
         self.kTextInsets = insets
         super.init(frame: .zero)
         setup()
@@ -58,7 +61,7 @@ class ChatTextContentView: UIView {
         textView.isEditable = false
         textView.textContainerInset = .zero
         textView.textContainer.lineFragmentPadding = 0
-        textView.dataDetectorTypes = .all
+        textView.dataDetectorTypes = [.link, .phoneNumber]
         textView.linkTextAttributes = [.underlineStyle: NSUnderlineStyle.single.rawValue]
         textView.font = style.textFont
         textView.backgroundColor = .clear
@@ -101,12 +104,33 @@ extension ChatTextContentView: UITextViewDelegate {
         in characterRange: NSRange,
         interaction: UITextItemInteraction
     ) -> Bool {
-        if URL.scheme == "tel" || URL.scheme == "mailto" {
-            return true
-        } else {
-            linkTapped?(URL)
-            return false
+        handleUrl(url: URL)
+        return false
+    }
+
+    func handleUrl(url: URL) {
+        switch url.scheme?.lowercased() {
+        case "tel",
+            "mailto":
+            guard
+                environment.uiApplication.canOpenURL(url)
+            else { return }
+
+            environment.uiApplication.open(url)
+
+        case "http",
+            "https":
+            linkTapped?(url)
+
+        default:
+            return
         }
+    }
+}
+
+extension ChatTextContentView {
+    struct Environment {
+        var uiApplication: UIKitBased.UIApplication
     }
 }
 
@@ -116,3 +140,20 @@ extension ChatTextContentView {
         var value: String?
     }
 }
+
+#if DEBUG
+extension ChatTextContentView {
+    static func mock(environment: Environment) -> ChatTextContentView {
+        ChatTextContentView(
+            with: ChatTextContentStyle(
+                textFont: .systemFont(ofSize: 10),
+                textColor: .black,
+                backgroundColor: .black
+            ),
+            contentAlignment: .left,
+            environment: environment,
+            insets: .zero
+        )
+    }
+}
+#endif
