@@ -57,7 +57,7 @@ class Interactor {
     /// Flag indicating if configuration was already performed.
     var isConfigurationPerformed: Bool = false
 
-    private let visitorContext: CoreSdkClient.VisitorContext
+    private let visitorContext: CoreSdkClient.VisitorContext?
     private var observers = [() -> (AnyObject?, EventHandler)]()
     private var isEngagementEndedByVisitor = false
     private let sdkConfiguration: CoreSdkClient.Salemove.Configuration
@@ -73,7 +73,7 @@ class Interactor {
     init(
         with conf: CoreSdkClient.Salemove.Configuration,
         queueID: String,
-        visitorContext: CoreSdkClient.VisitorContext,
+        visitorContext: CoreSdkClient.VisitorContext?,
         environment: Environment
     ) {
         self.queueID = queueID
@@ -280,9 +280,8 @@ extension Interactor: CoreSdkClient.Interactable {
     }
 
     var onEngagementRequest: CoreSdkClient.RequestOfferBlock {
-        return { answer in
-            let context = CoreSdkClient.VisitorContext(type: .page, url: "wwww.example.com")
-            answer(context, true) { _, _ in }
+        return { [weak self] answer in
+            answer(self?.visitorContext, true) { _, _ in }
         }
     }
 
