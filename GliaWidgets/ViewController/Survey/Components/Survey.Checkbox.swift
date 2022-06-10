@@ -33,7 +33,7 @@ extension Survey {
         let value = UILabel().makeView {
             $0.numberOfLines = 0
         }
-        lazy var contentStack = UIStackView.make(.horizontal, spacing: 8)(
+        lazy var contentStack = UIStackView.make(.horizontal, spacing: 8, distribution: .fillProportionally)(
             imageViewContainer,
             value
         )
