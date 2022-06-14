@@ -63,6 +63,7 @@ class ActionButton: UIButton {
         setTitleColor(style.titleColor, for: .normal)
         titleLabel?.textAlignment = .center
         setTitle(style.title, for: .normal)
+        titleLabel?.adjustsFontSizeToFitWidth = true
 
         addTarget(self, action: #selector(tapped), for: .touchUpInside)
 
