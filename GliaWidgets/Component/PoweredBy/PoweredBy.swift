@@ -32,8 +32,14 @@ class PoweredBy: UIView {
 
         logoImageView.image = Asset.gliaLogo.image
 
+        let size = logoImageView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+        logoImageView.heightAnchor.constraint(
+            equalTo: logoImageView.widthAnchor,
+            multiplier: size.height / size.width
+        ).isActive = true
+
         stackView.axis = .horizontal
-        stackView.alignment = .center
+        stackView.alignment = .fill
         stackView.spacing = 5
         stackView.addArrangedSubviews([
             label,
