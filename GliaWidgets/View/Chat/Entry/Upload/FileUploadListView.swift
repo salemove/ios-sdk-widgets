@@ -1,4 +1,5 @@
 import UIKit
+import SwiftUI
 
 class FileUploadListView: UIView {
     var removeTapped: ((FileUpload) -> Void)?
@@ -10,7 +11,13 @@ class FileUploadListView: UIView {
     private let stackView = UIStackView()
     private var heightLayoutConstraint: NSLayoutConstraint!
     private let style: FileUploadListStyle
-    private let kMaxUnscrollableViews = 3
+    private var maxUnscrollableViews: Int {
+        if UIApplication.shared.preferredContentSizeCategory <= .accessibilityMedium {
+            return 3
+        } else {
+            return 2
+        }
+    }
 
     init(with style: FileUploadListStyle) {
         self.style = style
@@ -68,14 +75,14 @@ class FileUploadListView: UIView {
         stackView.autoPinEdgesToSuperviewEdges()
     }
 
-    private func updateHeight() {
-        let maxHeight = CGFloat(kMaxUnscrollableViews) * FileUploadView.height
-        let height = CGFloat(uploadViews.count) * FileUploadView.height
-        if height <= maxHeight {
-            heightLayoutConstraint.constant = height
-        } else {
-            heightLayoutConstraint.constant = maxHeight
-        }
+    func updateHeight() {
+        let height = uploadViews
+            .prefix(maxUnscrollableViews)
+            .reduce(CGFloat.zero) { result, view in
+                result + view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
+            }
+
+        heightLayoutConstraint.constant = height
     }
 
     /// Make `fileUploadView` and `fileUploadView.removeButton` "visible"

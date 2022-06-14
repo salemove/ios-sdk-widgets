@@ -31,6 +31,7 @@ class FileUploadView: UIView {
 
     private func setup() {
         infoLabel.lineBreakMode = .byTruncatingMiddle
+        stateLabel.adjustsFontSizeToFitWidth = true
 
         progressView.backgroundColor = style.progressBackgroundColor
         progressView.clipsToBounds = true
@@ -58,7 +59,7 @@ class FileUploadView: UIView {
     }
 
     private func layout() {
-        autoSetDimension(.height, toSize: FileUploadView.height)
+        autoSetDimension(.height, toSize: FileUploadView.height, relation: .greaterThanOrEqual)
         progressView.autoSetDimension(.height, toSize: 8)
 
         addSubview(contentView)
@@ -74,7 +75,7 @@ class FileUploadView: UIView {
         removeButton.autoPinEdge(toSuperviewEdge: .right)
 
         contentView.addSubview(infoLabel)
-        infoLabel.autoPinEdge(.top, to: .top, of: contentView, withOffset: -2)
+        infoLabel.autoPinEdge(.top, to: .top, of: contentView, withOffset: -6)
         infoLabel.autoPinEdge(.left, to: .right, of: filePreviewView, withOffset: 12)
         infoLabel.autoPinEdge(.right, to: .left, of: removeButton, withOffset: -80)
 
@@ -84,7 +85,8 @@ class FileUploadView: UIView {
         stateLabel.autoPinEdge(.right, to: .left, of: removeButton, withOffset: -80)
 
         contentView.addSubview(progressView)
-        progressView.autoPinEdge(.bottom, to: .bottom, of: filePreviewView)
+        progressView.autoPinEdge(.top, to: .bottom, of: stateLabel, withOffset: 5)
+        progressView.autoPinEdge(.bottom, to: .bottom, of: contentView, withOffset: 6)
         progressView.autoPinEdge(.left, to: .right, of: filePreviewView, withOffset: 12)
         progressView.autoPinEdge(.right, to: .left, of: removeButton, withOffset: -80)
     }
