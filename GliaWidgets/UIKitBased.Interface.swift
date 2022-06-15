@@ -8,5 +8,6 @@ enum UIKitBased {
     struct UIApplication {
         var open: (URL) -> Void
         var canOpenURL: (URL) -> Bool
+        var preferredContentSizeCategory: () -> UIContentSizeCategory
     }
 }
