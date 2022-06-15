@@ -45,7 +45,10 @@ class ChatView: EngagementView {
         self.environment = environment
         self.messageEntryView = ChatMessageEntryView(
             with: style.messageEntry,
-            environment: .init(gcd: environment.gcd)
+            environment: .init(
+                gcd: environment.gcd,
+                uiApplication: environment.uiApplication
+            )
         )
         self.unreadMessageIndicatorView = UnreadMessageIndicatorView(
             with: style.unreadMessageIndicator,

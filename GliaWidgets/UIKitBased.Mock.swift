@@ -10,7 +10,8 @@ extension UIKitBased.UIImage {
 extension UIKitBased.UIApplication {
     static let mock = Self(
         open: { _ in },
-        canOpenURL: { _ in false }
+        canOpenURL: { _ in false },
+        preferredContentSizeCategory: { .unspecified }
     )
 }
 
