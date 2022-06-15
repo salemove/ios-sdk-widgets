@@ -17,6 +17,10 @@ extension UIKitBased.UIApplication {
         canOpenURL: { _ in
             fail("\(Self.self).canOpenURL")
             return false
+        },
+        preferredContentSizeCategory: {
+            fail("\(Self.self).preferredContentSizeCategory")
+            return .unspecified
         }
     )
 }

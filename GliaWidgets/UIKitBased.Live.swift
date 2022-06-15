@@ -7,6 +7,7 @@ extension UIKitBased.UIImage {
 extension UIKitBased.UIApplication {
     static let live = Self(
         open: { UIApplication.shared.open($0) },
-        canOpenURL: UIApplication.shared.canOpenURL
+        canOpenURL: UIApplication.shared.canOpenURL,
+        preferredContentSizeCategory: { UIApplication.shared.preferredContentSizeCategory }
     )
 }
