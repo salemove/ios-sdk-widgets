@@ -1,5 +1,3 @@
-import Foundation
-
 extension Theme.Button {
     /// Accessibility properties for button style.
     public struct Accessibility: Equatable {

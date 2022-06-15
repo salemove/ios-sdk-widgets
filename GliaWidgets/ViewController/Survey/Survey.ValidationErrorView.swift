@@ -4,9 +4,6 @@ extension Survey {
     final class ValidationErrorView: View {
         let validationMessage = UILabel().make {
             $0.numberOfLines = 0
-            $0.textColor = .red
-            $0.font = .boldSystemFont(ofSize: 12)
-            $0.text = L10n.Survey.Action.validationError
         }
         let validationImage = UIImageView().make {
             $0.image = Asset.surveyValidationError.image
@@ -16,12 +13,32 @@ extension Survey {
             validationMessage
         )
 
+        private let style: Theme.SurveyStyle.ValidationError
+
+        // MARK: - Lifycycle
+
+        init(style: Theme.SurveyStyle.ValidationError) {
+            self.style = style
+            super.init()
+        }
+
         override func setup() {
             super.setup()
             addSubview(validationMessageHStack)
-            accessibilityLabel = L10n.Survey.Accessibility.Validation.Title.label
+            accessibilityLabel = style.accessibility.label
             accessibilityElements = [validationMessageHStack]
             isAccessibilityElement = true
+
+            validationMessage.textColor = .init(hex: style.color)
+            validationMessage.font = style.font
+            validationMessage.text = style.message
+
+            validationMessageHStack.alignment = .center
+
+            setFontScalingEnabled(
+                style.accessibility.isFontScalingEnabled,
+                for: validationMessage
+            )
         }
 
         override func defineLayout() {

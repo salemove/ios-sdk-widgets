@@ -14,7 +14,7 @@ extension Survey {
         let textView = UITextView().make {
             $0.clipsToBounds = true
         }
-        let validationError = ValidationErrorView()
+        lazy var validationError = ValidationErrorView(style: style.error)
         lazy var contentStack = UIStackView.make(.vertical, spacing: 16)(
             title,
             textView,
@@ -49,16 +49,20 @@ extension Survey {
         }
 
         func render() {
+            setFontScalingEnabled(
+                style.accessibility.isFontScalingEnabled,
+                for: title
+            )
             title.attributedText = .withRequiredSymbol(
                 foregroundColor: .init(hex: style.title.color),
-                fontSize: style.title.fontSize,
-                fontWeight: style.title.fontWeight,
+                font: style.title.font,
                 isRequired: props.isRequired,
                 text: props.title
             )
 
             title.accessibilityLabel = props.title
-            title.accessibilityValue = props.accessibility.value
+            title.accessibilityValue = props.accessibility.titleValue
+            textView.accessibilityHint = props.accessibility.fieldHint
 
             textView.text = props.value
             validationError.isHidden = !props.showValidationError
@@ -74,11 +78,13 @@ extension Survey {
             if let backgroundColor = style.background.background {
                 textView.backgroundColor = UIColor(hex: backgroundColor)
             }
-            textView.font = .systemFont(
-                ofSize: style.option.normalText.fontSize,
-                weight: .init(rawValue: style.option.normalText.fontWeight)
+            textView.textColor = UIColor(hex: style.text.color)
+            textView.font = style.text.font
+
+            setFontScalingEnabled(
+                style.accessibility.isFontScalingEnabled,
+                for: textView
             )
-            textView.textColor = UIColor(hex: style.textColor)
         }
 
         // MARK: - Private

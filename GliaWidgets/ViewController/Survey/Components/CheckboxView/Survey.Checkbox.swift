@@ -54,11 +54,13 @@ extension Survey {
 
         init(
             props: Props = .init(),
-            style: Theme.Text,
+            style: Theme.SurveyStyle.Checkbox,
+            textStyle: Theme.Text,
             checkedTintColor: UIColor
         ) {
             self.props = props
             self.style = style
+            self.textStyle = textStyle
             self.checkedTintColor = checkedTintColor
             super.init()
         }
@@ -77,6 +79,11 @@ extension Survey {
             accessibilityElements = [imageView, value]
             accessibilityTraits = .button
             isAccessibilityElement = true
+
+            setFontScalingEnabled(
+                style.accessibility.isFontScalingEnabled,
+                for: value
+            )
         }
 
         override func defineLayout() {
@@ -110,14 +117,15 @@ extension Survey {
             case .highlighted:
                 checkImageView.image = Asset.surveyCheckboxChecked.image
             }
-            value.font = .systemFont(ofSize: style.fontSize, weight: .init(style.fontWeight))
-            value.textColor = .init(hex: style.color)
-            checkImageView.tintColor = checkedTintColor
+            value.font = style.title.font
+            value.textColor = .init(hex: textStyle.color)
+			checkImageView.tintColor = checkedTintColor
         }
 
         // MARK: - Private
 
-        private let style: Theme.Text
+        private let style: Theme.SurveyStyle.Checkbox
+        private let textStyle: Theme.Text
         private let checkedTintColor: UIColor
 
         @objc private func tapGestureAction(sender: UITapGestureRecognizer) {

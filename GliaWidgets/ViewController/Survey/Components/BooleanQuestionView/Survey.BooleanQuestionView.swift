@@ -13,7 +13,7 @@ extension Survey {
             $0.numberOfLines = 0
         }
         let optionsStack = UIStackView.make(.horizontal, spacing: 24)()
-        let validationError = ValidationErrorView()
+        lazy var validationError = ValidationErrorView(style: style.error)
         lazy var contentStack = UIStackView.make(.vertical, spacing: 16)(
             title,
             optionsStack,
@@ -41,7 +41,7 @@ extension Survey {
                 contentStack.topAnchor.constraint(equalTo: topAnchor),
                 contentStack.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
                 contentStack.bottomAnchor.constraint(equalTo: bottomAnchor),
-                contentStack.trailingAnchor.constraint(greaterThanOrEqualTo: safeAreaLayoutGuide.trailingAnchor, constant: 16)
+                contentStack.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor)
             ])
         }
 
@@ -52,7 +52,7 @@ extension Survey {
                 var constraints = [NSLayoutConstraint](); defer { NSLayoutConstraint.activate(constraints) }
                 (0..<abs(delta)).forEach { _ in
                     let buttonView = ButtonView(style: style.option)
-                    constraints.append(buttonView.widthAnchor.constraint(equalToConstant: 48))
+                    constraints.append(buttonView.widthAnchor.constraint(greaterThanOrEqualToConstant: 48))
                     constraints.append(buttonView.heightAnchor.constraint(equalToConstant: 52))
                     optionsStack.addArrangedSubview(buttonView)
                 }
@@ -61,10 +61,14 @@ extension Survey {
             default: break
             }
 
+            setFontScalingEnabled(
+                style.accessibility.isFontScalingEnabled,
+                for: title
+            )
+
             title.attributedText = .withRequiredSymbol(
                 foregroundColor: .init(hex: style.title.color),
-                fontSize: style.title.fontSize,
-                fontWeight: style.title.fontWeight,
+                font: style.title.font,
                 isRequired: props.isRequired,
                 text: props.title
             )

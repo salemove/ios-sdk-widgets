@@ -15,7 +15,7 @@ extension Survey {
         }
         let optionsStackContainer = UIView()
         let optionsStack = UIStackView.make(.horizontal, spacing: 16)()
-        let validationError = ValidationErrorView()
+        lazy var validationError = ValidationErrorView(style: style.error)
         lazy var contentStack = UIStackView.make(.vertical, spacing: 16)(
             title,
             optionsStackContainer,
@@ -71,10 +71,14 @@ extension Survey {
             default: break
             }
 
+            setFontScalingEnabled(
+                true,
+                for: title
+            )
+
             title.attributedText = .withRequiredSymbol(
                 foregroundColor: .init(hex: style.title.color),
-                fontSize: style.title.fontSize,
-                fontWeight: style.title.fontWeight,
+                font: style.title.font,
                 isRequired: props.isRequired,
                 text: props.title
             )

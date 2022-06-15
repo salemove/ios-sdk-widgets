@@ -62,8 +62,11 @@ class ChatMessageEntryView: UIView {
     private let kMinTextViewHeight: CGFloat = 24
     private let kMaxTextViewHeight: CGFloat = 200
 
-    public init(with style: ChatMessageEntryStyle) {
+    private let environment: Environment
+
+    public init(with style: ChatMessageEntryStyle, environment: Environment) {
         self.style = style
+        self.environment = environment
         uploadListView = FileUploadListView(with: style.uploadList)
         pickMediaButton = MessageButton(with: style.mediaButton)
         sendButton = MessageButton(with: style.sendButton)
@@ -83,6 +86,14 @@ class ChatMessageEntryView: UIView {
     override public func layoutSubviews() {
         super.layoutSubviews()
         updateTextViewHeight()
+    }
+
+    func updateLayout() {
+        // Height updates work only with delay
+        environment.gcd.mainQueue.asyncAfterDeadline(.now() + 0.1) {
+            self.updateTextViewHeight()
+            self.uploadListView.updateHeight()
+        }
     }
 
     private func setup() {
@@ -108,6 +119,8 @@ class ChatMessageEntryView: UIView {
         textView.backgroundColor = .clear
         textView.accessibilityLabel = style.accessibility.messageInputAccessibilityLabel
 
+        textView.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
+
         placeholderLabel.font = style.placeholderFont
         placeholderLabel.textColor = style.placeholderColor
         updatePlaceholderText()
@@ -123,6 +136,14 @@ class ChatMessageEntryView: UIView {
         buttonsStackView.axis = .horizontal
         buttonsStackView.spacing = 15
         buttonsStackView.addArrangedSubviews([pickMediaButton, sendButton])
+        setFontScalingEnabled(
+            style.accessibility.isFontScalingEnabled,
+            for: textView
+        )
+        setFontScalingEnabled(
+            style.accessibility.isFontScalingEnabled,
+            for: placeholderLabel
+        )
     }
 
     private func layout() {
@@ -196,6 +217,7 @@ class ChatMessageEntryView: UIView {
             width: textView.frame.size.width,
             height: CGFloat.greatestFiniteMagnitude
         )
+
         var newHeight = textView.sizeThatFits(size).height
 
         textView.isScrollEnabled = newHeight > kMaxTextViewHeight
@@ -242,5 +264,11 @@ extension ChatMessageEntryView: UITextViewDelegate {
 
     public func textViewDidEndEditing(_ textView: UITextView) {
         placeholderLabel.isHidden = !textView.text.isEmpty
+    }
+}
+
+extension ChatMessageEntryView {
+    struct Environment {
+        var gcd: GCD
     }
 }

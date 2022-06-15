@@ -1,17 +1,27 @@
 import UIKit
 
 enum Font {
-    static let headerTitle = Font.medium(20)
-
+    @available(*, deprecated, message: """
+                Use Font.Style and UIFontMetrics via FontScaling instead of UIFont of specific size.
+                For more information refer to 'ThemeFont.swift' to see it in action.
+                """)
     static func regular(_ size: CGFloat) -> UIFont {
-        FontProvider.shared.font(named: "Roboto-Regular", size: size)
+        FontProvider.shared.font(named: .robotoRegular, size: size)
     }
 
+    @available(*, deprecated, message: """
+                Use Font.Style and UIFontMetrics via FontScaling instead of UIFont of specific size.
+                For more information refer to 'ThemeFont.swift' to see it in action.
+                """)
     static func medium(_ size: CGFloat) -> UIFont {
-        FontProvider.shared.font(named: "Roboto-Medium", size: size)
+        FontProvider.shared.font(named: .robotoMedium, size: size)
     }
 
+    @available(*, deprecated, message: """
+                Use Font.Style and UIFontMetrics via FontScaling instead of UIFont of specific size.
+                For more information refer to 'ThemeFont.swift' to see it in action.
+                """)
     static func bold(_ size: CGFloat) -> UIFont {
-        FontProvider.shared.font(named: "Roboto-Bold", size: size)
+        FontProvider.shared.font(named: .robotoBold, size: size)
     }
 }

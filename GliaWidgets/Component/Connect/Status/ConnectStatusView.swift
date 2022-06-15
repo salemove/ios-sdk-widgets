@@ -18,10 +18,22 @@ class ConnectStatusView: UIView {
     func setStyle(_ style: ConnectStatusStyle) {
         firstLabel.font = style.firstTextFont
         firstLabel.textColor = style.firstTextFontColor
+        firstLabel.numberOfLines = 0
+
         secondLabel.font = style.secondTextFont
         secondLabel.textColor = style.secondTextFontColor
+        secondLabel.numberOfLines = 0
+
         firstLabel.accessibilityHint = style.accessibility.firstTextHint
         secondLabel.accessibilityHint = style.accessibility.secondTextHint
+        setFontScalingEnabled(
+            style.accessibility.isFontScalingEnabled,
+            for: firstLabel
+        )
+        setFontScalingEnabled(
+            style.accessibility.isFontScalingEnabled,
+            for: secondLabel
+        )
     }
 
     func setFirstText(_ text: String?, animated: Bool) {

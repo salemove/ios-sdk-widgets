@@ -72,6 +72,10 @@ class CallButton: UIView {
 
         titleLabel.textAlignment = .center
         titleLabel.numberOfLines = 0
+        setFontScalingEnabled(
+            style.accessibility.isFontScalingEnabled,
+            for: titleLabel
+        )
 
         let tapRecognizer = UITapGestureRecognizer(target: self,
                                                    action: #selector(tapped))

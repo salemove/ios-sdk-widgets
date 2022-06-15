@@ -38,15 +38,33 @@ extension Survey.ViewController.Props {
             cancel: {}
         )
     }
+
+    static func errorPropsMock() -> Survey.ViewController.Props {
+        return Survey.ViewController.Props(
+            header: "Survey title",
+            props: [
+                makeScalePropsMock(showValidationError: true),
+                makeInputPropsMock(showValidationError: true),
+                makeBooleanPropsMock(showValidationError: true),
+                makeSinglePropsMock(showValidationError: true)
+            ],
+            submit: { _ in },
+            cancel: {}
+        )
+    }
 }
 
 private extension Survey.ViewController.Props {
 
-    static func makeScalePropsMock(selectedOption: Survey.Option<Int>? = nil) -> Survey.ScaleQuestionView.Props {
+    static func makeScalePropsMock(
+        selectedOption: Survey.Option<Int>? = nil,
+        showValidationError: Bool = false
+    ) -> Survey.ScaleQuestionView.Props {
         var props = Survey.ScaleQuestionView.Props(
             id: UUID.mock.uuidString,
             title: "Question title",
             isRequired: true,
+            showValidationError: showValidationError,
             accessibility: .init(value: "Required")
         )
         props.options = [
@@ -61,12 +79,14 @@ private extension Survey.ViewController.Props {
     }
 
     static func makeBooleanPropsMock(
-        selectedOption: Survey.Option<Bool>? = nil
+        selectedOption: Survey.Option<Bool>? = nil,
+        showValidationError: Bool = false
     ) -> Survey.BooleanQuestionView.Props {
         var props = Survey.BooleanQuestionView.Props(
             id: UUID().uuidString,
             title: "Question title",
             isRequired: true,
+            showValidationError: showValidationError,
             accessibility: .init(value: "Required")
         )
         props.options = [
@@ -78,12 +98,14 @@ private extension Survey.ViewController.Props {
     }
 
     static func makeSinglePropsMock(
-        selectedOption: Survey.Option<String>? = nil
+        selectedOption: Survey.Option<String>? = nil,
+        showValidationError: Bool = false
     ) -> Survey.SingleChoiceQuestionView.Props {
         var props = Survey.SingleChoiceQuestionView.Props(
             id: UUID().uuidString,
             title: "Question title",
             isRequired: true,
+            showValidationError: showValidationError,
             accessibility: .init(value: "Required")
         )
         props.options = [
@@ -96,14 +118,19 @@ private extension Survey.ViewController.Props {
     }
 
     static func makeInputPropsMock(
-        value: String = "Feedback"
+        value: String = "Feedback",
+        showValidationError: Bool = false
     ) -> Survey.InputQuestionView.Props {
         .init(
             id: UUID().uuidString,
             title: "Question title",
             value: value,
             isRequired: true,
-            accessibility: .init(value: "Required")
+            showValidationError: showValidationError,
+            accessibility: .init(
+                titleValue: "Required",
+                fieldHint: nil
+            )
         )
     }
 }

@@ -2,6 +2,7 @@ import Foundation
 
 extension Survey.InputQuestionView.Props {
     struct Accessibility {
-        let value: String?
+        let titleValue: String?
+        let fieldHint: String?
     }
 }

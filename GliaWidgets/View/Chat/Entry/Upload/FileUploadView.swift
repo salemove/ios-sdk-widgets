@@ -31,6 +31,7 @@ class FileUploadView: UIView {
 
     private func setup() {
         infoLabel.lineBreakMode = .byTruncatingMiddle
+        stateLabel.adjustsFontSizeToFitWidth = true
 
         progressView.backgroundColor = style.progressBackgroundColor
         progressView.clipsToBounds = true
@@ -44,12 +45,21 @@ class FileUploadView: UIView {
         upload.state.addObserver(self) { [weak self] state, _ in
             self?.update(for: state)
         }
-        removeButton.accessibilityLabel = style.accessiblity.removeButtonAccessibilityLabel
+        removeButton.accessibilityLabel = style.accessibility.removeButtonAccessibilityLabel
         isAccessibilityElement = true
+
+        setFontScalingEnabled(
+            style.accessibility.isFontScalingEnabled,
+            for: infoLabel
+        )
+        setFontScalingEnabled(
+            style.accessibility.isFontScalingEnabled,
+            for: stateLabel
+        )
     }
 
     private func layout() {
-        autoSetDimension(.height, toSize: FileUploadView.height)
+        autoSetDimension(.height, toSize: FileUploadView.height, relation: .greaterThanOrEqual)
         progressView.autoSetDimension(.height, toSize: 8)
 
         addSubview(contentView)
@@ -65,7 +75,7 @@ class FileUploadView: UIView {
         removeButton.autoPinEdge(toSuperviewEdge: .right)
 
         contentView.addSubview(infoLabel)
-        infoLabel.autoPinEdge(.top, to: .top, of: filePreviewView, withOffset: 4)
+        infoLabel.autoPinEdge(.top, to: .top, of: contentView, withOffset: -2)
         infoLabel.autoPinEdge(.left, to: .right, of: filePreviewView, withOffset: 12)
         infoLabel.autoPinEdge(.right, to: .left, of: removeButton, withOffset: -80)
 
@@ -75,7 +85,8 @@ class FileUploadView: UIView {
         stateLabel.autoPinEdge(.right, to: .left, of: removeButton, withOffset: -80)
 
         contentView.addSubview(progressView)
-        progressView.autoPinEdge(.bottom, to: .bottom, of: filePreviewView)
+        progressView.autoPinEdge(.top, to: .bottom, of: stateLabel, withOffset: 5)
+        progressView.autoPinEdge(.bottom, to: .bottom, of: contentView, withOffset: 6)
         progressView.autoPinEdge(.left, to: .right, of: filePreviewView, withOffset: 12)
         progressView.autoPinEdge(.right, to: .left, of: removeButton, withOffset: -80)
     }
@@ -103,10 +114,10 @@ class FileUploadView: UIView {
             accessibilityValue = Self.accessibleProgress(
                 provideProgressText(progress.value),
                 to: infoLabel.text,
-                accessibility: style.accessiblity
+                accessibility: style.accessibility
             )
 
-            progress.addObserver(self) { [weak self, accessibility = style.accessiblity] progress, _ in
+            progress.addObserver(self) { [weak self, accessibility = style.accessibility] progress, _ in
                 self?.progressView.progress = Float(progress)
                 self?.accessibilityValue = Self.accessibleProgress(
                     provideProgressText(progress),
@@ -128,7 +139,7 @@ class FileUploadView: UIView {
             accessibilityValue = Self.accessibleProgress(
                 "100",
                 to: infoLabel.text,
-                accessibility: style.accessiblity
+                accessibility: style.accessibility
             )
         case .error(let error):
             filePreviewView.kind = .error

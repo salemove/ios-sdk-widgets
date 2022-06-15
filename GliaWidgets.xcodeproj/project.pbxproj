@@ -189,6 +189,8 @@
 		6EA3512626DE9F3400BF5941 /* operator-typing-indicator.json in Resources */ = {isa = PBXBuildFile; fileRef = 6EA3512526DE9F3400BF5941 /* operator-typing-indicator.json */; };
 		6EA3516926E139DA00BF5941 /* GliaViewTransitionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EA3516826E139DA00BF5941 /* GliaViewTransitionController.swift */; };
 		6EEAD84E2701A8C10074C191 /* ChoiceCardOptionStateStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EEAD84D2701A8C10074C191 /* ChoiceCardOptionStateStyle.swift */; };
+		750C0ADD2850D53F003E0415 /* Theme.Survey.ScaleQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750C0ADB2850D53F003E0415 /* Theme.Survey.ScaleQuestion.swift */; };
+		750C0ADE2850D53F003E0415 /* Theme.Survey.ScaleQuestion.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750C0ADC2850D53F003E0415 /* Theme.Survey.ScaleQuestion.Accessibility.swift */; };
 		7512A57727BE8A6700319DF1 /* InteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7512A57627BE8A6700319DF1 /* InteractorTests.swift */; };
 		7512A57A27BF9FCD00319DF1 /* ChatViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7512A57927BF9FCD00319DF1 /* ChatViewModelTests.swift */; };
 		7512A57D27BFA37D00319DF1 /* CoreSdkClient.Salemove.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7512A57C27BFA37D00319DF1 /* CoreSdkClient.Salemove.swift */; };
@@ -212,7 +214,6 @@
 		75F58EE127E7D5300065BA2D /* Survey.ViewController.Props.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F58EE027E7D5300065BA2D /* Survey.ViewController.Props.swift */; };
 		75FF151427F3A2D600FE7BE2 /* Theme+Survey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FF151327F3A2D600FE7BE2 /* Theme+Survey.swift */; };
 		75FF151727F4E13900FE7BE2 /* Theme.Survey.BooleanQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FF151627F4E13900FE7BE2 /* Theme.Survey.BooleanQuestion.swift */; };
-		75FF151927F4F01800FE7BE2 /* Theme.Survey.ScaleQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FF151827F4F01800FE7BE2 /* Theme.Survey.ScaleQuestion.swift */; };
 		75FF151B27F4F52D00FE7BE2 /* Theme.Survey.SingleQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FF151A27F4F52D00FE7BE2 /* Theme.Survey.SingleQuestion.swift */; };
 		75FF151D27F4F8E000FE7BE2 /* Theme.Survey.InputQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FF151C27F4F8E000FE7BE2 /* Theme.Survey.InputQuestion.swift */; };
 		8458769F2823FD18007AC3DF /* SurveyViewControllerVoiceOverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8458769E2823FD18007AC3DF /* SurveyViewControllerVoiceOverTests.swift */; };
@@ -223,14 +224,31 @@
 		845876AE282A95DE007AC3DF /* InputQuestionView.Props.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845876AD282A95DE007AC3DF /* InputQuestionView.Props.Accessibility.swift */; };
 		845876B1282A9EAF007AC3DF /* CheckboxView.Props.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845876B0282A9EAF007AC3DF /* CheckboxView.Props.Accessibility.swift */; };
 		845876B4282AA296007AC3DF /* ButtonView.Props.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845876B3282AA296007AC3DF /* ButtonView.Props.Accessibility.swift */; };
-		84CFB7732822700000167258 /* Theme.Button.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CFB7722822700000167258 /* Theme.Button.Accessibility.swift */; };
 		845E2F6A28365AD000C04D56 /* CoreSDKClient.Operator.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845E2F6928365AD000C04D56 /* CoreSDKClient.Operator.Mock.swift */; };
+		845E2F6C2837EF2E00C04D56 /* FilePreviewStyle.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845E2F6B2837EF2E00C04D56 /* FilePreviewStyle.Accessibility.swift */; };
+		845E2F6E283BD69B00C04D56 /* ChatTextContentStyle.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845E2F6D283BD69B00C04D56 /* ChatTextContentStyle.Accessibility.swift */; };
+		845E2F70283CF94100C04D56 /* VisitorChatMessageStyle.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845E2F6F283CF94100C04D56 /* VisitorChatMessageStyle.Accessibility.swift */; };
+		845E2F72283D068000C04D56 /* HeaderStyle.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845E2F71283D068000C04D56 /* HeaderStyle.Accessibility.swift */; };
+		845E2F74283D43FA00C04D56 /* AlertStyle.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845E2F73283D43FA00C04D56 /* AlertStyle.Accessibility.swift */; };
+		845E2F76283D48BC00C04D56 /* AttachmentSourceItemStyle.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845E2F75283D48BC00C04D56 /* AttachmentSourceItemStyle.Accessibility.swift */; };
+		845E2F78283E2D4200C04D56 /* PoweredByStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845E2F77283E2D4200C04D56 /* PoweredByStyle.swift */; };
+		845E2F7A283E2D4E00C04D56 /* PoweredByStyle.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845E2F79283E2D4E00C04D56 /* PoweredByStyle.Accessibility.swift */; };
+		845E2F7F283F99F200C04D56 /* Theme.Survey.ValidationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845E2F7E283F99F200C04D56 /* Theme.Survey.ValidationError.swift */; };
+		845E2F85283FA90200C04D56 /* Theme.Survey.ValidationError.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845E2F84283FA90200C04D56 /* Theme.Survey.ValidationError.Accessibility.swift */; };
+		845E2F88283FB49F00C04D56 /* Theme.Survey.BooleanQuestion.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845E2F87283FB49F00C04D56 /* Theme.Survey.BooleanQuestion.Accessibility.swift */; };
+		845E2F8B283FB53500C04D56 /* Theme.Survey.InputQuestion.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845E2F8A283FB53500C04D56 /* Theme.Survey.InputQuestion.Accessibility.swift */; };
+		845E2F8E283FB5B500C04D56 /* Theme.Survey.SingleQuestion.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845E2F8D283FB5B500C04D56 /* Theme.Survey.SingleQuestion.Accessibility.swift */; };
+		845E2F93283FB6D000C04D56 /* Theme.Survey.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845E2F92283FB6D000C04D56 /* Theme.Survey.Accessibility.swift */; };
+		845E2F95283FC5D300C04D56 /* Theme.Survey.OptionButton.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845E2F94283FC5D300C04D56 /* Theme.Survey.OptionButton.Accessibility.swift */; };
+		845E2F98283FC9A900C04D56 /* Theme.Survey.OptionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845E2F97283FC9A900C04D56 /* Theme.Survey.OptionButton.swift */; };
+		845E2F9B283FCA9000C04D56 /* Theme.Survey.Checkbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845E2F9A283FCA9000C04D56 /* Theme.Survey.Checkbox.swift */; };
+		845E2F9D283FCB1400C04D56 /* Theme.Survey.Checkbox.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845E2F9C283FCB1400C04D56 /* Theme.Survey.Checkbox.Accessibility.swift */; };
+		84CFB7732822700000167258 /* Theme.Button.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CFB7722822700000167258 /* Theme.Button.Accessibility.swift */; };
 		9A0B7D1727DA6B74006D8637 /* Interactor.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A0B7D1627DA6B74006D8637 /* Interactor.Mock.swift */; };
 		9A186A3527F5CF3C0055886D /* FileUploadStyle.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A186A3427F5CF3C0055886D /* FileUploadStyle.Accessibility.swift */; };
 		9A186A3727F5D38D0055886D /* ChatMessageEntryStyle.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A186A3627F5D38D0055886D /* ChatMessageEntryStyle.Accessibility.swift */; };
 		9A186A3927F5E3010055886D /* MessageButtonStyle.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A186A3827F5E3010055886D /* MessageButtonStyle.Accessibility.swift */; };
 		9A186A3B27F5E6B50055886D /* ChatFileContentStyle.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A186A3A27F5E6B50055886D /* ChatFileContentStyle.Accessibility.swift */; };
-		9A186A3F27F5E9F80055886D /* ChoiceCardOptionStateStyle.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A186A3E27F5E9F80055886D /* ChoiceCardOptionStateStyle.Accessibility.swift */; };
 		9A186A4127F605B90055886D /* HeaderButtonStyle.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A186A4027F605B90055886D /* HeaderButtonStyle.Accessibility.swift */; };
 		9A186A4327F6147D0055886D /* ActionButtonStyle.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A186A4227F6147D0055886D /* ActionButtonStyle.Accessibility.swift */; };
 		9A186A4527F6F88F0055886D /* BubbleStyle.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A186A4427F6F88F0055886D /* BubbleStyle.Accessibility.swift */; };
@@ -282,6 +300,7 @@
 		9A83D77F27B181C500681C9F /* Glia.Environment.Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A83D77E27B181C500681C9F /* Glia.Environment.Interface.swift */; };
 		9A83D78127B18DB600681C9F /* Glia.Environment.Live.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A83D78027B18DB600681C9F /* Glia.Environment.Live.swift */; };
 		9A83D78327B18DF000681C9F /* Glia.Environment.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A83D78227B18DF000681C9F /* Glia.Environment.Mock.swift */; };
+		9AA64E142811B91C00FA56FF /* FontScaling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA64E132811B91C00FA56FF /* FontScaling.swift */; };
 		9AB061C1280EFE09008960FA /* ChatFileDownloadStyle.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB061C0280EFE09008960FA /* ChatFileDownloadStyle.Accessibility.swift */; };
 		9AB196D227C3D74300FD60AB /* Interactor.Environment.Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB196D127C3D74300FD60AB /* Interactor.Environment.Interface.swift */; };
 		9AB196D427C3D7FD00FD60AB /* Interactor.Environment.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB196D327C3D7FD00FD60AB /* Interactor.Environment.Mock.swift */; };
@@ -310,6 +329,9 @@
 		9ACC25D427B474E800BC5335 /* Glia.Environment.Failing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ACC25D327B474E800BC5335 /* Glia.Environment.Failing.swift */; };
 		9AE05CB32805C9D900871321 /* ChatViewModel.Environment.Failing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE05CB22805C9D900871321 /* ChatViewModel.Environment.Failing.swift */; };
 		9AE05CB62805D2CB00871321 /* Interactor.Environment.Failing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE05CB52805D2CB00871321 /* Interactor.Environment.Failing.swift */; };
+		9AE0A7602821904400725946 /* FontScaling.Environment.Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE0A75F2821904400725946 /* FontScaling.Environment.Interface.swift */; };
+		9AE0A7622822AF3000725946 /* FontScaling.Environment.Live.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE0A7612822AF3000725946 /* FontScaling.Environment.Live.swift */; };
+		9AE0A7642822B02C00725946 /* FontScaling.Environment.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE0A7632822B02C00725946 /* FontScaling.Environment.Mock.swift */; };
 		9AE9E4B127E0E45200BFE239 /* CallViewController.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE9E4B027E0E45200BFE239 /* CallViewController.Mock.swift */; };
 		9AE9E4B327E0E60F00BFE239 /* CallViewModel.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE9E4B227E0E60F00BFE239 /* CallViewModel.Mock.swift */; };
 		9AE9E4B527E0EE2E00BFE239 /* CallViewControllerVoiceOverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE9E4B427E0EE2E00BFE239 /* CallViewControllerVoiceOverTests.swift */; };
@@ -580,6 +602,8 @@
 		6EA3512526DE9F3400BF5941 /* operator-typing-indicator.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "operator-typing-indicator.json"; sourceTree = "<group>"; };
 		6EA3516826E139DA00BF5941 /* GliaViewTransitionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GliaViewTransitionController.swift; sourceTree = "<group>"; };
 		6EEAD84D2701A8C10074C191 /* ChoiceCardOptionStateStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoiceCardOptionStateStyle.swift; sourceTree = "<group>"; };
+		750C0ADB2850D53F003E0415 /* Theme.Survey.ScaleQuestion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Theme.Survey.ScaleQuestion.swift; sourceTree = "<group>"; };
+		750C0ADC2850D53F003E0415 /* Theme.Survey.ScaleQuestion.Accessibility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Theme.Survey.ScaleQuestion.Accessibility.swift; sourceTree = "<group>"; };
 		7512A57627BE8A6700319DF1 /* InteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractorTests.swift; sourceTree = "<group>"; };
 		7512A57927BF9FCD00319DF1 /* ChatViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModelTests.swift; sourceTree = "<group>"; };
 		7512A57C27BFA37D00319DF1 /* CoreSdkClient.Salemove.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreSdkClient.Salemove.swift; sourceTree = "<group>"; };
@@ -602,7 +626,6 @@
 		75F58EE027E7D5300065BA2D /* Survey.ViewController.Props.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Survey.ViewController.Props.swift; sourceTree = "<group>"; };
 		75FF151327F3A2D600FE7BE2 /* Theme+Survey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Theme+Survey.swift"; sourceTree = "<group>"; };
 		75FF151627F4E13900FE7BE2 /* Theme.Survey.BooleanQuestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.Survey.BooleanQuestion.swift; sourceTree = "<group>"; };
-		75FF151827F4F01800FE7BE2 /* Theme.Survey.ScaleQuestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.Survey.ScaleQuestion.swift; sourceTree = "<group>"; };
 		75FF151A27F4F52D00FE7BE2 /* Theme.Survey.SingleQuestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.Survey.SingleQuestion.swift; sourceTree = "<group>"; };
 		75FF151C27F4F8E000FE7BE2 /* Theme.Survey.InputQuestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.Survey.InputQuestion.swift; sourceTree = "<group>"; };
 		8458769E2823FD18007AC3DF /* SurveyViewControllerVoiceOverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurveyViewControllerVoiceOverTests.swift; sourceTree = "<group>"; };
@@ -613,8 +636,26 @@
 		845876AD282A95DE007AC3DF /* InputQuestionView.Props.Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputQuestionView.Props.Accessibility.swift; sourceTree = "<group>"; };
 		845876B0282A9EAF007AC3DF /* CheckboxView.Props.Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckboxView.Props.Accessibility.swift; sourceTree = "<group>"; };
 		845876B3282AA296007AC3DF /* ButtonView.Props.Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonView.Props.Accessibility.swift; sourceTree = "<group>"; };
-		84CFB7722822700000167258 /* Theme.Button.Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.Button.Accessibility.swift; sourceTree = "<group>"; };
 		845E2F6928365AD000C04D56 /* CoreSDKClient.Operator.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreSDKClient.Operator.Mock.swift; sourceTree = "<group>"; };
+		845E2F6B2837EF2E00C04D56 /* FilePreviewStyle.Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilePreviewStyle.Accessibility.swift; sourceTree = "<group>"; };
+		845E2F6D283BD69B00C04D56 /* ChatTextContentStyle.Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTextContentStyle.Accessibility.swift; sourceTree = "<group>"; };
+		845E2F6F283CF94100C04D56 /* VisitorChatMessageStyle.Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorChatMessageStyle.Accessibility.swift; sourceTree = "<group>"; };
+		845E2F71283D068000C04D56 /* HeaderStyle.Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderStyle.Accessibility.swift; sourceTree = "<group>"; };
+		845E2F73283D43FA00C04D56 /* AlertStyle.Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertStyle.Accessibility.swift; sourceTree = "<group>"; };
+		845E2F75283D48BC00C04D56 /* AttachmentSourceItemStyle.Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentSourceItemStyle.Accessibility.swift; sourceTree = "<group>"; };
+		845E2F77283E2D4200C04D56 /* PoweredByStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoweredByStyle.swift; sourceTree = "<group>"; };
+		845E2F79283E2D4E00C04D56 /* PoweredByStyle.Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoweredByStyle.Accessibility.swift; sourceTree = "<group>"; };
+		845E2F7E283F99F200C04D56 /* Theme.Survey.ValidationError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.Survey.ValidationError.swift; sourceTree = "<group>"; };
+		845E2F84283FA90200C04D56 /* Theme.Survey.ValidationError.Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.Survey.ValidationError.Accessibility.swift; sourceTree = "<group>"; };
+		845E2F87283FB49F00C04D56 /* Theme.Survey.BooleanQuestion.Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.Survey.BooleanQuestion.Accessibility.swift; sourceTree = "<group>"; };
+		845E2F8A283FB53500C04D56 /* Theme.Survey.InputQuestion.Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.Survey.InputQuestion.Accessibility.swift; sourceTree = "<group>"; };
+		845E2F8D283FB5B500C04D56 /* Theme.Survey.SingleQuestion.Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.Survey.SingleQuestion.Accessibility.swift; sourceTree = "<group>"; };
+		845E2F92283FB6D000C04D56 /* Theme.Survey.Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.Survey.Accessibility.swift; sourceTree = "<group>"; };
+		845E2F94283FC5D300C04D56 /* Theme.Survey.OptionButton.Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.Survey.OptionButton.Accessibility.swift; sourceTree = "<group>"; };
+		845E2F97283FC9A900C04D56 /* Theme.Survey.OptionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.Survey.OptionButton.swift; sourceTree = "<group>"; };
+		845E2F9A283FCA9000C04D56 /* Theme.Survey.Checkbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.Survey.Checkbox.swift; sourceTree = "<group>"; };
+		845E2F9C283FCB1400C04D56 /* Theme.Survey.Checkbox.Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.Survey.Checkbox.Accessibility.swift; sourceTree = "<group>"; };
+		84CFB7722822700000167258 /* Theme.Button.Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.Button.Accessibility.swift; sourceTree = "<group>"; };
 		85639A838514258D976E1B2A /* Pods_GliaWidgets.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GliaWidgets.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		932C53D761BB62F6C162A714 /* Pods_SnapshotTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SnapshotTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		97422AD1FF7D9E4B3E887116 /* Pods_GliaWidgetsTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GliaWidgetsTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -623,7 +664,6 @@
 		9A186A3627F5D38D0055886D /* ChatMessageEntryStyle.Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageEntryStyle.Accessibility.swift; sourceTree = "<group>"; };
 		9A186A3827F5E3010055886D /* MessageButtonStyle.Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageButtonStyle.Accessibility.swift; sourceTree = "<group>"; };
 		9A186A3A27F5E6B50055886D /* ChatFileContentStyle.Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatFileContentStyle.Accessibility.swift; sourceTree = "<group>"; };
-		9A186A3E27F5E9F80055886D /* ChoiceCardOptionStateStyle.Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoiceCardOptionStateStyle.Accessibility.swift; sourceTree = "<group>"; };
 		9A186A4027F605B90055886D /* HeaderButtonStyle.Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderButtonStyle.Accessibility.swift; sourceTree = "<group>"; };
 		9A186A4227F6147D0055886D /* ActionButtonStyle.Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButtonStyle.Accessibility.swift; sourceTree = "<group>"; };
 		9A186A4427F6F88F0055886D /* BubbleStyle.Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleStyle.Accessibility.swift; sourceTree = "<group>"; };
@@ -676,6 +716,7 @@
 		9A83D77E27B181C500681C9F /* Glia.Environment.Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Glia.Environment.Interface.swift; sourceTree = "<group>"; };
 		9A83D78027B18DB600681C9F /* Glia.Environment.Live.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Glia.Environment.Live.swift; sourceTree = "<group>"; };
 		9A83D78227B18DF000681C9F /* Glia.Environment.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Glia.Environment.Mock.swift; sourceTree = "<group>"; };
+		9AA64E132811B91C00FA56FF /* FontScaling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontScaling.swift; sourceTree = "<group>"; };
 		9AB061C0280EFE09008960FA /* ChatFileDownloadStyle.Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatFileDownloadStyle.Accessibility.swift; sourceTree = "<group>"; };
 		9AB196D127C3D74300FD60AB /* Interactor.Environment.Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interactor.Environment.Interface.swift; sourceTree = "<group>"; };
 		9AB196D327C3D7FD00FD60AB /* Interactor.Environment.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interactor.Environment.Mock.swift; sourceTree = "<group>"; };
@@ -705,6 +746,9 @@
 		9ACC25D327B474E800BC5335 /* Glia.Environment.Failing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Glia.Environment.Failing.swift; sourceTree = "<group>"; };
 		9AE05CB22805C9D900871321 /* ChatViewModel.Environment.Failing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.Environment.Failing.swift; sourceTree = "<group>"; };
 		9AE05CB52805D2CB00871321 /* Interactor.Environment.Failing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interactor.Environment.Failing.swift; sourceTree = "<group>"; };
+		9AE0A75F2821904400725946 /* FontScaling.Environment.Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontScaling.Environment.Interface.swift; sourceTree = "<group>"; };
+		9AE0A7612822AF3000725946 /* FontScaling.Environment.Live.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontScaling.Environment.Live.swift; sourceTree = "<group>"; };
+		9AE0A7632822B02C00725946 /* FontScaling.Environment.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontScaling.Environment.Mock.swift; sourceTree = "<group>"; };
 		9AE9E4B027E0E45200BFE239 /* CallViewController.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallViewController.Mock.swift; sourceTree = "<group>"; };
 		9AE9E4B227E0E60F00BFE239 /* CallViewModel.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallViewModel.Mock.swift; sourceTree = "<group>"; };
 		9AE9E4B427E0EE2E00BFE239 /* CallViewControllerVoiceOverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallViewControllerVoiceOverTests.swift; sourceTree = "<group>"; };
@@ -931,6 +975,7 @@
 			children = (
 				1AFB1E7325F8B00B00CA460D /* ChatTextContentView.swift */,
 				1AFB1E7725F8B26800CA460D /* ChatTextContentStyle.swift */,
+				845E2F6D283BD69B00C04D56 /* ChatTextContentStyle.Accessibility.swift */,
 			);
 			path = Text;
 			sourceTree = "<group>";
@@ -1010,6 +1055,10 @@
 				9A1992E227D6669900161AAE /* UIKitBased.Interface.swift */,
 				9A1992E427D6679300161AAE /* UIKitBased.Live.swift */,
 				9AE9E4B627E1E30500BFE239 /* MockHelpers.swift */,
+				9AA64E132811B91C00FA56FF /* FontScaling.swift */,
+				9AE0A75F2821904400725946 /* FontScaling.Environment.Interface.swift */,
+				9AE0A7612822AF3000725946 /* FontScaling.Environment.Live.swift */,
+				9AE0A7632822B02C00725946 /* FontScaling.Environment.Mock.swift */,
 			);
 			path = GliaWidgets;
 			sourceTree = "<group>";
@@ -1106,6 +1155,7 @@
 				1A4674AB25E905D00078FA1C /* AttachmentSourceItemView.swift */,
 				1A4674B125E907120078FA1C /* AttachmentSourceItemStyle.swift */,
 				1A4674C125E92A710078FA1C /* AtttachmentSourceItemKind.swift */,
+				845E2F75283D48BC00C04D56 /* AttachmentSourceItemStyle.Accessibility.swift */,
 			);
 			path = Item;
 			sourceTree = "<group>";
@@ -1185,6 +1235,8 @@
 			isa = PBXGroup;
 			children = (
 				1A56D53C257E24A400141BC8 /* PoweredBy.swift */,
+				845E2F77283E2D4200C04D56 /* PoweredByStyle.swift */,
+				845E2F79283E2D4E00C04D56 /* PoweredByStyle.Accessibility.swift */,
 			);
 			path = PoweredBy;
 			sourceTree = "<group>";
@@ -1515,6 +1567,7 @@
 			children = (
 				1A60B0032567F25600E53F53 /* Header.swift */,
 				1A60B0072567F29900E53F53 /* HeaderStyle.swift */,
+				845E2F71283D068000C04D56 /* HeaderStyle.Accessibility.swift */,
 			);
 			path = Header;
 			sourceTree = "<group>";
@@ -1574,6 +1627,7 @@
 				1A4AD3B2256D2A7600468BFB /* VisitorChatMessageStyle.swift */,
 				1A60B02C256BF7FF00E53F53 /* OperatorChatMessageView.swift */,
 				1A38A8A7258B652B0089DE7B /* OperatorChatMessageStyle.swift */,
+				845E2F6F283CF94100C04D56 /* VisitorChatMessageStyle.Accessibility.swift */,
 			);
 			path = Message;
 			sourceTree = "<group>";
@@ -1708,6 +1762,7 @@
 			children = (
 				1AA738B125790D5A00E1120F /* AlertView.swift */,
 				1AA738BB25790DBE00E1120F /* AlertStyle.swift */,
+				845E2F73283D43FA00C04D56 /* AlertStyle.Accessibility.swift */,
 			);
 			path = Alert;
 			sourceTree = "<group>";
@@ -1813,6 +1868,15 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		750C0ADA2850D53F003E0415 /* Theme.Survey.ScaleQuestion */ = {
+			isa = PBXGroup;
+			children = (
+				750C0ADB2850D53F003E0415 /* Theme.Survey.ScaleQuestion.swift */,
+				750C0ADC2850D53F003E0415 /* Theme.Survey.ScaleQuestion.Accessibility.swift */,
+			);
+			path = Theme.Survey.ScaleQuestion;
+			sourceTree = "<group>";
+		};
 		7512A57827BF9FB800319DF1 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
@@ -1853,6 +1917,7 @@
 				75AF8CF027DBB1F9009EEE2C /* SurveyViewController.View.swift */,
 				75F58EE027E7D5300065BA2D /* Survey.ViewController.Props.swift */,
 				7529F2B327E1D503004D3581 /* Survey.swift */,
+				75AF8D0E27DE8305009EEE2C /* Survey.ValidationErrorView.swift */,
 			);
 			path = Survey;
 			sourceTree = "<group>";
@@ -1876,7 +1941,6 @@
 				845876A9282A952C007AC3DF /* SingleChoiceQuestionView */,
 				845876A6282A94AA007AC3DF /* BooleanQuestionView */,
 				845876A3282A8FEF007AC3DF /* ScaleQuestionView */,
-				75AF8D0E27DE8305009EEE2C /* Survey.ValidationErrorView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1884,12 +1948,14 @@
 		75FF151527F4E11000FE7BE2 /* Survey */ = {
 			isa = PBXGroup;
 			children = (
-				84CFB76F2821878900167258 /* Theme.Survey.Accessibility */,
-				75FF151327F3A2D600FE7BE2 /* Theme+Survey.swift */,
-				75FF151627F4E13900FE7BE2 /* Theme.Survey.BooleanQuestion.swift */,
-				75FF151C27F4F8E000FE7BE2 /* Theme.Survey.InputQuestion.swift */,
-				75FF151A27F4F52D00FE7BE2 /* Theme.Survey.SingleQuestion.swift */,
-				75FF151827F4F01800FE7BE2 /* Theme.Survey.ScaleQuestion.swift */,
+				750C0ADA2850D53F003E0415 /* Theme.Survey.ScaleQuestion */,
+				845E2F99283FCA5F00C04D56 /* Theme.Survey.Checkbox */,
+				845E2F96283FC98500C04D56 /* Theme.Survey.OptionButton */,
+				845E2F8C283FB59F00C04D56 /* Theme.Survey.SingleQuestion */,
+				845E2F89283FB52700C04D56 /* Theme.Survey.InputQuestion */,
+				845E2F86283FB48D00C04D56 /* Theme.Survey.BooleanQuestion */,
+				845E2F83283FA8EF00C04D56 /* Theme.Survey.ValidationError */,
+				84CFB76F2821878900167258 /* Theme.Survey */,
 			);
 			path = Survey;
 			sourceTree = "<group>";
@@ -1956,12 +2022,68 @@
 			path = ButtonView;
 			sourceTree = "<group>";
 		};
-		84CFB76F2821878900167258 /* Theme.Survey.Accessibility */ = {
+		845E2F83283FA8EF00C04D56 /* Theme.Survey.ValidationError */ = {
 			isa = PBXGroup;
 			children = (
-				84CFB7722822700000167258 /* Theme.Button.Accessibility.swift */,
+				845E2F7E283F99F200C04D56 /* Theme.Survey.ValidationError.swift */,
+				845E2F84283FA90200C04D56 /* Theme.Survey.ValidationError.Accessibility.swift */,
 			);
-			path = Theme.Survey.Accessibility;
+			path = Theme.Survey.ValidationError;
+			sourceTree = "<group>";
+		};
+		845E2F86283FB48D00C04D56 /* Theme.Survey.BooleanQuestion */ = {
+			isa = PBXGroup;
+			children = (
+				75FF151627F4E13900FE7BE2 /* Theme.Survey.BooleanQuestion.swift */,
+				845E2F87283FB49F00C04D56 /* Theme.Survey.BooleanQuestion.Accessibility.swift */,
+			);
+			path = Theme.Survey.BooleanQuestion;
+			sourceTree = "<group>";
+		};
+		845E2F89283FB52700C04D56 /* Theme.Survey.InputQuestion */ = {
+			isa = PBXGroup;
+			children = (
+				75FF151C27F4F8E000FE7BE2 /* Theme.Survey.InputQuestion.swift */,
+				845E2F8A283FB53500C04D56 /* Theme.Survey.InputQuestion.Accessibility.swift */,
+			);
+			path = Theme.Survey.InputQuestion;
+			sourceTree = "<group>";
+		};
+		845E2F8C283FB59F00C04D56 /* Theme.Survey.SingleQuestion */ = {
+			isa = PBXGroup;
+			children = (
+				75FF151A27F4F52D00FE7BE2 /* Theme.Survey.SingleQuestion.swift */,
+				845E2F8D283FB5B500C04D56 /* Theme.Survey.SingleQuestion.Accessibility.swift */,
+			);
+			path = Theme.Survey.SingleQuestion;
+			sourceTree = "<group>";
+		};
+		845E2F96283FC98500C04D56 /* Theme.Survey.OptionButton */ = {
+			isa = PBXGroup;
+			children = (
+				845E2F97283FC9A900C04D56 /* Theme.Survey.OptionButton.swift */,
+				845E2F94283FC5D300C04D56 /* Theme.Survey.OptionButton.Accessibility.swift */,
+			);
+			path = Theme.Survey.OptionButton;
+			sourceTree = "<group>";
+		};
+		845E2F99283FCA5F00C04D56 /* Theme.Survey.Checkbox */ = {
+			isa = PBXGroup;
+			children = (
+				845E2F9A283FCA9000C04D56 /* Theme.Survey.Checkbox.swift */,
+				845E2F9C283FCB1400C04D56 /* Theme.Survey.Checkbox.Accessibility.swift */,
+			);
+			path = Theme.Survey.Checkbox;
+			sourceTree = "<group>";
+		};
+		84CFB76F2821878900167258 /* Theme.Survey */ = {
+			isa = PBXGroup;
+			children = (
+				75FF151327F3A2D600FE7BE2 /* Theme+Survey.swift */,
+				84CFB7722822700000167258 /* Theme.Button.Accessibility.swift */,
+				845E2F92283FB6D000C04D56 /* Theme.Survey.Accessibility.swift */,
+			);
+			path = Theme.Survey;
 			sourceTree = "<group>";
 		};
 		9A1992CE27D61F5400161AAE /* SnapshotTests */ = {
@@ -2053,7 +2175,6 @@
 				C49E232E25FFA360001A851C /* ChoiceCardOptionView.swift */,
 				C460C7772600BCF400449851 /* ChoiceCardOptionStyle.swift */,
 				6EEAD84D2701A8C10074C191 /* ChoiceCardOptionStateStyle.swift */,
-				9A186A3E27F5E9F80055886D /* ChoiceCardOptionStateStyle.Accessibility.swift */,
 				C43D7A0C25FF92530064B1DA /* ChoiceCardView.swift */,
 				C43D7A1025FF92680064B1DA /* ChoiceCardStyle.swift */,
 				9AB3401627F74D66006E0FE2 /* ChoiceCardStyle.Accessibility.swift */,
@@ -2120,6 +2241,7 @@
 			children = (
 				C49A29E12614A29700819269 /* FilePreviewStyle.swift */,
 				C49A29E22614A29700819269 /* FilePreviewView.swift */,
+				845E2F6B2837EF2E00C04D56 /* FilePreviewStyle.Accessibility.swift */,
 			);
 			path = File;
 			sourceTree = "<group>";
@@ -2551,6 +2673,7 @@
 				9A83D77F27B181C500681C9F /* Glia.Environment.Interface.swift in Sources */,
 				6E9C01AF26D3BE2300EBE1D4 /* OperatorTypingIndicatorStyle.swift in Sources */,
 				1A60AFD925669A1500E53F53 /* View.swift in Sources */,
+				845E2F76283D48BC00C04D56 /* AttachmentSourceItemStyle.Accessibility.swift in Sources */,
 				1A6EBB0325ADB82000EE325D /* MediaUpgradeActionView.swift in Sources */,
 				9AB196E627C510DA00FD60AB /* ChatMessage.Mock.swift in Sources */,
 				9A19926A27D3BA8700161AAE /* ViewFactory.Environment.Interface.swift in Sources */,
@@ -2561,6 +2684,7 @@
 				1ABD6C5D25B59D1C00D56EFA /* BubbleWindow.swift in Sources */,
 				1AE15E38257A578B00A642C0 /* MessageAlertConfiguration.swift in Sources */,
 				75FF151D27F4F8E000FE7BE2 /* Theme.Survey.InputQuestion.swift in Sources */,
+				845E2F9D283FCB1400C04D56 /* Theme.Survey.Checkbox.Accessibility.swift in Sources */,
 				1AC7A77B25838AE800567FF8 /* ChatItem.swift in Sources */,
 				9A3E1D8C27B6B888005634EB /* FileDownload.Environment.Mock.swift in Sources */,
 				1A1E309F25F8E44300850E68 /* FileDownloader.swift in Sources */,
@@ -2594,11 +2718,13 @@
 				1A0C9A7F25C1732F00815406 /* Theme+MinimizedBubble.swift in Sources */,
 				1A60AF7E25656F0400E53F53 /* Glia.swift in Sources */,
 				1A60AFB62566825400E53F53 /* ViewModel.swift in Sources */,
+				845E2F95283FC5D300C04D56 /* Theme.Survey.OptionButton.Accessibility.swift in Sources */,
 				845876B4282AA296007AC3DF /* ButtonView.Props.Accessibility.swift in Sources */,
 				1A0C9AE025C9624500815406 /* ObservableValue.swift in Sources */,
 				1A60AFB9256682AF00E53F53 /* FlowCoordinator.swift in Sources */,
 				9A66172A27A94826001C8E03 /* CoreSDKClient.Live.swift in Sources */,
 				9A8130BB27D7A41000220BBD /* FileUpload.Environment.Interface.swift in Sources */,
+				845E2F93283FB6D000C04D56 /* Theme.Survey.Accessibility.swift in Sources */,
 				1A0C9A9125C41AB900815406 /* CallButtonBar.swift in Sources */,
 				1AE15E3B257A5CC900A642C0 /* AlertConfiguration.swift in Sources */,
 				75AF8D1027DFF4B3009EEE2C /* Survey.ValidationErrorView.swift in Sources */,
@@ -2609,6 +2735,7 @@
 				9A3E1D9927B6D0DB005634EB /* FoundationBased.Live.swift in Sources */,
 				1A7CA82F25751B5A0047CBBE /* ConnectOperatorStyle.swift in Sources */,
 				9AB196D227C3D74300FD60AB /* Interactor.Environment.Interface.swift in Sources */,
+				9AE0A7622822AF3000725946 /* FontScaling.Environment.Live.swift in Sources */,
 				1A0452DD25DBD0A4000DA0C1 /* HeaderButton.swift in Sources */,
 				75AF8CEF27DAA819009EEE2C /* SurveyViewController.swift in Sources */,
 				1A60AF96256675C400E53F53 /* UIColor+Extensions.swift in Sources */,
@@ -2617,6 +2744,7 @@
 				1A7CA81D2574D6370047CBBE /* ConnectView.swift in Sources */,
 				1ABD6C5525B574FF00D56EFA /* BubbleView.swift in Sources */,
 				C43D7A1525FF9A590064B1DA /* ChatChoiceCardOption.swift in Sources */,
+				845E2F8B283FB53500C04D56 /* Theme.Survey.InputQuestion.Accessibility.swift in Sources */,
 				9A3E1D9427B6C29C005634EB /* ChatEngagementFile.Mock.swift in Sources */,
 				1A2DA73B25EFC00500032611 /* FileUploadListStyle.swift in Sources */,
 				9A83D78127B18DB600681C9F /* Glia.Environment.Live.swift in Sources */,
@@ -2645,8 +2773,10 @@
 				1A5F815F258A43E600A605DA /* Section.swift in Sources */,
 				1A60AFBF2566834400E53F53 /* ViewController.swift in Sources */,
 				6E60DD5627146C9D001422EF /* AlertViewController+SingleAction.swift in Sources */,
+				845E2F70283CF94100C04D56 /* VisitorChatMessageStyle.Accessibility.swift in Sources */,
 				1A60AFF12566A4B300E53F53 /* NavigationPresenter.swift in Sources */,
 				1AC7A74F2582571100567FF8 /* Interactor.swift in Sources */,
+				845E2F72283D068000C04D56 /* HeaderStyle.Accessibility.swift in Sources */,
 				1A1E30CB25F9FDC400850E68 /* ChatImageFileContentStyle.swift in Sources */,
 				1A60AF93256674F900E53F53 /* Color.swift in Sources */,
 				1A38A8BA258B94D60089DE7B /* ImageView.swift in Sources */,
@@ -2662,6 +2792,7 @@
 				9A19926B27D3BA8700161AAE /* ViewFactory.Environment.Mock.swift in Sources */,
 				1A6EB05725A717CB0007081A /* ChatMessage.swift in Sources */,
 				1AA738B225790D5A00E1120F /* AlertView.swift in Sources */,
+				845E2F8E283FB5B500C04D56 /* Theme.Survey.SingleQuestion.Accessibility.swift in Sources */,
 				C47901B725ED2FB0007EE195 /* AlertViewController+ScreenShareOffer.swift in Sources */,
 				1A8366B025FF40AB005FE7EE /* LocalFile.swift in Sources */,
 				9A3E1D8A27B6B824005634EB /* FileDownload.Environment.Interface.swift in Sources */,
@@ -2674,6 +2805,7 @@
 				1A0C9A6D25C16EED00815406 /* Theme+Call.swift in Sources */,
 				1A60AFAF256680EF00E53F53 /* L10n.swift in Sources */,
 				9A1992DD27D6254800161AAE /* ImageView.Cache.Live.swift in Sources */,
+				845E2F9B283FCA9000C04D56 /* Theme.Survey.Checkbox.swift in Sources */,
 				1A60B0192567FC8A00E53F53 /* ButtonKind.swift in Sources */,
 				C42463742673ABE10082C135 /* ScreenShareHandler.swift in Sources */,
 				1A56D53D257E24A400141BC8 /* PoweredBy.swift in Sources */,
@@ -2681,18 +2813,23 @@
 				845876B1282A9EAF007AC3DF /* CheckboxView.Props.Accessibility.swift in Sources */,
 				1A4AF5CD25AEF4A0002CD0F4 /* AlertViewController+Message.swift in Sources */,
 				1A7CA8242574D68E0047CBBE /* ConnectStatusView.swift in Sources */,
+				845E2F78283E2D4200C04D56 /* PoweredByStyle.swift in Sources */,
+				845E2F7F283F99F200C04D56 /* Theme.Survey.ValidationError.swift in Sources */,
 				1A5F81402588B7BD00A605DA /* ChatMessageEntryStyle.swift in Sources */,
 				1A8B61D625C974D0000D780E /* ChatCallUpgradeStyle.swift in Sources */,
 				1A475BBC25DFA10100296D55 /* UnreadMessagesHandler.swift in Sources */,
+				845E2F85283FA90200C04D56 /* Theme.Survey.ValidationError.Accessibility.swift in Sources */,
 				9AB3402B28002EE9006E0FE2 /* ChatCallUpgradeStyle.Accessibility.swift in Sources */,
 				9A1992E327D6669900161AAE /* UIKitBased.Interface.swift in Sources */,
 				1A60AF7A25656E0500E53F53 /* Theme.swift in Sources */,
 				84CFB7732822700000167258 /* Theme.Button.Accessibility.swift in Sources */,
 				1A475BB725DE833200296D55 /* BadgeStyle.swift in Sources */,
 				1A4AD3B3256D2A7600468BFB /* VisitorChatMessageStyle.swift in Sources */,
+				845E2F98283FC9A900C04D56 /* Theme.Survey.OptionButton.swift in Sources */,
 				9AB196DC27C3FFCC00FD60AB /* Call.Environment.Interface.swift in Sources */,
 				C49A29EA2614A32600819269 /* ChatMessageContent.swift in Sources */,
 				9AB3402727FCDD92006E0FE2 /* ChatStyle.Accessibility.swift in Sources */,
+				845E2F74283D43FA00C04D56 /* AlertStyle.Accessibility.swift in Sources */,
 				1A60B0082567F29900E53F53 /* HeaderStyle.swift in Sources */,
 				1A4674BC25E91B930078FA1C /* PopoverPresenter.swift in Sources */,
 				1ABD6CAC25B71D1B00D56EFA /* CallViewModel.swift in Sources */,
@@ -2704,12 +2841,13 @@
 				1A6EBB2525ADE36900EE325D /* MediaUpgradePresenter.swift in Sources */,
 				1AA738B925790DB400E1120F /* ActionButtonStyle.swift in Sources */,
 				1A2DA71F25EF720400032611 /* FilePickerViewModel.swift in Sources */,
+				750C0ADD2850D53F003E0415 /* Theme.Survey.ScaleQuestion.swift in Sources */,
 				1A60B0152567FC7000E53F53 /* Button.swift in Sources */,
 				9A1992E927D6BCD700161AAE /* FileDownload.Mock.swift in Sources */,
-				75FF151927F4F01800FE7BE2 /* Theme.Survey.ScaleQuestion.swift in Sources */,
 				1ABD6C5925B5758000D56EFA /* BubbleStyle.swift in Sources */,
 				75AF8CF627DBB837009EEE2C /* NSLayoutConstraint.Extensions.swift in Sources */,
 				75AF8CF127DBB1F9009EEE2C /* SurveyViewController.View.swift in Sources */,
+				9AA64E142811B91C00FA56FF /* FontScaling.swift in Sources */,
 				C49E232F25FFA360001A851C /* ChoiceCardOptionView.swift in Sources */,
 				9A186A4527F6F88F0055886D /* BubbleStyle.Accessibility.swift in Sources */,
 				1A6EBB0725ADB84200EE325D /* MediaUpgradeActionStyle.swift in Sources */,
@@ -2745,15 +2883,20 @@
 				C499A57E26382FAA009962AC /* UnreadMessageIndicatorView.swift in Sources */,
 				9AB3402527FCBEB4006E0FE2 /* CallButtonStyle.Accessibility.swift in Sources */,
 				1A8B61D225C974A1000D780E /* ChatCallUpgradeView.swift in Sources */,
+				845E2F88283FB49F00C04D56 /* Theme.Survey.BooleanQuestion.Accessibility.swift in Sources */,
 				1ABD6C8125B6E97400D56EFA /* MultipleMediaUpgradeAlertConfiguration.swift in Sources */,
+				845E2F6C2837EF2E00C04D56 /* FilePreviewStyle.Accessibility.swift in Sources */,
 				EB750F53273BA9BB00BE5FBD /* GliaError.swift in Sources */,
+				845E2F6E283BD69B00C04D56 /* ChatTextContentStyle.Accessibility.swift in Sources */,
 				1A0C142D25B8545600B00695 /* EngagementView.swift in Sources */,
 				9A186A4327F6147D0055886D /* ActionButtonStyle.Accessibility.swift in Sources */,
+				750C0ADE2850D53F003E0415 /* Theme.Survey.ScaleQuestion.Accessibility.swift in Sources */,
 				1A5F814D2588C0B800A605DA /* KeyboardObserver.swift in Sources */,
 				9A66172C27A94A4B001C8E03 /* CoreSDKClient.Mock.swift in Sources */,
 				1A5F8182258B4F0E00A605DA /* OutgoingMessage.swift in Sources */,
 				9A19926E27D3BB7800161AAE /* Theme.Mock.swift in Sources */,
 				9AE9E4B127E0E45200BFE239 /* CallViewController.Mock.swift in Sources */,
+				9AE0A7642822B02C00725946 /* FontScaling.Environment.Mock.swift in Sources */,
 				6B48213E2735873300F2900A /* Feature.swift in Sources */,
 				1A60AFCA2566943F00E53F53 /* RootCoordinator.swift in Sources */,
 				1ABD6C9225B6F2D200D56EFA /* String+TemplateString.swift in Sources */,
@@ -2762,6 +2905,7 @@
 				75AF8CF427DBB3C8009EEE2C /* Makeable.swift in Sources */,
 				1A63B2F6257A469A00508478 /* AlertPresenter.swift in Sources */,
 				1A0452EA25DBE259000DA0C1 /* MessageButton.swift in Sources */,
+				9AE0A7602821904400725946 /* FontScaling.Environment.Interface.swift in Sources */,
 				9A19926627D3BA3A00161AAE /* GCD.Interface.swift in Sources */,
 				1A277A1225FA604E009FE131 /* ChatFileContentView.swift in Sources */,
 				845876AB282A959C007AC3DF /* SingleChoiceQuestionView.Props.Accessibility.swift in Sources */,
@@ -2823,13 +2967,13 @@
 				75FF151427F3A2D600FE7BE2 /* Theme+Survey.swift in Sources */,
 				1A60AFE825669C5000E53F53 /* ChatStyle.swift in Sources */,
 				1A4AF5C725AEEA42002CD0F4 /* Operator+Extensions.swift in Sources */,
+				845E2F7A283E2D4E00C04D56 /* PoweredByStyle.Accessibility.swift in Sources */,
 				1A4674C825ED084A0078FA1C /* MediaPickerViewModel.swift in Sources */,
 				9A186A3927F5E3010055886D /* MessageButtonStyle.Accessibility.swift in Sources */,
 				9AB196D627C3E1E400FD60AB /* ChatViewModel.Environment.Interface.swift in Sources */,
 				1A0C9A8625C4090D00815406 /* CallButton.swift in Sources */,
 				9AB196EA27C5390100FD60AB /* ChatAttachment.Mock.swift in Sources */,
 				1AFB1E5E25F7ADDA00CA460D /* ChatOperator.swift in Sources */,
-				9A186A3F27F5E9F80055886D /* ChoiceCardOptionStateStyle.Accessibility.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
