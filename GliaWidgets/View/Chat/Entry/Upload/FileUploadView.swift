@@ -75,7 +75,7 @@ class FileUploadView: UIView {
         removeButton.autoPinEdge(toSuperviewEdge: .right)
 
         contentView.addSubview(infoLabel)
-        infoLabel.autoPinEdge(.top, to: .top, of: contentView, withOffset: -6)
+        infoLabel.autoPinEdge(.top, to: .top, of: contentView, withOffset: -2)
         infoLabel.autoPinEdge(.left, to: .right, of: filePreviewView, withOffset: 12)
         infoLabel.autoPinEdge(.right, to: .left, of: removeButton, withOffset: -80)
 

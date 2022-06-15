@@ -26,6 +26,10 @@ class AttachmentSourceItemView: UIView {
         titleLabel.font = style.titleFont
         titleLabel.textColor = style.titleColor
 
+        accessibilityTraits = .button
+        accessibilityLabel = style.title
+        isAccessibilityElement = true
+
         setFontScalingEnabled(
             style.accessibility.isFontScalingEnabled,
             for: titleLabel

@@ -76,7 +76,7 @@ extension Theme {
             secondTextFontColor: color.baseNormal,
             accessibility: .init(
                 firstTextHint: Accessibility.Connect.Queue.FirstText.hint,
-                secondTextHint: Accessibility.Connect.Queue.SecondText.hint,
+                secondTextHint: nil,
                 isFontScalingEnabled: true
             )
         )
@@ -89,7 +89,7 @@ extension Theme {
             secondTextFontColor: color.baseDark,
             accessibility: .init(
                 firstTextHint: Accessibility.Connect.Connecting.FirstText.hint,
-                secondTextHint: Accessibility.Connect.Connecting.SecondText.hint,
+                secondTextHint: nil,
                 isFontScalingEnabled: true
             )
         )
@@ -102,7 +102,7 @@ extension Theme {
             secondTextFontColor: color.primary,
             accessibility: .init(
                 firstTextHint: Accessibility.Connect.Connected.FirstText.hint,
-                secondTextHint: Accessibility.Connect.Connected.SecondText.hint,
+                secondTextHint: nil,
                 isFontScalingEnabled: true
             )
         )
