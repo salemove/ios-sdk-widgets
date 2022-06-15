@@ -64,10 +64,16 @@ class ChatMessageEntryView: UIView {
 
     private let environment: Environment
 
-    public init(with style: ChatMessageEntryStyle, environment: Environment) {
+    public init(
+        with style: ChatMessageEntryStyle,
+        environment: Environment
+    ) {
         self.style = style
         self.environment = environment
-        uploadListView = FileUploadListView(with: style.uploadList)
+        uploadListView = FileUploadListView(
+            with: style.uploadList,
+            environment: .init(uiApplication: environment.uiApplication)
+        )
         pickMediaButton = MessageButton(with: style.mediaButton)
         sendButton = MessageButton(with: style.sendButton)
         isChoiceCardModeEnabled = false
@@ -270,5 +276,6 @@ extension ChatMessageEntryView: UITextViewDelegate {
 extension ChatMessageEntryView {
     struct Environment {
         var gcd: GCD
+        var uiApplication: UIKitBased.UIApplication
     }
 }

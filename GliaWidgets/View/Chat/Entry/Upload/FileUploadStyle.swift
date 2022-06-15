@@ -178,3 +178,51 @@ public class FileUploadErrorStateStyle {
         self.infoGenericError = infoGenericError
     }
 }
+
+#if DEBUG
+extension FileUploadStyle {
+    static var mock: FileUploadStyle {
+        FileUploadStyle(
+            filePreview: .mock,
+            uploading: .mock,
+            uploaded: .mock,
+            error: .mock,
+            progressColor: .clear,
+            errorProgressColor: .clear,
+            progressBackgroundColor: .clear,
+            removeButtonImage: UIImage(),
+            removeButtonColor: .clear,
+            accessibility: .unsupported
+        )
+    }
+}
+
+extension FileUploadStateStyle {
+    static var mock: FileUploadStateStyle {
+        FileUploadStateStyle(
+            text: "",
+            font: .systemFont(ofSize: 10),
+            textColor: .clear,
+            infoFont: .systemFont(ofSize: 10),
+            infoColor: .clear
+        )
+    }
+}
+
+extension FileUploadErrorStateStyle {
+    static var mock: FileUploadErrorStateStyle {
+        FileUploadErrorStateStyle(
+            text: "",
+            font: .systemFont(ofSize: 10),
+            textColor: .clear,
+            infoFont: .systemFont(ofSize: 10),
+            infoColor: .clear,
+            infoFileTooBig: "",
+            infoUnsupportedFileType: "",
+            infoSafetyCheckFailed: "",
+            infoNetworkError: "",
+            infoGenericError: ""
+        )
+    }
+}
+#endif

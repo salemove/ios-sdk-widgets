@@ -4,6 +4,14 @@ import SwiftUI
 class FileUploadListView: UIView {
     var removeTapped: ((FileUpload) -> Void)?
 
+    var maxUnscrollableViews: Int {
+        if environment.uiApplication.preferredContentSizeCategory() <= .accessibilityMedium {
+            return 3
+        } else {
+            return 2
+        }
+    }
+
     private var uploadViews: [FileUploadView] {
         return stackView.arrangedSubviews.compactMap { $0 as? FileUploadView }
     }
@@ -11,16 +19,14 @@ class FileUploadListView: UIView {
     private let stackView = UIStackView()
     private var heightLayoutConstraint: NSLayoutConstraint!
     private let style: FileUploadListStyle
-    private var maxUnscrollableViews: Int {
-        if UIApplication.shared.preferredContentSizeCategory <= .accessibilityMedium {
-            return 3
-        } else {
-            return 2
-        }
-    }
+    private let environment: Environment
 
-    init(with style: FileUploadListStyle) {
+    init(
+        with style: FileUploadListStyle,
+        environment: Environment
+    ) {
         self.style = style
+        self.environment = environment
         super.init(frame: .zero)
         setup()
         layout()
@@ -108,3 +114,20 @@ class FileUploadListView: UIView {
         stackView.accessibilityElements?.removeAll()
     }
 }
+
+extension FileUploadListView {
+    struct Environment {
+        var uiApplication: UIKitBased.UIApplication
+    }
+}
+
+#if DEBUG
+extension FileUploadListView {
+    static func mock(environment: Environment) -> FileUploadListView {
+        FileUploadListView(
+            with: FileUploadListStyle(item: .mock),
+            environment: environment
+        )
+    }
+}
+#endif
