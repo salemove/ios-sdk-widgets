@@ -1,14 +1,22 @@
 import UIKit
 import SwiftUI
 
-class FileUploadListView: UIView {
+private extension Int {
+    static let maxUnscrollableViewsOnDefaultContentSizeCategory = 3
+    static let maxUnscrollableViewsOnLargeContentSizeCategory = 2
+}
+
+final class FileUploadListView: UIView {
     var removeTapped: ((FileUpload) -> Void)?
 
+    // Defines how many attachment items prepared for sending will be displayed without scrolling,
+    // depends on preferredContentSizeCategory,
+    // if it's a large font size, 2 items will be displayed, otherwise 3 items
     var maxUnscrollableViews: Int {
         if environment.uiApplication.preferredContentSizeCategory() <= .accessibilityMedium {
-            return 3
+            return .maxUnscrollableViewsOnDefaultContentSizeCategory
         } else {
-            return 2
+            return .maxUnscrollableViewsOnLargeContentSizeCategory
         }
     }
 
