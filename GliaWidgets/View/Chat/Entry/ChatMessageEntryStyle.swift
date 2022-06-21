@@ -70,7 +70,7 @@ public struct ChatMessageEntryStyle {
         mediaButton: MessageButtonStyle,
         sendButton: MessageButtonStyle,
         uploadList: FileUploadListStyle,
-        accessibility: Accessibility
+        accessibility: Accessibility = .unsupported
     ) {
         self.messageFont = messageFont
         self.messageColor = messageColor

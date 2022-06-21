@@ -73,7 +73,7 @@ public class ChatStyle: EngagementStyle {
         pickMedia: AttachmentSourceListStyle,
         unreadMessageIndicator: UnreadMessageIndicatorStyle,
         operatorTypingIndicator: OperatorTypingIndicatorStyle,
-        accessibility: Accessibility
+        accessibility: Accessibility = .unsupported
     ) {
         self.title = title
         self.visitorMessage = visitorMessage

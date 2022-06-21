@@ -40,7 +40,7 @@ public class AttachmentSourceItemStyle {
         titleColor: UIColor,
         icon: UIImage?,
         iconColor: UIColor?,
-        accessibility: Accessibility
+        accessibility: Accessibility = .unsupported
     ) {
         self.kind = kind
         self.title = title

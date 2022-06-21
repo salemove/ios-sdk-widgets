@@ -31,7 +31,7 @@ public struct UnreadMessageIndicatorStyle {
         placeholderColor: UIColor,
         placeholderBackgroundColor: UIColor,
         imageBackgroundColor: UIColor,
-        accessibility: Accessibility
+        accessibility: Accessibility = .unsupported
     ) {
         self.badge = BadgeStyle(
             font: badgeFont,

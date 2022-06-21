@@ -31,7 +31,7 @@ public class VisitorChatMessageStyle: ChatMessageStyle {
         statusFont: UIFont,
         statusColor: UIColor,
         delivered: String,
-        accessibility: Accessibility
+        accessibility: Accessibility = .unsupported
     ) {
         self.statusFont = statusFont
         self.statusColor = statusColor

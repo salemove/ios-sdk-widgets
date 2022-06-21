@@ -25,7 +25,7 @@ public class ChatTextContentStyle {
         textFont: UIFont,
         textColor: UIColor,
         backgroundColor: UIColor,
-        accessibility: Accessibility
+        accessibility: Accessibility = .unsupported
     ) {
         self.textFont = textFont
         self.textColor = textColor

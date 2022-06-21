@@ -45,7 +45,7 @@ public struct HeaderStyle {
         closeButton: HeaderButtonStyle,
         endButton: ActionButtonStyle,
         endScreenShareButton: HeaderButtonStyle,
-        accessibility: Accessibility
+        accessibility: Accessibility = .unsupported
     ) {
         self.titleFont = titleFont
         self.titleColor = titleColor

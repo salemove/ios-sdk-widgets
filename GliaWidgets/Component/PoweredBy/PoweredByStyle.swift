@@ -17,7 +17,7 @@ public struct PoweredByStyle {
     public init(
         text: String,
         font: UIFont,
-        accessibility: Accessibility
+        accessibility: Accessibility = .init(isFontScalingEnabled: true)
     ) {
         self.text = text
         self.font = font
