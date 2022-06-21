@@ -11,6 +11,8 @@ public class ChatTextContentStyle {
     /// Background color of the view.
     public var backgroundColor: UIColor
 
+    public var cornerRadius: CGFloat
+
     ///
     /// - Parameters:
     ///   - textFont: Font of the message text.
@@ -20,10 +22,12 @@ public class ChatTextContentStyle {
     public init(
         textFont: UIFont,
         textColor: UIColor,
-        backgroundColor: UIColor
+        backgroundColor: UIColor,
+        cornerRadius: CGFloat = 10
     ) {
         self.textFont = textFont
         self.textColor = textColor
         self.backgroundColor = backgroundColor
+        self.cornerRadius = cornerRadius
     }
 }

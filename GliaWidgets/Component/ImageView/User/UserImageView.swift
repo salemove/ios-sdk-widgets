@@ -39,7 +39,7 @@ class UserImageView: UIView {
 
     func setImage(_ image: UIImage?, animated: Bool) {
         changeImageVisibility(visible: image != nil)
-        imageView.setImage(image, animated: animated)
+        imageView.setImage(image?.withRenderingMode(.alwaysTemplate), animated: animated)
     }
 
     func setImage(fromUrl url: String?, animated: Bool) {
@@ -55,7 +55,7 @@ class UserImageView: UIView {
     private func setup() {
         clipsToBounds = true
 
-        placeholderImageView.image = style.placeholderImage
+        placeholderImageView.image = style.placeholderImage?.withRenderingMode(.alwaysTemplate)
         placeholderImageView.tintColor = style.placeholderColor
         placeholderImageView.backgroundColor = style.placeholderBackgroundColor
         updatePlaceholderContentMode()

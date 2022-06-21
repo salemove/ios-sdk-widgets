@@ -42,6 +42,37 @@ class ViewController: UIViewController {
             print("End engagement operation has been executed. Result='\(result)'.")
         }
     }
+
+    @IBAction private func hackoFileTapped() {
+
+        try? Glia.sharedInstance.configure(
+            with: settingsViewController.conf,
+            queueId: settingsViewController.queueID,
+            visitorContext: .init(type: .page, url: "http://glia.com")
+        )
+
+        guard
+            let url = Bundle.main.url(forResource: "hacko", withExtension: "json"),
+            let jsonData = try? Data(contentsOf: url),
+            let config = try? JSONDecoder().decode(Glia.RemoteConfig.self, from: .init(jsonData))
+        else { return }
+
+        try? Glia.sharedInstance.startEngagementWithConfig(
+            engagement: .chat,
+            config: config
+        )
+    }
+
+    @IBAction private func hackoRemoteTapped() {
+
+        try? Glia.sharedInstance.configure(
+            with: settingsViewController.conf,
+            queueId: settingsViewController.queueID,
+            visitorContext: .init(type: .page, url: "http://glia.com")
+        )
+
+        try? Glia.sharedInstance.startEngagementWithRemoteConfig(engagement: .chat)
+    }
 }
 
 extension ViewController {

@@ -53,7 +53,7 @@ class ChatTextContentView: UIView {
 
     private func setup() {
         contentView.backgroundColor = style.backgroundColor
-        contentView.layer.cornerRadius = 10
+        contentView.layer.cornerRadius = style.cornerRadius
 
         textView.delegate = self
         textView.isScrollEnabled = false
