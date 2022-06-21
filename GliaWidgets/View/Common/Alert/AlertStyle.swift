@@ -65,7 +65,7 @@ public struct AlertStyle {
         positiveAction: ActionButtonStyle,
         negativeAction: ActionButtonStyle,
         poweredBy: PoweredByStyle,
-        accessibility: Accessibility
+        accessibility: Accessibility = .unsupported
     ) {
         self.titleFont = titleFont
         self.titleColor = titleColor

@@ -58,8 +58,8 @@ public class ChatFileDownloadStyle: ChatFileContentStyle {
         progressBackgroundColor: UIColor,
         backgroundColor: UIColor,
         borderColor: UIColor,
-        accessibility: Accessibility,
-        downloadAccessibility: StateAccessibility
+        accessibility: Accessibility = .unsupported,
+        downloadAccessibility: StateAccessibility = .unsupported
     ) {
         self.filePreview = filePreview
         self.download = download

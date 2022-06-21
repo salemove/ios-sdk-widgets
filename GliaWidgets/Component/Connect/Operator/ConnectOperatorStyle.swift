@@ -25,7 +25,7 @@ public struct ConnectOperatorStyle {
         operatorImage: UserImageStyle,
         animationColor: UIColor,
         onHoldOverlay: OnHoldOverlayStyle = .engagement,
-        accessibility: Accessibility
+        accessibility: Accessibility = .unsupported
     ) {
         self.operatorImage = operatorImage
         self.animationColor = animationColor

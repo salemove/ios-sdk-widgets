@@ -42,7 +42,7 @@ public class FilePreviewStyle {
         errorIconColor: UIColor,
         backgroundColor: UIColor,
         errorBackgroundColor: UIColor,
-        accessibility: Accessibility
+        accessibility: Accessibility = .unsupported
     ) {
         self.fileFont = fileFont
         self.fileColor = fileColor

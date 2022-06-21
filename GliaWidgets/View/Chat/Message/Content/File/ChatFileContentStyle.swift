@@ -13,7 +13,7 @@ public class ChatFileContentStyle {
     ///   - accessibility: Accessibility releated properties.
     public init(
         backgroundColor: UIColor,
-        accessibility: Accessibility
+        accessibility: Accessibility = .unsupported
     ) {
         self.backgroundColor = backgroundColor
         self.accessibility = accessibility
