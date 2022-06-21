@@ -28,7 +28,7 @@ extension Theme.SurveyStyle {
             highlightedText: Theme.Text,
             highlightedLayer: Theme.Layer,
             font: UIFont,
-            accessibility: Accessibility
+            accessibility: Accessibility = .init(isFontScalingEnabled: true)
         ) {
             self.normalText = normalText
             self.normalLayer = normalLayer

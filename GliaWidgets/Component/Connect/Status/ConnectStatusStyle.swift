@@ -40,7 +40,7 @@ public struct ConnectStatusStyle {
         secondText: String?,
         secondTextFont: UIFont,
         secondTextFontColor: UIColor,
-        accessibility: Accessibility
+        accessibility: Accessibility = .unsupported
     ) {
         self.firstText = firstText
         self.firstTextFont = firstTextFont

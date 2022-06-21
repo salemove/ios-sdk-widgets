@@ -19,7 +19,7 @@ public struct MessageButtonStyle {
     public init(
         image: UIImage,
         color: UIColor,
-        accessibility: Accessibility
+        accessibility: Accessibility = .unsupported
     ) {
         self.image = image
         self.color = color

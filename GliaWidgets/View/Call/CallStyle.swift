@@ -93,7 +93,7 @@ public class CallStyle: EngagementStyle {
         bottomTextColor: UIColor,
         buttonBar: CallButtonBarStyle,
         onHoldStyle: OnHoldStyle,
-        accessibility: Accessibility
+        accessibility: Accessibility = .unsupported
     ) {
         self.audioTitle = audioTitle
         self.videoTitle = videoTitle

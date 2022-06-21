@@ -17,7 +17,7 @@ public final class ChoiceCardOptionStateStyle: ChatTextContentStyle {
         textColor: UIColor,
         backgroundColor: UIColor,
         borderColor: UIColor?,
-        accessibility: Accessibility
+        accessibility: Accessibility = .unsupported
     ) {
         self.borderColor = borderColor
         super.init(

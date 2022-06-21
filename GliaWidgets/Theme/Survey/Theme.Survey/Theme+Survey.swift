@@ -49,7 +49,7 @@ extension Theme {
             borderWidth: CGFloat = 0,
             borderColor: String? = nil,
             shadow: Shadow = .standard,
-            accessibility: Accessibility
+            accessibility: Accessibility = .unsupported
         ) {
             self.background = background
             self.title = title

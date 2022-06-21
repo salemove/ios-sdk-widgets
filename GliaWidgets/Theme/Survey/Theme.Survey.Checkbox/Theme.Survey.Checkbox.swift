@@ -10,7 +10,7 @@ extension Theme.SurveyStyle {
         /// Initializes `OptionButton` style instance.
         public init(
             title: Theme.Text,
-            accessibility: Accessibility
+            accessibility: Accessibility = .init(isFontScalingEnabled: true)
         ) {
             self.title = title
             self.accessibility = accessibility

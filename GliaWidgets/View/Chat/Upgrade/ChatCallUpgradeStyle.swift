@@ -50,7 +50,7 @@ public class ChatCallUpgradeStyle {
         durationFont: UIFont,
         durationColor: UIColor,
         borderColor: UIColor,
-        accessibility: Accessibility
+        accessibility: Accessibility = .unsupported
     ) {
         self.icon = icon
         self.iconColor = iconColor

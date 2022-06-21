@@ -65,7 +65,7 @@ public struct ActionButtonStyle {
         shadowOpacity: Float? = nil,
         borderWidth: CGFloat? = nil,
         borderColor: UIColor? = nil,
-        accessibility: Accessibility
+        accessibility: Accessibility = .unsupported
     ) {
         self.title = title
         self.titleFont = titleFont

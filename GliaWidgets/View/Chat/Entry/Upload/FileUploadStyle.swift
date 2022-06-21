@@ -54,7 +54,7 @@ public class FileUploadStyle {
         progressBackgroundColor: UIColor,
         removeButtonImage: UIImage,
         removeButtonColor: UIColor,
-        accessibility: Accessibility
+        accessibility: Accessibility = .unsupported
     ) {
         self.filePreview = filePreview
         self.uploading = uploading

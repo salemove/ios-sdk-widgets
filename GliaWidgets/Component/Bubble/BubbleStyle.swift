@@ -23,7 +23,7 @@ public class BubbleStyle {
         userImage: UserImageStyle,
         badge: BadgeStyle? = nil,
         onHoldOverlay: OnHoldOverlayStyle = .bubble,
-        accessibility: Accessibility
+        accessibility: Accessibility = .unsupported
     ) {
         self.userImage = userImage
         self.badge = badge

@@ -12,7 +12,7 @@ public class OperatorTypingIndicatorStyle {
     ///   - accessibility: Accessibility related properties.
     public init(
         color: UIColor,
-        accessibility: Accessibility
+        accessibility: Accessibility = .unsupported
     ) {
         self.color = color
         self.accessibility = accessibility
