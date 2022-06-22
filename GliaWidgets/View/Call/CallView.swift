@@ -218,6 +218,10 @@ class CallView: EngagementView {
 
     func setConnectState(_ state: ConnectView.State, animated: Bool) {
         connectView.setState(state, animated: animated)
+
+        if isVisitrOnHold {
+            connectView.statusView.setSecondText(style.onHoldStyle.onHoldText, animated: false)
+        }
     }
 
     func willRotate(to orientation: UIInterfaceOrientation, duration: TimeInterval) {
