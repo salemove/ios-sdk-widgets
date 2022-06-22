@@ -180,7 +180,6 @@
 		1B0E1F137174A56E01875C95 /* Pods_GliaWidgetsTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3280C82C7791B7FAB49280F2 /* Pods_GliaWidgetsTests.framework */; };
 		24A54E58DEFB804A3A90ABEC /* Pods_GliaWidgets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43CF5FD712275E8B9AA7311D /* Pods_GliaWidgets.framework */; };
 		39B13FD6530AD29917C878A0 /* Pods_GliaWidgets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65D212CF1DC701685125C7B7 /* Pods_GliaWidgets.framework */; };
-		4B1AF277CB06801731BEC963 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
 		5A26C69D5C2088F37B3CBA6C /* Pods_SnapshotTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FB5932435E35FB802696525 /* Pods_SnapshotTests.framework */; };
 		5F7561E540CA0A4A38EB820D /* Pods_GliaWidgetsTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C1B1D31D2A8244728847B885 /* Pods_GliaWidgetsTests.framework */; };
 		6B2BFCE2274297F100B68506 /* SettingsSwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B2BFCE1274297F100B68506 /* SettingsSwitchCell.swift */; };
@@ -811,7 +810,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				1A205D6225655CB2003AA3CD /* GliaWidgets.framework in Frameworks */,
-				4B1AF277CB06801731BEC963 /* BuildFile in Frameworks */,
 				1B0E1F137174A56E01875C95 /* Pods_GliaWidgetsTests.framework in Frameworks */,
 				5F7561E540CA0A4A38EB820D /* Pods_GliaWidgetsTests.framework in Frameworks */,
 			);
@@ -1877,15 +1875,6 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
-		750C0ADA2850D53F003E0415 /* Theme.Survey.ScaleQuestion */ = {
-			isa = PBXGroup;
-			children = (
-				750C0ADB2850D53F003E0415 /* Theme.Survey.ScaleQuestion.swift */,
-				750C0ADC2850D53F003E0415 /* Theme.Survey.ScaleQuestion.Accessibility.swift */,
-			);
-			path = Theme.Survey.ScaleQuestion;
-			sourceTree = "<group>";
-		};
 		7512A57827BF9FB800319DF1 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
@@ -1948,14 +1937,23 @@
 		75FF151527F4E11000FE7BE2 /* Survey */ = {
 			isa = PBXGroup;
 			children = (
-				750C0ADA2850D53F003E0415 /* Theme.Survey.ScaleQuestion */,
-				845E2F99283FCA5F00C04D56 /* Theme.Survey.Checkbox */,
-				845E2F96283FC98500C04D56 /* Theme.Survey.OptionButton */,
-				845E2F8C283FB59F00C04D56 /* Theme.Survey.SingleQuestion */,
-				845E2F89283FB52700C04D56 /* Theme.Survey.InputQuestion */,
-				845E2F86283FB48D00C04D56 /* Theme.Survey.BooleanQuestion */,
-				845E2F83283FA8EF00C04D56 /* Theme.Survey.ValidationError */,
-				84CFB76F2821878900167258 /* Theme.Survey */,
+				84CFB7722822700000167258 /* Theme.Button.Accessibility.swift */,
+				845E2F92283FB6D000C04D56 /* Theme.Survey.Accessibility.swift */,
+				845E2F87283FB49F00C04D56 /* Theme.Survey.BooleanQuestion.Accessibility.swift */,
+				75FF151627F4E13900FE7BE2 /* Theme.Survey.BooleanQuestion.swift */,
+				845E2F9C283FCB1400C04D56 /* Theme.Survey.Checkbox.Accessibility.swift */,
+				845E2F9A283FCA9000C04D56 /* Theme.Survey.Checkbox.swift */,
+				845E2F8A283FB53500C04D56 /* Theme.Survey.InputQuestion.Accessibility.swift */,
+				75FF151C27F4F8E000FE7BE2 /* Theme.Survey.InputQuestion.swift */,
+				845E2F94283FC5D300C04D56 /* Theme.Survey.OptionButton.Accessibility.swift */,
+				845E2F97283FC9A900C04D56 /* Theme.Survey.OptionButton.swift */,
+				750C0ADC2850D53F003E0415 /* Theme.Survey.ScaleQuestion.Accessibility.swift */,
+				750C0ADB2850D53F003E0415 /* Theme.Survey.ScaleQuestion.swift */,
+				845E2F8D283FB5B500C04D56 /* Theme.Survey.SingleQuestion.Accessibility.swift */,
+				75FF151A27F4F52D00FE7BE2 /* Theme.Survey.SingleQuestion.swift */,
+				845E2F84283FA90200C04D56 /* Theme.Survey.ValidationError.Accessibility.swift */,
+				845E2F7E283F99F200C04D56 /* Theme.Survey.ValidationError.swift */,
+				75FF151327F3A2D600FE7BE2 /* Theme+Survey.swift */,
 			);
 			path = Survey;
 			sourceTree = "<group>";
@@ -2020,70 +2018,6 @@
 				845876B3282AA296007AC3DF /* ButtonView.Props.Accessibility.swift */,
 			);
 			path = ButtonView;
-			sourceTree = "<group>";
-		};
-		845E2F83283FA8EF00C04D56 /* Theme.Survey.ValidationError */ = {
-			isa = PBXGroup;
-			children = (
-				845E2F7E283F99F200C04D56 /* Theme.Survey.ValidationError.swift */,
-				845E2F84283FA90200C04D56 /* Theme.Survey.ValidationError.Accessibility.swift */,
-			);
-			path = Theme.Survey.ValidationError;
-			sourceTree = "<group>";
-		};
-		845E2F86283FB48D00C04D56 /* Theme.Survey.BooleanQuestion */ = {
-			isa = PBXGroup;
-			children = (
-				75FF151627F4E13900FE7BE2 /* Theme.Survey.BooleanQuestion.swift */,
-				845E2F87283FB49F00C04D56 /* Theme.Survey.BooleanQuestion.Accessibility.swift */,
-			);
-			path = Theme.Survey.BooleanQuestion;
-			sourceTree = "<group>";
-		};
-		845E2F89283FB52700C04D56 /* Theme.Survey.InputQuestion */ = {
-			isa = PBXGroup;
-			children = (
-				75FF151C27F4F8E000FE7BE2 /* Theme.Survey.InputQuestion.swift */,
-				845E2F8A283FB53500C04D56 /* Theme.Survey.InputQuestion.Accessibility.swift */,
-			);
-			path = Theme.Survey.InputQuestion;
-			sourceTree = "<group>";
-		};
-		845E2F8C283FB59F00C04D56 /* Theme.Survey.SingleQuestion */ = {
-			isa = PBXGroup;
-			children = (
-				75FF151A27F4F52D00FE7BE2 /* Theme.Survey.SingleQuestion.swift */,
-				845E2F8D283FB5B500C04D56 /* Theme.Survey.SingleQuestion.Accessibility.swift */,
-			);
-			path = Theme.Survey.SingleQuestion;
-			sourceTree = "<group>";
-		};
-		845E2F96283FC98500C04D56 /* Theme.Survey.OptionButton */ = {
-			isa = PBXGroup;
-			children = (
-				845E2F97283FC9A900C04D56 /* Theme.Survey.OptionButton.swift */,
-				845E2F94283FC5D300C04D56 /* Theme.Survey.OptionButton.Accessibility.swift */,
-			);
-			path = Theme.Survey.OptionButton;
-			sourceTree = "<group>";
-		};
-		845E2F99283FCA5F00C04D56 /* Theme.Survey.Checkbox */ = {
-			isa = PBXGroup;
-			children = (
-				845E2F9A283FCA9000C04D56 /* Theme.Survey.Checkbox.swift */,
-				845E2F9C283FCB1400C04D56 /* Theme.Survey.Checkbox.Accessibility.swift */,
-			);
-			path = Theme.Survey.Checkbox;
-			sourceTree = "<group>";
-		};
-		84CFB76F2821878900167258 /* Theme.Survey */ = {
-			isa = PBXGroup;
-			children = (
-				75FF151327F3A2D600FE7BE2 /* Theme+Survey.swift */,
-				84CFB7722822700000167258 /* Theme.Button.Accessibility.swift */,
-				845E2F92283FB6D000C04D56 /* Theme.Survey.Accessibility.swift */,
-			);
-			path = Theme.Survey;
 			sourceTree = "<group>";
 		};
 		9A1992CE27D61F5400161AAE /* SnapshotTests */ = {
@@ -2224,6 +2158,8 @@
 				1A5892AB2608C48000E183CC /* QuickLookViewModel.swift */,
 				1A79E3592604A263004C1F63 /* ChatFileDownloadContentStyle.swift */,
 				1A79E3552604A1EF004C1F63 /* ChatFileDownloadContentView.swift */,
+				43CF5FD712275E8B9AA7311D /* Pods_GliaWidgets.framework */,
+				3280C82C7791B7FAB49280F2 /* Pods_GliaWidgetsTests.framework */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";

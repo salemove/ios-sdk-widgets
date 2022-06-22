@@ -89,3 +89,4 @@ iOSInjectionProject/
 # The reason Git LFS is not used for current repo is because Swift Package Manager fails to work properly
 # with it.
 SnapshotTests/__Snapshots__/
+.vscode
