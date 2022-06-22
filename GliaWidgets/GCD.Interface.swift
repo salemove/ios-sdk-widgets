@@ -1,3 +1,5 @@
+import Dispatch
+
 struct GCD {
     var mainQueue: DispatchQueue
     var globalQueue: DispatchQueue
