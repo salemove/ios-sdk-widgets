@@ -2939,6 +2939,7 @@
 				9A3E1D9D27BA7741005634EB /* FoundationBased.Failing.swift in Sources */,
 				9A3E1D8427B67F1B005634EB /* Helper.swift in Sources */,
 				9A8130C627D90B3800220BBD /* FileSystemStorage.Failing.swift in Sources */,
+				845E2F6A28365AD000C04D56 /* CoreSDKClient.Operator.Mock.swift in Sources */,
 				7512A57A27BF9FCD00319DF1 /* ChatViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
