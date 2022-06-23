@@ -39,6 +39,10 @@ class ChatFileDownloadContentView: ChatFileContentView {
         layer.borderColor = style.borderColor.cgColor
 
         infoLabel.lineBreakMode = .byTruncatingMiddle
+        setFontScalingEnabled(
+            style.accessibility.isFontScalingEnabled,
+            for: infoLabel
+        )
 
         progressView.backgroundColor = style.progressBackgroundColor
         progressView.clipsToBounds = true
@@ -82,7 +86,9 @@ class ChatFileDownloadContentView: ChatFileContentView {
         progressView.isHidden = true
     }
 
+    // swiftlint:disable function_body_length
     override func update(with download: FileDownload) {
+        let sharedProperties = super.sharedAccessibility()
         switch download.state.value {
         case .none:
             filePreviewView.kind = .fileExtension(download.file.fileExtension)
@@ -91,6 +97,15 @@ class ChatFileDownloadContentView: ChatFileContentView {
             infoLabel.textColor = style.download.infoColor
             stateLabel.attributedText = stateText(for: download.state.value)
             progressView.isHidden = true
+
+            if let infoText = infoLabel.attributedText?.string, let stateText = stateLabel.attributedText?.string {
+                accessibilityValue = style.stateAccessibility.noneState
+                    .withDownloadedFileName(infoText)
+                    .withDownloadedFileState(stateText)
+            } else {
+                accessibilityValue = sharedProperties.value
+            }
+
         case .downloading(progress: let progress):
             filePreviewView.kind = .fileExtension(download.file.fileExtension)
             infoLabel.text = download.file.fileInfoString
@@ -100,8 +115,28 @@ class ChatFileDownloadContentView: ChatFileContentView {
             progressView.tintColor = style.progressColor
             progressView.progress = Float(progress.value)
             progressView.isHidden = false
+
+            let percentValue: (Double) -> String = { String(Int($0 * 100)) }
+            let downloadingStateFormat = style.stateAccessibility.downloadingState
+            if let infoText = infoLabel.attributedText?.string, let stateText = stateLabel.attributedText?.string {
+                accessibilityValue = downloadingStateFormat
+                    .withDownloadedFileName(infoText)
+                    .withDownloadedFileState(stateText)
+                    .withDownloadPercentValue(percentValue(progress.value))
+            } else {
+                accessibilityValue = sharedProperties.value
+            }
+
             progress.addObserver(self) { [weak self] progress, _ in
                 self?.progressView.progress = Float(progress)
+                if let infoText = self?.infoLabel.attributedText?.string, let stateText = self?.stateLabel.attributedText?.string {
+                    self?.accessibilityValue = downloadingStateFormat
+                        .withDownloadedFileName(infoText)
+                        .withDownloadedFileState(stateText)
+                        .withDownloadPercentValue(percentValue(progress))
+                } else {
+                    self?.accessibilityValue = sharedProperties.value
+                }
             }
         case .downloaded(let file):
             filePreviewView.kind = .file(file)
@@ -110,6 +145,15 @@ class ChatFileDownloadContentView: ChatFileContentView {
             infoLabel.textColor = style.open.infoColor
             stateLabel.attributedText = stateText(for: download.state.value)
             progressView.isHidden = true
+
+            if let infoText = infoLabel.attributedText?.string, let stateText = stateLabel.attributedText?.string {
+                accessibilityValue = style.stateAccessibility.downloadedState
+                    .withDownloadedFileName(infoText)
+                    .withDownloadedFileState(stateText)
+            } else {
+                accessibilityValue = sharedProperties.value
+            }
+
         case .error:
             filePreviewView.kind = .error
             infoLabel.text = download.file.fileInfoString
@@ -119,8 +163,18 @@ class ChatFileDownloadContentView: ChatFileContentView {
             progressView.isHidden = false
             progressView.tintColor = style.errorProgressColor
             progressView.progress = 1.0
+
+            if let infoText = infoLabel.attributedText?.string, let stateText = stateLabel.attributedText?.string {
+                accessibilityValue = style.stateAccessibility.errorState
+                    .withDownloadedFileName(infoText)
+                    .withDownloadedFileState(stateText)
+            } else {
+                accessibilityValue = sharedProperties.value
+            }
         }
+        accessibilityLabel = sharedProperties.label
     }
+    // swiftlint:enable function_body_length
 
     private func stateText(for downloadState: FileDownload.State) -> NSAttributedString? {
         switch downloadState {

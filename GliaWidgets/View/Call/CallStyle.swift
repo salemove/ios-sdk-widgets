@@ -47,6 +47,9 @@ public class CallStyle: EngagementStyle {
     /// Style of the call view when the visitor is put on hold.
     public var onHoldStyle: OnHoldStyle
 
+	/// Accessiblity properties for CallStyle.
+    public var accessibility: Accessibility
+
     ///
     /// - Parameters:
     ///   - header: Style of the view's header (navigation bar area).
@@ -68,7 +71,8 @@ public class CallStyle: EngagementStyle {
     ///   - bottomTextColor: Color of the bottom text.
     ///   - buttonBar: Style of the button bar.
     ///   - onHoldStyle: Style of the call view when the visitor is put on hold.
-    ///
+    ///   - accessibility: Accessiblity properties for CallStyle.
+	///
     public init(
         header: HeaderStyle,
         connect: ConnectStyle,
@@ -88,7 +92,8 @@ public class CallStyle: EngagementStyle {
         bottomTextFont: UIFont,
         bottomTextColor: UIColor,
         buttonBar: CallButtonBarStyle,
-        onHoldStyle: OnHoldStyle
+        onHoldStyle: OnHoldStyle,
+        accessibility: Accessibility = .unsupported
     ) {
         self.audioTitle = audioTitle
         self.videoTitle = videoTitle
@@ -105,6 +110,7 @@ public class CallStyle: EngagementStyle {
         self.bottomTextColor = bottomTextColor
         self.buttonBar = buttonBar
         self.onHoldStyle = onHoldStyle
+        self.accessibility = accessibility
         super.init(
             header: header,
             connect: connect,

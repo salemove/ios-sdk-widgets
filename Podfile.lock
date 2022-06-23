@@ -10,7 +10,7 @@ PODS:
   - lottie-ios (3.2.3)
   - PureLayout (3.1.9)
   - ReactiveSwift (6.5.0-xcf)
-  - SalemoveSDK (0.33.3):
+  - SalemoveSDK (0.33.4):
     - GliaCoreDependency (= 1.0)
     - ReactiveSwift (= 6.5.0-xcf)
     - TwilioVoice (= 6.3.1)
@@ -44,11 +44,11 @@ SPEC CHECKSUMS:
   lottie-ios: c058aeafa76daa4cf64d773554bccc8385d0150e
   PureLayout: 5fb5e5429519627d60d079ccb1eaa7265ce7cf88
   ReactiveSwift: 377d0a5621761a57c61829541b2ee0b9fdcd98f2
-  SalemoveSDK: 35d7f7173012e0bce662ed8b7a4a9b798922e383
+  SalemoveSDK: 561306fb67ad648412b7bc2528292e9df4cf3912
   SnapshotTesting: 6141c48b6aa76ead61431ca665c14ab9a066c53b
   TwilioVoice: 098a959181d4607921f5822d3c9f13043ea4075b
   WebRTC-lib: 508fe02efa0c1a3a8867082a77d24c9be5d29aeb
 
-PODFILE CHECKSUM: 0438e9734a3d7130551551522238a1e9f4b2b513
+PODFILE CHECKSUM: cc36aaaaee06ae1cdb01785c68eedaa918bdf6d7
 
 COCOAPODS: 1.11.3

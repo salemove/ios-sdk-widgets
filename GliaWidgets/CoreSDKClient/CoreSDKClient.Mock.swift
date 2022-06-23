@@ -58,11 +58,15 @@ extension CoreSdkClient.EngagementFile {
 }
 
 extension CoreSdkClient.Salemove.Configuration {
-    static func mock() throws -> Self {
-        try .init(
-            siteId: "mockSiteId",
-            region: .us,
-            authorizingMethod: .mock
+    static func mock(
+        siteId: String = "mocked-id",
+        region: CoreSdkClient.Salemove.Region = .us,
+        authMethod: CoreSdkClient.Salemove.AuthorizationMethod = .mock
+    ) throws -> Self {
+        try CoreSdkClient.Salemove.Configuration(
+            siteId: siteId,
+            region: region,
+            authorizingMethod: authMethod
         )
     }
 }
@@ -73,7 +77,13 @@ extension CoreSdkClient.Salemove.AuthorizationMethod {
 }
 
 extension CoreSdkClient.VisitorContext {
-    static let mock = CoreSdkClient.VisitorContext(type: CoreSdkClient.ContextType.page, url: "mockUrl")
+    static let mock = CoreSdkClient.VisitorContext(.assetId(.init(rawValue: .mock)))
+
+    static func mock(
+        contextType: ContextType = .assetId(.init(rawValue: .mock))
+    ) -> CoreSdkClient.VisitorContext {
+        .init(contextType)
+    }
 }
 
 extension CoreSdkClient.EngagementFileInformation {
@@ -274,6 +284,22 @@ extension CoreSdkClient {
                 setIsRemoteFunc: setIsRemoteFunc
             )
         }
+    }
+}
+
+extension CoreSdkClient.Operator {
+    static func mock(
+        id: String = "mockId",
+        name: String = "Mock Operator",
+        picture: CoreSdkClient.OperatorPicture? = nil,
+        availableMedia: [CoreSdkClient.MediaType]? = [.text, .audio, .video]
+    ) -> CoreSdkClient.Operator {
+        CoreSdkClient.Operator(
+            id: id,
+            name: name,
+            picture: picture,
+            availableMedia: availableMedia
+        )
     }
 }
 #endif

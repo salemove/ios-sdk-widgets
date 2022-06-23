@@ -13,7 +13,7 @@ extension Survey {
             $0.numberOfLines = 0
         }
         let optionsStack = UIStackView.make(.vertical, spacing: 24, distribution: .equalSpacing)()
-        let validationError = ValidationErrorView()
+        lazy var validationError = ValidationErrorView(style: style.error)
         lazy var contentStack = UIStackView.make(.vertical, spacing: 16)(
             title,
             optionsStack,
@@ -54,17 +54,30 @@ extension Survey {
                 break
             default:
                 (0..<abs(delta)).forEach { _ in
-                    optionsStack.addArrangedSubview(CheckboxView(style: style.optionText))
+                    optionsStack.addArrangedSubview(
+                        CheckboxView(
+                            style: style.option,
+                            textStyle: style.title,
+                            checkedTintColor: .init(hex: style.tintColor)
+                        )
+                    )
                 }
             }
 
+            setFontScalingEnabled(
+                style.accessibility.isFontScalingEnabled,
+                for: title
+            )
             title.attributedText = .withRequiredSymbol(
                 foregroundColor: .init(hex: style.title.color),
-                fontSize: style.title.fontSize,
-                fontWeight: style.title.fontWeight,
+                font: style.title.font,
                 isRequired: props.isRequired,
                 text: props.title
             )
+
+            title.accessibilityLabel = props.title
+            title.accessibilityValue = props.accessibility.value
+
             zip(props.options, optionsStack.arrangedSubviews)
                 .forEach { opt, view in
                     guard let checkboxView = view as? CheckboxView else { return }
@@ -93,6 +106,7 @@ extension Survey.SingleChoiceQuestionView {
         var options: [Survey.Option<String>]
         var selected: Survey.Option<String>?
         var answerContainer: CoreSdkClient.SurveyAnswerContainer?
+        let accessibility: Accessibility
 
         var isValid: Bool {
             guard isRequired else { return true }
@@ -106,7 +120,8 @@ extension Survey.SingleChoiceQuestionView {
             showValidationError: Bool = false,
             options: [Survey.Option<String>] = [],
             selected: Survey.Option<String>? = nil,
-            answerContainer: CoreSdkClient.SurveyAnswerContainer? = nil
+            answerContainer: CoreSdkClient.SurveyAnswerContainer? = nil,
+            accessibility: Accessibility
         ) {
             self.id = id
             self.title = title
@@ -115,6 +130,7 @@ extension Survey.SingleChoiceQuestionView {
             self.options = options
             self.selected = selected
             self.answerContainer = answerContainer
+            self.accessibility = accessibility
         }
     }
 }

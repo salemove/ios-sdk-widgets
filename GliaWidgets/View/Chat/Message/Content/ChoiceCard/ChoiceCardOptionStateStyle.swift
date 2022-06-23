@@ -11,18 +11,20 @@ public final class ChoiceCardOptionStateStyle: ChatTextContentStyle {
     ///   - textColor: Color of an option's text.
     ///   - backgroundColor: Color of an option's background.
     ///   - borderColor: Color of an option's border.
-    ///
+    ///   - accessibility: Accessibility related properties.
     public init(
         textFont: UIFont,
         textColor: UIColor,
         backgroundColor: UIColor,
-        borderColor: UIColor?
+        borderColor: UIColor?,
+        accessibility: Accessibility = .unsupported
     ) {
         self.borderColor = borderColor
         super.init(
             textFont: textFont,
             textColor: textColor,
-            backgroundColor: backgroundColor
+            backgroundColor: backgroundColor,
+            accessibility: accessibility
         )
     }
 }

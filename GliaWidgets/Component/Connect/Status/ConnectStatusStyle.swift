@@ -20,6 +20,9 @@ public struct ConnectStatusStyle {
     /// Color of the second status text.
     public var secondTextFontColor: UIColor
 
+    /// Accessibility releated properties.
+    public var accessibility: Accessibility
+
     ///
     /// - Parameters:
     ///   - firstText: First status text. Include `{operatorName}` template parameter in the string to display operator's name.
@@ -28,6 +31,7 @@ public struct ConnectStatusStyle {
     ///   - secondText: Second status text. Include `{operatorName}` template parameter in the string to display operator's name.
     ///   - secondTextFont: Font of the second status text.
     ///   - secondTextFontColor: Color of the second status text.
+    ///   - accessibility: Accessibility releated properties.
     ///
     public init(
         firstText: String?,
@@ -35,7 +39,8 @@ public struct ConnectStatusStyle {
         firstTextFontColor: UIColor,
         secondText: String?,
         secondTextFont: UIFont,
-        secondTextFontColor: UIColor
+        secondTextFontColor: UIColor,
+        accessibility: Accessibility = .unsupported
     ) {
         self.firstText = firstText
         self.firstTextFont = firstTextFont
@@ -43,5 +48,6 @@ public struct ConnectStatusStyle {
         self.secondText = secondText
         self.secondTextFont = secondTextFont
         self.secondTextFontColor = secondTextFontColor
+        self.accessibility = accessibility
     }
 }

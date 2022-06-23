@@ -2,8 +2,16 @@ import Foundation
 
 public extension Theme.SurveyStyle {
     struct SingleQuestion {
+        /// Title style.
         public var title: Theme.Text
-        public var optionText: Theme.Text
+        /// Tint color.
+        public var tintColor: String
+        /// Option style.
+        public var option: Checkbox
+        /// Validation error style
+        public var error: ValidationError
+        /// Accessibility related properties.
+        public var accessibility: Accessibility
 
         static func `default`(
             color: ThemeColor,
@@ -12,14 +20,17 @@ public extension Theme.SurveyStyle {
             .init(
                 title: .init(
                     color: color.baseDark.hex,
-                    fontSize: font.bodyText.pointSize,
-                    fontWeight: 0.4
+                    font: font.mediumSubtitle1
                 ),
-                optionText: .init(
-                    color: color.baseDark.hex,
-                    fontSize: font.bodyText.pointSize,
-                    fontWeight: 0.1
-                )
+                tintColor: color.primary.hex,
+                option: .init(
+                    title: .init(
+                        color: color.baseDark.hex,
+                        font: font.bodyText
+                    ),
+                    accessibility: .init(isFontScalingEnabled: true)),
+                error: .default(color: color, font: font),
+                accessibility: .init(isFontScalingEnabled: true)
             )
         }
     }

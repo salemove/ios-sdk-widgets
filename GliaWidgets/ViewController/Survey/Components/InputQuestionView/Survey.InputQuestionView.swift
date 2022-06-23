@@ -14,7 +14,7 @@ extension Survey {
         let textView = UITextView().make {
             $0.clipsToBounds = true
         }
-        let validationError = ValidationErrorView()
+        lazy var validationError = ValidationErrorView(style: style.error)
         lazy var contentStack = UIStackView.make(.vertical, spacing: 16)(
             title,
             textView,
@@ -49,13 +49,21 @@ extension Survey {
         }
 
         func render() {
+            setFontScalingEnabled(
+                style.accessibility.isFontScalingEnabled,
+                for: title
+            )
             title.attributedText = .withRequiredSymbol(
                 foregroundColor: .init(hex: style.title.color),
-                fontSize: style.title.fontSize,
-                fontWeight: style.title.fontWeight,
+                font: style.title.font,
                 isRequired: props.isRequired,
                 text: props.title
             )
+
+            title.accessibilityLabel = props.title
+            title.accessibilityValue = props.accessibility.titleValue
+            textView.accessibilityHint = props.accessibility.fieldHint
+
             textView.text = props.value
             validationError.isHidden = !props.showValidationError
             textView.layer.cornerRadius = props.showValidationError ?
@@ -70,7 +78,13 @@ extension Survey {
             if let backgroundColor = style.background.background {
                 textView.backgroundColor = UIColor(hex: backgroundColor)
             }
-            textView.textColor = UIColor(hex: style.textColor)
+            textView.textColor = UIColor(hex: style.text.color)
+            textView.font = style.text.font
+
+            setFontScalingEnabled(
+                style.accessibility.isFontScalingEnabled,
+                for: textView
+            )
         }
 
         // MARK: - Private
@@ -88,6 +102,7 @@ extension Survey.InputQuestionView {
         var showValidationError: Bool
         var textDidChange: (String) -> Void
         var answerContainer: CoreSdkClient.SurveyAnswerContainer?
+        let accessibility: Accessibility
 
         var isValid: Bool {
             guard isRequired else { return true }
@@ -101,7 +116,8 @@ extension Survey.InputQuestionView {
             isRequired: Bool = false,
             showValidationError: Bool = false,
             textDidChange: @escaping (String) -> Void = { _ in },
-            answerContainer: CoreSdkClient.SurveyAnswerContainer? = nil
+            answerContainer: CoreSdkClient.SurveyAnswerContainer? = nil,
+            accessibility: Accessibility
         ) {
             self.id = id
             self.title = title
@@ -110,6 +126,7 @@ extension Survey.InputQuestionView {
             self.showValidationError = showValidationError
             self.textDidChange = textDidChange
             self.answerContainer = answerContainer
+            self.accessibility = accessibility
         }
     }
 }

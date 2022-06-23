@@ -43,7 +43,13 @@ class ChatView: EngagementView {
     ) {
         self.style = style
         self.environment = environment
-        self.messageEntryView = ChatMessageEntryView(with: style.messageEntry)
+        self.messageEntryView = ChatMessageEntryView(
+            with: style.messageEntry,
+            environment: .init(
+                gcd: environment.gcd,
+                uiApplication: environment.uiApplication
+            )
+        )
         self.unreadMessageIndicatorView = UnreadMessageIndicatorView(
             with: style.unreadMessageIndicator,
             environment: .init(
@@ -54,10 +60,9 @@ class ChatView: EngagementView {
             )
         )
 
-        #warning("Find way how to provide operator name")
         self.typingIndicatorView = OperatorTypingIndicatorView(
             style: style.operatorTypingIndicator,
-            accessibilityProperties: .init(operatorName: "Operator")
+            accessibilityProperties: .init(operatorName: style.accessibility.operator)
         )
         super.init(
             with: style,
@@ -66,7 +71,8 @@ class ChatView: EngagementView {
                 uuid: environment.uuid,
                 gcd: environment.gcd,
                 imageViewCache: environment.imageViewCache,
-                timerProviding: environment.timerProviding
+                timerProviding: environment.timerProviding,
+                uiApplication: environment.uiApplication
             )
         )
         setup()
@@ -118,7 +124,12 @@ class ChatView: EngagementView {
                 switch cell.content {
                 case .operatorMessage(let view):
                     switch item.kind {
-                    case .operatorMessage(_, let showsImage, let imageUrl):
+                    case .operatorMessage(let message, let showsImage, let imageUrl):
+                        // forward operator name to typing indicator's accessibility
+                        if let operatorName = message.operator?.name {
+                            typingIndicatorView.accessibilityProperties.operatorName = operatorName
+                        }
+
                         view.showsOperatorImage = showsImage
                         view.setOperatorImage(fromUrl: imageUrl, animated: animated)
                     default:
@@ -255,8 +266,23 @@ extension ChatView {
         case .queueOperator:
             return .queueOperator(connectView)
         case .outgoingMessage(let message):
-            let view = VisitorChatMessageView(with: style.visitorMessage)
-            view.appendContent(.text(message.content, accessibility: Self.visitorAccessibilityOutgoingMessage(for: message)), animated: false)
+            let view = VisitorChatMessageView(
+                with: style.visitorMessage,
+                environment: .init(
+                    uiApplication: environment.uiApplication
+                )
+            )
+            view.appendContent(
+                .text(
+                    message.content,
+                    accessibility: Self.visitorAccessibilityOutgoingMessage(
+                        for: message,
+                        visitor: style.accessibility.visitor,
+                        isFontScalingEnabled: style.accessibility.isFontScalingEnabled
+                    )
+                ),
+                animated: false
+            )
             view.appendContent(
                 .files(
                     message.files,
@@ -268,10 +294,30 @@ extension ChatView {
             view.linkTapped = { [weak self] in self?.linkTapped?($0) }
             return .outgoingMessage(view)
         case .visitorMessage(let message, let status):
-            let view = VisitorChatMessageView(with: style.visitorMessage)
-            view.appendContent(.text(message.content, accessibility: Self.visitorAccessibilityMessage(for: message)), animated: false)
-            view.appendContent(.downloads(message.downloads,
-                                          accessibility: .init(from: .visitor)), animated: false)
+            let view = VisitorChatMessageView(
+                with: style.visitorMessage,
+                environment: .init(
+                    uiApplication: environment.uiApplication
+                )
+            )
+            view.appendContent(
+                .text(
+                    message.content,
+                    accessibility: Self.visitorAccessibilityMessage(
+                        for: message,
+                        visitor: style.accessibility.visitor,
+                        isFontScalingEnabled: style.accessibility.isFontScalingEnabled
+                    )
+                ),
+                animated: false
+            )
+            view.appendContent(
+                .downloads(
+                    message.downloads,
+                    accessibility: .init(from: .visitor)
+                ),
+                animated: false
+            )
             view.downloadTapped = { [weak self] in self?.downloadTapped?($0) }
             view.linkTapped = { [weak self] in self?.linkTapped?($0) }
             view.status = status
@@ -283,16 +329,25 @@ extension ChatView {
                     data: environment.data,
                     uuid: environment.uuid,
                     gcd: environment.gcd,
-                    imageViewCache: environment.imageViewCache
+                    imageViewCache: environment.imageViewCache,
+                    uiApplication: environment.uiApplication
                 )
             )
-            view.appendContent(.text(message.content, accessibility: Self.operatorAccessibilityMessage(for: message)), animated: false)
-            #warning("Provide proper localized 'Operator'")
+            view.appendContent(
+                .text(
+                    message.content,
+                    accessibility: Self.operatorAccessibilityMessage(
+                        for: message,
+                        operator: style.accessibility.operator,
+                        isFontScalingEnabled: style.accessibility.isFontScalingEnabled
+                    )
+                ),
+                animated: false
+            )
             view.appendContent(
                 .downloads(
                     message.downloads,
-
-                    accessibility: .init(from: .operator(message.operator?.name ?? "Operator"))),
+                    accessibility: .init(from: .operator(message.operator?.name ?? style.accessibility.operator))),
                 animated: false
             )
             view.downloadTapped = { [weak self] in self?.downloadTapped?($0) }
@@ -307,7 +362,8 @@ extension ChatView {
                     data: environment.data,
                     uuid: environment.uuid,
                     gcd: environment.gcd,
-                    imageViewCache: environment.imageViewCache
+                    imageViewCache: environment.imageViewCache,
+                    uiApplication: environment.uiApplication
                 )
             )
             let choiceCard = ChoiceCard(with: message, isActive: isActive)
@@ -322,8 +378,11 @@ extension ChatView {
                 with: callStyle,
                 duration: duration
             )
-            kind.addObserver(self) { kind, _ in
+            kind.addObserver(self) { [weak self] kind, _ in
+                guard let self = self else { return }
+
                 view.style = self.callUpgradeStyle(for: kind)
+                self.tableView.reloadData()
             }
             return .callUpgrade(view)
         }
@@ -490,19 +549,39 @@ extension ChatView: UITableViewDelegate {
 
 // MARK: - Accessibility
 extension ChatView {
-    static func operatorAccessibilityMessage(for chatMessage: ChatMessage) -> ChatMessageContent.TextAccessibilityProperties {
-        .init(label: chatMessage.operator?.name ?? "Operator", value: chatMessage.content)
+    static func operatorAccessibilityMessage(
+        for chatMessage: ChatMessage,
+        `operator`: String,
+        isFontScalingEnabled: Bool
+    ) -> ChatMessageContent.TextAccessibilityProperties {
+        .init(
+            label: chatMessage.operator?.name ?? `operator`,
+            value: chatMessage.content,
+            isFontScalingEnabled: isFontScalingEnabled
+        )
     }
 
-    static func visitorAccessibilityMessage(for chatMessage: ChatMessage) -> ChatMessageContent.TextAccessibilityProperties {
-        .init(label: "You", value: chatMessage.content)
+    static func visitorAccessibilityMessage(
+        for chatMessage: ChatMessage,
+        visitor: String,
+        isFontScalingEnabled: Bool
+    ) -> ChatMessageContent.TextAccessibilityProperties {
+        .init(
+            label: visitor,
+            value: chatMessage.content,
+            isFontScalingEnabled: isFontScalingEnabled
+        )
     }
 
-    static func visitorAccessibilityOutgoingMessage(for outgoingMessage: OutgoingMessage) -> ChatMessageContent.TextAccessibilityProperties {
-        .init(label: "You", value: outgoingMessage.content)
-    }
-
-    struct AccessibilityProperties {
-        let operatorName: String
+    static func visitorAccessibilityOutgoingMessage(
+        for outgoingMessage: OutgoingMessage,
+        visitor: String,
+        isFontScalingEnabled: Bool
+    ) -> ChatMessageContent.TextAccessibilityProperties {
+        .init(
+            label: visitor,
+            value: outgoingMessage.content,
+            isFontScalingEnabled: isFontScalingEnabled
+        )
     }
 }

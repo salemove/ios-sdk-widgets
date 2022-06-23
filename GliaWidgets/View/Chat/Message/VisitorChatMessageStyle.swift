@@ -11,6 +11,9 @@ public class VisitorChatMessageStyle: ChatMessageStyle {
     /// Text of the message delivered status.
     public var delivered: String
 
+    /// Accessibility related properties.
+    public var accessibility: Accessibility
+
     ///
     /// - Parameters:
     ///   - text: Style of the text content.
@@ -19,6 +22,7 @@ public class VisitorChatMessageStyle: ChatMessageStyle {
     ///   - statusFont: Font of the message status text.
     ///   - statusColor: Color of the message status text.
     ///   - delivered: Text of the message delivered status.
+    ///   - accessibility: Accessibility related properties.
     ///
     public init(
         text: ChatTextContentStyle,
@@ -26,11 +30,13 @@ public class VisitorChatMessageStyle: ChatMessageStyle {
         fileDownload: ChatFileDownloadStyle,
         statusFont: UIFont,
         statusColor: UIColor,
-        delivered: String
+        delivered: String,
+        accessibility: Accessibility = .unsupported
     ) {
         self.statusFont = statusFont
         self.statusColor = statusColor
         self.delivered = delivered
+        self.accessibility = accessibility
         super.init(
             text: text,
             imageFile: imageFile,

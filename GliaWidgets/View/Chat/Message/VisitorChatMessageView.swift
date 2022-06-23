@@ -9,8 +9,16 @@ class VisitorChatMessageView: ChatMessageView {
     private let statusLabel = UILabel()
     private let kInsets = UIEdgeInsets(top: 2, left: 88, bottom: 2, right: 16)
 
-    init(with style: VisitorChatMessageStyle) {
-        super.init(with: style, contentAlignment: .right)
+    init(
+        with style: VisitorChatMessageStyle,
+        environment: Environment
+    ) {
+        super.init(
+            with: style,
+            contentAlignment: .right,
+            environment: environment
+        )
+
         setup(style: style)
         layout()
     }
@@ -23,6 +31,10 @@ class VisitorChatMessageView: ChatMessageView {
         super.setup()
         statusLabel.font = style.statusFont
         statusLabel.textColor = style.statusColor
+        setFontScalingEnabled(
+            style.accessibility.isFontScalingEnabled,
+            for: statusLabel
+        )
     }
 
     private func layout() {
