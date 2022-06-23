@@ -7,5 +7,6 @@ extension ViewFactory {
         var gcd: GCD
         var imageViewCache: ImageView.Cache
         var timerProviding: FoundationBased.Timer.Providing
+        var uiApplication: UIKitBased.UIApplication
     }
 }

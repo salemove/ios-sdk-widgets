@@ -34,14 +34,10 @@ class ChatFileContentView: UIView {
     func update(with download: FileDownload) {}
 
     func setup() {
-        let fileValue: String?
-
         switch content {
         case .localFile(let file):
-            fileValue = file.accessibilityProperties.value
             update(with: file)
         case .download(let download):
-            fileValue = download.accessibilityProperties.value
             update(with: download)
             download.state.addObserver(self) { [weak self] _, _ in
                 self?.update(with: download)
@@ -52,18 +48,12 @@ class ChatFileContentView: UIView {
                                                    action: #selector(tapped))
         addGestureRecognizer(tapRecognizer)
 
-        let owner: String
-
-        switch accessibilityProperties.from {
-        case let .operator(operatorName):
-            owner = operatorName
-        case .visitor:
-            owner = "You"
-        }
         isAccessibilityElement = true
         accessibilityElements = []
-        accessibilityLabel = "Attachment from \(owner)"
-        accessibilityValue = fileValue
+
+        let accProperties = sharedAccessibility()
+        accessibilityLabel = accProperties.label
+        accessibilityValue = accProperties.value
     }
 
     func layout() {}
@@ -76,6 +66,29 @@ class ChatFileContentView: UIView {
 extension ChatFileContentView {
     struct AccessibilityProperties {
         var from: From
+    }
+
+    func sharedAccessibility() -> (label: String, value: String?) {
+        let fileValue: String?
+
+        switch content {
+        case .localFile(let file):
+            fileValue = file.accessibilityProperties.value
+        case .download(let download):
+            fileValue = download.accessibilityProperties.value
+
+        }
+
+        let sender: String
+
+        switch accessibilityProperties.from {
+        case let .operator(operatorName):
+            sender = operatorName
+        case .visitor:
+            sender = style.accessibility.youAccessibilityPlaceholder
+        }
+
+       return (style.accessibility.contentAccessibilityLabel.withFileSender(sender), fileValue)
     }
 }
 

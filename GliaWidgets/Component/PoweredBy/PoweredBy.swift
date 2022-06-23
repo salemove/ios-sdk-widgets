@@ -8,8 +8,10 @@ class PoweredBy: UIView {
     private let label = UILabel()
     private let logoImageView = UIImageView()
     private let stackView = UIStackView()
+    private let style: PoweredByStyle
 
-    init() {
+    init(style: PoweredByStyle) {
+        self.style = style
         super.init(frame: .zero)
         setup()
         layout()
@@ -21,13 +23,23 @@ class PoweredBy: UIView {
     }
 
     private func setup() {
-        label.text = L10n.poweredBy
-        label.font = Font.regular(12)
+        label.text = style.text
+        label.font = style.font
+        setFontScalingEnabled(
+            style.accessibility.isFontScalingEnabled,
+            for: label
+        )
 
         logoImageView.image = Asset.gliaLogo.image
 
+        let size = logoImageView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+        logoImageView.heightAnchor.constraint(
+            equalTo: logoImageView.widthAnchor,
+            multiplier: size.height / size.width
+        ).isActive = true
+
         stackView.axis = .horizontal
-        stackView.alignment = .center
+        stackView.alignment = .fill
         stackView.spacing = 5
         stackView.addArrangedSubviews([
             label,

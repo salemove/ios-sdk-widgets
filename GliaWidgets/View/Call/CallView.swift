@@ -27,10 +27,12 @@ class CallView: EngagementView {
                 secondLabel.text = style.onHoldStyle.onHoldText
                 secondLabel.accessibilityLabel = style.onHoldStyle.onHoldText
                 connectView.statusView.setSecondText(style.onHoldStyle.onHoldText, animated: false)
+                connectView.statusView.setStyle(style.connect.onHold)
             } else {
                 secondLabel.text = callDuration
                 secondLabel.accessibilityLabel = callDuration
                 connectView.statusView.setSecondText(callDuration, animated: false)
+                connectView.statusView.setStyle(style.connect.connected)
             }
 
             if case .video = mode {
@@ -48,31 +50,31 @@ class CallView: EngagementView {
         }
     }
 
-    let operatorNameLabel: UILabel = {
+    lazy var operatorNameLabel: UILabel = {
         let label = UILabel()
-        label.accessibilityHint = "Displays operator name."
+        label.accessibilityHint = style.accessibility.operatorNameHint
         return label
     }()
-    let secondLabel: UILabel = {
-        let label = UILabel()
-        label.accessibilityHint = "Displays call duration."
-        return label
-    }()
+
+    lazy var secondLabel = UILabel()
 
     let topLabel = UILabel()
     let bottomLabel = UILabel()
     let buttonBar: CallButtonBar
-    let localVideoView: VideoStreamView = {
+
+    lazy var localVideoView: VideoStreamView = {
         let streamView = VideoStreamView(.local)
-        streamView.accessibilityLabel = "Your Video"
+        streamView.accessibilityLabel = style.accessibility.localVideoLabel
         return streamView
     }()
-    let remoteVideoView: VideoStreamView = {
+
+    lazy var remoteVideoView: VideoStreamView = {
         let streamView = VideoStreamView(.remote)
         // Consider to provide Operator name instead of generic 'Operator's'
-        streamView.accessibilityLabel = "Operator's Video"
+        streamView.accessibilityLabel = style.accessibility.remoteVideoLabel
         return streamView
     }()
+
     var callButtonTapped: ((CallButton.Kind) -> Void)?
     let topStackView = UIStackView()
 
@@ -109,7 +111,8 @@ class CallView: EngagementView {
                 uuid: environment.uuid,
                 gcd: environment.gcd,
                 imageViewCache: environment.imageViewCache,
-                timerProviding: environment.timerProviding
+                timerProviding: environment.timerProviding,
+                uiApplication: environment.uiApplication
             )
         )
         setup()
@@ -130,22 +133,38 @@ class CallView: EngagementView {
         operatorNameLabel.font = style.operatorNameFont
         operatorNameLabel.textColor = style.operatorNameColor
         operatorNameLabel.textAlignment = .center
+        setFontScalingEnabled(
+            style.accessibility.isFontScalingEnabled,
+            for: operatorNameLabel
+        )
 
         secondLabel.font = style.durationFont
         secondLabel.textColor = style.durationColor
         secondLabel.textAlignment = .center
+        setFontScalingEnabled(
+            style.accessibility.isFontScalingEnabled,
+            for: secondLabel
+        )
 
         topLabel.text = style.topText
         topLabel.font = style.topTextFont
         topLabel.textColor = style.topTextColor
         topLabel.numberOfLines = 0
         topLabel.textAlignment = .center
+        setFontScalingEnabled(
+            style.accessibility.isFontScalingEnabled,
+            for: topLabel
+        )
 
         bottomLabel.text = style.bottomText
         bottomLabel.font = style.bottomTextFont
         bottomLabel.textColor = style.bottomTextColor
         bottomLabel.numberOfLines = 0
         bottomLabel.textAlignment = .center
+        setFontScalingEnabled(
+            style.accessibility.isFontScalingEnabled,
+            for: bottomLabel
+        )
 
         buttonBar.buttonTapped = { [weak self] in
             self?.callButtonTapped?($0)
@@ -166,8 +185,8 @@ class CallView: EngagementView {
             self?.adjustLocalVideoFrameAfterPanGesture(translation: $0)
         }
 
-        header.backButton.accessibilityLabel = "Back"
-        header.backButton.accessibilityHint = "Activates minimize."
+        header.backButton.accessibilityLabel = style.header.backButton.accessibility.label
+        header.backButton.accessibilityHint = style.header.backButton.accessibility.hint
     }
 
     func switchTo(_ mode: Mode) {
@@ -199,6 +218,10 @@ class CallView: EngagementView {
 
     func setConnectState(_ state: ConnectView.State, animated: Bool) {
         connectView.setState(state, animated: animated)
+
+        if isVisitrOnHold {
+            connectView.statusView.setSecondText(style.onHoldStyle.onHoldText, animated: false)
+        }
     }
 
     func willRotate(to orientation: UIInterfaceOrientation, duration: TimeInterval) {
@@ -252,7 +275,13 @@ class CallView: EngagementView {
 
         addSubview(connectView)
         connectView.autoPinEdge(.top, to: .bottom, of: header)
+        connectView.autoPinEdge(toSuperviewMargin: .left, relation: .greaterThanOrEqual)
+        connectView.autoPinEdge(toSuperviewMargin: .right, relation: .greaterThanOrEqual)
         connectView.autoAlignAxis(toSuperviewAxis: .vertical)
+
+        NSLayoutConstraint.autoSetPriority(.defaultHigh) {
+            connectView.operatorView.autoSetDimension(.height, toSize: 120)
+        }
 
         addSubview(topStackView)
         topStackView.autoPinEdge(.top, to: .bottom, of: header, withOffset: 50)
@@ -264,9 +293,21 @@ class CallView: EngagementView {
         buttonBar.autoPinEdge(toSuperviewEdge: .right)
 
         addSubview(bottomLabel)
+        bottomLabel.adjustsFontSizeToFitWidth = true
+        bottomLabel.setContentCompressionResistancePriority(
+            .fittingSizeLevel,
+            for: .vertical
+        )
         bottomLabel.autoPinEdge(.bottom, to: .top, of: buttonBar, withOffset: -38)
         bottomLabel.autoMatch(.width, to: .width, of: self, withMultiplier: 0.6)
         bottomLabel.autoAlignAxis(toSuperviewAxis: .vertical)
+        bottomLabel.autoPinEdge(
+            .top,
+            to: .bottom,
+            of: connectView,
+            withOffset: 10,
+            relation: .greaterThanOrEqual
+        )
 
         addSubview(localVideoView)
 
@@ -427,5 +468,6 @@ extension CallView {
         var gcd: GCD
         var imageViewCache: ImageView.Cache
         var timerProviding: FoundationBased.Timer.Providing
+        var uiApplication: UIKitBased.UIApplication
     }
 }

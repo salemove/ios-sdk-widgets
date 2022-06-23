@@ -29,6 +29,9 @@ public class ChatFileDownloadStyle: ChatFileContentStyle {
     /// Border color of the view.
     public var borderColor: UIColor
 
+    /// Accessibility related properties for downloaded file states.
+    public var stateAccessibility: StateAccessibility
+
     ///
     /// - Parameters:
     ///   - filePreview: Style of the file preview.
@@ -41,6 +44,8 @@ public class ChatFileDownloadStyle: ChatFileContentStyle {
     ///   - progressBackgroundColor: Background color of the upload progress bar.
     ///   - backgroundColor: Background color of the view.
     ///   - borderColor: Border color of the view.
+    ///   - accessibility: Accessibility related roperties for ChatFileContentStyle.
+    ///   - downloadAccessibility: Accessibility related properties for downloaded file.
     ///
     public init(
         filePreview: FilePreviewStyle,
@@ -52,7 +57,9 @@ public class ChatFileDownloadStyle: ChatFileContentStyle {
         errorProgressColor: UIColor,
         progressBackgroundColor: UIColor,
         backgroundColor: UIColor,
-        borderColor: UIColor
+        borderColor: UIColor,
+        accessibility: Accessibility = .unsupported,
+        downloadAccessibility: StateAccessibility = .unsupported
     ) {
         self.filePreview = filePreview
         self.download = download
@@ -63,7 +70,11 @@ public class ChatFileDownloadStyle: ChatFileContentStyle {
         self.errorProgressColor = errorProgressColor
         self.progressBackgroundColor = progressBackgroundColor
         self.borderColor = borderColor
-        super.init(backgroundColor: backgroundColor)
+        self.stateAccessibility = downloadAccessibility
+        super.init(
+            backgroundColor: backgroundColor,
+            accessibility: accessibility
+        )
     }
 }
 

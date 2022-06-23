@@ -8,6 +8,9 @@ public struct ConnectOperatorStyle {
     /// Color of the animated concentric circles extending from the operator's image.
     public var animationColor: UIColor
 
+	/// Accessibility related properties.
+    public var accessibility: Accessibility
+
     /// Style of the visitor on hold overlay view.
     public var onHoldOverlay: OnHoldOverlayStyle
 
@@ -16,14 +19,17 @@ public struct ConnectOperatorStyle {
     ///   - operatorImage: Style of the operator's image.
     ///   - animationColor: Color of the animated concentric circles extending from the operator's image.
     ///   - onHoldOverlay: Style of the visitor on hold overlay view.
+    ///   - accessibility: Accessibility related properties.
     ///
     public init(
         operatorImage: UserImageStyle,
         animationColor: UIColor,
-        onHoldOverlay: OnHoldOverlayStyle = .engagement
+        onHoldOverlay: OnHoldOverlayStyle = .engagement,
+        accessibility: Accessibility = .unsupported
     ) {
         self.operatorImage = operatorImage
         self.animationColor = animationColor
         self.onHoldOverlay = onHoldOverlay
+        self.accessibility = accessibility
     }
 }

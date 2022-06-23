@@ -29,6 +29,9 @@ public class FileUploadStyle {
     /// Color of the remove button image.
     public var removeButtonColor: UIColor
 
+    /// Accessibility related properties.
+    public var accessibility: Accessibility
+
     ///
     /// - Parameters:
     ///   - filePreview: Style of the file preview.
@@ -40,7 +43,7 @@ public class FileUploadStyle {
     ///   - progressBackgroundColor: Background color of the upload progress bar.
     ///   - removeButtonImage: Image of the remove button.
     ///   - removeButtonColor: Color of the remove button image.
-    ///
+    ///   - accessibility: Accessibility related properties.
     public init(
         filePreview: FilePreviewStyle,
         uploading: FileUploadStateStyle,
@@ -50,7 +53,8 @@ public class FileUploadStyle {
         errorProgressColor: UIColor,
         progressBackgroundColor: UIColor,
         removeButtonImage: UIImage,
-        removeButtonColor: UIColor
+        removeButtonColor: UIColor,
+        accessibility: Accessibility = .unsupported
     ) {
         self.filePreview = filePreview
         self.uploading = uploading
@@ -61,6 +65,7 @@ public class FileUploadStyle {
         self.progressBackgroundColor = progressBackgroundColor
         self.removeButtonImage = removeButtonImage
         self.removeButtonColor = removeButtonColor
+        self.accessibility = accessibility
     }
 }
 
@@ -173,3 +178,51 @@ public class FileUploadErrorStateStyle {
         self.infoGenericError = infoGenericError
     }
 }
+
+#if DEBUG
+extension FileUploadStyle {
+    static var mock: FileUploadStyle {
+        FileUploadStyle(
+            filePreview: .mock,
+            uploading: .mock,
+            uploaded: .mock,
+            error: .mock,
+            progressColor: .clear,
+            errorProgressColor: .clear,
+            progressBackgroundColor: .clear,
+            removeButtonImage: UIImage(),
+            removeButtonColor: .clear,
+            accessibility: .unsupported
+        )
+    }
+}
+
+extension FileUploadStateStyle {
+    static var mock: FileUploadStateStyle {
+        FileUploadStateStyle(
+            text: "",
+            font: .systemFont(ofSize: 10),
+            textColor: .clear,
+            infoFont: .systemFont(ofSize: 10),
+            infoColor: .clear
+        )
+    }
+}
+
+extension FileUploadErrorStateStyle {
+    static var mock: FileUploadErrorStateStyle {
+        FileUploadErrorStateStyle(
+            text: "",
+            font: .systemFont(ofSize: 10),
+            textColor: .clear,
+            infoFont: .systemFont(ofSize: 10),
+            infoColor: .clear,
+            infoFileTooBig: "",
+            infoUnsupportedFileType: "",
+            infoSafetyCheckFailed: "",
+            infoNetworkError: "",
+            infoGenericError: ""
+        )
+    }
+}
+#endif

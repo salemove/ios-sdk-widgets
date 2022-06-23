@@ -8,3 +8,19 @@ extension UIKitBased.UIImage {
         }
     )
 }
+
+extension UIKitBased.UIApplication {
+    static let failing = Self(
+        open: { _ in
+            fail("\(Self.self).open")
+        },
+        canOpenURL: { _ in
+            fail("\(Self.self).canOpenURL")
+            return false
+        },
+        preferredContentSizeCategory: {
+            fail("\(Self.self).preferredContentSizeCategory")
+            return .unspecified
+        }
+    )
+}

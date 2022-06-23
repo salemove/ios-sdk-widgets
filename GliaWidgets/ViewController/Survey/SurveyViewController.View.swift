@@ -111,28 +111,34 @@ extension Survey {
         }
 
         func updateUi(theme: Theme) {
-            header.font = .systemFont(ofSize: theme.survey.title.fontSize)
+            header.font = theme.survey.title.font
             header.textColor = .init(hex: theme.survey.title.color)
+            header.textAlignment = theme.survey.title.alignment
             if let hex = theme.survey.layer.background {
                 scrollView.backgroundColor = .init(hex: hex)
                 buttonContainer.backgroundColor = .init(hex: hex)
             }
             scrollView.layer.cornerRadius = theme.survey.layer.cornerRadius
-            cancelButton.backgroundColor = .init(hex: theme.survey.cancellButton.background)
-            cancelButton.layer.cornerRadius = theme.survey.cancellButton.cornerRadius
-            cancelButton.titleLabel?.font = .systemFont(
-                ofSize: theme.survey.cancellButton.title.fontSize,
-                weight: .init(rawValue: theme.survey.cancellButton.title.fontWeight)
-            )
-            cancelButton.setTitleColor(.init(hex: theme.survey.cancellButton.title.color), for: .normal)
 
-            submitButton.backgroundColor = .init(hex: theme.survey.submitButton.background)
-            submitButton.layer.cornerRadius = theme.survey.submitButton.cornerRadius
-            submitButton.titleLabel?.font = .systemFont(
-                ofSize: theme.survey.submitButton.title.fontSize,
-                weight: .init(theme.survey.submitButton.title.fontWeight)
+            cancelButton.update(with: theme.survey.cancellButton)
+            submitButton.update(with: theme.survey.submitButton)
+            cancelButton.accessibilityLabel = theme.survey.cancellButton.accessibility.label
+            submitButton.accessibilityLabel = theme.survey.submitButton.accessibility.label
+
+            header.accessibilityTraits = .header
+
+            setFontScalingEnabled(
+                theme.survey.accessibility.isFontScalingEnabled,
+                for: header
             )
-            submitButton.setTitleColor(.init(hex: theme.survey.submitButton.title.color), for: .normal)
+            setFontScalingEnabled(
+                theme.survey.accessibility.isFontScalingEnabled,
+                for: cancelButton
+            )
+            setFontScalingEnabled(
+                theme.survey.accessibility.isFontScalingEnabled,
+                for: submitButton
+            )
         }
 
         // MARK: - Private
@@ -144,8 +150,7 @@ extension Survey {
 extension NSAttributedString {
     static func withRequiredSymbol(
         foregroundColor: UIColor,
-        fontSize: CGFloat,
-        fontWeight: CGFloat,
+        font: UIFont,
         isRequired: Bool,
         text: String
     ) -> NSAttributedString {
@@ -153,12 +158,42 @@ extension NSAttributedString {
             string: text,
             attributes: [
                 .foregroundColor: foregroundColor,
-                    .font: UIFont.systemFont(ofSize: fontSize, weight: .init(fontWeight))
+                .font: font
             ]
         )
         if isRequired {
-            mutableString.append(.init(string: " *", attributes: [.foregroundColor: UIColor.red]))
+            mutableString.append(
+                .init(
+                    string: L10n.Survey.Question.Title.asterisk,
+                    attributes: [
+                        .foregroundColor: UIColor.red,
+                        .font: font
+                    ]
+                )
+            )
         }
         return mutableString
+    }
+}
+
+extension UIButton {
+    func update(with style: Theme.Button) {
+        style.background.map { backgroundColor = UIColor(hex: $0) }
+        contentEdgeInsets = .init(top: 6, left: 16, bottom: 6, right: 16)
+        clipsToBounds = true
+        layer.masksToBounds = false
+        layer.cornerRadius = style.cornerRadius
+
+        style.borderColor.map { layer.borderColor = UIColor(hex: $0).cgColor }
+        layer.borderWidth = style.borderWidth
+
+        layer.shadowColor = UIColor(hex: style.shadow.color).cgColor
+        layer.shadowOffset = style.shadow.offset
+        layer.shadowOpacity = style.shadow.opacity
+        layer.shadowRadius = style.shadow.radius
+
+        titleLabel?.font = style.title.font
+        setTitleColor(.init(hex: style.title.color), for: .normal)
+        titleLabel?.textAlignment = .center
     }
 }
