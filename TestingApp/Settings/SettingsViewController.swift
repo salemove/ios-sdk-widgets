@@ -9,8 +9,6 @@ private struct Section {
 class SettingsViewController: UIViewController {
     private let tableView = UITableView(frame: .zero, style: .grouped)
     private var sections = [Section]()
-    private var authorizationMethodCell: SettingsSegmentedCell!
-    private var appTokenCell: SettingsTextCell!
     private var siteApiKeyIdCell: SettingsTextCell!
     private var siteApiKeySecretCell: SettingsTextCell!
     private var siteCell: SettingsTextCell!
@@ -70,27 +68,24 @@ class SettingsViewController: UIViewController {
         updateConfigurationSection()
     }
 
+    @objc
+    func authMethodDidChange(sender: UISegmentedControl) {
+        updateConfigurationSection()
+        tableView.reloadData()
+    }
+
+    @objc
+    private func doneTapped() {
+        saveConf()
+        theme = makeTheme()
+        dismiss(animated: true, completion: nil)
+    }
+}
+
+// MARK: - Private
+private extension SettingsViewController {
     // swiftlint:disable function_body_length
     private func createCells() {
-        authorizationMethodCell = SettingsSegmentedCell(
-            title: "Site authorization method",
-            items: "app-token", "site-api-key"
-        )
-        authorizationMethodCell.segmentedControl.addTarget(
-            self,
-            action: #selector(authMethodDidChange(sender:)),
-            for: .valueChanged
-        )
-        switch conf.authorizationMethod {
-        case .appToken:
-            authorizationMethodCell.segmentedControl.selectedSegmentIndex = 0
-        case .siteApiKey:
-            authorizationMethodCell.segmentedControl.selectedSegmentIndex = 1
-        }
-        appTokenCell = SettingsTextCell(
-            title: "App token:",
-            text: conf.appToken
-        )
         siteApiKeyIdCell = SettingsTextCell(
             title: "Identifier:",
             text: conf.siteApiKeyId
@@ -164,7 +159,7 @@ class SettingsViewController: UIViewController {
         mediumSubtitle2FontCell = SettingsFontCell(title: "Medium subtitle2",
                                                    defaultFont: theme.font.mediumSubtitle2)
         captionFontCell = SettingsFontCell(title: "Caption",
-                                            defaultFont: theme.font.caption)
+                                           defaultFont: theme.font.caption)
         buttonLabelFontCell = SettingsFontCell(title: "Button label",
                                                defaultFont: theme.font.buttonLabel)
         var fontCells = [SettingsCell]()
@@ -189,27 +184,14 @@ class SettingsViewController: UIViewController {
         tableView.reloadData()
     }
 
-    @objc
-    func authMethodDidChange(sender: UISegmentedControl) {
-        updateConfigurationSection()
-        tableView.reloadData()
-    }
-
     private func updateConfigurationSection() {
-        var cells = [SettingsCell]()
-        cells.append(authorizationMethodCell)
-        switch authorizationMethodCell.segmentedControl.selectedSegmentIndex {
-        case 0:
-            cells.append(appTokenCell)
-        case 1:
-            cells.append(siteApiKeyIdCell)
-            cells.append(siteApiKeySecretCell)
-        default:
-            break
-        }
-        cells.append(siteCell)
-        cells.append(queueIDCell)
-        cells.append(visitorContextAssedIdCell)
+        let cells: [SettingsCell] = [
+            siteApiKeyIdCell,
+            siteApiKeySecretCell,
+            siteCell,
+            queueIDCell,
+            visitorContextAssedIdCell
+        ]
         configurationSection = Section(
             title: "Glia configuration",
             cells: cells
@@ -218,8 +200,6 @@ class SettingsViewController: UIViewController {
     }
 
     private func loadConf() -> Configuration {
-        let authorizationMethod = UserDefaults.standard.integer(forKey: "conf.authorizationMethod")
-        let appToken = UserDefaults.standard.string(forKey: "conf.appToken") ?? ""
         let siteApiKeyId = UserDefaults.standard.string(forKey: "conf.siteApiKeyId") ?? ""
         let siteApiKeySecret = UserDefaults.standard.string(forKey: "conf.siteApiKeySecret") ?? ""
         let site = UserDefaults.standard.string(forKey: "conf.site") ?? ""
@@ -227,7 +207,10 @@ class SettingsViewController: UIViewController {
         let visitorContext = UUID(uuidString: visitorAssetId)
             .map(Configuration.VisitorContext.init(assetId:))
         return Configuration(
-            authorizationMethod: authorizationMethod == 0 ? .appToken(appToken) : .siteApiKey(id: siteApiKeyId, secret: siteApiKeySecret),
+            authorizationMethod: .siteApiKey(
+                id: siteApiKeyId,
+                secret: siteApiKeySecret
+            ),
             environment: .beta,
             site: site,
             visitorContext: visitorContext
@@ -252,11 +235,6 @@ class SettingsViewController: UIViewController {
     }
 
     private func saveConf() {
-        UserDefaults.standard.setValue(
-            authorizationMethodCell.segmentedControl.selectedSegmentIndex,
-            forKey: "conf.authorizationMethod"
-        )
-        UserDefaults.standard.setValue(appTokenCell.textField.text ?? "", forKey: "conf.appToken")
         UserDefaults.standard.setValue(siteApiKeyIdCell.textField.text ?? "", forKey: "conf.siteApiKeyId")
         UserDefaults.standard.setValue(siteApiKeySecretCell.textField.text ?? "", forKey: "conf.siteApiKeySecret")
         UserDefaults.standard.setValue(siteCell.textField.text ?? "", forKey: "conf.site")
@@ -294,12 +272,6 @@ class SettingsViewController: UIViewController {
 
         return Theme(colorStyle: colorStyle,
                      fontStyle: fontStyle)
-    }
-
-    @objc private func doneTapped() {
-        saveConf()
-        theme = makeTheme()
-        dismiss(animated: true, completion: nil)
     }
 }
 
