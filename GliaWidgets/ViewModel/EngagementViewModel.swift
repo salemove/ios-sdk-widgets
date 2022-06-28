@@ -83,9 +83,7 @@ class EngagementViewModel {
         }
     }
 
-    func start() {
-        update(for: interactor.state)
-    }
+    func start() {}
 
     func enqueue(mediaType: CoreSdkClient.MediaType) {
         interactor.enqueueForEngagement(

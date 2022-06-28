@@ -4,7 +4,8 @@ extension GCD {
     static let failing = Self(
         mainQueue: .init(
             async: { _ in fail("\(Self.self).mainQueue.async") },
-            asyncAfterDeadline: { _, _ in fail("\(Self.self).mainQueue.asyncAfter") }
+            asyncIfNeeded: { _ in fail("\(Self.self).mainQueue.asyncIfNeeded") },
+            asyncAfterDeadline: { _, _ in fail("\(Self.self).globalQueue.asyncAfter") }
         ),
         globalQueue: .init(
             async: { _ in fail("\(Self.self).globalQueue.async") },

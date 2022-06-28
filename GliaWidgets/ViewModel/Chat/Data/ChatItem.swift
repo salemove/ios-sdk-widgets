@@ -1,15 +1,6 @@
 import Foundation
 
 class ChatItem {
-    enum Kind {
-        case queueOperator
-        case outgoingMessage(OutgoingMessage)
-        case visitorMessage(ChatMessage, status: String?)
-        case operatorMessage(ChatMessage, showsImage: Bool, imageUrl: String?)
-        case choiceCard(ChatMessage, showsImage: Bool, imageUrl: String?, isActive: Bool)
-        case callUpgrade(ObservableValue<CallKind>, duration: ObservableValue<Int>)
-    }
-
     var isOperatorMessage: Bool {
         switch kind {
         case .operatorMessage, .choiceCard:
@@ -40,5 +31,18 @@ class ChatItem {
         case .omniguide, .system, .unknown:
             return nil
         }
+    }
+}
+
+extension ChatItem {
+    enum Kind {
+        case queueOperator
+        case outgoingMessage(OutgoingMessage)
+        case visitorMessage(ChatMessage, status: String?)
+        case operatorMessage(ChatMessage, showsImage: Bool, imageUrl: String?)
+        case choiceCard(ChatMessage, showsImage: Bool, imageUrl: String?, isActive: Bool)
+        case callUpgrade(ObservableValue<CallKind>, duration: ObservableValue<Int>)
+        case operatorConnected(name: String?, imageUrl: String?)
+        case transferring
     }
 }

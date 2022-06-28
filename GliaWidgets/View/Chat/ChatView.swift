@@ -385,6 +385,36 @@ extension ChatView {
                 self.tableView.reloadData()
             }
             return .callUpgrade(view)
+        case .operatorConnected(let name, let imageUrl):
+            let connectView = ConnectView(
+                with: style.connect,
+                environment: .init(
+                    data: environment.data,
+                    uuid: environment.uuid,
+                    gcd: environment.gcd,
+                    imageViewCache: environment.imageViewCache,
+                    timerProviding: environment.timerProviding)
+            )
+            connectView.setState(
+                .connected(name: name, imageUrl: imageUrl),
+                animated: false
+            )
+            return .queueOperator(connectView)
+        case .transferring:
+            let connectView = ConnectView(
+                with: style.connect,
+                environment: .init(
+                    data: environment.data,
+                    uuid: environment.uuid,
+                    gcd: environment.gcd,
+                    imageViewCache: environment.imageViewCache,
+                    timerProviding: environment.timerProviding)
+            )
+            connectView.setState(
+                .transferring,
+                animated: false
+            )
+            return .queueOperator(connectView)
         }
     }
     // swiftlint:enable function_body_length
@@ -418,6 +448,12 @@ extension ChatView {
 // MARK: Call Bubble
 
 extension ChatView {
+    func setCallBubbleImage(with imageUrl: String?) {
+        guard let callBubble = callBubble else { return }
+
+        callBubble.kind = .userImage(url: imageUrl)
+    }
+
     func showCallBubble(with imageUrl: String?, animated: Bool) {
         guard callBubble == nil else { return }
         let callBubble = BubbleView(
