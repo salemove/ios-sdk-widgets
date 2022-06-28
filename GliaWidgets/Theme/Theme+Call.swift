@@ -58,7 +58,8 @@ extension Theme {
             placeholderImage: Asset.operatorPlaceholder.image,
             placeholderColor: color.baseLight,
             placeholderBackgroundColor: color.primary,
-            imageBackgroundColor: .clear
+            imageBackgroundColor: .clear,
+            transferringImage: Asset.operatorTransferring.image
         )
         let queueOperator = ConnectOperatorStyle(
             operatorImage: operatorImage,
@@ -121,11 +122,20 @@ extension Theme {
                 isFontScalingEnabled: true
             )
         )
+        let transferring = ConnectStatusStyle(
+            firstText: Call.Connect.Transferring.firstText,
+            firstTextFont: font.header1,
+            firstTextFontColor: color.baseLight,
+            secondText: nil,
+            secondTextFont: font.subtitle,
+            secondTextFontColor: color.baseLight
+        )
         let connect = ConnectStyle(
             queueOperator: queueOperator,
             queue: queue,
             connecting: connecting,
             connected: connected,
+            transferring: transferring,
             onHold: onHold
         )
         let onHoldStyle = CallStyle.OnHoldStyle(

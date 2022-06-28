@@ -56,7 +56,8 @@ extension Theme {
             placeholderImage: Asset.operatorPlaceholder.image,
             placeholderColor: color.baseLight,
             placeholderBackgroundColor: color.primary,
-            imageBackgroundColor: .clear
+            imageBackgroundColor: .clear,
+            transferringImage: Asset.operatorTransferring.image
         )
         let queueOperator = ConnectOperatorStyle(
             operatorImage: operatorImage,
@@ -119,11 +120,20 @@ extension Theme {
                 isFontScalingEnabled: true
             )
         )
+        let transferring = ConnectStatusStyle(
+            firstText: Chat.Connect.Transferring.firstText,
+            firstTextFont: font.header1,
+            firstTextFontColor: color.baseDark,
+            secondText: nil,
+            secondTextFont: font.subtitle,
+            secondTextFontColor: color.primary
+        )
         let connect = ConnectStyle(
             queueOperator: queueOperator,
             queue: queue,
             connecting: connecting,
             connected: connected,
+            transferring: transferring,
             onHold: onHold
         )
         let visitorText = ChatTextContentStyle(
@@ -291,7 +301,8 @@ extension Theme {
             placeholderImage: Asset.operatorPlaceholder.image,
             placeholderColor: color.baseLight,
             placeholderBackgroundColor: color.primary,
-            imageBackgroundColor: .clear
+            imageBackgroundColor: .clear,
+            transferringImage: Asset.operatorTransferring.image
         )
         let callBubble = BubbleStyle(
             userImage: userImage,
@@ -308,6 +319,7 @@ extension Theme {
             placeholderColor: color.baseLight,
             placeholderBackgroundColor: color.primary,
             imageBackgroundColor: .clear,
+            transferringImage: Asset.operatorTransferring.image,
             accessibility: .init(label: Accessibility.Message.UnreadMessagesIndicator.label)
         )
         return ChatStyle(

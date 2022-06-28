@@ -71,7 +71,9 @@ class CallViewModel: EngagementViewModel, ViewModel {
 
     override func start() {
         super.start()
+
         update(for: call.kind.value)
+        update(for: interactor.state)
 
         switch startWith {
         case .engagement(let mediaType):
@@ -91,9 +93,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
         case .enqueueing:
             action?(.queue)
         case .engaged:
-            if case .engagement = startWith {
-                showConnecting()
-            }
+            showConnecting()
 
             let operatorName = Strings.Operator.name.withOperatorName(
                 interactor.engagedOperator?.firstName
@@ -256,9 +256,19 @@ class CallViewModel: EngagementViewModel, ViewModel {
             handleVideoStreamError(error)
         case .upgradeOffer(let offer, answer: let answer):
             offerMediaUpgrade(offer, answer: answer)
+        case .engagementTransferring:
+            onEngagementTransferring()
         default:
             break
         }
+    }
+}
+
+extension CallViewModel {
+    private func onEngagementTransferring() {
+        call.transfer()
+        durationCounter.stop()
+        action?(.transferring)
     }
 }
 
@@ -353,7 +363,7 @@ extension CallViewModel {
                 guard self.call.state.value == .started else { return }
                 self.call.duration.value = duration
             }
-        case .upgrading:
+        case .connecting:
             action?(.switchToUpgradeMode)
             showConnecting()
         case .ended:
@@ -503,6 +513,7 @@ extension CallViewModel {
         case queue
         case connecting(name: String?, imageUrl: String?)
         case connected(name: String?, imageUrl: String?)
+        case transferring
         case setOperatorName(String?)
         case setTopTextHidden(Bool)
         case setBottomTextHidden(Bool)
