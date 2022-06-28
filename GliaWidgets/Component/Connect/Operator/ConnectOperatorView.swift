@@ -118,8 +118,8 @@ class ConnectOperatorView: UIView {
     private func setup() {
         isAccessibilityElement = true
         accessibilityTraits = .image
-        accessibilityLabel = "Avatar"
-        accessibilityHint = "Displays operator avatar or placeholder."
+        accessibilityLabel = style.accessibility.label
+        accessibilityHint = style.accessibility.hint
     }
 
     private func layout() {

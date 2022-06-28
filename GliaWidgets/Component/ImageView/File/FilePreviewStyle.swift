@@ -22,6 +22,9 @@ public class FilePreviewStyle {
     /// Background color of the view in the error state.
     public var errorBackgroundColor: UIColor
 
+    /// Accessiblity properties for CallStyle.
+    public var accessibility: Accessibility
+
     ///
     /// - Parameters:
     ///   - fileFont: Font of the file extension label text.
@@ -30,6 +33,7 @@ public class FilePreviewStyle {
     ///   - errorIconColor: Color of the error icon.
     ///   - backgroundColor: Background color of the view.
     ///   - errorBackgroundColor: Background color of the view in the error state.
+    ///   - accessibility: Accessiblity properties for CallStyle.
     ///
     public init(
         fileFont: UIFont,
@@ -37,7 +41,8 @@ public class FilePreviewStyle {
         errorIcon: UIImage,
         errorIconColor: UIColor,
         backgroundColor: UIColor,
-        errorBackgroundColor: UIColor
+        errorBackgroundColor: UIColor,
+        accessibility: Accessibility = .unsupported
     ) {
         self.fileFont = fileFont
         self.fileColor = fileColor
@@ -45,5 +50,22 @@ public class FilePreviewStyle {
         self.errorIconColor = errorIconColor
         self.backgroundColor = backgroundColor
         self.errorBackgroundColor = errorBackgroundColor
+        self.accessibility = accessibility
     }
 }
+
+#if DEBUG
+extension FilePreviewStyle {
+    static var mock: FilePreviewStyle {
+        FilePreviewStyle(
+            fileFont: .systemFont(ofSize: 10),
+            fileColor: .clear,
+            errorIcon: UIImage(),
+            errorIconColor: .clear,
+            backgroundColor: .clear,
+            errorBackgroundColor: .clear,
+            accessibility: .unsupported
+        )
+    }
+}
+#endif

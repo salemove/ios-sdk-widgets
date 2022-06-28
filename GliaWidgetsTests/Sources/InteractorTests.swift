@@ -11,7 +11,7 @@ class InteractorTests: XCTestCase {
             region: .us,
             authorizingMethod: .appToken("mocked-app-token")
         ),
-        visitorContext: CoreSdkClient.VisitorContext(type: .page, url: "www.glia.com")
+        visitorContext: CoreSdkClient.VisitorContext.mock
     )
 
     var interactor: Interactor!

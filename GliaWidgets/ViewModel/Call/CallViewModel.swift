@@ -9,6 +9,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
     private let call: Call
     private let startWith: StartAction
     private let durationCounter: CallDurationCounter
+    private let unreadMessages: ObservableValue<Int>
 
     init(
         interactor: Interactor,
@@ -27,6 +28,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
                 date: environment.date
             )
         )
+        self.unreadMessages = unreadMessages
         super.init(
             interactor: interactor,
             alertConfiguration: alertConfiguration,
@@ -418,6 +420,9 @@ extension CallViewModel {
 
     private func updateChatButton() {
         let enabled = interactor.isEngaged
+        let unreadMessagesCount = unreadMessages.value
+
+        action?(.setButtonBadge(.chat, itemCount: unreadMessagesCount))
         action?(.setButtonEnabled(.chat, enabled: enabled))
     }
 

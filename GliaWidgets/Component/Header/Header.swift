@@ -44,10 +44,7 @@ class Header: UIView {
         self.style = style
         self.backButton = HeaderButton(with: style.backButton)
         self.closeButton = HeaderButton(with: style.closeButton)
-        self.closeButton.accessibilityLabel = "Close"
-        self.closeButton.accessibilityHint = "Leaves queue."
         self.endButton = ActionButton(with: style.endButton)
-        self.endButton.accessibilityHint = "Completes engagement."
         self.endScreenShareButton = HeaderButton(with: style.endScreenShareButton)
         super.init(frame: .zero)
         self.titleLabel.accessibilityTraits = .header
@@ -99,6 +96,13 @@ class Header: UIView {
         rightItemContainer.axis = .horizontal
         rightItemContainer.spacing = 8
         rightItemContainer.alignment = .center
+
+        closeButton.accessibilityLabel = style.closeButton.accessibility.label
+        endButton.accessibilityLabel = style.endButton.accessibility.label
+        setFontScalingEnabled(
+            style.accessibility.isFontScalingEnabled,
+            for: titleLabel
+        )
     }
 
     private func layout() {

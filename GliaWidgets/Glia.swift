@@ -60,7 +60,7 @@ public class Glia {
     public func configure(
         with configuration: Configuration,
         queueId: String,
-        visitorContext: VisitorContext
+        visitorContext: VisitorContext?
     ) throws {
 
         let sdkConfiguration = try Salemove.Configuration(
@@ -119,7 +119,8 @@ public class Glia {
                 uuid: environment.uuid,
                 gcd: environment.gcd,
                 imageViewCache: environment.imageViewCache,
-                timerProviding: environment.timerProviding
+                timerProviding: environment.timerProviding,
+                uiApplication: environment.uiApplication
             )
         )
         startRootCoordinator(
@@ -153,7 +154,7 @@ public class Glia {
         _ engagementKind: EngagementKind,
         configuration: Configuration,
         queueID: String,
-        visitorContext: VisitorContext,
+        visitorContext: VisitorContext?,
         theme: Theme = Theme(),
         features: Features = .all,
         sceneProvider: SceneProvider? = nil

@@ -10,6 +10,9 @@ public struct UnreadMessageIndicatorStyle {
     /// Style of the operator's image that appears in the indicator's main frame.
     public var userImage: UserImageStyle
 
+    /// Accessibility related properties.
+    public var accessibility: Accessibility
+
     ///
     /// - Parameters:
     ///   - badgeFont: Font of the text that appears on the badge that indicates the number of unread messages.
@@ -19,6 +22,8 @@ public struct UnreadMessageIndicatorStyle {
     ///   - placeholderColor: Color of the placeholder's image if the operator has no picture set.
     ///   - placeholderBackgroundColor: Background color of the placeholder's image if the operator has no picture set.
     ///   - imageBackgroundColor: Background color of the operator's image. Visible when the operator's image contains transparent parts.
+    ///   - imageBackgroundColor: Background olor of the operator's image. Visible when the operator's image contains transparent parts.
+    ///   - accessibility: Accessibility related properties.
     public init(
         badgeFont: UIFont,
         badgeTextColor: UIColor,
@@ -27,7 +32,8 @@ public struct UnreadMessageIndicatorStyle {
         placeholderColor: UIColor,
         placeholderBackgroundColor: UIColor,
         imageBackgroundColor: UIColor,
-        transferringImage: UIImage
+        transferringImage: UIImage,
+        accessibility: Accessibility = .unsupported
     ) {
         self.badge = BadgeStyle(
             font: badgeFont,
@@ -41,5 +47,6 @@ public struct UnreadMessageIndicatorStyle {
             imageBackgroundColor: imageBackgroundColor,
             transferringImage: transferringImage
         )
+        self.accessibility = accessibility
     }
 }

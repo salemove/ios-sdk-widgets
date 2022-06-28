@@ -8,6 +8,9 @@ public final class ChoiceCardStyle: OperatorChatMessageStyle {
     /// Styles of the choice card's answer options.
     public var choiceOption: ChoiceCardOptionStyle
 
+    /// Accessibility related properties.
+    public var accessibility: Accessibility
+
     ///
     /// - Parameters:
     ///   - mainText: Style of the choice card's main text.
@@ -16,16 +19,19 @@ public final class ChoiceCardStyle: OperatorChatMessageStyle {
     ///   - fileDownload: Style of a choice card's attached files.
     ///   - operatorImage: Style of the operator's image to the left of a choice card.
     ///   - choiceOption: Styles of the choice card's answer options.
+    ///   - accessibility: Accessibility related properties.
     public init(
         mainText: ChatTextContentStyle,
         frameColor: UIColor,
         imageFile: ChatImageFileContentStyle,
         fileDownload: ChatFileDownloadStyle,
         operatorImage: UserImageStyle,
-        choiceOption: ChoiceCardOptionStyle
+        choiceOption: ChoiceCardOptionStyle,
+        accessibility: Accessibility
     ) {
         self.frameColor = frameColor
         self.choiceOption = choiceOption
+        self.accessibility = accessibility
         super.init(
             text: mainText,
             imageFile: imageFile,

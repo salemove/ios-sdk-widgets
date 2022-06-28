@@ -15,6 +15,7 @@ class SettingsViewController: UIViewController {
     private var siteApiKeySecretCell: SettingsTextCell!
     private var siteCell: SettingsTextCell!
     private var queueIDCell: SettingsTextCell!
+    private var visitorContextAssedIdCell: SettingsTextCell!
     private var bubbleFeatureCell: SettingsSwitchCell!
     private var primaryColorCell: SettingsColorCell!
     private var secondaryColorCell: SettingsColorCell!
@@ -29,7 +30,8 @@ class SettingsViewController: UIViewController {
     private var header3FontCell: SettingsFontCell!
     private var bodyTextFontCell: SettingsFontCell!
     private var subtitleFontCell: SettingsFontCell!
-    private var mediumSubtitleFontCell: SettingsFontCell!
+    private var mediumSubtitle1FontCell: SettingsFontCell!
+    private var mediumSubtitle2FontCell: SettingsFontCell!
     private var captionFontCell: SettingsFontCell!
     private var buttonLabelFontCell: SettingsFontCell!
 
@@ -41,6 +43,7 @@ class SettingsViewController: UIViewController {
     var theme: Theme = Theme()
     var conf: Configuration { loadConf() }
     var queueID: String { loadQueueID() }
+    var visitorContextAssetId: String { loadVisitorContextAssetId() }
     var features: Features { loadFeatures() }
 
     override func viewDidLoad() {
@@ -104,7 +107,10 @@ class SettingsViewController: UIViewController {
             title: "Queue ID:",
             text: queueID
         )
-
+        visitorContextAssedIdCell = SettingsTextCell(
+            title: "Visitor Context Asset ID:",
+            text: visitorContextAssetId
+        )
         bubbleFeatureCell = SettingsSwitchCell(
             title: "Present \"Bubble\" overlay in engagement time",
             isOn: features ~= .bubbleView
@@ -153,8 +159,10 @@ class SettingsViewController: UIViewController {
                                             defaultFont: theme.font.bodyText)
         subtitleFontCell = SettingsFontCell(title: "Subtitle",
                                             defaultFont: theme.font.subtitle)
-        mediumSubtitleFontCell = SettingsFontCell(title: "Medium subtitle",
-                                                  defaultFont: theme.font.mediumSubtitle)
+        mediumSubtitle1FontCell = SettingsFontCell(title: "Medium subtitle1",
+                                                   defaultFont: theme.font.mediumSubtitle1)
+        mediumSubtitle2FontCell = SettingsFontCell(title: "Medium subtitle2",
+                                                   defaultFont: theme.font.mediumSubtitle2)
         captionFontCell = SettingsFontCell(title: "Caption",
                                             defaultFont: theme.font.caption)
         buttonLabelFontCell = SettingsFontCell(title: "Button label",
@@ -165,7 +173,8 @@ class SettingsViewController: UIViewController {
         fontCells.append(header3FontCell)
         fontCells.append(bodyTextFontCell)
         fontCells.append(subtitleFontCell)
-        fontCells.append(mediumSubtitleFontCell)
+        fontCells.append(mediumSubtitle1FontCell)
+        fontCells.append(mediumSubtitle2FontCell)
         fontCells.append(captionFontCell)
         fontCells.append(buttonLabelFontCell)
 
@@ -200,6 +209,7 @@ class SettingsViewController: UIViewController {
         }
         cells.append(siteCell)
         cells.append(queueIDCell)
+        cells.append(visitorContextAssedIdCell)
         configurationSection = Section(
             title: "Glia configuration",
             cells: cells
@@ -213,16 +223,25 @@ class SettingsViewController: UIViewController {
         let siteApiKeyId = UserDefaults.standard.string(forKey: "conf.siteApiKeyId") ?? ""
         let siteApiKeySecret = UserDefaults.standard.string(forKey: "conf.siteApiKeySecret") ?? ""
         let site = UserDefaults.standard.string(forKey: "conf.site") ?? ""
+        let visitorAssetId = loadVisitorContextAssetId()
+        let visitorContext = UUID(uuidString: visitorAssetId)
+            .map(Configuration.VisitorContext.init(assetId:))
         return Configuration(
             authorizationMethod: authorizationMethod == 0 ? .appToken(appToken) : .siteApiKey(id: siteApiKeyId, secret: siteApiKeySecret),
             environment: .beta,
-            site: site
+            site: site,
+            visitorContext: visitorContext
         )
     }
 
     private func loadQueueID() -> String {
         let queueID = UserDefaults.standard.string(forKey: "conf.queueID") ?? ""
         return queueID
+    }
+
+    private func loadVisitorContextAssetId() -> String {
+        let visitorContextAssetId = UserDefaults.standard.string(forKey: "conf.visitorContextAssetId") ?? ""
+        return visitorContextAssetId
     }
 
     private func loadFeatures() -> Features {
@@ -242,18 +261,13 @@ class SettingsViewController: UIViewController {
         UserDefaults.standard.setValue(siteApiKeySecretCell.textField.text ?? "", forKey: "conf.siteApiKeySecret")
         UserDefaults.standard.setValue(siteCell.textField.text ?? "", forKey: "conf.site")
         UserDefaults.standard.setValue(queueIDCell.textField.text ?? "", forKey: "conf.queueID")
+        UserDefaults.standard.setValue(visitorContextAssedIdCell.textField.text ?? "", forKey: "conf.visitorContextAssetId")
 
         var features = Features.all
         if !bubbleFeatureCell.switcher.isOn {
             features.remove(.bubbleView)
         }
         UserDefaults.standard.setValue(features.rawValue, forKey: "conf.features")
-    }
-
-    private func makeConf() -> Configuration {
-        return Configuration(appToken: appTokenCell.textField.text ?? "",
-                             environment: .europe,
-                             site: siteCell.textField.text ?? "")
     }
 
     private func makeTheme() -> Theme {
@@ -270,7 +284,8 @@ class SettingsViewController: UIViewController {
                              header3: header3FontCell.selectedFont,
                              bodyText: bodyTextFontCell.selectedFont,
                              subtitle: subtitleFontCell.selectedFont,
-                             mediumSubtitle: mediumSubtitleFontCell.selectedFont,
+                             mediumSubtitle1: mediumSubtitle1FontCell.selectedFont,
+                             mediumSubtitle2: mediumSubtitle2FontCell.selectedFont,
                              caption: captionFontCell.selectedFont,
                              buttonLabel: buttonLabelFontCell.selectedFont)
 

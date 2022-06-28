@@ -69,6 +69,11 @@ class ChoiceCardOptionView: UIView {
     }
 
     private func applyStyle(_ style: ChoiceCardOptionStateStyle) {
+        setFontScalingEnabled(
+            style.accessibility.isFontScalingEnabled,
+            for: textLabel
+        )
+
         UIView.transition(with: textLabel, duration: 0.2, options: .transitionCrossDissolve) {
             self.layer.backgroundColor = style.backgroundColor.cgColor
             self.textLabel.textColor = style.textColor
@@ -89,11 +94,11 @@ extension ChoiceCardOptionView {
         choiceButton.accessibilityLabel = text
         switch state {
         case .normal:
-            choiceButton.accessibilityValue = nil
+            choiceButton.accessibilityValue = style.normal.accessibility.value
         case .selected:
-            choiceButton.accessibilityValue = "Selected"
+            choiceButton.accessibilityValue = style.selected.accessibility.value
         case .disabled:
-            choiceButton.accessibilityValue = "Disabled"
+            choiceButton.accessibilityValue = style.disabled.accessibility.value
         }
     }
 }

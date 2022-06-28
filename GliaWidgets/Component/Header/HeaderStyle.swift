@@ -23,6 +23,9 @@ public struct HeaderStyle {
     /// Style of the screen sharing ending button.
     public var endScreenShareButton: HeaderButtonStyle
 
+    /// Accessibility related properties.
+    public var accessibility: Accessibility
+
     ///
     /// - Parameters:
     ///   - titleFont: Font of the title text.
@@ -32,6 +35,7 @@ public struct HeaderStyle {
     ///   - closeButton: Style of the queue closing button.
     ///   - endButton: Style of the engagement ending button.
     ///   - endScreenShareButton: Style of the screen sharing ending button.
+    ///   - accessibility: Accessibility related properties.
     ///
     public init(
         titleFont: UIFont,
@@ -40,7 +44,8 @@ public struct HeaderStyle {
         backButton: HeaderButtonStyle,
         closeButton: HeaderButtonStyle,
         endButton: ActionButtonStyle,
-        endScreenShareButton: HeaderButtonStyle
+        endScreenShareButton: HeaderButtonStyle,
+        accessibility: Accessibility = .unsupported
     ) {
         self.titleFont = titleFont
         self.titleColor = titleColor
@@ -49,5 +54,6 @@ public struct HeaderStyle {
         self.closeButton = closeButton
         self.endButton = endButton
         self.endScreenShareButton = endScreenShareButton
+        self.accessibility = accessibility
     }
 }

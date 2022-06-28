@@ -15,7 +15,7 @@ extension Survey {
         }
         let optionsStackContainer = UIView()
         let optionsStack = UIStackView.make(.horizontal, spacing: 16)()
-        let validationError = ValidationErrorView()
+        lazy var validationError = ValidationErrorView(style: style.error)
         lazy var contentStack = UIStackView.make(.vertical, spacing: 16)(
             title,
             optionsStackContainer,
@@ -71,13 +71,21 @@ extension Survey {
             default: break
             }
 
+            setFontScalingEnabled(
+                true,
+                for: title
+            )
+
             title.attributedText = .withRequiredSymbol(
                 foregroundColor: .init(hex: style.title.color),
-                fontSize: style.title.fontSize,
-                fontWeight: style.title.fontWeight,
+                font: style.title.font,
                 isRequired: props.isRequired,
                 text: props.title
             )
+
+            title.accessibilityLabel = props.title
+            title.accessibilityValue = props.accessibility.value
+
             zip(props.options, optionsStack.arrangedSubviews)
                 .forEach { option, view in
                     guard let buttonView = view as? ButtonView else { return }
@@ -104,6 +112,7 @@ extension Survey.ScaleQuestionView {
         var options: [Survey.Option<Int>]
         var selected: Survey.Option<Int>?
         var answerContainer: CoreSdkClient.SurveyAnswerContainer?
+        let accessibility: Accessibility
 
         var isValid: Bool {
             guard isRequired else { return true }
@@ -117,7 +126,8 @@ extension Survey.ScaleQuestionView {
             showValidationError: Bool = false,
             options: [Survey.Option<Int>] = [],
             selected: Survey.Option<Int>? = nil,
-            answerContainer: CoreSdkClient.SurveyAnswerContainer? = nil
+            answerContainer: CoreSdkClient.SurveyAnswerContainer? = nil,
+            accessibility: Accessibility
         ) {
             self.id = id
             self.title = title
@@ -126,6 +136,7 @@ extension Survey.ScaleQuestionView {
             self.options = options
             self.selected = selected
             self.answerContainer = answerContainer
+            self.accessibility = accessibility
         }
     }
 }

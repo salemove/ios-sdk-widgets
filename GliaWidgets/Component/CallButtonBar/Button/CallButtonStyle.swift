@@ -21,6 +21,9 @@ public struct CallButtonStyle {
 
         /// Color of the title.
         public let titleColor: UIColor
+
+        /// Accessibility related properties.
+        public let accessibility: Accessibility
     }
 
     /// Style of active (i.e. toggled "on") state.
@@ -28,4 +31,7 @@ public struct CallButtonStyle {
 
     /// Style of inactive (i.e. toggled "off") state.
     public var inactive: StateStyle
+
+    /// Accessibility related properties.
+    public var accessibility: Accessibility
 }

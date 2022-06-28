@@ -6,26 +6,28 @@ extension Theme {
     public struct Text {
         /// Foreground hex color.
         public var color: String
-        /// Font size.
-        public var fontSize: CGFloat
-        /// Font weight.
-        public var fontWeight: CGFloat
+        /// Font.
+        public var font: UIFont
+
+        /// Text aligmment.
+        public var alignment: NSTextAlignment
+
         /// Initializes `Text` style instance.
         public init(
             color: String,
-            fontSize: CGFloat,
-            fontWeight: CGFloat
+            font: UIFont,
+            alignment: NSTextAlignment = .center
         ) {
             self.color = color
-            self.fontSize = fontSize
-            self.fontWeight = fontWeight
+            self.font = font
+			self.alignment = alignment
         }
     }
 
     /// Button style.
     public struct Button {
         /// Background hex color.
-        public var background: String
+        public var background: String?
         /// Title style.
         public var title: Text
         /// Button corner radius.
@@ -34,20 +36,70 @@ extension Theme {
         public var borderWidth: CGFloat = 0
         /// Button border hex color.
         public var borderColor: String?
+        /// Button shadow.
+        public var shadow: Shadow
+        /// Accessibility related properties.
+        public var accessibility: Accessibility
+
         /// Initializes `Button` style instance.
         public init(
-            background: String,
+            background: String?,
             title: Theme.Text,
             cornerRadius: CGFloat,
             borderWidth: CGFloat = 0,
-            borderColor: String? = nil
+            borderColor: String? = nil,
+            shadow: Shadow = .standard,
+            accessibility: Accessibility = .unsupported
         ) {
             self.background = background
             self.title = title
             self.cornerRadius = cornerRadius
             self.borderWidth = borderWidth
             self.borderColor = borderColor
+            self.shadow = shadow
+            self.accessibility = accessibility
         }
+
+        public init(
+            acitonButtonStyle: ActionButtonStyle,
+            accessibility: Accessibility
+        ) {
+            self.background = acitonButtonStyle.backgroundColor == .clear ? nil : acitonButtonStyle.backgroundColor.hex
+            self.title = .init(
+                color: acitonButtonStyle.titleColor.hex,
+                font: acitonButtonStyle.titleFont
+            )
+            self.cornerRadius = acitonButtonStyle.cornerRaidus ?? 0
+            self.borderWidth = acitonButtonStyle.borderWidth ?? 0
+            self.borderColor = acitonButtonStyle.borderColor?.hex
+
+            self.shadow = .init(
+                color: acitonButtonStyle.shadowColor?.hex ?? Shadow.standard.color,
+                offset: acitonButtonStyle.shadowOffset ?? Shadow.standard.offset,
+                opacity: acitonButtonStyle.shadowOpacity ?? Shadow.standard.opacity,
+                radius: acitonButtonStyle.shadowRadius ?? Shadow.standard.radius
+            )
+            self.accessibility = accessibility
+        }
+    }
+
+    /// Shadow style.
+    public struct Shadow {
+        /// Shadow color.
+        public let color: String
+        /// Shadow offset.
+        public let offset: CGSize
+        /// Shadow opacity.
+        public let opacity: Float
+        /// Shadow radius.
+        public let radius: CGFloat
+
+        public static let standard: Shadow = .init(
+            color: "0x000000",
+            offset: .init(width: 0.0, height: 2.0),
+            opacity: 0.3,
+            radius: 2.0
+        )
     }
 
     /// Abstract layer style.
@@ -91,6 +143,8 @@ extension Theme {
         public var singleQuestion: SingleQuestion
         /// "Input" question view style.
         public var inputQuestion: InputQuestion
+        /// Accessibility related properties.
+        public var accessibility: Accessibility
         /// Initializes `SurveyStyle` instance.
         public init(
             layer: Theme.Layer,
@@ -100,7 +154,8 @@ extension Theme {
             booleanQuestion: Theme.SurveyStyle.BooleanQuestion,
             scaleQuestion: Theme.SurveyStyle.ScaleQuestion,
             singleQuestion: Theme.SurveyStyle.SingleQuestion,
-            inputQuestion: Theme.SurveyStyle.InputQuestion
+            inputQuestion: Theme.SurveyStyle.InputQuestion,
+            accessibility: Accessibility
         ) {
             self.layer = layer
             self.title = title
@@ -110,40 +165,7 @@ extension Theme {
             self.scaleQuestion = scaleQuestion
             self.singleQuestion = singleQuestion
             self.inputQuestion = inputQuestion
-        }
-    }
-}
-
-extension Theme.SurveyStyle {
-    /// Survey option button style.
-    public struct OptionButton {
-        /// Title text for normal state.
-        public var normalText: Theme.Text
-        /// Option layer for normal state.
-        public var normalLayer: Theme.Layer
-        /// Title text style when option is selected.
-        public var selectedText: Theme.Text
-        /// Layer style when option is selected.
-        public var selectedLayer: Theme.Layer
-        /// Title text style when option is highlighted.
-        public var highlightedText: Theme.Text
-        /// Layer style when option is highlighted.
-        public var highlightedLayer: Theme.Layer
-        /// Initializes `OptionButton` style instance.
-        public init(
-            normalText: Theme.Text,
-            normalLayer: Theme.Layer,
-            selectedText: Theme.Text,
-            selectedLayer: Theme.Layer,
-            highlightedText: Theme.Text,
-            highlightedLayer: Theme.Layer
-        ) {
-            self.normalText = normalText
-            self.normalLayer = normalLayer
-            self.selectedText = selectedText
-            self.selectedLayer = selectedLayer
-            self.highlightedText = highlightedText
-            self.highlightedLayer = highlightedLayer
+            self.accessibility = accessibility
         }
     }
 }
@@ -151,8 +173,11 @@ extension Theme.SurveyStyle {
 extension Theme.SurveyStyle {
     public static func `default`(
         color: ThemeColor,
-        font: ThemeFont
+        font: ThemeFont,
+        alertStyle: AlertStyle
     ) -> Self {
+
+        let font = ThemeFontStyle.default.font
 
         return .init(
             layer: .init(
@@ -162,23 +187,32 @@ extension Theme.SurveyStyle {
             ),
             title: .init(
                 color: color.baseNormal.hex,
-                fontSize: 20,
-                fontWeight: 0.3
+                font: font.header2
             ),
             submitButton: .init(
-                background: color.primary.hex,
-                title: .init(color: color.baseLight.hex, fontSize: 16, fontWeight: 0.1),
-                cornerRadius: 4
+                acitonButtonStyle: alertStyle.positiveAction,
+                accessibility: .init(label: L10n.Survey.Accessibility.Footer.SubmitButton.label)
             ),
             cancellButton: .init(
-                background: color.systemNegative.hex,
-                title: .init(color: color.baseLight.hex, fontSize: 16, fontWeight: 0.1),
-                cornerRadius: 4
+                acitonButtonStyle: alertStyle.negativeAction,
+                accessibility: .init(label: L10n.Survey.Accessibility.Footer.CancelButton.label)
             ),
             booleanQuestion: .default(color: color, font: font),
             scaleQuestion: .default(color: color, font: font),
             singleQuestion: .default(color: color, font: font),
-            inputQuestion: .default(color: color, font: font)
+            inputQuestion: .default(color: color, font: font),
+            accessibility: .init(isFontScalingEnabled: true)
         )
+    }
+}
+
+extension UIFont {
+    func weight(orDefault defaultValue: CGFloat) -> CGFloat {
+        guard let face = fontDescriptor.object(forKey: .face) as? String else { return defaultValue }
+        switch face.lowercased() {
+        case "bold":    return 0.5
+        case "thin":    return 0.05
+        default:        return 0.2
+        }
     }
 }

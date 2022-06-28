@@ -72,6 +72,10 @@ class CallButton: UIView {
 
         titleLabel.textAlignment = .center
         titleLabel.numberOfLines = 0
+        setFontScalingEnabled(
+            style.accessibility.isFontScalingEnabled,
+            for: titleLabel
+        )
 
         let tapRecognizer = UITapGestureRecognizer(target: self,
                                                    action: #selector(tapped))
@@ -122,7 +126,8 @@ class CallButton: UIView {
         let properties = Self.accessibility(
             for: kind,
             state: state,
-            style: style(for: state),
+            buttonStyle: style,
+            stateStyle: style(for: state),
             badgeItemCount: badgeView?.newItemCount
         )
         accessibilityValue = properties.value
@@ -145,32 +150,36 @@ class CallButton: UIView {
     static func accessibility(
         for kind: Kind,
         state: State,
-        style: CallButtonStyle.StateStyle,
+        buttonStyle: CallButtonStyle,
+        stateStyle: CallButtonStyle.StateStyle,
         badgeItemCount: Int?
     ) -> (label: String?, value: String) {
 
         let badgeValue: String
-        switch kind {
-        case .chat:
-            if let itemCount = badgeItemCount {
-                #warning("accessibility: provide proper localization/formatting for pluralized string")
-                badgeValue = "\(itemCount) unread \(itemCount == 1 ? "message" : "messages")"
-            } else {
-                badgeValue = ""
-            }
-        case .video, .mute, .speaker, .minimize:
+
+        switch badgeItemCount {
+        case let .some(itemCount):
+            badgeValue = (itemCount == 1 ? buttonStyle.accessibility.singleItemBadgeValue : buttonStyle.accessibility.multipleItemsBadgeValue)
+                .withBadgeValue("\(itemCount)")
+        case .none:
             badgeValue = ""
         }
 
         let value: String
 
-        if style.title.isEmpty {
+        switch (stateStyle.title.isEmpty, badgeValue.isEmpty) {
+        case (true, true):
+            value = stateStyle.title
+        case (false, false):
+            value = buttonStyle.accessibility.titleAndBadgeValue
+                .withButtonTitle(stateStyle.title)
+                .withBadgeValue(badgeValue)
+        case (false, true):
+            value = stateStyle.title
+        case (true, false):
             value = badgeValue
-        } else {
-            value = "\(style.title), \(badgeValue)"
         }
 
-        return (state == .active ? "Selected" : nil, value)
-
+        return (stateStyle.accessibility.label, value)
     }
 }

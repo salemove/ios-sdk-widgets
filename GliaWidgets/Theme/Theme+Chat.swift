@@ -1,6 +1,7 @@
 extension Theme {
     var chatStyle: ChatStyle {
         typealias Chat = L10n.Chat
+        typealias Accessibility = Chat.Accessibility
 
         let onHoldOverlay = OnHoldOverlayStyle(
             image: Asset.callOnHold.image,
@@ -9,21 +10,37 @@ extension Theme {
         )
         let backButton = HeaderButtonStyle(
             image: Asset.back.image,
-            color: color.baseLight
+            color: color.baseLight,
+            accessibility: .init(
+                label: Accessibility.Header.BackButton.label,
+                hint: Accessibility.Header.BackButton.hint
+            )
         )
         let closeButton = HeaderButtonStyle(
             image: Asset.close.image,
-            color: color.baseLight
+            color: color.baseLight,
+            accessibility: .init(
+                label: Accessibility.Header.CloseButton.label,
+                hint: Accessibility.Header.CloseButton.hint
+            )
         )
         let endButton = ActionButtonStyle(
             title: Chat.EndButton.title,
             titleFont: font.buttonLabel,
             titleColor: color.baseLight,
-            backgroundColor: color.systemNegative
+            backgroundColor: color.systemNegative,
+            accessibility: .init(
+                label: Accessibility.Header.EndButton.label,
+                isFontScalingEnabled: true
+            )
         )
         let endScreenShareButton = HeaderButtonStyle(
             image: Asset.startScreenShare.image,
-            color: color.secondary
+            color: color.secondary,
+            accessibility: .init(
+                label: Accessibility.Header.EndScreenShareButton.label,
+                hint: Accessibility.Header.EndScreenShareButton.hint
+            )
         )
         let header = HeaderStyle(
             titleFont: font.header2,
@@ -32,7 +49,8 @@ extension Theme {
             backButton: backButton,
             closeButton: closeButton,
             endButton: endButton,
-            endScreenShareButton: endScreenShareButton
+            endScreenShareButton: endScreenShareButton,
+            accessibility: .init(isFontScalingEnabled: true)
         )
         let operatorImage = UserImageStyle(
             placeholderImage: Asset.operatorPlaceholder.image,
@@ -44,7 +62,11 @@ extension Theme {
         let queueOperator = ConnectOperatorStyle(
             operatorImage: operatorImage,
             animationColor: color.primary,
-            onHoldOverlay: onHoldOverlay
+            onHoldOverlay: onHoldOverlay,
+            accessibility: .init(
+                label: Accessibility.Operator.Avatar.label,
+                hint: Accessibility.Operator.Avatar.hint
+            )
         )
         let queue = ConnectStatusStyle(
             firstText: Chat.Connect.Queue.firstText,
@@ -52,7 +74,12 @@ extension Theme {
             firstTextFontColor: color.baseDark,
             secondText: Chat.Connect.Queue.secondText,
             secondTextFont: font.subtitle,
-            secondTextFontColor: color.baseNormal
+            secondTextFontColor: color.baseNormal,
+            accessibility: .init(
+                firstTextHint: Accessibility.Connect.Queue.FirstText.hint,
+                secondTextHint: nil,
+                isFontScalingEnabled: true
+            )
         )
         let connecting = ConnectStatusStyle(
             firstText: Chat.Connect.Connecting.firstText,
@@ -60,7 +87,12 @@ extension Theme {
             firstTextFontColor: color.baseDark,
             secondText: Chat.Connect.Connecting.secondText,
             secondTextFont: font.header2,
-            secondTextFontColor: color.baseDark
+            secondTextFontColor: color.baseDark,
+            accessibility: .init(
+                firstTextHint: Accessibility.Connect.Connecting.FirstText.hint,
+                secondTextHint: nil,
+                isFontScalingEnabled: true
+            )
         )
         let connected = ConnectStatusStyle(
             firstText: Chat.Connect.Connected.firstText,
@@ -68,7 +100,25 @@ extension Theme {
             firstTextFontColor: color.baseDark,
             secondText: Chat.Connect.Connected.secondText,
             secondTextFont: font.subtitle,
-            secondTextFontColor: color.primary
+            secondTextFontColor: color.primary,
+            accessibility: .init(
+                firstTextHint: Accessibility.Connect.Connected.FirstText.hint,
+                secondTextHint: nil,
+                isFontScalingEnabled: true
+            )
+        )
+        let onHold = ConnectStatusStyle(
+            firstText: Chat.Connect.Connected.firstText,
+            firstTextFont: font.header1,
+            firstTextFontColor: color.baseLight,
+            secondText: Chat.Connect.Connected.secondText,
+            secondTextFont: font.subtitle,
+            secondTextFontColor: color.baseLight,
+            accessibility: .init(
+                firstTextHint: Accessibility.Connect.Connected.FirstText.hint,
+                secondTextHint: nil,
+                isFontScalingEnabled: true
+            )
         )
         let transferring = ConnectStatusStyle(
             firstText: Chat.Connect.Transferring.firstText,
@@ -83,15 +133,22 @@ extension Theme {
             queue: queue,
             connecting: connecting,
             connected: connected,
-            transferring: transferring
+            transferring: transferring,
+            onHold: onHold
         )
         let visitorText = ChatTextContentStyle(
             textFont: font.bodyText,
             textColor: color.baseLight,
-            backgroundColor: color.primary
+            backgroundColor: color.primary,
+            accessibility: .init(isFontScalingEnabled: true)
         )
         let visitorImageFile = ChatImageFileContentStyle(
-            backgroundColor: color.primary
+            backgroundColor: color.primary,
+            accessibility: .init(
+                contentAccessibilityLabel: Accessibility.Message.attachmentMessageLabel,
+                youAccessibilityPlaceholder: Accessibility.Message.you,
+                isFontScalingEnabled: true
+            )
         )
         let visitorMessage = VisitorChatMessageStyle(
             text: visitorText,
@@ -99,15 +156,22 @@ extension Theme {
             fileDownload: fileDownload,
             statusFont: font.caption,
             statusColor: color.baseNormal,
-            delivered: Chat.Message.Status.delivered
+            delivered: Chat.Message.Status.delivered,
+            accessibility: .init(isFontScalingEnabled: true)
         )
         let operatorText = ChatTextContentStyle(
             textFont: font.bodyText,
             textColor: color.baseDark,
-            backgroundColor: Color.lightGrey
+            backgroundColor: Color.lightGrey,
+            accessibility: .init(isFontScalingEnabled: true)
         )
         let operatorImageFile = ChatImageFileContentStyle(
-            backgroundColor: Color.lightGrey
+            backgroundColor: Color.lightGrey,
+            accessibility: .init(
+                contentAccessibilityLabel: Accessibility.Message.attachmentMessageLabel,
+                youAccessibilityPlaceholder: Accessibility.Message.you,
+                isFontScalingEnabled: true
+            )
         )
         let operatorMessage = OperatorChatMessageStyle(
             text: operatorText,
@@ -116,33 +180,52 @@ extension Theme {
             operatorImage: operatorImage
         )
         let operatorTypingIndicator = OperatorTypingIndicatorStyle(
-            color: color.primary
+            color: color.primary,
+            accessibility: .init(label: Accessibility.Message.Operator.TypingIndicator.label)
         )
         let choiceCardText = ChatTextContentStyle(
             textFont: font.bodyText,
             textColor: color.baseDark,
-            backgroundColor: color.baseLight
+            backgroundColor: color.baseLight,
+            accessibility: .init(isFontScalingEnabled: true)
         )
         let choiceCardImageFile = ChatImageFileContentStyle(
-            backgroundColor: color.baseLight
+            backgroundColor: color.baseLight,
+            accessibility: .init(
+                contentAccessibilityLabel: Accessibility.Message.attachmentMessageLabel,
+                youAccessibilityPlaceholder: Accessibility.Message.you,
+                isFontScalingEnabled: true
+            )
         )
         let choiceCardOptionNormalState = ChoiceCardOptionStateStyle(
             textFont: font.bodyText,
             textColor: color.baseDark,
             backgroundColor: Color.lightGrey,
-            borderColor: nil
+            borderColor: nil,
+            accessibility: .init(
+                value: Accessibility.Message.ChoiceCard.ButtonState.normal,
+                isFontScalingEnabled: true
+            )
         )
         let choiceCardOptionSelectedState = ChoiceCardOptionStateStyle(
             textFont: font.bodyText,
             textColor: color.baseLight,
             backgroundColor: color.primary,
-            borderColor: nil
+            borderColor: nil,
+            accessibility: .init(
+                value: Accessibility.Message.ChoiceCard.ButtonState.selected,
+                isFontScalingEnabled: true
+            )
         )
         let choiceCardOptionDisabledState = ChoiceCardOptionStateStyle(
             textFont: font.bodyText,
             textColor: Color.grey,
             backgroundColor: Color.lightGrey,
-            borderColor: Color.baseShade
+            borderColor: Color.baseShade,
+            accessibility: .init(
+                value: Accessibility.Message.ChoiceCard.ButtonState.disabled,
+                isFontScalingEnabled: true
+            )
         )
         let choiceCardOption = ChoiceCardOptionStyle(
             normal: choiceCardOptionNormalState,
@@ -155,15 +238,18 @@ extension Theme {
             imageFile: choiceCardImageFile,
             fileDownload: fileDownload,
             operatorImage: operatorImage,
-            choiceOption: choiceCardOption
+            choiceOption: choiceCardOption,
+            accessibility: .init(imageLabel: Accessibility.Message.ChoiceCard.Image.label)
         )
         let mediaButton = MessageButtonStyle(
             image: Asset.chatPickMedia.image,
-            color: color.baseNormal
+            color: color.baseNormal,
+            accessibility: .init(accessibilityLabel: Accessibility.PickMedia.PickAttachmentButton.label)
         )
         let sendButton = MessageButtonStyle(
             image: Asset.chatSend.image,
-            color: color.primary
+            color: color.primary,
+            accessibility: .init(accessibilityLabel: Accessibility.Message.SendButton.label)
         )
         let messageEntry = ChatMessageEntryStyle(
             messageFont: font.bodyText,
@@ -177,7 +263,11 @@ extension Theme {
             backgroundColor: color.background,
             mediaButton: mediaButton,
             sendButton: sendButton,
-            uploadList: uploadListStyle
+            uploadList: uploadListStyle,
+            accessibility: .init(
+                messageInputAccessibilityLabel: Accessibility.Message.MessageInput.label,
+                isFontScalingEnabled: true
+            )
         )
         let audioUpgrade = ChatCallUpgradeStyle(
             icon: Asset.upgradeAudio.image,
@@ -187,7 +277,11 @@ extension Theme {
             textColor: color.baseDark,
             durationFont: font.bodyText,
             durationColor: color.baseNormal,
-            borderColor: color.baseShade
+            borderColor: color.baseShade,
+            accessibility: .init(
+                durationTextHint: Accessibility.ChatCallUpgrade.Audio.Duration.hint,
+                isFontScalingEnabled: true
+            )
         )
         let videoUpgrade = ChatCallUpgradeStyle(
             icon: Asset.upgradeVideo.image,
@@ -197,7 +291,11 @@ extension Theme {
             textColor: color.baseDark,
             durationFont: font.bodyText,
             durationColor: color.baseNormal,
-            borderColor: color.baseShade
+            borderColor: color.baseShade,
+            accessibility: .init(
+                durationTextHint: Accessibility.ChatCallUpgrade.Video.Duration.hint,
+                isFontScalingEnabled: true
+            )
         )
         let userImage = UserImageStyle(
             placeholderImage: Asset.operatorPlaceholder.image,
@@ -207,7 +305,11 @@ extension Theme {
             transferringImage: Asset.operatorTransferring.image
         )
         let callBubble = BubbleStyle(
-            userImage: userImage
+            userImage: userImage,
+            accessibility: .init(
+                label: L10n.Call.Accessibility.Bubble.label,
+                hint: L10n.Call.Accessibility.Bubble.hint
+            )
         )
         let unreadMessageIndicator = UnreadMessageIndicatorStyle(
             badgeFont: font.caption,
@@ -217,7 +319,8 @@ extension Theme {
             placeholderColor: color.baseLight,
             placeholderBackgroundColor: color.primary,
             imageBackgroundColor: .clear,
-            transferringImage: Asset.operatorTransferring.image
+            transferringImage: Asset.operatorTransferring.image,
+            accessibility: .init(label: Accessibility.Message.UnreadMessagesIndicator.label)
         )
         return ChatStyle(
             header: header,
@@ -234,12 +337,18 @@ extension Theme {
             callBubble: callBubble,
             pickMedia: pickMedia,
             unreadMessageIndicator: unreadMessageIndicator,
-            operatorTypingIndicator: operatorTypingIndicator
+            operatorTypingIndicator: operatorTypingIndicator,
+            accessibility: .init(
+                operator: L10n.operator,
+                visitor: Accessibility.visitorName,
+                isFontScalingEnabled: true
+            )
         )
     }
 
     private var uploadListStyle: FileUploadListStyle {
         typealias Upload = L10n.Chat.Upload
+        typealias Accessibility = L10n.Chat.Accessibility.Upload
 
         let filePreview = FilePreviewStyle(
             fileFont: font.subtitle,
@@ -247,25 +356,26 @@ extension Theme {
             errorIcon: Asset.uploadError.image,
             errorIconColor: color.systemNegative,
             backgroundColor: color.primary,
-            errorBackgroundColor: Color.lightGrey
+            errorBackgroundColor: Color.lightGrey,
+            accessibility: .init(isFontScalingEnabled: true)
         )
         let uploading = FileUploadStateStyle(
             text: Upload.uploading,
-            font: font.mediumSubtitle,
+            font: font.mediumSubtitle2,
             textColor: color.baseDark,
             infoFont: font.caption,
             infoColor: color.baseNormal
         )
         let uploaded = FileUploadStateStyle(
             text: Upload.uploaded,
-            font: font.mediumSubtitle,
+            font: font.mediumSubtitle2,
             textColor: color.baseDark,
             infoFont: font.caption,
             infoColor: color.baseNormal
         )
         let error = FileUploadErrorStateStyle(
             text: Upload.failed,
-            font: font.mediumSubtitle,
+            font: font.mediumSubtitle2,
             textColor: color.baseDark,
             infoFont: font.caption,
             infoColor: color.systemNegative,
@@ -284,7 +394,13 @@ extension Theme {
             errorProgressColor: color.systemNegative,
             progressBackgroundColor: Color.lightGrey,
             removeButtonImage: Asset.uploadRemove.image,
-            removeButtonColor: color.baseNormal
+            removeButtonColor: color.baseNormal,
+            accessibility: .init(
+                removeButtonAccessibilityLabel: Accessibility.RemoveUpload.label,
+                progressPercentValue: Accessibility.Progress.percentValue,
+                fileNameWithProgressValue: Accessibility.Progress.fileNameWithProgressValue,
+                isFontScalingEnabled: true
+            )
         )
 
         return FileUploadListStyle(item: upload)
@@ -292,6 +408,7 @@ extension Theme {
 
     private var fileDownload: ChatFileDownloadStyle {
         typealias Download = L10n.Chat.Download
+        typealias Accessibility = L10n.Chat.Accessibility
 
         let filePreview = FilePreviewStyle(
             fileFont: font.subtitle,
@@ -299,32 +416,33 @@ extension Theme {
             errorIcon: Asset.uploadError.image,
             errorIconColor: color.systemNegative,
             backgroundColor: color.primary,
-            errorBackgroundColor: Color.lightGrey
+            errorBackgroundColor: Color.lightGrey,
+            accessibility: .init(isFontScalingEnabled: true)
         )
         let download = ChatFileDownloadStateStyle(
             text: Download.download,
-            font: font.mediumSubtitle,
+            font: font.mediumSubtitle2,
             textColor: color.baseDark,
             infoFont: font.caption,
             infoColor: color.baseNormal
         )
         let downloading = ChatFileDownloadStateStyle(
             text: Download.downloading,
-            font: font.mediumSubtitle,
+            font: font.mediumSubtitle2,
             textColor: color.baseDark,
             infoFont: font.caption,
             infoColor: color.baseNormal
         )
         let open = ChatFileDownloadStateStyle(
             text: Download.open,
-            font: font.mediumSubtitle,
+            font: font.mediumSubtitle2,
             textColor: color.baseDark,
             infoFont: font.caption,
             infoColor: color.baseNormal
         )
         let error = ChatFileDownloadErrorStateStyle(
             text: Download.failed,
-            font: font.mediumSubtitle,
+            font: font.mediumSubtitle2,
             textColor: color.systemNegative,
             infoFont: font.caption,
             infoColor: color.baseNormal,
@@ -332,7 +450,7 @@ extension Theme {
             separatorFont: font.subtitle,
             separatorTextColor: color.baseDark,
             retryText: Download.Failed.retry,
-            retryFont: font.mediumSubtitle,
+            retryFont: font.mediumSubtitle2,
             retryTextColor: color.baseDark
         )
 
@@ -346,7 +464,18 @@ extension Theme {
             errorProgressColor: color.systemNegative,
             progressBackgroundColor: Color.lightGrey,
             backgroundColor: .white,
-            borderColor: Color.lightGrey
+            borderColor: Color.lightGrey,
+            accessibility: .init(
+                contentAccessibilityLabel: Accessibility.Message.attachmentMessageLabel,
+                youAccessibilityPlaceholder: Accessibility.Message.you,
+                isFontScalingEnabled: true
+            ),
+            downloadAccessibility: .init(
+                noneState: Accessibility.Download.State.none,
+                downloadingState: Accessibility.Download.State.downloading,
+                downloadedState: Accessibility.Download.State.downloaded,
+                errorState: Accessibility.Download.State.error
+            )
         )
     }
 
@@ -363,7 +492,8 @@ extension Theme {
             titleFont: itemFont,
             titleColor: itemFontColor,
             icon: Asset.photoLibraryIcon.image,
-            iconColor: itemIconColor
+            iconColor: itemIconColor,
+            accessibility: .init(isFontScalingEnabled: true)
         )
         let takePhoto = AttachmentSourceItemStyle(
             kind: .takePhoto,
@@ -371,7 +501,8 @@ extension Theme {
             titleFont: itemFont,
             titleColor: itemFontColor,
             icon: Asset.cameraIcon.image,
-            iconColor: itemIconColor
+            iconColor: itemIconColor,
+            accessibility: .init(isFontScalingEnabled: true)
         )
         let browse = AttachmentSourceItemStyle(
             kind: .browse,
@@ -379,7 +510,8 @@ extension Theme {
             titleFont: itemFont,
             titleColor: itemFontColor,
             icon: Asset.browseIcon.image,
-            iconColor: itemIconColor
+            iconColor: itemIconColor,
+            accessibility: .init(isFontScalingEnabled: true)
         )
 
         return AttachmentSourceListStyle(

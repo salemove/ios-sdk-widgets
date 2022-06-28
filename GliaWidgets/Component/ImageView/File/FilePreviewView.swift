@@ -38,6 +38,10 @@ class FilePreviewView: UIView {
         label.font = style.fileFont
         label.textColor = style.fileColor
         label.textAlignment = .center
+        setFontScalingEnabled(
+            style.accessibility.isFontScalingEnabled,
+            for: label
+        )
 
         update()
     }

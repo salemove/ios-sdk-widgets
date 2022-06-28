@@ -23,6 +23,14 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter,
         viewModel.event(.viewDidLoad)
     }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        // This is called to update message entry view height
+        // on every font size change
+        (self.view as? ChatView)?.messageEntryView.updateLayout()
+    }
+
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return viewFactory.theme.chat.preferredStatusBarStyle
     }

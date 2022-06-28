@@ -38,6 +38,9 @@ public struct ChatMessageEntryStyle {
     /// Style of the media upload menu popover.
     public var uploadList: FileUploadListStyle
 
+    /// Accessibility related properties.
+    public var accessibility: Accessibility
+
     ///
     /// - Parameters:
     ///   - messageFont: Font of the message text.
@@ -52,6 +55,7 @@ public struct ChatMessageEntryStyle {
     ///   - mediaButton: Style of the media attachment button.
     ///   - sendButton: Style of the send button.
     ///   - uploadList: Style of the media upload menu popover.
+    ///   - accessibility: Accessibility related properties.
     ///
     public init(
         messageFont: UIFont,
@@ -65,7 +69,8 @@ public struct ChatMessageEntryStyle {
         backgroundColor: UIColor,
         mediaButton: MessageButtonStyle,
         sendButton: MessageButtonStyle,
-        uploadList: FileUploadListStyle
+        uploadList: FileUploadListStyle,
+        accessibility: Accessibility = .unsupported
     ) {
         self.messageFont = messageFont
         self.messageColor = messageColor
@@ -79,5 +84,6 @@ public struct ChatMessageEntryStyle {
         self.mediaButton = mediaButton
         self.sendButton = sendButton
         self.uploadList = uploadList
+        self.accessibility = accessibility
     }
 }

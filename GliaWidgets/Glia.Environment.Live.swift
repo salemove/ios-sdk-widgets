@@ -20,7 +20,8 @@ extension Glia.Environment {
         uiImage: .live,
         createFileDownload: FileDownload.init(with:storage:environment:),
         fromHistory: { true },
-        timerProviding: .live
+        timerProviding: .live,
+        uiApplication: .live
     )
 }
 

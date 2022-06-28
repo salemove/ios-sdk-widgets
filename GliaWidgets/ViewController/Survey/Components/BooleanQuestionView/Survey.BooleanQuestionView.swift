@@ -13,7 +13,7 @@ extension Survey {
             $0.numberOfLines = 0
         }
         let optionsStack = UIStackView.make(.horizontal, spacing: 24)()
-        let validationError = ValidationErrorView()
+        lazy var validationError = ValidationErrorView(style: style.error)
         lazy var contentStack = UIStackView.make(.vertical, spacing: 16)(
             title,
             optionsStack,
@@ -41,7 +41,7 @@ extension Survey {
                 contentStack.topAnchor.constraint(equalTo: topAnchor),
                 contentStack.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
                 contentStack.bottomAnchor.constraint(equalTo: bottomAnchor),
-                contentStack.trailingAnchor.constraint(greaterThanOrEqualTo: safeAreaLayoutGuide.trailingAnchor, constant: 16)
+                contentStack.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor)
             ])
         }
 
@@ -52,7 +52,7 @@ extension Survey {
                 var constraints = [NSLayoutConstraint](); defer { NSLayoutConstraint.activate(constraints) }
                 (0..<abs(delta)).forEach { _ in
                     let buttonView = ButtonView(style: style.option)
-                    constraints.append(buttonView.widthAnchor.constraint(equalToConstant: 48))
+                    constraints.append(buttonView.widthAnchor.constraint(greaterThanOrEqualToConstant: 48))
                     constraints.append(buttonView.heightAnchor.constraint(equalToConstant: 52))
                     optionsStack.addArrangedSubview(buttonView)
                 }
@@ -61,13 +61,21 @@ extension Survey {
             default: break
             }
 
+            setFontScalingEnabled(
+                style.accessibility.isFontScalingEnabled,
+                for: title
+            )
+
             title.attributedText = .withRequiredSymbol(
                 foregroundColor: .init(hex: style.title.color),
-                fontSize: style.title.fontSize,
-                fontWeight: style.title.fontWeight,
+                font: style.title.font,
                 isRequired: props.isRequired,
                 text: props.title
             )
+
+            title.accessibilityLabel = props.title
+            title.accessibilityValue = props.accessibility.value
+
             zip(props.options, optionsStack.arrangedSubviews)
                 .forEach { option, view in
                     guard let buttonView = view as? ButtonView else { return }
@@ -95,6 +103,7 @@ extension Survey.BooleanQuestionView {
         var options: [Survey.Option<Bool>]
         var selected: Survey.Option<Bool>?
         var answerContainer: CoreSdkClient.SurveyAnswerContainer?
+        let accessibility: Accessibility
 
         var isValid: Bool {
             guard isRequired else { return true }
@@ -108,7 +117,8 @@ extension Survey.BooleanQuestionView {
             showValidationError: Bool = false,
             options: [Survey.Option<Bool>] = [],
             selected: Survey.Option<Bool>? = nil,
-            answerContainer: CoreSdkClient.SurveyAnswerContainer? = nil
+            answerContainer: CoreSdkClient.SurveyAnswerContainer? = nil,
+            accessibility: Accessibility
         ) {
             self.id = id
             self.title = title
@@ -117,6 +127,7 @@ extension Survey.BooleanQuestionView {
             self.options = options
             self.selected = selected
             self.answerContainer = answerContainer
+            self.accessibility = accessibility
         }
     }
 }
