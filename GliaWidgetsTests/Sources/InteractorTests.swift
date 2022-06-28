@@ -38,7 +38,7 @@ class InteractorTests: XCTestCase {
             with: mock.config,
             queueID: mock.queueId,
             visitorContext: mock.visitorContext,
-            environment: .init(coreSdk: coreSdk)
+            environment: .init(coreSdk: coreSdk, gcd: .failing)
         )
 
         interactor.enqueueForEngagement(mediaType: .text) {} failure: {
@@ -98,5 +98,42 @@ class InteractorTests: XCTestCase {
         }
 
         XCTAssertEqual(callbacks, [.withConfiguration, .withConfiguration, .withConfiguration])
+    }
+
+    func test_onEngagementTransfer() throws {
+        enum Call: Equatable {
+            case stateChanged(InteractorState)
+            case engagementTransferred(CoreSdkClient.Operator?)
+        }
+    
+        var calls = [Call]()
+        let mockOperator: CoreSdkClient.Operator = .mock()
+
+        interactor = .init(
+            with: mock.config,
+            queueID: mock.queueId,
+            visitorContext: mock.visitorContext,
+            environment: .init(coreSdk: .failing, gcd: .mock)
+        )
+
+        interactor.addObserver(self, handler: { event in
+            switch event {
+            case .stateChanged(let state):
+                calls.append(.stateChanged(state))
+                    
+            case .engagementTransferred(let engagedOperator):
+                calls.append(.engagementTransferred(engagedOperator))
+                
+            default:
+                break
+            }
+        })
+        
+        interactor.onEngagementTransfer([mockOperator])
+        
+        XCTAssertEqual(calls, [
+            .stateChanged(.engaged(mockOperator)),
+            .engagementTransferred(mockOperator)
+        ])
     }
 }

@@ -12,10 +12,11 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         Section<ChatItem>(2),
         Section<ChatItem>(3)
     ]
-    private var historySection: Section<ChatItem> { sections[0] }
-    private var pendingSection: Section<ChatItem> { sections[1] }
-    private var queueOperatorSection: Section<ChatItem> { sections[2] }
-    private var messagesSection: Section<ChatItem> { sections[3] }
+    var historySection: Section<ChatItem> { sections[0] }
+    var pendingSection: Section<ChatItem> { sections[1] }
+    var queueOperatorSection: Section<ChatItem> { sections[2] }
+    var messagesSection: Section<ChatItem> { sections[3] }
+
     private let call: ObservableValue<Call?>
     private var unreadMessages: UnreadMessagesHandler!
     private let isChatScrolledToBottom = ObservableValue<Bool>(with: true)
@@ -144,18 +145,8 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         interactor.withConfiguration { [weak self] in
             guard let self = self else { return }
             if case .startEngagement = self.startAction, self.environment.chatStorage.isEmpty() {
-                let item = ChatItem(kind: .queueOperator)
-
-                self.appendItem(
-                    item,
-                    to: self.queueOperatorSection,
-                    animated: false
-                )
-
                 self.enqueue(mediaType: .text)
             }
-
-            self.update(for: self.interactor.state)
         }
     }
 
@@ -164,12 +155,29 @@ class ChatViewModel: EngagementViewModel, ViewModel {
 
         switch state {
         case .enqueueing:
+            let item = ChatItem(kind: .queueOperator)
+
+            appendItem(
+                item,
+                to: queueOperatorSection,
+                animated: false
+            )
+
             action?(.queue)
-            action?(.scrollToBottom(animated: false))
+            action?(.scrollToBottom(animated: true))
 
         case .engaged(let engagedOperator):
             let name = engagedOperator?.firstName
             let pictureUrl = engagedOperator?.picture?.url
+            let chatItem = ChatItem(kind: .operatorConnected(name: name, imageUrl: pictureUrl))
+
+            setItems([], to: queueOperatorSection)
+            appendItem(
+                chatItem,
+                to: messagesSection,
+                animated: false
+            )
+
             action?(.connected(name: name, imageUrl: pictureUrl))
             action?(.setMessageEntryEnabled(true))
 
@@ -220,9 +228,39 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             offerMediaUpgrade(offer, answer: answer)
         case .typingStatusUpdated(let status):
             typingStatusUpdated(status)
+        case .engagementTransferring:
+            onEngagementTransferring()
+        case .engagementTransferred:
+            onEngagementTransferred()
         default:
             break
         }
+    }
+}
+
+extension ChatViewModel {
+    private func onEngagementTransferring() {
+        action?(.setMessageEntryEnabled(false))
+        appendItem(.init(kind: .transferring), to: messagesSection, animated: true)
+        action?(.scrollToBottom(animated: true))
+    }
+
+    private func onEngagementTransferred() {
+        action?(.setMessageEntryEnabled(true))
+
+        let engagedOperator = interactor.engagedOperator
+        action?(.setCallBubbleImage(imageUrl: engagedOperator?.picture?.url))
+        action?(.setUnreadMessageIndicatorImage(imageUrl: engagedOperator?.picture?.url))
+
+        guard let transferringItemIndex = messagesSection.items.firstIndex(where: {
+            switch $0.kind {
+            case .transferring: return true
+            default: return false
+            }
+        }) else { return }
+
+        messagesSection.removeItem(at: transferringItemIndex)
+        action?(.refreshSection(messagesSection.index))
     }
 }
 
@@ -803,6 +841,7 @@ extension ChatViewModel {
     enum Action {
         case queue
         case connected(name: String?, imageUrl: String?)
+        case transferring
         case setMessageEntryEnabled(Bool)
         case setChoiceCardInputModeEnabled(Bool)
         case setMessageText(String)
@@ -825,7 +864,9 @@ extension ChatViewModel {
             declined: () -> Void
         )
         case showCallBubble(imageUrl: String?)
+        case setCallBubbleImage(imageUrl: String?)
         case updateUnreadMessageIndicator(itemCount: Int)
+        case setUnreadMessageIndicatorImage(imageUrl: String?)
         case setOperatorTypingIndicatorIsHiddenTo(Bool, _ isChatScrolledToBottom: Bool)
         case setIsAttachmentButtonHidden(Bool)
     }

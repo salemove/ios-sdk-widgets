@@ -12,9 +12,9 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter,
     }
 
     override public func loadView() {
-        super.loadView()
         let view = viewFactory.makeChatView()
         self.view = view
+
         bind(viewModel: viewModel, to: view)
     }
 
@@ -122,6 +122,12 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter,
                 view.setOperatorTypingIndicatorIsHidden(to: isHidden)
             case .setIsAttachmentButtonHidden(let isHidden):
                 view.messageEntryView.isAttachmentButtonHidden = isHidden
+            case .transferring:
+                view.setConnectState(.transferring, animated: true)
+            case .setCallBubbleImage(let imageUrl):
+                view.setCallBubbleImage(with: imageUrl)
+            case .setUnreadMessageIndicatorImage(let imageUrl):
+                view.unreadMessageIndicatorView.setImage(fromUrl: imageUrl, animated: true)
             }
         }
     }

@@ -390,6 +390,10 @@ public enum L10n {
         /// An MSR will be with you shortly.
         public static let secondText = L10n.tr("Localizable", "call.connect.queue.secondText")
       }
+      public enum Transferring {
+        /// Transferring
+        public static let firstText = L10n.tr("Localizable", "call.connect.transferring.firstText")
+      }
     }
     public enum EndButton {
       /// End
@@ -584,6 +588,10 @@ public enum L10n {
         public static let firstText = L10n.tr("Localizable", "chat.connect.queue.firstText")
         /// An MSR will be with you shortly.
         public static let secondText = L10n.tr("Localizable", "chat.connect.queue.secondText")
+      }
+      public enum Transferring {
+        /// Transferring
+        public static let firstText = L10n.tr("Localizable", "chat.connect.transferring.firstText")
       }
     }
     public enum Download {

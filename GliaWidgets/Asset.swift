@@ -76,6 +76,7 @@ public enum Asset {
     public static let upgradeVideo = ImageAsset(name: "upgradeVideo")
     public static let mockImage = ImageAsset(name: "mock-image")
     public static let operatorPlaceholder = ImageAsset(name: "operatorPlaceholder")
+    public static let operatorTransferring = ImageAsset(name: "operatorTransferring")
     public static let surveyCheckboxChecked = ImageAsset(name: "survey-checkbox-checked")
     public static let surveyCheckbox = ImageAsset(name: "survey-checkbox")
     public static let surveyValidationError = ImageAsset(name: "survey-validation-error")
@@ -111,6 +112,7 @@ public enum Asset {
       upgradeVideo,
       mockImage,
       operatorPlaceholder,
+      operatorTransferring,
       surveyCheckboxChecked,
       surveyCheckbox,
       surveyValidationError,

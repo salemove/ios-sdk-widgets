@@ -21,6 +21,7 @@ public struct UnreadMessageIndicatorStyle {
     ///   - placeholderImage: Image that acts as a placeholder if the operator has no picture set.
     ///   - placeholderColor: Color of the placeholder's image if the operator has no picture set.
     ///   - placeholderBackgroundColor: Background color of the placeholder's image if the operator has no picture set.
+    ///   - imageBackgroundColor: Background color of the operator's image. Visible when the operator's image contains transparent parts.
     ///   - imageBackgroundColor: Background olor of the operator's image. Visible when the operator's image contains transparent parts.
     ///   - accessibility: Accessibility related properties.
     public init(
@@ -31,6 +32,7 @@ public struct UnreadMessageIndicatorStyle {
         placeholderColor: UIColor,
         placeholderBackgroundColor: UIColor,
         imageBackgroundColor: UIColor,
+        transferringImage: UIImage,
         accessibility: Accessibility = .unsupported
     ) {
         self.badge = BadgeStyle(
@@ -42,7 +44,8 @@ public struct UnreadMessageIndicatorStyle {
             placeholderImage: placeholderImage,
             placeholderColor: placeholderColor,
             placeholderBackgroundColor: placeholderBackgroundColor,
-            imageBackgroundColor: imageBackgroundColor
+            imageBackgroundColor: imageBackgroundColor,
+            transferringImage: transferringImage
         )
         self.accessibility = accessibility
     }
