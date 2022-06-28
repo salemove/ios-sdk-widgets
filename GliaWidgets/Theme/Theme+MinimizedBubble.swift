@@ -4,7 +4,8 @@ extension Theme {
             placeholderImage: Asset.operatorPlaceholder.image,
             placeholderColor: color.baseLight,
             placeholderBackgroundColor: color.primary,
-            imageBackgroundColor: color.primary
+            imageBackgroundColor: color.primary,
+            transferringImage: Asset.operatorTransferring.image
         )
         let badge = BadgeStyle(
             font: font.caption,

@@ -48,11 +48,11 @@ final class UnreadMessageIndicatorView: View {
     }
 
     func setImage(_ image: UIImage?, animated: Bool) {
-        userImageView.setImage(image, animated: animated)
+        userImageView.setOperatorImage(image, animated: animated)
     }
 
     func setImage(fromUrl url: String?, animated: Bool) {
-        userImageView.setImage(fromUrl: url, animated: animated)
+        userImageView.setOperatorImage(fromUrl: url, animated: animated)
     }
 
     override func setup() {

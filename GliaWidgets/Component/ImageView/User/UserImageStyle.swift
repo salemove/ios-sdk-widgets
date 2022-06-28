@@ -14,21 +14,27 @@ public struct UserImageStyle {
     /// Background color of the image (in case it has transparency).
     public var imageBackgroundColor: UIColor
 
+    /// Transferring image. It is shown if the visitor is being transferred to another operator.
+    public var transferringImage: UIImage?
+
     /// 
     /// - Parameters:
     ///   - placeholderImage: Placeholder image.
     ///   - placeholderColor: Color of the placeholder image.
     ///   - placeholderBackgroundColor: Color of the placeholder background.
     ///   - imageBackgroundColor: Background color of the image (in case it has transparency).
+    ///   - transferringImage: Transferring image. It is shown if the visitor is being transferred to another operator.
     public init(
         placeholderImage: UIImage?,
         placeholderColor: UIColor,
         placeholderBackgroundColor: UIColor,
-        imageBackgroundColor: UIColor
+        imageBackgroundColor: UIColor,
+        transferringImage: UIImage?
     ) {
         self.placeholderImage = placeholderImage
         self.placeholderColor = placeholderColor
         self.placeholderBackgroundColor = placeholderBackgroundColor
         self.imageBackgroundColor = imageBackgroundColor
+        self.transferringImage = transferringImage
     }
 }

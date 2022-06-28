@@ -1,5 +1,6 @@
 #if DEBUG
 import Foundation
+import SalemoveSDK
 
 extension CoreSdkClient {
     static let mock = Self(

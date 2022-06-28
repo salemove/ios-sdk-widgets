@@ -7,7 +7,11 @@ class EngagementViewController: ViewController, AlertPresenter {
     init(viewModel: EngagementViewModel, viewFactory: ViewFactory) {
         self.viewModel = viewModel
         self.viewFactory = viewFactory
+
         super.init(nibName: nil, bundle: nil)
+
+        // bind it here, so that view property will be requested from subclasses and views created
+        bind(engagementViewModel: viewModel)
     }
 
     @available(*, unavailable)
@@ -20,13 +24,6 @@ class EngagementViewController: ViewController, AlertPresenter {
         viewModel.event(.viewWillAppear)
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        if let view = self.view as? EngagementView {
-            bind(viewModel: viewModel, to: view)
-        }
-    }
-
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         viewModel.event(.viewDidAppear)
@@ -37,7 +34,9 @@ class EngagementViewController: ViewController, AlertPresenter {
         viewModel.event(.viewDidDisappear)
     }
 
-    private func bind(viewModel: EngagementViewModel, to view: EngagementView) {
+    func bind(engagementViewModel: EngagementViewModel) {
+        guard let view = view as? EngagementView else { return }
+
         view.header.endButton.tap = { [weak self] in self?.viewModel.event(.closeTapped) }
         view.header.endScreenShareButton.tap = { [weak self] in self?.viewModel.event(.endScreenSharingTapped) }
         view.header.backButton.tap = { [weak self] in self?.viewModel.event(.backTapped) }

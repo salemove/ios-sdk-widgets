@@ -5,7 +5,16 @@ extension GCD {
         mainQueue: .init(
             async: { callback in
                 Dispatch.DispatchQueue.main.async {
+                  callback()
+                }
+            },
+            asyncIfNeeded: { callback in
+                if Thread.isMainThread {
                     callback()
+                } else {
+                    Dispatch.DispatchQueue.main.async {
+                        callback()
+                    }
                 }
             },
             asyncAfterDeadline: { deadline, callback in

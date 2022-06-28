@@ -28,6 +28,8 @@ enum InteractorEvent {
     case screenShareError(error: CoreSdkClient.SalemoveError)
     case screenSharingStateChanged(to: CoreSdkClient.VisitorScreenSharingState)
     case error(CoreSdkClient.SalemoveError)
+    case engagementTransferred(CoreSdkClient.Operator?)
+    case engagementTransferring
 }
 
 class Interactor {
@@ -91,13 +93,14 @@ class Interactor {
         observers.removeAll(where: { $0().0 === observer })
     }
 
-    private func notify(_ event: InteractorEvent) {
+    func notify(_ event: InteractorEvent) {
         observers
             .compactMap { $0() }
             .filter { $0.0 != nil }
             .forEach {
                 let handler = $0.1
-                DispatchQueue.main.async {
+
+                environment.gcd.mainQueue.asyncIfNeeded {
                     handler(event)
                 }
             }
@@ -286,11 +289,18 @@ extension Interactor: CoreSdkClient.Interactable {
     }
 
     var onEngagementTransfer: CoreSdkClient.EngagementTransferBlock {
-        return { _ in }
+        return { [weak self] operators in
+            let engagedOperator = operators?.first
+
+            self?.state = .engaged(engagedOperator)
+            self?.notify(.engagementTransferred(engagedOperator))
+        }
     }
 
     var onEngagementTransferring: CoreSdkClient.EngagementTransferringBlock {
-        { }
+        return { [weak self] in
+            self?.notify(.engagementTransferring)
+        }
     }
 
     var onOperatorTypingStatusUpdate: CoreSdkClient.OperatorTypingStatusUpdate {
@@ -363,10 +373,13 @@ extension InteractorState: Equatable {
         switch (lhs, rhs) {
         case (.none, .none),
              (.enqueueing, .enqueueing),
-             (.engaged, .engaged),
              (.enqueued, .enqueued),
              (.ended, .ended):
             return true
+
+        case (.engaged(let lhsOperator), .engaged(let rhsOperator)):
+            return lhsOperator == rhsOperator
+
         default:
             return false
         }

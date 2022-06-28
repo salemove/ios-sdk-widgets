@@ -47,7 +47,7 @@ extension CallKind {
 enum CallState {
     case none
     case started
-    case upgrading
+    case connecting
     case ended
 }
 
@@ -77,6 +77,15 @@ enum MediaStream<Streamable> {
             return stream
         default:
             return nil
+        }
+    }
+
+    var isNone: Bool {
+        switch self {
+        case .none:
+            return true
+        default:
+            return false
         }
     }
 }
@@ -112,10 +121,16 @@ class Call {
         self.hasVisitorTurnedOffVideo = kind.mediaDirection == .oneWay
     }
 
+    func transfer() {
+        audio.stream.value = .none
+        video.stream.value = .none
+        state.value = .connecting
+    }
+
     func upgrade(to offer: CoreSdkClient.MediaUpgradeOffer) {
         setKind(for: offer.type, direction: offer.direction)
         setNeededDirection(offer.direction, for: offer.type)
-        state.value = .upgrading
+        state.value = .connecting
     }
 
     func updateAudioStream(with stream: CoreSdkClient.AudioStreamable) {
@@ -243,7 +258,7 @@ class Call {
     }
 
     private func updateStarted() {
-        guard [.none, .upgrading].contains(state.value) else { return }
+        guard [.none, .connecting].contains(state.value) else { return }
 
         switch kind.value {
         case .audio:
