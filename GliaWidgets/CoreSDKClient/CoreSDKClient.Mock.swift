@@ -303,4 +303,22 @@ extension CoreSdkClient.Operator {
         )
     }
 }
+
+extension CoreSdkClient.QueueTicket {
+    static let mock = CoreSdkClient.QueueTicket(
+        id: "mock-queue-ticket-id"
+    )
+}
+
+extension CoreSdkClient.SalemoveError {
+    static func mock(
+        reason: String = "mock",
+        error: Error? = nil
+    ) -> CoreSdkClient.SalemoveError {
+        CoreSdkClient.SalemoveError(
+            reason: reason,
+            error: error
+        )
+    }
+}
 #endif
