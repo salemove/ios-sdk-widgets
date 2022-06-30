@@ -22,6 +22,7 @@ extension ChatViewModel.Environment {
         fetchSiteConfigurations: { _ in },
         getCurrentEngagement: { return nil },
         timerProviding: .mock,
+        uuid: { UUID.mock },
         uiApplication: .mock
     )
 }

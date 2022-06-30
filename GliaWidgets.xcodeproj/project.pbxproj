@@ -370,6 +370,8 @@
 		EB2CBB1227D89F7D004F178E /* OnHoldOverlayStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB2CBB1127D89F7D004F178E /* OnHoldOverlayStyle.swift */; };
 		EB2CBB1527D8DB95004F178E /* OnHoldOverlayVisualEffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB2CBB1427D8DB95004F178E /* OnHoldOverlayVisualEffectView.swift */; };
 		EB750F53273BA9BB00BE5FBD /* GliaError.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB750F52273BA9BB00BE5FBD /* GliaError.swift */; };
+		EB7A1508286D98000035AC62 /* FileUploader.Environment.Failing.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB7A1507286D98000035AC62 /* FileUploader.Environment.Failing.swift */; };
+		EB7A150A286D98270035AC62 /* FileUploaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB7A1509286D98270035AC62 /* FileUploaderTests.swift */; };
 		EB95491C2850757400F567F0 /* ChatTextContentViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB95491B2850757400F567F0 /* ChatTextContentViewTests.swift */; };
 		EB9ADB51280EBD4E00FAE8A4 /* InteractorStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB9ADB50280EBD4E00FAE8A4 /* InteractorStateTests.swift */; };
 		EB9ADB552828E66B00FAE8A4 /* CallTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB9ADB542828E66B00FAE8A4 /* CallTests.swift */; };
@@ -801,6 +803,8 @@
 		EB2CBB1127D89F7D004F178E /* OnHoldOverlayStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnHoldOverlayStyle.swift; sourceTree = "<group>"; };
 		EB2CBB1427D8DB95004F178E /* OnHoldOverlayVisualEffectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnHoldOverlayVisualEffectView.swift; sourceTree = "<group>"; };
 		EB750F52273BA9BB00BE5FBD /* GliaError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GliaError.swift; sourceTree = "<group>"; };
+		EB7A1507286D98000035AC62 /* FileUploader.Environment.Failing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUploader.Environment.Failing.swift; sourceTree = "<group>"; };
+		EB7A1509286D98270035AC62 /* FileUploaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUploaderTests.swift; sourceTree = "<group>"; };
 		EB95491B2850757400F567F0 /* ChatTextContentViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTextContentViewTests.swift; sourceTree = "<group>"; };
 		EB9ADB50280EBD4E00FAE8A4 /* InteractorStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractorStateTests.swift; sourceTree = "<group>"; };
 		EB9ADB542828E66B00FAE8A4 /* CallTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallTests.swift; sourceTree = "<group>"; };
@@ -1901,6 +1905,7 @@
 				EB03B00D27FFF6DD0058F6B1 /* CallViewTests.swift */,
 				EB9ADB542828E66B00FAE8A4 /* CallTests.swift */,
 				847A7642285A1914004044D1 /* FileUploadListViewTests.swift */,
+				EB7A1509286D98270035AC62 /* FileUploaderTests.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -2052,6 +2057,7 @@
 		9A3E1D8527B6B668005634EB /* Lib */ = {
 			isa = PBXGroup;
 			children = (
+				EB7A1506286D97F30035AC62 /* Upload */,
 				EB9ADB582829089700FAE8A4 /* ChatItem */,
 				9A8130C027D9091800220BBD /* Download */,
 				9A3E1D9E27BA7B80005634EB /* Storage */,
@@ -2217,6 +2223,14 @@
 				EB2CBB1127D89F7D004F178E /* OnHoldOverlayStyle.swift */,
 			);
 			path = OnHoldOverlay;
+			sourceTree = "<group>";
+		};
+		EB7A1506286D97F30035AC62 /* Upload */ = {
+			isa = PBXGroup;
+			children = (
+				EB7A1507286D98000035AC62 /* FileUploader.Environment.Failing.swift */,
+			);
+			path = Upload;
 			sourceTree = "<group>";
 		};
 		EB9ADB582829089700FAE8A4 /* ChatItem */ = {
@@ -2957,9 +2971,11 @@
 				EB9ADB552828E66B00FAE8A4 /* CallTests.swift in Sources */,
 				9A3E1DA027BA7B9F005634EB /* FileSystemStorageTests.swift in Sources */,
 				EB9ADB5A2829089F00FAE8A4 /* ChatItem+Equatable.swift in Sources */,
+				EB7A150A286D98270035AC62 /* FileUploaderTests.swift in Sources */,
 				EB27E71D27FEBB620090B895 /* CallViewModelTests.swift in Sources */,
 				9ACC25D227B4727500BC5335 /* CoreSDKClient.Failing.swift in Sources */,
 				EB9ADB51280EBD4E00FAE8A4 /* InteractorStateTests.swift in Sources */,
+				EB7A1508286D98000035AC62 /* FileUploader.Environment.Failing.swift in Sources */,
 				847A7643285A1914004044D1 /* FileUploadListViewTests.swift in Sources */,
 				9A1992E727D66C7400161AAE /* UIKitBased.Failing.swift in Sources */,
 				9AE05CB62805D2CB00871321 /* Interactor.Environment.Failing.swift in Sources */,
