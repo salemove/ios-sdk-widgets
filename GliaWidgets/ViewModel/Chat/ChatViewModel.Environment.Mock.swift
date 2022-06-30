@@ -21,7 +21,8 @@ extension ChatViewModel.Environment {
         fromHistory: { true },
         fetchSiteConfigurations: { _ in },
         getCurrentEngagement: { return nil },
-        timerProviding: .mock
+        timerProviding: .mock,
+        uiApplication: .mock
     )
 }
 #endif

@@ -209,7 +209,8 @@ extension RootCoordinator {
                 fromHistory: environment.fromHistory,
                 fetchSiteConfigurations: environment.fetchSiteConfigurations,
                 getCurrentEngagement: environment.getCurrentEngagement,
-                submitSurveyAnswer: environment.submitSurveyAnswer
+                submitSurveyAnswer: environment.submitSurveyAnswer,
+                uiApplication: environment.uiApplication
             )
         )
         coordinator.delegate = { [weak self] event in
@@ -292,7 +293,8 @@ extension RootCoordinator {
                 fetchSiteConfigurations: environment.fetchSiteConfigurations,
                 getCurrentEngagement: environment.getCurrentEngagement,
                 timerProviding: environment.timerProviding,
-                submitSurveyAnswer: environment.submitSurveyAnswer
+                submitSurveyAnswer: environment.submitSurveyAnswer,
+                uiApplication: environment.uiApplication
             )
         )
         coordinator.delegate = { [weak self] event in
@@ -487,6 +489,7 @@ extension RootCoordinator {
         var fetchSiteConfigurations: CoreSdkClient.FetchSiteConfigurations
         var getCurrentEngagement: CoreSdkClient.GetCurrentEngagement
         var submitSurveyAnswer: CoreSdkClient.SubmitSurveyAnswer
+        var uiApplication: UIKitBased.UIApplication
     }
 }
 

@@ -33,6 +33,7 @@ extension ChatViewModel.Environment {
             fail("\(Self.self).fetchSiteConfigurations")
         },
         getCurrentEngagement: { nil },
-        timerProviding: .mock
+        timerProviding: .mock,
+        uiApplication: .mock
     )
 }
