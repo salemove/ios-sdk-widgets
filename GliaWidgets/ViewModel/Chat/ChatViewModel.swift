@@ -57,7 +57,8 @@ class ChatViewModel: EngagementViewModel, ViewModel {
                 date: environment.date,
                 gcd: environment.gcd,
                 localFileThumbnailQueue: environment.localFileThumbnailQueue,
-                uiImage: environment.uiImage
+                uiImage: environment.uiImage,
+                uuid: environment.uuid
             )
         )
         self.downloader = FileDownloader(
