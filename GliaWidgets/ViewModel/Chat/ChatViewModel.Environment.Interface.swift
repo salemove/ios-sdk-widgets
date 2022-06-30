@@ -17,6 +17,7 @@ extension EngagementViewModel {
         var fetchSiteConfigurations: CoreSdkClient.FetchSiteConfigurations
         var getCurrentEngagement: CoreSdkClient.GetCurrentEngagement
         var timerProviding: FoundationBased.Timer.Providing
+        var uuid: () -> UUID
         var uiApplication: UIKitBased.UIApplication
     }
 }

@@ -85,6 +85,7 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
                 fetchSiteConfigurations: environment.fetchSiteConfigurations,
                 getCurrentEngagement: environment.getCurrentEngagement,
                 timerProviding: .live,
+                uuid: environment.uuid,
                 uiApplication: environment.uiApplication
             )
         )
@@ -204,6 +205,7 @@ extension ChatCoordinator {
         var fetchSiteConfigurations: CoreSdkClient.FetchSiteConfigurations
         var getCurrentEngagement: CoreSdkClient.GetCurrentEngagement
         var submitSurveyAnswer: CoreSdkClient.SubmitSurveyAnswer
+        var uuid: () -> UUID
         var uiApplication: UIKitBased.UIApplication
     }
 }
