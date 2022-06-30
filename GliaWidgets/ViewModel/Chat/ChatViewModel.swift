@@ -632,8 +632,23 @@ extension ChatViewModel {
         delegate?(.showFile(file))
     }
 
-    private func linkTapped(_ url: URL) {
-        delegate?(.openLink(url))
+    func linkTapped(_ url: URL) {
+        switch url.scheme?.lowercased() {
+        case "tel",
+            "mailto":
+            guard
+                environment.uiApplication.canOpenURL(url)
+            else { return }
+
+            environment.uiApplication.open(url)
+
+        case "http",
+            "https":
+            delegate?(.openLink(url))
+
+        default:
+            return
+        }
     }
 
     private func downloadTapped(_ download: FileDownload) {
