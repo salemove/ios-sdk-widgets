@@ -34,6 +34,10 @@ extension ChatViewModel.Environment {
         },
         getCurrentEngagement: { nil },
         timerProviding: .mock,
+        uuid: {
+            fail("\(Self.self).uuid")
+            return .mock
+        },
         uiApplication: .mock
     )
 }

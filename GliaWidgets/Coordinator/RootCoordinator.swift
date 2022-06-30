@@ -210,6 +210,7 @@ extension RootCoordinator {
                 fetchSiteConfigurations: environment.fetchSiteConfigurations,
                 getCurrentEngagement: environment.getCurrentEngagement,
                 submitSurveyAnswer: environment.submitSurveyAnswer,
+                uuid: environment.uuid,
                 uiApplication: environment.uiApplication
             )
         )
@@ -294,6 +295,7 @@ extension RootCoordinator {
                 getCurrentEngagement: environment.getCurrentEngagement,
                 timerProviding: environment.timerProviding,
                 submitSurveyAnswer: environment.submitSurveyAnswer,
+                uuid: environment.uuid,
                 uiApplication: environment.uiApplication
             )
         )

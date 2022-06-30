@@ -54,7 +54,10 @@ final class FileUploadListView: UIView {
     }
 
     func removeUploadView(with upload: FileUpload) {
-        guard let uploadView = uploadViews.first(where: { $0.upload == upload }) else { return }
+        guard
+            let uploadView = uploadViews.first(where: { $0.upload.uuid == upload.uuid })
+        else { return }
+
         stackView.removeArrangedSubview(uploadView)
         uploadView.removeFromSuperview()
         updateHeight()

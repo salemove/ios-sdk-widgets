@@ -48,6 +48,7 @@ class ChatViewModelTests: XCTestCase {
                 fetchSiteConfigurations: { _ in },
                 getCurrentEngagement: { nil },
                 timerProviding: .mock,
+                uuid: { .mock },
                 uiApplication: .mock
             )
         )
