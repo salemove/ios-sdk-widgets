@@ -72,7 +72,8 @@ class CallCoordinator: SubFlowCoordinator, FlowCoordinator {
                 fromHistory: environment.fromHistory,
                 fetchSiteConfigurations: environment.fetchSiteConfigurations,
                 getCurrentEngagement: environment.getCurrentEngagement,
-                timerProviding: environment.timerProviding
+                timerProviding: environment.timerProviding,
+                uiApplication: environment.uiApplication
             ),
             call: call,
             unreadMessages: unreadMessages,
@@ -123,5 +124,6 @@ extension CallCoordinator {
         var getCurrentEngagement: CoreSdkClient.GetCurrentEngagement
         var timerProviding: FoundationBased.Timer.Providing
         var submitSurveyAnswer: CoreSdkClient.SubmitSurveyAnswer
+        var uiApplication: UIKitBased.UIApplication
     }
 }

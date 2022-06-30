@@ -211,7 +211,8 @@ public class Glia {
                 timerProviding: environment.timerProviding,
                 fetchSiteConfigurations: environment.coreSdk.fetchSiteConfigurations,
                 getCurrentEngagement: environment.coreSdk.getCurrentEngagement,
-                submitSurveyAnswer: environment.coreSdk.submitSurveyAnswer
+                submitSurveyAnswer: environment.coreSdk.submitSurveyAnswer,
+                uiApplication: environment.uiApplication
             )
         )
         rootCoordinator?.delegate = { [weak self] event in

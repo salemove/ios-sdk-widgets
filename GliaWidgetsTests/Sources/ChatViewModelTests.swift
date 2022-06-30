@@ -47,7 +47,8 @@ class ChatViewModelTests: XCTestCase {
                 fromHistory: { true },
                 fetchSiteConfigurations: { _ in },
                 getCurrentEngagement: { nil },
-                timerProviding: .mock
+                timerProviding: .mock,
+                uiApplication: .mock
             )
         )
 
@@ -215,6 +216,102 @@ class ChatViewModelTests: XCTestCase {
         // Then
         XCTAssertEqual(calls, [.fetchSiteConfigurations])
 	}
+    
+    func test_handleUrlWithPhoneOpensURLWithUIApplication() throws {
+        enum Call: Equatable { case openUrl(URL) }
+
+        var calls: [Call] = []
+        var viewModelEnv = ChatViewModel.Environment.failing
+        viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
+        viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
+        viewModelEnv.uiApplication.canOpenURL = { _ in true }
+        viewModelEnv.uiApplication.open = {
+            calls.append(.openUrl($0))
+        }
+        let viewModel: ChatViewModel = .mock(interactor: .mock(), environment: viewModelEnv)
+
+        let telUrl = URL(string: "tel:12345678")!
+        viewModel.linkTapped(telUrl)
+
+        XCTAssertEqual(calls, [.openUrl(telUrl)])
+    }
+    
+    func test_handleUrlWithEmailOpensURLWithUIApplication() throws {
+        enum Call: Equatable { case openUrl(URL) }
+
+        var calls: [Call] = []
+        var viewModelEnv = ChatViewModel.Environment.failing
+        viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
+        viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
+        viewModelEnv.uiApplication.canOpenURL = { _ in true }
+        viewModelEnv.uiApplication.open = {
+            calls.append(.openUrl($0))
+        }
+        let viewModel: ChatViewModel = .mock(interactor: .mock(), environment: viewModelEnv)
+
+        let mailUrl = URL(string: "mailto:mock@mock.mock")!
+        viewModel.linkTapped(mailUrl)
+
+        XCTAssertEqual(calls, [.openUrl(mailUrl)])
+    }
+    
+    func test_handleUrlWithLinkOpensCalsLinkTapped() throws {
+        enum Call: Equatable { case linkTapped(URL) }
+        var calls: [Call] = []
+        var viewModelEnv = ChatViewModel.Environment.failing
+        viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
+        viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
+        let viewModel: ChatViewModel = .mock(
+            interactor: .mock(),
+            environment: viewModelEnv
+        )
+
+        viewModel.delegate = { event in
+            switch event {
+            case .openLink(let url):
+                calls.append(.linkTapped(url))
+
+            default:
+                break
+            }
+        }
+
+        let linkUrl = URL(string: "https://mock.mock")!
+        viewModel.linkTapped(linkUrl)
+
+        XCTAssertEqual(calls, [.linkTapped(linkUrl)])
+    }
+    
+    func test_handleUrlWithRandomSchemeDoesNothing() throws {
+        enum Call: Equatable {
+            case linkTapped(URL)
+            case openUrl(URL)
+        }
+    
+        var calls: [Call] = []
+        var viewModelEnv = ChatViewModel.Environment.failing
+        viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
+        viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
+        viewModelEnv.uiApplication.canOpenURL = { _ in true }
+        viewModelEnv.uiApplication.open = {
+            calls.append(.openUrl($0))
+        }
+        let viewModel: ChatViewModel = .mock(interactor: .mock(), environment: viewModelEnv)
+        viewModel.delegate = { event in
+            switch event {
+            case .openLink(let url):
+                calls.append(.linkTapped(url))
+
+            default:
+                break
+            }
+        }
+    
+        let mockUrl = URL(string: "mock:mock")!
+        viewModel.linkTapped(mockUrl)
+
+        XCTAssertEqual(calls, [])
+    }
 }
 
 extension ChatChoiceCardOption {
