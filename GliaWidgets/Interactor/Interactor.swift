@@ -63,7 +63,8 @@ class Interactor {
     private var observers = [() -> (AnyObject?, EventHandler)]()
     private var isEngagementEndedByVisitor = false
     private let sdkConfiguration: CoreSdkClient.Salemove.Configuration
-    private(set) var state: InteractorState = .none {
+
+    var state: InteractorState = .none {
         didSet {
             if oldValue != state {
                 notify(.stateChanged(state))
@@ -160,33 +161,6 @@ extension Interactor {
         }
     }
 
-    func request(
-        _ media: CoreSdkClient.MediaType,
-        direction: CoreSdkClient.MediaDirection,
-        success: @escaping () -> Void,
-        failure: @escaping (Error?, CoreSdkClient.SalemoveError?) -> Void
-    ) {
-        withConfiguration { [weak self] in
-            do {
-                let offer = try CoreSdkClient.MediaUpgradeOffer(
-                    type: media,
-                    direction: direction
-                )
-                self?.environment.coreSdk.requestMediaUpgradeWithOffer(offer) { isSuccess, error in
-                    if let error = error {
-                        failure(nil, error)
-                    } else if !isSuccess {
-                        failure(nil, nil)
-                    } else {
-                        success()
-                    }
-                }
-            } catch {
-                failure(error, nil)
-            }
-        }
-    }
-
     func sendMessagePreview(_ message: String) {
         environment.coreSdk.sendMessagePreview(message) { _, _ in }
     }
@@ -240,7 +214,7 @@ extension Interactor {
         }
     }
 
-    private func exitQueue(
+    func exitQueue(
         ticket: CoreSdkClient.QueueTicket,
         success: @escaping () -> Void,
         failure: @escaping (CoreSdkClient.SalemoveError) -> Void
@@ -255,7 +229,7 @@ extension Interactor {
         }
     }
 
-    private func endEngagement(
+    func endEngagement(
         success: @escaping () -> Void,
         failure: @escaping (CoreSdkClient.SalemoveError) -> Void
     ) {
