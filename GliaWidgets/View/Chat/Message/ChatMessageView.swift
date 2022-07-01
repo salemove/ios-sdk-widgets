@@ -8,16 +8,13 @@ class ChatMessageView: UIView {
     var linkTapped: ((URL) -> Void)?
 
     private let contentAlignment: ChatMessageContentAlignment
-    private let environment: Environment
 
     init(
         with style: ChatMessageStyle,
-        contentAlignment: ChatMessageContentAlignment,
-        environment: Environment
+        contentAlignment: ChatMessageContentAlignment
     ) {
         self.style = style
         self.contentAlignment = contentAlignment
-        self.environment = environment
         super.init(frame: .zero)
         setup()
     }
@@ -32,10 +29,7 @@ class ChatMessageView: UIView {
         case let .text(text, accProperties):
             let contentView = ChatTextContentView(
                 with: style.text,
-                contentAlignment: contentAlignment,
-                environment: .init(
-                    uiApplication: environment.uiApplication
-                )
+                contentAlignment: contentAlignment
             )
             contentView.text = text
             contentView.linkTapped = { [weak self] in self?.linkTapped?($0) }
@@ -137,11 +131,5 @@ class ChatMessageView: UIView {
                 )
             }
         }
-    }
-}
-
-extension ChatMessageView {
-    struct Environment {
-        var uiApplication: UIKitBased.UIApplication
     }
 }

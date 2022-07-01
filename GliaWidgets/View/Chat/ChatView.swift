@@ -267,10 +267,7 @@ extension ChatView {
             return .queueOperator(connectView)
         case .outgoingMessage(let message):
             let view = VisitorChatMessageView(
-                with: style.visitorMessage,
-                environment: .init(
-                    uiApplication: environment.uiApplication
-                )
+                with: style.visitorMessage
             )
             view.appendContent(
                 .text(
@@ -295,10 +292,7 @@ extension ChatView {
             return .outgoingMessage(view)
         case .visitorMessage(let message, let status):
             let view = VisitorChatMessageView(
-                with: style.visitorMessage,
-                environment: .init(
-                    uiApplication: environment.uiApplication
-                )
+                with: style.visitorMessage
             )
             view.appendContent(
                 .text(
@@ -329,8 +323,7 @@ extension ChatView {
                     data: environment.data,
                     uuid: environment.uuid,
                     gcd: environment.gcd,
-                    imageViewCache: environment.imageViewCache,
-                    uiApplication: environment.uiApplication
+                    imageViewCache: environment.imageViewCache
                 )
             )
             view.appendContent(
@@ -362,8 +355,7 @@ extension ChatView {
                     data: environment.data,
                     uuid: environment.uuid,
                     gcd: environment.gcd,
-                    imageViewCache: environment.imageViewCache,
-                    uiApplication: environment.uiApplication
+                    imageViewCache: environment.imageViewCache
                 )
             )
             let choiceCard = ChoiceCard(with: message, isActive: isActive)

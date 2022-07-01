@@ -39,10 +39,7 @@ class OperatorChatMessageView: ChatMessageView {
         self.environment = environment
         super.init(
             with: style,
-            contentAlignment: .left,
-            environment: .init(
-                uiApplication: environment.uiApplication
-            )
+            contentAlignment: .left
         )
         setup()
         layout()
@@ -81,6 +78,5 @@ extension OperatorChatMessageView {
         var uuid: () -> UUID
         var gcd: GCD
         var imageViewCache: ImageView.Cache
-        var uiApplication: UIKitBased.UIApplication
     }
 }

@@ -30,17 +30,14 @@ class ChatTextContentView: UIView {
     private let contentAlignment: ChatMessageContentAlignment
     private let contentView = UIView()
     private let kTextInsets: UIEdgeInsets
-    private let environment: Environment
 
     init(
         with style: ChatTextContentStyle,
         contentAlignment: ChatMessageContentAlignment,
-        environment: Environment,
         insets: UIEdgeInsets = UIEdgeInsets(top: 12, left: 16, bottom: 12, right: 16)
     ) {
         self.style = style
         self.contentAlignment = contentAlignment
-        self.environment = environment
         self.kTextInsets = insets
         super.init(frame: .zero)
         setup()
@@ -110,33 +107,8 @@ extension ChatTextContentView: UITextViewDelegate {
         in characterRange: NSRange,
         interaction: UITextItemInteraction
     ) -> Bool {
-        handleUrl(url: URL)
+        linkTapped?(URL)
         return false
-    }
-
-    func handleUrl(url: URL) {
-        switch url.scheme?.lowercased() {
-        case "tel",
-            "mailto":
-            guard
-                environment.uiApplication.canOpenURL(url)
-            else { return }
-
-            environment.uiApplication.open(url)
-
-        case "http",
-            "https":
-            linkTapped?(url)
-
-        default:
-            return
-        }
-    }
-}
-
-extension ChatTextContentView {
-    struct Environment {
-        var uiApplication: UIKitBased.UIApplication
     }
 }
 
@@ -158,7 +130,6 @@ extension ChatTextContentView {
                 accessibility: .unsupported
             ),
             contentAlignment: .left,
-            environment: environment,
             insets: .zero
         )
     }
