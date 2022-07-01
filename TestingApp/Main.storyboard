@@ -22,7 +22,7 @@
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FAP-5O-GCi">
                                         <rect key="frame" x="164.5" y="0.0" width="85" height="30"/>
-                                        <accessibility key="accessibilityConfiguration" identifier="button_settings"/>
+                                        <accessibility key="accessibilityConfiguration" identifier="main_settings_button"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="F8f-dQ-RxV"/>
                                         </constraints>
@@ -33,7 +33,7 @@
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zmv-pl-N2H">
                                         <rect key="frame" x="173" y="50" width="68" height="30"/>
-                                        <accessibility key="accessibilityConfiguration" identifier="button_chat"/>
+                                        <accessibility key="accessibilityConfiguration" identifier="main_chat_button"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="9bb-ZJ-g4f"/>
                                         </constraints>
@@ -44,7 +44,7 @@
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="USF-zD-dZ5">
                                         <rect key="frame" x="173.5" y="100" width="67" height="30"/>
-                                        <accessibility key="accessibilityConfiguration" identifier="button_audio_call"/>
+                                        <accessibility key="accessibilityConfiguration" identifier="main_audio_button"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="PFk-Yr-vcD"/>
                                         </constraints>
@@ -55,7 +55,7 @@
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tG2-uU-gYf">
                                         <rect key="frame" x="173.5" y="150" width="67" height="30"/>
-                                        <accessibility key="accessibilityConfiguration" identifier="button_video_call"/>
+                                        <accessibility key="accessibilityConfiguration" identifier="main_video_button"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="Hga-kH-fOK"/>
                                         </constraints>
@@ -66,7 +66,7 @@
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P9U-ba-KVy">
                                         <rect key="frame" x="179.5" y="200" width="55" height="30"/>
-                                        <accessibility key="accessibilityConfiguration" identifier="button_resume"/>
+                                        <accessibility key="accessibilityConfiguration" identifier="main_resume_button"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="mbg-qw-hCC"/>
                                         </constraints>
@@ -77,7 +77,7 @@
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0wb-9L-Csn">
                                         <rect key="frame" x="161" y="250" width="92" height="30"/>
-                                        <accessibility key="accessibilityConfiguration" identifier="button_clear_session"/>
+                                        <accessibility key="accessibilityConfiguration" identifier="main_clearSession_button"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="wht-81-BI4"/>
                                         </constraints>
@@ -88,7 +88,7 @@
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Ys-xS-zdq">
                                         <rect key="frame" x="126" y="300" width="162" height="30"/>
-                                        <accessibility key="accessibilityConfiguration" identifier="button_end_active_engagement"/>
+                                        <accessibility key="accessibilityConfiguration" identifier="main_endEngagement_button"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="QkV-yj-Sti"/>
                                         </constraints>
