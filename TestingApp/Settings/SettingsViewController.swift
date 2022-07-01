@@ -55,7 +55,7 @@ class SettingsViewController: UIViewController {
             target: self,
             action: #selector(doneTapped)
         )
-        doneItem.accessibilityIdentifier = "barButtonItem_done"
+        doneItem.accessibilityIdentifier = "screen_settings_barButtonItem_done"
         navigationItem.rightBarButtonItem = doneItem
 
         tableView.dataSource = self
@@ -93,22 +93,22 @@ private extension SettingsViewController {
             title: "Identifier:",
             text: conf.siteApiKeyId
         )
-        siteApiKeyIdCell.textField.accessibilityIdentifier = "textField_site_api_key_id"
+        siteApiKeyIdCell.textField.accessibilityIdentifier = "settings_siteApiKeyId_textfield"
         siteApiKeySecretCell = SettingsTextCell(
             title: "Secret:",
             text: conf.siteApiKeySecret
         )
-        siteApiKeySecretCell.textField.accessibilityIdentifier = "textField_site_api_key_secret"
+        siteApiKeySecretCell.textField.accessibilityIdentifier = "settings_siteApiKeySecret_textfield"
         siteCell = SettingsTextCell(
             title: "Site:",
             text: conf.site
         )
-        siteCell.textField.accessibilityIdentifier = "textField_site_id"
+        siteCell.textField.accessibilityIdentifier = "settings_siteId_textfield"
         queueIDCell = SettingsTextCell(
             title: "Queue ID:",
             text: queueID
         )
-        queueIDCell.accessibilityIdentifier = "textField_queue_id"
+        queueIDCell.accessibilityIdentifier = "settings_queueId_textfield"
         visitorContextAssedIdCell = SettingsTextCell(
             title: "Visitor Context Asset ID:",
             text: visitorContextAssetId
