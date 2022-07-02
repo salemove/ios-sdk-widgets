@@ -199,6 +199,9 @@
 		7529F2B427E1D503004D3581 /* Survey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7529F2B327E1D503004D3581 /* Survey.swift */; };
 		7529F2B627E1EB9A004D3581 /* Survey.ButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7529F2B527E1EB9A004D3581 /* Survey.ButtonView.swift */; };
 		753A56B927CFEB730050D8E6 /* ChatViewModel.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB196DF27C401F600FD60AB /* ChatViewModel.Mock.swift */; };
+		754313CB2870A65400C9C1C6 /* SettingsViewController.Props.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754313CA2870A65400C9C1C6 /* SettingsViewController.Props.swift */; };
+		754313CD2870B1C400C9C1C6 /* UserDefaultsStored.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754313CC2870B1C400C9C1C6 /* UserDefaultsStored.swift */; };
+		754313CF2870E64600C9C1C6 /* Configuration.Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754313CE2870E64600C9C1C6 /* Configuration.Extensions.swift */; };
 		754CC61227E2767A005676E9 /* Survey.BooleanQuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AF8D0827DD0DE1009EEE2C /* Survey.BooleanQuestionView.swift */; };
 		754CC61327E27BE2005676E9 /* Survey.SingleChoiceQuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AF8D0A27DD1DD3009EEE2C /* Survey.SingleChoiceQuestionView.swift */; };
 		754CC61527E27C42005676E9 /* Survey.Checkbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754CC61427E27C42005676E9 /* Survey.Checkbox.swift */; };
@@ -367,11 +370,10 @@
 		EB2CBB1227D89F7D004F178E /* OnHoldOverlayStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB2CBB1127D89F7D004F178E /* OnHoldOverlayStyle.swift */; };
 		EB2CBB1527D8DB95004F178E /* OnHoldOverlayVisualEffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB2CBB1427D8DB95004F178E /* OnHoldOverlayVisualEffectView.swift */; };
 		EB750F53273BA9BB00BE5FBD /* GliaError.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB750F52273BA9BB00BE5FBD /* GliaError.swift */; };
+		EB95491C2850757400F567F0 /* ChatTextContentViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB95491B2850757400F567F0 /* ChatTextContentViewTests.swift */; };
 		EB9ADB51280EBD4E00FAE8A4 /* InteractorStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB9ADB50280EBD4E00FAE8A4 /* InteractorStateTests.swift */; };
 		EB9ADB552828E66B00FAE8A4 /* CallTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB9ADB542828E66B00FAE8A4 /* CallTests.swift */; };
 		EB9ADB5A2829089F00FAE8A4 /* ChatItem+Equatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB9ADB592829089F00FAE8A4 /* ChatItem+Equatable.swift */; };
-		FD01A52B483418AB02DCFBFC /* Pods_GliaWidgets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85639A838514258D976E1B2A /* Pods_GliaWidgets.framework */; };
-		EB95491C2850757400F567F0 /* ChatTextContentViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB95491B2850757400F567F0 /* ChatTextContentViewTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -622,6 +624,9 @@
 		7529F2B327E1D503004D3581 /* Survey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Survey.swift; sourceTree = "<group>"; };
 		7529F2B527E1EB9A004D3581 /* Survey.ButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Survey.ButtonView.swift; sourceTree = "<group>"; };
 		75348B236C84EBF420D0F082 /* Pods-SnapshotTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SnapshotTests.release.xcconfig"; path = "Target Support Files/Pods-SnapshotTests/Pods-SnapshotTests.release.xcconfig"; sourceTree = "<group>"; };
+		754313CA2870A65400C9C1C6 /* SettingsViewController.Props.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.Props.swift; sourceTree = "<group>"; };
+		754313CC2870B1C400C9C1C6 /* UserDefaultsStored.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsStored.swift; sourceTree = "<group>"; };
+		754313CE2870E64600C9C1C6 /* Configuration.Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.Extensions.swift; sourceTree = "<group>"; };
 		754CC61427E27C42005676E9 /* Survey.Checkbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Survey.Checkbox.swift; sourceTree = "<group>"; };
 		756087E027837EC000158604 /* BundleManaging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleManaging.swift; sourceTree = "<group>"; };
 		75A985425A950FFA1C13EACE /* Pods-GliaWidgets.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliaWidgets.debug.xcconfig"; path = "Target Support Files/Pods-GliaWidgets/Pods-GliaWidgets.debug.xcconfig"; sourceTree = "<group>"; };
@@ -796,11 +801,10 @@
 		EB2CBB1127D89F7D004F178E /* OnHoldOverlayStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnHoldOverlayStyle.swift; sourceTree = "<group>"; };
 		EB2CBB1427D8DB95004F178E /* OnHoldOverlayVisualEffectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnHoldOverlayVisualEffectView.swift; sourceTree = "<group>"; };
 		EB750F52273BA9BB00BE5FBD /* GliaError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GliaError.swift; sourceTree = "<group>"; };
+		EB95491B2850757400F567F0 /* ChatTextContentViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTextContentViewTests.swift; sourceTree = "<group>"; };
 		EB9ADB50280EBD4E00FAE8A4 /* InteractorStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractorStateTests.swift; sourceTree = "<group>"; };
 		EB9ADB542828E66B00FAE8A4 /* CallTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallTests.swift; sourceTree = "<group>"; };
 		EB9ADB592829089F00FAE8A4 /* ChatItem+Equatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatItem+Equatable.swift"; sourceTree = "<group>"; };
-		F08274A374F775EE39BFBDB1 /* Pods-GliaWidgetsTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliaWidgetsTests.debug.xcconfig"; path = "Target Support Files/Pods-GliaWidgetsTests/Pods-GliaWidgetsTests.debug.xcconfig"; sourceTree = "<group>"; };
-		EB95491B2850757400F567F0 /* ChatTextContentViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTextContentViewTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1234,6 +1238,7 @@
 			isa = PBXGroup;
 			children = (
 				1A4AD3D5256FE7F800468BFB /* UIColor+Extensions.swift */,
+				754313CE2870E64600C9C1C6 /* Configuration.Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1573,6 +1578,8 @@
 			children = (
 				1A4AD3CC256E8E6500468BFB /* Cells */,
 				1A60AFF42567CE1300E53F53 /* SettingsViewController.swift */,
+				754313CA2870A65400C9C1C6 /* SettingsViewController.Props.swift */,
+				754313CC2870B1C400C9C1C6 /* UserDefaultsStored.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -2951,7 +2958,6 @@
 				9A1992E127D6313500161AAE /* ImageView.Cache.Failing.swift in Sources */,
 				EB9ADB552828E66B00FAE8A4 /* CallTests.swift in Sources */,
 				9A3E1DA027BA7B9F005634EB /* FileSystemStorageTests.swift in Sources */,
-				7512A57D27BFA37D00319DF1 /* CoreSdkClient.Salemove.swift in Sources */,
 				EB9ADB5A2829089F00FAE8A4 /* ChatItem+Equatable.swift in Sources */,
 				EB27E71D27FEBB620090B895 /* CallViewModelTests.swift in Sources */,
 				9ACC25D227B4727500BC5335 /* CoreSDKClient.Failing.swift in Sources */,
@@ -2963,7 +2969,6 @@
 				9A3E1D9D27BA7741005634EB /* FoundationBased.Failing.swift in Sources */,
 				9A3E1D8427B67F1B005634EB /* Helper.swift in Sources */,
 				9A8130C627D90B3800220BBD /* FileSystemStorage.Failing.swift in Sources */,
-				845E2F6A28365AD000C04D56 /* CoreSDKClient.Operator.Mock.swift in Sources */,
 				7512A57A27BF9FCD00319DF1 /* ChatViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2976,7 +2981,10 @@
 				1A4AD3DC256FF67200468BFB /* SettingsFontCell.swift in Sources */,
 				1A205D7F25655CEC003AA3CD /* ViewController.swift in Sources */,
 				1A4AD3D6256FE7F800468BFB /* UIColor+Extensions.swift in Sources */,
+				754313CD2870B1C400C9C1C6 /* UserDefaultsStored.swift in Sources */,
 				1A205D7B25655CEC003AA3CD /* AppDelegate.swift in Sources */,
+				754313CB2870A65400C9C1C6 /* SettingsViewController.Props.swift in Sources */,
+				754313CF2870E64600C9C1C6 /* Configuration.Extensions.swift in Sources */,
 				1A4AD3D1256E92F300468BFB /* SettingsColorCell.swift in Sources */,
 				1A4AD3CE256E8F5500468BFB /* SettingsCell.swift in Sources */,
 				6B2BFCE2274297F100B68506 /* SettingsSwitchCell.swift in Sources */,

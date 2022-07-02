@@ -4,8 +4,18 @@ import GliaWidgets
 import SalemoveSDK
 
 class ViewController: UIViewController {
-    private var settingsViewController = SettingsViewController()
     private var glia: Glia!
+
+    @UserDefaultsStored(key: "configuration", defaultValue: Configuration.empty(with: .beta), coder: .jsonCoding())
+    private var configuration: Configuration
+
+    @UserDefaultsStored(key: "queueId", defaultValue: "")
+    private var queueId: String
+
+    private var theme = Theme()
+
+    @UserDefaultsStored(key: "features", defaultValue: Features.all, coder: .rawRepresentable())
+    private var features: Features
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,16 +56,26 @@ class ViewController: UIViewController {
 
 extension ViewController {
     func presentSettings() {
-        let navController = UINavigationController(rootViewController: settingsViewController)
+        let viewController = SettingsViewController(
+            props: .init(
+                config: configuration,
+                changeConfig: { [weak self] newConfig in self?.configuration = newConfig },
+                queueId: queueId,
+                changeQueueId: { [weak self] newQueueId in self?.queueId = newQueueId },
+                theme: theme,
+                changeTheme: { [weak self] newTheme in self?.theme = newTheme },
+                features: features,
+                changeFeatures: { [weak self] newFeatures in self?.features = newFeatures }
+            )
+        )
+        let navController = UINavigationController(rootViewController: viewController)
         navController.modalPresentationStyle = .fullScreen
         present(navController, animated: true, completion: nil)
     }
 
     func presentGlia(_ engagementKind: EngagementKind) {
-        let conf = settingsViewController.conf
-        let queueID = settingsViewController.queueID
-        let theme = settingsViewController.theme
-        let visitorContext: SalemoveSDK.VisitorContext? = conf.visitorContext
+
+        let visitorContext: SalemoveSDK.VisitorContext? = configuration.visitorContext
             .map(\.assetId)
             .map(SalemoveSDK.VisitorContext.AssetId.init(rawValue:))
             .map(SalemoveSDK.VisitorContext.ContextType.assetId)
@@ -78,11 +98,11 @@ extension ViewController {
         do {
             try Glia.sharedInstance.start(
                 engagementKind,
-                configuration: conf,
-                queueID: queueID,
+                configuration: configuration,
+                queueID: queueId,
                 visitorContext: visitorContext,
                 theme: theme,
-                features: settingsViewController.features
+                features: features
             )
         } catch GliaError.engagementExists {
             alert(message: "Failed to start\nEngagement is ongoing, please use 'Resume' button")
@@ -99,5 +119,12 @@ extension ViewController {
             alert.dismiss(animated: true, completion: nil)
         })))
         present(alert, animated: true, completion: nil)
+    }
+
+    func updateConf(with queryItems: [URLQueryItem]) {
+        Configuration(queryItems: queryItems).map { configuration = $0 }
+        queryItems.first(where: { $0.name == "queue_id"})?.value.map {
+            queueId = $0
+        }
     }
 }
