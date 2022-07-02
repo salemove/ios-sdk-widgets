@@ -8,6 +8,8 @@ public enum Environment {
     case usa
     /// Beta environment. For development use.
     case beta
+    /// Custom environment. For development use.
+    case custom(URL)
 
     var region: CoreSdkClient.Salemove.Region {
         switch self {
@@ -19,6 +21,8 @@ public enum Environment {
             // swiftlint:disable force_unwrapping
             return .custom(URL(string: "https://api.beta.salemove.com/")!)
             // swiftlint:enable force_unwrapping
+        case .custom(let url):
+            return .custom(url)
         }
     }
 }
