@@ -115,6 +115,7 @@ class ChatMessageEntryView: UIView {
         )
         messageContainerView.addGestureRecognizer(tapRecognizer)
 
+        textView.accessibilityIdentifier = "chat_textView"
         textView.delegate = self
         textView.textContainerInset = .zero
         textView.textContainer.lineFragmentPadding = 0
@@ -135,6 +136,7 @@ class ChatMessageEntryView: UIView {
         pickMediaButton.accessibilityLabel = style.mediaButton.accessibility.accessibilityLabel
         updatePickMediaButtonVisibility()
 
+        sendButton.accessibilityIdentifier = "chat_sendButton"
         sendButton.tap = { [weak self] in self?.sendTap() }
         sendButton.accessibilityLabel = style.sendButton.accessibility.accessibilityLabel
         showsSendButton = false
