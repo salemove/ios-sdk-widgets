@@ -100,6 +100,7 @@ class ChatTextContentView: UIView {
             }
             textView.text = text
         }
+        accessibilityIdentifier = text
     }
 }
 
