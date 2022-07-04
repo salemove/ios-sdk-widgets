@@ -105,6 +105,7 @@ class ChatView: EngagementView {
 
         observeKeyboard()
         addKeyboardDismissalTapGesture()
+        typingIndicatorView.accessibilityIdentifier = "chat_typingIndicator"
         typingIndicatorView.isHidden = true
     }
 
