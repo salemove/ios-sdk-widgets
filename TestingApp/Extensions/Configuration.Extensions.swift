@@ -13,17 +13,12 @@ extension Configuration {
 
 extension Configuration {
     init?(queryItems: [URLQueryItem]) {
-
-        guard let siteId = queryItems.first(where: { $0.name == "site_id"})?.value else {
-            return nil
-        }
-        guard let siteApiKeyId = queryItems.first(where: { $0.name == "api_key_id"})?.value else {
-            return nil
-        }
-        guard let siteApiKeySecret = queryItems.first(where: { $0.name == "api_key_secret"})?.value else {
-            return nil
-        }
-        guard let envName = queryItems.first(where: { $0.name == "env"})?.value else {
+        guard
+            let siteId = queryItems.first(where: { $0.name == "site_id"})?.value,
+            let siteApiKeyId = queryItems.first(where: { $0.name == "api_key_id"})?.value,
+            let siteApiKeySecret = queryItems.first(where: { $0.name == "api_key_secret"})?.value,
+            let envName = queryItems.first(where: { $0.name == "env"})?.value
+        else {
             return nil
         }
 
