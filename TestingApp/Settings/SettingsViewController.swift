@@ -40,9 +40,7 @@ final class SettingsViewController: UIViewController {
 
     private var props: Props
 
-    init(
-        props: Props
-    ) {
+    init(props: Props) {
         self.props = props
         super.init(nibName: nil, bundle: nil)
     }
@@ -253,7 +251,7 @@ private extension SettingsViewController {
         let uuid = UUID(uuidString: visitorContextAssedIdCell.textField.text ?? "")
         props.changeConfig(
             .init(
-                authorizationMethod: .siteApiKey(id: siteApiKeyIdCell.textField.text ?? "", secret: siteApiKeySecretCell.textField.text ?? ""),
+                authorizationMethod: siteApiKey,
                 environment: .beta,
                 site: siteCell.textField.text ?? "",
                 visitorContext: uuid == nil ? nil : .init(assetId: uuid!)
@@ -265,6 +263,13 @@ private extension SettingsViewController {
             features.remove(.bubbleView)
         }
         props.changeFeatures(features)
+    }
+
+    private var siteApiKey: Configuration.AuthorizationMethod {
+        .siteApiKey(
+            id: siteApiKeyIdCell.textField.text ?? "",
+            secret: siteApiKeySecretCell.textField.text ?? ""
+        )
     }
 
     private func makeTheme() -> Theme {
