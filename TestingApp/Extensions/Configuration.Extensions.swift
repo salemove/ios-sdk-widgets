@@ -53,7 +53,6 @@ private extension Environment {
 }
 
 extension Configuration: Codable {
-
     enum CodingKeys: String, CodingKey {
         case authorizationMethod, environment, site, visitorContext
     }
@@ -78,7 +77,6 @@ extension Configuration: Codable {
 }
 
 extension Configuration.AuthorizationMethod: Codable {
-
     enum CodingKeys: String, CodingKey {
         case id, secret, appToken
     }
