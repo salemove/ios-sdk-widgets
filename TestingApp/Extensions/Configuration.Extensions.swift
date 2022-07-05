@@ -119,7 +119,7 @@ extension Environment: Codable {
             self = .europe
         default:
             guard let custom = URL(string: rawValue) else {
-                throw NSError(domain: "not-valid-env", code: -33)
+                throw NSError(domain: "not-valid-env", code: 0)
             }
             self = .custom(custom)
         }
