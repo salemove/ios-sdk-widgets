@@ -34,7 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         if components.host == "configure" {
-            root.updateConf(with: queryItems)
+            root.updateConfiguration(with: queryItems)
         }
         return true
     }
