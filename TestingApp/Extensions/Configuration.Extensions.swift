@@ -17,7 +17,8 @@ extension Configuration {
             let siteId = queryItems.first(where: { $0.name == "site_id"})?.value,
             let siteApiKeyId = queryItems.first(where: { $0.name == "api_key_id"})?.value,
             let siteApiKeySecret = queryItems.first(where: { $0.name == "api_key_secret"})?.value,
-            let envName = queryItems.first(where: { $0.name == "env"})?.value
+            let envName = queryItems.first(where: { $0.name == "env"})?.value,
+            let environment = Environment(rawValue: envName)
         else {
             return nil
         }
@@ -28,7 +29,7 @@ extension Configuration {
 
         self = .init(
             authorizationMethod: .siteApiKey(id: siteApiKeyId, secret: siteApiKeySecret),
-            environment: .init(rawValue: envName) ?? .beta,
+            environment: environment,
             site: siteId,
             visitorContext: visitorContext
         )
