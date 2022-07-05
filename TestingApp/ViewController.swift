@@ -74,7 +74,6 @@ extension ViewController {
     }
 
     func presentGlia(_ engagementKind: EngagementKind) {
-
         let visitorContext: SalemoveSDK.VisitorContext? = configuration.visitorContext
             .map(\.assetId)
             .map(SalemoveSDK.VisitorContext.AssetId.init(rawValue:))
@@ -121,7 +120,7 @@ extension ViewController {
         present(alert, animated: true, completion: nil)
     }
 
-    func updateConf(with queryItems: [URLQueryItem]) {
+    func updateConfiguration(with queryItems: [URLQueryItem]) {
         Configuration(queryItems: queryItems).map { configuration = $0 }
         queryItems.first(where: { $0.name == "queue_id"})?.value.map {
             queueId = $0
