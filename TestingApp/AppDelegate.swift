@@ -11,6 +11,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             application,
             didFinishLaunchingWithOptions: launchOptions
         )
+        Salemove.sharedInstance.pushNotifications.enable(true)
+        return true
+    }
+
+    func application(
+        _ app: UIApplication,
+        open url: URL,
+        options: [UIApplication.OpenURLOptionsKey : Any] = [:]
+    ) -> Bool {
+
+        guard
+            let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
+            let queryItems = components.queryItems
+        else {
+            debugPrint("URL is not valid. url='\(url.absoluteString)'.")
+            return false
+        }
+
+        guard let root = window?.rootViewController as? ViewController else {
+            return false
+        }
+
+        if components.host == "configure" {
+            root.updateConfiguration(with: queryItems)
+        }
         return true
     }
 
