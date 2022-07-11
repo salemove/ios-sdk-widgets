@@ -1,0 +1,45 @@
+# frozen_string_literal: true
+
+default_platform(:ios)
+PRODUCT_NAME_GLIA_WIDGETS = 'GliaWidgets'
+
+PATH_ROOT = Dir.pwd.chomp("/fastlane")
+PATH_GLIA_PROJECT_DIR = "#{PATH_ROOT}/#{PRODUCT_NAME_GLIA_WIDGETS}"
+PATH_GLIA_STATIC_VALUES = "#{PATH_GLIA_PROJECT_DIR}/StaticValues.swift"
+
+platform :ios do
+  desc "Increments versions in Xcode projects and Podspec file "\
+    "according to given type.\n\n"\
+    "Usage:\n"\
+    "fastlane increment_project_version type:major - increments X.0.0\n"\
+    "fastlane increment_project_version type:minor - increments 0.X.0\n"\
+    "fastlane increment_project_version type:patch - increments 0.0.X\n"
+  lane :increment_project_version do |options|
+    type = options[:type]
+
+    UI.user_error! 'Type is mandatory' if type.nil?
+
+    new_version = increment_version_number(
+      bump_type: type
+    )
+
+    increment_static_version(
+      file_path: PATH_GLIA_STATIC_VALUES,
+      version: new_version
+    )
+  end
+
+  lane :increment_static_version do |options|
+    file_path = options[:file_path]
+    UI.user_error!("No filepath specified") unless !file_path.nil?
+
+    version = options[:version]
+    UI.user_error!("No version specified") unless !version.nil?
+
+    replace_swift_constant_value(
+      file_path: file_path,
+      name: 'sdkVersion',
+      value: "\"#{version}\""
+    )
+  end
+end
