@@ -263,6 +263,7 @@ private extension SettingsViewController {
             features.remove(.bubbleView)
         }
         props.changeFeatures(features)
+        props.changeQueueId(queueIDCell.textField.text ?? "")
     }
 
     private var siteApiKey: Configuration.AuthorizationMethod {
