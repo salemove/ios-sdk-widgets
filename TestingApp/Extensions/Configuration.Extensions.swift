@@ -14,10 +14,10 @@ extension Configuration {
 extension Configuration {
     init?(queryItems: [URLQueryItem]) {
         guard
-            let siteId = queryItems.first(where: { $0.name == "site_id"})?.value,
-            let siteApiKeyId = queryItems.first(where: { $0.name == "api_key_id"})?.value,
-            let siteApiKeySecret = queryItems.first(where: { $0.name == "api_key_secret"})?.value,
-            let envName = queryItems.first(where: { $0.name == "env"})?.value,
+            let siteId = queryItems.first(where: { $0.name == "site_id" })?.value,
+            let siteApiKeyId = queryItems.first(where: { $0.name == "api_key_id" })?.value,
+            let siteApiKeySecret = queryItems.first(where: { $0.name == "api_key_secret" })?.value,
+            let envName = queryItems.first(where: { $0.name == "env" })?.value,
             let environment = Environment(rawValue: envName)
         else {
             return nil
@@ -137,6 +137,11 @@ extension Environment: Codable {
         case .custom(let url):
             try container.encode(url.absoluteString)
         }
+    }
+
+    var stringValue: String? {
+        guard case .custom(let url) = self else { return nil }
+        return url.absoluteString
     }
 }
 
