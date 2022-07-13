@@ -13,6 +13,7 @@ final class SettingsViewController: UIViewController {
     private var siteApiKeySecretCell: SettingsTextCell!
     private var siteCell: SettingsTextCell!
     private var queueIDCell: SettingsTextCell!
+    private var environmentCell: SettingsTextCell!
     private var visitorContextAssedIdCell: SettingsTextCell!
     private var bubbleFeatureCell: SettingsSwitchCell!
     private var primaryColorCell: SettingsColorCell!
@@ -113,7 +114,12 @@ private extension SettingsViewController {
             title: "Queue ID:",
             text: props.queueId
         )
-        queueIDCell.accessibilityIdentifier = "settings_queueId_textfield"
+        queueIDCell.textField.accessibilityIdentifier = "settings_queueId_textfield"
+        environmentCell = SettingsTextCell(
+            title: "Env:",
+            text: props.config.environment.stringValue ?? ""
+        )
+        environmentCell.textField.accessibilityIdentifier = "settings_environment_textfield"
         visitorContextAssedIdCell = SettingsTextCell(
             title: "Visitor Context Asset ID:",
             text: props.config.visitorContext?.assetId.uuidString ?? ""
@@ -238,6 +244,7 @@ private extension SettingsViewController {
             siteApiKeySecretCell,
             siteCell,
             queueIDCell,
+            environmentCell,
             visitorContextAssedIdCell
         ]
         configurationSection = Section(
@@ -249,14 +256,23 @@ private extension SettingsViewController {
 
     private func updateConfiguration() {
         let uuid = UUID(uuidString: visitorContextAssedIdCell.textField.text ?? "")
+        let environment: (String) -> Environment = { value in
+            if let url = URL(string: value) {
+                return .custom(url)
+            } else {
+                return .beta
+            }
+        }
+        // swiftlint:disable force_unwrapping
         props.changeConfig(
-            .init(
+            Configuration(
                 authorizationMethod: siteApiKey,
-                environment: .beta,
+                environment: environment(environmentCell.textField.text ?? ""),
                 site: siteCell.textField.text ?? "",
                 visitorContext: uuid == nil ? nil : .init(assetId: uuid!)
             )
         )
+        // swiftlint:enable force_unwrapping
 
         var features = Features.all
         if !bubbleFeatureCell.switcher.isOn {
