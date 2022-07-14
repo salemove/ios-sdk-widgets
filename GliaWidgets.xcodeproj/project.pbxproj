@@ -203,6 +203,7 @@
 		754313CB2870A65400C9C1C6 /* SettingsViewController.Props.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754313CA2870A65400C9C1C6 /* SettingsViewController.Props.swift */; };
 		754313CD2870B1C400C9C1C6 /* UserDefaultsStored.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754313CC2870B1C400C9C1C6 /* UserDefaultsStored.swift */; };
 		754313CF2870E64600C9C1C6 /* Configuration.Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754313CE2870E64600C9C1C6 /* Configuration.Extensions.swift */; };
+		7543141828806AEB00C9C1C6 /* EnvironmentSettingsTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7543141728806AEB00C9C1C6 /* EnvironmentSettingsTextCell.swift */; };
 		754CC61227E2767A005676E9 /* Survey.BooleanQuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AF8D0827DD0DE1009EEE2C /* Survey.BooleanQuestionView.swift */; };
 		754CC61327E27BE2005676E9 /* Survey.SingleChoiceQuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AF8D0A27DD1DD3009EEE2C /* Survey.SingleChoiceQuestionView.swift */; };
 		754CC61527E27C42005676E9 /* Survey.Checkbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754CC61427E27C42005676E9 /* Survey.Checkbox.swift */; };
@@ -631,6 +632,7 @@
 		754313CA2870A65400C9C1C6 /* SettingsViewController.Props.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.Props.swift; sourceTree = "<group>"; };
 		754313CC2870B1C400C9C1C6 /* UserDefaultsStored.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsStored.swift; sourceTree = "<group>"; };
 		754313CE2870E64600C9C1C6 /* Configuration.Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.Extensions.swift; sourceTree = "<group>"; };
+		7543141728806AEB00C9C1C6 /* EnvironmentSettingsTextCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentSettingsTextCell.swift; sourceTree = "<group>"; };
 		754CC61427E27C42005676E9 /* Survey.Checkbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Survey.Checkbox.swift; sourceTree = "<group>"; };
 		756087E027837EC000158604 /* BundleManaging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleManaging.swift; sourceTree = "<group>"; };
 		75A985425A950FFA1C13EACE /* Pods-GliaWidgets.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliaWidgets.debug.xcconfig"; path = "Target Support Files/Pods-GliaWidgets/Pods-GliaWidgets.debug.xcconfig"; sourceTree = "<group>"; };
@@ -1235,6 +1237,7 @@
 				1A4AD3CD256E8F5500468BFB /* SettingsCell.swift */,
 				1A4AD3D0256E92F300468BFB /* SettingsColorCell.swift */,
 				1A4AD3D8256FE9D300468BFB /* SettingsTextCell.swift */,
+				7543141728806AEB00C9C1C6 /* EnvironmentSettingsTextCell.swift */,
 				1A4AD3DB256FF67200468BFB /* SettingsFontCell.swift */,
 				6B2BFCE1274297F100B68506 /* SettingsSwitchCell.swift */,
 			);
@@ -3002,6 +3005,7 @@
 				754313CD2870B1C400C9C1C6 /* UserDefaultsStored.swift in Sources */,
 				1A205D7B25655CEC003AA3CD /* AppDelegate.swift in Sources */,
 				754313CB2870A65400C9C1C6 /* SettingsViewController.Props.swift in Sources */,
+				7543141828806AEB00C9C1C6 /* EnvironmentSettingsTextCell.swift in Sources */,
 				754313CF2870E64600C9C1C6 /* Configuration.Extensions.swift in Sources */,
 				1A4AD3D1256E92F300468BFB /* SettingsColorCell.swift in Sources */,
 				1A4AD3CE256E8F5500468BFB /* SettingsCell.swift in Sources */,
