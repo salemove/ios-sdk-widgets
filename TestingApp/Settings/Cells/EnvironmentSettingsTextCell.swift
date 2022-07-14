@@ -67,6 +67,7 @@ final class EnvironmentSettingsTextCell: SettingsCell {
             at: 3,
             animated: false
         )
+        segmentedControl.subviews[3].accessibilityIdentifier = "settings_environement_cell_custom_segment"
         self.environment = environment
         setup()
         layout()
