@@ -138,11 +138,6 @@ extension Environment: Codable {
             try container.encode(url.absoluteString)
         }
     }
-
-    var stringValue: String? {
-        guard case .custom(let url) = self else { return nil }
-        return url.absoluteString
-    }
 }
 
 extension Configuration.VisitorContext: Codable {

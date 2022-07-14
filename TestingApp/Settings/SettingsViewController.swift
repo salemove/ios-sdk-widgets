@@ -13,7 +13,7 @@ final class SettingsViewController: UIViewController {
     private var siteApiKeySecretCell: SettingsTextCell!
     private var siteCell: SettingsTextCell!
     private var queueIDCell: SettingsTextCell!
-    private var environmentCell: SettingsTextCell!
+    private var environmentCell: EnvironmentSettingsTextCell!
     private var visitorContextAssedIdCell: SettingsTextCell!
     private var bubbleFeatureCell: SettingsSwitchCell!
     private var primaryColorCell: SettingsColorCell!
@@ -115,11 +115,11 @@ private extension SettingsViewController {
             text: props.queueId
         )
         queueIDCell.textField.accessibilityIdentifier = "settings_queueId_textfield"
-        environmentCell = SettingsTextCell(
-            title: "Env:",
-            text: props.config.environment.stringValue ?? ""
+        environmentCell = EnvironmentSettingsTextCell(
+            title: "Environment:",
+            environment: props.config.environment
         )
-        environmentCell.textField.accessibilityIdentifier = "settings_environment_textfield"
+        environmentCell.customEnvironmentUrlTextField.accessibilityIdentifier = "settings_custom_environment_url_textfield"
         visitorContextAssedIdCell = SettingsTextCell(
             title: "Visitor Context Asset ID:",
             text: props.config.visitorContext?.assetId.uuidString ?? ""
@@ -240,11 +240,11 @@ private extension SettingsViewController {
 
     private func updateConfigurationSection() {
         let cells: [SettingsCell] = [
+            environmentCell,
+            siteCell,
             siteApiKeyIdCell,
             siteApiKeySecretCell,
-            siteCell,
             queueIDCell,
-            environmentCell,
             visitorContextAssedIdCell
         ]
         configurationSection = Section(
@@ -256,17 +256,11 @@ private extension SettingsViewController {
 
     private func updateConfiguration() {
         let uuid = UUID(uuidString: visitorContextAssedIdCell.textField.text ?? "")
-        let environment: (String) -> Environment = { value in
-            if let url = URL(string: value) {
-                return .custom(url)
-            } else {
-                return .beta
-            }
-        }
+
         props.changeConfig(
             Configuration(
                 authorizationMethod: siteApiKey,
-                environment: environment(environmentCell.textField.text ?? ""),
+                environment: environmentCell.environment,
                 site: siteCell.textField.text ?? "",
                 visitorContext: uuid.map { Configuration.VisitorContext(assetId: $0) }
             )
