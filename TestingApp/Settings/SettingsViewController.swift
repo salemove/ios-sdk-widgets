@@ -263,16 +263,14 @@ private extension SettingsViewController {
                 return .beta
             }
         }
-        // swiftlint:disable force_unwrapping
         props.changeConfig(
             Configuration(
                 authorizationMethod: siteApiKey,
                 environment: environment(environmentCell.textField.text ?? ""),
                 site: siteCell.textField.text ?? "",
-                visitorContext: uuid == nil ? nil : .init(assetId: uuid!)
+                visitorContext: uuid.map { Configuration.VisitorContext(assetId: $0) }
             )
         )
-        // swiftlint:enable force_unwrapping
 
         var features = Features.all
         if !bubbleFeatureCell.switcher.isOn {
