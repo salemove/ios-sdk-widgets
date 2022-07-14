@@ -124,6 +124,7 @@ private extension SettingsViewController {
             title: "Visitor Context Asset ID:",
             text: props.config.visitorContext?.assetId.uuidString ?? ""
         )
+        visitorContextAssedIdCell.textField.accessibilityIdentifier = "settings_visitor_context_assetId_textfield"
         bubbleFeatureCell = SettingsSwitchCell(
             title: "Present \"Bubble\" overlay in engagement time",
             isOn: props.features ~= .bubbleView
