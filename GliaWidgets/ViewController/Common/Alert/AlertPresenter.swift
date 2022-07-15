@@ -5,10 +5,12 @@ protocol AlertPresenter where Self: UIViewController {
 
     func presentAlert(
         with conf: MessageAlertConfiguration,
+        accessibilityIdentifier: String?,
         dismissed: (() -> Void)?
     )
     func presentConfirmation(
         with conf: ConfirmationAlertConfiguration,
+        accessibilityIdentifier: String,
         confirmed: @escaping () -> Void
     )
     func presentSingleActionAlert(
@@ -24,10 +26,15 @@ protocol AlertPresenter where Self: UIViewController {
 extension AlertPresenter {
     func presentAlert(
         with conf: MessageAlertConfiguration,
+        accessibilityIdentifier: String? = nil,
         dismissed: (() -> Void)? = nil
     ) {
         let alert = AlertViewController(
-            kind: .message(conf, dismissed: dismissed),
+            kind: .message(
+                conf,
+                accessibilityIdentifier: accessibilityIdentifier,
+                dismissed: dismissed
+            ),
             viewFactory: viewFactory
         )
         present(alert, animated: true, completion: nil)
@@ -35,10 +42,15 @@ extension AlertPresenter {
 
     func presentConfirmation(
         with conf: ConfirmationAlertConfiguration,
+        accessibilityIdentifier: String,
         confirmed: @escaping () -> Void
     ) {
         let alert = AlertViewController(
-            kind: .confirmation(conf, confirmed: confirmed),
+            kind: .confirmation(
+                conf,
+                accessibilityIdentifier: accessibilityIdentifier,
+                confirmed: confirmed
+            ),
             viewFactory: viewFactory
         )
         present(alert, animated: true, completion: nil)
