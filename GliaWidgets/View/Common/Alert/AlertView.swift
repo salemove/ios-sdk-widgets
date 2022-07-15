@@ -156,6 +156,7 @@ class AlertView: UIView {
         let closeButton = Button(kind: .alertClose,
                                  tap: { [weak self] in self?.closeTapped?() })
         closeButton.tintColor = style.closeButtonColor
+        closeButton.accessibilityIdentifier = "alert_close_button"
         self.closeButton = closeButton
         addSubview(closeButton)
         closeButton.autoPinEdge(toSuperviewEdge: .right, withInset: 10)
