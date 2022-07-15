@@ -97,7 +97,9 @@ class Header: UIView {
         rightItemContainer.spacing = 8
         rightItemContainer.alignment = .center
 
+        closeButton.accessibilityIdentifier = "chat_close_button"
         closeButton.accessibilityLabel = style.closeButton.accessibility.label
+        endButton.accessibilityIdentifier = "chat_end_button"
         endButton.accessibilityLabel = style.endButton.accessibility.label
         setFontScalingEnabled(
             style.accessibility.isFontScalingEnabled,
