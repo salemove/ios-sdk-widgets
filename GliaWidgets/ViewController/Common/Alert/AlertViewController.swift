@@ -4,10 +4,12 @@ class AlertViewController: ViewController {
     enum Kind {
         case message(
             MessageAlertConfiguration,
+            accessibilityIdentifier: String?,
             dismissed: (() -> Void)?
         )
         case confirmation(
             ConfirmationAlertConfiguration,
+            accessibilityIdentifier: String,
             confirmed: () -> Void
         )
         case singleAction(
@@ -93,14 +95,16 @@ class AlertViewController: ViewController {
 
     private func makeAlertView() -> AlertView {
         switch kind {
-        case .message(let conf, let dismissed):
+        case .message(let conf, let accessibilityIdentifier, let dismissed):
             return makeMessageAlertView(
                 with: conf,
+                accessibilityIdentifier: accessibilityIdentifier,
                 dismissed: dismissed
             )
-        case .confirmation(let conf, let confirmed):
+        case .confirmation(let conf, let accessibilityIdentifier, let confirmed):
             return makeConfirmationAlertView(
                 with: conf,
+                accessibilityIdentifier: accessibilityIdentifier,
                 confirmed: confirmed
             )
         case .singleAction(let conf, let actionTapped):

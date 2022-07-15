@@ -3,6 +3,7 @@ import UIKit
 extension AlertViewController {
     func makeMessageAlertView(
         with conf: MessageAlertConfiguration,
+        accessibilityIdentifier: String?,
         dismissed: (() -> Void)?
     ) -> AlertView {
         let alertView = viewFactory.makeAlertView()
@@ -14,6 +15,7 @@ extension AlertViewController {
                 dismissed?()
             }
         }
+        alertView.accessibilityIdentifier = accessibilityIdentifier
         return alertView
     }
 }
