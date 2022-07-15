@@ -11,7 +11,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             application,
             didFinishLaunchingWithOptions: launchOptions
         )
-        Salemove.sharedInstance.pushNotifications.enable(true)
         return true
     }
 
