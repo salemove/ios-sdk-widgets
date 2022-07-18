@@ -2,7 +2,7 @@ import UIKit
 
 public class OperatorTypingIndicatorStyle {
     /// Color of the operator typing indicator.
-    public let color: UIColor
+    public var color: UIColor
     /// Accessibility related properties.
     public var accessibility: Accessibility
 

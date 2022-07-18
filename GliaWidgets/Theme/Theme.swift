@@ -17,10 +17,10 @@ import UIKit
 ///
 public class Theme {
     /// Base colors used in the theme.
-    public let color: ThemeColor
+    public var color: ThemeColor
 
     /// Base font styles used in the theme.
-    public let font: ThemeFont
+    public var font: ThemeFont
 
     /// Chat view style.
     public lazy var chat: ChatStyle = { return chatStyle }()

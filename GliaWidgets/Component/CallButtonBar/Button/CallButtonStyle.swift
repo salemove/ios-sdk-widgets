@@ -5,25 +5,25 @@ public struct CallButtonStyle {
     /// Style of a call button ("Chat", "Video", "Mute", "Speaker" and "Minimize") in a specific state - activated or not activated.
     public struct StateStyle {
         /// Background color of the button.
-        public let backgroundColor: UIColor
+        public var backgroundColor: UIColor
 
         /// Image of the button.
-        public let image: UIImage
+        public var image: UIImage
 
         /// Color of the image.
-        public let imageColor: UIColor
+        public var imageColor: UIColor
 
         /// Title of the button.
-        public let title: String
+        public var title: String
 
         /// Font of the title.
-        public let titleFont: UIFont
+        public var titleFont: UIFont
 
         /// Color of the title.
-        public let titleColor: UIColor
+        public var titleColor: UIColor
 
         /// Accessibility related properties.
-        public let accessibility: Accessibility
+        public var accessibility: Accessibility
     }
 
     /// Style of active (i.e. toggled "on") state.
