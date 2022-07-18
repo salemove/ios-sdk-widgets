@@ -86,13 +86,13 @@ extension Theme {
     /// Shadow style.
     public struct Shadow {
         /// Shadow color.
-        public let color: String
+        public var color: String
         /// Shadow offset.
-        public let offset: CGSize
+        public var offset: CGSize
         /// Shadow opacity.
-        public let opacity: Float
+        public var opacity: Float
         /// Shadow radius.
-        public let radius: CGFloat
+        public var radius: CGFloat
 
         public static let standard: Shadow = .init(
             color: "0x000000",
