@@ -44,12 +44,18 @@ class EngagementViewController: ViewController, AlertPresenter {
 
         viewModel.engagementAction = { action in
             switch action {
-            case .confirm(let conf, confirmed: let confirmed):
-                self.presentConfirmation(with: conf) { confirmed?() }
+            case .confirm(let conf, let accessibilityIdentifier, confirmed: let confirmed):
+                self.presentConfirmation(
+                    with: conf,
+                    accessibilityIdentifier: accessibilityIdentifier
+                ) { confirmed?() }
             case .showSingleActionAlert(let conf, actionTapped: let actionTapped):
                 self.presentSingleActionAlert(with: conf) { actionTapped?() }
-            case .showAlert(let conf, dismissed: let dismissed):
-                self.presentAlert(with: conf) { dismissed?() }
+            case .showAlert(let conf, let accessibilityIdentifier, dismissed: let dismissed):
+                self.presentAlert(
+                    with: conf,
+                    accessibilityIdentifier: accessibilityIdentifier
+                ) { dismissed?() }
             case .showSettingsAlert(let conf, cancelled: let cancelled):
                 self.presentSettingsAlert(with: conf, cancelled: cancelled)
             case .offerScreenShare(let conf, accepted: let accepted, declined: let declined):
