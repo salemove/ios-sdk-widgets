@@ -53,6 +53,7 @@ class EngagementViewModel {
             engagementAction?(
                 .confirm(
                     alertConfiguration.endScreenShare,
+                    accessibilityIdentifier: "alert_confirmation_endScreenSharing",
                     confirmed: { self.endScreenSharing() }
                 )
             )
@@ -168,6 +169,7 @@ class EngagementViewModel {
 
     func showAlert(
         with conf: MessageAlertConfiguration,
+        accessibilityIdentifier: String? = nil,
         dismissed: (() -> Void)? = nil
     ) {
         let onDismissed = {
@@ -182,7 +184,13 @@ class EngagementViewModel {
             }
         }
         EngagementViewModel.alertPresenters.insert(self)
-        engagementAction?(.showAlert(conf, dismissed: { onDismissed() }))
+        engagementAction?(
+            .showAlert(
+                conf,
+                accessibilityIdentifier: accessibilityIdentifier,
+                dismissed: { onDismissed() }
+            )
+        )
     }
 
     func showAlert(for error: Error) {
@@ -217,7 +225,10 @@ class EngagementViewModel {
         screenShareHandler.stop()
         engagementAction?(.showEndButton)
     }
+}
 
+// MARK: - Private
+private extension EngagementViewModel {
     private func offerScreenShare(answer: @escaping CoreSdkClient.AnswerBlock) {
         guard isViewActive.value else { return }
         let operatorName = interactor.engagedOperator?.firstName
@@ -244,6 +255,7 @@ class EngagementViewModel {
             engagementAction?(
                 .confirm(
                     alertConfiguration.leaveQueue,
+                    accessibilityIdentifier: "alert_confirmation_leaveQueue",
                     confirmed: { [weak self] in
                         self?.endSession()
                     }
@@ -253,6 +265,7 @@ class EngagementViewModel {
             engagementAction?(
                 .confirm(
                     alertConfiguration.endEngagement,
+                    accessibilityIdentifier: "alert_confirmation_endEngagement",
                     confirmed: { [weak self] in
                         self?.endSession()
                     }
@@ -267,9 +280,16 @@ class EngagementViewModel {
         switch error.error {
         case let queueError as CoreSdkClient.QueueError:
             switch queueError {
-            case .queueClosed, .queueFull:
+            case .queueClosed:
                 showAlert(
                     with: alertConfiguration.operatorsUnavailable,
+                    accessibilityIdentifier: "alert_queue_closed",
+                    dismissed: { self.endSession() }
+                )
+            case .queueFull:
+                showAlert(
+                    with: alertConfiguration.operatorsUnavailable,
+                    accessibilityIdentifier: "alert_queue_full",
                     dismissed: { self.endSession() }
                 )
             default:
@@ -320,6 +340,7 @@ extension EngagementViewModel {
     enum Action {
         case confirm(
             ConfirmationAlertConfiguration,
+            accessibilityIdentifier: String,
             confirmed: (() -> Void)?
         )
         case showSingleActionAlert(
@@ -328,6 +349,7 @@ extension EngagementViewModel {
         )
         case showAlert(
             MessageAlertConfiguration,
+            accessibilityIdentifier: String?,
             dismissed: (() -> Void)?
         )
         case showSettingsAlert(

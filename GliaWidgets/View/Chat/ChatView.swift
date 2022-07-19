@@ -75,6 +75,7 @@ class ChatView: EngagementView {
                 uiApplication: environment.uiApplication
             )
         )
+        self.accessibilityIdentifier = "chat_root_view"
         setup()
         layout()
     }
