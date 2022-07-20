@@ -244,6 +244,12 @@ extension Interactor {
 }
 
 extension Interactor: CoreSdkClient.Interactable {
+    var onEngagementTransferMediaUpdate: CoreSdkClient.MediaUpdateBlock {
+        { _ in
+
+        }
+    }
+
     var onScreenSharingOffer: CoreSdkClient.ScreenshareOfferBlock {
         return { [weak self] answer in
             self?.notify(.screenShareOffer(answer: answer))
