@@ -184,6 +184,7 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
         let configuration = SFSafariViewController.Configuration()
         configuration.entersReaderIfAvailable = true
         let safariViewController = SFSafariViewController(url: url, configuration: configuration)
+        safariViewController.view.accessibilityIdentifier = "safari_root_view"
         navigationPresenter.present(safariViewController)
     }
 }
