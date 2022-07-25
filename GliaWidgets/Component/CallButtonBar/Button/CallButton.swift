@@ -133,7 +133,7 @@ class CallButton: UIView {
         accessibilityValue = properties.value
         accessibilityLabel = properties.label
 
-        let buttonAccessibilityIdentifier = "audio_\(properties.value.lowercased())_button"
+        let buttonAccessibilityIdentifier = "media_\(properties.value.lowercased())_button"
         accessibilityIdentifier = isUserInteractionEnabled ? buttonAccessibilityIdentifier : ""
     }
 
