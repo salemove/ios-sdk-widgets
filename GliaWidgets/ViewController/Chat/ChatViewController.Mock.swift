@@ -314,7 +314,7 @@ extension ChatViewController {
     static func mockChoiceCard() throws -> ChatViewController {
         var chatViewModelEnv = ChatViewModel.Environment.mock
         chatViewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
-        chatViewModelEnv.fromHistory = {
+        chatViewModelEnv.loadChatMessagesFromHistory = {
             true
         }
         let messageUuid = UUID.incrementing

@@ -1,7 +1,7 @@
 @testable import GliaWidgets
 
-extension ChatViewModel.Environment {
-    static let failing = Self(
+extension RootCoordinator.Environment {
+    static let failing = Self.init(
         chatStorage: .failing,
         fetchFile: { _, _, _ in
             fail("\(Self.self).fetchFile")
@@ -12,6 +12,11 @@ extension ChatViewModel.Environment {
         uploadFileToEngagement: { _, _, _ in
             fail("\(Self.self).uploadFileToEngagement")
         },
+        audioSession: .failing,
+        uuid: {
+            fail("\(Self.self).uuid")
+            return .mock
+        },
         fileManager: .failing,
         data: .failing,
         date: {
@@ -21,23 +26,22 @@ extension ChatViewModel.Environment {
         gcd: .failing,
         localFileThumbnailQueue: .failing,
         uiImage: .failing,
-        createFileDownload: { _, _, _ in
-            fail("\(Self.self).createFileDownload")
-            return .failing
-        },
+        createFileDownload: { _, _, _ in .failing },
         loadChatMessagesFromHistory: {
             fail("\(Self.self).loadChatMessagesFromHistory")
             return true
         },
+        timerProviding: .failing,
         fetchSiteConfigurations: { _ in
             fail("\(Self.self).fetchSiteConfigurations")
         },
-        getCurrentEngagement: { nil },
-        timerProviding: .mock,
-        uuid: {
-            fail("\(Self.self).uuid")
-            return .mock
+        getCurrentEngagement: {
+            fail("\(Self.self).getCurrentEngagement")
+            return nil
         },
-        uiApplication: .mock
+        submitSurveyAnswer: { _, _, _, _ in
+            fail("\(Self.self).submitSurveyAnswer")
+        },
+        uiApplication: .failing
     )
 }
