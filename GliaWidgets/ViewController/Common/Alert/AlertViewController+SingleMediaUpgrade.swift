@@ -14,6 +14,7 @@ extension AlertViewController {
 
         let declineButton = ActionButton(with: viewFactory.theme.alert.negativeAction)
         declineButton.title = conf.decline
+        declineButton.accessibilityIdentifier = "alert_negative_button"
         declineButton.tap = { [weak self] in
             self?.dismiss(animated: true) {
                 declined()
@@ -21,6 +22,7 @@ extension AlertViewController {
         }
         let acceptButton = ActionButton(with: viewFactory.theme.alert.positiveAction)
         acceptButton.title = conf.accept
+        acceptButton.accessibilityIdentifier = "alert_positive_button"
         acceptButton.tap = { [weak self] in
             self?.dismiss(animated: true) {
                 accepted()
