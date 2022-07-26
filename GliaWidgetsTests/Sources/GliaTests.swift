@@ -34,7 +34,7 @@ class GliaTests: XCTestCase {
         var calls = [Call]()
 
         let sdk = Glia(environment: .failing)
-        sdk.interactor = try .mock()
+        sdk.interactor = .mock()
         sdk.onEvent = {
             calls.append(.onEvent($0))
         }
@@ -42,5 +42,86 @@ class GliaTests: XCTestCase {
 
         XCTAssertEqual(calls, [.onEvent(.ended)])
         XCTAssertNil(sdk.rootCoordinator)
+    }
+
+    func test__deprecated_start_passes_all_arguments_to_interactor() throws {
+        var gliaEnv = Glia.Environment.failing
+        var fileManager = FoundationBased.FileManager.failing
+        fileManager.urlsForDirectoryInDomainMask = { _, _ in
+            [.mock]
+        }
+        fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
+        gliaEnv.fileManager = fileManager
+        gliaEnv.coreSdk.configureWithInteractor = { _ in }
+
+        gliaEnv.coreSdk.configureWithConfiguration = { _, callback in
+            callback?()
+        }
+
+        gliaEnv.coreSdk.queueForEngagement = { _, _, _, _, _, callback in
+            callback(.mock, nil)
+        }
+
+        gliaEnv.uuid = { .mock }
+        gliaEnv.gcd.mainQueue.asyncIfNeeded = { callback in callback() }
+        gliaEnv.chatStorage.messages = { _ in [] }
+
+        let expectedTheme = Theme.mock(
+            colorStyle: .custom(.init()),
+            fontStyle: .default,
+            showsPoweredBy: true
+        )
+        let expectedFeatures = Features.bubbleView
+        var receivedTheme: Theme?
+        var receivedFeatures = Features.init()
+
+        class MockedSceneProvider: SceneProvider {
+            init () {}
+            @available(iOS 13.0, *)
+            func windowScene() -> UIWindowScene? {
+                UIWindow().windowScene
+            }
+        }
+        let expectedSceneProvider = MockedSceneProvider()
+        var receivedSceneProvider: SceneProvider?
+        gliaEnv.createRootCoordinator = { interactor, viewFactory, sceneProvider, engagementKind, features, environment in
+            receivedTheme = viewFactory.theme
+            receivedFeatures = features
+            receivedSceneProvider = sceneProvider
+            return .mock(
+                interactor: interactor,
+                viewFactory: viewFactory,
+                sceneProvider: sceneProvider,
+                environment: environment
+            )
+        }
+
+        let sdk = Glia(environment: gliaEnv)
+        let kind = EngagementKind.audioCall
+        let site = "site"
+        let configuration = Configuration(
+            authorizationMethod: .siteApiKey(
+                id: "siteAp1Key",
+                secret: "s3cr3t"
+            ),
+            environment: .beta,
+            site: site
+        )
+        let queueID = "queueID"
+        let visitorContext = VisitorContext.mock()
+
+        try sdk.start(
+            kind,
+            configuration: configuration,
+            queueID: queueID,
+            visitorContext: visitorContext,
+            theme: expectedTheme,
+            features: .all,
+            sceneProvider: expectedSceneProvider
+        )
+
+        XCTAssertTrue(try XCTUnwrap(receivedTheme) === expectedTheme)
+        XCTAssertEqual(receivedFeatures, expectedFeatures)
+        XCTAssertTrue(try XCTUnwrap(receivedSceneProvider as? MockedSceneProvider) === expectedSceneProvider)
     }
 }

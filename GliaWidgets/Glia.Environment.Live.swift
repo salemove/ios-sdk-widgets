@@ -19,9 +19,10 @@ extension Glia.Environment {
         }(),
         uiImage: .live,
         createFileDownload: FileDownload.init(with:storage:environment:),
-        fromHistory: { true },
+        loadChatMessagesFromHistory: { true },
         timerProviding: .live,
-        uiApplication: .live
+        uiApplication: .live,
+        createRootCoordinator: RootCoordinator.init(interactor: viewFactory:sceneProvider:engagementKind:features:environment:)
     )
 }
 

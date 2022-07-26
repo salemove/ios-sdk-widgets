@@ -69,7 +69,7 @@ class CallCoordinator: SubFlowCoordinator, FlowCoordinator {
                 localFileThumbnailQueue: environment.localFileThumbnailQueue,
                 uiImage: environment.uiImage,
                 createFileDownload: environment.createFileDownload,
-                fromHistory: environment.fromHistory,
+                loadChatMessagesFromHistory: environment.fromHistory,
                 fetchSiteConfigurations: environment.fetchSiteConfigurations,
                 getCurrentEngagement: environment.getCurrentEngagement,
                 timerProviding: environment.timerProviding,
