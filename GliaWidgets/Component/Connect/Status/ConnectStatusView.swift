@@ -27,6 +27,7 @@ class ConnectStatusView: UIView {
 
         firstLabel.accessibilityHint = style.accessibility.firstTextHint
         secondLabel.accessibilityHint = style.accessibility.secondTextHint
+        secondLabel.accessibilityIdentifier = "call_duration_label"
         setFontScalingEnabled(
             style.accessibility.isFontScalingEnabled,
             for: firstLabel
