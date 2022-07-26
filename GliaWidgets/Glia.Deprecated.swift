@@ -32,7 +32,10 @@ extension Glia {
             engagementKind,
             configuration: configuration,
             queueID: queueID,
-            visitorContext: Optional(visitorContext)
+            visitorContext: Optional(visitorContext),
+            theme: theme,
+            features: features,
+            sceneProvider: sceneProvider
         )
     }
 }
