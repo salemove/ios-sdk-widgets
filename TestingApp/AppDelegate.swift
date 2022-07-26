@@ -23,29 +23,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         guard
             let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
-            let queryItems = components.queryItems,
-            components.host == "configure"
-        else {
-            debugPrint("URL is not supported. url='\(url.absoluteString)'.")
-            return false
-        }
-
-        guard let root = (window?.rootViewController as? ViewController) else {
-            return false
-        }
-
-        root.updateConf(with: queryItems)
-        return true
-    }
-
-    func application(
-        _ app: UIApplication,
-        open url: URL,
-        options: [UIApplication.OpenURLOptionsKey : Any] = [:]
-    ) -> Bool {
-
-        guard
-            let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
             let queryItems = components.queryItems
         else {
             debugPrint("URL is not valid. url='\(url.absoluteString)'.")
