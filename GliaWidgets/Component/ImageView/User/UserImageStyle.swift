@@ -29,7 +29,7 @@ public struct UserImageStyle {
         placeholderColor: UIColor,
         placeholderBackgroundColor: UIColor,
         imageBackgroundColor: UIColor,
-        transferringImage: UIImage?
+        transferringImage: UIImage? = nil
     ) {
         self.placeholderImage = placeholderImage
         self.placeholderColor = placeholderColor
