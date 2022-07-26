@@ -20,6 +20,7 @@ enum InteractorEvent {
     case messagesUpdated([CoreSdkClient.Message])
     case typingStatusUpdated(CoreSdkClient.OperatorTypingStatus)
     case upgradeOffer(CoreSdkClient.MediaUpgradeOffer, answer: CoreSdkClient.AnswerWithSuccessBlock)
+    case updateOffer(CoreSdkClient.MediaUpgradeOffer)
     case audioStreamAdded(CoreSdkClient.AudioStreamable)
     case audioStreamError(CoreSdkClient.SalemoveError)
     case videoStreamAdded(CoreSdkClient.VideoStreamable)
@@ -244,12 +245,6 @@ extension Interactor {
 }
 
 extension Interactor: CoreSdkClient.Interactable {
-    var onEngagementTransferMediaUpdate: CoreSdkClient.MediaUpdateBlock {
-        { _ in
-
-        }
-    }
-
     var onScreenSharingOffer: CoreSdkClient.ScreenshareOfferBlock {
         return { [weak self] answer in
             self?.notify(.screenShareOffer(answer: answer))
@@ -259,6 +254,12 @@ extension Interactor: CoreSdkClient.Interactable {
     var onMediaUpgradeOffer: CoreSdkClient.MediaUgradeOfferBlock {
         return { [weak self] offer, answer in
             self?.notify(.upgradeOffer(offer, answer: answer))
+        }
+    }
+
+    var onEngagementTransferMediaUpdate: CoreSdkClient.MediaUpdateBlock {
+        return { [weak self] offer in
+            self?.notify(.updateOffer(offer))
         }
     }
 
