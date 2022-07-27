@@ -107,6 +107,7 @@ class BubbleView: UIView {
         accessibilityTraits = [.button]
         accessibilityLabel = style.accessibility.label
         accessibilityHint = style.accessibility.hint
+        accessibilityIdentifier = "bubble_view"
 
         update(kind)
     }
