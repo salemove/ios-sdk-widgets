@@ -256,6 +256,8 @@ class CallViewModel: EngagementViewModel, ViewModel {
             handleVideoStreamError(error)
         case .upgradeOffer(let offer, answer: let answer):
             offerMediaUpgrade(offer, answer: answer)
+        case .updateOffer(let offer):
+            call.upgrade(to: offer)
         case .engagementTransferring:
             onEngagementTransferring()
         default:
@@ -266,6 +268,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
 
 extension CallViewModel {
     private func onEngagementTransferring() {
+        endScreenSharing()
         call.transfer()
         durationCounter.stop()
         action?(.transferring)

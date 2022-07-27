@@ -2,10 +2,12 @@ import XCTest
 
 @testable import GliaWidgets
 
+// swiftlint:disable type_body_length
 class CallViewModelTests: XCTestCase {
     var viewModel: CallViewModel!
     var call: Call!
 
+    // swiftlint:disable function_body_length
     func test_setCallOnHoldPausesLocalVideoAndMutesLocalAudio() throws {
         var isVideoButtonEnabled: Bool = true
         var isMuteButtonEnabled: Bool = true
@@ -36,7 +38,7 @@ class CallViewModelTests: XCTestCase {
 
                 case .mute:
                     isMuteButtonEnabled = isEnabled
-                
+
                 default:
                     break
                 }
@@ -53,7 +55,7 @@ class CallViewModelTests: XCTestCase {
             getIsRemoteFunc: { true },
             setIsRemoteFunc: { _ in }
         )
-        
+
         let remoteVideoStream = CoreSdkClient.MockVideoStreamable.mock(
             getStreamViewFunc: { .init() },
             playVideoFunc: {},
@@ -74,7 +76,7 @@ class CallViewModelTests: XCTestCase {
             getIsRemoteFunc: { false },
             setIsRemoteFunc: { _ in }
         )
-        
+
         let localVideoStream = CoreSdkClient.MockVideoStreamable.mock(
             getStreamViewFunc: { .init() },
             playVideoFunc: {},
@@ -86,7 +88,7 @@ class CallViewModelTests: XCTestCase {
             getIsRemoteFunc: { false },
             setIsRemoteFunc: { _ in }
         )
-        
+
         call.updateAudioStream(with: remoteAudioStream)
         call.updateVideoStream(with: remoteVideoStream)
         call.updateAudioStream(with: localAudioStream)
@@ -100,6 +102,7 @@ class CallViewModelTests: XCTestCase {
         XCTAssertTrue(isLocalAudioStreamMuted)
     }
 
+    // swiftlint:disable function_body_length
     func test_toggleCallOnHoldRestoresPreviousLocalVideoAndAudioState() throws {
         var isLocalAudioStreamMuted: Bool = false
         var isLocalVideoStreamPaused: Bool = false
@@ -127,7 +130,7 @@ class CallViewModelTests: XCTestCase {
             getIsRemoteFunc: { true },
             setIsRemoteFunc: { _ in }
         )
-        
+
         let remoteVideoStream = CoreSdkClient.MockVideoStreamable.mock(
             getStreamViewFunc: { .init() },
             playVideoFunc: {},
@@ -148,7 +151,7 @@ class CallViewModelTests: XCTestCase {
             getIsRemoteFunc: { false },
             setIsRemoteFunc: { _ in }
         )
-        
+
         let localVideoStream = CoreSdkClient.MockVideoStreamable.mock(
             getStreamViewFunc: { .init() },
             playVideoFunc: {},
@@ -160,7 +163,7 @@ class CallViewModelTests: XCTestCase {
             getIsRemoteFunc: { false },
             setIsRemoteFunc: { _ in }
         )
-        
+
         call.updateAudioStream(with: remoteAudioStream)
         call.updateVideoStream(with: remoteVideoStream)
         call.updateAudioStream(with: localAudioStream)
@@ -181,7 +184,7 @@ class CallViewModelTests: XCTestCase {
         XCTAssertTrue(isLocalAudioStreamMuted)
         XCTAssertTrue(isLocalVideoStreamPaused)
     }
-    
+
     func test_engagementTransferringReleasesRemoteAndLocalVideoAndShowsConnectingState() throws {
         enum Calls { case showConnecting }
         var calls: [Calls] = []
@@ -209,10 +212,10 @@ class CallViewModelTests: XCTestCase {
             switch action {
             case .connecting:
                 calls.append(.showConnecting)
-                
+
             case .setRemoteVideo(let video):
                 XCTAssertNil(video)
-                
+
             case .setLocalVideo(let video):
                 XCTAssertNil(video)
 
@@ -225,7 +228,8 @@ class CallViewModelTests: XCTestCase {
 
         XCTAssertEqual([.showConnecting], calls)
     }
-    
+
+    // swiftlint:disable function_body_length
     func test_engagementTransferringReleasesStreams() throws {
         var interactorEnv: Interactor.Environment = .failing
         interactorEnv.gcd.mainQueue.asyncIfNeeded = { $0() }
@@ -294,12 +298,41 @@ class CallViewModelTests: XCTestCase {
         XCTAssertFalse(call.audio.stream.value.remoteStream == nil)
         XCTAssertFalse(call.video.stream.value.localStream == nil)
         XCTAssertFalse(call.video.stream.value.remoteStream == nil)
-        
+
         interactor.notify(.engagementTransferring)
 
         XCTAssertNil(call.video.stream.value.localStream)
         XCTAssertNil(call.video.stream.value.remoteStream)
         XCTAssertNil(call.audio.stream.value.localStream)
         XCTAssertNil(call.audio.stream.value.remoteStream)
+    }
+
+    func test_interactorEventUpdatesCallMediaState() throws {
+        var interactorEnv: Interactor.Environment = .failing
+        interactorEnv.gcd.mainQueue.asyncIfNeeded = { $0() }
+        let interactor: Interactor = .mock(environment: interactorEnv)
+
+        let offer = try CoreSdkClient.MediaUpgradeOffer(type: .audio, direction: .oneWay)
+
+        call = .init(
+            .video(direction: .twoWay),
+            environment: .mock
+        )
+
+        viewModel = .init(
+            interactor: interactor,
+            alertConfiguration: .mock(),
+            screenShareHandler: ScreenShareHandler(),
+            environment: .mock,
+            call: call,
+            unreadMessages: .init(with: 0),
+            startWith: .engagement(mediaType: .video)
+        )
+
+        XCTAssertEqual(call.kind.value, .video(direction: .twoWay))
+
+        interactor.notify(.updateOffer(offer))
+
+        XCTAssertEqual(call.kind.value, .audio)
     }
 }
