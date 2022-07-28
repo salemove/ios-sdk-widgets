@@ -146,6 +146,7 @@ extension CoreSdkClient {
     typealias MediaType = SalemoveSDK.MediaType
     typealias MediaUgradeOfferBlock = SalemoveSDK.MediaUgradeOfferBlock
     typealias MediaUpgradeOffer = SalemoveSDK.MediaUpgradeOffer
+    typealias MediaUpdateBlock = SalemoveSDK.MediaUpdateBlock
     typealias Message = SalemoveSDK.Message
     typealias MessageSender = SalemoveSDK.MessageSender
     typealias MessageBlock = SalemoveSDK.MessageBlock
@@ -177,5 +178,4 @@ extension CoreSdkClient {
     typealias Site = SalemoveSDK.Site
     typealias Survey = SalemoveSDK.Survey
     typealias SurveyAnswerContainer = SalemoveSDK.Survey.Answer.ValueContainer
-    typealias MediaUpdateBlock = SalemoveSDK.MediaUpdateBlock
 }
