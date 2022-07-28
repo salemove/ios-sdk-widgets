@@ -126,6 +126,8 @@ class CallView: EngagementView {
     }
 
     override func setup() {
+        accessibilityIdentifier = "call_root_view"
+
         topStackView.axis = .vertical
         topStackView.spacing = 8
         topStackView.addArrangedSubviews([operatorNameLabel, secondLabel])
