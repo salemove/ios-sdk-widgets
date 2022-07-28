@@ -1,4 +1,5 @@
 import Dispatch
+import Foundation
 
 extension GCD {
     static let live = Self(
