@@ -1,4 +1,7 @@
 #if DEBUG
+
+import Foundation
+
 extension ChatViewModel.Environment {
     static let mock = Self(
         chatStorage: .mock,
