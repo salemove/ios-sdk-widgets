@@ -205,7 +205,6 @@ extension ChatViewController {
         let interactor = Interactor.mock(environment: interEnv)
         let chatViewModel = ChatViewModel.mock(interactor: interactor, environment: chatViewModelEnv)
         let controller: ChatViewController = .mock(chatViewModel: chatViewModel)
-        controller.view.frame = UIScreen.main.bounds
         chatViewModel.action?(.setMessageText("Input Message Mock"))
         let localFileURL = URL.mockFilePath.appendingPathComponent("image").appendingPathExtension("png")
         var fileManager = FoundationBased.FileManager.mock
