@@ -45,7 +45,6 @@ extension CallViewController {
             environment: viewFactEnv
         )
         let viewController = CallViewController.mock(viewModel: viewModel, viewFactory: viewFactory)
-        viewController.view.frame = UIScreen.main.bounds
         viewModel.action?(.queue)
         return viewController
     }
@@ -83,7 +82,6 @@ extension CallViewController {
             environment: viewFactEnv
         )
         let viewController = CallViewController.mock(viewModel: viewModel, viewFactory: viewFactory)
-        viewController.view.frame = UIScreen.main.bounds
         viewModel.action?(.connecting(name: "Blob The Operator", imageUrl: nil))
         return viewController
     }
@@ -140,7 +138,6 @@ extension CallViewController {
             environment: viewFactEnv
         )
         let viewController = CallViewController.mock(viewModel: viewModel, viewFactory: viewFactory)
-        viewController.view.frame = UIScreen.main.bounds
         call.updateAudioStream(with: remoteAudioStream)
         call.updateAudioStream(with: localAudioStream)
         viewModel.action?(.connected(name: "Blob The Operator", imageUrl: nil))
@@ -188,7 +185,6 @@ extension CallViewController {
             environment: viewFactEnv
         )
         let viewController = CallViewController.mock(viewModel: viewModel, viewFactory: viewFactory)
-        viewController.view.frame = UIScreen.main.bounds
         let operatorImageURL = URL.mock
             .appendingPathComponent("operator")
             .appendingPathComponent("123")
@@ -231,7 +227,6 @@ extension CallViewController {
             environment: viewFactEnv
         )
         let viewController = CallViewController.mock(viewModel: viewModel, viewFactory: viewFactory)
-        viewController.view.frame = UIScreen.main.bounds
         viewModel.action?(.queue)
         return viewController
     }
@@ -275,7 +270,6 @@ extension CallViewController {
             environment: viewFactEnv
         )
         let viewController = CallViewController.mock(viewModel: viewModel, viewFactory: viewFactory)
-        viewController.view.frame = UIScreen.main.bounds
 
         call.updateVideoStream(with: CoreSdkClient.MockVideoStreamable.mock())
         call.state.value = .started
