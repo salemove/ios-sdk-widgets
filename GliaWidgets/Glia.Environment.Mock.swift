@@ -15,9 +15,10 @@ extension Glia.Environment {
         localFileThumbnailQueue: .mock(),
         uiImage: .mock,
         createFileDownload: { _, _, _ in .mock() },
-        fromHistory: { true },
+        loadChatMessagesFromHistory: { true },
         timerProviding: .mock,
-        uiApplication: .mock
+        uiApplication: .mock,
+        createRootCoordinator: RootCoordinator.mock
     )
 }
 

@@ -44,7 +44,7 @@ class ChatViewModelTests: XCTestCase {
                         environment: .failing
                     )
                 },
-                fromHistory: { true },
+                loadChatMessagesFromHistory: { true },
                 fetchSiteConfigurations: { _ in },
                 getCurrentEngagement: { nil },
                 timerProviding: .mock,
@@ -79,7 +79,7 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
         viewModelEnv.chatStorage.messages = { _ in [] }
-        viewModelEnv.fromHistory = { true }
+        viewModelEnv.loadChatMessagesFromHistory = { true }
         let viewModel = ChatViewModel.mock(interactor: interactor, environment: viewModelEnv)
         viewModel.start()
         XCTAssertEqual(calls, [.configureWithInteractor, .configureWithConfiguration])
@@ -110,7 +110,7 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
         viewModelEnv.chatStorage.messages = { _ in [] }
-        viewModelEnv.fromHistory = { true }
+        viewModelEnv.loadChatMessagesFromHistory = { true }
         viewModelEnv.fetchSiteConfigurations = { _ in }
         
         let interactor: Interactor = .mock(environment: interactorEnv)
@@ -132,7 +132,7 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
         viewModelEnv.chatStorage.messages = { _ in [] }
-        viewModelEnv.fromHistory = { true }
+        viewModelEnv.loadChatMessagesFromHistory = { true }
         viewModelEnv.fetchSiteConfigurations = { _ in }
 
         let interactor: Interactor = .mock(environment: interactorEnv)
@@ -159,7 +159,7 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
         viewModelEnv.chatStorage.messages = { _ in [] }
-        viewModelEnv.fromHistory = { true }
+        viewModelEnv.loadChatMessagesFromHistory = { true }
         viewModelEnv.fetchSiteConfigurations = { _ in }
 
         let interactor: Interactor = .mock(environment: interactorEnv)

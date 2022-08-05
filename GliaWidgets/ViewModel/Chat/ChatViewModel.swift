@@ -307,7 +307,7 @@ extension ChatViewModel {
 extension ChatViewModel {
     private func loadHistory() {
         let messages = environment.chatStorage.messages(interactor.queueID)
-        let items = messages.compactMap { ChatItem(with: $0, fromHistory: environment.fromHistory()) }
+        let items = messages.compactMap { ChatItem(with: $0, fromHistory: environment.loadChatMessagesFromHistory()) }
         historySection.set(items)
         action?(.refreshSection(historySection.index))
         action?(.scrollToBottom(animated: false))

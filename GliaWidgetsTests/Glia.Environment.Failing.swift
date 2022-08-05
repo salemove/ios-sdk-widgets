@@ -19,12 +19,23 @@ extension Glia.Environment {
         localFileThumbnailQueue: .failing,
         uiImage: .failing,
         createFileDownload: { _, _, _ in .failing },
-        fromHistory: {
-            fail("\(Self.self).fromHistory")
+        loadChatMessagesFromHistory: {
+            fail("\(Self.self).loadChatMessagesFromHistory")
             return true
         },
         timerProviding: .failing,
-        uiApplication: .failing
+        uiApplication: .failing,
+        createRootCoordinator: { _, _, _, _, _, _ in
+            fail("\(Self.self).createRootCoordinator")
+            return .mock(
+                interactor: .mock(environment: .failing),
+                viewFactory: .mock(environment: .failing),
+                sceneProvider: nil,
+                engagementKind: .none,
+                features: [],
+                environment: .failing
+            )
+        }
     )
 }
 
