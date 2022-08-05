@@ -21,7 +21,7 @@ extension ChatViewModel.Environment {
                     environment: env
                 )
         },
-        fromHistory: { true },
+        loadChatMessagesFromHistory: { true },
         fetchSiteConfigurations: { _ in },
         getCurrentEngagement: { return nil },
         timerProviding: .mock,
