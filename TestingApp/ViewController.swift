@@ -95,6 +95,13 @@ extension ViewController {
         }
 
         do {
+            #if DEBUG
+            let pushNotifications = Configuration.PushNotifications.sandbox
+            #else
+            let pushNotifications = Configuration.PushNotifications.production
+            #endif
+            configuration.pushNotifications = pushNotifications
+            
             try Glia.sharedInstance.start(
                 engagementKind,
                 configuration: configuration,
