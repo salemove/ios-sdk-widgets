@@ -1,3 +1,5 @@
+import Foundation
+
 extension RootCoordinator {
     struct Environment {
         var chatStorage: Glia.Environment.ChatStorage
