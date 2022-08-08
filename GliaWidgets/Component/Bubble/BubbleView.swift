@@ -14,6 +14,8 @@ class BubbleView: UIView {
             isVisitorOnHold
                 ? showOnHoldView()
                 : hideOnHoldView()
+
+            setAccessibilityIdentifier()
         }
     }
 
@@ -107,7 +109,7 @@ class BubbleView: UIView {
         accessibilityTraits = [.button]
         accessibilityLabel = style.accessibility.label
         accessibilityHint = style.accessibility.hint
-        accessibilityIdentifier = "bubble_view"
+        setAccessibilityIdentifier()
 
         update(kind)
     }
@@ -142,6 +144,10 @@ class BubbleView: UIView {
 
         addSubview(view)
         view.autoPinEdgesToSuperviewEdges()
+    }
+
+    private func setAccessibilityIdentifier() {
+        accessibilityIdentifier = isVisitorOnHold ? "on_hold_bubble_view" : "bubble_view"
     }
 
     @objc private func tapped() {
