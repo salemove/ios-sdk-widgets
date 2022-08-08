@@ -75,14 +75,14 @@ class Interactor {
     private var environment: Environment
 
     init(
-        with conf: CoreSdkClient.Salemove.Configuration,
+        with sdkConfiguration: CoreSdkClient.Salemove.Configuration,
         queueID: String,
         visitorContext: CoreSdkClient.VisitorContext?,
         environment: Environment
     ) {
         self.queueID = queueID
         self.visitorContext = visitorContext
-        self.sdkConfiguration = conf
+        self.sdkConfiguration = sdkConfiguration
         self.environment = environment
     }
 

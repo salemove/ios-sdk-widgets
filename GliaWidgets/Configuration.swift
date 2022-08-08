@@ -37,7 +37,9 @@ public struct Configuration {
     public let site: String
     /// Visitor Context
     public let visitorContext: VisitorContext?
-
+    /// Push notifications state. Pass `sandbox` to use push notifications during
+    /// development/debug time, and `production` for release.
+    public var pushNotifications: PushNotifications
     /// Initializes the configuration.
     ///
     /// - Parameters:
@@ -50,12 +52,14 @@ public struct Configuration {
         authorizationMethod: AuthorizationMethod,
         environment: Environment,
         site: String,
-        visitorContext: VisitorContext? = nil
+        visitorContext: VisitorContext? = nil,
+        pushNotifications: PushNotifications = .disabled
     ) {
         self.authorizationMethod = authorizationMethod
         self.environment = environment
         self.site = site
         self.visitorContext = visitorContext
+        self.pushNotifications = pushNotifications
     }
 }
 
@@ -88,6 +92,23 @@ extension Configuration {
         /// - Parameter assetId: Asset ID represented by UUID from Glia Hub.
         public init(assetId: UUID) {
             self.assetId = assetId
+        }
+    }
+}
+
+extension Configuration {
+    public enum PushNotifications {
+        case disabled, sandbox, production
+
+        var coreSdk: CoreSdkClient.Salemove.Configuration.PushNotifications {
+            switch self {
+            case .disabled:
+                return .disabled
+            case .sandbox:
+                return .sandbox
+            case .production:
+                return .production
+            }
         }
     }
 }
