@@ -62,11 +62,11 @@ public class Glia {
         queueId: String,
         visitorContext: VisitorContext?
     ) throws {
-
         let sdkConfiguration = try Salemove.Configuration(
             siteId: configuration.site,
             region: configuration.environment.region,
-            authorizingMethod: configuration.authorizationMethod.coreAuthorizationMethod
+            authorizingMethod: configuration.authorizationMethod.coreAuthorizationMethod,
+            pushNotifications: configuration.pushNotifications.coreSdk
         )
         interactor = Interactor(
             with: sdkConfiguration,
