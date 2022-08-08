@@ -1,0 +1,18 @@
+name: SpmSampleApp
+options:
+  bundleIdPrefix: com.glia.sdk.sample
+packages:
+  GliaWidgets:
+    url: https://github.com/salemove/ios-sdk-widgets
+    branch: #{GliaWidgets_SHA}
+targets:
+  SpmSampleApp:
+    type: application
+    platform: iOS
+    deploymentTarget: "12.0"
+    info:
+      path: Sources/Info.plist
+    sources: [Sources]
+    dependencies:
+      - package: GliaWidgets
+        product: GliaWidgets
