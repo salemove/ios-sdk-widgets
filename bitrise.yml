@@ -1,0 +1,295 @@
+---
+format_version: '8'
+default_step_lib_source: 'https://github.com/bitrise-io/bitrise-steplib.git'
+project_type: ios
+workflows:
+  browserstack_upload:
+    steps:
+    - activate-ssh-key@4:
+        run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
+    - git-clone@6: {}
+    - cache-pull@2: {}
+    - certificate-and-profile-installer@1: {}
+    - cocoapods-install@2: {}
+    - recreate-user-schemes@1:
+        inputs:
+        - project_path: $BITRISE_PROJECT_PATH
+    - xcode-archive@3:
+        inputs:
+        - scheme: $APP_SCHEME
+        - team_id: XR3G5NDPNH
+        - export_method: $BITRISE_EXPORT_METHOD
+    - browserstack-upload@0:
+        inputs:
+        - upload_path: $BITRISE_IPA_PATH
+        - custom_id: $BROWSERSTACK_APP_ID
+        title: Upload test app to BrowserStack
+    - deploy-to-bitrise-io@2:
+        inputs:
+        - notify_email_list: $NOTIFY_EMAILS
+    - cache-push@2: {}
+    description: >-
+      Workflow for creating builds of master branch. Triggered on each push to
+      master branch, notifies over email + Slack (external)
+  dev-build:
+    steps:
+    - activate-ssh-key@4:
+        run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
+    - git-clone@6: {}
+    - cache-pull@2: {}
+    - certificate-and-profile-installer@1: {}
+    - cocoapods-install@2: {}
+    - recreate-user-schemes@1:
+        inputs:
+        - project_path: $BITRISE_PROJECT_PATH
+    - xcode-archive@3:
+        inputs:
+        - scheme: $APP_SCHEME
+        - team_id: XR3G5NDPNH
+        - export_method: $BITRISE_EXPORT_METHOD
+    - deploy-to-bitrise-io@2:
+        inputs:
+        - notify_email_list: $NOTIFY_EMAILS
+    - cache-push@2: {}
+    description: >-
+      Workflow for creating builds of dev branch. Triggered on each push to dev
+      branch, notifies over email + Slack (internal)
+  docs:
+    steps:
+    - activate-ssh-key@4:
+        run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
+    - git-clone@6: {}
+    - script-runner@0:
+        inputs:
+        - file_path: docs/populate_wiki
+        is_always_run: true
+    description: >-
+      Workflow for checking and building pull requests. Does not notify
+      anywhere, but shows on the pull request itself.
+  integration-spm:
+    steps:
+    - script@1:
+        inputs:
+        - content: >-
+            #!/usr/bin/env bash
+
+            # fail if any commands fails
+
+            set -e
+
+            # make pipelines' return status equal the last command to exit with
+            a non-zero status, or zero if all commands exit successfully
+
+            set -o pipefail
+
+            # debug log
+
+            set -x
+
+
+            sed -i '' "s/\#{GliaWidgets_SHA}/$GIT_CLONE_COMMIT_HASH/"
+            "$BITRISE_SOURCE_DIR/Integrations/SwiftPackageManager/spm-project.yml"
+    - xcodegen@0:
+        inputs:
+        - project_path: $BITRISE_SOURCE_DIR/Integrations/SwiftPackageManager
+        - spec_path: $BITRISE_SOURCE_DIR/Integrations/SwiftPackageManager/spm-project.yml
+    - script@1:
+        inputs:
+        - content: >-
+            #!/usr/bin/env bash
+
+            # fail if any commands fails
+
+            set -e
+
+            # make pipelines' return status equal the last command to exit with
+            a non-zero status, or zero if all commands exit successfully
+
+            set -o pipefail
+
+            # debug log
+
+            set -x
+
+
+            cd $BITRISE_SOURCE_DIR/Integrations/SwiftPackageManager/
+
+
+            xcodebuild -project  SpmSampleApp.xcodeproj -scheme "SpmSampleApp"
+            -configuration "Debug" -sdk "iphonesimulator" -destination
+            "generic/platform=iOS Simulator"
+  master-build:
+    steps:
+    - activate-ssh-key@4:
+        run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
+    - git-clone@6: {}
+    - cache-pull@2: {}
+    - certificate-and-profile-installer@1: {}
+    - cocoapods-install@2: {}
+    - recreate-user-schemes@1:
+        inputs:
+        - project_path: $BITRISE_PROJECT_PATH
+    - xcode-archive@3:
+        inputs:
+        - scheme: $APP_SCHEME
+        - team_id: XR3G5NDPNH
+        - export_method: $BITRISE_EXPORT_METHOD
+    - browserstack-upload@0:
+        inputs:
+        - upload_path: $BITRISE_IPA_PATH
+        - custom_id: $BROWSERSTACK_APP_ID
+        title: Upload test app to BrowserStack
+    - deploy-to-bitrise-io@2:
+        inputs:
+        - notify_email_list: $NOTIFY_EMAILS
+    - cache-push@2: {}
+    description: >-
+      Workflow for creating builds of master branch. Triggered on each push to
+      master branch, notifies over email + Slack (external)
+  pull-request:
+    steps:
+    - activate-ssh-key@4:
+        run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
+    - git-clone@6: {}
+    - cache-pull@2: {}
+    - certificate-and-profile-installer@1: {}
+    - cocoapods-install@2: {}
+    - recreate-user-schemes@1:
+        inputs:
+        - project_path: $BITRISE_PROJECT_PATH
+    - xcode-test@4:
+        inputs:
+        - scheme: GliaWidgetsTests
+    - xcode-archive@4.5:
+        inputs:
+        - scheme: $APP_SCHEME
+        - team_id: XR3G5NDPNH
+        - export_method: $BITRISE_EXPORT_METHOD
+    - deploy-to-bitrise-io@2:
+        inputs:
+        - notify_email_list: ''
+    - cache-push@2: {}
+    description: >-
+      Workflow for checking and building pull requests. Does not notify
+      anywhere, but shows on the pull request itself.
+    after_run:
+    - integration-spm
+  pull-request-snapshot:
+    steps:
+    - activate-ssh-key@4:
+        run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
+    - git-clone@6: {}
+    - script@1:
+        inputs:
+        - content: >-
+            #!/usr/bin/env bash
+
+            # fail if any commands fails
+
+            set -e
+
+            # make pipelines' return status equal the last command to exit with
+            a non-zero status, or zero if all commands exit successfully
+
+            set -o pipefail
+
+            # debug log
+
+            set -x
+
+
+            # write your script here
+
+            echo "Hello World!"
+
+
+            # or run a script from your repository, like:
+
+            # bash ./path/to/script.sh
+
+            # not just bash, e.g.:
+
+            # ruby ./path/to/script.rb
+
+
+
+            git clone git@github.com:salemove/ios-widgets-snapshots.git
+    - cache-pull@2: {}
+    - certificate-and-profile-installer@1: {}
+    - cocoapods-install@2: {}
+    - recreate-user-schemes@1:
+        inputs:
+        - project_path: $BITRISE_PROJECT_PATH
+    - xcode-test@4:
+        inputs:
+        - scheme: GliaWidgetsTests
+    - xcode-test@4:
+        inputs:
+        - destination: 'platform=iOS Simulator,name=iPhone 13,OS=15.2'
+        - scheme: SnapshotTests
+    - xcode-archive@3:
+        inputs:
+        - scheme: $APP_SCHEME
+        - team_id: XR3G5NDPNH
+        - export_method: $BITRISE_EXPORT_METHOD
+    - deploy-to-bitrise-io@2:
+        inputs:
+        - notify_email_list: ''
+    - cache-push@2: {}
+    description: >-
+      Workflow for checking and building pull requests. Does not notify
+      anywhere, but shows on the pull request itself.
+  QA-build:
+    steps:
+    - activate-ssh-key@4:
+        run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
+    - git-clone@6: {}
+    - cache-pull@2: {}
+    - certificate-and-profile-installer@1: {}
+    - cocoapods-install@2: {}
+    - recreate-user-schemes@1:
+        inputs:
+        - project_path: $BITRISE_PROJECT_PATH
+    - xcode-archive@3:
+        inputs:
+        - scheme: $APP_SCHEME
+        - team_id: XR3G5NDPNH
+        - export_method: $BITRISE_EXPORT_METHOD
+    - deploy-to-bitrise-io@2:
+        inputs:
+        - notify_email_list: $NOTIFY_EMAILS
+    - cache-push@2: {}
+    description: >-
+      Workflow for creating builds of dev branch. Triggered on each push to dev
+      branch, notifies over email + Slack (internal)
+app:
+  envs:
+  - opts:
+      is_expand: false
+    BITRISE_PROJECT_PATH: GliaWidgets.xcworkspace
+  - opts:
+      is_expand: false
+    SDK_SCHEME: GliaWidgets
+  - opts:
+      is_expand: false
+    APP_SCHEME: TestingApp
+  - opts:
+      is_expand: false
+    BITRISE_EXPORT_METHOD: development
+  - opts:
+      is_expand: false
+    BROWSERSTACK_APP_ID: WidgetsSdkIosTestApp
+trigger_map:
+- push_branch: docs/*
+  workflow: docs
+- push_branch: qa/*
+  workflow: QA-build
+- push_branch: dev
+  workflow: dev-build
+- push_branch: master
+  workflow: master-build
+- pull_request_target_branch: '*'
+  workflow: pull-request
+meta:
+  bitrise.io:
+    stack: osx-xcode-13.3.x
