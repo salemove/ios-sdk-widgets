@@ -22,6 +22,7 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 ```
 
 Increments versions in Xcode projects and Podspec file according to given type.
+
 Usage:
 fastlane increment_project_version type:major - increments X.0.0
 fastlane increment_project_version type:minor - increments 0.X.0
@@ -35,6 +36,14 @@ fastlane increment_project_version type:patch - increments 0.0.X
 ```
 
 
+
+### ios create_pull_request
+
+```sh
+[bundle exec] fastlane ios create_pull_request
+```
+
+Creates a pull request in the repository with whatever changes have been made. Used in tandem with Bitrise to update dependencies.
 
 ----
 
