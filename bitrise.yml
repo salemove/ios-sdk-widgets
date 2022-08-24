@@ -262,6 +262,16 @@ workflows:
     description: >-
       Workflow for creating builds of dev branch. Triggered on each push to dev
       branch, notifies over email + Slack (internal)
+  update_dependencies:
+    steps:
+    - activate-ssh-key@4: {}
+    - git-clone@6: {}
+    - cocoapods-install@2:
+        inputs:
+        - command: update
+    - fastlane@3:
+        inputs:
+        - lane: create_pr
 app:
   envs:
   - opts:
