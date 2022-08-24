@@ -37,13 +37,13 @@ fastlane increment_project_version type:patch - increments 0.0.X
 
 
 
-### ios create_pull_request
+### ios create_pr
 
 ```sh
-[bundle exec] fastlane ios create_pull_request
+[bundle exec] fastlane ios create_pr
 ```
 
-Creates a pull request in the repository with whatever changes have been made. Used in tandem with Bitrise to update dependencies.
+Creates a pull request in the repository with whatever changes have been made. Used in tandem with Bitrise to update dependencies. Named `create_pr` and not `create_pull_request` to avoid conflicting with the Fastlane action of the same name.
 
 ----
 
