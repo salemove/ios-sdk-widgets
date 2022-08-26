@@ -42,4 +42,21 @@ platform :ios do
       value: "\"#{version}\""
     )
   end
+
+  desc "Creates a pull request in the repository with whatever changes have been made. "\
+    "Used in tandem with Bitrise to update dependencies. Named `create_pr` and not "\
+    "`create_pull_request` to avoid conflicting with the Fastlane action of the same name."
+  lane :create_pr do |options|
+    branch_name = 'dependencies-update'
+    message = "Update dependencies declared in `Podfile`"
+
+    sh "cd .. && scripts/create_pr.sh '#{branch_name}' '#{message}'"
+    create_pull_request(
+      repo: 'salemove/ios-sdk-widgets',
+      title: message,
+      head: branch_name,
+      base: 'master',
+      reviewers: [:gersonnoboa, :dukhovnyi, :igorkravchenko, :EgorovEI]
+    )
+  end
 end
