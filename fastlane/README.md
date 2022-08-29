@@ -15,6 +15,14 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 ## iOS
 
+### ios create_pr_for_incremented_project_version
+
+```sh
+[bundle exec] fastlane ios create_pr_for_incremented_project_version
+```
+
+
+
 ### ios increment_project_version
 
 ```sh
@@ -27,14 +35,6 @@ Usage:
 fastlane increment_project_version type:major - increments X.0.0
 fastlane increment_project_version type:minor - increments 0.X.0
 fastlane increment_project_version type:patch - increments 0.0.X
-
-
-### ios increment_static_version
-
-```sh
-[bundle exec] fastlane ios increment_static_version
-```
-
 
 
 ### ios create_pr
