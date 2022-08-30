@@ -8,6 +8,24 @@ PATH_GLIA_PROJECT_DIR = "#{PATH_ROOT}/#{PRODUCT_NAME_GLIA_WIDGETS}"
 PATH_GLIA_STATIC_VALUES = "#{PATH_GLIA_PROJECT_DIR}/StaticValues.swift"
 
 platform :ios do
+  desc "Creates a pull request in the repository with the required files to increment "\
+    "the project version."
+  lane :create_pr_for_increment_project_version do |options|
+    type = options[:type]
+    new_version = increment_project_version(type: type)
+    branch_name = 'increment-project-version'
+    message = "Update project version to #{new_version}"
+
+    sh "cd .. && scripts/commit_unstaged_changes.sh '#{branch_name}' '#{message}'"
+    create_pull_request(
+      repo: 'salemove/ios-sdk-widgets',
+      title: message,
+      head: branch_name,
+      base: 'master',
+      team_reviewers: ["tm-mobile-ios"]
+    )
+  end
+
   desc "Increments versions in Xcode projects and Podspec file "\
     "according to given type.\n\n"\
     "Usage:\n"\
@@ -27,9 +45,11 @@ platform :ios do
       file_path: PATH_GLIA_STATIC_VALUES,
       version: new_version
     )
+
+    new_version
   end
 
-  lane :increment_static_version do |options|
+  private_lane :increment_static_version do |options|
     file_path = options[:file_path]
     UI.user_error!("No filepath specified") unless !file_path.nil?
 
@@ -44,19 +64,18 @@ platform :ios do
   end
 
   desc "Creates a pull request in the repository with whatever changes have been made. "\
-    "Used in tandem with Bitrise to update dependencies. Named `create_pr` and not "\
-    "`create_pull_request` to avoid conflicting with the Fastlane action of the same name."
-  lane :create_pr do |options|
+    "Used in tandem with Bitrise to update dependencies."
+  lane :create_pr_for_dependencies_update do |options|
     branch_name = 'dependencies-update'
     message = "Update dependencies declared in `Podfile`"
 
-    sh "cd .. && scripts/create_pr.sh '#{branch_name}' '#{message}'"
+    sh "cd .. && scripts/commit_unstaged_changes.sh '#{branch_name}' '#{message}'"
     create_pull_request(
       repo: 'salemove/ios-sdk-widgets',
       title: message,
       head: branch_name,
       base: 'master',
-      reviewers: [:gersonnoboa, :dukhovnyi, :igorkravchenko, :EgorovEI]
+      team_reviewers: ["tm-mobile-ios"]
     )
   end
 end
