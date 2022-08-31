@@ -283,6 +283,25 @@ workflows:
     - fastlane@3:
         inputs:
         - lane: create_pr_for_dependencies_update
+  deployment:
+    steps:
+    - activate-ssh-key@4: {}
+    - git-clone@6: {}
+    - cache-pull@2: {}
+    - cocoapods-install@2: {}
+    - xcode-test@4:
+        inputs:
+        - scheme: GliaWidgetsTests
+    - generate-changelog@0: {}
+    - github-release@0:
+        inputs:
+        - username: $GITHUB_USERNAME
+        - name: Glia iOS Widgets SDK $BITRISE_GIT_TAG
+        - body: $BITRISE_CHANGELOG
+        - api_token: $GITHUB_API_TOKEN
+        - draft: 'no'
+        - commit: $GIT_CLONE_COMMIT_HASH
+    - cache-push@2: {}
 app:
   envs:
   - opts:
