@@ -43,13 +43,17 @@ extension Glia {
         // Reset navigation and UI back to initial state,
         // effectively removing bubble view (if there was one).
         let cleanup = { [weak self] in
-            self?.rootCoordinator?.popCoordinator()
-            self?.rootCoordinator?.end()
-            self?.rootCoordinator = nil
+            // Comment out clean up code until 'end engagement issue is resolved'.
+
+//            self?.rootCoordinator?.popCoordinator()
+//            self?.rootCoordinator?.end()
+//            self?.rootCoordinator = nil
         }
 
         return .init(
             authenticateWithIdToken: { [weak self, environment] idToken, callback in
+                // Cleanup navigation and views.
+                cleanup()
                 auth.authenticate(with: .init(rawValue: idToken)) { [weak self, environment] result in
                     switch result {
                     case .success:
@@ -69,6 +73,8 @@ extension Glia {
                 }
             },
             deauthenticateWithCallback: { [weak self, environment] callback in
+                // Cleanup navigation and views.
+                cleanup()
                 auth.deauthenticate { [weak self, environment] result in
                     switch result {
                     case .success:
