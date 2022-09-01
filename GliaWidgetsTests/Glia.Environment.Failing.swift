@@ -25,7 +25,7 @@ extension Glia.Environment {
         },
         timerProviding: .failing,
         uiApplication: .failing,
-        createRootCoordinator: { _, _, _, _, _, _ in
+        createRootCoordinator: { _, _, _, _, _, _, _ in
             fail("\(Self.self).createRootCoordinator")
             return .mock(
                 interactor: .mock(environment: .failing),
@@ -33,9 +33,11 @@ extension Glia.Environment {
                 sceneProvider: nil,
                 engagementKind: .none,
                 features: [],
+                chatStorageState: { .unauthenticated(.failing) },
                 environment: .failing
             )
-        }
+        },
+        authenticatedChatStorage: .failing
     )
 }
 

@@ -46,10 +46,12 @@ public class Glia {
 
     var rootCoordinator: RootCoordinator?
     var interactor: Interactor?
-    private var environment: Environment
+    var environment: Environment
+    var chatStorageState: ChatStorageState
 
     init(environment: Environment) {
         self.environment = environment
+        self.chatStorageState = .unauthenticated(environment.chatStorage)
     }
 
     /// Setup SDK using specific engagement configuration without starting the engagement.
@@ -57,10 +59,13 @@ public class Glia {
     ///   - configuration: Engagement configuration.
     ///   - queueId: Queue identifier.
     ///   - visitorContext: Visitor context.
+    ///   - completion: Optional completion handler that will be fired once configuration is complete.
+    ///   Passing  `nil` will defer configuration. Passing closure will start configuration immediately.
     public func configure(
         with configuration: Configuration,
         queueId: String,
-        visitorContext: VisitorContext?
+        visitorContext: VisitorContext?,
+        completion: (() -> Void)? = nil
     ) throws {
         let sdkConfiguration = try Salemove.Configuration(
             siteId: configuration.site,
@@ -77,6 +82,10 @@ public class Glia {
                 gcd: environment.gcd
             )
         )
+
+        if let callback = completion {
+            interactor?.withConfiguration(callback)
+        }
     }
 
     /// Starts the engagement.
@@ -193,6 +202,12 @@ public class Glia {
             sceneProvider: sceneProvider,
             engagementKind: engagementKind,
             features: features,
+            chatStorageState: { [environment, weak self] in
+                guard let self = self else {
+                    return .unauthenticated(environment.chatStorage)
+                }
+                return self.chatStorageState
+            },
             environment: .init(
                 chatStorage: environment.chatStorage,
                 fetchFile: environment.coreSdk.fetchFile,
@@ -237,6 +252,7 @@ public class Glia {
     public func clearVisitorSession() {
         environment.coreSdk.clearSession()
         environment.chatStorage.dropDatabase()
+        environment.authenticatedChatStorage.clear()
     }
 
     /// Fetch current Visitor's information.

@@ -16,6 +16,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     var pendingSection: Section<ChatItem> { sections[1] }
     var queueOperatorSection: Section<ChatItem> { sections[2] }
     var messagesSection: Section<ChatItem> { sections[3] }
+    var chatStorageState: () -> ChatStorageState
 
     private let call: ObservableValue<Call?>
     private var unreadMessages: UnreadMessagesHandler!
@@ -43,6 +44,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         showsCallBubble: Bool,
         isWindowVisible: ObservableValue<Bool>,
         startAction: StartAction,
+        chatStorageState: @escaping () -> ChatStorageState,
         environment: Environment
     ) {
         self.call = call
@@ -73,6 +75,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
                 createFileDownload: environment.createFileDownload
             )
         )
+        self.chatStorageState = chatStorageState
         super.init(
             interactor: interactor,
             alertConfiguration: alertConfiguration,
@@ -145,7 +148,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         // messages from operator until message is sent from visitor.
         interactor.withConfiguration { [weak self] in
             guard let self = self else { return }
-            if case .startEngagement = self.startAction, self.environment.chatStorage.isEmpty() {
+            if case .startEngagement = self.startAction, self.chatStorageState().isEmpty() {
                 self.enqueue(mediaType: .text)
             }
         }
@@ -306,7 +309,7 @@ extension ChatViewModel {
 
 extension ChatViewModel {
     private func loadHistory() {
-        let messages = environment.chatStorage.messages(interactor.queueID)
+        let messages = chatStorageState().messages(interactor.queueID)
         let items = messages.compactMap { ChatItem(with: $0, fromHistory: environment.loadChatMessagesFromHistory()) }
         historySection.set(items)
         action?(.refreshSection(historySection.index))
@@ -491,9 +494,9 @@ extension ChatViewModel {
     }
 
     private func receivedMessage(_ message: CoreSdkClient.Message) {
-        guard environment.chatStorage.isNewMessage(message) else { return }
+        guard chatStorageState().isNewMessage(message) else { return }
 
-        environment.chatStorage.storeMessage(
+        chatStorageState().storeMessage(
             message,
             interactor.queueID,
             interactor.engagedOperator
@@ -526,11 +529,11 @@ extension ChatViewModel {
     }
 
     private func messagesUpdated(_ messages: [CoreSdkClient.Message]) {
-        let newMessages = environment.chatStorage.newMessages(messages)
+        let newMessages = chatStorageState().newMessages(messages)
         unreadMessages.received(newMessages.count)
 
         if !newMessages.isEmpty {
-            environment.chatStorage.storeMessages(
+            chatStorageState().storeMessages(
                 newMessages,
                 interactor.queueID,
                 interactor.engagedOperator
@@ -809,7 +812,7 @@ extension ChatViewModel {
         ))
 
         messagesSection.replaceItem(at: index, with: item)
-        environment.chatStorage.updateMessage(message)
+        chatStorageState().updateMessage(message)
 
         action?(.refreshRow(index, in: messagesSection.index, animated: true))
         action?(.setChoiceCardInputModeEnabled(false))
