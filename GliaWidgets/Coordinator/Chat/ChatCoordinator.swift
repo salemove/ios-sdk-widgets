@@ -27,6 +27,7 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
     private var mediaPickerController: MediaPickerController?
     private var filePickerController: FilePickerController?
     private var quickLookController: QuickLookController?
+    private var chatStorageState: () -> ChatStorageState
     private let environment: Environment
 
     init(
@@ -39,6 +40,7 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
         screenShareHandler: ScreenShareHandler,
         isWindowVisible: ObservableValue<Bool>,
         startAction: ChatViewModel.StartAction,
+        chatStorageState: @escaping () -> ChatStorageState,
         environment: Environment
     ) {
         self.interactor = interactor
@@ -50,6 +52,7 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
         self.screenShareHandler = screenShareHandler
         self.isWindowVisible = isWindowVisible
         self.startAction = startAction
+        self.chatStorageState = chatStorageState
         self.environment = environment
     }
 
@@ -70,6 +73,7 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
             isCustomCardSupported: viewFactory.messageRenderer != nil,
             isWindowVisible: isWindowVisible,
             startAction: startAction,
+            chatStorageState: chatStorageState,
             environment: .init(
                 chatStorage: environment.chatStorage,
                 fetchFile: environment.fetchFile,

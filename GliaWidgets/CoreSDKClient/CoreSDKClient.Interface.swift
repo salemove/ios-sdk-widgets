@@ -100,6 +100,8 @@ struct CoreSdkClient {
         ) -> Void
     )
     var submitSurveyAnswer: SubmitSurveyAnswer
+    typealias CreateAuthentication = (_ behaviour: AuthenticationBehavior) throws -> Authentication
+    var authentication: CreateAuthentication
 }
 
 extension CoreSdkClient {
@@ -178,4 +180,6 @@ extension CoreSdkClient {
     typealias Site = SalemoveSDK.Site
     typealias Survey = SalemoveSDK.Survey
     typealias SurveyAnswerContainer = SalemoveSDK.Survey.Answer.ValueContainer
+    typealias Authentication = SalemoveSDK.Salemove.Authentication
+    typealias AuthenticationBehavior = SalemoveSDK.Salemove.Authentication.Behavior
 }

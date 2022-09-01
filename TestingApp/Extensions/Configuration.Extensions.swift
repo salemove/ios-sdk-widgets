@@ -1,5 +1,7 @@
 import Foundation
 import GliaWidgets
+import enum SalemoveSDK.ConfigurationError
+
 
 extension Configuration {
     static func empty(with env: Environment = .beta) -> Self {
@@ -149,5 +151,28 @@ extension Configuration.VisitorContext: Codable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
         try container.encode(assetId)
+    }
+}
+
+extension ConfigurationError: CustomStringConvertible {
+    public var description: String {
+        switch self {
+        case .invalidSite:
+            return "invalidSite"
+        case .invalidEnvironment:
+            return "invalidEnvironment"
+        case .invalidAppToken:
+            return "invalidAppToken"
+        case .invalidApiToken:
+            return "invalidApiToken"
+        case .apiTokenNotSupported:
+            return "apiTokenNotSupported"
+        case .invalidSiteApiKey:
+            return "invalidSiteApiKey"
+        case .invalidRegionEndpoint:
+            return "invalidRegionEndpoint"
+        @unknown default:
+            return "unknown default: '\(self.rawValue)'"
+        }
     }
 }

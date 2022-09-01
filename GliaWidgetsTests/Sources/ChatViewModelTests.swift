@@ -14,7 +14,7 @@ class ChatViewModelTests: XCTestCase {
         var fileManager = FoundationBased.FileManager.failing
         fileManager.urlsForDirectoryInDomainMask = { _, _ in [URL(fileURLWithPath: "/i/m/mocked/url")] }
         fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
-
+        let chatStorage = Glia.Environment.ChatStorage.failing
         viewModel = .init(
             interactor: .mock(),
             alertConfiguration: .mock(),
@@ -25,8 +25,9 @@ class ChatViewModelTests: XCTestCase {
             isCustomCardSupported: false,
             isWindowVisible: .init(with: true),
             startAction: .none,
+            chatStorageState: { .unauthenticated(chatStorage) },
             environment: .init(
-                chatStorage: .failing,
+                chatStorage: chatStorage,
                 fetchFile: { _, _, _ in },
                 sendSelectedOptionValue: { _, _ in
                     calls.append(.sendSelectedOptionValue)

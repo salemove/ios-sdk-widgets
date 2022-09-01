@@ -46,11 +46,13 @@ public class Glia {
 
     var rootCoordinator: RootCoordinator?
     var interactor: Interactor?
-    private var environment: Environment
+    var environment: Environment
+    var chatStorageState: ChatStorageState
     var messageRenderer: MessageRenderer?
 
     init(environment: Environment) {
         self.environment = environment
+        self.chatStorageState = .unauthenticated(environment.chatStorage)
     }
 
     /// Setup SDK using specific engagement configuration without starting the engagement.
@@ -58,10 +60,13 @@ public class Glia {
     ///   - configuration: Engagement configuration.
     ///   - queueId: Queue identifier.
     ///   - visitorContext: Visitor context.
+    ///   - completion: Optional completion handler that will be fired once configuration is complete.
+    ///   Passing  `nil` will defer configuration. Passing closure will start configuration immediately.
     public func configure(
         with configuration: Configuration,
         queueId: String,
-        visitorContext: VisitorContext?
+        visitorContext: VisitorContext?,
+        completion: (() -> Void)? = nil
     ) throws {
         let sdkConfiguration = try Salemove.Configuration(
             siteId: configuration.site,
@@ -69,7 +74,7 @@ public class Glia {
             authorizingMethod: configuration.authorizationMethod.coreAuthorizationMethod,
             pushNotifications: configuration.pushNotifications.coreSdk
         )
-        interactor = Interactor(
+        let createdInteractor = Interactor(
             with: sdkConfiguration,
             queueID: queueId,
             visitorContext: visitorContext,
@@ -78,6 +83,18 @@ public class Glia {
                 gcd: environment.gcd
             )
         )
+
+        interactor = createdInteractor
+
+        if let callback = completion {
+            createdInteractor.withConfiguration { [weak createdInteractor] in
+                guard let interactor = createdInteractor else { return }
+                    interactor.state = Salemove.sharedInstance
+                        .getCurrentEngagement()?.engagedOperator
+                        .map(InteractorState.engaged) ?? interactor.state
+                    callback()
+            }
+        }
     }
 
     /// Starts the engagement.
@@ -208,6 +225,12 @@ public class Glia {
             sceneProvider: sceneProvider,
             engagementKind: engagementKind,
             features: features,
+            chatStorageState: { [environment, weak self] in
+                guard let self = self else {
+                    return .unauthenticated(environment.chatStorage)
+                }
+                return self.chatStorageState
+            },
             environment: .init(
                 chatStorage: environment.chatStorage,
                 fetchFile: environment.coreSdk.fetchFile,
@@ -252,6 +275,7 @@ public class Glia {
     public func clearVisitorSession() {
         environment.coreSdk.clearSession()
         environment.chatStorage.dropDatabase()
+        environment.authenticatedChatStorage.clear()
     }
 
     /// Fetch current Visitor's information.
