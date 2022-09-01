@@ -189,7 +189,7 @@ extension ChatStorage {
         queueID: String,
         operator salemoveOperator: CoreSdkClient.Operator?
     ) {
-        let salemoveOperator = message.sender == .operator
+        let salemoveOperator = message.sender.type == .operator
             ? salemoveOperator
             : nil
         let message = ChatMessage(with: message, queueID: queueID, operator: salemoveOperator)

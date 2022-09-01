@@ -18,6 +18,7 @@ extension Glia {
             _ sceneProvider: SceneProvider?,
             _ engagementKind: EngagementKind,
             _ features: Features,
+            _ chatStorageState: @escaping () -> ChatStorageState,
             _ environment: RootCoordinator.Environment
         ) -> RootCoordinator
         var coreSdk: CoreSdkClient
@@ -36,6 +37,7 @@ extension Glia {
         var timerProviding: FoundationBased.Timer.Providing
         var uiApplication: UIKitBased.UIApplication
         var createRootCoordinator: CreateRootCoordinator
+        var authenticatedChatStorage: AuthenticatedChatStorage
     }
 }
 
@@ -46,6 +48,7 @@ extension Glia.Environment {
         sceneProvider: SceneProvider?,
         engagementKind: EngagementKind,
         features: Features,
+        chatStorageState: @escaping () -> ChatStorageState,
         environment: RootCoordinator.Environment
     ) -> RootCoordinator {
         self.createRootCoordinator(
@@ -54,6 +57,7 @@ extension Glia.Environment {
             sceneProvider,
             engagementKind,
             features,
+            chatStorageState,
             environment
         )
     }

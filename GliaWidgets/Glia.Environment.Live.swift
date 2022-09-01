@@ -22,7 +22,10 @@ extension Glia.Environment {
         loadChatMessagesFromHistory: { true },
         timerProviding: .live,
         uiApplication: .live,
-        createRootCoordinator: RootCoordinator.init(interactor: viewFactory:sceneProvider:engagementKind:features:environment:)
+        createRootCoordinator: RootCoordinator.init(
+            interactor:viewFactory:sceneProvider:engagementKind:features:chatStorageState:environment:
+        ),
+        authenticatedChatStorage: .live
     )
 }
 
