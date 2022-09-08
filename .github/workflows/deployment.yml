@@ -1,0 +1,16 @@
+name: Deployment
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version in semantic versioning format (i.e. 1.0.2)'
+        required: true
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Runs the deployment workflow in Bitrise
+        run: |
+          curl https://app.bitrise.io/app/${{ secrets.BITRISE_APP_ID }}/build/start.json --data '{"hook_info":{"type":"bitrise","build_trigger_token":"${{ secrets.BITRISE_BUILD_TRIGGER_TOKEN }}"},"build_params":{"branch":"master","workflow_id":"deployment", "tag":"${{ github.event.inputs.version }}"},"triggered_by":"curl"}'
