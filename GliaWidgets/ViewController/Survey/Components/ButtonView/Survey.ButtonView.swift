@@ -62,10 +62,10 @@ extension Survey {
         override func defineLayout() {
             super.defineLayout()
             NSLayoutConstraint.activate([
-                value.topAnchor.constraint(equalTo: topAnchor, constant: 1),
-                value.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 1),
-                value.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 1),
-                value.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 1)
+                value.topAnchor.constraint(equalTo: topAnchor, constant: 0),
+                value.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0),
+                value.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0),
+                value.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0)
             ])
         }
 
@@ -78,38 +78,74 @@ extension Survey {
             accessibilityLabel = props.accessibility.label
             switch props.state {
             case .active:
-                value.layer.cornerRadius = style.normalLayer.cornerRadius
-                value.layer.borderWidth = style.normalLayer.borderWidth
-                value.layer.borderColor = UIColor(hex: style.normalLayer.borderColor).cgColor
-                if let hex = style.normalLayer.background {
-                    value.backgroundColor = UIColor(hex: hex)
-                } else {
-                    value.backgroundColor = .clear
-                }
-                value.textColor = .init(hex: style.normalText.color)
-                value.font = style.normalText.font
+                updateActiveState()
             case .highlighted:
-                value.layer.cornerRadius = style.highlightedLayer.cornerRadius
-                value.layer.borderWidth = style.highlightedLayer.borderWidth
-                value.layer.borderColor = UIColor(hex: style.highlightedLayer.borderColor).cgColor
-                if let hex = style.highlightedLayer.background {
-                    value.backgroundColor = UIColor(hex: hex)
-                } else {
-                    value.backgroundColor = .clear
-                }
-                value.textColor = .init(hex: style.highlightedText.color)
-                value.font = style.highlightedText.font
+                updateHighlightedState()
             case .selected:
-                value.layer.cornerRadius = style.selectedLayer.cornerRadius
-                value.layer.borderWidth = style.selectedLayer.borderWidth
-                value.layer.borderColor = UIColor(hex: style.selectedLayer.borderColor).cgColor
-                if let hex = style.selectedLayer.background {
-                    value.backgroundColor = UIColor(hex: hex)
-                } else {
-                    value.backgroundColor = .clear
+                updateSelectedState()
+            }
+        }
+
+        func updateActiveState() {
+            value.layer.cornerRadius = style.normalLayer.cornerRadius
+            value.layer.borderWidth = style.normalLayer.borderWidth
+            value.layer.borderColor = style.normalLayer.borderColor
+            value.textColor = .init(hex: style.normalText.color)
+            value.font = style.normalText.font
+            if let hex = style.normalLayer.background {
+                switch hex {
+                case .fill(let color):
+                    value.backgroundColor = color
+                case .gradient(let colors):
+                    makeGradientBackground(
+                        colors: colors,
+                        cornerRadius: style.normalLayer.cornerRadius
+                    )
                 }
-                value.textColor = .init(hex: style.selectedText.color)
-                value.font = style.selectedText.font
+            } else {
+                value.backgroundColor = .clear
+            }
+        }
+
+        func updateSelectedState() {
+            value.layer.cornerRadius = style.selectedLayer.cornerRadius
+            value.layer.borderWidth = style.selectedLayer.borderWidth
+            value.layer.borderColor = style.selectedLayer.borderColor
+            value.textColor = .init(hex: style.selectedText.color)
+            value.font = style.selectedText.font
+            if let hex = style.selectedLayer.background {
+                switch hex {
+                case .fill(let color):
+                    value.backgroundColor = color
+                case .gradient(let colors):
+                    makeGradientBackground(
+                        colors: colors,
+                        cornerRadius: style.selectedLayer.cornerRadius
+                    )
+                }
+            } else {
+                value.backgroundColor = .clear
+            }
+        }
+
+        func updateHighlightedState() {
+            value.layer.cornerRadius = style.highlightedLayer.cornerRadius
+            value.layer.borderWidth = style.highlightedLayer.borderWidth
+            value.layer.borderColor = style.highlightedLayer.borderColor
+            value.textColor = .init(hex: style.highlightedText.color)
+            value.font = style.highlightedText.font
+            if let hex = style.highlightedLayer.background {
+                switch hex {
+                case .fill(let color):
+                    value.backgroundColor = color
+                case .gradient(let colors):
+                    makeGradientBackground(
+                        colors: colors,
+                        cornerRadius: style.highlightedLayer.cornerRadius
+                    )
+                }
+            } else {
+                value.backgroundColor = .clear
             }
         }
 

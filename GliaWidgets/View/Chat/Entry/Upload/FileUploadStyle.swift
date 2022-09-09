@@ -67,6 +67,48 @@ public class FileUploadStyle {
         self.removeButtonColor = removeButtonColor
         self.accessibility = accessibility
     }
+
+    func apply(
+        configuration: RemoteConfiguration.FileUploadBar?,
+        assetsBuilder: RemoteConfiguration.AssetsBuilder
+    ) {
+        filePreview.apply(
+            configuration: configuration?.filePreview,
+            assetsBuilder: assetsBuilder
+        )
+        uploading.apply(
+            configuration: configuration?.uploading,
+            assetsBuilder: assetsBuilder
+        )
+        uploaded.apply(
+            configuration: configuration?.uploaded,
+            assetsBuilder: assetsBuilder
+        )
+        error.apply(
+            configuration: configuration?.error,
+            assetsBuilder: assetsBuilder
+        )
+
+        configuration?.progress?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .unwrap { progressColor = $0 }
+
+        configuration?.errorProgress?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .unwrap { errorProgressColor = $0 }
+
+        configuration?.progressBackground?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .unwrap { progressBackgroundColor = $0 }
+
+        configuration?.removeButton?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .unwrap { removeButtonColor = $0 }
+    }
 }
 
 /// Style of an upload state.
@@ -80,32 +122,69 @@ public class FileUploadStateStyle {
     /// Color of the state text.
     public var textColor: UIColor
 
+    /// Text style of the state text.
+    public var textStyle: UIFont.TextStyle
+
     /// Font of the file info information text.
     public var infoFont: UIFont
 
     /// Color of the file information text.
     public var infoColor: UIColor
 
+    /// Text style of the info text.
+    public var infoTextStyle: UIFont.TextStyle
+
     ///
     /// - Parameters:
     ///   - text: Text for the state.
     ///   - font: Font of the state text.
     ///   - textColor: Color of the state text.
+    ///   - textStyle: Text style of the state text.
     ///   - infoFont: Font of the file info information text.
     ///   - infoColor: Color of the file information text.
+    ///   - infoTextStyle: Text style of the info text.
     ///
     public init(
         text: String,
         font: UIFont,
         textColor: UIColor,
+        textStyle: UIFont.TextStyle = .subheadline,
         infoFont: UIFont,
-        infoColor: UIColor
+        infoColor: UIColor,
+        infoTextStyle: UIFont.TextStyle = .caption1
     ) {
         self.text = text
         self.font = font
         self.textColor = textColor
+        self.textStyle = textStyle
         self.infoFont = infoFont
         self.infoColor = infoColor
+        self.infoTextStyle = infoTextStyle
+    }
+
+    func apply(
+        configuration: RemoteConfiguration.FileState?,
+        assetsBuilder: RemoteConfiguration.AssetsBuilder
+    ) {
+        configuration?.text?.foreground?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .unwrap { textColor = $0 }
+
+        UIFont.convertToFont(
+            uiFont: assetsBuilder.fontBuilder(configuration?.text?.font),
+            textStyle: textStyle
+        ).unwrap { font = $0 }
+
+        configuration?.info?.foreground?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .unwrap { infoColor = $0 }
+
+        UIFont.convertToFont(
+            uiFont: assetsBuilder.fontBuilder(configuration?.info?.font),
+            textStyle: infoTextStyle
+        ).unwrap { infoFont = $0 }
     }
 }
 
@@ -120,11 +199,17 @@ public class FileUploadErrorStateStyle {
     /// Color of the state text.
     public var textColor: UIColor
 
+    /// Text style of the state text.
+    public var textStyle: UIFont.TextStyle
+
     /// Font of the information text.
     public var infoFont: UIFont
 
     /// Color of the information text.
     public var infoColor: UIColor
+
+    /// Text style of the information text.
+    public var infoTextStyle: UIFont.TextStyle
 
     /// Information text to display when selected file is too big.
     public var infoFileTooBig: String
@@ -146,8 +231,10 @@ public class FileUploadErrorStateStyle {
     ///   - text: Text for the state.
     ///   - font: Font of the state text.
     ///   - textColor: Color of the state text.
+    ///   - textStyle: Text style of the state text.
     ///   - infoFont: Font of the information text.
     ///   - infoColor: Color of the information text.
+    ///   - infoTextStyle: Text style of the information text.
     ///   - infoFileTooBig: Information text to display when selected file is too big.
     ///   - infoUnsupportedFileType: Information text to display when selected file type is not supported.
     ///   - infoSafetyCheckFailed: Information text to display when selected file safety check failed.
@@ -158,8 +245,10 @@ public class FileUploadErrorStateStyle {
         text: String,
         font: UIFont,
         textColor: UIColor,
+        textStyle: UIFont.TextStyle = .subheadline,
         infoFont: UIFont,
         infoColor: UIColor,
+        infoTextStyle: UIFont.TextStyle = .caption1,
         infoFileTooBig: String,
         infoUnsupportedFileType: String,
         infoSafetyCheckFailed: String,
@@ -169,13 +258,40 @@ public class FileUploadErrorStateStyle {
         self.text = text
         self.font = font
         self.textColor = textColor
+        self.textStyle = textStyle
         self.infoFont = infoFont
         self.infoColor = infoColor
+        self.infoTextStyle = infoTextStyle
         self.infoFileTooBig = infoFileTooBig
         self.infoUnsupportedFileType = infoUnsupportedFileType
         self.infoSafetyCheckFailed = infoSafetyCheckFailed
         self.infoNetworkError = infoNetworkError
         self.infoGenericError = infoGenericError
+    }
+
+    func apply(
+        configuration: RemoteConfiguration.FileState?,
+        assetsBuilder: RemoteConfiguration.AssetsBuilder
+    ) {
+        configuration?.text?.foreground?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .unwrap { textColor = $0 }
+
+        UIFont.convertToFont(
+            uiFont: assetsBuilder.fontBuilder(configuration?.text?.font),
+            textStyle: textStyle
+        ).unwrap { font = $0 }
+
+        configuration?.info?.foreground?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .unwrap { infoColor = $0 }
+
+        UIFont.convertToFont(
+            uiFont: assetsBuilder.fontBuilder(configuration?.info?.font),
+            textStyle: infoTextStyle
+        ).unwrap { infoFont = $0 }
     }
 }
 

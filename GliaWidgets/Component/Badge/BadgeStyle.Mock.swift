@@ -10,7 +10,7 @@ extension BadgeStyle {
         .init(
             font: font,
             fontColor: fontColor,
-            backgroundColor: backgroundColor
+            backgroundColor: .fill(color: backgroundColor)
         )
     }
 }

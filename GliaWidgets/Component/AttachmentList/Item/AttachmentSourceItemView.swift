@@ -1,7 +1,7 @@
 import UIKit
 
 class AttachmentSourceItemView: UIView {
-    var tap: ((AtttachmentSourceItemKind) -> Void)?
+    var tap: ((AttachmentSourceItemKind) -> Void)?
 
     private let titleLabel = UILabel()
     private let stackView = UIStackView()

@@ -7,7 +7,7 @@ extension Theme {
 
         let onHoldOverlay = OnHoldOverlayStyle(
             image: Asset.callOnHold.image,
-            imageColor: .white,
+            imageColor: .fill(color: .white),
             imageSize: .init(width: 40, height: 40)
         )
         let backButton = HeaderButtonStyle(
@@ -30,7 +30,7 @@ extension Theme {
             title: Call.EndButton.title,
             titleFont: font.buttonLabel,
             titleColor: color.baseLight,
-            backgroundColor: color.systemNegative,
+            backgroundColor: .fill(color: color.systemNegative),
             accessibility: .init(
                 label: Accessibility.Header.EndButton.label,
                 isFontScalingEnabled: true
@@ -47,7 +47,7 @@ extension Theme {
         let header = HeaderStyle(
             titleFont: font.header2,
             titleColor: color.baseLight,
-            backgroundColor: .clear,
+            backgroundColor: .fill(color: .clear),
             backButton: backButton,
             closeButton: closeButton,
             endButton: endButton,
@@ -57,8 +57,8 @@ extension Theme {
         let operatorImage = UserImageStyle(
             placeholderImage: Asset.operatorPlaceholder.image,
             placeholderColor: color.baseLight,
-            placeholderBackgroundColor: color.primary,
-            imageBackgroundColor: .clear,
+            placeholderBackgroundColor: .fill(color: color.primary),
+            imageBackgroundColor: .fill(color: .clear),
             transferringImage: Asset.operatorTransferring.image
         )
         let queueOperator = ConnectOperatorStyle(
@@ -74,9 +74,11 @@ extension Theme {
             firstText: Call.Connect.Queue.firstText,
             firstTextFont: font.header1,
             firstTextFontColor: color.baseLight,
+            firstTextStyle: .title1,
             secondText: Call.Connect.Queue.secondText,
             secondTextFont: font.subtitle,
             secondTextFontColor: color.baseLight,
+            secondTextStyle: .footnote,
             accessibility: .init(
                 firstTextHint: Accessibility.Connect.Queue.FirstText.hint,
                 secondTextHint: nil,
@@ -87,9 +89,11 @@ extension Theme {
             firstText: Call.Connect.Connecting.firstText,
             firstTextFont: font.header2,
             firstTextFontColor: color.baseLight,
+            firstTextStyle: .title2,
             secondText: Call.Connect.Connecting.secondText,
             secondTextFont: font.header2,
             secondTextFontColor: color.baseLight,
+            secondTextStyle: .title2,
             accessibility: .init(
                 firstTextHint: Accessibility.Connect.Connecting.FirstText.hint,
                 secondTextHint: nil,
@@ -100,9 +104,11 @@ extension Theme {
             firstText: Call.Connect.Connected.firstText,
             firstTextFont: font.header1,
             firstTextFontColor: color.baseLight,
+            firstTextStyle: .title1,
             secondText: Call.Connect.Connected.secondText,
             secondTextFont: font.subtitle,
             secondTextFontColor: color.baseLight,
+            secondTextStyle: .footnote,
             accessibility: .init(
                 firstTextHint: Accessibility.Connect.Connected.FirstText.hint,
                 secondTextHint: Accessibility.Connect.Connected.SecondText.hint,
@@ -113,9 +119,11 @@ extension Theme {
             firstText: Call.Connect.Connected.firstText,
             firstTextFont: font.header1,
             firstTextFontColor: color.baseLight,
+            firstTextStyle: .title1,
             secondText: Call.Connect.Connected.secondText,
             secondTextFont: font.subtitle,
             secondTextFontColor: color.baseLight,
+            secondTextStyle: .footnote,
             accessibility: .init(
                 firstTextHint: Accessibility.Connect.Connected.FirstText.hint,
                 secondTextHint: nil,
@@ -126,9 +134,11 @@ extension Theme {
             firstText: Call.Connect.Transferring.firstText,
             firstTextFont: font.header1,
             firstTextFontColor: color.baseLight,
+            firstTextStyle: .title1,
             secondText: nil,
             secondTextFont: font.subtitle,
-            secondTextFontColor: color.baseLight
+            secondTextFontColor: color.baseLight,
+            secondTextStyle: .footnote
         )
         let connect = ConnectStyle(
             queueOperator: queueOperator,
@@ -149,7 +159,7 @@ extension Theme {
         return CallStyle(
             header: header,
             connect: connect,
-            backgroundColor: .clear,
+            backgroundColor: .fill(color: .white),
             preferredStatusBarStyle: .lightContent,
             audioTitle: Call.Audio.title,
             videoTitle: Call.Video.title,
@@ -180,10 +190,10 @@ extension Theme {
         typealias Buttons = L10n.Call.Buttons
         typealias Accessibility = L10n.Call.Accessibility
 
-        let activeBackgroundColor = UIColor.white.withAlphaComponent(0.9)
-        let inactiveBackgroundColor = UIColor.black.withAlphaComponent(0.4)
-        let activeImageColor = color.baseDark
-        let inactiveImageColor = color.baseLight
+        let activeBackgroundColor: ColorType = .fill(color: UIColor.white.withAlphaComponent(0.9))
+        let inactiveBackgroundColor: ColorType = .fill(color: UIColor.black.withAlphaComponent(0.4))
+        let activeImageColor: ColorType = .fill(color: color.baseDark)
+        let inactiveImageColor: ColorType = .fill(color: color.baseLight)
         let activeTitleFont = font.caption
         let inactiveTitleFont = font.caption
         let activeTitleColor = color.baseLight
@@ -197,6 +207,7 @@ extension Theme {
                 title: Buttons.Chat.title,
                 titleFont: activeTitleFont,
                 titleColor: activeTitleColor,
+                textStyle: .caption1,
                 accessibility: .init(
                     label: Accessibility.Buttons.Chat.Active.label
                 )
@@ -208,6 +219,19 @@ extension Theme {
                 title: Buttons.Chat.title,
                 titleFont: inactiveTitleFont,
                 titleColor: inactiveTitleColor,
+                textStyle: .caption1,
+                accessibility: .init(
+                    label: Accessibility.Buttons.Chat.Inactive.label
+                )
+            ),
+            selected: CallButtonStyle.StateStyle(
+                backgroundColor: inactiveBackgroundColor,
+                image: Asset.callChat.image,
+                imageColor: inactiveImageColor,
+                title: Buttons.Chat.title,
+                titleFont: inactiveTitleFont,
+                titleColor: inactiveTitleColor,
+                textStyle: .caption1,
                 accessibility: .init(
                     label: Accessibility.Buttons.Chat.Inactive.label
                 )
@@ -227,6 +251,7 @@ extension Theme {
                 title: Buttons.Video.title,
                 titleFont: activeTitleFont,
                 titleColor: activeTitleColor,
+                textStyle: .caption1,
                 accessibility: .init(
                     label: Accessibility.Buttons.Video.Active.label
                 )
@@ -238,6 +263,19 @@ extension Theme {
                 title: Buttons.Video.title,
                 titleFont: inactiveTitleFont,
                 titleColor: inactiveTitleColor,
+                textStyle: .caption1,
+                accessibility: .init(
+                    label: Accessibility.Buttons.Video.Inactive.label
+                )
+            ),
+            selected: CallButtonStyle.StateStyle(
+                backgroundColor: inactiveBackgroundColor,
+                image: Asset.callVideoInactive.image,
+                imageColor: inactiveImageColor,
+                title: Buttons.Video.title,
+                titleFont: inactiveTitleFont,
+                titleColor: inactiveTitleColor,
+                textStyle: .caption1,
                 accessibility: .init(
                     label: Accessibility.Buttons.Video.Inactive.label
                 )
@@ -257,6 +295,7 @@ extension Theme {
                 title: Buttons.Mute.Active.title,
                 titleFont: activeTitleFont,
                 titleColor: activeTitleColor,
+                textStyle: .caption1,
                 accessibility: .init(
                     label: Accessibility.Buttons.Mute.Active.label
                 )
@@ -268,6 +307,19 @@ extension Theme {
                 title: Buttons.Mute.Inactive.title,
                 titleFont: inactiveTitleFont,
                 titleColor: inactiveTitleColor,
+                textStyle: .caption1,
+                accessibility: .init(
+                    label: Accessibility.Buttons.Mute.Inactive.label
+                )
+            ),
+            selected: CallButtonStyle.StateStyle(
+                backgroundColor: inactiveBackgroundColor,
+                image: Asset.callMuteInactive.image,
+                imageColor: inactiveImageColor,
+                title: Buttons.Mute.Inactive.title,
+                titleFont: inactiveTitleFont,
+                titleColor: inactiveTitleColor,
+                textStyle: .caption1,
                 accessibility: .init(
                     label: Accessibility.Buttons.Mute.Inactive.label
                 )
@@ -287,6 +339,7 @@ extension Theme {
                 title: Buttons.Speaker.title,
                 titleFont: activeTitleFont,
                 titleColor: activeTitleColor,
+                textStyle: .caption1,
                 accessibility: .init(
                     label: Accessibility.Buttons.Speaker.Active.label
                 )
@@ -298,6 +351,19 @@ extension Theme {
                 title: Buttons.Speaker.title,
                 titleFont: inactiveTitleFont,
                 titleColor: inactiveTitleColor,
+                textStyle: .caption1,
+                accessibility: .init(
+                    label: Accessibility.Buttons.Speaker.Inactive.label
+                )
+            ),
+            selected: CallButtonStyle.StateStyle(
+                backgroundColor: inactiveBackgroundColor,
+                image: Asset.callSpeakerInactive.image,
+                imageColor: inactiveImageColor,
+                title: Buttons.Speaker.title,
+                titleFont: inactiveTitleFont,
+                titleColor: inactiveTitleColor,
+                textStyle: .caption1,
                 accessibility: .init(
                     label: Accessibility.Buttons.Speaker.Inactive.label
                 )
@@ -317,6 +383,7 @@ extension Theme {
                 title: Buttons.Minimize.title,
                 titleFont: activeTitleFont,
                 titleColor: activeTitleColor,
+                textStyle: .caption1,
                 accessibility: .init(
                     label: Accessibility.Buttons.Minimize.Active.label
                 )
@@ -328,6 +395,19 @@ extension Theme {
                 title: Buttons.Minimize.title,
                 titleFont: inactiveTitleFont,
                 titleColor: inactiveTitleColor,
+                textStyle: .caption1,
+                accessibility: .init(
+                    label: Accessibility.Buttons.Minimize.Inactive.label
+                )
+            ),
+            selected: CallButtonStyle.StateStyle(
+                backgroundColor: inactiveBackgroundColor,
+                image: Asset.callMiminize.image,
+                imageColor: inactiveImageColor,
+                title: Buttons.Minimize.title,
+                titleFont: inactiveTitleFont,
+                titleColor: inactiveTitleColor,
+                textStyle: .caption1,
                 accessibility: .init(
                     label: Accessibility.Buttons.Minimize.Inactive.label
                 )
@@ -342,7 +422,7 @@ extension Theme {
         let badge = BadgeStyle(
             font: font.caption,
             fontColor: color.baseLight,
-            backgroundColor: color.primary
+            backgroundColor: .fill(color: color.primary)
         )
         return CallButtonBarStyle(
             chatButton: chatButton,
