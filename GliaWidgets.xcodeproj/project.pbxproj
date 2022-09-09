@@ -209,6 +209,8 @@
 		754CC61527E27C42005676E9 /* Survey.Checkbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754CC61427E27C42005676E9 /* Survey.Checkbox.swift */; };
 		754CC61627E2816F005676E9 /* Survey.InputQuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AF8D0C27DD464A009EEE2C /* Survey.InputQuestionView.swift */; };
 		756087E127837EC000158604 /* BundleManaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756087E027837EC000158604 /* BundleManaging.swift */; };
+		7562B2EB28CBD7E20040C784 /* RemoteConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7562B2EA28CBD7E20040C784 /* RemoteConfiguration.swift */; };
+		7562B2ED28CBD9AE0040C784 /* Glia.RemoteConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7562B2EC28CBD9AE0040C784 /* Glia.RemoteConfiguration.swift */; };
 		75AF8CEF27DAA819009EEE2C /* SurveyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AF8CEE27DAA819009EEE2C /* SurveyViewController.swift */; };
 		75AF8CF127DBB1F9009EEE2C /* SurveyViewController.View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AF8CF027DBB1F9009EEE2C /* SurveyViewController.View.swift */; };
 		75AF8CF427DBB3C8009EEE2C /* Makeable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AF8CF327DBB3C8009EEE2C /* Makeable.swift */; };
@@ -646,6 +648,8 @@
 		7543141728806AEB00C9C1C6 /* EnvironmentSettingsTextCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentSettingsTextCell.swift; sourceTree = "<group>"; };
 		754CC61427E27C42005676E9 /* Survey.Checkbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Survey.Checkbox.swift; sourceTree = "<group>"; };
 		756087E027837EC000158604 /* BundleManaging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleManaging.swift; sourceTree = "<group>"; };
+		7562B2EA28CBD7E20040C784 /* RemoteConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfiguration.swift; sourceTree = "<group>"; };
+		7562B2EC28CBD9AE0040C784 /* Glia.RemoteConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Glia.RemoteConfiguration.swift; sourceTree = "<group>"; };
 		75A985425A950FFA1C13EACE /* Pods-GliaWidgets.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliaWidgets.debug.xcconfig"; path = "Target Support Files/Pods-GliaWidgets/Pods-GliaWidgets.debug.xcconfig"; sourceTree = "<group>"; };
 		75AF8CEE27DAA819009EEE2C /* SurveyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurveyViewController.swift; sourceTree = "<group>"; };
 		75AF8CF027DBB1F9009EEE2C /* SurveyViewController.View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurveyViewController.View.swift; sourceTree = "<group>"; };
@@ -1065,6 +1069,7 @@
 		1A205D5A25655CB1003AA3CD /* GliaWidgets */ = {
 			isa = PBXGroup;
 			children = (
+				7562B2E728CBD7150040C784 /* RemoteConfiguration */,
 				75AF8CF227DBB3BE009EEE2C /* Layout */,
 				9A66172827A945A2001C8E03 /* CoreSDKClient */,
 				756087DF27837EB100158604 /* BundleManaging */,
@@ -1085,6 +1090,7 @@
 				1A60AFC12566857200E53F53 /* Lib */,
 				1A60AF6C25656C3600E53F53 /* Resources */,
 				1A60AF7D25656F0400E53F53 /* Glia.swift */,
+				7562B2EC28CBD9AE0040C784 /* Glia.RemoteConfiguration.swift */,
 				AFBBF5772851C391004993B3 /* Glia.Deprecated.swift */,
 				9A83D77E27B181C500681C9F /* Glia.Environment.Interface.swift */,
 				9A83D78027B18DB600681C9F /* Glia.Environment.Live.swift */,
@@ -1956,6 +1962,14 @@
 			path = BundleManaging;
 			sourceTree = "<group>";
 		};
+		7562B2E728CBD7150040C784 /* RemoteConfiguration */ = {
+			isa = PBXGroup;
+			children = (
+				7562B2EA28CBD7E20040C784 /* RemoteConfiguration.swift */,
+			);
+			path = RemoteConfiguration;
+			sourceTree = "<group>";
+		};
 		75AF8CED27DA3D41009EEE2C /* Survey */ = {
 			isa = PBXGroup;
 			children = (
@@ -2814,6 +2828,7 @@
 				1A1E30CB25F9FDC400850E68 /* ChatImageFileContentStyle.swift in Sources */,
 				1A60AF93256674F900E53F53 /* Color.swift in Sources */,
 				1A38A8BA258B94D60089DE7B /* ImageView.swift in Sources */,
+				7562B2ED28CBD9AE0040C784 /* Glia.RemoteConfiguration.swift in Sources */,
 				75AF8CF827DBC086009EEE2C /* UIStackView.Extensions.swift in Sources */,
 				9AB196E227C4045B00FD60AB /* ChatViewController.Mock.swift in Sources */,
 				1A60B031256BF81500E53F53 /* VisitorChatMessageView.swift in Sources */,
@@ -2933,6 +2948,7 @@
 				9A66172C27A94A4B001C8E03 /* CoreSDKClient.Mock.swift in Sources */,
 				1A5F8182258B4F0E00A605DA /* OutgoingMessage.swift in Sources */,
 				AFA2FDF428907F0C00428E6D /* BubbleView.Mock.swift in Sources */,
+				7562B2EB28CBD7E20040C784 /* RemoteConfiguration.swift in Sources */,
 				9A19926E27D3BB7800161AAE /* Theme.Mock.swift in Sources */,
 				9AE9E4B127E0E45200BFE239 /* CallViewController.Mock.swift in Sources */,
 				9AE0A7642822B02C00725946 /* FontScaling.Environment.Mock.swift in Sources */,
