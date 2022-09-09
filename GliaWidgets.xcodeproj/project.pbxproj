@@ -1105,6 +1105,7 @@
 			children = (
 				7562B2E728CBD7150040C784 /* RemoteConfiguration */,
 				84EFB05E28AB90610005E270 /* MessageRenderer */,
+				7562B2E728CBD7150040C784 /* RemoteConfiguration */,
 				75AF8CF227DBB3BE009EEE2C /* Layout */,
 				9A66172827A945A2001C8E03 /* CoreSDKClient */,
 				756087DF27837EB100158604 /* BundleManaging */,
