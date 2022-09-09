@@ -8,6 +8,9 @@ public struct ChatMessageEntryStyle {
     /// Color of the message text.
     public var messageColor: UIColor
 
+    /// Text style of the message text.
+    public var messageTextStyle: UIFont.TextStyle
+
     /// Placeholder text of the message input view used when the user is engaged.
     public var enterMessagePlaceholder: String
 
@@ -22,6 +25,9 @@ public struct ChatMessageEntryStyle {
 
     /// Color of the placeholder text.
     public var placeholderColor: UIColor
+
+    /// Text style of the placeholder text.
+    public var placeholderTextStyle: UIFont.TextStyle
 
     /// Color of the separator line.
     public var separatorColor: UIColor
@@ -45,11 +51,13 @@ public struct ChatMessageEntryStyle {
     /// - Parameters:
     ///   - messageFont: Font of the message text.
     ///   - messageColor: Color of the message text.
+    ///   - messageTextStyle: Text style of the message text.
     ///   - enterMessagePlaceholder: Placeholder text of the message input view used when the user is engaged.
     ///   - startEngagementPlaceholder:Placeholder text of the message input view used when user input is required to start engagement.
     ///   - choiceCardPlaceholder: Placeholder text of the message input view used when a choice card is awaiting for the answer.
     ///   - placeholderFont: Font of the placeholder text.
     ///   - placeholderColor: Color of the placeholder text.
+    ///   - placeholderTextStyle: Text style of the placeholder text.
     ///   - separatorColor: Color of the separator line.
     ///   - backgroundColor: Background color of the view.
     ///   - mediaButton: Style of the media attachment button.
@@ -60,11 +68,13 @@ public struct ChatMessageEntryStyle {
     public init(
         messageFont: UIFont,
         messageColor: UIColor,
+        messageTextStyle: UIFont.TextStyle = .body,
         enterMessagePlaceholder: String,
         startEngagementPlaceholder: String,
         choiceCardPlaceholder: String,
         placeholderFont: UIFont,
         placeholderColor: UIColor,
+        placeholderTextStyle: UIFont.TextStyle = .body,
         separatorColor: UIColor,
         backgroundColor: UIColor,
         mediaButton: MessageButtonStyle,
@@ -74,16 +84,68 @@ public struct ChatMessageEntryStyle {
     ) {
         self.messageFont = messageFont
         self.messageColor = messageColor
+        self.messageTextStyle = messageTextStyle
         self.enterMessagePlaceholder = enterMessagePlaceholder
         self.startEngagementPlaceholder = startEngagementPlaceholder
         self.choiceCardPlaceholder = choiceCardPlaceholder
         self.placeholderFont = placeholderFont
         self.placeholderColor = placeholderColor
+        self.placeholderTextStyle = placeholderTextStyle
         self.separatorColor = separatorColor
         self.backgroundColor = backgroundColor
         self.mediaButton = mediaButton
         self.sendButton = sendButton
         self.uploadList = uploadList
         self.accessibility = accessibility
+    }
+
+    mutating func apply(
+        configuration: RemoteConfiguration.Input?,
+        assetsBuilder: RemoteConfiguration.AssetsBuilder
+    ) {
+        configuration?.background?.color?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .unwrap { backgroundColor = $0 }
+
+        configuration?.text?.foreground?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .unwrap { messageColor = $0 }
+
+        UIFont.convertToFont(
+            uiFont: assetsBuilder.fontBuilder(configuration?.text?.font),
+            textStyle: messageTextStyle
+        ).unwrap { messageFont = $0 }
+
+        configuration?.placeholder?.foreground?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .unwrap { placeholderColor = $0 }
+
+        UIFont.convertToFont(
+            uiFont: assetsBuilder.fontBuilder(configuration?.placeholder?.font),
+            textStyle: placeholderTextStyle
+        ).unwrap { placeholderFont = $0 }
+
+        configuration?.separator?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .unwrap { separatorColor = $0 }
+
+        configuration?.mediaButton?.tintColor?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .unwrap { mediaButton.color = $0 }
+
+        configuration?.sendButton?.tintColor?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .unwrap { sendButton.color = $0 }
+
+        uploadList.apply(
+            configuration: configuration?.fileUploadBar,
+            assetsBuilder: assetsBuilder
+        )
     }
 }

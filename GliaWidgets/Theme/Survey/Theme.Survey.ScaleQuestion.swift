@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 
 public extension Theme.SurveyStyle {
     struct ScaleQuestion {
@@ -18,34 +19,38 @@ public extension Theme.SurveyStyle {
             .init(
                 title: .init(
                     color: color.baseDark.hex,
-                    font: font.mediumSubtitle1
+                    font: font.mediumSubtitle1,
+                    textStyle: .subheadline
                 ),
                 option: .init(
                     normalText: .init(
                         color: color.baseDark.hex,
-                        font: font.bodyText
+                        font: font.bodyText,
+                        textStyle: .body
                     ),
                     normalLayer: .init(
-                        borderColor: color.baseNormal.hex,
+                        borderColor: color.baseNormal.cgColor,
                         borderWidth: 1,
                         cornerRadius: 4
                     ),
                     selectedText: .init(
                         color: color.baseLight.hex,
-                        font: font.bodyText
+                        font: font.bodyText,
+                        textStyle: .body
                     ),
                     selectedLayer: .init(
-                        background: color.primary.hex,
-                        borderColor: "",
+                        background: .fill(color: color.primary),
+                        borderColor: UIColor.clear.cgColor,
                         borderWidth: 0,
                         cornerRadius: 4
                     ),
                     highlightedText: .init(
                         color: color.systemNegative.hex,
-                        font: font.bodyText
+                        font: font.bodyText,
+                        textStyle: .body
                     ),
                     highlightedLayer: .init(
-                        borderColor: color.systemNegative.hex,
+                        borderColor: color.systemNegative.cgColor,
                         borderWidth: 1,
                         cornerRadius: 4
                     ),
@@ -54,6 +59,21 @@ public extension Theme.SurveyStyle {
                 ),
                 error: .default(color: color, font: font),
                 accessibility: .init(isFontScalingEnabled: true)
+            )
+        }
+
+        /// Apply scale question from remote configuration
+        mutating func apply(
+            configuration: RemoteConfiguration.SurveyScaleQuestion?,
+            assetsBuilder: RemoteConfiguration.AssetsBuilder
+        ) {
+            title.apply(
+                configuration: configuration?.title,
+                assetsBuilder: assetsBuilder
+            )
+            option.apply(
+                configuration: configuration?.optionButton,
+                assetsBuilder: assetsBuilder
             )
         }
     }

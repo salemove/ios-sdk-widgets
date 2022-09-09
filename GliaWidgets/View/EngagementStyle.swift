@@ -9,7 +9,7 @@ public class EngagementStyle {
     public var connect: ConnectStyle
 
     /// View's background color.
-    public var backgroundColor: UIColor
+    public var backgroundColor: ColorType
 
     public var preferredStatusBarStyle: UIStatusBarStyle
 
@@ -23,7 +23,7 @@ public class EngagementStyle {
     public init(
         header: HeaderStyle,
         connect: ConnectStyle,
-        backgroundColor: UIColor,
+        backgroundColor: ColorType,
         preferredStatusBarStyle: UIStatusBarStyle
     ) {
         self.header = header

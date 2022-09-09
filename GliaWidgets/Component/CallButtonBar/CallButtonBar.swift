@@ -112,6 +112,7 @@ class CallButtonBar: View {
                 style: CallButtonStyle(
                     active: style.chatButton.active,
                     inactive: style.chatButton.inactive,
+                    selected: style.chatButton.selected,
                     accessibility: style.chatButton.accessibility
                 )
             )
@@ -121,6 +122,7 @@ class CallButtonBar: View {
                 style: CallButtonStyle(
                     active: style.videoButton.active,
                     inactive: style.videoButton.inactive,
+                    selected: style.videoButton.selected,
                     accessibility: style.videoButton.accessibility
                 )
             )
@@ -130,6 +132,7 @@ class CallButtonBar: View {
                 style: CallButtonStyle(
                     active: style.muteButton.active,
                     inactive: style.muteButton.inactive,
+                    selected: style.muteButton.selected,
                     accessibility: style.muteButton.accessibility
                 )
             )
@@ -139,6 +142,7 @@ class CallButtonBar: View {
                 style: CallButtonStyle(
                     active: style.speakerButton.active,
                     inactive: style.speakerButton.inactive,
+                    selected: style.speakerButton.selected,
                     accessibility: style.speakerButton.accessibility
                 )
             )
@@ -148,6 +152,7 @@ class CallButtonBar: View {
                 style: CallButtonStyle(
                     active: style.minimizeButton.active,
                     inactive: style.minimizeButton.inactive,
+                    selected: style.minimizeButton.selected,
                     accessibility: style.minimizeButton.accessibility
                 )
             )

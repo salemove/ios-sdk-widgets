@@ -4,7 +4,7 @@ import UIKit
 extension OnHoldOverlayStyle {
     static func mock(
         image: UIImage = .init(),
-        imageColor: UIColor = .red,
+        imageColor: ColorType = .fill(color: .red),
         imageSize: CGSize = .zero
     ) -> OnHoldOverlayStyle {
         .init(

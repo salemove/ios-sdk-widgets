@@ -1,3 +1,4 @@
+import UIKit
 /// Style of a bubble that represents a call or the entirety of Widgets when they are minimized.
 public class BubbleStyle {
     /// Style of a user's image shown in the bubble.
@@ -29,5 +30,18 @@ public class BubbleStyle {
         self.badge = badge
         self.onHoldOverlay = onHoldOverlay
         self.accessibility = accessibility
+    }
+
+    /// Apply bubble remote configuration
+    func apply(
+        configuration: RemoteConfiguration.Bubble?,
+        assetsBuilder: RemoteConfiguration.AssetsBuilder
+    ) {
+        onHoldOverlay.apply(configuration: configuration?.onHoldOverlay)
+        badge?.apply(
+            configuration: configuration?.badge,
+            assetsBuilder: assetsBuilder
+        )
+        userImage.apply(configuration: configuration?.userImage)
     }
 }

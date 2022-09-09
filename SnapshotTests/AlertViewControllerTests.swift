@@ -12,7 +12,7 @@ class AlertViewControllerTests: SnapshotTestCase {
         ))
         assertSnapshot(
             matching: alert,
-            as: .accessibilityImage(precision: SnapshotTestCase.possiblePrecision),
+            as: .accessibilityImage,
             named: nameForDevice()
         )
     }
@@ -25,7 +25,7 @@ class AlertViewControllerTests: SnapshotTestCase {
         ))
         assertSnapshot(
             matching: alert,
-            as: .accessibilityImage(precision: SnapshotTestCase.possiblePrecision),
+            as: .accessibilityImage,
             named: nameForDevice()
         )
     }
