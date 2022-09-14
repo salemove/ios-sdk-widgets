@@ -11,6 +11,7 @@ extension Glia {
     ) throws {
 
         // Apply remote configuration
+        theme.applyRemoteConfiguration(uiConfig)
 
         try startEngagement(
             engagementKind: engagement,

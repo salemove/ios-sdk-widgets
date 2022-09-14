@@ -63,4 +63,17 @@ public class Theme {
         self.font = fontStyle.font
         self.showsPoweredBy = showsPoweredBy
     }
+
+    /// Apply remote configuration
+    public func applyRemoteConfiguration(_ config: RemoteConfiguration) {
+        call.applyCallConfiguration(config.callScreen)
+
+        /// apply chat config
+
+        /// apply alert config
+
+        /// apply bubble config
+
+        /// apply survey config
+    }
 }
