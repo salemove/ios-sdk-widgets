@@ -17,4 +17,13 @@ public struct CallButtonBarStyle {
 
     /// Style of the badge shown on a chat button that holds the number of unread chat messages.
     public var badge: BadgeStyle
+
+    /// Apply button bar from remote configuration
+    public mutating func applyBarConfiguration(_ bar: RemoteConfiguration.ButtonBar?) {
+        minimizeButton.applyBarButtonConfig(button: bar?.minimizeButton)
+        chatButton.applyBarButtonConfig(button: bar?.chatButton)
+        videoButton.applyBarButtonConfig(button: bar?.videoButton)
+        muteButton.applyBarButtonConfig(button: bar?.muteButton)
+        speakerButton.applyBarButtonConfig(button: bar?.speakerButton)
+    }
 }
