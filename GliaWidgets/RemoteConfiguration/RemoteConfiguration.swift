@@ -1,6 +1,7 @@
 import Foundation
 
 public struct RemoteConfiguration: Codable {
+    public let callScreen: Call?
     public let chatScreen: Chat?
 }
 
@@ -14,15 +15,32 @@ public extension RemoteConfiguration {
         public let visitorMessage: MessageBalloon?
     }
 
+    struct Call: Codable {
+        let background: Layer?
+        let bottomText: Text?
+        let buttonBar: ButtonBar?
+        let duration: Text?
+        let endButton: Button?
+        let header: Header?
+        let callOperator, topText: Text?
+
+        enum CodingKeys: String, CodingKey {
+            case background, bottomText, buttonBar, duration, endButton, header
+            case callOperator = "operator"
+            case topText
+        }
+    }
+
     struct Layer: Codable {
         public let border: Color?
         public let borderWidth: Double?
         public let cornerRadius: Double?
-        public let foreground: Color?
+        public let color: Color?
     }
 
     struct Color: Codable {
-        public let value: [ColorType]?
+        let type: ColorType?
+        let value: [String]?
     }
 
     enum ColorType: String, Codable {
@@ -50,7 +68,7 @@ public extension RemoteConfiguration {
 
     struct Font: Codable {
         public let size: Double?
-        public let style: [FontStyle]?
+        public let style: FontStyle?
     }
 
     enum FontStyle: String, Codable {
@@ -66,5 +84,19 @@ public extension RemoteConfiguration {
         public let alignment: [Alignment]?
         public let background: Layer?
         public let text: Text?
+    }
+
+    struct ButtonBar: Codable {
+        let chatButton, minimizeButton, muteButton, speakerButton: BarButtonStates?
+        let videoButton: BarButtonStates?
+    }
+
+    struct BarButtonStates: Codable {
+        let active, inactive: BarButtonStyle?
+    }
+
+    struct BarButtonStyle: Codable {
+        let background, imageColor: Color?
+        let title: Text?
     }
 }
