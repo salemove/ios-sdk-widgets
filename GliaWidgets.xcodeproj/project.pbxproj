@@ -110,7 +110,7 @@
 		1A60AFCA2566943F00E53F53 /* RootCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60AFC92566943F00E53F53 /* RootCoordinator.swift */; };
 		1A60AFCE2566958900E53F53 /* ViewFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60AFCD2566958900E53F53 /* ViewFactory.swift */; };
 		1A60AFD52566992A00E53F53 /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60AFD42566992A00E53F53 /* ChatViewModel.swift */; };
-		1A60AFD925669A1500E53F53 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60AFD825669A1500E53F53 /* View.swift */; };
+		1A60AFD925669A1500E53F53 /* BaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60AFD825669A1500E53F53 /* BaseView.swift */; };
 		1A60AFDD25669A4200E53F53 /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60AFDC25669A4200E53F53 /* ChatView.swift */; };
 		1A60AFE025669A6100E53F53 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60AFDF25669A6100E53F53 /* ChatViewController.swift */; };
 		1A60AFE425669B0400E53F53 /* ChatCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60AFE325669B0400E53F53 /* ChatCoordinator.swift */; };
@@ -576,7 +576,7 @@
 		1A60AFC92566943F00E53F53 /* RootCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCoordinator.swift; sourceTree = "<group>"; };
 		1A60AFCD2566958900E53F53 /* ViewFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewFactory.swift; sourceTree = "<group>"; };
 		1A60AFD42566992A00E53F53 /* ChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
-		1A60AFD825669A1500E53F53 /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
+		1A60AFD825669A1500E53F53 /* BaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseView.swift; sourceTree = "<group>"; };
 		1A60AFDC25669A4200E53F53 /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
 		1A60AFDF25669A6100E53F53 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		1A60AFE325669B0400E53F53 /* ChatCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCoordinator.swift; sourceTree = "<group>"; };
@@ -1648,7 +1648,7 @@
 		1A60AFD725669A0500E53F53 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				1A60AFD825669A1500E53F53 /* View.swift */,
+				1A60AFD825669A1500E53F53 /* BaseView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -2828,7 +2828,7 @@
 			files = (
 				9A83D77F27B181C500681C9F /* Glia.Environment.Interface.swift in Sources */,
 				6E9C01AF26D3BE2300EBE1D4 /* OperatorTypingIndicatorStyle.swift in Sources */,
-				1A60AFD925669A1500E53F53 /* View.swift in Sources */,
+				1A60AFD925669A1500E53F53 /* BaseView.swift in Sources */,
 				845E2F76283D48BC00C04D56 /* AttachmentSourceItemStyle.Accessibility.swift in Sources */,
 				1A6EBB0325ADB82000EE325D /* MediaUpgradeActionView.swift in Sources */,
 				9AB196E627C510DA00FD60AB /* ChatMessage.Mock.swift in Sources */,

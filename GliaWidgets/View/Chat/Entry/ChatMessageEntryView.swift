@@ -1,6 +1,6 @@
 import UIKit
 
-class ChatMessageEntryView: UIView {
+class ChatMessageEntryView: BaseView {
     let pickMediaButton: MessageButton
     let uploadListView: FileUploadListView
     var maxCharacters: Int = 200
@@ -58,7 +58,7 @@ class ChatMessageEntryView: UIView {
     private let placeholderLabel = UILabel()
     private let sendButton: MessageButton
     private let buttonsStackView = UIStackView()
-    private var textViewHeightConstraint: NSLayoutConstraint!
+    private var textViewHeightConstraint: NSLayoutConstraint?
     private let kMinTextViewHeight: CGFloat = 24
     private let kMaxTextViewHeight: CGFloat = 200
 
@@ -79,14 +79,11 @@ class ChatMessageEntryView: UIView {
         isChoiceCardModeEnabled = false
         isAttachmentButtonHidden = true
         isConnected = false
-        super.init(frame: .zero)
-        setup()
-        layout()
+        super.init()
     }
 
-    @available(*, unavailable)
-    required init?(coder _: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    required init() {
+        fatalError("init() has not been implemented")
     }
 
     override public func layoutSubviews() {
@@ -102,7 +99,8 @@ class ChatMessageEntryView: UIView {
         }
     }
 
-    private func setup() {
+    override func setup() {
+        super.setup()
         backgroundColor = style.backgroundColor
 
         separator.backgroundColor = style.separatorColor
@@ -154,7 +152,12 @@ class ChatMessageEntryView: UIView {
         )
     }
 
-    private func layout() {
+    override func defineLayout() {
+        super.defineLayout()
+        addSubview(separator)
+        addSubview(uploadListView)
+        addSubview(messageContainerView)
+
         messageContainerView.addSubview(textView)
         textViewHeightConstraint = textView.autoSetDimension(
             .height,
@@ -165,16 +168,11 @@ class ChatMessageEntryView: UIView {
         textView.autoPinEdge(toSuperviewEdge: .top, withInset: 13)
         textView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 13)
         textView.autoPinEdge(toSuperviewEdge: .right, withInset: 8)
-        textView.autoAlignAxis(toSuperviewAxis: .horizontal)
 
         textView.addSubview(placeholderLabel)
         placeholderLabel.autoPinEdge(toSuperviewEdge: .left)
         placeholderLabel.autoPinEdge(toSuperviewEdge: .top)
         placeholderLabel.autoPinEdge(toSuperviewEdge: .right)
-
-        addSubview(separator)
-        addSubview(uploadListView)
-        addSubview(messageContainerView)
 
         separator.autoSetDimension(.height, toSize: 1)
         separator.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .bottom)
@@ -236,7 +234,7 @@ class ChatMessageEntryView: UIView {
             newHeight = kMinTextViewHeight
         }
 
-        textViewHeightConstraint.constant = newHeight
+        textViewHeightConstraint?.constant = newHeight
     }
 
     private func sendTap() {

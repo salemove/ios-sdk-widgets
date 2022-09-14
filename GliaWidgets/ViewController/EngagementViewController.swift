@@ -1,6 +1,6 @@
 import UIKit
 
-class EngagementViewController: ViewController, AlertPresenter {
+class EngagementViewController: UIViewController, AlertPresenter {
     internal let viewFactory: ViewFactory
     private let viewModel: EngagementViewModel
 

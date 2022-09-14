@@ -1,6 +1,6 @@
 import UIKit
 
-class ChatMessageView: UIView {
+class ChatMessageView: BaseView {
     let style: ChatMessageStyle
     let contentViews = UIStackView()
     var fileTapped: ((LocalFile) -> Void)?
@@ -15,13 +15,16 @@ class ChatMessageView: UIView {
     ) {
         self.style = style
         self.contentAlignment = contentAlignment
-        super.init(frame: .zero)
-        setup()
+        super.init()
     }
 
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    required init() {
+        fatalError("init() has not been implemented")
     }
 
     func appendContent(_ content: ChatMessageContent, animated: Bool) {
@@ -77,7 +80,8 @@ class ChatMessageView: UIView {
         }
     }
 
-    func setup() {
+    override func setup() {
+        super.setup()
         contentViews.axis = .vertical
         contentViews.spacing = 4
         // Add empty list of accessible elements to be populated later,

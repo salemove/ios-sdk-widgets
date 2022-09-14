@@ -1,6 +1,6 @@
 import UIKit
 
-class ConnectAnimationView: UIView {
+class ConnectAnimationView: BaseView {
     private let color: UIColor
     private let size: CGFloat
     private let replicatorLayer = CAReplicatorLayer()
@@ -9,21 +9,23 @@ class ConnectAnimationView: UIView {
     private let kAnimationName = "animation"
 
     private var animationBounds: CGRect {
-        return CGRect(origin: .zero,
-                      size: CGSize(width: size, height: size))
+        .init(
+            origin: .zero,
+            size: CGSize(width: size, height: size)
+        )
     }
 
-    init(color: UIColor, size: CGFloat) {
+    init(
+        color: UIColor,
+        size: CGFloat
+    ) {
         self.color = color
         self.size = size
-        super.init(frame: .zero)
-        setup()
-        layout()
+        super.init()
     }
 
-    @available(*, unavailable)
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    required init() {
+        fatalError("init() has not been implemented")
     }
 
     func startAnimating() {
@@ -34,24 +36,28 @@ class ConnectAnimationView: UIView {
         removeAnimation()
     }
 
-    private func setup() {
+    override func setup() {
+        super.setup()
         replicatorLayer.instanceCount = 2
         replicatorLayer.instanceDelay = 0.3
         replicatorLayer.frame = animationBounds
-        replicatorLayer.position = CGPoint(x: animationBounds.midX,
-                                           y: animationBounds.midY)
+        replicatorLayer.position = CGPoint(
+            x: animationBounds.midX,
+            y: animationBounds.midY
+        )
 
         circleLayer.opacity = 0.0
         circleLayer.fillColor = color.cgColor
         circleLayer.path = UIBezierPath(ovalIn: animationBounds).cgPath
         circleLayer.frame = animationBounds
-        circleLayer.position = CGPoint(x: animationBounds.midX,
-                                       y: animationBounds.midY)
+        circleLayer.position = CGPoint(
+            x: animationBounds.midX,
+            y: animationBounds.midY
+        )
     }
 
-    private func layout() {
-        autoSetDimensions(to: CGSize(width: size, height: size))
-
+    override func defineLayout() {
+        super.defineLayout()
         replicatorLayer.addSublayer(circleLayer)
         layer.addSublayer(replicatorLayer)
     }

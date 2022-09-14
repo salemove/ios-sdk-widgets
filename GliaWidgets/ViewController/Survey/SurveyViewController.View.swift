@@ -1,7 +1,7 @@
 import UIKit
 
 extension Survey {
-    final class ContentView: View {
+    final class ContentView: BaseView {
 
         // MARK: - Survey questions container
 

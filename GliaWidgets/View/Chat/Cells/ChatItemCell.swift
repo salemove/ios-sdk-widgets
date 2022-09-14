@@ -38,20 +38,25 @@ class ChatItemCell: UITableViewCell {
         didSet {
             switch content {
             case .none:
-                containerView.removeArrangedSubviews()
+                stackView.removeArrangedSubviews()
             default:
+//                let redView = UIView()
+//                redView.backgroundColor = .red
+//                redView.heightAnchor.constraint(equalToConstant: 44).isActive = true
+//                redView.widthAnchor.constraint(equalToConstant: 44).isActive = true
+//                stackView.replaceArrangedSubviews(with: [redView])
                 guard let view = content.view else { return }
-                containerView.replaceArrangedSubviews(with: [view])
+                stackView.replaceArrangedSubviews(with: [view])
             }
         }
     }
 
-    private let containerView = UIStackView()
+    private let stackView = UIStackView()
 
     public override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setup()
-        layout()
+        defineLayout()
     }
 
     @available(*, unavailable)
@@ -68,12 +73,15 @@ class ChatItemCell: UITableViewCell {
         backgroundColor = .clear
         selectionStyle = .none
         isAccessibilityElement = false
-        containerView.isAccessibilityElement = false
+        stackView.isAccessibilityElement = false
         contentView.isAccessibilityElement = false
     }
 
-    private func layout() {
-        contentView.addSubview(containerView)
-        containerView.autoPinEdgesToSuperviewEdges()
+    private func defineLayout() {
+        contentView.addSubview(stackView)
+        stackView.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .bottom)
+        NSLayoutConstraint.autoSetPriority(.defaultHigh) {
+            stackView.autoPinEdge(toSuperviewEdge: .bottom)
+        }
     }
 }
