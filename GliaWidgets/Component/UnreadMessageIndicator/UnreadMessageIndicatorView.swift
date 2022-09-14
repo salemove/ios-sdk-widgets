@@ -1,6 +1,6 @@
 import UIKit
 
-final class UnreadMessageIndicatorView: View {
+final class UnreadMessageIndicatorView: BaseView {
     var newItemCount: Int = 0 {
         didSet {
             if newItemCount <= 0 {
@@ -43,8 +43,10 @@ final class UnreadMessageIndicatorView: View {
         )
         badgeView = BadgeView(with: style.badge)
         super.init()
-        setup()
-        layout()
+    }
+
+    required init() {
+        fatalError("init() has not been implemented")
     }
 
     func setImage(_ image: UIImage?, animated: Bool) {
@@ -72,7 +74,8 @@ final class UnreadMessageIndicatorView: View {
         accessibilityTraits = [.button]
     }
 
-    private func layout() {
+    override func defineLayout() {
+        super.defineLayout()
         autoSetDimensions(to: kSize)
 
         addSubview(backgroundView)

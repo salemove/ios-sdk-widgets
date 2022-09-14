@@ -1,6 +1,6 @@
 import UIKit
 
-class CallButtonBar: View {
+class CallButtonBar: BaseView {
     enum Effect {
         case none
         case blur
@@ -25,18 +25,19 @@ class CallButtonBar: View {
     private let stackView = UIStackView()
     private var buttons = [CallButton]()
     private var effectView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
-    private var bottomSpaceConstraint: NSLayoutConstraint!
-    private var leftConstraint: NSLayoutConstraint!
-    private var rightConstraint: NSLayoutConstraint!
-    private var verticalAlignConstrait: NSLayoutConstraint!
+    private var bottomSpaceConstraint: NSLayoutConstraint?
+    private var leftConstraint: NSLayoutConstraint?
+    private var rightConstraint: NSLayoutConstraint?
+    private var verticalAlignConstrait: NSLayoutConstraint?
     private var kInsets = UIEdgeInsets(top: 7.0, left: 3.0, bottom: 7.0, right: 3.0)
 
     init(with style: CallButtonBarStyle) {
         self.style = style
         super.init()
-        setup()
-        layout()
-        adjustStackConstraints()
+    }
+
+    required init() {
+        fatalError("init() has not been implemented")
     }
 
     override func layoutSubviews() {
@@ -47,15 +48,15 @@ class CallButtonBar: View {
 
     func adjustStackConstraints() {
         if currentOrientation.isPortrait {
-            verticalAlignConstrait.autoRemove()
+            verticalAlignConstrait?.autoRemove()
             stackView.spacing = 2
-            leftConstraint.autoInstall()
-            rightConstraint.autoInstall()
+            leftConstraint?.autoInstall()
+            rightConstraint?.autoInstall()
         } else {
-            leftConstraint.autoRemove()
-            rightConstraint.autoRemove()
+            leftConstraint?.autoRemove()
+            rightConstraint?.autoRemove()
             stackView.spacing = 12
-            verticalAlignConstrait.autoInstall()
+            verticalAlignConstrait?.autoInstall()
         }
     }
 
@@ -79,7 +80,9 @@ class CallButtonBar: View {
         stackView.distribution = .fillEqually
     }
 
-    private func layout() {
+    override func defineLayout() {
+        super.defineLayout()
+        adjustStackConstraints()
         addSubview(effectView)
         effectView.autoPinEdgesToSuperviewEdges()
 
@@ -175,6 +178,6 @@ class CallButtonBar: View {
     }
 
     private func adjustBottomSpacing() {
-        bottomSpaceConstraint.constant = -(safeAreaInsets.bottom + kInsets.bottom)
+        bottomSpaceConstraint?.constant = -(safeAreaInsets.bottom + kInsets.bottom)
     }
 }

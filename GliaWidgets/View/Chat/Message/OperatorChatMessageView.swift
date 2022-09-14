@@ -45,9 +45,8 @@ class OperatorChatMessageView: ChatMessageView {
         layout()
     }
 
-    @available(*, unavailable)
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    required init() {
+        fatalError("init() has not been implemented")
     }
 
     func setOperatorImage(fromUrl url: String?, animated: Bool) {
@@ -64,10 +63,10 @@ class OperatorChatMessageView: ChatMessageView {
         addSubview(contentViews)
         contentViews.autoPinEdge(.left, to: .right, of: operatorImageViewContainer, withOffset: 4)
         contentViews.autoPinEdge(toSuperviewEdge: .top, withInset: kInsets.top)
-        contentViews.autoPinEdge(toSuperviewEdge: .right, withInset: kInsets.right, relation: .greaterThanOrEqual)
+        contentViews.autoPinEdge(toSuperviewEdge: .bottom, withInset: kInsets.bottom)
 
         NSLayoutConstraint.autoSetPriority(.defaultHigh) {
-            contentViews.autoPinEdge(toSuperviewEdge: .bottom, withInset: kInsets.bottom)
+            contentViews.autoPinEdge(toSuperviewEdge: .right, withInset: kInsets.right, relation: .greaterThanOrEqual)
         }
     }
 }

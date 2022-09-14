@@ -1,7 +1,7 @@
 import UIKit
 import PureLayout
 
-class Header: UIView {
+final class Header: BaseView {
     enum Effect {
         case none
         case blur
@@ -46,16 +46,12 @@ class Header: UIView {
         self.closeButton = HeaderButton(with: style.closeButton)
         self.endButton = ActionButton(with: style.endButton, height: 32.0)
         self.endScreenShareButton = HeaderButton(with: style.endScreenShareButton)
-        super.init(frame: .zero)
+        super.init()
         self.titleLabel.accessibilityTraits = .header
-
-        setup()
-        layout()
     }
 
-    @available(*, unavailable)
-    required init?(coder _: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    required init() {
+        fatalError("init() has not been implemented")
     }
 
     override func layoutSubviews() {
@@ -91,7 +87,8 @@ class Header: UIView {
         closeButton.isHidden = true
     }
 
-    private func setup() {
+    override func setup() {
+        super.setup()
         effect = .none
 
         titleLabel.font = style.titleFont
@@ -102,6 +99,7 @@ class Header: UIView {
         rightItemContainer.spacing = 16
         rightItemContainer.alignment = .center
 
+        titleLabel.textColor = style.titleColor
         backButton.accessibilityIdentifier = "header_back_button"
         closeButton.accessibilityIdentifier = "header_close_button"
         closeButton.accessibilityLabel = style.closeButton.accessibility.label
@@ -113,7 +111,8 @@ class Header: UIView {
         )
     }
 
-    private func layout() {
+    override func defineLayout() {
+        super.defineLayout()
         heightConstraint = autoSetDimension(.height, toSize: kHeight)
 
         addSubview(effectView)

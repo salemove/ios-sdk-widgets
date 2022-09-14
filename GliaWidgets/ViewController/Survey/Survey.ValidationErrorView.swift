@@ -1,7 +1,7 @@
 import UIKit
 
 extension Survey {
-    final class ValidationErrorView: View {
+    final class ValidationErrorView: BaseView {
         let validationMessage = UILabel().make {
             $0.numberOfLines = 0
         }
@@ -20,6 +20,10 @@ extension Survey {
         init(style: Theme.SurveyStyle.ValidationError) {
             self.style = style
             super.init()
+        }
+
+        required init() {
+            fatalError("init() has not been implemented")
         }
 
         override func setup() {
