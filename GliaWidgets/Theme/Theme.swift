@@ -67,6 +67,7 @@ public class Theme {
     /// Apply remote configuration
     public func applyRemoteConfiguration(_ config: RemoteConfiguration) {
         call.applyCallConfiguration(config.callScreen)
+        survey.applySurveyConfiguration(config.surveyScreen)
 
         /// apply chat config
 
@@ -74,6 +75,5 @@ public class Theme {
 
         /// apply bubble config
 
-        /// apply survey config
     }
 }
