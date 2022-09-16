@@ -31,6 +31,37 @@ workflows:
     description: >-
       Workflow for creating builds of master branch. Triggered on each push to
       master branch, notifies over email + Slack (external)
+  deployment:
+    steps:
+    - activate-ssh-key@4: {}
+    - git-clone@6: {}
+    - cache-pull@2: {}
+    - cocoapods-install@2: {}
+    - xcode-test@4:
+        inputs:
+        - scheme: GliaWidgetsTests
+    - generate-changelog@0: {}
+    - github-release@0:
+        inputs:
+        - username: $GITHUB_USERNAME
+        - name: Glia iOS Widgets SDK $BITRISE_GIT_TAG
+        - body: $BITRISE_CHANGELOG
+        - api_token: $GITHUB_API_TOKEN
+        - draft: 'no'
+        - commit: $GIT_CLONE_COMMIT_HASH
+    - set-env-var@0:
+        inputs:
+        - destination_keys: NEW_VERSION
+        - value: $BITRISE_GIT_TAG
+    - trigger-bitrise-workflow@0:
+        inputs:
+        - api_token: $GLIA_IOS_PODSPECS_API_TOKEN
+        - workflow_id: upload_widgets_sdk_podspec
+        - exported_environment_variable_names: NEW_VERSION
+        - app_slug: $GLIA_IOS_PODSPECS_APP_SLUG
+    - cache-push@2: {}
+    after_run:
+    - increment_project_version
   dev-build:
     steps:
     - activate-ssh-key@4:
@@ -283,25 +314,6 @@ workflows:
     - fastlane@3:
         inputs:
         - lane: create_pr_for_dependencies_update
-  deployment:
-    steps:
-    - activate-ssh-key@4: {}
-    - git-clone@6: {}
-    - cache-pull@2: {}
-    - cocoapods-install@2: {}
-    - xcode-test@4:
-        inputs:
-        - scheme: GliaWidgetsTests
-    - generate-changelog@0: {}
-    - github-release@0:
-        inputs:
-        - username: $GITHUB_USERNAME
-        - name: Glia iOS Widgets SDK $BITRISE_GIT_TAG
-        - body: $BITRISE_CHANGELOG
-        - api_token: $GITHUB_API_TOKEN
-        - draft: 'no'
-        - commit: $GIT_CLONE_COMMIT_HASH
-    - cache-push@2: {}
 app:
   envs:
   - opts:
@@ -319,6 +331,12 @@ app:
   - opts:
       is_expand: false
     BROWSERSTACK_APP_ID: WidgetsSdkIosTestApp
+  - opts:
+      is_expand: false
+    GLIA_IOS_PODSPECS_APP_SLUG: 02d9069f03b494d0
+  - opts:
+      is_expand: false
+    CORTEX_DEMO_APP_SLUG: 2e5eb3394ea5598e
 trigger_map:
 - push_branch: docs/*
   workflow: docs
