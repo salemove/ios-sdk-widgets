@@ -39,5 +39,23 @@ extension Theme.SurveyStyle {
             self.font = font
             self.accessibility = accessibility
         }
+
+        /// Apply option button from remote configuration
+        public mutating func applyOptionButtonConfiguration(_ optionButton: RemoteConfiguration.OptionButton?) {
+            applyFontConfiguration(optionButton?.font)
+            normalText.applyTextConfiguration(optionButton?.normalText)
+            normalLayer.applyLayerConfiguration(optionButton?.normalLayer)
+            selectedText.applyTextConfiguration(optionButton?.selectedText)
+            selectedLayer.applyLayerConfiguration(optionButton?.selectedLayer)
+            highlightedText.applyTextConfiguration(optionButton?.highlightedText)
+            highlightedLayer.applyLayerConfiguration(optionButton?.highlightedLayer)
+        }
+
+        /// Apply option button title font from remote configuration
+        private mutating func applyFontConfiguration(_ font: RemoteConfiguration.Font?) {
+            if let font = UIFont.convertToFont(font: font) {
+                self.font = font
+            }
+        }
     }
 }
