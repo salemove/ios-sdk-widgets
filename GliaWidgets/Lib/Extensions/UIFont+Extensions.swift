@@ -19,14 +19,3 @@ extension UIFont {
         }
     }
 }
-
-extension UIFont {
-    func weight(orDefault defaultValue: CGFloat) -> CGFloat {
-        guard let face = fontDescriptor.object(forKey: .face) as? String else { return defaultValue }
-        switch face.lowercased() {
-        case "bold":    return 0.5
-        case "thin":    return 0.05
-        default:        return 0.2
-        }
-    }
-}
