@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 
 public extension Theme.SurveyStyle {
     struct InputQuestion {
@@ -69,6 +70,14 @@ public extension Theme.SurveyStyle {
                 error: .default(color: color, font: font),
                 accessibility: .init(isFontScalingEnabled: true)
             )
+        }
+
+        /// Apply input question from remote configuration
+        public mutating func applyQuestionConfiguration(_ question: RemoteConfiguration.SurveyInputQuestion?) {
+            title.applyTextConfiguration(question?.title)
+            text.applyTextConfiguration(question?.text)
+            background.applyLayerConfiguration(question?.background)
+            option.applyOptionButtonConfiguration(question?.option)
         }
     }
 }

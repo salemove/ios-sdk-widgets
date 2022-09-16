@@ -380,6 +380,11 @@
 		AFBBF57A28522591004993B3 /* Configuration.Unavailable.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBBF57928522591004993B3 /* Configuration.Unavailable.swift */; };
 		C03A8047292BA76D00DDECA6 /* ChatViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03A8046292BA76D00DDECA6 /* ChatViewControllerTests.swift */; };
 		C03A8049292BC8DB00DDECA6 /* CallViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03A8048292BC8DB00DDECA6 /* CallViewControllerTests.swift */; };
+		C0857DE528D470C1008D171D /* Theme+Shadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0857DE428D470C1008D171D /* Theme+Shadow.swift */; };
+		C0857DE728D470F2008D171D /* Theme+Layer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0857DE628D470F2008D171D /* Theme+Layer.swift */; };
+		C0857DEB28D482D0008D171D /* Theme+Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0857DEA28D482D0008D171D /* Theme+Button.swift */; };
+		C0857DED28D4831E008D171D /* Theme+Text.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0857DEC28D4831E008D171D /* Theme+Text.swift */; };
+		C0857DEF28D9AD32008D171D /* UIFont+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0857DEE28D9AD32008D171D /* UIFont+Extensions.swift */; };
 		C4119E06268F41D1004DFEFB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C4119E05268F41D1004DFEFB /* Main.storyboard */; };
 		C42463742673ABE10082C135 /* ScreenShareHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42463732673ABE10082C135 /* ScreenShareHandler.swift */; };
 		C43C12F92694B14900C37E1B /* GliaPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43C12F82694B14900C37E1B /* GliaPresenter.swift */; };
@@ -850,6 +855,12 @@
 		AFBBF57928522591004993B3 /* Configuration.Unavailable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.Unavailable.swift; sourceTree = "<group>"; };
 		C03A8046292BA76D00DDECA6 /* ChatViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewControllerTests.swift; sourceTree = "<group>"; };
 		C03A8048292BC8DB00DDECA6 /* CallViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallViewControllerTests.swift; sourceTree = "<group>"; };
+		C0857DE428D470C1008D171D /* Theme+Shadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Theme+Shadow.swift"; sourceTree = "<group>"; };
+		C0857DE628D470F2008D171D /* Theme+Layer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Theme+Layer.swift"; sourceTree = "<group>"; };
+		C0857DEA28D482D0008D171D /* Theme+Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Theme+Button.swift"; sourceTree = "<group>"; };
+		C0857DEC28D4831E008D171D /* Theme+Text.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Theme+Text.swift"; sourceTree = "<group>"; };
+		C0857DEE28D9AD32008D171D /* UIFont+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Extensions.swift"; sourceTree = "<group>"; };
+		C1B1D31D2A8244728847B885 /* Pods_GliaWidgetsTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GliaWidgetsTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4119E05268F41D1004DFEFB /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		C42463732673ABE10082C135 /* ScreenShareHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenShareHandler.swift; sourceTree = "<group>"; };
 		C43C12F82694B14900C37E1B /* GliaPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GliaPresenter.swift; sourceTree = "<group>"; };
@@ -1528,6 +1539,10 @@
 				1A4AD3C3256E7A0C00468BFB /* ThemeFontStyle.swift */,
 				1A4AD3C6256E863900468BFB /* ThemeColor.swift */,
 				1A4AD3C9256E864800468BFB /* ThemeColorStyle.swift */,
+				C0857DE428D470C1008D171D /* Theme+Shadow.swift */,
+				C0857DE628D470F2008D171D /* Theme+Layer.swift */,
+				C0857DEA28D482D0008D171D /* Theme+Button.swift */,
+				C0857DEC28D4831E008D171D /* Theme+Text.swift */,
 			);
 			path = Theme;
 			sourceTree = "<group>";
@@ -1735,6 +1750,7 @@
 				1A0C9AC725C9493D00815406 /* Int+Extensions.swift */,
 				1A0EDF6C25E7AC100076D1AD /* UIImage+Extensions.swift */,
 				C4C2A16F2670E848003AC039 /* UIViewController+Extensions.swift */,
+				C0857DEE28D9AD32008D171D /* UIFont+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -2847,6 +2863,7 @@
 				753A56B927CFEB730050D8E6 /* ChatViewModel.Mock.swift in Sources */,
 				1A0C9A7F25C1732F00815406 /* Theme+MinimizedBubble.swift in Sources */,
 				1A60AF7E25656F0400E53F53 /* Glia.swift in Sources */,
+				C0857DE728D470F2008D171D /* Theme+Layer.swift in Sources */,
 				1A60AFB62566825400E53F53 /* ViewModel.swift in Sources */,
 				845E2F95283FC5D300C04D56 /* Theme.Survey.OptionButton.Accessibility.swift in Sources */,
 				845876B4282AA296007AC3DF /* ButtonView.Props.Accessibility.swift in Sources */,
@@ -2869,6 +2886,7 @@
 				1A0452DD25DBD0A4000DA0C1 /* HeaderButton.swift in Sources */,
 				75AF8CEF27DAA819009EEE2C /* SurveyViewController.swift in Sources */,
 				1A60AF96256675C400E53F53 /* UIColor+Extensions.swift in Sources */,
+				C0857DED28D4831E008D171D /* Theme+Text.swift in Sources */,
 				845876A22823FF34007AC3DF /* Survey.ViewController.Props.Mock.swift in Sources */,
 				1A4674B625E907320078FA1C /* AttachmentSourceListStyle.swift in Sources */,
 				1A7CA81D2574D6370047CBBE /* ConnectView.swift in Sources */,
@@ -2885,6 +2903,7 @@
 				AFA2FDFC289082F500428E6D /* OnHoldOverlayStyle.Mock.swift in Sources */,
 				1A0C142925B84E5500B00695 /* EngagementViewController.swift in Sources */,
 				1A60AFE425669B0400E53F53 /* ChatCoordinator.swift in Sources */,
+				C0857DEB28D482D0008D171D /* Theme+Button.swift in Sources */,
 				EB2CBB1027D89F74004F178E /* OnHoldOverlayView.swift in Sources */,
 				9AB3401727F74D66006E0FE2 /* ChoiceCardStyle.Accessibility.swift in Sources */,
 				9A8130B527D7563000220BBD /* LocalFile.Environment.Interface.swift in Sources */,
@@ -2913,6 +2932,7 @@
 				1A1E30CB25F9FDC400850E68 /* ChatImageFileContentStyle.swift in Sources */,
 				1A60AF93256674F900E53F53 /* Color.swift in Sources */,
 				1A38A8BA258B94D60089DE7B /* ImageView.swift in Sources */,
+				C0857DE528D470C1008D171D /* Theme+Shadow.swift in Sources */,
 				7562B2ED28CBD9AE0040C784 /* Glia.RemoteConfiguration.swift in Sources */,
 				75AF8CF827DBC086009EEE2C /* UIStackView.Extensions.swift in Sources */,
 				9AB196E227C4045B00FD60AB /* ChatViewController.Mock.swift in Sources */,
@@ -3133,6 +3153,7 @@
 				9AB196D627C3E1E400FD60AB /* ChatViewModel.Environment.Interface.swift in Sources */,
 				1A0C9A8625C4090D00815406 /* CallButton.swift in Sources */,
 				9AB196EA27C5390100FD60AB /* ChatAttachment.Mock.swift in Sources */,
+				C0857DEF28D9AD32008D171D /* UIFont+Extensions.swift in Sources */,
 				1AFB1E5E25F7ADDA00CA460D /* ChatOperator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

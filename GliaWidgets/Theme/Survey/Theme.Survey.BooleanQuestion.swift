@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 
 public extension Theme.SurveyStyle {
     struct BooleanQuestion {
@@ -55,6 +56,12 @@ public extension Theme.SurveyStyle {
                 error: .default(color: color, font: font),
                 accessibility: .init(isFontScalingEnabled: true)
             )
+        }
+
+        /// Apply boolean question from remote configuration
+        public mutating func applyQuestionConfiguration(_ question: RemoteConfiguration.SurveyBooleanQuestion?) {
+            title.applyTextConfiguration(question?.title)
+            option.applyOptionButtonConfiguration(question?.optionButton)
         }
     }
 }

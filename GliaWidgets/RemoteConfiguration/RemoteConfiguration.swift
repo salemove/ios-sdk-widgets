@@ -3,6 +3,7 @@ import Foundation
 public struct RemoteConfiguration: Codable {
     public let callScreen: Call?
     public let chatScreen: Chat?
+    public let surveyScreen: Survey?
 }
 
 public extension RemoteConfiguration {
@@ -54,7 +55,7 @@ public extension RemoteConfiguration {
     }
 
     struct Text: Codable {
-        public let alignment: [Alignment]?
+        public let alignment: Alignment?
         public let background: Color?
         public let font: Font?
         public let foreground: Color?
@@ -97,6 +98,61 @@ public extension RemoteConfiguration {
 
     struct BarButtonStyle: Codable {
         let background, imageColor: Color?
+        let title: Text?
+    }
+
+    struct Survey: Codable {
+        let booleanQuestion: SurveyBooleanQuestion?
+        let cancelButton: SurveyButton?
+        let inputQuestion: SurveyInputQuestion?
+        let layer: Layer?
+        let scaleQuestion: SurveyScaleQuestion?
+        let singleQuestion: SurveySingleQuestion?
+        let submitButton: SurveyButton?
+        let title: Text?
+    }
+
+    struct SurveyBooleanQuestion: Codable {
+        let optionButton: OptionButton?
+        let title: Text?
+    }
+
+    struct OptionButton: Codable {
+        let font: Font?
+        let highlightedLayer: Layer?
+        let highlightedText: Text?
+        let normalLayer: Layer?
+        let normalText: Text?
+        let selectedLayer: Layer?
+        let selectedText: Text?
+    }
+
+    struct SurveyButton: Codable {
+        let background: Layer?
+        let shadow: Shadow?
+        let title: Text?
+    }
+
+    struct Shadow: Codable {
+        let color: Color?
+        let offset: Double?
+        let opacity, radius: Double?
+    }
+
+    struct SurveyInputQuestion: Codable {
+        let background: Layer?
+        let option: OptionButton?
+        let text, title: Text?
+    }
+
+    struct SurveyScaleQuestion: Codable {
+        let optionButton: OptionButton?
+        let title: Text?
+    }
+
+    struct SurveySingleQuestion: Codable {
+        let option: Text?
+        let tintColor: Color?
         let title: Text?
     }
 }
