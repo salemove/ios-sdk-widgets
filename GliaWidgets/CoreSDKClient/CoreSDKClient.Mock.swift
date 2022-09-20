@@ -24,7 +24,8 @@ extension CoreSdkClient {
         getCurrentEngagement: { return nil },
         fetchSiteConfigurations: { _ in },
         submitSurveyAnswer: { _, _, _, _ in },
-        authentication: { .mock }
+        authentication: { .mock },
+        fetchChatHistory: { _ in }
     )
 }
 

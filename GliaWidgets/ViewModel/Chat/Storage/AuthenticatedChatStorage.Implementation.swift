@@ -2,7 +2,7 @@ extension AuthenticatedChatStorage {
     static func inMemory(_ storage: StorageRef) -> Self {
         Self(
             isEmpty: {
-                storage.messageIdsForQueue.isEmpty
+                storage.messages.isEmpty
             },
             messages: { queueId in
                 storage.messagesForQueue(queueId)
@@ -35,11 +35,7 @@ extension AuthenticatedChatStorage {
                 storage.isNewMessage(message.id)
             },
             newMessages: { messages in
-                // This logic is copied from `ChatStorage.newMessages`,
-                // however it doesn't seem to be reasonable.
-                // Let's discuss it during the code review.
-                let existingMessageIDs = messages.map(\.id)
-                return messages.filter { !existingMessageIDs.contains($0.id) }
+                messages
             },
             clear: {
                 storage.clear()
@@ -50,34 +46,31 @@ extension AuthenticatedChatStorage {
 
 extension AuthenticatedChatStorage.StorageRef {
     func storeMessage(
-        _ message: ChatMessage,
+        _ newMessage: ChatMessage,
         for queueId: AuthenticatedChatStorage.QueueId
     ) {
-        var messageIds = messageIdsForQueue[queueId, default: []]
-        messageIds.append(message.id)
-        messageForMessageId[message.id] = message
-        messageIdsForQueue[queueId] = messageIds
+        messages.append(newMessage)
     }
 
     func messagesForQueue(_ queueID: QueueId) -> [ChatMessage] {
-        messageIdsForQueue[queueID].map { messageIds in
-            messageIds
-                .compactMap { messageId in
-                    self.messageForMessageId[messageId]
-                }
-        } ?? []
+        messages
     }
 
     func updateMessage(_ message: ChatMessage) {
-        messageForMessageId[message.id] = message
+        guard
+            let index = messages.firstIndex(where: { $0.id == message.id }),
+            messages.count > index
+        else {
+            return
+        }
+        messages[index] = message
     }
 
     func isNewMessage(_ messageId: MessageId) -> Bool {
-        messageForMessageId[messageId] == nil
+        !messages.contains(where: { $0.id == messageId })
     }
 
     func clear() {
-        messageIdsForQueue.removeAll()
-        messageForMessageId.removeAll()
+        messages.removeAll()
     }
 }

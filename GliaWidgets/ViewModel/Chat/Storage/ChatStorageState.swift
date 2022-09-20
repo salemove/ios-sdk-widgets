@@ -3,7 +3,6 @@ enum ChatStorageState {
     case authenticated(AuthenticatedChatStorage)
 }
 
-
 extension ChatStorageState {
     func isEmpty() -> Bool {
         switch self {

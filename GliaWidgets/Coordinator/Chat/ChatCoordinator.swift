@@ -90,7 +90,8 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
                 getCurrentEngagement: environment.getCurrentEngagement,
                 timerProviding: .live,
                 uuid: environment.uuid,
-                uiApplication: environment.uiApplication
+                uiApplication: environment.uiApplication,
+                fetchChatHistory: environment.fetchChatHistory
             )
         )
         viewModel.engagementDelegate = { [weak self] event in
@@ -212,5 +213,6 @@ extension ChatCoordinator {
         var submitSurveyAnswer: CoreSdkClient.SubmitSurveyAnswer
         var uuid: () -> UUID
         var uiApplication: UIKitBased.UIApplication
+        var fetchChatHistory: CoreSdkClient.FetchChatHistory
     }
 }
