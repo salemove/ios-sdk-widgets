@@ -24,7 +24,7 @@ class AuthenticatedChatStorageStorageRefTests: XCTestCase {
             message,
             for: queueId
         )
-        XCTAssertEqual(ref.messageIdsForQueue, [queueId: [messageId]])
+        XCTAssertEqual(ref.messages.map(\.id), [message.id])
     }
 
     func test_messagesForQueueReturnsMessages() {
@@ -76,7 +76,7 @@ class AuthenticatedChatStorageStorageRefTests: XCTestCase {
 
         ref.updateMessage(newMessage)
 
-        XCTAssertEqual(ref.messageForMessageId[message.id]?.content, otherContent)
+        XCTAssertEqual(ref.messages.map(\.content), [otherContent])
     }
 
     func test_isNewMessageReturnsTrueForNotStoredMessage() {

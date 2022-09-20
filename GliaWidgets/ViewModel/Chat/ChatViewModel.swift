@@ -150,15 +150,16 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     override func start() {
         super.start()
 
-        loadHistory()
-        // At this point we need to be sure that CoreSDK is configured.
-        // This will restore engagement if one was not completed earlier.
-        // Otherwise in case of ongoing engagement, visitor will not receive
-        // messages from operator until message is sent from visitor.
-        interactor.withConfiguration { [weak self] in
-            guard let self = self else { return }
-            if case .startEngagement = self.startAction, self.chatStorageState().isEmpty() {
-                self.enqueue(mediaType: .text)
+        loadHistory { [weak self] in
+            // At this point we need to be sure that CoreSDK is configured.
+            // This will restore engagement if one was not completed earlier.
+            // Otherwise in case of ongoing engagement, visitor will not receive
+            // messages from operator until message is sent from visitor.
+            self?.interactor.withConfiguration { [weak self] in
+                guard let self = self else { return }
+                if case .startEngagement = self.startAction, self.chatStorageState().isEmpty() {
+                    self.enqueue(mediaType: .text)
+                }
             }
         }
     }
@@ -317,18 +318,26 @@ extension ChatViewModel {
 // MARK: History
 
 extension ChatViewModel {
-    private func loadHistory() {
-        let messages = environment.chatStorage.messages(interactor.queueID)
-        let items = messages.compactMap {
-            ChatItem(
-                with: $0,
-                isCustomCardSupported: isCustomCardSupported,
-                fromHistory: environment.loadChatMessagesFromHistory()
-            )
+    private func loadHistory(_ completion: @escaping () -> Void) {
+        environment.fetchChatHistory { [weak self] result in
+            defer { completion() }
+            guard let self = self else { return }
+            if case .success(let messages) = result {
+                self.chatStorageState().storeMessages(messages, "", nil)
+            }
+
+            let messages = self.chatStorageState().messages(self.interactor.queueID)
+            let items = messages.compactMap {
+                ChatItem(
+                    with: $0,
+                    isCustomCardSupported: self.isCustomCardSupported,
+                    fromHistory: self.environment.loadChatMessagesFromHistory()
+                )
+            }
+            self.historySection.set(items)
+            self.action?(.refreshSection(self.historySection.index))
+            self.action?(.scrollToBottom(animated: false))
         }
-        historySection.set(items)
-        action?(.refreshSection(historySection.index))
-        action?(.scrollToBottom(animated: false))
     }
 }
 

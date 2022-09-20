@@ -25,7 +25,8 @@ extension CoreSdkClient {
         authentication: { _ in
             fail("\(Self.self).authentication")
             return .mock
-        }
+        },
+        fetchChatHistory: { _ in }
     )
 }
 
