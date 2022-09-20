@@ -153,14 +153,19 @@ class ChatView: EngagementView {
     }
 
     func appendRows(_ count: Int, to section: Int, animated: Bool) {
-        guard let rows = numberOfRows?(section) else { return }
+        guard
+            let rows = numberOfRows?(section),
+            rows >= count
+        else { return }
 
         if animated {
-            let indexPaths = (rows - count ..< rows)
-                .map { IndexPath(row: $0, section: section) }
-            tableView.insertRows(at: indexPaths, with: .bottom)
+            tableView.performBatchUpdates {
+                let indexPaths = (rows - count ..< rows)
+                    .map { IndexPath(row: $0, section: section) }
+                tableView.insertRows(at: indexPaths, with: .fade)
+            }
         } else {
-            tableView.reloadData()
+            refreshAll()
         }
     }
 
@@ -178,7 +183,6 @@ class ChatView: EngagementView {
         else { return }
 
         cell.content = content(for: item)
-        tableView.reloadRows(at: [indexPath], with: animated ? .fade : .none)
     }
 
     func refreshRows(_ rows: [Int], in section: Int, animated: Bool) {
@@ -376,7 +380,7 @@ extension ChatView {
                 guard let self = self else { return }
 
                 view.style = self.callUpgradeStyle(for: kind)
-                self.tableView.reloadData()
+                self.refreshAll()
             }
             return .callUpgrade(view)
         case .operatorConnected(let name, let imageUrl):
