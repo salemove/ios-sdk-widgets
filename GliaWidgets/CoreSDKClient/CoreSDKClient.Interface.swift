@@ -102,6 +102,9 @@ struct CoreSdkClient {
     var submitSurveyAnswer: SubmitSurveyAnswer
     typealias CreateAuthentication = (_ behaviour: AuthenticationBehavior) throws -> Authentication
     var authentication: CreateAuthentication
+
+    typealias FetchChatHistory = (_ completion: @escaping (Result<[Self.Message], SalemoveSDK.SalemoveError>) -> Void) -> Void
+    var fetchChatHistory: FetchChatHistory
 }
 
 extension CoreSdkClient {

@@ -21,5 +21,6 @@ extension RootCoordinator {
         var getCurrentEngagement: CoreSdkClient.GetCurrentEngagement
         var submitSurveyAnswer: CoreSdkClient.SubmitSurveyAnswer
         var uiApplication: UIKitBased.UIApplication
+        var fetchChatHistory: CoreSdkClient.FetchChatHistory
     }
 }

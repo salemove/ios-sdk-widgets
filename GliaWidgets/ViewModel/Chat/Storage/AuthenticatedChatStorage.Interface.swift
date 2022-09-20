@@ -40,7 +40,6 @@ extension AuthenticatedChatStorage {
         typealias QueueId = AuthenticatedChatStorage.QueueId
         typealias MessageId = AuthenticatedChatStorage.MessageId
 
-        var messageIdsForQueue: [QueueId: [MessageId]] = [:]
-        var messageForMessageId: [MessageId: ChatMessage] = [:]
+        var messages: [ChatMessage] = []
     }
 }

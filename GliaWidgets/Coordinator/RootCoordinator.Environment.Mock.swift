@@ -19,7 +19,8 @@ extension RootCoordinator.Environment {
         fetchSiteConfigurations: { _ in },
         getCurrentEngagement: { nil },
         submitSurveyAnswer: { _, _, _, _ in },
-        uiApplication: .mock
+        uiApplication: .mock,
+        fetchChatHistory: { _ in }
     )
 }
 #endif
