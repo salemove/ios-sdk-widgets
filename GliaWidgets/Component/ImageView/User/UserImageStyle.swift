@@ -37,4 +37,49 @@ public struct UserImageStyle {
         self.imageBackgroundColor = imageBackgroundColor
         self.transferringImage = transferringImage
     }
+
+    /// Apply user image remote configuration
+    mutating func applyUserImageConfiguration(_ userImage: RemoteConfiguration.UserImageStyle?) {
+        userImage?.imageBackgroundColor?.type.map { backgroundType in
+            switch backgroundType {
+            case .fill:
+                userImage?.imageBackgroundColor?.value.map {
+                    imageBackgroundColor = UIColor(hex: $0[0])
+                }
+            case .gradient:
+
+            /// The logic for gradient has not been implemented
+
+                break
+            }
+        }
+
+        userImage?.placeholderColor?.type.map { backgroundType in
+            switch backgroundType {
+            case .fill:
+                userImage?.placeholderColor?.value.map {
+                    placeholderColor = UIColor(hex: $0[0])
+                }
+            case .gradient:
+
+            /// The logic for gradient has not been implemented
+
+                break
+            }
+        }
+
+        userImage?.placeholderBackgroundColor?.type.map { backgroundType in
+            switch backgroundType {
+            case .fill:
+                userImage?.placeholderBackgroundColor?.value.map {
+                    placeholderBackgroundColor = UIColor(hex: $0[0])
+                }
+            case .gradient:
+
+            /// The logic for gradient has not been implemented
+
+                break
+            }
+        }
+    }
 }

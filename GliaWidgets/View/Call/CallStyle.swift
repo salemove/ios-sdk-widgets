@@ -187,17 +187,8 @@ extension CallStyle {
 
         }
 
-        if let fontSize = bottomText?.font?.size, let fontStyle = bottomText?.font?.style {
-            switch fontStyle {
-            case .bold:
-                self.bottomTextFont = UIFont.boldSystemFont(ofSize: fontSize)
-            case .italic:
-                self.bottomTextFont = UIFont.italicSystemFont(ofSize: fontSize)
-            case .regular:
-                self.bottomTextFont = UIFont.systemFont(ofSize: fontSize)
-            case .thin:
-                self.bottomTextFont = UIFont.systemFont(ofSize: fontSize, weight: .thin)
-            }
+        if let font = UIFont.convertToFont(font: bottomText?.font) {
+            bottomTextFont = font
         }
 
         bottomText?.foreground?.value.map { colors in
@@ -220,17 +211,8 @@ extension CallStyle {
 
         }
 
-        if let fontSize = topText?.font?.size, let fontStyle = topText?.font?.style {
-            switch fontStyle {
-            case .bold:
-                self.topTextFont = UIFont.boldSystemFont(ofSize: fontSize)
-            case .italic:
-                self.topTextFont = UIFont.italicSystemFont(ofSize: fontSize)
-            case .regular:
-                self.topTextFont = UIFont.systemFont(ofSize: fontSize)
-            case .thin:
-                self.topTextFont = UIFont.systemFont(ofSize: fontSize, weight: .thin)
-            }
+        if let font = UIFont.convertToFont(font: topText?.font) {
+            topTextFont = font
         }
 
         topText?.foreground?.value.map { colors in
@@ -253,17 +235,8 @@ extension CallStyle {
 
         }
 
-        if let fontSize = duration?.font?.size, let fontStyle = duration?.font?.style {
-            switch fontStyle {
-            case .bold:
-                self.durationFont = UIFont.boldSystemFont(ofSize: fontSize)
-            case .italic:
-                self.durationFont = UIFont.italicSystemFont(ofSize: fontSize)
-            case .regular:
-                self.durationFont = UIFont.systemFont(ofSize: fontSize)
-            case .thin:
-                self.durationFont = UIFont.systemFont(ofSize: fontSize, weight: .thin)
-            }
+        if let font = UIFont.convertToFont(font: duration?.font) {
+            durationFont = font
         }
 
         duration?.foreground?.value.map { colors in
@@ -299,17 +272,8 @@ extension CallStyle {
 
         }
 
-        if let fontSize = endButton?.text?.font?.size, let fontStyle = endButton?.text?.font?.style {
-            switch fontStyle {
-            case .bold:
-                header.endButton.titleFont = UIFont.boldSystemFont(ofSize: fontSize)
-            case .italic:
-                header.endButton.titleFont = UIFont.italicSystemFont(ofSize: fontSize)
-            case .regular:
-                header.endButton.titleFont = UIFont.systemFont(ofSize: fontSize)
-            case .thin:
-                header.endButton.titleFont = UIFont.systemFont(ofSize: fontSize, weight: .thin)
-            }
+        if let font = UIFont.convertToFont(font: endButton?.text?.font) {
+            header.endButton.titleFont = font
         }
 
         endButton?.text?.foreground?.value.map { colors in
@@ -353,17 +317,8 @@ extension CallStyle {
 
         }
 
-        if let titleFontSize = header?.text?.font?.size, let titleFontStyle = header?.text?.font?.style {
-            switch titleFontStyle {
-            case .bold:
-                self.header.titleFont = UIFont.boldSystemFont(ofSize: titleFontSize)
-            case .italic:
-                self.header.titleFont = UIFont.italicSystemFont(ofSize: titleFontSize)
-            case .regular:
-                self.header.titleFont = UIFont.systemFont(ofSize: titleFontSize)
-            case .thin:
-                self.header.titleFont = UIFont.systemFont(ofSize: titleFontSize, weight: .thin)
-            }
+        if let font = UIFont.convertToFont(font: header?.text?.font) {
+            self.header.titleFont = font
         }
 
         header?.text?.foreground?.value.map { titleForeground in
@@ -377,17 +332,8 @@ extension CallStyle {
             self.operatorNameColor = UIColor.init(hex: colors[0])
         }
 
-        if let fontSize = callOperator?.font?.size, let fontStyle = callOperator?.font?.style {
-            switch fontStyle {
-            case .bold:
-                self.operatorNameFont = UIFont.boldSystemFont(ofSize: fontSize)
-            case .italic:
-                self.operatorNameFont = UIFont.italicSystemFont(ofSize: fontSize)
-            case .regular:
-                self.operatorNameFont = UIFont.systemFont(ofSize: fontSize)
-            case .thin:
-                self.operatorNameFont = UIFont.systemFont(ofSize: fontSize, weight: .thin)
-            }
+        if let font = UIFont.convertToFont(font: callOperator?.font) {
+            operatorNameFont = font
         }
     }
 
