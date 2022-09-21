@@ -4,6 +4,7 @@ public struct RemoteConfiguration: Codable {
     public let callScreen: Call?
     public let chatScreen: Chat?
     public let surveyScreen: Survey?
+    public let bubble: Bubble?
 }
 
 public extension RemoteConfiguration {
@@ -30,6 +31,28 @@ public extension RemoteConfiguration {
             case callOperator = "operator"
             case topText
         }
+    }
+
+    struct Bubble: Codable {
+        let badge: BadgeStyle?
+        let onHoldOverlay: OnHoldOverlayStyle?
+        let userImage: UserImageStyle?
+    }
+
+    struct BadgeStyle: Codable {
+        let backgroundColor: Color?
+        let font: Font?
+        let fontColor: Color?
+    }
+
+    struct OnHoldOverlayStyle: Codable {
+        let color: Color?
+    }
+
+    struct UserImageStyle: Codable {
+        let imageBackgroundColor: Color?
+        let placeholderBackgroundColor: Color?
+        let placeholderColor: Color?
     }
 
     struct Layer: Codable {

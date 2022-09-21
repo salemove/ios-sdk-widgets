@@ -15,6 +15,23 @@ public struct OnHoldOverlayStyle {
         self.imageColor = imageColor
         self.imageSize = imageSize
     }
+
+    /// Apply onHoldOverlay style remote configuration
+    mutating func applyOnHoldOverlayConfiguration(_ onHoldOverlay: RemoteConfiguration.OnHoldOverlayStyle?) {
+        onHoldOverlay?.color?.type.map { colorType in
+            switch colorType {
+            case .fill:
+                onHoldOverlay?.color?.value.map {
+                    imageColor = UIColor(hex: $0[0])
+                }
+            case .gradient:
+
+            /// The logic for gradient has not been implemented
+
+                break
+            }
+        }
+    }
 }
 
 public extension OnHoldOverlayStyle {
