@@ -30,4 +30,11 @@ public class BubbleStyle {
         self.onHoldOverlay = onHoldOverlay
         self.accessibility = accessibility
     }
+
+    /// Apply bubble remote configuration
+    func applyBubbleConfiguration(_ bubble: RemoteConfiguration.Bubble?) {
+        userImage.applyUserImageConfiguration(bubble?.userImage)
+        badge?.applyBadgeConfiguration(bubble?.badge)
+        onHoldOverlay.applyOnHoldOverlayConfiguration(bubble?.onHoldOverlay)
+    }
 }
