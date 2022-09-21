@@ -2,129 +2,6 @@ import Foundation
 import UIKit
 
 extension Theme {
-    /// Text style.
-    public struct Text {
-        /// Foreground hex color.
-        public var color: String
-        /// Font.
-        public var font: UIFont
-
-        /// Text aligmment.
-        public var alignment: NSTextAlignment
-
-        /// Initializes `Text` style instance.
-        public init(
-            color: String,
-            font: UIFont,
-            alignment: NSTextAlignment = .center
-        ) {
-            self.color = color
-            self.font = font
-			self.alignment = alignment
-        }
-    }
-
-    /// Button style.
-    public struct Button {
-        /// Background hex color.
-        public var background: String?
-        /// Title style.
-        public var title: Text
-        /// Button corner radius.
-        public var cornerRadius: CGFloat
-        /// Button border width.
-        public var borderWidth: CGFloat = 0
-        /// Button border hex color.
-        public var borderColor: String?
-        /// Button shadow.
-        public var shadow: Shadow
-        /// Accessibility related properties.
-        public var accessibility: Accessibility
-
-        /// Initializes `Button` style instance.
-        public init(
-            background: String?,
-            title: Theme.Text,
-            cornerRadius: CGFloat,
-            borderWidth: CGFloat = 0,
-            borderColor: String? = nil,
-            shadow: Shadow = .standard,
-            accessibility: Accessibility = .unsupported
-        ) {
-            self.background = background
-            self.title = title
-            self.cornerRadius = cornerRadius
-            self.borderWidth = borderWidth
-            self.borderColor = borderColor
-            self.shadow = shadow
-            self.accessibility = accessibility
-        }
-
-        public init(
-            acitonButtonStyle: ActionButtonStyle,
-            accessibility: Accessibility
-        ) {
-            self.background = acitonButtonStyle.backgroundColor == .clear ? nil : acitonButtonStyle.backgroundColor.hex
-            self.title = .init(
-                color: acitonButtonStyle.titleColor.hex,
-                font: acitonButtonStyle.titleFont
-            )
-            self.cornerRadius = acitonButtonStyle.cornerRaidus ?? 0
-            self.borderWidth = acitonButtonStyle.borderWidth ?? 0
-            self.borderColor = acitonButtonStyle.borderColor?.hex
-
-            self.shadow = .init(
-                color: acitonButtonStyle.shadowColor?.hex ?? Shadow.standard.color,
-                offset: acitonButtonStyle.shadowOffset ?? Shadow.standard.offset,
-                opacity: acitonButtonStyle.shadowOpacity ?? Shadow.standard.opacity,
-                radius: acitonButtonStyle.shadowRadius ?? Shadow.standard.radius
-            )
-            self.accessibility = accessibility
-        }
-    }
-
-    /// Shadow style.
-    public struct Shadow {
-        /// Shadow color.
-        public var color: String
-        /// Shadow offset.
-        public var offset: CGSize
-        /// Shadow opacity.
-        public var opacity: Float
-        /// Shadow radius.
-        public var radius: CGFloat
-
-        public static let standard: Shadow = .init(
-            color: "0x000000",
-            offset: .init(width: 0.0, height: 2.0),
-            opacity: 0.3,
-            radius: 2.0
-        )
-    }
-
-    /// Abstract layer style.
-    public struct Layer {
-        /// Background hex color.
-        public var background: String?
-        /// Border hex color.
-        public var borderColor: String
-        /// Border width.
-        public var borderWidth: CGFloat = 0
-        /// Layer corner radius.
-        public var cornerRadius: CGFloat = 0
-        /// Initializes `Layer` style instance.
-        public init(
-            background: String? = nil,
-            borderColor: String,
-            borderWidth: CGFloat = 0,
-            cornerRadius: CGFloat = 0
-        ) {
-            self.background = background
-            self.borderColor = borderColor
-            self.borderWidth = borderWidth
-            self.cornerRadius = cornerRadius
-        }
-    }
 
     public struct SurveyStyle {
         /// Layer style.
@@ -203,6 +80,18 @@ extension Theme.SurveyStyle {
             inputQuestion: .default(color: color, font: font),
             accessibility: .init(isFontScalingEnabled: true)
         )
+    }
+
+    /// Apply survey remote configuration
+    public mutating func applySurveyConfiguration(_ survey: RemoteConfiguration.Survey?) {
+        layer.applyLayerConfiguration(survey?.layer)
+        title.applyTextConfiguration(survey?.title)
+        submitButton.applyQuestionConfiguration(survey?.submitButton)
+        cancellButton.applyQuestionConfiguration(survey?.cancelButton)
+        booleanQuestion.applyQuestionConfiguration(survey?.booleanQuestion)
+        scaleQuestion.applyQuestionConfiguration(survey?.scaleQuestion)
+        singleQuestion.applyQuestionConfiguration(survey?.singleQuestion)
+        inputQuestion.applyQuestionConfiguration(survey?.inputQuestion)
     }
 }
 
