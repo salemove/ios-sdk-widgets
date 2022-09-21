@@ -47,7 +47,6 @@ public struct CallButtonStyle {
 }
 
 extension CallButtonStyle.StateStyle {
-
     mutating func apply(configuration: RemoteConfiguration.BarButtonStyle?) {
         configuration?.background.map {
             switch $0.type {
