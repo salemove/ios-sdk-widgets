@@ -15,6 +15,6 @@ class InteractorStateTests: XCTestCase {
         let state1: InteractorState = .engaged(.mock())
         let state2: InteractorState = .engaged(.mock())
 
-        XCTAssertNotEqual(state1, state2)
+        XCTAssertEqual(state1, state2)
     }
 }
