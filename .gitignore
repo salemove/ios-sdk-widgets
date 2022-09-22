@@ -4,6 +4,7 @@ project.xcworkspace
 xcuserdata
 *.xctimeline
 .swiftpm
+.bundle
 
 # Xcode
 #
