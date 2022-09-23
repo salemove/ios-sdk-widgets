@@ -80,4 +80,89 @@ public struct ActionButtonStyle {
         self.borderColor = borderColor
         self.accessibility = accessibility
     }
+
+    /// Apply actionButton from remote configuration
+    mutating func applyActionButtonCustomization(_ button: RemoteConfiguration.ActionButton?) {
+        applyTitleCustomization(button?.title)
+        applyBackgroundCustomization(button?.background)
+    }
+
+    /// Apply button title from remote configuration
+    private mutating func applyTitleCustomization(_ title: RemoteConfiguration.Text?) {
+        UIFont.convertToFont(font: title?.font).map {
+            titleFont = $0
+        }
+
+        title?.foreground?.value.map {
+            titleColor = UIColor(hex: $0[0])
+        }
+    }
+
+    /// Apply button background from remote configuration
+    private mutating func applyBackgroundCustomization(_ background: RemoteConfiguration.Layer?) {
+        background?.color?.type.map { backgroundType in
+            switch backgroundType {
+            case .fill:
+                background?.color?.value.map {
+                    backgroundColor = UIColor(hex: $0[0])
+                }
+            case .gradient:
+
+            /// The logic for gradient has not been implemented
+
+                break
+            }
+        }
+
+        background?.border?.type.map { borderType in
+            switch borderType {
+            case .fill:
+                background?.border?.value.map {
+                    borderColor = UIColor(hex: $0[0])
+                }
+            case .gradient:
+
+            /// The logic for gradient has not been implemented
+
+                break
+            }
+        }
+
+        background?.borderWidth.map {
+            borderWidth = $0
+        }
+
+        background?.cornerRadius.map {
+            cornerRaidus = CGFloat($0)
+        }
+    }
+
+    /// Apply shadow from remote configuration
+    private mutating func applyShadowCustomization(_ shadow: RemoteConfiguration.Shadow?) {
+        shadow?.offset.map {
+            shadowOffset = CGSize(width: $0, height: $0)
+        }
+
+        shadow?.radius.map {
+            shadowRadius = CGFloat($0)
+        }
+
+        shadow?.opacity.map {
+            shadowOpacity = Float($0)
+        }
+
+        shadow?.color?.type.map { colorType in
+            switch colorType {
+            case .fill:
+                shadow?.color?.value.map {
+                    shadowColor = UIColor(hex: $0[0])
+                }
+            case .gradient:
+
+            /// The logic for gradient has not been implemented
+
+                break
+            }
+        }
+    }
 }
