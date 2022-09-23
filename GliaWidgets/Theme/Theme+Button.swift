@@ -62,19 +62,19 @@ extension Theme {
         }
 
         /// Apply default question button from remote configuration
-        public mutating func applyQuestionConfiguration(_ question: RemoteConfiguration.ActionButton?) {
+        mutating func applyQuestionConfiguration(_ question: RemoteConfiguration.ActionButton?) {
             applyBackgroundConfiguration(question?.background)
             title.applyTextConfiguration(question?.title)
             shadow.applyShadowConfiguration(question?.shadow)
         }
 
         /// Apply button background from remote configuration
-        private mutating func applyBackgroundConfiguration(_ background: RemoteConfiguration.Layer?) {
+        mutating func applyBackgroundConfiguration(_ background: RemoteConfiguration.Layer?) {
             background?.color?.type.map { backgroundType in
                 switch backgroundType {
                 case .fill:
-                    background?.color?.value.map { colors in
-                        self.background = colors[0]
+                    background?.color?.value.map {
+                        self.background = $0[0]
                     }
                 case .gradient:
 
@@ -84,19 +84,19 @@ extension Theme {
                 }
             }
 
-            background?.cornerRadius.map { cornerRadius in
-                self.cornerRadius = cornerRadius
+            background?.cornerRadius.map {
+                cornerRadius = $0
             }
 
-            background?.borderWidth.map { borderWidth in
-                self.borderWidth = borderWidth
+            background?.borderWidth.map {
+                borderWidth = $0
             }
 
             background?.color?.type.map { borderColorType in
                 switch borderColorType {
                 case .fill:
-                    background?.color?.value.map { borderColors in
-                        self.borderColor = borderColors[0]
+                    background?.color?.value.map {
+                        borderColor = $0[0]
                     }
                 case .gradient:
 

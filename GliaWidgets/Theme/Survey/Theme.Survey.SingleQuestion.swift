@@ -36,7 +36,7 @@ public extension Theme.SurveyStyle {
         }
 
         /// Apply single question from remote configuration
-        public mutating func applyQuestionConfiguration(_ question: RemoteConfiguration.SurveySingleQuestion?) {
+        mutating func applyQuestionConfiguration(_ question: RemoteConfiguration.SurveySingleQuestion?) {
             option.title.applyTextConfiguration(question?.option)
             title.applyTextConfiguration(question?.title)
             applyTintColorConfiguration(question?.tintColor)
@@ -47,8 +47,8 @@ public extension Theme.SurveyStyle {
             tintColor?.type.map { tintColorType in
                 switch tintColorType {
                 case .fill:
-                    tintColor?.value.map { colors in
-                        self.tintColor = colors[0]
+                    tintColor?.value.map {
+                        self.tintColor = $0[0]
                     }
                 case .gradient:
 

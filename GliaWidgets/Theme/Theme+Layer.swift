@@ -26,12 +26,12 @@ extension Theme {
         }
 
         /// Apply layer remote configuration
-        public mutating func applyLayerConfiguration(_ layer: RemoteConfiguration.Layer?) {
+        mutating func applyLayerConfiguration(_ layer: RemoteConfiguration.Layer?) {
             layer?.border?.type.map { borderColorType in
                 switch borderColorType {
                 case .fill:
-                    layer?.border?.value.map { borderColors in
-                        self.borderColor = borderColors[0]
+                    layer?.border?.value.map {
+                        borderColor = $0[0]
                     }
                 case .gradient:
 
@@ -41,19 +41,19 @@ extension Theme {
                 }
             }
 
-            layer?.borderWidth.map { borderWidth in
-                self.borderWidth = borderWidth
+            layer?.borderWidth.map {
+                borderWidth = $0
             }
 
-            layer?.cornerRadius.map { cornerRadius in
-                self.cornerRadius = cornerRadius
+            layer?.cornerRadius.map {
+                cornerRadius = $0
             }
 
-            layer?.color?.type.map { backgroundColorType in
-                switch backgroundColorType {
+            layer?.color?.type.map { backgroundType in
+                switch backgroundType {
                 case .fill:
-                    layer?.color?.value.map { backgroundColors in
-                        self.background = backgroundColors[0]
+                    layer?.color?.value.map {
+                        background = $0[0]
                     }
                 case .gradient:
 

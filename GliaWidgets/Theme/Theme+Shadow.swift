@@ -21,12 +21,12 @@ extension Theme {
         )
 
         /// Apply shadow configuration
-        public mutating func applyShadowConfiguration(_ shadow: RemoteConfiguration.Shadow?) {
+        mutating func applyShadowConfiguration(_ shadow: RemoteConfiguration.Shadow?) {
             shadow?.color?.type.map { shadowType in
                 switch shadowType {
                 case .fill:
-                    shadow?.color?.value.map { shadowColors in
-                        self.color = shadowColors[0]
+                    shadow?.color?.value.map {
+                        self.color = $0[0]
                     }
                 case .gradient:
 
@@ -36,16 +36,16 @@ extension Theme {
                 }
             }
 
-            shadow?.offset.map { offset in
-                self.offset = CGSize(width: offset, height: offset)
+            shadow?.offset.map {
+                offset = CGSize(width: $0, height: $0)
             }
 
-            shadow?.opacity.map { opacity in
-                self.opacity = Float(opacity)
+            shadow?.opacity.map {
+                opacity = Float($0)
             }
 
-            shadow?.radius.map { radius in
-                self.radius = radius
+            shadow?.radius.map {
+                radius = $0
             }
         }
     }
