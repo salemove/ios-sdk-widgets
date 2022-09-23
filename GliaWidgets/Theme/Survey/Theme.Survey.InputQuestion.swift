@@ -73,7 +73,7 @@ public extension Theme.SurveyStyle {
         }
 
         /// Apply input question from remote configuration
-        public mutating func applyQuestionConfiguration(_ question: RemoteConfiguration.SurveyInputQuestion?) {
+        mutating func applyQuestionConfiguration(_ question: RemoteConfiguration.SurveyInputQuestion?) {
             title.applyTextConfiguration(question?.title)
             text.applyTextConfiguration(question?.text)
             background.applyLayerConfiguration(question?.background)
