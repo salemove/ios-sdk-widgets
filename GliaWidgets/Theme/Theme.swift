@@ -65,7 +65,7 @@ public class Theme {
     }
 
     /// Apply remote configuration
-    public func applyRemoteConfiguration(_ config: RemoteConfiguration) {
+    func applyRemoteConfiguration(_ config: RemoteConfiguration) {
         call.applyCallConfiguration(config.callScreen)
         survey.applySurveyConfiguration(config.surveyScreen)
         alert.applyAlertConfiguration(config.alertScreen)

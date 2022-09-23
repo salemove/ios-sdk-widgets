@@ -41,7 +41,7 @@ extension Theme.SurveyStyle {
         }
 
         /// Apply option button from remote configuration
-        public mutating func applyOptionButtonConfiguration(_ optionButton: RemoteConfiguration.OptionButton?) {
+        mutating func applyOptionButtonConfiguration(_ optionButton: RemoteConfiguration.OptionButton?) {
             applyFontConfiguration(optionButton?.font)
             normalText.applyTextConfiguration(optionButton?.normalText)
             normalLayer.applyLayerConfiguration(optionButton?.normalLayer)
@@ -53,8 +53,8 @@ extension Theme.SurveyStyle {
 
         /// Apply option button title font from remote configuration
         private mutating func applyFontConfiguration(_ font: RemoteConfiguration.Font?) {
-            if let font = UIFont.convertToFont(font: font) {
-                self.font = font
+            UIFont.convertToFont(font: font).map {
+                self.font = $0
             }
         }
     }

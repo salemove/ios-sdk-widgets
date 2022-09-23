@@ -24,7 +24,7 @@ extension Theme {
         }
 
         /// Apply text from remote configuration
-        public mutating func applyTextConfiguration(_ text: RemoteConfiguration.Text?) {
+        mutating func applyTextConfiguration(_ text: RemoteConfiguration.Text?) {
             text?.alignment.map { alignment in
                 switch alignment {
                 case .center:
@@ -42,15 +42,15 @@ extension Theme {
 
             }
 
-            if let font = UIFont.convertToFont(font: text?.font) {
-                self.font = font
+            UIFont.convertToFont(font: text?.font).map {
+                font = $0
             }
 
             text?.foreground?.type.map { foregroundType in
                 switch foregroundType {
                 case .fill:
-                    text?.foreground?.value.map { colors in
-                        self.color = colors[0]
+                    text?.foreground?.value.map {
+                        self.color = $0[0]
                     }
                 case .gradient:
 
