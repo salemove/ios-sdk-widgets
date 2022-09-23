@@ -82,19 +82,8 @@ public struct CallButtonStyle {
 
         }
 
-        button?.active?.title?.font.map { titleFont in
-            if let fontSize = titleFont.size, let fontStyle = titleFont.style {
-                switch fontStyle {
-                case .bold:
-                    active.titleFont = UIFont.boldSystemFont(ofSize: fontSize)
-                case .italic:
-                    active.titleFont = UIFont.italicSystemFont(ofSize: fontSize)
-                case .regular:
-                    active.titleFont = UIFont.systemFont(ofSize: fontSize)
-                case .thin:
-                    active.titleFont = UIFont.systemFont(ofSize: fontSize, weight: .thin)
-                }
-            }
+        if let font = UIFont.convertToFont(font: button?.active?.title?.font) {
+            active.titleFont = font
         }
 
         button?.active?.title?.foreground?.type.map { foregroundType in
@@ -153,19 +142,8 @@ public struct CallButtonStyle {
 
         }
 
-        button?.inactive?.title?.font.map { titleFont in
-            if let fontSize = titleFont.size, let fontStyle = titleFont.style {
-                switch fontStyle {
-                case .bold:
-                    inactive.titleFont = UIFont.boldSystemFont(ofSize: fontSize)
-                case .italic:
-                    inactive.titleFont = UIFont.italicSystemFont(ofSize: fontSize)
-                case .regular:
-                    inactive.titleFont = UIFont.systemFont(ofSize: fontSize)
-                case .thin:
-                    inactive.titleFont = UIFont.systemFont(ofSize: fontSize, weight: .thin)
-                }
-            }
+        if let font = UIFont.convertToFont(font: button?.inactive?.title?.font) {
+            inactive.titleFont = font
         }
 
         button?.inactive?.title?.foreground?.type.map { titleForegroundType in

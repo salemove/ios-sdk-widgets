@@ -26,4 +26,29 @@ public struct BadgeStyle {
         self.fontColor = fontColor
         self.backgroundColor = backgroundColor
     }
+
+    /// Apply badge remote configuration
+    mutating func applyBadgeConfiguration(_ badge: RemoteConfiguration.BadgeStyle?) {
+        UIFont.convertToFont(font: badge?.font).map {
+            font = $0
+        }
+
+        badge?.fontColor?.value.map {
+            fontColor = UIColor(hex: $0[0])
+        }
+
+        badge?.backgroundColor?.type.map { backgroundType in
+            switch backgroundType {
+            case .fill:
+                badge?.backgroundColor?.value.map {
+                    backgroundColor = UIColor(hex: $0[0])
+                }
+            case .gradient:
+
+            /// The logic for gradient has not been implemented
+
+                break
+            }
+        }
+    }
 }
