@@ -356,6 +356,7 @@ extension ChatViewController {
             chatViewModel: chatViewModel,
             viewFactory: .init(
                 with: .mock(),
+                messageRenderer: .mock,
                 environment: viewFactoryEnv
             )
         )
