@@ -47,6 +47,7 @@ public class Glia {
     var rootCoordinator: RootCoordinator?
     var interactor: Interactor?
     private var environment: Environment
+    var messageRenderer: MessageRenderer?
 
     init(environment: Environment) {
         self.environment = environment
@@ -114,6 +115,7 @@ public class Glia {
 
         let viewFactory = ViewFactory(
             with: theme,
+            messageRenderer: messageRenderer,
             environment: .init(
                 data: environment.data,
                 uuid: environment.uuid,
@@ -165,6 +167,8 @@ public class Glia {
             visitorContext: visitorContext
         )
 
+        setChatMessageRenderer(messageRenderer: .webRenderer)
+
         try startEngagement(
             engagementKind: engagementKind,
             theme: theme,
@@ -178,6 +182,17 @@ public class Glia {
             throw GliaError.engagementNotExist
         }
         rootCoordinator?.maximize()
+    }
+
+    /// This custom message renderer used for rendering AI custom cards.
+    /// Glia Widgets contains implementation for HTML based custom cards. See MessegeRenderer.webRenderer
+    ///
+    /// - Parameter messageRenderer: Custom message renderer.
+    ///
+    public func setChatMessageRenderer(
+        messageRenderer: MessageRenderer
+    ) {
+        self.messageRenderer = messageRenderer
     }
 
     private func startRootCoordinator(

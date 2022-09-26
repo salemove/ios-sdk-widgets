@@ -5,7 +5,10 @@ class OutgoingMessage {
     let content: String
     let files: [LocalFile]
 
-    init(content: String, files: [LocalFile]) {
+    init(
+        content: String,
+        files: [LocalFile] = []
+    ) {
         self.content = content
         self.files = files
     }
