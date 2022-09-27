@@ -16,12 +16,13 @@ class ChatViewModelTests: XCTestCase {
         fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
 
         viewModel = .init(
-            interactor: try .mock(),
+            interactor: .mock(),
             alertConfiguration: .mock(),
             screenShareHandler: ScreenShareHandler(),
             call: .init(with: nil),
             unreadMessages: .init(with: 0),
             showsCallBubble: true,
+            isCustomCardSupported: false,
             isWindowVisible: .init(with: true),
             startAction: .none,
             environment: .init(
@@ -91,7 +92,7 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
         viewModelEnv.fetchSiteConfigurations = { _ in }
 
-        let interactor: Interactor = try .mock()
+        let interactor: Interactor = .mock()
         let viewModel: ChatViewModel = .mock(interactor: interactor, environment: viewModelEnv)
         let queueSectionIndex: Int = viewModel.queueOperatorSection.index
         let mockOperator: CoreSdkClient.Operator = .mock()

@@ -124,4 +124,14 @@ class GliaTests: XCTestCase {
         XCTAssertEqual(receivedFeatures, expectedFeatures)
         XCTAssertTrue(try XCTUnwrap(receivedSceneProvider as? MockedSceneProvider) === expectedSceneProvider)
     }
+
+    func test__messageRenderer() throws {
+        let sdk = Glia(environment: .failing)
+        XCTAssertNil(sdk.messageRenderer)
+
+        let messageRendererMock = MessageRenderer.mock
+        sdk.setChatMessageRenderer(messageRenderer: messageRendererMock)
+
+        XCTAssertNotNil(sdk.messageRenderer)
+    }
 }
