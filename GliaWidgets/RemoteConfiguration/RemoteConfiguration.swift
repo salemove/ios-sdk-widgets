@@ -4,6 +4,7 @@ public struct RemoteConfiguration: Codable {
     public let callScreen: Call?
     public let chatScreen: Chat?
     public let surveyScreen: Survey?
+    public let alertScreen: Alert?
     public let bubble: Bubble?
 }
 
@@ -31,6 +32,22 @@ public extension RemoteConfiguration {
             case callOperator = "operator"
             case topText
         }
+    }
+
+    struct Alert: Codable {
+        let title: Text?
+        let titleImageColor: Color?
+        let message: Text?
+        let backgroundColor: Color?
+        let closeButtonColor: Color?
+        let positiveButton: ActionButton?
+        let negativeButton: ActionButton?
+        let buttonAxis: Axis?
+    }
+
+    enum Axis: String, Codable {
+        case horizontal
+        case vertical
     }
 
     struct Bubble: Codable {
@@ -75,6 +92,7 @@ public extension RemoteConfiguration {
     struct Button: Codable {
         public let background: Color?
         public let text: Text?
+        public let shadow: Shadow?
     }
 
     struct Text: Codable {
@@ -126,12 +144,12 @@ public extension RemoteConfiguration {
 
     struct Survey: Codable {
         let booleanQuestion: SurveyBooleanQuestion?
-        let cancelButton: SurveyButton?
+        let cancelButton: ActionButton?
         let inputQuestion: SurveyInputQuestion?
         let layer: Layer?
         let scaleQuestion: SurveyScaleQuestion?
         let singleQuestion: SurveySingleQuestion?
-        let submitButton: SurveyButton?
+        let submitButton: ActionButton?
         let title: Text?
     }
 
@@ -150,7 +168,7 @@ public extension RemoteConfiguration {
         let selectedText: Text?
     }
 
-    struct SurveyButton: Codable {
+    struct ActionButton: Codable {
         let background: Layer?
         let shadow: Shadow?
         let title: Text?

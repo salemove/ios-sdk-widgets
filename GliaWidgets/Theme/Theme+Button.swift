@@ -62,7 +62,7 @@ extension Theme {
         }
 
         /// Apply default question button from remote configuration
-        mutating func applyQuestionConfiguration(_ question: RemoteConfiguration.SurveyButton?) {
+        public mutating func applyQuestionConfiguration(_ question: RemoteConfiguration.ActionButton?) {
             applyBackgroundConfiguration(question?.background)
             title.applyTextConfiguration(question?.title)
             shadow.applyShadowConfiguration(question?.shadow)
