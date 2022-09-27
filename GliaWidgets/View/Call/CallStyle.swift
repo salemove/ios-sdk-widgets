@@ -161,7 +161,7 @@ extension CallStyle {
     }
 
     /// Apply call configuration from remote configuration
-    public func applyCallConfiguration(_ call: RemoteConfiguration.Call?) {
+    func applyCallConfiguration(_ call: RemoteConfiguration.Call?) {
         applyBarConfiguration(call?.buttonBar)
         applyBackgroundConfiguration(call?.background)
         applyOperatorConfiguration(call?.callOperator)
@@ -187,12 +187,12 @@ extension CallStyle {
 
         }
 
-        if let font = UIFont.convertToFont(font: bottomText?.font) {
-            bottomTextFont = font
+        UIFont.convertToFont(font: bottomText?.font).map {
+            bottomTextFont = $0
         }
 
-        bottomText?.foreground?.value.map { colors in
-            self.bottomTextColor = UIColor.init(hex: colors[0])
+        bottomText?.foreground?.value.map {
+            bottomTextColor = UIColor(hex: $0[0])
         }
     }
 
@@ -211,12 +211,12 @@ extension CallStyle {
 
         }
 
-        if let font = UIFont.convertToFont(font: topText?.font) {
-            topTextFont = font
+        UIFont.convertToFont(font: topText?.font).map {
+            topTextFont = $0
         }
 
-        topText?.foreground?.value.map { colors in
-            self.topTextColor = UIColor.init(hex: colors[0])
+        topText?.foreground?.value.map {
+            topTextColor = UIColor(hex: $0[0])
         }
     }
 
@@ -235,12 +235,12 @@ extension CallStyle {
 
         }
 
-        if let font = UIFont.convertToFont(font: duration?.font) {
-            durationFont = font
+        UIFont.convertToFont(font: duration?.font).map {
+            durationFont = $0
         }
 
-        duration?.foreground?.value.map { colors in
-            self.durationColor = UIColor.init(hex: colors[0])
+        duration?.foreground?.value.map {
+            durationColor = UIColor(hex: $0[0])
         }
     }
 
@@ -249,8 +249,8 @@ extension CallStyle {
         endButton?.background?.type.map { backgroundType in
             switch backgroundType {
             case .fill:
-                endButton?.background?.value.map { colors in
-                    header.endButton.backgroundColor = UIColor.init(hex: colors[0])
+                endButton?.background?.value.map {
+                    header.endButton.backgroundColor = UIColor(hex: $0[0])
                 }
             case .gradient:
 
@@ -272,12 +272,12 @@ extension CallStyle {
 
         }
 
-        if let font = UIFont.convertToFont(font: endButton?.text?.font) {
-            header.endButton.titleFont = font
+        UIFont.convertToFont(font: endButton?.text?.font).map {
+            header.endButton.titleFont = $0
         }
 
-        endButton?.text?.foreground?.value.map { colors in
-            header.endButton.titleColor = UIColor.init(hex: colors[0])
+        endButton?.text?.foreground?.value.map {
+            header.endButton.titleColor = UIColor(hex: $0[0])
         }
     }
 
@@ -301,8 +301,8 @@ extension CallStyle {
 
         }
 
-        header?.background?.color?.value.map { foreground in
-            self.header.titleColor = UIColor.init(hex: foreground[0])
+        header?.background?.color?.value.map {
+            self.header.titleColor = UIColor(hex: $0[0])
         }
 
         header?.text?.alignment.map { _ in
@@ -317,23 +317,23 @@ extension CallStyle {
 
         }
 
-        if let font = UIFont.convertToFont(font: header?.text?.font) {
-            self.header.titleFont = font
+        UIFont.convertToFont(font: header?.text?.font).map {
+            self.header.titleFont = $0
         }
 
-        header?.text?.foreground?.value.map { titleForeground in
-            self.header.titleColor = UIColor.init(hex: titleForeground[0])
+        header?.text?.foreground?.value.map {
+            self.header.titleColor = UIColor(hex: $0[0])
         }
     }
 
     /// Apply operator from remote configuration
     private func applyOperatorConfiguration(_ callOperator: RemoteConfiguration.Text?) {
-        callOperator?.foreground?.value.map { colors in
-            self.operatorNameColor = UIColor.init(hex: colors[0])
+        callOperator?.foreground?.value.map {
+            self.operatorNameColor = UIColor(hex: $0[0])
         }
 
-        if let font = UIFont.convertToFont(font: callOperator?.font) {
-            operatorNameFont = font
+        UIFont.convertToFont(font: callOperator?.font).map {
+            operatorNameFont = $0
         }
     }
 
@@ -342,8 +342,8 @@ extension CallStyle {
         background?.color?.type.map { backgroundType in
             switch backgroundType {
             case .fill:
-                background?.color?.value.map { colors in
-                    self.backgroundColor = UIColor.init(hex: colors[0])
+                background?.color?.value.map {
+                    backgroundColor = UIColor(hex: $0[0])
                 }
             case .gradient:
 

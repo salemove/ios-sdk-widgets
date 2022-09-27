@@ -83,7 +83,7 @@ extension Theme.SurveyStyle {
     }
 
     /// Apply survey remote configuration
-    public mutating func applySurveyConfiguration(_ survey: RemoteConfiguration.Survey?) {
+    mutating func applySurveyConfiguration(_ survey: RemoteConfiguration.Survey?) {
         layer.applyLayerConfiguration(survey?.layer)
         title.applyTextConfiguration(survey?.title)
         submitButton.applyQuestionConfiguration(survey?.submitButton)
