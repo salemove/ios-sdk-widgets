@@ -19,7 +19,7 @@ public struct CallButtonBarStyle {
     public var badge: BadgeStyle
 
     /// Apply button bar from remote configuration
-    public mutating func applyBarConfiguration(_ bar: RemoteConfiguration.ButtonBar?) {
+    mutating func applyBarConfiguration(_ bar: RemoteConfiguration.ButtonBar?) {
         minimizeButton.applyBarButtonConfig(button: bar?.minimizeButton)
         chatButton.applyBarButtonConfig(button: bar?.chatButton)
         videoButton.applyBarButtonConfig(button: bar?.videoButton)

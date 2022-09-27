@@ -36,7 +36,7 @@ public struct CallButtonStyle {
     public var accessibility: Accessibility
 
     /// Apply bar button from remote configuration
-    public mutating func applyBarButtonConfig(button: RemoteConfiguration.BarButtonStates?) {
+    mutating func applyBarButtonConfig(button: RemoteConfiguration.BarButtonStates?) {
         applyActiveBarButtonConfiguration(button: button)
         applyActiveBarButtonConfiguration(button: button)
     }
@@ -45,8 +45,8 @@ public struct CallButtonStyle {
         button?.active?.background?.type.map { backgroundType in
             switch backgroundType {
             case .fill:
-                button?.active?.background?.value.map { colors in
-                    active.backgroundColor = UIColor.init(hex: colors[0])
+                button?.active?.background?.value.map {
+                    active.backgroundColor = UIColor(hex: $0[0])
                 }
             case .gradient:
 
@@ -59,8 +59,8 @@ public struct CallButtonStyle {
         button?.active?.imageColor?.type.map { imageType in
             switch imageType {
             case .fill:
-                button?.active?.imageColor?.value.map { colors in
-                    active.imageColor = UIColor.init(hex: colors[0])
+                button?.active?.imageColor?.value.map {
+                    active.imageColor = UIColor(hex: $0[0])
                 }
             case .gradient:
 
@@ -82,15 +82,15 @@ public struct CallButtonStyle {
 
         }
 
-        if let font = UIFont.convertToFont(font: button?.active?.title?.font) {
-            active.titleFont = font
+        UIFont.convertToFont(font: button?.active?.title?.font).map {
+            active.titleFont = $0
         }
 
         button?.active?.title?.foreground?.type.map { foregroundType in
             switch foregroundType {
             case .fill:
-                button?.active?.imageColor?.value.map { colors in
-                    active.imageColor = UIColor.init(hex: colors[0])
+                button?.active?.imageColor?.value.map {
+                    active.imageColor = UIColor(hex: $0[0])
                 }
             case .gradient:
 
@@ -105,8 +105,8 @@ public struct CallButtonStyle {
         button?.inactive?.background?.type.map { backgroundType in
             switch backgroundType {
             case .fill:
-                button?.inactive?.background?.value.map { colors in
-                    inactive.backgroundColor = UIColor.init(hex: colors[0])
+                button?.inactive?.background?.value.map {
+                    inactive.backgroundColor = UIColor(hex: $0[0])
                 }
             case .gradient:
 
@@ -119,8 +119,8 @@ public struct CallButtonStyle {
         button?.inactive?.imageColor?.type.map { imageType in
             switch imageType {
             case .fill:
-                button?.inactive?.imageColor?.value.map { colors in
-                    inactive.imageColor = UIColor.init(hex: colors[0])
+                button?.inactive?.imageColor?.value.map {
+                    inactive.imageColor = UIColor(hex: $0[0])
                 }
             case .gradient:
 
@@ -142,15 +142,15 @@ public struct CallButtonStyle {
 
         }
 
-        if let font = UIFont.convertToFont(font: button?.inactive?.title?.font) {
-            inactive.titleFont = font
+        UIFont.convertToFont(font: button?.inactive?.title?.font).map {
+            inactive.titleFont = $0
         }
 
-        button?.inactive?.title?.foreground?.type.map { titleForegroundType in
-            switch titleForegroundType {
+        button?.inactive?.title?.foreground?.type.map { foregroundType in
+            switch foregroundType {
             case .fill:
-                button?.inactive?.imageColor?.value.map { colors in
-                    inactive.imageColor = UIColor.init(hex: colors[0])
+                button?.inactive?.imageColor?.value.map {
+                    inactive.imageColor = UIColor(hex: $0[0])
                 }
             case .gradient:
 
