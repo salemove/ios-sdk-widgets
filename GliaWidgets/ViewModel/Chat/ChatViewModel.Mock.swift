@@ -7,6 +7,7 @@ extension ChatViewModel {
         call: ObservableValue<Call?> = .init(with: .init(.audio, environment: .mock)),
         unreadMessages: ObservableValue<Int> = .init(with: .zero),
         showsCallBubble: Bool = false,
+        isCustomCardSupported: Bool = true,
         isWindowVisible: ObservableValue<Bool> = .init(with: true),
         startAction: StartAction = .startEngagement,
         environment: Environment = .mock
@@ -18,6 +19,7 @@ extension ChatViewModel {
             call: call,
             unreadMessages: unreadMessages,
             showsCallBubble: showsCallBubble,
+            isCustomCardSupported: isCustomCardSupported,
             isWindowVisible: isWindowVisible,
             startAction: startAction,
             environment: environment

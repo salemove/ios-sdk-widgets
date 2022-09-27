@@ -1,4 +1,5 @@
 import Foundation
+import SalemoveSDK
 
 enum ChatMessageSender: Int, Codable {
     case visitor = 0
@@ -31,9 +32,14 @@ class ChatMessage: Codable {
     let content: String
     var attachment: ChatAttachment?
     var downloads = [FileDownload]()
+    var metadata: MessageMetadata?
 
     var isChoiceCard: Bool {
         return attachment?.type == .singleChoice
+    }
+
+    var isCustomCard: Bool {
+        metadata != nil
     }
 
     private enum CodingKeys: String, CodingKey {
@@ -43,6 +49,7 @@ class ChatMessage: Codable {
         case sender
         case content
         case attachment
+        case metadata
     }
 
     init(with message: CoreSdkClient.Message,
@@ -54,6 +61,35 @@ class ChatMessage: Codable {
         sender = ChatMessageSender(with: message.sender)
         content = message.content
         attachment = ChatAttachment(with: message.attachment)
+        metadata = message.metadata
+    }
+
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = try container.decode(String.self, forKey: .id)
+        self.queueID = try container.decodeIfPresent(String.self, forKey: .queueID)
+        self.operator = try container.decodeIfPresent(ChatOperator.self, forKey: .operator)
+        self.sender = try container.decode(ChatMessageSender.self, forKey: .sender)
+        self.content = try container.decode(String.self, forKey: .content)
+        self.attachment = try container.decodeIfPresent(ChatAttachment.self, forKey: .attachment)
+        if (try? container.decodeNil(forKey: .metadata)) == false {
+            let metadataContainer = try decoder.container(keyedBy: MessageMetadata.CodingKeys.self)
+            self.metadata = .init(container: metadataContainer)
+        } else {
+            self.metadata = nil
+        }
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
+        try container.encode(queueID, forKey: .queueID)
+        try container.encode(`operator`, forKey: .operator)
+        try container.encode(sender, forKey: .sender)
+        try container.encode(content, forKey: .content)
+        try container.encode(attachment, forKey: .attachment)
+        let metadata = try? metadata?.decode([String: AnyCodable].self)
+        try container.encode(metadata, forKey: .metadata)
     }
 
     #if DEBUG
