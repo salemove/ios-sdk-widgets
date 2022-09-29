@@ -10,14 +10,6 @@ public struct RemoteConfiguration: Codable {
 
 public extension RemoteConfiguration {
 
-    struct Chat: Codable {
-        public let background: Layer?
-        public let endButton: Button?
-        public let header: Header?
-        public let operatorMessage: MessageBalloon?
-        public let visitorMessage: MessageBalloon?
-    }
-
     struct Call: Codable {
         let background: Layer?
         let bottomText: Text?
@@ -40,8 +32,8 @@ public extension RemoteConfiguration {
         let message: Text?
         let backgroundColor: Color?
         let closeButtonColor: Color?
-        let positiveButton: ActionButton?
-        let negativeButton: ActionButton?
+        let positiveButton: Button?
+        let negativeButton: Button?
         let buttonAxis: Axis?
     }
 
@@ -51,15 +43,9 @@ public extension RemoteConfiguration {
     }
 
     struct Bubble: Codable {
-        let badge: BadgeStyle?
+        let badge: Button?
         let onHoldOverlay: OnHoldOverlayStyle?
         let userImage: UserImageStyle?
-    }
-
-    struct BadgeStyle: Codable {
-        let backgroundColor: Color?
-        let font: Font?
-        let fontColor: Color?
     }
 
     struct OnHoldOverlayStyle: Codable {
@@ -80,8 +66,8 @@ public extension RemoteConfiguration {
     }
 
     struct Color: Codable {
-        let type: ColorType?
-        let value: [String]?
+        public let type: ColorType
+        public let value: [String]
     }
 
     enum ColorType: String, Codable {
@@ -90,9 +76,16 @@ public extension RemoteConfiguration {
     }
 
     struct Button: Codable {
-        public let background: Color?
+        public let background: Layer?
         public let text: Text?
+        public let tintColor: Color?
         public let shadow: Shadow?
+    }
+
+    struct Shadow: Codable {
+        let color: Color?
+        let offset: Double?
+        let opacity, radius: Double?
     }
 
     struct Text: Codable {
@@ -117,17 +110,6 @@ public extension RemoteConfiguration {
         case bold, italic, regular, thin
     }
 
-    struct Header: Codable {
-        public let background: Layer?
-        public let text: Text?
-    }
-
-    struct MessageBalloon: Codable {
-        public let alignment: Alignment?
-        public let background: Layer?
-        public let text: Text?
-    }
-
     struct ButtonBar: Codable {
         let chatButton, minimizeButton, muteButton, speakerButton: BarButtonStates?
         let videoButton: BarButtonStates?
@@ -145,14 +127,14 @@ public extension RemoteConfiguration {
     }
 
     struct Survey: Codable {
-        let booleanQuestion: SurveyBooleanQuestion?
-        let cancelButton: ActionButton?
-        let inputQuestion: SurveyInputQuestion?
+        let title: Text?
         let layer: Layer?
+        let submitButton: Button?
+        let cancelButton: Button?
+        let booleanQuestion: SurveyBooleanQuestion?
+        let inputQuestion: SurveyInputQuestion?
         let scaleQuestion: SurveyScaleQuestion?
         let singleQuestion: SurveySingleQuestion?
-        let submitButton: ActionButton?
-        let title: Text?
     }
 
     struct SurveyBooleanQuestion: Codable {
@@ -168,18 +150,6 @@ public extension RemoteConfiguration {
         let normalText: Text?
         let selectedLayer: Layer?
         let selectedText: Text?
-    }
-
-    struct ActionButton: Codable {
-        let background: Layer?
-        let shadow: Shadow?
-        let title: Text?
-    }
-
-    struct Shadow: Codable {
-        let color: Color?
-        let offset: Double?
-        let opacity, radius: Double?
     }
 
     struct SurveyInputQuestion: Codable {

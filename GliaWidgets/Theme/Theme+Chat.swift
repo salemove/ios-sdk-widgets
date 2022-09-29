@@ -235,6 +235,7 @@ extension Theme {
         let choiceCard = ChoiceCardStyle(
             mainText: choiceCardText,
             frameColor: color.primary,
+            backgroundColor: color.baseLight,
             imageFile: choiceCardImageFile,
             fileDownload: fileDownload,
             operatorImage: operatorImage,

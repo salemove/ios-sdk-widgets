@@ -17,19 +17,18 @@ public struct OnHoldOverlayStyle {
     }
 
     /// Apply onHoldOverlay style remote configuration
-    mutating func applyOnHoldOverlayConfiguration(_ onHoldOverlay: RemoteConfiguration.OnHoldOverlayStyle?) {
-        onHoldOverlay?.color?.type.map { colorType in
-            switch colorType {
-            case .fill:
-                onHoldOverlay?.color?.value.map {
-                    imageColor = UIColor(hex: $0[0])
-                }
-            case .gradient:
+    mutating func apply(configuration: RemoteConfiguration.OnHoldOverlayStyle?) {
+        switch configuration?.color?.type {
+        case .fill:
+            configuration?.color?.value
+                .map { UIColor(hex: $0) }
+                .first
+                .map { imageColor = $0 }
+        case .gradient, .none:
 
-            /// The logic for gradient has not been implemented
+        /// The logic for gradient has not been implemented
 
-                break
-            }
+            break
         }
     }
 }

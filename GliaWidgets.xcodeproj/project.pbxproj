@@ -223,6 +223,7 @@
 		75FF151727F4E13900FE7BE2 /* Theme.Survey.BooleanQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FF151627F4E13900FE7BE2 /* Theme.Survey.BooleanQuestion.swift */; };
 		75FF151B27F4F52D00FE7BE2 /* Theme.Survey.SingleQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FF151A27F4F52D00FE7BE2 /* Theme.Survey.SingleQuestion.swift */; };
 		75FF151D27F4F8E000FE7BE2 /* Theme.Survey.InputQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FF151C27F4F8E000FE7BE2 /* Theme.Survey.InputQuestion.swift */; };
+		8454122B28E2FE8400F59DE2 /* RemoteConfiguration+Chat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8454122A28E2FE8400F59DE2 /* RemoteConfiguration+Chat.swift */; };
 		8458769F2823FD18007AC3DF /* SurveyViewControllerVoiceOverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8458769E2823FD18007AC3DF /* SurveyViewControllerVoiceOverTests.swift */; };
 		845876A22823FF34007AC3DF /* Survey.ViewController.Props.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845876A12823FF34007AC3DF /* Survey.ViewController.Props.Mock.swift */; };
 		845876A5282A9015007AC3DF /* ScaleQuestionView.Props.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845876A4282A9015007AC3DF /* ScaleQuestionView.Props.Accessibility.swift */; };
@@ -265,6 +266,7 @@
 		84EFB06228AB90D60005E270 /* MessageRenderer.Web.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EFB06128AB90D60005E270 /* MessageRenderer.Web.swift */; };
 		84EFB06528AB97FA0005E270 /* MessageMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EFB06428AB97FA0005E270 /* MessageMetadata.swift */; };
 		84EFB06728ABA95C0005E270 /* MessageRenderer.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EFB06628ABA95C0005E270 /* MessageRenderer.Mock.swift */; };
+		84D2293E28D36B2A00F64FE7 /* UIColor+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D2293D28D36B2A00F64FE7 /* UIColor+Hex.swift */; };
 		9A0B7D1727DA6B74006D8637 /* Interactor.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A0B7D1627DA6B74006D8637 /* Interactor.Mock.swift */; };
 		9A186A3527F5CF3C0055886D /* FileUploadStyle.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A186A3427F5CF3C0055886D /* FileUploadStyle.Accessibility.swift */; };
 		9A186A3727F5D38D0055886D /* ChatMessageEntryStyle.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A186A3627F5D38D0055886D /* ChatMessageEntryStyle.Accessibility.swift */; };
@@ -683,6 +685,7 @@
 		75FF151627F4E13900FE7BE2 /* Theme.Survey.BooleanQuestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.Survey.BooleanQuestion.swift; sourceTree = "<group>"; };
 		75FF151A27F4F52D00FE7BE2 /* Theme.Survey.SingleQuestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.Survey.SingleQuestion.swift; sourceTree = "<group>"; };
 		75FF151C27F4F8E000FE7BE2 /* Theme.Survey.InputQuestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.Survey.InputQuestion.swift; sourceTree = "<group>"; };
+		8454122A28E2FE8400F59DE2 /* RemoteConfiguration+Chat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RemoteConfiguration+Chat.swift"; sourceTree = "<group>"; };
 		8458769E2823FD18007AC3DF /* SurveyViewControllerVoiceOverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurveyViewControllerVoiceOverTests.swift; sourceTree = "<group>"; };
 		845876A12823FF34007AC3DF /* Survey.ViewController.Props.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Survey.ViewController.Props.Mock.swift; sourceTree = "<group>"; };
 		845876A4282A9015007AC3DF /* ScaleQuestionView.Props.Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleQuestionView.Props.Accessibility.swift; sourceTree = "<group>"; };
@@ -725,6 +728,7 @@
 		84EFB06128AB90D60005E270 /* MessageRenderer.Web.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageRenderer.Web.swift; sourceTree = "<group>"; };
 		84EFB06428AB97FA0005E270 /* MessageMetadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageMetadata.swift; sourceTree = "<group>"; };
 		84EFB06628ABA95C0005E270 /* MessageRenderer.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageRenderer.Mock.swift; sourceTree = "<group>"; };
+		84D2293D28D36B2A00F64FE7 /* UIColor+Hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Hex.swift"; sourceTree = "<group>"; };
 		9A0B7D1627DA6B74006D8637 /* Interactor.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interactor.Mock.swift; sourceTree = "<group>"; };
 		9A186A3427F5CF3C0055886D /* FileUploadStyle.Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUploadStyle.Accessibility.swift; sourceTree = "<group>"; };
 		9A186A3627F5D38D0055886D /* ChatMessageEntryStyle.Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageEntryStyle.Accessibility.swift; sourceTree = "<group>"; };
@@ -1725,6 +1729,7 @@
 				1A0EDF6C25E7AC100076D1AD /* UIImage+Extensions.swift */,
 				C4C2A16F2670E848003AC039 /* UIViewController+Extensions.swift */,
 				C0857DEE28D9AD32008D171D /* UIFont+Extensions.swift */,
+				84D2293D28D36B2A00F64FE7 /* UIColor+Hex.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -2011,6 +2016,7 @@
 			isa = PBXGroup;
 			children = (
 				7562B2EA28CBD7E20040C784 /* RemoteConfiguration.swift */,
+				8454122A28E2FE8400F59DE2 /* RemoteConfiguration+Chat.swift */,
 			);
 			path = RemoteConfiguration;
 			sourceTree = "<group>";
@@ -2476,6 +2482,7 @@
 				1A205D7425655CEC003AA3CD /* Sources */,
 				1A205D7525655CEC003AA3CD /* Frameworks */,
 				1A205D7625655CEC003AA3CD /* Resources */,
+				845BD16F28EC80C100978E67 /* ShellScript */,
 				1A205DB8256566BB003AA3CD /* Embed Frameworks */,
 				0B2FDA3EA058719FAF282E28 /* [CP] Embed Pods Frameworks */,
 			);
@@ -2750,6 +2757,23 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		845BD16F28EC80C100978E67 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "find -L ${SRCROOT}/TestingApp \\\n    -type f \\\n    -name \"*.json\" \\\n    | xargs -t -I {} \\\n    cp {} ${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\n";
+		};
 		9A1BD2C2282932F500089691 /* Write SnapshotTests/Changes.diff */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -2855,6 +2879,7 @@
 				9A3E1D9727B6C7E9005634EB /* FoundationBased.Interface.swift in Sources */,
 				1A60B01D2567FCAD00E53F53 /* ButtonProperties.swift in Sources */,
 				1AC7A7482582237500567FF8 /* GliaViewController.swift in Sources */,
+				8454122B28E2FE8400F59DE2 /* RemoteConfiguration+Chat.swift in Sources */,
 				75AF8D0427DBF07D009EEE2C /* Survey.ScaleQuestionView.swift in Sources */,
 				1A4AF5D325AEF543002CD0F4 /* AlertViewController+Confirmation.swift in Sources */,
 				1AFB1E7825F8B26800CA460D /* ChatTextContentStyle.swift in Sources */,
@@ -3030,6 +3055,7 @@
 				9A19926427D3BA3A00161AAE /* GCD.Live.swift in Sources */,
 				75FF151B27F4F52D00FE7BE2 /* Theme.Survey.SingleQuestion.swift in Sources */,
 				1A60AFDD25669A4200E53F53 /* ChatView.swift in Sources */,
+				84D2293E28D36B2A00F64FE7 /* UIColor+Hex.swift in Sources */,
 				754CC61327E27BE2005676E9 /* Survey.SingleChoiceQuestionView.swift in Sources */,
 				1A0C9A6725C16DC400815406 /* Theme+Chat.swift in Sources */,
 				1A0C9AC225C9400000815406 /* CallDurationCounter.swift in Sources */,

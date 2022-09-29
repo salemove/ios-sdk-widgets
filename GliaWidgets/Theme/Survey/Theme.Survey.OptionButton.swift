@@ -41,14 +41,14 @@ extension Theme.SurveyStyle {
         }
 
         /// Apply option button from remote configuration
-        mutating func applyOptionButtonConfiguration(_ optionButton: RemoteConfiguration.OptionButton?) {
-            applyFontConfiguration(optionButton?.font)
-            normalText.applyTextConfiguration(optionButton?.normalText)
-            normalLayer.applyLayerConfiguration(optionButton?.normalLayer)
-            selectedText.applyTextConfiguration(optionButton?.selectedText)
-            selectedLayer.applyLayerConfiguration(optionButton?.selectedLayer)
-            highlightedText.applyTextConfiguration(optionButton?.highlightedText)
-            highlightedLayer.applyLayerConfiguration(optionButton?.highlightedLayer)
+        mutating func apply(configuration: RemoteConfiguration.OptionButton?) {
+            applyFontConfiguration(configuration?.font)
+            normalText.apply(configuration: configuration?.normalText)
+            normalLayer.apply(configuration: configuration?.normalLayer)
+            selectedText.apply(configuration: configuration?.selectedText)
+            selectedLayer.apply(configuration: configuration?.selectedLayer)
+            highlightedText.apply(configuration: configuration?.highlightedText)
+            highlightedLayer.apply(configuration: configuration?.highlightedLayer)
         }
 
         /// Apply option button title font from remote configuration

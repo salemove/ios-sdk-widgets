@@ -86,4 +86,44 @@ public struct ChatMessageEntryStyle {
         self.uploadList = uploadList
         self.accessibility = accessibility
     }
+
+    mutating func apply(configuration: RemoteConfiguration.Input?) {
+        configuration?.background?.color?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .map { backgroundColor = $0 }
+
+        configuration?.text?.foreground?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .map { messageColor = $0 }
+
+        configuration?.text?.font?.size
+            .map { messageFont = Font.regular($0) }
+
+        configuration?.placeholder?.foreground?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .map { placeholderColor = $0 }
+
+        configuration?.placeholder?.font?.size
+            .map { placeholderFont = Font.regular($0) }
+
+        configuration?.separator?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .map { separatorColor = $0 }
+
+        configuration?.mediaButton?.tintColor?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .map { mediaButton.color = $0 }
+
+        configuration?.sendButton?.tintColor?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .map { sendButton.color = $0 }
+
+        uploadList.apply(configuration: configuration?.fileUploadBar)
+    }
 }

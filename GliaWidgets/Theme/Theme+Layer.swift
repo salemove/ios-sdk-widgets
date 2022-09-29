@@ -26,41 +26,35 @@ extension Theme {
         }
 
         /// Apply layer remote configuration
-        mutating func applyLayerConfiguration(_ layer: RemoteConfiguration.Layer?) {
-            layer?.border?.type.map { borderColorType in
-                switch borderColorType {
-                case .fill:
-                    layer?.border?.value.map {
-                        borderColor = $0[0]
-                    }
-                case .gradient:
+        mutating func apply(configuration: RemoteConfiguration.Layer?) {
+            switch configuration?.border?.type {
+            case .fill:
+                configuration?.border?.value
+                    .first
+                    .map { borderColor = $0 }
+            case .gradient, .none:
 
-                /// The logic for gradient has not been implemented
+            /// The logic for gradient has not been implemented
 
-                    break
-                }
+                break
             }
 
-            layer?.borderWidth.map {
+            configuration?.borderWidth.map {
                 borderWidth = $0
             }
 
-            layer?.cornerRadius.map {
+            configuration?.cornerRadius.map {
                 cornerRadius = $0
             }
 
-            layer?.color?.type.map { backgroundType in
-                switch backgroundType {
-                case .fill:
-                    layer?.color?.value.map {
-                        background = $0[0]
-                    }
-                case .gradient:
+            switch configuration?.color?.type {
+            case .fill:
+                background = configuration?.color?.value.first
+            case .gradient, .none:
 
-                /// The logic for gradient has not been implemented
+            /// The logic for gradient has not been implemented
 
-                    break
-                }
+                break
             }
         }
     }

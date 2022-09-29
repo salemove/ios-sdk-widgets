@@ -578,7 +578,7 @@ extension ChatViewModel {
 
 extension ChatViewModel {
     private func presentMediaPicker() {
-        let itemSelected = { (kind: AtttachmentSourceItemKind) -> Void in
+        let itemSelected = { (kind: AttachmentSourceItemKind) -> Void in
             let media = ObservableValue<MediaPickerEvent>(with: .none)
             media.addObserver(self) { [weak self] event, _ in
                 guard let self = self else { return }
@@ -920,7 +920,7 @@ extension ChatViewModel {
         case addUpload(FileUpload)
         case removeUpload(FileUpload)
         case removeAllUploads
-        case presentMediaPicker(itemSelected: (AtttachmentSourceItemKind) -> Void)
+        case presentMediaPicker(itemSelected: (AttachmentSourceItemKind) -> Void)
         case offerMediaUpgrade(
             SingleMediaUpgradeAlertConfiguration,
             accepted: () -> Void,

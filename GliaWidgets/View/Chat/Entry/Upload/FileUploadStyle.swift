@@ -67,6 +67,33 @@ public class FileUploadStyle {
         self.removeButtonColor = removeButtonColor
         self.accessibility = accessibility
     }
+
+    func apply(configuration: RemoteConfiguration.FileUploadBar?) {
+        filePreview.apply(configuration: configuration?.filePreview)
+        uploading.apply(configuration: configuration?.uploading)
+        uploaded.apply(configuration: configuration?.uploaded)
+        error.apply(configuration: configuration?.error)
+
+        configuration?.progress?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .map { progressColor = $0 }
+
+        configuration?.errorProgress?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .map { errorProgressColor = $0 }
+
+        configuration?.progressBackground?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .map { progressBackgroundColor = $0 }
+
+        configuration?.removeButton?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .map { removeButtonColor = $0 }
+    }
 }
 
 /// Style of an upload state.
@@ -106,6 +133,24 @@ public class FileUploadStateStyle {
         self.textColor = textColor
         self.infoFont = infoFont
         self.infoColor = infoColor
+    }
+
+    func apply(configuration: RemoteConfiguration.FileState?) {
+        configuration?.text?.foreground?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .map { textColor = $0 }
+
+        configuration?.text?.font?.size
+            .map { font = Font.regular($0) }
+
+        configuration?.info?.foreground?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .map { infoColor = $0 }
+
+        configuration?.info?.font?.size
+            .map { infoFont = Font.regular($0) }
     }
 }
 
@@ -176,6 +221,24 @@ public class FileUploadErrorStateStyle {
         self.infoSafetyCheckFailed = infoSafetyCheckFailed
         self.infoNetworkError = infoNetworkError
         self.infoGenericError = infoGenericError
+    }
+
+    func apply(configuration: RemoteConfiguration.FileState?) {
+        configuration?.text?.foreground?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .map { textColor = $0 }
+
+        configuration?.text?.font?.size
+            .map { font = Font.regular($0) }
+
+        configuration?.info?.foreground?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .map { infoColor = $0 }
+
+        configuration?.info?.font?.size
+            .map { infoFont = Font.regular($0) }
     }
 }
 
