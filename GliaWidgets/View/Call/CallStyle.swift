@@ -302,7 +302,7 @@ extension CallStyle {
         }
 
         header?.background?.color?.value.map {
-            self.header.titleColor = UIColor(hex: $0[0])
+            self.header.backgroundColor = UIColor(hex: $0[0])
         }
 
         header?.text?.alignment.map { _ in

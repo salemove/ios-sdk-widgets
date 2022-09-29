@@ -158,5 +158,19 @@ public struct AlertStyle {
                 actionAxis = .vertical
             }
         }
+
+        alert?.backgroundColor?.type.map { backgroundType in
+            switch backgroundType {
+            case .fill:
+                alert?.backgroundColor?.value.map {
+                    backgroundColor = UIColor(hex: $0[0])
+                }
+            case .gradient:
+
+            /// The logic for gradient has not been implemented
+
+                break
+            }
+        }
     }
 }
