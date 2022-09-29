@@ -21,30 +21,28 @@ extension Theme {
         )
 
         /// Apply shadow configuration
-        mutating func applyShadowConfiguration(_ shadow: RemoteConfiguration.Shadow?) {
-            shadow?.color?.type.map { shadowType in
-                switch shadowType {
-                case .fill:
-                    shadow?.color?.value.map {
-                        self.color = $0[0]
-                    }
-                case .gradient:
+        mutating func apply(configuration: RemoteConfiguration.Shadow?) {
+            switch configuration?.color?.type {
+            case .fill:
+                configuration?.color?.value
+                    .first
+                    .map { color = $0 }
+            case .gradient, .none:
 
-                /// The logic for gradient has not been implemented yet
+            /// The logic for gradient has not been implemented yet
 
-                    break
-                }
+                break
             }
 
-            shadow?.offset.map {
+            configuration?.offset.map {
                 offset = CGSize(width: $0, height: $0)
             }
 
-            shadow?.opacity.map {
+            configuration?.opacity.map {
                 opacity = Float($0)
             }
 
-            shadow?.radius.map {
+            configuration?.radius.map {
                 radius = $0
             }
         }

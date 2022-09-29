@@ -44,4 +44,13 @@ public struct ConnectStyle {
         self.transferring = transferring
         self.onHold = onHold
     }
+
+    mutating func apply(configuration: RemoteConfiguration.EngagementStates?) {
+        connectOperator.apply(configuration: configuration?.operator)
+        queue.apply(configuration: configuration?.queue)
+        connecting.apply(configuration: configuration?.connecting)
+        connected.apply(configuration: configuration?.connected)
+        transferring.apply(configuration: configuration?.transferring)
+        onHold.apply(configuration: configuration?.onHold)
+    }
 }

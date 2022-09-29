@@ -40,188 +40,68 @@ public struct CallButtonStyle {
 
     /// Apply bar button from remote configuration
     mutating func applyBarButtonConfig(button: RemoteConfiguration.BarButtonStates?) {
-        applyActiveBarButtonConfiguration(button: button)
-        applyActiveBarButtonConfiguration(button: button)
-        applySelectedBarButtonConfiguration(button: button)
+        active.apply(configuration: button?.active)
+        inactive.apply(configuration: button?.inactive)
+        selected.apply(configuration: button?.selected)
     }
+}
 
-    private mutating func applyActiveBarButtonConfiguration(button: RemoteConfiguration.BarButtonStates?) {
-        button?.active?.background?.type.map { backgroundType in
-            switch backgroundType {
-            case .fill:
-                button?.active?.background?.value.map {
-                    active.backgroundColor = UIColor(hex: $0[0])
-                }
-            case .gradient:
+extension CallButtonStyle.StateStyle {
+
+    mutating func apply(configuration: RemoteConfiguration.BarButtonStyle?) {
+        switch configuration?.background?.type {
+        case .fill:
+            configuration?.background?.value
+                .map { UIColor(hex: $0) }
+                .first
+                .map { backgroundColor = $0 }
+        case .gradient, .none:
 
             /// The logic for gradient has not been implemented yet
 
-                break
-            }
+            break
         }
 
-        button?.active?.imageColor?.type.map { imageType in
-            switch imageType {
-            case .fill:
-                button?.active?.imageColor?.value.map {
-                    active.imageColor = UIColor(hex: $0[0])
-                }
-            case .gradient:
+        switch configuration?.imageColor?.type {
+        case .fill:
+            configuration?.imageColor?.value
+                .map { UIColor(hex: $0) }
+                .first
+                .map { imageColor = $0 }
+        case .gradient, .none:
 
             /// The logic for gradient has not been implemented yet
 
-                break
-            }
+            break
         }
 
-        button?.active?.title?.alignment.map { _ in
+        configuration?.title?.alignment.map { _ in
 
-        /// The logic for title alignment has not been implemented
-
-        }
-
-        button?.active?.title?.background.map { _ in
-
-        /// The logic for title background has not been implemented
+            /// The logic for title alignment has not been implemented
 
         }
 
-        UIFont.convertToFont(font: button?.active?.title?.font).map {
-            active.titleFont = $0
+        configuration?.title?.background.map { _ in
+
+            /// The logic for title background has not been implemented
+
         }
 
-        button?.active?.title?.foreground?.type.map { foregroundType in
-            switch foregroundType {
-            case .fill:
-                button?.active?.imageColor?.value.map {
-                    active.imageColor = UIColor(hex: $0[0])
-                }
-            case .gradient:
+        UIFont.convertToFont(font: configuration?.title?.font).map {
+            titleFont = $0
+        }
+
+        switch configuration?.title?.foreground?.type {
+        case .fill:
+            configuration?.title?.foreground?.value
+                .map { UIColor(hex: $0) }
+                .first
+                .map { titleColor = $0 }
+        case .gradient, .none:
 
             /// The logic for gradient has not been implemented yet
 
-                break
-            }
-        }
-    }
-
-    private mutating func applyInactiveBarButtonConfiguration(button: RemoteConfiguration.BarButtonStates?) {
-        button?.inactive?.background?.type.map { backgroundType in
-            switch backgroundType {
-            case .fill:
-                button?.inactive?.background?.value.map {
-                    inactive.backgroundColor = UIColor(hex: $0[0])
-                }
-            case .gradient:
-
-            /// The logic for gradient has not been implemented
-
-                break
-            }
-        }
-
-        button?.inactive?.imageColor?.type.map { imageType in
-            switch imageType {
-            case .fill:
-                button?.inactive?.imageColor?.value.map {
-                    inactive.imageColor = UIColor(hex: $0[0])
-                }
-            case .gradient:
-
-            /// The logic for gradient has not been implemented
-
-                break
-            }
-        }
-
-        button?.inactive?.title?.alignment.map { _ in
-
-        /// The logic for title alignment has not been implemented
-
-        }
-
-        button?.inactive?.title?.background.map { _ in
-
-        /// The logic for title background has not been implemented
-
-        }
-
-        UIFont.convertToFont(font: button?.inactive?.title?.font).map {
-            inactive.titleFont = $0
-        }
-
-        button?.inactive?.title?.foreground?.type.map { foregroundType in
-            switch foregroundType {
-            case .fill:
-                button?.inactive?.imageColor?.value.map {
-                    inactive.imageColor = UIColor(hex: $0[0])
-                }
-            case .gradient:
-
-            /// The logic for gradient has not been implemented
-
-                break
-            }
-        }
-    }
-
-    private mutating func applySelectedBarButtonConfiguration(button: RemoteConfiguration.BarButtonStates?) {
-        button?.selected?.background?.type.map { backgroundType in
-            switch backgroundType {
-            case .fill:
-                button?.selected?.background?.value.map {
-                    selected.backgroundColor = UIColor(hex: $0[0])
-                }
-            case .gradient:
-
-            /// The logic for gradient has not been implemented
-
-                break
-            }
-        }
-
-        button?.selected?.imageColor?.type.map { imageType in
-            switch imageType {
-            case .fill:
-                button?.selected?.imageColor?.value.map {
-                    selected.imageColor = UIColor(hex: $0[0])
-                }
-            case .gradient:
-
-            /// The logic for gradient has not been implemented
-
-                break
-            }
-        }
-
-        button?.selected?.title?.alignment.map { _ in
-
-        /// The logic for title alignment has not been implemented
-
-        }
-
-        button?.selected?.title?.background.map { _ in
-
-        /// The logic for title background has not been implemented
-
-        }
-
-        UIFont.convertToFont(font: button?.inactive?.title?.font).map {
-            inactive.titleFont = $0
-        }
-
-        button?.selected?.title?.foreground?.type.map { foregroundType in
-            switch foregroundType {
-            case .fill:
-                button?.selected?.imageColor?.value.map {
-                    selected.imageColor = UIColor(hex: $0[0])
-                }
-            case .gradient:
-
-            /// The logic for gradient has not been implemented
-
-                break
-            }
+            break
         }
     }
 }

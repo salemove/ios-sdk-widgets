@@ -5,6 +5,15 @@ public final class ChoiceCardStyle: OperatorChatMessageStyle {
     /// Color of the choice card's border.
     public var frameColor: UIColor
 
+    /// Width of the choice card's border.
+    public var borderWidth: CGFloat
+
+    /// Corner radius of the choice card.
+    public var cornerRadius: CGFloat
+
+    /// Background color of t the choice card.
+    public var backgroundColor: UIColor
+
     /// Styles of the choice card's answer options.
     public var choiceOption: ChoiceCardOptionStyle
 
@@ -23,6 +32,9 @@ public final class ChoiceCardStyle: OperatorChatMessageStyle {
     public init(
         mainText: ChatTextContentStyle,
         frameColor: UIColor,
+        borderWidth: CGFloat = 1,
+        cornerRadius: CGFloat = 8,
+        backgroundColor: UIColor,
         imageFile: ChatImageFileContentStyle,
         fileDownload: ChatFileDownloadStyle,
         operatorImage: UserImageStyle,
@@ -30,6 +42,9 @@ public final class ChoiceCardStyle: OperatorChatMessageStyle {
         accessibility: Accessibility
     ) {
         self.frameColor = frameColor
+        self.borderWidth = borderWidth
+        self.cornerRadius = cornerRadius
+        self.backgroundColor = backgroundColor
         self.choiceOption = choiceOption
         self.accessibility = accessibility
         super.init(
@@ -38,5 +53,26 @@ public final class ChoiceCardStyle: OperatorChatMessageStyle {
             fileDownload: fileDownload,
             operatorImage: operatorImage
         )
+    }
+
+    func apply(configuration: RemoteConfiguration.ResponseCard?) {
+        configuration?.background?.color?.value
+            .map(UIColor.init(hex:))
+            .first
+            .map { backgroundColor = $0 }
+
+        configuration?.background?.border?.value
+            .map(UIColor.init(hex:))
+            .first
+            .map { frameColor = $0 }
+
+        configuration?.background?.cornerRadius
+            .map { cornerRadius = $0 }
+
+        configuration?.background?.borderWidth
+            .map { borderWidth = $0 }
+
+        choiceOption.apply(configuration: configuration?.option)
+        apply(configuration: configuration?.message)
     }
 }

@@ -26,6 +26,12 @@ public class ChatCallUpgradeStyle {
     /// Border color of the view.
     public var borderColor: UIColor
 
+    /// Border width of the view.
+    public var borderWidth: CGFloat
+
+    /// Corner radius of the view.
+    public var cornerRadius: CGFloat
+
     /// Accessibility related properties.
     public var accessibility: Accessibility
 
@@ -39,6 +45,8 @@ public class ChatCallUpgradeStyle {
     ///   - durationFont: Font of the duration counter text.
     ///   - durationColor: Color of the duration counter text.
     ///   - borderColor: Border color of the view.
+    ///   - borderWidth: Border width of the view.
+    ///   - cornerRadius: Corner radius of the view.
     ///   - accessibility: Accessibility related properties.
     ///
     public init(
@@ -50,6 +58,8 @@ public class ChatCallUpgradeStyle {
         durationFont: UIFont,
         durationColor: UIColor,
         borderColor: UIColor,
+        borderWidth: CGFloat = 1,
+        cornerRadius: CGFloat = 8,
         accessibility: Accessibility = .unsupported
     ) {
         self.icon = icon
@@ -60,6 +70,42 @@ public class ChatCallUpgradeStyle {
         self.durationFont = durationFont
         self.durationColor = durationColor
         self.borderColor = borderColor
+        self.borderWidth = borderWidth
+        self.cornerRadius = cornerRadius
         self.accessibility = accessibility
+    }
+
+    func apply(configuration: RemoteConfiguration.Upgrade?) {
+        configuration?.iconColor?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .map { iconColor = $0 }
+
+        configuration?.text?.font?.size
+            .map { textFont = Font.regular($0) }
+
+        configuration?.text?.foreground?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .map { textColor = $0 }
+
+        configuration?.description?.font?.size
+            .map { durationFont = Font.regular($0) }
+
+        configuration?.description?.foreground?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .map { durationColor = $0 }
+
+        configuration?.background?.border?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .map { borderColor = $0 }
+
+        configuration?.background?.borderWidth
+            .map { borderWidth = $0 }
+
+        configuration?.background?.cornerRadius
+            .map { cornerRadius = $0 }
     }
 }

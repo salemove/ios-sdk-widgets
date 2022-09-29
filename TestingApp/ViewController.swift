@@ -71,6 +71,38 @@ class ViewController: UIViewController {
             }
         }
     }
+
+    @IBAction private func remoteConfigTapped() {
+        let paths = Bundle.main.paths(forResourcesOfType: "json", inDirectory: nil)
+
+        guard !paths.isEmpty else {
+            alert(message: "Could not find any json file")
+            return
+        }
+
+        let names = paths
+            .compactMap(URL.init(string:))
+            .compactMap {
+                $0.lastPathComponent
+                .components(separatedBy: ".")
+                .first
+            }.sorted()
+
+        let alert = UIAlertController(
+            title: nil,
+            message: nil,
+            preferredStyle: .actionSheet
+        )
+        let action: (String) -> UIAlertAction = { fileName in
+            UIAlertAction(title: fileName, style: .default) { [weak self, weak alert] _ in
+                self?.applyRemoteConfig(with: fileName)
+                alert?.dismiss(animated: true)
+            }
+        }
+        names.map(action).forEach(alert.addAction)
+        alert.addAction(.init(title: "Cancel", style: .cancel))
+        present(alert, animated: true)
+    }
 }
 
 extension ViewController {
@@ -120,7 +152,7 @@ extension ViewController {
             let pushNotifications = Configuration.PushNotifications.production
             #endif
             configuration.pushNotifications = pushNotifications
-            
+
             try Glia.sharedInstance.start(
                 engagementKind,
                 configuration: configuration,
@@ -151,6 +183,25 @@ extension ViewController {
         queryItems.first(where: { $0.name == "queue_id"})?.value.map {
             queueId = $0
         }
+    }
+
+    func applyRemoteConfig(with name: String) {
+        try? Glia.sharedInstance.configure(
+            with: configuration,
+            queueId: queueId,
+            visitorContext: .init(type: .page, url: "http://glia.com")
+        )
+
+        guard
+            let url = Bundle.main.url(forResource: name, withExtension: "json"),
+            let jsonData = try? Data(contentsOf: url),
+            let config = try? JSONDecoder().decode(RemoteConfiguration.self, from: .init(jsonData))
+        else { return }
+
+        try? Glia.sharedInstance.startEngagementWithConfig(
+            engagement: .chat,
+            uiConfig: config
+        )
     }
 }
 

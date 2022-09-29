@@ -94,4 +94,24 @@ public class ChatStyle: EngagementStyle {
             preferredStatusBarStyle: preferredStatusBarStyle
         )
     }
+
+    func apply(configuration: RemoteConfiguration.Chat?) {
+        header.apply(configuration: configuration?.header)
+        connect.apply(configuration: configuration?.connect)
+        visitorMessage.apply(configuration: configuration?.visitorMessage)
+        operatorMessage.apply(configuration: configuration?.operatorMessage)
+        messageEntry.apply(configuration: configuration?.input)
+        choiceCard.apply(configuration: configuration?.responseCard)
+        audioUpgrade.apply(configuration: configuration?.audioUpgrade)
+        videoUpgrade.apply(configuration: configuration?.videoUpgrade)
+        callBubble.apply(configuration: configuration?.bubble)
+        pickMedia.apply(configuration: configuration?.attachmentSourceList)
+        unreadMessageIndicator.apply(configuration: configuration?.unreadIndicator)
+        operatorTypingIndicator.apply(configuration: configuration?.typingIndicator)
+
+        configuration?.background?.color?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .map { backgroundColor = $0 }
+    }
 }

@@ -26,4 +26,10 @@ public final class ChoiceCardOptionStyle {
         self.selected = selected
         self.disabled = disabled
     }
+
+    func apply(configuration: RemoteConfiguration.ResponseCardOption?) {
+        normal.apply(configuration: configuration?.normal)
+        selected.apply(configuration: configuration?.selected)
+        disabled.apply(configuration: configuration?.disabled)
+    }
 }

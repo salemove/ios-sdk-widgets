@@ -161,15 +161,15 @@ extension CallStyle {
     }
 
     /// Apply call configuration from remote configuration
-    func applyCallConfiguration(_ call: RemoteConfiguration.Call?) {
-        applyBarConfiguration(call?.buttonBar)
-        applyBackgroundConfiguration(call?.background)
-        applyOperatorConfiguration(call?.callOperator)
-        applyHeaderConfiguration(call?.header)
-        applyEndButtonConfiguration(call?.endButton)
-        applyDurationConfiguration(call?.duration)
-        applyTopTextConfiguration(call?.topText)
-        applyBottomTextConfiguration(call?.bottomText)
+    func apply(configuration: RemoteConfiguration.Call?) {
+        applyBarConfiguration(configuration?.buttonBar)
+        applyBackgroundConfiguration(configuration?.background)
+        applyOperatorConfiguration(configuration?.callOperator)
+        applyHeaderConfiguration(configuration?.header)
+        applyEndButtonConfiguration(configuration?.endButton)
+        applyDurationConfiguration(configuration?.duration)
+        applyTopTextConfiguration(configuration?.topText)
+        applyBottomTextConfiguration(configuration?.bottomText)
     }
 
     /// Apply bottomText from remote configuration
@@ -181,129 +181,110 @@ extension CallStyle {
 
         }
 
-        bottomText?.background?.type.map { _ in
-
         /// The logic for bottomText background has not been implemented
-
-        }
+        // bottomText?.background?.type.map { _ in }
 
         UIFont.convertToFont(font: bottomText?.font).map {
             bottomTextFont = $0
         }
 
-        bottomText?.foreground?.value.map {
-            bottomTextColor = UIColor(hex: $0[0])
-        }
+        bottomText?.foreground?.value
+            .map(UIColor.init(hex:))
+            .first
+            .map { bottomTextColor = $0 }
     }
 
     /// Apply topText from remote configuration
     private func applyTopTextConfiguration(_ topText: RemoteConfiguration.Text?) {
 
         topText?.alignment.map { _ in
-
-        /// The logic for topText alignment has not been implemented
-
+            /// The logic for topText alignment has not been implemented
         }
 
-        topText?.background?.type.map { _ in
-
-        /// The logic for topText background has not been implemented
-
-        }
+         topText?.background.map { _ in
+             /// The logic for topText background has not been implemented
+         }
 
         UIFont.convertToFont(font: topText?.font).map {
             topTextFont = $0
         }
 
-        topText?.foreground?.value.map {
-            topTextColor = UIColor(hex: $0[0])
-        }
+        topText?.foreground?.value
+            .map(UIColor.init(hex:))
+            .first
+            .map { topTextColor = $0 }
     }
 
     /// Apply duration from remote configuration
     private func applyDurationConfiguration(_ duration: RemoteConfiguration.Text?) {
 
-        duration?.alignment.map { _ in
+         duration?.alignment.map { _ in
+             /// The logic for duration alignment has not been implemented
+         }
 
-        /// The logic for duration alignment has not been implemented
-
+        duration?.background.map { _ in
+            /// The logic for duration background has not been implemented
         }
 
-        duration?.background?.type.map { _ in
+        UIFont.convertToFont(font: duration?.font)
+            .map { durationFont = $0 }
 
-        /// The logic for duration background has not been implemented
-
-        }
-
-        UIFont.convertToFont(font: duration?.font).map {
-            durationFont = $0
-        }
-
-        duration?.foreground?.value.map {
-            durationColor = UIColor(hex: $0[0])
-        }
+        duration?.foreground?.value
+            .map(UIColor.init(hex:))
+            .first
+            .map { durationColor = $0 }
     }
 
     /// Apply end button from remote configuration
     private func applyEndButtonConfiguration(_ endButton: RemoteConfiguration.Button?) {
-        endButton?.background?.type.map { backgroundType in
-            switch backgroundType {
-            case .fill:
-                endButton?.background?.value.map {
-                    header.endButton.backgroundColor = UIColor(hex: $0[0])
-                }
-            case .gradient:
 
+        switch endButton?.background?.color?.type {
+        case .fill:
+            endButton?.background?.color?.value
+                .map(UIColor.init(hex:))
+                .first
+                .map { header.endButton.backgroundColor = $0 }
+        case .gradient, .none:
             /// The logic for gradient has not been implemented
-
-                break
-            }
+            break
         }
 
         endButton?.text?.alignment.map { _ in
-
-        /// The logic for duration alignment has not been implemented
-
+            /// The logic for duration alignment has not been implemented
         }
 
-        endButton?.text?.background?.type.map { _ in
-
-        /// The logic for duration background has not been implemented
-
+        endButton?.text?.background.map { _ in
+            /// The logic for duration background has not been implemented
         }
 
         UIFont.convertToFont(font: endButton?.text?.font).map {
             header.endButton.titleFont = $0
         }
 
-        endButton?.text?.foreground?.value.map {
-            header.endButton.titleColor = UIColor(hex: $0[0])
-        }
+        endButton?.text?.foreground?.value
+            .map(UIColor.init(hex:))
+            .first
+            .map { header.endButton.titleColor = $0 }
     }
 
     /// Apply header from remote configuration
     private func applyHeaderConfiguration(_ header: RemoteConfiguration.Header?) {
         header?.background?.border.map { _ in
-
-        /// The logic for header border has not been implemented
-
+            /// The logic for header border has not been implemented
         }
 
         header?.background?.borderWidth.map { _ in
-
-        /// The logic for header borderWidth has not been implemented
-
+            /// The logic for header borderWidth has not been implemented
         }
 
         header?.background?.cornerRadius.map { _ in
-
-        /// The logic for header cornerRadius has not been implemented
-
+            /// The logic for header cornerRadius has not been implemented
         }
 
-        header?.background?.color?.value.map {
-            self.header.backgroundColor = UIColor(hex: $0[0])
-        }
+        header?.background?.color?.value
+            .map(UIColor.init(hex:))
+            .first
+            .map { self.header.backgroundColor = $0 }
 
         header?.text?.alignment.map { _ in
 
@@ -321,16 +302,18 @@ extension CallStyle {
             self.header.titleFont = $0
         }
 
-        header?.text?.foreground?.value.map {
-            self.header.titleColor = UIColor(hex: $0[0])
-        }
+        header?.text?.foreground?.value
+            .map(UIColor.init(hex:))
+            .first
+            .map { self.header.titleColor = $0 }
     }
 
     /// Apply operator from remote configuration
     private func applyOperatorConfiguration(_ callOperator: RemoteConfiguration.Text?) {
-        callOperator?.foreground?.value.map {
-            self.operatorNameColor = UIColor(hex: $0[0])
-        }
+        callOperator?.foreground?.value
+            .map(UIColor.init(hex:))
+            .first
+            .map { self.operatorNameColor = $0 }
 
         UIFont.convertToFont(font: callOperator?.font).map {
             operatorNameFont = $0
@@ -339,18 +322,17 @@ extension CallStyle {
 
     /// Apply background from remote configuration
     private func applyBackgroundConfiguration(_ background: RemoteConfiguration.Layer?) {
-        background?.color?.type.map { backgroundType in
-            switch backgroundType {
-            case .fill:
-                background?.color?.value.map {
-                    backgroundColor = UIColor(hex: $0[0])
-                }
-            case .gradient:
+        switch background?.color?.type {
+        case .fill:
+            background?.color?.value
+                .map(UIColor.init(hex:))
+                .first
+                .map { backgroundColor = $0 }
+        case .gradient, .none:
 
-            /// The logic for gradient has not been implemented yet
+        /// The logic for gradient has not been implemented yet
 
-                break
-            }
+            break
         }
     }
 

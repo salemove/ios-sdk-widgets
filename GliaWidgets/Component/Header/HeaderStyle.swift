@@ -56,4 +56,24 @@ public struct HeaderStyle {
         self.endScreenShareButton = endScreenShareButton
         self.accessibility = accessibility
     }
+
+    mutating func apply(configuration: RemoteConfiguration.Header?) {
+        configuration?.background?.color?.value
+            .map(UIColor.init(hex:))
+            .first
+            .map { backgroundColor = $0 }
+
+        configuration?.text?.font?.size
+            .map { titleFont = Font.regular($0) }
+
+        configuration?.text?.foreground?.value
+            .map(UIColor.init(hex:))
+            .first
+            .map { titleColor = $0 }
+
+        backButton.apply(configuration: configuration?.backButton)
+        closeButton.apply(configuration: configuration?.closeButton)
+        endButton.apply(configuration: configuration?.endButton)
+        endScreenShareButton.apply(configuration: configuration?.endScreenSharingButton)
+    }
 }

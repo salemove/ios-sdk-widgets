@@ -76,6 +76,39 @@ public class ChatFileDownloadStyle: ChatFileContentStyle {
             accessibility: accessibility
         )
     }
+
+    func apply(configuration: RemoteConfiguration.FileMessage?) {
+        filePreview.apply(configuration: configuration?.preview)
+        download.apply(configuration: configuration?.download)
+        downloading.apply(configuration: configuration?.downloading)
+        open.apply(configuration: configuration?.downloaded)
+        error.apply(configuration: configuration?.error)
+
+        configuration?.progress?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .map { progressColor = $0 }
+
+        configuration?.errorProgress?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .map { errorProgressColor = $0 }
+
+        configuration?.progressBackground?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .map { progressBackgroundColor = $0 }
+
+        configuration?.border?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .map { borderColor = $0 }
+
+        configuration?.background?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .map { backgroundColor = $0 }
+    }
 }
 
 /// Style of a download state.
@@ -115,6 +148,24 @@ public class ChatFileDownloadStateStyle {
         self.textColor = textColor
         self.infoFont = infoFont
         self.infoColor = infoColor
+    }
+
+    func apply(configuration: RemoteConfiguration.FileState?) {
+        configuration?.text?.font?.size
+            .map { font = Font.regular($0) }
+
+        configuration?.text?.foreground?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .map { textColor = $0 }
+
+        configuration?.info?.font?.size
+            .map { infoFont = Font.regular($0) }
+
+        configuration?.info?.foreground?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .map { infoColor = $0 }
     }
 }
 
@@ -191,5 +242,39 @@ public class ChatFileDownloadErrorStateStyle {
         self.retryText = retryText
         self.retryFont = retryFont
         self.retryTextColor = retryTextColor
+    }
+
+    func apply(configuration: RemoteConfiguration.FileErrorState?) {
+        configuration?.text?.font?.size
+            .map { font = Font.regular($0) }
+
+        configuration?.text?.foreground?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .map { textColor = $0 }
+
+        configuration?.info?.font?.size
+            .map { infoFont = Font.regular($0) }
+
+        configuration?.info?.foreground?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .map { infoColor = $0 }
+
+        configuration?.separator?.font?.size
+            .map { separatorFont = Font.regular($0) }
+
+        configuration?.separator?.foreground?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .map { separatorTextColor = $0 }
+
+        configuration?.retry?.font?.size
+            .map { retryFont = Font.regular($0) }
+
+        configuration?.retry?.foreground?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .map { retryTextColor = $0 }
     }
 }

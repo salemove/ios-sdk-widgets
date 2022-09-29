@@ -43,4 +43,35 @@ public class VisitorChatMessageStyle: ChatMessageStyle {
             fileDownload: fileDownload
         )
     }
+
+    func apply(configuration: RemoteConfiguration.MessageBalloon?) {
+        configuration?.background?.cornerRadius
+            .map { text.cornerRadius = $0 }
+
+        configuration?.background?.color?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .map {
+                text.backgroundColor = $0
+                imageFile.backgroundColor = $0
+            }
+
+        configuration?.text?.font?.size
+            .map { text.textFont = Font.regular($0) }
+
+        configuration?.text?.foreground?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .map { text.textColor = $0 }
+
+        configuration?.status?.font?.size
+            .map { statusFont = Font.regular($0) }
+
+        configuration?.status?.foreground?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .map { statusColor = $0 }
+
+        fileDownload.apply(configuration: configuration?.file)
+    }
 }
