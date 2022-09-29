@@ -11,6 +11,9 @@ public class ChatTextContentStyle {
     /// Background color of the view.
     public var backgroundColor: UIColor
 
+    /// Corner radius of the view.
+    public var cornerRadius: CGFloat
+
     /// Accessibility related properties.
     public var accessibility: Accessibility
 
@@ -25,11 +28,13 @@ public class ChatTextContentStyle {
         textFont: UIFont,
         textColor: UIColor,
         backgroundColor: UIColor,
+        cornerRadius: CGFloat = 10,
         accessibility: Accessibility = .unsupported
     ) {
         self.textFont = textFont
         self.textColor = textColor
         self.backgroundColor = backgroundColor
+        self.cornerRadius = cornerRadius
         self.accessibility = accessibility
     }
 }

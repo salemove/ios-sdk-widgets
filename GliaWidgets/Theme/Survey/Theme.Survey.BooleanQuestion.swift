@@ -59,9 +59,9 @@ public extension Theme.SurveyStyle {
         }
 
         /// Apply boolean question from remote configuration
-        mutating func applyQuestionConfiguration(_ question: RemoteConfiguration.SurveyBooleanQuestion?) {
-            title.applyTextConfiguration(question?.title)
-            option.applyOptionButtonConfiguration(question?.optionButton)
+        mutating func apply(configuration: RemoteConfiguration.SurveyBooleanQuestion?) {
+            title.apply(configuration: configuration?.title)
+            option.apply(configuration: configuration?.optionButton)
         }
     }
 }

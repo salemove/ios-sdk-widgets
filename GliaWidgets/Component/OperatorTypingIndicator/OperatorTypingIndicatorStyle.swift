@@ -17,4 +17,11 @@ public class OperatorTypingIndicatorStyle {
         self.color = color
         self.accessibility = accessibility
     }
+
+    func apply(configuration: RemoteConfiguration.Color?) {
+        configuration?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .map { color = $0 }
+    }
 }

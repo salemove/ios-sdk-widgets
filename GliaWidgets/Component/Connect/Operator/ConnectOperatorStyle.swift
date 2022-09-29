@@ -32,4 +32,31 @@ public struct ConnectOperatorStyle {
         self.onHoldOverlay = onHoldOverlay
         self.accessibility = accessibility
     }
+
+    mutating func apply(configuration: RemoteConfiguration.Operator?) {
+        configuration?.image?.imageBackgroundColor?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .map { operatorImage.imageBackgroundColor = $0 }
+
+        configuration?.image?.placeholderBackgroundColor?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .map { operatorImage.placeholderBackgroundColor = $0 }
+
+        configuration?.image?.placeholderColor?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .map { operatorImage.placeholderColor = $0 }
+
+        configuration?.animationColor?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .map { animationColor = $0 }
+
+        configuration?.overlayColor?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .map { onHoldOverlay.imageColor = $0 }
+    }
 }

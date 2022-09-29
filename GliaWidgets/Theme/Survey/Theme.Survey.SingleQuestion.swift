@@ -36,26 +36,22 @@ public extension Theme.SurveyStyle {
         }
 
         /// Apply single question from remote configuration
-        mutating func applyQuestionConfiguration(_ question: RemoteConfiguration.SurveySingleQuestion?) {
-            option.title.applyTextConfiguration(question?.option)
-            title.applyTextConfiguration(question?.title)
-            applyTintColorConfiguration(question?.tintColor)
+        mutating func apply(configuration: RemoteConfiguration.SurveySingleQuestion?) {
+            option.title.apply(configuration: configuration?.option)
+            title.apply(configuration: configuration?.title)
+            applyTintColorConfiguration(configuration?.tintColor)
         }
 
         /// Apply tint color from remote configuration
         private mutating func applyTintColorConfiguration(_ tintColor: RemoteConfiguration.Color?) {
-            tintColor?.type.map { tintColorType in
-                switch tintColorType {
-                case .fill:
-                    tintColor?.value.map {
-                        self.tintColor = $0[0]
-                    }
-                case .gradient:
+            switch tintColor?.type {
+            case .fill:
+                tintColor?.value.first.map { self.tintColor = $0 }
+            case .gradient, .none:
 
-                /// The logic for gradient has not been implemented
+            /// The logic for gradient has not been implemented
 
-                    break
-                }
+                break
             }
         }
     }

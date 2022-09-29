@@ -24,8 +24,8 @@ extension Theme {
         }
 
         /// Apply text from remote configuration
-        mutating func applyTextConfiguration(_ text: RemoteConfiguration.Text?) {
-            text?.alignment.map { alignment in
+        mutating func apply(configuration: RemoteConfiguration.Text?) {
+            configuration?.alignment.map { alignment in
                 switch alignment {
                 case .center:
                     self.alignment = .center
@@ -36,28 +36,24 @@ extension Theme {
                 }
             }
 
-            text?.background.map { _ in
+            configuration?.background.map { _ in
 
             /// The logic for normal text background has not been implemented
 
             }
 
-            UIFont.convertToFont(font: text?.font).map {
+            UIFont.convertToFont(font: configuration?.font).map {
                 font = $0
             }
 
-            text?.foreground?.type.map { foregroundType in
-                switch foregroundType {
-                case .fill:
-                    text?.foreground?.value.map {
-                        self.color = $0[0]
-                    }
-                case .gradient:
+            switch configuration?.foreground?.type {
+            case .fill:
+                configuration?.foreground?.value.first.map { color = $0 }
+            case .gradient, .none:
 
-                /// The logic for gradient has not been implemented
+            /// The logic for gradient has not been implemented
 
-                    break
-                }
+                break
             }
         }
     }

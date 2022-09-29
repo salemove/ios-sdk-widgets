@@ -38,48 +38,20 @@ public struct UserImageStyle {
         self.transferringImage = transferringImage
     }
 
-    /// Apply user image remote configuration
-    mutating func applyUserImageConfiguration(_ userImage: RemoteConfiguration.UserImageStyle?) {
-        userImage?.imageBackgroundColor?.type.map { backgroundType in
-            switch backgroundType {
-            case .fill:
-                userImage?.imageBackgroundColor?.value.map {
-                    imageBackgroundColor = UIColor(hex: $0[0])
-                }
-            case .gradient:
+    mutating func apply(configuration: RemoteConfiguration.UserImageStyle?) {
+        configuration?.placeholderColor?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .map { placeholderColor = $0 }
 
-            /// The logic for gradient has not been implemented
+        configuration?.placeholderBackgroundColor?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .map { placeholderBackgroundColor = $0 }
 
-                break
-            }
-        }
-
-        userImage?.placeholderColor?.type.map { backgroundType in
-            switch backgroundType {
-            case .fill:
-                userImage?.placeholderColor?.value.map {
-                    placeholderColor = UIColor(hex: $0[0])
-                }
-            case .gradient:
-
-            /// The logic for gradient has not been implemented
-
-                break
-            }
-        }
-
-        userImage?.placeholderBackgroundColor?.type.map { backgroundType in
-            switch backgroundType {
-            case .fill:
-                userImage?.placeholderBackgroundColor?.value.map {
-                    placeholderBackgroundColor = UIColor(hex: $0[0])
-                }
-            case .gradient:
-
-            /// The logic for gradient has not been implemented
-
-                break
-            }
-        }
+        configuration?.imageBackgroundColor?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .map { imageBackgroundColor = $0 }
     }
 }

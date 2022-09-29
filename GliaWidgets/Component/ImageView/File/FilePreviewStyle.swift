@@ -22,6 +22,9 @@ public class FilePreviewStyle {
     /// Background color of the view in the error state.
     public var errorBackgroundColor: UIColor
 
+    /// Corner radius of the view.
+    public var cornerRadius: CGFloat
+
     /// Accessiblity properties for CallStyle.
     public var accessibility: Accessibility
 
@@ -33,6 +36,7 @@ public class FilePreviewStyle {
     ///   - errorIconColor: Color of the error icon.
     ///   - backgroundColor: Background color of the view.
     ///   - errorBackgroundColor: Background color of the view in the error state.
+    ///   - cornerRadius: Corner radius of the view.
     ///   - accessibility: Accessiblity properties for CallStyle.
     ///
     public init(
@@ -42,6 +46,7 @@ public class FilePreviewStyle {
         errorIconColor: UIColor,
         backgroundColor: UIColor,
         errorBackgroundColor: UIColor,
+        cornerRadius: CGFloat = 4,
         accessibility: Accessibility = .unsupported
     ) {
         self.fileFont = fileFont
@@ -50,7 +55,36 @@ public class FilePreviewStyle {
         self.errorIconColor = errorIconColor
         self.backgroundColor = backgroundColor
         self.errorBackgroundColor = errorBackgroundColor
+        self.cornerRadius = cornerRadius
         self.accessibility = accessibility
+    }
+
+    func apply(configuration: RemoteConfiguration.FilePreview?) {
+        configuration?.background?.cornerRadius
+            .map { cornerRadius = $0 }
+
+        configuration?.background?.color?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .map { backgroundColor = $0 }
+
+        configuration?.errorBackground?.color?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .map { errorBackgroundColor = $0 }
+
+        configuration?.text?.foreground?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .map { fileColor = $0 }
+
+        configuration?.text?.font?.size
+            .map { fileFont = Font.regular($0) }
+
+        configuration?.errorIcon?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .map { errorIconColor = $0 }
     }
 }
 

@@ -50,4 +50,22 @@ public struct ConnectStatusStyle {
         self.secondTextFontColor = secondTextFontColor
         self.accessibility = accessibility
     }
+
+    mutating func apply(configuration: RemoteConfiguration.EngagementState?) {
+        configuration?.title?.font?.size
+            .map { firstTextFont = Font.regular($0) }
+
+        configuration?.title?.foreground?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .map { firstTextFontColor = $0 }
+
+        configuration?.description?.font?.size
+            .map { secondTextFont = Font.regular($0) }
+
+        configuration?.description?.foreground?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .map { secondTextFontColor = $0 }
+    }
 }
