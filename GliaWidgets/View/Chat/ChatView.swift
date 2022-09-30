@@ -538,6 +538,10 @@ extension ChatView: WebMessageCardViewDelegate {
         selectCustomCardOption?(selectedOption, messageId)
     }
 
+    func didCallMobileAction(_ view: WebMessageCardView, action: String) {
+        messageRenderer?.callMobileActionHandler(action)
+    }
+
     func didSelectURL(_ view: WebMessageCardView, url: URL) {
         linkTapped?(url)
     }
