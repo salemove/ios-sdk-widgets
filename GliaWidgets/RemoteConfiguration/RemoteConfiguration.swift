@@ -123,7 +123,7 @@ public extension RemoteConfiguration {
     }
 
     struct MessageBalloon: Codable {
-        public let alignment: [Alignment]?
+        public let alignment: Alignment?
         public let background: Layer?
         public let text: Text?
     }
