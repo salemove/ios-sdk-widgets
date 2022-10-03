@@ -8,9 +8,14 @@ private extension String {
 
     static let separator = "@@"
     static let gliaDomain = "gliaSdk"
-    static let js = """
+    static let responseOptionScript = """
         function sendResponse(selectedText, selectedValue) {
             window.webkit.messageHandlers.\(gliaDomain).postMessage(`${selectedText}\(separator)${selectedValue}`);
+        }
+    """
+    static let mobileOptionScript = """
+        function callMobileAction(action) {
+            window.webkit.messageHandlers.\(gliaDomain).postMessage(`${action}`);
         }
     """
     static let disableZooming = """
@@ -35,6 +40,11 @@ protocol WebMessageCardViewDelegate: AnyObject {
         for messageId: MessageRenderer.Message.Identifier
     )
 
+    func didCallMobileAction(
+        _ view: WebMessageCardView,
+        action: String
+    )
+
     func didSelectURL(
         _ view: WebMessageCardView,
         url: URL
@@ -42,6 +52,11 @@ protocol WebMessageCardViewDelegate: AnyObject {
 }
 
 final class WebMessageCardView: UIView {
+
+    private enum ActionType: Int {
+        case mobileAction = 1
+        case cardOption
+    }
 
     private lazy var webView: WKWebView = {
         let config = WKWebViewConfiguration()
@@ -52,13 +67,21 @@ final class WebMessageCardView: UIView {
             forMainFrameOnly: true
         )
         config.userContentController.addUserScript(zoomingScript)
-        // Script used to handle JS actions
-        let jsScript = WKUserScript(
-            source: .js,
+        // Script is used to handle JS response card actions
+        let responseOptionScript = WKUserScript(
+            source: .responseOptionScript,
             injectionTime: .atDocumentEnd,
             forMainFrameOnly: false
         )
-        config.userContentController.addUserScript(jsScript)
+        // Script is used to handle JS mobile actions (string-based url-schemes)
+        let mobileOptionScript = WKUserScript(
+            source: .mobileOptionScript,
+            injectionTime: .atDocumentEnd,
+            forMainFrameOnly: false
+        )
+
+        config.userContentController.addUserScript(responseOptionScript)
+        config.userContentController.addUserScript(mobileOptionScript)
         config.userContentController.add(self, name: .gliaDomain)
         return WKWebView(
             frame: .zero,
@@ -116,6 +139,31 @@ private extension WebMessageCardView {
     func loadWebView() {
         webView.loadHTMLString(metadata.html, baseURL: nil)
     }
+
+    func handleMobileAction(_ components: [String]) {
+        guard let action = components.first else { return }
+        delegate?.didCallMobileAction(
+            self,
+            action: action
+        )
+    }
+
+    func handleResponseOption(_ components: [String]) {
+        guard
+            let text = components.first,
+            let value = components.last
+        else { return }
+
+        isUserInteractionEnabled = false
+        delegate?.didSelectCustomCardOption(
+            self,
+            selectedOption: .init(
+                text: text,
+                value: value
+            ),
+            for: self.message.id
+        )
+    }
 }
 
 // MARK: - WKScriptMessageHandler
@@ -132,20 +180,14 @@ extension WebMessageCardView: WKScriptMessageHandler {
 
         let components = body.components(separatedBy: String.separator)
 
-        guard
-            let text = components.first,
-            let value = components.last
-        else { return }
+        guard let actionType = ActionType(rawValue: components.count) else { return }
 
-        isUserInteractionEnabled = false
-        delegate?.didSelectCustomCardOption(
-            self,
-            selectedOption: .init(
-                text: text,
-                value: value
-            ),
-            for: self.message.id
-        )
+        switch actionType {
+        case .mobileAction:
+            handleMobileAction(components)
+        case .cardOption:
+            handleResponseOption(components)
+        }
     }
 }
 
