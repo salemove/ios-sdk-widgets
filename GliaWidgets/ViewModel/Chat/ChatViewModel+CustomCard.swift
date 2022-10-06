@@ -18,7 +18,7 @@ extension ChatViewModel {
         )
 
         let outgoingMessage = OutgoingMessage(
-            content: option.value,
+            content: option.text,
             files: []
         )
 
