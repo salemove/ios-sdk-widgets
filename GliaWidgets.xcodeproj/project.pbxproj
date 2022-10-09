@@ -3396,6 +3396,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2BF626EDE27A8B893F1AAEF5 /* Pods-GliaWidgets.debug.xcconfig */;
 			buildSettings = {
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
@@ -3425,6 +3426,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 26CBB076AA7AE3578DCD9D1F /* Pods-GliaWidgets.release.xcconfig */;
 			buildSettings = {
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
