@@ -13,8 +13,8 @@ platform :ios do
   lane :create_pr_for_increment_project_version do |options|
     type = options[:type]
     new_version = increment_project_version(type: type)
-    branch_name = 'increment-project-version'
-    message = "Update project version to #{new_version}"
+    branch_name = "project-version-increment/#{new_version}"
+    message = "Increment project version to #{new_version}"
 
     sh "cd .. && scripts/commit_unstaged_changes.sh '#{branch_name}' '#{message}'"
     create_pull_request(
