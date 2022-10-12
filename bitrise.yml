@@ -44,15 +44,12 @@ workflows:
     - github-release@0:
         inputs:
         - username: $GITHUB_USERNAME
-        - name: Glia iOS Widgets SDK $BITRISE_GIT_TAG
+        - name: Glia iOS Widgets SDK $NEW_VERSION
         - body: $BITRISE_CHANGELOG
         - api_token: $GITHUB_API_TOKEN
         - draft: 'no'
+        - tag: $NEW_VERSION
         - commit: $GIT_CLONE_COMMIT_HASH
-    - set-env-var@0:
-        inputs:
-        - destination_keys: NEW_VERSION
-        - value: $BITRISE_GIT_TAG
     - trigger-bitrise-workflow@0:
         inputs:
         - api_token: $GLIA_IOS_PODSPECS_API_TOKEN
@@ -99,8 +96,6 @@ workflows:
       anywhere, but shows on the pull request itself.
   increment_project_version:
     steps:
-    - activate-ssh-key@4: {}
-    - git-clone@6: {}
     - fastlane@3:
         inputs:
         - lane: 'create_pr_for_increment_project_version type:$VERSION_INCREMENT_TYPE'
