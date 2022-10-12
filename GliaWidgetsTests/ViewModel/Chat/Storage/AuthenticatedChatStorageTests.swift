@@ -15,7 +15,7 @@ class AuthenticatedChatStorageTests: XCTestCase {
         let message = CoreSdkClient.Message.mock(id: messageId)
         storage = .inMemory(ref)
         storage.storeMessage(message, queueId, .mock())
-        XCTAssertEqual(ref.messageIdsForQueue, [queueId: [messageId]])
+        XCTAssertEqual(ref.messages.map(\.id), [message.id])
 
     }
 

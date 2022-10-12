@@ -19,5 +19,6 @@ extension EngagementViewModel {
         var timerProviding: FoundationBased.Timer.Providing
         var uuid: () -> UUID
         var uiApplication: UIKitBased.UIApplication
+        var fetchChatHistory: CoreSdkClient.FetchChatHistory
     }
 }
