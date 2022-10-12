@@ -229,7 +229,8 @@ extension RootCoordinator {
                 getCurrentEngagement: environment.getCurrentEngagement,
                 submitSurveyAnswer: environment.submitSurveyAnswer,
                 uuid: environment.uuid,
-                uiApplication: environment.uiApplication
+                uiApplication: environment.uiApplication,
+                fetchChatHistory: environment.fetchChatHistory
             )
         )
         coordinator.delegate = { [weak self] event in
@@ -314,7 +315,8 @@ extension RootCoordinator {
                 timerProviding: environment.timerProviding,
                 submitSurveyAnswer: environment.submitSurveyAnswer,
                 uuid: environment.uuid,
-                uiApplication: environment.uiApplication
+                uiApplication: environment.uiApplication,
+                fetchChatHistory: environment.fetchChatHistory
             )
         )
         coordinator.delegate = { [weak self] event in
