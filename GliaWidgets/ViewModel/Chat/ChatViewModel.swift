@@ -157,7 +157,11 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             // messages from operator until message is sent from visitor.
             self?.interactor.withConfiguration { [weak self] in
                 guard let self = self else { return }
-                if case .startEngagement = self.startAction, self.chatStorageState().isEmpty() {
+                // We only proceed to considering enqueue flow if `startAction` is about starting of engagement.
+                guard case .startEngagement = self.startAction else { return }
+                // We enqueue eagerly in case if this is the first engagement for visitor (by  evaluating previous chat history)
+                // or in case if engagement has been restored.
+                if self.chatStorageState().isEmpty() || self.environment.getCurrentEngagement() != nil {
                     self.enqueue(mediaType: .text)
                 }
             }
