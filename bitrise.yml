@@ -102,7 +102,7 @@ workflows:
     envs:
     - opts:
         is_expand: false
-      VERSION_INCREMENT_TYPE: minor
+      VERSION_INCREMENT_TYPE: patch
   integration-spm:
     steps:
     - script@1:
