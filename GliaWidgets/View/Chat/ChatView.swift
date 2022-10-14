@@ -161,8 +161,11 @@ class ChatView: EngagementView {
             let rows = numberOfRows?(section),
             rows >= count
         else { return }
-
-        if animated {
+        // Here we ignore `animated` in case there are no
+        // visible cells. Without this workaround there
+        // could be a crash related to `UITableView.performBatchUpdates`
+        // method.
+        if animated, !tableView.visibleCells.isEmpty {
             tableView.performBatchUpdates {
                 let indexPaths = (rows - count ..< rows)
                     .map { IndexPath(row: $0, section: section) }
