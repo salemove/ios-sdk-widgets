@@ -72,7 +72,5 @@ public class Theme {
         minimizedBubble.applyBubbleConfiguration(config.bubble)
 
         /// apply chat config
-
-        /// apply alert config
     }
 }

@@ -134,7 +134,9 @@ public extension RemoteConfiguration {
     }
 
     struct BarButtonStates: Codable {
-        let active, inactive: BarButtonStyle?
+        let active: BarButtonStyle?
+        let inactive: BarButtonStyle?
+        let selected: BarButtonStyle?
     }
 
     struct BarButtonStyle: Codable {
