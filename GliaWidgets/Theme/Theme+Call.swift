@@ -212,6 +212,17 @@ extension Theme {
                     label: Accessibility.Buttons.Chat.Inactive.label
                 )
             ),
+            selected: CallButtonStyle.StateStyle(
+                backgroundColor: inactiveBackgroundColor,
+                image: Asset.callChat.image,
+                imageColor: inactiveImageColor,
+                title: Buttons.Chat.title,
+                titleFont: inactiveTitleFont,
+                titleColor: inactiveTitleColor,
+                accessibility: .init(
+                    label: Accessibility.Buttons.Chat.Inactive.label
+                )
+            ),
             accessibility: .init(
                 singleItemBadgeValue: Accessibility.Buttons.Chat.BadgeValue.singleItem,
                 multipleItemsBadgeValue: Accessibility.Buttons.Chat.BadgeValue.multipleItems,
@@ -232,6 +243,17 @@ extension Theme {
                 )
             ),
             inactive: CallButtonStyle.StateStyle(
+                backgroundColor: inactiveBackgroundColor,
+                image: Asset.callVideoInactive.image,
+                imageColor: inactiveImageColor,
+                title: Buttons.Video.title,
+                titleFont: inactiveTitleFont,
+                titleColor: inactiveTitleColor,
+                accessibility: .init(
+                    label: Accessibility.Buttons.Video.Inactive.label
+                )
+            ),
+            selected: CallButtonStyle.StateStyle(
                 backgroundColor: inactiveBackgroundColor,
                 image: Asset.callVideoInactive.image,
                 imageColor: inactiveImageColor,
@@ -272,6 +294,17 @@ extension Theme {
                     label: Accessibility.Buttons.Mute.Inactive.label
                 )
             ),
+            selected: CallButtonStyle.StateStyle(
+                backgroundColor: inactiveBackgroundColor,
+                image: Asset.callMuteInactive.image,
+                imageColor: inactiveImageColor,
+                title: Buttons.Mute.Inactive.title,
+                titleFont: inactiveTitleFont,
+                titleColor: inactiveTitleColor,
+                accessibility: .init(
+                    label: Accessibility.Buttons.Mute.Inactive.label
+                )
+            ),
             accessibility: .init(
                 singleItemBadgeValue: Accessibility.Buttons.Mute.BadgeValue.singleItem,
                 multipleItemsBadgeValue: Accessibility.Buttons.Mute.BadgeValue.multipleItems,
@@ -302,6 +335,17 @@ extension Theme {
                     label: Accessibility.Buttons.Speaker.Inactive.label
                 )
             ),
+            selected: CallButtonStyle.StateStyle(
+                backgroundColor: inactiveBackgroundColor,
+                image: Asset.callSpeakerInactive.image,
+                imageColor: inactiveImageColor,
+                title: Buttons.Speaker.title,
+                titleFont: inactiveTitleFont,
+                titleColor: inactiveTitleColor,
+                accessibility: .init(
+                    label: Accessibility.Buttons.Speaker.Inactive.label
+                )
+            ),
             accessibility: .init(
                 singleItemBadgeValue: Accessibility.Buttons.Speaker.BadgeValue.singleItem,
                 multipleItemsBadgeValue: Accessibility.Buttons.Speaker.BadgeValue.multipleItems,
@@ -322,6 +366,17 @@ extension Theme {
                 )
             ),
             inactive: CallButtonStyle.StateStyle(
+                backgroundColor: inactiveBackgroundColor,
+                image: Asset.callMiminize.image,
+                imageColor: inactiveImageColor,
+                title: Buttons.Minimize.title,
+                titleFont: inactiveTitleFont,
+                titleColor: inactiveTitleColor,
+                accessibility: .init(
+                    label: Accessibility.Buttons.Minimize.Inactive.label
+                )
+            ),
+            selected: CallButtonStyle.StateStyle(
                 backgroundColor: inactiveBackgroundColor,
                 image: Asset.callMiminize.image,
                 imageColor: inactiveImageColor,
