@@ -26,11 +26,14 @@ public struct CallButtonStyle {
         public var accessibility: Accessibility
     }
 
-    /// Style of active (i.e. toggled "on") state.
+    /// Style of active state.
     public var active: StateStyle
 
-    /// Style of inactive (i.e. toggled "off") state.
+    /// Style of inactive state.
     public var inactive: StateStyle
+
+    /// Style of selected state.
+    public var selected: StateStyle
 
     /// Accessibility related properties.
     public var accessibility: Accessibility
@@ -39,6 +42,7 @@ public struct CallButtonStyle {
     mutating func applyBarButtonConfig(button: RemoteConfiguration.BarButtonStates?) {
         applyActiveBarButtonConfiguration(button: button)
         applyActiveBarButtonConfiguration(button: button)
+        applySelectedBarButtonConfiguration(button: button)
     }
 
     private mutating func applyActiveBarButtonConfiguration(button: RemoteConfiguration.BarButtonStates?) {
@@ -151,6 +155,66 @@ public struct CallButtonStyle {
             case .fill:
                 button?.inactive?.imageColor?.value.map {
                     inactive.imageColor = UIColor(hex: $0[0])
+                }
+            case .gradient:
+
+            /// The logic for gradient has not been implemented
+
+                break
+            }
+        }
+    }
+
+    private mutating func applySelectedBarButtonConfiguration(button: RemoteConfiguration.BarButtonStates?) {
+        button?.selected?.background?.type.map { backgroundType in
+            switch backgroundType {
+            case .fill:
+                button?.selected?.background?.value.map {
+                    selected.backgroundColor = UIColor(hex: $0[0])
+                }
+            case .gradient:
+
+            /// The logic for gradient has not been implemented
+
+                break
+            }
+        }
+
+        button?.selected?.imageColor?.type.map { imageType in
+            switch imageType {
+            case .fill:
+                button?.selected?.imageColor?.value.map {
+                    selected.imageColor = UIColor(hex: $0[0])
+                }
+            case .gradient:
+
+            /// The logic for gradient has not been implemented
+
+                break
+            }
+        }
+
+        button?.selected?.title?.alignment.map { _ in
+
+        /// The logic for title alignment has not been implemented
+
+        }
+
+        button?.selected?.title?.background.map { _ in
+
+        /// The logic for title background has not been implemented
+
+        }
+
+        UIFont.convertToFont(font: button?.inactive?.title?.font).map {
+            inactive.titleFont = $0
+        }
+
+        button?.selected?.title?.foreground?.type.map { foregroundType in
+            switch foregroundType {
+            case .fill:
+                button?.selected?.imageColor?.value.map {
+                    selected.imageColor = UIColor(hex: $0[0])
                 }
             case .gradient:
 
