@@ -40,9 +40,9 @@ final class ChoiceCardView: OperatorChatMessageView {
 
     private func contentView(for choiceCard: ChoiceCard) -> UIView {
         let containerView = UIView()
-
-        containerView.layer.cornerRadius = 8
-        containerView.layer.borderWidth = 1
+        containerView.backgroundColor = viewStyle.backgroundColor
+        containerView.layer.cornerRadius = viewStyle.cornerRadius
+        containerView.layer.borderWidth = viewStyle.borderWidth
         containerView.layer.borderColor = viewStyle.frameColor.cgColor
 
         let stackView = UIStackView()

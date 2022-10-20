@@ -67,6 +67,7 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
             call: call,
             unreadMessages: unreadMessages,
             showsCallBubble: showsCallBubble,
+            isCustomCardSupported: viewFactory.messageRenderer != nil,
             isWindowVisible: isWindowVisible,
             startAction: startAction,
             environment: .init(
@@ -89,6 +90,8 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
                 uiApplication: environment.uiApplication
             )
         )
+        viewModel.isInteractableCard = viewFactory.messageRenderer?.isInteractable
+        viewModel.shouldShowCard = viewFactory.messageRenderer?.shouldShowCard
         viewModel.engagementDelegate = { [weak self] event in
             switch event {
             case .back:

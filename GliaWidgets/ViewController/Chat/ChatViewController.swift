@@ -65,6 +65,12 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter,
         view.choiceOptionSelected = { viewModel.event(.choiceOptionSelected($0, $1)) }
         view.chatScrolledToBottom = { viewModel.event(.chatScrolled(bottomReached: $0)) }
         view.linkTapped = { viewModel.event(.linkTapped($0)) }
+        view.selectCustomCardOption = { viewModel.event(
+            .customCardOptionSelected(
+                option: $0,
+                messageId: $1
+            )
+        ) }
 
         viewModel.action = { action in
             switch action {
@@ -134,7 +140,7 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter,
 
     private func presentMediaPicker(
         from sourceView: UIView,
-        itemSelected: @escaping (AtttachmentSourceItemKind) -> Void
+        itemSelected: @escaping (AttachmentSourceItemKind) -> Void
     ) {
         presentPopover(
             with: viewFactory.theme.chat.pickMedia,

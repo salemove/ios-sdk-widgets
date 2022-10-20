@@ -4,6 +4,10 @@ class ChatViewModel: EngagementViewModel, ViewModel {
 
     var action: ((Action) -> Void)?
     var delegate: ((DelegateEvent) -> Void)?
+    // Used to check whether custom card contains interactable metadata.
+    var isInteractableCard: ((MessageRenderer.Message) -> Bool)?
+    // Used to check whether custom card should be hidden.
+    var shouldShowCard: ((MessageRenderer.Message) -> Bool)?
 
     private let startAction: StartAction
     private let sections = [
@@ -21,6 +25,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     private var unreadMessages: UnreadMessagesHandler!
     private let isChatScrolledToBottom = ObservableValue<Bool>(with: true)
     private let showsCallBubble: Bool
+    private let isCustomCardSupported: Bool
     private let uploader: FileUploader
     private let downloader: FileDownloader
     private var messageText = "" {
@@ -41,12 +46,14 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         call: ObservableValue<Call?>,
         unreadMessages: ObservableValue<Int>,
         showsCallBubble: Bool,
+        isCustomCardSupported: Bool,
         isWindowVisible: ObservableValue<Bool>,
         startAction: StartAction,
         environment: Environment
     ) {
         self.call = call
         self.showsCallBubble = showsCallBubble
+        self.isCustomCardSupported = isCustomCardSupported
         self.startAction = startAction
         self.uploader = FileUploader(
             maximumUploads: 25,
@@ -124,6 +131,8 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             isChatScrolledToBottom.value = bottomReached
         case .linkTapped(let url):
             linkTapped(url)
+        case .customCardOptionSelected(let option, let messageId):
+            sendSelectedCustomCardOption(option, for: messageId)
         }
     }
 
@@ -268,7 +277,7 @@ extension ChatViewModel {
 // MARK: Section management
 
 extension ChatViewModel {
-    private func appendItem(
+    func appendItem(
         _ item: ChatItem,
         to section: Section<ChatItem>,
         animated: Bool
@@ -307,7 +316,13 @@ extension ChatViewModel {
 extension ChatViewModel {
     private func loadHistory() {
         let messages = environment.chatStorage.messages(interactor.queueID)
-        let items = messages.compactMap { ChatItem(with: $0, fromHistory: environment.loadChatMessagesFromHistory()) }
+        let items = messages.compactMap {
+            ChatItem(
+                with: $0,
+                isCustomCardSupported: isCustomCardSupported,
+                fromHistory: environment.loadChatMessagesFromHistory()
+            )
+        }
         historySection.set(items)
         action?(.refreshSection(historySection.index))
         action?(.scrollToBottom(animated: false))
@@ -441,7 +456,7 @@ extension ChatViewModel {
         }
     }
 
-    private func replace(
+    func replace(
         _ outgoingMessage: OutgoingMessage,
         uploads: [FileUpload],
         with message: CoreSdkClient.Message,
@@ -505,7 +520,10 @@ extension ChatViewModel {
                 with: message,
                 operator: interactor.engagedOperator
             )
-            if let item = ChatItem(with: message) {
+            if let item = ChatItem(
+                with: message,
+                isCustomCardSupported: isCustomCardSupported
+            ) {
                 unreadMessages.received(1)
 
                 guard isViewLoaded else { return }
@@ -514,7 +532,9 @@ extension ChatViewModel {
 
                 appendItem(item, to: messagesSection, animated: true)
                 action?(.updateItemsUserImage(animated: true))
-                action?(.setChoiceCardInputModeEnabled(message.isChoiceCard))
+
+                let choiceCardInputModeEnabled = message.isChoiceCard || self.isInteractableCustomCard(message)
+                action?(.setChoiceCardInputModeEnabled(choiceCardInputModeEnabled))
 
                 if isChatBottomReached {
                     action?(.scrollToBottom(animated: true))
@@ -536,7 +556,12 @@ extension ChatViewModel {
                 interactor.engagedOperator
             )
             let newMessages = newMessages.map { ChatMessage(with: $0) }
-            let items = newMessages.compactMap { ChatItem(with: $0) }
+            let items = newMessages.compactMap {
+                ChatItem(
+                    with: $0,
+                    isCustomCardSupported: isCustomCardSupported
+                )
+            }
             setItems(items, to: messagesSection)
             action?(.scrollToBottom(animated: true))
         }
@@ -553,7 +578,7 @@ extension ChatViewModel {
 
 extension ChatViewModel {
     private func presentMediaPicker() {
-        let itemSelected = { (kind: AtttachmentSourceItemKind) -> Void in
+        let itemSelected = { (kind: AttachmentSourceItemKind) -> Void in
             let media = ObservableValue<MediaPickerEvent>(with: .none)
             media.addObserver(self) { [weak self] event, _ in
                 guard let self = self else { return }
@@ -713,6 +738,17 @@ extension ChatViewModel {
                 return ChatItem(kind: kind)
             }
             return item
+
+        case .customCard(let message, _, _, let isActive):
+            let imageUrl = message.operator?.pictureUrl
+            let shouldShowImage = shouldShowOperatorImage(for: row, in: section)
+            let kind: ChatItem.Kind = .customCard(
+                message,
+                showsImage: shouldShowImage,
+                imageUrl: imageUrl,
+                isActive: isActive
+            )
+            return ChatItem(kind: kind)
         default:
             return item
         }
@@ -725,6 +761,13 @@ extension ChatViewModel {
         guard section[row].isOperatorMessage else { return false }
         let nextItem = section.item(after: row)
         return nextItem == nil || nextItem?.isOperatorMessage == false
+    }
+
+    private func isCustomCardActive(
+        for row: Int,
+        in section: Section<ChatItem>
+    ) -> Bool {
+        return section.item(after: row) == nil
     }
 }
 
@@ -852,6 +895,10 @@ extension ChatViewModel {
         case choiceOptionSelected(ChatChoiceCardOption, String)
         case chatScrolled(bottomReached: Bool)
         case linkTapped(URL)
+        case customCardOptionSelected(
+            option: HtmlMetadata.Option,
+            messageId: MessageRenderer.Message.Identifier
+        )
     }
 
     enum Action {
@@ -873,7 +920,7 @@ extension ChatViewModel {
         case addUpload(FileUpload)
         case removeUpload(FileUpload)
         case removeAllUploads
-        case presentMediaPicker(itemSelected: (AtttachmentSourceItemKind) -> Void)
+        case presentMediaPicker(itemSelected: (AttachmentSourceItemKind) -> Void)
         case offerMediaUpgrade(
             SingleMediaUpgradeAlertConfiguration,
             accepted: () -> Void,

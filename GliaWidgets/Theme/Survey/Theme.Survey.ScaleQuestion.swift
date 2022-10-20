@@ -59,9 +59,9 @@ public extension Theme.SurveyStyle {
         }
 
         /// Apply scale question from remote configuration
-        mutating func applyQuestionConfiguration(_ question: RemoteConfiguration.SurveyScaleQuestion?) {
-            title.applyTextConfiguration(question?.title)
-            option.applyOptionButtonConfiguration(question?.optionButton)
+        mutating func apply(configuration: RemoteConfiguration.SurveyScaleQuestion?) {
+            title.apply(configuration: configuration?.title)
+            option.apply(configuration: configuration?.optionButton)
         }
     }
 }

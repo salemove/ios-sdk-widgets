@@ -39,8 +39,8 @@ class ChatCallUpgradeView: UIView {
     }
 
     private func update(with style: ChatCallUpgradeStyle) {
-        contentView.layer.cornerRadius = 8
-        contentView.layer.borderWidth = 1
+        contentView.layer.cornerRadius = style.cornerRadius
+        contentView.layer.borderWidth = style.borderWidth
         contentView.layer.borderColor = style.borderColor.cgColor
 
         stackView.axis = .vertical

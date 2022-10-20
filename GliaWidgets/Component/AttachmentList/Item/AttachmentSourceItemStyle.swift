@@ -3,7 +3,7 @@ import UIKit
 /// Style of an attachment source list item.
 public class AttachmentSourceItemStyle {
     /// Kind of an item shown in the attachment source list view (e.g. Photo Library, Take Photo or Browse).
-    public var kind: AtttachmentSourceItemKind
+    public var kind: AttachmentSourceItemKind
 
     /// Title of the attachment source list item (e.g. "Take Photo").
     public var title: String
@@ -34,7 +34,7 @@ public class AttachmentSourceItemStyle {
     ///   - accessibility: Accessibility related properties.
     ///
     public init(
-        kind: AtttachmentSourceItemKind,
+        kind: AttachmentSourceItemKind,
         title: String,
         titleFont: UIFont,
         titleColor: UIColor,
@@ -49,5 +49,20 @@ public class AttachmentSourceItemStyle {
         self.icon = icon
         self.iconColor = iconColor
         self.accessibility = accessibility
+    }
+
+    func apply(configuration: RemoteConfiguration.AttachmentSource?) {
+        configuration?.tintColor?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .map { iconColor = $0 }
+
+        configuration?.text?.foreground?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .map { titleColor = $0 }
+
+        configuration?.text?.font?.size
+            .map { titleFont = Font.regular($0) }
     }
 }

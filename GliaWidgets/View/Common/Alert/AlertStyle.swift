@@ -82,75 +82,25 @@ public struct AlertStyle {
     }
 
     /// Apply alert customization from remote configuration
-    mutating func applyAlertConfiguration(_ alert: RemoteConfiguration.Alert?) {
-        positiveAction.applyActionButtonCustomization(alert?.positiveButton)
-        negativeAction.applyActionButtonCustomization(alert?.negativeButton)
+    mutating func apply(configuration: RemoteConfiguration.Alert?) {
+        positiveAction.apply(configuration: configuration?.positiveButton)
+        negativeAction.apply(configuration: configuration?.negativeButton)
+        applyTitleConfiguration(configuration?.title)
+        applyTitleImageConfiguration(configuration?.titleImageColor)
+        applyMessageConfiguration(configuration?.message)
 
-        UIFont.convertToFont(font: alert?.title?.font).map {
-            titleFont = $0
-        }
-
-        alert?.title?.foreground?.type.map { colorType in
-            switch colorType {
-            case .fill:
-                alert?.title?.foreground?.value.map {
-                    titleColor = UIColor(hex: $0[0])
-                }
-            case .gradient:
-
+        switch configuration?.closeButtonColor?.type {
+        case .fill:
+            configuration?.closeButtonColor?.value
+                .map(UIColor.init(hex:))
+                .first
+                .map { closeButtonColor = $0 }
+        case .gradient, .none:
             /// The logic for gradient has not been implemented
-
-                break
-            }
+            break
         }
 
-        alert?.titleImageColor?.type.map { colorType in
-            switch colorType {
-            case .fill:
-                alert?.titleImageColor?.value.map {
-                    titleImageColor = UIColor(hex: $0[0])
-                }
-            case .gradient:
-
-            /// The logic for gradient has not been implemented
-
-                break
-            }
-        }
-
-        UIFont.convertToFont(font: alert?.message?.font).map {
-            messageFont = $0
-        }
-
-        alert?.message?.foreground?.type.map { colorType in
-            switch colorType {
-            case .fill:
-                alert?.message?.foreground?.value.map {
-                    messageColor = UIColor(hex: $0[0])
-                }
-            case .gradient:
-
-            /// The logic for gradient has not been implemented
-
-                break
-            }
-        }
-
-        alert?.closeButtonColor?.type.map { colorType in
-            switch colorType {
-            case .fill:
-                alert?.closeButtonColor?.value.map {
-                    closeButtonColor = UIColor(hex: $0[0])
-                }
-            case .gradient:
-
-            /// The logic for gradient has not been implemented
-
-                break
-            }
-        }
-
-        alert?.buttonAxis.map { axis in
+        configuration?.buttonAxis.map { axis in
             switch axis {
             case .horizontal:
                 actionAxis = .horizontal
@@ -159,18 +109,65 @@ public struct AlertStyle {
             }
         }
 
-        alert?.backgroundColor?.type.map { backgroundType in
-            switch backgroundType {
-            case .fill:
-                alert?.backgroundColor?.value.map {
-                    backgroundColor = UIColor(hex: $0[0])
-                }
-            case .gradient:
-
+        switch configuration?.backgroundColor?.type {
+        case .fill:
+            configuration?.backgroundColor?.value
+                .map(UIColor.init(hex:))
+                .first
+                .map { backgroundColor = $0 }
+        case .gradient, .none:
             /// The logic for gradient has not been implemented
+            break
+        }
+    }
+}
 
-                break
-            }
+// MARK: - Private
+
+private extension AlertStyle {
+
+    mutating func applyTitleConfiguration(_ configuration: RemoteConfiguration.Text?) {
+        UIFont.convertToFont(font: configuration?.font)
+            .map { titleFont = $0 }
+
+        switch configuration?.foreground?.type {
+        case .fill:
+            configuration?.foreground?.value
+                .map(UIColor.init(hex:))
+                .first
+                .map { titleColor = $0 }
+        case .gradient, .none:
+            /// The logic for gradient has not been implemented
+            break
+        }
+    }
+
+    mutating func applyTitleImageConfiguration(_ configuration: RemoteConfiguration.Color?) {
+        switch configuration?.type {
+        case .fill:
+            configuration?.value
+                .map(UIColor.init(hex:))
+                .first
+                .map { titleImageColor = $0 }
+        case .gradient, .none:
+            /// The logic for gradient has not been implemented
+            break
+        }
+    }
+
+    mutating func applyMessageConfiguration(_ configuration: RemoteConfiguration.Text?) {
+        UIFont.convertToFont(font: configuration?.font)
+            .map { messageFont = $0 }
+
+        switch configuration?.foreground?.type {
+        case .fill:
+            configuration?.foreground?.value
+                .map(UIColor.init(hex:))
+                .first
+                .map { messageColor = $0 }
+        case .gradient, .none:
+            /// The logic for gradient has not been implemented
+            break
         }
     }
 }

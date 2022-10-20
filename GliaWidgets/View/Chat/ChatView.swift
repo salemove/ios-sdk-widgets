@@ -15,6 +15,7 @@ class ChatView: EngagementView {
     var choiceOptionSelected: ((ChatChoiceCardOption, String) -> Void)!
     var chatScrolledToBottom: ((Bool) -> Void)?
     var linkTapped: ((URL) -> Void)?
+    var selectCustomCardOption: ((HtmlMetadata.Option, MessageRenderer.Message.Identifier) -> Void)?
 
     private let style: ChatStyle
     private var messageEntryViewBottomConstraint: NSLayoutConstraint!
@@ -35,13 +36,18 @@ class ChatView: EngagementView {
         return CGRect(x: x, y: y, width: width, height: height)
     }
 
+    private let messageRenderer: MessageRenderer?
     private let environment: Environment
+
+    private var heightCache: [String: CGFloat] = [:]
 
     init(
         with style: ChatStyle,
+        messageRenderer: MessageRenderer?,
         environment: Environment
     ) {
         self.style = style
+        self.messageRenderer = messageRenderer
         self.environment = environment
         self.messageEntryView = ChatMessageEntryView(
             with: style.messageEntry,
@@ -92,8 +98,6 @@ class ChatView: EngagementView {
         tableView.backgroundColor = .clear
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = UITableView.automaticDimension
         tableView.separatorStyle = .none
         tableView.contentInset = kChatTableViewInsets
         tableView.register(cell: ChatItemCell.self)
@@ -153,14 +157,19 @@ class ChatView: EngagementView {
     }
 
     func appendRows(_ count: Int, to section: Int, animated: Bool) {
-        guard let rows = numberOfRows?(section) else { return }
+        guard
+            let rows = numberOfRows?(section),
+            rows >= count
+        else { return }
 
         if animated {
-            let indexPaths = (rows - count ..< rows)
-                .map { IndexPath(row: $0, section: section) }
-            tableView.insertRows(at: indexPaths, with: .bottom)
+            tableView.performBatchUpdates {
+                let indexPaths = (rows - count ..< rows)
+                    .map { IndexPath(row: $0, section: section) }
+                tableView.insertRows(at: indexPaths, with: .fade)
+            }
         } else {
-            tableView.reloadData()
+            refreshAll()
         }
     }
 
@@ -178,7 +187,6 @@ class ChatView: EngagementView {
         else { return }
 
         cell.content = content(for: item)
-        tableView.reloadRows(at: [indexPath], with: animated ? .fade : .none)
     }
 
     func refreshRows(_ rows: [Int], in section: Int, animated: Bool) {
@@ -319,53 +327,56 @@ extension ChatView {
             view.status = status
             return .visitorMessage(view)
         case .operatorMessage(let message, let showsImage, let imageUrl):
-            let view = OperatorChatMessageView(
-                with: style.operatorMessage,
-                environment: .init(
-                    data: environment.data,
-                    uuid: environment.uuid,
-                    gcd: environment.gcd,
-                    imageViewCache: environment.imageViewCache
-                )
+            return operatorMessageContent(
+                message,
+                showsImage: showsImage,
+                imageUrl: imageUrl
             )
-            view.appendContent(
-                .text(
-                    message.content,
-                    accessibility: Self.operatorAccessibilityMessage(
-                        for: message,
-                        operator: style.accessibility.operator,
-                        isFontScalingEnabled: style.accessibility.isFontScalingEnabled
-                    )
-                ),
-                animated: false
-            )
-            view.appendContent(
-                .downloads(
-                    message.downloads,
-                    accessibility: .init(from: .operator(message.operator?.name ?? style.accessibility.operator))),
-                animated: false
-            )
-            view.downloadTapped = { [weak self] in self?.downloadTapped?($0) }
-            view.linkTapped = { [weak self] in self?.linkTapped?($0) }
-            view.showsOperatorImage = showsImage
-            view.setOperatorImage(fromUrl: imageUrl, animated: false)
-            return .operatorMessage(view)
         case .choiceCard(let message, let showsImage, let imageUrl, let isActive):
-            let view = ChoiceCardView(
-                with: style.choiceCard,
-                environment: .init(
-                    data: environment.data,
-                    uuid: environment.uuid,
-                    gcd: environment.gcd,
-                    imageViewCache: environment.imageViewCache
-                )
+            return choiceCardMessageContent(
+                message,
+                showsImage: showsImage,
+                imageUrl: imageUrl,
+                isActive: isActive
             )
-            let choiceCard = ChoiceCard(with: message, isActive: isActive)
-            view.showsOperatorImage = showsImage
-            view.setOperatorImage(fromUrl: imageUrl, animated: false)
-            view.onOptionTapped = { self.choiceOptionSelected($0, message.id) }
-            view.appendContent(.choiceCard(choiceCard), animated: false)
-            return .choiceCard(view)
+        case .customCard(let chatMessage, let showsImage, let imageUrl, let isActive):
+            let message = MessageRenderer.Message(chatMessage: chatMessage)
+            // Response card should be shown by default even if option is selected.
+            let shouldShow = messageRenderer?.shouldShowCard(message) ?? true
+            // Response card is considered as noninteractable by default.
+            let isInteractable = messageRenderer?.isInteractable(message) ?? false
+            // Need to hide interactable response card if integrator returns `false`
+            // via shouldShowCard interface.
+            if !shouldShow, isInteractable {
+                return .none
+            }
+
+            guard let contentView = messageRenderer?.render(message) else {
+                if chatMessage.isChoiceCard {
+                    return choiceCardMessageContent(
+                        chatMessage,
+                        showsImage: showsImage,
+                        imageUrl: imageUrl,
+                        isActive: isActive
+                    )
+                }
+                return operatorMessageContent(
+                    chatMessage,
+                    showsImage: showsImage,
+                    imageUrl: imageUrl
+                )
+            }
+
+            let container = CustomCardContainerView()
+            if let webCardView = contentView as? WebMessageCardView {
+                webCardView.isUserInteractionEnabled = isActive
+                webCardView.delegate = self
+                webCardView.updateHeight(heightCache[chatMessage.id] ?? 0)
+                container.willDisplayView = webCardView.startLoading
+            }
+
+            container.addContentView(contentView)
+            return .customCard(container)
         case .callUpgrade(let kind, let duration):
             let callStyle = callUpgradeStyle(for: kind.value)
             let view = ChatCallUpgradeView(
@@ -376,7 +387,7 @@ extension ChatView {
                 guard let self = self else { return }
 
                 view.style = self.callUpgradeStyle(for: kind)
-                self.tableView.reloadData()
+                self.refreshAll()
             }
             return .callUpgrade(view)
         case .operatorConnected(let name, let imageUrl):
@@ -436,6 +447,119 @@ extension ChatView {
         let currentPositionOffset = scrollView.contentOffset.y + scrollView.contentInset.top
 
         return currentPositionOffset >= chatBottomOffset
+    }
+
+    private func operatorMessageContent(
+        _ message: ChatMessage,
+        showsImage: Bool,
+        imageUrl: String?
+    ) -> ChatItemCell.Content {
+        let view = OperatorChatMessageView(
+            with: style.operatorMessage,
+            environment: .init(
+                data: environment.data,
+                uuid: environment.uuid,
+                gcd: environment.gcd,
+                imageViewCache: environment.imageViewCache
+            )
+        )
+        view.appendContent(
+            .text(
+                message.content,
+                accessibility: Self.operatorAccessibilityMessage(
+                    for: message,
+                    operator: style.accessibility.operator,
+                    isFontScalingEnabled: style.accessibility.isFontScalingEnabled
+                )
+            ),
+            animated: false
+        )
+        view.appendContent(
+            .downloads(
+                message.downloads,
+                accessibility: .init(from: .operator(message.operator?.name ?? style.accessibility.operator))),
+            animated: false
+        )
+        view.downloadTapped = { [weak self] in self?.downloadTapped?($0) }
+        view.linkTapped = { [weak self] in self?.linkTapped?($0) }
+        view.showsOperatorImage = showsImage
+        view.setOperatorImage(fromUrl: imageUrl, animated: false)
+        return .operatorMessage(view)
+    }
+
+    private func choiceCardMessageContent(
+        _ message: ChatMessage,
+        showsImage: Bool,
+        imageUrl: String?,
+        isActive: Bool
+    ) -> ChatItemCell.Content {
+        let view = ChoiceCardView(
+            with: style.choiceCard,
+            environment: .init(
+                data: environment.data,
+                uuid: environment.uuid,
+                gcd: environment.gcd,
+                imageViewCache: environment.imageViewCache
+            )
+        )
+        let choiceCard = ChoiceCard(with: message, isActive: isActive)
+        view.showsOperatorImage = showsImage
+        view.setOperatorImage(fromUrl: imageUrl, animated: false)
+        view.onOptionTapped = { self.choiceOptionSelected($0, message.id) }
+        view.appendContent(.choiceCard(choiceCard), animated: false)
+        return .choiceCard(view)
+    }
+}
+
+// MARK: WebMessageCardViewDelegate
+
+extension ChatView: WebMessageCardViewDelegate {
+    func viewDidUpdateHeight(
+        _ view: WebMessageCardView,
+        height: CGFloat,
+        for messageId: MessageRenderer.Message.Identifier
+    ) {
+        if let cachedHeight = heightCache[messageId.rawValue],
+            cachedHeight == height {
+            return
+        }
+        heightCache[messageId.rawValue] = height
+        updateTableView(animated: true)
+
+        guard isLastMessage(messageId) else { return }
+        scrollToBottom(animated: true)
+    }
+
+    func didSelectCustomCardOption(
+        _ view: WebMessageCardView,
+        selectedOption: HtmlMetadata.Option,
+        for messageId: MessageRenderer.Message.Identifier
+    ) {
+        selectCustomCardOption?(selectedOption, messageId)
+    }
+
+    func didCallMobileAction(_ view: WebMessageCardView, action: String) {
+        messageRenderer?.callMobileActionHandler(action)
+    }
+
+    func didSelectURL(_ view: WebMessageCardView, url: URL) {
+        linkTapped?(url)
+    }
+
+    private func isLastMessage(_ messageId: MessageRenderer.Message.Identifier) -> Bool {
+        let numberOfSections = { self.numberOfSections?() ?? 0 }
+        let numberOfRows = { section in self.numberOfRows?(section) ?? 0 }
+        let sections = (0 ..< numberOfSections()).reversed()
+
+        guard let section = sections.first(where: { numberOfRows($0) > 0 }) else { return false }
+        let lastRowIndex = numberOfRows(section) - 1
+
+        guard
+            let lastItem = itemForRow?(lastRowIndex, section),
+            case .customCard(let message, _, _, _) = lastItem.kind
+        else { return false }
+
+        return message.id == messageId.rawValue
     }
 }
 
@@ -563,6 +687,14 @@ extension ChatView: UITableViewDataSource {
         cell.content = content(for: item)
         return cell
     }
+
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        guard
+            let cell = cell as? ChatItemCell,
+            case .customCard(let view) = cell.content
+        else { return }
+        view.willDisplayView?()
+    }
 }
 
 // MARK: UITableViewDelegate
@@ -574,6 +706,12 @@ extension ChatView: UITableViewDelegate {
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         chatScrolledToBottom?(isBottomReached(for: scrollView))
+    }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        guard let item = itemForRow?(indexPath.row, indexPath.section) else { return CGFloat.zero }
+        guard case .none = content(for: item) else { return UITableView.automaticDimension }
+        return CGFloat.zero
     }
 }
 

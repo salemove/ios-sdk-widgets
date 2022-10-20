@@ -62,26 +62,24 @@ extension Theme {
         }
 
         /// Apply default question button from remote configuration
-        public mutating func applyQuestionConfiguration(_ question: RemoteConfiguration.ActionButton?) {
-            applyBackgroundConfiguration(question?.background)
-            title.applyTextConfiguration(question?.title)
-            shadow.applyShadowConfiguration(question?.shadow)
+        public mutating func apply(configuration: RemoteConfiguration.Button?) {
+            applyBackgroundConfiguration(configuration?.background)
+            title.apply(configuration: configuration?.text)
+            shadow.apply(configuration: configuration?.shadow)
         }
 
         /// Apply button background from remote configuration
-        mutating func applyBackgroundConfiguration(_ background: RemoteConfiguration.Layer?) {
-            background?.color?.type.map { backgroundType in
-                switch backgroundType {
-                case .fill:
-                    background?.color?.value.map {
-                        self.background = $0[0]
-                    }
-                case .gradient:
+        private mutating func applyBackgroundConfiguration(_ background: RemoteConfiguration.Layer?) {
+            switch background?.color?.type {
+            case .fill:
+                background?.color?.value
+                    .first
+                    .map { self.background = $0 }
+            case .gradient, .none:
 
-                /// The logic for gradient has not been implemented
+            /// The logic for gradient has not been implemented
 
-                    break
-                }
+                break
             }
 
             background?.cornerRadius.map {
@@ -92,18 +90,16 @@ extension Theme {
                 borderWidth = $0
             }
 
-            background?.color?.type.map { borderColorType in
-                switch borderColorType {
-                case .fill:
-                    background?.color?.value.map {
-                        borderColor = $0[0]
-                    }
-                case .gradient:
+            switch background?.color?.type {
+            case .fill:
+                background?.color?.value
+                    .first
+                    .map { borderColor = $0 }
+            case .gradient, .none:
 
-                /// The logic for gradient has not been implemented
+            /// The logic for gradient has not been implemented
 
-                    break
-                }
+                break
             }
         }
     }

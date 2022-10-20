@@ -83,25 +83,14 @@ extension Theme.SurveyStyle {
     }
 
     /// Apply survey remote configuration
-    mutating func applySurveyConfiguration(_ survey: RemoteConfiguration.Survey?) {
-        layer.applyLayerConfiguration(survey?.layer)
-        title.applyTextConfiguration(survey?.title)
-        submitButton.applyQuestionConfiguration(survey?.submitButton)
-        cancellButton.applyQuestionConfiguration(survey?.cancelButton)
-        booleanQuestion.applyQuestionConfiguration(survey?.booleanQuestion)
-        scaleQuestion.applyQuestionConfiguration(survey?.scaleQuestion)
-        singleQuestion.applyQuestionConfiguration(survey?.singleQuestion)
-        inputQuestion.applyQuestionConfiguration(survey?.inputQuestion)
-    }
-}
-
-extension UIFont {
-    func weight(orDefault defaultValue: CGFloat) -> CGFloat {
-        guard let face = fontDescriptor.object(forKey: .face) as? String else { return defaultValue }
-        switch face.lowercased() {
-        case "bold":    return 0.5
-        case "thin":    return 0.05
-        default:        return 0.2
-        }
+    mutating func apply(configuration: RemoteConfiguration.Survey?) {
+        layer.apply(configuration: configuration?.layer)
+        title.apply(configuration: configuration?.title)
+        submitButton.apply(configuration: configuration?.submitButton)
+        cancellButton.apply(configuration: configuration?.cancelButton)
+        booleanQuestion.apply(configuration: configuration?.booleanQuestion)
+        scaleQuestion.apply(configuration: configuration?.scaleQuestion)
+        singleQuestion.apply(configuration: configuration?.singleQuestion)
+        inputQuestion.apply(configuration: configuration?.inputQuestion)
     }
 }
