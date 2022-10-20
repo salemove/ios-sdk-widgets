@@ -5,7 +5,7 @@ extension Theme {
 
         let onHoldOverlay = OnHoldOverlayStyle(
             image: Asset.callOnHold.image,
-            imageColor: .white,
+            imageColor: .fill(color: .white),
             imageSize: .init(width: 40, height: 40)
         )
         let backButton = HeaderButtonStyle(
@@ -28,7 +28,7 @@ extension Theme {
             title: Chat.EndButton.title,
             titleFont: font.buttonLabel,
             titleColor: color.baseLight,
-            backgroundColor: color.systemNegative,
+            backgroundColor: .fill(color: color.systemNegative),
             accessibility: .init(
                 label: Accessibility.Header.EndButton.label,
                 isFontScalingEnabled: true
@@ -45,7 +45,7 @@ extension Theme {
         let header = HeaderStyle(
             titleFont: font.header2,
             titleColor: color.baseLight,
-            backgroundColor: color.primary,
+            backgroundColor: .fill(color: color.primary),
             backButton: backButton,
             closeButton: closeButton,
             endButton: endButton,
@@ -55,8 +55,8 @@ extension Theme {
         let operatorImage = UserImageStyle(
             placeholderImage: Asset.operatorPlaceholder.image,
             placeholderColor: color.baseLight,
-            placeholderBackgroundColor: color.primary,
-            imageBackgroundColor: .clear,
+            placeholderBackgroundColor: .fill(color: color.primary),
+            imageBackgroundColor: .fill(color: .clear),
             transferringImage: Asset.operatorTransferring.image
         )
         let queueOperator = ConnectOperatorStyle(
@@ -301,8 +301,8 @@ extension Theme {
         let userImage = UserImageStyle(
             placeholderImage: Asset.operatorPlaceholder.image,
             placeholderColor: color.baseLight,
-            placeholderBackgroundColor: color.primary,
-            imageBackgroundColor: .clear,
+            placeholderBackgroundColor: .fill(color: color.primary),
+            imageBackgroundColor: .fill(color: .clear),
             transferringImage: Asset.operatorTransferring.image
         )
         let callBubble = BubbleStyle(
@@ -315,18 +315,18 @@ extension Theme {
         let unreadMessageIndicator = UnreadMessageIndicatorStyle(
             badgeFont: font.caption,
             badgeTextColor: color.baseLight,
-            badgeColor: color.primary,
+            badgeColor: .fill(color: color.primary),
             placeholderImage: Asset.operatorPlaceholder.image,
             placeholderColor: color.baseLight,
-            placeholderBackgroundColor: color.primary,
-            imageBackgroundColor: .clear,
+            placeholderBackgroundColor: .fill(color: color.primary),
+            imageBackgroundColor: .fill(color: .clear),
             transferringImage: Asset.operatorTransferring.image,
             accessibility: .init(label: Accessibility.Message.UnreadMessagesIndicator.label)
         )
         return ChatStyle(
             header: header,
             connect: connect,
-            backgroundColor: color.background,
+            backgroundColor: .fill(color: color.background),
             preferredStatusBarStyle: .lightContent,
             title: Chat.title,
             visitorMessage: visitorMessage,

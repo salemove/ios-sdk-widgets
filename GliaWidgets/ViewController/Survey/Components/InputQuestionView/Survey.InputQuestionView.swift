@@ -70,13 +70,18 @@ extension Survey {
                 style.option.highlightedLayer.cornerRadius :
                 style.option.normalLayer.cornerRadius
             textView.layer.borderColor = props.showValidationError ?
-                UIColor(hex: style.option.highlightedLayer.borderColor).cgColor :
-                UIColor(hex: style.option.normalLayer.borderColor).cgColor
+                style.option.highlightedLayer.borderColor :
+                style.option.normalLayer.borderColor
             textView.layer.borderWidth = props.showValidationError ?
                 style.option.highlightedLayer.borderWidth :
                 style.option.normalLayer.borderWidth
             if let backgroundColor = style.background.background {
-                textView.backgroundColor = UIColor(hex: backgroundColor)
+                switch backgroundColor {
+                case .fill(color: let color):
+                    textView.backgroundColor = color
+                case .gradient(colors: let colors):
+                    textView.layer.insertSublayer(makeGradientBackground(colors: colors), at: 0)
+                }
             }
             textView.textColor = UIColor(hex: style.text.color)
             textView.font = style.text.font

@@ -107,9 +107,23 @@ class CallButton: UIView {
 
     private func update(for state: State) {
         let style = self.style(for: state)
-        circleView.backgroundColor = style.backgroundColor
+        switch style.backgroundColor {
+        case .fill(let color):
+            circleView.backgroundColor = color
+        case .gradient(let colors):
+            makeGradientBackground(
+                colors: colors,
+                cornerRadius: circleView.layer.cornerRadius
+            ).frame = circleView.bounds
+        }
         imageView.image = style.image
-        imageView.tintColor = style.imageColor
+        switch style.imageColor {
+        case .fill(let color):
+            imageView.tintColor = color
+        case .gradient(let colors):
+            imageView.makeGradientBackground(colors: colors)
+
+        }
         titleLabel.text = style.title
         titleLabel.font = style.titleFont
         titleLabel.textColor = style.titleColor

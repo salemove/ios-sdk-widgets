@@ -32,6 +32,15 @@ class ActionButton: UIButton {
 
         setNeedsDisplay()
 
+        switch style.backgroundColor {
+        case .fill(let color):
+            backgroundColor = color
+        case .gradient(let colors):
+            makeGradientBackground(
+                colors: colors,
+                cornerRadius: style.cornerRaidus
+            ).frame = bounds
+        }
         layer.shadowPath = UIBezierPath(
             roundedRect: bounds,
             byRoundingCorners: .allCorners,
@@ -43,7 +52,6 @@ class ActionButton: UIButton {
     }
 
     private func setup() {
-        backgroundColor = style.backgroundColor
         contentEdgeInsets = kContentInsets
         clipsToBounds = true
 
@@ -56,7 +64,7 @@ class ActionButton: UIButton {
 
         layer.shadowColor = style.shadowColor?.cgColor
         layer.shadowOffset = style.shadowOffset ?? .zero
-        layer.shadowOpacity = style.shadowOpacity ?? (style.backgroundColor == .clear ? 0.0 : 0.2)
+        layer.shadowOpacity = style.shadowOpacity ?? (style.backgroundColor == .fill(color: .clear) ? 0.0 : 0.2)
         layer.shadowRadius = style.shadowRadius ?? 0.0
 
         titleLabel?.font = style.titleFont

@@ -27,11 +27,11 @@ public struct UnreadMessageIndicatorStyle {
     public init(
         badgeFont: UIFont,
         badgeTextColor: UIColor,
-        badgeColor: UIColor,
+        badgeColor: ColorType,
         placeholderImage: UIImage?,
         placeholderColor: UIColor,
-        placeholderBackgroundColor: UIColor,
-        imageBackgroundColor: UIColor,
+        placeholderBackgroundColor: ColorType,
+        imageBackgroundColor: ColorType,
         transferringImage: UIImage,
         accessibility: Accessibility = .unsupported
     ) {

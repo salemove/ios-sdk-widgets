@@ -9,7 +9,7 @@ public struct HeaderStyle {
     public var titleColor: UIColor
 
     /// Background color of the view.
-    public var backgroundColor: UIColor
+    public var backgroundColor: ColorType
 
     /// Style of the back button.
     public var backButton: HeaderButtonStyle
@@ -40,7 +40,7 @@ public struct HeaderStyle {
     public init(
         titleFont: UIFont,
         titleColor: UIColor,
-        backgroundColor: UIColor,
+        backgroundColor: ColorType,
         backButton: HeaderButtonStyle,
         closeButton: HeaderButtonStyle,
         endButton: ActionButtonStyle,
@@ -58,16 +58,24 @@ public struct HeaderStyle {
     }
 
     mutating func apply(configuration: RemoteConfiguration.Header?) {
-        configuration?.background?.color?.value
-            .map(UIColor.init(hex:))
-            .first
-            .map { backgroundColor = $0 }
+        configuration?.background?.color.map {
+            switch $0.type {
+            case .fill:
+                $0.value
+                    .map { UIColor(hex: $0) }
+                    .first
+                    .map { backgroundColor = .fill(color: $0) }
+            case .gradient:
+                let colors = $0.value.convertToCgColors()
+                backgroundColor = .gradient(colors: colors)
+            }
+        }
 
         configuration?.text?.font?.size
             .map { titleFont = Font.regular($0) }
 
         configuration?.text?.foreground?.value
-            .map(UIColor.init(hex:))
+            .map { UIColor(hex: $0) }
             .first
             .map { titleColor = $0 }
 
