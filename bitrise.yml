@@ -98,7 +98,7 @@ workflows:
     steps:
     - fastlane@3:
         inputs:
-        - lane: 'create_pr_for_increment_project_version type:$VERSION_INCREMENT_TYPE'
+        - lane: 'ios create_pr_for_increment_project_version type:$VERSION_INCREMENT_TYPE'
     envs:
     - opts:
         is_expand: false
@@ -308,7 +308,7 @@ workflows:
         - command: update
     - fastlane@3:
         inputs:
-        - lane: create_pr_for_dependencies_update
+        - lane: 'ios create_pr_for_dependencies_update'
 app:
   envs:
   - opts:
