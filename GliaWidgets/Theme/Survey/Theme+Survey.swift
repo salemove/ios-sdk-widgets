@@ -58,8 +58,8 @@ extension Theme.SurveyStyle {
 
         return .init(
             layer: .init(
-                background: color.background.hex,
-                borderColor: color.baseDark.hex,
+                background: .fill(color: color.background),
+                borderColor: color.baseDark.cgColor,
                 cornerRadius: 30
             ),
             title: .init(
@@ -67,11 +67,11 @@ extension Theme.SurveyStyle {
                 font: font.header2
             ),
             submitButton: .init(
-                acitonButtonStyle: alertStyle.positiveAction,
+                actionButtonStyle: alertStyle.positiveAction,
                 accessibility: .init(label: L10n.Survey.Accessibility.Footer.SubmitButton.label)
             ),
             cancellButton: .init(
-                acitonButtonStyle: alertStyle.negativeAction,
+                actionButtonStyle: alertStyle.negativeAction,
                 accessibility: .init(label: L10n.Survey.Accessibility.Footer.CancelButton.label)
             ),
             booleanQuestion: .default(color: color, font: font),

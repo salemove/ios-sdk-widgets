@@ -31,7 +31,12 @@ class BadgeView: UIView {
     private func setup() {
         clipsToBounds = true
         layer.cornerRadius = size / 2
-        backgroundColor = style.backgroundColor
+        switch style.backgroundColor {
+        case .fill(let color):
+            backgroundColor = color
+        case .gradient(let colors):
+            self.makeGradientBackground(colors: colors).frame = bounds
+        }
 
         countLabel.font = style.font
         countLabel.textColor = style.fontColor

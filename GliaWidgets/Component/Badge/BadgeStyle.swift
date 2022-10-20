@@ -9,7 +9,7 @@ public struct BadgeStyle {
     public var fontColor: UIColor
 
     /// Background color of the view.
-    public var backgroundColor: UIColor
+    public var backgroundColor: ColorType
 
     ///
     /// - Parameters:
@@ -20,7 +20,7 @@ public struct BadgeStyle {
     public init(
         font: UIFont,
         fontColor: UIColor,
-        backgroundColor: UIColor
+        backgroundColor: ColorType
     ) {
         self.font = font
         self.fontColor = fontColor
@@ -38,9 +38,17 @@ public struct BadgeStyle {
             .first
             .map { fontColor = $0 }
 
-        configuration?.background?.color?.value
-            .map { UIColor(hex: $0) }
-            .first
-            .map { backgroundColor = $0 }
+        configuration?.background?.color.map {
+            switch $0.type {
+            case .fill:
+                $0.value
+                    .map { UIColor(hex: $0) }
+                    .first
+                    .map { backgroundColor = .fill(color: $0) }
+            case .gradient:
+                let colors = $0.value.convertToCgColors()
+                backgroundColor = .gradient(colors: colors)
+            }
+        }
     }
 }

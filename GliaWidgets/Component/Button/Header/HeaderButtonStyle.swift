@@ -28,7 +28,7 @@ public struct HeaderButtonStyle {
 
     mutating func apply(configuration: RemoteConfiguration.Button?) {
         configuration?.tintColor?.value
-            .map(UIColor.init(hex:))
+            .map { UIColor(hex: $0) }
             .first
             .map { color = $0 }
     }

@@ -61,6 +61,12 @@ class Header: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         updateHeight()
+        switch style.backgroundColor {
+        case .fill(let color):
+            backgroundColor = color
+        case .gradient(let colors):
+            makeGradientBackground(colors: colors).frame = bounds
+        }
     }
 
     func showBackButton() {
@@ -87,7 +93,6 @@ class Header: UIView {
 
     private func setup() {
         effect = .none
-        backgroundColor = style.backgroundColor
 
         titleLabel.font = style.titleFont
         titleLabel.textColor = style.titleColor

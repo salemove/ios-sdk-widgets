@@ -5,13 +5,13 @@ public struct CallButtonStyle {
     /// Style of a call button ("Chat", "Video", "Mute", "Speaker" and "Minimize") in a specific state - activated or not activated.
     public struct StateStyle {
         /// Background color of the button.
-        public var backgroundColor: UIColor
+        public var backgroundColor: ColorType
 
         /// Image of the button.
         public var image: UIImage
 
         /// Color of the image.
-        public var imageColor: UIColor
+        public var imageColor: ColorType
 
         /// Title of the button.
         public var title: String
@@ -49,59 +49,49 @@ public struct CallButtonStyle {
 extension CallButtonStyle.StateStyle {
 
     mutating func apply(configuration: RemoteConfiguration.BarButtonStyle?) {
-        switch configuration?.background?.type {
-        case .fill:
-            configuration?.background?.value
-                .map { UIColor(hex: $0) }
-                .first
-                .map { backgroundColor = $0 }
-        case .gradient, .none:
-
-            /// The logic for gradient has not been implemented yet
-
-            break
+        configuration?.background.map {
+            switch $0.type {
+            case .fill:
+                $0.value
+                    .map { UIColor(hex: $0) }
+                    .first
+                    .map { backgroundColor = .fill(color: $0) }
+            case .gradient:
+                let colors = $0.value.convertToCgColors()
+                backgroundColor = .gradient(colors: colors)
+            }
         }
 
-        switch configuration?.imageColor?.type {
-        case .fill:
-            configuration?.imageColor?.value
-                .map { UIColor(hex: $0) }
-                .first
-                .map { imageColor = $0 }
-        case .gradient, .none:
-
-            /// The logic for gradient has not been implemented yet
-
-            break
+        configuration?.imageColor.map {
+            switch $0.type {
+            case .fill:
+                $0.value
+                    .map { UIColor(hex: $0) }
+                    .first
+                    .map { imageColor = .fill(color: $0) }
+            case .gradient:
+                let colors = $0.value.convertToCgColors()
+                imageColor = .gradient(colors: colors)
+            }
         }
 
         configuration?.title?.alignment.map { _ in
-
             /// The logic for title alignment has not been implemented
-
         }
 
         configuration?.title?.background.map { _ in
-
             /// The logic for title background has not been implemented
-
         }
 
         UIFont.convertToFont(font: configuration?.title?.font).map {
             titleFont = $0
         }
 
-        switch configuration?.title?.foreground?.type {
-        case .fill:
-            configuration?.title?.foreground?.value
+        configuration?.title?.foreground.map {
+            $0.value
                 .map { UIColor(hex: $0) }
                 .first
                 .map { titleColor = $0 }
-        case .gradient, .none:
-
-            /// The logic for gradient has not been implemented yet
-
-            break
         }
     }
 }

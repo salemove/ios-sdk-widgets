@@ -60,7 +60,7 @@ public class ChatStyle: EngagementStyle {
     public init(
         header: HeaderStyle,
         connect: ConnectStyle,
-        backgroundColor: UIColor,
+        backgroundColor: ColorType,
         preferredStatusBarStyle: UIStatusBarStyle,
         title: String,
         visitorMessage: VisitorChatMessageStyle,
@@ -109,9 +109,17 @@ public class ChatStyle: EngagementStyle {
         unreadMessageIndicator.apply(configuration: configuration?.unreadIndicator)
         operatorTypingIndicator.apply(configuration: configuration?.typingIndicator)
 
-        configuration?.background?.color?.value
-            .map { UIColor(hex: $0) }
-            .first
-            .map { backgroundColor = $0 }
+        configuration?.background?.color.map {
+            switch $0.type {
+            case .fill:
+                $0.value
+                    .map { UIColor(hex: $0) }
+                    .first
+                    .map { backgroundColor = .fill(color: $0) }
+            case .gradient:
+                let colors = $0.value.convertToCgColors()
+                backgroundColor = .gradient(colors: colors)
+            }
+        }
     }
 }

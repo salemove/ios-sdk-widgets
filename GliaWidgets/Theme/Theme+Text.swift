@@ -37,23 +37,17 @@ extension Theme {
             }
 
             configuration?.background.map { _ in
-
             /// The logic for normal text background has not been implemented
-
             }
 
             UIFont.convertToFont(font: configuration?.font).map {
                 font = $0
             }
 
-            switch configuration?.foreground?.type {
-            case .fill:
-                configuration?.foreground?.value.first.map { color = $0 }
-            case .gradient, .none:
-
-            /// The logic for gradient has not been implemented
-
-                break
+            configuration?.foreground.map {
+                $0.value
+                    .first
+                    .map { color = $0 }
             }
         }
     }

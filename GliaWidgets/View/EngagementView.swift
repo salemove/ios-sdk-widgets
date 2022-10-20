@@ -31,7 +31,13 @@ class EngagementView: View {
 
     override func setup() {
         super.setup()
-        backgroundColor = style.backgroundColor
+
+        switch style.backgroundColor {
+        case .fill(color: let color):
+            backgroundColor = color
+        case .gradient(colors: let colors):
+            makeGradientBackground(colors: colors).frame = bounds
+        }
     }
 
     private func layout() {}

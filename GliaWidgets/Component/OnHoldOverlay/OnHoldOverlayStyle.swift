@@ -3,12 +3,12 @@ import UIKit
 /// Style of the on hold overlay view (used in bubble & call views).
 public struct OnHoldOverlayStyle {
     public var image: UIImage
-    public var imageColor: UIColor
+    public var imageColor: ColorType
     public var imageSize: CGSize
 
     public init(
         image: UIImage,
-        imageColor: UIColor,
+        imageColor: ColorType,
         imageSize: CGSize
     ) {
         self.image = image
@@ -18,17 +18,17 @@ public struct OnHoldOverlayStyle {
 
     /// Apply onHoldOverlay style remote configuration
     mutating func apply(configuration: RemoteConfiguration.OnHoldOverlayStyle?) {
-        switch configuration?.color?.type {
-        case .fill:
-            configuration?.color?.value
-                .map { UIColor(hex: $0) }
-                .first
-                .map { imageColor = $0 }
-        case .gradient, .none:
-
-        /// The logic for gradient has not been implemented
-
-            break
+        configuration?.color.map {
+            switch $0.type {
+            case .fill:
+                $0.value
+                    .map { UIColor(hex: $0) }
+                    .first
+                    .map { imageColor = .fill(color: $0) }
+            case .gradient:
+                let colors = $0.value.convertToCgColors()
+                imageColor = .gradient(colors: colors)
+            }
         }
     }
 }
@@ -36,13 +36,13 @@ public struct OnHoldOverlayStyle {
 public extension OnHoldOverlayStyle {
     static var bubble: OnHoldOverlayStyle = .init(
         image: Asset.callOnHold.image,
-        imageColor: .white,
+        imageColor: .fill(color: .white),
         imageSize: .init(width: 26, height: 26)
     )
 
     static var engagement: OnHoldOverlayStyle = .init(
         image: Asset.callOnHold.image,
-        imageColor: .white,
+        imageColor: .fill(color: .white),
         imageSize: .init(width: 40, height: 40)
     )
 }

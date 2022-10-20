@@ -9,10 +9,10 @@ public struct UserImageStyle {
     public var placeholderColor: UIColor
 
     /// Color of the placeholder background.
-    public var placeholderBackgroundColor: UIColor
+    public var placeholderBackgroundColor: ColorType
 
     /// Background color of the image (in case it has transparency).
-    public var imageBackgroundColor: UIColor
+    public var imageBackgroundColor: ColorType
 
     /// Transferring image. It is shown if the visitor is being transferred to another operator.
     public var transferringImage: UIImage?
@@ -27,8 +27,8 @@ public struct UserImageStyle {
     public init(
         placeholderImage: UIImage?,
         placeholderColor: UIColor,
-        placeholderBackgroundColor: UIColor,
-        imageBackgroundColor: UIColor,
+        placeholderBackgroundColor: ColorType,
+        imageBackgroundColor: ColorType,
         transferringImage: UIImage? = nil
     ) {
         self.placeholderImage = placeholderImage
@@ -44,14 +44,30 @@ public struct UserImageStyle {
             .first
             .map { placeholderColor = $0 }
 
-        configuration?.placeholderBackgroundColor?.value
-            .map { UIColor(hex: $0) }
-            .first
-            .map { placeholderBackgroundColor = $0 }
+        configuration?.placeholderBackgroundColor.map {
+            switch $0.type {
+            case .fill:
+                $0.value
+                    .map { UIColor(hex: $0) }
+                    .first
+                    .map { placeholderBackgroundColor = .fill(color: $0) }
+            case .gradient:
+                let colors = $0.value.convertToCgColors()
+                placeholderBackgroundColor = .gradient(colors: colors)
+            }
+        }
 
-        configuration?.imageBackgroundColor?.value
-            .map { UIColor(hex: $0) }
-            .first
-            .map { imageBackgroundColor = $0 }
+        configuration?.imageBackgroundColor.map {
+            switch $0.type {
+            case .fill:
+                $0.value
+                    .map { UIColor(hex: $0) }
+                    .first
+                    .map { imageBackgroundColor = .fill(color: $0) }
+            case .gradient:
+                let colors = $0.value.convertToCgColors()
+                imageBackgroundColor = .gradient(colors: colors)
+            }
+        }
     }
 }
