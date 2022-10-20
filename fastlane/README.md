@@ -15,13 +15,13 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 ## iOS
 
-### ios create_pr_for_incremented_project_version
+### ios create_pr_for_increment_project_version
 
 ```sh
-[bundle exec] fastlane ios create_pr_for_incremented_project_version
+[bundle exec] fastlane ios create_pr_for_increment_project_version
 ```
 
-
+Creates a pull request in the repository with the required files to increment the project version.
 
 ### ios increment_project_version
 
@@ -37,13 +37,13 @@ fastlane increment_project_version type:minor - increments 0.X.0
 fastlane increment_project_version type:patch - increments 0.0.X
 
 
-### ios create_pr
+### ios create_pr_for_dependencies_update
 
 ```sh
-[bundle exec] fastlane ios create_pr
+[bundle exec] fastlane ios create_pr_for_dependencies_update
 ```
 
-Creates a pull request in the repository with whatever changes have been made. Used in tandem with Bitrise to update dependencies. Named `create_pr` and not `create_pull_request` to avoid conflicting with the Fastlane action of the same name.
+Creates a pull request in the repository with whatever changes have been made. Used in tandem with Bitrise to update dependencies.
 
 ----
 
