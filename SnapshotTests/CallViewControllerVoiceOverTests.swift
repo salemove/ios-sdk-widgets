@@ -9,7 +9,7 @@ class CallViewControllerVoiceOverTests: SnapshotTestCase {
         viewController.view.frame = UIScreen.main.bounds
         assertSnapshot(
             matching: viewController,
-            as: .accessibilityImage(precision: SnapshotTestCase.possiblePrecision),
+            as: .accessibilityImage,
             named: nameForDevice()
         )
     }
@@ -19,7 +19,7 @@ class CallViewControllerVoiceOverTests: SnapshotTestCase {
         viewController.view.frame = UIScreen.main.bounds
         assertSnapshot(
             matching: viewController,
-            as: .accessibilityImage(precision: SnapshotTestCase.possiblePrecision),
+            as: .accessibilityImage,
             named: nameForDevice()
         )
     }
@@ -29,7 +29,7 @@ class CallViewControllerVoiceOverTests: SnapshotTestCase {
         viewController.view.frame = UIScreen.main.bounds
         assertSnapshot(
             matching: viewController,
-            as: .accessibilityImage(precision: SnapshotTestCase.possiblePrecision),
+            as: .accessibilityImage,
             named: nameForDevice()
         )
     }
@@ -39,7 +39,7 @@ class CallViewControllerVoiceOverTests: SnapshotTestCase {
         viewController.view.frame = UIScreen.main.bounds
         assertSnapshot(
             matching: viewController,
-            as: .accessibilityImage(precision: SnapshotTestCase.possiblePrecision),
+            as: .accessibilityImage,
             named: nameForDevice()
         )
     }
@@ -59,7 +59,7 @@ class CallViewControllerVoiceOverTests: SnapshotTestCase {
         viewController.view.frame = UIScreen.main.bounds
         assertSnapshot(
             matching: viewController,
-            as: .accessibilityImage(precision: SnapshotTestCase.possiblePrecision),
+            as: .accessibilityImage,
             named: nameForDevice()
         )
     }
