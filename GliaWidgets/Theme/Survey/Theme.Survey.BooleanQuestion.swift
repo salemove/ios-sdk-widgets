@@ -19,12 +19,14 @@ public extension Theme.SurveyStyle {
             .init(
                 title: .init(
                     color: color.baseDark.hex,
-                    font: font.mediumSubtitle1
+                    font: font.mediumSubtitle1,
+                    textStyle: .subheadline
                 ),
                 option: .init(
                     normalText: .init(
                         color: color.baseDark.hex,
-                        font: font.bodyText
+                        font: font.bodyText,
+                        textStyle: .body
                     ),
                     normalLayer: .init(
                         borderColor: color.baseNormal.hex,
@@ -33,7 +35,8 @@ public extension Theme.SurveyStyle {
                     ),
                     selectedText: .init(
                         color: color.baseLight.hex,
-                        font: font.bodyText
+                        font: font.bodyText,
+                        textStyle: .body
                     ),
                     selectedLayer: .init(
                         background: color.primary.hex,
@@ -43,7 +46,8 @@ public extension Theme.SurveyStyle {
                     ),
                     highlightedText: .init(
                         color: color.systemNegative.hex,
-                        font: font.bodyText
+                        font: font.bodyText,
+                        textStyle: .body
                     ),
                     highlightedLayer: .init(
                         borderColor: color.systemNegative.hex,

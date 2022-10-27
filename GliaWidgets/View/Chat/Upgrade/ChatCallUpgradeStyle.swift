@@ -17,11 +17,17 @@ public class ChatCallUpgradeStyle {
     /// Color of the text.
     public var textColor: UIColor
 
+    /// Text style of the text.
+    public var textStyle: UIFont.TextStyle
+
     /// Font of the duration counter text.
     public var durationFont: UIFont
 
     /// Color of the duration counter text.
     public var durationColor: UIColor
+
+    /// Text style of the duration counter text.
+    public var durationTextStyle: UIFont.TextStyle
 
     /// Border color of the view.
     public var borderColor: UIColor
@@ -42,8 +48,10 @@ public class ChatCallUpgradeStyle {
     ///   - text: Text to display in the view.
     ///   - textFont: Font of the text.
     ///   - textColor: Color of the text.
+    ///   - textStyle: Text style of the text.
     ///   - durationFont: Font of the duration counter text.
     ///   - durationColor: Color of the duration counter text.
+    ///   - durationTextStyle: Text style of the duration counter text.
     ///   - borderColor: Border color of the view.
     ///   - borderWidth: Border width of the view.
     ///   - cornerRadius: Corner radius of the view.
@@ -55,8 +63,10 @@ public class ChatCallUpgradeStyle {
         text: String,
         textFont: UIFont,
         textColor: UIColor,
+        textStyle: UIFont.TextStyle = .body,
         durationFont: UIFont,
         durationColor: UIColor,
+        durationTextStyle: UIFont.TextStyle = .body,
         borderColor: UIColor,
         borderWidth: CGFloat = 1,
         cornerRadius: CGFloat = 8,
@@ -67,8 +77,10 @@ public class ChatCallUpgradeStyle {
         self.text = text
         self.textFont = textFont
         self.textColor = textColor
+        self.textStyle = textStyle
         self.durationFont = durationFont
         self.durationColor = durationColor
+        self.durationTextStyle = durationTextStyle
         self.borderColor = borderColor
         self.borderWidth = borderWidth
         self.cornerRadius = cornerRadius
@@ -81,16 +93,20 @@ public class ChatCallUpgradeStyle {
             .first
             .map { iconColor = $0 }
 
-        configuration?.text?.font?.size
-            .map { textFont = Font.regular($0) }
+        UIFont.convertToFont(
+            font: configuration?.text?.font,
+            textStyle: textStyle
+        ).map { textFont = $0 }
 
         configuration?.text?.foreground?.value
             .map { UIColor(hex: $0) }
             .first
             .map { textColor = $0 }
 
-        configuration?.description?.font?.size
-            .map { durationFont = Font.regular($0) }
+        UIFont.convertToFont(
+            font: configuration?.description?.font,
+            textStyle: durationTextStyle
+        ).map { durationFont = $0 }
 
         configuration?.description?.foreground?.value
             .map { UIColor(hex: $0) }
