@@ -15,12 +15,11 @@ public extension RemoteConfiguration {
         let bottomText: Text?
         let buttonBar: ButtonBar?
         let duration: Text?
-        let endButton: Button?
         let header: Header?
         let callOperator, topText: Text?
 
         enum CodingKeys: String, CodingKey {
-            case background, bottomText, buttonBar, duration, endButton, header
+            case background, bottomText, buttonBar, duration, header
             case callOperator = "operator"
             case topText
         }
