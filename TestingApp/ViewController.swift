@@ -180,12 +180,34 @@ extension ViewController {
 
     func updateConfiguration(with queryItems: [URLQueryItem]) {
         Configuration(queryItems: queryItems).map { configuration = $0 }
-        queryItems.first(where: { $0.name == "queue_id"})?.value.map {
+        queryItems.first(where: { $0.name == "queue_id" })?.value.map {
             queueId = $0
         }
     }
 
     func applyRemoteConfig(with name: String) {
+        let data: [(EngagementKind, String)] = [
+            (.chat, "Chat"),
+            (.audioCall, "Audio"),
+            (.videoCall, "Video")
+        ]
+        let alert = UIAlertController(
+            title: "Choose engagement type",
+            message: nil,
+            preferredStyle: .actionSheet
+        )
+        let action: ((kind: EngagementKind, title: String)) -> UIAlertAction = { data  in
+            UIAlertAction(title: data.title, style: .default) { [weak self, weak alert] _ in
+                self?.startEngagement(with: data.kind, config: name)
+                alert?.dismiss(animated: true)
+            }
+        }
+        data.map(action).forEach(alert.addAction)
+        alert.addAction(.init(title: "Cancel", style: .cancel))
+        present(alert, animated: true)
+    }
+
+    private func startEngagement(with kind: EngagementKind, config name: String) {
         try? Glia.sharedInstance.configure(
             with: configuration,
             queueId: queueId,
@@ -199,7 +221,7 @@ extension ViewController {
         else { return }
 
         try? Glia.sharedInstance.startEngagementWithConfig(
-            engagement: .chat,
+            engagement: kind,
             uiConfig: config
         )
     }
