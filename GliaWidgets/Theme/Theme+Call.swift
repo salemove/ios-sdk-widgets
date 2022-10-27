@@ -74,9 +74,11 @@ extension Theme {
             firstText: Call.Connect.Queue.firstText,
             firstTextFont: font.header1,
             firstTextFontColor: color.baseLight,
+            firstTextStyle: .title1,
             secondText: Call.Connect.Queue.secondText,
             secondTextFont: font.subtitle,
             secondTextFontColor: color.baseLight,
+            secondTextStyle: .footnote,
             accessibility: .init(
                 firstTextHint: Accessibility.Connect.Queue.FirstText.hint,
                 secondTextHint: nil,
@@ -87,9 +89,11 @@ extension Theme {
             firstText: Call.Connect.Connecting.firstText,
             firstTextFont: font.header2,
             firstTextFontColor: color.baseLight,
+            firstTextStyle: .title2,
             secondText: Call.Connect.Connecting.secondText,
             secondTextFont: font.header2,
             secondTextFontColor: color.baseLight,
+            secondTextStyle: .title2,
             accessibility: .init(
                 firstTextHint: Accessibility.Connect.Connecting.FirstText.hint,
                 secondTextHint: nil,
@@ -100,9 +104,11 @@ extension Theme {
             firstText: Call.Connect.Connected.firstText,
             firstTextFont: font.header1,
             firstTextFontColor: color.baseLight,
+            firstTextStyle: .title1,
             secondText: Call.Connect.Connected.secondText,
             secondTextFont: font.subtitle,
             secondTextFontColor: color.baseLight,
+            secondTextStyle: .footnote,
             accessibility: .init(
                 firstTextHint: Accessibility.Connect.Connected.FirstText.hint,
                 secondTextHint: Accessibility.Connect.Connected.SecondText.hint,
@@ -113,9 +119,11 @@ extension Theme {
             firstText: Call.Connect.Connected.firstText,
             firstTextFont: font.header1,
             firstTextFontColor: color.baseLight,
+            firstTextStyle: .title1,
             secondText: Call.Connect.Connected.secondText,
             secondTextFont: font.subtitle,
             secondTextFontColor: color.baseLight,
+            secondTextStyle: .footnote,
             accessibility: .init(
                 firstTextHint: Accessibility.Connect.Connected.FirstText.hint,
                 secondTextHint: nil,
@@ -126,9 +134,11 @@ extension Theme {
             firstText: Call.Connect.Transferring.firstText,
             firstTextFont: font.header1,
             firstTextFontColor: color.baseLight,
+            firstTextStyle: .title1,
             secondText: nil,
             secondTextFont: font.subtitle,
-            secondTextFontColor: color.baseLight
+            secondTextFontColor: color.baseLight,
+            secondTextStyle: .footnote
         )
         let connect = ConnectStyle(
             queueOperator: queueOperator,
@@ -197,6 +207,7 @@ extension Theme {
                 title: Buttons.Chat.title,
                 titleFont: activeTitleFont,
                 titleColor: activeTitleColor,
+                textStyle: .caption1,
                 accessibility: .init(
                     label: Accessibility.Buttons.Chat.Active.label
                 )
@@ -208,6 +219,7 @@ extension Theme {
                 title: Buttons.Chat.title,
                 titleFont: inactiveTitleFont,
                 titleColor: inactiveTitleColor,
+                textStyle: .caption1,
                 accessibility: .init(
                     label: Accessibility.Buttons.Chat.Inactive.label
                 )
@@ -219,6 +231,7 @@ extension Theme {
                 title: Buttons.Chat.title,
                 titleFont: inactiveTitleFont,
                 titleColor: inactiveTitleColor,
+                textStyle: .caption1,
                 accessibility: .init(
                     label: Accessibility.Buttons.Chat.Inactive.label
                 )
@@ -238,6 +251,7 @@ extension Theme {
                 title: Buttons.Video.title,
                 titleFont: activeTitleFont,
                 titleColor: activeTitleColor,
+                textStyle: .caption1,
                 accessibility: .init(
                     label: Accessibility.Buttons.Video.Active.label
                 )
@@ -249,6 +263,7 @@ extension Theme {
                 title: Buttons.Video.title,
                 titleFont: inactiveTitleFont,
                 titleColor: inactiveTitleColor,
+                textStyle: .caption1,
                 accessibility: .init(
                     label: Accessibility.Buttons.Video.Inactive.label
                 )
@@ -260,6 +275,7 @@ extension Theme {
                 title: Buttons.Video.title,
                 titleFont: inactiveTitleFont,
                 titleColor: inactiveTitleColor,
+                textStyle: .caption1,
                 accessibility: .init(
                     label: Accessibility.Buttons.Video.Inactive.label
                 )
@@ -279,6 +295,7 @@ extension Theme {
                 title: Buttons.Mute.Active.title,
                 titleFont: activeTitleFont,
                 titleColor: activeTitleColor,
+                textStyle: .caption1,
                 accessibility: .init(
                     label: Accessibility.Buttons.Mute.Active.label
                 )
@@ -290,6 +307,7 @@ extension Theme {
                 title: Buttons.Mute.Inactive.title,
                 titleFont: inactiveTitleFont,
                 titleColor: inactiveTitleColor,
+                textStyle: .caption1,
                 accessibility: .init(
                     label: Accessibility.Buttons.Mute.Inactive.label
                 )
@@ -301,6 +319,7 @@ extension Theme {
                 title: Buttons.Mute.Inactive.title,
                 titleFont: inactiveTitleFont,
                 titleColor: inactiveTitleColor,
+                textStyle: .caption1,
                 accessibility: .init(
                     label: Accessibility.Buttons.Mute.Inactive.label
                 )
@@ -320,6 +339,7 @@ extension Theme {
                 title: Buttons.Speaker.title,
                 titleFont: activeTitleFont,
                 titleColor: activeTitleColor,
+                textStyle: .caption1,
                 accessibility: .init(
                     label: Accessibility.Buttons.Speaker.Active.label
                 )
@@ -331,6 +351,7 @@ extension Theme {
                 title: Buttons.Speaker.title,
                 titleFont: inactiveTitleFont,
                 titleColor: inactiveTitleColor,
+                textStyle: .caption1,
                 accessibility: .init(
                     label: Accessibility.Buttons.Speaker.Inactive.label
                 )
@@ -342,6 +363,7 @@ extension Theme {
                 title: Buttons.Speaker.title,
                 titleFont: inactiveTitleFont,
                 titleColor: inactiveTitleColor,
+                textStyle: .caption1,
                 accessibility: .init(
                     label: Accessibility.Buttons.Speaker.Inactive.label
                 )
@@ -361,6 +383,7 @@ extension Theme {
                 title: Buttons.Minimize.title,
                 titleFont: activeTitleFont,
                 titleColor: activeTitleColor,
+                textStyle: .caption1,
                 accessibility: .init(
                     label: Accessibility.Buttons.Minimize.Active.label
                 )
@@ -372,6 +395,7 @@ extension Theme {
                 title: Buttons.Minimize.title,
                 titleFont: inactiveTitleFont,
                 titleColor: inactiveTitleColor,
+                textStyle: .caption1,
                 accessibility: .init(
                     label: Accessibility.Buttons.Minimize.Inactive.label
                 )
@@ -383,6 +407,7 @@ extension Theme {
                 title: Buttons.Minimize.title,
                 titleFont: inactiveTitleFont,
                 titleColor: inactiveTitleColor,
+                textStyle: .caption1,
                 accessibility: .init(
                     label: Accessibility.Buttons.Minimize.Inactive.label
                 )

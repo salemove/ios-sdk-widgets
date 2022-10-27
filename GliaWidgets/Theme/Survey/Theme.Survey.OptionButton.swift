@@ -17,6 +17,8 @@ extension Theme.SurveyStyle {
         public var highlightedLayer: Theme.Layer
         /// Title font.
         public var font: UIFont
+        /// Text style ot the title.
+        public var textStyle: UIFont.TextStyle
         /// Accessibility related properties.
         public var accessibility: Accessibility
         /// Initializes `OptionButton` style instance.
@@ -28,6 +30,7 @@ extension Theme.SurveyStyle {
             highlightedText: Theme.Text,
             highlightedLayer: Theme.Layer,
             font: UIFont,
+            textStyle: UIFont.TextStyle = .body,
             accessibility: Accessibility = .init(isFontScalingEnabled: true)
         ) {
             self.normalText = normalText
@@ -37,6 +40,7 @@ extension Theme.SurveyStyle {
             self.highlightedText = highlightedText
             self.highlightedLayer = highlightedLayer
             self.font = font
+            self.textStyle = textStyle
             self.accessibility = accessibility
         }
 
@@ -53,9 +57,10 @@ extension Theme.SurveyStyle {
 
         /// Apply option button title font from remote configuration
         private mutating func applyFontConfiguration(_ font: RemoteConfiguration.Font?) {
-            UIFont.convertToFont(font: font).map {
-                self.font = $0
-            }
+            UIFont.convertToFont(
+                font: font,
+                textStyle: textStyle
+            ).map { self.font = $0 }
         }
     }
 }

@@ -72,9 +72,11 @@ extension Theme {
             firstText: Chat.Connect.Queue.firstText,
             firstTextFont: font.header1,
             firstTextFontColor: color.baseDark,
+            firstTextStyle: .title1,
             secondText: Chat.Connect.Queue.secondText,
             secondTextFont: font.subtitle,
             secondTextFontColor: color.baseNormal,
+            secondTextStyle: .footnote,
             accessibility: .init(
                 firstTextHint: Accessibility.Connect.Queue.FirstText.hint,
                 secondTextHint: nil,
@@ -85,9 +87,11 @@ extension Theme {
             firstText: Chat.Connect.Connecting.firstText,
             firstTextFont: font.header2,
             firstTextFontColor: color.baseDark,
+            firstTextStyle: .title2,
             secondText: Chat.Connect.Connecting.secondText,
             secondTextFont: font.header2,
             secondTextFontColor: color.baseDark,
+            secondTextStyle: .title2,
             accessibility: .init(
                 firstTextHint: Accessibility.Connect.Connecting.FirstText.hint,
                 secondTextHint: nil,
@@ -98,9 +102,11 @@ extension Theme {
             firstText: Chat.Connect.Connected.firstText,
             firstTextFont: font.header1,
             firstTextFontColor: color.baseDark,
+            firstTextStyle: .title1,
             secondText: Chat.Connect.Connected.secondText,
             secondTextFont: font.subtitle,
             secondTextFontColor: color.primary,
+            secondTextStyle: .footnote,
             accessibility: .init(
                 firstTextHint: Accessibility.Connect.Connected.FirstText.hint,
                 secondTextHint: nil,
@@ -111,9 +117,11 @@ extension Theme {
             firstText: Chat.Connect.Connected.firstText,
             firstTextFont: font.header1,
             firstTextFontColor: color.baseLight,
+            firstTextStyle: .title1,
             secondText: Chat.Connect.Connected.secondText,
             secondTextFont: font.subtitle,
             secondTextFontColor: color.baseLight,
+            secondTextStyle: .footnote,
             accessibility: .init(
                 firstTextHint: Accessibility.Connect.Connected.FirstText.hint,
                 secondTextHint: nil,
@@ -124,9 +132,11 @@ extension Theme {
             firstText: Chat.Connect.Transferring.firstText,
             firstTextFont: font.header1,
             firstTextFontColor: color.baseDark,
+            firstTextStyle: .title1,
             secondText: nil,
             secondTextFont: font.subtitle,
-            secondTextFontColor: color.primary
+            secondTextFontColor: color.primary,
+            secondTextStyle: .footnote
         )
         let connect = ConnectStyle(
             queueOperator: queueOperator,
@@ -156,6 +166,7 @@ extension Theme {
             fileDownload: fileDownload,
             statusFont: font.caption,
             statusColor: color.baseNormal,
+            statusTextStyle: .caption1,
             delivered: Chat.Message.Status.delivered,
             accessibility: .init(isFontScalingEnabled: true)
         )

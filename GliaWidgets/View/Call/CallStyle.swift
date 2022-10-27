@@ -17,11 +17,17 @@ public class CallStyle: EngagementStyle {
     /// Color of the operator's name text.
     public var operatorNameColor: UIColor
 
+    /// Text style of the operator's name text.
+    public var operatorNameTextStyle: UIFont.TextStyle
+
     /// Font of the call duration text.
     public var durationFont: UIFont
 
     /// Color of the call duration text.
     public var durationColor: UIColor
+
+    /// Text style of the duration text.
+    public var durationTextStyle: UIFont.TextStyle
 
     /// The text shown in the top section of the view.
     public var topText: String
@@ -32,6 +38,9 @@ public class CallStyle: EngagementStyle {
     /// Color of the top text.
     public var topTextColor: UIColor
 
+    /// Text style of the top text.
+    public var topTextStyle: UIFont.TextStyle
+
     /// The text shown in the bottom section of the view.
     public var bottomText: String
 
@@ -40,6 +49,9 @@ public class CallStyle: EngagementStyle {
 
     /// Color of the bottom text.
     public var bottomTextColor: UIColor
+
+    /// Text style of the bottom text.
+    public var bottomTextStyle: UIFont.TextStyle
 
     /// Style of the call view bottom button bar (with buttons like "Chat", "Video", "Mute", "Speaker" and "Minimize").
     public var buttonBar: CallButtonBarStyle
@@ -61,14 +73,18 @@ public class CallStyle: EngagementStyle {
     ///   - operatorName: A text to display operator's name. Include `{operatorName}` template parameter in the string to display operator's name.
     ///   - operatorNameFont: Font of the operator's name text.
     ///   - operatorNameColor: Color of the operator's name text.
+    ///   - operatorNameTextStyle: Text style of the operator's name text.
     ///   - durationFont: Font of the call duration text.
     ///   - durationColor: Color of the call duration text.
+    ///   - durationTextStyle: Text style of the duration text.
     ///   - topText: The text shown in the top section of the view.
     ///   - topTextFont: Font of the top text.
     ///   - topTextColor: Color of the top text.
+    ///   - topTextStyle: Text style of the top text.
     ///   - bottomText: The text shown in the bottom section of the view.
     ///   - bottomTextFont: Font of the bottom text.
     ///   - bottomTextColor: Color of the bottom text.
+    ///   - bottomTextStyle: Text style of the bottom text.
     ///   - buttonBar: Style of the button bar.
     ///   - onHoldStyle: Style of the call view when the visitor is put on hold.
     ///   - accessibility: Accessiblity properties for CallStyle.
@@ -83,14 +99,18 @@ public class CallStyle: EngagementStyle {
         operatorName: String,
         operatorNameFont: UIFont,
         operatorNameColor: UIColor,
+        operatorNameTextStyle: UIFont.TextStyle = .title1,
         durationFont: UIFont,
         durationColor: UIColor,
+        durationTextStyle: UIFont.TextStyle = .body,
         topText: String,
         topTextFont: UIFont,
         topTextColor: UIColor,
+        topTextStyle: UIFont.TextStyle = .footnote,
         bottomText: String,
         bottomTextFont: UIFont,
         bottomTextColor: UIColor,
+        bottomTextStyle: UIFont.TextStyle = .body,
         buttonBar: CallButtonBarStyle,
         onHoldStyle: OnHoldStyle,
         accessibility: Accessibility = .unsupported
@@ -100,14 +120,18 @@ public class CallStyle: EngagementStyle {
         self.operatorName = operatorName
         self.operatorNameFont = operatorNameFont
         self.operatorNameColor = operatorNameColor
+        self.operatorNameTextStyle = operatorNameTextStyle
         self.durationFont = durationFont
         self.durationColor = durationColor
+        self.durationTextStyle = durationTextStyle
         self.topText = topText
         self.topTextFont = topTextFont
         self.topTextColor = topTextColor
+        self.topTextStyle = topTextStyle
         self.bottomText = bottomText
         self.bottomTextFont = bottomTextFont
         self.bottomTextColor = bottomTextColor
+        self.bottomTextStyle = bottomTextStyle
         self.buttonBar = buttonBar
         self.onHoldStyle = onHoldStyle
         self.accessibility = accessibility
@@ -165,8 +189,7 @@ extension CallStyle {
         applyBarConfiguration(configuration?.buttonBar)
         applyBackgroundConfiguration(configuration?.background)
         applyOperatorConfiguration(configuration?.callOperator)
-        applyHeaderConfiguration(configuration?.header)
-        applyEndButtonConfiguration(configuration?.endButton)
+        header.apply(configuration: configuration?.header)
         applyDurationConfiguration(configuration?.duration)
         applyTopTextConfiguration(configuration?.topText)
         applyBottomTextConfiguration(configuration?.bottomText)
@@ -179,9 +202,10 @@ extension CallStyle {
             /// The logic for bottomText alignment has not been implemented
         }
 
-        UIFont.convertToFont(font: bottomText?.font).map {
-            bottomTextFont = $0
-        }
+        UIFont.convertToFont(
+            font: bottomText?.font,
+            textStyle: bottomTextStyle
+        ).map { bottomTextFont = $0 }
 
         bottomText?.foreground?.value
             .map { UIColor(hex: $0) }
@@ -200,9 +224,10 @@ extension CallStyle {
             /// The logic for topText background has not been implemented
         }
 
-        UIFont.convertToFont(font: topText?.font).map {
-            topTextFont = $0
-        }
+        UIFont.convertToFont(
+            font: topText?.font,
+            textStyle: topTextStyle
+        ).map { topTextFont = $0 }
 
         topText?.foreground?.value
             .map { UIColor(hex: $0) }
@@ -221,91 +246,15 @@ extension CallStyle {
             /// The logic for duration background has not been implemented
         }
 
-        UIFont.convertToFont(font: duration?.font)
-            .map { durationFont = $0 }
+        UIFont.convertToFont(
+            font: duration?.font,
+            textStyle: durationTextStyle
+        ).map { durationFont = $0 }
 
         duration?.foreground?.value
             .map { UIColor(hex: $0) }
             .first
             .map { durationColor = $0 }
-    }
-
-    /// Apply end button from remote configuration
-    private func applyEndButtonConfiguration(_ endButton: RemoteConfiguration.Button?) {
-        endButton?.background?.color.map {
-            switch $0.type {
-            case .fill:
-                $0.value
-                    .map { UIColor(hex: $0) }
-                    .first
-                    .map { header.endButton.backgroundColor = .fill(color: $0) }
-            case .gradient:
-                let colors = $0.value.convertToCgColors()
-                header.endButton.backgroundColor = .gradient(colors: colors)
-            }
-        }
-
-        endButton?.text?.alignment.map { _ in
-            /// The logic for duration alignment has not been implemented
-        }
-
-        endButton?.text?.background.map { _ in
-            /// The logic for duration background has not been implemented
-        }
-
-        UIFont.convertToFont(font: endButton?.text?.font).map {
-            header.endButton.titleFont = $0
-        }
-
-        endButton?.text?.foreground?.value
-            .map { UIColor(hex: $0) }
-            .first
-            .map { header.endButton.titleColor = $0 }
-    }
-
-    /// Apply header from remote configuration
-    private func applyHeaderConfiguration(_ header: RemoteConfiguration.Header?) {
-        header?.background?.border.map { _ in
-            /// The logic for header border has not been implemented
-        }
-
-        header?.background?.borderWidth.map { _ in
-            /// The logic for header borderWidth has not been implemented
-        }
-
-        header?.background?.cornerRadius.map { _ in
-            /// The logic for header cornerRadius has not been implemented
-        }
-
-        header?.background?.color.map {
-            switch $0.type {
-            case .fill:
-                $0.value
-                    .map { UIColor(hex: $0) }
-                    .first
-                    .map { self.header.backgroundColor = .fill(color: $0) }
-            case .gradient:
-                let colors = $0.value.convertToCgColors()
-                self.header.backgroundColor = .gradient(colors: colors)
-            }
-        }
-
-        header?.text?.alignment.map { _ in
-            /// The logic for title alignment has not been implemented
-        }
-
-        header?.text?.background.map { _ in
-            /// The logic for title background has not been implemented
-        }
-
-        UIFont.convertToFont(font: header?.text?.font).map {
-            self.header.titleFont = $0
-        }
-
-        header?.text?.foreground?.value
-            .map { UIColor(hex: $0) }
-            .first
-            .map { self.header.titleColor = $0 }
     }
 
     /// Apply operator from remote configuration
@@ -315,9 +264,10 @@ extension CallStyle {
             .first
             .map { self.operatorNameColor = $0 }
 
-        UIFont.convertToFont(font: callOperator?.font).map {
-            operatorNameFont = $0
-        }
+        UIFont.convertToFont(
+            font: callOperator?.font,
+            textStyle: operatorNameTextStyle
+        ).map { operatorNameFont = $0 }
     }
 
     /// Apply background from remote configuration

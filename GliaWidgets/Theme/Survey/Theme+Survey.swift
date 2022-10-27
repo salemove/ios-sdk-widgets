@@ -64,7 +64,8 @@ extension Theme.SurveyStyle {
             ),
             title: .init(
                 color: color.baseNormal.hex,
-                font: font.header2
+                font: font.header2,
+                textStyle: .title2
             ),
             submitButton: .init(
                 actionButtonStyle: alertStyle.positiveAction,

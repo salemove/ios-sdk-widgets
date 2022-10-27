@@ -21,13 +21,15 @@ public extension Theme.SurveyStyle {
             .init(
                 title: .init(
                     color: color.baseDark.hex,
-                    font: font.mediumSubtitle1
+                    font: font.mediumSubtitle1,
+                    textStyle: .subheadline
                 ),
                 tintColor: color.primary.hex,
                 option: .init(
                     title: .init(
                         color: color.baseDark.hex,
-                        font: font.bodyText
+                        font: font.bodyText,
+                        textStyle: .body
                     ),
                     accessibility: .init(isFontScalingEnabled: true)),
                 error: .default(color: color, font: font),
