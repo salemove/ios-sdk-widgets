@@ -2,7 +2,7 @@ import UIKit
 
 extension FontScaling.Environment {
     static let live = Self(
-        fontWithNameAndSize: FontProvider.shared.optionalFont(named:size:),
+        fontWithWeightAndSize: UIFont.systemFont(ofSize:weight:),
         preferredForTextStyle: UIFont.preferredFont(forTextStyle:),
         fontMetricsScaledFont: { style, font in
             UIFontMetrics(forTextStyle: style)

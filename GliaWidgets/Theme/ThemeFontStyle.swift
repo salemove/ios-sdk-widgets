@@ -17,12 +17,12 @@ extension ThemeFontStyle {
             return ThemeFont()
         case .defaultLarge:
             return ThemeFont(
-                header1: Font.bold(26),
-                header2: Font.regular(22),
-                header3: Font.medium(20),
-                bodyText: Font.regular(18),
-                subtitle: Font.regular(16),
-                caption: Font.regular(14)
+                header1: UIFont.systemFont(ofSize: 26, weight: .bold),
+                header2: UIFont.systemFont(ofSize: 22, weight: .regular),
+                header3: UIFont.systemFont(ofSize: 20, weight: .medium),
+                bodyText: UIFont.systemFont(ofSize: 18, weight: .regular),
+                subtitle: UIFont.systemFont(ofSize: 16, weight: .regular),
+                caption: UIFont.systemFont(ofSize: 14, weight: .regular)
             )
         case .custom(let font):
             return font

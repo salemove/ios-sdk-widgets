@@ -4,14 +4,20 @@ struct FontScaling {
     var descriptions: [Style: Description]
     var environment: Environment
 
-    func uiFont(with textStyle: UIFont.TextStyle, fontSize: CGFloat? = nil) -> UIFont {
+    func uiFont(
+        with textStyle: UIFont.TextStyle,
+        font: UIFont? = nil
+    ) -> UIFont {
         guard
             let style = Style(textStyle),
             let description = descriptions[style],
-            let uiFont = environment.fontWithNameAndSize(description.name, fontSize ?? description.size) else {
-                return environment.preferredForTextStyle(textStyle)
-            }
-
+            let uiFont = font ?? environment.fontWithWeightAndSize(
+                description.size,
+                description.weight
+            )
+        else {
+            return environment.preferredForTextStyle(textStyle)
+        }
         return environment.fontMetricsScaledFont(textStyle, uiFont)
     }
 }
@@ -32,7 +38,7 @@ extension FontScaling {
     }
 
     struct Description {
-        let name: String
+        let weight: UIFont.Weight
         let size: Double
     }
 }
