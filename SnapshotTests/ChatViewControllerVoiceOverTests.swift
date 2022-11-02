@@ -16,6 +16,7 @@ class ChatViewControllerVoiceOverTests: SnapshotTestCase {
 
     func test_visitorUploadedFileStates() throws {
         let viewController = try ChatViewController.mockVisitorFileUploadStates()
+        viewController.view.frame = UIScreen.main.bounds
         assertSnapshot(
             matching: viewController,
             as: .accessibilityImage(precision: SnapshotTestCase.possiblePrecision),
@@ -25,6 +26,7 @@ class ChatViewControllerVoiceOverTests: SnapshotTestCase {
 
     func test_choiceCard() throws {
         let viewController = try ChatViewController.mockChoiceCard()
+        viewController.view.frame = UIScreen.main.bounds
         assertSnapshot(
             matching: viewController,
             as: .accessibilityImage(precision: SnapshotTestCase.possiblePrecision),
@@ -34,9 +36,10 @@ class ChatViewControllerVoiceOverTests: SnapshotTestCase {
 
     func test_visitorFileDownloadStates() throws {
         var chatMessages: [ChatMessage] = []
-        let viewController = try ChatViewController.mockVisitorFileDownloadStates() { messages in
+        let viewController = try ChatViewController.mockVisitorFileDownloadStates { messages in
             chatMessages = messages
         }
+        viewController.view.frame = UIScreen.main.bounds
         viewController.view.setNeedsLayout()
         viewController.view.layoutIfNeeded()
         XCTAssertEqual(chatMessages.count, 4)
