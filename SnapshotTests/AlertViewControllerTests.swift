@@ -56,9 +56,11 @@ class AlertViewControllerTests: SnapshotTestCase {
     }
 
     private func alert(ofKind kind: AlertViewController.Kind) -> AlertViewController {
-        AlertViewController(
+        let viewController = AlertViewController(
             kind: kind,
             viewFactory: .mock()
         )
+        viewController.view.frame = UIScreen.main.bounds
+        return viewController
     }
 }
