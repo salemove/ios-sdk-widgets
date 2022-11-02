@@ -61,6 +61,7 @@ extension ChatViewController {
         let fileId = { fileUuid().uuidString }
         let queueId = UUID.mock.uuidString
         let operatorAttachmentURL = URL.mock.appendingPathComponent("image").appendingPathExtension("png")
+        chatViewModelEnv.fetchChatHistory = { $0(.success([])) }
         chatViewModelEnv.chatStorage.messages = { _ in
             [
                 .mock(
@@ -186,6 +187,9 @@ extension ChatViewController {
             ]
         }
         let chatViewModel = ChatViewModel.mock(environment: chatViewModelEnv)
+        chatViewModel.chatStorageState = {
+            .unauthenticated(chatViewModelEnv.chatStorage)
+        }
         var factoryEnv = ViewFactory.Environment.mock
         factoryEnv.data.dataWithContentsOfFileUrl = { _ in UIImage.mock.pngData() ?? Data() }
         factoryEnv.imageViewCache.getImageForKey = { _ in  .mock }
@@ -198,12 +202,14 @@ extension ChatViewController {
         var chatViewModelEnv = ChatViewModel.Environment.mock
         chatViewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
         chatViewModelEnv.chatStorage.isEmpty = { true }
+        chatViewModelEnv.fetchChatHistory = { $0(.success([])) }
         var interEnv = Interactor.Environment.mock
         interEnv.coreSdk.configureWithConfiguration = { _, callback in
             callback?()
         }
         let interactor = Interactor.mock(environment: interEnv)
         let chatViewModel = ChatViewModel.mock(interactor: interactor, environment: chatViewModelEnv)
+        chatViewModel.chatStorageState = { .unauthenticated(chatViewModelEnv.chatStorage) }
         let controller: ChatViewController = .mock(chatViewModel: chatViewModel)
         chatViewModel.action?(.setMessageText("Input Message Mock"))
         let localFileURL = URL.mockFilePath.appendingPathComponent("image").appendingPathExtension("png")
@@ -326,6 +332,8 @@ extension ChatViewController {
             ChatChoiceCardOption(with: try .mock(text: "One", value: "eno"))
         ]
 
+        chatViewModelEnv.fetchChatHistory = { $0(.success([])) }
+
         chatViewModelEnv.chatStorage.messages = { _ in
             [
                 .mock(id: messageId(),
@@ -352,6 +360,7 @@ extension ChatViewController {
         viewFactoryEnv.imageViewCache.getImageForKey = { _ in .mock }
 
         let chatViewModel = ChatViewModel.mock(environment: chatViewModelEnv)
+        chatViewModel.chatStorageState = { .unauthenticated(chatViewModelEnv.chatStorage) }
         let controller: ChatViewController = .mock(
             chatViewModel: chatViewModel,
             viewFactory: .init(
@@ -360,7 +369,6 @@ extension ChatViewController {
                 environment: viewFactoryEnv
             )
         )
-        controller.view.frame = UIScreen.main.bounds
         chatViewModel.action?(.setMessageText("Input Message Mock"))
         return controller
     }
@@ -369,6 +377,7 @@ extension ChatViewController {
     static func mockVisitorFileDownloadStates(completion: ([ChatMessage]) -> Void) throws -> ChatViewController {
         var chatViewModelEnv = ChatViewModel.Environment.mock
         chatViewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
+        chatViewModelEnv.fetchChatHistory = { $0(.success([])) }
         let messages: [ChatMessage] =
         (0 ..< 4).map { idx in
             ChatMessage.mock(
@@ -410,8 +419,8 @@ extension ChatViewController {
         }
         let interactor = Interactor.mock(environment: interEnv)
         let chatViewModel = ChatViewModel.mock(interactor: interactor, environment: chatViewModelEnv)
+        chatViewModel.chatStorageState = { .unauthenticated(chatViewModelEnv.chatStorage) }
         let controller: ChatViewController = .mock(chatViewModel: chatViewModel)
-        controller.view.frame = UIScreen.main.bounds
         completion(messages)
         return controller
     }
