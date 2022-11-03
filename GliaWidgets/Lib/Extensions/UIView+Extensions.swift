@@ -20,7 +20,6 @@ extension UIView {
         l.startPoint = CGPoint(x: 0, y: 0.5)
         l.endPoint = CGPoint(x: 1, y: 0.5)
         l.cornerRadius = cornerRadius ?? 0.0
-        layer.insertSublayer(l, at: 0)
         if l.superlayer == nil {
             layer.insertSublayer(l, at: 0)
         }
