@@ -33,9 +33,7 @@ extension Theme {
                     .first
                     .map { borderColor = $0 }
             case .gradient, .none:
-
-            /// The logic for gradient has not been implemented
-
+                // The logic for gradient has not been implemented
                 break
             }
 
@@ -51,9 +49,7 @@ extension Theme {
             case .fill:
                 background = configuration?.color?.value.first
             case .gradient, .none:
-
-            /// The logic for gradient has not been implemented
-
+                // The logic for gradient has not been implemented
                 break
             }
         }

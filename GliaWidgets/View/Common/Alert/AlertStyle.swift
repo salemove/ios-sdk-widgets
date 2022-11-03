@@ -108,7 +108,7 @@ public struct AlertStyle {
                 .first
                 .map { closeButtonColor = $0 }
         case .gradient, .none:
-            /// The logic for gradient has not been implemented
+            // The logic for gradient has not been implemented
             break
         }
 
@@ -128,7 +128,7 @@ public struct AlertStyle {
                 .first
                 .map { backgroundColor = $0 }
         case .gradient, .none:
-            /// The logic for gradient has not been implemented
+            // The logic for gradient has not been implemented
             break
         }
     }
@@ -151,7 +151,7 @@ private extension AlertStyle {
                 .first
                 .map { titleColor = $0 }
         case .gradient, .none:
-            /// The logic for gradient has not been implemented
+            // The logic for gradient has not been implemented
             break
         }
     }
@@ -164,7 +164,7 @@ private extension AlertStyle {
                 .first
                 .map { titleImageColor = $0 }
         case .gradient, .none:
-            /// The logic for gradient has not been implemented
+            // The logic for gradient has not been implemented
             break
         }
     }
@@ -182,7 +182,7 @@ private extension AlertStyle {
                 .first
                 .map { messageColor = $0 }
         case .gradient, .none:
-            /// The logic for gradient has not been implemented
+            // The logic for gradient has not been implemented
             break
         }
     }

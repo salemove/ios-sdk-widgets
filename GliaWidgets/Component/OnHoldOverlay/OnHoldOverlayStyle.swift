@@ -25,9 +25,7 @@ public struct OnHoldOverlayStyle {
                 .first
                 .map { imageColor = $0 }
         case .gradient, .none:
-
-        /// The logic for gradient has not been implemented
-
+            // The logic for gradient has not been implemented
             break
         }
     }

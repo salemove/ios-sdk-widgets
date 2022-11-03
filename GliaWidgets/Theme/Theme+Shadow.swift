@@ -28,9 +28,7 @@ extension Theme {
                     .first
                     .map { color = $0 }
             case .gradient, .none:
-
-            /// The logic for gradient has not been implemented yet
-
+                // The logic for gradient has not been implemented yet
                 break
             }
 

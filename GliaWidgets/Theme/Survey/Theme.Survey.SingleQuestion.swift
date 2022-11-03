@@ -50,9 +50,7 @@ public extension Theme.SurveyStyle {
             case .fill:
                 tintColor?.value.first.map { self.tintColor = $0 }
             case .gradient, .none:
-
-            /// The logic for gradient has not been implemented
-
+                // The logic for gradient has not been implemented
                 break
             }
         }

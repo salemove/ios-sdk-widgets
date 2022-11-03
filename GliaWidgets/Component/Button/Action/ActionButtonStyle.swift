@@ -94,11 +94,11 @@ public struct ActionButtonStyle {
         ).map { titleFont = $0 }
 
         configuration?.text?.alignment.map { _ in
-            /// The logic for duration alignment has not been implemented
+            // The logic for duration alignment has not been implemented
         }
 
         configuration?.text?.background.map { _ in
-            /// The logic for duration background has not been implemented
+            // The logic for duration background has not been implemented
         }
 
         configuration?.text?.foreground?.value
@@ -113,7 +113,7 @@ public struct ActionButtonStyle {
                 .first
                 .map { backgroundColor = $0 }
         case .gradient, .none:
-            /// The logic for gradient has not been implemented
+            // The logic for gradient has not been implemented
             break
         }
 

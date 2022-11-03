@@ -77,9 +77,7 @@ extension Theme {
                     .first
                     .map { self.background = $0 }
             case .gradient, .none:
-
-            /// The logic for gradient has not been implemented
-
+                // The logic for gradient has not been implemented
                 break
             }
 
@@ -97,9 +95,7 @@ extension Theme {
                     .first
                     .map { borderColor = $0 }
             case .gradient, .none:
-
-            /// The logic for gradient has not been implemented
-
+                // The logic for gradient has not been implemented
                 break
             }
         }

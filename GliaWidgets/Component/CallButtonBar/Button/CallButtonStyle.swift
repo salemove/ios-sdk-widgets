@@ -59,9 +59,7 @@ extension CallButtonStyle.StateStyle {
                 .first
                 .map { backgroundColor = $0 }
         case .gradient, .none:
-
-            /// The logic for gradient has not been implemented yet
-
+            // The logic for gradient has not been implemented yet
             break
         }
 
@@ -72,22 +70,16 @@ extension CallButtonStyle.StateStyle {
                 .first
                 .map { imageColor = $0 }
         case .gradient, .none:
-
-            /// The logic for gradient has not been implemented yet
-
+            // The logic for gradient has not been implemented yet
             break
         }
 
         configuration?.title?.alignment.map { _ in
-
-            /// The logic for title alignment has not been implemented
-
+            // The logic for title alignment has not been implemented
         }
 
         configuration?.title?.background.map { _ in
-
-            /// The logic for title background has not been implemented
-
+            // The logic for title background has not been implemented
         }
 
         UIFont.convertToFont(
@@ -102,9 +94,7 @@ extension CallButtonStyle.StateStyle {
                 .first
                 .map { titleColor = $0 }
         case .gradient, .none:
-
-            /// The logic for gradient has not been implemented yet
-
+            // The logic for gradient has not been implemented yet
             break
         }
     }

@@ -79,23 +79,23 @@ public struct HeaderStyle {
             .map { titleColor = $0 }
 
         configuration?.background?.border.map { _ in
-            /// The logic for header border has not been implemented
+            // The logic for header border has not been implemented
         }
 
         configuration?.background?.borderWidth.map { _ in
-            /// The logic for header borderWidth has not been implemented
+            // The logic for header borderWidth has not been implemented
         }
 
         configuration?.background?.cornerRadius.map { _ in
-            /// The logic for header cornerRadius has not been implemented
+            // The logic for header cornerRadius has not been implemented
         }
 
         configuration?.text?.alignment.map { _ in
-            /// The logic for title alignment has not been implemented
+            // The logic for title alignment has not been implemented
         }
 
         configuration?.text?.background.map { _ in
-            /// The logic for title background has not been implemented
+            // The logic for title background has not been implemented
         }
 
         backButton.apply(configuration: configuration?.backButton)
