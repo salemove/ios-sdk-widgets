@@ -111,7 +111,7 @@ class CallButton: UIView {
         case .fill(let color):
             circleView.backgroundColor = color
         case .gradient(let colors):
-            makeGradientBackground(
+            circleView.makeGradientBackground(
                 colors: colors,
                 cornerRadius: circleView.layer.cornerRadius
             ).frame = circleView.bounds
@@ -121,7 +121,7 @@ class CallButton: UIView {
         case .fill(let color):
             imageView.tintColor = color
         case .gradient(let colors):
-            imageView.makeGradientBackground(colors: colors)
+            imageView.makeGradientBackground(colors: colors).frame = imageView.bounds
 
         }
         titleLabel.text = style.title
