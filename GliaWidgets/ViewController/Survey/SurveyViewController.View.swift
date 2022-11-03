@@ -199,7 +199,7 @@ extension UIButton {
         case .fill(let color):
             backgroundColor = color
         case .gradient(let colors):
-            makeGradientBackground(colors: colors, cornerRadius: style.cornerRadius).frame = bounds
+            makeGradientBackground(colors: colors, cornerRadius: style.cornerRadius)
         }
         contentEdgeInsets = .init(top: 6, left: 16, bottom: 6, right: 16)
         clipsToBounds = true

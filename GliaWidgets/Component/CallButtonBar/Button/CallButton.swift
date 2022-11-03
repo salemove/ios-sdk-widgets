@@ -114,14 +114,14 @@ class CallButton: UIView {
             circleView.makeGradientBackground(
                 colors: colors,
                 cornerRadius: circleView.layer.cornerRadius
-            ).frame = circleView.bounds
+            )
         }
         imageView.image = style.image
         switch style.imageColor {
         case .fill(let color):
             imageView.tintColor = color
         case .gradient(let colors):
-            imageView.makeGradientBackground(colors: colors).frame = imageView.bounds
+            imageView.makeGradientBackground(colors: colors)
 
         }
         titleLabel.text = style.title

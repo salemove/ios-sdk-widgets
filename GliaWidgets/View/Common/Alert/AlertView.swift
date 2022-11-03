@@ -93,7 +93,7 @@ class AlertView: UIView {
             makeGradientBackground(
                 colors: colors,
                 cornerRadius: kCornerRadius
-            ).frame = bounds
+            )
         }
         layer.shadowPath = UIBezierPath(
             roundedRect: bounds,
@@ -168,7 +168,7 @@ class AlertView: UIView {
         case .fill(let color):
             closeButton.tintColor = color
         case .gradient(let colors):
-            closeButton.makeGradientBackground(colors: colors).frame = closeButton.bounds
+            closeButton.makeGradientBackground(colors: colors)
         }
 
         closeButton.accessibilityIdentifier = "alert_close_button"

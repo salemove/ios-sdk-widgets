@@ -39,7 +39,7 @@ class ActionButton: UIButton {
             makeGradientBackground(
                 colors: colors,
                 cornerRadius: style.cornerRaidus
-            ).frame = bounds
+            )
         }
         layer.shadowPath = UIBezierPath(
             roundedRect: bounds,

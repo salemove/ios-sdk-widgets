@@ -100,7 +100,7 @@ extension Survey {
                     makeGradientBackground(
                         colors: colors,
                         cornerRadius: style.normalLayer.cornerRadius
-                    ).frame = bounds
+                    )
                 }
             } else {
                 value.backgroundColor = .clear
@@ -121,7 +121,7 @@ extension Survey {
                     makeGradientBackground(
                         colors: colors,
                         cornerRadius: style.selectedLayer.cornerRadius
-                    ).frame = bounds
+                    )
                 }
             } else {
                 value.backgroundColor = .clear
@@ -142,7 +142,7 @@ extension Survey {
                     makeGradientBackground(
                         colors: colors,
                         cornerRadius: style.highlightedLayer.cornerRadius
-                    ).frame = bounds
+                    )
                 }
             } else {
                 value.backgroundColor = .clear

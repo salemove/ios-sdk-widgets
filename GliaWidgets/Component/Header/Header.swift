@@ -65,7 +65,7 @@ class Header: UIView {
         case .fill(let color):
             backgroundColor = color
         case .gradient(let colors):
-            makeGradientBackground(colors: colors).frame = bounds
+            makeGradientBackground(colors: colors)
         }
     }
 
