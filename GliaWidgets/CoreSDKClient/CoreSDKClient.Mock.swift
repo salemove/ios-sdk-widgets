@@ -23,7 +23,9 @@ extension CoreSdkClient {
         fetchFile: { _, _, _ in },
         getCurrentEngagement: { return nil },
         fetchSiteConfigurations: { _ in },
-        submitSurveyAnswer: { _, _, _, _ in }
+        submitSurveyAnswer: { _, _, _, _ in },
+        authentication: { _ in .mock },
+        fetchChatHistory: { _ in }
     )
 }
 
@@ -320,5 +322,31 @@ extension CoreSdkClient.SalemoveError {
             error: error
         )
     }
+}
+
+extension CoreSdkClient.Authentication {
+    static let mock = Self()
+}
+
+extension CoreSdkClient.Message {
+    static func mock(
+        id: String = "id",
+        content: String = "content",
+        sender: MessageSender = .mock,
+        attachment: Attachment? = nil,
+        metadata: Metadata? = nil
+    ) -> Message {
+        .init(
+            id: id,
+            content: content,
+            sender: sender,
+            attachment: attachment,
+            metadata: metadata
+        )
+    }
+}
+
+extension MessageSender {
+    static let mock = Self.init(type: .visitor)
 }
 #endif

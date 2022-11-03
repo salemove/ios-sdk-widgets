@@ -26,6 +26,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
     private let kBubbleViewSize: CGFloat = 60.0
     private let features: Features
     private let environment: Environment
+    private let chatStorageState: () -> ChatStorageState
 
     init(
         interactor: Interactor,
@@ -33,6 +34,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
         sceneProvider: SceneProvider?,
         engagementKind: EngagementKind,
         features: Features,
+        chatStorageState: @escaping () -> ChatStorageState,
         environment: Environment
     ) {
         self.interactor = interactor
@@ -43,6 +45,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
         self.navigationPresenter = NavigationPresenter(with: navigationController)
         self.features = features
         self.environment = environment
+        self.chatStorageState = chatStorageState
         navigationController.modalPresentationStyle = .fullScreen
         navigationController.isNavigationBarHidden = true
     }
@@ -114,10 +117,24 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
         event(.maximized)
         delegate?(.started)
     }
+
+    deinit {
+        print("\(Self.self) is deallocated.")
+    }
 }
 
 extension RootCoordinator {
-    private func end() {
+    func end() {
+        defer {
+            // For now it is required that message history is cleared when engagement ends
+            // for authenticated visitor.
+            switch self.chatStorageState() {
+            case let .authenticated(authenticatedChatStorage):
+                authenticatedChatStorage.clear()
+            case .unauthenticated:
+                break
+            }
+        }
 
         let dismissGliaViewController = { [weak self] in
             self?.dismissGliaViewController(animated: true) { [weak self] in
@@ -194,6 +211,7 @@ extension RootCoordinator {
             screenShareHandler: screenShareHandler,
             isWindowVisible: isWindowVisible,
             startAction: startAction,
+            chatStorageState: self.chatStorageState,
             environment: .init(
                 chatStorage: environment.chatStorage,
                 fetchFile: environment.fetchFile,
@@ -211,7 +229,8 @@ extension RootCoordinator {
                 getCurrentEngagement: environment.getCurrentEngagement,
                 submitSurveyAnswer: environment.submitSurveyAnswer,
                 uuid: environment.uuid,
-                uiApplication: environment.uiApplication
+                uiApplication: environment.uiApplication,
+                fetchChatHistory: environment.fetchChatHistory
             )
         )
         coordinator.delegate = { [weak self] event in
@@ -296,7 +315,8 @@ extension RootCoordinator {
                 timerProviding: environment.timerProviding,
                 submitSurveyAnswer: environment.submitSurveyAnswer,
                 uuid: environment.uuid,
-                uiApplication: environment.uiApplication
+                uiApplication: environment.uiApplication,
+                fetchChatHistory: environment.fetchChatHistory
             )
         )
         coordinator.delegate = { [weak self] event in

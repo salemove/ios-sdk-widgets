@@ -21,7 +21,12 @@ extension CoreSdkClient {
         fetchFile: { _, _, _ in fail("\(Self.self).fetchFile") },
         getCurrentEngagement: { return nil },
         fetchSiteConfigurations: { _ in fail("\(Self.self).fetchSiteConfigurations") },
-        submitSurveyAnswer: { _, _, _, _ in }
+        submitSurveyAnswer: { _, _, _, _ in },
+        authentication: { _ in
+            fail("\(Self.self).authentication")
+            return .mock
+        },
+        fetchChatHistory: { _ in }
     )
 }
 

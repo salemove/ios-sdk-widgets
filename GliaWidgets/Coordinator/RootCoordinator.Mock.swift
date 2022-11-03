@@ -6,6 +6,7 @@ extension RootCoordinator {
         sceneProvider: SceneProvider? = nil,
         engagementKind: EngagementKind = .audioCall,
         features: Features = .all,
+        chatStorageState: @escaping () -> ChatStorageState,
         environment: Environment = .mock
     ) -> RootCoordinator {
         RootCoordinator(
@@ -14,6 +15,7 @@ extension RootCoordinator {
             sceneProvider: sceneProvider,
             engagementKind: engagementKind,
             features: features,
+            chatStorageState: chatStorageState,
             environment: environment
         )
     }

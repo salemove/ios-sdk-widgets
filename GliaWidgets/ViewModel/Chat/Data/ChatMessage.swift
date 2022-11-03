@@ -9,7 +9,7 @@ enum ChatMessageSender: Int, Codable {
     case unknown = 100
 
     init(with sender: CoreSdkClient.MessageSender) {
-        switch sender {
+        switch sender.type {
         case .visitor:
             self = .visitor
         case .operator:

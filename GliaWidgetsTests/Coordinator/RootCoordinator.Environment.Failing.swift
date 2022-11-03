@@ -42,6 +42,7 @@ extension RootCoordinator.Environment {
         submitSurveyAnswer: { _, _, _, _ in
             fail("\(Self.self).submitSurveyAnswer")
         },
-        uiApplication: .failing
+        uiApplication: .failing,
+        fetchChatHistory: { _ in }
     )
 }

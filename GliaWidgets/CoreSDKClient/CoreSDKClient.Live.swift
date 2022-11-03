@@ -23,7 +23,9 @@ extension CoreSdkClient {
             fetchFile: Salemove.sharedInstance.fetchFile(engagementFile:progress:completion:),
             getCurrentEngagement: Salemove.sharedInstance.getCurrentEngagement,
             fetchSiteConfigurations: Salemove.sharedInstance.fetchSiteConfiguration(_:),
-            submitSurveyAnswer: Salemove.sharedInstance.submitSurveyAnswer(_:surveyId:engagementId:completion:)
+            submitSurveyAnswer: Salemove.sharedInstance.submitSurveyAnswer(_:surveyId:engagementId:completion:),
+            authentication: Salemove.sharedInstance.authentication,
+            fetchChatHistory: Salemove.sharedInstance.fetchChatTranscript
         )
     }()
 }

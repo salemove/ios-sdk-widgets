@@ -20,6 +20,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     var pendingSection: Section<ChatItem> { sections[1] }
     var queueOperatorSection: Section<ChatItem> { sections[2] }
     var messagesSection: Section<ChatItem> { sections[3] }
+    var chatStorageState: () -> ChatStorageState
 
     private let call: ObservableValue<Call?>
     private var unreadMessages: UnreadMessagesHandler!
@@ -49,6 +50,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         isCustomCardSupported: Bool,
         isWindowVisible: ObservableValue<Bool>,
         startAction: StartAction,
+        chatStorageState: @escaping () -> ChatStorageState,
         environment: Environment
     ) {
         self.call = call
@@ -80,6 +82,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
                 createFileDownload: environment.createFileDownload
             )
         )
+        self.chatStorageState = chatStorageState
         super.init(
             interactor: interactor,
             alertConfiguration: alertConfiguration,
@@ -147,15 +150,20 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     override func start() {
         super.start()
 
-        loadHistory()
-        // At this point we need to be sure that CoreSDK is configured.
-        // This will restore engagement if one was not completed earlier.
-        // Otherwise in case of ongoing engagement, visitor will not receive
-        // messages from operator until message is sent from visitor.
-        interactor.withConfiguration { [weak self] in
-            guard let self = self else { return }
-            if case .startEngagement = self.startAction, self.environment.chatStorage.isEmpty() {
-                self.enqueue(mediaType: .text)
+        loadHistory { [weak self] in
+            // At this point we need to be sure that CoreSDK is configured.
+            // This will restore engagement if one was not completed earlier.
+            // Otherwise in case of ongoing engagement, visitor will not receive
+            // messages from operator until message is sent from visitor.
+            self?.interactor.withConfiguration { [weak self] in
+                guard let self = self else { return }
+                // We only proceed to considering enqueue flow if `startAction` is about starting of engagement.
+                guard case .startEngagement = self.startAction else { return }
+                // We enqueue eagerly in case if this is the first engagement for visitor (by  evaluating previous chat history)
+                // or in case if engagement has been restored.
+                if self.chatStorageState().isEmpty() || self.environment.getCurrentEngagement() != nil {
+                    self.enqueue(mediaType: .text)
+                }
             }
         }
     }
@@ -314,18 +322,26 @@ extension ChatViewModel {
 // MARK: History
 
 extension ChatViewModel {
-    private func loadHistory() {
-        let messages = environment.chatStorage.messages(interactor.queueID)
-        let items = messages.compactMap {
-            ChatItem(
-                with: $0,
-                isCustomCardSupported: isCustomCardSupported,
-                fromHistory: environment.loadChatMessagesFromHistory()
-            )
+    private func loadHistory(_ completion: @escaping () -> Void) {
+        environment.fetchChatHistory { [weak self] result in
+            defer { completion() }
+            guard let self = self else { return }
+            if case .success(let messages) = result {
+                self.chatStorageState().storeMessages(messages, "", nil)
+            }
+
+            let messages = self.chatStorageState().messages(self.interactor.queueID)
+            let items = messages.compactMap {
+                ChatItem(
+                    with: $0,
+                    isCustomCardSupported: self.isCustomCardSupported,
+                    fromHistory: self.environment.loadChatMessagesFromHistory()
+                )
+            }
+            self.historySection.set(items)
+            self.action?(.refreshSection(self.historySection.index))
+            self.action?(.scrollToBottom(animated: false))
         }
-        historySection.set(items)
-        action?(.refreshSection(historySection.index))
-        action?(.scrollToBottom(animated: false))
     }
 }
 
@@ -506,15 +522,15 @@ extension ChatViewModel {
     }
 
     private func receivedMessage(_ message: CoreSdkClient.Message) {
-        guard environment.chatStorage.isNewMessage(message) else { return }
+        guard chatStorageState().isNewMessage(message) else { return }
 
-        environment.chatStorage.storeMessage(
+        chatStorageState().storeMessage(
             message,
             interactor.queueID,
             interactor.engagedOperator
         )
 
-        switch message.sender {
+        switch message.sender.type {
         case .operator:
             let message = ChatMessage(
                 with: message,
@@ -546,11 +562,11 @@ extension ChatViewModel {
     }
 
     private func messagesUpdated(_ messages: [CoreSdkClient.Message]) {
-        let newMessages = environment.chatStorage.newMessages(messages)
+        let newMessages = chatStorageState().newMessages(messages)
         unreadMessages.received(newMessages.count)
 
         if !newMessages.isEmpty {
-            environment.chatStorage.storeMessages(
+            chatStorageState().storeMessages(
                 newMessages,
                 interactor.queueID,
                 interactor.engagedOperator
@@ -852,7 +868,7 @@ extension ChatViewModel {
         ))
 
         messagesSection.replaceItem(at: index, with: item)
-        environment.chatStorage.updateMessage(message)
+        chatStorageState().updateMessage(message)
 
         action?(.refreshRow(index, in: messagesSection.index, animated: true))
         action?(.setChoiceCardInputModeEnabled(false))

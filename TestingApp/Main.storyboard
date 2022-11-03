@@ -86,8 +86,19 @@
                                             <action selector="clearSessionTapped" destination="Y6W-OH-hqX" eventType="touchUpInside" id="RCf-9D-SL6"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pHy-59-v7T">
+                                        <rect key="frame" x="163" y="300" width="88" height="30"/>
+                                        <accessibility key="accessibilityConfiguration" identifier="main_endEngagement_button"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="ezp-dJ-Nup"/>
+                                        </constraints>
+                                        <state key="normal" title="Authenticate"/>
+                                        <connections>
+                                            <action selector="toggleAuthentication" destination="Y6W-OH-hqX" eventType="touchUpInside" id="ilH-Ar-YKu"/>
+                                        </connections>
+                                    </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Ys-xS-zdq">
-                                        <rect key="frame" x="126" y="300" width="162" height="30"/>
+                                        <rect key="frame" x="126" y="350" width="162" height="30"/>
                                         <accessibility key="accessibilityConfiguration" identifier="main_endEngagement_button"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="QkV-yj-Sti"/>
@@ -120,6 +131,9 @@
                             <constraint firstItem="A3Y-Xf-Ufg" firstAttribute="centerY" secondItem="5EZ-qb-Rvc" secondAttribute="centerY" id="IjI-Fr-kUn"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="toggleAuthenticateButton" destination="pHy-59-v7T" id="9rO-74-dfE"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
