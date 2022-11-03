@@ -26,7 +26,7 @@ final class OnHoldOverlayView: UIView {
         case .fill(let color):
             imageView.tintColor = color
         case .gradient(let colors):
-            imageView.makeGradientBackground(colors: colors).frame = imageView.bounds
+            imageView.makeGradientBackground(colors: colors)
         }
     }
 

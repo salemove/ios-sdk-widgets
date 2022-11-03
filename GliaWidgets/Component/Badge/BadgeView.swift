@@ -35,7 +35,7 @@ class BadgeView: UIView {
         case .fill(let color):
             backgroundColor = color
         case .gradient(let colors):
-            self.makeGradientBackground(colors: colors).frame = bounds
+            self.makeGradientBackground(colors: colors)
         }
 
         countLabel.font = style.font

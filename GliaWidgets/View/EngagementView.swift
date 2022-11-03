@@ -36,7 +36,7 @@ class EngagementView: View {
         case .fill(color: let color):
             backgroundColor = color
         case .gradient(colors: let colors):
-            makeGradientBackground(colors: colors).frame = bounds
+            makeGradientBackground(colors: colors)
         }
     }
 

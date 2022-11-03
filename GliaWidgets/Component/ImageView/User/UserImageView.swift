@@ -39,13 +39,13 @@ class UserImageView: UIView {
         case .fill(let color):
             placeholderImageView.backgroundColor = color
         case .gradient(let colors):
-            placeholderImageView.makeGradientBackground(colors: colors).frame = placeholderImageView.bounds
+            placeholderImageView.makeGradientBackground(colors: colors)
         }
         switch style.imageBackgroundColor {
         case .fill(let color):
             operatorImageView.backgroundColor = color
         case .gradient(let colors):
-            operatorImageView.makeGradientBackground(colors: colors).frame = operatorImageView.bounds
+            operatorImageView.makeGradientBackground(colors: colors)
         }
     }
 
