@@ -217,11 +217,11 @@ extension CallStyle {
     private func applyTopTextConfiguration(_ topText: RemoteConfiguration.Text?) {
 
         topText?.alignment.map { _ in
-            /// The logic for topText alignment has not been implemented
+            // The logic for topText alignment has not been implemented
         }
 
         topText?.background.map { _ in
-            /// The logic for topText background has not been implemented
+            // The logic for topText background has not been implemented
         }
 
         UIFont.convertToFont(
@@ -239,11 +239,11 @@ extension CallStyle {
     private func applyDurationConfiguration(_ duration: RemoteConfiguration.Text?) {
 
         duration?.alignment.map { _ in
-            /// The logic for duration alignment has not been implemented
+            // The logic for duration alignment has not been implemented
         }
 
         duration?.background.map { _ in
-            /// The logic for duration background has not been implemented
+            // The logic for duration background has not been implemented
         }
 
         UIFont.convertToFont(

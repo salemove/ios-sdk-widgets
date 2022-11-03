@@ -41,7 +41,7 @@ extension Theme {
             }
 
             configuration?.background.map { _ in
-            /// The logic for normal text background has not been implemented
+                // The logic for normal text background has not been implemented
             }
 
             UIFont.convertToFont(
