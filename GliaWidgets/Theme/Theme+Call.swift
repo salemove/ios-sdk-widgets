@@ -7,7 +7,7 @@ extension Theme {
 
         let onHoldOverlay = OnHoldOverlayStyle(
             image: Asset.callOnHold.image,
-            imageColor: .fill(color: color.primary),
+            imageColor: .fill(color: .white),
             imageSize: .init(width: 40, height: 40)
         )
         let backButton = HeaderButtonStyle(
@@ -149,7 +149,7 @@ extension Theme {
         return CallStyle(
             header: header,
             connect: connect,
-            backgroundColor: .fill(color: color.primary),
+            backgroundColor: .fill(color: .white),
             preferredStatusBarStyle: .lightContent,
             audioTitle: Call.Audio.title,
             videoTitle: Call.Video.title,

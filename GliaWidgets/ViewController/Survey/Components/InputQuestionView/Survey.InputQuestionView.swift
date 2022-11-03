@@ -77,9 +77,9 @@ extension Survey {
                 style.option.normalLayer.borderWidth
             if let backgroundColor = style.background.background {
                 switch backgroundColor {
-                case .fill(color: let color):
+                case .fill(let color):
                     textView.backgroundColor = color
-                case .gradient(colors: let colors):
+                case .gradient(let colors):
                     textView.layer.insertSublayer(makeGradientBackground(colors: colors), at: 0)
                 }
             }
