@@ -95,7 +95,9 @@ class ViewController: UIViewController {
         )
         let action: (String) -> UIAlertAction = { fileName in
             UIAlertAction(title: fileName, style: .default) { [weak self, weak alert] _ in
-                self?.applyRemoteConfig(with: fileName)
+                self?.showEngagementKindActionSheet { kind in
+                    self?.startEngagement(with: kind, config: fileName)
+                }
                 alert?.dismiss(animated: true)
             }
         }
@@ -185,7 +187,9 @@ extension ViewController {
         }
     }
 
-    func applyRemoteConfig(with name: String) {
+    /// Shows alert with engagement kinds.
+    /// - Parameter completion: Completion handler to be called on engagement kind selection.
+    func showEngagementKindActionSheet(completion: @escaping (EngagementKind) -> Void) {
         let data: [(EngagementKind, String)] = [
             (.chat, "Chat"),
             (.audioCall, "Audio"),
@@ -197,8 +201,8 @@ extension ViewController {
             preferredStyle: .actionSheet
         )
         let action: ((kind: EngagementKind, title: String)) -> UIAlertAction = { data  in
-            UIAlertAction(title: data.title, style: .default) { [weak self, weak alert] _ in
-                self?.startEngagement(with: data.kind, config: name)
+            UIAlertAction(title: data.title, style: .default) { [weak alert] _ in
+                completion(data.kind)
                 alert?.dismiss(animated: true)
             }
         }
@@ -380,8 +384,7 @@ extension ViewController {
             try throwing()
         } catch let error as SalemoveError {
             self.alert(message: error.reason)
-        }
-        catch let error as ConfigurationError {
+        } catch let error as ConfigurationError {
             self.alert(message: "Configuration error: '\(error)'.")
         } catch {
             self.alert(message: error.localizedDescription)
