@@ -8,6 +8,9 @@ public struct HeaderStyle {
     /// Color of the title text.
     public var titleColor: UIColor
 
+    /// Text style of the title text.
+    public var textStyle: UIFont.TextStyle
+
     /// Background color of the view.
     public var backgroundColor: ColorType
 
@@ -41,6 +44,7 @@ public struct HeaderStyle {
         titleFont: UIFont,
         titleColor: UIColor,
         backgroundColor: ColorType,
+        textStyle: UIFont.TextStyle = .title2,
         backButton: HeaderButtonStyle,
         closeButton: HeaderButtonStyle,
         endButton: ActionButtonStyle,
@@ -49,6 +53,7 @@ public struct HeaderStyle {
     ) {
         self.titleFont = titleFont
         self.titleColor = titleColor
+        self.textStyle = textStyle
         self.backgroundColor = backgroundColor
         self.backButton = backButton
         self.closeButton = closeButton
@@ -71,13 +76,35 @@ public struct HeaderStyle {
             }
         }
 
-        configuration?.text?.font?.size
-            .map { titleFont = Font.regular($0) }
+        UIFont.convertToFont(
+            font: configuration?.text?.font,
+            textStyle: textStyle
+        ).map { titleFont = $0 }
 
         configuration?.text?.foreground?.value
             .map { UIColor(hex: $0) }
             .first
             .map { titleColor = $0 }
+
+        configuration?.background?.border.map { _ in
+            // The logic for header border has not been implemented
+        }
+
+        configuration?.background?.borderWidth.map { _ in
+            // The logic for header borderWidth has not been implemented
+        }
+
+        configuration?.background?.cornerRadius.map { _ in
+            // The logic for header cornerRadius has not been implemented
+        }
+
+        configuration?.text?.alignment.map { _ in
+            // The logic for title alignment has not been implemented
+        }
+
+        configuration?.text?.background.map { _ in
+            // The logic for title background has not been implemented
+        }
 
         backButton.apply(configuration: configuration?.backButton)
         closeButton.apply(configuration: configuration?.closeButton)

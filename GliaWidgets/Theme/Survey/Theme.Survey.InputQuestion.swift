@@ -23,12 +23,14 @@ public extension Theme.SurveyStyle {
             .init(
                 title: .init(
                     color: color.baseDark.hex,
-                    font: font.mediumSubtitle1
+                    font: font.mediumSubtitle1,
+                    textStyle: .subheadline
                 ),
                 option: .init(
                     normalText: .init(
                         color: color.baseDark.hex,
-                        font: font.bodyText
+                        font: font.bodyText,
+                        textStyle: .body
                     ),
                     normalLayer: .init(
                         borderColor: color.baseNormal.cgColor,
@@ -37,7 +39,8 @@ public extension Theme.SurveyStyle {
                     ),
                     selectedText: .init(
                         color: color.baseLight.hex,
-                        font: font.bodyText
+                        font: font.bodyText,
+                        textStyle: .body
                     ),
                     selectedLayer: .init(
                         background: .fill(color: color.primary),
@@ -47,7 +50,8 @@ public extension Theme.SurveyStyle {
                     ),
                     highlightedText: .init(
                         color: color.systemNegative.hex,
-                        font: font.bodyText
+                        font: font.bodyText,
+                        textStyle: .body
                     ),
                     highlightedLayer: .init(
                         borderColor: color.systemNegative.cgColor,
@@ -55,6 +59,7 @@ public extension Theme.SurveyStyle {
                         cornerRadius: 4
                     ),
                     font: font.caption,
+                    textStyle: .caption1,
                     accessibility: .init(isFontScalingEnabled: true)
                 ),
                 background: Theme.Layer(
@@ -65,7 +70,8 @@ public extension Theme.SurveyStyle {
                 ),
                 text: .init(
                     color: color.baseDark.hex,
-                    font: font.subtitle
+                    font: font.subtitle,
+                    textStyle: .footnote
                 ),
                 error: .default(color: color, font: font),
                 accessibility: .init(isFontScalingEnabled: true)

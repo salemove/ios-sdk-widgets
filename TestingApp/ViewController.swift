@@ -95,7 +95,9 @@ class ViewController: UIViewController {
         )
         let action: (String) -> UIAlertAction = { fileName in
             UIAlertAction(title: fileName, style: .default) { [weak self, weak alert] _ in
-                self?.applyRemoteConfig(with: fileName)
+                self?.showEngagementKindActionSheet { kind in
+                    self?.startEngagement(with: kind, config: fileName)
+                }
                 alert?.dismiss(animated: true)
             }
         }
@@ -180,12 +182,36 @@ extension ViewController {
 
     func updateConfiguration(with queryItems: [URLQueryItem]) {
         Configuration(queryItems: queryItems).map { configuration = $0 }
-        queryItems.first(where: { $0.name == "queue_id"})?.value.map {
+        queryItems.first(where: { $0.name == "queue_id" })?.value.map {
             queueId = $0
         }
     }
 
-    func applyRemoteConfig(with name: String) {
+    /// Shows alert with engagement kinds.
+    /// - Parameter completion: Completion handler to be called on engagement kind selection.
+    func showEngagementKindActionSheet(completion: @escaping (EngagementKind) -> Void) {
+        let data: [(EngagementKind, String)] = [
+            (.chat, "Chat"),
+            (.audioCall, "Audio"),
+            (.videoCall, "Video")
+        ]
+        let alert = UIAlertController(
+            title: "Choose engagement type",
+            message: nil,
+            preferredStyle: .actionSheet
+        )
+        let action: ((kind: EngagementKind, title: String)) -> UIAlertAction = { data  in
+            UIAlertAction(title: data.title, style: .default) { [weak alert] _ in
+                completion(data.kind)
+                alert?.dismiss(animated: true)
+            }
+        }
+        data.map(action).forEach(alert.addAction)
+        alert.addAction(.init(title: "Cancel", style: .cancel))
+        present(alert, animated: true)
+    }
+
+    private func startEngagement(with kind: EngagementKind, config name: String) {
         try? Glia.sharedInstance.configure(
             with: configuration,
             queueId: queueId,
@@ -199,7 +225,7 @@ extension ViewController {
         else { return }
 
         try? Glia.sharedInstance.startEngagementWithConfig(
-            engagement: .chat,
+            engagement: kind,
             uiConfig: config
         )
     }
@@ -358,8 +384,7 @@ extension ViewController {
             try throwing()
         } catch let error as SalemoveError {
             self.alert(message: error.reason)
-        }
-        catch let error as ConfigurationError {
+        } catch let error as ConfigurationError {
             self.alert(message: "Configuration error: '\(error)'.")
         } catch {
             self.alert(message: error.localizedDescription)

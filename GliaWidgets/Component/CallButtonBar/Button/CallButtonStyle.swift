@@ -22,6 +22,9 @@ public struct CallButtonStyle {
         /// Color of the title.
         public var titleColor: UIColor
 
+        /// Text style of the title.
+        public var textStyle: UIFont.TextStyle
+
         /// Accessibility related properties.
         public var accessibility: Accessibility
     }
@@ -83,9 +86,10 @@ extension CallButtonStyle.StateStyle {
             /// The logic for title background has not been implemented
         }
 
-        UIFont.convertToFont(font: configuration?.title?.font).map {
-            titleFont = $0
-        }
+        UIFont.convertToFont(
+            font: configuration?.title?.font,
+            textStyle: textStyle
+        ).map { titleFont = $0 }
 
         configuration?.title?.foreground.map {
             $0.value
