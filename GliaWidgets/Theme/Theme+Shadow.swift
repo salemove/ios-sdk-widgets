@@ -22,21 +22,19 @@ extension Theme {
 
         /// Apply shadow configuration
         mutating func apply(configuration: RemoteConfiguration.Shadow?) {
-            configuration?.color.map {
-                $0.value
-                    .first
-                    .map { color = $0 }
-            }
+            configuration?.color?.value
+                .first
+                .unwrap { color = $0 }
 
-            configuration?.offset.map {
+            configuration?.offset.unwrap {
                 offset = CGSize(width: $0, height: $0)
             }
 
-            configuration?.opacity.map {
+            configuration?.opacity.unwrap {
                 opacity = Float($0)
             }
 
-            configuration?.radius.map {
+            configuration?.radius.unwrap {
                 radius = $0
             }
         }

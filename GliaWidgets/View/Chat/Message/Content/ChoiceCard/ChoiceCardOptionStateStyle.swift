@@ -37,24 +37,24 @@ public final class ChoiceCardOptionStateStyle: ChatTextContentStyle {
         configuration?.background?.color?.value
             .map { UIColor(hex: $0) }
             .first
-            .map { backgroundColor = $0 }
+            .unwrap { backgroundColor = $0 }
 
         configuration?.background?.border?.value
             .map { UIColor(hex: $0) }
             .first
-            .map { borderColor = $0 }
+            .unwrap { borderColor = $0 }
 
         configuration?.background?.borderWidth
-            .map { borderWidth = $0 }
+            .unwrap { borderWidth = $0 }
 
         configuration?.text?.foreground?.value
             .map { UIColor(hex: $0) }
             .first
-            .map { textColor = $0 }
+            .unwrap { textColor = $0 }
 
         UIFont.convertToFont(
             font: configuration?.text?.font,
             textStyle: textStyle
-        ).map { textFont = $0 }
+        ).unwrap { textFont = $0 }
     }
 }

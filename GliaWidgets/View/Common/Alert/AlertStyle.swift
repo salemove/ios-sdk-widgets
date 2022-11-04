@@ -111,47 +111,41 @@ private extension AlertStyle {
         UIFont.convertToFont(
             font: configuration?.font,
             textStyle: titleTextStyle
-        ).map { titleFont = $0 }
+        ).unwrap { titleFont = $0 }
 
-        configuration?.foreground.map {
-            $0.value
-                .map { UIColor(hex: $0) }
-                .first
-                .map { titleColor = $0 }
-        }
+        configuration?.foreground?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .unwrap { titleColor = $0 }
     }
 
     mutating func applyTitleImageConfiguration(_ configuration: RemoteConfiguration.Color?) {
-        configuration.map {
-            $0.value
-                .map { UIColor(hex: $0) }
-                .first
-                .map { titleImageColor = $0 }
-        }
+        configuration?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .unwrap { titleImageColor = $0 }
     }
 
     mutating func applyMessageConfiguration(_ configuration: RemoteConfiguration.Text?) {
         UIFont.convertToFont(
             font: configuration?.font,
             textStyle: messageTextStyle
-        ).map { messageFont = $0 }
+        ).unwrap { messageFont = $0 }
 
-        configuration?.foreground.map {
-            $0.value
-                .map { UIColor(hex: $0) }
-                .first
-                .map { messageColor = $0 }
-        }
+        configuration?.foreground?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .unwrap { messageColor = $0 }
     }
 
     mutating func applyBackgroundConfiguration(_ configuration: RemoteConfiguration.Color?) {
-        configuration.map {
+        configuration.unwrap {
             switch $0.type {
             case .fill:
                 $0.value
                     .map { UIColor(hex: $0) }
                     .first
-                    .map { backgroundColor = .fill(color: $0) }
+                    .unwrap { backgroundColor = .fill(color: $0) }
             case .gradient:
                 let colors = $0.value.convertToCgColors()
                 backgroundColor = .gradient(colors: colors)
@@ -160,7 +154,7 @@ private extension AlertStyle {
     }
 
     mutating func applyButtonAxisConfiguration(_ configuration: RemoteConfiguration.Axis?) {
-        configuration.map { axis in
+        configuration.unwrap { axis in
             switch axis {
             case .horizontal:
                 actionAxis = .horizontal
@@ -171,13 +165,13 @@ private extension AlertStyle {
     }
 
     mutating func applyCloseButtonConfiguration(_ configuration: RemoteConfiguration.Color?) {
-        configuration.map {
+        configuration.unwrap {
             switch $0.type {
             case .fill:
                 $0.value
                     .map { UIColor(hex: $0) }
                     .first
-                    .map { closeButtonColor = .fill(color: $0) }
+                    .unwrap { closeButtonColor = .fill(color: $0) }
             case .gradient:
                 let colors = $0.value.convertToCgColors()
                 closeButtonColor = .gradient(colors: colors)

@@ -103,42 +103,42 @@ public struct ChatMessageEntryStyle {
         configuration?.background?.color?.value
             .map { UIColor(hex: $0) }
             .first
-            .map { backgroundColor = $0 }
+            .unwrap { backgroundColor = $0 }
 
         configuration?.text?.foreground?.value
             .map { UIColor(hex: $0) }
             .first
-            .map { messageColor = $0 }
+            .unwrap { messageColor = $0 }
 
         UIFont.convertToFont(
             font: configuration?.text?.font,
             textStyle: messageTextStyle
-        ).map { messageFont = $0 }
+        ).unwrap { messageFont = $0 }
 
         configuration?.placeholder?.foreground?.value
             .map { UIColor(hex: $0) }
             .first
-            .map { placeholderColor = $0 }
+            .unwrap { placeholderColor = $0 }
 
         UIFont.convertToFont(
             font: configuration?.placeholder?.font,
             textStyle: placeholderTextStyle
-        ).map { placeholderFont = $0 }
+        ).unwrap { placeholderFont = $0 }
 
         configuration?.separator?.value
             .map { UIColor(hex: $0) }
             .first
-            .map { separatorColor = $0 }
+            .unwrap { separatorColor = $0 }
 
         configuration?.mediaButton?.tintColor?.value
             .map { UIColor(hex: $0) }
             .first
-            .map { mediaButton.color = $0 }
+            .unwrap { mediaButton.color = $0 }
 
         configuration?.sendButton?.tintColor?.value
             .map { UIColor(hex: $0) }
             .first
-            .map { sendButton.color = $0 }
+            .unwrap { sendButton.color = $0 }
 
         uploadList.apply(configuration: configuration?.fileUploadBar)
     }

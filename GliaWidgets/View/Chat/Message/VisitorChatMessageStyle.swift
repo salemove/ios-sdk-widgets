@@ -52,12 +52,12 @@ public class VisitorChatMessageStyle: ChatMessageStyle {
 
     func apply(configuration: RemoteConfiguration.MessageBalloon?) {
         configuration?.background?.cornerRadius
-            .map { text.cornerRadius = $0 }
+            .unwrap { text.cornerRadius = $0 }
 
         configuration?.background?.color?.value
             .map { UIColor(hex: $0) }
             .first
-            .map {
+            .unwrap {
                 text.backgroundColor = $0
                 imageFile.backgroundColor = $0
             }
@@ -65,22 +65,22 @@ public class VisitorChatMessageStyle: ChatMessageStyle {
         UIFont.convertToFont(
             font: configuration?.text?.font,
             textStyle: text.textStyle
-        ).map { text.textFont = $0 }
+        ).unwrap { text.textFont = $0 }
 
         configuration?.text?.foreground?.value
             .map { UIColor(hex: $0) }
             .first
-            .map { text.textColor = $0 }
+            .unwrap { text.textColor = $0 }
 
         UIFont.convertToFont(
             font: configuration?.status?.font,
             textStyle: statusTextStyle
-        ).map { statusFont = $0 }
+        ).unwrap { statusFont = $0 }
 
         configuration?.status?.foreground?.value
             .map { UIColor(hex: $0) }
             .first
-            .map { statusColor = $0 }
+            .unwrap { statusColor = $0 }
 
         fileDownload.apply(configuration: configuration?.file)
     }
