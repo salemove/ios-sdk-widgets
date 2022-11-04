@@ -11,6 +11,9 @@ public struct ActionButtonStyle {
     /// Color of the title.
     public var titleColor: UIColor
 
+    /// Text style of the title.
+    public var textStyle: UIFont.TextStyle
+
     /// Background color of the button.
     public var backgroundColor: UIColor
 
@@ -57,6 +60,7 @@ public struct ActionButtonStyle {
         title: String,
         titleFont: UIFont,
         titleColor: UIColor,
+        textStyle: UIFont.TextStyle = .body,
         backgroundColor: UIColor,
         cornerRaidus: CGFloat? = 4.0,
         shadowOffset: CGSize? = CGSize(width: 0.0, height: 2.0),
@@ -70,6 +74,7 @@ public struct ActionButtonStyle {
         self.title = title
         self.titleFont = titleFont
         self.titleColor = titleColor
+        self.textStyle = textStyle
         self.backgroundColor = backgroundColor
         self.cornerRaidus = cornerRaidus
         self.shadowOffset = shadowOffset
@@ -83,18 +88,34 @@ public struct ActionButtonStyle {
 
     /// Apply Button from remote configuration
     mutating func apply(configuration: RemoteConfiguration.Button?) {
-        configuration?.text?.font?.size
-            .map { titleFont = Font.regular($0) }
+        UIFont.convertToFont(
+            font: configuration?.text?.font,
+            textStyle: textStyle
+        ).map { titleFont = $0 }
+
+        configuration?.text?.alignment.map { _ in
+            // The logic for duration alignment has not been implemented
+        }
+
+        configuration?.text?.background.map { _ in
+            // The logic for duration background has not been implemented
+        }
 
         configuration?.text?.foreground?.value
             .map(UIColor.init(hex:))
             .first
             .map { titleColor = $0 }
 
-        configuration?.background?.color?.value
-            .map(UIColor.init(hex:))
-            .first
-            .map { backgroundColor = $0 }
+        switch configuration?.background?.color?.type {
+        case .fill:
+            configuration?.background?.color?.value
+                .map(UIColor.init(hex:))
+                .first
+                .map { backgroundColor = $0 }
+        case .gradient, .none:
+            // The logic for gradient has not been implemented
+            break
+        }
 
         configuration?.background?.cornerRadius
             .map { cornerRaidus = $0 }

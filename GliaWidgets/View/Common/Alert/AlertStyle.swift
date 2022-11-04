@@ -8,6 +8,9 @@ public struct AlertStyle {
     /// Color of the title text.
     public var titleColor: UIColor
 
+    /// Text style of the title text.
+    public var titleTextStyle: UIFont.TextStyle
+
     /// Color of the title image.
     public var titleImageColor: UIColor
 
@@ -16,6 +19,9 @@ public struct AlertStyle {
 
     /// Color of the message text.
     public var messageColor: UIColor
+
+    /// Text style of the message text.
+    public var messageTextStyle: UIFont.TextStyle
 
     /// Background color of the view.
     public var backgroundColor: UIColor
@@ -42,9 +48,11 @@ public struct AlertStyle {
     /// - Parameters:
     ///   - titleFont: Font of the title text.
     ///   - titleColor: Color of the title text.
+    ///   - titleTextStyle: Text style of the title text.
     ///   - titleImageColor: Color of the title image.
     ///   - messageFont: Font of the message text.
     ///   - messageColor: Color of the message text.
+    ///   - messageTextStyle: Text style of the message text.
     ///   - backgroundColor: Background color of the view.
     ///   - closeButtonColor: Color of the close button.
     ///   - actionAxis: Direction of the action buttons.
@@ -56,9 +64,11 @@ public struct AlertStyle {
     public init(
         titleFont: UIFont,
         titleColor: UIColor,
+        titleTextStyle: UIFont.TextStyle = .title2,
         titleImageColor: UIColor,
         messageFont: UIFont,
         messageColor: UIColor,
+        messageTextStyle: UIFont.TextStyle = .body,
         backgroundColor: UIColor,
         closeButtonColor: UIColor,
         actionAxis: NSLayoutConstraint.Axis,
@@ -69,9 +79,11 @@ public struct AlertStyle {
     ) {
         self.titleFont = titleFont
         self.titleColor = titleColor
+        self.titleTextStyle = titleTextStyle
         self.titleImageColor = titleImageColor
         self.messageFont = messageFont
         self.messageColor = messageColor
+        self.messageTextStyle = messageTextStyle
         self.backgroundColor = backgroundColor
         self.closeButtonColor = closeButtonColor
         self.actionAxis = actionAxis
@@ -96,7 +108,7 @@ public struct AlertStyle {
                 .first
                 .map { closeButtonColor = $0 }
         case .gradient, .none:
-            /// The logic for gradient has not been implemented
+            // The logic for gradient has not been implemented
             break
         }
 
@@ -116,7 +128,7 @@ public struct AlertStyle {
                 .first
                 .map { backgroundColor = $0 }
         case .gradient, .none:
-            /// The logic for gradient has not been implemented
+            // The logic for gradient has not been implemented
             break
         }
     }
@@ -127,8 +139,10 @@ public struct AlertStyle {
 private extension AlertStyle {
 
     mutating func applyTitleConfiguration(_ configuration: RemoteConfiguration.Text?) {
-        UIFont.convertToFont(font: configuration?.font)
-            .map { titleFont = $0 }
+        UIFont.convertToFont(
+            font: configuration?.font,
+            textStyle: titleTextStyle
+        ).map { titleFont = $0 }
 
         switch configuration?.foreground?.type {
         case .fill:
@@ -137,7 +151,7 @@ private extension AlertStyle {
                 .first
                 .map { titleColor = $0 }
         case .gradient, .none:
-            /// The logic for gradient has not been implemented
+            // The logic for gradient has not been implemented
             break
         }
     }
@@ -150,14 +164,16 @@ private extension AlertStyle {
                 .first
                 .map { titleImageColor = $0 }
         case .gradient, .none:
-            /// The logic for gradient has not been implemented
+            // The logic for gradient has not been implemented
             break
         }
     }
 
     mutating func applyMessageConfiguration(_ configuration: RemoteConfiguration.Text?) {
-        UIFont.convertToFont(font: configuration?.font)
-            .map { messageFont = $0 }
+        UIFont.convertToFont(
+            font: configuration?.font,
+            textStyle: messageTextStyle
+        ).map { messageFont = $0 }
 
         switch configuration?.foreground?.type {
         case .fill:
@@ -166,7 +182,7 @@ private extension AlertStyle {
                 .first
                 .map { messageColor = $0 }
         case .gradient, .none:
-            /// The logic for gradient has not been implemented
+            // The logic for gradient has not been implemented
             break
         }
     }

@@ -64,14 +64,15 @@ extension Theme.SurveyStyle {
             ),
             title: .init(
                 color: color.baseNormal.hex,
-                font: font.header2
+                font: font.header2,
+                textStyle: .title2
             ),
             submitButton: .init(
-                acitonButtonStyle: alertStyle.positiveAction,
+                actionButtonStyle: alertStyle.positiveAction,
                 accessibility: .init(label: L10n.Survey.Accessibility.Footer.SubmitButton.label)
             ),
             cancellButton: .init(
-                acitonButtonStyle: alertStyle.negativeAction,
+                actionButtonStyle: alertStyle.negativeAction,
                 accessibility: .init(label: L10n.Survey.Accessibility.Footer.CancelButton.label)
             ),
             booleanQuestion: .default(color: color, font: font),

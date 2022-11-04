@@ -10,6 +10,9 @@ public class FilePreviewStyle {
     /// Color of the file extension label text.
     public var fileColor: UIColor
 
+    /// Text style of the file extension label text.
+    public var fileTextStyle: UIFont.TextStyle
+
     /// Icon of the error state.
     public var errorIcon: UIImage
 
@@ -32,6 +35,7 @@ public class FilePreviewStyle {
     /// - Parameters:
     ///   - fileFont: Font of the file extension label text.
     ///   - fileColor: Color of the file extension label text.
+    ///   - fileTextStyle: Text style of the file extension label text.
     ///   - errorIcon: Icon of the error state.
     ///   - errorIconColor: Color of the error icon.
     ///   - backgroundColor: Background color of the view.
@@ -42,6 +46,7 @@ public class FilePreviewStyle {
     public init(
         fileFont: UIFont,
         fileColor: UIColor,
+        fileTextStyle: UIFont.TextStyle = .footnote,
         errorIcon: UIImage,
         errorIconColor: UIColor,
         backgroundColor: UIColor,
@@ -51,6 +56,7 @@ public class FilePreviewStyle {
     ) {
         self.fileFont = fileFont
         self.fileColor = fileColor
+        self.fileTextStyle = fileTextStyle
         self.errorIcon = errorIcon
         self.errorIconColor = errorIconColor
         self.backgroundColor = backgroundColor
@@ -78,8 +84,10 @@ public class FilePreviewStyle {
             .first
             .map { fileColor = $0 }
 
-        configuration?.text?.font?.size
-            .map { fileFont = Font.regular($0) }
+        UIFont.convertToFont(
+            font: configuration?.text?.font,
+            textStyle: fileTextStyle
+        ).map { fileFont = $0 }
 
         configuration?.errorIcon?.value
             .map { UIColor(hex: $0) }

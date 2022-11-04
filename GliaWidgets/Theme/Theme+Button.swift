@@ -40,23 +40,24 @@ extension Theme {
         }
 
         public init(
-            acitonButtonStyle: ActionButtonStyle,
+            actionButtonStyle: ActionButtonStyle,
             accessibility: Accessibility
         ) {
-            self.background = acitonButtonStyle.backgroundColor == .clear ? nil : acitonButtonStyle.backgroundColor.hex
+            self.background = actionButtonStyle.backgroundColor == .clear ? nil : actionButtonStyle.backgroundColor.hex
             self.title = .init(
-                color: acitonButtonStyle.titleColor.hex,
-                font: acitonButtonStyle.titleFont
+                color: actionButtonStyle.titleColor.hex,
+                font: actionButtonStyle.titleFont,
+                textStyle: actionButtonStyle.textStyle
             )
-            self.cornerRadius = acitonButtonStyle.cornerRaidus ?? 0
-            self.borderWidth = acitonButtonStyle.borderWidth ?? 0
-            self.borderColor = acitonButtonStyle.borderColor?.hex
+            self.cornerRadius = actionButtonStyle.cornerRaidus ?? 0
+            self.borderWidth = actionButtonStyle.borderWidth ?? 0
+            self.borderColor = actionButtonStyle.borderColor?.hex
 
             self.shadow = .init(
-                color: acitonButtonStyle.shadowColor?.hex ?? Shadow.standard.color,
-                offset: acitonButtonStyle.shadowOffset ?? Shadow.standard.offset,
-                opacity: acitonButtonStyle.shadowOpacity ?? Shadow.standard.opacity,
-                radius: acitonButtonStyle.shadowRadius ?? Shadow.standard.radius
+                color: actionButtonStyle.shadowColor?.hex ?? Shadow.standard.color,
+                offset: actionButtonStyle.shadowOffset ?? Shadow.standard.offset,
+                opacity: actionButtonStyle.shadowOpacity ?? Shadow.standard.opacity,
+                radius: actionButtonStyle.shadowRadius ?? Shadow.standard.radius
             )
             self.accessibility = accessibility
         }
@@ -76,9 +77,7 @@ extension Theme {
                     .first
                     .map { self.background = $0 }
             case .gradient, .none:
-
-            /// The logic for gradient has not been implemented
-
+                // The logic for gradient has not been implemented
                 break
             }
 
@@ -96,9 +95,7 @@ extension Theme {
                     .first
                     .map { borderColor = $0 }
             case .gradient, .none:
-
-            /// The logic for gradient has not been implemented
-
+                // The logic for gradient has not been implemented
                 break
             }
         }

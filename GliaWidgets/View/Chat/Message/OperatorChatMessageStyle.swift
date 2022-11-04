@@ -38,8 +38,10 @@ public class OperatorChatMessageStyle: ChatMessageStyle {
                 imageFile.backgroundColor = $0
             }
 
-        configuration?.text?.font?.size
-            .map { text.textFont = Font.regular($0) }
+        UIFont.convertToFont(
+            font: configuration?.text?.font,
+            textStyle: text.textStyle
+        ).map { text.textFont = $0 }
 
         configuration?.text?.foreground?.value
             .map { UIColor(hex: $0) }

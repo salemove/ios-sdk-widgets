@@ -22,6 +22,9 @@ public struct CallButtonStyle {
         /// Color of the title.
         public var titleColor: UIColor
 
+        /// Text style of the title.
+        public var textStyle: UIFont.TextStyle
+
         /// Accessibility related properties.
         public var accessibility: Accessibility
     }
@@ -56,9 +59,7 @@ extension CallButtonStyle.StateStyle {
                 .first
                 .map { backgroundColor = $0 }
         case .gradient, .none:
-
-            /// The logic for gradient has not been implemented yet
-
+            // The logic for gradient has not been implemented yet
             break
         }
 
@@ -69,27 +70,22 @@ extension CallButtonStyle.StateStyle {
                 .first
                 .map { imageColor = $0 }
         case .gradient, .none:
-
-            /// The logic for gradient has not been implemented yet
-
+            // The logic for gradient has not been implemented yet
             break
         }
 
         configuration?.title?.alignment.map { _ in
-
-            /// The logic for title alignment has not been implemented
-
+            // The logic for title alignment has not been implemented
         }
 
         configuration?.title?.background.map { _ in
-
-            /// The logic for title background has not been implemented
-
+            // The logic for title background has not been implemented
         }
 
-        UIFont.convertToFont(font: configuration?.title?.font).map {
-            titleFont = $0
-        }
+        UIFont.convertToFont(
+            font: configuration?.title?.font,
+            textStyle: textStyle
+        ).map { titleFont = $0 }
 
         switch configuration?.title?.foreground?.type {
         case .fill:
@@ -98,9 +94,7 @@ extension CallButtonStyle.StateStyle {
                 .first
                 .map { titleColor = $0 }
         case .gradient, .none:
-
-            /// The logic for gradient has not been implemented yet
-
+            // The logic for gradient has not been implemented yet
             break
         }
     }

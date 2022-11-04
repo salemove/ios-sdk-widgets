@@ -8,6 +8,8 @@ extension Theme {
         public var color: String
         /// Font.
         public var font: UIFont
+        /// Text style.
+        public var textStyle: UIFont.TextStyle
 
         /// Text aligmment.
         public var alignment: NSTextAlignment
@@ -16,10 +18,12 @@ extension Theme {
         public init(
             color: String,
             font: UIFont,
+            textStyle: UIFont.TextStyle,
             alignment: NSTextAlignment = .center
         ) {
             self.color = color
             self.font = font
+            self.textStyle = textStyle
             self.alignment = alignment
         }
 
@@ -37,22 +41,19 @@ extension Theme {
             }
 
             configuration?.background.map { _ in
-
-            /// The logic for normal text background has not been implemented
-
+                // The logic for normal text background has not been implemented
             }
 
-            UIFont.convertToFont(font: configuration?.font).map {
-                font = $0
-            }
+            UIFont.convertToFont(
+                font: configuration?.font,
+                textStyle: textStyle
+            ).map { font = $0 }
 
             switch configuration?.foreground?.type {
             case .fill:
                 configuration?.foreground?.value.first.map { color = $0 }
             case .gradient, .none:
-
-            /// The logic for gradient has not been implemented
-
+                // The logic for gradient has not been implemented
                 break
             }
         }

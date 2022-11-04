@@ -14,6 +14,9 @@ public class AttachmentSourceItemStyle {
     /// Color of the title.
     public var titleColor: UIColor
 
+    /// Text style of the title.
+    public var titleTextStyle: UIFont.TextStyle
+
     /// Icon of the item. Default is one of three icons (Take Photo, Photo Library or Browse) corresponding to the kind of attachment.
     public var icon: UIImage?
 
@@ -29,6 +32,7 @@ public class AttachmentSourceItemStyle {
     ///   - title: Title of the attachment source list item (e.g. "Take Photo").
     ///   - titleFont: Font of the title. Default is `bodyText`, i.e. Roboto Regular 16.
     ///   - titleColor: Color of the title.
+    ///   - titleTextStyle: Text style of the title.
     ///   - icon: Icon of the item. Default is one of three icons (Take Photo, Photo Library or Browse) corresponding to the kind of attachment.
     ///   - iconColor: Color of the icon.
     ///   - accessibility: Accessibility related properties.
@@ -38,6 +42,7 @@ public class AttachmentSourceItemStyle {
         title: String,
         titleFont: UIFont,
         titleColor: UIColor,
+        titleTextStyle: UIFont.TextStyle = .body,
         icon: UIImage?,
         iconColor: UIColor?,
         accessibility: Accessibility = .unsupported
@@ -46,6 +51,7 @@ public class AttachmentSourceItemStyle {
         self.title = title
         self.titleFont = titleFont
         self.titleColor = titleColor
+        self.titleTextStyle = titleTextStyle
         self.icon = icon
         self.iconColor = iconColor
         self.accessibility = accessibility
@@ -62,7 +68,9 @@ public class AttachmentSourceItemStyle {
             .first
             .map { titleColor = $0 }
 
-        configuration?.text?.font?.size
-            .map { titleFont = Font.regular($0) }
+        UIFont.convertToFont(
+            font: configuration?.text?.font,
+            textStyle: titleTextStyle
+        ).map { titleFont = $0 }
     }
 }

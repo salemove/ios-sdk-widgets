@@ -52,7 +52,9 @@ public final class ChoiceCardOptionStateStyle: ChatTextContentStyle {
             .first
             .map { textColor = $0 }
 
-        configuration?.text?.font?.size
-            .map { textFont = Font.regular($0) }
+        UIFont.convertToFont(
+            font: configuration?.text?.font,
+            textStyle: textStyle
+        ).map { textFont = $0 }
     }
 }
