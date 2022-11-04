@@ -206,7 +206,7 @@ extension UIButton {
         layer.masksToBounds = false
         layer.cornerRadius = style.cornerRadius
 
-        style.borderColor.map { layer.borderColor = UIColor(hex: $0).cgColor }
+        style.borderColor.unwrap { layer.borderColor = UIColor(hex: $0).cgColor }
         layer.borderWidth = style.borderWidth
 
         layer.shadowColor = UIColor(hex: style.shadow.color).cgColor

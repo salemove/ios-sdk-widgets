@@ -30,23 +30,23 @@ extension Theme {
             configuration?.border?.value
                 .map { UIColor(hex: $0) }
                 .first
-                .map { borderColor = $0.cgColor }
+                .unwrap { borderColor = $0.cgColor }
 
-            configuration?.borderWidth.map {
+            configuration?.borderWidth.unwrap {
                 borderWidth = $0
             }
 
-            configuration?.cornerRadius.map {
+            configuration?.cornerRadius.unwrap {
                 cornerRadius = $0
             }
 
-            configuration?.color.map {
+            configuration?.color.unwrap {
                 switch $0.type {
                 case .fill:
                     $0.value
                         .map { UIColor(hex: $0) }
                         .first
-                        .map { background = .fill(color: $0) }
+                        .unwrap { background = .fill(color: $0) }
                 case .gradient:
                     let colors = $0.value.convertToCgColors()
                     background = .gradient(colors: colors)

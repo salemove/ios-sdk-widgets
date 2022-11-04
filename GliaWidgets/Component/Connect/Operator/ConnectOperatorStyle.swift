@@ -34,26 +34,26 @@ public struct ConnectOperatorStyle {
     }
 
     mutating func apply(configuration: RemoteConfiguration.Operator?) {
-        configuration?.image?.imageBackgroundColor.map {
+        configuration?.image?.imageBackgroundColor.unwrap {
             switch $0.type {
             case .fill:
                 $0.value
                     .map { UIColor(hex: $0) }
                     .first
-                    .map { operatorImage.imageBackgroundColor = .fill(color: $0) }
+                    .unwrap { operatorImage.imageBackgroundColor = .fill(color: $0) }
             case .gradient:
                 let colors = $0.value.convertToCgColors()
                 operatorImage.imageBackgroundColor = .gradient(colors: colors)
             }
         }
 
-        configuration?.image?.placeholderBackgroundColor.map {
+        configuration?.image?.placeholderBackgroundColor.unwrap {
             switch $0.type {
             case .fill:
                 $0.value
                     .map { UIColor(hex: $0) }
                     .first
-                    .map { operatorImage.placeholderBackgroundColor = .fill(color: $0) }
+                    .unwrap { operatorImage.placeholderBackgroundColor = .fill(color: $0) }
             case .gradient:
                 let colors = $0.value.convertToCgColors()
                 operatorImage.placeholderBackgroundColor = .gradient(colors: colors)
@@ -63,20 +63,20 @@ public struct ConnectOperatorStyle {
         configuration?.image?.placeholderColor?.value
             .map { UIColor(hex: $0) }
             .first
-            .map { operatorImage.placeholderColor = $0 }
+            .unwrap { operatorImage.placeholderColor = $0 }
 
         configuration?.animationColor?.value
             .map { UIColor(hex: $0) }
             .first
-            .map { animationColor = $0 }
+            .unwrap { animationColor = $0 }
 
-        configuration?.overlayColor.map {
+        configuration?.overlayColor.unwrap {
             switch $0.type {
             case .fill:
                 $0.value
                     .map { UIColor(hex: $0) }
                     .first
-                    .map { onHoldOverlay.imageColor = .fill(color: $0) }
+                    .unwrap { onHoldOverlay.imageColor = .fill(color: $0) }
             case .gradient:
                 let colors = $0.value.convertToCgColors()
                 onHoldOverlay.imageColor = .gradient(colors: colors)

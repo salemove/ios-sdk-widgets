@@ -87,27 +87,27 @@ public class ChatFileDownloadStyle: ChatFileContentStyle {
         configuration?.progress?.value
             .map { UIColor(hex: $0) }
             .first
-            .map { progressColor = $0 }
+            .unwrap { progressColor = $0 }
 
         configuration?.errorProgress?.value
             .map { UIColor(hex: $0) }
             .first
-            .map { errorProgressColor = $0 }
+            .unwrap { errorProgressColor = $0 }
 
         configuration?.progressBackground?.value
             .map { UIColor(hex: $0) }
             .first
-            .map { progressBackgroundColor = $0 }
+            .unwrap { progressBackgroundColor = $0 }
 
         configuration?.border?.value
             .map { UIColor(hex: $0) }
             .first
-            .map { borderColor = $0 }
+            .unwrap { borderColor = $0 }
 
         configuration?.background?.value
             .map { UIColor(hex: $0) }
             .first
-            .map { backgroundColor = $0 }
+            .unwrap { backgroundColor = $0 }
     }
 }
 
@@ -166,22 +166,22 @@ public class ChatFileDownloadStateStyle {
         UIFont.convertToFont(
             font: configuration?.text?.font,
             textStyle: textStyle
-        ).map { font = $0 }
+        ).unwrap { font = $0 }
 
         configuration?.text?.foreground?.value
             .map { UIColor(hex: $0) }
             .first
-            .map { textColor = $0 }
+            .unwrap { textColor = $0 }
 
         UIFont.convertToFont(
             font: configuration?.info?.font,
             textStyle: infoTextStyle
-        ).map { infoFont = $0 }
+        ).unwrap { infoFont = $0 }
 
         configuration?.info?.foreground?.value
             .map { UIColor(hex: $0) }
             .first
-            .map { infoColor = $0 }
+            .unwrap { infoColor = $0 }
     }
 }
 
@@ -288,41 +288,41 @@ public class ChatFileDownloadErrorStateStyle {
         UIFont.convertToFont(
             font: configuration?.text?.font,
             textStyle: textStyle
-        ).map { font = $0 }
+        ).unwrap { font = $0 }
 
         configuration?.text?.foreground?.value
             .map { UIColor(hex: $0) }
             .first
-            .map { textColor = $0 }
+            .unwrap { textColor = $0 }
 
         UIFont.convertToFont(
             font: configuration?.info?.font,
             textStyle: infoTextStyle
-        ).map { infoFont = $0 }
+        ).unwrap { infoFont = $0 }
 
         configuration?.info?.foreground?.value
             .map { UIColor(hex: $0) }
             .first
-            .map { infoColor = $0 }
+            .unwrap { infoColor = $0 }
 
         UIFont.convertToFont(
             font: configuration?.separator?.font,
             textStyle: separatorTextStyle
-        ).map { separatorFont = $0 }
+        ).unwrap { separatorFont = $0 }
 
         configuration?.separator?.foreground?.value
             .map { UIColor(hex: $0) }
             .first
-            .map { separatorTextColor = $0 }
+            .unwrap { separatorTextColor = $0 }
 
         UIFont.convertToFont(
             font: configuration?.retry?.font,
             textStyle: retryTextStyle
-        ).map { retryFont = $0 }
+        ).unwrap { retryFont = $0 }
 
         configuration?.retry?.foreground?.value
             .map { UIColor(hex: $0) }
             .first
-            .map { retryTextColor = $0 }
+            .unwrap { retryTextColor = $0 }
     }
 }

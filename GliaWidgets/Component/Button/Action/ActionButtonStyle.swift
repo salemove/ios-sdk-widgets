@@ -91,28 +91,28 @@ public struct ActionButtonStyle {
         UIFont.convertToFont(
             font: configuration?.text?.font,
             textStyle: textStyle
-        ).map { titleFont = $0 }
+        ).unwrap { titleFont = $0 }
 
-        configuration?.text?.alignment.map { _ in
+        configuration?.text?.alignment.unwrap { _ in
             // The logic for duration alignment has not been implemented
         }
 
-        configuration?.text?.background.map { _ in
+        configuration?.text?.background.unwrap { _ in
             // The logic for duration background has not been implemented
         }
 
         configuration?.text?.foreground?.value
             .map { UIColor(hex: $0) }
             .first
-            .map { titleColor = $0 }
+            .unwrap { titleColor = $0 }
 
-        configuration?.background?.color.map {
+        configuration?.background?.color.unwrap {
             switch $0.type {
             case .fill:
                 $0.value
                     .map { UIColor(hex: $0) }
                     .first
-                    .map { backgroundColor = .fill(color: $0) }
+                    .unwrap { backgroundColor = .fill(color: $0) }
             case .gradient:
                 let colors = $0.value.convertToCgColors()
                 backgroundColor = .gradient(colors: colors)
@@ -120,26 +120,26 @@ public struct ActionButtonStyle {
         }
 
         configuration?.background?.cornerRadius
-            .map { cornerRaidus = $0 }
+            .unwrap { cornerRaidus = $0 }
 
         configuration?.background?.borderWidth
-            .map { borderWidth = $0 }
+            .unwrap { borderWidth = $0 }
 
         configuration?.background?.border?.value
             .map { UIColor(hex: $0) }
             .first
-            .map { borderColor = $0 }
+            .unwrap { borderColor = $0 }
 
         configuration?.shadow?.color?.value
             .map { UIColor(hex: $0) }
             .first
-            .map { shadowColor = $0 }
+            .unwrap { shadowColor = $0 }
 
-        configuration?.shadow?.offset.map {
+        configuration?.shadow?.offset.unwrap {
             shadowOffset = .init(width: $0, height: $0)
         }
 
-        configuration?.shadow?.opacity.map {
+        configuration?.shadow?.opacity.unwrap {
             shadowOpacity = Float($0)
         }
     }

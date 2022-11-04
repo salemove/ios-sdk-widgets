@@ -29,7 +29,7 @@ extension Theme {
 
         /// Apply text from remote configuration
         mutating func apply(configuration: RemoteConfiguration.Text?) {
-            configuration?.alignment.map { alignment in
+            configuration?.alignment.unwrap { alignment in
                 switch alignment {
                 case .center:
                     self.alignment = .center
@@ -40,20 +40,18 @@ extension Theme {
                 }
             }
 
-            configuration?.background.map { _ in
+            configuration?.background.unwrap { _ in
                 // The logic for normal text background has not been implemented
             }
 
             UIFont.convertToFont(
                 font: configuration?.font,
                 textStyle: textStyle
-            ).map { font = $0 }
+            ).unwrap { font = $0 }
 
-            configuration?.foreground.map {
-                $0.value
-                    .first
-                    .map { color = $0 }
-            }
+            configuration?.foreground?.value
+                .first
+                .unwrap { color = $0 }
         }
     }
 }

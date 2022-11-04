@@ -67,21 +67,21 @@ public struct ConnectStatusStyle {
         UIFont.convertToFont(
             font: configuration?.title?.font,
             textStyle: firstTextStyle
-        ).map { firstTextFont = $0 }
+        ).unwrap { firstTextFont = $0 }
 
         configuration?.title?.foreground?.value
             .map { UIColor(hex: $0) }
             .first
-            .map { firstTextFontColor = $0 }
+            .unwrap { firstTextFontColor = $0 }
 
         UIFont.convertToFont(
             font: configuration?.description?.font,
             textStyle: secondTextStyle
-        ).map { secondTextFont = $0 }
+        ).unwrap { secondTextFont = $0 }
 
         configuration?.description?.foreground?.value
             .map { UIColor(hex: $0) }
             .first
-            .map { secondTextFontColor = $0 }
+            .unwrap { secondTextFontColor = $0 }
     }
 }

@@ -63,13 +63,13 @@ public struct HeaderStyle {
     }
 
     mutating func apply(configuration: RemoteConfiguration.Header?) {
-        configuration?.background?.color.map {
+        configuration?.background?.color.unwrap {
             switch $0.type {
             case .fill:
                 $0.value
                     .map { UIColor(hex: $0) }
                     .first
-                    .map { backgroundColor = .fill(color: $0) }
+                    .unwrap { backgroundColor = .fill(color: $0) }
             case .gradient:
                 let colors = $0.value.convertToCgColors()
                 backgroundColor = .gradient(colors: colors)
@@ -79,30 +79,30 @@ public struct HeaderStyle {
         UIFont.convertToFont(
             font: configuration?.text?.font,
             textStyle: textStyle
-        ).map { titleFont = $0 }
+        ).unwrap { titleFont = $0 }
 
         configuration?.text?.foreground?.value
             .map { UIColor(hex: $0) }
             .first
-            .map { titleColor = $0 }
+            .unwrap { titleColor = $0 }
 
-        configuration?.background?.border.map { _ in
+        configuration?.background?.border.unwrap { _ in
             // The logic for header border has not been implemented
         }
 
-        configuration?.background?.borderWidth.map { _ in
+        configuration?.background?.borderWidth.unwrap { _ in
             // The logic for header borderWidth has not been implemented
         }
 
-        configuration?.background?.cornerRadius.map { _ in
+        configuration?.background?.cornerRadius.unwrap { _ in
             // The logic for header cornerRadius has not been implemented
         }
 
-        configuration?.text?.alignment.map { _ in
+        configuration?.text?.alignment.unwrap { _ in
             // The logic for title alignment has not been implemented
         }
 
-        configuration?.text?.background.map { _ in
+        configuration?.text?.background.unwrap { _ in
             // The logic for title background has not been implemented
         }
 

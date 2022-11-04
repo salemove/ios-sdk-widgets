@@ -42,28 +42,28 @@ public struct UserImageStyle {
         configuration?.placeholderColor?.value
             .map { UIColor(hex: $0) }
             .first
-            .map { placeholderColor = $0 }
+            .unwrap { placeholderColor = $0 }
 
-        configuration?.placeholderBackgroundColor.map {
+        configuration?.placeholderBackgroundColor.unwrap {
             switch $0.type {
             case .fill:
                 $0.value
                     .map { UIColor(hex: $0) }
                     .first
-                    .map { placeholderBackgroundColor = .fill(color: $0) }
+                    .unwrap { placeholderBackgroundColor = .fill(color: $0) }
             case .gradient:
                 let colors = $0.value.convertToCgColors()
                 placeholderBackgroundColor = .gradient(colors: colors)
             }
         }
 
-        configuration?.imageBackgroundColor.map {
+        configuration?.imageBackgroundColor.unwrap {
             switch $0.type {
             case .fill:
                 $0.value
                     .map { UIColor(hex: $0) }
                     .first
-                    .map { imageBackgroundColor = .fill(color: $0) }
+                    .unwrap { imageBackgroundColor = .fill(color: $0) }
             case .gradient:
                 let colors = $0.value.convertToCgColors()
                 imageBackgroundColor = .gradient(colors: colors)

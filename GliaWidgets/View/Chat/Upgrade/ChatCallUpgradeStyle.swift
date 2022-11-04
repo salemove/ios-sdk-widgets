@@ -91,37 +91,37 @@ public class ChatCallUpgradeStyle {
         configuration?.iconColor?.value
             .map { UIColor(hex: $0) }
             .first
-            .map { iconColor = $0 }
+            .unwrap { iconColor = $0 }
 
         UIFont.convertToFont(
             font: configuration?.text?.font,
             textStyle: textStyle
-        ).map { textFont = $0 }
+        ).unwrap { textFont = $0 }
 
         configuration?.text?.foreground?.value
             .map { UIColor(hex: $0) }
             .first
-            .map { textColor = $0 }
+            .unwrap { textColor = $0 }
 
         UIFont.convertToFont(
             font: configuration?.description?.font,
             textStyle: durationTextStyle
-        ).map { durationFont = $0 }
+        ).unwrap { durationFont = $0 }
 
         configuration?.description?.foreground?.value
             .map { UIColor(hex: $0) }
             .first
-            .map { durationColor = $0 }
+            .unwrap { durationColor = $0 }
 
         configuration?.background?.border?.value
             .map { UIColor(hex: $0) }
             .first
-            .map { borderColor = $0 }
+            .unwrap { borderColor = $0 }
 
         configuration?.background?.borderWidth
-            .map { borderWidth = $0 }
+            .unwrap { borderWidth = $0 }
 
         configuration?.background?.cornerRadius
-            .map { cornerRadius = $0 }
+            .unwrap { cornerRadius = $0 }
     }
 }

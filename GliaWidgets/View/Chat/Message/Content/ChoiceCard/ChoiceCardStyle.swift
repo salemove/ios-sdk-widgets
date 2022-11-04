@@ -59,18 +59,18 @@ public final class ChoiceCardStyle: OperatorChatMessageStyle {
         configuration?.background?.color?.value
             .map { UIColor(hex: $0) }
             .first
-            .map { backgroundColor = $0 }
+            .unwrap { backgroundColor = $0 }
 
         configuration?.background?.border?.value
             .map { UIColor(hex: $0) }
             .first
-            .map { frameColor = $0 }
+            .unwrap { frameColor = $0 }
 
         configuration?.background?.cornerRadius
-            .map { cornerRadius = $0 }
+            .unwrap { cornerRadius = $0 }
 
         configuration?.background?.borderWidth
-            .map { borderWidth = $0 }
+            .unwrap { borderWidth = $0 }
 
         choiceOption.apply(configuration: configuration?.option)
         apply(configuration: configuration?.message)

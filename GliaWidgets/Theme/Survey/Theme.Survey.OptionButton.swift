@@ -60,7 +60,7 @@ extension Theme.SurveyStyle {
             UIFont.convertToFont(
                 font: font,
                 textStyle: textStyle
-            ).map { self.font = $0 }
+            ).unwrap { self.font = $0 }
         }
     }
 }

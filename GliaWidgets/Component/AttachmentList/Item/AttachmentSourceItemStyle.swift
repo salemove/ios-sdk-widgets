@@ -61,16 +61,16 @@ public class AttachmentSourceItemStyle {
         configuration?.tintColor?.value
             .map { UIColor(hex: $0) }
             .first
-            .map { iconColor = $0 }
+            .unwrap { iconColor = $0 }
 
         configuration?.text?.foreground?.value
             .map { UIColor(hex: $0) }
             .first
-            .map { titleColor = $0 }
+            .unwrap { titleColor = $0 }
 
         UIFont.convertToFont(
             font: configuration?.text?.font,
             textStyle: titleTextStyle
-        ).map { titleFont = $0 }
+        ).unwrap { titleFont = $0 }
     }
 }

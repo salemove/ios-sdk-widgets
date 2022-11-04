@@ -30,6 +30,6 @@ public struct HeaderButtonStyle {
         configuration?.tintColor?.value
             .map { UIColor(hex: $0) }
             .first
-            .map { color = $0 }
+            .unwrap { color = $0 }
     }
 }
