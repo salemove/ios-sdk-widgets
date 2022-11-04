@@ -22,7 +22,12 @@ final class OnHoldOverlayView: UIView {
 
     private func setup() {
         imageView.image = style.image.withRenderingMode(.alwaysTemplate)
-        imageView.tintColor = style.imageColor
+        switch style.imageColor {
+        case .fill(let color):
+            imageView.tintColor = color
+        case .gradient(let colors):
+            imageView.makeGradientBackground(colors: colors)
+        }
     }
 
     private func layout() {

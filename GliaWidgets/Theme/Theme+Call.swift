@@ -7,7 +7,7 @@ extension Theme {
 
         let onHoldOverlay = OnHoldOverlayStyle(
             image: Asset.callOnHold.image,
-            imageColor: .white,
+            imageColor: .fill(color: .white),
             imageSize: .init(width: 40, height: 40)
         )
         let backButton = HeaderButtonStyle(
@@ -30,7 +30,7 @@ extension Theme {
             title: Call.EndButton.title,
             titleFont: font.buttonLabel,
             titleColor: color.baseLight,
-            backgroundColor: color.systemNegative,
+            backgroundColor: .fill(color: color.systemNegative),
             accessibility: .init(
                 label: Accessibility.Header.EndButton.label,
                 isFontScalingEnabled: true
@@ -47,7 +47,7 @@ extension Theme {
         let header = HeaderStyle(
             titleFont: font.header2,
             titleColor: color.baseLight,
-            backgroundColor: .clear,
+            backgroundColor: .fill(color: .clear),
             backButton: backButton,
             closeButton: closeButton,
             endButton: endButton,
@@ -57,8 +57,8 @@ extension Theme {
         let operatorImage = UserImageStyle(
             placeholderImage: Asset.operatorPlaceholder.image,
             placeholderColor: color.baseLight,
-            placeholderBackgroundColor: color.primary,
-            imageBackgroundColor: .clear,
+            placeholderBackgroundColor: .fill(color: color.primary),
+            imageBackgroundColor: .fill(color: .clear),
             transferringImage: Asset.operatorTransferring.image
         )
         let queueOperator = ConnectOperatorStyle(
@@ -159,7 +159,7 @@ extension Theme {
         return CallStyle(
             header: header,
             connect: connect,
-            backgroundColor: .clear,
+            backgroundColor: .fill(color: .white),
             preferredStatusBarStyle: .lightContent,
             audioTitle: Call.Audio.title,
             videoTitle: Call.Video.title,
@@ -190,10 +190,10 @@ extension Theme {
         typealias Buttons = L10n.Call.Buttons
         typealias Accessibility = L10n.Call.Accessibility
 
-        let activeBackgroundColor = UIColor.white.withAlphaComponent(0.9)
-        let inactiveBackgroundColor = UIColor.black.withAlphaComponent(0.4)
-        let activeImageColor = color.baseDark
-        let inactiveImageColor = color.baseLight
+        let activeBackgroundColor: ColorType = .fill(color: UIColor.white.withAlphaComponent(0.9))
+        let inactiveBackgroundColor: ColorType = .fill(color: UIColor.black.withAlphaComponent(0.4))
+        let activeImageColor: ColorType = .fill(color: color.baseDark)
+        let inactiveImageColor: ColorType = .fill(color: color.baseLight)
         let activeTitleFont = font.caption
         let inactiveTitleFont = font.caption
         let activeTitleColor = color.baseLight
@@ -422,7 +422,7 @@ extension Theme {
         let badge = BadgeStyle(
             font: font.caption,
             fontColor: color.baseLight,
-            backgroundColor: color.primary
+            backgroundColor: .fill(color: color.primary)
         )
         return CallButtonBarStyle(
             chatButton: chatButton,

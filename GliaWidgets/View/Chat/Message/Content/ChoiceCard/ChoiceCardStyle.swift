@@ -57,12 +57,12 @@ public final class ChoiceCardStyle: OperatorChatMessageStyle {
 
     func apply(configuration: RemoteConfiguration.ResponseCard?) {
         configuration?.background?.color?.value
-            .map(UIColor.init(hex:))
+            .map { UIColor(hex: $0) }
             .first
             .map { backgroundColor = $0 }
 
         configuration?.background?.border?.value
-            .map(UIColor.init(hex:))
+            .map { UIColor(hex: $0) }
             .first
             .map { frameColor = $0 }
 

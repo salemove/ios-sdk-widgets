@@ -5,17 +5,17 @@ extension Theme {
     /// Abstract layer style.
     public struct Layer {
         /// Background hex color.
-        public var background: String?
+        public var background: ColorType?
         /// Border hex color.
-        public var borderColor: String
+        public var borderColor: CGColor
         /// Border width.
         public var borderWidth: CGFloat = 0
         /// Layer corner radius.
         public var cornerRadius: CGFloat = 0
         /// Initializes `Layer` style instance.
         public init(
-            background: String? = nil,
-            borderColor: String,
+            background: ColorType? = nil,
+            borderColor: CGColor,
             borderWidth: CGFloat = 0,
             cornerRadius: CGFloat = 0
         ) {
@@ -27,15 +27,10 @@ extension Theme {
 
         /// Apply layer remote configuration
         mutating func apply(configuration: RemoteConfiguration.Layer?) {
-            switch configuration?.border?.type {
-            case .fill:
-                configuration?.border?.value
-                    .first
-                    .map { borderColor = $0 }
-            case .gradient, .none:
-                // The logic for gradient has not been implemented
-                break
-            }
+            configuration?.border?.value
+                .map { UIColor(hex: $0) }
+                .first
+                .map { borderColor = $0.cgColor }
 
             configuration?.borderWidth.map {
                 borderWidth = $0
@@ -45,12 +40,17 @@ extension Theme {
                 cornerRadius = $0
             }
 
-            switch configuration?.color?.type {
-            case .fill:
-                background = configuration?.color?.value.first
-            case .gradient, .none:
-                // The logic for gradient has not been implemented
-                break
+            configuration?.color.map {
+                switch $0.type {
+                case .fill:
+                    $0.value
+                        .map { UIColor(hex: $0) }
+                        .first
+                        .map { background = .fill(color: $0) }
+                case .gradient:
+                    let colors = $0.value.convertToCgColors()
+                    background = .gradient(colors: colors)
+                }
             }
         }
     }

@@ -22,14 +22,10 @@ extension Theme {
 
         /// Apply shadow configuration
         mutating func apply(configuration: RemoteConfiguration.Shadow?) {
-            switch configuration?.color?.type {
-            case .fill:
-                configuration?.color?.value
+            configuration?.color.map {
+                $0.value
                     .first
                     .map { color = $0 }
-            case .gradient, .none:
-                // The logic for gradient has not been implemented yet
-                break
             }
 
             configuration?.offset.map {

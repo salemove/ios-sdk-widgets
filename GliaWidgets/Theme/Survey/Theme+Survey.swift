@@ -58,8 +58,8 @@ extension Theme.SurveyStyle {
 
         return .init(
             layer: .init(
-                background: color.background.hex,
-                borderColor: color.baseDark.hex,
+                background: .fill(color: color.background),
+                borderColor: color.baseDark.cgColor,
                 cornerRadius: 30
             ),
             title: .init(

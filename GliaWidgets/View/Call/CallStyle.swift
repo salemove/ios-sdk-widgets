@@ -59,7 +59,7 @@ public class CallStyle: EngagementStyle {
     /// Style of the call view when the visitor is put on hold.
     public var onHoldStyle: OnHoldStyle
 
-	/// Accessiblity properties for CallStyle.
+    /// Accessiblity properties for CallStyle.
     public var accessibility: Accessibility
 
     ///
@@ -88,11 +88,11 @@ public class CallStyle: EngagementStyle {
     ///   - buttonBar: Style of the button bar.
     ///   - onHoldStyle: Style of the call view when the visitor is put on hold.
     ///   - accessibility: Accessiblity properties for CallStyle.
-	///
+    ///
     public init(
         header: HeaderStyle,
         connect: ConnectStyle,
-        backgroundColor: UIColor,
+        backgroundColor: ColorType,
         preferredStatusBarStyle: UIStatusBarStyle,
         audioTitle: String,
         videoTitle: String,
@@ -202,16 +202,13 @@ extension CallStyle {
             // The logic for bottomText alignment has not been implemented
         }
 
-        // The logic for bottomText background has not been implemented
-        // bottomText?.background?.type.map { _ in }
-
         UIFont.convertToFont(
             font: bottomText?.font,
             textStyle: bottomTextStyle
         ).map { bottomTextFont = $0 }
 
         bottomText?.foreground?.value
-            .map(UIColor.init(hex:))
+            .map { UIColor(hex: $0) }
             .first
             .map { bottomTextColor = $0 }
     }
@@ -233,7 +230,7 @@ extension CallStyle {
         ).map { topTextFont = $0 }
 
         topText?.foreground?.value
-            .map(UIColor.init(hex:))
+            .map { UIColor(hex: $0) }
             .first
             .map { topTextColor = $0 }
     }
@@ -255,15 +252,94 @@ extension CallStyle {
         ).map { durationFont = $0 }
 
         duration?.foreground?.value
-            .map(UIColor.init(hex:))
+            .map { UIColor(hex: $0) }
             .first
             .map { durationColor = $0 }
+    }
+
+    /// Apply end button from remote configuration
+    private func applyEndButtonConfiguration(_ endButton: RemoteConfiguration.Button?) {
+        endButton?.background?.color.map {
+            switch $0.type {
+            case .fill:
+                $0.value
+                    .map { UIColor(hex: $0) }
+                    .first
+                    .map { header.endButton.backgroundColor = .fill(color: $0) }
+            case .gradient:
+                let colors = $0.value.convertToCgColors()
+                header.endButton.backgroundColor = .gradient(colors: colors)
+            }
+        }
+
+        endButton?.text?.alignment.map { _ in
+            /// The logic for duration alignment has not been implemented
+        }
+
+        endButton?.text?.background.map { _ in
+            /// The logic for duration background has not been implemented
+        }
+        UIFont.convertToFont(
+            font: endButton?.text?.font,
+            textStyle: header.endButton.textStyle
+        ).map { header.endButton.titleFont = $0 }
+
+        endButton?.text?.foreground?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .map { header.endButton.titleColor = $0 }
+    }
+
+    /// Apply header from remote configuration
+    private func applyHeaderConfiguration(_ header: RemoteConfiguration.Header?) {
+        header?.background?.border.map { _ in
+            /// The logic for header border has not been implemented
+        }
+
+        header?.background?.borderWidth.map { _ in
+            /// The logic for header borderWidth has not been implemented
+        }
+
+        header?.background?.cornerRadius.map { _ in
+            /// The logic for header cornerRadius has not been implemented
+        }
+
+        header?.background?.color.map {
+            switch $0.type {
+            case .fill:
+                $0.value
+                    .map { UIColor(hex: $0) }
+                    .first
+                    .map { self.header.backgroundColor = .fill(color: $0) }
+            case .gradient:
+                let colors = $0.value.convertToCgColors()
+                self.header.backgroundColor = .gradient(colors: colors)
+            }
+        }
+
+        header?.text?.alignment.map { _ in
+            /// The logic for title alignment has not been implemented
+        }
+
+        header?.text?.background.map { _ in
+            /// The logic for title background has not been implemented
+        }
+
+        UIFont.convertToFont(
+            font: header?.text?.font,
+            textStyle: self.header.textStyle
+        ).map { self.header.titleFont = $0 }
+
+        header?.text?.foreground?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .map { self.header.titleColor = $0 }
     }
 
     /// Apply operator from remote configuration
     private func applyOperatorConfiguration(_ callOperator: RemoteConfiguration.Text?) {
         callOperator?.foreground?.value
-            .map(UIColor.init(hex:))
+            .map { UIColor(hex: $0) }
             .first
             .map { self.operatorNameColor = $0 }
 
@@ -275,15 +351,17 @@ extension CallStyle {
 
     /// Apply background from remote configuration
     private func applyBackgroundConfiguration(_ background: RemoteConfiguration.Layer?) {
-        switch background?.color?.type {
-        case .fill:
-            background?.color?.value
-                .map(UIColor.init(hex:))
-                .first
-                .map { backgroundColor = $0 }
-        case .gradient, .none:
-            // The logic for gradient has not been implemented yet
-            break
+        background?.color.map {
+            switch $0.type {
+            case .fill:
+                $0.value
+                    .map { UIColor(hex: $0) }
+                    .first
+                    .map { backgroundColor = .fill(color: $0) }
+            case .gradient:
+                let colors = $0.value.convertToCgColors()
+                backgroundColor = .gradient(colors: colors)
+            }
         }
     }
 

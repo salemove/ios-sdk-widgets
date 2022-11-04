@@ -103,6 +103,11 @@ extension Survey {
             ])
         }
 
+        override func layoutSubviews() {
+            super.layoutSubviews()
+
+            _updateUi?()
+        }
         func showKeyboard(keyboardHeight: CGFloat) {
             constraints.constraints(with: .bottom).first?.constant = -keyboardHeight
         }
@@ -110,35 +115,47 @@ extension Survey {
             constraints.constraints(with: .bottom).first?.constant = 0
         }
 
+        var _updateUi: (() -> Void)?
         func updateUi(theme: Theme) {
-            header.font = theme.survey.title.font
-            header.textColor = .init(hex: theme.survey.title.color)
-            header.textAlignment = theme.survey.title.alignment
-            if let hex = theme.survey.layer.background {
-                scrollView.backgroundColor = .init(hex: hex)
-                buttonContainer.backgroundColor = .init(hex: hex)
+
+            _updateUi = { [weak self] in
+                guard let this = self else { return }
+                this.header.font = theme.survey.title.font
+                this.header.textColor = .init(hex: theme.survey.title.color)
+                this.header.textAlignment = theme.survey.title.alignment
+                theme.survey.layer.background.map { type in
+                    switch type {
+                    case .fill(color: let color):
+                        this.scrollView.backgroundColor = color
+                        this.buttonContainer.backgroundColor = color
+                    case .gradient(colors: let colors):
+                        this.scrollView.layer.insertSublayer(this.makeGradientBackground(colors: colors), at: 0)
+                        this.buttonContainer.layer.insertSublayer(this.makeGradientBackground(colors: colors), at: 0)
+                    }
+                }
+                this.scrollView.layer.cornerRadius = theme.survey.layer.cornerRadius
+
+                this.cancelButton.update(with: theme.survey.cancellButton)
+                this.submitButton.update(with: theme.survey.submitButton)
+                this.cancelButton.accessibilityLabel = theme.survey.cancellButton.accessibility.label
+                this.submitButton.accessibilityLabel = theme.survey.submitButton.accessibility.label
+
+                this.header.accessibilityTraits = .header
+
+                setFontScalingEnabled(
+                    theme.survey.accessibility.isFontScalingEnabled,
+                    for: this.header
+                )
+                setFontScalingEnabled(
+                    theme.survey.accessibility.isFontScalingEnabled,
+                    for: this.cancelButton
+                )
+                setFontScalingEnabled(
+                    theme.survey.accessibility.isFontScalingEnabled,
+                    for: this.submitButton
+                )
             }
-            scrollView.layer.cornerRadius = theme.survey.layer.cornerRadius
-
-            cancelButton.update(with: theme.survey.cancellButton)
-            submitButton.update(with: theme.survey.submitButton)
-            cancelButton.accessibilityLabel = theme.survey.cancellButton.accessibility.label
-            submitButton.accessibilityLabel = theme.survey.submitButton.accessibility.label
-
-            header.accessibilityTraits = .header
-
-            setFontScalingEnabled(
-                theme.survey.accessibility.isFontScalingEnabled,
-                for: header
-            )
-            setFontScalingEnabled(
-                theme.survey.accessibility.isFontScalingEnabled,
-                for: cancelButton
-            )
-            setFontScalingEnabled(
-                theme.survey.accessibility.isFontScalingEnabled,
-                for: submitButton
-            )
+            setNeedsLayout()
         }
 
         // MARK: - Private
@@ -178,7 +195,12 @@ extension NSAttributedString {
 
 extension UIButton {
     func update(with style: Theme.Button) {
-        style.background.map { backgroundColor = UIColor(hex: $0) }
+        switch style.background {
+        case .fill(let color):
+            backgroundColor = color
+        case .gradient(let colors):
+            makeGradientBackground(colors: colors, cornerRadius: style.cornerRadius)
+        }
         contentEdgeInsets = .init(top: 6, left: 16, bottom: 6, right: 16)
         clipsToBounds = true
         layer.masksToBounds = false

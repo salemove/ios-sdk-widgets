@@ -24,10 +24,10 @@ public struct AlertStyle {
     public var messageTextStyle: UIFont.TextStyle
 
     /// Background color of the view.
-    public var backgroundColor: UIColor
+    public var backgroundColor: ColorType
 
     /// Color of the close button.
-    public var closeButtonColor: UIColor
+    public var closeButtonColor: ColorType
 
     /// Direction of the action buttons.
     public var actionAxis: NSLayoutConstraint.Axis
@@ -68,9 +68,9 @@ public struct AlertStyle {
         titleImageColor: UIColor,
         messageFont: UIFont,
         messageColor: UIColor,
+        backgroundColor: ColorType,
+        closeButtonColor: ColorType,
         messageTextStyle: UIFont.TextStyle = .body,
-        backgroundColor: UIColor,
-        closeButtonColor: UIColor,
         actionAxis: NSLayoutConstraint.Axis,
         positiveAction: ActionButtonStyle,
         negativeAction: ActionButtonStyle,
@@ -100,37 +100,6 @@ public struct AlertStyle {
         applyTitleConfiguration(configuration?.title)
         applyTitleImageConfiguration(configuration?.titleImageColor)
         applyMessageConfiguration(configuration?.message)
-
-        switch configuration?.closeButtonColor?.type {
-        case .fill:
-            configuration?.closeButtonColor?.value
-                .map(UIColor.init(hex:))
-                .first
-                .map { closeButtonColor = $0 }
-        case .gradient, .none:
-            // The logic for gradient has not been implemented
-            break
-        }
-
-        configuration?.buttonAxis.map { axis in
-            switch axis {
-            case .horizontal:
-                actionAxis = .horizontal
-            case .vertical:
-                actionAxis = .vertical
-            }
-        }
-
-        switch configuration?.backgroundColor?.type {
-        case .fill:
-            configuration?.backgroundColor?.value
-                .map(UIColor.init(hex:))
-                .first
-                .map { backgroundColor = $0 }
-        case .gradient, .none:
-            // The logic for gradient has not been implemented
-            break
-        }
     }
 }
 
@@ -144,28 +113,20 @@ private extension AlertStyle {
             textStyle: titleTextStyle
         ).map { titleFont = $0 }
 
-        switch configuration?.foreground?.type {
-        case .fill:
-            configuration?.foreground?.value
-                .map(UIColor.init(hex:))
+        configuration?.foreground.map {
+            $0.value
+                .map { UIColor(hex: $0) }
                 .first
                 .map { titleColor = $0 }
-        case .gradient, .none:
-            // The logic for gradient has not been implemented
-            break
         }
     }
 
     mutating func applyTitleImageConfiguration(_ configuration: RemoteConfiguration.Color?) {
-        switch configuration?.type {
-        case .fill:
-            configuration?.value
-                .map(UIColor.init(hex:))
+        configuration.map {
+            $0.value
+                .map { UIColor(hex: $0) }
                 .first
                 .map { titleImageColor = $0 }
-        case .gradient, .none:
-            // The logic for gradient has not been implemented
-            break
         }
     }
 
@@ -175,15 +136,52 @@ private extension AlertStyle {
             textStyle: messageTextStyle
         ).map { messageFont = $0 }
 
-        switch configuration?.foreground?.type {
-        case .fill:
-            configuration?.foreground?.value
-                .map(UIColor.init(hex:))
+        configuration?.foreground.map {
+            $0.value
+                .map { UIColor(hex: $0) }
                 .first
                 .map { messageColor = $0 }
-        case .gradient, .none:
-            // The logic for gradient has not been implemented
-            break
+        }
+    }
+
+    mutating func applyBackgroundConfiguration(_ configuration: RemoteConfiguration.Color?) {
+        configuration.map {
+            switch $0.type {
+            case .fill:
+                $0.value
+                    .map { UIColor(hex: $0) }
+                    .first
+                    .map { backgroundColor = .fill(color: $0) }
+            case .gradient:
+                let colors = $0.value.convertToCgColors()
+                backgroundColor = .gradient(colors: colors)
+            }
+        }
+    }
+
+    mutating func applyButtonAxisConfiguration(_ configuration: RemoteConfiguration.Axis?) {
+        configuration.map { axis in
+            switch axis {
+            case .horizontal:
+                actionAxis = .horizontal
+            case .vertical:
+                actionAxis = .vertical
+            }
+        }
+    }
+
+    mutating func applyCloseButtonConfiguration(_ configuration: RemoteConfiguration.Color?) {
+        configuration.map {
+            switch $0.type {
+            case .fill:
+                $0.value
+                    .map { UIColor(hex: $0) }
+                    .first
+                    .map { closeButtonColor = .fill(color: $0) }
+            case .gradient:
+                let colors = $0.value.convertToCgColors()
+                closeButtonColor = .gradient(colors: colors)
+            }
         }
     }
 }

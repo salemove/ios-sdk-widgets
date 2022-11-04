@@ -6,7 +6,7 @@ extension Theme {
     /// Button style.
     public struct Button {
         /// Background hex color.
-        public var background: String?
+        public var background: ColorType
         /// Title style.
         public var title: Text
         /// Button corner radius.
@@ -22,7 +22,7 @@ extension Theme {
 
         /// Initializes `Button` style instance.
         public init(
-            background: String?,
+            background: ColorType,
             title: Theme.Text,
             cornerRadius: CGFloat,
             borderWidth: CGFloat = 0,
@@ -43,7 +43,7 @@ extension Theme {
             actionButtonStyle: ActionButtonStyle,
             accessibility: Accessibility
         ) {
-            self.background = actionButtonStyle.backgroundColor == .clear ? nil : actionButtonStyle.backgroundColor.hex
+            self.background = actionButtonStyle.backgroundColor
             self.title = .init(
                 color: actionButtonStyle.titleColor.hex,
                 font: actionButtonStyle.titleFont,
@@ -63,41 +63,42 @@ extension Theme {
         }
 
         /// Apply default question button from remote configuration
-        public mutating func apply(configuration: RemoteConfiguration.Button?) {
-            applyBackgroundConfiguration(configuration?.background)
+        mutating func apply(configuration: RemoteConfiguration.Button?) {
+            applyBackground(configuration?.background)
             title.apply(configuration: configuration?.text)
             shadow.apply(configuration: configuration?.shadow)
         }
+    }
+}
 
-        /// Apply button background from remote configuration
-        private mutating func applyBackgroundConfiguration(_ background: RemoteConfiguration.Layer?) {
-            switch background?.color?.type {
+private extension Theme.Button {
+    /// Apply button background from remote configuration
+    mutating func applyBackground(_ background: RemoteConfiguration.Layer?) {
+        background?.color.map {
+            switch $0.type {
             case .fill:
-                background?.color?.value
+                $0.value
+                    .map { UIColor(hex: $0) }
                     .first
-                    .map { self.background = $0 }
-            case .gradient, .none:
-                // The logic for gradient has not been implemented
-                break
+                    .map { self.background = .fill(color: $0) }
+            case .gradient:
+                let colors = $0.value.convertToCgColors()
+                self.background = .gradient(colors: colors)
             }
+        }
 
-            background?.cornerRadius.map {
-                cornerRadius = $0
-            }
+        background?.cornerRadius.map {
+            cornerRadius = $0
+        }
 
-            background?.borderWidth.map {
-                borderWidth = $0
-            }
+        background?.borderWidth.map {
+            borderWidth = $0
+        }
 
-            switch background?.color?.type {
-            case .fill:
-                background?.color?.value
-                    .first
-                    .map { borderColor = $0 }
-            case .gradient, .none:
-                // The logic for gradient has not been implemented
-                break
-            }
+        background?.border.map {
+            $0.value
+                .first
+                .map { borderColor = $0 }
         }
     }
 }

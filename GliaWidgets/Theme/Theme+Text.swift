@@ -49,12 +49,10 @@ extension Theme {
                 textStyle: textStyle
             ).map { font = $0 }
 
-            switch configuration?.foreground?.type {
-            case .fill:
-                configuration?.foreground?.value.first.map { color = $0 }
-            case .gradient, .none:
-                // The logic for gradient has not been implemented
-                break
+            configuration?.foreground.map {
+                $0.value
+                    .first
+                    .map { color = $0 }
             }
         }
     }

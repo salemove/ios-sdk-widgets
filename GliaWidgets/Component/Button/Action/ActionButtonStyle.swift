@@ -15,7 +15,7 @@ public struct ActionButtonStyle {
     public var textStyle: UIFont.TextStyle
 
     /// Background color of the button.
-    public var backgroundColor: UIColor
+    public var backgroundColor: ColorType
 
     /// Corner radius of the button.
     public var cornerRaidus: CGFloat?
@@ -60,8 +60,8 @@ public struct ActionButtonStyle {
         title: String,
         titleFont: UIFont,
         titleColor: UIColor,
+        backgroundColor: ColorType,
         textStyle: UIFont.TextStyle = .body,
-        backgroundColor: UIColor,
         cornerRaidus: CGFloat? = 4.0,
         shadowOffset: CGSize? = CGSize(width: 0.0, height: 2.0),
         shadowColor: UIColor? = UIColor.black,
@@ -102,19 +102,21 @@ public struct ActionButtonStyle {
         }
 
         configuration?.text?.foreground?.value
-            .map(UIColor.init(hex:))
+            .map { UIColor(hex: $0) }
             .first
             .map { titleColor = $0 }
 
-        switch configuration?.background?.color?.type {
-        case .fill:
-            configuration?.background?.color?.value
-                .map(UIColor.init(hex:))
-                .first
-                .map { backgroundColor = $0 }
-        case .gradient, .none:
-            // The logic for gradient has not been implemented
-            break
+        configuration?.background?.color.map {
+            switch $0.type {
+            case .fill:
+                $0.value
+                    .map { UIColor(hex: $0) }
+                    .first
+                    .map { backgroundColor = .fill(color: $0) }
+            case .gradient:
+                let colors = $0.value.convertToCgColors()
+                backgroundColor = .gradient(colors: colors)
+            }
         }
 
         configuration?.background?.cornerRadius
@@ -124,18 +126,21 @@ public struct ActionButtonStyle {
             .map { borderWidth = $0 }
 
         configuration?.background?.border?.value
-            .map(UIColor.init(hex:))
+            .map { UIColor(hex: $0) }
             .first
             .map { borderColor = $0 }
 
-        configuration?.background?.color?.value
-            .map(UIColor.init(hex:))
+        configuration?.shadow?.color?.value
+            .map { UIColor(hex: $0) }
             .first
             .map { shadowColor = $0 }
 
         configuration?.shadow?.offset.map {
             shadowOffset = .init(width: $0, height: $0)
-            shadowRadius = $0
+        }
+
+        configuration?.shadow?.opacity.map {
+            shadowOpacity = Float($0)
         }
     }
 }
