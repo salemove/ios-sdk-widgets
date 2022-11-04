@@ -38,20 +38,20 @@ public struct BadgeStyle {
         UIFont.convertToFont(
             font: configuration?.text?.font,
             textStyle: textStyle
-        ).map { font = $0 }
+        ).unwrap { font = $0 }
 
         configuration?.text?.foreground?.value
             .map { UIColor(hex: $0) }
             .first
-            .map { fontColor = $0 }
+            .unwrap { fontColor = $0 }
 
-        configuration?.background?.color.map {
+        configuration?.background?.color.unwrap {
             switch $0.type {
             case .fill:
                 $0.value
                     .map { UIColor(hex: $0) }
                     .first
-                    .map { backgroundColor = .fill(color: $0) }
+                    .unwrap { backgroundColor = .fill(color: $0) }
             case .gradient:
                 let colors = $0.value.convertToCgColors()
                 backgroundColor = .gradient(colors: colors)

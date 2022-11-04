@@ -109,13 +109,13 @@ public class ChatStyle: EngagementStyle {
         unreadMessageIndicator.apply(configuration: configuration?.unreadIndicator)
         operatorTypingIndicator.apply(configuration: configuration?.typingIndicator)
 
-        configuration?.background?.color.map {
+        configuration?.background?.color.unwrap {
             switch $0.type {
             case .fill:
                 $0.value
                     .map { UIColor(hex: $0) }
                     .first
-                    .map { backgroundColor = .fill(color: $0) }
+                    .unwrap { backgroundColor = .fill(color: $0) }
             case .gradient:
                 let colors = $0.value.convertToCgColors()
                 backgroundColor = .gradient(colors: colors)

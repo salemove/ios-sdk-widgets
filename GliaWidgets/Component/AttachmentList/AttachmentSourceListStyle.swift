@@ -31,12 +31,12 @@ public class AttachmentSourceListStyle {
         configuration?.separator?.value
             .map { UIColor(hex: $0) }
             .first
-            .map { separatorColor = $0 }
+            .unwrap { separatorColor = $0 }
 
         configuration?.background?.value
             .map { UIColor(hex: $0) }
             .first
-            .map { backgroundColor = $0 }
+            .unwrap { backgroundColor = $0 }
 
         configuration?.items?.forEach { item in
             let sourceType = AttachmentSourceItemKind(rawValue: item.type.rawValue)

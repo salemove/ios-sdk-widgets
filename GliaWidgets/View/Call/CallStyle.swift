@@ -198,63 +198,63 @@ extension CallStyle {
     /// Apply bottomText from remote configuration
     private func applyBottomTextConfiguration(_ bottomText: RemoteConfiguration.Text?) {
 
-        bottomText?.alignment.map { _ in
-            /// The logic for bottomText alignment has not been implemented
+        bottomText?.alignment.unwrap { _ in
+            // The logic for bottomText alignment has not been implemented
         }
 
         UIFont.convertToFont(
             font: bottomText?.font,
             textStyle: bottomTextStyle
-        ).map { bottomTextFont = $0 }
+        ).unwrap { bottomTextFont = $0 }
 
         bottomText?.foreground?.value
             .map { UIColor(hex: $0) }
             .first
-            .map { bottomTextColor = $0 }
+            .unwrap { bottomTextColor = $0 }
     }
 
     /// Apply topText from remote configuration
     private func applyTopTextConfiguration(_ topText: RemoteConfiguration.Text?) {
 
-        topText?.alignment.map { _ in
+        topText?.alignment.unwrap { _ in
             // The logic for topText alignment has not been implemented
         }
 
-        topText?.background.map { _ in
+        topText?.background.unwrap { _ in
             // The logic for topText background has not been implemented
         }
 
         UIFont.convertToFont(
             font: topText?.font,
             textStyle: topTextStyle
-        ).map { topTextFont = $0 }
+        ).unwrap { topTextFont = $0 }
 
         topText?.foreground?.value
             .map { UIColor(hex: $0) }
             .first
-            .map { topTextColor = $0 }
+            .unwrap { topTextColor = $0 }
     }
 
     /// Apply duration from remote configuration
     private func applyDurationConfiguration(_ duration: RemoteConfiguration.Text?) {
 
-        duration?.alignment.map { _ in
+        duration?.alignment.unwrap { _ in
             // The logic for duration alignment has not been implemented
         }
 
-        duration?.background.map { _ in
+        duration?.background.unwrap { _ in
             // The logic for duration background has not been implemented
         }
 
         UIFont.convertToFont(
             font: duration?.font,
             textStyle: durationTextStyle
-        ).map { durationFont = $0 }
+        ).unwrap { durationFont = $0 }
 
         duration?.foreground?.value
             .map { UIColor(hex: $0) }
             .first
-            .map { durationColor = $0 }
+            .unwrap { durationColor = $0 }
     }
 
     /// Apply operator from remote configuration
@@ -262,23 +262,23 @@ extension CallStyle {
         callOperator?.foreground?.value
             .map { UIColor(hex: $0) }
             .first
-            .map { self.operatorNameColor = $0 }
+            .unwrap { self.operatorNameColor = $0 }
 
         UIFont.convertToFont(
             font: callOperator?.font,
             textStyle: operatorNameTextStyle
-        ).map { operatorNameFont = $0 }
+        ).unwrap { operatorNameFont = $0 }
     }
 
     /// Apply background from remote configuration
     private func applyBackgroundConfiguration(_ background: RemoteConfiguration.Layer?) {
-        background?.color.map {
+        background?.color.unwrap {
             switch $0.type {
             case .fill:
                 $0.value
                     .map { UIColor(hex: $0) }
                     .first
-                    .map { backgroundColor = .fill(color: $0) }
+                    .unwrap { backgroundColor = .fill(color: $0) }
             case .gradient:
                 let colors = $0.value.convertToCgColors()
                 backgroundColor = .gradient(colors: colors)

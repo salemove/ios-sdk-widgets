@@ -74,31 +74,29 @@ extension Theme {
 private extension Theme.Button {
     /// Apply button background from remote configuration
     mutating func applyBackground(_ background: RemoteConfiguration.Layer?) {
-        background?.color.map {
+        background?.color.unwrap {
             switch $0.type {
             case .fill:
                 $0.value
                     .map { UIColor(hex: $0) }
                     .first
-                    .map { self.background = .fill(color: $0) }
+                    .unwrap { self.background = .fill(color: $0) }
             case .gradient:
                 let colors = $0.value.convertToCgColors()
                 self.background = .gradient(colors: colors)
             }
         }
 
-        background?.cornerRadius.map {
+        background?.cornerRadius.unwrap {
             cornerRadius = $0
         }
 
-        background?.borderWidth.map {
+        background?.borderWidth.unwrap {
             borderWidth = $0
         }
 
-        background?.border.map {
-            $0.value
-                .first
-                .map { borderColor = $0 }
-        }
+        background?.border?.value
+            .first
+            .unwrap { borderColor = $0 }
     }
 }

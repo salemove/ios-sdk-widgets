@@ -67,32 +67,32 @@ public class FilePreviewStyle {
 
     func apply(configuration: RemoteConfiguration.FilePreview?) {
         configuration?.background?.cornerRadius
-            .map { cornerRadius = $0 }
+            .unwrap { cornerRadius = $0 }
 
         configuration?.background?.color?.value
             .map { UIColor(hex: $0) }
             .first
-            .map { backgroundColor = $0 }
+            .unwrap { backgroundColor = $0 }
 
         configuration?.errorBackground?.color?.value
             .map { UIColor(hex: $0) }
             .first
-            .map { errorBackgroundColor = $0 }
+            .unwrap { errorBackgroundColor = $0 }
 
         configuration?.text?.foreground?.value
             .map { UIColor(hex: $0) }
             .first
-            .map { fileColor = $0 }
+            .unwrap { fileColor = $0 }
 
         UIFont.convertToFont(
             font: configuration?.text?.font,
             textStyle: fileTextStyle
-        ).map { fileFont = $0 }
+        ).unwrap { fileFont = $0 }
 
         configuration?.errorIcon?.value
             .map { UIColor(hex: $0) }
             .first
-            .map { errorIconColor = $0 }
+            .unwrap { errorIconColor = $0 }
     }
 }
 

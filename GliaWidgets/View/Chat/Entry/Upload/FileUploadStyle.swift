@@ -77,22 +77,22 @@ public class FileUploadStyle {
         configuration?.progress?.value
             .map { UIColor(hex: $0) }
             .first
-            .map { progressColor = $0 }
+            .unwrap { progressColor = $0 }
 
         configuration?.errorProgress?.value
             .map { UIColor(hex: $0) }
             .first
-            .map { errorProgressColor = $0 }
+            .unwrap { errorProgressColor = $0 }
 
         configuration?.progressBackground?.value
             .map { UIColor(hex: $0) }
             .first
-            .map { progressBackgroundColor = $0 }
+            .unwrap { progressBackgroundColor = $0 }
 
         configuration?.removeButton?.value
             .map { UIColor(hex: $0) }
             .first
-            .map { removeButtonColor = $0 }
+            .unwrap { removeButtonColor = $0 }
     }
 }
 
@@ -151,22 +151,22 @@ public class FileUploadStateStyle {
         configuration?.text?.foreground?.value
             .map { UIColor(hex: $0) }
             .first
-            .map { textColor = $0 }
+            .unwrap { textColor = $0 }
 
         UIFont.convertToFont(
             font: configuration?.text?.font,
             textStyle: textStyle
-        ).map { font = $0 }
+        ).unwrap { font = $0 }
 
         configuration?.info?.foreground?.value
             .map { UIColor(hex: $0) }
             .first
-            .map { infoColor = $0 }
+            .unwrap { infoColor = $0 }
 
         UIFont.convertToFont(
             font: configuration?.info?.font,
             textStyle: infoTextStyle
-        ).map { infoFont = $0 }
+        ).unwrap { infoFont = $0 }
     }
 }
 
@@ -255,22 +255,22 @@ public class FileUploadErrorStateStyle {
         configuration?.text?.foreground?.value
             .map { UIColor(hex: $0) }
             .first
-            .map { textColor = $0 }
+            .unwrap { textColor = $0 }
 
         UIFont.convertToFont(
             font: configuration?.text?.font,
             textStyle: textStyle
-        ).map { font = $0 }
+        ).unwrap { font = $0 }
 
         configuration?.info?.foreground?.value
             .map { UIColor(hex: $0) }
             .first
-            .map { infoColor = $0 }
+            .unwrap { infoColor = $0 }
 
         UIFont.convertToFont(
             font: configuration?.info?.font,
             textStyle: infoTextStyle
-        ).map { infoFont = $0 }
+        ).unwrap { infoFont = $0 }
     }
 }
 

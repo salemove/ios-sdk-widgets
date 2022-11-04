@@ -18,13 +18,13 @@ public struct OnHoldOverlayStyle {
 
     /// Apply onHoldOverlay style remote configuration
     mutating func apply(configuration: RemoteConfiguration.OnHoldOverlayStyle?) {
-        configuration?.color.map {
+        configuration?.color.unwrap {
             switch $0.type {
             case .fill:
                 $0.value
                     .map { UIColor(hex: $0) }
                     .first
-                    .map { imageColor = .fill(color: $0) }
+                    .unwrap { imageColor = .fill(color: $0) }
             case .gradient:
                 let colors = $0.value.convertToCgColors()
                 imageColor = .gradient(colors: colors)

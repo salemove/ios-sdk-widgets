@@ -46,11 +46,9 @@ public extension Theme.SurveyStyle {
 
         /// Apply tint color from remote configuration
         private mutating func applyTintColorConfiguration(_ tintColor: RemoteConfiguration.Color?) {
-            tintColor.map {
-                $0.value
-                    .first
-                    .map { self.tintColor = $0 }
-            }
+            tintColor?.value
+                .first
+                .unwrap { self.tintColor = $0 }
         }
     }
 }
