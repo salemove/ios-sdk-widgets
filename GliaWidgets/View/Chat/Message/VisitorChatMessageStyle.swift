@@ -50,7 +50,10 @@ public class VisitorChatMessageStyle: ChatMessageStyle {
         )
     }
 
-    func apply(configuration: RemoteConfiguration.MessageBalloon?) {
+    func apply(
+        configuration: RemoteConfiguration.MessageBalloon?,
+        assetsBuilder: RemoteConfiguration.AssetsBuilder
+    ) {
         configuration?.background?.cornerRadius
             .unwrap { text.cornerRadius = $0 }
 
@@ -63,7 +66,7 @@ public class VisitorChatMessageStyle: ChatMessageStyle {
             }
 
         UIFont.convertToFont(
-            font: configuration?.text?.font,
+            uiFont: assetsBuilder.fontBuilder(configuration?.text?.font),
             textStyle: text.textStyle
         ).unwrap { text.textFont = $0 }
 
@@ -73,7 +76,7 @@ public class VisitorChatMessageStyle: ChatMessageStyle {
             .unwrap { text.textColor = $0 }
 
         UIFont.convertToFont(
-            font: configuration?.status?.font,
+            uiFont: assetsBuilder.fontBuilder(configuration?.status?.font),
             textStyle: statusTextStyle
         ).unwrap { statusFont = $0 }
 
@@ -82,6 +85,9 @@ public class VisitorChatMessageStyle: ChatMessageStyle {
             .first
             .unwrap { statusColor = $0 }
 
-        fileDownload.apply(configuration: configuration?.file)
+        fileDownload.apply(
+            configuration: configuration?.file,
+            assetsBuilder: assetsBuilder
+        )
     }
 }

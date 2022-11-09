@@ -27,7 +27,10 @@ public class AttachmentSourceListStyle {
         self.backgroundColor = backgroundColor
     }
 
-    func apply(configuration: RemoteConfiguration.AttachmentSourceList?) {
+    func apply(
+        configuration: RemoteConfiguration.AttachmentSourceList?,
+        assetsBuilder: RemoteConfiguration.AssetsBuilder
+    ) {
         configuration?.separator?.value
             .map { UIColor(hex: $0) }
             .first
@@ -41,7 +44,10 @@ public class AttachmentSourceListStyle {
         configuration?.items?.forEach { item in
             let sourceType = AttachmentSourceItemKind(rawValue: item.type.rawValue)
             items.first(where: { $0.kind == sourceType })?
-                .apply(configuration: item)
+                .apply(
+                    configuration: item,
+                    assetsBuilder: assetsBuilder
+                )
         }
     }
 }

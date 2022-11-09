@@ -2,28 +2,25 @@ import Foundation
 import UIKit
 
 extension UIFont {
-    static func convertToFont(font: RemoteConfiguration.Font?, textStyle: UIFont.TextStyle) -> UIFont? {
-        let fontScaling = FontScaling.theme
-        if let fontSize = font?.size, let fontStyle = font?.style {
-            let weight = UIFont.Weight(fontStyle: fontStyle)
-            let font = fontStyle == .italic ? Self.italicFont(weight:size:) : Self.font(weight:size:)
-            return fontScaling.uiFont(
-                with: textStyle,
-                font: font(weight, fontSize)
-            )
-        } else {
-            return nil
-        }
+
+    static func convertToFont(
+        uiFont: UIFont?,
+        textStyle: UIFont.TextStyle
+    ) -> UIFont? {
+        FontScaling.theme.uiFont(
+            with: textStyle,
+            font: uiFont
+        )
     }
 
-    private static func font(
+    static func font(
         weight: UIFont.Weight,
         size: CGFloat
     ) -> UIFont {
         return .systemFont(ofSize: size, weight: weight)
     }
 
-    private static func italicFont(
+    static func italicFont(
         weight: UIFont.Weight = .regular,
         size: CGFloat
     ) -> UIFont {

@@ -33,7 +33,10 @@ public final class ChoiceCardOptionStateStyle: ChatTextContentStyle {
         )
     }
 
-    func apply(configuration: RemoteConfiguration.Button?) {
+    func apply(
+        configuration: RemoteConfiguration.Button?,
+        assetsBuilder: RemoteConfiguration.AssetsBuilder
+    ) {
         configuration?.background?.color?.value
             .map { UIColor(hex: $0) }
             .first
@@ -53,7 +56,7 @@ public final class ChoiceCardOptionStateStyle: ChatTextContentStyle {
             .unwrap { textColor = $0 }
 
         UIFont.convertToFont(
-            font: configuration?.text?.font,
+            uiFont: assetsBuilder.fontBuilder(configuration?.text?.font),
             textStyle: textStyle
         ).unwrap { textFont = $0 }
     }

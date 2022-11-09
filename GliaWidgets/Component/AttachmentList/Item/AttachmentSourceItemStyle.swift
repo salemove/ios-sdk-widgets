@@ -57,7 +57,10 @@ public class AttachmentSourceItemStyle {
         self.accessibility = accessibility
     }
 
-    func apply(configuration: RemoteConfiguration.AttachmentSource?) {
+    func apply(
+        configuration: RemoteConfiguration.AttachmentSource?,
+        assetsBuilder: RemoteConfiguration.AssetsBuilder
+    ) {
         configuration?.tintColor?.value
             .map { UIColor(hex: $0) }
             .first
@@ -69,7 +72,7 @@ public class AttachmentSourceItemStyle {
             .unwrap { titleColor = $0 }
 
         UIFont.convertToFont(
-            font: configuration?.text?.font,
+            uiFont: assetsBuilder.fontBuilder(configuration?.text?.font),
             textStyle: titleTextStyle
         ).unwrap { titleFont = $0 }
     }

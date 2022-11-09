@@ -34,9 +34,12 @@ public struct BadgeStyle {
     }
 
     /// Apply badge remote configuration
-    mutating func apply(configuration: RemoteConfiguration.Button?) {
+    mutating func apply(
+        configuration: RemoteConfiguration.Button?,
+        assetsBuilder: RemoteConfiguration.AssetsBuilder
+    ) {
         UIFont.convertToFont(
-            font: configuration?.text?.font,
+            uiFont: assetsBuilder.fontBuilder(configuration?.text?.font),
             textStyle: textStyle
         ).unwrap { font = $0 }
 

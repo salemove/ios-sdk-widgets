@@ -95,18 +95,54 @@ public class ChatStyle: EngagementStyle {
         )
     }
 
-    func apply(configuration: RemoteConfiguration.Chat?) {
-        header.apply(configuration: configuration?.header)
-        connect.apply(configuration: configuration?.connect)
-        visitorMessage.apply(configuration: configuration?.visitorMessage)
-        operatorMessage.apply(configuration: configuration?.operatorMessage)
-        messageEntry.apply(configuration: configuration?.input)
-        choiceCard.apply(configuration: configuration?.responseCard)
-        audioUpgrade.apply(configuration: configuration?.audioUpgrade)
-        videoUpgrade.apply(configuration: configuration?.videoUpgrade)
-        callBubble.apply(configuration: configuration?.bubble)
-        pickMedia.apply(configuration: configuration?.attachmentSourceList)
-        unreadMessageIndicator.apply(configuration: configuration?.unreadIndicator)
+    func apply(
+        configuration: RemoteConfiguration.Chat?,
+        assetsBuilder: RemoteConfiguration.AssetsBuilder
+    ) {
+        header.apply(
+            configuration: configuration?.header,
+            assetsBuilder: assetsBuilder
+        )
+        connect.apply(
+            configuration: configuration?.connect,
+            assetsBuilder: assetsBuilder
+        )
+        visitorMessage.apply(
+            configuration: configuration?.visitorMessage,
+            assetsBuilder: assetsBuilder
+        )
+        operatorMessage.apply(
+            configuration: configuration?.operatorMessage,
+            assetsBuilder: assetsBuilder
+        )
+        messageEntry.apply(
+            configuration: configuration?.input,
+            assetsBuilder: assetsBuilder
+        )
+        choiceCard.apply(
+            configuration: configuration?.responseCard,
+            assetsBuilder: assetsBuilder
+        )
+        audioUpgrade.apply(
+            configuration: configuration?.audioUpgrade,
+            assetsBuilder: assetsBuilder
+        )
+        videoUpgrade.apply(
+            configuration: configuration?.videoUpgrade,
+            assetsBuilder: assetsBuilder
+        )
+        callBubble.apply(
+            configuration: configuration?.bubble,
+            assetsBuilder: assetsBuilder
+        )
+        pickMedia.apply(
+            configuration: configuration?.attachmentSourceList,
+            assetsBuilder: assetsBuilder
+        )
+        unreadMessageIndicator.apply(
+            configuration: configuration?.unreadIndicator,
+            assetsBuilder: assetsBuilder
+        )
         operatorTypingIndicator.apply(configuration: configuration?.typingIndicator)
 
         configuration?.background?.color.unwrap {

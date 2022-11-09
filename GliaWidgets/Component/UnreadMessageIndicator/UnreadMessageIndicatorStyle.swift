@@ -50,8 +50,14 @@ public struct UnreadMessageIndicatorStyle {
         self.accessibility = accessibility
     }
 
-    mutating func apply(configuration: RemoteConfiguration.Bubble?) {
-        badge.apply(configuration: configuration?.badge)
+    mutating func apply(
+        configuration: RemoteConfiguration.Bubble?,
+        assetsBuilder: RemoteConfiguration.AssetsBuilder
+    ) {
+        badge.apply(
+            configuration: configuration?.badge,
+            assetsBuilder: assetsBuilder
+        )
         userImage.apply(configuration: configuration?.userImage)
     }
 }

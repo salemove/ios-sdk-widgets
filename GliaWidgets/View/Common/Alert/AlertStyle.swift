@@ -94,12 +94,27 @@ public struct AlertStyle {
     }
 
     /// Apply alert customization from remote configuration
-    mutating func apply(configuration: RemoteConfiguration.Alert?) {
-        positiveAction.apply(configuration: configuration?.positiveButton)
-        negativeAction.apply(configuration: configuration?.negativeButton)
-        applyTitleConfiguration(configuration?.title)
+    mutating func apply(
+        configuration: RemoteConfiguration.Alert?,
+        assetsBuilder: RemoteConfiguration.AssetsBuilder
+    ) {
+        positiveAction.apply(
+            configuration: configuration?.positiveButton,
+            assetsBuilder: assetsBuilder
+        )
+        negativeAction.apply(
+            configuration: configuration?.negativeButton,
+            assetsBuilder: assetsBuilder
+        )
+        applyTitleConfiguration(
+            configuration?.title,
+            assetsBuilder: assetsBuilder
+        )
         applyTitleImageConfiguration(configuration?.titleImageColor)
-        applyMessageConfiguration(configuration?.message)
+        applyMessageConfiguration(
+            configuration?.message,
+            assetsBuilder: assetsBuilder
+        )
     }
 }
 
@@ -107,9 +122,12 @@ public struct AlertStyle {
 
 private extension AlertStyle {
 
-    mutating func applyTitleConfiguration(_ configuration: RemoteConfiguration.Text?) {
+    mutating func applyTitleConfiguration(
+        _ configuration: RemoteConfiguration.Text?,
+        assetsBuilder: RemoteConfiguration.AssetsBuilder
+    ) {
         UIFont.convertToFont(
-            font: configuration?.font,
+            uiFont: assetsBuilder.fontBuilder(configuration?.font),
             textStyle: titleTextStyle
         ).unwrap { titleFont = $0 }
 
@@ -126,9 +144,12 @@ private extension AlertStyle {
             .unwrap { titleImageColor = $0 }
     }
 
-    mutating func applyMessageConfiguration(_ configuration: RemoteConfiguration.Text?) {
+    mutating func applyMessageConfiguration(
+        _ configuration: RemoteConfiguration.Text?,
+        assetsBuilder: RemoteConfiguration.AssetsBuilder
+    ) {
         UIFont.convertToFont(
-            font: configuration?.font,
+            uiFont: assetsBuilder.fontBuilder(configuration?.font),
             textStyle: messageTextStyle
         ).unwrap { messageFont = $0 }
 

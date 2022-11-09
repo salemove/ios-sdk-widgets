@@ -19,11 +19,29 @@ public struct CallButtonBarStyle {
     public var badge: BadgeStyle
 
     /// Apply button bar from remote configuration
-    mutating func applyBarConfiguration(_ bar: RemoteConfiguration.ButtonBar?) {
-        minimizeButton.applyBarButtonConfig(button: bar?.minimizeButton)
-        chatButton.applyBarButtonConfig(button: bar?.chatButton)
-        videoButton.applyBarButtonConfig(button: bar?.videoButton)
-        muteButton.applyBarButtonConfig(button: bar?.muteButton)
-        speakerButton.applyBarButtonConfig(button: bar?.speakerButton)
+    mutating func applyBarConfiguration(
+        _ bar: RemoteConfiguration.ButtonBar?,
+        assetsBuilder: RemoteConfiguration.AssetsBuilder
+    ) {
+        minimizeButton.applyBarButtonConfig(
+            button: bar?.minimizeButton,
+            assetsBuilder: assetsBuilder
+        )
+        chatButton.applyBarButtonConfig(
+            button: bar?.chatButton,
+            assetsBuilder: assetsBuilder
+        )
+        videoButton.applyBarButtonConfig(
+            button: bar?.videoButton,
+            assetsBuilder: assetsBuilder
+        )
+        muteButton.applyBarButtonConfig(
+            button: bar?.muteButton,
+            assetsBuilder: assetsBuilder
+        )
+        speakerButton.applyBarButtonConfig(
+            button: bar?.speakerButton,
+            assetsBuilder: assetsBuilder
+        )
     }
 }
