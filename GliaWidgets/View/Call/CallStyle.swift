@@ -185,25 +185,49 @@ extension CallStyle {
     }
 
     /// Apply call configuration from remote configuration
-    func apply(configuration: RemoteConfiguration.Call?) {
-        applyBarConfiguration(configuration?.buttonBar)
+    func apply(
+        configuration: RemoteConfiguration.Call?,
+        assetsBuilder: RemoteConfiguration.AssetsBuilder
+    ) {
+        applyBarConfiguration(
+            configuration?.buttonBar,
+            assetsBuilder: assetsBuilder
+        )
         applyBackgroundConfiguration(configuration?.background)
-        applyOperatorConfiguration(configuration?.callOperator)
-        header.apply(configuration: configuration?.header)
-        applyDurationConfiguration(configuration?.duration)
-        applyTopTextConfiguration(configuration?.topText)
-        applyBottomTextConfiguration(configuration?.bottomText)
+        applyOperatorConfiguration(
+            configuration?.callOperator,
+            assetsBuilder: assetsBuilder
+        )
+        header.apply(
+            configuration: configuration?.header,
+            assetsBuilder: assetsBuilder
+        )
+        applyDurationConfiguration(
+            configuration?.duration,
+            assetsBuilder: assetsBuilder
+        )
+        applyTopTextConfiguration(
+            configuration?.topText,
+            assetsBuilder: assetsBuilder
+        )
+        applyBottomTextConfiguration(
+            configuration?.bottomText,
+            assetsBuilder: assetsBuilder
+        )
     }
 
     /// Apply bottomText from remote configuration
-    private func applyBottomTextConfiguration(_ bottomText: RemoteConfiguration.Text?) {
+    private func applyBottomTextConfiguration(
+        _ bottomText: RemoteConfiguration.Text?,
+        assetsBuilder: RemoteConfiguration.AssetsBuilder
+    ) {
 
         bottomText?.alignment.unwrap { _ in
             // The logic for bottomText alignment has not been implemented
         }
 
         UIFont.convertToFont(
-            font: bottomText?.font,
+            uiFont: assetsBuilder.fontBuilder(bottomText?.font),
             textStyle: bottomTextStyle
         ).unwrap { bottomTextFont = $0 }
 
@@ -214,7 +238,10 @@ extension CallStyle {
     }
 
     /// Apply topText from remote configuration
-    private func applyTopTextConfiguration(_ topText: RemoteConfiguration.Text?) {
+    private func applyTopTextConfiguration(
+        _ topText: RemoteConfiguration.Text?,
+        assetsBuilder: RemoteConfiguration.AssetsBuilder
+    ) {
 
         topText?.alignment.unwrap { _ in
             // The logic for topText alignment has not been implemented
@@ -225,7 +252,7 @@ extension CallStyle {
         }
 
         UIFont.convertToFont(
-            font: topText?.font,
+            uiFont: assetsBuilder.fontBuilder(topText?.font),
             textStyle: topTextStyle
         ).unwrap { topTextFont = $0 }
 
@@ -236,7 +263,10 @@ extension CallStyle {
     }
 
     /// Apply duration from remote configuration
-    private func applyDurationConfiguration(_ duration: RemoteConfiguration.Text?) {
+    private func applyDurationConfiguration(
+        _ duration: RemoteConfiguration.Text?,
+        assetsBuilder: RemoteConfiguration.AssetsBuilder
+    ) {
 
         duration?.alignment.unwrap { _ in
             // The logic for duration alignment has not been implemented
@@ -247,7 +277,7 @@ extension CallStyle {
         }
 
         UIFont.convertToFont(
-            font: duration?.font,
+            uiFont: assetsBuilder.fontBuilder(duration?.font),
             textStyle: durationTextStyle
         ).unwrap { durationFont = $0 }
 
@@ -258,14 +288,17 @@ extension CallStyle {
     }
 
     /// Apply operator from remote configuration
-    private func applyOperatorConfiguration(_ callOperator: RemoteConfiguration.Text?) {
+    private func applyOperatorConfiguration(
+        _ callOperator: RemoteConfiguration.Text?,
+        assetsBuilder: RemoteConfiguration.AssetsBuilder
+    ) {
         callOperator?.foreground?.value
             .map { UIColor(hex: $0) }
             .first
             .unwrap { self.operatorNameColor = $0 }
 
         UIFont.convertToFont(
-            font: callOperator?.font,
+            uiFont: assetsBuilder.fontBuilder(callOperator?.font),
             textStyle: operatorNameTextStyle
         ).unwrap { operatorNameFont = $0 }
     }
@@ -287,7 +320,13 @@ extension CallStyle {
     }
 
     /// Apply bar buttons from remote configuration
-    private func applyBarConfiguration(_ bar: RemoteConfiguration.ButtonBar?) {
-        buttonBar.applyBarConfiguration(bar)
+    private func applyBarConfiguration(
+        _ bar: RemoteConfiguration.ButtonBar?,
+        assetsBuilder: RemoteConfiguration.AssetsBuilder
+    ) {
+        buttonBar.applyBarConfiguration(
+            bar,
+            assetsBuilder: assetsBuilder
+        )
     }
 }

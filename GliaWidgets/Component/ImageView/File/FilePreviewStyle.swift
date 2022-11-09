@@ -65,7 +65,10 @@ public class FilePreviewStyle {
         self.accessibility = accessibility
     }
 
-    func apply(configuration: RemoteConfiguration.FilePreview?) {
+    func apply(
+        configuration: RemoteConfiguration.FilePreview?,
+        assetsBuilder: RemoteConfiguration.AssetsBuilder
+    ) {
         configuration?.background?.cornerRadius
             .unwrap { cornerRadius = $0 }
 
@@ -85,7 +88,7 @@ public class FilePreviewStyle {
             .unwrap { fileColor = $0 }
 
         UIFont.convertToFont(
-            font: configuration?.text?.font,
+            uiFont: assetsBuilder.fontBuilder(configuration?.text?.font),
             textStyle: fileTextStyle
         ).unwrap { fileFont = $0 }
 

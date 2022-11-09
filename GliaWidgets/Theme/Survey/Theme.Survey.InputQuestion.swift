@@ -79,11 +79,23 @@ public extension Theme.SurveyStyle {
         }
 
         /// Apply input question from remote configuration
-        mutating func apply(configuration: RemoteConfiguration.SurveyInputQuestion?) {
-            title.apply(configuration: configuration?.title)
-            text.apply(configuration: configuration?.text)
+        mutating func apply(
+            configuration: RemoteConfiguration.SurveyInputQuestion?,
+            assetsBuilder: RemoteConfiguration.AssetsBuilder
+        ) {
+            title.apply(
+                configuration: configuration?.title,
+                assetsBuilder: assetsBuilder
+            )
+            text.apply(
+                configuration: configuration?.text,
+                assetsBuilder: assetsBuilder
+            )
             background.apply(configuration: configuration?.background)
-            option.apply(configuration: configuration?.option)
+            option.apply(
+                configuration: configuration?.option,
+                assetsBuilder: assetsBuilder
+            )
         }
     }
 }

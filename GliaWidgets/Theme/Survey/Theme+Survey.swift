@@ -84,14 +84,38 @@ extension Theme.SurveyStyle {
     }
 
     /// Apply survey remote configuration
-    mutating func apply(configuration: RemoteConfiguration.Survey?) {
+    mutating func apply(
+        configuration: RemoteConfiguration.Survey?,
+        assetsBuilder: RemoteConfiguration.AssetsBuilder
+    ) {
         layer.apply(configuration: configuration?.layer)
-        title.apply(configuration: configuration?.title)
-        submitButton.apply(configuration: configuration?.submitButton)
-        cancellButton.apply(configuration: configuration?.cancelButton)
-        booleanQuestion.apply(configuration: configuration?.booleanQuestion)
-        scaleQuestion.apply(configuration: configuration?.scaleQuestion)
-        singleQuestion.apply(configuration: configuration?.singleQuestion)
-        inputQuestion.apply(configuration: configuration?.inputQuestion)
+        title.apply(
+            configuration: configuration?.title,
+            assetsBuilder: assetsBuilder
+        )
+        submitButton.apply(
+            configuration: configuration?.submitButton,
+            assetsBuilder: assetsBuilder
+        )
+        cancellButton.apply(
+            configuration: configuration?.cancelButton,
+            assetsBuilder: assetsBuilder
+        )
+        booleanQuestion.apply(
+            configuration: configuration?.booleanQuestion,
+            assetsBuilder: assetsBuilder
+        )
+        scaleQuestion.apply(
+            configuration: configuration?.scaleQuestion,
+            assetsBuilder: assetsBuilder
+        )
+        singleQuestion.apply(
+            configuration: configuration?.singleQuestion,
+            assetsBuilder: assetsBuilder
+        )
+        inputQuestion.apply(
+            configuration: configuration?.inputQuestion,
+            assetsBuilder: assetsBuilder
+        )
     }
 }

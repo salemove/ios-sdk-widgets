@@ -23,13 +23,17 @@ extension Glia {
     public func startEngagementWithConfig(
         engagement: EngagementKind,
         uiConfig: RemoteConfiguration,
+        assetsBuilder: RemoteConfiguration.AssetsBuilder = .standard,
         features: Features = .all,
         sceneProvider: SceneProvider? = nil
     ) throws {
 
         // Apply remote configuration
         let theme = Theme()
-        theme.applyRemoteConfiguration(uiConfig)
+        theme.applyRemoteConfiguration(
+            uiConfig,
+            assetsBuilder: assetsBuilder
+        )
 
         try startEngagement(
             engagementKind: engagement,

@@ -62,7 +62,10 @@ public struct HeaderStyle {
         self.accessibility = accessibility
     }
 
-    mutating func apply(configuration: RemoteConfiguration.Header?) {
+    mutating func apply(
+        configuration: RemoteConfiguration.Header?,
+        assetsBuilder: RemoteConfiguration.AssetsBuilder
+    ) {
         configuration?.background?.color.unwrap {
             switch $0.type {
             case .fill:
@@ -77,7 +80,7 @@ public struct HeaderStyle {
         }
 
         UIFont.convertToFont(
-            font: configuration?.text?.font,
+            uiFont: assetsBuilder.fontBuilder(configuration?.text?.font),
             textStyle: textStyle
         ).unwrap { titleFont = $0 }
 
@@ -108,7 +111,10 @@ public struct HeaderStyle {
 
         backButton.apply(configuration: configuration?.backButton)
         closeButton.apply(configuration: configuration?.closeButton)
-        endButton.apply(configuration: configuration?.endButton)
+        endButton.apply(
+            configuration: configuration?.endButton,
+            assetsBuilder: assetsBuilder
+        )
         endScreenShareButton.apply(configuration: configuration?.endScreenSharingButton)
     }
 }

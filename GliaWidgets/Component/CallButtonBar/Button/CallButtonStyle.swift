@@ -42,15 +42,30 @@ public struct CallButtonStyle {
     public var accessibility: Accessibility
 
     /// Apply bar button from remote configuration
-    mutating func applyBarButtonConfig(button: RemoteConfiguration.BarButtonStates?) {
-        active.apply(configuration: button?.active)
-        inactive.apply(configuration: button?.inactive)
-        selected.apply(configuration: button?.selected)
+    mutating func applyBarButtonConfig(
+        button: RemoteConfiguration.BarButtonStates?,
+        assetsBuilder: RemoteConfiguration.AssetsBuilder
+    ) {
+        active.apply(
+            configuration: button?.active,
+            assetsBuilder: assetsBuilder
+        )
+        inactive.apply(
+            configuration: button?.inactive,
+            assetsBuilder: assetsBuilder
+        )
+        selected.apply(
+            configuration: button?.selected,
+            assetsBuilder: assetsBuilder
+        )
     }
 }
 
 extension CallButtonStyle.StateStyle {
-    mutating func apply(configuration: RemoteConfiguration.BarButtonStyle?) {
+    mutating func apply(
+        configuration: RemoteConfiguration.BarButtonStyle?,
+        assetsBuilder: RemoteConfiguration.AssetsBuilder
+    ) {
         configuration?.background.unwrap {
             switch $0.type {
             case .fill:
@@ -86,7 +101,7 @@ extension CallButtonStyle.StateStyle {
         }
 
         UIFont.convertToFont(
-            font: configuration?.title?.font,
+            uiFont: assetsBuilder.fontBuilder(configuration?.title?.font),
             textStyle: textStyle
         ).unwrap { titleFont = $0 }
 

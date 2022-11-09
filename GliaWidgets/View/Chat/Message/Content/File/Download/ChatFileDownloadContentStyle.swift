@@ -77,12 +77,30 @@ public class ChatFileDownloadStyle: ChatFileContentStyle {
         )
     }
 
-    func apply(configuration: RemoteConfiguration.FileMessage?) {
-        filePreview.apply(configuration: configuration?.preview)
-        download.apply(configuration: configuration?.download)
-        downloading.apply(configuration: configuration?.downloading)
-        open.apply(configuration: configuration?.downloaded)
-        error.apply(configuration: configuration?.error)
+    func apply(
+        configuration: RemoteConfiguration.FileMessage?,
+        assetsBuilder: RemoteConfiguration.AssetsBuilder
+    ) {
+        filePreview.apply(
+            configuration: configuration?.preview,
+            assetsBuilder: assetsBuilder
+        )
+        download.apply(
+            configuration: configuration?.download,
+            assetsBuilder: assetsBuilder
+        )
+        downloading.apply(
+            configuration: configuration?.downloading,
+            assetsBuilder: assetsBuilder
+        )
+        open.apply(
+            configuration: configuration?.downloaded,
+            assetsBuilder: assetsBuilder
+        )
+        error.apply(
+            configuration: configuration?.error,
+            assetsBuilder: assetsBuilder
+        )
 
         configuration?.progress?.value
             .map { UIColor(hex: $0) }
@@ -162,9 +180,12 @@ public class ChatFileDownloadStateStyle {
         self.infoTextStyle = infoTextStyle
     }
 
-    func apply(configuration: RemoteConfiguration.FileState?) {
+    func apply(
+        configuration: RemoteConfiguration.FileState?,
+        assetsBuilder: RemoteConfiguration.AssetsBuilder
+    ) {
         UIFont.convertToFont(
-            font: configuration?.text?.font,
+            uiFont: assetsBuilder.fontBuilder(configuration?.text?.font),
             textStyle: textStyle
         ).unwrap { font = $0 }
 
@@ -174,7 +195,7 @@ public class ChatFileDownloadStateStyle {
             .unwrap { textColor = $0 }
 
         UIFont.convertToFont(
-            font: configuration?.info?.font,
+            uiFont: assetsBuilder.fontBuilder(configuration?.info?.font),
             textStyle: infoTextStyle
         ).unwrap { infoFont = $0 }
 
@@ -284,9 +305,12 @@ public class ChatFileDownloadErrorStateStyle {
         self.retryTextStyle = retryTextStyle
     }
 
-    func apply(configuration: RemoteConfiguration.FileErrorState?) {
+    func apply(
+        configuration: RemoteConfiguration.FileErrorState?,
+        assetsBuilder: RemoteConfiguration.AssetsBuilder
+    ) {
         UIFont.convertToFont(
-            font: configuration?.text?.font,
+            uiFont: assetsBuilder.fontBuilder(configuration?.text?.font),
             textStyle: textStyle
         ).unwrap { font = $0 }
 
@@ -296,7 +320,7 @@ public class ChatFileDownloadErrorStateStyle {
             .unwrap { textColor = $0 }
 
         UIFont.convertToFont(
-            font: configuration?.info?.font,
+            uiFont: assetsBuilder.fontBuilder(configuration?.info?.font),
             textStyle: infoTextStyle
         ).unwrap { infoFont = $0 }
 
@@ -306,7 +330,7 @@ public class ChatFileDownloadErrorStateStyle {
             .unwrap { infoColor = $0 }
 
         UIFont.convertToFont(
-            font: configuration?.separator?.font,
+            uiFont: assetsBuilder.fontBuilder(configuration?.separator?.font),
             textStyle: separatorTextStyle
         ).unwrap { separatorFont = $0 }
 
@@ -316,7 +340,7 @@ public class ChatFileDownloadErrorStateStyle {
             .unwrap { separatorTextColor = $0 }
 
         UIFont.convertToFont(
-            font: configuration?.retry?.font,
+            uiFont: assetsBuilder.fontBuilder(configuration?.retry?.font),
             textStyle: retryTextStyle
         ).unwrap { retryFont = $0 }
 

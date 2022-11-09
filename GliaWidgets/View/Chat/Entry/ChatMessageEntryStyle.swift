@@ -99,7 +99,10 @@ public struct ChatMessageEntryStyle {
         self.accessibility = accessibility
     }
 
-    mutating func apply(configuration: RemoteConfiguration.Input?) {
+    mutating func apply(
+        configuration: RemoteConfiguration.Input?,
+        assetsBuilder: RemoteConfiguration.AssetsBuilder
+    ) {
         configuration?.background?.color?.value
             .map { UIColor(hex: $0) }
             .first
@@ -111,7 +114,7 @@ public struct ChatMessageEntryStyle {
             .unwrap { messageColor = $0 }
 
         UIFont.convertToFont(
-            font: configuration?.text?.font,
+            uiFont: assetsBuilder.fontBuilder(configuration?.text?.font),
             textStyle: messageTextStyle
         ).unwrap { messageFont = $0 }
 
@@ -121,7 +124,7 @@ public struct ChatMessageEntryStyle {
             .unwrap { placeholderColor = $0 }
 
         UIFont.convertToFont(
-            font: configuration?.placeholder?.font,
+            uiFont: assetsBuilder.fontBuilder(configuration?.placeholder?.font),
             textStyle: placeholderTextStyle
         ).unwrap { placeholderFont = $0 }
 
@@ -140,6 +143,9 @@ public struct ChatMessageEntryStyle {
             .first
             .unwrap { sendButton.color = $0 }
 
-        uploadList.apply(configuration: configuration?.fileUploadBar)
+        uploadList.apply(
+            configuration: configuration?.fileUploadBar,
+            assetsBuilder: assetsBuilder
+        )
     }
 }
