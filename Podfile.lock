@@ -6,13 +6,11 @@ PODS:
   - AccessibilitySnapshot/SnapshotTesting (0.5.0):
     - AccessibilitySnapshot/Core
     - SnapshotTesting (~> 1.0)
-  - GliaCoreDependency (1.0)
+  - GliaCoreDependency (1.2)
   - lottie-ios (3.2.3)
   - PureLayout (3.1.9)
-  - ReactiveSwift (6.5.0-xcf)
-  - SalemoveSDK (0.35.0):
-    - GliaCoreDependency (= 1.0)
-    - ReactiveSwift (= 6.5.0-xcf)
+  - SalemoveSDK (0.35.1):
+    - GliaCoreDependency (= 1.2)
     - TwilioVoice (= 6.3.1)
     - WebRTC-lib (= 96.0.0)
   - SnapshotTesting (1.9.0)
@@ -28,23 +26,21 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
     - AccessibilitySnapshot
+    - GliaCoreDependency
     - lottie-ios
     - PureLayout
     - SnapshotTesting
     - TwilioVoice
     - WebRTC-lib
   https://github.com/salemove/glia-ios-podspecs.git:
-    - GliaCoreDependency
-    - ReactiveSwift
     - SalemoveSDK
 
 SPEC CHECKSUMS:
   AccessibilitySnapshot: a91e4a69f870188b51f43863d9fc7269d07cdd93
-  GliaCoreDependency: a6e1b7c32dbd697018990d9f62e89c5835479df9
+  GliaCoreDependency: 87b3897f0d85321ecf77f1faa829211ad527e54d
   lottie-ios: c058aeafa76daa4cf64d773554bccc8385d0150e
   PureLayout: 5fb5e5429519627d60d079ccb1eaa7265ce7cf88
-  ReactiveSwift: 377d0a5621761a57c61829541b2ee0b9fdcd98f2
-  SalemoveSDK: 746636f7d0baed5fac0c979d361d86dfdcce7283
+  SalemoveSDK: a0ddbff0556593da436104bc9d877a77cedf0048
   SnapshotTesting: 6141c48b6aa76ead61431ca665c14ab9a066c53b
   TwilioVoice: 098a959181d4607921f5822d3c9f13043ea4075b
   WebRTC-lib: 508fe02efa0c1a3a8867082a77d24c9be5d29aeb
