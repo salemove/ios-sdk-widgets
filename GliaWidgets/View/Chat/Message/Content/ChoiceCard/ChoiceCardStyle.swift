@@ -55,7 +55,10 @@ public final class ChoiceCardStyle: OperatorChatMessageStyle {
         )
     }
 
-    func apply(configuration: RemoteConfiguration.ResponseCard?) {
+    func apply(
+        configuration: RemoteConfiguration.ResponseCard?,
+        assetsBuilder: RemoteConfiguration.AssetsBuilder
+    ) {
         configuration?.background?.color?.value
             .map { UIColor(hex: $0) }
             .first
@@ -72,7 +75,13 @@ public final class ChoiceCardStyle: OperatorChatMessageStyle {
         configuration?.background?.borderWidth
             .unwrap { borderWidth = $0 }
 
-        choiceOption.apply(configuration: configuration?.option)
-        apply(configuration: configuration?.message)
+        choiceOption.apply(
+            configuration: configuration?.option,
+            assetsBuilder: assetsBuilder
+        )
+        apply(
+            configuration: configuration?.message,
+            assetsBuilder: assetsBuilder
+        )
     }
 }

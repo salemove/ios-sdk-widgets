@@ -68,11 +68,26 @@ public class FileUploadStyle {
         self.accessibility = accessibility
     }
 
-    func apply(configuration: RemoteConfiguration.FileUploadBar?) {
-        filePreview.apply(configuration: configuration?.filePreview)
-        uploading.apply(configuration: configuration?.uploading)
-        uploaded.apply(configuration: configuration?.uploaded)
-        error.apply(configuration: configuration?.error)
+    func apply(
+        configuration: RemoteConfiguration.FileUploadBar?,
+        assetsBuilder: RemoteConfiguration.AssetsBuilder
+    ) {
+        filePreview.apply(
+            configuration: configuration?.filePreview,
+            assetsBuilder: assetsBuilder
+        )
+        uploading.apply(
+            configuration: configuration?.uploading,
+            assetsBuilder: assetsBuilder
+        )
+        uploaded.apply(
+            configuration: configuration?.uploaded,
+            assetsBuilder: assetsBuilder
+        )
+        error.apply(
+            configuration: configuration?.error,
+            assetsBuilder: assetsBuilder
+        )
 
         configuration?.progress?.value
             .map { UIColor(hex: $0) }
@@ -147,14 +162,17 @@ public class FileUploadStateStyle {
         self.infoTextStyle = infoTextStyle
     }
 
-    func apply(configuration: RemoteConfiguration.FileState?) {
+    func apply(
+        configuration: RemoteConfiguration.FileState?,
+        assetsBuilder: RemoteConfiguration.AssetsBuilder
+    ) {
         configuration?.text?.foreground?.value
             .map { UIColor(hex: $0) }
             .first
             .unwrap { textColor = $0 }
 
         UIFont.convertToFont(
-            font: configuration?.text?.font,
+            uiFont: assetsBuilder.fontBuilder(configuration?.text?.font),
             textStyle: textStyle
         ).unwrap { font = $0 }
 
@@ -164,7 +182,7 @@ public class FileUploadStateStyle {
             .unwrap { infoColor = $0 }
 
         UIFont.convertToFont(
-            font: configuration?.info?.font,
+            uiFont: assetsBuilder.fontBuilder(configuration?.info?.font),
             textStyle: infoTextStyle
         ).unwrap { infoFont = $0 }
     }
@@ -251,14 +269,17 @@ public class FileUploadErrorStateStyle {
         self.infoGenericError = infoGenericError
     }
 
-    func apply(configuration: RemoteConfiguration.FileState?) {
+    func apply(
+        configuration: RemoteConfiguration.FileState?,
+        assetsBuilder: RemoteConfiguration.AssetsBuilder
+    ) {
         configuration?.text?.foreground?.value
             .map { UIColor(hex: $0) }
             .first
             .unwrap { textColor = $0 }
 
         UIFont.convertToFont(
-            font: configuration?.text?.font,
+            uiFont: assetsBuilder.fontBuilder(configuration?.text?.font),
             textStyle: textStyle
         ).unwrap { font = $0 }
 
@@ -268,7 +289,7 @@ public class FileUploadErrorStateStyle {
             .unwrap { infoColor = $0 }
 
         UIFont.convertToFont(
-            font: configuration?.info?.font,
+            uiFont: assetsBuilder.fontBuilder(configuration?.info?.font),
             textStyle: infoTextStyle
         ).unwrap { infoFont = $0 }
     }

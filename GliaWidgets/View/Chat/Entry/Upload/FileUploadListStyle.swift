@@ -13,7 +13,13 @@ public class FileUploadListStyle {
         self.item = item
     }
 
-    func apply(configuration: RemoteConfiguration.FileUploadBar?) {
-        item.apply(configuration: configuration)
+    func apply(
+        configuration: RemoteConfiguration.FileUploadBar?,
+        assetsBuilder: RemoteConfiguration.AssetsBuilder
+    ) {
+        item.apply(
+            configuration: configuration,
+            assetsBuilder: assetsBuilder
+        )
     }
 }

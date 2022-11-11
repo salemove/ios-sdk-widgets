@@ -26,7 +26,10 @@ public class OperatorChatMessageStyle: ChatMessageStyle {
         )
     }
 
-    func apply(configuration: RemoteConfiguration.MessageBalloon?) {
+    func apply(
+        configuration: RemoteConfiguration.MessageBalloon?,
+        assetsBuilder: RemoteConfiguration.AssetsBuilder
+    ) {
         configuration?.background?.cornerRadius
             .unwrap { text.cornerRadius = $0 }
 
@@ -39,7 +42,7 @@ public class OperatorChatMessageStyle: ChatMessageStyle {
             }
 
         UIFont.convertToFont(
-            font: configuration?.text?.font,
+            uiFont: assetsBuilder.fontBuilder(configuration?.text?.font),
             textStyle: text.textStyle
         ).unwrap { text.textFont = $0 }
 
@@ -48,7 +51,10 @@ public class OperatorChatMessageStyle: ChatMessageStyle {
             .first
             .unwrap { text.textColor = $0 }
 
-        fileDownload.apply(configuration: configuration?.file)
+        fileDownload.apply(
+            configuration: configuration?.file,
+            assetsBuilder: assetsBuilder
+        )
         operatorImage.apply(configuration: configuration?.userImage)
     }
 }

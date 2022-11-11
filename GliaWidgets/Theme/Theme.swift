@@ -65,11 +65,29 @@ public class Theme {
     }
 
     /// Apply remote configuration
-    func applyRemoteConfiguration(_ config: RemoteConfiguration) {
-        call.apply(configuration: config.callScreen)
-        survey.apply(configuration: config.surveyScreen)
-        alert.apply(configuration: config.alertScreen)
-        minimizedBubble.apply(configuration: config.bubble)
-        chat.apply(configuration: config.chatScreen)
+    func applyRemoteConfiguration(
+        _ config: RemoteConfiguration,
+        assetsBuilder: RemoteConfiguration.AssetsBuilder
+    ) {
+        call.apply(
+            configuration: config.callScreen,
+            assetsBuilder: assetsBuilder
+        )
+        survey.apply(
+            configuration: config.surveyScreen,
+            assetsBuilder: assetsBuilder
+        )
+        alert.apply(
+            configuration: config.alertScreen,
+            assetsBuilder: assetsBuilder
+        )
+        minimizedBubble.apply(
+            configuration: config.bubble,
+            assetsBuilder: assetsBuilder
+        )
+        chat.apply(
+            configuration: config.chatScreen,
+            assetsBuilder: assetsBuilder
+        )
     }
 }

@@ -45,20 +45,38 @@ extension Theme.SurveyStyle {
         }
 
         /// Apply option button from remote configuration
-        mutating func apply(configuration: RemoteConfiguration.OptionButton?) {
-            applyFontConfiguration(configuration?.font)
-            normalText.apply(configuration: configuration?.normalText)
+        mutating func apply(
+            configuration: RemoteConfiguration.OptionButton?,
+            assetsBuilder: RemoteConfiguration.AssetsBuilder
+        ) {
+            applyFontConfiguration(
+                configuration?.font,
+                assetsBuilder: assetsBuilder
+            )
+            normalText.apply(
+                configuration: configuration?.normalText,
+                assetsBuilder: assetsBuilder
+            )
             normalLayer.apply(configuration: configuration?.normalLayer)
-            selectedText.apply(configuration: configuration?.selectedText)
+            selectedText.apply(
+                configuration: configuration?.selectedText,
+                assetsBuilder: assetsBuilder
+            )
             selectedLayer.apply(configuration: configuration?.selectedLayer)
-            highlightedText.apply(configuration: configuration?.highlightedText)
+            highlightedText.apply(
+                configuration: configuration?.highlightedText,
+                assetsBuilder: assetsBuilder
+            )
             highlightedLayer.apply(configuration: configuration?.highlightedLayer)
         }
 
         /// Apply option button title font from remote configuration
-        private mutating func applyFontConfiguration(_ font: RemoteConfiguration.Font?) {
+        private mutating func applyFontConfiguration(
+            _ font: RemoteConfiguration.Font?,
+            assetsBuilder: RemoteConfiguration.AssetsBuilder
+        ) {
             UIFont.convertToFont(
-                font: font,
+                uiFont: assetsBuilder.fontBuilder(font),
                 textStyle: textStyle
             ).unwrap { self.font = $0 }
         }

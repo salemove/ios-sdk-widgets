@@ -33,9 +33,15 @@ public class BubbleStyle {
     }
 
     /// Apply bubble remote configuration
-    func apply(configuration: RemoteConfiguration.Bubble?) {
+    func apply(
+        configuration: RemoteConfiguration.Bubble?,
+        assetsBuilder: RemoteConfiguration.AssetsBuilder
+    ) {
         onHoldOverlay.apply(configuration: configuration?.onHoldOverlay)
-        badge?.apply(configuration: configuration?.badge)
+        badge?.apply(
+            configuration: configuration?.badge,
+            assetsBuilder: assetsBuilder
+        )
         userImage.apply(configuration: configuration?.userImage)
     }
 }

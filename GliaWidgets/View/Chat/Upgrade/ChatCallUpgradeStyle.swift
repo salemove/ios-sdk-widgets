@@ -87,14 +87,17 @@ public class ChatCallUpgradeStyle {
         self.accessibility = accessibility
     }
 
-    func apply(configuration: RemoteConfiguration.Upgrade?) {
+    func apply(
+        configuration: RemoteConfiguration.Upgrade?,
+        assetsBuilder: RemoteConfiguration.AssetsBuilder
+    ) {
         configuration?.iconColor?.value
             .map { UIColor(hex: $0) }
             .first
             .unwrap { iconColor = $0 }
 
         UIFont.convertToFont(
-            font: configuration?.text?.font,
+            uiFont: assetsBuilder.fontBuilder(configuration?.text?.font),
             textStyle: textStyle
         ).unwrap { textFont = $0 }
 
@@ -104,7 +107,7 @@ public class ChatCallUpgradeStyle {
             .unwrap { textColor = $0 }
 
         UIFont.convertToFont(
-            font: configuration?.description?.font,
+            uiFont: assetsBuilder.fontBuilder(configuration?.description?.font),
             textStyle: durationTextStyle
         ).unwrap { durationFont = $0 }
 

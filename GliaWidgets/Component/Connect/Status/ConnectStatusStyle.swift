@@ -63,9 +63,12 @@ public struct ConnectStatusStyle {
         self.accessibility = accessibility
     }
 
-    mutating func apply(configuration: RemoteConfiguration.EngagementState?) {
+    mutating func apply(
+        configuration: RemoteConfiguration.EngagementState?,
+        assetsBuilder: RemoteConfiguration.AssetsBuilder
+    ) {
         UIFont.convertToFont(
-            font: configuration?.title?.font,
+            uiFont: assetsBuilder.fontBuilder(configuration?.title?.font),
             textStyle: firstTextStyle
         ).unwrap { firstTextFont = $0 }
 
@@ -75,7 +78,7 @@ public struct ConnectStatusStyle {
             .unwrap { firstTextFontColor = $0 }
 
         UIFont.convertToFont(
-            font: configuration?.description?.font,
+            uiFont: assetsBuilder.fontBuilder(configuration?.description?.font),
             textStyle: secondTextStyle
         ).unwrap { secondTextFont = $0 }
 

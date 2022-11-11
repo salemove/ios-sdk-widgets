@@ -63,9 +63,15 @@ extension Theme {
         }
 
         /// Apply default question button from remote configuration
-        mutating func apply(configuration: RemoteConfiguration.Button?) {
+        mutating func apply(
+            configuration: RemoteConfiguration.Button?,
+            assetsBuilder: RemoteConfiguration.AssetsBuilder
+        ) {
             applyBackground(configuration?.background)
-            title.apply(configuration: configuration?.text)
+            title.apply(
+                configuration: configuration?.text,
+                assetsBuilder: assetsBuilder
+            )
             shadow.apply(configuration: configuration?.shadow)
         }
     }

@@ -185,25 +185,49 @@ extension CallStyle {
     }
 
     /// Apply call configuration from remote configuration
-    func apply(configuration: RemoteConfiguration.Call?) {
-        applyBarConfiguration(configuration?.buttonBar)
+    func apply(
+        configuration: RemoteConfiguration.Call?,
+        assetsBuilder: RemoteConfiguration.AssetsBuilder
+    ) {
+        applyBarConfiguration(
+            configuration?.buttonBar,
+            assetsBuilder: assetsBuilder
+        )
         applyBackgroundConfiguration(configuration?.background)
-        applyOperatorConfiguration(configuration?.callOperator)
-        header.apply(configuration: configuration?.header)
-        applyDurationConfiguration(configuration?.duration)
-        applyTopTextConfiguration(configuration?.topText)
-        applyBottomTextConfiguration(configuration?.bottomText)
+        applyOperatorConfiguration(
+            configuration?.callOperator,
+            assetsBuilder: assetsBuilder
+        )
+        header.apply(
+            configuration: configuration?.header,
+            assetsBuilder: assetsBuilder
+        )
+        applyDurationConfiguration(
+            configuration?.duration,
+            assetsBuilder: assetsBuilder
+        )
+        applyTopTextConfiguration(
+            configuration?.topText,
+            assetsBuilder: assetsBuilder
+        )
+        applyBottomTextConfiguration(
+            configuration?.bottomText,
+            assetsBuilder: assetsBuilder
+        )
     }
 
     /// Apply bottomText from remote configuration
-    private func applyBottomTextConfiguration(_ bottomText: RemoteConfiguration.Text?) {
+    private func applyBottomTextConfiguration(
+        _ bottomText: RemoteConfiguration.Text?,
+        assetsBuilder: RemoteConfiguration.AssetsBuilder
+    ) {
 
         bottomText?.alignment.unwrap { _ in
             // The logic for bottomText alignment has not been implemented
         }
 
         UIFont.convertToFont(
-            font: bottomText?.font,
+            uiFont: assetsBuilder.fontBuilder(bottomText?.font),
             textStyle: bottomTextStyle
         ).unwrap { bottomTextFont = $0 }
 
@@ -214,7 +238,10 @@ extension CallStyle {
     }
 
     /// Apply topText from remote configuration
-    private func applyTopTextConfiguration(_ topText: RemoteConfiguration.Text?) {
+    private func applyTopTextConfiguration(
+        _ topText: RemoteConfiguration.Text?,
+        assetsBuilder: RemoteConfiguration.AssetsBuilder
+    ) {
 
         topText?.alignment.unwrap { _ in
             // The logic for topText alignment has not been implemented
@@ -225,7 +252,7 @@ extension CallStyle {
         }
 
         UIFont.convertToFont(
-            font: topText?.font,
+            uiFont: assetsBuilder.fontBuilder(topText?.font),
             textStyle: topTextStyle
         ).unwrap { topTextFont = $0 }
 
@@ -236,7 +263,10 @@ extension CallStyle {
     }
 
     /// Apply duration from remote configuration
-    private func applyDurationConfiguration(_ duration: RemoteConfiguration.Text?) {
+    private func applyDurationConfiguration(
+        _ duration: RemoteConfiguration.Text?,
+        assetsBuilder: RemoteConfiguration.AssetsBuilder
+    ) {
 
         duration?.alignment.unwrap { _ in
             // The logic for duration alignment has not been implemented
@@ -247,7 +277,7 @@ extension CallStyle {
         }
 
         UIFont.convertToFont(
-            font: duration?.font,
+            uiFont: assetsBuilder.fontBuilder(duration?.font),
             textStyle: durationTextStyle
         ).unwrap { durationFont = $0 }
 
@@ -257,94 +287,18 @@ extension CallStyle {
             .unwrap { durationColor = $0 }
     }
 
-    /// Apply end button from remote configuration
-    private func applyEndButtonConfiguration(_ endButton: RemoteConfiguration.Button?) {
-        endButton?.background?.color.unwrap {
-            switch $0.type {
-            case .fill:
-                $0.value
-                    .map { UIColor(hex: $0) }
-                    .first
-                    .unwrap { header.endButton.backgroundColor = .fill(color: $0) }
-            case .gradient:
-                let colors = $0.value.convertToCgColors()
-                header.endButton.backgroundColor = .gradient(colors: colors)
-            }
-        }
-
-        endButton?.text?.alignment.unwrap { _ in
-            // The logic for duration alignment has not been implemented
-        }
-
-        endButton?.text?.background.unwrap { _ in
-            // The logic for duration background has not been implemented
-        }
-        UIFont.convertToFont(
-            font: endButton?.text?.font,
-            textStyle: header.endButton.textStyle
-        ).unwrap { header.endButton.titleFont = $0 }
-
-        endButton?.text?.foreground?.value
-            .map { UIColor(hex: $0) }
-            .first
-            .unwrap { header.endButton.titleColor = $0 }
-    }
-
-    /// Apply header from remote configuration
-    private func applyHeaderConfiguration(_ header: RemoteConfiguration.Header?) {
-        header?.background?.border.unwrap { _ in
-            // The logic for header border has not been implemented
-        }
-
-        header?.background?.borderWidth.unwrap { _ in
-            // The logic for header borderWidth has not been implemented
-        }
-
-        header?.background?.cornerRadius.unwrap { _ in
-            // The logic for header cornerRadius has not been implemented
-        }
-
-        header?.background?.color.unwrap {
-            switch $0.type {
-            case .fill:
-                $0.value
-                    .map { UIColor(hex: $0) }
-                    .first
-                    .unwrap { self.header.backgroundColor = .fill(color: $0) }
-            case .gradient:
-                let colors = $0.value.convertToCgColors()
-                self.header.backgroundColor = .gradient(colors: colors)
-            }
-        }
-
-        header?.text?.alignment.unwrap { _ in
-            // The logic for title alignment has not been implemented
-        }
-
-        header?.text?.background.unwrap { _ in
-            // The logic for title background has not been implemented
-        }
-
-        UIFont.convertToFont(
-            font: header?.text?.font,
-            textStyle: self.header.textStyle
-        ).unwrap { self.header.titleFont = $0 }
-
-        header?.text?.foreground?.value
-            .map { UIColor(hex: $0) }
-            .first
-            .unwrap { self.header.titleColor = $0 }
-    }
-
     /// Apply operator from remote configuration
-    private func applyOperatorConfiguration(_ callOperator: RemoteConfiguration.Text?) {
+    private func applyOperatorConfiguration(
+        _ callOperator: RemoteConfiguration.Text?,
+        assetsBuilder: RemoteConfiguration.AssetsBuilder
+    ) {
         callOperator?.foreground?.value
             .map { UIColor(hex: $0) }
             .first
             .unwrap { self.operatorNameColor = $0 }
 
         UIFont.convertToFont(
-            font: callOperator?.font,
+            uiFont: assetsBuilder.fontBuilder(callOperator?.font),
             textStyle: operatorNameTextStyle
         ).unwrap { operatorNameFont = $0 }
     }
@@ -366,7 +320,13 @@ extension CallStyle {
     }
 
     /// Apply bar buttons from remote configuration
-    private func applyBarConfiguration(_ bar: RemoteConfiguration.ButtonBar?) {
-        buttonBar.applyBarConfiguration(bar)
+    private func applyBarConfiguration(
+        _ bar: RemoteConfiguration.ButtonBar?,
+        assetsBuilder: RemoteConfiguration.AssetsBuilder
+    ) {
+        buttonBar.applyBarConfiguration(
+            bar,
+            assetsBuilder: assetsBuilder
+        )
     }
 }

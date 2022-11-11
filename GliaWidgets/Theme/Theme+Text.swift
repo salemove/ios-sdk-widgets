@@ -28,7 +28,10 @@ extension Theme {
         }
 
         /// Apply text from remote configuration
-        mutating func apply(configuration: RemoteConfiguration.Text?) {
+        mutating func apply(
+            configuration: RemoteConfiguration.Text?,
+            assetsBuilder: RemoteConfiguration.AssetsBuilder
+        ) {
             configuration?.alignment.unwrap { alignment in
                 switch alignment {
                 case .center:
@@ -45,7 +48,7 @@ extension Theme {
             }
 
             UIFont.convertToFont(
-                font: configuration?.font,
+                uiFont: assetsBuilder.fontBuilder(configuration?.font),
                 textStyle: textStyle
             ).unwrap { font = $0 }
 

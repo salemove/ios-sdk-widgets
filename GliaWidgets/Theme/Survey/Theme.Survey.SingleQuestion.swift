@@ -38,9 +38,18 @@ public extension Theme.SurveyStyle {
         }
 
         /// Apply single question from remote configuration
-        mutating func apply(configuration: RemoteConfiguration.SurveySingleQuestion?) {
-            option.title.apply(configuration: configuration?.option)
-            title.apply(configuration: configuration?.title)
+        mutating func apply(
+            configuration: RemoteConfiguration.SurveySingleQuestion?,
+            assetsBuilder: RemoteConfiguration.AssetsBuilder
+        ) {
+            option.title.apply(
+                configuration: configuration?.option,
+                assetsBuilder: assetsBuilder
+            )
+            title.apply(
+                configuration: configuration?.title,
+                assetsBuilder: assetsBuilder
+            )
             applyTintColorConfiguration(configuration?.tintColor)
         }
 
