@@ -1,0 +1,21 @@
+name: Increment project version
+
+on:
+  workflow_dispatch:
+    inputs:
+      type:
+        description: 'Version increment type'
+        required: true
+        type: choice
+        options:
+        - patch
+        - minor
+        - major
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Runs the increment project version workflow in Bitrise
+        run: |
+          curl https://app.bitrise.io/app/${{ secrets.BITRISE_APP_ID }}/build/start.json --data '{"hook_info":{"type":"bitrise","build_trigger_token":"${{ secrets.BITRISE_BUILD_TRIGGER_TOKEN }}"},"build_params":{"branch":"master","workflow_id":"authenticated_increment_project_version","environments":[{"mapped_to":"GITHUB_VERSION_INCREMENT_TYPE","value":"${{ github.event.inputs.type }}","is_expand":true}]},"triggered_by":"curl"}'
