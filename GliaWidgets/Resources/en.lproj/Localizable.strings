@@ -113,7 +113,7 @@
 "chat.accessibility.header.endButton.label" = "End";
 "chat.accessibility.header.closeButton.label" = "Close";
 "chat.accessibility.header.closeButton.hint" = "";
-"chat.accessibility.header.endScreenShareButton.label" = "End";
+"chat.accessibility.header.endScreenShareButton.label" = "End screen share";
 "chat.accessibility.header.endScreenShareButton.hint" = "";
 "chat.accessibility.message.choiceCard.image.label" = "Choice card";
 "chat.accessibility.message.unreadMessagesIndicator.label" = "Unread messages";
