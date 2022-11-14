@@ -3,6 +3,46 @@ format_version: '8'
 default_step_lib_source: 'https://github.com/bitrise-io/bitrise-steplib.git'
 project_type: ios
 workflows:
+  _increment_project_version:
+    steps:
+    - script@1:
+        inputs:
+        - content: >-
+            #!/usr/bin/env bash
+
+            # fail if any commands fails
+
+            set -e
+
+            # make pipelines' return status equal the last command to exit with
+            a non-zero status, or zero if all commands exit successfully
+
+            set -o pipefail
+
+            # debug log
+
+            set -x
+
+
+            if [ ! -z "$GITHUB_VERSION_INCREMENT_TYPE" ] ; then
+              envman add --key VERSION_INCREMENT_TYPE --value "$GITHUB_VERSION_INCREMENT_TYPE"
+            fi
+    - fastlane@3:
+        inputs:
+        - lane: >-
+            ios create_pr_for_increment_project_version
+            type:$VERSION_INCREMENT_TYPE
+    envs:
+    - opts:
+        is_expand: false
+      VERSION_INCREMENT_TYPE: patch
+  authenticated_increment_project_version:
+    steps:
+    - activate-ssh-key@4:
+        run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
+    - git-clone@6: {}
+    after_run:
+    - _increment_project_version
   browserstack_upload:
     steps:
     - activate-ssh-key@4:
@@ -60,7 +100,7 @@ workflows:
         - app_slug: $GLIA_IOS_PODSPECS_APP_SLUG
     - cache-push@2: {}
     after_run:
-    - increment_project_version
+    - _increment_project_version
   dev-build:
     steps:
     - activate-ssh-key@4:
@@ -96,15 +136,6 @@ workflows:
     description: >-
       Workflow for checking and building pull requests. Does not notify
       anywhere, but shows on the pull request itself.
-  increment_project_version:
-    steps:
-    - fastlane@3:
-        inputs:
-        - lane: 'ios create_pr_for_increment_project_version type:$VERSION_INCREMENT_TYPE'
-    envs:
-    - opts:
-        is_expand: false
-      VERSION_INCREMENT_TYPE: patch
   integration-spm:
     steps:
     - script@1:
@@ -310,7 +341,7 @@ workflows:
         - command: update
     - fastlane@3:
         inputs:
-        - lane: 'ios create_pr_for_dependencies_update'
+        - lane: ios create_pr_for_dependencies_update
 app:
   envs:
   - opts:
