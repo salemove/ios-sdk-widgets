@@ -79,9 +79,17 @@ public final class ChoiceCardStyle: OperatorChatMessageStyle {
             configuration: configuration?.option,
             assetsBuilder: assetsBuilder
         )
-        apply(
-            configuration: configuration?.message,
-            assetsBuilder: assetsBuilder
-        )
+
+        UIFont.convertToFont(
+            uiFont: assetsBuilder.fontBuilder(configuration?.text?.font),
+            textStyle: text.textStyle
+        ).unwrap { text.textFont = $0 }
+
+        configuration?.text?.foreground?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .unwrap { text.textColor = $0 }
+
+        operatorImage.apply(configuration: configuration?.userImage)
     }
 }

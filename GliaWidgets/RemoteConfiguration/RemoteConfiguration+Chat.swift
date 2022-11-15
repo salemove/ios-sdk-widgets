@@ -83,7 +83,8 @@ public extension RemoteConfiguration {
     struct ResponseCard: Codable {
         public let background: Layer?
         public let option: ResponseCardOption?
-        public let message: MessageBalloon?
+        public let text: Text?
+        public let userImage: UserImageStyle?
     }
 
     struct ResponseCardOption: Codable {
