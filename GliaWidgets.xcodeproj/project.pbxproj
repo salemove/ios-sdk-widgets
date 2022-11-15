@@ -376,6 +376,8 @@
 		AFA2FDFC289082F500428E6D /* OnHoldOverlayStyle.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA2FDFB289082F500428E6D /* OnHoldOverlayStyle.Mock.swift */; };
 		AFBBF5782851C391004993B3 /* Glia.Deprecated.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBBF5772851C391004993B3 /* Glia.Deprecated.swift */; };
 		AFBBF57A28522591004993B3 /* Configuration.Unavailable.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBBF57928522591004993B3 /* Configuration.Unavailable.swift */; };
+		C03A8047292BA76D00DDECA6 /* ChatViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03A8046292BA76D00DDECA6 /* ChatViewControllerTests.swift */; };
+		C03A8049292BC8DB00DDECA6 /* CallViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03A8048292BC8DB00DDECA6 /* CallViewControllerTests.swift */; };
 		C4119E06268F41D1004DFEFB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C4119E05268F41D1004DFEFB /* Main.storyboard */; };
 		C42463742673ABE10082C135 /* ScreenShareHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42463732673ABE10082C135 /* ScreenShareHandler.swift */; };
 		C43C12F92694B14900C37E1B /* GliaPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43C12F82694B14900C37E1B /* GliaPresenter.swift */; };
@@ -841,6 +843,8 @@
 		AFA2FDFB289082F500428E6D /* OnHoldOverlayStyle.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnHoldOverlayStyle.Mock.swift; sourceTree = "<group>"; };
 		AFBBF5772851C391004993B3 /* Glia.Deprecated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Glia.Deprecated.swift; sourceTree = "<group>"; };
 		AFBBF57928522591004993B3 /* Configuration.Unavailable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.Unavailable.swift; sourceTree = "<group>"; };
+		C03A8046292BA76D00DDECA6 /* ChatViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewControllerTests.swift; sourceTree = "<group>"; };
+		C03A8048292BC8DB00DDECA6 /* CallViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallViewControllerTests.swift; sourceTree = "<group>"; };
 		C4119E05268F41D1004DFEFB /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		C42463732673ABE10082C135 /* ScreenShareHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenShareHandler.swift; sourceTree = "<group>"; };
 		C43C12F82694B14900C37E1B /* GliaPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GliaPresenter.swift; sourceTree = "<group>"; };
@@ -1994,6 +1998,8 @@
 				EB9ADB542828E66B00FAE8A4 /* CallTests.swift */,
 				847A7642285A1914004044D1 /* FileUploadListViewTests.swift */,
 				EB7A1509286D98270035AC62 /* FileUploaderTests.swift */,
+				C03A8046292BA76D00DDECA6 /* ChatViewControllerTests.swift */,
+				C03A8048292BC8DB00DDECA6 /* CallViewControllerTests.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -3118,6 +3124,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C03A8049292BC8DB00DDECA6 /* CallViewControllerTests.swift in Sources */,
 				EB03B00E27FFF6DD0058F6B1 /* CallViewTests.swift in Sources */,
 				7512A57727BE8A6700319DF1 /* InteractorTests.swift in Sources */,
 				9ACC25D427B474E800BC5335 /* Glia.Environment.Failing.swift in Sources */,
@@ -3128,6 +3135,7 @@
 				9A3E1DA227BA7D00005634EB /* FileSystemStorage.Environment.Failing.swift in Sources */,
 				9A1992E127D6313500161AAE /* ImageView.Cache.Failing.swift in Sources */,
 				AF11F31628C31E4A002ACEB4 /* AuthenticatedChatStorageTests.swift in Sources */,
+				C03A8047292BA76D00DDECA6 /* ChatViewControllerTests.swift in Sources */,
 				EB9ADB552828E66B00FAE8A4 /* CallTests.swift in Sources */,
 				AF9DB22E2890571A00A0C442 /* RootCoordinator.Environment.Failing.swift in Sources */,
 				AF9DB23128905A1D00A0C442 /* ViewFactory.Environment.Failing.swift in Sources */,
