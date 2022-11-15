@@ -42,7 +42,8 @@ class EngagementViewController: ViewController, AlertPresenter {
         view.header.backButton.tap = { [weak self] in self?.viewModel.event(.backTapped) }
         view.header.closeButton.tap = { [weak self] in self?.viewModel.event(.closeTapped) }
 
-        viewModel.engagementAction = { action in
+        viewModel.engagementAction = { [weak self] action in
+            guard let self = self else { return }
             switch action {
             case .confirm(let conf, let accessibilityIdentifier, confirmed: let confirmed):
                 self.presentConfirmation(

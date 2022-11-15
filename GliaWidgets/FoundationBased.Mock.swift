@@ -3,7 +3,7 @@ import Foundation
 
 extension FoundationBased.FileManager {
     static let mock = Self(
-        urlsForDirectoryInDomainMask: { _, _ in [] },
+        urlsForDirectoryInDomainMask: { _, _ in [.mock] },
         fileExistsAtPath: { _ in false },
         createDirectoryAtUrlWithIntermediateDirectories: { _, _, _ in },
         removeItemAtUrl: { _ in },

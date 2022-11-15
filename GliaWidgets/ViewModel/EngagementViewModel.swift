@@ -24,7 +24,9 @@ class EngagementViewModel {
         self.alertConfiguration = alertConfiguration
         self.screenShareHandler = screenShareHandler
         self.environment = environment
-        interactor.addObserver(self, handler: interactorEvent)
+        self.interactor.addObserver(self) { [weak self] event in
+            self?.interactorEvent(event)
+        }
         screenShareHandler.status.addObserver(self) { [weak self] status, _ in
             self?.onScreenSharingStatusChange(status)
         }
