@@ -24,6 +24,10 @@ platform :ios do
       base: 'master',
       team_reviewers: ["tm-mobile-ios"]
     )
+
+    sh("cp ../templates/GliaWidgets.podspec ../GliaWidgets.podspec")
+    sh("sed -i '' 's/\${WIDGETS_SDK_VERSION_SEMVER}/#{new_version}/' ../GliaWidgets.podspec")
+    
   end
 
   desc "Increments versions in Xcode projects and Podspec file "\
