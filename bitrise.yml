@@ -92,12 +92,10 @@ workflows:
         - draft: 'no'
         - tag: $NEW_VERSION
         - commit: $GIT_CLONE_COMMIT_HASH
-    - trigger-bitrise-workflow@0:
+    - script:
         inputs:
-        - api_token: $GLIA_IOS_PODSPECS_API_TOKEN
-        - workflow_id: upload_widgets_sdk_podspec
-        - exported_environment_variable_names: NEW_VERSION
-        - app_slug: $GLIA_IOS_PODSPECS_APP_SLUG
+        - content: |-
+            pod trunk push GliaWidgets.podspec --verbose
     - cache-push@2: {}
     after_run:
     - _increment_project_version
@@ -359,9 +357,6 @@ app:
   - opts:
       is_expand: false
     BROWSERSTACK_APP_ID: WidgetsSdkIosTestApp
-  - opts:
-      is_expand: false
-    GLIA_IOS_PODSPECS_APP_SLUG: 02d9069f03b494d0
   - opts:
       is_expand: false
     CORTEX_DEMO_APP_SLUG: 2e5eb3394ea5598e
