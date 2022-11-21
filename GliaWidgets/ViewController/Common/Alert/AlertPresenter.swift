@@ -15,6 +15,7 @@ protocol AlertPresenter where Self: UIViewController {
     )
     func presentSingleActionAlert(
         with conf: SingleActionAlertConfiguration,
+        accessibilityIdentifier: String,
         actionTapped: @escaping () -> Void
     )
     func presentSettingsAlert(
@@ -58,10 +59,15 @@ extension AlertPresenter {
 
     func presentSingleActionAlert(
         with conf: SingleActionAlertConfiguration,
+        accessibilityIdentifier: String,
         actionTapped: @escaping () -> Void
     ) {
         let alert = AlertViewController(
-            kind: .singleAction(conf, actionTapped: actionTapped),
+            kind: .singleAction(
+                conf,
+                accessibilityIdentifier: accessibilityIdentifier,
+                actionTapped: actionTapped
+            ),
             viewFactory: viewFactory
         )
         present(alert, animated: true, completion: nil)

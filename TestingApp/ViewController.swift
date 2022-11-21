@@ -212,7 +212,7 @@ extension ViewController {
         var enteredJwt: String = ""
 
         let createAuthorizationAction = UIAlertAction(
-            title: "Create Autorization",
+            title: "Create Authentication",
             style: .default
         ) { _ in
             authentication.authenticate(with: enteredJwt) { [weak self] result in
@@ -230,6 +230,7 @@ extension ViewController {
         let isEmptyJwt = { enteredJwt.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
 
         createAuthorizationAction.isEnabled = !isEmptyJwt()
+        createAuthorizationAction.accessibilityIdentifier = "create_authentication_alert_button"
 
         let jwtTextFieldDelegate = TextFieldDelegate(
             textChanged: { [weak createAuthorizationAction] text in
@@ -240,6 +241,7 @@ extension ViewController {
 
         alertController.addTextField(
             configurationHandler: { textField in
+                textField.accessibilityIdentifier = "authentication_id_token_textfield"
                 textField.addTarget(
                     jwtTextFieldDelegate,
                     action: #selector(jwtTextFieldDelegate.handleTextChanged(textField:)),
@@ -256,6 +258,7 @@ extension ViewController {
             // while alert is visible to keep it alive.
             _ = jwtTextFieldDelegate
         }
+        cancel.accessibilityIdentifier = "cancel_authentication_alert_button"
 
         alertController.addAction(createAuthorizationAction)
         alertController.addAction(cancel)
@@ -284,8 +287,13 @@ extension ViewController {
                 }
             }
         }
+
+        deauthenticateAction.accessibilityIdentifier = "deauthenticate_action_sheet_button"
+
         actionSheet.addAction(deauthenticateAction)
-        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        cancelAction.accessibilityIdentifier = "cancel_deauthenticate_action_sheet_button"
+        actionSheet.addAction(cancelAction)
 
         actionSheet.presented(
             in: self,

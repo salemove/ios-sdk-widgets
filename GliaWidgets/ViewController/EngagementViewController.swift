@@ -50,8 +50,11 @@ class EngagementViewController: ViewController, AlertPresenter {
                     with: conf,
                     accessibilityIdentifier: accessibilityIdentifier
                 ) { confirmed?() }
-            case .showSingleActionAlert(let conf, actionTapped: let actionTapped):
-                self.presentSingleActionAlert(with: conf) { actionTapped?() }
+            case .showSingleActionAlert(let conf, let accessibilityIdentifier, let actionTapped):
+                self.presentSingleActionAlert(
+                    with: conf,
+                    accessibilityIdentifier: accessibilityIdentifier
+                ) { actionTapped?() }
             case .showAlert(let conf, let accessibilityIdentifier, dismissed: let dismissed):
                 self.presentAlert(
                     with: conf,
