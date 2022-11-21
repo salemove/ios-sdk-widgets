@@ -14,6 +14,7 @@ class AlertViewController: ViewController {
         )
         case singleAction(
             SingleActionAlertConfiguration,
+            accessibilityIdentifier: String,
             actionTapped: () -> Void
         )
         case singleMediaUpgrade(
@@ -107,9 +108,10 @@ class AlertViewController: ViewController {
                 accessibilityIdentifier: accessibilityIdentifier,
                 confirmed: confirmed
             )
-        case .singleAction(let conf, let actionTapped):
+        case .singleAction(let conf, let accessibilityIdentifier, let actionTapped):
             return makeSingleActionAlertView(
                 with: conf,
+                accessibilityIdentifier: accessibilityIdentifier,
                 actionTapped: actionTapped
             )
         case .singleMediaUpgrade(let conf, accepted: let accepted, declined: let declined):

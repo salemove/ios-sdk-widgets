@@ -46,6 +46,7 @@ class AlertViewControllerTests: SnapshotTestCase {
     func test_singleAction() {
         let alert = alert(ofKind: .singleAction(
             .mock(),
+            accessibilityIdentifier: "mocked-accessibility-identifier",
             actionTapped: {}
         ))
         assertSnapshot(

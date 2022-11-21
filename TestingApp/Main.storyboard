@@ -88,7 +88,7 @@
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pHy-59-v7T">
                                         <rect key="frame" x="163" y="300" width="88" height="30"/>
-                                        <accessibility key="accessibilityConfiguration" identifier="main_endEngagement_button"/>
+                                        <accessibility key="accessibilityConfiguration" identifier="main_authenticate_button"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="ezp-dJ-Nup"/>
                                         </constraints>
