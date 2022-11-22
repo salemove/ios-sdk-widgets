@@ -45,6 +45,7 @@ class ConnectView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // swiftlint:disable function_body_length
     func setState(_ state: State, animated: Bool) {
         self.state = state
 
@@ -100,6 +101,7 @@ class ConnectView: UIView {
             show(animated: animated)
         }
     }
+    // swiftlint:enable function_body_length
 
     private func show(animated: Bool) {
         guard !isShowing else { return }
