@@ -2431,7 +2431,6 @@
 			buildPhases = (
 				5125FC6275E2CD62BEF4F0C2 /* [CP] Check Pods Manifest.lock */,
 				1A205D5325655CB1003AA3CD /* Headers */,
-				EB750F51273BA5AF00BE5FBD /* SwiftFormat */,
 				1A60AF882566647E00E53F53 /* SwiftLint */,
 				1A60AFA525667F3C00E53F53 /* SwiftGen */,
 				1A205D5425655CB1003AA3CD /* Sources */,
@@ -2613,7 +2612,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\"\n";
 		};
 		1A60AFA525667F3C00E53F53 /* SwiftGen */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -2767,24 +2766,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "make write-diff\n";
-		};
-		EB750F51273BA5AF00BE5FBD /* SwiftFormat */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = SwiftFormat;
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if which swiftformat >/dev/null; then\n  swiftformat --disable trailingCommas\nelse\n  echo \"warning: SwiftFormat not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
 		FFEE13C53E4CA4ACD98F9194 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
