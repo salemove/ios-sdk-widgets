@@ -1,4 +1,3 @@
-source 'https://github.com/salemove/glia-ios-podspecs.git'
 source 'https://github.com/CocoaPods/Specs.git'
 project 'GliaWidgets.xcodeproj'
 platform :ios, '12.0'
@@ -8,6 +7,10 @@ inhibit_all_warnings!
 
 use_frameworks!
 
+def swiftlint
+   pod 'SwiftLint'
+end
+
 target 'TestingApp' do
     pod 'PureLayout', '~> 3.1'
 end
@@ -16,6 +19,7 @@ target 'GliaWidgets' do
   pod 'PureLayout', '~> 3.1'
   pod 'SalemoveSDK'
   pod 'lottie-ios', '3.2.3'
+  swiftlint
 end
 
 target 'GliaWidgetsTests' do
