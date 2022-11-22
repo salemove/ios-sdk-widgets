@@ -11,9 +11,11 @@ class BubbleView: UIView {
 
     var isVisitorOnHold: Bool = false {
         didSet {
-            isVisitorOnHold
-                ? showOnHoldView()
-                : hideOnHoldView()
+            if isVisitorOnHold {
+                showOnHoldView()
+            } else {
+                hideOnHoldView()
+            }
 
             setAccessibilityIdentifier()
         }

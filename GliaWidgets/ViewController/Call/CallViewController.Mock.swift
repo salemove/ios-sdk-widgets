@@ -86,6 +86,7 @@ extension CallViewController {
         return viewController
     }
 
+    // swiftlint:disable function_body_length
     static func mockAudioCallConnectedState() throws -> CallViewController {
         let conf = try CoreSdkClient.Salemove.Configuration.mock()
         let queueId = UUID.mock.uuidString
@@ -143,6 +144,7 @@ extension CallViewController {
         viewModel.action?(.connected(name: "Blob The Operator", imageUrl: nil))
         return viewController
     }
+    // swiftlint:enable function_body_length
 
     static func mockVideoCallConnectingState() throws -> CallViewController {
         let conf = try CoreSdkClient.Salemove.Configuration.mock()

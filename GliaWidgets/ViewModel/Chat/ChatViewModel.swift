@@ -40,6 +40,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     private var pendingMessages: [OutgoingMessage] = []
     private var isViewLoaded: Bool = false
 
+    // swiftlint:disable function_body_length
     init(
         interactor: Interactor,
         alertConfiguration: AlertConfiguration,
@@ -108,6 +109,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             self?.action?(.pickMediaButtonEnabled(!limitReached))
         }
     }
+    // swiftlint:enable function_body_length
 
     func event(_ event: Event) {
         switch event {
@@ -168,6 +170,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         }
     }
 
+    // swiftlint:disable function_body_length
     override func update(for state: InteractorState) {
         super.update(for: state)
 
@@ -233,6 +236,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             break
         }
     }
+    // swiftlint:enable function_body_length
 
     override func interactorEvent(_ event: InteractorEvent) {
         super.interactorEvent(event)
