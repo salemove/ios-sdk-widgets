@@ -9,7 +9,7 @@ class ChatViewControllerVoiceOverTests: SnapshotTestCase {
         viewController.view.frame = UIScreen.main.bounds
         assertSnapshot(
             matching: viewController,
-            as: .accessibilityImage(precision: SnapshotTestCase.possiblePrecision),
+            as: .accessibilityImage,
             named: nameForDevice()
         )
     }
@@ -19,7 +19,7 @@ class ChatViewControllerVoiceOverTests: SnapshotTestCase {
         viewController.view.frame = UIScreen.main.bounds
         assertSnapshot(
             matching: viewController,
-            as: .accessibilityImage(precision: SnapshotTestCase.possiblePrecision),
+            as: .accessibilityImage,
             named: nameForDevice()
         )
     }
@@ -29,7 +29,7 @@ class ChatViewControllerVoiceOverTests: SnapshotTestCase {
         viewController.view.frame = UIScreen.main.bounds
         assertSnapshot(
             matching: viewController,
-            as: .accessibilityImage(precision: SnapshotTestCase.possiblePrecision),
+            as: .accessibilityImage,
             named: nameForDevice()
         )
     }
@@ -49,7 +49,7 @@ class ChatViewControllerVoiceOverTests: SnapshotTestCase {
         chatMessages[3].downloads[0].state.value = .error(.deleted)
         assertSnapshot(
             matching: viewController,
-            as: .accessibilityImage(precision: SnapshotTestCase.possiblePrecision),
+            as: .accessibilityImage,
             named: self.nameForDevice()
         )
     }
