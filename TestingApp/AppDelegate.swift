@@ -4,13 +4,13 @@ import SalemoveSDK
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
-    var salemoveDelegate = SalemoveAppDelegate()
+    var gliaCoreAppDelegate = GliaCore.AppDelegate()
 
     func application(
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
-        salemoveDelegate.application(
+        gliaCoreAppDelegate.application(
             application,
             didFinishLaunchingWithOptions: launchOptions
         )
@@ -46,7 +46,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data
     ) {
         debugPrint("Registered for remote notifications. Token='\(deviceToken.map { String(format: "%02.2hhx", $0) }.joined())'.")
-        Salemove.sharedInstance.pushNotifications.application(
+        GliaCore.sharedInstance.pushNotifications.application(
             application,
             didRegisterForRemoteNotificationsWithDeviceToken: deviceToken
         )
@@ -60,6 +60,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
-        salemoveDelegate.applicationDidBecomeActive(application)
+        gliaCoreAppDelegate.applicationDidBecomeActive(application)
     }
 }
