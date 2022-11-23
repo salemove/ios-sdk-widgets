@@ -95,7 +95,7 @@ workflows:
     - script:
         inputs:
         - content: |-
-            pod trunk push GliaWidgets.podspec --verbose
+            pod trunk push GliaWidgets.podspec --verbose --allow-warnings
     - cache-push@2: {}
     after_run:
     - _increment_project_version
