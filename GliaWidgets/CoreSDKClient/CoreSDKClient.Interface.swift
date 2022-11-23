@@ -96,14 +96,14 @@ struct CoreSdkClient {
             _ answers: [SalemoveSDK.Survey.Answer],
             _ surveyId: SalemoveSDK.Survey.Id,
             _ engagementId: String,
-            _ completion: @escaping (Result<Void, SalemoveSDK.SalemoveError>) -> Void
+            _ completion: @escaping (Result<Void, SalemoveSDK.GliaCoreError>) -> Void
         ) -> Void
     )
     var submitSurveyAnswer: SubmitSurveyAnswer
     typealias CreateAuthentication = (_ behaviour: AuthenticationBehavior) throws -> Authentication
     var authentication: CreateAuthentication
 
-    typealias FetchChatHistory = (_ completion: @escaping (Result<[Self.Message], SalemoveSDK.SalemoveError>) -> Void) -> Void
+    typealias FetchChatHistory = (_ completion: @escaping (Result<[Self.Message], SalemoveSDK.GliaCoreError>) -> Void) -> Void
     var fetchChatHistory: FetchChatHistory
 }
 
@@ -165,8 +165,8 @@ extension CoreSdkClient {
     typealias QueueTicket = SalemoveSDK.QueueTicket
     typealias QueueTicketBlock = SalemoveSDK.QueueTicketBlock
     typealias RequestOfferBlock = SalemoveSDK.RequestOfferBlock
-    typealias Salemove = SalemoveSDK.Salemove
-    typealias SalemoveError = SalemoveSDK.SalemoveError
+    typealias Salemove = SalemoveSDK.GliaCore
+    typealias SalemoveError = SalemoveSDK.GliaCoreError
     typealias ScreenshareOfferBlock = SalemoveSDK.ScreenshareOfferBlock
     typealias SingleChoiceOption = SalemoveSDK.SingleChoiceOption
     typealias StreamableOnHoldHandler = SalemoveSDK.StreamableOnHoldHandler
@@ -183,6 +183,6 @@ extension CoreSdkClient {
     typealias Site = SalemoveSDK.Site
     typealias Survey = SalemoveSDK.Survey
     typealias SurveyAnswerContainer = SalemoveSDK.Survey.Answer.ValueContainer
-    typealias Authentication = SalemoveSDK.Salemove.Authentication
-    typealias AuthenticationBehavior = SalemoveSDK.Salemove.Authentication.Behavior
+    typealias Authentication = SalemoveSDK.GliaCore.Authentication
+    typealias AuthenticationBehavior = SalemoveSDK.GliaCore.Authentication.Behavior
 }
