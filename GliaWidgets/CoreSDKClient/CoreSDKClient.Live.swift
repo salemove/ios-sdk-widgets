@@ -5,27 +5,27 @@ extension CoreSdkClient {
         .init(
             pushNotifications: .live,
             createAppDelegate: Self.AppDelegate.live,
-            clearSession: Salemove.sharedInstance.clearSession,
-            fetchVisitorInfo: Salemove.sharedInstance.fetchVisitorInfo(_:),
-            updateVisitorInfo: Salemove.sharedInstance.updateVisitorInfo(_:completion:),
-            sendSelectedOptionValue: Salemove.sharedInstance.send(option:completion:),
-            configureWithConfiguration: Salemove.sharedInstance.configure(with:completion:),
-            configureWithInteractor: Salemove.sharedInstance.configure(interactor:),
-            queueForEngagement: Salemove.sharedInstance
+            clearSession: GliaCore.sharedInstance.clearSession,
+            fetchVisitorInfo: GliaCore.sharedInstance.fetchVisitorInfo(_:),
+            updateVisitorInfo: GliaCore.sharedInstance.updateVisitorInfo(_:completion:),
+            sendSelectedOptionValue: GliaCore.sharedInstance.send(option:completion:),
+            configureWithConfiguration: GliaCore.sharedInstance.configure(with:completion:),
+            configureWithInteractor: GliaCore.sharedInstance.configure(interactor:),
+            queueForEngagement: GliaCore.sharedInstance
                 .queueForEngagement(queueID:visitorContext:shouldCloseAllQueues:mediaType:options:completion:),
-            requestMediaUpgradeWithOffer: Salemove.sharedInstance.requestMediaUpgrade(offer:completion:),
-            sendMessagePreview: Salemove.sharedInstance.sendMessagePreview(message:completion:),
-            sendMessageWithAttachment: Salemove.sharedInstance.send(message:attachment:completion:),
-            cancelQueueTicket: Salemove.sharedInstance.cancel(queueTicket:completion:),
-            endEngagement: Salemove.sharedInstance.endEngagement(completion:),
-            requestEngagedOperator: Salemove.sharedInstance.requestEngagedOperator(completion:),
-            uploadFileToEngagement: Salemove.sharedInstance.uploadFileToEngagement(_:progress:completion:),
-            fetchFile: Salemove.sharedInstance.fetchFile(engagementFile:progress:completion:),
-            getCurrentEngagement: Salemove.sharedInstance.getCurrentEngagement,
-            fetchSiteConfigurations: Salemove.sharedInstance.fetchSiteConfiguration(_:),
-            submitSurveyAnswer: Salemove.sharedInstance.submitSurveyAnswer(_:surveyId:engagementId:completion:),
-            authentication: Salemove.sharedInstance.authentication,
-            fetchChatHistory: Salemove.sharedInstance.fetchChatTranscript
+            requestMediaUpgradeWithOffer: GliaCore.sharedInstance.requestMediaUpgrade(offer:completion:),
+            sendMessagePreview: GliaCore.sharedInstance.sendMessagePreview(message:completion:),
+            sendMessageWithAttachment: GliaCore.sharedInstance.send(message:attachment:completion:),
+            cancelQueueTicket: GliaCore.sharedInstance.cancel(queueTicket:completion:),
+            endEngagement: GliaCore.sharedInstance.endEngagement(completion:),
+            requestEngagedOperator: GliaCore.sharedInstance.requestEngagedOperator(completion:),
+            uploadFileToEngagement: GliaCore.sharedInstance.uploadFileToEngagement(_:progress:completion:),
+            fetchFile: GliaCore.sharedInstance.fetchFile(engagementFile:progress:completion:),
+            getCurrentEngagement: GliaCore.sharedInstance.getCurrentEngagement,
+            fetchSiteConfigurations: GliaCore.sharedInstance.fetchSiteConfiguration(_:),
+            submitSurveyAnswer: GliaCore.sharedInstance.submitSurveyAnswer(_:surveyId:engagementId:completion:),
+            authentication: GliaCore.sharedInstance.authentication,
+            fetchChatHistory: GliaCore.sharedInstance.fetchChatTranscript
         )
     }()
 }
@@ -33,16 +33,16 @@ extension CoreSdkClient {
 extension CoreSdkClient.PushNotifications {
     static let live = Self(
         applicationDidRegisterForRemoteNotificationsWithDeviceToken:
-            Salemove.sharedInstance.pushNotifications.application(_:didRegisterForRemoteNotificationsWithDeviceToken:)
+            GliaCore.sharedInstance.pushNotifications.application(_:didRegisterForRemoteNotificationsWithDeviceToken:)
     )
 }
 
 extension CoreSdkClient.AppDelegate {
     static func live() -> Self {
-        let salemoveDelegate = SalemoveAppDelegate()
+        let gliaCoreAppDelegate = GliaCore.AppDelegate()
         return .init(
-            applicationDidFinishLaunchingWithOptions: salemoveDelegate.application(_:didFinishLaunchingWithOptions:),
-            applicationDidBecomeActive: salemoveDelegate.applicationDidBecomeActive
+            applicationDidFinishLaunchingWithOptions: gliaCoreAppDelegate.application(_:didFinishLaunchingWithOptions:),
+            applicationDidBecomeActive: gliaCoreAppDelegate.applicationDidBecomeActive
         )
     }
 }

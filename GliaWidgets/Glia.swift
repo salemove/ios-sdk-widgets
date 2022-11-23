@@ -68,7 +68,7 @@ public class Glia {
         visitorContext: VisitorContext?,
         completion: (() -> Void)? = nil
     ) throws {
-        let sdkConfiguration = try Salemove.Configuration(
+        let sdkConfiguration = try GliaCore.Configuration(
             siteId: configuration.site,
             region: configuration.environment.region,
             authorizingMethod: configuration.authorizationMethod.coreAuthorizationMethod,
@@ -89,7 +89,7 @@ public class Glia {
         if let callback = completion {
             createdInteractor.withConfiguration { [weak createdInteractor] in
                 guard let interactor = createdInteractor else { return }
-                    interactor.state = Salemove.sharedInstance
+                    interactor.state = GliaCore.sharedInstance
                         .getCurrentEngagement()?.engagedOperator
                         .map(InteractorState.engaged) ?? interactor.state
                     callback()
@@ -306,7 +306,7 @@ public class Glia {
     /// - Important: Note, that in case of engagement has not been started yet, `configure(with:queueID:visitorContext:)` must be called initially prior to this method,
     /// because `GliaError.sdkIsNotConfigured` will occur otherwise.
     ///
-    public func fetchVisitorInfo(completion: @escaping (Result<Salemove.VisitorInfo, Error>) -> Void) {
+    public func fetchVisitorInfo(completion: @escaping (Result<GliaCore.VisitorInfo, Error>) -> Void) {
         guard interactor != nil else {
             completion(.failure(GliaError.sdkIsNotConfigured))
             return
