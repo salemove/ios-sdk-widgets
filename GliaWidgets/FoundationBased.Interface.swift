@@ -7,9 +7,9 @@ enum FoundationBased {
             _ inDomainMask: Foundation.FileManager.SearchPathDomainMask
         ) -> [URL]
 
-        var fileExistsAtPath:(_ atPath: String) -> Bool
+        var fileExistsAtPath: (_ atPath: String) -> Bool
 
-        var createDirectoryAtUrlWithIntermediateDirectories:(
+        var createDirectoryAtUrlWithIntermediateDirectories: (
             _ atURL: URL,
             _ withIntermediateDirectories: Bool,
             _ attributes: [FileAttributeKey: Any]?

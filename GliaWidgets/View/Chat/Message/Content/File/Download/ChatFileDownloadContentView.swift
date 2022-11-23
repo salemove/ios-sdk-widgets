@@ -175,7 +175,6 @@ class ChatFileDownloadContentView: ChatFileContentView {
         }
         accessibilityLabel = sharedProperties.label
     }
-    // swiftlint:enable function_body_length
 
     private func stateText(for downloadState: FileDownload.State) -> NSAttributedString? {
         switch downloadState {
@@ -232,4 +231,5 @@ class ChatFileDownloadContentView: ChatFileContentView {
             return string
         }
     }
+    // swiftlint:enable function_body_length
 }

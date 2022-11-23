@@ -255,21 +255,25 @@ public class Glia {
             )
         )
         rootCoordinator?.delegate = { [weak self] event in
-            switch event {
-            case .started:
-                self?.onEvent?(.started)
-            case .engagementChanged(let engagementKind):
-                self?.onEvent?(.engagementChanged(engagementKind))
-            case .ended:
-                self?.rootCoordinator = nil
-                self?.onEvent?(.ended)
-            case .minimized:
-                self?.onEvent?(.minimized)
-            case .maximized:
-                self?.onEvent?(.maximized)
-            }
+            self?.handleCoordinatorEvent(event)
         }
         rootCoordinator?.start()
+    }
+
+    private func handleCoordinatorEvent(_ event: RootCoordinator.DelegateEvent) {
+        switch event {
+        case .started:
+            onEvent?(.started)
+        case .engagementChanged(let engagementKind):
+            onEvent?(.engagementChanged(engagementKind))
+        case .ended:
+            rootCoordinator = nil
+            onEvent?(.ended)
+        case .minimized:
+            onEvent?(.minimized)
+        case .maximized:
+            onEvent?(.maximized)
+        }
     }
 
     /// Clear visitor session
