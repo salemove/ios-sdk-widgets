@@ -16,9 +16,7 @@ extension Glia {
     }
 
     /// Deprecated.
-// swiftlint: disable line_length
     @available(*, deprecated, message: "Use start(_:configuration:queueID:visitorContext:theme:features:sceneProvider:) with Optional<VisitorContext> instead.")
-// swiftlint: enable line_length
     public func start(
         _ engagementKind: EngagementKind,
         configuration: Configuration,

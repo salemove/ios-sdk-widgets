@@ -50,6 +50,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
         navigationController.isNavigationBarHidden = true
     }
 
+    // swiftlint:disable function_body_length
     func start() {
         switch engagementKind {
         case .none:
@@ -117,6 +118,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
         event(.maximized)
         delegate?(.started)
     }
+    // swiftlint:enable function_body_length
 
     deinit {
         print("\(Self.self) is deallocated.")
@@ -124,6 +126,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
 }
 
 extension RootCoordinator {
+    // swiftlint:disable function_body_length
     func end() {
         defer {
             // For now it is required that message history is cleared when engagement ends
@@ -196,6 +199,7 @@ extension RootCoordinator {
             presentSurvey(engagement.id, survey)
         }
     }
+    // swiftlint:enable function_body_length
 
     private func startChat(
         withAction startAction: ChatViewModel.StartAction,

@@ -125,6 +125,7 @@ class CallView: EngagementView {
         adjustLocalVideoFrameAfterLayout()
     }
 
+    // swiftlint:disable function_body_length
     override func setup() {
         accessibilityIdentifier = "call_root_view"
 
@@ -190,6 +191,7 @@ class CallView: EngagementView {
         header.backButton.accessibilityLabel = style.header.backButton.accessibility.label
         header.backButton.accessibilityHint = style.header.backButton.accessibility.hint
     }
+    // swiftlint:enable function_body_length
 
     func switchTo(_ mode: Mode) {
         self.mode = mode
@@ -253,6 +255,7 @@ class CallView: EngagementView {
         }
     }
 
+    // swiftlint:disable function_body_length
     private func layout() {
         let effect = UIBlurEffect(style: .dark)
         let effectView = UIVisualEffectView(effect: effect)
@@ -316,6 +319,7 @@ class CallView: EngagementView {
         adjustForCurrentOrientation()
         switchTo(mode)
     }
+    // swiftlint:enable function_body_length
 
     private func adjustForCurrentOrientation() {
         if currentOrientation.isLandscape {

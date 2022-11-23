@@ -48,8 +48,12 @@ class CallCoordinator: SubFlowCoordinator, FlowCoordinator {
         )
         return viewController
     }
+}
 
-    private func makeCallViewController(
+// MARK: - Private
+
+private extension CallCoordinator {
+    func makeCallViewController(
         call: Call,
         startAction: CallViewModel.StartAction
     ) -> CallViewController {
@@ -82,29 +86,37 @@ class CallCoordinator: SubFlowCoordinator, FlowCoordinator {
             startWith: startAction
         )
         viewModel.engagementDelegate = { [weak self] event in
-            switch event {
-            case .back:
-                self?.delegate?(.back)
-            case .engaged(operatorImageUrl: let url):
-                self?.delegate?(.engaged(operatorImageUrl: url))
-            case .finished:
-                self?.delegate?(.finished)
-            }
+            self?.handleEngagementViewModelEvent(event)
         }
         viewModel.delegate = { [weak self] event in
-            switch event {
-            case .chat:
-                self?.delegate?(.chat)
-            case .minimize:
-                self?.delegate?(.minimize)
-            case .visitorOnHoldUpdated(let isOnHold):
-                self?.delegate?(.visitorOnHoldUpdated(isOnHold: isOnHold))
-            }
+            self?.handleCallViewModelEvent(event)
         }
         return CallViewController(
             viewModel: viewModel,
             viewFactory: viewFactory
         )
+    }
+
+    func handleEngagementViewModelEvent(_ event: EngagementViewModel.DelegateEvent) {
+        switch event {
+        case .back:
+            delegate?(.back)
+        case .engaged(let url):
+            delegate?(.engaged(operatorImageUrl: url))
+        case .finished:
+            delegate?(.finished)
+        }
+    }
+
+    func handleCallViewModelEvent(_ event: CallViewModel.DelegateEvent) {
+        switch event {
+        case .chat:
+            delegate?(.chat)
+        case .minimize:
+            delegate?(.minimize)
+        case .visitorOnHoldUpdated(let isOnHold):
+            delegate?(.visitorOnHoldUpdated(isOnHold: isOnHold))
+        }
     }
 }
 

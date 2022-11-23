@@ -168,7 +168,7 @@ extension CoreSdkClient {
 
         static func mock(
             onHold: CoreSdkClient.StreamableOnHoldHandler? = nil,
-            muteFunc: @escaping () -> Void = {} ,
+            muteFunc: @escaping () -> Void = {},
             unmuteFunc: @escaping () -> Void = {},
             getIsMutedFunc: @escaping () -> Bool = { false },
             setIsMutedFunc: @escaping (Bool) -> Void = { _ in },
@@ -266,7 +266,7 @@ extension CoreSdkClient {
             onHold: CoreSdkClient.StreamableOnHoldHandler? = nil,
             getStreamViewFunc: @escaping () -> CoreSdkClient.StreamView = { .init() },
             playVideoFunc: @escaping () -> Void = {},
-            pauseFunc: @escaping () -> Void = {} ,
+            pauseFunc: @escaping () -> Void = {},
             resumeFunc: @escaping () -> Void = {},
             stopFunc: @escaping () -> Void = {},
             getIsPausedFunc: @escaping () -> Bool = { false },
