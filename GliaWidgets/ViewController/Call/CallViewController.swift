@@ -55,9 +55,11 @@ class CallViewController: EngagementViewController, MediaUpgradePresenter {
         view.header.showBackButton()
         view.header.showCloseButton()
 
-        view.callButtonTapped = { viewModel.event(.callButtonTapped(.init(with: $0))) }
+        view.callButtonTapped = { [weak viewModel] button in
+            viewModel?.event(.callButtonTapped(.init(with: button)))
+        }
 
-        viewModel.action = { action in
+        self.viewModel.action = { [weak self] action in
             switch action {
             case .queue:
                 view.setConnectState(.queue, animated: false)
@@ -96,7 +98,7 @@ class CallViewController: EngagementViewController, MediaUpgradePresenter {
                 let button = CallButton.Kind(with: button)
                 view.buttonBar.setButton(button, badgeItemCount: itemCount)
             case .offerMediaUpgrade(let conf, accepted: let accepted, declined: let declined):
-                self.offerMediaUpgrade(with: conf, accepted: accepted, declined: declined)
+                self?.offerMediaUpgrade(with: conf, accepted: accepted, declined: declined)
             case .setRemoteVideo(let streamView):
                 view.remoteVideoView.streamView = streamView
             case .setLocalVideo(let streamView):

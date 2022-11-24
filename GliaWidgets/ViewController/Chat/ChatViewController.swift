@@ -52,27 +52,50 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter,
         view.header.showBackButton()
         view.header.showCloseButton()
 
-        view.numberOfSections = { viewModel.numberOfSections }
-        view.numberOfRows = { viewModel.numberOfItems(in: $0) }
-        view.itemForRow = { viewModel.item(for: $0, in: $1) }
-        view.messageEntryView.textChanged = { viewModel.event(.messageTextChanged($0)) }
-        view.messageEntryView.sendTapped = { viewModel.event(.sendTapped) }
-        view.messageEntryView.pickMediaTapped = { viewModel.event(.pickMediaTapped) }
-        view.messageEntryView.uploadListView.removeTapped = { viewModel.event(.removeUploadTapped($0)) }
-        view.fileTapped = { viewModel.event(.fileTapped($0)) }
-        view.downloadTapped = { viewModel.event(.downloadTapped($0)) }
-        view.callBubbleTapped = { viewModel.event(.callBubbleTapped) }
-        view.choiceOptionSelected = { viewModel.event(.choiceOptionSelected($0, $1)) }
-        view.chatScrolledToBottom = { viewModel.event(.chatScrolled(bottomReached: $0)) }
-        view.linkTapped = { viewModel.event(.linkTapped($0)) }
-        view.selectCustomCardOption = { viewModel.event(
-            .customCardOptionSelected(
-                option: $0,
-                messageId: $1
-            )
-        ) }
+        view.numberOfSections = { [weak viewModel] in
+            viewModel?.numberOfSections
+        }
+        view.numberOfRows = { [weak viewModel] rows in
+            viewModel?.numberOfItems(in: rows)
+        }
+        view.itemForRow = { [weak viewModel] row, section in
+            viewModel?.item(for: row, in: section)
+        }
+        view.messageEntryView.textChanged = { [weak viewModel] text in
+            viewModel?.event(.messageTextChanged(text))
+        }
+        view.messageEntryView.sendTapped = { [weak viewModel] in
+            viewModel?.event(.sendTapped)
+        }
+        view.messageEntryView.pickMediaTapped = { [weak viewModel] in
+            viewModel?.event(.pickMediaTapped)
+        }
+        view.messageEntryView.uploadListView.removeTapped = { [weak viewModel] upload in
+            viewModel?.event(.removeUploadTapped(upload))
+        }
+        view.fileTapped = { [weak viewModel] file in
+            viewModel?.event(.fileTapped(file))
+        }
+        view.downloadTapped = { [weak viewModel] download in
+            viewModel?.event(.downloadTapped(download))
+        }
+        view.callBubbleTapped = { [weak viewModel] in
+            viewModel?.event(.callBubbleTapped)
+        }
+        view.choiceOptionSelected = { [weak viewModel] option, messageId in
+            viewModel?.event(.choiceOptionSelected(option, messageId))
+        }
+        view.chatScrolledToBottom = { [weak viewModel] bottomReached in
+            viewModel?.event(.chatScrolled(bottomReached: bottomReached))
+        }
+        view.linkTapped = { [weak viewModel] url in
+            viewModel?.event(.linkTapped(url))
+        }
+        view.selectCustomCardOption = { [weak viewModel] option, messageId in
+            viewModel?.event(.customCardOptionSelected(option: option, messageId: messageId))
+        }
 
-        viewModel.action = { action in
+        viewModel.action = { [weak self] action in
             switch action {
             case .queue:
                 view.setConnectState(.queue, animated: false)
@@ -111,12 +134,12 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter,
             case .removeAllUploads:
                 view.messageEntryView.uploadListView.removeAllUploadViews()
             case .presentMediaPicker(let itemSelected):
-                self.presentMediaPicker(
+                self?.presentMediaPicker(
                     from: view.messageEntryView.pickMediaButton,
                     itemSelected: itemSelected
                 )
             case .offerMediaUpgrade(let conf, let accepted, let declined):
-                self.offerMediaUpgrade(with: conf, accepted: accepted, declined: declined)
+                self?.offerMediaUpgrade(with: conf, accepted: accepted, declined: declined)
             case .showCallBubble(let imageUrl):
                 view.showCallBubble(with: imageUrl, animated: true)
             case .updateUnreadMessageIndicator(let count):
