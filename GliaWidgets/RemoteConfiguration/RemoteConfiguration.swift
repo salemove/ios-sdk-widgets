@@ -1,15 +1,14 @@
 import Foundation
 
 public struct RemoteConfiguration: Codable {
-    public let callScreen: Call?
-    public let chatScreen: Chat?
-    public let surveyScreen: Survey?
-    public let alertScreen: Alert?
-    public let bubble: Bubble?
+    let callScreen: Call?
+    let chatScreen: Chat?
+    let surveyScreen: Survey?
+    let alertScreen: Alert?
+    let bubble: Bubble?
 }
 
-public extension RemoteConfiguration {
-
+extension RemoteConfiguration {
     struct Call: Codable {
         let background: Layer?
         let bottomText: Text?
@@ -58,15 +57,15 @@ public extension RemoteConfiguration {
     }
 
     struct Layer: Codable {
-        public let border: Color?
-        public let borderWidth: Double?
-        public let cornerRadius: Double?
-        public let color: Color?
+        let border: Color?
+        let borderWidth: Double?
+        let cornerRadius: Double?
+        let color: Color?
     }
 
     struct Color: Codable {
-        public let type: ColorType
-        public let value: [String]
+        let type: ColorType
+        let value: [String]
     }
 
     enum ColorType: String, Codable {
@@ -75,10 +74,10 @@ public extension RemoteConfiguration {
     }
 
     struct Button: Codable {
-        public let background: Layer?
-        public let text: Text?
-        public let tintColor: Color?
-        public let shadow: Shadow?
+        let background: Layer?
+        let text: Text?
+        let tintColor: Color?
+        let shadow: Shadow?
     }
 
     struct Shadow: Codable {
@@ -88,10 +87,10 @@ public extension RemoteConfiguration {
     }
 
     struct Text: Codable {
-        public let alignment: Alignment?
-        public let background: Color?
-        public let font: Font?
-        public let foreground: Color?
+        let alignment: Alignment?
+        let background: Color?
+        let font: Font?
+        let foreground: Color?
     }
 
     enum Alignment: String, Codable {
@@ -100,12 +99,12 @@ public extension RemoteConfiguration {
         case trailing
     }
 
-    struct Font: Codable {
+    public struct Font: Codable {
         public let size: Double?
         public let style: FontStyle?
     }
 
-    enum FontStyle: String, Codable {
+    public enum FontStyle: String, Codable {
         case bold, italic, regular, thin
     }
 
