@@ -4,7 +4,7 @@ import SalemoveSDK
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
-    var gliaCoreAppDelegate = GliaCore.AppDelegate()
+    var gliaCoreAppDelegate = GliaCoreAppDelegate()
 
     func application(
         _ application: UIApplication,
