@@ -214,6 +214,11 @@ extension CallStyle {
             configuration?.bottomText,
             assetsBuilder: assetsBuilder
         )
+
+        connect.apply(
+            configuration: configuration?.connect,
+            assetsBuilder: assetsBuilder
+        )
     }
 
     /// Apply bottomText from remote configuration

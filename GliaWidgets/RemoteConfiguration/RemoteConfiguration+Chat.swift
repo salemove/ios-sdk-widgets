@@ -1,115 +1,112 @@
 import Foundation
 
-public extension RemoteConfiguration {
-
+extension RemoteConfiguration {
     struct Chat: Codable {
-        public let background: Layer?
-        public let header: Header?
-        public let connect: EngagementStates?
-        public let operatorMessage: MessageBalloon?
-        public let visitorMessage: MessageBalloon?
-        public let input: Input?
-        public let responseCard: ResponseCard?
-        public let audioUpgrade: Upgrade?
-        public let videoUpgrade: Upgrade?
-        public let bubble: Bubble?
-        public let attachmentSourceList: AttachmentSourceList?
-        public let unreadIndicator: Bubble?
-        public let typingIndicator: Color?
+        let background: Layer?
+        let header: Header?
+        let connect: EngagementStates?
+        let operatorMessage: MessageBalloon?
+        let visitorMessage: MessageBalloon?
+        let input: Input?
+        let responseCard: ResponseCard?
+        let audioUpgrade: Upgrade?
+        let videoUpgrade: Upgrade?
+        let bubble: Bubble?
+        let attachmentSourceList: AttachmentSourceList?
+        let unreadIndicator: Bubble?
+        let typingIndicator: Color?
     }
 
     struct Header: Codable {
-        public let background: Layer?
-        public let text: Text?
-        public let backButton: Button?
-        public let closeButton: Button?
-        public let endButton: Button?
-        public let endScreenSharingButton: Button?
+        let background: Layer?
+        let text: Text?
+        let backButton: Button?
+        let closeButton: Button?
+        let endButton: Button?
+        let endScreenSharingButton: Button?
     }
 
     struct MessageBalloon: Codable {
-        public let alignment: [Alignment]?
-        public let background: Layer?
-        public let text: Text?
-        public let file: FileMessage?
-        public let status: Text?
-        public let userImage: UserImageStyle?
+        let background: Layer?
+        let text: Text?
+        let file: FileMessage?
+        let status: Text?
+        let userImage: UserImageStyle?
     }
 
     struct FileMessage: Codable {
-        public let preview: FilePreview?
-        public let download: FileState?
-        public let downloading: FileState?
-        public let downloaded: FileState?
-        public let error: FileErrorState?
-        public let progress: Color?
-        public let errorProgress: Color?
-        public let progressBackground: Color?
-        public let background: Color?
-        public let border: Color?
+        let preview: FilePreview?
+        let download: FileState?
+        let downloading: FileState?
+        let downloaded: FileState?
+        let error: FileErrorState?
+        let progress: Color?
+        let errorProgress: Color?
+        let progressBackground: Color?
+        let background: Color?
+        let border: Color?
     }
 
     struct EngagementStates: Codable {
-        public let `operator`: Operator?
-        public let queue: EngagementState?
-        public let connecting: EngagementState?
-        public let connected: EngagementState?
-        public let transferring: EngagementState?
-        public let onHold: EngagementState?
+        let `operator`: Operator?
+        let queue: EngagementState?
+        let connecting: EngagementState?
+        let connected: EngagementState?
+        let transferring: EngagementState?
+        let onHold: EngagementState?
     }
 
     struct EngagementState: Codable {
-        public let title: Text?
-        public let description: Text?
-        public let tintColor: Color?
+        let title: Text?
+        let description: Text?
     }
 
     struct Operator: Codable {
-        public let image: UserImageStyle?
-        public let animationColor: Color?
-        public let overlayColor: Color?
+        let image: UserImageStyle?
+        let animationColor: Color?
+        let overlayColor: Color?
     }
 
     struct Input: Codable {
-        public let text: Text?
-        public let placeholder: Text?
-        public let separator: Color?
-        public let sendButton: Button?
-        public let mediaButton: Button?
-        public let background: Layer?
-        public let fileUploadBar: FileUploadBar?
+        let text: Text?
+        let placeholder: Text?
+        let separator: Color?
+        let sendButton: Button?
+        let mediaButton: Button?
+        let background: Layer?
+        let fileUploadBar: FileUploadBar?
     }
 
     struct ResponseCard: Codable {
-        public let background: Layer?
-        public let option: ResponseCardOption?
-        public let text: Text?
-        public let userImage: UserImageStyle?
+        let background: Layer?
+        let option: ResponseCardOption?
+        let text: Text?
+        let userImage: UserImageStyle?
     }
 
     struct ResponseCardOption: Codable {
-        public let normal: Button?
-        public let selected: Button?
-        public let disabled: Button?
+        let normal: Button?
+        let selected: Button?
+        let disabled: Button?
     }
 
     struct Upgrade: Codable {
-        public let text: Text?
-        public let description: Text?
-        public let iconColor: Color?
-        public let background: Layer?
+        let text: Text?
+        let description: Text?
+        let iconColor: Color?
+        let background: Layer?
     }
 
     struct AttachmentSourceList: Codable {
-        public let items: [AttachmentSource]?
-        public let separator: Color?
-        public let background: Color?
+        let items: [AttachmentSource]?
+        let separator: Color?
+        let background: Color?
     }
 
     struct AttachmentSource: Codable {
-        public let type: AttachmentSourceType
-        public let text: Text?
-        public let tintColor: Color?
+        let type: AttachmentSourceType
+        let text: Text?
+        let tintColor: Color?
     }
 
     enum AttachmentSourceType: String, Codable {
@@ -117,32 +114,32 @@ public extension RemoteConfiguration {
     }
 
     struct FileUploadBar: Codable {
-        public let filePreview: FilePreview?
-        public let uploading: FileState?
-        public let uploaded: FileState?
-        public let error: FileState?
-        public let progress: Color?
-        public let errorProgress: Color?
-        public let progressBackground: Color?
-        public let removeButton: Color?
+        let filePreview: FilePreview?
+        let uploading: FileState?
+        let uploaded: FileState?
+        let error: FileState?
+        let progress: Color?
+        let errorProgress: Color?
+        let progressBackground: Color?
+        let removeButton: Color?
     }
 
     struct FilePreview: Codable {
-        public let text: Text?
-        public let errorIcon: Color?
-        public let background: Layer?
-        public let errorBackground: Layer?
+        let text: Text?
+        let errorIcon: Color?
+        let background: Layer?
+        let errorBackground: Layer?
     }
 
     struct FileState: Codable {
-        public let text: Text?
-        public let info: Text?
+        let text: Text?
+        let info: Text?
     }
 
     struct FileErrorState: Codable {
-        public let text: Text?
-        public let info: Text?
-        public let separator: Text?
-        public let retry: Text?
+        let text: Text?
+        let info: Text?
+        let separator: Text?
+        let retry: Text?
     }
 }
