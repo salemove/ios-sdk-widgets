@@ -39,7 +39,7 @@ extension CoreSdkClient.PushNotifications {
 
 extension CoreSdkClient.AppDelegate {
     static func live() -> Self {
-        let gliaCoreAppDelegate = GliaCore.AppDelegate()
+        let gliaCoreAppDelegate = GliaCoreAppDelegate()
         return .init(
             applicationDidFinishLaunchingWithOptions: gliaCoreAppDelegate.application(_:didFinishLaunchingWithOptions:),
             applicationDidBecomeActive: gliaCoreAppDelegate.applicationDidBecomeActive
