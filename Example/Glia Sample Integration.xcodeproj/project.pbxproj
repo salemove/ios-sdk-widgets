@@ -1,0 +1,455 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		C01D12E6292E461C00154A08 /* GliaWidgets in Frameworks */ = {isa = PBXBuildFile; productRef = C01D12E5292E461C00154A08 /* GliaWidgets */; };
+		C03A8021292B7A6700DDECA6 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03A8020292B7A6700DDECA6 /* RootView.swift */; };
+		C03A8023292B7A6700DDECA6 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03A8022292B7A6700DDECA6 /* ContentView.swift */; };
+		C03A8025292B7A6700DDECA6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C03A8024292B7A6700DDECA6 /* Assets.xcassets */; };
+		C03A8028292B7A6700DDECA6 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C03A8027292B7A6700DDECA6 /* Preview Assets.xcassets */; };
+		C03A802F292B7AFA00DDECA6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03A802E292B7AFA00DDECA6 /* AppDelegate.swift */; };
+		C03A8035292B7D0E00DDECA6 /* EngagementButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03A8034292B7D0E00DDECA6 /* EngagementButtonStyle.swift */; };
+		C03A8037292B7DFA00DDECA6 /* ContentViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03A8036292B7DFA00DDECA6 /* ContentViewPresenter.swift */; };
+		C03A803C292B7E9C00DDECA6 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03A803B292B7E9C00DDECA6 /* Configuration.swift */; };
+		C03A803F292B7EFB00DDECA6 /* GliaEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03A803E292B7EFB00DDECA6 /* GliaEnvironment.swift */; };
+		C03A8041292B812B00DDECA6 /* AvailabilityModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03A8040292B812B00DDECA6 /* AvailabilityModifier.swift */; };
+		C03A804C292CE2FE00DDECA6 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03A804B292CE2FE00DDECA6 /* Colors.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		C03A801D292B7A6700DDECA6 /* Glia Sample Integration.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Glia Sample Integration.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C03A8020292B7A6700DDECA6 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		C03A8022292B7A6700DDECA6 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		C03A8024292B7A6700DDECA6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		C03A8027292B7A6700DDECA6 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		C03A802E292B7AFA00DDECA6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		C03A8034292B7D0E00DDECA6 /* EngagementButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EngagementButtonStyle.swift; sourceTree = "<group>"; };
+		C03A8036292B7DFA00DDECA6 /* ContentViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewPresenter.swift; sourceTree = "<group>"; };
+		C03A803B292B7E9C00DDECA6 /* Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
+		C03A803E292B7EFB00DDECA6 /* GliaEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GliaEnvironment.swift; sourceTree = "<group>"; };
+		C03A8040292B812B00DDECA6 /* AvailabilityModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvailabilityModifier.swift; sourceTree = "<group>"; };
+		C03A804B292CE2FE00DDECA6 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		C03A801A292B7A6700DDECA6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C01D12E6292E461C00154A08 /* GliaWidgets in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		C03A8014292B7A6700DDECA6 = {
+			isa = PBXGroup;
+			children = (
+				C03A801F292B7A6700DDECA6 /* Glia Sample Integration */,
+				C03A801E292B7A6700DDECA6 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		C03A801E292B7A6700DDECA6 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C03A801D292B7A6700DDECA6 /* Glia Sample Integration.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C03A801F292B7A6700DDECA6 /* Glia Sample Integration */ = {
+			isa = PBXGroup;
+			children = (
+				C03A803B292B7E9C00DDECA6 /* Configuration.swift */,
+				C03A8045292B9FAE00DDECA6 /* Delegate */,
+				C03A8039292B7E5200DDECA6 /* Presenters */,
+				C03A8038292B7E4200DDECA6 /* Views */,
+				C03A8033292B7CEC00DDECA6 /* ViewModifiers */,
+				C03A803D292B7EE100DDECA6 /* Extensions */,
+				C03A804A292CE2DD00DDECA6 /* Appearance */,
+				C03A8024292B7A6700DDECA6 /* Assets.xcassets */,
+				C03A8026292B7A6700DDECA6 /* Preview Content */,
+			);
+			path = "Glia Sample Integration";
+			sourceTree = "<group>";
+		};
+		C03A8026292B7A6700DDECA6 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				C03A8027292B7A6700DDECA6 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		C03A8033292B7CEC00DDECA6 /* ViewModifiers */ = {
+			isa = PBXGroup;
+			children = (
+				C03A8034292B7D0E00DDECA6 /* EngagementButtonStyle.swift */,
+				C03A8040292B812B00DDECA6 /* AvailabilityModifier.swift */,
+			);
+			path = ViewModifiers;
+			sourceTree = "<group>";
+		};
+		C03A8038292B7E4200DDECA6 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				C03A8020292B7A6700DDECA6 /* RootView.swift */,
+				C03A8022292B7A6700DDECA6 /* ContentView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		C03A8039292B7E5200DDECA6 /* Presenters */ = {
+			isa = PBXGroup;
+			children = (
+				C03A8036292B7DFA00DDECA6 /* ContentViewPresenter.swift */,
+			);
+			path = Presenters;
+			sourceTree = "<group>";
+		};
+		C03A803D292B7EE100DDECA6 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				C03A803E292B7EFB00DDECA6 /* GliaEnvironment.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		C03A8045292B9FAE00DDECA6 /* Delegate */ = {
+			isa = PBXGroup;
+			children = (
+				C03A802E292B7AFA00DDECA6 /* AppDelegate.swift */,
+			);
+			path = Delegate;
+			sourceTree = "<group>";
+		};
+		C03A804A292CE2DD00DDECA6 /* Appearance */ = {
+			isa = PBXGroup;
+			children = (
+				C03A804B292CE2FE00DDECA6 /* Colors.swift */,
+			);
+			path = Appearance;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		C03A801C292B7A6700DDECA6 /* Glia Sample Integration */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C03A802B292B7A6700DDECA6 /* Build configuration list for PBXNativeTarget "Glia Sample Integration" */;
+			buildPhases = (
+				C03A8019292B7A6700DDECA6 /* Sources */,
+				C03A801A292B7A6700DDECA6 /* Frameworks */,
+				C03A801B292B7A6700DDECA6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Glia Sample Integration";
+			packageProductDependencies = (
+				C01D12E5292E461C00154A08 /* GliaWidgets */,
+			);
+			productName = "Glia Sample Integration";
+			productReference = C03A801D292B7A6700DDECA6 /* Glia Sample Integration.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		C03A8015292B7A6700DDECA6 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1410;
+				LastUpgradeCheck = 1410;
+				TargetAttributes = {
+					C03A801C292B7A6700DDECA6 = {
+						CreatedOnToolsVersion = 14.1;
+					};
+				};
+			};
+			buildConfigurationList = C03A8018292B7A6700DDECA6 /* Build configuration list for PBXProject "Glia Sample Integration" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = C03A8014292B7A6700DDECA6;
+			packageReferences = (
+				C01D12E4292E461C00154A08 /* XCRemoteSwiftPackageReference "ios-sdk-widgets" */,
+			);
+			productRefGroup = C03A801E292B7A6700DDECA6 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				C03A801C292B7A6700DDECA6 /* Glia Sample Integration */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		C03A801B292B7A6700DDECA6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C03A8028292B7A6700DDECA6 /* Preview Assets.xcassets in Resources */,
+				C03A8025292B7A6700DDECA6 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		C03A8019292B7A6700DDECA6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C03A803F292B7EFB00DDECA6 /* GliaEnvironment.swift in Sources */,
+				C03A804C292CE2FE00DDECA6 /* Colors.swift in Sources */,
+				C03A803C292B7E9C00DDECA6 /* Configuration.swift in Sources */,
+				C03A802F292B7AFA00DDECA6 /* AppDelegate.swift in Sources */,
+				C03A8023292B7A6700DDECA6 /* ContentView.swift in Sources */,
+				C03A8035292B7D0E00DDECA6 /* EngagementButtonStyle.swift in Sources */,
+				C03A8021292B7A6700DDECA6 /* RootView.swift in Sources */,
+				C03A8037292B7DFA00DDECA6 /* ContentViewPresenter.swift in Sources */,
+				C03A8041292B812B00DDECA6 /* AvailabilityModifier.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		C03A8029292B7A6700DDECA6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		C03A802A292B7A6700DDECA6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		C03A802C292B7A6700DDECA6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Glia Sample Integration/Preview Content\"";
+				DEVELOPMENT_TEAM = XR3G5NDPNH;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "Glia.Glia-Sample-Integration";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		C03A802D292B7A6700DDECA6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Glia Sample Integration/Preview Content\"";
+				DEVELOPMENT_TEAM = XR3G5NDPNH;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "Glia.Glia-Sample-Integration";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C03A8018292B7A6700DDECA6 /* Build configuration list for PBXProject "Glia Sample Integration" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C03A8029292B7A6700DDECA6 /* Debug */,
+				C03A802A292B7A6700DDECA6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C03A802B292B7A6700DDECA6 /* Build configuration list for PBXNativeTarget "Glia Sample Integration" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C03A802C292B7A6700DDECA6 /* Debug */,
+				C03A802D292B7A6700DDECA6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		C01D12E4292E461C00154A08 /* XCRemoteSwiftPackageReference "ios-sdk-widgets" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/salemove/ios-sdk-widgets.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.10.4;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		C01D12E5292E461C00154A08 /* GliaWidgets */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C01D12E4292E461C00154A08 /* XCRemoteSwiftPackageReference "ios-sdk-widgets" */;
+			productName = GliaWidgets;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = C03A8015292B7A6700DDECA6 /* Project object */;
+}
