@@ -1,5 +1,9 @@
 #!/bin/bash
 
+if [ "$SHOULD_LINT_ON_PRECOMMIT" != 1 ]; then
+    exit 0
+fi
+
 # Checks and sets the appropriate SwiftLint path for M1 or Intel CPU
 if [[ $(uname -m) == 'arm64' ]]; then
     SWIFT_LINT=/opt/homebrew/bin/swiftlint
