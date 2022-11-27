@@ -64,7 +64,6 @@ class GliaTests: XCTestCase {
 
         gliaEnv.uuid = { .mock }
         gliaEnv.gcd.mainQueue.asyncIfNeeded = { callback in callback() }
-        gliaEnv.chatStorage.messages = { _ in [] }
 
         let expectedTheme = Theme.mock(
             colorStyle: .custom(.init()),
@@ -84,8 +83,7 @@ class GliaTests: XCTestCase {
         }
         let expectedSceneProvider = MockedSceneProvider()
         var receivedSceneProvider: SceneProvider?
-        gliaEnv.createRootCoordinator = { interactor, viewFactory, sceneProvider, engagementKind, features, chatStorageState,
-            environment in
+        gliaEnv.createRootCoordinator = { interactor, viewFactory, sceneProvider, engagementKind, features, environment in
             receivedTheme = viewFactory.theme
             receivedFeatures = features
             receivedSceneProvider = sceneProvider
@@ -93,7 +91,6 @@ class GliaTests: XCTestCase {
                 interactor: interactor,
                 viewFactory: viewFactory,
                 sceneProvider: sceneProvider,
-                chatStorageState: chatStorageState,
                 environment: environment
             )
         }
