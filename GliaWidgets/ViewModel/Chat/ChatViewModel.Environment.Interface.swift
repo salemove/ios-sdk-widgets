@@ -2,7 +2,6 @@ import Foundation
 
 extension EngagementViewModel {
     struct Environment {
-        var chatStorage: Glia.Environment.ChatStorage
         var fetchFile: CoreSdkClient.FetchFile
         var sendSelectedOptionValue: CoreSdkClient.SendSelectedOptionValue
         var uploadFileToEngagement: CoreSdkClient.UploadFileToEngagement

@@ -14,7 +14,6 @@ class ChatViewModelTests: XCTestCase {
         var fileManager = FoundationBased.FileManager.failing
         fileManager.urlsForDirectoryInDomainMask = { _, _ in [URL(fileURLWithPath: "/i/m/mocked/url")] }
         fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
-        let chatStorage = Glia.Environment.ChatStorage.failing
         viewModel = .init(
             interactor: .mock(),
             alertConfiguration: .mock(),
@@ -25,10 +24,8 @@ class ChatViewModelTests: XCTestCase {
             isCustomCardSupported: false,
             isWindowVisible: .init(with: true),
             startAction: .none,
-            chatStorageState: { .unauthenticated(chatStorage) },
             deliveredStatusText: "Delivered",
             environment: .init(
-                chatStorage: chatStorage,
                 fetchFile: { _, _, _ in },
                 sendSelectedOptionValue: { _, _ in
                     calls.append(.sendSelectedOptionValue)
@@ -66,7 +63,7 @@ class ChatViewModelTests: XCTestCase {
     func test__startCallsSDKConfigureWithInteractorAndСonfigureWithConfiguration() throws {
         var interactorEnv = Interactor.Environment.init(
             coreSdk: .failing,
-            gcd: .failing
+            gcd: .mock
         )
         enum Calls {
             case configureWithConfiguration, configureWithInteractor
@@ -82,7 +79,6 @@ class ChatViewModelTests: XCTestCase {
         var viewModelEnv = ChatViewModel.Environment.failing(fetchChatHistory: { $0(.success([]))})
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
-        viewModelEnv.chatStorage.messages = { _ in [] }
         viewModelEnv.loadChatMessagesFromHistory = { true }
         let viewModel = ChatViewModel.mock(interactor: interactor, environment: viewModelEnv)
         viewModel.start()
@@ -113,7 +109,6 @@ class ChatViewModelTests: XCTestCase {
         var viewModelEnv = ChatViewModel.Environment.failing()
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
-        viewModelEnv.chatStorage.messages = { _ in [] }
         viewModelEnv.loadChatMessagesFromHistory = { true }
         viewModelEnv.fetchSiteConfigurations = { _ in }
         
@@ -135,7 +130,6 @@ class ChatViewModelTests: XCTestCase {
         var viewModelEnv = ChatViewModel.Environment.failing()
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
-        viewModelEnv.chatStorage.messages = { _ in [] }
         viewModelEnv.loadChatMessagesFromHistory = { true }
         viewModelEnv.fetchSiteConfigurations = { _ in }
 
@@ -162,7 +156,6 @@ class ChatViewModelTests: XCTestCase {
         var viewModelEnv = ChatViewModel.Environment.failing()
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
-        viewModelEnv.chatStorage.messages = { _ in [] }
         viewModelEnv.loadChatMessagesFromHistory = { true }
         viewModelEnv.fetchSiteConfigurations = { _ in }
 
