@@ -2395,14 +2395,6 @@
 			path = Command;
 			sourceTree = "<group>";
 		};
-		AF5762172948A608003C0ACE /* Command */ = {
-			isa = PBXGroup;
-			children = (
-				AF5762182948A608003C0ACE /* Command.swift */,
-			);
-			path = Command;
-			sourceTree = "<group>";
-		};
 		AF9DB22C289056F600A0C442 /* Coordinator */ = {
 			isa = PBXGroup;
 			children = (
