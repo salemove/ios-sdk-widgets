@@ -317,9 +317,9 @@ extension ChatViewModel {
 // MARK: History
 
 extension ChatViewModel {
-    private func loadHistory(_ completion: @escaping ([ChatMessage]) -> Void) {
+    private func loadHistory(_ completion: @escaping ([CoreSdkClient.Message]) -> Void) {
         environment.fetchChatHistory { result in
-            let messages = (try? result.get()) ?? []
+            let messages = ((try? result.get()) ?? []).compactMap { ChatMessage(with: $0) }
             let items = messages.compactMap {
                 ChatItem(
                     with: $0,
@@ -330,7 +330,7 @@ extension ChatViewModel {
             self.historySection.set(items)
             self.action?(.refreshSection(self.historySection.index))
             self.action?(.scrollToBottom(animated: false))
-            completion(messages)
+            completion((try? result.get()) ?? [])
         }
     }
 }
