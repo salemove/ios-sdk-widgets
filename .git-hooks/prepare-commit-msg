@@ -1,0 +1,26 @@
+#!/bin/bash
+
+#
+# Inspects branch name and checks if it contains a Jira ticket number (i.e. MOB-1234).
+# If yes, [MOB-123] will be added in the end of a commit message.
+#
+
+BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+
+# Ensure BRANCH_NAME is not empty and is not in a detached HEAD state (i.e. rebase).
+if [ ! -z "$BRANCH_NAME" ] && [ "$BRANCH_NAME" != "HEAD" ] && [ "$SHOULD_PREPARE_COMMIT_MSG" == 1 ]; then
+
+	SUFFIX_PATTERN='MOB-[0-9]{4,5}'
+
+	[[ $BRANCH_NAME =~ $SUFFIX_PATTERN ]]
+
+	SUFFIX=${BASH_REMATCH[0]}
+
+	SUFFIX_IN_COMMIT=$(grep -c "\[$SUFFIX\]" $1)
+
+	# Ensure SUFFIX exists in BRANCH_NAME and is not already present in the commit message
+	if [[ -n "$SUFFIX" ]] && ! [[ $SUFFIX_IN_COMMIT -ge 1 ]]; then
+		echo "" >>$1
+  	echo "$SUFFIX" >>$1
+  fi
+fi
