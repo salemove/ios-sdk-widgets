@@ -78,7 +78,7 @@ public class Theme {
             assetsBuilder: assetsBuilder
         )
         alert.apply(
-            configuration: config.alertScreen,
+            configuration: config.alert,
             assetsBuilder: assetsBuilder
         )
         minimizedBubble.apply(

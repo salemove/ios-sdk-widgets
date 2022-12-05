@@ -4,7 +4,7 @@ public struct RemoteConfiguration: Codable {
     let callScreen: Call?
     let chatScreen: Chat?
     let surveyScreen: Survey?
-    let alertScreen: Alert?
+    let alert: Alert?
     let bubble: Bubble?
 }
 
