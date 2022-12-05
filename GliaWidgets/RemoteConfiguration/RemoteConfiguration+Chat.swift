@@ -64,7 +64,7 @@ extension RemoteConfiguration {
     struct Operator: Codable {
         let image: UserImageStyle?
         let animationColor: Color?
-        let overlayColor: Color?
+        let onHoldOverlay: OnHoldOverlayStyle?
     }
 
     struct Input: Codable {

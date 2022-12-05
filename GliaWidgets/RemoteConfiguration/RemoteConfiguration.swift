@@ -48,7 +48,8 @@ extension RemoteConfiguration {
     }
 
     struct OnHoldOverlayStyle: Codable {
-        let color: Color?
+        let backgroundColor: Color?
+        let tintColor: Color?
     }
 
     struct UserImageStyle: Codable {

@@ -5,20 +5,23 @@ public struct OnHoldOverlayStyle {
     public var image: UIImage
     public var imageColor: ColorType
     public var imageSize: CGSize
+    public var backgroundColor: ColorType
 
     public init(
         image: UIImage,
         imageColor: ColorType,
-        imageSize: CGSize
+        imageSize: CGSize,
+        backgroundColor: ColorType = .fill(color: .clear)
     ) {
         self.image = image
         self.imageColor = imageColor
         self.imageSize = imageSize
+        self.backgroundColor = backgroundColor
     }
 
     /// Apply onHoldOverlay style remote configuration
     mutating func apply(configuration: RemoteConfiguration.OnHoldOverlayStyle?) {
-        configuration?.color.unwrap {
+        configuration?.tintColor.unwrap {
             switch $0.type {
             case .fill:
                 $0.value
@@ -28,6 +31,19 @@ public struct OnHoldOverlayStyle {
             case .gradient:
                 let colors = $0.value.convertToCgColors()
                 imageColor = .gradient(colors: colors)
+            }
+        }
+
+        configuration?.backgroundColor.unwrap {
+            switch $0.type {
+            case .fill:
+                $0.value
+                    .map { UIColor(hex: $0) }
+                    .first
+                    .unwrap { backgroundColor = .fill(color: $0) }
+            case .gradient:
+                let colors = $0.value.convertToCgColors()
+                backgroundColor = .gradient(colors: colors)
             }
         }
     }

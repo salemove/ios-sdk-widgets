@@ -34,53 +34,12 @@ public struct ConnectOperatorStyle {
     }
 
     mutating func apply(configuration: RemoteConfiguration.Operator?) {
-        configuration?.image?.imageBackgroundColor.unwrap {
-            switch $0.type {
-            case .fill:
-                $0.value
-                    .map { UIColor(hex: $0) }
-                    .first
-                    .unwrap { operatorImage.imageBackgroundColor = .fill(color: $0) }
-            case .gradient:
-                let colors = $0.value.convertToCgColors()
-                operatorImage.imageBackgroundColor = .gradient(colors: colors)
-            }
-        }
-
-        configuration?.image?.placeholderBackgroundColor.unwrap {
-            switch $0.type {
-            case .fill:
-                $0.value
-                    .map { UIColor(hex: $0) }
-                    .first
-                    .unwrap { operatorImage.placeholderBackgroundColor = .fill(color: $0) }
-            case .gradient:
-                let colors = $0.value.convertToCgColors()
-                operatorImage.placeholderBackgroundColor = .gradient(colors: colors)
-            }
-        }
-
-        configuration?.image?.placeholderColor?.value
-            .map { UIColor(hex: $0) }
-            .first
-            .unwrap { operatorImage.placeholderColor = $0 }
-
         configuration?.animationColor?.value
             .map { UIColor(hex: $0) }
             .first
             .unwrap { animationColor = $0 }
 
-        configuration?.overlayColor.unwrap {
-            switch $0.type {
-            case .fill:
-                $0.value
-                    .map { UIColor(hex: $0) }
-                    .first
-                    .unwrap { onHoldOverlay.imageColor = .fill(color: $0) }
-            case .gradient:
-                let colors = $0.value.convertToCgColors()
-                onHoldOverlay.imageColor = .gradient(colors: colors)
-            }
-        }
+        operatorImage.apply(configuration: configuration?.image)
+        onHoldOverlay.apply(configuration: configuration?.onHoldOverlay)
     }
 }
