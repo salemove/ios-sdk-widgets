@@ -1,6 +1,7 @@
 import Foundation
 
 class EngagementViewModel {
+    static let alertSingleActionAccessibilityIdentifier = "alert_close_engagementEnded"
 
     var engagementAction: ((Action) -> Void)?
     var engagementDelegate: ((DelegateEvent) -> Void)?
@@ -76,6 +77,7 @@ class EngagementViewModel {
                     self.engagementAction?(
                         .showSingleActionAlert(
                             self.alertConfiguration.operatorEndedEngagement,
+                            accessibilityIdentifier: Self.alertSingleActionAccessibilityIdentifier,
                             actionTapped: { [weak self] in
                                 self?.endSession()
                             }
@@ -149,6 +151,7 @@ class EngagementViewModel {
                 self.engagementAction?(
                     .showSingleActionAlert(
                         self.alertConfiguration.operatorEndedEngagement,
+                        accessibilityIdentifier: Self.alertSingleActionAccessibilityIdentifier,
                         actionTapped: { [weak self] in
                             self?.endSession()
                             self?.engagementDelegate?(
@@ -345,6 +348,7 @@ extension EngagementViewModel {
         )
         case showSingleActionAlert(
             SingleActionAlertConfiguration,
+            accessibilityIdentifier: String,
             actionTapped: (() -> Void)?
         )
         case showAlert(
