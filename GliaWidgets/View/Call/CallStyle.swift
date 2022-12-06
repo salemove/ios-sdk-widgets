@@ -189,10 +189,11 @@ extension CallStyle {
         configuration: RemoteConfiguration.Call?,
         assetsBuilder: RemoteConfiguration.AssetsBuilder
     ) {
-        applyBarConfiguration(
+        buttonBar.applyBarConfiguration(
             configuration?.buttonBar,
             assetsBuilder: assetsBuilder
         )
+
         applyBackgroundConfiguration(configuration?.background)
         applyOperatorConfiguration(
             configuration?.callOperator,
@@ -322,16 +323,5 @@ extension CallStyle {
                 backgroundColor = .gradient(colors: colors)
             }
         }
-    }
-
-    /// Apply bar buttons from remote configuration
-    private func applyBarConfiguration(
-        _ bar: RemoteConfiguration.ButtonBar?,
-        assetsBuilder: RemoteConfiguration.AssetsBuilder
-    ) {
-        buttonBar.applyBarConfiguration(
-            bar,
-            assetsBuilder: assetsBuilder
-        )
     }
 }

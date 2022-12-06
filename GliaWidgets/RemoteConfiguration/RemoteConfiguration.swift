@@ -42,9 +42,15 @@ extension RemoteConfiguration {
     }
 
     struct Bubble: Codable {
-        let badge: Button?
+        let badge: Badge?
         let onHoldOverlay: OnHoldOverlayStyle?
         let userImage: UserImageStyle?
+    }
+
+    struct Badge: Codable {
+        let background: Layer?
+        let font: Font?
+        let fontColor: Color?
     }
 
     struct OnHoldOverlayStyle: Codable {
@@ -113,6 +119,7 @@ extension RemoteConfiguration {
     struct ButtonBar: Codable {
         let chatButton, minimizeButton, muteButton, speakerButton: BarButtonStates?
         let videoButton: BarButtonStates?
+        let badge: Badge?
     }
 
     struct BarButtonStates: Codable {

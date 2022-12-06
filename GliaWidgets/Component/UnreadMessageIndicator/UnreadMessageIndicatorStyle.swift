@@ -10,6 +10,9 @@ public struct UnreadMessageIndicatorStyle {
     /// Style of the operator's image that appears in the indicator's main frame.
     public var userImage: UserImageStyle
 
+    /// Color of the unread indicator image.
+    public var indicatorImageTintColor: UIColor
+
     /// Accessibility related properties.
     public var accessibility: Accessibility
 
@@ -22,7 +25,8 @@ public struct UnreadMessageIndicatorStyle {
     ///   - placeholderColor: Color of the placeholder's image if the operator has no picture set.
     ///   - placeholderBackgroundColor: Background color of the placeholder's image if the operator has no picture set.
     ///   - imageBackgroundColor: Background color of the operator's image. Visible when the operator's image contains transparent parts.
-    ///   - imageBackgroundColor: Background olor of the operator's image. Visible when the operator's image contains transparent parts.
+    ///   - imageBackgroundColor: Background color of the operator's image. Visible when the operator's image contains transparent parts.
+    ///   - indicatorImageTintColor: Color of the unread indicator image.
     ///   - accessibility: Accessibility related properties.
     public init(
         badgeFont: UIFont,
@@ -33,6 +37,7 @@ public struct UnreadMessageIndicatorStyle {
         placeholderBackgroundColor: ColorType,
         imageBackgroundColor: ColorType,
         transferringImage: UIImage,
+        indicatorImageTintColor: UIColor = .white,
         accessibility: Accessibility = .unsupported
     ) {
         self.badge = BadgeStyle(
@@ -47,17 +52,22 @@ public struct UnreadMessageIndicatorStyle {
             imageBackgroundColor: imageBackgroundColor,
             transferringImage: transferringImage
         )
+        self.indicatorImageTintColor = indicatorImageTintColor
         self.accessibility = accessibility
     }
 
     mutating func apply(
-        configuration: RemoteConfiguration.Bubble?,
+        configuration: RemoteConfiguration.UnreadIndicator?,
         assetsBuilder: RemoteConfiguration.AssetsBuilder
     ) {
         badge.apply(
-            configuration: configuration?.badge,
+            configuration: configuration?.bubble?.badge,
             assetsBuilder: assetsBuilder
         )
-        userImage.apply(configuration: configuration?.userImage)
+        userImage.apply(configuration: configuration?.bubble?.userImage)
+        configuration?.backgroundColor?.value
+            .first
+            .map { UIColor(hex: $0) }
+            .unwrap { indicatorImageTintColor = $0 }
     }
 }

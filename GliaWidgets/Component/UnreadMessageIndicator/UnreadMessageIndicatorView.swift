@@ -59,6 +59,8 @@ final class UnreadMessageIndicatorView: View {
         isHidden = true
 
         backgroundView.image = Asset.unreadMessageIndicator.image
+            .withRenderingMode(.alwaysTemplate)
+        backgroundView.tintColor = style.indicatorImageTintColor
 
         let tapRecognizer = UITapGestureRecognizer(
             target: self,

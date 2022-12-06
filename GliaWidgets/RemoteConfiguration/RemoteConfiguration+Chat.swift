@@ -13,7 +13,7 @@ extension RemoteConfiguration {
         let videoUpgrade: Upgrade?
         let bubble: Bubble?
         let attachmentSourceList: AttachmentSourceList?
-        let unreadIndicator: Bubble?
+        let unreadIndicator: UnreadIndicator?
         let typingIndicator: Color?
     }
 
@@ -141,5 +141,10 @@ extension RemoteConfiguration {
         let info: Text?
         let separator: Text?
         let retry: Text?
+    }
+
+    struct UnreadIndicator: Codable {
+        let backgroundColor: Color?
+        let bubble: Bubble?
     }
 }

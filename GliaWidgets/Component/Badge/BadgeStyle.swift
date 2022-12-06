@@ -14,6 +14,12 @@ public struct BadgeStyle {
     /// Background color of the view.
     public var backgroundColor: ColorType
 
+    /// Border color of the view.
+    public var borderColor: ColorType
+
+    /// Border width of the view.
+    public var borderWidth: CGFloat
+
     ///
     /// - Parameters:
     ///   - font: Font of the text.
@@ -25,25 +31,29 @@ public struct BadgeStyle {
         font: UIFont,
         fontColor: UIColor,
         textStyle: UIFont.TextStyle = .caption1,
-        backgroundColor: ColorType
+        backgroundColor: ColorType,
+        borderColor: ColorType = .fill(color: .clear),
+        borderWidth: CGFloat = .zero
     ) {
         self.font = font
         self.fontColor = fontColor
         self.textStyle = textStyle
         self.backgroundColor = backgroundColor
+        self.borderColor = borderColor
+        self.borderWidth = borderWidth
     }
 
     /// Apply badge remote configuration
     mutating func apply(
-        configuration: RemoteConfiguration.Button?,
+        configuration: RemoteConfiguration.Badge?,
         assetsBuilder: RemoteConfiguration.AssetsBuilder
     ) {
         UIFont.convertToFont(
-            uiFont: assetsBuilder.fontBuilder(configuration?.text?.font),
+            uiFont: assetsBuilder.fontBuilder(configuration?.font),
             textStyle: textStyle
         ).unwrap { font = $0 }
 
-        configuration?.text?.foreground?.value
+        configuration?.fontColor?.value
             .map { UIColor(hex: $0) }
             .first
             .unwrap { fontColor = $0 }
@@ -60,5 +70,20 @@ public struct BadgeStyle {
                 backgroundColor = .gradient(colors: colors)
             }
         }
+
+        configuration?.background?.border.unwrap {
+            switch $0.type {
+            case .fill:
+                $0.value
+                    .map { UIColor(hex: $0) }
+                    .first
+                    .unwrap { borderColor = .fill(color: $0) }
+            case .gradient:
+                break
+            }
+        }
+
+        configuration?.background?.borderWidth
+            .unwrap { borderWidth = $0 }
     }
 }

@@ -43,5 +43,9 @@ public struct CallButtonBarStyle {
             button: bar?.speakerButton,
             assetsBuilder: assetsBuilder
         )
+        badge.apply(
+            configuration: bar?.badge,
+            assetsBuilder: assetsBuilder
+        )
     }
 }

@@ -31,6 +31,11 @@ class BadgeView: UIView {
     private func setup() {
         clipsToBounds = true
         layer.cornerRadius = size / 2
+        layer.borderWidth = style.borderWidth
+        if case let .fill(color) = style.borderColor {
+            layer.borderColor = color.cgColor
+        }
+
         switch style.backgroundColor {
         case .fill(let color):
             backgroundColor = color
