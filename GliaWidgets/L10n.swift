@@ -385,8 +385,8 @@ public enum L10n {
       public enum Queue {
         /// CompanyName
         public static let firstText = L10n.tr("Localizable", "call.connect.queue.firstText", fallback: "CompanyName")
-        /// An MSR will be with you shortly.
-        public static let secondText = L10n.tr("Localizable", "call.connect.queue.secondText", fallback: "An MSR will be with you shortly.")
+        /// We're here to help!
+        public static let secondText = L10n.tr("Localizable", "call.connect.queue.secondText", fallback: "We're here to help!")
       }
       public enum Transferring {
         /// Transferring
@@ -583,8 +583,8 @@ public enum L10n {
       public enum Queue {
         /// CompanyName
         public static let firstText = L10n.tr("Localizable", "chat.connect.queue.firstText", fallback: "CompanyName")
-        /// An MSR will be with you shortly.
-        public static let secondText = L10n.tr("Localizable", "chat.connect.queue.secondText", fallback: "An MSR will be with you shortly.")
+        /// We're here to help!
+        public static let secondText = L10n.tr("Localizable", "chat.connect.queue.secondText", fallback: "We're here to help!")
       }
       public enum Transferring {
         /// Transferring
