@@ -48,6 +48,10 @@ class ViewController: UIViewController {
         try? Glia.sharedInstance.resume()
     }
 
+    @IBAction private func secureConversationTapped() {
+        presentGlia(.messaging)
+    }
+
     @IBAction private func clearSessionTapped() {
         Glia.sharedInstance.clearVisitorSession()
     }
