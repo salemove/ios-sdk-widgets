@@ -47,6 +47,10 @@ class ViewController: UIViewController {
         try? Glia.sharedInstance.resume()
     }
 
+    @IBAction private func secureConversationTapped() {
+        presentGlia(.messaging)
+    }
+
     @IBAction private func clearSessionTapped() {
         Glia.sharedInstance.clearVisitorSession()
     }
@@ -120,7 +124,7 @@ extension ViewController {
             let pushNotifications = Configuration.PushNotifications.production
             #endif
             configuration.pushNotifications = pushNotifications
-            
+
             try Glia.sharedInstance.start(
                 engagementKind,
                 configuration: configuration,

@@ -28,6 +28,11 @@ public class Theme {
     /// Call view style.
     public lazy var call: CallStyle = { return callStyle }()
 
+    /// Secure conversations welcome style.
+    public lazy var secureConversationsWelcome: SecureConversations.WelcomeStyle = {
+        return secureConversationsWelcomeStyle
+    }()
+
     /// Alert view style.
     public lazy var alert: AlertStyle = { return alertStyle }()
 
