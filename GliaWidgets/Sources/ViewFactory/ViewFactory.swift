@@ -59,4 +59,8 @@ class ViewFactory {
             )
         )
     }
+
+    func makeSecureConversationsWelcomeView() -> SecureConversations.WelcomeView {
+        return .init(with: theme.secureConversationsWelcome)
+    }
 }
