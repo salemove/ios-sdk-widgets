@@ -11,6 +11,8 @@ public enum EngagementKind: Equatable {
     case audioCall
     /// Video call
     case videoCall
+    /// Secure conversations
+    case messaging
 }
 
 /// An event providing engagement state information.
