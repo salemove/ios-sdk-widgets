@@ -100,6 +100,13 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
                 [callViewController],
                 animated: false
             )
+        case .messaging:
+            let secureConversationsWelcomeViewController = startSecureConversations()
+            engagement = .secureConversations(secureConversationsWelcomeViewController)
+            navigationPresenter.setViewControllers(
+                [secureConversationsWelcomeViewController],
+                animated: false
+            )
         }
 
         let bubbleView = viewFactory.makeBubbleView()
@@ -376,6 +383,31 @@ extension RootCoordinator {
             )
         }
     }
+
+    private func startSecureConversations() -> SecureConversations.WelcomeViewController {
+        let coordinator = SecureConversations.Coordinator(
+            viewFactory: viewFactory
+        )
+
+        coordinator.delegate = { [weak self] event in
+            self?.handleSecureConversationsCoordinatorEvent(event)
+        }
+
+        pushCoordinator(coordinator)
+
+        return coordinator.start()
+    }
+
+    private func handleSecureConversationsCoordinatorEvent(_ event: SecureConversations.Coordinator.DelegateEvent) {
+        // These actions are tentative. Design hasn't been finalized yet.
+        switch event {
+        case .closeTapped:
+            self.popCoordinator()
+            self.end()
+        case .backTapped:
+            self.gliaViewController?.minimize(animated: true)
+        }
+    }
 }
 
 extension RootCoordinator {
@@ -438,7 +470,7 @@ extension RootCoordinator {
             )
             answer(true, nil)
 
-        case .none:
+        case .secureConversations, .none:
             break
         }
     }
@@ -492,6 +524,7 @@ extension RootCoordinator {
         case none
         case chat(ChatViewController)
         case call(CallViewController, ChatViewController, UpgradedFrom, Call)
+        case secureConversations(SecureConversations.WelcomeViewController)
     }
 
     private enum UpgradedFrom {
