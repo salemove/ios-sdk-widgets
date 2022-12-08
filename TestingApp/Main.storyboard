@@ -99,8 +99,8 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pHy-59-v7T">
-                                        <rect key="frame" x="163" y="300" width="88" height="30"/>
-                                        <accessibility key="accessibilityConfiguration" identifier="main_endEngagement_button"/>
+                                        <rect key="frame" x="163" y="350" width="88" height="30"/>
+                                        <accessibility key="accessibilityConfiguration" identifier="main_authenticate_button"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="ezp-dJ-Nup"/>
                                         </constraints>
@@ -133,6 +133,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="secureConversationsButton" destination="ojd-PF-wje" id="kN8-zY-QYl"/>
                         <outlet property="toggleAuthenticateButton" destination="pHy-59-v7T" id="9rO-74-dfE"/>
                     </connections>
                 </viewController>
