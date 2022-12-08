@@ -61,7 +61,7 @@
 "chat.title" = "Chat";
 "chat.endButton.title" = "End";
 "chat.connect.queue.firstText" = "CompanyName";
-"chat.connect.queue.secondText" = "An MSR will be with you shortly.";
+"chat.connect.queue.secondText" = "We're here to help!";
 "chat.connect.connecting.firstText" = "Connecting with {operatorName}";
 "chat.connect.connecting.secondText" = "";
 "chat.connect.connected.firstText" = "{operatorName}";
@@ -134,7 +134,7 @@
 "call.video.title" = "Video";
 "call.endButton.title" = "End";
 "call.connect.queue.firstText" = "CompanyName";
-"call.connect.queue.secondText" = "An MSR will be with you shortly.";
+"call.connect.queue.secondText" = "We're here to help!";
 "call.connect.connecting.firstText" = "Connecting with {operatorName}";
 "call.connect.connecting.secondText" = "";
 "call.connect.connected.firstText" = "{operatorName}";
