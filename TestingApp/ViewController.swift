@@ -22,11 +22,16 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         title = "Glia UI testing"
         view.backgroundColor = .white
+
+        if !features.contains(.secureConversations) {
+            secureConversationsButton.isHidden = true
+        }
     }
 
     @IBOutlet weak var visitorCodeView: UIView!
     @IBOutlet var toggleAuthenticateButton: UIButton!
     @IBOutlet var configureButton: UIButton!
+    @IBOutlet var secureConversationsButton: UIButton!
 
     @IBAction private func settingsTapped() {
         presentSettings()
@@ -49,7 +54,9 @@ class ViewController: UIViewController {
     }
 
     @IBAction private func secureConversationTapped() {
-        presentGlia(.messaging)
+        if features.contains(.secureConversations) {
+            presentGlia(.messaging)
+        }
     }
 
     @IBAction private func clearSessionTapped() {
