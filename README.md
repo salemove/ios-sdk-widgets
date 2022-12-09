@@ -33,9 +33,8 @@ To integrate `GliaWidgets` into your project via [CocoaPods](https://cocoapods.o
 # Podfile
 
 source 'https://github.com/CocoaPods/Specs.git'
-source 'https://github.com/salemove/glia-ios-podspecs.git'
 
-user_frameworks!
+use_frameworks!
 
 target 'YOUR_TARGET_NAME' do
     pod 'GliaWidgets'
