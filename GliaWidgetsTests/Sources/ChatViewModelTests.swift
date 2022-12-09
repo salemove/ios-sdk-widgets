@@ -26,6 +26,7 @@ class ChatViewModelTests: XCTestCase {
             isWindowVisible: .init(with: true),
             startAction: .none,
             chatStorageState: { .unauthenticated(chatStorage) },
+            deliveredStatusText: "Delivered",
             environment: .init(
                 chatStorage: chatStorage,
                 fetchFile: { _, _, _ in },
@@ -285,7 +286,7 @@ class ChatViewModelTests: XCTestCase {
 
         XCTAssertEqual(calls, [.linkTapped(linkUrl)])
     }
-    
+
     func test_handleUrlWithRandomSchemeDoesNothing() throws {
         enum Call: Equatable {
             case linkTapped(URL)
@@ -315,6 +316,57 @@ class ChatViewModelTests: XCTestCase {
         viewModel.linkTapped(mockUrl)
 
         XCTAssertEqual(calls, [])
+    }
+
+    func test_deliveryStatusText() {
+        let deliveredStatusText = "This message has been delivered"
+        let messageContent = "Message"
+
+        var environment: Interactor.Environment = .mock
+        environment.coreSdk.sendMessageWithAttachment = { message, attachment, completion in
+            let coreSdkMessage = Message(
+                id: UUID().uuidString,
+                content: messageContent,
+                sender: MessageSender.mock,
+                metadata: nil
+            )
+            completion(coreSdkMessage, nil)
+        }
+
+        // `sendMessageWithAttachment` goes through this method first, so if
+        // we use the mocked one, which doesn't execute the completion,
+        // `sendMessageWithAttachment` will not be executed.
+        environment.coreSdk.configureWithConfiguration = { _, completion in
+            completion?()
+        }
+
+        let viewModel: ChatViewModel = .mock(
+            interactor: .mock(environment: environment),
+            deliveredStatusText: deliveredStatusText
+        )
+
+        viewModel.action = { action in
+            switch action {
+            // `refreshRows` is the action called when a message is sent
+            // and delivered.
+            case .refreshRows(let row, let section, _):
+                // As there is only one message refreshed because we
+                // just send one message, the first row is retrieved.
+                let item = viewModel.item(for: row.first!, in: section)
+                if case .visitorMessage(_, let status) = item.kind {
+                    XCTAssertEqual(status, deliveredStatusText)
+                } else {
+                    XCTFail("Refreshed message is of incorrect type.")
+                }
+            default: break
+            }
+        }
+
+        viewModel.interactor.state = .engaged(nil)
+
+        // Simulate typing and message and pressing the send button
+        viewModel.event(.messageTextChanged(messageContent))
+        viewModel.event(.sendTapped)
     }
 }
 
