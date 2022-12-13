@@ -44,7 +44,7 @@ class Header: UIView {
         self.style = style
         self.backButton = HeaderButton(with: style.backButton)
         self.closeButton = HeaderButton(with: style.closeButton)
-        self.endButton = ActionButton(with: style.endButton)
+        self.endButton = ActionButton(with: style.endButton, height: 32.0)
         self.endScreenShareButton = HeaderButton(with: style.endScreenShareButton)
         super.init(frame: .zero)
         self.titleLabel.accessibilityTraits = .header
@@ -99,7 +99,7 @@ class Header: UIView {
         titleLabel.textAlignment = .center
 
         rightItemContainer.axis = .horizontal
-        rightItemContainer.spacing = 8
+        rightItemContainer.spacing = 16
         rightItemContainer.alignment = .center
 
         backButton.accessibilityIdentifier = "header_back_button"

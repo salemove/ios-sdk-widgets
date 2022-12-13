@@ -12,11 +12,12 @@ class ActionButton: UIButton {
     }
 
     private let style: ActionButtonStyle
-    private let kHeight: CGFloat = 40.0
+    private let kHeight: CGFloat
     private let kContentInsets = UIEdgeInsets(top: 6, left: 16, bottom: 6, right: 16)
 
-    init(with style: ActionButtonStyle) {
+    init(with style: ActionButtonStyle, height: CGFloat = 40.0) {
         self.style = style
+        self.kHeight = height
         super.init(frame: .zero)
         setup()
         layout()
