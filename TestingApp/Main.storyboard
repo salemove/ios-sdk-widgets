@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Y6W-OH-hqX">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Y6W-OH-hqX">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -18,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="A3Y-Xf-Ufg">
-                                <rect key="frame" x="0.0" y="258" width="414" height="380"/>
+                                <rect key="frame" x="0.0" y="233" width="414" height="430"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FAP-5O-GCi">
                                         <rect key="frame" x="164.5" y="0.0" width="85" height="30"/>
@@ -64,8 +64,20 @@
                                             <action selector="videoTapped" destination="Y6W-OH-hqX" eventType="touchUpInside" id="gAa-VI-Ha1"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ojd-PF-wje">
+                                        <rect key="frame" x="119" y="200" width="176" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="Nk7-ud-fyb"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" title="Start secure conversation"/>
+                                        <connections>
+                                            <action selector="secureConversationTapped" destination="Y6W-OH-hqX" eventType="touchUpInside" id="pV9-8F-891"/>
+                                        </connections>
+                                    </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P9U-ba-KVy">
-                                        <rect key="frame" x="179.5" y="200" width="55" height="30"/>
+                                        <rect key="frame" x="179.5" y="250" width="55" height="30"/>
                                         <accessibility key="accessibilityConfiguration" identifier="main_resume_button"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="mbg-qw-hCC"/>
@@ -76,7 +88,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0wb-9L-Csn">
-                                        <rect key="frame" x="161" y="250" width="92" height="30"/>
+                                        <rect key="frame" x="161" y="300" width="92" height="30"/>
                                         <accessibility key="accessibilityConfiguration" identifier="main_clearSession_button"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="wht-81-BI4"/>
@@ -87,8 +99,8 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pHy-59-v7T">
-                                        <rect key="frame" x="163" y="300" width="88" height="30"/>
-                                        <accessibility key="accessibilityConfiguration" identifier="main_endEngagement_button"/>
+                                        <rect key="frame" x="163" y="350" width="88" height="30"/>
+                                        <accessibility key="accessibilityConfiguration" identifier="main_authenticate_button"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="ezp-dJ-Nup"/>
                                         </constraints>
@@ -98,7 +110,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Ys-xS-zdq">
-                                        <rect key="frame" x="126" y="350" width="162" height="30"/>
+                                        <rect key="frame" x="126" y="400" width="162" height="30"/>
                                         <accessibility key="accessibilityConfiguration" identifier="main_endEngagement_button"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="QkV-yj-Sti"/>
@@ -121,6 +133,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="secureConversationsButton" destination="ojd-PF-wje" id="kN8-zY-QYl"/>
                         <outlet property="toggleAuthenticateButton" destination="pHy-59-v7T" id="9rO-74-dfE"/>
                     </connections>
                 </viewController>

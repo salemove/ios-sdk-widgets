@@ -23,9 +23,14 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         title = "Glia UI testing"
         view.backgroundColor = .white
+
+        if !features.contains(.secureConversations) {
+            secureConversationsButton.isHidden = true
+        }
     }
 
     @IBOutlet var toggleAuthenticateButton: UIButton!
+    @IBOutlet var secureConversationsButton: UIButton!
 
     @IBAction private func settingsTapped() {
         presentSettings()
@@ -45,6 +50,12 @@ class ViewController: UIViewController {
 
     @IBAction private func resumeTapped() {
         try? Glia.sharedInstance.resume()
+    }
+
+    @IBAction private func secureConversationTapped() {
+        if features.contains(.secureConversations) {
+            presentGlia(.messaging)
+        }
     }
 
     @IBAction private func clearSessionTapped() {
@@ -120,7 +131,7 @@ extension ViewController {
             let pushNotifications = Configuration.PushNotifications.production
             #endif
             configuration.pushNotifications = pushNotifications
-            
+
             try Glia.sharedInstance.start(
                 engagementKind,
                 configuration: configuration,
