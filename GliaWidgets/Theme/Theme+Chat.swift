@@ -36,7 +36,7 @@ extension Theme {
         )
         let endScreenShareButton = HeaderButtonStyle(
             image: Asset.startScreenShare.image,
-            color: color.secondary,
+            color: color.baseLight,
             accessibility: .init(
                 label: Accessibility.Header.EndScreenShareButton.label,
                 hint: Accessibility.Header.EndScreenShareButton.hint
