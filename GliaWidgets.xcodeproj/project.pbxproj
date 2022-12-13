@@ -365,6 +365,7 @@
 		9AE9E4B727E1E30500BFE239 /* MockHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE9E4B627E1E30500BFE239 /* MockHelpers.swift */; };
 		AF11F30728BE6F0C002ACEB4 /* UIAlertController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF11F30628BE6F0C002ACEB4 /* UIAlertController+Extensions.swift */; };
 		AF11F30928C0C592002ACEB4 /* Glia.OpaqueAuthentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF11F30828C0C592002ACEB4 /* Glia.OpaqueAuthentication.swift */; };
+		AF5762192948A608003C0ACE /* Command.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF5762182948A608003C0ACE /* Command.swift */; };
 		AF9DB22E2890571A00A0C442 /* RootCoordinator.Environment.Failing.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF9DB22D2890571A00A0C442 /* RootCoordinator.Environment.Failing.swift */; };
 		AF9DB23128905A1D00A0C442 /* ViewFactory.Environment.Failing.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF9DB23028905A1D00A0C442 /* ViewFactory.Environment.Failing.swift */; };
 		AFA2FDEC28907D7C00428E6D /* EngagementCoordinator.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA2FDEB28907D7C00428E6D /* EngagementCoordinator.Environment.swift */; };
@@ -862,7 +863,7 @@
 		9AE9E4B627E1E30500BFE239 /* MockHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockHelpers.swift; sourceTree = "<group>"; };
 		AE34F2102D2E802EE3A6B607 /* Pods-GliaWidgets.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliaWidgets.debug.xcconfig"; path = "Target Support Files/Pods-GliaWidgets/Pods-GliaWidgets.debug.xcconfig"; sourceTree = "<group>"; };
 		AF11F30628BE6F0C002ACEB4 /* UIAlertController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIAlertController+Extensions.swift"; sourceTree = "<group>"; };
-		AF11F30828C0C592002ACEB4 /* Glia.OpaqueAuthentication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Glia.OpaqueAuthentication.swift; sourceTree = "<group>"; };
+		AF5762182948A608003C0ACE /* Command.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Command.swift; sourceTree = "<group>"; };
 		AF9DB22D2890571A00A0C442 /* RootCoordinator.Environment.Failing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCoordinator.Environment.Failing.swift; sourceTree = "<group>"; };
 		AF9DB23028905A1D00A0C442 /* ViewFactory.Environment.Failing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewFactory.Environment.Failing.swift; sourceTree = "<group>"; };
 		AFA2FDEB28907D7C00428E6D /* EngagementCoordinator.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EngagementCoordinator.Environment.swift; sourceTree = "<group>"; };
@@ -1545,6 +1546,9 @@
 		1A60AFC12566857200E53F53 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				AF5762172948A608003C0ACE /* Command */,
+				84D2292C28C61DE000F64FE7 /* WKNavigationPolicyProvider */,
+				845A28FD28AFF2DC008558EA /* URLScheme */,
 				C4794E6E270673FC00F989F7 /* Animation */,
 				756087DF27837EB100158604 /* BundleManaging */,
 				C05AB018295F176200AA381F /* CallVisualizer */,
@@ -2430,6 +2434,14 @@
 			path = Interactor;
 			sourceTree = "<group>";
 		};
+		AF5762172948A608003C0ACE /* Command */ = {
+			isa = PBXGroup;
+			children = (
+				AF5762182948A608003C0ACE /* Command.swift */,
+			);
+			path = Command;
+			sourceTree = "<group>";
+		};
 		AF9DB22C289056F600A0C442 /* Coordinator */ = {
 			isa = PBXGroup;
 			children = (
@@ -3216,6 +3228,7 @@
 				845E2F98283FC9A900C04D56 /* Theme.Survey.OptionButton.swift in Sources */,
 				9AB196DC27C3FFCC00FD60AB /* Call.Environment.Interface.swift in Sources */,
 				C49A29EA2614A32600819269 /* ChatMessageContent.swift in Sources */,
+				AF5762192948A608003C0ACE /* Command.swift in Sources */,
 				9AB3402727FCDD92006E0FE2 /* ChatStyle.Accessibility.swift in Sources */,
 				845E2F74283D43FA00C04D56 /* AlertStyle.Accessibility.swift in Sources */,
 				1A60B0082567F29900E53F53 /* HeaderStyle.swift in Sources */,
