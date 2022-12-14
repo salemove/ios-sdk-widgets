@@ -4,7 +4,7 @@ class AttachmentSourceListView: UIView {
     var items: [AttachmentSourceItemStyle] = [] {
         didSet { updateItems(items) }
     }
-    var itemTapped: ((AtttachmentSourceItemKind) -> Void)?
+    var itemTapped: ((AttachmentSourceItemKind) -> Void)?
 
     private let stackView = UIStackView()
     private let style: AttachmentSourceListStyle

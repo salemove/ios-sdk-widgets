@@ -17,14 +17,26 @@ public class ChatCallUpgradeStyle {
     /// Color of the text.
     public var textColor: UIColor
 
+    /// Text style of the text.
+    public var textStyle: UIFont.TextStyle
+
     /// Font of the duration counter text.
     public var durationFont: UIFont
 
     /// Color of the duration counter text.
     public var durationColor: UIColor
 
+    /// Text style of the duration counter text.
+    public var durationTextStyle: UIFont.TextStyle
+
     /// Border color of the view.
     public var borderColor: UIColor
+
+    /// Border width of the view.
+    public var borderWidth: CGFloat
+
+    /// Corner radius of the view.
+    public var cornerRadius: CGFloat
 
     /// Accessibility related properties.
     public var accessibility: Accessibility
@@ -36,9 +48,13 @@ public class ChatCallUpgradeStyle {
     ///   - text: Text to display in the view.
     ///   - textFont: Font of the text.
     ///   - textColor: Color of the text.
+    ///   - textStyle: Text style of the text.
     ///   - durationFont: Font of the duration counter text.
     ///   - durationColor: Color of the duration counter text.
+    ///   - durationTextStyle: Text style of the duration counter text.
     ///   - borderColor: Border color of the view.
+    ///   - borderWidth: Border width of the view.
+    ///   - cornerRadius: Corner radius of the view.
     ///   - accessibility: Accessibility related properties.
     ///
     public init(
@@ -47,9 +63,13 @@ public class ChatCallUpgradeStyle {
         text: String,
         textFont: UIFont,
         textColor: UIColor,
+        textStyle: UIFont.TextStyle = .body,
         durationFont: UIFont,
         durationColor: UIColor,
+        durationTextStyle: UIFont.TextStyle = .body,
         borderColor: UIColor,
+        borderWidth: CGFloat = 1,
+        cornerRadius: CGFloat = 8,
         accessibility: Accessibility = .unsupported
     ) {
         self.icon = icon
@@ -57,9 +77,54 @@ public class ChatCallUpgradeStyle {
         self.text = text
         self.textFont = textFont
         self.textColor = textColor
+        self.textStyle = textStyle
         self.durationFont = durationFont
         self.durationColor = durationColor
+        self.durationTextStyle = durationTextStyle
         self.borderColor = borderColor
+        self.borderWidth = borderWidth
+        self.cornerRadius = cornerRadius
         self.accessibility = accessibility
+    }
+
+    func apply(
+        configuration: RemoteConfiguration.Upgrade?,
+        assetsBuilder: RemoteConfiguration.AssetsBuilder
+    ) {
+        configuration?.iconColor?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .unwrap { iconColor = $0 }
+
+        UIFont.convertToFont(
+            uiFont: assetsBuilder.fontBuilder(configuration?.text?.font),
+            textStyle: textStyle
+        ).unwrap { textFont = $0 }
+
+        configuration?.text?.foreground?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .unwrap { textColor = $0 }
+
+        UIFont.convertToFont(
+            uiFont: assetsBuilder.fontBuilder(configuration?.description?.font),
+            textStyle: durationTextStyle
+        ).unwrap { durationFont = $0 }
+
+        configuration?.description?.foreground?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .unwrap { durationColor = $0 }
+
+        configuration?.background?.border?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .unwrap { borderColor = $0 }
+
+        configuration?.background?.borderWidth
+            .unwrap { borderWidth = $0 }
+
+        configuration?.background?.cornerRadius
+            .unwrap { cornerRadius = $0 }
     }
 }

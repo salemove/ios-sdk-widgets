@@ -79,7 +79,7 @@ class ChoiceCardOptionView: UIView {
             self.textLabel.textColor = style.textColor
             if let borderColor = style.borderColor {
                 self.layer.borderColor = borderColor.cgColor
-                self.layer.borderWidth = 1
+                self.layer.borderWidth = style.borderWidth
             }
         }
     }

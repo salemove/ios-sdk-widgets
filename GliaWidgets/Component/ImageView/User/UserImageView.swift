@@ -35,6 +35,18 @@ class UserImageView: UIView {
         setNeedsDisplay()
         layer.cornerRadius = bounds.height / 2.0
         updatePlaceholderContentMode()
+        switch style.placeholderBackgroundColor {
+        case .fill(let color):
+            placeholderImageView.backgroundColor = color
+        case .gradient(let colors):
+            placeholderImageView.makeGradientBackground(colors: colors)
+        }
+        switch style.imageBackgroundColor {
+        case .fill(let color):
+            operatorImageView.backgroundColor = color
+        case .gradient(let colors):
+            operatorImageView.makeGradientBackground(colors: colors)
+        }
     }
 
     func setPlaceholderImage(_ image: UIImage?) {
@@ -60,13 +72,13 @@ class UserImageView: UIView {
         clipsToBounds = true
 
         placeholderImageView.tintColor = style.placeholderColor
-        placeholderImageView.backgroundColor = style.placeholderBackgroundColor
+
         placeholderImageView.image = style.placeholderImage
         updatePlaceholderContentMode()
 
         operatorImageView.isHidden = true
         operatorImageView.contentMode = .scaleAspectFill
-        operatorImageView.backgroundColor = style.imageBackgroundColor
+
     }
 
     private func layout() {

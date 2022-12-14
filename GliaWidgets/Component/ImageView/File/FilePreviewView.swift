@@ -34,7 +34,7 @@ class FilePreviewView: UIView {
 
     private func setup() {
         clipsToBounds = true
-        layer.cornerRadius = 4
+        layer.cornerRadius = style.cornerRadius
 
         label.font = style.fileFont
         label.textColor = style.fileColor

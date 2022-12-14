@@ -76,6 +76,57 @@ public class ChatFileDownloadStyle: ChatFileContentStyle {
             accessibility: accessibility
         )
     }
+
+    func apply(
+        configuration: RemoteConfiguration.FileMessage?,
+        assetsBuilder: RemoteConfiguration.AssetsBuilder
+    ) {
+        filePreview.apply(
+            configuration: configuration?.preview,
+            assetsBuilder: assetsBuilder
+        )
+        download.apply(
+            configuration: configuration?.download,
+            assetsBuilder: assetsBuilder
+        )
+        downloading.apply(
+            configuration: configuration?.downloading,
+            assetsBuilder: assetsBuilder
+        )
+        open.apply(
+            configuration: configuration?.downloaded,
+            assetsBuilder: assetsBuilder
+        )
+        error.apply(
+            configuration: configuration?.error,
+            assetsBuilder: assetsBuilder
+        )
+
+        configuration?.progress?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .unwrap { progressColor = $0 }
+
+        configuration?.errorProgress?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .unwrap { errorProgressColor = $0 }
+
+        configuration?.progressBackground?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .unwrap { progressBackgroundColor = $0 }
+
+        configuration?.border?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .unwrap { borderColor = $0 }
+
+        configuration?.background?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .unwrap { backgroundColor = $0 }
+    }
 }
 
 /// Style of a download state.
@@ -89,32 +140,69 @@ public class ChatFileDownloadStateStyle {
     /// Color of the state text.
     public var textColor: UIColor
 
+    /// Text style of the state text.
+    public var textStyle: UIFont.TextStyle
+
     /// Font of the file information text.
     public var infoFont: UIFont
 
     /// Color of the file information text.
     public var infoColor: UIColor
 
+    /// Text style of the information text.
+    public var infoTextStyle: UIFont.TextStyle
+
     ///
     /// - Parameters:
     ///   - text: Text for the state.
     ///   - font: Font of the state text.
     ///   - textColor: Color of the state text.
+    ///   - textStyle: Text style of the state text.
     ///   - infoFont: Font of the file information text.
     ///   - infoColor: Color of the file information text.
+    ///   - infoTextStyle: Text style of the information text.
     ///
     public init(
         text: String,
         font: UIFont,
         textColor: UIColor,
+        textStyle: UIFont.TextStyle = .subheadline,
         infoFont: UIFont,
-        infoColor: UIColor
+        infoColor: UIColor,
+        infoTextStyle: UIFont.TextStyle = .caption1
     ) {
         self.text = text
         self.font = font
         self.textColor = textColor
+        self.textStyle = textStyle
         self.infoFont = infoFont
         self.infoColor = infoColor
+        self.infoTextStyle = infoTextStyle
+    }
+
+    func apply(
+        configuration: RemoteConfiguration.FileState?,
+        assetsBuilder: RemoteConfiguration.AssetsBuilder
+    ) {
+        UIFont.convertToFont(
+            uiFont: assetsBuilder.fontBuilder(configuration?.text?.font),
+            textStyle: textStyle
+        ).unwrap { font = $0 }
+
+        configuration?.text?.foreground?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .unwrap { textColor = $0 }
+
+        UIFont.convertToFont(
+            uiFont: assetsBuilder.fontBuilder(configuration?.info?.font),
+            textStyle: infoTextStyle
+        ).unwrap { infoFont = $0 }
+
+        configuration?.info?.foreground?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .unwrap { infoColor = $0 }
     }
 }
 
@@ -129,11 +217,17 @@ public class ChatFileDownloadErrorStateStyle {
     /// Color of the state text.
     public var textColor: UIColor
 
+    /// Text style of the state text.
+    public var textStyle: UIFont.TextStyle
+
     /// Font of the information text.
     public var infoFont: UIFont
 
     /// Color of the information text.
     public var infoColor: UIColor
+
+    /// Text style of the information text.
+    public var infoTextStyle: UIFont.TextStyle
 
     /// The text between the state text and retry text.
     public var separatorText: String
@@ -144,6 +238,9 @@ public class ChatFileDownloadErrorStateStyle {
     /// Color of the separator text.
     public var separatorTextColor: UIColor
 
+    /// Text style of the separator text.
+    public var separatorTextStyle: UIFont.TextStyle
+
     /// Retry text.
     public var retryText: String
 
@@ -153,43 +250,103 @@ public class ChatFileDownloadErrorStateStyle {
     /// Color of the retry text.
     public var retryTextColor: UIColor
 
+    /// Text style of the retry text.
+    public var retryTextStyle: UIFont.TextStyle
+
     ///
     /// - Parameters:
     ///   - text: Text for the state.
     ///   - font: Font of the state text.
     ///   - textColor: Color of the state text.
+    ///   - textStyle: Text style of the state text.
     ///   - infoFont: Font of the information text.
     ///   - infoColor: Color of the information text.
+    ///   - infoTextStyle: Text style of the information text.
     ///   - separatorText: The text between the state text and retry text.
     ///   - separatorFont: Font of the separator text.
     ///   - separatorTextColor: Color of the separator text.
+    ///   - separatorTextStyle: Text style of the separator text.
     ///   - retryText: Retry text.
     ///   - retryFont: Font of the retry text.
     ///   - retryTextColor: Color of the retry text.
+    ///   - retryTextStyle: Text style of the retry text.
     ///
     public init(
         text: String,
         font: UIFont,
         textColor: UIColor,
+        textStyle: UIFont.TextStyle = .subheadline,
         infoFont: UIFont,
         infoColor: UIColor,
+        infoTextStyle: UIFont.TextStyle = .caption1,
         separatorText: String,
         separatorFont: UIFont,
         separatorTextColor: UIColor,
+        separatorTextStyle: UIFont.TextStyle = .footnote,
         retryText: String,
         retryFont: UIFont,
-        retryTextColor: UIColor
+        retryTextColor: UIColor,
+        retryTextStyle: UIFont.TextStyle = .subheadline
     ) {
         self.text = text
         self.font = font
         self.textColor = textColor
+        self.textStyle = textStyle
         self.infoFont = infoFont
         self.infoColor = infoColor
+        self.infoTextStyle = infoTextStyle
         self.separatorText = separatorText
         self.separatorFont = separatorFont
         self.separatorTextColor = separatorTextColor
+        self.separatorTextStyle = separatorTextStyle
         self.retryText = retryText
         self.retryFont = retryFont
         self.retryTextColor = retryTextColor
+        self.retryTextStyle = retryTextStyle
+    }
+
+    func apply(
+        configuration: RemoteConfiguration.FileErrorState?,
+        assetsBuilder: RemoteConfiguration.AssetsBuilder
+    ) {
+        UIFont.convertToFont(
+            uiFont: assetsBuilder.fontBuilder(configuration?.text?.font),
+            textStyle: textStyle
+        ).unwrap { font = $0 }
+
+        configuration?.text?.foreground?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .unwrap { textColor = $0 }
+
+        UIFont.convertToFont(
+            uiFont: assetsBuilder.fontBuilder(configuration?.info?.font),
+            textStyle: infoTextStyle
+        ).unwrap { infoFont = $0 }
+
+        configuration?.info?.foreground?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .unwrap { infoColor = $0 }
+
+        UIFont.convertToFont(
+            uiFont: assetsBuilder.fontBuilder(configuration?.separator?.font),
+            textStyle: separatorTextStyle
+        ).unwrap { separatorFont = $0 }
+
+        configuration?.separator?.foreground?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .unwrap { separatorTextColor = $0 }
+
+        UIFont.convertToFont(
+            uiFont: assetsBuilder.fontBuilder(configuration?.retry?.font),
+            textStyle: retryTextStyle
+        ).unwrap { retryFont = $0 }
+
+        configuration?.retry?.foreground?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .unwrap { retryTextColor = $0 }
     }
 }

@@ -85,6 +85,16 @@ class AlertView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         setNeedsDisplay()
+
+        switch style.backgroundColor {
+        case .fill(let color):
+            backgroundColor = color
+        case .gradient(let colors):
+            makeGradientBackground(
+                colors: colors,
+                cornerRadius: kCornerRadius
+            )
+        }
         layer.shadowPath = UIBezierPath(
             roundedRect: bounds,
             byRoundingCorners: .allCorners,
@@ -97,7 +107,6 @@ class AlertView: UIView {
     }
 
     private func setup() {
-        backgroundColor = style.backgroundColor
         clipsToBounds = true
 
         layer.masksToBounds = false
@@ -155,7 +164,13 @@ class AlertView: UIView {
 
         let closeButton = Button(kind: .alertClose,
                                  tap: { [weak self] in self?.closeTapped?() })
-        closeButton.tintColor = style.closeButtonColor
+        switch style.closeButtonColor {
+        case .fill(let color):
+            closeButton.tintColor = color
+        case .gradient(let colors):
+            closeButton.makeGradientBackground(colors: colors)
+        }
+
         closeButton.accessibilityIdentifier = "alert_close_button"
         self.closeButton = closeButton
         addSubview(closeButton)

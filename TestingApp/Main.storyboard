@@ -108,6 +108,17 @@
                                             <action selector="endEngagementTapped" destination="Y6W-OH-hqX" eventType="touchUpInside" id="HY1-eg-X4F"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ezc-iY-PbB">
+                                        <rect key="frame" x="141" y="350" width="132" height="30"/>
+                                        <accessibility key="accessibilityConfiguration" identifier="main_endEngagement_button"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="Nef-0j-qW7"/>
+                                        </constraints>
+                                        <state key="normal" title="Remote config.json"/>
+                                        <connections>
+                                            <action selector="remoteConfigTapped" destination="Y6W-OH-hqX" eventType="touchUpInside" id="9aa-P2-FLo"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                             </stackView>
                         </subviews>

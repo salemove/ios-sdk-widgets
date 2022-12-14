@@ -5,7 +5,7 @@ extension Theme {
 
         let onHoldOverlay = OnHoldOverlayStyle(
             image: Asset.callOnHold.image,
-            imageColor: .white,
+            imageColor: .fill(color: .white),
             imageSize: .init(width: 40, height: 40)
         )
         let backButton = HeaderButtonStyle(
@@ -28,7 +28,7 @@ extension Theme {
             title: Chat.EndButton.title,
             titleFont: font.buttonLabel,
             titleColor: color.baseLight,
-            backgroundColor: color.systemNegative,
+            backgroundColor: .fill(color: color.systemNegative),
             accessibility: .init(
                 label: Accessibility.Header.EndButton.label,
                 isFontScalingEnabled: true
@@ -45,7 +45,7 @@ extension Theme {
         let header = HeaderStyle(
             titleFont: font.header2,
             titleColor: color.baseLight,
-            backgroundColor: color.primary,
+            backgroundColor: .fill(color: color.primary),
             backButton: backButton,
             closeButton: closeButton,
             endButton: endButton,
@@ -55,8 +55,8 @@ extension Theme {
         let operatorImage = UserImageStyle(
             placeholderImage: Asset.operatorPlaceholder.image,
             placeholderColor: color.baseLight,
-            placeholderBackgroundColor: color.primary,
-            imageBackgroundColor: .clear,
+            placeholderBackgroundColor: .fill(color: color.primary),
+            imageBackgroundColor: .fill(color: .clear),
             transferringImage: Asset.operatorTransferring.image
         )
         let queueOperator = ConnectOperatorStyle(
@@ -72,9 +72,11 @@ extension Theme {
             firstText: Chat.Connect.Queue.firstText,
             firstTextFont: font.header1,
             firstTextFontColor: color.baseDark,
+            firstTextStyle: .title1,
             secondText: Chat.Connect.Queue.secondText,
             secondTextFont: font.subtitle,
             secondTextFontColor: color.baseNormal,
+            secondTextStyle: .footnote,
             accessibility: .init(
                 firstTextHint: Accessibility.Connect.Queue.FirstText.hint,
                 secondTextHint: nil,
@@ -85,9 +87,11 @@ extension Theme {
             firstText: Chat.Connect.Connecting.firstText,
             firstTextFont: font.header2,
             firstTextFontColor: color.baseDark,
+            firstTextStyle: .title2,
             secondText: Chat.Connect.Connecting.secondText,
             secondTextFont: font.header2,
             secondTextFontColor: color.baseDark,
+            secondTextStyle: .title2,
             accessibility: .init(
                 firstTextHint: Accessibility.Connect.Connecting.FirstText.hint,
                 secondTextHint: nil,
@@ -98,9 +102,11 @@ extension Theme {
             firstText: Chat.Connect.Connected.firstText,
             firstTextFont: font.header1,
             firstTextFontColor: color.baseDark,
+            firstTextStyle: .title1,
             secondText: Chat.Connect.Connected.secondText,
             secondTextFont: font.subtitle,
             secondTextFontColor: color.primary,
+            secondTextStyle: .footnote,
             accessibility: .init(
                 firstTextHint: Accessibility.Connect.Connected.FirstText.hint,
                 secondTextHint: nil,
@@ -111,9 +117,11 @@ extension Theme {
             firstText: Chat.Connect.Connected.firstText,
             firstTextFont: font.header1,
             firstTextFontColor: color.baseLight,
+            firstTextStyle: .title1,
             secondText: Chat.Connect.Connected.secondText,
             secondTextFont: font.subtitle,
             secondTextFontColor: color.baseLight,
+            secondTextStyle: .footnote,
             accessibility: .init(
                 firstTextHint: Accessibility.Connect.Connected.FirstText.hint,
                 secondTextHint: nil,
@@ -124,9 +132,11 @@ extension Theme {
             firstText: Chat.Connect.Transferring.firstText,
             firstTextFont: font.header1,
             firstTextFontColor: color.baseDark,
+            firstTextStyle: .title1,
             secondText: nil,
             secondTextFont: font.subtitle,
-            secondTextFontColor: color.primary
+            secondTextFontColor: color.primary,
+            secondTextStyle: .footnote
         )
         let connect = ConnectStyle(
             queueOperator: queueOperator,
@@ -156,6 +166,7 @@ extension Theme {
             fileDownload: fileDownload,
             statusFont: font.caption,
             statusColor: color.baseNormal,
+            statusTextStyle: .caption1,
             delivered: Chat.Message.Status.delivered,
             accessibility: .init(isFontScalingEnabled: true)
         )
@@ -235,6 +246,7 @@ extension Theme {
         let choiceCard = ChoiceCardStyle(
             mainText: choiceCardText,
             frameColor: color.primary,
+            backgroundColor: color.baseLight,
             imageFile: choiceCardImageFile,
             fileDownload: fileDownload,
             operatorImage: operatorImage,
@@ -300,8 +312,8 @@ extension Theme {
         let userImage = UserImageStyle(
             placeholderImage: Asset.operatorPlaceholder.image,
             placeholderColor: color.baseLight,
-            placeholderBackgroundColor: color.primary,
-            imageBackgroundColor: .clear,
+            placeholderBackgroundColor: .fill(color: color.primary),
+            imageBackgroundColor: .fill(color: .clear),
             transferringImage: Asset.operatorTransferring.image
         )
         let callBubble = BubbleStyle(
@@ -314,18 +326,18 @@ extension Theme {
         let unreadMessageIndicator = UnreadMessageIndicatorStyle(
             badgeFont: font.caption,
             badgeTextColor: color.baseLight,
-            badgeColor: color.primary,
+            badgeColor: .fill(color: color.primary),
             placeholderImage: Asset.operatorPlaceholder.image,
             placeholderColor: color.baseLight,
-            placeholderBackgroundColor: color.primary,
-            imageBackgroundColor: .clear,
+            placeholderBackgroundColor: .fill(color: color.primary),
+            imageBackgroundColor: .fill(color: .clear),
             transferringImage: Asset.operatorTransferring.image,
             accessibility: .init(label: Accessibility.Message.UnreadMessagesIndicator.label)
         )
         return ChatStyle(
             header: header,
             connect: connect,
-            backgroundColor: color.background,
+            backgroundColor: .fill(color: color.background),
             preferredStatusBarStyle: .lightContent,
             title: Chat.title,
             visitorMessage: visitorMessage,
