@@ -50,15 +50,15 @@ public struct ThemeFont {
         caption: UIFont? = nil,
         buttonLabel: UIFont? = nil
     ) {
-        self.header1 = header1 ?? Font.bold(24)
-        self.header2 = header2 ?? Font.regular(20)
-        self.header3 = header3 ?? Font.medium(18)
-        self.bodyText = bodyText ?? Font.regular(16)
-        self.subtitle = subtitle ?? Font.regular(14)
-        self.mediumSubtitle1 = mediumSubtitle1 ?? Font.medium(16)
-        self.mediumSubtitle2 = mediumSubtitle2 ?? Font.medium(14)
-        self.caption = caption ?? Font.regular(12)
-        self.buttonLabel = buttonLabel ?? Font.regular(16)
+        self.header1 = header1 ?? UIFont.systemFont(ofSize: 24, weight: .bold)
+        self.header2 = header2 ?? UIFont.systemFont(ofSize: 20, weight: .regular)
+        self.header3 = header3 ?? UIFont.systemFont(ofSize: 18, weight: .medium)
+        self.bodyText = bodyText ?? UIFont.systemFont(ofSize: 16, weight: .regular)
+        self.subtitle = subtitle ?? UIFont.systemFont(ofSize: 14, weight: .regular)
+        self.mediumSubtitle1 = mediumSubtitle1 ?? UIFont.systemFont(ofSize: 16, weight: .medium)
+        self.mediumSubtitle2 = mediumSubtitle2 ?? UIFont.systemFont(ofSize: 14, weight: .medium)
+        self.caption = caption ?? UIFont.systemFont(ofSize: 12, weight: .regular)
+        self.buttonLabel = buttonLabel ?? UIFont.systemFont(ofSize: 16, weight: .regular)
     }
 
     init() {
@@ -68,10 +68,13 @@ public struct ThemeFont {
         self.header3 = fontScaling.uiFont(with: .title3) // header3 ?? Font.medium(18) // .title3
         self.bodyText = fontScaling.uiFont(with: .body) // bodyText ?? Font.regular(16) // .body
         self.subtitle = fontScaling.uiFont(with: .footnote) // subtitle ?? Font.regular(14) // .footnote
-        self.mediumSubtitle1 = fontScaling.uiFont(with: .subheadline, fontSize: 16) // medium16 ?? Font.medium(16)
+        self.mediumSubtitle1 = fontScaling.uiFont(
+            with: .subheadline,
+            font: .systemFont(ofSize: 16, weight: .medium)
+        ) // medium16 ?? Font.medium(16) // .subheadline
         self.mediumSubtitle2 = fontScaling.uiFont(with: .subheadline)// mediumSubtitle ?? Font.medium(14) // .subheadline
         self.caption = fontScaling.uiFont(with: .caption1) // caption ?? Font.regular(12) // .caption1
-        self.buttonLabel = fontScaling.uiFont(with: .body)// buttonLabel ?? Font.regular(16) // .bodykmj
+        self.buttonLabel = fontScaling.uiFont(with: .body)// buttonLabel ?? Font.regular(16) // .body
     }
 }
 
@@ -86,37 +89,31 @@ extension FontScaling {
     )
 }
 
-extension FontScaling.Description {
-    init(name: FontProvider.FontName, size: Double) {
-        self.init(name: name.rawValue, size: size)
-    }
-}
-
 extension FontScaling.Style {
     func themeFontDescription() -> FontScaling.Description {
         switch self {
         case .body:
-            return .init(name: .robotoRegular, size: 16) // bodyText ?? Font.regular(16)
+            return .init(weight: .regular, size: 16) // bodyText ?? Font.regular(16)
         case .callout:
-            return .init(name: .robotoRegular, size: 15)
+            return .init(weight: .regular, size: 15)
         case .caption1:
-            return .init(name: .robotoRegular, size: 12) // caption ?? Font.regular(12)
+            return .init(weight: .regular, size: 12) // caption ?? Font.regular(12)
         case .caption2:
-            return .init(name: .robotoRegular, size: 11)
+            return .init(weight: .regular, size: 11)
         case .footnote:
-            return .init(name: .robotoRegular, size: 14)  // subtitle ?? Font.regular(14) // ???
+            return .init(weight: .regular, size: 14)  // subtitle ?? Font.regular(14) // ???
         case .headline:
-            return .init(name: .robotoBold, size: 17)
+            return .init(weight: .bold, size: 17)
         case .largeTitle:
-            return .init(name: .robotoRegular, size: 34)
+            return .init(weight: .regular, size: 34)
         case .subheadline:
-            return .init(name: .robotoMedium, size: 14) // mediumSubtitle ?? Font.medium(14)
+            return .init(weight: .medium, size: 14) // mediumSubtitle ?? Font.medium(14)
         case .title1:
-            return .init(name: .robotoBold, size: 24) // header1 ?? Font.bold(24)
+            return .init(weight: .bold, size: 24) // header1 ?? Font.bold(24)
         case .title2:
-            return .init(name: .robotoRegular, size: 20) // header2 ?? Font.regular(20)
+            return .init(weight: .regular, size: 20) // header2 ?? Font.regular(20)
         case .title3:
-            return .init(name: .robotoMedium, size: 18) // header3 ?? Font.medium(18)
+            return .init(weight: .medium, size: 18) // header3 ?? Font.medium(18)
         }
     }
 }

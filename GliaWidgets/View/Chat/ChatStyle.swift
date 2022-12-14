@@ -60,7 +60,7 @@ public class ChatStyle: EngagementStyle {
     public init(
         header: HeaderStyle,
         connect: ConnectStyle,
-        backgroundColor: UIColor,
+        backgroundColor: ColorType,
         preferredStatusBarStyle: UIStatusBarStyle,
         title: String,
         visitorMessage: VisitorChatMessageStyle,
@@ -93,5 +93,69 @@ public class ChatStyle: EngagementStyle {
             backgroundColor: backgroundColor,
             preferredStatusBarStyle: preferredStatusBarStyle
         )
+    }
+
+    func apply(
+        configuration: RemoteConfiguration.Chat?,
+        assetsBuilder: RemoteConfiguration.AssetsBuilder
+    ) {
+        header.apply(
+            configuration: configuration?.header,
+            assetsBuilder: assetsBuilder
+        )
+        connect.apply(
+            configuration: configuration?.connect,
+            assetsBuilder: assetsBuilder
+        )
+        visitorMessage.apply(
+            configuration: configuration?.visitorMessage,
+            assetsBuilder: assetsBuilder
+        )
+        operatorMessage.apply(
+            configuration: configuration?.operatorMessage,
+            assetsBuilder: assetsBuilder
+        )
+        messageEntry.apply(
+            configuration: configuration?.input,
+            assetsBuilder: assetsBuilder
+        )
+        choiceCard.apply(
+            configuration: configuration?.responseCard,
+            assetsBuilder: assetsBuilder
+        )
+        audioUpgrade.apply(
+            configuration: configuration?.audioUpgrade,
+            assetsBuilder: assetsBuilder
+        )
+        videoUpgrade.apply(
+            configuration: configuration?.videoUpgrade,
+            assetsBuilder: assetsBuilder
+        )
+        callBubble.apply(
+            configuration: configuration?.bubble,
+            assetsBuilder: assetsBuilder
+        )
+        pickMedia.apply(
+            configuration: configuration?.attachmentSourceList,
+            assetsBuilder: assetsBuilder
+        )
+        unreadMessageIndicator.apply(
+            configuration: configuration?.unreadIndicator,
+            assetsBuilder: assetsBuilder
+        )
+        operatorTypingIndicator.apply(configuration: configuration?.typingIndicator)
+
+        configuration?.background?.color.unwrap {
+            switch $0.type {
+            case .fill:
+                $0.value
+                    .map { UIColor(hex: $0) }
+                    .first
+                    .unwrap { backgroundColor = .fill(color: $0) }
+            case .gradient:
+                let colors = $0.value.convertToCgColors()
+                backgroundColor = .gradient(colors: colors)
+            }
+        }
     }
 }

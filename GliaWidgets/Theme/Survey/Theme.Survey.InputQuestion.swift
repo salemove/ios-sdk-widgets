@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 
 public extension Theme.SurveyStyle {
     struct InputQuestion {
@@ -22,52 +23,78 @@ public extension Theme.SurveyStyle {
             .init(
                 title: .init(
                     color: color.baseDark.hex,
-                    font: font.mediumSubtitle1
+                    font: font.mediumSubtitle1,
+                    textStyle: .subheadline
                 ),
                 option: .init(
                     normalText: .init(
                         color: color.baseDark.hex,
-                        font: font.bodyText
+                        font: font.bodyText,
+                        textStyle: .body
                     ),
                     normalLayer: .init(
-                        borderColor: color.baseNormal.hex,
+                        borderColor: color.baseNormal.cgColor,
                         borderWidth: 1,
                         cornerRadius: 4
                     ),
                     selectedText: .init(
                         color: color.baseLight.hex,
-                        font: font.bodyText
+                        font: font.bodyText,
+                        textStyle: .body
                     ),
                     selectedLayer: .init(
-                        background: color.primary.hex,
-                        borderColor: "",
+                        background: .fill(color: color.primary),
+                        borderColor: UIColor.gray.cgColor,
                         borderWidth: 0,
                         cornerRadius: 4
                     ),
                     highlightedText: .init(
                         color: color.systemNegative.hex,
-                        font: font.bodyText
+                        font: font.bodyText,
+                        textStyle: .body
                     ),
                     highlightedLayer: .init(
-                        borderColor: color.systemNegative.hex,
+                        borderColor: color.systemNegative.cgColor,
                         borderWidth: 1,
                         cornerRadius: 4
                     ),
                     font: font.caption,
+                    textStyle: .caption1,
                     accessibility: .init(isFontScalingEnabled: true)
                 ),
                 background: Theme.Layer(
-                    background: color.background.hex,
-                    borderColor: color.baseNormal.hex,
+                    background: .fill(color: color.background),
+                    borderColor: color.baseNormal.cgColor,
                     borderWidth: 1,
                     cornerRadius: 5
                 ),
                 text: .init(
                     color: color.baseDark.hex,
-                    font: font.subtitle
+                    font: font.subtitle,
+                    textStyle: .footnote
                 ),
                 error: .default(color: color, font: font),
                 accessibility: .init(isFontScalingEnabled: true)
+            )
+        }
+
+        /// Apply input question from remote configuration
+        mutating func apply(
+            configuration: RemoteConfiguration.SurveyInputQuestion?,
+            assetsBuilder: RemoteConfiguration.AssetsBuilder
+        ) {
+            title.apply(
+                configuration: configuration?.title,
+                assetsBuilder: assetsBuilder
+            )
+            text.apply(
+                configuration: configuration?.text,
+                assetsBuilder: assetsBuilder
+            )
+            background.apply(configuration: configuration?.background)
+            option.apply(
+                configuration: configuration?.option,
+                assetsBuilder: assetsBuilder
             )
         }
     }

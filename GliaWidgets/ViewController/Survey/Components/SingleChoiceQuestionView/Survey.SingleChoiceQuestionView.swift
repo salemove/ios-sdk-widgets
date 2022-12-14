@@ -57,7 +57,7 @@ extension Survey {
                     optionsStack.addArrangedSubview(
                         CheckboxView(
                             style: style.option,
-                            textStyle: style.title,
+                            textStyle: style.option.title,
                             checkedTintColor: .init(hex: style.tintColor)
                         )
                     )
