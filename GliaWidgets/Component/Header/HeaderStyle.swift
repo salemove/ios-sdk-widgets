@@ -1,7 +1,7 @@
 import UIKit
 
 /// Style of a view's header (navigation bar).
-public struct HeaderStyle {
+public struct HeaderStyle: Equatable {
     /// Font of the title text.
     public var titleFont: UIFont
 
