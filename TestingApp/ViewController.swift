@@ -23,6 +23,14 @@ class ViewController: UIViewController {
         title = "Glia UI testing"
         view.backgroundColor = .white
 
+        #if DEBUG
+        #warning("Remove this when 'secure messaging immplementation is complete.'")
+        // For non fresh builds `user default` may old version of
+        // `.all` which is missing `.secureConversations` flag.
+        // Here we force it to use `.all`.
+        features = .all
+        #endif
+
         if !features.contains(.secureConversations) {
             secureConversationsButton.isHidden = true
         }
@@ -168,7 +176,7 @@ extension ViewController {
                 print("MINIMIZED")
             case .maximized:
                 print("MAXIMIZED")
-            }
+                }
         }
 
         do {

@@ -379,6 +379,7 @@
 		AFA2FDFC289082F500428E6D /* OnHoldOverlayStyle.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA2FDFB289082F500428E6D /* OnHoldOverlayStyle.Mock.swift */; };
 		AFBBF5782851C391004993B3 /* Glia.Deprecated.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBBF5772851C391004993B3 /* Glia.Deprecated.swift */; };
 		AFBBF57A28522591004993B3 /* Configuration.Unavailable.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBBF57928522591004993B3 /* Configuration.Unavailable.swift */; };
+		AFD5E12B295F03A2004C03A0 /* Command.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD5E12A295F03A2004C03A0 /* Command.swift */; };
 		C03A8047292BA76D00DDECA6 /* ChatViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03A8046292BA76D00DDECA6 /* ChatViewControllerTests.swift */; };
 		C03A8049292BC8DB00DDECA6 /* CallViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03A8048292BC8DB00DDECA6 /* CallViewControllerTests.swift */; };
 		C05AB01A295F177700AA381F /* CallVisualizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05AB019295F177700AA381F /* CallVisualizer.swift */; };
@@ -877,7 +878,7 @@
 		AFA2FDFB289082F500428E6D /* OnHoldOverlayStyle.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnHoldOverlayStyle.Mock.swift; sourceTree = "<group>"; };
 		AFBBF5772851C391004993B3 /* Glia.Deprecated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Glia.Deprecated.swift; sourceTree = "<group>"; };
 		AFBBF57928522591004993B3 /* Configuration.Unavailable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.Unavailable.swift; sourceTree = "<group>"; };
-		B242B17A6024FB600B3AD08A /* Pods-GliaWidgetsTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliaWidgetsTests.debug.xcconfig"; path = "Target Support Files/Pods-GliaWidgetsTests/Pods-GliaWidgetsTests.debug.xcconfig"; sourceTree = "<group>"; };
+		AFD5E12A295F03A2004C03A0 /* Command.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Command.swift; sourceTree = "<group>"; };
 		C03A8046292BA76D00DDECA6 /* ChatViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewControllerTests.swift; sourceTree = "<group>"; };
 		C03A8048292BC8DB00DDECA6 /* CallViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallViewControllerTests.swift; sourceTree = "<group>"; };
 		C05AB016295DA9FC00AA381F /* AlertViewController+VisitorCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlertViewController+VisitorCode.swift"; sourceTree = "<group>"; };
@@ -1546,7 +1547,7 @@
 		1A60AFC12566857200E53F53 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				AF5762172948A608003C0ACE /* Command */,
+				AFD5E129295F03A2004C03A0 /* Command */,
 				84D2292C28C61DE000F64FE7 /* WKNavigationPolicyProvider */,
 				845A28FD28AFF2DC008558EA /* URLScheme */,
 				C4794E6E270673FC00F989F7 /* Animation */,
@@ -2458,6 +2459,12 @@
 			path = Factory;
 			sourceTree = "<group>";
 		};
+		AFD5E129295F03A2004C03A0 /* Command */ = {
+			isa = PBXGroup;
+			children = (
+				AFD5E12A295F03A2004C03A0 /* Command.swift */,
+			);
+			path = Command;
 		C05AB018295F176200AA381F /* CallVisualizer */ = {
 			isa = PBXGroup;
 			children = (
@@ -3228,7 +3235,6 @@
 				845E2F98283FC9A900C04D56 /* Theme.Survey.OptionButton.swift in Sources */,
 				9AB196DC27C3FFCC00FD60AB /* Call.Environment.Interface.swift in Sources */,
 				C49A29EA2614A32600819269 /* ChatMessageContent.swift in Sources */,
-				AF5762192948A608003C0ACE /* Command.swift in Sources */,
 				9AB3402727FCDD92006E0FE2 /* ChatStyle.Accessibility.swift in Sources */,
 				845E2F74283D43FA00C04D56 /* AlertStyle.Accessibility.swift in Sources */,
 				1A60B0082567F29900E53F53 /* HeaderStyle.swift in Sources */,
@@ -3310,6 +3316,7 @@
 				1A5F8182258B4F0E00A605DA /* OutgoingMessage.swift in Sources */,
 				AFA2FDF428907F0C00428E6D /* BubbleView.Mock.swift in Sources */,
 				7562B2EB28CBD7E20040C784 /* RemoteConfiguration.swift in Sources */,
+				AFD5E12B295F03A2004C03A0 /* Command.swift in Sources */,
 				9A19926E27D3BB7800161AAE /* Theme.Mock.swift in Sources */,
 				9AE9E4B127E0E45200BFE239 /* CallViewController.Mock.swift in Sources */,
 				9AE0A7642822B02C00725946 /* FontScaling.Environment.Mock.swift in Sources */,
