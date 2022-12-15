@@ -74,6 +74,8 @@ public enum Asset {
     public static let upgradeAudio = ImageAsset(name: "upgradeAudio")
     public static let upgradePhone = ImageAsset(name: "upgradePhone")
     public static let upgradeVideo = ImageAsset(name: "upgradeVideo")
+    public static let mcEnvelope = ImageAsset(name: "mc-envelope")
+    public static let mcPickMedia = ImageAsset(name: "mc-pick-media")
     public static let mockImage = ImageAsset(name: "mock-image")
     public static let operatorPlaceholder = ImageAsset(name: "operatorPlaceholder")
     public static let operatorTransferring = ImageAsset(name: "operatorTransferring")
@@ -111,6 +113,8 @@ public enum Asset {
       upgradeAudio,
       upgradePhone,
       upgradeVideo,
+      mcEnvelope,
+      mcPickMedia,
       mockImage,
       operatorPlaceholder,
       operatorTransferring,
