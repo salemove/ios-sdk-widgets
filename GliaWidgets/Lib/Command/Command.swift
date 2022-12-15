@@ -51,6 +51,9 @@ struct Command<T>: Hashable {
         hasher.combine(function)
         hasher.combine(line)
     }
+
+    /// Command with empty closure.
+    static var nop: Self { Self(tag: "nop", closure: { _ in }) }
 }
 
 /// A shorthand for Command for closure with zero parameters.

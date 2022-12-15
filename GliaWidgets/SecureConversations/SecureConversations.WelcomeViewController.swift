@@ -3,16 +3,21 @@ import UIKit
 
 extension SecureConversations {
     final class WelcomeViewController: ViewController {
-        private let viewModel: SecureConversations.WelcomeViewModel
+        var props: Props {
+            didSet {
+                guard props != oldValue else { return }
+                renderProps()
+            }
+        }
+
         private let viewFactory: ViewFactory
 
         init(
-            viewModel: SecureConversations.WelcomeViewModel,
-            viewFactory: ViewFactory
+            viewFactory: ViewFactory,
+            props: Props
         ) {
-            self.viewModel = viewModel
             self.viewFactory = viewFactory
-
+            self.props = props
             super.init(nibName: nil, bundle: nil)
         }
 
@@ -22,25 +27,32 @@ extension SecureConversations {
         }
 
         override func loadView() {
-            let view = viewFactory.makeSecureConversationsWelcomeView()
-            self.view = view
-
-            bind(viewModel: viewModel, to: view)
+            super.loadView()
+            renderProps()
         }
 
-        private func bind(
-            viewModel: SecureConversations.WelcomeViewModel,
-            to view: SecureConversations.WelcomeView
-        ) {
-            view.header.showCloseButton()
-
-            view.header.backButton.tap = { [weak viewModel] in
-                viewModel?.event(.backTapped)
-            }
-
-            view.header.closeButton.tap = { [weak viewModel] in
-                viewModel?.event(.closeTapped)
+        func renderProps() {
+            switch props {
+            case let .welcome(welcomeProps):
+            renderWelcome(props: welcomeProps)
             }
         }
+
+        func renderWelcome(props: WelcomeView.Props) {
+            let welcomeView: WelcomeView
+            if let currentView = view as? WelcomeView {
+                welcomeView = currentView
+            } else {
+                welcomeView = viewFactory.makeSecureConversationsWelcomeView(props: props)
+                view = welcomeView
+            }
+            welcomeView.props = props
+        }
+    }
+}
+
+extension SecureConversations.WelcomeViewController {
+    enum Props: Equatable {
+        case welcome(SecureConversations.WelcomeView.Props)
     }
 }
