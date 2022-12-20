@@ -11,6 +11,7 @@ extension ChatViewModel {
         isWindowVisible: ObservableValue<Bool> = .init(with: true),
         startAction: StartAction = .startEngagement,
         chatStorageState: @escaping () -> ChatStorageState = { .unauthenticated(.mock) },
+        deliveredStatusText: String = "Delivered",
         environment: Environment = .mock
     ) -> ChatViewModel {
         ChatViewModel(
@@ -24,6 +25,7 @@ extension ChatViewModel {
             isWindowVisible: isWindowVisible,
             startAction: startAction,
             chatStorageState: chatStorageState,
+            deliveredStatusText: deliveredStatusText,
             environment: environment
         )
     }
