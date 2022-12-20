@@ -74,6 +74,7 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
             isWindowVisible: isWindowVisible,
             startAction: startAction,
             chatStorageState: chatStorageState,
+            deliveredStatusText: viewFactory.theme.chat.visitorMessage.delivered,
             environment: .init(
                 chatStorage: environment.chatStorage,
                 fetchFile: environment.fetchFile,

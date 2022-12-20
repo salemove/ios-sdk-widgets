@@ -29,6 +29,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     private let isCustomCardSupported: Bool
     private let uploader: FileUploader
     private let downloader: FileDownloader
+    private let deliveredStatusText: String
     private var messageText = "" {
         didSet {
             validateMessage()
@@ -52,6 +53,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         isWindowVisible: ObservableValue<Bool>,
         startAction: StartAction,
         chatStorageState: @escaping () -> ChatStorageState,
+        deliveredStatusText: String,
         environment: Environment
     ) {
         self.call = call
@@ -84,6 +86,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             )
         )
         self.chatStorageState = chatStorageState
+        self.deliveredStatusText = deliveredStatusText
         super.init(
             interactor: interactor,
             alertConfiguration: alertConfiguration,
@@ -490,7 +493,6 @@ extension ChatViewModel {
             })?.offset
         else { return }
 
-        let deliveredStatus = Strings.Message.Status.delivered
         var affectedRows = [Int]()
 
         // Remove previous "Delivered" statuses
@@ -498,7 +500,7 @@ extension ChatViewModel {
             .enumerated()
             .forEach { index, element in
                 if case .visitorMessage(let message, let status) = element.kind,
-                   status == deliveredStatus {
+                   status == deliveredStatusText {
                     let chatItem = ChatItem(kind: .visitorMessage(message, status: nil))
                     section.replaceItem(at: index, with: chatItem)
                     affectedRows.append(index)
@@ -506,7 +508,11 @@ extension ChatViewModel {
             }
 
         let deliveredMessage = ChatMessage(with: message)
-        let item = ChatItem(kind: .visitorMessage(deliveredMessage, status: deliveredStatus))
+        let kind = ChatItem.Kind.visitorMessage(
+            deliveredMessage,
+            status: deliveredStatusText
+        )
+        let item = ChatItem(kind: kind)
         downloader.addDownloads(for: deliveredMessage.attachment?.files)
         section.replaceItem(at: index, with: item)
         affectedRows.append(index)
