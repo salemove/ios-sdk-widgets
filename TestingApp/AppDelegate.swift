@@ -4,18 +4,6 @@ import SalemoveSDK
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
-    var gliaCoreAppDelegate = GliaCoreAppDelegate()
-
-    func application(
-        _ application: UIApplication,
-        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
-    ) -> Bool {
-        gliaCoreAppDelegate.application(
-            application,
-            didFinishLaunchingWithOptions: launchOptions
-        )
-        return true
-    }
 
     func application(
         _ app: UIApplication,
@@ -57,9 +45,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         didFailToRegisterForRemoteNotificationsWithError error: Error
     ) {
         print("Failed to register for remote notifications. Error: \(error.localizedDescription)")
-    }
-
-    func applicationDidBecomeActive(_ application: UIApplication) {
-        gliaCoreAppDelegate.applicationDidBecomeActive(application)
     }
 }
