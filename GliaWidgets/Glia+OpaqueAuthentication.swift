@@ -49,17 +49,12 @@ extension Glia {
         }
 
         return .init(
-            authenticateWithIdToken: { [weak self, environment] idToken, callback in
-                auth.authenticate(with: .init(rawValue: idToken)) { [weak self, environment] result in
+            authenticateWithIdToken: { idToken, callback in
+                auth.authenticate(with: .init(rawValue: idToken)) { result in
                     switch result {
                     case .success:
                         // Cleanup navigation and views.
                         cleanup()
-                        // Make sure that authenticated visitor starts
-                        // with clean history.
-                        environment.authenticatedChatStorage.clear()
-                        // Change storage state for messages to be stored in memory.
-                        self?.chatStorageState = .authenticated(environment.authenticatedChatStorage)
 
                     case .failure:
                         break
@@ -68,16 +63,12 @@ extension Glia {
                     callback(result.mapError(Glia.Authentication.Error.init) )
                 }
             },
-            deauthenticateWithCallback: { [weak self, environment] callback in
-                auth.deauthenticate { [weak self, environment] result in
+            deauthenticateWithCallback: { callback in
+                auth.deauthenticate { result in
                     switch result {
                     case .success:
                         // Cleanup navigation and views.
                         cleanup()
-                        // Clear history for authenticated visitor after deauthentication.
-                        environment.authenticatedChatStorage.clear()
-                        // Change storage state for messages to be stored in database.
-                        self?.chatStorageState = .unauthenticated(environment.chatStorage)
                     case .failure:
                         break
                     }

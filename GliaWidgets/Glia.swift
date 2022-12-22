@@ -49,12 +49,10 @@ public class Glia {
     var rootCoordinator: RootCoordinator?
     var interactor: Interactor?
     var environment: Environment
-    var chatStorageState: ChatStorageState
     var messageRenderer: MessageRenderer?
 
     init(environment: Environment) {
         self.environment = environment
-        self.chatStorageState = .unauthenticated(environment.chatStorage)
     }
 
     /// Setup SDK using specific engagement configuration without starting the engagement.
@@ -184,16 +182,21 @@ public class Glia {
             with: configuration,
             queueId: queueID,
             visitorContext: visitorContext
-        )
+        ) { [weak self] in
 
-        setChatMessageRenderer(messageRenderer: .webRenderer)
+            self?.setChatMessageRenderer(messageRenderer: .webRenderer)
 
-        try startEngagement(
-            engagementKind: engagementKind,
-            theme: theme,
-            features: features,
-            sceneProvider: sceneProvider
-        )
+            do {
+                try self?.startEngagement(
+                    engagementKind: engagementKind,
+                    theme: theme,
+                    features: features,
+                    sceneProvider: sceneProvider
+                )
+            } catch {
+                print("Engagement has not been started. Error='\(error)'.")
+            }
+        }
     }
 
     public func resume() throws {
@@ -227,14 +230,7 @@ public class Glia {
             sceneProvider: sceneProvider,
             engagementKind: engagementKind,
             features: features,
-            chatStorageState: { [environment, weak self] in
-                guard let self = self else {
-                    return .unauthenticated(environment.chatStorage)
-                }
-                return self.chatStorageState
-            },
             environment: .init(
-                chatStorage: environment.chatStorage,
                 fetchFile: environment.coreSdk.fetchFile,
                 sendSelectedOptionValue: environment.coreSdk.sendSelectedOptionValue,
                 uploadFileToEngagement: environment.coreSdk.uploadFileToEngagement,
@@ -281,8 +277,6 @@ public class Glia {
     /// Clear visitor session
     public func clearVisitorSession() {
         environment.coreSdk.clearSession()
-        environment.chatStorage.dropDatabase()
-        environment.authenticatedChatStorage.clear()
     }
 
     /// Fetch current Visitor's information.

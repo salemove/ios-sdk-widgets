@@ -166,7 +166,6 @@
 		1AE15E38257A578B00A642C0 /* MessageAlertConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE15E37257A578B00A642C0 /* MessageAlertConfiguration.swift */; };
 		1AE15E3B257A5CC900A642C0 /* AlertConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE15E3A257A5CC900A642C0 /* AlertConfiguration.swift */; };
 		1AE15E49257A6BD200A642C0 /* ConfirmationAlertConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE15E48257A6BD200A642C0 /* ConfirmationAlertConfiguration.swift */; };
-		1AFB1E5025F7708E00CA460D /* ChatStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFB1E4F25F7708E00CA460D /* ChatStorage.swift */; };
 		1AFB1E5E25F7ADDA00CA460D /* ChatOperator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFB1E5D25F7ADDA00CA460D /* ChatOperator.swift */; };
 		1AFB1E6225F7AE1300CA460D /* ChatEngagementFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFB1E6125F7AE1300CA460D /* ChatEngagementFile.swift */; };
 		1AFB1E6825F7AE3C00CA460D /* ChatAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFB1E6725F7AE3C00CA460D /* ChatAttachment.swift */; };
@@ -363,15 +362,6 @@
 		9AE9E4B727E1E30500BFE239 /* MockHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE9E4B627E1E30500BFE239 /* MockHelpers.swift */; };
 		AF11F30728BE6F0C002ACEB4 /* UIAlertController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF11F30628BE6F0C002ACEB4 /* UIAlertController+Extensions.swift */; };
 		AF11F30928C0C592002ACEB4 /* Glia+OpaqueAuthentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF11F30828C0C592002ACEB4 /* Glia+OpaqueAuthentication.swift */; };
-		AF11F30B28C145FF002ACEB4 /* ChatStorageState.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF11F30A28C145FF002ACEB4 /* ChatStorageState.swift */; };
-		AF11F30F28C269EE002ACEB4 /* AuthenticatedChatStorage.Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF11F30E28C269EE002ACEB4 /* AuthenticatedChatStorage.Interface.swift */; };
-		AF11F31328C274BC002ACEB4 /* AuthenticatedChatStorage.Implementation.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF11F31228C274BC002ACEB4 /* AuthenticatedChatStorage.Implementation.swift */; };
-		AF11F31628C31E4A002ACEB4 /* AuthenticatedChatStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF11F31528C31E4A002ACEB4 /* AuthenticatedChatStorageTests.swift */; };
-		AF11F31828C608F7002ACEB4 /* AuthenticatedChatStorage.Live.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF11F31728C608F7002ACEB4 /* AuthenticatedChatStorage.Live.swift */; };
-		AF11F31A28C60A28002ACEB4 /* AuthenticatedChatStorage.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF11F31928C60A28002ACEB4 /* AuthenticatedChatStorage.Mock.swift */; };
-		AF11F31C28C639A5002ACEB4 /* AuthenticatedChatStorage.Failing.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF11F31B28C639A5002ACEB4 /* AuthenticatedChatStorage.Failing.swift */; };
-		AF11F31E28C78E7F002ACEB4 /* AuthenticatedChatStorage.StorageRefTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF11F31D28C78E7F002ACEB4 /* AuthenticatedChatStorage.StorageRefTests.swift */; };
-		AF5762192948A608003C0ACE /* Command.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF5762182948A608003C0ACE /* Command.swift */; };
 		AF9DB22E2890571A00A0C442 /* RootCoordinator.Environment.Failing.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF9DB22D2890571A00A0C442 /* RootCoordinator.Environment.Failing.swift */; };
 		AF9DB23128905A1D00A0C442 /* ViewFactory.Environment.Failing.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF9DB23028905A1D00A0C442 /* ViewFactory.Environment.Failing.swift */; };
 		AFA2FDEC28907D7C00428E6D /* RootCoordinator.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA2FDEB28907D7C00428E6D /* RootCoordinator.Environment.swift */; };
@@ -642,7 +632,6 @@
 		1AE15E37257A578B00A642C0 /* MessageAlertConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageAlertConfiguration.swift; sourceTree = "<group>"; };
 		1AE15E3A257A5CC900A642C0 /* AlertConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertConfiguration.swift; sourceTree = "<group>"; };
 		1AE15E48257A6BD200A642C0 /* ConfirmationAlertConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationAlertConfiguration.swift; sourceTree = "<group>"; };
-		1AFB1E4F25F7708E00CA460D /* ChatStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatStorage.swift; sourceTree = "<group>"; };
 		1AFB1E5D25F7ADDA00CA460D /* ChatOperator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatOperator.swift; sourceTree = "<group>"; };
 		1AFB1E6125F7AE1300CA460D /* ChatEngagementFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatEngagementFile.swift; sourceTree = "<group>"; };
 		1AFB1E6725F7AE3C00CA460D /* ChatAttachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatAttachment.swift; sourceTree = "<group>"; };
@@ -847,15 +836,6 @@
 		ACA6624B17817F26592D14A1 /* Pods-GliaWidgetsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliaWidgetsTests.release.xcconfig"; path = "Target Support Files/Pods-GliaWidgetsTests/Pods-GliaWidgetsTests.release.xcconfig"; sourceTree = "<group>"; };
 		AF11F30628BE6F0C002ACEB4 /* UIAlertController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIAlertController+Extensions.swift"; sourceTree = "<group>"; };
 		AF11F30828C0C592002ACEB4 /* Glia+OpaqueAuthentication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Glia+OpaqueAuthentication.swift"; sourceTree = "<group>"; };
-		AF11F30A28C145FF002ACEB4 /* ChatStorageState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatStorageState.swift; sourceTree = "<group>"; };
-		AF11F30E28C269EE002ACEB4 /* AuthenticatedChatStorage.Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticatedChatStorage.Interface.swift; sourceTree = "<group>"; };
-		AF11F31228C274BC002ACEB4 /* AuthenticatedChatStorage.Implementation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticatedChatStorage.Implementation.swift; sourceTree = "<group>"; };
-		AF11F31528C31E4A002ACEB4 /* AuthenticatedChatStorageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticatedChatStorageTests.swift; sourceTree = "<group>"; };
-		AF11F31728C608F7002ACEB4 /* AuthenticatedChatStorage.Live.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticatedChatStorage.Live.swift; sourceTree = "<group>"; };
-		AF11F31928C60A28002ACEB4 /* AuthenticatedChatStorage.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticatedChatStorage.Mock.swift; sourceTree = "<group>"; };
-		AF11F31B28C639A5002ACEB4 /* AuthenticatedChatStorage.Failing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticatedChatStorage.Failing.swift; sourceTree = "<group>"; };
-		AF11F31D28C78E7F002ACEB4 /* AuthenticatedChatStorage.StorageRefTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticatedChatStorage.StorageRefTests.swift; sourceTree = "<group>"; };
-		AF5762182948A608003C0ACE /* Command.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Command.swift; sourceTree = "<group>"; };
 		AF9DB22D2890571A00A0C442 /* RootCoordinator.Environment.Failing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCoordinator.Environment.Failing.swift; sourceTree = "<group>"; };
 		AF9DB23028905A1D00A0C442 /* ViewFactory.Environment.Failing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewFactory.Environment.Failing.swift; sourceTree = "<group>"; };
 		AFA2FDEB28907D7C00428E6D /* RootCoordinator.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCoordinator.Environment.swift; sourceTree = "<group>"; };
@@ -1359,19 +1339,6 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		1A54B83625A4722900C9393E /* Storage */ = {
-			isa = PBXGroup;
-			children = (
-				1AFB1E4F25F7708E00CA460D /* ChatStorage.swift */,
-				AF11F30A28C145FF002ACEB4 /* ChatStorageState.swift */,
-				AF11F30E28C269EE002ACEB4 /* AuthenticatedChatStorage.Interface.swift */,
-				AF11F31228C274BC002ACEB4 /* AuthenticatedChatStorage.Implementation.swift */,
-				AF11F31728C608F7002ACEB4 /* AuthenticatedChatStorage.Live.swift */,
-				AF11F31928C60A28002ACEB4 /* AuthenticatedChatStorage.Mock.swift */,
-			);
-			path = Storage;
-			sourceTree = "<group>";
-		};
 		1A56D53B257E248200141BC8 /* PoweredBy */ = {
 			isa = PBXGroup;
 			children = (
@@ -1652,7 +1619,6 @@
 			isa = PBXGroup;
 			children = (
 				1A475BBA25DFA09D00296D55 /* Unread */,
-				1A54B83625A4722900C9393E /* Storage */,
 				1A5F8180258B4EF900A605DA /* Data */,
 				1A60AFD42566992A00E53F53 /* ChatViewModel.swift */,
 				84D2293B28D1FC4B00F64FE7 /* ChatViewModel+CustomCard.swift */,
@@ -2315,7 +2281,6 @@
 			isa = PBXGroup;
 			children = (
 				9AE05CB22805C9D900871321 /* ChatViewModel.Environment.Failing.swift */,
-				AF11F31428C31DCF002ACEB4 /* Storage */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -2326,24 +2291,6 @@
 				9AE05CB52805D2CB00871321 /* Interactor.Environment.Failing.swift */,
 			);
 			path = Interactor;
-			sourceTree = "<group>";
-		};
-		AF11F31428C31DCF002ACEB4 /* Storage */ = {
-			isa = PBXGroup;
-			children = (
-				AF11F31528C31E4A002ACEB4 /* AuthenticatedChatStorageTests.swift */,
-				AF11F31D28C78E7F002ACEB4 /* AuthenticatedChatStorage.StorageRefTests.swift */,
-				AF11F31B28C639A5002ACEB4 /* AuthenticatedChatStorage.Failing.swift */,
-			);
-			path = Storage;
-			sourceTree = "<group>";
-		};
-		AF5762172948A608003C0ACE /* Command */ = {
-			isa = PBXGroup;
-			children = (
-				AF5762182948A608003C0ACE /* Command.swift */,
-			);
-			path = Command;
 			sourceTree = "<group>";
 		};
 		AF9DB22C289056F600A0C442 /* Coordinator */ = {
@@ -2902,7 +2849,6 @@
 				9A83D78327B18DF000681C9F /* Glia.Environment.Mock.swift in Sources */,
 				9A1992DB27D6241400161AAE /* ImageView.Cache.Interface.swift in Sources */,
 				1A63B2F3257A3F3D00508478 /* AlertViewController.swift in Sources */,
-				AF11F31828C608F7002ACEB4 /* AuthenticatedChatStorage.Live.swift in Sources */,
 				9A1992EF27D6C1EA00161AAE /* FileSystemStorage.Environment.Interface.swift in Sources */,
 				C499A58426382FBE009962AC /* UnreadMessageIndicatorStyle.swift in Sources */,
 				9AB196DA27C3FE3A00FD60AB /* AlertConfiguration.Mock.swift in Sources */,
@@ -3011,7 +2957,6 @@
 				1A0C143F25B85DB400B00695 /* CallViewController.swift in Sources */,
 				1A0C9A7125C16F4A00815406 /* Theme+Alert.swift in Sources */,
 				1A38A8AC258B65D00089DE7B /* ChatMessageStyle.swift in Sources */,
-				1AFB1E5025F7708E00CA460D /* ChatStorage.swift in Sources */,
 				C49A29F22614A85E00819269 /* ChoiceCard.swift in Sources */,
 				1A0C9A6D25C16EED00815406 /* Theme+Call.swift in Sources */,
 				1A60AFAF256680EF00E53F53 /* L10n.swift in Sources */,
@@ -3093,7 +3038,6 @@
 				84D2293E28D36B2A00F64FE7 /* UIColor+Hex.swift in Sources */,
 				754CC61327E27BE2005676E9 /* Survey.SingleChoiceQuestionView.swift in Sources */,
 				1A0C9A6725C16DC400815406 /* Theme+Chat.swift in Sources */,
-				AF11F30F28C269EE002ACEB4 /* AuthenticatedChatStorage.Interface.swift in Sources */,
 				1A0C9AC225C9400000815406 /* CallDurationCounter.swift in Sources */,
 				9A19926527D3BA3A00161AAE /* UIKitBased.Mock.swift in Sources */,
 				1AFB1E6225F7AE1300CA460D /* ChatEngagementFile.swift in Sources */,
@@ -3130,7 +3074,6 @@
 				84EFB06528AB97FA0005E270 /* MessageMetadata.swift in Sources */,
 				1A60B0042567F25600E53F53 /* Header.swift in Sources */,
 				1A4674CD25ED08A30078FA1C /* MediaPickerController.swift in Sources */,
-				AF11F31A28C60A28002ACEB4 /* AuthenticatedChatStorage.Mock.swift in Sources */,
 				75AF8CF427DBB3C8009EEE2C /* Makeable.swift in Sources */,
 				1A63B2F6257A469A00508478 /* AlertPresenter.swift in Sources */,
 				1A0452EA25DBE259000DA0C1 /* MessageButton.swift in Sources */,
@@ -3174,11 +3117,9 @@
 				1A1E30A325F8E4A400850E68 /* FileSystemStorage.swift in Sources */,
 				754CC61227E2767A005676E9 /* Survey.BooleanQuestionView.swift in Sources */,
 				6EA3516926E139DA00BF5941 /* GliaViewTransitionController.swift in Sources */,
-				AF11F31328C274BC002ACEB4 /* AuthenticatedChatStorage.Implementation.swift in Sources */,
 				1A1E30C725F9FDAB00850E68 /* ChatImageFileContentView.swift in Sources */,
 				844D3C6E291BD890002887A9 /* RemoteConfiguration+AssetsBuilder.swift in Sources */,
 				756087E127837EC000158604 /* BundleManaging.swift in Sources */,
-				AF11F30B28C145FF002ACEB4 /* ChatStorageState.swift in Sources */,
 				AFA2FDEE28907DDB00428E6D /* RootCoordinator.Environment.Mock.swift in Sources */,
 				9A41B66A27E2439000CF9F69 /* Call.Mock.swift in Sources */,
 				1A4674C225E92A710078FA1C /* AtttachmentSourceItemKind.swift in Sources */,
@@ -3237,13 +3178,11 @@
 				7512A5A727C3926500319DF1 /* GliaTests.swift in Sources */,
 				9A3E1DA227BA7D00005634EB /* FileSystemStorage.Environment.Failing.swift in Sources */,
 				9A1992E127D6313500161AAE /* ImageView.Cache.Failing.swift in Sources */,
-				AF11F31628C31E4A002ACEB4 /* AuthenticatedChatStorageTests.swift in Sources */,
 				C03A8047292BA76D00DDECA6 /* ChatViewControllerTests.swift in Sources */,
 				EB9ADB552828E66B00FAE8A4 /* CallTests.swift in Sources */,
 				AF9DB22E2890571A00A0C442 /* RootCoordinator.Environment.Failing.swift in Sources */,
 				AF9DB23128905A1D00A0C442 /* ViewFactory.Environment.Failing.swift in Sources */,
 				9A3E1DA027BA7B9F005634EB /* FileSystemStorageTests.swift in Sources */,
-				AF11F31E28C78E7F002ACEB4 /* AuthenticatedChatStorage.StorageRefTests.swift in Sources */,
 				EB9ADB5A2829089F00FAE8A4 /* ChatItem+Equatable.swift in Sources */,
 				EB7A150A286D98270035AC62 /* FileUploaderTests.swift in Sources */,
 				EB27E71D27FEBB620090B895 /* CallViewModelTests.swift in Sources */,
@@ -3257,7 +3196,6 @@
 				9AE05CB32805C9D900871321 /* ChatViewModel.Environment.Failing.swift in Sources */,
 				9A3E1D9D27BA7741005634EB /* FoundationBased.Failing.swift in Sources */,
 				9A3E1D8427B67F1B005634EB /* Helper.swift in Sources */,
-				AF11F31C28C639A5002ACEB4 /* AuthenticatedChatStorage.Failing.swift in Sources */,
 				9A8130C627D90B3800220BBD /* FileSystemStorage.Failing.swift in Sources */,
 				7512A57A27BF9FCD00319DF1 /* ChatViewModelTests.swift in Sources */,
 			);

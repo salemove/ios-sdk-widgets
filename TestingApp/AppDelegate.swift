@@ -4,18 +4,6 @@ import SalemoveSDK
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
-    var gliaCoreAppDelegate = GliaCoreAppDelegate()
-
-    func application(
-        _ application: UIApplication,
-        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
-    ) -> Bool {
-        gliaCoreAppDelegate.application(
-            application,
-            didFinishLaunchingWithOptions: launchOptions
-        )
-        return true
-    }
 
     func application(
         _ app: UIApplication,
@@ -45,7 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication,
         didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data
     ) {
-        debugPrint("Registered for remote notifications. Token='\(deviceToken.map { String(format: "%02.2hhx", $0) }.joined())'.")
+        debugPrint("✅ Registered for remote notifications. Token='\(deviceToken.map { String(format: "%02.2hhx", $0) }.joined())'.")
         GliaCore.sharedInstance.pushNotifications.application(
             application,
             didRegisterForRemoteNotificationsWithDeviceToken: deviceToken
@@ -56,10 +44,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication,
         didFailToRegisterForRemoteNotificationsWithError error: Error
     ) {
-        print("Failed to register for remote notifications. Error: \(error.localizedDescription)")
-    }
-
-    func applicationDidBecomeActive(_ application: UIApplication) {
-        gliaCoreAppDelegate.applicationDidBecomeActive(application)
+        print("💥 Failed to register for remote notifications. Error: \(error.localizedDescription)")
     }
 }

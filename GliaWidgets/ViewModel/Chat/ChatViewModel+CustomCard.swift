@@ -96,7 +96,6 @@ extension ChatViewModel {
             isActive: isActive
         ))
         messagesSection.replaceItem(at: index, with: item)
-        environment.chatStorage.updateMessage(message)
 
         // Reload card to hide it if `shouldShowCard` returns `false` or
         // `isActive` is `true in case when sending request with selected option failed
