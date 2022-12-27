@@ -368,4 +368,8 @@ public class Glia {
             }
         )
     }
+
+    public func requestVisitorCode(completion: @escaping (Result<VisitorCode, Swift.Error>) -> Void) {
+        environment.coreSdk.requestVisitorCode(completion)
+    }
 }
