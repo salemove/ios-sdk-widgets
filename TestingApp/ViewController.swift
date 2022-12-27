@@ -51,6 +51,14 @@ class ViewController: UIViewController {
         Glia.sharedInstance.clearVisitorSession()
     }
 
+    @IBAction private func visitorCodeTapped() {
+        requestVisitorCode()
+    }
+
+    @IBAction private func configureSDKTapped() {
+        configureSDK()
+    }
+
     @IBAction private func endEngagementTapped() {
         self.catchingError {
             // Since ending of engagement is possible
@@ -170,6 +178,27 @@ extension ViewController {
         } catch {
             alert(message: "Failed to start\nCheck Glia parameters in Settings")
         }
+    }
+
+    func requestVisitorCode() {
+        Glia.sharedInstance.requestVisitorCode { result in
+            switch result {
+            case .success(let visitorCode):
+                print("Visitor code is:", visitorCode.code)
+                print("Visitor code expires at:", visitorCode.expiresAt)
+            case .failure(let error):
+                print("Error getting visitor code.", error.localizedDescription)
+            }
+        }
+    }
+
+    func configureSDK() {
+        try? Glia.sharedInstance.configure(
+            with: configuration,
+            queueId: queueId,
+            visitorContext: nil) {
+                debugPrint("SDK has been configured")
+            }
     }
 
     func alert(message: String) {

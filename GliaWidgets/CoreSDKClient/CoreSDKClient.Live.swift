@@ -25,7 +25,8 @@ extension CoreSdkClient {
             fetchSiteConfigurations: GliaCore.sharedInstance.fetchSiteConfiguration(_:),
             submitSurveyAnswer: GliaCore.sharedInstance.submitSurveyAnswer(_:surveyId:engagementId:completion:),
             authentication: GliaCore.sharedInstance.authentication,
-            fetchChatHistory: GliaCore.sharedInstance.fetchChatTranscript
+            fetchChatHistory: GliaCore.sharedInstance.fetchChatTranscript,
+            requestVisitorCode: GliaCore.sharedInstance.callVisualizer.requestVisitorCode(completion:)
         )
     }()
 }
