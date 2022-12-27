@@ -5,7 +5,6 @@ import SalemoveSDK
 
 class ViewController: UIViewController {
     typealias Authentication = GliaWidgets.Glia.Authentication
-    var vc: UIViewController?
     private var glia: Glia!
 
     @UserDefaultsStored(key: "configuration", defaultValue: Configuration.empty(with: .beta), coder: .jsonCoding())
