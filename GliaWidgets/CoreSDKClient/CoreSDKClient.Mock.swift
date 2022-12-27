@@ -1,6 +1,6 @@
 #if DEBUG
 import Foundation
-@testable import SalemoveSDK
+import SalemoveSDK
 
 extension CoreSdkClient {
     static let mock = Self(
@@ -26,7 +26,7 @@ extension CoreSdkClient {
         submitSurveyAnswer: { _, _, _, _ in },
         authentication: { _ in .mock },
         fetchChatHistory: { _ in },
-        requestVisitorCode: { _ in .init() }
+        requestVisitorCode: { _ in fatalError() }
     )
 }
 
