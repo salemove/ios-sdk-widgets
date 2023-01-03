@@ -23,9 +23,8 @@ final class ChoiceCardView: OperatorChatMessageView {
         )
     }
 
-    @available(*, unavailable)
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    required init() {
+        fatalError("init() has not been implemented")
     }
 
     override func appendContent(_ content: ChatMessageContent, animated: Bool) {

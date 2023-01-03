@@ -1,7 +1,7 @@
 import UIKit
 
 extension Survey {
-    final class ButtonView: View {
+    final class ButtonView: BaseView {
 
         enum State {
             case active, highlighted, selected
@@ -39,6 +39,10 @@ extension Survey {
             self.props = props
             self.style = style
             super.init()
+        }
+
+        required init() {
+            fatalError("init() has not been implemented")
         }
 
         override func setup() {

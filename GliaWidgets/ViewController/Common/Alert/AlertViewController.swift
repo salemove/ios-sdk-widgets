@@ -1,6 +1,6 @@
 import UIKit
 
-class AlertViewController: ViewController {
+class AlertViewController: UIViewController {
     enum Kind {
         case message(
             MessageAlertConfiguration,

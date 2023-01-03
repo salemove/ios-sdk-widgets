@@ -2,7 +2,7 @@ import SalemoveSDK
 import UIKit
 
 extension Survey {
-    final class SingleChoiceQuestionView: View {
+    final class SingleChoiceQuestionView: BaseView {
         var props: Props {
             didSet { render() }
         }
@@ -29,6 +29,10 @@ extension Survey {
             self.props = props
             self.style = style
             super.init()
+        }
+
+        required init() {
+            fatalError("init() has not been implemented")
         }
 
         override func setup() {

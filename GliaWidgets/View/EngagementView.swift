@@ -1,6 +1,6 @@
 import UIKit
 
-class EngagementView: View {
+class EngagementView: BaseView {
     let header: Header
     let connectView: ConnectView
 
@@ -25,8 +25,10 @@ class EngagementView: View {
             )
         )
         super.init()
-        setup()
-        layout()
+    }
+
+    required init() {
+        fatalError("init() has not been implemented")
     }
 
     override func setup() {
@@ -39,8 +41,6 @@ class EngagementView: View {
             makeGradientBackground(colors: colors)
         }
     }
-
-    private func layout() {}
 }
 
 extension EngagementView {

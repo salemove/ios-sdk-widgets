@@ -1,6 +1,6 @@
 import UIKit
 
-class ConnectView: UIView {
+final class ConnectView: BaseView {
     enum State: Equatable {
         case none
         case queue
@@ -35,14 +35,32 @@ class ConnectView: UIView {
                 imageViewCache: environment.imageViewCache
             )
         )
-        super.init(frame: .zero)
-        setup()
-        layout()
+        super.init()
+    }
+   
+    required init() {
+        fatalError("init() has not been implemented")
     }
 
-    @available(*, unavailable)
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    override func setup() {
+        super.setup()
+        setState(.none, animated: false)
+        accessibilityElements = [operatorView, statusView]
+
+        addSubview(stackView)
+        stackView.axis = .vertical
+        stackView.spacing = 32
+        stackView.distribution = .fillProportionally
+        stackView.addArrangedSubviews([
+            operatorView,
+            statusView
+        ])
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+    }
+
+    override func defineLayout() {
+        super.defineLayout()
+        stackView.autoPinEdgesToSuperviewEdges(with: .init(top: 32, left: 0, bottom: 10, right: 0))
     }
 
     // swiftlint:disable function_body_length
@@ -105,44 +123,29 @@ class ConnectView: UIView {
 
     private func show(animated: Bool) {
         guard !isShowing else { return }
-        UIView.animate(withDuration: animated ? 0.5 : 0.0,
-                       delay: 0.0,
-                       usingSpringWithDamping: 0.8,
-                       initialSpringVelocity: 0.7,
-                       options: .curveEaseInOut,
-                       animations: {
-                        self.transform = .identity
-                       }, completion: nil)
+        UIView.animate(
+            withDuration: animated ? 0.5 : 0.0,
+            delay: 0.0,
+            usingSpringWithDamping: 0.8,
+            initialSpringVelocity: 0.7,
+            options: .curveEaseInOut,
+            animations: {
+                self.transform = .identity
+            }, completion: nil)
         isShowing = true
     }
 
     private func hide(animated: Bool) {
-        UIView.animate(withDuration: animated ? 0.5 : 0.0,
-                       delay: 0.0,
-                       usingSpringWithDamping: 0.8,
-                       initialSpringVelocity: 0.7,
-                       options: .curveEaseInOut,
-                       animations: {
-                        self.transform = CGAffineTransform(scaleX: 0, y: 0)
-                       }, completion: nil)
+        UIView.animate(
+            withDuration: animated ? 0.5 : 0.0,
+            delay: 0.0,
+            usingSpringWithDamping: 0.8,
+            initialSpringVelocity: 0.7,
+            options: .curveEaseInOut,
+            animations: {
+                self.transform = CGAffineTransform(scaleX: 0, y: 0)
+            }, completion: nil)
         isShowing = false
-    }
-
-    private func setup() {
-        setState(.none, animated: false)
-        accessibilityElements = [operatorView, statusView]
-
-        stackView.axis = .vertical
-        stackView.spacing = 10
-    }
-
-    private func layout() {
-        addSubview(stackView)
-        stackView.autoPinEdgesToSuperviewEdges(with: .init(top: 10, left: 0, bottom: 10, right: 0))
-        stackView.addArrangedSubviews([
-            operatorView,
-            statusView
-        ])
     }
 }
 

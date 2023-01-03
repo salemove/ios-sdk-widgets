@@ -119,6 +119,10 @@ class CallView: EngagementView {
         layout()
     }
 
+    required init() {
+        fatalError("init() has not been implemented")
+    }
+
     override func layoutSubviews() {
         super.layoutSubviews()
         adjustForCurrentOrientation()

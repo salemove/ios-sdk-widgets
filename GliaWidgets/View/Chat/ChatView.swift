@@ -82,8 +82,10 @@ class ChatView: EngagementView {
             )
         )
         self.accessibilityIdentifier = "chat_root_view"
-        setup()
-        layout()
+    }
+
+    required init() {
+        fatalError("init() has not been implemented")
     }
 
     override func layoutSubviews() {
@@ -219,17 +221,14 @@ class ChatView: EngagementView {
     func refreshAll() {
         tableView.reloadData()
     }
-}
 
-extension ChatView {
-    private func layout() {
+    override func defineLayout() {
+        super.defineLayout()
         addSubview(header)
         header.autoPinEdgesToSuperviewEdges(
             with: .zero,
             excludingEdge: .bottom
         )
-
-        typingIndicatorView.autoSetDimensions(to: kOperatorTypingIndicatorViewSize)
 
         tableAndIndicatorStack.addArrangedSubviews([tableView, typingIndicatorView])
         addSubview(tableAndIndicatorStack)
@@ -254,7 +253,9 @@ extension ChatView {
             withOffset: kUnreadMessageIndicatorInset
         )
     }
+}
 
+extension ChatView {
     private func addKeyboardDismissalTapGesture() {
         let tapGesture = UITapGestureRecognizer(
             target: self,
