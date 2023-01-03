@@ -1,5 +1,5 @@
-extension PoweredByStyle {
-    /// Accessibility properties for PoweredByStyle.
+extension NumberSlotStyle {
+    /// Accessibility properties for AlertStyle.
     public struct Accessibility: Equatable {
         /// Flag that provides font dynamic type by setting `adjustsFontForContentSizeCategory` for component that supports it.
         public var isFontScalingEnabled: Bool
@@ -9,5 +9,8 @@ extension PoweredByStyle {
         public init(isFontScalingEnabled: Bool) {
             self.isFontScalingEnabled = isFontScalingEnabled
         }
+
+        /// Accessibility is not supported intentionally.
+        public static let unsupported = Self(isFontScalingEnabled: false)
     }
 }

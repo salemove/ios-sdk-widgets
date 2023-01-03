@@ -48,9 +48,16 @@ public class Glia {
     var interactor: Interactor?
     var environment: Environment
     var messageRenderer: MessageRenderer?
+    public let callVisualizer: CallVisualizer
 
     init(environment: Environment) {
         self.environment = environment
+        self.callVisualizer = CallVisualizer(
+            environment: .init(
+                timerProviding: environment.timerProviding,
+                requestVisitorCode: environment.coreSdk.requestVisitorCode
+            )
+        )
     }
 
     /// Setup SDK using specific engagement configuration without starting the engagement.
@@ -367,9 +374,5 @@ public class Glia {
                 completion(.failure($0))
             }
         )
-    }
-
-    public func requestVisitorCode(completion: @escaping (Result<VisitorCode, Swift.Error>) -> Void) {
-        environment.coreSdk.requestVisitorCode(completion)
     }
 }
