@@ -1,6 +1,7 @@
 enum ButtonKind {
     case close
     case alertClose
+    case visitorCodeClose
 }
 
 extension ButtonKind {
@@ -10,6 +11,8 @@ extension ButtonKind {
             return CloseButtonProperties()
         case .alertClose:
             return AlertCloseButtonProperties()
+        case .visitorCodeClose:
+            return VisitorCodeCloseButtonProperties()
         }
     }
 }

@@ -48,6 +48,8 @@ public enum L10n {
       public static let settings = L10n.tr("Localizable", "alert.action.settings", fallback: "Settings")
       /// Yes
       public static let yes = L10n.tr("Localizable", "alert.action.yes", fallback: "Yes")
+      /// Refresh
+      public static let refresh = L10n.tr("Localizable", "alert.action.yes", fallback: "Refresh")
     }
     public enum ApiError {
       /// {message}
@@ -148,6 +150,9 @@ public enum L10n {
         /// {operatorName} has offered you to upgrade to video
         public static let title = L10n.tr("Localizable", "alert.videoUpgrade.twoWay.title", fallback: "{operatorName} has offered you to upgrade to video")
       }
+    }
+    public enum VisitorCode {
+        public static let title = L10n.tr("Localizable", "alert.visitorCode.title", fallback: "Your Visitor Code")
     }
   }
   public enum Call {

@@ -5,7 +5,7 @@ import SalemoveSDK
 
 class ViewController: UIViewController {
     typealias Authentication = GliaWidgets.Glia.Authentication
-
+    var vc: UIViewController?
     private var glia: Glia!
 
     @UserDefaultsStored(key: "configuration", defaultValue: Configuration.empty(with: .beta), coder: .jsonCoding())
@@ -24,6 +24,7 @@ class ViewController: UIViewController {
         title = "Glia UI testing"
         view.backgroundColor = .white
     }
+    @IBOutlet weak var visitorCodeView: UIView!
 
     @IBOutlet var toggleAuthenticateButton: UIButton!
 
@@ -51,8 +52,12 @@ class ViewController: UIViewController {
         Glia.sharedInstance.clearVisitorSession()
     }
 
-    @IBAction private func visitorCodeTapped() {
-        requestVisitorCode()
+    @IBAction private func presentVisitorCodeAsAlertTapped() {
+        showVisitorCodeAlert()
+    }
+
+    @IBAction private func embedVisitorCodeViewTapped() {
+        showVisitorCodeEmbeddedView()
     }
 
     @IBAction private func configureSDKTapped() {
@@ -180,16 +185,12 @@ extension ViewController {
         }
     }
 
-    func requestVisitorCode() {
-        Glia.sharedInstance.requestVisitorCode { result in
-            switch result {
-            case .success(let visitorCode):
-                print("Visitor code is", visitorCode.code)
-                print("Visitor code expires at", visitorCode.expiresAt)
-            case .failure(let error):
-                print("Error getting visitor code.", error.localizedDescription)
-            }
-        }
+    func showVisitorCodeEmbeddedView() {
+        Glia.sharedInstance.callVisualizer.showVisitorCodeViewController(by: .embedded(visitorCodeView))
+    }
+
+    func showVisitorCodeAlert() {
+        Glia.sharedInstance.callVisualizer.showVisitorCodeViewController(by: .alert(self))
     }
 
     func configureSDK() {
