@@ -13,17 +13,25 @@ class HeaderButton: UIButton {
 
     private let style: HeaderButtonStyle
     private let kSize = CGSize(width: 30, height: 30)
+    private var isDefineLayoutNeeded = true
 
     init(with style: HeaderButtonStyle) {
         self.style = style
         super.init(frame: .zero)
         setup()
-        layout()
     }
 
     @available(*, unavailable)
     required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    override func updateConstraints() {
+        defer { super.updateConstraints() }
+        if isDefineLayoutNeeded {
+            isDefineLayoutNeeded = false
+            defineLayout()
+        }
     }
 
     private func setup() {
@@ -35,7 +43,7 @@ class HeaderButton: UIButton {
         accessibilityHint = style.accessibility.hint
     }
 
-    private func layout() {
+    private func defineLayout() {
         autoSetDimensions(to: kSize)
     }
 

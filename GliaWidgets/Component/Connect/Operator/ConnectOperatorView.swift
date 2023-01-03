@@ -1,6 +1,6 @@
 import UIKit
 
-class ConnectOperatorView: UIView {
+final class ConnectOperatorView: BaseView {
     enum Size {
         case normal
         case large
@@ -41,8 +41,8 @@ class ConnectOperatorView: UIView {
     private var onHoldView: OnHoldOverlayView?
 
     private var size: Size = .normal
-    private var widthConstraint: NSLayoutConstraint!
-    private var heightConstraint: NSLayoutConstraint!
+    private var widthConstraint: NSLayoutConstraint?
+    private var heightConstraint: NSLayoutConstraint?
     private let kAnimationViewSize: CGFloat = 142
     private let environment: Environment
 
@@ -61,22 +61,41 @@ class ConnectOperatorView: UIView {
                 imageViewCache: environment.imageViewCache
             )
         )
-        super.init(frame: .zero)
-        setup()
-        layout()
+        super.init()
     }
 
-    @available(*, unavailable)
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    required init() {
+        fatalError("init() has not been implemented")
+    }
+
+    override func setup() {
+        super.setup()
+        isAccessibilityElement = true
+        accessibilityTraits = .image
+        accessibilityLabel = style.accessibility.label
+        accessibilityHint = style.accessibility.hint
+    }
+
+    override func defineLayout() {
+        super.defineLayout()
+
+        addSubview(imageView)
+        NSLayoutConstraint.autoSetPriority(.defaultHigh) {
+            imageView.autoPinEdge(toSuperviewEdge: .left, withInset: 0, relation: .greaterThanOrEqual)
+            imageView.autoPinEdge(toSuperviewEdge: .top, withInset: 0, relation: .greaterThanOrEqual)
+            imageView.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
+            imageView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 0, relation: .greaterThanOrEqual)
+        }
+        widthConstraint = imageView.autoSetDimension(.width, toSize: size.width)
+        heightConstraint = imageView.autoSetDimension(.height, toSize: size.height)
+        imageView.autoCenterInSuperview()
     }
 
     func setSize(_ size: Size, animated: Bool) {
         self.size = size
-        layoutIfNeeded()
         UIView.animate(withDuration: animated ? 0.3 : 0.0) {
-            self.widthConstraint.constant = size.width
-            self.heightConstraint.constant = size.height
+            self.widthConstraint?.constant = size.width
+            self.heightConstraint?.constant = size.height
             self.layoutIfNeeded()
         }
     }
@@ -84,16 +103,15 @@ class ConnectOperatorView: UIView {
     func startAnimating(animated: Bool) {
         guard animationView == nil else { return }
 
-        let animationView = ConnectAnimationView(color: style.animationColor,
-                                               size: kAnimationViewSize)
+        let animationView = ConnectAnimationView(
+            color: style.animationColor,
+            size: kAnimationViewSize
+        )
         self.animationView = animationView
 
         insertSubview(animationView, at: 0)
-        animationView.autoPinEdge(toSuperviewEdge: .left, withInset: 0, relation: .greaterThanOrEqual)
-        animationView.autoPinEdge(toSuperviewEdge: .top, withInset: 0, relation: .greaterThanOrEqual)
-        animationView.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
-        animationView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 0, relation: .greaterThanOrEqual)
         animationView.autoCenterInSuperview()
+        animationView.autoSetDimensions(to: .init(width: kAnimationViewSize, height: kAnimationViewSize))
         animationView.startAnimating()
     }
 
@@ -115,27 +133,6 @@ class ConnectOperatorView: UIView {
     func hideOnHoldView() {
         onHoldView?.removeFromSuperview()
         onHoldView = nil
-    }
-
-    private func setup() {
-        isAccessibilityElement = true
-        accessibilityTraits = .image
-        accessibilityLabel = style.accessibility.label
-        accessibilityHint = style.accessibility.hint
-    }
-
-    private func layout() {
-        NSLayoutConstraint.autoSetPriority(.defaultHigh) {
-            widthConstraint = imageView.autoSetDimension(.width, toSize: size.width)
-            heightConstraint = imageView.autoSetDimension(.height, toSize: size.height)
-        }
-
-        addSubview(imageView)
-        imageView.autoPinEdge(toSuperviewEdge: .left, withInset: 0, relation: .greaterThanOrEqual)
-        imageView.autoPinEdge(toSuperviewEdge: .top, withInset: 0, relation: .greaterThanOrEqual)
-        imageView.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
-        imageView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 0, relation: .greaterThanOrEqual)
-        imageView.autoCenterInSuperview()
     }
 }
 

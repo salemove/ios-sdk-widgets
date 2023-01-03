@@ -1,6 +1,6 @@
 import UIKit
 
-class ChatTextContentView: UIView {
+class ChatTextContentView: BaseView {
     var text: String? {
         get { return textView.text }
         set { setText(newValue) }
@@ -39,17 +39,15 @@ class ChatTextContentView: UIView {
         self.style = style
         self.contentAlignment = contentAlignment
         self.kTextInsets = insets
-        super.init(frame: .zero)
-        setup()
-        layout()
+        super.init()
     }
 
-    @available(*, unavailable)
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    required init() {
+        fatalError("init() has not been implemented")
     }
 
-    private func setup() {
+    override func setup() {
+        super.setup()
         contentView.backgroundColor = style.backgroundColor
         contentView.layer.cornerRadius = style.cornerRadius
 
@@ -72,7 +70,8 @@ class ChatTextContentView: UIView {
         )
     }
 
-    private func layout() {
+    override func defineLayout() {
+        super.defineLayout()
         addSubview(contentView)
         contentView.autoPinEdge(toSuperviewEdge: .top)
         contentView.autoPinEdge(toSuperviewEdge: .bottom)

@@ -1,19 +1,14 @@
 import UIKit
 import Lottie
 
-final class OperatorTypingIndicatorView: UIView {
+final class OperatorTypingIndicatorView: BaseView {
     override var isHidden: Bool {
         didSet {
-            if isHidden {
-                animationView.stop()
-            } else {
-                animationView.play()
-            }
+            isHidden ? animationView.stop() : animationView.play()
         }
     }
     private let style: OperatorTypingIndicatorStyle
     private let animationView = AnimationView()
-    private let backgroundView = UIView()
     private let kViewSize = CGSize(width: 28, height: 28)
     private let kLeftInset: CGFloat = 10
     private let bundleManaging: BundleManaging
@@ -31,17 +26,15 @@ final class OperatorTypingIndicatorView: UIView {
         self.style = style
         self.bundleManaging = bundleManaging
         self.accessibilityProperties = accessibilityProperties
-        super.init(frame: .zero)
-        setup()
-        layout()
+        super.init()
     }
 
-    @available(*, unavailable)
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    required init() {
+        fatalError("init() has not been implemented")
     }
 
-    private func setup() {
+    override func setup() {
+        super.setup()
         let animation = Animation.named(
             "operator-typing-indicator",
             bundle: bundleManaging.current()
@@ -61,10 +54,13 @@ final class OperatorTypingIndicatorView: UIView {
         updateAccessibility()
     }
 
-    private func layout() {
+    override func defineLayout() {
+        super.defineLayout()
         addSubview(animationView)
         animationView.autoSetDimensions(to: kViewSize)
-        animationView.autoPinEdge(toSuperviewEdge: .left, withInset: kLeftInset)
+        animationView.autoPinEdge(toSuperviewEdge: .leading, withInset: kLeftInset)
+        animationView.autoPinEdge(toSuperviewEdge: .top)
+        animationView.autoPinEdge(toSuperviewEdge: .bottom)
     }
 
     private func updateAccessibility() {

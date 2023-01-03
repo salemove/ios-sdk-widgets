@@ -1,7 +1,7 @@
 import UIKit
 
 extension Survey {
-    final class CheckboxView: View {
+    final class CheckboxView: BaseView {
 
         enum State {
             case active, highlighted, selected
@@ -63,6 +63,10 @@ extension Survey {
             self.textStyle = textStyle
             self.checkedTintColor = checkedTintColor
             super.init()
+        }
+
+        required init() {
+            fatalError("init() has not been implemented")
         }
 
         override func setup() {

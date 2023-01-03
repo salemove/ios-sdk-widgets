@@ -1,6 +1,6 @@
 import UIKit
 
-class UserImageView: UIView {
+final class UserImageView: BaseView {
     private let style: UserImageStyle
     private let placeholderImageView = UIImageView()
     private let operatorImageView: ImageView
@@ -20,19 +20,35 @@ class UserImageView: UIView {
                 imageViewCache: environment.imageViewCache
             )
         )
-        super.init(frame: .zero)
-        setup()
-        layout()
+        super.init()
     }
 
-    @available(*, unavailable)
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    required init() {
+        fatalError("init() has not been implemented")
+    }
+
+    override func setup() {
+        super.setup()
+        clipsToBounds = true
+
+        placeholderImageView.tintColor = style.placeholderColor
+        placeholderImageView.image = style.placeholderImage
+        updatePlaceholderContentMode()
+
+        operatorImageView.isHidden = true
+        operatorImageView.contentMode = .scaleAspectFill
+    }
+
+    override func defineLayout() {
+        super.defineLayout()
+        addSubview(placeholderImageView)
+        addSubview(operatorImageView)
+        placeholderImageView.autoPinEdgesToSuperviewEdges()
+        operatorImageView.autoPinEdgesToSuperviewEdges()
     }
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        setNeedsDisplay()
         layer.cornerRadius = bounds.height / 2.0
         updatePlaceholderContentMode()
         switch style.placeholderBackgroundColor {
@@ -66,27 +82,6 @@ class UserImageView: UIView {
                 self?.changeOperatorImageVisibility(visible: image != nil)
             }
         )
-    }
-
-    private func setup() {
-        clipsToBounds = true
-
-        placeholderImageView.tintColor = style.placeholderColor
-
-        placeholderImageView.image = style.placeholderImage
-        updatePlaceholderContentMode()
-
-        operatorImageView.isHidden = true
-        operatorImageView.contentMode = .scaleAspectFill
-
-    }
-
-    private func layout() {
-        addSubview(placeholderImageView)
-        placeholderImageView.autoPinEdgesToSuperviewEdges()
-
-        addSubview(operatorImageView)
-        operatorImageView.autoPinEdgesToSuperviewEdges()
     }
 
     private func updatePlaceholderContentMode() {
