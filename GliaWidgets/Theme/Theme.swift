@@ -44,6 +44,8 @@ public class Theme {
         alertStyle: alert
     )
 
+    public lazy var visitorCode: VisitorCodeStyle = { return visitorCodeStyle }()
+
     /// Controls the visibility of the "Powered by" text and image.
     public var showsPoweredBy: Bool
 
@@ -88,6 +90,10 @@ public class Theme {
         chat.apply(
             configuration: config.chatScreen,
             assetsBuilder: assetsBuilder
+        )
+        visitorCode.apply(
+            configuration: config.visitorCode,
+            assetBuilder: assetsBuilder
         )
     }
 }

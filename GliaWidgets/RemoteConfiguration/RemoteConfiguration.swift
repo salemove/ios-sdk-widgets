@@ -6,6 +6,7 @@ public struct RemoteConfiguration: Codable {
     let surveyScreen: Survey?
     let alert: Alert?
     let bubble: Bubble?
+    let visitorCode: VisitorCode
 }
 
 extension RemoteConfiguration {
@@ -23,6 +24,19 @@ extension RemoteConfiguration {
             case callOperator = "operator"
             case topText
         }
+    }
+
+    struct VisitorCode: Codable {
+        let title: Text?
+        let actionButton: Button?
+        let numberSlot: NumberSlot?
+        let background: Layer?
+    }
+
+    struct NumberSlot: Codable {
+        let background: Layer?
+        let font: Font?
+        let fontColor: Color?
     }
 
     struct Alert: Codable {

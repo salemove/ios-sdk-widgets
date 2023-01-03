@@ -106,7 +106,7 @@ struct CoreSdkClient {
     typealias FetchChatHistory = (_ completion: @escaping (Result<[ChatMessage], SalemoveSDK.GliaCoreError>) -> Void) -> Void
     var fetchChatHistory: FetchChatHistory
 
-    typealias RequestVisitorCode = (_ completion: @escaping VisitorCodeBlock) -> GliaCore.Cancellable
+    typealias RequestVisitorCode = (_ completion: @escaping (VisitorCodeBlock) -> Void) -> GliaCore.Cancellable
     var requestVisitorCode: RequestVisitorCode
 }
 
@@ -189,5 +189,5 @@ extension CoreSdkClient {
     typealias SurveyAnswerContainer = SalemoveSDK.Survey.Answer.ValueContainer
     typealias Authentication = SalemoveSDK.GliaCore.Authentication
     typealias AuthenticationBehavior = SalemoveSDK.GliaCore.Authentication.Behavior
-    typealias VisitorCodeBlock = (Result<VisitorCode, Swift.Error>) -> Void
+    typealias VisitorCodeBlock = (Result<VisitorCode, Swift.Error>)
 }

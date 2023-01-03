@@ -1,7 +1,7 @@
 import UIKit
 
 /// Style of an action button. This button contains a title placed on a rectangular background. Used for positive and negative actions in alerts and in the navigation bar (header) for the engagement ending button.
-public struct ActionButtonStyle {
+public struct ActionButtonStyle: Equatable {
     /// Title of the button.
     public var title: String
 
