@@ -17,6 +17,7 @@ class ChatTextContentView: BaseView {
         set {
             contentView.accessibilityLabel = newValue.label
             contentView.accessibilityValue = newValue.value
+            contentView.accessibilityIdentifier = newValue.value
             // Avoid reading empty messages.
             // This is relevant to the case when file attachment is sent without message.
             contentView.isAccessibilityElement = textView.superview != nil
