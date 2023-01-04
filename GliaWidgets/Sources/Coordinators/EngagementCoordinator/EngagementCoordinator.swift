@@ -101,7 +101,7 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
                 animated: false
             )
         case .messaging:
-            let secureConversationsWelcomeViewController = startSecureConversations()
+            let secureConversationsWelcomeViewController: UIViewController = startSecureConversations()
             engagement = .secureConversations(secureConversationsWelcomeViewController)
             navigationPresenter.setViewControllers(
                 [secureConversationsWelcomeViewController],
@@ -384,7 +384,7 @@ extension EngagementCoordinator {
         }
     }
 
-    private func startSecureConversations() -> SecureConversations.WelcomeViewController {
+    private func startSecureConversations() -> UIViewController {
         let coordinator = SecureConversations.Coordinator(
             viewFactory: viewFactory
         )
@@ -524,7 +524,7 @@ extension EngagementCoordinator {
         case none
         case chat(ChatViewController)
         case call(CallViewController, ChatViewController, UpgradedFrom, Call)
-        case secureConversations(SecureConversations.WelcomeViewController)
+        case secureConversations(UIViewController)
     }
 
     private enum UpgradedFrom {
