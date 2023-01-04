@@ -232,6 +232,12 @@ workflows:
     - deploy-to-bitrise-io@2:
         inputs:
         - notify_email_list: $NOTIFY_EMAILS
+    - slack@3:
+        is_always_run: false
+        inputs:
+        - channel: '#tm-mobile-builds'
+        - text: iOS Build Succeeded!
+        - webhook_url: $SLACK_IOS_WEBHOOK
     - cache-push@2: {}
     description: >-
       Workflow for creating builds of master branch. Triggered on each push to
