@@ -10,7 +10,6 @@ extension ChatViewModel {
         isCustomCardSupported: Bool = true,
         isWindowVisible: ObservableValue<Bool> = .init(with: true),
         startAction: StartAction = .startEngagement,
-        chatStorageState: @escaping () -> ChatStorageState = { .unauthenticated(.mock) },
         deliveredStatusText: String = "Delivered",
         environment: Environment = .mock
     ) -> ChatViewModel {
@@ -24,7 +23,6 @@ extension ChatViewModel {
             isCustomCardSupported: isCustomCardSupported,
             isWindowVisible: isWindowVisible,
             startAction: startAction,
-            chatStorageState: chatStorageState,
             deliveredStatusText: deliveredStatusText,
             environment: environment
         )

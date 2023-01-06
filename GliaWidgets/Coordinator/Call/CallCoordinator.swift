@@ -62,7 +62,6 @@ private extension CallCoordinator {
             alertConfiguration: viewFactory.theme.alertConfiguration,
             screenShareHandler: screenShareHandler,
             environment: .init(
-                chatStorage: environment.chatStorage,
                 fetchFile: environment.fetchFile,
                 sendSelectedOptionValue: environment.sendSelectedOptionValue,
                 uploadFileToEngagement: environment.uploadFileToEngagement,
@@ -122,7 +121,6 @@ private extension CallCoordinator {
 
 extension CallCoordinator {
     struct Environment {
-        var chatStorage: Glia.Environment.ChatStorage
         var fetchFile: CoreSdkClient.FetchFile
         var sendSelectedOptionValue: CoreSdkClient.SendSelectedOptionValue
         var uploadFileToEngagement: CoreSdkClient.UploadFileToEngagement

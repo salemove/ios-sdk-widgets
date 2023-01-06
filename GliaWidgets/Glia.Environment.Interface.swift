@@ -18,11 +18,9 @@ extension Glia {
             _ sceneProvider: SceneProvider?,
             _ engagementKind: EngagementKind,
             _ features: Features,
-            _ chatStorageState: @escaping () -> ChatStorageState,
             _ environment: RootCoordinator.Environment
         ) -> RootCoordinator
         var coreSdk: CoreSdkClient
-        var chatStorage: ChatStorage
         var audioSession: AudioSession
         var uuid: () -> UUID
         var date: () -> Date
@@ -37,7 +35,6 @@ extension Glia {
         var timerProviding: FoundationBased.Timer.Providing
         var uiApplication: UIKitBased.UIApplication
         var createRootCoordinator: CreateRootCoordinator
-        var authenticatedChatStorage: AuthenticatedChatStorage
     }
 }
 
@@ -48,7 +45,6 @@ extension Glia.Environment {
         sceneProvider: SceneProvider?,
         engagementKind: EngagementKind,
         features: Features,
-        chatStorageState: @escaping () -> ChatStorageState,
         environment: RootCoordinator.Environment
     ) -> RootCoordinator {
         self.createRootCoordinator(
@@ -57,7 +53,6 @@ extension Glia.Environment {
             sceneProvider,
             engagementKind,
             features,
-            chatStorageState,
             environment
         )
     }
@@ -66,41 +61,5 @@ extension Glia.Environment {
 extension Glia.Environment {
     struct AudioSession {
         var overrideOutputAudioPort: (AVAudioSession.PortOverride) throws -> Void
-    }
-}
-
-extension Glia.Environment {
-    struct ChatStorage {
-        var databaseUrl: () -> URL?
-        var dropDatabase: () -> Void
-        var isEmpty: () -> Bool
-
-        var messages: (
-            _ queueId: String
-        ) -> [ChatMessage]
-
-        var updateMessage: (
-            _ message: ChatMessage
-        ) -> Void
-
-        var storeMessage: (
-            _ message: CoreSdkClient.Message,
-            _ queueId: String,
-            _ operator: CoreSdkClient.Operator?
-        ) -> Void
-
-        var storeMessages: (
-            _ messages: [CoreSdkClient.Message],
-            _ queueId: String,
-            _ operator: CoreSdkClient.Operator?
-        ) -> Void
-
-        var isNewMessage: (
-            _ message: CoreSdkClient.Message
-        ) -> Bool
-
-        var newMessages: (
-            _ messages: [CoreSdkClient.Message]
-        ) -> [CoreSdkClient.Message]
     }
 }
