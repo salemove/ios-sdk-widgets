@@ -14,11 +14,15 @@ class ChatItem {
 
     let kind: Kind
 
-    init(kind: Kind) {
+    init(
+        kind: Kind
+    ) {
         self.kind = kind
     }
 
-    init(with message: OutgoingMessage) {
+    init(
+        with message: OutgoingMessage
+    ) {
         kind = .outgoingMessage(message)
     }
 

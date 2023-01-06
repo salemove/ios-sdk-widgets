@@ -5,7 +5,6 @@ extension ChatViewModel.Environment {
         fetchChatHistory: CoreSdkClient.FetchChatHistory? = nil
     ) -> Self {
         .init(
-            chatStorage: .failing,
             fetchFile: { _, _, _ in
                 fail("\(Self.self).fetchFile")
             },

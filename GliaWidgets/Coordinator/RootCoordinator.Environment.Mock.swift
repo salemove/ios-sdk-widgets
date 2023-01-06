@@ -1,7 +1,6 @@
 #if DEBUG
 extension RootCoordinator.Environment {
     static let mock = Self.init(
-        chatStorage: .mock,
         fetchFile: { _, _, _ in },
         sendSelectedOptionValue: { _, _ in },
         uploadFileToEngagement: { _, _, _ in },

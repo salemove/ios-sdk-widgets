@@ -20,7 +20,7 @@ class CallViewModelTests: XCTestCase {
         )
 
         viewModel = .init(
-            interactor: try .mock(),
+            interactor: .mock(),
             alertConfiguration: .mock(),
             screenShareHandler: ScreenShareHandler(),
             environment: .mock,
@@ -113,7 +113,7 @@ class CallViewModelTests: XCTestCase {
         )
 
         viewModel = .init(
-            interactor: try .mock(),
+            interactor: .mock(),
             alertConfiguration: .mock(),
             screenShareHandler: ScreenShareHandler(),
             environment: .mock,

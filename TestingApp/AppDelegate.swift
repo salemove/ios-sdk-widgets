@@ -33,7 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication,
         didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data
     ) {
-        debugPrint("Registered for remote notifications. Token='\(deviceToken.map { String(format: "%02.2hhx", $0) }.joined())'.")
+        debugPrint("✅ Registered for remote notifications. Token='\(deviceToken.map { String(format: "%02.2hhx", $0) }.joined())'.")
         GliaCore.sharedInstance.pushNotifications.application(
             application,
             didRegisterForRemoteNotificationsWithDeviceToken: deviceToken
@@ -44,6 +44,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication,
         didFailToRegisterForRemoteNotificationsWithError error: Error
     ) {
-        print("Failed to register for remote notifications. Error: \(error.localizedDescription)")
+        debugPrint("💥 Failed to register for remote notifications. Error: \(error.localizedDescription)")
     }
 }
