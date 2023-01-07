@@ -1,0 +1,14 @@
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: ios-sdk-widgets
+  annotations:
+    github.com/project-slug: salemove/ios-sdk-widgets
+    github.com/team-slug: salemove/tm-mobile
+    snyk.io/org-name: glia-mobile
+    snyk.io/project-ids: bb825aeb-577b-49cb-8186-38cc0e61aa28
+spec:
+  type: library
+  lifecycle: production
+  owner: tm-mobile
