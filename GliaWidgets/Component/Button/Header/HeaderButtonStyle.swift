@@ -1,7 +1,7 @@
 import UIKit
 
 /// Style of a button that only consists of a single image. It is displayed in the app navigation bar (header). Used for "Back", "Exit queue" and "End screen share" buttons.
-public struct HeaderButtonStyle {
+public struct HeaderButtonStyle: Equatable {
     /// Image of the button.
     public var image: UIImage
 
