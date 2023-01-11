@@ -214,3 +214,5 @@
 "survey.accessibility.question.optionButton.selected.label" = "Selected: {buttonTitle}";
 "survey.accessibility.question.optionButton.unselected.label" = "Unselected: {buttonTitle}";
 "survey.accessibility.validation.title.label" = "Please provide an answer for question above";
+
+"messageCenter.welcome.messageLengthWarning" = "The message cannot exceed {textLength} characters.";
