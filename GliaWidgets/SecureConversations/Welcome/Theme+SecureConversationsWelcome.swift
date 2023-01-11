@@ -1,3 +1,5 @@
+import UIKit
+
 extension Theme {
     var secureConversationsWelcomeStyle: SecureConversations.WelcomeStyle {
         let chat = chatStyle
@@ -38,23 +40,78 @@ extension Theme {
             cornerRadius: 4
         )
 
-        let sendButtonStyle = SecureConversations.WelcomeStyle.SendButtonStyle(
+        let sendButtonEnabledStyle = SecureConversations.WelcomeStyle.SendButtonEnabledStyle(
             title: "Send",
             font: font.bodyText,
             textColor: color.baseLight,
-            backgroundColor: color.primary
+            backgroundColor: color.primary,
+            borderColor: .clear,
+            borderWidth: 1,
+            cornerRadius: 4
         )
+
+        let sendButtonDisabledStyle = SecureConversations.WelcomeStyle.SendButtonDisabledStyle(
+            title: "Send",
+            font: font.bodyText,
+            textColor: .disabledTitle,
+            backgroundColor: .disabledBackground,
+            borderColor: .disabledBorder,
+            borderWidth: 1,
+            cornerRadius: 4
+        )
+
+        let sendButtonLoadingStyle = SecureConversations.WelcomeStyle.SendButtonLoadingStyle(
+            title: "Send",
+            font: font.bodyText,
+            textColor: .disabledTitle,
+            backgroundColor: .disabledBackground,
+            borderColor: .disabledBorder,
+            borderWidth: 1,
+            activityIndicatorColor: .disabledActivityIndicator,
+            cornerRadius: 4
+        )
+
+        let sendButtonStyle = SecureConversations.WelcomeStyle.SendButtonStyle(
+            enabledStyle: sendButtonEnabledStyle,
+            disabledStyle: sendButtonDisabledStyle,
+            loadingStyle: sendButtonLoadingStyle
+        )
+
+        let messageWarningStyle = SecureConversations.WelcomeStyle.MessageWarningStyle(
+            textColor: color.systemNegative,
+            textFont: .systemFont(ofSize: 12.0),
+            iconColor: color.systemNegative,
+            messageLengthLimitText: L10n.MessageCenter.Welcome.messageLengthWarning
+        )
+
+        let filePickerButtonStyle = SecureConversations.WelcomeStyle.FilePickerButtonStyle(
+            color: .gray,
+            disabledColor: .lightGray
+        )
+
+        let titleImageStyle = SecureConversations.WelcomeStyle.TitleImageStyle(color: color.primary)
 
         return .init(
             header: chat.header,
             headerTitle: "Messaging",
             welcomeTitleStyle: welcomeTitleStyle,
+            titleImageStyle: titleImageStyle,
             welcomeSubtitleStyle: welcomeSubtitleStyle,
             checkMessagesButtonStyle: checkMessagesButtonStyle,
             messageTitleStyle: messageTitleStyle,
             messageTextViewStyle: messageTextViewStyle,
             sendButtonStyle: sendButtonStyle,
+            messageWarningStyle: messageWarningStyle,
+            filePickerButtonStyle: filePickerButtonStyle,
             backgroundColor: color.background
         )
     }
+}
+
+private extension UIColor {
+    // Variations of gray color indicating disabled state of components.
+    static let disabledBackground = UIColor(red: 0.953, green: 0.953, blue: 0.953, alpha: 1)
+    static let disabledBorder = UIColor(red: 0.424, green: 0.463, blue: 0.514, alpha: 0.5)
+    static let disabledTitle = UIColor(red: 0, green: 0, blue: 0, alpha: 0.4)
+    static let disabledActivityIndicator = UIColor(red: 0.769, green: 0.769, blue: 0.769, alpha: 1)
 }

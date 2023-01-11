@@ -662,6 +662,12 @@ public enum L10n {
       }
     }
   }
+  public enum MessageCenter {
+    public enum Welcome {
+      /// The message cannot exceed {textLength} characters.
+      public static let messageLengthWarning = L10n.tr("Localizable", "messageCenter.welcome.messageLengthWarning", fallback: "The message cannot exceed {textLength} characters.")
+    }
+  }
   public enum Survey {
     public enum Accessibility {
       public enum Footer {

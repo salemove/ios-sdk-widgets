@@ -365,6 +365,8 @@
 		9AE9E4B327E0E60F00BFE239 /* CallViewModel.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE9E4B227E0E60F00BFE239 /* CallViewModel.Mock.swift */; };
 		9AE9E4B527E0EE2E00BFE239 /* CallViewControllerVoiceOverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE9E4B427E0EE2E00BFE239 /* CallViewControllerVoiceOverTests.swift */; };
 		9AE9E4B727E1E30500BFE239 /* MockHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE9E4B627E1E30500BFE239 /* MockHelpers.swift */; };
+		AF0D26D629705FDF00816CCB /* SecureConversations.ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0D26D529705FDE00816CCB /* SecureConversations.ActivityIndicator.swift */; };
+		AF0D26D82971912A00816CCB /* SecureConversations.SendMessageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0D26D72971912A00816CCB /* SecureConversations.SendMessageButton.swift */; };
 		AF11F30728BE6F0C002ACEB4 /* UIAlertController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF11F30628BE6F0C002ACEB4 /* UIAlertController+Extensions.swift */; };
 		AF11F30928C0C592002ACEB4 /* Glia+OpaqueAuthentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF11F30828C0C592002ACEB4 /* Glia+OpaqueAuthentication.swift */; };
 		AF9DB22E2890571A00A0C442 /* RootCoordinator.Environment.Failing.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF9DB22D2890571A00A0C442 /* RootCoordinator.Environment.Failing.swift */; };
@@ -845,6 +847,8 @@
 		A0D30B1DEDC2C10EDB7B2920 /* Pods_SnapshotTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SnapshotTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3CCA1615224A89E2EC0D339 /* Pods-TestingApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestingApp.release.xcconfig"; path = "Target Support Files/Pods-TestingApp/Pods-TestingApp.release.xcconfig"; sourceTree = "<group>"; };
 		ACA6624B17817F26592D14A1 /* Pods-GliaWidgetsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliaWidgetsTests.release.xcconfig"; path = "Target Support Files/Pods-GliaWidgetsTests/Pods-GliaWidgetsTests.release.xcconfig"; sourceTree = "<group>"; };
+		AF0D26D529705FDE00816CCB /* SecureConversations.ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.ActivityIndicator.swift; sourceTree = "<group>"; };
+		AF0D26D72971912A00816CCB /* SecureConversations.SendMessageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.SendMessageButton.swift; sourceTree = "<group>"; };
 		AF11F30628BE6F0C002ACEB4 /* UIAlertController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIAlertController+Extensions.swift"; sourceTree = "<group>"; };
 		AF11F30828C0C592002ACEB4 /* Glia+OpaqueAuthentication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Glia+OpaqueAuthentication.swift"; sourceTree = "<group>"; };
 		AF9DB22D2890571A00A0C442 /* RootCoordinator.Environment.Failing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCoordinator.Environment.Failing.swift; sourceTree = "<group>"; };
@@ -2016,6 +2020,8 @@
 				3100D921296E943100DEC9CE /* Welcome */,
 				3100EEF1293E214B00D57F71 /* SecureConversations.Coordinator.swift */,
 				313EBD542943116E008E9597 /* SecureConversations.swift */,
+				AF0D26D529705FDE00816CCB /* SecureConversations.ActivityIndicator.swift */,
+				AF0D26D72971912A00816CCB /* SecureConversations.SendMessageButton.swift */,
 			);
 			path = SecureConversations;
 			sourceTree = "<group>";
@@ -3024,6 +3030,7 @@
 				845E2F85283FA90200C04D56 /* Theme.Survey.ValidationError.Accessibility.swift in Sources */,
 				9AB3402B28002EE9006E0FE2 /* ChatCallUpgradeStyle.Accessibility.swift in Sources */,
 				9A1992E327D6669900161AAE /* UIKitBased.Interface.swift in Sources */,
+				AF0D26D629705FDF00816CCB /* SecureConversations.ActivityIndicator.swift in Sources */,
 				1A60AF7A25656E0500E53F53 /* Theme.swift in Sources */,
 				84CFB7732822700000167258 /* Theme.Button.Accessibility.swift in Sources */,
 				1A475BB725DE833200296D55 /* BadgeStyle.swift in Sources */,
@@ -3204,6 +3211,7 @@
 				1A4674C825ED084A0078FA1C /* MediaPickerViewModel.swift in Sources */,
 				9A186A3927F5E3010055886D /* MessageButtonStyle.Accessibility.swift in Sources */,
 				9AB196D627C3E1E400FD60AB /* ChatViewModel.Environment.Interface.swift in Sources */,
+				AF0D26D82971912A00816CCB /* SecureConversations.SendMessageButton.swift in Sources */,
 				1A0C9A8625C4090D00815406 /* CallButton.swift in Sources */,
 				9AB196EA27C5390100FD60AB /* ChatAttachment.Mock.swift in Sources */,
 				C0857DEF28D9AD32008D171D /* UIFont+Extensions.swift in Sources */,
