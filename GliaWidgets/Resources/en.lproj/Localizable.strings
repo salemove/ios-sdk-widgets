@@ -217,6 +217,7 @@
 "survey.accessibility.question.optionButton.unselected.label" = "Unselected: {buttonTitle}";
 "survey.accessibility.validation.title.label" = "Please provide an answer for question above";
 
+"messageCenter.welcome.messageLengthWarning" = "The message cannot exceed {textLength} characters.";
 "visitorCode.title.standard" = "Your Visitor Code";
 "visitorCode.title.error" = "Could not show visitor code. Please try refreshing.";
 "visitorCode.action.refresh" = "Refresh";

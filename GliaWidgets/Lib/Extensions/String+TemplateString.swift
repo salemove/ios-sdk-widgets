@@ -39,4 +39,8 @@ extension String {
     func withDownloadedFileState(_ value: String) -> String {
         replacingOccurrences(of: "{downloadedFileState}", with: value)
     }
+
+    func withTextLength(_ value: String) -> String {
+        replacingOccurrences(of: "{textLength}", with: value)
+    }
 }
