@@ -76,6 +76,7 @@ public enum Asset {
     public static let upgradeVideo = ImageAsset(name: "upgradeVideo")
     public static let mcEnvelope = ImageAsset(name: "mc-envelope")
     public static let mcPickMedia = ImageAsset(name: "mc-pick-media")
+    public static let mcWarningIcon = ImageAsset(name: "mc-warning-icon")
     public static let mcConfirmation = ImageAsset(name: "mc-confirmation")
     public static let mockImage = ImageAsset(name: "mock-image")
     public static let operatorPlaceholder = ImageAsset(name: "operatorPlaceholder")
@@ -116,6 +117,7 @@ public enum Asset {
       upgradeVideo,
       mcEnvelope,
       mcPickMedia,
+      mcWarningIcon,
       mockImage,
       operatorPlaceholder,
       operatorTransferring,

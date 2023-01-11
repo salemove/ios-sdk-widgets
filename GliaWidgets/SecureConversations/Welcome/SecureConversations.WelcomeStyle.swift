@@ -13,6 +13,9 @@ extension SecureConversations {
         /// Style for title shown in the welcome area.
         public var welcomeTitleStyle: TitleStyle
 
+        /// Style for title icon image.
+        public var titleImageStyle: TitleImageStyle
+
         /// Style for description showm in the welcome area.
         public var welcomeSubtitleStyle: SubtitleStyle
 
@@ -28,6 +31,12 @@ extension SecureConversations {
         /// Style for send message button.
         public var sendButtonStyle: SendButtonStyle
 
+        /// Style for message warning section.
+        public var messageWarningStyle: MessageWarningStyle
+
+        /// Style for attachemnt button.
+        public var filePickerButtonStyle: FilePickerButtonStyle
+
         /// View's background color.
         public var backgroundColor: UIColor
 
@@ -39,16 +48,21 @@ extension SecureConversations {
         ///   - messageTitleStyle: Style for message text view title.
         ///   - messageTextViewStyle: Style for message text view.
         ///   - sendButtonStyle: Style for send message button.
+        ///   - messageWarningStyle: Style for message warning section.
+        ///   - filePickerButtonStyle: Style for file picker button.
         ///   - backgroundColor: Welcome area's view background color.
         public init(
             header: HeaderStyle,
             headerTitle: String,
             welcomeTitleStyle: TitleStyle,
+            titleImageStyle: TitleImageStyle,
             welcomeSubtitleStyle: SubtitleStyle,
             checkMessagesButtonStyle: CheckMessagesButtonStyle,
             messageTitleStyle: MessageTitleStyle,
             messageTextViewStyle: MessageTextViewStyle,
             sendButtonStyle: SendButtonStyle,
+            messageWarningStyle: MessageWarningStyle,
+            filePickerButtonStyle: FilePickerButtonStyle,
             backgroundColor: UIColor
         ) {
             self.header = header
@@ -59,7 +73,10 @@ extension SecureConversations {
             self.messageTitleStyle = messageTitleStyle
             self.messageTextViewStyle = messageTextViewStyle
             self.sendButtonStyle = sendButtonStyle
+            self.messageWarningStyle = messageWarningStyle
+            self.filePickerButtonStyle = filePickerButtonStyle
             self.backgroundColor = backgroundColor
+            self.titleImageStyle = titleImageStyle
         }
     }
 }
@@ -286,6 +303,30 @@ extension SecureConversations.WelcomeStyle {
 
     /// Style for send message button.
     public struct SendButtonStyle: Equatable {
+        /// Style for enabled state of send message button.
+        public var enabledStyle: SendButtonEnabledStyle
+        /// Style for disabled state of send message button.
+        public var disabledStyle: SendButtonDisabledStyle
+        /// Style for loading state of send message button.
+        public var loadingStyle: SendButtonLoadingStyle
+
+        /// - Parameters:
+        ///   - enabledStyle: Style for enabled state of send message button.
+        ///   - disabledStyle: Style for disabled state of send message button.
+        ///   - loadingStyle: Style for loading state of send message button.
+        public init(
+            enabledStyle: SecureConversations.WelcomeStyle.SendButtonEnabledStyle,
+            disabledStyle: SecureConversations.WelcomeStyle.SendButtonDisabledStyle,
+            loadingStyle: SendButtonLoadingStyle
+        ) {
+            self.enabledStyle = enabledStyle
+            self.disabledStyle = disabledStyle
+            self.loadingStyle = loadingStyle
+        }
+    }
+
+    /// Style for enabled state of send message button.
+    public struct SendButtonEnabledStyle: Equatable {
         /// Title text of the button.
         public var title: String
         /// Font of the title.
@@ -294,8 +335,263 @@ extension SecureConversations.WelcomeStyle {
         public var textColor: UIColor
         /// Background color of the button.
         public var backgroundColor: UIColor
+        /// Border color of the button.
+        public var borderColor: UIColor
+        /// Border width of the button.
+        public var borderWidth: Double
+        /// Corner radius of the button.
+        public var cornerRadius: Double
 
-        /// Accessibility properties for SendButtonStyle.
+        /// - Parameters:
+        ///   - title: Title text of the button.
+        ///   - font: Font of the title.
+        ///   - textColor: Color of the button title text.
+        ///   - backgroundColor: Background color of the button.
+        ///   - borderColor: Border color of the button.
+        ///   - borderWidth: Border width of the button.
+        ///   - cornerRadius: Corner radius of the button.
+        public init(
+            title: String,
+            font: UIFont,
+            textColor: UIColor,
+            backgroundColor: UIColor,
+            borderColor: UIColor,
+            borderWidth: Double,
+            cornerRadius: Double
+        ) {
+            self.title = title
+            self.font = font
+            self.textColor = textColor
+            self.backgroundColor = backgroundColor
+            self.cornerRadius = cornerRadius
+            self.borderColor = borderColor
+            self.borderWidth = borderWidth
+        }
+
+        /// Accessibility properties for SendButtonEnabledStyle.
+        public struct Accessibility: Equatable {
+            /// Flag that provides font dynamic type by setting `adjustsFontForContentSizeCategory` for component that supports it.
+            public var isFontScalingEnabled: Bool
+
+            /// - Parameter isFontScalingEnabled: Flag that provides font dynamic type by setting `adjustsFontForContentSizeCategory` for component that supports it.
+            public init(isFontScalingEnabled: Bool) {
+                self.isFontScalingEnabled = isFontScalingEnabled
+            }
+
+            /// Accessibility is not supported intentionally.
+            public static let unsupported = Self(isFontScalingEnabled: false)
+        }
+    }
+
+    /// Style for disabled state of send message button.
+    public struct SendButtonDisabledStyle: Equatable {
+        /// Title text of the button.
+        public var title: String
+        /// Font of the title.
+        public var font: UIFont
+        /// Color of the button title text.
+        public var textColor: UIColor
+        /// Background color of the button.
+        public var backgroundColor: UIColor
+        /// Border color of the button.
+        public var borderColor: UIColor
+        /// Border width of the button.
+        public var borderWidth: Double
+        /// Corner radius of the button.
+        public var cornerRadius: Double
+
+        /// - Parameters:
+        ///   - title: Title text of the button.
+        ///   - font: Font of the title.
+        ///   - textColor: Color of the button title text.
+        ///   - backgroundColor: Background color of the button.
+        ///   - borderColor: Border color of the button.
+        ///   - borderWidth: Border width of the button.
+        ///   - cornerRadius: Corner radius of the button.
+        public init(
+            title: String,
+            font: UIFont,
+            textColor: UIColor,
+            backgroundColor: UIColor,
+            borderColor: UIColor,
+            borderWidth: Double,
+            cornerRadius: Double
+        ) {
+            self.title = title
+            self.font = font
+            self.textColor = textColor
+            self.backgroundColor = backgroundColor
+            self.cornerRadius = cornerRadius
+            self.borderColor = borderColor
+            self.borderWidth = borderWidth
+        }
+
+        /// Accessibility properties for SendButtonDisabledStyle.
+        public struct Accessibility: Equatable {
+            /// Flag that provides font dynamic type by setting `adjustsFontForContentSizeCategory` for component that supports it.
+            public var isFontScalingEnabled: Bool
+
+            /// - Parameter isFontScalingEnabled: Flag that provides font dynamic type by setting `adjustsFontForContentSizeCategory` for component that supports it.
+            public init(isFontScalingEnabled: Bool) {
+                self.isFontScalingEnabled = isFontScalingEnabled
+            }
+
+            /// Accessibility is not supported intentionally.
+            public static let unsupported = Self(isFontScalingEnabled: false)
+        }
+    }
+
+    /// Style for loading state of send message button.
+    public struct SendButtonLoadingStyle: Equatable {
+        /// Title text of the button.
+        public var title: String
+        /// Font of the title.
+        public var font: UIFont
+        /// Color of the button title text.
+        public var textColor: UIColor
+        /// Background color of the button.
+        public var backgroundColor: UIColor
+        /// Border color of the button.
+        public var borderColor: UIColor
+        /// Border width of the button.
+        public var borderWidth: Double
+        /// Color of the activity indicator of the button.
+        public var activityIndicatorColor: UIColor
+        /// Corner radius of the button.
+        public var cornerRadius: Double
+
+        /// - Parameters:
+        ///   - title: Title text of the button.
+        ///   - font: Font of the title.
+        ///   - textColor: Color of the button title text.
+        ///   - backgroundColor: Background color of the button.
+        ///   - borderColor: Border color of the button.
+        ///   - borderWidth: Border width of the button.
+        ///   - activityIndicatorColor: Color of the activity indicator of the button.
+        ///   - cornerRadius: Corner radius of the button.
+        public init(
+            title: String,
+            font: UIFont,
+            textColor: UIColor,
+            backgroundColor: UIColor,
+            borderColor: UIColor,
+            borderWidth: Double,
+            activityIndicatorColor: UIColor,
+            cornerRadius: Double
+        ) {
+            self.title = title
+            self.font = font
+            self.textColor = textColor
+            self.backgroundColor = backgroundColor
+            self.cornerRadius = cornerRadius
+            self.borderColor = borderColor
+            self.borderWidth = borderWidth
+            self.activityIndicatorColor = activityIndicatorColor
+        }
+
+        /// Accessibility properties for SendButtonEnabledStyle.
+        public struct Accessibility: Equatable {
+            /// Flag that provides font dynamic type by setting `adjustsFontForContentSizeCategory` for component that supports it.
+            public var isFontScalingEnabled: Bool
+
+            /// - Parameter isFontScalingEnabled: Flag that provides font dynamic type by setting `adjustsFontForContentSizeCategory` for component that supports it.
+            public init(isFontScalingEnabled: Bool) {
+                self.isFontScalingEnabled = isFontScalingEnabled
+            }
+
+            /// Accessibility is not supported intentionally.
+            public static let unsupported = Self(isFontScalingEnabled: false)
+        }
+    }
+
+    /// Style for message warning section.
+    public struct MessageWarningStyle: Equatable {
+        /// Color of the warning text.
+        public var textColor: UIColor
+        /// Font of the warning text.
+        public var textFont: UIFont
+        /// Color of the warning icon image.
+        public var iconColor: UIColor
+        /// Text for the message limit warning.
+        public var messageLengthLimitText: String
+
+        /// - Parameters:
+        ///   - textColor: Color of the warning text.
+        ///   - textFont: Font of the warning text.
+        ///   - iconColor: Color of the warning icon image.
+        ///   - messageLengthLimitText: Text for the message limit warning.
+        public init(
+            textColor: UIColor,
+            textFont: UIFont,
+            iconColor: UIColor,
+            messageLengthLimitText: String
+        ) {
+            self.textColor = textColor
+            self.textFont = textFont
+            self.iconColor = iconColor
+            self.messageLengthLimitText = messageLengthLimitText
+        }
+
+        /// Accessibility properties for MessageWarningStyle.
+        public struct Accessibility: Equatable {
+            /// Flag that provides font dynamic type by setting `adjustsFontForContentSizeCategory` for component that supports it.
+            public var isFontScalingEnabled: Bool
+
+            /// - Parameter isFontScalingEnabled: Flag that provides font dynamic type by setting `adjustsFontForContentSizeCategory` for component that supports it.
+            public init(isFontScalingEnabled: Bool) {
+                self.isFontScalingEnabled = isFontScalingEnabled
+            }
+
+            /// Accessibility is not supported intentionally.
+            public static let unsupported = Self(isFontScalingEnabled: false)
+        }
+    }
+
+    ///  Style for file picker button.
+    public struct FilePickerButtonStyle: Equatable {
+        /// Button image color.
+        public var color: UIColor
+        /// Button image color for disabled state.
+        public var disabledColor: UIColor
+
+        /// - Parameters:
+        ///   - color: Button image color.
+        ///   - disabledColor: Button image color for disabled state.
+        public init(
+            color: UIColor,
+            disabledColor: UIColor
+        ) {
+            self.color = color
+            self.disabledColor = disabledColor
+        }
+
+        /// Accessibility properties for FilePickerButtonStyle.
+        public struct Accessibility: Equatable {
+            /// Flag that provides font dynamic type by setting `adjustsFontForContentSizeCategory` for component that supports it.
+            public var isFontScalingEnabled: Bool
+
+            /// - Parameter isFontScalingEnabled: Flag that provides font dynamic type by setting `adjustsFontForContentSizeCategory` for component that supports it.
+            public init(isFontScalingEnabled: Bool) {
+                self.isFontScalingEnabled = isFontScalingEnabled
+            }
+
+            /// Accessibility is not supported intentionally.
+            public static let unsupported = Self(isFontScalingEnabled: false)
+        }
+    }
+
+
+    /// Style for title icon image.
+    public struct TitleImageStyle: Equatable {
+        /// Color of the image.
+        public var color: UIColor
+
+        /// - Parameter color: Color of the image.
+        public init(color: UIColor) {
+            self.color = color
+        }
+
+        /// Accessibility properties for TitleImageStyle.
         public struct Accessibility: Equatable {
             /// Flag that provides font dynamic type by setting `adjustsFontForContentSizeCategory` for component that supports it.
             public var isFontScalingEnabled: Bool

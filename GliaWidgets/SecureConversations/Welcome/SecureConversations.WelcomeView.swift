@@ -7,13 +7,30 @@ extension SecureConversations {
         static let filePickerButtonSize = 44.0
 
         struct Props: Equatable {
+            struct FilePickerButton: Equatable {
+                let isEnabled: Bool
+                let tap: Cmd
+            }
+
+            struct WarningMessage: Equatable {
+                let text: String
+                let animated: Bool
+            }
+
+            enum SendMessageButton: Equatable {
+                case active(Cmd)
+                case loading
+                case disabled
+            }
+
             let style: SecureConversations.WelcomeStyle
             let backButtonTap: Cmd
             let closeButtonTap: Cmd
             let checkMessageButtonTap: Cmd
-            let filePickerButtonTap: Cmd?
-            let sendMessageButtonTap: Cmd
+            let filePickerButton: FilePickerButton?
+            let sendMessageButton: SendMessageButton
             let messageTextViewProps: MessageTextView.Props
+            let warningMessage: WarningMessage
         }
 
         var props: Props {
@@ -56,13 +73,16 @@ extension SecureConversations {
 
         let messageTextView = MessageTextView().makeView()
 
-        lazy var sendMessageButton = UIButton().makeView { button in
+        lazy var sendMessageButton: SecureConversations.SendMessageButton = {
+            let button = SecureConversations.SendMessageButton()
+            button.translatesAutoresizingMaskIntoConstraints = false
             button.addTarget(
                 self,
                 action: #selector(handleSendMessageButtonTap),
                 for: .touchUpInside
             )
-        }
+            return button
+        }()
 
         lazy var scrollView = UIScrollView().makeView { scrollView in
             scrollView.keyboardDismissMode = .onDrag
@@ -77,6 +97,7 @@ extension SecureConversations {
                 checkMessagesButton,
                 messageTitleStackView,
                 messageTextView,
+                messageWarningStackView,
                 sendMessageButton
             ]
         ).makeView { stackView in
@@ -101,6 +122,25 @@ extension SecureConversations {
             recognizer.cancelsTouchesInView = false
             return recognizer
         }()
+
+        lazy var messageWarningLabel = UILabel().make { label in
+            label.numberOfLines = 0
+        }
+
+        lazy var messageWarningImageView = UIImageView().makeView { imageView in
+            imageView.image = Asset.mcWarningIcon.image
+        }
+
+        lazy var messageWarningStackView = UIStackView(
+            arrangedSubviews: [
+            messageWarningImageView,
+            messageWarningLabel
+            ])
+            .make { stackView in
+                stackView.alignment = .center
+                stackView.axis = .horizontal
+                stackView.spacing = 5
+            }
 
         // Since some of the reusable views require style
         // to be passed during initializtion, we have to
@@ -127,6 +167,9 @@ extension SecureConversations {
             defineFilePickerButtonLayout()
             defineMessageTextViewLayout()
             defineSendMessageButtonLayout()
+            defineMessageWarningLabelLayout()
+            // Hide warning stack initially.
+            setWarningStackHidden(true)
         }
 
         override func setup() {
@@ -239,8 +282,6 @@ extension SecureConversations {
                     multiplier: bottomSpaceToScreenHeightRatio
                 )
             ])
-            rootStackView.setCustomSpacing(16, after: messageTextView)
-
         }
 
         func defineSendMessageButtonLayout() {
@@ -257,16 +298,25 @@ extension SecureConversations {
             ])
         }
 
+        func defineMessageWarningLabelLayout() {
+            NSLayoutConstraint.activate([
+                messageWarningLabel.trailingAnchor.constraint(
+                    equalTo: safeAreaLayoutGuide.trailingAnchor,
+                    constant: -Self.sideMargin
+                )
+            ])
+        }
+
         @objc func handleCheckMessagesButtonTap() {
             props.checkMessageButtonTap()
         }
 
         @objc func handleFilePickerButtonTap() {
-            props.filePickerButtonTap?()
+            props.filePickerButton?.tap()
         }
 
         @objc func handleSendMessageButtonTap() {
-            props.sendMessageButtonTap()
+            Props.SendMessageButton.UIKitProps(props.sendMessageButton).tap?()
         }
 
         @objc func handleContentViewTap() {
@@ -278,6 +328,8 @@ extension SecureConversations {
             header.backButton.tap = props.backButtonTap.execute
             header.closeButton.tap = props.backButtonTap.execute
             header.showCloseButton()
+
+            titleIconView.tintColor = props.style.titleImageStyle.color
 
             titleLabel.text = props.style.welcomeTitleStyle.text
             titleLabel.font = props.style.welcomeTitleStyle.font
@@ -298,12 +350,58 @@ extension SecureConversations {
             messageTitleLabel.font = props.style.messageTitleStyle.font
             messageTitleLabel.textColor = props.style.messageTitleStyle.color
 
-            sendMessageButton.setTitle(props.style.sendButtonStyle.title, for: .normal)
-            sendMessageButton.setTitleColor(props.style.sendButtonStyle.textColor, for: .normal)
-            sendMessageButton.backgroundColor = props.style.sendButtonStyle.backgroundColor
+            switch props.sendMessageButton {
+            case .active:
+                sendMessageButton.props = .init(enabledStyle: props.style.sendButtonStyle.enabledStyle)
+            case .disabled:
+                sendMessageButton.props = .init(disabledStyle: props.style.sendButtonStyle.disabledStyle)
+            case .loading:
+                sendMessageButton.props = .init(loadingStyle: props.style.sendButtonStyle.loadingStyle)
+            }
+
             backgroundColor = props.style.backgroundColor
 
-            filePickerButton.isHidden = props.filePickerButtonTap == nil
+            filePickerButton.isHidden = props.filePickerButton == nil
+            filePickerButton.isEnabled = props.filePickerButton?.isEnabled == true
+            filePickerButton.tintColor = filePickerButton.isEnabled
+                ? props.style.filePickerButtonStyle.color
+                : props.style.filePickerButtonStyle.disabledColor
+
+            renderedWarning = props.warningMessage
+        }
+
+        var renderedWarning: Props.WarningMessage = "" {
+            didSet {
+                guard renderedWarning != oldValue else { return }
+
+                let render = { [weak self] in
+                    guard let self = self else { return }
+                    self.setWarningStackHidden(self.renderedWarning.text.isEmpty)
+                    self.messageWarningLabel.text = self.renderedWarning.text
+                    self.messageWarningLabel.textColor = self.props.style.messageWarningStyle.textColor
+                    self.messageWarningLabel.font = self.props.style.messageWarningStyle.textFont
+                    self.messageWarningImageView.tintColor = self.props.style.messageWarningStyle.iconColor
+                }
+
+                // Render w/o animation
+                if renderedWarning.animated {
+                    UIView.animate(withDuration: 0.25, animations: render)
+                } else {
+                    render()
+                }
+            }
+        }
+
+        private func setWarningStackHidden(_ isHidden: Bool) {
+            if isHidden {
+                messageWarningStackView.isHidden = true
+                rootStackView.setCustomSpacing(16, after: messageTextView)
+                rootStackView.setCustomSpacing(0, after: messageWarningStackView)
+            } else {
+                messageWarningStackView.isHidden = false
+                rootStackView.setCustomSpacing(4, after: messageTextView)
+                rootStackView.setCustomSpacing(14, after: messageWarningStackView)
+            }
         }
     }
 }
@@ -314,10 +412,9 @@ extension SecureConversations.WelcomeView {
             let style: SecureConversations.WelcomeStyle.MessageTextViewStyle
             let text: String
             let textChanged: Command<String>
-            let textLimit: Int
         }
 
-        var props = Props(style: .initial, text: "", textChanged: .nop, textLimit: .max) {
+        var props = Props(style: .initial, text: "", textChanged: .nop) {
             didSet {
                 renderProps()
             }
@@ -420,14 +517,6 @@ extension SecureConversations.WelcomeView.MessageTextView: UITextViewDelegate {
         placeholderLabel.isHidden = !textView.text.isEmpty
         renderBorder()
     }
-
-    func textView(
-        _ textView: UITextView,
-        shouldChangeTextIn range: NSRange,
-        replacementText text: String
-    ) -> Bool {
-        textView.text.count + (text.count - range.length) <= props.textLimit
-    }
 }
 
 extension SecureConversations.WelcomeView {
@@ -463,7 +552,10 @@ extension SecureConversations.WelcomeView {
             UIView.animate(withDuration: duration) {
                 self.layoutIfNeeded()
             }
-            let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.height + scrollView.contentInset.bottom)
+            let bottomOffset = CGPoint(
+                x: 0,
+                y: scrollView.contentSize.height - scrollView.bounds.height + scrollView.contentInset.bottom
+            )
             scrollView.setContentOffset(
                 bottomOffset,
                 animated: true
@@ -485,4 +577,86 @@ private extension SecureConversations.WelcomeStyle.MessageTextViewStyle {
         borderWidth: 1,
         cornerRadius: 4
     )
+}
+
+extension SecureConversations.WelcomeView.Props.WarningMessage: ExpressibleByStringLiteral {
+    init(stringLiteral value: String) {
+        text = value
+        animated = false
+    }
+}
+
+extension SecureConversations.SendMessageButton.Props {
+    init(enabledStyle: SecureConversations.WelcomeStyle.SendButtonEnabledStyle) {
+        self = .normal(
+            .init(
+                title: enabledStyle.title,
+                titleFont: enabledStyle.font,
+                foregroundColor: enabledStyle.textColor,
+                backgroundColor: enabledStyle.backgroundColor,
+                borderColor: enabledStyle.borderColor,
+                borderWidth: enabledStyle.borderWidth,
+                cornerRadius: enabledStyle.cornerRadius,
+                activityIndicatorColor: .clear,
+                isActivityIndicatorShown: false
+            )
+        )
+    }
+
+    init(disabledStyle: SecureConversations.WelcomeStyle.SendButtonDisabledStyle) {
+        self = .disabled(
+            .init(
+                title: disabledStyle.title,
+                titleFont: disabledStyle.font,
+                foregroundColor: disabledStyle.textColor,
+                backgroundColor: disabledStyle.backgroundColor,
+                borderColor: disabledStyle.borderColor,
+                borderWidth: disabledStyle.borderWidth,
+                cornerRadius: disabledStyle.cornerRadius,
+                activityIndicatorColor: .clear,
+                isActivityIndicatorShown: false
+            )
+        )
+    }
+
+    init(loadingStyle: SecureConversations.WelcomeStyle.SendButtonLoadingStyle) {
+        self = .disabled(
+            .init(
+                title: loadingStyle.title,
+                titleFont: loadingStyle.font,
+                foregroundColor: loadingStyle.textColor,
+                backgroundColor: loadingStyle.backgroundColor,
+                borderColor: loadingStyle.borderColor,
+                borderWidth: loadingStyle.borderWidth,
+                cornerRadius: loadingStyle.cornerRadius,
+                activityIndicatorColor: loadingStyle.activityIndicatorColor,
+                isActivityIndicatorShown: true
+            )
+        )
+    }
+}
+
+extension SecureConversations.WelcomeView.Props.SendMessageButton {
+    struct UIKitProps: Equatable {
+        var tap: Cmd?
+        var isLoading: Bool
+        var isEnabled: Bool
+
+        init(_ state: SecureConversations.WelcomeView.Props.SendMessageButton) {
+            switch state {
+            case let .active(action):
+                tap = action
+                isEnabled = true
+                isLoading = false
+            case .disabled:
+                tap = nil
+                isEnabled = false
+                isLoading = false
+            case .loading:
+                tap = nil
+                isEnabled = false
+                isLoading = true
+            }
+        }
+    }
 }

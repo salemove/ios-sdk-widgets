@@ -31,25 +31,44 @@ extension SecureConversations {
 }
 
 extension SecureConversations.WelcomeViewModel {
-    func props() -> SecureConversations.WelcomeViewController.Props {
+    typealias Props = SecureConversations.WelcomeViewController.Props
+    typealias WelcomeViewProps = SecureConversations.WelcomeView.Props
+    
+    func props() -> Props {
         let welcomeStyle = environment.welcomeStyle
-        let filePickerButtonTap = Cmd { print("### file picker") }
-        let props: SecureConversations.WelcomeViewController.Props = .welcome(
+        let filePickerButton = SecureConversations.WelcomeView.Props.FilePickerButton(
+            isEnabled: true,
+            tap: Cmd { print("### file picker") }
+        )
+
+        let messageLenghtWarning = messageText.count > Self.messageTextLimit ? welcomeStyle
+            .messageWarningStyle.messageLengthLimitText
+            .withTextLength(String(SecureConversations.WelcomeViewModel.messageTextLimit))
+        : ""
+
+        let warningMessage = WelcomeViewProps.WarningMessage(
+            text: messageLenghtWarning,
+            animated: true
+        )
+
+        let sendMessageButton: WelcomeViewProps.SendMessageButton = .active(Cmd { print("### send message") })
+
+        let props: Props = .welcome(
             .init(
                 style: environment.welcomeStyle,
                 backButtonTap: Cmd { [weak self] in self?.delegate?(.backTapped) },
                 closeButtonTap: Cmd { [weak self] in self?.delegate?(.closeTapped) },
                 checkMessageButtonTap: Cmd { print("### check messages") },
-                filePickerButtonTap: isAttachmentsAvailable ? filePickerButtonTap : nil,
-                sendMessageButtonTap: Cmd { print("### send message") },
+                filePickerButton: isAttachmentsAvailable ? filePickerButton : nil,
+                sendMessageButton: sendMessageButton,
                 messageTextViewProps: .init(
                     style: welcomeStyle.messageTextViewStyle,
                     text: messageText,
                     textChanged: .init { [weak self] text in
                         self?.messageText = text
-                    },
-                    textLimit: Self.messageTextLimit
-                )
+                    }
+                ),
+                warningMessage: warningMessage
             )
         )
         return props
