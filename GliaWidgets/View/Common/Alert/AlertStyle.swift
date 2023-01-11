@@ -1,7 +1,7 @@
 import UIKit
 
 /// Style of an alert view.
-public struct AlertStyle {
+public struct AlertStyle: Equatable {
     /// Font of the title text.
     public var titleFont: UIFont
 

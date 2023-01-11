@@ -1,7 +1,7 @@
 import UIKit
 
 /// Style of PoweredBy view (used in AlertView).
-public struct PoweredByStyle {
+public struct PoweredByStyle: Equatable {
     /// **Powered by** text.
     public var text: String
     /// Font used for `PoweredBy` view.

@@ -1,10 +1,10 @@
 import UIKit
 
-public enum ColorType {
+public enum ColorType: Equatable {
     case fill(color: UIColor)
     case gradient(colors: [CGColor])
 
-    static func == (lhs: ColorType, rhs: ColorType) -> Bool {
+    public static func == (lhs: ColorType, rhs: ColorType) -> Bool {
         switch (lhs, rhs) {
         case (.fill, .gradient):
             return false

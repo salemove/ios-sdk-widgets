@@ -8,6 +8,7 @@
 "alert.action.ok" = "OK";
 "alert.action.settings" = "Settings";
 "alert.action.cancel" = "Cancel";
+"alert.action.refresh" = "Refresh";
 
 "alert.accessibility.action.yes" = "Yes";
 "alert.accessibility.action.no" = "No";
@@ -57,6 +58,8 @@
 "alert.screenSharing.start.message" = "{operatorName} would like to see the screen of your device";
 "alert.screenSharing.stop.title" = "Stop screen sharing?";
 "alert.screenSharing.stop.message" = "Are you sure you want to stop sharing your screen?";
+
+"alert.visitorCode.title" = "Your Visitor Code";
 
 "chat.title" = "Chat";
 "chat.endButton.title" = "End";
