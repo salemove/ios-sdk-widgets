@@ -72,6 +72,7 @@ class ChatView: EngagementView {
         )
         super.init(
             with: style,
+            layout: .chat,
             environment: .init(
                 data: environment.data,
                 uuid: environment.uuid,
@@ -82,6 +83,7 @@ class ChatView: EngagementView {
             )
         )
         self.accessibilityIdentifier = "chat_root_view"
+        defineLayout()
     }
 
     required init() {
@@ -121,6 +123,7 @@ class ChatView: EngagementView {
     }
 
     func setConnectState(_ state: ConnectView.State, animated: Bool) {
+        connectView.setState(state, animated: animated)
         updateTableView(animated: animated)
     }
 
@@ -277,21 +280,6 @@ extension ChatView {
     private func content(for item: ChatItem) -> ChatItemCell.Content {
         switch item.kind {
         case .queueOperator:
-            let connectView = ConnectView(
-                with: style.connect,
-                layout: .chat,
-                environment: .init(
-                    data: environment.data,
-                    uuid: environment.uuid,
-                    gcd: environment.gcd,
-                    imageViewCache: environment.imageViewCache,
-                    timerProviding: environment.timerProviding
-                )
-            )
-            connectView.setState(
-                .queue,
-                animated: false
-            )
             return .queueOperator(connectView)
         case .outgoingMessage(let message):
             let view = VisitorChatMessageView(
