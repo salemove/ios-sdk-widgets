@@ -2,17 +2,30 @@ import UIKit
 
 class EngagementView: BaseView {
     let header: Header
+    let connectView: ConnectView
 
     private let style: EngagementStyle
     private let environment: Environment
 
     init(
         with style: EngagementStyle,
+        layout: ConnectView.Layout,
         environment: Environment
     ) {
         self.style = style
         self.header = Header(with: style.header)
         self.environment = environment
+        self.connectView = ConnectView(
+            with: style.connect,
+            layout: layout,
+            environment: .init(
+                data: environment.data,
+                uuid: environment.uuid,
+                gcd: environment.gcd,
+                imageViewCache: environment.imageViewCache,
+                timerProviding: environment.timerProviding
+            )
+        )
         super.init()
     }
 

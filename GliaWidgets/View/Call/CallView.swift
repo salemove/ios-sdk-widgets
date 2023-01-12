@@ -49,17 +49,6 @@ class CallView: EngagementView {
             localVideoView.label.isHidden = !isVisitrOnHold
         }
     }
-    lazy var connectView: ConnectView = .init(
-        with: style.connect,
-        layout: .call,
-        environment: .init(
-            data: environment.data,
-            uuid: environment.uuid,
-            gcd: environment.gcd,
-            imageViewCache: environment.imageViewCache,
-            timerProviding: environment.timerProviding
-        )
-    )
 
     lazy var operatorNameLabel: UILabel = {
         let label = UILabel()
@@ -117,6 +106,7 @@ class CallView: EngagementView {
         self.buttonBar = CallButtonBar(with: style.buttonBar)
         super.init(
             with: style,
+            layout: .call,
             environment: .init(
                 data: environment.data,
                 uuid: environment.uuid,

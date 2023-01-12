@@ -4,7 +4,7 @@ final class ConnectView: BaseView {
     private enum Constants {
         static var contentInsets: UIEdgeInsets {
             .init(
-                top: State.none.chatTopPadding,
+                top: State.initial.chatTopPadding,
                 left: 0,
                 bottom: 10,
                 right: 0
@@ -17,7 +17,7 @@ final class ConnectView: BaseView {
     }
 
     enum State: Equatable {
-        case none
+        case initial
         case queue
         case connecting(name: String?, imageUrl: String?)
         case connected(name: String?, imageUrl: String?)
@@ -29,12 +29,19 @@ final class ConnectView: BaseView {
 
     private let layout: Layout
     private let style: ConnectStyle
-    private var state: State = .none
+    private var state: State = .initial
     private var connectTimer: FoundationBased.Timer?
     private var connectCounter: Int = 0
     private var isShowing = false
     private let environment: Environment
-    private let stackView = UIStackView()
+    private lazy var stackView = UIStackView.make(
+        .vertical,
+        spacing: State.initial.chatContentSpacing,
+        distribution: .fillProportionally
+    )(
+        operatorView,
+        statusView
+    )
     private var contentTopPadding: NSLayoutConstraint?
 
     init(
@@ -66,15 +73,8 @@ final class ConnectView: BaseView {
         accessibilityElements = [operatorView, statusView]
 
         addSubview(stackView)
-        stackView.axis = .vertical
-        stackView.spacing = State.none.chatContentSpacing
-        stackView.distribution = .fillProportionally
-        stackView.addArrangedSubviews([
-            operatorView,
-            statusView
-        ])
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        setState(.none, animated: false)
+        setState(.initial, animated: false)
     }
 
     override func defineLayout() {
@@ -91,7 +91,7 @@ final class ConnectView: BaseView {
         updateConstraints()
 
         switch state {
-        case .none:
+        case .initial:
             stopConnectTimer()
             hide(animated: animated)
         case .queue:
@@ -207,7 +207,7 @@ extension ConnectView {
 extension ConnectView.State {
     var chatContentSpacing: CGFloat {
         switch self {
-        case .none, .queue, .connecting, .transferring:
+        case .initial, .queue, .connecting, .transferring:
             return 0
         case .connected:
             return 12
@@ -216,7 +216,7 @@ extension ConnectView.State {
 
     var callContentSpacing: CGFloat {
         switch self {
-        case .none, .queue, .connecting, .transferring:
+        case .initial, .queue, .connecting, .transferring:
             return 1
         case .connected:
             return 18
@@ -225,7 +225,7 @@ extension ConnectView.State {
 
     var chatTopPadding: CGFloat {
         switch self {
-        case .none, .queue, .connecting, .transferring:
+        case .initial, .queue, .connecting, .transferring:
             return 6
         case .connected:
             return 14
@@ -234,7 +234,7 @@ extension ConnectView.State {
 
     var callTopPadding: CGFloat {
         switch self {
-        case .none, .queue, .connecting, .transferring:
+        case .initial, .queue, .connecting, .transferring:
             return 32
         case .connected:
             return 14

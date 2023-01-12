@@ -25,7 +25,18 @@ extension CoreSdkClient {
             fetchSiteConfigurations: GliaCore.sharedInstance.fetchSiteConfiguration(_:),
             submitSurveyAnswer: GliaCore.sharedInstance.submitSurveyAnswer(_:surveyId:engagementId:completion:),
             authentication: GliaCore.sharedInstance.authentication,
-            fetchChatHistory: GliaCore.sharedInstance.fetchChatTranscript
+            fetchChatHistory: { completion in
+                GliaCore.sharedInstance.fetchChatTranscript { result in
+                    switch result {
+                    case let .success(messages):
+                        completion(
+                            .success(messages.map { ChatMessage(with: $0) })
+                        )
+                    case let .failure(error):
+                        completion(.failure(error))
+                    }
+                }
+            }
         )
     }()
 }
