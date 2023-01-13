@@ -8,7 +8,6 @@
 "alert.action.ok" = "OK";
 "alert.action.settings" = "Settings";
 "alert.action.cancel" = "Cancel";
-"alert.action.refresh" = "Refresh";
 
 "alert.accessibility.action.yes" = "Yes";
 "alert.accessibility.action.no" = "No";
@@ -217,3 +216,7 @@
 "survey.accessibility.question.optionButton.selected.label" = "Selected: {buttonTitle}";
 "survey.accessibility.question.optionButton.unselected.label" = "Unselected: {buttonTitle}";
 "survey.accessibility.validation.title.label" = "Please provide an answer for question above";
+
+"visitorCode.title.standard" = "Your Visitor Code";
+"visitorCode.title.error" = "Could not show visitor code. Please try refreshing.";
+"visitorCode.action.refresh" = "Refresh";

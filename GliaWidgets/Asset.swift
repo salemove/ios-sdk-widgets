@@ -80,6 +80,7 @@ public enum Asset {
     public static let surveyCheckboxChecked = ImageAsset(name: "survey-checkbox-checked")
     public static let surveyCheckbox = ImageAsset(name: "survey-checkbox")
     public static let surveyValidationError = ImageAsset(name: "survey-validation-error")
+    public static let spinner = ImageAsset(name: "spinner")
 
   // swiftlint:disable trailing_comma
   public static let allColors: [ColorAsset] = [

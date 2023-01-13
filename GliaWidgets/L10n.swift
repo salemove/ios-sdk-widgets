@@ -14,6 +14,18 @@ public enum L10n {
   public static let `operator` = L10n.tr("Localizable", "operator", fallback: "Operator")
   /// Powered by
   public static let poweredBy = L10n.tr("Localizable", "poweredBy", fallback: "Powered by")
+  public enum VisitorCode {
+    public enum Title {
+      /// Standard
+      public static let standard = L10n.tr("Localizable", "visitorCode.title.standard", fallback: "Your Visitor Code")
+      /// Error
+      public static let error = L10n.tr("Localizable", "visitorCode.title.error", fallback: "Could not show visitor code. Please try refreshing.")
+    }
+    public enum Action {
+      /// Refresh
+      public static let refresh = L10n.tr("Localizable", "visitorCode.action.refresh", fallback: "Refresh")
+    }
+  }
   public enum Alert {
     public enum Accessibility {
       public enum Action {
@@ -48,8 +60,6 @@ public enum L10n {
       public static let settings = L10n.tr("Localizable", "alert.action.settings", fallback: "Settings")
       /// Yes
       public static let yes = L10n.tr("Localizable", "alert.action.yes", fallback: "Yes")
-      /// Refresh
-      public static let refresh = L10n.tr("Localizable", "alert.action.yes", fallback: "Refresh")
     }
     public enum ApiError {
       /// {message}
