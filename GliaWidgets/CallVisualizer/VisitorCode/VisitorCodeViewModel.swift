@@ -8,7 +8,8 @@ extension CallVisualizer {
         var delegate: (Delegate) -> Void
         var timer: FoundationBased.Timer?
         var theme: Theme
-        var receivedVisitorCode: VisitorCode? {
+        var visitorCodeExpiresAt: Date?
+        var viewState: VisitorCodeView.Props.ViewState = .loading {
             didSet {
                 notifyPropsUpdated()
                 scheduleVisitorCodeRefresh()
@@ -40,8 +41,8 @@ extension CallVisualizer {
 
             let codeViewProps = VisitorCodeView.Props(
                 viewType: viewType,
+                viewState: viewState,
                 style: theme.visitorCodeStyle,
-                visitorCode: receivedVisitorCode?.code ?? "",
                 isPoweredByShown: theme.showsPoweredBy
             )
             return .init(visitorCodeViewProps: codeViewProps)
@@ -55,21 +56,31 @@ extension CallVisualizer {
             _ = environment.requestVisitorCode { [weak self] result in
                 switch result {
                 case let .success(code):
-                    self?.receivedVisitorCode = code
+                    self?.visitorCodeExpiresAt = code.expiresAt
+                    self?.viewState = .success(visitorCode: code.code)
                 case let .failure(error):
-                    debugPrint(error.localizedDescription)
+                    self?.viewState = .error(refreshTap: Cmd { [weak self] in
+                        self?.viewState = .loading
+                        self?.requestVisitorCode()
+                    })
+                    debugPrint("Error getting vistior code:", error.localizedDescription)
                 }
             }
         }
 
         func scheduleVisitorCodeRefresh() {
             timer?.invalidate()
-            guard let expDate = receivedVisitorCode?.expiresAt else { return }
-            timer = environment.timerProviding.scheduledTimer(
-                withTimeInterval: expDate.timeIntervalSinceNow,
-                repeats: false
-            ) { [weak self] _ in
-                self?.requestVisitorCode()
+            switch viewState {
+            case .error, .loading:
+                break
+            case .success:
+                guard let expirationDate = visitorCodeExpiresAt else { return }
+                timer = environment.timerProviding.scheduledTimer(
+                    withTimeInterval: expirationDate.timeIntervalSinceNow,
+                    repeats: false
+                ) { [weak self] _ in
+                    self?.requestVisitorCode()
+                }
             }
         }
     }

@@ -57,10 +57,8 @@ extension CallVisualizer {
                     }
                 }
             )
-            defer {
-                viewModel.requestVisitorCode()
-            }
 
+            viewModel.requestVisitorCode()
             self.viewModel = viewModel
 
             let codeController = VisitorCodeViewController(props: viewModel.makeProps())
