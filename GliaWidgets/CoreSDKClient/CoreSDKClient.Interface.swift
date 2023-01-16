@@ -103,7 +103,7 @@ struct CoreSdkClient {
     typealias CreateAuthentication = (_ behaviour: AuthenticationBehavior) throws -> Authentication
     var authentication: CreateAuthentication
 
-    typealias FetchChatHistory = (_ completion: @escaping (Result<[Self.Message], SalemoveSDK.GliaCoreError>) -> Void) -> Void
+    typealias FetchChatHistory = (_ completion: @escaping (Result<[ChatMessage], SalemoveSDK.GliaCoreError>) -> Void) -> Void
     var fetchChatHistory: FetchChatHistory
 }
 

@@ -106,6 +106,7 @@ class CallView: EngagementView {
         self.buttonBar = CallButtonBar(with: style.buttonBar)
         super.init(
             with: style,
+            layout: .call,
             environment: .init(
                 data: environment.data,
                 uuid: environment.uuid,
@@ -129,7 +130,6 @@ class CallView: EngagementView {
         adjustLocalVideoFrameAfterLayout()
     }
 
-    // swiftlint:disable function_body_length
     override func setup() {
         accessibilityIdentifier = "call_root_view"
 
@@ -195,7 +195,6 @@ class CallView: EngagementView {
         header.backButton.accessibilityLabel = style.header.backButton.accessibility.label
         header.backButton.accessibilityHint = style.header.backButton.accessibility.hint
     }
-    // swiftlint:enable function_body_length
 
     func switchTo(_ mode: Mode) {
         self.mode = mode
@@ -259,7 +258,6 @@ class CallView: EngagementView {
         }
     }
 
-    // swiftlint:disable function_body_length
     private func layout() {
         let effect = UIBlurEffect(style: .dark)
         let effectView = UIVisualEffectView(effect: effect)
@@ -283,7 +281,7 @@ class CallView: EngagementView {
         topLabel.autoPinEdge(toSuperviewSafeArea: .right, withInset: 20)
 
         addSubview(connectView)
-        connectView.autoPinEdge(.top, to: .bottom, of: header)
+        connectView.autoPinEdge(.top, to: .bottom, of: header, withOffset: 10)
         connectView.autoPinEdge(toSuperviewMargin: .left, relation: .greaterThanOrEqual)
         connectView.autoPinEdge(toSuperviewMargin: .right, relation: .greaterThanOrEqual)
         connectView.autoAlignAxis(toSuperviewAxis: .vertical)
@@ -323,7 +321,6 @@ class CallView: EngagementView {
         adjustForCurrentOrientation()
         switchTo(mode)
     }
-    // swiftlint:enable function_body_length
 
     private func adjustForCurrentOrientation() {
         if currentOrientation.isLandscape {

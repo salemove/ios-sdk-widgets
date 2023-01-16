@@ -40,11 +40,6 @@ class ChatItemCell: UITableViewCell {
             case .none:
                 stackView.removeArrangedSubviews()
             default:
-//                let redView = UIView()
-//                redView.backgroundColor = .red
-//                redView.heightAnchor.constraint(equalToConstant: 44).isActive = true
-//                redView.widthAnchor.constraint(equalToConstant: 44).isActive = true
-//                stackView.replaceArrangedSubviews(with: [redView])
                 guard let view = content.view else { return }
                 stackView.replaceArrangedSubviews(with: [view])
             }
