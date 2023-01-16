@@ -72,6 +72,7 @@ class ChatView: EngagementView {
         )
         super.init(
             with: style,
+            layout: .chat,
             environment: .init(
                 data: environment.data,
                 uuid: environment.uuid,
@@ -82,6 +83,7 @@ class ChatView: EngagementView {
             )
         )
         self.accessibilityIdentifier = "chat_root_view"
+        defineLayout()
     }
 
     required init() {
@@ -397,6 +399,7 @@ extension ChatView {
         case .operatorConnected(let name, let imageUrl):
             let connectView = ConnectView(
                 with: style.connect,
+                layout: .chat,
                 environment: .init(
                     data: environment.data,
                     uuid: environment.uuid,
@@ -412,6 +415,7 @@ extension ChatView {
         case .transferring:
             let connectView = ConnectView(
                 with: style.connect,
+                layout: .chat,
                 environment: .init(
                     data: environment.data,
                     uuid: environment.uuid,

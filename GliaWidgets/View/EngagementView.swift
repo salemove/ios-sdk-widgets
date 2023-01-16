@@ -9,6 +9,7 @@ class EngagementView: BaseView {
 
     init(
         with style: EngagementStyle,
+        layout: ConnectView.Layout,
         environment: Environment
     ) {
         self.style = style
@@ -16,6 +17,7 @@ class EngagementView: BaseView {
         self.environment = environment
         self.connectView = ConnectView(
             with: style.connect,
+            layout: layout,
             environment: .init(
                 data: environment.data,
                 uuid: environment.uuid,

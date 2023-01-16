@@ -1,8 +1,23 @@
 import UIKit
 
 final class ConnectView: BaseView {
+    private enum Constants {
+        static var contentInsets: UIEdgeInsets {
+            .init(
+                top: State.initial.chatTopPadding,
+                left: 0,
+                bottom: 10,
+                right: 0
+            )
+        }
+    }
+
+    enum Layout {
+        case chat, call
+    }
+
     enum State: Equatable {
-        case none
+        case initial
         case queue
         case connecting(name: String?, imageUrl: String?)
         case connected(name: String?, imageUrl: String?)
@@ -12,19 +27,30 @@ final class ConnectView: BaseView {
     let operatorView: ConnectOperatorView
     let statusView = ConnectStatusView()
 
+    private let layout: Layout
     private let style: ConnectStyle
-    private var state: State = .none
+    private var state: State = .initial
     private var connectTimer: FoundationBased.Timer?
     private var connectCounter: Int = 0
     private var isShowing = false
     private let environment: Environment
-    private let stackView = UIStackView()
+    private lazy var stackView = UIStackView.make(
+        .vertical,
+        spacing: State.initial.chatContentSpacing,
+        distribution: .fillProportionally
+    )(
+        operatorView,
+        statusView
+    )
+    private var contentTopPadding: NSLayoutConstraint?
 
     init(
         with style: ConnectStyle,
+        layout: Layout,
         environment: Environment
     ) {
         self.style = style
+        self.layout = layout
         self.environment = environment
         self.operatorView = ConnectOperatorView(
             with: style.connectOperator,
@@ -37,38 +63,35 @@ final class ConnectView: BaseView {
         )
         super.init()
     }
-   
+
     required init() {
         fatalError("init() has not been implemented")
     }
 
     override func setup() {
         super.setup()
-        setState(.none, animated: false)
         accessibilityElements = [operatorView, statusView]
 
         addSubview(stackView)
-        stackView.axis = .vertical
-        stackView.spacing = 32
-        stackView.distribution = .fillProportionally
-        stackView.addArrangedSubviews([
-            operatorView,
-            statusView
-        ])
         stackView.translatesAutoresizingMaskIntoConstraints = false
+        setState(.initial, animated: false)
     }
 
     override func defineLayout() {
         super.defineLayout()
-        stackView.autoPinEdgesToSuperviewEdges(with: .init(top: 32, left: 0, bottom: 10, right: 0))
+        // `autoPinEdgesToSuperviewEdges` returns array of constraints where first one is for top padding.
+        contentTopPadding = stackView.autoPinEdgesToSuperviewEdges(with: Constants.contentInsets).first
     }
 
     // swiftlint:disable function_body_length
     func setState(_ state: State, animated: Bool) {
         self.state = state
+        stackView.spacing = layout.contentSpacing(for: state)
+        contentTopPadding?.constant = layout.topPadding(for: state)
+        updateConstraints()
 
         switch state {
-        case .none:
+        case .initial:
             stopConnectTimer()
             hide(animated: animated)
         case .queue:
@@ -178,5 +201,63 @@ extension ConnectView {
         var gcd: GCD
         var imageViewCache: ImageView.Cache
         var timerProviding: FoundationBased.Timer.Providing
+    }
+}
+
+extension ConnectView.State {
+    var chatContentSpacing: CGFloat {
+        switch self {
+        case .initial, .queue, .connecting, .transferring:
+            return 0
+        case .connected:
+            return 12
+        }
+    }
+
+    var callContentSpacing: CGFloat {
+        switch self {
+        case .initial, .queue, .connecting, .transferring:
+            return 1
+        case .connected:
+            return 18
+        }
+    }
+
+    var chatTopPadding: CGFloat {
+        switch self {
+        case .initial, .queue, .connecting, .transferring:
+            return 6
+        case .connected:
+            return 14
+        }
+    }
+
+    var callTopPadding: CGFloat {
+        switch self {
+        case .initial, .queue, .connecting, .transferring:
+            return 32
+        case .connected:
+            return 14
+        }
+    }
+}
+
+extension ConnectView.Layout {
+    func topPadding(for state: ConnectView.State) -> CGFloat {
+        switch self {
+        case .chat:
+            return state.chatTopPadding
+        case .call:
+            return state.callTopPadding
+        }
+    }
+
+    func contentSpacing(for state: ConnectView.State) -> CGFloat {
+        switch self {
+        case .chat:
+            return state.chatContentSpacing
+        case .call:
+            return state.callContentSpacing
+        }
     }
 }

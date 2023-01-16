@@ -40,7 +40,6 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     private var pendingMessages: [OutgoingMessage] = []
     private var isViewLoaded: Bool = false
 
-    // swiftlint:disable function_body_length
     init(
         interactor: Interactor,
         alertConfiguration: AlertConfiguration,
@@ -109,7 +108,6 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             self?.action?(.pickMediaButtonEnabled(!limitReached))
         }
     }
-    // swiftlint:enable function_body_length
 
     func event(_ event: Event) {
         switch event {
@@ -165,7 +163,6 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         }
     }
 
-    // swiftlint:disable function_body_length
     override func update(for state: InteractorState) {
         super.update(for: state)
 
@@ -231,7 +228,6 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             break
         }
     }
-    // swiftlint:enable function_body_length
 
     override func interactorEvent(_ event: InteractorEvent) {
         super.interactorEvent(event)
@@ -321,9 +317,9 @@ extension ChatViewModel {
 // MARK: History
 
 extension ChatViewModel {
-    private func loadHistory(_ completion: @escaping ([CoreSdkClient.Message]) -> Void) {
+    private func loadHistory(_ completion: @escaping ([ChatMessage]) -> Void) {
         environment.fetchChatHistory { result in
-            let messages = ((try? result.get()) ?? []).compactMap { ChatMessage(with: $0) }
+            let messages = (try? result.get()) ?? []
             let items = messages.compactMap {
                 ChatItem(
                     with: $0,
@@ -334,7 +330,7 @@ extension ChatViewModel {
             self.historySection.set(items)
             self.action?(.refreshSection(self.historySection.index))
             self.action?(.scrollToBottom(animated: false))
-            completion((try? result.get()) ?? [])
+            completion(messages)
         }
     }
 }

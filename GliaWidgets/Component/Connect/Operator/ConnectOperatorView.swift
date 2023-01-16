@@ -110,6 +110,10 @@ final class ConnectOperatorView: BaseView {
         self.animationView = animationView
 
         insertSubview(animationView, at: 0)
+        animationView.autoPinEdge(toSuperviewEdge: .left, withInset: 0, relation: .greaterThanOrEqual)
+        animationView.autoPinEdge(toSuperviewEdge: .top, withInset: 0)
+        animationView.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
+        animationView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 0)
         animationView.autoCenterInSuperview()
         animationView.autoSetDimensions(to: .init(width: kAnimationViewSize, height: kAnimationViewSize))
         animationView.startAnimating()
