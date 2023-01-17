@@ -6,33 +6,6 @@ extension SecureConversations {
         static let sideMargin = 24.0
         static let filePickerButtonSize = 44.0
 
-        struct Props: Equatable {
-            struct FilePickerButton: Equatable {
-                let isEnabled: Bool
-                let tap: Cmd
-            }
-
-            struct WarningMessage: Equatable {
-                let text: String
-                let animated: Bool
-            }
-
-            enum SendMessageButton: Equatable {
-                case active(Cmd)
-                case loading
-                case disabled
-            }
-
-            let style: SecureConversations.WelcomeStyle
-            let backButtonTap: Cmd
-            let closeButtonTap: Cmd
-            let checkMessageButtonTap: Cmd
-            let filePickerButton: FilePickerButton?
-            let sendMessageButton: SendMessageButton
-            let messageTextViewProps: MessageTextView.Props
-            let warningMessage: WarningMessage
-        }
-
         var props: Props {
             didSet {
                renderProps()
@@ -184,134 +157,6 @@ extension SecureConversations {
             renderProps()
         }
 
-        func defineHeaderLayout() {
-            addSubview(header)
-            header.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                header.leadingAnchor.constraint(equalTo: leadingAnchor),
-                header.trailingAnchor.constraint(equalTo: trailingAnchor),
-                header.topAnchor.constraint(equalTo: topAnchor)
-            ])
-        }
-
-        func defineScrollViewLayout() {
-            addSubview(scrollView)
-            scrollViewBottomConstraint = scrollView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor)
-            NSLayoutConstraint.activate(
-                [
-                    scrollView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
-                    scrollView.topAnchor.constraint(equalTo: header.safeAreaLayoutGuide.bottomAnchor),
-                    scrollView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
-                    scrollViewBottomConstraint
-                ].compactMap({ $0 })
-            )
-        }
-
-        func defineRootStackViewLayout() {
-            scrollView.addSubview(rootStackView)
-            NSLayoutConstraint.activate([
-                rootStackView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor),
-                rootStackView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
-                rootStackView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor, constant: 42),
-                rootStackView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor)
-            ])
-        }
-
-        func defineTitleIconLayout() {
-            NSLayoutConstraint.activate([
-                titleIconView.widthAnchor.constraint(equalToConstant: 24),
-                titleIconView.heightAnchor.constraint(equalToConstant: 24)
-            ])
-            rootStackView.setCustomSpacing(10, after: titleIconView)
-        }
-
-        func defineTitleLabelLayout() {
-            NSLayoutConstraint.activate([
-                titleLabel.trailingAnchor.constraint(
-                    lessThanOrEqualTo: safeAreaLayoutGuide.trailingAnchor,
-                    constant: -Self.sideMargin
-                )
-            ])
-            rootStackView.setCustomSpacing(16, after: titleLabel)
-
-        }
-
-        func defineSubtitleLabelLayout() {
-            NSLayoutConstraint.activate([
-                subtitleLabel.trailingAnchor.constraint(
-                    lessThanOrEqualTo: safeAreaLayoutGuide.trailingAnchor,
-                    constant: -Self.sideMargin
-                )
-            ])
-            rootStackView.setCustomSpacing(16, after: subtitleLabel)
-
-        }
-
-        func defineCheckMessagesButtonLayout() {
-            rootStackView.setCustomSpacing(56, after: checkMessagesButton)
-        }
-
-        func defineMessageTitleStackViewLayout() {
-            rootStackView.setCustomSpacing(5, after: messageTitleStackView)
-        }
-
-        func defineMessageTitleLabelLayout() {
-            NSLayoutConstraint.activate([
-                messageTitleLabel.trailingAnchor.constraint(
-                    equalTo: safeAreaLayoutGuide.trailingAnchor,
-                    constant: -Self.filePickerButtonSize - Self.sideMargin
-                )
-            ])
-        }
-
-        func defineFilePickerButtonLayout() {
-            NSLayoutConstraint.activate([
-                filePickerButton.widthAnchor.constraint(equalToConstant: Self.filePickerButtonSize),
-                filePickerButton.heightAnchor.constraint(equalToConstant: Self.filePickerButtonSize)
-            ])
-        }
-
-        func defineMessageTextViewLayout() {
-            // In design space between bottom part of border
-            // and bottom part of screen is 170 and screen height 812.
-            // So since height is different for every other
-            // device, we should rely on ratio.
-            let bottomSpaceToScreenHeightRatio = 0.209
-            NSLayoutConstraint.activate([
-                messageTextView.trailingAnchor.constraint(
-                    equalTo: safeAreaLayoutGuide.trailingAnchor,
-                    constant: -Self.sideMargin
-                ),
-                messageTextView.heightAnchor.constraint(
-                    greaterThanOrEqualTo: heightAnchor,
-                    multiplier: bottomSpaceToScreenHeightRatio
-                )
-            ])
-        }
-
-        func defineSendMessageButtonLayout() {
-            let widthConstraint = sendMessageButton.widthAnchor.constraint(
-                equalTo: messageTitleStackView.widthAnchor,
-                // For some reason width constraint breaks if it is
-                // exactly equal to `messageTitleStackView` width.
-                // Making it slightly less, seem to resolve the issue.
-                constant: -1
-            )
-            NSLayoutConstraint.activate([
-                widthConstraint,
-                sendMessageButton.heightAnchor.constraint(equalToConstant: 48)
-            ])
-        }
-
-        func defineMessageWarningLabelLayout() {
-            NSLayoutConstraint.activate([
-                messageWarningLabel.trailingAnchor.constraint(
-                    equalTo: safeAreaLayoutGuide.trailingAnchor,
-                    constant: -Self.sideMargin
-                )
-            ])
-        }
-
         @objc func handleCheckMessagesButtonTap() {
             props.checkMessageButtonTap()
         }
@@ -411,15 +256,202 @@ extension SecureConversations {
     }
 }
 
+// MARK: - Define layout
 extension SecureConversations.WelcomeView {
-    class MessageTextView: BaseView {
-        struct Props: Equatable {
-            let style: SecureConversations.WelcomeStyle.MessageTextViewStyle
-            let text: String
-            let textChanged: Command<String>
+    func defineHeaderLayout() {
+        addSubview(header)
+        header.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            header.leadingAnchor.constraint(equalTo: leadingAnchor),
+            header.trailingAnchor.constraint(equalTo: trailingAnchor),
+            header.topAnchor.constraint(equalTo: topAnchor)
+        ])
+    }
+
+    func defineScrollViewLayout() {
+        addSubview(scrollView)
+        scrollViewBottomConstraint = scrollView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor)
+        NSLayoutConstraint.activate(
+            [
+                scrollView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
+                scrollView.topAnchor.constraint(equalTo: header.safeAreaLayoutGuide.bottomAnchor),
+                scrollView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
+                scrollViewBottomConstraint
+            ].compactMap({ $0 })
+        )
+    }
+
+    func defineRootStackViewLayout() {
+        scrollView.addSubview(rootStackView)
+        NSLayoutConstraint.activate([
+            rootStackView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor),
+            rootStackView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
+            rootStackView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor, constant: 42),
+            rootStackView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor)
+        ])
+    }
+
+    func defineTitleIconLayout() {
+        NSLayoutConstraint.activate([
+            titleIconView.widthAnchor.constraint(equalToConstant: 24),
+            titleIconView.heightAnchor.constraint(equalToConstant: 24)
+        ])
+        rootStackView.setCustomSpacing(10, after: titleIconView)
+    }
+
+    func defineTitleLabelLayout() {
+        NSLayoutConstraint.activate([
+            titleLabel.trailingAnchor.constraint(
+                lessThanOrEqualTo: safeAreaLayoutGuide.trailingAnchor,
+                constant: -Self.sideMargin
+            )
+        ])
+        rootStackView.setCustomSpacing(16, after: titleLabel)
+
+    }
+
+    func defineSubtitleLabelLayout() {
+        NSLayoutConstraint.activate([
+            subtitleLabel.trailingAnchor.constraint(
+                lessThanOrEqualTo: safeAreaLayoutGuide.trailingAnchor,
+                constant: -Self.sideMargin
+            )
+        ])
+        rootStackView.setCustomSpacing(16, after: subtitleLabel)
+
+    }
+
+    func defineCheckMessagesButtonLayout() {
+        rootStackView.setCustomSpacing(56, after: checkMessagesButton)
+    }
+
+    func defineMessageTitleStackViewLayout() {
+        rootStackView.setCustomSpacing(5, after: messageTitleStackView)
+    }
+
+    func defineMessageTitleLabelLayout() {
+        NSLayoutConstraint.activate([
+            messageTitleLabel.trailingAnchor.constraint(
+                equalTo: safeAreaLayoutGuide.trailingAnchor,
+                constant: -Self.filePickerButtonSize - Self.sideMargin
+            )
+        ])
+    }
+
+    func defineFilePickerButtonLayout() {
+        NSLayoutConstraint.activate([
+            filePickerButton.widthAnchor.constraint(equalToConstant: Self.filePickerButtonSize),
+            filePickerButton.heightAnchor.constraint(equalToConstant: Self.filePickerButtonSize)
+        ])
+    }
+
+    func defineMessageTextViewLayout() {
+        // In design space between bottom part of border
+        // and bottom part of screen is 170 and screen height 812.
+        // So since height is different for every other
+        // device, we should rely on ratio.
+        let bottomSpaceToScreenHeightRatio = 0.209
+        NSLayoutConstraint.activate([
+            messageTextView.trailingAnchor.constraint(
+                equalTo: safeAreaLayoutGuide.trailingAnchor,
+                constant: -Self.sideMargin
+            ),
+            messageTextView.heightAnchor.constraint(
+                greaterThanOrEqualTo: heightAnchor,
+                multiplier: bottomSpaceToScreenHeightRatio
+            )
+        ])
+    }
+
+    func defineSendMessageButtonLayout() {
+        let widthConstraint = sendMessageButton.widthAnchor.constraint(
+            equalTo: messageTitleStackView.widthAnchor,
+            // For some reason width constraint breaks if it is
+            // exactly equal to `messageTitleStackView` width.
+            // Making it slightly less, seem to resolve the issue.
+            constant: -1
+        )
+        NSLayoutConstraint.activate([
+            widthConstraint,
+            sendMessageButton.heightAnchor.constraint(equalToConstant: 48)
+        ])
+    }
+
+    func defineMessageWarningLabelLayout() {
+        NSLayoutConstraint.activate([
+            messageWarningLabel.trailingAnchor.constraint(
+                equalTo: safeAreaLayoutGuide.trailingAnchor,
+                constant: -Self.sideMargin
+            )
+        ])
+    }
+}
+
+// MARK: - Props
+extension SecureConversations.WelcomeView {
+    struct Props: Equatable {
+        struct FilePickerButton: Equatable {
+            let isEnabled: Bool
+            let tap: Cmd
         }
 
-        var props = Props(style: .initial, text: "", textChanged: .nop) {
+        struct WarningMessage: Equatable {
+            let text: String
+            let animated: Bool
+        }
+
+        enum SendMessageButton: Equatable {
+            case active(Cmd)
+            case loading
+            case disabled
+        }
+
+        let style: SecureConversations.WelcomeStyle
+        let backButtonTap: Cmd
+        let closeButtonTap: Cmd
+        let checkMessageButtonTap: Cmd
+        let filePickerButton: FilePickerButton?
+        let sendMessageButton: SendMessageButton
+        let messageTextViewProps: MessageTextView.Props
+        let warningMessage: WarningMessage
+    }
+}
+
+extension SecureConversations.WelcomeView.Props.WarningMessage: ExpressibleByStringLiteral {
+    init(stringLiteral value: String) {
+        text = value
+        animated = false
+    }
+}
+
+// MARK: - MessageTextView
+extension SecureConversations.WelcomeView {
+    class MessageTextView: BaseView {
+        enum Props: Equatable {
+            struct NormalState: Equatable {
+                let style: SecureConversations.WelcomeStyle.MessageTextViewStyle
+                let text: String
+                let activeChanged: Command<Bool>
+            }
+
+            struct ActiveState: Equatable {
+                let style: SecureConversations.WelcomeStyle.MessageTextViewStyle
+                let text: String
+                let textChanged: Command<String>
+                let activeChanged: Command<Bool>?
+            }
+
+            struct DisabledState: Equatable {
+                let style: SecureConversations.WelcomeStyle.MessageTextViewStyle
+                let text: String
+            }
+
+            case normal(NormalState)
+            case active(ActiveState)
+            case disabled(DisabledState)
+        }
+
+        var props = Props.normal(.init(style: .initial, text: "", activeChanged: .nop)) {
             didSet {
                 renderProps()
             }
@@ -485,6 +517,7 @@ extension SecureConversations.WelcomeView {
         }
 
         func renderProps() {
+            let props = UIKitProps(self.props)
             let style = props.style
             placeholderLabel.textColor = style.placeholderColor
             placeholderLabel.font = style.placeholderFont
@@ -495,35 +528,151 @@ extension SecureConversations.WelcomeView {
             textView.textColor = style.textColor
             textView.textContainerInset = .zero
             textView.textContainer.lineFragmentPadding = 0
+            textView.isEditable = props.isEnabled
+            self.backgroundColor = style.backgroundColor
             self.layer.borderWidth = style.borderWidth
             self.layer.cornerRadius = style.cornerRadius
-            renderBorder()
+            self.layer.borderColor = style.borderColor.cgColor
+            // Hide placeholder if textfield is active or has non-empty text.
+            placeholderLabel.isHidden = !textView.text.isEmpty || textView.isFirstResponder
+            renderedActive = props.isActive
         }
 
-        func renderBorder() {
-            self.layer.borderColor = textView.isFirstResponder
-            ? props.style.activeBorderColor.cgColor
-            : props.style.borderColor.cgColor
+        var renderedActive: Bool = false {
+            didSet {
+                guard renderedActive != oldValue else { return }
+                // Make text view active based on pass value from Props
+                switch (renderedActive, textView.isFirstResponder) {
+                case (true, true), (false, false):
+                    break
+                case (true, false):
+                    textView.becomeFirstResponder()
+                case (false, true):
+                    textView.resignFirstResponder()
+                }
+            }
         }
     }
 }
 
+// MARK: - UIKitProps for MessageTextView
+extension SecureConversations.WelcomeView.MessageTextView {
+    struct UIKitProps: Equatable {
+        struct Style: Equatable {
+            var placeholderText: String
+            var placeholderFont: UIFont
+            var placeholderColor: UIColor
+            var textFont: UIFont
+            var textColor: UIColor
+            var borderColor: UIColor
+            var borderWidth: Double
+            var cornerRadius: Double
+            var backgroundColor: UIColor
+        }
+
+        let style: Style
+        let text: String
+        let textChanged: Command<String>?
+        let activeChanged: Command<Bool>?
+        let isEnabled: Bool
+        let isActive: Bool
+    }
+}
+
+extension SecureConversations.WelcomeView.MessageTextView.UIKitProps {
+    init(_ props: SecureConversations.WelcomeView.MessageTextView.Props) {
+        switch props {
+        case let .normal(normalState):
+            self.init(
+                style: .init(normalStyle: normalState.style.normalStyle),
+                text: normalState.text,
+                textChanged: nil,
+                activeChanged: normalState.activeChanged,
+                isEnabled: true,
+                isActive: false
+            )
+        case let .active(activeState):
+            self.init(
+                style: .init(activeStyle: activeState.style.activeStyle),
+                text: activeState.text,
+                textChanged: activeState.textChanged,
+                activeChanged: activeState.activeChanged,
+                isEnabled: true,
+                isActive: true
+            )
+        case let .disabled(disabledState):
+            self.init(
+                style: .init(disabledStyle: disabledState.style.disabledStyle),
+                text: disabledState.text,
+                textChanged: nil,
+                activeChanged: nil,
+                isEnabled: false,
+                isActive: false
+            )
+        }
+    }
+}
+
+extension SecureConversations.WelcomeView.MessageTextView.UIKitProps.Style {
+    init(activeStyle: SecureConversations.WelcomeStyle.MessageTextViewActiveStyle) {
+        self.init(
+            placeholderText: activeStyle.placeholderText,
+            placeholderFont: activeStyle.placeholderFont,
+            placeholderColor: activeStyle.placeholderColor,
+            textFont: activeStyle.textFont,
+            textColor: activeStyle.textColor,
+            borderColor: activeStyle.borderColor,
+            borderWidth: activeStyle.borderWidth,
+            cornerRadius: activeStyle.cornerRadius,
+            backgroundColor: activeStyle.backgroundColor
+        )
+    }
+
+    init(disabledStyle: SecureConversations.WelcomeStyle.MessageTextViewDisabledStyle) {
+        self.init(
+            placeholderText: disabledStyle.placeholderText,
+            placeholderFont: disabledStyle.placeholderFont,
+            placeholderColor: disabledStyle.placeholderColor,
+            textFont: disabledStyle.textFont,
+            textColor: disabledStyle.textColor,
+            borderColor: disabledStyle.borderColor,
+            borderWidth: disabledStyle.borderWidth,
+            cornerRadius: disabledStyle.cornerRadius,
+            backgroundColor: disabledStyle.backgroundColor
+        )
+    }
+
+    init(normalStyle: SecureConversations.WelcomeStyle.MessageTextViewNormalStyle) {
+        self.init(
+            placeholderText: normalStyle.placeholderText,
+            placeholderFont: normalStyle.placeholderFont,
+            placeholderColor: normalStyle.placeholderColor,
+            textFont: normalStyle.textFont,
+            textColor: normalStyle.textColor,
+            borderColor: normalStyle.borderColor,
+            borderWidth: normalStyle.borderWidth,
+            cornerRadius: normalStyle.cornerRadius,
+            backgroundColor: normalStyle.backgroundColor
+        )
+    }
+}
+
+// MARK: - MessageTextView as UITextViewDelegate
 extension SecureConversations.WelcomeView.MessageTextView: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
-        props.textChanged(textView.text)
+        UIKitProps(props).textChanged?(textView.text)
     }
 
     public func textViewDidBeginEditing(_: UITextView) {
-        placeholderLabel.isHidden = true
-        renderBorder()
+        UIKitProps(props).activeChanged?(true)
     }
 
     public func textViewDidEndEditing(_ textView: UITextView) {
-        placeholderLabel.isHidden = !textView.text.isEmpty
-        renderBorder()
+        UIKitProps(props).activeChanged?(false)
     }
 }
 
+// MARK: - Keyboard handling in WelcomeView
 extension SecureConversations.WelcomeView {
     func subscribeToNotification(_ notification: NSNotification.Name, selector: Selector) {
         NotificationCenter.default.addObserver(
@@ -571,97 +720,39 @@ extension SecureConversations.WelcomeView {
 }
 
 private extension SecureConversations.WelcomeStyle.MessageTextViewStyle {
-    static let initial = Self(
-        placeholderText: "",
-        placeholderFont: .systemFont(ofSize: 12),
-        placeholderColor: .black,
-        textFont: .systemFont(ofSize: 12),
-        textColor: .black,
-        borderColor: .black,
-        activeBorderColor: .black,
-        borderWidth: 1,
-        cornerRadius: 4
+    static let initial = SecureConversations.WelcomeStyle.MessageTextViewStyle(
+        normalStyle: .init(
+            placeholderText: "",
+            placeholderFont: .systemFont(ofSize: 12),
+            placeholderColor: .black,
+            textFont: .systemFont(ofSize: 12),
+            textColor: .black,
+            borderColor: .black,
+            borderWidth: 1,
+            cornerRadius: 4,
+            backgroundColor: .black
+        ),
+        disabledStyle: .init(
+            placeholderText: "",
+            placeholderFont: .systemFont(ofSize: 12),
+            placeholderColor: .black,
+            textFont: .systemFont(ofSize: 12),
+            textColor: .black,
+            borderColor: .black,
+            borderWidth: 1,
+            cornerRadius: 4,
+            backgroundColor: .lightGray
+        ),
+        activeStyle: .init(
+            placeholderText: "",
+            placeholderFont: .systemFont(ofSize: 12),
+            placeholderColor: .black,
+            textFont: .systemFont(ofSize: 12),
+            textColor: .black,
+            borderColor: .black,
+            borderWidth: 1,
+            cornerRadius: 4,
+            backgroundColor: .blue
+        )
     )
-}
-
-extension SecureConversations.WelcomeView.Props.WarningMessage: ExpressibleByStringLiteral {
-    init(stringLiteral value: String) {
-        text = value
-        animated = false
-    }
-}
-
-extension SecureConversations.SendMessageButton.Props {
-    init(enabledStyle: SecureConversations.WelcomeStyle.SendButtonEnabledStyle) {
-        self = .normal(
-            .init(
-                title: enabledStyle.title,
-                titleFont: enabledStyle.font,
-                foregroundColor: enabledStyle.textColor,
-                backgroundColor: enabledStyle.backgroundColor,
-                borderColor: enabledStyle.borderColor,
-                borderWidth: enabledStyle.borderWidth,
-                cornerRadius: enabledStyle.cornerRadius,
-                activityIndicatorColor: .clear,
-                isActivityIndicatorShown: false
-            )
-        )
-    }
-
-    init(disabledStyle: SecureConversations.WelcomeStyle.SendButtonDisabledStyle) {
-        self = .disabled(
-            .init(
-                title: disabledStyle.title,
-                titleFont: disabledStyle.font,
-                foregroundColor: disabledStyle.textColor,
-                backgroundColor: disabledStyle.backgroundColor,
-                borderColor: disabledStyle.borderColor,
-                borderWidth: disabledStyle.borderWidth,
-                cornerRadius: disabledStyle.cornerRadius,
-                activityIndicatorColor: .clear,
-                isActivityIndicatorShown: false
-            )
-        )
-    }
-
-    init(loadingStyle: SecureConversations.WelcomeStyle.SendButtonLoadingStyle) {
-        self = .disabled(
-            .init(
-                title: loadingStyle.title,
-                titleFont: loadingStyle.font,
-                foregroundColor: loadingStyle.textColor,
-                backgroundColor: loadingStyle.backgroundColor,
-                borderColor: loadingStyle.borderColor,
-                borderWidth: loadingStyle.borderWidth,
-                cornerRadius: loadingStyle.cornerRadius,
-                activityIndicatorColor: loadingStyle.activityIndicatorColor,
-                isActivityIndicatorShown: true
-            )
-        )
-    }
-}
-
-extension SecureConversations.WelcomeView.Props.SendMessageButton {
-    struct UIKitProps: Equatable {
-        var tap: Cmd?
-        var isLoading: Bool
-        var isEnabled: Bool
-
-        init(_ state: SecureConversations.WelcomeView.Props.SendMessageButton) {
-            switch state {
-            case let .active(action):
-                tap = action
-                isEnabled = true
-                isLoading = false
-            case .disabled:
-                tap = nil
-                isEnabled = false
-                isLoading = false
-            case .loading:
-                tap = nil
-                isEnabled = false
-                isLoading = true
-            }
-        }
-    }
 }
