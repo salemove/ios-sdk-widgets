@@ -7,10 +7,14 @@ extension CallVisualizer {
                 case alert(closeButtonTap: Cmd)
                 case embedded
             }
-
+            enum ViewState: Equatable {
+                case error(refreshTap: Cmd)
+                case loading
+                case success(visitorCode: String)
+            }
+            let viewState: ViewState
             let viewType: ViewType
             let style: VisitorCodeStyle
-            let visitorCode: String
             let isPoweredByShown: Bool
             var isShadowNeeded: Bool {
                 switch viewType {
@@ -30,17 +34,26 @@ extension CallVisualizer {
                 }
             }
 
+            var refreshButtonTap: Cmd? {
+                switch viewState {
+                case let .error(refreshButtonTap):
+                    return refreshButtonTap
+                case .loading, .success:
+                    return nil
+                }
+            }
+
             init(
                 viewType: ViewType = .alert(closeButtonTap: .nop),
+                viewState: ViewState = .loading,
                 style: VisitorCodeStyle = Theme().visitorCode,
-                visitorCode: String = "11111",
                 isPoweredByShown: Bool = true
 
             ) {
                 self.viewType = viewType
                 self.style = style
-                self.visitorCode = visitorCode
                 self.isPoweredByShown = isPoweredByShown
+                self.viewState = viewState
             }
         }
 
@@ -50,14 +63,19 @@ extension CallVisualizer {
             }
         }
 
+        private let refreshButton = UIButton()
+        private let spinnerView = UIImageView().make { imageView in
+            imageView.image = Asset.spinner.image
+            imageView.contentMode = .center
+        }
+
         private let titleLabel = UILabel().make { label in
-            label.numberOfLines = 0
+            label.numberOfLines = 2
             label.textAlignment = .center
         }
 
         private lazy var stackView = UIStackView.make(.vertical, spacing: 24)(
             titleLabel,
-            visitorCodeStack,
             poweredBy
         )
 
@@ -80,18 +98,19 @@ extension CallVisualizer {
             layer.masksToBounds = false
             layer.cornerRadius = props.style.cornerRadius
             renderProps()
+            refreshButton.addTarget(self, action: #selector(refreshButtonTapped), for: .touchUpInside)
         }
 
         override func defineLayout() {
             super.defineLayout()
             addSubview(stackView)
             addSubview(closeButton)
-            visitorCodeStack.distribution = .fill
             NSLayoutConstraint.activate([
                 stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: contentInsets.left),
                 stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -contentInsets.right),
                 stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -contentInsets.bottom),
                 stackView.topAnchor.constraint(equalTo: topAnchor, constant: contentInsets.top),
+                refreshButton.heightAnchor.constraint(equalToConstant: 40),
                 closeButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -30),
                 closeButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -26)
             ])
@@ -109,6 +128,25 @@ extension CallVisualizer {
                     cornerRadius: props.style.cornerRadius
                 )
             }
+
+            refreshButton.layer.cornerRadius = props.style.actionButton.cornerRaidus ?? 9
+            refreshButton.layer.borderWidth = props.style.actionButton.borderWidth ?? 0
+            refreshButton.layer.borderColor = props.style.actionButton.borderColor?.cgColor
+            refreshButton.layer.shadowColor = props.style.actionButton.shadowColor?.cgColor
+            refreshButton.layer.shadowOffset = props.style.actionButton.shadowOffset ?? .zero
+            refreshButton.layer.shadowRadius = props.style.actionButton.shadowRadius ?? 0.0
+            refreshButton.layer.shadowOpacity = props.style.actionButton.shadowOpacity ?? 0
+            refreshButton.setTitle(props.style.actionButton.title, for: .normal)
+            switch props.style.actionButton.backgroundColor {
+            case .fill(let color):
+                refreshButton.backgroundColor = color
+            case .gradient(let colors):
+                refreshButton.makeGradientBackground(
+                    colors: colors,
+                    cornerRadius: props.style.actionButton.cornerRaidus
+                )
+            }
+
             layer.shadowPath = UIBezierPath(
                 roundedRect: bounds,
                 byRoundingCorners: .allCorners,
@@ -122,12 +160,22 @@ extension CallVisualizer {
         func renderProps() {
             titleLabel.font = props.style.titleFont
             titleLabel.textColor = props.style.titleColor
-            titleLabel.text = L10n.Alert.VisitorCode.title
+            switch props.viewState {
+            case .success(visitorCode: let code):
+                renderedVisitorCode = code
+                titleLabel.text = L10n.VisitorCode.Title.standard
+                renderVisitorCode()
+            case .error:
+                titleLabel.text = L10n.VisitorCode.Title.error
+                renderError()
+            case .loading:
+                titleLabel.text = L10n.VisitorCode.Title.standard
+                renderSpinner()
+            }
             setFontScalingEnabled(
                 props.style.accessibility.isFontScalingEnabled,
                 for: titleLabel
             )
-            renderedVisitorCode = props.visitorCode
             poweredBy.alpha = props.isPoweredByShown ? 1 : 0
             renderShadow()
 
@@ -154,6 +202,39 @@ extension CallVisualizer {
             }
         }
 
+        func renderVisitorCode() {
+            switch shouldReplaceViewInStack() {
+            case true:
+                stackView.replaceArrangedSubview(at: 1, with: visitorCodeStack)
+            case false:
+                stackView.insertArrangedSubview(visitorCodeStack, at: 1)
+            }
+        }
+
+        func renderError() {
+            switch shouldReplaceViewInStack() {
+            case true:
+                stackView.replaceArrangedSubview(at: 1, with: refreshButton)
+            case false:
+                stackView.insertArrangedSubview(refreshButton, at: 1)
+            }
+        }
+
+        func renderSpinner() {
+            switch shouldReplaceViewInStack() {
+            case true:
+                stackView.replaceArrangedSubview(at: 1, with: spinnerView)
+            case false:
+                stackView.insertArrangedSubview(spinnerView, at: 1)
+            }
+            let rotation = CABasicAnimation(keyPath: "transform.rotation")
+            rotation.fromValue = 0
+            rotation.toValue = CGFloat.pi * 2
+            rotation.duration = 1.0
+            rotation.repeatCount = Float.infinity
+            spinnerView.layer.add(rotation, forKey: "Spin")
+        }
+
         func renderShadow() {
             layer.shadowColor = props.isShadowNeeded
                             ? UIColor.black.withAlphaComponent(0.16).cgColor
@@ -161,6 +242,17 @@ extension CallVisualizer {
             layer.shadowOffset = CGSize(width: 0.0, height: 8.0)
             layer.shadowRadius = 24.0
             layer.shadowOpacity = 1.0
+        }
+
+        func shouldReplaceViewInStack() -> Bool {
+            guard !stackView.arrangedSubviews.contains(spinnerView) else { return true }
+            guard !stackView.arrangedSubviews.contains(visitorCodeStack) else { return true }
+            guard !stackView.arrangedSubviews.contains(refreshButton) else { return true }
+            return false
+        }
+
+        @objc func refreshButtonTapped(_ sender: UIButton) {
+            self.props.refreshButtonTap?()
         }
     }
 }
