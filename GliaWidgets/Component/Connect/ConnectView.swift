@@ -37,7 +37,7 @@ final class ConnectView: BaseView {
         )
         super.init()
     }
-   
+
     required init() {
         fatalError("init() has not been implemented")
     }

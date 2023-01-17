@@ -30,12 +30,7 @@ extension CallVisualizer {
         }
 
         override func loadView() {
-            switch props.visitorCodeViewProps.viewType {
-            case .alert:
-                view = withContainer(codeView)
-            case .embedded:
-                view = codeView
-            }
+            view = withContainer(codeView)
         }
 
         func renderProps() {
@@ -47,9 +42,15 @@ extension CallVisualizer {
             view.translatesAutoresizingMaskIntoConstraints = false
             container.addSubview(view)
             NSLayoutConstraint.activate([
-                container.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                container.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-                container.widthAnchor.constraint(greaterThanOrEqualTo: view.safeAreaLayoutGuide.widthAnchor, constant: 16)
+                view.centerYAnchor.constraint(equalTo: container.centerYAnchor),
+                view.leadingAnchor.constraint(
+                    equalTo: container.safeAreaLayoutGuide.leadingAnchor,
+                    constant: 8
+                ),
+                view.trailingAnchor.constraint(
+                    equalTo: container.safeAreaLayoutGuide.trailingAnchor,
+                    constant: -8
+                )
             ])
 
             return container
