@@ -156,3 +156,78 @@ extension SecureConversations.SendMessageButton {
         }
     }
 }
+
+extension SecureConversations.SendMessageButton.Props {
+    init(enabledStyle: SecureConversations.WelcomeStyle.SendButtonEnabledStyle) {
+        self = .normal(
+            .init(
+                title: enabledStyle.title,
+                titleFont: enabledStyle.font,
+                foregroundColor: enabledStyle.textColor,
+                backgroundColor: enabledStyle.backgroundColor,
+                borderColor: enabledStyle.borderColor,
+                borderWidth: enabledStyle.borderWidth,
+                cornerRadius: enabledStyle.cornerRadius,
+                activityIndicatorColor: .clear,
+                isActivityIndicatorShown: false
+            )
+        )
+    }
+
+    init(disabledStyle: SecureConversations.WelcomeStyle.SendButtonDisabledStyle) {
+        self = .disabled(
+            .init(
+                title: disabledStyle.title,
+                titleFont: disabledStyle.font,
+                foregroundColor: disabledStyle.textColor,
+                backgroundColor: disabledStyle.backgroundColor,
+                borderColor: disabledStyle.borderColor,
+                borderWidth: disabledStyle.borderWidth,
+                cornerRadius: disabledStyle.cornerRadius,
+                activityIndicatorColor: .clear,
+                isActivityIndicatorShown: false
+            )
+        )
+    }
+
+    init(loadingStyle: SecureConversations.WelcomeStyle.SendButtonLoadingStyle) {
+        self = .disabled(
+            .init(
+                title: loadingStyle.title,
+                titleFont: loadingStyle.font,
+                foregroundColor: loadingStyle.textColor,
+                backgroundColor: loadingStyle.backgroundColor,
+                borderColor: loadingStyle.borderColor,
+                borderWidth: loadingStyle.borderWidth,
+                cornerRadius: loadingStyle.cornerRadius,
+                activityIndicatorColor: loadingStyle.activityIndicatorColor,
+                isActivityIndicatorShown: true
+            )
+        )
+    }
+}
+
+extension SecureConversations.WelcomeView.Props.SendMessageButton {
+    struct UIKitProps: Equatable {
+        var tap: Cmd?
+        var isLoading: Bool
+        var isEnabled: Bool
+
+        init(_ state: SecureConversations.WelcomeView.Props.SendMessageButton) {
+            switch state {
+            case let .active(action):
+                tap = action
+                isEnabled = true
+                isLoading = false
+            case .disabled:
+                tap = nil
+                isEnabled = false
+                isLoading = false
+            case .loading:
+                tap = nil
+                isEnabled = false
+                isLoading = true
+            }
+        }
+    }
+}

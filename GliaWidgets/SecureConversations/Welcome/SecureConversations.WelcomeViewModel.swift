@@ -2,6 +2,10 @@ import Foundation
 
 extension SecureConversations {
     final class WelcomeViewModel: ViewModel {
+        enum MessageInputState {
+            case normal, active, disabled
+        }
+
         static let messageTextLimit = 10_000
 
         var action: ((Action) -> Void)?
@@ -10,7 +14,7 @@ extension SecureConversations {
 
         var messageText: String = "" { didSet { reportChange() } }
         var isAttachmentsAvailable: Bool = true { didSet { reportChange() } }
-
+        var messageInputState: MessageInputState = .normal { didSet { reportChange() } }
         init(environment: Environment) {
             self.environment = environment
         }
@@ -33,7 +37,11 @@ extension SecureConversations {
 extension SecureConversations.WelcomeViewModel {
     typealias Props = SecureConversations.WelcomeViewController.Props
     typealias WelcomeViewProps = SecureConversations.WelcomeView.Props
-    
+    typealias TextViewProps = SecureConversations.WelcomeView.MessageTextView.Props
+
+    // At one hand it is convenient to have Props construction logic in single place,
+    // but since the method can become quite big (resulting in linter warnings),
+    // some parts are refactored to pure static methods.
     func props() -> Props {
         let welcomeStyle = environment.welcomeStyle
         let filePickerButton = SecureConversations.WelcomeView.Props.FilePickerButton(
@@ -61,17 +69,56 @@ extension SecureConversations.WelcomeViewModel {
                 checkMessageButtonTap: Cmd { print("### check messages") },
                 filePickerButton: isAttachmentsAvailable ? filePickerButton : nil,
                 sendMessageButton: sendMessageButton,
-                messageTextViewProps: .init(
-                    style: welcomeStyle.messageTextViewStyle,
-                    text: messageText,
-                    textChanged: .init { [weak self] text in
-                        self?.messageText = text
-                    }
-                ),
+                messageTextViewProps: Self.textViewState(for: self),
                 warningMessage: warningMessage
             )
         )
         return props
+    }
+
+    static func textViewState(for instance: SecureConversations.WelcomeViewModel
+    ) -> TextViewProps {
+        let messageTextViewStyle = instance.environment.welcomeStyle.messageTextViewStyle
+        let normalTextViewState = TextViewProps.NormalState(
+            style: messageTextViewStyle,
+            text: instance.messageText,
+            activeChanged: .init { [weak instance] isActive in
+                if isActive {
+                    instance?.messageInputState = .active
+                }
+            }
+        )
+
+        let activeTextViewState = TextViewProps.ActiveState(
+            style: messageTextViewStyle,
+            text: instance.messageText,
+            textChanged: .init { [weak instance] text in
+                instance?.messageText = text
+            },
+            activeChanged: .init { [weak instance] isActive in
+                if !isActive {
+                    instance?.messageInputState = .normal
+                }
+            }
+        )
+
+        let disabledTextViewState = TextViewProps.DisabledState(
+            style: messageTextViewStyle,
+            text: instance.messageText
+        )
+
+        let textViewState: TextViewProps
+
+        switch instance.messageInputState {
+        case .normal:
+            textViewState = .normal(normalTextViewState)
+        case .active:
+            textViewState = .active(activeTextViewState)
+        case .disabled:
+            textViewState = .disabled(disabledTextViewState)
+        }
+
+        return textViewState
     }
 }
 
