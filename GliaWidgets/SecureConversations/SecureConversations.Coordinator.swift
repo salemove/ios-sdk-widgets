@@ -11,7 +11,7 @@ extension SecureConversations {
             self.viewFactory = viewFactory
         }
 
-        func start() -> ViewController {
+        func start() -> UIViewController {
             let viewController = makeSecureConversationsWelcomeViewController()
 
             return viewController

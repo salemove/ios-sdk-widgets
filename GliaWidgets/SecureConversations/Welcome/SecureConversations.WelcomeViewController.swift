@@ -2,7 +2,7 @@ import Foundation
 import UIKit
 
 extension SecureConversations {
-    final class WelcomeViewController: ViewController {
+    final class WelcomeViewController: UIViewController {
         var props: Props {
             didSet {
                 guard props != oldValue else { return }
