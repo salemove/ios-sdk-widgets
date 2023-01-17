@@ -2,7 +2,7 @@ import Foundation
 import UIKit
 
 extension SecureConversations {
-    final class ConfirmationView: View {
+    final class ConfirmationView: BaseView {
         static let sideMargin = 24.0
         static let confirmationImageSize = 144.0
 
@@ -67,6 +67,11 @@ extension SecureConversations {
             self.header = Header(with: props.style.header)
             self.props = props
             super.init()
+        }
+
+        @available(*, unavailable)
+        required init() {
+            fatalError("init() has not been implemented")
         }
 
         override func defineLayout() {

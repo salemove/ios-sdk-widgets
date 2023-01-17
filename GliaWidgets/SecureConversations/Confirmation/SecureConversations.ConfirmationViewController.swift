@@ -1,7 +1,7 @@
-import Foundation
+import UIKit
 
 extension SecureConversations {
-    final class ConfirmationViewController: ViewController {
+    final class ConfirmationViewController: UIViewController {
         var props: Props {
             didSet {
                 guard props != oldValue else { return }

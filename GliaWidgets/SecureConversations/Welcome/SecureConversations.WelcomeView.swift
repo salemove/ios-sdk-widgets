@@ -2,7 +2,7 @@ import Foundation
 import UIKit
 
 extension SecureConversations {
-    final class WelcomeView: View {
+    final class WelcomeView: BaseView {
         static let sideMargin = 24.0
         static let filePickerButtonSize = 44.0
 
@@ -151,6 +151,11 @@ extension SecureConversations {
             self.header = Header(with: props.style.header)
             self.props = props
             super.init()
+        }
+
+        @available(*, unavailable)
+        required init() {
+            fatalError("init() has not been implemented")
         }
 
         override func defineLayout() {
@@ -407,7 +412,7 @@ extension SecureConversations {
 }
 
 extension SecureConversations.WelcomeView {
-    class MessageTextView: View {
+    class MessageTextView: BaseView {
         struct Props: Equatable {
             let style: SecureConversations.WelcomeStyle.MessageTextViewStyle
             let text: String
