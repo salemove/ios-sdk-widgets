@@ -235,6 +235,29 @@ extension SecureConversations.WelcomeStyle {
     }
     /// Style for message text view.
     public struct MessageTextViewStyle: Equatable {
+        /// Style of normal state for message text view.
+        public var normalStyle: MessageTextViewNormalStyle
+        /// Style of disabled state for message text view.
+        public var disabledStyle: MessageTextViewDisabledStyle
+        /// Style of active state for message text view.
+        public var activeStyle: MessageTextViewActiveStyle
+
+        /// - Parameters:
+        ///   - normalStyle: Style of normal state for message text view.
+        ///   - disabledStyle: Style of disabled state for message text view.
+        ///   - activeStyle: Style of active state for message text view.
+        public init(
+            normalStyle: SecureConversations.WelcomeStyle.MessageTextViewNormalStyle,
+            disabledStyle: SecureConversations.WelcomeStyle.MessageTextViewDisabledStyle,
+            activeStyle: SecureConversations.WelcomeStyle.MessageTextViewActiveStyle) {
+            self.normalStyle = normalStyle
+            self.disabledStyle = disabledStyle
+            self.activeStyle = activeStyle
+        }
+    }
+
+    /// Style of disabled state for message text view.
+    public struct MessageTextViewDisabledStyle: Equatable {
         /// Placeholder text for text view.
         public var placeholderText: String
         /// Font for placeholder text.
@@ -247,12 +270,12 @@ extension SecureConversations.WelcomeStyle {
         public var textColor: UIColor
         /// Color of the border of the text view.
         public var borderColor: UIColor
-        /// Color of the border of the text view when it becomes first responder.
-        public var activeBorderColor: UIColor
         /// Width of border for the text view.
         public var borderWidth: Double
         /// Border corner radius.
         public var cornerRadius: Double
+        /// Color of the background of the text view.
+        public var backgroundColor: UIColor
 
         /// - Parameters:
         ///   - placeholderText: Placeholder text for text view.
@@ -261,9 +284,9 @@ extension SecureConversations.WelcomeStyle {
         ///   - textFont: Font for the text of text view.
         ///   - textColor: Color of the text.
         ///   - borderColor: Color of the border of the text view.
-        ///   - activeBorderColor: Color of the border of the text view when it becomes first responder.
         ///   - borderWidth: Width of border for the text view.
         ///   - cornerRadius: Border corner radius.
+        ///   - backgroundColor: Color of the background of the text view.
         public init(
             placeholderText: String,
             placeholderFont: UIFont,
@@ -271,9 +294,9 @@ extension SecureConversations.WelcomeStyle {
             textFont: UIFont,
             textColor: UIColor,
             borderColor: UIColor,
-            activeBorderColor: UIColor,
             borderWidth: Double,
-            cornerRadius: Double
+            cornerRadius: Double,
+            backgroundColor: UIColor
         ) {
             self.placeholderText = placeholderText
             self.placeholderFont = placeholderFont
@@ -281,12 +304,148 @@ extension SecureConversations.WelcomeStyle {
             self.textFont = textFont
             self.textColor = textColor
             self.borderColor = borderColor
-            self.activeBorderColor = activeBorderColor
             self.borderWidth = borderWidth
             self.cornerRadius = cornerRadius
+            self.backgroundColor = backgroundColor
         }
 
-        /// Accessibility properties for MessageTextViewStyle.
+        /// Accessibility properties for MessageTextViewDisabledStyle.
+        public struct Accessibility: Equatable {
+            /// Flag that provides font dynamic type by setting `adjustsFontForContentSizeCategory` for component that supports it.
+            public var isFontScalingEnabled: Bool
+
+            /// - Parameter isFontScalingEnabled: Flag that provides font dynamic type by setting `adjustsFontForContentSizeCategory` for component that supports it.
+            public init(isFontScalingEnabled: Bool) {
+                self.isFontScalingEnabled = isFontScalingEnabled
+            }
+
+            /// Accessibility is not supported intentionally.
+            public static let unsupported = Self(isFontScalingEnabled: false)
+        }
+    }
+
+    /// Style of normal state for message text view.
+    public struct MessageTextViewNormalStyle: Equatable {
+        /// Placeholder text for text view.
+        public var placeholderText: String
+        /// Font for placeholder text.
+        public var placeholderFont: UIFont
+        /// Color for placeholder text.
+        public var placeholderColor: UIColor
+        /// Font for the text of text view.
+        public var textFont: UIFont
+        /// Color of the text.
+        public var textColor: UIColor
+        /// Color of the border of the text view.
+        public var borderColor: UIColor
+        /// Width of border for the text view.
+        public var borderWidth: Double
+        /// Border corner radius.
+        public var cornerRadius: Double
+        /// Color of the background of the text view.
+        public var backgroundColor: UIColor
+
+        /// - Parameters:
+        ///   - placeholderText: Placeholder text for text view.
+        ///   - placeholderFont: Font for placeholder text.
+        ///   - placeholderColor: Color for placeholder text.
+        ///   - textFont: Font for the text of text view.
+        ///   - textColor: Color of the text.
+        ///   - borderColor: Color of the border of the text view.
+        ///   - borderWidth: Width of border for the text view.
+        ///   - cornerRadius: Border corner radius.
+        ///   - backgroundColor: Color of the background of the text view.
+        public init(
+            placeholderText: String,
+            placeholderFont: UIFont,
+            placeholderColor: UIColor,
+            textFont: UIFont,
+            textColor: UIColor,
+            borderColor: UIColor,
+            borderWidth: Double,
+            cornerRadius: Double,
+            backgroundColor: UIColor
+        ) {
+            self.placeholderText = placeholderText
+            self.placeholderFont = placeholderFont
+            self.placeholderColor = placeholderColor
+            self.textFont = textFont
+            self.textColor = textColor
+            self.borderColor = borderColor
+            self.borderWidth = borderWidth
+            self.cornerRadius = cornerRadius
+            self.backgroundColor = backgroundColor
+        }
+
+        /// Accessibility properties for MessageTextViewNormalStyle.
+        public struct Accessibility: Equatable {
+            /// Flag that provides font dynamic type by setting `adjustsFontForContentSizeCategory` for component that supports it.
+            public var isFontScalingEnabled: Bool
+
+            /// - Parameter isFontScalingEnabled: Flag that provides font dynamic type by setting `adjustsFontForContentSizeCategory` for component that supports it.
+            public init(isFontScalingEnabled: Bool) {
+                self.isFontScalingEnabled = isFontScalingEnabled
+            }
+
+            /// Accessibility is not supported intentionally.
+            public static let unsupported = Self(isFontScalingEnabled: false)
+        }
+    }
+
+    /// Style of active state for message text view.
+    public struct MessageTextViewActiveStyle: Equatable {
+        /// Placeholder text for text view.
+        public var placeholderText: String
+        /// Font for placeholder text.
+        public var placeholderFont: UIFont
+        /// Color for placeholder text.
+        public var placeholderColor: UIColor
+        /// Font for the text of text view.
+        public var textFont: UIFont
+        /// Color of the text.
+        public var textColor: UIColor
+        /// Color of the border of the text view.
+        public var borderColor: UIColor
+        /// Width of border for the text view.
+        public var borderWidth: Double
+        /// Border corner radius.
+        public var cornerRadius: Double
+        /// Color of the background of the text view.
+        public var backgroundColor: UIColor
+
+        /// - Parameters:
+        ///   - placeholderText: Placeholder text for text view.
+        ///   - placeholderFont: Font for placeholder text.
+        ///   - placeholderColor: Color for placeholder text.
+        ///   - textFont: Font for the text of text view.
+        ///   - textColor: Color of the text.
+        ///   - borderColor: Color of the border of the text view.
+        ///   - borderWidth: Width of border for the text view.
+        ///   - cornerRadius: Border corner radius.
+        ///   - backgroundColor: Color of the background of the text view.
+        public init(
+            placeholderText: String,
+            placeholderFont: UIFont,
+            placeholderColor: UIColor,
+            textFont: UIFont,
+            textColor: UIColor,
+            borderColor: UIColor,
+            borderWidth: Double,
+            cornerRadius: Double,
+            backgroundColor: UIColor
+        ) {
+            self.placeholderText = placeholderText
+            self.placeholderFont = placeholderFont
+            self.placeholderColor = placeholderColor
+            self.textFont = textFont
+            self.textColor = textColor
+            self.borderColor = borderColor
+            self.borderWidth = borderWidth
+            self.cornerRadius = cornerRadius
+            self.backgroundColor = backgroundColor
+        }
+
+        /// Accessibility properties for MessageTextViewActiveStyle.
         public struct Accessibility: Equatable {
             /// Flag that provides font dynamic type by setting `adjustsFontForContentSizeCategory` for component that supports it.
             public var isFontScalingEnabled: Bool
@@ -579,7 +738,6 @@ extension SecureConversations.WelcomeStyle {
             public static let unsupported = Self(isFontScalingEnabled: false)
         }
     }
-
 
     /// Style for title icon image.
     public struct TitleImageStyle: Equatable {
