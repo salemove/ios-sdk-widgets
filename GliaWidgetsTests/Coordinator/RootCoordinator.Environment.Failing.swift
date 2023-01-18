@@ -42,6 +42,10 @@ extension EngagementCoordinator.Environment {
             fail("\(Self.self).submitSurveyAnswer")
         },
         uiApplication: .failing,
-        fetchChatHistory: { _ in }
+        fetchChatHistory: { _ in fail("\(Self.self).fetchChatHistory")},
+        sendSecureMessage: { _, _, _, _ in
+            fail("\(Self.self).sendScureMessage")
+            return .init()
+        }
     )
 }

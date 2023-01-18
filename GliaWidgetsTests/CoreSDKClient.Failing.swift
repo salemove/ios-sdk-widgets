@@ -30,6 +30,10 @@ extension CoreSdkClient {
         requestVisitorCode: { _ in
             fail("\(Self.self).requestVisitorCode")
             return .init()
+        },
+        sendSecureMessage: { _, _, _, _ in
+            fail("\(Self.self).sendSecureMessage")
+            return .init()
         }
     )
 }
