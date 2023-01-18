@@ -36,7 +36,8 @@ extension CoreSdkClient {
                         completion(.failure(error))
                     }
                 }
-            }
+            },
+            sendSecureMessage: GliaCore.sharedInstance.secureConversations.send(secureMessage:attachment:queueIds:completion:)
         )
     }()
 }

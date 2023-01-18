@@ -105,6 +105,14 @@ struct CoreSdkClient {
 
     typealias FetchChatHistory = (_ completion: @escaping (Result<[ChatMessage], SalemoveSDK.GliaCoreError>) -> Void) -> Void
     var fetchChatHistory: FetchChatHistory
+
+    typealias SendSecureMessage = (
+        _ secureMessage: String,
+        _ attachment: Self.Attachment?,
+        _ queueIds: [String],
+        _ completion: @escaping (Result<Self.Message, Error>) -> Void
+    ) -> Salemove.Cancellable
+    var sendSecureMessage: SendSecureMessage
 }
 
 extension CoreSdkClient {
