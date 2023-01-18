@@ -386,7 +386,11 @@ extension EngagementCoordinator {
 
     private func startSecureConversations() -> UIViewController {
         let coordinator = SecureConversations.Coordinator(
-            viewFactory: viewFactory
+            viewFactory: viewFactory,
+            environment: .init(
+                queueIds: [interactor.queueID],
+                sendSecureMessage: environment.sendSecureMessage
+            )
         )
 
         coordinator.delegate = { [weak self] event in

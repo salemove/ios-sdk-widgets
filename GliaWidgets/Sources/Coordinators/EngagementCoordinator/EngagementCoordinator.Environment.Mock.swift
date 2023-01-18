@@ -19,7 +19,8 @@ extension EngagementCoordinator.Environment {
         getCurrentEngagement: { nil },
         submitSurveyAnswer: { _, _, _, _ in },
         uiApplication: .mock,
-        fetchChatHistory: { _ in }
+        fetchChatHistory: { _ in },
+        sendSecureMessage: { _, _, _, _ in .init() }
     )
 }
 #endif
