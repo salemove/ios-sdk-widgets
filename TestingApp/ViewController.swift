@@ -22,6 +22,8 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         title = "Glia UI testing"
         view.backgroundColor = .white
+
+        Glia.sharedInstance.callVisualizer.presenter = { self }
     }
     @IBOutlet weak var visitorCodeView: UIView!
 

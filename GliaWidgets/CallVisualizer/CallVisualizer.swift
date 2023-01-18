@@ -14,9 +14,43 @@ import SalemoveSDK
 public final class CallVisualizer {
     private var environment: Environment
     private var visitorCodeCoordinator: VisitorCodeCoordinator?
+    var interactor: Interactor?
 
-    init(environment: Environment) {
+    init(
+        environment: Environment
+    ) {
         self.environment = environment
+    }
+
+//    func interactorEvent(_ event: InteractorEvent) {
+//        switch event {
+//        case .engagementRequested(let requestAnswerBlock):
+//
+//            print("YOYOUO")
+//        default:
+//            print("NAH")
+//        }
+//    }
+
+    func acceptEngagementRequest(visitorContex: VisitorContext?, completion: @escaping SuccessBlock) {
+        do {
+            try Glia.sharedInstance.startEngagement(engagementKind: .audioCall)
+        } catch {
+            print("ssss")
+        }
+    }
+
+    public var presenter: () -> UIViewController = {
+        let keyWindow = UIApplication.shared.windows.filter { $0.isKeyWindow }.first
+        guard var topController = keyWindow?.rootViewController else {
+            assertionFailure("Top view controller not found. Can't present Call Visualizer UI.")
+            return UIViewController()
+        }
+        while let presentedViewController = topController.presentedViewController {
+            topController = presentedViewController
+        }
+
+        return topController
     }
 
     /// Show VisitorCode for current Visitor.
@@ -61,5 +95,14 @@ public final class CallVisualizer {
         _ = coordinator.start()
 
         self.visitorCodeCoordinator = coordinator
+    }
+
+    public func showVisitorCodeViewController(
+        uiConfig: RemoteConfiguration? = nil
+    ) {
+        showVisitorCodeViewController(
+            by: .alert(presenter()),
+            uiConfig: uiConfig
+        )
     }
 }

@@ -48,15 +48,14 @@ public class Glia {
     var interactor: Interactor?
     var environment: Environment
     var messageRenderer: MessageRenderer?
-    public let callVisualizer: CallVisualizer
+    public var callVisualizer: CallVisualizer
 
     init(environment: Environment) {
         self.environment = environment
-        self.callVisualizer = CallVisualizer(
-            environment: .init(
-                timerProviding: environment.timerProviding,
-                requestVisitorCode: environment.coreSdk.requestVisitorCode
-            )
+        self.callVisualizer = CallVisualizer(environment: .init(
+            timerProviding: environment.timerProviding,
+            requestVisitorCode: environment.coreSdk.requestVisitorCode
+        )
         )
     }
 
@@ -90,6 +89,7 @@ public class Glia {
         )
 
         interactor = createdInteractor
+        callVisualizer.interactor = createdInteractor
 
         if let callback = completion {
             createdInteractor.withConfiguration { [weak createdInteractor] in

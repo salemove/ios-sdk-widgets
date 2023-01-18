@@ -274,6 +274,7 @@ extension Interactor: CoreSdkClient.Interactable {
 
             }
             self?.notify(.engagementRequested(answer))
+
             answer(self?.visitorContext, true, completion)
         }
     }
