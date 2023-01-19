@@ -28,16 +28,46 @@ extension Theme {
             color: .black
         )
 
-        let messageTextViewStyle = SecureConversations.WelcomeStyle.MessageTextViewStyle(
+        let messageTextViewNormalStyle = SecureConversations.WelcomeStyle.MessageTextViewNormalStyle(
             placeholderText: "Enter your message",
             placeholderFont: font.bodyText,
             placeholderColor: color.baseNormal,
             textFont: font.bodyText,
             textColor: .black,
             borderColor: color.baseNormal,
-            activeBorderColor: color.primary,
             borderWidth: 1,
-            cornerRadius: 4
+            cornerRadius: 4,
+            backgroundColor: color.background
+        )
+
+        let messageTextViewActiveStyle = SecureConversations.WelcomeStyle.MessageTextViewActiveStyle(
+            placeholderText: "Enter your message",
+            placeholderFont: font.bodyText,
+            placeholderColor: color.baseNormal,
+            textFont: font.bodyText,
+            textColor: .black,
+            borderColor: color.primary,
+            borderWidth: 1,
+            cornerRadius: 4,
+            backgroundColor: color.background
+        )
+
+        let messageTextViewDisabledStyle = SecureConversations.WelcomeStyle.MessageTextViewDisabledStyle(
+            placeholderText: "Enter your message",
+            placeholderFont: font.bodyText,
+            placeholderColor: color.baseNormal,
+            textFont: font.bodyText,
+            textColor: .black,
+            borderColor: .disabledBorder,
+            borderWidth: 1,
+            cornerRadius: 4,
+            backgroundColor: .disabledBackground
+        )
+
+        let messageTextViewStyle = SecureConversations.WelcomeStyle.MessageTextViewStyle(
+            normalStyle: messageTextViewNormalStyle,
+            disabledStyle: messageTextViewDisabledStyle,
+            activeStyle: messageTextViewActiveStyle
         )
 
         let sendButtonEnabledStyle = SecureConversations.WelcomeStyle.SendButtonEnabledStyle(
