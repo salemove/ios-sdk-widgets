@@ -15,6 +15,36 @@ extension SecureConversations {
         var messageText: String = "" { didSet { reportChange() } }
         var isAttachmentsAvailable: Bool = true { didSet { reportChange() } }
         var messageInputState: MessageInputState = .normal { didSet { reportChange() } }
+
+        lazy var sendMessageCommand = Cmd { [weak self] in
+            guard
+                let message = self?.messageText,
+                    !message.isEmpty
+            else {
+                // TODO: show error
+                return
+            }
+
+            guard
+                let queueIds = self?.environment.queueIds,
+                    !queueIds.isEmpty
+            else {
+                // TODO: show error
+                return
+            }
+
+            _ = self?.environment.sendSecureMessage(message, nil, queueIds) { result in
+                switch result {
+                case .success(let message):
+                    // TODO: go to confirmation screen
+                    print("Success sending message with content: \(message.content)")
+                case .failure:
+                    // TODO: show error
+                    print("### failure sending secure message")
+                }
+            }
+        }
+
         init(environment: Environment) {
             self.environment = environment
         }
@@ -59,7 +89,7 @@ extension SecureConversations.WelcomeViewModel {
             animated: true
         )
 
-        let sendMessageButton: WelcomeViewProps.SendMessageButton = .active(Cmd { print("### send message") })
+        let sendMessageButton: WelcomeViewProps.SendMessageButton = .active(sendMessageCommand)
 
         let props: Props = .welcome(
             .init(
@@ -146,5 +176,7 @@ extension SecureConversations.WelcomeViewModel {
 extension SecureConversations.WelcomeViewModel {
     struct Environment {
         var welcomeStyle: SecureConversations.WelcomeStyle
+        var queueIds: [String]
+        var sendSecureMessage: CoreSdkClient.SendSecureMessage
     }
 }

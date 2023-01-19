@@ -6,9 +6,11 @@ extension SecureConversations {
         var delegate: ((DelegateEvent) -> Void)?
         private let viewFactory: ViewFactory
         private var viewModel: SecureConversations.WelcomeViewModel?
+        private let environment: Environment
 
-        init(viewFactory: ViewFactory) {
+        init(viewFactory: ViewFactory, environment: Environment) {
             self.viewFactory = viewFactory
+            self.environment = environment
         }
 
         func start() -> UIViewController {
@@ -20,7 +22,9 @@ extension SecureConversations {
         private func makeSecureConversationsWelcomeViewController() -> SecureConversations.WelcomeViewController {
             let viewModel = SecureConversations.WelcomeViewModel(
                 environment: .init(
-                    welcomeStyle: viewFactory.theme.secureConversationsWelcomeStyle
+                    welcomeStyle: viewFactory.theme.secureConversationsWelcomeStyle,
+                    queueIds: environment.queueIds,
+                    sendSecureMessage: environment.sendSecureMessage
                 )
             )
 
@@ -83,6 +87,11 @@ extension SecureConversations {
 }
 
 extension SecureConversations.Coordinator {
+    struct Environment {
+        var queueIds: [String]
+        var sendSecureMessage: CoreSdkClient.SendSecureMessage
+    }
+
     enum DelegateEvent {
         case backTapped
         case closeTapped
