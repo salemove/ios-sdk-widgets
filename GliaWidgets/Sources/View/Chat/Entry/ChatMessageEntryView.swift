@@ -2,7 +2,7 @@ import UIKit
 
 class ChatMessageEntryView: BaseView {
     let pickMediaButton: MessageButton
-    let uploadListView: FileUploadListView
+    let uploadListView: SecureConversations.FileUploadListView
     var maxCharacters: Int = 200
     var textChanged: ((String) -> Void)?
     var sendTapped: (() -> Void)?
@@ -70,10 +70,7 @@ class ChatMessageEntryView: BaseView {
     ) {
         self.style = style
         self.environment = environment
-        uploadListView = FileUploadListView(
-            with: style.uploadList,
-            environment: .init(uiApplication: environment.uiApplication)
-        )
+        uploadListView = SecureConversations.FileUploadListView()
         pickMediaButton = MessageButton(with: style.mediaButton)
         sendButton = MessageButton(with: style.sendButton)
         isChoiceCardModeEnabled = false

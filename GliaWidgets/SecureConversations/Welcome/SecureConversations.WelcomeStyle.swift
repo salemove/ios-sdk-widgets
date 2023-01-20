@@ -34,8 +34,14 @@ extension SecureConversations {
         /// Style for message warning section.
         public var messageWarningStyle: MessageWarningStyle
 
-        /// Style for attachemnt button.
+        /// Style for attachment button.
         public var filePickerButtonStyle: FilePickerButtonStyle
+
+        /// Style for list of message attachments.
+        public var attachmentListStyle: FileUploadListStyle
+
+        /// Style of the list that contains the chat attachment sources. Appears in the media upload menu popover in the message input area in welcome screen.
+        public var pickMediaStyle: AttachmentSourceListStyle
 
         /// View's background color.
         public var backgroundColor: UIColor
@@ -50,6 +56,8 @@ extension SecureConversations {
         ///   - sendButtonStyle: Style for send message button.
         ///   - messageWarningStyle: Style for message warning section.
         ///   - filePickerButtonStyle: Style for file picker button.
+        ///   - attachmentListStyle: Style for list of message attachments.
+        ///   - pickMediaStyle: Style of the list that contains the chat attachment sources. Appears in the media upload menu popover in the message input area in welcome screen.
         ///   - backgroundColor: Welcome area's view background color.
         public init(
             header: HeaderStyle,
@@ -63,6 +71,8 @@ extension SecureConversations {
             sendButtonStyle: SendButtonStyle,
             messageWarningStyle: MessageWarningStyle,
             filePickerButtonStyle: FilePickerButtonStyle,
+            attachmentListStyle: FileUploadListStyle,
+            pickMediaStyle: AttachmentSourceListStyle,
             backgroundColor: UIColor
         ) {
             self.header = header
@@ -77,6 +87,8 @@ extension SecureConversations {
             self.filePickerButtonStyle = filePickerButtonStyle
             self.backgroundColor = backgroundColor
             self.titleImageStyle = titleImageStyle
+            self.attachmentListStyle = attachmentListStyle
+            self.pickMediaStyle = pickMediaStyle
         }
     }
 }

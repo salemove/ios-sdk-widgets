@@ -70,9 +70,6 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter,
         view.messageEntryView.pickMediaTapped = { [weak viewModel] in
             viewModel?.event(.pickMediaTapped)
         }
-        view.messageEntryView.uploadListView.removeTapped = { [weak viewModel] upload in
-            viewModel?.event(.removeUploadTapped(upload))
-        }
         view.fileTapped = { [weak viewModel] file in
             viewModel?.event(.fileTapped(file))
         }
@@ -127,10 +124,12 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter,
                 view.scrollToBottom(animated: animated)
             case .updateItemsUserImage(let animated):
                 view.updateItemsUserImage(animated: animated)
-            case .addUpload(let upload):
-                view.messageEntryView.uploadListView.addUploadView(with: upload)
-            case .removeUpload(let upload):
-                view.messageEntryView.uploadListView.removeUploadView(with: upload)
+            case .addUpload:
+                // Handled by data-driven SecureConversations.FileUploadListView.
+                break
+            case .removeUpload:
+                // Handled by data-driven SecureConversations.FileUploadListView.
+                break
             case .removeAllUploads:
                 view.messageEntryView.uploadListView.removeAllUploadViews()
             case .presentMediaPicker(let itemSelected):
@@ -157,6 +156,8 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter,
                 view.setCallBubbleImage(with: imageUrl)
             case .setUnreadMessageIndicatorImage(let imageUrl):
                 view.unreadMessageIndicatorView.setImage(fromUrl: imageUrl, animated: true)
+            case let .fileUploadListPropsUpdated(fileUploadListProps):
+                view.messageEntryView.uploadListView.props = fileUploadListProps
             }
         }
     }
@@ -169,8 +170,8 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter,
             with: viewFactory.theme.chat.pickMedia,
             from: sourceView,
             arrowDirections: [.down],
-            itemSelected: {
-                self.dismiss(animated: true, completion: nil)
+            itemSelected: { [weak self] in
+                self?.dismiss(animated: true, completion: nil)
                 itemSelected($0)
             }
         )

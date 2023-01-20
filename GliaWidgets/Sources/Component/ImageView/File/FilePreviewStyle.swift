@@ -3,7 +3,7 @@ import UIKit
 /// Style of a file preview.
 ///
 /// Appears in message input area before sending the files or in the incoming messages to preview downloads (except for images).
-public class FilePreviewStyle {
+public class FilePreviewStyle: Equatable {
     /// Font of the file extension label text.
     public var fileFont: UIFont
 
@@ -96,6 +96,20 @@ public class FilePreviewStyle {
             .map { UIColor(hex: $0) }
             .first
             .unwrap { errorIconColor = $0 }
+    }
+}
+
+extension FilePreviewStyle {
+    public static func == (lhs: FilePreviewStyle, rhs: FilePreviewStyle) -> Bool {
+        lhs.fileFont == rhs.fileFont &&
+        lhs.fileColor == rhs.fileColor &&
+        lhs.fileTextStyle == rhs.fileTextStyle &&
+        lhs.errorIcon == rhs.errorIcon &&
+        lhs.errorIconColor == rhs.errorIconColor &&
+        lhs.backgroundColor == rhs.backgroundColor &&
+        lhs.errorBackgroundColor == rhs.errorBackgroundColor &&
+        lhs.cornerRadius == rhs.cornerRadius &&
+        lhs.accessibility == rhs.accessibility
     }
 }
 

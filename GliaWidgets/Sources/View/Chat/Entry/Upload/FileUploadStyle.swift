@@ -1,7 +1,7 @@
 import UIKit
 
 /// Style of a single upload view in the uploads list view.
-public class FileUploadStyle {
+public class FileUploadStyle: Equatable {
     /// Style of the file preview.
     public var filePreview: FilePreviewStyle
 
@@ -111,8 +111,23 @@ public class FileUploadStyle {
     }
 }
 
+extension FileUploadStyle {
+    public static func == (lhs: FileUploadStyle, rhs: FileUploadStyle) -> Bool {
+        lhs.filePreview == rhs.filePreview &&
+        lhs.uploading == rhs.uploading &&
+        lhs.uploaded == rhs.uploaded &&
+        lhs.error == rhs.error &&
+        lhs.progressColor == rhs.progressColor &&
+        lhs.errorProgressColor == rhs.errorProgressColor &&
+        lhs.progressBackgroundColor == rhs.progressBackgroundColor &&
+        lhs.removeButtonImage == rhs.removeButtonImage &&
+        lhs.removeButtonColor == rhs.removeButtonColor &&
+        lhs.accessibility == rhs.accessibility
+    }
+}
+
 /// Style of an upload state.
-public class FileUploadStateStyle {
+public class FileUploadStateStyle: Equatable {
     /// Text for the state.
     public var text: String
 
@@ -188,8 +203,20 @@ public class FileUploadStateStyle {
     }
 }
 
+extension FileUploadStateStyle {
+    public static func == (lhs: FileUploadStateStyle, rhs: FileUploadStateStyle) -> Bool {
+        lhs.text == rhs.text &&
+        lhs.font == rhs.font &&
+        lhs.textColor == rhs.textColor &&
+        lhs.textStyle == rhs.textStyle &&
+        lhs.infoFont == rhs.infoFont &&
+        lhs.infoColor == rhs.infoColor &&
+        lhs.infoTextStyle == rhs.infoTextStyle
+    }
+}
+
 /// Style of an upload error state.
-public class FileUploadErrorStateStyle {
+public class FileUploadErrorStateStyle: Equatable {
     /// Text for the state.
     public var text: String
 
@@ -292,6 +319,23 @@ public class FileUploadErrorStateStyle {
             uiFont: assetsBuilder.fontBuilder(configuration?.info?.font),
             textStyle: infoTextStyle
         ).unwrap { infoFont = $0 }
+    }
+}
+
+extension FileUploadErrorStateStyle {
+    public static func == (lhs: FileUploadErrorStateStyle, rhs: FileUploadErrorStateStyle) -> Bool {
+        lhs.text == rhs.text &&
+        lhs.font == rhs.font &&
+        lhs.textColor == rhs.textColor &&
+        lhs.textStyle == rhs.textStyle &&
+        lhs.infoFont == rhs.infoFont &&
+        lhs.infoColor == rhs.infoColor &&
+        lhs.infoTextStyle == rhs.infoTextStyle &&
+        lhs.infoFileTooBig == rhs.infoFileTooBig &&
+        lhs.infoUnsupportedFileType == rhs.infoUnsupportedFileType &&
+        lhs.infoSafetyCheckFailed == rhs.infoSafetyCheckFailed &&
+        lhs.infoNetworkError == rhs.infoNetworkError &&
+        lhs.infoGenericError == rhs.infoGenericError
     }
 }
 
