@@ -1,6 +1,11 @@
 import Foundation
 
 class FileUploader {
+    typealias Create = (
+        _ maximumUploads: Int,
+        _ environment: Environment
+    ) -> FileUploader
+
     enum State {
         case idle
         case uploading
@@ -151,18 +156,5 @@ class FileUploader {
 
     private func updateLimitReached() {
         limitReached.value = count >= maximumUploads
-    }
-}
-
-extension FileUploader {
-    struct Environment {
-        var uploadFileToEngagement: CoreSdkClient.UploadFileToEngagement
-        var fileManager: FoundationBased.FileManager
-        var data: FoundationBased.Data
-        var date: () -> Date
-        var gcd: GCD
-        var localFileThumbnailQueue: FoundationBased.OperationQueue
-        var uiImage: UIKitBased.UIImage
-        var uuid: () -> UUID
     }
 }

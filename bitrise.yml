@@ -298,8 +298,9 @@ workflows:
     description: >-
       Workflow for checking and building pull requests. Does not notify
       anywhere, but shows on the pull request itself.
-#    after_run:
-#    - integration-spm
+    # MOB-1812
+    #after_run:
+    #- integration-spm
   pull-request-snapshot:
     steps:
     - activate-ssh-key@4:

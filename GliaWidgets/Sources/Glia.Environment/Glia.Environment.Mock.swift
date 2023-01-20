@@ -19,7 +19,9 @@ extension Glia.Environment {
         uiApplication: .mock,
         createRootCoordinator: EngagementCoordinator.mock,
         callVisualizerPresenter: .init { nil },
-        bundleManaging: .init { .main }
+        bundleManaging: .init { .main },
+        createFileUploader: FileUploader.mock,
+        createFileUploadListModel: SecureConversations.FileUploadListViewModel.mock(environment:)
     )
 }
 

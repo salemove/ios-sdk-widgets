@@ -26,7 +26,9 @@ extension ChatViewModel.Environment {
         timerProviding: .mock,
         uuid: { UUID.mock },
         uiApplication: .mock,
-        fetchChatHistory: { _ in }
+        fetchChatHistory: { _ in },
+        fileUploadListStyle: .initial,
+        createFileUploadListModel: SecureConversations.FileUploadListViewModel.mock(environment:)
     )
 }
 #endif
