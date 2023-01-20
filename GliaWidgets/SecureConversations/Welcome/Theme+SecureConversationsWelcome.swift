@@ -121,6 +121,113 @@ extension Theme {
 
         let titleImageStyle = SecureConversations.WelcomeStyle.TitleImageStyle(color: color.primary)
 
+
+        var uploadListStyle: FileUploadListStyle {
+            // TODO: Introduce dedicated localization for Secure conversations upload list instaed of using Chat's one.
+            // MOB-1831
+            typealias Upload = L10n.Chat.Upload
+            typealias Accessibility = L10n.Chat.Accessibility.Upload
+
+            let filePreview = FilePreviewStyle(
+                fileFont: font.subtitle,
+                fileColor: color.baseLight,
+                errorIcon: Asset.uploadError.image,
+                errorIconColor: color.systemNegative,
+                backgroundColor: color.primary,
+                errorBackgroundColor: Color.lightGrey,
+                accessibility: .init(isFontScalingEnabled: true)
+            )
+            let uploading = FileUploadStateStyle(
+                text: Upload.uploading,
+                font: font.mediumSubtitle2,
+                textColor: color.baseDark,
+                infoFont: font.caption,
+                infoColor: color.baseNormal
+            )
+            let uploaded = FileUploadStateStyle(
+                text: Upload.uploaded,
+                font: font.mediumSubtitle2,
+                textColor: color.baseDark,
+                infoFont: font.caption,
+                infoColor: color.baseNormal
+            )
+            let error = FileUploadErrorStateStyle(
+                text: Upload.failed,
+                font: font.mediumSubtitle2,
+                textColor: color.baseDark,
+                infoFont: font.caption,
+                infoColor: color.systemNegative,
+                infoFileTooBig: Upload.Error.fileTooBig,
+                infoUnsupportedFileType: Upload.Error.unsupportedFileType,
+                infoSafetyCheckFailed: Upload.Error.safetyCheckFailed,
+                infoNetworkError: Upload.Error.network,
+                infoGenericError: Upload.Error.generic
+            )
+            let upload = FileUploadStyle(
+                filePreview: filePreview,
+                uploading: uploading,
+                uploaded: uploaded,
+                error: error,
+                progressColor: color.primary,
+                errorProgressColor: color.systemNegative,
+                progressBackgroundColor: Color.lightGrey,
+                removeButtonImage: Asset.uploadRemove.image,
+                removeButtonColor: color.baseNormal,
+                accessibility: .init(
+                    removeButtonAccessibilityLabel: Accessibility.RemoveUpload.label,
+                    progressPercentValue: Accessibility.Progress.percentValue,
+                    fileNameWithProgressValue: Accessibility.Progress.fileNameWithProgressValue,
+                    isFontScalingEnabled: true
+                )
+            )
+
+            return FileUploadListStyle(item: upload)
+        }
+
+        // TODO: Introduce dedicated localization for Secure conversations upload list instaed of using Chat's one.
+        // MOB-1831
+        var pickMediaStyle: AttachmentSourceListStyle {
+           typealias Chat = L10n.Chat.PickMedia
+
+           let itemFont = font.bodyText
+           let itemFontColor = color.baseDark
+           let itemIconColor = color.baseDark
+
+           let pickPhoto = AttachmentSourceItemStyle(
+               kind: .photoLibrary,
+               title: Chat.photo,
+               titleFont: itemFont,
+               titleColor: itemFontColor,
+               icon: Asset.photoLibraryIcon.image,
+               iconColor: itemIconColor,
+               accessibility: .init(isFontScalingEnabled: true)
+           )
+           let takePhoto = AttachmentSourceItemStyle(
+               kind: .takePhoto,
+               title: Chat.takePhoto,
+               titleFont: itemFont,
+               titleColor: itemFontColor,
+               icon: Asset.cameraIcon.image,
+               iconColor: itemIconColor,
+               accessibility: .init(isFontScalingEnabled: true)
+           )
+           let browse = AttachmentSourceItemStyle(
+               kind: .browse,
+               title: Chat.browse,
+               titleFont: itemFont,
+               titleColor: itemFontColor,
+               icon: Asset.browseIcon.image,
+               iconColor: itemIconColor,
+               accessibility: .init(isFontScalingEnabled: true)
+           )
+
+           return AttachmentSourceListStyle(
+               items: [pickPhoto, takePhoto, browse],
+               separatorColor: color.baseShade,
+               backgroundColor: Color.lightGrey
+           )
+       }
+
         return .init(
             header: chat.header,
             headerTitle: "Messaging",
@@ -133,6 +240,8 @@ extension Theme {
             sendButtonStyle: sendButtonStyle,
             messageWarningStyle: messageWarningStyle,
             filePickerButtonStyle: filePickerButtonStyle,
+            attachmentListStyle: uploadListStyle,
+            pickMediaStyle: pickMediaStyle,
             backgroundColor: color.background
         )
     }

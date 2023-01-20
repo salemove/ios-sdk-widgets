@@ -53,6 +53,7 @@ class GliaTests: XCTestCase {
         fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
         gliaEnv.fileManager = fileManager
         gliaEnv.coreSdk.configureWithInteractor = { _ in }
+        gliaEnv.createFileUploadListModel = { _ in .mock() }
 
         gliaEnv.coreSdk.configureWithConfiguration = { _, callback in
             callback?()

@@ -54,7 +54,136 @@ extension ChatViewController {
             return fileDownload
         }
 
-        chatViewModelEnv.fetchChatHistory = { $0(.success([])) }
+        let messageUuid = UUID.incrementing
+        let messageId = { messageUuid().uuidString }
+        let fileUuid = UUID.incrementing
+        let fileId = { fileUuid().uuidString }
+        let queueId = UUID.mock.uuidString
+        let operatorAttachmentURL = URL.mock.appendingPathComponent("image").appendingPathExtension("png")
+
+        let messages: [ChatMessage] = [
+            .mock(
+                id: messageId(),
+                queueID: queueId,
+                operator: nil,
+                sender: .visitor,
+                content: "Hi",
+                attachment: nil,
+                downloads: []
+            ),
+            .mock(
+                id: messageId(),
+                queueID: queueId,
+                operator: .mock(name: "John Smith", pictureUrl: URL.mock.absoluteString),
+                sender: .operator,
+                content: "hello",
+                attachment: nil,
+                downloads: []
+            ),
+            .mock(
+                id: messageId(),
+                queueID: queueId,
+                operator: nil,
+                sender: .visitor,
+                content: "",
+                attachment: .mock(
+                    type: .files,
+                    files: [
+                        .mock(
+                            id: fileId(),
+                            url: .mock,
+                            name: "File 1.pdf",
+                            size: 1024,
+                            contentType: "application/pdf",
+                            isDeleted: false
+                        )
+                    ],
+                    imageUrl: nil,
+                    options: nil,
+                    selectedOption: nil
+                ),
+                downloads: []
+            ),
+            .mock(
+                id: messageId(),
+                queueID: queueId,
+                operator: nil,
+                sender: .visitor,
+                content: "Message along with content",
+                attachment: .mock(
+                    type: .files,
+                    files: [
+                        .mock(
+                            id: fileId(),
+                            url: .mockFilePath,
+                            name: "File 2.mp3",
+                            size: 512,
+                            contentType: "audio/mpeg",
+                            isDeleted: false
+                        )
+                    ],
+                    imageUrl: nil,
+                    options: nil,
+                    selectedOption: nil
+                ),
+                downloads: []
+            ),
+            .mock(
+                id: messageId(),
+                queueID: queueId,
+                operator: .mock(
+                    name: "John Doe",
+                    pictureUrl: URL.mock.absoluteString
+                ),
+                sender: .operator,
+                content: "",
+                attachment: .mock(
+                    type: .files,
+                    files: [
+                        .mock(
+                            id: fileId(),
+                            url: operatorAttachmentURL,
+                            name: "Screen Shot.png",
+                            size: 11806,
+                            contentType: "image/png",
+                            isDeleted: false
+                        )
+                    ],
+                    imageUrl: nil,
+                    options: nil,
+                    selectedOption: nil
+                ),
+                downloads: []
+            ),
+            .mock(
+                id: messageId(),
+                queueID: queueId,
+                operator: .mock(
+                    name: "John Smith",
+                    pictureUrl: URL.mock.appendingPathComponent("opImage").appendingPathExtension("png").absoluteString
+                ),
+                sender: .operator,
+                content: "",
+                attachment: .mock(
+                    type: .files,
+                    files: [
+                        .mock(
+                            id: fileId(),
+                            url: .mock,
+                            name: "File 2.pdf",
+                            size: 1024,
+                            contentType: "application/pdf",
+                            isDeleted: false
+                        )
+                    ],
+                    imageUrl: nil,
+                    options: nil,
+                    selectedOption: nil
+                ),
+                downloads: []
+            )
+        ]
+        chatViewModelEnv.fetchChatHistory = { $0(.success(messages)) }
         let chatViewModel = ChatViewModel.mock(environment: chatViewModelEnv)
         var factoryEnv = ViewFactory.Environment.mock
         factoryEnv.data.dataWithContentsOfFileUrl = { _ in UIImage.mock.pngData() ?? Data() }
@@ -73,6 +202,14 @@ extension ChatViewController {
             callback?()
         }
         let interactor = Interactor.mock(environment: interEnv)
+        let generateUUID = UUID.incrementing
+
+        let fileUploadListModel = SecureConversations.FileUploadListViewModel.mock()
+
+        chatViewModelEnv.createFileUploadListModel = { _ in
+            fileUploadListModel
+        }
+
         let chatViewModel = ChatViewModel.mock(interactor: interactor, environment: chatViewModelEnv)
         let controller: ChatViewController = .mock(chatViewModel: chatViewModel)
         chatViewModel.action?(.setMessageText("Input Message Mock"))
@@ -87,7 +224,8 @@ extension ChatViewController {
         let uiImage = UIKitBased.UIImage.mock
         let data = FoundationBased.Data.mock
         let date = Date.mock
-        let fileUploadEnv: FileUpload.Environment = .mock
+        var fileUploadEnv: FileUpload.Environment = .mock
+        fileUploadEnv.uuid = generateUUID
         let fileUpload: FileUpload = .mock(
             localFile: .mock(
                 url: localFileURL,
@@ -109,10 +247,8 @@ extension ChatViewController {
             ),
             environment: fileUploadEnv
         )
-        chatViewModel.action?(
-            .addUpload(fileUpload)
-        )
         fileUpload.state.value = .uploading(progress: .init(with: 0.5))
+        fileUploadListModel.environment.uploader.uploads.append(fileUpload)
 
         let fileUploadComplete: FileUpload = .mock(
             localFile: .mock(
@@ -135,10 +271,8 @@ extension ChatViewController {
             ),
             environment: fileUploadEnv
         )
-        chatViewModel.action?(
-            .addUpload(fileUploadComplete)
-        )
 
+        fileUploadListModel.environment.uploader.uploads.append(fileUploadComplete)
         fileUploadComplete.state.value = .uploaded(file: try .mock())
 
         let fileUploadWithError: FileUpload = .mock(
@@ -162,10 +296,8 @@ extension ChatViewController {
             ),
             environment: fileUploadEnv
         )
-        chatViewModel.action?(
-            .addUpload(fileUploadWithError)
-        )
 
+        fileUploadListModel.environment.uploader.uploads.append(fileUploadWithError)
         fileUploadWithError.state.value = .error(FileUpload.Error.fileTooBig)
 
         chatViewModel.action?(.sendButtonHidden(false))
@@ -176,23 +308,50 @@ extension ChatViewController {
         chatViewModel.action?(.pickMediaButtonEnabled(true))
         chatViewModel.action?(.setOperatorTypingIndicatorIsHiddenTo(false, false))
 
+        chatViewModel.action?(.fileUploadListPropsUpdated(chatViewModel.fileUploadListModel.props()))
         return controller
     }
 
     // MARK: - Choice Card States
     static func mockChoiceCard() throws -> ChatViewController {
         var chatViewModelEnv = ChatViewModel.Environment.mock
-        chatViewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
-        chatViewModelEnv.loadChatMessagesFromHistory = {
-            true
-        }
-        chatViewModelEnv.fetchChatHistory = { $0(.success([])) }
+        chatViewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [URL.mock] }
+        chatViewModelEnv.loadChatMessagesFromHistory = { true }
+        let messageUuid = UUID.incrementing
+        let messageId = { messageUuid().uuidString }
+        let queueId = UUID.mock.uuidString
+
+        let options = [
+            ChatChoiceCardOption(with: try .mock(text: "Four", value: "ruof")),
+            ChatChoiceCardOption(with: try .mock(text: "Five", value: "evif")),
+            ChatChoiceCardOption(with: try .mock(text: "One", value: "eno"))
+        ]
+        let messages: [ChatMessage] = [
+            .mock(id: messageId(),
+                  queueID: queueId,
+                  operator: .mock(
+                    name: "Blob",
+                    pictureUrl: "https://mock.mock/operator/234/image.png"
+                  ),
+                  sender: .operator,
+                  content: "What is 2 + 2?",
+                  attachment: .init(
+                    type: .singleChoice,
+                    files: nil,
+                    imageUrl: "https://mock.mock/single_choice/567/image.png",
+                    options: options,
+                    selectedOption: .some("ruof")
+                  ),
+                  downloads: []
+                 )
+        ]
+        chatViewModelEnv.fetchChatHistory = { $0(.success(messages)) }
 
         var viewFactoryEnv = ViewFactory.Environment.mock
         viewFactoryEnv.imageViewCache.getImageForKey = { _ in UIImage.mock }
 
         let chatViewModel = ChatViewModel.mock(environment: chatViewModelEnv)
-        let controller: ChatViewController = .mock(
+        let controller = ChatViewController.mock(
             chatViewModel: chatViewModel,
             viewFactory: .init(
                 with: .mock(),
@@ -240,14 +399,14 @@ extension ChatViewController {
             )
 
         }
-
+        chatViewModelEnv.fetchChatHistory = { $0(.success(messages)) }
         var interEnv = Interactor.Environment.mock
         interEnv.coreSdk.configureWithConfiguration = { _, callback in
             callback?()
         }
         let interactor = Interactor.mock(environment: interEnv)
         let chatViewModel = ChatViewModel.mock(interactor: interactor, environment: chatViewModelEnv)
-        let controller: ChatViewController = .mock(chatViewModel: chatViewModel)
+        let controller = ChatViewController.mock(chatViewModel: chatViewModel)
         completion(messages)
         return controller
     }

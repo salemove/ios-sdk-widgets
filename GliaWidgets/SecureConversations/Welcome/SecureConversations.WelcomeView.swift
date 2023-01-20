@@ -71,6 +71,7 @@ extension SecureConversations {
                 messageTitleStackView,
                 messageTextView,
                 messageWarningStackView,
+                fileUploadListView,
                 sendMessageButton
             ]
         ).makeView { stackView in
@@ -115,6 +116,8 @@ extension SecureConversations {
                 stackView.spacing = 5
             }
 
+        let fileUploadListView = SecureConversations.FileUploadListView().makeView()
+
         // Since some of the reusable views require style
         // to be passed during initializtion, we have to
         // provide `Props` also during initializtion, because
@@ -124,6 +127,8 @@ extension SecureConversations {
             self.header = Header(with: props.style.header)
             self.props = props
             super.init()
+            // Hide warning stack initially.
+            setWarningStackHidden(true)
         }
 
         @available(*, unavailable)
@@ -146,8 +151,7 @@ extension SecureConversations {
             defineMessageTextViewLayout()
             defineSendMessageButtonLayout()
             defineMessageWarningLabelLayout()
-            // Hide warning stack initially.
-            setWarningStackHidden(true)
+            defineFileUploadListViewLayout()
         }
 
         override func setup() {
@@ -162,7 +166,7 @@ extension SecureConversations {
         }
 
         @objc func handleFilePickerButtonTap() {
-            props.filePickerButton?.tap()
+            props.filePickerButton?.tap(filePickerButton)
         }
 
         @objc func handleSendMessageButtonTap() {
@@ -385,6 +389,15 @@ extension SecureConversations.WelcomeView {
             )
         ])
     }
+
+    func defineFileUploadListViewLayout() {
+        NSLayoutConstraint.activate([
+            fileUploadListView.trailingAnchor.constraint(
+                equalTo: safeAreaLayoutGuide.trailingAnchor,
+                constant: -Self.sideMargin
+            )
+        ])
+    }
 }
 
 // MARK: - Props
@@ -392,7 +405,7 @@ extension SecureConversations.WelcomeView {
     struct Props: Equatable {
         struct FilePickerButton: Equatable {
             let isEnabled: Bool
-            let tap: Cmd
+            let tap: Command<UIView>
         }
 
         struct WarningMessage: Equatable {
@@ -414,6 +427,7 @@ extension SecureConversations.WelcomeView {
         let sendMessageButton: SendMessageButton
         let messageTextViewProps: MessageTextView.Props
         let warningMessage: WarningMessage
+        let fileUploadListProps: SecureConversations.FileUploadListView.Props
     }
 }
 

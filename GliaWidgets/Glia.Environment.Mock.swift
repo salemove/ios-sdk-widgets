@@ -17,7 +17,9 @@ extension Glia.Environment {
         loadChatMessagesFromHistory: { true },
         timerProviding: .mock,
         uiApplication: .mock,
-        createRootCoordinator: RootCoordinator.mock
+        createRootCoordinator: RootCoordinator.mock,
+        createFileUploader: FileUploader.mock,
+        createFileUploadListModel: SecureConversations.FileUploadListViewModel.mock(environment:)
     )
 }
 

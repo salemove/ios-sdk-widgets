@@ -1,7 +1,7 @@
 import UIKit
 
 /// Style of the list that contains the chat attachment sources. Appears in the media upload menu popover in the message input area in chat.
-public class AttachmentSourceListStyle {
+public class AttachmentSourceListStyle: Equatable {
     /// Possible attachment sources to show, for example: camera, photo gallery or local file system.
     public var items: [AttachmentSourceItemStyle]
 
@@ -49,5 +49,13 @@ public class AttachmentSourceListStyle {
                     assetsBuilder: assetsBuilder
                 )
         }
+    }
+}
+
+extension AttachmentSourceListStyle {
+    public static func == (lhs: AttachmentSourceListStyle, rhs: AttachmentSourceListStyle) -> Bool {
+        lhs.items == rhs.items &&
+        lhs.separatorColor == rhs.separatorColor &&
+        lhs.backgroundColor == rhs.backgroundColor
     }
 }

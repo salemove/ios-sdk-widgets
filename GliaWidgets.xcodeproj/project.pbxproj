@@ -369,6 +369,13 @@
 		AF0D26D82971912A00816CCB /* SecureConversations.SendMessageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0D26D72971912A00816CCB /* SecureConversations.SendMessageButton.swift */; };
 		AF11F30728BE6F0C002ACEB4 /* UIAlertController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF11F30628BE6F0C002ACEB4 /* UIAlertController+Extensions.swift */; };
 		AF11F30928C0C592002ACEB4 /* Glia+OpaqueAuthentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF11F30828C0C592002ACEB4 /* Glia+OpaqueAuthentication.swift */; };
+		AF3D520B2983235C00AD8E69 /* FileUploader.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3D520A2983235C00AD8E69 /* FileUploader.Mock.swift */; };
+		AF3D520D2983B3DD00AD8E69 /* FileUploader.Environment.Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3D520C2983B3DD00AD8E69 /* FileUploader.Environment.Interface.swift */; };
+		AF3D520F2983BC5600AD8E69 /* FileUploader.Environment.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3D520E2983BC5600AD8E69 /* FileUploader.Environment.Mock.swift */; };
+		AF6AB34B2989517100003645 /* FileUploader.Failing.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF6AB34A2989517100003645 /* FileUploader.Failing.swift */; };
+		AF6AB34D298A9F2500003645 /* SecureConversations.FileUploadListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF6AB34C298A9F2500003645 /* SecureConversations.FileUploadListViewModel.swift */; };
+		AF6AB34F298AA02400003645 /* SecureConversations.FileUploadListViewModel.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF6AB34E298AA02400003645 /* SecureConversations.FileUploadListViewModel.Environment.swift */; };
+		AF6AB353298AE4E700003645 /* IdCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF6AB352298AE4E700003645 /* IdCollection.swift */; };
 		AF9DB22E2890571A00A0C442 /* RootCoordinator.Environment.Failing.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF9DB22D2890571A00A0C442 /* RootCoordinator.Environment.Failing.swift */; };
 		AF9DB23128905A1D00A0C442 /* ViewFactory.Environment.Failing.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF9DB23028905A1D00A0C442 /* ViewFactory.Environment.Failing.swift */; };
 		AFA2FDEC28907D7C00428E6D /* RootCoordinator.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA2FDEB28907D7C00428E6D /* RootCoordinator.Environment.swift */; };
@@ -380,6 +387,7 @@
 		AFA2FDF8289080FA00428E6D /* UserImageStyle.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA2FDF7289080FA00428E6D /* UserImageStyle.Mock.swift */; };
 		AFA2FDFA2890827E00428E6D /* BadgeStyle.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA2FDF92890827E00428E6D /* BadgeStyle.Mock.swift */; };
 		AFA2FDFC289082F500428E6D /* OnHoldOverlayStyle.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA2FDFB289082F500428E6D /* OnHoldOverlayStyle.Mock.swift */; };
+		AFAB409229798BD4007F96CC /* SecureConversations.FileUploadListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFAB409129798BD4007F96CC /* SecureConversations.FileUploadListView.swift */; };
 		AFBBF5782851C391004993B3 /* Glia.Deprecated.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBBF5772851C391004993B3 /* Glia.Deprecated.swift */; };
 		AFBBF57A28522591004993B3 /* Configuration.Unavailable.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBBF57928522591004993B3 /* Configuration.Unavailable.swift */; };
 		BBFFB6C8097E4CA18F416CB4 /* Pods_TestingApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 58B7B415C415DC7D731270D3 /* Pods_TestingApp.framework */; };
@@ -865,6 +873,13 @@
 		AF0D26D72971912A00816CCB /* SecureConversations.SendMessageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.SendMessageButton.swift; sourceTree = "<group>"; };
 		AF11F30628BE6F0C002ACEB4 /* UIAlertController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIAlertController+Extensions.swift"; sourceTree = "<group>"; };
 		AF11F30828C0C592002ACEB4 /* Glia+OpaqueAuthentication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Glia+OpaqueAuthentication.swift"; sourceTree = "<group>"; };
+		AF3D520A2983235C00AD8E69 /* FileUploader.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUploader.Mock.swift; sourceTree = "<group>"; };
+		AF3D520C2983B3DD00AD8E69 /* FileUploader.Environment.Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUploader.Environment.Interface.swift; sourceTree = "<group>"; };
+		AF3D520E2983BC5600AD8E69 /* FileUploader.Environment.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUploader.Environment.Mock.swift; sourceTree = "<group>"; };
+		AF6AB34A2989517100003645 /* FileUploader.Failing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUploader.Failing.swift; sourceTree = "<group>"; };
+		AF6AB34C298A9F2500003645 /* SecureConversations.FileUploadListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.FileUploadListViewModel.swift; sourceTree = "<group>"; };
+		AF6AB34E298AA02400003645 /* SecureConversations.FileUploadListViewModel.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.FileUploadListViewModel.Environment.swift; sourceTree = "<group>"; };
+		AF6AB352298AE4E700003645 /* IdCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdCollection.swift; sourceTree = "<group>"; };
 		AF9DB22D2890571A00A0C442 /* RootCoordinator.Environment.Failing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCoordinator.Environment.Failing.swift; sourceTree = "<group>"; };
 		AF9DB23028905A1D00A0C442 /* ViewFactory.Environment.Failing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewFactory.Environment.Failing.swift; sourceTree = "<group>"; };
 		AFA2FDEB28907D7C00428E6D /* RootCoordinator.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCoordinator.Environment.swift; sourceTree = "<group>"; };
@@ -876,6 +891,7 @@
 		AFA2FDF7289080FA00428E6D /* UserImageStyle.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserImageStyle.Mock.swift; sourceTree = "<group>"; };
 		AFA2FDF92890827E00428E6D /* BadgeStyle.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeStyle.Mock.swift; sourceTree = "<group>"; };
 		AFA2FDFB289082F500428E6D /* OnHoldOverlayStyle.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnHoldOverlayStyle.Mock.swift; sourceTree = "<group>"; };
+		AFAB409129798BD4007F96CC /* SecureConversations.FileUploadListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.FileUploadListView.swift; sourceTree = "<group>"; };
 		AFBBF5772851C391004993B3 /* Glia.Deprecated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Glia.Deprecated.swift; sourceTree = "<group>"; };
 		AFBBF57928522591004993B3 /* Configuration.Unavailable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.Unavailable.swift; sourceTree = "<group>"; };
 		B0F2F021C6CF00728FD97D19 /* Pods_GliaWidgetsTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GliaWidgetsTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1303,6 +1319,9 @@
 				1A2DA72C25EF9DD900032611 /* FileUpload.swift */,
 				9A8130BE27D7AEF700220BBD /* FileUpload.Mock.swift */,
 				1A2DA73025EFA77E00032611 /* FileUploader.swift */,
+				AF3D520A2983235C00AD8E69 /* FileUploader.Mock.swift */,
+				AF3D520C2983B3DD00AD8E69 /* FileUploader.Environment.Interface.swift */,
+				AF3D520E2983BC5600AD8E69 /* FileUploader.Environment.Mock.swift */,
 				9A8130BA27D7A41000220BBD /* FileUpload.Environment.Interface.swift */,
 				9A8130BC27D7A53300220BBD /* FileUpload.Environment.Mock.swift */,
 			);
@@ -1595,6 +1614,7 @@
 		1A60AFC12566857200E53F53 /* Lib */ = {
 			isa = PBXGroup;
 			children = (
+				AF6AB351298AE4DB00003645 /* IdCollection */,
 				75940919298A73DF008B173A /* Command */,
 				84D2292C28C61DE000F64FE7 /* WKNavigationPolicyProvider */,
 				845A28FD28AFF2DC008558EA /* URLScheme */,
@@ -2058,6 +2078,9 @@
 				313EBD542943116E008E9597 /* SecureConversations.swift */,
 				AF0D26D529705FDE00816CCB /* SecureConversations.ActivityIndicator.swift */,
 				AF0D26D72971912A00816CCB /* SecureConversations.SendMessageButton.swift */,
+				AFAB409129798BD4007F96CC /* SecureConversations.FileUploadListView.swift */,
+				AF6AB34C298A9F2500003645 /* SecureConversations.FileUploadListViewModel.swift */,
+				AF6AB34E298AA02400003645 /* SecureConversations.FileUploadListViewModel.Environment.swift */,
 			);
 			path = SecureConversations;
 			sourceTree = "<group>";
@@ -2377,6 +2400,14 @@
 			path = Interactor;
 			sourceTree = "<group>";
 		};
+		AF6AB351298AE4DB00003645 /* IdCollection */ = {
+			isa = PBXGroup;
+			children = (
+				AF6AB352298AE4E700003645 /* IdCollection.swift */,
+			);
+			path = IdCollection;
+			sourceTree = "<group>";
+		};
 		AF9DB22C289056F600A0C442 /* Coordinator */ = {
 			isa = PBXGroup;
 			children = (
@@ -2574,6 +2605,7 @@
 			isa = PBXGroup;
 			children = (
 				EB7A1507286D98000035AC62 /* FileUploader.Environment.Failing.swift */,
+				AF6AB34A2989517100003645 /* FileUploader.Failing.swift */,
 			);
 			path = Upload;
 			sourceTree = "<group>";
@@ -3049,6 +3081,7 @@
 				9AB196D227C3D74300FD60AB /* Interactor.Environment.Interface.swift in Sources */,
 				9AE0A7622822AF3000725946 /* FontScaling.Environment.Live.swift in Sources */,
 				1A0452DD25DBD0A4000DA0C1 /* HeaderButton.swift in Sources */,
+				AF3D520B2983235C00AD8E69 /* FileUploader.Mock.swift in Sources */,
 				75AF8CEF27DAA819009EEE2C /* SurveyViewController.swift in Sources */,
 				1A60AF96256675C400E53F53 /* UIColor+Extensions.swift in Sources */,
 				C06A7588296ECD75006B69A2 /* Theme+VisitorCode.swift in Sources */,
@@ -3080,6 +3113,7 @@
 				84D2293028C61FF300F64FE7 /* WKNavigationPolicyProvider.Mock.swift in Sources */,
 				1A0C144425B868FC00B00695 /* CallCoordinator.swift in Sources */,
 				1A1E309B25F8E1F700850E68 /* DataStorage.swift in Sources */,
+				AF6AB34D298A9F2500003645 /* SecureConversations.FileUploadListViewModel.swift in Sources */,
 				1A0452E325DBD0B4000DA0C1 /* HeaderButtonStyle.swift in Sources */,
 				1A5F813C2588B72100A605DA /* ChatMessageEntryView.swift in Sources */,
 				1A4674A725E905AC0078FA1C /* AttachmentSourceListView.swift in Sources */,
@@ -3098,6 +3132,7 @@
 				1A60AFF12566A4B300E53F53 /* NavigationPresenter.swift in Sources */,
 				1AC7A74F2582571100567FF8 /* Interactor.swift in Sources */,
 				845E2F72283D068000C04D56 /* HeaderStyle.Accessibility.swift in Sources */,
+				AF6AB353298AE4E700003645 /* IdCollection.swift in Sources */,
 				1A1E30CB25F9FDC400850E68 /* ChatImageFileContentStyle.swift in Sources */,
 				1A60AF93256674F900E53F53 /* Color.swift in Sources */,
 				1A38A8BA258B94D60089DE7B /* ImageView.swift in Sources */,
@@ -3174,6 +3209,7 @@
 				750C0ADD2850D53F003E0415 /* Theme.Survey.ScaleQuestion.swift in Sources */,
 				1A60B0152567FC7000E53F53 /* Button.swift in Sources */,
 				9A1992E927D6BCD700161AAE /* FileDownload.Mock.swift in Sources */,
+				AF3D520D2983B3DD00AD8E69 /* FileUploader.Environment.Interface.swift in Sources */,
 				AF11F30928C0C592002ACEB4 /* Glia+OpaqueAuthentication.swift in Sources */,
 				1ABD6C5925B5758000D56EFA /* BubbleStyle.swift in Sources */,
 				75AF8CF627DBB837009EEE2C /* NSLayoutConstraint.Extensions.swift in Sources */,
@@ -3234,6 +3270,7 @@
 				1A0C142D25B8545600B00695 /* EngagementView.swift in Sources */,
 				9A186A4327F6147D0055886D /* ActionButtonStyle.Accessibility.swift in Sources */,
 				750C0ADE2850D53F003E0415 /* Theme.Survey.ScaleQuestion.Accessibility.swift in Sources */,
+				AFAB409229798BD4007F96CC /* SecureConversations.FileUploadListView.swift in Sources */,
 				1A5F814D2588C0B800A605DA /* KeyboardObserver.swift in Sources */,
 				9A66172C27A94A4B001C8E03 /* CoreSDKClient.Mock.swift in Sources */,
 				3100EEF8293E276E00D57F71 /* SecureConversations.WelcomeViewModel.swift in Sources */,
@@ -3271,6 +3308,7 @@
 				84A318A12869ECFC00CA1DE5 /* Unavailable.swift in Sources */,
 				1AE15E49257A6BD200A642C0 /* ConfirmationAlertConfiguration.swift in Sources */,
 				C460C7782600BCF400449851 /* ChoiceCardOptionStyle.swift in Sources */,
+				AF3D520F2983BC5600AD8E69 /* FileUploader.Environment.Mock.swift in Sources */,
 				C43D7A1125FF92680064B1DA /* ChoiceCardStyle.swift in Sources */,
 				9A186A4127F605B90055886D /* HeaderButtonStyle.Accessibility.swift in Sources */,
 				84EFB06728ABA95C0005E270 /* MessageRenderer.Mock.swift in Sources */,
@@ -3301,6 +3339,7 @@
 				756087E127837EC000158604 /* BundleManaging.swift in Sources */,
 				AFA2FDEE28907DDB00428E6D /* RootCoordinator.Environment.Mock.swift in Sources */,
 				9A41B66A27E2439000CF9F69 /* Call.Mock.swift in Sources */,
+				AF6AB34F298AA02400003645 /* SecureConversations.FileUploadListViewModel.Environment.swift in Sources */,
 				1A4674C225E92A710078FA1C /* AtttachmentSourceItemKind.swift in Sources */,
 				9A1992EB27D6C0F000161AAE /* FileSystemStorage.Mock.swift in Sources */,
 				1A4674AC25E905D00078FA1C /* AttachmentSourceItemView.swift in Sources */,
@@ -3351,6 +3390,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C03A8049292BC8DB00DDECA6 /* CallViewControllerTests.swift in Sources */,
+				AF6AB34B2989517100003645 /* FileUploader.Failing.swift in Sources */,
 				EB03B00E27FFF6DD0058F6B1 /* CallViewTests.swift in Sources */,
 				7512A57727BE8A6700319DF1 /* InteractorTests.swift in Sources */,
 				C096B40B297EBDE400F0C552 /* VisitorCodeTests.swift in Sources */,

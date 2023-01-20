@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 
 extension SecureConversations {
     final class WelcomeViewModel: ViewModel {
@@ -11,6 +12,7 @@ extension SecureConversations {
         }
 
         static let messageTextLimit = 10_000
+        static let maximumUploads = 25
 
         var action: ((Action) -> Void)?
         var delegate: ((DelegateEvent) -> Void)?
@@ -21,12 +23,21 @@ extension SecureConversations {
         var messageInputState: MessageInputState = .normal { didSet { reportChange() } }
         var sendMessageRequestState: SendMessageRequestState = .waiting { didSet { reportChange() } }
 
+        let fileUploadListModel: FileUploadListViewModel
+
         lazy var sendMessageCommand = Cmd { [weak self] in
             self?.sendMessage()
         }
 
         init(environment: Environment) {
             self.environment = environment
+            self.fileUploadListModel = .init(
+                environment: .init(
+                        uploader: environment.fileUploader,
+                        style: environment.welcomeStyle.attachmentListStyle,
+                        uiApplication: environment.uiApplication
+                    )
+                )
         }
 
         func event(_ event: Event) {
@@ -44,6 +55,7 @@ extension SecureConversations {
     }
 }
 
+// MARK: - Send Message
 private extension SecureConversations.WelcomeViewModel {
     func sendMessage() {
         guard !messageText.isEmpty else { return }
@@ -69,7 +81,7 @@ private extension SecureConversations.WelcomeViewModel {
         }
     }
 }
-
+// MARK: - Props Generation
 extension SecureConversations.WelcomeViewModel {
     typealias Props = SecureConversations.WelcomeViewController.Props
     typealias WelcomeViewProps = SecureConversations.WelcomeView.Props
@@ -83,7 +95,12 @@ extension SecureConversations.WelcomeViewModel {
         let welcomeStyle = environment.welcomeStyle
         let filePickerButton = SecureConversations.WelcomeView.Props.FilePickerButton(
             isEnabled: true,
-            tap: Cmd { print("### file picker") }
+            tap: Command { [weak self, alertConfiguration = environment.alertConfiguration] originView in
+                self?.presentMediaPicker(
+                    from: originView,
+                    alertConfiguration: alertConfiguration
+                )
+            }
         )
 
         let messageLenghtWarning = messageText.count > Self.messageTextLimit ? welcomeStyle
@@ -107,7 +124,8 @@ extension SecureConversations.WelcomeViewModel {
                 filePickerButton: isAttachmentsAvailable ? filePickerButton : nil,
                 sendMessageButton: sendMessageButton,
                 messageTextViewProps: Self.textViewState(for: self),
-                warningMessage: warningMessage
+                warningMessage: warningMessage,
+                fileUploadListProps: fileUploadListModel.props()
             )
         )
         return props
@@ -185,6 +203,23 @@ extension SecureConversations.WelcomeViewModel {
         case closeTapped
         case renderProps(SecureConversations.WelcomeViewController.Props)
         case confirmationScreenNeeded
+        case mediaPickerRequested(
+            from: UIView,
+            callback: (AttachmentSourceItemKind) -> Void
+        )
+        case pickMedia(Command<MediaPickerEvent>)
+        case takeMedia(Command<MediaPickerEvent>)
+        case pickFile(Command<FilePickerEvent>)
+        case showFile(LocalFile)
+        case showAlert(
+            MessageAlertConfiguration,
+            accessibilityIdentifier: String?,
+            dismissed: (() -> Void)?
+        )
+        case showSettingsAlert(
+            SettingsAlertConfiguration,
+            cancelled: (() -> Void)?
+        )
     }
 
     enum StartAction {
@@ -197,5 +232,145 @@ extension SecureConversations.WelcomeViewModel {
         var welcomeStyle: SecureConversations.WelcomeStyle
         var queueIds: [String]
         var sendSecureMessage: CoreSdkClient.SendSecureMessage
+        var alertConfiguration: AlertConfiguration
+        var fileUploader: FileUploader
+        var uiApplication: UIKitBased.UIApplication
+    }
+}
+
+// MARK: - Media Picker
+extension SecureConversations.WelcomeViewModel {
+    func presentMediaPicker(
+        from originView: UIView,
+        alertConfiguration: AlertConfiguration
+    ) {
+        let itemSelected = { (kind: AttachmentSourceItemKind) -> Void in
+            let media = Command<MediaPickerEvent> { [weak self] event in
+                guard let self = self else { return }
+                switch event {
+                case .none, .cancelled:
+                    break
+                case .pickedMedia(let media):
+                    self.mediaPicked(media)
+                case .sourceNotAvailable:
+                    self.showAlert(
+                        with: alertConfiguration.mediaSourceNotAvailable,
+                        dismissed: nil
+                    )
+                case .noCameraPermission:
+                    self.showSettingsAlert(with: alertConfiguration.cameraSettings)
+                }
+            }
+            let file = Command<FilePickerEvent> { [weak self] event in
+                switch event {
+                case .none, .cancelled:
+                    break
+                case .pickedFile(let url):
+                    self?.filePicked(url)
+                }
+            }
+
+            switch kind {
+            case .photoLibrary:
+                self.delegate?(.pickMedia(media))
+            case .takePhoto:
+                self.delegate?(.takeMedia(media))
+            case .browse:
+                self.delegate?(.pickFile(file))
+            }
+        }
+
+        delegate?(
+            .mediaPickerRequested(
+                from: originView,
+                callback: itemSelected
+            )
+        )
+    }
+
+    private func mediaPicked(_ media: PickedMedia) {
+        switch media {
+        case .image(let url):
+            addUpload(with: url)
+        case .photo(let data, format: let format):
+            addUpload(with: data, format: format)
+        case .movie(let url):
+            addUpload(with: url)
+        case .none:
+            break
+        }
+    }
+
+    func showAlert(
+        with conf: MessageAlertConfiguration,
+        accessibilityIdentifier: String? = nil,
+        dismissed: (() -> Void)? = nil
+    ) {
+        let onDismissed = {
+            Self.alertPresenters.remove(self)
+            dismissed?()
+        }
+        Self.alertPresenters.insert(self)
+        delegate?(
+            .showAlert(
+                conf,
+                accessibilityIdentifier: accessibilityIdentifier,
+                dismissed: { onDismissed() }
+            )
+        )
+    }
+
+    func showSettingsAlert(
+        with conf: SettingsAlertConfiguration,
+        cancelled: (() -> Void)? = nil
+    ) {
+        delegate?(
+            .showSettingsAlert(
+                conf,
+                cancelled: cancelled
+            )
+        )
+    }
+
+    func filePicked(_ url: URL) {
+        addUpload(with: url)
+    }
+}
+
+// MARK: - Upload releated methods
+extension SecureConversations.WelcomeViewModel {
+    private func addUpload(with url: URL) {
+        // TODO: MOB-1722
+    }
+
+    private func addUpload(with data: Data, format: MediaFormat) {
+        // TODO: MOB-1722
+    }
+
+    private func removeUpload(_ upload: FileUpload) {
+        // TODO: MOB-1722
+    }
+
+    private func onUploaderStateChanged(_ state: FileUploader.State) {
+        // TODO: MOB-1722
+    }
+
+    private func fileTapped(_ file: LocalFile) {
+        delegate?(.showFile(file))
+    }
+}
+
+// MARK: Support alerts system
+extension SecureConversations.WelcomeViewModel {
+    private static var alertPresenters = Set<SecureConversations.WelcomeViewModel>()
+}
+
+extension SecureConversations.WelcomeViewModel: Hashable {
+    static func == (lhs: SecureConversations.WelcomeViewModel, rhs: SecureConversations.WelcomeViewModel) -> Bool {
+        lhs === rhs
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(ObjectIdentifier(self))
     }
 }

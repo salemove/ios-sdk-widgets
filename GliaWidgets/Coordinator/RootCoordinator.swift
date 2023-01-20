@@ -226,7 +226,8 @@ extension RootCoordinator {
                 submitSurveyAnswer: environment.submitSurveyAnswer,
                 uuid: environment.uuid,
                 uiApplication: environment.uiApplication,
-                fetchChatHistory: environment.fetchChatHistory
+                fetchChatHistory: environment.fetchChatHistory,
+                createFileUploadListModel: environment.createFileUploadListModel
             )
         )
         coordinator.delegate = { [weak self] event in
@@ -311,7 +312,8 @@ extension RootCoordinator {
                 submitSurveyAnswer: environment.submitSurveyAnswer,
                 uuid: environment.uuid,
                 uiApplication: environment.uiApplication,
-                fetchChatHistory: environment.fetchChatHistory
+                fetchChatHistory: environment.fetchChatHistory,
+                createFileUploadListModel: environment.createFileUploadListModel
             )
         )
         coordinator.delegate = { [weak self] event in
@@ -390,7 +392,17 @@ extension RootCoordinator {
             navigationPresenter: navigationPresenter,
             environment: .init(
                 queueIds: [interactor.queueID],
-                sendSecureMessage: environment.sendSecureMessage
+                sendSecureMessage: environment.sendSecureMessage,
+                createFileUploader: environment.createFileUploader,
+                uploadFileToEngagement: environment.uploadFileToEngagement,
+                fileManager: environment.fileManager,
+                data: environment.data,
+                date: environment.date,
+                gcd: environment.gcd,
+                localFileThumbnailQueue: environment.localFileThumbnailQueue,
+                uiImage: environment.uiImage,
+                uuid: environment.uuid,
+                uiApplication: environment.uiApplication
             )
         )
 

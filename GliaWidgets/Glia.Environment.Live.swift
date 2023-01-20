@@ -23,7 +23,9 @@ extension Glia.Environment {
         uiApplication: .live,
         createRootCoordinator: RootCoordinator.init(
             interactor:viewFactory:sceneProvider:engagementKind:features:environment:
-        )
+        ),
+        createFileUploader: FileUploader.init(maximumUploads:environment:),
+        createFileUploadListModel: SecureConversations.FileUploadListViewModel.init
     )
 }
 

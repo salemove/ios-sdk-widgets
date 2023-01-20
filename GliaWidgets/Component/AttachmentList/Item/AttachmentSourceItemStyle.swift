@@ -1,7 +1,7 @@
 import UIKit
 
 /// Style of an attachment source list item.
-public class AttachmentSourceItemStyle {
+public class AttachmentSourceItemStyle: Equatable {
     /// Kind of an item shown in the attachment source list view (e.g. Photo Library, Take Photo or Browse).
     public var kind: AttachmentSourceItemKind
 
@@ -75,5 +75,18 @@ public class AttachmentSourceItemStyle {
             uiFont: assetsBuilder.fontBuilder(configuration?.text?.font),
             textStyle: titleTextStyle
         ).unwrap { titleFont = $0 }
+    }
+}
+
+extension AttachmentSourceItemStyle {
+    public static func == (lhs: AttachmentSourceItemStyle, rhs: AttachmentSourceItemStyle) -> Bool {
+        lhs.kind == rhs.kind &&
+        lhs.title == rhs.title &&
+        lhs.titleFont == rhs.titleFont &&
+        lhs.titleColor == rhs.titleColor &&
+        lhs.titleTextStyle == rhs.titleTextStyle &&
+        lhs.icon == rhs.icon &&
+        lhs.iconColor == rhs.iconColor &&
+        lhs.accessibility == rhs.accessibility
     }
 }

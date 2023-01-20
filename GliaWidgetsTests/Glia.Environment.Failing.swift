@@ -34,6 +34,13 @@ extension Glia.Environment {
                 features: [],
                 environment: .failing
             )
+        },
+        createFileUploader: { _, _ in
+            .failing
+        },
+        createFileUploadListModel: { _ in
+            fail("\(Self.self).createFileUploadListModel")
+            return .mock()
         }
     )
 }

@@ -10,7 +10,7 @@ extension SecureConversations {
             }
         }
 
-        private let viewFactory: ViewFactory
+        let viewFactory: ViewFactory
 
         init(
             viewFactory: ViewFactory,
@@ -56,3 +56,7 @@ extension SecureConversations.WelcomeViewController {
         case welcome(SecureConversations.WelcomeView.Props)
     }
 }
+
+extension SecureConversations.WelcomeViewController: PopoverPresenter {}
+
+extension SecureConversations.WelcomeViewController: AlertPresenter {}

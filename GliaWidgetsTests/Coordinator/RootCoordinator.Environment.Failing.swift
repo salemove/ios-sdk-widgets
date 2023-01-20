@@ -46,6 +46,14 @@ extension RootCoordinator.Environment {
         sendSecureMessage: { _, _, _, _ in
             fail("\(Self.self).sendScureMessage")
             return .init()
+        },
+        createFileUploader: { _, _ in
+            .failing
+        },
+        createFileUploadListModel: { _ in
+            fail("\(Self.self).createFileUploadListModel")
+            return .mock()
+
         }
     )
 }

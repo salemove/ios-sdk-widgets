@@ -20,7 +20,9 @@ extension RootCoordinator.Environment {
         submitSurveyAnswer: { _, _, _, _ in },
         uiApplication: .mock,
         fetchChatHistory: { _ in },
-        sendSecureMessage: { _, _, _, _ in .init() }
+        sendSecureMessage: { _, _, _, _ in .init() },
+        createFileUploader: FileUploader.mock,
+        createFileUploadListModel: SecureConversations.FileUploadListViewModel.mock(environment:)
     )
 }
 #endif
