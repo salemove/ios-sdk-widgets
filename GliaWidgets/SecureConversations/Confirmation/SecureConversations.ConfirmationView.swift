@@ -161,7 +161,7 @@ extension SecureConversations {
         private func renderProps() {
             header.title = props.style.headerTitle
             header.backButton.tap = props.backButtonTap.execute
-            header.closeButton.tap = props.backButtonTap.execute
+            header.closeButton.tap = props.closeButtonTap.execute
             header.showCloseButton()
 
             titleLabel.text = props.style.titleStyle.text

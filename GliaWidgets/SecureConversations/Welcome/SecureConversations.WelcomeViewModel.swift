@@ -6,6 +6,10 @@ extension SecureConversations {
             case normal, active, disabled
         }
 
+        enum SendMessageRequestState {
+            case waiting, loading
+        }
+
         static let messageTextLimit = 10_000
 
         var action: ((Action) -> Void)?
@@ -15,34 +19,10 @@ extension SecureConversations {
         var messageText: String = "" { didSet { reportChange() } }
         var isAttachmentsAvailable: Bool = true { didSet { reportChange() } }
         var messageInputState: MessageInputState = .normal { didSet { reportChange() } }
+        var sendMessageRequestState: SendMessageRequestState = .waiting { didSet { reportChange() } }
 
         lazy var sendMessageCommand = Cmd { [weak self] in
-            guard
-                let message = self?.messageText,
-                    !message.isEmpty
-            else {
-                // TODO: show error
-                return
-            }
-
-            guard
-                let queueIds = self?.environment.queueIds,
-                    !queueIds.isEmpty
-            else {
-                // TODO: show error
-                return
-            }
-
-            _ = self?.environment.sendSecureMessage(message, nil, queueIds) { result in
-                switch result {
-                case .success(let message):
-                    // TODO: go to confirmation screen
-                    print("Success sending message with content: \(message.content)")
-                case .failure:
-                    // TODO: show error
-                    print("### failure sending secure message")
-                }
-            }
+            self?.sendMessage()
         }
 
         init(environment: Environment) {
@@ -64,10 +44,37 @@ extension SecureConversations {
     }
 }
 
+private extension SecureConversations.WelcomeViewModel {
+    func sendMessage() {
+        guard !messageText.isEmpty else { return }
+
+        let queueIds = environment.queueIds
+        guard !queueIds.isEmpty else {
+            // TODO: show error
+            return
+        }
+
+        sendMessageRequestState = .loading
+
+        _ = environment.sendSecureMessage(messageText, nil, queueIds) { [weak self] result in
+            self?.sendMessageRequestState = .waiting
+
+            switch result {
+            case .success:
+                self?.delegate?(.confirmationScreenNeeded)
+            case .failure(let error):
+                // TODO: show error
+                print("error on sending message")
+            }
+        }
+    }
+}
+
 extension SecureConversations.WelcomeViewModel {
     typealias Props = SecureConversations.WelcomeViewController.Props
     typealias WelcomeViewProps = SecureConversations.WelcomeView.Props
     typealias TextViewProps = SecureConversations.WelcomeView.MessageTextView.Props
+    typealias SendMessageButton = WelcomeViewProps.SendMessageButton
 
     // At one hand it is convenient to have Props construction logic in single place,
     // but since the method can become quite big (resulting in linter warnings),
@@ -89,7 +96,7 @@ extension SecureConversations.WelcomeViewModel {
             animated: true
         )
 
-        let sendMessageButton: WelcomeViewProps.SendMessageButton = .active(sendMessageCommand)
+        let sendMessageButton: SendMessageButton = Self.sendMessageButtonState(for: self)
 
         let props: Props = .welcome(
             .init(
@@ -150,6 +157,17 @@ extension SecureConversations.WelcomeViewModel {
 
         return textViewState
     }
+
+    static func sendMessageButtonState(
+        for instance: SecureConversations.WelcomeViewModel
+    ) -> SendMessageButton {
+        switch instance.sendMessageRequestState {
+        case .loading:
+            return .loading
+        case .waiting:
+            return .active(instance.sendMessageCommand)
+        }
+    }
 }
 
 extension SecureConversations.WelcomeViewModel {
@@ -166,6 +184,7 @@ extension SecureConversations.WelcomeViewModel {
         case backTapped
         case closeTapped
         case renderProps(SecureConversations.WelcomeViewController.Props)
+        case confirmationScreenNeeded
     }
 
     enum StartAction {
