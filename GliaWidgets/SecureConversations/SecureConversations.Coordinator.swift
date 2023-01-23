@@ -5,11 +5,17 @@ extension SecureConversations {
     final class Coordinator: SubFlowCoordinator, FlowCoordinator {
         var delegate: ((DelegateEvent) -> Void)?
         private let viewFactory: ViewFactory
-        private var viewModel: SecureConversations.WelcomeViewModel?
+        private let navigationPresenter: NavigationPresenter
         private let environment: Environment
+        private var viewModel: SecureConversations.WelcomeViewModel?
 
-        init(viewFactory: ViewFactory, environment: Environment) {
+        init(
+            viewFactory: ViewFactory,
+            navigationPresenter: NavigationPresenter,
+            environment: Environment
+        ) {
             self.viewFactory = viewFactory
+            self.navigationPresenter = navigationPresenter
             self.environment = environment
         }
 
@@ -42,6 +48,8 @@ extension SecureConversations {
                 // Bind changes in view model to view controller.
                 case let .renderProps(props):
                     controller?.props = props
+                case .confirmationScreenNeeded:
+                    self?.presentSecureConversationsConfirmationViewController()
                 }
             }
 
@@ -51,7 +59,7 @@ extension SecureConversations {
             return controller
         }
 
-        private func makeSecureConversationsConfirmationViewController() -> SecureConversations.ConfirmationViewController {
+        func presentSecureConversationsConfirmationViewController() {
             let viewModel = SecureConversations.ConfirmationViewModel(
                 environment: .init(
                     confirmationStyle: viewFactory.theme.secureConversationsConfirmationStyle
@@ -59,6 +67,7 @@ extension SecureConversations {
             )
 
             let controller = SecureConversations.ConfirmationViewController(
+                viewModel: viewModel,
                 viewFactory: viewFactory,
                 props: viewModel.props()
             )
@@ -75,13 +84,11 @@ extension SecureConversations {
                 }
             }
 
-            // Store view model, so that it would not be deallocated.
-            // Currently the view model can only be of one type because
-            // the base `ViewModel` class has associated values. Will need
-            // to fix this in the future.
-            // self.viewModel = viewModel
-
-            return controller
+            self.navigationPresenter.push(
+                controller,
+                animated: true,
+                replacingLast: true
+            )
         }
     }
 }
