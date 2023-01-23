@@ -10,11 +10,14 @@ extension SecureConversations {
         }
 
         private let viewFactory: ViewFactory
+        private let viewModel: ConfirmationViewModel
 
         init(
+            viewModel: ConfirmationViewModel,
             viewFactory: ViewFactory,
             props: Props
         ) {
+            self.viewModel = viewModel
             self.viewFactory = viewFactory
             self.props = props
             super.init(nibName: nil, bundle: nil)
