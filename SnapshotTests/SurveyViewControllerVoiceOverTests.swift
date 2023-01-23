@@ -9,7 +9,7 @@ class SurveyViewControllerVoiceOverTests: SnapshotTestCase {
         viewController.view.frame = UIScreen.main.bounds
         assertSnapshot(
             matching: viewController,
-            as: .accessibilityImage,
+            as: .accessibilityImage(precision: Self.possiblePrecision),
             named: nameForDevice()
         )
     }
@@ -19,7 +19,7 @@ class SurveyViewControllerVoiceOverTests: SnapshotTestCase {
         viewController.view.frame = UIScreen.main.bounds
         assertSnapshot(
             matching: viewController,
-            as: .accessibilityImage,
+            as: .accessibilityImage(precision: Self.possiblePrecision),
             named: nameForDevice()
         )
     }
@@ -29,7 +29,7 @@ class SurveyViewControllerVoiceOverTests: SnapshotTestCase {
         viewController.view.frame = UIScreen.main.bounds
         assertSnapshot(
             matching: viewController,
-            as: .accessibilityImage,
+            as: .accessibilityImage(precision: Self.possiblePrecision),
             named: nameForDevice()
         )
     }
