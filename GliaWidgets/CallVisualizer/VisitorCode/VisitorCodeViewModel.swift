@@ -18,7 +18,6 @@ extension CallVisualizer {
 
         init(
             presentation: CallVisualizer.Presentation,
-            visitorCodeStyle: VisitorCodeStyle,
             environment: Environment,
             theme: Theme,
             delegate: @escaping (Delegate) -> Void
