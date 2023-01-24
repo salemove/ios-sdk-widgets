@@ -42,7 +42,6 @@ extension CallVisualizer {
             }
             let viewModel = VisitorCodeViewModel(
                 presentation: presentation,
-                visitorCodeStyle: visitorCodeStyle,
                 environment: .init(
                     timerProviding: environment.timerProviding,
                     requestVisitorCode: environment.requestVisitorCode),

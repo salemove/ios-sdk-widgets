@@ -63,23 +63,23 @@ extension CallVisualizer {
             }
         }
 
-        private let refreshButton = UIButton()
-        private let spinnerView = UIImageView().make { imageView in
+        let refreshButton = UIButton()
+        let spinnerView = UIImageView().make { imageView in
             imageView.image = Asset.spinner.image
             imageView.contentMode = .center
         }
 
-        private let titleLabel = UILabel().make { label in
+        let titleLabel = UILabel().make { label in
             label.numberOfLines = 2
             label.textAlignment = .center
         }
 
-        private lazy var stackView = UIStackView.make(.vertical, spacing: 24)(
+        lazy var stackView = UIStackView.make(.vertical, spacing: 24)(
             titleLabel,
             poweredBy
         )
 
-        private lazy var closeButton = Button(
+        lazy var closeButton = Button(
             kind: .visitorCodeClose,
             tap: { [weak self] in
                 self?.props.closeButtonTap?()
@@ -88,8 +88,8 @@ extension CallVisualizer {
             button.accessibilityIdentifier = "visitorCode_alert_close_button"
         }
 
-        private lazy var poweredBy: PoweredBy = PoweredBy(style: props.style.poweredBy)
-        private lazy var visitorCodeStack = UIStackView.make(.horizontal, spacing: 8)()
+        lazy var poweredBy: PoweredBy = PoweredBy(style: props.style.poweredBy)
+        lazy var visitorCodeStack = UIStackView.make(.horizontal, spacing: 8)()
         private let contentInsets = UIEdgeInsets(top: 24, left: 24, bottom: 21, right: 24)
 
         override func setup() {

@@ -397,6 +397,9 @@
 		C08D776028F583D7000461E5 /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08D775F28F583D7000461E5 /* Array+Extensions.swift */; };
 		C08D776228F58A18000461E5 /* ColorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08D776128F58A18000461E5 /* ColorType.swift */; };
 		C08D776428F5910A000461E5 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08D776328F5910A000461E5 /* UIView+Extensions.swift */; };
+		C096B40B297EBDE400F0C552 /* VisitorCodeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C096B40A297EBDE400F0C552 /* VisitorCodeTests.swift */; };
+		C096B40F297FF45F00F0C552 /* CallVisualizer.Environment.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C096B40E297FF45F00F0C552 /* CallVisualizer.Environment.Mock.swift */; };
+		C096B4112980023E00F0C552 /* CallVisualizer.VisitorCodeViewModel.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C096B4102980023E00F0C552 /* CallVisualizer.VisitorCodeViewModel.Mock.swift */; };
 		C4119E06268F41D1004DFEFB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C4119E05268F41D1004DFEFB /* Main.storyboard */; };
 		C42463742673ABE10082C135 /* ScreenShareHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42463732673ABE10082C135 /* ScreenShareHandler.swift */; };
 		C43C12F92694B14900C37E1B /* GliaPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43C12F82694B14900C37E1B /* GliaPresenter.swift */; };
@@ -884,6 +887,9 @@
 		C08D775F28F583D7000461E5 /* Array+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extensions.swift"; sourceTree = "<group>"; };
 		C08D776128F58A18000461E5 /* ColorType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorType.swift; sourceTree = "<group>"; };
 		C08D776328F5910A000461E5 /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
+		C096B40A297EBDE400F0C552 /* VisitorCodeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorCodeTests.swift; sourceTree = "<group>"; };
+		C096B40E297FF45F00F0C552 /* CallVisualizer.Environment.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallVisualizer.Environment.Mock.swift; sourceTree = "<group>"; };
+		C096B4102980023E00F0C552 /* CallVisualizer.VisitorCodeViewModel.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallVisualizer.VisitorCodeViewModel.Mock.swift; sourceTree = "<group>"; };
 		C4119E05268F41D1004DFEFB /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		C42463732673ABE10082C135 /* ScreenShareHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenShareHandler.swift; sourceTree = "<group>"; };
 		C43C12F82694B14900C37E1B /* GliaPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GliaPresenter.swift; sourceTree = "<group>"; };
@@ -1203,6 +1209,7 @@
 		1A205D6525655CB2003AA3CD /* GliaWidgetsTests */ = {
 			isa = PBXGroup;
 			children = (
+				C096B408297EBCEB00F0C552 /* CallVisualizer */,
 				9AE05CB42805D29F00871321 /* Interactor */,
 				9A8130C727D90DD300220BBD /* ViewModel */,
 				7512A57827BF9FB800319DF1 /* Sources */,
@@ -2327,6 +2334,7 @@
 		C05AB018295F176200AA381F /* CallVisualizer */ = {
 			isa = PBXGroup;
 			children = (
+				C096B40D297FF44E00F0C552 /* Mock */,
 				C06A7574296C555D006B69A2 /* VisitorCode */,
 				C05AB019295F177700AA381F /* CallVisualizer.swift */,
 				C06A7570296C3EFA006B69A2 /* CallVisualizer+Presentation.swift */,
@@ -2368,6 +2376,23 @@
 				C06A7583296EC9DC006B69A2 /* NumberSlotStyle.Accessibility.swift */,
 			);
 			path = NumberSlot;
+			sourceTree = "<group>";
+		};
+		C096B408297EBCEB00F0C552 /* CallVisualizer */ = {
+			isa = PBXGroup;
+			children = (
+				C096B40A297EBDE400F0C552 /* VisitorCodeTests.swift */,
+			);
+			path = CallVisualizer;
+			sourceTree = "<group>";
+		};
+		C096B40D297FF44E00F0C552 /* Mock */ = {
+			isa = PBXGroup;
+			children = (
+				C096B40E297FF45F00F0C552 /* CallVisualizer.Environment.Mock.swift */,
+				C096B4102980023E00F0C552 /* CallVisualizer.VisitorCodeViewModel.Mock.swift */,
+			);
+			path = Mock;
 			sourceTree = "<group>";
 		};
 		C42463722673ABCD0082C135 /* Screensharing */ = {
@@ -3103,6 +3128,7 @@
 				1AA738A72578DD0300E1120F /* ConnectStatusStyle.swift in Sources */,
 				C47901AF25ED2E70007EE195 /* ScreenShareOfferPresenter.swift in Sources */,
 				9A19926427D3BA3A00161AAE /* GCD.Live.swift in Sources */,
+				C096B40F297FF45F00F0C552 /* CallVisualizer.Environment.Mock.swift in Sources */,
 				75FF151B27F4F52D00FE7BE2 /* Theme.Survey.SingleQuestion.swift in Sources */,
 				1A60AFDD25669A4200E53F53 /* ChatView.swift in Sources */,
 				84D2293E28D36B2A00F64FE7 /* UIColor+Hex.swift in Sources */,
@@ -3145,6 +3171,7 @@
 				C06A7571296C3EFA006B69A2 /* CallVisualizer+Presentation.swift in Sources */,
 				1A4674CD25ED08A30078FA1C /* MediaPickerController.swift in Sources */,
 				75AF8CF427DBB3C8009EEE2C /* Makeable.swift in Sources */,
+				C096B4112980023E00F0C552 /* CallVisualizer.VisitorCodeViewModel.Mock.swift in Sources */,
 				1A63B2F6257A469A00508478 /* AlertPresenter.swift in Sources */,
 				1A0452EA25DBE259000DA0C1 /* MessageButton.swift in Sources */,
 				9AE0A7602821904400725946 /* FontScaling.Environment.Interface.swift in Sources */,
@@ -3243,6 +3270,7 @@
 				C03A8049292BC8DB00DDECA6 /* CallViewControllerTests.swift in Sources */,
 				EB03B00E27FFF6DD0058F6B1 /* CallViewTests.swift in Sources */,
 				7512A57727BE8A6700319DF1 /* InteractorTests.swift in Sources */,
+				C096B40B297EBDE400F0C552 /* VisitorCodeTests.swift in Sources */,
 				9ACC25D427B474E800BC5335 /* Glia.Environment.Failing.swift in Sources */,
 				9A8130C227D9095200220BBD /* FileDownload.Failing.swift in Sources */,
 				9A19927027D3BCAE00161AAE /* GCD.Failing.swift in Sources */,
