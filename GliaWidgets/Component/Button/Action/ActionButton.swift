@@ -46,8 +46,8 @@ class ActionButton: UIButton {
             roundedRect: bounds,
             byRoundingCorners: .allCorners,
             cornerRadii: CGSize(
-                width: style.cornerRaidus ?? 0.0,
-                height: style.cornerRaidus ?? 0.0
+                width: style.cornerRaidus ?? 0,
+                height: style.cornerRaidus ?? 0
             )
         ).cgPath
     }
@@ -58,7 +58,7 @@ class ActionButton: UIButton {
 
         layer.masksToBounds = false
 
-        layer.cornerRadius = style.cornerRaidus ?? 0.0
+        layer.cornerRadius = style.cornerRaidus ?? 0
 
         layer.borderColor = style.borderColor?.cgColor
         layer.borderWidth = style.borderWidth ?? 0.0

@@ -5,7 +5,6 @@ import SalemoveSDK
 
 class ViewController: UIViewController {
     typealias Authentication = GliaWidgets.Glia.Authentication
-
     private var glia: Glia!
 
     @UserDefaultsStored(key: "configuration", defaultValue: Configuration.empty(with: .beta), coder: .jsonCoding())
@@ -24,6 +23,7 @@ class ViewController: UIViewController {
         title = "Glia UI testing"
         view.backgroundColor = .white
     }
+    @IBOutlet weak var visitorCodeView: UIView!
 
     @IBOutlet var toggleAuthenticateButton: UIButton!
 
@@ -49,6 +49,18 @@ class ViewController: UIViewController {
 
     @IBAction private func clearSessionTapped() {
         Glia.sharedInstance.clearVisitorSession()
+    }
+
+    @IBAction private func presentVisitorCodeAsAlertTapped() {
+        showVisitorCodeAlert()
+    }
+
+    @IBAction private func embedVisitorCodeViewTapped() {
+        showVisitorCodeEmbeddedView()
+    }
+
+    @IBAction private func configureSDKTapped() {
+        configureSDK()
     }
 
     @IBAction private func endEngagementTapped() {
@@ -170,6 +182,23 @@ extension ViewController {
         } catch {
             alert(message: "Failed to start\nCheck Glia parameters in Settings")
         }
+    }
+
+    func showVisitorCodeEmbeddedView() {
+        Glia.sharedInstance.callVisualizer.showVisitorCodeViewController(by: .embedded(visitorCodeView))
+    }
+
+    func showVisitorCodeAlert() {
+        Glia.sharedInstance.callVisualizer.showVisitorCodeViewController(by: .alert(self))
+    }
+
+    func configureSDK() {
+        try? Glia.sharedInstance.configure(
+            with: configuration,
+            queueId: queueId,
+            visitorContext: nil) {
+                debugPrint("SDK has been configured")
+            }
     }
 
     func alert(message: String) {

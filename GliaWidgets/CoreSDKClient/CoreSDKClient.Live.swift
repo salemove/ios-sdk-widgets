@@ -36,7 +36,8 @@ extension CoreSdkClient {
                         completion(.failure(error))
                     }
                 }
-            }
+            },
+            requestVisitorCode: GliaCore.sharedInstance.callVisualizer.requestVisitorCode(completion:)
         )
     }()
 }
