@@ -1,7 +1,7 @@
 import UIKit
 
 /// Style of an action button. This button contains a title placed on a rectangular background. Used for positive and negative actions in alerts and in the navigation bar (header) for the engagement ending button.
-public struct ActionButtonStyle {
+public struct ActionButtonStyle: Equatable {
     /// Title of the button.
     public var title: String
 
@@ -63,9 +63,9 @@ public struct ActionButtonStyle {
         textStyle: UIFont.TextStyle = .body,
         backgroundColor: ColorType,
         cornerRaidus: CGFloat? = 4.0,
-        shadowOffset: CGSize? = CGSize(width: 0.0, height: 2.0),
-        shadowColor: UIColor? = UIColor.black,
-        shadowRadius: CGFloat? = 2.0,
+        shadowOffset: CGSize = CGSize(width: 0.0, height: 2.0),
+        shadowColor: UIColor = UIColor.black,
+        shadowRadius: CGFloat = 2.0,
         shadowOpacity: Float? = nil,
         borderWidth: CGFloat? = nil,
         borderColor: UIColor? = nil,
