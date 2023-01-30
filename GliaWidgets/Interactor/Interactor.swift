@@ -31,7 +31,6 @@ enum InteractorEvent {
     case error(CoreSdkClient.SalemoveError)
     case engagementTransferred(CoreSdkClient.Operator?)
     case engagementTransferring
-    case engagementRequested(CoreSdkClient.RequestAnswerBlock)
 }
 
 class Interactor {
@@ -265,15 +264,12 @@ extension Interactor: CoreSdkClient.Interactable {
     }
 
     var onEngagementRequest: CoreSdkClient.RequestOfferBlock {
-        debugPrint("Engagement request received")
         return { [weak self] answer in
             let completion: CoreSdkClient.SuccessBlock = { _, error in
                 if let reason = error?.reason {
                     debugPrint(reason)
                 }
-
             }
-            self?.notify(.engagementRequested(answer))
             answer(self?.visitorContext, true, completion)
         }
     }
@@ -345,6 +341,23 @@ extension Interactor: CoreSdkClient.Interactable {
             self?.state = .engaged(engagedOperator)
         }
         currentEngagement = environment.coreSdk.getCurrentEngagement()
+    }
+
+    func start(engagement: CoreSdkClient.Engagement) {
+
+        switch engagement.source {
+        case .coreEngagement:
+            start()
+
+        case .callVisualizer:
+            break
+
+        case .unknown(let type):
+            debugPrint("Unknown engagement started (type='\(type)').")
+
+        @unknown default:
+            assertionFailure("Unexpected case in 'EngaagementSource' enum.")
+        }
     }
 
     func end() {

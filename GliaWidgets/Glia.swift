@@ -44,11 +44,13 @@ public class Glia {
     /// Used to monitor engagement state changes.
     public var onEvent: ((GliaEvent) -> Void)?
 
+    public let callVisualizer: CallVisualizer
+
     var rootCoordinator: RootCoordinator?
+    var callVisualizerCoordinator: CallVisualizer.Coordinator?
     var interactor: Interactor?
     var environment: Environment
     var messageRenderer: MessageRenderer?
-    public let callVisualizer: CallVisualizer
 
     init(environment: Environment) {
         self.environment = environment
@@ -99,6 +101,38 @@ public class Glia {
                         .map(InteractorState.engaged) ?? interactor.state
                     callback()
             }
+        }
+
+        var viewFactory = ViewFactory(
+            with: Theme(),
+            messageRenderer: messageRenderer,
+            environment: .init(
+                data: environment.data,
+                uuid: environment.uuid,
+                gcd: environment.gcd,
+                imageViewCache: environment.imageViewCache,
+                timerProviding: environment.timerProviding,
+                uiApplication: environment.uiApplication
+            )
+        )
+
+        callVisualizerCoordinator = .init(viewFactory: viewFactory)
+        interactor?.addObserver(self) { [weak self] event in
+            guard let engagement = self?.environment.coreSdk.getCurrentEngagement(),
+                  engagement.source == .callVisualizer,
+                  case .screenShareOffer(let answer) = event else {
+                return
+            }
+
+            self?.callVisualizerCoordinator?.offerScreenShare(
+                with: Theme().alertConfiguration.screenShareOffer,
+                accepted: {
+                    // should show bubble here
+                    answer(true)
+                }, declined: {
+                    answer(false)
+                }
+            )
         }
     }
 
@@ -204,6 +238,10 @@ public class Glia {
         }
     }
 
+    /// Maximizes engagement view if ongoing engagment exists.
+    /// Throws error if ongoing engagement not exist.
+    /// Use this function for resuming engagement view If bubble is hidden programmatically and you need to
+    /// present engagement view.
     public func resume() throws {
         guard engagement != .none else {
             throw GliaError.engagementNotExist
@@ -376,7 +414,9 @@ public class Glia {
         )
     }
 
+    /// Deprecated, use ``callVisualizer.showVisitorCodeViewController`` instead.
+    @available(*, deprecated, message: "Deprecated, use ``CallVisualizer.showVisitorCodeViewController`` instead.")
     public func requestVisitorCode(completion: @escaping (Result<VisitorCode, Swift.Error>) -> Void) {
-        environment.coreSdk.requestVisitorCode(completion)
+        _ = environment.coreSdk.requestVisitorCode(completion)
     }
 }
