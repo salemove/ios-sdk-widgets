@@ -236,6 +236,7 @@
                     </view>
                     <connections>
                         <outlet property="VisitorCodeView" destination="7mi-et-ybT" id="guR-OT-e1w"/>
+                        <outlet property="configureButton" destination="4yC-lN-tH2" id="sAf-jg-YTC"/>
                         <outlet property="toggleAuthenticateButton" destination="pHy-59-v7T" id="9rO-74-dfE"/>
                     </connections>
                 </viewController>

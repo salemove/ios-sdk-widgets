@@ -23,9 +23,10 @@ class ViewController: UIViewController {
         title = "Glia UI testing"
         view.backgroundColor = .white
     }
-    @IBOutlet weak var visitorCodeView: UIView!
 
+    @IBOutlet weak var visitorCodeView: UIView!
     @IBOutlet var toggleAuthenticateButton: UIButton!
+    @IBOutlet var configureButton: UIButton!
 
     @IBAction private func settingsTapped() {
         presentSettings()
@@ -193,12 +194,16 @@ extension ViewController {
     }
 
     func configureSDK() {
+        let originalTitle = configureButton.title(for: .normal)
+        configureButton.setTitle("Configuring ...", for: .normal)
         try? Glia.sharedInstance.configure(
             with: configuration,
             queueId: queueId,
-            visitorContext: nil) {
-                debugPrint("SDK has been configured")
-            }
+            visitorContext: nil
+        ) { [weak self] in
+            self?.configureButton.setTitle(originalTitle, for: .normal)
+            debugPrint("SDK has been configured")
+        }
     }
 
     func alert(message: String) {

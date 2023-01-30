@@ -203,6 +203,8 @@
 		756087E127837EC000158604 /* BundleManaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756087E027837EC000158604 /* BundleManaging.swift */; };
 		7562B2EB28CBD7E20040C784 /* RemoteConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7562B2EA28CBD7E20040C784 /* RemoteConfiguration.swift */; };
 		7562B2ED28CBD9AE0040C784 /* Glia.RemoteConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7562B2EC28CBD9AE0040C784 /* Glia.RemoteConfiguration.swift */; };
+		75940900298430CF008B173A /* CallVisualizer.EngagementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 759408FF298430CF008B173A /* CallVisualizer.EngagementViewController.swift */; };
+		759409022987F63E008B173A /* CallVisualizer.Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 759409012987F63E008B173A /* CallVisualizer.Coordinator.swift */; };
 		75AF8CEF27DAA819009EEE2C /* SurveyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AF8CEE27DAA819009EEE2C /* SurveyViewController.swift */; };
 		75AF8CF127DBB1F9009EEE2C /* SurveyViewController.View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AF8CF027DBB1F9009EEE2C /* SurveyViewController.View.swift */; };
 		75AF8CF427DBB3C8009EEE2C /* Makeable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AF8CF327DBB3C8009EEE2C /* Makeable.swift */; };
@@ -681,6 +683,8 @@
 		756087E027837EC000158604 /* BundleManaging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleManaging.swift; sourceTree = "<group>"; };
 		7562B2EA28CBD7E20040C784 /* RemoteConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfiguration.swift; sourceTree = "<group>"; };
 		7562B2EC28CBD9AE0040C784 /* Glia.RemoteConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Glia.RemoteConfiguration.swift; sourceTree = "<group>"; };
+		759408FF298430CF008B173A /* CallVisualizer.EngagementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallVisualizer.EngagementViewController.swift; sourceTree = "<group>"; };
+		759409012987F63E008B173A /* CallVisualizer.Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallVisualizer.Coordinator.swift; sourceTree = "<group>"; };
 		75AF8CEE27DAA819009EEE2C /* SurveyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurveyViewController.swift; sourceTree = "<group>"; };
 		75AF8CF027DBB1F9009EEE2C /* SurveyViewController.View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurveyViewController.View.swift; sourceTree = "<group>"; };
 		75AF8CF327DBB3C8009EEE2C /* Makeable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Makeable.swift; sourceTree = "<group>"; };
@@ -2059,6 +2063,14 @@
 			path = RemoteConfiguration;
 			sourceTree = "<group>";
 		};
+		759408F929842F35008B173A /* EngagementViewController */ = {
+			isa = PBXGroup;
+			children = (
+				759408FF298430CF008B173A /* CallVisualizer.EngagementViewController.swift */,
+			);
+			path = EngagementViewController;
+			sourceTree = "<group>";
+		};
 		75AF8CED27DA3D41009EEE2C /* Survey */ = {
 			isa = PBXGroup;
 			children = (
@@ -2334,9 +2346,11 @@
 		C05AB018295F176200AA381F /* CallVisualizer */ = {
 			isa = PBXGroup;
 			children = (
+				759408F929842F35008B173A /* EngagementViewController */,
 				C096B40D297FF44E00F0C552 /* Mock */,
 				C06A7574296C555D006B69A2 /* VisitorCode */,
 				C05AB019295F177700AA381F /* CallVisualizer.swift */,
+				759409012987F63E008B173A /* CallVisualizer.Coordinator.swift */,
 				C06A7570296C3EFA006B69A2 /* CallVisualizer+Presentation.swift */,
 				C06A756A296C3C48006B69A2 /* CallVisualizer+Environment.swift */,
 				C06A756629685314006B69A2 /* TemporaryCommandFile.swift */,
@@ -3005,6 +3019,7 @@
 				9AB3401727F74D66006E0FE2 /* ChoiceCardStyle.Accessibility.swift in Sources */,
 				9A8130B527D7563000220BBD /* LocalFile.Environment.Interface.swift in Sources */,
 				9AB3401B27FB4720006E0FE2 /* OperatorTypingIndicatorStyle.Accessibility.swift in Sources */,
+				75940900298430CF008B173A /* CallVisualizer.EngagementViewController.swift in Sources */,
 				1AA738B625790D9900E1120F /* ActionButton.swift in Sources */,
 				84D2293028C61FF300F64FE7 /* WKNavigationPolicyProvider.Mock.swift in Sources */,
 				1A0C144425B868FC00B00695 /* CallCoordinator.swift in Sources */,
@@ -3230,6 +3245,7 @@
 				1A60B04A256C0E0100E53F53 /* ChatItemCell.swift in Sources */,
 				1A4AD3BE256D37FD00468BFB /* UITableView+Extensions.swift in Sources */,
 				9A19926327D3BA3A00161AAE /* GCD.Mock.swift in Sources */,
+				759409022987F63E008B173A /* CallVisualizer.Coordinator.swift in Sources */,
 				1A4AD3C1256E74C600468BFB /* ThemeFont.swift in Sources */,
 				1A5F495525CBE84A003E3678 /* SettingsAlertConfiguration.swift in Sources */,
 				1A60AFEC2566A0E700E53F53 /* NavigationController.swift in Sources */,

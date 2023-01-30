@@ -35,7 +35,10 @@ class AlertViewController: UIViewController {
     private var alertView: AlertView?
     private let kAlertInsets = UIEdgeInsets(top: 0, left: 20, bottom: 10, right: 20)
 
-    init(kind: Kind, viewFactory: ViewFactory) {
+    init(
+        kind: Kind,
+        viewFactory: ViewFactory
+    ) {
         self.kind = kind
         self.viewFactory = viewFactory
         super.init(nibName: nil, bundle: nil)

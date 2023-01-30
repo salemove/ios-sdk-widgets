@@ -190,4 +190,5 @@ extension CoreSdkClient {
     typealias Authentication = SalemoveSDK.GliaCore.Authentication
     typealias AuthenticationBehavior = SalemoveSDK.GliaCore.Authentication.Behavior
     typealias VisitorCodeBlock = (Result<VisitorCode, Swift.Error>)
+    typealias EngagementSource = SalemoveSDK.EngagementSource
 }
