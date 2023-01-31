@@ -46,7 +46,7 @@ public class Glia {
 
     public let callVisualizer: CallVisualizer
 
-    var rootCoordinator: RootCoordinator?
+    var rootCoordinator: EngagementCoordinator?
     var callVisualizerCoordinator: CallVisualizer.Coordinator?
     var interactor: Interactor?
     var environment: Environment
@@ -116,7 +116,10 @@ public class Glia {
             )
         )
 
-        callVisualizerCoordinator = .init(viewFactory: viewFactory)
+        callVisualizerCoordinator = .init(
+            viewFactory: viewFactory,
+            presenter: .topViewController(application: .live)
+        )
         interactor?.addObserver(self) { [weak self] event in
             guard let engagement = self?.environment.coreSdk.getCurrentEngagement(),
                   engagement.source == .callVisualizer,
@@ -301,7 +304,7 @@ public class Glia {
         rootCoordinator?.start()
     }
 
-    private func handleCoordinatorEvent(_ event: RootCoordinator.DelegateEvent) {
+    private func handleCoordinatorEvent(_ event: EngagementCoordinator.DelegateEvent) {
         switch event {
         case .started:
             onEvent?(.started)

@@ -1,6 +1,6 @@
 import Foundation
 
-extension RootCoordinator {
+extension EngagementCoordinator {
     struct Environment {
         var fetchFile: CoreSdkClient.FetchFile
         var sendSelectedOptionValue: CoreSdkClient.SendSelectedOptionValue

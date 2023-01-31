@@ -2,9 +2,7 @@ import Foundation
 import UIKit
 
 extension CallVisualizer {
-    final class EngagementViewController: BaseViewController<EngagementView> {
-
-    }
+    final class EngagementViewController: BaseViewController<EngagementView> {}
 }
 
 extension CallVisualizer {
