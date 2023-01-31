@@ -1,6 +1,6 @@
 import UIKit
 
-class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
+class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
 
     var delegate: ((DelegateEvent) -> Void)?
 
@@ -122,7 +122,7 @@ class RootCoordinator: SubFlowCoordinator, FlowCoordinator {
     }
 }
 
-extension RootCoordinator {
+extension EngagementCoordinator {
     // swiftlint:disable function_body_length
     func end() {
 
@@ -378,7 +378,7 @@ extension RootCoordinator {
     }
 }
 
-extension RootCoordinator {
+extension EngagementCoordinator {
     private func presentGliaViewController(animated: Bool, completion: (() -> Void)? = nil) {
         guard let gliaViewController = gliaViewController else { return }
         gliaPresenter.present(gliaViewController, animated: animated) { [weak self] in
@@ -396,7 +396,7 @@ extension RootCoordinator {
     }
 }
 
-extension RootCoordinator {
+extension EngagementCoordinator {
     private func chatMediaUpgradeAccepted(
         offer: CoreSdkClient.MediaUpgradeOffer,
         answer: @escaping CoreSdkClient.AnswerWithSuccessBlock
@@ -444,7 +444,7 @@ extension RootCoordinator {
     }
 }
 
-extension RootCoordinator: GliaViewControllerDelegate {
+extension EngagementCoordinator: GliaViewControllerDelegate {
     func event(_ event: GliaViewControllerEvent) {
         switch event {
         case .minimized:
@@ -461,7 +461,7 @@ extension RootCoordinator: GliaViewControllerDelegate {
     }
 }
 
-extension RootCoordinator {
+extension EngagementCoordinator {
 
     func maximize() {
         gliaViewController?.maximize(animated: true)
@@ -479,7 +479,7 @@ extension EngagementKind {
     }
 }
 
-extension RootCoordinator {
+extension EngagementCoordinator {
     enum DelegateEvent {
         case started
         case engagementChanged(EngagementKind)

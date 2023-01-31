@@ -1,5 +1,5 @@
 #if DEBUG
-extension RootCoordinator.Environment {
+extension EngagementCoordinator.Environment {
     static let mock = Self.init(
         fetchFile: { _, _, _ in },
         sendSelectedOptionValue: { _, _ in },

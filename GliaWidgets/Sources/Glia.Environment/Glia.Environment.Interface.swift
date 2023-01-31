@@ -18,8 +18,8 @@ extension Glia {
             _ sceneProvider: SceneProvider?,
             _ engagementKind: EngagementKind,
             _ features: Features,
-            _ environment: RootCoordinator.Environment
-        ) -> RootCoordinator
+            _ environment: EngagementCoordinator.Environment
+        ) -> EngagementCoordinator
         var coreSdk: CoreSdkClient
         var audioSession: AudioSession
         var uuid: () -> UUID
@@ -35,6 +35,7 @@ extension Glia {
         var timerProviding: FoundationBased.Timer.Providing
         var uiApplication: UIKitBased.UIApplication
         var createRootCoordinator: CreateRootCoordinator
+        var callVisualizerPresenter: CallVisualizer.Presenter
     }
 }
 
@@ -45,8 +46,8 @@ extension Glia.Environment {
         sceneProvider: SceneProvider?,
         engagementKind: EngagementKind,
         features: Features,
-        environment: RootCoordinator.Environment
-    ) -> RootCoordinator {
+        environment: EngagementCoordinator.Environment
+    ) -> EngagementCoordinator {
         self.createRootCoordinator(
             interactor,
             viewFactory,

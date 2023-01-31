@@ -9,5 +9,6 @@ enum UIKitBased {
         var open: (URL) -> Void
         var canOpenURL: (URL) -> Bool
         var preferredContentSizeCategory: () -> UIContentSizeCategory
+        var shared: () -> UIKit.UIApplication
     }
 }
