@@ -8,6 +8,7 @@ extension UIKitBased.UIApplication {
     static let live = Self(
         open: { UIApplication.shared.open($0) },
         canOpenURL: UIApplication.shared.canOpenURL,
-        preferredContentSizeCategory: { UIApplication.shared.preferredContentSizeCategory }
+        preferredContentSizeCategory: { UIApplication.shared.preferredContentSizeCategory },
+        shared: { UIApplication.shared }
     )
 }

@@ -1,5 +1,5 @@
 #if DEBUG
-extension RootCoordinator {
+extension EngagementCoordinator {
     static func mock(
         interactor: Interactor = .mock(),
         viewFactory: ViewFactory = .mock(),
@@ -7,8 +7,8 @@ extension RootCoordinator {
         engagementKind: EngagementKind = .audioCall,
         features: Features = .all,
         environment: Environment = .mock
-    ) -> RootCoordinator {
-        RootCoordinator(
+    ) -> EngagementCoordinator {
+        EngagementCoordinator(
             interactor: interactor,
             viewFactory: viewFactory,
             sceneProvider: sceneProvider,

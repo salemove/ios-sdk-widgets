@@ -1,6 +1,6 @@
 @testable import GliaWidgets
 
-extension RootCoordinator.Environment {
+extension EngagementCoordinator.Environment {
     static let failing = Self.init(
         fetchFile: { _, _, _ in
             fail("\(Self.self).fetchFile")
