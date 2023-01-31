@@ -63,7 +63,9 @@ extension CallVisualizer {
             }
         }
 
-        let refreshButton = UIButton()
+        let refreshButton = UIButton().make { button in
+            button.accessibilityIdentifier = "visitor_code_refresh_button"
+        }
         let spinnerView = UIImageView().make { imageView in
             imageView.image = Asset.spinner.image
             imageView.contentMode = .center
@@ -72,6 +74,7 @@ extension CallVisualizer {
         let titleLabel = UILabel().make { label in
             label.numberOfLines = 2
             label.textAlignment = .center
+            label.accessibilityIdentifier = "visitor_code_title_label"
         }
 
         lazy var stackView = UIStackView.make(.vertical, spacing: 24)(
@@ -85,7 +88,7 @@ extension CallVisualizer {
                 self?.props.closeButtonTap?()
             }
         ).make { button in
-            button.accessibilityIdentifier = "visitorCode_alert_close_button"
+            button.accessibilityIdentifier = "visitor_code_alert_close_button"
         }
 
         lazy var poweredBy: PoweredBy = PoweredBy(style: props.style.poweredBy)
@@ -99,6 +102,8 @@ extension CallVisualizer {
             layer.cornerRadius = props.style.cornerRadius
             renderProps()
             refreshButton.addTarget(self, action: #selector(refreshButtonTapped), for: .touchUpInside)
+            accessibilityElements = [titleLabel, closeButton, visitorCodeStack, poweredBy, refreshButton]
+
         }
 
         override func defineLayout() {
@@ -176,6 +181,10 @@ extension CallVisualizer {
                 props.style.accessibility.isFontScalingEnabled,
                 for: titleLabel
             )
+            setFontScalingEnabled(
+                props.style.accessibility.isFontScalingEnabled,
+                for: refreshButton
+            )
             poweredBy.alpha = props.isPoweredByShown ? 1 : 0
             renderShadow()
 
@@ -193,9 +202,10 @@ extension CallVisualizer {
             didSet {
                 guard renderedVisitorCode != oldValue else { return }
                 visitorCodeStack.removeArrangedSubviews()
-                renderedVisitorCode.forEach { char in
+                renderedVisitorCode.enumerated().forEach { (index, char) in
                     let valueLabel = NumberView().make { numberView in
                         numberView.props = .init(character: char, style: props.style)
+                        numberView.accessibilityIdentifier = "visitor_code_number_slot_at_index_\(index)"
                     }
                     visitorCodeStack.addArrangedSubview(valueLabel)
                 }
