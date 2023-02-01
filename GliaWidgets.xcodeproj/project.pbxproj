@@ -206,6 +206,7 @@
 		75940900298430CF008B173A /* CallVisualizer.EngagementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 759408FF298430CF008B173A /* CallVisualizer.EngagementViewController.swift */; };
 		759409022987F63E008B173A /* CallVisualizer.Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 759409012987F63E008B173A /* CallVisualizer.Coordinator.swift */; };
 		7594091529891C5C008B173A /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7594091429891C5C008B173A /* Environment.swift */; };
+		7594091D298C442E008B173A /* CallVisualizer.BubbleIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7594091C298C442E008B173A /* CallVisualizer.BubbleIcon.swift */; };
 		75AF8CEF27DAA819009EEE2C /* SurveyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AF8CEE27DAA819009EEE2C /* SurveyViewController.swift */; };
 		75AF8CF127DBB1F9009EEE2C /* SurveyViewController.View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AF8CF027DBB1F9009EEE2C /* SurveyViewController.View.swift */; };
 		75AF8CF427DBB3C8009EEE2C /* Makeable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AF8CF327DBB3C8009EEE2C /* Makeable.swift */; };
@@ -689,6 +690,7 @@
 		759408FF298430CF008B173A /* CallVisualizer.EngagementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallVisualizer.EngagementViewController.swift; sourceTree = "<group>"; };
 		759409012987F63E008B173A /* CallVisualizer.Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallVisualizer.Coordinator.swift; sourceTree = "<group>"; };
 		7594091429891C5C008B173A /* Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
+		7594091C298C442E008B173A /* CallVisualizer.BubbleIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallVisualizer.BubbleIcon.swift; sourceTree = "<group>"; };
 		75AF8CEE27DAA819009EEE2C /* SurveyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurveyViewController.swift; sourceTree = "<group>"; };
 		75AF8CF027DBB1F9009EEE2C /* SurveyViewController.View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurveyViewController.View.swift; sourceTree = "<group>"; };
 		75AF8CF327DBB3C8009EEE2C /* Makeable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Makeable.swift; sourceTree = "<group>"; };
@@ -2407,6 +2409,7 @@
 				C06A7574296C555D006B69A2 /* VisitorCode */,
 				C05AB019295F177700AA381F /* CallVisualizer.swift */,
 				759409012987F63E008B173A /* CallVisualizer.Coordinator.swift */,
+				7594091C298C442E008B173A /* CallVisualizer.BubbleIcon.swift */,
 				C06A7570296C3EFA006B69A2 /* CallVisualizer+Presentation.swift */,
 				C06A756A296C3C48006B69A2 /* CallVisualizer+Environment.swift */,
 				C06A756629685314006B69A2 /* TemporaryCommandFile.swift */,
@@ -3161,6 +3164,7 @@
 				84CFB7732822700000167258 /* Theme.Button.Accessibility.swift in Sources */,
 				1A475BB725DE833200296D55 /* BadgeStyle.swift in Sources */,
 				1A4AD3B3256D2A7600468BFB /* VisitorChatMessageStyle.swift in Sources */,
+				7594091D298C442E008B173A /* CallVisualizer.BubbleIcon.swift in Sources */,
 				845E2F98283FC9A900C04D56 /* Theme.Survey.OptionButton.swift in Sources */,
 				9AB196DC27C3FFCC00FD60AB /* Call.Environment.Interface.swift in Sources */,
 				C49A29EA2614A32600819269 /* ChatMessageContent.swift in Sources */,

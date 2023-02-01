@@ -18,7 +18,8 @@ extension Glia.Environment {
         timerProviding: .mock,
         uiApplication: .mock,
         createRootCoordinator: EngagementCoordinator.mock,
-        callVisualizerPresenter: .init { nil }
+        callVisualizerPresenter: .init { nil },
+        bundleManaging: .init { .main }
     )
 }
 
