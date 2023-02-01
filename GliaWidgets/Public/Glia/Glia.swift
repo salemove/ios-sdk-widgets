@@ -118,7 +118,8 @@ public class Glia {
 
         callVisualizerCoordinator = .init(
             viewFactory: viewFactory,
-            presenter: environment.callVisualizerPresenter
+            presenter: environment.callVisualizerPresenter,
+            bundleManaging: environment.bundleManaging
         )
         interactor?.addObserver(self) { [weak self] event in
             guard let engagement = self?.environment.coreSdk.getCurrentEngagement(),
@@ -127,14 +128,17 @@ public class Glia {
                 return
             }
 
-            self?.callVisualizerCoordinator?.offerScreenShare(
-                with: Theme().alertConfiguration.screenShareOffer,
-                accepted: {
-                    answer(true)
-                }, declined: {
-                    answer(false)
-                }
-            )
+            self?.environment.coreSdk.requestEngagedOperator { operators, _ in
+                self?.callVisualizerCoordinator?.offerScreenShare(
+                    from: operators ?? [],
+                    configuration: Theme().alertConfiguration.screenShareOffer,
+                    accepted: {
+                        answer(true)
+                    }, declined: {
+                        answer(false)
+                    }
+                )
+            }
         }
     }
 

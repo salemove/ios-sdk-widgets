@@ -36,6 +36,7 @@ extension Glia {
         var uiApplication: UIKitBased.UIApplication
         var createRootCoordinator: CreateRootCoordinator
         var callVisualizerPresenter: CallVisualizer.Presenter
+        var bundleManaging: BundleManaging
     }
 }
 

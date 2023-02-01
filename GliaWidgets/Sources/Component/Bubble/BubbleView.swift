@@ -2,6 +2,7 @@ import UIKit
 
 enum BubbleKind {
     case userImage(url: String?)
+    case view(UIView)
 }
 
 class BubbleView: UIView {
@@ -137,6 +138,8 @@ class BubbleView: UIView {
             userImageView.setOperatorImage(fromUrl: url, animated: true)
             self.userImageView = userImageView
             setView(userImageView)
+        case .view(let customView):
+            setView(customView)
         }
     }
 
