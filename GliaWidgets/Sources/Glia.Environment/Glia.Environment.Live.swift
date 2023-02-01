@@ -24,7 +24,7 @@ extension Glia.Environment {
         createRootCoordinator: EngagementCoordinator.init(
             interactor:viewFactory:sceneProvider:engagementKind:features:environment:
         ),
-        callVisualizerPresenter: .topViewController()
+        callVisualizerPresenter: .topViewController(application: .live)
     )
 }
 

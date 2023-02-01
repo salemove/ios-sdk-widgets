@@ -127,14 +127,17 @@ public class Glia {
                 return
             }
 
-            self?.callVisualizerCoordinator?.offerScreenShare(
-                with: Theme().alertConfiguration.screenShareOffer,
-                accepted: {
-                    answer(true)
-                }, declined: {
-                    answer(false)
-                }
-            )
+            self?.environment.coreSdk.requestEngagedOperator { operators, _ in
+                self?.callVisualizerCoordinator?.offerScreenShare(
+                    from: operators ?? [],
+                    configuration: Theme().alertConfiguration.screenShareOffer,
+                    accepted: {
+                        answer(true)
+                    }, declined: {
+                        answer(false)
+                    }
+                )
+            }
         }
     }
 

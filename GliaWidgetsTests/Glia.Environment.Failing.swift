@@ -34,7 +34,11 @@ extension Glia.Environment {
                 features: [],
                 environment: .failing
             )
-        }
+        },
+        callVisualizerPresenter: .init(presenter: {
+            fail("\(Self.self).callVisualizerPresenter")
+            return nil
+        })
     )
 }
 
