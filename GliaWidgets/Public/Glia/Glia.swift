@@ -130,7 +130,6 @@ public class Glia {
             self?.callVisualizerCoordinator?.offerScreenShare(
                 with: Theme().alertConfiguration.screenShareOffer,
                 accepted: {
-                    // should show bubble here
                     answer(true)
                 }, declined: {
                     answer(false)
