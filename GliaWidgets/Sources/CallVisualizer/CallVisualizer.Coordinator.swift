@@ -48,7 +48,7 @@ extension CallVisualizer {
 }
 
 extension CallVisualizer.Presenter {
-    static func topViewController(application: UIKitBased.UIApplication = .live) -> Self {
+    static func topViewController(application: UIKitBased.UIApplication) -> Self {
         .init {
             if var topController = application.shared().windows.first(where: { $0.isKeyWindow })?.rootViewController {
                 while let presentedViewController = topController.presentedViewController {
