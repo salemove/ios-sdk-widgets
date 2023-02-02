@@ -21,6 +21,7 @@ extension UIKitBased.UIApplication {
         preferredContentSizeCategory: {
             fail("\(Self.self).preferredContentSizeCategory")
             return .unspecified
-        }
+        },
+        shared: { fail("\(Self.self).shared"); return .init() }
     )
 }
