@@ -17,7 +17,8 @@ extension Glia.Environment {
         loadChatMessagesFromHistory: { true },
         timerProviding: .mock,
         uiApplication: .mock,
-        createRootCoordinator: EngagementCoordinator.mock
+        createRootCoordinator: EngagementCoordinator.mock,
+        callVisualizerPresenter: .init { nil }
     )
 }
 

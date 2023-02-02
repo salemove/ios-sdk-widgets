@@ -118,7 +118,7 @@ public class Glia {
 
         callVisualizerCoordinator = .init(
             viewFactory: viewFactory,
-            presenter: .topViewController(application: .live)
+            presenter: environment.callVisualizerPresenter
         )
         interactor?.addObserver(self) { [weak self] event in
             guard let engagement = self?.environment.coreSdk.getCurrentEngagement(),

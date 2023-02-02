@@ -35,6 +35,7 @@ extension Glia {
         var timerProviding: FoundationBased.Timer.Providing
         var uiApplication: UIKitBased.UIApplication
         var createRootCoordinator: CreateRootCoordinator
+        var callVisualizerPresenter: CallVisualizer.Presenter
     }
 }
 
