@@ -34,6 +34,10 @@ extension CoreSdkClient {
         sendSecureMessage: { _, _, _, _ in
             fail("\(Self.self).sendSecureMessage")
             return .init()
+        },
+        uploadSecureFile: { _, _, _ in
+            fail("\(Self.self).uploadSecureFile")
+            return .mock
         }
     )
 }

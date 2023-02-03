@@ -24,5 +24,7 @@ extension EngagementCoordinator {
         var sendSecureMessage: CoreSdkClient.SendSecureMessage
         var createFileUploader: FileUploader.Create
         var createFileUploadListModel: SecureConversations.FileUploadListViewModel.Create
+        var uploadSecureFile: CoreSdkClient.SecureConversationsUploadFile
+
     }
 }

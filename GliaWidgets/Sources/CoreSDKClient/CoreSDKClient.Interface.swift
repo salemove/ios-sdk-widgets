@@ -114,8 +114,15 @@ struct CoreSdkClient {
         _ attachment: Self.Attachment?,
         _ queueIds: [String],
         _ completion: @escaping (Result<Self.Message, Error>) -> Void
-    ) -> Salemove.Cancellable
+    ) -> Self.Cancellable
     var sendSecureMessage: SendSecureMessage
+
+    typealias SecureConversationsUploadFile = (
+        _ file: EngagementFile,
+        _ progress: EngagementFileProgressBlock?,
+        _ completion: @escaping (Result<EngagementFileInformation, Swift.Error>) -> Void
+    ) -> Self.Cancellable
+    var uploadSecureFile: SecureConversationsUploadFile
 }
 
 extension CoreSdkClient {
@@ -199,4 +206,5 @@ extension CoreSdkClient {
     typealias AuthenticationBehavior = SalemoveSDK.GliaCore.Authentication.Behavior
     typealias VisitorCodeBlock = (Result<VisitorCode, Swift.Error>)
     typealias EngagementSource = SalemoveSDK.EngagementSource
+    typealias Cancellable = GliaCore.Cancellable
 }
