@@ -84,7 +84,7 @@ class GliaTests: XCTestCase {
         }
         let expectedSceneProvider = MockedSceneProvider()
         var receivedSceneProvider: SceneProvider?
-        gliaEnv.createRootCoordinator = { interactor, viewFactory, sceneProvider, engagementKind, features, environment in
+        gliaEnv.createRootCoordinator = { interactor, viewFactory, sceneProvider, engagementKind, screenShareHandler, features, environment in
             receivedTheme = viewFactory.theme
             receivedFeatures = features
             receivedSceneProvider = sceneProvider
@@ -92,6 +92,7 @@ class GliaTests: XCTestCase {
                 interactor: interactor,
                 viewFactory: viewFactory,
                 sceneProvider: sceneProvider,
+                screenShareHandler: screenShareHandler,
                 environment: environment
             )
         }

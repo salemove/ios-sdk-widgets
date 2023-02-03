@@ -34,3 +34,11 @@ class ScreenShareHandler {
         visitorState = nil
     }
 }
+
+#if DEBUG
+extension ScreenShareHandler {
+    static func mock() -> ScreenShareHandler {
+        ScreenShareHandler()
+    }
+}
+#endif

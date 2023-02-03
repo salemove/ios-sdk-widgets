@@ -13,10 +13,37 @@ import SalemoveSDK
 ///  3. Handling engagement, featuring video calling, screen sharing, and much more in future.
 public final class CallVisualizer {
     private var environment: Environment
-    private var visitorCodeCoordinator: VisitorCodeCoordinator?
+    let coordinator: Coordinator
 
     init(environment: Environment) {
         self.environment = environment
+        let viewFactory = ViewFactory(
+            with: Theme(),
+            messageRenderer: nil,
+            environment: .init(
+                data: environment.data,
+                uuid: environment.uuid,
+                gcd: environment.gcd,
+                imageViewCache: environment.imageViewCache,
+                timerProviding: environment.timerProviding,
+                uiApplication: environment.uiApplication
+            )
+        )
+        self.coordinator = Coordinator(
+            environment: .init(
+                viewFactory: viewFactory,
+                presenter: environment.callVisualizerPresenter,
+                bundleManaging: environment.bundleManaging,
+                screenShareHandler: environment.screenShareHandler,
+                timerProviding: environment.timerProviding,
+                requestVisitorCode: environment.requestVisitorCode
+            )
+        )
+    }
+
+    deinit {
+        environment.screenShareHandler.status.removeObserver(self)
+        environment.screenShareHandler.cleanUp()
     }
 
     /// Show VisitorCode for current Visitor.
@@ -40,26 +67,26 @@ public final class CallVisualizer {
         by presentation: Presentation,
         uiConfig: RemoteConfiguration? = nil
     ) {
-        let coordinator = VisitorCodeCoordinator(
-            environment: .init(
-                timerProviding: environment.timerProviding,
-                requestVisitorCode: environment.requestVisitorCode
-            ),
-            presentation: presentation,
+        coordinator.showVisitorCodeViewController(
+            by: presentation,
             uiConfig: uiConfig
         )
 
-        coordinator.delegate = { [weak self] event in
+        startObservingInteractorEvents()
+    }
+}
+
+// MARK: - Private
+
+private extension CallVisualizer {
+    func startObservingInteractorEvents() {
+        environment.interactorProviding()?.addObserver(self) { [weak self] event in
             switch event {
-            case .closeTap:
-                self?.visitorCodeCoordinator = nil
+            case let .screenSharingStateChanged(state):
+                self?.environment.screenShareHandler.updateState(to: state)
+            default:
+                break
             }
         }
-
-        /// FlowCoordinator protocol requires start() to return a viewController, but it won't be used in Call Visualizer context.
-        /// Instead, it is handled seperately because of its unique nature.
-        _ = coordinator.start()
-
-        self.visitorCodeCoordinator = coordinator
     }
 }

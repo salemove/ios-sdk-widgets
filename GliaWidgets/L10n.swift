@@ -683,6 +683,19 @@ public enum L10n {
       public static let messageLengthWarning = L10n.tr("Localizable", "messageCenter.welcome.messageLengthWarning", fallback: "The message cannot exceed {textLength} characters.")
     }
   }
+
+  public enum ScreenSharing {
+    /// Your Screen
+    /// is Being Shared
+    public static let message = L10n.tr("Localizable", "screenSharing.message", fallback: "Screen Sharing")
+    /// Screen Sharing
+    public static let title = L10n.tr("Localizable", "screenSharing.title", fallback: "Your Screen\nis Being Shared")
+    public enum Button {
+      /// End Screen Sharing
+      public static let title = L10n.tr("Localizable", "screenSharing.button.title", fallback: "End Screen Sharing")
+    }
+  }
+
   public enum Survey {
     public enum Accessibility {
       public enum Footer {
