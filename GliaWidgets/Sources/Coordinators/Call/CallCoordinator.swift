@@ -78,7 +78,9 @@ private extension CallCoordinator {
                 timerProviding: environment.timerProviding,
                 uuid: environment.uuid,
                 uiApplication: environment.uiApplication,
-                fetchChatHistory: environment.fetchChatHistory
+                fetchChatHistory: environment.fetchChatHistory,
+                fileUploadListStyle: viewFactory.theme.chatStyle.messageEntry.uploadList,
+                createFileUploadListModel: environment.createFileUploadListModel
             ),
             call: call,
             unreadMessages: unreadMessages,
@@ -139,5 +141,6 @@ extension CallCoordinator {
         var uuid: () -> UUID
         var uiApplication: UIKitBased.UIApplication
         var fetchChatHistory: CoreSdkClient.FetchChatHistory
+        var createFileUploadListModel: SecureConversations.FileUploadListViewModel.Create
     }
 }

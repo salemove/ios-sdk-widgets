@@ -100,6 +100,13 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
                 [callViewController],
                 animated: false
             )
+        case .messaging:
+            let secureConversationsWelcomeViewController: UIViewController = startSecureConversations()
+            engagement = .secureConversations(secureConversationsWelcomeViewController)
+            navigationPresenter.setViewControllers(
+                [secureConversationsWelcomeViewController],
+                animated: false
+            )
         }
 
         let bubbleView = viewFactory.makeBubbleView()
@@ -219,7 +226,8 @@ extension EngagementCoordinator {
                 submitSurveyAnswer: environment.submitSurveyAnswer,
                 uuid: environment.uuid,
                 uiApplication: environment.uiApplication,
-                fetchChatHistory: environment.fetchChatHistory
+                fetchChatHistory: environment.fetchChatHistory,
+                createFileUploadListModel: environment.createFileUploadListModel
             )
         )
         coordinator.delegate = { [weak self] event in
@@ -304,7 +312,8 @@ extension EngagementCoordinator {
                 submitSurveyAnswer: environment.submitSurveyAnswer,
                 uuid: environment.uuid,
                 uiApplication: environment.uiApplication,
-                fetchChatHistory: environment.fetchChatHistory
+                fetchChatHistory: environment.fetchChatHistory,
+                createFileUploadListModel: environment.createFileUploadListModel
             )
         )
         coordinator.delegate = { [weak self] event in
@@ -376,6 +385,46 @@ extension EngagementCoordinator {
             )
         }
     }
+
+    private func startSecureConversations() -> UIViewController {
+        let coordinator = SecureConversations.Coordinator(
+            viewFactory: viewFactory,
+            navigationPresenter: navigationPresenter,
+            environment: .init(
+                queueIds: [interactor.queueID],
+                sendSecureMessage: environment.sendSecureMessage,
+                createFileUploader: environment.createFileUploader,
+                uploadFileToEngagement: environment.uploadFileToEngagement,
+                fileManager: environment.fileManager,
+                data: environment.data,
+                date: environment.date,
+                gcd: environment.gcd,
+                localFileThumbnailQueue: environment.localFileThumbnailQueue,
+                uiImage: environment.uiImage,
+                uuid: environment.uuid,
+                uiApplication: environment.uiApplication
+            )
+        )
+
+        coordinator.delegate = { [weak self] event in
+            self?.handleSecureConversationsCoordinatorEvent(event)
+        }
+
+        pushCoordinator(coordinator)
+
+        return coordinator.start()
+    }
+
+    private func handleSecureConversationsCoordinatorEvent(_ event: SecureConversations.Coordinator.DelegateEvent) {
+        // These actions are tentative. Design hasn't been finalized yet.
+        switch event {
+        case .closeTapped:
+            self.popCoordinator()
+            self.end()
+        case .backTapped:
+            self.gliaViewController?.minimize(animated: true)
+        }
+    }
 }
 
 extension EngagementCoordinator {
@@ -438,7 +487,7 @@ extension EngagementCoordinator {
             )
             answer(true, nil)
 
-        case .none:
+        case .secureConversations, .none:
             break
         }
     }
@@ -492,6 +541,7 @@ extension EngagementCoordinator {
         case none
         case chat(ChatViewController)
         case call(CallViewController, ChatViewController, UpgradedFrom, Call)
+        case secureConversations(UIViewController)
     }
 
     private enum UpgradedFrom {

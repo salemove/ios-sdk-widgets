@@ -50,7 +50,11 @@ class ChatViewModelTests: XCTestCase {
                 timerProviding: .mock,
                 uuid: { .mock },
                 uiApplication: .mock,
-                fetchChatHistory: { _ in }
+                fetchChatHistory: { _ in },
+                fileUploadListStyle: .mock,
+                createFileUploadListModel: { _ in
+                    .mock()
+                }
             )
         )
 
@@ -77,6 +81,7 @@ class ChatViewModelTests: XCTestCase {
         }
         let interactor = Interactor.mock(environment: interactorEnv)
         var viewModelEnv = ChatViewModel.Environment.failing(fetchChatHistory: { $0(.success([]))})
+        viewModelEnv.createFileUploadListModel = { _ in .mock() }
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
         viewModelEnv.loadChatMessagesFromHistory = { true }
@@ -90,7 +95,7 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
         viewModelEnv.fetchSiteConfigurations = { _ in }
-
+        viewModelEnv.createFileUploadListModel = { _ in .mock() }
         let interactor: Interactor = .mock()
         let viewModel: ChatViewModel = .mock(interactor: interactor, environment: viewModelEnv)
         let queueSectionIndex: Int = viewModel.queueOperatorSection.index
@@ -107,6 +112,7 @@ class ChatViewModelTests: XCTestCase {
         var interactorEnv: Interactor.Environment = .failing
         interactorEnv.gcd.mainQueue.asyncIfNeeded = { $0() }
         var viewModelEnv = ChatViewModel.Environment.failing()
+        viewModelEnv.createFileUploadListModel = { _ in .mock() }
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
         viewModelEnv.loadChatMessagesFromHistory = { true }
@@ -132,6 +138,7 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
         viewModelEnv.loadChatMessagesFromHistory = { true }
         viewModelEnv.fetchSiteConfigurations = { _ in }
+        viewModelEnv.createFileUploadListModel = { _ in .mock() }
 
         let interactor: Interactor = .mock(environment: interactorEnv)
         let viewModel: ChatViewModel = .mock(interactor: interactor, environment: viewModelEnv)
@@ -158,6 +165,7 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
         viewModelEnv.loadChatMessagesFromHistory = { true }
         viewModelEnv.fetchSiteConfigurations = { _ in }
+        viewModelEnv.createFileUploadListModel = { _ in .mock() }
 
         let interactor: Interactor = .mock(environment: interactorEnv)
         let viewModel: ChatViewModel = .mock(interactor: interactor, environment: viewModelEnv)
@@ -182,6 +190,7 @@ class ChatViewModelTests: XCTestCase {
         var viewModelEnv = ChatViewModel.Environment.failing()
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
+        viewModelEnv.createFileUploadListModel = { _ in .mock() }
         viewModelEnv.fetchSiteConfigurations = { _ in
             calls.append(.fetchSiteConfigurations)
         }
@@ -206,6 +215,7 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.fetchSiteConfigurations = { _ in
             calls.append(.fetchSiteConfigurations)
         }
+        viewModelEnv.createFileUploadListModel = { _ in .mock() }
         let viewModel = ChatViewModel.mock(interactor: interactor, environment: viewModelEnv)
 
         // When
@@ -223,10 +233,12 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
         viewModelEnv.uiApplication.canOpenURL = { _ in true }
+        viewModelEnv.createFileUploadListModel = { _ in .mock() }
         viewModelEnv.uiApplication.open = {
             calls.append(.openUrl($0))
         }
         let viewModel: ChatViewModel = .mock(interactor: .mock(), environment: viewModelEnv)
+        
 
         let telUrl = URL(string: "tel:12345678")!
         viewModel.linkTapped(telUrl)
@@ -245,6 +257,7 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.uiApplication.open = {
             calls.append(.openUrl($0))
         }
+        viewModelEnv.createFileUploadListModel = { _ in .mock() }
         let viewModel: ChatViewModel = .mock(interactor: .mock(), environment: viewModelEnv)
 
         let mailUrl = URL(string: "mailto:mock@mock.mock")!
@@ -259,6 +272,7 @@ class ChatViewModelTests: XCTestCase {
         var viewModelEnv = ChatViewModel.Environment.failing()
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
+        viewModelEnv.createFileUploadListModel = { _ in .mock() }
         let viewModel: ChatViewModel = .mock(
             interactor: .mock(),
             environment: viewModelEnv
@@ -290,6 +304,7 @@ class ChatViewModelTests: XCTestCase {
         var viewModelEnv = ChatViewModel.Environment.failing()
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
+        viewModelEnv.createFileUploadListModel = { _ in .mock() }
         viewModelEnv.uiApplication.canOpenURL = { _ in true }
         viewModelEnv.uiApplication.open = {
             calls.append(.openUrl($0))

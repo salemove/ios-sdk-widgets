@@ -42,7 +42,14 @@ extension Glia.Environment {
         bundleManaging: .init(current: {
             fail("\(Self.self).bundleManaging")
             return .main
-        })
+        }),
+        createFileUploader: { _, _ in
+            .failing
+        },
+        createFileUploadListModel: { _ in
+            fail("\(Self.self).createFileUploadListModel")
+            return .mock()
+        }
     )
 }
 

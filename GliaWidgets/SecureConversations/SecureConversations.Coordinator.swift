@@ -1,0 +1,203 @@
+import Foundation
+import UIKit
+
+extension SecureConversations {
+    final class Coordinator: SubFlowCoordinator, FlowCoordinator {
+        var delegate: ((DelegateEvent) -> Void)?
+        private let viewFactory: ViewFactory
+        private let navigationPresenter: NavigationPresenter
+        private let environment: Environment
+        private var viewModel: SecureConversations.WelcomeViewModel?
+
+        init(
+            viewFactory: ViewFactory,
+            navigationPresenter: NavigationPresenter,
+            environment: Environment
+        ) {
+            self.viewFactory = viewFactory
+            self.navigationPresenter = navigationPresenter
+            self.environment = environment
+        }
+
+        func start() -> UIViewController {
+            let viewController = makeSecureConversationsWelcomeViewController()
+
+            return viewController
+        }
+
+        private func makeSecureConversationsWelcomeViewController() -> SecureConversations.WelcomeViewController {
+            let viewModel = SecureConversations.WelcomeViewModel(
+                environment: .init(
+                    welcomeStyle: viewFactory.theme.secureConversationsWelcomeStyle,
+                    queueIds: environment.queueIds,
+                    sendSecureMessage: environment.sendSecureMessage,
+                    alertConfiguration: viewFactory.theme.alertConfiguration,
+                    fileUploader: environment.createFileUploader(
+                        SecureConversations.WelcomeViewModel.maximumUploads,
+                        .init(
+                            uploadFileToEngagement: environment.uploadFileToEngagement,
+                            fileManager: environment.fileManager,
+                            data: environment.data,
+                            date: environment.date,
+                            gcd: environment.gcd,
+                            localFileThumbnailQueue: environment.localFileThumbnailQueue,
+                            uiImage: environment.uiImage,
+                            uuid: environment.uuid
+                        )
+                    ),
+                    uiApplication: environment.uiApplication
+                )
+            )
+
+            let controller = SecureConversations.WelcomeViewController(
+                viewFactory: viewFactory,
+                props: viewModel.props()
+            )
+
+            viewModel.delegate = { [weak self, weak controller, style = viewFactory.theme.secureConversationsWelcomeStyle] event in
+                switch event {
+                case .backTapped:
+                    self?.delegate?(.backTapped)
+                case .closeTapped:
+                    self?.delegate?(.closeTapped)
+                // Bind changes in view model to view controller.
+                case let .renderProps(props):
+                    controller?.props = props
+                case .confirmationScreenNeeded:
+                    self?.presentSecureConversationsConfirmationViewController()
+                case let .mediaPickerRequested(originView, callback):
+                    controller?.presentPopover(
+                        with: style.pickMediaStyle,
+                        from: originView,
+                        // Designs use 'up' arrow, but currently
+                        // it seems like there is a bug in
+                        // AttachmentSourceListView, that makes
+                        // it render incorrectly with 'up' arrow.
+                        // That is why using 'down' arrow for now.
+                        arrowDirections: .down,
+                        itemSelected: { [weak controller] kind in
+                            controller?.dismiss(animated: true)
+                            callback(kind)
+                        }
+                    )
+                case let .pickMedia(callback):
+                    self?.presentMediaPickerController(
+                        with: callback,
+                        mediaSource: .library,
+                        mediaTypes: [.image, .movie]
+                    )
+                case let .takeMedia(callback):
+                    self?.presentMediaPickerController(
+                        with: callback,
+                        mediaSource: .camera,
+                        mediaTypes: [.image, .movie]
+                    )
+                case let .pickFile(callback):
+                    self?.presentFilePickerController(with: callback)
+                case let .showFile(file):
+                    self?.presentQuickLookController(with: file)
+                case let .showAlert(conf, accessibilityIdentifier, dismissed):
+                    controller?.presentAlert(
+                        with: conf,
+                        accessibilityIdentifier: accessibilityIdentifier
+                    ) { dismissed?() }
+                case let .showSettingsAlert(conf, cancelled):
+                    controller?.presentSettingsAlert(
+                        with: conf, cancelled: cancelled
+                    )
+                }
+            }
+
+            // Store view model, so that it would not be deallocated.
+            self.viewModel = viewModel
+
+            return controller
+        }
+
+        func presentSecureConversationsConfirmationViewController() {
+            let viewModel = SecureConversations.ConfirmationViewModel(
+                environment: .init(
+                    confirmationStyle: viewFactory.theme.secureConversationsConfirmationStyle
+                )
+            )
+
+            let controller = SecureConversations.ConfirmationViewController(
+                viewModel: viewModel,
+                viewFactory: viewFactory,
+                props: viewModel.props()
+            )
+
+            viewModel.delegate = { [weak self, weak controller] event in
+                switch event {
+                case .backTapped:
+                    self?.delegate?(.backTapped)
+                case .closeTapped:
+                    self?.delegate?(.closeTapped)
+                // Bind changes in view model to view controller.
+                case let .renderProps(props):
+                    controller?.props = props
+                }
+            }
+
+            self.navigationPresenter.push(
+                controller,
+                animated: true,
+                replacingLast: true
+            )
+        }
+
+        private func presentMediaPickerController(
+            with pickerEvent: Command<MediaPickerEvent>,
+            mediaSource: MediaPickerViewModel.MediaSource,
+            mediaTypes: [MediaPickerViewModel.MediaType]
+        ) {
+            let observable = ObservableValue<MediaPickerEvent>(with: .none)
+            observable.addObserver(self, update: { newValue, _ in pickerEvent(newValue) })
+            let viewModel = MediaPickerViewModel(
+                pickerEvent: observable,
+                mediaSource: mediaSource,
+                mediaTypes: mediaTypes
+            )
+            let controller = MediaPickerController(viewModel: viewModel)
+            controller.viewController { [weak self] viewController in
+                self?.navigationPresenter.present(viewController)
+            }
+        }
+
+        private func presentFilePickerController(with pickerEvent: Command<FilePickerEvent>) {
+            let observable = ObservableValue<FilePickerEvent>(with: .none)
+            observable.addObserver(self, update: { event, _ in pickerEvent(event) })
+            let viewModel = FilePickerViewModel(pickerEvent: observable)
+            let controller = FilePickerController(viewModel: viewModel)
+            navigationPresenter.present(controller.viewController)
+        }
+
+        private func presentQuickLookController(with file: LocalFile) {
+            let viewModel = QuickLookViewModel(file: file)
+            let controller = QuickLookController(viewModel: viewModel)
+            navigationPresenter.present(controller.viewController)
+        }
+    }
+}
+
+extension SecureConversations.Coordinator {
+    struct Environment {
+        var queueIds: [String]
+        var sendSecureMessage: CoreSdkClient.SendSecureMessage
+        var createFileUploader: FileUploader.Create
+        var uploadFileToEngagement: CoreSdkClient.UploadFileToEngagement
+        var fileManager: FoundationBased.FileManager
+        var data: FoundationBased.Data
+        var date: () -> Date
+        var gcd: GCD
+        var localFileThumbnailQueue: FoundationBased.OperationQueue
+        var uiImage: UIKitBased.UIImage
+        var uuid: () -> UUID
+        var uiApplication: UIKitBased.UIApplication
+    }
+
+    enum DelegateEvent {
+        case backTapped
+        case closeTapped
+    }
+}

@@ -202,6 +202,14 @@ extension ChatViewController {
             callback?()
         }
         let interactor = Interactor.mock(environment: interEnv)
+        let generateUUID = UUID.incrementing
+
+        let fileUploadListModel = SecureConversations.FileUploadListViewModel.mock()
+
+        chatViewModelEnv.createFileUploadListModel = { _ in
+            fileUploadListModel
+        }
+
         let chatViewModel = ChatViewModel.mock(interactor: interactor, environment: chatViewModelEnv)
         let controller: ChatViewController = .mock(chatViewModel: chatViewModel)
         chatViewModel.action?(.setMessageText("Input Message Mock"))
@@ -216,7 +224,8 @@ extension ChatViewController {
         let uiImage = UIKitBased.UIImage.mock
         let data = FoundationBased.Data.mock
         let date = Date.mock
-        let fileUploadEnv: FileUpload.Environment = .mock
+        var fileUploadEnv: FileUpload.Environment = .mock
+        fileUploadEnv.uuid = generateUUID
         let fileUpload: FileUpload = .mock(
             localFile: .mock(
                 url: localFileURL,
@@ -238,10 +247,8 @@ extension ChatViewController {
             ),
             environment: fileUploadEnv
         )
-        chatViewModel.action?(
-            .addUpload(fileUpload)
-        )
         fileUpload.state.value = .uploading(progress: .init(with: 0.5))
+        fileUploadListModel.environment.uploader.uploads.append(fileUpload)
 
         let fileUploadComplete: FileUpload = .mock(
             localFile: .mock(
@@ -264,10 +271,8 @@ extension ChatViewController {
             ),
             environment: fileUploadEnv
         )
-        chatViewModel.action?(
-            .addUpload(fileUploadComplete)
-        )
 
+        fileUploadListModel.environment.uploader.uploads.append(fileUploadComplete)
         fileUploadComplete.state.value = .uploaded(file: try .mock())
 
         let fileUploadWithError: FileUpload = .mock(
@@ -291,10 +296,8 @@ extension ChatViewController {
             ),
             environment: fileUploadEnv
         )
-        chatViewModel.action?(
-            .addUpload(fileUploadWithError)
-        )
 
+        fileUploadListModel.environment.uploader.uploads.append(fileUploadWithError)
         fileUploadWithError.state.value = .error(FileUpload.Error.fileTooBig)
 
         chatViewModel.action?(.sendButtonHidden(false))
@@ -305,6 +308,7 @@ extension ChatViewController {
         chatViewModel.action?(.pickMediaButtonEnabled(true))
         chatViewModel.action?(.setOperatorTypingIndicatorIsHiddenTo(false, false))
 
+        chatViewModel.action?(.fileUploadListPropsUpdated(chatViewModel.fileUploadListModel.props()))
         return controller
     }
 

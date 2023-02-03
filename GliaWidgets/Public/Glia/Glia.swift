@@ -11,6 +11,8 @@ public enum EngagementKind: Equatable {
     case audioCall
     /// Video call
     case videoCall
+    /// Secure conversations
+    case messaging
 }
 
 /// An event providing engagement state information.
@@ -298,7 +300,10 @@ public class Glia {
                 getCurrentEngagement: environment.coreSdk.getCurrentEngagement,
                 submitSurveyAnswer: environment.coreSdk.submitSurveyAnswer,
                 uiApplication: environment.uiApplication,
-                fetchChatHistory: environment.coreSdk.fetchChatHistory
+                fetchChatHistory: environment.coreSdk.fetchChatHistory,
+                sendSecureMessage: environment.coreSdk.sendSecureMessage,
+                createFileUploader: environment.createFileUploader,
+                createFileUploadListModel: environment.createFileUploadListModel
             )
         )
         rootCoordinator?.delegate = { [weak self] event in

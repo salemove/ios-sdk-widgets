@@ -1,7 +1,7 @@
 import UIKit
 
 /// Style of an upload list view.
-public class FileUploadListStyle {
+public class FileUploadListStyle: Equatable {
     /// Style of an item.
     public var item: FileUploadStyle
 
@@ -23,3 +23,19 @@ public class FileUploadListStyle {
         )
     }
 }
+
+extension FileUploadListStyle {
+    public static func == (lhs: FileUploadListStyle, rhs: FileUploadListStyle) -> Bool {
+        lhs.item == rhs.item
+    }
+}
+
+extension FileUploadListStyle {
+    static let initial: FileUploadListStyle = Theme().chatStyle.messageEntry.uploadList
+}
+
+#if DEBUG
+extension FileUploadListStyle {
+    static let mock: FileUploadListStyle = .initial
+}
+#endif

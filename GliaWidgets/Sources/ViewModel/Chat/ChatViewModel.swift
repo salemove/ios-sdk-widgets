@@ -1,6 +1,7 @@
 import Foundation
 
 class ChatViewModel: EngagementViewModel, ViewModel {
+    static let maximumUploads = 25
 
     var action: ((Action) -> Void)?
     var delegate: ((DelegateEvent) -> Void)?
@@ -26,7 +27,8 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     private let isChatScrolledToBottom = ObservableValue<Bool>(with: true)
     private let showsCallBubble: Bool
     private let isCustomCardSupported: Bool
-    private let uploader: FileUploader
+    let fileUploadListModel: SecureConversations.FileUploadListViewModel
+
     private let downloader: FileDownloader
     private let deliveredStatusText: String
     private var messageText = "" {
@@ -57,8 +59,8 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         self.showsCallBubble = showsCallBubble
         self.isCustomCardSupported = isCustomCardSupported
         self.startAction = startAction
-        self.uploader = FileUploader(
-            maximumUploads: 25,
+        let uploader = FileUploader(
+            maximumUploads: Self.maximumUploads,
             environment: .init(
                 uploadFileToEngagement: environment.uploadFileToEngagement,
                 fileManager: environment.fileManager,
@@ -70,6 +72,23 @@ class ChatViewModel: EngagementViewModel, ViewModel {
                 uuid: environment.uuid
             )
         )
+        self.fileUploadListModel = environment.createFileUploadListModel(
+            .init(
+                uploader: uploader,
+                style: environment.fileUploadListStyle,
+                uiApplication: environment.uiApplication
+            )
+        )
+
+        defer {
+            self.fileUploadListModel.delegate = { [weak self] event in
+                switch event {
+                case let .renderProps(uploadListViewProps):
+                    self?.action?(.fileUploadListPropsUpdated(uploadListViewProps))
+                }
+            }
+        }
+
         self.downloader = FileDownloader(
             environment: .init(
                 fetchFile: environment.fetchFile,
@@ -392,8 +411,8 @@ extension ChatViewModel {
     private func sendMessage() {
         guard validateMessage() else { return }
 
-        let attachment = uploader.attachment
-        let uploads = uploader.succeededUploads
+        let attachment = fileUploadListModel.attachment
+        let uploads = fileUploadListModel.succeededUploads
         let files = uploads.map { $0.localFile }
         let outgoingMessage = OutgoingMessage(
             content: messageText,
@@ -404,8 +423,8 @@ extension ChatViewModel {
         case .engaged:
             let item = ChatItem(with: outgoingMessage)
             appendItem(item, to: messagesSection, animated: true)
-            uploader.succeededUploads.forEach { action?(.removeUpload($0)) }
-            uploader.removeSucceededUploads()
+            fileUploadListModel.succeededUploads.forEach { action?(.removeUpload($0)) }
+            fileUploadListModel.removeSucceededUploads()
             action?(.scrollToBottom(animated: true))
             let messageTextTemp = messageText
             messageText = ""
@@ -448,8 +467,8 @@ extension ChatViewModel {
             let messageItem = ChatItem(with: pendingMessage)
             appendItem(messageItem, to: pendingSection, animated: true)
 
-            uploader.succeededUploads.forEach { action?(.removeUpload($0)) }
-            uploader.removeSucceededUploads()
+            fileUploadListModel.succeededUploads.forEach { action?(.removeUpload($0)) }
+            fileUploadListModel.removeSucceededUploads()
             action?(.removeAllUploads)
 
             pendingMessages.append(pendingMessage)
@@ -506,9 +525,9 @@ extension ChatViewModel {
     private func validateMessage() -> Bool {
         let canSendText = !messageText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
         let canSendAttachment =
-            uploader.state.value != .uploading
-                && uploader.failedUploads.isEmpty
-                && !uploader.succeededUploads.isEmpty
+            fileUploadListModel.state.value != .uploading
+                && fileUploadListModel.failedUploads.isEmpty
+                && !fileUploadListModel.succeededUploads.isEmpty
         let isValid = canSendText || canSendAttachment
         action?(.sendButtonHidden(!isValid))
         return isValid
@@ -629,17 +648,17 @@ extension ChatViewModel {
     }
 
     private func addUpload(with url: URL) {
-        guard let upload = uploader.addUpload(with: url) else { return }
+        guard let upload = fileUploadListModel.addUpload(with: url) else { return }
         action?(.addUpload(upload))
     }
 
     private func addUpload(with data: Data, format: MediaFormat) {
-        guard let upload = uploader.addUpload(with: data, format: format) else { return }
+        guard let upload = fileUploadListModel.addUpload(with: data, format: format) else { return }
         action?(.addUpload(upload))
     }
 
     private func removeUpload(_ upload: FileUpload) {
-        uploader.removeUpload(upload)
+        fileUploadListModel.removeUpload(upload)
         action?(.removeUpload(upload))
         validateMessage()
     }
@@ -924,6 +943,7 @@ extension ChatViewModel {
         case setUnreadMessageIndicatorImage(imageUrl: String?)
         case setOperatorTypingIndicatorIsHiddenTo(Bool, _ isChatScrolledToBottom: Bool)
         case setIsAttachmentButtonHidden(Bool)
+        case fileUploadListPropsUpdated(SecureConversations.FileUploadListView.Props)
     }
 
     enum DelegateEvent {

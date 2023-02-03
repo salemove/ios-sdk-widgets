@@ -10,6 +10,7 @@ public struct Features: OptionSet {
 
     /// Bubble that is shown in engagement time outside of engagement view.
     public static let bubbleView = Self(rawValue: 1 << 0)
-
-    public static let all: Self = [.bubbleView]
+    #warning("Remove 'secureConversations' flag once implementation is complete.")
+    public static let secureConversations = Self(rawValue: 2 << 0)
+    public static let all: Self = [.bubbleView, .secureConversations]
 }

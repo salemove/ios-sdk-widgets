@@ -1,5 +1,3 @@
-import Foundation
-
 /// Developer-friendly wrapper around a closure.
 /// It makes debugging easier by providing callee information.
 /// Note: since closure does not conform to `Equatable`, it will

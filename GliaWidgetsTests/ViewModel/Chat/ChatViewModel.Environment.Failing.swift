@@ -40,9 +40,14 @@ extension ChatViewModel.Environment {
                 fail("\(Self.self).uuid")
                 return .mock
             },
-            uiApplication: .mock,
+            uiApplication: .failing,
             fetchChatHistory: fetchChatHistory ?? { _ in
                 fail("\(Self.self).fetchChatHistory")
+            },
+            fileUploadListStyle: .mock,
+            createFileUploadListModel: { _ in
+                fail("\(Self.self).createFileUploadListModel")
+                return .mock()
             }
         )
     }
