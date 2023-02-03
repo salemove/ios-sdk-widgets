@@ -2,7 +2,7 @@
 
 extension FileUploader.Environment {
     static let failing = Self(
-        uploadFileToEngagement: CoreSdkClient.failing.uploadFileToEngagement,
+        uploadFile: .toEngagement(CoreSdkClient.failing.uploadFileToEngagement),
         fileManager: .failing,
         data: FoundationBased.Data.failing,
         date: {

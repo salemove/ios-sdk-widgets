@@ -11,7 +11,7 @@ class FileUploaderTests: XCTestCase {
         fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
 
         var env: FileUploader.Environment = .failing
-        env.uploadFileToEngagement = { _, _, _ in }
+        env.uploadFile = .mock
         env.uuid = { UUID() }
         env.fileManager = fileManager
 

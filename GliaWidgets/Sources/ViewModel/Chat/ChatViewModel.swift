@@ -62,7 +62,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         let uploader = FileUploader(
             maximumUploads: Self.maximumUploads,
             environment: .init(
-                uploadFileToEngagement: environment.uploadFileToEngagement,
+                uploadFile: .toEngagement(environment.uploadFileToEngagement),
                 fileManager: environment.fileManager,
                 data: environment.data,
                 date: environment.date,

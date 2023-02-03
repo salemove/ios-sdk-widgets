@@ -22,7 +22,8 @@ extension EngagementCoordinator.Environment {
         fetchChatHistory: { _ in },
         sendSecureMessage: { _, _, _, _ in .init() },
         createFileUploader: FileUploader.mock,
-        createFileUploadListModel: SecureConversations.FileUploadListViewModel.mock(environment:)
+        createFileUploadListModel: SecureConversations.FileUploadListViewModel.mock(environment:),
+        uploadSecureFile: { _, _, _ in .mock }
     )
 }
 #endif

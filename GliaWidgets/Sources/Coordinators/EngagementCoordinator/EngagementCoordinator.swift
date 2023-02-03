@@ -394,7 +394,7 @@ extension EngagementCoordinator {
                 queueIds: [interactor.queueID],
                 sendSecureMessage: environment.sendSecureMessage,
                 createFileUploader: environment.createFileUploader,
-                uploadFileToEngagement: environment.uploadFileToEngagement,
+                uploadSecureFile: environment.uploadSecureFile,
                 fileManager: environment.fileManager,
                 data: environment.data,
                 date: environment.date,

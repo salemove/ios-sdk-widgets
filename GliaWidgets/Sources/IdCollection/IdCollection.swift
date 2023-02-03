@@ -26,8 +26,8 @@ struct IdCollection<Identifier: Hashable, Item: Equatable>: Equatable & Collecti
         list.index(after: i)
     }
 
-    subscript(by index: DictionaryType.Key) -> DictionaryType.Value? {
-        items[index]
+    subscript(by key: DictionaryType.Key) -> DictionaryType.Value? {
+        items[key]
     }
 
     mutating func insert(

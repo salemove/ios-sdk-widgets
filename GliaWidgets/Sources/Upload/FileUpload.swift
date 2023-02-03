@@ -72,21 +72,26 @@ class FileUpload {
                 progress.value = $0.fractionCompleted
             }
         }
-        let onCompletion: CoreSdkClient.EngagementFileCompletionBlock = { engagementFile, error in
-            if let engagementFile = engagementFile {
+        let onCompletion: (Result<CoreSdkClient.EngagementFileInformation, Swift.Error>) -> Void = { result in
+            switch result {
+            case let .success(engagementFile):
                 let storageID = "\(engagementFile.id)/\(self.localFile.url.lastPathComponent)"
                 self.storage.store(from: self.localFile.url, for: storageID)
                 self.state.value = .uploaded(file: engagementFile)
-            } else if let error = error {
-                self.state.value = .error(Error(with: error))
+            case let .failure(error):
+                if let err = error as? CoreSdkClient.SalemoveError {
+                    self.state.value = .error(Error(with: err))
+                } else {
+                    self.state.value = .error(.generic)
+                }
             }
         }
 
         state.value = .uploading(progress: progress)
-        environment.uploadFileToEngagement(
+        environment.uploadFile.uploadFile(
             file,
-            onProgress,
-            onCompletion
+            progress: onProgress,
+            completion: onCompletion
         )
     }
 

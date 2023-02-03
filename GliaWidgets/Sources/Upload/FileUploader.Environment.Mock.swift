@@ -2,7 +2,7 @@
 
 extension FileUploader.Environment {
     static let mock = FileUploader.Environment(
-        uploadFileToEngagement: { _, _, _ in },
+        uploadFile: .mock,
         fileManager: .mock,
         data: .mock,
         date: { .mock },
