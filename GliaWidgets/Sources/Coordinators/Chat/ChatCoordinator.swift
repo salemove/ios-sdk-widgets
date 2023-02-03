@@ -88,7 +88,9 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
                 timerProviding: .live,
                 uuid: environment.uuid,
                 uiApplication: environment.uiApplication,
-                fetchChatHistory: environment.fetchChatHistory
+                fetchChatHistory: environment.fetchChatHistory,
+                fileUploadListStyle: viewFactory.theme.chatStyle.messageEntry.uploadList,
+                createFileUploadListModel: environment.createFileUploadListModel
             )
         )
         viewModel.isInteractableCard = viewFactory.messageRenderer?.isInteractable
@@ -212,5 +214,6 @@ extension ChatCoordinator {
         var uuid: () -> UUID
         var uiApplication: UIKitBased.UIApplication
         var fetchChatHistory: CoreSdkClient.FetchChatHistory
+        var createFileUploadListModel: SecureConversations.FileUploadListViewModel.Create
     }
 }

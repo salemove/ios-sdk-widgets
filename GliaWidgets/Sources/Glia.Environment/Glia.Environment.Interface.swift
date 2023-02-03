@@ -37,6 +37,8 @@ extension Glia {
         var createRootCoordinator: CreateRootCoordinator
         var callVisualizerPresenter: CallVisualizer.Presenter
         var bundleManaging: BundleManaging
+        var createFileUploader: FileUploader.Create
+        var createFileUploadListModel: SecureConversations.FileUploadListViewModel.Create
     }
 }
 

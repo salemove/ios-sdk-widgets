@@ -25,7 +25,9 @@ extension Glia.Environment {
             interactor:viewFactory:sceneProvider:engagementKind:features:environment:
         ),
         callVisualizerPresenter: .topViewController(application: .live),
-        bundleManaging: .live
+        bundleManaging: .live,
+        createFileUploader: FileUploader.init(maximumUploads:environment:),
+        createFileUploadListModel: SecureConversations.FileUploadListViewModel.init
     )
 }
 

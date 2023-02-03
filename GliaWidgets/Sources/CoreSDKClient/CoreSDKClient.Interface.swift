@@ -108,6 +108,14 @@ struct CoreSdkClient {
 
     typealias RequestVisitorCode = (_ completion: @escaping (VisitorCodeBlock) -> Void) -> GliaCore.Cancellable
     var requestVisitorCode: RequestVisitorCode
+
+    typealias SendSecureMessage = (
+        _ secureMessage: String,
+        _ attachment: Self.Attachment?,
+        _ queueIds: [String],
+        _ completion: @escaping (Result<Self.Message, Error>) -> Void
+    ) -> Salemove.Cancellable
+    var sendSecureMessage: SendSecureMessage
 }
 
 extension CoreSdkClient {

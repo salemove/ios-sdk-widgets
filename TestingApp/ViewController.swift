@@ -22,11 +22,24 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         title = "Glia UI testing"
         view.backgroundColor = .white
+
+        #if DEBUG
+        #warning("Remove this when 'secure messaging immplementation is complete.'")
+        // For non fresh builds `user default` may old version of
+        // `.all` which is missing `.secureConversations` flag.
+        // Here we force it to use `.all`.
+        features = .all
+        #endif
+
+        if !features.contains(.secureConversations) {
+            secureConversationsButton.isHidden = true
+        }
     }
 
     @IBOutlet weak var visitorCodeView: UIView!
     @IBOutlet var toggleAuthenticateButton: UIButton!
     @IBOutlet var configureButton: UIButton!
+    @IBOutlet var secureConversationsButton: UIButton!
 
     @IBAction private func settingsTapped() {
         presentSettings()
@@ -46,6 +59,12 @@ class ViewController: UIViewController {
 
     @IBAction private func resumeTapped() {
         try? Glia.sharedInstance.resume()
+    }
+
+    @IBAction private func secureConversationTapped() {
+        if features.contains(.secureConversations) {
+            presentGlia(.messaging)
+        }
     }
 
     @IBAction private func clearSessionTapped() {
@@ -157,7 +176,7 @@ extension ViewController {
                 print("MINIMIZED")
             case .maximized:
                 print("MAXIMIZED")
-            }
+                }
         }
 
         do {

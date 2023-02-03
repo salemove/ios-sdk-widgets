@@ -37,7 +37,8 @@ extension CoreSdkClient {
                     }
                 }
             },
-            requestVisitorCode: GliaCore.sharedInstance.callVisualizer.requestVisitorCode(completion:)
+            requestVisitorCode: GliaCore.sharedInstance.callVisualizer.requestVisitorCode(completion:),
+            sendSecureMessage: GliaCore.sharedInstance.secureConversations.send(secureMessage:attachment:queueIds:completion:)
         )
     }()
 }

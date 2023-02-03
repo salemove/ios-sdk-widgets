@@ -19,5 +19,7 @@ extension EngagementViewModel {
         var uuid: () -> UUID
         var uiApplication: UIKitBased.UIApplication
         var fetchChatHistory: CoreSdkClient.FetchChatHistory
+        var fileUploadListStyle: FileUploadListStyle
+        var createFileUploadListModel: SecureConversations.FileUploadListViewModel.Create
     }
 }
