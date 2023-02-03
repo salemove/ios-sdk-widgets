@@ -17,6 +17,7 @@ extension Glia {
             _ viewFactory: ViewFactory,
             _ sceneProvider: SceneProvider?,
             _ engagementKind: EngagementKind,
+            _ screenShareHandler: ScreenShareHandler,
             _ features: Features,
             _ environment: EngagementCoordinator.Environment
         ) -> EngagementCoordinator
@@ -39,6 +40,7 @@ extension Glia {
         var bundleManaging: BundleManaging
         var createFileUploader: FileUploader.Create
         var createFileUploadListModel: SecureConversations.FileUploadListViewModel.Create
+        var screenShareHandler: ScreenShareHandler
     }
 }
 
@@ -48,6 +50,7 @@ extension Glia.Environment {
         viewFactory: ViewFactory,
         sceneProvider: SceneProvider?,
         engagementKind: EngagementKind,
+        screenShareHandler: ScreenShareHandler,
         features: Features,
         environment: EngagementCoordinator.Environment
     ) -> EngagementCoordinator {
@@ -56,6 +59,7 @@ extension Glia.Environment {
             viewFactory,
             sceneProvider,
             engagementKind,
+            screenShareHandler,
             features,
             environment
         )

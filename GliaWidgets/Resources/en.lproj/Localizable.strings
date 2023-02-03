@@ -221,3 +221,7 @@
 "visitorCode.title.standard" = "Your Visitor Code";
 "visitorCode.title.error" = "Could not show visitor code. Please try refreshing.";
 "visitorCode.action.refresh" = "Refresh";
+
+"screenSharing.title" = "Screen Sharing";
+"screenSharing.message" = "Your Screen\nis Being Shared";
+"screenSharing.button.title" = "End Screen Sharing";
