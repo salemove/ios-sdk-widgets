@@ -31,13 +31,20 @@ extension SecureConversations {
 
         init(environment: Environment) {
             self.environment = environment
-            self.fileUploadListModel = .init(
-                environment: .init(
-                        uploader: environment.fileUploader,
-                        style: environment.welcomeStyle.attachmentListStyle,
-                        uiApplication: environment.uiApplication
-                    )
+            self.fileUploadListModel = environment.createFileUploadListModel(
+                .init(
+                    uploader: environment.fileUploader,
+                    style: environment.welcomeStyle.attachmentListStyle,
+                    uiApplication: environment.uiApplication
                 )
+            )
+
+            self.fileUploadListModel.delegate = { [weak self] event in
+                switch event {
+                case .renderProps:
+                    self?.reportChange()
+                }
+            }
         }
 
         func event(_ event: Event) {
@@ -235,6 +242,7 @@ extension SecureConversations.WelcomeViewModel {
         var alertConfiguration: AlertConfiguration
         var fileUploader: FileUploader
         var uiApplication: UIKitBased.UIApplication
+        var createFileUploadListModel: SecureConversations.FileUploadListViewModel.Create
     }
 }
 
@@ -340,19 +348,21 @@ extension SecureConversations.WelcomeViewModel {
 // MARK: - Upload releated methods
 extension SecureConversations.WelcomeViewModel {
     private func addUpload(with url: URL) {
-        // TODO: MOB-1722
+        fileUploadListModel.addUpload(with: url)
     }
 
-    private func addUpload(with data: Data, format: MediaFormat) {
-        // TODO: MOB-1722
+    private func addUpload(
+        with data: Data,
+        format: MediaFormat
+    ) {
+        fileUploadListModel.addUpload(
+            with: data,
+            format: format
+        )
     }
 
     private func removeUpload(_ upload: FileUpload) {
-        // TODO: MOB-1722
-    }
-
-    private func onUploaderStateChanged(_ state: FileUploader.State) {
-        // TODO: MOB-1722
+        fileUploadListModel.removeUpload(upload)
     }
 
     private func fileTapped(_ file: LocalFile) {
