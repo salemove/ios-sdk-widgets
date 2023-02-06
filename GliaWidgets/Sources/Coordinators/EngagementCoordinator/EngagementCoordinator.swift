@@ -17,7 +17,7 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
     private let chatCall = ObservableValue<Call?>(with: nil)
     private let unreadMessages = ObservableValue<Int>(with: 0)
     private let isWindowVisible = ObservableValue<Bool>(with: false)
-    private let screenShareHandler = ScreenShareHandler()
+    private let screenShareHandler: ScreenShareHandler
 
     private let navigationController = NavigationController()
     private let navigationPresenter: NavigationPresenter
@@ -32,6 +32,7 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
         viewFactory: ViewFactory,
         sceneProvider: SceneProvider?,
         engagementKind: EngagementKind,
+        screenShareHandler: ScreenShareHandler,
         features: Features,
         environment: Environment
     ) {
@@ -41,6 +42,7 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
         self.engagementKind = engagementKind
         self.gliaPresenter = GliaPresenter(sceneProvider: sceneProvider)
         self.navigationPresenter = NavigationPresenter(with: navigationController)
+        self.screenShareHandler = screenShareHandler
         self.features = features
         self.environment = environment
         navigationController.modalPresentationStyle = .fullScreen

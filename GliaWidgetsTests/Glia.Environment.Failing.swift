@@ -24,13 +24,14 @@ extension Glia.Environment {
         },
         timerProviding: .failing,
         uiApplication: .failing,
-        createRootCoordinator: { _, _, _, _, _, _ in
+        createRootCoordinator: { _, _, _, _, _, _, _ in
             fail("\(Self.self).createRootCoordinator")
             return .mock(
                 interactor: .mock(environment: .failing),
                 viewFactory: .mock(environment: .failing),
                 sceneProvider: nil,
                 engagementKind: .none,
+                screenShareHandler: .mock(),
                 features: [],
                 environment: .failing
             )
@@ -49,7 +50,8 @@ extension Glia.Environment {
         createFileUploadListModel: { _ in
             fail("\(Self.self).createFileUploadListModel")
             return .mock()
-        }
+        },
+        screenShareHandler: .mock()
     )
 }
 

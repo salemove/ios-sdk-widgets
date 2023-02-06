@@ -21,7 +21,8 @@ extension Glia.Environment {
         callVisualizerPresenter: .init { nil },
         bundleManaging: .init { .main },
         createFileUploader: FileUploader.mock,
-        createFileUploadListModel: SecureConversations.FileUploadListViewModel.mock(environment:)
+        createFileUploadListModel: SecureConversations.FileUploadListViewModel.mock(environment:),
+        screenShareHandler: .mock()
     )
 }
 
