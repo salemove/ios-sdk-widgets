@@ -22,12 +22,13 @@ extension Glia.Environment {
         timerProviding: .live,
         uiApplication: .live,
         createRootCoordinator: EngagementCoordinator.init(
-            interactor:viewFactory:sceneProvider:engagementKind:features:environment:
+            interactor:viewFactory:sceneProvider:engagementKind:screenShareHandler:features:environment:
         ),
         callVisualizerPresenter: .topViewController(application: .live),
         bundleManaging: .live,
         createFileUploader: FileUploader.init(maximumUploads:environment:),
-        createFileUploadListModel: SecureConversations.FileUploadListViewModel.init
+        createFileUploadListModel: SecureConversations.FileUploadListViewModel.init,
+        screenShareHandler: ScreenShareHandler()
     )
 }
 

@@ -46,22 +46,29 @@ public class Glia {
     /// Used to monitor engagement state changes.
     public var onEvent: ((GliaEvent) -> Void)?
 
-    public let callVisualizer: CallVisualizer
-
     var rootCoordinator: EngagementCoordinator?
-    var callVisualizerCoordinator: CallVisualizer.Coordinator?
+    public lazy var callVisualizer = CallVisualizer(
+        environment: .init(
+            data: environment.data,
+            uuid: environment.uuid,
+            gcd: environment.gcd,
+            imageViewCache: environment.imageViewCache,
+            timerProviding: environment.timerProviding,
+            uiApplication: environment.uiApplication,
+            requestVisitorCode: environment.coreSdk.requestVisitorCode,
+            interactorProviding: { [weak self] in self?.interactor },
+            callVisualizerPresenter: environment.callVisualizerPresenter,
+            bundleManaging: environment.bundleManaging,
+            screenShareHandler: environment.screenShareHandler
+        )
+    )
+
     var interactor: Interactor?
     var environment: Environment
     var messageRenderer: MessageRenderer?
 
     init(environment: Environment) {
         self.environment = environment
-        self.callVisualizer = CallVisualizer(
-            environment: .init(
-                timerProviding: environment.timerProviding,
-                requestVisitorCode: environment.coreSdk.requestVisitorCode
-            )
-        )
     }
 
     /// Setup SDK using specific engagement configuration without starting the engagement.
@@ -105,24 +112,6 @@ public class Glia {
             }
         }
 
-        var viewFactory = ViewFactory(
-            with: Theme(),
-            messageRenderer: messageRenderer,
-            environment: .init(
-                data: environment.data,
-                uuid: environment.uuid,
-                gcd: environment.gcd,
-                imageViewCache: environment.imageViewCache,
-                timerProviding: environment.timerProviding,
-                uiApplication: environment.uiApplication
-            )
-        )
-
-        callVisualizerCoordinator = .init(
-            viewFactory: viewFactory,
-            presenter: environment.callVisualizerPresenter,
-            bundleManaging: environment.bundleManaging
-        )
         interactor?.addObserver(self) { [weak self] event in
             guard let engagement = self?.environment.coreSdk.getCurrentEngagement(),
                   engagement.source == .callVisualizer,
@@ -131,7 +120,7 @@ public class Glia {
             }
 
             self?.environment.coreSdk.requestEngagedOperator { operators, _ in
-                self?.callVisualizerCoordinator?.offerScreenShare(
+                self?.callVisualizer.offerScreenShare(
                     from: operators ?? [],
                     configuration: Theme().alertConfiguration.screenShareOffer,
                     accepted: {
@@ -280,6 +269,7 @@ public class Glia {
             viewFactory: viewFactory,
             sceneProvider: sceneProvider,
             engagementKind: engagementKind,
+            screenShareHandler: environment.screenShareHandler,
             features: features,
             environment: .init(
                 fetchFile: environment.coreSdk.fetchFile,

@@ -3,22 +3,56 @@ import UIKit
 
 extension CallVisualizer {
     final class Coordinator {
-        init(
-            viewFactory: ViewFactory,
-            presenter: Presenter,
-            bundleManaging: BundleManaging
-        ) {
-            self.viewFactory = viewFactory
-            self.presenter = presenter
-            self.bundleManaging = bundleManaging
-            self.bubbleView = viewFactory.makeBubbleView()
+        init(environment: Environment) {
+            self.environment = environment
+            self.bubbleView = environment.viewFactory.makeBubbleView()
+
+            environment
+                .screenShareHandler
+                .status
+                .addObserver(self) { [weak self] newStatus, _ in
+                    switch newStatus {
+                    case .started:
+                        self?.createBubbleView()
+                    case .stopped:
+                        self?.end()
+                    }
+                }
 
             bubbleView.tap = { [weak self] in
-                self?.presentCallVisualizerViewController()
+                guard let self = self else { return }
+                self.showEndScreenSharingViewController()
             }
             bubbleView.pan = { [weak self] translation in
                 self?.updateBubblePosition(translation: translation)
             }
+        }
+
+        func showVisitorCodeViewController(
+            by presentation: Presentation,
+            uiConfig: RemoteConfiguration? = nil
+        ) {
+            let coordinator = VisitorCodeCoordinator(
+                environment: .init(
+                    timerProviding: environment.timerProviding,
+                    requestVisitorCode: environment.requestVisitorCode
+                ),
+                presentation: presentation,
+                uiConfig: uiConfig
+            )
+
+            coordinator.delegate = { [weak self] event in
+                switch event {
+                case .closeTap:
+                    self?.visitorCodeCoordinator = nil
+                }
+            }
+
+            /// FlowCoordinator protocol requires start() to return a viewController, but it won't be used in Call Visualizer context.
+            /// Instead, it is handled seperately because of its unique nature.
+            _ = coordinator.start()
+
+            self.visitorCodeCoordinator = coordinator
         }
 
         func offerScreenShare(
@@ -30,22 +64,23 @@ extension CallVisualizer {
             let alert = AlertViewController(
                 kind: .screenShareOffer(
                     configuration.withOperatorName(operators.compactMap { $0.name }.joined()),
-                    accepted: { [weak self] in
-                        accepted()
-                        self?.createBubbleView()
-                    },
+                    accepted: accepted,
                     declined: declined
                 ),
-                viewFactory: viewFactory
+                viewFactory: environment.viewFactory
             )
-            presenter.getInstance()?.present(alert, animated: true, completion: nil)
+            environment
+                .presenter
+                .getInstance()?
+                .present(alert, animated: true)
         }
 
-        func presentCallVisualizerViewController() {
-            presenter.getInstance()?.present(
-                CallVisualizer.EngagementViewController(),
-                animated: true
-            )
+        func showEndScreenSharingViewController() {
+            let viewController = buildScreenSharingViewController()
+            environment
+                .presenter
+                .getInstance()?
+                .present(viewController, animated: true)
         }
 
         func end() {
@@ -54,17 +89,20 @@ extension CallVisualizer {
 
         // MARK: - Private
 
-        private let bundleManaging: BundleManaging
-        private let viewFactory: ViewFactory
+        private let environment: Environment
         private let bubbleSize = CGSize(width: 60, height: 60)
         private let bubbleView: BubbleView
         private lazy var screensharingImageView: UIView = {
             let icon = CallVisualizer.BubbleIcon(
-                image: UIImage(named: "screensharing", in: bundleManaging.current(), compatibleWith: .none),
+                image: UIImage(
+                    named: "screensharing",
+                    in: environment.bundleManaging.current(),
+                    compatibleWith: .none
+                ),
                 imageSize: .init(width: 24, height: 24)
             ) { [weak self] icon in
                 guard let self = self else { return }
-                switch self.viewFactory.theme.minimizedBubble.badge?.backgroundColor {
+                switch self.environment.viewFactory.theme.minimizedBubble.badge?.backgroundColor {
                 case .fill(let color):
                     icon.backgroundColor = color
                 case .gradient(let colors):
@@ -80,10 +118,11 @@ extension CallVisualizer {
 
             return icon
         }()
-        private let presenter: Presenter
+        private var visitorCodeCoordinator: VisitorCodeCoordinator?
+        private var screenSharingCoordinator: ScreenSharingCoordinator?
 
         private func createBubbleView() {
-            guard let parent = presenter.getInstance()?.view else { return }
+            guard let parent = environment.presenter.getInstance()?.view else { return }
             bubbleView.kind = .view(screensharingImageView)
             bubbleView.frame = .init(origin: .init(x: parent.frame.maxX, y: parent.frame.maxY), size: bubbleSize)
             parent.addSubview(bubbleView)
@@ -114,6 +153,29 @@ extension CallVisualizer {
             } else if centerY > superview.frame.height - bubbleSize.height / 2 {
                 centerY = superview.frame.height - bubbleView.frame.height / 2 - superview.safeAreaInsets.bottom
             }
+        }
+
+        private func buildScreenSharingViewController(uiConfig: RemoteConfiguration? = nil) -> UIViewController {
+            let theme = Theme()
+            uiConfig.map { theme.applyRemoteConfiguration($0, assetsBuilder: .standard) }
+            let coordinator = ScreenSharingCoordinator(
+                environment: .init(
+                    theme: theme,
+                    screenShareHandler: environment.screenShareHandler
+                )
+            )
+
+            coordinator.delegate = { [weak self] event in
+                switch event {
+                case .close:
+                    self?.screenSharingCoordinator = nil
+                }
+            }
+
+            let viewController = coordinator.start()
+            self.screenSharingCoordinator = coordinator
+
+            return viewController
         }
     }
 }
