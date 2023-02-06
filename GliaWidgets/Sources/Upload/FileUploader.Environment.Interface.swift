@@ -1,6 +1,6 @@
 extension FileUploader {
     struct Environment {
-        var uploadFileToEngagement: CoreSdkClient.UploadFileToEngagement
+        var uploadFile: UploadFile
         var fileManager: FoundationBased.FileManager
         var data: FoundationBased.Data
         var date: () -> Date
@@ -9,4 +9,8 @@ extension FileUploader {
         var uiImage: UIKitBased.UIImage
         var uuid: () -> UUID
     }
+}
+
+extension FileUploader.Environment {
+    typealias UploadFile = FileUpload.Environment.UploadFile
 }
