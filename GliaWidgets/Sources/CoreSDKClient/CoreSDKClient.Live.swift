@@ -39,7 +39,19 @@ extension CoreSdkClient {
             },
             requestVisitorCode: GliaCore.sharedInstance.callVisualizer.requestVisitorCode(completion:),
             sendSecureMessage: GliaCore.sharedInstance.secureConversations.send(secureMessage:attachment:queueIds:completion:),
-            uploadSecureFile: GliaCore.sharedInstance.secureConversations.uploadFile(_:progress:completion:)
+            uploadSecureFile: { file, progress, completion in
+                GliaCore
+                    .sharedInstance
+                    .secureConversations
+                    .uploadFile(
+                        file,
+                        progress: { value in
+                            print("progress value", value.fractionCompleted) },
+                        completion: { result in
+                            print("done uploading", result)
+                        }
+                    )
+            }
         )
     }()
 }

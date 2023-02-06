@@ -8,6 +8,7 @@ extension SecureConversations {
         private let navigationPresenter: NavigationPresenter
         private let environment: Environment
         private var viewModel: SecureConversations.WelcomeViewModel?
+        private var selectedPickerController: SelectedPickerController?
 
         init(
             viewFactory: ViewFactory,
@@ -45,7 +46,8 @@ extension SecureConversations {
                             uuid: environment.uuid
                         )
                     ),
-                    uiApplication: environment.uiApplication
+                    uiApplication: environment.uiApplication,
+                    createFileUploadListModel: environment.createFileUploadListModel
                 )
             )
 
@@ -158,17 +160,40 @@ extension SecureConversations {
                 mediaSource: mediaSource,
                 mediaTypes: mediaTypes
             )
+
+            viewModel.delegate = { [weak self] event in
+                switch event {
+                case .finished:
+                    self?.selectedPickerController = nil
+                }
+            }
+
             let controller = MediaPickerController(viewModel: viewModel)
             controller.viewController { [weak self] viewController in
                 self?.navigationPresenter.present(viewController)
             }
+            // Keep storng reference, otherwise
+            // `controller` will be deallocted, resulting in
+            // event not being sent.
+            self.selectedPickerController = .mediaPickerController(controller)
         }
 
         private func presentFilePickerController(with pickerEvent: Command<FilePickerEvent>) {
             let observable = ObservableValue<FilePickerEvent>(with: .none)
             observable.addObserver(self, update: { event, _ in pickerEvent(event) })
             let viewModel = FilePickerViewModel(pickerEvent: observable)
+            viewModel.delegate = { [weak self] event in
+                switch event {
+                case .finished:
+                    self?.selectedPickerController = nil
+                }
+            }
             let controller = FilePickerController(viewModel: viewModel)
+            // Keep storng reference, otherwise
+            // `controller` will be deallocted, resulting in
+            // event not being sent.
+            self.selectedPickerController = .filePickerController(controller)
+
             navigationPresenter.present(controller.viewController)
         }
 
@@ -194,10 +219,18 @@ extension SecureConversations.Coordinator {
         var uiImage: UIKitBased.UIImage
         var uuid: () -> UUID
         var uiApplication: UIKitBased.UIApplication
+        var createFileUploadListModel: SecureConversations.FileUploadListViewModel.Create
     }
 
     enum DelegateEvent {
         case backTapped
         case closeTapped
+    }
+}
+
+extension SecureConversations.Coordinator {
+    enum SelectedPickerController {
+        case filePickerController(FilePickerController)
+        case mediaPickerController(MediaPickerController)
     }
 }

@@ -402,7 +402,8 @@ extension EngagementCoordinator {
                 localFileThumbnailQueue: environment.localFileThumbnailQueue,
                 uiImage: environment.uiImage,
                 uuid: environment.uuid,
-                uiApplication: environment.uiApplication
+                uiApplication: environment.uiApplication,
+                createFileUploadListModel: environment.createFileUploadListModel
             )
         )
 
