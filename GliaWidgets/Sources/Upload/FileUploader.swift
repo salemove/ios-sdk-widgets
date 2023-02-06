@@ -87,7 +87,7 @@ class FileUploader {
             with: localFile,
             storage: storage,
             environment: .init(
-                uploadFileToEngagement: environment.uploadFileToEngagement,
+                uploadFile: environment.uploadFile,
                 uuid: environment.uuid
             )
         )

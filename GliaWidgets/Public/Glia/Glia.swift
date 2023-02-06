@@ -293,7 +293,8 @@ public class Glia {
                 fetchChatHistory: environment.coreSdk.fetchChatHistory,
                 sendSecureMessage: environment.coreSdk.sendSecureMessage,
                 createFileUploader: environment.createFileUploader,
-                createFileUploadListModel: environment.createFileUploadListModel
+                createFileUploadListModel: environment.createFileUploadListModel,
+                uploadSecureFile: environment.coreSdk.uploadSecureFile
             )
         )
         rootCoordinator?.delegate = { [weak self] event in

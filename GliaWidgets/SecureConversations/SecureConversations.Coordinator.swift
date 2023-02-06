@@ -35,7 +35,7 @@ extension SecureConversations {
                     fileUploader: environment.createFileUploader(
                         SecureConversations.WelcomeViewModel.maximumUploads,
                         .init(
-                            uploadFileToEngagement: environment.uploadFileToEngagement,
+                            uploadFile: .toConversation(environment.uploadSecureFile),
                             fileManager: environment.fileManager,
                             data: environment.data,
                             date: environment.date,
@@ -185,7 +185,7 @@ extension SecureConversations.Coordinator {
         var queueIds: [String]
         var sendSecureMessage: CoreSdkClient.SendSecureMessage
         var createFileUploader: FileUploader.Create
-        var uploadFileToEngagement: CoreSdkClient.UploadFileToEngagement
+        var uploadSecureFile: CoreSdkClient.SecureConversationsUploadFile
         var fileManager: FoundationBased.FileManager
         var data: FoundationBased.Data
         var date: () -> Date

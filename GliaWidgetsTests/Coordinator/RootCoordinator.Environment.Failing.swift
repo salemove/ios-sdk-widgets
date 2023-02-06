@@ -54,6 +54,10 @@ extension EngagementCoordinator.Environment {
             fail("\(Self.self).createFileUploadListModel")
             return .mock()
 
+        },
+        uploadSecureFile: { _, _, _ in
+            fail("\(Self.self).uploadSecureFile")
+            return .mock
         }
     )
 }

@@ -27,7 +27,8 @@ extension CoreSdkClient {
         authentication: { _ in .mock },
         fetchChatHistory: { _ in },
         requestVisitorCode: { _ in fatalError() },
-        sendSecureMessage: { _, _, _, _ in .init() }
+        sendSecureMessage: { _, _, _, _ in .mock },
+        uploadSecureFile: { _, _, _ in .mock }
     )
 }
 
@@ -350,5 +351,9 @@ extension CoreSdkClient.Message {
 
 extension MessageSender {
     static let mock = Self.init(type: .visitor)
+}
+
+extension CoreSdkClient.Cancellable {
+    static let mock = CoreSdkClient.Cancellable()
 }
 #endif
