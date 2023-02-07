@@ -79,14 +79,16 @@ extension SecureConversations {
         }
 
         func props() -> FileUploadListView.Props {
-            typealias Identifier = SecureConversations.FileUploadListView.FileUploadView.Props.Identifier
-            typealias FileUploadViewProps = SecureConversations.FileUploadListView.FileUploadView.Props
+            typealias Identifier = SecureConversations.FileUploadView.Props.Identifier
+            typealias FileUploadViewProps = SecureConversations.FileUploadView.Props
+
+            let style = FileUploadListView.Style.Properties(style: environment.style)
 
             let uploads = IdCollection<Identifier, FileUploadViewProps>(
                 environment.uploader.uploads.map { fileUpload in
                     FileUploadViewProps(
                         fileUpload: fileUpload,
-                        style: environment.style.item,
+                        style: style.item,
                         removeTapped: Cmd { [weak self] in
                             self?.removeUpload(fileUpload)
                         }
@@ -94,20 +96,22 @@ extension SecureConversations {
                 }
             )
 
-            var maxUnscrollableViews: Int {
-                if environment.uiApplication.preferredContentSizeCategory() <= .accessibilityMedium {
-                    return .maxUnscrollableViewsOnDefaultContentSizeCategory
-                } else {
-                    return .maxUnscrollableViewsOnLargeContentSizeCategory
-                }
-            }
-
             let props = FileUploadListView.Props(
                 maxUnscrollableViews: maxUnscrollableViews,
                 style: environment.style,
                 uploads: uploads
             )
             return props
+        }
+    }
+}
+
+extension SecureConversations.FileUploadListViewModel {
+    var maxUnscrollableViews: Int {
+        if environment.uiApplication.preferredContentSizeCategory() <= .accessibilityMedium {
+            return .maxUnscrollableViewsOnDefaultContentSizeCategory
+        } else {
+            return .maxUnscrollableViewsOnLargeContentSizeCategory
         }
     }
 }

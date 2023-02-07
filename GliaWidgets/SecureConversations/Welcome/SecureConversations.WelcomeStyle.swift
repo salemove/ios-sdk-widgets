@@ -38,7 +38,7 @@ extension SecureConversations {
         public var filePickerButtonStyle: FilePickerButtonStyle
 
         /// Style for list of message attachments.
-        public var attachmentListStyle: FileUploadListStyle
+        public var attachmentListStyle: MessageCenterFileUploadListStyle
 
         /// Style of the list that contains the chat attachment sources. Appears in the media upload menu popover in the message input area in welcome screen.
         public var pickMediaStyle: AttachmentSourceListStyle
@@ -71,7 +71,7 @@ extension SecureConversations {
             sendButtonStyle: SendButtonStyle,
             messageWarningStyle: MessageWarningStyle,
             filePickerButtonStyle: FilePickerButtonStyle,
-            attachmentListStyle: FileUploadListStyle,
+            attachmentListStyle: MessageCenterFileUploadListStyle,
             pickMediaStyle: AttachmentSourceListStyle,
             backgroundColor: UIColor
         ) {

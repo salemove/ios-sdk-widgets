@@ -59,6 +59,7 @@ public enum Asset {
       public static let callVideoActive = ImageAsset(name: "call-video-active")
       public static let callVideoInactive = ImageAsset(name: "call-video-inactive")
       public static let callOnHold = ImageAsset(name: "call-on-hold")
+    public static let screensharing = ImageAsset(name: "screensharing")
       public static let uploadError = ImageAsset(name: "uploadError")
       public static let uploadRemove = ImageAsset(name: "uploadRemove")
     public static let chatPickMedia = ImageAsset(name: "chatPickMedia")
@@ -74,10 +75,11 @@ public enum Asset {
     public static let upgradeAudio = ImageAsset(name: "upgradeAudio")
     public static let upgradePhone = ImageAsset(name: "upgradePhone")
     public static let upgradeVideo = ImageAsset(name: "upgradeVideo")
+      public static let mcRemoveUpload = ImageAsset(name: "mc-remove-upload")
+    public static let mcConfirmation = ImageAsset(name: "mc-confirmation")
     public static let mcEnvelope = ImageAsset(name: "mc-envelope")
     public static let mcPickMedia = ImageAsset(name: "mc-pick-media")
     public static let mcWarningIcon = ImageAsset(name: "mc-warning-icon")
-    public static let mcConfirmation = ImageAsset(name: "mc-confirmation")
     public static let mockImage = ImageAsset(name: "mock-image")
     public static let operatorPlaceholder = ImageAsset(name: "operatorPlaceholder")
     public static let operatorTransferring = ImageAsset(name: "operatorTransferring")
@@ -100,6 +102,7 @@ public enum Asset {
       callVideoActive,
       callVideoInactive,
       callOnHold,
+      screensharing,
       uploadError,
       uploadRemove,
       chatPickMedia,
@@ -115,6 +118,8 @@ public enum Asset {
       upgradeAudio,
       upgradePhone,
       upgradeVideo,
+      mcRemoveUpload,
+      mcConfirmation,
       mcEnvelope,
       mcPickMedia,
       mcWarningIcon,
@@ -124,6 +129,7 @@ public enum Asset {
       surveyCheckboxChecked,
       surveyCheckbox,
       surveyValidationError,
+      spinner,
     ]
     // swiftlint:enable trailing_comma
     @available(*, deprecated, renamed: "allImages")

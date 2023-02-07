@@ -40,3 +40,8 @@ extension FileUploadStyle {
         )
     }
 }
+
+extension MessageCenterFileUploadStyle {
+    // TODO: MOB-1710
+    public typealias Accessibility = FileUploadStyle.Accessibility
+}

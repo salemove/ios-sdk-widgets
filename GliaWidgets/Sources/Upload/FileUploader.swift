@@ -54,7 +54,7 @@ class FileUploader {
     let limitReached = ObservableValue<Bool>(with: false)
     var uploads = [FileUpload]()
 
-    private var storage: FileSystemStorage
+    var storage: FileSystemStorage
     private let maximumUploads: Int
     private let environment: Environment
 
