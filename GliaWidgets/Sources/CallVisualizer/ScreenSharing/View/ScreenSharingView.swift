@@ -51,10 +51,21 @@ extension CallVisualizer {
             endScreenSharingButton
         )
 
-        var props: Props = Props() {
+        var props: Props {
             didSet {
                 renderProps()
             }
+        }
+
+        // MARK: - Initialization
+
+        init(props: Props) {
+            self.props = props
+            super.init()
+        }
+
+        required init() {
+            fatalError("init() has not been implemented")
         }
 
         // MARK: - Overrides
@@ -91,5 +102,12 @@ private extension CallVisualizer.ScreenSharingView {
         header.title = props.style.title
         header.backButton.tap = props.back.execute
         endScreenSharingButton.tap = props.endScreenSharing.execute
+
+        switch props.style.backgroundColor {
+        case .fill(let color):
+            backgroundColor = color
+        case .gradient(let colors):
+            makeGradientBackground(colors: colors)
+        }
     }
 }

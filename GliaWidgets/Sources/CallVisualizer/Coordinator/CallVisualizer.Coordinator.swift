@@ -153,11 +153,9 @@ extension CallVisualizer {
         }
 
         private func buildScreenSharingViewController(uiConfig: RemoteConfiguration? = nil) -> UIViewController {
-            let theme = Theme()
-            uiConfig.map { theme.applyRemoteConfiguration($0, assetsBuilder: .standard) }
             let coordinator = ScreenSharingCoordinator(
                 environment: .init(
-                    theme: theme,
+                    theme: environment.viewFactory.theme,
                     screenShareHandler: environment.screenShareHandler
                 )
             )
