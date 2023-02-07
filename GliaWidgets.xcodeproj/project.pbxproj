@@ -1625,7 +1625,7 @@
 				7594090F29891BD5008B173A /* FontScaling */,
 				7594091029891BE8008B173A /* FoundationBased */,
 				7594091129891BFD008B173A /* GCD */,
-				75940947298D37E8008B173A /* Glia.Environment */,
+				75940947298D37E8008B173A /* GliaEnvironment */,
 				7594094E298D3810008B173A /* IdCollection */,
 				1AC7A74D258256FF00567FF8 /* Interactor */,
 				75940954298D386F008B173A /* Layout */,
@@ -2241,14 +2241,14 @@
 			path = CoreSDKClient;
 			sourceTree = "<group>";
 		};
-		75940947298D37E8008B173A /* Glia.Environment */ = {
+		75940947298D37E8008B173A /* GliaEnvironment */ = {
 			isa = PBXGroup;
 			children = (
 				75940948298D37E8008B173A /* Glia.Environment.Live.swift */,
 				75940949298D37E8008B173A /* Glia.Environment.Interface.swift */,
 				7594094A298D37E8008B173A /* Glia.Environment.Mock.swift */,
 			);
-			path = Glia.Environment;
+			path = GliaEnvironment;
 			sourceTree = "<group>";
 		};
 		7594094E298D3810008B173A /* IdCollection */ = {

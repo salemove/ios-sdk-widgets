@@ -1,3 +1,5 @@
+import Foundation
+
 extension FileUploader {
     struct Environment {
         var uploadFile: UploadFile
