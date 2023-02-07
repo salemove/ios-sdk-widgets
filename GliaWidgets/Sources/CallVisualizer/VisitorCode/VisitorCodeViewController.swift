@@ -50,6 +50,14 @@ extension CallVisualizer {
                 view.trailingAnchor.constraint(
                     equalTo: container.safeAreaLayoutGuide.trailingAnchor,
                     constant: -8
+                ),
+                view.topAnchor.constraint(
+                    greaterThanOrEqualTo: container.topAnchor,
+                    constant: 8
+                ),
+                view.bottomAnchor.constraint(
+                    lessThanOrEqualTo: container.bottomAnchor,
+                    constant: -8
                 )
             ])
 

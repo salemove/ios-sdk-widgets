@@ -1,30 +1,17 @@
 import UIKit
 
 extension CallVisualizer.VisitorCodeView {
-    class NumberView: UILabel {
+    final class NumberView: UILabel {
         struct Props: Equatable {
             let character: Character
-            let style: VisitorCodeStyle
+            let style: NumberSlotStyle
         }
 
         override init(frame: CGRect) {
             super.init(frame: frame)
-            self.font = .boldSystemFont(ofSize: 40)
             self.numberOfLines = 0
-            self.textColor = props.style.numberSlot.numberColor
+            self.clipsToBounds = true
             self.textAlignment = .center
-            switch props.style.numberSlot.backgroundColor {
-            case .fill(let color):
-                self.backgroundColor = color
-            case .gradient(let colors):
-                makeGradientBackground(
-                    colors: colors,
-                    cornerRadius: props.style.numberSlot.cornerRadius
-                )
-            }
-            self.layer.cornerRadius = props.style.numberSlot.cornerRadius
-            self.layer.borderWidth = props.style.numberSlot.borderWidth
-            self.layer.borderColor = props.style.numberSlot.borderColor.cgColor
             NSLayoutConstraint.activate([
                 self.heightAnchor.constraint(equalToConstant: 60),
                 self.widthAnchor.constraint(equalToConstant: 55).priority(.defaultHigh)
@@ -36,14 +23,29 @@ extension CallVisualizer.VisitorCodeView {
             fatalError("init(coder:) has not been implemented")
         }
 
-        var props: Props = Props(character: " ", style: Theme().visitorCode) {
+        var props: Props = Props(character: " ", style: Theme().visitorCode.numberSlot) {
             didSet {
                 renderProps()
             }
         }
 
-        func renderProps() {
+        private func renderProps() {
             text = String(props.character)
+            font = props.style.numberFont
+            textColor = props.style.numberColor
+            layer.cornerRadius = props.style.cornerRadius
+            layer.borderWidth = props.style.borderWidth
+            layer.borderColor = props.style.borderColor.cgColor
+
+            switch props.style.backgroundColor {
+            case .fill(let color):
+                backgroundColor = color
+            case .gradient(let colors):
+                makeGradientBackground(
+                    colors: colors,
+                    cornerRadius: props.style.cornerRadius
+                )
+            }
         }
     }
 }

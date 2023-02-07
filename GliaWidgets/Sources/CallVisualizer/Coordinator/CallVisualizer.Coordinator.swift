@@ -28,17 +28,14 @@ extension CallVisualizer {
             }
         }
 
-        func showVisitorCodeViewController(
-            by presentation: Presentation,
-            uiConfig: RemoteConfiguration? = nil
-        ) {
+        func showVisitorCodeViewController(by presentation: Presentation) {
             let coordinator = VisitorCodeCoordinator(
+                theme: environment.viewFactory.theme,
                 environment: .init(
                     timerProviding: environment.timerProviding,
                     requestVisitorCode: environment.requestVisitorCode
                 ),
-                presentation: presentation,
-                uiConfig: uiConfig
+                presentation: presentation
             )
 
             coordinator.delegate = { [weak self] event in
