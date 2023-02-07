@@ -11,6 +11,7 @@ extension ScreenSharingViewStyle {
             messageTextColor: .clear,
             buttonStyle: .mock(),
             buttonIcon: UIImage(),
+            backgroundColor: .fill(color: .white),
             accessibility: .unsupported
         )
     }
