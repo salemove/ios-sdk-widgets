@@ -22,7 +22,7 @@ extension SecureConversations {
                 self?.onUploaderStateChanged(state)
             }
             environment.uploader.limitReached.addObserver(self) { [weak self] limitReached, _ in
-                // TODO: MOB-1722
+                // TODO: MOB-1838
             }
         }
 
@@ -135,6 +135,7 @@ extension SecureConversations.FileUploadListViewModel {
         reportChange()
     }
 
+    @discardableResult
     func addUpload(with url: URL) -> FileUpload? {
         guard let upload = environment.uploader.addUpload(with: url) else {
             return nil
@@ -143,6 +144,7 @@ extension SecureConversations.FileUploadListViewModel {
 
     }
 
+    @discardableResult
     func addUpload(with data: Data, format: MediaFormat) -> FileUpload? {
         guard let upload = environment.uploader.addUpload(with: data, format: format) else {
             return nil
