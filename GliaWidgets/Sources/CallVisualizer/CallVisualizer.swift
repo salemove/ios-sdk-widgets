@@ -13,32 +13,10 @@ import SalemoveSDK
 ///  3. Handling engagement, featuring video calling, screen sharing, and much more in future.
 public final class CallVisualizer {
     private var environment: Environment
-    let coordinator: Coordinator
+    var coordinator: Coordinator?
 
     init(environment: Environment) {
         self.environment = environment
-        let viewFactory = ViewFactory(
-            with: Theme(),
-            messageRenderer: nil,
-            environment: .init(
-                data: environment.data,
-                uuid: environment.uuid,
-                gcd: environment.gcd,
-                imageViewCache: environment.imageViewCache,
-                timerProviding: environment.timerProviding,
-                uiApplication: environment.uiApplication
-            )
-        )
-        self.coordinator = Coordinator(
-            environment: .init(
-                viewFactory: viewFactory,
-                presenter: environment.callVisualizerPresenter,
-                bundleManaging: environment.bundleManaging,
-                screenShareHandler: environment.screenShareHandler,
-                timerProviding: environment.timerProviding,
-                requestVisitorCode: environment.requestVisitorCode
-            )
-        )
     }
 
     deinit {
@@ -67,10 +45,36 @@ public final class CallVisualizer {
         by presentation: Presentation,
         uiConfig: RemoteConfiguration? = nil
     ) {
-        coordinator.showVisitorCodeViewController(
-            by: presentation,
-            uiConfig: uiConfig
+
+        let theme = Theme()
+        if let uiConfig = uiConfig {
+            theme.applyRemoteConfiguration(uiConfig, assetsBuilder: .standard)
+        }
+
+        let viewFactory = ViewFactory(
+            with: theme,
+            messageRenderer: nil,
+            environment: .init(
+                data: environment.data,
+                uuid: environment.uuid,
+                gcd: environment.gcd,
+                imageViewCache: environment.imageViewCache,
+                timerProviding: environment.timerProviding,
+                uiApplication: environment.uiApplication
+            )
         )
+        coordinator = Coordinator(
+            environment: .init(
+                viewFactory: viewFactory,
+                presenter: environment.callVisualizerPresenter,
+                bundleManaging: environment.bundleManaging,
+                screenShareHandler: environment.screenShareHandler,
+                timerProviding: environment.timerProviding,
+                requestVisitorCode: environment.requestVisitorCode
+            )
+        )
+
+        coordinator?.showVisitorCodeViewController(by: presentation)
 
         startObservingInteractorEvents()
     }
