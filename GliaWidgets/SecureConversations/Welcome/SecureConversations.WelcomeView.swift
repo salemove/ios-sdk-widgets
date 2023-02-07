@@ -1,6 +1,8 @@
 import Foundation
 import UIKit
 
+import Dispatch
+
 extension SecureConversations {
     final class WelcomeView: BaseView {
         static let sideMargin = 24.0
@@ -222,6 +224,8 @@ extension SecureConversations {
                 : props.style.filePickerButtonStyle.disabledColor
 
             renderedWarning = props.warningMessage
+
+            fileUploadListView.props = props.fileUploadListProps
         }
 
         var renderedWarning: Props.WarningMessage = "" {
