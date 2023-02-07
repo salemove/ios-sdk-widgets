@@ -1,3 +1,6 @@
+// TODO: Remove this file once SecureConversations.FileUploadListView is fully integrated.
+
+/*
 import UIKit
 
 class FileUploadView: UIView {
@@ -205,3 +208,4 @@ class FileUploadView: UIView {
         }
     }
 }
+*/

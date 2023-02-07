@@ -39,3 +39,36 @@ extension FileUploadListStyle {
     static let mock: FileUploadListStyle = .initial
 }
 #endif
+
+/// Style of an upload list view.
+public class MessageCenterFileUploadListStyle: Equatable {
+    /// Style of an item.
+    public var item: MessageCenterFileUploadStyle
+
+    ///
+    /// - Parameters:
+    ///   - item: Style of an item.
+    ///
+    public init(item: MessageCenterFileUploadStyle) {
+        self.item = item
+    }
+
+    func apply(
+        configuration: RemoteConfiguration.FileUploadBar?,
+        assetsBuilder: RemoteConfiguration.AssetsBuilder
+    ) {
+        item.apply(
+            configuration: configuration,
+            assetsBuilder: assetsBuilder
+        )
+    }
+}
+
+extension MessageCenterFileUploadListStyle {
+    public static func == (
+        lhs: MessageCenterFileUploadListStyle,
+        rhs: MessageCenterFileUploadListStyle
+    ) -> Bool {
+        lhs.item == rhs.item
+    }
+}

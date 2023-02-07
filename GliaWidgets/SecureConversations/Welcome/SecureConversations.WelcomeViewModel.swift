@@ -34,7 +34,7 @@ extension SecureConversations {
             self.fileUploadListModel = environment.createFileUploadListModel(
                 .init(
                     uploader: environment.fileUploader,
-                    style: environment.welcomeStyle.attachmentListStyle,
+                    style: .messageCenter(environment.welcomeStyle.attachmentListStyle),
                     uiApplication: environment.uiApplication
                 )
             )

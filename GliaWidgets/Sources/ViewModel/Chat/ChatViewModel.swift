@@ -75,7 +75,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         self.fileUploadListModel = environment.createFileUploadListModel(
             .init(
                 uploader: uploader,
-                style: environment.fileUploadListStyle,
+                style: .chat(environment.fileUploadListStyle),
                 uiApplication: environment.uiApplication
             )
         )

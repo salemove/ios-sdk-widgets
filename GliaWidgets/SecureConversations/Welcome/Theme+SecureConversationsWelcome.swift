@@ -122,7 +122,7 @@ extension Theme {
         let titleImageStyle = SecureConversations.WelcomeStyle.TitleImageStyle(color: color.primary)
 
 
-        var uploadListStyle: FileUploadListStyle {
+        var uploadListStyle: MessageCenterFileUploadListStyle {
             // TODO: Introduce dedicated localization for Secure conversations upload list instaed of using Chat's one.
             // MOB-1831
             typealias Upload = L10n.Chat.Upload
@@ -163,7 +163,7 @@ extension Theme {
                 infoNetworkError: Upload.Error.network,
                 infoGenericError: Upload.Error.generic
             )
-            let upload = FileUploadStyle(
+            let upload = MessageCenterFileUploadStyle(
                 filePreview: filePreview,
                 uploading: uploading,
                 uploaded: uploaded,
@@ -171,8 +171,9 @@ extension Theme {
                 progressColor: color.primary,
                 errorProgressColor: color.systemNegative,
                 progressBackgroundColor: Color.lightGrey,
-                removeButtonImage: Asset.uploadRemove.image,
+                removeButtonImage: Asset.mcRemoveUpload.image,
                 removeButtonColor: color.baseNormal,
+                backgroundColor: .commonGray,
                 accessibility: .init(
                     removeButtonAccessibilityLabel: Accessibility.RemoveUpload.label,
                     progressPercentValue: Accessibility.Progress.percentValue,
@@ -181,7 +182,7 @@ extension Theme {
                 )
             )
 
-            return FileUploadListStyle(item: upload)
+            return MessageCenterFileUploadListStyle(item: upload)
         }
 
         // TODO: Introduce dedicated localization for Secure conversations upload list instaed of using Chat's one.
@@ -249,8 +250,12 @@ extension Theme {
 
 private extension UIColor {
     // Variations of gray color indicating disabled state of components.
-    static let disabledBackground = UIColor(red: 0.953, green: 0.953, blue: 0.953, alpha: 1)
+    static let disabledBackground = commonGray
     static let disabledBorder = UIColor(red: 0.424, green: 0.463, blue: 0.514, alpha: 0.5)
     static let disabledTitle = UIColor(red: 0, green: 0, blue: 0, alpha: 0.4)
     static let disabledActivityIndicator = UIColor(red: 0.769, green: 0.769, blue: 0.769, alpha: 1)
+}
+
+private extension UIColor {
+    static let commonGray = UIColor(red: 0.953, green: 0.953, blue: 0.953, alpha: 1)
 }
