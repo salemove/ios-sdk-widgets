@@ -156,58 +156,6 @@ workflows:
     description: >-
       Workflow for checking and building pull requests. Does not notify
       anywhere, but shows on the pull request itself.
-  integration-spm:
-    steps:
-    - script@1:
-        inputs:
-        - content: >-
-            #!/usr/bin/env bash
-
-            # fail if any commands fails
-
-            set -e
-
-            # make pipelines' return status equal the last command to exit with
-            a non-zero status, or zero if all commands exit successfully
-
-            set -o pipefail
-
-            # debug log
-
-            set -x
-
-
-            sed -i '' "s/\#{GliaWidgets_SHA}/$GIT_CLONE_COMMIT_HASH/"
-            "$BITRISE_SOURCE_DIR/Integrations/SwiftPackageManager/spm-project.yml"
-    - xcodegen@0:
-        inputs:
-        - project_path: $BITRISE_SOURCE_DIR/Integrations/SwiftPackageManager
-        - spec_path: $BITRISE_SOURCE_DIR/Integrations/SwiftPackageManager/spm-project.yml
-    - script@1:
-        inputs:
-        - content: >-
-            #!/usr/bin/env bash
-
-            # fail if any commands fails
-
-            set -e
-
-            # make pipelines' return status equal the last command to exit with
-            a non-zero status, or zero if all commands exit successfully
-
-            set -o pipefail
-
-            # debug log
-
-            set -x
-
-
-            cd $BITRISE_SOURCE_DIR/Integrations/SwiftPackageManager/
-
-
-            xcodebuild -project  SpmSampleApp.xcodeproj -scheme "SpmSampleApp"
-            -configuration "Debug" -sdk "iphonesimulator" -destination
-            "generic/platform=iOS Simulator"
   master-build:
     steps:
     - activate-ssh-key@4:
@@ -247,30 +195,40 @@ workflows:
     - activate-ssh-key@4:
         run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
     - git-clone@6: {}
+    - xcodegen:
+        inputs:
+        - project_path: $BITRISE_SOURCE_DIR/Integrations/SwiftPackageManager
+        - spec_path: $BITRISE_SOURCE_DIR/Integrations/SwiftPackageManager/spm-project.yml
     - script@1:
         inputs:
         - content: >-
             #!/usr/bin/env bash
-
-
             # fail if any commands fails
-
-
             set -e
-
-
             # make pipelines' return status equal the last command to exit with
             a non-zero status, or zero if all commands exit successfully
-
-
             set -o pipefail
-
-
             # debug log
-
-
             set -x
 
+            cd $BITRISE_SOURCE_DIR/Integrations/SwiftPackageManager/
+
+            xcodebuild -resolvePackageDependencies
+
+            xcodebuild -project SpmSampleApp.xcodeproj -scheme "SpmSampleApp"
+            -configuration "Debug" -sdk "iphonesimulator" -destination
+            "generic/platform=iOS Simulator" clean build
+    - script@1:
+        inputs:
+        - content: >-
+            #!/usr/bin/env bash
+            # fail if any commands fails
+            set -e
+            # make pipelines' return status equal the last command to exit with
+            a non-zero status, or zero if all commands exit successfully
+            set -o pipefail
+            # debug log
+            set -x
 
             make clone-snapshots-ci repo_url="https://$GITHUB_USERNAME:$GITHUB_API_TOKEN@$SNAPSHOTS_REPO"
     - cache-pull@2: {}
@@ -286,10 +244,11 @@ workflows:
         inputs:
         - scheme: SnapshotTests
         - destination: 'platform=iOS Simulator,name=iPhone 13,OS=15.2'
-    - xcode-archive@4.5:
+    - xcode-archive:
         inputs:
         - scheme: $APP_SCHEME
         - team_id: XR3G5NDPNH
+        - cache_level: none
         - export_method: $BITRISE_EXPORT_METHOD
     - deploy-to-bitrise-io@2:
         inputs:
@@ -298,9 +257,9 @@ workflows:
     description: >-
       Workflow for checking and building pull requests. Does not notify
       anywhere, but shows on the pull request itself.
-    # MOB-1812
-    #after_run:
-    #- integration-spm
+    meta:
+      bitrise.io:
+        stack: osx-xcode-14.2.x-ventura
   pull-request-snapshot:
     steps:
     - activate-ssh-key@4:

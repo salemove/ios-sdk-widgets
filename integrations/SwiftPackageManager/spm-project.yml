@@ -3,8 +3,7 @@ options:
   bundleIdPrefix: com.glia.sdk.sample
 packages:
   GliaWidgets:
-    url: https://github.com/salemove/ios-sdk-widgets
-    branch: #{GliaWidgets_SHA}
+    path: ../../
 targets:
   SpmSampleApp:
     type: application
@@ -15,4 +14,3 @@ targets:
     sources: [Sources]
     dependencies:
       - package: GliaWidgets
-        product: GliaWidgets
