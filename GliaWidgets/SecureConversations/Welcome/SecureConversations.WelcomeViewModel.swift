@@ -100,8 +100,9 @@ extension SecureConversations.WelcomeViewModel {
     // some parts are refactored to pure static methods.
     func props() -> Props {
         let welcomeStyle = environment.welcomeStyle
-        let filePickerButton = SecureConversations.WelcomeView.Props.FilePickerButton(
-            isEnabled: true,
+        let isFilePickerEnabled = !fileUploadListModel.isLimitReached
+        let filePickerButton = WelcomeViewProps.FilePickerButton(
+            isEnabled: isFilePickerEnabled,
             tap: Command { [weak self, alertConfiguration = environment.alertConfiguration] originView in
                 self?.presentMediaPicker(
                     from: originView,
