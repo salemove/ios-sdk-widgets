@@ -1,5 +1,7 @@
+// TODO: Remove this file once SecureConversations.FileUploadListView is fully integrated.
+
+/*
 import UIKit
-import SwiftUI
 
 private extension Int {
     static let maxUnscrollableViewsOnDefaultContentSizeCategory = 3
@@ -143,3 +145,4 @@ extension FileUploadListView {
     }
 }
 #endif
+*/

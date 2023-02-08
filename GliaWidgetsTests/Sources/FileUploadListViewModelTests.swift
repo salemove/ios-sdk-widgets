@@ -2,22 +2,25 @@ import XCTest
 
 @testable import GliaWidgets
 
-final class FileUploadListViewTests: XCTestCase {
-    private var view: FileUploadListView!
+final class FileUploadListViewModelTests: XCTestCase {
+    private var viewModel: SecureConversations.FileUploadListViewModel!
 
     func test_maxUnscrollableViewsWithMediumPreferredContentSizeCategory() throws {
         func testCase(input: (category: UIContentSizeCategory, maxViewCount: Int)) throws {
-            var environment = FileUploadListView.Environment(
+            var environment: SecureConversations.FileUploadListViewModel.Environment = .init(
+                uploader: .mock(),
+                style: .chat(.mock),
                 uiApplication: .failing
             )
+
 
             environment.uiApplication.preferredContentSizeCategory = {
                 return input.category
             }
 
-            view = .mock(environment: environment)
+            viewModel = .mock(environment: environment)
 
-            XCTAssertEqual(view.maxUnscrollableViews, input.maxViewCount)
+            XCTAssertEqual(viewModel.maxUnscrollableViews, input.maxViewCount)
         }
 
         let input: [(UIContentSizeCategory, Int)] = [
