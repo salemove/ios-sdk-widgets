@@ -1,7 +1,7 @@
 extension SecureConversations.FileUploadListViewModel {
     struct Environment {
         var uploader: FileUploader
-        var style: FileUploadListStyle
+        var style: SecureConversations.FileUploadListView.Style
         var uiApplication: UIKitBased.UIApplication
     }
 }
@@ -10,7 +10,7 @@ extension SecureConversations.FileUploadListViewModel {
 extension SecureConversations.FileUploadListViewModel.Environment {
     static let mock = SecureConversations.FileUploadListViewModel.Environment(
         uploader: .mock(),
-        style: .mock,
+        style: .chat(.mock),
         uiApplication: .mock
     )
 }
