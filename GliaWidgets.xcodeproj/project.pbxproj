@@ -272,6 +272,8 @@
 		84265E66298D7B2900D65842 /* ScreenSharingViewController+Props.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84265E5B298D7B2900D65842 /* ScreenSharingViewController+Props.swift */; };
 		84265E67298D7B2900D65842 /* ScreenSharingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84265E5C298D7B2900D65842 /* ScreenSharingViewController.swift */; };
 		84265E69298D7B9D00D65842 /* CallVisualizer+MediaUpgrade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84265E68298D7B9D00D65842 /* CallVisualizer+MediaUpgrade.swift */; };
+		84265E6B29912E2100D65842 /* RemoteConfiguration+CallVisualizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84265E6A29912E2100D65842 /* RemoteConfiguration+CallVisualizer.swift */; };
+		84265E6E29914DDA00D65842 /* ViewController+CallVisualizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84265E6D29914DDA00D65842 /* ViewController+CallVisualizer.swift */; };
 		844D3C6C29142C17002887A9 /* Optional+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844D3C6B29142C17002887A9 /* Optional+Extensions.swift */; };
 		8458769F2823FD18007AC3DF /* SurveyViewControllerVoiceOverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8458769E2823FD18007AC3DF /* SurveyViewControllerVoiceOverTests.swift */; };
 		845876A22823FF34007AC3DF /* Survey.ViewController.Props.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845876A12823FF34007AC3DF /* Survey.ViewController.Props.Mock.swift */; };
@@ -795,6 +797,8 @@
 		84265E5B298D7B2900D65842 /* ScreenSharingViewController+Props.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ScreenSharingViewController+Props.swift"; sourceTree = "<group>"; };
 		84265E5C298D7B2900D65842 /* ScreenSharingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenSharingViewController.swift; sourceTree = "<group>"; };
 		84265E68298D7B9D00D65842 /* CallVisualizer+MediaUpgrade.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CallVisualizer+MediaUpgrade.swift"; sourceTree = "<group>"; };
+		84265E6A29912E2100D65842 /* RemoteConfiguration+CallVisualizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RemoteConfiguration+CallVisualizer.swift"; sourceTree = "<group>"; };
+		84265E6D29914DDA00D65842 /* ViewController+CallVisualizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+CallVisualizer.swift"; sourceTree = "<group>"; };
 		844D3C6B29142C17002887A9 /* Optional+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Optional+Extensions.swift"; sourceTree = "<group>"; };
 		8458769E2823FD18007AC3DF /* SurveyViewControllerVoiceOverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurveyViewControllerVoiceOverTests.swift; sourceTree = "<group>"; };
 		845876A12823FF34007AC3DF /* Survey.ViewController.Props.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Survey.ViewController.Props.Mock.swift; sourceTree = "<group>"; };
@@ -1270,11 +1274,11 @@
 		1A205D7925655CEC003AA3CD /* TestingApp */ = {
 			isa = PBXGroup;
 			children = (
+				84265E6C29914DAA00D65842 /* ViewController */,
 				C46B2463262F05BE001245A1 /* TestingApp.entitlements */,
 				1A60AFF32567CDFB00E53F53 /* Settings */,
 				1A4AD3D4256FE7DA00468BFB /* Extensions */,
 				1A205D7A25655CEC003AA3CD /* AppDelegate.swift */,
-				1A205D7E25655CEC003AA3CD /* ViewController.swift */,
 				1A205D8525655CEE003AA3CD /* LaunchScreen.storyboard */,
 				1A205D8825655CEE003AA3CD /* Info.plist */,
 				C4119E05268F41D1004DFEFB /* Main.storyboard */,
@@ -2217,6 +2221,7 @@
 				7594093A298D376A008B173A /* RemoteConfiguration+AssetsBuilder.swift */,
 				7594093B298D376A008B173A /* RemoteConfiguration.swift */,
 				7594093C298D376A008B173A /* RemoteConfiguration+Chat.swift */,
+				84265E6A29912E2100D65842 /* RemoteConfiguration+CallVisualizer.swift */,
 			);
 			path = RemoteConfiguration;
 			sourceTree = "<group>";
@@ -2458,6 +2463,15 @@
 			children = (
 				84265E5B298D7B2900D65842 /* ScreenSharingViewController+Props.swift */,
 				84265E5C298D7B2900D65842 /* ScreenSharingViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		84265E6C29914DAA00D65842 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				1A205D7E25655CEC003AA3CD /* ViewController.swift */,
+				84265E6D29914DDA00D65842 /* ViewController+CallVisualizer.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -3525,6 +3539,7 @@
 				75940944298D378A008B173A /* CoreSDKClient.Interface.swift in Sources */,
 				754CC61227E2767A005676E9 /* Survey.BooleanQuestionView.swift in Sources */,
 				6EA3516926E139DA00BF5941 /* GliaViewTransitionController.swift in Sources */,
+				84265E6B29912E2100D65842 /* RemoteConfiguration+CallVisualizer.swift in Sources */,
 				1A1E30C725F9FDAB00850E68 /* ChatImageFileContentView.swift in Sources */,
 				AFA2FDEE28907DDB00428E6D /* EngagementCoordinator.Environment.Mock.swift in Sources */,
 				75940967298D38B6008B173A /* BundleManaging.swift in Sources */,
@@ -3633,6 +3648,7 @@
 				1A205D7B25655CEC003AA3CD /* AppDelegate.swift in Sources */,
 				754313CB2870A65400C9C1C6 /* SettingsViewController.Props.swift in Sources */,
 				7543141828806AEB00C9C1C6 /* EnvironmentSettingsTextCell.swift in Sources */,
+				84265E6E29914DDA00D65842 /* ViewController+CallVisualizer.swift in Sources */,
 				754313CF2870E64600C9C1C6 /* Configuration.Extensions.swift in Sources */,
 				1A4AD3D1256E92F300468BFB /* SettingsColorCell.swift in Sources */,
 				1A4AD3CE256E8F5500468BFB /* SettingsCell.swift in Sources */,

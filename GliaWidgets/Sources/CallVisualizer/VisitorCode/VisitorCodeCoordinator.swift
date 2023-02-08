@@ -9,37 +9,25 @@ extension CallVisualizer {
         var delegate: ((DelegateEvent) -> Void)?
         var environment: Environment
         let presentation: CallVisualizer.Presentation
-        let uiConfig: RemoteConfiguration?
         var viewModel: VisitorCodeViewModel?
         var codeViewController: VisitorCodeViewController?
 
         init(
-            theme: Theme = Theme(),
+            theme: Theme,
             environment: Environment,
-            presentation: CallVisualizer.Presentation,
-            uiConfig: RemoteConfiguration?
+            presentation: CallVisualizer.Presentation
         ) {
-            self.visitorCodeStyle = theme.visitorCodeStyle
+            self.visitorCodeStyle = theme.visitorCode
             self.environment = environment
             self.theme = theme
             self.presentation = presentation
-            self.uiConfig = uiConfig
         }
 
         func start() -> UIViewController {
-            showVisitorCodeViewController(
-                by: presentation,
-                uiConfig: uiConfig
-            )
+            showVisitorCodeViewController(by: presentation)
         }
 
-        func showVisitorCodeViewController(
-            by presentation: CallVisualizer.Presentation,
-            uiConfig: RemoteConfiguration?
-        ) -> UIViewController {
-            if let uiConfig = uiConfig {
-                theme.applyRemoteConfiguration(uiConfig, assetsBuilder: .standard)
-            }
+        func showVisitorCodeViewController(by presentation: CallVisualizer.Presentation) -> UIViewController {
             let viewModel = VisitorCodeViewModel(
                 presentation: presentation,
                 environment: .init(

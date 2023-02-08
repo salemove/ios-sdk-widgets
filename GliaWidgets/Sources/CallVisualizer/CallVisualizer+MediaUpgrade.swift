@@ -7,7 +7,7 @@ extension CallVisualizer {
         accepted: @escaping () -> Void,
         declined: @escaping () -> Void
     ) {
-        coordinator.offerScreenShare(
+        coordinator?.offerScreenShare(
             from: operators,
             configuration: configuration,
             accepted: accepted,

@@ -71,14 +71,6 @@ class ViewController: UIViewController {
         Glia.sharedInstance.clearVisitorSession()
     }
 
-    @IBAction private func presentVisitorCodeAsAlertTapped() {
-        showVisitorCodeAlert()
-    }
-
-    @IBAction private func embedVisitorCodeViewTapped() {
-        showVisitorCodeEmbeddedView()
-    }
-
     @IBAction private func configureSDKTapped() {
         configureSDK()
     }
@@ -105,37 +97,11 @@ class ViewController: UIViewController {
     }
 
     @IBAction private func remoteConfigTapped() {
-        let paths = Bundle.main.paths(forResourcesOfType: "json", inDirectory: nil)
-
-        guard !paths.isEmpty else {
-            alert(message: "Could not find any json file")
-            return
-        }
-
-        let names = paths
-            .compactMap(URL.init(string:))
-            .compactMap {
-                $0.lastPathComponent
-                .components(separatedBy: ".")
-                .first
-            }.sorted()
-
-        let alert = UIAlertController(
-            title: nil,
-            message: nil,
-            preferredStyle: .actionSheet
-        )
-        let action: (String) -> UIAlertAction = { fileName in
-            UIAlertAction(title: fileName, style: .default) { [weak self, weak alert] _ in
-                self?.showEngagementKindActionSheet { kind in
-                    self?.startEngagement(with: kind, config: fileName)
-                }
-                alert?.dismiss(animated: true)
+        showRemoteConfigAlert { [weak self] fileName in
+            self?.showEngagementKindActionSheet { kind in
+                self?.startEngagement(with: kind, config: fileName)
             }
         }
-        names.map(action).forEach(alert.addAction)
-        alert.addAction(.init(title: "Cancel", style: .cancel))
-        present(alert, animated: true)
     }
 }
 
@@ -204,14 +170,6 @@ extension ViewController {
         }
     }
 
-    func showVisitorCodeEmbeddedView() {
-        Glia.sharedInstance.callVisualizer.showVisitorCodeViewController(by: .embedded(visitorCodeView))
-    }
-
-    func showVisitorCodeAlert() {
-        Glia.sharedInstance.callVisualizer.showVisitorCodeViewController(by: .alert(self))
-    }
-
     func configureSDK() {
         let originalTitle = configureButton.title(for: .normal)
         configureButton.setTitle("Configuring ...", for: .normal)
@@ -271,16 +229,61 @@ extension ViewController {
             visitorContext: .init(type: .page, url: "http://glia.com")
         )
 
-        guard
-            let url = Bundle.main.url(forResource: name, withExtension: "json"),
-            let jsonData = try? Data(contentsOf: url),
-            let config = try? JSONDecoder().decode(RemoteConfiguration.self, from: .init(jsonData))
-        else { return }
+        guard let config = retrieveRemoteConfiguration(name) else { return }
 
         try? Glia.sharedInstance.startEngagementWithConfig(
             engagement: kind,
             uiConfig: config
         )
+    }
+
+    private func jsonNames() -> [String] {
+        let paths = Bundle.main.paths(forResourcesOfType: "json", inDirectory: nil)
+
+        guard !paths.isEmpty else {
+            alert(message: "Could not find any json file")
+            return []
+        }
+
+        return paths
+            .compactMap(URL.init(string:))
+            .compactMap {
+                $0.lastPathComponent
+                    .components(separatedBy: ".")
+                    .first
+            }.sorted()
+    }
+
+    func showRemoteConfigAlert(_ completion: @escaping (String) -> Void) {
+        let names = jsonNames()
+        guard !names.isEmpty else { return }
+
+        let alert = UIAlertController(
+            title: "Remote configuration",
+            message: "Selected config will be applied",
+            preferredStyle: .actionSheet
+        )
+        let action: (String) -> UIAlertAction = { fileName in
+            UIAlertAction(title: fileName, style: .default) { [weak alert] _ in
+                completion(fileName)
+                alert?.dismiss(animated: true)
+            }
+        }
+        names.map(action).forEach(alert.addAction)
+        alert.addAction(.init(title: "Cancel", style: .cancel))
+        present(alert, animated: true)
+    }
+
+    func retrieveRemoteConfiguration(_ fileName: String) -> RemoteConfiguration? {
+        guard
+            let url = Bundle.main.url(forResource: fileName, withExtension: "json"),
+            let jsonData = try? Data(contentsOf: url),
+            let config = try? JSONDecoder().decode(RemoteConfiguration.self, from: .init(jsonData))
+        else {
+            alert(message: "Could not decode RemoteConfiguration.")
+            return nil
+        }
+        return config
     }
 }
 

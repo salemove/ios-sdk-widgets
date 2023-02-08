@@ -67,7 +67,7 @@ extension CallVisualizer {
             button.accessibilityIdentifier = "visitor_code_refresh_button"
         }
         let spinnerView = UIImageView().make { imageView in
-            imageView.image = Asset.spinner.image
+            imageView.image = Asset.spinner.image.withRenderingMode(.alwaysTemplate)
             imageView.contentMode = .center
         }
 
@@ -99,11 +99,9 @@ extension CallVisualizer {
             super.setup()
             clipsToBounds = true
             layer.masksToBounds = false
-            layer.cornerRadius = props.style.cornerRadius
             renderProps()
             refreshButton.addTarget(self, action: #selector(refreshButtonTapped), for: .touchUpInside)
             accessibilityElements = [titleLabel, closeButton, visitorCodeStack, poweredBy, refreshButton]
-
         }
 
         override func defineLayout() {
@@ -142,6 +140,7 @@ extension CallVisualizer {
             refreshButton.layer.shadowRadius = props.style.actionButton.shadowRadius ?? 0.0
             refreshButton.layer.shadowOpacity = props.style.actionButton.shadowOpacity ?? 0
             refreshButton.setTitle(props.style.actionButton.title, for: .normal)
+            refreshButton.titleLabel?.font = props.style.actionButton.titleFont
             switch props.style.actionButton.backgroundColor {
             case .fill(let color):
                 refreshButton.backgroundColor = color
@@ -163,6 +162,10 @@ extension CallVisualizer {
         }
 
         func renderProps() {
+            layer.cornerRadius = props.style.cornerRadius
+            layer.borderColor = props.style.borderColor.cgColor
+            layer.borderWidth = props.style.borderWidth
+
             titleLabel.font = props.style.titleFont
             titleLabel.textColor = props.style.titleColor
             switch props.viewState {
@@ -196,15 +199,17 @@ extension CallVisualizer {
             }
 
             closeButton.isHidden = props.closeButtonTap == nil
+
+            layoutSubviews()
         }
 
         var renderedVisitorCode: String = "" {
             didSet {
                 guard renderedVisitorCode != oldValue else { return }
                 visitorCodeStack.removeArrangedSubviews()
-                renderedVisitorCode.enumerated().forEach { (index, char) in
+                renderedVisitorCode.enumerated().forEach { index, char in
                     let valueLabel = NumberView().make { numberView in
-                        numberView.props = .init(character: char, style: props.style)
+                        numberView.props = .init(character: char, style: props.style.numberSlot)
                         numberView.accessibilityIdentifier = "visitor_code_number_slot_at_index_\(index)"
                     }
                     visitorCodeStack.addArrangedSubview(valueLabel)
@@ -242,6 +247,7 @@ extension CallVisualizer {
             rotation.toValue = CGFloat.pi * 2
             rotation.duration = 1.0
             rotation.repeatCount = Float.infinity
+            spinnerView.tintColor = props.style.loadingProgressColor
             spinnerView.layer.add(rotation, forKey: "Spin")
         }
 

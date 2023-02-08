@@ -2,7 +2,7 @@ import UIKit
 
 public extension CallVisualizer {
     final class ScreenSharingViewController: UIViewController {
-        private let screenSharingView = ScreenSharingView()
+        private lazy var screenSharingView = ScreenSharingView(props: props.screenSharingViewProps)
 
         var props: Props = .initial {
             didSet {

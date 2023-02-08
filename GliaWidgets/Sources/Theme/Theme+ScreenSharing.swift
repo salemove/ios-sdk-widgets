@@ -1,7 +1,7 @@
 import UIKit
 
 extension Theme {
-    var screenSharing: ScreenSharingViewStyle {
+    var screenSharingStyle: ScreenSharingViewStyle {
         return ScreenSharingViewStyle(
             title: L10n.ScreenSharing.title,
             header: chat.header,
@@ -20,6 +20,7 @@ extension Theme {
                 )
             ),
             buttonIcon: Asset.startScreenShare.image,
+            backgroundColor: .fill(color: .white),
             accessibility: .init(isFontScalingEnabled: true)
         )
     }

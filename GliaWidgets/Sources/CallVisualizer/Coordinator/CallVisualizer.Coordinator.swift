@@ -28,17 +28,14 @@ extension CallVisualizer {
             }
         }
 
-        func showVisitorCodeViewController(
-            by presentation: Presentation,
-            uiConfig: RemoteConfiguration? = nil
-        ) {
+        func showVisitorCodeViewController(by presentation: Presentation) {
             let coordinator = VisitorCodeCoordinator(
+                theme: environment.viewFactory.theme,
                 environment: .init(
                     timerProviding: environment.timerProviding,
                     requestVisitorCode: environment.requestVisitorCode
                 ),
-                presentation: presentation,
-                uiConfig: uiConfig
+                presentation: presentation
             )
 
             coordinator.delegate = { [weak self] event in
@@ -156,11 +153,9 @@ extension CallVisualizer {
         }
 
         private func buildScreenSharingViewController(uiConfig: RemoteConfiguration? = nil) -> UIViewController {
-            let theme = Theme()
-            uiConfig.map { theme.applyRemoteConfiguration($0, assetsBuilder: .standard) }
             let coordinator = ScreenSharingCoordinator(
                 environment: .init(
-                    theme: theme,
+                    theme: environment.viewFactory.theme,
                     screenShareHandler: environment.screenShareHandler
                 )
             )

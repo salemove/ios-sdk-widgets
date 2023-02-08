@@ -25,8 +25,17 @@ public struct VisitorCodeStyle: Equatable {
     /// Corner radius of the view.
     public var cornerRadius: CGFloat
 
+    /// Border width of the view.
+    public var borderWidth: CGFloat
+
+    /// Border color of the view.
+    public var borderColor: UIColor
+
     /// Color of the close button.
     public var closeButtonColor: ColorType
+
+    /// Color of the loading progress.
+    public var loadingProgressColor: UIColor
 
     /// Accessibility related properties.
     public var accessibility: Accessibility
@@ -38,10 +47,13 @@ public struct VisitorCodeStyle: Equatable {
         poweredBy: PoweredByStyle,
         numberSlot: NumberSlotStyle,
         actionButton: ActionButtonStyle,
-        accessibility: Accessibility = .unsupported,
         backgroundColor: ColorType,
         cornerRadius: CGFloat,
-        closeButtonColor: ColorType
+        borderWidth: CGFloat = 0,
+        borderColor: UIColor = .clear,
+        closeButtonColor: ColorType,
+        loadingProgressColor: UIColor,
+        accessibility: Accessibility = .unsupported
     ) {
         self.titleColor = titleColor
         self.titleFont = titleFont
@@ -49,10 +61,13 @@ public struct VisitorCodeStyle: Equatable {
         self.poweredBy = poweredBy
         self.numberSlot = numberSlot
         self.actionButton = actionButton
-        self.accessibility = accessibility
-        self.cornerRadius = cornerRadius
         self.backgroundColor = backgroundColor
+        self.cornerRadius = cornerRadius
+        self.borderWidth = borderWidth
+        self.borderColor = borderColor
         self.closeButtonColor = closeButtonColor
+        self.loadingProgressColor = loadingProgressColor
+        self.accessibility = accessibility
     }
 
     mutating func apply(
@@ -72,8 +87,21 @@ public struct VisitorCodeStyle: Equatable {
             assetsBuilder: assetBuilder
         )
 
+        configuration?.loadingProgressColor?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .unwrap { loadingProgressColor = $0 }
+
         configuration?.background?.cornerRadius
             .unwrap { cornerRadius = $0 }
+
+        configuration?.background?.borderWidth
+            .unwrap { borderWidth = $0 }
+
+        configuration?.background?.border?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .unwrap { borderColor = $0 }
 
         configuration?.background?.color.unwrap {
             switch $0.type {

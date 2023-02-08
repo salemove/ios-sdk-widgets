@@ -49,7 +49,11 @@ public class Theme {
         alertStyle: alert
     )
 
+    /// Call Visualizer Visitor Code view style.
     public lazy var visitorCode: VisitorCodeStyle = { return visitorCodeStyle }()
+
+    /// Call Visualizer Screen Sharing View style.
+    public lazy var screenSharing: ScreenSharingViewStyle = { return screenSharingStyle }()
 
     /// Controls the visibility of the "Powered by" text and image.
     public var showsPoweredBy: Bool
@@ -97,7 +101,11 @@ public class Theme {
             assetsBuilder: assetsBuilder
         )
         visitorCode.apply(
-            configuration: config.visitorCode,
+            configuration: config.callVisualizer?.visitorCode,
+            assetBuilder: assetsBuilder
+        )
+        screenSharing.apply(
+            configuration: config.callVisualizer?.screenSharing,
             assetBuilder: assetsBuilder
         )
     }
