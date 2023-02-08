@@ -21,8 +21,8 @@ extension SecureConversations {
             environment.uploader.state.addObserver(self) { [weak self] state, _ in
                 self?.onUploaderStateChanged(state)
             }
-            environment.uploader.limitReached.addObserver(self) { [weak self] limitReached, _ in
-                // TODO: MOB-1838
+            environment.uploader.limitReached.addObserver(self) { [weak self] _, _ in
+                self?.reportChange()
             }
         }
 
@@ -132,6 +132,10 @@ extension SecureConversations.FileUploadListViewModel {
 
     var state: ObservableValue<FileUploader.State> {
         environment.uploader.state
+    }
+
+    var isLimitReached: Bool {
+        environment.uploader.limitReached.value
     }
 
     func removeSucceededUploads() {

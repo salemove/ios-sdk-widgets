@@ -226,6 +226,11 @@ extension SecureConversations {
             renderedWarning = props.warningMessage
 
             fileUploadListView.props = props.fileUploadListProps
+
+            rootStackView.setCustomSpacing(
+                props.fileUploadListProps.uploads.isEmpty ? 0 : 16,
+                after: fileUploadListView
+            )
         }
 
         var renderedWarning: Props.WarningMessage = "" {
