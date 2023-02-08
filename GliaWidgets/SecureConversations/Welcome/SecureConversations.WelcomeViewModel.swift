@@ -22,6 +22,9 @@ extension SecureConversations {
         var isAttachmentsAvailable: Bool = true { didSet { reportChange() } }
         var messageInputState: MessageInputState = .normal { didSet { reportChange() } }
         var sendMessageRequestState: SendMessageRequestState = .waiting { didSet { reportChange() } }
+        // TODO: Handle messaging availibility MOB-1724
+        // Hardcode availability for now.
+        var isSecureConversationAvailable = true { didSet { reportChange() } }
 
         let fileUploadListModel: FileUploadListViewModel
 
@@ -187,12 +190,40 @@ extension SecureConversations.WelcomeViewModel {
     static func sendMessageButtonState(
         for instance: SecureConversations.WelcomeViewModel
     ) -> SendMessageButton {
+        // Is service available?
+        guard instance.isSecureConversationAvailable else {
+            return .disabled
+        }
+
+        // Are there failed uploads?
+        guard instance.fileUploadListModel.failedUploads.isEmpty else {
+            return .disabled
+        }
+
+        // Are there in-progress uploads?
+        guard instance.fileUploadListModel.activeUploads.isEmpty else {
+            return .disabled
+        }
+
+        // Is message text valid?
+        guard isInputTextValid(instance.messageText) else {
+            return .disabled
+        }
+
         switch instance.sendMessageRequestState {
         case .loading:
             return .loading
         case .waiting:
             return .active(instance.sendMessageCommand)
         }
+    }
+
+    static func isInputTextValid(_ text: String) -> Bool {
+        guard !text.isEmpty else {
+            return false
+        }
+
+        return text.count <= Self.messageTextLimit
     }
 }
 
