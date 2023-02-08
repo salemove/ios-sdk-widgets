@@ -31,10 +31,11 @@ extension Theme {
             poweredBy: poweredBy,
             numberSlot: numberSlot,
             actionButton: actionButton,
-            accessibility: .init(isFontScalingEnabled: true),
             backgroundColor: .fill(color: color.background),
             cornerRadius: 30,
-            closeButtonColor: .fill(color: color.baseNormal)
+            closeButtonColor: .fill(color: color.baseNormal),
+            loadingProgressColor: color.primary,
+            accessibility: .init(isFontScalingEnabled: true)
         )
     }
 }

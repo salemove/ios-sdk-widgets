@@ -41,7 +41,7 @@ extension CallVisualizer {
             let codeViewProps = VisitorCodeView.Props(
                 viewType: viewType,
                 viewState: viewState,
-                style: theme.visitorCodeStyle,
+                style: theme.visitorCode,
                 isPoweredByShown: theme.showsPoweredBy
             )
             return .init(visitorCodeViewProps: codeViewProps)
