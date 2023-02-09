@@ -11,6 +11,8 @@ extension SecureConversations {
             case waiting, loading
         }
 
+        static let sendMessageErrorAlertAccIdentidier = "send_message_alert_error_identifier"
+
         static let messageTextLimit = 10_000
         static let maximumUploads = 25
 
@@ -68,13 +70,7 @@ extension SecureConversations {
 // MARK: - Send Message
 private extension SecureConversations.WelcomeViewModel {
     func sendMessage() {
-        guard !messageText.isEmpty else { return }
-
         let queueIds = environment.queueIds
-        guard !queueIds.isEmpty else {
-            // TODO: show error
-            return
-        }
 
         sendMessageRequestState = .loading
 
@@ -82,15 +78,20 @@ private extension SecureConversations.WelcomeViewModel {
             messageText,
             fileUploadListModel.attachment,
             queueIds
-        ) { [weak self] result in
+        ) { [weak self, alertConfiguration = environment.alertConfiguration] result in
             self?.sendMessageRequestState = .waiting
 
             switch result {
             case .success:
                 self?.delegate?(.confirmationScreenNeeded)
-            case .failure(let error):
-                // TODO: show error
-                print("error on sending message")
+            case .failure:
+                self?.delegate?(
+                    .showAlert(
+                        alertConfiguration.unexpectedError,
+                        accessibilityIdentifier: Self.sendMessageErrorAlertAccIdentidier,
+                        dismissed: nil
+                    )
+                )
             }
         }
     }
@@ -211,6 +212,11 @@ extension SecureConversations.WelcomeViewModel {
 
         // Is message text valid?
         guard isInputTextValid(instance.messageText) else {
+            return .disabled
+        }
+
+        // Is there a ticket?
+        guard !instance.environment.queueIds.isEmpty else {
             return .disabled
         }
 
