@@ -122,6 +122,10 @@ extension SecureConversations.FileUploadListViewModel {
         environment.uploader.attachment
     }
 
+    var activeUploads: [FileUpload] {
+        environment.uploader.activeUploads
+    }
+
     var succeededUploads: [FileUpload] {
         environment.uploader.succeededUploads
     }
