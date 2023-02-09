@@ -731,7 +731,12 @@ extension SecureConversations.WelcomeView {
             }
             let bottomOffset = CGPoint(
                 x: 0,
-                y: scrollView.contentSize.height - scrollView.bounds.height + scrollView.contentInset.bottom
+                y: scrollView.contentSize.height - scrollView.bounds.height + scrollView.contentInset.bottom +
+                // Take file upload list into account, so that text view would be accessible,
+                // when keyboard appears.
+                fileUploadListView.frame.height == .zero
+                ? 0
+                : (messageTextView.frame.height - fileUploadListView.frame.height)
             )
             scrollView.setContentOffset(
                 bottomOffset,
