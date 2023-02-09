@@ -78,7 +78,11 @@ private extension SecureConversations.WelcomeViewModel {
 
         sendMessageRequestState = .loading
 
-        _ = environment.sendSecureMessage(messageText, nil, queueIds) { [weak self] result in
+        _ = environment.sendSecureMessage(
+            messageText,
+            fileUploadListModel.attachment,
+            queueIds
+        ) { [weak self] result in
             self?.sendMessageRequestState = .waiting
 
             switch result {
