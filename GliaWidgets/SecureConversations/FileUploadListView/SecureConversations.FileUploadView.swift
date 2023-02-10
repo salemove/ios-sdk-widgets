@@ -126,7 +126,6 @@ extension SecureConversations {
             self.backgroundColor = style.backgroundColor
         }
 
-        // swiftlint:disable function_body_length
         private func update(for state: FileUpload.State) {
             let style = SecureConversations.FileUploadView.Style.Properties(
                 style: props.style
@@ -185,7 +184,6 @@ extension SecureConversations {
             }
             accessibilityLabel = stateLabel.text
         }
-        // swiftlint:enable function_body_length
 
         private func errorText(from style: FileUploadErrorStateStyle, for error: FileUpload.Error) -> String {
             switch error {

@@ -261,7 +261,6 @@ extension MessageCenterFileUploadStyle {
     }
 }
 
-
 /// Style of an upload state.
 public class FileUploadStateStyle: Equatable {
     /// Text for the state.

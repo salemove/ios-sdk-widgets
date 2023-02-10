@@ -16,7 +16,11 @@ extension Glia {
     }
 
     /// Deprecated.
-    @available(*, deprecated, message: "Use start(_:configuration:queueID:visitorContext:theme:features:sceneProvider:) with Optional<VisitorContext> instead.")
+    @available(
+        *,
+         deprecated,
+         message: "Use start(_:configuration:queueID:visitorContext:theme:features:sceneProvider:) with Optional<VisitorContext> instead."
+    )
     public func start(
         _ engagementKind: EngagementKind,
         configuration: Configuration,

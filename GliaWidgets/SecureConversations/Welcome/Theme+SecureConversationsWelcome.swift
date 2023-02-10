@@ -121,7 +121,6 @@ extension Theme {
 
         let titleImageStyle = SecureConversations.WelcomeStyle.TitleImageStyle(color: color.primary)
 
-
         var uploadListStyle: MessageCenterFileUploadListStyle {
             // TODO: Introduce dedicated localization for Secure conversations upload list instaed of using Chat's one.
             // MOB-1831

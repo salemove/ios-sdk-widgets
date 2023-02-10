@@ -4,6 +4,7 @@ disabled_rules:
   - implicit_return
   - function_parameter_count
   - weak_delegate
+  - todo
 opt_in_rules:
   - empty_count
   - implicit_return
@@ -38,7 +39,7 @@ file_length:
   error: 1200
 
 function_body_length:
-  warning: 50
+  warning: 60
   error: 100
 
 reporter: "xcode" # reporter type (xcode, json, csv, checkstyle, junit, html, emoji)

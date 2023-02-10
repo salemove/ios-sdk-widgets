@@ -132,7 +132,7 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
 }
 
 extension EngagementCoordinator {
-    // swiftlint:disable function_body_length
+
     func end() {
 
         let dismissGliaViewController = { [weak self] in
@@ -195,7 +195,6 @@ extension EngagementCoordinator {
             presentSurvey(engagement.id, survey)
         }
     }
-    // swiftlint:enable function_body_length
 
     private func startChat(
         withAction startAction: ChatViewModel.StartAction,
