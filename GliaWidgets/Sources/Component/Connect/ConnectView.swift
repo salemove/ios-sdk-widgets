@@ -83,7 +83,6 @@ final class ConnectView: BaseView {
         contentTopPadding = stackView.autoPinEdgesToSuperviewEdges(with: Constants.contentInsets).first
     }
 
-    // swiftlint:disable function_body_length
     func setState(_ state: State, animated: Bool) {
         self.state = state
         stackView.spacing = layout.contentSpacing(for: state)
@@ -142,7 +141,6 @@ final class ConnectView: BaseView {
             show(animated: animated)
         }
     }
-    // swiftlint:enable function_body_length
 
     private func show(animated: Bool) {
         guard !isShowing else { return }
