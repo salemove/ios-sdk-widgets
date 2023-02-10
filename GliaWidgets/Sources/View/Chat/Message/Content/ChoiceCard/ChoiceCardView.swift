@@ -37,7 +37,6 @@ final class ChoiceCardView: OperatorChatMessageView {
         }
     }
 
-    // swiftlint:disable function_body_length
     private func contentView(for choiceCard: ChoiceCard) -> UIView {
         let containerView = UIView()
         containerView.backgroundColor = viewStyle.backgroundColor
@@ -101,7 +100,6 @@ final class ChoiceCardView: OperatorChatMessageView {
 
         return containerView
     }
-    // swiftlint:enable function_body_length
 }
 
 extension ChoiceCardView {

@@ -26,8 +26,8 @@ extension SecureConversations {
             return viewController
         }
 
-        private func makeSecureConversationsWelcomeViewController() -> SecureConversations.WelcomeViewController {
-            let viewModel = SecureConversations.WelcomeViewModel(
+        private func makeWelcomeViewModel() -> SecureConversations.WelcomeViewModel {
+            SecureConversations.WelcomeViewModel(
                 environment: .init(
                     welcomeStyle: viewFactory.theme.secureConversationsWelcomeStyle,
                     queueIds: environment.queueIds,
@@ -50,6 +50,10 @@ extension SecureConversations {
                     createFileUploadListModel: environment.createFileUploadListModel
                 )
             )
+        }
+
+        private func makeSecureConversationsWelcomeViewController() -> SecureConversations.WelcomeViewController {
+            let viewModel = makeWelcomeViewModel()
 
             let controller = SecureConversations.WelcomeViewController(
                 viewFactory: viewFactory,
