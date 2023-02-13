@@ -172,7 +172,9 @@ extension SecureConversations {
         }
 
         @objc func handleSendMessageButtonTap() {
-            Props.SendMessageButton.UIKitProps(props.sendMessageButton).tap?()
+            if let sendMessageButtonProps = props.sendMessageButton {
+                Props.SendMessageButton.UIKitProps(sendMessageButtonProps).tap?()
+            }
         }
 
         @objc func handleContentViewTap() {
@@ -195,24 +197,33 @@ extension SecureConversations {
             subtitleLabel.font = props.style.welcomeSubtitleStyle.font
             subtitleLabel.textColor = props.style.welcomeSubtitleStyle.color
 
-            messageTextView.props = props.messageTextViewProps
+            messageTextView.isHidden = props.messageTextViewProps == nil
+            if let messageTextViewProps = props.messageTextViewProps {
+                messageTextView.props = messageTextViewProps
+            }
 
             checkMessagesButton.setTitle(props.style.checkMessagesButtonStyle.title, for: .normal)
             checkMessagesButton.titleLabel?.font = props.style.checkMessagesButtonStyle.font
             checkMessagesButton.setTitleColor(props.style.checkMessagesButtonStyle.color, for: .normal)
             checkMessagesButton.accessibilityLabel = "some acc. label"
 
-            messageTitleLabel.text = props.style.messageTitleStyle.title
-            messageTitleLabel.font = props.style.messageTitleStyle.font
-            messageTitleLabel.textColor = props.style.messageTitleStyle.color
+            messageTitleLabel.isHidden = props.style.messageTitleStyle == nil
+            if let messageTitleStyle = props.style.messageTitleStyle {
+                messageTitleLabel.text = messageTitleStyle.title
+                messageTitleLabel.font = messageTitleStyle.font
+                messageTitleLabel.textColor = messageTitleStyle.color
+            }
 
-            switch props.sendMessageButton {
-            case .active:
-                sendMessageButton.props = .init(enabledStyle: props.style.sendButtonStyle.enabledStyle)
-            case .disabled:
-                sendMessageButton.props = .init(disabledStyle: props.style.sendButtonStyle.disabledStyle)
-            case .loading:
-                sendMessageButton.props = .init(loadingStyle: props.style.sendButtonStyle.loadingStyle)
+            sendMessageButton.isHidden = props.sendMessageButton == nil
+            if let sendMessageButtonProps = props.sendMessageButton {
+                switch sendMessageButtonProps {
+                case .active:
+                    sendMessageButton.props = .init(enabledStyle: props.style.sendButtonStyle.enabledStyle)
+                case .disabled:
+                    sendMessageButton.props = .init(disabledStyle: props.style.sendButtonStyle.disabledStyle)
+                case .loading:
+                    sendMessageButton.props = .init(loadingStyle: props.style.sendButtonStyle.loadingStyle)
+                }
             }
 
             backgroundColor = props.style.backgroundColor
@@ -433,8 +444,8 @@ extension SecureConversations.WelcomeView {
         let closeButtonTap: Cmd
         let checkMessageButtonTap: Cmd
         let filePickerButton: FilePickerButton?
-        let sendMessageButton: SendMessageButton
-        let messageTextViewProps: MessageTextView.Props
+        let sendMessageButton: SendMessageButton?
+        let messageTextViewProps: MessageTextView.Props?
         let warningMessage: WarningMessage
         let fileUploadListProps: SecureConversations.FileUploadListView.Props
     }

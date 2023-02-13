@@ -291,6 +291,7 @@ public class Glia {
                 submitSurveyAnswer: environment.coreSdk.submitSurveyAnswer,
                 uiApplication: environment.uiApplication,
                 fetchChatHistory: environment.coreSdk.fetchChatHistory,
+                listQueues: environment.coreSdk.listQueues,
                 sendSecureMessage: environment.coreSdk.sendSecureMessage,
                 createFileUploader: environment.createFileUploader,
                 createFileUploadListModel: environment.createFileUploadListModel,
