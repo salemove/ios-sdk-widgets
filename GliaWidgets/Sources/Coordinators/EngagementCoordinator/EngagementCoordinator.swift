@@ -393,6 +393,7 @@ extension EngagementCoordinator {
             navigationPresenter: navigationPresenter,
             environment: .init(
                 queueIds: [interactor.queueID],
+                listQueues: environment.listQueues,
                 sendSecureMessage: environment.sendSecureMessage,
                 createFileUploader: environment.createFileUploader,
                 uploadSecureFile: environment.uploadSecureFile,

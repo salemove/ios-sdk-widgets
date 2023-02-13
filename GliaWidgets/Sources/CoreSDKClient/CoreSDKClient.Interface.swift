@@ -30,6 +30,11 @@ struct CoreSdkClient {
     typealias ConfigureWithInteractor = (_ interactor: Self.Interactable) -> Void
     var configureWithInteractor: ConfigureWithInteractor
 
+    typealias ListQueues = (
+        _ completion: @escaping Self.QueueRequestBlock
+    ) -> Void
+    var listQueues: ListQueues
+    
     typealias QueueForEngagement = (
         _ queueID: String,
         _ visitorContext: Self.VisitorContext?,
@@ -179,7 +184,9 @@ extension CoreSdkClient {
     typealias OperatorBlock = SalemoveSDK.OperatorBlock
     typealias OperatorTypingStatus = SalemoveSDK.OperatorTypingStatus
     typealias OperatorTypingStatusUpdate = SalemoveSDK.OperatorTypingStatusUpdate
+    typealias Queue = SalemoveSDK.Queue
     typealias QueueError = SalemoveSDK.QueueError
+    typealias QueueRequestBlock = SalemoveSDK.QueueRequestBlock
     typealias QueueTicket = SalemoveSDK.QueueTicket
     typealias QueueTicketBlock = SalemoveSDK.QueueTicketBlock
     typealias RequestOfferBlock = SalemoveSDK.RequestOfferBlock

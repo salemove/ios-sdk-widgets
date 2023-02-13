@@ -22,11 +22,9 @@ extension SecureConversations {
 
         var messageText: String = "" { didSet { reportChange() } }
         var isAttachmentsAvailable: Bool = true { didSet { reportChange() } }
+        var isSecureConversationsAvailable: Bool = true { didSet { reportChange() } }
         var messageInputState: MessageInputState = .normal { didSet { reportChange() } }
         var sendMessageRequestState: SendMessageRequestState = .waiting { didSet { reportChange() } }
-        // TODO: Handle messaging availibility MOB-1724
-        // Hardcode availability for now.
-        var isSecureConversationAvailable = true { didSet { reportChange() } }
 
         let fileUploadListModel: FileUploadListViewModel
 
@@ -50,6 +48,8 @@ extension SecureConversations {
                     self?.reportChange()
                 }
             }
+
+            checkSecureConversationsAvailability()
         }
 
         func event(_ event: Event) {
@@ -95,6 +95,30 @@ private extension SecureConversations.WelcomeViewModel {
             }
         }
     }
+
+    func checkSecureConversationsAvailability() {
+        environment.listQueues { [weak self] queues, _ in
+            guard let self = self else {
+                self?.isSecureConversationsAvailable = false
+                return
+            }
+
+            self.isSecureConversationsAvailable = self.isSecureConversationsAvailable(in: queues)
+        }
+    }
+
+    private func isSecureConversationsAvailable(
+        in queues: [CoreSdkClient.Queue]?
+    ) -> Bool {
+        guard let queues = queues else { return false }
+
+        let filteredQueues = queues
+            .filter { self.environment.queueIds.contains($0.id) }
+            .filter { $0.state.status != .closed }
+            .filter { $0.state.media.contains(CoreSdkClient.MediaType.messaging) }
+
+        return !filteredQueues.isEmpty
+    }
 }
 // MARK: - Props Generation
 extension SecureConversations.WelcomeViewModel {
@@ -108,16 +132,6 @@ extension SecureConversations.WelcomeViewModel {
     // some parts are refactored to pure static methods.
     func props() -> Props {
         let welcomeStyle = environment.welcomeStyle
-        let isFilePickerEnabled = !fileUploadListModel.isLimitReached
-        let filePickerButton = WelcomeViewProps.FilePickerButton(
-            isEnabled: isFilePickerEnabled,
-            tap: Command { [weak self, alertConfiguration = environment.alertConfiguration] originView in
-                self?.presentMediaPicker(
-                    from: originView,
-                    alertConfiguration: alertConfiguration
-                )
-            }
-        )
 
         let messageLenghtWarning = messageText.count > Self.messageTextLimit ? welcomeStyle
             .messageWarningStyle.messageLengthLimitText
@@ -129,15 +143,14 @@ extension SecureConversations.WelcomeViewModel {
             animated: true
         )
 
-        let sendMessageButton: SendMessageButton = Self.sendMessageButtonState(for: self)
-
+        let sendMessageButton = Self.sendMessageButtonState(for: self)
         let props: Props = .welcome(
             .init(
-                style: environment.welcomeStyle,
+                style: Self.welcomeStyle(for: self),
                 backButtonTap: Cmd { [weak self] in self?.delegate?(.backTapped) },
                 closeButtonTap: Cmd { [weak self] in self?.delegate?(.closeTapped) },
                 checkMessageButtonTap: Cmd { print("### check messages") },
-                filePickerButton: isAttachmentsAvailable ? filePickerButton : nil,
+                filePickerButton: Self.filePickerButtonState(for: self),
                 sendMessageButton: sendMessageButton,
                 messageTextViewProps: Self.textViewState(for: self),
                 warningMessage: warningMessage,
@@ -147,8 +160,44 @@ extension SecureConversations.WelcomeViewModel {
         return props
     }
 
+    static func welcomeStyle(
+        for instance: SecureConversations.WelcomeViewModel
+    ) -> SecureConversations.WelcomeStyle {
+        var style = instance.environment.welcomeStyle
+
+        if !instance.isSecureConversationsAvailable {
+            style.messageTitleStyle = nil
+        }
+
+        return style
+    }
+
+    static func filePickerButtonState(
+        for instance: SecureConversations.WelcomeViewModel
+    ) -> WelcomeViewProps.FilePickerButton? {
+        var filePickerButton: WelcomeViewProps.FilePickerButton?
+
+        let isFilePickerEnabled = !instance.fileUploadListModel.isLimitReached
+        if instance.isSecureConversationsAvailable && instance.isAttachmentsAvailable {
+            filePickerButton = WelcomeViewProps.FilePickerButton(
+                isEnabled: isFilePickerEnabled,
+                tap: Command { originView in
+                    instance.presentMediaPicker(
+                        from: originView,
+                        alertConfiguration: instance.environment.alertConfiguration
+                    )
+                }
+            )
+        }
+
+        return filePickerButton
+    }
     static func textViewState(for instance: SecureConversations.WelcomeViewModel
-    ) -> TextViewProps {
+    ) -> TextViewProps? {
+        guard instance.isSecureConversationsAvailable else {
+            return nil
+        }
+
         let messageTextViewStyle = instance.environment.welcomeStyle.messageTextViewStyle
         let normalTextViewState = TextViewProps.NormalState(
             style: messageTextViewStyle,
@@ -194,10 +243,10 @@ extension SecureConversations.WelcomeViewModel {
 
     static func sendMessageButtonState(
         for instance: SecureConversations.WelcomeViewModel
-    ) -> SendMessageButton {
+    ) -> SendMessageButton? {
         // Is service available?
-        guard instance.isSecureConversationAvailable else {
-            return .disabled
+        guard instance.isSecureConversationsAvailable else {
+            return nil
         }
 
         // Are there failed uploads?
@@ -280,6 +329,7 @@ extension SecureConversations.WelcomeViewModel {
     struct Environment {
         var welcomeStyle: SecureConversations.WelcomeStyle
         var queueIds: [String]
+        var listQueues: CoreSdkClient.ListQueues
         var sendSecureMessage: CoreSdkClient.SendSecureMessage
         var alertConfiguration: AlertConfiguration
         var fileUploader: FileUploader
