@@ -21,6 +21,7 @@ extension EngagementCoordinator {
         var submitSurveyAnswer: CoreSdkClient.SubmitSurveyAnswer
         var uiApplication: UIKitBased.UIApplication
         var fetchChatHistory: CoreSdkClient.FetchChatHistory
+        var listQueues: CoreSdkClient.ListQueues
         var sendSecureMessage: CoreSdkClient.SendSecureMessage
         var createFileUploader: FileUploader.Create
         var createFileUploadListModel: SecureConversations.FileUploadListViewModel.Create

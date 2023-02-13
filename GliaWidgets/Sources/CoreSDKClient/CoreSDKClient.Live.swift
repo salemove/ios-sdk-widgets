@@ -11,6 +11,7 @@ extension CoreSdkClient {
             sendSelectedOptionValue: GliaCore.sharedInstance.send(option:completion:),
             configureWithConfiguration: GliaCore.sharedInstance.configure(with:completion:),
             configureWithInteractor: GliaCore.sharedInstance.configure(interactor:),
+            listQueues: GliaCore.sharedInstance.listQueues(completion:),
             queueForEngagement: GliaCore.sharedInstance
                 .queueForEngagement(queueID:visitorContext:shouldCloseAllQueues:mediaType:options:completion:),
             requestMediaUpgradeWithOffer: GliaCore.sharedInstance.requestMediaUpgrade(offer:completion:),

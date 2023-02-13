@@ -31,6 +31,7 @@ extension SecureConversations {
                 environment: .init(
                     welcomeStyle: viewFactory.theme.secureConversationsWelcomeStyle,
                     queueIds: environment.queueIds,
+                    listQueues: environment.listQueues,
                     sendSecureMessage: environment.sendSecureMessage,
                     alertConfiguration: viewFactory.theme.alertConfiguration,
                     fileUploader: environment.createFileUploader(
@@ -212,6 +213,7 @@ extension SecureConversations {
 extension SecureConversations.Coordinator {
     struct Environment {
         var queueIds: [String]
+        var listQueues: CoreSdkClient.ListQueues
         var sendSecureMessage: CoreSdkClient.SendSecureMessage
         var createFileUploader: FileUploader.Create
         var uploadSecureFile: CoreSdkClient.SecureConversationsUploadFile
