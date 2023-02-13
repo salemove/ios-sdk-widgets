@@ -9,7 +9,7 @@ extension ChatViewController {
         viewFactory: ViewFactory = .mock()
     ) -> ChatViewController {
         ChatViewController(
-            viewModel: chatViewModel,
+            viewModel: .chat(chatViewModel),
             viewFactory: viewFactory
         )
     }

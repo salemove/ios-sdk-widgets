@@ -1,10 +1,11 @@
 import Foundation
 
-class EngagementViewModel {
+class EngagementViewModel: CommonEngagementModel {
+    typealias ActionCallback = (Action) -> Void
+    typealias DelegateCallback = (DelegateEvent) -> Void
     static let alertSingleActionAccessibilityIdentifier = "alert_close_engagementEnded"
-
-    var engagementAction: ((Action) -> Void)?
-    var engagementDelegate: ((DelegateEvent) -> Void)?
+    var engagementAction: ActionCallback?
+    var engagementDelegate: DelegateCallback?
 
     let interactor: Interactor
     let alertConfiguration: AlertConfiguration
