@@ -23,7 +23,7 @@ extension SecureConversations {
         public var checkMessagesButtonStyle: CheckMessagesButtonStyle
 
         /// Style for message text view title.
-        public var messageTitleStyle: MessageTitleStyle
+        public var messageTitleStyle: MessageTitleStyle?
 
         /// Style for message text view.
         public var messageTextViewStyle: MessageTextViewStyle
