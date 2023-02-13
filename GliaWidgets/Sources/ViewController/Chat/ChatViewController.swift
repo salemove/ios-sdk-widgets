@@ -3,12 +3,12 @@ import UIKit
 
 class ChatViewController: EngagementViewController, MediaUpgradePresenter,
     PopoverPresenter, ScreenShareOfferPresenter {
-    private let viewModel: ChatViewModel
+    private var viewModel: SecureConversations.ChatWithTranscriptModel
     private var lastVisibleRowIndexPath: IndexPath?
 
-    init(viewModel: ChatViewModel, viewFactory: ViewFactory) {
+    init(viewModel: SecureConversations.ChatWithTranscriptModel, viewFactory: ViewFactory) {
         self.viewModel = viewModel
-        super.init(viewModel: viewModel, viewFactory: viewFactory)
+        super.init(viewModel: viewModel.engagementModel, viewFactory: viewFactory)
     }
 
     override public func loadView() {
@@ -20,7 +20,7 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter,
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel.event(.viewDidLoad)
+        viewModel.event(.chat(.viewDidLoad))
     }
 
     override func viewDidLayoutSubviews() {
@@ -48,52 +48,55 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter,
     }
 
     // swiftlint:disable function_body_length
-    private func bind(viewModel: ChatViewModel, to view: ChatView) {
+    private func bind(viewModel: SecureConversations.ChatWithTranscriptModel, to view: ChatView) {
         view.header.showBackButton()
         view.header.showCloseButton()
 
-        view.numberOfSections = { [weak viewModel] in
-            viewModel?.numberOfSections
+        view.numberOfSections = { [viewModel] in
+            viewModel.numberOfSections
         }
-        view.numberOfRows = { [weak viewModel] rows in
-            viewModel?.numberOfItems(in: rows)
+        view.numberOfRows = { [viewModel] rows in
+            viewModel.numberOfItems(in: rows)
         }
-        view.itemForRow = { [weak viewModel] row, section in
-            viewModel?.item(for: row, in: section)
+        view.itemForRow = { [viewModel] row, section in
+            viewModel.item(for: row, in: section)
         }
-        view.messageEntryView.textChanged = { [weak viewModel] text in
-            viewModel?.event(.messageTextChanged(text))
+        view.messageEntryView.textChanged = { [viewModel] text in
+            viewModel.event(.chat(.messageTextChanged(text)))
         }
-        view.messageEntryView.sendTapped = { [weak viewModel] in
-            viewModel?.event(.sendTapped)
+        view.messageEntryView.sendTapped = { [viewModel] in
+            viewModel.event(.chat(.sendTapped))
         }
-        view.messageEntryView.pickMediaTapped = { [weak viewModel] in
-            viewModel?.event(.pickMediaTapped)
+        view.messageEntryView.pickMediaTapped = { [viewModel] in
+            viewModel.event(.chat(.pickMediaTapped))
         }
-        view.fileTapped = { [weak viewModel] file in
-            viewModel?.event(.fileTapped(file))
+        view.fileTapped = { [viewModel] file in
+            viewModel.event(.chat(.fileTapped(file)))
         }
-        view.downloadTapped = { [weak viewModel] download in
-            viewModel?.event(.downloadTapped(download))
+        view.downloadTapped = { [viewModel] download in
+            viewModel.event(.chat(.downloadTapped(download)))
         }
-        view.callBubbleTapped = { [weak viewModel] in
-            viewModel?.event(.callBubbleTapped)
+        view.callBubbleTapped = { [viewModel] in
+            viewModel.event(.chat(.callBubbleTapped))
         }
-        view.choiceOptionSelected = { [weak viewModel] option, messageId in
-            viewModel?.event(.choiceOptionSelected(option, messageId))
+        view.choiceOptionSelected = { [viewModel] option, messageId in
+            viewModel.event(.chat(.choiceOptionSelected(option, messageId)))
         }
-        view.chatScrolledToBottom = { [weak viewModel] bottomReached in
-            viewModel?.event(.chatScrolled(bottomReached: bottomReached))
+        view.chatScrolledToBottom = { [viewModel] bottomReached in
+            viewModel.event(.chat(.chatScrolled(bottomReached: bottomReached)))
         }
-        view.linkTapped = { [weak viewModel] url in
-            viewModel?.event(.linkTapped(url))
+        view.linkTapped = { [viewModel] url in
+            viewModel.event(.chat(.linkTapped(url)))
         }
-        view.selectCustomCardOption = { [weak viewModel] option, messageId in
-            viewModel?.event(.customCardOptionSelected(option: option, messageId: messageId))
+        view.selectCustomCardOption = { [viewModel] option, messageId in
+            viewModel.event(.chat(.customCardOptionSelected(option: option, messageId: messageId)))
         }
 
+        var viewModel = viewModel
+
         viewModel.action = { [weak self] action in
-            switch action {
+            guard case let .chat(chatAction) = action else { return }
+            switch chatAction {
             case .queue:
                 view.setConnectState(.queue, animated: false)
             case .connected(let name, let imageUrl):

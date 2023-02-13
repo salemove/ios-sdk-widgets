@@ -131,7 +131,7 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
                 self?.presentWebViewController(with: url)
             }
         }
-        return ChatViewController(viewModel: viewModel, viewFactory: viewFactory)
+        return ChatViewController(viewModel: .chat(viewModel), viewFactory: viewFactory)
     }
     // swiftlint:enable function_body_length
 
