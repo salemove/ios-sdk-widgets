@@ -122,21 +122,22 @@ class BubbleView: UIView {
     private func update(_ kind: BubbleKind) {
         switch kind {
         case .userImage(url: let url):
-            guard userImageView == nil else {
-                userImageView?.setOperatorImage(fromUrl: url, animated: true)
-                break
-            }
-            let userImageView = UserImageView(
-                with: style.userImage,
-                environment: .init(
-                    data: environment.data,
-                    uuid: environment.uuid,
-                    gcd: environment.gcd,
-                    imageViewCache: environment.imageViewCache
+            guard let userImageView = userImageView else {
+                let userImageView = UserImageView(
+                    with: style.userImage,
+                    environment: .init(
+                        data: environment.data,
+                        uuid: environment.uuid,
+                        gcd: environment.gcd,
+                        imageViewCache: environment.imageViewCache
+                    )
                 )
-            )
+                userImageView.setOperatorImage(fromUrl: url, animated: true)
+                self.userImageView = userImageView
+                setView(userImageView)
+                return
+            }
             userImageView.setOperatorImage(fromUrl: url, animated: true)
-            self.userImageView = userImageView
             setView(userImageView)
         case .view(let customView):
             setView(customView)

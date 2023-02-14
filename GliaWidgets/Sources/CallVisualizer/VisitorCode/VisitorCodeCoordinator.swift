@@ -3,7 +3,6 @@ import UIKit
 extension CallVisualizer {
     class VisitorCodeCoordinator: FlowCoordinator {
         typealias ViewController = UIViewController
-        private let visitorCodeStyle: VisitorCodeStyle
         private let theme: Theme
 
         var delegate: ((DelegateEvent) -> Void)?
@@ -17,7 +16,6 @@ extension CallVisualizer {
             environment: Environment,
             presentation: CallVisualizer.Presentation
         ) {
-            self.visitorCodeStyle = theme.visitorCode
             self.environment = environment
             self.theme = theme
             self.presentation = presentation
