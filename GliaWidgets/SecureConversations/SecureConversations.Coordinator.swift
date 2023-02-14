@@ -70,7 +70,7 @@ extension SecureConversations {
                 // Bind changes in view model to view controller.
                 case let .renderProps(props):
                     controller?.props = props
-                case .confirmationScreenNeeded:
+                case .confirmationScreenRequested:
                     self?.presentSecureConversationsConfirmationViewController()
                 case let .mediaPickerRequested(originView, callback):
                     controller?.presentPopover(
@@ -112,6 +112,8 @@ extension SecureConversations {
                     controller?.presentSettingsAlert(
                         with: conf, cancelled: cancelled
                     )
+                case .transcriptRequested:
+                    self?.navigateToTranscript()
                 }
             }
 
@@ -207,6 +209,15 @@ extension SecureConversations {
             let controller = QuickLookController(viewModel: viewModel)
             navigationPresenter.present(controller.viewController)
         }
+
+        private func navigateToTranscript() {
+            let transcriptCoordinator = TranscriptCoordinator(environment: .init(viewFactory: environment.viewFactory))
+            pushCoordinator(transcriptCoordinator)
+            navigationPresenter.push(
+                transcriptCoordinator.start(),
+                replacingLast: true
+            )
+        }
     }
 }
 
@@ -226,6 +237,7 @@ extension SecureConversations.Coordinator {
         var uuid: () -> UUID
         var uiApplication: UIKitBased.UIApplication
         var createFileUploadListModel: SecureConversations.FileUploadListViewModel.Create
+        var viewFactory: ViewFactory
     }
 
     enum DelegateEvent {

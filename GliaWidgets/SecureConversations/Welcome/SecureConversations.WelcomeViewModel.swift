@@ -83,7 +83,7 @@ private extension SecureConversations.WelcomeViewModel {
 
             switch result {
             case .success:
-                self?.delegate?(.confirmationScreenNeeded)
+                self?.delegate?(.confirmationScreenRequested)
             case .failure:
                 self?.delegate?(
                     .showAlert(
@@ -149,7 +149,8 @@ extension SecureConversations.WelcomeViewModel {
                 style: Self.welcomeStyle(for: self),
                 backButtonTap: Cmd { [weak self] in self?.delegate?(.backTapped) },
                 closeButtonTap: Cmd { [weak self] in self?.delegate?(.closeTapped) },
-                checkMessageButtonTap: Cmd { print("### check messages") },
+                checkMessageButtonTap: Cmd { [weak self] in self?.delegate?(.transcriptRequested)
+                },
                 filePickerButton: Self.filePickerButtonState(for: self),
                 sendMessageButton: sendMessageButton,
                 messageTextViewProps: Self.textViewState(for: self),
@@ -300,7 +301,7 @@ extension SecureConversations.WelcomeViewModel {
         case backTapped
         case closeTapped
         case renderProps(SecureConversations.WelcomeViewController.Props)
-        case confirmationScreenNeeded
+        case confirmationScreenRequested
         case mediaPickerRequested(
             from: UIView,
             callback: (AttachmentSourceItemKind) -> Void
@@ -318,6 +319,7 @@ extension SecureConversations.WelcomeViewModel {
             SettingsAlertConfiguration,
             cancelled: (() -> Void)?
         )
+        case transcriptRequested
     }
 
     enum StartAction {

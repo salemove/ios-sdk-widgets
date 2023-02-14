@@ -405,7 +405,8 @@ extension EngagementCoordinator {
                 uiImage: environment.uiImage,
                 uuid: environment.uuid,
                 uiApplication: environment.uiApplication,
-                createFileUploadListModel: environment.createFileUploadListModel
+                createFileUploadListModel: environment.createFileUploadListModel,
+                viewFactory: viewFactory
             )
         )
 
