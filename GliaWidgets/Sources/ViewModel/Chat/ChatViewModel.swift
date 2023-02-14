@@ -1,10 +1,13 @@
 import Foundation
 
 class ChatViewModel: EngagementViewModel, ViewModel {
+    typealias ActionCallback = (Action) -> Void
+    typealias DelegateCallback = (DelegateEvent) -> Void
+
     static let maximumUploads = 25
 
-    var action: ((Action) -> Void)?
-    var delegate: ((DelegateEvent) -> Void)?
+    var action: ActionCallback?
+    var delegate: DelegateCallback?
     // Used to check whether custom card contains interactable metadata.
     var isInteractableCard: ((MessageRenderer.Message) -> Bool)?
     // Used to check whether custom card should be hidden.

@@ -2,9 +2,9 @@ import UIKit
 
 class EngagementViewController: UIViewController, AlertPresenter {
     internal let viewFactory: ViewFactory
-    private let viewModel: EngagementViewModel
+    private let viewModel: CommonEngagementModel
 
-    init(viewModel: EngagementViewModel, viewFactory: ViewFactory) {
+    init(viewModel: CommonEngagementModel, viewFactory: ViewFactory) {
         self.viewModel = viewModel
         self.viewFactory = viewFactory
 
@@ -34,7 +34,7 @@ class EngagementViewController: UIViewController, AlertPresenter {
         viewModel.event(.viewDidDisappear)
     }
 
-    func bind(engagementViewModel: EngagementViewModel) {
+    func bind(engagementViewModel: CommonEngagementModel) {
         guard let view = view as? EngagementView else { return }
 
         view.header.endButton.tap = { [weak self] in self?.viewModel.event(.closeTapped) }

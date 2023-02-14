@@ -24,7 +24,7 @@ class ChatViewControllerTests: XCTestCase {
         weak var weakViewController: ChatViewController?
         autoreleasepool {
             let viewController: ChatViewController? = ChatViewController(
-                viewModel: ChatViewModel.mock(environment: ChatViewModel.Environment.mock),
+                viewModel: .chat(ChatViewModel.mock(environment: ChatViewModel.Environment.mock)),
                 viewFactory: ViewFactory.mock()
             )
             weakViewController = viewController
