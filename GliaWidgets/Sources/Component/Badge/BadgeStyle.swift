@@ -1,7 +1,7 @@
 import UIKit
 
 /// Style of a badge view. A badge is used to show unread message count on the minimized bubble and on the chat button in the call view.
-public struct BadgeStyle {
+public struct BadgeStyle: Equatable {
     /// Font of the text.
     public var font: UIFont
 

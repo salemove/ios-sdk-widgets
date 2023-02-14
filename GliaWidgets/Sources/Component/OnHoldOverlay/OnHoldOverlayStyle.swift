@@ -1,7 +1,7 @@
 import UIKit
 
 /// Style of the on hold overlay view (used in bubble & call views).
-public struct OnHoldOverlayStyle {
+public struct OnHoldOverlayStyle: Equatable {
     public var image: UIImage
     public var imageColor: ColorType
     public var imageSize: CGSize

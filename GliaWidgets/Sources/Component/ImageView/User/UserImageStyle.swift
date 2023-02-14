@@ -1,7 +1,7 @@
 import UIKit
 
 /// Style of a view showing user image.
-public struct UserImageStyle {
+public struct UserImageStyle: Equatable {
     /// Placeholder image. It is shown if the user's image is not set or not available.
     public var placeholderImage: UIImage?
 
