@@ -61,66 +61,81 @@ extension SecureConversations {
                 props: viewModel.props()
             )
 
-            viewModel.delegate = { [weak self, weak controller, style = viewFactory.theme.secureConversationsWelcomeStyle] event in
-                switch event {
-                case .backTapped:
-                    self?.delegate?(.backTapped)
-                case .closeTapped:
-                    self?.delegate?(.closeTapped)
-                // Bind changes in view model to view controller.
-                case let .renderProps(props):
-                    controller?.props = props
-                case .confirmationScreenRequested:
-                    self?.presentSecureConversationsConfirmationViewController()
-                case let .mediaPickerRequested(originView, callback):
-                    controller?.presentPopover(
-                        with: style.pickMediaStyle,
-                        from: originView,
-                        // Designs use 'up' arrow, but currently
-                        // it seems like there is a bug in
-                        // AttachmentSourceListView, that makes
-                        // it render incorrectly with 'up' arrow.
-                        // That is why using 'down' arrow for now.
-                        arrowDirections: .down,
-                        itemSelected: { [weak controller] kind in
-                            controller?.dismiss(animated: true)
-                            callback(kind)
-                        }
-                    )
-                case let .pickMedia(callback):
-                    self?.presentMediaPickerController(
-                        with: callback,
-                        mediaSource: .library,
-                        mediaTypes: [.image, .movie]
-                    )
-                case let .takeMedia(callback):
-                    self?.presentMediaPickerController(
-                        with: callback,
-                        mediaSource: .camera,
-                        mediaTypes: [.image, .movie]
-                    )
-                case let .pickFile(callback):
-                    self?.presentFilePickerController(with: callback)
-                case let .showFile(file):
-                    self?.presentQuickLookController(with: file)
-                case let .showAlert(conf, accessibilityIdentifier, dismissed):
-                    controller?.presentAlert(
-                        with: conf,
-                        accessibilityIdentifier: accessibilityIdentifier
-                    ) { dismissed?() }
-                case let .showSettingsAlert(conf, cancelled):
-                    controller?.presentSettingsAlert(
-                        with: conf, cancelled: cancelled
-                    )
-                case .transcriptRequested:
-                    self?.navigateToTranscript()
-                }
+            viewModel.delegate = { [weak self, weak controller] event in
+                self?.bindDelegate(to: event, controller: controller)
             }
 
             // Store view model, so that it would not be deallocated.
             self.viewModel = viewModel
 
             return controller
+        }
+
+        private func bindDelegate(
+            to event: WelcomeViewModel.DelegateEvent,
+            controller: WelcomeViewController?
+        ) {
+            let style = viewFactory.theme.secureConversationsWelcomeStyle
+            switch event {
+            case .backTapped:
+                delegate?(.backTapped)
+            case .closeTapped:
+                delegate?(.closeTapped)
+            // Bind changes in view model to view controller.
+            case let .renderProps(props):
+                controller?.props = props
+            case .confirmationScreenRequested:
+                presentSecureConversationsConfirmationViewController()
+            case let .mediaPickerRequested(originView, callback):
+                controller?.presentPopover(
+                    with: style.pickMediaStyle,
+                    from: originView,
+                    // Designs use 'up' arrow, but currently
+                    // it seems like there is a bug in
+                    // AttachmentSourceListView, that makes
+                    // it render incorrectly with 'up' arrow.
+                    // That is why using 'down' arrow for now.
+                    arrowDirections: .down,
+                    itemSelected: { [weak controller] kind in
+                        controller?.dismiss(animated: true)
+                        callback(kind)
+                    }
+                )
+            case let .pickMedia(callback):
+                presentMediaPickerController(
+                    with: callback,
+                    mediaSource: .library,
+                    mediaTypes: [.image, .movie]
+                )
+            case let .takeMedia(callback):
+                presentMediaPickerController(
+                    with: callback,
+                    mediaSource: .camera,
+                    mediaTypes: [.image, .movie]
+                )
+            case let .pickFile(callback):
+                presentFilePickerController(with: callback)
+            case let .showFile(file):
+                presentQuickLookController(with: file)
+            case let .showAlert(conf, accessibilityIdentifier, dismissed):
+                controller?.presentAlert(
+                    with: conf,
+                    accessibilityIdentifier: accessibilityIdentifier,
+                    dismissed: dismissed
+                )
+            case let .showAlertAsView(conf, accessibilityIdentifier, dismissed):
+                controller?.presentAlertAsView(
+                    with: conf,
+                    accessibilityIdentifier: accessibilityIdentifier,
+                    dismissed: dismissed
+                )
+            case let .showSettingsAlert(conf, cancelled):
+                controller?.presentSettingsAlert(
+                    with: conf, cancelled: cancelled
+                )
+            case .transcriptRequested:
+                navigateToTranscript()
+            }
         }
 
         func presentSecureConversationsConfirmationViewController() {

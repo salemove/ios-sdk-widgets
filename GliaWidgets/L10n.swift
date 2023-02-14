@@ -164,6 +164,12 @@ public enum L10n {
     public enum VisitorCode {
         public static let title = L10n.tr("Localizable", "alert.visitorCode.title", fallback: "Your Visitor Code")
     }
+    public enum UnavailableMessageCenter {
+      /// The Message Center is currently unavailable. Please try again later.
+      public static let message = L10n.tr("Localizable", "alert.unavailableMessageCenter.message", fallback: "The Message Center is currently unavailable. Please try again later.")
+      /// Message Center Unavailable
+      public static let title = L10n.tr("Localizable", "alert.unavailableMessageCenter.title", fallback: "Message Center Unavailable")
+      }
   }
   public enum Call {
     /// You can continue browsing and we’ll connect you automatically.

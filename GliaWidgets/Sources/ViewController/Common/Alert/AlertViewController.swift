@@ -54,7 +54,15 @@ class AlertViewController: UIViewController {
     override public func loadView() {
         super.loadView()
         let view = UIView()
-        view.backgroundColor = UIColor.black.withAlphaComponent(0.2)
+
+        if case let Kind.message(conf, _, _) = kind, !conf.shouldShowCloseButton {
+            view.backgroundColor = UIColor.clear
+            view.isUserInteractionEnabled = false
+        } else {
+            view.backgroundColor = UIColor.black.withAlphaComponent(0.2)
+            view.isUserInteractionEnabled = true
+        }
+
         self.view = view
     }
 
@@ -68,6 +76,7 @@ class AlertViewController: UIViewController {
 
         let alertView = makeAlertView()
         self.alertView = alertView
+        alertView.isUserInteractionEnabled = false
 
         view.addSubview(alertView)
         alertView.autoPinEdgesToSuperviewSafeArea(with: kAlertInsets,

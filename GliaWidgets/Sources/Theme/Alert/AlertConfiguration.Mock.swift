@@ -17,7 +17,8 @@ extension AlertConfiguration {
             cameraSettings: .mock(),
             mediaSourceNotAvailable: .mock(),
             unexpectedError: .mock(),
-            apiError: .mock()
+            apiError: .mock(),
+            unavailableMessageCenter: .mock()
         )
     }
 }
