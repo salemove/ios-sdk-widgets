@@ -46,51 +46,29 @@ extension SecureChatModel where Chat: CommonEngagementModel, Transcript: CommonE
     }
 }
 
-extension SecureChatModel where Chat == ChatViewModel, Transcript == SecureConversations.TranscriptModel {
-    typealias Action = SecureChatModel<Chat.Action, Transcript.Action>
+extension SecureConversations.ChatWithTranscriptModel {
+    typealias Action = Chat.Action
     typealias ActionCallback = (Action) -> Void
     typealias DelegateEvent = SecureChatModel<Chat.DelegateEvent, Transcript.DelegateEvent>
     typealias DelegateCallback = (DelegateEvent) -> Void
-    typealias Event = SecureChatModel<Chat.Event, Transcript.Event>
+    typealias Event = Chat.Event
 
     var action: ActionCallback? {
         get {
             switch self {
             case let .chat(model):
-                return model.action.map { callback in { action in
-                        switch action {
-                        case let .chat(chatAction):
-                            callback(chatAction)
-                        case .transcript:
-                            break
-                        }
-                    }
-                }
+                return model.action
             case let .transcript(model):
-                return model.action.map { callback in { action in
-                        switch action {
-                        case .chat:
-                            break
-                        case let .transcript(transcriptAction):
-                            callback(transcriptAction)
-                        }
-                    }
-                }
+                return model.action
             }
         }
 
         set {
             switch self {
             case let .chat(model):
-                model.action = newValue.map { callback in { action in
-                        callback(.chat(action))
-                    }
-                }
+                model.action = newValue
             case let .transcript(model):
-                model.action = newValue.map { callback in { action in
-                        callback(.transcript(action))
-                    }
-                }
+                model.action = newValue
             }
         }
     }
@@ -147,13 +125,11 @@ extension SecureChatModel where Chat == ChatViewModel, Transcript == SecureConve
     }
 
     func event(_ event: Event) {
-        switch (self, event) {
-        case let (.chat(chatModel), .chat(chatEvent)):
-            chatModel.event(chatEvent)
-        case let (.transcript(transcriptModel), .transcript(transcriptEvent)):
-            transcriptModel.event(transcriptEvent)
-        case (.chat, .transcript), (.transcript, .chat):
-            break
+        switch self {
+        case let .chat(model):
+            model.event(event)
+        case let .transcript(model):
+            model.event(event)
         }
     }
 
@@ -180,11 +156,13 @@ extension SecureConversations {
     final class TranscriptModel: CommonEngagementModel {
         typealias ActionCallback = (Action) -> Void
         typealias DelegateCallback = (DelegateEvent) -> Void
-        enum Action {}
-        enum DelegateEvent {}
-        enum Event {
-            // TODO: MOB-1863
+        typealias Action = ChatViewModel.Action
+
+        enum DelegateEvent {
+            // TODO: MOB-1871
         }
+
+        typealias Event = ChatViewModel.Event
 
         var action: ActionCallback?
         var delegate: DelegateCallback?
@@ -192,31 +170,200 @@ extension SecureConversations {
         var engagementAction: EngagementViewModel.ActionCallback?
         var engagementDelegate: EngagementViewModel.DelegateCallback?
 
+        private let downloader: FileDownloader
+
+        private let isCustomCardSupported: Bool
+
+        private var isViewLoaded: Bool = false
+
+        private let environment: Environment
+
+        private let sections = [
+            Section<ChatItem>(0)
+        ]
+
+        var historySection: Section<ChatItem> { sections[0] }
+
         var numberOfSections: Int {
-            // TODO: MOB-1863
-            .zero
+            sections.count
         }
 
+        init(
+            isCustomCardSupported: Bool,
+            environment: Environment
+        ) {
+            self.isCustomCardSupported = isCustomCardSupported
+            self.environment = environment
+            self.downloader = FileDownloader(
+                environment: .init(
+                    fetchFile: environment.fetchFile,
+                    fileManager: environment.fileManager,
+                    data: environment.data,
+                    date: environment.date,
+                    gcd: environment.gcd,
+                    localFileThumbnailQueue: environment.localFileThumbnailQueue,
+                    uiImage: environment.uiImage,
+                    createFileDownload: environment.createFileDownload
+                )
+            )
+        }
+
+        // TODO: Common with chat model, should it be unified?
         func numberOfItems(in section: Int) -> Int {
-            // TODO: MOB-1863
-            .zero
+            sections[section].itemCount
         }
 
         func item(for row: Int, in section: Int) -> ChatItem {
-            // TODO: MOB-1863
-            fatalError("Unimplemnted")
+            let section = sections[section]
+            let item = section[row]
+
+            switch item.kind {
+            case .operatorMessage(let message, _, _):
+                message.downloads = downloader.downloads(
+                    for: message.attachment?.files,
+                    autoDownload: .images
+                )
+                if shouldShowOperatorImage(for: row, in: section) {
+                    let imageUrl = message.operator?.pictureUrl
+                    let kind: ChatItem.Kind = .operatorMessage(
+                        message,
+                        showsImage: true,
+                        imageUrl: imageUrl
+                    )
+                    return ChatItem(kind: kind)
+                }
+                return item
+            case .visitorMessage(let message, _):
+                message.downloads = downloader.downloads(
+                    for: message.attachment?.files,
+                    autoDownload: .images
+                )
+                return item
+            case .choiceCard(let message, _, _, let isActive):
+                if shouldShowOperatorImage(for: row, in: section) {
+                    let imageUrl = message.operator?.pictureUrl
+                    let kind: ChatItem.Kind = .choiceCard(
+                        message,
+                        showsImage: true,
+                        imageUrl: imageUrl,
+                        isActive: isActive
+                    )
+                    return ChatItem(kind: kind)
+                }
+                return item
+
+            case .customCard(let message, _, _, let isActive):
+                let imageUrl = message.operator?.pictureUrl
+                let shouldShowImage = shouldShowOperatorImage(for: row, in: section)
+                let kind: ChatItem.Kind = .customCard(
+                    message,
+                    showsImage: shouldShowImage,
+                    imageUrl: imageUrl,
+                    isActive: isActive
+                )
+                return ChatItem(kind: kind)
+            default:
+                return item
+            }
+        }
+
+        private func shouldShowOperatorImage(
+            for row: Int,
+            in section: Section<ChatItem>
+        ) -> Bool {
+            guard section[row].isOperatorMessage else { return false }
+            let nextItem = section.item(after: row)
+            return nextItem == nil || nextItem?.isOperatorMessage == false
         }
 
         func event(_ event: EngagementViewModel.Event) {
-            // TODO: MOB-1863
+            // Not used for transcript.
         }
 
         func event(_ event: Event) {
-            // TODO: MOB-1863
+            switch event {
+            case .viewDidLoad:
+                start()
+                isViewLoaded = true
+            case .messageTextChanged(let text):
+                // TODO: MOB-1740
+                break
+            case .sendTapped:
+                // TODO: MOB-1740
+                break
+            case .removeUploadTapped:
+                // Not supported for transcript.
+                break
+            case .pickMediaTapped:
+                // Not supported for transcript.
+                break
+            case .callBubbleTapped:
+                // Not supported for transcript.
+                break
+            case .fileTapped(let file):
+                // TODO: MOB-1871
+                break
+            case .downloadTapped(let download):
+                // TODO: MOB-1871
+                break
+            case .choiceOptionSelected:
+                // Not supported for transcript.
+                break
+            case .chatScrolled:
+                // Not supported for transcript.
+                break
+            case .linkTapped(let url):
+                // TODO: MOB-1871
+                break
+            case .customCardOptionSelected:
+                // Not supported for transcript.
+                break
+            }
+        }
+
+        func start() {
+            loadHistory { _ in }
         }
     }
 }
 
 extension SecureConversations {
     typealias ChatWithTranscriptModel = SecureChatModel<ChatViewModel, TranscriptModel>
+}
+
+extension SecureConversations.TranscriptModel {
+    struct Environment {
+        var fetchFile: CoreSdkClient.FetchFile
+        var fileManager: FoundationBased.FileManager
+        var data: FoundationBased.Data
+        var date: () -> Date
+        var gcd: GCD
+        var localFileThumbnailQueue: FoundationBased.OperationQueue
+        var uiImage: UIKitBased.UIImage
+        var createFileDownload: FileDownloader.CreateFileDownload
+        var loadChatMessagesFromHistory: () -> Bool
+        var fetchChatHistory: CoreSdkClient.FetchChatHistory
+    }
+}
+
+// MARK: History
+
+extension SecureConversations.TranscriptModel {
+    private func loadHistory(_ completion: @escaping ([ChatMessage]) -> Void) {
+        environment.fetchChatHistory { [weak self] result in
+            guard let self = self else { return }
+            let messages = (try? result.get()) ?? []
+            let items = messages.compactMap {
+                ChatItem(
+                    with: $0,
+                    isCustomCardSupported: self.isCustomCardSupported,
+                    fromHistory: self.environment.loadChatMessagesFromHistory()
+                )
+            }
+            self.historySection.set(items)
+            self.action?(.refreshSection(self.historySection.index))
+            self.action?(.scrollToBottom(animated: false))
+            completion(messages)
+        }
+    }
 }
