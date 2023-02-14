@@ -1,7 +1,7 @@
 import UIKit
 
 /// Style of a view that shows the engagement connection state - enqueued, connecting or connected. This view consists of an operator image with an animation of several concentric circles extending from it and two status labels below it.
-public struct ConnectStyle {
+public struct ConnectStyle: Equatable {
     /// Style of the operator view.
     public var connectOperator: ConnectOperatorStyle
 

@@ -53,13 +53,18 @@ public class Glia {
             uuid: environment.uuid,
             gcd: environment.gcd,
             imageViewCache: environment.imageViewCache,
+            callVisualizerImageViewCache: environment.callVisualizerImageViewCache,
             timerProviding: environment.timerProviding,
             uiApplication: environment.uiApplication,
             requestVisitorCode: environment.coreSdk.requestVisitorCode,
             interactorProviding: { [weak self] in self?.interactor },
             callVisualizerPresenter: environment.callVisualizerPresenter,
             bundleManaging: environment.bundleManaging,
-            screenShareHandler: environment.screenShareHandler
+            screenShareHandler: environment.screenShareHandler,
+            audioSession: environment.audioSession,
+            date: environment.date,
+            engagedOperator: { [weak self] in self?.environment.coreSdk.getCurrentEngagement()?.engagedOperator
+            }
         )
     )
 
@@ -113,22 +118,46 @@ public class Glia {
         }
 
         interactor?.addObserver(self) { [weak self] event in
-            guard let engagement = self?.environment.coreSdk.getCurrentEngagement(),
-                  engagement.source == .callVisualizer,
-                  case .screenShareOffer(let answer) = event else {
+            guard let engagement = self?.environment.coreSdk.getCurrentEngagement(), engagement.source == .callVisualizer else {
                 return
             }
 
-            self?.environment.coreSdk.requestEngagedOperator { operators, _ in
-                self?.callVisualizer.offerScreenShare(
-                    from: operators ?? [],
-                    configuration: Theme().alertConfiguration.screenShareOffer,
-                    accepted: {
-                        answer(true)
-                    }, declined: {
-                        answer(false)
-                    }
-                )
+            switch event {
+            case .screenShareOffer(answer: let answer):
+                self?.environment.coreSdk.requestEngagedOperator { operators, _ in
+                    self?.callVisualizer.offerScreenShare(
+                        from: operators ?? [],
+                        configuration: Theme().alertConfiguration.screenShareOffer,
+                        accepted: {
+                            answer(true)
+                        }, declined: {
+                            answer(false)
+                        }
+                    )
+                }
+            case let .upgradeOffer(offer, answer):
+                self?.environment.coreSdk.requestEngagedOperator { operators, _ in
+                    self?.callVisualizer.offerMediaUpgrade(
+                        from: operators ?? [],
+                        offer: offer,
+                        answer: answer,
+                        accepted: {
+                            answer(true, nil)
+                            self?.callVisualizer.coordinator?.showVideoCallViewController()
+                        },
+                        declined: {
+                            answer(false, nil)
+                        }
+                    )
+                }
+            case let .videoStreamAdded(stream):
+                self?.callVisualizer.coordinator?.videoCallCoordinator?.call.updateVideoStream(with: stream)
+            case let .stateChanged(state):
+                if state == .ended(.byOperator) {
+                   // End call
+                }
+            default:
+                print(event)
             }
         }
     }

@@ -2,6 +2,7 @@ import UIKit
 
 /// Style of the call view.
 public class CallStyle: EngagementStyle {
+
     /// Title for the audio call.
     public var audioTitle: String
 
@@ -145,7 +146,7 @@ public class CallStyle: EngagementStyle {
 }
 
 extension CallStyle {
-    public struct OnHoldStyle {
+    public struct OnHoldStyle: Equatable {
         /// The text shown in the top section of the call view when visitor is put on hold
         public var onHoldText: String
 

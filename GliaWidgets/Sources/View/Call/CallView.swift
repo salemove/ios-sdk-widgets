@@ -322,23 +322,7 @@ class CallView: EngagementView {
         switchTo(mode)
     }
 
-    private func adjustForCurrentOrientation() {
-        if currentOrientation.isLandscape {
-            if mode == .video {
-                header.effect = .blur
-                buttonBar.effect = .blur
-            }
-            topStackView.alpha = 0.0
-            bottomLabel.alpha = 0.0
-        } else {
-            header.effect = .none
-            buttonBar.effect = .none
-            topStackView.alpha = 1.0
-            bottomLabel.alpha = 1.0
-        }
 
-        adjustVideoViews()
-    }
 
     private func adjustVideoViews() {
         adjustRemoteVideoView()
@@ -389,6 +373,24 @@ class CallView: EngagementView {
             showBars(duration: 0.3)
             hideLandscapeBarsAfterDelay()
         }
+    }
+
+    private func adjustForCurrentOrientation() {
+        if currentOrientation.isLandscape {
+            if mode == .video {
+                header.effect = .blur
+                buttonBar.effect = .blur
+            }
+            topStackView.alpha = 0.0
+            bottomLabel.alpha = 0.0
+        } else {
+            header.effect = .none
+            buttonBar.effect = .none
+            topStackView.alpha = 1.0
+            bottomLabel.alpha = 1.0
+        }
+
+        adjustVideoViews()
     }
 }
 // swiftlint:enable type_body_length

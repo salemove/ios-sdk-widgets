@@ -72,8 +72,35 @@ extension CallVisualizer {
                 .present(alert, animated: true)
         }
 
+        func offerMediaUpgrade(
+            from operators: [CoreSdkClient.Operator],
+            configuration: SingleMediaUpgradeAlertConfiguration,
+            accepted: @escaping () -> Void,
+            declined: @escaping () -> Void
+        ) {
+            let alert = AlertViewController(
+                kind: .singleMediaUpgrade(
+                    configuration.withOperatorName(operators.compactMap { $0.name }.joined()),
+                    accepted: accepted,
+                    declined: declined
+                ),
+                viewFactory: environment.viewFactory)
+            environment
+                .presenter
+                .getInstance()?
+                .present(alert, animated: true)
+        }
+
         func showEndScreenSharingViewController() {
             let viewController = buildScreenSharingViewController()
+            environment
+                .presenter
+                .getInstance()?
+                .present(viewController, animated: true)
+        }
+
+        func showVideoCallViewController() {
+            let viewController = buildVideoCallViewController()
             environment
                 .presenter
                 .getInstance()?
@@ -117,6 +144,7 @@ extension CallVisualizer {
         }()
         private var visitorCodeCoordinator: VisitorCodeCoordinator?
         private var screenSharingCoordinator: ScreenSharingCoordinator?
+        var videoCallCoordinator: VideoCallCoodinator?
 
         private func createBubbleView() {
             guard let parent = environment.presenter.getInstance()?.view else { return }
@@ -169,6 +197,42 @@ extension CallVisualizer {
 
             let viewController = coordinator.start()
             self.screenSharingCoordinator = coordinator
+
+            return viewController
+        }
+
+        private func buildVideoCallViewController(uiConfig: RemoteConfiguration? = nil) -> UIViewController {
+            let coordinator = VideoCallCoodinator(
+                environment: .init(
+                    data: environment.data,
+                    uuid: environment.uuid,
+                    gcd: environment.gcd,
+                    imageViewCache: environment.imageViewCache,
+                    timerProviding: environment.timerProviding,
+                    uiApplication: environment.uiApplication,
+                    date: environment.date,
+                    engagedOperator: environment.engagedOperator,
+                    screenShareHandler: environment.screenShareHandler
+                ),
+                uiConfig: uiConfig,
+                call: .init(
+                    .video(direction: .twoWay),
+                    environment: .init(
+                        audioSession: environment.audiSession,
+                        uuid: environment.uuid
+                    )
+                )
+            )
+
+            coordinator.delegate = { [weak self] event in
+                switch event {
+                case .end:
+                    self?.videoCallCoordinator = nil
+                }
+            }
+
+            let viewController = coordinator.start()
+            self.videoCallCoordinator = coordinator
 
             return viewController
         }

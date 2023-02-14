@@ -65,12 +65,20 @@ public final class CallVisualizer {
         )
         coordinator = Coordinator(
             environment: .init(
+                data: environment.data,
+                uuid: environment.uuid,
+                gcd: environment.gcd,
+                imageViewCache: environment.imageViewCache,
+                uiApplication: environment.uiApplication,
                 viewFactory: viewFactory,
                 presenter: environment.callVisualizerPresenter,
                 bundleManaging: environment.bundleManaging,
                 screenShareHandler: environment.screenShareHandler,
                 timerProviding: environment.timerProviding,
-                requestVisitorCode: environment.requestVisitorCode
+                requestVisitorCode: environment.requestVisitorCode,
+                audiSession: environment.audioSession,
+                date: environment.date,
+                engagedOperator: environment.engagedOperator
             )
         )
 

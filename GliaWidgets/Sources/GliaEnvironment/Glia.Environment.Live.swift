@@ -11,6 +11,7 @@ extension Glia.Environment {
         data: .live,
         gcd: .live,
         imageViewCache: .live,
+        callVisualizerImageViewCache: .live,
         localFileThumbnailQueue: {
             let queue: FoundationBased.OperationQueue = .live()
             queue.setMaxConcurrentOperationCount(2)

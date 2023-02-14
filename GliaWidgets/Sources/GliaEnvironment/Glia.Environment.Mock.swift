@@ -11,6 +11,7 @@ extension Glia.Environment {
         data: .mock,
         gcd: .mock,
         imageViewCache: .mock,
+        callVisualizerImageViewCache: .mock,
         localFileThumbnailQueue: .mock(),
         uiImage: .mock,
         createFileDownload: { _, _, _ in .mock() },
