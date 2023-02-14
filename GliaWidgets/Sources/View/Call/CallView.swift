@@ -1,5 +1,11 @@
 import UIKit
 
+extension CallView {
+    struct Props {
+        let header: Header.Props
+    }
+}
+
 // swiftlint:disable type_body_length
 class CallView: EngagementView {
     enum Mode {
@@ -97,13 +103,17 @@ class CallView: EngagementView {
     }
     private let environment: Environment
 
+    var props: Props
+
     init(
         with style: CallStyle,
-        environment: Environment
+        environment: Environment,
+        props: Props
     ) {
         self.style = style
         self.environment = environment
         self.buttonBar = CallButtonBar(with: style.buttonBar)
+        self.props = props
         super.init(
             with: style,
             layout: .call,
@@ -114,7 +124,8 @@ class CallView: EngagementView {
                 imageViewCache: environment.imageViewCache,
                 timerProviding: environment.timerProviding,
                 uiApplication: environment.uiApplication
-            )
+            ),
+            headerProps: props.header
         )
         setup()
         layout()
@@ -323,15 +334,30 @@ class CallView: EngagementView {
     }
 
     private func adjustForCurrentOrientation() {
+        func createNewProps(
+            with props: Header.Props,
+            newEffect: Header.Effect
+        ) -> Header.Props {
+            .init(
+                title: props.title,
+                effect: props.effect,
+                endButton: props.endButton,
+                backButton: props.backButton,
+                closeButton: props.closeButton,
+                endScreenshareButton: props.endScreenshareButton,
+                style: props.style
+            )
+        }
+
         if currentOrientation.isLandscape {
             if mode == .video {
-                header.effect = .blur
+                header.props = createNewProps(with: header.props, newEffect: .blur)
                 buttonBar.effect = .blur
             }
             topStackView.alpha = 0.0
             bottomLabel.alpha = 0.0
         } else {
-            header.effect = .none
+            header.props = createNewProps(with: header.props, newEffect: .none)
             buttonBar.effect = .none
             topStackView.alpha = 1.0
             bottomLabel.alpha = 1.0

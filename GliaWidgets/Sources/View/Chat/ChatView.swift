@@ -1,5 +1,11 @@
 import UIKit
 
+extension ChatView {
+    struct Props {
+        let header: Header.Props
+    }
+}
+
 class ChatView: EngagementView {
     let tableAndIndicatorStack = UIStackView()
     let tableView = UITableView()
@@ -41,10 +47,13 @@ class ChatView: EngagementView {
 
     private var heightCache: [String: CGFloat] = [:]
 
+    var props: Props
+
     init(
         with style: ChatStyle,
         messageRenderer: MessageRenderer?,
-        environment: Environment
+        environment: Environment,
+        props: Props
     ) {
         self.style = style
         self.messageRenderer = messageRenderer
@@ -70,6 +79,7 @@ class ChatView: EngagementView {
             style: style.operatorTypingIndicator,
             accessibilityProperties: .init(operatorName: style.accessibility.operator)
         )
+        self.props = props
         super.init(
             with: style,
             layout: .chat,
@@ -80,7 +90,8 @@ class ChatView: EngagementView {
                 imageViewCache: environment.imageViewCache,
                 timerProviding: environment.timerProviding,
                 uiApplication: environment.uiApplication
-            )
+            ),
+            headerProps: props.header
         )
         self.accessibilityIdentifier = "chat_root_view"
         defineLayout()
@@ -97,8 +108,6 @@ class ChatView: EngagementView {
 
     override func setup() {
         super.setup()
-        header.title = style.title
-
         tableView.backgroundColor = .clear
         tableView.delegate = self
         tableView.dataSource = self

@@ -15,28 +15,26 @@ extension AlertViewController {
         let negativeButtonStyle = viewFactory.theme.alert.negativeAction
         let positiveButtonStyle = viewFactory.theme.alert.positiveAction
 
-        let negativeButton: ActionButton
-        let positiveButton: ActionButton
+        let negativeButton: ActionButton = ActionButton(
+            props: .init(
+                style: negativeButtonStyle,
+                tap: .init { [weak self] in self?.dismiss(animated: true) },
+                title: conf.negativeTitle ?? "",
+                accessibilityIdentifier: "alert_negative_button"
+            )
+        )
+        let positiveButton = ActionButton(
+            props: ActionButton.Props(
+                style: positiveButtonStyle,
+                tap: .init { [weak self] in self?.dismiss(animated: true) { confirmed() } },
+                title: conf.positiveTitle ?? "",
+                accessibilityIdentifier: "alert_positive_button"
+            )
+        )
 
         if conf.switchButtonBackgroundColors {
-            negativeButton = ActionButton(with: positiveButtonStyle)
-            positiveButton = ActionButton(with: negativeButtonStyle)
-        } else {
-            negativeButton = ActionButton(with: negativeButtonStyle)
-            positiveButton = ActionButton(with: positiveButtonStyle)
-        }
-
-        negativeButton.title = conf.negativeTitle
-        negativeButton.accessibilityIdentifier = "alert_negative_button"
-        negativeButton.tap = { [weak self] in
-            self?.dismiss(animated: true)
-        }
-        positiveButton.title = conf.positiveTitle
-        positiveButton.accessibilityIdentifier = "alert_positive_button"
-        positiveButton.tap = { [weak self] in
-            self?.dismiss(animated: true) {
-                confirmed()
-            }
+            negativeButton.props.style = positiveButtonStyle
+            positiveButton.props.style = negativeButtonStyle
         }
         alertView.addActionView(negativeButton)
         alertView.addActionView(positiveButton)

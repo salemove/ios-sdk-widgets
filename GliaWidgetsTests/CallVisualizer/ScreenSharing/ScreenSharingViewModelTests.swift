@@ -14,7 +14,8 @@ final class ScreenSharingViewModelTests: XCTestCase {
     func test_end_screen_sharing() throws {
         let screenShareHandlerMock = ScreenShareHandler.mock()
         screenShareHandlerMock.status.value = .started
-        var props: CallVisualizer.ScreenSharingViewModel.Props = .initial
+
+        var props: CallVisualizer.ScreenSharingViewModel.Props?
 
         viewModel = CallVisualizer.ScreenSharingViewModel(
             style: ScreenSharingViewStyle.mock(),
@@ -25,15 +26,17 @@ final class ScreenSharingViewModelTests: XCTestCase {
             environment: .init(screenShareHandler: screenShareHandlerMock)
         )
 
+        props = viewModel.props()
+
         XCTAssertEqual(screenShareHandlerMock.status.value, .started)
-        props.screenSharingViewProps.endScreenSharing()
+        props?.screenSharingViewProps.endScreenSharing.tap.execute()
         XCTAssertEqual(screenShareHandlerMock.status.value, .stopped)
     }
 
     func test_viewModel_output_actions() throws {
         enum Call { case close }
         var calls: [Call] = []
-        var props: CallVisualizer.ScreenSharingViewModel.Props = .initial
+        var props: CallVisualizer.ScreenSharingViewModel.Props?
 
         viewModel = CallVisualizer.ScreenSharingViewModel(
             style: .mock(),
@@ -48,11 +51,12 @@ final class ScreenSharingViewModelTests: XCTestCase {
             },
             environment: .init(screenShareHandler: ScreenShareHandler.mock())
         )
+        props = viewModel.props()
 
-        props.screenSharingViewProps.endScreenSharing()
+        props?.screenSharingViewProps.endScreenSharing.tap.execute()
         XCTAssertEqual(calls, [.close])
 
-        props.screenSharingViewProps.back()
+        props?.screenSharingViewProps.header.backButton.tap.execute()
         XCTAssertEqual(calls, [.close, .close])
     }
 }

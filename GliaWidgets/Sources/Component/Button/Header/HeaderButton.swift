@@ -1,8 +1,13 @@
 import UIKit
-import PureLayout
 
-class HeaderButton: UIButton {
-    var tap: (() -> Void)?
+/// Defines button in Header
+///
+final class HeaderButton: UIButton {
+    var props: Props {
+        didSet {
+            renderProps()
+        }
+    }
 
     override var isEnabled: Bool {
         didSet {
@@ -11,12 +16,10 @@ class HeaderButton: UIButton {
         }
     }
 
-    private let style: HeaderButtonStyle
-    private let kSize = CGSize(width: 30, height: 30)
     private var isDefineLayoutNeeded = true
 
-    init(with style: HeaderButtonStyle) {
-        self.style = style
+    init(with props: Props) {
+        self.props = props
         super.init(frame: .zero)
         setup()
     }
@@ -34,20 +37,27 @@ class HeaderButton: UIButton {
         }
     }
 
+    func renderProps() {
+        tintColor = props.style.color
+        setImage(props.style.image, for: .normal)
+        setImage(props.style.image, for: .highlighted)
+        accessibilityLabel = props.style.accessibility.label
+        accessibilityHint = props.style.accessibility.hint
+    }
+
     private func setup() {
-        tintColor = style.color
-        setImage(style.image, for: .normal)
-        setImage(style.image, for: .highlighted)
         addTarget(self, action: #selector(tapped), for: .touchUpInside)
-        accessibilityLabel = style.accessibility.label
-        accessibilityHint = style.accessibility.hint
     }
 
     private func defineLayout() {
-        autoSetDimensions(to: kSize)
+        renderProps()
+        NSLayoutConstraint.activate([
+            widthAnchor.constraint(equalToConstant: props.size.width),
+            heightAnchor.constraint(equalToConstant: props.size.height)
+        ])
     }
 
     @objc private func tapped() {
-        tap?()
+        props.tap()
     }
 }

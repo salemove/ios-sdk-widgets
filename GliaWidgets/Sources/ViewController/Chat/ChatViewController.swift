@@ -12,7 +12,12 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter,
     }
 
     override public func loadView() {
-        let view = viewFactory.makeChatView()
+        let view = viewFactory.makeChatView(
+            endCmd: .init { [weak self] in self?.viewModel.event(.closeTapped) },
+            closeCmd: .init { [weak self] in self?.viewModel.event(.closeTapped) },
+            endScreenshareCmd: .init { [weak self] in self?.viewModel.event(.endScreenSharingTapped) },
+            backCmd: .init { [weak self] in self?.viewModel.event(.backTapped) }
+        )
         self.view = view
 
         bind(viewModel: viewModel, to: view)
@@ -33,18 +38,6 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter,
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return viewFactory.theme.chat.preferredStatusBarStyle
-    }
-
-    override func willRotate(to toInterfaceOrientation: UIInterfaceOrientation, duration: TimeInterval) {
-        guard let view = view as? ChatView else { return }
-        lastVisibleRowIndexPath = view.tableView.indexPathsForVisibleRows?.last
-    }
-
-    override func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
-        guard let view = view as? ChatView else { return }
-        guard let indexPath = lastVisibleRowIndexPath else { return }
-        view.tableView.reloadData()
-        view.tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
     }
 
     // swiftlint:disable function_body_length

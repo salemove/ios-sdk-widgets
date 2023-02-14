@@ -34,7 +34,7 @@ struct CoreSdkClient {
         _ completion: @escaping Self.QueueRequestBlock
     ) -> Void
     var listQueues: ListQueues
-    
+
     typealias QueueForEngagement = (
         _ queueID: String,
         _ visitorContext: Self.VisitorContext?,

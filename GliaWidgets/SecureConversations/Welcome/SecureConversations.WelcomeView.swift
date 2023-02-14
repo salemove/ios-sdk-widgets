@@ -126,7 +126,7 @@ extension SecureConversations {
         // it is single source of data (including styles)
         // for the data-driven view.
         init(props: Props) {
-            self.header = Header(with: props.style.header)
+            self.header = Header(props: props.headerProps)
             self.props = props
             super.init()
             // Hide warning stack initially.
@@ -182,9 +182,7 @@ extension SecureConversations {
         }
 
         func renderProps() {
-            header.title = props.style.headerTitle
-            header.backButton.tap = props.backButtonTap.execute
-            header.closeButton.tap = props.closeButtonTap.execute
+            header.props = props.headerProps
             header.showCloseButton()
 
             titleIconView.tintColor = props.style.titleImageStyle.color
@@ -440,14 +438,13 @@ extension SecureConversations.WelcomeView {
         }
 
         let style: SecureConversations.WelcomeStyle
-        let backButtonTap: Cmd
-        let closeButtonTap: Cmd
         let checkMessageButtonTap: Cmd
         let filePickerButton: FilePickerButton?
         let sendMessageButton: SendMessageButton?
         let messageTextViewProps: MessageTextView.Props?
         let warningMessage: WarningMessage
         let fileUploadListProps: SecureConversations.FileUploadListView.Props
+        let headerProps: Header.Props
     }
 }
 
