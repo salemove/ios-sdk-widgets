@@ -13,7 +13,12 @@ class CallViewController: EngagementViewController, MediaUpgradePresenter {
     }
 
     override public func loadView() {
-        let view = viewFactory.makeCallView()
+        let view = viewFactory.makeCallView(
+            endCmd: .init { [weak self] in self?.viewModel.event(.closeTapped) },
+            closeCmd: .init { [weak self] in self?.viewModel.event(.closeTapped) },
+            endScreenshareCmd: .init { [weak self] in self?.viewModel.event(.endScreenSharingTapped) },
+            backCmd: .init { [weak self] in self?.viewModel.event(.backTapped) }
+        )
         self.view = view
 
         bind(viewModel: viewModel, to: view)
@@ -77,7 +82,7 @@ class CallViewController: EngagementViewController, MediaUpgradePresenter {
             case .switchToUpgradeMode:
                 view.switchTo(.upgrading)
             case .setTitle(let title):
-                view.header.title = title
+                view.header.props = Self.buildNewHeaderProps(newTitle: title, props: view.header.props)
             case .setOperatorName(let name):
                 view.operatorNameLabel.text = name
                 view.operatorNameLabel.accessibilityLabel = name
@@ -108,6 +113,18 @@ class CallViewController: EngagementViewController, MediaUpgradePresenter {
                 view.setConnectState(.transferring, animated: true)
             }
         }
+    }
+
+    private static func buildNewHeaderProps(newTitle: String, props: Header.Props) -> Header.Props {
+        Header.Props(
+            title: newTitle,
+            effect: props.effect,
+            endButton: props.endButton,
+            backButton: props.backButton,
+            closeButton: props.closeButton,
+            endScreenshareButton: props.endScreenshareButton,
+            style: props.style
+        )
     }
 }
 

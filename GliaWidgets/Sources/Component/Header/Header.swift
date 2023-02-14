@@ -1,51 +1,42 @@
 import UIKit
 import PureLayout
 
+/// Defines navigation header for engagement view.
+/// This header has different states for `chat history` and `engaged`
+/// states.
 final class Header: BaseView {
-    enum Effect {
+    enum Effect: Equatable {
         case none
         case blur
     }
 
-    var title: String? {
-        get { return titleLabel.text }
-        set {
-            titleLabel.text = newValue
-            titleLabel.accessibilityLabel = newValue
-        }
-    }
-    var effect: Effect = .none {
-        didSet {
-            switch effect {
-            case .none:
-                effectView.isHidden = true
-            case .blur:
-                effectView.isHidden = false
-            }
-        }
-    }
     var backButton: HeaderButton
     var closeButton: HeaderButton
     var endButton: ActionButton
     var endScreenShareButton: HeaderButton
 
-    private let style: HeaderStyle
+    var props: Props {
+        didSet {
+            renderProps()
+        }
+    }
     private let leftItemContainer = UIView()
     private let rightItemContainer = UIStackView()
     private let titleLabel = UILabel()
     private let contentView = UIView()
     private var effectView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
     private var heightConstraint: NSLayoutConstraint?
-    private let kContentInsets = UIEdgeInsets(top: 0, left: 16, bottom: 10, right: 16)
-    private let kContentHeight: CGFloat = 30
-    private let kHeight: CGFloat = 58
+    private let contentInsets = UIEdgeInsets(top: 0, left: 16, bottom: 10, right: 16)
+    private let contentHeight: CGFloat = 30
+    private let height: CGFloat = 58
 
-    init(with style: HeaderStyle) {
-        self.style = style
-        self.backButton = HeaderButton(with: style.backButton)
-        self.closeButton = HeaderButton(with: style.closeButton)
-        self.endButton = ActionButton(with: style.endButton, height: 32.0)
-        self.endScreenShareButton = HeaderButton(with: style.endScreenShareButton)
+    init(props: Props) {
+        self.props = props
+        self.backButton = HeaderButton(with: props.backButton)
+        self.closeButton = HeaderButton(with: props.closeButton)
+        self.endButton = ActionButton(props: props.endButton)
+
+        self.endScreenShareButton = HeaderButton(with: props.endScreenshareButton)
         super.init()
         self.titleLabel.accessibilityTraits = .header
     }
@@ -57,12 +48,32 @@ final class Header: BaseView {
     override func layoutSubviews() {
         super.layoutSubviews()
         updateHeight()
-        switch style.backgroundColor {
+        switch props.style.backgroundColor {
         case .fill(let color):
             backgroundColor = color
         case .gradient(let colors):
             makeGradientBackground(colors: colors)
         }
+    }
+
+    func renderProps() {
+        backButton.props = props.backButton
+        closeButton.props = props.closeButton
+        endButton.props = props.endButton
+
+        titleLabel.text = props.title
+        titleLabel.accessibilityLabel = props.title
+
+        effectView.isHidden = props.effect == .none
+        titleLabel.font = props.style.titleFont
+        titleLabel.textColor = props.style.titleColor
+
+        closeButton.accessibilityLabel = props.style.closeButton.accessibility.label
+        endButton.accessibilityLabel = props.style.endButton.accessibility.label
+        setFontScalingEnabled(
+            props.style.accessibility.isFontScalingEnabled,
+            for: titleLabel
+        )
     }
 
     func showBackButton() {
@@ -89,38 +100,24 @@ final class Header: BaseView {
 
     override func setup() {
         super.setup()
-        effect = .none
-
-        titleLabel.font = style.titleFont
-        titleLabel.textColor = style.titleColor
         titleLabel.textAlignment = .center
-
         rightItemContainer.axis = .horizontal
         rightItemContainer.spacing = 16
         rightItemContainer.alignment = .center
-
-        titleLabel.textColor = style.titleColor
         backButton.accessibilityIdentifier = "header_back_button"
         closeButton.accessibilityIdentifier = "header_close_button"
-        closeButton.accessibilityLabel = style.closeButton.accessibility.label
-        endButton.accessibilityIdentifier = "header_end_button"
-        endButton.accessibilityLabel = style.endButton.accessibility.label
-        setFontScalingEnabled(
-            style.accessibility.isFontScalingEnabled,
-            for: titleLabel
-        )
     }
 
     override func defineLayout() {
         super.defineLayout()
-        heightConstraint = autoSetDimension(.height, toSize: kHeight)
+        heightConstraint = autoSetDimension(.height, toSize: height)
 
         addSubview(effectView)
         effectView.autoPinEdgesToSuperviewEdges()
 
         addSubview(contentView)
-        contentView.autoPinEdgesToSuperviewEdges(with: kContentInsets, excludingEdge: .top)
-        contentView.autoSetDimension(.height, toSize: kContentHeight)
+        contentView.autoPinEdgesToSuperviewEdges(with: contentInsets, excludingEdge: .top)
+        contentView.autoSetDimension(.height, toSize: contentHeight)
 
         contentView.addSubview(titleLabel)
         titleLabel.autoPinEdge(toSuperviewEdge: .left)
@@ -137,9 +134,11 @@ final class Header: BaseView {
         rightItemContainer.autoAlignAxis(toSuperviewAxis: .horizontal)
 
         updateHeight()
+
+        renderProps()
     }
 
     private func updateHeight() {
-        heightConstraint?.constant = kHeight + safeAreaInsets.top
+        heightConstraint?.constant = height + safeAreaInsets.top
     }
 }

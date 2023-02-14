@@ -210,6 +210,9 @@
 		754CC61527E27C42005676E9 /* Survey.Checkbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754CC61427E27C42005676E9 /* Survey.Checkbox.swift */; };
 		754CC61627E2816F005676E9 /* Survey.InputQuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AF8D0C27DD464A009EEE2C /* Survey.InputQuestionView.swift */; };
 		7562B2ED28CBD9AE0040C784 /* Glia.RemoteConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7562B2EC28CBD9AE0040C784 /* Glia.RemoteConfiguration.swift */; };
+		756B8B1C2996B116001D2BB2 /* ChatCoordinator.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756B8B1B2996B116001D2BB2 /* ChatCoordinator.Environment.swift */; };
+		756B8B1E2996BAEA001D2BB2 /* HeaderButton.Props.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756B8B1D2996BAEA001D2BB2 /* HeaderButton.Props.swift */; };
+		756B8B202996EFA2001D2BB2 /* Header.Props.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756B8B1F2996EFA2001D2BB2 /* Header.Props.swift */; };
 		7594091529891C5C008B173A /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7594091429891C5C008B173A /* Environment.swift */; };
 		7594093D298D376B008B173A /* RemoteConfiguration+AssetsBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7594093A298D376A008B173A /* RemoteConfiguration+AssetsBuilder.swift */; };
 		7594093E298D376B008B173A /* RemoteConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7594093B298D376A008B173A /* RemoteConfiguration.swift */; };
@@ -736,6 +739,9 @@
 		7543141728806AEB00C9C1C6 /* EnvironmentSettingsTextCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentSettingsTextCell.swift; sourceTree = "<group>"; };
 		754CC61427E27C42005676E9 /* Survey.Checkbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Survey.Checkbox.swift; sourceTree = "<group>"; };
 		7562B2EC28CBD9AE0040C784 /* Glia.RemoteConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Glia.RemoteConfiguration.swift; sourceTree = "<group>"; };
+		756B8B1B2996B116001D2BB2 /* ChatCoordinator.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCoordinator.Environment.swift; sourceTree = "<group>"; };
+		756B8B1D2996BAEA001D2BB2 /* HeaderButton.Props.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderButton.Props.swift; sourceTree = "<group>"; };
+		756B8B1F2996EFA2001D2BB2 /* Header.Props.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Header.Props.swift; sourceTree = "<group>"; };
 		7594091429891C5C008B173A /* Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
 		7594093A298D376A008B173A /* RemoteConfiguration+AssetsBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "RemoteConfiguration+AssetsBuilder.swift"; sourceTree = "<group>"; };
 		7594093B298D376A008B173A /* RemoteConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteConfiguration.swift; sourceTree = "<group>"; };
@@ -1061,6 +1067,7 @@
 			isa = PBXGroup;
 			children = (
 				1A0452DC25DBD0A4000DA0C1 /* HeaderButton.swift */,
+				756B8B1D2996BAEA001D2BB2 /* HeaderButton.Props.swift */,
 				1A0452E225DBD0B4000DA0C1 /* HeaderButtonStyle.swift */,
 				9A186A4027F605B90055886D /* HeaderButtonStyle.Accessibility.swift */,
 			);
@@ -1745,6 +1752,7 @@
 			isa = PBXGroup;
 			children = (
 				1A60AFE325669B0400E53F53 /* ChatCoordinator.swift */,
+				756B8B1B2996B116001D2BB2 /* ChatCoordinator.Environment.swift */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -1781,6 +1789,7 @@
 			isa = PBXGroup;
 			children = (
 				1A60B0032567F25600E53F53 /* Header.swift */,
+				756B8B1F2996EFA2001D2BB2 /* Header.Props.swift */,
 				1A60B0072567F29900E53F53 /* HeaderStyle.swift */,
 				845E2F71283D068000C04D56 /* HeaderStyle.Accessibility.swift */,
 			);
@@ -3270,6 +3279,7 @@
 				1A0C9A7925C16F9700815406 /* Theme+AlertConfiguration.swift in Sources */,
 				1AC8AADD25D419CE00DAFE50 /* VideoStreamView.swift in Sources */,
 				1A4AD3C7256E863900468BFB /* ThemeColor.swift in Sources */,
+				756B8B1E2996BAEA001D2BB2 /* HeaderButton.Props.swift in Sources */,
 				9A1992DB27D6241400161AAE /* ImageView.Cache.Interface.swift in Sources */,
 				1A63B2F3257A3F3D00508478 /* AlertViewController.swift in Sources */,
 				9A1992EF27D6C1EA00161AAE /* FileSystemStorage.Environment.Interface.swift in Sources */,
@@ -3341,6 +3351,7 @@
 				84265E63298D7B2900D65842 /* ScreenSharingViewStyle.swift in Sources */,
 				C43D7A0D25FF92530064B1DA /* ChoiceCardView.swift in Sources */,
 				84265E64298D7B2900D65842 /* ScreenSharingViewStyle.Accessibility.swift in Sources */,
+				756B8B202996EFA2001D2BB2 /* Header.Props.swift in Sources */,
 				AFA2FDFC289082F500428E6D /* OnHoldOverlayStyle.Mock.swift in Sources */,
 				1A0C142925B84E5500B00695 /* EngagementViewController.swift in Sources */,
 				1A60AFE425669B0400E53F53 /* ChatCoordinator.swift in Sources */,
@@ -3592,6 +3603,7 @@
 				AF6AB34F298AA02400003645 /* SecureConversations.FileUploadListViewModel.Environment.swift in Sources */,
 				1A4674C225E92A710078FA1C /* AtttachmentSourceItemKind.swift in Sources */,
 				9A1992EB27D6C0F000161AAE /* FileSystemStorage.Mock.swift in Sources */,
+				756B8B1C2996B116001D2BB2 /* ChatCoordinator.Environment.swift in Sources */,
 				1A4674AC25E905D00078FA1C /* AttachmentSourceItemView.swift in Sources */,
 				9AB196E827C51F7D00FD60AB /* ChatOperator.Mock.swift in Sources */,
 				75940963298D3889008B173A /* MessageRenderer.Mock.swift in Sources */,

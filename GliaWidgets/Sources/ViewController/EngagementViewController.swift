@@ -1,7 +1,7 @@
 import UIKit
 
 class EngagementViewController: UIViewController, AlertPresenter {
-    internal let viewFactory: ViewFactory
+    let viewFactory: ViewFactory
     private let viewModel: CommonEngagementModel
 
     init(viewModel: CommonEngagementModel, viewFactory: ViewFactory) {
@@ -36,11 +36,6 @@ class EngagementViewController: UIViewController, AlertPresenter {
 
     func bind(engagementViewModel: CommonEngagementModel) {
         guard let view = view as? EngagementView else { return }
-
-        view.header.endButton.tap = { [weak self] in self?.viewModel.event(.closeTapped) }
-        view.header.endScreenShareButton.tap = { [weak self] in self?.viewModel.event(.endScreenSharingTapped) }
-        view.header.backButton.tap = { [weak self] in self?.viewModel.event(.backTapped) }
-        view.header.closeButton.tap = { [weak self] in self?.viewModel.event(.closeTapped) }
 
         viewModel.engagementAction = { [weak self] action in
             guard let self = self else { return }

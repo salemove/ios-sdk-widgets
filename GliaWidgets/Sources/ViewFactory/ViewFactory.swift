@@ -15,7 +15,12 @@ class ViewFactory {
         self.environment = environment
     }
 
-    func makeChatView() -> ChatView {
+    func makeChatView(
+        endCmd: Cmd,
+        closeCmd: Cmd,
+        endScreenshareCmd: Cmd,
+        backCmd: Cmd
+    ) -> ChatView {
         return ChatView(
             with: theme.chat,
             messageRenderer: messageRenderer,
@@ -26,11 +31,43 @@ class ViewFactory {
                 imageViewCache: environment.imageViewCache,
                 timerProviding: environment.timerProviding,
                 uiApplication: environment.uiApplication
+            ),
+            props: Self.chatHeaderProps(
+                theme: theme,
+                endCmd: endCmd,
+                closeCmd: closeCmd,
+                endScreenshareCmd: endScreenshareCmd,
+                backCmd: backCmd
             )
         )
     }
 
-    func makeCallView() -> CallView {
+    static func chatHeaderProps(
+        theme: Theme,
+        endCmd: Cmd,
+        closeCmd: Cmd,
+        endScreenshareCmd: Cmd,
+        backCmd: Cmd
+    ) -> ChatView.Props {
+        .init(
+            header: .init(
+                title: theme.chat.title,
+                effect: .none,
+                endButton: .init(style: theme.chat.header.endButton, tap: endCmd, title: theme.chat.header.endButton.title),
+                backButton: .init(tap: backCmd, style: theme.chat.header.backButton),
+                closeButton: .init(tap: closeCmd, style: theme.chat.header.closeButton),
+                endScreenshareButton: .init(tap: endScreenshareCmd, style: theme.chat.header.endScreenShareButton),
+                style: theme.chat.header
+            )
+        )
+    }
+
+    func makeCallView(
+        endCmd: Cmd,
+        closeCmd: Cmd,
+        endScreenshareCmd: Cmd,
+        backCmd: Cmd
+    ) -> CallView {
         return CallView(
             with: theme.call,
             environment: .init(
@@ -40,6 +77,33 @@ class ViewFactory {
                 imageViewCache: environment.imageViewCache,
                 timerProviding: environment.timerProviding,
                 uiApplication: environment.uiApplication
+            ),
+            props: Self.callHeaderProps(
+                theme: theme,
+                endCmd: endCmd,
+                closeCmd: closeCmd,
+                endScreenshareCmd: endScreenshareCmd,
+                backCmd: backCmd
+            )
+        )
+    }
+
+    static func callHeaderProps(
+        theme: Theme,
+        endCmd: Cmd,
+        closeCmd: Cmd,
+        endScreenshareCmd: Cmd,
+        backCmd: Cmd
+    ) -> CallView.Props {
+        .init(
+            header: .init(
+                title: "",
+                effect: .none,
+                endButton: .init(style: theme.call.header.endButton, tap: endCmd, title: theme.call.header.endButton.title),
+                backButton: .init(tap: backCmd, style: theme.call.header.backButton),
+                closeButton: .init(tap: closeCmd, style: theme.call.header.closeButton),
+                endScreenshareButton: .init(style: theme.call.header.endScreenShareButton),
+                style: theme.call.header
             )
         )
     }

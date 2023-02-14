@@ -4,7 +4,7 @@ public extension CallVisualizer {
     final class ScreenSharingViewController: UIViewController {
         private lazy var screenSharingView = ScreenSharingView(props: props.screenSharingViewProps)
 
-        var props: Props = .initial {
+        var props: Props {
             didSet {
                 renderProps()
             }
@@ -14,6 +14,15 @@ public extension CallVisualizer {
 
         public override func loadView() {
             view = screenSharingView
+        }
+
+        init(props: Props) {
+            self.props = props
+            super.init(nibName: "", bundle: nil)
+        }
+
+        required init?(coder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
         }
     }
 }
