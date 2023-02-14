@@ -226,7 +226,21 @@ extension SecureConversations {
         }
 
         private func navigateToTranscript() {
-            let transcriptCoordinator = TranscriptCoordinator(environment: .init(viewFactory: environment.viewFactory))
+            let transcriptCoordinator = TranscriptCoordinator(
+                environment: .init(
+                    viewFactory: environment.viewFactory,
+                    fetchFile: environment.fetchFile,
+                    fileManager: environment.fileManager,
+                    data: environment.data,
+                    date: environment.date,
+                    gcd: environment.gcd,
+                    localFileThumbnailQueue: environment.localFileThumbnailQueue,
+                    uiImage: environment.uiImage,
+                    createFileDownload: environment.createFileDownload,
+                    loadChatMessagesFromHistory: environment.loadChatMessagesFromHistory,
+                    fetchChatHistory: environment.fetchChatHistory
+                )
+            )
             pushCoordinator(transcriptCoordinator)
             navigationPresenter.push(
                 transcriptCoordinator.start(),
@@ -253,6 +267,10 @@ extension SecureConversations.Coordinator {
         var uiApplication: UIKitBased.UIApplication
         var createFileUploadListModel: SecureConversations.FileUploadListViewModel.Create
         var viewFactory: ViewFactory
+        var fetchFile: CoreSdkClient.FetchFile
+        var createFileDownload: FileDownloader.CreateFileDownload
+        var loadChatMessagesFromHistory: () -> Bool
+        var fetchChatHistory: CoreSdkClient.FetchChatHistory
     }
 
     enum DelegateEvent {

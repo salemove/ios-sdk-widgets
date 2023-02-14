@@ -406,7 +406,11 @@ extension EngagementCoordinator {
                 uuid: environment.uuid,
                 uiApplication: environment.uiApplication,
                 createFileUploadListModel: environment.createFileUploadListModel,
-                viewFactory: viewFactory
+                viewFactory: viewFactory,
+                fetchFile: environment.fetchFile,
+                createFileDownload: environment.createFileDownload,
+                loadChatMessagesFromHistory: environment.loadChatMessagesFromHistory,
+                fetchChatHistory: environment.fetchChatHistory
             )
         )
 
