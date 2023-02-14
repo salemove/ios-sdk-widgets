@@ -23,11 +23,22 @@ extension CallVisualizer {
 
         // MARK: - Properties
 
-        private lazy var header = Header(with: props.style.header).make { header in
-            header.endScreenShareButton.isHidden = true
-            header.closeButton.isHidden = true
-            header.endButton.isHidden = true
-        }
+        private lazy var header = Header(
+            props: .init(
+                title: "",
+                effect: .none,
+                endButton: .init(style: props.style.header.endButton, title: props.style.header.endButton.title),
+                backButton: .init(style: props.style.header.backButton),
+                closeButton: .init(style: props.style.header.closeButton),
+                endScreenshareButton: .init(style: props.style.header.endScreenShareButton),
+                style: props.style.header
+            )
+        )
+            .make { header in
+                header.endScreenShareButton.isHidden = true
+                header.closeButton.isHidden = true
+                header.endButton.isHidden = true
+            }
         private lazy var messageLabel = UILabel().make {
             $0.font = props.style.messageTextFont
             $0.textColor = props.style.messageTextColor
@@ -37,7 +48,7 @@ extension CallVisualizer {
             $0.textAlignment = .center
             $0.accessibilityIdentifier = "end_screen_sharing_message"
         }
-        private lazy var endScreenSharingButton = ActionButton(with: props.style.buttonStyle).make {
+        private lazy var endScreenSharingButton = ActionButton(props: .init(style: props.style.buttonStyle)).make {
             $0.setImage(props.style.buttonIcon, for: .normal)
             $0.tintColor = props.style.buttonStyle.titleColor
             $0.titleEdgeInsets = .init(top: 0, left: 8, bottom: 0, right: 0)
@@ -99,9 +110,9 @@ private extension CallVisualizer.ScreenSharingView {
             for: messageLabel
         )
 
-        header.title = props.style.title
-        header.backButton.tap = props.back.execute
-        endScreenSharingButton.tap = props.endScreenSharing.execute
+        header.props.title = props.style.title
+        header.backButton.props.tap = props.back
+        endScreenSharingButton.props.tap = props.endScreenSharing
 
         switch props.style.backgroundColor {
         case .fill(let color):

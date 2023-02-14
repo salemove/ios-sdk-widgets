@@ -77,7 +77,7 @@ class CallViewController: EngagementViewController, MediaUpgradePresenter {
             case .switchToUpgradeMode:
                 view.switchTo(.upgrading)
             case .setTitle(let title):
-                view.header.title = title
+                view.header.props.title = title
             case .setOperatorName(let name):
                 view.operatorNameLabel.text = name
                 view.operatorNameLabel.accessibilityLabel = name

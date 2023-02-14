@@ -13,7 +13,17 @@ class EngagementView: BaseView {
         environment: Environment
     ) {
         self.style = style
-        self.header = Header(with: style.header)
+        self.header = Header(
+            props: .init(
+                title: "",
+                effect: .none,
+                endButton: .init(style: style.header.endButton, title: style.header.endButton.title),
+                backButton: .init(style: style.header.backButton),
+                closeButton: .init(style: style.header.closeButton),
+                endScreenshareButton: .init(style: style.header.endScreenShareButton),
+                style: style.header
+            )
+        )
         self.environment = environment
         self.connectView = ConnectView(
             with: style.connect,

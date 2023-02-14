@@ -126,7 +126,17 @@ extension SecureConversations {
         // it is single source of data (including styles)
         // for the data-driven view.
         init(props: Props) {
-            self.header = Header(with: props.style.header)
+            self.header = Header(
+                props: .init(
+                    title: "",
+                    effect: .none,
+                    endButton: .init(style: props.style.header.endButton, title: props.style.header.endButton.title),
+                    backButton: .init(style: props.style.header.backButton),
+                    closeButton: .init(style: props.style.header.closeButton),
+                    endScreenshareButton: .init(style: props.style.header.endScreenShareButton),
+                    style: props.style.header
+                )
+            )
             self.props = props
             super.init()
             // Hide warning stack initially.
@@ -182,9 +192,9 @@ extension SecureConversations {
         }
 
         func renderProps() {
-            header.title = props.style.headerTitle
-            header.backButton.tap = props.backButtonTap.execute
-            header.closeButton.tap = props.closeButtonTap.execute
+            header.props.title = props.style.headerTitle
+            header.props.backButton.tap = .init { [weak self] in self?.props.backButtonTap.execute() }
+            header.props.closeButton.tap = .init { [weak self] in self?.props.closeButtonTap.execute() }
             header.showCloseButton()
 
             titleIconView.tintColor = props.style.titleImageStyle.color

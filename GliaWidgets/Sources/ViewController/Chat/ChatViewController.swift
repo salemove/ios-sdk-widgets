@@ -35,18 +35,6 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter,
         return viewFactory.theme.chat.preferredStatusBarStyle
     }
 
-    override func willRotate(to toInterfaceOrientation: UIInterfaceOrientation, duration: TimeInterval) {
-        guard let view = view as? ChatView else { return }
-        lastVisibleRowIndexPath = view.tableView.indexPathsForVisibleRows?.last
-    }
-
-    override func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
-        guard let view = view as? ChatView else { return }
-        guard let indexPath = lastVisibleRowIndexPath else { return }
-        view.tableView.reloadData()
-        view.tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
-    }
-
     // swiftlint:disable function_body_length
     private func bind(viewModel: SecureConversations.ChatWithTranscriptModel, to view: ChatView) {
         view.header.showBackButton()

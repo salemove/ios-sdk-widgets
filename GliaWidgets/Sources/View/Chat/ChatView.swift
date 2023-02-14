@@ -97,7 +97,7 @@ class ChatView: EngagementView {
 
     override func setup() {
         super.setup()
-        header.title = style.title
+        header.props.title = style.title
 
         tableView.backgroundColor = .clear
         tableView.delegate = self

@@ -325,13 +325,13 @@ class CallView: EngagementView {
     private func adjustForCurrentOrientation() {
         if currentOrientation.isLandscape {
             if mode == .video {
-                header.effect = .blur
+                header.props.effect = .blur
                 buttonBar.effect = .blur
             }
             topStackView.alpha = 0.0
             bottomLabel.alpha = 0.0
         } else {
-            header.effect = .none
+            header.props.effect = .none
             buttonBar.effect = .none
             topStackView.alpha = 1.0
             bottomLabel.alpha = 1.0
