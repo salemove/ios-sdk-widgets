@@ -1,7 +1,7 @@
 import UIKit
 
 extension Header {
-    struct Props {
+    struct Props: Equatable {
         var title: String
         var effect: Effect
         var endButton: ActionButton.Props

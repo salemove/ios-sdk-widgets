@@ -1,7 +1,7 @@
 import Foundation
 
 extension HeaderButton {
-    struct Props {
+    struct Props: Equatable {
         var tap: Cmd
         var style: HeaderButtonStyle
         var size: CGSize

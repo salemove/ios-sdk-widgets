@@ -192,9 +192,6 @@ extension SecureConversations {
         }
 
         func renderProps() {
-            header.props.title = props.style.headerTitle
-            header.props.backButton.tap = .init { [weak self] in self?.props.backButtonTap.execute() }
-            header.props.closeButton.tap = .init { [weak self] in self?.props.closeButtonTap.execute() }
             header.showCloseButton()
 
             titleIconView.tintColor = props.style.titleImageStyle.color
@@ -458,6 +455,7 @@ extension SecureConversations.WelcomeView {
         let messageTextViewProps: MessageTextView.Props?
         let warningMessage: WarningMessage
         let fileUploadListProps: SecureConversations.FileUploadListView.Props
+        let headerProps: Header.Props
     }
 }
 

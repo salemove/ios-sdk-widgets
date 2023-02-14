@@ -21,12 +21,6 @@ class ActionButton: UIButton {
         fatalError("init(coder:) has not been implemented")
     }
 
-//    override func layoutSubviews() {
-//        super.layoutSubviews()
-////        renderProps()
-//        setNeedsDisplay()
-//    }
-
     func renderProps() {
         setTitle(props.title, for: .normal)
         contentEdgeInsets = contentInsets
@@ -87,7 +81,7 @@ class ActionButton: UIButton {
 }
 
 extension ActionButton {
-    struct Props {
+    struct Props: Equatable {
         var style: ActionButtonStyle
         var height: CGFloat
         var tap: Cmd

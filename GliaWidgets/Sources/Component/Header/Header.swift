@@ -5,7 +5,7 @@ import PureLayout
 /// This header has different states for `chat history` and `engaged`
 /// states.
 final class Header: BaseView {
-    enum Effect {
+    enum Effect: Equatable {
         case none
         case blur
     }

@@ -149,13 +149,13 @@ extension SecureConversations.WelcomeViewModel {
                 style: Self.welcomeStyle(for: self),
                 backButtonTap: Cmd { [weak self] in self?.delegate?(.backTapped) },
                 closeButtonTap: Cmd { [weak self] in self?.delegate?(.closeTapped) },
-                checkMessageButtonTap: Cmd { [weak self] in self?.delegate?(.transcriptRequested)
-                },
+                checkMessageButtonTap: Cmd { [weak self] in self?.delegate?(.transcriptRequested) },
                 filePickerButton: Self.filePickerButtonState(for: self),
                 sendMessageButton: sendMessageButton,
                 messageTextViewProps: Self.textViewState(for: self),
                 warningMessage: warningMessage,
-                fileUploadListProps: fileUploadListModel.props()
+                fileUploadListProps: fileUploadListModel.props(),
+                headerProps: Self.headerState(for: self)
             )
         )
         return props
@@ -284,6 +284,21 @@ extension SecureConversations.WelcomeViewModel {
         }
 
         return text.count <= Self.messageTextLimit
+    }
+
+    static func headerState(
+        for instance: SecureConversations.WelcomeViewModel
+    ) -> Header.Props {
+
+        .init(
+            title: instance.environment.welcomeStyle.headerTitle,
+            effect: .none,
+            endButton: .init(),
+            backButton: .init(tap: Cmd { [weak instance] in instance?.delegate?(.backTapped) }),
+            closeButton: .init(tap: Cmd { [weak instance] in instance?.delegate?(.closeTapped) }),
+            endScreenshareButton: .init(),
+            style: instance.environment.welcomeStyle.header
+        )
     }
 }
 
