@@ -45,6 +45,9 @@ public struct AlertConfiguration {
     /// Configuration of the API error alert.
     public var apiError: MessageAlertConfiguration
 
+    /// Configuration of the unavailable message center error alert.
+    public var unavailableMessageCenter: MessageAlertConfiguration
+
     ///
     /// - Parameters:
     ///   - leaveQueue: Configuration of the queue leaving confirmation alert.
@@ -62,6 +65,7 @@ public struct AlertConfiguration {
     ///   - mediaSourceNotAvailable: Configuration of the unavailable media source (camera, etc) alert.
     ///   - unexpectedError: Configuration of the unexpected error alert.
     ///   - apiError: Configuration of the API error alert.
+    ///   - unavailableMessageCenter: Configuration of the unavailable message center error alert.
     ///
     public init(
         leaveQueue: ConfirmationAlertConfiguration,
@@ -78,7 +82,8 @@ public struct AlertConfiguration {
         cameraSettings: SettingsAlertConfiguration,
         mediaSourceNotAvailable: MessageAlertConfiguration,
         unexpectedError: MessageAlertConfiguration,
-        apiError: MessageAlertConfiguration
+        apiError: MessageAlertConfiguration,
+        unavailableMessageCenter: MessageAlertConfiguration
     ) {
         self.leaveQueue = leaveQueue
         self.endEngagement = endEngagement
@@ -95,5 +100,6 @@ public struct AlertConfiguration {
         self.mediaSourceNotAvailable = mediaSourceNotAvailable
         self.unexpectedError = unexpectedError
         self.apiError = apiError
+        self.unavailableMessageCenter = unavailableMessageCenter
     }
 }

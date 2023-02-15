@@ -32,6 +32,9 @@
 "alert.unexpected.title" = "We're sorry, there has been an unexpected error.";
 "alert.unexpected.message" = "Please try again later.";
 
+"alert.unavailableMessageCenter.title" = "Message Center Unavailable";
+"alert.unavailableMessageCenter.message" = "The Message Center is currently unavailable. Please try again later.";
+
 "alert.apiError.title" = "We're sorry, there has been an error.";
 "alert.apiError.message" = "{message}";
 

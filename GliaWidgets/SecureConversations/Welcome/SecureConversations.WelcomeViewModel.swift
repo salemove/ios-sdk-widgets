@@ -98,20 +98,32 @@ private extension SecureConversations.WelcomeViewModel {
 
     func checkSecureConversationsAvailability() {
         environment.listQueues { [weak self] queues, _ in
-            guard let self = self else {
-                self?.isSecureConversationsAvailable = false
-                return
-            }
-
-            self.isSecureConversationsAvailable = self.isSecureConversationsAvailable(in: queues)
+            self?.checkQueues(queues)
         }
     }
 
-    private func isSecureConversationsAvailable(
-        in queues: [CoreSdkClient.Queue]?
-    ) -> Bool {
-        guard let queues = queues else { return false }
+    func checkQueues(_ queues: [CoreSdkClient.Queue]?) {
+        guard let queues = queues, isSecureConversationsAvailable(in: queues) else {
+            self.isSecureConversationsAvailable = false
 
+            let configuration = self.environment.alertConfiguration.unavailableMessageCenter
+            self.delegate?(
+                .showAlertAsView(
+                    configuration,
+                    accessibilityIdentifier: Self.sendMessageErrorAlertAccIdentidier,
+                    dismissed: nil
+                )
+            )
+
+            return
+        }
+
+        self.isSecureConversationsAvailable = true
+    }
+
+    private func isSecureConversationsAvailable(
+        in queues: [CoreSdkClient.Queue]
+    ) -> Bool {
         let filteredQueues = queues
             .filter { self.environment.queueIds.contains($0.id) }
             .filter { $0.state.status != .closed }
@@ -311,6 +323,11 @@ extension SecureConversations.WelcomeViewModel {
         case pickFile(Command<FilePickerEvent>)
         case showFile(LocalFile)
         case showAlert(
+            MessageAlertConfiguration,
+            accessibilityIdentifier: String?,
+            dismissed: (() -> Void)?
+        )
+        case showAlertAsView(
             MessageAlertConfiguration,
             accessibilityIdentifier: String?,
             dismissed: (() -> Void)?
