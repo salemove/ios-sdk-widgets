@@ -65,18 +65,24 @@ extension SecureConversations {
 
         init(props: Props) {
             self.header = Header(
-                props: .init(
-                    title: "",
-                    effect: .none,
-                    endButton: .init(style: props.style.header.endButton, title: props.style.header.endButton.title),
-                    backButton: .init(style: props.style.header.backButton),
-                    closeButton: .init(style: props.style.header.closeButton),
-                    endScreenshareButton: .init(style: props.style.header.endScreenShareButton),
-                    style: props.style.header
-                )
+                props: Self.buildHeaderProps(confirmationViewProps: props)
             )
             self.props = props
             super.init()
+        }
+
+        static func buildHeaderProps(
+            confirmationViewProps props: ConfirmationView.Props
+        ) -> Header.Props {
+            Header.Props(
+                title: props.style.headerTitle,
+                effect: .none,
+                endButton: .init(style: props.style.header.endButton, title: props.style.header.endButton.title),
+                backButton: .init(tap: props.backButtonTap, style: props.style.header.backButton),
+                closeButton: .init(tap: props.closeButtonTap, style: props.style.header.closeButton),
+                endScreenshareButton: .init(style: props.style.header.endScreenShareButton),
+                style: props.style.header
+            )
         }
 
         @available(*, unavailable)
@@ -169,9 +175,7 @@ extension SecureConversations {
         }
 
         private func renderProps() {
-            header.props.title = props.style.headerTitle
-            header.backButton.props.tap = .init { [weak self] in self?.props.backButtonTap.execute() }
-            header.closeButton.props.tap = .init { [weak self] in self?.props.closeButtonTap.execute() }
+            header.props = Self.buildHeaderProps(confirmationViewProps: props)
             header.showCloseButton()
 
             titleLabel.text = props.style.titleStyle.text
