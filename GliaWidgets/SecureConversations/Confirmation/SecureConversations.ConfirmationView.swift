@@ -8,8 +8,7 @@ extension SecureConversations {
 
         struct Props: Equatable {
             let style: ConfirmationStyle
-            let backButtonTap: Cmd
-            let closeButtonTap: Cmd
+            let header: Header.Props
             let checkMessageButtonTap: Cmd
         }
 
@@ -65,24 +64,10 @@ extension SecureConversations {
 
         init(props: Props) {
             self.header = Header(
-                props: Self.buildHeaderProps(confirmationViewProps: props)
+                props: props.header
             )
             self.props = props
             super.init()
-        }
-
-        static func buildHeaderProps(
-            confirmationViewProps props: ConfirmationView.Props
-        ) -> Header.Props {
-            Header.Props(
-                title: props.style.headerTitle,
-                effect: .none,
-                endButton: .init(style: props.style.header.endButton, title: props.style.header.endButton.title),
-                backButton: .init(tap: props.backButtonTap, style: props.style.header.backButton),
-                closeButton: .init(tap: props.closeButtonTap, style: props.style.header.closeButton),
-                endScreenshareButton: .init(style: props.style.header.endScreenShareButton),
-                style: props.style.header
-            )
         }
 
         @available(*, unavailable)
@@ -175,7 +160,6 @@ extension SecureConversations {
         }
 
         private func renderProps() {
-            header.props = Self.buildHeaderProps(confirmationViewProps: props)
             header.showCloseButton()
 
             titleLabel.text = props.style.titleStyle.text
