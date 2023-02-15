@@ -25,10 +25,9 @@ extension CallVisualizer {
         private func showEndScreenSharingViewController() -> ViewController {
             typealias Props = ScreenSharingViewController.Props
 
-            let viewController = ScreenSharingViewController()
-            viewController.modalPresentationStyle = .overFullScreen
+            var viewController: ScreenSharingViewController?
 
-            viewModel = ScreenSharingViewModel(
+            let model = ScreenSharingViewModel(
                 style: environment.theme.screenSharing,
                 delegate: .init { [weak self, weak viewController] event in
                     switch event {
@@ -41,7 +40,16 @@ extension CallVisualizer {
                 },
                 environment: .init(screenShareHandler: environment.screenShareHandler)
             )
-            return viewController
+
+            defer {
+                viewModel = model
+            }
+
+            let screenSharingController = ScreenSharingViewController(props: model.props())
+            viewController = screenSharingController
+            screenSharingController.modalPresentationStyle = .overFullScreen
+
+            return screenSharingController
         }
     }
 }

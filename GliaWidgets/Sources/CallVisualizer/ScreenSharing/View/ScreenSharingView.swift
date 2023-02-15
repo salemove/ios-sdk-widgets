@@ -7,32 +7,24 @@ extension CallVisualizer {
 
         struct Props: Equatable {
             let style: ScreenSharingViewStyle
-            let endScreenSharing: Cmd
-            let back: Cmd
+            let headerProps: Header.Props
+            let endScreenSharingButtonProps: ActionButton.Props
 
             init(
-                style: ScreenSharingViewStyle = Theme().screenSharing,
-                endScreenSharing: Cmd = .nop,
-                back: Cmd = .nop
+                style: ScreenSharingViewStyle,
+                headerProps: Header.Props,
+                endScreenSharingButtonProps: ActionButton.Props
             ) {
                 self.style = style
-                self.endScreenSharing = endScreenSharing
-                self.back = back
+                self.endScreenSharingButtonProps = endScreenSharingButtonProps
+                self.headerProps = headerProps
             }
         }
 
         // MARK: - Properties
 
         private lazy var header = Header(
-            props: .init(
-                title: "",
-                effect: .none,
-                endButton: .init(style: props.style.header.endButton, title: props.style.header.endButton.title),
-                backButton: .init(style: props.style.header.backButton),
-                closeButton: .init(style: props.style.header.closeButton),
-                endScreenshareButton: .init(style: props.style.header.endScreenShareButton),
-                style: props.style.header
-            )
+            props: props.headerProps
         )
             .make { header in
                 header.endScreenShareButton.isHidden = true
@@ -48,7 +40,7 @@ extension CallVisualizer {
             $0.textAlignment = .center
             $0.accessibilityIdentifier = "end_screen_sharing_message"
         }
-        private lazy var endScreenSharingButton = ActionButton(props: .init(style: props.style.buttonStyle)).make {
+        private lazy var endScreenSharingButton = ActionButton(props: props.endScreenSharingButtonProps).make {
             $0.setImage(props.style.buttonIcon, for: .normal)
             $0.tintColor = props.style.buttonStyle.titleColor
             $0.titleEdgeInsets = .init(top: 0, left: 8, bottom: 0, right: 0)
@@ -110,9 +102,8 @@ private extension CallVisualizer.ScreenSharingView {
             for: messageLabel
         )
 
-        header.props.title = props.style.title
-        header.backButton.props.tap = props.back
-        endScreenSharingButton.props.tap = props.endScreenSharing
+        header.props = props.headerProps
+        endScreenSharingButton.props = props.endScreenSharingButtonProps
 
         switch props.style.backgroundColor {
         case .fill(let color):

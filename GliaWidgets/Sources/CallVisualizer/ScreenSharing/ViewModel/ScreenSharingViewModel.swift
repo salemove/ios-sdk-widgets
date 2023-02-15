@@ -22,24 +22,45 @@ extension CallVisualizer {
     }
 }
 
-// MARK: - Private
+// MARK: - Props Generation
 
-private extension CallVisualizer.ScreenSharingViewModel {
+extension CallVisualizer.ScreenSharingViewModel {
     func props() -> Props {
+        let headerProps = Header.Props(
+            title: "",
+            effect: .none,
+            endButton: .init(
+                style: style.header.endButton,
+                title: style.header.endButton.title
+            ),
+            backButton: .init(
+                tap: Cmd { [delegate] in delegate(.close) },
+                style: style.header.backButton),
+            closeButton: .init(style: style.header.closeButton),
+            endScreenshareButton: .init(
+                tap: Cmd { [weak self] in self?.endScreenSharing() },
+                style: style.header.endScreenShareButton
+            ),
+            style: style.header
+        )
+
+        let endScreenSharingButtonProps = ActionButton.Props(
+            style: style.buttonStyle,
+            tap: Cmd { [weak self] in self?.endScreenSharing() }
+        )
+
+        let screenSharingViewProps = CallVisualizer.ScreenSharingView.Props(
+            style: style,
+            headerProps: headerProps,
+            endScreenSharingButtonProps: endScreenSharingButtonProps
+        )
+
         return Props(
-            screenSharingViewProps: .init(
-                style: style,
-                endScreenSharing: .init { [weak self] in
-                    self?.endScreenSharing()
-                },
-                back: .init { [weak self] in
-                    self?.delegate(.close)
-                }
-            )
+            screenSharingViewProps: screenSharingViewProps
         )
     }
 
-    func endScreenSharing() {
+    private func endScreenSharing() {
         environment.screenShareHandler.stop { [weak self] in
             self?.delegate(.close)
         }
