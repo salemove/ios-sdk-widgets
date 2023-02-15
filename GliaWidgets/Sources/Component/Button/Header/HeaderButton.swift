@@ -3,7 +3,7 @@ import UIKit
 /// Defines button in Header
 ///
 final class HeaderButton: UIButton {
-    var props: Props = Props() {
+    var props: Props {
         didSet {
             renderProps()
         }
@@ -46,11 +46,11 @@ final class HeaderButton: UIButton {
     }
 
     private func setup() {
-        renderProps()
         addTarget(self, action: #selector(tapped), for: .touchUpInside)
     }
 
     private func defineLayout() {
+        renderProps()
         NSLayoutConstraint.activate([
             widthAnchor.constraint(equalToConstant: props.size.width),
             heightAnchor.constraint(equalToConstant: props.size.height)

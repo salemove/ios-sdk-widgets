@@ -13,12 +13,21 @@ class ActionButton: UIButton {
         self.props = props
         super.init(frame: .zero)
         setup()
-        layout()
     }
 
     @available(*, unavailable)
     required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    var isLayoutDefined = false
+    override func updateConstraints() {
+        super.updateConstraints()
+
+        if !isLayoutDefined {
+            isLayoutDefined = true
+            layout()
+        }
     }
 
     func renderProps() {
@@ -65,11 +74,11 @@ class ActionButton: UIButton {
     }
 
     private func setup() {
-        renderProps()
         addTarget(self, action: #selector(tapped), for: .touchUpInside)
     }
 
     private func layout() {
+        renderProps()
         NSLayoutConstraint.activate([
             heightAnchor.constraint(equalToConstant: props.height)
         ])

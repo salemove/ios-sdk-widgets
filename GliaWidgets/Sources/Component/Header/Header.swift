@@ -106,8 +106,6 @@ final class Header: BaseView {
         rightItemContainer.alignment = .center
         backButton.accessibilityIdentifier = "header_back_button"
         closeButton.accessibilityIdentifier = "header_close_button"
-
-        renderProps()
     }
 
     override func defineLayout() {
@@ -136,6 +134,8 @@ final class Header: BaseView {
         rightItemContainer.autoAlignAxis(toSuperviewAxis: .horizontal)
 
         updateHeight()
+
+        renderProps()
     }
 
     private func updateHeight() {

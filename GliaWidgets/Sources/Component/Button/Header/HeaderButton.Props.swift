@@ -8,7 +8,7 @@ extension HeaderButton {
 
         init(
             tap: Cmd = .nop,
-            style: HeaderButtonStyle = .init(image: .init(), color: .black),
+            style: HeaderButtonStyle,
             size: CGSize = CGSize(width: 30, height: 30)
         ) {
             self.tap = tap
