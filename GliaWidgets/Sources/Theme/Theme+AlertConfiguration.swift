@@ -118,6 +118,11 @@ extension Theme {
             title: Alert.ApiError.title,
             message: Alert.ApiError.message
         )
+        let unavailableMessageCenter = MessageAlertConfiguration(
+            title: Alert.UnavailableMessageCenter.title,
+            message: Alert.UnavailableMessageCenter.message,
+            shouldShowCloseButton: false
+        )
 
         return AlertConfiguration(
             leaveQueue: leaveQueue,
@@ -134,7 +139,8 @@ extension Theme {
             cameraSettings: cameraSettings,
             mediaSourceNotAvailable: mediaSourceNotAvailable,
             unexpectedError: unexpected,
-            apiError: api
+            apiError: api,
+            unavailableMessageCenter: unavailableMessageCenter
         )
     }
 }

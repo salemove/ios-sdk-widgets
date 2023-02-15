@@ -8,6 +8,11 @@ protocol AlertPresenter where Self: UIViewController {
         accessibilityIdentifier: String?,
         dismissed: (() -> Void)?
     )
+    func presentAlertAsView(
+        with conf: MessageAlertConfiguration,
+        accessibilityIdentifier: String?,
+        dismissed: (() -> Void)?
+    )
     func presentConfirmation(
         with conf: ConfirmationAlertConfiguration,
         accessibilityIdentifier: String,
@@ -39,6 +44,30 @@ extension AlertPresenter {
             viewFactory: viewFactory
         )
         present(alert, animated: true, completion: nil)
+    }
+
+    func presentAlertAsView(
+        with conf: MessageAlertConfiguration,
+        accessibilityIdentifier: String? = nil,
+        dismissed: (() -> Void)? = nil
+    ) {
+        let alert = AlertViewController(
+            kind: .message(
+                conf,
+                accessibilityIdentifier: accessibilityIdentifier,
+                dismissed: dismissed
+            ),
+            viewFactory: viewFactory
+        )
+
+        insertChild(alert)
+        alert.view.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            view.topAnchor.constraint(equalTo: alert.view.topAnchor),
+            view.bottomAnchor.constraint(equalTo: alert.view.bottomAnchor),
+            view.leadingAnchor.constraint(equalTo: alert.view.leadingAnchor),
+            view.trailingAnchor.constraint(equalTo: alert.view.trailingAnchor)
+        ])
     }
 
     func presentConfirmation(
