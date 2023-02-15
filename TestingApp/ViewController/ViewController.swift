@@ -98,6 +98,10 @@ class ViewController: UIViewController {
 
     @IBAction private func remoteConfigTapped() {
         showRemoteConfigAlert { [weak self] fileName in
+            guard let fileName = fileName else {
+                self?.alert(message: "Could not find any json file")
+                return
+            }
             self?.showEngagementKindActionSheet { kind in
                 self?.startEngagement(with: kind, config: fileName)
             }
@@ -239,12 +243,6 @@ extension ViewController {
 
     private func jsonNames() -> [String] {
         let paths = Bundle.main.paths(forResourcesOfType: "json", inDirectory: nil)
-
-        guard !paths.isEmpty else {
-            alert(message: "Could not find any json file")
-            return []
-        }
-
         return paths
             .compactMap(URL.init(string:))
             .compactMap {
@@ -254,9 +252,12 @@ extension ViewController {
             }.sorted()
     }
 
-    func showRemoteConfigAlert(_ completion: @escaping (String) -> Void) {
+    func showRemoteConfigAlert(_ completion: @escaping (String?) -> Void) {
         let names = jsonNames()
-        guard !names.isEmpty else { return }
+        guard !names.isEmpty else {
+            completion(nil)
+            return
+        }
 
         let alert = UIAlertController(
             title: "Remote configuration",
