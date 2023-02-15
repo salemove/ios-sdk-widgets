@@ -232,9 +232,6 @@ extension CallVisualizer {
             coordinator.delegate = { [weak self] event in
                 switch event {
                 case .close:
-                    self?.videoCallCoordinator?.viewController?.dismiss(animated: true)
-
-                    // Temporary fix
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                         self?.createBubbleView()
                     }

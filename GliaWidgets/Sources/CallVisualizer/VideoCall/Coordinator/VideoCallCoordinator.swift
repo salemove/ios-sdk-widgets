@@ -10,7 +10,6 @@ extension CallVisualizer {
         let call: Call
         let uiConfig: RemoteConfiguration?
         var viewModel: VideoCallViewModel?
-        var viewController: VideoCallViewController?
 
         init(
             theme: Theme = Theme(),
@@ -47,21 +46,22 @@ extension CallVisualizer {
                     engagedOperator: environment.engagedOperator,
                     screenShareHandler: environment.screenShareHandler
                 ),
-                delegate: .init { [weak self] event in
-                    switch event {
-                    case let .propsUpdated(props):
-                        self?.viewController?.props = props
-                    case .minimized:
-                        self?.delegate?(.close)
-
-                    }
-                },
                 call: call
             )
             self.viewModel = viewModel
 
             let viewController = VideoCallViewController(props: viewModel.makeProps())
-            self.viewController = viewController
+            viewController.modalPresentationStyle = .fullScreen
+
+            viewModel.delegate = { [weak self, weak viewController] event in
+                switch event {
+                case let .propsUpdated(props):
+                    viewController?.props = props
+                case .minimized:
+                    viewController?.dismiss(animated: true)
+                    self?.delegate?(.close)
+                }
+            }
             return viewController
         }
     }

@@ -5,7 +5,7 @@ extension CallVisualizer {
 
         // MARK: - Properties
 
-        private let delegate: Command<DelegateEvent>
+        var delegate: ((DelegateEvent) -> Void)?
         private let environment: Environment
         private let style: CallStyle
         private var state: State = .initial
@@ -160,11 +160,9 @@ extension CallVisualizer {
         init(
             style: CallStyle,
             environment: Environment,
-            delegate: Command<DelegateEvent>,
             call: Call
         ) {
             self.style = style
-            self.delegate = delegate
             self.environment = environment
             self.call = call
             self.durationCounter = CallDurationCounter(
@@ -209,7 +207,7 @@ extension CallVisualizer.VideoCallViewModel {
             videoCallViewProps: .init(
                 style: style,
                 backButtonTap: .init { [weak self] in
-                    self?.delegate(.minimized)
+                    self?.delegate?(.minimized)
                 },
                 endScreenShareTap: .init { [weak self] in
                     self?.environment.screenShareHandler.stop()
@@ -287,7 +285,7 @@ extension CallVisualizer.VideoCallViewModel {
 
 private extension CallVisualizer.VideoCallViewModel {
     func reportChange() {
-        delegate(.propsUpdated(makeProps()))
+        delegate?(.propsUpdated(makeProps()))
     }
 
     func makeOperatorImageViewProps() -> CallVisualizer.VideoCallView.OperatorImageView.Props {
@@ -351,7 +349,7 @@ private extension CallVisualizer.VideoCallViewModel {
                 self?.toggleVideo()
             },
             minimizeTap: .init { [weak self] in
-                self?.delegate(.minimized)
+                self?.delegate?(.minimized)
             },
             videoButtonState: videoButtonState,
             minimizeButtonState: minimizeButtonState,

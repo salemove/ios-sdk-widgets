@@ -73,6 +73,7 @@ extension CallVisualizer {
         private lazy var header = Header(with: props.style.header).make { header in
             header.endButton.isHidden = true
             header.closeButton.isHidden = true
+            header.endScreenShareButton.isHidden = true
             header.backButton.accessibilityLabel = props.style.header.backButton.accessibility.label
             header.backButton.accessibilityHint = props.style.header.backButton.accessibility.hint
         }
@@ -222,6 +223,12 @@ extension CallVisualizer {
 
             addSubview(localVideoView)
 
+            adjustForCurrentOrientation()
+            adjustLocalVideoFrameAfterLayout()
+        }
+
+        override func layoutSubviews() {
+            super.layoutSubviews()
             adjustForCurrentOrientation()
             adjustLocalVideoFrameAfterLayout()
         }
