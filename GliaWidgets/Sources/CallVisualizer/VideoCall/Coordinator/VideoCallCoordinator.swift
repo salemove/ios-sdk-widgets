@@ -52,8 +52,7 @@ extension CallVisualizer {
                     case let .propsUpdated(props):
                         self?.viewController?.props = props
                     case .minimized:
-                        break
-                        // TODO - Need to minimize the viewController and show bubble
+                        self?.delegate?(.close)
 
                     }
                 },

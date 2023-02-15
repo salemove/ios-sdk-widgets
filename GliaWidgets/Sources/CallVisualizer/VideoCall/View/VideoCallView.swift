@@ -290,6 +290,8 @@ private extension CallVisualizer.VideoCallView {
         bottomLabel.isHidden = props.bottomLabelHidden
         header.endScreenShareButton.isHidden = props.endScreenShareButtonHidden
         connectView.isHidden = props.connectViewHidden
+        header.backButton.tap = props.backButtonTap.execute
+        header.endScreenShareButton.tap = props.endScreenShareTap.execute
     }
 
     func adjustVideoViews() {

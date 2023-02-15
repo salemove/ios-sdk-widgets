@@ -13,6 +13,7 @@ extension CallVisualizer {
                 .addObserver(self) { [weak self] newStatus, _ in
                     switch newStatus {
                     case .started:
+                        guard self?.videoCallCoordinator == nil else { break }
                         self?.createBubbleView()
                     case .stopped:
                         self?.end()
@@ -21,7 +22,11 @@ extension CallVisualizer {
 
             bubbleView.tap = { [weak self] in
                 guard let self = self else { return }
-                self.showEndScreenSharingViewController()
+                if self.videoCallCoordinator == nil {
+                    self.showEndScreenSharingViewController()
+                } else {
+                    self.showVideoCallViewController()
+                }
             }
             bubbleView.pan = { [weak self] translation in
                 self?.updateBubblePosition(translation: translation)
@@ -226,8 +231,13 @@ extension CallVisualizer {
 
             coordinator.delegate = { [weak self] event in
                 switch event {
-                case .end:
-                    self?.videoCallCoordinator = nil
+                case .close:
+                    self?.videoCallCoordinator?.viewController?.dismiss(animated: true)
+
+                    // Temporary fix
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                        self?.createBubbleView()
+                    }
                 }
             }
 
