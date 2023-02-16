@@ -16,7 +16,7 @@ extension CallVisualizer {
                         guard self?.videoCallCoordinator == nil else { break }
                         self?.createBubbleView()
                     case .stopped:
-                        self?.end()
+                        self?.removeBubbleView()
                     }
                 }
 
@@ -25,7 +25,7 @@ extension CallVisualizer {
                 if self.videoCallCoordinator == nil {
                     self.showEndScreenSharingViewController()
                 } else {
-                    self.showVideoCallViewController()
+                    self.resumeVideoCallViewController()
                 }
             }
             bubbleView.pan = { [weak self] translation in
@@ -105,6 +105,8 @@ extension CallVisualizer {
         }
 
         func showVideoCallViewController() {
+            createBubbleView()
+            bubbleView.alpha = 0.0
             let viewController = buildVideoCallViewController()
             environment
                 .presenter
@@ -112,12 +114,24 @@ extension CallVisualizer {
                 .present(viewController, animated: true)
         }
 
+        func resumeVideoCallViewController() {
+            if let viewController = videoCallCoordinator?.resume() {
+                environment
+                    .presenter
+                    .getInstance()?
+                    .present(viewController, animated: true)
+            }
+        }
+
         func end() {
-            bubbleView.removeFromSuperview()
+            removeBubbleView()
+        }
+
+        func addVideoStream(stream: CoreSdkClient.VideoStreamable) {
+            videoCallCoordinator?.call.updateVideoStream(with: stream)
         }
 
         // MARK: - Private
-
         private let environment: Environment
         private let bubbleSize = CGSize(width: 60, height: 60)
         private let bubbleView: BubbleView
@@ -149,7 +163,7 @@ extension CallVisualizer {
         }()
         private var visitorCodeCoordinator: VisitorCodeCoordinator?
         private var screenSharingCoordinator: ScreenSharingCoordinator?
-        var videoCallCoordinator: VideoCallCoodinator?
+        private var videoCallCoordinator: VideoCallCoodinator?
 
         private func createBubbleView() {
             guard let parent = environment.presenter.getInstance()?.view else { return }
@@ -157,6 +171,10 @@ extension CallVisualizer {
             bubbleView.frame = .init(origin: .init(x: parent.frame.maxX, y: parent.frame.maxY), size: bubbleSize)
             parent.addSubview(bubbleView)
             updateBubblePosition()
+        }
+
+        private func removeBubbleView() {
+            bubbleView.removeFromSuperview()
         }
 
         private func updateBubblePosition(translation: CGPoint = .zero) {
@@ -229,17 +247,16 @@ extension CallVisualizer {
                 )
             )
 
+            let viewController = coordinator.start()
+            self.videoCallCoordinator = coordinator
+
             coordinator.delegate = { [weak self] event in
                 switch event {
                 case .close:
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                        self?.createBubbleView()
-                    }
+                    viewController.dismiss(animated: true)
+                    self?.bubbleView.alpha = 1.0
                 }
             }
-
-            let viewController = coordinator.start()
-            self.videoCallCoordinator = coordinator
 
             return viewController
         }

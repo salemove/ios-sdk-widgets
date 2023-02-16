@@ -322,8 +322,6 @@ class CallView: EngagementView {
         switchTo(mode)
     }
 
-
-
     private func adjustVideoViews() {
         adjustRemoteVideoView()
     }

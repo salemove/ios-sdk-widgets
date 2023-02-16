@@ -156,7 +156,7 @@ extension CallVisualizer {
         }
 
         // MARK: - Initializer
-//
+
         init(
             style: CallStyle,
             environment: Environment,
@@ -524,6 +524,7 @@ private extension CallVisualizer.VideoCallViewModel {
         connectOperatorSize = .init(size: .large, animated: true)
         topLabelHidden = true
         bottomLabelHidden = true
+        operatorName = engagedOperator?.firstName
         switch call.kind.value {
         case .video(let direction):
             switch direction {
@@ -545,7 +546,7 @@ private extension CallVisualizer.VideoCallViewModel {
         let engagedOperator = environment.engagedOperator()
         setConnectViewState(.connecting(name: engagedOperator?.firstName, imageUrl: engagedOperator?.picture?.url), animated: true)
         connectOperatorSize = .init(size: .normal, animated: true)
-
+        topLabelHidden = true
         switch call.kind.value {
         case .audio:
             break

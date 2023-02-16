@@ -151,10 +151,10 @@ public class Glia {
                     )
                 }
             case let .videoStreamAdded(stream):
-                self?.callVisualizer.coordinator?.videoCallCoordinator?.call.updateVideoStream(with: stream)
+                self?.callVisualizer.coordinator?.addVideoStream(stream: stream)
             case let .stateChanged(state):
                 if state == .ended(.byOperator) {
-                   // End call
+                    self?.callVisualizer.coordinator?.end()
                 }
             default:
                 print(event)

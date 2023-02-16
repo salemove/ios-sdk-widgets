@@ -116,6 +116,7 @@ extension CallVisualizer {
             self.props = props
             self.buttonBar = .init(props: props.buttonBarProps)
             super.init()
+            layout()
         }
 
         required init() {
@@ -165,7 +166,7 @@ extension CallVisualizer {
             }
         }
 
-        override func defineLayout() {
+        func layout() {
             addSubview(effectView)
             effectView.autoPinEdgesToSuperviewEdges()
 

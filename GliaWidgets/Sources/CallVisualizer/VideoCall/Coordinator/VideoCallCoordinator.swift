@@ -10,6 +10,7 @@ extension CallVisualizer {
         let call: Call
         let uiConfig: RemoteConfiguration?
         var viewModel: VideoCallViewModel?
+        var viewController: VideoCallViewController?
 
         init(
             theme: Theme = Theme(),
@@ -25,6 +26,10 @@ extension CallVisualizer {
 
         func start() -> ViewController {
             return showVideoCallViewController()
+        }
+
+        func resume() -> ViewController {
+            return resumeVideoCallViewController()
         }
 
         private func showVideoCallViewController() -> ViewController {
@@ -51,14 +56,33 @@ extension CallVisualizer {
             self.viewModel = viewModel
 
             let viewController = VideoCallViewController(props: viewModel.makeProps())
-            viewController.modalPresentationStyle = .fullScreen
+            viewController.modalPresentationStyle = .overFullScreen
+            self.viewController = viewController
 
             viewModel.delegate = { [weak self, weak viewController] event in
                 switch event {
                 case let .propsUpdated(props):
                     viewController?.props = props
                 case .minimized:
-                    viewController?.dismiss(animated: true)
+                    self?.delegate?(.close)
+                }
+            }
+            return viewController
+        }
+
+        private func resumeVideoCallViewController() -> ViewController {
+            guard let viewModel = viewModel, let viewController = viewController else { return showVideoCallViewController() }
+
+            if let uiConfig {
+                theme.applyRemoteConfiguration(uiConfig, assetsBuilder: .standard)
+            }
+
+            viewController.modalPresentationStyle = .overFullScreen
+            viewModel.delegate = { [weak self, weak viewController] event in
+                switch event {
+                case let .propsUpdated(props):
+                    viewController?.props = props
+                case .minimized:
                     self?.delegate?(.close)
                 }
             }
