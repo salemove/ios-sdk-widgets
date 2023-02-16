@@ -13,7 +13,10 @@ extension ViewController {
     
     func showVisitorCode(presentation: CallVisualizer.Presentation) {
         showRemoteConfigAlert { [weak self] fileName in
-            let config = self?.retrieveRemoteConfiguration(fileName)
+            var config: RemoteConfiguration?
+            if let fileName = fileName {
+                config = self?.retrieveRemoteConfiguration(fileName)
+            }
             Glia.sharedInstance.callVisualizer.showVisitorCodeViewController(
                 by: presentation,
                 uiConfig: config
