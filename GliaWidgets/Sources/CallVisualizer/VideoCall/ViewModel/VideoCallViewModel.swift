@@ -17,143 +17,51 @@ extension CallVisualizer {
 
         // MARK: - Operator properties
 
-        private var connectOperatorSize: SizeObject = .init(size: .normal, animated: true) {
-            didSet {
-                reportChange()
-            }
-        }
+        private var connectOperatorSize: SizeObject { didSet { reportChange() } }
 
-        private var operatorImageVisible: Bool = false {
-            didSet {
-                reportChange()
-            }
-        }
+        private var operatorImageVisible: Bool { didSet { reportChange() } }
 
-        private var operatorName: String? = "" {
-            didSet {
-                reportChange()
-            }
-        }
+        private var operatorName: String? { didSet { reportChange() } }
 
-        private var operatorImagePlaceholder: UIImage? {
-            didSet {
-                reportChange()
-            }
-        }
+        private var operatorImagePlaceholder: UIImage? { didSet { reportChange() } }
 
-        private var animateOperator: Bool = false {
-            didSet {
-                reportChange()
-            }
-        }
+        private var animateOperator: Bool { didSet { reportChange() } }
 
-        private var operatorImage: OperatorImage? {
-            didSet {
-                reportChange()
-            }
-        }
+        private var operatorImage: AnimatedImage? { didSet { reportChange() } }
 
-        private var connectViewHidden: Bool = true {
-            didSet {
-                reportChange()
-            }
-        }
+        private var connectViewHidden: Bool { didSet { reportChange() } }
 
-        private var connectVisibility: Transaition = .show(animation: true) {
-            didSet {
-                reportChange()
-            }
-        }
+        private var connectVisibility: Transaition { didSet { reportChange() } }
 
         // MARK: - Status Properties
 
-        private var statusStyle: ConnectStatusStyle {
-            didSet {
-                reportChange()
-            }
-        }
+        private var statusStyle: ConnectStatusStyle { didSet { reportChange() } }
 
-        private var statusFirstText: AnimatedText = "" {
-            didSet {
-                reportChange()
-            }
-        }
+        private var statusFirstText: AnimatedText { didSet { reportChange() } }
 
-        private var statusSecondText: AnimatedText = "" {
-            didSet {
-                reportChange()
-            }
-        }
+        private var statusSecondText: AnimatedText { didSet { reportChange() } }
 
         // MARK: - ButtonBar Properties
 
-        private var videoButtonState: CallButton.State = .active {
-            didSet {
-                reportChange()
-            }
-        }
+        private var videoButtonState: CallButton.State { didSet { reportChange() } }
 
-        private var minimizeButtonState: CallButton.State = .inactive {
-            didSet {
-                reportChange()
-            }
-        }
+        private var videoButtonEnabled: Bool { didSet { reportChange() } }
 
-        private var videoButtonEnabled: Bool = true {
-            didSet {
-                reportChange()
-            }
-        }
-
-        private var minimizeButtonEnabled: Bool = true {
-            didSet {
-                reportChange()
-            }
-        }
+        private var minimizeButtonEnabled: Bool { didSet { reportChange() } }
 
         // MARK: - Other Properties
 
-        private var title: String = L10n.Call.Video.title {
-            didSet {
-                reportChange()
-            }
-        }
+        private var title: String { didSet { reportChange() } }
 
-        private var callDuration: String = "" {
-            didSet {
-                reportChange()
-            }
-        }
+        private var callDuration: String { didSet { reportChange() } }
 
-        private var remoteVideoStream: CoreSdkClient.StreamView? {
-            didSet {
-                reportChange()
-            }
-        }
+        private var remoteVideoStream: CoreSdkClient.StreamView? { didSet { reportChange() } }
 
-        private var localVideoStream: CoreSdkClient.StreamView? {
-            didSet {
-                reportChange()
-            }
-        }
+        private var localVideoStream: CoreSdkClient.StreamView? { didSet { reportChange() } }
 
-        private var topLabelHidden: Bool = false {
-            didSet {
-                reportChange()
-            }
-        }
+        private var topLabelHidden: Bool { didSet { reportChange() } }
 
-        private var bottomLabelHidden: Bool = false {
-            didSet {
-                reportChange()
-            }
-        }
-
-        private var endScreenShareButtonHidden: Bool = true {
-            didSet {
-                reportChange()
-            }
-        }
+        private var endScreenShareButtonHidden: Bool { didSet { reportChange() } }
 
         // MARK: - Initializer
 
@@ -171,6 +79,21 @@ extension CallVisualizer {
                     date: environment.date
                 )
             )
+
+            connectOperatorSize = .init(size: .normal, animated: true)
+            operatorImageVisible = false
+            animateOperator = false
+            connectViewHidden = true
+            connectVisibility = .show(animation: true)
+            statusFirstText = ""
+            statusSecondText = ""
+            videoButtonState = .active
+            videoButtonEnabled = true
+            minimizeButtonEnabled = true
+            title = L10n.Call.Video.title
+            callDuration = ""
+            topLabelHidden = false
+            endScreenShareButtonHidden = true
             statusStyle = style.connect.connecting
 
             self.call.kind.addObserver(self) { [weak self] kind, _ in
@@ -195,9 +118,9 @@ extension CallVisualizer {
 // MARK: - Props
 
 extension CallVisualizer.VideoCallViewModel {
+    typealias VideoCall = CallVisualizer.VideoCallView
     typealias Props = CallVisualizer.VideoCallViewController.Props
     typealias SizeObject = CallVisualizer.VideoCallView.ConnectOperatorView.Props.SizeObject
-    typealias OperatorImage = CallVisualizer.VideoCallView.OperatorImageView.Props
 
     func makeProps() -> Props {
         let connectViewProps = makeConnectViewProps()
@@ -220,10 +143,81 @@ extension CallVisualizer.VideoCallViewModel {
                 remoteVideoStream: remoteVideoStream,
                 localVideoStream: localVideoStream,
                 topLabelHidden: topLabelHidden,
-                bottomLabelHidden: bottomLabelHidden,
                 endScreenShareButtonHidden: endScreenShareButtonHidden,
                 connectViewHidden: connectViewHidden
             )
+        )
+    }
+
+    private func makeOperatorImageViewProps() -> VideoCall.OperatorImageView.Props {
+        return .init(
+            image: operatorImage?.image,
+            animated: operatorImage?.animated ?? false
+        )
+    }
+
+    private func makeUserImageProps() -> VideoCall.UserImageView.Props {
+        let operatorImageProps = makeOperatorImageViewProps()
+        return .init(
+            style: style.connect.connectOperator.operatorImage,
+            operatorImageViewProps: operatorImageProps,
+            operatorImageVisible: operatorImageVisible,
+            placeHolderImage: operatorImagePlaceholder
+        )
+    }
+
+    private func makeConnetOperatorViewProps() -> VideoCall.ConnectOperatorView.Props {
+        let userImageProps = makeUserImageProps()
+        return .init(
+            style: style.connect.connectOperator,
+            size: .init(
+                size: connectOperatorSize.size,
+                animated: connectOperatorSize.animated
+            ),
+            operatorAnimate: animateOperator,
+            userImageViewProps: userImageProps
+        )
+    }
+
+    private func makeConnectStatusViewProps() -> VideoCall.ConnectStatusView.Props {
+        return .init(
+            style: statusStyle,
+            firstLabelText: .init(
+                text: statusFirstText.text,
+                animated: statusFirstText.animated
+            ),
+            secondLabelText: .init(
+                text: statusSecondText.text,
+                animated: statusSecondText.animated
+            )
+        )
+    }
+
+    private func makeConnectViewProps() -> VideoCall.ConnectView.Props {
+        let connectOperatorViewProps = makeConnetOperatorViewProps()
+        let connectStatusViewProps = makeConnectStatusViewProps()
+        let connectViewProps: VideoCall.ConnectView.Props = .init(
+            operatorViewProps: connectOperatorViewProps,
+            statusViewProps: connectStatusViewProps,
+            state: state,
+            transition: connectVisibility
+        )
+
+        return connectViewProps
+    }
+
+    private func makeButtonBarProps() -> VideoCall.CallButtonBar.Props {
+        return .init(
+            style: style.buttonBar,
+            videoButtonTap: .init { [weak self] in
+                self?.toggleVideo()
+            },
+            minimizeTap: .init { [weak self] in
+                self?.delegate?(.minimized)
+            },
+            videoButtonState: videoButtonState,
+            videoButtonEnabled: videoButtonEnabled,
+            minimizeButtonEnabled: minimizeButtonEnabled
         )
     }
 }
@@ -235,16 +229,9 @@ extension CallVisualizer.VideoCallViewModel {
         self.state = state
         switch state {
         case .initial:
-            stopConnectTimer()
-            connectVisibility = .hide(animation: animated)
+            break
         case .queue:
-            stopConnectTimer()
-            operatorImagePlaceholder = style.connect.connectOperator.operatorImage.placeholderImage
-            animateOperator = animated
-            statusFirstText = .init(text: style.connect.queue.firstText, animated: false)
-            statusSecondText = .init(text: style.connect.queue.secondText, animated: false)
-            statusStyle = style.connect.queue
-            connectVisibility = .show(animation: animated)
+            break
         case .connecting(let name, let imageUrl):
             animateOperator = animated
             operatorImagePlaceholder = style.connect.connectOperator.operatorImage.placeholderImage
@@ -281,104 +268,11 @@ extension CallVisualizer.VideoCallViewModel {
     }
 }
 
-// MARK: - Make Props
+// MARK: - Private
 
 private extension CallVisualizer.VideoCallViewModel {
     func reportChange() {
         delegate?(.propsUpdated(makeProps()))
-    }
-
-    func makeOperatorImageViewProps() -> CallVisualizer.VideoCallView.OperatorImageView.Props {
-        return operatorImage ?? .init()
-    }
-
-    func makeUserImageProps() -> CallVisualizer.VideoCallView.UserImageView.Props {
-        let operatorImageProps = makeOperatorImageViewProps()
-        return .init(
-            style: style.connect.connectOperator.operatorImage,
-            operatorImageViewProps: operatorImageProps,
-            operatorImageVisible: operatorImageVisible,
-            placeHolderImage: operatorImagePlaceholder
-        )
-    }
-
-    func makeConnetOperatorViewProps() -> CallVisualizer.VideoCallView.ConnectOperatorView.Props {
-        let userImageProps = makeUserImageProps()
-        return .init(
-            style: style.connect.connectOperator,
-            size: .init(
-                size: connectOperatorSize.size,
-                animated: connectOperatorSize.animated
-            ),
-            operatorAnimate: animateOperator,
-            userImageViewProps: userImageProps
-        )
-    }
-
-    func makeConnectStatusViewProps() -> CallVisualizer.VideoCallView.ConnectStatusView.Props {
-        return .init(
-            style: statusStyle,
-            firstLabelText: .init(
-                text: statusFirstText.text,
-                animated: statusFirstText.animated
-            ),
-            secondLabelText: .init(
-                text: statusSecondText.text,
-                animated: statusSecondText.animated
-            )
-        )
-    }
-
-    func makeConnectViewProps() -> CallVisualizer.VideoCallView.ConnectView.Props {
-        let connectOperatorViewProps = makeConnetOperatorViewProps()
-        let connectStatusViewProps = makeConnectStatusViewProps()
-        let connectViewProps: CallVisualizer.VideoCallView.ConnectView.Props = .init(
-            operatorViewProps: connectOperatorViewProps,
-            statusViewProps: connectStatusViewProps,
-            state: state,
-            transition: connectVisibility
-        )
-
-        return connectViewProps
-    }
-
-    func makeButtonBarProps() -> CallVisualizer.VideoCallView.CallButtonBar.Props {
-        return .init(
-            style: style.buttonBar,
-            videoButtonTap: .init { [weak self] in
-                self?.toggleVideo()
-            },
-            minimizeTap: .init { [weak self] in
-                self?.delegate?(.minimized)
-            },
-            videoButtonState: videoButtonState,
-            minimizeButtonState: minimizeButtonState,
-            videoButtonEnabled: videoButtonEnabled,
-            minimizeButtonEnabled: minimizeButtonEnabled
-        )
-    }
-}
-
-// MARK: - Private
-
-private extension CallVisualizer.VideoCallViewModel {
-
-    func update(for state: InteractorState) {
-        switch state {
-        case .enqueueing:
-            setConnectViewState(.queue, animated: false)
-        case .engaged:
-            showConnecting()
-
-            let operatorName = L10n.Call.Operator.name.withOperatorName(
-                environment.engagedOperator()?.firstName
-            )
-            self.operatorName = operatorName
-        case .ended:
-            call.end()
-        default:
-            break
-        }
     }
 
     func toggleVideo() {
@@ -389,12 +283,10 @@ private extension CallVisualizer.VideoCallViewModel {
 
     func setButtonState(kind: CallButton.Kind, state: CallButton.State) {
         switch kind {
-        case .chat, .mute, .speaker:
+        case .chat, .mute, .speaker, .minimize:
             break
         case .video:
             videoButtonState = state
-        case .minimize:
-            minimizeButtonState = state
         }
     }
 
@@ -523,23 +415,7 @@ private extension CallVisualizer.VideoCallViewModel {
         setConnectViewState(.connected(name: engagedOperator?.firstName, imageUrl: engagedOperator?.picture?.url), animated: true)
         connectOperatorSize = .init(size: .large, animated: true)
         topLabelHidden = true
-        bottomLabelHidden = true
         operatorName = engagedOperator?.firstName
-        switch call.kind.value {
-        case .video(let direction):
-            switch direction {
-            case .twoWay:
-                call.video.stream.value.localStream.map {
-                    localVideoStream = $0.getStreamView()
-                }
-
-            default:
-                break
-            }
-
-        case .audio:
-            break
-        }
     }
 
     func showConnecting() {
@@ -606,7 +482,6 @@ private extension CallVisualizer.VideoCallViewModel {
         case .ended:
             durationCounter.stop()
         }
-
         updateButtons()
     }
 
@@ -638,6 +513,19 @@ extension CallVisualizer.VideoCallViewModel {
     struct AnimatedText: Equatable {
         let text: String?
         let animated: Bool
+    }
+
+    struct AnimatedImage: Equatable {
+        let image: UIImage?
+        let animated: Bool
+
+        init(
+            image: UIImage? = UIImage(),
+            animated: Bool = false
+        ) {
+            self.image = image
+            self.animated = animated
+        }
     }
 
     enum Transaition: Equatable {

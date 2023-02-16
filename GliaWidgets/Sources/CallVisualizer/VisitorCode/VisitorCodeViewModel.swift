@@ -84,27 +84,3 @@ extension CallVisualizer {
         }
     }
 }
-
-extension CallVisualizer.VideoCallViewModel {
-    struct Cache {
-        var setImageForKey: (UIImage?, String) -> Void
-        var getImageForKey: (String) -> UIImage?
-    }
-}
-
-extension CallVisualizer.VideoCallViewModel.Cache {
-    static let live: Self = {
-        var cache: [String: UIImage] = [:]
-        return .init(
-            setImageForKey: { image, key in cache[key] = image },
-            getImageForKey: { key in cache[key] }
-        )
-    }()
-
-    #if DEBUG
-    static let mock = Self(
-        setImageForKey: { _, _ in },
-        getImageForKey: { _ in nil }
-    )
-    #endif
-}

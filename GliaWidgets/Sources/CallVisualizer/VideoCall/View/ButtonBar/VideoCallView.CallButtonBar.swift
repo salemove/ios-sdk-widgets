@@ -46,6 +46,7 @@ extension CallVisualizer.VideoCallView {
             muteButton = .init(kind: .mute, style: props.style.muteButton)
             speakerButton = .init(kind: .speaker, style: props.style.speakerButton)
             minimizeButton = .init(kind: .minimize, style: props.style.minimizeButton)
+            effectView.isHidden = true
             super.init()
         }
 
@@ -80,6 +81,7 @@ extension CallVisualizer.VideoCallView {
             chatButton.isEnabled = false
             muteButton.isEnabled = false
             speakerButton.isEnabled = false
+            minimizeButton.state = .inactive
             stackView.axis = .horizontal
             stackView.distribution = .fillEqually
 
@@ -133,7 +135,6 @@ extension CallVisualizer.VideoCallView.CallButtonBar {
         let videoButtonTap: Cmd
         let minimizeTap: Cmd
         let videoButtonState: CallButton.State
-        let minimizeButtonState: CallButton.State
         let videoButtonEnabled: Bool
         let minimzeButtonEnabled: Bool
 
@@ -142,7 +143,6 @@ extension CallVisualizer.VideoCallView.CallButtonBar {
             videoButtonTap: Cmd,
             minimizeTap: Cmd,
             videoButtonState: CallButton.State = .active,
-            minimizeButtonState: CallButton.State = .inactive,
             videoButtonEnabled: Bool = true,
             minimizeButtonEnabled: Bool = true
         ) {
@@ -150,7 +150,6 @@ extension CallVisualizer.VideoCallView.CallButtonBar {
             self.videoButtonTap = videoButtonTap
             self.minimizeTap = minimizeTap
             self.videoButtonState = videoButtonState
-            self.minimizeButtonState = minimizeButtonState
             self.videoButtonEnabled = videoButtonEnabled
             self.minimzeButtonEnabled = minimizeButtonEnabled
         }
@@ -162,7 +161,6 @@ extension CallVisualizer.VideoCallView.CallButtonBar {
 private extension CallVisualizer.VideoCallView.CallButtonBar {
     func renderProps() {
         videoButton.state = props.videoButtonState
-        minimizeButton.state = props.minimizeButtonState
         videoButton.isEnabled = props.videoButtonEnabled
         minimizeButton.isEnabled = props.minimzeButtonEnabled
         adjustStackConstraints()

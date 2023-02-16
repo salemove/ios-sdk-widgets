@@ -34,6 +34,20 @@ extension CallVisualizer {
             }
         }
 
+        var renderLocalVideoStream: CoreSdkClient.StreamView? {
+            didSet {
+                guard renderLocalVideoStream != oldValue else { return }
+                localVideoView.streamView = renderLocalVideoStream
+            }
+        }
+
+        var renderRemoteVideoStream: CoreSdkClient.StreamView? {
+            didSet {
+                guard renderRemoteVideoStream != oldValue else { return }
+                remoteVideoView.streamView = renderRemoteVideoStream
+            }
+        }
+
         private var hideBarsWorkItem: DispatchWorkItem?
         private var headerTopConstraint: NSLayoutConstraint!
         private var buttonBarBottomConstraint: NSLayoutConstraint!
@@ -47,13 +61,6 @@ extension CallVisualizer {
         }()
         let buttonBar: CallButtonBar
         let connectView = ConnectView()
-
-        private lazy var bottomLabel = UILabel().make { label in
-            label.font = props.style.bottomTextFont
-            label.textColor = props.style.bottomTextColor
-            label.numberOfLines = 0
-            label.textAlignment = .center
-        }
 
         private lazy var topLabel = UILabel().make { label in
             label.text = props.style.topText
@@ -140,10 +147,7 @@ extension CallVisualizer {
                 props.style.accessibility.isFontScalingEnabled,
                 for: topLabel
             )
-            setFontScalingEnabled(
-                props.style.accessibility.isFontScalingEnabled,
-                for: bottomLabel
-            )
+
             let tapRecognizer = UITapGestureRecognizer(
                 target: self,
                 action: #selector(tap)
@@ -205,23 +209,6 @@ extension CallVisualizer {
             buttonBar.autoPinEdge(toSuperviewEdge: .left)
             buttonBar.autoPinEdge(toSuperviewEdge: .right)
 
-            addSubview(bottomLabel)
-            bottomLabel.adjustsFontSizeToFitWidth = true
-            bottomLabel.setContentCompressionResistancePriority(
-                .fittingSizeLevel,
-                for: .vertical
-            )
-            bottomLabel.autoPinEdge(.bottom, to: .top, of: buttonBar, withOffset: -38)
-            bottomLabel.autoMatch(.width, to: .width, of: self, withMultiplier: 0.6)
-            bottomLabel.autoAlignAxis(toSuperviewAxis: .vertical)
-            bottomLabel.autoPinEdge(
-                .top,
-                to: .bottom,
-                of: connectView,
-                withOffset: 10,
-                relation: .greaterThanOrEqual
-            )
-
             addSubview(localVideoView)
 
             adjustForCurrentOrientation()
@@ -277,7 +264,6 @@ extension CallVisualizer.VideoCallView {
         let remoteVideoStream: CoreSdkClient.StreamView?
         let localVideoStream: CoreSdkClient.StreamView?
         let topLabelHidden: Bool
-        let bottomLabelHidden: Bool
         let endScreenShareButtonHidden: Bool
         let connectViewHidden: Bool
     }
@@ -292,10 +278,9 @@ private extension CallVisualizer.VideoCallView {
         buttonBar.props = props.buttonBarProps
         renderTitle = props.headerTitle
         renderOperatorName = props.operatorName
-        remoteVideoView.streamView = props.remoteVideoStream
-        localVideoView.streamView = props.localVideoStream
+        renderRemoteVideoStream = props.remoteVideoStream
+        renderLocalVideoStream = props.localVideoStream
         topLabel.isHidden = props.topLabelHidden
-        bottomLabel.isHidden = props.bottomLabelHidden
         header.endScreenShareButton.isHidden = props.endScreenShareButtonHidden
         connectView.isHidden = props.connectViewHidden
         header.backButton.tap = props.backButtonTap.execute
@@ -349,6 +334,8 @@ private extension CallVisualizer.VideoCallView {
         if currentOrientation.isLandscape {
             showBars(duration: 0.3)
             hideLandscapeBarsAfterDelay()
+        } else {
+            showBars(duration: 0.3)
         }
     }
 
@@ -357,12 +344,10 @@ private extension CallVisualizer.VideoCallView {
             header.effect = .blur
             buttonBar.renderEffect = .blur
             topStackView.alpha = 0.0
-            bottomLabel.alpha = 0.0
         } else {
             header.effect = .none
             buttonBar.renderEffect = .none
             topStackView.alpha = 1.0
-            bottomLabel.alpha = 1.0
         }
 
         adjustVideoViews()

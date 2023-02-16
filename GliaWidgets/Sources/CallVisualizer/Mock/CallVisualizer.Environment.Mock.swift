@@ -6,7 +6,6 @@ extension CallVisualizer.Environment {
         uuid: { .mock },
         gcd: .mock,
         imageViewCache: .mock,
-        callVisualizerImageViewCache: .mock,
         timerProviding: .mock,
         uiApplication: .mock,
         requestVisitorCode: { _ in .init() },

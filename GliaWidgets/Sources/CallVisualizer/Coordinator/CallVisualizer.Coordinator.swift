@@ -11,10 +11,10 @@ extension CallVisualizer {
                 .screenShareHandler
                 .status
                 .addObserver(self) { [weak self] newStatus, _ in
+                    guard self?.videoCallCoordinator == nil else { return }
                     switch newStatus {
                     case .started:
-                        guard self?.videoCallCoordinator == nil else { break }
-                        self?.createBubbleView()
+                        self?.createScreenShareBubbleView()
                     case .stopped:
                         self?.removeBubbleView()
                     }
@@ -105,7 +105,7 @@ extension CallVisualizer {
         }
 
         func showVideoCallViewController() {
-            createBubbleView()
+            createOperatorImageBubbleView()
             bubbleView.alpha = 0.0
             let viewController = buildVideoCallViewController()
             environment
@@ -125,6 +125,10 @@ extension CallVisualizer {
 
         func end() {
             removeBubbleView()
+            videoCallCoordinator?.viewController?.dismiss(animated: true)
+            videoCallCoordinator = nil
+            environment.screenShareHandler.stop()
+            screenSharingCoordinator = nil
         }
 
         func addVideoStream(stream: CoreSdkClient.VideoStreamable) {
@@ -165,12 +169,23 @@ extension CallVisualizer {
         private var screenSharingCoordinator: ScreenSharingCoordinator?
         private var videoCallCoordinator: VideoCallCoodinator?
 
-        private func createBubbleView() {
+        private func createScreenShareBubbleView() {
             guard let parent = environment.presenter.getInstance()?.view else { return }
             bubbleView.kind = .view(screensharingImageView)
             bubbleView.frame = .init(origin: .init(x: parent.frame.maxX, y: parent.frame.maxY), size: bubbleSize)
             parent.addSubview(bubbleView)
             updateBubblePosition()
+        }
+
+        private func createOperatorImageBubbleView() {
+            guard let parent = environment.presenter.getInstance()?.view else { return }
+            let imageUrl = environment.engagedOperator()?.picture?.url
+            bubbleView.kind = .userImage(url: imageUrl)
+            if bubbleView.superview == nil {
+                bubbleView.frame = .init(origin: .init(x: parent.frame.maxX, y: parent.frame.maxY), size: bubbleSize)
+                parent.addSubview(bubbleView)
+                updateBubblePosition()
+            }
         }
 
         private func removeBubbleView() {

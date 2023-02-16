@@ -53,7 +53,6 @@ public class Glia {
             uuid: environment.uuid,
             gcd: environment.gcd,
             imageViewCache: environment.imageViewCache,
-            callVisualizerImageViewCache: environment.callVisualizerImageViewCache,
             timerProviding: environment.timerProviding,
             uiApplication: environment.uiApplication,
             requestVisitorCode: environment.coreSdk.requestVisitorCode,
