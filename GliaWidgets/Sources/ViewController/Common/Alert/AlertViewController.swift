@@ -76,7 +76,6 @@ class AlertViewController: UIViewController {
 
         let alertView = makeAlertView()
         self.alertView = alertView
-        alertView.isUserInteractionEnabled = false
 
         view.addSubview(alertView)
         alertView.autoPinEdgesToSuperviewSafeArea(with: kAlertInsets,
