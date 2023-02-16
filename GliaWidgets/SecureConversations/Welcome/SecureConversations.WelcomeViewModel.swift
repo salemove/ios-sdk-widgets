@@ -321,7 +321,6 @@ extension SecureConversations.WelcomeViewModel {
         case pickMedia(Command<MediaPickerEvent>)
         case takeMedia(Command<MediaPickerEvent>)
         case pickFile(Command<FilePickerEvent>)
-        case showFile(LocalFile)
         case showAlert(
             MessageAlertConfiguration,
             accessibilityIdentifier: String?,
@@ -474,10 +473,6 @@ extension SecureConversations.WelcomeViewModel {
 
     private func removeUpload(_ upload: FileUpload) {
         fileUploadListModel.removeUpload(upload)
-    }
-
-    private func fileTapped(_ file: LocalFile) {
-        delegate?(.showFile(file))
     }
 }
 

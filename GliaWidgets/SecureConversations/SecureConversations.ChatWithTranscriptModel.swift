@@ -159,7 +159,8 @@ extension SecureConversations {
         typealias Action = ChatViewModel.Action
 
         enum DelegateEvent {
-            // TODO: MOB-1871
+            case showFile(LocalFile)
+            case openLink(URL)
         }
 
         typealias Event = ChatViewModel.Event
@@ -301,11 +302,9 @@ extension SecureConversations {
                 // Not supported for transcript.
                 break
             case .fileTapped(let file):
-                // TODO: MOB-1871
-                break
+                fileTapped(file)
             case .downloadTapped(let download):
-                // TODO: MOB-1871
-                break
+                downloadTapped(download)
             case .choiceOptionSelected:
                 // Not supported for transcript.
                 break
@@ -313,8 +312,7 @@ extension SecureConversations {
                 // Not supported for transcript.
                 break
             case .linkTapped(let url):
-                // TODO: MOB-1871
-                break
+                linkTapped(url)
             case .customCardOptionSelected:
                 // Not supported for transcript.
                 break
@@ -323,6 +321,42 @@ extension SecureConversations {
 
         func start() {
             loadHistory { _ in }
+        }
+
+        private func fileTapped(_ file: LocalFile) {
+            delegate?(.showFile(file))
+        }
+
+        private func downloadTapped(_ download: FileDownload) {
+            switch download.state.value {
+            case .none:
+                download.startDownload()
+            case .downloading:
+                break
+            case .downloaded(let file):
+                delegate?(.showFile(file))
+            case .error:
+                download.startDownload()
+            }
+        }
+
+        func linkTapped(_ url: URL) {
+            switch url.scheme?.lowercased() {
+            case "tel",
+                "mailto":
+                guard
+                    environment.uiApplication.canOpenURL(url)
+                else { return }
+
+                environment.uiApplication.open(url)
+
+            case "http",
+                "https":
+                delegate?(.openLink(url))
+
+            default:
+                return
+            }
         }
     }
 }
@@ -343,6 +377,7 @@ extension SecureConversations.TranscriptModel {
         var createFileDownload: FileDownloader.CreateFileDownload
         var loadChatMessagesFromHistory: () -> Bool
         var fetchChatHistory: CoreSdkClient.FetchChatHistory
+        var uiApplication: UIKitBased.UIApplication
     }
 }
 
