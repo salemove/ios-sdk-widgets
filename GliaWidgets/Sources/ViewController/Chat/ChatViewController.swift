@@ -20,7 +20,7 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter,
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel.event(.chat(.viewDidLoad))
+        viewModel.event(.viewDidLoad)
     }
 
     override func viewDidLayoutSubviews() {
@@ -62,41 +62,40 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter,
             viewModel.item(for: row, in: section)
         }
         view.messageEntryView.textChanged = { [viewModel] text in
-            viewModel.event(.chat(.messageTextChanged(text)))
+            viewModel.event(.messageTextChanged(text))
         }
         view.messageEntryView.sendTapped = { [viewModel] in
-            viewModel.event(.chat(.sendTapped))
+            viewModel.event(.sendTapped)
         }
         view.messageEntryView.pickMediaTapped = { [viewModel] in
-            viewModel.event(.chat(.pickMediaTapped))
+            viewModel.event(.pickMediaTapped)
         }
         view.fileTapped = { [viewModel] file in
-            viewModel.event(.chat(.fileTapped(file)))
+            viewModel.event(.fileTapped(file))
         }
         view.downloadTapped = { [viewModel] download in
-            viewModel.event(.chat(.downloadTapped(download)))
+            viewModel.event(.downloadTapped(download))
         }
         view.callBubbleTapped = { [viewModel] in
-            viewModel.event(.chat(.callBubbleTapped))
+            viewModel.event(.callBubbleTapped)
         }
         view.choiceOptionSelected = { [viewModel] option, messageId in
-            viewModel.event(.chat(.choiceOptionSelected(option, messageId)))
+            viewModel.event(.choiceOptionSelected(option, messageId))
         }
         view.chatScrolledToBottom = { [viewModel] bottomReached in
-            viewModel.event(.chat(.chatScrolled(bottomReached: bottomReached)))
+            viewModel.event(.chatScrolled(bottomReached: bottomReached))
         }
         view.linkTapped = { [viewModel] url in
-            viewModel.event(.chat(.linkTapped(url)))
+            viewModel.event(.linkTapped(url))
         }
         view.selectCustomCardOption = { [viewModel] option, messageId in
-            viewModel.event(.chat(.customCardOptionSelected(option: option, messageId: messageId)))
+            viewModel.event(.customCardOptionSelected(option: option, messageId: messageId))
         }
 
         var viewModel = viewModel
 
         viewModel.action = { [weak self] action in
-            guard case let .chat(chatAction) = action else { return }
-            switch chatAction {
+            switch action {
             case .queue:
                 view.setConnectState(.queue, animated: false)
             case .connected(let name, let imageUrl):
