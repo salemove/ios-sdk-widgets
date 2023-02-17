@@ -193,7 +193,10 @@ extension ViewController {
         try? Glia.sharedInstance.configure(
             with: configuration,
             queueId: queueId,
-            visitorContext: nil
+            visitorContext: (configuration.visitorContext?.assetId)
+                .map(VisitorContext.AssetId.init(rawValue:))
+                .map(VisitorContext.ContextType.assetId)
+                .map(VisitorContext.init(_:))
         ) { [weak self] in
             self?.configureButton.setTitle(originalTitle, for: .normal)
             debugPrint("SDK has been configured")
