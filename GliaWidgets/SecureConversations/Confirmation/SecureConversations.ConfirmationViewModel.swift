@@ -33,8 +33,11 @@ extension SecureConversations.ConfirmationViewModel {
         let confirmationStyle = environment.confirmationStyle
         let confirmationViewProps = SecureConversations.ConfirmationView.Props(
             style: confirmationStyle,
-            backButtonTap: Cmd { [weak self] in self?.delegate?(.backTapped) },
-            closeButtonTap: Cmd { [weak self] in self?.delegate?(.closeTapped) },
+            header: Self.buildHeaderProps(
+                style: confirmationStyle,
+                backButtonCmd: Cmd(closure: { [weak self] in self?.delegate?(.backTapped) }),
+                closeButtonCmd: Cmd(closure: { [weak self] in self?.delegate?(.closeTapped) })
+            ),
             checkMessageButtonTap: Cmd { print("check messages") }
         )
 
@@ -43,6 +46,22 @@ extension SecureConversations.ConfirmationViewModel {
         )
 
         return viewControllerProps
+    }
+
+    static func buildHeaderProps(
+        style: SecureConversations.ConfirmationStyle,
+        backButtonCmd: Cmd,
+        closeButtonCmd: Cmd
+    ) -> Header.Props {
+        Header.Props(
+            title: style.headerTitle,
+            effect: .none,
+            endButton: .init(style: style.header.endButton, title: style.header.endButton.title),
+            backButton: .init(tap: backButtonCmd, style: style.header.backButton),
+            closeButton: .init(tap: closeButtonCmd, style: style.header.closeButton),
+            endScreenshareButton: .init(style: style.header.endScreenShareButton),
+            style: style.header
+        )
     }
 }
 

@@ -159,15 +159,13 @@ extension SecureConversations.WelcomeViewModel {
         let props: Props = .welcome(
             .init(
                 style: Self.welcomeStyle(for: self),
-                backButtonTap: Cmd { [weak self] in self?.delegate?(.backTapped) },
-                closeButtonTap: Cmd { [weak self] in self?.delegate?(.closeTapped) },
-                checkMessageButtonTap: Cmd { [weak self] in self?.delegate?(.transcriptRequested)
-                },
+                checkMessageButtonTap: Cmd { [weak self] in self?.delegate?(.transcriptRequested) },
                 filePickerButton: Self.filePickerButtonState(for: self),
                 sendMessageButton: sendMessageButton,
                 messageTextViewProps: Self.textViewState(for: self),
                 warningMessage: warningMessage,
-                fileUploadListProps: fileUploadListModel.props()
+                fileUploadListProps: fileUploadListModel.props(),
+                headerProps: Self.headerState(for: self, with: welcomeStyle)
             )
         )
         return props
@@ -296,6 +294,27 @@ extension SecureConversations.WelcomeViewModel {
         }
 
         return text.count <= Self.messageTextLimit
+    }
+
+    static func headerState(
+        for instance: SecureConversations.WelcomeViewModel,
+        with style: SecureConversations.WelcomeStyle
+    ) -> Header.Props {
+        .init(
+            title: style.headerTitle,
+            effect: .none,
+            endButton: .init(),
+            backButton: .init(
+                tap: Cmd { [weak instance] in instance?.delegate?(.backTapped) },
+                style: style.header.backButton
+            ),
+            closeButton: .init(
+                tap: Cmd { [weak instance] in instance?.delegate?(.closeTapped) },
+                style: style.header.closeButton
+            ),
+            endScreenshareButton: .init(style: style.header.endScreenShareButton),
+            style: style.header
+        )
     }
 }
 

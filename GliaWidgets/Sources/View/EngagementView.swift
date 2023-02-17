@@ -10,10 +10,12 @@ class EngagementView: BaseView {
     init(
         with style: EngagementStyle,
         layout: ConnectView.Layout,
-        environment: Environment
+        environment: Environment,
+        headerProps: Header.Props
     ) {
         self.style = style
-        self.header = Header(with: style.header)
+        print(headerProps)
+        self.header = Header(props: headerProps)
         self.environment = environment
         self.connectView = ConnectView(
             with: style.connect,
