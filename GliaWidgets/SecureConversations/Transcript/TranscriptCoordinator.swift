@@ -1,4 +1,5 @@
 import Foundation
+import SafariServices
 
 extension SecureConversations {
     final class TranscriptCoordinator: FlowCoordinator {
@@ -6,8 +7,14 @@ extension SecureConversations {
 
         var delegate: ((DelegateEvent) -> Void)?
         var environment: Environment
+        let navigationPresenter: NavigationPresenter
+        var presentedController: PresentedController?
 
-        init(environment: Environment) {
+        init(
+            navigationPresenter: NavigationPresenter,
+            environment: Environment
+        ) {
+            self.navigationPresenter = navigationPresenter
             self.environment = environment
         }
 
@@ -24,13 +31,46 @@ extension SecureConversations {
                     uiImage: environment.uiImage,
                     createFileDownload: environment.createFileDownload,
                     loadChatMessagesFromHistory: environment.loadChatMessagesFromHistory,
-                    fetchChatHistory: environment.fetchChatHistory
+                    fetchChatHistory: environment.fetchChatHistory,
+                    uiApplication: environment.uiApplication
                 )
             )
+
+            model.delegate = { [weak self] event in
+                switch event {
+                case .showFile(let file):
+                    self?.presentQuickLookController(with: file)
+                case .openLink(let url):
+                    self?.presentWebViewController(with: url)
+                }
+            }
+
             let controller = ChatViewController(
-                viewModel: .transcript(model), viewFactory: environment.viewFactory
+                viewModel: .transcript(model),
+                viewFactory: environment.viewFactory
             )
             return controller
+        }
+
+        private func presentQuickLookController(with file: LocalFile) {
+            let viewModel = QuickLookViewModel(file: file)
+            viewModel.delegate = { [weak self] event in
+                switch event {
+                case .finished:
+                    self?.presentedController = nil
+                }
+            }
+            let controller = QuickLookController(viewModel: viewModel)
+            presentedController = .quickLook(controller)
+            navigationPresenter.present(controller.viewController)
+        }
+
+        private func presentWebViewController(with url: URL) {
+            let configuration = SFSafariViewController.Configuration()
+            configuration.entersReaderIfAvailable = true
+            let safariViewController = SFSafariViewController(url: url, configuration: configuration)
+            safariViewController.view.accessibilityIdentifier = "safari_root_view"
+            navigationPresenter.present(safariViewController)
         }
     }
 }
@@ -48,5 +88,12 @@ extension SecureConversations.TranscriptCoordinator {
         var createFileDownload: FileDownloader.CreateFileDownload
         var loadChatMessagesFromHistory: () -> Bool
         var fetchChatHistory: CoreSdkClient.FetchChatHistory
+        var uiApplication: UIKitBased.UIApplication
+    }
+}
+
+extension SecureConversations.TranscriptCoordinator {
+    enum PresentedController {
+        case quickLook(QuickLookController)
     }
 }

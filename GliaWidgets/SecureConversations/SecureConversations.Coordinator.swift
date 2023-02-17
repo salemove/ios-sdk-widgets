@@ -115,8 +115,6 @@ extension SecureConversations {
                 )
             case let .pickFile(callback):
                 presentFilePickerController(with: callback)
-            case let .showFile(file):
-                presentQuickLookController(with: file)
             case let .showAlert(conf, accessibilityIdentifier, dismissed):
                 controller?.presentAlert(
                     with: conf,
@@ -219,14 +217,9 @@ extension SecureConversations {
             navigationPresenter.present(controller.viewController)
         }
 
-        private func presentQuickLookController(with file: LocalFile) {
-            let viewModel = QuickLookViewModel(file: file)
-            let controller = QuickLookController(viewModel: viewModel)
-            navigationPresenter.present(controller.viewController)
-        }
-
         private func navigateToTranscript() {
             let transcriptCoordinator = TranscriptCoordinator(
+                navigationPresenter: navigationPresenter,
                 environment: .init(
                     viewFactory: environment.viewFactory,
                     fetchFile: environment.fetchFile,
@@ -238,7 +231,8 @@ extension SecureConversations {
                     uiImage: environment.uiImage,
                     createFileDownload: environment.createFileDownload,
                     loadChatMessagesFromHistory: environment.loadChatMessagesFromHistory,
-                    fetchChatHistory: environment.fetchChatHistory
+                    fetchChatHistory: environment.fetchChatHistory,
+                    uiApplication: environment.uiApplication
                 )
             )
             pushCoordinator(transcriptCoordinator)
