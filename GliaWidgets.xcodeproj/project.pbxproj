@@ -213,6 +213,7 @@
 		756B8B1C2996B116001D2BB2 /* ChatCoordinator.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756B8B1B2996B116001D2BB2 /* ChatCoordinator.Environment.swift */; };
 		756B8B1E2996BAEA001D2BB2 /* HeaderButton.Props.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756B8B1D2996BAEA001D2BB2 /* HeaderButton.Props.swift */; };
 		756B8B202996EFA2001D2BB2 /* Header.Props.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756B8B1F2996EFA2001D2BB2 /* Header.Props.swift */; };
+		756B8B232996F373001D2BB2 /* PlaybookViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756B8B222996F373001D2BB2 /* PlaybookViewController.swift */; };
 		7594091529891C5C008B173A /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7594091429891C5C008B173A /* Environment.swift */; };
 		7594093D298D376B008B173A /* RemoteConfiguration+AssetsBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7594093A298D376A008B173A /* RemoteConfiguration+AssetsBuilder.swift */; };
 		7594093E298D376B008B173A /* RemoteConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7594093B298D376A008B173A /* RemoteConfiguration.swift */; };
@@ -253,6 +254,7 @@
 		75AF8CF127DBB1F9009EEE2C /* SurveyViewController.View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AF8CF027DBB1F9009EEE2C /* SurveyViewController.View.swift */; };
 		75AF8D0427DBF07D009EEE2C /* Survey.ScaleQuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AF8D0327DBF07D009EEE2C /* Survey.ScaleQuestionView.swift */; };
 		75AF8D1027DFF4B3009EEE2C /* Survey.ValidationErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AF8D0E27DE8305009EEE2C /* Survey.ValidationErrorView.swift */; };
+		75C48498299AC71F003EC223 /* Header+Playbook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C48497299AC71F003EC223 /* Header+Playbook.swift */; };
 		75F58EE127E7D5300065BA2D /* Survey.ViewController.Props.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F58EE027E7D5300065BA2D /* Survey.ViewController.Props.swift */; };
 		75FF151427F3A2D600FE7BE2 /* Theme+Survey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FF151327F3A2D600FE7BE2 /* Theme+Survey.swift */; };
 		75FF151727F4E13900FE7BE2 /* Theme.Survey.BooleanQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FF151627F4E13900FE7BE2 /* Theme.Survey.BooleanQuestion.swift */; };
@@ -742,6 +744,7 @@
 		756B8B1B2996B116001D2BB2 /* ChatCoordinator.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCoordinator.Environment.swift; sourceTree = "<group>"; };
 		756B8B1D2996BAEA001D2BB2 /* HeaderButton.Props.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderButton.Props.swift; sourceTree = "<group>"; };
 		756B8B1F2996EFA2001D2BB2 /* Header.Props.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Header.Props.swift; sourceTree = "<group>"; };
+		756B8B222996F373001D2BB2 /* PlaybookViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybookViewController.swift; sourceTree = "<group>"; };
 		7594091429891C5C008B173A /* Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
 		7594093A298D376A008B173A /* RemoteConfiguration+AssetsBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "RemoteConfiguration+AssetsBuilder.swift"; sourceTree = "<group>"; };
 		7594093B298D376A008B173A /* RemoteConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteConfiguration.swift; sourceTree = "<group>"; };
@@ -785,6 +788,7 @@
 		75AF8D0A27DD1DD3009EEE2C /* Survey.SingleChoiceQuestionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Survey.SingleChoiceQuestionView.swift; sourceTree = "<group>"; };
 		75AF8D0C27DD464A009EEE2C /* Survey.InputQuestionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Survey.InputQuestionView.swift; sourceTree = "<group>"; };
 		75AF8D0E27DE8305009EEE2C /* Survey.ValidationErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Survey.ValidationErrorView.swift; sourceTree = "<group>"; };
+		75C48497299AC71F003EC223 /* Header+Playbook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Header+Playbook.swift"; sourceTree = "<group>"; };
 		75F58EE027E7D5300065BA2D /* Survey.ViewController.Props.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Survey.ViewController.Props.swift; sourceTree = "<group>"; };
 		75FF151327F3A2D600FE7BE2 /* Theme+Survey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Theme+Survey.swift"; sourceTree = "<group>"; };
 		75FF151627F4E13900FE7BE2 /* Theme.Survey.BooleanQuestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.Survey.BooleanQuestion.swift; sourceTree = "<group>"; };
@@ -1292,6 +1296,7 @@
 		1A205D7925655CEC003AA3CD /* TestingApp */ = {
 			isa = PBXGroup;
 			children = (
+				756B8B212996F2D8001D2BB2 /* Playbook */,
 				84265E6C29914DAA00D65842 /* ViewController */,
 				C46B2463262F05BE001245A1 /* TestingApp.entitlements */,
 				1A60AFF32567CDFB00E53F53 /* Settings */,
@@ -1789,6 +1794,7 @@
 			isa = PBXGroup;
 			children = (
 				1A60B0032567F25600E53F53 /* Header.swift */,
+				75C48497299AC71F003EC223 /* Header+Playbook.swift */,
 				756B8B1F2996EFA2001D2BB2 /* Header.Props.swift */,
 				1A60B0072567F29900E53F53 /* HeaderStyle.swift */,
 				845E2F71283D068000C04D56 /* HeaderStyle.Accessibility.swift */,
@@ -2149,6 +2155,14 @@
 				C03A8048292BC8DB00DDECA6 /* CallViewControllerTests.swift */,
 			);
 			path = Sources;
+			sourceTree = "<group>";
+		};
+		756B8B212996F2D8001D2BB2 /* Playbook */ = {
+			isa = PBXGroup;
+			children = (
+				756B8B222996F373001D2BB2 /* PlaybookViewController.swift */,
+			);
+			path = Playbook;
 			sourceTree = "<group>";
 		};
 		7594090E29891A06008B173A /* EngagementCoordinator */ = {
@@ -3388,6 +3402,7 @@
 				1AC7A74F2582571100567FF8 /* Interactor.swift in Sources */,
 				845E2F72283D068000C04D56 /* HeaderStyle.Accessibility.swift in Sources */,
 				1A1E30CB25F9FDC400850E68 /* ChatImageFileContentStyle.swift in Sources */,
+				75C48498299AC71F003EC223 /* Header+Playbook.swift in Sources */,
 				1A60AF93256674F900E53F53 /* Color.swift in Sources */,
 				1A38A8BA258B94D60089DE7B /* ImageView.swift in Sources */,
 				C0857DE528D470C1008D171D /* Theme+Shadow.swift in Sources */,
@@ -3704,6 +3719,7 @@
 				AF11F30728BE6F0C002ACEB4 /* UIAlertController+Extensions.swift in Sources */,
 				754313CD2870B1C400C9C1C6 /* UserDefaultsStored.swift in Sources */,
 				1A205D7B25655CEC003AA3CD /* AppDelegate.swift in Sources */,
+				756B8B232996F373001D2BB2 /* PlaybookViewController.swift in Sources */,
 				754313CB2870A65400C9C1C6 /* SettingsViewController.Props.swift in Sources */,
 				7543141828806AEB00C9C1C6 /* EnvironmentSettingsTextCell.swift in Sources */,
 				84265E6E29914DDA00D65842 /* ViewController+CallVisualizer.swift in Sources */,
