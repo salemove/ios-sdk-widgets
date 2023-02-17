@@ -173,6 +173,13 @@ extension SecureConversations {
 
         private let downloader: FileDownloader
 
+        private var messageText = "" {
+            didSet {
+                validateMessage()
+                action?(.setMessageText(messageText))
+            }
+        }
+
         private let isCustomCardSupported: Bool
 
         private var isViewLoaded: Bool = false
@@ -287,16 +294,14 @@ extension SecureConversations {
                 start()
                 isViewLoaded = true
             case .messageTextChanged(let text):
-                // TODO: MOB-1740
-                break
+                messageText = text
             case .sendTapped:
-                // TODO: MOB-1740
-                break
+                sendMessage()
             case .removeUploadTapped:
-                // Not supported for transcript.
+                // TODO: MOB-1742
                 break
             case .pickMediaTapped:
-                // Not supported for transcript.
+                // TODO: MOB-1742
                 break
             case .callBubbleTapped:
                 // Not supported for transcript.
@@ -358,6 +363,33 @@ extension SecureConversations {
                 return
             }
         }
+
+        @discardableResult
+        private func validateMessage() -> Bool {
+            let canSendText = !messageText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            // TODO: File uploading validation MOB-1742
+            action?(.sendButtonHidden(!canSendText))
+            return canSendText
+        }
+
+        private func sendMessage() {
+            guard validateMessage() else { return }
+
+           _ = environment.sendSecureMessage(
+                messageText,
+                nil, // TODO: File uploading MOB-1742
+                environment.queueIds
+           ) { [weak self] result in
+               switch result {
+               case .success:
+                   self?.messageText = ""
+                   // TODO: MOB-1738
+               case .failure:
+                   // TODO: MOB-1874
+                   break
+               }
+           }
+        }
     }
 }
 
@@ -378,6 +410,8 @@ extension SecureConversations.TranscriptModel {
         var loadChatMessagesFromHistory: () -> Bool
         var fetchChatHistory: CoreSdkClient.FetchChatHistory
         var uiApplication: UIKitBased.UIApplication
+        var sendSecureMessage: CoreSdkClient.SendSecureMessage
+        var queueIds: [String]
     }
 }
 
