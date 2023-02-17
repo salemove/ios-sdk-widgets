@@ -13,20 +13,21 @@ extension AlertViewController {
         alertView.showsPoweredBy = conf.showsPoweredBy
         alertView.showsCloseButton = false
 
-        let declineButton = ActionButton(with: viewFactory.theme.alert.negativeAction)
-        declineButton.title = conf.decline
-        declineButton.tap = { [weak self] in
-            self?.dismiss(animated: true) {
-                declined()
-            }
-        }
-        let acceptButton = ActionButton(with: viewFactory.theme.alert.positiveAction)
-        acceptButton.title = conf.accept
-        acceptButton.tap = { [weak self] in
-            self?.dismiss(animated: true) {
-                accepted()
-            }
-        }
+        let declineButton = ActionButton(
+            props: .init(
+                style: viewFactory.theme.alert.negativeAction,
+                tap: .init { [weak self] in self?.dismiss(animated: true, completion: declined) },
+                title: conf.decline
+            )
+        )
+
+        let acceptButton = ActionButton(
+            props: .init(
+                style: viewFactory.theme.alert.positiveAction,
+                tap: .init { [weak self] in self?.dismiss(animated: true, completion: accepted) },
+                title: conf.accept
+            )
+        )
         alertView.addActionView(declineButton)
         alertView.addActionView(acceptButton)
 

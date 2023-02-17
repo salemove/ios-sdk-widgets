@@ -8,8 +8,7 @@ extension SecureConversations {
 
         struct Props: Equatable {
             let style: ConfirmationStyle
-            let backButtonTap: Cmd
-            let closeButtonTap: Cmd
+            let header: Header.Props
             let checkMessageButtonTap: Cmd
         }
 
@@ -64,7 +63,9 @@ extension SecureConversations {
         }
 
         init(props: Props) {
-            self.header = Header(with: props.style.header)
+            self.header = Header(
+                props: props.header
+            )
             self.props = props
             super.init()
         }
@@ -159,9 +160,7 @@ extension SecureConversations {
         }
 
         private func renderProps() {
-            header.title = props.style.headerTitle
-            header.backButton.tap = props.backButtonTap.execute
-            header.closeButton.tap = props.closeButtonTap.execute
+            header.props = props.header
             header.showCloseButton()
 
             titleLabel.text = props.style.titleStyle.text

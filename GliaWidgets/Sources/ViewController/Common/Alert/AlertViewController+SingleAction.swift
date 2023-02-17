@@ -12,13 +12,14 @@ extension AlertViewController {
 
         let buttonStyle = viewFactory.theme.alert.positiveAction
 
-        let button = ActionButton(with: buttonStyle)
-        button.accessibilityIdentifier = accessibilityIdentifier
-        button.title = conf.buttonTitle
-        button.tap = { [weak self] in
-            self?.dismiss(animated: true)
-            actionTapped()
-        }
+        let button = ActionButton(
+            props: .init(
+                style: buttonStyle,
+                tap: .init { [weak self] in self?.dismiss(animated: true); actionTapped() },
+                title: conf.buttonTitle ?? "",
+                accessibilityIdentifier: accessibilityIdentifier
+            )
+        )
         alertView.addActionView(button)
 
         return alertView
