@@ -32,7 +32,9 @@ extension SecureConversations {
                     createFileDownload: environment.createFileDownload,
                     loadChatMessagesFromHistory: environment.loadChatMessagesFromHistory,
                     fetchChatHistory: environment.fetchChatHistory,
-                    uiApplication: environment.uiApplication
+                    uiApplication: environment.uiApplication,
+                    sendSecureMessage: environment.sendSecureMessage,
+                    queueIds: environment.queueIds
                 )
             )
 
@@ -89,6 +91,8 @@ extension SecureConversations.TranscriptCoordinator {
         var loadChatMessagesFromHistory: () -> Bool
         var fetchChatHistory: CoreSdkClient.FetchChatHistory
         var uiApplication: UIKitBased.UIApplication
+        var sendSecureMessage: CoreSdkClient.SendSecureMessage
+        var queueIds: [String]
     }
 }
 
