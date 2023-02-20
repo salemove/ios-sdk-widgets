@@ -1,5 +1,5 @@
 /// Style of the call view bottom button bar (with buttons like "Chat", "Video", "Mute", "Speaker" and "Minimize").
-public struct CallButtonBarStyle {
+public struct CallButtonBarStyle: Equatable {
     /// Style of chat button.
     public var chatButton: CallButtonStyle
 

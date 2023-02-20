@@ -13,7 +13,7 @@ import SalemoveSDK
 ///  3. Handling engagement, featuring video calling, screen sharing, and much more in future.
 public final class CallVisualizer {
     private var environment: Environment
-    var coordinator: Coordinator?
+    private var coordinator: Coordinator?
 
     init(environment: Environment) {
         self.environment = environment
@@ -65,18 +65,76 @@ public final class CallVisualizer {
         )
         coordinator = Coordinator(
             environment: .init(
+                data: environment.data,
+                uuid: environment.uuid,
+                gcd: environment.gcd,
+                imageViewCache: environment.imageViewCache,
+                uiApplication: environment.uiApplication,
                 viewFactory: viewFactory,
                 presenter: environment.callVisualizerPresenter,
                 bundleManaging: environment.bundleManaging,
                 screenShareHandler: environment.screenShareHandler,
                 timerProviding: environment.timerProviding,
-                requestVisitorCode: environment.requestVisitorCode
+                requestVisitorCode: environment.requestVisitorCode,
+                audioSession: environment.audioSession,
+                date: environment.date,
+                engagedOperator: environment.engagedOperator
             )
         )
 
         coordinator?.showVisitorCodeViewController(by: presentation)
 
         startObservingInteractorEvents()
+    }
+
+    public func showVideoCallViewController() {
+        coordinator?.showVideoCallViewController()
+    }
+
+    func addVideoStream(stream: CoreSdkClient.VideoStreamable) {
+        coordinator?.addVideoStream(stream: stream)
+    }
+
+    func endSession() {
+        coordinator?.end()
+    }
+
+    func offerScreenShare(
+        from operators: [CoreSdkClient.Operator],
+        configuration: ScreenShareOfferAlertConfiguration,
+        accepted: @escaping () -> Void,
+        declined: @escaping () -> Void
+    ) {
+        coordinator?.offerScreenShare(
+            from: operators,
+            configuration: configuration,
+            accepted: accepted,
+            declined: declined
+        )
+    }
+
+    func offerMediaUpgrade(
+        from operators: [CoreSdkClient.Operator],
+        offer: CoreSdkClient.MediaUpgradeOffer,
+        answer: @escaping CoreSdkClient.AnswerWithSuccessBlock,
+        accepted: @escaping () -> Void,
+        declined: @escaping () -> Void
+    ) {
+        let alertConfiguration = Theme().alertConfiguration
+        switch offer.type {
+        case .video:
+            let configuration = offer.direction == .oneWay
+                ? alertConfiguration.oneWayVideoUpgrade
+                : alertConfiguration.twoWayVideoUpgrade
+            coordinator?.offerMediaUpgrade(
+                from: operators,
+                configuration: configuration,
+                accepted: accepted,
+                declined: declined
+            )
+        default:
+            break
+        }
     }
 }
 

@@ -125,7 +125,7 @@ final class ConnectView: BaseView {
                 statusView.setSecondText(secondText, animated: animated)
             } else {
                 statusView.setFirstText(nil, animated: animated)
-                statusView.setFirstText(nil, animated: animated)
+                statusView.setSecondText(nil, animated: animated)
             }
             statusView.setStyle(style.connected)
             show(animated: animated)

@@ -1,7 +1,8 @@
 import UIKit
 
 /// Base style for engagement views.
-public class EngagementStyle {
+public class EngagementStyle: Equatable {
+
     /// Style of the view's header (navigation bar area).
     public var header: HeaderStyle
 
@@ -30,5 +31,14 @@ public class EngagementStyle {
         self.connect = connect
         self.backgroundColor = backgroundColor
         self.preferredStatusBarStyle = preferredStatusBarStyle
+    }
+}
+
+extension EngagementStyle {
+    public static func == (lhs: EngagementStyle, rhs: EngagementStyle) -> Bool {
+        return lhs.header == rhs.header &&
+               lhs.connect == rhs.connect &&
+               lhs.backgroundColor == rhs.backgroundColor &&
+               lhs.preferredStatusBarStyle == rhs.preferredStatusBarStyle
     }
 }

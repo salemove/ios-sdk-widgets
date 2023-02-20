@@ -1,7 +1,7 @@
 import UIKit
 
 /// Style of the operator view inside the connect view.
-public struct ConnectOperatorStyle {
+public struct ConnectOperatorStyle: Equatable {
     /// Style of the operator's image.
     public var operatorImage: UserImageStyle
 
