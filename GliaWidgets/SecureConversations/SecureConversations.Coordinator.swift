@@ -243,7 +243,12 @@ extension SecureConversations {
                     sendSecureMessage: environment.sendSecureMessage,
                     queueIds: environment.queueIds,
                     listQueues: environment.listQueues,
-                    alertConfiguration: viewFactory.theme.alertConfiguration
+                    alertConfiguration: viewFactory.theme.alertConfiguration,
+                    createFileUploadListModel: environment.createFileUploadListModel,
+                    uuid: environment.uuid,
+                    secureUploadFile: environment.uploadSecureFile,
+                    fileUploadListStyle: viewFactory.theme.chat.messageEntry.uploadList,
+                    fetchSiteConfigurations: environment.fetchSiteConfigurations
                 )
             )
             pushCoordinator(transcriptCoordinator)
