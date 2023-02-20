@@ -232,7 +232,9 @@ extension SecureConversations {
                     createFileDownload: environment.createFileDownload,
                     loadChatMessagesFromHistory: environment.loadChatMessagesFromHistory,
                     fetchChatHistory: environment.fetchChatHistory,
-                    uiApplication: environment.uiApplication
+                    uiApplication: environment.uiApplication,
+                    sendSecureMessage: environment.sendSecureMessage,
+                    queueIds: environment.queueIds
                 )
             )
             pushCoordinator(transcriptCoordinator)
