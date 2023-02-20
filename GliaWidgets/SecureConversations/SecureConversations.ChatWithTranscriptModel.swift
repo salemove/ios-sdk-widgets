@@ -168,9 +168,17 @@ extension SecureConversations {
                 accessibilityIdentifier: String?,
                 dismissed: (() -> Void)?
             )
+            case pickMedia(ObservableValue<MediaPickerEvent>)
+            case takeMedia(ObservableValue<MediaPickerEvent>)
+            case pickFile(ObservableValue<FilePickerEvent>)
         }
 
         typealias Event = ChatViewModel.Event
+
+        static let messageTextLimit = WelcomeViewModel.messageTextLimit
+        static let maximumUploads = WelcomeViewModel.maximumUploads
+
+        private static var alertPresenters = Set<TranscriptModel>()
 
         var action: ActionCallback?
         var delegate: DelegateCallback?
@@ -179,6 +187,7 @@ extension SecureConversations {
         var engagementDelegate: EngagementViewModel.DelegateCallback?
 
         private let downloader: FileDownloader
+        let fileUploadListModel: SecureConversations.FileUploadListViewModel
 
         private var messageText = "" {
             didSet {
@@ -198,6 +207,14 @@ extension SecureConversations {
                 // Hide text field in MOB-1882
                 print("availability has changed")
             }
+        }
+
+        var siteConfiguration: CoreSdkClient.Site?
+
+        var mediaPickerButtonVisibility: MediaPickerButtonVisibility {
+            guard let site = siteConfiguration else { return .disabled }
+            guard site.allowedFileSenders.visitor else { return .disabled }
+            return .enabled(.secureMessaging)
         }
 
         private let sections = [
@@ -232,6 +249,59 @@ extension SecureConversations {
 
             self.availability = availability
             checkSecureConversationsAvailability()
+
+            let uploader = FileUploader(
+                maximumUploads: Self.maximumUploads,
+                environment: .init(
+                    uploadFile: .toConversation(environment.secureUploadFile),
+                    fileManager: environment.fileManager,
+                    data: environment.data,
+                    date: environment.date,
+                    gcd: environment.gcd,
+                    localFileThumbnailQueue: environment.localFileThumbnailQueue,
+                    uiImage: environment.uiImage,
+                    uuid: environment.uuid
+                )
+            )
+
+            self.fileUploadListModel = environment.createFileUploadListModel(
+                .init(
+                    uploader: uploader,
+                    style: .chat(environment.fileUploadListStyle),
+                    uiApplication: environment.uiApplication
+                )
+            )
+
+            self.availability = availability
+
+            self.fileUploadListModel.delegate = { [weak self] event in
+                switch event {
+                case let .renderProps(uploadListViewProps):
+                    self?.action?(.fileUploadListPropsUpdated(uploadListViewProps))
+                    // Validate ability to send message, to cover cases where
+                    // sending is not possible because of file upload limitations.
+                    self?.validateMessage()
+                }
+            }
+
+            uploader.limitReached.addObserver(self) { [weak self] limitReached, _ in
+                self?.action?(.pickMediaButtonEnabled(!limitReached))
+            }
+            checkSecureConversationsAvailability()
+
+            self.fileUploadListModel.delegate = { [weak self] event in
+                switch event {
+                case let .renderProps(uploadListViewProps):
+                    self?.action?(.fileUploadListPropsUpdated(uploadListViewProps))
+                    // Validate ability to send message, to cover cases where
+                    // sending is not possible because of file upload limitations.
+                    self?.validateMessage()
+                }
+            }
+
+            uploader.limitReached.addObserver(self) { [weak self] limitReached, _ in
+                self?.action?(.pickMediaButtonEnabled(!limitReached))
+            }
         }
 
         private func checkSecureConversationsAvailability() {
@@ -335,12 +405,10 @@ extension SecureConversations {
                 messageText = text
             case .sendTapped:
                 sendMessage()
-            case .removeUploadTapped:
-                // TODO: MOB-1742
-                break
+            case .removeUploadTapped(let upload):
+                removeUpload(upload)
             case .pickMediaTapped:
-                // TODO: MOB-1742
-                break
+                presentMediaPicker()
             case .callBubbleTapped:
                 // Not supported for transcript.
                 break
@@ -363,51 +431,20 @@ extension SecureConversations {
         }
 
         func start() {
+            fetchSiteConfigurations()
             loadHistory { _ in }
-        }
-
-        private func fileTapped(_ file: LocalFile) {
-            delegate?(.showFile(file))
-        }
-
-        private func downloadTapped(_ download: FileDownload) {
-            switch download.state.value {
-            case .none:
-                download.startDownload()
-            case .downloading:
-                break
-            case .downloaded(let file):
-                delegate?(.showFile(file))
-            case .error:
-                download.startDownload()
-            }
-        }
-
-        func linkTapped(_ url: URL) {
-            switch url.scheme?.lowercased() {
-            case "tel",
-                "mailto":
-                guard
-                    environment.uiApplication.canOpenURL(url)
-                else { return }
-
-                environment.uiApplication.open(url)
-
-            case "http",
-                "https":
-                delegate?(.openLink(url))
-
-            default:
-                return
-            }
         }
 
         @discardableResult
         private func validateMessage() -> Bool {
-            let canSendText = !messageText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-            // TODO: File uploading validation MOB-1742
-            action?(.sendButtonHidden(!canSendText))
-            return canSendText
+            let canSendText = !messageText.trimmingCharacters(in: .whitespacesAndNewlines)
+                .isEmpty && messageText.count <= Self.messageTextLimit
+            let canSendAttachments =
+            fileUploadListModel.failedUploads.isEmpty &&
+            fileUploadListModel.activeUploads.isEmpty && !fileUploadListModel.isLimitReached
+            let isValid = canSendText && canSendAttachments
+            action?(.sendButtonHidden(!isValid))
+            return isValid
         }
 
         private func sendMessage() {
@@ -415,18 +452,193 @@ extension SecureConversations {
 
            _ = environment.sendSecureMessage(
                 messageText,
-                nil, // TODO: File uploading MOB-1742
+                fileUploadListModel.attachment,
                 environment.queueIds
            ) { [weak self] result in
                switch result {
                case .success:
                    self?.messageText = ""
+                   self?.fileUploadListModel.removeSucceededUploads()
                    // TODO: MOB-1738
-               case .failure:
+               case let .failure(error):
                    // TODO: MOB-1874
                    break
                }
            }
+        }
+    }
+}
+
+// MARK: Interaction with messages
+extension SecureConversations.TranscriptModel {
+    private func fileTapped(_ file: LocalFile) {
+        delegate?(.showFile(file))
+    }
+
+    private func downloadTapped(_ download: FileDownload) {
+        switch download.state.value {
+        case .none:
+            download.startDownload()
+        case .downloading:
+            break
+        case .downloaded(let file):
+            delegate?(.showFile(file))
+        case .error:
+            download.startDownload()
+        }
+    }
+
+    func linkTapped(_ url: URL) {
+        switch url.scheme?.lowercased() {
+        case "tel",
+            "mailto":
+            guard
+                environment.uiApplication.canOpenURL(url)
+            else { return }
+
+            environment.uiApplication.open(url)
+
+        case "http",
+            "https":
+            delegate?(.openLink(url))
+
+        default:
+            return
+        }
+    }
+}
+
+// MARK: Handling of file-picker
+extension SecureConversations.TranscriptModel {
+    private func presentMediaPicker() {
+        let itemSelected = { [weak self] (kind: AttachmentSourceItemKind) -> Void in
+            let media = ObservableValue<MediaPickerEvent>(with: .none)
+            guard let self = self else { return }
+            media.addObserver(self) { [weak self] event, _ in
+                guard let self = self else { return }
+                switch event {
+                case .none, .cancelled:
+                    break
+                case .pickedMedia(let media):
+                    self.mediaPicked(media)
+                case .sourceNotAvailable:
+                    self.showAlert(
+                        with: self.environment.alertConfiguration.mediaSourceNotAvailable,
+                        dismissed: nil
+                    )
+                case .noCameraPermission:
+                    self.showSettingsAlert(with: self.environment.alertConfiguration.cameraSettings)
+                }
+            }
+            let file = ObservableValue<FilePickerEvent>(with: .none)
+            file.addObserver(self) { [weak self] event, _ in
+                switch event {
+                case .none, .cancelled:
+                    break
+                case .pickedFile(let url):
+                    self?.filePicked(url)
+                }
+            }
+            switch kind {
+            case .photoLibrary:
+                self.delegate?(.pickMedia(media))
+            case .takePhoto:
+                self.delegate?(.takeMedia(media))
+            case .browse:
+                self.delegate?(.pickFile(file))
+            }
+        }
+        action?(.presentMediaPicker(itemSelected: { itemSelected($0) }))
+    }
+
+    private func mediaPicked(_ media: PickedMedia) {
+        switch media {
+        case .image(let url):
+            addUpload(with: url)
+        case .photo(let data, format: let format):
+            addUpload(with: data, format: format)
+        case .movie(let url):
+            addUpload(with: url)
+        case .none:
+            break
+        }
+    }
+
+    private func filePicked(_ url: URL) {
+        addUpload(with: url)
+    }
+}
+
+// MARK: Handling of alerts
+extension SecureConversations.TranscriptModel {
+    func showSettingsAlert(
+        with conf: SettingsAlertConfiguration,
+        cancelled: (() -> Void)? = nil
+    ) {
+        engagementAction?(.showSettingsAlert(conf, cancelled: cancelled))
+    }
+
+    func showAlert(
+        with conf: MessageAlertConfiguration,
+        accessibilityIdentifier: String? = nil,
+        dismissed: (() -> Void)? = nil
+    ) {
+        let onDismissed = { [weak self] in
+            guard let self = self else { return }
+            SecureConversations.TranscriptModel.alertPresenters.remove(self)
+            dismissed?()
+        }
+        SecureConversations.TranscriptModel.alertPresenters.insert(self)
+        engagementAction?(
+            .showAlert(
+                conf,
+                accessibilityIdentifier: accessibilityIdentifier,
+                dismissed: { onDismissed() }
+            )
+        )
+    }
+}
+
+// MARK: File Upload
+extension SecureConversations.TranscriptModel {
+    private func addUpload(with url: URL) {
+        guard let upload = fileUploadListModel.addUpload(with: url) else { return }
+        action?(.addUpload(upload))
+    }
+
+    private func addUpload(with data: Data, format: MediaFormat) {
+        guard let upload = fileUploadListModel.addUpload(with: data, format: format) else { return }
+        action?(.addUpload(upload))
+    }
+
+    private func removeUpload(_ upload: FileUpload) {
+        fileUploadListModel.removeUpload(upload)
+        action?(.removeUpload(upload))
+        validateMessage()
+    }
+
+    private func onUploaderStateChanged(_ state: FileUploader.State) {
+        validateMessage()
+    }
+}
+
+// MARK: Site Confgurations
+
+extension SecureConversations.TranscriptModel {
+    func fetchSiteConfigurations() {
+        environment.fetchSiteConfigurations { [weak self] result in
+            guard let self = self else { return }
+
+            switch result {
+            case .success(let site):
+                self.siteConfiguration = site
+                self.action?(.setAttachmentButtonVisibility(self.mediaPickerButtonVisibility))
+            case .failure:
+                self.showAlert(
+                    with: self.environment.alertConfiguration.unexpectedError,
+                    dismissed: nil
+                )
+            }
         }
     }
 }
@@ -452,6 +664,11 @@ extension SecureConversations.TranscriptModel {
         var queueIds: [String]
         var listQueues: CoreSdkClient.ListQueues
         var alertConfiguration: AlertConfiguration
+        var createFileUploadListModel: SecureConversations.FileUploadListViewModel.Create
+        var uuid: () -> UUID
+        var secureUploadFile: CoreSdkClient.SecureConversationsUploadFile
+        var fileUploadListStyle: FileUploadListStyle
+        var fetchSiteConfigurations: CoreSdkClient.FetchSiteConfigurations
     }
 }
 
@@ -474,5 +691,16 @@ extension SecureConversations.TranscriptModel {
             self.action?(.scrollToBottom(animated: false))
             completion(messages)
         }
+    }
+}
+
+// MARK: Hashable
+extension SecureConversations.TranscriptModel: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(ObjectIdentifier(self))
+    }
+
+    static func == (lhs: SecureConversations.TranscriptModel, rhs: SecureConversations.TranscriptModel) -> Bool {
+        lhs === rhs
     }
 }
