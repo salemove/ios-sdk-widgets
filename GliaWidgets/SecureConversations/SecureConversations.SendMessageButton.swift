@@ -12,7 +12,10 @@ extension SecureConversations {
                 borderWidth: 3,
                 cornerRadius: 8,
                 activityIndicatorColor: .green,
-                isActivityIndicatorShown: false
+                isActivityIndicatorShown: false,
+                isFontScalingEnabled: false,
+                accessibilityLabel: "",
+                accessibilityHint: ""
             )
         ) {
             didSet {
@@ -65,6 +68,10 @@ extension SecureConversations {
             layer.cornerRadius = props.cornerRadius
             activityIndicator.color = props.activityIndicatorColor
             renderedIsIndicatorShown = props.isActivityIndicatorShown
+            accessibilityTraits = .button
+            accessibilityLabel = props.accessibilityLabel
+            accessibilityHint = props.accessibilityHint
+            isAccessibilityElement = true
         }
 
         var renderedIsIndicatorShown: Bool = false {
@@ -100,6 +107,9 @@ extension SecureConversations.SendMessageButton.Props {
         let cornerRadius: Double
         let activityIndicatorColor: UIColor
         let isActivityIndicatorShown: Bool
+        let isFontScalingEnabled: Bool
+        let accessibilityLabel: String
+        let accessibilityHint: String
     }
 
     struct DisabledState: Equatable {
@@ -112,6 +122,9 @@ extension SecureConversations.SendMessageButton.Props {
         let cornerRadius: Double
         let activityIndicatorColor: UIColor
         let isActivityIndicatorShown: Bool
+        let isFontScalingEnabled: Bool
+        let accessibilityLabel: String
+        let accessibilityHint: String
     }
 }
 
@@ -127,6 +140,9 @@ extension SecureConversations.SendMessageButton {
         let activityIndicatorColor: UIColor
         let isActivityIndicatorShown: Bool
         let isEnabled: Bool
+        let isFontScalingEnabled: Bool
+        let accessibilityLabel: String
+        let accessibilityHint: String
 
         init(_ props: Props) {
             switch props {
@@ -141,6 +157,9 @@ extension SecureConversations.SendMessageButton {
                 self.activityIndicatorColor = state.activityIndicatorColor
                 self.isActivityIndicatorShown = state.isActivityIndicatorShown
                 self.isEnabled = true
+                self.isFontScalingEnabled = state.isFontScalingEnabled
+                self.accessibilityLabel = state.accessibilityLabel
+                self.accessibilityHint = state.accessibilityHint
             case let .disabled(state):
                 self.title = state.title
                 self.titleFont = state.titleFont
@@ -152,6 +171,9 @@ extension SecureConversations.SendMessageButton {
                 self.activityIndicatorColor = state.activityIndicatorColor
                 self.isActivityIndicatorShown = state.isActivityIndicatorShown
                 self.isEnabled = false
+                self.isFontScalingEnabled = state.isFontScalingEnabled
+                self.accessibilityLabel = state.accessibilityLabel
+                self.accessibilityHint = state.accessibilityHint
             }
         }
     }
@@ -169,7 +191,10 @@ extension SecureConversations.SendMessageButton.Props {
                 borderWidth: enabledStyle.borderWidth,
                 cornerRadius: enabledStyle.cornerRadius,
                 activityIndicatorColor: .clear,
-                isActivityIndicatorShown: false
+                isActivityIndicatorShown: false,
+                isFontScalingEnabled: enabledStyle.accessibility.isFontScalingEnabled,
+                accessibilityLabel: enabledStyle.accessibility.label,
+                accessibilityHint: enabledStyle.accessibility.hint
             )
         )
     }
@@ -185,7 +210,10 @@ extension SecureConversations.SendMessageButton.Props {
                 borderWidth: disabledStyle.borderWidth,
                 cornerRadius: disabledStyle.cornerRadius,
                 activityIndicatorColor: .clear,
-                isActivityIndicatorShown: false
+                isActivityIndicatorShown: false,
+                isFontScalingEnabled: disabledStyle.accessibility.isFontScalingEnabled,
+                accessibilityLabel: disabledStyle.accessibility.label,
+                accessibilityHint: disabledStyle.accessibility.hint
             )
         )
     }
@@ -201,7 +229,10 @@ extension SecureConversations.SendMessageButton.Props {
                 borderWidth: loadingStyle.borderWidth,
                 cornerRadius: loadingStyle.cornerRadius,
                 activityIndicatorColor: loadingStyle.activityIndicatorColor,
-                isActivityIndicatorShown: true
+                isActivityIndicatorShown: true,
+                isFontScalingEnabled: loadingStyle.accessibility.isFontScalingEnabled,
+                accessibilityLabel: loadingStyle.accessibility.label,
+                accessibilityHint: loadingStyle.accessibility.hint
             )
         )
     }

@@ -181,67 +181,6 @@ extension SecureConversations {
             endEditing(false)
         }
 
-        func renderProps() {
-            header.props = props.headerProps
-            header.showCloseButton()
-
-            titleIconView.tintColor = props.style.titleImageStyle.color
-
-            titleLabel.text = props.style.welcomeTitleStyle.text
-            titleLabel.font = props.style.welcomeTitleStyle.font
-            titleLabel.textColor = props.style.welcomeTitleStyle.color
-
-            subtitleLabel.text = props.style.welcomeSubtitleStyle.text
-            subtitleLabel.font = props.style.welcomeSubtitleStyle.font
-            subtitleLabel.textColor = props.style.welcomeSubtitleStyle.color
-
-            messageTextView.isHidden = props.messageTextViewProps == nil
-            if let messageTextViewProps = props.messageTextViewProps {
-                messageTextView.props = messageTextViewProps
-            }
-
-            checkMessagesButton.setTitle(props.style.checkMessagesButtonStyle.title, for: .normal)
-            checkMessagesButton.titleLabel?.font = props.style.checkMessagesButtonStyle.font
-            checkMessagesButton.setTitleColor(props.style.checkMessagesButtonStyle.color, for: .normal)
-            checkMessagesButton.accessibilityLabel = "some acc. label"
-
-            messageTitleLabel.isHidden = props.style.messageTitleStyle == nil
-            if let messageTitleStyle = props.style.messageTitleStyle {
-                messageTitleLabel.text = messageTitleStyle.title
-                messageTitleLabel.font = messageTitleStyle.font
-                messageTitleLabel.textColor = messageTitleStyle.color
-            }
-
-            sendMessageButton.isHidden = props.sendMessageButton == nil
-            if let sendMessageButtonProps = props.sendMessageButton {
-                switch sendMessageButtonProps {
-                case .active:
-                    sendMessageButton.props = .init(enabledStyle: props.style.sendButtonStyle.enabledStyle)
-                case .disabled:
-                    sendMessageButton.props = .init(disabledStyle: props.style.sendButtonStyle.disabledStyle)
-                case .loading:
-                    sendMessageButton.props = .init(loadingStyle: props.style.sendButtonStyle.loadingStyle)
-                }
-            }
-
-            backgroundColor = props.style.backgroundColor
-
-            filePickerButton.isHidden = props.filePickerButton == nil
-            filePickerButton.isEnabled = props.filePickerButton?.isEnabled == true
-            filePickerButton.tintColor = filePickerButton.isEnabled
-                ? props.style.filePickerButtonStyle.color
-                : props.style.filePickerButtonStyle.disabledColor
-
-            renderedWarning = props.warningMessage
-
-            fileUploadListView.props = props.fileUploadListProps
-
-            rootStackView.setCustomSpacing(
-                props.fileUploadListProps.uploads.isEmpty ? 0 : 16,
-                after: fileUploadListView
-            )
-        }
-
         var renderedWarning: Props.WarningMessage = "" {
             didSet {
                 guard renderedWarning != oldValue else { return }
@@ -273,6 +212,105 @@ extension SecureConversations {
                 messageWarningStackView.isHidden = false
                 rootStackView.setCustomSpacing(4, after: messageTextView)
                 rootStackView.setCustomSpacing(14, after: messageWarningStackView)
+            }
+        }
+    }
+}
+
+// MARK: - Render props
+extension SecureConversations.WelcomeView {
+    func renderProps() {
+        header.props = props.headerProps
+        header.showCloseButton()
+
+        titleIconView.tintColor = props.style.titleImageStyle.color
+
+        titleLabel.text = props.style.welcomeTitleStyle.text
+        titleLabel.font = props.style.welcomeTitleStyle.font
+        titleLabel.textColor = props.style.welcomeTitleStyle.color
+        setFontScalingEnabled(
+            props.style.welcomeTitleStyle.accessibility.isFontScalingEnabled,
+            for: titleLabel
+        )
+
+        subtitleLabel.text = props.style.welcomeSubtitleStyle.text
+        subtitleLabel.font = props.style.welcomeSubtitleStyle.font
+        subtitleLabel.textColor = props.style.welcomeSubtitleStyle.color
+        setFontScalingEnabled(
+            props.style.welcomeSubtitleStyle.accessibility.isFontScalingEnabled,
+            for: subtitleLabel
+        )
+
+        messageTextView.isHidden = props.messageTextViewProps == nil
+        if let messageTextViewProps = props.messageTextViewProps {
+            messageTextView.props = messageTextViewProps
+        }
+
+        renderCheckMessagesButtonProps()
+
+        messageTitleLabel.isHidden = props.style.messageTitleStyle == nil
+        if let messageTitleStyle = props.style.messageTitleStyle {
+            messageTitleLabel.text = messageTitleStyle.title
+            messageTitleLabel.font = messageTitleStyle.font
+            messageTitleLabel.textColor = messageTitleStyle.color
+
+            setFontScalingEnabled(
+                messageTitleStyle.accessibility.isFontScalingEnabled,
+                for: messageTitleLabel
+            )
+        }
+
+        renderSendMessageButtonProps()
+
+        backgroundColor = props.style.backgroundColor
+
+        filePickerButton.isHidden = props.filePickerButton == nil
+        filePickerButton.isEnabled = props.filePickerButton?.isEnabled == true
+        filePickerButton.tintColor = filePickerButton.isEnabled
+            ? props.style.filePickerButtonStyle.color
+            : props.style.filePickerButtonStyle.disabledColor
+        filePickerButton.accessibilityTraits = .button
+        filePickerButton.accessibilityLabel = props.style.filePickerButtonStyle.accessibility.label
+        filePickerButton.accessibilityHint = props.style.filePickerButtonStyle.accessibility.hint
+        setFontScalingEnabled(
+            props.style.filePickerButtonStyle.accessibility.isFontScalingEnabled,
+            for: filePickerButton
+        )
+
+        renderedWarning = props.warningMessage
+
+        fileUploadListView.props = props.fileUploadListProps
+
+        rootStackView.setCustomSpacing(
+            props.fileUploadListProps.uploads.isEmpty ? 0 : 16,
+            after: fileUploadListView
+        )
+    }
+
+    private func renderCheckMessagesButtonProps() {
+        checkMessagesButton.setTitle(props.style.checkMessagesButtonStyle.title, for: .normal)
+        checkMessagesButton.titleLabel?.font = props.style.checkMessagesButtonStyle.font
+        checkMessagesButton.setTitleColor(props.style.checkMessagesButtonStyle.color, for: .normal)
+        checkMessagesButton.accessibilityLabel = props.style.checkMessagesButtonStyle.accessibility.label
+        checkMessagesButton.accessibilityHint = props.style.checkMessagesButtonStyle.accessibility.hint
+        checkMessagesButton.accessibilityTraits = .button
+
+        setFontScalingEnabled(
+            props.style.checkMessagesButtonStyle.accessibility.isFontScalingEnabled,
+            for: checkMessagesButton
+        )
+    }
+
+    private func renderSendMessageButtonProps() {
+        sendMessageButton.isHidden = props.sendMessageButton == nil
+        if let sendMessageButtonProps = props.sendMessageButton {
+            switch sendMessageButtonProps {
+            case .active:
+                sendMessageButton.props = .init(enabledStyle: props.style.sendButtonStyle.enabledStyle)
+            case .disabled:
+                sendMessageButton.props = .init(disabledStyle: props.style.sendButtonStyle.disabledStyle)
+            case .loading:
+                sendMessageButton.props = .init(loadingStyle: props.style.sendButtonStyle.loadingStyle)
             }
         }
     }
@@ -766,7 +804,8 @@ private extension SecureConversations.WelcomeStyle.MessageTextViewStyle {
             borderColor: .black,
             borderWidth: 1,
             cornerRadius: 4,
-            backgroundColor: .black
+            backgroundColor: .black,
+            accessibility: .init(isFontScalingEnabled: true)
         ),
         disabledStyle: .init(
             placeholderText: "",
@@ -777,7 +816,8 @@ private extension SecureConversations.WelcomeStyle.MessageTextViewStyle {
             borderColor: .black,
             borderWidth: 1,
             cornerRadius: 4,
-            backgroundColor: .lightGray
+            backgroundColor: .lightGray,
+            accessibility: .init(isFontScalingEnabled: true)
         ),
         activeStyle: .init(
             placeholderText: "",
@@ -788,7 +828,8 @@ private extension SecureConversations.WelcomeStyle.MessageTextViewStyle {
             borderColor: .black,
             borderWidth: 1,
             cornerRadius: 4,
-            backgroundColor: .blue
+            backgroundColor: .blue,
+            accessibility: .init(isFontScalingEnabled: true)
         )
     )
 }

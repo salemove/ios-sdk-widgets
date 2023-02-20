@@ -685,8 +685,45 @@ public enum L10n {
   }
   public enum MessageCenter {
     public enum Welcome {
+      // Messaging
+      public static let header = L10n.tr("Localizable", "messageCenter.welcome.header", fallback: "Messaging")
+      // Welcome to Message Center
+      public static let title = L10n.tr("Localizable", "messageCenter.welcome.title", fallback: "Welcome to Message Center")
+      // Send a message and we’ll get back to you within 48 hours
+      public static let subtitle = L10n.tr("Localizable", "messageCenter.welcome.subtitle", fallback: "Send a message and we’ll get back to you within 48 hours")
+      // Check messages
+      public static let checkMessages = L10n.tr("Localizable", "messageCenter.welcome.checkMessages", fallback: "Check messages")
+      // Your messages
+      public static let messageTitle = L10n.tr("Localizable", "messageCenter.welcome.messageTitle", fallback: "Your message")
+      // Enter your message
+      public static let messageTextViewNormal = L10n.tr("Localizable", "messageCenter.welcome.messageTextViewNormal", fallback: "Enter your message")
+      // Enter your message
+      public static let messageTextViewActive = L10n.tr("Localizable", "messageCenter.welcome.messageTextViewActive", fallback: "Enter your message")
+      // Enter your message
+      public static let messageTextViewDisabled = L10n.tr("Localizable", "messageCenter.welcome.messageTextViewDisabled", fallback: "Enter your message")
+      // Send
+      public static let sendEnabled = L10n.tr("Localizable", "messageCenter.welcome.sendEnabled", fallback: "Send")
+      // Send
+      public static let sendDisabled = L10n.tr("Localizable", "messageCenter.welcome.sendDisabled", fallback: "Send")
+      // Send
+      public static let sendLoading = L10n.tr("Localizable", "messageCenter.welcome.sendLoading", fallback: "Send")
       /// The message cannot exceed {textLength} characters.
       public static let messageLengthWarning = L10n.tr("Localizable", "messageCenter.welcome.messageLengthWarning", fallback: "The message cannot exceed {textLength} characters.")
+
+      public enum Accessibility {
+        // Check messages
+        public static let checkMessagesLabel = L10n.tr("Localizable", "messageCenter.welcome.accessibility.checkMessagesLabel", fallback: "Check messages")
+        // Navigates you to the chat transcript.
+        public static let checkMessagesHint = L10n.tr("Localizable", "messageCenter.welcome.accessibility.checkMessagesHint", fallback: "Navigates you to the chat transcript.")
+        // File picker
+        public static let filePickerLabel = L10n.tr("Localizable", "messageCenter.welcome.accessibility.filePickerLabel", fallback: "File picker")
+        // Opens the file picker to attach media.
+        public static let filePickerHint = L10n.tr("Localizable", "messageCenter.welcome.accessibility.filePickerHint", fallback: "Opens the file picker to attach media.")
+        // Send
+        public static let sendLabel = L10n.tr("Localizable", "messageCenter.welcome.accessibility.sendLabel", fallback: "Send")
+        // Sends a secure message.
+        public static let sendHint = L10n.tr("Localizable", "messageCenter.welcome.accessibility.sendHint", fallback: "Sends a secure message.")
+      }
     }
   }
 
