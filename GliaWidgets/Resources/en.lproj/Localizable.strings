@@ -221,6 +221,24 @@
 "survey.accessibility.validation.title.label" = "Please provide an answer for question above";
 
 "messageCenter.welcome.messageLengthWarning" = "The message cannot exceed {textLength} characters.";
+"messageCenter.welcome.header" = "Messaging";
+"messageCenter.welcome.title" = "Welcome to Message Center";
+"messageCenter.welcome.subtitle" = "Send a message and we’ll get back to you within 48 hours";
+"messageCenter.welcome.checkMessages" = "Check messages";
+"messageCenter.welcome.messageTitle" = "Your message";
+"messageCenter.welcome.messageTextViewNormal" = "Enter your message";
+"messageCenter.welcome.messageTextViewActive" = "Enter your message";
+"messageCenter.welcome.messageTextViewDisabled" = "Enter your message";
+"messageCenter.welcome.sendEnabled" = "Send";
+"messageCenter.welcome.sendDisabled" = "Send";
+"messageCenter.welcome.sendLoading" = "Send";
+"messageCenter.welcome.accessibility.checkMessagesLabel" = "Check messages";
+"messageCenter.welcome.accessibility.checkMessagesHint" = "Navigates you to the chat transcript.";
+"messageCenter.welcome.accessibility.filePickerLabel" = "File picker";
+"messageCenter.welcome.accessibility.filePickerHint" = "Opens the file picker to attach media.";
+"messageCenter.welcome.accessibility.sendLabel" = "Send";
+"messageCenter.welcome.accessibility.sendHint" = "Sends a secure message.";
+
 "visitorCode.title.standard" = "Your Visitor Code";
 "visitorCode.title.error" = "Could not show visitor code. Please try refreshing.";
 "visitorCode.action.refresh" = "Refresh";
