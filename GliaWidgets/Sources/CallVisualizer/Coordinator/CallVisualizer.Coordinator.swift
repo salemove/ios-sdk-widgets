@@ -11,17 +11,22 @@ extension CallVisualizer {
                 .screenShareHandler
                 .status
                 .addObserver(self) { [weak self] newStatus, _ in
+                    guard self?.videoCallCoordinator == nil else { return }
                     switch newStatus {
                     case .started:
-                        self?.createBubbleView()
+                        self?.createScreenShareBubbleView()
                     case .stopped:
-                        self?.end()
+                        self?.removeBubbleView()
                     }
                 }
 
             bubbleView.tap = { [weak self] in
                 guard let self = self else { return }
-                self.showEndScreenSharingViewController()
+                if self.videoCallCoordinator == nil {
+                    self.showEndScreenSharingViewController()
+                } else {
+                    self.resumeVideoCallViewController()
+                }
             }
             bubbleView.pan = { [weak self] translation in
                 self?.updateBubblePosition(translation: translation)
@@ -72,6 +77,25 @@ extension CallVisualizer {
                 .present(alert, animated: true)
         }
 
+        func offerMediaUpgrade(
+            from operators: [CoreSdkClient.Operator],
+            configuration: SingleMediaUpgradeAlertConfiguration,
+            accepted: @escaping () -> Void,
+            declined: @escaping () -> Void
+        ) {
+            let alert = AlertViewController(
+                kind: .singleMediaUpgrade(
+                    configuration.withOperatorName(operators.compactMap { $0.name }.joined()),
+                    accepted: accepted,
+                    declined: declined
+                ),
+                viewFactory: environment.viewFactory)
+            environment
+                .presenter
+                .getInstance()?
+                .present(alert, animated: true)
+        }
+
         func showEndScreenSharingViewController() {
             let viewController = buildScreenSharingViewController()
             environment
@@ -80,12 +104,37 @@ extension CallVisualizer {
                 .present(viewController, animated: true)
         }
 
+        func showVideoCallViewController() {
+            createOperatorImageBubbleView()
+            let viewController = buildVideoCallViewController()
+            environment
+                .presenter
+                .getInstance()?
+                .present(viewController, animated: true)
+        }
+
+        func resumeVideoCallViewController() {
+            if let viewController = videoCallCoordinator?.resume() {
+                environment
+                    .presenter
+                    .getInstance()?
+                    .present(viewController, animated: true)
+            }
+        }
+
         func end() {
-            bubbleView.removeFromSuperview()
+            removeBubbleView()
+            videoCallCoordinator?.viewController?.dismiss(animated: true)
+            videoCallCoordinator = nil
+            environment.screenShareHandler.stop()
+            screenSharingCoordinator = nil
+        }
+
+        func addVideoStream(stream: CoreSdkClient.VideoStreamable) {
+            videoCallCoordinator?.call.updateVideoStream(with: stream)
         }
 
         // MARK: - Private
-
         private let environment: Environment
         private let bubbleSize = CGSize(width: 60, height: 60)
         private let bubbleView: BubbleView
@@ -117,13 +166,29 @@ extension CallVisualizer {
         }()
         private var visitorCodeCoordinator: VisitorCodeCoordinator?
         private var screenSharingCoordinator: ScreenSharingCoordinator?
+        private var videoCallCoordinator: VideoCallCoodinator?
 
-        private func createBubbleView() {
+        private func createScreenShareBubbleView() {
             guard let parent = environment.presenter.getInstance()?.view else { return }
             bubbleView.kind = .view(screensharingImageView)
             bubbleView.frame = .init(origin: .init(x: parent.frame.maxX, y: parent.frame.maxY), size: bubbleSize)
             parent.addSubview(bubbleView)
             updateBubblePosition()
+        }
+
+        private func createOperatorImageBubbleView() {
+            guard let parent = environment.presenter.getInstance()?.view else { return }
+            let imageUrl = environment.engagedOperator()?.picture?.url
+            bubbleView.kind = .userImage(url: imageUrl)
+            if bubbleView.superview == nil {
+                bubbleView.frame = .init(origin: .init(x: parent.frame.maxX, y: parent.frame.maxY), size: bubbleSize)
+                parent.addSubview(bubbleView)
+                updateBubblePosition()
+            }
+        }
+
+        private func removeBubbleView() {
+            bubbleView.removeFromSuperview()
         }
 
         private func updateBubblePosition(translation: CGPoint = .zero) {
@@ -169,6 +234,42 @@ extension CallVisualizer {
 
             let viewController = coordinator.start()
             self.screenSharingCoordinator = coordinator
+
+            return viewController
+        }
+
+        private func buildVideoCallViewController(uiConfig: RemoteConfiguration? = nil) -> UIViewController {
+            let coordinator = VideoCallCoodinator(
+                environment: .init(
+                    data: environment.data,
+                    uuid: environment.uuid,
+                    gcd: environment.gcd,
+                    imageViewCache: environment.imageViewCache,
+                    timerProviding: environment.timerProviding,
+                    uiApplication: environment.uiApplication,
+                    date: environment.date,
+                    engagedOperator: environment.engagedOperator,
+                    screenShareHandler: environment.screenShareHandler
+                ),
+                uiConfig: uiConfig,
+                call: .init(
+                    .video(direction: .twoWay),
+                    environment: .init(
+                        audioSession: environment.audioSession,
+                        uuid: environment.uuid
+                    )
+                )
+            )
+
+            let viewController = coordinator.start()
+            self.videoCallCoordinator = coordinator
+
+            coordinator.delegate = { event in
+                switch event {
+                case .close:
+                    viewController.dismiss(animated: true)
+                }
+            }
 
             return viewController
         }

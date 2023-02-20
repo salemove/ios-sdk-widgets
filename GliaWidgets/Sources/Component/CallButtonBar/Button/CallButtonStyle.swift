@@ -1,9 +1,9 @@
 import UIKit
 
 /// Style of a button shown in call view bottom button bar (i.e. "Chat", "Video", "Mute", "Speaker" and "Minimize").
-public struct CallButtonStyle {
+public struct CallButtonStyle: Equatable {
     /// Style of a call button ("Chat", "Video", "Mute", "Speaker" and "Minimize") in a specific state - activated or not activated.
-    public struct StateStyle {
+    public struct StateStyle: Equatable {
         /// Background color of the button.
         public var backgroundColor: ColorType
 

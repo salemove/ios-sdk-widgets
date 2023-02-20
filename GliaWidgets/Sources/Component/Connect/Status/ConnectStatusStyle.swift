@@ -1,7 +1,7 @@
 import UIKit
 
 /// Style of a connect status. These are used when visitor is in enqueued, connecting, and connected state.
-public struct ConnectStatusStyle {
+public struct ConnectStatusStyle: Equatable {
     /// First status text. Include `{operatorName}` template parameter in the string to display operator's name.
     public var firstText: String?
 

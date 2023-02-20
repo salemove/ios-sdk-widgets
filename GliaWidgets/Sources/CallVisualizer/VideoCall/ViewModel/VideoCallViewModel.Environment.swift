@@ -1,6 +1,6 @@
 import Foundation
 
-extension CallVisualizer {
+extension CallVisualizer.VideoCallViewModel {
     struct Environment {
         var data: FoundationBased.Data
         var uuid: () -> UUID
@@ -8,13 +8,8 @@ extension CallVisualizer {
         var imageViewCache: ImageView.Cache
         var timerProviding: FoundationBased.Timer.Providing
         var uiApplication: UIKitBased.UIApplication
-        var requestVisitorCode: CoreSdkClient.RequestVisitorCode
-        var interactorProviding: () -> Interactor?
-        var callVisualizerPresenter: CallVisualizer.Presenter
-        var bundleManaging: BundleManaging
-        var screenShareHandler: ScreenShareHandler
-        var audioSession: Glia.Environment.AudioSession
         var date: () -> Date
         var engagedOperator: () -> CoreSdkClient.Operator?
+        var screenShareHandler: ScreenShareHandler
     }
 }
