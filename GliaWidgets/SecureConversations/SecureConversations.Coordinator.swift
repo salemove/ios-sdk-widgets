@@ -29,7 +29,7 @@ extension SecureConversations {
         private func makeWelcomeViewModel() -> SecureConversations.WelcomeViewModel {
             SecureConversations.WelcomeViewModel(
                 environment: .init(
-                    welcomeStyle: viewFactory.theme.secureConversationsWelcomeStyle,
+                    welcomeStyle: viewFactory.theme.secureConversationsWelcome,
                     queueIds: environment.queueIds,
                     listQueues: environment.listQueues,
                     sendSecureMessage: environment.sendSecureMessage,

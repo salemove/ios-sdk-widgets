@@ -4,7 +4,7 @@ import UIKit
 extension Theme {
 
     /// Button style.
-    public struct Button {
+    public struct Button: Equatable {
         /// Background hex color.
         public var background: ColorType
         /// Title style.
