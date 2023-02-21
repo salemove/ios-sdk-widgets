@@ -304,7 +304,7 @@ extension ChatViewController {
         chatViewModel.action?(.updateUnreadMessageIndicator(itemCount: 5))
         chatViewModel.action?(.setChoiceCardInputModeEnabled(false))
         chatViewModel.action?(.connected(name: "Mocked Operator Name", imageUrl: localFileURL.absoluteString))
-        chatViewModel.action?(.setIsAttachmentButtonHidden(false))
+        chatViewModel.action?(.setAttachmentButtonVisibility(.enabled(.enagagementConnection(isConnected: true))))
         chatViewModel.action?(.pickMediaButtonEnabled(true))
         chatViewModel.action?(.setOperatorTypingIndicatorIsHiddenTo(false, false))
 
