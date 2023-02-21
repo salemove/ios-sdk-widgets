@@ -108,5 +108,9 @@ public class Theme {
             configuration: config.callVisualizer?.screenSharing,
             assetBuilder: assetsBuilder
         )
+        secureConversationsWelcome.apply(
+            configuration: config.secureConversationsWelcomeScreen,
+            assetBuilder: assetsBuilder
+        )
     }
 }

@@ -224,7 +224,8 @@ extension ViewController {
         let data: [(EngagementKind, String)] = [
             (.chat, "Chat"),
             (.audioCall, "Audio"),
-            (.videoCall, "Video")
+            (.videoCall, "Video"),
+            (.messaging, "Messaging")
         ]
         let alert = UIAlertController(
             title: "Choose engagement type",
