@@ -6,12 +6,12 @@ extension CallVisualizer {
         // MARK: - Properties
 
         var delegate: ((DelegateEvent) -> Void)?
-        let environment: Environment
+        private let environment: Environment
         private let style: CallStyle
         private var state: State = .initial
         private let durationCounter: CallDurationCounter
         private var imageDownloadID: String = ""
-        let call: Call
+        private let call: Call
         private var connectTimer: FoundationBased.Timer?
         private var connectCounter: Int = 0
 
@@ -59,7 +59,7 @@ extension CallVisualizer {
 
         private var remoteVideoStream: CoreSdkClient.StreamView? { didSet { reportChange() } }
 
-        var localVideoStream: CoreSdkClient.StreamView? { didSet { reportChange() } }
+        private var localVideoStream: CoreSdkClient.StreamView? { didSet { reportChange() } }
 
         private var topLabelHidden: Bool { didSet { reportChange() } }
 

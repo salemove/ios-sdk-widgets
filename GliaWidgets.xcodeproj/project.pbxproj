@@ -465,20 +465,6 @@
 		C0D2F04C2992789000803B47 /* VideoCallView.UserImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D2F04B2992789000803B47 /* VideoCallView.UserImageView.swift */; };
 		C0D2F0542993CCD100803B47 /* VideoCallView.CallButtonBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D2F0532993CCD100803B47 /* VideoCallView.CallButtonBar.swift */; };
 		C0D2F060299F93EC00803B47 /* PlaybookViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D2F05F299F93EC00803B47 /* PlaybookViewController.swift */; };
-		C0D2F06429A4B1E900803B47 /* VideoCallTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D2F06329A4B1E900803B47 /* VideoCallTests.swift */; };
-		C0D2F06829A4B71C00803B47 /* VideoCallViewModel.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D2F06629A4B68F00803B47 /* VideoCallViewModel.Mock.swift */; };
-		C0D2F06B29A4DAA000803B47 /* VideoCallViewMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D2F06929A4DA8300803B47 /* VideoCallViewMock.swift */; };
-		C0D2F06E29A4DADE00803B47 /* VideoCallVIewModel.Environment.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D2F06C29A4DAD500803B47 /* VideoCallVIewModel.Environment.Mock.swift */; };
-		C0D2F07329A4DC2000803B47 /* CallStyle.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D2F07129A4DBC400803B47 /* CallStyle.Mock.swift */; };
-		C0D2F07629A4E2CE00803B47 /* ConnectOperatorStyle.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D2F07429A4E29000803B47 /* ConnectOperatorStyle.Mock.swift */; };
-		C0D2F07929A4E3DF00803B47 /* UserImageView.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D2F07729A4E3B200803B47 /* UserImageView.Mock.swift */; };
-		C0D2F07C29A4E47200803B47 /* ConnectOperatorView.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D2F07A29A4E44C00803B47 /* ConnectOperatorView.Mock.swift */; };
-		C0D2F07F29A4E59200803B47 /* CallButtonBarStyle.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D2F07D29A4E57900803B47 /* CallButtonBarStyle.Mock.swift */; };
-		C0D2F08229A4E75200803B47 /* Header.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D2F08029A4E72700803B47 /* Header.Mock.swift */; };
-		C0D2F08529A4E7CB00803B47 /* HeaderStyle.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D2F08329A4E7A600803B47 /* HeaderStyle.Mock.swift */; };
-		C0D2F08829A4E8E100803B47 /* CallButtonBar.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D2F08629A4E8AE00803B47 /* CallButtonBar.Mock.swift */; };
-		C0D2F08B29A4E95700803B47 /* ConnectView.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D2F08929A4E92D00803B47 /* ConnectView.Mock.swift */; };
-		C0D2F08C29A4EBA900803B47 /* VIdeoCallView.Environment.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D2F06F29A4DB5C00803B47 /* VIdeoCallView.Environment.Mock.swift */; };
 		C2B201AEDBE3A53369DF524F /* Pods_GliaWidgetsTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCF7E6C5499635E67EF6A604 /* Pods_GliaWidgetsTests.framework */; };
 		C4119E06268F41D1004DFEFB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C4119E05268F41D1004DFEFB /* Main.storyboard */; };
 		C42463742673ABE10082C135 /* ScreenShareHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42463732673ABE10082C135 /* ScreenShareHandler.swift */; };
@@ -1032,20 +1018,6 @@
 		C0D2F0532993CCD100803B47 /* VideoCallView.CallButtonBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCallView.CallButtonBar.swift; sourceTree = "<group>"; };
 		C0D2F058299B8DB300803B47 /* LibertyMutual.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LibertyMutual.json; sourceTree = "<group>"; };
 		C0D2F05F299F93EC00803B47 /* PlaybookViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaybookViewController.swift; sourceTree = "<group>"; };
-		C0D2F06329A4B1E900803B47 /* VideoCallTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCallTests.swift; sourceTree = "<group>"; };
-		C0D2F06629A4B68F00803B47 /* VideoCallViewModel.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCallViewModel.Mock.swift; sourceTree = "<group>"; };
-		C0D2F06929A4DA8300803B47 /* VideoCallViewMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCallViewMock.swift; sourceTree = "<group>"; };
-		C0D2F06C29A4DAD500803B47 /* VideoCallVIewModel.Environment.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCallVIewModel.Environment.Mock.swift; sourceTree = "<group>"; };
-		C0D2F06F29A4DB5C00803B47 /* VIdeoCallView.Environment.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VIdeoCallView.Environment.Mock.swift; sourceTree = "<group>"; };
-		C0D2F07129A4DBC400803B47 /* CallStyle.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallStyle.Mock.swift; sourceTree = "<group>"; };
-		C0D2F07429A4E29000803B47 /* ConnectOperatorStyle.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectOperatorStyle.Mock.swift; sourceTree = "<group>"; };
-		C0D2F07729A4E3B200803B47 /* UserImageView.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserImageView.Mock.swift; sourceTree = "<group>"; };
-		C0D2F07A29A4E44C00803B47 /* ConnectOperatorView.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectOperatorView.Mock.swift; sourceTree = "<group>"; };
-		C0D2F07D29A4E57900803B47 /* CallButtonBarStyle.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallButtonBarStyle.Mock.swift; sourceTree = "<group>"; };
-		C0D2F08029A4E72700803B47 /* Header.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Header.Mock.swift; sourceTree = "<group>"; };
-		C0D2F08329A4E7A600803B47 /* HeaderStyle.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderStyle.Mock.swift; sourceTree = "<group>"; };
-		C0D2F08629A4E8AE00803B47 /* CallButtonBar.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallButtonBar.Mock.swift; sourceTree = "<group>"; };
-		C0D2F08929A4E92D00803B47 /* ConnectView.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectView.Mock.swift; sourceTree = "<group>"; };
 		C4119E05268F41D1004DFEFB /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		C42463732673ABE10082C135 /* ScreenShareHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenShareHandler.swift; sourceTree = "<group>"; };
 		C43C12F82694B14900C37E1B /* GliaPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GliaPresenter.swift; sourceTree = "<group>"; };
@@ -2790,7 +2762,6 @@
 		C096B408297EBCEB00F0C552 /* CallVisualizer */ = {
 			isa = PBXGroup;
 			children = (
-				C0D2F06229A4B18000803B47 /* VideoCall */,
 				84265E05298AE93700D65842 /* ScreenSharing */,
 				C096B40A297EBDE400F0C552 /* VisitorCodeTests.swift */,
 			);
@@ -2879,35 +2850,6 @@
 				C0D2F05F299F93EC00803B47 /* PlaybookViewController.swift */,
 			);
 			path = Playbook;
-			sourceTree = "<group>";
-		};
-		C0D2F06229A4B18000803B47 /* VideoCall */ = {
-			isa = PBXGroup;
-			children = (
-				C0D2F06529A4B66F00803B47 /* Mocks */,
-				C0D2F06329A4B1E900803B47 /* VideoCallTests.swift */,
-			);
-			path = VideoCall;
-			sourceTree = "<group>";
-		};
-		C0D2F06529A4B66F00803B47 /* Mocks */ = {
-			isa = PBXGroup;
-			children = (
-				C0D2F06629A4B68F00803B47 /* VideoCallViewModel.Mock.swift */,
-				C0D2F06C29A4DAD500803B47 /* VideoCallVIewModel.Environment.Mock.swift */,
-				C0D2F06929A4DA8300803B47 /* VideoCallViewMock.swift */,
-				C0D2F06F29A4DB5C00803B47 /* VIdeoCallView.Environment.Mock.swift */,
-				C0D2F07729A4E3B200803B47 /* UserImageView.Mock.swift */,
-				C0D2F07129A4DBC400803B47 /* CallStyle.Mock.swift */,
-				C0D2F07429A4E29000803B47 /* ConnectOperatorStyle.Mock.swift */,
-				C0D2F07A29A4E44C00803B47 /* ConnectOperatorView.Mock.swift */,
-				C0D2F08929A4E92D00803B47 /* ConnectView.Mock.swift */,
-				C0D2F07D29A4E57900803B47 /* CallButtonBarStyle.Mock.swift */,
-				C0D2F08629A4E8AE00803B47 /* CallButtonBar.Mock.swift */,
-				C0D2F08329A4E7A600803B47 /* HeaderStyle.Mock.swift */,
-				C0D2F08029A4E72700803B47 /* Header.Mock.swift */,
-			);
-			path = Mocks;
 			sourceTree = "<group>";
 		};
 		C42463722673ABCD0082C135 /* Screensharing */ = {
@@ -3427,7 +3369,6 @@
 				9A19926A27D3BA8700161AAE /* ViewFactory.Environment.Interface.swift in Sources */,
 				1A0EDF8225E8E0150076D1AD /* PopoverViewController.swift in Sources */,
 				84265E4B298D7B1900D65842 /* CallVisualizer.Coordinator.swift in Sources */,
-				C0D2F07629A4E2CE00803B47 /* ConnectOperatorStyle.Mock.swift in Sources */,
 				75940987298D38C2008B173A /* VisitorCodeViewModel+Environment.swift in Sources */,
 				1A60AFBC256682C800E53F53 /* SubFlowCoordinator.swift in Sources */,
 				1A0C9A8C25C4092400815406 /* CallButtonStyle.swift in Sources */,
@@ -3443,8 +3384,6 @@
 				1AC7A77B25838AE800567FF8 /* ChatItem.swift in Sources */,
 				9A3E1D8C27B6B888005634EB /* FileDownload.Environment.Mock.swift in Sources */,
 				1A1E309F25F8E44300850E68 /* FileDownloader.swift in Sources */,
-				C0D2F06E29A4DADE00803B47 /* VideoCallVIewModel.Environment.Mock.swift in Sources */,
-				C0D2F07C29A4E47200803B47 /* ConnectOperatorView.Mock.swift in Sources */,
 				C08D776028F583D7000461E5 /* Array+Extensions.swift in Sources */,
 				9AE9E4B727E1E30500BFE239 /* MockHelpers.swift in Sources */,
 				1A2DA72625EF892600032611 /* FilePickerController.swift in Sources */,
@@ -3529,7 +3468,6 @@
 				9A3E1D9427B6C29C005634EB /* ChatEngagementFile.Mock.swift in Sources */,
 				1A2DA73B25EFC00500032611 /* FileUploadListStyle.swift in Sources */,
 				7594095A298D386F008B173A /* NSLayoutConstraint.Extensions.swift in Sources */,
-				C0D2F06829A4B71C00803B47 /* VideoCallViewModel.Mock.swift in Sources */,
 				AFEF5C6F29928DB0005C3D8D /* SecureConversations.FileUploadView.swift in Sources */,
 				75940953298D3832008B173A /* Command.swift in Sources */,
 				C4F176CE261D1543009D9F07 /* ChatFileDownloadContentStyle.swift in Sources */,
@@ -3562,7 +3500,6 @@
 				EB2CBB1227D89F7D004F178E /* OnHoldOverlayStyle.swift in Sources */,
 				75940983298D38C2008B173A /* VisitorCodeViewModel+Delegate.swift in Sources */,
 				84265E66298D7B2900D65842 /* ScreenSharingViewController+Props.swift in Sources */,
-				C0D2F08C29A4EBA900803B47 /* VIdeoCallView.Environment.Mock.swift in Sources */,
 				313EBD552943116E008E9597 /* SecureConversations.swift in Sources */,
 				7529F2B627E1EB9A004D3581 /* Survey.ButtonView.swift in Sources */,
 				C49A29E42614A29700819269 /* FilePreviewView.swift in Sources */,
@@ -3607,7 +3544,6 @@
 				1A60AFAF256680EF00E53F53 /* L10n.swift in Sources */,
 				9A1992DD27D6254800161AAE /* ImageView.Cache.Live.swift in Sources */,
 				845E2F9B283FCA9000C04D56 /* Theme.Survey.Checkbox.swift in Sources */,
-				C0D2F07F29A4E59200803B47 /* CallButtonBarStyle.Mock.swift in Sources */,
 				1A60B0192567FC8A00E53F53 /* ButtonKind.swift in Sources */,
 				C42463742673ABE10082C135 /* ScreenShareHandler.swift in Sources */,
 				3100EEFD293F757E00D57F71 /* SecureConversations.WelcomeStyle.swift in Sources */,
@@ -3632,7 +3568,6 @@
 				1A60AF7A25656E0500E53F53 /* Theme.swift in Sources */,
 				84CFB7732822700000167258 /* Theme.Button.Accessibility.swift in Sources */,
 				1A475BB725DE833200296D55 /* BadgeStyle.swift in Sources */,
-				C0D2F08229A4E75200803B47 /* Header.Mock.swift in Sources */,
 				1A4AD3B3256D2A7600468BFB /* VisitorChatMessageStyle.swift in Sources */,
 				845E2F98283FC9A900C04D56 /* Theme.Survey.OptionButton.swift in Sources */,
 				84265E60298D7B2900D65842 /* ScreenSharingCoordinator+Environment.swift in Sources */,
@@ -3662,7 +3597,6 @@
 				9A1992E927D6BCD700161AAE /* FileDownload.Mock.swift in Sources */,
 				AF3D520D2983B3DD00AD8E69 /* FileUploader.Environment.Interface.swift in Sources */,
 				1ABD6C5925B5758000D56EFA /* BubbleStyle.swift in Sources */,
-				C0D2F08B29A4E95700803B47 /* ConnectView.Mock.swift in Sources */,
 				75AF8CF127DBB1F9009EEE2C /* SurveyViewController.View.swift in Sources */,
 				9AA64E142811B91C00FA56FF /* FontScaling.swift in Sources */,
 				C0D2F04629925C5A00803B47 /* VideoCallView.ConnectStatusView.swift in Sources */,
@@ -3702,7 +3636,6 @@
 				75940985298D38C2008B173A /* VisitorCodeCoordinator+DelegateEvent.swift in Sources */,
 				1A0C9AC225C9400000815406 /* CallDurationCounter.swift in Sources */,
 				9A19926527D3BA3A00161AAE /* UIKitBased.Mock.swift in Sources */,
-				C0D2F06B29A4DAA000803B47 /* VideoCallViewMock.swift in Sources */,
 				1AFB1E6225F7AE1300CA460D /* ChatEngagementFile.swift in Sources */,
 				3100EEF2293E214B00D57F71 /* SecureConversations.Coordinator.swift in Sources */,
 				1AA738AE2578E0D500E1120F /* ConnectAnimationView.swift in Sources */,
@@ -3790,10 +3723,8 @@
 				84D2292B28C61C8D00F64FE7 /* WKNavigationPolicyProvider.CustomResponseCard.swift in Sources */,
 				1A1E30A325F8E4A400850E68 /* FileSystemStorage.swift in Sources */,
 				75940944298D378A008B173A /* CoreSDKClient.Interface.swift in Sources */,
-				C0D2F08529A4E7CB00803B47 /* HeaderStyle.Mock.swift in Sources */,
 				754CC61227E2767A005676E9 /* Survey.BooleanQuestionView.swift in Sources */,
 				6EA3516926E139DA00BF5941 /* GliaViewTransitionController.swift in Sources */,
-				C0D2F07929A4E3DF00803B47 /* UserImageView.Mock.swift in Sources */,
 				AFC40C1A299650CD001B4C53 /* TranscriptCoordinator.swift in Sources */,
 				84265E6B29912E2100D65842 /* RemoteConfiguration+CallVisualizer.swift in Sources */,
 				1A1E30C725F9FDAB00850E68 /* ChatImageFileContentView.swift in Sources */,
@@ -3818,7 +3749,6 @@
 				1A60AFEC2566A0E700E53F53 /* NavigationController.swift in Sources */,
 				1A63B2ED257A312700508478 /* AlertCloseButtonProperties.swift in Sources */,
 				3100EEF5293E24C700D57F71 /* SecureConversations.WelcomeViewController.swift in Sources */,
-				C0D2F07329A4DC2000803B47 /* CallStyle.Mock.swift in Sources */,
 				C0D2F03B299149D600803B47 /* VideoCallViewModel.swift in Sources */,
 				C0D2F02E2991221900803B47 /* VideoCallCoordinator.DelegateEvent.swift in Sources */,
 				1A2DA73125EFA77E00032611 /* FileUploader.swift in Sources */,
@@ -3844,7 +3774,6 @@
 				845E2F7A283E2D4E00C04D56 /* PoweredByStyle.Accessibility.swift in Sources */,
 				1A4674C825ED084A0078FA1C /* MediaPickerViewModel.swift in Sources */,
 				9A186A3927F5E3010055886D /* MessageButtonStyle.Accessibility.swift in Sources */,
-				C0D2F08829A4E8E100803B47 /* CallButtonBar.Mock.swift in Sources */,
 				9AB196D627C3E1E400FD60AB /* ChatViewModel.Environment.Interface.swift in Sources */,
 				AF0D26D82971912A00816CCB /* SecureConversations.SendMessageButton.swift in Sources */,
 				1A0C9A8625C4090D00815406 /* CallButton.swift in Sources */,
@@ -3872,7 +3801,6 @@
 				9A3E1DA227BA7D00005634EB /* FileSystemStorage.Environment.Failing.swift in Sources */,
 				9A1992E127D6313500161AAE /* ImageView.Cache.Failing.swift in Sources */,
 				84265E0C298AECBA00D65842 /* ScreenSharingViewStyle+Mock.swift in Sources */,
-				C0D2F06429A4B1E900803B47 /* VideoCallTests.swift in Sources */,
 				C03A8047292BA76D00DDECA6 /* ChatViewControllerTests.swift in Sources */,
 				EB9ADB552828E66B00FAE8A4 /* CallTests.swift in Sources */,
 				AF9DB22E2890571A00A0C442 /* RootCoordinator.Environment.Failing.swift in Sources */,
