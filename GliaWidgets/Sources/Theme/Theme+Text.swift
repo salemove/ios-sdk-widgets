@@ -3,7 +3,7 @@ import UIKit
 
 extension Theme {
     /// Text style.
-    public struct Text {
+    public struct Text: Equatable {
         /// Foreground hex color.
         public var color: String
         /// Font.

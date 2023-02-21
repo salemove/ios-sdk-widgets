@@ -7,6 +7,7 @@ public struct RemoteConfiguration: Codable {
     let alert: Alert?
     let bubble: Bubble?
     let callVisualizer: CallVisualizer?
+    let secureConversationsWelcomeScreen: SecureConversationsWelcomeScreen?
 }
 
 extension RemoteConfiguration {

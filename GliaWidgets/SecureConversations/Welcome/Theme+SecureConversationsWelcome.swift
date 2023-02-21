@@ -11,6 +11,7 @@ extension Theme {
         let welcomeTitleStyle = SecureConversations.WelcomeStyle.TitleStyle(
             text: Welcome.title,
             font: font.header3,
+            textStyle: .title3,
             color: .black,
             accessibility: .init(isFontScalingEnabled: true)
         )
@@ -18,6 +19,7 @@ extension Theme {
         let welcomeSubtitleStyle = SecureConversations.WelcomeStyle.SubtitleStyle(
             text: Welcome.subtitle,
             font: font.subtitle,
+            textStyle: .footnote,
             color: .black,
             accessibility: .init(isFontScalingEnabled: true)
         )
@@ -25,6 +27,7 @@ extension Theme {
         let checkMessagesButtonStyle = SecureConversations.WelcomeStyle.CheckMessagesButtonStyle(
             title: Welcome.checkMessages,
             font: font.header2,
+            textStyle: .title2,
             color: color.primary,
             accessibility: .init(
                 isFontScalingEnabled: true,
@@ -36,6 +39,7 @@ extension Theme {
         let messageTitleStyle = SecureConversations.WelcomeStyle.MessageTitleStyle(
             title: Welcome.messageTitle,
             font: font.mediumSubtitle1,
+            textStyle: .subheadline,
             color: .black,
             accessibility: .init(isFontScalingEnabled: true)
         )
@@ -45,6 +49,7 @@ extension Theme {
             placeholderFont: font.bodyText,
             placeholderColor: color.baseNormal,
             textFont: font.bodyText,
+            textFontStyle: .body,
             textColor: .black,
             borderColor: color.baseNormal,
             borderWidth: 1,
@@ -58,6 +63,7 @@ extension Theme {
             placeholderFont: font.bodyText,
             placeholderColor: color.baseNormal,
             textFont: font.bodyText,
+            textFontStyle: .body,
             textColor: .black,
             borderColor: color.primary,
             borderWidth: 1,
@@ -71,6 +77,7 @@ extension Theme {
             placeholderFont: font.bodyText,
             placeholderColor: color.baseNormal,
             textFont: font.bodyText,
+            textFontStyle: .body,
             textColor: .black,
             borderColor: .disabledBorder,
             borderWidth: 1,
@@ -88,6 +95,7 @@ extension Theme {
         let sendButtonEnabledStyle = SecureConversations.WelcomeStyle.SendButtonEnabledStyle(
             title: Welcome.sendEnabled,
             font: font.bodyText,
+            textStyle: .body,
             textColor: color.baseLight,
             backgroundColor: color.primary,
             borderColor: .clear,
@@ -103,6 +111,7 @@ extension Theme {
         let sendButtonDisabledStyle = SecureConversations.WelcomeStyle.SendButtonDisabledStyle(
             title: Welcome.sendDisabled,
             font: font.bodyText,
+            textStyle: .body,
             textColor: .disabledTitle,
             backgroundColor: .disabledBackground,
             borderColor: .disabledBorder,
@@ -118,6 +127,7 @@ extension Theme {
         let sendButtonLoadingStyle = SecureConversations.WelcomeStyle.SendButtonLoadingStyle(
             title: Welcome.sendLoading,
             font: font.bodyText,
+            textStyle: .body,
             textColor: .disabledTitle,
             backgroundColor: .disabledBackground,
             borderColor: .disabledBorder,
@@ -140,6 +150,7 @@ extension Theme {
         let messageWarningStyle = SecureConversations.WelcomeStyle.MessageWarningStyle(
             textColor: color.systemNegative,
             textFont: .systemFont(ofSize: 12.0),
+            textStyle: .caption1,
             iconColor: color.systemNegative,
             messageLengthLimitText: L10n.MessageCenter.Welcome.messageLengthWarning,
             accessibility: .init(isFontScalingEnabled: true)

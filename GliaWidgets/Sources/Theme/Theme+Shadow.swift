@@ -3,7 +3,7 @@ import UIKit
 
 extension Theme {
     /// Shadow style.
-    public struct Shadow {
+    public struct Shadow: Equatable {
         /// Shadow color.
         public var color: String
         /// Shadow offset.
