@@ -2,34 +2,43 @@ import UIKit
 
 extension Theme {
     var secureConversationsWelcomeStyle: SecureConversations.WelcomeStyle {
+        typealias Welcome = L10n.MessageCenter.Welcome
         let chat = chatStyle
 
         let welcomeTitleStyle = SecureConversations.WelcomeStyle.TitleStyle(
-            text: "Welcome to Message Center",
+            text: Welcome.title,
             font: font.header3,
-            color: .black
+            color: .black,
+            accessibility: .init(isFontScalingEnabled: true)
         )
 
         let welcomeSubtitleStyle = SecureConversations.WelcomeStyle.SubtitleStyle(
-            text: "Send a message and we’ll get back to you within 48 hours",
+            text: Welcome.subtitle,
             font: font.subtitle,
-            color: .black
+            color: .black,
+            accessibility: .init(isFontScalingEnabled: true)
         )
 
         let checkMessagesButtonStyle = SecureConversations.WelcomeStyle.CheckMessagesButtonStyle(
-            title: "Check messages",
+            title: Welcome.checkMessages,
             font: font.header2,
-            color: color.primary
+            color: color.primary,
+            accessibility: .init(
+                isFontScalingEnabled: true,
+                label: Welcome.Accessibility.checkMessagesLabel,
+                hint: Welcome.Accessibility.checkMessagesHint
+            )
         )
 
         let messageTitleStyle = SecureConversations.WelcomeStyle.MessageTitleStyle(
-            title: "Your message",
+            title: Welcome.messageTitle,
             font: font.mediumSubtitle1,
-            color: .black
+            color: .black,
+            accessibility: .init(isFontScalingEnabled: true)
         )
 
         let messageTextViewNormalStyle = SecureConversations.WelcomeStyle.MessageTextViewNormalStyle(
-            placeholderText: "Enter your message",
+            placeholderText: Welcome.messageTextViewNormal,
             placeholderFont: font.bodyText,
             placeholderColor: color.baseNormal,
             textFont: font.bodyText,
@@ -37,11 +46,12 @@ extension Theme {
             borderColor: color.baseNormal,
             borderWidth: 1,
             cornerRadius: 4,
-            backgroundColor: color.background
+            backgroundColor: color.background,
+            accessibility: .init(isFontScalingEnabled: true)
         )
 
         let messageTextViewActiveStyle = SecureConversations.WelcomeStyle.MessageTextViewActiveStyle(
-            placeholderText: "Enter your message",
+            placeholderText: Welcome.messageTextViewActive,
             placeholderFont: font.bodyText,
             placeholderColor: color.baseNormal,
             textFont: font.bodyText,
@@ -49,11 +59,12 @@ extension Theme {
             borderColor: color.primary,
             borderWidth: 1,
             cornerRadius: 4,
-            backgroundColor: color.background
+            backgroundColor: color.background,
+            accessibility: .init(isFontScalingEnabled: true)
         )
 
         let messageTextViewDisabledStyle = SecureConversations.WelcomeStyle.MessageTextViewDisabledStyle(
-            placeholderText: "Enter your message",
+            placeholderText: Welcome.messageTextViewDisabled,
             placeholderFont: font.bodyText,
             placeholderColor: color.baseNormal,
             textFont: font.bodyText,
@@ -61,7 +72,8 @@ extension Theme {
             borderColor: .disabledBorder,
             borderWidth: 1,
             cornerRadius: 4,
-            backgroundColor: .disabledBackground
+            backgroundColor: .disabledBackground,
+            accessibility: .init(isFontScalingEnabled: true)
         )
 
         let messageTextViewStyle = SecureConversations.WelcomeStyle.MessageTextViewStyle(
@@ -71,34 +83,49 @@ extension Theme {
         )
 
         let sendButtonEnabledStyle = SecureConversations.WelcomeStyle.SendButtonEnabledStyle(
-            title: "Send",
+            title: Welcome.sendEnabled,
             font: font.bodyText,
             textColor: color.baseLight,
             backgroundColor: color.primary,
             borderColor: .clear,
             borderWidth: 1,
-            cornerRadius: 4
+            cornerRadius: 4,
+            accessibility: .init(
+                isFontScalingEnabled: true,
+                label: Welcome.Accessibility.sendLabel,
+                hint: Welcome.Accessibility.sendHint
+            )
         )
 
         let sendButtonDisabledStyle = SecureConversations.WelcomeStyle.SendButtonDisabledStyle(
-            title: "Send",
+            title: Welcome.sendDisabled,
             font: font.bodyText,
             textColor: .disabledTitle,
             backgroundColor: .disabledBackground,
             borderColor: .disabledBorder,
             borderWidth: 1,
-            cornerRadius: 4
+            cornerRadius: 4,
+            accessibility: .init(
+                isFontScalingEnabled: true,
+                label: Welcome.Accessibility.sendLabel,
+                hint: Welcome.Accessibility.sendHint
+            )
         )
 
         let sendButtonLoadingStyle = SecureConversations.WelcomeStyle.SendButtonLoadingStyle(
-            title: "Send",
+            title: Welcome.sendLoading,
             font: font.bodyText,
             textColor: .disabledTitle,
             backgroundColor: .disabledBackground,
             borderColor: .disabledBorder,
             borderWidth: 1,
             activityIndicatorColor: .disabledActivityIndicator,
-            cornerRadius: 4
+            cornerRadius: 4,
+            accessibility: .init(
+                isFontScalingEnabled: true,
+                label: Welcome.Accessibility.sendLabel,
+                hint: Welcome.Accessibility.sendHint
+            )
         )
 
         let sendButtonStyle = SecureConversations.WelcomeStyle.SendButtonStyle(
@@ -111,15 +138,24 @@ extension Theme {
             textColor: color.systemNegative,
             textFont: .systemFont(ofSize: 12.0),
             iconColor: color.systemNegative,
-            messageLengthLimitText: L10n.MessageCenter.Welcome.messageLengthWarning
+            messageLengthLimitText: L10n.MessageCenter.Welcome.messageLengthWarning,
+            accessibility: .init(isFontScalingEnabled: true)
         )
 
         let filePickerButtonStyle = SecureConversations.WelcomeStyle.FilePickerButtonStyle(
             color: .gray,
-            disabledColor: .lightGray
+            disabledColor: .lightGray,
+            accessibility: .init(
+                isFontScalingEnabled: true,
+                accessibilityLabel: Welcome.Accessibility.filePickerLabel,
+                accessibilityHint: Welcome.Accessibility.filePickerHint
+            )
         )
 
-        let titleImageStyle = SecureConversations.WelcomeStyle.TitleImageStyle(color: color.primary)
+        let titleImageStyle = SecureConversations.WelcomeStyle.TitleImageStyle(
+            color: color.primary,
+            accessibility: .unsupported
+        )
 
         var uploadListStyle: MessageCenterFileUploadListStyle {
             // TODO: Introduce dedicated localization for Secure conversations upload list instaed of using Chat's one.
@@ -230,7 +266,7 @@ extension Theme {
 
         return .init(
             header: chat.header,
-            headerTitle: "Messaging",
+            headerTitle: Welcome.header,
             welcomeTitleStyle: welcomeTitleStyle,
             titleImageStyle: titleImageStyle,
             welcomeSubtitleStyle: welcomeSubtitleStyle,

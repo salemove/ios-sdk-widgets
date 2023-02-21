@@ -102,23 +102,28 @@ extension SecureConversations.WelcomeStyle {
         public var font: UIFont
         /// Title color.
         public var color: UIColor
+        /// Accessibility related properties.
+        public var accessibility: Accessibility
 
         /// - Parameters:
         ///   - text: Title text value.
         ///   - font: Title font.
         ///   - color: Title color.
+        ///   - accessibility: Accessibility related properties.
         public init(
             text: String,
             font: UIFont,
-            color: UIColor
+            color: UIColor,
+            accessibility: Accessibility
         ) {
             self.text = text
             self.font = font
             self.color = color
+            self.accessibility = accessibility
         }
 
         /// Accessibility properties for TitleStyle.
-        public struct Accessibility {
+        public struct Accessibility: Equatable {
             /// Flag that provides font dynamic type by setting `adjustsFontForContentSizeCategory` for component that supports it.
             public var isFontScalingEnabled: Bool
 
@@ -140,23 +145,28 @@ extension SecureConversations.WelcomeStyle {
         public var font: UIFont
         /// Subtitle color.
         public var color: UIColor
+        /// Accessibility related properties.
+        public var accessibility: Accessibility
 
         /// - Parameters:
         ///   - text: Subtitle text value.
         ///   - font: Subtitle font.
         ///   - color: Subtitle color.
+        ///   - accessibility: Accessibility related properties.
         public init(
             text: String,
             font: UIFont,
-            color: UIColor
+            color: UIColor,
+            accessibility: Accessibility
         ) {
             self.text = text
             self.font = font
             self.color = color
+            self.accessibility = accessibility
         }
 
         /// Accessibility properties for SubtitleStyle.
-        public struct Accessibility {
+        public struct Accessibility: Equatable {
             /// Flag that provides font dynamic type by setting `adjustsFontForContentSizeCategory` for component that supports it.
             public var isFontScalingEnabled: Bool
 
@@ -178,6 +188,8 @@ extension SecureConversations.WelcomeStyle {
         public var font: UIFont
         /// Color of the button title.
         public var color: UIColor
+        /// Accessibility related properties.
+        public var accessibility: Accessibility
 
         /// - Parameters:
         ///   - title: Button title.
@@ -186,25 +198,45 @@ extension SecureConversations.WelcomeStyle {
         public init(
             title: String,
             font: UIFont,
-            color: UIColor
+            color: UIColor,
+            accessibility: Accessibility
         ) {
             self.title = title
             self.font = font
             self.color = color
+            self.accessibility = accessibility
         }
 
         /// Accessibility properties for CheckMessagesButtonStyle.
         public struct Accessibility: Equatable {
             /// Flag that provides font dynamic type by setting `adjustsFontForContentSizeCategory` for component that supports it.
             public var isFontScalingEnabled: Bool
+            /// Accessibility label.
+            public var label: String
+            /// Accessibility hint.
+            public var hint: String
 
-            /// - Parameter isFontScalingEnabled: Flag that provides font dynamic type by setting `adjustsFontForContentSizeCategory` for component that supports it.
-            public init(isFontScalingEnabled: Bool) {
+            /// - Parameters:
+            ///   - isFontScalingEnabled: Flag that provides font dynamic type by setting
+            ///    `adjustsFontForContentSizeCategory` for component that supports it.
+            ///   - label: Accessibility label.
+            ///   - hint: Accessibility hint.
+            public init(
+                isFontScalingEnabled: Bool,
+                label: String,
+                hint: String
+            ) {
                 self.isFontScalingEnabled = isFontScalingEnabled
+                self.label = label
+                self.hint = hint
             }
 
             /// Accessibility is not supported intentionally.
-            public static let unsupported = Self(isFontScalingEnabled: false)
+            public static let unsupported = Self(
+                isFontScalingEnabled: false,
+                label: "",
+                hint: ""
+            )
         }
     }
 
@@ -216,6 +248,8 @@ extension SecureConversations.WelcomeStyle {
         public var font: UIFont
         /// Color of the message title.
         public var color: UIColor
+        /// Accessibility related properties.
+        public var accessibility: Accessibility
 
         /// - Parameters:
         ///   - title: Message title text.
@@ -224,11 +258,13 @@ extension SecureConversations.WelcomeStyle {
         public init(
             title: String,
             font: UIFont,
-            color: UIColor
+            color: UIColor,
+            accessibility: Accessibility
         ) {
             self.title = title
             self.font = font
             self.color = color
+            self.accessibility = accessibility
         }
 
         /// Accessibility properties for MessageTitleStyle.
@@ -288,6 +324,8 @@ extension SecureConversations.WelcomeStyle {
         public var cornerRadius: Double
         /// Color of the background of the text view.
         public var backgroundColor: UIColor
+        /// Accessibility related properties.
+        public var accessibility: Accessibility
 
         /// - Parameters:
         ///   - placeholderText: Placeholder text for text view.
@@ -308,7 +346,8 @@ extension SecureConversations.WelcomeStyle {
             borderColor: UIColor,
             borderWidth: Double,
             cornerRadius: Double,
-            backgroundColor: UIColor
+            backgroundColor: UIColor,
+            accessibility: Accessibility
         ) {
             self.placeholderText = placeholderText
             self.placeholderFont = placeholderFont
@@ -319,6 +358,7 @@ extension SecureConversations.WelcomeStyle {
             self.borderWidth = borderWidth
             self.cornerRadius = cornerRadius
             self.backgroundColor = backgroundColor
+            self.accessibility = accessibility
         }
 
         /// Accessibility properties for MessageTextViewDisabledStyle.
@@ -356,6 +396,8 @@ extension SecureConversations.WelcomeStyle {
         public var cornerRadius: Double
         /// Color of the background of the text view.
         public var backgroundColor: UIColor
+        /// Accessibility related properties.
+        public var accessibility: Accessibility
 
         /// - Parameters:
         ///   - placeholderText: Placeholder text for text view.
@@ -376,7 +418,8 @@ extension SecureConversations.WelcomeStyle {
             borderColor: UIColor,
             borderWidth: Double,
             cornerRadius: Double,
-            backgroundColor: UIColor
+            backgroundColor: UIColor,
+            accessibility: Accessibility
         ) {
             self.placeholderText = placeholderText
             self.placeholderFont = placeholderFont
@@ -387,6 +430,7 @@ extension SecureConversations.WelcomeStyle {
             self.borderWidth = borderWidth
             self.cornerRadius = cornerRadius
             self.backgroundColor = backgroundColor
+            self.accessibility = accessibility
         }
 
         /// Accessibility properties for MessageTextViewNormalStyle.
@@ -424,6 +468,8 @@ extension SecureConversations.WelcomeStyle {
         public var cornerRadius: Double
         /// Color of the background of the text view.
         public var backgroundColor: UIColor
+        /// Accessibility related properties.
+        public var accessibility: Accessibility
 
         /// - Parameters:
         ///   - placeholderText: Placeholder text for text view.
@@ -444,7 +490,8 @@ extension SecureConversations.WelcomeStyle {
             borderColor: UIColor,
             borderWidth: Double,
             cornerRadius: Double,
-            backgroundColor: UIColor
+            backgroundColor: UIColor,
+            accessibility: Accessibility
         ) {
             self.placeholderText = placeholderText
             self.placeholderFont = placeholderFont
@@ -455,6 +502,7 @@ extension SecureConversations.WelcomeStyle {
             self.borderWidth = borderWidth
             self.cornerRadius = cornerRadius
             self.backgroundColor = backgroundColor
+            self.accessibility = accessibility
         }
 
         /// Accessibility properties for MessageTextViewActiveStyle.
@@ -512,6 +560,8 @@ extension SecureConversations.WelcomeStyle {
         public var borderWidth: Double
         /// Corner radius of the button.
         public var cornerRadius: Double
+        /// Accessibility related properties.
+        public var accessibility: Accessibility
 
         /// - Parameters:
         ///   - title: Title text of the button.
@@ -528,7 +578,8 @@ extension SecureConversations.WelcomeStyle {
             backgroundColor: UIColor,
             borderColor: UIColor,
             borderWidth: Double,
-            cornerRadius: Double
+            cornerRadius: Double,
+            accessibility: Accessibility
         ) {
             self.title = title
             self.font = font
@@ -537,20 +588,39 @@ extension SecureConversations.WelcomeStyle {
             self.cornerRadius = cornerRadius
             self.borderColor = borderColor
             self.borderWidth = borderWidth
+            self.accessibility = accessibility
         }
 
         /// Accessibility properties for SendButtonEnabledStyle.
         public struct Accessibility: Equatable {
             /// Flag that provides font dynamic type by setting `adjustsFontForContentSizeCategory` for component that supports it.
             public var isFontScalingEnabled: Bool
+            /// Accessibility label.
+            public var label: String
+            /// Accessibility hint.
+            public var hint: String
 
-            /// - Parameter isFontScalingEnabled: Flag that provides font dynamic type by setting `adjustsFontForContentSizeCategory` for component that supports it.
-            public init(isFontScalingEnabled: Bool) {
+            /// - Parameters:
+            ///   - isFontScalingEnabled: Flag that provides font dynamic type by setting
+            ///    `adjustsFontForContentSizeCategory` for component that supports it.
+            ///   - label: Accessibility label.
+            ///   - hint: Accessibility hint.
+            public init(
+                isFontScalingEnabled: Bool,
+                label: String,
+                hint: String
+            ) {
                 self.isFontScalingEnabled = isFontScalingEnabled
+                self.label = label
+                self.hint = hint
             }
 
             /// Accessibility is not supported intentionally.
-            public static let unsupported = Self(isFontScalingEnabled: false)
+            public static let unsupported = Self(
+                isFontScalingEnabled: false,
+                label: "",
+                hint: ""
+            )
         }
     }
 
@@ -570,6 +640,8 @@ extension SecureConversations.WelcomeStyle {
         public var borderWidth: Double
         /// Corner radius of the button.
         public var cornerRadius: Double
+        /// Accessibility related properties.
+        public var accessibility: Accessibility
 
         /// - Parameters:
         ///   - title: Title text of the button.
@@ -586,7 +658,8 @@ extension SecureConversations.WelcomeStyle {
             backgroundColor: UIColor,
             borderColor: UIColor,
             borderWidth: Double,
-            cornerRadius: Double
+            cornerRadius: Double,
+            accessibility: Accessibility
         ) {
             self.title = title
             self.font = font
@@ -595,20 +668,39 @@ extension SecureConversations.WelcomeStyle {
             self.cornerRadius = cornerRadius
             self.borderColor = borderColor
             self.borderWidth = borderWidth
+            self.accessibility = accessibility
         }
 
         /// Accessibility properties for SendButtonDisabledStyle.
         public struct Accessibility: Equatable {
             /// Flag that provides font dynamic type by setting `adjustsFontForContentSizeCategory` for component that supports it.
             public var isFontScalingEnabled: Bool
+            /// Accessibility label.
+            public var label: String
+            /// Accessibility hint.
+            public var hint: String
 
-            /// - Parameter isFontScalingEnabled: Flag that provides font dynamic type by setting `adjustsFontForContentSizeCategory` for component that supports it.
-            public init(isFontScalingEnabled: Bool) {
+            /// - Parameters:
+            ///   - isFontScalingEnabled: Flag that provides font dynamic type by setting
+            ///    `adjustsFontForContentSizeCategory` for component that supports it.
+            ///   - label: Accessibility label.
+            ///   - hint: Accessibility hint.
+            public init(
+                isFontScalingEnabled: Bool,
+                label: String,
+                hint: String
+            ) {
                 self.isFontScalingEnabled = isFontScalingEnabled
+                self.label = label
+                self.hint = hint
             }
 
             /// Accessibility is not supported intentionally.
-            public static let unsupported = Self(isFontScalingEnabled: false)
+            public static let unsupported = Self(
+                isFontScalingEnabled: false,
+                label: "",
+                hint: ""
+            )
         }
     }
 
@@ -630,6 +722,8 @@ extension SecureConversations.WelcomeStyle {
         public var activityIndicatorColor: UIColor
         /// Corner radius of the button.
         public var cornerRadius: Double
+        /// Accessibility related properties.
+        public var accessibility: Accessibility
 
         /// - Parameters:
         ///   - title: Title text of the button.
@@ -648,7 +742,8 @@ extension SecureConversations.WelcomeStyle {
             borderColor: UIColor,
             borderWidth: Double,
             activityIndicatorColor: UIColor,
-            cornerRadius: Double
+            cornerRadius: Double,
+            accessibility: Accessibility
         ) {
             self.title = title
             self.font = font
@@ -658,20 +753,39 @@ extension SecureConversations.WelcomeStyle {
             self.borderColor = borderColor
             self.borderWidth = borderWidth
             self.activityIndicatorColor = activityIndicatorColor
+            self.accessibility = accessibility
         }
 
         /// Accessibility properties for SendButtonEnabledStyle.
         public struct Accessibility: Equatable {
             /// Flag that provides font dynamic type by setting `adjustsFontForContentSizeCategory` for component that supports it.
             public var isFontScalingEnabled: Bool
+            /// Accessibility label.
+            public var label: String
+            /// Accessibility hint.
+            public var hint: String
 
-            /// - Parameter isFontScalingEnabled: Flag that provides font dynamic type by setting `adjustsFontForContentSizeCategory` for component that supports it.
-            public init(isFontScalingEnabled: Bool) {
+            /// - Parameters:
+            ///   - isFontScalingEnabled: Flag that provides font dynamic type by setting
+            ///    `adjustsFontForContentSizeCategory` for component that supports it.
+            ///   - label: Accessibility label.
+            ///   - hint: Accessibility hint.
+            public init(
+                isFontScalingEnabled: Bool,
+                label: String,
+                hint: String
+            ) {
                 self.isFontScalingEnabled = isFontScalingEnabled
+                self.label = label
+                self.hint = hint
             }
 
             /// Accessibility is not supported intentionally.
-            public static let unsupported = Self(isFontScalingEnabled: false)
+            public static let unsupported = Self(
+                isFontScalingEnabled: false,
+                label: "",
+                hint: ""
+            )
         }
     }
 
@@ -685,6 +799,8 @@ extension SecureConversations.WelcomeStyle {
         public var iconColor: UIColor
         /// Text for the message limit warning.
         public var messageLengthLimitText: String
+        /// Accessibility related properties.
+        public var accessibility: Accessibility
 
         /// - Parameters:
         ///   - textColor: Color of the warning text.
@@ -695,12 +811,14 @@ extension SecureConversations.WelcomeStyle {
             textColor: UIColor,
             textFont: UIFont,
             iconColor: UIColor,
-            messageLengthLimitText: String
+            messageLengthLimitText: String,
+            accessibility: Accessibility
         ) {
             self.textColor = textColor
             self.textFont = textFont
             self.iconColor = iconColor
             self.messageLengthLimitText = messageLengthLimitText
+            self.accessibility = accessibility
         }
 
         /// Accessibility properties for MessageWarningStyle.
@@ -724,30 +842,52 @@ extension SecureConversations.WelcomeStyle {
         public var color: UIColor
         /// Button image color for disabled state.
         public var disabledColor: UIColor
+        /// Accessibility related properties.
+        public var accessibility: Accessibility
 
         /// - Parameters:
         ///   - color: Button image color.
         ///   - disabledColor: Button image color for disabled state.
         public init(
             color: UIColor,
-            disabledColor: UIColor
+            disabledColor: UIColor,
+            accessibility: Accessibility
         ) {
             self.color = color
             self.disabledColor = disabledColor
+            self.accessibility = accessibility
         }
 
         /// Accessibility properties for FilePickerButtonStyle.
         public struct Accessibility: Equatable {
             /// Flag that provides font dynamic type by setting `adjustsFontForContentSizeCategory` for component that supports it.
             public var isFontScalingEnabled: Bool
+            /// Accessibility label.
+            public var label: String
+            /// Accessibility hint.
+            public var hint: String
 
-            /// - Parameter isFontScalingEnabled: Flag that provides font dynamic type by setting `adjustsFontForContentSizeCategory` for component that supports it.
-            public init(isFontScalingEnabled: Bool) {
+            /// - Parameters:
+            ///   - isFontScalingEnabled: Flag that provides font dynamic type by setting
+            ///    `adjustsFontForContentSizeCategory` for component that supports it.
+            ///   - label: Accessibility label.
+            ///   - hint: Accessibility hint.
+            public init(
+                isFontScalingEnabled: Bool,
+                accessibilityLabel: String,
+                accessibilityHint: String
+            ) {
                 self.isFontScalingEnabled = isFontScalingEnabled
+                self.label = accessibilityLabel
+                self.hint = accessibilityHint
             }
 
             /// Accessibility is not supported intentionally.
-            public static let unsupported = Self(isFontScalingEnabled: false)
+            public static let unsupported = Self(
+                isFontScalingEnabled: false,
+                accessibilityLabel: "",
+                accessibilityHint: ""
+            )
         }
     }
 
@@ -755,10 +895,16 @@ extension SecureConversations.WelcomeStyle {
     public struct TitleImageStyle: Equatable {
         /// Color of the image.
         public var color: UIColor
+        /// Accessibility related properties.
+        public var accessibility: Accessibility
 
         /// - Parameter color: Color of the image.
-        public init(color: UIColor) {
+        public init(
+            color: UIColor,
+            accessibility: Accessibility
+        ) {
             self.color = color
+            self.accessibility = accessibility
         }
 
         /// Accessibility properties for TitleImageStyle.
