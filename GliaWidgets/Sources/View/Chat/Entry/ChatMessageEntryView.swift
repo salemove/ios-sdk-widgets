@@ -23,21 +23,15 @@ class ChatMessageEntryView: BaseView {
                 textView.resignFirstResponder()
             }
 
-            updatePickMediaButtonVisibility()
+            updatePickMediaButtonVisibility(mediaPickerButtonVisibility)
             updatePlaceholderText()
-        }
-    }
-
-    var isAttachmentButtonHidden: Bool {
-        didSet {
-            updatePickMediaButtonVisibility()
         }
     }
 
     var isConnected: Bool {
         didSet {
             updatePlaceholderText()
-            updatePickMediaButtonVisibility()
+            updatePickMediaButtonVisibility(mediaPickerButtonVisibility)
         }
     }
 
@@ -50,6 +44,8 @@ class ChatMessageEntryView: BaseView {
         get { return isUserInteractionEnabled }
         set { isUserInteractionEnabled = newValue }
     }
+
+    var mediaPickerButtonVisibility: MediaPickerButtonVisibility = .disabled
 
     private let style: ChatMessageEntryStyle
     private let separator = UIView()
@@ -74,7 +70,6 @@ class ChatMessageEntryView: BaseView {
         pickMediaButton = MessageButton(with: style.mediaButton)
         sendButton = MessageButton(with: style.sendButton)
         isChoiceCardModeEnabled = false
-        isAttachmentButtonHidden = true
         isConnected = false
         super.init()
     }
@@ -129,7 +124,7 @@ class ChatMessageEntryView: BaseView {
 
         pickMediaButton.tap = { [weak self] in self?.pickMediaTapped?() }
         pickMediaButton.accessibilityLabel = style.mediaButton.accessibility.accessibilityLabel
-        updatePickMediaButtonVisibility()
+        updatePickMediaButtonVisibility(.disabled)
 
         sendButton.accessibilityIdentifier = "chat_sendButton"
         sendButton.tap = { [weak self] in self?.sendTap() }
@@ -207,12 +202,8 @@ class ChatMessageEntryView: BaseView {
         placeholderLabel.text = text
     }
 
-    private func updatePickMediaButtonVisibility() {
-        if isChoiceCardModeEnabled || !isConnected {
-            pickMediaButton.isHidden = true
-        } else {
-            pickMediaButton.isHidden = isAttachmentButtonHidden
-        }
+    private func updatePickMediaButtonVisibility(_ visibility: MediaPickerButtonVisibility) {
+        pickMediaButton.isHidden = visibility.isHidden
     }
 
     private func updateTextViewHeight() {
@@ -274,5 +265,37 @@ extension ChatMessageEntryView {
     struct Environment {
         var gcd: GCD
         var uiApplication: UIKitBased.UIApplication
+    }
+}
+
+extension ChatMessageEntryView {
+    func setPickMediaButtonVisibility(_ visibility: MediaPickerButtonVisibility) {
+        mediaPickerButtonVisibility = visibility
+        updatePickMediaButtonVisibility(visibility)
+    }
+}
+
+enum MediaPickerButtonVisibility {
+    enum ToggledBy {
+        case choiceCard
+        case enagagementConnection(isConnected: Bool)
+        case secureMessaging
+    }
+    case enabled(ToggledBy)
+    case disabled
+}
+
+extension MediaPickerButtonVisibility {
+    var isHidden: Bool {
+        switch self {
+        case .disabled:
+            return true
+        case .enabled(.choiceCard):
+            return true
+        case let .enabled(.enagagementConnection(isConnected)):
+            return !isConnected
+        case .enabled(.secureMessaging):
+            return false
+        }
     }
 }
