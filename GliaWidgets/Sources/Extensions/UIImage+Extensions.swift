@@ -1,5 +1,5 @@
 import UIKit
-import func AVFoundation.AVMakeRect
+import AVFoundation
 
 extension UIImage {
     func resized(to size: CGSize) -> UIImage? {
