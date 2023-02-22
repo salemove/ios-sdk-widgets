@@ -48,7 +48,8 @@ extension SecureConversations {
                         )
                     ),
                     uiApplication: environment.uiApplication,
-                    createFileUploadListModel: environment.createFileUploadListModel
+                    createFileUploadListModel: environment.createFileUploadListModel,
+                    fetchSiteConfigurations: environment.fetchSiteConfigurations
                 )
             )
         }
@@ -267,6 +268,7 @@ extension SecureConversations.Coordinator {
         var createFileDownload: FileDownloader.CreateFileDownload
         var loadChatMessagesFromHistory: () -> Bool
         var fetchChatHistory: CoreSdkClient.FetchChatHistory
+        var fetchSiteConfigurations: CoreSdkClient.FetchSiteConfigurations
     }
 
     enum DelegateEvent {
