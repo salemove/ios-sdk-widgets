@@ -248,7 +248,6 @@ extension SecureConversations {
             )
 
             self.availability = availability
-            checkSecureConversationsAvailability()
 
             let uploader = FileUploader(
                 maximumUploads: Self.maximumUploads,
@@ -272,8 +271,6 @@ extension SecureConversations {
                 )
             )
 
-            self.availability = availability
-
             self.fileUploadListModel.delegate = { [weak self] event in
                 switch event {
                 case let .renderProps(uploadListViewProps):
@@ -288,23 +285,9 @@ extension SecureConversations {
                 self?.action?(.pickMediaButtonEnabled(!limitReached))
             }
             checkSecureConversationsAvailability()
-
-            self.fileUploadListModel.delegate = { [weak self] event in
-                switch event {
-                case let .renderProps(uploadListViewProps):
-                    self?.action?(.fileUploadListPropsUpdated(uploadListViewProps))
-                    // Validate ability to send message, to cover cases where
-                    // sending is not possible because of file upload limitations.
-                    self?.validateMessage()
-                }
-            }
-
-            uploader.limitReached.addObserver(self) { [weak self] limitReached, _ in
-                self?.action?(.pickMediaButtonEnabled(!limitReached))
-            }
         }
 
-        private func checkSecureConversationsAvailability() {
+		private func checkSecureConversationsAvailability() {
             availability.checkSecureConversationsAvailability { result in
                 switch result {
                 case .success(let isAvailable) where isAvailable:
@@ -322,7 +305,7 @@ extension SecureConversations {
                     )
                 }
             }
-        }
+		}
 
         // TODO: Common with chat model, should it be unified?
         func numberOfItems(in section: Int) -> Int {

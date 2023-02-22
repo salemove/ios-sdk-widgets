@@ -37,7 +37,7 @@ extension SecureConversations {
                     queueIds: environment.queueIds,
                     listQueues: environment.listQueues,
                     alertConfiguration: environment.alertConfiguration,
-                    createFileUploadListModel: environment.createFileUploadListModel,
+					createFileUploadListModel: environment.createFileUploadListModel,
                     uuid: environment.uuid,
                     secureUploadFile: environment.secureUploadFile,
                     fileUploadListStyle: environment.fileUploadListStyle,
