@@ -44,6 +44,18 @@ class ChatViewModel: EngagementViewModel, ViewModel {
 
     private var pendingMessages: [OutgoingMessage] = []
     private var isViewLoaded: Bool = false
+    private (set) var isChoiceCardInputModeEnabled: Bool = false
+    private (set) var siteConfiguration: CoreSdkClient.Site?
+
+    var mediaPickerButtonVisibility: MediaPickerButtonVisibility {
+        guard let site = siteConfiguration else { return .disabled }
+        guard site.allowedFileSenders.visitor else { return .disabled }
+        guard environment.getCurrentEngagement() != nil else {
+            return .enabled(.enagagementConnection(isConnected: false))
+        }
+        guard !isChoiceCardInputModeEnabled else { return .enabled(.choiceCard) }
+        return .enabled(.enagagementConnection(isConnected: environment.getCurrentEngagement() != nil))
+    }
 
     // swiftlint:disable function_body_length
     init(
@@ -561,6 +573,10 @@ extension ChatViewModel {
                 let choiceCardInputModeEnabled = message.isChoiceCard || self.isInteractableCustomCard(message)
                 action?(.setChoiceCardInputModeEnabled(choiceCardInputModeEnabled))
 
+                // Store info about choice card mode from which
+                // attachment button visibility will be calculated.
+                self.isChoiceCardInputModeEnabled = choiceCardInputModeEnabled
+
                 if isChatBottomReached {
                     action?(.scrollToBottom(animated: true))
                 }
@@ -872,6 +888,9 @@ extension ChatViewModel {
         messagesSection.replaceItem(at: index, with: item)
         action?(.refreshRow(index, in: messagesSection.index, animated: true))
         action?(.setChoiceCardInputModeEnabled(false))
+        // Update stored choice card mode to be in
+        // sync after response.
+        isChoiceCardInputModeEnabled = false
     }
 }
 
@@ -884,7 +903,10 @@ extension ChatViewModel {
 
             switch result {
             case .success(let site):
-                self.action?(.setIsAttachmentButtonHidden(!site.allowedFileSenders.visitor))
+                self.siteConfiguration = site
+                self.action?(
+                    .setAttachmentButtonVisibility(self.mediaPickerButtonVisibility)
+                )
             case .failure:
                 self.showAlert(
                     with: self.alertConfiguration.unexpectedError,
@@ -947,7 +969,7 @@ extension ChatViewModel {
         case updateUnreadMessageIndicator(itemCount: Int)
         case setUnreadMessageIndicatorImage(imageUrl: String?)
         case setOperatorTypingIndicatorIsHiddenTo(Bool, _ isChatScrolledToBottom: Bool)
-        case setIsAttachmentButtonHidden(Bool)
+        case setAttachmentButtonVisibility(MediaPickerButtonVisibility)
         case fileUploadListPropsUpdated(SecureConversations.FileUploadListView.Props)
     }
 
