@@ -50,6 +50,12 @@ extension SecureConversations {
                     uiApplication: environment.uiApplication,
                     createFileUploadListModel: environment.createFileUploadListModel,
                     fetchSiteConfigurations: environment.fetchSiteConfigurations
+                ),
+                availability: .init(
+                    environment: .init(
+                        listQueues: environment.listQueues,
+                        queueIds: environment.queueIds
+                    )
                 )
             )
         }
@@ -235,7 +241,9 @@ extension SecureConversations {
                     fetchChatHistory: environment.fetchChatHistory,
                     uiApplication: environment.uiApplication,
                     sendSecureMessage: environment.sendSecureMessage,
-                    queueIds: environment.queueIds
+                    queueIds: environment.queueIds,
+                    listQueues: environment.listQueues,
+                    alertConfiguration: viewFactory.theme.alertConfiguration
                 )
             )
             pushCoordinator(transcriptCoordinator)

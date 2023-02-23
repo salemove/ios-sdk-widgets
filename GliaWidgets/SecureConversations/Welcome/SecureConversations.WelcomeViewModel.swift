@@ -12,6 +12,7 @@ extension SecureConversations {
         }
 
         static let sendMessageErrorAlertAccIdentifier = "send_message_alert_error_identifier"
+        static let unavailableMessageCenterAlertAccIdentidier = "unavailable_message_center_alert_identifier"
 
         static let messageTextLimit = 10_000
         static let maximumUploads = 25
@@ -19,6 +20,7 @@ extension SecureConversations {
         var action: ((Action) -> Void)?
         var delegate: ((DelegateEvent) -> Void)?
         var environment: Environment
+        var availability: Availability
 
         var messageText: String = "" { didSet { reportChange() } }
         // By default attachments are not available, until site configurations are fetched.
@@ -33,7 +35,7 @@ extension SecureConversations {
             self?.sendMessage()
         }
 
-        init(environment: Environment) {
+        init(environment: Environment, availability: Availability) {
             self.environment = environment
             self.fileUploadListModel = environment.createFileUploadListModel(
                 .init(
@@ -42,6 +44,7 @@ extension SecureConversations {
                     uiApplication: environment.uiApplication
                 )
             )
+            self.availability = availability
 
             self.fileUploadListModel.delegate = { [weak self] event in
                 switch event {
@@ -52,6 +55,26 @@ extension SecureConversations {
 
             checkSecureConversationsAvailability()
             loadAttachmentAvailability()
+        }
+
+        private func checkSecureConversationsAvailability() {
+            availability.checkSecureConversationsAvailability { result in
+                switch result {
+                case .success(let isAvailable) where isAvailable:
+                    self.isSecureConversationsAvailable = true
+                default:
+                    self.isSecureConversationsAvailable = false
+
+                    let configuration = self.environment.alertConfiguration.unavailableMessageCenter
+                    self.delegate?(
+                        .showAlertAsView(
+                            configuration,
+                            accessibilityIdentifier: Self.unavailableMessageCenterAlertAccIdentidier,
+                            dismissed: nil
+                        )
+                    )
+                }
+            }
         }
 
         func event(_ event: Event) {
@@ -97,43 +120,6 @@ private extension SecureConversations.WelcomeViewModel {
             }
         }
     }
-
-    func checkSecureConversationsAvailability() {
-        environment.listQueues { [weak self] queues, _ in
-            self?.checkQueues(queues)
-        }
-    }
-
-    func checkQueues(_ queues: [CoreSdkClient.Queue]?) {
-        guard let queues = queues, isSecureConversationsAvailable(in: queues) else {
-            self.isSecureConversationsAvailable = false
-
-            let configuration = self.environment.alertConfiguration.unavailableMessageCenter
-            self.delegate?(
-                .showAlertAsView(
-                    configuration,
-                    accessibilityIdentifier: Self.sendMessageErrorAlertAccIdentifier,
-                    dismissed: nil
-                )
-            )
-
-            return
-        }
-
-        self.isSecureConversationsAvailable = true
-    }
-
-    private func isSecureConversationsAvailable(
-        in queues: [CoreSdkClient.Queue]
-    ) -> Bool {
-        let filteredQueues = queues
-            .filter { self.environment.queueIds.contains($0.id) }
-            .filter { $0.state.status != .closed }
-            .filter { $0.state.media.contains(CoreSdkClient.MediaType.messaging) }
-
-        return !filteredQueues.isEmpty
-    }
-
     func loadAttachmentAvailability() {
         environment.fetchSiteConfigurations { [weak self, alertConfiguration = environment.alertConfiguration] result in
             switch result {

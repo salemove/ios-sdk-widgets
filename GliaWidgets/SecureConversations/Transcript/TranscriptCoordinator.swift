@@ -34,23 +34,38 @@ extension SecureConversations {
                     fetchChatHistory: environment.fetchChatHistory,
                     uiApplication: environment.uiApplication,
                     sendSecureMessage: environment.sendSecureMessage,
-                    queueIds: environment.queueIds
+                    queueIds: environment.queueIds,
+                    listQueues: environment.listQueues,
+                    alertConfiguration: environment.alertConfiguration
+                ),
+                availability: .init(
+                    environment: .init(
+                        listQueues: environment.listQueues,
+                        queueIds: environment.queueIds
+                    )
                 )
             )
-
-            model.delegate = { [weak self] event in
-                switch event {
-                case .showFile(let file):
-                    self?.presentQuickLookController(with: file)
-                case .openLink(let url):
-                    self?.presentWebViewController(with: url)
-                }
-            }
 
             let controller = ChatViewController(
                 viewModel: .transcript(model),
                 viewFactory: environment.viewFactory
             )
+
+            model.delegate = { [weak self, weak controller] event in
+                switch event {
+                case .showFile(let file):
+                    self?.presentQuickLookController(with: file)
+                case .openLink(let url):
+                    self?.presentWebViewController(with: url)
+                case let .showAlertAsView(conf, accessibilityIdentifier, dismissed):
+                    controller?.presentAlertAsView(
+                        with: conf,
+                        accessibilityIdentifier: accessibilityIdentifier,
+                        dismissed: dismissed
+                    )
+                }
+            }
+
             return controller
         }
 
@@ -93,6 +108,8 @@ extension SecureConversations.TranscriptCoordinator {
         var uiApplication: UIKitBased.UIApplication
         var sendSecureMessage: CoreSdkClient.SendSecureMessage
         var queueIds: [String]
+        var listQueues: CoreSdkClient.ListQueues
+        var alertConfiguration: AlertConfiguration
     }
 }
 
