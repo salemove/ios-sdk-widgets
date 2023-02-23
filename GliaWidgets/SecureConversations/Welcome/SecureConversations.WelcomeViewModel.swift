@@ -11,7 +11,7 @@ extension SecureConversations {
             case waiting, loading
         }
 
-        static let sendMessageErrorAlertAccIdentidier = "send_message_alert_error_identifier"
+        static let sendMessageErrorAlertAccIdentifier = "send_message_alert_error_identifier"
 
         static let messageTextLimit = 10_000
         static let maximumUploads = 25
@@ -21,7 +21,8 @@ extension SecureConversations {
         var environment: Environment
 
         var messageText: String = "" { didSet { reportChange() } }
-        var isAttachmentsAvailable: Bool = true { didSet { reportChange() } }
+        // By default attachments are not available, until site configurations are fetched.
+        private (set) var isAttachmentsAvailable: Bool = false { didSet { reportChange() } }
         var isSecureConversationsAvailable: Bool = true { didSet { reportChange() } }
         var messageInputState: MessageInputState = .normal { didSet { reportChange() } }
         var sendMessageRequestState: SendMessageRequestState = .waiting { didSet { reportChange() } }
@@ -50,6 +51,7 @@ extension SecureConversations {
             }
 
             checkSecureConversationsAvailability()
+            loadAttachmentAvailability()
         }
 
         func event(_ event: Event) {
@@ -88,7 +90,7 @@ private extension SecureConversations.WelcomeViewModel {
                 self?.delegate?(
                     .showAlert(
                         alertConfiguration.unexpectedError,
-                        accessibilityIdentifier: Self.sendMessageErrorAlertAccIdentidier,
+                        accessibilityIdentifier: Self.sendMessageErrorAlertAccIdentifier,
                         dismissed: nil
                     )
                 )
@@ -110,7 +112,7 @@ private extension SecureConversations.WelcomeViewModel {
             self.delegate?(
                 .showAlertAsView(
                     configuration,
-                    accessibilityIdentifier: Self.sendMessageErrorAlertAccIdentidier,
+                    accessibilityIdentifier: Self.sendMessageErrorAlertAccIdentifier,
                     dismissed: nil
                 )
             )
@@ -130,6 +132,23 @@ private extension SecureConversations.WelcomeViewModel {
             .filter { $0.state.media.contains(CoreSdkClient.MediaType.messaging) }
 
         return !filteredQueues.isEmpty
+    }
+
+    func loadAttachmentAvailability() {
+        environment.fetchSiteConfigurations { [weak self, alertConfiguration = environment.alertConfiguration] result in
+            switch result {
+            case let .success(site):
+                self?.isAttachmentsAvailable = site.allowedFileSenders.visitor
+            case .failure:
+                self?.delegate?(
+                    .showAlert(
+                        alertConfiguration.unexpectedError,
+                        accessibilityIdentifier: Self.sendMessageErrorAlertAccIdentifier,
+                        dismissed: nil
+                    )
+                )
+            }
+        }
     }
 }
 // MARK: - Props Generation
@@ -372,6 +391,7 @@ extension SecureConversations.WelcomeViewModel {
         var fileUploader: FileUploader
         var uiApplication: UIKitBased.UIApplication
         var createFileUploadListModel: SecureConversations.FileUploadListViewModel.Create
+        var fetchSiteConfigurations: CoreSdkClient.FetchSiteConfigurations
     }
 }
 

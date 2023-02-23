@@ -425,11 +425,7 @@ extension SecureConversations.WelcomeView {
 
     func defineSendMessageButtonLayout() {
         let widthConstraint = sendMessageButton.widthAnchor.constraint(
-            equalTo: messageTitleStackView.widthAnchor,
-            // For some reason width constraint breaks if it is
-            // exactly equal to `messageTitleStackView` width.
-            // Making it slightly less, seem to resolve the issue.
-            constant: -1
+            equalTo: messageTextView.widthAnchor
         )
         NSLayoutConstraint.activate([
             widthConstraint,
