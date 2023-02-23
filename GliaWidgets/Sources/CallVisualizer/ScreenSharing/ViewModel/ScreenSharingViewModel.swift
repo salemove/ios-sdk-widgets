@@ -4,20 +4,17 @@ extension CallVisualizer {
     final class ScreenSharingViewModel {
         typealias Props = CallVisualizer.ScreenSharingViewController.Props
 
-        private let delegate: Command<DelegateEvent>
         private let environment: Environment
         private let style: ScreenSharingViewStyle
 
+        var delegate: Command<DelegateEvent> = .nop
+
         init(
             style: ScreenSharingViewStyle,
-            delegate: Command<DelegateEvent>,
             environment: Environment
         ) {
             self.style = style
-            self.delegate = delegate
             self.environment = environment
-
-            delegate(.propsUpdated(props()))
         }
     }
 }
@@ -28,7 +25,7 @@ extension CallVisualizer.ScreenSharingViewModel {
     func props() -> Props {
         let backButton = style.header.backButton.map {
             HeaderButton.Props(
-                tap: Cmd { [delegate] in delegate(.close) },
+                tap: Cmd { [weak self] in self?.delegate(.close) },
                 style: $0
             )
         }
