@@ -53,11 +53,13 @@ extension SecureConversations.ConfirmationViewModel {
         backButtonCmd: Cmd,
         closeButtonCmd: Cmd
     ) -> Header.Props {
-        Header.Props(
+        let backButton = style.header.backButton.map { HeaderButton.Props(tap: backButtonCmd, style: $0) }
+
+        return Header.Props(
             title: style.headerTitle,
             effect: .none,
             endButton: .init(style: style.header.endButton),
-            backButton: .init(tap: backButtonCmd, style: style.header.backButton),
+            backButton: backButton,
             closeButton: .init(tap: closeButtonCmd, style: style.header.closeButton),
             endScreenshareButton: .init(style: style.header.endScreenShareButton),
             style: style.header
