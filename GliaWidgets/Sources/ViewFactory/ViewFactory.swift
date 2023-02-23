@@ -53,7 +53,7 @@ class ViewFactory {
             header: .init(
                 title: theme.chat.title,
                 effect: .none,
-                endButton: .init(style: theme.chat.header.endButton, tap: endCmd, title: theme.chat.header.endButton.title),
+                endButton: .init(style: theme.chat.header.endButton, tap: endCmd),
                 backButton: .init(tap: backCmd, style: theme.chat.header.backButton),
                 closeButton: .init(tap: closeCmd, style: theme.chat.header.closeButton),
                 endScreenshareButton: .init(tap: endScreenshareCmd, style: theme.chat.header.endScreenShareButton),
@@ -99,7 +99,7 @@ class ViewFactory {
             header: .init(
                 title: "",
                 effect: .none,
-                endButton: .init(style: theme.call.header.endButton, tap: endCmd, title: theme.call.header.endButton.title),
+                endButton: .init(style: theme.call.header.endButton, tap: endCmd),
                 backButton: .init(tap: backCmd, style: theme.call.header.backButton),
                 closeButton: .init(tap: closeCmd, style: theme.call.header.closeButton),
                 endScreenshareButton: .init(style: theme.call.header.endScreenShareButton),

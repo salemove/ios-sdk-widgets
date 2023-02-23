@@ -28,18 +28,17 @@ extension ViewPlaybook {
     ]
 
     static var chat: Header {
+        var headerStyle = standardTheme.chat.header
+        headerStyle.endButton.title = "#endButton#"
         let header = Header(
             props: .init(
                 title: "Chat",
                 effect: .none,
-                endButton: .init(
-                    style: standardTheme.chat.header.endButton,
-                    title: "#endButton#"
-                ),
-                backButton: .init(style: standardTheme.chat.header.backButton),
-                closeButton: .init(style: standardTheme.chat.header.closeButton),
-                endScreenshareButton: .init(style: standardTheme.chat.header.endScreenShareButton),
-                style: standardTheme.chat.header
+                endButton: .init(style: headerStyle.endButton),
+                backButton: .init(style: headerStyle.backButton),
+                closeButton: .init(style: headerStyle.closeButton),
+                endScreenshareButton: .init(style: headerStyle.endScreenShareButton),
+                style: headerStyle
             )
         )
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3)) {
@@ -50,18 +49,17 @@ extension ViewPlaybook {
     }
 
     static var call: Header {
+        var headerStyle = standardTheme.call.header
+        headerStyle.endButton.title = "#endButton#"
         let header = Header(
             props: .init(
                 title: "Audio Call",
                 effect: .blur,
-                endButton: .init(
-                    style: standardTheme.call.header.endButton,
-                    title: "#endButton#"
-                ),
-                backButton: .init(style: standardTheme.call.header.backButton),
-                closeButton: .init(style: standardTheme.call.header.closeButton),
-                endScreenshareButton: .init(style: standardTheme.call.header.endScreenShareButton),
-                style: standardTheme.call.header
+                endButton: .init(style: headerStyle.endButton),
+                backButton: .init(style: headerStyle.backButton),
+                closeButton: .init(style: headerStyle.closeButton),
+                endScreenshareButton: .init(style: headerStyle.endScreenShareButton),
+                style: headerStyle
             )
         )
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3)) {

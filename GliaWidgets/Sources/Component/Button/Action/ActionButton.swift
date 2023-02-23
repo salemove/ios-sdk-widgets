@@ -31,7 +31,7 @@ class ActionButton: UIButton {
     }
 
     func renderProps() {
-        setTitle(props.title, for: .normal)
+        setTitle(props.style.title, for: .normal)
         contentEdgeInsets = contentInsets
         clipsToBounds = true
         layer.masksToBounds = false
@@ -94,21 +94,18 @@ extension ActionButton {
         var style: ActionButtonStyle
         var height: CGFloat
         var tap: Cmd
-        var title: String
         var accessibilityIdentifier: String
 
         init(
             style: ActionButtonStyle = .init(title: "", titleFont: .systemFont(ofSize: 16), titleColor: .white, backgroundColor: .fill(color: .blue)),
             height: CGFloat = 40,
             tap: Cmd = .nop,
-            title: String = "",
             accessibilityIdentifier: String = ""
         ) {
             self.style = style
             self.height = height
             self.tap = tap
-            self.title = title
-            self.accessibilityIdentifier = accessibilityIdentifier.isEmpty ? title : accessibilityIdentifier
+            self.accessibilityIdentifier = accessibilityIdentifier.isEmpty ? style.title : accessibilityIdentifier
         }
     }
 }
