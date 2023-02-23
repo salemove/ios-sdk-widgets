@@ -50,11 +50,13 @@ extension CallVisualizer {
         }
 
         private static func createHeaderProps(with header: HeaderStyle) -> Header.Props {
-            .init(
+            let backButton = header.backButton.map { HeaderButton.Props(style: $0) }
+
+            return .init(
                 title: "",
                 effect: .none,
                 endButton: .init(),
-                backButton: .init(style: header.backButton),
+                backButton: backButton,
                 closeButton: .init(style: header.closeButton),
                 endScreenshareButton: .init(style: header.endScreenShareButton),
                 style: header

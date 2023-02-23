@@ -5,6 +5,9 @@ extension Theme {
         typealias Welcome = L10n.MessageCenter.Welcome
         let chat = chatStyle
 
+        var header = chat.header
+        header.backButton = nil
+
         let welcomeTitleStyle = SecureConversations.WelcomeStyle.TitleStyle(
             text: Welcome.title,
             font: font.header3,
@@ -265,7 +268,7 @@ extension Theme {
        }
 
         return .init(
-            header: chat.header,
+            header: header,
             headerTitle: Welcome.header,
             welcomeTitleStyle: welcomeTitleStyle,
             titleImageStyle: titleImageStyle,

@@ -30,15 +30,18 @@ extension ViewPlaybook {
     static var chat: Header {
         var headerStyle = standardTheme.chat.header
         headerStyle.endButton.title = "#endButton#"
+
+        let backButton = headerStyle.backButton.map { HeaderButton.Props(style: $0) }
+
         let header = Header(
             props: .init(
                 title: "Chat",
                 effect: .none,
                 endButton: .init(style: headerStyle.endButton),
-                backButton: .init(style: headerStyle.backButton),
-                closeButton: .init(style: headerStyle.closeButton),
-                endScreenshareButton: .init(style: headerStyle.endScreenShareButton),
-                style: headerStyle
+                backButton: backButton,
+                closeButton: .init(style: standardTheme.chat.header.closeButton),
+                endScreenshareButton: .init(style: standardTheme.chat.header.endScreenShareButton),
+                style: standardTheme.chat.header
             )
         )
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3)) {
@@ -51,17 +54,21 @@ extension ViewPlaybook {
     static var call: Header {
         var headerStyle = standardTheme.call.header
         headerStyle.endButton.title = "#endButton#"
+
+        let backButton = headerStyle.backButton.map { HeaderButton.Props(style: $0) }
+
         let header = Header(
             props: .init(
                 title: "Audio Call",
                 effect: .blur,
                 endButton: .init(style: headerStyle.endButton),
-                backButton: .init(style: headerStyle.backButton),
+                backButton: backButton,
                 closeButton: .init(style: headerStyle.closeButton),
                 endScreenshareButton: .init(style: headerStyle.endScreenShareButton),
                 style: headerStyle
             )
         )
+
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3)) {
             header.props = .createNewProps(with: "Video Call", props: header.props)
         }

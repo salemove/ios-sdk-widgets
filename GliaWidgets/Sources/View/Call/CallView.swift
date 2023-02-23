@@ -203,8 +203,10 @@ class CallView: EngagementView {
             self?.adjustLocalVideoFrameAfterPanGesture(translation: $0)
         }
 
-        header.backButton.accessibilityLabel = style.header.backButton.accessibility.label
-        header.backButton.accessibilityHint = style.header.backButton.accessibility.hint
+        if let backButton = style.header.backButton {
+            header.backButton?.accessibilityLabel = backButton.accessibility.label
+            header.backButton?.accessibilityHint = backButton.accessibility.hint
+        }
     }
 
     func switchTo(_ mode: Mode) {
