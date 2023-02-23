@@ -182,6 +182,7 @@
 		3100EEFB293F363100D57F71 /* SecureConversations.WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3100EEFA293F363100D57F71 /* SecureConversations.WelcomeView.swift */; };
 		3100EEFD293F757E00D57F71 /* SecureConversations.WelcomeStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3100EEFC293F757E00D57F71 /* SecureConversations.WelcomeStyle.swift */; };
 		3100EEFF293F7E0900D57F71 /* Theme+SecureConversationsWelcome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3100EEFE293F7E0900D57F71 /* Theme+SecureConversationsWelcome.swift */; };
+		3115D45C29A4FD3F00D99561 /* SecureConversations.Availability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3115D45B29A4FD3F00D99561 /* SecureConversations.Availability.swift */; };
 		313EBD552943116E008E9597 /* SecureConversations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313EBD542943116E008E9597 /* SecureConversations.swift */; };
 		31DB0C01287C2EFC00FB288E /* StaticValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31DB0C00287C2EFC00FB288E /* StaticValues.swift */; };
 		6B2BFCE2274297F100B68506 /* SettingsSwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B2BFCE1274297F100B68506 /* SettingsSwitchCell.swift */; };
@@ -744,6 +745,7 @@
 		3100EEFA293F363100D57F71 /* SecureConversations.WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.WelcomeView.swift; sourceTree = "<group>"; };
 		3100EEFC293F757E00D57F71 /* SecureConversations.WelcomeStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.WelcomeStyle.swift; sourceTree = "<group>"; };
 		3100EEFE293F7E0900D57F71 /* Theme+SecureConversationsWelcome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Theme+SecureConversationsWelcome.swift"; sourceTree = "<group>"; };
+		3115D45B29A4FD3F00D99561 /* SecureConversations.Availability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.Availability.swift; sourceTree = "<group>"; };
 		313EBD542943116E008E9597 /* SecureConversations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.swift; sourceTree = "<group>"; };
 		31DB0C00287C2EFC00FB288E /* StaticValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticValues.swift; sourceTree = "<group>"; };
 		6304CD1CAD1108C78C7B11BF /* Pods-GliaWidgetsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliaWidgetsTests.release.xcconfig"; path = "Target Support Files/Pods-GliaWidgetsTests/Pods-GliaWidgetsTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -1031,7 +1033,6 @@
 		C0D2F0492992765F00803B47 /* VideoCallView.OperatorImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCallView.OperatorImageView.swift; sourceTree = "<group>"; };
 		C0D2F04B2992789000803B47 /* VideoCallView.UserImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCallView.UserImageView.swift; sourceTree = "<group>"; };
 		C0D2F0532993CCD100803B47 /* VideoCallView.CallButtonBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCallView.CallButtonBar.swift; sourceTree = "<group>"; };
-		C0D2F058299B8DB300803B47 /* LibertyMutual.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LibertyMutual.json; sourceTree = "<group>"; };
 		C0D2F05F299F93EC00803B47 /* PlaybookViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaybookViewController.swift; sourceTree = "<group>"; };
 		C0D2F06329A4B1E900803B47 /* VideoCallTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCallTests.swift; sourceTree = "<group>"; };
 		C0D2F06629A4B68F00803B47 /* VideoCallViewModel.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCallViewModel.Mock.swift; sourceTree = "<group>"; };
@@ -1355,7 +1356,6 @@
 			isa = PBXGroup;
 			children = (
 				C0D2F05E299F93EC00803B47 /* Playbook */,
-				C0D2F058299B8DB300803B47 /* LibertyMutual.json */,
 				84265E6C29914DAA00D65842 /* ViewController */,
 				C46B2463262F05BE001245A1 /* TestingApp.entitlements */,
 				1A60AFF32567CDFB00E53F53 /* Settings */,
@@ -2179,6 +2179,7 @@
 				AFEF5C6D29928376005C3D8D /* FileUploadListView */,
 				AF0D26D72971912A00816CCB /* SecureConversations.SendMessageButton.swift */,
 				AFC40C1B29965F0F001B4C53 /* SecureConversations.ChatWithTranscriptModel.swift */,
+				3115D45B29A4FD3F00D99561 /* SecureConversations.Availability.swift */,
 			);
 			path = SecureConversations;
 			sourceTree = "<group>";
@@ -3734,6 +3735,7 @@
 				3100EEF8293E276E00D57F71 /* SecureConversations.WelcomeViewModel.swift in Sources */,
 				1A5F8182258B4F0E00A605DA /* OutgoingMessage.swift in Sources */,
 				AFA2FDF428907F0C00428E6D /* BubbleView.Mock.swift in Sources */,
+				3115D45C29A4FD3F00D99561 /* SecureConversations.Availability.swift in Sources */,
 				9A19926E27D3BB7800161AAE /* Theme.Mock.swift in Sources */,
 				9AE9E4B127E0E45200BFE239 /* CallViewController.Mock.swift in Sources */,
 				9AE0A7642822B02C00725946 /* FontScaling.Environment.Mock.swift in Sources */,
