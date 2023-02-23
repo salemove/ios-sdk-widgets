@@ -23,30 +23,25 @@ extension CallVisualizer {
         // MARK: - Private
 
         private func showEndScreenSharingViewController() -> ViewController {
-            typealias Props = ScreenSharingViewController.Props
-            var viewController: ScreenSharingViewController?
-
             let model = ScreenSharingViewModel(
                 style: environment.theme.screenSharing,
-                delegate: .init { [weak self, weak viewController] event in
-                    switch event {
-                    case .close:
-                        viewController?.dismiss(animated: true)
-                        self?.delegate?(.close)
-                    case let .propsUpdated(props):
-                        viewController?.props = props
-                    }
-                },
                 environment: .init(screenShareHandler: environment.screenShareHandler)
             )
 
             defer { viewModel = model }
 
-            let screenSharingController = ScreenSharingViewController(props: model.props())
-            viewController = screenSharingController
-            screenSharingController.modalPresentationStyle = .overFullScreen
+            let viewController = ScreenSharingViewController(props: model.props())
+            viewController.modalPresentationStyle = .overFullScreen
 
-            return screenSharingController
+            model.delegate = .init { [weak self, weak viewController] event in
+                switch event {
+                case .close:
+                    viewController?.dismiss(animated: true)
+                    self?.delegate?(.close)
+                }
+            }
+
+            return viewController
         }
 
         private static func createHeaderProps(with header: HeaderStyle) -> Header.Props {
