@@ -410,7 +410,8 @@ extension EngagementCoordinator {
                 fetchFile: environment.fetchFile,
                 createFileDownload: environment.createFileDownload,
                 loadChatMessagesFromHistory: environment.loadChatMessagesFromHistory,
-                fetchChatHistory: environment.fetchChatHistory
+                fetchChatHistory: environment.fetchChatHistory,
+                fetchSiteConfigurations: environment.fetchSiteConfigurations
             )
         )
 
