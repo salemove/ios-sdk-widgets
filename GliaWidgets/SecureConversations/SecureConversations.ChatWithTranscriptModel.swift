@@ -158,9 +158,16 @@ extension SecureConversations {
         typealias DelegateCallback = (DelegateEvent) -> Void
         typealias Action = ChatViewModel.Action
 
+        static let unavailableMessageCenterAlertAccIdentidier = "unavailable_message_center_alert_identifier"
+
         enum DelegateEvent {
             case showFile(LocalFile)
             case openLink(URL)
+            case showAlertAsView(
+                MessageAlertConfiguration,
+                accessibilityIdentifier: String?,
+                dismissed: (() -> Void)?
+            )
         }
 
         typealias Event = ChatViewModel.Event
@@ -184,7 +191,14 @@ extension SecureConversations {
 
         private var isViewLoaded: Bool = false
 
-        private let environment: Environment
+        var environment: Environment
+        var availability: Availability
+        var isSecureConversationsAvailable: Bool = true {
+            didSet {
+                // Hide text field in MOB-1882
+                print("availability has changed")
+            }
+        }
 
         private let sections = [
             Section<ChatItem>(0)
@@ -198,7 +212,8 @@ extension SecureConversations {
 
         init(
             isCustomCardSupported: Bool,
-            environment: Environment
+            environment: Environment,
+            availability: Availability
         ) {
             self.isCustomCardSupported = isCustomCardSupported
             self.environment = environment
@@ -214,6 +229,29 @@ extension SecureConversations {
                     createFileDownload: environment.createFileDownload
                 )
             )
+
+            self.availability = availability
+            checkSecureConversationsAvailability()
+        }
+
+        private func checkSecureConversationsAvailability() {
+            availability.checkSecureConversationsAvailability { result in
+                switch result {
+                case .success(let isAvailable) where isAvailable:
+                    self.isSecureConversationsAvailable = true
+                default:
+                    self.isSecureConversationsAvailable = false
+
+                    let configuration = self.environment.alertConfiguration.unavailableMessageCenter
+                    self.delegate?(
+                        .showAlertAsView(
+                            configuration,
+                            accessibilityIdentifier: Self.unavailableMessageCenterAlertAccIdentidier,
+                            dismissed: nil
+                        )
+                    )
+                }
+            }
         }
 
         // TODO: Common with chat model, should it be unified?
@@ -412,6 +450,8 @@ extension SecureConversations.TranscriptModel {
         var uiApplication: UIKitBased.UIApplication
         var sendSecureMessage: CoreSdkClient.SendSecureMessage
         var queueIds: [String]
+        var listQueues: CoreSdkClient.ListQueues
+        var alertConfiguration: AlertConfiguration
     }
 }
 
