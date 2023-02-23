@@ -26,14 +26,18 @@ extension CallVisualizer {
 
 extension CallVisualizer.ScreenSharingViewModel {
     func props() -> Props {
+        let backButton = style.header.backButton.map {
+            HeaderButton.Props(
+                tap: Cmd { [delegate] in delegate(.close) },
+                style: $0
+            )
+        }
+
         let headerProps = Header.Props(
             title: style.title,
             effect: .none,
             endButton: .init(style: style.header.endButton),
-            backButton: .init(
-                tap: Cmd { [delegate] in delegate(.close) },
-                style: style.header.backButton
-            ),
+            backButton: backButton,
             closeButton: .init(
                 style: style.header.closeButton
             ),

@@ -306,14 +306,18 @@ extension SecureConversations.WelcomeViewModel {
         for instance: SecureConversations.WelcomeViewModel,
         with style: SecureConversations.WelcomeStyle
     ) -> Header.Props {
-        .init(
+        let backButton = style.header.backButton.map {
+            HeaderButton.Props(
+                tap: Cmd { [weak instance] in instance?.delegate?(.backTapped) },
+                style: $0
+            )
+        }
+
+        return .init(
             title: style.headerTitle,
             effect: .none,
             endButton: .init(),
-            backButton: .init(
-                tap: Cmd { [weak instance] in instance?.delegate?(.backTapped) },
-                style: style.header.backButton
-            ),
+            backButton: backButton,
             closeButton: .init(
                 tap: Cmd { [weak instance] in instance?.delegate?(.closeTapped) },
                 style: style.header.closeButton

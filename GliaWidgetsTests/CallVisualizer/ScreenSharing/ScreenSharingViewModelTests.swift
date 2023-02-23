@@ -56,7 +56,7 @@ final class ScreenSharingViewModelTests: XCTestCase {
         props?.screenSharingViewProps.endScreenSharing.tap.execute()
         XCTAssertEqual(calls, [.close])
 
-        props?.screenSharingViewProps.header.backButton.tap.execute()
+        props?.screenSharingViewProps.header.backButton?.tap.execute()
         XCTAssertEqual(calls, [.close, .close])
     }
 }
