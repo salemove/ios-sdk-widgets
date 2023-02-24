@@ -101,6 +101,9 @@ class ChatViewModel: EngagementViewModel, ViewModel {
                 switch event {
                 case let .renderProps(uploadListViewProps):
                     self?.action?(.fileUploadListPropsUpdated(uploadListViewProps))
+                    // Validate ability to send message, to cover cases where
+                    // sending is not possible because of file upload limitations.
+                    self?.validateMessage()
                 }
             }
         }
