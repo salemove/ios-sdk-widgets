@@ -12,20 +12,24 @@ extension AlertViewController {
         alertView.showsPoweredBy = conf.showsPoweredBy
         alertView.showsCloseButton = false
 
+        var declineButtonStyle = viewFactory.theme.alert.negativeAction
+        declineButtonStyle.title = conf.decline
+
+        var acceptButtonStyle = viewFactory.theme.alert.positiveAction
+        acceptButtonStyle.title = conf.accept
+
         let declineButton = ActionButton(
             props: .init(
-                style: viewFactory.theme.alert.negativeAction,
+                style: declineButtonStyle,
                 tap: .init { [weak self] in self?.dismiss(animated: true, completion: declined) },
-                title: conf.decline,
                 accessibilityIdentifier: "alert_negative_button"
             )
         )
 
         let acceptButton = ActionButton(
             props: .init(
-                style: viewFactory.theme.alert.positiveAction,
+                style: acceptButtonStyle,
                 tap: .init { [weak self] in self?.dismiss(animated: true, completion: accepted) },
-                title: conf.accept,
                 accessibilityIdentifier: "alert_positive_button"
             )
         )
