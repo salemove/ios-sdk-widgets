@@ -36,7 +36,12 @@ extension SecureConversations {
                     sendSecureMessage: environment.sendSecureMessage,
                     queueIds: environment.queueIds,
                     listQueues: environment.listQueues,
-                    alertConfiguration: environment.alertConfiguration
+                    alertConfiguration: environment.alertConfiguration,
+					createFileUploadListModel: environment.createFileUploadListModel,
+                    uuid: environment.uuid,
+                    secureUploadFile: environment.secureUploadFile,
+                    fileUploadListStyle: environment.fileUploadListStyle,
+                    fetchSiteConfigurations: environment.fetchSiteConfigurations
                 ),
                 availability: .init(
                     environment: .init(
@@ -57,6 +62,20 @@ extension SecureConversations {
                     self?.presentQuickLookController(with: file)
                 case .openLink(let url):
                     self?.presentWebViewController(with: url)
+                case .pickMedia(let pickerEvent):
+                    self?.presentMediaPickerController(
+                        with: pickerEvent,
+                        mediaSource: .library,
+                        mediaTypes: [.image, .movie]
+                    )
+                case .takeMedia(let pickerEvent):
+                    self?.presentMediaPickerController(
+                        with: pickerEvent,
+                        mediaSource: .camera,
+                        mediaTypes: [.image, .movie]
+                    )
+                case .pickFile(let pickerEvent):
+                    self?.presentFilePickerController(with: pickerEvent)
                 case let .showAlertAsView(conf, accessibilityIdentifier, dismissed):
                     controller?.presentAlertAsView(
                         with: conf,
@@ -89,6 +108,44 @@ extension SecureConversations {
             safariViewController.view.accessibilityIdentifier = "safari_root_view"
             navigationPresenter.present(safariViewController)
         }
+
+        private func presentMediaPickerController(
+            with pickerEvent: ObservableValue<MediaPickerEvent>,
+            mediaSource: MediaPickerViewModel.MediaSource,
+            mediaTypes: [MediaPickerViewModel.MediaType]
+        ) {
+            let viewModel = MediaPickerViewModel(
+                pickerEvent: pickerEvent,
+                mediaSource: mediaSource,
+                mediaTypes: mediaTypes
+            )
+            viewModel.delegate = { [weak self] event in
+                switch event {
+                case .finished:
+                    self?.presentedController = nil
+                }
+            }
+
+            let controller = MediaPickerController(viewModel: viewModel)
+            presentedController = .mediaPickerController(controller)
+            controller.viewController { [weak self] viewController in
+                self?.navigationPresenter.present(viewController)
+            }
+        }
+
+        private func presentFilePickerController(with pickerEvent: ObservableValue<FilePickerEvent>) {
+            let viewModel = FilePickerViewModel(pickerEvent: pickerEvent)
+            viewModel.delegate = { [weak self] event in
+                switch event {
+                case .finished:
+                    self?.presentedController = nil
+                }
+            }
+
+            let controller = FilePickerController(viewModel: viewModel)
+            presentedController = .filePickerController(controller)
+            navigationPresenter.present(controller.viewController)
+        }
     }
 }
 
@@ -110,11 +167,18 @@ extension SecureConversations.TranscriptCoordinator {
         var queueIds: [String]
         var listQueues: CoreSdkClient.ListQueues
         var alertConfiguration: AlertConfiguration
+        var createFileUploadListModel: SecureConversations.FileUploadListViewModel.Create
+        var uuid: () -> UUID
+        var secureUploadFile: CoreSdkClient.SecureConversationsUploadFile
+        var fileUploadListStyle: FileUploadListStyle
+        var fetchSiteConfigurations: CoreSdkClient.FetchSiteConfigurations
     }
 }
 
 extension SecureConversations.TranscriptCoordinator {
     enum PresentedController {
         case quickLook(QuickLookController)
+        case mediaPickerController(MediaPickerController)
+        case filePickerController(FilePickerController)
     }
 }

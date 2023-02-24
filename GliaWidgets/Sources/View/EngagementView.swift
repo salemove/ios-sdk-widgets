@@ -14,7 +14,6 @@ class EngagementView: BaseView {
         headerProps: Header.Props
     ) {
         self.style = style
-        print(headerProps)
         self.header = Header(props: headerProps)
         self.environment = environment
         self.connectView = ConnectView(
