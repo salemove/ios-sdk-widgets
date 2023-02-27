@@ -36,6 +36,7 @@ extension SecureConversations {
             stackView.axis = .horizontal
             stackView.alignment = .center
             stackView.spacing = 11
+            stackView.isUserInteractionEnabled = false
         }
 
         override init(frame: CGRect) {
