@@ -38,7 +38,7 @@ extension SecureConversations.ConfirmationViewModel {
                 backButtonCmd: Cmd(closure: { [weak self] in self?.delegate?(.backTapped) }),
                 closeButtonCmd: Cmd(closure: { [weak self] in self?.delegate?(.closeTapped) })
             ),
-            checkMessageButtonTap: Cmd { print("check messages") }
+            checkMessageButtonTap: Cmd { [weak self] in self?.delegate?(.chatTranscriptScreenRequested) }
         )
 
         let viewControllerProps = SecureConversations.ConfirmationViewController.Props(
@@ -81,6 +81,7 @@ extension SecureConversations.ConfirmationViewModel {
         case backTapped
         case closeTapped
         case renderProps(SecureConversations.ConfirmationViewController.Props)
+        case chatTranscriptScreenRequested
     }
 
     enum StartAction {
