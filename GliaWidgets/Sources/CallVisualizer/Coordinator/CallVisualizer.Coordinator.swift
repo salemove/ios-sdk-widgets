@@ -96,6 +96,11 @@ extension CallVisualizer {
                 .present(alert, animated: true)
         }
 
+        func handleAcceptedUpgrade() {
+            guard videoCallCoordinator == nil else { return }
+            showVideoCallViewController()
+        }
+
         func showEndScreenSharingViewController() {
             let viewController = buildScreenSharingViewController()
             environment
