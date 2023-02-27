@@ -48,7 +48,8 @@ extension SecureConversations {
                         listQueues: environment.listQueues,
                         queueIds: environment.queueIds
                     )
-                )
+                ),
+                deliveredStatusText: environment.viewFactory.theme.chat.visitorMessage.delivered
             )
             let controller = ChatViewController(viewModel: .transcript(model), viewFactory: environment.viewFactory)
 

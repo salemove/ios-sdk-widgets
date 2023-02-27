@@ -218,10 +218,16 @@ extension SecureConversations {
         }
 
         private let sections = [
-            Section<ChatItem>(0)
+            Section<ChatItem>(0),
+            Section<ChatItem>(1),
+            Section<ChatItem>(2),
+            Section<ChatItem>(3)
         ]
 
         var historySection: Section<ChatItem> { sections[0] }
+        var messagesSection: Section<ChatItem> { sections[3] }
+
+        let deliveredStatusText: String
 
         var numberOfSections: Int {
             sections.count
@@ -230,7 +236,8 @@ extension SecureConversations {
         init(
             isCustomCardSupported: Bool,
             environment: Environment,
-            availability: Availability
+            availability: Availability,
+            deliveredStatusText: String
         ) {
             self.isCustomCardSupported = isCustomCardSupported
             self.environment = environment
@@ -248,6 +255,7 @@ extension SecureConversations {
             )
 
             self.availability = availability
+            self.deliveredStatusText = deliveredStatusText
 
             let uploader = FileUploader(
                 maximumUploads: Self.maximumUploads,
@@ -429,26 +437,120 @@ extension SecureConversations {
             action?(.sendButtonHidden(!isValid))
             return isValid
         }
+    }
+}
 
-        private func sendMessage() {
-            guard validateMessage() else { return }
+// MARK: Message management
+extension SecureConversations.TranscriptModel {
+    private func sendMessage() {
+        guard validateMessage() else { return }
 
-           _ = environment.sendSecureMessage(
-                messageText,
-                fileUploadListModel.attachment,
-                environment.queueIds
-           ) { [weak self] result in
-               switch result {
-               case .success:
-                   self?.messageText = ""
-                   self?.fileUploadListModel.removeSucceededUploads()
-                   // TODO: MOB-1738
-               case let .failure(error):
-                   // TODO: MOB-1874
-                   break
-               }
+        let uploads = fileUploadListModel.succeededUploads
+        let localFiles = uploads.map(\.localFile)
+
+        let outgoingMessage = OutgoingMessage(
+            content: messageText,
+            files: localFiles
+        )
+        appendItem(.init(kind: .outgoingMessage(outgoingMessage)), to: messagesSection, animated: true)
+
+       _ = environment.sendSecureMessage(
+            messageText,
+            fileUploadListModel.attachment,
+            environment.queueIds
+       ) { [weak self] result in
+           guard let self = self else { return }
+           switch result {
+           case let .success(message):
+               self.replace(
+                outgoingMessage,
+                uploads: uploads,
+                with: message,
+                in: self.messagesSection
+               )
+           case let .failure(error):
+               // TODO: MOB-1874
+               break
            }
-        }
+       }
+
+        // Clear inputs, thus disabling them
+        // and preventing the message to be sent again.
+        clearInputs()
+        action?(.scrollToBottom(animated: true))
+    }
+
+    func replace(
+        _ outgoingMessage: OutgoingMessage,
+        uploads: [FileUpload],
+        with message: CoreSdkClient.Message,
+        in section: Section<ChatItem>
+    ) {
+        guard let index = section.items
+            .enumerated()
+            .first(where: {
+                guard case .outgoingMessage(let message) = $0.element.kind else { return false }
+                return message.id == outgoingMessage.id
+            })?.offset
+        else { return }
+
+        var affectedRows = [Int]()
+
+        // Remove previous "Delivered" statuses
+        section.items
+            .enumerated()
+            .forEach { index, element in
+                if case .visitorMessage(let message, let status) = element.kind,
+                   status == deliveredStatusText {
+                    let chatItem = ChatItem(kind: .visitorMessage(message, status: nil))
+                    section.replaceItem(at: index, with: chatItem)
+                    affectedRows.append(index)
+                }
+            }
+
+        let deliveredMessage = ChatMessage(with: message)
+        let kind = ChatItem.Kind.visitorMessage(
+            deliveredMessage,
+            status: deliveredStatusText
+        )
+        let item = ChatItem(kind: kind)
+        downloader.addDownloads(for: deliveredMessage.attachment?.files)
+        section.replaceItem(at: index, with: item)
+        affectedRows.append(index)
+        action?(.refreshRows(affectedRows, in: section.index, animated: false))
+    }
+
+    func clearInputs() {
+        messageText = ""
+        fileUploadListModel.removeSucceededUploads()
+    }
+}
+
+// MARK: Section management
+extension SecureConversations.TranscriptModel {
+    func appendItem(
+        _ item: ChatItem,
+        to section: Section<ChatItem>,
+        animated: Bool
+    ) {
+        appendItems(
+            [item],
+            to: section,
+            animated: animated
+        )
+    }
+
+    private func appendItems(
+        _ items: [ChatItem],
+        to section: Section<ChatItem>,
+        animated: Bool
+    ) {
+        section.append(items)
+        action?(.appendRows(
+            items.count,
+            to: section.index,
+            animated: animated
+        ))
     }
 }
 
