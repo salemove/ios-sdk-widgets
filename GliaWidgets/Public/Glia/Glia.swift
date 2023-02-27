@@ -134,7 +134,7 @@ public class Glia {
                         answer: answer,
                         accepted: {
                             answer(true, nil)
-                            self?.callVisualizer.showVideoCallViewController()
+                            self?.callVisualizer.handleAcceptedUpgrade()
                         },
                         declined: { answer(false, nil) }
                     )
