@@ -76,7 +76,7 @@ class ViewController: UIViewController {
 
     @IBAction private func secureConversationTapped() {
         if features.contains(.secureConversations) {
-            presentGlia(.messaging)
+            presentGlia(.messaging())
         }
     }
 
@@ -225,7 +225,7 @@ extension ViewController {
             (.chat, "Chat"),
             (.audioCall, "Audio"),
             (.videoCall, "Video"),
-            (.messaging, "Messaging")
+            (.messaging(), "Messaging")
         ]
         let alert = UIAlertController(
             title: "Choose engagement type",

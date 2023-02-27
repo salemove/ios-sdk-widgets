@@ -19,38 +19,7 @@ extension SecureConversations {
         }
 
         func start() -> ChatViewController {
-            let model = TranscriptModel(
-                isCustomCardSupported: environment.viewFactory.messageRenderer != nil,
-                environment: .init(
-                    fetchFile: environment.fetchFile,
-                    fileManager: environment.fileManager,
-                    data: environment.data,
-                    date: environment.date,
-                    gcd: environment.gcd,
-                    localFileThumbnailQueue: environment.localFileThumbnailQueue,
-                    uiImage: environment.uiImage,
-                    createFileDownload: environment.createFileDownload,
-                    loadChatMessagesFromHistory: environment.loadChatMessagesFromHistory,
-                    fetchChatHistory: environment.fetchChatHistory,
-                    uiApplication: environment.uiApplication,
-                    sendSecureMessage: environment.sendSecureMessage,
-                    queueIds: environment.queueIds,
-                    listQueues: environment.listQueues,
-                    alertConfiguration: environment.alertConfiguration,
-					createFileUploadListModel: environment.createFileUploadListModel,
-                    uuid: environment.uuid,
-                    secureUploadFile: environment.secureUploadFile,
-                    fileUploadListStyle: environment.fileUploadListStyle,
-                    fetchSiteConfigurations: environment.fetchSiteConfigurations
-                ),
-                availability: .init(
-                    environment: .init(
-                        listQueues: environment.listQueues,
-                        queueIds: environment.queueIds
-                    )
-                ),
-                deliveredStatusText: environment.viewFactory.theme.chat.visitorMessage.delivered
-            )
+            let model = transcriptModel()
             let controller = ChatViewController(viewModel: .transcript(model), viewFactory: environment.viewFactory)
 
             model.delegate = { [weak self, weak controller] event in
@@ -83,6 +52,41 @@ extension SecureConversations {
             }
 
             return controller
+        }
+
+        private func transcriptModel() -> TranscriptModel {
+            .init(
+                isCustomCardSupported: environment.viewFactory.messageRenderer != nil,
+                environment: .init(
+                    fetchFile: environment.fetchFile,
+                    fileManager: environment.fileManager,
+                    data: environment.data,
+                    date: environment.date,
+                    gcd: environment.gcd,
+                    localFileThumbnailQueue: environment.localFileThumbnailQueue,
+                    uiImage: environment.uiImage,
+                    createFileDownload: environment.createFileDownload,
+                    loadChatMessagesFromHistory: environment.loadChatMessagesFromHistory,
+                    fetchChatHistory: environment.fetchChatHistory,
+                    uiApplication: environment.uiApplication,
+                    sendSecureMessage: environment.sendSecureMessage,
+                    queueIds: environment.queueIds,
+                    listQueues: environment.listQueues,
+                    alertConfiguration: environment.alertConfiguration,
+                    createFileUploadListModel: environment.createFileUploadListModel,
+                    uuid: environment.uuid,
+                    secureUploadFile: environment.secureUploadFile,
+                    fileUploadListStyle: environment.fileUploadListStyle,
+                    fetchSiteConfigurations: environment.fetchSiteConfigurations
+                ),
+                availability: .init(
+                    environment: .init(
+                        listQueues: environment.listQueues,
+                        queueIds: environment.queueIds
+                    )
+                ),
+                deliveredStatusText: environment.viewFactory.theme.chat.visitorMessage.delivered
+            )
         }
 
         private func presentQuickLookController(with file: LocalFile) {
