@@ -50,11 +50,7 @@ extension SecureConversations {
                     )
                 )
             )
-
-            let controller = ChatViewController(
-                viewModel: .transcript(model),
-                viewFactory: environment.viewFactory
-            )
+            let controller = ChatViewController(viewModel: .transcript(model), viewFactory: environment.viewFactory)
 
             model.delegate = { [weak self, weak controller] event in
                 switch event {
