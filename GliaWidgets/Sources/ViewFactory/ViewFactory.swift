@@ -49,7 +49,7 @@ class ViewFactory {
         endScreenshareCmd: Cmd,
         backCmd: Cmd
     ) -> ChatView.Props {
-        let backButton = theme.chat.header.backButton.map { HeaderButton.Props(tap: backCmd,style: $0) }
+        let backButton = theme.chat.header.backButton.map { HeaderButton.Props(tap: backCmd, style: $0) }
 
         return .init(
             header: .init(
