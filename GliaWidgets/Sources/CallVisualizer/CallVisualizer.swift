@@ -87,8 +87,8 @@ public final class CallVisualizer {
         startObservingInteractorEvents()
     }
 
-    public func showVideoCallViewController() {
-        coordinator?.showVideoCallViewController()
+    func handleAcceptedUpgrade() {
+        coordinator?.handleAcceptedUpgrade()
     }
 
     func addVideoStream(stream: CoreSdkClient.VideoStreamable) {
