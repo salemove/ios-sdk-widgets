@@ -165,6 +165,8 @@ extension SecureConversations {
                 // Bind changes in view model to view controller.
                 case let .renderProps(props):
                     controller?.props = props
+                case .chatTranscriptScreenRequested:
+                    self?.navigateToTranscript()
                 }
             }
 
