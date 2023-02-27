@@ -143,6 +143,14 @@ extension CallVisualizer.VideoCallViewModel {
     func makeProps() -> Props {
         let connectViewProps = makeConnectViewProps()
         let buttonBarProps = makeButtonBarProps()
+        let backButton = style.header.backButton.map {
+            HeaderButton.Props(
+                tap: .init { [weak self] in
+                    self?.delegate?(.minimized)
+                },
+                style: $0
+            )
+        }
 
         return Props(
             videoCallViewProps: .init(
@@ -162,12 +170,7 @@ extension CallVisualizer.VideoCallViewModel {
                     title: title,
                     effect: interfaceOrientation.isLandscape ? .blur : .none,
                     endButton: .init(),
-                    backButton: .init(
-                        tap: .init { [weak self] in
-                            self?.delegate?(.minimized)
-                        },
-                        style: style.header.backButton
-                    ),
+                    backButton: backButton,
                     closeButton: .init(style: style.header.closeButton),
                     endScreenshareButton: .init(
                         tap: .init { [weak self] in

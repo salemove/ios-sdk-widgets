@@ -64,7 +64,7 @@ final class VideoCallTests: XCTestCase {
             )
         )
 
-        headerProps.backButton.tap()
+        headerProps.backButton?.tap()
         XCTAssertEqual(wasExecuted, true)
     }
 }

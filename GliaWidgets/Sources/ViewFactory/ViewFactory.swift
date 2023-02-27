@@ -49,12 +49,14 @@ class ViewFactory {
         endScreenshareCmd: Cmd,
         backCmd: Cmd
     ) -> ChatView.Props {
-        .init(
+        let backButton = theme.chat.header.backButton.map { HeaderButton.Props(tap: backCmd,style: $0) }
+
+        return .init(
             header: .init(
                 title: theme.chat.title,
                 effect: .none,
                 endButton: .init(style: theme.chat.header.endButton, tap: endCmd),
-                backButton: .init(tap: backCmd, style: theme.chat.header.backButton),
+                backButton: backButton,
                 closeButton: .init(tap: closeCmd, style: theme.chat.header.closeButton),
                 endScreenshareButton: .init(tap: endScreenshareCmd, style: theme.chat.header.endScreenShareButton),
                 style: theme.chat.header
@@ -95,12 +97,14 @@ class ViewFactory {
         endScreenshareCmd: Cmd,
         backCmd: Cmd
     ) -> CallView.Props {
-        .init(
+        let backButton = theme.call.header.backButton.map { HeaderButton.Props( tap: backCmd, style: $0) }
+
+        return .init(
             header: .init(
                 title: "",
                 effect: .none,
                 endButton: .init(style: theme.call.header.endButton, tap: endCmd),
-                backButton: .init(tap: backCmd, style: theme.call.header.backButton),
+                backButton: backButton,
                 closeButton: .init(tap: closeCmd, style: theme.call.header.closeButton),
                 endScreenshareButton: .init(style: theme.call.header.endScreenShareButton),
                 style: theme.call.header

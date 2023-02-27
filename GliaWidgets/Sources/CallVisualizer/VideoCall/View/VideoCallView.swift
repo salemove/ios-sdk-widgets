@@ -75,8 +75,11 @@ extension CallVisualizer {
             header.endButton.isHidden = true
             header.closeButton.isHidden = true
             header.endScreenShareButton.isHidden = true
-            header.backButton.accessibilityLabel = props.style.header.backButton.accessibility.label
-            header.backButton.accessibilityHint = props.style.header.backButton.accessibility.hint
+
+            if let backButton = props.style.header.backButton {
+                header.backButton?.accessibilityLabel = backButton.accessibility.label
+                header.backButton?.accessibilityHint = backButton.accessibility.hint
+            }
         }
 
         private lazy var topStackView = UIStackView().make {
