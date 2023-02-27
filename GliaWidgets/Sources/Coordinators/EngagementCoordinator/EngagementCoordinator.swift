@@ -102,8 +102,8 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
                 [callViewController],
                 animated: false
             )
-        case .messaging:
-            let secureConversationsWelcomeViewController: UIViewController = startSecureConversations()
+        case .messaging(let messagingInitialScreen):
+            let secureConversationsWelcomeViewController = startSecureConversations(using: messagingInitialScreen)
             engagement = .secureConversations(secureConversationsWelcomeViewController)
             navigationPresenter.setViewControllers(
                 [secureConversationsWelcomeViewController],
@@ -387,8 +387,11 @@ extension EngagementCoordinator {
         }
     }
 
-    private func startSecureConversations() -> UIViewController {
+    private func startSecureConversations(
+        using messagingInitialScreen: SecureConversations.InitialScreen
+    ) -> UIViewController {
         let coordinator = SecureConversations.Coordinator(
+            messagingInitialScreen: messagingInitialScreen,
             viewFactory: viewFactory,
             navigationPresenter: navigationPresenter,
             environment: .init(
