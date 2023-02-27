@@ -3,6 +3,8 @@ import Foundation
 extension Theme {
     var secureConversationsConfirmationStyle: SecureConversations.ConfirmationStyle {
         let chatStyle = chatStyle
+        var header = chatStyle.header
+        header.backButton = nil
 
         let titleStyle = SecureConversations.ConfirmationStyle.TitleStyle(
             text: "Thank you!",
@@ -24,7 +26,7 @@ extension Theme {
         )
 
         return .init(
-            header: chatStyle.header,
+            header: header,
             headerTitle: "Messaging",
             confirmationImage: Asset.mcEnvelope.image,
             titleStyle: titleStyle,

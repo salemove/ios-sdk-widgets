@@ -15,7 +15,7 @@ public struct HeaderStyle: Equatable {
     public var backgroundColor: ColorType
 
     /// Style of the back button.
-    public var backButton: HeaderButtonStyle
+    public var backButton: HeaderButtonStyle?
 
     /// Style of the queue closing button.
     public var closeButton: HeaderButtonStyle
@@ -109,7 +109,7 @@ public struct HeaderStyle: Equatable {
             // The logic for title background has not been implemented
         }
 
-        backButton.apply(configuration: configuration?.backButton)
+        backButton?.apply(configuration: configuration?.backButton)
         closeButton.apply(configuration: configuration?.closeButton)
         endButton.apply(
             configuration: configuration?.endButton,

@@ -10,7 +10,7 @@ final class Header: BaseView {
         case blur
     }
 
-    var backButton: HeaderButton
+    var backButton: HeaderButton?
     var closeButton: HeaderButton
     var endButton: ActionButton
     var endScreenShareButton: HeaderButton
@@ -31,8 +31,11 @@ final class Header: BaseView {
     private let height: CGFloat = 58
 
     init(props: Props) {
+        if let backButtonProps = props.backButton {
+            self.backButton = HeaderButton(with: backButtonProps)
+        }
+
         self.props = props
-        self.backButton = HeaderButton(with: props.backButton)
         self.closeButton = HeaderButton(with: props.closeButton)
         self.endButton = ActionButton(props: props.endButton)
 
@@ -57,7 +60,11 @@ final class Header: BaseView {
     }
 
     func renderProps() {
-        backButton.props = props.backButton
+        backButton?.isEnabled = props.backButton != nil
+        if let backButtonProps = props.backButton {
+            backButton?.props = backButtonProps
+        }
+
         closeButton.props = props.closeButton
         endButton.props = props.endButton
 
@@ -77,7 +84,7 @@ final class Header: BaseView {
     }
 
     func showBackButton() {
-        backButton.isHidden = false
+        backButton?.isHidden = false
     }
 
     func showCloseButton() {
@@ -104,7 +111,7 @@ final class Header: BaseView {
         rightItemContainer.axis = .horizontal
         rightItemContainer.spacing = 16
         rightItemContainer.alignment = .center
-        backButton.accessibilityIdentifier = "header_back_button"
+        backButton?.accessibilityIdentifier = "header_back_button"
         closeButton.accessibilityIdentifier = "header_close_button"
     }
 
@@ -124,9 +131,11 @@ final class Header: BaseView {
         titleLabel.autoPinEdge(toSuperviewEdge: .right)
         titleLabel.autoAlignAxis(toSuperviewAxis: .horizontal)
 
-        contentView.addSubview(backButton)
-        backButton.autoPinEdge(toSuperviewEdge: .left)
-        backButton.autoAlignAxis(toSuperviewAxis: .horizontal)
+        if let backButton = backButton {
+            contentView.addSubview(backButton)
+            backButton.autoPinEdge(toSuperviewEdge: .left)
+            backButton.autoAlignAxis(toSuperviewAxis: .horizontal)
+        }
 
         rightItemContainer.addArrangedSubviews([endScreenShareButton, endButton, closeButton])
         contentView.addSubview(rightItemContainer)
