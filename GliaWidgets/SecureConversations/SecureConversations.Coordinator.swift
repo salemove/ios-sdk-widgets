@@ -9,19 +9,29 @@ extension SecureConversations {
         private let environment: Environment
         private var viewModel: SecureConversations.WelcomeViewModel?
         private var selectedPickerController: SelectedPickerController?
+        private var messagingInitialScreen: SecureConversations.InitialScreen
 
         init(
+            messagingInitialScreen: SecureConversations.InitialScreen,
             viewFactory: ViewFactory,
             navigationPresenter: NavigationPresenter,
             environment: Environment
         ) {
+            self.messagingInitialScreen = messagingInitialScreen
             self.viewFactory = viewFactory
             self.navigationPresenter = navigationPresenter
             self.environment = environment
         }
 
         func start() -> UIViewController {
-            let viewController = makeSecureConversationsWelcomeViewController()
+            var viewController: UIViewController
+
+            switch messagingInitialScreen {
+            case .chatTranscript:
+                viewController = navigateToTranscript()
+            default:
+                viewController = makeSecureConversationsWelcomeViewController()
+            }
 
             return viewController
         }
@@ -226,7 +236,8 @@ extension SecureConversations {
             navigationPresenter.present(controller.viewController)
         }
 
-        private func navigateToTranscript() {
+        @discardableResult
+        private func navigateToTranscript() -> UIViewController {
             let transcriptCoordinator = TranscriptCoordinator(
                 navigationPresenter: navigationPresenter,
                 environment: .init(
@@ -254,10 +265,14 @@ extension SecureConversations {
                 )
             )
             pushCoordinator(transcriptCoordinator)
+
+            let viewController = transcriptCoordinator.start()
             navigationPresenter.push(
-                transcriptCoordinator.start(),
+                viewController,
                 replacingLast: true
             )
+
+            return viewController
         }
     }
 }
