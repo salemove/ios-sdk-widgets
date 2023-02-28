@@ -16,6 +16,7 @@ extension SecureConversations.ConfirmationStyle {
         ///   - text: Title text value.
         ///   - font: Title font.
         ///   - color: Title color.
+        ///   - accessibility: Accessibility related properties.
         public init(
             text: String,
             font: UIFont,
