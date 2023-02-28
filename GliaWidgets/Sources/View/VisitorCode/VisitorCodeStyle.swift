@@ -83,7 +83,8 @@ public struct VisitorCodeStyle: Equatable {
             assetsBuilder: assetBuilder
         )
         numberSlot.apply(
-            configuration: configuration?.numberSlot,
+            text: configuration?.numberSlotText,
+            background: configuration?.numberSlotBackground,
             assetsBuilder: assetBuilder
         )
 
@@ -115,6 +116,11 @@ public struct VisitorCodeStyle: Equatable {
                 backgroundColor = .gradient(colors: colors)
             }
         }
+
+        configuration?.closeButtonColor?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .unwrap { closeButtonColor = .fill(color: $0) }
     }
 }
 

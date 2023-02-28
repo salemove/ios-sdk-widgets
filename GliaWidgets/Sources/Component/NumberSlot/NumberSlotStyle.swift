@@ -56,20 +56,21 @@ public struct NumberSlotStyle: Equatable {
     }
 
     mutating func apply(
-        configuration: RemoteConfiguration.NumberSlot?,
+        text: RemoteConfiguration.Text?,
+        background: RemoteConfiguration.Layer?,
         assetsBuilder: RemoteConfiguration.AssetsBuilder
     ) {
         UIFont.convertToFont(
-            uiFont: assetsBuilder.fontBuilder(configuration?.font),
+            uiFont: assetsBuilder.fontBuilder(text?.font),
             textStyle: numberStyle
         ).unwrap { numberFont = $0 }
 
-        configuration?.fontColor?.value
+        text?.foreground?.value
             .map { UIColor(hex: $0) }
             .first
             .unwrap { numberColor = $0 }
 
-        configuration?.background?.color.unwrap {
+        background?.color.unwrap {
             switch $0.type {
             case .fill:
                 $0.value
@@ -82,13 +83,9 @@ public struct NumberSlotStyle: Equatable {
             }
         }
 
-        configuration?.background?.cornerRadius
-            .unwrap { cornerRadius = $0 }
-
-        configuration?.background?.borderWidth
-            .unwrap { borderWidth = $0 }
-
-        configuration?.background?.border?.value
+        background?.cornerRadius.unwrap { cornerRadius = $0 }
+        background?.borderWidth.unwrap { borderWidth = $0 }
+        background?.border?.value
             .map { UIColor(hex: $0) }
             .first
             .unwrap { borderColor = $0 }
