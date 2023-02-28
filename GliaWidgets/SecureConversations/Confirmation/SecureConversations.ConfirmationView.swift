@@ -166,14 +166,29 @@ extension SecureConversations {
             titleLabel.text = props.style.titleStyle.text
             titleLabel.textColor = props.style.titleStyle.color
             titleLabel.font = props.style.titleStyle.font
+            setFontScalingEnabled(
+                props.style.titleStyle.accessibility.isFontScalingEnabled,
+                for: titleLabel
+            )
 
             subtitleLabel.text = props.style.subtitleStyle.text
             subtitleLabel.textColor = props.style.subtitleStyle.color
             subtitleLabel.font = props.style.subtitleStyle.font
+            setFontScalingEnabled(
+                props.style.subtitleStyle.accessibility.isFontScalingEnabled,
+                for: subtitleLabel
+            )
 
             checkMessagesButton.setTitle(props.style.checkMessagesButtonStyle.title, for: .normal)
             checkMessagesButton.setTitleColor(props.style.checkMessagesButtonStyle.textColor, for: .normal)
             checkMessagesButton.backgroundColor = props.style.checkMessagesButtonStyle.backgroundColor
+            checkMessagesButton.accessibilityTraits = .button
+            checkMessagesButton.accessibilityLabel = props.style.checkMessagesButtonStyle.accessibility.label
+            checkMessagesButton.accessibilityHint = props.style.checkMessagesButtonStyle.accessibility.hint
+            setFontScalingEnabled(
+                props.style.checkMessagesButtonStyle.accessibility.isFontScalingEnabled,
+                for: checkMessagesButton
+            )
 
             backgroundColor = props.style.backgroundColor
         }
