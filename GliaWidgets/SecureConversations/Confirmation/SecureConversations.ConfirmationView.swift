@@ -19,7 +19,7 @@ extension SecureConversations {
         lazy var rootStackView = UIStackView.make(
             .vertical,
             spacing: 0,
-            distribution: .fillProportionally,
+            distribution: .fill,
             alignment: .center
         )(
             confirmationImageView,
@@ -129,16 +129,10 @@ extension SecureConversations {
         }
 
         private func defineTitleLabelLayout() {
-            NSLayoutConstraint.activate([
-                titleLabel.heightAnchor.constraint(equalToConstant: 20)
-            ])
             rootStackView.setCustomSpacing(16, after: titleLabel)
         }
 
         private func defineSubtitleLabelLayout() {
-            NSLayoutConstraint.activate([
-                subtitleLabel.heightAnchor.constraint(equalToConstant: 40)
-            ])
             rootStackView.setCustomSpacing(0, after: subtitleLabel)
         }
 
