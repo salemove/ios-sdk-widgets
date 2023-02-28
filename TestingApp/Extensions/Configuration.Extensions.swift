@@ -56,7 +56,7 @@ private extension Environment {
 
 extension Configuration: Codable {
     enum CodingKeys: String, CodingKey {
-        case authorizationMethod, environment, site, visitorContext
+        case authorizationMethod, environment, site, visitorContext, pushNotifications
     }
 
     public init(from decoder: Decoder) throws {
@@ -65,7 +65,8 @@ extension Configuration: Codable {
             authorizationMethod: container.decode(Configuration.AuthorizationMethod.self, forKey: .authorizationMethod),
             environment: container.decode(Environment.self, forKey: .environment),
             site: container.decode(String.self, forKey: .site),
-            visitorContext: container.decodeIfPresent(VisitorContext.self, forKey: .visitorContext)
+            visitorContext: container.decodeIfPresent(VisitorContext.self, forKey: .visitorContext),
+            pushNotifications: container.decodeIfPresent(PushNotifications.self, forKey: .pushNotifications) ?? .disabled
         )
     }
 
@@ -75,6 +76,7 @@ extension Configuration: Codable {
         try container.encode(environment, forKey: .environment)
         try container.encode(site, forKey: .site)
         try container.encode(visitorContext, forKey: .visitorContext)
+        try container.encode(pushNotifications, forKey: .pushNotifications)
     }
 }
 
@@ -151,6 +153,32 @@ extension Configuration.VisitorContext: Codable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
         try container.encode(assetId)
+    }
+}
+
+extension Configuration.PushNotifications: RawRepresentable, Codable {
+    public var rawValue: String {
+        switch self {
+        case .disabled:
+            return "disabled"
+        case .sandbox:
+            return "sandbox"
+        case .production:
+            return "production"
+        }
+    }
+
+    public init?(rawValue: String) {
+        switch rawValue {
+        case "disabled":
+            self = .disabled
+        case "sandbox":
+            self = .sandbox
+        case "production":
+            self = .production
+        default:
+            return nil
+        }
     }
 }
 
