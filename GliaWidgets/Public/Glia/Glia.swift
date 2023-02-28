@@ -12,7 +12,20 @@ public enum EngagementKind: Equatable {
     /// Video call
     case videoCall
     /// Secure conversations
-    case messaging
+    case messaging(SecureConversations.InitialScreen = .welcome)
+}
+
+extension SecureConversations {
+    /// The initial screen seen by a visitor when starting a secure conversation.
+    public enum InitialScreen: Equatable {
+        /// Shows a screen that has welcome text, and allows to send messages and
+        /// attachments. It also allows navigation to the chat transcript screen.
+        case welcome
+        /// Shows a screen with the chat transcript, which consists of the message
+        /// history of the currently authenticated visitor. Also allows sending
+        /// messages and attachments.
+        case chatTranscript
+    }
 }
 
 /// An event providing engagement state information.
