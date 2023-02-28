@@ -184,6 +184,9 @@
 		3100EEFF293F7E0900D57F71 /* Theme+SecureConversationsWelcome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3100EEFE293F7E0900D57F71 /* Theme+SecureConversationsWelcome.swift */; };
 		3115D45C29A4FD3F00D99561 /* SecureConversations.Availability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3115D45B29A4FD3F00D99561 /* SecureConversations.Availability.swift */; };
 		313EBD552943116E008E9597 /* SecureConversations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313EBD542943116E008E9597 /* SecureConversations.swift */; };
+		315BAB1A29ADFEBC00FF284B /* ConfirmationStyle+TitleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 315BAB1929ADFEBC00FF284B /* ConfirmationStyle+TitleStyle.swift */; };
+		315BAB1C29ADFEC800FF284B /* ConfirmationStyle+SubtitleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 315BAB1B29ADFEC800FF284B /* ConfirmationStyle+SubtitleStyle.swift */; };
+		315BAB1E29ADFED800FF284B /* ConfirmationStyle+CheckMessagesButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 315BAB1D29ADFED800FF284B /* ConfirmationStyle+CheckMessagesButtonStyle.swift */; };
 		31DB0C01287C2EFC00FB288E /* StaticValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31DB0C00287C2EFC00FB288E /* StaticValues.swift */; };
 		6B2BFCE2274297F100B68506 /* SettingsSwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B2BFCE1274297F100B68506 /* SettingsSwitchCell.swift */; };
 		6B48213E2735873300F2900A /* Feature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B48213D2735873300F2900A /* Feature.swift */; };
@@ -762,6 +765,9 @@
 		3100EEFE293F7E0900D57F71 /* Theme+SecureConversationsWelcome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Theme+SecureConversationsWelcome.swift"; sourceTree = "<group>"; };
 		3115D45B29A4FD3F00D99561 /* SecureConversations.Availability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.Availability.swift; sourceTree = "<group>"; };
 		313EBD542943116E008E9597 /* SecureConversations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.swift; sourceTree = "<group>"; };
+		315BAB1929ADFEBC00FF284B /* ConfirmationStyle+TitleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ConfirmationStyle+TitleStyle.swift"; sourceTree = "<group>"; };
+		315BAB1B29ADFEC800FF284B /* ConfirmationStyle+SubtitleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ConfirmationStyle+SubtitleStyle.swift"; sourceTree = "<group>"; };
+		315BAB1D29ADFED800FF284B /* ConfirmationStyle+CheckMessagesButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ConfirmationStyle+CheckMessagesButtonStyle.swift"; sourceTree = "<group>"; };
 		31DB0C00287C2EFC00FB288E /* StaticValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticValues.swift; sourceTree = "<group>"; };
 		6304CD1CAD1108C78C7B11BF /* Pods-GliaWidgetsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliaWidgetsTests.release.xcconfig"; path = "Target Support Files/Pods-GliaWidgetsTests/Pods-GliaWidgetsTests.release.xcconfig"; sourceTree = "<group>"; };
 		6B2BFCE1274297F100B68506 /* SettingsSwitchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSwitchCell.swift; sourceTree = "<group>"; };
@@ -2189,6 +2195,7 @@
 		3100D923296E946600DEC9CE /* Confirmation */ = {
 			isa = PBXGroup;
 			children = (
+				315BAB1829ADFE9E00FF284B /* ConfirmationStyle */,
 				3100D924296E946600DEC9CE /* SecureConversations.ConfirmationView.swift */,
 				3100D925296E946600DEC9CE /* Theme+SecureConversationsConfirmation.swift */,
 				3100D926296E946600DEC9CE /* SecureConversations.ConfirmationStyle.swift */,
@@ -2214,6 +2221,16 @@
 				3115D45B29A4FD3F00D99561 /* SecureConversations.Availability.swift */,
 			);
 			path = SecureConversations;
+			sourceTree = "<group>";
+		};
+		315BAB1829ADFE9E00FF284B /* ConfirmationStyle */ = {
+			isa = PBXGroup;
+			children = (
+				315BAB1929ADFEBC00FF284B /* ConfirmationStyle+TitleStyle.swift */,
+				315BAB1B29ADFEC800FF284B /* ConfirmationStyle+SubtitleStyle.swift */,
+				315BAB1D29ADFED800FF284B /* ConfirmationStyle+CheckMessagesButtonStyle.swift */,
+			);
+			path = ConfirmationStyle;
 			sourceTree = "<group>";
 		};
 		69BB38CE6B54F4C95ED474B6 /* Pods */ = {
@@ -3646,6 +3663,7 @@
 				1A5892B12608C68000E183CC /* QuickLookController.swift in Sources */,
 				75940982298D38C2008B173A /* VisitorCodeCoordinator+Environment.swift in Sources */,
 				84EFB05D28AA992D0005E270 /* WebMessageCardView.swift in Sources */,
+				315BAB1E29ADFED800FF284B /* ConfirmationStyle+CheckMessagesButtonStyle.swift in Sources */,
 				C49A29DB2614A22600819269 /* QuickLookViewModel.swift in Sources */,
 				1A4AD3C4256E7A0C00468BFB /* ThemeFontStyle.swift in Sources */,
 				1A0C9AC825C9493D00815406 /* Int+Extensions.swift in Sources */,
@@ -3756,6 +3774,7 @@
 				1A0EDF5625E786CE0076D1AD /* FileUploadView.swift in Sources */,
 				75940988298D38C2008B173A /* VisitorCodeCoordinator.swift in Sources */,
 				1A4674B225E907120078FA1C /* AttachmentSourceItemStyle.swift in Sources */,
+				315BAB1A29ADFEBC00FF284B /* ConfirmationStyle+TitleStyle.swift in Sources */,
 				1A0C143625B85C3300B00695 /* CallView.swift in Sources */,
 				1AA738A72578DD0300E1120F /* ConnectStatusStyle.swift in Sources */,
 				C47901AF25ED2E70007EE195 /* ScreenShareOfferPresenter.swift in Sources */,
@@ -3797,6 +3816,7 @@
 				9A186A4327F6147D0055886D /* ActionButtonStyle.Accessibility.swift in Sources */,
 				750C0ADE2850D53F003E0415 /* Theme.Survey.ScaleQuestion.Accessibility.swift in Sources */,
 				AFAB409229798BD4007F96CC /* SecureConversations.FileUploadListView.swift in Sources */,
+				315BAB1C29ADFEC800FF284B /* ConfirmationStyle+SubtitleStyle.swift in Sources */,
 				1A5F814D2588C0B800A605DA /* KeyboardObserver.swift in Sources */,
 				3100EEF8293E276E00D57F71 /* SecureConversations.WelcomeViewModel.swift in Sources */,
 				1A5F8182258B4F0E00A605DA /* OutgoingMessage.swift in Sources */,
