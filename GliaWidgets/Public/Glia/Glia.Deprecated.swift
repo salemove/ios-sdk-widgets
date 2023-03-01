@@ -2,6 +2,22 @@ import SalemoveSDK
 
 extension Glia {
     /// Deprecated.
+    @available(*, deprecated, message: "Use configure(with:queueId:visitorContext:uiConfig:assetsBuilder:completion:) instead.")
+    public func configure(
+        with configuration: Configuration,
+        queueId: String,
+        visitorContext: VisitorContext?,
+        completion: (() -> Void)? = nil
+    ) throws {
+        try self.configure(
+            with: configuration,
+            queueId: queueId,
+            visitorContext: visitorContext,
+            uiConfig: nil,
+            completion: completion
+        )
+    }
+    /// Deprecated.
     @available(*, deprecated, message: "Use configure(with:queueId:visitorContext:) with Optional<VisitorContext> instead.")
     public func configure(
         with configuration: Configuration,
