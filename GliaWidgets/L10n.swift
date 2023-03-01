@@ -725,6 +725,23 @@ public enum L10n {
         public static let sendHint = L10n.tr("Localizable", "messageCenter.welcome.accessibility.sendHint", fallback: "Sends a secure message.")
       }
     }
+    public enum Confirmation {
+      // Messaging
+      public static let header = L10n.tr("Localizable", "messageCenter.confirmation.header", fallback: "Messaging")
+      // Thank you!
+      public static let title = L10n.tr("Localizable", "messageCenter.confirmation.title", fallback: "Thank you!")
+      // Your message has been sent.\nWe will get back to you within 48 hours.
+      public static let subtitle = L10n.tr("Localizable", "messageCenter.confirmation.subtitle", fallback: "Your message has been sent.\nWe will get back to you within 48 hours.")
+      // Check messages
+      public static let checkMessages = L10n.tr("Localizable", "messageCenter.confirmation.checkMessages", fallback: "Check messages")
+
+      public enum Accessibility {
+          // Check messages
+          public static let checkMessagesLabel = L10n.tr("Localizable", "messageCenter.confirmation.accessibility.checkMessagesLabel", fallback: "Check messages")
+          // Navigates you to the chat transcript.
+          public static let checkMessagesHint = L10n.tr("Localizable", "messageCenter.confirmation.accessibility.checkMessagesHint", fallback: "Navigates you to the chat transcript.")
+      }
+    }
   }
 
   public enum ScreenSharing {
