@@ -20,5 +20,9 @@ extension ChatCoordinator {
         var uiApplication: UIKitBased.UIApplication
         var fetchChatHistory: CoreSdkClient.FetchChatHistory
         var createFileUploadListModel: SecureConversations.FileUploadListViewModel.Create
+        var sendSecureMessage: CoreSdkClient.SendSecureMessage
+        var queueIds: [String]
+        var listQueues: CoreSdkClient.ListQueues
+        var secureUploadFile: CoreSdkClient.SecureConversationsUploadFile
     }
 }

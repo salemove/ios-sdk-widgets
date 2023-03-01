@@ -238,11 +238,20 @@ extension SecureConversations {
 
         @discardableResult
         private func navigateToTranscript() -> UIViewController {
-            let transcriptCoordinator = TranscriptCoordinator(
+            let coordinator = ChatCoordinator(
+                interactor: environment.interactor,
+                viewFactory: environment.viewFactory,
                 navigationPresenter: navigationPresenter,
+                call: environment.chatCall,
+                unreadMessages: environment.unreadMessages,
+                showsCallBubble: environment.showsCallBubble,
+                screenShareHandler: environment.screenShareHandler,
+                isWindowVisible: environment.isWindowVisible,
+                startAction: .startEngagement,
                 environment: .init(
-                    viewFactory: environment.viewFactory,
                     fetchFile: environment.fetchFile,
+                    sendSelectedOptionValue: environment.sendSelectedOptionValue,
+                    uploadFileToEngagement: environment.uploadFileToEngagement,
                     fileManager: environment.fileManager,
                     data: environment.data,
                     date: environment.date,
@@ -250,23 +259,25 @@ extension SecureConversations {
                     localFileThumbnailQueue: environment.localFileThumbnailQueue,
                     uiImage: environment.uiImage,
                     createFileDownload: environment.createFileDownload,
-                    loadChatMessagesFromHistory: environment.loadChatMessagesFromHistory,
-                    fetchChatHistory: environment.fetchChatHistory,
+                    fromHistory: environment.loadChatMessagesFromHistory,
+                    fetchSiteConfigurations: environment.fetchSiteConfigurations,
+                    getCurrentEngagement: environment.getCurrentEngagement,
+                    submitSurveyAnswer: environment.submitSurveyAnswer,
+                    uuid: environment.uuid,
                     uiApplication: environment.uiApplication,
+                    fetchChatHistory: environment.fetchChatHistory,
+                    createFileUploadListModel: environment.createFileUploadListModel,
                     sendSecureMessage: environment.sendSecureMessage,
                     queueIds: environment.queueIds,
                     listQueues: environment.listQueues,
-                    alertConfiguration: viewFactory.theme.alertConfiguration,
-                    createFileUploadListModel: environment.createFileUploadListModel,
-                    uuid: environment.uuid,
-                    secureUploadFile: environment.uploadSecureFile,
-                    fileUploadListStyle: viewFactory.theme.chat.messageEntry.uploadList,
-                    fetchSiteConfigurations: environment.fetchSiteConfigurations
-                )
+                    secureUploadFile: environment.uploadSecureFile
+                ),
+                startWithSecureTranscriptFlow: true
             )
-            pushCoordinator(transcriptCoordinator)
 
-            let viewController = transcriptCoordinator.start()
+            pushCoordinator(coordinator)
+
+            let viewController = coordinator.start()
             navigationPresenter.push(
                 viewController,
                 replacingLast: true
@@ -299,6 +310,17 @@ extension SecureConversations.Coordinator {
         var loadChatMessagesFromHistory: () -> Bool
         var fetchChatHistory: CoreSdkClient.FetchChatHistory
         var fetchSiteConfigurations: CoreSdkClient.FetchSiteConfigurations
+        var chatCall: ObservableValue<Call?>
+        var unreadMessages: ObservableValue<Int>
+        var showsCallBubble: Bool
+        var screenShareHandler: ScreenShareHandler
+        var isWindowVisible: ObservableValue<Bool>
+        var sendSelectedOptionValue: CoreSdkClient.SendSelectedOptionValue
+        var uploadFileToEngagement: CoreSdkClient.UploadFileToEngagement
+        var getCurrentEngagement: CoreSdkClient.GetCurrentEngagement
+        var submitSurveyAnswer: CoreSdkClient.SubmitSurveyAnswer
+        var interactor: Interactor
+
     }
 
     enum DelegateEvent {
