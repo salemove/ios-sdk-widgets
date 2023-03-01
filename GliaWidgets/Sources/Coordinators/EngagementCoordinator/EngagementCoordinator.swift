@@ -228,8 +228,13 @@ extension EngagementCoordinator {
                 uuid: environment.uuid,
                 uiApplication: environment.uiApplication,
                 fetchChatHistory: environment.fetchChatHistory,
-                createFileUploadListModel: environment.createFileUploadListModel
-            )
+                createFileUploadListModel: environment.createFileUploadListModel,
+                sendSecureMessage: environment.sendSecureMessage,
+                queueIds: [interactor.queueID],
+                listQueues: environment.listQueues,
+                secureUploadFile: environment.uploadSecureFile
+            ),
+            startWithSecureTranscriptFlow: false
         )
         coordinator.delegate = { [weak self] event in
             self?.handleChatCoordinatorEvent(event: event)
@@ -414,7 +419,17 @@ extension EngagementCoordinator {
                 createFileDownload: environment.createFileDownload,
                 loadChatMessagesFromHistory: environment.loadChatMessagesFromHistory,
                 fetchChatHistory: environment.fetchChatHistory,
-                fetchSiteConfigurations: environment.fetchSiteConfigurations
+                fetchSiteConfigurations: environment.fetchSiteConfigurations,
+                chatCall: chatCall,
+                unreadMessages: unreadMessages,
+                showsCallBubble: true, // TODO: pass show bubble as parameter for this method
+                screenShareHandler: screenShareHandler,
+                isWindowVisible: isWindowVisible,
+                sendSelectedOptionValue: environment.sendSelectedOptionValue,
+                uploadFileToEngagement: environment.uploadFileToEngagement,
+                getCurrentEngagement: environment.getCurrentEngagement,
+                submitSurveyAnswer: environment.submitSurveyAnswer,
+                interactor: interactor
             )
         )
 
