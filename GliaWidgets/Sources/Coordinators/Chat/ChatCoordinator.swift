@@ -28,6 +28,7 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
     private var filePickerController: FilePickerController?
     private var quickLookController: QuickLookController?
     private let environment: Environment
+    private let startWithSecureTranscriptFlow: Bool
 
     init(
         interactor: Interactor,
@@ -39,7 +40,8 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
         screenShareHandler: ScreenShareHandler,
         isWindowVisible: ObservableValue<Bool>,
         startAction: ChatViewModel.StartAction,
-        environment: Environment
+        environment: Environment,
+        startWithSecureTranscriptFlow: Bool
     ) {
         self.interactor = interactor
         self.viewFactory = viewFactory
@@ -51,6 +53,7 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
         self.isWindowVisible = isWindowVisible
         self.startAction = startAction
         self.environment = environment
+        self.startWithSecureTranscriptFlow = startWithSecureTranscriptFlow
     }
 
     func start() -> ChatViewController {
@@ -58,82 +61,11 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
         return viewController
     }
 
-    // swiftlint:disable function_body_length
     private func makeChatViewController() -> ChatViewController {
-        let viewModel = ChatViewModel(
-            interactor: interactor,
-            alertConfiguration: viewFactory.theme.alertConfiguration,
-            screenShareHandler: screenShareHandler,
-            call: call,
-            unreadMessages: unreadMessages,
-            showsCallBubble: showsCallBubble,
-            isCustomCardSupported: viewFactory.messageRenderer != nil,
-            isWindowVisible: isWindowVisible,
-            startAction: startAction,
-            deliveredStatusText: viewFactory.theme.chat.visitorMessage.delivered,
-            environment: .init(
-                fetchFile: environment.fetchFile,
-                sendSelectedOptionValue: environment.sendSelectedOptionValue,
-                uploadFileToEngagement: environment.uploadFileToEngagement,
-                fileManager: environment.fileManager,
-                data: environment.data,
-                date: environment.date,
-                gcd: environment.gcd,
-                localFileThumbnailQueue: environment.localFileThumbnailQueue,
-                uiImage: environment.uiImage,
-                createFileDownload: environment.createFileDownload,
-                loadChatMessagesFromHistory: environment.fromHistory,
-                fetchSiteConfigurations: environment.fetchSiteConfigurations,
-                getCurrentEngagement: environment.getCurrentEngagement,
-                timerProviding: .live,
-                uuid: environment.uuid,
-                uiApplication: environment.uiApplication,
-                fetchChatHistory: environment.fetchChatHistory,
-                fileUploadListStyle: viewFactory.theme.chatStyle.messageEntry.uploadList,
-                createFileUploadListModel: environment.createFileUploadListModel
-            )
-        )
-        viewModel.isInteractableCard = viewFactory.messageRenderer?.isInteractable
-        viewModel.shouldShowCard = viewFactory.messageRenderer?.shouldShowCard
-        viewModel.engagementDelegate = { [weak self] event in
-            switch event {
-            case .back:
-                self?.delegate?(.back)
-            case .engaged(let url):
-                self?.delegate?(.engaged(operatorImageUrl: url))
-            case .finished:
-                self?.delegate?(.finished)
-            }
-        }
-        viewModel.delegate = { [weak self] event in
-            switch event {
-            case .pickMedia(let pickerEvent):
-                self?.presentMediaPickerController(
-                    with: pickerEvent,
-                    mediaSource: .library,
-                    mediaTypes: [.image, .movie]
-                )
-            case .takeMedia(let pickerEvent):
-                self?.presentMediaPickerController(
-                    with: pickerEvent,
-                    mediaSource: .camera,
-                    mediaTypes: [.image, .movie]
-                )
-            case .pickFile(let pickerEvent):
-                self?.presentFilePickerController(with: pickerEvent)
-            case .mediaUpgradeAccepted(let offer, let answer):
-                self?.delegate?(.mediaUpgradeAccepted(offer: offer, answer: answer))
-            case .showFile(let file):
-                self?.presentQuickLookController(with: file)
-            case .call:
-                self?.delegate?(.call)
-            case .openLink(let url):
-                self?.presentWebViewController(with: url)
-            }
-        }
-        return ChatViewController(viewModel: .chat(viewModel), viewFactory: viewFactory)
+        let model: SecureConversations.ChatWithTranscriptModel =
+            startWithSecureTranscriptFlow ? .transcript(transcriptModel()) : .chat(chatModel())
+        return ChatViewController(viewModel: model, viewFactory: viewFactory)
     }
-    // swiftlint:enable function_body_length
 
     private func presentMediaPickerController(
         with pickerEvent: ObservableValue<MediaPickerEvent>,
@@ -192,5 +124,129 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
         let safariViewController = SFSafariViewController(url: url, configuration: configuration)
         safariViewController.view.accessibilityIdentifier = "safari_root_view"
         navigationPresenter.present(safariViewController)
+    }
+}
+
+// MARK: Chat model
+extension ChatCoordinator {
+    private func chatModel() -> ChatViewModel {
+        let viewModel = ChatViewModel(
+            interactor: interactor,
+            alertConfiguration: viewFactory.theme.alertConfiguration,
+            screenShareHandler: screenShareHandler,
+            call: call,
+            unreadMessages: unreadMessages,
+            showsCallBubble: showsCallBubble,
+            isCustomCardSupported: viewFactory.messageRenderer != nil,
+            isWindowVisible: isWindowVisible,
+            startAction: startAction,
+            deliveredStatusText: viewFactory.theme.chat.visitorMessage.delivered,
+            environment: Self.enviromentForChatModel(environment: environment, viewFactory: viewFactory)
+        )
+        viewModel.isInteractableCard = viewFactory.messageRenderer?.isInteractable
+        viewModel.shouldShowCard = viewFactory.messageRenderer?.shouldShowCard
+        viewModel.engagementDelegate = { [weak self] event in
+            switch event {
+            case .back:
+                self?.delegate?(.back)
+            case .engaged(let url):
+                self?.delegate?(.engaged(operatorImageUrl: url))
+            case .finished:
+                self?.delegate?(.finished)
+            }
+        }
+        viewModel.delegate = { [weak self] event in
+            switch event {
+            case .pickMedia(let pickerEvent):
+                self?.presentMediaPickerController(
+                    with: pickerEvent,
+                    mediaSource: .library,
+                    mediaTypes: [.image, .movie]
+                )
+            case .takeMedia(let pickerEvent):
+                self?.presentMediaPickerController(
+                    with: pickerEvent,
+                    mediaSource: .camera,
+                    mediaTypes: [.image, .movie]
+                )
+            case .pickFile(let pickerEvent):
+                self?.presentFilePickerController(with: pickerEvent)
+            case .mediaUpgradeAccepted(let offer, let answer):
+                self?.delegate?(.mediaUpgradeAccepted(offer: offer, answer: answer))
+            case .showFile(let file):
+                self?.presentQuickLookController(with: file)
+            case .call:
+                self?.delegate?(.call)
+            case .openLink(let url):
+                self?.presentWebViewController(with: url)
+            }
+        }
+
+        return viewModel
+    }
+
+    static func enviromentForChatModel(
+        environment: Environment,
+        viewFactory: ViewFactory
+    ) -> ChatViewModel.Environment {
+        ChatViewModel.Environment(
+            fetchFile: environment.fetchFile,
+            sendSelectedOptionValue: environment.sendSelectedOptionValue,
+            uploadFileToEngagement: environment.uploadFileToEngagement,
+            fileManager: environment.fileManager,
+            data: environment.data,
+            date: environment.date,
+            gcd: environment.gcd,
+            localFileThumbnailQueue: environment.localFileThumbnailQueue,
+            uiImage: environment.uiImage,
+            createFileDownload: environment.createFileDownload,
+            loadChatMessagesFromHistory: environment.fromHistory,
+            fetchSiteConfigurations: environment.fetchSiteConfigurations,
+            getCurrentEngagement: environment.getCurrentEngagement,
+            timerProviding: .live,
+            uuid: environment.uuid,
+            uiApplication: environment.uiApplication,
+            fetchChatHistory: environment.fetchChatHistory,
+            fileUploadListStyle: viewFactory.theme.chatStyle.messageEntry.uploadList,
+            createFileUploadListModel: environment.createFileUploadListModel
+        )
+    }
+}
+
+// MARK: Transcript model
+extension ChatCoordinator {
+    private func transcriptModel() -> SecureConversations.TranscriptModel {
+        .init(
+            isCustomCardSupported: viewFactory.messageRenderer != nil,
+            environment: .init(
+                fetchFile: environment.fetchFile,
+                fileManager: environment.fileManager,
+                data: environment.data,
+                date: environment.date,
+                gcd: environment.gcd,
+                localFileThumbnailQueue: environment.localFileThumbnailQueue,
+                uiImage: environment.uiImage,
+                createFileDownload: environment.createFileDownload,
+                loadChatMessagesFromHistory: environment.fromHistory,
+                fetchChatHistory: environment.fetchChatHistory,
+                uiApplication: environment.uiApplication,
+                sendSecureMessage: environment.sendSecureMessage,
+                queueIds: environment.queueIds,
+                listQueues: environment.listQueues,
+                alertConfiguration: viewFactory.theme.alertConfiguration,
+                createFileUploadListModel: environment.createFileUploadListModel,
+                uuid: environment.uuid,
+                secureUploadFile: environment.secureUploadFile,
+                fileUploadListStyle: viewFactory.theme.chatStyle.messageEntry.uploadList,
+                fetchSiteConfigurations: environment.fetchSiteConfigurations
+            ),
+            availability: .init(
+                environment: .init(
+                    listQueues: environment.listQueues,
+                    queueIds: environment.queueIds
+                )
+            ),
+            deliveredStatusText: viewFactory.theme.chat.visitorMessage.delivered
+        )
     }
 }
