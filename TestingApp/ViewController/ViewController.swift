@@ -85,7 +85,13 @@ class ViewController: UIViewController {
     }
 
     @IBAction private func configureSDKTapped() {
-        configureSDK()
+        showRemoteConfigAlert { [weak self] fileName in
+            var config: RemoteConfiguration?
+            if let fileName = fileName {
+                config = self?.retrieveRemoteConfiguration(fileName)
+            }
+            self?.configureSDK(uiConfig: config)
+        }
     }
 
     @IBAction private func endEngagementTapped() {
@@ -159,7 +165,7 @@ extension ViewController {
                 print("MINIMIZED")
             case .maximized:
                 print("MAXIMIZED")
-                }
+            }
         }
 
         do {
@@ -187,7 +193,7 @@ extension ViewController {
         }
     }
 
-    func configureSDK() {
+    func configureSDK(uiConfig: RemoteConfiguration?) {
         let originalTitle = configureButton.title(for: .normal)
         configureButton.setTitle("Configuring ...", for: .normal)
         try? Glia.sharedInstance.configure(
@@ -196,7 +202,8 @@ extension ViewController {
             visitorContext: (configuration.visitorContext?.assetId)
                 .map(VisitorContext.AssetId.init(rawValue:))
                 .map(VisitorContext.ContextType.assetId)
-                .map(VisitorContext.init(_:))
+                .map(VisitorContext.init(_:)),
+            uiConfig: uiConfig
         ) { [weak self] in
             self?.configureButton.setTitle(originalTitle, for: .normal)
             debugPrint("SDK has been configured")
