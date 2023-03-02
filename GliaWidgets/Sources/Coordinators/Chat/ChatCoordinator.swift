@@ -62,9 +62,19 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
     }
 
     private func makeChatViewController() -> ChatViewController {
-        let model: SecureConversations.ChatWithTranscriptModel =
-            startWithSecureTranscriptFlow ? .transcript(transcriptModel()) : .chat(chatModel())
-        return ChatViewController(viewModel: model, viewFactory: viewFactory)
+        // We need to defer passing controller to transcript model,
+        // because model will use it later, however controller
+        // can not be created without model, that is why
+        // we create 'placeholder' for controller and use it instead.
+        var controller: ChatViewController?
+        let model: SecureConversations.ChatWithTranscriptModel = startWithSecureTranscriptFlow
+            ? .transcript(transcriptModel(with: { [weak controller] in controller }))
+            : .chat(chatModel())
+        let chatController = ChatViewController(viewModel: model, viewFactory: viewFactory)
+        // Controller is created, now we can put in into placeholder.
+        controller = chatController
+        return chatController
+
     }
 
     private func presentMediaPickerController(
@@ -215,30 +225,12 @@ extension ChatCoordinator {
 
 // MARK: Transcript model
 extension ChatCoordinator {
-    private func transcriptModel() -> SecureConversations.TranscriptModel {
-        .init(
+    private func transcriptModel(with controller: @escaping () -> ChatViewController?) -> SecureConversations.TranscriptModel {
+        let viewModel = SecureConversations.TranscriptModel(
             isCustomCardSupported: viewFactory.messageRenderer != nil,
-            environment: .init(
-                fetchFile: environment.fetchFile,
-                fileManager: environment.fileManager,
-                data: environment.data,
-                date: environment.date,
-                gcd: environment.gcd,
-                localFileThumbnailQueue: environment.localFileThumbnailQueue,
-                uiImage: environment.uiImage,
-                createFileDownload: environment.createFileDownload,
-                loadChatMessagesFromHistory: environment.fromHistory,
-                fetchChatHistory: environment.fetchChatHistory,
-                uiApplication: environment.uiApplication,
-                sendSecureMessage: environment.sendSecureMessage,
-                queueIds: environment.queueIds,
-                listQueues: environment.listQueues,
-                alertConfiguration: viewFactory.theme.alertConfiguration,
-                createFileUploadListModel: environment.createFileUploadListModel,
-                uuid: environment.uuid,
-                secureUploadFile: environment.secureUploadFile,
-                fileUploadListStyle: viewFactory.theme.chatStyle.messageEntry.uploadList,
-                fetchSiteConfigurations: environment.fetchSiteConfigurations
+            environment: Self.environmentForTranscriptModel(
+                environment: environment,
+                viewFactory: viewFactory
             ),
             availability: .init(
                 environment: .init(
@@ -248,5 +240,66 @@ extension ChatCoordinator {
             ),
             deliveredStatusText: viewFactory.theme.chat.visitorMessage.delivered
         )
+
+        viewModel.delegate = { [weak self] event in
+            switch event {
+            case .showFile(let file):
+                self?.presentQuickLookController(with: file)
+            case .openLink(let url):
+                self?.presentWebViewController(with: url)
+            case let .showAlertAsView(conf, accessibilityIdentifier, dismissed):
+                controller()?.presentAlertAsView(
+                    with: conf,
+                    accessibilityIdentifier: accessibilityIdentifier,
+                    dismissed: dismissed
+                )
+            case .pickMedia(let pickerEvent):
+                self?.presentMediaPickerController(
+                    with: pickerEvent,
+                    mediaSource: .library,
+                    mediaTypes: [.image, .movie]
+                )
+            case .takeMedia(let pickerEvent):
+                self?.presentMediaPickerController(
+                    with: pickerEvent,
+                    mediaSource: .camera,
+                    mediaTypes: [.image, .movie]
+                )
+            case .pickFile(let pickerEvent):
+                self?.presentFilePickerController(with: pickerEvent)
+            case .awaitUpgradeToChatEngagement:
+                break
+            }
+        }
+
+        return viewModel
+    }
+
+    static func environmentForTranscriptModel(
+        environment: Environment,
+        viewFactory: ViewFactory
+    ) -> SecureConversations.TranscriptModel.Environment {
+        SecureConversations.TranscriptModel.Environment(
+           fetchFile: environment.fetchFile,
+           fileManager: environment.fileManager,
+           data: environment.data,
+           date: environment.date,
+           gcd: environment.gcd,
+           localFileThumbnailQueue: environment.localFileThumbnailQueue,
+           uiImage: environment.uiImage,
+           createFileDownload: environment.createFileDownload,
+           loadChatMessagesFromHistory: environment.fromHistory,
+           fetchChatHistory: environment.fetchChatHistory,
+           uiApplication: environment.uiApplication,
+           sendSecureMessage: environment.sendSecureMessage,
+           queueIds: environment.queueIds,
+           listQueues: environment.listQueues,
+           alertConfiguration: viewFactory.theme.alertConfiguration,
+           createFileUploadListModel: environment.createFileUploadListModel,
+           uuid: environment.uuid,
+           secureUploadFile: environment.secureUploadFile,
+           fileUploadListStyle: viewFactory.theme.chatStyle.messageEntry.uploadList,
+           fetchSiteConfigurations: environment.fetchSiteConfigurations
+       )
     }
 }
