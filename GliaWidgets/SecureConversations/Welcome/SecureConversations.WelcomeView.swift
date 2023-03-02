@@ -232,6 +232,7 @@ extension SecureConversations.WelcomeView {
             props.style.welcomeTitleStyle.accessibility.isFontScalingEnabled,
             for: titleLabel
         )
+        titleLabel.accessibilityIdentifier = "secureConversations_welcomeTitle_label"
 
         subtitleLabel.text = props.style.welcomeSubtitleStyle.text
         subtitleLabel.font = props.style.welcomeSubtitleStyle.font
@@ -270,6 +271,7 @@ extension SecureConversations.WelcomeView {
             ? props.style.filePickerButtonStyle.color
             : props.style.filePickerButtonStyle.disabledColor
         filePickerButton.accessibilityTraits = .button
+        filePickerButton.accessibilityIdentifier = "secureConversations_welcomeFilePicker_button"
         filePickerButton.accessibilityLabel = props.style.filePickerButtonStyle.accessibility.label
         filePickerButton.accessibilityHint = props.style.filePickerButtonStyle.accessibility.hint
         setFontScalingEnabled(
@@ -294,6 +296,7 @@ extension SecureConversations.WelcomeView {
         checkMessagesButton.accessibilityLabel = props.style.checkMessagesButtonStyle.accessibility.label
         checkMessagesButton.accessibilityHint = props.style.checkMessagesButtonStyle.accessibility.hint
         checkMessagesButton.accessibilityTraits = .button
+        checkMessagesButton.accessibilityIdentifier = "secureConversations_welcomeCheckMessages_button"
 
         setFontScalingEnabled(
             props.style.checkMessagesButtonStyle.accessibility.isFontScalingEnabled,
@@ -601,6 +604,8 @@ extension SecureConversations.WelcomeView {
             // Hide placeholder if textfield is active or has non-empty text.
             placeholderLabel.isHidden = !textView.text.isEmpty || textView.isFirstResponder
             renderedActive = props.isActive
+
+            textView.accessibilityIdentifier = "secureConversations_welcome_textView"
         }
 
         var renderedActive: Bool = false {

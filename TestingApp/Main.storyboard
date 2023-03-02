@@ -142,6 +142,7 @@
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ojd-PF-wje">
                                                 <rect key="frame" x="119" y="331.5" width="176" height="30"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="main_secureConversations_button"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="30" id="Nk7-ud-fyb"/>
                                                 </constraints>
