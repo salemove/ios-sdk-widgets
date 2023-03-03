@@ -3,19 +3,19 @@ import UIKit
 extension Theme {
     var screenSharingStyle: ScreenSharingViewStyle {
         return ScreenSharingViewStyle(
-            title: L10n.ScreenSharing.title,
+            title: L10n.CallVisualizer.ScreenSharing.title,
             header: chat.header,
-            messageText: L10n.ScreenSharing.message,
+            messageText: L10n.CallVisualizer.ScreenSharing.message,
             messageTextFont: font.header2,
             messageTextColor: color.baseDark,
             buttonStyle: .init(
-                title: L10n.ScreenSharing.Button.title,
+                title: L10n.CallVisualizer.ScreenSharing.Button.title,
                 titleFont: font.buttonLabel,
                 titleColor: .white,
                 backgroundColor: .fill(color: color.systemNegative),
                 cornerRaidus: 4,
                 accessibility: .init(
-                    label: L10n.ScreenSharing.Button.title,
+                    label: L10n.CallVisualizer.ScreenSharing.Button.title,
                     isFontScalingEnabled: true
                 )
             ),
