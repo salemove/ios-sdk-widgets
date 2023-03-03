@@ -450,6 +450,8 @@ extension EngagementCoordinator {
             self.end()
         case .backTapped:
             self.gliaViewController?.minimize(animated: true)
+        case let .chat(chatEvent):
+            self.handleChatCoordinatorEvent(event: chatEvent)
         }
     }
 }

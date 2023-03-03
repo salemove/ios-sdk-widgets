@@ -29,6 +29,7 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
     private var quickLookController: QuickLookController?
     private let environment: Environment
     private let startWithSecureTranscriptFlow: Bool
+    private weak var controller: ChatViewController?
 
     init(
         interactor: Interactor,
@@ -65,14 +66,12 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
         // We need to defer passing controller to transcript model,
         // because model will use it later, however controller
         // can not be created without model, that is why
-        // we create 'placeholder' for controller and use it instead.
-        var controller: ChatViewController?
+        // we are to store it in coordinator and return in when needed.
         let model: SecureConversations.ChatWithTranscriptModel = startWithSecureTranscriptFlow
-            ? .transcript(transcriptModel(with: { [weak controller] in controller }))
+        ? .transcript(transcriptModel(with: { [weak self] in self?.controller }))
             : .chat(chatModel())
         let chatController = ChatViewController(viewModel: model, viewFactory: viewFactory)
-        // Controller is created, now we can put in into placeholder.
-        controller = chatController
+        self.controller = chatController
         return chatController
 
     }
@@ -267,8 +266,13 @@ extension ChatCoordinator {
                 )
             case .pickFile(let pickerEvent):
                 self?.presentFilePickerController(with: pickerEvent)
-            case .awaitUpgradeToChatEngagement:
-                break
+            case let .awaitUpgradeToChatEngagement(transcriptModel):
+                guard let self, let controller = controller() else {
+                    return
+                }
+                let chatModel = self.chatModel()
+                controller.swapAndBindViewModel(.chat(chatModel))
+                chatModel.migrate(from: transcriptModel)
             }
         }
 
