@@ -14,18 +14,6 @@ public enum L10n {
   public static let `operator` = L10n.tr("Localizable", "operator", fallback: "Operator")
   /// Powered by
   public static let poweredBy = L10n.tr("Localizable", "poweredBy", fallback: "Powered by")
-  public enum VisitorCode {
-    public enum Title {
-      /// Standard
-      public static let standard = L10n.tr("Localizable", "visitorCode.title.standard", fallback: "Your Visitor Code")
-      /// Error
-      public static let error = L10n.tr("Localizable", "visitorCode.title.error", fallback: "Could not show visitor code. Please try refreshing.")
-    }
-    public enum Action {
-      /// Refresh
-      public static let refresh = L10n.tr("Localizable", "visitorCode.action.refresh", fallback: "Refresh")
-    }
-  }
   public enum Alert {
     public enum Accessibility {
       public enum Action {
@@ -145,6 +133,12 @@ public enum L10n {
         public static let title = L10n.tr("Localizable", "alert.screenSharing.stop.title", fallback: "Stop screen sharing?")
       }
     }
+    public enum UnavailableMessageCenter {
+      /// The Message Center is currently unavailable. Please try again later.
+      public static let message = L10n.tr("Localizable", "alert.unavailableMessageCenter.message", fallback: "The Message Center is currently unavailable. Please try again later.")
+      /// Message Center Unavailable
+      public static let title = L10n.tr("Localizable", "alert.unavailableMessageCenter.title", fallback: "Message Center Unavailable")
+    }
     public enum Unexpected {
       /// Please try again later.
       public static let message = L10n.tr("Localizable", "alert.unexpected.message", fallback: "Please try again later.")
@@ -162,14 +156,9 @@ public enum L10n {
       }
     }
     public enum VisitorCode {
-        public static let title = L10n.tr("Localizable", "alert.visitorCode.title", fallback: "Your Visitor Code")
+      /// Your Visitor Code
+      public static let title = L10n.tr("Localizable", "alert.visitorCode.title", fallback: "Your Visitor Code")
     }
-    public enum UnavailableMessageCenter {
-      /// The Message Center is currently unavailable. Please try again later.
-      public static let message = L10n.tr("Localizable", "alert.unavailableMessageCenter.message", fallback: "The Message Center is currently unavailable. Please try again later.")
-      /// Message Center Unavailable
-      public static let title = L10n.tr("Localizable", "alert.unavailableMessageCenter.title", fallback: "Message Center Unavailable")
-      }
   }
   public enum Call {
     /// You can continue browsing and we’ll connect you automatically.
@@ -435,6 +424,53 @@ public enum L10n {
       public static let title = L10n.tr("Localizable", "call.video.title", fallback: "Video")
     }
   }
+  public enum CallVisualizer {
+    public enum ScreenSharing {
+      /// Your Screen
+      /// is Being Shared
+      public static let message = L10n.tr("Localizable", "callVisualizer.screenSharing.message", fallback: "Your Screen\nis Being Shared")
+      /// Screen Sharing
+      public static let title = L10n.tr("Localizable", "callVisualizer.screenSharing.title", fallback: "Screen Sharing")
+      public enum Accessibility {
+        /// Ends screen sharing
+        public static let buttonHint = L10n.tr("Localizable", "callVisualizer.screenSharing.accessibility.buttonHint", fallback: "Ends screen sharing")
+        /// End Screen Sharing
+        public static let buttonLabel = L10n.tr("Localizable", "callVisualizer.screenSharing.accessibility.buttonLabel", fallback: "End Screen Sharing")
+        /// Message label
+        public static let messageHint = L10n.tr("Localizable", "callVisualizer.screenSharing.accessibility.messageHint", fallback: "Message label")
+      }
+      public enum Button {
+        /// End Screen Sharing
+        public static let title = L10n.tr("Localizable", "callVisualizer.screenSharing.button.title", fallback: "End Screen Sharing")
+      }
+    }
+    public enum VisitorCode {
+      public enum Accessibility {
+        /// Closes visitor code
+        public static let closeHint = L10n.tr("Localizable", "callVisualizer.visitorCode.accessibility.closeHint", fallback: "Closes visitor code")
+        /// Close Button
+        public static let closeLabel = L10n.tr("Localizable", "callVisualizer.visitorCode.accessibility.closeLabel", fallback: "Close Button")
+        /// Generates new visitor code
+        public static let refreshHint = L10n.tr("Localizable", "callVisualizer.visitorCode.accessibility.refreshHint", fallback: "Generates new visitor code")
+        /// Refresh Button
+        public static let refreshLabel = L10n.tr("Localizable", "callVisualizer.visitorCode.accessibility.refreshLabel", fallback: "Refresh Button")
+        /// Your five-digit visitor code is
+        public static let titleHint = L10n.tr("Localizable", "callVisualizer.visitorCode.accessibility.titleHint", fallback: "Your five-digit visitor code is")
+      }
+      public enum Action {
+        /// Close
+        public static let close = L10n.tr("Localizable", "callVisualizer.visitorCode.action.close", fallback: "Close")
+        /// Refresh
+        public static let refresh = L10n.tr("Localizable", "callVisualizer.visitorCode.action.refresh", fallback: "Refresh")
+      }
+      public enum Title {
+        /// Could not show visitor code. Please try refreshing.
+        public static let error = L10n.tr("Localizable", "callVisualizer.visitorCode.title.error", fallback: "Could not show visitor code. Please try refreshing.")
+        /// Your Visitor Code
+        public static let standard = L10n.tr("Localizable", "callVisualizer.visitorCode.title.standard", fallback: "Your Visitor Code")
+      }
+    }
+  }
   public enum Chat {
     /// Chat
     public static let title = L10n.tr("Localizable", "chat.title", fallback: "Chat")
@@ -684,78 +720,64 @@ public enum L10n {
     }
   }
   public enum MessageCenter {
+    public enum Confirmation {
+      /// Check messages
+      public static let checkMessages = L10n.tr("Localizable", "messageCenter.confirmation.checkMessages", fallback: "Check messages")
+      /// Messaging
+      public static let header = L10n.tr("Localizable", "messageCenter.confirmation.header", fallback: "Messaging")
+      /// Your message has been sent.
+      /// We will get back to you within 48 hours.
+      public static let subtitle = L10n.tr("Localizable", "messageCenter.confirmation.subtitle", fallback: "Your message has been sent.\nWe will get back to you within 48 hours.")
+      /// Thank you!
+      public static let title = L10n.tr("Localizable", "messageCenter.confirmation.title", fallback: "Thank you!")
+      public enum Accessibility {
+        /// Navigates you to the chat transcript.
+        public static let checkMessagesHint = L10n.tr("Localizable", "messageCenter.confirmation.accessibility.checkMessagesHint", fallback: "Navigates you to the chat transcript.")
+        /// Check messages
+        public static let checkMessagesLabel = L10n.tr("Localizable", "messageCenter.confirmation.accessibility.checkMessagesLabel", fallback: "Check messages")
+      }
+    }
     public enum Welcome {
-      // Messaging
-      public static let header = L10n.tr("Localizable", "messageCenter.welcome.header", fallback: "Messaging")
-      // Welcome to Message Center
-      public static let title = L10n.tr("Localizable", "messageCenter.welcome.title", fallback: "Welcome to Message Center")
-      // Send a message and we’ll get back to you within 48 hours
-      public static let subtitle = L10n.tr("Localizable", "messageCenter.welcome.subtitle", fallback: "Send a message and we’ll get back to you within 48 hours")
-      // Check messages
+      /// Check messages
       public static let checkMessages = L10n.tr("Localizable", "messageCenter.welcome.checkMessages", fallback: "Check messages")
-      // Your messages
-      public static let messageTitle = L10n.tr("Localizable", "messageCenter.welcome.messageTitle", fallback: "Your message")
-      // Enter your message
-      public static let messageTextViewNormal = L10n.tr("Localizable", "messageCenter.welcome.messageTextViewNormal", fallback: "Enter your message")
-      // Enter your message
-      public static let messageTextViewActive = L10n.tr("Localizable", "messageCenter.welcome.messageTextViewActive", fallback: "Enter your message")
-      // Enter your message
-      public static let messageTextViewDisabled = L10n.tr("Localizable", "messageCenter.welcome.messageTextViewDisabled", fallback: "Enter your message")
-      // Send
-      public static let sendEnabled = L10n.tr("Localizable", "messageCenter.welcome.sendEnabled", fallback: "Send")
-      // Send
-      public static let sendDisabled = L10n.tr("Localizable", "messageCenter.welcome.sendDisabled", fallback: "Send")
-      // Send
-      public static let sendLoading = L10n.tr("Localizable", "messageCenter.welcome.sendLoading", fallback: "Send")
+      /// Messaging
+      public static let header = L10n.tr("Localizable", "messageCenter.welcome.header", fallback: "Messaging")
       /// The message cannot exceed {textLength} characters.
       public static let messageLengthWarning = L10n.tr("Localizable", "messageCenter.welcome.messageLengthWarning", fallback: "The message cannot exceed {textLength} characters.")
-
+      /// Enter your message
+      public static let messageTextViewActive = L10n.tr("Localizable", "messageCenter.welcome.messageTextViewActive", fallback: "Enter your message")
+      /// Enter your message
+      public static let messageTextViewDisabled = L10n.tr("Localizable", "messageCenter.welcome.messageTextViewDisabled", fallback: "Enter your message")
+      /// Enter your message
+      public static let messageTextViewNormal = L10n.tr("Localizable", "messageCenter.welcome.messageTextViewNormal", fallback: "Enter your message")
+      /// Your message
+      public static let messageTitle = L10n.tr("Localizable", "messageCenter.welcome.messageTitle", fallback: "Your message")
+      /// Send
+      public static let sendDisabled = L10n.tr("Localizable", "messageCenter.welcome.sendDisabled", fallback: "Send")
+      /// Send
+      public static let sendEnabled = L10n.tr("Localizable", "messageCenter.welcome.sendEnabled", fallback: "Send")
+      /// Send
+      public static let sendLoading = L10n.tr("Localizable", "messageCenter.welcome.sendLoading", fallback: "Send")
+      /// Send a message and we’ll get back to you within 48 hours
+      public static let subtitle = L10n.tr("Localizable", "messageCenter.welcome.subtitle", fallback: "Send a message and we’ll get back to you within 48 hours")
+      /// Welcome to Message Center
+      public static let title = L10n.tr("Localizable", "messageCenter.welcome.title", fallback: "Welcome to Message Center")
       public enum Accessibility {
-        // Check messages
-        public static let checkMessagesLabel = L10n.tr("Localizable", "messageCenter.welcome.accessibility.checkMessagesLabel", fallback: "Check messages")
-        // Navigates you to the chat transcript.
+        /// Navigates you to the chat transcript.
         public static let checkMessagesHint = L10n.tr("Localizable", "messageCenter.welcome.accessibility.checkMessagesHint", fallback: "Navigates you to the chat transcript.")
-        // File picker
-        public static let filePickerLabel = L10n.tr("Localizable", "messageCenter.welcome.accessibility.filePickerLabel", fallback: "File picker")
-        // Opens the file picker to attach media.
+        /// Check messages
+        public static let checkMessagesLabel = L10n.tr("Localizable", "messageCenter.welcome.accessibility.checkMessagesLabel", fallback: "Check messages")
+        /// Opens the file picker to attach media.
         public static let filePickerHint = L10n.tr("Localizable", "messageCenter.welcome.accessibility.filePickerHint", fallback: "Opens the file picker to attach media.")
-        // Send
-        public static let sendLabel = L10n.tr("Localizable", "messageCenter.welcome.accessibility.sendLabel", fallback: "Send")
-        // Sends a secure message.
+        /// File picker
+        public static let filePickerLabel = L10n.tr("Localizable", "messageCenter.welcome.accessibility.filePickerLabel", fallback: "File picker")
+        /// Sends a secure message.
         public static let sendHint = L10n.tr("Localizable", "messageCenter.welcome.accessibility.sendHint", fallback: "Sends a secure message.")
-      }
-    }
-    public enum Confirmation {
-      // Messaging
-      public static let header = L10n.tr("Localizable", "messageCenter.confirmation.header", fallback: "Messaging")
-      // Thank you!
-      public static let title = L10n.tr("Localizable", "messageCenter.confirmation.title", fallback: "Thank you!")
-      // Your message has been sent.\nWe will get back to you within 48 hours.
-      public static let subtitle = L10n.tr("Localizable", "messageCenter.confirmation.subtitle", fallback: "Your message has been sent.\nWe will get back to you within 48 hours.")
-      // Check messages
-      public static let checkMessages = L10n.tr("Localizable", "messageCenter.confirmation.checkMessages", fallback: "Check messages")
-
-      public enum Accessibility {
-          // Check messages
-          public static let checkMessagesLabel = L10n.tr("Localizable", "messageCenter.confirmation.accessibility.checkMessagesLabel", fallback: "Check messages")
-          // Navigates you to the chat transcript.
-          public static let checkMessagesHint = L10n.tr("Localizable", "messageCenter.confirmation.accessibility.checkMessagesHint", fallback: "Navigates you to the chat transcript.")
+        /// Send
+        public static let sendLabel = L10n.tr("Localizable", "messageCenter.welcome.accessibility.sendLabel", fallback: "Send")
       }
     }
   }
-
-  public enum ScreenSharing {
-    /// Your Screen
-    /// is Being Shared
-    public static let message = L10n.tr("Localizable", "screenSharing.message", fallback: "Screen Sharing")
-    /// Screen Sharing
-    public static let title = L10n.tr("Localizable", "screenSharing.title", fallback: "Your Screen\nis Being Shared")
-    public enum Button {
-      /// End Screen Sharing
-      public static let title = L10n.tr("Localizable", "screenSharing.button.title", fallback: "End Screen Sharing")
-    }
-  }
-
   public enum Survey {
     public enum Accessibility {
       public enum Footer {

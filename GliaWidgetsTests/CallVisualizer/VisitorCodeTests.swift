@@ -19,21 +19,21 @@ class VisitorCodeTests: XCTestCase {
         let view = CallVisualizer.VisitorCodeView()
         view.props = .init(viewState: .success(visitorCode: visitorCode))
         XCTAssertEqual(visitorCode, view.renderedVisitorCode, "Visitor Code not displayed properly")
-        XCTAssertEqual(view.titleLabel.text, L10n.VisitorCode.Title.standard)
+        XCTAssertEqual(view.titleLabel.text, L10n.CallVisualizer.VisitorCode.Title.standard)
     }
 
     func test_error_displayed() {
         let view = CallVisualizer.VisitorCodeView()
         view.props = .init(viewState: .error(refreshTap: .nop))
         XCTAssertTrue(view.stackView.arrangedSubviews.contains(view.refreshButton))
-        XCTAssertEqual(view.titleLabel.text, L10n.VisitorCode.Title.error)
+        XCTAssertEqual(view.titleLabel.text, L10n.CallVisualizer.VisitorCode.Title.error)
     }
 
     func test_spinner_displayed() {
         let view = CallVisualizer.VisitorCodeView()
         view.props = .init(viewState: .loading)
         XCTAssertTrue(view.stackView.arrangedSubviews.contains(view.spinnerView))
-        XCTAssertEqual(view.titleLabel.text, L10n.VisitorCode.Title.standard)
+        XCTAssertEqual(view.titleLabel.text, L10n.CallVisualizer.VisitorCode.Title.standard)
     }
 
     func test_closeButton_visibility() {
