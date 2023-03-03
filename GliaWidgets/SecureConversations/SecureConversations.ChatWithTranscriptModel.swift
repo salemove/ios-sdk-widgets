@@ -171,6 +171,7 @@ extension SecureConversations {
             case pickMedia(ObservableValue<MediaPickerEvent>)
             case takeMedia(ObservableValue<MediaPickerEvent>)
             case pickFile(ObservableValue<FilePickerEvent>)
+            case awaitUpgradeToChatEngagement
         }
 
         typealias Event = ChatViewModel.Event
