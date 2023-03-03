@@ -65,6 +65,9 @@ extension CallVisualizer {
 
         let refreshButton = UIButton().make { button in
             button.accessibilityIdentifier = "visitor_code_refresh_button"
+            button.accessibilityTraits = .button
+            button.accessibilityLabel = L10n.CallVisualizer.VisitorCode.Accessibility.refreshLabel
+            button.accessibilityHint = L10n.CallVisualizer.VisitorCode.Accessibility.refreshHint
         }
         let spinnerView = UIImageView().make { imageView in
             imageView.image = Asset.spinner.image.withRenderingMode(.alwaysTemplate)
@@ -75,6 +78,7 @@ extension CallVisualizer {
             label.numberOfLines = 2
             label.textAlignment = .center
             label.accessibilityIdentifier = "visitor_code_title_label"
+            label.accessibilityHint = L10n.CallVisualizer.VisitorCode.Accessibility.titleHint
         }
 
         lazy var stackView = UIStackView.make(.vertical, spacing: 24)(
@@ -89,6 +93,9 @@ extension CallVisualizer {
             }
         ).make { button in
             button.accessibilityIdentifier = "visitor_code_alert_close_button"
+            button.accessibilityTraits = .button
+            button.accessibilityLabel = L10n.CallVisualizer.VisitorCode.Accessibility.closeLabel
+            button.accessibilityHint = L10n.CallVisualizer.VisitorCode.Accessibility.closeHint
         }
 
         lazy var poweredBy: PoweredBy = PoweredBy(style: props.style.poweredBy)
@@ -171,13 +178,13 @@ extension CallVisualizer {
             switch props.viewState {
             case .success(visitorCode: let code):
                 renderedVisitorCode = code
-                titleLabel.text = L10n.VisitorCode.Title.standard
+                titleLabel.text = L10n.CallVisualizer.VisitorCode.Title.standard
                 renderVisitorCode()
             case .error:
-                titleLabel.text = L10n.VisitorCode.Title.error
+                titleLabel.text = L10n.CallVisualizer.VisitorCode.Title.error
                 renderError()
             case .loading:
-                titleLabel.text = L10n.VisitorCode.Title.standard
+                titleLabel.text = L10n.CallVisualizer.VisitorCode.Title.standard
                 renderSpinner()
             }
             setFontScalingEnabled(
@@ -211,6 +218,7 @@ extension CallVisualizer {
                     let valueLabel = NumberView().make { numberView in
                         numberView.props = .init(character: char, style: props.style.numberSlot)
                         numberView.accessibilityIdentifier = "visitor_code_number_slot_at_index_\(index)"
+                        numberView.accessibilityLabel = "\(char)"
                     }
                     visitorCodeStack.addArrangedSubview(valueLabel)
                 }

@@ -245,10 +245,18 @@
 "messageCenter.confirmation.accessibility.checkMessagesLabel" = "Check messages";
 "messageCenter.confirmation.accessibility.checkMessagesHint" = "Navigates you to the chat transcript.";
 
-"visitorCode.title.standard" = "Your Visitor Code";
-"visitorCode.title.error" = "Could not show visitor code. Please try refreshing.";
-"visitorCode.action.refresh" = "Refresh";
-
-"screenSharing.title" = "Screen Sharing";
-"screenSharing.message" = "Your Screen\nis Being Shared";
-"screenSharing.button.title" = "End Screen Sharing";
+"callVisualizer.visitorCode.title.standard" = "Your Visitor Code";
+"callVisualizer.visitorCode.title.error" = "Could not show visitor code. Please try refreshing.";
+"callVisualizer.visitorCode.action.refresh" = "Refresh";
+"callVisualizer.visitorCode.action.close" = "Close";
+"callVisualizer.visitorCode.accessibility.titleHint" = "Your five-digit visitor code is";
+"callVisualizer.visitorCode.accessibility.refreshLabel" = "Refresh Button";
+"callVisualizer.visitorCode.accessibility.refreshHint" = "Generates new visitor code";
+"callVisualizer.visitorCode.accessibility.closeLabel" = "Close Button";
+"callVisualizer.visitorCode.accessibility.closeHint" = "Closes visitor code";
+"callVisualizer.screenSharing.title" = "Screen Sharing";
+"callVisualizer.screenSharing.message" = "Your Screen\nis Being Shared";
+"callVisualizer.screenSharing.button.title" = "End Screen Sharing";
+"callVisualizer.screenSharing.accessibility.messageHint" = "Message label";
+"callVisualizer.screenSharing.accessibility.buttonLabel" = "End screen sharing";
+"callVisualizer.screenSharing.accessibility.buttonHint" = "Ends screen sharing";

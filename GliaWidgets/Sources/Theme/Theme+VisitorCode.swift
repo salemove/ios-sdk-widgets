@@ -13,7 +13,7 @@ extension Theme {
         )
 
         let actionButton = ActionButtonStyle(
-            title: L10n.VisitorCode.Action.refresh,
+            title: L10n.CallVisualizer.VisitorCode.Action.refresh,
             titleFont: font.buttonLabel,
             titleColor: color.baseLight,
             backgroundColor: .fill(color: color.primary)
