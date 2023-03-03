@@ -9,9 +9,11 @@ extension RemoteConfiguration {
     struct VisitorCode: Codable {
         let title: Text?
         let actionButton: Button?
-        let numberSlot: NumberSlot?
+        let numberSlotText: Text?
+        let numberSlotBackground: Layer?
         let background: Layer?
         let loadingProgressColor: Color?
+        let closeButtonColor: Color?
     }
 
     struct ScreenSharing: Codable {
@@ -19,11 +21,5 @@ extension RemoteConfiguration {
         let message: Text?
         let endButton: Button?
         let background: Layer?
-    }
-
-    struct NumberSlot: Codable {
-        let background: Layer?
-        let font: Font?
-        let fontColor: Color?
     }
 }
