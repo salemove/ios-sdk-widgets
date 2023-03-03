@@ -14,7 +14,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     var shouldShowCard: ((MessageRenderer.Message) -> Bool)?
 
     private let startAction: StartAction
-    private let sections = [
+    var sections = [
         Section<ChatItem>(0),
         Section<ChatItem>(1),
         Section<ChatItem>(2),
@@ -43,7 +43,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     }
 
     private var pendingMessages: [OutgoingMessage] = []
-    private var isViewLoaded: Bool = false
+    var isViewLoaded: Bool = false
     private (set) var isChoiceCardInputModeEnabled: Bool = false
     private (set) var siteConfiguration: CoreSdkClient.Site?
 

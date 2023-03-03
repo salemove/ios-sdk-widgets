@@ -2,7 +2,7 @@ import UIKit
 
 class EngagementViewController: UIViewController, AlertPresenter {
     let viewFactory: ViewFactory
-    private let viewModel: CommonEngagementModel
+    private var viewModel: CommonEngagementModel
 
     init(viewModel: CommonEngagementModel, viewFactory: ViewFactory) {
         self.viewModel = viewModel
@@ -65,5 +65,10 @@ class EngagementViewController: UIViewController, AlertPresenter {
                 view.header.showEndScreenSharingButton()
             }
         }
+    }
+
+    func swapAndBindEgagementViewModel(_ engagementModel: CommonEngagementModel) {
+        self.viewModel = engagementModel
+        bind(engagementViewModel: engagementModel)
     }
 }
