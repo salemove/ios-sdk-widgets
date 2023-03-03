@@ -171,7 +171,7 @@ extension SecureConversations {
             case pickMedia(ObservableValue<MediaPickerEvent>)
             case takeMedia(ObservableValue<MediaPickerEvent>)
             case pickFile(ObservableValue<FilePickerEvent>)
-            case awaitUpgradeToChatEngagement
+            case awaitUpgradeToChatEngagement(TranscriptModel)
         }
 
         typealias Event = ChatViewModel.Event
@@ -199,7 +199,7 @@ extension SecureConversations {
 
         private let isCustomCardSupported: Bool
 
-        private var isViewLoaded: Bool = false
+        private (set) var isViewLoaded: Bool = false
 
         var environment: Environment
         var availability: Availability
@@ -218,7 +218,7 @@ extension SecureConversations {
             return .enabled(.secureMessaging)
         }
 
-        private let sections = [
+        let sections = [
             Section<ChatItem>(0),
             Section<ChatItem>(1),
             Section<ChatItem>(2),
@@ -469,6 +469,7 @@ extension SecureConversations.TranscriptModel {
                 with: message,
                 in: self.messagesSection
                )
+               self.delegate?(.awaitUpgradeToChatEngagement(self))
            case let .failure(error):
                // TODO: MOB-1874
                break
