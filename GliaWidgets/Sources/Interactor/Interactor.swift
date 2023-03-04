@@ -55,15 +55,14 @@ class Interactor {
         }
     }
 
+    let configuration: Configuration
     var currentEngagement: CoreSdkClient.Engagement?
 
     /// Flag indicating if configuration was already performed.
     var isConfigurationPerformed: Bool = false
 
-    private let visitorContext: CoreSdkClient.VisitorContext?
     private var observers = [() -> (AnyObject?, EventHandler)]()
     private var isEngagementEndedByVisitor = false
-    private let sdkConfiguration: CoreSdkClient.Salemove.Configuration
 
     var state: InteractorState = .none {
         didSet {
@@ -75,14 +74,12 @@ class Interactor {
     private var environment: Environment
 
     init(
-        with sdkConfiguration: CoreSdkClient.Salemove.Configuration,
+        configuration: Configuration,
         queueID: String,
-        visitorContext: CoreSdkClient.VisitorContext?,
         environment: Environment
     ) {
         self.queueID = queueID
-        self.visitorContext = visitorContext
-        self.sdkConfiguration = sdkConfiguration
+        self.configuration = configuration
         self.environment = environment
     }
 
@@ -119,8 +116,19 @@ class Interactor {
         } else {
             // Mark configuration applied and perfrom configuration.
             isConfigurationPerformed = true
-            environment.coreSdk.configureWithConfiguration(sdkConfiguration) {
-                action()
+
+            do {
+                let sdkConfiguration = try CoreSdkClient.Salemove.Configuration(
+                    siteId: configuration.site,
+                    region: configuration.environment.region,
+                    authorizingMethod: configuration.authorizationMethod.coreAuthorizationMethod,
+                    pushNotifications: configuration.pushNotifications.coreSdk
+                )
+                environment.coreSdk.configureWithConfiguration(sdkConfiguration) {
+                    action()
+                }
+            } catch {
+                debugPrint("💥 Core SDK configuration is not valid. Unexpected error='\(error)'.")
             }
         }
     }
@@ -140,9 +148,15 @@ extension Interactor {
 
         withConfiguration { [weak self] in
             guard let self = self else { return }
+
+            let coreSdkVisitorContext: CoreSdkClient.VisitorContext? = (self.configuration.visitorContext?.assetId)
+                .map(CoreSdkClient.VisitorContext.AssetId.init(rawValue:))
+                .map(CoreSdkClient.VisitorContext.ContextType.assetId)
+                .map(CoreSdkClient.VisitorContext.init(_:))
+
             self.environment.coreSdk.queueForEngagement(
                 self.queueID,
-                self.visitorContext,
+                coreSdkVisitorContext,
                 // shouldCloseAllQueues is `true` by default core sdk,
                 // here it is passed explicitly
                 true,
@@ -270,7 +284,11 @@ extension Interactor: CoreSdkClient.Interactable {
                     debugPrint(reason)
                 }
             }
-            answer(self?.visitorContext, true, completion)
+            let coreSdkVisitorContext: CoreSdkClient.VisitorContext? = (self?.configuration.visitorContext?.assetId)
+                .map(CoreSdkClient.VisitorContext.AssetId.init(rawValue:))
+                .map(CoreSdkClient.VisitorContext.ContextType.assetId)
+                .map(CoreSdkClient.VisitorContext.init(_:))
+            answer(coreSdkVisitorContext, true, completion)
         }
     }
 

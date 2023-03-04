@@ -102,11 +102,7 @@ class ViewController: UIViewController {
             // to end engagement.
             try Glia.sharedInstance.configure(
                 with: configuration,
-                queueId: queueId,
-                visitorContext: (configuration.visitorContext?.assetId)
-                    .map(VisitorContext.AssetId.init(rawValue:))
-                    .map(VisitorContext.ContextType.assetId)
-                    .map(VisitorContext.init(_:))
+                queueId: queueId
             ) {
                 Glia.sharedInstance.endEngagement { result in
                     print("End engagement operation has been executed. Result='\(result)'.")
@@ -165,6 +161,8 @@ extension ViewController {
                 print("MINIMIZED")
             case .maximized:
                 print("MAXIMIZED")
+            @unknown default:
+                print("UNknown case='\(event)'.")
             }
         }
 
@@ -199,10 +197,6 @@ extension ViewController {
         try? Glia.sharedInstance.configure(
             with: configuration,
             queueId: queueId,
-            visitorContext: (configuration.visitorContext?.assetId)
-                .map(VisitorContext.AssetId.init(rawValue:))
-                .map(VisitorContext.ContextType.assetId)
-                .map(VisitorContext.init(_:)),
             uiConfig: uiConfig
         ) { [weak self] in
             self?.configureButton.setTitle(originalTitle, for: .normal)
@@ -253,8 +247,7 @@ extension ViewController {
     private func startEngagement(with kind: EngagementKind, config name: String) {
         try? Glia.sharedInstance.configure(
             with: configuration,
-            queueId: queueId,
-            visitorContext: .init(type: .page, url: "http://glia.com")
+            queueId: queueId
         )
 
         guard let config = retrieveRemoteConfiguration(name) else { return }
@@ -321,11 +314,7 @@ extension ViewController {
         catchingError {
             try Glia.sharedInstance.configure(
                 with: configuration,
-                queueId: queueId,
-                visitorContext: (configuration.visitorContext?.assetId)
-                    .map(VisitorContext.AssetId.init(rawValue:))
-                    .map(VisitorContext.ContextType.assetId)
-                    .map(VisitorContext.init(_:))
+                queueId: queueId
             ) { [weak self] in
                 guard let self = self else { return }
                 self.catchingError {
