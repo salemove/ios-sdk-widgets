@@ -100,7 +100,6 @@ public class Glia {
     public func configure(
         with configuration: Configuration,
         queueId: String,
-        visitorContext: VisitorContext?,
         uiConfig: RemoteConfiguration? = nil,
         assetsBuilder: RemoteConfiguration.AssetsBuilder = .standard,
         completion: (() -> Void)? = nil
@@ -108,16 +107,9 @@ public class Glia {
         self.uiConfig = uiConfig
         self.assetsBuilder = assetsBuilder
 
-        let sdkConfiguration = try GliaCore.Configuration(
-            siteId: configuration.site,
-            region: configuration.environment.region,
-            authorizingMethod: configuration.authorizationMethod.coreAuthorizationMethod,
-            pushNotifications: configuration.pushNotifications.coreSdk
-        )
         let createdInteractor = Interactor(
-            with: sdkConfiguration,
+            configuration: configuration,
             queueID: queueId,
-            visitorContext: visitorContext,
             environment: .init(coreSdk: environment.coreSdk, gcd: environment.gcd)
         )
 

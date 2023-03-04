@@ -37,6 +37,8 @@ final class EnvironmentSettingsTextCell: SettingsCell {
             case .custom(let url):
                 segmentedControl.selectedSegmentIndex = 3
                 customEnvironmentUrlTextField.text = url.absoluteString
+            @unknown default:
+                debugPrint("💥 Can't set selected segment. Environment is unknown: \(self)")
             }
             customEnvironmentUrlTextField.isHidden = segmentedControl.selectedSegmentIndex != 3
         }

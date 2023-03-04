@@ -104,6 +104,8 @@ extension Configuration.AuthorizationMethod: Codable {
         case let .siteApiKey(id, secret):
             try container.encode(id, forKey: .id)
             try container.encode(secret, forKey: .secret)
+        @unknown default:
+            debugPrint("💥 Can't encode AuthorizationMethod: \(self)")
         }
     }
 }
@@ -138,6 +140,8 @@ extension Environment: Codable {
             try container.encode("beta")
         case .custom(let url):
             try container.encode(url.absoluteString)
+        @unknown default:
+            debugPrint("💥 Can't encode Environment: \(self)")
         }
     }
 }
