@@ -6,10 +6,10 @@ class InteractorTests: XCTestCase {
 
     let mock = (
         queueId: "i'm-queue-identifier",
-        config: try! CoreSdkClient.Salemove.Configuration(
-            siteId: "mocked-id",
-            region: .us,
-            authorizingMethod: .appToken("mocked-app-token")
+        config: Configuration.mock(
+            authMethod: .appToken("mocked-app-token"),
+            environment: .usa,
+            site: "mocked-id"
         ),
         visitorContext: CoreSdkClient.VisitorContext.mock
     )
@@ -35,9 +35,8 @@ class InteractorTests: XCTestCase {
             coreSdkCalls.append(.queueForEngagement)
         }
         interactor = .init(
-            with: mock.config,
+            configuration: mock.config,
             queueID: mock.queueId,
-            visitorContext: mock.visitorContext,
             environment: .init(coreSdk: coreSdk, gcd: .failing)
         )
 
@@ -110,9 +109,8 @@ class InteractorTests: XCTestCase {
         let mockOperator: CoreSdkClient.Operator = .mock()
 
         interactor = .init(
-            with: mock.config,
+            configuration: mock.config,
             queueID: mock.queueId,
-            visitorContext: mock.visitorContext,
             environment: .init(coreSdk: .failing, gcd: .mock)
         )
 
