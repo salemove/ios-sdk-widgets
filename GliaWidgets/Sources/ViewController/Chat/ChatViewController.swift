@@ -172,3 +172,22 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter,
         )
     }
 }
+
+extension ChatViewController {
+    func swapAndBindViewModel(_ viewModel: SecureConversations.ChatWithTranscriptModel) {
+        // Binding is only possible for `ChatView` so casting is required.
+        guard let chatView = view as? ChatView else { return }
+        // Swap transcript model with chat model.
+        self.viewModel = viewModel
+        // Swap existing engagement transcript model
+        // (though it is technically not for engagement)
+        // with engagement chat model in superclass EngagementViewController.
+        swapAndBindEgagementViewModel(viewModel.engagementModel)
+        // Bind chat model to chat view for sending actions
+        // and receiving events.
+        bind(
+            viewModel: viewModel,
+            to: chatView
+        )
+    }
+}
