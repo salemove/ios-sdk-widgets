@@ -7,6 +7,7 @@ extension Glia {
     /// - Parameters:
     ///   - engagementKind: Engagement media type.
     ///   - uiConfig: Remote UI configuration.
+    ///   - assetsBuilder: Provides assets for remote configuration.
     ///   - features: Set of features to be enabled in the SDK.
     ///   - sceneProvider: Used to provide `UIWindowScene` to the framework. Defaults to the first active foreground scene.
     ///
@@ -27,6 +28,11 @@ extension Glia {
         features: Features = .all,
         sceneProvider: SceneProvider? = nil
     ) throws {
+        // Store uiConfig and assetsBuilder to have ability to
+        // apply them for Call Visualizer flow if integrator use
+        // old `configure` method
+        self.uiConfig = uiConfig
+        self.assetsBuilder = assetsBuilder
 
         // Apply remote configuration
         let theme = Theme()

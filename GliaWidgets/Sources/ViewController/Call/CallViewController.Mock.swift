@@ -13,14 +13,12 @@ extension CallViewController {
     }
 
     static func mockAudioCallQueueState() throws -> CallViewController {
-        let conf = try CoreSdkClient.Salemove.Configuration.mock()
+        let conf = Configuration.mock()
         let queueId = UUID.mock.uuidString
-        let viewContext = CoreSdkClient.VisitorContext.mock
         let interactorEnv = Interactor.Environment.mock
         let interactor = Interactor.mock(
             configuration: conf,
             queueID: queueId,
-            visitorContext: viewContext,
             environment: interactorEnv
         )
         let alertConf = AlertConfiguration.mock()
@@ -50,14 +48,12 @@ extension CallViewController {
     }
 
     static func mockAudioCallConnectingState() throws -> CallViewController {
-        let conf = try CoreSdkClient.Salemove.Configuration.mock()
+        let conf = Configuration.mock()
         let queueId = UUID.mock.uuidString
-        let viewContext = CoreSdkClient.VisitorContext.mock
         let interactorEnv = Interactor.Environment.mock
         let interactor = Interactor.mock(
             configuration: conf,
             queueID: queueId,
-            visitorContext: viewContext,
             environment: interactorEnv
         )
         let alertConf = AlertConfiguration.mock()
@@ -87,9 +83,8 @@ extension CallViewController {
     }
 
     static func mockAudioCallConnectedState() throws -> CallViewController {
-        let conf = try CoreSdkClient.Salemove.Configuration.mock()
+        let conf = Configuration.mock()
         let queueId = UUID.mock.uuidString
-        let viewContext = CoreSdkClient.VisitorContext.mock
         var interactorEnv = Interactor.Environment.mock
         interactorEnv.coreSdk.configureWithConfiguration = { _, callback in
             callback?()
@@ -97,7 +92,6 @@ extension CallViewController {
         let interactor = Interactor.mock(
             configuration: conf,
             queueID: queueId,
-            visitorContext: viewContext,
             environment: interactorEnv
         )
         let alertConf = AlertConfiguration.mock()
@@ -145,14 +139,12 @@ extension CallViewController {
     }
 
     static func mockVideoCallConnectingState() throws -> CallViewController {
-        let conf = try CoreSdkClient.Salemove.Configuration.mock()
+        let conf = Configuration.mock()
         let queueId = UUID.mock.uuidString
-        let viewContext = CoreSdkClient.VisitorContext.mock
         let interactorEnv = Interactor.Environment.mock
         let interactor = Interactor.mock(
             configuration: conf,
             queueID: queueId,
-            visitorContext: viewContext,
             environment: interactorEnv
         )
         let alertConf = AlertConfiguration.mock()
@@ -195,14 +187,12 @@ extension CallViewController {
     }
 
     static func mockVideoCallQueueState() throws -> CallViewController {
-        let conf = try CoreSdkClient.Salemove.Configuration.mock()
+        let conf = Configuration.mock()
         let queueId = UUID.mock.uuidString
-        let viewContext = CoreSdkClient.VisitorContext.mock
         let interactorEnv = Interactor.Environment.mock
         let interactor = Interactor.mock(
             configuration: conf,
             queueID: queueId,
-            visitorContext: viewContext,
             environment: interactorEnv
         )
         let alertConf = AlertConfiguration.mock()
@@ -232,14 +222,12 @@ extension CallViewController {
     }
 
     static func mockVideoCallConnectedState() throws -> CallViewController {
-        let conf = try CoreSdkClient.Salemove.Configuration.mock()
+        let conf = Configuration.mock()
         let queueId = UUID.mock.uuidString
-        let viewContext = CoreSdkClient.VisitorContext.mock
         let interactorEnv = Interactor.Environment.mock
         let interactor = Interactor.mock(
             configuration: conf,
             queueID: queueId,
-            visitorContext: viewContext,
             environment: interactorEnv
         )
         let alertConf = AlertConfiguration.mock()
