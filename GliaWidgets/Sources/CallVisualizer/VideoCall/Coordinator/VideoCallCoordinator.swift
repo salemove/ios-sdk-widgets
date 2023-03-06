@@ -7,21 +7,26 @@ extension CallVisualizer {
         var delegate: ((DelegateEvent) -> Void)?
         private let theme: Theme
         private let environment: Environment
-        private let uiConfig: RemoteConfiguration?
         private var viewModel: VideoCallViewModel?
         let call: Call
         var viewController: VideoCallViewController?
 
         init(
-            theme: Theme = Theme(),
             environment: Environment,
             uiConfig: RemoteConfiguration?,
             call: Call
         ) {
             self.environment = environment
-            self.theme = theme
-            self.uiConfig = uiConfig
             self.call = call
+
+            if let uiConfig = uiConfig {
+                self.theme = Theme(
+                    uiConfig: uiConfig,
+                    assetsBuilder: .standard
+                )
+            } else {
+                self.theme = Theme()
+            }
         }
 
         func start() -> ViewController {
@@ -34,9 +39,6 @@ extension CallVisualizer {
 
         private func showVideoCallViewController() -> ViewController {
             typealias Props = VideoCallViewController.Props
-            if let uiConfig = uiConfig {
-                theme.applyRemoteConfiguration(uiConfig, assetsBuilder: .standard)
-            }
 
             let viewModel = VideoCallViewModel(
                 style: theme.callStyle,
@@ -75,10 +77,6 @@ extension CallVisualizer {
 
         private func resumeVideoCallViewController() -> ViewController {
             guard let viewModel = viewModel, let viewController = viewController else { return showVideoCallViewController() }
-
-            if let uiConfig {
-                theme.applyRemoteConfiguration(uiConfig, assetsBuilder: .standard)
-            }
 
             viewController.modalPresentationStyle = .overFullScreen
             viewModel.delegate = { [weak self, weak viewController] event in
