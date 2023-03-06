@@ -15,6 +15,14 @@ extension CallVisualizer {
         ) {
             self.style = style
             self.environment = environment
+
+            environment
+                .screenShareHandler
+                .status
+                .addObserver(self) { [weak self] newStatus, _ in
+                    guard case .stopped = newStatus else { return }
+                    self?.delegate(.close)
+                }
         }
     }
 }
@@ -61,8 +69,6 @@ extension CallVisualizer.ScreenSharingViewModel {
     }
 
     func endScreenSharing() {
-        environment.screenShareHandler.stop { [weak self] in
-            self?.delegate(.close)
-        }
+        environment.screenShareHandler.stop()
     }
 }
