@@ -74,7 +74,9 @@ public class Glia {
             date: environment.date,
             engagedOperator: { [weak self] in
                 self?.environment.coreSdk.getCurrentEngagement()?.engagedOperator
-            }
+            },
+            uiConfig: { [weak self] in self?.uiConfig },
+            assetsBuilder: { [weak self] in self?.assetsBuilder ?? .standard }
         )
     )
     var rootCoordinator: EngagementCoordinator?
