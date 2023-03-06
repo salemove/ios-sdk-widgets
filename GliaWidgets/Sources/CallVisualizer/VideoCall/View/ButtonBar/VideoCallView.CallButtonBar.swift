@@ -30,20 +30,14 @@ extension CallVisualizer.VideoCallView {
         private var leftConstraint: NSLayoutConstraint?
         private var rightConstraint: NSLayoutConstraint?
         private var verticalAlignConstrait: NSLayoutConstraint?
-        private let chatButton: CallButton
         private let videoButton: CallButton
-        private let muteButton: CallButton
-        private let speakerButton: CallButton
         private let minimizeButton: CallButton
 
         // MARK: - Initializer
 
         init(props: Props) {
             self.props = props
-            chatButton = .init(kind: .chat, style: props.style.chatButton)
             videoButton = .init(kind: .video, style: props.style.videoButton)
-            muteButton = .init(kind: .mute, style: props.style.muteButton)
-            speakerButton = .init(kind: .speaker, style: props.style.speakerButton)
             minimizeButton = .init(kind: .minimize, style: props.style.minimizeButton)
             effectView.isHidden = true
             super.init()
@@ -77,9 +71,6 @@ extension CallVisualizer.VideoCallView {
 
         override func setup() {
             super.setup()
-            chatButton.isEnabled = false
-            muteButton.isEnabled = false
-            speakerButton.isEnabled = false
             minimizeButton.state = .inactive
             stackView.axis = .horizontal
             stackView.distribution = .fillEqually
@@ -93,10 +84,7 @@ extension CallVisualizer.VideoCallView {
             }
 
             let allButtons = [
-                chatButton,
                 videoButton,
-                muteButton,
-                speakerButton,
                 minimizeButton
             ]
 
@@ -169,14 +157,14 @@ private extension CallVisualizer.VideoCallView.CallButtonBar {
     func adjustStackConstraints() {
         if currentOrientation.isPortrait {
             verticalAlignConstrait?.autoRemove()
-            stackView.spacing = 2
+            stackView.spacing = 0
             leftConstraint?.autoInstall()
             rightConstraint?.autoInstall()
             renderEffect = .none
         } else {
             leftConstraint?.autoRemove()
             rightConstraint?.autoRemove()
-            stackView.spacing = 12
+            stackView.spacing = 84
             verticalAlignConstrait?.autoInstall()
             renderEffect = .blur
         }
