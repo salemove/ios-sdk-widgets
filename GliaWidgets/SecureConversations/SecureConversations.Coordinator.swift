@@ -275,6 +275,10 @@ extension SecureConversations {
                 startWithSecureTranscriptFlow: true
             )
 
+            coordinator.delegate = { [weak self] event in
+                self?.delegate?(.chat(event))
+            }
+
             pushCoordinator(coordinator)
 
             let viewController = coordinator.start()
@@ -326,6 +330,7 @@ extension SecureConversations.Coordinator {
     enum DelegateEvent {
         case backTapped
         case closeTapped
+        case chat(ChatCoordinator.DelegateEvent)
     }
 }
 
