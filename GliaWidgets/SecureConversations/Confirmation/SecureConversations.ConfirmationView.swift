@@ -177,6 +177,7 @@ extension SecureConversations {
             checkMessagesButton.setTitleColor(props.style.checkMessagesButtonStyle.textColor, for: .normal)
             checkMessagesButton.backgroundColor = props.style.checkMessagesButtonStyle.backgroundColor
             checkMessagesButton.accessibilityTraits = .button
+            checkMessagesButton.accessibilityIdentifier = "secureConversations_confirmationCheckMessages_button"
             checkMessagesButton.accessibilityLabel = props.style.checkMessagesButtonStyle.accessibility.label
             checkMessagesButton.accessibilityHint = props.style.checkMessagesButtonStyle.accessibility.hint
             setFontScalingEnabled(
