@@ -434,8 +434,8 @@ public enum L10n {
       public enum Accessibility {
         /// Ends screen sharing
         public static let buttonHint = L10n.tr("Localizable", "callVisualizer.screenSharing.accessibility.buttonHint", fallback: "Ends screen sharing")
-        /// End Screen Sharing
-        public static let buttonLabel = L10n.tr("Localizable", "callVisualizer.screenSharing.accessibility.buttonLabel", fallback: "End Screen Sharing")
+        /// End screen sharing
+        public static let buttonLabel = L10n.tr("Localizable", "callVisualizer.screenSharing.accessibility.buttonLabel", fallback: "End screen sharing")
         /// Message label
         public static let messageHint = L10n.tr("Localizable", "callVisualizer.screenSharing.accessibility.messageHint", fallback: "Message label")
       }
@@ -472,6 +472,8 @@ public enum L10n {
     }
   }
   public enum Chat {
+    /// Messaging
+    public static let secureTranscriptTitle = L10n.tr("Localizable", "chat.secureTranscriptTitle", fallback: "Messaging")
     /// Chat
     public static let title = L10n.tr("Localizable", "chat.title", fallback: "Chat")
     public enum Accessibility {
