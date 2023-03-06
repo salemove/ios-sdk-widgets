@@ -14,12 +14,9 @@ import SalemoveSDK
 public final class CallVisualizer {
     private var environment: Environment
     private lazy var coordinator: Coordinator = {
-        let theme = Theme()
+        var theme = Theme()
         if let uiConfig = environment.uiConfig() {
-            theme.applyRemoteConfiguration(
-                uiConfig,
-                assetsBuilder: environment.assetsBuilder()
-            )
+            theme = .init(uiConfig: uiConfig, assetsBuilder: environment.assetsBuilder())
         }
         let viewFactory = ViewFactory(
             with: theme,
