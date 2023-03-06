@@ -73,6 +73,7 @@ extension SecureConversations {
             accessibilityLabel = props.accessibilityLabel
             accessibilityHint = props.accessibilityHint
             isAccessibilityElement = true
+            accessibilityIdentifier = "secureConversations_welcomeSend_button"
         }
 
         var renderedIsIndicatorShown: Bool = false {
