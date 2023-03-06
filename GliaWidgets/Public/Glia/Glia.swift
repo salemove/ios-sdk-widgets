@@ -57,7 +57,6 @@ public class Glia {
     /// Used to monitor engagement state changes.
     public var onEvent: ((GliaEvent) -> Void)?
 
-    var rootCoordinator: EngagementCoordinator?
     public lazy var callVisualizer = CallVisualizer(
         environment: .init(
             data: environment.data,
@@ -78,10 +77,12 @@ public class Glia {
             }
         )
     )
-
+    var rootCoordinator: EngagementCoordinator?
     var interactor: Interactor?
     var environment: Environment
     var messageRenderer: MessageRenderer?
+    var uiConfig: RemoteConfiguration?
+    var assetsBuilder: RemoteConfiguration.AssetsBuilder = .standard
 
     init(environment: Environment) {
         self.environment = environment
@@ -92,24 +93,23 @@ public class Glia {
     ///   - configuration: Engagement configuration.
     ///   - queueId: Queue identifier.
     ///   - visitorContext: Visitor context.
+    ///   - uiConfig: Remote UI configuration.
+    ///   - assetsBuilder: Provides assets for remote configuration.
     ///   - completion: Optional completion handler that will be fired once configuration is complete.
     ///   Passing  `nil` will defer configuration. Passing closure will start configuration immediately.
     public func configure(
         with configuration: Configuration,
         queueId: String,
-        visitorContext: VisitorContext?,
+        uiConfig: RemoteConfiguration? = nil,
+        assetsBuilder: RemoteConfiguration.AssetsBuilder = .standard,
         completion: (() -> Void)? = nil
     ) throws {
-        let sdkConfiguration = try GliaCore.Configuration(
-            siteId: configuration.site,
-            region: configuration.environment.region,
-            authorizingMethod: configuration.authorizationMethod.coreAuthorizationMethod,
-            pushNotifications: configuration.pushNotifications.coreSdk
-        )
+        self.uiConfig = uiConfig
+        self.assetsBuilder = assetsBuilder
+
         let createdInteractor = Interactor(
-            with: sdkConfiguration,
+            configuration: configuration,
             queueID: queueId,
-            visitorContext: visitorContext,
             environment: .init(coreSdk: environment.coreSdk, gcd: environment.gcd)
         )
 
@@ -125,43 +125,7 @@ public class Glia {
             }
         }
 
-        interactor?.addObserver(self) { [weak self] event in
-            guard let engagement = self?.environment.coreSdk.getCurrentEngagement(), engagement.source == .callVisualizer else {
-                return
-            }
-            switch event {
-            case .screenShareOffer(answer: let answer):
-                self?.environment.coreSdk.requestEngagedOperator { operators, _ in
-                    self?.callVisualizer.offerScreenShare(
-                        from: operators ?? [],
-                        configuration: Theme().alertConfiguration.screenShareOffer,
-                        accepted: { answer(true) },
-                        declined: { answer(false) }
-                    )
-                }
-            case let .upgradeOffer(offer, answer):
-                self?.environment.coreSdk.requestEngagedOperator { operators, _ in
-                    self?.callVisualizer.offerMediaUpgrade(
-                        from: operators ?? [],
-                        offer: offer,
-                        answer: answer,
-                        accepted: {
-                            answer(true, nil)
-                            self?.callVisualizer.handleAcceptedUpgrade()
-                        },
-                        declined: { answer(false, nil) }
-                    )
-                }
-            case let .videoStreamAdded(stream):
-                self?.callVisualizer.addVideoStream(stream: stream)
-            case let .stateChanged(state):
-                if state == .ended(.byOperator) {
-                    self?.callVisualizer.endSession()
-                }
-            default:
-                break
-            }
-        }
+        startObservingInteractorEvents()
     }
 
     /// Maximizes engagement view if ongoing engagment exists.
@@ -279,5 +243,49 @@ public class Glia {
     @available(*, deprecated, message: "Deprecated, use ``CallVisualizer.showVisitorCodeViewController`` instead.")
     public func requestVisitorCode(completion: @escaping (Result<VisitorCode, Swift.Error>) -> Void) {
         _ = environment.coreSdk.requestVisitorCode(completion)
+    }
+}
+
+// MARK: - Private
+
+private extension Glia {
+    func startObservingInteractorEvents() {
+        interactor?.addObserver(self) { [weak self] event in
+            guard let engagement = self?.environment.coreSdk.getCurrentEngagement(), engagement.source == .callVisualizer else {
+                return
+            }
+            switch event {
+            case .screenShareOffer(answer: let answer):
+                self?.environment.coreSdk.requestEngagedOperator { operators, _ in
+                    self?.callVisualizer.offerScreenShare(
+                        from: operators ?? [],
+                        configuration: Theme().alertConfiguration.screenShareOffer,
+                        accepted: { answer(true) },
+                        declined: { answer(false) }
+                    )
+                }
+            case let .upgradeOffer(offer, answer):
+                self?.environment.coreSdk.requestEngagedOperator { operators, _ in
+                    self?.callVisualizer.offerMediaUpgrade(
+                        from: operators ?? [],
+                        offer: offer,
+                        answer: answer,
+                        accepted: {
+                            answer(true, nil)
+                            self?.callVisualizer.handleAcceptedUpgrade()
+                        },
+                        declined: { answer(false, nil) }
+                    )
+                }
+            case let .videoStreamAdded(stream):
+                self?.callVisualizer.addVideoStream(stream: stream)
+            case let .stateChanged(state):
+                if state == .ended(.byOperator) {
+                    self?.callVisualizer.endSession()
+                }
+            default:
+                break
+            }
+        }
     }
 }
