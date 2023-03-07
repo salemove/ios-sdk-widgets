@@ -44,7 +44,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
 
     private var pendingMessages: [OutgoingMessage] = []
     var isViewLoaded: Bool = false
-    private (set) var isChoiceCardInputModeEnabled: Bool = false
+    var isChoiceCardInputModeEnabled: Bool = false
     private (set) var siteConfiguration: CoreSdkClient.Site?
 
     var mediaPickerButtonVisibility: MediaPickerButtonVisibility {
@@ -56,6 +56,8 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         guard !isChoiceCardInputModeEnabled else { return .enabled(.choiceCard) }
         return .enabled(.enagagementConnection(isConnected: environment.getCurrentEngagement() != nil))
     }
+
+    let shouldSkipEnqueueingState: Bool
 
     // swiftlint:disable function_body_length
     init(
@@ -69,12 +71,15 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         isWindowVisible: ObservableValue<Bool>,
         startAction: StartAction,
         deliveredStatusText: String,
+        shouldSkipEnqueueingState: Bool,
         environment: Environment
+
     ) {
         self.call = call
         self.showsCallBubble = showsCallBubble
         self.isCustomCardSupported = isCustomCardSupported
         self.startAction = startAction
+        self.shouldSkipEnqueueingState = shouldSkipEnqueueingState
         let uploader = FileUploader(
             maximumUploads: Self.maximumUploads,
             environment: .init(
@@ -207,6 +212,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
 
         switch state {
         case .enqueueing:
+            guard !shouldSkipEnqueueingState else { return }
             let item = ChatItem(kind: .queueOperator)
 
             appendItem(
@@ -831,69 +837,6 @@ extension ChatViewModel {
     private func showCallBubble() {
         let imageUrl = interactor.engagedOperator?.picture?.url
         action?(.showCallBubble(imageUrl: imageUrl))
-    }
-}
-
-// MARK: Choice Card
-
-extension ChatViewModel {
-    func sendChoiceCardResponse(_ option: ChatChoiceCardOption, to messageId: String) {
-
-        guard let option = option.asSingleChoiceOption() else { return }
-        environment.sendSelectedOptionValue(option) { [weak self] result in
-            guard let self = self else { return }
-
-            switch result {
-            case .success(let message):
-                guard
-                    let selection = message.attachment?.selectedOption
-                else { return }
-
-                self.respond(to: messageId, with: selection)
-
-            case .failure:
-                self.showAlert(
-                    with: self.alertConfiguration.unexpectedError,
-                    dismissed: nil
-                )
-            }
-        }
-    }
-
-    private func respond(to choiceCardId: String, with selection: String?) {
-        guard let index = messagesSection.items
-            .enumerated()
-            .first(where: {
-                guard case .choiceCard(let message, _, _, _) = $0.element.kind
-                else { return false }
-                return message.id == choiceCardId
-            })?.offset
-        else { return }
-
-        let choiceCard = messagesSection[index]
-
-        guard case .choiceCard(
-            let message,
-            let showsImage,
-            let imageUrl,
-            _
-        ) = choiceCard.kind else { return }
-
-        message.attachment?.selectedOption = selection
-        message.queueID = interactor.queueID
-        let item = ChatItem(kind: .choiceCard(
-            message,
-            showsImage: showsImage,
-            imageUrl: imageUrl,
-            isActive: false
-        ))
-
-        messagesSection.replaceItem(at: index, with: item)
-        action?(.refreshRow(index, in: messagesSection.index, animated: true))
-        action?(.setChoiceCardInputModeEnabled(false))
-        // Update stored choice card mode to be in
-        // sync after response.
-        isChoiceCardInputModeEnabled = false
     }
 }
 
