@@ -30,7 +30,7 @@ extension SecureConversations {
         )
 
         let confirmationImageView = UIImageView().makeView { imageView in
-            imageView.image = Asset.mcConfirmation.image
+            imageView.image = Asset.mcConfirmation.image.withRenderingMode(.alwaysTemplate)
         }
         let titleLabel = UILabel().makeView { label in
             label.numberOfLines = 0
@@ -157,6 +157,7 @@ extension SecureConversations {
             header.props = props.header
             header.showCloseButton()
 
+            confirmationImageView.tintColor = props.style.confirmationImageTint
             titleLabel.text = props.style.titleStyle.text
             titleLabel.textColor = props.style.titleStyle.color
             titleLabel.font = props.style.titleStyle.font

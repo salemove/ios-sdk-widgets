@@ -173,7 +173,7 @@
 		1AFB1E7825F8B26800CA460D /* ChatTextContentStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFB1E7725F8B26800CA460D /* ChatTextContentStyle.swift */; };
 		3100D929296E946600DEC9CE /* SecureConversations.ConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3100D924296E946600DEC9CE /* SecureConversations.ConfirmationView.swift */; };
 		3100D92A296E946600DEC9CE /* Theme+SecureConversationsConfirmation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3100D925296E946600DEC9CE /* Theme+SecureConversationsConfirmation.swift */; };
-		3100D92B296E946600DEC9CE /* SecureConversations.ConfirmationStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3100D926296E946600DEC9CE /* SecureConversations.ConfirmationStyle.swift */; };
+		3100D92B296E946600DEC9CE /* SecureConversations+ConfirmationStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3100D926296E946600DEC9CE /* SecureConversations+ConfirmationStyle.swift */; };
 		3100D92C296E946600DEC9CE /* SecureConversations.ConfirmationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3100D927296E946600DEC9CE /* SecureConversations.ConfirmationViewController.swift */; };
 		3100D92D296E946600DEC9CE /* SecureConversations.ConfirmationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3100D928296E946600DEC9CE /* SecureConversations.ConfirmationViewModel.swift */; };
 		3100EEF2293E214B00D57F71 /* SecureConversations.Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3100EEF1293E214B00D57F71 /* SecureConversations.Coordinator.swift */; };
@@ -274,6 +274,7 @@
 		75C1143629A406F00004E5F7 /* SecureConversations+RemoteConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C1143529A406F00004E5F7 /* SecureConversations+RemoteConfig.swift */; };
 		75C48498299AC71F003EC223 /* Header+Playbook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C48497299AC71F003EC223 /* Header+Playbook.swift */; };
 		75CF8D6129B3F1E400CB1524 /* Configuration+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CF8D6029B3F1E400CB1524 /* Configuration+Mock.swift */; };
+		75CF8D6329B7DD8300CB1524 /* SecureConversations+ConfirmationStyle+RemoteConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CF8D6229B7DD8300CB1524 /* SecureConversations+ConfirmationStyle+RemoteConfig.swift */; };
 		75F58EE127E7D5300065BA2D /* Survey.ViewController.Props.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F58EE027E7D5300065BA2D /* Survey.ViewController.Props.swift */; };
 		75FF151427F3A2D600FE7BE2 /* Theme+Survey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FF151327F3A2D600FE7BE2 /* Theme+Survey.swift */; };
 		75FF151727F4E13900FE7BE2 /* Theme.Survey.BooleanQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FF151627F4E13900FE7BE2 /* Theme.Survey.BooleanQuestion.swift */; };
@@ -762,7 +763,7 @@
 		2F4C9EF1991B7981DC24CA98 /* Pods-TestingApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestingApp.release.xcconfig"; path = "Target Support Files/Pods-TestingApp/Pods-TestingApp.release.xcconfig"; sourceTree = "<group>"; };
 		3100D924296E946600DEC9CE /* SecureConversations.ConfirmationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecureConversations.ConfirmationView.swift; sourceTree = "<group>"; };
 		3100D925296E946600DEC9CE /* Theme+SecureConversationsConfirmation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Theme+SecureConversationsConfirmation.swift"; sourceTree = "<group>"; };
-		3100D926296E946600DEC9CE /* SecureConversations.ConfirmationStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecureConversations.ConfirmationStyle.swift; sourceTree = "<group>"; };
+		3100D926296E946600DEC9CE /* SecureConversations+ConfirmationStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SecureConversations+ConfirmationStyle.swift"; sourceTree = "<group>"; };
 		3100D927296E946600DEC9CE /* SecureConversations.ConfirmationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecureConversations.ConfirmationViewController.swift; sourceTree = "<group>"; };
 		3100D928296E946600DEC9CE /* SecureConversations.ConfirmationViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecureConversations.ConfirmationViewModel.swift; sourceTree = "<group>"; };
 		3100EEF1293E214B00D57F71 /* SecureConversations.Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.Coordinator.swift; sourceTree = "<group>"; };
@@ -863,6 +864,7 @@
 		75C1143529A406F00004E5F7 /* SecureConversations+RemoteConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SecureConversations+RemoteConfig.swift"; sourceTree = "<group>"; };
 		75C48497299AC71F003EC223 /* Header+Playbook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Header+Playbook.swift"; sourceTree = "<group>"; };
 		75CF8D6029B3F1E400CB1524 /* Configuration+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Configuration+Mock.swift"; sourceTree = "<group>"; };
+		75CF8D6229B7DD8300CB1524 /* SecureConversations+ConfirmationStyle+RemoteConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SecureConversations+ConfirmationStyle+RemoteConfig.swift"; sourceTree = "<group>"; };
 		75F58EE027E7D5300065BA2D /* Survey.ViewController.Props.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Survey.ViewController.Props.swift; sourceTree = "<group>"; };
 		75FF151327F3A2D600FE7BE2 /* Theme+Survey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Theme+Survey.swift"; sourceTree = "<group>"; };
 		75FF151627F4E13900FE7BE2 /* Theme.Survey.BooleanQuestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.Survey.BooleanQuestion.swift; sourceTree = "<group>"; };
@@ -2216,7 +2218,8 @@
 				315BAB1829ADFE9E00FF284B /* ConfirmationStyle */,
 				3100D924296E946600DEC9CE /* SecureConversations.ConfirmationView.swift */,
 				3100D925296E946600DEC9CE /* Theme+SecureConversationsConfirmation.swift */,
-				3100D926296E946600DEC9CE /* SecureConversations.ConfirmationStyle.swift */,
+				3100D926296E946600DEC9CE /* SecureConversations+ConfirmationStyle.swift */,
+				75CF8D6229B7DD8300CB1524 /* SecureConversations+ConfirmationStyle+RemoteConfig.swift */,
 				3100D927296E946600DEC9CE /* SecureConversations.ConfirmationViewController.swift */,
 				3100D928296E946600DEC9CE /* SecureConversations.ConfirmationViewModel.swift */,
 			);
@@ -3544,6 +3547,7 @@
 				C0D2F02C2991219100803B47 /* VideoCallCoordinator.swift in Sources */,
 				75940980298D38C2008B173A /* VisitorCodeViewModel.swift in Sources */,
 				1A277A1625FA60E1009FE131 /* ChatFileContentStyle.swift in Sources */,
+				75CF8D6329B7DD8300CB1524 /* SecureConversations+ConfirmationStyle+RemoteConfig.swift in Sources */,
 				1A475BB325DE831F00296D55 /* BadgeView.swift in Sources */,
 				1A38A8A8258B652B0089DE7B /* OperatorChatMessageStyle.swift in Sources */,
 				1A7CA8212574D6760047CBBE /* ConnectOperatorView.swift in Sources */,
@@ -3583,7 +3587,7 @@
 				1A60AFB9256682AF00E53F53 /* FlowCoordinator.swift in Sources */,
 				3100D92C296E946600DEC9CE /* SecureConversations.ConfirmationViewController.swift in Sources */,
 				9A8130BB27D7A41000220BBD /* FileUpload.Environment.Interface.swift in Sources */,
-				3100D92B296E946600DEC9CE /* SecureConversations.ConfirmationStyle.swift in Sources */,
+				3100D92B296E946600DEC9CE /* SecureConversations+ConfirmationStyle.swift in Sources */,
 				845E2F93283FB6D000C04D56 /* Theme.Survey.Accessibility.swift in Sources */,
 				75940959298D386F008B173A /* UIStackView.Extensions.swift in Sources */,
 				1A0C9A9125C41AB900815406 /* CallButtonBar.swift in Sources */,

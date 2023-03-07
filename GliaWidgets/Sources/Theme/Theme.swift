@@ -55,6 +55,9 @@ public class Theme {
     /// Call Visualizer Screen Sharing View style.
     public lazy var screenSharing: ScreenSharingViewStyle = { return screenSharingStyle }()
 
+    // Confirmation Screen in Secure Conversation flow style.
+    public lazy var secureConversationsConfirmation: SecureConversations.ConfirmationStyle = defaultSecureConversationsConfirmationStyle
+
     /// Controls the visibility of the "Powered by" text and image.
     public var showsPoweredBy: Bool
 
@@ -110,7 +113,11 @@ public class Theme {
         )
         secureConversationsWelcome.apply(
             configuration: config.secureConversationsWelcomeScreen,
-            assetBuilder: assetsBuilder
+            assetsBuilder: assetsBuilder
+        )
+        secureConversationsConfirmation.apply(
+            configuration: config.secureConversationsConfirmationScreen,
+            assetsBuilder: assetsBuilder
         )
     }
 }
