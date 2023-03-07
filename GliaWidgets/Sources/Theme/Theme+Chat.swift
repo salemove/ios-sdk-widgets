@@ -354,7 +354,8 @@ extension Theme {
                 operator: L10n.operator,
                 visitor: Accessibility.visitorName,
                 isFontScalingEnabled: true
-            )
+            ),
+            secureTranscriptTitle: Chat.secureTranscriptTitle
         )
     }
 
