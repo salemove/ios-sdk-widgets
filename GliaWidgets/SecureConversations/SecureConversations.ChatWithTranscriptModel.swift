@@ -470,9 +470,8 @@ extension SecureConversations.TranscriptModel {
                 in: self.messagesSection
                )
                self.delegate?(.awaitUpgradeToChatEngagement(self))
-           case let .failure(error):
-               // TODO: MOB-1874
-               break
+           case .failure:
+               self.showAlert(with: self.environment.alertConfiguration.unexpectedError)
            }
        }
 
