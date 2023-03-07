@@ -1,7 +1,9 @@
 import Foundation
 
 extension Theme {
-    var secureConversationsConfirmationStyle: SecureConversations.ConfirmationStyle {
+    /// Default style for confirmation screen in secure conversation. Be aware it depends on
+    /// `self.colors` (ThemeColor).
+    var defaultSecureConversationsConfirmationStyle: SecureConversations.ConfirmationStyle {
         typealias Confirmation = L10n.MessageCenter.Confirmation
 
         let chatStyle = chatStyle
@@ -11,14 +13,14 @@ extension Theme {
         let titleStyle = SecureConversations.ConfirmationStyle.TitleStyle(
             text: Confirmation.title,
             font: font.header3,
-            color: .black,
+            color: color.baseDark,
             accessibility: .init(isFontScalingEnabled: true)
         )
 
         let subtitleStyle = SecureConversations.ConfirmationStyle.SubtitleStyle(
             text: Confirmation.subtitle,
             font: font.bodyText,
-            color: .black,
+            color: color.baseDark,
             accessibility: .init(isFontScalingEnabled: true)
         )
 
@@ -38,8 +40,9 @@ extension Theme {
             header: header,
             headerTitle: Confirmation.header,
             confirmationImage: Asset.mcEnvelope.image,
+            confirmationImageTint: color.primary,
             titleStyle: titleStyle,
             subtitleStyle: subtitleStyle,
-            checkMessagesButtonStyle: checkMessagesButtonStyle, backgroundColor: .white)
+            checkMessagesButtonStyle: checkMessagesButtonStyle, backgroundColor: color.baseLight)
     }
 }

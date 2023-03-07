@@ -24,4 +24,12 @@ extension RemoteConfiguration {
         let pickMedia: AttachmentSourceList?
         let background: Color?
     }
+
+    struct SecureConversationsConfirmationScreen: Codable {
+        let background: Color?
+        let checkMessagesButton: Button?
+        let header: Header?
+        let iconColor: Color?
+        let subtitle, title: Text?
+    }
 }

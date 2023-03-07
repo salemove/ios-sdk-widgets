@@ -156,7 +156,7 @@ extension SecureConversations {
         func presentSecureConversationsConfirmationViewController() {
             let viewModel = SecureConversations.ConfirmationViewModel(
                 environment: .init(
-                    confirmationStyle: viewFactory.theme.secureConversationsConfirmationStyle
+                    confirmationStyle: viewFactory.theme.secureConversationsConfirmation
                 )
             )
 

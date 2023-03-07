@@ -3,50 +3,50 @@ import UIKit
 extension SecureConversations.WelcomeStyle {
     mutating func apply(
         configuration: RemoteConfiguration.SecureConversationsWelcomeScreen?,
-        assetBuilder: RemoteConfiguration.AssetsBuilder
+        assetsBuilder: RemoteConfiguration.AssetsBuilder
     ) {
         header.apply(
             configuration: configuration?.header,
-            assetsBuilder: assetBuilder
+            assetsBuilder: assetsBuilder
         )
         welcomeTitleStyle.apply(
             configuration: configuration?.welcomeTitle,
-            assetBuilder: assetBuilder
+            assetBuilder: assetsBuilder
         )
         titleImageStyle.apply(
             configuration: configuration?.titleImage,
-            assetBuilder: assetBuilder
+            assetBuilder: assetsBuilder
         )
         welcomeSubtitleStyle.apply(
             configuration: configuration?.welcomeSubtitle,
-            assetBuilder: assetBuilder
+            assetBuilder: assetsBuilder
         )
         checkMessagesButtonStyle.apply(
             configuration: configuration?.checkMessagesButton,
-            assetBuilder: assetBuilder
+            assetBuilder: assetsBuilder
         )
         messageTitleStyle?.apply(
             configuration: configuration?.messageTitle,
-            assetBuilder: assetBuilder
+            assetBuilder: assetsBuilder
         )
         messageTextViewStyle.apply(
             normal: configuration?.messageTextViewNormal,
             disabled: configuration?.messageTextViewDisabled,
             active: configuration?.messageTextViewActive,
             layer: configuration?.messageTextViewLayer,
-            assetBuilder: assetBuilder
+            assetBuilder: assetsBuilder
         )
         sendButtonStyle.apply(
             enabled: configuration?.enabledSendButton,
             disabled: configuration?.disabledSendButton,
             loading: configuration?.loadingSendButton,
             activityIndicatorColor: configuration?.activityIndicatorColor,
-            assetBuilder: assetBuilder
+            assetBuilder: assetsBuilder
         )
         messageWarningStyle.apply(
             textConfiguration: configuration?.messageWarning,
             iconConfiguration: configuration?.messageWarningIconColor,
-            assetBuilder: assetBuilder
+            assetBuilder: assetsBuilder
         )
         filePickerButtonStyle.apply(
             configuration: configuration?.filePickerButton,
@@ -54,11 +54,11 @@ extension SecureConversations.WelcomeStyle {
         )
         attachmentListStyle.apply(
             configuration: configuration?.attachmentList,
-            assetsBuilder: assetBuilder
+            assetsBuilder: assetsBuilder
         )
         pickMediaStyle.apply(
             configuration: configuration?.pickMedia,
-            assetsBuilder: assetBuilder
+            assetsBuilder: assetsBuilder
         )
         configuration?.background?.value
             .map { UIColor(hex: $0) }

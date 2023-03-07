@@ -13,6 +13,9 @@ extension SecureConversations {
         /// Image shown in the confirmation screen.
         public var confirmationImage: UIImage
 
+        /// Image tint color in the confirmation screen.
+        public var confirmationImageTint: UIColor
+
         /// Style for title shown in the confirmation area.
         public var titleStyle: TitleStyle
 
@@ -37,15 +40,16 @@ extension SecureConversations {
             header: HeaderStyle,
             headerTitle: String,
             confirmationImage: UIImage,
+            confirmationImageTint: UIColor,
             titleStyle: TitleStyle,
             subtitleStyle: SubtitleStyle,
-            checkMessagesButtonStyle:
-            CheckMessagesButtonStyle,
+            checkMessagesButtonStyle: CheckMessagesButtonStyle,
             backgroundColor: UIColor
         ) {
             self.header = header
             self.headerTitle = headerTitle
             self.confirmationImage = confirmationImage
+            self.confirmationImageTint = confirmationImageTint
             self.titleStyle = titleStyle
             self.subtitleStyle = subtitleStyle
             self.checkMessagesButtonStyle = checkMessagesButtonStyle
