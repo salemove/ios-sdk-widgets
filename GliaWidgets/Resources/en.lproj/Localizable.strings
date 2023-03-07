@@ -95,6 +95,7 @@
 "chat.download.failed" = "Download failed";
 "chat.download.failed.separator" = " | ";
 "chat.download.failed.retry" = "Retry";
+"chat.secureTranscriptTitle" = "Messaging";
 
 "chat.accessibility.upload.removeUpload.label" = "Remove upload";
 "chat.accessibility.upload.progress.percentValue" = "{uploadPercentValue}%%";

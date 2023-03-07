@@ -3,7 +3,11 @@ import UIKit
 
 class ChatViewController: EngagementViewController, MediaUpgradePresenter,
     PopoverPresenter, ScreenShareOfferPresenter {
-    private var viewModel: SecureConversations.ChatWithTranscriptModel
+    private var viewModel: SecureConversations.ChatWithTranscriptModel {
+        didSet {
+            renderTitle()
+        }
+    }
     private var lastVisibleRowIndexPath: IndexPath?
 
     init(viewModel: SecureConversations.ChatWithTranscriptModel, viewFactory: ViewFactory) {
@@ -21,6 +25,7 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter,
         self.view = view
 
         bind(viewModel: viewModel, to: view)
+        renderTitle()
     }
 
     override func viewDidLoad() {
@@ -170,6 +175,30 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter,
                 itemSelected($0)
             }
         )
+    }
+
+    private func renderTitle() {
+        guard let chatView: ChatView = view as? ChatView else { return }
+        let headerProps = chatView.props.header
+        let headerTitle: String
+        switch viewModel {
+        case .chat:
+            headerTitle = viewFactory.theme.chat.title
+        case .transcript:
+            headerTitle = viewFactory.theme.chat.secureTranscriptTitle
+        }
+
+        let newHeaderProps = Header.Props(
+            title: headerTitle,
+            effect: headerProps.effect,
+            endButton: headerProps.endButton,
+            backButton: headerProps.backButton,
+            closeButton: headerProps.closeButton,
+            endScreenshareButton: headerProps.endScreenshareButton,
+            style: headerProps.style
+        )
+
+        chatView.props = .init(header: newHeaderProps)
     }
 }
 
