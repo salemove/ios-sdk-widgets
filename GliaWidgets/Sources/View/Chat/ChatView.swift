@@ -47,7 +47,11 @@ class ChatView: EngagementView {
 
     private var heightCache: [String: CGFloat] = [:]
 
-    var props: Props
+    var props: Props {
+        didSet {
+            renderHeaderProps()
+        }
+    }
 
     init(
         with style: ChatStyle,
@@ -263,6 +267,10 @@ class ChatView: EngagementView {
             of: messageEntryView,
             withOffset: kUnreadMessageIndicatorInset
         )
+    }
+
+    func renderHeaderProps() {
+        header.props = props.header
     }
 }
 
