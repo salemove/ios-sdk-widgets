@@ -150,6 +150,8 @@ extension ChatCoordinator {
             isWindowVisible: isWindowVisible,
             startAction: startAction,
             deliveredStatusText: viewFactory.theme.chat.visitorMessage.delivered,
+            // We should not show enqueueing state in case of secure transcript flow.
+            shouldSkipEnqueueingState: startWithSecureTranscriptFlow,
             environment: Self.enviromentForChatModel(environment: environment, viewFactory: viewFactory)
         )
         viewModel.isInteractableCard = viewFactory.messageRenderer?.isInteractable

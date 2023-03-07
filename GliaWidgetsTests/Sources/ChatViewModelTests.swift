@@ -25,6 +25,7 @@ class ChatViewModelTests: XCTestCase {
             isWindowVisible: .init(with: true),
             startAction: .none,
             deliveredStatusText: "Delivered",
+            shouldSkipEnqueueingState: false,
             environment: .init(
                 fetchFile: { _, _, _ in },
                 sendSelectedOptionValue: { _, _ in
