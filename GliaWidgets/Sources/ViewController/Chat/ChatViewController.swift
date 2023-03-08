@@ -159,6 +159,7 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter,
             case let .fileUploadListPropsUpdated(fileUploadListProps):
                 view.messageEntryView.uploadListView.props = fileUploadListProps
             }
+            self?.renderTitle()
         }
     }
 
@@ -182,8 +183,11 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter,
         let headerProps = chatView.props.header
         let headerTitle: String
         switch viewModel {
-        case .chat:
-            headerTitle = viewFactory.theme.chat.title
+        case let .chat(chatViewModel):
+            headerTitle = Self.headerTitleForChatModel(
+                chatViewModel,
+                chatStyle: viewFactory.theme.chat
+            )
         case .transcript:
             headerTitle = viewFactory.theme.chat.secureTranscriptTitle
         }
@@ -218,5 +222,17 @@ extension ChatViewController {
             viewModel: viewModel,
             to: chatView
         )
+    }
+
+    static func headerTitleForChatModel(_ chatViewModel: ChatViewModel, chatStyle: ChatStyle) -> String {
+        let headerTitle: String
+        if chatViewModel.shouldSkipEnqueueingState {
+            headerTitle = chatViewModel.activeEngagement != nil
+            ? chatStyle.title
+            : chatStyle.secureTranscriptTitle
+        } else {
+            headerTitle = chatStyle.title
+        }
+        return headerTitle
     }
 }
