@@ -24,6 +24,7 @@ extension ChatViewModel {
             isWindowVisible: isWindowVisible,
             startAction: startAction,
             deliveredStatusText: deliveredStatusText,
+            shouldSkipEnqueueingState: false,
             environment: environment
         )
     }
