@@ -1,54 +1,23 @@
+#if DEBUG
+
 import UIKit
-@testable import GliaWidgets
 
 extension ScreenSharingViewStyle {
-    static func mock() -> ScreenSharingViewStyle {
+    static func mock(
+        title: String = ""
+    ) -> ScreenSharingViewStyle {
         ScreenSharingViewStyle(
-            title: "",
+            title: title,
             header: .mock(),
-            messageText: "",
-            messageTextFont: .systemFont(ofSize: 16),
-            messageTextColor: .clear,
+            messageText: L10n.CallVisualizer.ScreenSharing.message,
+            messageTextFont: .systemFont(ofSize: 20, weight: .regular),
+            messageTextColor: Color.baseDark,
             buttonStyle: .mock(),
-            buttonIcon: UIImage(),
+            buttonIcon: Asset.startScreenShare.image,
             backgroundColor: .fill(color: .white),
             accessibility: .unsupported
         )
     }
 }
 
-extension HeaderStyle {
-    static func mock() -> HeaderStyle {
-        HeaderStyle(
-            titleFont: .systemFont(ofSize: 16),
-            titleColor: .cyan,
-            backgroundColor: .fill(color: .clear),
-            backButton: .mock(),
-            closeButton: .mock(),
-            endButton: .mock(),
-            endScreenShareButton: .mock()
-        )
-    }
-}
-
-extension HeaderButtonStyle {
-    static func mock() -> HeaderButtonStyle {
-        HeaderButtonStyle(
-            image: UIImage(),
-            color: .clear
-        )
-    }
-}
-
-extension ActionButtonStyle {
-    static func mock() -> ActionButtonStyle {
-        ActionButtonStyle(
-            title: "",
-            titleFont: .systemFont(ofSize: 16),
-            titleColor: .clear,
-            backgroundColor: .fill(color: .clear)
-        )
-    }
-}
-
-
+#endif

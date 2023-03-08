@@ -25,6 +25,7 @@ class PoweredBy: UIView {
     private func setup() {
         label.text = style.text
         label.font = style.font
+        label.accessibilityLabel = "Powered By Glia"
         setFontScalingEnabled(
             style.accessibility.isFontScalingEnabled,
             for: label

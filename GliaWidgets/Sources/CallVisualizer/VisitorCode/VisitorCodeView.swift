@@ -78,7 +78,6 @@ extension CallVisualizer {
             label.numberOfLines = 2
             label.textAlignment = .center
             label.accessibilityIdentifier = "visitor_code_title_label"
-            label.accessibilityHint = L10n.CallVisualizer.VisitorCode.Accessibility.titleHint
         }
 
         lazy var stackView = UIStackView.make(.vertical, spacing: 24)(
@@ -180,9 +179,11 @@ extension CallVisualizer {
                 renderedVisitorCode = code
                 titleLabel.text = L10n.CallVisualizer.VisitorCode.Title.standard
                 renderVisitorCode()
+                titleLabel.accessibilityHint = L10n.CallVisualizer.VisitorCode.Accessibility.titleHint
             case .error:
                 titleLabel.text = L10n.CallVisualizer.VisitorCode.Title.error
                 renderError()
+                titleLabel.accessibilityHint = nil
             case .loading:
                 titleLabel.text = L10n.CallVisualizer.VisitorCode.Title.standard
                 renderSpinner()
