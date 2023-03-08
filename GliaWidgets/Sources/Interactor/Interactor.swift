@@ -31,6 +31,7 @@ enum InteractorEvent {
     case error(CoreSdkClient.SalemoveError)
     case engagementTransferred(CoreSdkClient.Operator?)
     case engagementTransferring
+    case engagementRequestAccepted
 }
 
 class Interactor {
@@ -289,6 +290,7 @@ extension Interactor: CoreSdkClient.Interactable {
                 .map(CoreSdkClient.VisitorContext.ContextType.assetId)
                 .map(CoreSdkClient.VisitorContext.init(_:))
             answer(coreSdkVisitorContext, true, completion)
+            self?.notify(.engagementRequestAccepted)
         }
     }
 
