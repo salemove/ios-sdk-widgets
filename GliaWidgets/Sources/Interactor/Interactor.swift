@@ -368,7 +368,7 @@ extension Interactor: CoreSdkClient.Interactable {
             start()
 
         case .callVisualizer:
-            break
+            start()
 
         case .unknown(let type):
             debugPrint("Unknown engagement started (type='\(type)').")
