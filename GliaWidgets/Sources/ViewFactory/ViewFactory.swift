@@ -106,7 +106,7 @@ class ViewFactory {
                 endButton: .init(style: theme.call.header.endButton, tap: endCmd),
                 backButton: backButton,
                 closeButton: .init(tap: closeCmd, style: theme.call.header.closeButton),
-                endScreenshareButton: .init(style: theme.call.header.endScreenShareButton),
+                endScreenshareButton: .init(tap: endScreenshareCmd, style: theme.call.header.endScreenShareButton),
                 style: theme.call.header
             )
         )
