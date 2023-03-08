@@ -3,21 +3,37 @@
 import UIKit
 
 extension CallVisualizer.VideoCallView.Props {
-    static let mock = Self(
-        style: .mock(),
-        callDuration: "",
-        connectViewProps: .mock,
-        buttonBarProps: .mock(),
-        headerTitle: "",
-        operatorName: "",
-        remoteVideoStream: .none,
-        localVideoStream: .none,
-        topLabelHidden: false,
-        endScreenShareButtonHidden: false,
-        connectViewHidden: false,
-        topStackAlpha: 1.0,
-        headerProps: .mock()
-    )
+    static func mock(
+        style: CallStyle = .mock(),
+        callDuration: String? = "",
+        connectViewProps: CallVisualizer.VideoCallView.ConnectView.Props = .mock,
+        buttonBarProps: CallVisualizer.VideoCallView.CallButtonBar.Props = .mock(),
+        headerTitle: String = "",
+        operatorName: String? = "",
+        remoteVideoStream: CoreSdkClient.StreamView? = .none,
+        localVideoStream: CoreSdkClient.StreamView? = .none,
+        topLabelHidden: Bool = false,
+        endScreenShareButtonHidden: Bool = false,
+        connectViewHidden: Bool = false,
+        topStackAlpha: CGFloat = 1.0,
+        headerProps: Header.Props = .mock()
+    ) -> CallVisualizer.VideoCallView.Props {
+        return .init(
+            style: style,
+            callDuration: callDuration,
+            connectViewProps: connectViewProps,
+            buttonBarProps: buttonBarProps,
+            headerTitle: headerTitle,
+            operatorName: operatorName,
+            remoteVideoStream: remoteVideoStream,
+            localVideoStream: localVideoStream,
+            topLabelHidden: topLabelHidden,
+            endScreenShareButtonHidden: endScreenShareButtonHidden,
+            connectViewHidden: connectViewHidden,
+            topStackAlpha: topStackAlpha,
+            headerProps: headerProps
+        )
+    }
 }
 
 #endif
