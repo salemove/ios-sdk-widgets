@@ -127,6 +127,11 @@ extension CallVisualizer {
             }
         }
 
+        func handleEngagementRequestAccepted() {
+            visitorCodeCoordinator?.codeViewController?.dismiss(animated: true)
+            visitorCodeCoordinator = nil
+        }
+
         func end() {
             removeBubbleView()
             videoCallCoordinator?.viewController?.dismiss(animated: true)
