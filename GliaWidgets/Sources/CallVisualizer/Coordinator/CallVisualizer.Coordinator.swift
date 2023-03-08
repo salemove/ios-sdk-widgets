@@ -272,6 +272,10 @@ extension CallVisualizer {
             coordinator.delegate = { event in
                 switch event {
                 case .close:
+                    self.screenSharingCoordinator.unwrap {
+                        $0.viewController?.dismiss(animated: false)
+                        self.screenSharingCoordinator = nil
+                    }
                     viewController.dismiss(animated: true)
                 }
             }
