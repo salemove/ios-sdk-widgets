@@ -13,7 +13,45 @@ import SalemoveSDK
 ///  3. Handling engagement, featuring video calling, screen sharing, and much more in future.
 public final class CallVisualizer {
     private var environment: Environment
-    private var coordinator: Coordinator?
+    private lazy var coordinator: Coordinator = {
+        let theme = Theme()
+        if let uiConfig = environment.uiConfig() {
+            theme.applyRemoteConfiguration(
+                uiConfig,
+                assetsBuilder: environment.assetsBuilder()
+            )
+        }
+        let viewFactory = ViewFactory(
+            with: theme,
+            messageRenderer: nil,
+            environment: .init(
+                data: environment.data,
+                uuid: environment.uuid,
+                gcd: environment.gcd,
+                imageViewCache: environment.imageViewCache,
+                timerProviding: environment.timerProviding,
+                uiApplication: environment.uiApplication
+            )
+        )
+        return Coordinator(
+            environment: .init(
+                data: environment.data,
+                uuid: environment.uuid,
+                gcd: environment.gcd,
+                imageViewCache: environment.imageViewCache,
+                uiApplication: environment.uiApplication,
+                viewFactory: viewFactory,
+                presenter: environment.callVisualizerPresenter,
+                bundleManaging: environment.bundleManaging,
+                screenShareHandler: environment.screenShareHandler,
+                timerProviding: environment.timerProviding,
+                requestVisitorCode: environment.requestVisitorCode,
+                audioSession: environment.audioSession,
+                date: environment.date,
+                engagedOperator: environment.engagedOperator
+            )
+        )
+    }()
 
     init(environment: Environment) {
         self.environment = environment
@@ -42,61 +80,25 @@ public final class CallVisualizer {
     ///  needs to be passed in as an associated value. If, however, embedding is chosen, the view into which you want to
     ///  embed it has to be passed in as an associated value.
     public func showVisitorCodeViewController(
-        by presentation: Presentation,
-        uiConfig: RemoteConfiguration? = nil
+        by presentation: Presentation
     ) {
-
-        let theme = Theme()
-        if let uiConfig = uiConfig {
-            theme.applyRemoteConfiguration(uiConfig, assetsBuilder: .standard)
-        }
-
-        let viewFactory = ViewFactory(
-            with: theme,
-            messageRenderer: nil,
-            environment: .init(
-                data: environment.data,
-                uuid: environment.uuid,
-                gcd: environment.gcd,
-                imageViewCache: environment.imageViewCache,
-                timerProviding: environment.timerProviding,
-                uiApplication: environment.uiApplication
-            )
-        )
-        coordinator = Coordinator(
-            environment: .init(
-                data: environment.data,
-                uuid: environment.uuid,
-                gcd: environment.gcd,
-                imageViewCache: environment.imageViewCache,
-                uiApplication: environment.uiApplication,
-                viewFactory: viewFactory,
-                presenter: environment.callVisualizerPresenter,
-                bundleManaging: environment.bundleManaging,
-                screenShareHandler: environment.screenShareHandler,
-                timerProviding: environment.timerProviding,
-                requestVisitorCode: environment.requestVisitorCode,
-                audioSession: environment.audioSession,
-                date: environment.date,
-                engagedOperator: environment.engagedOperator
-            )
-        )
-
-        coordinator?.showVisitorCodeViewController(by: presentation)
-
-        startObservingInteractorEvents()
+        coordinator.showVisitorCodeViewController(by: presentation)
     }
+}
 
+// MARK: - Internal
+
+extension CallVisualizer {
     func handleAcceptedUpgrade() {
-        coordinator?.handleAcceptedUpgrade()
+        coordinator.handleAcceptedUpgrade()
     }
 
     func addVideoStream(stream: CoreSdkClient.VideoStreamable) {
-        coordinator?.addVideoStream(stream: stream)
+        coordinator.addVideoStream(stream: stream)
     }
 
     func endSession() {
-        coordinator?.end()
+        coordinator.end()
     }
 
     func offerScreenShare(
@@ -105,10 +107,14 @@ public final class CallVisualizer {
         accepted: @escaping () -> Void,
         declined: @escaping () -> Void
     ) {
-        coordinator?.offerScreenShare(
+        let acceptedHandler = { [weak self] in
+            self?.startObservingInteractorEvents()
+            accepted()
+        }
+        coordinator.offerScreenShare(
             from: operators,
             configuration: configuration,
-            accepted: accepted,
+            accepted: acceptedHandler,
             declined: declined
         )
     }
@@ -124,9 +130,9 @@ public final class CallVisualizer {
         switch offer.type {
         case .video:
             let configuration = offer.direction == .oneWay
-                ? alertConfiguration.oneWayVideoUpgrade
-                : alertConfiguration.twoWayVideoUpgrade
-            coordinator?.offerMediaUpgrade(
+            ? alertConfiguration.oneWayVideoUpgrade
+            : alertConfiguration.twoWayVideoUpgrade
+            coordinator.offerMediaUpgrade(
                 from: operators,
                 configuration: configuration,
                 accepted: accepted,
@@ -136,11 +142,7 @@ public final class CallVisualizer {
             break
         }
     }
-}
 
-// MARK: - Private
-
-private extension CallVisualizer {
     func startObservingInteractorEvents() {
         environment.interactorProviding()?.addObserver(self) { [weak self] event in
             switch event {
