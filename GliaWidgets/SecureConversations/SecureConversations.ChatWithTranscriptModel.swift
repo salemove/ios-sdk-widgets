@@ -429,12 +429,17 @@ extension SecureConversations {
 
         @discardableResult
         private func validateMessage() -> Bool {
-            let canSendText = !messageText.trimmingCharacters(in: .whitespacesAndNewlines)
-                .isEmpty && messageText.count <= Self.messageTextLimit
             let canSendAttachments =
             fileUploadListModel.failedUploads.isEmpty &&
             fileUploadListModel.activeUploads.isEmpty && !fileUploadListModel.isLimitReached
-            let isValid = canSendText && canSendAttachments
+
+            guard canSendAttachments else { return false }
+
+            let canSendText = !messageText.trimmingCharacters(in: .whitespacesAndNewlines)
+                .isEmpty && messageText.count <= Self.messageTextLimit
+            let hasAttachments = !fileUploadListModel.succeededUploads.isEmpty
+
+            let isValid = canSendText || hasAttachments
             action?(.sendButtonHidden(!isValid))
             return isValid
         }
