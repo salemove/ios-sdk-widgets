@@ -15,7 +15,9 @@ extension CallVisualizer.Environment {
         screenShareHandler: .mock(),
         audioSession: .mock,
         date: { .mock },
-        engagedOperator: { .mock() }
+        engagedOperator: { .mock() },
+        uiConfig: { nil },
+        assetsBuilder: { .standard }
     )
 }
 
