@@ -57,11 +57,6 @@ public final class CallVisualizer {
         self.environment = environment
     }
 
-    deinit {
-        environment.screenShareHandler.status.removeObserver(self)
-        environment.screenShareHandler.cleanUp()
-    }
-
     /// Show VisitorCode for current Visitor.
     ///
     /// Call Visualizer Operators use the Visitor's code to start an Call Visualizer Engagement with the Visitor.
@@ -99,6 +94,7 @@ extension CallVisualizer {
 
     func endSession() {
         coordinator.end()
+        stopObservingInteractorEvents()
     }
 
     func offerScreenShare(
@@ -142,9 +138,16 @@ extension CallVisualizer {
             break
         }
     }
+}
 
+// MARK: - Private
+
+private extension CallVisualizer {
     func startObservingInteractorEvents() {
         environment.interactorProviding()?.addObserver(self) { [weak self] event in
+            guard let engagement = self?.environment.getCurrentEngagement(), engagement.source == .callVisualizer else {
+                return
+            }
             switch event {
             case let .screenSharingStateChanged(state):
                 self?.environment.screenShareHandler.updateState(to: state)
@@ -152,5 +155,9 @@ extension CallVisualizer {
                 break
             }
         }
+    }
+
+    func stopObservingInteractorEvents() {
+        environment.interactorProviding()?.removeObserver(self)
     }
 }
