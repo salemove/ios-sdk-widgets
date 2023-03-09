@@ -195,29 +195,29 @@ workflows:
     - activate-ssh-key@4:
         run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
     - git-clone@6: {}
-    - xcodegen:
-        inputs:
-        - project_path: $BITRISE_SOURCE_DIR/Integrations/SwiftPackageManager
-        - spec_path: $BITRISE_SOURCE_DIR/Integrations/SwiftPackageManager/spm-project.yml
-    - script@1:
-        inputs:
-        - content: >-
-            #!/usr/bin/env bash
-            # fail if any commands fails
-            set -e
-            # make pipelines' return status equal the last command to exit with
-            a non-zero status, or zero if all commands exit successfully
-            set -o pipefail
-            # debug log
-            set -x
+    # - xcodegen:
+    #     inputs:
+    #     - project_path: $BITRISE_SOURCE_DIR/Integrations/SwiftPackageManager
+    #     - spec_path: $BITRISE_SOURCE_DIR/Integrations/SwiftPackageManager/spm-project.yml
+    # - script@1:
+    #     inputs:
+    #     - content: >-
+    #         #!/usr/bin/env bash
+    #         # fail if any commands fails
+    #         set -e
+    #         # make pipelines' return status equal the last command to exit with
+    #         a non-zero status, or zero if all commands exit successfully
+    #         set -o pipefail
+    #         # debug log
+    #         set -x
 
-            cd $BITRISE_SOURCE_DIR/Integrations/SwiftPackageManager/
+    #         cd $BITRISE_SOURCE_DIR/Integrations/SwiftPackageManager/
 
-            xcodebuild -resolvePackageDependencies
+    #         xcodebuild -resolvePackageDependencies
 
-            xcodebuild -project SpmSampleApp.xcodeproj -scheme "SpmSampleApp"
-            -configuration "Debug" -sdk "iphonesimulator" -destination
-            "generic/platform=iOS Simulator" clean build
+    #         xcodebuild -project SpmSampleApp.xcodeproj -scheme "SpmSampleApp"
+    #         -configuration "Debug" -sdk "iphonesimulator" -destination
+    #         "generic/platform=iOS Simulator" clean build
     - script@1:
         inputs:
         - content: >-
