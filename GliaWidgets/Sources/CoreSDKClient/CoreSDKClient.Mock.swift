@@ -29,7 +29,8 @@ extension CoreSdkClient {
         fetchChatHistory: { _ in },
         requestVisitorCode: { _ in fatalError() },
         sendSecureMessage: { _, _, _, _ in .mock },
-        uploadSecureFile: { _, _, _ in .mock }
+        uploadSecureFile: { _, _, _ in .mock },
+        getSecureUnreadMessageCount: { _ in }
     )
 }
 

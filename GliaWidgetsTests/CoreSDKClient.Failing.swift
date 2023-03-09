@@ -39,6 +39,9 @@ extension CoreSdkClient {
         uploadSecureFile: { _, _, _ in
             fail("\(Self.self).uploadSecureFile")
             return .mock
+        },
+        getSecureUnreadMessageCount: { _ in
+            fail("\(Self.self).getSecureUnreadMessageCount")
         }
     )
 }

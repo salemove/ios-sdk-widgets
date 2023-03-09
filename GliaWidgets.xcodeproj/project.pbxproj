@@ -427,6 +427,7 @@
 		AF0D26D629705FDF00816CCB /* SecureConversations.ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0D26D529705FDE00816CCB /* SecureConversations.ActivityIndicator.swift */; };
 		AF0D26D82971912A00816CCB /* SecureConversations.SendMessageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0D26D72971912A00816CCB /* SecureConversations.SendMessageButton.swift */; };
 		AF10ED8B29B7A4C000E85309 /* ChatViewModel+ChoiceCards.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF10ED8A29B7A4C000E85309 /* ChatViewModel+ChoiceCards.swift */; };
+		AF10ED8D29BA210500E85309 /* SecureConversations.MessagesWithUnreadCountLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF10ED8C29BA210500E85309 /* SecureConversations.MessagesWithUnreadCountLoader.swift */; };
 		AF11F30728BE6F0C002ACEB4 /* UIAlertController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF11F30628BE6F0C002ACEB4 /* UIAlertController+Extensions.swift */; };
 		AF39330B29B2A6A00008B60D /* ChatViewModel.SecureConverstaions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF39330A29B2A6A00008B60D /* ChatViewModel.SecureConverstaions.swift */; };
 		AF3D520B2983235C00AD8E69 /* FileUploader.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3D520A2983235C00AD8E69 /* FileUploader.Mock.swift */; };
@@ -1022,6 +1023,7 @@
 		AF0D26D529705FDE00816CCB /* SecureConversations.ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.ActivityIndicator.swift; sourceTree = "<group>"; };
 		AF0D26D72971912A00816CCB /* SecureConversations.SendMessageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.SendMessageButton.swift; sourceTree = "<group>"; };
 		AF10ED8A29B7A4C000E85309 /* ChatViewModel+ChoiceCards.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatViewModel+ChoiceCards.swift"; sourceTree = "<group>"; };
+		AF10ED8C29BA210500E85309 /* SecureConversations.MessagesWithUnreadCountLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.MessagesWithUnreadCountLoader.swift; sourceTree = "<group>"; };
 		AF11F30628BE6F0C002ACEB4 /* UIAlertController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIAlertController+Extensions.swift"; sourceTree = "<group>"; };
 		AF39330A29B2A6A00008B60D /* ChatViewModel.SecureConverstaions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.SecureConverstaions.swift; sourceTree = "<group>"; };
 		AF3D520A2983235C00AD8E69 /* FileUploader.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUploader.Mock.swift; sourceTree = "<group>"; };
@@ -2238,6 +2240,7 @@
 				AFEF5C6D29928376005C3D8D /* FileUploadListView */,
 				AF0D26D72971912A00816CCB /* SecureConversations.SendMessageButton.swift */,
 				AFC40C1B29965F0F001B4C53 /* SecureConversations.ChatWithTranscriptModel.swift */,
+				AF10ED8C29BA210500E85309 /* SecureConversations.MessagesWithUnreadCountLoader.swift */,
 				3115D45B29A4FD3F00D99561 /* SecureConversations.Availability.swift */,
 			);
 			path = SecureConversations;
@@ -3832,6 +3835,7 @@
 				1A8B61D225C974A1000D780E /* ChatCallUpgradeView.swift in Sources */,
 				845E2F88283FB49F00C04D56 /* Theme.Survey.BooleanQuestion.Accessibility.swift in Sources */,
 				C06A7584296EC9DC006B69A2 /* NumberSlotStyle.Accessibility.swift in Sources */,
+				AF10ED8D29BA210500E85309 /* SecureConversations.MessagesWithUnreadCountLoader.swift in Sources */,
 				C0D2F04A2992765F00803B47 /* VideoCallView.OperatorImageView.swift in Sources */,
 				755D186F29A6A6160009F5E8 /* WelcomeStyle+MessageTextViewDisabledStyle.swift in Sources */,
 				1ABD6C8125B6E97400D56EFA /* MultipleMediaUpgradeAlertConfiguration.swift in Sources */,
