@@ -7,19 +7,6 @@ extension CallVisualizer {
             self.environment = environment
             self.bubbleView = environment.viewFactory.makeBubbleView()
 
-            environment
-                .screenShareHandler
-                .status
-                .addObserver(self) { [weak self] newStatus, _ in
-                    guard self?.videoCallCoordinator == nil else { return }
-                    switch newStatus {
-                    case .started:
-                        self?.createScreenShareBubbleView()
-                    case .stopped:
-                        self?.removeBubbleView()
-                    }
-                }
-
             bubbleView.tap = { [weak self] in
                 guard let self = self else { return }
                 if self.videoCallCoordinator == nil {
@@ -50,9 +37,7 @@ extension CallVisualizer {
                 }
             }
 
-            /// FlowCoordinator protocol requires start() to return a viewController, but it won't be used in Call Visualizer context.
-            /// Instead, it is handled seperately because of its unique nature.
-            _ = coordinator.start()
+            coordinator.start()
 
             self.visitorCodeCoordinator = coordinator
         }
@@ -63,10 +48,14 @@ extension CallVisualizer {
             accepted: @escaping () -> Void,
             declined: @escaping () -> Void
         ) {
+            let acceptedHandler = { [weak self] in
+                self?.observeScreenSharingHandlerState()
+                accepted()
+            }
             let alert = AlertViewController(
                 kind: .screenShareOffer(
                     configuration.withOperatorName(operators.compactMap { $0.name }.joined()),
-                    accepted: accepted,
+                    accepted: acceptedHandler,
                     declined: declined
                 ),
                 viewFactory: environment.viewFactory
@@ -136,7 +125,7 @@ extension CallVisualizer {
             removeBubbleView()
             videoCallCoordinator?.viewController?.dismiss(animated: true)
             videoCallCoordinator = nil
-            environment.screenShareHandler.stop()
+            stopObservingScreenSharingHandlerState()
             screenSharingCoordinator = nil
         }
 
@@ -287,6 +276,30 @@ extension CallVisualizer {
 
             return viewController
         }
+    }
+}
+
+// MARK: - Private
+
+private extension CallVisualizer.Coordinator {
+    func observeScreenSharingHandlerState() {
+        self.environment
+            .screenShareHandler
+            .status
+            .addObserver(self) { [weak self] newStatus, _ in
+                guard self?.videoCallCoordinator == nil else { return }
+                switch newStatus {
+                case .started:
+                    self?.createScreenShareBubbleView()
+                case .stopped:
+                    self?.removeBubbleView()
+                }
+            }
+    }
+
+    func stopObservingScreenSharingHandlerState() {
+        environment.screenShareHandler.status.removeObserver(self)
+        environment.screenShareHandler.stop()
     }
 }
 

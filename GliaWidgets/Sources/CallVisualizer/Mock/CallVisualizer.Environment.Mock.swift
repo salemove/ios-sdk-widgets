@@ -17,7 +17,8 @@ extension CallVisualizer.Environment {
         date: { .mock },
         engagedOperator: { .mock() },
         uiConfig: { nil },
-        assetsBuilder: { .standard }
+        assetsBuilder: { .standard },
+        getCurrentEngagement: CoreSdkClient.mock.getCurrentEngagement
     )
 }
 

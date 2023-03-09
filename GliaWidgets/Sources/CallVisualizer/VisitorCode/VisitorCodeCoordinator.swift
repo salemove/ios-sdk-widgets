@@ -21,6 +21,7 @@ extension CallVisualizer {
             self.presentation = presentation
         }
 
+        @discardableResult
         func start() -> UIViewController {
             showVisitorCodeViewController(by: presentation)
         }
