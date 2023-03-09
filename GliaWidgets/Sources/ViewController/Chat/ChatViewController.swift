@@ -182,21 +182,25 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter,
         guard let chatView: ChatView = view as? ChatView else { return }
         let headerProps = chatView.props.header
         let headerTitle: String
-        switch viewModel {
-        case let .chat(chatViewModel):
-            headerTitle = Self.headerTitleForChatModel(
-                chatViewModel,
-                chatStyle: viewFactory.theme.chat
-            )
-        case .transcript:
-            headerTitle = viewFactory.theme.chat.secureTranscriptTitle
-        }
+        var backButton: HeaderButton.Props?
+
+        let type = Self.currentChatModelType(viewModel)
+
+        headerTitle = Self.headerTitle(
+            for: type,
+            chatStyle: viewFactory.theme.chat
+        )
+
+        backButton = Self.backButton(
+            for: type,
+            chatStyle: viewFactory.theme.chat
+        )
 
         let newHeaderProps = Header.Props(
             title: headerTitle,
             effect: headerProps.effect,
             endButton: headerProps.endButton,
-            backButton: headerProps.backButton,
+            backButton: backButton,
             closeButton: headerProps.closeButton,
             endScreenshareButton: headerProps.endScreenshareButton,
             style: headerProps.style
@@ -224,15 +228,56 @@ extension ChatViewController {
         )
     }
 
-    static func headerTitleForChatModel(_ chatViewModel: ChatViewModel, chatStyle: ChatStyle) -> String {
-        let headerTitle: String
-        if chatViewModel.shouldSkipEnqueueingState {
-            headerTitle = chatViewModel.activeEngagement != nil
-            ? chatStyle.title
-            : chatStyle.secureTranscriptTitle
-        } else {
-            headerTitle = chatStyle.title
+    private static func currentChatModelType(
+        _ viewModel: SecureConversations.ChatWithTranscriptModel
+    ) -> CurrentChatModelType {
+        switch viewModel {
+        case .chat(let chatViewModel):
+            // Even though we are using the chat view model already,
+            // if the engagement is not active, we still need to show
+            // secure transcript UI.
+            if chatViewModel.shouldSkipEnqueueingState {
+                return chatViewModel.activeEngagement != nil
+                ? .chat
+                : .secureTranscript
+            } else {
+                return .chat
+            }
+        case .transcript:
+            return .secureTranscript
         }
-        return headerTitle
     }
+
+    private static func headerTitle(
+        for type: CurrentChatModelType,
+        chatStyle: ChatStyle
+    ) -> String {
+        switch type {
+        case .chat: return chatStyle.title
+        case .secureTranscript: return chatStyle.secureTranscriptTitle
+        }
+    }
+
+    private static func backButton(
+        for type: CurrentChatModelType,
+        chatStyle: ChatStyle
+    ) -> HeaderButton.Props? {
+        switch type {
+        case .chat:
+            if let backButtonStyle = chatStyle.header.backButton {
+                return .init(style: backButtonStyle)
+            }
+        case .secureTranscript:
+            if let backButtonStyle = chatStyle.secureTranscriptHeader.backButton {
+                return .init(style: backButtonStyle)
+            }
+        }
+
+        return nil
+    }
+}
+
+private enum CurrentChatModelType {
+    case chat
+    case secureTranscript
 }
