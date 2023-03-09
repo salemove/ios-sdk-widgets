@@ -276,8 +276,16 @@ extension SecureConversations.WelcomeViewModel {
             return .disabled
         }
 
-        // Is message text valid?
-        guard isInputTextValid(instance.messageText) else {
+        // Is file upload limit not yet reached?
+        guard !instance.fileUploadListModel.isLimitReached else {
+            return .disabled
+        }
+
+        // Is message text valid or have attachments been successfully uploaded?
+        guard
+            isInputTextValid(instance.messageText) ||
+            !instance.fileUploadListModel.succeededUploads.isEmpty
+        else {
             return .disabled
         }
 
@@ -295,7 +303,7 @@ extension SecureConversations.WelcomeViewModel {
     }
 
     static func isInputTextValid(_ text: String) -> Bool {
-        guard !text.isEmpty else {
+        guard !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
             return false
         }
 
