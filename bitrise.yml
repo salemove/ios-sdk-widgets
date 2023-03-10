@@ -160,14 +160,14 @@ workflows:
     steps:
     - activate-ssh-key@4:
         run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
-    - git-clone@6: {}
+    - git-clone@8: {}
     - cache-pull@2: {}
     - certificate-and-profile-installer@1: {}
     - cocoapods-install@2: {}
     - recreate-user-schemes@1:
         inputs:
         - project_path: $BITRISE_PROJECT_PATH
-    - xcode-archive@3:
+    - xcode-archive@4:
         inputs:
         - scheme: $APP_SCHEME
         - team_id: XR3G5NDPNH
@@ -194,7 +194,7 @@ workflows:
     steps:
     - activate-ssh-key@4:
         run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
-    - git-clone@6: {}
+    - git-clone@8: {}
     # - xcodegen:
     #     inputs:
     #     - project_path: $BITRISE_SOURCE_DIR/Integrations/SwiftPackageManager
