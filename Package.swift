@@ -11,6 +11,10 @@ let package = Package(
         .library(
             name: "GliaWidgets",
             targets: ["GliaWidgetsSDK"]
+        ),
+        .library(
+            name: "GliaWidgets-xcframework",
+            targets: ["GliaWidgetsSDK-xcframework"]
         )
     ],
     dependencies: [
@@ -38,6 +42,21 @@ let package = Package(
             url: "https://github.com/salemove/ios-bundle/releases/download/0.35.6/SalemoveSDK.xcframework.zip",
             checksum: "0a371206cd0e67fd21ca098f5af3f6da9c4438d679f98e75dd64102a0f853c8f"
         ),
+        .binaryTarget(
+            name: "PureLayoutXcf",
+            url: "https://github.com/salemove/ios-sdk-widgets/releases/download/0.10.8/PureLayoutXcf.xcframework.zip",
+            checksum: "93f00268ba710a0ee513be7cef94a385637bfb76c292942cc5f062a7b2f0037b"
+        ),
+        .binaryTarget(
+            name: "LottieXcf",
+            url: "https://github.com/salemove/ios-sdk-widgets/releases/download/0.10.8/LottieXcf.xcframework.zip",
+            checksum: "9f2340bfb15f734ebd3a4e79d67ce3581822aa5ceec3a37a38ebaa505bf1a8a3"
+        ),
+        .binaryTarget(
+            name: "GliaWidgetsXcf",
+            url: "https://github.com/salemove/ios-sdk-widgets/releases/download/0.10.8/GliaWidgetsXcf.xcframework.zip",
+            checksum: "3deacedffc912751d8a597d56d17b33b20191679c10d7c909222a0baefb6a137"
+        ),
         .target(
             name: "GliaWidgets",
             dependencies: [
@@ -62,6 +81,18 @@ let package = Package(
                 "TwilioVoice",
                 "WebRTC",
                 "GliaWidgets"
+            ]
+        ),
+        .target(
+            name: "GliaWidgetsSDK-xcframework",
+            dependencies: [
+                "SalemoveSDK",
+                "GliaWidgetsXcf",
+                "GliaCoreDependency",
+                "TwilioVoice",
+                "WebRTC",
+                "PureLayoutXcf",
+                "LottieXcf"
             ]
         )
     ]
