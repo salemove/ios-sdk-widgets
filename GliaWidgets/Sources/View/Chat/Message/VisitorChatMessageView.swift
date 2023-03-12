@@ -44,7 +44,7 @@ class VisitorChatMessageView: ChatMessageView {
         statusLabel.autoPinEdge(toSuperviewEdge: .right, withInset: kInsets.right)
         statusLabel.autoPinEdge(toSuperviewEdge: .bottom, withInset: kInsets.bottom)
 
-        NSLayoutConstraint.autoSetPriority(.defaultHigh) {
+        NSLayoutConstraint.autoSetPriority(.required) {
             contentViews.autoPinEdge(toSuperviewEdge: .left, withInset: kInsets.left, relation: .greaterThanOrEqual)
         }
     }
