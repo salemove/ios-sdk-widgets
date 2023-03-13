@@ -235,60 +235,70 @@ extension SecureConversations {
 
             navigationPresenter.present(controller.viewController)
         }
+    }
+}
 
-        @discardableResult
-        private func navigateToTranscript() -> UIViewController {
-            let coordinator = ChatCoordinator(
-                interactor: environment.interactor,
-                viewFactory: environment.viewFactory,
-                navigationPresenter: navigationPresenter,
-                call: environment.chatCall,
-                unreadMessages: environment.unreadMessages,
-                showsCallBubble: environment.showsCallBubble,
-                screenShareHandler: environment.screenShareHandler,
-                isWindowVisible: environment.isWindowVisible,
-                startAction: .startEngagement,
-                environment: .init(
-                    fetchFile: environment.fetchFile,
-                    sendSelectedOptionValue: environment.sendSelectedOptionValue,
-                    uploadFileToEngagement: environment.uploadFileToEngagement,
-                    fileManager: environment.fileManager,
-                    data: environment.data,
-                    date: environment.date,
-                    gcd: environment.gcd,
-                    localFileThumbnailQueue: environment.localFileThumbnailQueue,
-                    uiImage: environment.uiImage,
-                    createFileDownload: environment.createFileDownload,
-                    fromHistory: environment.loadChatMessagesFromHistory,
-                    fetchSiteConfigurations: environment.fetchSiteConfigurations,
-                    getCurrentEngagement: environment.getCurrentEngagement,
-                    submitSurveyAnswer: environment.submitSurveyAnswer,
-                    uuid: environment.uuid,
-                    uiApplication: environment.uiApplication,
-                    fetchChatHistory: environment.fetchChatHistory,
-                    createFileUploadListModel: environment.createFileUploadListModel,
-                    sendSecureMessage: environment.sendSecureMessage,
-                    queueIds: environment.queueIds,
-                    listQueues: environment.listQueues,
-                    secureUploadFile: environment.uploadSecureFile
-                ),
-                startWithSecureTranscriptFlow: true
-            )
+// Chat transcript
+extension SecureConversations.Coordinator {
+    @discardableResult
+    private func navigateToTranscript() -> UIViewController {
+        let coordinator = ChatCoordinator(
+            interactor: environment.interactor,
+            viewFactory: environment.viewFactory,
+            navigationPresenter: navigationPresenter,
+            call: environment.chatCall,
+            unreadMessages: environment.unreadMessages,
+            showsCallBubble: environment.showsCallBubble,
+            screenShareHandler: environment.screenShareHandler,
+            isWindowVisible: environment.isWindowVisible,
+            startAction: .startEngagement,
+            environment: .init(
+                fetchFile: environment.fetchFile,
+                sendSelectedOptionValue: environment.sendSelectedOptionValue,
+                uploadFileToEngagement: environment.uploadFileToEngagement,
+                fileManager: environment.fileManager,
+                data: environment.data,
+                date: environment.date,
+                gcd: environment.gcd,
+                localFileThumbnailQueue: environment.localFileThumbnailQueue,
+                uiImage: environment.uiImage,
+                createFileDownload: environment.createFileDownload,
+                fromHistory: environment.loadChatMessagesFromHistory,
+                fetchSiteConfigurations: environment.fetchSiteConfigurations,
+                getCurrentEngagement: environment.getCurrentEngagement,
+                submitSurveyAnswer: environment.submitSurveyAnswer,
+                uuid: environment.uuid,
+                uiApplication: environment.uiApplication,
+                fetchChatHistory: environment.fetchChatHistory,
+                createFileUploadListModel: environment.createFileUploadListModel,
+                sendSecureMessage: environment.sendSecureMessage,
+                queueIds: environment.queueIds,
+                listQueues: environment.listQueues,
+                secureUploadFile: environment.uploadSecureFile
+            ),
+            startWithSecureTranscriptFlow: true
+        )
 
-            coordinator.delegate = { [weak self] event in
+        coordinator.delegate = { [weak self] event in
+            switch event {
+            case .back:
+                self?.delegate?(.backTapped)
+            case .finished:
+                self?.delegate?(.closeTapped)
+            default:
                 self?.delegate?(.chat(event))
             }
-
-            pushCoordinator(coordinator)
-
-            let viewController = coordinator.start()
-            navigationPresenter.push(
-                viewController,
-                replacingLast: true
-            )
-
-            return viewController
         }
+
+        pushCoordinator(coordinator)
+
+        let viewController = coordinator.start()
+        navigationPresenter.push(
+            viewController,
+            replacingLast: true
+        )
+
+        return viewController
     }
 }
 
