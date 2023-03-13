@@ -11,7 +11,12 @@ extension ViewController {
 
     @IBAction private func embedVisitorCodeViewTapped() {
         Glia.sharedInstance.callVisualizer.showVisitorCodeViewController(
-            by: .embedded(visitorCodeView)
+            by: .embedded(
+                visitorCodeView,
+                onEngagementAccepted: {
+                    self.visitorCodeView.subviews.forEach { $0.removeFromSuperview() }
+                }
+            )
         )
     }
 }
