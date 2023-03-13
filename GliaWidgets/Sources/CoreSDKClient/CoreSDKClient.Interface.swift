@@ -1,5 +1,6 @@
 import SalemoveSDK
 import UIKit
+import GliaCoreDependency
 
 struct CoreSdkClient {
     var pushNotifications: PushNotifications
@@ -128,6 +129,9 @@ struct CoreSdkClient {
         _ completion: @escaping (Result<EngagementFileInformation, Swift.Error>) -> Void
     ) -> Self.Cancellable
     var uploadSecureFile: SecureConversationsUploadFile
+
+    typealias GetSecureUnreadMessageCount = (_ callback: @escaping (Result<Int, Error>) -> Void) -> Void
+    var getSecureUnreadMessageCount: GetSecureUnreadMessageCount
 }
 
 extension CoreSdkClient {
@@ -168,6 +172,7 @@ extension CoreSdkClient {
     typealias EngagementTransferringBlock = SalemoveSDK.EngagementTransferringBlock
     typealias FileError = SalemoveSDK.FileError
     typealias GeneralError = SalemoveSDK.GeneralError
+    typealias GliaCoreError = SalemoveSDK.GliaCoreError
     typealias Interactable = SalemoveSDK.Interactable
     typealias MediaDirection = SalemoveSDK.MediaDirection
     typealias MediaError = SalemoveSDK.MediaError
@@ -214,4 +219,5 @@ extension CoreSdkClient {
     typealias VisitorCodeBlock = (Result<VisitorCode, Swift.Error>)
     typealias EngagementSource = SalemoveSDK.EngagementSource
     typealias Cancellable = GliaCore.Cancellable
+    typealias ReactiveSwift = GliaCoreDependency.ReactiveSwift
 }
