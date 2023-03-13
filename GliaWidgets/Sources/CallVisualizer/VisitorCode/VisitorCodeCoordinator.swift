@@ -55,7 +55,7 @@ extension CallVisualizer {
                 codeController.modalPresentationStyle = .overFullScreen
                 codeController.modalTransitionStyle = .crossDissolve
                 parentController.present(codeController, animated: true)
-            case .embedded(let parentView):
+            case .embedded(let parentView, _):
                 parentView.subviews.forEach { $0.removeFromSuperview() }
                 parentView.addSubview(codeController.view)
                 codeController.view.translatesAutoresizingMaskIntoConstraints = false
