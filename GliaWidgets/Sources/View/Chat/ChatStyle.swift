@@ -41,9 +41,12 @@ public class ChatStyle: EngagementStyle {
     /// Header title for secure messaging transcript.
     public var secureTranscriptTitle: String
 
+    /// Header style for secure messaging transcript.
+    public var secureTranscriptHeader: HeaderStyle
+
     ///
     /// - Parameters:
-    ///   - header: Style of the view's header (navigation bar area).
+    ///   - header: Style of the view's header (navigation bar area) when the screen is displaying live chat.
     ///   - connect: Styles for different engagement connection states.
     ///   - backgroundColor: View's background color.
     ///   - preferredStatusBarStyle: Preferred style of the status bar.
@@ -60,6 +63,7 @@ public class ChatStyle: EngagementStyle {
     ///   - operatorTypingIndicator: Style of the view that indicates that the operator is currently typing.
     ///   - accessibility: Accessibility related properties.
     ///   - secureTranscriptTitle: Header title for secure messaging transcript.
+    ///   - secureTranscriptHeader: Style of the view's header (navigation bar area) when the screen is displaying secure conversations.
     ///
     public init(
         header: HeaderStyle,
@@ -78,7 +82,8 @@ public class ChatStyle: EngagementStyle {
         unreadMessageIndicator: UnreadMessageIndicatorStyle,
         operatorTypingIndicator: OperatorTypingIndicatorStyle,
         accessibility: Accessibility = .unsupported,
-        secureTranscriptTitle: String
+        secureTranscriptTitle: String,
+        secureTranscriptHeader: HeaderStyle
     ) {
         self.title = title
         self.visitorMessage = visitorMessage
@@ -93,6 +98,8 @@ public class ChatStyle: EngagementStyle {
         self.operatorTypingIndicator = operatorTypingIndicator
         self.accessibility = accessibility
         self.secureTranscriptTitle = secureTranscriptTitle
+        self.secureTranscriptHeader = secureTranscriptHeader
+
         super.init(
             header: header,
             connect: connect,
