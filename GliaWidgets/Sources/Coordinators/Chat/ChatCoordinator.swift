@@ -70,7 +70,11 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
         let model: SecureConversations.ChatWithTranscriptModel = startWithSecureTranscriptFlow
         ? .transcript(transcriptModel(with: { [weak self] in self?.controller }))
             : .chat(chatModel())
-        let chatController = ChatViewController(viewModel: model, viewFactory: viewFactory)
+
+        let chatController = ChatViewController(
+            viewModel: model,
+            viewFactory: viewFactory
+        )
         self.controller = chatController
         return chatController
 
@@ -241,6 +245,14 @@ extension ChatCoordinator {
             ),
             deliveredStatusText: viewFactory.theme.chat.visitorMessage.delivered
         )
+
+        viewModel.engagementDelegate = { [weak self] event in
+            switch event {
+            case .finished:
+                self?.delegate?(.finished)
+            default: break
+            }
+        }
 
         viewModel.delegate = { [weak self] event in
             switch event {
