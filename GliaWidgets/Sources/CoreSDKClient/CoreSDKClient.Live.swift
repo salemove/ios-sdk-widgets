@@ -40,7 +40,8 @@ extension CoreSdkClient {
             },
             requestVisitorCode: GliaCore.sharedInstance.callVisualizer.requestVisitorCode(completion:),
             sendSecureMessage: GliaCore.sharedInstance.secureConversations.send(secureMessage:attachment:queueIds:completion:),
-            uploadSecureFile: GliaCore.sharedInstance.secureConversations.uploadFile(_:progress:completion:)
+            uploadSecureFile: GliaCore.sharedInstance.secureConversations.uploadFile(_:progress:completion:),
+            getSecureUnreadMessageCount: GliaCore.sharedInstance.secureConversations.getUnreadMessageCount(completion:)
         )
     }()
 }
