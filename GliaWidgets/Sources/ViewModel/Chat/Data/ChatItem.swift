@@ -64,5 +64,6 @@ extension ChatItem {
         case callUpgrade(ObservableValue<CallKind>, duration: ObservableValue<Int>)
         case operatorConnected(name: String?, imageUrl: String?)
         case transferring
+        case unreadMessageDivider
     }
 }

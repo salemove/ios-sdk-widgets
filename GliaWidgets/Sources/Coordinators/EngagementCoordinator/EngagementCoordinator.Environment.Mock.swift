@@ -1,6 +1,6 @@
 #if DEBUG
 extension EngagementCoordinator.Environment {
-    static let mock = Self.init(
+    static let mock = Self(
         fetchFile: { _, _, _ in },
         sendSelectedOptionValue: { _, _ in },
         uploadFileToEngagement: { _, _, _ in },
@@ -24,7 +24,9 @@ extension EngagementCoordinator.Environment {
         sendSecureMessage: { _, _, _, _ in .init() },
         createFileUploader: FileUploader.mock,
         createFileUploadListModel: SecureConversations.FileUploadListViewModel.mock(environment:),
-        uploadSecureFile: { _, _, _ in .mock }
+        uploadSecureFile: { _, _, _ in .mock },
+        getSecureUnreadMessageCount: { _ in },
+        messagesWithUnreadCountLoaderScheduler: CoreSdkClient.reactiveSwiftDateSchedulerMock
     )
 }
 #endif
