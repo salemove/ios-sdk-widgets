@@ -193,13 +193,16 @@ extension ViewController {
 
     func configureSDK(uiConfig: RemoteConfiguration?) {
         let originalTitle = configureButton.title(for: .normal)
+        let originalIdentifier = configureButton.accessibilityIdentifier
         configureButton.setTitle("Configuring ...", for: .normal)
+        configureButton.accessibilityIdentifier = "main_configure_sdk_button_loading"
         try? Glia.sharedInstance.configure(
             with: configuration,
             queueId: queueId,
             uiConfig: uiConfig
         ) { [weak self] in
             self?.configureButton.setTitle(originalTitle, for: .normal)
+            self?.configureButton.accessibilityIdentifier = originalIdentifier
             debugPrint("SDK has been configured")
         }
     }

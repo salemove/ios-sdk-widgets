@@ -98,12 +98,14 @@ extension CallVisualizer {
         lazy var localVideoView: VideoStreamView = {
             let streamView = VideoStreamView(.local)
             streamView.accessibilityLabel = props.style.accessibility.localVideoLabel
+            streamView.accessibilityIdentifier = "call_visualizer_visitor_video_view"
             return streamView
         }()
 
         lazy var remoteVideoView: VideoStreamView = {
             let streamView = VideoStreamView(.remote)
             streamView.accessibilityLabel = props.style.accessibility.remoteVideoLabel
+            streamView.accessibilityIdentifier = "call_visualizer_operator_video_view"
             return streamView
         }()
 

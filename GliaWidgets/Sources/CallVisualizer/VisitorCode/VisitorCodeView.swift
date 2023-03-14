@@ -43,6 +43,15 @@ extension CallVisualizer {
                 }
             }
 
+            var titleAccessibilityIdentifier: String {
+                switch viewType {
+                case .alert:
+                    return "visitor_code_alert_title_label"
+                case .embedded:
+                    return "visitor_code_embedded_view_title_label"
+                }
+            }
+
             init(
                 viewType: ViewType = .alert(closeButtonTap: .nop),
                 viewState: ViewState = .loading,
@@ -168,6 +177,7 @@ extension CallVisualizer {
         }
 
         func renderProps() {
+            titleLabel.accessibilityIdentifier = props.titleAccessibilityIdentifier
             layer.cornerRadius = props.style.cornerRadius
             layer.borderColor = props.style.borderColor.cgColor
             layer.borderWidth = props.style.borderWidth
