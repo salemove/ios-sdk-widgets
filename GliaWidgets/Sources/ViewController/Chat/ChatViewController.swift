@@ -5,13 +5,17 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter,
     PopoverPresenter, ScreenShareOfferPresenter {
     private var viewModel: SecureConversations.ChatWithTranscriptModel {
         didSet {
-            renderTitle()
+            renderProps()
         }
     }
     private var lastVisibleRowIndexPath: IndexPath?
 
-    init(viewModel: SecureConversations.ChatWithTranscriptModel, viewFactory: ViewFactory) {
+    init(
+        viewModel: SecureConversations.ChatWithTranscriptModel,
+        viewFactory: ViewFactory
+    ) {
         self.viewModel = viewModel
+
         super.init(viewModel: viewModel.engagementModel, viewFactory: viewFactory)
     }
 
@@ -25,7 +29,7 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter,
         self.view = view
 
         bind(viewModel: viewModel, to: view)
-        renderTitle()
+        renderProps()
     }
 
     override func viewDidLoad() {
@@ -159,7 +163,7 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter,
             case let .fileUploadListPropsUpdated(fileUploadListProps):
                 view.messageEntryView.uploadListView.props = fileUploadListProps
             }
-            self?.renderTitle()
+            self?.renderProps()
         }
     }
 
@@ -178,31 +182,54 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter,
         )
     }
 
-    private func renderTitle() {
-        guard let chatView: ChatView = view as? ChatView else { return }
-        let headerProps = chatView.props.header
-        let headerTitle: String
-        switch viewModel {
-        case let .chat(chatViewModel):
-            headerTitle = Self.headerTitleForChatModel(
-                chatViewModel,
-                chatStyle: viewFactory.theme.chat
-            )
-        case .transcript:
-            headerTitle = viewFactory.theme.chat.secureTranscriptTitle
+    private func props(
+        using viewModel: SecureConversations.ChatWithTranscriptModel
+    ) -> ChatViewController.Props {
+        let chatTheme = viewFactory.theme.chat
+        let endEvent = Cmd { viewModel.event(EngagementViewModel.Event.closeTapped) }
+        let backEvent = Cmd { viewModel.event(EngagementViewModel.Event.backTapped) }
+        let closeEvent = Cmd { viewModel.event(EngagementViewModel.Event.closeTapped) }
+        let endScreenSharingEvent = Cmd { viewModel.event(EngagementViewModel.Event.endScreenSharingTapped) }
+
+        let chatHeaderBackButton = chatTheme.header.backButton.map {
+            HeaderButton.Props(tap: backEvent, style: $0)
         }
 
-        let newHeaderProps = Header.Props(
-            title: headerTitle,
-            effect: headerProps.effect,
-            endButton: headerProps.endButton,
-            backButton: headerProps.backButton,
-            closeButton: headerProps.closeButton,
-            endScreenshareButton: headerProps.endScreenshareButton,
-            style: headerProps.style
+        let chatHeader = Header.Props(
+            title: chatTheme.title,
+            effect: .none,
+            endButton: .init(style: chatTheme.header.endButton, tap: endEvent),
+            backButton: chatHeaderBackButton,
+            closeButton: .init(tap: closeEvent, style: chatTheme.header.closeButton),
+            endScreenshareButton: .init(tap: endScreenSharingEvent, style: chatTheme.header.endScreenShareButton),
+            style: chatTheme.header
         )
 
-        chatView.props = .init(header: newHeaderProps)
+        let secureTranscriptHeader = Header.Props(
+            title: chatTheme.secureTranscriptTitle,
+            effect: .none,
+            endButton: .init(style: chatTheme.secureTranscriptHeader.endButton, tap: endEvent),
+            backButton: nil,
+            closeButton: .init(tap: closeEvent, style: chatTheme.secureTranscriptHeader.closeButton),
+            endScreenshareButton: .init(tap: endScreenSharingEvent, style: chatTheme.secureTranscriptHeader.endScreenShareButton),
+            style: chatTheme.secureTranscriptHeader
+        )
+
+        return .init(chat: chatHeader, secureTranscript: secureTranscriptHeader)
+    }
+
+    private func renderProps() {
+        guard let chatView: ChatView = view as? ChatView else { return }
+
+        let type = Self.currentChatModelType(viewModel)
+        let props = props(using: viewModel)
+
+        switch type {
+        case .chat:
+            chatView.props = .init(header: props.chat)
+        case .secureTranscript:
+            chatView.props = .init(header: props.secureTranscript)
+        }
     }
 }
 
@@ -224,15 +251,34 @@ extension ChatViewController {
         )
     }
 
-    static func headerTitleForChatModel(_ chatViewModel: ChatViewModel, chatStyle: ChatStyle) -> String {
-        let headerTitle: String
-        if chatViewModel.shouldSkipEnqueueingState {
-            headerTitle = chatViewModel.activeEngagement != nil
-            ? chatStyle.title
-            : chatStyle.secureTranscriptTitle
-        } else {
-            headerTitle = chatStyle.title
+    private static func currentChatModelType(
+        _ viewModel: SecureConversations.ChatWithTranscriptModel
+    ) -> CurrentChatModelType {
+        switch viewModel {
+        case .chat(let chatViewModel):
+            // Even though we are using the chat view model already,
+            // if the engagement is not active, we still need to show
+            // secure transcript UI.
+            if chatViewModel.shouldSkipEnqueueingState {
+                return chatViewModel.activeEngagement != nil
+                ? .chat
+                : .secureTranscript
+            } else {
+                return .chat
+            }
+        case .transcript:
+            return .secureTranscript
         }
-        return headerTitle
     }
+}
+
+extension ChatViewController {
+    struct Props: Equatable {
+        let chat: Header.Props
+        let secureTranscript: Header.Props
+    }
+}
+private enum CurrentChatModelType {
+    case chat
+    case secureTranscript
 }

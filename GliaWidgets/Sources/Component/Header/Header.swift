@@ -60,7 +60,7 @@ final class Header: BaseView {
     }
 
     func renderProps() {
-        backButton?.isEnabled = props.backButton != nil
+        backButton?.isHidden = props.backButton == nil
         if let backButtonProps = props.backButton {
             backButton?.props = backButtonProps
         }
