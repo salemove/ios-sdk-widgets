@@ -472,8 +472,6 @@ public enum L10n {
     }
   }
   public enum Chat {
-    /// Messaging
-    public static let secureTranscriptTitle = L10n.tr("Localizable", "chat.secureTranscriptTitle", fallback: "Messaging")
     /// Chat
     public static let title = L10n.tr("Localizable", "chat.title", fallback: "Chat")
     public enum Accessibility {
@@ -689,6 +687,12 @@ public enum L10n {
       public static let photo = L10n.tr("Localizable", "chat.pickMedia.photo", fallback: "Photo Library")
       /// Take Photo or Video
       public static let takePhoto = L10n.tr("Localizable", "chat.pickMedia.takePhoto", fallback: "Take Photo or Video")
+    }
+    public enum SecureTranscript {
+      /// Messaging
+      public static let headerTitle = L10n.tr("Localizable", "chat.secureTranscript.headerTitle", fallback: "Messaging")
+      /// New Messages
+      public static let unreadMessageDividerTitle = L10n.tr("Localizable", "chat.secureTranscript.unreadMessageDividerTitle", fallback: "New Messages")
     }
     public enum Upgrade {
       public enum Audio {

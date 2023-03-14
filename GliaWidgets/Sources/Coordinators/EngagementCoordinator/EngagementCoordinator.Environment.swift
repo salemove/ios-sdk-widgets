@@ -26,5 +26,7 @@ extension EngagementCoordinator {
         var createFileUploader: FileUploader.Create
         var createFileUploadListModel: SecureConversations.FileUploadListViewModel.Create
         var uploadSecureFile: CoreSdkClient.SecureConversationsUploadFile
+        var getSecureUnreadMessageCount: CoreSdkClient.GetSecureUnreadMessageCount
+        var messagesWithUnreadCountLoaderScheduler: CoreSdkClient.ReactiveSwift.DateScheduler
     }
 }
