@@ -254,6 +254,12 @@ public class Glia {
 private extension Glia {
     func startObservingInteractorEvents() {
         interactor?.addObserver(self) { [weak self] event in
+            // Since engagement is accepted before current engagement is established,
+            // this case needs to be checked before any other so that visitor code alert
+            // can be dismissed properly and visitor code embedded view can trigger callback.
+            if case .engagementRequestAccepted = event {
+                self?.callVisualizer.handleEngagementRequestAccepted()
+            }
             guard let engagement = self?.environment.coreSdk.getCurrentEngagement(), engagement.source == .callVisualizer else {
                 return
             }

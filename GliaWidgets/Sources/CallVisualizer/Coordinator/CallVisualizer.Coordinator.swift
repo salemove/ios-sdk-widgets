@@ -34,6 +34,13 @@ extension CallVisualizer {
                 switch event {
                 case .closeTap:
                     self?.visitorCodeCoordinator = nil
+                case .engagementAccepted:
+                    switch coordinator.presentation {
+                    case let .embedded(_, onEngagementAccepted: callback):
+                        callback()
+                    case .alert:
+                        break
+                    }
                 }
             }
 
@@ -117,6 +124,7 @@ extension CallVisualizer {
         }
 
         func handleEngagementRequestAccepted() {
+            visitorCodeCoordinator?.delegate?(.engagementAccepted)
             visitorCodeCoordinator?.codeViewController?.dismiss(animated: true)
             visitorCodeCoordinator = nil
         }
