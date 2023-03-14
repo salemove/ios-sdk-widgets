@@ -59,6 +59,10 @@ extension EngagementCoordinator.Environment {
         uploadSecureFile: { _, _, _ in
             fail("\(Self.self).uploadSecureFile")
             return .mock
-        }
+        },
+        getSecureUnreadMessageCount: { _ in
+            fail("\(Self.self).getSecureUnreadMessageCount")
+        },
+        messagesWithUnreadCountLoaderScheduler: CoreSdkClient.reactiveSwiftDateSchedulerMock
     )
 }
