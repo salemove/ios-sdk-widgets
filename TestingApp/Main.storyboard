@@ -45,6 +45,7 @@
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4yC-lN-tH2">
                                                         <rect key="frame" x="117" y="0.0" width="136.5" height="30"/>
+                                                        <accessibility key="accessibilityConfiguration" identifier="main_configure_sdk_button"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="30" id="qN6-sa-ywS"/>
                                                         </constraints>
@@ -192,6 +193,7 @@
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YnU-rR-gCc">
                                                         <rect key="frame" x="0.0" y="0.0" width="88" height="30"/>
+                                                        <accessibility key="accessibilityConfiguration" identifier="main_visitor_code_alert_button"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="30" id="XhY-9v-cra"/>
                                                         </constraints>
@@ -203,6 +205,7 @@
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ohH-5E-lwb">
                                                         <rect key="frame" x="120" y="0.0" width="113" height="30"/>
+                                                        <accessibility key="accessibilityConfiguration" identifier="main_visitor_code_embedded_view_button"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="30" id="13m-sK-ejP"/>
                                                         </constraints>
