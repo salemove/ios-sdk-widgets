@@ -52,6 +52,10 @@ extension Theme {
             endScreenShareButton: endScreenShareButton,
             accessibility: .init(isFontScalingEnabled: true)
         )
+
+        var secureTranscriptHeader = header
+        secureTranscriptHeader.backButton = nil
+
         let operatorImage = UserImageStyle(
             placeholderImage: Asset.operatorPlaceholder.image,
             placeholderColor: color.baseLight,
@@ -355,7 +359,8 @@ extension Theme {
                 visitor: Accessibility.visitorName,
                 isFontScalingEnabled: true
             ),
-            secureTranscriptTitle: Chat.secureTranscriptTitle
+            secureTranscriptTitle: Chat.secureTranscriptTitle,
+            secureTranscriptHeader: secureTranscriptHeader
         )
     }
 

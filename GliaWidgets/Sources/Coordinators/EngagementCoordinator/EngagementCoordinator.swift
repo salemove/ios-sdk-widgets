@@ -422,7 +422,7 @@ extension EngagementCoordinator {
                 fetchSiteConfigurations: environment.fetchSiteConfigurations,
                 chatCall: chatCall,
                 unreadMessages: unreadMessages,
-                showsCallBubble: true, // TODO: pass show bubble as parameter for this method
+                showsCallBubble: false,
                 screenShareHandler: screenShareHandler,
                 isWindowVisible: isWindowVisible,
                 sendSelectedOptionValue: environment.sendSelectedOptionValue,
