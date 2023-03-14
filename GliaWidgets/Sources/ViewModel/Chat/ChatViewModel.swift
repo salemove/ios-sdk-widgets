@@ -153,36 +153,6 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     }
     // swiftlint:enable function_body_length
 
-    func event(_ event: Event) {
-        switch event {
-        case .viewDidLoad:
-            start()
-            isViewLoaded = true
-        case .messageTextChanged(let text):
-            messageText = text
-        case .sendTapped:
-            sendMessage()
-        case .removeUploadTapped(let upload):
-            removeUpload(upload)
-        case .pickMediaTapped:
-            presentMediaPicker()
-        case .callBubbleTapped:
-            delegate?(.call)
-        case .fileTapped(let file):
-            fileTapped(file)
-        case .downloadTapped(let download):
-            downloadTapped(download)
-        case .choiceOptionSelected(let option, let messageId):
-            sendChoiceCardResponse(option, to: messageId)
-        case .chatScrolled(let bottomReached):
-            isChatScrolledToBottom.value = bottomReached
-        case .linkTapped(let url):
-            linkTapped(url)
-        case .customCardOptionSelected(let option, let messageId):
-            sendSelectedCustomCardOption(option, for: messageId)
-        }
-    }
-
     override func viewDidAppear() {
         super.viewDidAppear()
 
@@ -292,6 +262,38 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             onEngagementTransferred()
         default:
             break
+        }
+    }
+}
+
+extension ChatViewModel {
+    func event(_ event: Event) {
+        switch event {
+        case .viewDidLoad:
+            start()
+            isViewLoaded = true
+        case .messageTextChanged(let text):
+            messageText = text
+        case .sendTapped:
+            sendMessage()
+        case .removeUploadTapped(let upload):
+            removeUpload(upload)
+        case .pickMediaTapped:
+            presentMediaPicker()
+        case .callBubbleTapped:
+            delegate?(.call)
+        case .fileTapped(let file):
+            fileTapped(file)
+        case .downloadTapped(let download):
+            downloadTapped(download)
+        case .choiceOptionSelected(let option, let messageId):
+            sendChoiceCardResponse(option, to: messageId)
+        case .chatScrolled(let bottomReached):
+            isChatScrolledToBottom.value = bottomReached
+        case .linkTapped(let url):
+            linkTapped(url)
+        case .customCardOptionSelected(let option, let messageId):
+            sendSelectedCustomCardOption(option, for: messageId)
         }
     }
 }

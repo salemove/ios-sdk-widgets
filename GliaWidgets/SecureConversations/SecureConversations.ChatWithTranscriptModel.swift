@@ -385,7 +385,11 @@ extension SecureConversations {
         }
 
         func event(_ event: EngagementViewModel.Event) {
-            // Not used for transcript.
+            switch event {
+            case .closeTapped:
+                engagementDelegate?(.finished)
+            default: break
+            }
         }
 
         func event(_ event: Event) {

@@ -45,7 +45,7 @@ public struct HeaderStyle: Equatable {
         titleColor: UIColor,
         textStyle: UIFont.TextStyle = .title2,
         backgroundColor: ColorType,
-        backButton: HeaderButtonStyle,
+        backButton: HeaderButtonStyle?,
         closeButton: HeaderButtonStyle,
         endButton: ActionButtonStyle,
         endScreenShareButton: HeaderButtonStyle,
