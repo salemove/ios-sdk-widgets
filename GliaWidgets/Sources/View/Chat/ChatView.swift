@@ -227,9 +227,16 @@ class ChatView: EngagementView {
         }
     }
 
-    func refreshSection(_ section: Int) {
-        UIView.performWithoutAnimation {
-            tableView.reloadSections([section], with: .none)
+    func refreshSection(
+        _ section: Int,
+        animated: Bool
+    ) {
+        if animated {
+            tableView.reloadSections([section], with: .fade)
+        } else {
+            UIView.performWithoutAnimation {
+                tableView.reloadSections([section], with: .none)
+            }
         }
     }
 

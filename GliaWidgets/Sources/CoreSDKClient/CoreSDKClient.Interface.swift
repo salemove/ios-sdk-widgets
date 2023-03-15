@@ -132,6 +132,9 @@ struct CoreSdkClient {
 
     typealias GetSecureUnreadMessageCount = (_ callback: @escaping (Result<Int, Error>) -> Void) -> Void
     var getSecureUnreadMessageCount: GetSecureUnreadMessageCount
+
+    typealias SecureMarkMessagesAsRead = (_ callback: @escaping (Result<Void, Error>) -> Void) -> Cancellable
+    var secureMarkMessagesAsRead: SecureMarkMessagesAsRead
 }
 
 extension CoreSdkClient {

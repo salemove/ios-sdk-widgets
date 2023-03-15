@@ -26,7 +26,8 @@ extension EngagementCoordinator.Environment {
         createFileUploadListModel: SecureConversations.FileUploadListViewModel.mock(environment:),
         uploadSecureFile: { _, _, _ in .mock },
         getSecureUnreadMessageCount: { _ in },
-        messagesWithUnreadCountLoaderScheduler: CoreSdkClient.reactiveSwiftDateSchedulerMock
+        messagesWithUnreadCountLoaderScheduler: CoreSdkClient.reactiveSwiftDateSchedulerMock,
+        secureMarkMessagesAsRead: { _ in .mock }
     )
 }
 #endif
