@@ -445,6 +445,12 @@ extension ChatView {
                 animated: false
             )
             return .queueOperator(connectView)
+        case .unreadMessageDivider:
+            return .unreadMessagesDivider(
+                UnreadMessageDividerView(
+                    style: style.unreadMessageDivider
+                )
+            )
         }
     }
     // swiftlint:enable function_body_length

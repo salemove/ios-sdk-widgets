@@ -137,7 +137,9 @@ extension Glia {
                 sendSecureMessage: environment.coreSdk.sendSecureMessage,
                 createFileUploader: environment.createFileUploader,
                 createFileUploadListModel: environment.createFileUploadListModel,
-                uploadSecureFile: environment.coreSdk.uploadSecureFile
+                uploadSecureFile: environment.coreSdk.uploadSecureFile,
+                getSecureUnreadMessageCount: environment.coreSdk.getSecureUnreadMessageCount,
+                messagesWithUnreadCountLoaderScheduler: environment.messagesWithUnreadCountLoaderScheduler
             )
         )
         rootCoordinator?.delegate = { [weak self] event in

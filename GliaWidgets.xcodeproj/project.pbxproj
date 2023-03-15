@@ -428,6 +428,8 @@
 		AF0D26D82971912A00816CCB /* SecureConversations.SendMessageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0D26D72971912A00816CCB /* SecureConversations.SendMessageButton.swift */; };
 		AF10ED8B29B7A4C000E85309 /* ChatViewModel+ChoiceCards.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF10ED8A29B7A4C000E85309 /* ChatViewModel+ChoiceCards.swift */; };
 		AF10ED8D29BA210500E85309 /* SecureConversations.MessagesWithUnreadCountLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF10ED8C29BA210500E85309 /* SecureConversations.MessagesWithUnreadCountLoader.swift */; };
+		AF10ED8F29BF849A00E85309 /* UnreadMessageDividerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF10ED8E29BF849A00E85309 /* UnreadMessageDividerView.swift */; };
+		AF10ED9129BF85C700E85309 /* UnreadMessageDividerStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF10ED9029BF85C700E85309 /* UnreadMessageDividerStyle.swift */; };
 		AF11F30728BE6F0C002ACEB4 /* UIAlertController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF11F30628BE6F0C002ACEB4 /* UIAlertController+Extensions.swift */; };
 		AF39330B29B2A6A00008B60D /* ChatViewModel.SecureConverstaions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF39330A29B2A6A00008B60D /* ChatViewModel.SecureConverstaions.swift */; };
 		AF3D520B2983235C00AD8E69 /* FileUploader.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3D520A2983235C00AD8E69 /* FileUploader.Mock.swift */; };
@@ -1024,6 +1026,8 @@
 		AF0D26D72971912A00816CCB /* SecureConversations.SendMessageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.SendMessageButton.swift; sourceTree = "<group>"; };
 		AF10ED8A29B7A4C000E85309 /* ChatViewModel+ChoiceCards.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatViewModel+ChoiceCards.swift"; sourceTree = "<group>"; };
 		AF10ED8C29BA210500E85309 /* SecureConversations.MessagesWithUnreadCountLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.MessagesWithUnreadCountLoader.swift; sourceTree = "<group>"; };
+		AF10ED8E29BF849A00E85309 /* UnreadMessageDividerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnreadMessageDividerView.swift; sourceTree = "<group>"; };
+		AF10ED9029BF85C700E85309 /* UnreadMessageDividerStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnreadMessageDividerStyle.swift; sourceTree = "<group>"; };
 		AF11F30628BE6F0C002ACEB4 /* UIAlertController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIAlertController+Extensions.swift"; sourceTree = "<group>"; };
 		AF39330A29B2A6A00008B60D /* ChatViewModel.SecureConverstaions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.SecureConverstaions.swift; sourceTree = "<group>"; };
 		AF3D520A2983235C00AD8E69 /* FileUploader.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUploader.Mock.swift; sourceTree = "<group>"; };
@@ -1833,6 +1837,8 @@
 				1A60AFDC25669A4200E53F53 /* ChatView.swift */,
 				1A60AFE725669C5000E53F53 /* ChatStyle.swift */,
 				9AB3402627FCDD92006E0FE2 /* ChatStyle.Accessibility.swift */,
+				AF10ED8E29BF849A00E85309 /* UnreadMessageDividerView.swift */,
+				AF10ED9029BF85C700E85309 /* UnreadMessageDividerStyle.swift */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -3558,6 +3564,7 @@
 				9AB196D427C3D7FD00FD60AB /* Interactor.Environment.Mock.swift in Sources */,
 				7594098D298D38C2008B173A /* CallVisualizer.swift in Sources */,
 				1A0C9A7925C16F9700815406 /* Theme+AlertConfiguration.swift in Sources */,
+				AF10ED8F29BF849A00E85309 /* UnreadMessageDividerView.swift in Sources */,
 				1AC8AADD25D419CE00DAFE50 /* VideoStreamView.swift in Sources */,
 				1A4AD3C7256E863900468BFB /* ThemeColor.swift in Sources */,
 				756B8B1E2996BAEA001D2BB2 /* HeaderButton.Props.swift in Sources */,
@@ -3776,6 +3783,7 @@
 				AF3D520D2983B3DD00AD8E69 /* FileUploader.Environment.Interface.swift in Sources */,
 				1ABD6C5925B5758000D56EFA /* BubbleStyle.swift in Sources */,
 				C0D2F08B29A4E95700803B47 /* ConnectView.Mock.swift in Sources */,
+				AF10ED9129BF85C700E85309 /* UnreadMessageDividerStyle.swift in Sources */,
 				75AF8CF127DBB1F9009EEE2C /* SurveyViewController.View.swift in Sources */,
 				9AA64E142811B91C00FA56FF /* FontScaling.swift in Sources */,
 				C0D2F04629925C5A00803B47 /* VideoCallView.ConnectStatusView.swift in Sources */,
