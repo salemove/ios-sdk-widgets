@@ -181,10 +181,15 @@ workflows:
         inputs:
         - notify_email_list: $NOTIFY_EMAILS
     - slack@3:
-        is_always_run: false
         inputs:
         - channel: '#tm-mobile-builds'
         - text: iOS Build Succeeded!
+        - webhook_url_on_error: $SLACK_IOS_WEBHOOK
+        - channel_on_error: '#tm-mobile'
+        - text_on_error: "@mobile-caretaker iOS Build Failed! (master-build)"
+        - emoji_on_error: "\U0001F4A5"
+        - color_on_error: '#d9482b'
+        - from_username_on_error: Bitrise
         - webhook_url: $SLACK_IOS_WEBHOOK
     - cache-push@2: {}
     description: >-
