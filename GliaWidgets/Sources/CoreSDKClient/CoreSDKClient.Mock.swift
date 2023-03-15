@@ -30,7 +30,8 @@ extension CoreSdkClient {
         requestVisitorCode: { _ in fatalError() },
         sendSecureMessage: { _, _, _, _ in .mock },
         uploadSecureFile: { _, _, _ in .mock },
-        getSecureUnreadMessageCount: { _ in }
+        getSecureUnreadMessageCount: { _ in },
+        secureMarkMessagesAsRead: { _ in .mock }
     )
 }
 
