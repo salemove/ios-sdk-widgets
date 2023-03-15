@@ -120,8 +120,8 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter,
                 view.refreshRow(row, in: section, animated: animated)
             case .refreshRows(let rows, let section, let animated):
                 view.refreshRows(rows, in: section, animated: animated)
-            case .refreshSection(let section):
-                view.refreshSection(section)
+            case let .refreshSection(section, animated):
+                view.refreshSection(section, animated: animated)
             case .refreshAll:
                 view.refreshAll()
             case .scrollToBottom(let animated):

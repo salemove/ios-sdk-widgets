@@ -42,6 +42,10 @@ extension CoreSdkClient {
         },
         getSecureUnreadMessageCount: { _ in
             fail("\(Self.self).getSecureUnreadMessageCount")
+        },
+        secureMarkMessagesAsRead: { _ in
+            fail("\(Self.self).secureMarkMessagesAsRead")
+            return .mock
         }
     )
 }

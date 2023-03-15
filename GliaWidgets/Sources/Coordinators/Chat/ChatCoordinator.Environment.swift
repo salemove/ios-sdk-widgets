@@ -26,5 +26,6 @@ extension ChatCoordinator {
         var secureUploadFile: CoreSdkClient.SecureConversationsUploadFile
         var getSecureUnreadMessageCount: CoreSdkClient.GetSecureUnreadMessageCount
         var messagesWithUnreadCountLoaderScheduler: CoreSdkClient.ReactiveSwift.DateScheduler
+        var secureMarkMessagesAsRead: CoreSdkClient.SecureMarkMessagesAsRead
     }
 }

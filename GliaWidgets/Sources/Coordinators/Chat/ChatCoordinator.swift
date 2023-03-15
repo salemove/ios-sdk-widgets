@@ -319,7 +319,8 @@ extension ChatCoordinator {
            fileUploadListStyle: viewFactory.theme.chatStyle.messageEntry.uploadList,
            fetchSiteConfigurations: environment.fetchSiteConfigurations,
            getSecureUnreadMessageCount: environment.getSecureUnreadMessageCount,
-           messagesWithUnreadCountLoaderScheduler: environment.messagesWithUnreadCountLoaderScheduler
+           messagesWithUnreadCountLoaderScheduler: environment.messagesWithUnreadCountLoaderScheduler,
+           secureMarkMessagesAsRead: environment.secureMarkMessagesAsRead
        )
     }
 }

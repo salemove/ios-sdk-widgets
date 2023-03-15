@@ -899,7 +899,7 @@ extension ChatViewModel {
         case appendRows(Int, to: Int, animated: Bool)
         case refreshRow(Int, in: Int, animated: Bool)
         case refreshRows([Int], in: Int, animated: Bool)
-        case refreshSection(Int)
+        case refreshSection(Int, animated: Bool = false)
         case refreshAll
         case scrollToBottom(animated: Bool)
         case updateItemsUserImage(animated: Bool)

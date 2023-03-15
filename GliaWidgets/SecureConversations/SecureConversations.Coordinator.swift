@@ -276,7 +276,8 @@ extension SecureConversations.Coordinator {
                 listQueues: environment.listQueues,
                 secureUploadFile: environment.uploadSecureFile,
                 getSecureUnreadMessageCount: environment.getSecureUnreadMessageCount,
-                messagesWithUnreadCountLoaderScheduler: environment.messagesWithUnreadCountLoaderScheduler
+                messagesWithUnreadCountLoaderScheduler: environment.messagesWithUnreadCountLoaderScheduler,
+                secureMarkMessagesAsRead: environment.secureMarkMessagesAsRead
             ),
             startWithSecureTranscriptFlow: true
         )
@@ -338,6 +339,7 @@ extension SecureConversations.Coordinator {
         var interactor: Interactor
         var getSecureUnreadMessageCount: CoreSdkClient.GetSecureUnreadMessageCount
         var messagesWithUnreadCountLoaderScheduler: CoreSdkClient.ReactiveSwift.DateScheduler
+        var secureMarkMessagesAsRead: CoreSdkClient.SecureMarkMessagesAsRead
     }
 
     enum DelegateEvent {
