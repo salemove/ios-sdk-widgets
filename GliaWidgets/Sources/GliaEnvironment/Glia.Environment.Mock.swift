@@ -22,7 +22,8 @@ extension Glia.Environment {
         bundleManaging: .init { .main },
         createFileUploader: FileUploader.mock,
         createFileUploadListModel: SecureConversations.FileUploadListViewModel.mock(environment:),
-        screenShareHandler: .mock()
+        screenShareHandler: .mock(),
+        messagesWithUnreadCountLoaderScheduler: CoreSdkClient.reactiveSwiftDateSchedulerMock
     )
 }
 

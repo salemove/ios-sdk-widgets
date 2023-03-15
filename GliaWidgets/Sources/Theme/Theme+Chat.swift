@@ -338,6 +338,15 @@ extension Theme {
             transferringImage: Asset.operatorTransferring.image,
             accessibility: .init(label: Accessibility.Message.UnreadMessagesIndicator.label)
         )
+
+        let unreadMessageDivider = UnreadMessageDividerStyle(
+            title: Chat.SecureTranscript.unreadMessageDividerTitle,
+            titleColor: Color.baseNormal,
+            titleFont: .systemFont(ofSize: 14),
+            lineColor: Color.primary,
+            accessibility: .unsupported
+        )
+
         return ChatStyle(
             header: header,
             connect: connect,
@@ -359,8 +368,9 @@ extension Theme {
                 visitor: Accessibility.visitorName,
                 isFontScalingEnabled: true
             ),
-            secureTranscriptTitle: Chat.secureTranscriptTitle,
-            secureTranscriptHeader: secureTranscriptHeader
+            secureTranscriptTitle: Chat.SecureTranscript.headerTitle,
+            secureTranscriptHeader: secureTranscriptHeader,
+            unreadMessageDivider: unreadMessageDivider
         )
     }
 

@@ -234,6 +234,8 @@ extension SecureConversations {
             sections.count
         }
 
+        let transcriptMessageLoader: SecureConversations.MessagesWithUnreadCountLoader
+
         init(
             isCustomCardSupported: Bool,
             environment: Environment,
@@ -277,6 +279,14 @@ extension SecureConversations {
                     uploader: uploader,
                     style: .chat(environment.fileUploadListStyle),
                     uiApplication: environment.uiApplication
+                )
+            )
+
+            self.transcriptMessageLoader = SecureConversations.MessagesWithUnreadCountLoader(
+                environment: .init(
+                    getSecureUnreadMessageCount: environment.getSecureUnreadMessageCount,
+                    fetchChatHistory: environment.fetchChatHistory,
+                    scheduler: environment.messagesWithUnreadCountLoaderScheduler
                 )
             )
 
@@ -430,23 +440,26 @@ extension SecureConversations {
             fetchSiteConfigurations()
             loadHistory { _ in }
         }
+    }
+}
 
-        @discardableResult
-        private func validateMessage() -> Bool {
-            let canSendAttachments =
-            fileUploadListModel.failedUploads.isEmpty &&
-            fileUploadListModel.activeUploads.isEmpty && !fileUploadListModel.isLimitReached
+// MARK: Input validation
+extension SecureConversations.TranscriptModel {
+    @discardableResult
+    private func validateMessage() -> Bool {
+        let canSendAttachments =
+        fileUploadListModel.failedUploads.isEmpty &&
+        fileUploadListModel.activeUploads.isEmpty && !fileUploadListModel.isLimitReached
 
-            guard canSendAttachments else { return false }
+        guard canSendAttachments else { return false }
 
-            let canSendText = !messageText.trimmingCharacters(in: .whitespacesAndNewlines)
-                .isEmpty && messageText.count <= Self.messageTextLimit
-            let hasAttachments = !fileUploadListModel.succeededUploads.isEmpty
+        let canSendText = !messageText.trimmingCharacters(in: .whitespacesAndNewlines)
+            .isEmpty && messageText.count <= Self.messageTextLimit
+        let hasAttachments = !fileUploadListModel.succeededUploads.isEmpty
 
-            let isValid = canSendText || hasAttachments
-            action?(.sendButtonHidden(!isValid))
-            return isValid
-        }
+        let isValid = canSendText || hasAttachments
+        action?(.sendButtonHidden(!isValid))
+        return isValid
     }
 }
 
@@ -764,6 +777,8 @@ extension SecureConversations.TranscriptModel {
         var secureUploadFile: CoreSdkClient.SecureConversationsUploadFile
         var fileUploadListStyle: FileUploadListStyle
         var fetchSiteConfigurations: CoreSdkClient.FetchSiteConfigurations
+        var getSecureUnreadMessageCount: CoreSdkClient.GetSecureUnreadMessageCount
+        var messagesWithUnreadCountLoaderScheduler: CoreSdkClient.ReactiveSwift.DateScheduler
     }
 }
 
@@ -771,20 +786,44 @@ extension SecureConversations.TranscriptModel {
 
 extension SecureConversations.TranscriptModel {
     private func loadHistory(_ completion: @escaping ([ChatMessage]) -> Void) {
-        environment.fetchChatHistory { [weak self] result in
-            guard let self = self else { return }
-            let messages = (try? result.get()) ?? []
-            let items = messages.compactMap {
-                ChatItem(
-                    with: $0,
-                    isCustomCardSupported: self.isCustomCardSupported,
-                    fromHistory: self.environment.loadChatMessagesFromHistory()
-                )
+        transcriptMessageLoader.loadMessagesWithUnreadCount { result in
+            switch result {
+            case let .success(messagesWithUnreadCount):
+                let items: [ChatItem]
+
+                let messages = messagesWithUnreadCount.messages
+                let unreadCount = min(messagesWithUnreadCount.unreadCount, messages.count)
+                let isValidUnreadCount = unreadCount > 0
+
+                switch (!messages.isEmpty, isValidUnreadCount) {
+                case (true, true):
+                    let list = messagesWithUnreadCount.messages.compactMap {
+                        ChatItem(
+                            with: $0,
+                            isCustomCardSupported: self.isCustomCardSupported,
+                            fromHistory: self.environment.loadChatMessagesFromHistory()
+                        )
+                    }
+                    let head = list.dropLast(unreadCount)
+                    let tail = list.dropFirst(head.count)
+                    items = head + [ChatItem(kind: .unreadMessageDivider)] + tail
+                case (true, false), (false, true), (false, false):
+                    items = messagesWithUnreadCount.messages.compactMap {
+                        ChatItem(
+                            with: $0,
+                            isCustomCardSupported: self.isCustomCardSupported,
+                            fromHistory: self.environment.loadChatMessagesFromHistory()
+                        )
+                    }
+                }
+
+                self.historySection.set(items)
+                self.action?(.refreshSection(self.historySection.index))
+                self.action?(.scrollToBottom(animated: false))
+               completion(messagesWithUnreadCount.messages)
+            case .failure:
+                completion([])
             }
-            self.historySection.set(items)
-            self.action?(.refreshSection(self.historySection.index))
-            self.action?(.scrollToBottom(animated: false))
-            completion(messages)
         }
     }
 }

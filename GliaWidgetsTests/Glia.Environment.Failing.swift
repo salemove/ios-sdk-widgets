@@ -51,7 +51,8 @@ extension Glia.Environment {
             fail("\(Self.self).createFileUploadListModel")
             return .mock()
         },
-        screenShareHandler: .mock()
+        screenShareHandler: .mock(),
+        messagesWithUnreadCountLoaderScheduler: CoreSdkClient.reactiveSwiftDateSchedulerMock
     )
 }
 

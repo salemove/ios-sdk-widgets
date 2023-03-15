@@ -358,4 +358,11 @@ extension MessageSender {
 extension CoreSdkClient.Cancellable {
     static let mock = CoreSdkClient.Cancellable()
 }
+
+extension CoreSdkClient {
+    static var reactiveSwiftDateSchedulerMock: CoreSdkClient.ReactiveSwift.DateScheduler {
+        CoreSdkClient.ReactiveSwift.TestScheduler()
+    }
+}
+
 #endif
