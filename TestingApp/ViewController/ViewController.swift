@@ -170,7 +170,7 @@ extension ViewController {
             #if DEBUG
             let pushNotifications = Configuration.PushNotifications.sandbox
             #else
-            let pushNotifications = Configuration.PushNotifications.production
+            let pushNotifications = Configuration.PushNotifications.disabled
             #endif
             configuration.pushNotifications = pushNotifications
 
