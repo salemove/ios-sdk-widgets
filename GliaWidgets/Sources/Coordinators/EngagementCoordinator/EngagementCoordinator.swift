@@ -232,7 +232,9 @@ extension EngagementCoordinator {
                 sendSecureMessage: environment.sendSecureMessage,
                 queueIds: [interactor.queueID],
                 listQueues: environment.listQueues,
-                secureUploadFile: environment.uploadSecureFile
+                secureUploadFile: environment.uploadSecureFile,
+                getSecureUnreadMessageCount: environment.getSecureUnreadMessageCount,
+                messagesWithUnreadCountLoaderScheduler: environment.messagesWithUnreadCountLoaderScheduler
             ),
             startWithSecureTranscriptFlow: false
         )
@@ -429,7 +431,9 @@ extension EngagementCoordinator {
                 uploadFileToEngagement: environment.uploadFileToEngagement,
                 getCurrentEngagement: environment.getCurrentEngagement,
                 submitSurveyAnswer: environment.submitSurveyAnswer,
-                interactor: interactor
+                interactor: interactor,
+                getSecureUnreadMessageCount: environment.getSecureUnreadMessageCount,
+                messagesWithUnreadCountLoaderScheduler: environment.messagesWithUnreadCountLoaderScheduler
             )
         )
 

@@ -11,6 +11,7 @@ class ChatItemCell: UITableViewCell {
         case choiceCard(ChoiceCardView)
         case customCard(CustomCardContainerView)
         case callUpgrade(ChatCallUpgradeView)
+        case unreadMessagesDivider(UnreadMessageDividerView)
 
         var view: UIView? {
             switch self {
@@ -29,6 +30,8 @@ class ChatItemCell: UITableViewCell {
             case .customCard(let view):
                 return view
             case .callUpgrade(let view):
+                return view
+            case let .unreadMessagesDivider(view):
                 return view
             }
         }

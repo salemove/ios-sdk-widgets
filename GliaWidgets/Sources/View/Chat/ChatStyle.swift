@@ -44,6 +44,9 @@ public class ChatStyle: EngagementStyle {
     /// Header style for secure messaging transcript.
     public var secureTranscriptHeader: HeaderStyle
 
+    /// Style for divider of unread messages in secure messaging transcript.
+    public var unreadMessageDivider: UnreadMessageDividerStyle
+
     ///
     /// - Parameters:
     ///   - header: Style of the view's header (navigation bar area) when the screen is displaying live chat.
@@ -64,7 +67,7 @@ public class ChatStyle: EngagementStyle {
     ///   - accessibility: Accessibility related properties.
     ///   - secureTranscriptTitle: Header title for secure messaging transcript.
     ///   - secureTranscriptHeader: Style of the view's header (navigation bar area) when the screen is displaying secure conversations.
-    ///
+    ///   - unreadMessageDivider: Style for divider of unread messages in secure messaging transcript.
     public init(
         header: HeaderStyle,
         connect: ConnectStyle,
@@ -83,7 +86,8 @@ public class ChatStyle: EngagementStyle {
         operatorTypingIndicator: OperatorTypingIndicatorStyle,
         accessibility: Accessibility = .unsupported,
         secureTranscriptTitle: String,
-        secureTranscriptHeader: HeaderStyle
+        secureTranscriptHeader: HeaderStyle,
+        unreadMessageDivider: UnreadMessageDividerStyle
     ) {
         self.title = title
         self.visitorMessage = visitorMessage
@@ -99,6 +103,7 @@ public class ChatStyle: EngagementStyle {
         self.accessibility = accessibility
         self.secureTranscriptTitle = secureTranscriptTitle
         self.secureTranscriptHeader = secureTranscriptHeader
+        self.unreadMessageDivider = unreadMessageDivider
 
         super.init(
             header: header,
