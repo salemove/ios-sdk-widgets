@@ -58,7 +58,7 @@ extension SecureConversations.ConfirmationViewModel {
         return Header.Props(
             title: style.headerTitle,
             effect: .none,
-            endButton: .init(style: style.header.endButton),
+            endButton: .init(style: style.header.endButton, accessibilityIdentifier: "header_end_button"),
             backButton: backButton,
             closeButton: .init(tap: closeButtonCmd, style: style.header.closeButton),
             endScreenshareButton: .init(style: style.header.endScreenShareButton),
