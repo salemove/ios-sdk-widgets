@@ -60,6 +60,7 @@ workflows:
         - team_id: XR3G5NDPNH
         - export_method: $BITRISE_EXPORT_METHOD
     - browserstack-upload@0:
+        run_if: false
         inputs:
         - upload_path: $BITRISE_IPA_PATH
         - custom_id: $BROWSERSTACK_APP_ID
@@ -173,6 +174,7 @@ workflows:
         - team_id: XR3G5NDPNH
         - export_method: $BITRISE_EXPORT_METHOD
     - browserstack-upload@0:
+        run_if: false
         inputs:
         - upload_path: $BITRISE_IPA_PATH
         - custom_id: $BROWSERSTACK_APP_ID
