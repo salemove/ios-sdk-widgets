@@ -78,11 +78,25 @@ public class Theme {
         self.showsPoweredBy = showsPoweredBy
     }
 
-    /// Apply remote configuration
-    func applyRemoteConfiguration(
-        _ config: RemoteConfiguration,
+    convenience init(
+        uiConfig config: RemoteConfiguration,
         assetsBuilder: RemoteConfiguration.AssetsBuilder
     ) {
+        self.init(
+            colorStyle: .custom(
+                .init(
+                    primary: .init(hex: config.globalColors.primary),
+                    secondary: .init(hex: config.globalColors.secondary),
+                    baseNormal: .init(hex: config.globalColors.baseNormal),
+                    baseLight: .init(hex: config.globalColors.baseLight),
+                    baseDark: .init(hex: config.globalColors.baseDark),
+                    baseShade: .init(hex: config.globalColors.baseShade),
+                    background: .init(hex: config.globalColors.background),
+                    systemNegative: .init(hex: config.globalColors.systemNegative)
+                )
+            )
+        )
+
         call.apply(
             configuration: config.callScreen,
             assetsBuilder: assetsBuilder
