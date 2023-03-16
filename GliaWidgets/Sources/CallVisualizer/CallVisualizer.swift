@@ -74,6 +74,10 @@ public final class CallVisualizer {
     ///  The way of displaying is determined by the 'presentation' parameter. If choosing alert, the current viewController
     ///  needs to be passed in as an associated value. If, however, embedding is chosen, the view into which you want to
     ///  embed it has to be passed in as an associated value.
+    ///
+    ///  If embedded option is chosen, `onEngagementAccepted` callback can be used, that is called when engagement
+    ///  has been accepted. One of the use cases may be calling for visitor code again, because in the moment when engagement
+    ///  was accepted, the displayed visitor code becomes obsolete.
     public func showVisitorCodeViewController(
         by presentation: Presentation
     ) {
