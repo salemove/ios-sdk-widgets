@@ -35,9 +35,8 @@ extension Glia {
         self.assetsBuilder = assetsBuilder
 
         // Apply remote configuration
-        let theme = Theme()
-        theme.applyRemoteConfiguration(
-            uiConfig,
+        let theme = Theme(
+            uiConfig: uiConfig,
             assetsBuilder: assetsBuilder
         )
 
