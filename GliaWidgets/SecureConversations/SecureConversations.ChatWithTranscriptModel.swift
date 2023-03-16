@@ -159,6 +159,7 @@ extension SecureConversations {
         typealias Action = ChatViewModel.Action
 
         static let unavailableMessageCenterAlertAccIdentidier = "unavailable_message_center_alert_identifier"
+        static let markUnreadMessagesDelaySeconds = 6
 
         enum DelegateEvent {
             case showFile(LocalFile)
@@ -779,6 +780,7 @@ extension SecureConversations.TranscriptModel {
         var fetchSiteConfigurations: CoreSdkClient.FetchSiteConfigurations
         var getSecureUnreadMessageCount: CoreSdkClient.GetSecureUnreadMessageCount
         var messagesWithUnreadCountLoaderScheduler: CoreSdkClient.ReactiveSwift.DateScheduler
+        var secureMarkMessagesAsRead: CoreSdkClient.SecureMarkMessagesAsRead
     }
 }
 
@@ -786,7 +788,8 @@ extension SecureConversations.TranscriptModel {
 
 extension SecureConversations.TranscriptModel {
     private func loadHistory(_ completion: @escaping ([ChatMessage]) -> Void) {
-        transcriptMessageLoader.loadMessagesWithUnreadCount { result in
+        transcriptMessageLoader.loadMessagesWithUnreadCount { [weak self] result in
+            guard let self else { return }
             switch result {
             case let .success(messagesWithUnreadCount):
                 let items: [ChatItem]
@@ -820,9 +823,33 @@ extension SecureConversations.TranscriptModel {
                 self.historySection.set(items)
                 self.action?(.refreshSection(self.historySection.index))
                 self.action?(.scrollToBottom(animated: false))
-               completion(messagesWithUnreadCount.messages)
+                completion(messagesWithUnreadCount.messages)
+                if messagesWithUnreadCount.unreadCount > 0 {
+                    self.markMessagesAsRead()
+                }
             case .failure:
                 completion([])
+            }
+        }
+    }
+
+    func markMessagesAsRead() {
+        environment.gcd.mainQueue.asyncAfterDeadline(.now() + .seconds(Self.markUnreadMessagesDelaySeconds)) { [weak self] in
+            _ = self?.environment.secureMarkMessagesAsRead { [weak self] result in
+                guard let self else { return }
+                switch result {
+                case .success:
+                    self.historySection.removeAll(where: {
+                        if case .unreadMessageDivider = $0.kind {
+                            return true
+                        }
+
+                        return false
+                    })
+                    self.action?(.refreshSection(self.historySection.index, animated: true))
+                case .failure:
+                    break
+                }
             }
         }
     }
