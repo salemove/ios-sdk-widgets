@@ -63,6 +63,10 @@ extension EngagementCoordinator.Environment {
         getSecureUnreadMessageCount: { _ in
             fail("\(Self.self).getSecureUnreadMessageCount")
         },
-        messagesWithUnreadCountLoaderScheduler: CoreSdkClient.reactiveSwiftDateSchedulerMock
+        messagesWithUnreadCountLoaderScheduler: CoreSdkClient.reactiveSwiftDateSchedulerMock,
+        secureMarkMessagesAsRead: { _ in
+            fail("\(Self.self).secureMarkMessagesAsRead")
+            return .mock
+        }
     )
 }

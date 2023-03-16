@@ -40,4 +40,8 @@ class Section<Item> {
     func removeItem(at index: Int) {
         items_.remove(at: index)
     }
+
+    func removeAll(where shouldBeRemoved: (Item) throws -> Bool) rethrows {
+        try items_.removeAll(where: shouldBeRemoved)
+    }
 }
