@@ -227,8 +227,9 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter,
         switch type {
         case .chat:
             chatView.props = .init(header: props.chat)
-        case .secureTranscript:
+        case let .secureTranscript(needsTextInput):
             chatView.props = .init(header: props.secureTranscript)
+            chatView.messageEntryView.isHidden = !needsTextInput
         }
     }
 }
@@ -262,12 +263,12 @@ extension ChatViewController {
             if chatViewModel.shouldSkipEnqueueingState {
                 return chatViewModel.activeEngagement != nil
                 ? .chat
-                : .secureTranscript
+                : .secureTranscript(needsTextInput: true)
             } else {
                 return .chat
             }
-        case .transcript:
-            return .secureTranscript
+        case .transcript(let transcriptModel):
+            return .secureTranscript(needsTextInput: transcriptModel.isSecureConversationsAvailable)
         }
     }
 }
@@ -280,5 +281,5 @@ extension ChatViewController {
 }
 private enum CurrentChatModelType {
     case chat
-    case secureTranscript
+    case secureTranscript(needsTextInput: Bool)
 }
