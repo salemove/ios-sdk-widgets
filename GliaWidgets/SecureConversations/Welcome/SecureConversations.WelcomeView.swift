@@ -154,13 +154,16 @@ extension SecureConversations {
             defineSendMessageButtonLayout()
             defineMessageWarningLabelLayout()
             defineFileUploadListViewLayout()
+            renderProps()
         }
 
         override func setup() {
             super.setup()
             subscribeToNotification(UIResponder.keyboardWillShowNotification, selector: #selector(keyboardWillShow))
             subscribeToNotification(UIResponder.keyboardWillHideNotification, selector: #selector(keyboardWillHide))
-            renderProps()
+            addSubview(header)
+            addSubview(scrollView)
+            scrollView.addSubview(rootStackView)
         }
 
         @objc func handleCheckMessagesButtonTap() {
@@ -322,7 +325,6 @@ extension SecureConversations.WelcomeView {
 // MARK: - Define layout
 extension SecureConversations.WelcomeView {
     func defineHeaderLayout() {
-        addSubview(header)
         header.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             header.leadingAnchor.constraint(equalTo: leadingAnchor),
@@ -332,7 +334,6 @@ extension SecureConversations.WelcomeView {
     }
 
     func defineScrollViewLayout() {
-        addSubview(scrollView)
         scrollViewBottomConstraint = scrollView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor)
         NSLayoutConstraint.activate(
             [
@@ -345,7 +346,6 @@ extension SecureConversations.WelcomeView {
     }
 
     func defineRootStackViewLayout() {
-        scrollView.addSubview(rootStackView)
         NSLayoutConstraint.activate([
             rootStackView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor),
             rootStackView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
@@ -539,6 +539,12 @@ extension SecureConversations.WelcomeView {
         var textViewLeadingConstraint: NSLayoutConstraint?
         var textViewTrailingConstraint: NSLayoutConstraint?
 
+        override func setup() {
+            super.setup()
+            addSubview(textView)
+            addSubview(placeholderLabel)
+        }
+
         override func defineLayout() {
             super.defineLayout()
             defineTextViewLayout()
@@ -547,7 +553,6 @@ extension SecureConversations.WelcomeView {
         }
 
         func defineTextViewLayout() {
-            addSubview(textView)
             textViewLeadingConstraint = textView.leadingAnchor.constraint(equalTo: leadingAnchor)
             textViewTrailingConstraint = textView.trailingAnchor.constraint(equalTo: trailingAnchor)
             textViewTopConstraint = textView.topAnchor.constraint(equalTo: topAnchor)
@@ -568,7 +573,6 @@ extension SecureConversations.WelcomeView {
         }
 
         func definePlaceholderLabelLayout() {
-            addSubview(placeholderLabel)
             NSLayoutConstraint.activate([
                 placeholderLabel.leadingAnchor.constraint(equalTo: textView.leadingAnchor),
                 placeholderLabel.trailingAnchor.constraint(equalTo: textView.trailingAnchor),
