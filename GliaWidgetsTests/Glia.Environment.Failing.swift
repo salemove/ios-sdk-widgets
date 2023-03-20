@@ -24,6 +24,9 @@ extension Glia.Environment {
         },
         timerProviding: .failing,
         uiApplication: .failing,
+        uiScreen: .failing,
+        uiDevice: .failing,
+        notificationCenter: .failing,
         createRootCoordinator: { _, _, _, _, _, _, _ in
             fail("\(Self.self).createRootCoordinator")
             return .mock(

@@ -461,6 +461,7 @@
 		C03A8047292BA76D00DDECA6 /* ChatViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03A8046292BA76D00DDECA6 /* ChatViewControllerTests.swift */; };
 		C03A8049292BC8DB00DDECA6 /* CallViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03A8048292BC8DB00DDECA6 /* CallViewControllerTests.swift */; };
 		C05AB01C295F416700AA381F /* VisitorCodeCloseButtonProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05AB01B295F416700AA381F /* VisitorCodeCloseButtonProperties.swift */; };
+		C05E3EDE29C99E070013BC81 /* ProximityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05E3EDD29C99E070013BC81 /* ProximityManager.swift */; };
 		C06A757F296EC76B006B69A2 /* VisitorCodeStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06A757E296EC76B006B69A2 /* VisitorCodeStyle.swift */; };
 		C06A7582296EC856006B69A2 /* NumberSlotStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06A7581296EC856006B69A2 /* NumberSlotStyle.swift */; };
 		C06A7584296EC9DC006B69A2 /* NumberSlotStyle.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06A7583296EC9DC006B69A2 /* NumberSlotStyle.Accessibility.swift */; };
@@ -1061,6 +1062,7 @@
 		C03A8048292BC8DB00DDECA6 /* CallViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallViewControllerTests.swift; sourceTree = "<group>"; };
 		C05AB016295DA9FC00AA381F /* AlertViewController+VisitorCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlertViewController+VisitorCode.swift"; sourceTree = "<group>"; };
 		C05AB01B295F416700AA381F /* VisitorCodeCloseButtonProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorCodeCloseButtonProperties.swift; sourceTree = "<group>"; };
+		C05E3EDD29C99E070013BC81 /* ProximityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProximityManager.swift; sourceTree = "<group>"; };
 		C06A757E296EC76B006B69A2 /* VisitorCodeStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorCodeStyle.swift; sourceTree = "<group>"; };
 		C06A7581296EC856006B69A2 /* NumberSlotStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberSlotStyle.swift; sourceTree = "<group>"; };
 		C06A7583296EC9DC006B69A2 /* NumberSlotStyle.Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberSlotStyle.Accessibility.swift; sourceTree = "<group>"; };
@@ -1748,6 +1750,7 @@
 		1A60AFC12566857200E53F53 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				C05E3EDC29C99DEE0013BC81 /* ProximityManager */,
 				C4794E6E270673FC00F989F7 /* Animation */,
 				75940965298D38B6008B173A /* BundleManaging */,
 				75940968298D38C2008B173A /* CallVisualizer */,
@@ -2873,6 +2876,14 @@
 			path = SecureConversations;
 			sourceTree = "<group>";
 		};
+		C05E3EDC29C99DEE0013BC81 /* ProximityManager */ = {
+			isa = PBXGroup;
+			children = (
+				C05E3EDD29C99E070013BC81 /* ProximityManager.swift */,
+			);
+			path = ProximityManager;
+			sourceTree = "<group>";
+		};
 		C06A757D296EC743006B69A2 /* VisitorCode */ = {
 			isa = PBXGroup;
 			children = (
@@ -3966,6 +3977,7 @@
 				9AB3401D27FB4F3C006E0FE2 /* ConnectOperatorStyle.Accessibility.swift in Sources */,
 				75940989298D38C2008B173A /* CallVisualizer.Environment.Mock.swift in Sources */,
 				AFA2FDF028907E3900428E6D /* EngagementCoordinator.Mock.swift in Sources */,
+				C05E3EDE29C99E070013BC81 /* ProximityManager.swift in Sources */,
 				9A1992E527D6679300161AAE /* UIKitBased.Live.swift in Sources */,
 				1A60B0232567FD2D00E53F53 /* CloseButtonProperties.swift in Sources */,
 				1ABD6C8725B6EFD000D56EFA /* SingleMediaUpgradeAlertConfiguration.swift in Sources */,

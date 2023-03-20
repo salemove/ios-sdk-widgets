@@ -12,7 +12,8 @@ extension UIKitBased.UIApplication {
         open: { _ in },
         canOpenURL: { _ in false },
         preferredContentSizeCategory: { .unspecified },
-        shared: { .init() }
+        isIdleTimerDisabled: { _ in },
+        windows: { .init() }
     )
 }
 
@@ -24,4 +25,17 @@ extension UIImage {
     ).unsafelyUnwrapped
 }
 
+extension UIKitBased.UIDevice {
+    static let mock = Self.init(
+        proximityState: { .init() },
+        isProximityMonitoringEnabled: { _ in }
+    )
+}
+
+extension UIKitBased.UIScreen {
+    static let mock = Self.init(
+        brightness: { .init() },
+        setBrightness: { _ in }
+    )
+}
 #endif

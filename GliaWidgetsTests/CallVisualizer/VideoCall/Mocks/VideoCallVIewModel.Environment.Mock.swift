@@ -9,6 +9,7 @@ extension CallVisualizer.VideoCallViewModel.Environment {
         imageViewCache: .mock,
         timerProviding: .mock,
         uiApplication: .mock,
+        notificationCenter: .mock,
         date: { .mock },
         engagedOperator: { .mock() },
         screenShareHandler: .mock()

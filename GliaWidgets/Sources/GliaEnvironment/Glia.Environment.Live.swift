@@ -21,6 +21,9 @@ extension Glia.Environment {
         loadChatMessagesFromHistory: { true },
         timerProviding: .live,
         uiApplication: .live,
+        uiScreen: .live,
+        uiDevice: .live,
+        notificationCenter: .live,
         createRootCoordinator: EngagementCoordinator.init(
             interactor:viewFactory:sceneProvider:engagementKind:screenShareHandler:features:environment:
         ),

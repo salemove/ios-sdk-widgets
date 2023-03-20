@@ -22,6 +22,37 @@ extension UIKitBased.UIApplication {
             fail("\(Self.self).preferredContentSizeCategory")
             return .unspecified
         },
-        shared: { fail("\(Self.self).shared"); return .init() }
+        isIdleTimerDisabled: { _ in
+            fail("\(Self.self).isIdleTimerDisabled")
+        },
+        windows: {
+            fail("\(Self.self).window")
+            return []
+        }
+    )
+}
+
+extension UIKitBased.UIScreen {
+    static let failing = Self(
+        brightness: {
+            fail("\(Self.self).brightness")
+            return 0.0
+        },
+        setBrightness: { _ in
+            fail("\(Self.self).setBrightness")
+            return
+        }
+    )
+}
+
+extension UIKitBased.UIDevice {
+    static let failing = Self(
+        proximityState: {
+            fail("\(Self.self).proximityState")
+            return false
+        },
+        isProximityMonitoringEnabled: { _ in
+            fail("\(Self.self).isProximityMonitoringEnabled")
+        }
     )
 }
