@@ -233,7 +233,7 @@ extension ConnectView.State {
     var callTopPadding: CGFloat {
         switch self {
         case .initial, .queue, .connecting, .transferring:
-            return 32
+            return 0
         case .connected:
             return 14
         }
