@@ -8,6 +8,7 @@ extension CallVisualizer.VideoCallViewModel {
         var imageViewCache: ImageView.Cache
         var timerProviding: FoundationBased.Timer.Providing
         var uiApplication: UIKitBased.UIApplication
+        var notificationCenter: FoundationBased.NotificationCenter
         var date: () -> Date
         var engagedOperator: () -> CoreSdkClient.Operator?
         var screenShareHandler: ScreenShareHandler

@@ -35,6 +35,9 @@ extension Glia {
         var loadChatMessagesFromHistory: () -> Bool
         var timerProviding: FoundationBased.Timer.Providing
         var uiApplication: UIKitBased.UIApplication
+        var uiScreen: UIKitBased.UIScreen
+        var uiDevice: UIKitBased.UIDevice
+        var notificationCenter: FoundationBased.NotificationCenter
         var createRootCoordinator: CreateRootCoordinator
         var callVisualizerPresenter: CallVisualizer.Presenter
         var bundleManaging: BundleManaging

@@ -7,6 +7,9 @@ extension CallVisualizer.Coordinator {
         var gcd: GCD
         var imageViewCache: ImageView.Cache
         var uiApplication: UIKitBased.UIApplication
+        var uiScreen: UIKitBased.UIScreen
+        var uiDevice: UIKitBased.UIDevice
+        var notificationCenter: FoundationBased.NotificationCenter
         var viewFactory: ViewFactory
         var presenter: CallVisualizer.Presenter
         var bundleManaging: BundleManaging

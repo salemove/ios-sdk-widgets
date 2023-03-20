@@ -3,6 +3,8 @@ import UIKit
 public extension CallVisualizer {
     final class VideoCallViewController: UIViewController {
         private let videoCallView: VideoCallView
+        private let environment: Environment
+        private var proximityManager: ProximityManager?
 
         var props: Props {
             didSet {
@@ -12,13 +14,18 @@ public extension CallVisualizer {
 
         // MARK: - Initializer
 
-        init(props: Props, environment: CallVisualizer.VideoCallView.Environment) {
+        init(props: Props, environment: Environment) {
             self.props = props
             self.videoCallView = .init(
                 props: props.videoCallViewProps,
-                environment: environment
+                environment: environment.videoCallView
             )
+            self.environment = environment
             super.init(nibName: nil, bundle: nil)
+        }
+
+        deinit {
+            proximityManager?.stop()
         }
 
         // MARK: - Required
@@ -32,6 +39,20 @@ public extension CallVisualizer {
         public override func loadView() {
             view = videoCallView
         }
+
+        public override func viewDidLoad() {
+            super.viewDidLoad()
+            proximityManager = .init(
+                view: self.view,
+                environment: .init(
+                    uiApplication: environment.uiApplication,
+                    uiDevice: environment.uiDevice,
+                    uiScreen: environment.uiScreen,
+                    notificationCenter: environment.notificationCenter
+                )
+            )
+            proximityManager?.start()
+        }
     }
 }
 
@@ -40,6 +61,18 @@ public extension CallVisualizer {
 extension CallVisualizer.VideoCallViewController {
     struct Props: Equatable {
         let videoCallViewProps: CallVisualizer.VideoCallView.Props
+    }
+}
+
+// MARK: - Environment
+
+extension CallVisualizer.VideoCallViewController {
+    struct Environment {
+        var videoCallView: CallVisualizer.VideoCallView.Environment
+        var uiApplication: UIKitBased.UIApplication
+        var uiScreen: UIKitBased.UIScreen
+        var uiDevice: UIKitBased.UIDevice
+        var notificationCenter: FoundationBased.NotificationCenter
     }
 }
 

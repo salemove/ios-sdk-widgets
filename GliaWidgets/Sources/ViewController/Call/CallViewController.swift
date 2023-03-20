@@ -2,14 +2,18 @@ import UIKit
 
 class CallViewController: EngagementViewController, MediaUpgradePresenter {
     private let viewModel: CallViewModel
+    private let environment: Environment
+    private var proximityManager: ProximityManager?
 
-    init(viewModel: CallViewModel, viewFactory: ViewFactory) {
+    init(viewModel: CallViewModel, viewFactory: ViewFactory, environment: Environment) {
+        self.environment = environment
         self.viewModel = viewModel
         super.init(viewModel: viewModel, viewFactory: viewFactory)
     }
 
     deinit {
-         NotificationCenter.default.removeObserver(self)
+        environment.notificationCenter.removeObserver(self)
+        proximityManager?.stop()
     }
 
     override public func loadView() {
@@ -26,13 +30,23 @@ class CallViewController: EngagementViewController, MediaUpgradePresenter {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        proximityManager = .init(
+            view: self.view,
+            environment: .init(
+                uiApplication: environment.uiApplication,
+                uiDevice: environment.uiDevice,
+                uiScreen: environment.uiScreen,
+                notificationCenter: environment.notificationCenter
+            )
+        )
         viewModel.event(.viewDidLoad)
+        proximityManager?.start()
 
-        NotificationCenter.default.addObserver(
+        environment.notificationCenter.addObserver(
             self,
             selector: #selector(CallViewController.deviceDidRotate),
-            name: UIDevice.orientationDidChangeNotification, object: nil
+            name: UIDevice.orientationDidChangeNotification,
+            object: nil
         )
     }
 
@@ -170,5 +184,14 @@ private extension CallButton.State {
         case .inactive:
             self = .inactive
         }
+    }
+}
+
+extension CallViewController {
+    struct Environment {
+        var uiApplication: UIKitBased.UIApplication
+        var uiScreen: UIKitBased.UIScreen
+        var uiDevice: UIKitBased.UIDevice
+        var notificationCenter: FoundationBased.NotificationCenter
     }
 }

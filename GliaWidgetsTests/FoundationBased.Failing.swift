@@ -78,3 +78,17 @@ extension FoundationBased.Timer.Providing {
         }
     )
 }
+
+extension FoundationBased.NotificationCenter {
+    static let failing = Self.init(
+        addObserverClosure: { _, _, _, _ in
+            fail("\(Self.self).addObserverClosure")
+        },
+        removeObserverClosure: { _ in
+            fail("\(Self.self).removeObserverClosure")
+        },
+        removeObserverWithNameAndObject: {_, _, _ in
+            fail("\(Self.self).removeObserverWithNameAndObject")
+        }
+    )
+}

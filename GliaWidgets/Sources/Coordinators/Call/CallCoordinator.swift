@@ -94,7 +94,13 @@ private extension CallCoordinator {
         }
         return CallViewController(
             viewModel: viewModel,
-            viewFactory: viewFactory
+            viewFactory: viewFactory,
+            environment: .init(
+                uiApplication: environment.uiApplication,
+                uiScreen: environment.uiScreen,
+                uiDevice: environment.uiDevice,
+                notificationCenter: environment.notificationCenter
+            )
         )
     }
 
@@ -140,6 +146,9 @@ extension CallCoordinator {
         var submitSurveyAnswer: CoreSdkClient.SubmitSurveyAnswer
         var uuid: () -> UUID
         var uiApplication: UIKitBased.UIApplication
+        var uiScreen: UIKitBased.UIScreen
+        var uiDevice: UIKitBased.UIDevice
+        var notificationCenter: FoundationBased.NotificationCenter
         var fetchChatHistory: CoreSdkClient.FetchChatHistory
         var createFileUploadListModel: SecureConversations.FileUploadListViewModel.Create
     }
