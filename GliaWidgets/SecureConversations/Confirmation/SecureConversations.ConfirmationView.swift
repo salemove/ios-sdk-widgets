@@ -84,11 +84,13 @@ extension SecureConversations {
             defineSubtitleLabelLayout()
             defineSpacerLayout()
             defineCheckMessagesButtonLayout()
+            renderProps()
         }
 
         override func setup() {
             super.setup()
-            renderProps()
+            addSubview(header)
+            addSubview(rootStackView)
         }
 
         override func layoutSubviews() {
@@ -99,7 +101,6 @@ extension SecureConversations {
             topRootStackViewConstraint?.constant = self.rootStackView.frame.height * 0.2783
         }
         private func defineHeaderLayout() {
-            addSubview(header)
             header.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
                 header.leadingAnchor.constraint(equalTo: leadingAnchor),
@@ -109,7 +110,6 @@ extension SecureConversations {
         }
 
         func defineRootStackViewLayout() {
-            addSubview(rootStackView)
             topRootStackViewConstraint = rootStackView.topAnchor.constraint(equalTo: header.bottomAnchor)
             NSLayoutConstraint.activate([
                 rootStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Self.sideMargin),
