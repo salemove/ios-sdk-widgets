@@ -318,7 +318,7 @@ class CallView: EngagementView {
             .fittingSizeLevel,
             for: .vertical
         )
-        bottomLabel.autoPinEdge(.bottom, to: .top, of: buttonBar, withOffset: -38)
+        bottomLabel.autoPinEdge(.bottom, to: .top, of: buttonBar, withOffset: 0)
         bottomLabel.autoMatch(.width, to: .width, of: self, withMultiplier: 0.6)
         bottomLabel.autoAlignAxis(toSuperviewAxis: .vertical)
         bottomLabel.autoPinEdge(
