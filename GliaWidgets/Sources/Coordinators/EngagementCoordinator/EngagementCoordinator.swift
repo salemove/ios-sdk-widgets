@@ -321,6 +321,9 @@ extension EngagementCoordinator {
                 submitSurveyAnswer: environment.submitSurveyAnswer,
                 uuid: environment.uuid,
                 uiApplication: environment.uiApplication,
+                uiScreen: environment.uiScreen,
+                uiDevice: environment.uiDevice,
+                notificationCenter: environment.notificationCenter,
                 fetchChatHistory: environment.fetchChatHistory,
                 createFileUploadListModel: environment.createFileUploadListModel
             )

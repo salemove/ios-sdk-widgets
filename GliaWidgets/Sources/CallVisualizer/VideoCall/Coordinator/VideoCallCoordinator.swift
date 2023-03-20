@@ -49,6 +49,7 @@ extension CallVisualizer {
                     imageViewCache: environment.imageViewCache,
                     timerProviding: environment.timerProviding,
                     uiApplication: environment.uiApplication,
+                    notificationCenter: environment.notificationCenter,
                     date: environment.date,
                     engagedOperator: environment.engagedOperator,
                     screenShareHandler: environment.screenShareHandler
@@ -59,7 +60,13 @@ extension CallVisualizer {
 
             let viewController = VideoCallViewController(
                 props: viewModel.makeProps(),
-                environment: .init(gcd: environment.gcd)
+                environment: .init(
+                    videoCallView: .init(gcd: environment.gcd),
+                    uiApplication: environment.uiApplication,
+                    uiScreen: environment.uiScreen,
+                    uiDevice: environment.uiDevice,
+                    notificationCenter: environment.notificationCenter
+                )
             )
             viewController.modalPresentationStyle = .overFullScreen
             self.viewController = viewController
