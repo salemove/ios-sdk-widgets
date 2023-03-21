@@ -35,11 +35,13 @@ struct IdCollection<Identifier: Hashable, Item: Equatable>: Equatable & Collecti
         identified by: Identifier,
         at index: Int
     ) {
+        var prevIdx: Index?
         if items[by] != nil, let idx = list.firstIndex(of: by) {
+            prevIdx = idx
             list.remove(at: idx)
         }
         items[by] = item
-        list.insert(by, at: index)
+        list.insert(by, at: prevIdx ?? index)
     }
 
     @inlinable mutating func append(
