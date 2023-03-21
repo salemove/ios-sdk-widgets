@@ -342,9 +342,9 @@ extension Theme {
         let unreadMessageDivider = UnreadMessageDividerStyle(
             title: Chat.SecureTranscript.unreadMessageDividerTitle,
             titleColor: Color.baseNormal,
-            titleFont: .systemFont(ofSize: 14),
+            titleFont: font.buttonLabel,
             lineColor: Color.primary,
-            accessibility: .unsupported
+            accessibility: .init(isFontScalingEnabled: true)
         )
 
         return ChatStyle(
