@@ -150,6 +150,118 @@ extension SecureConversations.ChatWithTranscriptModel {
             return model.item(for: row, in: section)
         }
     }
+
+    static func replace(
+            _ outgoingMessage: OutgoingMessage,
+            uploads: [FileUpload],
+            with message: CoreSdkClient.Message,
+            in section: Section<ChatItem>,
+            deliveredStatusText: String,
+            downloader: FileDownloader,
+            action: ActionCallback?
+        ) {
+            guard let index = section.items
+                .enumerated()
+                .first(where: {
+                    guard case .outgoingMessage(let message) = $0.element.kind else { return false }
+                    return message.id == outgoingMessage.id
+                })?.offset
+            else { return }
+
+            var affectedRows = [Int]()
+
+            // Remove previous "Delivered" statuses
+            section.items
+                .enumerated()
+                .forEach { index, element in
+                    if case .visitorMessage(let message, let status) = element.kind,
+                       status == deliveredStatusText {
+                        let chatItem = ChatItem(kind: .visitorMessage(message, status: nil))
+                        section.replaceItem(at: index, with: chatItem)
+                        affectedRows.append(index)
+                    }
+                }
+
+            let deliveredMessage = ChatMessage(with: message)
+            let kind = ChatItem.Kind.visitorMessage(
+                deliveredMessage,
+                status: deliveredStatusText
+            )
+            let item = ChatItem(kind: kind)
+            downloader.addDownloads(for: deliveredMessage.attachment?.files)
+            section.replaceItem(at: index, with: item)
+            affectedRows.append(index)
+            action?(.refreshRows(affectedRows, in: section.index, animated: false))
+        }
+
+    static func item(
+            for row: Int,
+            in section: Int,
+            from sections: [Section<ChatItem>],
+            downloader: FileDownloader
+        ) -> ChatItem {
+            let section = sections[section]
+            let item = section[row]
+
+            switch item.kind {
+            case .operatorMessage(let message, _, _):
+                message.downloads = downloader.downloads(
+                    for: message.attachment?.files,
+                    autoDownload: .images
+                )
+                if shouldShowOperatorImage(for: row, in: section) {
+                    let imageUrl = message.operator?.pictureUrl
+                    let kind: ChatItem.Kind = .operatorMessage(
+                        message,
+                        showsImage: true,
+                        imageUrl: imageUrl
+                    )
+                    return ChatItem(kind: kind)
+                }
+                return item
+            case .visitorMessage(let message, _):
+                message.downloads = downloader.downloads(
+                    for: message.attachment?.files,
+                    autoDownload: .images
+                )
+                return item
+            case .choiceCard(let message, _, _, let isActive):
+                if shouldShowOperatorImage(for: row, in: section) {
+                    let imageUrl = message.operator?.pictureUrl
+                    let kind: ChatItem.Kind = .choiceCard(
+                        message,
+                        showsImage: true,
+                        imageUrl: imageUrl,
+                        isActive: isActive
+                    )
+                    return ChatItem(kind: kind)
+                }
+                return item
+
+            case .customCard(let message, _, _, let isActive):
+                let imageUrl = message.operator?.pictureUrl
+                let shouldShowImage = shouldShowOperatorImage(for: row, in: section)
+                let kind: ChatItem.Kind = .customCard(
+                    message,
+                    showsImage: shouldShowImage,
+                    imageUrl: imageUrl,
+                    isActive: isActive
+                )
+                return ChatItem(kind: kind)
+            default:
+                return item
+            }
+        }
+
+        static private func shouldShowOperatorImage(
+            for row: Int,
+            in section: Section<ChatItem>
+        ) -> Bool {
+            guard section[row].isOperatorMessage else { return false }
+            let nextItem = section.item(after: row)
+            return nextItem == nil || nextItem?.isOperatorMessage == false
+        }
+
 }
 
 extension SecureConversations {
@@ -333,57 +445,13 @@ extension SecureConversations {
         }
 
         func item(for row: Int, in section: Int) -> ChatItem {
-            let section = sections[section]
-            let item = section[row]
-
-            switch item.kind {
-            case .operatorMessage(let message, _, _):
-                message.downloads = downloader.downloads(
-                    for: message.attachment?.files,
-                    autoDownload: .images
+            SecureConversations.ChatWithTranscriptModel
+                .item(
+                    for: row,
+                    in: section,
+                    from: sections,
+                    downloader: downloader
                 )
-                if shouldShowOperatorImage(for: row, in: section) {
-                    let imageUrl = message.operator?.pictureUrl
-                    let kind: ChatItem.Kind = .operatorMessage(
-                        message,
-                        showsImage: true,
-                        imageUrl: imageUrl
-                    )
-                    return ChatItem(kind: kind)
-                }
-                return item
-            case .visitorMessage(let message, _):
-                message.downloads = downloader.downloads(
-                    for: message.attachment?.files,
-                    autoDownload: .images
-                )
-                return item
-            case .choiceCard(let message, _, _, let isActive):
-                if shouldShowOperatorImage(for: row, in: section) {
-                    let imageUrl = message.operator?.pictureUrl
-                    let kind: ChatItem.Kind = .choiceCard(
-                        message,
-                        showsImage: true,
-                        imageUrl: imageUrl,
-                        isActive: isActive
-                    )
-                    return ChatItem(kind: kind)
-                }
-                return item
-
-            case .customCard(let message, _, _, let isActive):
-                let imageUrl = message.operator?.pictureUrl
-                let shouldShowImage = shouldShowOperatorImage(for: row, in: section)
-                let kind: ChatItem.Kind = .customCard(
-                    message,
-                    showsImage: shouldShowImage,
-                    imageUrl: imageUrl,
-                    isActive: isActive
-                )
-                return ChatItem(kind: kind)
-            default:
-                return item
-            }
         }
 
         private func shouldShowOperatorImage(
@@ -510,38 +578,16 @@ extension SecureConversations.TranscriptModel {
         with message: CoreSdkClient.Message,
         in section: Section<ChatItem>
     ) {
-        guard let index = section.items
-            .enumerated()
-            .first(where: {
-                guard case .outgoingMessage(let message) = $0.element.kind else { return false }
-                return message.id == outgoingMessage.id
-            })?.offset
-        else { return }
-
-        var affectedRows = [Int]()
-
-        // Remove previous "Delivered" statuses
-        section.items
-            .enumerated()
-            .forEach { index, element in
-                if case .visitorMessage(let message, let status) = element.kind,
-                   status == deliveredStatusText {
-                    let chatItem = ChatItem(kind: .visitorMessage(message, status: nil))
-                    section.replaceItem(at: index, with: chatItem)
-                    affectedRows.append(index)
-                }
-            }
-
-        let deliveredMessage = ChatMessage(with: message)
-        let kind = ChatItem.Kind.visitorMessage(
-            deliveredMessage,
-            status: deliveredStatusText
-        )
-        let item = ChatItem(kind: kind)
-        downloader.addDownloads(for: deliveredMessage.attachment?.files)
-        section.replaceItem(at: index, with: item)
-        affectedRows.append(index)
-        action?(.refreshRows(affectedRows, in: section.index, animated: false))
+        SecureConversations.ChatWithTranscriptModel
+            .replace(
+                outgoingMessage,
+                uploads: uploads,
+                with: message,
+                in: section,
+                deliveredStatusText: deliveredStatusText,
+                downloader: downloader,
+                action: action
+            )
     }
 
     func clearInputs() {
