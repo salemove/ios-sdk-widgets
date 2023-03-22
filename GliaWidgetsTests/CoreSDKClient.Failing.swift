@@ -46,6 +46,10 @@ extension CoreSdkClient {
         secureMarkMessagesAsRead: { _ in
             fail("\(Self.self).secureMarkMessagesAsRead")
             return .mock
+        },
+        downloadSecureFile: { _, _, _ in
+            fail("\(Self.self).downloadSecureFile")
+            return .mock
         }
     )
 }

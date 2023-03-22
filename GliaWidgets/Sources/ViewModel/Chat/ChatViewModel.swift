@@ -115,7 +115,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
 
         self.downloader = FileDownloader(
             environment: .init(
-                fetchFile: environment.fetchFile,
+                fetchFile: .fromEngagement(environment.fetchFile),
                 fileManager: environment.fileManager,
                 data: environment.data,
                 date: environment.date,

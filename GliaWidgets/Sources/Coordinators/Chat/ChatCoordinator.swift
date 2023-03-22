@@ -298,7 +298,7 @@ extension ChatCoordinator {
         viewFactory: ViewFactory
     ) -> SecureConversations.TranscriptModel.Environment {
         SecureConversations.TranscriptModel.Environment(
-           fetchFile: environment.fetchFile,
+           fetchFile: environment.downloadSecureFile,
            fileManager: environment.fileManager,
            data: environment.data,
            date: environment.date,
