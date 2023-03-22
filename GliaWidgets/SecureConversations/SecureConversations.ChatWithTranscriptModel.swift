@@ -359,7 +359,7 @@ extension SecureConversations {
             self.environment = environment
             self.downloader = FileDownloader(
                 environment: .init(
-                    fetchFile: environment.fetchFile,
+                    fetchFile: .fromSecureMessaging(environment.fetchFile),
                     fileManager: environment.fileManager,
                     data: environment.data,
                     date: environment.date,
@@ -376,7 +376,7 @@ extension SecureConversations {
             let uploader = FileUploader(
                 maximumUploads: Self.maximumUploads,
                 environment: .init(
-                    uploadFile: .toConversation(environment.secureUploadFile),
+                    uploadFile: .toSecureMessaging(environment.secureUploadFile),
                     fileManager: environment.fileManager,
                     data: environment.data,
                     date: environment.date,
@@ -804,7 +804,7 @@ extension SecureConversations {
 
 extension SecureConversations.TranscriptModel {
     struct Environment {
-        var fetchFile: CoreSdkClient.FetchFile
+        var fetchFile: CoreSdkClient.DownloadSecureFile
         var fileManager: FoundationBased.FileManager
         var data: FoundationBased.Data
         var date: () -> Date

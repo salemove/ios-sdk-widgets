@@ -76,7 +76,7 @@ class FileDownload {
                 progress.value = $0.fractionCompleted
             }
         }
-        let onCompletion: CoreSdkClient.EngagementFileFetchCompletionBlock = { data, error in
+        let onCompletion: (CoreSdkClient.EngagementFileData?, Swift.Error?) -> Void = { data, error in
             if let data = data, let storageID = self.storageID {
                 let url = self.storage.url(for: storageID)
                 let file = LocalFile(
@@ -90,18 +90,26 @@ class FileDownload {
                 )
                 self.storage.store(data.data, for: storageID)
                 self.state.value = .downloaded(file)
-            } else if let error = error {
+            } else if let error = error as? CoreSdkClient.GliaCoreError {
                 self.state.value = .error(Error(with: error))
+            } else if error != nil {
+                self.state.value = .error(.generic)
             }
         }
 
         state.value = .downloading(progress: progress)
 
-        environment.fetchFile(
+        environment.fetchFile.startWithFile(
             engagementFile,
-            onProgress,
-            onCompletion
-        )
+            progress: onProgress
+        ) { result in
+            switch result {
+            case let .success(fileData):
+                onCompletion(fileData, nil)
+            case let .failure(error):
+                onCompletion(nil, error)
+            }
+        }
     }
 }
 

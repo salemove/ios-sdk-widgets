@@ -135,6 +135,15 @@ struct CoreSdkClient {
 
     typealias SecureMarkMessagesAsRead = (_ callback: @escaping (Result<Void, Error>) -> Void) -> Cancellable
     var secureMarkMessagesAsRead: SecureMarkMessagesAsRead
+
+    typealias DownloadSecureFile = (
+        _ file: EngagementFile,
+        _ progress: @escaping EngagementFileProgressBlock,
+        _ completion: @escaping (Result<EngagementFileData, Error>) -> Void
+    ) -> Cancellable
+
+    var downloadSecureFile: DownloadSecureFile
+
 }
 
 extension CoreSdkClient {

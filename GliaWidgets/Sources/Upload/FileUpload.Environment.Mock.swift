@@ -7,6 +7,6 @@ extension FileUpload.Environment {
 }
 
 extension FileUpload.Environment.UploadFile {
-    static let mock = FileUploader.Environment.UploadFile.toConversation({ _, _, _ in .mock })
+    static let mock = FileUploader.Environment.UploadFile.toSecureMessaging({ _, _, _ in .mock })
 }
 #endif
