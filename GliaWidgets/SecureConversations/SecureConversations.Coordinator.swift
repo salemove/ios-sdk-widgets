@@ -47,7 +47,7 @@ extension SecureConversations {
                     fileUploader: environment.createFileUploader(
                         SecureConversations.WelcomeViewModel.maximumUploads,
                         .init(
-                            uploadFile: .toConversation(environment.uploadSecureFile),
+                            uploadFile: .toSecureMessaging(environment.uploadSecureFile),
                             fileManager: environment.fileManager,
                             data: environment.data,
                             date: environment.date,
@@ -277,7 +277,8 @@ extension SecureConversations.Coordinator {
                 secureUploadFile: environment.uploadSecureFile,
                 getSecureUnreadMessageCount: environment.getSecureUnreadMessageCount,
                 messagesWithUnreadCountLoaderScheduler: environment.messagesWithUnreadCountLoaderScheduler,
-                secureMarkMessagesAsRead: environment.secureMarkMessagesAsRead
+                secureMarkMessagesAsRead: environment.secureMarkMessagesAsRead,
+                downloadSecureFile: environment.downloadSecureFile
             ),
             startWithSecureTranscriptFlow: true
         )
@@ -340,6 +341,7 @@ extension SecureConversations.Coordinator {
         var getSecureUnreadMessageCount: CoreSdkClient.GetSecureUnreadMessageCount
         var messagesWithUnreadCountLoaderScheduler: CoreSdkClient.ReactiveSwift.DateScheduler
         var secureMarkMessagesAsRead: CoreSdkClient.SecureMarkMessagesAsRead
+        var downloadSecureFile: CoreSdkClient.DownloadSecureFile
     }
 
     enum DelegateEvent {

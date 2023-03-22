@@ -31,7 +31,8 @@ extension CoreSdkClient {
         sendSecureMessage: { _, _, _, _ in .mock },
         uploadSecureFile: { _, _, _ in .mock },
         getSecureUnreadMessageCount: { _ in },
-        secureMarkMessagesAsRead: { _ in .mock }
+        secureMarkMessagesAsRead: { _ in .mock },
+        downloadSecureFile: { _, _, _ in .mock }
     )
 }
 
