@@ -431,6 +431,7 @@
 		AF10ED8F29BF849A00E85309 /* UnreadMessageDividerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF10ED8E29BF849A00E85309 /* UnreadMessageDividerView.swift */; };
 		AF10ED9129BF85C700E85309 /* UnreadMessageDividerStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF10ED9029BF85C700E85309 /* UnreadMessageDividerStyle.swift */; };
 		AF11F30728BE6F0C002ACEB4 /* UIAlertController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF11F30628BE6F0C002ACEB4 /* UIAlertController+Extensions.swift */; };
+		AF2355A229C9EC7E007D9896 /* IdCollectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2355A129C9EC7E007D9896 /* IdCollectionTests.swift */; };
 		AF39330B29B2A6A00008B60D /* ChatViewModel.SecureConverstaions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF39330A29B2A6A00008B60D /* ChatViewModel.SecureConverstaions.swift */; };
 		AF3D520B2983235C00AD8E69 /* FileUploader.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3D520A2983235C00AD8E69 /* FileUploader.Mock.swift */; };
 		AF3D520D2983B3DD00AD8E69 /* FileUploader.Environment.Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3D520C2983B3DD00AD8E69 /* FileUploader.Environment.Interface.swift */; };
@@ -1029,6 +1030,7 @@
 		AF10ED8E29BF849A00E85309 /* UnreadMessageDividerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnreadMessageDividerView.swift; sourceTree = "<group>"; };
 		AF10ED9029BF85C700E85309 /* UnreadMessageDividerStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnreadMessageDividerStyle.swift; sourceTree = "<group>"; };
 		AF11F30628BE6F0C002ACEB4 /* UIAlertController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIAlertController+Extensions.swift"; sourceTree = "<group>"; };
+		AF2355A129C9EC7E007D9896 /* IdCollectionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdCollectionTests.swift; sourceTree = "<group>"; };
 		AF39330A29B2A6A00008B60D /* ChatViewModel.SecureConverstaions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.SecureConverstaions.swift; sourceTree = "<group>"; };
 		AF3D520A2983235C00AD8E69 /* FileUploader.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUploader.Mock.swift; sourceTree = "<group>"; };
 		AF3D520C2983B3DD00AD8E69 /* FileUploader.Environment.Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUploader.Environment.Interface.swift; sourceTree = "<group>"; };
@@ -2787,6 +2789,7 @@
 				EB9ADB582829089700FAE8A4 /* ChatItem */,
 				9A8130C027D9091800220BBD /* Download */,
 				9A3E1D9E27BA7B80005634EB /* Storage */,
+				AF2355A129C9EC7E007D9896 /* IdCollectionTests.swift */,
 			);
 			path = Lib;
 			sourceTree = "<group>";
@@ -4018,6 +4021,7 @@
 				84265E07298AE96B00D65842 /* ScreenSharingViewModelTests.swift in Sources */,
 				EB9ADB51280EBD4E00FAE8A4 /* InteractorStateTests.swift in Sources */,
 				EB7A1508286D98000035AC62 /* FileUploader.Environment.Failing.swift in Sources */,
+				AF2355A229C9EC7E007D9896 /* IdCollectionTests.swift in Sources */,
 				847A7643285A1914004044D1 /* FileUploadListViewModelTests.swift in Sources */,
 				9A1992E727D66C7400161AAE /* UIKitBased.Failing.swift in Sources */,
 				9AE05CB62805D2CB00871321 /* Interactor.Environment.Failing.swift in Sources */,
