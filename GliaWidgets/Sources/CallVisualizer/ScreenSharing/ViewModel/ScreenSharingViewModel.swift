@@ -15,14 +15,6 @@ extension CallVisualizer {
         ) {
             self.style = style
             self.environment = environment
-
-            environment
-                .screenShareHandler
-                .status
-                .addObserver(self) { [weak self] newStatus, _ in
-                    guard case .stopped = newStatus else { return }
-                    self?.delegate(.close)
-                }
         }
     }
 }
