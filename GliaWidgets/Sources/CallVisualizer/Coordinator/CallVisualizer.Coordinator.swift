@@ -274,11 +274,12 @@ extension CallVisualizer {
             coordinator.delegate = { event in
                 switch event {
                 case .close:
-                    self.screenSharingCoordinator.unwrap {
-                        $0.viewController?.dismiss(animated: false)
+                    if let screenSharing = self.screenSharingCoordinator?.viewController {
+                        screenSharing.presentingViewController?.dismiss(animated: true)
                         self.screenSharingCoordinator = nil
+                    } else {
+                        viewController.dismiss(animated: true)
                     }
-                    viewController.dismiss(animated: true)
                 }
             }
 
@@ -300,6 +301,8 @@ private extension CallVisualizer.Coordinator {
                 case .started:
                     self?.createScreenShareBubbleView()
                 case .stopped:
+                    self?.screenSharingCoordinator?.viewController?.dismiss(animated: true)
+                    self?.screenSharingCoordinator = nil
                     self?.removeBubbleView()
                 }
             }
