@@ -128,8 +128,11 @@ class ViewFactory {
         )
     }
 
-    func makeSecureConversationsWelcomeView(props: SecureConversations.WelcomeView.Props) -> SecureConversations.WelcomeView {
-        return .init(props: props)
+    func makeSecureConversationsWelcomeView(
+        props: SecureConversations.WelcomeView.Props,
+        environment: SecureConversations.WelcomeView.Environemnt
+    ) -> SecureConversations.WelcomeView {
+        return .init(props: props, environment: environment)
     }
 
     func makeSecureConversationsConfirmationView(props: SecureConversations.ConfirmationView.Props) -> SecureConversations.ConfirmationView {

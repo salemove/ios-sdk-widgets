@@ -3,6 +3,9 @@ import UIKit
 
 extension SecureConversations {
     final class WelcomeViewController: UIViewController {
+        struct Environemnt {
+            let gcd: GCD
+        }
         var props: Props {
             didSet {
                 guard props != oldValue else { return }
@@ -11,13 +14,16 @@ extension SecureConversations {
         }
 
         let viewFactory: ViewFactory
+        let environment: Environemnt
 
         init(
             viewFactory: ViewFactory,
-            props: Props
+            props: Props,
+            environment: Environemnt
         ) {
             self.viewFactory = viewFactory
             self.props = props
+            self.environment = environment
             super.init(nibName: nil, bundle: nil)
         }
 
@@ -43,7 +49,10 @@ extension SecureConversations {
             if let currentView = view as? WelcomeView {
                 welcomeView = currentView
             } else {
-                welcomeView = viewFactory.makeSecureConversationsWelcomeView(props: props)
+                welcomeView = viewFactory.makeSecureConversationsWelcomeView(
+                    props: props,
+                    environment: .init(gcd: environment.gcd)
+                )
                 view = welcomeView
             }
             welcomeView.props = props
