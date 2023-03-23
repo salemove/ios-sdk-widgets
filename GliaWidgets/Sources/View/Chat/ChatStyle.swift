@@ -113,6 +113,7 @@ public class ChatStyle: EngagementStyle {
         )
     }
 
+    // swiftlint:disable function_body_length
     func apply(
         configuration: RemoteConfiguration.Chat?,
         assetsBuilder: RemoteConfiguration.AssetsBuilder
@@ -162,7 +163,11 @@ public class ChatStyle: EngagementStyle {
             assetsBuilder: assetsBuilder
         )
         operatorTypingIndicator.apply(configuration: configuration?.typingIndicator)
-
+        unreadMessageDivider.apply(
+            lineColor: configuration?.newMessagesDividerColor,
+            text: configuration?.newMessagesDividerText,
+            assetBuilder: assetsBuilder
+        )
         configuration?.background?.color.unwrap {
             switch $0.type {
             case .fill:
@@ -176,4 +181,5 @@ public class ChatStyle: EngagementStyle {
             }
         }
     }
+    // swiftlint:enable function_body_length
 }

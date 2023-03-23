@@ -1,7 +1,7 @@
 import UIKit
 
 /// Style for divider of unread messages in secure messaging transcript.
-public struct UnreadMessageDividerStyle: Equatable {
+public class UnreadMessageDividerStyle: Equatable {
     /// Message divider title.
     public var title: String
     /// Text color for message divider title.
@@ -32,6 +32,13 @@ public struct UnreadMessageDividerStyle: Equatable {
         self.titleFont = titleFont
         self.accessibility = accessibility
     }
+
+    public static func == (lhs: UnreadMessageDividerStyle, rhs: UnreadMessageDividerStyle) -> Bool {
+        return lhs.title == rhs.title &&
+        lhs.titleColor == rhs.titleColor &&
+        lhs.titleFont == rhs.titleFont &&
+        lhs.lineColor == rhs.lineColor
+    }
 }
 
 extension UnreadMessageDividerStyle {
@@ -51,5 +58,27 @@ extension UnreadMessageDividerStyle {
         public static let unsupported = Self(
             isFontScalingEnabled: false
         )
+    }
+}
+
+extension UnreadMessageDividerStyle {
+    func apply(
+        lineColor: RemoteConfiguration.Color?,
+        text: RemoteConfiguration.Text?,
+        assetBuilder: RemoteConfiguration.AssetsBuilder
+    ) {
+        lineColor?.value.map { UIColor(hex: $0) }
+            .first
+            .unwrap { self.lineColor = $0 }
+
+        UIFont.convertToFont(
+            uiFont: assetBuilder.fontBuilder(text?.font),
+            textStyle: .body
+        ).unwrap { titleFont = $0 }
+
+        text?.foreground?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .unwrap { titleColor = $0 }
     }
 }
