@@ -250,7 +250,7 @@ private extension EngagementViewModel {
         } failure: { _ in
             self.engagementDelegate?(.finished)
         }
-        self.screenShareHandler.cleanUp()
+        self.screenShareHandler.stop()
     }
 
     private func closeTapped() {
