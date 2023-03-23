@@ -70,6 +70,7 @@ final class Header: BaseView {
 
         titleLabel.text = props.title
         titleLabel.accessibilityLabel = props.title
+        titleLabel.accessibilityIdentifier = "header_view_title_label"
 
         effectView.isHidden = props.effect == .none
         titleLabel.font = props.style.titleFont
