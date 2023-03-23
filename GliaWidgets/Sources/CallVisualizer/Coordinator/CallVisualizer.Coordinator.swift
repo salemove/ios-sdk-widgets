@@ -131,9 +131,9 @@ extension CallVisualizer {
 
         func end() {
             removeBubbleView()
-            videoCallCoordinator?.viewController?.dismiss(animated: true)
-            videoCallCoordinator = nil
+            closeFlow()
             stopObservingScreenSharingHandlerState()
+            videoCallCoordinator = nil
             screenSharingCoordinator = nil
         }
 
@@ -271,15 +271,11 @@ extension CallVisualizer {
             let viewController = coordinator.start()
             self.videoCallCoordinator = coordinator
 
-            coordinator.delegate = { event in
+            coordinator.delegate = { [weak self] event in
                 switch event {
                 case .close:
-                    if let screenSharing = self.screenSharingCoordinator?.viewController {
-                        screenSharing.presentingViewController?.dismiss(animated: true)
-                        self.screenSharingCoordinator = nil
-                    } else {
-                        viewController.dismiss(animated: true)
-                    }
+                    self?.closeFlow()
+                    self?.screenSharingCoordinator = nil
                 }
             }
 
@@ -311,6 +307,27 @@ private extension CallVisualizer.Coordinator {
     func stopObservingScreenSharingHandlerState() {
         environment.screenShareHandler.status.removeObserver(self)
         environment.screenShareHandler.stop()
+    }
+
+    func closeFlow() {
+        // Presented flow can consist of:
+        // - Only screen sharing screen is presented from Root (Main) controller.
+        // - Only Video call screen is presented from Root (Main) controller.
+        // - Video call screen is presented over Screen sharing screen,
+        // which is presented from Root (Main) controller.
+        //
+        // To dismiss all presented controllers just need to call `dismiss` from Root (Main) controller.
+        // If Screen sharing screen is exist, no matter whether Video call screen is presented over it,
+        // screenSharingCoordinator?.viewController.presentingViewController is Root (Main) controller,
+        // otherwise videoCallCoordinator?.viewController?.presentingViewController is Root (Main) controller.
+        switch (screenSharingCoordinator, videoCallCoordinator) {
+        case (.some(let screenSharing), _):
+            screenSharing.viewController?.presentingViewController?.dismiss(animated: true)
+        case (.none, .some(let videoCall)):
+            videoCall.viewController?.presentingViewController?.dismiss(animated: true)
+        case (.none, .none):
+            break
+        }
     }
 }
 
