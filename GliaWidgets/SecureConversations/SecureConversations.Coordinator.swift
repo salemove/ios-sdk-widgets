@@ -75,7 +75,8 @@ extension SecureConversations {
 
             let controller = SecureConversations.WelcomeViewController(
                 viewFactory: viewFactory,
-                props: viewModel.props()
+                props: viewModel.props(),
+                environment: .init(gcd: environment.gcd)
             )
 
             viewModel.delegate = { [weak self, weak controller] event in

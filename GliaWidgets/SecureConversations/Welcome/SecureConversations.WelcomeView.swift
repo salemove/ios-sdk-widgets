@@ -5,6 +5,9 @@ import Dispatch
 
 extension SecureConversations {
     final class WelcomeView: BaseView {
+        struct Environemnt {
+            let gcd: GCD
+        }
         static let sideMargin = 24.0
         static let filePickerButtonSize = 44.0
 
@@ -46,7 +49,7 @@ extension SecureConversations {
             )
         }
 
-        let messageTextView = MessageTextView().makeView()
+        lazy var messageTextView = MessageTextView(environment: .init(gcd: environment.gcd)).makeView()
 
         lazy var sendMessageButton: SecureConversations.SendMessageButton = {
             let button = SecureConversations.SendMessageButton()
@@ -119,15 +122,17 @@ extension SecureConversations {
             }
 
         let fileUploadListView = SecureConversations.FileUploadListView().makeView()
+        let environment: Environemnt
 
         // Since some of the reusable views require style
         // to be passed during initializtion, we have to
         // provide `Props` also during initializtion, because
         // it is single source of data (including styles)
         // for the data-driven view.
-        init(props: Props) {
+        init(props: Props, environment: Environemnt) {
             self.header = Header(props: props.headerProps)
             self.props = props
+            self.environment = environment
             super.init()
             // Hide warning stack initially.
             setWarningStackHidden(true)
@@ -495,6 +500,9 @@ extension SecureConversations.WelcomeView.Props.WarningMessage: ExpressibleByStr
 // MARK: - MessageTextView
 extension SecureConversations.WelcomeView {
     class MessageTextView: BaseView {
+        struct Environemnt {
+            let gcd: GCD
+        }
         enum Props: Equatable {
             struct NormalState: Equatable {
                 let style: SecureConversations.WelcomeStyle.MessageTextViewStyle
@@ -519,6 +527,8 @@ extension SecureConversations.WelcomeView {
             case disabled(DisabledState)
         }
 
+        let environment: Environemnt
+
         var props = Props.normal(.init(style: .initial, text: "", activeChanged: .nop)) {
             didSet {
                 renderProps()
@@ -538,6 +548,15 @@ extension SecureConversations.WelcomeView {
         var textViewBottomConstraint: NSLayoutConstraint?
         var textViewLeadingConstraint: NSLayoutConstraint?
         var textViewTrailingConstraint: NSLayoutConstraint?
+
+        init(environment: Environemnt) {
+            self.environment = environment
+            super.init()
+        }
+
+        required init() {
+            fatalError("init() has not been implemented")
+        }
 
         override func setup() {
             super.setup()
@@ -615,14 +634,16 @@ extension SecureConversations.WelcomeView {
         var renderedActive: Bool = false {
             didSet {
                 guard renderedActive != oldValue else { return }
-                // Make text view active based on pass value from Props
-                switch (renderedActive, textView.isFirstResponder) {
-                case (true, true), (false, false):
-                    break
-                case (true, false):
-                    textView.becomeFirstResponder()
-                case (false, true):
-                    textView.resignFirstResponder()
+                environment.gcd.mainQueue.async {
+                    // Make text view active based on pass value from Props
+                    switch (self.renderedActive, self.textView.isFirstResponder) {
+                    case (true, true), (false, false):
+                        break
+                    case (true, false):
+                        self.textView.becomeFirstResponder()
+                    case (false, true):
+                        self.textView.resignFirstResponder()
+                    }
                 }
             }
         }
