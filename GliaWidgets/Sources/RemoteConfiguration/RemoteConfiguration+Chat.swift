@@ -15,6 +15,8 @@ extension RemoteConfiguration {
         let attachmentSourceList: AttachmentSourceList?
         let unreadIndicator: UnreadIndicator?
         let typingIndicator: Color?
+        let newMessagesDividerColor: Color?
+        let newMessagesDividerText: Text?
     }
 
     struct Header: Codable {
