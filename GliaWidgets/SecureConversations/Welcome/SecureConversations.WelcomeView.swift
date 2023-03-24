@@ -295,6 +295,8 @@ extension SecureConversations.WelcomeView {
             props.fileUploadListProps.uploads.isEmpty ? 0 : 16,
             after: fileUploadListView
         )
+
+        rootStackView.isHidden = props.isUiHidden
     }
 
     private func renderCheckMessagesButtonProps() {
@@ -487,6 +489,7 @@ extension SecureConversations.WelcomeView {
         let warningMessage: WarningMessage
         let fileUploadListProps: SecureConversations.FileUploadListView.Props
         let headerProps: Header.Props
+        let isUiHidden: Bool
     }
 }
 
