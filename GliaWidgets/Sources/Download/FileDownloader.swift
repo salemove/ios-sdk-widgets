@@ -101,8 +101,11 @@ extension FileDownloader {
         _ storage: DataStorage,
         _ environment: FileDownload.Environment
     ) -> FileDownload
+
     struct Environment {
-        var fetchFile: CoreSdkClient.FetchFile
+        typealias FetchFile = FileDownload.Environment.FetchFile
+
+        var fetchFile: FetchFile
         var fileManager: FoundationBased.FileManager
         var data: FoundationBased.Data
         var date: () -> Date
