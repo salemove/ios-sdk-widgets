@@ -10,7 +10,7 @@ extension FileUpload {
 extension FileUpload.Environment {
     enum UploadFile {
         case toEngagement(CoreSdkClient.UploadFileToEngagement)
-        case toConversation(CoreSdkClient.SecureConversationsUploadFile)
+        case toSecureMessaging(CoreSdkClient.SecureConversationsUploadFile)
     }
 }
 
@@ -36,7 +36,7 @@ extension FileUpload.Environment.UploadFile {
             }
             return nil
 
-        case let .toConversation(uploadFile):
+        case let .toSecureMessaging(uploadFile):
             return uploadFile(file, progress, completion)
         }
     }
