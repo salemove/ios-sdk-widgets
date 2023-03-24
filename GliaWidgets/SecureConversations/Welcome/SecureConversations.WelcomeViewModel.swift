@@ -26,7 +26,7 @@ extension SecureConversations {
         /// Flag indicating attachment(s) availability.
         /// By default attachments are not available, until site configurations are fetched.
         private (set) var isAttachmentsAvailable: Bool = false { didSet { reportChange() } }
-        var isSecureConversationsAvailable: Bool = true { didSet { reportChange() } }
+        var availabilityStatus: Availability.Status = .available { didSet { reportChange() } }
         var messageInputState: MessageInputState = .normal { didSet { reportChange() } }
         var sendMessageRequestState: SendMessageRequestState = .waiting { didSet { reportChange() } }
 
@@ -59,13 +59,23 @@ extension SecureConversations {
         }
 
         private func checkSecureConversationsAvailability() {
-            availability.checkSecureConversationsAvailability { result in
+            availability.checkSecureConversationsAvailability { [weak self] result in
+                guard let self else { return }
                 switch result {
-                case .success(let isAvailable) where isAvailable:
-                    self.isSecureConversationsAvailable = true
-                default:
-                    self.isSecureConversationsAvailable = false
-
+                case .success(.available):
+                    self.availabilityStatus = .available
+                case .success(.unavailable(.emptyQueue)), .failure:
+                    self.availabilityStatus = .unavailable(.emptyQueue)
+                    let configuration = self.environment.alertConfiguration.unavailableMessageCenter
+                    self.delegate?(
+                        .showAlertAsView(
+                            configuration,
+                            accessibilityIdentifier: Self.unavailableMessageCenterAlertAccIdentidier,
+                            dismissed: nil
+                        )
+                    )
+                case .success(.unavailable(.unauthenticated)):
+                    self.availabilityStatus = .unavailable(.unauthenticated)
                     let configuration = self.environment.alertConfiguration.unavailableMessageCenter
                     self.delegate?(
                         .showAlertAsView(
@@ -171,7 +181,8 @@ extension SecureConversations.WelcomeViewModel {
                 messageTextViewProps: Self.textViewState(for: self),
                 warningMessage: warningMessage,
                 fileUploadListProps: fileUploadListModel.props(),
-                headerProps: Self.headerState(for: self, with: welcomeStyle)
+                headerProps: Self.headerState(for: self, with: welcomeStyle),
+                isUiHidden: self.availabilityStatus == .unavailable(.unauthenticated)
             )
         )
         return props
@@ -182,7 +193,7 @@ extension SecureConversations.WelcomeViewModel {
     ) -> SecureConversations.WelcomeStyle {
         var style = instance.environment.welcomeStyle
 
-        if !instance.isSecureConversationsAvailable {
+        if instance.availabilityStatus != .available {
             style.messageTitleStyle = nil
         }
 
@@ -195,7 +206,7 @@ extension SecureConversations.WelcomeViewModel {
         var filePickerButton: WelcomeViewProps.FilePickerButton?
 
         let isFilePickerEnabled = !instance.fileUploadListModel.isLimitReached
-        if instance.isSecureConversationsAvailable && instance.isAttachmentsAvailable {
+        if instance.availabilityStatus == .available && instance.isAttachmentsAvailable {
             filePickerButton = WelcomeViewProps.FilePickerButton(
                 isEnabled: isFilePickerEnabled,
                 tap: Command { originView in
@@ -211,7 +222,7 @@ extension SecureConversations.WelcomeViewModel {
     }
     static func textViewState(for instance: SecureConversations.WelcomeViewModel
     ) -> TextViewProps? {
-        guard instance.isSecureConversationsAvailable else {
+        guard instance.availabilityStatus == .available else {
             return nil
         }
 
@@ -262,7 +273,7 @@ extension SecureConversations.WelcomeViewModel {
         for instance: SecureConversations.WelcomeViewModel
     ) -> SendMessageButton? {
         // Is service available?
-        guard instance.isSecureConversationsAvailable else {
+        guard instance.availabilityStatus == .available else {
             return nil
         }
 

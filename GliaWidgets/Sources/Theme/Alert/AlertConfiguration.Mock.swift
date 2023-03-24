@@ -18,7 +18,8 @@ extension AlertConfiguration {
             mediaSourceNotAvailable: .mock(),
             unexpectedError: .mock(),
             apiError: .mock(),
-            unavailableMessageCenter: .mock()
+            unavailableMessageCenter: .mock(),
+            unavailableMessageCenterForBeingUnauthenticated: .mock()
         )
     }
 }
