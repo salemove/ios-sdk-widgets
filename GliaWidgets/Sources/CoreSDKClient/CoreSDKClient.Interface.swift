@@ -143,7 +143,6 @@ struct CoreSdkClient {
     ) -> Cancellable
 
     var downloadSecureFile: DownloadSecureFile
-
 }
 
 extension CoreSdkClient {

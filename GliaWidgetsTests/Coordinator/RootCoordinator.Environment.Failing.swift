@@ -71,6 +71,10 @@ extension EngagementCoordinator.Environment {
         downloadSecureFile: { _, _, _ in
             fail("\(Self.self).downloadSecureFile")
             return .mock
+        },
+        isAuthenticated: {
+            fail("\(Self.self).isAuthenticated")
+            return false
         }
     )
 }

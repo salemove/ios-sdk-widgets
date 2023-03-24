@@ -64,7 +64,8 @@ extension SecureConversations {
                 availability: .init(
                     environment: .init(
                         listQueues: environment.listQueues,
-                        queueIds: environment.queueIds
+                        queueIds: environment.queueIds,
+                        isAuthenticated: environment.isAuthenticated
                     )
                 )
             )
@@ -279,7 +280,8 @@ extension SecureConversations.Coordinator {
                 getSecureUnreadMessageCount: environment.getSecureUnreadMessageCount,
                 messagesWithUnreadCountLoaderScheduler: environment.messagesWithUnreadCountLoaderScheduler,
                 secureMarkMessagesAsRead: environment.secureMarkMessagesAsRead,
-                downloadSecureFile: environment.downloadSecureFile
+                downloadSecureFile: environment.downloadSecureFile,
+                isAuthenticated: environment.isAuthenticated
             ),
             startWithSecureTranscriptFlow: true
         )
@@ -343,6 +345,7 @@ extension SecureConversations.Coordinator {
         var messagesWithUnreadCountLoaderScheduler: CoreSdkClient.ReactiveSwift.DateScheduler
         var secureMarkMessagesAsRead: CoreSdkClient.SecureMarkMessagesAsRead
         var downloadSecureFile: CoreSdkClient.DownloadSecureFile
+        var isAuthenticated: () -> Bool
     }
 
     enum DelegateEvent {

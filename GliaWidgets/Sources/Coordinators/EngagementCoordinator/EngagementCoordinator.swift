@@ -236,7 +236,8 @@ extension EngagementCoordinator {
                 getSecureUnreadMessageCount: environment.getSecureUnreadMessageCount,
                 messagesWithUnreadCountLoaderScheduler: environment.messagesWithUnreadCountLoaderScheduler,
                 secureMarkMessagesAsRead: environment.secureMarkMessagesAsRead,
-                downloadSecureFile: environment.downloadSecureFile
+                downloadSecureFile: environment.downloadSecureFile,
+                isAuthenticated: environment.isAuthenticated
             ),
             startWithSecureTranscriptFlow: false
         )
@@ -437,7 +438,8 @@ extension EngagementCoordinator {
                 getSecureUnreadMessageCount: environment.getSecureUnreadMessageCount,
                 messagesWithUnreadCountLoaderScheduler: environment.messagesWithUnreadCountLoaderScheduler,
                 secureMarkMessagesAsRead: environment.secureMarkMessagesAsRead,
-                downloadSecureFile: environment.downloadSecureFile
+                downloadSecureFile: environment.downloadSecureFile,
+                isAuthenticated: environment.isAuthenticated
             )
         )
 
