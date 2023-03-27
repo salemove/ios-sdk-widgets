@@ -240,7 +240,8 @@ extension ChatCoordinator {
             availability: .init(
                 environment: .init(
                     listQueues: environment.listQueues,
-                    queueIds: environment.queueIds
+                    queueIds: environment.queueIds,
+                    isAuthenticated: environment.isAuthenticated
                 )
             ),
             deliveredStatusText: viewFactory.theme.chat.visitorMessage.delivered

@@ -124,6 +124,12 @@ extension Theme {
             shouldShowCloseButton: false
         )
 
+        let unavailableMessageCenterForBeingUnauthenticated = MessageAlertConfiguration(
+            title: Alert.UnavailableMessageCenter.title,
+            message: Alert.UnavailableMessageCenter.notAuthenticatedMessage,
+            shouldShowCloseButton: false
+        )
+
         return AlertConfiguration(
             leaveQueue: leaveQueue,
             endEngagement: endEngagement,
@@ -140,7 +146,8 @@ extension Theme {
             mediaSourceNotAvailable: mediaSourceNotAvailable,
             unexpectedError: unexpected,
             apiError: api,
-            unavailableMessageCenter: unavailableMessageCenter
+            unavailableMessageCenter: unavailableMessageCenter,
+            unavailableMessageCenterForBeingUnauthenticated: unavailableMessageCenterForBeingUnauthenticated
         )
     }
 }

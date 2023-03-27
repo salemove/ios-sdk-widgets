@@ -136,6 +136,8 @@ public enum L10n {
     public enum UnavailableMessageCenter {
       /// The Message Center is currently unavailable. Please try again later.
       public static let message = L10n.tr("Localizable", "alert.unavailableMessageCenter.message", fallback: "The Message Center is currently unavailable. Please try again later.")
+      /// We could not verify your authentication status.
+      public static let notAuthenticatedMessage = L10n.tr("Localizable", "alert.unavailableMessageCenter.notAuthenticatedMessage", fallback: "We could not verify your authentication status.")
       /// Message Center Unavailable
       public static let title = L10n.tr("Localizable", "alert.unavailableMessageCenter.title", fallback: "Message Center Unavailable")
     }

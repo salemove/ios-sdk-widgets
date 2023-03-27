@@ -420,26 +420,32 @@ extension SecureConversations {
         }
 
 		private func checkSecureConversationsAvailability() {
-            availability.checkSecureConversationsAvailability { result in
+            availability.checkSecureConversationsAvailability { [weak self] result in
+                guard let self else { return }
                 switch result {
-                case .success(let isAvailable) where isAvailable:
+                case .success(.available):
                     self.isSecureConversationsAvailable = true
-                default:
+                case .failure, .success(.unavailable(.emptyQueue)):
                     self.isSecureConversationsAvailable = false
-
                     let configuration = self.environment.alertConfiguration.unavailableMessageCenter
-                    self.delegate?(
-                        .showAlertAsView(
-                            configuration,
-                            accessibilityIdentifier: Self.unavailableMessageCenterAlertAccIdentidier,
-                            dismissed: nil
-                        )
-                    )
+                    self.reportMessageCenterUnavailable(configuration: configuration)
+                case .success(.unavailable(.unauthenticated)):
+                    let configuration = self.environment.alertConfiguration.unavailableMessageCenterForBeingUnauthenticated
+                    self.reportMessageCenterUnavailable(configuration: configuration)
                 }
             }
 		}
 
-        // TODO: Common with chat model, should it be unified?
+        func reportMessageCenterUnavailable(configuration: MessageAlertConfiguration) {
+            self.delegate?(
+                .showAlertAsView(
+                    configuration,
+                    accessibilityIdentifier: Self.unavailableMessageCenterAlertAccIdentidier,
+                    dismissed: nil
+                )
+            )
+        }
+
         func numberOfItems(in section: Int) -> Int {
             sections[section].itemCount
         }
