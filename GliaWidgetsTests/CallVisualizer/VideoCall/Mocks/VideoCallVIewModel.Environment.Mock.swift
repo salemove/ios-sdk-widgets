@@ -12,7 +12,7 @@ extension CallVisualizer.VideoCallViewModel.Environment {
         notificationCenter: .mock,
         date: { .mock },
         engagedOperator: { .mock() },
-        screenShareHandler: .mock()
+        screenShareHandler: .mock
     )
 }
 

@@ -119,7 +119,7 @@ extension CallVisualizer {
             self.call.duration.addObserver(self) { [weak self] duration, _ in
                 self?.onDurationChanged(duration)
             }
-            self.environment.screenShareHandler.status.addObserver(self) { [weak self] status, _ in
+            self.environment.screenShareHandler.status().addObserver(self) { [weak self] status, _ in
                 self?.onScreenSharingStatusChange(status)
             }
 
@@ -174,7 +174,7 @@ extension CallVisualizer.VideoCallViewModel {
                     closeButton: .init(style: style.header.closeButton),
                     endScreenshareButton: .init(
                         tap: .init { [weak self] in
-                            self?.environment.screenShareHandler.stop()
+                            self?.environment.screenShareHandler.stop(nil)
                         },
                         style: style.header.endScreenShareButton
                     ),
@@ -456,7 +456,7 @@ private extension CallVisualizer.VideoCallViewModel {
     }
 
     func showConnected() {
-        switch environment.screenShareHandler.status.value {
+        switch environment.screenShareHandler.status().value {
         case .started:
             endScreenShareButtonHidden = false
         case .stopped:

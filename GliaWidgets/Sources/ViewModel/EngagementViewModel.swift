@@ -29,14 +29,14 @@ class EngagementViewModel: CommonEngagementModel {
         self.interactor.addObserver(self) { [weak self] event in
             self?.interactorEvent(event)
         }
-        screenShareHandler.status.addObserver(self) { [weak self] status, _ in
+        screenShareHandler.status().addObserver(self) { [weak self] status, _ in
             self?.onScreenSharingStatusChange(status)
         }
     }
 
     deinit {
         interactor.removeObserver(self)
-        screenShareHandler.status.removeObserver(self)
+        screenShareHandler.status().removeObserver(self)
         screenShareHandler.cleanUp()
     }
 
@@ -222,11 +222,11 @@ class EngagementViewModel: CommonEngagementModel {
     }
 
     func updateScreenSharingState(to state: CoreSdkClient.VisitorScreenSharingState) {
-        screenShareHandler.updateState(to: state)
+        screenShareHandler.updateState(state)
     }
 
     func endScreenSharing() {
-        screenShareHandler.stop()
+        screenShareHandler.stop(nil)
         engagementAction?(.showEndButton)
     }
 }
@@ -250,7 +250,7 @@ private extension EngagementViewModel {
         } failure: { _ in
             self.engagementDelegate?(.finished)
         }
-        self.screenShareHandler.stop()
+        self.screenShareHandler.stop(nil)
     }
 
     private func closeTapped() {
