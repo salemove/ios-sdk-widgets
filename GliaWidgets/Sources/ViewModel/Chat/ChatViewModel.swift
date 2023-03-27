@@ -209,7 +209,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             action?(.connected(name: name, imageUrl: pictureUrl))
             action?(.setMessageEntryEnabled(true))
 
-            switch screenShareHandler.status.value {
+            switch screenShareHandler.status().value {
             case .started:
                 engagementAction?(.showEndScreenShareButton)
             case .stopped:

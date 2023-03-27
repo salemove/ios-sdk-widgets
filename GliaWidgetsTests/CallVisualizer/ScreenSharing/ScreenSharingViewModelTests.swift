@@ -12,8 +12,11 @@ final class ScreenSharingViewModelTests: XCTestCase {
     }
 
     func test_end_screen_sharing() throws {
-        let screenShareHandlerMock = ScreenShareHandler.mock()
-        screenShareHandlerMock.status.value = .started
+        var isRunning = true
+        var screenShareHandlerMock = ScreenShareHandler.mock
+        screenShareHandlerMock.stop = { _ in
+            isRunning = false
+        }
 
         viewModel = CallVisualizer.ScreenSharingViewModel(
             style: ScreenSharingViewStyle.mock(),
@@ -22,9 +25,9 @@ final class ScreenSharingViewModelTests: XCTestCase {
 
         let props = viewModel.props()
 
-        XCTAssertEqual(screenShareHandlerMock.status.value, .started)
+        XCTAssertTrue(isRunning)
         props.screenSharingViewProps.endScreenSharing.tap.execute()
-        XCTAssertEqual(screenShareHandlerMock.status.value, .stopped)
+        XCTAssertFalse(isRunning)
     }
 
     func test_viewModel_output_actions() throws {
@@ -33,7 +36,7 @@ final class ScreenSharingViewModelTests: XCTestCase {
 
         viewModel = CallVisualizer.ScreenSharingViewModel(
             style: .mock(),
-            environment: .init(screenShareHandler: ScreenShareHandler.mock())
+            environment: .init(screenShareHandler: ScreenShareHandler.mock)
         )
         viewModel.delegate = Command { event in
             switch event {

@@ -22,7 +22,7 @@ class CallViewModelTests: XCTestCase {
         viewModel = .init(
             interactor: .mock(),
             alertConfiguration: .mock(),
-            screenShareHandler: ScreenShareHandler(),
+            screenShareHandler: .mock,
             environment: .mock,
             call: call,
             unreadMessages: .init(with: 0),
@@ -115,7 +115,7 @@ class CallViewModelTests: XCTestCase {
         viewModel = .init(
             interactor: .mock(),
             alertConfiguration: .mock(),
-            screenShareHandler: ScreenShareHandler(),
+            screenShareHandler: .mock,
             environment: .mock,
             call: call,
             unreadMessages: .init(with: 0),
@@ -201,7 +201,7 @@ class CallViewModelTests: XCTestCase {
         viewModel = .init(
             interactor: interactor,
             alertConfiguration: .mock(),
-            screenShareHandler: ScreenShareHandler(),
+            screenShareHandler: .mock,
             environment: .mock,
             call: call,
             unreadMessages: .init(with: 0),
@@ -281,7 +281,7 @@ class CallViewModelTests: XCTestCase {
         viewModel = .init(
             interactor: interactor,
             alertConfiguration: .mock(),
-            screenShareHandler: ScreenShareHandler(),
+            screenShareHandler: .mock,
             environment: .mock,
             call: call,
             unreadMessages: .init(with: 0),
@@ -322,7 +322,7 @@ class CallViewModelTests: XCTestCase {
         viewModel = .init(
             interactor: interactor,
             alertConfiguration: .mock(),
-            screenShareHandler: ScreenShareHandler(),
+            screenShareHandler: .mock,
             environment: .mock,
             call: call,
             unreadMessages: .init(with: 0),

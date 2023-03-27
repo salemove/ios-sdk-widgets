@@ -34,7 +34,7 @@ extension Glia.Environment {
                 viewFactory: .mock(environment: .failing),
                 sceneProvider: nil,
                 engagementKind: .none,
-                screenShareHandler: .mock(),
+                screenShareHandler: .mock,
                 features: [],
                 environment: .failing
             )
@@ -54,7 +54,7 @@ extension Glia.Environment {
             fail("\(Self.self).createFileUploadListModel")
             return .mock()
         },
-        screenShareHandler: .mock(),
+        screenShareHandler: .mock,
         messagesWithUnreadCountLoaderScheduler: CoreSdkClient.reactiveSwiftDateSchedulerMock
     )
 }
