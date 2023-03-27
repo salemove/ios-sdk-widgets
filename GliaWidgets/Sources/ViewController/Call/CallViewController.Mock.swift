@@ -28,7 +28,7 @@ extension CallViewController {
             environment: interactorEnv
         )
         let alertConf = AlertConfiguration.mock()
-        let screenShareHandler = ScreenShareHandler()
+        let screenShareHandler = ScreenShareHandler.mock
         let callKind = CallKind.audio
         let callEnv = Call.Environment.mock
         let call = Call.mock(kind: callKind, environment: callEnv)
@@ -63,7 +63,7 @@ extension CallViewController {
             environment: interactorEnv
         )
         let alertConf = AlertConfiguration.mock()
-        let screenShareHandler = ScreenShareHandler()
+        let screenShareHandler = ScreenShareHandler.mock
         let callKind = CallKind.audio
         let callEnv = Call.Environment.mock
         let call = Call.mock(kind: callKind, environment: callEnv)
@@ -101,7 +101,7 @@ extension CallViewController {
             environment: interactorEnv
         )
         let alertConf = AlertConfiguration.mock()
-        let screenShareHandler = ScreenShareHandler()
+        let screenShareHandler = ScreenShareHandler.mock
         let callKind = CallKind.audio
         let callEnv = Call.Environment.mock
         let call = Call.mock(kind: callKind, environment: callEnv)
@@ -154,7 +154,7 @@ extension CallViewController {
             environment: interactorEnv
         )
         let alertConf = AlertConfiguration.mock()
-        let screenShareHandler = ScreenShareHandler()
+        let screenShareHandler = ScreenShareHandler.mock
         let callKind = CallKind.video(direction: .oneWay)
         let callEnv = Call.Environment.mock
         let call = Call.mock(kind: callKind, environment: callEnv)
@@ -202,7 +202,7 @@ extension CallViewController {
             environment: interactorEnv
         )
         let alertConf = AlertConfiguration.mock()
-        let screenShareHandler = ScreenShareHandler()
+        let screenShareHandler = ScreenShareHandler.mock
         let callKind = CallKind.video(direction: .oneWay)
         let callEnv = Call.Environment.mock
         let call = Call.mock(kind: callKind, environment: callEnv)
@@ -237,7 +237,7 @@ extension CallViewController {
             environment: interactorEnv
         )
         let alertConf = AlertConfiguration.mock()
-        let screenShareHandler = ScreenShareHandler()
+        let screenShareHandler = ScreenShareHandler.mock
         let callKind = CallKind.video(direction: .oneWay)
         let callEnv = Call.Environment.mock
         let call = Call.mock(kind: callKind, environment: callEnv)

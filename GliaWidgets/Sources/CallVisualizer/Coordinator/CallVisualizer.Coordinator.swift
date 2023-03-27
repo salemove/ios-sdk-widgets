@@ -235,7 +235,7 @@ private extension CallVisualizer.Coordinator {
     func observeScreenSharingHandlerState() {
         self.environment
             .screenShareHandler
-            .status
+            .status()
             .addObserver(self) { [weak self] newStatus, _ in
                 guard self?.videoCallCoordinator == nil else { return }
                 switch newStatus {
@@ -250,8 +250,8 @@ private extension CallVisualizer.Coordinator {
     }
 
     func stopObservingScreenSharingHandlerState() {
-        environment.screenShareHandler.status.removeObserver(self)
-        environment.screenShareHandler.stop()
+        environment.screenShareHandler.status().removeObserver(self)
+        environment.screenShareHandler.stop(nil)
     }
 
     func closeFlow() {
