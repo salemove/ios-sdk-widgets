@@ -61,6 +61,6 @@ extension CallVisualizer.ScreenSharingViewModel {
     }
 
     func endScreenSharing() {
-        environment.screenShareHandler.stop()
+        environment.screenShareHandler.stop(nil)
     }
 }
