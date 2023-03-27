@@ -8,7 +8,13 @@ extension CallViewController {
     ) -> CallViewController {
         .init(
             viewModel: viewModel,
-            viewFactory: viewFactory
+            viewFactory: viewFactory,
+            environment: .init(
+                uiApplication: .mock,
+                uiScreen: .mock,
+                uiDevice: .mock,
+                notificationCenter: .mock
+            )
         )
     }
 

@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 
 class CallViewModel: EngagementViewModel, ViewModel {
     private typealias Strings = L10n.Call

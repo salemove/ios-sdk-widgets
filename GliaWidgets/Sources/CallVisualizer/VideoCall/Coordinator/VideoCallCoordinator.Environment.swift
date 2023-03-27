@@ -8,6 +8,9 @@ extension CallVisualizer.VideoCallCoodinator {
         var imageViewCache: ImageView.Cache
         var timerProviding: FoundationBased.Timer.Providing
         var uiApplication: UIKitBased.UIApplication
+        var uiScreen: UIKitBased.UIScreen
+        var uiDevice: UIKitBased.UIDevice
+        var notificationCenter: FoundationBased.NotificationCenter
         var date: () -> Date
         var engagedOperator: () -> CoreSdkClient.Operator?
         var screenShareHandler: ScreenShareHandler
