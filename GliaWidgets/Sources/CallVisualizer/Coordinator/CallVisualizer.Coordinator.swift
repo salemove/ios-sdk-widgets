@@ -105,15 +105,6 @@ extension CallVisualizer {
                 .present(viewController, animated: true)
         }
 
-        func showVideoCallViewController() {
-            createOperatorImageBubbleView()
-            let viewController = buildVideoCallViewController()
-            environment
-                .presenter
-                .getInstance()?
-                .present(viewController, animated: true)
-        }
-
         func resumeVideoCallViewController() {
             if let viewController = videoCallCoordinator?.resume() {
                 environment
@@ -175,55 +166,6 @@ extension CallVisualizer {
         private var screenSharingCoordinator: ScreenSharingCoordinator?
         private var videoCallCoordinator: VideoCallCoodinator?
 
-        private func createScreenShareBubbleView() {
-            guard let parent = environment.presenter.getInstance()?.view else { return }
-            bubbleView.kind = .view(screensharingImageView)
-            bubbleView.frame = .init(origin: .init(x: parent.frame.maxX, y: parent.frame.maxY), size: bubbleSize)
-            parent.addSubview(bubbleView)
-            updateBubblePosition()
-        }
-
-        private func createOperatorImageBubbleView() {
-            guard let parent = environment.presenter.getInstance()?.view else { return }
-            let imageUrl = environment.engagedOperator()?.picture?.url
-            bubbleView.kind = .userImage(url: imageUrl)
-            if bubbleView.superview == nil {
-                bubbleView.frame = .init(origin: .init(x: parent.frame.maxX, y: parent.frame.maxY), size: bubbleSize)
-                parent.addSubview(bubbleView)
-                updateBubblePosition()
-            }
-        }
-
-        private func removeBubbleView() {
-            bubbleView.removeFromSuperview()
-        }
-
-        private func updateBubblePosition(translation: CGPoint = .zero) {
-            var centerX = bubbleView.center.x + translation.x
-            var centerY = bubbleView.center.y + translation.y
-
-            defer {
-                bubbleView.center = CGPoint(
-                    x: centerX,
-                    y: centerY
-                )
-            }
-
-            guard let superview = bubbleView.superview else { return }
-
-            if centerX < bubbleSize.width / 2 {
-                centerX = bubbleView.frame.width / 2 + superview.safeAreaInsets.left
-            } else if centerX > superview.frame.width - bubbleSize.width / 2 {
-                centerX = superview.frame.width - bubbleView.frame.width / 2 - superview.safeAreaInsets.right
-            }
-
-            if centerY < bubbleSize.height / 2 {
-                centerY = bubbleView.frame.height / 2 + superview.safeAreaInsets.top
-            } else if centerY > superview.frame.height - bubbleSize.height / 2 {
-                centerY = superview.frame.height - bubbleView.frame.height / 2 - superview.safeAreaInsets.bottom
-            }
-        }
-
         private func buildScreenSharingViewController(uiConfig: RemoteConfiguration? = nil) -> UIViewController {
             let coordinator = ScreenSharingCoordinator(
                 environment: .init(
@@ -254,6 +196,9 @@ extension CallVisualizer {
                     imageViewCache: environment.imageViewCache,
                     timerProviding: environment.timerProviding,
                     uiApplication: environment.uiApplication,
+                    uiScreen: environment.uiScreen,
+                    uiDevice: environment.uiDevice,
+                    notificationCenter: environment.notificationCenter,
                     date: environment.date,
                     engagedOperator: environment.engagedOperator,
                     screenShareHandler: environment.screenShareHandler
@@ -329,6 +274,64 @@ private extension CallVisualizer.Coordinator {
             break
         }
     }
+
+    func showVideoCallViewController() {
+        createOperatorImageBubbleView()
+        let viewController = buildVideoCallViewController()
+        environment
+            .presenter
+            .getInstance()?
+            .present(viewController, animated: true)
+    }
+
+    func createScreenShareBubbleView() {
+        guard let parent = environment.presenter.getInstance()?.view else { return }
+        bubbleView.kind = .view(screensharingImageView)
+        bubbleView.frame = .init(origin: .init(x: parent.frame.maxX, y: parent.frame.maxY), size: bubbleSize)
+        parent.addSubview(bubbleView)
+        updateBubblePosition()
+    }
+
+    func createOperatorImageBubbleView() {
+        guard let parent = environment.presenter.getInstance()?.view else { return }
+        let imageUrl = environment.engagedOperator()?.picture?.url
+        bubbleView.kind = .userImage(url: imageUrl)
+        if bubbleView.superview == nil {
+            bubbleView.frame = .init(origin: .init(x: parent.frame.maxX, y: parent.frame.maxY), size: bubbleSize)
+            parent.addSubview(bubbleView)
+            updateBubblePosition()
+        }
+    }
+
+    func removeBubbleView() {
+        bubbleView.removeFromSuperview()
+    }
+
+    func updateBubblePosition(translation: CGPoint = .zero) {
+        var centerX = bubbleView.center.x + translation.x
+        var centerY = bubbleView.center.y + translation.y
+
+        defer {
+            bubbleView.center = CGPoint(
+                x: centerX,
+                y: centerY
+            )
+        }
+
+        guard let superview = bubbleView.superview else { return }
+
+        if centerX < bubbleSize.width / 2 {
+            centerX = bubbleView.frame.width / 2 + superview.safeAreaInsets.left
+        } else if centerX > superview.frame.width - bubbleSize.width / 2 {
+            centerX = superview.frame.width - bubbleView.frame.width / 2 - superview.safeAreaInsets.right
+        }
+
+        if centerY < bubbleSize.height / 2 {
+            centerY = bubbleView.frame.height / 2 + superview.safeAreaInsets.top
+        } else if centerY > superview.frame.height - bubbleSize.height / 2 {
+            centerY = superview.frame.height - bubbleView.frame.height / 2 - superview.safeAreaInsets.bottom
+        }
+    }
 }
 
 extension CallVisualizer {
@@ -343,7 +346,7 @@ extension CallVisualizer {
 extension CallVisualizer.Presenter {
     static func topViewController(application: UIKitBased.UIApplication) -> Self {
         .init {
-            if var topController = application.shared().windows.first(where: { $0.isKeyWindow })?.rootViewController {
+            if var topController = application.windows().first(where: { $0.isKeyWindow })?.rootViewController {
                 while let presentedViewController = topController.presentedViewController {
                     topController = presentedViewController
                 }

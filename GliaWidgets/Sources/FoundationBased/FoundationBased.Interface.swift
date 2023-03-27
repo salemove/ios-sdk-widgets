@@ -65,6 +65,34 @@ enum FoundationBased {
 
         var invalidate: () -> Void
     }
+
+    struct NotificationCenter {
+        var addObserverClosure: (
+            _ observer: Any,
+            _ selector: Selector,
+            _ name: NSNotification.Name?,
+            _ object: Any?)
+        -> Void
+
+        var removeObserverClosure: (Any) -> Void
+        var removeObserverWithNameAndObject: (
+            _ observer: Any,
+            _ name: NSNotification.Name?,
+            _ object: Any?)
+        -> Void
+
+        func addObserver(_ observer: Any, selector aSelector: Selector, name aName: NSNotification.Name?, object anObject: Any?) {
+            addObserverClosure(observer, aSelector, aName, anObject)
+        }
+
+        func removeObserver(_ observer: Any, name aName: NSNotification.Name?, object anObject: Any?) {
+            removeObserverWithNameAndObject(observer, aName, anObject)
+        }
+
+        func removeObserver(_ observer: Any) {
+            removeObserverClosure(observer)
+        }
+    }
 }
 
 extension FoundationBased.Timer.Providing {

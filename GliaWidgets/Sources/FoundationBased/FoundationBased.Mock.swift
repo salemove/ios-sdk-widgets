@@ -46,6 +46,14 @@ extension FoundationBased.Timer.Providing {
     )
 }
 
+extension FoundationBased.NotificationCenter {
+    static let mock = Self(
+        addObserverClosure: { _, _, _, _ in },
+        removeObserverClosure: { _ in },
+        removeObserverWithNameAndObject: { _, _, _ in }
+    )
+}
+
 // MARK: - Foundation
 extension Foundation.Date {
     static let mock = Self(timeIntervalSince1970: .zero)
