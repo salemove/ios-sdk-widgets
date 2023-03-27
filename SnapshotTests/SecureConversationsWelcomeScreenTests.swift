@@ -116,7 +116,8 @@ class SecureConversationsWelcomeScreenTests: SnapshotTestCase {
                 style: .chat(.mock),
                 uploads: .init(uploads)
             ),
-            headerProps: headerProps
+            headerProps: headerProps,
+            isUiHidden: false
         )
     }
 }

@@ -48,6 +48,9 @@ public struct AlertConfiguration {
     /// Configuration of the unavailable message center error alert.
     public var unavailableMessageCenter: MessageAlertConfiguration
 
+    /// Configuration of the unavailable message center error alert due to unautheticated visitor.
+    public var unavailableMessageCenterForBeingUnauthenticated: MessageAlertConfiguration
+
     ///
     /// - Parameters:
     ///   - leaveQueue: Configuration of the queue leaving confirmation alert.
@@ -66,6 +69,7 @@ public struct AlertConfiguration {
     ///   - unexpectedError: Configuration of the unexpected error alert.
     ///   - apiError: Configuration of the API error alert.
     ///   - unavailableMessageCenter: Configuration of the unavailable message center error alert.
+    ///   - unavailableMessageCenterForBeingUnauthenticated: Configuration of the unavailable message center error alert due to unautheticated visitor.
     ///
     public init(
         leaveQueue: ConfirmationAlertConfiguration,
@@ -83,7 +87,8 @@ public struct AlertConfiguration {
         mediaSourceNotAvailable: MessageAlertConfiguration,
         unexpectedError: MessageAlertConfiguration,
         apiError: MessageAlertConfiguration,
-        unavailableMessageCenter: MessageAlertConfiguration
+        unavailableMessageCenter: MessageAlertConfiguration,
+        unavailableMessageCenterForBeingUnauthenticated: MessageAlertConfiguration
     ) {
         self.leaveQueue = leaveQueue
         self.endEngagement = endEngagement
@@ -101,5 +106,6 @@ public struct AlertConfiguration {
         self.unexpectedError = unexpectedError
         self.apiError = apiError
         self.unavailableMessageCenter = unavailableMessageCenter
+        self.unavailableMessageCenterForBeingUnauthenticated = unavailableMessageCenterForBeingUnauthenticated
     }
 }

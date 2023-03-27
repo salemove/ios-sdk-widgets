@@ -2,7 +2,7 @@ import Foundation
 
 extension SecureConversations {
     struct Availability {
-        typealias CompletionResult = (Result<Bool, CoreSdkClient.SalemoveError>) -> Void
+        typealias CompletionResult = (Result<Status, CoreSdkClient.SalemoveError>) -> Void
         let environment: Environment
 
         func checkSecureConversationsAvailability(completion: @escaping CompletionResult) {
@@ -18,14 +18,19 @@ extension SecureConversations {
 
         private func checkQueues(
             _ queues: [CoreSdkClient.Queue]?,
-            completion: (Result<Bool, CoreSdkClient.SalemoveError>) -> Void
+            completion: (Result<Status, CoreSdkClient.SalemoveError>) -> Void
         ) {
-            guard let queues = queues, isSecureConversationsAvailable(in: queues) else {
-                completion(.success(false))
+            guard environment.isAuthenticated() else {
+                completion(.success(.unavailable(.unauthenticated)))
                 return
             }
 
-            completion(.success(true))
+            guard let queues = queues, isSecureConversationsAvailable(in: queues) else {
+                completion(.success(.unavailable(.emptyQueue)))
+                return
+            }
+
+            completion(.success(.available))
         }
 
         private func isSecureConversationsAvailable(
@@ -47,5 +52,20 @@ extension SecureConversations.Availability {
     struct Environment {
         let listQueues: CoreSdkClient.ListQueues
         let queueIds: [String]
+        let isAuthenticated: () -> Bool
+    }
+}
+
+extension SecureConversations.Availability {
+    enum Status: Equatable {
+        case available
+        case unavailable(UnavailabilityReason)
+    }
+}
+
+extension SecureConversations.Availability.Status {
+    enum UnavailabilityReason: Equatable {
+        case emptyQueue
+        case unauthenticated
     }
 }
