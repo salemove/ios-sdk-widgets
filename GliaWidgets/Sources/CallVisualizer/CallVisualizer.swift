@@ -158,7 +158,7 @@ private extension CallVisualizer {
             }
             switch event {
             case let .screenSharingStateChanged(state):
-                self?.environment.screenShareHandler.updateState(to: state)
+                self?.environment.screenShareHandler.updateState(state)
             default:
                 break
             }

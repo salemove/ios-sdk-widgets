@@ -17,7 +17,7 @@ class ChatViewModelTests: XCTestCase {
         viewModel = .init(
             interactor: .mock(),
             alertConfiguration: .mock(),
-            screenShareHandler: ScreenShareHandler(),
+            screenShareHandler: .mock,
             call: .init(with: nil),
             unreadMessages: .init(with: 0),
             showsCallBubble: true,
