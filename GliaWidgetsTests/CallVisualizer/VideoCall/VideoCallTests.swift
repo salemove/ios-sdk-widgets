@@ -12,21 +12,20 @@ final class VideoCallTests: XCTestCase {
     }
 
     func test_end_screen_sharing() {
-        let viewModel: CallVisualizer.VideoCallViewModel = .mock()
-        viewModel.environment.screenShareHandler.status.value = .started
+        var isRunning = true
+        var screenShareHandlerMock = ScreenShareHandler.mock
+        screenShareHandlerMock.stop = { _ in
+            isRunning = false
+        }
+        var environment = CallVisualizer.VideoCallViewModel.Environment.mock
+        environment.screenShareHandler = screenShareHandlerMock
 
-        let headerProps: Header.Props = .mock(
-            endScreenShareButton: .init(
-                tap: .init { _ in
-                    viewModel.environment.screenShareHandler.stop()
-                },
-                style: .mock()
-            )
-        )
+        let viewModel: CallVisualizer.VideoCallViewModel = .mock(environment: environment, call: .mock())
+        let props = viewModel.makeProps()
 
-        XCTAssertEqual(viewModel.environment.screenShareHandler.status.value, .started)
-        headerProps.endScreenshareButton.tap()
-        XCTAssertEqual(viewModel.environment.screenShareHandler.status.value, .stopped)
+        XCTAssertTrue(isRunning)
+        props.videoCallViewProps.headerProps.endScreenshareButton.tap()
+        XCTAssertFalse(isRunning)
     }
 
     func test_video_button_action() {
