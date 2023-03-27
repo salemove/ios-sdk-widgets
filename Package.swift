@@ -39,8 +39,8 @@ let package = Package(
         ),
         .binaryTarget(
             name: "SalemoveSDK",
-            url: "https://github.com/salemove/ios-bundle/releases/download/0.35.11/SalemoveSDK.xcframework.zip",
-            checksum: "8b9fa94bbb3e9591b2cad6b96a84d4879a3a804d6465d341229d29a50c69fd16"
+            url: "https://github.com/salemove/ios-bundle/releases/download/0.35.12/SalemoveSDK.xcframework.zip",
+            checksum: "876c9a000937099fbf9a071516bd20913c1b8f538abaca09fac01ce09288e153"
         ),
         .binaryTarget(
             name: "PureLayoutXcf",
