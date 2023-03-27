@@ -33,5 +33,6 @@ extension EngagementCoordinator {
         var messagesWithUnreadCountLoaderScheduler: CoreSdkClient.ReactiveSwift.DateScheduler
         var secureMarkMessagesAsRead: CoreSdkClient.SecureMarkMessagesAsRead
         var downloadSecureFile: CoreSdkClient.DownloadSecureFile
+        var isAuthenticated: () -> Bool
     }
 }
