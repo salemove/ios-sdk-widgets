@@ -9,6 +9,17 @@ enum UIKitBased {
         var open: (URL) -> Void
         var canOpenURL: (URL) -> Bool
         var preferredContentSizeCategory: () -> UIContentSizeCategory
-        var shared: () -> UIKit.UIApplication
+        var isIdleTimerDisabled: (Bool) -> Void
+        var windows: () -> [UIKit.UIWindow]
+    }
+
+    struct UIDevice {
+        var proximityState: () -> Bool
+        var isProximityMonitoringEnabled: (Bool) -> Void
+    }
+
+    struct UIScreen {
+        var brightness: () -> CGFloat
+        var setBrightness: (CGFloat) -> Void
     }
 }

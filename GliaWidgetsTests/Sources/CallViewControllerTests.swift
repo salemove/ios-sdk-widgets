@@ -8,7 +8,13 @@ class CallViewControllerTests: XCTestCase {
         autoreleasepool {
             let viewController: CallViewController? = CallViewController(
                 viewModel: CallViewModel.mock(environment: CallViewModel.Environment.mock),
-                viewFactory: ViewFactory.mock()
+                viewFactory: ViewFactory.mock(),
+                environment: .init(
+                    uiApplication: .mock,
+                    uiScreen: .mock,
+                    uiDevice: .mock,
+                    notificationCenter: .mock
+                )
             )
             weakViewController = viewController
         }

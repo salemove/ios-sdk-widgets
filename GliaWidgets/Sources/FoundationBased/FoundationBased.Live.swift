@@ -60,3 +60,11 @@ extension FoundationBased.Timer.Providing {
         return provider
     }()
 }
+
+extension FoundationBased.NotificationCenter {
+    static let live = Self(
+        addObserverClosure: NotificationCenter.default.addObserver,
+        removeObserverClosure: NotificationCenter.default.removeObserver,
+        removeObserverWithNameAndObject: NotificationCenter.default.removeObserver
+    )
+}
