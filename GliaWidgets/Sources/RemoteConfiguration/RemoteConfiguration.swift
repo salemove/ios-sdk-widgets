@@ -1,7 +1,7 @@
 import Foundation
 
 public struct RemoteConfiguration: Codable {
-    let globalColors: GlobalColors
+    let globalColors: GlobalColors?
     let callScreen: Call?
     let chatScreen: Chat?
     let surveyScreen: Survey?
@@ -14,14 +14,14 @@ public struct RemoteConfiguration: Codable {
 
 extension RemoteConfiguration {
     struct GlobalColors: Codable {
-        let primary: String
-        let secondary: String
-        let baseNormal: String
-        let baseLight: String
-        let baseDark: String
-        let baseShade: String
-        let background: String
-        let systemNegative: String
+        let primary: String?
+        let secondary: String?
+        let baseNormal: String?
+        let baseLight: String?
+        let baseDark: String?
+        let baseShade: String?
+        let background: String?
+        let systemNegative: String?
     }
 }
 

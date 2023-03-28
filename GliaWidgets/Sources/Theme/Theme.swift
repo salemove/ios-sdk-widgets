@@ -85,14 +85,14 @@ public class Theme {
         self.init(
             colorStyle: .custom(
                 .init(
-                    primary: .init(hex: config.globalColors.primary),
-                    secondary: .init(hex: config.globalColors.secondary),
-                    baseNormal: .init(hex: config.globalColors.baseNormal),
-                    baseLight: .init(hex: config.globalColors.baseLight),
-                    baseDark: .init(hex: config.globalColors.baseDark),
-                    baseShade: .init(hex: config.globalColors.baseShade),
-                    background: .init(hex: config.globalColors.background),
-                    systemNegative: .init(hex: config.globalColors.systemNegative)
+                    primary: config.globalColors?.primary.map { UIColor(hex: $0) },
+                    secondary: config.globalColors?.secondary.map { UIColor(hex: $0) },
+                    baseNormal: config.globalColors?.baseNormal.map { UIColor(hex: $0) },
+                    baseLight: config.globalColors?.baseLight.map { UIColor(hex: $0) },
+                    baseDark: config.globalColors?.baseDark.map { UIColor(hex: $0) },
+                    baseShade: config.globalColors?.baseShade.map { UIColor(hex: $0) },
+                    background: config.globalColors?.background.map { UIColor(hex: $0) },
+                    systemNegative: config.globalColors?.systemNegative.map { UIColor(hex: $0) }
                 )
             )
         )
