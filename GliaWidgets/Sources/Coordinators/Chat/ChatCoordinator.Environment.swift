@@ -29,5 +29,6 @@ extension ChatCoordinator {
         var secureMarkMessagesAsRead: CoreSdkClient.SecureMarkMessagesAsRead
         var downloadSecureFile: CoreSdkClient.DownloadSecureFile
         var isAuthenticated: () -> Bool
+        var interactor: Interactor
     }
 }
