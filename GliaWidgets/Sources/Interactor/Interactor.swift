@@ -3,7 +3,7 @@ import Foundation
 enum InteractorState {
     case none
     case enqueueing
-    case enqueued(CoreSdkClient.QueueTicket)
+    case enqueued(CoreSdkClient.QueueTicket?)
     case engaged(CoreSdkClient.Operator?)
     case ended(EndEngagementReason)
 }
@@ -160,7 +160,7 @@ extension Interactor {
                 coreSdkVisitorContext,
                 // shouldCloseAllQueues is `true` by default core sdk,
                 // here it is passed explicitly
-                true,
+                false,
                 mediaType,
                 options
             ) { [weak self] queueTicket, error in
@@ -215,7 +215,7 @@ extension Interactor {
             success()
         case .enqueued(let ticket):
             exitQueue(
-                ticket: ticket,
+                ticket: ticket!,
                 success: success,
                 failure: failure
             )

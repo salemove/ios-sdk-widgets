@@ -480,9 +480,12 @@ extension ChatViewModel {
         case .enqueued:
             handle(pendingMessage: outgoingMessage)
 
-        case .enqueueing, .ended, .none:
+        case .ended, .enqueueing:
             handle(pendingMessage: outgoingMessage)
             enqueue(mediaType: .text)
+
+        case .none:
+            handle(pendingMessage: outgoingMessage)
         }
 
         messageText = ""

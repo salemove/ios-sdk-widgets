@@ -143,6 +143,7 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
 // MARK: Chat model
 extension ChatCoordinator {
     private func chatModel() -> ChatViewModel {
+        interactor.state = .enqueued(nil)
         let viewModel = ChatViewModel(
             interactor: interactor,
             alertConfiguration: viewFactory.theme.alertConfiguration,
