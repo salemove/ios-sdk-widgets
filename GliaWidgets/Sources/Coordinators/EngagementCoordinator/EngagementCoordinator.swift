@@ -149,7 +149,8 @@ extension EngagementCoordinator {
         let presentSurvey = { [weak self] (engagementId: String, survey: CoreSdkClient.Survey) in
             guard let self = self else { return }
             let viewController = Survey.ViewController(
-                viewFactory: self.viewFactory
+                viewFactory: self.viewFactory,
+                environment: .init(notificationCenter: self.environment.notificationCenter)
             )
             viewController.props = .live(
                 sdkSurvey: survey,
@@ -382,20 +383,32 @@ extension EngagementCoordinator {
                     bubbleView: bubbleView,
                     delegate: self,
                     sceneProvider: sceneProvider,
-                    features: features
+                    features: features,
+                    environment: .init(
+                        uiApplication: environment.uiApplication,
+                        uiScreen: environment.uiScreen
+                    )
                 )
             } else {
                 return GliaViewController(
                     bubbleView: bubbleView,
                     delegate: self,
-                    features: features
+                    features: features,
+                    environment: .init(
+                        uiApplication: environment.uiApplication,
+                        uiScreen: environment.uiScreen
+                    )
                 )
             }
         } else {
             return GliaViewController(
                 bubbleView: bubbleView,
                 delegate: self,
-                features: features
+                features: features,
+                environment: .init(
+                    uiApplication: environment.uiApplication,
+                    uiScreen: environment.uiScreen
+                )
             )
         }
     }
@@ -421,6 +434,8 @@ extension EngagementCoordinator {
                 uiImage: environment.uiImage,
                 uuid: environment.uuid,
                 uiApplication: environment.uiApplication,
+                uiScreen: environment.uiScreen,
+                notificationCenter: environment.notificationCenter,
                 createFileUploadListModel: environment.createFileUploadListModel,
                 viewFactory: viewFactory,
                 fetchFile: environment.fetchFile,

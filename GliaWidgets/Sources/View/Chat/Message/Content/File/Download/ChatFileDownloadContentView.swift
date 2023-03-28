@@ -13,10 +13,14 @@ class ChatFileDownloadContentView: ChatFileContentView {
         with style: ChatFileDownloadStyle,
         content: Content,
         accessibilityProperties: ChatFileContentView.AccessibilityProperties,
+        environment: Environment,
         tap: @escaping () -> Void
     ) {
         self.style = style
-        self.filePreviewView = FilePreviewView(with: style.filePreview)
+        self.filePreviewView = FilePreviewView(
+            with: style.filePreview,
+            environment: .init(uiScreen: environment.uiScreen)
+        )
         super.init(
             with: style,
             content: content,
@@ -232,4 +236,10 @@ class ChatFileDownloadContentView: ChatFileContentView {
         }
     }
     // swiftlint:enable function_body_length
+}
+
+extension ChatFileDownloadContentView {
+    struct Environment {
+        var uiScreen: UIKitBased.UIScreen
+    }
 }

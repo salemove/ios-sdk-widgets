@@ -10,7 +10,8 @@ extension UIKitBased.UIApplication {
         canOpenURL: UIApplication.shared.canOpenURL,
         preferredContentSizeCategory: { UIApplication.shared.preferredContentSizeCategory },
         isIdleTimerDisabled: { UIApplication.shared.isIdleTimerDisabled = $0 },
-        windows: { UIApplication.shared.windows }
+        windows: { UIApplication.shared.windows },
+        statusBarOrientation: { UIApplication.shared.statusBarOrientation }
     )
 }
 
@@ -24,6 +25,8 @@ extension UIKitBased.UIDevice {
 extension UIKitBased.UIScreen {
     static let live = Self.init(
         brightness: { UIScreen.main.brightness },
-        setBrightness: { UIScreen.main.brightness = $0 }
+        setBrightness: { UIScreen.main.brightness = $0 },
+        bounds: { UIScreen.main.bounds },
+        scale: { UIScreen.main.scale }
     )
 }

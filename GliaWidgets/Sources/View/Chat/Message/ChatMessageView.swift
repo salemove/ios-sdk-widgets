@@ -8,13 +8,16 @@ class ChatMessageView: BaseView {
     var linkTapped: ((URL) -> Void)?
 
     private let contentAlignment: ChatMessageContentAlignment
+    private let environment: Environment
 
     init(
         with style: ChatMessageStyle,
-        contentAlignment: ChatMessageContentAlignment
+        contentAlignment: ChatMessageContentAlignment,
+        environment: Environment
     ) {
         self.style = style
         self.contentAlignment = contentAlignment
+        self.environment = environment
         super.init()
     }
 
@@ -107,6 +110,7 @@ class ChatMessageView: BaseView {
                     with: style.fileDownload,
                     content: .localFile(file),
                     accessibilityProperties: accessibilityProperties,
+                    environment: .init(uiScreen: environment.uiScreen),
                     tap: { [weak self] in self?.fileTapped?(file) }
                 )
             }
@@ -131,9 +135,16 @@ class ChatMessageView: BaseView {
                     with: style.fileDownload,
                     content: .download(download),
                     accessibilityProperties: accessibilityProperties,
+                    environment: .init(uiScreen: environment.uiScreen),
                     tap: { [weak self] in self?.downloadTapped?(download) }
                 )
             }
         }
+    }
+}
+
+extension ChatMessageView {
+    struct Environment {
+        var uiScreen: UIKitBased.UIScreen
     }
 }
