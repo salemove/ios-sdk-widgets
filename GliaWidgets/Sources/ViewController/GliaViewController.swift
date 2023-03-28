@@ -20,15 +20,18 @@ class GliaViewController: UIViewController {
     private var sceneProvider: SceneProvider?
     private var animationImageView: UIImageView?
     private let features: Features
+    private let environment: Environment
 
     init(
         bubbleView: BubbleView,
         delegate: GliaViewControllerDelegate?,
-        features: Features
+        features: Features,
+        environment: Environment
     ) {
         self.bubbleView = bubbleView
         self.delegate = delegate
         self.features = features
+        self.environment = environment
         super.init(nibName: nil, bundle: nil)
         setup()
     }
@@ -38,12 +41,14 @@ class GliaViewController: UIViewController {
         bubbleView: BubbleView?,
         delegate: GliaViewControllerDelegate?,
         sceneProvider: SceneProvider,
-        features: Features
+        features: Features,
+        environment: Environment
     ) {
         self.bubbleView = bubbleView
         self.delegate = delegate
         self.sceneProvider = sceneProvider
         self.features = features
+        self.environment = environment
         super.init(nibName: nil, bundle: nil)
         setup()
     }
@@ -114,13 +119,29 @@ class GliaViewController: UIViewController {
             if let windowScene = windowScene() {
                 return BubbleWindow(
                     bubbleView: bubbleView,
+                    environment: .init(
+                        uiScreen: environment.uiScreen,
+                        uiApplication: environment.uiApplication
+                    ),
                     windowScene: windowScene
                 )
             } else {
-                return BubbleWindow(bubbleView: bubbleView)
+                return BubbleWindow(
+                    bubbleView: bubbleView,
+                    environment: .init(
+                        uiScreen: environment.uiScreen,
+                        uiApplication: environment.uiApplication
+                    )
+                )
             }
         } else {
-            return BubbleWindow(bubbleView: bubbleView)
+            return BubbleWindow(
+                bubbleView: bubbleView,
+                environment: .init(
+                    uiScreen: environment.uiScreen,
+                    uiApplication: environment.uiApplication
+                )
+            )
         }
     }
 
@@ -159,5 +180,12 @@ extension GliaViewController: UIViewControllerTransitioningDelegate {
             originCenterPoint: bubbleWindow?.center ?? view.center,
             transitionMode: .dismiss
         )
+    }
+}
+
+extension GliaViewController {
+    struct Environment {
+        var uiApplication: UIKitBased.UIApplication
+        var uiScreen: UIKitBased.UIScreen
     }
 }

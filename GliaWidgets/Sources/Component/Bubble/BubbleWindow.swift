@@ -7,28 +7,35 @@ class BubbleWindow: UIWindow {
     }
     var tap: (() -> Void)?
 
+    private let environment: Environment
     private let bubbleView: BubbleView
     private let kSize = CGSize(width: 80, height: 80)
     private let kBubbleInset: CGFloat = 10
     private let kEdgeInset: CGFloat = 0
     private var initialFrame: CGRect {
-        let bounds = UIApplication.shared.windows.first?.frame ?? UIScreen.main.bounds
-        let safeAreaInsets = UIApplication.shared.windows.first?.safeAreaInsets ?? .zero
+        let bounds = environment.uiApplication.windows().first?.frame ?? environment.uiScreen.bounds()
+        let safeAreaInsets = environment.uiApplication.windows().first?.safeAreaInsets ?? .zero
         let origin = CGPoint(x: bounds.width - kSize.width - safeAreaInsets.right - kEdgeInset,
                              y: bounds.height - kSize.height - safeAreaInsets.bottom - kEdgeInset)
         return CGRect(origin: origin, size: kSize)
     }
 
     @available(iOS 13.0, *)
-    init(bubbleView: BubbleView, windowScene: UIWindowScene) {
+    init(
+        bubbleView: BubbleView,
+        environment: Environment,
+        windowScene: UIWindowScene
+    ) {
         self.bubbleView = bubbleView
+        self.environment = environment
         super.init(windowScene: windowScene)
         setup()
         layout()
     }
 
-    init(bubbleView: BubbleView) {
+    init(bubbleView: BubbleView, environment: Environment) {
         self.bubbleView = bubbleView
+        self.environment = environment
         super.init(frame: .zero)
         setup()
         layout()
@@ -63,8 +70,8 @@ class BubbleWindow: UIWindow {
                                   bottom: -kEdgeInset,
                                   right: -kEdgeInset)
         let insetFrame = frame.inset(by: insets)
-        let boundsInsets = UIApplication.shared.windows.first?.safeAreaInsets ?? .zero
-        let bounds = UIScreen.main.bounds.inset(by: boundsInsets)
+        let boundsInsets = environment.uiApplication.windows().first?.safeAreaInsets ?? .zero
+        let bounds = environment.uiScreen.bounds().inset(by: boundsInsets)
 
         if bounds.contains(insetFrame) {
             self.frame = frame
@@ -92,5 +99,12 @@ private class BubbleViewController: UIViewController {
         view.addSubview(bubbleView)
         bubbleView.autoPinEdgesToSuperviewEdges(
             with: UIEdgeInsets(top: edgeInset, left: edgeInset, bottom: edgeInset, right: edgeInset))
+    }
+}
+
+extension BubbleWindow {
+    struct Environment {
+        var uiScreen: UIKitBased.UIScreen
+        var uiApplication: UIKitBased.UIApplication
     }
 }

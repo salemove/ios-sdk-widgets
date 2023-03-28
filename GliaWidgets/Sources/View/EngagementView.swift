@@ -54,5 +54,6 @@ extension EngagementView {
         var imageViewCache: ImageView.Cache
         var timerProviding: FoundationBased.Timer.Providing
         var uiApplication: UIKitBased.UIApplication
+        var uiScreen: UIKitBased.UIScreen
     }
 }

@@ -27,8 +27,10 @@ extension SecureConversations {
         private let imageView = UIImageView()
         private let label = UILabel()
         private let kSize = CGSize(width: 52, height: 52)
+        private let environment: Environment
 
-        init() {
+        init(environment: Environment) {
+            self.environment = environment
             self.props = Props(style: .initial, kind: .none)
             super.init(frame: .zero)
             setup()
@@ -128,7 +130,7 @@ extension SecureConversations {
                 let request = QLThumbnailGenerator.Request(
                     fileAt: file.url,
                     size: kSize,
-                    scale: UIScreen.main.scale,
+                    scale: environment.uiScreen.scale(),
                     representationTypes: .lowQualityThumbnail
                 )
                 QLThumbnailGenerator.shared.generateRepresentations(for: request) { representation, _, _ in
@@ -229,4 +231,10 @@ extension SecureConversations.FilePreviewView.Kind {
 
 private extension FilePreviewStyle {
     static let initial = FileUploadStyle.initial.filePreview
+}
+
+extension SecureConversations.FilePreviewView {
+    struct Environment {
+        var uiScreen: UIKitBased.UIScreen
+    }
 }

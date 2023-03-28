@@ -18,7 +18,8 @@ final class ChoiceCardView: OperatorChatMessageView {
                 data: environment.data,
                 uuid: environment.uuid,
                 gcd: environment.gcd,
-                imageViewCache: environment.imageViewCache
+                imageViewCache: environment.imageViewCache,
+                uiScreen: environment.uiScreen
             )
         )
     }
@@ -108,6 +109,7 @@ extension ChoiceCardView {
         var uuid: () -> UUID
         var gcd: GCD
         var imageViewCache: ImageView.Cache
+        var uiScreen: UIKitBased.UIScreen
     }
 }
 

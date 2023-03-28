@@ -8,7 +8,11 @@ extension GliaViewController {
         .init(
             bubbleView: bubbleView,
             delegate: delegate,
-            features: features
+            features: features,
+            environment: .init(
+                uiApplication: .mock,
+                uiScreen: .mock
+            )
         )
     }
 }

@@ -123,7 +123,8 @@ class CallView: EngagementView {
                 gcd: environment.gcd,
                 imageViewCache: environment.imageViewCache,
                 timerProviding: environment.timerProviding,
-                uiApplication: environment.uiApplication
+                uiApplication: environment.uiApplication,
+                uiScreen: environment.uiScreen
             ),
             headerProps: props.header
         )
@@ -403,13 +404,9 @@ class CallView: EngagementView {
 
     private func hideLandscapeBarsAfterDelay() {
         guard mode == .video else { return }
-        hideBarsWorkItem?.cancel()
-        let hideBarsWorkItem = DispatchWorkItem { self.hideLandscapeBars() }
-        self.hideBarsWorkItem = hideBarsWorkItem
-        DispatchQueue.main.asyncAfter(
-            deadline: .now() + kBarsHideDelay,
-            execute: hideBarsWorkItem
-        )
+        environment.gcd.mainQueue.asyncAfterDeadline(.now() + kBarsHideDelay) {
+            self.hideLandscapeBars()
+        }
     }
 
     @objc private func tap() {
@@ -426,7 +423,7 @@ class CallView: EngagementView {
 extension CallView {
     private func setLocalVideoFrame(isVisible: Bool) {
         if isVisible {
-            let screenSize: CGRect = UIScreen.main.bounds
+            let screenSize: CGRect = environment.uiScreen.bounds()
 
             let size = CGSize(
                 width: screenSize.width * 0.3,
@@ -444,7 +441,7 @@ extension CallView {
     }
 
     private func adjustLocalVideoFrameAfterOrientationChange() {
-        let screenSize: CGRect = UIScreen.main.bounds
+        let screenSize: CGRect = environment.uiScreen.bounds()
 
         let size = CGSize(
             width: screenSize.width * 0.3,
@@ -504,5 +501,6 @@ extension CallView {
         var imageViewCache: ImageView.Cache
         var timerProviding: FoundationBased.Timer.Providing
         var uiApplication: UIKitBased.UIApplication
+        var uiScreen: UIKitBased.UIScreen
     }
 }

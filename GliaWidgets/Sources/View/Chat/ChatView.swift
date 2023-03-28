@@ -66,7 +66,8 @@ class ChatView: EngagementView {
             with: style.messageEntry,
             environment: .init(
                 gcd: environment.gcd,
-                uiApplication: environment.uiApplication
+                uiApplication: environment.uiApplication,
+                uiScreen: environment.uiScreen
             )
         )
         self.unreadMessageIndicatorView = UnreadMessageIndicatorView(
@@ -93,7 +94,8 @@ class ChatView: EngagementView {
                 gcd: environment.gcd,
                 imageViewCache: environment.imageViewCache,
                 timerProviding: environment.timerProviding,
-                uiApplication: environment.uiApplication
+                uiApplication: environment.uiApplication,
+                uiScreen: environment.uiScreen
             ),
             headerProps: props.header
         )
@@ -307,7 +309,8 @@ extension ChatView {
             return .queueOperator(connectView)
         case .outgoingMessage(let message):
             let view = VisitorChatMessageView(
-                with: style.visitorMessage
+                with: style.visitorMessage,
+                environment: .init(uiScreen: environment.uiScreen)
             )
             view.appendContent(
                 .text(
@@ -332,7 +335,8 @@ extension ChatView {
             return .outgoingMessage(view)
         case .visitorMessage(let message, let status):
             let view = VisitorChatMessageView(
-                with: style.visitorMessage
+                with: style.visitorMessage,
+                environment: .init(uiScreen: environment.uiScreen)
             )
             view.appendContent(
                 .text(
@@ -498,7 +502,8 @@ extension ChatView {
                 data: environment.data,
                 uuid: environment.uuid,
                 gcd: environment.gcd,
-                imageViewCache: environment.imageViewCache
+                imageViewCache: environment.imageViewCache,
+                uiScreen: environment.uiScreen
             )
         )
         view.appendContent(
@@ -537,7 +542,8 @@ extension ChatView {
                 data: environment.data,
                 uuid: environment.uuid,
                 gcd: environment.gcd,
-                imageViewCache: environment.imageViewCache
+                imageViewCache: environment.imageViewCache,
+                uiScreen: environment.uiScreen
             )
         )
         let choiceCard = ChoiceCard(with: message, isActive: isActive)
