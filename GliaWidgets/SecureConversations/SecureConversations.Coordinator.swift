@@ -281,7 +281,8 @@ extension SecureConversations.Coordinator {
                 messagesWithUnreadCountLoaderScheduler: environment.messagesWithUnreadCountLoaderScheduler,
                 secureMarkMessagesAsRead: environment.secureMarkMessagesAsRead,
                 downloadSecureFile: environment.downloadSecureFile,
-                isAuthenticated: environment.isAuthenticated
+                isAuthenticated: environment.isAuthenticated,
+                interactor: environment.interactor
             ),
             startWithSecureTranscriptFlow: true
         )
