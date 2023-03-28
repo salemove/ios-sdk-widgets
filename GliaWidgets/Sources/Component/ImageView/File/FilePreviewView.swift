@@ -19,9 +19,11 @@ class FilePreviewView: UIView {
     private let label = UILabel()
     private let style: FilePreviewStyle
     private let kSize = CGSize(width: 52, height: 52)
+    private let environment: Environment
 
-    init(with style: FilePreviewStyle) {
+    init(with style: FilePreviewStyle, environment: Environment) {
         self.style = style
+        self.environment = environment
         super.init(frame: .zero)
         setup()
         layout()
@@ -107,7 +109,7 @@ class FilePreviewView: UIView {
             let request = QLThumbnailGenerator.Request(
                 fileAt: file.url,
                 size: kSize,
-                scale: UIScreen.main.scale,
+                scale: environment.uiScreen.scale(),
                 representationTypes: .lowQualityThumbnail
             )
             QLThumbnailGenerator.shared.generateRepresentations(for: request) { representation, _, _ in
@@ -121,5 +123,11 @@ class FilePreviewView: UIView {
             let image = UIImage(contentsOfFile: file.url.path)?.resized(to: kSize)
             completion(image)
         }
+    }
+}
+
+extension FilePreviewView {
+    struct Environment {
+        var uiScreen: UIKitBased.UIScreen
     }
 }

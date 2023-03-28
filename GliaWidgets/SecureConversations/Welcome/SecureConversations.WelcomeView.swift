@@ -7,6 +7,8 @@ extension SecureConversations {
     final class WelcomeView: BaseView {
         struct Environemnt {
             let gcd: GCD
+            let uiScreen: UIKitBased.UIScreen
+            let notificationCenter: FoundationBased.NotificationCenter
         }
         static let sideMargin = 24.0
         static let filePickerButtonSize = 44.0
@@ -121,7 +123,7 @@ extension SecureConversations {
                 stackView.spacing = 5
             }
 
-        let fileUploadListView = SecureConversations.FileUploadListView().makeView()
+        let fileUploadListView: FileUploadListView
         let environment: Environemnt
 
         // Since some of the reusable views require style
@@ -133,6 +135,7 @@ extension SecureConversations {
             self.header = Header(props: props.headerProps)
             self.props = props
             self.environment = environment
+            self.fileUploadListView = .init(environment: .init(uiScreen: environment.uiScreen)).makeView()
             super.init()
             // Hide warning stack initially.
             setWarningStackHidden(true)
@@ -773,7 +776,7 @@ extension SecureConversations.WelcomeView.MessageTextView: UITextViewDelegate {
 // MARK: - Keyboard handling in WelcomeView
 extension SecureConversations.WelcomeView {
     func subscribeToNotification(_ notification: NSNotification.Name, selector: Selector) {
-        NotificationCenter.default.addObserver(
+        environment.notificationCenter.addObserver(
             self,
             selector: selector,
             name: notification,

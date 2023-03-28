@@ -26,6 +26,7 @@ extension Survey {
         }
 
         let viewFactory: ViewFactory
+        private let environment: Environment
 
         var props: Props {
             didSet { render() }
@@ -36,9 +37,11 @@ extension Survey {
 
         init(
             viewFactory: ViewFactory,
+            environment: Environment,
             props: Props = .init()
         ) {
             self.viewFactory = viewFactory
+            self.environment = environment
             self.props = props
             self.theme = viewFactory.theme
             super.init(nibName: nil, bundle: nil)
@@ -145,7 +148,7 @@ extension Survey.QuestionPropsProtocol {
 
 extension Survey.ViewController {
     func subscribeToNotification(_ notification: NSNotification.Name, selector: Selector) {
-        NotificationCenter.default.addObserver(
+        environment.notificationCenter.addObserver(
             self,
             selector: selector,
             name: notification,
@@ -177,5 +180,11 @@ extension Survey.ViewController {
                 self.view.layoutIfNeeded()
             }
         }
+    }
+}
+
+extension Survey.ViewController {
+    struct Environment {
+        var notificationCenter: FoundationBased.NotificationCenter
     }
 }
