@@ -83,12 +83,12 @@ extension CallVisualizer {
             )
 
             if #available(iOS 13.0, *) {
-                let windows = UIApplication.shared.windows
+                let windows = environment.uiApplication.windows()
                 interfaceOrientation = windows.first(where: {
                     $0.isKeyWindow
                 })?.windowScene?.interfaceOrientation ?? .portrait
             } else {
-                interfaceOrientation = UIApplication.shared.statusBarOrientation
+                interfaceOrientation = environment.uiApplication.statusBarOrientation()
             }
 
             connectOperatorSize = .init(size: .normal, animated: true)
@@ -123,7 +123,7 @@ extension CallVisualizer {
                 self?.onScreenSharingStatusChange(status)
             }
 
-            NotificationCenter.default.addObserver(
+            environment.notificationCenter.addObserver(
                 self,
                 selector: #selector(handleDeviceOrientationDidChange),
                 name: UIDevice.orientationDidChangeNotification,
@@ -317,12 +317,12 @@ private extension CallVisualizer.VideoCallViewModel {
 
     func handleOrientationChange() {
         if #available(iOS 13.0, *) {
-            let windows = UIApplication.shared.windows
+            let windows = environment.uiApplication.windows()
             interfaceOrientation = windows.first(where: {
                 $0.isKeyWindow
             })?.windowScene?.interfaceOrientation ?? .portrait
         } else {
-            interfaceOrientation = UIApplication.shared.statusBarOrientation
+            interfaceOrientation = environment.uiApplication.statusBarOrientation()
         }
     }
 

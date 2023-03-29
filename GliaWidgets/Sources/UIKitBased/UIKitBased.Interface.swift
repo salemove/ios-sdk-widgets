@@ -11,6 +11,7 @@ enum UIKitBased {
         var preferredContentSizeCategory: () -> UIContentSizeCategory
         var isIdleTimerDisabled: (Bool) -> Void
         var windows: () -> [UIKit.UIWindow]
+        var statusBarOrientation: () -> UIInterfaceOrientation
     }
 
     struct UIDevice {
@@ -21,5 +22,7 @@ enum UIKitBased {
     struct UIScreen {
         var brightness: () -> CGFloat
         var setBrightness: (CGFloat) -> Void
+        var bounds: () -> CGRect
+        var scale: () -> CGFloat
     }
 }
