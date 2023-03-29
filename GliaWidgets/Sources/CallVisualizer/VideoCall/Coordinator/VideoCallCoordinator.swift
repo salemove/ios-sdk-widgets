@@ -61,7 +61,10 @@ extension CallVisualizer {
             let viewController = VideoCallViewController(
                 props: viewModel.makeProps(),
                 environment: .init(
-                    videoCallView: .init(gcd: environment.gcd),
+                    videoCallView: .init(
+                        gcd: environment.gcd,
+                        uiScreen: environment.uiScreen
+                    ),
                     uiApplication: environment.uiApplication,
                     uiScreen: environment.uiScreen,
                     uiDevice: environment.uiDevice,

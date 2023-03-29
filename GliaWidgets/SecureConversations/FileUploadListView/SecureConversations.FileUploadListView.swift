@@ -22,13 +22,15 @@ extension SecureConversations {
             return stackView.arrangedSubviews.compactMap { $0 as? FileUploadView }
         }
 
+        private let environment: Environment
         private let scrollView = UIScrollView()
         private let stackView = UIStackView()
         private var heightLayoutConstraint: NSLayoutConstraint!
 
         var cachedViews = IdCollection<FileUploadView.Props.Identifier, FileUploadView>()
 
-        init() {
+        init(environment: Environment) {
+            self.environment = environment
             super.init(frame: .zero)
             setup()
             layout()
@@ -141,7 +143,10 @@ extension SecureConversations {
                     #endif
                     continue
                 }
-                let uploadView = FileUploadView(props: uploadViewProps)
+                let uploadView = FileUploadView(
+                    props: uploadViewProps,
+                    environment: .init(uiScreen: environment.uiScreen)
+                )
                 addUploadView(uploadView)
                 cachedViews.append(item: uploadView, identified: id)
             }
@@ -179,5 +184,11 @@ extension SecureConversations.FileUploadListView.Style {
                 spacing = 4
             }
         }
+    }
+}
+
+extension SecureConversations.FileUploadListView {
+    struct Environment {
+        var uiScreen: UIKitBased.UIScreen
     }
 }

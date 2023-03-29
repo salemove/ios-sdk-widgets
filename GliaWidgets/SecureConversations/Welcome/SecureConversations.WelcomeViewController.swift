@@ -5,6 +5,8 @@ extension SecureConversations {
     final class WelcomeViewController: UIViewController {
         struct Environemnt {
             let gcd: GCD
+            let uiScreen: UIKitBased.UIScreen
+            let notificationCenter: FoundationBased.NotificationCenter
         }
         var props: Props {
             didSet {
@@ -51,7 +53,11 @@ extension SecureConversations {
             } else {
                 welcomeView = viewFactory.makeSecureConversationsWelcomeView(
                     props: props,
-                    environment: .init(gcd: environment.gcd)
+                    environment: .init(
+                        gcd: environment.gcd,
+                        uiScreen: environment.uiScreen,
+                        notificationCenter: environment.notificationCenter
+                    )
                 )
                 view = welcomeView
             }

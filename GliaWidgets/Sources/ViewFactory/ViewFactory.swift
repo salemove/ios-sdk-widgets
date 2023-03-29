@@ -30,7 +30,8 @@ class ViewFactory {
                 gcd: environment.gcd,
                 imageViewCache: environment.imageViewCache,
                 timerProviding: environment.timerProviding,
-                uiApplication: environment.uiApplication
+                uiApplication: environment.uiApplication,
+                uiScreen: environment.uiScreen
             ),
             props: Self.chatHeaderProps(
                 theme: theme,
@@ -78,7 +79,8 @@ class ViewFactory {
                 gcd: environment.gcd,
                 imageViewCache: environment.imageViewCache,
                 timerProviding: environment.timerProviding,
-                uiApplication: environment.uiApplication
+                uiApplication: environment.uiApplication,
+                uiScreen: environment.uiScreen
             ),
             props: Self.callHeaderProps(
                 theme: theme,

@@ -24,7 +24,7 @@ extension SecureConversations {
         private let contentView = UIView()
         private let infoLabel = UILabel()
         private let stateLabel = UILabel()
-        private let filePreviewView = FilePreviewView()
+        private let filePreviewView: FilePreviewView
         private let progressView = UIProgressView()
         let removeButton = UIButton()
 
@@ -36,7 +36,8 @@ extension SecureConversations {
             }
         }
 
-        init(props: Props) {
+        init(props: Props, environment: Environment) {
+            filePreviewView = .init(environment: .init(uiScreen: environment.uiScreen))
             self.props = props
             super.init(frame: .zero)
             setup()
@@ -406,5 +407,11 @@ extension SecureConversations.FileUploadView.Props {
                 self = .generic
             }
         }
+    }
+}
+
+extension SecureConversations.FileUploadView {
+    struct Environment {
+        var uiScreen: UIKitBased.UIScreen
     }
 }

@@ -27,7 +27,8 @@ public final class CallVisualizer {
                 gcd: environment.gcd,
                 imageViewCache: environment.imageViewCache,
                 timerProviding: environment.timerProviding,
-                uiApplication: environment.uiApplication
+                uiApplication: environment.uiApplication,
+                uiScreen: environment.uiScreen
             )
         )
         return Coordinator(

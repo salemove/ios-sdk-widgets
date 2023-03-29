@@ -28,6 +28,10 @@ extension UIKitBased.UIApplication {
         windows: {
             fail("\(Self.self).window")
             return []
+        },
+        statusBarOrientation: {
+            fail("\(Self.self).statusBarOrientation")
+            return .portrait
         }
     )
 }
@@ -41,6 +45,14 @@ extension UIKitBased.UIScreen {
         setBrightness: { _ in
             fail("\(Self.self).setBrightness")
             return
+        },
+        bounds: {
+            fail("\(Self.self).bounds")
+            return CGRect()
+        },
+        scale: {
+            fail("\(Self.self).scale")
+            return 0.0
         }
     )
 }

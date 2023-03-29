@@ -10,6 +10,7 @@ extension ViewFactory.Environment {
         gcd: .failing,
         imageViewCache: .failing,
         timerProviding: .failing,
-        uiApplication: .failing
+        uiApplication: .failing,
+        uiScreen: .failing
     )
 }

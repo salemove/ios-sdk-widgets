@@ -66,7 +66,9 @@ class ChatMessageEntryView: BaseView {
     ) {
         self.style = style
         self.environment = environment
-        uploadListView = SecureConversations.FileUploadListView()
+        uploadListView = SecureConversations.FileUploadListView(
+            environment: .init(uiScreen: environment.uiScreen)
+        )
         pickMediaButton = MessageButton(with: style.mediaButton)
         sendButton = MessageButton(with: style.sendButton)
         isChoiceCardModeEnabled = false
@@ -265,6 +267,7 @@ extension ChatMessageEntryView {
     struct Environment {
         var gcd: GCD
         var uiApplication: UIKitBased.UIApplication
+        var uiScreen: UIKitBased.UIScreen
     }
 }
 

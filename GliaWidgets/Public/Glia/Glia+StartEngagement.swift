@@ -39,7 +39,8 @@ extension Glia {
                 gcd: environment.gcd,
                 imageViewCache: environment.imageViewCache,
                 timerProviding: environment.timerProviding,
-                uiApplication: environment.uiApplication
+                uiApplication: environment.uiApplication,
+                uiScreen: environment.uiScreen
             )
         )
         startRootCoordinator(
