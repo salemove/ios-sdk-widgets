@@ -148,9 +148,9 @@ extension CallVisualizer {
     }
 }
 
-// MARK: - Private
+// MARK: - Interactor Events
 
-private extension CallVisualizer {
+extension CallVisualizer {
     func startObservingInteractorEvents() {
         environment.interactorProviding()?.addObserver(self) { [weak self] event in
             guard let engagement = self?.environment.getCurrentEngagement(), engagement.source == .callVisualizer else {
