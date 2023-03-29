@@ -332,7 +332,7 @@ private extension CallVisualizer.VideoCallView {
 
     func setLocalVideoFrame(isVisible: Bool) {
         if isVisible {
-            let screenSize: CGRect = UIScreen.main.bounds
+            let screenSize: CGRect = environment.uiScreen.bounds()
 
             let size = CGSize(
                 width: screenSize.width * 0.3,
@@ -350,7 +350,7 @@ private extension CallVisualizer.VideoCallView {
     }
 
     func adjustLocalVideoFrameAfterOrientationChange() {
-        let screenSize: CGRect = UIScreen.main.bounds
+        let screenSize: CGRect = environment.uiScreen.bounds()
 
         let size = CGSize(
             width: screenSize.width * 0.3,
@@ -405,5 +405,6 @@ private extension CallVisualizer.VideoCallView {
 extension CallVisualizer.VideoCallView {
     struct Environment {
         let gcd: GCD
+        let uiScreen: UIKitBased.UIScreen
     }
 }

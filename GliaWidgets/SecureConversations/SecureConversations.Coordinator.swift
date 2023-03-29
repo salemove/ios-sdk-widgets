@@ -77,7 +77,11 @@ extension SecureConversations {
             let controller = SecureConversations.WelcomeViewController(
                 viewFactory: viewFactory,
                 props: viewModel.props(),
-                environment: .init(gcd: environment.gcd)
+                environment: .init(
+                    gcd: environment.gcd,
+                    uiScreen: environment.uiScreen,
+                    notificationCenter: environment.notificationCenter
+                )
             )
 
             viewModel.delegate = { [weak self, weak controller] event in
@@ -324,6 +328,8 @@ extension SecureConversations.Coordinator {
         var uiImage: UIKitBased.UIImage
         var uuid: () -> UUID
         var uiApplication: UIKitBased.UIApplication
+        var uiScreen: UIKitBased.UIScreen
+        var notificationCenter: FoundationBased.NotificationCenter
         var createFileUploadListModel: SecureConversations.FileUploadListViewModel.Create
         var viewFactory: ViewFactory
         var fetchFile: CoreSdkClient.FetchFile

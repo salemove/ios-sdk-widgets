@@ -14,7 +14,7 @@ class SecureConversationsWelcomeScreenTests: SnapshotTestCase {
         let viewController = SecureConversations.WelcomeViewController(
             viewFactory: .mock(theme: theme, messageRenderer: nil, environment: .mock),
             props: .welcome(props),
-            environment: .init(gcd: .live)
+            environment: .init(gcd: .live, uiScreen: .mock, notificationCenter: .mock)
         )
         viewController.view.frame = UIScreen.main.bounds
 
@@ -36,7 +36,7 @@ class SecureConversationsWelcomeScreenTests: SnapshotTestCase {
         let viewController = SecureConversations.WelcomeViewController(
             viewFactory: .mock(theme: theme, messageRenderer: nil, environment: .mock),
             props: .welcome(props),
-            environment: .init(gcd: .live)
+            environment: .init(gcd: .live, uiScreen: .mock, notificationCenter: .mock)
         )
         viewController.view.frame = UIScreen.main.bounds
 
@@ -52,7 +52,7 @@ class SecureConversationsWelcomeScreenTests: SnapshotTestCase {
         let viewController = SecureConversations.WelcomeViewController(
             viewFactory: .mock(theme: theme, messageRenderer: nil, environment: .mock),
             props: .welcome(props),
-            environment: .init(gcd: .live)
+            environment: .init(gcd: .live, uiScreen: .mock, notificationCenter: .mock)
         )
         viewController.view.frame = UIScreen.main.bounds
 

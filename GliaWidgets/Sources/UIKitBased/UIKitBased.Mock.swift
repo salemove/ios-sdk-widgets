@@ -13,7 +13,8 @@ extension UIKitBased.UIApplication {
         canOpenURL: { _ in false },
         preferredContentSizeCategory: { .unspecified },
         isIdleTimerDisabled: { _ in },
-        windows: { .init() }
+        windows: { .init() },
+        statusBarOrientation: { .portrait }
     )
 }
 
@@ -35,7 +36,9 @@ extension UIKitBased.UIDevice {
 extension UIKitBased.UIScreen {
     static let mock = Self.init(
         brightness: { .init() },
-        setBrightness: { _ in }
+        setBrightness: { _ in },
+        bounds: { UIScreen.main.bounds },
+        scale: { .init() }
     )
 }
 #endif
