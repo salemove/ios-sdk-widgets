@@ -330,6 +330,7 @@
 		846A5C3429CB3A130049B29F /* ScreenShareHandler.Implementation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846A5C3329CB3A130049B29F /* ScreenShareHandler.Implementation.swift */; };
 		846A5C3629CB3E270049B29F /* ScreenShareHandler.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846A5C3529CB3E270049B29F /* ScreenShareHandler.Mock.swift */; };
 		846A5C3929D18D400049B29F /* ScreenShareHandlerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846A5C3829D18D400049B29F /* ScreenShareHandlerTests.swift */; };
+		846A5C3E29D1C7B00049B29F /* CallVisualizerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846A5C3D29D1C7B00049B29F /* CallVisualizerTests.swift */; };
 		846E822828996A5C008EFBF0 /* AlertViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846E822728996A5C008EFBF0 /* AlertViewControllerTests.swift */; };
 		847A7643285A1914004044D1 /* FileUploadListViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847A7642285A1914004044D1 /* FileUploadListViewModelTests.swift */; };
 		84A318A12869ECFC00CA1DE5 /* Unavailable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A318A02869ECFC00CA1DE5 /* Unavailable.swift */; };
@@ -932,6 +933,7 @@
 		846A5C3329CB3A130049B29F /* ScreenShareHandler.Implementation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenShareHandler.Implementation.swift; sourceTree = "<group>"; };
 		846A5C3529CB3E270049B29F /* ScreenShareHandler.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenShareHandler.Mock.swift; sourceTree = "<group>"; };
 		846A5C3829D18D400049B29F /* ScreenShareHandlerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenShareHandlerTests.swift; sourceTree = "<group>"; };
+		846A5C3D29D1C7B00049B29F /* CallVisualizerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallVisualizerTests.swift; sourceTree = "<group>"; };
 		846E822728996A5C008EFBF0 /* AlertViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertViewControllerTests.swift; sourceTree = "<group>"; };
 		847A7642285A1914004044D1 /* FileUploadListViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUploadListViewModelTests.swift; sourceTree = "<group>"; };
 		84A318A02869ECFC00CA1DE5 /* Unavailable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Unavailable.swift; sourceTree = "<group>"; };
@@ -2929,6 +2931,7 @@
 				C0D2F06229A4B18000803B47 /* VideoCall */,
 				84265E05298AE93700D65842 /* ScreenSharing */,
 				C096B40A297EBDE400F0C552 /* VisitorCodeTests.swift */,
+				846A5C3D29D1C7B00049B29F /* CallVisualizerTests.swift */,
 			);
 			path = CallVisualizer;
 			sourceTree = "<group>";
@@ -4053,6 +4056,7 @@
 				EB9ADB5A2829089F00FAE8A4 /* ChatItem+Equatable.swift in Sources */,
 				EB7A150A286D98270035AC62 /* FileUploaderTests.swift in Sources */,
 				EB27E71D27FEBB620090B895 /* CallViewModelTests.swift in Sources */,
+				846A5C3E29D1C7B00049B29F /* CallVisualizerTests.swift in Sources */,
 				84D2293328C6240000F64FE7 /* WKNavigationPolicyProviderTests.swift in Sources */,
 				9ACC25D227B4727500BC5335 /* CoreSDKClient.Failing.swift in Sources */,
 				84265E07298AE96B00D65842 /* ScreenSharingViewModelTests.swift in Sources */,
