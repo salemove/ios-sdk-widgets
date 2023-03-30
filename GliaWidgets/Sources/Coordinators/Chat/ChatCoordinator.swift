@@ -281,7 +281,7 @@ extension ChatCoordinator {
                 )
             case .pickFile(let pickerEvent):
                 self?.presentFilePickerController(with: pickerEvent)
-            case let .awaitUpgradeToChatEngagement(transcriptModel):
+            case let .upgradeToChatEngagement(transcriptModel):
                 guard let self, let controller = controller() else {
                     return
                 }
@@ -321,7 +321,8 @@ extension ChatCoordinator {
            fetchSiteConfigurations: environment.fetchSiteConfigurations,
            getSecureUnreadMessageCount: environment.getSecureUnreadMessageCount,
            messagesWithUnreadCountLoaderScheduler: environment.messagesWithUnreadCountLoaderScheduler,
-           secureMarkMessagesAsRead: environment.secureMarkMessagesAsRead
+           secureMarkMessagesAsRead: environment.secureMarkMessagesAsRead,
+           interactor: environment.interactor
        )
     }
 }
