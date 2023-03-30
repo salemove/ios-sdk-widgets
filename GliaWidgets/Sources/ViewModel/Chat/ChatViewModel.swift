@@ -501,10 +501,13 @@ extension ChatViewModel {
 
             pendingMessages.append(pendingMessage)
 
-            let queueItem = ChatItem(kind: .queueOperator)
+            // Avoid showing enqueud operator according to parameter.
+            if !shouldSkipEnqueueingState {
+                let queueItem = ChatItem(kind: .queueOperator)
+                queueOperatorSection.set([queueItem])
+                action?(.refreshSection(queueOperatorSection.index))
+            }
 
-            queueOperatorSection.set([queueItem])
-            action?(.refreshSection(2))
             action?(.scrollToBottom(animated: true))
         }
     }

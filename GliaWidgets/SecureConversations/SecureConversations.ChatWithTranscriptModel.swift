@@ -284,7 +284,7 @@ extension SecureConversations {
             case pickMedia(ObservableValue<MediaPickerEvent>)
             case takeMedia(ObservableValue<MediaPickerEvent>)
             case pickFile(ObservableValue<FilePickerEvent>)
-            case awaitUpgradeToChatEngagement(TranscriptModel)
+            case upgradeToChatEngagement(TranscriptModel)
         }
 
         typealias Event = ChatViewModel.Event
@@ -339,8 +339,7 @@ extension SecureConversations {
         ]
 
         var historySection: Section<ChatItem> { sections[0] }
-        var messagesSection: Section<ChatItem> { sections[3] }
-
+        var pendingSection: Section<ChatItem> { sections[1] }
         let deliveredStatusText: String
 
         var numberOfSections: Int {
@@ -515,6 +514,10 @@ extension SecureConversations {
             fetchSiteConfigurations()
             loadHistory { _ in }
         }
+
+        deinit {
+            environment.interactor.removeObserver(self)
+        }
     }
 }
 
@@ -550,7 +553,11 @@ extension SecureConversations.TranscriptModel {
             content: messageText,
             files: localFiles
         )
-        appendItem(.init(kind: .outgoingMessage(outgoingMessage)), to: messagesSection, animated: true)
+        appendItem(
+            .init(kind: .outgoingMessage(outgoingMessage)),
+            to: pendingSection,
+            animated: true
+        )
 
        _ = environment.sendSecureMessage(
             messageText,
@@ -564,9 +571,8 @@ extension SecureConversations.TranscriptModel {
                 outgoingMessage,
                 uploads: uploads,
                 with: message,
-                in: self.messagesSection
+                in: self.pendingSection
                )
-               self.delegate?(.awaitUpgradeToChatEngagement(self))
            case .failure:
                self.showAlert(with: self.environment.alertConfiguration.unexpectedError)
            }
@@ -833,6 +839,7 @@ extension SecureConversations.TranscriptModel {
         var getSecureUnreadMessageCount: CoreSdkClient.GetSecureUnreadMessageCount
         var messagesWithUnreadCountLoaderScheduler: CoreSdkClient.ReactiveSwift.DateScheduler
         var secureMarkMessagesAsRead: CoreSdkClient.SecureMarkMessagesAsRead
+        var interactor: Interactor
     }
 }
 
@@ -879,9 +886,32 @@ extension SecureConversations.TranscriptModel {
                 if messagesWithUnreadCount.unreadCount > 0 {
                     self.markMessagesAsRead()
                 }
+
+                switch self.environment.interactor.state {
+                // If engagement has been started
+                // we signal perform upgrade.
+                case .engaged:
+                    self.delegate?(.upgradeToChatEngagement(self))
+                case .none, .enqueueing, .ended, .enqueued:
+                    self.environment.interactor.addObserver(self) { [weak self] event in
+                        self?.handleInteractorEvent(event)
+                    }
+                }
             case .failure:
                 completion([])
             }
+        }
+    }
+
+    func handleInteractorEvent(_ event: InteractorEvent) {
+        switch event {
+        case .stateChanged(.engaged):
+            // We no longer need to listen to Interactor events,
+            // so unsubscribe.
+            self.environment.interactor.removeObserver(self)
+            delegate?(.upgradeToChatEngagement(self))
+        default:
+            break
         }
     }
 
