@@ -851,35 +851,21 @@ extension SecureConversations.TranscriptModel {
             guard let self else { return }
             switch result {
             case let .success(messagesWithUnreadCount):
-                let items: [ChatItem]
-
-                let messages = messagesWithUnreadCount.messages
-                let unreadCount = min(messagesWithUnreadCount.unreadCount, messages.count)
-                let isValidUnreadCount = unreadCount > 0
-
-                switch (!messages.isEmpty, isValidUnreadCount) {
-                case (true, true):
-                    let list = messagesWithUnreadCount.messages.compactMap {
-                        ChatItem(
-                            with: $0,
-                            isCustomCardSupported: self.isCustomCardSupported,
-                            fromHistory: self.environment.loadChatMessagesFromHistory()
-                        )
-                    }
-                    let head = list.dropLast(unreadCount)
-                    let tail = list.dropFirst(head.count)
-                    items = head + [ChatItem(kind: .unreadMessageDivider)] + tail
-                case (true, false), (false, true), (false, false):
-                    items = messagesWithUnreadCount.messages.compactMap {
-                        ChatItem(
-                            with: $0,
-                            isCustomCardSupported: self.isCustomCardSupported,
-                            fromHistory: self.environment.loadChatMessagesFromHistory()
-                        )
-                    }
+                let items: [ChatItem] = messagesWithUnreadCount.messages.compactMap {
+                    ChatItem(
+                        with: $0,
+                        isCustomCardSupported: self.isCustomCardSupported,
+                        fromHistory: self.environment.loadChatMessagesFromHistory()
+                    )
                 }
 
-                self.historySection.set(items)
+                let itemsWithDivider = Self.dividedChatItemsForUnreadCount(
+                    chatItems: items,
+                    unreadCount: messagesWithUnreadCount.unreadCount,
+                    divider: ChatItem(kind: .unreadMessageDivider)
+                )
+
+                self.historySection.set(itemsWithDivider)
                 self.action?(.refreshSection(self.historySection.index))
                 self.action?(.scrollToBottom(animated: false))
                 completion(messagesWithUnreadCount.messages)
@@ -945,5 +931,51 @@ extension SecureConversations.TranscriptModel: Hashable {
 
     static func == (lhs: SecureConversations.TranscriptModel, rhs: SecureConversations.TranscriptModel) -> Bool {
         lhs === rhs
+    }
+}
+
+extension SecureConversations.TranscriptModel {
+    static func dividedChatItemsForUnreadCount(
+        chatItems: [ChatItem],
+        unreadCount: Int,
+        divider: ChatItem
+    ) -> [ChatItem] {
+        var tail: [ChatItem] = []
+        var unreadCount = unreadCount
+        var head = chatItems
+        var dividerIndex: Int?
+        while unreadCount > 0 {
+            // Remove messages from the end of list.
+            // In case list has ended, that means unread count
+            // is larger than list size, so we break to prevent
+            // infinite loop.
+            guard let item = head.popLast() else {
+                break
+            }
+            // Removed items are placed into separate list,
+            // to be later combined with initial one.
+            tail.insert(item, at: 0)
+
+            // We treat only operator messages
+            // eligible to be counted as unread.
+            if item.isOperatorMessage {
+                // Update divider insertion index with
+                // next relevant one.
+                dividerIndex = head.endIndex
+                unreadCount -= 1
+            }
+        }
+
+        // At this point we have finished search for insertion
+        // index for divider, so we combine two lists together.
+        var result = head + tail
+
+        // Make sure that divider index is within safe bounds
+        // before performing the insertion.
+        if let dividerIndex, dividerIndex <= result.endIndex {
+            result.insert(divider, at: dividerIndex)
+        }
+
+        return result
     }
 }
