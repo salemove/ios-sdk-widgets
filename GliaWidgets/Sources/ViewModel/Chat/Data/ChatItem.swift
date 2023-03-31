@@ -42,9 +42,9 @@ class ChatItem {
                 isActive: !fromHistory
             )
         case .operator:
-            kind = message.isChoiceCard
-                ? .choiceCard(message, showsImage: false, imageUrl: nil, isActive: !fromHistory)
-                : .operatorMessage(message, showsImage: false, imageUrl: nil)
+            kind = message.isChoiceCard ?
+                .choiceCard(message, showsImage: false, imageUrl: nil, isActive: !fromHistory) :
+                .operatorMessage(message, showsImage: false, imageUrl: message.operator?.pictureUrl)
         case .omniguide, .system, .unknown:
             return nil
         }
