@@ -76,7 +76,7 @@ extension SecureConversations {
                     )
                 case .success(.unavailable(.unauthenticated)):
                     self.availabilityStatus = .unavailable(.unauthenticated)
-                    let configuration = self.environment.alertConfiguration.unavailableMessageCenter
+                    let configuration = self.environment.alertConfiguration.unavailableMessageCenterForBeingUnauthenticated
                     self.delegate?(
                         .showAlertAsView(
                             configuration,
