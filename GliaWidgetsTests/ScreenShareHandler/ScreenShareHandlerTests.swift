@@ -20,7 +20,6 @@ final class ScreenShareHandlerTests: XCTestCase {
         screenShareHandler.updateState(state)
 
         XCTAssertEqual(screenShareHandler.status().value, .started)
-        let newState = screenSharingState(status: .notSharing)
         screenShareHandler.updateState(nil)
         XCTAssertEqual(screenShareHandler.status().value, .stopped)
     }
