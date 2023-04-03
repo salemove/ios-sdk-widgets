@@ -169,7 +169,6 @@ class EngagementViewModel: CommonEngagementModel {
             break
         }
     }
-    // swiftlint:enable function_body_length
 
     func showAlert(
         with conf: MessageAlertConfiguration,

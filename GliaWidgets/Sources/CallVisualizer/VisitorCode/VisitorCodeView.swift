@@ -176,51 +176,6 @@ extension CallVisualizer {
             ).cgPath
         }
 
-        func renderProps() {
-            titleLabel.accessibilityIdentifier = props.titleAccessibilityIdentifier
-            layer.cornerRadius = props.style.cornerRadius
-            layer.borderColor = props.style.borderColor.cgColor
-            layer.borderWidth = props.style.borderWidth
-
-            titleLabel.font = props.style.titleFont
-            titleLabel.textColor = props.style.titleColor
-            switch props.viewState {
-            case .success(visitorCode: let code):
-                renderedVisitorCode = code
-                titleLabel.text = L10n.CallVisualizer.VisitorCode.Title.standard
-                renderVisitorCode()
-                titleLabel.accessibilityHint = L10n.CallVisualizer.VisitorCode.Accessibility.titleHint
-            case .error:
-                titleLabel.text = L10n.CallVisualizer.VisitorCode.Title.error
-                renderError()
-                titleLabel.accessibilityHint = nil
-            case .loading:
-                titleLabel.text = L10n.CallVisualizer.VisitorCode.Title.standard
-                renderSpinner()
-            }
-            setFontScalingEnabled(
-                props.style.accessibility.isFontScalingEnabled,
-                for: titleLabel
-            )
-            setFontScalingEnabled(
-                props.style.accessibility.isFontScalingEnabled,
-                for: refreshButton
-            )
-            poweredBy.alpha = props.isPoweredByShown ? 1 : 0
-            renderShadow()
-
-            switch props.style.closeButtonColor {
-            case .fill(let color):
-                closeButton.tintColor = color
-            case .gradient(let colors):
-                closeButton.makeGradientBackground(colors: colors)
-            }
-
-            closeButton.isHidden = props.closeButtonTap == nil
-
-            layoutSubviews()
-        }
-
         var renderedVisitorCode: String = "" {
             didSet {
                 guard renderedVisitorCode != oldValue else { return }
@@ -289,5 +244,53 @@ extension CallVisualizer {
         @objc func refreshButtonTapped(_ sender: UIButton) {
             self.props.refreshButtonTap?()
         }
+    }
+}
+
+// Props rendering
+extension CallVisualizer.VisitorCodeView {
+    func renderProps() {
+        titleLabel.accessibilityIdentifier = props.titleAccessibilityIdentifier
+        layer.cornerRadius = props.style.cornerRadius
+        layer.borderColor = props.style.borderColor.cgColor
+        layer.borderWidth = props.style.borderWidth
+
+        titleLabel.font = props.style.titleFont
+        titleLabel.textColor = props.style.titleColor
+        switch props.viewState {
+        case .success(visitorCode: let code):
+            renderedVisitorCode = code
+            titleLabel.text = L10n.CallVisualizer.VisitorCode.Title.standard
+            renderVisitorCode()
+            titleLabel.accessibilityHint = L10n.CallVisualizer.VisitorCode.Accessibility.titleHint
+        case .error:
+            titleLabel.text = L10n.CallVisualizer.VisitorCode.Title.error
+            renderError()
+            titleLabel.accessibilityHint = nil
+        case .loading:
+            titleLabel.text = L10n.CallVisualizer.VisitorCode.Title.standard
+            renderSpinner()
+        }
+        setFontScalingEnabled(
+            props.style.accessibility.isFontScalingEnabled,
+            for: titleLabel
+        )
+        setFontScalingEnabled(
+            props.style.accessibility.isFontScalingEnabled,
+            for: refreshButton
+        )
+        poweredBy.alpha = props.isPoweredByShown ? 1 : 0
+        renderShadow()
+
+        switch props.style.closeButtonColor {
+        case .fill(let color):
+            closeButton.tintColor = color
+        case .gradient(let colors):
+            closeButton.makeGradientBackground(colors: colors)
+        }
+
+        closeButton.isHidden = props.closeButtonTap == nil
+
+        layoutSubviews()
     }
 }
