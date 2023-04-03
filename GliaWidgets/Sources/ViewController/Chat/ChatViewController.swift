@@ -166,6 +166,7 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter,
             self?.renderProps()
         }
     }
+    // swiftlint:enable function_body_length
 
     private func presentMediaPicker(
         from sourceView: UIView,
