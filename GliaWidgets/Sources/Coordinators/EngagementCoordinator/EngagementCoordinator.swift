@@ -134,6 +134,14 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
 extension EngagementCoordinator {
 
     func end() {
+        switch engagement {
+        case let .call(_, _, _, call):
+            call.kind.removeObserver(self)
+            chatCall.value?.kind.removeObserver(self)
+            chatCall.value = nil
+        default:
+            break
+        }
 
         let dismissGliaViewController = { [weak self] in
             self?.dismissGliaViewController(animated: true) { [weak self] in
@@ -184,15 +192,10 @@ extension EngagementCoordinator {
         }
 
         engagement.getSurvey { result in
-
-            guard
-                case .success(let survey) = result,
-                let survey = survey
-            else {
+            guard case .success(let survey) = result, let survey = survey else {
                 dismissGliaViewController()
                 return
             }
-
             presentSurvey(engagement.id, survey)
         }
     }
