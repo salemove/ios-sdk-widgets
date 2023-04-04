@@ -2,6 +2,7 @@ import Foundation
 import UIKit
 
 final class UnreadMessageDividerView: BaseView {
+    static let accessibilityIdentifier = "chatTranscript_unreadMessageDivider_view"
     private let style: UnreadMessageDividerStyle
     private let textLabel = UILabel().makeView()
     private lazy var leadingLine = LineView(color: style.lineColor).makeView()
@@ -36,6 +37,10 @@ final class UnreadMessageDividerView: BaseView {
             style.accessibility.isFontScalingEnabled,
             for: textLabel
         )
+        textLabel.isAccessibilityElement = false
+        isAccessibilityElement = true
+        accessibilityLabel = textLabel.text
+        accessibilityIdentifier = Self.accessibilityIdentifier
     }
 
     override func defineLayout() {
