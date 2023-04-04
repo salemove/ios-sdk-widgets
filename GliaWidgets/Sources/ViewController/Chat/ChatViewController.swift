@@ -54,80 +54,80 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter,
         view.header.showBackButton()
         view.header.showCloseButton()
 
-        view.numberOfSections = { [viewModel] in
+        view.numberOfSections = {
             viewModel.numberOfSections
         }
-        view.numberOfRows = { [viewModel] rows in
+        view.numberOfRows = { rows in
             viewModel.numberOfItems(in: rows)
         }
-        view.itemForRow = { [viewModel] row, section in
+        view.itemForRow = { row, section in
             viewModel.item(for: row, in: section)
         }
-        view.messageEntryView.textChanged = { [viewModel] text in
+        view.messageEntryView.textChanged = { text in
             viewModel.event(.messageTextChanged(text))
         }
-        view.messageEntryView.sendTapped = { [viewModel] in
+        view.messageEntryView.sendTapped = {
             viewModel.event(.sendTapped)
         }
-        view.messageEntryView.pickMediaTapped = { [viewModel] in
+        view.messageEntryView.pickMediaTapped = {
             viewModel.event(.pickMediaTapped)
         }
-        view.fileTapped = { [viewModel] file in
+        view.fileTapped = { file in
             viewModel.event(.fileTapped(file))
         }
-        view.downloadTapped = { [viewModel] download in
+        view.downloadTapped = { download in
             viewModel.event(.downloadTapped(download))
         }
-        view.callBubbleTapped = { [viewModel] in
+        view.callBubbleTapped = {
             viewModel.event(.callBubbleTapped)
         }
-        view.choiceOptionSelected = { [viewModel] option, messageId in
+        view.choiceOptionSelected = { option, messageId in
             viewModel.event(.choiceOptionSelected(option, messageId))
         }
-        view.chatScrolledToBottom = { [viewModel] bottomReached in
+        view.chatScrolledToBottom = { bottomReached in
             viewModel.event(.chatScrolled(bottomReached: bottomReached))
         }
-        view.linkTapped = { [viewModel] url in
+        view.linkTapped = { url in
             viewModel.event(.linkTapped(url))
         }
-        view.selectCustomCardOption = { [viewModel] option, messageId in
+        view.selectCustomCardOption = { option, messageId in
             viewModel.event(.customCardOptionSelected(option: option, messageId: messageId))
         }
 
         var viewModel = viewModel
 
-        viewModel.action = { [weak self] action in
+        viewModel.action = { [weak self, weak view] action in
             switch action {
             case .queue:
-                view.setConnectState(.queue, animated: false)
+                view?.setConnectState(.queue, animated: false)
             case .connected(let name, let imageUrl):
-                view.setConnectState(.connected(name: name, imageUrl: imageUrl), animated: true)
-                view.unreadMessageIndicatorView.setImage(fromUrl: imageUrl, animated: true)
-                view.messageEntryView.isConnected = true
+                view?.setConnectState(.connected(name: name, imageUrl: imageUrl), animated: true)
+                view?.unreadMessageIndicatorView.setImage(fromUrl: imageUrl, animated: true)
+                view?.messageEntryView.isConnected = true
             case .setMessageEntryEnabled(let enabled):
-                view.messageEntryView.isEnabled = enabled
+                view?.messageEntryView.isEnabled = enabled
             case .setChoiceCardInputModeEnabled(let enabled):
-                view.messageEntryView.isChoiceCardModeEnabled = enabled
+                view?.messageEntryView.isChoiceCardModeEnabled = enabled
             case .setMessageText(let text):
-                view.messageEntryView.messageText = text
+                view?.messageEntryView.messageText = text
             case .sendButtonHidden(let hidden):
-                view.messageEntryView.showsSendButton = !hidden
+                view?.messageEntryView.showsSendButton = !hidden
             case .pickMediaButtonEnabled(let enabled):
-                view.messageEntryView.pickMediaButton.isEnabled = enabled
+                view?.messageEntryView.pickMediaButton.isEnabled = enabled
             case .appendRows(let count, let section, let animated):
-                view.appendRows(count, to: section, animated: animated)
+                view?.appendRows(count, to: section, animated: animated)
             case .refreshRow(let row, let section, let animated):
-                view.refreshRow(row, in: section, animated: animated)
+                view?.refreshRow(row, in: section, animated: animated)
             case .refreshRows(let rows, let section, let animated):
-                view.refreshRows(rows, in: section, animated: animated)
+                view?.refreshRows(rows, in: section, animated: animated)
             case let .refreshSection(section, animated):
-                view.refreshSection(section, animated: animated)
+                view?.refreshSection(section, animated: animated)
             case .refreshAll:
-                view.refreshAll()
+                view?.refreshAll()
             case .scrollToBottom(let animated):
-                view.scrollToBottom(animated: animated)
+                view?.scrollToBottom(animated: animated)
             case .updateItemsUserImage(let animated):
-                view.updateItemsUserImage(animated: animated)
+                view?.updateItemsUserImage(animated: animated)
             case .addUpload:
                 // Handled by data-driven SecureConversations.FileUploadListView.
                 break
@@ -135,8 +135,9 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter,
                 // Handled by data-driven SecureConversations.FileUploadListView.
                 break
             case .removeAllUploads:
-                view.messageEntryView.uploadListView.removeAllUploadViews()
+                view?.messageEntryView.uploadListView.removeAllUploadViews()
             case .presentMediaPicker(let itemSelected):
+                guard let view = view else { return }
                 self?.presentMediaPicker(
                     from: view.messageEntryView.pickMediaButton,
                     itemSelected: itemSelected
@@ -144,24 +145,24 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter,
             case .offerMediaUpgrade(let conf, let accepted, let declined):
                 self?.offerMediaUpgrade(with: conf, accepted: accepted, declined: declined)
             case .showCallBubble(let imageUrl):
-                view.showCallBubble(with: imageUrl, animated: true)
+                view?.showCallBubble(with: imageUrl, animated: true)
             case .updateUnreadMessageIndicator(let count):
-                view.unreadMessageIndicatorView.newItemCount = count
+                view?.unreadMessageIndicatorView.newItemCount = count
             case .setOperatorTypingIndicatorIsHiddenTo(let isHidden, let isChatScrolledToBottom):
                 if isChatScrolledToBottom {
-                    view.scrollToBottom(animated: true)
+                    view?.scrollToBottom(animated: true)
                 }
-                view.setOperatorTypingIndicatorIsHidden(to: isHidden)
+                view?.setOperatorTypingIndicatorIsHidden(to: isHidden)
             case let .setAttachmentButtonVisibility(visibility):
-                view.messageEntryView.setPickMediaButtonVisibility(visibility)
+                view?.messageEntryView.setPickMediaButtonVisibility(visibility)
             case .transferring:
-                view.setConnectState(.transferring, animated: true)
+                view?.setConnectState(.transferring, animated: true)
             case .setCallBubbleImage(let imageUrl):
-                view.setCallBubbleImage(with: imageUrl)
+                view?.setCallBubbleImage(with: imageUrl)
             case .setUnreadMessageIndicatorImage(let imageUrl):
-                view.unreadMessageIndicatorView.setImage(fromUrl: imageUrl, animated: true)
+                view?.unreadMessageIndicatorView.setImage(fromUrl: imageUrl, animated: true)
             case let .fileUploadListPropsUpdated(fileUploadListProps):
-                view.messageEntryView.uploadListView.props = fileUploadListProps
+                view?.messageEntryView.uploadListView.props = fileUploadListProps
             }
             self?.renderProps()
         }

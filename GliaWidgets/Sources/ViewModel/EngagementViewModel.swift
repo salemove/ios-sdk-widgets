@@ -14,7 +14,7 @@ class EngagementViewModel: CommonEngagementModel {
     var activeEngagement: CoreSdkClient.Engagement?
 
     private(set) var isViewActive = ObservableValue<Bool>(with: false)
-    private static var alertPresenters = Set<EngagementViewModel>()
+    static var alertPresenters = Set<EngagementViewModel>()
 
     init(
         interactor: Interactor,
@@ -80,7 +80,9 @@ class EngagementViewModel: CommonEngagementModel {
                             self.alertConfiguration.operatorEndedEngagement,
                             accessibilityIdentifier: Self.alertSingleActionAccessibilityIdentifier,
                             actionTapped: { [weak self] in
-                                self?.endSession()
+                                guard let self else { return }
+                                EngagementViewModel.alertPresenters.remove(self)
+                                self.endSession()
                             }
                         )
                     )
@@ -154,11 +156,13 @@ class EngagementViewModel: CommonEngagementModel {
                         self.alertConfiguration.operatorEndedEngagement,
                         accessibilityIdentifier: Self.alertSingleActionAccessibilityIdentifier,
                         actionTapped: { [weak self] in
-                            self?.endSession()
-                            self?.engagementDelegate?(
-                                .engaged(
-                                    operatorImageUrl: nil
-                                )
+                            guard let self else { return }
+                            EngagementViewModel.alertPresenters.remove(self)
+                            self.endSession()
+                            self.engagementDelegate?(
+                                  .engaged(
+                                      operatorImageUrl: nil
+                                   )
                             )
                         }
                     )
@@ -228,6 +232,15 @@ class EngagementViewModel: CommonEngagementModel {
         screenShareHandler.stop(nil)
         engagementAction?(.showEndButton)
     }
+
+    func endSession() {
+        interactor.endSession {
+            self.engagementDelegate?(.finished)
+        } failure: { _ in
+            self.engagementDelegate?(.finished)
+        }
+        self.screenShareHandler.stop(nil)
+    }
 }
 
 // MARK: - Private
@@ -241,15 +254,6 @@ private extension EngagementViewModel {
             accepted: { answer(true) },
             declined: { answer(false) }
         ))
-    }
-
-    private func endSession() {
-        interactor.endSession {
-            self.engagementDelegate?(.finished)
-        } failure: { _ in
-            self.engagementDelegate?(.finished)
-        }
-        self.screenShareHandler.stop(nil)
     }
 
     private func closeTapped() {
