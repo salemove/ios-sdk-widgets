@@ -22,18 +22,6 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         title = "Glia UI testing"
         view.backgroundColor = .white
-
-        #if DEBUG
-        #warning("Remove this when 'secure messaging immplementation is complete.'")
-        // For non fresh builds `user default` may old version of
-        // `.all` which is missing `.secureConversations` flag.
-        // Here we force it to use `.all`.
-        features = .all
-        #endif
-
-        if !features.contains(.secureConversations) {
-            secureConversationsButton.isHidden = true
-        }
     }
 
     override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
@@ -75,9 +63,7 @@ class ViewController: UIViewController {
     }
 
     @IBAction private func secureConversationTapped() {
-        if features.contains(.secureConversations) {
-            presentGlia(.messaging())
-        }
+        presentGlia(.messaging())
     }
 
     @IBAction private func clearSessionTapped() {
