@@ -37,7 +37,7 @@ class EngagementViewController: UIViewController, AlertPresenter {
     func bind(engagementViewModel: CommonEngagementModel) {
         guard let view = view as? EngagementView else { return }
 
-        viewModel.engagementAction = { [weak self] action in
+        viewModel.engagementAction = { [weak self, weak view] action in
             guard let self = self else { return }
             switch action {
             case .confirm(let conf, let accessibilityIdentifier, confirmed: let confirmed):
@@ -60,9 +60,9 @@ class EngagementViewController: UIViewController, AlertPresenter {
             case .offerScreenShare(let conf, accepted: let accepted, declined: let declined):
                 self.offerScreenShare(with: conf, accepted: accepted, declined: declined)
             case .showEndButton:
-                view.header.showEndButton()
+                view?.header.showEndButton()
             case .showEndScreenShareButton:
-                view.header.showEndScreenSharingButton()
+                view?.header.showEndScreenSharingButton()
             }
         }
     }
