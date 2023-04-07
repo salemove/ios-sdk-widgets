@@ -77,7 +77,7 @@ class GliaTests: XCTestCase {
             fontStyle: .default,
             showsPoweredBy: true
         )
-        let expectedFeatures: Features = [Features.bubbleView, .secureConversations]
+        let expectedFeatures: Features = [Features.bubbleView]
         var receivedTheme: Theme?
         var receivedFeatures = Features.init()
 
