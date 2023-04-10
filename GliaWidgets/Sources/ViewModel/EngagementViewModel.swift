@@ -14,7 +14,6 @@ class EngagementViewModel: CommonEngagementModel {
     var activeEngagement: CoreSdkClient.Engagement?
 
     private(set) var isViewActive = ObservableValue<Bool>(with: false)
-    static var alertPresenters = Set<EngagementViewModel>()
 
     init(
         interactor: Interactor,
@@ -74,15 +73,12 @@ class EngagementViewModel: CommonEngagementModel {
                 case .success(let survey) where survey != nil:
                     return
                 default:
-                    EngagementViewModel.alertPresenters.insert(self)
                     self.engagementAction?(
                         .showSingleActionAlert(
                             self.alertConfiguration.operatorEndedEngagement,
                             accessibilityIdentifier: Self.alertSingleActionAccessibilityIdentifier,
                             actionTapped: { [weak self] in
-                                guard let self else { return }
-                                EngagementViewModel.alertPresenters.remove(self)
-                                self.endSession()
+                                self?.endSession()
                             }
                         )
                     )
@@ -150,16 +146,13 @@ class EngagementViewModel: CommonEngagementModel {
                     return
                 }
 
-                EngagementViewModel.alertPresenters.insert(self)
                 self.engagementAction?(
                     .showSingleActionAlert(
                         self.alertConfiguration.operatorEndedEngagement,
                         accessibilityIdentifier: Self.alertSingleActionAccessibilityIdentifier,
                         actionTapped: { [weak self] in
-                            guard let self else { return }
-                            EngagementViewModel.alertPresenters.remove(self)
-                            self.endSession()
-                            self.engagementDelegate?(
+                            self?.endSession()
+                            self?.engagementDelegate?(
                                   .engaged(
                                       operatorImageUrl: nil
                                    )
@@ -180,7 +173,6 @@ class EngagementViewModel: CommonEngagementModel {
         dismissed: (() -> Void)? = nil
     ) {
         let onDismissed = {
-            EngagementViewModel.alertPresenters.remove(self)
             dismissed?()
 
             switch self.interactor.state {
@@ -190,7 +182,6 @@ class EngagementViewModel: CommonEngagementModel {
                 break
             }
         }
-        EngagementViewModel.alertPresenters.insert(self)
         engagementAction?(
             .showAlert(
                 conf,
