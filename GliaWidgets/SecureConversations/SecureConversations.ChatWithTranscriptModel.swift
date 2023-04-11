@@ -292,8 +292,6 @@ extension SecureConversations {
         static let messageTextLimit = WelcomeViewModel.messageTextLimit
         static let maximumUploads = WelcomeViewModel.maximumUploads
 
-        private static var alertPresenters = Set<TranscriptModel>()
-
         var action: ActionCallback?
         var delegate: DelegateCallback?
 
@@ -750,17 +748,11 @@ extension SecureConversations.TranscriptModel {
         accessibilityIdentifier: String? = nil,
         dismissed: (() -> Void)? = nil
     ) {
-        let onDismissed = { [weak self] in
-            guard let self = self else { return }
-            SecureConversations.TranscriptModel.alertPresenters.remove(self)
-            dismissed?()
-        }
-        SecureConversations.TranscriptModel.alertPresenters.insert(self)
         engagementAction?(
             .showAlert(
                 conf,
                 accessibilityIdentifier: accessibilityIdentifier,
-                dismissed: { onDismissed() }
+                dismissed: dismissed
             )
         )
     }

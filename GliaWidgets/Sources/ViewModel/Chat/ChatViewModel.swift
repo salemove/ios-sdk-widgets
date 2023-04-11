@@ -264,37 +264,6 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             break
         }
     }
-
-    override func stateChanged(_ state: InteractorState) {
-        super.stateChanged(state)
-        guard case .ended(let reason) = state, reason == .byOperator else { return }
-        interactor.currentEngagement?.getSurvey(completion: { [weak self] result in
-
-            guard let self = self else { return }
-            guard case .success(let survey) = result, survey == nil else {
-                self.endSession()
-                return
-            }
-
-            EngagementViewModel.alertPresenters.insert(self)
-            self.engagementAction?(
-                .showSingleActionAlert(
-                    self.alertConfiguration.operatorEndedEngagement,
-                    accessibilityIdentifier: Self.alertSingleActionAccessibilityIdentifier,
-                    actionTapped: { [weak self] in
-                        guard let self else { return }
-                        EngagementViewModel.alertPresenters.remove(self)
-                        self.endSession()
-                        self.engagementDelegate?(
-                            .engaged(
-                                operatorImageUrl: nil
-                            )
-                        )
-                    }
-                )
-            )
-        })
-    }
 }
 
 extension ChatViewModel {
