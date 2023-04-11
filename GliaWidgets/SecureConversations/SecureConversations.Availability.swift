@@ -50,9 +50,9 @@ extension SecureConversations {
 
 extension SecureConversations.Availability {
     struct Environment {
-        let listQueues: CoreSdkClient.ListQueues
-        let queueIds: [String]
-        let isAuthenticated: () -> Bool
+        var listQueues: CoreSdkClient.ListQueues
+        var queueIds: [String]
+        var isAuthenticated: () -> Bool
     }
 }
 
