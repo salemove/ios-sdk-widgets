@@ -473,16 +473,11 @@ extension SecureConversations.WelcomeViewModel {
         accessibilityIdentifier: String? = nil,
         dismissed: (() -> Void)? = nil
     ) {
-        let onDismissed = {
-            Self.alertPresenters.remove(self)
-            dismissed?()
-        }
-        Self.alertPresenters.insert(self)
         delegate?(
             .showAlert(
                 conf,
                 accessibilityIdentifier: accessibilityIdentifier,
-                dismissed: { onDismissed() }
+                dismissed: dismissed
             )
         )
     }
@@ -523,11 +518,6 @@ extension SecureConversations.WelcomeViewModel {
     private func removeUpload(_ upload: FileUpload) {
         fileUploadListModel.removeUpload(upload)
     }
-}
-
-// MARK: Support alerts system
-extension SecureConversations.WelcomeViewModel {
-    private static var alertPresenters = Set<SecureConversations.WelcomeViewModel>()
 }
 
 extension SecureConversations.WelcomeViewModel: Hashable {
