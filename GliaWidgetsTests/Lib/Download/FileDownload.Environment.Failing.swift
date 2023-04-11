@@ -2,11 +2,11 @@
 
 extension FileDownload.Environment {
     static let failing = Self(
-        fetchFile: .fromEngagement(
-            { _, _, _ in
-                fail("\(Self.self).fetchFile")
-            }
-        ),
+        fetchFile: { _, _, _ in fail("\(Self.self).fetchFile") },
+        downloadSecureFile: { _, _, _ in
+            fail("\(Self.self).downloadSecureFile")
+            return .mock
+        },
         fileManager: .failing,
         gcd: .failing,
         localFileThumbnailQueue: .failing,

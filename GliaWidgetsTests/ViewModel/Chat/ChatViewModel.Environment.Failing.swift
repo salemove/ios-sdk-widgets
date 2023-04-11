@@ -8,6 +8,10 @@ extension ChatViewModel.Environment {
             fetchFile: { _, _, _ in
                 fail("\(Self.self).fetchFile")
             },
+            downloadSecureFile: { _, _, _ in
+                fail("\(Self.self).downloadSecureFile")
+                return .mock
+            },
             sendSelectedOptionValue: { _, _ in
                 fail("\(Self.self).sendSelectedOptionValue")
             },

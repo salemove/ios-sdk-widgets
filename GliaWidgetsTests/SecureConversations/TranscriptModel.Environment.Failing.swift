@@ -2,8 +2,11 @@
 
 extension SecureConversations.TranscriptModel.Environment {
     static let failing = SecureConversations.TranscriptModel.Environment(
-        fetchFile: { file, progress, completion in
+        fetchFile: { _, _, _ in
             fail("\(Self.self).fetchFile")
+        },
+        downloadSecureFile: { _, _, _ in
+            fail("\(Self.self).downloadSecureFile")
             return .mock
         },
         fileManager: .failing,
