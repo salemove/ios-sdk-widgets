@@ -206,6 +206,7 @@ extension ChatCoordinator {
     ) -> ChatViewModel.Environment {
         ChatViewModel.Environment(
             fetchFile: environment.fetchFile,
+            downloadSecureFile: environment.downloadSecureFile,
             sendSelectedOptionValue: environment.sendSelectedOptionValue,
             uploadFileToEngagement: environment.uploadFileToEngagement,
             fileManager: environment.fileManager,
@@ -299,7 +300,8 @@ extension ChatCoordinator {
         viewFactory: ViewFactory
     ) -> SecureConversations.TranscriptModel.Environment {
         SecureConversations.TranscriptModel.Environment(
-           fetchFile: environment.downloadSecureFile,
+           fetchFile: environment.fetchFile,
+           downloadSecureFile: environment.downloadSecureFile,
            fileManager: environment.fileManager,
            data: environment.data,
            date: environment.date,
