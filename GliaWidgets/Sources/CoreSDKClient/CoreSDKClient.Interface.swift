@@ -202,6 +202,8 @@ extension CoreSdkClient {
     typealias OperatorTypingStatusUpdate = SalemoveSDK.OperatorTypingStatusUpdate
     typealias Queue = SalemoveSDK.Queue
     typealias QueueError = SalemoveSDK.QueueError
+    typealias QueueState = SalemoveSDK.QueueState
+    typealias QueueStatus = SalemoveSDK.QueueStatus
     typealias QueueRequestBlock = SalemoveSDK.QueueRequestBlock
     typealias QueueTicket = SalemoveSDK.QueueTicket
     typealias QueueTicketBlock = SalemoveSDK.QueueTicketBlock
