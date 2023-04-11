@@ -36,7 +36,12 @@ extension SecureConversations {
             self?.sendMessage()
         }
 
-        init(environment: Environment, availability: Availability) {
+        init(
+            environment: Environment,
+            availability: Availability,
+            delegate: ((DelegateEvent) -> Void)? = nil
+        ) {
+            self.delegate = delegate
             self.environment = environment
             self.fileUploadListModel = environment.createFileUploadListModel(
                 .init(
