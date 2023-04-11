@@ -301,7 +301,7 @@ extension SecureConversations {
         private let downloader: FileDownloader
         let fileUploadListModel: SecureConversations.FileUploadListViewModel
 
-        private var messageText = "" {
+        private (set) var messageText = "" {
             didSet {
                 validateMessage()
                 action?(.setMessageText(messageText))
@@ -314,12 +314,7 @@ extension SecureConversations {
 
         var environment: Environment
         var availability: Availability
-        var isSecureConversationsAvailable: Bool = true {
-            didSet {
-                // Hide text field in MOB-1882
-                print("availability has changed")
-            }
-        }
+        private (set) var isSecureConversationsAvailable: Bool = true
 
         var siteConfiguration: CoreSdkClient.Site?
 

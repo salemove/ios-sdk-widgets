@@ -367,4 +367,73 @@ extension CoreSdkClient {
     }
 }
 
+extension CoreSdkClient.Site.AllowedFileSenders {
+    struct Mock: Codable {
+        let `operator`: Bool
+        let visitor: Bool
+    }
+}
+
+extension CoreSdkClient.Site.AllowedFileSenders.Mock {
+    static let mock = CoreSdkClient.Site.AllowedFileSenders.Mock.init(
+        operator: false,
+        visitor: false
+    )
+
+    static func mock(
+        operator: Bool = false,
+        visitor: Bool = false
+    ) -> CoreSdkClient.Site.AllowedFileSenders.Mock {
+        CoreSdkClient.Site.AllowedFileSenders.Mock(
+            operator: `operator`,
+            visitor: visitor
+        )
+    }
+
+}
+
+extension CoreSdkClient.Site.AllowedFileSenders {
+    static func mock(
+        operator: Bool = false,
+        visitor: Bool = false
+    ) throws -> CoreSdkClient.Site.AllowedFileSenders {
+        try JSONDecoder().decode(
+            CoreSdkClient.Site.AllowedFileSenders.self,
+            from: JSONEncoder()
+                .encode(
+                    CoreSdkClient.Site.AllowedFileSenders.Mock(
+                        operator: `operator`,
+                        visitor: visitor
+                    )
+                )
+        )
+    }
+}
+
+extension CoreSdkClient.Site {
+    static func mock(
+        id: UUID = .mock,
+        allowedFileSenders: AllowedFileSenders.Mock = .mock,
+        maskingRegularExpressions: [String] = []
+    ) throws -> Self {
+        struct Mock: Codable {
+            let id: UUID
+            let allowedFileSenders: CoreSdkClient.Site.AllowedFileSenders.Mock
+            let maskingRegularExpressions: [String]
+        }
+        return try JSONDecoder()
+            .decode(
+                CoreSdkClient.Site.self,
+                from: JSONEncoder()
+                    .encode(
+                        Mock(
+                            id: id,
+                            allowedFileSenders: allowedFileSenders,
+                            maskingRegularExpressions: maskingRegularExpressions
+                        )
+                    )
+            )
+    }
+}
+
 #endif
