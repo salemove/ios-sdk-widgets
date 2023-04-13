@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name                  = 'GliaWidgets'
-  s.version               = '0.10.10'
+  s.version               = '0.10.11'
   s.summary               = 'The Glia iOS Widgets library'
   s.description           = 'The Glia Widgets library allows to integrate easily a UI/UX for Glia\'s Digital Customer Service platform'
   s.homepage              = 'https://github.com/salemove/ios-sdk-widgets'
