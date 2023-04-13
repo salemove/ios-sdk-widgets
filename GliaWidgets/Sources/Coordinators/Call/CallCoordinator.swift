@@ -63,6 +63,7 @@ private extension CallCoordinator {
             screenShareHandler: screenShareHandler,
             environment: .init(
                 fetchFile: environment.fetchFile,
+                downloadSecureFile: environment.downloadSecureFile,
                 sendSelectedOptionValue: environment.sendSelectedOptionValue,
                 uploadFileToEngagement: environment.uploadFileToEngagement,
                 fileManager: environment.fileManager,
@@ -130,6 +131,7 @@ private extension CallCoordinator {
 extension CallCoordinator {
     struct Environment {
         var fetchFile: CoreSdkClient.FetchFile
+        var downloadSecureFile: CoreSdkClient.DownloadSecureFile
         var sendSelectedOptionValue: CoreSdkClient.SendSelectedOptionValue
         var uploadFileToEngagement: CoreSdkClient.UploadFileToEngagement
         var fileManager: FoundationBased.FileManager

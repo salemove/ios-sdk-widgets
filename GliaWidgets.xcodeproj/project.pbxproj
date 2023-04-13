@@ -444,6 +444,7 @@
 		AF29810B29E0478E0005BD55 /* TranscriptModel.Environment.Failing.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF29810A29E0478E0005BD55 /* TranscriptModel.Environment.Failing.swift */; };
 		AF29811029E06E830005BD55 /* Availability.Environment.Failing.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF29810F29E06E830005BD55 /* Availability.Environment.Failing.swift */; };
 		AF29811229E42F3C0005BD55 /* AvailabilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF29811129E42F3C0005BD55 /* AvailabilityTests.swift */; };
+		AF29811529E6D76A0005BD55 /* FileDownloadTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF29811429E6D76A0005BD55 /* FileDownloadTests.swift */; };
 		AF39330B29B2A6A00008B60D /* ChatViewModel.SecureConverstaions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF39330A29B2A6A00008B60D /* ChatViewModel.SecureConverstaions.swift */; };
 		AF3D520B2983235C00AD8E69 /* FileUploader.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3D520A2983235C00AD8E69 /* FileUploader.Mock.swift */; };
 		AF3D520D2983B3DD00AD8E69 /* FileUploader.Environment.Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3D520C2983B3DD00AD8E69 /* FileUploader.Environment.Interface.swift */; };
@@ -1057,6 +1058,7 @@
 		AF29810A29E0478E0005BD55 /* TranscriptModel.Environment.Failing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranscriptModel.Environment.Failing.swift; sourceTree = "<group>"; };
 		AF29810F29E06E830005BD55 /* Availability.Environment.Failing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Availability.Environment.Failing.swift; sourceTree = "<group>"; };
 		AF29811129E42F3C0005BD55 /* AvailabilityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvailabilityTests.swift; sourceTree = "<group>"; };
+		AF29811429E6D76A0005BD55 /* FileDownloadTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileDownloadTests.swift; sourceTree = "<group>"; };
 		AF39330A29B2A6A00008B60D /* ChatViewModel.SecureConverstaions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.SecureConverstaions.swift; sourceTree = "<group>"; };
 		AF3D520A2983235C00AD8E69 /* FileUploader.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUploader.Mock.swift; sourceTree = "<group>"; };
 		AF3D520C2983B3DD00AD8E69 /* FileUploader.Environment.Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUploader.Environment.Interface.swift; sourceTree = "<group>"; };
@@ -2322,6 +2324,7 @@
 			isa = PBXGroup;
 			children = (
 				7512A57627BE8A6700319DF1 /* InteractorTests.swift */,
+				AF29811429E6D76A0005BD55 /* FileDownloadTests.swift */,
 				7512A57927BF9FCD00319DF1 /* ChatViewModelTests.swift */,
 				7512A5A627C3926500319DF1 /* GliaTests.swift */,
 				EB9ADB50280EBD4E00FAE8A4 /* InteractorStateTests.swift */,
@@ -4069,6 +4072,7 @@
 				EB03B00E27FFF6DD0058F6B1 /* CallViewTests.swift in Sources */,
 				AF29810929E045CE0005BD55 /* TranscriptModelTests.swift in Sources */,
 				7512A57727BE8A6700319DF1 /* InteractorTests.swift in Sources */,
+				AF29811529E6D76A0005BD55 /* FileDownloadTests.swift in Sources */,
 				C096B40B297EBDE400F0C552 /* VisitorCodeTests.swift in Sources */,
 				9ACC25D427B474E800BC5335 /* Glia.Environment.Failing.swift in Sources */,
 				9A8130C227D9095200220BBD /* FileDownload.Failing.swift in Sources */,
