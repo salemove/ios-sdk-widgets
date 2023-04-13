@@ -4,7 +4,8 @@ import Foundation
 extension SecureConversations.WelcomeViewModel {
     static let mock = SecureConversations.WelcomeViewModel(
         environment: .mock,
-        availability: .mock
+        availability: .mock,
+        delegate: nil
     )
 }
 
