@@ -518,7 +518,7 @@ extension SecureConversations {
 // MARK: Input validation
 extension SecureConversations.TranscriptModel {
     @discardableResult
-    private func validateMessage() -> Bool {
+    func validateMessage() -> Bool {
         let canSendAttachments =
         fileUploadListModel.failedUploads.isEmpty &&
         fileUploadListModel.activeUploads.isEmpty && !fileUploadListModel.isLimitReached
@@ -537,7 +537,7 @@ extension SecureConversations.TranscriptModel {
 
 // MARK: Message management
 extension SecureConversations.TranscriptModel {
-    private func sendMessage() {
+    func sendMessage() {
         guard validateMessage() else { return }
 
         let uploads = fileUploadListModel.succeededUploads
