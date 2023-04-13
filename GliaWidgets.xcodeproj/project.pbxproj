@@ -189,6 +189,7 @@
 		315BAB1E29ADFED800FF284B /* ConfirmationStyle+CheckMessagesButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 315BAB1D29ADFED800FF284B /* ConfirmationStyle+CheckMessagesButtonStyle.swift */; };
 		3189DD9429DEFAC600D68E9F /* SecureConversations.WelcomeViewModelSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3189DD9329DEFAC600D68E9F /* SecureConversations.WelcomeViewModelSpec.swift */; };
 		3189DD9629E4331200D68E9F /* SecureConversations.WelcomeViewModel.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3189DD9529E4331200D68E9F /* SecureConversations.WelcomeViewModel.Mock.swift */; };
+		3197F7AD29E6A5C8008EE9F7 /* SecureConversations.FileUploadListView.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3197F7AC29E6A5C8008EE9F7 /* SecureConversations.FileUploadListView.Mock.swift */; };
 		31DB0C01287C2EFC00FB288E /* StaticValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31DB0C00287C2EFC00FB288E /* StaticValues.swift */; };
 		6B2BFCE2274297F100B68506 /* SettingsSwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B2BFCE1274297F100B68506 /* SettingsSwitchCell.swift */; };
 		6B48213E2735873300F2900A /* Feature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B48213D2735873300F2900A /* Feature.swift */; };
@@ -798,6 +799,7 @@
 		315BAB1D29ADFED800FF284B /* ConfirmationStyle+CheckMessagesButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ConfirmationStyle+CheckMessagesButtonStyle.swift"; sourceTree = "<group>"; };
 		3189DD9329DEFAC600D68E9F /* SecureConversations.WelcomeViewModelSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.WelcomeViewModelSpec.swift; sourceTree = "<group>"; };
 		3189DD9529E4331200D68E9F /* SecureConversations.WelcomeViewModel.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.WelcomeViewModel.Mock.swift; sourceTree = "<group>"; };
+		3197F7AC29E6A5C8008EE9F7 /* SecureConversations.FileUploadListView.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.FileUploadListView.Mock.swift; sourceTree = "<group>"; };
 		31DB0C00287C2EFC00FB288E /* StaticValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticValues.swift; sourceTree = "<group>"; };
 		6304CD1CAD1108C78C7B11BF /* Pods-GliaWidgetsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliaWidgetsTests.release.xcconfig"; path = "Target Support Files/Pods-GliaWidgetsTests/Pods-GliaWidgetsTests.release.xcconfig"; sourceTree = "<group>"; };
 		6B2BFCE1274297F100B68506 /* SettingsSwitchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSwitchCell.swift; sourceTree = "<group>"; };
@@ -2927,6 +2929,7 @@
 				AF29810A29E0478E0005BD55 /* TranscriptModel.Environment.Failing.swift */,
 				AF4D821B29D6E572007763F8 /* TranscriptModel.dividedChatItemsForUnreadCountTests.swift */,
 				AF29810F29E06E830005BD55 /* Availability.Environment.Failing.swift */,
+				3197F7AC29E6A5C8008EE9F7 /* SecureConversations.FileUploadListView.Mock.swift */,
 			);
 			path = SecureConversations;
 			sourceTree = "<group>";
@@ -4070,6 +4073,7 @@
 				C03A8049292BC8DB00DDECA6 /* CallViewControllerTests.swift in Sources */,
 				AF6AB34B2989517100003645 /* FileUploader.Failing.swift in Sources */,
 				EB03B00E27FFF6DD0058F6B1 /* CallViewTests.swift in Sources */,
+				3197F7AD29E6A5C8008EE9F7 /* SecureConversations.FileUploadListView.Mock.swift in Sources */,
 				AF29810929E045CE0005BD55 /* TranscriptModelTests.swift in Sources */,
 				7512A57727BE8A6700319DF1 /* InteractorTests.swift in Sources */,
 				AF29811529E6D76A0005BD55 /* FileDownloadTests.swift in Sources */,
