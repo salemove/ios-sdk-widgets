@@ -68,7 +68,19 @@ class FileDownload {
             return
         }
 
-        let engagementFile = CoreSdkClient.EngagementFile(url: fileUrl)
+        let fetchFile = Environment.FetchFile.fetchForEngagementFile(CoreSdkClient.EngagementFile(url: fileUrl), environment: .init(
+            fetchFile: environment.fetchFile,
+            downloadSecureFile: environment.downloadSecureFile)
+        )
+
+        let engagementFile: CoreSdkClient.EngagementFile
+
+        switch fetchFile {
+        case .fromEngagement:
+            engagementFile = CoreSdkClient.EngagementFile(url: fileUrl)
+        case .fromSecureMessaging:
+            engagementFile = file.id.map(CoreSdkClient.EngagementFile.init(id:)) ?? CoreSdkClient.EngagementFile(url: fileUrl)
+        }
 
         let progress = ObservableValue<Double>(with: 0)
         let onProgress: CoreSdkClient.EngagementFileProgressBlock = {
@@ -99,7 +111,7 @@ class FileDownload {
 
         state.value = .downloading(progress: progress)
 
-        environment.fetchFile.startWithFile(
+        fetchFile.startWithFile(
             engagementFile,
             progress: onProgress
         ) { result in

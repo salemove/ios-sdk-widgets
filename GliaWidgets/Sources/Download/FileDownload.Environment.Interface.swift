@@ -1,6 +1,7 @@
 extension FileDownload {
     struct Environment {
-        var fetchFile: FetchFile
+        var fetchFile: CoreSdkClient.FetchFile
+        var downloadSecureFile: CoreSdkClient.DownloadSecureFile
         var fileManager: FoundationBased.FileManager
         var gcd: GCD
         var localFileThumbnailQueue: FoundationBased.OperationQueue
@@ -38,4 +39,22 @@ extension FileDownload.Environment.FetchFile {
                 return nil
             }
         }
+
+    static func fetchForEngagementFile(
+        _ file: CoreSdkClient.EngagementFile,
+        environment: Environment
+    ) -> FileDownload.Environment.FetchFile {
+        guard let components = file.url
+            .flatMap({ url in URLComponents(url: url, resolvingAgainstBaseURL: false) }),
+            components.path.starts(with: "/messaging/files/") else {
+            return .fromEngagement(environment.fetchFile)
+        }
+
+        return .fromSecureMessaging(environment.downloadSecureFile)
+    }
+
+    struct Environment {
+        var fetchFile: CoreSdkClient.FetchFile
+        var downloadSecureFile: CoreSdkClient.DownloadSecureFile
+    }
 }
