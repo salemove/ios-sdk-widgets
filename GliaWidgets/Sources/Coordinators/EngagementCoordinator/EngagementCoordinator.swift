@@ -312,6 +312,7 @@ extension EngagementCoordinator {
             startAction: startAction,
             environment: .init(
                 fetchFile: environment.fetchFile,
+                downloadSecureFile: environment.downloadSecureFile,
                 sendSelectedOptionValue: environment.sendSelectedOptionValue,
                 uploadFileToEngagement: environment.uploadFileToEngagement,
                 fileManager: environment.fileManager,

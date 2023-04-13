@@ -28,6 +28,7 @@ class ChatViewModelTests: XCTestCase {
             shouldSkipEnqueueingState: false,
             environment: .init(
                 fetchFile: { _, _, _ in },
+                downloadSecureFile: { _, _, _ in .mock },
                 sendSelectedOptionValue: { _, _ in
                     calls.append(.sendSelectedOptionValue)
                 },

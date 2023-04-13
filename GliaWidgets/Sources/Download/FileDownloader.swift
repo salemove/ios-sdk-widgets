@@ -68,6 +68,7 @@ class FileDownloader {
                 storage,
                 .init(
                     fetchFile: environment.fetchFile,
+                    downloadSecureFile: environment.downloadSecureFile,
                     fileManager: environment.fileManager,
                     gcd: environment.gcd,
                     localFileThumbnailQueue: environment.localFileThumbnailQueue,
@@ -103,9 +104,8 @@ extension FileDownloader {
     ) -> FileDownload
 
     struct Environment {
-        typealias FetchFile = FileDownload.Environment.FetchFile
-
-        var fetchFile: FetchFile
+        var fetchFile: CoreSdkClient.FetchFile
+        var downloadSecureFile: CoreSdkClient.DownloadSecureFile
         var fileManager: FoundationBased.FileManager
         var data: FoundationBased.Data
         var date: () -> Date
