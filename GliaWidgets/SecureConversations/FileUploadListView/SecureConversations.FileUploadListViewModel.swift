@@ -14,7 +14,7 @@ extension SecureConversations {
             case renderProps(SecureConversations.FileUploadListView.Props)
         }
 
-        let environment: Environment
+        var environment: Environment
 
         init(environment: Environment) {
             self.environment = environment
