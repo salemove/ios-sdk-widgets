@@ -324,7 +324,9 @@ extension ChatCoordinator {
            getSecureUnreadMessageCount: environment.getSecureUnreadMessageCount,
            messagesWithUnreadCountLoaderScheduler: environment.messagesWithUnreadCountLoaderScheduler,
            secureMarkMessagesAsRead: environment.secureMarkMessagesAsRead,
-           interactor: environment.interactor
+           interactor: environment.interactor,
+           startSocketObservation: environment.startSocketObservation,
+           stopSocketObservation: environment.stopSocketObservation
        )
     }
 }
