@@ -62,6 +62,12 @@ extension SecureConversations.TranscriptModel.Environment {
             fail("\(Self.self).secureMarkMessagesAsRead")
             return .mock
         },
-        interactor: .mock()
+        interactor: .mock(),
+        startSocketObservation: {
+            fail("\(Self.self).startSocketObservation")
+        },
+        stopSocketObservation: {
+            fail("\(Self.self).stopSocketObservation")
+        }
     )
 }
