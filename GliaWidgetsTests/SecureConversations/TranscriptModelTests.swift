@@ -3,6 +3,7 @@ import XCTest
 
 final class TranscriptModelTests: XCTestCase {
     typealias TranscriptModel = SecureConversations.TranscriptModel
+    typealias FileUploadListViewModel = SecureConversations.FileUploadListViewModel
 
     func testEmptyQueueSetsIsSecureConversationsAvailableToFalse() {
         var modelEnv = TranscriptModel.Environment.failing
@@ -147,5 +148,238 @@ final class TranscriptModelTests: XCTestCase {
         XCTAssertEqual(viewModel.messageText, text)
         viewModel.clearInputs()
         XCTAssertTrue(viewModel.messageText.isEmpty)
+    }
+
+    func testValidateMessageReturnsFalseForExpectedCases() {
+        var modelEnv = TranscriptModel.Environment.failing
+        let fileUploadListModel = FileUploadListViewModel.mock()
+
+        let failedUpload = FileUpload.mock()
+        failedUpload.state.value = .error(.generic)
+
+        let inProgressUpload = FileUpload.mock()
+        inProgressUpload.state.value = .uploading(progress: .init(with: .zero))
+
+        // Empty text, failed and in-progress uploads, lack of succeeding uploads
+        // along with reached limit of uploads will not let validation pass.
+        fileUploadListModel.environment.uploader.uploads = [failedUpload, inProgressUpload]
+        fileUploadListModel.environment.uploader.limitReached.value = true
+        let emptyMessageText = ""
+
+        modelEnv.fileManager = .mock
+        modelEnv.createFileUploadListModel = { _ in fileUploadListModel }
+        modelEnv.listQueues = { _ in }
+        modelEnv.fetchChatHistory = { _ in }
+        modelEnv.fetchSiteConfigurations = { _ in }
+        modelEnv.getSecureUnreadMessageCount = { _ in  }
+        let availabilityEnv = SecureConversations.Availability.Environment(
+            listQueues: modelEnv.listQueues,
+            queueIds: modelEnv.queueIds,
+            isAuthenticated: { true }
+        )
+
+        let viewModel = TranscriptModel(
+            isCustomCardSupported: false,
+            environment: modelEnv,
+            availability: .init(
+                environment: availabilityEnv
+            ),
+            deliveredStatusText: ""
+        )
+
+        viewModel.event(.messageTextChanged(emptyMessageText))
+
+        XCTAssertFalse(viewModel.validateMessage())
+    }
+
+    func testValidateMessageReturnsTrueForSucceedingUpload() throws {
+        var modelEnv = TranscriptModel.Environment.failing
+        let fileUploadListModel = FileUploadListViewModel.mock()
+
+        let succeedingUpload = FileUpload.mock()
+        succeedingUpload.state.value = try .uploaded(file: .mock())
+        fileUploadListModel.environment.uploader.uploads = [succeedingUpload]
+        fileUploadListModel.environment.uploader.limitReached.value = false
+        // Validation should pass even if text is empty, because file attachments
+        // meet criteria.
+        let emptyMessageText = ""
+
+        modelEnv.fileManager = .mock
+        modelEnv.createFileUploadListModel = { _ in fileUploadListModel }
+        modelEnv.listQueues = { _ in }
+        modelEnv.fetchChatHistory = { _ in }
+        modelEnv.fetchSiteConfigurations = { _ in }
+        modelEnv.getSecureUnreadMessageCount = { _ in  }
+        let availabilityEnv = SecureConversations.Availability.Environment(
+            listQueues: modelEnv.listQueues,
+            queueIds: modelEnv.queueIds,
+            isAuthenticated: { true }
+        )
+
+        let viewModel = TranscriptModel(
+            isCustomCardSupported: false,
+            environment: modelEnv,
+            availability: .init(
+                environment: availabilityEnv
+            ),
+            deliveredStatusText: ""
+        )
+
+        viewModel.event(.messageTextChanged(emptyMessageText))
+
+        XCTAssertTrue(viewModel.validateMessage())
+    }
+
+    func testValidateMessageReturnsTrueForNonemptyText() throws {
+        var modelEnv = TranscriptModel.Environment.failing
+        let fileUploadListModel = FileUploadListViewModel.mock()
+        fileUploadListModel.environment.uploader.limitReached.value = false
+
+        // Validation should pass even for non-empty text.
+        let nonEmptyText = "Non empty message."
+
+        modelEnv.fileManager = .mock
+        modelEnv.createFileUploadListModel = { _ in fileUploadListModel }
+        modelEnv.listQueues = { _ in }
+        modelEnv.fetchChatHistory = { _ in }
+        modelEnv.fetchSiteConfigurations = { _ in }
+        modelEnv.getSecureUnreadMessageCount = { _ in  }
+        let availabilityEnv = SecureConversations.Availability.Environment(
+            listQueues: modelEnv.listQueues,
+            queueIds: modelEnv.queueIds,
+            isAuthenticated: { true }
+        )
+
+        let viewModel = TranscriptModel(
+            isCustomCardSupported: false,
+            environment: modelEnv,
+            availability: .init(
+                environment: availabilityEnv
+            ),
+            deliveredStatusText: ""
+        )
+
+        viewModel.event(.messageTextChanged(nonEmptyText))
+
+        XCTAssertTrue(viewModel.validateMessage())
+    }
+
+
+    func testSendMessageUsesSecureEndpoint() {
+        var modelEnv = TranscriptModel.Environment.failing
+        let fileUploadListModel = FileUploadListViewModel.mock()
+        fileUploadListModel.environment.uploader.limitReached.value = false
+        let nonEmptyText = "No empty message."
+        modelEnv.fileManager = .mock
+        modelEnv.createFileUploadListModel = { _ in fileUploadListModel }
+        modelEnv.listQueues = { _ in }
+        modelEnv.fetchChatHistory = { _ in }
+        modelEnv.fetchSiteConfigurations = { _ in }
+        modelEnv.getSecureUnreadMessageCount = { _ in  }
+        enum Call: Equatable { case sendSecureMessage }
+        var calls: [Call] = []
+        modelEnv.sendSecureMessage = { _, _, _, _ in
+            calls.append(.sendSecureMessage)
+            return .mock
+        }
+        let availabilityEnv = SecureConversations.Availability.Environment(
+            listQueues: modelEnv.listQueues,
+            queueIds: modelEnv.queueIds,
+            isAuthenticated: { true }
+        )
+
+        let viewModel = TranscriptModel(
+            isCustomCardSupported: false,
+            environment: modelEnv,
+            availability: .init(
+                environment: availabilityEnv
+            ),
+            deliveredStatusText: ""
+        )
+
+        viewModel.event(.messageTextChanged(nonEmptyText))
+        viewModel.sendMessage()
+        XCTAssertEqual(calls, [.sendSecureMessage])
+    }
+
+    func testLoadHistoryAlsoInvokesUnreadMessageCount() {
+        var modelEnv = TranscriptModel.Environment.failing
+        let fileUploadListModel = FileUploadListViewModel.mock()
+        fileUploadListModel.environment.uploader.limitReached.value = false
+        modelEnv.fileManager = .mock
+        modelEnv.createFileUploadListModel = { _ in fileUploadListModel }
+        modelEnv.listQueues = { _ in }
+        modelEnv.fetchChatHistory = { _ in }
+        modelEnv.fetchSiteConfigurations = { _ in }
+        enum Call: Equatable { case getSecureUnreadMessageCount }
+        var calls: [Call] = []
+        modelEnv.getSecureUnreadMessageCount = { _ in
+            calls.append(.getSecureUnreadMessageCount)
+        }
+
+        let availabilityEnv = SecureConversations.Availability.Environment(
+            listQueues: modelEnv.listQueues,
+            queueIds: modelEnv.queueIds,
+            isAuthenticated: { true }
+        )
+
+        let viewModel = TranscriptModel(
+            isCustomCardSupported: false,
+            environment: modelEnv,
+            availability: .init(
+                environment: availabilityEnv
+            ),
+            deliveredStatusText: ""
+        )
+
+        viewModel.start()
+        XCTAssertEqual(calls, [.getSecureUnreadMessageCount])
+    }
+
+    func testLoadHistoryAddsUnreadMessageDivider() {
+        var modelEnv = TranscriptModel.Environment.failing
+        let fileUploadListModel = FileUploadListViewModel.mock()
+        fileUploadListModel.environment.uploader.limitReached.value = false
+        modelEnv.fileManager = .mock
+        modelEnv.createFileUploadListModel = { _ in fileUploadListModel }
+        modelEnv.listQueues = { _ in }
+        modelEnv.fetchChatHistory = { callback in
+            callback(.success([.mock(sender: .operator)]))
+        }
+        modelEnv.fetchSiteConfigurations = { _ in }
+        modelEnv.getSecureUnreadMessageCount = { callback in
+            callback(.success(1))
+        }
+        modelEnv.gcd.mainQueue.asyncAfterDeadline = { _, callback in }
+        modelEnv.loadChatMessagesFromHistory = { true }
+        let scheduler = CoreSdkClient.ReactiveSwift.TestScheduler()
+        modelEnv.messagesWithUnreadCountLoaderScheduler = scheduler
+
+        let availabilityEnv = SecureConversations.Availability.Environment(
+            listQueues: modelEnv.listQueues,
+            queueIds: modelEnv.queueIds,
+            isAuthenticated: { true }
+        )
+
+        let viewModel = TranscriptModel(
+            isCustomCardSupported: false,
+            environment: modelEnv,
+            availability: .init(
+                environment: availabilityEnv
+            ),
+            deliveredStatusText: ""
+        )
+
+        viewModel.start()
+        scheduler.run()
+
+        XCTAssertTrue(viewModel.historySection.items.contains(where: { item in
+            switch item.kind {
+            case .unreadMessageDivider:
+                return true
+            default:
+                return false
+            }
+        }))
     }
 }
