@@ -190,6 +190,8 @@
 		3189DD9429DEFAC600D68E9F /* SecureConversations.WelcomeViewModelSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3189DD9329DEFAC600D68E9F /* SecureConversations.WelcomeViewModelSpec.swift */; };
 		3189DD9629E4331200D68E9F /* SecureConversations.WelcomeViewModel.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3189DD9529E4331200D68E9F /* SecureConversations.WelcomeViewModel.Mock.swift */; };
 		3197F7AD29E6A5C8008EE9F7 /* SecureConversations.FileUploadListView.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3197F7AC29E6A5C8008EE9F7 /* SecureConversations.FileUploadListView.Mock.swift */; };
+		3197F7AF29E95527008EE9F7 /* SystemMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3197F7AE29E95527008EE9F7 /* SystemMessageView.swift */; };
+		3197F7B129E958F4008EE9F7 /* SystemMessageStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3197F7B029E958F4008EE9F7 /* SystemMessageStyle.swift */; };
 		31DB0C01287C2EFC00FB288E /* StaticValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31DB0C00287C2EFC00FB288E /* StaticValues.swift */; };
 		6B2BFCE2274297F100B68506 /* SettingsSwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B2BFCE1274297F100B68506 /* SettingsSwitchCell.swift */; };
 		6B48213E2735873300F2900A /* Feature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B48213D2735873300F2900A /* Feature.swift */; };
@@ -800,6 +802,8 @@
 		3189DD9329DEFAC600D68E9F /* SecureConversations.WelcomeViewModelSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.WelcomeViewModelSpec.swift; sourceTree = "<group>"; };
 		3189DD9529E4331200D68E9F /* SecureConversations.WelcomeViewModel.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.WelcomeViewModel.Mock.swift; sourceTree = "<group>"; };
 		3197F7AC29E6A5C8008EE9F7 /* SecureConversations.FileUploadListView.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.FileUploadListView.Mock.swift; sourceTree = "<group>"; };
+		3197F7AE29E95527008EE9F7 /* SystemMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemMessageView.swift; sourceTree = "<group>"; };
+		3197F7B029E958F4008EE9F7 /* SystemMessageStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemMessageStyle.swift; sourceTree = "<group>"; };
 		31DB0C00287C2EFC00FB288E /* StaticValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticValues.swift; sourceTree = "<group>"; };
 		6304CD1CAD1108C78C7B11BF /* Pods-GliaWidgetsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliaWidgetsTests.release.xcconfig"; path = "Target Support Files/Pods-GliaWidgetsTests/Pods-GliaWidgetsTests.release.xcconfig"; sourceTree = "<group>"; };
 		6B2BFCE1274297F100B68506 /* SettingsSwitchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSwitchCell.swift; sourceTree = "<group>"; };
@@ -2024,6 +2028,8 @@
 				1A60B02C256BF7FF00E53F53 /* OperatorChatMessageView.swift */,
 				1A38A8A7258B652B0089DE7B /* OperatorChatMessageStyle.swift */,
 				845E2F6F283CF94100C04D56 /* VisitorChatMessageStyle.Accessibility.swift */,
+				3197F7AE29E95527008EE9F7 /* SystemMessageView.swift */,
+				3197F7B029E958F4008EE9F7 /* SystemMessageStyle.swift */,
 			);
 			path = Message;
 			sourceTree = "<group>";
@@ -3670,6 +3676,7 @@
 				75940962298D3889008B173A /* MessageMetadata.swift in Sources */,
 				7594094D298D37E8008B173A /* Glia.Environment.Mock.swift in Sources */,
 				1A60AFB9256682AF00E53F53 /* FlowCoordinator.swift in Sources */,
+				3197F7B129E958F4008EE9F7 /* SystemMessageStyle.swift in Sources */,
 				3100D92C296E946600DEC9CE /* SecureConversations.ConfirmationViewController.swift in Sources */,
 				9A8130BB27D7A41000220BBD /* FileUpload.Environment.Interface.swift in Sources */,
 				3100D92B296E946600DEC9CE /* SecureConversations+ConfirmationStyle.swift in Sources */,
@@ -3831,6 +3838,7 @@
 				845E2F98283FC9A900C04D56 /* Theme.Survey.OptionButton.swift in Sources */,
 				84265E60298D7B2900D65842 /* ScreenSharingCoordinator+Environment.swift in Sources */,
 				9AB196DC27C3FFCC00FD60AB /* Call.Environment.Interface.swift in Sources */,
+				3197F7AF29E95527008EE9F7 /* SystemMessageView.swift in Sources */,
 				755D186729A6A4FA0009F5E8 /* WelcomeStyle+SubtitleStyle.swift in Sources */,
 				C49A29EA2614A32600819269 /* ChatMessageContent.swift in Sources */,
 				75940961298D3889008B173A /* ChatMessageRenderer.Interface.swift in Sources */,
