@@ -57,7 +57,15 @@ class ChatMessage: Codable {
          operator salemoveOperator: CoreSdkClient.Operator? = nil) {
         id = message.id
         self.queueID = queueID
-        self.operator = salemoveOperator.map { ChatOperator(with: $0) }
+
+        if let salemoveOperator = salemoveOperator {
+            self.operator = ChatOperator(with: salemoveOperator)
+        } else if let name = message.sender.name {
+            self.operator = ChatOperator(name: name, pictureUrl: message.sender.picture?.url)
+        } else {
+            self.operator = nil
+        }
+
         sender = ChatMessageSender(with: message.sender)
         content = message.content
         attachment = ChatAttachment(with: message.attachment)
