@@ -1,0 +1,24 @@
+# This workflow will build a Swift project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-swift
+
+name: Coverage
+
+on:
+  push:
+    branches: ["master"]
+  pull_request:
+    branches: ["master"]
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run tests
+        run: |
+          pod install
+          xcodebuild test -workspace GliaWidgets.xcworkspace -scheme GliaWidgets -destination 'platform=iOS Simulator,name=iPhone 14,OS=16.2' -resultBundlePath GliaWidgetsSDKResults test
+      - uses: kishikawakatsumi/xcresulttool@v1
+        with:
+          path: GliaWidgetsSDKResults.xcresult
