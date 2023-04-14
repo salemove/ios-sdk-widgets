@@ -45,7 +45,9 @@ class ChatItem {
             kind = message.isChoiceCard ?
                 .choiceCard(message, showsImage: false, imageUrl: nil, isActive: !fromHistory) :
                 .operatorMessage(message, showsImage: false, imageUrl: message.operator?.pictureUrl)
-        case .omniguide, .system, .unknown:
+        case .system:
+            kind = .systemMessage(message)
+        case .omniguide, .unknown:
             return nil
         }
     }
@@ -65,5 +67,6 @@ extension ChatItem {
         case operatorConnected(name: String?, imageUrl: String?)
         case transferring
         case unreadMessageDivider
+        case systemMessage(ChatMessage)
     }
 }

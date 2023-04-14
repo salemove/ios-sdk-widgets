@@ -347,6 +347,12 @@ extension Theme {
             accessibility: .init(isFontScalingEnabled: true)
         )
 
+        let systemMessage = SystemMessageStyle(
+            text: operatorText,
+            imageFile: operatorImageFile,
+            fileDownload: fileDownload
+        )
+
         return ChatStyle(
             header: header,
             connect: connect,
@@ -370,7 +376,8 @@ extension Theme {
             ),
             secureTranscriptTitle: Chat.SecureTranscript.headerTitle,
             secureTranscriptHeader: secureTranscriptHeader,
-            unreadMessageDivider: unreadMessageDivider
+            unreadMessageDivider: unreadMessageDivider,
+            systemMessage: systemMessage
         )
     }
 
