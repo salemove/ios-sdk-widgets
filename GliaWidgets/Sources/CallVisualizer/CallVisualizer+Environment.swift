@@ -22,5 +22,6 @@ extension CallVisualizer {
         var uiConfig: () -> RemoteConfiguration?
         var assetsBuilder: () -> RemoteConfiguration.AssetsBuilder
         var getCurrentEngagement: CoreSdkClient.GetCurrentEngagement
+        var eventHandler: ((GliaEvent) -> Void)?
     }
 }

@@ -14,6 +14,7 @@ extension CallVisualizer {
                 } else {
                     self.resumeVideoCallViewController()
                 }
+                environment.eventHandler(.maximized)
             }
             bubbleView.pan = { [weak self] translation in
                 self?.updateBubblePosition(translation: translation)
@@ -226,6 +227,16 @@ extension CallVisualizer {
 
             return viewController
         }
+
+        func showVideoCallViewController() {
+            createOperatorImageBubbleView()
+            let viewController = buildVideoCallViewController()
+            environment
+                .presenter
+                .getInstance()?
+                .present(viewController, animated: true)
+            environment.eventHandler(.maximized)
+        }
     }
 }
 
@@ -268,20 +279,13 @@ private extension CallVisualizer.Coordinator {
         switch (screenSharingCoordinator, videoCallCoordinator) {
         case (.some(let screenSharing), _):
             screenSharing.viewController?.presentingViewController?.dismiss(animated: true)
+            environment.eventHandler(.minimized)
         case (.none, .some(let videoCall)):
             videoCall.viewController?.presentingViewController?.dismiss(animated: true)
+            environment.eventHandler(.minimized)
         case (.none, .none):
             break
         }
-    }
-
-    func showVideoCallViewController() {
-        createOperatorImageBubbleView()
-        let viewController = buildVideoCallViewController()
-        environment
-            .presenter
-            .getInstance()?
-            .present(viewController, animated: true)
     }
 
     func createScreenShareBubbleView() {
