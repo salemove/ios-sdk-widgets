@@ -3,16 +3,7 @@ import XCTest
 
 @testable import GliaWidgets
 
-class GliaTests: XCTestCase {
-
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
-
+final class GliaTests: XCTestCase {
     func test__endEngagementNotConfigured() throws {
 
         let sdk = Glia(environment: .failing)
@@ -171,5 +162,112 @@ class GliaTests: XCTestCase {
         sdk.setChatMessageRenderer(messageRenderer: messageRendererMock)
 
         XCTAssertNotNil(sdk.messageRenderer)
+    }
+
+    func testOnEventWhenCallVisualizerEngagementStarts() throws {
+        enum Call: Equatable {
+            case onEvent(GliaEvent)
+        }
+        var calls = [Call]()
+
+        var gliaEnv = Glia.Environment.failing
+        gliaEnv.gcd.mainQueue.asyncIfNeeded = { callback in callback() }
+        gliaEnv.coreSdk.getCurrentEngagement = {
+            .init(id: "", engagedOperator: nil, source: .callVisualizer, fetchSurvey: { _, _ in })
+        }
+        let sdk = Glia(environment: gliaEnv)
+        sdk.onEvent = {
+            calls.append(.onEvent($0))
+        }
+        try sdk.configure(
+            with: .mock(),
+            queueId: "queueId"
+        )
+
+        sdk.interactor?.state = .engaged(nil)
+
+        XCTAssertEqual(calls, [.onEvent(.started)])
+    }
+
+    func testOnEventWhenCallVisualizerEngagementEnds() throws {
+        enum Call: Equatable {
+            case onEvent(GliaEvent)
+        }
+        var calls = [Call]()
+
+        var gliaEnv = Glia.Environment.failing
+        gliaEnv.gcd.mainQueue.asyncIfNeeded = { callback in callback() }
+        gliaEnv.coreSdk.getCurrentEngagement = {
+            .init(id: "", engagedOperator: nil, source: .callVisualizer, fetchSurvey: { _, _ in })
+        }
+        let sdk = Glia(environment: gliaEnv)
+        sdk.onEvent = {
+            calls.append(.onEvent($0))
+        }
+        try sdk.configure(
+            with: .mock(),
+            queueId: "queueId"
+        )
+        
+        sdk.interactor?.state = .ended(.byOperator)
+
+        XCTAssertEqual(calls, [.onEvent(.ended)])
+    }
+
+    func testOnEventWhenScreenSharingScreenIsShownAndCallVisualizerEngagementEnds() throws {
+        enum Call: Equatable {
+            case onEvent(GliaEvent)
+        }
+        var calls = [Call]()
+
+        var gliaEnv = Glia.Environment.failing
+        gliaEnv.callVisualizerPresenter = .init(presenter: { nil })
+        gliaEnv.gcd.mainQueue.asyncIfNeeded = { callback in callback() }
+        gliaEnv.coreSdk.getCurrentEngagement = {
+            .init(id: "", engagedOperator: nil, source: .callVisualizer, fetchSurvey: { _, _ in })
+        }
+        let sdk = Glia(environment: gliaEnv)
+        sdk.onEvent = {
+            calls.append(.onEvent($0))
+        }
+        try sdk.configure(
+            with: .mock(),
+            queueId: "queueId"
+        )
+
+        sdk.callVisualizer.coordinator.showEndScreenSharingViewController()
+        sdk.interactor?.state = .ended(.byOperator)
+
+        XCTAssertEqual(calls, [.onEvent(.minimized), .onEvent(.ended)])
+    }
+
+    func testOnEventWhenVideoScreenIsShownAndCallVisualizerEngagementEnds() throws {
+        enum Call: Equatable {
+            case onEvent(GliaEvent)
+        }
+        var calls = [Call]()
+
+        var gliaEnv = Glia.Environment.failing
+        gliaEnv.uuid = { .mock }
+        gliaEnv.uiApplication.windows = { [] }
+        gliaEnv.callVisualizerPresenter = .init(presenter: { nil })
+        gliaEnv.gcd.mainQueue.asyncIfNeeded = { callback in callback() }
+        gliaEnv.notificationCenter.addObserverClosure = { _, _, _, _ in }
+        gliaEnv.coreSdk.getCurrentEngagement = {
+            .init(id: "", engagedOperator: nil, source: .callVisualizer, fetchSurvey: { _, _ in })
+        }
+        let sdk = Glia(environment: gliaEnv)
+        sdk.onEvent = {
+            calls.append(.onEvent($0))
+        }
+        try sdk.configure(
+            with: .mock(),
+            queueId: "queueId"
+        )
+
+        sdk.callVisualizer.coordinator.showVideoCallViewController()
+        sdk.interactor?.state = .ended(.byOperator)
+
+        XCTAssertEqual(calls, [.onEvent(.maximized), .onEvent(.minimized), .onEvent(.ended)])
     }
 }
