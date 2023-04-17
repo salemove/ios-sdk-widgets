@@ -462,6 +462,8 @@ extension ChatView {
                     style: style.unreadMessageDivider
                 )
             )
+        case .systemMessage(let message):
+            return systemMessageContent(message)
         }
     }
     // swiftlint:enable function_body_length
@@ -552,6 +554,29 @@ extension ChatView {
         view.onOptionTapped = { self.choiceOptionSelected($0, message.id) }
         view.appendContent(.choiceCard(choiceCard), animated: false)
         return .choiceCard(view)
+    }
+
+    private func systemMessageContent(_ message: ChatMessage) -> ChatItemCell.Content {
+        let view = SystemMessageView(
+            with: style.systemMessage,
+            environment: .init(
+                uiScreen: environment.uiScreen
+            )
+        )
+
+        view.appendContent(
+            .text(
+                message.content,
+                accessibility: Self.operatorAccessibilityMessage(
+                    for: message,
+                    operator: style.accessibility.operator,
+                    isFontScalingEnabled: style.accessibility.isFontScalingEnabled
+                )
+            ),
+            animated: false
+        )
+
+        return .systemMessage(view)
     }
 }
 
