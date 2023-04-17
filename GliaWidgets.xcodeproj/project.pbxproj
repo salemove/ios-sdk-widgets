@@ -336,6 +336,7 @@
 		846A5C3629CB3E270049B29F /* ScreenShareHandler.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846A5C3529CB3E270049B29F /* ScreenShareHandler.Mock.swift */; };
 		846A5C3929D18D400049B29F /* ScreenShareHandlerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846A5C3829D18D400049B29F /* ScreenShareHandlerTests.swift */; };
 		846A5C3E29D1C7B00049B29F /* CallVisualizerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846A5C3D29D1C7B00049B29F /* CallVisualizerTests.swift */; };
+		846A5C4029ED83C50049B29F /* CallVisualizer.Coordinator.DelegateEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846A5C3F29ED83C50049B29F /* CallVisualizer.Coordinator.DelegateEvent.swift */; };
 		846E822828996A5C008EFBF0 /* AlertViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846E822728996A5C008EFBF0 /* AlertViewControllerTests.swift */; };
 		847A7643285A1914004044D1 /* FileUploadListViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847A7642285A1914004044D1 /* FileUploadListViewModelTests.swift */; };
 		84A318A12869ECFC00CA1DE5 /* Unavailable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A318A02869ECFC00CA1DE5 /* Unavailable.swift */; };
@@ -950,6 +951,7 @@
 		846A5C3529CB3E270049B29F /* ScreenShareHandler.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenShareHandler.Mock.swift; sourceTree = "<group>"; };
 		846A5C3829D18D400049B29F /* ScreenShareHandlerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenShareHandlerTests.swift; sourceTree = "<group>"; };
 		846A5C3D29D1C7B00049B29F /* CallVisualizerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallVisualizerTests.swift; sourceTree = "<group>"; };
+		846A5C3F29ED83C50049B29F /* CallVisualizer.Coordinator.DelegateEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallVisualizer.Coordinator.DelegateEvent.swift; sourceTree = "<group>"; };
 		846E822728996A5C008EFBF0 /* AlertViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertViewControllerTests.swift; sourceTree = "<group>"; };
 		847A7642285A1914004044D1 /* FileUploadListViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUploadListViewModelTests.swift; sourceTree = "<group>"; };
 		84A318A02869ECFC00CA1DE5 /* Unavailable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Unavailable.swift; sourceTree = "<group>"; };
@@ -2654,6 +2656,7 @@
 			children = (
 				84265E49298D7B1900D65842 /* CallVisualizer.Coordinator.swift */,
 				84265E4A298D7B1900D65842 /* CallVisualizer.Coordinator.Environment.swift */,
+				846A5C3F29ED83C50049B29F /* CallVisualizer.Coordinator.DelegateEvent.swift */,
 			);
 			path = Coordinator;
 			sourceTree = "<group>";
@@ -3671,6 +3674,7 @@
 				1A60AFB62566825400E53F53 /* ViewModel.swift in Sources */,
 				C0D2F03F29914E8E00803B47 /* VideoCallViewModel.Environment.swift in Sources */,
 				845E2F95283FC5D300C04D56 /* Theme.Survey.OptionButton.Accessibility.swift in Sources */,
+				846A5C4029ED83C50049B29F /* CallVisualizer.Coordinator.DelegateEvent.swift in Sources */,
 				845876B4282AA296007AC3DF /* ButtonView.Props.Accessibility.swift in Sources */,
 				1A0C9AE025C9624500815406 /* ObservableValue.swift in Sources */,
 				75940962298D3889008B173A /* MessageMetadata.swift in Sources */,
