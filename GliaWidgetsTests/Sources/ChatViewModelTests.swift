@@ -183,6 +183,18 @@ class ChatViewModelTests: XCTestCase {
         XCTAssertEqual(lastItemKind, mockItemKind)
     }
 
+    func test_screenSharingTerminationUponEngagmentTransferring() {
+        let viewModel: ChatViewModel = .mock(screenShareHandler: .create())
+        let state: CoreSdkClient.VisitorScreenSharingState = .init(status: .sharing, localScreen: nil)
+        viewModel.screenShareHandler.updateState(state)
+
+        XCTAssertEqual(viewModel.screenShareHandler.status().value, .started)
+
+        viewModel.interactor.onEngagementTransferring()
+
+        XCTAssertEqual(viewModel.screenShareHandler.status().value, .stopped)
+    }
+
     func test__updateDoesNotCallSDKFetchSiteConfigurationsOnEnqueueingState() throws {
         // Given
         enum Calls { case fetchSiteConfigurations }

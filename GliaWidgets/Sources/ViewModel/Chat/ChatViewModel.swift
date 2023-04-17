@@ -304,6 +304,7 @@ extension ChatViewModel {
         action?(.setMessageEntryEnabled(false))
         appendItem(.init(kind: .transferring), to: messagesSection, animated: true)
         action?(.scrollToBottom(animated: true))
+        endScreenSharing()
     }
 
     private func onEngagementTransferred() {
