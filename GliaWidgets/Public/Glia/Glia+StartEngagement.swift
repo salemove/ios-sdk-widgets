@@ -29,6 +29,10 @@ extension Glia {
     ) throws {
         guard engagement == .none else { throw GliaError.engagementExists }
         guard let interactor = self.interactor else { throw GliaError.sdkIsNotConfigured }
+        if let engagement = environment.coreSdk.getCurrentEngagement(),
+            engagement.source == .callVisualizer {
+            throw GliaError.callVisualizerEngagementExists
+        }
 
         let viewFactory = ViewFactory(
             with: theme,
