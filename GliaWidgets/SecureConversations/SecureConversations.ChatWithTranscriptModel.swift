@@ -309,7 +309,7 @@ extension SecureConversations {
         }
 
         private let isCustomCardSupported: Bool
-
+        private let isChatScrolledToBottom = ObservableValue<Bool>(with: true)
         private (set) var isViewLoaded: Bool = false
 
         var environment: Environment
@@ -474,7 +474,11 @@ extension SecureConversations {
             switch event {
             case .viewDidLoad:
                 start()
+                startSocketObservation()
                 isViewLoaded = true
+            case .viewDidUnload:
+                stopSocketObservation()
+                isViewLoaded = false
             case .messageTextChanged(let text):
                 messageText = text
             case .sendTapped:
@@ -493,9 +497,8 @@ extension SecureConversations {
             case .choiceOptionSelected:
                 // Not supported for transcript.
                 break
-            case .chatScrolled:
-                // Not supported for transcript.
-                break
+            case .chatScrolled(let bottomReached):
+                isChatScrolledToBottom.value = bottomReached
             case .linkTapped(let url):
                 linkTapped(url)
             case .customCardOptionSelected:
@@ -517,6 +520,14 @@ extension SecureConversations {
 
 // MARK: Input validation
 extension SecureConversations.TranscriptModel {
+    private func startSocketObservation() {
+        environment.startSocketObservation()
+    }
+
+    private func stopSocketObservation() {
+        environment.stopSocketObservation()
+    }
+
     @discardableResult
     func validateMessage() -> Bool {
         let canSendAttachments =
@@ -829,6 +840,8 @@ extension SecureConversations.TranscriptModel {
         var messagesWithUnreadCountLoaderScheduler: CoreSdkClient.ReactiveSwift.DateScheduler
         var secureMarkMessagesAsRead: CoreSdkClient.SecureMarkMessagesAsRead
         var interactor: Interactor
+        var startSocketObservation: CoreSdkClient.StartSocketObservation
+        var stopSocketObservation: CoreSdkClient.StopSocketObservation
     }
 }
 
@@ -885,8 +898,34 @@ extension SecureConversations.TranscriptModel {
             // so unsubscribe.
             self.environment.interactor.removeObserver(self)
             delegate?(.upgradeToChatEngagement(self))
+        case .receivedMessage(let message):
+            receivedMessage(message)
         default:
             break
+        }
+    }
+
+    private func receivedMessage(_ message: CoreSdkClient.Message) {
+        switch message.sender.type {
+        case .system:
+            let message = ChatMessage(with: message)
+
+            if let item = ChatItem(
+                with: message,
+                isCustomCardSupported: false,
+                fromHistory: false
+            ) {
+                guard isViewLoaded else { return }
+
+                let isChatBottomReached = isChatScrolledToBottom.value
+                appendItem(item, to: pendingSection, animated: true)
+                action?(.updateItemsUserImage(animated: true))
+
+                if isChatBottomReached {
+                    action?(.scrollToBottom(animated: true))
+                }
+            }
+        default: break
         }
     }
 

@@ -273,6 +273,8 @@ extension ChatViewModel {
         case .viewDidLoad:
             start()
             isViewLoaded = true
+        case .viewDidUnload:
+            isViewLoaded = false
         case .messageTextChanged(let text):
             messageText = text
         case .sendTapped:
@@ -809,6 +811,7 @@ extension ChatViewModel {
 
     enum Event {
         case viewDidLoad
+        case viewDidUnload
         case messageTextChanged(String)
         case sendTapped
         case removeUploadTapped(FileUpload)

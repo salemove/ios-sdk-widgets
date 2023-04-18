@@ -37,6 +37,10 @@ class ChatViewController: EngagementViewController, MediaUpgradePresenter,
         viewModel.event(.viewDidLoad)
     }
 
+    deinit {
+        viewModel.event(.viewDidUnload)
+    }
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 

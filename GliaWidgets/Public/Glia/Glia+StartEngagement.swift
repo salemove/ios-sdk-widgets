@@ -153,7 +153,9 @@ extension Glia {
                         debugPrint(#function, "isAuthenticated:", error.localizedDescription)
                         return false
                     }
-                }
+                },
+                startSocketObservation: environment.coreSdk.startSocketObservation,
+                stopSocketObservation: environment.coreSdk.stopSocketObservation
             )
         )
         rootCoordinator?.delegate = { [weak self] event in

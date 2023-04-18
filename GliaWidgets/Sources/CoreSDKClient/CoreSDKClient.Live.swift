@@ -43,7 +43,9 @@ extension CoreSdkClient {
             uploadSecureFile: GliaCore.sharedInstance.secureConversations.uploadFile(_:progress:completion:),
             getSecureUnreadMessageCount: GliaCore.sharedInstance.secureConversations.getUnreadMessageCount(completion:),
             secureMarkMessagesAsRead: GliaCore.sharedInstance.secureConversations.markMessagesAsRead(completion:),
-            downloadSecureFile: GliaCore.sharedInstance.secureConversations.downloadFile(_:progress:completion:)
+            downloadSecureFile: GliaCore.sharedInstance.secureConversations.downloadFile(_:progress:completion:),
+            startSocketObservation: GliaCore.sharedInstance.startSocketObservation,
+            stopSocketObservation: GliaCore.sharedInstance.stopSocketObservation
         )
     }()
 }
