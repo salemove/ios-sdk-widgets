@@ -132,6 +132,37 @@ class GliaTests: XCTestCase {
         XCTAssertTrue(try XCTUnwrap(receivedSceneProvider as? MockedSceneProvider) === expectedSceneProvider)
     }
 
+    func testStartEngagementThrowsErrorWhenEngagementAlreadyExists() throws {
+        let sdk = Glia(environment: .failing)
+        sdk.rootCoordinator = .mock(engagementKind: .chat, screenShareHandler: .mock)
+        try sdk.configure(with: .mock(), queueId: "queueID")
+
+        XCTAssertThrowsError(try sdk.startEngagement(engagementKind: .chat)) { error in
+            XCTAssertEqual(error as? GliaError, GliaError.engagementExists)
+        }
+    }
+
+    func testStartEngagementThrowsErrorDuringActiveCallVisualizerEngagement() throws {
+        var gliaEnv = Glia.Environment.failing
+        gliaEnv.coreSdk.getCurrentEngagement = {
+            Engagement(id: "", engagedOperator: nil, source: .callVisualizer, fetchSurvey: { _, _ in })
+        }
+        let sdk = Glia(environment: gliaEnv)
+        try sdk.configure(with: .mock(), queueId: "queueID")
+
+        XCTAssertThrowsError(try sdk.startEngagement(engagementKind: .chat)) { error in
+            XCTAssertEqual(error as? GliaError, GliaError.callVisualizerEngagementExists)
+        }
+    }
+
+    func testStartEngagementThrowsErrorWhenSdkIsNotConfigured() {
+        let sdk = Glia(environment: .failing)
+
+        XCTAssertThrowsError(try sdk.startEngagement(engagementKind: .chat)) { error in
+            XCTAssertEqual(error as? GliaError, GliaError.sdkIsNotConfigured)
+        }
+    }
+
     func test__messageRenderer() throws {
         let sdk = Glia(environment: .failing)
         XCTAssertNil(sdk.messageRenderer)
