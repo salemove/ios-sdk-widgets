@@ -13,7 +13,7 @@ import SalemoveSDK
 ///  3. Handling engagement, featuring video calling, screen sharing, and much more in future.
 public final class CallVisualizer {
     private var environment: Environment
-    private lazy var coordinator: Coordinator = {
+    lazy var coordinator: Coordinator = {
         var theme = Theme()
         if let uiConfig = environment.uiConfig() {
             theme = .init(uiConfig: uiConfig, assetsBuilder: environment.assetsBuilder())
@@ -49,7 +49,15 @@ public final class CallVisualizer {
                 requestVisitorCode: environment.requestVisitorCode,
                 audioSession: environment.audioSession,
                 date: environment.date,
-                engagedOperator: environment.engagedOperator
+                engagedOperator: environment.engagedOperator,
+                eventHandler: { [weak self] event in
+                    switch event {
+                    case .minimized:
+                        self?.environment.eventHandler?(.minimized)
+                    case .maximized:
+                        self?.environment.eventHandler?(.maximized)
+                    }
+                }
             )
         )
     }()

@@ -80,7 +80,8 @@ public class Glia {
             },
             uiConfig: { [weak self] in self?.uiConfig },
             assetsBuilder: { [weak self] in self?.assetsBuilder ?? .standard },
-            getCurrentEngagement: environment.coreSdk.getCurrentEngagement
+            getCurrentEngagement: environment.coreSdk.getCurrentEngagement,
+            eventHandler: onEvent
         )
     )
     var rootCoordinator: EngagementCoordinator?
@@ -257,15 +258,11 @@ public class Glia {
 private extension Glia {
     func startObservingInteractorEvents() {
         interactor?.addObserver(self) { [weak self] event in
-            // Since engagement is accepted before current engagement is established,
-            // this case needs to be checked before any other so that visitor code alert
-            // can be dismissed properly and visitor code embedded view can trigger callback.
-            if case .engagementRequestAccepted = event {
-                self?.callVisualizer.handleEngagementRequestAccepted()
-            }
-            guard let engagement = self?.environment.coreSdk.getCurrentEngagement(), engagement.source == .callVisualizer else {
-                return
-            }
+            guard
+                let engagement = self?.environment.coreSdk.getCurrentEngagement(),
+                engagement.source == .callVisualizer
+            else { return }
+
             switch event {
             case .screenShareOffer(answer: let answer):
                 self?.environment.coreSdk.requestEngagedOperator { operators, _ in
@@ -294,6 +291,10 @@ private extension Glia {
             case let .stateChanged(state):
                 if state == .ended(.byOperator) {
                     self?.callVisualizer.endSession()
+                    self?.onEvent?(.ended)
+                } else if case .engaged = state {
+                    self?.callVisualizer.handleEngagementRequestAccepted()
+                    self?.onEvent?(.started)
                 }
             default:
                 break
