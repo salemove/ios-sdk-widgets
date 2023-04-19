@@ -19,5 +19,6 @@ extension CallVisualizer.Coordinator {
         var audioSession: Glia.Environment.AudioSession
         var date: () -> Date
         var engagedOperator: () -> CoreSdkClient.Operator?
+        var eventHandler: (DelegateEvent) -> Void
     }
 }
