@@ -40,24 +40,24 @@ workflows:
     steps:
     - activate-ssh-key@4:
         run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
-    - git-clone@6: {}
+    - git-clone@8: {}
     after_run:
     - _increment_project_version
   browserstack_upload:
     steps:
     - activate-ssh-key@4:
         run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
-    - git-clone@6: {}
+    - git-clone@8: {}
     - cache-pull@2: {}
     - certificate-and-profile-installer@1: {}
     - cocoapods-install@2: {}
     - recreate-user-schemes@1:
         inputs:
         - project_path: $BITRISE_PROJECT_PATH
-    - xcode-archive@3:
+    - xcode-archive@4:
         inputs:
         - scheme: $APP_SCHEME
-        - team_id: XR3G5NDPNH
+        - team_id: $TEAM_ID
         - export_method: $BITRISE_EXPORT_METHOD
     - browserstack-upload@0:
         inputs:
@@ -74,14 +74,14 @@ workflows:
   deployment:
     steps:
     - activate-ssh-key@4: {}
-    - git-clone:
+    - git-clone@8:
         inputs:
         - fetch_tags: 'yes'
     - cache-pull@2: {}
     - cocoapods-install@2: {}
     - xcode-test@4:
         inputs:
-        - scheme: GliaWidgetsTests
+        - scheme: $TEST_SCHEME
     - git-tag@1:
         inputs:
         - tag: $NEW_VERSION
@@ -115,47 +115,12 @@ workflows:
         - draft: 'no'
         - tag: $NEW_VERSION
         - commit: $GIT_CLONE_COMMIT_HASH
-    - script:
+    - script@1:
         inputs:
         - content: pod trunk push GliaWidgets.podspec --verbose --allow-warnings
     - cache-push@2: {}
     after_run:
     - _increment_project_version
-  dev-build:
-    steps:
-    - activate-ssh-key@4:
-        run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
-    - git-clone@6: {}
-    - cache-pull@2: {}
-    - certificate-and-profile-installer@1: {}
-    - cocoapods-install@2: {}
-    - recreate-user-schemes@1:
-        inputs:
-        - project_path: $BITRISE_PROJECT_PATH
-    - xcode-archive@3:
-        inputs:
-        - scheme: $APP_SCHEME
-        - team_id: XR3G5NDPNH
-        - export_method: $BITRISE_EXPORT_METHOD
-    - deploy-to-bitrise-io@2:
-        inputs:
-        - notify_email_list: $NOTIFY_EMAILS
-    - cache-push@2: {}
-    description: >-
-      Workflow for creating builds of dev branch. Triggered on each push to dev
-      branch, notifies over email + Slack (internal)
-  docs:
-    steps:
-    - activate-ssh-key@4:
-        run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
-    - git-clone@6: {}
-    - script-runner@0:
-        inputs:
-        - file_path: docs/populate_wiki
-        is_always_run: true
-    description: >-
-      Workflow for checking and building pull requests. Does not notify
-      anywhere, but shows on the pull request itself.
   master-build:
     steps:
     - activate-ssh-key@4:
@@ -170,7 +135,7 @@ workflows:
     - xcode-archive@4:
         inputs:
         - scheme: $APP_SCHEME
-        - team_id: XR3G5NDPNH
+        - team_id: $TEAM_ID
         - export_method: $BITRISE_EXPORT_METHOD
     - browserstack-upload@0:
         inputs:
@@ -244,15 +209,15 @@ workflows:
         - project_path: $BITRISE_PROJECT_PATH
     - xcode-test@4:
         inputs:
-        - scheme: GliaWidgetsTests
+        - scheme: $TEST_SCHEME
     - xcode-test@4:
         inputs:
-        - scheme: SnapshotTests
+        - scheme: $SNAPSHOTS_SCHEME
         - destination: 'platform=iOS Simulator,name=iPhone 13,OS=15.2'
-    - xcode-archive:
+    - xcode-archive@4:
         inputs:
         - scheme: $APP_SCHEME
-        - team_id: XR3G5NDPNH
+        - team_id: $TEAM_ID
         - cache_level: none
         - export_method: $BITRISE_EXPORT_METHOD
     - deploy-to-bitrise-io@2:
@@ -262,101 +227,10 @@ workflows:
     description: >-
       Workflow for checking and building pull requests. Does not notify
       anywhere, but shows on the pull request itself.
-    meta:
-      bitrise.io:
-        stack: osx-xcode-14.2.x-ventura
-  pull-request-snapshot:
-    steps:
-    - activate-ssh-key@4:
-        run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
-    - git-clone@6: {}
-    - script@1:
-        inputs:
-        - content: >-
-            #!/usr/bin/env bash
-
-            # fail if any commands fails
-
-            set -e
-
-            # make pipelines' return status equal the last command to exit with
-            a non-zero status, or zero if all commands exit successfully
-
-            set -o pipefail
-
-            # debug log
-
-            set -x
-
-
-            # write your script here
-
-            echo "Hello World!"
-
-
-            # or run a script from your repository, like:
-
-            # bash ./path/to/script.sh
-
-            # not just bash, e.g.:
-
-            # ruby ./path/to/script.rb
-
-
-
-            git clone git@github.com:salemove/ios-widgets-snapshots.git
-    - cache-pull@2: {}
-    - certificate-and-profile-installer@1: {}
-    - cocoapods-install@2: {}
-    - recreate-user-schemes@1:
-        inputs:
-        - project_path: $BITRISE_PROJECT_PATH
-    - xcode-test@4:
-        inputs:
-        - scheme: GliaWidgetsTests
-    - xcode-test@4:
-        inputs:
-        - destination: 'platform=iOS Simulator,name=iPhone 13,OS=15.2'
-        - scheme: SnapshotTests
-    - xcode-archive@3:
-        inputs:
-        - scheme: $APP_SCHEME
-        - team_id: XR3G5NDPNH
-        - export_method: $BITRISE_EXPORT_METHOD
-    - deploy-to-bitrise-io@2:
-        inputs:
-        - notify_email_list: ''
-    - cache-push@2: {}
-    description: >-
-      Workflow for checking and building pull requests. Does not notify
-      anywhere, but shows on the pull request itself.
-  QA-build:
-    steps:
-    - activate-ssh-key@4:
-        run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
-    - git-clone@6: {}
-    - cache-pull@2: {}
-    - certificate-and-profile-installer@1: {}
-    - cocoapods-install@2: {}
-    - recreate-user-schemes@1:
-        inputs:
-        - project_path: $BITRISE_PROJECT_PATH
-    - xcode-archive@3:
-        inputs:
-        - scheme: $APP_SCHEME
-        - team_id: XR3G5NDPNH
-        - export_method: $BITRISE_EXPORT_METHOD
-    - deploy-to-bitrise-io@2:
-        inputs:
-        - notify_email_list: $NOTIFY_EMAILS
-    - cache-push@2: {}
-    description: >-
-      Workflow for creating builds of dev branch. Triggered on each push to dev
-      branch, notifies over email + Slack (internal)
   update_dependencies:
     steps:
     - activate-ssh-key@4: {}
-    - git-clone@6: {}
+    - git-clone@8: {}
     - cocoapods-install@2:
         inputs:
         - command: update
@@ -383,13 +257,13 @@ app:
   - opts:
       is_expand: false
     CORTEX_DEMO_APP_SLUG: 2e5eb3394ea5598e
+  - opts:
+      is_expand: false
+    TEST_SCHEME: GliaWidgetsTests
+  - opts:
+      is_expand: false
+    SNAPSHOTS_SCHEME: SnapshotTests
 trigger_map:
-- push_branch: docs/*
-  workflow: docs
-- push_branch: qa/*
-  workflow: QA-build
-- push_branch: dev
-  workflow: dev-build
 - push_branch: master
   workflow: master-build
 - pull_request_target_branch: '*'
