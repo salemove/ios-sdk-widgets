@@ -47,7 +47,7 @@ extension SecureConversations {
                 .init(
                     uploader: environment.fileUploader,
                     style: .messageCenter(environment.welcomeStyle.attachmentListStyle),
-                    uiApplication: environment.uiApplication
+                    scrollingBehaviour: .nonScrolling
                 )
             )
             self.availability = availability
@@ -61,6 +61,7 @@ extension SecureConversations {
 
             checkSecureConversationsAvailability()
             loadAttachmentAvailability()
+            environment.startSocketObservation()
         }
 
         private func checkSecureConversationsAvailability() {
@@ -104,6 +105,10 @@ extension SecureConversations {
 
         func reportChange() {
             delegate?(.renderProps(props()))
+        }
+
+        deinit {
+            environment.stopSocketObservation()
         }
     }
 }
@@ -407,6 +412,8 @@ extension SecureConversations.WelcomeViewModel {
         var uiApplication: UIKitBased.UIApplication
         var createFileUploadListModel: SecureConversations.FileUploadListViewModel.Create
         var fetchSiteConfigurations: CoreSdkClient.FetchSiteConfigurations
+        var startSocketObservation: CoreSdkClient.StartSocketObservation
+        var stopSocketObservation: CoreSdkClient.StopSocketObservation
     }
 }
 
