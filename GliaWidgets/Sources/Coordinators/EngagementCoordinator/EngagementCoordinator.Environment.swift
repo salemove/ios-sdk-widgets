@@ -34,5 +34,7 @@ extension EngagementCoordinator {
         var secureMarkMessagesAsRead: CoreSdkClient.SecureMarkMessagesAsRead
         var downloadSecureFile: CoreSdkClient.DownloadSecureFile
         var isAuthenticated: () -> Bool
+        var startSocketObservation: CoreSdkClient.StartSocketObservation
+        var stopSocketObservation: CoreSdkClient.StopSocketObservation
     }
 }

@@ -78,6 +78,12 @@ extension EngagementCoordinator.Environment {
         isAuthenticated: {
             fail("\(Self.self).isAuthenticated")
             return false
+        },
+        startSocketObservation: {
+            fail("\(Self.self).startSocketObservation")
+        },
+        stopSocketObservation: {
+            fail("\(Self.self).stopSocketObservation")
         }
     )
 }

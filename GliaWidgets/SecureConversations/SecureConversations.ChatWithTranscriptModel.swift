@@ -270,7 +270,7 @@ extension SecureConversations {
         typealias DelegateCallback = (DelegateEvent) -> Void
         typealias Action = ChatViewModel.Action
 
-        static let unavailableMessageCenterAlertAccIdentidier = "unavailable_message_center_alert_identifier"
+        static let unavailableMessageCenterAlertAccIdentifier = "unavailable_message_center_alert_identifier"
         static let markUnreadMessagesDelaySeconds = 6
 
         enum DelegateEvent {
@@ -333,6 +333,9 @@ extension SecureConversations {
 
         var historySection: Section<ChatItem> { sections[0] }
         var pendingSection: Section<ChatItem> { sections[1] }
+
+        private (set) var receivedMessages = [String: [MessageSource]]()
+
         let deliveredStatusText: String
 
         var numberOfSections: Int {
@@ -433,7 +436,7 @@ extension SecureConversations {
             self.delegate?(
                 .showAlertAsView(
                     configuration,
-                    accessibilityIdentifier: Self.unavailableMessageCenterAlertAccIdentidier,
+                    accessibilityIdentifier: Self.unavailableMessageCenterAlertAccIdentifier,
                     dismissed: nil
                 )
             )
@@ -505,6 +508,7 @@ extension SecureConversations {
         }
 
         func start() {
+            environment.startSocketObservation()
             fetchSiteConfigurations()
             loadHistory { _ in }
         }
@@ -561,12 +565,7 @@ extension SecureConversations.TranscriptModel {
            guard let self = self else { return }
            switch result {
            case let .success(message):
-               self.replace(
-                outgoingMessage,
-                uploads: uploads,
-                with: message,
-                in: self.pendingSection
-               )
+               self.receiveMessage(from: .api(message, outgoingMessage: outgoingMessage))
            case .failure:
                self.showAlert(with: self.environment.alertConfiguration.unexpectedError)
            }
@@ -829,6 +828,8 @@ extension SecureConversations.TranscriptModel {
         var messagesWithUnreadCountLoaderScheduler: CoreSdkClient.ReactiveSwift.DateScheduler
         var secureMarkMessagesAsRead: CoreSdkClient.SecureMarkMessagesAsRead
         var interactor: Interactor
+        var startSocketObservation: CoreSdkClient.StartSocketObservation
+        var stopSocketObservation: CoreSdkClient.StopSocketObservation
     }
 }
 
@@ -885,6 +886,8 @@ extension SecureConversations.TranscriptModel {
             // so unsubscribe.
             self.environment.interactor.removeObserver(self)
             delegate?(.upgradeToChatEngagement(self))
+        case let .receivedMessage(message):
+            receiveMessage(from: .socket(message))
         default:
             break
         }
@@ -910,6 +913,58 @@ extension SecureConversations.TranscriptModel {
             }
         }
     }
+
+    /// Wraps message to determine how to replace it when it is delivered.
+    enum MessageSource: Identifiying, Equatable {
+        case api(CoreSdkClient.Message, outgoingMessage: OutgoingMessage)
+        case socket(CoreSdkClient.Message)
+
+        var id: String {
+            message.id
+        }
+
+        var message: CoreSdkClient.Message {
+            switch self {
+            case let .api(message, _):
+                return message
+            case let .socket(message):
+                return message
+            }
+        }
+
+        var outgoingMessage: OutgoingMessage? {
+            switch self {
+            case let .api(_, outgoingMessage):
+                return outgoingMessage
+            case  .socket:
+                return nil
+            }
+        }
+    }
+
+    func receiveMessage(from messageSource: MessageSource) {
+        // We store message and try to determine if
+        // it has attachment. This depends on origin
+        // from which message was received. REST API
+        // does not return information about attachments,
+        // so we use messages delivered from socket instead.
+        var list = receivedMessages[messageSource.id] ?? []
+        list.append(messageSource)
+        receivedMessages[messageSource.id] = list
+        let withPossibleAttachment = list.last(where: { $0.message.attachment != nil })?.message ?? messageSource.message
+        // We try to reuse outgoing message to show `delivered` status
+        // to indicated that message is delivered.
+        let outgoingMessage = list.last(where: { $0.outgoingMessage != nil })?.outgoingMessage ?? OutgoingMessage(
+            content: messageSource.message.content,
+            files: fileUploadListModel.succeededUploads.map(\.localFile)
+        )
+        self.replace(
+            outgoingMessage,
+            uploads: fileUploadListModel.succeededUploads,
+            with: withPossibleAttachment,
+            in: self.pendingSection
+        )
+    }
 }
 
 // MARK: Hashable
@@ -920,51 +975,5 @@ extension SecureConversations.TranscriptModel: Hashable {
 
     static func == (lhs: SecureConversations.TranscriptModel, rhs: SecureConversations.TranscriptModel) -> Bool {
         lhs === rhs
-    }
-}
-
-extension SecureConversations.TranscriptModel {
-    static func dividedChatItemsForUnreadCount(
-        chatItems: [ChatItem],
-        unreadCount: Int,
-        divider: ChatItem
-    ) -> [ChatItem] {
-        var tail: [ChatItem] = []
-        var unreadCount = unreadCount
-        var head = chatItems
-        var dividerIndex: Int?
-        while unreadCount > 0 {
-            // Remove messages from the end of list.
-            // In case list has ended, that means unread count
-            // is larger than list size, so we break to prevent
-            // infinite loop.
-            guard let item = head.popLast() else {
-                break
-            }
-            // Removed items are placed into separate list,
-            // to be later combined with initial one.
-            tail.insert(item, at: 0)
-
-            // We treat only operator messages
-            // eligible to be counted as unread.
-            if item.isOperatorMessage {
-                // Update divider insertion index with
-                // next relevant one.
-                dividerIndex = head.endIndex
-                unreadCount -= 1
-            }
-        }
-
-        // At this point we have finished search for insertion
-        // index for divider, so we combine two lists together.
-        var result = head + tail
-
-        // Make sure that divider index is within safe bounds
-        // before performing the insertion.
-        if let dividerIndex, dividerIndex <= result.endIndex {
-            result.insert(divider, at: dividerIndex)
-        }
-
-        return result
     }
 }

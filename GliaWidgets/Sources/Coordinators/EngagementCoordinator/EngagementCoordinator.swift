@@ -242,7 +242,9 @@ extension EngagementCoordinator {
                 secureMarkMessagesAsRead: environment.secureMarkMessagesAsRead,
                 downloadSecureFile: environment.downloadSecureFile,
                 isAuthenticated: environment.isAuthenticated,
-                interactor: interactor
+                interactor: interactor,
+                startSocketObservation: environment.startSocketObservation,
+                stopSocketObservation: environment.stopSocketObservation
             ),
             startWithSecureTranscriptFlow: false
         )
@@ -462,7 +464,9 @@ extension EngagementCoordinator {
                 messagesWithUnreadCountLoaderScheduler: environment.messagesWithUnreadCountLoaderScheduler,
                 secureMarkMessagesAsRead: environment.secureMarkMessagesAsRead,
                 downloadSecureFile: environment.downloadSecureFile,
-                isAuthenticated: environment.isAuthenticated
+                isAuthenticated: environment.isAuthenticated,
+                startSocketObservation: environment.startSocketObservation,
+                stopSocketObservation: environment.stopSocketObservation
             )
         )
 
