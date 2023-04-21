@@ -1,6 +1,6 @@
 import Foundation
 
-class OutgoingMessage {
+class OutgoingMessage: Equatable {
     let id = UUID().uuidString
     let content: String
     let files: [LocalFile]
@@ -11,5 +11,11 @@ class OutgoingMessage {
     ) {
         self.content = content
         self.files = files
+    }
+
+    static func == (lhs: OutgoingMessage, rhs: OutgoingMessage) -> Bool {
+        lhs.id == rhs.id &&
+        lhs.content == rhs.content &&
+        lhs.files == rhs.files
     }
 }

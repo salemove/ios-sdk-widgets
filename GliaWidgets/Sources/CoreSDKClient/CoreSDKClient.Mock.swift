@@ -32,7 +32,9 @@ extension CoreSdkClient {
         uploadSecureFile: { _, _, _ in .mock },
         getSecureUnreadMessageCount: { _ in },
         secureMarkMessagesAsRead: { _ in .mock },
-        downloadSecureFile: { _, _, _ in .mock }
+        downloadSecureFile: { _, _, _ in .mock },
+        startSocketObservation: {},
+        stopSocketObservation: {}
     )
 }
 

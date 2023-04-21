@@ -56,6 +56,7 @@ final class TranscriptModelTests: XCTestCase {
         modelEnv.listQueues = { _ in }
         modelEnv.fetchChatHistory = { _ in }
         modelEnv.getSecureUnreadMessageCount = { _ in }
+        modelEnv.startSocketObservation = {}
         let site = try CoreSdkClient.Site.mock(allowedFileSenders: .mock(visitor: true))
         modelEnv.fetchSiteConfigurations = { callback in
             callback(.success(site))
@@ -100,7 +101,9 @@ final class TranscriptModelTests: XCTestCase {
             calls.append(.loadSiteConfiguration)
         }
 
-        modelEnv.getSecureUnreadMessageCount = { _ in calls.append(.getSecureUnreadMessageCount) }
+        modelEnv.getSecureUnreadMessageCount = { _ in calls.append(.getSecureUnreadMessageCount)
+        }
+        modelEnv.startSocketObservation = {}
         let availabilityEnv = SecureConversations.Availability.Environment(
             listQueues: modelEnv.listQueues,
             queueIds: modelEnv.queueIds,
@@ -129,6 +132,7 @@ final class TranscriptModelTests: XCTestCase {
         modelEnv.fetchChatHistory = { _ in }
         modelEnv.fetchSiteConfigurations = { _ in }
         modelEnv.getSecureUnreadMessageCount = { _ in  }
+        modelEnv.startSocketObservation = {}
         let availabilityEnv = SecureConversations.Availability.Environment(
             listQueues: modelEnv.listQueues,
             queueIds: modelEnv.queueIds,
@@ -311,6 +315,7 @@ final class TranscriptModelTests: XCTestCase {
         modelEnv.listQueues = { _ in }
         modelEnv.fetchChatHistory = { _ in }
         modelEnv.fetchSiteConfigurations = { _ in }
+        modelEnv.startSocketObservation = {}
         enum Call: Equatable { case getSecureUnreadMessageCount }
         var calls: [Call] = []
         modelEnv.getSecureUnreadMessageCount = { _ in
@@ -350,6 +355,7 @@ final class TranscriptModelTests: XCTestCase {
         modelEnv.getSecureUnreadMessageCount = { callback in
             callback(.success(1))
         }
+        modelEnv.startSocketObservation = {}
         modelEnv.gcd.mainQueue.asyncAfterDeadline = { _, callback in }
         modelEnv.loadChatMessagesFromHistory = { true }
         let scheduler = CoreSdkClient.ReactiveSwift.TestScheduler()
