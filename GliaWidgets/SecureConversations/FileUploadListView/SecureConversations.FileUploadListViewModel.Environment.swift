@@ -2,7 +2,23 @@ extension SecureConversations.FileUploadListViewModel {
     struct Environment {
         var uploader: FileUploader
         var style: SecureConversations.FileUploadListView.Style
-        var uiApplication: UIKitBased.UIApplication
+        var scrollingBehaviour: ScrollingBehaviour
+    }
+}
+
+extension SecureConversations.FileUploadListViewModel.Environment {
+    enum ScrollingBehaviour {
+        case scrolling(UIKitBased.UIApplication)
+        case nonScrolling
+
+        var isScrollingEnabled: Bool {
+            switch self {
+            case .scrolling:
+                return true
+            case .nonScrolling:
+                return false
+            }
+        }
     }
 }
 
@@ -15,7 +31,7 @@ extension SecureConversations.FileUploadListViewModel.Environment {
         .init(
             uploader: .mock(),
             style: .chat(.mock),
-            uiApplication: .mock
+            scrollingBehaviour: .scrolling(.mock)
         )
     }
 }

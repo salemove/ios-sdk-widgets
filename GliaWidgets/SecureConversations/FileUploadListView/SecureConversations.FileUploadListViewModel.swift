@@ -64,7 +64,7 @@ extension SecureConversations {
             }
 
             // There is a case, where state is already set to `.uploading` case,
-            // that's why we evaluate state immediatelty.
+            // that's why we evaluate state immediately.
             handleState(upload.state.value, instance: instance)
         }
 
@@ -99,7 +99,8 @@ extension SecureConversations {
             let props = FileUploadListView.Props(
                 maxUnscrollableViews: maxUnscrollableViews,
                 style: environment.style,
-                uploads: uploads
+                uploads: uploads,
+                isScrollingEnabled: environment.scrollingBehaviour.isScrollingEnabled
             )
             return props
         }
@@ -107,11 +108,28 @@ extension SecureConversations {
 }
 
 extension SecureConversations.FileUploadListViewModel {
+    /// Represents number of visible uploads at once, avoiding
+    /// to involve scrolling. If number of uploads is greater than
+    /// this value, user will have to scroll to see the rest of the uploads.
     var maxUnscrollableViews: Int {
-        if environment.uiApplication.preferredContentSizeCategory() <= .accessibilityMedium {
-            return .maxUnscrollableViewsOnDefaultContentSizeCategory
-        } else {
-            return .maxUnscrollableViewsOnLargeContentSizeCategory
+        switch environment.scrollingBehaviour {
+        // For non-scrolling behaviour we allow
+        // unlimited number of uploads to be visible
+        // at once.
+        case .nonScrolling:
+            return .max
+        // For scrolling behaviour we base
+        // number of visible uploads that do not
+        // involve scrolling, on the font content size
+        // category. These numbers are represented by
+        // constants `Int.maxUnscrollableViewsOnDefaultContentSizeCategory`
+        // and `Int.maxUnscrollableViewsOnLargeContentSizeCategory`.
+        case let .scrolling(application):
+            if application.preferredContentSizeCategory() <= .accessibilityMedium {
+                return .maxUnscrollableViewsOnDefaultContentSizeCategory
+            } else {
+                return .maxUnscrollableViewsOnLargeContentSizeCategory
+            }
         }
     }
 }

@@ -97,7 +97,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             .init(
                 uploader: uploader,
                 style: .chat(environment.fileUploadListStyle),
-                uiApplication: environment.uiApplication
+                scrollingBehaviour: .scrolling(environment.uiApplication)
             )
         )
 
