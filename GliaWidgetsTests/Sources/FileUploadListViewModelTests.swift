@@ -7,16 +7,15 @@ final class FileUploadListViewModelTests: XCTestCase {
 
     func test_maxUnscrollableViewsWithMediumPreferredContentSizeCategory() throws {
         func testCase(input: (category: UIContentSizeCategory, maxViewCount: Int)) throws {
+            var application: UIKitBased.UIApplication = .failing
+            application.preferredContentSizeCategory = {
+                return input.category
+            }
             var environment: SecureConversations.FileUploadListViewModel.Environment = .init(
                 uploader: .mock(),
                 style: .chat(.mock),
-                uiApplication: .failing
+                scrollingBehaviour: .scrolling(application)
             )
-
-
-            environment.uiApplication.preferredContentSizeCategory = {
-                return input.category
-            }
 
             viewModel = .mock(environment: environment)
 

@@ -59,7 +59,9 @@ extension SecureConversations {
                     ),
                     uiApplication: environment.uiApplication,
                     createFileUploadListModel: environment.createFileUploadListModel,
-                    fetchSiteConfigurations: environment.fetchSiteConfigurations
+                    fetchSiteConfigurations: environment.fetchSiteConfigurations,
+                    startSocketObservation: environment.startSocketObservation,
+                    stopSocketObservation: environment.stopSocketObservation
                 ),
                 availability: .init(
                     environment: .init(
