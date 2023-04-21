@@ -1,5 +1,3 @@
-// TODO: Add unit tests
-// MOB-1841
 /// Collection that allows easier access by element identifier.
 struct IdCollection<Identifier: Hashable, Item: Equatable>: Equatable & Collection {
 

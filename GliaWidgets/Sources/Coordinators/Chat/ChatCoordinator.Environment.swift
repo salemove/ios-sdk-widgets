@@ -30,5 +30,7 @@ extension ChatCoordinator {
         var downloadSecureFile: CoreSdkClient.DownloadSecureFile
         var isAuthenticated: () -> Bool
         var interactor: Interactor
+        var startSocketObservation: CoreSdkClient.StartSocketObservation
+        var stopSocketObservation: CoreSdkClient.StopSocketObservation
     }
 }

@@ -286,7 +286,9 @@ extension SecureConversations.Coordinator {
                 secureMarkMessagesAsRead: environment.secureMarkMessagesAsRead,
                 downloadSecureFile: environment.downloadSecureFile,
                 isAuthenticated: environment.isAuthenticated,
-                interactor: environment.interactor
+                interactor: environment.interactor,
+                startSocketObservation: environment.startSocketObservation,
+                stopSocketObservation: environment.stopSocketObservation
             ),
             startWithSecureTranscriptFlow: true
         )
@@ -305,10 +307,7 @@ extension SecureConversations.Coordinator {
         pushCoordinator(coordinator)
 
         let viewController = coordinator.start()
-        navigationPresenter.push(
-            viewController,
-            replacingLast: true
-        )
+        navigationPresenter.push(viewController, replacingLast: true)
 
         return viewController
     }
@@ -353,6 +352,8 @@ extension SecureConversations.Coordinator {
         var secureMarkMessagesAsRead: CoreSdkClient.SecureMarkMessagesAsRead
         var downloadSecureFile: CoreSdkClient.DownloadSecureFile
         var isAuthenticated: () -> Bool
+        var startSocketObservation: CoreSdkClient.StartSocketObservation
+        var stopSocketObservation: CoreSdkClient.StopSocketObservation
     }
 
     enum DelegateEvent {

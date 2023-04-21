@@ -50,6 +50,12 @@ extension CoreSdkClient {
         downloadSecureFile: { _, _, _ in
             fail("\(Self.self).downloadSecureFile")
             return .mock
+        },
+        startSocketObservation: {
+            fail("\(Self.self).startSocketObservation")
+        },
+        stopSocketObservation: {
+            fail("\(Self.self).stopSocketObservation")
         }
     )
 }

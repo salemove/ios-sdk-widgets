@@ -143,6 +143,12 @@ struct CoreSdkClient {
     ) -> Cancellable
 
     var downloadSecureFile: DownloadSecureFile
+
+    typealias StartSocketObservation = () -> Void
+    var startSocketObservation: StartSocketObservation
+
+    typealias StopSocketObservation = () -> Void
+    var stopSocketObservation: StopSocketObservation
 }
 
 extension CoreSdkClient {
