@@ -6,12 +6,14 @@ extension SecureConversations {
             let maxUnscrollableViews: Int
             let style: FileUploadListView.Style
             let uploads: IdCollection<FileUploadView.Props.Identifier, FileUploadView.Props>
+            let isScrollingEnabled: Bool
         }
 
         var props: Props = .init(
             maxUnscrollableViews: 2,
             style: .chat(.initial),
-            uploads: .init()
+            uploads: .init(),
+            isScrollingEnabled: false
         ) {
             didSet {
                 renderProps()
@@ -158,6 +160,7 @@ extension SecureConversations {
 
             let style = Style.Properties(style: props.style)
             stackView.spacing = style.spacing
+            scrollView.isScrollEnabled = props.isScrollingEnabled
         }
     }
 }

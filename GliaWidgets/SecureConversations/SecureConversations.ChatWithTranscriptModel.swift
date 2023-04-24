@@ -387,7 +387,7 @@ extension SecureConversations {
                 .init(
                     uploader: uploader,
                     style: .chat(environment.fileUploadListStyle),
-                    uiApplication: environment.uiApplication
+                    scrollingBehaviour: .scrolling(environment.uiApplication)
                 )
             )
 
