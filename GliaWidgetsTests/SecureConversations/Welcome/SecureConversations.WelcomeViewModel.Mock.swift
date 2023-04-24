@@ -20,7 +20,9 @@ extension SecureConversations.WelcomeViewModel.Environment {
         fileUploader: .mock(),
         uiApplication: .mock,
         createFileUploadListModel: { _ in .mock() },
-        fetchSiteConfigurations: { _ in }
+        fetchSiteConfigurations: { _ in },
+        startSocketObservation: {},
+        stopSocketObservation: {}
     )
 }
 

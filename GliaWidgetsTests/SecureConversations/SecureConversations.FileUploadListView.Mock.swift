@@ -7,6 +7,7 @@ extension SecureConversations.FileUploadListView.Props {
         style: SecureConversations.FileUploadListView.Style.chat(
             FileUploadListStyle(item: FileUploadStyle.initial)
         ),
-        uploads: .init([])
+        uploads: .init([]),
+        isScrollingEnabled: false
     )
 }

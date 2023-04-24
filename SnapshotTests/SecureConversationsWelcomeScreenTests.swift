@@ -114,7 +114,8 @@ class SecureConversationsWelcomeScreenTests: SnapshotTestCase {
             fileUploadListProps: .init(
                 maxUnscrollableViews: 3,
                 style: .chat(.mock),
-                uploads: .init(uploads)
+                uploads: .init(uploads),
+                isScrollingEnabled: true
             ),
             headerProps: headerProps,
             isUiHidden: false
