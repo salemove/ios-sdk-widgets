@@ -56,7 +56,7 @@ class FileUpload {
     lazy var uuid = environment.uuid()
 
     private let storage: DataStorage
-    private let environment: Environment
+    var environment: Environment
 
     init(with localFile: LocalFile, storage: DataStorage, environment: Environment) {
         self.localFile = localFile
