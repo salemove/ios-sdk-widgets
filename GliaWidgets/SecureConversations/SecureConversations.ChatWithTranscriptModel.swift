@@ -885,6 +885,7 @@ extension SecureConversations.TranscriptModel {
             // We no longer need to listen to Interactor events,
             // so unsubscribe.
             self.environment.interactor.removeObserver(self)
+            markMessagesAsRead()
             delegate?(.upgradeToChatEngagement(self))
         case let .receivedMessage(message):
             receiveMessage(from: .socket(message))
@@ -894,19 +895,22 @@ extension SecureConversations.TranscriptModel {
     }
 
     func markMessagesAsRead() {
-        environment.gcd.mainQueue.asyncAfterDeadline(.now() + .seconds(Self.markUnreadMessagesDelaySeconds)) { [weak self] in
-            _ = self?.environment.secureMarkMessagesAsRead { [weak self] result in
-                guard let self else { return }
+        let dispatchTime: DispatchTime = .now() + .seconds(Self.markUnreadMessagesDelaySeconds)
+        environment.gcd.mainQueue.asyncAfterDeadline(dispatchTime) { [environment, weak historySection, action] in
+            _ = environment.secureMarkMessagesAsRead { result in
                 switch result {
                 case .success:
-                    self.historySection.removeAll(where: {
+                    guard let historySection = historySection else { return }
+
+                    historySection.removeAll(where: {
                         if case .unreadMessageDivider = $0.kind {
                             return true
                         }
 
                         return false
                     })
-                    self.action?(.refreshSection(self.historySection.index, animated: true))
+
+                    action?(.refreshSection(historySection.index, animated: true))
                 case .failure:
                     break
                 }
