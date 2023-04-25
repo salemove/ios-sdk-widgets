@@ -1,51 +1,5 @@
 import Foundation
 
-enum SecureChatModel<Chat, Transcript> {
-    case chat(Chat)
-    case transcript(Transcript)
-}
-
-protocol CommonEngagementModel: AnyObject {
-    var engagementAction: EngagementViewModel.ActionCallback? { get set }
-    var engagementDelegate: EngagementViewModel.DelegateCallback? { get set }
-    func event(_ event: EngagementViewModel.Event)
-}
-
-extension SecureChatModel where Chat: CommonEngagementModel, Transcript: CommonEngagementModel {
-    var engagementModel: CommonEngagementModel {
-        switch self {
-        case let .chat(model):
-            return model
-        case let .transcript(model):
-            return  model
-        }
-    }
-
-    var engagementDelegate: EngagementViewModel.DelegateCallback? {
-        get {
-            engagementModel.engagementDelegate
-        }
-
-        set {
-            engagementModel.engagementDelegate = newValue
-        }
-    }
-
-    var engagementAction: EngagementViewModel.ActionCallback? {
-        get {
-            engagementModel.engagementAction
-        }
-
-        set {
-            engagementModel.engagementAction = newValue
-        }
-    }
-
-    func event(_ event: EngagementViewModel.Event) {
-        engagementModel.event(event)
-    }
-}
-
 extension SecureConversations.ChatWithTranscriptModel {
     typealias Action = Chat.Action
     typealias ActionCallback = (Action) -> Void
@@ -776,7 +730,6 @@ extension SecureConversations.TranscriptModel {
 }
 
 // MARK: Site Confgurations
-
 extension SecureConversations.TranscriptModel {
     func fetchSiteConfigurations() {
         environment.fetchSiteConfigurations { [weak self] result in
@@ -833,7 +786,6 @@ extension SecureConversations.TranscriptModel {
 }
 
 // MARK: History
-
 extension SecureConversations.TranscriptModel {
     private func loadHistory(_ completion: @escaping ([ChatMessage]) -> Void) {
         transcriptMessageLoader.loadMessagesWithUnreadCount { [weak self] result in
@@ -999,16 +951,5 @@ extension SecureConversations.TranscriptModel {
             )
         }
 
-    }
-}
-
-// MARK: Hashable
-extension SecureConversations.TranscriptModel: Hashable {
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(ObjectIdentifier(self))
-    }
-
-    static func == (lhs: SecureConversations.TranscriptModel, rhs: SecureConversations.TranscriptModel) -> Bool {
-        lhs === rhs
     }
 }
