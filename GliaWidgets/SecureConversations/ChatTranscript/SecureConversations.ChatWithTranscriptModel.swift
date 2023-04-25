@@ -1,51 +1,5 @@
 import Foundation
 
-enum SecureChatModel<Chat, Transcript> {
-    case chat(Chat)
-    case transcript(Transcript)
-}
-
-protocol CommonEngagementModel: AnyObject {
-    var engagementAction: EngagementViewModel.ActionCallback? { get set }
-    var engagementDelegate: EngagementViewModel.DelegateCallback? { get set }
-    func event(_ event: EngagementViewModel.Event)
-}
-
-extension SecureChatModel where Chat: CommonEngagementModel, Transcript: CommonEngagementModel {
-    var engagementModel: CommonEngagementModel {
-        switch self {
-        case let .chat(model):
-            return model
-        case let .transcript(model):
-            return  model
-        }
-    }
-
-    var engagementDelegate: EngagementViewModel.DelegateCallback? {
-        get {
-            engagementModel.engagementDelegate
-        }
-
-        set {
-            engagementModel.engagementDelegate = newValue
-        }
-    }
-
-    var engagementAction: EngagementViewModel.ActionCallback? {
-        get {
-            engagementModel.engagementAction
-        }
-
-        set {
-            engagementModel.engagementAction = newValue
-        }
-    }
-
-    func event(_ event: EngagementViewModel.Event) {
-        engagementModel.event(event)
-    }
-}
-
 extension SecureConversations.ChatWithTranscriptModel {
     typealias Action = Chat.Action
     typealias ActionCallback = (Action) -> Void
@@ -309,7 +263,7 @@ extension SecureConversations {
         }
 
         private let isCustomCardSupported: Bool
-
+        private let isChatScrolledToBottom = ObservableValue<Bool>(with: true)
         private (set) var isViewLoaded: Bool = false
 
         var environment: Environment
@@ -496,9 +450,8 @@ extension SecureConversations {
             case .choiceOptionSelected:
                 // Not supported for transcript.
                 break
-            case .chatScrolled:
-                // Not supported for transcript.
-                break
+            case .chatScrolled(let bottomReached):
+                isChatScrolledToBottom.value = bottomReached
             case .linkTapped(let url):
                 linkTapped(url)
             case .customCardOptionSelected:
@@ -777,7 +730,6 @@ extension SecureConversations.TranscriptModel {
 }
 
 // MARK: Site Confgurations
-
 extension SecureConversations.TranscriptModel {
     func fetchSiteConfigurations() {
         environment.fetchSiteConfigurations { [weak self] result in
@@ -834,7 +786,6 @@ extension SecureConversations.TranscriptModel {
 }
 
 // MARK: History
-
 extension SecureConversations.TranscriptModel {
     private func loadHistory(_ completion: @escaping ([ChatMessage]) -> Void) {
         transcriptMessageLoader.loadMessagesWithUnreadCount { [weak self] result in
@@ -947,37 +898,58 @@ extension SecureConversations.TranscriptModel {
     }
 
     func receiveMessage(from messageSource: MessageSource) {
-        // We store message and try to determine if
-        // it has attachment. This depends on origin
-        // from which message was received. REST API
-        // does not return information about attachments,
-        // so we use messages delivered from socket instead.
         var list = receivedMessages[messageSource.id] ?? []
-        list.append(messageSource)
-        receivedMessages[messageSource.id] = list
-        let withPossibleAttachment = list.last(where: { $0.message.attachment != nil })?.message ?? messageSource.message
-        // We try to reuse outgoing message to show `delivered` status
-        // to indicated that message is delivered.
-        let outgoingMessage = list.last(where: { $0.outgoingMessage != nil })?.outgoingMessage ?? OutgoingMessage(
-            content: messageSource.message.content,
-            files: fileUploadListModel.succeededUploads.map(\.localFile)
-        )
-        self.replace(
-            outgoingMessage,
-            uploads: fileUploadListModel.succeededUploads,
-            with: withPossibleAttachment,
-            in: self.pendingSection
-        )
-    }
-}
 
-// MARK: Hashable
-extension SecureConversations.TranscriptModel: Hashable {
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(ObjectIdentifier(self))
-    }
+        // If list is empty, it means that the message hasn't been received through web sockets yet.
+        // Thus we need to render it and save it. Otherwise, we should replace it. This is done to
+        // avoid rendering duplicated messages.
+        if list.isEmpty {
+            switch messageSource.message.sender.type {
+            case .system:
+                let message = ChatMessage(with: messageSource.message)
 
-    static func == (lhs: SecureConversations.TranscriptModel, rhs: SecureConversations.TranscriptModel) -> Bool {
-        lhs === rhs
+                if let item = ChatItem(
+                    with: message,
+                    isCustomCardSupported: false,
+                    fromHistory: false
+                ) {
+                    guard isViewLoaded else { return }
+
+                    let isChatBottomReached = isChatScrolledToBottom.value
+                    appendItem(item, to: pendingSection, animated: true)
+                    action?(.updateItemsUserImage(animated: true))
+
+                    if isChatBottomReached {
+                        action?(.scrollToBottom(animated: true))
+                    }
+
+                    list.append(messageSource)
+                    receivedMessages[messageSource.id] = list
+                }
+            default: break
+            }
+        } else {
+            // We store message and try to determine if
+            // it has attachment. This depends on origin
+            // from which message was received. REST API
+            // does not return information about attachments,
+            // so we use messages delivered from socket instead.
+            list.append(messageSource)
+            receivedMessages[messageSource.id] = list
+            let withPossibleAttachment = list.last(where: { $0.message.attachment != nil })?.message ?? messageSource.message
+            // We try to reuse outgoing message to show `delivered` status
+            // to indicated that message is delivered.
+            let outgoingMessage = list.last(where: { $0.outgoingMessage != nil })?.outgoingMessage ?? OutgoingMessage(
+                content: messageSource.message.content,
+                files: fileUploadListModel.succeededUploads.map(\.localFile)
+            )
+            self.replace(
+                outgoingMessage,
+                uploads: fileUploadListModel.succeededUploads,
+                with: withPossibleAttachment,
+                in: self.pendingSection
+            )
+        }
+
     }
 }
