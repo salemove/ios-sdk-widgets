@@ -9,12 +9,12 @@ PODS:
   - GliaCoreDependency (1.2)
   - lottie-ios (3.2.3)
   - PureLayout (3.1.9)
-  - SalemoveSDK (0.35.14):
+  - SalemoveSDK (0.35.15):
     - GliaCoreDependency (= 1.2)
     - TwilioVoice (= 6.3.1)
     - WebRTC-lib (= 96.0.0)
   - SnapshotTesting (1.9.0)
-  - SwiftLint (0.50.3)
+  - SwiftLint (0.51.0)
   - TwilioVoice (6.3.1)
   - WebRTC-lib (96.0.0)
 
@@ -42,9 +42,9 @@ SPEC CHECKSUMS:
   GliaCoreDependency: 87b3897f0d85321ecf77f1faa829211ad527e54d
   lottie-ios: c058aeafa76daa4cf64d773554bccc8385d0150e
   PureLayout: 5fb5e5429519627d60d079ccb1eaa7265ce7cf88
-  SalemoveSDK: f0648b82578d962269bff2b0472aa76578456505
+  SalemoveSDK: 7223c321af8bfa7660e5032a6db8b0d55e006798
   SnapshotTesting: 6141c48b6aa76ead61431ca665c14ab9a066c53b
-  SwiftLint: 77f7cb2b9bb81ab4a12fcc86448ba3f11afa50c6
+  SwiftLint: 1b7561918a19e23bfed960e40759086e70f4dba5
   TwilioVoice: 098a959181d4607921f5822d3c9f13043ea4075b
   WebRTC-lib: 508fe02efa0c1a3a8867082a77d24c9be5d29aeb
 
