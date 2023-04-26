@@ -78,8 +78,6 @@ extension CallVisualizer {
         override func setup() {
             super.setup()
 
-            backgroundColor = .white
-
             addSubview(header)
             header.autoPinEdge(toSuperviewEdge: .left)
             header.autoPinEdge(toSuperviewEdge: .right)
@@ -91,6 +89,15 @@ extension CallVisualizer {
             contentStackView.autoPinEdge(toSuperviewMargin: .trailing, withInset: 42)
 
             endScreenSharingButton.autoSetDimension(.height, toSize: 40)
+        }
+
+        override func layoutSubviews() {
+            switch props.style.backgroundColor {
+            case .fill(let color):
+                backgroundColor = color
+            case .gradient(let colors):
+                makeGradientBackground(colors: colors)
+            }
         }
     }
 }
@@ -106,12 +113,5 @@ private extension CallVisualizer.ScreenSharingView {
 
         header.props = props.header
         endScreenSharingButton.props = props.endScreenSharing
-
-        switch props.style.backgroundColor {
-        case .fill(let color):
-            backgroundColor = color
-        case .gradient(let colors):
-            makeGradientBackground(colors: colors)
-        }
     }
 }
