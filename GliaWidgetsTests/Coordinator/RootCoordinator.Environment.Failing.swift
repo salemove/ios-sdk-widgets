@@ -84,6 +84,7 @@ extension EngagementCoordinator.Environment {
         },
         stopSocketObservation: {
             fail("\(Self.self).stopSocketObservation")
-        }
+        },
+        pushNotifications: .failing
     )
 }
