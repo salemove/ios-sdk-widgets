@@ -34,7 +34,8 @@ extension EngagementCoordinator.Environment {
         downloadSecureFile: { _, _, _ in .mock },
         isAuthenticated: { false },
         startSocketObservation: {},
-        stopSocketObservation: {}
+        stopSocketObservation: {},
+        pushNotifications: .mock
     )
 }
 #endif
