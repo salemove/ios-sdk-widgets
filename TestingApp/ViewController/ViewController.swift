@@ -135,6 +135,7 @@ extension ViewController {
             .map(SalemoveSDK.VisitorContext.AssetId.init(rawValue:))
             .map(SalemoveSDK.VisitorContext.ContextType.assetId)
             .map(SalemoveSDK.VisitorContext.init)
+
         Glia.sharedInstance.onEvent = { event in
             switch event {
             case .started:
@@ -182,14 +183,22 @@ extension ViewController {
         let originalIdentifier = configureButton.accessibilityIdentifier
         configureButton.setTitle("Configuring ...", for: .normal)
         configureButton.accessibilityIdentifier = "main_configure_sdk_button_loading"
-        try? Glia.sharedInstance.configure(
-            with: configuration,
-            queueId: queueId,
-            uiConfig: uiConfig
-        ) { [weak self] in
+
+        let completion = { [weak self] printable in
             self?.configureButton.setTitle(originalTitle, for: .normal)
             self?.configureButton.accessibilityIdentifier = originalIdentifier
-            debugPrint("SDK has been configured")
+            debugPrint(printable)
+        }
+        do {
+            try Glia.sharedInstance.configure(
+                with: configuration,
+                queueId: queueId,
+                uiConfig: uiConfig
+            ) {
+                completion("SDK has been configured")
+            }
+        } catch {
+            completion(error)
         }
     }
 

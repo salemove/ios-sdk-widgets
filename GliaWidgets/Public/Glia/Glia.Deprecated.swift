@@ -56,4 +56,32 @@ extension Glia {
             sceneProvider: sceneProvider
         )
     }
+
+    /// Deprecated.
+    @available(
+        *,
+         deprecated,
+         message: "Use start(_:configuration:queueID:theme:features:sceneProvider:) instead."
+    )
+    public func start(
+        _ engagementKind: EngagementKind,
+        configuration: Configuration,
+        queueID: String,
+        visitorContext: VisitorContext?,
+        theme: Theme = Theme(),
+        features: Features = .all,
+        sceneProvider: SceneProvider? = nil
+    ) throws {
+        if visitorContext != nil {
+            print("⚠️ visitorContext has been deprecated, please pass visitor context using `Configuration`.")
+        }
+        try start(
+            engagementKind,
+            configuration: configuration,
+            queueID: queueID,
+            theme: theme,
+            features: features,
+            sceneProvider: sceneProvider
+        )
+    }
 }
