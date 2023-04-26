@@ -390,6 +390,92 @@ class ChatViewModelTests: XCTestCase {
         viewModel.event(.messageTextChanged(messageContent))
         viewModel.event(.sendTapped)
     }
+
+    func testMigrateSetsExpectedFieldsFromTranscriptModelAndCallsActions() throws {
+        typealias TranscriptModel = SecureConversations.TranscriptModel
+        typealias FileUploadListViewModel = SecureConversations.FileUploadListViewModel
+        var fileManager = FoundationBased.FileManager.failing
+        fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
+        fileManager.createDirectoryAtUrlWithIntermediateDirectories =  { _, _, _ in }
+
+        var transcriptModelEnv = TranscriptModel.Environment.failing
+        transcriptModelEnv.fileManager = fileManager
+        var uploaderEnv = FileUploader.Environment.failing
+        uploaderEnv.fileManager = fileManager
+        let transcriptFileUploadListModelEnv = FileUploadListViewModel.Environment.failing(
+            uploader: .mock(environment: uploaderEnv)
+        )
+        let fileUpload = FileUpload.mock()
+        fileUpload.environment.uploadFile = .toSecureMessaging({ _, _, _ in .mock })
+        transcriptFileUploadListModelEnv.uploader.uploads = [fileUpload]
+
+        let transcriptFileUploadListModel = FileUploadListViewModel(environment: transcriptFileUploadListModelEnv)
+        transcriptModelEnv.createFileUploadListModel = { _ in transcriptFileUploadListModel }
+        transcriptModelEnv.listQueues = { callback in callback([], nil) }
+        let availabilityEnv = SecureConversations.Availability.Environment(
+            listQueues: transcriptModelEnv.listQueues,
+            queueIds: transcriptModelEnv.queueIds,
+            isAuthenticated: { true }
+        )
+        let transcriptModel = TranscriptModel(
+            isCustomCardSupported: false,
+            environment: transcriptModelEnv,
+            availability: .init(
+                environment: availabilityEnv
+            ),
+            deliveredStatusText: ""
+        )
+
+        transcriptModel.sections[transcriptModel.pendingSection.index].append(.init(kind: .unreadMessageDivider))
+
+        var chatViewModelEnv = ChatViewModel.Environment.failing()
+        chatViewModelEnv.fileManager = fileManager
+        chatViewModelEnv.createFileUploadListModel = {
+            .mock(environment: $0)
+        }
+        chatViewModelEnv.uiApplication.preferredContentSizeCategory = { .unspecified }
+        let chatViewModel = ChatViewModel.mock(environment: chatViewModelEnv)
+        var calls: [Call] = []
+        chatViewModel.action = { action in
+            switch action {
+            case let .scrollToBottom(animated):
+                calls.append(.scrollToBottom(animated: animated))
+            default:
+                break
+            }
+        }
+        chatViewModel.migrate(from: transcriptModel)
+
+        let itemKind = chatViewModel.pendingSection.items.first(
+            where: {
+                switch $0.kind {
+                case .unreadMessageDivider:
+                    return true
+                default:
+                    return false
+                }
+            }
+        )
+        // Make sure that pending section is shared with chat model.
+        XCTAssertTrue(transcriptModel.pendingSection === chatViewModel.pendingSection)
+        XCTAssertNotNil(itemKind)
+        // Ensure that uploads migrated as well.
+        XCTAssertTrue(try XCTUnwrap(chatViewModel.fileUploadListModel.environment.uploader.uploads.first) === fileUpload)
+        XCTAssertNotNil(chatViewModel.fileUploadListModel.environment.uploader.uploads.first(where: {
+            switch $0.environment.uploadFile {
+            case .toEngagement:
+                return true
+            case .toSecureMessaging:
+                return false
+            }
+        }))
+        XCTAssertTrue(chatViewModel.isViewActive.value)
+        XCTAssertEqual(chatViewModel.isViewLoaded, transcriptModel.isViewLoaded)
+        enum Call: Equatable {
+            case scrollToBottom(animated: Bool)
+        }
+        XCTAssertEqual(calls, [.scrollToBottom(animated: true)])
+    }
 }
 
 extension ChatChoiceCardOption {
