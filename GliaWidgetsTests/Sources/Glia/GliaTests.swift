@@ -44,18 +44,13 @@ final class GliaTests: XCTestCase {
         gliaEnv.notificationCenter.removeObserverWithNameAndObject = { _, _, _ in }
         gliaEnv.notificationCenter.addObserverClosure = { _, _, _, _ in }
         var fileManager = FoundationBased.FileManager.failing
-        fileManager.urlsForDirectoryInDomainMask = { _, _ in
-            [.mock]
-        }
+        fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
         fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
         gliaEnv.fileManager = fileManager
         gliaEnv.coreSdk.configureWithInteractor = { _ in }
         gliaEnv.createFileUploadListModel = { _ in .mock() }
 
-        gliaEnv.coreSdk.configureWithConfiguration = { _, callback in
-            callback?()
-        }
-
+        gliaEnv.coreSdk.configureWithConfiguration = { _, callback in callback?() }
         gliaEnv.coreSdk.queueForEngagement = { _, _, _, _, _, callback in
             callback(.mock, nil)
         }
@@ -81,7 +76,7 @@ final class GliaTests: XCTestCase {
         }
         let expectedSceneProvider = MockedSceneProvider()
         var receivedSceneProvider: SceneProvider?
-        gliaEnv.createRootCoordinator = { interactor, viewFactory, sceneProvider, engagementKind, screenShareHandler, features, environment in
+        gliaEnv.createRootCoordinator = { interactor, viewFactory, sceneProvider, _, screenShareHandler, features, environment in
             receivedTheme = viewFactory.theme
             receivedFeatures = features
             receivedSceneProvider = sceneProvider
@@ -97,20 +92,12 @@ final class GliaTests: XCTestCase {
         let sdk = Glia(environment: gliaEnv)
         let kind = EngagementKind.audioCall
         let site = "site"
-        let configuration = Configuration(
-            authorizationMethod: .siteApiKey(
-                id: "siteAp1Key",
-                secret: "s3cr3t"
-            ),
-            environment: .beta,
-            site: site
-        )
         let queueID = "queueID"
         let visitorContext = VisitorContext.mock()
 
         try sdk.start(
             kind,
-            configuration: configuration,
+            configuration: .mock(),
             queueID: queueID,
             visitorContext: visitorContext,
             theme: expectedTheme,
@@ -121,37 +108,6 @@ final class GliaTests: XCTestCase {
         XCTAssertTrue(try XCTUnwrap(receivedTheme) === expectedTheme)
         XCTAssertEqual(receivedFeatures, expectedFeatures)
         XCTAssertTrue(try XCTUnwrap(receivedSceneProvider as? MockedSceneProvider) === expectedSceneProvider)
-    }
-
-    func testStartEngagementThrowsErrorWhenEngagementAlreadyExists() throws {
-        let sdk = Glia(environment: .failing)
-        sdk.rootCoordinator = .mock(engagementKind: .chat, screenShareHandler: .mock)
-        try sdk.configure(with: .mock(), queueId: "queueID")
-
-        XCTAssertThrowsError(try sdk.startEngagement(engagementKind: .chat)) { error in
-            XCTAssertEqual(error as? GliaError, GliaError.engagementExists)
-        }
-    }
-
-    func testStartEngagementThrowsErrorDuringActiveCallVisualizerEngagement() throws {
-        var gliaEnv = Glia.Environment.failing
-        gliaEnv.coreSdk.getCurrentEngagement = {
-            Engagement(id: "", engagedOperator: nil, source: .callVisualizer, fetchSurvey: { _, _ in })
-        }
-        let sdk = Glia(environment: gliaEnv)
-        try sdk.configure(with: .mock(), queueId: "queueID")
-
-        XCTAssertThrowsError(try sdk.startEngagement(engagementKind: .chat)) { error in
-            XCTAssertEqual(error as? GliaError, GliaError.callVisualizerEngagementExists)
-        }
-    }
-
-    func testStartEngagementThrowsErrorWhenSdkIsNotConfigured() {
-        let sdk = Glia(environment: .failing)
-
-        XCTAssertThrowsError(try sdk.startEngagement(engagementKind: .chat)) { error in
-            XCTAssertEqual(error as? GliaError, GliaError.sdkIsNotConfigured)
-        }
     }
 
     func test__messageRenderer() throws {
@@ -172,9 +128,7 @@ final class GliaTests: XCTestCase {
 
         var gliaEnv = Glia.Environment.failing
         gliaEnv.gcd.mainQueue.asyncIfNeeded = { callback in callback() }
-        gliaEnv.coreSdk.getCurrentEngagement = {
-            .init(id: "", engagedOperator: nil, source: .callVisualizer, fetchSurvey: { _, _ in })
-        }
+
         let sdk = Glia(environment: gliaEnv)
         sdk.onEvent = {
             calls.append(.onEvent($0))
@@ -183,6 +137,8 @@ final class GliaTests: XCTestCase {
             with: .mock(),
             queueId: "queueId"
         )
+
+        sdk.environment.coreSdk.getCurrentEngagement = { .mock(source: .callVisualizer) }
 
         sdk.interactor?.state = .engaged(nil)
 
@@ -196,10 +152,10 @@ final class GliaTests: XCTestCase {
         var calls = [Call]()
 
         var gliaEnv = Glia.Environment.failing
+        gliaEnv.coreSdk.configureWithInteractor = { _ in }
+        gliaEnv.coreSdk.configureWithConfiguration = { _, _ in }
         gliaEnv.gcd.mainQueue.asyncIfNeeded = { callback in callback() }
-        gliaEnv.coreSdk.getCurrentEngagement = {
-            .init(id: "", engagedOperator: nil, source: .callVisualizer, fetchSurvey: { _, _ in })
-        }
+
         let sdk = Glia(environment: gliaEnv)
         sdk.onEvent = {
             calls.append(.onEvent($0))
@@ -208,7 +164,8 @@ final class GliaTests: XCTestCase {
             with: .mock(),
             queueId: "queueId"
         )
-        
+
+        sdk.environment.coreSdk.getCurrentEngagement = { .mock(source: .callVisualizer) }
         sdk.interactor?.state = .ended(.byOperator)
 
         XCTAssertEqual(calls, [.onEvent(.ended)])
@@ -223,9 +180,7 @@ final class GliaTests: XCTestCase {
         var gliaEnv = Glia.Environment.failing
         gliaEnv.callVisualizerPresenter = .init(presenter: { nil })
         gliaEnv.gcd.mainQueue.asyncIfNeeded = { callback in callback() }
-        gliaEnv.coreSdk.getCurrentEngagement = {
-            .init(id: "", engagedOperator: nil, source: .callVisualizer, fetchSurvey: { _, _ in })
-        }
+
         let sdk = Glia(environment: gliaEnv)
         sdk.onEvent = {
             calls.append(.onEvent($0))
@@ -234,6 +189,7 @@ final class GliaTests: XCTestCase {
             with: .mock(),
             queueId: "queueId"
         )
+        sdk.environment.coreSdk.getCurrentEngagement = { .mock(source: .callVisualizer) }
 
         sdk.callVisualizer.coordinator.showEndScreenSharingViewController()
         sdk.interactor?.state = .ended(.byOperator)
@@ -253,9 +209,6 @@ final class GliaTests: XCTestCase {
         gliaEnv.callVisualizerPresenter = .init(presenter: { nil })
         gliaEnv.gcd.mainQueue.asyncIfNeeded = { callback in callback() }
         gliaEnv.notificationCenter.addObserverClosure = { _, _, _, _ in }
-        gliaEnv.coreSdk.getCurrentEngagement = {
-            .init(id: "", engagedOperator: nil, source: .callVisualizer, fetchSurvey: { _, _ in })
-        }
         let sdk = Glia(environment: gliaEnv)
         sdk.onEvent = {
             calls.append(.onEvent($0))
@@ -264,10 +217,21 @@ final class GliaTests: XCTestCase {
             with: .mock(),
             queueId: "queueId"
         )
+        sdk.environment.coreSdk.getCurrentEngagement = { .mock(source: .callVisualizer) }
 
         sdk.callVisualizer.coordinator.showVideoCallViewController()
         sdk.interactor?.state = .ended(.byOperator)
 
         XCTAssertEqual(calls, [.onEvent(.maximized), .onEvent(.minimized), .onEvent(.ended)])
+    }
+
+    func testConfigureThrowsErrorDuringActiveEngagement() throws {
+        var environment = Glia.Environment.failing
+        environment.coreSdk.getCurrentEngagement = { .mock() }
+        let sdk = Glia(environment: environment)
+
+        XCTAssertThrowsError(try sdk.configure(with: .mock(), queueId: "queueId")) { error in
+            XCTAssertEqual(error as? GliaError, GliaError.configuringDuringEngagementIsNotAllowed)
+        }
     }
 }

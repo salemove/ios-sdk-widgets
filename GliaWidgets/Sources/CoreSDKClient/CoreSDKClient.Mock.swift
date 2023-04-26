@@ -456,4 +456,20 @@ extension CoreSdkClient.Queue {
     }
 }
 
+extension CoreSdkClient.Engagement {
+    static func mock(
+        id: String = "",
+        engagedOperator: Operator? = nil,
+        source: EngagementSource = .coreEngagement,
+        fetchSurvey: @escaping FetchSurvey = { _, _ in })
+    -> CoreSdkClient.Engagement {
+        .init(
+            id: id,
+            engagedOperator: engagedOperator,
+            source: source,
+            fetchSurvey: fetchSurvey
+        )
+    }
+}
+
 #endif
