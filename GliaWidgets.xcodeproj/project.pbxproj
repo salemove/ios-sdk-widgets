@@ -340,6 +340,7 @@
 		846A5C3929D18D400049B29F /* ScreenShareHandlerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846A5C3829D18D400049B29F /* ScreenShareHandlerTests.swift */; };
 		846A5C3E29D1C7B00049B29F /* CallVisualizerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846A5C3D29D1C7B00049B29F /* CallVisualizerTests.swift */; };
 		846A5C4029ED83C50049B29F /* CallVisualizer.Coordinator.DelegateEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846A5C3F29ED83C50049B29F /* CallVisualizer.Coordinator.DelegateEvent.swift */; };
+		846A5C4529F6BEFA0049B29F /* GliaTests+StartEngagement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846A5C4429F6BEFA0049B29F /* GliaTests+StartEngagement.swift */; };
 		846E822828996A5C008EFBF0 /* AlertViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846E822728996A5C008EFBF0 /* AlertViewControllerTests.swift */; };
 		847A7643285A1914004044D1 /* FileUploadListViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847A7642285A1914004044D1 /* FileUploadListViewModelTests.swift */; };
 		84A318A12869ECFC00CA1DE5 /* Unavailable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A318A02869ECFC00CA1DE5 /* Unavailable.swift */; };
@@ -959,6 +960,7 @@
 		846A5C3829D18D400049B29F /* ScreenShareHandlerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenShareHandlerTests.swift; sourceTree = "<group>"; };
 		846A5C3D29D1C7B00049B29F /* CallVisualizerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallVisualizerTests.swift; sourceTree = "<group>"; };
 		846A5C3F29ED83C50049B29F /* CallVisualizer.Coordinator.DelegateEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallVisualizer.Coordinator.DelegateEvent.swift; sourceTree = "<group>"; };
+		846A5C4429F6BEFA0049B29F /* GliaTests+StartEngagement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GliaTests+StartEngagement.swift"; sourceTree = "<group>"; };
 		846E822728996A5C008EFBF0 /* AlertViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertViewControllerTests.swift; sourceTree = "<group>"; };
 		847A7642285A1914004044D1 /* FileUploadListViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUploadListViewModelTests.swift; sourceTree = "<group>"; };
 		84A318A02869ECFC00CA1DE5 /* Unavailable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Unavailable.swift; sourceTree = "<group>"; };
@@ -2353,10 +2355,10 @@
 		7512A57827BF9FB800319DF1 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				846A5C4329F6BEB60049B29F /* Glia */,
 				7512A57627BE8A6700319DF1 /* InteractorTests.swift */,
 				AF29811429E6D76A0005BD55 /* FileDownloadTests.swift */,
 				7512A57927BF9FCD00319DF1 /* ChatViewModelTests.swift */,
-				7512A5A627C3926500319DF1 /* GliaTests.swift */,
 				EB9ADB50280EBD4E00FAE8A4 /* InteractorStateTests.swift */,
 				EB27E71C27FEBB620090B895 /* CallViewModelTests.swift */,
 				EB03B00D27FFF6DD0058F6B1 /* CallViewTests.swift */,
@@ -2816,6 +2818,15 @@
 				846A5C3829D18D400049B29F /* ScreenShareHandlerTests.swift */,
 			);
 			path = ScreenShareHandler;
+			sourceTree = "<group>";
+		};
+		846A5C4329F6BEB60049B29F /* Glia */ = {
+			isa = PBXGroup;
+			children = (
+				7512A5A627C3926500319DF1 /* GliaTests.swift */,
+				846A5C4429F6BEFA0049B29F /* GliaTests+StartEngagement.swift */,
+			);
+			path = Glia;
 			sourceTree = "<group>";
 		};
 		84D2292C28C61DE000F64FE7 /* WKNavigationPolicyProvider */ = {
@@ -4152,6 +4163,7 @@
 				9A3E1D9D27BA7741005634EB /* FoundationBased.Failing.swift in Sources */,
 				9A3E1D8427B67F1B005634EB /* Helper.swift in Sources */,
 				9A8130C627D90B3800220BBD /* FileSystemStorage.Failing.swift in Sources */,
+				846A5C4529F6BEFA0049B29F /* GliaTests+StartEngagement.swift in Sources */,
 				7512A57A27BF9FCD00319DF1 /* ChatViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

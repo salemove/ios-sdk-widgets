@@ -62,7 +62,6 @@ extension Glia {
     ///   - engagementKind: Engagement media type.
     ///   - configuration: Engagement configuration.
     ///   - queueID: Queue identifier.
-    ///   - visitorContext: Visitor context.
     ///   - theme: A custom theme to use with the engagement.
     ///   - sceneProvider: Used to provide `UIWindowScene` to the framework. Defaults to the first active foreground scene.
     ///
@@ -78,27 +77,28 @@ extension Glia {
         _ engagementKind: EngagementKind,
         configuration: Configuration,
         queueID: String,
-        visitorContext: VisitorContext?, // GliaCoreSDK.VisitorContext
         theme: Theme = Theme(),
         features: Features = .all,
         sceneProvider: SceneProvider? = nil
     ) throws {
-        try configure(
-            with: configuration,
-            queueId: queueID,
-            visitorContext: visitorContext
-        ) { [weak self] in
+        let completion = { [weak self] in
             self?.setChatMessageRenderer(messageRenderer: .webRenderer)
-            do {
-                try self?.startEngagement(
-                    engagementKind: engagementKind,
-                    theme: theme,
-                    features: features,
-                    sceneProvider: sceneProvider
-                )
-            } catch {
-                print("Engagement has not been started. Error='\(error)'.")
+            try self?.startEngagement(
+                engagementKind: engagementKind,
+                theme: theme,
+                features: features,
+                sceneProvider: sceneProvider
+            )
+        }
+        do {
+            try configure(
+                with: configuration,
+                queueId: queueID
+            ) {
+                try? completion()
             }
+        } catch GliaError.configuringDuringEngagementIsNotAllowed {
+            try completion()
         }
     }
 
