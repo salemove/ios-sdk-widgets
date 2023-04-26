@@ -4,4 +4,5 @@ public enum GliaError: Error {
     case engagementNotExist
     case sdkIsNotConfigured
     case callVisualizerEngagementExists
+    case configuringDuringEngagementIsNotAllowed
 }
