@@ -64,6 +64,13 @@ extension CoreSdkClient.PushNotifications {
     static let failing = Self(
         applicationDidRegisterForRemoteNotificationsWithDeviceToken: { _, _ in
             fail("\(Self.self).applicationDidRegisterForRemoteNotificationsWithDeviceToken")
+        },
+        setPushHandler: { _ in
+            fail("\(Self.self).setPushHandler")
+        },
+        pushHandler: {
+            fail("\(Self.self).pushHandler")
+            return nil
         }
     )
 }
