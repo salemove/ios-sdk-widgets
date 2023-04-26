@@ -111,6 +111,9 @@ public class Glia {
         assetsBuilder: RemoteConfiguration.AssetsBuilder = .standard,
         completion: (() -> Void)? = nil
     ) throws {
+        guard environment.coreSdk.getCurrentEngagement() == nil else {
+            throw GliaError.configuringDuringEngagementIsNotAllowed
+        }
         self.uiConfig = uiConfig
         self.assetsBuilder = assetsBuilder
 
