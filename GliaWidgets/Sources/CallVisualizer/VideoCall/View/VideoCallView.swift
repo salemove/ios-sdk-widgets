@@ -163,13 +163,6 @@ extension CallVisualizer {
             localVideoView.pan = { [weak self] in
                 self?.adjustLocalVideoFrameAfterPanGesture(translation: $0)
             }
-
-            switch props.style.backgroundColor {
-            case .fill(color: let color):
-                backgroundColor = color
-            case .gradient(colors: let colors):
-                makeGradientBackground(colors: colors)
-            }
         }
 
         func layout() {
@@ -217,6 +210,13 @@ extension CallVisualizer {
             super.layoutSubviews()
             adjustVideoViews()
             adjustLocalVideoFrameAfterLayout()
+
+            switch props.style.backgroundColor {
+            case .fill(color: let color):
+                backgroundColor = color
+            case .gradient(colors: let colors):
+                makeGradientBackground(colors: colors)
+            }
         }
 
         // MARK: - Methods
