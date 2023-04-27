@@ -11,7 +11,7 @@ extension Theme {
             buttonStyle: .init(
                 title: L10n.CallVisualizer.ScreenSharing.Button.title,
                 titleFont: font.buttonLabel,
-                titleColor: .white,
+                titleColor: color.baseLight,
                 backgroundColor: .fill(color: color.systemNegative),
                 cornerRaidus: 4,
                 accessibility: .init(
@@ -20,7 +20,7 @@ extension Theme {
                 )
             ),
             buttonIcon: Asset.startScreenShare.image,
-            backgroundColor: .fill(color: .white),
+            backgroundColor: .fill(color: color.baseLight),
             accessibility: .init(isFontScalingEnabled: true)
         )
     }

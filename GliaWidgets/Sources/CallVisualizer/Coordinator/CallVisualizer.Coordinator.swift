@@ -188,7 +188,7 @@ extension CallVisualizer {
             return viewController
         }
 
-        private func buildVideoCallViewController(uiConfig: RemoteConfiguration? = nil) -> UIViewController {
+        private func buildVideoCallViewController() -> UIViewController {
             let coordinator = VideoCallCoodinator(
                 environment: .init(
                     data: environment.data,
@@ -204,7 +204,7 @@ extension CallVisualizer {
                     engagedOperator: environment.engagedOperator,
                     screenShareHandler: environment.screenShareHandler
                 ),
-                uiConfig: uiConfig,
+                theme: environment.viewFactory.theme,
                 call: .init(
                     .video(direction: .twoWay),
                     environment: .init(
