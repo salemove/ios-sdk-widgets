@@ -13,20 +13,12 @@ extension CallVisualizer {
 
         init(
             environment: Environment,
-            uiConfig: RemoteConfiguration?,
+            theme: Theme,
             call: Call
         ) {
             self.environment = environment
             self.call = call
-
-            if let uiConfig = uiConfig {
-                self.theme = Theme(
-                    uiConfig: uiConfig,
-                    assetsBuilder: .standard
-                )
-            } else {
-                self.theme = Theme()
-            }
+            self.theme = theme
         }
 
         func start() -> ViewController {
@@ -41,7 +33,7 @@ extension CallVisualizer {
             typealias Props = VideoCallViewController.Props
 
             let viewModel = VideoCallViewModel(
-                style: theme.callStyle,
+                style: theme.call,
                 environment: .init(
                     data: environment.data,
                     uuid: environment.uuid,
