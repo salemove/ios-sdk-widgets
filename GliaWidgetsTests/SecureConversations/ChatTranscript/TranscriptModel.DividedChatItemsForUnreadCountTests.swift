@@ -1,7 +1,7 @@
 @testable import GliaWidgets
 import XCTest
 
-final class SecureConversationsTranscriptModelTests: XCTestCase {
+class SecureConversationsTranscriptModelDividerTests {
     // Since ChatItem does not conform to Equatable,
     // one of the ways to evaluate if it is the exact
     // item is by doing identity check.
