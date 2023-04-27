@@ -423,7 +423,9 @@ class ChatViewModelTests: XCTestCase {
             availability: .init(
                 environment: availabilityEnv
             ),
-            deliveredStatusText: ""
+            deliveredStatusText: "",
+            interactor: .failing,
+            alertConfiguration: .mock()
         )
 
         transcriptModel.sections[transcriptModel.pendingSection.index].append(.init(kind: .unreadMessageDivider))
