@@ -68,6 +68,9 @@ extension SecureConversations.TranscriptModel.Environment {
         },
         stopSocketObservation: {
             fail("\(Self.self).stopSocketObservation")
+        },
+        sendSelectedOptionValue: { _, _ in
+            fail("\(Self.self).sendSelectedOptionValue")
         }
     )
 }
