@@ -173,6 +173,8 @@ extension ViewController {
             alert(message: "Failed to start\nEngagement is ongoing, please use 'Resume' button")
         } catch GliaError.engagementNotExist {
             alert(message: "Failed to start\nNo ongoing engagement. Please start a new one with 'Start chat' button")
+        } catch GliaError.callVisualizerEngagementExists {
+            alert(message: "Failed to start\nCall Visualizer engagement is ongoing")
         } catch {
             alert(message: "Failed to start\nCheck Glia parameters in Settings")
         }
