@@ -159,7 +159,8 @@ extension Glia {
                     }
                 },
                 startSocketObservation: environment.coreSdk.startSocketObservation,
-                stopSocketObservation: environment.coreSdk.stopSocketObservation
+                stopSocketObservation: environment.coreSdk.stopSocketObservation,
+                pushNotifications: environment.coreSdk.pushNotifications
             )
         )
         rootCoordinator?.delegate = { [weak self] event in
