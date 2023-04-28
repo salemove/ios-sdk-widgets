@@ -89,7 +89,8 @@ extension SecureConversations {
             let height = uploadViews
                 .prefix(props.maxUnscrollableViews)
                 .reduce(CGFloat.zero) { result, view in
-                    result + view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
+                    result + view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height +
+                    stackView.spacing
                 }
 
             heightLayoutConstraint.constant = height
