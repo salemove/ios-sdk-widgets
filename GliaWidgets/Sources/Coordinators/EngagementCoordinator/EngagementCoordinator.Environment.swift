@@ -36,5 +36,6 @@ extension EngagementCoordinator {
         var isAuthenticated: () -> Bool
         var startSocketObservation: CoreSdkClient.StartSocketObservation
         var stopSocketObservation: CoreSdkClient.StopSocketObservation
+        var pushNotifications: CoreSdkClient.PushNotifications
     }
 }
