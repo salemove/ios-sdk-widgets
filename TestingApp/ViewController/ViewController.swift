@@ -22,6 +22,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         title = "Glia UI testing"
         view.backgroundColor = .white
+        setupPushHandler()
     }
 
     override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
@@ -302,6 +303,22 @@ extension ViewController {
             return nil
         }
         return config
+    }
+
+    func setupPushHandler() {
+        GliaCore.sharedInstance.pushNotifications.handler = { [weak self] push in
+            switch push.type {
+            // For now this will try to open transcript screen from any
+            // push notification received with type of `chatMessage`.
+            case .chatMessage:
+                guard self?.presentedViewController == nil else { return }
+                self?.presentGlia(.messaging(.chatTranscript))
+            case .unidentified:
+                break
+            @unknown default:
+                break
+            }
+        }
     }
 }
 

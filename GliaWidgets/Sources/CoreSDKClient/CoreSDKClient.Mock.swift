@@ -39,7 +39,11 @@ extension CoreSdkClient {
 }
 
 extension CoreSdkClient.PushNotifications {
-    static let mock = Self(applicationDidRegisterForRemoteNotificationsWithDeviceToken: { _, _ in })
+    static let mock = Self(
+        applicationDidRegisterForRemoteNotificationsWithDeviceToken: { _, _ in },
+        setPushHandler: { _ in },
+        pushHandler: { nil }
+    )
 }
 
 extension CoreSdkClient.AppDelegate {

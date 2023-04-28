@@ -157,7 +157,15 @@ extension CoreSdkClient {
             _ application: UIApplication,
             _ deviceToken: Data
         ) -> Void
+
+        var setPushHandler: (PushHandler?) -> Void
+        var pushHandler: () -> PushHandler?
     }
+}
+
+extension CoreSdkClient.PushNotifications {
+    typealias Push = SalemoveSDK.Push
+    typealias PushHandler = SalemoveSDK.PushActionBlock
 }
 
 extension CoreSdkClient {

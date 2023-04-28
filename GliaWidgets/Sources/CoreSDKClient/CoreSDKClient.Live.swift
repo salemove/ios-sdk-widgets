@@ -53,7 +53,9 @@ extension CoreSdkClient {
 extension CoreSdkClient.PushNotifications {
     static let live = Self(
         applicationDidRegisterForRemoteNotificationsWithDeviceToken:
-            GliaCore.sharedInstance.pushNotifications.application(_:didRegisterForRemoteNotificationsWithDeviceToken:)
+            GliaCore.sharedInstance.pushNotifications.application(_:didRegisterForRemoteNotificationsWithDeviceToken:),
+        setPushHandler: { GliaCore.sharedInstance.pushNotifications.handler = $0 },
+        pushHandler: { GliaCore.sharedInstance.pushNotifications.handler }
     )
 }
 
