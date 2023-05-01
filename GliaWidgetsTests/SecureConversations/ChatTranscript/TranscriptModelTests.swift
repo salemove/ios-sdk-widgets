@@ -1,7 +1,7 @@
 @testable import GliaWidgets
 import XCTest
 
-final class TranscriptModelTests: XCTestCase {
+final class SecureConversationsTranscriptModelTests: XCTestCase {
     typealias TranscriptModel = SecureConversations.TranscriptModel
     typealias FileUploadListViewModel = SecureConversations.FileUploadListViewModel
 
@@ -21,7 +21,9 @@ final class TranscriptModelTests: XCTestCase {
             availability: .init(
                 environment: availabilityEnv
             ),
-            deliveredStatusText: ""
+            deliveredStatusText: "",
+            interactor: .failing,
+            alertConfiguration: .mock()
         )
 
         XCTAssertFalse(viewModel.isSecureConversationsAvailable)
@@ -43,7 +45,9 @@ final class TranscriptModelTests: XCTestCase {
             availability: .init(
                 environment: availabilityEnv
             ),
-            deliveredStatusText: ""
+            deliveredStatusText: "",
+            interactor: .failing,
+            alertConfiguration: .mock()
         )
 
         XCTAssertFalse(viewModel.isSecureConversationsAvailable)
@@ -74,7 +78,9 @@ final class TranscriptModelTests: XCTestCase {
             availability: .init(
                 environment: availabilityEnv
             ),
-            deliveredStatusText: ""
+            deliveredStatusText: "",
+            interactor: .failing,
+            alertConfiguration: .mock()
         )
 
         viewModel.start()
@@ -115,7 +121,9 @@ final class TranscriptModelTests: XCTestCase {
             availability: .init(
                 environment: availabilityEnv
             ),
-            deliveredStatusText: ""
+            deliveredStatusText: "",
+            interactor: .failing,
+            alertConfiguration: .mock()
         )
         viewModel.start()
         XCTAssertEqual(
@@ -144,7 +152,9 @@ final class TranscriptModelTests: XCTestCase {
             availability: .init(
                 environment: availabilityEnv
             ),
-            deliveredStatusText: ""
+            deliveredStatusText: "",
+            interactor: .failing,
+            alertConfiguration: .mock()
         )
         viewModel.start()
         let text = "Test text"
@@ -188,7 +198,9 @@ final class TranscriptModelTests: XCTestCase {
             availability: .init(
                 environment: availabilityEnv
             ),
-            deliveredStatusText: ""
+            deliveredStatusText: "",
+            interactor: .failing,
+            alertConfiguration: .mock()
         )
 
         viewModel.event(.messageTextChanged(emptyMessageText))
@@ -226,7 +238,9 @@ final class TranscriptModelTests: XCTestCase {
             availability: .init(
                 environment: availabilityEnv
             ),
-            deliveredStatusText: ""
+            deliveredStatusText: "",
+            interactor: .failing,
+            alertConfiguration: .mock()
         )
 
         viewModel.event(.messageTextChanged(emptyMessageText))
@@ -260,7 +274,9 @@ final class TranscriptModelTests: XCTestCase {
             availability: .init(
                 environment: availabilityEnv
             ),
-            deliveredStatusText: ""
+            deliveredStatusText: "",
+            interactor: .failing,
+            alertConfiguration: .mock()
         )
 
         viewModel.event(.messageTextChanged(nonEmptyText))
@@ -298,7 +314,9 @@ final class TranscriptModelTests: XCTestCase {
             availability: .init(
                 environment: availabilityEnv
             ),
-            deliveredStatusText: ""
+            deliveredStatusText: "",
+            interactor: .failing,
+            alertConfiguration: .mock()
         )
 
         viewModel.event(.messageTextChanged(nonEmptyText))
@@ -334,7 +352,9 @@ final class TranscriptModelTests: XCTestCase {
             availability: .init(
                 environment: availabilityEnv
             ),
-            deliveredStatusText: ""
+            deliveredStatusText: "",
+            interactor: .failing,
+            alertConfiguration: .mock()
         )
 
         viewModel.start()
@@ -373,7 +393,9 @@ final class TranscriptModelTests: XCTestCase {
             availability: .init(
                 environment: availabilityEnv
             ),
-            deliveredStatusText: ""
+            deliveredStatusText: "",
+            interactor: .failing,
+            alertConfiguration: .mock()
         )
 
         viewModel.start()
@@ -387,5 +409,133 @@ final class TranscriptModelTests: XCTestCase {
                 return false
             }
         }))
+    }
+
+    func testSystemMessagesFromWebSocket() {
+        var modelEnv = TranscriptModel.Environment.failing
+        let fileUploadListModel = FileUploadListViewModel.mock()
+        fileUploadListModel.environment.uploader.limitReached.value = false
+        modelEnv.fileManager = .mock
+        modelEnv.createFileUploadListModel = { _ in fileUploadListModel }
+        modelEnv.listQueues = { _ in }
+        modelEnv.fetchSiteConfigurations = { _ in }
+        modelEnv.fetchChatHistory = { _ in }
+        modelEnv.getSecureUnreadMessageCount = { callback in
+            callback(.success(0))
+        }
+        modelEnv.startSocketObservation = {}
+        modelEnv.gcd.mainQueue.asyncAfterDeadline = { _, callback in }
+        modelEnv.loadChatMessagesFromHistory = { true }
+        let scheduler = CoreSdkClient.ReactiveSwift.TestScheduler()
+        modelEnv.messagesWithUnreadCountLoaderScheduler = scheduler
+
+        let availabilityEnv = SecureConversations.Availability.Environment(
+            listQueues: modelEnv.listQueues,
+            queueIds: modelEnv.queueIds,
+            isAuthenticated: { true }
+        )
+
+        let interactor: Interactor = .failing
+
+        let viewModel = TranscriptModel(
+            isCustomCardSupported: false,
+            environment: modelEnv,
+            availability: .init(
+                environment: availabilityEnv
+            ),
+            deliveredStatusText: "",
+            interactor: interactor,
+            alertConfiguration: .mock()
+        )
+
+        modelEnv.fetchChatHistory = { callback in
+            let uuid = UUID.mock.uuidString
+            let message = CoreSdkClient.Message(
+                id: uuid,
+                content: "Test",
+                sender: .init(type: .system),
+                metadata: nil
+            )
+
+            interactor.receive(message: message)
+            XCTAssertEqual(viewModel.pendingSection.items.count, 1)
+
+            let receivedMessage = viewModel.receivedMessages[uuid]
+            XCTAssertNotNil(receivedMessage)
+
+            if case let .socket(innerMessage) = receivedMessage?.first {
+                XCTAssertEqual(innerMessage.id, uuid)
+                XCTAssertEqual(innerMessage.sender.type, .system)
+            } else {
+                XCTFail("Message should come from socket")
+            }
+        }
+
+        viewModel.start()
+        scheduler.run()
+    }
+
+    func testWelcomeMessagesFromWebSocket() {
+        var modelEnv = TranscriptModel.Environment.failing
+        let fileUploadListModel = FileUploadListViewModel.mock()
+        fileUploadListModel.environment.uploader.limitReached.value = false
+        modelEnv.fileManager = .mock
+        modelEnv.createFileUploadListModel = { _ in fileUploadListModel }
+        modelEnv.listQueues = { _ in }
+        modelEnv.fetchSiteConfigurations = { _ in }
+        modelEnv.fetchChatHistory = { _ in }
+        modelEnv.getSecureUnreadMessageCount = { callback in
+            callback(.success(0))
+        }
+        modelEnv.startSocketObservation = {}
+        modelEnv.gcd.mainQueue.asyncAfterDeadline = { _, callback in }
+        modelEnv.loadChatMessagesFromHistory = { true }
+        let scheduler = CoreSdkClient.ReactiveSwift.TestScheduler()
+        modelEnv.messagesWithUnreadCountLoaderScheduler = scheduler
+
+        let availabilityEnv = SecureConversations.Availability.Environment(
+            listQueues: modelEnv.listQueues,
+            queueIds: modelEnv.queueIds,
+            isAuthenticated: { true }
+        )
+
+        let interactor: Interactor = .failing
+
+        let viewModel = TranscriptModel(
+            isCustomCardSupported: false,
+            environment: modelEnv,
+            availability: .init(
+                environment: availabilityEnv
+            ),
+            deliveredStatusText: "",
+            interactor: interactor,
+            alertConfiguration: .mock()
+        )
+
+        modelEnv.fetchChatHistory = { callback in
+            let uuid = UUID.mock.uuidString
+            let message = CoreSdkClient.Message(
+                id: uuid,
+                content: "Welcome",
+                sender: .init(type: .operator),
+                metadata: nil
+            )
+
+            interactor.receive(message: message)
+            XCTAssertEqual(viewModel.pendingSection.items.count, 1)
+
+            let receivedMessage = viewModel.receivedMessages[uuid]
+            XCTAssertNotNil(receivedMessage)
+
+            if case let .socket(innerMessage) = receivedMessage?.first {
+                XCTAssertEqual(innerMessage.id, uuid)
+                XCTAssertEqual(innerMessage.sender.type, .operator)
+            } else {
+                XCTFail("Message should come from socket")
+            }
+        }
+
+        viewModel.start()
+        scheduler.run()
     }
 }
