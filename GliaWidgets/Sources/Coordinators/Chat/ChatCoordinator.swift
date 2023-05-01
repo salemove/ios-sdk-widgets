@@ -245,9 +245,13 @@ extension ChatCoordinator {
                     isAuthenticated: environment.isAuthenticated
                 )
             ),
-            deliveredStatusText: viewFactory.theme.chat.visitorMessage.delivered
+            deliveredStatusText: viewFactory.theme.chat.visitorMessage.delivered,
+            interactor: interactor,
+            alertConfiguration: viewFactory.theme.alertConfiguration
         )
 
+        viewModel.shouldShowCard = viewFactory.messageRenderer?.shouldShowCard
+        viewModel.isInteractableCard = viewFactory.messageRenderer?.isInteractable
         viewModel.engagementDelegate = { [weak self] event in
             switch event {
             case .finished:
@@ -256,6 +260,15 @@ extension ChatCoordinator {
             }
         }
 
+        configureDelegate(for: viewModel, controller: controller)
+
+        return viewModel
+    }
+
+    private func configureDelegate(
+        for viewModel: SecureConversations.TranscriptModel,
+        controller: @escaping () -> ChatViewController?
+    ) {
         viewModel.delegate = { [weak self] event in
             switch event {
             case .showFile(let file):
@@ -291,8 +304,6 @@ extension ChatCoordinator {
                 chatModel.migrate(from: transcriptModel)
             }
         }
-
-        return viewModel
     }
 
     static func environmentForTranscriptModel(
@@ -326,7 +337,8 @@ extension ChatCoordinator {
            secureMarkMessagesAsRead: environment.secureMarkMessagesAsRead,
            interactor: environment.interactor,
            startSocketObservation: environment.startSocketObservation,
-           stopSocketObservation: environment.stopSocketObservation
+           stopSocketObservation: environment.stopSocketObservation,
+           sendSelectedOptionValue: environment.sendSelectedOptionValue
        )
     }
 }

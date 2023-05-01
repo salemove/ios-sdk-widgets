@@ -252,6 +252,14 @@ extension SecureConversations {
         var engagementAction: EngagementViewModel.ActionCallback?
         var engagementDelegate: EngagementViewModel.DelegateCallback?
 
+        /// Used to check whether custom card contains interactable metadata.
+        var isInteractableCard: ((MessageRenderer.Message) -> Bool)?
+        /// Used to check whether custom card should be hidden.
+        var shouldShowCard: ((MessageRenderer.Message) -> Bool)?
+
+        var isChoiceCardInputModeEnabled: Bool = false
+        var alertConfiguration: AlertConfiguration
+
         private let downloader: FileDownloader
         let fileUploadListModel: SecureConversations.FileUploadListViewModel
 
@@ -268,6 +276,8 @@ extension SecureConversations {
 
         var environment: Environment
         var availability: Availability
+        var interactor: Interactor
+
         private (set) var isSecureConversationsAvailable: Bool = true
 
         var siteConfiguration: CoreSdkClient.Site?
@@ -302,7 +312,9 @@ extension SecureConversations {
             isCustomCardSupported: Bool,
             environment: Environment,
             availability: Availability,
-            deliveredStatusText: String
+            deliveredStatusText: String,
+            interactor: Interactor,
+            alertConfiguration: AlertConfiguration
         ) {
             self.isCustomCardSupported = isCustomCardSupported
             self.environment = environment
@@ -322,6 +334,8 @@ extension SecureConversations {
 
             self.availability = availability
             self.deliveredStatusText = deliveredStatusText
+            self.interactor = interactor
+            self.alertConfiguration = alertConfiguration
 
             let uploader = FileUploader(
                 maximumUploads: Self.maximumUploads,
@@ -782,6 +796,7 @@ extension SecureConversations.TranscriptModel {
         var interactor: Interactor
         var startSocketObservation: CoreSdkClient.StartSocketObservation
         var stopSocketObservation: CoreSdkClient.StopSocketObservation
+        var sendSelectedOptionValue: CoreSdkClient.SendSelectedOptionValue
     }
 }
 
@@ -925,6 +940,35 @@ extension SecureConversations.TranscriptModel {
 
                     list.append(messageSource)
                     receivedMessages[messageSource.id] = list
+                }
+            case .operator:
+                let message = ChatMessage(
+                    with: messageSource.message,
+                    operator: interactor.engagedOperator
+                )
+
+                if let item = ChatItem(
+                    with: message,
+                    isCustomCardSupported: isCustomCardSupported,
+                    fromHistory: false
+                ) {
+                    guard isViewLoaded else { return }
+
+                    let isChatBottomReached = isChatScrolledToBottom.value
+
+                    appendItem(item, to: pendingSection, animated: true)
+                    action?(.updateItemsUserImage(animated: true))
+
+                    let choiceCardInputModeEnabled = message.isChoiceCard || self.isInteractableCustomCard(message)
+                    action?(.setChoiceCardInputModeEnabled(choiceCardInputModeEnabled))
+
+                    // Store info about choice card mode from which
+                    // attachment button visibility will be calculated.
+                    self.isChoiceCardInputModeEnabled = choiceCardInputModeEnabled
+
+                    if isChatBottomReached {
+                        action?(.scrollToBottom(animated: true))
+                    }
                 }
             default: break
             }
