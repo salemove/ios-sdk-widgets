@@ -11,7 +11,7 @@ final class FileUploadListViewModelTests: XCTestCase {
             application.preferredContentSizeCategory = {
                 return input.category
             }
-            var environment: SecureConversations.FileUploadListViewModel.Environment = .init(
+            let environment: SecureConversations.FileUploadListViewModel.Environment = .init(
                 uploader: .mock(),
                 style: .chat(.mock),
                 scrollingBehaviour: .scrolling(application)
