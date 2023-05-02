@@ -100,7 +100,6 @@ class ChatMessage: Codable {
         try container.encode(metadata, forKey: .metadata)
     }
 
-    #if DEBUG
     init(
         id: String,
         queueID: String?,
@@ -118,5 +117,4 @@ class ChatMessage: Codable {
         self.attachment = attachment
         self.downloads = downloads
     }
-    #endif
 }

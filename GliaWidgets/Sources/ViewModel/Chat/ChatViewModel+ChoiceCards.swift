@@ -9,12 +9,8 @@ extension ChatViewModel {
 
             switch result {
             case .success(let message):
-                guard
-                    let selection = message.attachment?.selectedOption
-                else { return }
-
+                let selection = message.content
                 self.respond(to: messageId, with: selection)
-
             case .failure:
                 self.showAlert(
                     with: self.alertConfiguration.unexpectedError,
@@ -40,26 +36,35 @@ extension ChatViewModel {
 
         guard case .choiceCard(
             let message,
-            let showsImage,
-            let imageUrl,
+            _,
+            _,
             _
         ) = choiceCard.kind else { return }
 
         message.attachment?.selectedOption = selection
         message.queueID = interactor.queueID
-        let item = ChatItem(kind: .choiceCard(
-            message,
-            showsImage: showsImage,
-            imageUrl: imageUrl,
-            isActive: false
-        ))
 
+        let item = ChatItem(
+            kind: .visitorMessage(
+                ChatMessage(
+                    id: message.id,
+                    queueID: message.queueID,
+                    operator: message.operator,
+                    sender: message.sender,
+                    content: message.attachment?.selectedOption ?? "",
+                    attachment: message.attachment,
+                    downloads: message.downloads
+                ),
+                status: nil
+            )
+        )
         section.replaceItem(at: index, with: item)
         action?(.refreshRow(index, in: section.index, animated: true))
         action?(.setChoiceCardInputModeEnabled(false))
         // Update stored choice card mode to be in
         // sync after response.
         isChoiceCardInputModeEnabled = false
+        action?(.refreshAll)
     }
 
     private func searchForChoiceCard(in section: Section<ChatItem>, choiceCardId: String) -> (Int, Section<ChatItem>)? {
