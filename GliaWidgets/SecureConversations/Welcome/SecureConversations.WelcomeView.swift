@@ -809,12 +809,10 @@ extension SecureConversations.WelcomeView {
             }
             let bottomOffset = CGPoint(
                 x: 0,
-                y: scrollView.contentSize.height - scrollView.bounds.height + scrollView.contentInset.bottom +
-                // Take file upload list into account, so that text view would be accessible,
-                // when keyboard appears.
-                fileUploadListView.frame.height == .zero
-                ? 0
-                : (messageTextView.frame.height - fileUploadListView.frame.height)
+                // Scroll content to the location of message text view,
+                // so that it would become visible initially when keyboard
+                // is shown, for portrait and landscape screen orientations.
+                y: messageTextView.frame.origin.y
             )
             scrollView.setContentOffset(
                 bottomOffset,
