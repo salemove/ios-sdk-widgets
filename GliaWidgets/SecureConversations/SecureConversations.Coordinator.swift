@@ -115,12 +115,6 @@ extension SecureConversations {
                 controller?.presentPopover(
                     with: style.pickMediaStyle,
                     from: originView,
-                    // Designs use 'up' arrow, but currently
-                    // it seems like there is a bug in
-                    // AttachmentSourceListView, that makes
-                    // it render incorrectly with 'up' arrow.
-                    // That is why using 'down' arrow for now.
-                    arrowDirections: .down,
                     itemSelected: { [weak controller] kind in
                         controller?.dismiss(animated: true)
                         callback(kind)
