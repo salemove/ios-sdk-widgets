@@ -30,7 +30,6 @@
 		1A0C9AC225C9400000815406 /* CallDurationCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0C9AC125C9400000815406 /* CallDurationCounter.swift */; };
 		1A0C9AC825C9493D00815406 /* Int+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0C9AC725C9493D00815406 /* Int+Extensions.swift */; };
 		1A0C9AE025C9624500815406 /* ObservableValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0C9ADF25C9624500815406 /* ObservableValue.swift */; };
-		1A0EDF5625E786CE0076D1AD /* FileUploadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0EDF5525E786CE0076D1AD /* FileUploadView.swift */; };
 		1A0EDF5A25E786DB0076D1AD /* FileUploadStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0EDF5925E786DB0076D1AD /* FileUploadStyle.swift */; };
 		1A0EDF6D25E7AC100076D1AD /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0EDF6C25E7AC100076D1AD /* UIImage+Extensions.swift */; };
 		1A0EDF8225E8E0150076D1AD /* PopoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0EDF8125E8E0150076D1AD /* PopoverViewController.swift */; };
@@ -53,7 +52,6 @@
 		1A2DA72625EF892600032611 /* FilePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2DA72525EF892600032611 /* FilePickerController.swift */; };
 		1A2DA72D25EF9DD900032611 /* FileUpload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2DA72C25EF9DD900032611 /* FileUpload.swift */; };
 		1A2DA73125EFA77E00032611 /* FileUploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2DA73025EFA77E00032611 /* FileUploader.swift */; };
-		1A2DA73725EFBFE700032611 /* FileUploadListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2DA73625EFBFE700032611 /* FileUploadListView.swift */; };
 		1A2DA73B25EFC00500032611 /* FileUploadListStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2DA73A25EFC00500032611 /* FileUploadListStyle.swift */; };
 		1A38A8A8258B652B0089DE7B /* OperatorChatMessageStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A38A8A7258B652B0089DE7B /* OperatorChatMessageStyle.swift */; };
 		1A38A8AC258B65D00089DE7B /* ChatMessageStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A38A8AB258B65D00089DE7B /* ChatMessageStyle.swift */; };
@@ -645,7 +643,6 @@
 		1A0C9AC125C9400000815406 /* CallDurationCounter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallDurationCounter.swift; sourceTree = "<group>"; };
 		1A0C9AC725C9493D00815406 /* Int+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Extensions.swift"; sourceTree = "<group>"; };
 		1A0C9ADF25C9624500815406 /* ObservableValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservableValue.swift; sourceTree = "<group>"; };
-		1A0EDF5525E786CE0076D1AD /* FileUploadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUploadView.swift; sourceTree = "<group>"; };
 		1A0EDF5925E786DB0076D1AD /* FileUploadStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUploadStyle.swift; sourceTree = "<group>"; };
 		1A0EDF6C25E7AC100076D1AD /* UIImage+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extensions.swift"; sourceTree = "<group>"; };
 		1A0EDF8125E8E0150076D1AD /* PopoverViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopoverViewController.swift; sourceTree = "<group>"; };
@@ -671,7 +668,6 @@
 		1A2DA72525EF892600032611 /* FilePickerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilePickerController.swift; sourceTree = "<group>"; };
 		1A2DA72C25EF9DD900032611 /* FileUpload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUpload.swift; sourceTree = "<group>"; };
 		1A2DA73025EFA77E00032611 /* FileUploader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUploader.swift; sourceTree = "<group>"; };
-		1A2DA73625EFBFE700032611 /* FileUploadListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUploadListView.swift; sourceTree = "<group>"; };
 		1A2DA73A25EFC00500032611 /* FileUploadListStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUploadListStyle.swift; sourceTree = "<group>"; };
 		1A38A8A7258B652B0089DE7B /* OperatorChatMessageStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperatorChatMessageStyle.swift; sourceTree = "<group>"; };
 		1A38A8AB258B65D00089DE7B /* ChatMessageStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageStyle.swift; sourceTree = "<group>"; };
@@ -1339,9 +1335,7 @@
 		1A0EDF5425E786820076D1AD /* Upload */ = {
 			isa = PBXGroup;
 			children = (
-				1A0EDF5525E786CE0076D1AD /* FileUploadView.swift */,
 				1A0EDF5925E786DB0076D1AD /* FileUploadStyle.swift */,
-				1A2DA73625EFBFE700032611 /* FileUploadListView.swift */,
 				1A2DA73A25EFC00500032611 /* FileUploadListStyle.swift */,
 				9A186A3427F5CF3C0055886D /* FileUploadStyle.Accessibility.swift */,
 			);
@@ -3943,7 +3937,6 @@
 				1A7CA8272574D6F40047CBBE /* ConnectStyle.swift in Sources */,
 				9AB3401F27FB56B7006E0FE2 /* ConnectStatusStyle.Accessibility.swift in Sources */,
 				1AC7A7552582594200567FF8 /* Configuration.swift in Sources */,
-				1A0EDF5625E786CE0076D1AD /* FileUploadView.swift in Sources */,
 				75940988298D38C2008B173A /* VisitorCodeCoordinator.swift in Sources */,
 				1A4674B225E907120078FA1C /* AttachmentSourceItemStyle.swift in Sources */,
 				315BAB1A29ADFEBC00FF284B /* ConfirmationStyle+TitleStyle.swift in Sources */,
@@ -4027,7 +4020,6 @@
 				84265E65298D7B2900D65842 /* ScreenSharingView.swift in Sources */,
 				9A1992ED27D6C19E00161AAE /* FileSystemStorage.Environment.Mock.swift in Sources */,
 				1AFB1E6825F7AE3C00CA460D /* ChatAttachment.swift in Sources */,
-				1A2DA73725EFBFE700032611 /* FileUploadListView.swift in Sources */,
 				9A186A3527F5CF3C0055886D /* FileUploadStyle.Accessibility.swift in Sources */,
 				84A318A12869ECFC00CA1DE5 /* Unavailable.swift in Sources */,
 				1AE15E49257A6BD200A642C0 /* ConfirmationAlertConfiguration.swift in Sources */,
