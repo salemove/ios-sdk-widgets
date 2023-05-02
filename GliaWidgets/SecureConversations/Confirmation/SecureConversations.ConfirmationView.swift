@@ -4,7 +4,8 @@ import UIKit
 extension SecureConversations {
     final class ConfirmationView: BaseView {
         static let sideMargin = 24.0
-        static let confirmationImageSize = 144.0
+        static let portraitConfirmationImageSize = 144.0
+        static let landscapeConfirmationImageSize = 90.0
 
         struct Props: Equatable {
             let style: ConfirmationStyle
@@ -15,6 +16,8 @@ extension SecureConversations {
         private let header: Header
 
         var topRootStackViewConstraint: NSLayoutConstraint?
+        var confirmationImageViewWidthConstraints: NSLayoutConstraint?
+        var confirmationImageViewHeightConstraints: NSLayoutConstraint?
 
         lazy var rootStackView = UIStackView.make(
             .vertical,
@@ -96,10 +99,26 @@ extension SecureConversations {
         override func layoutSubviews() {
             super.layoutSubviews()
 
-            // The factor between the space from the header to the beginning of the stack view
-            // versus the height of the screen in the Figma design.
-            topRootStackViewConstraint?.constant = self.rootStackView.frame.height * 0.2783
+            changeConfirmationImageViewDimensions()
         }
+
+        private func changeConfirmationImageViewDimensions() {
+            // The portrait factor is the factor between the space from the header
+            // to the beginning of the stack view versus the height of the screen
+            // in the Figma design. The landscape factor was calculated through trial
+            // and error to avoid a bug where the image was so big that it would hide
+            // the text below it.
+            let factor = currentOrientation.isPortrait ? 0.2783 : 0.075
+            topRootStackViewConstraint?.constant = self.rootStackView.frame.height * factor
+
+            let imageSize = currentOrientation.isPortrait ?
+                Self.portraitConfirmationImageSize :
+                Self.landscapeConfirmationImageSize
+
+            confirmationImageViewWidthConstraints?.constant = imageSize
+            confirmationImageViewHeightConstraints?.constant = imageSize
+        }
+
         private func defineHeaderLayout() {
             header.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
@@ -120,11 +139,19 @@ extension SecureConversations {
         }
 
         private func defineConfirmationImageViewLayout() {
+            confirmationImageViewWidthConstraints = confirmationImageView.widthAnchor.constraint(
+                equalToConstant: Self.portraitConfirmationImageSize
+            )
+            confirmationImageViewHeightConstraints = confirmationImageView.heightAnchor.constraint(
+                equalToConstant: Self.portraitConfirmationImageSize
+            )
+
             NSLayoutConstraint.activate([
                 confirmationImageView.topAnchor.constraint(equalTo: rootStackView.topAnchor),
-                confirmationImageView.widthAnchor.constraint(equalToConstant: Self.confirmationImageSize),
-                confirmationImageView.heightAnchor.constraint(equalToConstant: Self.confirmationImageSize)
-            ])
+                confirmationImageViewWidthConstraints,
+                confirmationImageViewHeightConstraints
+            ].compactMap { $0 })
+
             rootStackView.setCustomSpacing(32, after: confirmationImageView)
         }
 
