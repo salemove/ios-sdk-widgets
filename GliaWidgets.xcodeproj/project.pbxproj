@@ -195,6 +195,8 @@
 		3197F7B429F7C26A008EE9F7 /* SecureConversations.ChatWithTranscriptViewModel+Hashable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3197F7B329F7C26A008EE9F7 /* SecureConversations.ChatWithTranscriptViewModel+Hashable.swift */; };
 		3197F7B629F7C2E5008EE9F7 /* SecureConversations.SecureChatModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3197F7B529F7C2E5008EE9F7 /* SecureConversations.SecureChatModel.swift */; };
 		3197F7B829F7C318008EE9F7 /* SecureConversations.CommonEngagementModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3197F7B729F7C318008EE9F7 /* SecureConversations.CommonEngagementModel.swift */; };
+		31D286AD2A00DD2C009192A6 /* SecureConversations.ConfirmationViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31D286AC2A00DD2C009192A6 /* SecureConversations.ConfirmationViewModelTests.swift */; };
+		31D286AF2A00DE2B009192A6 /* SecureConversations.ConfirmationViewModel.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31D286AE2A00DE2B009192A6 /* SecureConversations.ConfirmationViewModel.Mock.swift */; };
 		31DB0C01287C2EFC00FB288E /* StaticValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31DB0C00287C2EFC00FB288E /* StaticValues.swift */; };
 		6B2BFCE2274297F100B68506 /* SettingsSwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B2BFCE1274297F100B68506 /* SettingsSwitchCell.swift */; };
 		6B48213E2735873300F2900A /* Feature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B48213D2735873300F2900A /* Feature.swift */; };
@@ -813,6 +815,8 @@
 		3197F7B329F7C26A008EE9F7 /* SecureConversations.ChatWithTranscriptViewModel+Hashable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SecureConversations.ChatWithTranscriptViewModel+Hashable.swift"; sourceTree = "<group>"; };
 		3197F7B529F7C2E5008EE9F7 /* SecureConversations.SecureChatModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.SecureChatModel.swift; sourceTree = "<group>"; };
 		3197F7B729F7C318008EE9F7 /* SecureConversations.CommonEngagementModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.CommonEngagementModel.swift; sourceTree = "<group>"; };
+		31D286AC2A00DD2C009192A6 /* SecureConversations.ConfirmationViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.ConfirmationViewModelTests.swift; sourceTree = "<group>"; };
+		31D286AE2A00DE2B009192A6 /* SecureConversations.ConfirmationViewModel.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.ConfirmationViewModel.Mock.swift; sourceTree = "<group>"; };
 		31DB0C00287C2EFC00FB288E /* StaticValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticValues.swift; sourceTree = "<group>"; };
 		6304CD1CAD1108C78C7B11BF /* Pods-GliaWidgetsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliaWidgetsTests.release.xcconfig"; path = "Target Support Files/Pods-GliaWidgetsTests/Pods-GliaWidgetsTests.release.xcconfig"; sourceTree = "<group>"; };
 		6B2BFCE1274297F100B68506 /* SettingsSwitchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSwitchCell.swift; sourceTree = "<group>"; };
@@ -2346,6 +2350,15 @@
 			path = ChatTranscript;
 			sourceTree = "<group>";
 		};
+		31D286AB2A00DA5F009192A6 /* Confirmation */ = {
+			isa = PBXGroup;
+			children = (
+				31D286AC2A00DD2C009192A6 /* SecureConversations.ConfirmationViewModelTests.swift */,
+				31D286AE2A00DE2B009192A6 /* SecureConversations.ConfirmationViewModel.Mock.swift */,
+			);
+			path = Confirmation;
+			sourceTree = "<group>";
+		};
 		69BB38CE6B54F4C95ED474B6 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -2972,6 +2985,7 @@
 		AFEF5C7229929A73005C3D8D /* SecureConversations */ = {
 			isa = PBXGroup;
 			children = (
+				31D286AB2A00DA5F009192A6 /* Confirmation */,
 				3142696829FFB4ED003DF62E /* ChatTranscript */,
 				3189DD9229DEF62600D68E9F /* Welcome */,
 				AFEF5C7329929A8D005C3D8D /* SecureConversations.FileUploadListViewModel.Environment.Failing.swift */,
@@ -4141,10 +4155,12 @@
 				9A8130C427D9099F00220BBD /* FileDownload.Environment.Failing.swift in Sources */,
 				AF29811029E06E830005BD55 /* Availability.Environment.Failing.swift in Sources */,
 				7512A5A727C3926500319DF1 /* GliaTests.swift in Sources */,
+				31D286AD2A00DD2C009192A6 /* SecureConversations.ConfirmationViewModelTests.swift in Sources */,
 				9A3E1DA227BA7D00005634EB /* FileSystemStorage.Environment.Failing.swift in Sources */,
 				AF29810B29E0478E0005BD55 /* TranscriptModel.Environment.Failing.swift in Sources */,
 				9A1992E127D6313500161AAE /* ImageView.Cache.Failing.swift in Sources */,
 				3189DD9629E4331200D68E9F /* SecureConversations.WelcomeViewModel.Mock.swift in Sources */,
+				31D286AF2A00DE2B009192A6 /* SecureConversations.ConfirmationViewModel.Mock.swift in Sources */,
 				C0D2F06429A4B1E900803B47 /* VideoCallTests.swift in Sources */,
 				C03A8047292BA76D00DDECA6 /* ChatViewControllerTests.swift in Sources */,
 				EB9ADB552828E66B00FAE8A4 /* CallTests.swift in Sources */,

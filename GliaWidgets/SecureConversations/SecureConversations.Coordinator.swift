@@ -170,8 +170,6 @@ extension SecureConversations {
 
             viewModel.delegate = { [weak self, weak controller] event in
                 switch event {
-                case .backTapped:
-                    self?.delegate?(.backTapped)
                 case .closeTapped:
                     self?.delegate?(.closeTapped)
                 // Bind changes in view model to view controller.
