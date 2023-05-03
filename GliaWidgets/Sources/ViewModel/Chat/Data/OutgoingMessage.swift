@@ -1,14 +1,16 @@
 import Foundation
 
 class OutgoingMessage: Equatable {
-    let id = UUID().uuidString
+    let id: String
     let content: String
     let files: [LocalFile]
 
     init(
+        id: String = UUID().uuidString,
         content: String,
         files: [LocalFile] = []
     ) {
+        self.id = id
         self.content = content
         self.files = files
     }
