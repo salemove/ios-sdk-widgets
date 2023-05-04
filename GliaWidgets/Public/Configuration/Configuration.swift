@@ -13,6 +13,10 @@ public struct Configuration {
     /// Push notifications state. Pass `sandbox` to use push notifications during
     /// development/debug time, and `production` for release.
     public var pushNotifications: PushNotifications
+    /// Controls the visibility of the "Powered by" text and image.
+    public let isWhiteLabelApp: Bool
+    /// Company name. Appears during connection with operator.
+    public let companyName: String
     /// Initializes the configuration.
     ///
     /// - Parameters:
@@ -26,13 +30,17 @@ public struct Configuration {
         environment: Environment,
         site: String,
         visitorContext: VisitorContext? = nil,
-        pushNotifications: PushNotifications = .disabled
+        pushNotifications: PushNotifications = .disabled,
+        isWhiteLabelApp: Bool = false,
+        companyName: String = L10n.Chat.Connect.Queue.firstText
     ) {
         self.authorizationMethod = authorizationMethod
         self.environment = environment
         self.site = site
         self.visitorContext = visitorContext
         self.pushNotifications = pushNotifications
+        self.isWhiteLabelApp = isWhiteLabelApp
+        self.companyName = companyName
     }
 }
 
