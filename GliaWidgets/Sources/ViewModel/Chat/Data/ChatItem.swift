@@ -3,9 +3,9 @@ import Foundation
 class ChatItem {
     var isOperatorMessage: Bool {
         switch kind {
-        // customCard was added to be able to handle as regular operator message
-        // in case when metadata can't be handled
-        case .operatorMessage, .choiceCard, .customCard:
+        // CustomCard was added to be able to handle as regular operator message
+        // in case when metadata can't be handled.
+        case .operatorMessage, .choiceCard, .customCard, .systemMessage:
             return true
         default:
             return false
