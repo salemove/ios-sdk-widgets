@@ -6,17 +6,12 @@ extension SecureConversations {
         var delegate: ((DelegateEvent) -> Void)?
         var environment: Environment
 
-        var messageText: String { didSet { reportChange() } }
-
         init(environment: Environment) {
             self.environment = environment
-            messageText = ""
         }
 
         func event(_ event: Event) {
             switch event {
-            case .backTapped:
-                delegate?(.backTapped)
             case .closeTapped:
                 delegate?(.closeTapped)
             }
@@ -35,7 +30,6 @@ extension SecureConversations.ConfirmationViewModel {
             style: confirmationStyle,
             header: Self.buildHeaderProps(
                 style: confirmationStyle,
-                backButtonCmd: Cmd(closure: { [weak self] in self?.delegate?(.backTapped) }),
                 closeButtonCmd: Cmd(closure: { [weak self] in self?.delegate?(.closeTapped) })
             ),
             checkMessageButtonTap: Cmd { [weak self] in self?.delegate?(.chatTranscriptScreenRequested) }
@@ -50,10 +44,9 @@ extension SecureConversations.ConfirmationViewModel {
 
     static func buildHeaderProps(
         style: SecureConversations.ConfirmationStyle,
-        backButtonCmd: Cmd,
         closeButtonCmd: Cmd
     ) -> Header.Props {
-        let backButton = style.header.backButton.map { HeaderButton.Props(tap: backButtonCmd, style: $0) }
+        let backButton = style.header.backButton.map { HeaderButton.Props(style: $0) }
 
         return Header.Props(
             title: style.headerTitle,
@@ -69,7 +62,6 @@ extension SecureConversations.ConfirmationViewModel {
 
 extension SecureConversations.ConfirmationViewModel {
     enum Event {
-        case backTapped
         case closeTapped
     }
 
@@ -78,7 +70,6 @@ extension SecureConversations.ConfirmationViewModel {
     }
 
     enum DelegateEvent {
-        case backTapped
         case closeTapped
         case renderProps(SecureConversations.ConfirmationViewController.Props)
         case chatTranscriptScreenRequested
