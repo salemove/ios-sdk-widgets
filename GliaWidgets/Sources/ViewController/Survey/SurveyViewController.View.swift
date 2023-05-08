@@ -29,9 +29,16 @@ extension Survey {
         }
         let cancelButton = UIButton(type: .custom).make {
             $0.setTitle(L10n.Survey.Action.cancel, for: .normal)
+            $0.titleLabel?.numberOfLines = 0
+            // Using `byWordWrapping` prevents button text
+            // from getting truncated, for example for large
+            // dynamic font types.
+            $0.titleLabel?.lineBreakMode = .byWordWrapping
         }
         let submitButton = UIButton(type: .custom).make {
             $0.setTitle(L10n.Survey.Action.submit, for: .normal)
+            $0.titleLabel?.numberOfLines = 0
+            $0.titleLabel?.lineBreakMode = .byWordWrapping
         }
         lazy var buttonStackView = UIStackView.make(.horizontal, spacing: 16)(
             cancelButton,
@@ -97,9 +104,10 @@ extension Survey {
                 buttonStackView.leadingAnchor.constraint(equalTo: buttonContainer.leadingAnchor, constant: Self.contentPadding),
                 buttonStackView.trailingAnchor.constraint(equalTo: buttonContainer.trailingAnchor, constant: -Self.contentPadding),
 
-                cancelButton.heightAnchor.constraint(equalToConstant: 44),
-                submitButton.heightAnchor.constraint(equalToConstant: 44),
-                cancelButton.widthAnchor.constraint(equalTo: submitButton.widthAnchor)
+                cancelButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 44),
+                submitButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 44),
+                cancelButton.widthAnchor.constraint(lessThanOrEqualTo: submitButton.widthAnchor),
+                submitButton.widthAnchor.constraint(lessThanOrEqualTo: cancelButton.widthAnchor)
             ])
         }
 
