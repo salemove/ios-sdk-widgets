@@ -22,7 +22,10 @@ extension SecureConversations.WelcomeViewModel.Environment {
         createFileUploadListModel: { _ in .mock() },
         fetchSiteConfigurations: { _ in },
         startSocketObservation: {},
-        stopSocketObservation: {}
+        stopSocketObservation: {},
+        getCurrentEngagement: { .mock() },
+        uploadSecureFile: { _, _, _ in .mock },
+        uploadFileToEngagement: { _, _, _ in }
     )
 }
 
