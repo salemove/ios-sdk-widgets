@@ -36,8 +36,7 @@ final class ConnectView: BaseView {
     private let environment: Environment
     private lazy var stackView = UIStackView.make(
         .vertical,
-        spacing: State.initial.chatContentSpacing,
-        distribution: .fillProportionally
+        spacing: State.initial.chatContentSpacing
     )(
         operatorView,
         statusView

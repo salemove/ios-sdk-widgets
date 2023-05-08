@@ -2,8 +2,8 @@ import UIKit
 
 final class ConnectStatusView: BaseView {
     private let stackView = UIStackView()
-    private let firstLabel = UILabel()
-    private let secondLabel = UILabel()
+    private let firstLabel = UILabel().makeView()
+    private let secondLabel = UILabel().makeView()
 
     override func setup() {
         super.setup()
@@ -19,16 +19,24 @@ final class ConnectStatusView: BaseView {
         addSubview(stackView)
         stackView.addArrangedSubviews([firstLabel, secondLabel])
         stackView.autoPinEdgesToSuperviewEdges()
+        NSLayoutConstraint.activate([
+            firstLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
+            firstLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
+            secondLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
+            secondLabel.trailingAnchor.constraint(equalTo: trailingAnchor)
+        ])
     }
 
     func setStyle(_ style: ConnectStatusStyle) {
         firstLabel.font = style.firstTextFont
         firstLabel.textColor = style.firstTextFontColor
         firstLabel.numberOfLines = 0
+        firstLabel.lineBreakMode = .byWordWrapping
 
         secondLabel.font = style.secondTextFont
         secondLabel.textColor = style.secondTextFontColor
         secondLabel.numberOfLines = 0
+        secondLabel.lineBreakMode = .byWordWrapping
 
         firstLabel.accessibilityHint = style.accessibility.firstTextHint
         secondLabel.accessibilityHint = style.accessibility.secondTextHint
