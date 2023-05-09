@@ -51,7 +51,7 @@ class ChatMessageEntryView: BaseView {
     private let separator = UIView()
     private let messageContainerView = UIView()
     private let textView = UITextView()
-    private let placeholderLabel = UILabel()
+    private let placeholderLabel = UILabel().makeView()
     private let sendButton: MessageButton
     private let buttonsStackView = UIStackView()
     private var textViewHeightConstraint: NSLayoutConstraint?
@@ -122,6 +122,7 @@ class ChatMessageEntryView: BaseView {
 
         placeholderLabel.font = style.placeholderFont
         placeholderLabel.textColor = style.placeholderColor
+        placeholderLabel.isUserInteractionEnabled = false
         updatePlaceholderText()
 
         pickMediaButton.tap = { [weak self] in self?.pickMediaTapped?() }
@@ -158,15 +159,19 @@ class ChatMessageEntryView: BaseView {
             toSize: kMinTextViewHeight
         )
 
-        textView.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
+        textView.autoPinEdge(toSuperviewEdge: .leading, withInset: 16)
         textView.autoPinEdge(toSuperviewEdge: .top, withInset: 13)
         textView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 13)
-        textView.autoPinEdge(toSuperviewEdge: .right, withInset: 8)
+        textView.autoPinEdge(toSuperviewEdge: .trailing, withInset: 8)
 
-        textView.addSubview(placeholderLabel)
-        placeholderLabel.autoPinEdge(toSuperviewEdge: .left)
-        placeholderLabel.autoPinEdge(toSuperviewEdge: .top)
-        placeholderLabel.autoPinEdge(toSuperviewEdge: .right)
+        messageContainerView.addSubview(placeholderLabel)
+        placeholderLabel.numberOfLines = 0
+
+        NSLayoutConstraint.activate([
+            placeholderLabel.leadingAnchor.constraint(equalTo: textView.leadingAnchor),
+            placeholderLabel.trailingAnchor.constraint(equalTo: textView.trailingAnchor),
+            placeholderLabel.topAnchor.constraint(equalTo: textView.topAnchor)
+        ])
 
         separator.autoSetDimension(.height, toSize: 1)
         separator.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .bottom)
@@ -214,7 +219,10 @@ class ChatMessageEntryView: BaseView {
             height: CGFloat.greatestFiniteMagnitude
         )
 
-        var newHeight = textView.sizeThatFits(size).height
+        // We need to take into account larger height
+        // of text view or placeholder label for
+        // updated text entry height.
+        var newHeight = max(textView.sizeThatFits(size).height, placeholderLabel.sizeThatFits(size).height)
 
         textView.isScrollEnabled = newHeight > kMaxTextViewHeight
 
