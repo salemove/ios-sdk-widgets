@@ -25,6 +25,8 @@ class AttachmentSourceItemView: UIView {
         titleLabel.text = style.title
         titleLabel.font = style.titleFont
         titleLabel.textColor = style.titleColor
+        titleLabel.numberOfLines = 0
+        titleLabel.lineBreakMode = .byWordWrapping
 
         accessibilityTraits = .button
         accessibilityLabel = style.title
