@@ -132,8 +132,9 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
 }
 
 extension EngagementCoordinator {
-
-    func end() {
+    func end(
+        surveyPresentation: SecureConversations.Coordinator.DelegateEvent.SurveyPresentation = .presentSurvey
+    ) {
         switch engagement {
         case let .call(_, _, _, call):
             call.kind.removeObserver(self)
@@ -154,50 +155,60 @@ extension EngagementCoordinator {
             }
         }
 
-        let presentSurvey = { [weak self] (engagementId: String, survey: CoreSdkClient.Survey) in
-            guard let self = self else { return }
-            let viewController = Survey.ViewController(
-                viewFactory: self.viewFactory,
-                environment: .init(notificationCenter: self.environment.notificationCenter)
-            )
-            viewController.props = .live(
-                sdkSurvey: survey,
-                engagementId: engagementId,
-                submitSurveyAnswer: self.environment.submitSurveyAnswer,
-                cancel: {
-                    viewController.dismiss(animated: true) {
-                        dismissGliaViewController()
-                    }
-                },
-                endEditing: { viewController.view.endEditing(true) },
-                updateProps: { viewController.props = $0 },
-                onError: { _ in
-                    viewController.presentAlert(
-                        with: self.viewFactory.theme.alertConfiguration.unexpectedError
-                    )
-                },
-                completion: {
-                    viewController.dismiss(animated: true) {
-                        dismissGliaViewController()
-                    }
-                }
-            )
-            self.gliaViewController?.removeBubbleWindow()
-            self.gliaPresenter.present(viewController, animated: true)
-        }
-
-        guard let engagement = interactor.currentEngagement else {
+        guard let engagement = interactor.currentEngagement, surveyPresentation == .presentSurvey else {
             dismissGliaViewController()
             return
         }
 
-        engagement.getSurvey { result in
-            guard case .success(let survey) = result, let survey = survey else {
+        engagement.getSurvey { [weak self] result in
+            guard
+                case .success(let survey) = result,
+                let survey = survey
+            else {
                 dismissGliaViewController()
                 return
             }
-            presentSurvey(engagement.id, survey)
+            self?.presentSurvey(
+                engagementId: engagement.id,
+                survey: survey,
+                dismissGliaViewController: dismissGliaViewController
+            )
         }
+    }
+
+    private func presentSurvey(
+        engagementId: String,
+        survey: CoreSdkClient.Survey,
+        dismissGliaViewController: @escaping () -> Void?
+    ) {
+        let viewController = Survey.ViewController(
+            viewFactory: self.viewFactory,
+            environment: .init(notificationCenter: self.environment.notificationCenter)
+        )
+        viewController.props = .live(
+            sdkSurvey: survey,
+            engagementId: engagementId,
+            submitSurveyAnswer: self.environment.submitSurveyAnswer,
+            cancel: {
+                viewController.dismiss(animated: true) {
+                    dismissGliaViewController()
+                }
+            },
+            endEditing: { viewController.view.endEditing(true) },
+            updateProps: { viewController.props = $0 },
+            onError: { _ in
+                viewController.presentAlert(
+                    with: self.viewFactory.theme.alertConfiguration.unexpectedError
+                )
+            },
+            completion: {
+                viewController.dismiss(animated: true) {
+                    dismissGliaViewController()
+                }
+            }
+        )
+        self.gliaViewController?.removeBubbleWindow()
+        self.gliaPresenter.present(viewController, animated: true)
     }
 
     private func startChat(
@@ -480,11 +491,10 @@ extension EngagementCoordinator {
     }
 
     private func handleSecureConversationsCoordinatorEvent(_ event: SecureConversations.Coordinator.DelegateEvent) {
-        // These actions are tentative. Design hasn't been finalized yet.
         switch event {
-        case .closeTapped:
+        case .closeTapped(let surveyPresentation):
             self.popCoordinator()
-            self.end()
+            self.end(surveyPresentation: surveyPresentation)
         case .backTapped:
             self.gliaViewController?.minimize(animated: true)
         case let .chat(chatEvent):
