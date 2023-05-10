@@ -105,7 +105,7 @@ extension SecureConversations {
             case .backTapped:
                 delegate?(.backTapped)
             case .closeTapped:
-                delegate?(.closeTapped)
+                delegate?(.closeTapped(.doNotPresentSurvey))
             // Bind changes in view model to view controller.
             case let .renderProps(props):
                 controller?.props = props
@@ -171,7 +171,7 @@ extension SecureConversations {
             viewModel.delegate = { [weak self, weak controller] event in
                 switch event {
                 case .closeTapped:
-                    self?.delegate?(.closeTapped)
+                    self?.delegate?(.closeTapped(.doNotPresentSurvey))
                 // Bind changes in view model to view controller.
                 case let .renderProps(props):
                     controller?.props = props
@@ -292,7 +292,7 @@ extension SecureConversations.Coordinator {
             case .back:
                 self?.delegate?(.backTapped)
             case .finished:
-                self?.delegate?(.closeTapped)
+                self?.delegate?(.closeTapped(.presentSurvey))
             default:
                 self?.delegate?(.chat(event))
             }
@@ -352,8 +352,13 @@ extension SecureConversations.Coordinator {
 
     enum DelegateEvent {
         case backTapped
-        case closeTapped
+        case closeTapped(SurveyPresentation)
         case chat(ChatCoordinator.DelegateEvent)
+
+        enum SurveyPresentation {
+            case presentSurvey
+            case doNotPresentSurvey
+        }
     }
 }
 
