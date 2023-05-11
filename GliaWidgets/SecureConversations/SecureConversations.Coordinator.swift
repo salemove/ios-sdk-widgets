@@ -61,7 +61,10 @@ extension SecureConversations {
                     createFileUploadListModel: environment.createFileUploadListModel,
                     fetchSiteConfigurations: environment.fetchSiteConfigurations,
                     startSocketObservation: environment.startSocketObservation,
-                    stopSocketObservation: environment.stopSocketObservation
+                    stopSocketObservation: environment.stopSocketObservation,
+                    getCurrentEngagement: environment.getCurrentEngagement,
+                    uploadSecureFile: environment.uploadSecureFile,
+                    uploadFileToEngagement: environment.uploadFileToEngagement
                 ),
                 availability: .init(
                     environment: .init(
