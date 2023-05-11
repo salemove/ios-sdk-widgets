@@ -56,7 +56,7 @@ class FileUploader {
 
     var storage: FileSystemStorage
     private let maximumUploads: Int
-    private let environment: Environment
+    var environment: Environment
 
     init(maximumUploads: Int, environment: Environment) {
         self.maximumUploads = maximumUploads

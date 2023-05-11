@@ -363,18 +363,10 @@ extension SecureConversationsWelcomeViewModelTests {
         }
     }
 
-    func testSendMessageButtonStateSuccessfulUpload1() {
+    func testSendMessageButtonStateSuccessfulUpload() {
         viewModel.availabilityStatus = .available
         viewModel.fileUploadListModel.environment.uploader = FileUploader(maximumUploads: 100, environment: .mock)
         viewModel.messageText = ""
-
-        if case .welcome(let props) = viewModel.props() {
-            XCTAssertEqual(props.sendMessageButton, .disabled)
-        } else {
-            XCTFail()
-        }
-
-
 
         if case .welcome(let props) = viewModel.props() {
             XCTAssertEqual(props.sendMessageButton, .disabled)
@@ -598,6 +590,7 @@ extension SecureConversationsWelcomeViewModelTests {
     }
 }
 
+// Availability
 extension SecureConversationsWelcomeViewModelTests {
     func testAvailabilityAvailable() {
         let uuid = UUID.mock.uuidString
@@ -699,5 +692,52 @@ extension SecureConversationsWelcomeViewModelTests {
             alertConfiguration?.message,
             viewModel.environment.alertConfiguration.unavailableMessageCenterForBeingUnauthenticated.message
         )
+    }
+}
+
+// File upload
+extension SecureConversationsWelcomeViewModelTests {
+    func testFileUploadSelectsSecureEndpoint() {
+        viewModel.environment.getCurrentEngagement = { nil }
+        viewModel.fileUploadListModel.environment.uploader = FileUploader(maximumUploads: 100, environment: .mock)
+        viewModel.delegate = { event in
+            switch event {
+            case let .mediaPickerRequested(_, callback):
+                callback(.photoLibrary)
+            case .pickMedia(let callback):
+                callback(.pickedMedia(PickedMedia.image(URL.mock)))
+            default: break
+            }
+        }
+
+        viewModel.presentMediaPicker(from: UIView(), alertConfiguration: viewModel.environment.alertConfiguration)
+
+        if case .toSecureMessaging = viewModel.fileUploadListModel.environment.uploader.environment.uploadFile {
+            XCTAssertTrue(true)
+        } else {
+            XCTFail()
+        }
+    }
+
+    func testFileUploadSelectsChatEndpoint() {
+        viewModel.environment.getCurrentEngagement = { .mock() }
+        viewModel.fileUploadListModel.environment.uploader = FileUploader(maximumUploads: 100, environment: .mock)
+        viewModel.delegate = { event in
+            switch event {
+            case let .mediaPickerRequested(_, callback):
+                callback(.photoLibrary)
+            case .pickMedia(let callback):
+                callback(.pickedMedia(PickedMedia.image(URL.mock)))
+            default: break
+            }
+        }
+
+        viewModel.presentMediaPicker(from: UIView(), alertConfiguration: viewModel.environment.alertConfiguration)
+
+        if case .toEngagement = viewModel.fileUploadListModel.environment.uploader.environment.uploadFile {
+            XCTAssertTrue(true)
+        } else {
+            XCTFail()
+        }
     }
 }
