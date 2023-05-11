@@ -414,6 +414,9 @@ extension SecureConversations.WelcomeViewModel {
         var fetchSiteConfigurations: CoreSdkClient.FetchSiteConfigurations
         var startSocketObservation: CoreSdkClient.StartSocketObservation
         var stopSocketObservation: CoreSdkClient.StopSocketObservation
+        var getCurrentEngagement: CoreSdkClient.GetCurrentEngagement
+        var uploadSecureFile: CoreSdkClient.SecureConversationsUploadFile
+        var uploadFileToEngagement: CoreSdkClient.UploadFileToEngagement
     }
 }
 
@@ -514,6 +517,7 @@ extension SecureConversations.WelcomeViewModel {
 // MARK: - Upload releated methods
 extension SecureConversations.WelcomeViewModel {
     private func addUpload(with url: URL) {
+        determineFileUploadEndpoint()
         fileUploadListModel.addUpload(with: url)
     }
 
@@ -521,10 +525,19 @@ extension SecureConversations.WelcomeViewModel {
         with data: Data,
         format: MediaFormat
     ) {
+        determineFileUploadEndpoint()
         fileUploadListModel.addUpload(
             with: data,
             format: format
         )
+    }
+
+    private func determineFileUploadEndpoint() {
+        let isEngagementOngoing = environment.getCurrentEngagement() != nil
+        fileUploadListModel.environment.uploader.environment.uploadFile =
+        isEngagementOngoing ?
+            .toEngagement(environment.uploadFileToEngagement) :
+            .toSecureMessaging(environment.uploadSecureFile)
     }
 
     private func removeUpload(_ upload: FileUpload) {
