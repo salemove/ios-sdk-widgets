@@ -78,6 +78,7 @@ final class ChoiceCardView: OperatorChatMessageView {
         )
         textView.text = choiceCard.text
         stackView.addArrangedSubview(textView)
+        setupAccessibilityProperties(for: textView)
 
         guard let options = choiceCard.options else { return containerView }
 
@@ -117,5 +118,10 @@ extension ChoiceCardView {
     func setupAccessibilityProperties(for imageView: ImageView) {
         imageView.isAccessibilityElement = true
         imageView.accessibilityLabel = viewStyle.accessibility.imageLabel
+    }
+
+    func setupAccessibilityProperties(for textView: ChatTextContentView) {
+        textView.accessibilityLabel = textView.text
+        textView.isAccessibilityElement = true
     }
 }
