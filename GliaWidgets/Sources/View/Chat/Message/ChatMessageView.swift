@@ -68,12 +68,7 @@ class ChatMessageView: BaseView {
     func appendContentView(_ contentView: UIView, animated: Bool) {
         contentViews.addArrangedSubview(contentView)
         contentView.isHidden = animated
-
-        // Make sure that order of accessible elements is preserved the same way
-        // as it is displayed. Otherwise, for example message sent along with attachment is read
-        // by VoiceOver after attachment, even though it is situated above attachment.
         contentViews.accessibilityElements?.append(contentView)
-
         if animated {
             contentViews.layoutIfNeeded()
             UIView.animate(withDuration: 0.3) {
@@ -87,9 +82,6 @@ class ChatMessageView: BaseView {
         super.setup()
         contentViews.axis = .vertical
         contentViews.spacing = 4
-        // Add empty list of accessible elements to be populated later,
-        // as visual elements are added to `contentViews`.
-        contentViews.accessibilityElements = []
     }
 
     private func contentViews(
