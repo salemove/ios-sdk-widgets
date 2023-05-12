@@ -1,7 +1,7 @@
 source 'https://github.com/CocoaPods/Specs.git'
 project 'GliaWidgets.xcodeproj'
 
-DEPLOYMENT_TARGET = '12.0'
+DEPLOYMENT_TARGET = '13.0'
 
 platform :ios, DEPLOYMENT_TARGET
 
