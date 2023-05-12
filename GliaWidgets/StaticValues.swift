@@ -6,5 +6,5 @@ final class StaticValues {
     /// version cannot be changed by integrators, so this ensures that our code will
     /// always have the correct version regardless of what our integrators do with
     /// our plist files.
-    static let sdkVersion = "0.10.11"
+    static let sdkVersion = "2.0.0"
 }
