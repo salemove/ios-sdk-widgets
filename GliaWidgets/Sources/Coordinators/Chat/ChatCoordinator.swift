@@ -224,7 +224,9 @@ extension ChatCoordinator {
             uiApplication: environment.uiApplication,
             fetchChatHistory: environment.fetchChatHistory,
             fileUploadListStyle: viewFactory.theme.chatStyle.messageEntry.uploadList,
-            createFileUploadListModel: environment.createFileUploadListModel
+            createFileUploadListModel: environment.createFileUploadListModel,
+            startSocketObservation: environment.startSocketObservation,
+            stopSocketObservation: environment.stopSocketObservation
         )
     }
 }

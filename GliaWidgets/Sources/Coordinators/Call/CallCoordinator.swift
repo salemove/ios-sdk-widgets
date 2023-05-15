@@ -81,7 +81,9 @@ private extension CallCoordinator {
                 uiApplication: environment.uiApplication,
                 fetchChatHistory: environment.fetchChatHistory,
                 fileUploadListStyle: viewFactory.theme.chatStyle.messageEntry.uploadList,
-                createFileUploadListModel: environment.createFileUploadListModel
+                createFileUploadListModel: environment.createFileUploadListModel,
+                startSocketObservation: environment.startSocketObservation,
+                stopSocketObservation: environment.stopSocketObservation
             ),
             call: call,
             unreadMessages: unreadMessages,
@@ -153,5 +155,7 @@ extension CallCoordinator {
         var notificationCenter: FoundationBased.NotificationCenter
         var fetchChatHistory: CoreSdkClient.FetchChatHistory
         var createFileUploadListModel: SecureConversations.FileUploadListViewModel.Create
+        var startSocketObservation: CoreSdkClient.StartSocketObservation
+        var stopSocketObservation: CoreSdkClient.StopSocketObservation
     }
 }

@@ -346,7 +346,9 @@ extension EngagementCoordinator {
                 uiDevice: environment.uiDevice,
                 notificationCenter: environment.notificationCenter,
                 fetchChatHistory: environment.fetchChatHistory,
-                createFileUploadListModel: environment.createFileUploadListModel
+                createFileUploadListModel: environment.createFileUploadListModel,
+                startSocketObservation: environment.startSocketObservation,
+                stopSocketObservation: environment.stopSocketObservation
             )
         )
         coordinator.delegate = { [weak self] event in

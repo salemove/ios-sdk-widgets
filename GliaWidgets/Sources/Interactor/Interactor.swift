@@ -350,7 +350,12 @@ extension Interactor: CoreSdkClient.Interactable {
     }
 
     func receive(message: CoreSdkClient.Message) {
-        notify(.receivedMessage(message))
+        let allowed: [CoreSdkClient.MessageSender.SenderType] = [.visitor, .system]
+
+        // Only process visitor and system messages while on secure transcript (engagement is nil).
+        if (currentEngagement == nil && allowed.contains(message.sender.type)) || currentEngagement != nil  {
+            notify(.receivedMessage(message))
+        }
     }
 
     func start() {
@@ -362,7 +367,6 @@ extension Interactor: CoreSdkClient.Interactable {
     }
 
     func start(engagement: CoreSdkClient.Engagement) {
-
         switch engagement.source {
         case .coreEngagement:
             start()

@@ -366,7 +366,10 @@ extension ChatViewModel {
 // MARK: History
 
 extension ChatViewModel {
-    private func loadHistory(_ completion: @escaping ([ChatMessage]) -> Void) {
+    func loadHistory(
+        appendingToMessageSection shouldAppendToMessageSection: Bool = false,
+        _ completion: @escaping ([ChatMessage]) -> Void
+    ) {
         environment.fetchChatHistory { [weak self] result in
             guard let self else { return }
             let messages = (try? result.get()) ?? []
@@ -377,8 +380,46 @@ extension ChatViewModel {
                     fromHistory: self.environment.loadChatMessagesFromHistory()
                 )
             }
-            self.historySection.set(items)
-            self.action?(.refreshSection(self.historySection.index))
+
+            // Welcome messages and starting engagement events come in the incorrect order,
+            // so this flag allows to have new messages appended to the message section instead
+            // of the history section and simulate that the welcome message arrives later. This
+            // has to be used together with the fact that the socket in secure transcript needs
+            // to ignore operator messages. Using the completion of this method, the caller should
+            // restart the socket observation.
+            if shouldAppendToMessageSection {
+                // Traverse all items received from the chat transcript.
+                for chatTranscriptItem in items {
+                    // Only operator messages should be treated specially.
+                    if case .operatorMessage = chatTranscriptItem.kind {
+                        // Determines if an operator message is currently part of the history
+                        // section already to avoid duplication.
+                        let hasMessageInHistorySection = historySection.items.contains { historyItem in
+                            if case .operatorMessage = historyItem.kind {
+                                guard
+                                    let historyItemId = historyItem.id,
+                                    let chatTranscriptItemId = chatTranscriptItem.id
+                                else { return false }
+
+                                return historyItemId == chatTranscriptItemId
+                            } else { return false }
+                        }
+
+                        // If the message is not part of the history section, append it to the
+                        // messages section.
+                        if !hasMessageInHistorySection {
+                            self.messagesSection.append(chatTranscriptItem)
+                        }
+                    }
+                }
+
+                // Refreshes both the history section and the messages section.
+                self.action?(.refreshAll)
+            } else {
+                self.historySection.set(items)
+                self.action?(.refreshSection(self.historySection.index))
+            }
+
             self.action?(.scrollToBottom(animated: false))
             completion(messages)
         }

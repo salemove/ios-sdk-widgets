@@ -22,5 +22,7 @@ extension EngagementViewModel {
         var fetchChatHistory: CoreSdkClient.FetchChatHistory
         var fileUploadListStyle: FileUploadListStyle
         var createFileUploadListModel: SecureConversations.FileUploadListViewModel.Create
+        var startSocketObservation: CoreSdkClient.StartSocketObservation
+        var stopSocketObservation: CoreSdkClient.StopSocketObservation
     }
 }

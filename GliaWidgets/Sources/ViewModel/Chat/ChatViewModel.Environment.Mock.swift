@@ -29,7 +29,9 @@ extension ChatViewModel.Environment {
         uiApplication: .mock,
         fetchChatHistory: { _ in },
         fileUploadListStyle: .initial,
-        createFileUploadListModel: SecureConversations.FileUploadListViewModel.mock(environment:)
+        createFileUploadListModel: SecureConversations.FileUploadListViewModel.mock(environment:),
+        startSocketObservation: { },
+        stopSocketObservation: { }
     )
 }
 #endif

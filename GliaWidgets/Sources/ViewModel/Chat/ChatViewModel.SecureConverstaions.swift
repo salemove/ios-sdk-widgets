@@ -1,3 +1,5 @@
+import SalemoveSDK
+
 extension ChatViewModel {
     func migrate(from transcript: SecureConversations.TranscriptModel) {
         sections = transcript.sections
@@ -25,5 +27,10 @@ extension ChatViewModel {
         // Set view active, to avoid unread message button
         // to be shown.
         isViewActive.value = true
+
+        environment.stopSocketObservation()
+        loadHistory(appendingToMessageSection: true) { [weak self] _ in
+            self?.environment.startSocketObservation()
+        }
     }
 }

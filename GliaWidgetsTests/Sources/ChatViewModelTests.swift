@@ -56,7 +56,9 @@ class ChatViewModelTests: XCTestCase {
                 fileUploadListStyle: .mock,
                 createFileUploadListModel: { _ in
                     .mock()
-                }
+                },
+                startSocketObservation: { },
+                stopSocketObservation: { }
             )
         )
 
@@ -436,6 +438,7 @@ class ChatViewModelTests: XCTestCase {
             .mock(environment: $0)
         }
         chatViewModelEnv.uiApplication.preferredContentSizeCategory = { .unspecified }
+        chatViewModelEnv.fetchChatHistory = { _ in }
         let chatViewModel = ChatViewModel.mock(environment: chatViewModelEnv)
         var calls: [Call] = []
         chatViewModel.action = { action in

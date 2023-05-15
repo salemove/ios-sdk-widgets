@@ -12,6 +12,25 @@ class ChatItem {
         }
     }
 
+    var id: String? {
+        switch kind {
+        case .operatorMessage(let chatMessage, _, _):
+            return chatMessage.id
+        case .outgoingMessage(let outgoingMessage):
+            return outgoingMessage.id
+        case .visitorMessage(let chatMessage, _):
+            return chatMessage.id
+        case .choiceCard(let chatMessage, _, _, _):
+            return chatMessage.id
+        case .customCard(let chatMessage, _, _, _):
+            return chatMessage.id
+        case .systemMessage(let chatMessage):
+            return chatMessage.id
+        case .callUpgrade, .queueOperator, .operatorConnected, .transferring, .unreadMessageDivider:
+            return nil
+        }
+    }
+
     let kind: Kind
 
     init(
@@ -68,5 +87,22 @@ extension ChatItem {
         case transferring
         case unreadMessageDivider
         case systemMessage(ChatMessage)
+    }
+}
+
+extension ChatItem: Equatable {
+    static func == (lhs: ChatItem, rhs: ChatItem) -> Bool {
+        guard let lhsId = lhs.id, let rhsId = rhs.id else { return false }
+
+        switch (lhs.kind, rhs.kind) {
+        case (.operatorMessage, .operatorMessage),
+            (.outgoingMessage, .outgoingMessage),
+            (.visitorMessage, .visitorMessage),
+            (.choiceCard, .choiceCard),
+            (.customCard, .customCard),
+            (.systemMessage, .systemMessage):
+            return lhsId == rhsId
+        default: return false
+        }
     }
 }

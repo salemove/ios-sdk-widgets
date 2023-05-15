@@ -52,7 +52,9 @@ extension ChatViewModel.Environment {
             createFileUploadListModel: { _ in
                 fail("\(Self.self).createFileUploadListModel")
                 return .mock()
-            }
+            },
+            startSocketObservation: { },
+            stopSocketObservation: { }
         )
     }
 }
