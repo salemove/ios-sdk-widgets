@@ -1,7 +1,6 @@
 import UIKit
 
 class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
-
     var delegate: ((DelegateEvent) -> Void)?
 
     var engagementKind: EngagementKind {
@@ -293,6 +292,8 @@ extension EngagementCoordinator {
             gliaViewController?.bubbleKind = .userImage(url: operatorImageUrl)
         case .mediaUpgradeAccepted(let offer, let answer):
             chatMediaUpgradeAccepted(offer: offer, answer: answer)
+        case .secureTranscriptUpgradedToLiveChat(let chatViewController):
+            upgradeSecureTranscriptToChat(chatViewController: chatViewController)
         case .call:
             switch engagement {
             case .call(let callViewController, _, let upgradedFrom, _):
@@ -566,6 +567,10 @@ extension EngagementCoordinator {
         case .secureConversations, .none:
             break
         }
+    }
+
+    private func upgradeSecureTranscriptToChat(chatViewController: ChatViewController) {
+        engagement = .chat(chatViewController)
     }
 }
 
