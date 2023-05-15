@@ -48,15 +48,27 @@ class ViewController: UIViewController {
     }
 
     @IBAction private func chatTapped() {
-        presentGlia(.chat)
+        do {
+            try presentGlia(.chat)
+        } catch {
+            showErrorAlert(using: error)
+        }
     }
 
     @IBAction private func audioTapped() {
-        presentGlia(.audioCall)
+        do {
+            try presentGlia(.audioCall)
+        } catch {
+            showErrorAlert(using: error)
+        }
     }
 
     @IBAction private func videoTapped() {
-        presentGlia(.videoCall)
+        do {
+            try presentGlia(.videoCall)
+        } catch {
+            showErrorAlert(using: error)
+        }
     }
 
     @IBAction private func resumeTapped() {
@@ -64,7 +76,27 @@ class ViewController: UIViewController {
     }
 
     @IBAction private func secureConversationTapped() {
-        presentGlia(.messaging())
+        do {
+            try presentGlia(.messaging())
+        } catch {
+            showErrorAlert(using: error)
+        }
+    }
+
+    private func showErrorAlert(using error: Error) {
+        guard let gliaError = error as? GliaError else { return }
+
+        switch error {
+        case GliaError.engagementExists:
+            alert(message: "Failed to start\nEngagement is ongoing, please use 'Resume' button")
+        case GliaError.engagementNotExist:
+            alert(message: "Failed to start\nNo ongoing engagement. Please start a new one with 'Start chat' button")
+        case GliaError.callVisualizerEngagementExists:
+            alert(message: "Failed to start\nCall Visualizer engagement is ongoing")
+        default:
+            alert(message: "Failed to start\nCheck Glia parameters in Settings")
+
+        }
     }
 
     @IBAction private func clearSessionTapped() {
@@ -130,7 +162,7 @@ extension ViewController {
         present(navController, animated: true, completion: nil)
     }
 
-    func presentGlia(_ engagementKind: EngagementKind) {
+    func presentGlia(_ engagementKind: EngagementKind) throws {
         let visitorContext: SalemoveSDK.VisitorContext? = configuration.visitorContext
             .map(\.assetId)
             .map(SalemoveSDK.VisitorContext.AssetId.init(rawValue:))
@@ -154,31 +186,21 @@ extension ViewController {
             }
         }
 
-        do {
-            #if DEBUG
-            let pushNotifications = Configuration.PushNotifications.sandbox
-            #else
-            let pushNotifications = Configuration.PushNotifications.disabled
-            #endif
-            configuration.pushNotifications = pushNotifications
+        #if DEBUG
+        let pushNotifications = Configuration.PushNotifications.sandbox
+        #else
+        let pushNotifications = Configuration.PushNotifications.disabled
+        #endif
+        configuration.pushNotifications = pushNotifications
 
-            try Glia.sharedInstance.start(
-                engagementKind,
-                configuration: configuration,
-                queueID: queueId,
-                visitorContext: visitorContext,
-                theme: theme,
-                features: features
-            )
-        } catch GliaError.engagementExists {
-            alert(message: "Failed to start\nEngagement is ongoing, please use 'Resume' button")
-        } catch GliaError.engagementNotExist {
-            alert(message: "Failed to start\nNo ongoing engagement. Please start a new one with 'Start chat' button")
-        } catch GliaError.callVisualizerEngagementExists {
-            alert(message: "Failed to start\nCall Visualizer engagement is ongoing")
-        } catch {
-            alert(message: "Failed to start\nCheck Glia parameters in Settings")
-        }
+        try Glia.sharedInstance.start(
+            engagementKind,
+            configuration: configuration,
+            queueID: queueId,
+            visitorContext: visitorContext,
+            theme: theme,
+            features: features
+        )
     }
 
     func configureSDK(uiConfig: RemoteConfiguration?) {
@@ -306,16 +328,23 @@ extension ViewController {
     }
 
     func setupPushHandler() {
+        let waitForActiveEngagement = GliaCore.sharedInstance.waitForActiveEngagement(completion:)
         GliaCore.sharedInstance.pushNotifications.handler = { [weak self] push in
-            switch push.type {
-            // For now this will try to open transcript screen from any
-            // push notification received with type of `chatMessage`.
-            case .chatMessage:
+            switch (push.type, push.timing) {
+            // Open chat transcript only when the push notification has come
+            // when the app is on the background and the visitor has pressed
+            // on the notification banner.
+            case (.chatMessage, .background), (.queueMessage, .background):
                 guard self?.presentedViewController == nil else { return }
-                self?.presentGlia(.messaging(.chatTranscript))
-            case .unidentified:
-                break
-            @unknown default:
+
+                do {
+                    try self?.presentGlia(.messaging(.chatTranscript))
+                } catch GliaError.engagementExists {
+                    try? Glia.sharedInstance.resume()
+                } catch {
+                    self?.showErrorAlert(using: error)
+                }
+            default:
                 break
             }
         }
