@@ -18,7 +18,7 @@ extension Glia {
     }
 
     /// Deprecated.
-    @available(*, deprecated, message: "Use configure(with:queueId:visitorContext:) with Optional<VisitorContext> instead.")
+    @available(*, unavailable, message: "Use configure(with:queueId:visitorContext:) with Optional<VisitorContext> instead.")
     public func configure(
         with configuration: Configuration,
         queueId: String,
