@@ -861,8 +861,10 @@ extension SecureConversations.TranscriptModel {
     }
 
     func markMessagesAsRead() {
+        let mainQueue = environment.gcd.mainQueue
         let dispatchTime: DispatchTime = .now() + .seconds(Self.markUnreadMessagesDelaySeconds)
-        environment.gcd.mainQueue.asyncAfterDeadline(dispatchTime) { [environment, weak historySection, action] in
+
+        mainQueue.asyncAfterDeadline(dispatchTime) { [environment, weak historySection, action, weak self] in
             _ = environment.secureMarkMessagesAsRead { result in
                 switch result {
                 case .success:
@@ -877,6 +879,10 @@ extension SecureConversations.TranscriptModel {
                     })
 
                     action?(.refreshSection(historySection.index, animated: true))
+
+                    if self?.isChatScrolledToBottom.value ?? false {
+                        action?(.scrollToBottom(animated: true))
+                    }
                 case .failure:
                     break
                 }
