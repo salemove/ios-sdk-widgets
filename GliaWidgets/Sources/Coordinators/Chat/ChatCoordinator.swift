@@ -5,6 +5,7 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
     enum DelegateEvent {
         case back
         case engaged(operatorImageUrl: String?)
+        case secureTranscriptUpgradedToLiveChat(ChatViewController)
         case mediaUpgradeAccepted(
             offer: CoreSdkClient.MediaUpgradeOffer,
             answer: CoreSdkClient.AnswerWithSuccessBlock
@@ -188,6 +189,8 @@ extension ChatCoordinator {
                 self?.presentFilePickerController(with: pickerEvent)
             case .mediaUpgradeAccepted(let offer, let answer):
                 self?.delegate?(.mediaUpgradeAccepted(offer: offer, answer: answer))
+            case .secureTranscriptUpgradedToLiveChat(let chatViewController):
+                self?.delegate?(.secureTranscriptUpgradedToLiveChat(chatViewController))
             case .showFile(let file):
                 self?.presentQuickLookController(with: file)
             case .call:
@@ -302,6 +305,7 @@ extension ChatCoordinator {
                 let chatModel = self.chatModel()
                 controller.swapAndBindViewModel(.chat(chatModel))
                 chatModel.migrate(from: transcriptModel)
+                self.delegate?(.secureTranscriptUpgradedToLiveChat(controller))
             }
         }
     }

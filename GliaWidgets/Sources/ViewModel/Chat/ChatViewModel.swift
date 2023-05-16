@@ -868,6 +868,7 @@ extension ChatViewModel {
             offer: CoreSdkClient.MediaUpgradeOffer,
             answer: CoreSdkClient.AnswerWithSuccessBlock
         )
+        case secureTranscriptUpgradedToLiveChat(ChatViewController)
         case showFile(LocalFile)
         case call
         case openLink(URL)
