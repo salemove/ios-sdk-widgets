@@ -326,8 +326,8 @@ extension SecureConversations {
                     data: environment.data,
                     date: environment.date,
                     gcd: environment.gcd,
-                    localFileThumbnailQueue: environment.localFileThumbnailQueue,
-                    uiImage: environment.uiImage,
+                    uiScreen: environment.uiScreen,
+                    createThumbnailGenerator: environment.createThumbnailGenerator,
                     createFileDownload: environment.createFileDownload
                 )
             )
@@ -345,8 +345,8 @@ extension SecureConversations {
                     data: environment.data,
                     date: environment.date,
                     gcd: environment.gcd,
-                    localFileThumbnailQueue: environment.localFileThumbnailQueue,
-                    uiImage: environment.uiImage,
+                    uiScreen: environment.uiScreen,
+                    createThumbnailGenerator: environment.createThumbnailGenerator,
                     uuid: environment.uuid
                 )
             )
@@ -775,8 +775,8 @@ extension SecureConversations.TranscriptModel {
         var data: FoundationBased.Data
         var date: () -> Date
         var gcd: GCD
-        var localFileThumbnailQueue: FoundationBased.OperationQueue
-        var uiImage: UIKitBased.UIImage
+        var uiScreen: UIKitBased.UIScreen
+        var createThumbnailGenerator: () -> QuickLookBased.ThumbnailGenerator
         var createFileDownload: FileDownloader.CreateFileDownload
         var loadChatMessagesFromHistory: () -> Bool
         var fetchChatHistory: CoreSdkClient.FetchChatHistory

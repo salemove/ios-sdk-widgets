@@ -23,8 +23,7 @@ extension EngagementCoordinator.Environment {
             return .mock
         },
         gcd: .failing,
-        localFileThumbnailQueue: .failing,
-        uiImage: .failing,
+        createThumbnailGenerator: { .failing },
         createFileDownload: { _, _, _ in .failing },
         loadChatMessagesFromHistory: {
             fail("\(Self.self).loadChatMessagesFromHistory")

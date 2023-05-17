@@ -52,8 +52,8 @@ extension SecureConversations {
                             data: environment.data,
                             date: environment.date,
                             gcd: environment.gcd,
-                            localFileThumbnailQueue: environment.localFileThumbnailQueue,
-                            uiImage: environment.uiImage,
+                            uiScreen: environment.uiScreen,
+                            createThumbnailGenerator: environment.createThumbnailGenerator,
                             uuid: environment.uuid
                         )
                     ),
@@ -263,8 +263,8 @@ extension SecureConversations.Coordinator {
                 data: environment.data,
                 date: environment.date,
                 gcd: environment.gcd,
-                localFileThumbnailQueue: environment.localFileThumbnailQueue,
-                uiImage: environment.uiImage,
+                uiScreen: environment.uiScreen,
+                createThumbnailGenerator: environment.createThumbnailGenerator,
                 createFileDownload: environment.createFileDownload,
                 fromHistory: environment.loadChatMessagesFromHistory,
                 fetchSiteConfigurations: environment.fetchSiteConfigurations,
@@ -321,8 +321,7 @@ extension SecureConversations.Coordinator {
         var data: FoundationBased.Data
         var date: () -> Date
         var gcd: GCD
-        var localFileThumbnailQueue: FoundationBased.OperationQueue
-        var uiImage: UIKitBased.UIImage
+        var createThumbnailGenerator: () -> QuickLookBased.ThumbnailGenerator
         var uuid: () -> UUID
         var uiApplication: UIKitBased.UIApplication
         var uiScreen: UIKitBased.UIScreen

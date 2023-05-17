@@ -11,12 +11,7 @@ extension Glia.Environment {
         data: .live,
         gcd: .live,
         imageViewCache: .live,
-        localFileThumbnailQueue: {
-            let queue: FoundationBased.OperationQueue = .live()
-            queue.setMaxConcurrentOperationCount(2)
-            return queue
-        }(),
-        uiImage: .live,
+        createThumbnailGenerator: { QuickLookBased.ThumbnailGenerator.live(.init()) },
         createFileDownload: FileDownload.init(with:storage:environment:),
         loadChatMessagesFromHistory: { true },
         timerProviding: .live,

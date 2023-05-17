@@ -71,8 +71,8 @@ class FileDownloader {
                     downloadSecureFile: environment.downloadSecureFile,
                     fileManager: environment.fileManager,
                     gcd: environment.gcd,
-                    localFileThumbnailQueue: environment.localFileThumbnailQueue,
-                    uiImage: environment.uiImage
+                    uiScreen: environment.uiScreen,
+                    createThumbnailGenerator: environment.createThumbnailGenerator
                 )
             )
 
@@ -110,8 +110,8 @@ extension FileDownloader {
         var data: FoundationBased.Data
         var date: () -> Date
         var gcd: GCD
-        var localFileThumbnailQueue: FoundationBased.OperationQueue
-        var uiImage: UIKitBased.UIImage
+        var uiScreen: UIKitBased.UIScreen
+        var createThumbnailGenerator: () -> QuickLookBased.ThumbnailGenerator
         var createFileDownload: CreateFileDownload
     }
 }

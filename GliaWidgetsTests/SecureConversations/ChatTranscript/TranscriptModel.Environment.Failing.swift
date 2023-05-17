@@ -16,8 +16,8 @@ extension SecureConversations.TranscriptModel.Environment {
             return .mock
         },
         gcd: .failing,
-        localFileThumbnailQueue: .failing,
-        uiImage: .failing,
+        uiScreen: .failing,
+        createThumbnailGenerator: { .failing },
         createFileDownload: { _, _, _ in
             return .failing
         },
@@ -34,7 +34,7 @@ extension SecureConversations.TranscriptModel.Environment {
             return .mock
         },
         queueIds: [],
-        listQueues: { completion in
+        listQueues: { _ in
             fail("\(Self.self).listQueues")
         },
         alertConfiguration: .mock(),

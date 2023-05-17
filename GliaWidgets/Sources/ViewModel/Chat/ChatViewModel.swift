@@ -88,8 +88,8 @@ class ChatViewModel: EngagementViewModel, ViewModel {
                 data: environment.data,
                 date: environment.date,
                 gcd: environment.gcd,
-                localFileThumbnailQueue: environment.localFileThumbnailQueue,
-                uiImage: environment.uiImage,
+                uiScreen: environment.uiScreen,
+                createThumbnailGenerator: environment.createThumbnailGenerator,
                 uuid: environment.uuid
             )
         )
@@ -121,8 +121,8 @@ class ChatViewModel: EngagementViewModel, ViewModel {
                 data: environment.data,
                 date: environment.date,
                 gcd: environment.gcd,
-                localFileThumbnailQueue: environment.localFileThumbnailQueue,
-                uiImage: environment.uiImage,
+                uiScreen: environment.uiScreen,
+                createThumbnailGenerator: environment.createThumbnailGenerator,
                 createFileDownload: environment.createFileDownload
             )
         )
