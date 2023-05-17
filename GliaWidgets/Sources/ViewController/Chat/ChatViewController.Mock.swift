@@ -36,15 +36,19 @@ extension ChatViewController {
         var fileManager = FoundationBased.FileManager.mock
         fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
         chatViewModelEnv.fileManager = fileManager
-        chatViewModelEnv.uiImage.imageWithContentsOfFileAtPath = { _ in .mock }
         let createFileDownload = chatViewModelEnv.createFileDownload
+        var thumbnailGeneratorMock = QuickLookBased.ThumbnailGenerator.mock
+        thumbnailGeneratorMock.generateBestRepresentation = { _, completion in
+            var thubmnailMock = QuickLookBased.ThumbnailRepresentation.mock
+            thubmnailMock.uiImage = .mock
+            completion(thubmnailMock, nil)
+        }
         chatViewModelEnv.createFileDownload = { file, storage, env in
             let fileDownload = createFileDownload(file, storage, env)
             var localFileEnv = LocalFile.Environment.mock
-            localFileEnv.localFileThumbnailQueue.addOperation = { $0() }
+            localFileEnv.thumbnailGenerator = thumbnailGeneratorMock
             localFileEnv.gcd.globalQueue = .init(async: { $0() }, asyncAfterDeadline: { $1() })
             localFileEnv.gcd.mainQueue = .init(async: { $0() }, asyncIfNeeded: { $0() }, asyncAfterDeadline: { $1() })
-            localFileEnv.uiImage.imageWithContentsOfFileAtPath = { _ in .mock }
             fileDownload.state.value = .downloaded(
                 .mock(
                     url: .mockFilePath.appendingPathComponent(file.url?.lastPathComponent ?? ""),
@@ -220,8 +224,7 @@ extension ChatViewController {
             [FileAttributeKey.size: 12345678]
         }
         let gcd = GCD.mock
-        let localFileThumbnailQueue = FoundationBased.OperationQueue.mock()
-        let uiImage = UIKitBased.UIImage.mock
+        let uiScreen = UIKitBased.UIScreen.mock
         let data = FoundationBased.Data.mock
         let date = Date.mock
         var fileUploadEnv: FileUpload.Environment = .mock
@@ -232,8 +235,8 @@ extension ChatViewController {
                 environment: .init(
                     fileManager: fileManager,
                     gcd: gcd,
-                    localFileThumbnailQueue: localFileThumbnailQueue,
-                    uiImage: uiImage
+                    uiScreen: uiScreen,
+                    thumbnailGenerator: .mock
                 )
             ),
             storage: FileSystemStorage.mock(
@@ -256,8 +259,8 @@ extension ChatViewController {
                 environment: .init(
                     fileManager: fileManager,
                     gcd: gcd,
-                    localFileThumbnailQueue: localFileThumbnailQueue,
-                    uiImage: uiImage
+                    uiScreen: uiScreen,
+                    thumbnailGenerator: .mock
                 )
             ),
             storage: FileSystemStorage.mock(
@@ -281,8 +284,8 @@ extension ChatViewController {
                 environment: .init(
                     fileManager: fileManager,
                     gcd: gcd,
-                    localFileThumbnailQueue: localFileThumbnailQueue,
-                    uiImage: uiImage
+                    uiScreen: uiScreen,
+                    thumbnailGenerator: .mock
                 )
             ),
             storage: FileSystemStorage.mock(

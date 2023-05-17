@@ -25,8 +25,8 @@ extension ChatViewModel.Environment {
                 return .mock
             },
             gcd: .failing,
-            localFileThumbnailQueue: .failing,
-            uiImage: .failing,
+            uiScreen: .failing,
+            createThumbnailGenerator: { .failing },
             createFileDownload: { _, _, _ in
                 fail("\(Self.self).createFileDownload")
                 return .failing

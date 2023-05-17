@@ -70,8 +70,8 @@ private extension CallCoordinator {
                 data: environment.data,
                 date: environment.date,
                 gcd: environment.gcd,
-                localFileThumbnailQueue: environment.localFileThumbnailQueue,
-                uiImage: environment.uiImage,
+                uiScreen: environment.uiScreen,
+                createThumbnailGenerator: environment.createThumbnailGenerator,
                 createFileDownload: environment.createFileDownload,
                 loadChatMessagesFromHistory: environment.fromHistory,
                 fetchSiteConfigurations: environment.fetchSiteConfigurations,
@@ -138,8 +138,7 @@ extension CallCoordinator {
         var data: FoundationBased.Data
         var date: () -> Date
         var gcd: GCD
-        var localFileThumbnailQueue: FoundationBased.OperationQueue
-        var uiImage: UIKitBased.UIImage
+        var createThumbnailGenerator: () -> QuickLookBased.ThumbnailGenerator
         var createFileDownload: FileDownloader.CreateFileDownload
         var fromHistory: () -> Bool
         var fetchSiteConfigurations: CoreSdkClient.FetchSiteConfigurations

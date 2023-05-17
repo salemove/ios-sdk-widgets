@@ -5,8 +5,8 @@ extension FileDownload.Environment {
         downloadSecureFile: { _, _, _ in .mock },
         fileManager: .mock,
         gcd: .mock,
-        localFileThumbnailQueue: .mock(),
-        uiImage: .mock
+        uiScreen: .mock,
+        createThumbnailGenerator: { .mock }
     )
 }
 #endif
