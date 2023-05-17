@@ -12,8 +12,8 @@ extension ChatViewModel.Environment {
         data: .mock,
         date: { .mock },
         gcd: .mock,
-        localFileThumbnailQueue: .mock(),
-        uiImage: .mock,
+        uiScreen: .mock,
+        createThumbnailGenerator: { .mock },
         createFileDownload: { file, fileStorage, env in
                 .mock(
                     file: file,

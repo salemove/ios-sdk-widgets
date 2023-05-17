@@ -37,8 +37,8 @@ class ChatViewModelTests: XCTestCase {
                 data: .failing,
                 date: { Date.mock },
                 gcd: .failing,
-                localFileThumbnailQueue: .failing,
-                uiImage: .failing,
+                uiScreen: .failing,
+                createThumbnailGenerator: { .failing },
                 createFileDownload: { _, _, _ in
                     .mock(
                         file: .mock(),
@@ -82,7 +82,7 @@ class ChatViewModelTests: XCTestCase {
             calls.append(.configureWithInteractor)
         }
         let interactor = Interactor.mock(environment: interactorEnv)
-        var viewModelEnv = ChatViewModel.Environment.failing(fetchChatHistory: { $0(.success([]))})
+        var viewModelEnv = ChatViewModel.Environment.failing(fetchChatHistory: { $0(.success([])) })
         viewModelEnv.createFileUploadListModel = { _ in .mock() }
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
@@ -252,7 +252,6 @@ class ChatViewModelTests: XCTestCase {
             calls.append(.openUrl($0))
         }
         let viewModel: ChatViewModel = .mock(interactor: .mock(), environment: viewModelEnv)
-        
 
         let telUrl = URL(string: "tel:12345678")!
         viewModel.linkTapped(telUrl)
