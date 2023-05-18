@@ -234,4 +234,21 @@ final class GliaTests: XCTestCase {
             XCTAssertEqual(error as? GliaError, GliaError.configuringDuringEngagementIsNotAllowed)
         }
     }
+
+    func testClearVisitorSessionThrowsErrorDuringActiveEngagement() throws {
+        var environment = Glia.Environment.failing
+        environment.coreSdk.getCurrentEngagement = { .mock() }
+        let sdk = Glia(environment: environment)
+
+        var resultingError: Error?
+        sdk.clearVisitorSession { result in
+            guard case let .failure(error) = result else {
+                fail("`clearVisitorSession` should fail when ongoing engegament exists.")
+                return
+            }
+            resultingError = error
+        }
+
+        XCTAssertEqual(resultingError as? GliaError, GliaError.clearingVisitorSessionDuringEngagementIsNotAllowed)
+    }
 }
