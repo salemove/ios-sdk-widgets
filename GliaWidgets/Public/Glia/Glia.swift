@@ -157,8 +157,19 @@ public class Glia {
     }
 
     /// Clear visitor session
-    public func clearVisitorSession() {
+    ///
+    /// - Parameter completion: Completion handler.
+    ///
+    /// - Important: Note, that in case of ongoing engagement, `clearVisitorSession` must be called after ending engagement,
+    /// because `GliaError.clearingVisitorSessionDuringEngagementIsNotAllowed` will occur otherwise.
+    ///
+    public func clearVisitorSession(_ completion: @escaping (Result<Void, Error>) -> Void) {
+        guard environment.coreSdk.getCurrentEngagement() == nil else {
+            completion(.failure(GliaError.clearingVisitorSessionDuringEngagementIsNotAllowed))
+            return
+        }
         environment.coreSdk.clearSession()
+        completion(.success(()))
     }
 
     /// Fetch current Visitor's information.
@@ -245,12 +256,6 @@ public class Glia {
             success: { completion(.success(())) },
             failure: { completion(.failure($0)) }
         )
-    }
-
-    /// Deprecated, use ``callVisualizer.showVisitorCodeViewController`` instead.
-    @available(*, deprecated, message: "Deprecated, use ``CallVisualizer.showVisitorCodeViewController`` instead.")
-    public func requestVisitorCode(completion: @escaping (Result<VisitorCode, Swift.Error>) -> Void) {
-        _ = environment.coreSdk.requestVisitorCode(completion)
     }
 }
 
