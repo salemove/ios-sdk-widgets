@@ -1,4 +1,4 @@
-import SalemoveSDK
+import GliaCoreSDK
 
 extension Glia {
     /// Deprecated.
@@ -88,5 +88,19 @@ extension Glia {
     @available(*, deprecated, message: "Deprecated, use ``CallVisualizer.showVisitorCodeViewController`` instead.")
     public func requestVisitorCode(completion: @escaping (Result<VisitorCode, Swift.Error>) -> Void) {
         _ = environment.coreSdk.requestVisitorCode(completion)
+    }
+}
+
+extension Glia.Authentication {
+    @available(*, deprecated, message: "Use Glia.Authentication.authenticate(with:accessToken:completion:) instead.")
+    public func authenticate(
+        with idToken: IdToken,
+        completion: @escaping (Result<Void, Error>) -> Void
+    ) {
+        self.authenticateWithIdToken(
+            idToken,
+            nil,
+            completion
+        )
     }
 }

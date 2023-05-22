@@ -1,4 +1,4 @@
-import SalemoveSDK
+import GliaCoreSDK
 import UIKit
 import GliaCoreDependency
 
@@ -67,7 +67,7 @@ struct CoreSdkClient {
 
     typealias CancelQueueTicket = (
         _ queueTicket: Self.QueueTicket,
-        _ completion: @escaping SalemoveSDK.SuccessBlock
+        _ completion: @escaping GliaCoreSDK.SuccessBlock
     ) -> Void
     var cancelQueueTicket: CancelQueueTicket
 
@@ -99,17 +99,17 @@ struct CoreSdkClient {
 
     typealias SubmitSurveyAnswer = (
         (
-            _ answers: [SalemoveSDK.Survey.Answer],
-            _ surveyId: SalemoveSDK.Survey.Id,
+            _ answers: [GliaCoreSDK.Survey.Answer],
+            _ surveyId: GliaCoreSDK.Survey.Id,
             _ engagementId: String,
-            _ completion: @escaping (Result<Void, SalemoveSDK.GliaCoreError>) -> Void
+            _ completion: @escaping (Result<Void, GliaCoreSDK.GliaCoreError>) -> Void
         ) -> Void
     )
     var submitSurveyAnswer: SubmitSurveyAnswer
     typealias CreateAuthentication = (_ behaviour: AuthenticationBehavior) throws -> Authentication
     var authentication: CreateAuthentication
 
-    typealias FetchChatHistory = (_ completion: @escaping (Result<[ChatMessage], SalemoveSDK.GliaCoreError>) -> Void) -> Void
+    typealias FetchChatHistory = (_ completion: @escaping (Result<[ChatMessage], GliaCoreSDK.GliaCoreError>) -> Void) -> Void
     var fetchChatHistory: FetchChatHistory
 
     typealias RequestVisitorCode = (_ completion: @escaping (VisitorCodeBlock) -> Void) -> GliaCore.Cancellable
@@ -164,8 +164,8 @@ extension CoreSdkClient {
 }
 
 extension CoreSdkClient.PushNotifications {
-    typealias Push = SalemoveSDK.Push
-    typealias PushHandler = SalemoveSDK.PushActionBlock
+    typealias Push = GliaCoreSDK.Push
+    typealias PushHandler = GliaCoreSDK.PushActionBlock
 }
 
 extension CoreSdkClient {
@@ -180,71 +180,73 @@ extension CoreSdkClient {
 }
 
 extension CoreSdkClient {
-    typealias AnswerBlock = SalemoveSDK.AnswerBlock
-    typealias AnswerWithSuccessBlock = SalemoveSDK.AnswerWithSuccessBlock
-    typealias Attachment = SalemoveSDK.Attachment
-    typealias AttachmentType = SalemoveSDK.AttachmentType
-    typealias AudioStreamable = SalemoveSDK.AudioStreamable
-    typealias AudioStreamAddedBlock = SalemoveSDK.AudioStreamAddedBlock
-    typealias EngagementFile = SalemoveSDK.EngagementFile
-    typealias EngagementFileCompletionBlock = SalemoveSDK.EngagementFileCompletionBlock
-    typealias EngagementFileData = SalemoveSDK.EngagementFileData
-    typealias EngagementFileFetchCompletionBlock = SalemoveSDK.EngagementFileFetchCompletionBlock
-    typealias EngagementFileInformation = SalemoveSDK.EngagementFileInformation
-    typealias EngagementFileProgressBlock = SalemoveSDK.EngagementFileProgressBlock
-    typealias EngagementOptions = SalemoveSDK.EngagementOptions
-    typealias EngagementTransferBlock = SalemoveSDK.EngagementTransferBlock
-    typealias EngagementTransferringBlock = SalemoveSDK.EngagementTransferringBlock
-    typealias FileError = SalemoveSDK.FileError
-    typealias GeneralError = SalemoveSDK.GeneralError
-    typealias GliaCoreError = SalemoveSDK.GliaCoreError
-    typealias Interactable = SalemoveSDK.Interactable
-    typealias MediaDirection = SalemoveSDK.MediaDirection
-    typealias MediaError = SalemoveSDK.MediaError
-    typealias MediaType = SalemoveSDK.MediaType
-    typealias MediaUgradeOfferBlock = SalemoveSDK.MediaUgradeOfferBlock
-    typealias MediaUpgradeOffer = SalemoveSDK.MediaUpgradeOffer
-    typealias MediaUpdateBlock = SalemoveSDK.MediaUpdateBlock
-    typealias Message = SalemoveSDK.Message
-    typealias MessageSender = SalemoveSDK.MessageSender
-    typealias MessageBlock = SalemoveSDK.MessageBlock
-    typealias MessagesUpdateBlock = SalemoveSDK.MessagesUpdateBlock
-    typealias Operator = SalemoveSDK.Operator
-    typealias OperatorPicture = SalemoveSDK.OperatorPicture
-    typealias OperatorBlock = SalemoveSDK.OperatorBlock
-    typealias OperatorTypingStatus = SalemoveSDK.OperatorTypingStatus
-    typealias OperatorTypingStatusUpdate = SalemoveSDK.OperatorTypingStatusUpdate
-    typealias Queue = SalemoveSDK.Queue
-    typealias QueueError = SalemoveSDK.QueueError
-    typealias QueueState = SalemoveSDK.QueueState
-    typealias QueueStatus = SalemoveSDK.QueueStatus
-    typealias QueueRequestBlock = SalemoveSDK.QueueRequestBlock
-    typealias QueueTicket = SalemoveSDK.QueueTicket
-    typealias QueueTicketBlock = SalemoveSDK.QueueTicketBlock
-    typealias RequestOfferBlock = SalemoveSDK.RequestOfferBlock
-    typealias RequestAnswerBlock = SalemoveSDK.RequestAnswerBlock
-    typealias Salemove = SalemoveSDK.GliaCore
-    typealias SalemoveError = SalemoveSDK.GliaCoreError
-    typealias ScreenshareOfferBlock = SalemoveSDK.ScreenshareOfferBlock
-    typealias SingleChoiceOption = SalemoveSDK.SingleChoiceOption
-    typealias StreamableOnHoldHandler = SalemoveSDK.StreamableOnHoldHandler
-    typealias StreamView = SalemoveSDK.StreamView
-    typealias SuccessBlock = SalemoveSDK.SuccessBlock
-    typealias VideoStreamable = SalemoveSDK.VideoStreamable
-    typealias VideoStreamAddedBlock = SalemoveSDK.VideoStreamAddedBlock
-    typealias VisitorContext = SalemoveSDK.VisitorContext
-    typealias ContextType = SalemoveSDK.VisitorContext.ContextType
-    typealias VisitorInfoUpdate = SalemoveSDK.VisitorInfoUpdate
-    typealias VisitorScreenSharingState = SalemoveSDK.VisitorScreenSharingState
-    typealias VisitorScreenSharingStateChange = SalemoveSDK.VisitorScreenSharingStateChange
-    typealias Engagement = SalemoveSDK.Engagement
-    typealias Site = SalemoveSDK.Site
-    typealias Survey = SalemoveSDK.Survey
-    typealias SurveyAnswerContainer = SalemoveSDK.Survey.Answer.ValueContainer
-    typealias Authentication = SalemoveSDK.GliaCore.Authentication
-    typealias AuthenticationBehavior = SalemoveSDK.GliaCore.Authentication.Behavior
+    typealias AnswerBlock = GliaCoreSDK.AnswerBlock
+    typealias AnswerWithSuccessBlock = GliaCoreSDK.AnswerWithSuccessBlock
+    typealias Attachment = GliaCoreSDK.Attachment
+    typealias AttachmentType = GliaCoreSDK.AttachmentType
+    typealias AudioStreamable = GliaCoreSDK.AudioStreamable
+    typealias AudioStreamAddedBlock = GliaCoreSDK.AudioStreamAddedBlock
+    typealias EngagementFile = GliaCoreSDK.EngagementFile
+    typealias EngagementFileCompletionBlock = GliaCoreSDK.EngagementFileCompletionBlock
+    typealias EngagementFileData = GliaCoreSDK.EngagementFileData
+    typealias EngagementFileFetchCompletionBlock = GliaCoreSDK.EngagementFileFetchCompletionBlock
+    typealias EngagementFileInformation = GliaCoreSDK.EngagementFileInformation
+    typealias EngagementFileProgressBlock = GliaCoreSDK.EngagementFileProgressBlock
+    typealias EngagementOptions = GliaCoreSDK.EngagementOptions
+    typealias EngagementTransferBlock = GliaCoreSDK.EngagementTransferBlock
+    typealias EngagementTransferringBlock = GliaCoreSDK.EngagementTransferringBlock
+    typealias FileError = GliaCoreSDK.FileError
+    typealias GeneralError = GliaCoreSDK.GeneralError
+    typealias GliaCoreError = GliaCoreSDK.GliaCoreError
+    typealias Interactable = GliaCoreSDK.Interactable
+    typealias MediaDirection = GliaCoreSDK.MediaDirection
+    typealias MediaError = GliaCoreSDK.MediaError
+    typealias MediaType = GliaCoreSDK.MediaType
+    typealias MediaUgradeOfferBlock = GliaCoreSDK.MediaUgradeOfferBlock
+    typealias MediaUpgradeOffer = GliaCoreSDK.MediaUpgradeOffer
+    typealias MediaUpdateBlock = GliaCoreSDK.MediaUpdateBlock
+    typealias Message = GliaCoreSDK.Message
+    typealias MessageSender = GliaCoreSDK.MessageSender
+    typealias MessageBlock = GliaCoreSDK.MessageBlock
+    typealias MessagesUpdateBlock = GliaCoreSDK.MessagesUpdateBlock
+    typealias Operator = GliaCoreSDK.Operator
+    typealias OperatorPicture = GliaCoreSDK.OperatorPicture
+    typealias OperatorBlock = GliaCoreSDK.OperatorBlock
+    typealias OperatorTypingStatus = GliaCoreSDK.OperatorTypingStatus
+    typealias OperatorTypingStatusUpdate = GliaCoreSDK.OperatorTypingStatusUpdate
+    typealias Queue = GliaCoreSDK.Queue
+    typealias QueueError = GliaCoreSDK.QueueError
+    typealias QueueState = GliaCoreSDK.QueueState
+    typealias QueueStatus = GliaCoreSDK.QueueStatus
+    typealias QueueRequestBlock = GliaCoreSDK.QueueRequestBlock
+    typealias QueueTicket = GliaCoreSDK.QueueTicket
+    typealias QueueTicketBlock = GliaCoreSDK.QueueTicketBlock
+    typealias RequestOfferBlock = GliaCoreSDK.RequestOfferBlock
+    typealias RequestAnswerBlock = GliaCoreSDK.RequestAnswerBlock
+    typealias Salemove = GliaCoreSDK.GliaCore
+    typealias SalemoveError = GliaCoreSDK.GliaCoreError
+    typealias ScreenshareOfferBlock = GliaCoreSDK.ScreenshareOfferBlock
+    typealias SingleChoiceOption = GliaCoreSDK.SingleChoiceOption
+    typealias StreamableOnHoldHandler = GliaCoreSDK.StreamableOnHoldHandler
+    typealias StreamView = GliaCoreSDK.StreamView
+    typealias SuccessBlock = GliaCoreSDK.SuccessBlock
+    typealias VideoStreamable = GliaCoreSDK.VideoStreamable
+    typealias VideoStreamAddedBlock = GliaCoreSDK.VideoStreamAddedBlock
+    typealias VisitorContext = GliaCoreSDK.VisitorContext
+    typealias ContextType = GliaCoreSDK.VisitorContext.ContextType
+    typealias VisitorInfoUpdate = GliaCoreSDK.VisitorInfoUpdate
+    typealias VisitorScreenSharingState = GliaCoreSDK.VisitorScreenSharingState
+    typealias VisitorScreenSharingStateChange = GliaCoreSDK.VisitorScreenSharingStateChange
+    typealias Engagement = GliaCoreSDK.Engagement
+    typealias Site = GliaCoreSDK.Site
+    typealias Survey = GliaCoreSDK.Survey
+    typealias SurveyAnswerContainer = GliaCoreSDK.Survey.Answer.ValueContainer
+    typealias Authentication = GliaCoreSDK.GliaCore.Authentication
+    typealias AuthenticationBehavior = GliaCoreSDK.GliaCore.Authentication.Behavior
+    typealias EngagementEndingReason = GliaCoreSDK.EngagementEndingReason
     typealias VisitorCodeBlock = (Result<VisitorCode, Swift.Error>)
-    typealias EngagementSource = SalemoveSDK.EngagementSource
+    typealias EngagementSource = GliaCoreSDK.EngagementSource
     typealias Cancellable = GliaCore.Cancellable
     typealias ReactiveSwift = GliaCoreDependency.ReactiveSwift
+
 }

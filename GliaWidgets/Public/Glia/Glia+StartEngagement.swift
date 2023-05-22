@@ -1,5 +1,5 @@
 import Foundation
-import SalemoveSDK
+import GliaCoreSDK
 
 extension Glia {
     /// Starts the engagement.
@@ -12,8 +12,8 @@ extension Glia {
     ///   - sceneProvider: Used to provide `UIWindowScene` to the framework. Defaults to the first active foreground scene.
     ///
     /// - throws:
-    ///   - `SalemoveSDK.ConfigurationError.invalidSite`
-    ///   - `SalemoveSDK.ConfigurationError.invalidEnvironment`
+    ///   - `GliaCoreSDK.ConfigurationError.invalidSite`
+    ///   - `GliaCoreSDK.ConfigurationError.invalidEnvironment`
     ///   - `GliaError.engagementExists
     ///   - `GliaError.sdkIsNotConfigured`
     ///
@@ -65,10 +65,10 @@ extension Glia {
     ///   - sceneProvider: Used to provide `UIWindowScene` to the framework. Defaults to the first active foreground scene.
     ///
     /// - throws:
-    ///   - `SalemoveSDK.ConfigurationError.invalidSite`
-    ///   - `SalemoveSDK.ConfigurationError.invalidEnvironment`
-    ///   - `SalemoveSDK.ConfigurationError.invalidRegionEndpoint`
-    ///   - `SalemoveSDK.ConfigurationError.invalidSiteApiKey`
+    ///   - `GliaCoreSDK.ConfigurationError.invalidSite`
+    ///   - `GliaCoreSDK.ConfigurationError.invalidEnvironment`
+    ///   - `GliaCoreSDK.ConfigurationError.invalidRegionEndpoint`
+    ///   - `GliaCoreSDK.ConfigurationError.invalidSiteApiKey`
     ///   - `GliaError.engagementExists`
     ///
     public func start(

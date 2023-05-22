@@ -1,12 +1,12 @@
 import Foundation
-import SalemoveSDK
+import GliaCoreSDK
 @testable import GliaWidgets
 
 extension CoreSdkClient.Operator {
     static func mock(
         id: String = "mockId",
         name: String = "Mock Operator",
-        picture: SalemoveSDK.OperatorPicture? = nil,
+        picture: GliaCoreSDK.OperatorPicture? = nil,
         availableMedia: [CoreSdkClient.MediaType]? = [.text, .audio, .video]
     ) -> CoreSdkClient.Operator {
         CoreSdkClient.Operator(

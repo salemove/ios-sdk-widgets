@@ -1,4 +1,4 @@
-import SalemoveSDK
+import GliaCoreSDK
 import XCTest
 
 @testable import GliaWidgets

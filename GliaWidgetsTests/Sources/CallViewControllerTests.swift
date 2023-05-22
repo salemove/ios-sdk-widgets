@@ -1,5 +1,5 @@
 @testable import GliaWidgets
-import SalemoveSDK
+import GliaCoreSDK
 import XCTest
 
 class CallViewControllerTests: XCTestCase {

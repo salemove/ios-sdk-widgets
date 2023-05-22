@@ -1,5 +1,5 @@
 import Foundation
-import SalemoveSDK
+import GliaCoreSDK
 
 // MARK: Custom cards
 

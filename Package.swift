@@ -38,9 +38,9 @@ let package = Package(
             checksum: "f76e410f608d96989ba0312e099697703a37b4414f8f46bb9e30c3d9b4291a52"
         ),
         .binaryTarget(
-            name: "SalemoveSDK",
-            url: "https://github.com/salemove/ios-bundle/releases/download/0.35.16/SalemoveSDK.xcframework.zip",
-            checksum: "fe624dac2a5094d3c83a8222290c81fba47527a24029ed338739498584f2305b"
+            name: "GliaCoreSDK",
+            url: "https://github.com/salemove/ios-bundle/releases/download/1.0.1/GliaCoreSDK.xcframework.zip",
+            checksum: "4d43788335a05d573af40171c99d608aa24aea6b557bc83d8f633eedd776fb53"
         ),
         .binaryTarget(
             name: "PureLayoutXcf",
@@ -76,7 +76,7 @@ let package = Package(
         .target(
             name: "GliaWidgetsSDK",
             dependencies: [
-                "SalemoveSDK",
+                "GliaCoreSDK",
                 "GliaCoreDependency",
                 "TwilioVoice",
                 "WebRTC",
@@ -86,7 +86,7 @@ let package = Package(
         .target(
             name: "GliaWidgetsSDK-xcframework",
             dependencies: [
-                "SalemoveSDK",
+                "GliaCoreSDK",
                 "GliaWidgetsXcf",
                 "GliaCoreDependency",
                 "TwilioVoice",

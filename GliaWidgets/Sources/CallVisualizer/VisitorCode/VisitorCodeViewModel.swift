@@ -1,5 +1,5 @@
 import UIKit
-import SalemoveSDK
+import GliaCoreSDK
 
 extension CallVisualizer {
     class VisitorCodeViewModel {

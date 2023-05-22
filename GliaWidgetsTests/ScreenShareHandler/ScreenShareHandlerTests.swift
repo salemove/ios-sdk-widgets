@@ -1,6 +1,6 @@
 import XCTest
 @testable import GliaWidgets
-import SalemoveSDK
+import GliaCoreSDK
 
 final class ScreenShareHandlerTests: XCTestCase {
 
@@ -44,7 +44,7 @@ final class ScreenShareHandlerTests: XCTestCase {
         XCTAssertTrue(isInvoked)
     }
 
-    private func screenSharingState(status: SalemoveSDK.ScreenSharingStatus) -> CoreSdkClient.VisitorScreenSharingState {
+    private func screenSharingState(status: GliaCoreSDK.ScreenSharingStatus) -> CoreSdkClient.VisitorScreenSharingState {
         .init(status: status, localScreen: nil)
     }
 }

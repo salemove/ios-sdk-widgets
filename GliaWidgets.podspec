@@ -9,7 +9,7 @@ Pod::Spec.new do |s|
   s.source                = { :git => 'https://github.com/salemove/ios-sdk-widgets.git', :tag => s.version.to_s }
 
   s.module_name           = 'GliaWidgets'
-  s.ios.deployment_target = '12.0'
+  s.ios.deployment_target = '13.0'
   s.source_files          = 'GliaWidgets/**/*.swift'
   s.swift_version         = '5.3'
 
@@ -19,7 +19,7 @@ Pod::Spec.new do |s|
   }
   s.exclude_files         = ['GliaWidgets/Window/**']
 
-  s.dependency 'SalemoveSDK', '0.35.16'
+  s.dependency 'GliaCoreSDK', '1.0.1'
   s.dependency 'PureLayout', '~>3.1'
   s.dependency 'lottie-ios', '3.2.3'
 end
