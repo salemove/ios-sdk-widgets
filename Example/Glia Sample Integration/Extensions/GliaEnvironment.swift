@@ -1,5 +1,5 @@
 import GliaWidgets
-import SalemoveSDK
+import GliaCoreSDK
 
 extension Environment {
     var gliaCoreRegion: GliaCore.Region {

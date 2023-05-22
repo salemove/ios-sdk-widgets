@@ -1,4 +1,4 @@
-import SalemoveSDK
+import GliaCoreSDK
 import UIKit
 
 /// Engagement media type.
@@ -184,11 +184,10 @@ public class Glia {
     /// If the request is unsuccessful for any reason then the completion will have an Error.
     /// The Error may have one of the following causes:
     ///
-    /// - `SalemoveSDK.GeneralError.internalError`
-    /// - `SalemoveSDK.GeneralError.networkError`
-    /// - `SalemoveSDK.ConfigurationError.invalidSite`
-    /// - `SalemoveSDK.ConfigurationError.invalidEnvironment`
-    /// - `SalemoveSDK.ConfigurationError.invalidApiToken`
+    /// - `GliaCoreSDK.GeneralError.internalError`
+    /// - `GliaCoreSDK.GeneralError.networkError`
+    /// - `GliaCoreSDK.ConfigurationError.invalidSite`
+    /// - `GliaCoreSDK.ConfigurationError.invalidEnvironment`
     /// - `GliaError.sdkIsNotConfigured`
     ///
     /// - Important: Note, that in case of engagement has not been started yet, `configure(with:queueID:visitorContext:)` must be called initially prior to this method,
@@ -219,11 +218,10 @@ public class Glia {
     /// If the request is unsuccessful for any reason then the completion will have an Error.
     /// The Error may have one of the following causes:
     ///
-    /// - `SalemoveSDK.GeneralError.internalError`
-    /// - `SalemoveSDK.GeneralError.networkError`
-    /// - `SalemoveSDK.ConfigurationError.invalidSite`
-    /// - `SalemoveSDK.ConfigurationError.invalidEnvironment`
-    /// - `SalemoveSDK.ConfigurationError.invalidApiToken`
+    /// - `GliaCoreSDK.GeneralError.internalError`
+    /// - `GliaCoreSDK.GeneralError.networkError`
+    /// - `GliaCoreSDK.ConfigurationError.invalidSite`
+    /// - `GliaCoreSDK.ConfigurationError.invalidEnvironment`
     /// - `GliaError.sdkIsNotConfigured`
     ///
     /// - Important: Note, that in case of engagement has not been started yet, `configure(with:queueID:visitorContext:)` must be called initially prior to this method,

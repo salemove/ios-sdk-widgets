@@ -1,6 +1,6 @@
 import Foundation
 import GliaWidgets
-import enum SalemoveSDK.ConfigurationError
+import enum GliaCoreSDK.ConfigurationError
 
 
 extension Configuration {
@@ -187,10 +187,6 @@ extension ConfigurationError: CustomStringConvertible {
             return "invalidSite"
         case .invalidEnvironment:
             return "invalidEnvironment"
-        case .invalidApiToken:
-            return "invalidApiToken"
-        case .apiTokenNotSupported:
-            return "apiTokenNotSupported"
         case .invalidSiteApiKey:
             return "invalidSiteApiKey"
         case .invalidRegionEndpoint:

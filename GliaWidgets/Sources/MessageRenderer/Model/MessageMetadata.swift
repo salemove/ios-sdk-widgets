@@ -1,6 +1,6 @@
-import SalemoveSDK
+import GliaCoreSDK
 
-public typealias MessageMetadata = SalemoveSDK.Message.Metadata
+public typealias MessageMetadata = GliaCoreSDK.Message.Metadata
 
 struct HtmlMetadata: Decodable {
     let html: String

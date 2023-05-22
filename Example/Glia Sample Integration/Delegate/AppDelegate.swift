@@ -1,4 +1,4 @@
-import SalemoveSDK
+import GliaCoreSDK
 import SwiftUI
 
 class AppDelegate: NSObject, UIApplicationDelegate {

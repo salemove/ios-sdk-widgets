@@ -12,8 +12,8 @@ extension Glia {
     ///   - sceneProvider: Used to provide `UIWindowScene` to the framework. Defaults to the first active foreground scene.
     ///
     /// - throws:
-    ///   - `SalemoveSDK.ConfigurationError.invalidSite`
-    ///   - `SalemoveSDK.ConfigurationError.invalidEnvironment`
+    ///   - `GliaCoreSDK.ConfigurationError.invalidSite`
+    ///   - `GliaCoreSDK.ConfigurationError.invalidEnvironment`
     ///   - `GliaError.engagementExists
     ///   - `GliaError.sdkIsNotConfigured`
     ///

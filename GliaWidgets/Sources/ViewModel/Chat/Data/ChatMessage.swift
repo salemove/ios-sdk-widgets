@@ -1,5 +1,5 @@
 import Foundation
-import SalemoveSDK
+import GliaCoreSDK
 
 enum ChatMessageSender: Int, Codable {
     case visitor = 0
