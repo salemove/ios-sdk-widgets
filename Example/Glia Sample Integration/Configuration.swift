@@ -1,5 +1,5 @@
 import GliaWidgets
-import SalemoveSDK
+import GliaCoreSDK
 
 // Configure the Glia class
 final class GliaConfiguration {

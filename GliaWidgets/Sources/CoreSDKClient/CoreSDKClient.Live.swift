@@ -1,4 +1,4 @@
-import SalemoveSDK
+import GliaCoreSDK
 
 extension CoreSdkClient {
     static let live: Self = {

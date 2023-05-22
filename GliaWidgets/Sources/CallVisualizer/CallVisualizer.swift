@@ -1,6 +1,6 @@
 import Foundation
 import UIKit
-import SalemoveSDK
+import GliaCoreSDK
 
 /// Call Visualizer is a feature for operators to transfer their visitors from conventional comunication methods,
 /// such as a phone call, to Glia solution. The visitor needs to provide to the operator a visitor code,

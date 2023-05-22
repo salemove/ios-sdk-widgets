@@ -1,5 +1,5 @@
 import Foundation
-import SalemoveSDK
+import GliaCoreSDK
 
 extension ChatViewModel {
     func sendChoiceCardResponse(_ option: ChatChoiceCardOption, to messageId: String) {

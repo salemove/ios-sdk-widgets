@@ -1,7 +1,7 @@
 import UIKit
 import PureLayout
 import GliaWidgets
-import SalemoveSDK
+import GliaCoreSDK
 
 class ViewController: UIViewController {
     typealias Authentication = GliaWidgets.Glia.Authentication
@@ -163,11 +163,11 @@ extension ViewController {
     }
 
     func presentGlia(_ engagementKind: EngagementKind) throws {
-        let visitorContext: SalemoveSDK.VisitorContext? = configuration.visitorContext
+        let visitorContext: GliaCoreSDK.VisitorContext? = configuration.visitorContext
             .map(\.assetId)
-            .map(SalemoveSDK.VisitorContext.AssetId.init(rawValue:))
-            .map(SalemoveSDK.VisitorContext.ContextType.assetId)
-            .map(SalemoveSDK.VisitorContext.init)
+            .map(GliaCoreSDK.VisitorContext.AssetId.init(rawValue:))
+            .map(GliaCoreSDK.VisitorContext.ContextType.assetId)
+            .map(GliaCoreSDK.VisitorContext.init)
 
         Glia.sharedInstance.onEvent = { event in
             switch event {
@@ -403,12 +403,13 @@ extension ViewController {
         }
 
         var enteredJwt: String = ""
+        var enteredAccessToken: String = ""
 
         let createAuthorizationAction = UIAlertAction(
             title: "Create Authentication",
             style: .default
         ) { _ in
-            authentication.authenticate(with: enteredJwt) { [weak self] result in
+            authentication.authenticate(with: enteredJwt, accessToken: enteredAccessToken) { [weak self] result in
                 switch result {
                 case .success:
                     self?.renderAuthenticatedState(isAuthenticated: true)
@@ -432,6 +433,12 @@ extension ViewController {
             }
         )
 
+        let accessTokenTextFieldDelegate = TextFieldDelegate(
+            textChanged: { text in
+                enteredAccessToken = text
+            }
+        )
+
         alertController.addTextField(
             configurationHandler: { textField in
                 textField.accessibilityIdentifier = "authentication_id_token_textfield"
@@ -443,13 +450,26 @@ extension ViewController {
             }
         )
 
+        alertController.addTextField(
+            configurationHandler: { textField in
+                textField.placeholder = "(Optional) Access token"
+                textField.accessibilityIdentifier = "authentication_access_token_textfield"
+                textField.addTarget(
+                    accessTokenTextFieldDelegate,
+                    action: #selector(accessTokenTextFieldDelegate.handleTextChanged(textField:)),
+                    for: .editingChanged
+                )
+            }
+        )
+
         let cancel = UIAlertAction(
             title: "Cancel",
             style: .cancel
-        ) { [jwtTextFieldDelegate] _ in
+        ) { [jwtTextFieldDelegate, accessTokenTextFieldDelegate] _ in
             // Keep strong reference to text field delegate
             // while alert is visible to keep it alive.
             _ = jwtTextFieldDelegate
+            _ = accessTokenTextFieldDelegate
         }
         cancel.accessibilityIdentifier = "cancel_authentication_alert_button"
 

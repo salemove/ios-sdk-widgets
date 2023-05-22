@@ -1,4 +1,4 @@
-import SalemoveSDK
+import GliaCoreSDK
 
 extension Glia {
     /// Deprecated.
@@ -68,6 +68,20 @@ extension Glia {
             theme: theme,
             features: features,
             sceneProvider: sceneProvider
+        )
+    }
+}
+
+extension Glia.Authentication {
+    @available(*, deprecated, message: "Use Glia.Authentication.authenticate(with:accessToken:completion:) instead.")
+    public func authenticate(
+        with idToken: IdToken,
+        completion: @escaping (Result<Void, Error>) -> Void
+    ) {
+        self.authenticateWithIdToken(
+            idToken,
+            nil,
+            completion
         )
     }
 }

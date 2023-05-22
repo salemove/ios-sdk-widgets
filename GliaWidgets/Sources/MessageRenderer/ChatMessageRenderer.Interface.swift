@@ -1,5 +1,5 @@
 import UIKit
-import SalemoveSDK
+import GliaCoreSDK
 
 /// Message renderer for AI custom cards.
 public struct MessageRenderer {

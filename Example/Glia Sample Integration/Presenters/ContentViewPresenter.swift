@@ -1,5 +1,5 @@
 import GliaWidgets
-import SalemoveSDK
+import GliaCoreSDK
 import SwiftUI
 
 class ContentViewPresenter: ObservableObject {
@@ -108,7 +108,7 @@ class ContentViewPresenter: ObservableObject {
 }
 
 // Check if the desired queue is open and available for a certain media.
-private extension SalemoveSDK.Queue {
+private extension GliaCoreSDK.Queue {
     func isMediaTypeSupported(_ mediaType: MediaType) -> Bool {
         state.status == .open && state.media.contains(mediaType)
     }
