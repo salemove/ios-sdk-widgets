@@ -9,7 +9,7 @@ extension FileDownload.Environment {
         },
         fileManager: .failing,
         gcd: .failing,
-        localFileThumbnailQueue: .failing,
-        uiImage: .failing
+        uiScreen: .failing,
+        createThumbnailGenerator: { .failing }
     )
 }
