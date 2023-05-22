@@ -54,8 +54,8 @@ class FileDownload {
                 environment: .init(
                     fileManager: environment.fileManager,
                     gcd: environment.gcd,
-                    localFileThumbnailQueue: environment.localFileThumbnailQueue,
-                    uiImage: environment.uiImage
+                    uiScreen: environment.uiScreen,
+                    thumbnailGenerator: environment.createThumbnailGenerator()
                 )
             )
             state.value = .downloaded(localFile)
@@ -96,8 +96,8 @@ class FileDownload {
                     environment: .init(
                         fileManager: self.environment.fileManager,
                         gcd: self.environment.gcd,
-                        localFileThumbnailQueue: self.environment.localFileThumbnailQueue,
-                        uiImage: self.environment.uiImage
+                        uiScreen: self.environment.uiScreen,
+                        thumbnailGenerator: self.environment.createThumbnailGenerator()
                     )
                 )
                 self.storage.store(data.data, for: storageID)

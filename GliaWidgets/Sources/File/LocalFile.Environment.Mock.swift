@@ -3,8 +3,8 @@ extension LocalFile.Environment {
     static let mock = Self(
         fileManager: .mock,
         gcd: .mock,
-        localFileThumbnailQueue: .mock(),
-        uiImage: .mock
+        uiScreen: .mock,
+        thumbnailGenerator: .mock
     )
 }
 #endif
