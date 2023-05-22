@@ -353,6 +353,10 @@
 		84D2293328C6240000F64FE7 /* WKNavigationPolicyProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D2293228C6240000F64FE7 /* WKNavigationPolicyProviderTests.swift */; };
 		84D2293C28D1FC4B00F64FE7 /* ChatViewModel+CustomCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D2293B28D1FC4B00F64FE7 /* ChatViewModel+CustomCard.swift */; };
 		84D2293E28D36B2A00F64FE7 /* UIColor+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D2293D28D36B2A00F64FE7 /* UIColor+Hex.swift */; };
+		84D5B9602A14DF2400807F92 /* QuickLookBased.Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D5B95F2A14DF2400807F92 /* QuickLookBased.Interface.swift */; };
+		84D5B9622A14F33400807F92 /* QuickLookBased.Live.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D5B9612A14F33400807F92 /* QuickLookBased.Live.swift */; };
+		84D5B9642A151B6100807F92 /* QuickLookBased.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D5B9632A151B6100807F92 /* QuickLookBased.Mock.swift */; };
+		84D5B9662A15204400807F92 /* QuickLookBased.Failing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D5B9652A15204400807F92 /* QuickLookBased.Failing.swift */; };
 		84EFB05B28AA90220005E270 /* CustomCardContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EFB05A28AA90220005E270 /* CustomCardContainerView.swift */; };
 		84EFB05D28AA992D0005E270 /* WebMessageCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EFB05C28AA992D0005E270 /* WebMessageCardView.swift */; };
 		9A0B7D1727DA6B74006D8637 /* Interactor.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A0B7D1627DA6B74006D8637 /* Interactor.Mock.swift */; };
@@ -977,6 +981,10 @@
 		84D2293228C6240000F64FE7 /* WKNavigationPolicyProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WKNavigationPolicyProviderTests.swift; sourceTree = "<group>"; };
 		84D2293B28D1FC4B00F64FE7 /* ChatViewModel+CustomCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatViewModel+CustomCard.swift"; sourceTree = "<group>"; };
 		84D2293D28D36B2A00F64FE7 /* UIColor+Hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Hex.swift"; sourceTree = "<group>"; };
+		84D5B95F2A14DF2400807F92 /* QuickLookBased.Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLookBased.Interface.swift; sourceTree = "<group>"; };
+		84D5B9612A14F33400807F92 /* QuickLookBased.Live.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLookBased.Live.swift; sourceTree = "<group>"; };
+		84D5B9632A151B6100807F92 /* QuickLookBased.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLookBased.Mock.swift; sourceTree = "<group>"; };
+		84D5B9652A15204400807F92 /* QuickLookBased.Failing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLookBased.Failing.swift; sourceTree = "<group>"; };
 		84EFB05A28AA90220005E270 /* CustomCardContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCardContainerView.swift; sourceTree = "<group>"; };
 		84EFB05C28AA992D0005E270 /* WebMessageCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebMessageCardView.swift; sourceTree = "<group>"; };
 		9131A19E516E338E979C0C43 /* Pods_SnapshotTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SnapshotTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1464,6 +1472,7 @@
 				9A19926F27D3BCAE00161AAE /* GCD.Failing.swift */,
 				9A3E1D8327B67F1B005634EB /* Helper.swift */,
 				9A3E1D9C27BA7741005634EB /* FoundationBased.Failing.swift */,
+				84D5B9652A15204400807F92 /* QuickLookBased.Failing.swift */,
 				9A1992E627D66C7400161AAE /* UIKitBased.Failing.swift */,
 			);
 			path = GliaWidgetsTests;
@@ -1804,6 +1813,7 @@
 		1A60AFC12566857200E53F53 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				84D5B95E2A14DEFD00807F92 /* QuickLookBased */,
 				C05E3EDC29C99DEE0013BC81 /* ProximityManager */,
 				C4794E6E270673FC00F989F7 /* Animation */,
 				75940965298D38B6008B173A /* BundleManaging */,
@@ -2874,6 +2884,16 @@
 			path = WKNavigationPolicyProvider;
 			sourceTree = "<group>";
 		};
+		84D5B95E2A14DEFD00807F92 /* QuickLookBased */ = {
+			isa = PBXGroup;
+			children = (
+				84D5B95F2A14DF2400807F92 /* QuickLookBased.Interface.swift */,
+				84D5B9612A14F33400807F92 /* QuickLookBased.Live.swift */,
+				84D5B9632A151B6100807F92 /* QuickLookBased.Mock.swift */,
+			);
+			path = QuickLookBased;
+			sourceTree = "<group>";
+		};
 		84EFB05928AA8FFD0005E270 /* CustomCard */ = {
 			isa = PBXGroup;
 			children = (
@@ -3785,6 +3805,7 @@
 				7594095A298D386F008B173A /* NSLayoutConstraint.Extensions.swift in Sources */,
 				C0D2F06829A4B71C00803B47 /* VideoCallViewModel.Mock.swift in Sources */,
 				AFEF5C6F29928DB0005C3D8D /* SecureConversations.FileUploadView.swift in Sources */,
+				84D5B9622A14F33400807F92 /* QuickLookBased.Live.swift in Sources */,
 				75940953298D3832008B173A /* Command.swift in Sources */,
 				75C1143429A3F58E0004E5F7 /* RemoteConfiguration+SecureConversationsWelcomeScreen.swift in Sources */,
 				C4F176CE261D1543009D9F07 /* ChatFileDownloadContentStyle.swift in Sources */,
@@ -3850,6 +3871,7 @@
 				C4C2A1702670E848003AC039 /* UIViewController+Extensions.swift in Sources */,
 				C07FA04029AF542A00E9FB7F /* ScreenSharingViewStyle+Mock.swift in Sources */,
 				755D186D29A6A5E30009F5E8 /* WelcomeStyle+MessageTextViewStyle.swift in Sources */,
+				84D5B9642A151B6100807F92 /* QuickLookBased.Mock.swift in Sources */,
 				311CAFCD29F8FAE20067B59F /* SecureConversations.TranscriptModel+CustomCard.swift in Sources */,
 				9A19926B27D3BA8700161AAE /* ViewFactory.Environment.Mock.swift in Sources */,
 				1A6EB05725A717CB0007081A /* ChatMessage.swift in Sources */,
@@ -4008,6 +4030,7 @@
 				3100EEF8293E276E00D57F71 /* SecureConversations.WelcomeViewModel.swift in Sources */,
 				1A5F8182258B4F0E00A605DA /* OutgoingMessage.swift in Sources */,
 				AFA2FDF428907F0C00428E6D /* BubbleView.Mock.swift in Sources */,
+				84D5B9602A14DF2400807F92 /* QuickLookBased.Interface.swift in Sources */,
 				3115D45C29A4FD3F00D99561 /* SecureConversations.Availability.swift in Sources */,
 				9A19926E27D3BB7800161AAE /* Theme.Mock.swift in Sources */,
 				9AE9E4B127E0E45200BFE239 /* CallViewController.Mock.swift in Sources */,
@@ -4146,6 +4169,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C03A8049292BC8DB00DDECA6 /* CallViewControllerTests.swift in Sources */,
+				84D5B9662A15204400807F92 /* QuickLookBased.Failing.swift in Sources */,
 				AF6AB34B2989517100003645 /* FileUploader.Failing.swift in Sources */,
 				EB03B00E27FFF6DD0058F6B1 /* CallViewTests.swift in Sources */,
 				3197F7AD29E6A5C8008EE9F7 /* SecureConversations.FileUploadListView.Mock.swift in Sources */,

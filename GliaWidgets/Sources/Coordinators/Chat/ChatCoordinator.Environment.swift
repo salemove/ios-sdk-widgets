@@ -9,8 +9,8 @@ extension ChatCoordinator {
         var data: FoundationBased.Data
         var date: () -> Date
         var gcd: GCD
-        var localFileThumbnailQueue: FoundationBased.OperationQueue
-        var uiImage: UIKitBased.UIImage
+        var uiScreen: UIKitBased.UIScreen
+        var createThumbnailGenerator: () -> QuickLookBased.ThumbnailGenerator
         var createFileDownload: FileDownloader.CreateFileDownload
         var fromHistory: () -> Bool
         var fetchSiteConfigurations: CoreSdkClient.FetchSiteConfigurations

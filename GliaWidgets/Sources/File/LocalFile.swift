@@ -1,6 +1,7 @@
 import UIKit
+import QuickLook
 
-class LocalFile {
+final class LocalFile {
     lazy var fileExtension: String = { return url.pathExtension }()
     lazy var fileName: String = { return url.lastPathComponent }()
     lazy var fileSize: Int64? = {
@@ -52,20 +53,15 @@ extension LocalFile {
             completion(thumbnail)
             return
         } else {
-            environment.localFileThumbnailQueue.addOperation { [weak self] in
-                guard let self = self else { return }
-                guard let image = self.environment.uiImage.imageWithContentsOfFileAtPath(
-                    self.url.standardizedFileURL.path
-                ) else {
-                    self.environment.gcd.mainQueue.async {
-                        completion(nil)
-                    }
-                    return
-                }
-                let thumbnail = image.resized(to: size)
-                self.thumbnail = thumbnail
-                self.environment.gcd.mainQueue.async {
-                    completion(thumbnail)
+            environment.thumbnailGenerator.createImageThumbnail(
+                fileURL: url,
+                size: size,
+                scale: environment.uiScreen.scale()
+            ) { [weak self] image in
+                let cropped = image?.resized(to: size)
+                self?.thumbnail = cropped
+                self?.environment.gcd.mainQueue.async {
+                    completion(cropped)
                 }
             }
         }

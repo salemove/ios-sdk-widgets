@@ -79,8 +79,8 @@ class FileUploader {
             environment: .init(
                 fileManager: environment.fileManager,
                 gcd: environment.gcd,
-                localFileThumbnailQueue: environment.localFileThumbnailQueue,
-                uiImage: environment.uiImage
+                uiScreen: environment.uiScreen,
+                thumbnailGenerator: environment.createThumbnailGenerator()
             )
         )
         let upload = FileUpload(
