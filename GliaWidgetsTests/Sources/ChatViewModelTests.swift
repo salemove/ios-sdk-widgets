@@ -1,5 +1,5 @@
 @testable import GliaWidgets
-import SalemoveSDK
+import GliaCoreSDK
 import XCTest
 
 class ChatViewModelTests: XCTestCase {
@@ -481,7 +481,7 @@ class ChatViewModelTests: XCTestCase {
 
 extension ChatChoiceCardOption {
     static func mock() throws -> ChatChoiceCardOption {
-        // SalemoveSDK.SingleChoiceOption has no available constructors but supports Codable
+        // GliaCoreSDK.SingleChoiceOption has no available constructors but supports Codable
         //  protocol, so I decided that this is the most convenient way to get the instance of.
         let json = """
         { "text": "choice card text", "value": "choice card value" }

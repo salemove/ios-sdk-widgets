@@ -1,5 +1,5 @@
 import UIKit
-import SalemoveSDK
+import GliaCoreSDK
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {

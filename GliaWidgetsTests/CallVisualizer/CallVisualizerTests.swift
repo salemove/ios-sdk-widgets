@@ -1,5 +1,5 @@
 import XCTest
-import SalemoveSDK
+import GliaCoreSDK
 @testable import GliaWidgets
 
 final class CallVisualizerTests: XCTestCase {
@@ -80,7 +80,7 @@ final class CallVisualizerTests: XCTestCase {
 
     // MARK: - Private
 
-    private func screenSharingState(status: SalemoveSDK.ScreenSharingStatus) -> CoreSdkClient.VisitorScreenSharingState {
+    private func screenSharingState(status: GliaCoreSDK.ScreenSharingStatus) -> CoreSdkClient.VisitorScreenSharingState {
         .init(status: status, localScreen: nil)
     }
 }

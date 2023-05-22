@@ -4,7 +4,8 @@ extension Glia {
         typealias Callback = (Result<Void, Error>) -> Void
         typealias GetVisitor = () -> Void
 
-        var authenticateWithIdToken: (_ idToken: IdToken, _ callback: @escaping Callback) -> Void
+
+        var authenticateWithIdToken: (_ idToken: IdToken, _ accessToken: AccessToken?, _ callback: @escaping Callback) -> Void
         var deauthenticateWithCallback: (@escaping Callback) -> Void
         var isAuthenticatedClosure: () -> Bool
     }
@@ -49,8 +50,11 @@ extension Glia {
         }
 
         return .init(
-            authenticateWithIdToken: { idToken, callback in
-                auth.authenticate(with: .init(rawValue: idToken)) { result in
+            authenticateWithIdToken: { idToken, accessToken, callback in
+                auth.authenticate(
+                    with: .init(rawValue: idToken),
+                    externalAccessToken: accessToken.map { .init(rawValue: $0) }
+                ) { result in
                     switch result {
                     case .success:
                         // Cleanup navigation and views.
@@ -85,18 +89,23 @@ extension Glia {
 
 extension Glia.Authentication {
     /// JWT token represented by `String`.
-   public typealias IdToken = String
+    public typealias IdToken = String
+    /// Access token represented by `String`.
+    public typealias AccessToken = String
 
     /// Authenticate visitor.
     /// - Parameters:
     /// - Parameter idToken: JWT token for visitor authentication.
+    /// - Parameter accessToken: Access token for visitor authentication.
     /// - Parameter completion: Completion handler.
     public func authenticate(
         with idToken: IdToken,
+        accessToken: AccessToken?,
         completion: @escaping (Result<Void, Error>) -> Void
     ) {
         self.authenticateWithIdToken(
             idToken,
+            accessToken,
             completion
         )
     }

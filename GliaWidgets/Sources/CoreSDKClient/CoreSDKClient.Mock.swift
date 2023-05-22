@@ -1,6 +1,6 @@
 #if DEBUG
 import Foundation
-import SalemoveSDK
+import GliaCoreSDK
 
 extension CoreSdkClient {
     static let mock = Self(

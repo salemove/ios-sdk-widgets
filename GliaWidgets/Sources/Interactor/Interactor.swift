@@ -378,8 +378,7 @@ extension Interactor: CoreSdkClient.Interactable {
         }
     }
 
-    func end() {
-
+    func end(with reason: CoreSdkClient.EngagementEndingReason) {
         currentEngagement = environment.coreSdk.getCurrentEngagement()
         state = isEngagementEndedByVisitor == true ? .ended(.byVisitor) : .ended(.byOperator)
     }
