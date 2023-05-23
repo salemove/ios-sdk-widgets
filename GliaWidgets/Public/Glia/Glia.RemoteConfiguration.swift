@@ -14,7 +14,6 @@ extension Glia {
     /// - throws:
     ///   - `SalemoveSDK.ConfigurationError.invalidSite`
     ///   - `SalemoveSDK.ConfigurationError.invalidEnvironment`
-    ///   - `SalemoveSDK.ConfigurationError.invalidAppToken`
     ///   - `GliaError.engagementExists
     ///   - `GliaError.sdkIsNotConfigured`
     ///

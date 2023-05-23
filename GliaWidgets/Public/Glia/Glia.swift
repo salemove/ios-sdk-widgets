@@ -177,7 +177,6 @@ public class Glia {
     /// - `SalemoveSDK.GeneralError.networkError`
     /// - `SalemoveSDK.ConfigurationError.invalidSite`
     /// - `SalemoveSDK.ConfigurationError.invalidEnvironment`
-    /// - `SalemoveSDK.ConfigurationError.invalidAppToken`
     /// - `SalemoveSDK.ConfigurationError.invalidApiToken`
     /// - `GliaError.sdkIsNotConfigured`
     ///
@@ -213,7 +212,6 @@ public class Glia {
     /// - `SalemoveSDK.GeneralError.networkError`
     /// - `SalemoveSDK.ConfigurationError.invalidSite`
     /// - `SalemoveSDK.ConfigurationError.invalidEnvironment`
-    /// - `SalemoveSDK.ConfigurationError.invalidAppToken`
     /// - `SalemoveSDK.ConfigurationError.invalidApiToken`
     /// - `GliaError.sdkIsNotConfigured`
     ///
