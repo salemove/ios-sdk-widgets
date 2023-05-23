@@ -481,7 +481,6 @@
 		AFA5E96229F2CF9400F13DB7 /* SecureConversations.TranscriptModel.DividedChatItemsForUnreadCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA5E96129F2CF9400F13DB7 /* SecureConversations.TranscriptModel.DividedChatItemsForUnreadCount.swift */; };
 		AFAB409229798BD4007F96CC /* SecureConversations.FileUploadListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFAB409129798BD4007F96CC /* SecureConversations.FileUploadListView.swift */; };
 		AFBBF5782851C391004993B3 /* Glia.Deprecated.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBBF5772851C391004993B3 /* Glia.Deprecated.swift */; };
-		AFBBF57A28522591004993B3 /* Configuration.Unavailable.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBBF57928522591004993B3 /* Configuration.Unavailable.swift */; };
 		AFC40C1C29965F0F001B4C53 /* SecureConversations.ChatWithTranscriptModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC40C1B29965F0F001B4C53 /* SecureConversations.ChatWithTranscriptModel.swift */; };
 		AFCF8A5A2A02A97100B7ABB3 /* ChatItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCF8A592A02A97100B7ABB3 /* ChatItemTests.swift */; };
 		AFCF8A5C2A02AB3000B7ABB3 /* OutgoingMessage.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCF8A5B2A02AB3000B7ABB3 /* OutgoingMessage.Mock.swift */; };
@@ -1112,7 +1111,6 @@
 		AFA5E96129F2CF9400F13DB7 /* SecureConversations.TranscriptModel.DividedChatItemsForUnreadCount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.TranscriptModel.DividedChatItemsForUnreadCount.swift; sourceTree = "<group>"; };
 		AFAB409129798BD4007F96CC /* SecureConversations.FileUploadListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.FileUploadListView.swift; sourceTree = "<group>"; };
 		AFBBF5772851C391004993B3 /* Glia.Deprecated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Glia.Deprecated.swift; sourceTree = "<group>"; };
-		AFBBF57928522591004993B3 /* Configuration.Unavailable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.Unavailable.swift; sourceTree = "<group>"; };
 		AFC40C1B29965F0F001B4C53 /* SecureConversations.ChatWithTranscriptModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.ChatWithTranscriptModel.swift; sourceTree = "<group>"; };
 		AFCF8A592A02A97100B7ABB3 /* ChatItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatItemTests.swift; sourceTree = "<group>"; };
 		AFCF8A5B2A02AB3000B7ABB3 /* OutgoingMessage.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutgoingMessage.Mock.swift; sourceTree = "<group>"; };
@@ -2496,7 +2494,6 @@
 			children = (
 				1AC7A7542582594200567FF8 /* Configuration.swift */,
 				75CF8D6029B3F1E400CB1524 /* Configuration+Mock.swift */,
-				AFBBF57928522591004993B3 /* Configuration.Unavailable.swift */,
 			);
 			path = Configuration;
 			sourceTree = "<group>";
@@ -3969,7 +3966,6 @@
 				845A28FC28AFF092008558EA /* URLScheme.swift in Sources */,
 				75F58EE127E7D5300065BA2D /* Survey.ViewController.Props.swift in Sources */,
 				754CC61527E27C42005676E9 /* Survey.Checkbox.swift in Sources */,
-				AFBBF57A28522591004993B3 /* Configuration.Unavailable.swift in Sources */,
 				1A4AD3CA256E864800468BFB /* ThemeColorStyle.swift in Sources */,
 				AFA2FDF228907E9D00428E6D /* GliaViewController.Mock.swift in Sources */,
 				9AB196DE27C3FFF400FD60AB /* Call.Environment.Mock.swift in Sources */,

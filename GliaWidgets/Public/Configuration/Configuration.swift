@@ -47,8 +47,6 @@ public struct Configuration {
 public extension Configuration {
     /// Site authorization method.
     enum AuthorizationMethod {
-        @available(*, deprecated, message: "Use `siteApiKey` authorization instead.")
-        case appToken(String)
         /// Site API key authorization.
         case siteApiKey(id: String, secret: String)
 
@@ -56,8 +54,6 @@ public extension Configuration {
             switch self {
             case .siteApiKey(let id, let secret):
                 return .siteApiKey(id: id, secret: secret)
-            case .appToken(let token):
-                return .appToken(token)
             }
         }
     }
