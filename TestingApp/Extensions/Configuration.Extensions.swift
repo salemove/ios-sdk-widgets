@@ -82,27 +82,21 @@ extension Configuration: Codable {
 
 extension Configuration.AuthorizationMethod: Codable {
     enum CodingKeys: String, CodingKey {
-        case id, secret, appToken
+        case id, secret
     }
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
-        if container.contains(.appToken) {
-            self = try .appToken(container.decode(String.self, forKey: .appToken))
-        } else {
-            self = try .siteApiKey(
-                id: container.decode(String.self, forKey: .id),
-                secret: container.decode(String.self, forKey: .secret)
-            )
-        }
+        self = try .siteApiKey(
+            id: container.decode(String.self, forKey: .id),
+            secret: container.decode(String.self, forKey: .secret)
+        )
     }
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         switch self {
-        case .appToken(let appToken):
-            try container.encode(appToken, forKey: .appToken)
         case let .siteApiKey(id, secret):
             try container.encode(id, forKey: .id)
             try container.encode(secret, forKey: .secret)
@@ -193,8 +187,6 @@ extension ConfigurationError: CustomStringConvertible {
             return "invalidSite"
         case .invalidEnvironment:
             return "invalidEnvironment"
-        case .invalidAppToken:
-            return "invalidAppToken"
         case .invalidApiToken:
             return "invalidApiToken"
         case .apiTokenNotSupported:
