@@ -14,7 +14,6 @@ extension Glia {
     /// - throws:
     ///   - `SalemoveSDK.ConfigurationError.invalidSite`
     ///   - `SalemoveSDK.ConfigurationError.invalidEnvironment`
-    ///   - `SalemoveSDK.ConfigurationError.invalidAppToken`
     ///   - `GliaError.engagementExists
     ///   - `GliaError.sdkIsNotConfigured`
     ///
@@ -70,7 +69,6 @@ extension Glia {
     ///   - `SalemoveSDK.ConfigurationError.invalidEnvironment`
     ///   - `SalemoveSDK.ConfigurationError.invalidRegionEndpoint`
     ///   - `SalemoveSDK.ConfigurationError.invalidSiteApiKey`
-    ///   - `SalemoveSDK.ConfigurationError.invalidAppToken`
     ///   - `GliaError.engagementExists`
     ///
     public func start(
