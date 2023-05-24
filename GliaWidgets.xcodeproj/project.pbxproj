@@ -237,6 +237,7 @@
 		755D187B29A6A7180009F5E8 /* WelcomeStyle+TitleImageStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755D187A29A6A7180009F5E8 /* WelcomeStyle+TitleImageStyle.swift */; };
 		755D187F29A6B1B90009F5E8 /* Glia+StartEngagement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755D187E29A6B1B90009F5E8 /* Glia+StartEngagement.swift */; };
 		7562B2ED28CBD9AE0040C784 /* Glia.RemoteConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7562B2EC28CBD9AE0040C784 /* Glia.RemoteConfiguration.swift */; };
+		756979C52A1E5E3C002ED254 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 756979C42A1E5E3C002ED254 /* Assets.xcassets */; };
 		756B8B1C2996B116001D2BB2 /* ChatCoordinator.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756B8B1B2996B116001D2BB2 /* ChatCoordinator.Environment.swift */; };
 		756B8B1E2996BAEA001D2BB2 /* HeaderButton.Props.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756B8B1D2996BAEA001D2BB2 /* HeaderButton.Props.swift */; };
 		756B8B202996EFA2001D2BB2 /* Header.Props.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756B8B1F2996EFA2001D2BB2 /* Header.Props.swift */; };
@@ -859,6 +860,7 @@
 		755D187A29A6A7180009F5E8 /* WelcomeStyle+TitleImageStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WelcomeStyle+TitleImageStyle.swift"; sourceTree = "<group>"; };
 		755D187E29A6B1B90009F5E8 /* Glia+StartEngagement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Glia+StartEngagement.swift"; sourceTree = "<group>"; };
 		7562B2EC28CBD9AE0040C784 /* Glia.RemoteConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Glia.RemoteConfiguration.swift; sourceTree = "<group>"; };
+		756979C42A1E5E3C002ED254 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		756B8B1B2996B116001D2BB2 /* ChatCoordinator.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCoordinator.Environment.swift; sourceTree = "<group>"; };
 		756B8B1D2996BAEA001D2BB2 /* HeaderButton.Props.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderButton.Props.swift; sourceTree = "<group>"; };
 		756B8B1F2996EFA2001D2BB2 /* Header.Props.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Header.Props.swift; sourceTree = "<group>"; };
@@ -1486,6 +1488,7 @@
 				1A4AD3D4256FE7DA00468BFB /* Extensions */,
 				1A205D7A25655CEC003AA3CD /* AppDelegate.swift */,
 				1A205D8525655CEE003AA3CD /* LaunchScreen.storyboard */,
+				756979C42A1E5E3C002ED254 /* Assets.xcassets */,
 				1A205D8825655CEE003AA3CD /* Info.plist */,
 				C4119E05268F41D1004DFEFB /* Main.storyboard */,
 			);
@@ -3464,6 +3467,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1A205D8725655CEE003AA3CD /* LaunchScreen.storyboard in Resources */,
+				756979C52A1E5E3C002ED254 /* Assets.xcassets in Resources */,
 				C4119E06268F41D1004DFEFB /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4532,6 +4536,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = TestingApp/TestingApp.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
@@ -4539,10 +4544,12 @@
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = TestingApp/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Glia Widgets";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.glia.sdk.widgets-example";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Widgets Example App (Bitrise)";
@@ -4557,20 +4564,26 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = TestingApp/TestingApp.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = XR3G5NDPNH;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = XR3G5NDPNH;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = TestingApp/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Glia Widgets";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.glia.sdk.widgets-example";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Widgets Example App (Bitrise)";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Widgets - TestingApp | AppStore";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
