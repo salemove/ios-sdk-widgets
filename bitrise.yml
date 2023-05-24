@@ -237,6 +237,27 @@ workflows:
     - fastlane@3:
         inputs:
         - lane: ios create_pr_for_dependencies_update
+  upload_to_appstore_connect:
+    steps:
+    - activate-ssh-key@4:
+        run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
+    - git-clone@8: {}
+    - cache-pull@2: {}
+    - certificate-and-profile-installer@1: {}
+    - cocoapods-install@2: {}
+    - set-xcode-build-number@1:
+        inputs:
+        - plist_path: TestingApp/Info.plist
+    - xcode-archive@4:
+        inputs:
+        - scheme: $APP_SCHEME
+        - team_id: $TEAM_ID
+        - distribution_method: app-store
+        - export_method: $BITRISE_EXPORT_METHOD
+    - deploy-to-bitrise-io@2: {}
+    - deploy-to-itunesconnect-application-loader@1:
+        inputs:
+        - api_issuer: 69a6de7f-8b71-47e3-e053-5b8c7c11a4d1
 app:
   envs:
   - opts:
