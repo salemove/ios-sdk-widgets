@@ -2,7 +2,7 @@ import Foundation
 import UIKit
 import SalemoveSDK
 
-/// Call Visualizer is a feature for operators to transfer their visitors from conventional comunication methods,
+/// Call Visualizer is a feature for operators to transfer their visitors from conventional communication methods,
 /// such as a phone call, to Glia solution. The visitor needs to provide to the operator a visitor code,
 /// which they will find in their app either via alert or embedded view. By telling the code to the operator, they can
 /// initiate engagement with the visitor directly through the app.
@@ -66,9 +66,9 @@ public final class CallVisualizer {
         self.environment = environment
     }
 
-    /// Show VisitorCode for current Visitor.
+    /// Show VisitorCode popup alert for current Visitor.
     ///
-    /// Call Visualizer Operators use the Visitor's code to start an Call Visualizer Engagement with the Visitor.
+    /// Call Visualizer Operators use the Visitor's code to start a Call Visualizer Engagement with the Visitor.
     ///
     /// Each Visitor code is generated on demand and is unique for every Visitor on a particular site. Upon the first time
     /// this function is called for a Visitor the code is generated and returned. For each successive call thereafter the
@@ -76,21 +76,35 @@ public final class CallVisualizer {
     /// Once Operator uses the Visitor code to initiate an engagement, the code will expire immediately. When the Visitor Code
     /// expires this function will return a new Visitor code.
     ///
-    /// Visitor code can be displayed in 2 ways:
-    /// - `Popup alert`
-    /// - `Embedded view`
+    /// - Parameter source: The current viewController to present from.
     ///
-    ///  The way of displaying is determined by the 'presentation' parameter. If choosing alert, the current viewController
-    ///  needs to be passed in as an associated value. If, however, embedding is chosen, the view into which you want to
-    ///  embed it has to be passed in as an associated value.
+    public func showVisitorCodeViewController(from source: UIViewController) {
+        coordinator.showVisitorCodeViewController(by: .alert(source))
+    }
+
+    /// Show VisitorCode embedded view for current Visitor.
     ///
-    ///  If embedded option is chosen, `onEngagementAccepted` callback can be used, that is called when engagement
-    ///  has been accepted. One of the use cases may be calling for visitor code again, because in the moment when engagement
-    ///  was accepted, the displayed visitor code becomes obsolete.
-    public func showVisitorCodeViewController(
-        by presentation: Presentation
+    /// Call Visualizer Operators use the Visitor's code to start a Call Visualizer Engagement with the Visitor.
+    ///
+    /// Each Visitor code is generated on demand and is unique for every Visitor on a particular site. Upon the first time
+    /// this function is called for a Visitor the code is generated and returned. For each successive call thereafter the
+    /// same code will be returned as long as the code has not expired. During that time the code can be used to initiate an engagement.
+    /// Once Operator uses the Visitor code to initiate an engagement, the code will expire immediately. When the Visitor Code
+    /// expires this function will return a new Visitor code.
+    ///
+    /// - Parameters:
+    ///   - container: The view into which you want to embed VisitorCode view.
+    ///   - onEngagementAccepted: callback can be used, that is called when engagement has been accepted.
+    ///   One of the use cases may be calling for visitor code again, because in the moment when engagement
+    ///   was accepted, the displayed visitor code becomes obsolete.
+    ///
+    public func embedVisitorCodeView(
+        into container: UIView,
+        onEngagementAccepted: @escaping () -> Void
     ) {
-        coordinator.showVisitorCodeViewController(by: presentation)
+        coordinator.showVisitorCodeViewController(
+            by: .embedded(container, onEngagementAccepted: onEngagementAccepted)
+        )
     }
 }
 

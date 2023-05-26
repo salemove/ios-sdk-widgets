@@ -1,7 +1,7 @@
 import UIKit
 
 extension CallVisualizer {
-    public enum Presentation {
+    enum Presentation {
         case alert(UIViewController)
         case embedded(
             UIView,
