@@ -100,7 +100,10 @@ class ViewController: UIViewController {
     }
 
     @IBAction private func clearSessionTapped() {
-        Glia.sharedInstance.clearVisitorSession()
+        Glia.sharedInstance.clearVisitorSession { [weak self] result in
+            guard case let .failure(error) = result else { return }
+            self?.alert(message: "The operation couldn't be completed. '\(error)'.")
+        }
     }
 
     @IBAction private func configureSDKTapped() {
@@ -510,6 +513,8 @@ extension ViewController {
             self.alert(message: error.reason)
         } catch let error as ConfigurationError {
             self.alert(message: "Configuration error: '\(error)'.")
+        } catch let error as GliaError {
+            self.alert(message: "The operation couldn't be completed. '\(error)'.")
         } catch {
             self.alert(message: error.localizedDescription)
         }
