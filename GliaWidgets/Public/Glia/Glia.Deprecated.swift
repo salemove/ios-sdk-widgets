@@ -70,4 +70,23 @@ extension Glia {
             sceneProvider: sceneProvider
         )
     }
+
+    /// Deprecated, use `clearVisitorSession(_:)` instead.
+    @available(
+        *,
+         deprecated,
+         message: "Use clearVisitorSession(_:) instead."
+    )
+    public func clearVisitorSession() {
+        if environment.coreSdk.getCurrentEngagement() != nil {
+            print("⚠️ Don't call `clearVisitorSession` during active engagement. Otherwise, it might break the engagement interaction.")
+        }
+        environment.coreSdk.clearSession()
+    }
+
+    /// Deprecated, use ``callVisualizer.showVisitorCodeViewController`` instead.
+    @available(*, deprecated, message: "Deprecated, use ``CallVisualizer.showVisitorCodeViewController`` instead.")
+    public func requestVisitorCode(completion: @escaping (Result<VisitorCode, Swift.Error>) -> Void) {
+        _ = environment.coreSdk.requestVisitorCode(completion)
+    }
 }

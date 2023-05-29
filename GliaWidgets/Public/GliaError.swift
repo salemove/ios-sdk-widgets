@@ -5,4 +5,5 @@ public enum GliaError: Error {
     case sdkIsNotConfigured
     case callVisualizerEngagementExists
     case configuringDuringEngagementIsNotAllowed
+    case clearingVisitorSessionDuringEngagementIsNotAllowed
 }
