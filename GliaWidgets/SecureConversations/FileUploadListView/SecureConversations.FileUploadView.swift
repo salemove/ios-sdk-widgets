@@ -58,6 +58,7 @@ extension SecureConversations {
             progressView.layer.cornerRadius = 4
 
             removeButton.addTarget(self, action: #selector(remove), for: .touchUpInside)
+            removeButton.accessibilityIdentifier = "secureConversations_remove_attachment_button"
             isAccessibilityElement = true
         }
 
@@ -137,6 +138,7 @@ extension SecureConversations {
                 infoLabel.text = nil
                 stateLabel.text = nil
                 accessibilityValue = nil
+                accessibilityIdentifier = nil
             case let .uploading(progress, localFile):
                 filePreviewView.props = .init(style: style.filePreview, kind: .file(localFile))
                 infoLabel.text = localFile.fileInfoString
@@ -154,6 +156,7 @@ extension SecureConversations {
                     to: infoLabel.text,
                     accessibility: style.accessibility
                 )
+                accessibilityIdentifier = "secureConversations_file_attachment_uploading"
             case let .uploaded(localFile):
                 filePreviewView.props = .init(style: style.filePreview, kind: .file(localFile))
                 infoLabel.text = localFile.fileInfoString
@@ -170,6 +173,7 @@ extension SecureConversations {
                     to: infoLabel.text,
                     accessibility: style.accessibility
                 )
+                accessibilityIdentifier = "secureConversations_file_attachment_ready_to_send"
             case .error(let error):
                 filePreviewView.props = .init(style: style.filePreview, kind: .error)
                 infoLabel.text = errorText(from: style.error, for: error)
@@ -182,6 +186,7 @@ extension SecureConversations {
                 progressView.tintColor = style.errorProgressColor
                 progressView.progress = 1.0
                 accessibilityValue = infoLabel.text
+                accessibilityIdentifier = "secureConversations_file_attachment_uploading_error_\(error.accessibilityIdentifierSuffix)"
             }
             accessibilityLabel = stateLabel.text
         }
@@ -405,6 +410,16 @@ extension SecureConversations.FileUploadView.Props {
                 }
             default:
                 self = .generic
+            }
+        }
+
+        var accessibilityIdentifierSuffix: String {
+            switch self {
+            case .fileTooBig: return "file_too_big"
+            case .unsupportedFileType: return "unsupported_file_type"
+            case .safetyCheckFailed: return "safety_check_failed"
+            case .network: return "network"
+            case .generic: return "generic"
             }
         }
     }
