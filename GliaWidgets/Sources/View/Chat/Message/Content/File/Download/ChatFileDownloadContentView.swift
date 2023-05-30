@@ -111,6 +111,8 @@ class ChatFileDownloadContentView: ChatFileContentView {
                 accessibilityValue = sharedProperties.value
             }
 
+            accessibilityIdentifier = download.file.name.map { "chat_message_file_\($0)_download" }
+
         case .downloading(progress: let progress):
             filePreviewView.kind = .fileExtension(download.file.fileExtension)
             infoLabel.text = download.file.fileInfoString
@@ -120,6 +122,8 @@ class ChatFileDownloadContentView: ChatFileContentView {
             progressView.tintColor = style.progressColor
             progressView.progress = Float(progress.value)
             progressView.isHidden = false
+
+            accessibilityIdentifier = download.file.name.map { "chat_message_file_\($0)_downloading" }
 
             let percentValue: (Double) -> String = { String(Int($0 * 100)) }
             let downloadingStateFormat = style.stateAccessibility.downloadingState
@@ -159,6 +163,8 @@ class ChatFileDownloadContentView: ChatFileContentView {
                 accessibilityValue = sharedProperties.value
             }
 
+            accessibilityIdentifier = download.file.name.map { "chat_message_file_\($0)_downloaded" }
+
         case .error:
             filePreviewView.kind = .error
             infoLabel.text = download.file.fileInfoString
@@ -176,6 +182,8 @@ class ChatFileDownloadContentView: ChatFileContentView {
             } else {
                 accessibilityValue = sharedProperties.value
             }
+
+            accessibilityIdentifier = download.file.name.map { "chat_message_file_\($0)_error" }
         }
         accessibilityLabel = sharedProperties.label
     }
