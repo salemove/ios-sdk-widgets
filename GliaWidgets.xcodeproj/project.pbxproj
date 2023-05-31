@@ -3619,7 +3619,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "find -L ${SRCROOT}/TestingApp \\\n    -type f \\\n    -name \"*.json\" \\\n    | xargs -t -I {} \\\n    cp {} ${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\n";
+			shellScript = "mkdir -p ${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/UnifiedUI/\nfind -L ${SRCROOT}/TestingApp/UnifiedUI \\\n    -type f \\\n    -name \"*.json\" \\\n    | xargs -t -I {} \\\n    cp {} ${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/UnifiedUI\n";
 		};
 		9A1BD2C2282932F500089691 /* Write SnapshotTests/Changes.diff */ = {
 			isa = PBXShellScriptBuildPhase;
