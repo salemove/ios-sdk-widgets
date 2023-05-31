@@ -285,7 +285,7 @@ extension ViewController {
     }
 
     private func jsonNames() -> [String] {
-        let paths = Bundle.main.paths(forResourcesOfType: "json", inDirectory: nil)
+        let paths = Bundle.main.paths(forResourcesOfType: "json", inDirectory: "UnifiedUI")
         return paths
             .compactMap(URL.init(string:))
             .compactMap {
