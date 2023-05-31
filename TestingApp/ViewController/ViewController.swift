@@ -412,7 +412,10 @@ extension ViewController {
             title: "Create Authentication",
             style: .default
         ) { _ in
-            authentication.authenticate(with: enteredJwt, accessToken: enteredAccessToken) { [weak self] result in
+            authentication.authenticate(
+                with: enteredJwt,
+                accessToken: enteredAccessToken.isEmpty ? nil : enteredAccessToken
+            ) { [weak self] result in
                 switch result {
                 case .success:
                     self?.renderAuthenticatedState(isAuthenticated: true)
