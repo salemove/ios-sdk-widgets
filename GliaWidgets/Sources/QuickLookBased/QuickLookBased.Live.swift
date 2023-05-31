@@ -23,7 +23,7 @@ extension QuickLookBased.ThumbnailGenerator {
         let request = QLThumbnailGenerator.Request(
             fileAt: fileURL.standardizedFileURL,
             size: newSize,
-            scale: scale,
+            scale: 1,
             representationTypes: .thumbnail
         )
         generateBestRepresentation(request) { thumbnail, error in
