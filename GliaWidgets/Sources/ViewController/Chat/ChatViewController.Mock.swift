@@ -31,7 +31,7 @@ extension ChatViewController {
     }
 
     // MARK: - Messages from Chat Storage
-    static func mockHistoryMessagesScreen() -> ChatViewController {
+    static func mockHistoryMessagesScreen(theme: Theme? = nil) -> ChatViewController {
         var chatViewModelEnv = ChatViewModel.Environment.mock
         var fileManager = FoundationBased.FileManager.mock
         fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
@@ -192,7 +192,10 @@ extension ChatViewController {
         var factoryEnv = ViewFactory.Environment.mock
         factoryEnv.data.dataWithContentsOfFileUrl = { _ in UIImage.mock.pngData() ?? Data() }
         factoryEnv.imageViewCache.getImageForKey = { _ in  .mock }
-        let viewFactory = ViewFactory.mock(environment: factoryEnv)
+        let viewFactory = ViewFactory.mock(
+            theme: theme ?? .mock(),
+            environment: factoryEnv
+        )
         return .mock(chatViewModel: chatViewModel, viewFactory: viewFactory)
     }
 
