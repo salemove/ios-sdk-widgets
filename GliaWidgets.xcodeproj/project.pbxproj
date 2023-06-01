@@ -485,6 +485,8 @@
 		AFC40C1C29965F0F001B4C53 /* SecureConversations.ChatWithTranscriptModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC40C1B29965F0F001B4C53 /* SecureConversations.ChatWithTranscriptModel.swift */; };
 		AFCF8A5A2A02A97100B7ABB3 /* ChatItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCF8A592A02A97100B7ABB3 /* ChatItemTests.swift */; };
 		AFCF8A5C2A02AB3000B7ABB3 /* OutgoingMessage.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCF8A5B2A02AB3000B7ABB3 /* OutgoingMessage.Mock.swift */; };
+		AFE9893D2A279C63004B5524 /* ThemeRemoteConfigurationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFE9893C2A279C63004B5524 /* ThemeRemoteConfigurationTests.swift */; };
+		AFE989412A28652F004B5524 /* unified_sample.json in Resources */ = {isa = PBXBuildFile; fileRef = AFE989402A28652F004B5524 /* unified_sample.json */; };
 		AFEF5C6F29928DB0005C3D8D /* SecureConversations.FileUploadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFEF5C6E29928DB0005C3D8D /* SecureConversations.FileUploadView.swift */; };
 		AFEF5C7129929601005C3D8D /* SecureConversations.FilePreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFEF5C7029929601005C3D8D /* SecureConversations.FilePreviewView.swift */; };
 		AFEF5C7429929A8D005C3D8D /* SecureConversations.FileUploadListViewModel.Environment.Failing.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFEF5C7329929A8D005C3D8D /* SecureConversations.FileUploadListViewModel.Environment.Failing.swift */; };
@@ -1116,6 +1118,8 @@
 		AFC40C1B29965F0F001B4C53 /* SecureConversations.ChatWithTranscriptModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.ChatWithTranscriptModel.swift; sourceTree = "<group>"; };
 		AFCF8A592A02A97100B7ABB3 /* ChatItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatItemTests.swift; sourceTree = "<group>"; };
 		AFCF8A5B2A02AB3000B7ABB3 /* OutgoingMessage.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutgoingMessage.Mock.swift; sourceTree = "<group>"; };
+		AFE9893C2A279C63004B5524 /* ThemeRemoteConfigurationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeRemoteConfigurationTests.swift; sourceTree = "<group>"; };
+		AFE989402A28652F004B5524 /* unified_sample.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = unified_sample.json; sourceTree = "<group>"; };
 		AFEF5C6E29928DB0005C3D8D /* SecureConversations.FileUploadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.FileUploadView.swift; sourceTree = "<group>"; };
 		AFEF5C7029929601005C3D8D /* SecureConversations.FilePreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.FilePreviewView.swift; sourceTree = "<group>"; };
 		AFEF5C7329929A8D005C3D8D /* SecureConversations.FileUploadListViewModel.Environment.Failing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.FileUploadListViewModel.Environment.Failing.swift; sourceTree = "<group>"; };
@@ -2906,6 +2910,7 @@
 		9A1992CE27D61F5400161AAE /* SnapshotTests */ = {
 			isa = PBXGroup;
 			children = (
+				AFE989402A28652F004B5524 /* unified_sample.json */,
 				846E822728996A5C008EFBF0 /* AlertViewControllerTests.swift */,
 				9AB3401227F71D5D006E0FE2 /* BubbleViewVoiceOverTests.swift */,
 				9AE9E4B427E0EE2E00BFE239 /* CallViewControllerVoiceOverTests.swift */,
@@ -2918,6 +2923,7 @@
 				8458769E2823FD18007AC3DF /* SurveyViewControllerVoiceOverTests.swift */,
 				C07FA04D29B0E41A00E9FB7F /* VideoCallViewControllerTests.swift */,
 				C07FA04E29B0E41A00E9FB7F /* VisitorCodeViewControllerTests.swift */,
+				AFE9893C2A279C63004B5524 /* ThemeRemoteConfigurationTests.swift */,
 			);
 			path = SnapshotTests;
 			sourceTree = "<group>";
@@ -3476,6 +3482,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AFE989412A28652F004B5524 /* unified_sample.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4254,6 +4261,7 @@
 				846E822828996A5C008EFBF0 /* AlertViewControllerTests.swift in Sources */,
 				75CF8D9129C3A85C00CB1524 /* SecureConversationsWelcomeScreenTests.swift in Sources */,
 				9AE9E4B527E0EE2E00BFE239 /* CallViewControllerVoiceOverTests.swift in Sources */,
+				AFE9893D2A279C63004B5524 /* ThemeRemoteConfigurationTests.swift in Sources */,
 				C07FA05029B0E41A00E9FB7F /* VideoCallViewControllerTests.swift in Sources */,
 				9AB3401327F71D5D006E0FE2 /* BubbleViewVoiceOverTests.swift in Sources */,
 				9A1992D827D61F8100161AAE /* ChatViewControllerVoiceOverTests.swift in Sources */,
