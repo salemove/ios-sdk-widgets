@@ -1,5 +1,4 @@
----
-format_version: '8'
+format_version: "8"
 default_step_lib_source: https://github.com/bitrise-io/bitrise-steplib.git
 project_type: ios
 workflows:
@@ -43,37 +42,36 @@ workflows:
     - cocoapods-install@2: {}
     - recreate-user-schemes@1:
         inputs:
-        - project_path: "$BITRISE_PROJECT_PATH"
+        - project_path: $BITRISE_PROJECT_PATH
     - xcode-archive@4:
         inputs:
-        - scheme: "$APP_SCHEME"
-        - team_id: "$TEAM_ID"
-        - export_method: "$BITRISE_EXPORT_METHOD"
+        - scheme: $APP_SCHEME
+        - team_id: $TEAM_ID
+        - export_method: $BITRISE_EXPORT_METHOD
     - browserstack-upload@0:
         inputs:
-        - upload_path: "$BITRISE_IPA_PATH"
-        - custom_id: "$BROWSERSTACK_APP_ID"
+        - upload_path: $BITRISE_IPA_PATH
+        - custom_id: $BROWSERSTACK_APP_ID
         title: Upload test app to BrowserStack
     - deploy-to-bitrise-io@2:
         inputs:
-        - notify_email_list: "$NOTIFY_EMAILS"
+        - notify_email_list: $NOTIFY_EMAILS
     - cache-push@2: {}
-    description: Workflow for creating builds of master branch. Triggered on each
-      push to master branch, notifies over email + Slack (external)
+    description: Workflow for creating builds of master branch. Triggered on each push to master branch, notifies over email + Slack (external)
   deployment:
     steps:
     - activate-ssh-key@4: {}
     - git-clone@8:
         inputs:
-        - fetch_tags: 'yes'
+        - fetch_tags: "yes"
     - cache-pull@2: {}
     - cocoapods-install@2: {}
     - xcode-test@4:
         inputs:
-        - scheme: "$TEST_SCHEME"
+        - scheme: $TEST_SCHEME
     - git-tag@1:
         inputs:
-        - tag: "$NEW_VERSION"
+        - tag: $NEW_VERSION
     - script@1:
         inputs:
         - content: |-
@@ -89,13 +87,13 @@ workflows:
     - generate-changelog@0: {}
     - github-release@0:
         inputs:
-        - username: "$GITHUB_USERNAME"
+        - username: $GITHUB_USERNAME
         - name: Glia iOS Widgets SDK $NEW_VERSION
-        - body: "$BITRISE_CHANGELOG"
-        - api_token: "$GITHUB_API_TOKEN"
-        - draft: 'no'
-        - tag: "$NEW_VERSION"
-        - commit: "$GIT_CLONE_COMMIT_HASH"
+        - body: $BITRISE_CHANGELOG
+        - api_token: $GITHUB_API_TOKEN
+        - draft: "no"
+        - tag: $NEW_VERSION
+        - commit: $GIT_CLONE_COMMIT_HASH
     - script@1:
         inputs:
         - content: pod trunk push GliaWidgets.podspec --verbose --allow-warnings
@@ -112,34 +110,33 @@ workflows:
     - cocoapods-install@2: {}
     - recreate-user-schemes@1:
         inputs:
-        - project_path: "$BITRISE_PROJECT_PATH"
+        - project_path: $BITRISE_PROJECT_PATH
     - xcode-archive@4:
         inputs:
-        - scheme: "$APP_SCHEME"
-        - team_id: "$TEAM_ID"
-        - export_method: "$BITRISE_EXPORT_METHOD"
+        - scheme: $APP_SCHEME
+        - team_id: $TEAM_ID
+        - export_method: $BITRISE_EXPORT_METHOD
     - browserstack-upload@0:
         inputs:
-        - upload_path: "$BITRISE_IPA_PATH"
-        - custom_id: "$BROWSERSTACK_APP_ID"
+        - upload_path: $BITRISE_IPA_PATH
+        - custom_id: $BROWSERSTACK_APP_ID
         title: Upload test app to BrowserStack
     - deploy-to-bitrise-io@2:
         inputs:
-        - notify_email_list: "$NOTIFY_EMAILS"
+        - notify_email_list: $NOTIFY_EMAILS
     - slack@3:
         inputs:
-        - channel: "#tm-mobile-builds"
+        - channel: '#tm-mobile-builds'
         - text: iOS Build Succeeded!
-        - webhook_url_on_error: "$SLACK_IOS_WEBHOOK"
-        - channel_on_error: "#tm-mobile"
-        - text_on_error: "@mobile-caretaker iOS Build Failed! (master-build)"
+        - webhook_url_on_error: $SLACK_IOS_WEBHOOK
+        - channel_on_error: '#tm-mobile'
+        - text_on_error: '@mobile-caretaker iOS Build Failed! (master-build)'
         - emoji_on_error: "\U0001F4A5"
-        - color_on_error: "#d9482b"
+        - color_on_error: '#d9482b'
         - from_username_on_error: Bitrise
-        - webhook_url: "$SLACK_IOS_WEBHOOK"
+        - webhook_url: $SLACK_IOS_WEBHOOK
     - cache-push@2: {}
-    description: Workflow for creating builds of master branch. Triggered on each
-      push to master branch, notifies over email + Slack (external)
+    description: Workflow for creating builds of master branch. Triggered on each push to master branch, notifies over email + Slack (external)
   pull-request:
     steps:
     - activate-ssh-key@4:
@@ -155,26 +152,25 @@ workflows:
     - cocoapods-install@2: {}
     - recreate-user-schemes@1:
         inputs:
-        - project_path: "$BITRISE_PROJECT_PATH"
+        - project_path: $BITRISE_PROJECT_PATH
     - xcode-test@4:
         inputs:
-        - scheme: "$TEST_SCHEME"
+        - scheme: $TEST_SCHEME
     - xcode-test@4:
         inputs:
-        - scheme: "$SNAPSHOTS_SCHEME"
+        - scheme: $SNAPSHOTS_SCHEME
         - destination: platform=iOS Simulator,name=iPhone 13,OS=15.2
     - xcode-archive@4:
         inputs:
-        - scheme: "$APP_SCHEME"
-        - team_id: "$TEAM_ID"
+        - scheme: $APP_SCHEME
+        - team_id: $TEAM_ID
         - cache_level: none
-        - export_method: "$BITRISE_EXPORT_METHOD"
+        - export_method: $BITRISE_EXPORT_METHOD
     - deploy-to-bitrise-io@2:
         inputs:
-        - notify_email_list: ''
+        - notify_email_list: ""
     - cache-push@2: {}
-    description: Workflow for checking and building pull requests. Does not notify
-      anywhere, but shows on the pull request itself.
+    description: Workflow for checking and building pull requests. Does not notify anywhere, but shows on the pull request itself.
   update_dependencies:
     steps:
     - activate-ssh-key@4: {}
@@ -202,14 +198,14 @@ workflows:
         - plist_path: TestingApp/Info.plist
     - xcode-archive@4:
         inputs:
-        - scheme: "$APP_SCHEME"
-        - team_id: "$TEAM_ID"
+        - scheme: $APP_SCHEME
+        - team_id: $TEAM_ID
         - distribution_method: app-store
-        - export_method: "$BITRISE_EXPORT_METHOD"
+        - export_method: $BITRISE_EXPORT_METHOD
     - deploy-to-bitrise-io@2: {}
     - deploy-to-itunesconnect-application-loader@1:
         inputs:
-        - api_key_path: "$BITRISEIO_appStoreAPIKeyUrl_URL"
+        - api_key_path: $BITRISEIO_appStoreAPIKeyUrl_URL
         - api_issuer: 69a6de7f-8b71-47e3-e053-5b8c7c11a4d1
     envs:
     - opts:
@@ -244,10 +240,16 @@ app:
   - opts:
       is_expand: false
     SNAPSHOTS_SCHEME: SnapshotTests
+  - opts:
+      is_expand: false
+    GIT_AUTHOR_NAME: BitriseBot
+  - opts:
+      is_expand: false
+    GIT_AUTHOR_EMAIL: bitrise@glia.com
 trigger_map:
 - push_branch: master
   workflow: master-build
-- pull_request_target_branch: "*"
+- pull_request_target_branch: '*'
   workflow: pull-request
 meta:
   bitrise.io:
