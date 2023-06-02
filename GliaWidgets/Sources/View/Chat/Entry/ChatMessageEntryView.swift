@@ -123,6 +123,7 @@ class ChatMessageEntryView: BaseView {
         placeholderLabel.font = style.placeholderFont
         placeholderLabel.textColor = style.placeholderColor
         placeholderLabel.isUserInteractionEnabled = false
+        placeholderLabel.accessibilityIdentifier = "chat_textEntryPlaceholderLabel"
         updatePlaceholderText()
 
         pickMediaButton.tap = { [weak self] in self?.pickMediaTapped?() }
