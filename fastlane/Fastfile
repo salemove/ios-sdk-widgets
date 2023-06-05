@@ -24,10 +24,6 @@ platform :ios do
       base: 'development',
       team_reviewers: ["tm-mobile-ios"]
     )
-
-    sh("cp ../templates/GliaWidgets.podspec ../GliaWidgets.podspec")
-    sh("sed -i '' 's/\${WIDGETS_SDK_VERSION_SEMVER}/#{new_version}/' ../GliaWidgets.podspec")
-    
   end
 
   desc "Increments versions in Xcode projects and Podspec file "\
@@ -50,6 +46,9 @@ platform :ios do
       version: new_version
     )
 
+    sh("cp ../templates/GliaWidgets.podspec ../GliaWidgets.podspec")
+    sh("sed -i '' 's/\${WIDGETS_SDK_VERSION_SEMVER}/#{new_version}/' ../GliaWidgets.podspec")
+
     new_version
   end
 
@@ -70,6 +69,10 @@ platform :ios do
   desc "Creates a pull request in the repository with whatever changes have been made. "\
     "Used in tandem with Bitrise to update dependencies."
   lane :create_pr_for_dependencies_update do |options|
+    version = options[:version]
+    checksum = options[:checksum]
+    update_core_sdk_version(core_sdk_version: version, core_sdk_checksum: checksum)
+
     branch_name = 'dependencies-update'
     message = "Update dependencies declared in `Podfile`"
 
@@ -81,5 +84,24 @@ platform :ios do
       base: 'development',
       team_reviewers: ["tm-mobile-ios"]
     )
+  end
+
+  desc "Creates a pull request in the repository with updates to Core SDK version. "
+  lane :update_core_sdk_version do |options|
+    project_version = get_version_number(xcodeproj: 'GliaWidgets.xcodeproj', target: 'GliaWidgets')
+
+    core_sdk_version = options[:core_sdk_version]
+    UI.user_error!("No Core SDK version specified") unless !core_sdk_version.nil?
+
+    core_sdk_checksum = options[:core_sdk_checksum]
+    UI.user_error!("No Core SDK checksum specified") unless !core_sdk_checksum.nil?
+
+    sh("cp ../templates/GliaWidgets.podspec ../GliaWidgets.podspec")
+    sh("sed -i '' \"s/.*GliaCoreSDK.*/  s.dependency 'GliaCoreSDK', '#{core_sdk_version}'/g\" ../GliaWidgets.podspec")
+    sh("sed -i '' \"s/.*  s.version.*/  s.version               = '#{project_version}'/g\" ../GliaWidgets.podspec")
+
+    sh("cp ../templates/Package.swift ../Package.swift")
+    sh("sed -i '' 's/\${CORE_SDK_VERSION}/#{core_sdk_version}/' ../Package.swift")
+    sh("sed -i '' 's/\${CORE_SDK_CHECKSUM}/#{core_sdk_checksum}/' ../Package.swift")
   end
 end
