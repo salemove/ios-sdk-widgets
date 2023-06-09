@@ -247,7 +247,7 @@ app:
       is_expand: false
     GIT_AUTHOR_EMAIL: bitrise@glia.com
 trigger_map:
-- push_branch: master
+- push_branch: development
   workflow: master-build
 - pull_request_target_branch: '*'
   workflow: pull-request
