@@ -185,10 +185,23 @@ class ChatView: EngagementView {
         // could be a crash related to `UITableView.performBatchUpdates`
         // method.
         if animated, !tableView.visibleCells.isEmpty {
-            tableView.performBatchUpdates {
-                let indexPaths = (rows - count ..< rows)
-                    .map { IndexPath(row: $0, section: section) }
+            let indexPaths = (rows - count ..< rows)
+                .map { IndexPath(row: $0, section: section) }
+
+            // In case nothing (empty array) gets inserted, we early-out,
+            // otherwise crash will occur for `tableView.insertRows` or
+            // `tableView.performBatchUpdates`.
+            guard !indexPaths.isEmpty else { return }
+
+            // `tableView.performBatchUpdates` crashes in case if tableView
+            // size is .zero. That is why we perform `tableView.insertRows` without
+            // `tableView.performBatchUpdates` wrapping.
+            if tableView.frame.size == .zero {
                 tableView.insertRows(at: indexPaths, with: .fade)
+            } else {
+                tableView.performBatchUpdates {
+                    tableView.insertRows(at: indexPaths, with: .fade)
+                }
             }
         } else {
             refreshAll()
