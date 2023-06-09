@@ -21,7 +21,7 @@ platform :ios do
       repo: 'salemove/ios-sdk-widgets',
       title: message,
       head: branch_name,
-      base: 'master',
+      base: 'development',
       team_reviewers: ["tm-mobile-ios"]
     )
 
@@ -78,7 +78,7 @@ platform :ios do
       repo: 'salemove/ios-sdk-widgets',
       title: message,
       head: branch_name,
-      base: 'master',
+      base: 'development',
       team_reviewers: ["tm-mobile-ios"]
     )
   end
