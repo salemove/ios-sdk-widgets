@@ -70,7 +70,7 @@ class BubbleView: UIView {
         self.onHoldView = onHoldView
 
         userImageView.addSubview(onHoldView)
-        onHoldView.autoPinEdgesToSuperviewEdges()
+        onHoldView.layoutInSuperview().activate()
     }
 
     func hideOnHoldView() {
@@ -89,8 +89,10 @@ class BubbleView: UIView {
                 let badgeView = BadgeView(with: style)
                 self.badgeView = badgeView
                 addSubview(badgeView)
-                badgeView.autoPinEdge(.top, to: .top, of: self)
-                badgeView.autoPinEdge(.right, to: .right, of: self)
+                badgeView.translatesAutoresizingMaskIntoConstraints = false
+                var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
+                constraints += badgeView.topAnchor.constraint(equalTo: topAnchor)
+                constraints += badgeView.trailingAnchor.constraint(equalTo: trailingAnchor)
             }
         }
         badgeView?.newItemCount = itemCount
@@ -149,7 +151,7 @@ class BubbleView: UIView {
         view.isUserInteractionEnabled = false
 
         addSubview(view)
-        view.autoPinEdgesToSuperviewEdges()
+        view.layoutInSuperview().activate()
     }
 
     private func setAccessibilityIdentifier() {

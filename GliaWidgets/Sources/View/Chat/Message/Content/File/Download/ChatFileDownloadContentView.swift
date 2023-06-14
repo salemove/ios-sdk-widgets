@@ -56,28 +56,35 @@ class ChatFileDownloadContentView: ChatFileContentView {
 
     override func layout() {
         super.layout()
-        progressView.autoSetDimension(.height, toSize: 8)
+        var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
 
         addSubview(contentView)
-        contentView.autoPinEdgesToSuperviewEdges(with: kContentInsets)
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        constraints += contentView.layoutInSuperview(insets: kContentInsets)
 
         contentView.addSubview(filePreviewView)
-        filePreviewView.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .right)
+        filePreviewView.translatesAutoresizingMaskIntoConstraints = false
+        constraints += filePreviewView.layoutInSuperview(edges: .vertical)
+        constraints += filePreviewView.layoutInSuperview(edges: .leading)
 
         contentView.addSubview(infoLabel)
-        infoLabel.autoPinEdge(.top, to: .top, of: filePreviewView, withOffset: 4)
-        infoLabel.autoPinEdge(.left, to: .right, of: filePreviewView, withOffset: 12)
-        infoLabel.autoPinEdge(toSuperviewEdge: .right)
+        infoLabel.translatesAutoresizingMaskIntoConstraints = false
+        constraints += infoLabel.topAnchor.constraint(equalTo: filePreviewView.topAnchor)
+        constraints += infoLabel.leadingAnchor.constraint(equalTo: filePreviewView.trailingAnchor, constant: 12)
+        constraints += infoLabel.layoutInSuperview(edges: .trailing)
 
         contentView.addSubview(stateLabel)
-        stateLabel.autoPinEdge(.top, to: .bottom, of: infoLabel, withOffset: 4)
-        stateLabel.autoPinEdge(.left, to: .right, of: filePreviewView, withOffset: 12)
-        stateLabel.autoPinEdge(toSuperviewEdge: .right)
+        stateLabel.translatesAutoresizingMaskIntoConstraints = false
+        constraints += stateLabel.topAnchor.constraint(equalTo: infoLabel.bottomAnchor, constant: 4)
+        constraints += stateLabel.leadingAnchor.constraint(equalTo: filePreviewView.trailingAnchor, constant: 12)
+        constraints += stateLabel.layoutInSuperview(edges: .trailing)
 
         contentView.addSubview(progressView)
-        progressView.autoPinEdge(.bottom, to: .bottom, of: filePreviewView)
-        progressView.autoPinEdge(.left, to: .right, of: filePreviewView, withOffset: 12)
-        progressView.autoPinEdge(toSuperviewEdge: .right)
+        progressView.translatesAutoresizingMaskIntoConstraints = false
+        constraints += progressView.match(.height, value: 8)
+        constraints += progressView.bottomAnchor.constraint(equalTo: filePreviewView.bottomAnchor)
+        constraints += progressView.leadingAnchor.constraint(equalTo: filePreviewView.trailingAnchor, constant: 12)
+        constraints += progressView.layoutInSuperview(edges: .trailing)
     }
 
     override func update(with file: LocalFile) {

@@ -20,5 +20,4 @@ Pod::Spec.new do |s|
   s.exclude_files         = ['GliaWidgets/Window/**']
 
   s.dependency 'SalemoveSDK', '0.35.14'
-  s.dependency 'PureLayout', '~>3.1'
 end

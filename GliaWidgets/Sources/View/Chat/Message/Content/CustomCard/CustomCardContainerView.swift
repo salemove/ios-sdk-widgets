@@ -7,6 +7,7 @@ final class CustomCardContainerView: UIView {
 
     func addContentView(_ contentView: UIView) {
         addSubview(contentView)
-        contentView.autoPinEdgesToSuperviewEdges(with: edgeInsets)
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.layoutInSuperview(insets: edgeInsets).activate()
     }
 }

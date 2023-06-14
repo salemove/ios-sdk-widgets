@@ -31,7 +31,7 @@ class AttachmentSourceListView: UIView {
 
     private func layout() {
         addSubview(stackView)
-        stackView.autoPinEdgesToSuperviewEdges()
+        stackView.layoutInSuperview().activate()
     }
 
     private func updateItems(_ styles: [AttachmentSourceItemStyle]) {
@@ -50,7 +50,7 @@ class AttachmentSourceListView: UIView {
     private func makeSeparator(color: UIColor) -> UIView {
         let view = UIView()
         view.backgroundColor = color
-        view.autoSetDimension(.height, toSize: 0.5)
+        view.match(.height, value: 0.5).activate()
         return view
     }
 }

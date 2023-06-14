@@ -86,7 +86,6 @@ class CallView: EngagementView {
 
     private let style: CallStyle
     private var mode: Mode = .audio
-    private let topView = UIView() // does not seem to be used
     private var hideBarsWorkItem: DispatchWorkItem?
     private var headerTopConstraint: NSLayoutConstraint!
     private var buttonBarBottomConstraint: NSLayoutConstraint!
@@ -273,62 +272,61 @@ class CallView: EngagementView {
     }
 
     private func layout() {
+        var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
         let effect = UIBlurEffect(style: .dark)
         let effectView = UIVisualEffectView(effect: effect)
         addSubview(effectView)
-        effectView.autoPinEdgesToSuperviewEdges()
+        effectView.translatesAutoresizingMaskIntoConstraints = false
+        constraints += effectView.layoutInSuperview()
 
         addSubview(remoteVideoView)
-        remoteVideoView.autoAlignAxis(toSuperviewAxis: .horizontal)
-        remoteVideoView.autoAlignAxis(toSuperviewAxis: .vertical)
-        remoteVideoViewHeightConstraint = remoteVideoView.autoSetDimension(.height, toSize: 0)
-        remoteVideoViewWidthConstraint = remoteVideoView.autoSetDimension(.width, toSize: 0)
+        remoteVideoView.translatesAutoresizingMaskIntoConstraints = false
+        constraints += remoteVideoView.centerXAnchor.constraint(equalTo: centerXAnchor)
+        constraints += remoteVideoView.centerYAnchor.constraint(equalTo: centerYAnchor)
+        remoteVideoViewHeightConstraint = remoteVideoView.match(.height, value: 0).first
+        remoteVideoViewWidthConstraint = remoteVideoView.match(.width, value: 0).first
+        constraints += [remoteVideoViewHeightConstraint, remoteVideoViewWidthConstraint].compactMap { $0 }
 
         addSubview(header)
-        headerTopConstraint = header.autoPinEdge(toSuperviewEdge: .top)
-        header.autoPinEdge(toSuperviewEdge: .left)
-        header.autoPinEdge(toSuperviewEdge: .right)
+        header.translatesAutoresizingMaskIntoConstraints = false
+        headerTopConstraint = header.layoutInSuperview(edges: .top).first
+        constraints += headerTopConstraint
+        constraints += header.layoutInSuperview(edges: .horizontal)
 
         addSubview(topLabel)
-        topLabel.autoPinEdge(.top, to: .bottom, of: header)
-        topLabel.autoPinEdge(toSuperviewSafeArea: .left, withInset: 20)
-        topLabel.autoPinEdge(toSuperviewSafeArea: .right, withInset: 20)
+        topLabel.translatesAutoresizingMaskIntoConstraints = false
+        constraints += topLabel.topAnchor.constraint(equalTo: header.bottomAnchor)
+        constraints += topLabel.layoutIn(safeAreaLayoutGuide, edges: .horizontal, insets: .init(top: 0, left: 20, bottom: 0, right: 20))
 
         addSubview(connectView)
-        connectView.autoPinEdge(.top, to: .bottom, of: header, withOffset: 10)
-        connectView.autoPinEdge(toSuperviewMargin: .left, relation: .greaterThanOrEqual)
-        connectView.autoPinEdge(toSuperviewMargin: .right, relation: .greaterThanOrEqual)
-        connectView.autoAlignAxis(toSuperviewAxis: .vertical)
-
-        NSLayoutConstraint.autoSetPriority(.defaultHigh) {
-            connectView.operatorView.autoSetDimension(.height, toSize: 120)
-        }
+        connectView.translatesAutoresizingMaskIntoConstraints = false
+        constraints += connectView.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 10)
+        constraints += connectView.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor)
+        constraints += connectView.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor)
+        constraints += connectView.centerXAnchor.constraint(equalTo: centerXAnchor)
 
         addSubview(topStackView)
-        topStackView.autoPinEdge(.top, to: .bottom, of: header, withOffset: 50)
-        topStackView.autoAlignAxis(toSuperviewAxis: .vertical)
+        topStackView.translatesAutoresizingMaskIntoConstraints = false
+        constraints += topStackView.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 50)
+        constraints += topStackView.centerXAnchor.constraint(equalTo: centerXAnchor)
 
         addSubview(buttonBar)
-        buttonBarBottomConstraint = buttonBar.autoPinEdge(toSuperviewEdge: .bottom)
-        buttonBar.autoPinEdge(toSuperviewEdge: .left)
-        buttonBar.autoPinEdge(toSuperviewEdge: .right)
+        buttonBar.translatesAutoresizingMaskIntoConstraints = false
+        buttonBarBottomConstraint = buttonBar.layoutInSuperview(edges: .bottom).first
+        constraints += [buttonBarBottomConstraint].compactMap { $0 }
+        constraints += buttonBar.layoutInSuperview(edges: .horizontal)
 
         addSubview(bottomLabel)
+        bottomLabel.translatesAutoresizingMaskIntoConstraints = false
         bottomLabel.adjustsFontSizeToFitWidth = true
         bottomLabel.setContentCompressionResistancePriority(
             .fittingSizeLevel,
             for: .vertical
         )
-        bottomLabel.autoPinEdge(.bottom, to: .top, of: buttonBar, withOffset: 0)
-        bottomLabel.autoMatch(.width, to: .width, of: self, withMultiplier: 0.6)
-        bottomLabel.autoAlignAxis(toSuperviewAxis: .vertical)
-        bottomLabel.autoPinEdge(
-            .top,
-            to: .bottom,
-            of: connectView,
-            withOffset: 10,
-            relation: .greaterThanOrEqual
-        )
+        constraints += bottomLabel.bottomAnchor.constraint(equalTo: buttonBar.topAnchor)
+        constraints += bottomLabel.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.6)
+        constraints += bottomLabel.centerXAnchor.constraint(equalTo: centerXAnchor)
+        constraints += bottomLabel.topAnchor.constraint(greaterThanOrEqualTo: connectView.bottomAnchor, constant: 10)
 
         addSubview(localVideoView)
 
@@ -374,8 +372,8 @@ class CallView: EngagementView {
     }
 
     private func adjustRemoteVideoView() {
-        remoteVideoViewHeightConstraint.constant = frame.size.height
-        remoteVideoViewWidthConstraint.constant = frame.size.width
+        remoteVideoViewHeightConstraint?.constant = frame.size.height
+        remoteVideoViewWidthConstraint?.constant = frame.size.width
     }
 
     private func showBars(duration: TimeInterval) {

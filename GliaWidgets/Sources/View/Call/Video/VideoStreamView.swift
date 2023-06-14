@@ -54,12 +54,17 @@ class VideoStreamView: UIView {
             show?(false)
             return
         }
+        var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
         streamView.scale = kind == .remote ? .aspectFit : .aspectFill
+
         addSubview(streamView)
-        streamView.autoPinEdgesToSuperviewEdges()
+        streamView.translatesAutoresizingMaskIntoConstraints = false
+        constraints += streamView.layoutInSuperview()
         streamView.layoutIfNeeded()
+
         addSubview(label)
-        label.autoCenterInSuperview()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        constraints += label.layoutInSuperviewCenter()
         show?(true)
     }
 
