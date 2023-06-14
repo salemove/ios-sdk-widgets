@@ -11,6 +11,7 @@ class ChatView: EngagementView {
     let tableView = UITableView()
     let messageEntryView: ChatMessageEntryView
     let unreadMessageIndicatorView: UnreadMessageIndicatorView
+    let typingIndicatorContainer = UIView()
     let typingIndicatorView: OperatorTypingIndicatorView
     var numberOfSections: (() -> Int?)?
     var numberOfRows: ((Int) -> Int?)?
@@ -32,7 +33,6 @@ class ChatView: EngagementView {
     private let kCallBubbleEdgeInset: CGFloat = 10
     private let kCallBubbleSize = CGSize(width: 60, height: 60)
     private let kChatTableViewInsets = UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0)
-    private let kOperatorTypingIndicatorViewSize = CGSize(width: 28, height: 28)
     private var callBubbleBounds: CGRect {
         let x = safeAreaInsets.left + kCallBubbleEdgeInset
         let y = safeAreaInsets.top + kCallBubbleEdgeInset
@@ -81,8 +81,13 @@ class ChatView: EngagementView {
         )
 
         self.typingIndicatorView = OperatorTypingIndicatorView(
-            style: style.operatorTypingIndicator,
-            accessibilityProperties: .init(operatorName: style.accessibility.operator)
+            accessibilityProperties: .init(operatorName: style.accessibility.operator),
+            style: style.operatorTypingIndicator
+        )
+        typingIndicatorContainer.isAccessibilityElement = true
+        typingIndicatorContainer.accessibilityLabel =
+        style.operatorTypingIndicator.accessibility.label.withOperatorName(
+            OperatorTypingIndicatorView.AccessibilityProperties(operatorName: style.accessibility.operator).operatorName
         )
         self.props = props
         super.init(
@@ -130,11 +135,11 @@ class ChatView: EngagementView {
         observeKeyboard()
         addKeyboardDismissalTapGesture()
         typingIndicatorView.accessibilityIdentifier = "chat_typingIndicator"
-        typingIndicatorView.isHidden = true
+        typingIndicatorContainer.isHidden = true
     }
 
     func setOperatorTypingIndicatorIsHidden(to isHidden: Bool) {
-        typingIndicatorView.isHidden = isHidden
+        typingIndicatorContainer.isHidden = isHidden
     }
 
     func setConnectState(_ state: ConnectView.State, animated: Bool) {
@@ -254,11 +259,22 @@ class ChatView: EngagementView {
             excludingEdge: .bottom
         )
 
-        tableAndIndicatorStack.addArrangedSubviews([tableView, typingIndicatorView])
+        typingIndicatorContainer.addSubview(typingIndicatorView)
+        typingIndicatorView.translatesAutoresizingMaskIntoConstraints = false
+
+        tableAndIndicatorStack.addArrangedSubviews([tableView, typingIndicatorContainer])
         addSubview(tableAndIndicatorStack)
         tableAndIndicatorStack.autoPinEdge(.top, to: .bottom, of: header)
         tableAndIndicatorStack.autoPinEdge(toSuperviewSafeArea: .left)
         tableAndIndicatorStack.autoPinEdge(toSuperviewSafeArea: .right)
+
+        NSLayoutConstraint.activate([
+            typingIndicatorView.leadingAnchor.constraint(equalTo: typingIndicatorContainer.leadingAnchor, constant: 10),
+            typingIndicatorView.topAnchor.constraint(equalTo: typingIndicatorContainer.topAnchor, constant: 10),
+            typingIndicatorView.bottomAnchor.constraint(equalTo: typingIndicatorContainer.bottomAnchor, constant: -8),
+            typingIndicatorView.widthAnchor.constraint(equalToConstant: 28),
+            typingIndicatorView.heightAnchor.constraint(equalToConstant: 10)
+        ])
 
         addSubview(messageEntryView)
         messageEntryViewBottomConstraint = messageEntryView.autoPinEdge(
