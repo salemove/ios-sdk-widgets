@@ -1,5 +1,4 @@
 import UIKit
-import PureLayout
 
 class MessageButton: UIButton {
     var tap: (() -> Void)?
@@ -12,7 +11,7 @@ class MessageButton: UIButton {
     }
 
     private let style: MessageButtonStyle
-    private let kWidth: CGFloat = 30
+    private let width: CGFloat = 30
 
     init(with style: MessageButtonStyle, tap: (() -> Void)? = nil) {
         self.style = style
@@ -35,7 +34,7 @@ class MessageButton: UIButton {
     }
 
     private func layout() {
-        autoSetDimension(.width, toSize: kWidth)
+        match(.width, value: width).activate()
     }
 
     @objc private func tapped() {

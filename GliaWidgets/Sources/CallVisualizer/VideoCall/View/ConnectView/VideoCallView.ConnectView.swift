@@ -60,18 +60,28 @@ extension CallVisualizer.VideoCallView {
         override func setup() {
             super.setup()
             accessibilityElements = [operatorView, statusView]
+
             addSubview(stackView)
-            stackView.addArrangedSubviews([operatorView, statusView])
             stackView.translatesAutoresizingMaskIntoConstraints = false
+            stackView.addArrangedSubviews([operatorView, statusView])
+            operatorView.translatesAutoresizingMaskIntoConstraints = false
         }
 
         override func defineLayout() {
             super.defineLayout()
-            contentTopPadding = stackView.autoPinEdgesToSuperviewEdges(with: CallVisualizer.VideoCallView.ConnectView.contentInsets).first
-
-            NSLayoutConstraint.autoSetPriority(.defaultHigh) {
-                operatorView.autoSetDimension(.height, toSize: 120)
-            }
+            let insets = CallVisualizer.VideoCallView.ConnectView.contentInsets
+            var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
+            let topConstraint = stackView.topAnchor.constraint(
+                equalTo: topAnchor, constant: insets.top
+            )
+            constraints += topConstraint
+            contentTopPadding = topConstraint
+            constraints += stackView.layoutInSuperview(
+                edges: .horizontal,
+                insets: insets
+            )
+            constraints += stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: insets.bottom)
+            constraints += operatorView.heightAnchor.constraint(equalToConstant: 120)
         }
     }
 }

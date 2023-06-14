@@ -121,17 +121,23 @@ extension CallVisualizer {
 
         override func defineLayout() {
             super.defineLayout()
+
+            var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
+
             addSubview(stackView)
+            stackView.translatesAutoresizingMaskIntoConstraints = false
+            constraints += stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: contentInsets.left)
+            constraints += stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -contentInsets.right)
+            constraints += stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -contentInsets.bottom)
+            constraints += stackView.topAnchor.constraint(equalTo: topAnchor, constant: contentInsets.top)
+
             addSubview(closeButton)
-            NSLayoutConstraint.activate([
-                stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: contentInsets.left),
-                stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -contentInsets.right),
-                stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -contentInsets.bottom),
-                stackView.topAnchor.constraint(equalTo: topAnchor, constant: contentInsets.top),
-                refreshButton.heightAnchor.constraint(equalToConstant: 40),
-                closeButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -30),
-                closeButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -26)
-            ])
+            closeButton.translatesAutoresizingMaskIntoConstraints = false
+            constraints += closeButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -30)
+            constraints += closeButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -26)
+
+            refreshButton.translatesAutoresizingMaskIntoConstraints = false
+            constraints += refreshButton.heightAnchor.constraint(equalToConstant: 40)
         }
 
         override func layoutSubviews() {
