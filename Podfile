@@ -19,7 +19,6 @@ target 'TestingApp' do
 end
 
 target 'GliaWidgets' do
-  pod 'PureLayout', '~> 3.1'
   pod 'SalemoveSDK'
   swiftlint
 end

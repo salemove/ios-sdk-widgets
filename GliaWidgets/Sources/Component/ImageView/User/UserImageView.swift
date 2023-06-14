@@ -41,10 +41,15 @@ final class UserImageView: BaseView {
 
     override func defineLayout() {
         super.defineLayout()
+
+        var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
         addSubview(placeholderImageView)
+        placeholderImageView.translatesAutoresizingMaskIntoConstraints = false
+        constraints += placeholderImageView.layoutInSuperview()
+
         addSubview(operatorImageView)
-        placeholderImageView.autoPinEdgesToSuperviewEdges()
-        operatorImageView.autoPinEdgesToSuperviewEdges()
+        operatorImageView.translatesAutoresizingMaskIntoConstraints = false
+        constraints += operatorImageView.layoutInSuperview()
     }
 
     override func layoutSubviews() {

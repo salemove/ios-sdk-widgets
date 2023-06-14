@@ -1,5 +1,4 @@
 import UIKit
-import PureLayout
 
 class ChatItemCell: UITableViewCell {
     enum Content {
@@ -77,9 +76,10 @@ class ChatItemCell: UITableViewCell {
 
     private func defineLayout() {
         contentView.addSubview(stackView)
-        stackView.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .bottom)
-        NSLayoutConstraint.autoSetPriority(.defaultHigh) {
-            stackView.autoPinEdge(toSuperviewEdge: .bottom)
-        }
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
+        constraints += stackView.layoutInSuperview(edges: .horizontal)
+        constraints += stackView.layoutInSuperview(edges: .top)
+        constraints += stackView.layoutInSuperview(edges: .bottom, priority: .defaultHigh)
     }
 }

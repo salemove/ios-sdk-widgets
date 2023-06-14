@@ -1,4 +1,3 @@
-import PureLayout
 import UIKit
 
 extension CallVisualizer {
@@ -81,16 +80,17 @@ extension CallVisualizer {
             backgroundColor = .white
 
             addSubview(header)
-            header.autoPinEdge(toSuperviewEdge: .left)
-            header.autoPinEdge(toSuperviewEdge: .right)
+            header.translatesAutoresizingMaskIntoConstraints = false
+            var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
+            constraints += header.layoutInSuperview(edges: .horizontal)
 
             addSubview(contentStackView)
-            contentStackView.autoAlignAxis(.vertical, toSameAxisOf: self, withOffset: 0)
-            contentStackView.autoAlignAxis(.horizontal, toSameAxisOf: self, withOffset: 0)
-            contentStackView.autoPinEdge(toSuperviewMargin: .leading, withInset: 42)
-            contentStackView.autoPinEdge(toSuperviewMargin: .trailing, withInset: 42)
+            contentStackView.translatesAutoresizingMaskIntoConstraints = false
+            constraints += contentStackView.centerXAnchor.constraint(equalTo: centerXAnchor)
+            constraints += contentStackView.centerYAnchor.constraint(equalTo: centerYAnchor)
+            constraints += contentStackView.layoutIn(layoutMarginsGuide, edges: .horizontal, insets: .init(top: 0, left: 42, bottom: 0, right: 42))
 
-            endScreenSharingButton.autoSetDimension(.height, toSize: 40)
+            constraints += endScreenSharingButton.match(.height, value: 40)
         }
     }
 }

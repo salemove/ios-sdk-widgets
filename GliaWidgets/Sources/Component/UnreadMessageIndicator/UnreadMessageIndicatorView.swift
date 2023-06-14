@@ -76,19 +76,26 @@ final class UnreadMessageIndicatorView: BaseView {
 
     override func defineLayout() {
         super.defineLayout()
-        autoSetDimensions(to: kSize)
+
+        var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
+        constraints += match(.width, value: kSize.width)
+        constraints += match(.height, value: kSize.height)
 
         addSubview(backgroundView)
-        backgroundView.autoPinEdgesToSuperviewEdges()
+        backgroundView.translatesAutoresizingMaskIntoConstraints = false
+        constraints += backgroundView.layoutInSuperview()
 
         addSubview(userImageView)
-        userImageView.autoAlignAxis(toSuperviewAxis: .vertical)
-        userImageView.autoPinEdge(toSuperviewEdge: .top, withInset: 6)
-        userImageView.autoSetDimensions(to: kUserImageSize)
+        userImageView.translatesAutoresizingMaskIntoConstraints = false
+        constraints += userImageView.match(.width, value: kUserImageSize.width)
+        constraints += userImageView.match(.height, value: kUserImageSize.height)
+        constraints += userImageView.topAnchor.constraint(equalTo: topAnchor, constant: 6)
+        constraints += userImageView.centerXAnchor.constraint(equalTo: centerXAnchor)
 
         addSubview(badgeView)
-        badgeView.autoPinEdge(toSuperviewEdge: .top, withInset: kBadgeInsets.top)
-        badgeView.autoPinEdge(toSuperviewEdge: .right, withInset: kBadgeInsets.right)
+        badgeView.translatesAutoresizingMaskIntoConstraints = false
+        constraints += badgeView.topAnchor.constraint(equalTo: topAnchor, constant: kBadgeInsets.top)
+        constraints += badgeView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -kBadgeInsets.right)
     }
 
     @objc private func onTap() {

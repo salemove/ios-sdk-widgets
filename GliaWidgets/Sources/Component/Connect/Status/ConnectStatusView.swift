@@ -1,7 +1,10 @@
 import UIKit
 
 final class ConnectStatusView: BaseView {
-    private let stackView = UIStackView()
+    private lazy var stackView = UIStackView.make(.vertical)(
+        firstLabel,
+        secondLabel
+    )
     private let firstLabel = UILabel()
     private let secondLabel = UILabel()
 
@@ -17,8 +20,8 @@ final class ConnectStatusView: BaseView {
     override func defineLayout() {
         super.defineLayout()
         addSubview(stackView)
-        stackView.addArrangedSubviews([firstLabel, secondLabel])
-        stackView.autoPinEdgesToSuperviewEdges()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.layoutInSuperview().activate()
     }
 
     func setStyle(_ style: ConnectStatusStyle) {
