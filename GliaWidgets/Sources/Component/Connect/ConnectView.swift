@@ -70,7 +70,6 @@ final class ConnectView: BaseView {
     override func setup() {
         super.setup()
         accessibilityElements = [operatorView, statusView]
-
         addSubview(stackView)
         stackView.translatesAutoresizingMaskIntoConstraints = false
         setState(.initial, animated: false)
@@ -78,8 +77,13 @@ final class ConnectView: BaseView {
 
     override func defineLayout() {
         super.defineLayout()
-        // `autoPinEdgesToSuperviewEdges` returns array of constraints where first one is for top padding.
-        contentTopPadding = stackView.autoPinEdgesToSuperviewEdges(with: Constants.contentInsets).first
+
+        var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
+        let topConstraint = stackView.topAnchor.constraint(equalTo: topAnchor, constant: Constants.contentInsets.top)
+        constraints += topConstraint
+        contentTopPadding = topConstraint
+        constraints += stackView.layoutInSuperview(edges: .horizontal, insets: Constants.contentInsets)
+        constraints += stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.contentInsets.bottom)
     }
 
     func setState(_ state: State, animated: Bool) {

@@ -48,15 +48,9 @@ class CallButtonBar: BaseView {
 
     func adjustStackConstraints() {
         if currentOrientation.isPortrait {
-            verticalAlignConstrait?.autoRemove()
             stackView.spacing = 2
-            leftConstraint?.autoInstall()
-            rightConstraint?.autoInstall()
         } else {
-            leftConstraint?.autoRemove()
-            rightConstraint?.autoRemove()
             stackView.spacing = 12
-            verticalAlignConstrait?.autoInstall()
         }
     }
 
@@ -83,15 +77,22 @@ class CallButtonBar: BaseView {
     override func defineLayout() {
         super.defineLayout()
         adjustStackConstraints()
+        var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
+
         addSubview(effectView)
-        effectView.autoPinEdgesToSuperviewEdges()
+        effectView.translatesAutoresizingMaskIntoConstraints = false
+        constraints += effectView.layoutInSuperview()
 
         addSubview(stackView)
-        stackView.autoPinEdge(toSuperviewEdge: .top, withInset: kInsets.top)
-        leftConstraint = stackView.autoPinEdge(toSuperviewEdge: .left, withInset: kInsets.left)
-        rightConstraint = stackView.autoPinEdge(toSuperviewEdge: .right, withInset: kInsets.right)
-        verticalAlignConstrait = stackView.autoAlignAxis(toSuperviewAxis: .vertical)
-        bottomSpaceConstraint = stackView.autoPinEdge(toSuperviewEdge: .bottom)
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        constraints += stackView.topAnchor.constraint(equalTo: topAnchor, constant: kInsets.top)
+
+        leftConstraint = stackView.layoutInSuperview(edges: .leading, insets: kInsets).first
+        rightConstraint = stackView.layoutInSuperview(edges: .trailing, insets: kInsets).first
+        verticalAlignConstrait = stackView.centerXAnchor.constraint(equalTo: centerXAnchor)
+        bottomSpaceConstraint = stackView.bottomAnchor.constraint(equalTo: bottomAnchor)
+
+        constraints += [leftConstraint, rightConstraint, verticalAlignConstrait, bottomSpaceConstraint].compactMap { $0 }
     }
 
     private func showButtons(_ buttonKinds: [CallButton.Kind]) {
@@ -163,13 +164,14 @@ class CallButtonBar: BaseView {
     }
 
     private func wrap(_ button: CallButton) -> UIView {
+        var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
         let wrapper = UIView()
         wrapper.addSubview(button)
-        button.autoPinEdge(toSuperviewEdge: .top)
-        button.autoPinEdge(toSuperviewEdge: .bottom)
-        button.autoPinEdge(toSuperviewEdge: .left, withInset: 0, relation: .greaterThanOrEqual)
-        button.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
-        button.autoAlignAxis(toSuperviewAxis: .vertical)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        constraints += button.layoutInSuperview(edges: .vertical)
+        constraints += button.leadingAnchor.constraint(greaterThanOrEqualTo: wrapper.leadingAnchor)
+        constraints += button.trailingAnchor.constraint(lessThanOrEqualTo: wrapper.trailingAnchor)
+        constraints += button.centerXAnchor.constraint(equalTo: wrapper.centerXAnchor)
         return wrapper
     }
 

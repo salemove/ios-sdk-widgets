@@ -73,17 +73,18 @@ class ChatTextContentView: BaseView {
 
     override func defineLayout() {
         super.defineLayout()
+        var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
         addSubview(contentView)
-        contentView.autoPinEdge(toSuperviewEdge: .top)
-        contentView.autoPinEdge(toSuperviewEdge: .bottom)
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        constraints += contentView.layoutInSuperview(edges: .vertical)
 
         switch contentAlignment {
         case .left:
-            contentView.autoPinEdge(toSuperviewEdge: .left)
-            contentView.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
+            constraints += contentView.layoutInSuperview(edges: .leading)
+            constraints += contentView.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor)
         case .right:
-            contentView.autoPinEdge(toSuperviewEdge: .right)
-            contentView.autoPinEdge(toSuperviewEdge: .left, withInset: 0, relation: .greaterThanOrEqual)
+            constraints += contentView.layoutInSuperview(edges: .trailing)
+            constraints += contentView.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor)
         }
     }
 
@@ -93,7 +94,9 @@ class ChatTextContentView: BaseView {
         } else {
             if textView.superview == nil {
                 contentView.addSubview(textView)
-                textView.autoPinEdgesToSuperviewEdges(with: kTextInsets)
+                textView.translatesAutoresizingMaskIntoConstraints = false
+                var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
+                constraints += textView.layoutInSuperview(insets: kTextInsets)
             }
             textView.text = text
         }

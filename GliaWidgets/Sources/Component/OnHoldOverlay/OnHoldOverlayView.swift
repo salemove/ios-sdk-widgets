@@ -1,5 +1,4 @@
 import UIKit
-import PureLayout
 
 final class OnHoldOverlayView: UIView {
     private let style: OnHoldOverlayStyle
@@ -46,11 +45,15 @@ final class OnHoldOverlayView: UIView {
     }
 
     private func layout() {
+        var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
         addSubview(blurEffectView)
-        blurEffectView.autoPinEdgesToSuperviewEdges()
+        blurEffectView.translatesAutoresizingMaskIntoConstraints = false
+        constraints += blurEffectView.layoutInSuperview()
 
         addSubview(imageView)
-        imageView.autoCenterInSuperview()
-        imageView.autoSetDimensions(to: style.imageSize)
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        constraints += imageView.layoutInSuperviewCenter()
+        constraints += imageView.match(.width, value: style.imageSize.width)
+        constraints += imageView.match(.height, value: style.imageSize.height)
     }
 }

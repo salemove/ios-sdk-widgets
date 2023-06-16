@@ -200,7 +200,6 @@ extension ViewController {
             engagementKind,
             configuration: configuration,
             queueID: queueId,
-            visitorContext: visitorContext,
             theme: theme,
             features: features
         )

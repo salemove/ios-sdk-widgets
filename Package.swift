@@ -17,9 +17,6 @@ let package = Package(
             targets: ["GliaWidgetsSDK-xcframework"]
         )
     ],
-    dependencies: [
-        .package(url: "https://github.com/PureLayout/PureLayout", from: "3.1.9")
-    ],
     targets: [
         .binaryTarget(
             name: "GliaCoreDependency",
@@ -42,20 +39,12 @@ let package = Package(
             checksum: "4d997e74bb975db723b7d93a26f2fb3611f735f809a825aa2e89e5226cc602d4"
         ),
         .binaryTarget(
-            name: "PureLayoutXcf",
-            url: "https://github.com/salemove/ios-sdk-widgets/releases/download/0.10.8/PureLayoutXcf.xcframework.zip",
-            checksum: "93f00268ba710a0ee513be7cef94a385637bfb76c292942cc5f062a7b2f0037b"
-        ),
-        .binaryTarget(
             name: "GliaWidgetsXcf",
             url: "https://github.com/salemove/ios-sdk-widgets/releases/download/2.0.1/GliaWidgetsXcf.xcframework.zip",
             checksum: "26f6e0bc6e32f4223f635d8de8aa4877338aed7a323f2127a05980f347ac1f9a"
         ),
         .target(
             name: "GliaWidgets",
-            dependencies: [
-                .product(name: "PureLayout", package: "PureLayout")
-            ],
             path: "GliaWidgets",
             exclude: [
                 "Cartfile.resolved",
@@ -83,8 +72,7 @@ let package = Package(
                 "GliaWidgetsXcf",
                 "GliaCoreDependency",
                 "TwilioVoice",
-                "WebRTC",
-                "PureLayoutXcf"
+                "WebRTC"
             ]
         )
     ]

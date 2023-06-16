@@ -5,10 +5,8 @@ DEPLOYMENT_TARGET = '13.0'
 
 platform :ios, DEPLOYMENT_TARGET
 
-# ignore all warnings from all pods
-inhibit_all_warnings!
-
 use_frameworks!
+inhibit_all_warnings! # ignore all warnings from all pods
 
 def swiftlint
    pod 'SwiftLint'
@@ -19,7 +17,6 @@ target 'TestingApp' do
 end
 
 target 'GliaWidgets' do
-  pod 'PureLayout', '~> 3.1'
   pod 'GliaCoreSDK'
   swiftlint
 end
