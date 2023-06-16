@@ -17,7 +17,7 @@ class ChoiceCardOptionView: UIView {
     private let textLabel = UILabel()
     private let choiceButton = UIButton()
     private let style: ChoiceCardOptionStyle
-    private let kInsets = UIEdgeInsets(top: 10, left: 12, bottom: 10, right: 12)
+    private let viewInsets = UIEdgeInsets(top: 10, left: 12, bottom: 10, right: 12)
 
     init(with style: ChoiceCardOptionStyle, text: String?) {
         self.style = style
@@ -49,11 +49,15 @@ class ChoiceCardOptionView: UIView {
     }
 
     private func layout() {
+        var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
+
         addSubview(textLabel)
-        textLabel.autoPinEdgesToSuperviewEdges(with: kInsets)
+        textLabel.translatesAutoresizingMaskIntoConstraints = false
+        constraints += textLabel.layoutInSuperview(insets: viewInsets)
 
         addSubview(choiceButton)
-        choiceButton.autoPinEdgesToSuperviewEdges()
+        choiceButton.translatesAutoresizingMaskIntoConstraints = false
+        constraints += choiceButton.layoutInSuperview()
     }
 
     private func updateStyle() {

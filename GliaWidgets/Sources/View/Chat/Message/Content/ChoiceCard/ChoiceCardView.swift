@@ -51,7 +51,7 @@ final class ChoiceCardView: OperatorChatMessageView {
         stackView.isLayoutMarginsRelativeArrangement = true
         stackView.layoutMargins = kLayoutMargins
         containerView.addSubview(stackView)
-        stackView.autoPinEdgesToSuperviewEdges()
+        stackView.layoutInSuperview().activate()
 
         if let imageUrl = choiceCard.imageUrl {
             let imageView = ImageView(
@@ -65,7 +65,7 @@ final class ChoiceCardView: OperatorChatMessageView {
             imageView.contentMode = .scaleAspectFill
             imageView.layer.cornerRadius = 4
             imageView.layer.masksToBounds = true
-            imageView.autoSetDimension(.height, toSize: kImageHeight)
+            imageView.match(.height, value: kImageHeight).activate()
             imageView.setImage(from: imageUrl, animated: true)
             stackView.addArrangedSubview(imageView)
             setupAccessibilityProperties(for: imageView)

@@ -6,8 +6,8 @@ class VisitorChatMessageView: ChatMessageView {
         set { statusLabel.text = newValue }
     }
 
-    private let statusLabel = UILabel()
-    private let kInsets = UIEdgeInsets(top: 2, left: 88, bottom: 2, right: 16)
+    private let statusLabel = UILabel().makeView()
+    private let contentInsets = UIEdgeInsets(top: 2, left: 88, bottom: 2, right: 16)
 
     init(
         with style: VisitorChatMessageStyle,
@@ -38,16 +38,14 @@ class VisitorChatMessageView: ChatMessageView {
     override func defineLayout() {
         super.defineLayout()
         addSubview(contentViews)
-        contentViews.autoPinEdge(toSuperviewEdge: .top, withInset: kInsets.top)
-        contentViews.autoPinEdge(toSuperviewEdge: .right, withInset: kInsets.right)
+        var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
+        constraints += contentViews.topAnchor.constraint(equalTo: topAnchor, constant: contentInsets.top)
+        constraints += contentViews.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -contentInsets.right)
+        constraints += contentViews.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: contentInsets.left)
 
         addSubview(statusLabel)
-        statusLabel.autoPinEdge(.top, to: .bottom, of: contentViews, withOffset: 2)
-        statusLabel.autoPinEdge(toSuperviewEdge: .right, withInset: kInsets.right)
-        statusLabel.autoPinEdge(toSuperviewEdge: .bottom, withInset: kInsets.bottom)
-
-        NSLayoutConstraint.autoSetPriority(.required) {
-            contentViews.autoPinEdge(toSuperviewEdge: .left, withInset: kInsets.left, relation: .greaterThanOrEqual)
-        }
+        constraints += statusLabel.topAnchor.constraint(equalTo: contentViews.bottomAnchor, constant: 2)
+        constraints += statusLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -contentInsets.right)
+        constraints += statusLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -contentInsets.bottom)
     }
 }

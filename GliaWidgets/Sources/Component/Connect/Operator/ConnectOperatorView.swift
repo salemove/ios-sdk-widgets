@@ -80,15 +80,19 @@ final class ConnectOperatorView: BaseView {
         super.defineLayout()
 
         addSubview(imageView)
-        NSLayoutConstraint.autoSetPriority(.defaultHigh) {
-            imageView.autoPinEdge(toSuperviewEdge: .left, withInset: 0, relation: .greaterThanOrEqual)
-            imageView.autoPinEdge(toSuperviewEdge: .top, withInset: 0, relation: .greaterThanOrEqual)
-            imageView.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
-            imageView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 0, relation: .greaterThanOrEqual)
-        }
-        widthConstraint = imageView.autoSetDimension(.width, toSize: size.width)
-        heightConstraint = imageView.autoSetDimension(.height, toSize: size.height)
-        imageView.autoCenterInSuperview()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
+
+        constraints += imageView.centerXAnchor.constraint(equalTo: centerXAnchor)
+        constraints += imageView.centerYAnchor.constraint(equalTo: centerYAnchor)
+        constraints += imageView.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor)
+        constraints += imageView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor)
+        constraints += imageView.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor)
+        constraints += imageView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor)
+
+        widthConstraint = imageView.widthAnchor.constraint(equalToConstant: size.width)
+        heightConstraint = imageView.heightAnchor.constraint(equalToConstant: size.height)
+        constraints += [widthConstraint, heightConstraint].compactMap { $0 }
     }
 
     func setSize(_ size: Size, animated: Bool) {
@@ -110,12 +114,12 @@ final class ConnectOperatorView: BaseView {
         self.animationView = animationView
 
         insertSubview(animationView, at: 0)
-        animationView.autoPinEdge(toSuperviewEdge: .left, withInset: 0, relation: .greaterThanOrEqual)
-        animationView.autoPinEdge(toSuperviewEdge: .top, withInset: 0)
-        animationView.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
-        animationView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 0)
-        animationView.autoCenterInSuperview()
-        animationView.autoSetDimensions(to: .init(width: kAnimationViewSize, height: kAnimationViewSize))
+        animationView.translatesAutoresizingMaskIntoConstraints = false
+        var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
+        constraints += animationView.layoutInSuperviewCenter()
+        constraints += animationView.layoutInSuperview(edges: .vertical)
+        constraints += animationView.match(value: kAnimationViewSize)
+
         animationView.startAnimating()
     }
 
@@ -131,7 +135,7 @@ final class ConnectOperatorView: BaseView {
         self.onHoldView = onHoldView
 
         imageView.addSubview(onHoldView)
-        onHoldView.autoPinEdgesToSuperviewEdges()
+        onHoldView.layoutInSuperview().activate()
     }
 
     func hideOnHoldView() {
