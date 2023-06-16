@@ -134,7 +134,7 @@ class ChatMessageEntryView: BaseView {
         showsSendButton = false
 
         buttonsStackView.axis = .horizontal
-        buttonsStackView.spacing = 15
+        buttonsStackView.spacing = 16
         buttonsStackView.addArrangedSubviews([pickMediaButton, sendButton])
         setFontScalingEnabled(
             style.accessibility.isFontScalingEnabled,
@@ -148,44 +148,43 @@ class ChatMessageEntryView: BaseView {
 
     override func defineLayout() {
         super.defineLayout()
+        var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
+
         addSubview(separator)
+        separator.translatesAutoresizingMaskIntoConstraints = false
+        constraints += separator.match(.height, value: 1)
+        constraints += separator.layoutInSuperview(edges: .horizontal)
+        constraints += separator.layoutInSuperview(edges: .top)
+
         addSubview(uploadListView)
+        uploadListView.translatesAutoresizingMaskIntoConstraints = false
+        constraints += uploadListView.topAnchor.constraint(equalTo: separator.bottomAnchor)
+        constraints += uploadListView.layoutInSuperview(edges: .horizontal)
+
         addSubview(messageContainerView)
+        messageContainerView.translatesAutoresizingMaskIntoConstraints = false
+        constraints += messageContainerView.topAnchor.constraint(equalTo: uploadListView.bottomAnchor)
+        constraints += messageContainerView.layoutInSuperview(edges: .horizontal)
+        constraints += messageContainerView.layoutIn(safeAreaLayoutGuide, edges: .bottom)
 
         messageContainerView.addSubview(textView)
-        textViewHeightConstraint = textView.autoSetDimension(
-            .height,
-            toSize: kMinTextViewHeight
-        )
-
-        textView.autoPinEdge(toSuperviewEdge: .left, withInset: 16)
-        textView.autoPinEdge(toSuperviewEdge: .top, withInset: 13)
-        textView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 13)
-        textView.autoPinEdge(toSuperviewEdge: .right, withInset: 8)
+        textView.translatesAutoresizingMaskIntoConstraints = false
+        textViewHeightConstraint = textView.match(.height, value: kMinTextViewHeight).first
+        constraints += [textViewHeightConstraint].compactMap { $0 }
+        constraints += textView.layoutInSuperview(edges: .vertical, insets: .init(top: 13, left: 16, bottom: 13, right: 32))
+        constraints += textView.layoutInSuperview(edges: .leading, insets: .init(top: 13, left: 16, bottom: 13, right: 32))
+        constraints += textView.trailingAnchor.constraint(equalTo: buttonsStackView.leadingAnchor, constant: -8)
 
         textView.addSubview(placeholderLabel)
-        placeholderLabel.autoPinEdge(toSuperviewEdge: .left)
-        placeholderLabel.autoPinEdge(toSuperviewEdge: .top)
-        placeholderLabel.autoPinEdge(toSuperviewEdge: .right)
-
-        separator.autoSetDimension(.height, toSize: 1)
-        separator.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .bottom)
-
-        uploadListView.autoPinEdge(.top, to: .bottom, of: separator)
-        uploadListView.autoPinEdge(.bottom, to: .top, of: messageContainerView)
-        uploadListView.autoPinEdge(toSuperviewEdge: .left)
-        uploadListView.autoPinEdge(toSuperviewEdge: .right)
-
-        messageContainerView.autoPinEdge(.top, to: .bottom, of: uploadListView)
-        messageContainerView.autoPinEdge(toSuperviewEdge: .left)
-        messageContainerView.autoPinEdge(toSuperviewEdge: .bottom)
+        placeholderLabel.translatesAutoresizingMaskIntoConstraints = false
+        constraints += placeholderLabel.layoutInSuperview(edges: .horizontal)
+        constraints += placeholderLabel.layoutInSuperview(edges: .top)
 
         addSubview(buttonsStackView)
-        buttonsStackView.autoSetDimension(.height, toSize: 50)
-        buttonsStackView.autoSetDimension(.width, toSize: 72, relation: .lessThanOrEqual)
-        buttonsStackView.autoPinEdge(.left, to: .right, of: messageContainerView)
-        buttonsStackView.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
-        buttonsStackView.autoPinEdge(toSuperviewEdge: .bottom)
+        buttonsStackView.translatesAutoresizingMaskIntoConstraints = false
+        constraints += buttonsStackView.match(.height, value: 50)
+        constraints += buttonsStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16)
+        constraints += buttonsStackView.topAnchor.constraint(equalTo: messageContainerView.topAnchor)
 
         updateTextViewHeight()
     }

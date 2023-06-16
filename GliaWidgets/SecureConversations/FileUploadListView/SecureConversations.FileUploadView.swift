@@ -28,7 +28,7 @@ extension SecureConversations {
         private let progressView = UIProgressView()
         let removeButton = UIButton()
 
-        private let kRemoveButtonSize = CGSize(width: 30, height: 30)
+        private let buttonSize: CGFloat = 30
 
         var props: Props {
             didSet {
@@ -62,46 +62,51 @@ extension SecureConversations {
         }
 
         private func layout() {
-            autoSetDimension(
+            var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
+            constraints += match(
                 .height,
-                toSize: Self.height(for: props.style),
+                value: Self.height(for: props.style),
                 relation: .greaterThanOrEqual
             )
-            progressView.autoSetDimension(.height, toSize: 8)
 
             addSubview(contentView)
+            contentView.translatesAutoresizingMaskIntoConstraints = false
             let style = Style.Properties(style: props.style)
-            contentView.autoPinEdgesToSuperviewEdges(with: style.contentInsets)
+            constraints += contentView.layoutInSuperview(insets: style.contentInsets)
 
             contentView.addSubview(filePreviewView)
-            filePreviewView.autoPinEdge(toSuperviewEdge: .left)
-            filePreviewView.autoAlignAxis(toSuperviewAxis: .horizontal)
+            filePreviewView.translatesAutoresizingMaskIntoConstraints = false
+            constraints += filePreviewView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor)
+            constraints += filePreviewView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
 
             contentView.addSubview(removeButton)
-            removeButton.autoSetDimensions(to: kRemoveButtonSize)
-            removeButton.autoPinEdge(
-                toSuperviewEdge: .top,
-                withInset: style.removeButtonTopRightOffset.height
+            removeButton.translatesAutoresizingMaskIntoConstraints = false
+            constraints += removeButton.topAnchor.constraint(
+                equalTo: contentView.topAnchor, constant: style.removeButtonTopRightOffset.height
             )
-            removeButton.autoPinEdge(
-                toSuperviewEdge: .right,
-                withInset: style.removeButtonTopRightOffset.width
+            constraints += removeButton.trailingAnchor.constraint(
+                equalTo: contentView.trailingAnchor, constant: style.removeButtonTopRightOffset.height
             )
+            constraints += removeButton.match(value: buttonSize)
+
             contentView.addSubview(infoLabel)
-            infoLabel.autoPinEdge(.top, to: .top, of: contentView, withOffset: -6)
-            infoLabel.autoPinEdge(.left, to: .right, of: filePreviewView, withOffset: 12)
-            infoLabel.autoPinEdge(.right, to: .left, of: removeButton, withOffset: -80)
+            infoLabel.translatesAutoresizingMaskIntoConstraints = false
+            constraints += infoLabel.leadingAnchor.constraint(equalTo: filePreviewView.trailingAnchor, constant: 12)
+            constraints += infoLabel.trailingAnchor.constraint(lessThanOrEqualTo: removeButton.leadingAnchor, constant: -80)
+            constraints += infoLabel.topAnchor.constraint(equalTo: filePreviewView.firstBaselineAnchor, constant: 3)
 
             contentView.addSubview(stateLabel)
-            stateLabel.autoPinEdge(.top, to: .bottom, of: infoLabel, withOffset: 4)
-            stateLabel.autoPinEdge(.left, to: .right, of: filePreviewView, withOffset: 12)
-            stateLabel.autoPinEdge(.right, to: .left, of: removeButton, withOffset: -80)
+            stateLabel.translatesAutoresizingMaskIntoConstraints = false
+            constraints += stateLabel.topAnchor.constraint(equalTo: infoLabel.bottomAnchor, constant: 4)
+            constraints += stateLabel.leadingAnchor.constraint(equalTo: infoLabel.leadingAnchor)
+            constraints += stateLabel.trailingAnchor.constraint(equalTo: infoLabel.trailingAnchor)
 
             contentView.addSubview(progressView)
-            progressView.autoPinEdge(.top, to: .bottom, of: stateLabel, withOffset: 5)
-            progressView.autoPinEdge(.bottom, to: .bottom, of: contentView, withOffset: 6)
-            progressView.autoPinEdge(.left, to: .right, of: filePreviewView, withOffset: 12)
-            progressView.autoPinEdge(.right, to: .left, of: removeButton, withOffset: -80)
+            progressView.translatesAutoresizingMaskIntoConstraints = false
+            constraints += progressView.heightAnchor.constraint(equalToConstant: 8)
+            constraints += progressView.lastBaselineAnchor.constraint(equalTo: filePreviewView.lastBaselineAnchor)
+            constraints += progressView.leadingAnchor.constraint(equalTo: stateLabel.leadingAnchor)
+            constraints += progressView.trailingAnchor.constraint(equalTo: removeButton.leadingAnchor, constant: -80)
         }
 
         func renderProps() {
@@ -212,7 +217,7 @@ extension SecureConversations {
             var accFrame = self.frame
             let style = Style.Properties(style: props.style)
 
-            let insetX = style.contentInsets.left + style.contentInsets.right + kRemoveButtonSize.width
+            let insetX = style.contentInsets.left + style.contentInsets.right + buttonSize
             accFrame.size.width -= insetX
             accessibilityFrame = UIAccessibility.convertToScreenCoordinates(accFrame, in: self)
         }
