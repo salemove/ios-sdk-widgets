@@ -1,5 +1,4 @@
 import UIKit
-import PureLayout
 
 class Button: UIButton {
     var tap: (() -> Void)?
@@ -46,15 +45,8 @@ class Button: UIButton {
         properties.shadowOffset.map { layer.shadowOffset = $0 }
         properties.shadowOpacity.map { layer.shadowOpacity = $0 }
         properties.shadowRadius.map { layer.shadowRadius = $0 }
-        properties.width.map {
-            let height = $0
-            autoSetDimension(.width, toSize: height)
-        }
-        properties.height.map {
-            let height = $0
-            autoSetDimension(.height, toSize: height)
-        }
-
+        properties.width.map { match(.width, value: $0).activate() }
+        properties.height.map { match(.height, value: $0).activate() }
         setImage(properties.image, for: .normal)
         setImage(properties.image, for: .highlighted)
 

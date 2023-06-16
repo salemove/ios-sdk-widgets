@@ -31,11 +31,10 @@ final class PopoverViewController: UIViewController {
     override func loadView() {
         super.loadView()
         view.backgroundColor = contentView.backgroundColor
+        var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
         view.addSubview(contentView)
-        contentView.autoPinEdge(toSuperviewEdge: .left, withInset: contentInsets.left)
-        contentView.autoPinEdge(toSuperviewEdge: .top, withInset: contentInsets.top)
-        contentView.autoPinEdge(toSuperviewEdge: .right, withInset: contentInsets.right)
-        contentView.autoPinEdge(toSuperviewEdge: .bottom, withInset: contentInsets.bottom, relation: .greaterThanOrEqual)
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        constraints += contentView.layoutInSuperview(insets: contentInsets)
         updatePreferredContentSize()
     }
 

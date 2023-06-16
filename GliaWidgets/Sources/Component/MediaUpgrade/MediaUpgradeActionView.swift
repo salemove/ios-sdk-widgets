@@ -46,22 +46,27 @@ class MediaUpgradeActionView: UIView {
     }
 
     private func layout() {
-        imageView.autoSetDimension(.width, toSize: 60)
-        imageView.autoSetDimension(.height, toSize: 60, relation: .greaterThanOrEqual)
+        var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
 
         addSubview(imageView)
-        imageView.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .right)
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        constraints += imageView.match(.width, value: 60)
+        constraints += imageView.heightAnchor.constraint(greaterThanOrEqualToConstant: 60)
+        constraints += imageView.layoutInSuperview(edges: .vertical)
+        constraints += imageView.layoutInSuperview(edges: .leading)
 
         addSubview(titleLabel)
-        titleLabel.autoPinEdge(.left, to: .right, of: imageView)
-        titleLabel.autoPinEdge(toSuperviewEdge: .top, withInset: 12)
-        titleLabel.autoPinEdge(toSuperviewEdge: .right, withInset: 12)
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        constraints += titleLabel.leadingAnchor.constraint(equalTo: imageView.trailingAnchor)
+        constraints += titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 12)
+        constraints += titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12)
 
         addSubview(infoLabel)
-        infoLabel.autoPinEdge(.left, to: .right, of: imageView)
-        infoLabel.autoPinEdge(.top, to: .bottom, of: titleLabel, withOffset: 4)
-        infoLabel.autoPinEdge(toSuperviewEdge: .right, withInset: 12)
-        infoLabel.autoPinEdge(toSuperviewEdge: .bottom, withInset: 12)
+        infoLabel.translatesAutoresizingMaskIntoConstraints = false
+        constraints += infoLabel.leadingAnchor.constraint(equalTo: imageView.trailingAnchor)
+        constraints += infoLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4)
+        constraints += infoLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12)
+        constraints += infoLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -12)
     }
 
     @objc private func tapped() {

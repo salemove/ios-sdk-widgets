@@ -51,9 +51,12 @@ class BadgeView: UIView {
     }
 
     private func layout() {
-        autoSetDimensions(to: CGSize(width: size, height: size))
+        var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
+        constraints += match(value: size)
 
         addSubview(countLabel)
-        countLabel.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 2, left: 2, bottom: 2, right: 2))
+        countLabel.translatesAutoresizingMaskIntoConstraints = false
+        constraints += countLabel.layoutInSuperviewCenter()
+        constraints += countLabel.layoutInSuperview(insets: UIEdgeInsets(top: 2, left: 2, bottom: -2, right: -2), priority: .defaultHigh)
     }
 }
