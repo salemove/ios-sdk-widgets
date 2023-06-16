@@ -51,12 +51,14 @@ class PoweredBy: UIView {
     }
 
     private func layout() {
+        var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
         addSubview(stackView)
-        stackView.autoCenterInSuperview()
-        stackView.autoPinEdge(toSuperviewEdge: .left, withInset: 0, relation: .greaterThanOrEqual)
-        stackView.autoPinEdge(toSuperviewEdge: .top, withInset: 0, relation: .greaterThanOrEqual)
-        stackView.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
-        stackView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 0, relation: .greaterThanOrEqual)
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        constraints += stackView.layoutInSuperviewCenter()
+        constraints += stackView.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor)
+        constraints += stackView.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor)
+        constraints += stackView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor)
+        constraints += stackView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor)
     }
 
     private func setColor() {
