@@ -18,7 +18,6 @@ let package = Package(
         )
     ],
     dependencies: [
-        .package(url: "https://github.com/airbnb/lottie-ios", from: "3.3.0"),
         .package(url: "https://github.com/PureLayout/PureLayout", from: "3.1.9")
     ],
     targets: [
@@ -48,11 +47,6 @@ let package = Package(
             checksum: "93f00268ba710a0ee513be7cef94a385637bfb76c292942cc5f062a7b2f0037b"
         ),
         .binaryTarget(
-            name: "LottieXcf",
-            url: "https://github.com/salemove/ios-sdk-widgets/releases/download/0.10.8/LottieXcf.xcframework.zip",
-            checksum: "9f2340bfb15f734ebd3a4e79d67ce3581822aa5ceec3a37a38ebaa505bf1a8a3"
-        ),
-        .binaryTarget(
             name: "GliaWidgetsXcf",
             url: "https://github.com/salemove/ios-sdk-widgets/releases/download/2.0.1/GliaWidgetsXcf.xcframework.zip",
             checksum: "26f6e0bc6e32f4223f635d8de8aa4877338aed7a323f2127a05980f347ac1f9a"
@@ -60,7 +54,6 @@ let package = Package(
         .target(
             name: "GliaWidgets",
             dependencies: [
-                .product(name: "Lottie", package: "lottie-ios"),
                 .product(name: "PureLayout", package: "PureLayout")
             ],
             path: "GliaWidgets",
@@ -91,8 +84,7 @@ let package = Package(
                 "GliaCoreDependency",
                 "TwilioVoice",
                 "WebRTC",
-                "PureLayoutXcf",
-                "LottieXcf"
+                "PureLayoutXcf"
             ]
         )
     ]
