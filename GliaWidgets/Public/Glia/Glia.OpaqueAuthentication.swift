@@ -4,7 +4,6 @@ extension Glia {
         typealias Callback = (Result<Void, Error>) -> Void
         typealias GetVisitor = () -> Void
 
-
         var authenticateWithIdToken: (_ idToken: IdToken, _ accessToken: AccessToken?, _ callback: @escaping Callback) -> Void
         var deauthenticateWithCallback: (@escaping Callback) -> Void
         var isAuthenticatedClosure: () -> Bool
