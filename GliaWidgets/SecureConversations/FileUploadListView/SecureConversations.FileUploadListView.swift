@@ -69,18 +69,23 @@ extension SecureConversations {
         }
 
         private func layout() {
-            heightLayoutConstraint = autoSetDimension(.height, toSize: 0)
+            var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
+
+            heightLayoutConstraint = match(.height, value: 0).first
+            constraints += heightLayoutConstraint
 
             addSubview(scrollView)
-            scrollView.autoPinEdgesToSuperviewEdges(with: .zero)
+            scrollView.translatesAutoresizingMaskIntoConstraints = false
+            constraints += scrollView.layoutInSuperview()
 
             let contentView = UIView()
             scrollView.addSubview(contentView)
-            contentView.autoPinEdgesToSuperviewEdges()
-            contentView.autoMatch(.width, to: .width, of: scrollView)
+            contentView.translatesAutoresizingMaskIntoConstraints = false
+            constraints += contentView.layoutInScrollView()
 
             contentView.addSubview(stackView)
-            stackView.autoPinEdgesToSuperviewEdges()
+            stackView.translatesAutoresizingMaskIntoConstraints = false
+            constraints += stackView.layoutInSuperview()
         }
 
         func updateHeight() {

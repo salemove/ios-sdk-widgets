@@ -1,6 +1,6 @@
 import UIKit
 
-class AlertView: UIView {
+class AlertView: BaseView {
     enum ActionKind {
         case positive
         case negative
@@ -16,11 +16,12 @@ class AlertView: UIView {
             } else {
                 guard titleImageView.superview == nil else { return }
                 titleImageViewContainer.addSubview(titleImageView)
-                titleImageView.autoPinEdge(toSuperviewEdge: .top)
-                titleImageView.autoPinEdge(toSuperviewEdge: .bottom)
-                titleImageView.autoPinEdge(toSuperviewEdge: .left, withInset: 0, relation: .greaterThanOrEqual)
-                titleImageView.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
-                titleImageView.autoCenterInSuperview()
+                titleImageView.translatesAutoresizingMaskIntoConstraints = false
+                var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
+                constraints += titleImageView.layoutInSuperview(edges: .vertical)
+                constraints += titleImageView.layoutInCenter(titleImageViewContainer)
+                constraints += titleImageView.leadingAnchor.constraint(greaterThanOrEqualTo: titleImageViewContainer.leadingAnchor)
+                constraints += titleImageView.trailingAnchor.constraint(lessThanOrEqualTo: titleImageViewContainer.trailingAnchor)
             }
         }
     }
@@ -58,28 +59,26 @@ class AlertView: UIView {
     var closeTapped: (() -> Void)?
 
     private let style: AlertStyle
-    private let titleImageView = UIImageView()
-    private let titleImageViewContainer = UIView()
-    private let titleLabel = UILabel()
-    private let messageLabel = UILabel()
-    private let stackView = UIStackView()
-    private let actionsStackView = UIStackView()
+    private let titleImageView = UIImageView().makeView()
+    private let titleImageViewContainer = UIView().makeView()
+    private let titleLabel = UILabel().makeView()
+    private let messageLabel = UILabel().makeView()
+    private let stackView = UIStackView().makeView()
+    private let actionsStackView = UIStackView().makeView()
     private let kContentInsets = UIEdgeInsets(top: 28, left: 32, bottom: 28, right: 32)
     private let kCornerRadius: CGFloat = 30
-    private let kTitleImageViewSize = CGSize(width: 32, height: 32)
+    private let titleImageViewSize: CGFloat = 32
     private var poweredBy: PoweredBy?
     private var closeButton: Button?
 
     init(with style: AlertStyle) {
         self.style = style
-        super.init(frame: .zero)
-        setup()
-        layout()
+        super.init()
     }
 
     @available(*, unavailable)
-    required init?(coder _: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    required init() {
+        fatalError("init() has not been implemented")
     }
 
     override func layoutSubviews() {
@@ -106,7 +105,8 @@ class AlertView: UIView {
         actionsStackView.addArrangedSubview(actionView)
     }
 
-    private func setup() {
+    override func setup() {
+        super.setup()
         clipsToBounds = true
 
         layer.masksToBounds = false
@@ -152,11 +152,13 @@ class AlertView: UIView {
         )
     }
 
-    private func layout() {
+    override func defineLayout() {
+        super.defineLayout()
         addSubview(stackView)
-        stackView.autoPinEdgesToSuperviewEdges(with: kContentInsets)
-
-        titleImageView.autoSetDimensions(to: kTitleImageViewSize)
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
+        constraints += stackView.layoutInSuperview(insets: kContentInsets)
+        constraints += titleImageView.match(value: titleImageViewSize)
     }
 
     private func addCloseButton() {
@@ -174,8 +176,11 @@ class AlertView: UIView {
         closeButton.accessibilityIdentifier = "alert_close_button"
         self.closeButton = closeButton
         addSubview(closeButton)
-        closeButton.autoPinEdge(toSuperviewEdge: .right, withInset: 10)
-        closeButton.autoPinEdge(toSuperviewEdge: .bottom, withInset: 10)
+        closeButton.translatesAutoresizingMaskIntoConstraints = false
+        [
+            closeButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
+            closeButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10)
+        ].activate()
     }
 
     private func removeCloseButton() {

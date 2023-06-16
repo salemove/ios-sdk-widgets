@@ -43,24 +43,23 @@ class ChatImageFileContentView: ChatFileContentView {
     override func layout() {
         super.layout()
 
+        var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
         contentView.addSubview(imageView)
-        imageView.autoPinEdgesToSuperviewEdges()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        constraints += imageView.layoutInSuperview()
 
         addSubview(contentView)
-        contentView.autoPinEdge(toSuperviewEdge: .top)
-        contentView.autoPinEdge(toSuperviewEdge: .bottom)
-
-        NSLayoutConstraint.autoSetPriority(.defaultHigh) {
-            contentView.autoSetDimension(.height, toSize: kHeight)
-        }
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        constraints += contentView.layoutInSuperview(edges: .vertical)
+        constraints += contentView.match(.height, value: kHeight, priority: .defaultHigh)
 
         switch contentAlignment {
         case .left:
-            contentView.autoPinEdge(toSuperviewEdge: .left)
-            contentView.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
+            constraints += contentView.layoutInSuperview(edges: .leading)
+            constraints += contentView.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor)
         case .right:
-            contentView.autoPinEdge(toSuperviewEdge: .right)
-            contentView.autoPinEdge(toSuperviewEdge: .left, withInset: 0, relation: .greaterThanOrEqual)
+            constraints += contentView.layoutInSuperview(edges: .trailing)
+            constraints += contentView.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor)
         }
     }
 

@@ -28,8 +28,8 @@ class CallButton: UIView {
     private let titleLabel = UILabel()
     private let circleView = UIView()
     private var badgeView: BadgeView?
-    private let kCircleSize: CGFloat = 60
-    private let kImageViewSize = CGSize(width: 21, height: 21)
+    private let circleSize: CGFloat = 60
+    private let imageViewSize: CGFloat = 21
 
     init(kind: Kind, style: CallButtonStyle) {
         self.kind = kind
@@ -53,8 +53,10 @@ class CallButton: UIView {
                 let badgeView = BadgeView(with: style)
                 self.badgeView = badgeView
                 addSubview(badgeView)
-                badgeView.autoPinEdge(.top, to: .top, of: imageView, withOffset: -badgeView.size / 2)
-                badgeView.autoPinEdge(.left, to: .right, of: imageView, withOffset: -badgeView.size / 2)
+                badgeView.translatesAutoresizingMaskIntoConstraints = false
+                var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
+                constraints += badgeView.topAnchor.constraint(equalTo: imageView.topAnchor, constant: -badgeView.size / 2)
+                constraints += badgeView.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: -badgeView.size / 2)
             }
         }
         badgeView?.newItemCount = itemCount
@@ -63,7 +65,7 @@ class CallButton: UIView {
 
     private func setup() {
         circleView.clipsToBounds = true
-        circleView.layer.cornerRadius = kCircleSize / 2.0
+        circleView.layer.cornerRadius = circleSize / 2.0
 
         imageView.clipsToBounds = true
         imageView.contentMode = .scaleAspectFit
@@ -89,20 +91,25 @@ class CallButton: UIView {
     }
 
     private func layout() {
+        var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
         addSubview(circleView)
-        circleView.autoSetDimensions(to: CGSize(width: kCircleSize, height: kCircleSize))
-        circleView.autoPinEdge(toSuperviewEdge: .top)
-        circleView.autoPinEdge(toSuperviewEdge: .left, withInset: 0, relation: .greaterThanOrEqual)
-        circleView.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
-        circleView.autoAlignAxis(toSuperviewAxis: .vertical)
+        circleView.translatesAutoresizingMaskIntoConstraints = false
+        constraints += circleView.match(value: circleSize)
+        constraints += circleView.topAnchor.constraint(equalTo: topAnchor)
+        constraints += circleView.centerXAnchor.constraint(equalTo: centerXAnchor)
+        constraints += circleView.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor)
+        constraints += circleView.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor)
 
         circleView.addSubview(imageView)
-        imageView.autoSetDimensions(to: kImageViewSize)
-        imageView.autoCenterInSuperview()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        constraints += imageView.match(value: imageViewSize)
+        constraints += imageView.layoutInCenter(circleView)
 
         addSubview(titleLabel)
-        titleLabel.autoPinEdge(.top, to: .bottom, of: circleView, withOffset: 4)
-        titleLabel.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .top)
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        constraints += titleLabel.topAnchor.constraint(equalTo: circleView.bottomAnchor, constant: 4)
+        constraints += titleLabel.layoutInSuperview(edges: .horizontal)
+        constraints += titleLabel.layoutInSuperview(edges: .bottom)
     }
 
     private func update(for state: State) {
