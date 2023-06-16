@@ -21,7 +21,6 @@ end
 target 'GliaWidgets' do
   pod 'PureLayout', '~> 3.1'
   pod 'GliaCoreSDK'
-  pod 'lottie-ios', '3.2.3'
   swiftlint
 end
 

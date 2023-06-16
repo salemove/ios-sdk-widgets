@@ -21,5 +21,4 @@ Pod::Spec.new do |s|
 
   s.dependency 'GliaCoreSDK', '1.0.2'
   s.dependency 'PureLayout', '~>3.1'
-  s.dependency 'lottie-ios', '3.2.3'
 end
