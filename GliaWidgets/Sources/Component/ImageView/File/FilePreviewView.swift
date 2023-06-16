@@ -50,18 +50,18 @@ class FilePreviewView: UIView {
     }
 
     private func layout() {
-        NSLayoutConstraint.autoSetPriority(.defaultHigh) {
-            autoSetDimension(.height, toSize: kSize.height)
-        }
-        autoSetDimension(.width, toSize: kSize.width)
+        var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
+        constraints += match(.height, value: kSize.height, priority: .defaultHigh)
+        constraints += match(.width, value: kSize.width)
 
         addSubview(imageView)
-        imageView.autoPinEdgesToSuperviewEdges()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        constraints += imageView.layoutInSuperview()
 
         addSubview(label)
-        label.autoPinEdge(toSuperviewEdge: .left, withInset: 5)
-        label.autoPinEdge(toSuperviewEdge: .right, withInset: 5)
-        label.autoAlignAxis(toSuperviewAxis: .horizontal)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        constraints += label.layoutInSuperview(edges: .horizontal, insets: .init(top: 0, left: 5, bottom: 0, right: 5))
+        constraints += label.centerYAnchor.constraint(equalTo: centerYAnchor)
     }
 
     private func update() {

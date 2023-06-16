@@ -58,15 +58,19 @@ extension CallVisualizer.VideoCallView {
         override func defineLayout() {
             super.defineLayout()
             adjustStackConstraints()
+            var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
             addSubview(effectView)
-            effectView.autoPinEdgesToSuperviewEdges()
+            effectView.translatesAutoresizingMaskIntoConstraints = false
+            constraints += effectView.layoutInSuperview()
 
             addSubview(stackView)
-            stackView.autoPinEdge(toSuperviewEdge: .top, withInset: insets.top)
-            leftConstraint = stackView.autoPinEdge(toSuperviewEdge: .left, withInset: insets.left)
-            rightConstraint = stackView.autoPinEdge(toSuperviewEdge: .right, withInset: insets.right)
-            verticalAlignConstrait = stackView.autoAlignAxis(toSuperviewAxis: .vertical)
-            bottomSpaceConstraint = stackView.autoPinEdge(toSuperviewEdge: .bottom)
+            stackView.translatesAutoresizingMaskIntoConstraints = false
+            constraints += stackView.topAnchor.constraint(equalTo: topAnchor, constant: insets.top)
+            leftConstraint = stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: insets.left)
+            rightConstraint = stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -insets.right)
+            verticalAlignConstrait = stackView.centerXAnchor.constraint(equalTo: centerXAnchor)
+            bottomSpaceConstraint = stackView.bottomAnchor.constraint(equalTo: bottomAnchor)
+            constraints += [leftConstraint, rightConstraint, verticalAlignConstrait, bottomSpaceConstraint].compactMap { $0 }
         }
 
         override func setup() {
@@ -88,8 +92,16 @@ extension CallVisualizer.VideoCallView {
                 minimizeButton
             ]
 
-            allButtons.forEach {
-                let wrapper = wrap($0)
+            allButtons.forEach { button in
+                var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
+                let wrapper = UIView()
+                wrapper.addSubview(button)
+                button.translatesAutoresizingMaskIntoConstraints = false
+                constraints += button.layoutInSuperview(edges: .vertical)
+                constraints += button.leadingAnchor.constraint(greaterThanOrEqualTo: wrapper.leadingAnchor)
+                constraints += button.trailingAnchor.constraint(lessThanOrEqualTo: wrapper.trailingAnchor)
+                constraints += button.centerXAnchor.constraint(equalTo: wrapper.centerXAnchor)
+
                 stackView.addArrangedSubview(wrapper)
             }
         }
@@ -143,29 +155,12 @@ private extension CallVisualizer.VideoCallView.CallButtonBar {
         bottomSpaceConstraint?.constant = -(safeAreaInsets.bottom + insets.bottom)
     }
 
-    func wrap(_ button: CallButton) -> UIView {
-        let wrapper = UIView()
-        wrapper.addSubview(button)
-        button.autoPinEdge(toSuperviewEdge: .top)
-        button.autoPinEdge(toSuperviewEdge: .bottom)
-        button.autoPinEdge(toSuperviewEdge: .left, withInset: 0, relation: .greaterThanOrEqual)
-        button.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
-        button.autoAlignAxis(toSuperviewAxis: .vertical)
-        return wrapper
-    }
-
     func adjustStackConstraints() {
         if currentOrientation.isPortrait {
-            verticalAlignConstrait?.autoRemove()
             stackView.spacing = 0
-            leftConstraint?.autoInstall()
-            rightConstraint?.autoInstall()
             renderEffect = .none
         } else {
-            leftConstraint?.autoRemove()
-            rightConstraint?.autoRemove()
             stackView.spacing = 84
-            verticalAlignConstrait?.autoInstall()
             renderEffect = .blur
         }
     }

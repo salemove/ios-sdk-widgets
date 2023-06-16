@@ -66,19 +66,22 @@ class ChatCallUpgradeView: UIView {
     }
 
     private func layout() {
+        var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
         addSubview(contentView)
-        contentView.autoPinEdgesToSuperviewEdges(with: kContentInsets)
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        constraints += contentView.layoutInSuperview(insets: kContentInsets)
 
         contentView.addSubview(stackView)
-        stackView.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 14, left: 14, bottom: 14, right: 14))
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        constraints += stackView.layoutInSuperview(insets: UIEdgeInsets(top: 14, left: 14, bottom: 14, right: 14))
 
         let iconWrapper = UIView()
         iconWrapper.addSubview(iconImageView)
-        iconImageView.autoPinEdge(toSuperviewEdge: .top)
-        iconImageView.autoPinEdge(toSuperviewEdge: .bottom)
-        iconImageView.autoPinEdge(toSuperviewEdge: .left, withInset: 0, relation: .greaterThanOrEqual)
-        iconImageView.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
-        iconImageView.autoAlignAxis(toSuperviewAxis: .vertical)
+        iconImageView.translatesAutoresizingMaskIntoConstraints = false
+        constraints += iconImageView.layoutInSuperview(edges: .vertical)
+        constraints += iconImageView.leadingAnchor.constraint(greaterThanOrEqualTo: iconWrapper.leadingAnchor)
+        constraints += iconImageView.trailingAnchor.constraint(lessThanOrEqualTo: iconWrapper.trailingAnchor)
+        constraints += iconImageView.centerXAnchor.constraint(equalTo: iconWrapper.centerXAnchor)
 
         stackView.addArrangedSubviews(
             [iconWrapper, textLabel, durationLabel]

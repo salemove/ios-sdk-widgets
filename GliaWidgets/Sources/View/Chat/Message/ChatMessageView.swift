@@ -2,7 +2,7 @@ import UIKit
 
 class ChatMessageView: BaseView {
     let style: ChatMessageStyle
-    let contentViews = UIStackView()
+    let contentViews = UIStackView().makeView()
     var fileTapped: ((LocalFile) -> Void)?
     var downloadTapped: ((FileDownload) -> Void)?
     var linkTapped: ((URL) -> Void)?

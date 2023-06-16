@@ -166,39 +166,51 @@ extension CallVisualizer {
         }
 
         func layout() {
+            var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
             addSubview(effectView)
-            effectView.autoPinEdgesToSuperviewEdges()
+            effectView.translatesAutoresizingMaskIntoConstraints = false
+            constraints += effectView.layoutInSuperview()
 
             addSubview(remoteVideoView)
-            remoteVideoView.autoAlignAxis(toSuperviewAxis: .horizontal)
-            remoteVideoView.autoAlignAxis(toSuperviewAxis: .vertical)
-            remoteVideoViewWidthConstraint = remoteVideoView.autoSetDimension(.height, toSize: 0)
-            remoteVideoViewHeightConstraint = remoteVideoView.autoSetDimension(.width, toSize: 0)
+            remoteVideoView.translatesAutoresizingMaskIntoConstraints = false
+            constraints += remoteVideoView.centerYAnchor.constraint(equalTo: centerYAnchor)
+            constraints += remoteVideoView.centerXAnchor.constraint(equalTo: centerXAnchor)
+            let (widthConstraing, heightConstraint) = (
+                remoteVideoView.match(.height, value: 0), remoteVideoView.match(.width, value: 0)
+            )
+            remoteVideoViewWidthConstraint = widthConstraing.first
+            remoteVideoViewHeightConstraint = heightConstraint.first
+            constraints += widthConstraing
+            constraints += heightConstraint
 
             addSubview(header)
-            headerTopConstraint = header.autoPinEdge(toSuperviewEdge: .top)
-            header.autoPinEdge(toSuperviewEdge: .left)
-            header.autoPinEdge(toSuperviewEdge: .right)
+            header.translatesAutoresizingMaskIntoConstraints = false
+            headerTopConstraint = header.topAnchor.constraint(equalTo: topAnchor)
+            constraints += headerTopConstraint
+            constraints += header.layoutInSuperview(edges: .horizontal)
 
             addSubview(topLabel)
-            topLabel.autoPinEdge(.top, to: .bottom, of: header)
-            topLabel.autoPinEdge(toSuperviewSafeArea: .left, withInset: 20)
-            topLabel.autoPinEdge(toSuperviewSafeArea: .right, withInset: 20)
+            topLabel.translatesAutoresizingMaskIntoConstraints = false
+            constraints += topLabel.topAnchor.constraint(equalTo: header.bottomAnchor)
+            constraints += topLabel.layoutIn(safeAreaLayoutGuide, edges: .horizontal, insets: .init(top: 0, left: 20, bottom: 0, right: 20))
 
             addSubview(connectView)
-            connectView.autoPinEdge(.top, to: .bottom, of: header, withOffset: 10)
-            connectView.autoPinEdge(toSuperviewMargin: .left, relation: .greaterThanOrEqual)
-            connectView.autoPinEdge(toSuperviewMargin: .right, relation: .greaterThanOrEqual)
-            connectView.autoAlignAxis(toSuperviewAxis: .vertical)
+            connectView.translatesAutoresizingMaskIntoConstraints = false
+            constraints += connectView.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 10)
+            constraints += connectView.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor)
+            constraints += connectView.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor)
+            constraints += connectView.centerXAnchor.constraint(equalTo: centerXAnchor)
 
             addSubview(topStackView)
-            topStackView.autoPinEdge(.top, to: .bottom, of: header, withOffset: 50)
-            topStackView.autoAlignAxis(toSuperviewAxis: .vertical)
+            topStackView.translatesAutoresizingMaskIntoConstraints = false
+            constraints += topStackView.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 50)
+            constraints += topStackView.centerXAnchor.constraint(equalTo: centerXAnchor)
 
             addSubview(buttonBar)
-            buttonBarBottomConstraint = buttonBar.autoPinEdge(toSuperviewEdge: .bottom)
-            buttonBar.autoPinEdge(toSuperviewEdge: .left)
-            buttonBar.autoPinEdge(toSuperviewEdge: .right)
+            buttonBar.translatesAutoresizingMaskIntoConstraints = false
+            buttonBarBottomConstraint = buttonBar.bottomAnchor.constraint(equalTo: bottomAnchor)
+            constraints += buttonBarBottomConstraint
+            constraints += buttonBar.layoutInSuperview(edges: .horizontal)
 
             addSubview(localVideoView)
 
