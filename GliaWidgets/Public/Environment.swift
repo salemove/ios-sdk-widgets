@@ -19,7 +19,7 @@ public enum Environment {
             return .eu
         case .beta:
             // swiftlint:disable force_unwrapping
-            return .custom(URL(string: "https://api.beta.salemove.com/")!)
+            return .custom(URL(string: "https://beta.salemove.com/")!)
             // swiftlint:enable force_unwrapping
         case .custom(let url):
             return .custom(url)
