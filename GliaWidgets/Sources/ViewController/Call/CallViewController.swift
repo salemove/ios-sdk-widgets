@@ -1,6 +1,6 @@
 import UIKit
 
-class CallViewController: EngagementViewController, MediaUpgradePresenter {
+final class CallViewController: EngagementViewController {
     private let viewModel: CallViewModel
     private let environment: Environment
     private var proximityManager: ProximityManager?

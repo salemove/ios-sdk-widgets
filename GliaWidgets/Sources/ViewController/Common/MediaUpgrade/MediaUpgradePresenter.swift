@@ -1,6 +1,6 @@
 import UIKit
 
-protocol MediaUpgradePresenter where Self: UIViewController {
+protocol MediaUpgradePresenter: DismissalAndPresentationController where Self: UIViewController {
     var viewFactory: ViewFactory { get }
 
     func offerMediaUpgrade(
@@ -10,18 +10,20 @@ protocol MediaUpgradePresenter where Self: UIViewController {
     )
 }
 
-extension AlertPresenter {
+extension MediaUpgradePresenter {
     func offerMediaUpgrade(
         with conf: SingleMediaUpgradeAlertConfiguration,
         accepted: @escaping () -> Void,
         declined: @escaping () -> Void
     ) {
         let alert = AlertViewController(
-            kind: .singleMediaUpgrade(conf,
-                                      accepted: accepted,
-                                      declined: declined),
-            viewFactory: viewFactory
+            kind: .singleMediaUpgrade(
+                conf,
+                accepted: accepted,
+                declined: declined
+            ),
+            viewFactory: self.viewFactory
         )
-        present(alert, animated: true, completion: nil)
+        replacePresentedOfferIfPossible(with: alert)
     }
 }

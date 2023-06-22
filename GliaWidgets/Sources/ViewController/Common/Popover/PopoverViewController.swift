@@ -1,6 +1,6 @@
 import UIKit
 
-final class PopoverViewController: UIViewController {
+final class PopoverViewController: UIViewController, Replaceable {
     private let contentView: UIView
     private let sourceView: UIView
     private let contentInsets: UIEdgeInsets

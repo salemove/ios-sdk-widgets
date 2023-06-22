@@ -1,6 +1,6 @@
 import UIKit
 
-class EngagementViewController: UIViewController, AlertPresenter {
+class EngagementViewController: UIViewController, AlertPresenter, MediaUpgradePresenter, ScreenShareOfferPresenter {
     let viewFactory: ViewFactory
     private var viewModel: CommonEngagementModel
 
