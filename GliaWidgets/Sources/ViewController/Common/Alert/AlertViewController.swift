@@ -1,6 +1,6 @@
 import UIKit
 
-class AlertViewController: UIViewController {
+class AlertViewController: UIViewController, Replaceable {
     enum Kind {
         case message(
             MessageAlertConfiguration,
@@ -27,9 +27,28 @@ class AlertViewController: UIViewController {
             accepted: () -> Void,
             declined: () -> Void
         )
+
+        /// Indicating presentation priority of an alert.
+        /// Based on comparing values we can decide whether an alert can be replaced with another alert.
+        fileprivate var presentationPriority: PresentationPriority {
+            switch self {
+            case .singleAction:
+                return .highest
+            case .confirmation:
+                return .high
+            case .message, .singleMediaUpgrade, .screenShareOffer:
+                return .regular
+            }
+        }
     }
 
     let viewFactory: ViewFactory
+
+    /// Indicating presentation priority of an alert.
+    /// Based on comparing values we can decide whether an alert can be replaced with another alert.
+    var presentationPriority: PresentationPriority {
+        kind.presentationPriority
+    }
 
     private let kind: Kind
     private var alertView: AlertView?

@@ -1,8 +1,7 @@
 import MobileCoreServices
 import UIKit
 
-class ChatViewController: EngagementViewController, MediaUpgradePresenter,
-    PopoverPresenter, ScreenShareOfferPresenter {
+final class ChatViewController: EngagementViewController, PopoverPresenter {
     private var viewModel: SecureConversations.ChatWithTranscriptModel {
         didSet {
             renderProps()

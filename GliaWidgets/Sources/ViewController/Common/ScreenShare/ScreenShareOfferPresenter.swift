@@ -1,6 +1,6 @@
 import UIKit
 
-protocol ScreenShareOfferPresenter where Self: UIViewController {
+protocol ScreenShareOfferPresenter: DismissalAndPresentationController where Self: UIViewController {
     var viewFactory: ViewFactory { get }
 
     func offerScreenShare(
@@ -10,7 +10,7 @@ protocol ScreenShareOfferPresenter where Self: UIViewController {
     )
 }
 
-extension AlertPresenter {
+extension ScreenShareOfferPresenter {
     func offerScreenShare(
         with conf: ScreenShareOfferAlertConfiguration,
         accepted: @escaping () -> Void,
@@ -18,8 +18,8 @@ extension AlertPresenter {
     ) {
         let alert = AlertViewController(
             kind: .screenShareOffer(conf, accepted: accepted, declined: declined),
-            viewFactory: viewFactory
+            viewFactory: self.viewFactory
         )
-        present(alert, animated: true, completion: nil)
+        replacePresentedOfferIfPossible(with: alert)
     }
 }
