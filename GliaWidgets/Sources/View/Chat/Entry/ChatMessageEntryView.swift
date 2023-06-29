@@ -3,7 +3,6 @@ import UIKit
 class ChatMessageEntryView: BaseView {
     let pickMediaButton: MessageButton
     let uploadListView: SecureConversations.FileUploadListView
-    var maxCharacters: Int = 200
     var textChanged: ((String) -> Void)?
     var sendTapped: (() -> Void)?
     var pickMediaTapped: (() -> Void)?
@@ -55,8 +54,9 @@ class ChatMessageEntryView: BaseView {
     private let sendButton: MessageButton
     private let buttonsStackView = UIStackView()
     private var textViewHeightConstraint: NSLayoutConstraint?
-    private let kMinTextViewHeight: CGFloat = 24
-    private let kMaxTextViewHeight: CGFloat = 200
+    private let minTextViewHeight: CGFloat = 24
+    private let maxTextLines = 4
+    private let maxCharacters = 10000
 
     private let environment: Environment
 
@@ -112,7 +112,6 @@ class ChatMessageEntryView: BaseView {
         textView.textContainerInset = .zero
         textView.textContainer.lineFragmentPadding = 0
         textView.autocapitalizationType = .sentences
-        textView.isScrollEnabled = false
         textView.font = style.messageFont
         textView.textColor = style.messageColor
         textView.backgroundColor = .clear
@@ -171,7 +170,7 @@ class ChatMessageEntryView: BaseView {
 
         messageContainerView.addSubview(textView)
         textView.translatesAutoresizingMaskIntoConstraints = false
-        textViewHeightConstraint = textView.match(.height, value: kMinTextViewHeight).first
+        textViewHeightConstraint = textView.match(.height, value: minTextViewHeight).first
         constraints += [textViewHeightConstraint].compactMap { $0 }
         constraints += textView.layoutInSuperview(edges: .vertical, insets: .init(top: 13, left: 16, bottom: 13, right: 32))
         constraints += textView.layoutInSuperview(edges: .leading, insets: .init(top: 13, left: 16, bottom: 13, right: 32))
@@ -190,7 +189,7 @@ class ChatMessageEntryView: BaseView {
         buttonsStackView.translatesAutoresizingMaskIntoConstraints = false
         constraints += buttonsStackView.match(.height, value: 50)
         constraints += buttonsStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16)
-        constraints += buttonsStackView.topAnchor.constraint(equalTo: messageContainerView.topAnchor)
+        constraints += buttonsStackView.bottomAnchor.constraint(equalTo: messageContainerView.bottomAnchor)
 
         updateTextViewHeight()
     }
@@ -219,17 +218,21 @@ class ChatMessageEntryView: BaseView {
             height: CGFloat.greatestFiniteMagnitude
         )
 
-        // We need to take into account larger height
-        // of text view or placeholder label for
-        // updated text entry height.
-        var newHeight = max(textView.sizeThatFits(size).height, placeholderLabel.sizeThatFits(size).height)
+        guard let font = textView.font, font.lineHeight > 0 else {
+            return
+        }
 
-        textView.isScrollEnabled = newHeight > kMaxTextViewHeight
+        let estimatedTextViewHeight = textView.sizeThatFits(size).height
+        let estimatedPlaceholderHeight = placeholderLabel.sizeThatFits(size).height
 
-        if newHeight > kMaxTextViewHeight {
-            newHeight = kMaxTextViewHeight
-        } else if newHeight < kMinTextViewHeight {
-            newHeight = kMinTextViewHeight
+        var newHeight = max(estimatedTextViewHeight, estimatedPlaceholderHeight)
+
+        let numLines = estimatedTextViewHeight / font.lineHeight
+
+        textView.isScrollEnabled = Int(numLines) > maxTextLines
+
+        if Int(numLines) > maxTextLines {
+            newHeight = font.lineHeight * CGFloat(maxTextLines)
         }
 
         textViewHeightConstraint?.constant = newHeight
