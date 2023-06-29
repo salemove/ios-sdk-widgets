@@ -1,6 +1,6 @@
 import UIKit
 
-protocol AlertPresenter where Self: UIViewController {
+protocol AlertPresenter: DismissalAndPresentationController where Self: UIViewController {
     var viewFactory: ViewFactory { get }
 
     func presentAlert(
@@ -43,7 +43,7 @@ extension AlertPresenter {
             ),
             viewFactory: viewFactory
         )
-        present(alert, animated: true, completion: nil)
+        replacePresentedOfferIfPossible(with: alert)
     }
 
     func presentAlertAsView(
@@ -83,7 +83,7 @@ extension AlertPresenter {
             ),
             viewFactory: viewFactory
         )
-        present(alert, animated: true, completion: nil)
+        replacePresentedOfferIfPossible(with: alert)
     }
 
     func presentSingleActionAlert(
@@ -99,7 +99,7 @@ extension AlertPresenter {
             ),
             viewFactory: viewFactory
         )
-        present(alert, animated: true, completion: nil)
+        replacePresentedOfferIfPossible(with: alert)
     }
 
     func presentSettingsAlert(
