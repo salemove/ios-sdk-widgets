@@ -18,6 +18,14 @@ class ViewController: UIViewController {
     @UserDefaultsStored(key: "features", defaultValue: Features.all, coder: .rawRepresentable())
     private var features: Features
 
+    let visitorInfoModel = VisitorInfoModel(
+        environment: .init(
+            fetchVisitorInfo: GliaCore.sharedInstance.fetchVisitorInfo,
+            updateVisitorInfo: GliaCore.sharedInstance.updateVisitorInfo,
+            uuid: UUID.init
+        )
+    )
+
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Glia UI testing"
