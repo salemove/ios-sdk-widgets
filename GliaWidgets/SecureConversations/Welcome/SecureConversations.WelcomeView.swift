@@ -127,8 +127,8 @@ extension SecureConversations {
         let environment: Environemnt
 
         // Since some of the reusable views require style
-        // to be passed during initializtion, we have to
-        // provide `Props` also during initializtion, because
+        // to be passed during initialization, we have to
+        // provide `Props` also during initialization, because
         // it is single source of data (including styles)
         // for the data-driven view.
         init(props: Props, environment: Environemnt) {
