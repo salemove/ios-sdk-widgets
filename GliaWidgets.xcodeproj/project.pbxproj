@@ -466,7 +466,12 @@
 		AF29811029E06E830005BD55 /* Availability.Environment.Failing.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF29810F29E06E830005BD55 /* Availability.Environment.Failing.swift */; };
 		AF29811229E42F3C0005BD55 /* AvailabilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF29811129E42F3C0005BD55 /* AvailabilityTests.swift */; };
 		AF29811529E6D76A0005BD55 /* FileDownloadTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF29811429E6D76A0005BD55 /* FileDownloadTests.swift */; };
+		AF35DFEF2A507B4C0038BCA7 /* VisitorInfoViewController.HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF35DFEE2A507B4C0038BCA7 /* VisitorInfoViewController.HeaderView.swift */; };
+		AF35DFF12A507CA70038BCA7 /* VisitorInfoViewController.Cells.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF35DFF02A507CA70038BCA7 /* VisitorInfoViewController.Cells.swift */; };
+		AF35DFF32A507D3E0038BCA7 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF35DFF22A507D3E0038BCA7 /* UIView+Extensions.swift */; };
 		AF39330B29B2A6A00008B60D /* ChatViewModel.SecureConverstaions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF39330A29B2A6A00008B60D /* ChatViewModel.SecureConverstaions.swift */; };
+		AF3BD1DD2A41D09100A7713E /* VisitorInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3BD1DC2A41D09100A7713E /* VisitorInfoViewController.swift */; };
+		AF3BD1DF2A42026D00A7713E /* Command.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3BD1DE2A42026D00A7713E /* Command.swift */; };
 		AF3D520B2983235C00AD8E69 /* FileUploader.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3D520A2983235C00AD8E69 /* FileUploader.Mock.swift */; };
 		AF3D520D2983B3DD00AD8E69 /* FileUploader.Environment.Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3D520C2983B3DD00AD8E69 /* FileUploader.Environment.Interface.swift */; };
 		AF3D520F2983BC5600AD8E69 /* FileUploader.Environment.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3D520E2983BC5600AD8E69 /* FileUploader.Environment.Mock.swift */; };
@@ -491,6 +496,7 @@
 		AFC40C1C29965F0F001B4C53 /* SecureConversations.ChatWithTranscriptModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC40C1B29965F0F001B4C53 /* SecureConversations.ChatWithTranscriptModel.swift */; };
 		AFCF8A5A2A02A97100B7ABB3 /* ChatItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCF8A592A02A97100B7ABB3 /* ChatItemTests.swift */; };
 		AFCF8A5C2A02AB3000B7ABB3 /* OutgoingMessage.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCF8A5B2A02AB3000B7ABB3 /* OutgoingMessage.Mock.swift */; };
+		AFD3C52C2A472B7500BC37A9 /* VisitorInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD3C52B2A472B7500BC37A9 /* VisitorInfoModel.swift */; };
 		AFEF5C6F29928DB0005C3D8D /* SecureConversations.FileUploadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFEF5C6E29928DB0005C3D8D /* SecureConversations.FileUploadView.swift */; };
 		AFEF5C7129929601005C3D8D /* SecureConversations.FilePreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFEF5C7029929601005C3D8D /* SecureConversations.FilePreviewView.swift */; };
 		AFEF5C7429929A8D005C3D8D /* SecureConversations.FileUploadListViewModel.Environment.Failing.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFEF5C7329929A8D005C3D8D /* SecureConversations.FileUploadListViewModel.Environment.Failing.swift */; };
@@ -1103,7 +1109,12 @@
 		AF29810F29E06E830005BD55 /* Availability.Environment.Failing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Availability.Environment.Failing.swift; sourceTree = "<group>"; };
 		AF29811129E42F3C0005BD55 /* AvailabilityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvailabilityTests.swift; sourceTree = "<group>"; };
 		AF29811429E6D76A0005BD55 /* FileDownloadTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileDownloadTests.swift; sourceTree = "<group>"; };
+		AF35DFEE2A507B4C0038BCA7 /* VisitorInfoViewController.HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorInfoViewController.HeaderView.swift; sourceTree = "<group>"; };
+		AF35DFF02A507CA70038BCA7 /* VisitorInfoViewController.Cells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorInfoViewController.Cells.swift; sourceTree = "<group>"; };
+		AF35DFF22A507D3E0038BCA7 /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
 		AF39330A29B2A6A00008B60D /* ChatViewModel.SecureConverstaions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.SecureConverstaions.swift; sourceTree = "<group>"; };
+		AF3BD1DC2A41D09100A7713E /* VisitorInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorInfoViewController.swift; sourceTree = "<group>"; };
+		AF3BD1DE2A42026D00A7713E /* Command.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Command.swift; sourceTree = "<group>"; };
 		AF3D520A2983235C00AD8E69 /* FileUploader.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUploader.Mock.swift; sourceTree = "<group>"; };
 		AF3D520C2983B3DD00AD8E69 /* FileUploader.Environment.Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUploader.Environment.Interface.swift; sourceTree = "<group>"; };
 		AF3D520E2983BC5600AD8E69 /* FileUploader.Environment.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUploader.Environment.Mock.swift; sourceTree = "<group>"; };
@@ -1128,6 +1139,7 @@
 		AFC40C1B29965F0F001B4C53 /* SecureConversations.ChatWithTranscriptModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.ChatWithTranscriptModel.swift; sourceTree = "<group>"; };
 		AFCF8A592A02A97100B7ABB3 /* ChatItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatItemTests.swift; sourceTree = "<group>"; };
 		AFCF8A5B2A02AB3000B7ABB3 /* OutgoingMessage.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutgoingMessage.Mock.swift; sourceTree = "<group>"; };
+		AFD3C52B2A472B7500BC37A9 /* VisitorInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorInfoModel.swift; sourceTree = "<group>"; };
 		AFEF5C6E29928DB0005C3D8D /* SecureConversations.FileUploadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.FileUploadView.swift; sourceTree = "<group>"; };
 		AFEF5C7029929601005C3D8D /* SecureConversations.FilePreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.FilePreviewView.swift; sourceTree = "<group>"; };
 		AFEF5C7329929A8D005C3D8D /* SecureConversations.FileUploadListViewModel.Environment.Failing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.FileUploadListViewModel.Environment.Failing.swift; sourceTree = "<group>"; };
@@ -1493,12 +1505,14 @@
 		1A205D7925655CEC003AA3CD /* TestingApp */ = {
 			isa = PBXGroup;
 			children = (
+				AFD3C52A2A472B1C00BC37A9 /* VisitorInfo */,
 				C0D2F05E299F93EC00803B47 /* Playbook */,
 				84265E6C29914DAA00D65842 /* ViewController */,
 				C46B2463262F05BE001245A1 /* TestingApp.entitlements */,
 				1A60AFF32567CDFB00E53F53 /* Settings */,
 				1A4AD3D4256FE7DA00468BFB /* Extensions */,
 				1A205D7A25655CEC003AA3CD /* AppDelegate.swift */,
+				AF3BD1DE2A42026D00A7713E /* Command.swift */,
 				1A205D8525655CEE003AA3CD /* LaunchScreen.storyboard */,
 				756979C42A1E5E3C002ED254 /* Assets.xcassets */,
 				1A205D8825655CEE003AA3CD /* Info.plist */,
@@ -1632,6 +1646,7 @@
 			isa = PBXGroup;
 			children = (
 				1A4AD3D5256FE7F800468BFB /* UIColor+Extensions.swift */,
+				AF35DFF22A507D3E0038BCA7 /* UIView+Extensions.swift */,
 				AF11F30628BE6F0C002ACEB4 /* UIAlertController+Extensions.swift */,
 				754313CE2870E64600C9C1C6 /* Configuration.Extensions.swift */,
 			);
@@ -3046,6 +3061,17 @@
 			path = Factory;
 			sourceTree = "<group>";
 		};
+		AFD3C52A2A472B1C00BC37A9 /* VisitorInfo */ = {
+			isa = PBXGroup;
+			children = (
+				AF3BD1DC2A41D09100A7713E /* VisitorInfoViewController.swift */,
+				AF35DFF02A507CA70038BCA7 /* VisitorInfoViewController.Cells.swift */,
+				AF35DFEE2A507B4C0038BCA7 /* VisitorInfoViewController.HeaderView.swift */,
+				AFD3C52B2A472B7500BC37A9 /* VisitorInfoModel.swift */,
+			);
+			path = VisitorInfo;
+			sourceTree = "<group>";
+		};
 		AFEF5C6D29928376005C3D8D /* FileUploadListView */ = {
 			isa = PBXGroup;
 			children = (
@@ -4286,16 +4312,22 @@
 			files = (
 				1A4AD3D9256FE9D300468BFB /* SettingsTextCell.swift in Sources */,
 				1A4AD3DC256FF67200468BFB /* SettingsFontCell.swift in Sources */,
+				AF35DFEF2A507B4C0038BCA7 /* VisitorInfoViewController.HeaderView.swift in Sources */,
 				1A205D7F25655CEC003AA3CD /* ViewController.swift in Sources */,
+				AFD3C52C2A472B7500BC37A9 /* VisitorInfoModel.swift in Sources */,
 				1A4AD3D6256FE7F800468BFB /* UIColor+Extensions.swift in Sources */,
 				AF11F30728BE6F0C002ACEB4 /* UIAlertController+Extensions.swift in Sources */,
+				AF3BD1DF2A42026D00A7713E /* Command.swift in Sources */,
 				754313CD2870B1C400C9C1C6 /* UserDefaultsStored.swift in Sources */,
 				1A205D7B25655CEC003AA3CD /* AppDelegate.swift in Sources */,
+				AF35DFF32A507D3E0038BCA7 /* UIView+Extensions.swift in Sources */,
 				C0D2F060299F93EC00803B47 /* PlaybookViewController.swift in Sources */,
 				754313CB2870A65400C9C1C6 /* SettingsViewController.Props.swift in Sources */,
 				7543141828806AEB00C9C1C6 /* EnvironmentSettingsTextCell.swift in Sources */,
 				84265E6E29914DDA00D65842 /* ViewController+CallVisualizer.swift in Sources */,
 				754313CF2870E64600C9C1C6 /* Configuration.Extensions.swift in Sources */,
+				AF35DFF12A507CA70038BCA7 /* VisitorInfoViewController.Cells.swift in Sources */,
+				AF3BD1DD2A41D09100A7713E /* VisitorInfoViewController.swift in Sources */,
 				1A4AD3D1256E92F300468BFB /* SettingsColorCell.swift in Sources */,
 				1A4AD3CE256E8F5500468BFB /* SettingsCell.swift in Sources */,
 				6B2BFCE2274297F100B68506 /* SettingsSwitchCell.swift in Sources */,
