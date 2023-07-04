@@ -7,7 +7,7 @@ PODS:
     - AccessibilitySnapshot/Core
     - SnapshotTesting (~> 1.0)
   - GliaCoreDependency (1.2)
-  - GliaCoreSDK (1.0.2):
+  - GliaCoreSDK (1.0.3):
     - GliaCoreDependency (= 1.2)
     - TwilioVoice (= 6.3.1)
     - WebRTC-lib (= 96.0.0)
@@ -37,7 +37,7 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   AccessibilitySnapshot: a91e4a69f870188b51f43863d9fc7269d07cdd93
   GliaCoreDependency: 87b3897f0d85321ecf77f1faa829211ad527e54d
-  GliaCoreSDK: e4e3a4c758651dcc5f8a978488b247e486728704
+  GliaCoreSDK: 08b8e50f47aed46ce3f52b4a668f57b671be75ec
   PureLayout: 5fb5e5429519627d60d079ccb1eaa7265ce7cf88
   SnapshotTesting: 6141c48b6aa76ead61431ca665c14ab9a066c53b
   SwiftLint: 13280e21cdda6786ad908dc6e416afe5acd1fcb7
