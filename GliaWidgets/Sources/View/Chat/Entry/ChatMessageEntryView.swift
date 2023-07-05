@@ -45,17 +45,17 @@ class ChatMessageEntryView: BaseView {
     }
 
     var mediaPickerButtonVisibility: MediaPickerButtonVisibility = .disabled
+    var textViewHeightConstraint: NSLayoutConstraint?
 
+    let textView = UITextView()
+    let maxTextLines = 4
     private let style: ChatMessageEntryStyle
     private let separator = UIView()
     private let messageContainerView = UIView()
-    private let textView = UITextView()
     private let placeholderLabel = UILabel()
     private let sendButton: MessageButton
     private let buttonsStackView = UIStackView()
-    private var textViewHeightConstraint: NSLayoutConstraint?
     private let minTextViewHeight: CGFloat = 24
-    private let maxTextLines = 4
     private let maxCharacters = 10000
 
     private let environment: Environment
