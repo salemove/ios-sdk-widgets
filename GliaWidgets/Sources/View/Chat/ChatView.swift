@@ -405,7 +405,7 @@ extension ChatView {
             }
 
             guard let contentView = messageRenderer?.render(message) else {
-                if chatMessage.isChoiceCard {
+                if chatMessage.cardType == .choiceCard {
                     return choiceCardMessageContent(
                         chatMessage,
                         showsImage: showsImage,
@@ -483,6 +483,30 @@ extension ChatView {
             )
         case .systemMessage(let message):
             return systemMessageContent(message)
+        case let .gvaPersistentButton(_, button):
+            // Temporary, since UI hasn't been implemented
+
+            let textView = UITextView()
+            textView.text = "Persistent Button: \(button.content)"
+            return .gvaPersistentButton(textView)
+        case let .gvaResponseText(_, text):
+            // Temporary, since UI hasn't been implemented
+
+            let textView = UITextView()
+            textView.text = "Response Text: \(text.content)"
+            return .gvaResponseText(textView)
+        case let .gvaQuickReply(_, button):
+            // Temporary, since UI hasn't been implemented
+
+            let textView = UITextView()
+            textView.text = "Quick Reply: \(button.content)"
+            return .gvaQuickReply(textView)
+        case let .gvaGallery(_, gallery):
+            // Temporary, since UI hasn't been implemented
+
+            let textView = UITextView()
+            textView.text = "Gallery: \(gallery.type.rawValue)"
+            return .gvaGallery(textView)
         }
     }
     // swiftlint:enable function_body_length
