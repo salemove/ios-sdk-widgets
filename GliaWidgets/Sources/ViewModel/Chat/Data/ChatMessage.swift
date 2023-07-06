@@ -34,12 +34,32 @@ class ChatMessage: Codable {
     var downloads = [FileDownload]()
     var metadata: MessageMetadata?
 
-    var isChoiceCard: Bool {
-        return attachment?.type == .singleChoice
-    }
+    var cardType: ChatMessageCardType {
+        if let response = try? metadata?.decode(GvaResponseText.self), response.type == .plainText {
+            return .gvaResponseText(response)
+        }
 
-    var isCustomCard: Bool {
-        metadata != nil
+        if let response = try? metadata?.decode(GvaButton.self) {
+            if response.type == .persistentButtons {
+                return .gvaPersistenButton(response)
+            } else if response.type == .quickReplies {
+                return .gvaQuickReply(response)
+            }
+        }
+
+        if let response = try? metadata?.decode(GvaGallery.self), response.type == .galleryCards {
+            return .gvaGallery(response)
+        }
+
+        if attachment?.type == .singleChoice {
+            return .choiceCard
+        }
+
+        if metadata == nil {
+            return .none
+        }
+
+        return .customCard
     }
 
     private enum CodingKeys: String, CodingKey {
