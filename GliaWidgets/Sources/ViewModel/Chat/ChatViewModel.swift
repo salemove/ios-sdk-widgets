@@ -565,7 +565,7 @@ extension ChatViewModel {
                 appendItem(item, to: messagesSection, animated: true)
                 action?(.updateItemsUserImage(animated: true))
 
-                let choiceCardInputModeEnabled = message.isChoiceCard || self.isInteractableCustomCard(message)
+                let choiceCardInputModeEnabled = message.cardType == .choiceCard || self.isInteractableCustomCard(message)
                 action?(.setChoiceCardInputModeEnabled(choiceCardInputModeEnabled))
 
                 // Store info about choice card mode from which

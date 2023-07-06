@@ -34,17 +34,32 @@ class ChatItem {
         switch message.sender {
         case .visitor:
             kind = .visitorMessage(message, status: nil)
-        case .operator where message.isCustomCard && isCustomCardSupported:
-            kind = .customCard(
-                message,
-                showsImage: false,
-                imageUrl: nil,
-                isActive: !fromHistory
-            )
         case .operator:
-            kind = message.isChoiceCard ?
-                .choiceCard(message, showsImage: false, imageUrl: nil, isActive: !fromHistory) :
-                .operatorMessage(message, showsImage: false, imageUrl: message.operator?.pictureUrl)
+            switch message.cardType {
+            case .choiceCard:
+                kind = .choiceCard(message, showsImage: false, imageUrl: nil, isActive: !fromHistory)
+            case .customCard:
+                if isCustomCardSupported {
+                    kind = .customCard(
+                        message,
+                        showsImage: false,
+                        imageUrl: nil,
+                        isActive: !fromHistory
+                    )
+                } else {
+                    return nil
+                }
+            case let .gvaPersistenButton(button):
+                kind = .gvaPersistentButton(message, persistenButton: button)
+            case let .gvaResponseText(text):
+                kind = .gvaResponseText(message, responseText: text)
+            case let .gvaQuickReply(button):
+                kind = .gvaQuickReply(message, quickReply: button)
+            case let .gvaGallery(gallery):
+                kind = .gvaGallery(message, gallery: gallery)
+            case .none:
+                kind = .operatorMessage(message, showsImage: false, imageUrl: message.operator?.pictureUrl)
+            }
         case .system:
             kind = .systemMessage(message)
         case .omniguide, .unknown:
@@ -68,5 +83,9 @@ extension ChatItem {
         case transferring
         case unreadMessageDivider
         case systemMessage(ChatMessage)
+        case gvaPersistentButton(ChatMessage, persistenButton: GvaButton)
+        case gvaResponseText(ChatMessage, responseText: GvaResponseText)
+        case gvaQuickReply(ChatMessage, quickReply: GvaButton)
+        case gvaGallery(ChatMessage, gallery: GvaGallery)
     }
 }
