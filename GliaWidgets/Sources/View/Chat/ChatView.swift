@@ -128,6 +128,56 @@ class ChatView: EngagementView {
         typingIndicatorContainer.isHidden = true
     }
 
+    override func defineLayout() {
+        super.defineLayout()
+        addSubview(header)
+        var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
+        constraints += header.layoutInSuperview(edges: .horizontal)
+        constraints += header.layoutInSuperview(edges: .top)
+
+        typingIndicatorContainer.addSubview(typingIndicatorView)
+        typingIndicatorView.translatesAutoresizingMaskIntoConstraints = false
+
+        tableAndIndicatorStack.addArrangedSubviews([tableView, typingIndicatorContainer])
+        addSubview(tableAndIndicatorStack)
+        tableAndIndicatorStack.translatesAutoresizingMaskIntoConstraints = false
+        constraints += tableAndIndicatorStack.topAnchor.constraint(equalTo: header.bottomAnchor)
+        constraints += tableAndIndicatorStack.layoutInSuperview(edges: .horizontal)
+
+        constraints += [
+            typingIndicatorView.leadingAnchor.constraint(equalTo: typingIndicatorContainer.leadingAnchor, constant: 10),
+            typingIndicatorView.topAnchor.constraint(equalTo: typingIndicatorContainer.topAnchor, constant: 10),
+            typingIndicatorView.bottomAnchor.constraint(equalTo: typingIndicatorContainer.bottomAnchor),
+            typingIndicatorView.widthAnchor.constraint(equalToConstant: 28),
+            typingIndicatorView.heightAnchor.constraint(equalToConstant: 14)
+        ]
+
+        NSLayoutConstraint.activate([
+            typingIndicatorView.leadingAnchor.constraint(equalTo: typingIndicatorContainer.leadingAnchor, constant: 10),
+            typingIndicatorView.topAnchor.constraint(equalTo: typingIndicatorContainer.topAnchor, constant: 10),
+            typingIndicatorView.bottomAnchor.constraint(equalTo: typingIndicatorContainer.bottomAnchor, constant: -8),
+            typingIndicatorView.widthAnchor.constraint(equalToConstant: 28),
+            typingIndicatorView.heightAnchor.constraint(equalToConstant: 10)
+        ])
+
+        addSubview(messageEntryView)
+        messageEntryViewBottomConstraint = messageEntryView.layoutIn(safeAreaLayoutGuide, edges: .bottom).first
+        constraints += messageEntryViewBottomConstraint
+
+        constraints += messageEntryView.layoutIn(safeAreaLayoutGuide, edges: .horizontal)
+        constraints += messageEntryView.topAnchor.constraint(equalTo: tableAndIndicatorStack.bottomAnchor)
+
+        addSubview(unreadMessageIndicatorView)
+        unreadMessageIndicatorView.translatesAutoresizingMaskIntoConstraints = false
+        constraints += unreadMessageIndicatorView.centerXAnchor.constraint(equalTo: centerXAnchor)
+
+        constraints += unreadMessageIndicatorView.bottomAnchor.constraint(
+            equalTo: messageEntryView.topAnchor, constant: kUnreadMessageIndicatorInset
+        )
+    }
+}
+
+extension ChatView {
     func setOperatorTypingIndicatorIsHidden(to isHidden: Bool) {
         typingIndicatorContainer.isHidden = isHidden
     }
@@ -247,54 +297,6 @@ class ChatView: EngagementView {
 
     func refreshAll() {
         tableView.reloadData()
-    }
-
-    override func defineLayout() {
-        super.defineLayout()
-        addSubview(header)
-        var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
-        constraints += header.layoutInSuperview(edges: .horizontal)
-        constraints += header.layoutInSuperview(edges: .top)
-
-        typingIndicatorContainer.addSubview(typingIndicatorView)
-        typingIndicatorView.translatesAutoresizingMaskIntoConstraints = false
-
-        tableAndIndicatorStack.addArrangedSubviews([tableView, typingIndicatorContainer])
-        addSubview(tableAndIndicatorStack)
-        tableAndIndicatorStack.translatesAutoresizingMaskIntoConstraints = false
-        constraints += tableAndIndicatorStack.topAnchor.constraint(equalTo: header.bottomAnchor)
-        constraints += tableAndIndicatorStack.layoutInSuperview(edges: .horizontal)
-
-        constraints += [
-            typingIndicatorView.leadingAnchor.constraint(equalTo: typingIndicatorContainer.leadingAnchor, constant: 10),
-            typingIndicatorView.topAnchor.constraint(equalTo: typingIndicatorContainer.topAnchor, constant: 10),
-            typingIndicatorView.bottomAnchor.constraint(equalTo: typingIndicatorContainer.bottomAnchor),
-            typingIndicatorView.widthAnchor.constraint(equalToConstant: 28),
-            typingIndicatorView.heightAnchor.constraint(equalToConstant: 14)
-        ]
-
-        NSLayoutConstraint.activate([
-            typingIndicatorView.leadingAnchor.constraint(equalTo: typingIndicatorContainer.leadingAnchor, constant: 10),
-            typingIndicatorView.topAnchor.constraint(equalTo: typingIndicatorContainer.topAnchor, constant: 10),
-            typingIndicatorView.bottomAnchor.constraint(equalTo: typingIndicatorContainer.bottomAnchor, constant: -8),
-            typingIndicatorView.widthAnchor.constraint(equalToConstant: 28),
-            typingIndicatorView.heightAnchor.constraint(equalToConstant: 10)
-        ])
-
-        addSubview(messageEntryView)
-        messageEntryViewBottomConstraint = messageEntryView.layoutIn(safeAreaLayoutGuide, edges: .bottom).first
-        constraints += messageEntryViewBottomConstraint
-
-        constraints += messageEntryView.layoutIn(safeAreaLayoutGuide, edges: .horizontal)
-        constraints += messageEntryView.topAnchor.constraint(equalTo: tableAndIndicatorStack.bottomAnchor)
-
-        addSubview(unreadMessageIndicatorView)
-        unreadMessageIndicatorView.translatesAutoresizingMaskIntoConstraints = false
-        constraints += unreadMessageIndicatorView.centerXAnchor.constraint(equalTo: centerXAnchor)
-
-        constraints += unreadMessageIndicatorView.bottomAnchor.constraint(
-            equalTo: messageEntryView.topAnchor, constant: kUnreadMessageIndicatorInset
-        )
     }
 
     func renderHeaderProps() {
