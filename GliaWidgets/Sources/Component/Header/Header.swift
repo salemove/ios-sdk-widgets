@@ -1,5 +1,4 @@
 import UIKit
-import PureLayout
 
 /// Defines navigation header for engagement view.
 /// This header has different states for `chat history` and `engaged`
@@ -118,31 +117,39 @@ final class Header: BaseView {
 
     override func defineLayout() {
         super.defineLayout()
-        heightConstraint = autoSetDimension(.height, toSize: height)
+        var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
+
+        heightConstraint = match(.height, value: height).first
+        constraints += [heightConstraint].compactMap { $0 }
 
         addSubview(effectView)
-        effectView.autoPinEdgesToSuperviewEdges()
+        effectView.translatesAutoresizingMaskIntoConstraints = false
+        constraints += effectView.layoutInSuperview()
 
         addSubview(contentView)
-        contentView.autoPinEdgesToSuperviewEdges(with: contentInsets, excludingEdge: .top)
-        contentView.autoSetDimension(.height, toSize: contentHeight)
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        constraints += contentView.layoutInSuperview(edges: .horizontal, insets: contentInsets)
+        constraints += contentView.layoutInSuperview(edges: .bottom, insets: contentInsets)
+        constraints += contentView.match(.height, value: contentHeight)
 
         contentView.addSubview(titleLabel)
-        titleLabel.autoPinEdge(toSuperviewEdge: .left)
-        titleLabel.autoPinEdge(toSuperviewEdge: .right)
-        titleLabel.autoAlignAxis(toSuperviewAxis: .horizontal)
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        constraints += titleLabel.layoutInSuperview(edges: .horizontal)
+        constraints += titleLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
+        constraints += titleLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor)
 
         if let backButton = backButton {
             contentView.addSubview(backButton)
-            backButton.autoPinEdge(toSuperviewEdge: .left)
-            backButton.autoAlignAxis(toSuperviewAxis: .horizontal)
+            backButton.translatesAutoresizingMaskIntoConstraints = false
+            constraints += backButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor)
+            constraints += backButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
         }
 
         rightItemContainer.addArrangedSubviews([endScreenShareButton, endButton, closeButton])
         contentView.addSubview(rightItemContainer)
-        rightItemContainer.autoPinEdge(toSuperviewEdge: .right)
-        rightItemContainer.autoAlignAxis(toSuperviewAxis: .horizontal)
-
+        rightItemContainer.translatesAutoresizingMaskIntoConstraints = false
+        constraints += rightItemContainer.layoutInSuperview(edges: .trailing)
+        constraints += rightItemContainer.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
         updateHeight()
 
         renderProps()

@@ -131,9 +131,11 @@ private extension WebMessageCardView {
     }
 
     func layout() {
-        heightConstraint = webView.autoSetDimension(.height, toSize: 0)
+        var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
+        heightConstraint = webView.match(.height, value: 0).first
+        heightConstraint.map { constraints += $0 }
         addSubview(webView)
-        webView.autoPinEdgesToSuperviewEdges()
+        constraints += webView.layoutInSuperview()
     }
 
     func loadWebView() {

@@ -27,13 +27,11 @@ final class SystemMessageView: ChatMessageView {
 
     private func layout() {
         addSubview(contentViews)
-        contentViews.autoPinEdge(toSuperviewEdge: .left, withInset: kInsets.left)
-        contentViews.autoPinEdge(toSuperviewEdge: .top, withInset: kInsets.top)
-        contentViews.autoPinEdge(toSuperviewEdge: .right, withInset: kInsets.right, relation: .greaterThanOrEqual)
 
-        NSLayoutConstraint.autoSetPriority(.required) {
-            contentViews.autoPinEdge(toSuperviewEdge: .bottom, withInset: kInsets.bottom)
-        }
+        var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
+        constraints += contentViews.layoutInSuperview(edges: .vertical, insets: kInsets)
+        constraints += contentViews.layoutInSuperview(edges: .top, insets: kInsets)
+        constraints += contentViews.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: kInsets.right)
     }
 }
 
