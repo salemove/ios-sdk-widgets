@@ -32,6 +32,8 @@ final class ChatItemTests: XCTestCase {
             switch kind {
             case .choiceCard, .customCard, .operatorMessage, .systemMessage:
                 XCTAssertTrue(chatItem.isOperatorMessage)
+            case .gvaGallery, .gvaQuickReply, .gvaResponseText, .gvaPersistentButton:
+                XCTAssertTrue(chatItem.isOperatorMessage)
             case .unreadMessageDivider, .visitorMessage, .transferring,
                  .outgoingMessage, .queueOperator, .operatorConnected, .callUpgrade:
                 XCTAssertFalse(chatItem.isOperatorMessage)
