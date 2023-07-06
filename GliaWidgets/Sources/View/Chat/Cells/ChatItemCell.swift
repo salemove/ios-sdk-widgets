@@ -12,6 +12,10 @@ class ChatItemCell: UITableViewCell {
         case callUpgrade(ChatCallUpgradeView)
         case unreadMessagesDivider(UnreadMessageDividerView)
         case systemMessage(SystemMessageView)
+        case gvaResponseText(UIView)
+        case gvaPersistentButton(UIView)
+        case gvaQuickReply(UIView)
+        case gvaGallery(UIView)
 
         var view: UIView? {
             switch self {
@@ -34,6 +38,14 @@ class ChatItemCell: UITableViewCell {
             case let .unreadMessagesDivider(view):
                 return view
             case let .systemMessage(view):
+                return view
+            case let .gvaResponseText(view):
+                return view
+            case let .gvaPersistentButton(view):
+                return view
+            case let .gvaQuickReply(view):
+                return view
+            case let .gvaGallery(view):
                 return view
             }
         }

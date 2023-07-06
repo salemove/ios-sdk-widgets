@@ -108,6 +108,6 @@ extension ChatViewModel {
 
     func isInteractableCustomCard(_ chatMessage: ChatMessage) -> Bool {
         let message = MessageRenderer.Message(chatMessage: chatMessage)
-        return chatMessage.isCustomCard && (isInteractableCard?(message) ?? false)
+        return chatMessage.cardType == .customCard && (isInteractableCard?(message) ?? false)
     }
 }
