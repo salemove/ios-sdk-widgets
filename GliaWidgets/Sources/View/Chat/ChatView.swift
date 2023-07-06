@@ -11,6 +11,7 @@ class ChatView: EngagementView {
     let tableView = UITableView()
     let messageEntryView: ChatMessageEntryView
     let unreadMessageIndicatorView: UnreadMessageIndicatorView
+    let typingIndicatorContainer = UIView()
     let typingIndicatorView: OperatorTypingIndicatorView
     var numberOfSections: (() -> Int?)?
     var numberOfRows: ((Int) -> Int?)?
@@ -27,12 +28,10 @@ class ChatView: EngagementView {
     private var messageEntryViewBottomConstraint: NSLayoutConstraint!
     private var callBubble: BubbleView?
     private let keyboardObserver = KeyboardObserver()
-
     private let kUnreadMessageIndicatorInset: CGFloat = -3
     private let kCallBubbleEdgeInset: CGFloat = 10
     private let kCallBubbleSize = CGSize(width: 60, height: 60)
     private let kChatTableViewInsets = UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0)
-    private let kOperatorTypingIndicatorViewSize = CGSize(width: 28, height: 28)
     private var callBubbleBounds: CGRect {
         let x = safeAreaInsets.left + kCallBubbleEdgeInset
         let y = safeAreaInsets.top + kCallBubbleEdgeInset
@@ -41,16 +40,12 @@ class ChatView: EngagementView {
 
         return CGRect(x: x, y: y, width: width, height: height)
     }
-
     private let messageRenderer: MessageRenderer?
     private let environment: Environment
-
     private var heightCache: [String: CGFloat] = [:]
 
     var props: Props {
-        didSet {
-            renderHeaderProps()
-        }
+        didSet { renderHeaderProps() }
     }
 
     init(
@@ -81,8 +76,13 @@ class ChatView: EngagementView {
         )
 
         self.typingIndicatorView = OperatorTypingIndicatorView(
-            style: style.operatorTypingIndicator,
-            accessibilityProperties: .init(operatorName: style.accessibility.operator)
+            accessibilityProperties: .init(operatorName: style.accessibility.operator),
+            style: style.operatorTypingIndicator
+        )
+        typingIndicatorContainer.isAccessibilityElement = true
+        typingIndicatorContainer.accessibilityLabel =
+        style.operatorTypingIndicator.accessibility.label.withOperatorName(
+            OperatorTypingIndicatorView.AccessibilityProperties(operatorName: style.accessibility.operator).operatorName
         )
         self.props = props
         super.init(
@@ -103,9 +103,7 @@ class ChatView: EngagementView {
         defineLayout()
     }
 
-    required init() {
-        fatalError("init() has not been implemented")
-    }
+    required init() { fatalError("init() has not been implemented") }
 
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -120,21 +118,18 @@ class ChatView: EngagementView {
         tableView.separatorStyle = .none
         tableView.contentInset = kChatTableViewInsets
         tableView.register(cell: ChatItemCell.self)
-
         unreadMessageIndicatorView.tapped = { [weak self] in
             self?.scrollToBottom(animated: true)
         }
-
         tableAndIndicatorStack.axis = .vertical
-
         observeKeyboard()
         addKeyboardDismissalTapGesture()
         typingIndicatorView.accessibilityIdentifier = "chat_typingIndicator"
-        typingIndicatorView.isHidden = true
+        typingIndicatorContainer.isHidden = true
     }
 
     func setOperatorTypingIndicatorIsHidden(to isHidden: Bool) {
-        typingIndicatorView.isHidden = isHidden
+        typingIndicatorContainer.isHidden = isHidden
     }
 
     func setConnectState(_ state: ConnectView.State, animated: Bool) {
@@ -176,10 +171,7 @@ class ChatView: EngagementView {
     }
 
     func appendRows(_ count: Int, to section: Int, animated: Bool) {
-        guard
-            let rows = numberOfRows?(section),
-            rows >= count
-        else { return }
+        guard let rows = numberOfRows?(section), rows >= count else { return }
         // Here we ignore `animated` in case there are no
         // visible cells. Without this workaround there
         // could be a crash related to `UITableView.performBatchUpdates`
@@ -214,7 +206,6 @@ class ChatView: EngagementView {
 
     func refreshRow(_ row: Int, in section: Int, animated: Bool) {
         let indexPath = IndexPath(row: row, section: section)
-
         guard
             tableView.indexPathsForVisibleRows?.contains(indexPath) == true,
             let cell = tableView.cellForRow(at: indexPath) as? ChatItemCell,
@@ -232,7 +223,6 @@ class ChatView: EngagementView {
             }
             self.tableView.endUpdates()
         }
-
         if animated {
             refreshBlock()
         } else {
@@ -262,32 +252,48 @@ class ChatView: EngagementView {
     override func defineLayout() {
         super.defineLayout()
         addSubview(header)
-        header.autoPinEdgesToSuperviewEdges(
-            with: .zero,
-            excludingEdge: .bottom
-        )
+        var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
+        constraints += header.layoutInSuperview(edges: .horizontal)
+        constraints += header.layoutInSuperview(edges: .top)
 
-        tableAndIndicatorStack.addArrangedSubviews([tableView, typingIndicatorView])
+        typingIndicatorContainer.addSubview(typingIndicatorView)
+        typingIndicatorView.translatesAutoresizingMaskIntoConstraints = false
+
+        tableAndIndicatorStack.addArrangedSubviews([tableView, typingIndicatorContainer])
         addSubview(tableAndIndicatorStack)
-        tableAndIndicatorStack.autoPinEdge(.top, to: .bottom, of: header)
-        tableAndIndicatorStack.autoPinEdge(toSuperviewSafeArea: .left)
-        tableAndIndicatorStack.autoPinEdge(toSuperviewSafeArea: .right)
+        tableAndIndicatorStack.translatesAutoresizingMaskIntoConstraints = false
+        constraints += tableAndIndicatorStack.topAnchor.constraint(equalTo: header.bottomAnchor)
+        constraints += tableAndIndicatorStack.layoutInSuperview(edges: .horizontal)
+
+        constraints += [
+            typingIndicatorView.leadingAnchor.constraint(equalTo: typingIndicatorContainer.leadingAnchor, constant: 10),
+            typingIndicatorView.topAnchor.constraint(equalTo: typingIndicatorContainer.topAnchor, constant: 10),
+            typingIndicatorView.bottomAnchor.constraint(equalTo: typingIndicatorContainer.bottomAnchor),
+            typingIndicatorView.widthAnchor.constraint(equalToConstant: 28),
+            typingIndicatorView.heightAnchor.constraint(equalToConstant: 14)
+        ]
+
+        NSLayoutConstraint.activate([
+            typingIndicatorView.leadingAnchor.constraint(equalTo: typingIndicatorContainer.leadingAnchor, constant: 10),
+            typingIndicatorView.topAnchor.constraint(equalTo: typingIndicatorContainer.topAnchor, constant: 10),
+            typingIndicatorView.bottomAnchor.constraint(equalTo: typingIndicatorContainer.bottomAnchor, constant: -8),
+            typingIndicatorView.widthAnchor.constraint(equalToConstant: 28),
+            typingIndicatorView.heightAnchor.constraint(equalToConstant: 10)
+        ])
 
         addSubview(messageEntryView)
-        messageEntryViewBottomConstraint = messageEntryView.autoPinEdge(
-            toSuperviewSafeArea: .bottom
-        )
-        messageEntryView.autoPinEdge(toSuperviewSafeArea: .left)
-        messageEntryView.autoPinEdge(toSuperviewSafeArea: .right)
-        messageEntryView.autoPinEdge(.top, to: .bottom, of: tableAndIndicatorStack)
+        messageEntryViewBottomConstraint = messageEntryView.layoutIn(safeAreaLayoutGuide, edges: .bottom).first
+        constraints += messageEntryViewBottomConstraint
+
+        constraints += messageEntryView.layoutIn(safeAreaLayoutGuide, edges: .horizontal)
+        constraints += messageEntryView.topAnchor.constraint(equalTo: tableAndIndicatorStack.bottomAnchor)
 
         addSubview(unreadMessageIndicatorView)
-        unreadMessageIndicatorView.autoAlignAxis(toSuperviewAxis: .vertical)
-        unreadMessageIndicatorView.autoPinEdge(
-            .bottom,
-            to: .top,
-            of: messageEntryView,
-            withOffset: kUnreadMessageIndicatorInset
+        unreadMessageIndicatorView.translatesAutoresizingMaskIntoConstraints = false
+        constraints += unreadMessageIndicatorView.centerXAnchor.constraint(equalTo: centerXAnchor)
+
+        constraints += unreadMessageIndicatorView.bottomAnchor.constraint(
+            equalTo: messageEntryView.topAnchor, constant: kUnreadMessageIndicatorInset
         )
     }
 

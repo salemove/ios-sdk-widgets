@@ -52,15 +52,17 @@ extension CallVisualizer.VideoCallView {
         override func defineLayout() {
             super.defineLayout()
             addSubview(imageView)
-            NSLayoutConstraint.autoSetPriority(.defaultHigh) {
-                imageView.autoPinEdge(toSuperviewEdge: .left, withInset: 0, relation: .greaterThanOrEqual)
-                imageView.autoPinEdge(toSuperviewEdge: .top, withInset: 0, relation: .greaterThanOrEqual)
-                imageView.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
-                imageView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 0, relation: .greaterThanOrEqual)
-            }
-            widthConstraint = imageView.autoSetDimension(.width, toSize: props.size.size.width)
-            heightConstraint = imageView.autoSetDimension(.height, toSize: props.size.size.height)
-            imageView.autoCenterInSuperview()
+            imageView.translatesAutoresizingMaskIntoConstraints = false
+            var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
+            constraints += imageView.centerXAnchor.constraint(equalTo: centerXAnchor)
+            constraints += imageView.centerYAnchor.constraint(equalTo: centerYAnchor)
+            constraints += imageView.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor)
+            constraints += imageView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor)
+            constraints += imageView.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor)
+            constraints += imageView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor)
+            widthConstraint = imageView.match(.width, value: props.size.size.width).first
+            heightConstraint = imageView.match(.height, value: props.size.size.height).first
+            constraints += [widthConstraint, heightConstraint].compactMap { $0 }
         }
     }
 }
@@ -129,12 +131,15 @@ private extension CallVisualizer.VideoCallView.ConnectOperatorView {
         self.animationView = animationView
 
         insertSubview(animationView, at: 0)
-        animationView.autoPinEdge(toSuperviewEdge: .left, withInset: 0, relation: .greaterThanOrEqual)
-        animationView.autoPinEdge(toSuperviewEdge: .top, withInset: 0)
-        animationView.autoPinEdge(toSuperviewEdge: .right, withInset: 0, relation: .greaterThanOrEqual)
-        animationView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 0)
-        animationView.autoCenterInSuperview()
-        animationView.autoSetDimensions(to: .init(width: animationViewSize, height: animationViewSize))
+        animationView.translatesAutoresizingMaskIntoConstraints = false
+        var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
+        constraints += animationView.centerXAnchor.constraint(equalTo: centerXAnchor)
+        constraints += animationView.centerYAnchor.constraint(equalTo: centerYAnchor)
+        constraints += animationView.layoutInSuperview(edges: .vertical)
+        constraints += animationView.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor)
+        constraints += animationView.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor)
+        constraints += animationView.match(value: animationViewSize)
+
         animationView.startAnimating()
     }
 

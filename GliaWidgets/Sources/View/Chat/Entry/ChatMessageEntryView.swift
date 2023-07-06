@@ -3,7 +3,6 @@ import UIKit
 class ChatMessageEntryView: BaseView {
     let pickMediaButton: MessageButton
     let uploadListView: SecureConversations.FileUploadListView
-    var maxCharacters: Int = 200
     var textChanged: ((String) -> Void)?
     var sendTapped: (() -> Void)?
     var pickMediaTapped: (() -> Void)?
@@ -46,17 +45,18 @@ class ChatMessageEntryView: BaseView {
     }
 
     var mediaPickerButtonVisibility: MediaPickerButtonVisibility = .disabled
+    var textViewHeightConstraint: NSLayoutConstraint?
 
+    let textView = UITextView()
+    let maxTextLines = 4
     private let style: ChatMessageEntryStyle
     private let separator = UIView()
     private let messageContainerView = UIView()
-    private let textView = UITextView()
-    private let placeholderLabel = UILabel().makeView()
+    private let placeholderLabel = UILabel()
     private let sendButton: MessageButton
     private let buttonsStackView = UIStackView()
-    private var textViewHeightConstraint: NSLayoutConstraint?
-    private let kMinTextViewHeight: CGFloat = 24
-    private let kMaxTextViewHeight: CGFloat = 200
+    private let minTextViewHeight: CGFloat = 24
+    private let maxCharacters = 10000
 
     private let environment: Environment
 
@@ -112,7 +112,6 @@ class ChatMessageEntryView: BaseView {
         textView.textContainerInset = .zero
         textView.textContainer.lineFragmentPadding = 0
         textView.autocapitalizationType = .sentences
-        textView.isScrollEnabled = false
         textView.font = style.messageFont
         textView.textColor = style.messageColor
         textView.backgroundColor = .clear
@@ -136,7 +135,7 @@ class ChatMessageEntryView: BaseView {
         showsSendButton = false
 
         buttonsStackView.axis = .horizontal
-        buttonsStackView.spacing = 15
+        buttonsStackView.spacing = 16
         buttonsStackView.addArrangedSubviews([pickMediaButton, sendButton])
         setFontScalingEnabled(
             style.accessibility.isFontScalingEnabled,
@@ -150,48 +149,47 @@ class ChatMessageEntryView: BaseView {
 
     override func defineLayout() {
         super.defineLayout()
+        var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
+
         addSubview(separator)
+        separator.translatesAutoresizingMaskIntoConstraints = false
+        constraints += separator.match(.height, value: 1)
+        constraints += separator.layoutInSuperview(edges: .horizontal)
+        constraints += separator.layoutInSuperview(edges: .top)
+
         addSubview(uploadListView)
+        uploadListView.translatesAutoresizingMaskIntoConstraints = false
+        constraints += uploadListView.topAnchor.constraint(equalTo: separator.bottomAnchor)
+        constraints += uploadListView.layoutInSuperview(edges: .horizontal)
+
         addSubview(messageContainerView)
+        messageContainerView.translatesAutoresizingMaskIntoConstraints = false
+        constraints += messageContainerView.topAnchor.constraint(equalTo: uploadListView.bottomAnchor)
+        constraints += messageContainerView.layoutInSuperview(edges: .horizontal)
+        constraints += messageContainerView.layoutIn(safeAreaLayoutGuide, edges: .bottom)
 
         messageContainerView.addSubview(textView)
-        textViewHeightConstraint = textView.autoSetDimension(
-            .height,
-            toSize: kMinTextViewHeight
-        )
-
-        textView.autoPinEdge(toSuperviewEdge: .leading, withInset: 16)
-        textView.autoPinEdge(toSuperviewEdge: .top, withInset: 13)
-        textView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 13)
-        textView.autoPinEdge(toSuperviewEdge: .trailing, withInset: 8)
+        textView.translatesAutoresizingMaskIntoConstraints = false
+        textViewHeightConstraint = textView.match(.height, value: minTextViewHeight).first
+        constraints += [textViewHeightConstraint].compactMap { $0 }
+        constraints += textView.layoutInSuperview(edges: .vertical, insets: .init(top: 13, left: 16, bottom: 13, right: 32))
+        constraints += textView.layoutInSuperview(edges: .leading, insets: .init(top: 13, left: 16, bottom: 13, right: 32))
+        constraints += textView.trailingAnchor.constraint(equalTo: buttonsStackView.leadingAnchor, constant: -8)
 
         messageContainerView.addSubview(placeholderLabel)
+        placeholderLabel.isAccessibilityElement = false
+        placeholderLabel.translatesAutoresizingMaskIntoConstraints = false
         placeholderLabel.numberOfLines = 0
 
-        NSLayoutConstraint.activate([
-            placeholderLabel.leadingAnchor.constraint(equalTo: textView.leadingAnchor),
-            placeholderLabel.trailingAnchor.constraint(equalTo: textView.trailingAnchor),
-            placeholderLabel.topAnchor.constraint(equalTo: textView.topAnchor)
-        ])
-
-        separator.autoSetDimension(.height, toSize: 1)
-        separator.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .bottom)
-
-        uploadListView.autoPinEdge(.top, to: .bottom, of: separator)
-        uploadListView.autoPinEdge(.bottom, to: .top, of: messageContainerView)
-        uploadListView.autoPinEdge(toSuperviewEdge: .left)
-        uploadListView.autoPinEdge(toSuperviewEdge: .right)
-
-        messageContainerView.autoPinEdge(.top, to: .bottom, of: uploadListView)
-        messageContainerView.autoPinEdge(toSuperviewEdge: .left)
-        messageContainerView.autoPinEdge(toSuperviewEdge: .bottom)
+        constraints += placeholderLabel.leadingAnchor.constraint(equalTo: textView.leadingAnchor)
+        constraints += placeholderLabel.trailingAnchor.constraint(equalTo: textView.trailingAnchor)
+        constraints += placeholderLabel.topAnchor.constraint(equalTo: textView.topAnchor)
 
         addSubview(buttonsStackView)
-        buttonsStackView.autoSetDimension(.height, toSize: 50)
-        buttonsStackView.autoSetDimension(.width, toSize: 72, relation: .lessThanOrEqual)
-        buttonsStackView.autoPinEdge(.left, to: .right, of: messageContainerView)
-        buttonsStackView.autoPinEdge(toSuperviewEdge: .right, withInset: 16)
-        buttonsStackView.autoPinEdge(toSuperviewEdge: .bottom)
+        buttonsStackView.translatesAutoresizingMaskIntoConstraints = false
+        constraints += buttonsStackView.match(.height, value: 50)
+        constraints += buttonsStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16)
+        constraints += buttonsStackView.bottomAnchor.constraint(equalTo: messageContainerView.bottomAnchor)
 
         updateTextViewHeight()
     }
@@ -220,17 +218,21 @@ class ChatMessageEntryView: BaseView {
             height: CGFloat.greatestFiniteMagnitude
         )
 
-        // We need to take into account larger height
-        // of text view or placeholder label for
-        // updated text entry height.
-        var newHeight = max(textView.sizeThatFits(size).height, placeholderLabel.sizeThatFits(size).height)
+        guard let font = textView.font, font.lineHeight > 0 else {
+            return
+        }
 
-        textView.isScrollEnabled = newHeight > kMaxTextViewHeight
+        let estimatedTextViewHeight = textView.sizeThatFits(size).height
+        let estimatedPlaceholderHeight = placeholderLabel.sizeThatFits(size).height
 
-        if newHeight > kMaxTextViewHeight {
-            newHeight = kMaxTextViewHeight
-        } else if newHeight < kMinTextViewHeight {
-            newHeight = kMinTextViewHeight
+        var newHeight = max(estimatedTextViewHeight, estimatedPlaceholderHeight)
+
+        let numLines = estimatedTextViewHeight / font.lineHeight
+
+        textView.isScrollEnabled = Int(numLines) > maxTextLines
+
+        if Int(numLines) > maxTextLines {
+            newHeight = font.lineHeight * CGFloat(maxTextLines)
         }
 
         textViewHeightConstraint?.constant = newHeight

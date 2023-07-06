@@ -55,10 +55,11 @@ class AttachmentSourceItemView: UIView {
     }
 
     private func layout() {
-        autoSetDimension(.height, toSize: kHeight)
+        var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
+        constraints += match(.height, value: kHeight)
 
         addSubview(stackView)
-        stackView.autoPinEdgesToSuperviewEdges(with: kContentInsets)
+        constraints += stackView.layoutInSuperview(insets: kContentInsets)
     }
 
     @objc private func tapped() {
