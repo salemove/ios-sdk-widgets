@@ -510,6 +510,8 @@
 		B757AD4073B49FF0A17D071D /* Pods_TestingApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE3A89412171262DF9CD8ABA /* Pods_TestingApp.framework */; };
 		C0175A0F2A55A624001FACDE /* ChatMessagaEntryViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0175A0E2A55A624001FACDE /* ChatMessagaEntryViewTests.swift */; };
 		C0175A112A55AA3E001FACDE /* ChatMessageEntryView.+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0175A102A55AA3E001FACDE /* ChatMessageEntryView.+Mock.swift */; };
+		C0175A132A56E29E001FACDE /* ChatMessageCardType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0175A122A56E29E001FACDE /* ChatMessageCardType.swift */; };
+		C0175A152A56E2DD001FACDE /* Gva.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0175A142A56E2DD001FACDE /* Gva.swift */; };
 		C03A8047292BA76D00DDECA6 /* ChatViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03A8046292BA76D00DDECA6 /* ChatViewControllerTests.swift */; };
 		C03A8049292BC8DB00DDECA6 /* CallViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03A8048292BC8DB00DDECA6 /* CallViewControllerTests.swift */; };
 		C05AB01C295F416700AA381F /* VisitorCodeCloseButtonProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05AB01B295F416700AA381F /* VisitorCodeCloseButtonProperties.swift */; };
@@ -1157,6 +1159,8 @@
 		B45FBFA4E2F1D31E83A1CC3A /* Pods_GliaWidgets.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GliaWidgets.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0175A0E2A55A624001FACDE /* ChatMessagaEntryViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessagaEntryViewTests.swift; sourceTree = "<group>"; };
 		C0175A102A55AA3E001FACDE /* ChatMessageEntryView.+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatMessageEntryView.+Mock.swift"; sourceTree = "<group>"; };
+		C0175A122A56E29E001FACDE /* ChatMessageCardType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageCardType.swift; sourceTree = "<group>"; };
+		C0175A142A56E2DD001FACDE /* Gva.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gva.swift; sourceTree = "<group>"; };
 		C03A8046292BA76D00DDECA6 /* ChatViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewControllerTests.swift; sourceTree = "<group>"; };
 		C03A8048292BC8DB00DDECA6 /* CallViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallViewControllerTests.swift; sourceTree = "<group>"; };
 		C05AB016295DA9FC00AA381F /* AlertViewController+VisitorCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlertViewController+VisitorCode.swift"; sourceTree = "<group>"; };
@@ -1728,6 +1732,8 @@
 				AFCF8A5B2A02AB3000B7ABB3 /* OutgoingMessage.Mock.swift */,
 				C49A29F12614A85E00819269 /* ChoiceCard.swift */,
 				C43D7A1425FF9A590064B1DA /* ChatChoiceCardOption.swift */,
+				C0175A122A56E29E001FACDE /* ChatMessageCardType.swift */,
+				C0175A142A56E2DD001FACDE /* Gva.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -3813,6 +3819,7 @@
 				1ABD6C5D25B59D1C00D56EFA /* BubbleWindow.swift in Sources */,
 				75940964298D3889008B173A /* MessageRenderer.Web.swift in Sources */,
 				1AE15E38257A578B00A642C0 /* MessageAlertConfiguration.swift in Sources */,
+				C0175A132A56E29E001FACDE /* ChatMessageCardType.swift in Sources */,
 				AFBBF5782851C391004993B3 /* Glia.Deprecated.swift in Sources */,
 				75940950298D3810008B173A /* IdCollection.swift in Sources */,
 				75FF151D27F4F8E000FE7BE2 /* Theme.Survey.InputQuestion.swift in Sources */,
@@ -3997,6 +4004,7 @@
 				84265E62298D7B2900D65842 /* ScreenSharingCoordinator+DelegateEvent.swift in Sources */,
 				C0D2F048299272D100803B47 /* VideoCallView.ConnectOperatorView.swift in Sources */,
 				9A3E1D8A27B6B824005634EB /* FileDownload.Environment.Interface.swift in Sources */,
+				C0175A152A56E2DD001FACDE /* Gva.swift in Sources */,
 				9A8130B727D7578500220BBD /* LocalFile.Environment.Mock.swift in Sources */,
 				1A0C143F25B85DB400B00695 /* CallViewController.swift in Sources */,
 				3197F7B629F7C2E5008EE9F7 /* SecureConversations.SecureChatModel.swift in Sources */,
