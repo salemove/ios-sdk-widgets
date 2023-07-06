@@ -16,7 +16,7 @@ class OperatorChatMessageView: ChatMessageView {
                 )
                 self.operatorImageView = operatorImageView
                 operatorImageViewContainer.addSubview(operatorImageView)
-                operatorImageView.autoPinEdgesToSuperviewEdges()
+                operatorImageView.layoutInSuperview().activate()
             } else {
                 operatorImageView?.removeFromSuperview()
                 operatorImageView = nil
@@ -26,9 +26,9 @@ class OperatorChatMessageView: ChatMessageView {
 
     private let viewStyle: OperatorChatMessageStyle
     private var operatorImageView: UserImageView?
-    private var operatorImageViewContainer = UIView()
-    private let kInsets = UIEdgeInsets(top: 2, left: 10, bottom: 2, right: 60)
-    private let kOperatorImageViewSize = CGSize(width: 28, height: 28)
+    private var operatorImageViewContainer = UIView().makeView()
+    private let imageViewInsets = UIEdgeInsets(top: 2, left: 10, bottom: 2, right: 60)
+    private let operatorImageViewSize: CGFloat = 28
     private let environment: Environment
 
     init(
@@ -56,19 +56,21 @@ class OperatorChatMessageView: ChatMessageView {
 
     private func layout() {
         addSubview(operatorImageViewContainer)
-        operatorImageViewContainer.autoSetDimensions(to: kOperatorImageViewSize)
-        operatorImageViewContainer.autoPinEdge(toSuperviewEdge: .left, withInset: kInsets.left)
-        operatorImageViewContainer.autoPinEdge(toSuperviewEdge: .bottom, withInset: kInsets.bottom)
-        operatorImageViewContainer.autoPinEdge(toSuperviewEdge: .top, withInset: kInsets.top, relation: .greaterThanOrEqual)
+        operatorImageViewContainer.translatesAutoresizingMaskIntoConstraints = false
+        var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
+
+        constraints += operatorImageViewContainer.match(value: operatorImageViewSize)
+        constraints += operatorImageViewContainer.leadingAnchor.constraint(equalTo: leadingAnchor, constant: imageViewInsets.left)
+        constraints += operatorImageViewContainer.bottomAnchor.constraint(equalTo: bottomAnchor, constant: imageViewInsets.bottom)
+        constraints += operatorImageViewContainer.topAnchor.constraint(greaterThanOrEqualTo: topAnchor, constant: imageViewInsets.top)
 
         addSubview(contentViews)
-        contentViews.autoPinEdge(.left, to: .right, of: operatorImageViewContainer, withOffset: 4)
-        contentViews.autoPinEdge(toSuperviewEdge: .top, withInset: kInsets.top)
-        contentViews.autoPinEdge(toSuperviewEdge: .right, withInset: kInsets.right, relation: .greaterThanOrEqual)
+        contentViews.translatesAutoresizingMaskIntoConstraints = false
+        constraints += contentViews.leadingAnchor.constraint(equalTo: operatorImageViewContainer.trailingAnchor, constant: 4)
+        constraints += contentViews.topAnchor.constraint(equalTo: topAnchor, constant: imageViewInsets.top)
+        constraints += contentViews.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -imageViewInsets.right)
 
-        NSLayoutConstraint.autoSetPriority(.required) {
-            contentViews.autoPinEdge(toSuperviewEdge: .bottom, withInset: kInsets.bottom)
-        }
+        constraints += contentViews.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -imageViewInsets.bottom)
     }
 }
 

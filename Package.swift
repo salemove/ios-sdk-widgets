@@ -17,10 +17,6 @@ let package = Package(
             targets: ["GliaWidgetsSDK-xcframework"]
         )
     ],
-    dependencies: [
-        .package(url: "https://github.com/airbnb/lottie-ios", from: "3.3.0"),
-        .package(url: "https://github.com/PureLayout/PureLayout", from: "3.1.9")
-    ],
     targets: [
         .binaryTarget(
             name: "GliaCoreDependency",
@@ -39,18 +35,8 @@ let package = Package(
         ),
         .binaryTarget(
             name: "GliaCoreSDK",
-            url: "https://github.com/salemove/ios-bundle/releases/download/1.0.2/GliaCoreSDK.xcframework.zip",
-            checksum: "4d997e74bb975db723b7d93a26f2fb3611f735f809a825aa2e89e5226cc602d4"
-        ),
-        .binaryTarget(
-            name: "PureLayoutXcf",
-            url: "https://github.com/salemove/ios-sdk-widgets/releases/download/0.10.8/PureLayoutXcf.xcframework.zip",
-            checksum: "93f00268ba710a0ee513be7cef94a385637bfb76c292942cc5f062a7b2f0037b"
-        ),
-        .binaryTarget(
-            name: "LottieXcf",
-            url: "https://github.com/salemove/ios-sdk-widgets/releases/download/0.10.8/LottieXcf.xcframework.zip",
-            checksum: "9f2340bfb15f734ebd3a4e79d67ce3581822aa5ceec3a37a38ebaa505bf1a8a3"
+            url: "https://github.com/salemove/ios-bundle/releases/download/1.0.3/GliaCoreSDK.xcframework.zip",
+            checksum: "267140b0bb4b71c7755c5a530e6f9afc3392d431449b8e3361def7b8de2ee6e2"
         ),
         .binaryTarget(
             name: "GliaWidgetsXcf",
@@ -59,10 +45,6 @@ let package = Package(
         ),
         .target(
             name: "GliaWidgets",
-            dependencies: [
-                .product(name: "Lottie", package: "lottie-ios"),
-                .product(name: "PureLayout", package: "PureLayout")
-            ],
             path: "GliaWidgets",
             exclude: [
                 "Cartfile.resolved",
@@ -90,9 +72,7 @@ let package = Package(
                 "GliaWidgetsXcf",
                 "GliaCoreDependency",
                 "TwilioVoice",
-                "WebRTC",
-                "PureLayoutXcf",
-                "LottieXcf"
+                "WebRTC"
             ]
         )
     ]

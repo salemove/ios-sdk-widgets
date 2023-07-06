@@ -53,7 +53,7 @@ extension CallVisualizer.VideoCallView {
             super.setup()
             addSubview(stackView)
             stackView.addArrangedSubviews([firstLabel, secondLabel])
-            stackView.autoPinEdgesToSuperviewEdges()
+            stackView.layoutInSuperview().activate()
         }
     }
 }
