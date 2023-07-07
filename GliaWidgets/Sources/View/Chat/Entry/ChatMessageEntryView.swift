@@ -17,11 +17,6 @@ class ChatMessageEntryView: BaseView {
 
     var isChoiceCardModeEnabled: Bool {
         didSet {
-            isEnabled = !isChoiceCardModeEnabled
-            if isChoiceCardModeEnabled {
-                textView.resignFirstResponder()
-            }
-
             updatePickMediaButtonVisibility(mediaPickerButtonVisibility)
             updatePlaceholderText()
         }
