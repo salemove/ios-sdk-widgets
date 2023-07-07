@@ -45,6 +45,14 @@ fastlane increment_project_version type:patch - increments 0.0.X
 
 Creates a pull request in the repository with whatever changes have been made. Used in tandem with Bitrise to update dependencies.
 
+### ios update_core_sdk_version
+
+```sh
+[bundle exec] fastlane ios update_core_sdk_version
+```
+
+Creates a pull request in the repository with updates to Core SDK version. 
+
 ----
 
 This README.md is auto-generated and will be re-generated every time [_fastlane_](https://fastlane.tools) is run.
