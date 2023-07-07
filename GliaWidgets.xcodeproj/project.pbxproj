@@ -197,6 +197,7 @@
 		31D286AD2A00DD2C009192A6 /* SecureConversations.ConfirmationViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31D286AC2A00DD2C009192A6 /* SecureConversations.ConfirmationViewModelTests.swift */; };
 		31D286AF2A00DE2B009192A6 /* SecureConversations.ConfirmationViewModel.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31D286AE2A00DE2B009192A6 /* SecureConversations.ConfirmationViewModel.Mock.swift */; };
 		31DB0C01287C2EFC00FB288E /* StaticValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31DB0C00287C2EFC00FB288E /* StaticValues.swift */; };
+		31DD41652A57105400F92612 /* SecureConversations.TranscriptModel.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31DD41642A57105400F92612 /* SecureConversations.TranscriptModel.Environment.swift */; };
 		6B2BFCE2274297F100B68506 /* SettingsSwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B2BFCE1274297F100B68506 /* SettingsSwitchCell.swift */; };
 		6B48213E2735873300F2900A /* Feature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B48213D2735873300F2900A /* Feature.swift */; };
 		6E60DD5627146C9D001422EF /* AlertViewController+SingleAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E60DD5527146C9D001422EF /* AlertViewController+SingleAction.swift */; };
@@ -838,6 +839,7 @@
 		31D286AC2A00DD2C009192A6 /* SecureConversations.ConfirmationViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.ConfirmationViewModelTests.swift; sourceTree = "<group>"; };
 		31D286AE2A00DE2B009192A6 /* SecureConversations.ConfirmationViewModel.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.ConfirmationViewModel.Mock.swift; sourceTree = "<group>"; };
 		31DB0C00287C2EFC00FB288E /* StaticValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticValues.swift; sourceTree = "<group>"; };
+		31DD41642A57105400F92612 /* SecureConversations.TranscriptModel.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.TranscriptModel.Environment.swift; sourceTree = "<group>"; };
 		6304CD1CAD1108C78C7B11BF /* Pods-GliaWidgetsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliaWidgetsTests.release.xcconfig"; path = "Target Support Files/Pods-GliaWidgetsTests/Pods-GliaWidgetsTests.release.xcconfig"; sourceTree = "<group>"; };
 		6B2BFCE1274297F100B68506 /* SettingsSwitchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSwitchCell.swift; sourceTree = "<group>"; };
 		6B48213D2735873300F2900A /* Feature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feature.swift; sourceTree = "<group>"; };
@@ -2394,6 +2396,7 @@
 				3197F7B729F7C318008EE9F7 /* SecureConversations.CommonEngagementModel.swift */,
 				AFA5E96129F2CF9400F13DB7 /* SecureConversations.TranscriptModel.DividedChatItemsForUnreadCount.swift */,
 				311CAFCC29F8FAE20067B59F /* SecureConversations.TranscriptModel+CustomCard.swift */,
+				31DD41642A57105400F92612 /* SecureConversations.TranscriptModel.Environment.swift */,
 			);
 			path = ChatTranscript;
 			sourceTree = "<group>";
@@ -3447,6 +3450,7 @@
 				845BD16F28EC80C100978E67 /* Copy Remote Configuration Files */,
 				1A205DB8256566BB003AA3CD /* Embed Frameworks */,
 				68BB2A77F5F49BCFDAB839CB /* [CP] Embed Pods Frameworks */,
+				31DD41602A5540F200F92612 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -3626,6 +3630,24 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\"\n";
 			showEnvVarsInLog = 0;
+		};
+		31DD41602A5540F200F92612 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "git status --porcelain | grep -v '^ \\?D' | cut -c 4- | sed 's/.* -> //' | tr -d '\"' | while read file \ndo\n    if [[ \"$file\" == *.swift ]]; then\n        swiftlint \"$file\" --strict | sed \"s/warning:/error:/\"\n    fi\ndone\n";
 		};
 		3B27B3DC0213279B71583F94 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -4131,6 +4153,7 @@
 				9AE0A7602821904400725946 /* FontScaling.Environment.Interface.swift in Sources */,
 				9A19926627D3BA3A00161AAE /* GCD.Interface.swift in Sources */,
 				3197F7B829F7C318008EE9F7 /* SecureConversations.CommonEngagementModel.swift in Sources */,
+				31DD41652A57105400F92612 /* SecureConversations.TranscriptModel.Environment.swift in Sources */,
 				1A277A1225FA604E009FE131 /* ChatFileContentView.swift in Sources */,
 				84265E5E298D7B2900D65842 /* ScreenSharingViewModel.swift in Sources */,
 				75B7BD802A39D5A70060794D /* Layoutable.swift in Sources */,
