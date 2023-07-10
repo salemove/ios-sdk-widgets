@@ -104,7 +104,7 @@ extension CallVisualizer {
             title = L10n.Call.Video.title
             callDuration = ""
             topLabelHidden = false
-            endScreenShareButtonHidden = true
+            endScreenShareButtonHidden = environment.screenShareHandler.status().value == .stopped
             statusStyle = style.connect.connecting
 
             self.call.kind.addObserver(self) { [weak self] kind, _ in
@@ -456,12 +456,6 @@ private extension CallVisualizer.VideoCallViewModel {
     }
 
     func showConnected() {
-        switch environment.screenShareHandler.status().value {
-        case .started:
-            endScreenShareButtonHidden = false
-        case .stopped:
-            break
-        }
         let engagedOperator = environment.engagedOperator()
         setConnectViewState(.connected(name: engagedOperator?.firstName, imageUrl: engagedOperator?.picture?.url), animated: true)
         connectOperatorSize = .init(size: .large, animated: true)

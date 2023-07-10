@@ -66,4 +66,31 @@ final class VideoCallTests: XCTestCase {
         headerProps.backButton?.tap()
         XCTAssertEqual(wasExecuted, true)
     }
+
+    func test_endScreenSharingIsVisible() {
+        let viewModel = mockViewModel(with: .started)
+        let props = viewModel.makeProps()
+
+        XCTAssertFalse(props.videoCallViewProps.endScreenShareButtonHidden)
+    }
+
+    func test_endScreenSharingIsHidden() {
+        let viewModel = mockViewModel(with: .stopped)
+        let props = viewModel.makeProps()
+
+        XCTAssertTrue(props.videoCallViewProps.endScreenShareButtonHidden)
+    }
+}
+
+private extension VideoCallTests {
+    func mockViewModel(
+        with screenSharingStatus: ScreenSharingStatus
+    ) -> CallVisualizer.VideoCallViewModel {
+        var screenShareHandlerMock = ScreenShareHandler.mock
+        screenShareHandlerMock.status = { .init(with: screenSharingStatus) }
+        var environment = CallVisualizer.VideoCallViewModel.Environment.mock
+        environment.screenShareHandler = screenShareHandlerMock
+
+        return .mock(environment: environment)
+    }
 }
