@@ -14,6 +14,7 @@ final class VisitorInfoModel {
     typealias Segment = HeaderView.Props.Segment
     typealias Delegate = (DelegateEvent) -> Void
     typealias UpdateButton = Props.UpdateButton
+    typealias CancelButton = Props.CancelButton
 
     // Stores visitor fields to be sent for update.
     var visitorInfoUpdate = VisitorInfoUpdate() {
@@ -351,10 +352,19 @@ final class VisitorInfoModel {
         let updateButton: UpdateButton
         switch self.updateInfoRequestState {
         case .none, .result:
-            updateButton = .normal(updateTap, isEnabled: hasChanges)
+            updateButton = .normal(
+                updateTap,
+                isEnabled: hasChanges,
+                accIdentifier: "visitor_info_save_button"
+            )
         case .inFlight:
             updateButton = .loading
         }
+
+        let cancelButton = CancelButton(
+            tap: cancelTap,
+            accIdentifier: "visitor_info_cancel_button"
+        )
 
         let props = Props(
             title: "Visitor Info",
@@ -365,7 +375,7 @@ final class VisitorInfoModel {
             ],
             pulledToRefresh: pulledToRefresh,
             showsRefreshing: self.fetchInfoRequestState == .inFlight,
-            cancelTap: cancelTap,
+            cancelButton: cancelButton,
             updateButton: updateButton
         )
 
