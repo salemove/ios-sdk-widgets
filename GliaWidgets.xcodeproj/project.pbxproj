@@ -518,6 +518,7 @@
 		AF6AB34B2989517100003645 /* FileUploader.Failing.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF6AB34A2989517100003645 /* FileUploader.Failing.swift */; };
 		AF6AB34D298A9F2500003645 /* SecureConversations.FileUploadListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF6AB34C298A9F2500003645 /* SecureConversations.FileUploadListViewModel.swift */; };
 		AF6AB34F298AA02400003645 /* SecureConversations.FileUploadListViewModel.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF6AB34E298AA02400003645 /* SecureConversations.FileUploadListViewModel.Environment.swift */; };
+		AF75601C2A78146600871E36 /* CustomSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF75601B2A78146500871E36 /* CustomSegmentedControl.swift */; };
 		AF755FDA2A71583900871E36 /* BubbleWindowLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF755FD92A71583900871E36 /* BubbleWindowLayoutTests.swift */; };
 		AF9DB22E2890571A00A0C442 /* RootCoordinator.Environment.Failing.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF9DB22D2890571A00A0C442 /* RootCoordinator.Environment.Failing.swift */; };
 		AF9DB23128905A1D00A0C442 /* ViewFactory.Environment.Failing.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF9DB23028905A1D00A0C442 /* ViewFactory.Environment.Failing.swift */; };
@@ -1208,6 +1209,7 @@
 		AF6AB34A2989517100003645 /* FileUploader.Failing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUploader.Failing.swift; sourceTree = "<group>"; };
 		AF6AB34C298A9F2500003645 /* SecureConversations.FileUploadListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.FileUploadListViewModel.swift; sourceTree = "<group>"; };
 		AF6AB34E298AA02400003645 /* SecureConversations.FileUploadListViewModel.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.FileUploadListViewModel.Environment.swift; sourceTree = "<group>"; };
+		AF75601B2A78146500871E36 /* CustomSegmentedControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomSegmentedControl.swift; sourceTree = "<group>"; };
 		AF755FD92A71583900871E36 /* BubbleWindowLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleWindowLayoutTests.swift; sourceTree = "<group>"; };
 		AF9DB22D2890571A00A0C442 /* RootCoordinator.Environment.Failing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCoordinator.Environment.Failing.swift; sourceTree = "<group>"; };
 		AF9DB23028905A1D00A0C442 /* ViewFactory.Environment.Failing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewFactory.Environment.Failing.swift; sourceTree = "<group>"; };
@@ -3262,6 +3264,7 @@
 		AFD3C52A2A472B1C00BC37A9 /* VisitorInfo */ = {
 			isa = PBXGroup;
 			children = (
+				AF75601B2A78146500871E36 /* CustomSegmentedControl.swift */,
 				AF3BD1DC2A41D09100A7713E /* VisitorInfoViewController.swift */,
 				AF35DFF02A507CA70038BCA7 /* VisitorInfoViewController.Cells.swift */,
 				AF35DFEE2A507B4C0038BCA7 /* VisitorInfoViewController.HeaderView.swift */,
@@ -4571,6 +4574,7 @@
 				7552DFA52A683A2C0093519B /* Makeable.swift in Sources */,
 				1A205D7F25655CEC003AA3CD /* ViewController.swift in Sources */,
 				AFD3C52C2A472B7500BC37A9 /* VisitorInfoModel.swift in Sources */,
+				AF75601C2A78146600871E36 /* CustomSegmentedControl.swift in Sources */,
 				1A4AD3D6256FE7F800468BFB /* UIColor+Extensions.swift in Sources */,
 				AF11F30728BE6F0C002ACEB4 /* UIAlertController+Extensions.swift in Sources */,
 				7552DFA82A683A2C0093519B /* UIStackView.Extensions.swift in Sources */,
