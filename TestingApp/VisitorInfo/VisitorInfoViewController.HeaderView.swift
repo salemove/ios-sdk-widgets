@@ -5,10 +5,16 @@ final class HeaderView: UITableViewHeaderFooterView {
     static var height: CGFloat { UITableView.automaticDimension }
 
     private lazy var titleLabel = UILabel()
-    private lazy var segmentedControl = UISegmentedControl()
+    private lazy var customSegmentedControl = CustomSegmentedControl(frame: .zero).makeView()
     private lazy var actionButton = UIButton(type: .system)
 
-    var props = Props(title: "", segments: [], selectedSegment: nil, actionButton: nil, segmentAccessibilityIdentifierPrefix: "") {
+    var props = Props(
+        title: "",
+        segments: [],
+        selectedSegment: nil,
+        actionButton: nil,
+        segmentAccessibilityIdentifierPrefix: ""
+    ) {
         didSet {
             guard props != oldValue else { return }
             renderProps()
@@ -35,8 +41,8 @@ final class HeaderView: UITableViewHeaderFooterView {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(stackView)
 
-        stackView.addArrangedSubview(segmentedControl)
-        segmentedControl.addTarget(
+        stackView.addArrangedSubview(customSegmentedControl)
+        customSegmentedControl.addTarget(
             self,
             action: #selector(handleSegmentedControlSelect),
             for: .valueChanged
@@ -58,6 +64,7 @@ final class HeaderView: UITableViewHeaderFooterView {
             titleLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -margins),
             stackView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -margins),
+            customSegmentedControl.heightAnchor.constraint(equalToConstant: 40)
         ])
     }
 
@@ -78,35 +85,31 @@ final class HeaderView: UITableViewHeaderFooterView {
 
             // Render list of segments if needed.
             if renderedSegments.segments != oldValue.segments {
-                segmentedControl.removeAllSegments()
+                customSegmentedControl.segments = renderedSegments.segments.map(\.title)
+
                 for (segment, idx) in zip(renderedSegments.segments, 0...) {
-                    segmentedControl.insertSegment(withTitle: segment.title, at: idx, animated: false)
                     if renderedSegments.selectedSegment == segment {
                         selectedIdx = idx
                     }
+
+                    customSegmentedControl.setAccessibilityIdentifier(
+                        "\(props.segmentAccessibilityIdentifierPrefix)\(idx)",
+                        at: idx
+                    )
                 }
 
-            // Render segment selection if needed, to preserve uninterrupted animation.
+            // Render segment selection if needed.
             } else if renderedSegments.selectedSegment != oldValue.selectedSegment {
-                for (segment, idx) in zip(renderedSegments.segments, 0...) {
-                    if renderedSegments.selectedSegment == segment {
-                        selectedIdx = idx
-                    }
+                for (segment, idx) in zip(renderedSegments.segments, 0...) where renderedSegments.selectedSegment == segment {
+                    selectedIdx = idx
                 }
             }
 
-            if let selectedIdx, segmentedControl.selectedSegmentIndex != selectedIdx {
-                segmentedControl.selectedSegmentIndex = selectedIdx
-                // Segments of UISegmentedControl are private, so there's no direct way to access them
-                // to assign accessibility identifier, so we need to use workaround for that.
-                var idx = 0
-                for view in segmentedControl.subviews where "\(type(of: view))".lowercased().hasSuffix("segment") {
-                    view.accessibilityIdentifier = "\(props.segmentAccessibilityIdentifierPrefix)\(idx)"
-                    idx += 1
-                }
+            if let selectedIdx, customSegmentedControl.selectedSegmentIndex != selectedIdx {
+                customSegmentedControl.setSelectedSegmentIndex(selectedIdx, sendActions: false)
             }
 
-            segmentedControl.isHidden = renderedSegments.segments.isEmpty
+            customSegmentedControl.isHidden = renderedSegments.segments.isEmpty
         }
     }
 
@@ -120,11 +123,10 @@ final class HeaderView: UITableViewHeaderFooterView {
         } else {
             props.actionButton?.tap()
         }
-
     }
 
     @objc
-    private func handleSegmentedControlSelect(_ control: UISegmentedControl) {
+    private func handleSegmentedControlSelect(_ control: CustomSegmentedControl) {
         props.segments[control.selectedSegmentIndex].select()
     }
 }
