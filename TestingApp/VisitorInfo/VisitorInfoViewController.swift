@@ -50,7 +50,7 @@ final class VisitorInfoViewController: UIViewController {
         sections: [],
         pulledToRefresh: .nop,
         showsRefreshing: false,
-        cancelTap: .nop,
+        cancelButton: .init(tap: .nop, accIdentifier: ""),
         updateButton: .loading
     ) {
         didSet {
@@ -135,6 +135,7 @@ final class VisitorInfoViewController: UIViewController {
             tableView.reloadData()
         }
 
+        self.cancelBarButtonItem.accessibilityIdentifier = props.cancelButton.accIdentifier
         self.renderedShowsRefreshing = props.showsRefreshing
         self.renderedUpdateButton = props.updateButton
     }
@@ -147,7 +148,7 @@ final class VisitorInfoViewController: UIViewController {
     }
 
     @objc func handleCancelTap() {
-        props.cancelTap()
+        props.cancelButton.tap()
     }
 
     @objc func handleUpdateTap() {
@@ -177,9 +178,10 @@ final class VisitorInfoViewController: UIViewController {
         didSet {
             guard oldValue != renderedUpdateButton else { return }
             switch self.renderedUpdateButton {
-            case let .normal(_, isEnabled):
+            case let .normal(_, isEnabled, accIdentifier):
                 self.navigationItem.rightBarButtonItem = self.updateBarButtonItem
                 self.updateBarButtonItem.isEnabled = isEnabled
+                self.updateBarButtonItem.accessibilityIdentifier = accIdentifier
             case .loading:
                 self.navigationItem.rightBarButtonItem = self.loadingBarButtonItem
             }
@@ -234,7 +236,7 @@ extension VisitorInfoViewController {
         let sections: [Section]
         let pulledToRefresh: Cmd
         let showsRefreshing: Bool
-        let cancelTap: Cmd
+        let cancelButton: CancelButton
         let updateButton: UpdateButton
     }
 }
@@ -245,15 +247,19 @@ extension VisitorInfoViewController.Props {
 
         init(_ updateButton: UpdateButton) {
             switch updateButton {
-            case let .normal(tap, _):
+            case let .normal(tap, _, _):
                 self.tap = tap
             case .loading:
                 tap = nil
             }
         }
     }
-}
 
+    struct CancelButton: Equatable {
+        let tap: Cmd
+        let accIdentifier: String
+    }
+}
 
 extension VisitorInfoViewController.Props {
     typealias KeyValuePair = InfoField.CustomAttributesUpdateMethod.KeyValuePair
@@ -273,7 +279,7 @@ extension VisitorInfoViewController.Props {
     }
 
     enum UpdateButton: Equatable {
-        case normal(Cmd, isEnabled: Bool)
+        case normal(Cmd, isEnabled: Bool, accIdentifier: String)
         case loading
     }
 }
@@ -376,7 +382,7 @@ extension VisitorInfoViewController: UITableViewDataSource {
             } else {
                 return UITableViewCell()
             }
-        }   
+        }
     }
 }
 
