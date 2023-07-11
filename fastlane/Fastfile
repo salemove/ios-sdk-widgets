@@ -6,6 +6,7 @@ PRODUCT_NAME_GLIA_WIDGETS = 'GliaWidgets'
 PATH_ROOT = Dir.pwd.chomp("/fastlane")
 PATH_GLIA_PROJECT_DIR = "#{PATH_ROOT}/#{PRODUCT_NAME_GLIA_WIDGETS}"
 PATH_GLIA_STATIC_VALUES = "#{PATH_GLIA_PROJECT_DIR}/StaticValues.swift"
+PATH_GLIA_PODSPEC = "#{PATH_ROOT}/GliaWidgets.podspec"
 
 platform :ios do
   desc "Creates a pull request in the repository with the required files to increment "\
@@ -42,6 +43,11 @@ platform :ios do
     UI.user_error! 'Type is mandatory' if type.nil?
 
     new_version = increment_version_number(
+      bump_type: type
+    )
+
+    version_bump_podspec(
+      path: PATH_GLIA_PODSPEC,
       bump_type: type
     )
 
