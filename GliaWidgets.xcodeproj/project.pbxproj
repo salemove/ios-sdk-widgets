@@ -506,6 +506,9 @@
 		C0175A112A55AA3E001FACDE /* ChatMessageEntryView.+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0175A102A55AA3E001FACDE /* ChatMessageEntryView.+Mock.swift */; };
 		C0175A132A56E29E001FACDE /* ChatMessageCardType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0175A122A56E29E001FACDE /* ChatMessageCardType.swift */; };
 		C0175A152A56E2DD001FACDE /* Gva.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0175A142A56E2DD001FACDE /* Gva.swift */; };
+		C0175A172A5D30D7001FACDE /* GvaResponseTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0175A162A5D30D7001FACDE /* GvaResponseTextView.swift */; };
+		C0175A192A5D3C56001FACDE /* ChatView.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0175A182A5D3C56001FACDE /* ChatView.Accessibility.swift */; };
+		C0175A1D2A5D4226001FACDE /* ChatView.TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0175A1C2A5D4226001FACDE /* ChatView.TableView.swift */; };
 		C03A8047292BA76D00DDECA6 /* ChatViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03A8046292BA76D00DDECA6 /* ChatViewControllerTests.swift */; };
 		C03A8049292BC8DB00DDECA6 /* CallViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03A8048292BC8DB00DDECA6 /* CallViewControllerTests.swift */; };
 		C05AB01C295F416700AA381F /* VisitorCodeCloseButtonProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05AB01B295F416700AA381F /* VisitorCodeCloseButtonProperties.swift */; };
@@ -1154,6 +1157,9 @@
 		C0175A102A55AA3E001FACDE /* ChatMessageEntryView.+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatMessageEntryView.+Mock.swift"; sourceTree = "<group>"; };
 		C0175A122A56E29E001FACDE /* ChatMessageCardType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageCardType.swift; sourceTree = "<group>"; };
 		C0175A142A56E2DD001FACDE /* Gva.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gva.swift; sourceTree = "<group>"; };
+		C0175A162A5D30D7001FACDE /* GvaResponseTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GvaResponseTextView.swift; sourceTree = "<group>"; };
+		C0175A182A5D3C56001FACDE /* ChatView.Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.Accessibility.swift; sourceTree = "<group>"; };
+		C0175A1C2A5D4226001FACDE /* ChatView.TableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.TableView.swift; sourceTree = "<group>"; };
 		C03A8046292BA76D00DDECA6 /* ChatViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewControllerTests.swift; sourceTree = "<group>"; };
 		C03A8048292BC8DB00DDECA6 /* CallViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallViewControllerTests.swift; sourceTree = "<group>"; };
 		C05AB016295DA9FC00AA381F /* AlertViewController+VisitorCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlertViewController+VisitorCode.swift"; sourceTree = "<group>"; };
@@ -1938,15 +1944,17 @@
 		1A60AFD12566990F00E53F53 /* Chat */ = {
 			isa = PBXGroup;
 			children = (
-				1A8B61D025C97481000D780E /* Upgrade */,
+				1AC7A7822583B65B00567FF8 /* Cells */,
+				9AB3402627FCDD92006E0FE2 /* ChatStyle.Accessibility.swift */,
+				1A60AFE725669C5000E53F53 /* ChatStyle.swift */,
+				C0175A182A5D3C56001FACDE /* ChatView.Accessibility.swift */,
+				C0175A1C2A5D4226001FACDE /* ChatView.TableView.swift */,
+				1A60AFDC25669A4200E53F53 /* ChatView.swift */,
 				1A5F813A2588B70A00A605DA /* Entry */,
 				1A60B02B256BF7C200E53F53 /* Message */,
-				1AC7A7822583B65B00567FF8 /* Cells */,
-				1A60AFDC25669A4200E53F53 /* ChatView.swift */,
-				1A60AFE725669C5000E53F53 /* ChatStyle.swift */,
-				9AB3402627FCDD92006E0FE2 /* ChatStyle.Accessibility.swift */,
-				AF10ED8E29BF849A00E85309 /* UnreadMessageDividerView.swift */,
 				AF10ED9029BF85C700E85309 /* UnreadMessageDividerStyle.swift */,
+				AF10ED8E29BF849A00E85309 /* UnreadMessageDividerView.swift */,
+				1A8B61D025C97481000D780E /* Upgrade */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -2098,6 +2106,7 @@
 				845E2F6F283CF94100C04D56 /* VisitorChatMessageStyle.Accessibility.swift */,
 				3197F7AE29E95527008EE9F7 /* SystemMessageView.swift */,
 				3197F7B029E958F4008EE9F7 /* SystemMessageStyle.swift */,
+				C0175A162A5D30D7001FACDE /* GvaResponseTextView.swift */,
 			);
 			path = Message;
 			sourceTree = "<group>";
@@ -4183,6 +4192,7 @@
 				9A186A3527F5CF3C0055886D /* FileUploadStyle.Accessibility.swift in Sources */,
 				84A318A12869ECFC00CA1DE5 /* Unavailable.swift in Sources */,
 				1AE15E49257A6BD200A642C0 /* ConfirmationAlertConfiguration.swift in Sources */,
+				C0175A172A5D30D7001FACDE /* GvaResponseTextView.swift in Sources */,
 				C460C7782600BCF400449851 /* ChoiceCardOptionStyle.swift in Sources */,
 				AF3D520F2983BC5600AD8E69 /* FileUploader.Environment.Mock.swift in Sources */,
 				C43D7A1125FF92680064B1DA /* ChoiceCardStyle.swift in Sources */,
@@ -4190,6 +4200,7 @@
 				9AB196D827C3E27300FD60AB /* ChatViewModel.Environment.Mock.swift in Sources */,
 				3100EEFF293F7E0900D57F71 /* Theme+SecureConversationsWelcome.swift in Sources */,
 				9A8130BF27D7AEF700220BBD /* FileUpload.Mock.swift in Sources */,
+				C0175A1D2A5D4226001FACDE /* ChatView.TableView.swift in Sources */,
 				9A8130BD27D7A53300220BBD /* FileUpload.Environment.Mock.swift in Sources */,
 				1A60AFB22566821B00E53F53 /* Asset.swift in Sources */,
 				C05AB01C295F416700AA381F /* VisitorCodeCloseButtonProperties.swift in Sources */,
@@ -4247,6 +4258,7 @@
 				1A2DA73125EFA77E00032611 /* FileUploader.swift in Sources */,
 				1A60B0272568070800E53F53 /* UIStackView+Extensions.swift in Sources */,
 				75940945298D378A008B173A /* CoreSDKClient.Mock.swift in Sources */,
+				C0175A192A5D3C56001FACDE /* ChatView.Accessibility.swift in Sources */,
 				C08D776228F58A18000461E5 /* ColorType.swift in Sources */,
 				84EFB05B28AA90220005E270 /* CustomCardContainerView.swift in Sources */,
 				7594098A298D38C2008B173A /* CallVisualizer.VisitorCodeViewModel.Mock.swift in Sources */,
