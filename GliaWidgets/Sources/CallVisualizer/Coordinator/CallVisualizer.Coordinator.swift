@@ -75,10 +75,7 @@ extension CallVisualizer {
                 viewFactory: environment.viewFactory
             )
             mediaUpgradeViewController = alert
-            environment
-                .presenter
-                .getInstance()?
-                .present(alert, animated: true)
+            presentAlert(alert)
         }
 
         func offerMediaUpgrade(
@@ -103,10 +100,7 @@ extension CallVisualizer {
                 viewFactory: environment.viewFactory
             )
             mediaUpgradeViewController = alert
-            environment
-                .presenter
-                .getInstance()?
-                .present(alert, animated: true)
+            presentAlert(alert)
         }
 
         func handleAcceptedUpgrade() {
@@ -181,7 +175,7 @@ extension CallVisualizer {
         }()
         private var visitorCodeCoordinator: VisitorCodeCoordinator?
         private var screenSharingCoordinator: ScreenSharingCoordinator?
-        private var videoCallCoordinator: VideoCallCoodinator?
+        private var videoCallCoordinator: VideoCallCoordinator?
         private var mediaUpgradeViewController: AlertViewController?
 
         private func buildScreenSharingViewController(uiConfig: RemoteConfiguration? = nil) -> UIViewController {
@@ -206,7 +200,7 @@ extension CallVisualizer {
         }
 
         private func buildVideoCallViewController() -> UIViewController {
-            let coordinator = VideoCallCoodinator(
+            let coordinator = VideoCallCoordinator(
                 environment: .init(
                     data: environment.data,
                     uuid: environment.uuid,
@@ -358,6 +352,23 @@ private extension CallVisualizer.Coordinator {
             centerY = bubbleView.frame.height / 2 + superview.safeAreaInsets.top
         } else if centerY > superview.frame.height - bubbleSize.height / 2 {
             centerY = superview.frame.height - bubbleView.frame.height / 2 - superview.safeAreaInsets.bottom
+        }
+    }
+
+    func presentAlert(_ alert: AlertViewController) {
+        let topController = environment.presenter.getInstance()
+
+        // If replaceable is not nil, that means some AlertViewController is presented,
+        // and we need to decide whether to replace presented alert.
+        // Otherwise, just present requested alert.
+        guard let replaceable = topController as? Replaceable else {
+            topController?.present(alert, animated: true)
+            return
+        }
+        let presenting = replaceable.presentingViewController
+        guard replaceable.isReplaceable(with: alert) else { return }
+        replaceable.dismiss(animated: true) {
+            presenting?.present(alert, animated: true)
         }
     }
 }
