@@ -321,195 +321,71 @@ extension ChatView {
         }
     }
 
-    // swiftlint:disable function_body_length
-    private func content(for item: ChatItem) -> ChatItemCell.Content {
+    func content(for item: ChatItem) -> ChatItemCell.Content {
         switch item.kind {
         case .queueOperator:
             return .queueOperator(connectView)
-        case .outgoingMessage(let message):
-            let view = VisitorChatMessageView(
-                with: style.visitorMessage,
-                environment: .init(uiScreen: environment.uiScreen)
+        case let .outgoingMessage(message):
+            return outgoingMessageContent(message)
+        case let .visitorMessage(message, status):
+            return visitorMessageContent(
+                message,
+                status: status
             )
-            view.appendContent(
-                .text(
-                    message.content,
-                    accessibility: Self.visitorAccessibilityOutgoingMessage(
-                        for: message,
-                        visitor: style.accessibility.visitor,
-                        isFontScalingEnabled: style.accessibility.isFontScalingEnabled
-                    )
-                ),
-                animated: false
-            )
-            view.appendContent(
-                .files(
-                    message.files,
-                    accessibility: .init(from: .visitor)
-                ),
-                animated: false
-            )
-            view.fileTapped = { [weak self] in self?.fileTapped?($0) }
-            view.linkTapped = { [weak self] in self?.linkTapped?($0) }
-            return .outgoingMessage(view)
-        case .visitorMessage(let message, let status):
-            let view = VisitorChatMessageView(
-                with: style.visitorMessage,
-                environment: .init(uiScreen: environment.uiScreen)
-            )
-            view.appendContent(
-                .text(
-                    message.content,
-                    accessibility: Self.visitorAccessibilityMessage(
-                        for: message,
-                        visitor: style.accessibility.visitor,
-                        isFontScalingEnabled: style.accessibility.isFontScalingEnabled
-                    )
-                ),
-                animated: false
-            )
-            view.appendContent(
-                .downloads(
-                    message.downloads,
-                    accessibility: .init(from: .visitor)
-                ),
-                animated: false
-            )
-            view.downloadTapped = { [weak self] in self?.downloadTapped?($0) }
-            view.linkTapped = { [weak self] in self?.linkTapped?($0) }
-            view.status = status
-            return .visitorMessage(view)
-        case .operatorMessage(let message, let showsImage, let imageUrl):
+        case let .operatorMessage(message, showsImage, imageUrl):
             return operatorMessageContent(
                 message,
                 showsImage: showsImage,
                 imageUrl: imageUrl
             )
-        case .choiceCard(let message, let showsImage, let imageUrl, let isActive):
+        case let .choiceCard(message, showsImage, imageUrl, isActive):
             return choiceCardMessageContent(
                 message,
                 showsImage: showsImage,
                 imageUrl: imageUrl,
                 isActive: isActive
             )
-        case .customCard(let chatMessage, let showsImage, let imageUrl, let isActive):
-            let message = MessageRenderer.Message(chatMessage: chatMessage)
-            // Response card should be shown by default even if option is selected.
-            let shouldShow = messageRenderer?.shouldShowCard(message) ?? true
-            // Response card is considered as noninteractable by default.
-            let isInteractable = messageRenderer?.isInteractable(message) ?? false
-            // Need to hide interactable response card if integrator returns `false`
-            // via shouldShowCard interface.
-            if !shouldShow, isInteractable {
-                return .none
-            }
-
-            guard let contentView = messageRenderer?.render(message) else {
-                if chatMessage.cardType == .choiceCard {
-                    return choiceCardMessageContent(
-                        chatMessage,
-                        showsImage: showsImage,
-                        imageUrl: imageUrl,
-                        isActive: isActive
-                    )
-                }
-                return operatorMessageContent(
-                    chatMessage,
-                    showsImage: showsImage,
-                    imageUrl: imageUrl
-                )
-            }
-
-            let container = CustomCardContainerView()
-            if let webCardView = contentView as? WebMessageCardView {
-                webCardView.isUserInteractionEnabled = isActive
-                webCardView.delegate = self
-                webCardView.updateHeight(heightCache[chatMessage.id] ?? 0)
-                container.willDisplayView = webCardView.startLoading
-            }
-
-            container.addContentView(contentView)
-            return .customCard(container)
-        case .callUpgrade(let kind, let duration):
-            let callStyle = callUpgradeStyle(for: kind.value)
-            let view = ChatCallUpgradeView(
-                with: callStyle,
-                duration: duration
+        case let .customCard(chatMessage, showsImage, imageUrl, isActive):
+            return customCardContent(
+                chatMessage,
+                showsImage: showsImage,
+                imageUrl: imageUrl,
+                isActive: isActive
             )
-            kind.addObserver(self) { [weak self] kind, _ in
-                guard let self = self else { return }
-
-                view.style = self.callUpgradeStyle(for: kind)
-                self.refreshAll()
-            }
-            return .callUpgrade(view)
-        case .operatorConnected(let name, let imageUrl):
-            let connectView = ConnectView(
-                with: style.connect,
-                layout: .chat,
-                environment: .init(
-                    data: environment.data,
-                    uuid: environment.uuid,
-                    gcd: environment.gcd,
-                    imageViewCache: environment.imageViewCache,
-                    timerProviding: environment.timerProviding)
-            )
-            connectView.setState(
-                .connected(name: name, imageUrl: imageUrl),
-                animated: false
-            )
-            return .queueOperator(connectView)
+        case let .callUpgrade(kind, duration):
+            return callUpgradeContent(kind: kind, duration: duration)
+        case let .operatorConnected(name, imageUrl):
+            return operatorConnectedContent(name: name, imageUrl: imageUrl)
         case .transferring:
-            let connectView = ConnectView(
-                with: style.connect,
-                layout: .chat,
-                environment: .init(
-                    data: environment.data,
-                    uuid: environment.uuid,
-                    gcd: environment.gcd,
-                    imageViewCache: environment.imageViewCache,
-                    timerProviding: environment.timerProviding)
-            )
-            connectView.setState(
-                .transferring,
-                animated: false
-            )
-            return .queueOperator(connectView)
+            return transferringContent()
         case .unreadMessageDivider:
-            return .unreadMessagesDivider(
-                UnreadMessageDividerView(
-                    style: style.unreadMessageDivider
-                )
-            )
+            return unreadMessageDividerContent()
         case .systemMessage(let message):
             return systemMessageContent(message)
         case let .gvaPersistentButton(_, button):
             // Temporary, since UI hasn't been implemented
-
             let textView = UITextView()
             textView.text = "Persistent Button: \(button.content)"
             return .gvaPersistentButton(textView)
-        case let .gvaResponseText(_, text):
-            // Temporary, since UI hasn't been implemented
-
-            let textView = UITextView()
-            textView.text = "Response Text: \(text.content)"
-            return .gvaResponseText(textView)
+        case let .gvaResponseText(message, text, showImage, imageUrl):
+            return gvaResponseTextContent(
+                message,
+                text: text,
+                showImage: showImage,
+                imageUrl: imageUrl
+            )
         case let .gvaQuickReply(_, button):
             // Temporary, since UI hasn't been implemented
-
             let textView = UITextView()
             textView.text = "Quick Reply: \(button.content)"
             return .gvaQuickReply(textView)
         case let .gvaGallery(_, gallery):
             // Temporary, since UI hasn't been implemented
-
             let textView = UITextView()
             textView.text = "Gallery: \(gallery.type.rawValue)"
             return .gvaGallery(textView)
         }
     }
-    // swiftlint:enable function_body_length
 
     private func callUpgradeStyle(for callKind: CallKind) -> ChatCallUpgradeStyle {
         return callKind == .audio
@@ -529,13 +405,174 @@ extension ChatView {
         }
     }
 
-    private func isBottomReached(for scrollView: UIScrollView) -> Bool {
+    func isBottomReached(for scrollView: UIScrollView) -> Bool {
         let chatBottomOffset = scrollView.contentSize.height - scrollView.frame.size.height
         let currentPositionOffset = scrollView.contentOffset.y + scrollView.contentInset.top
 
         return currentPositionOffset >= chatBottomOffset
     }
+}
 
+// MARK: - WebMessageCardViewDelegate
+
+extension ChatView: WebMessageCardViewDelegate {
+    func viewDidUpdateHeight(
+        _ view: WebMessageCardView,
+        height: CGFloat,
+        for messageId: MessageRenderer.Message.Identifier
+    ) {
+        if let cachedHeight = heightCache[messageId.rawValue],
+            cachedHeight == height {
+            return
+        }
+        heightCache[messageId.rawValue] = height
+        updateTableView(animated: true)
+
+        guard isLastMessage(messageId) else { return }
+        scrollToBottom(animated: true)
+    }
+
+    func didSelectCustomCardOption(
+        _ view: WebMessageCardView,
+        selectedOption: HtmlMetadata.Option,
+        for messageId: MessageRenderer.Message.Identifier
+    ) {
+        selectCustomCardOption?(selectedOption, messageId)
+    }
+
+    func didCallMobileAction(_ view: WebMessageCardView, action: String) {
+        messageRenderer?.callMobileActionHandler(action)
+    }
+
+    func didSelectURL(_ view: WebMessageCardView, url: URL) {
+        linkTapped?(url)
+    }
+
+    private func isLastMessage(_ messageId: MessageRenderer.Message.Identifier) -> Bool {
+        let numberOfSections = { self.numberOfSections?() ?? 0 }
+        let numberOfRows = { section in self.numberOfRows?(section) ?? 0 }
+        let sections = (0 ..< numberOfSections()).reversed()
+
+        guard let section = sections.first(where: { numberOfRows($0) > 0 }) else { return false }
+        let lastRowIndex = numberOfRows(section) - 1
+
+        guard
+            let lastItem = itemForRow?(lastRowIndex, section),
+            case .customCard(let message, _, _, _) = lastItem.kind
+        else { return false }
+
+        return message.id == messageId.rawValue
+    }
+}
+
+// MARK: - Call Bubble
+
+extension ChatView {
+    func setCallBubbleImage(with imageUrl: String?) {
+        guard let callBubble = callBubble else { return }
+
+        callBubble.kind = .userImage(url: imageUrl)
+    }
+
+    func showCallBubble(with imageUrl: String?, animated: Bool) {
+        guard callBubble == nil else { return }
+        let callBubble = BubbleView(
+            with: style.callBubble,
+            environment: .init(
+                data: environment.data,
+                uuid: environment.uuid,
+                gcd: environment.gcd,
+                imageViewCache: environment.imageViewCache
+            )
+        )
+        callBubble.kind = .userImage(url: imageUrl)
+        callBubble.tap = { [weak self] in self?.callBubbleTapped?() }
+        callBubble.pan = { [weak self] in self?.moveCallBubble($0, animated: true) }
+        callBubble.frame = CGRect(
+            origin: CGPoint(
+                x: callBubbleBounds.maxX - kCallBubbleSize.width,
+                y: callBubbleBounds.maxY - kCallBubbleSize.height
+            ),
+            size: kCallBubbleSize
+        )
+        self.callBubble = callBubble
+
+        addSubview(callBubble)
+    }
+
+    private func moveCallBubble(_ translation: CGPoint, animated: Bool) {
+        guard let callBubble = callBubble else { return }
+
+        var frame = callBubble.frame
+        frame.origin.x += translation.x
+        frame.origin.y += translation.y
+
+        if callBubbleBounds.contains(frame) {
+            callBubble.frame = frame
+        }
+    }
+
+    private func moveCallBubbleVisible() {
+        guard let callBubble = callBubble else { return }
+        bringSubviewToFront(callBubble)
+
+        var frame: CGRect = callBubble.frame
+
+        if callBubble.frame.minX < callBubbleBounds.minX {
+            frame.origin.x = callBubbleBounds.minX
+        }
+        if callBubble.frame.minY < callBubbleBounds.minY {
+            frame.origin.y = callBubbleBounds.minY
+        }
+        if callBubble.frame.maxX > callBubbleBounds.maxX {
+            frame.origin.x = callBubbleBounds.maxX - callBubble.frame.width
+        }
+        if callBubble.frame.maxY > callBubbleBounds.maxY {
+            frame.origin.y = callBubbleBounds.maxY - callBubble.frame.height
+        }
+
+        callBubble.frame = frame
+    }
+}
+
+// MARK: - Keyboard
+
+extension ChatView {
+    private func observeKeyboard() {
+        keyboardObserver.keyboardWillShow = { [unowned self] properties in
+            let bottomInset = safeAreaInsets.bottom
+            let newEntryConstraint = -properties.finalFrame.height + bottomInset
+            UIView.animate(
+                withDuration: properties.duration,
+                delay: 0.0,
+                options: properties.animationOptions,
+                animations: { [weak self] in
+                    self?.messageEntryViewBottomConstraint.constant = newEntryConstraint
+                    self?.layoutIfNeeded()
+                },
+                completion: { [weak self] _ in
+                    self?.tableView.scrollToBottom(animated: true)
+                }
+            )
+        }
+
+        keyboardObserver.keyboardWillHide = { [unowned self] properties in
+            UIView.animate(
+                withDuration: properties.duration,
+                delay: 0.0,
+                options: properties.animationOptions,
+                animations: { [weak self] in
+                    self?.messageEntryViewBottomConstraint.constant = 0
+                    self?.layoutIfNeeded()
+                }
+            )
+        }
+    }
+}
+
+// MARK: - Message Content
+
+extension ChatView {
     private func operatorMessageContent(
         _ message: ChatMessage,
         showsImage: Bool,
@@ -621,247 +658,213 @@ extension ChatView {
 
         return .systemMessage(view)
     }
-}
 
-// MARK: WebMessageCardViewDelegate
+    private func outgoingMessageContent(_ message: OutgoingMessage) -> ChatItemCell.Content {
+        let view = VisitorChatMessageView(
+            with: style.visitorMessage,
+            environment: .init(uiScreen: environment.uiScreen)
+        )
+        view.appendContent(
+            .text(
+                message.content,
+                accessibility: Self.visitorAccessibilityOutgoingMessage(
+                    for: message,
+                    visitor: style.accessibility.visitor,
+                    isFontScalingEnabled: style.accessibility.isFontScalingEnabled
+                )
+            ),
+            animated: false
+        )
+        view.appendContent(
+            .files(
+                message.files,
+                accessibility: .init(from: .visitor)
+            ),
+            animated: false
+        )
+        view.fileTapped = { [weak self] in self?.fileTapped?($0) }
+        view.linkTapped = { [weak self] in self?.linkTapped?($0) }
+        return .outgoingMessage(view)
+    }
 
-extension ChatView: WebMessageCardViewDelegate {
-    func viewDidUpdateHeight(
-        _ view: WebMessageCardView,
-        height: CGFloat,
-        for messageId: MessageRenderer.Message.Identifier
-    ) {
-        if let cachedHeight = heightCache[messageId.rawValue],
-            cachedHeight == height {
-            return
+    private func visitorMessageContent(
+        _ message: ChatMessage,
+        status: String?
+    ) -> ChatItemCell.Content {
+        let view = VisitorChatMessageView(
+            with: style.visitorMessage,
+            environment: .init(uiScreen: environment.uiScreen)
+        )
+        view.appendContent(
+            .text(
+                message.content,
+                accessibility: Self.visitorAccessibilityMessage(
+                    for: message,
+                    visitor: style.accessibility.visitor,
+                    isFontScalingEnabled: style.accessibility.isFontScalingEnabled
+                )
+            ),
+            animated: false
+        )
+        view.appendContent(
+            .downloads(
+                message.downloads,
+                accessibility: .init(from: .visitor)
+            ),
+            animated: false
+        )
+        view.downloadTapped = { [weak self] in self?.downloadTapped?($0) }
+        view.linkTapped = { [weak self] in self?.linkTapped?($0) }
+        view.status = status
+
+        return .visitorMessage(view)
+    }
+
+    private func customCardContent(
+        _ chatMessage: ChatMessage,
+        showsImage: Bool,
+        imageUrl: String?,
+        isActive: Bool
+    ) -> ChatItemCell.Content {
+        let message = MessageRenderer.Message(chatMessage: chatMessage)
+        // Response card should be shown by default even if option is selected.
+        let shouldShow = messageRenderer?.shouldShowCard(message) ?? true
+        // Response card is considered as noninteractable by default.
+        let isInteractable = messageRenderer?.isInteractable(message) ?? false
+        // Need to hide interactable response card if integrator returns `false`
+        // via shouldShowCard interface.
+        if !shouldShow, isInteractable {
+            return .none
         }
-        heightCache[messageId.rawValue] = height
-        updateTableView(animated: true)
 
-        guard isLastMessage(messageId) else { return }
-        scrollToBottom(animated: true)
+        guard let contentView = messageRenderer?.render(message) else {
+            if chatMessage.cardType == .choiceCard {
+                return choiceCardMessageContent(
+                    chatMessage,
+                    showsImage: showsImage,
+                    imageUrl: imageUrl,
+                    isActive: isActive
+                )
+            }
+            return operatorMessageContent(
+                chatMessage,
+                showsImage: showsImage,
+                imageUrl: imageUrl
+            )
+        }
+
+        let container = CustomCardContainerView()
+        if let webCardView = contentView as? WebMessageCardView {
+            webCardView.isUserInteractionEnabled = isActive
+            webCardView.delegate = self
+            webCardView.updateHeight(heightCache[chatMessage.id] ?? 0)
+            container.willDisplayView = webCardView.startLoading
+        }
+
+        container.addContentView(contentView)
+        return .customCard(container)
     }
 
-    func didSelectCustomCardOption(
-        _ view: WebMessageCardView,
-        selectedOption: HtmlMetadata.Option,
-        for messageId: MessageRenderer.Message.Identifier
-    ) {
-        selectCustomCardOption?(selectedOption, messageId)
+    private func callUpgradeContent(
+        kind: ObservableValue<CallKind>,
+        duration: ObservableValue<Int>
+    ) -> ChatItemCell.Content {
+        let callStyle = callUpgradeStyle(for: kind.value)
+        let view = ChatCallUpgradeView(
+            with: callStyle,
+            duration: duration
+        )
+        kind.addObserver(self) { [weak self] kind, _ in
+            guard let self = self else { return }
+
+            view.style = self.callUpgradeStyle(for: kind)
+            self.refreshAll()
+        }
+        return .callUpgrade(view)
     }
 
-    func didCallMobileAction(_ view: WebMessageCardView, action: String) {
-        messageRenderer?.callMobileActionHandler(action)
-    }
-
-    func didSelectURL(_ view: WebMessageCardView, url: URL) {
-        linkTapped?(url)
-    }
-
-    private func isLastMessage(_ messageId: MessageRenderer.Message.Identifier) -> Bool {
-        let numberOfSections = { self.numberOfSections?() ?? 0 }
-        let numberOfRows = { section in self.numberOfRows?(section) ?? 0 }
-        let sections = (0 ..< numberOfSections()).reversed()
-
-        guard let section = sections.first(where: { numberOfRows($0) > 0 }) else { return false }
-        let lastRowIndex = numberOfRows(section) - 1
-
-        guard
-            let lastItem = itemForRow?(lastRowIndex, section),
-            case .customCard(let message, _, _, _) = lastItem.kind
-        else { return false }
-
-        return message.id == messageId.rawValue
-    }
-}
-
-// MARK: Call Bubble
-
-extension ChatView {
-    func setCallBubbleImage(with imageUrl: String?) {
-        guard let callBubble = callBubble else { return }
-
-        callBubble.kind = .userImage(url: imageUrl)
-    }
-
-    func showCallBubble(with imageUrl: String?, animated: Bool) {
-        guard callBubble == nil else { return }
-        let callBubble = BubbleView(
-            with: style.callBubble,
+    private func operatorConnectedContent(
+        name: String?,
+        imageUrl: String?
+    ) -> ChatItemCell.Content {
+        let connectView = ConnectView(
+            with: style.connect,
+            layout: .chat,
             environment: .init(
                 data: environment.data,
                 uuid: environment.uuid,
                 gcd: environment.gcd,
-                imageViewCache: environment.imageViewCache
+                imageViewCache: environment.imageViewCache,
+                timerProviding: environment.timerProviding)
+        )
+        connectView.setState(
+            .connected(name: name, imageUrl: imageUrl),
+            animated: false
+        )
+        return .queueOperator(connectView)
+    }
+
+    private func transferringContent() -> ChatItemCell.Content {
+        let connectView = ConnectView(
+            with: style.connect,
+            layout: .chat,
+            environment: .init(
+                data: environment.data,
+                uuid: environment.uuid,
+                gcd: environment.gcd,
+                imageViewCache: environment.imageViewCache,
+                timerProviding: environment.timerProviding)
+        )
+        connectView.setState(
+            .transferring,
+            animated: false
+        )
+
+        return .queueOperator(connectView)
+    }
+
+    private func unreadMessageDividerContent() -> ChatItemCell.Content {
+        let messageDivider = UnreadMessageDividerView(style: style.unreadMessageDivider)
+        return .unreadMessagesDivider(messageDivider)
+    }
+
+    private func gvaResponseTextContent(
+        _ message: ChatMessage,
+        text: GvaResponseText,
+        showImage: Bool,
+        imageUrl: String?
+    ) -> ChatItemCell.Content {
+        let view = GvaResponseTextView(
+            with: style.operatorMessage,
+            environment: .init(
+                data: environment.data,
+                uuid: environment.uuid,
+                gcd: environment.gcd,
+                imageViewCache: environment.imageViewCache,
+                uiScreen: environment.uiScreen
             )
         )
-        callBubble.kind = .userImage(url: imageUrl)
-        callBubble.tap = { [weak self] in self?.callBubbleTapped?() }
-        callBubble.pan = { [weak self] in self?.moveCallBubble($0, animated: true) }
-        callBubble.frame = CGRect(
-            origin: CGPoint(
-                x: callBubbleBounds.maxX - kCallBubbleSize.width,
-                y: callBubbleBounds.maxY - kCallBubbleSize.height
+        view.appendContent(
+            .text(
+                text.content,
+                accessibility: Self.operatorAccessibilityMessage(
+                    for: message,
+                    operator: style.accessibility.operator,
+                    isFontScalingEnabled: style.accessibility.isFontScalingEnabled
+                )
             ),
-            size: kCallBubbleSize
+            animated: false
         )
-        self.callBubble = callBubble
-
-        addSubview(callBubble)
-    }
-
-    private func moveCallBubble(_ translation: CGPoint, animated: Bool) {
-        guard let callBubble = callBubble else { return }
-
-        var frame = callBubble.frame
-        frame.origin.x += translation.x
-        frame.origin.y += translation.y
-
-        if callBubbleBounds.contains(frame) {
-            callBubble.frame = frame
-        }
-    }
-
-    private func moveCallBubbleVisible() {
-        guard let callBubble = callBubble else { return }
-        bringSubviewToFront(callBubble)
-
-        var frame: CGRect = callBubble.frame
-
-        if callBubble.frame.minX < callBubbleBounds.minX {
-            frame.origin.x = callBubbleBounds.minX
-        }
-        if callBubble.frame.minY < callBubbleBounds.minY {
-            frame.origin.y = callBubbleBounds.minY
-        }
-        if callBubble.frame.maxX > callBubbleBounds.maxX {
-            frame.origin.x = callBubbleBounds.maxX - callBubble.frame.width
-        }
-        if callBubble.frame.maxY > callBubbleBounds.maxY {
-            frame.origin.y = callBubbleBounds.maxY - callBubble.frame.height
-        }
-
-        callBubble.frame = frame
-    }
-}
-
-// MARK: Keyboard
-
-extension ChatView {
-    private func observeKeyboard() {
-        keyboardObserver.keyboardWillShow = { [unowned self] properties in
-            let bottomInset = safeAreaInsets.bottom
-            let newEntryConstraint = -properties.finalFrame.height + bottomInset
-            UIView.animate(
-                withDuration: properties.duration,
-                delay: 0.0,
-                options: properties.animationOptions,
-                animations: { [weak self] in
-                    self?.messageEntryViewBottomConstraint.constant = newEntryConstraint
-                    self?.layoutIfNeeded()
-                },
-                completion: { [weak self] _ in
-                    self?.tableView.scrollToBottom(animated: true)
-                }
-            )
-        }
-
-        keyboardObserver.keyboardWillHide = { [unowned self] properties in
-            UIView.animate(
-                withDuration: properties.duration,
-                delay: 0.0,
-                options: properties.animationOptions,
-                animations: { [weak self] in
-                    self?.messageEntryViewBottomConstraint.constant = 0
-                    self?.layoutIfNeeded()
-                }
-            )
-        }
-    }
-}
-
-// MARK: UITableViewDataSource
-
-extension ChatView: UITableViewDataSource {
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return numberOfSections?() ?? 0
-    }
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return numberOfRows?(section) ?? 0
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard
-            let item = itemForRow?(indexPath.row, indexPath.section),
-            let cell: ChatItemCell = tableView.dequeue(cellFor: indexPath)
-        else { return UITableViewCell() }
-        cell.content = content(for: item)
-        return cell
-    }
-
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        guard
-            let cell = cell as? ChatItemCell,
-            case .customCard(let view) = cell.content
-        else { return }
-        view.willDisplayView?()
-    }
-}
-
-// MARK: UITableViewDelegate
-
-extension ChatView: UITableViewDelegate {
-    public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        endEditing(true)
-    }
-
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        chatScrolledToBottom?(isBottomReached(for: scrollView))
-    }
-
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        guard let item = itemForRow?(indexPath.row, indexPath.section) else { return CGFloat.zero }
-        guard case .none = content(for: item) else { return UITableView.automaticDimension }
-        return CGFloat.zero
-    }
-}
-
-// MARK: - Accessibility
-extension ChatView {
-    static func operatorAccessibilityMessage(
-        for chatMessage: ChatMessage,
-        `operator`: String,
-        isFontScalingEnabled: Bool
-    ) -> ChatMessageContent.TextAccessibilityProperties {
-        .init(
-            label: chatMessage.operator?.name ?? `operator`,
-            value: chatMessage.content,
-            isFontScalingEnabled: isFontScalingEnabled
+        view.appendContent(
+            .downloads(
+                message.downloads,
+                accessibility: .init(from: .operator(message.operator?.name ?? style.accessibility.operator))),
+            animated: false
         )
-    }
-
-    static func visitorAccessibilityMessage(
-        for chatMessage: ChatMessage,
-        visitor: String,
-        isFontScalingEnabled: Bool
-    ) -> ChatMessageContent.TextAccessibilityProperties {
-        .init(
-            label: visitor,
-            value: chatMessage.content,
-            isFontScalingEnabled: isFontScalingEnabled
-        )
-    }
-
-    static func visitorAccessibilityOutgoingMessage(
-        for outgoingMessage: OutgoingMessage,
-        visitor: String,
-        isFontScalingEnabled: Bool
-    ) -> ChatMessageContent.TextAccessibilityProperties {
-        .init(
-            label: visitor,
-            value: outgoingMessage.content,
-            isFontScalingEnabled: isFontScalingEnabled
-        )
+        view.downloadTapped = { [weak self] in self?.downloadTapped?($0) }
+        view.linkTapped = { [weak self] in self?.linkTapped?($0) }
+        view.showsOperatorImage = showImage
+        view.setOperatorImage(fromUrl: imageUrl, animated: false)
+        return .gvaResponseText(view)
     }
 }
