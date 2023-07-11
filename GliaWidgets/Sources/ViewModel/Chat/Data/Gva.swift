@@ -13,10 +13,10 @@ struct GvaButton: Decodable, Equatable {
 
 struct GvaGallery: Decodable, Equatable {
     let type: GvaCardType
-    let gallaryCards: [GvaGallaryCard]
+    let galleryCards: [GvaGalleryCard]
 }
 
-struct GvaGallaryCard: Decodable, Equatable {
+struct GvaGalleryCard: Decodable, Equatable {
     let title: String
     let subtitle: String?
     let imageUrl: String?
