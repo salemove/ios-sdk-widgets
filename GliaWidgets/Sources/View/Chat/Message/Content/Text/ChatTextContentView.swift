@@ -6,6 +6,11 @@ class ChatTextContentView: BaseView {
         set { setText(newValue) }
     }
 
+    var attributedText: NSAttributedString? {
+        get { return textView.attributedText }
+        set { return setAttributedText(newValue) }
+    }
+
     var accessibilityProperties: AccessibilityProperties {
         get {
             .init(
@@ -89,18 +94,51 @@ class ChatTextContentView: BaseView {
     }
 
     private func setText(_ text: String?) {
-        if text == nil || text?.isEmpty == true {
+        guard let text, !text.isEmpty else {
             textView.removeFromSuperview()
-        } else {
-            if textView.superview == nil {
-                contentView.addSubview(textView)
-                textView.translatesAutoresizingMaskIntoConstraints = false
-                var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
-                constraints += textView.layoutInSuperview(insets: kTextInsets)
-            }
-            textView.text = text
+            return
         }
+
+        if textView.superview == nil {
+            contentView.addSubview(textView)
+            textView.translatesAutoresizingMaskIntoConstraints = false
+            var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
+            constraints += textView.layoutInSuperview(insets: kTextInsets)
+        }
+        textView.text = text
+
         textView.accessibilityIdentifier = text
+    }
+
+    private func setAttributedText(_ text: NSAttributedString?) {
+        guard let text, !text.string.isEmpty else {
+            textView.removeFromSuperview()
+            return
+        }
+
+        if textView.superview == nil {
+            contentView.addSubview(textView)
+            textView.translatesAutoresizingMaskIntoConstraints = false
+            var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
+            constraints += textView.layoutInSuperview(insets: kTextInsets)
+        }
+
+        let attributes: [NSAttributedString.Key: Any] = [
+            .font: style.textFont,
+            .foregroundColor: style.textColor
+        ]
+
+        let attributedText = NSMutableAttributedString(attributedString: text)
+        attributedText.addAttributes(
+            attributes,
+            range: NSRange(
+                location: 0,
+                length: attributedText.length
+            )
+        )
+
+        textView.attributedText = attributedText
+        textView.accessibilityIdentifier = text.string
     }
 }
 
