@@ -56,6 +56,18 @@ class ChatMessageView: BaseView {
                 accessibilityProperties: accProperties
             )
             appendContentViews(contentViews, animated: animated)
+        case let .attributedText(text, accProperties):
+            let contentView = ChatTextContentView(
+                with: style.text,
+                contentAlignment: contentAlignment
+            )
+            contentView.attributedText = text
+            contentView.linkTapped = { [weak self] in self?.linkTapped?($0) }
+            contentView.accessibilityProperties = .init(
+                label: accProperties.label,
+                value: accProperties.value
+            )
+            appendContentView(contentView, animated: animated)
         default:
             break
         }
