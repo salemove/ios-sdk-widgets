@@ -845,7 +845,7 @@ extension ChatView {
             )
         )
         view.appendContent(
-            .text(
+            .attributedText(
                 text.content,
                 accessibility: Self.operatorAccessibilityMessage(
                     for: message,

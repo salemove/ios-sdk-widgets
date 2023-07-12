@@ -2,7 +2,19 @@ import Foundation
 
 struct GvaResponseText: Decodable, Equatable {
     let type: GvaCardType
-    let content: String
+    let content: NSAttributedString
+
+    enum CodingKeys: String, CodingKey {
+        case type, content
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        type = try container.decode(GvaCardType.self, forKey: .type)
+        let contentString = try container.decode(String.self, forKey: .content)
+        let modifiedString = contentString.replacingOccurrences(of: "\n", with: "</br>")
+        content = modifiedString.htmlToAttributedString ?? NSAttributedString(string: "")
+    }
 }
 
 struct GvaButton: Decodable, Equatable {
@@ -48,4 +60,33 @@ enum GvaCardType: String, Decodable {
     case quickReplies
     case plainText
     case galleryCards
+}
+
+private extension StringProtocol {
+    var htmlToAttributedString: NSAttributedString? {
+        Data(utf8).htmlToAttributedString
+    }
+    var htmlToString: String {
+        htmlToAttributedString?.string ?? ""
+    }
+}
+
+private extension Data {
+    var htmlToAttributedString: NSAttributedString? {
+        do {
+            let options: [NSAttributedString.DocumentReadingOptionKey: Any] = [
+                .documentType: NSAttributedString.DocumentType.html,
+                .characterEncoding: String.Encoding.utf8.rawValue
+            ]
+            return try NSAttributedString(
+                data: self,
+                options: options,
+                documentAttributes: nil
+            )
+        } catch {
+            debugPrint("HTML-string decoding failed with error:", error)
+            return  nil
+        }
+    }
+    var htmlToString: String { htmlToAttributedString?.string ?? "" }
 }
