@@ -5,6 +5,7 @@ enum ChatMessageContent {
     case files([LocalFile], accessibility: ChatFileContentView.AccessibilityProperties)
     case downloads([FileDownload], accessibility: ChatFileContentView.AccessibilityProperties)
     case choiceCard(ChoiceCard)
+    case attributedText(NSAttributedString, accessibility: TextAccessibilityProperties)
 
     struct TextAccessibilityProperties {
         let label: String
