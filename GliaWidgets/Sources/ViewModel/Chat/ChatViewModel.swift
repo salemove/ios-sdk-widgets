@@ -29,7 +29,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     private var unreadMessages: UnreadMessagesHandler!
     private let isChatScrolledToBottom = ObservableValue<Bool>(with: true)
     private let showsCallBubble: Bool
-    private let isCustomCardSupported: Bool
+    let isCustomCardSupported: Bool
     let fileUploadListModel: SecureConversations.FileUploadListViewModel
 
     private let downloader: FileDownloader

@@ -345,6 +345,9 @@
 		846429802A45A1F200943BD6 /* OfferPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8464297F2A45A1F200943BD6 /* OfferPresenter.swift */; };
 		846429832A45DA7500943BD6 /* AlertViewController+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846429822A45DA7500943BD6 /* AlertViewController+Mock.swift */; };
 		846429862A45DB4100943BD6 /* AlertViewController.Kind+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846429852A45DB4100943BD6 /* AlertViewController.Kind+Mock.swift */; };
+		84681A8E2A5ED76300DD7406 /* ChatViewModel+GVA.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84681A8D2A5ED76300DD7406 /* ChatViewModel+GVA.swift */; };
+		84681A952A61844000DD7406 /* ChatViewModelTests+Gva.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84681A942A61844000DD7406 /* ChatViewModelTests+Gva.swift */; };
+		84681A982A61853300DD7406 /* GvaOption.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84681A972A61853300DD7406 /* GvaOption.Mock.swift */; };
 		846A5C3429CB3A130049B29F /* ScreenShareHandler.Implementation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846A5C3329CB3A130049B29F /* ScreenShareHandler.Implementation.swift */; };
 		846A5C3629CB3E270049B29F /* ScreenShareHandler.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846A5C3529CB3E270049B29F /* ScreenShareHandler.Mock.swift */; };
 		846A5C3929D18D400049B29F /* ScreenShareHandlerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846A5C3829D18D400049B29F /* ScreenShareHandlerTests.swift */; };
@@ -993,6 +996,9 @@
 		8464297F2A45A1F200943BD6 /* OfferPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferPresenter.swift; sourceTree = "<group>"; };
 		846429822A45DA7500943BD6 /* AlertViewController+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlertViewController+Mock.swift"; sourceTree = "<group>"; };
 		846429852A45DB4100943BD6 /* AlertViewController.Kind+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlertViewController.Kind+Mock.swift"; sourceTree = "<group>"; };
+		84681A8D2A5ED76300DD7406 /* ChatViewModel+GVA.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatViewModel+GVA.swift"; sourceTree = "<group>"; };
+		84681A942A61844000DD7406 /* ChatViewModelTests+Gva.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatViewModelTests+Gva.swift"; sourceTree = "<group>"; };
+		84681A972A61853300DD7406 /* GvaOption.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GvaOption.Mock.swift; sourceTree = "<group>"; };
 		846A5C3329CB3A130049B29F /* ScreenShareHandler.Implementation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenShareHandler.Implementation.swift; sourceTree = "<group>"; };
 		846A5C3529CB3E270049B29F /* ScreenShareHandler.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenShareHandler.Mock.swift; sourceTree = "<group>"; };
 		846A5C3829D18D400049B29F /* ScreenShareHandlerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenShareHandlerTests.swift; sourceTree = "<group>"; };
@@ -1980,6 +1986,7 @@
 				9AB196DF27C401F600FD60AB /* ChatViewModel.Mock.swift */,
 				9AB196D527C3E1E400FD60AB /* ChatViewModel.Environment.Interface.swift */,
 				9AB196D727C3E27300FD60AB /* ChatViewModel.Environment.Mock.swift */,
+				84681A8D2A5ED76300DD7406 /* ChatViewModel+GVA.swift */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -2443,11 +2450,11 @@
 		7512A57827BF9FB800319DF1 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				84681A932A61840700DD7406 /* ChatViewModel */,
 				846429812A45DA5900943BD6 /* AlertViewController */,
 				846A5C4329F6BEB60049B29F /* Glia */,
 				7512A57627BE8A6700319DF1 /* InteractorTests.swift */,
 				AF29811429E6D76A0005BD55 /* FileDownloadTests.swift */,
-				7512A57927BF9FCD00319DF1 /* ChatViewModelTests.swift */,
 				EB9ADB50280EBD4E00FAE8A4 /* InteractorStateTests.swift */,
 				EB27E71C27FEBB620090B895 /* CallViewModelTests.swift */,
 				EB03B00D27FFF6DD0058F6B1 /* CallViewTests.swift */,
@@ -2932,6 +2939,24 @@
 			children = (
 				846429822A45DA7500943BD6 /* AlertViewController+Mock.swift */,
 				846429852A45DB4100943BD6 /* AlertViewController.Kind+Mock.swift */,
+			);
+			path = Mocks;
+			sourceTree = "<group>";
+		};
+		84681A932A61840700DD7406 /* ChatViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				84681A962A61851700DD7406 /* Mocks */,
+				7512A57927BF9FCD00319DF1 /* ChatViewModelTests.swift */,
+				84681A942A61844000DD7406 /* ChatViewModelTests+Gva.swift */,
+			);
+			path = ChatViewModel;
+			sourceTree = "<group>";
+		};
+		84681A962A61851700DD7406 /* Mocks */ = {
+			isa = PBXGroup;
+			children = (
+				84681A972A61853300DD7406 /* GvaOption.Mock.swift */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -3977,6 +4002,7 @@
 				845E2F72283D068000C04D56 /* HeaderStyle.Accessibility.swift in Sources */,
 				1A1E30CB25F9FDC400850E68 /* ChatImageFileContentStyle.swift in Sources */,
 				75C48498299AC71F003EC223 /* Header+Playbook.swift in Sources */,
+				84681A8E2A5ED76300DD7406 /* ChatViewModel+GVA.swift in Sources */,
 				1A60AF93256674F900E53F53 /* Color.swift in Sources */,
 				1A38A8BA258B94D60089DE7B /* ImageView.swift in Sources */,
 				C0857DE528D470C1008D171D /* Theme+Shadow.swift in Sources */,
@@ -4298,6 +4324,7 @@
 			files = (
 				C03A8049292BC8DB00DDECA6 /* CallViewControllerTests.swift in Sources */,
 				84D5B9662A15204400807F92 /* QuickLookBased.Failing.swift in Sources */,
+				84681A982A61853300DD7406 /* GvaOption.Mock.swift in Sources */,
 				AF6AB34B2989517100003645 /* FileUploader.Failing.swift in Sources */,
 				EB03B00E27FFF6DD0058F6B1 /* CallViewTests.swift in Sources */,
 				3197F7AD29E6A5C8008EE9F7 /* SecureConversations.FileUploadListView.Mock.swift in Sources */,
@@ -4339,6 +4366,7 @@
 				EB9ADB51280EBD4E00FAE8A4 /* InteractorStateTests.swift in Sources */,
 				EB7A1508286D98000035AC62 /* FileUploader.Environment.Failing.swift in Sources */,
 				AF2355A229C9EC7E007D9896 /* IdCollectionTests.swift in Sources */,
+				84681A952A61844000DD7406 /* ChatViewModelTests+Gva.swift in Sources */,
 				847A7643285A1914004044D1 /* FileUploadListViewModelTests.swift in Sources */,
 				9A1992E727D66C7400161AAE /* UIKitBased.Failing.swift in Sources */,
 				846A5C3929D18D400049B29F /* ScreenShareHandlerTests.swift in Sources */,
