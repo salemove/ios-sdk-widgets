@@ -263,3 +263,5 @@
 "callVisualizer.screenSharing.accessibility.messageHint" = "Message label";
 "callVisualizer.screenSharing.accessibility.buttonLabel" = "End screen sharing";
 "callVisualizer.screenSharing.accessibility.buttonHint" = "Ends screen sharing";
+
+"gva_not_supported" = "This action is not currently supported on mobile";

@@ -56,12 +56,27 @@ extension ChatViewModelTests {
 
         XCTAssertEqual(calls, [.sendOption("text", "value")])
     }
+
+    func test_broadcastEventAction() {
+        let option = GvaOption.mock(text: "text", destinationPdBroadcastEvent: "mock")
+        var calls: [Call] = []
+        viewModel = .mock(environment: .mock)
+        viewModel.engagementAction = { action in
+            guard case .showAlert = action else { return }
+            calls.append(.showAlert)
+        }
+
+        viewModel.gvaOptionAction(for: option)()
+
+        XCTAssertEqual(calls, [.showAlert])
+    }
 }
 
 private extension ChatViewModelTests {
     enum Call: Equatable {
         case openUrl(String?)
         case sendOption(String?, String?)
+        case showAlert
 
         static func == (lhs: Call, rhs: Call) -> Bool {
             switch (lhs, rhs) {
@@ -69,6 +84,8 @@ private extension ChatViewModelTests {
                 return lhsUrl == rhsUrl
             case let (.sendOption(lhsText, lhsValue), .sendOption(rhsText, rhsValue)):
                 return lhsText == rhsText && lhsValue == rhsValue
+            case (.showAlert, .showAlert):
+                return true
             default:
                 return false
             }
