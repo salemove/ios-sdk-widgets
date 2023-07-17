@@ -8,10 +8,15 @@ private extension String {
 
 extension ChatViewModel {
     func gvaOptionAction(for option: GvaOption) -> Cmd {
+        // If `option.destinationPdBroadcastEvent` is specified,
+        // this is broadcast event button, which is not supported
+        // on mobile. So an alert should be shown.
         // If option contains `url`, then it's URL Button,
         // otherwise it's Postback Button and option should be sent
         // to the server as `SingleChoiceOption`
-        if let urlString = option.url,
+        if option.destinationPdBroadcastEvent != nil {
+            return broadcastEventButtonAction()
+        } else if let urlString = option.url,
            let url = URL(string: urlString) {
             return urlButtonAction(url: url, urlTarget: option.urlTarget)
         } else {
@@ -75,6 +80,16 @@ private extension ChatViewModel {
                     )
                 }
             }
+        }
+    }
+
+    func broadcastEventButtonAction() -> Cmd {
+        .init { [weak self] in
+            guard let self = self else { return }
+            self.showAlert(
+                with: self.alertConfiguration.unsupportedGvaBroadcastError,
+                dismissed: nil
+            )
         }
     }
 }
