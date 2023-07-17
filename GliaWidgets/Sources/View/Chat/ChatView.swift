@@ -162,7 +162,17 @@ class ChatView: EngagementView {
         ])
 
         addSubview(messageEntryView)
-        messageEntryViewBottomConstraint = messageEntryView.layoutIn(safeAreaLayoutGuide, edges: .bottom).first
+        let messageEntryInsets = UIEdgeInsets(
+            top: 0,
+            left: 0,
+            bottom: 4.5,
+            right: 0
+        )
+        messageEntryViewBottomConstraint = messageEntryView.layoutIn(
+            safeAreaLayoutGuide,
+            edges: .bottom,
+            insets: messageEntryInsets
+        ).first
         constraints += messageEntryViewBottomConstraint
 
         constraints += messageEntryView.layoutIn(safeAreaLayoutGuide, edges: .horizontal)
