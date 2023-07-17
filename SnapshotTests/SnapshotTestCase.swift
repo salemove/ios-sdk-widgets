@@ -38,7 +38,7 @@ extension SnapshotTestCase {
         )
     ]
 
-    static let possiblePrecision: Float = 0.99
+    static let possiblePrecision: Float = 1.0
 
     private static func checkSimulatorEnvironment() {
         guard SnapshotTestCase.testedDevices.contains(where: { $0.matchesCurrentDevice() }) else {

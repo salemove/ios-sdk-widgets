@@ -1,15 +1,14 @@
-import AccessibilitySnapshot
 @testable import GliaWidgets
 import SnapshotTesting
 import XCTest
 
-class CallViewControllerVoiceOverTests: SnapshotTestCase {
+class CallViewControllerLayoutTests: SnapshotTestCase {
     func test_audioCallQueueState() throws {
         let viewController = try CallViewController.mockAudioCallQueueState()
         viewController.view.frame = UIScreen.main.bounds
         assertSnapshot(
             matching: viewController,
-            as: .accessibilityImage(precision: Self.possiblePrecision),
+            as: .image,
             named: nameForDevice()
         )
     }
@@ -19,7 +18,7 @@ class CallViewControllerVoiceOverTests: SnapshotTestCase {
         viewController.view.frame = UIScreen.main.bounds
         assertSnapshot(
             matching: viewController,
-            as: .accessibilityImage(precision: Self.possiblePrecision),
+            as: .image,
             named: nameForDevice()
         )
     }
@@ -29,7 +28,7 @@ class CallViewControllerVoiceOverTests: SnapshotTestCase {
         viewController.view.frame = UIScreen.main.bounds
         assertSnapshot(
             matching: viewController,
-            as: .accessibilityImage(precision: Self.possiblePrecision),
+            as: .image,
             named: nameForDevice()
         )
     }
@@ -39,7 +38,7 @@ class CallViewControllerVoiceOverTests: SnapshotTestCase {
         viewController.view.frame = UIScreen.main.bounds
         assertSnapshot(
             matching: viewController,
-            as: .accessibilityImage(precision: Self.possiblePrecision),
+            as: .image,
             named: nameForDevice()
         )
     }
@@ -49,7 +48,7 @@ class CallViewControllerVoiceOverTests: SnapshotTestCase {
         viewController.view.frame = UIScreen.main.bounds
         assertSnapshot(
             matching: viewController,
-            as: .accessibilityImage(precision: Self.possiblePrecision),
+            as: .image,
             named: nameForDevice()
         )
     }
@@ -59,7 +58,7 @@ class CallViewControllerVoiceOverTests: SnapshotTestCase {
         viewController.view.frame = UIScreen.main.bounds
         assertSnapshot(
             matching: viewController,
-            as: .accessibilityImage(precision: Self.possiblePrecision),
+            as: .image,
             named: nameForDevice()
         )
     }
