@@ -61,7 +61,7 @@ class OperatorChatMessageView: ChatMessageView {
 
         constraints += operatorImageViewContainer.match(value: operatorImageViewSize)
         constraints += operatorImageViewContainer.leadingAnchor.constraint(equalTo: leadingAnchor, constant: imageViewInsets.left)
-        constraints += operatorImageViewContainer.bottomAnchor.constraint(equalTo: bottomAnchor, constant: imageViewInsets.bottom)
+        constraints += operatorImageViewContainer.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -imageViewInsets.bottom)
         constraints += operatorImageViewContainer.topAnchor.constraint(greaterThanOrEqualTo: topAnchor, constant: imageViewInsets.top)
 
         addSubview(contentViews)
