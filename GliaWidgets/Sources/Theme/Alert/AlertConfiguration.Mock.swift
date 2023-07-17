@@ -19,7 +19,8 @@ extension AlertConfiguration {
             unexpectedError: .mock(),
             apiError: .mock(),
             unavailableMessageCenter: .mock(),
-            unavailableMessageCenterForBeingUnauthenticated: .mock()
+            unavailableMessageCenterForBeingUnauthenticated: .mock(),
+            unsupportedGvaBroadcastError: .mock()
         )
     }
 }
