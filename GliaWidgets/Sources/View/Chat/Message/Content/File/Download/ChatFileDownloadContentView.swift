@@ -69,7 +69,7 @@ class ChatFileDownloadContentView: ChatFileContentView {
 
         contentView.addSubview(infoLabel)
         infoLabel.translatesAutoresizingMaskIntoConstraints = false
-        constraints += infoLabel.topAnchor.constraint(equalTo: filePreviewView.topAnchor)
+        constraints += infoLabel.topAnchor.constraint(equalTo: filePreviewView.topAnchor, constant: 4)
         constraints += infoLabel.leadingAnchor.constraint(equalTo: filePreviewView.trailingAnchor, constant: 12)
         constraints += infoLabel.layoutInSuperview(edges: .trailing)
 
