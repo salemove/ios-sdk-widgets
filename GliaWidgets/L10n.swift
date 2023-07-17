@@ -10,6 +10,8 @@ import Foundation
 // swiftlint:disable explicit_type_interface function_parameter_count identifier_name line_length
 // swiftlint:disable nesting type_body_length type_name vertical_whitespace_opening_braces
 public enum L10n {
+  /// This action is not currently supported on mobile
+  public static let gvaNotSupported = L10n.tr("Localizable", "gva_not_supported", fallback: "This action is not currently supported on mobile")
   /// Operator
   public static let `operator` = L10n.tr("Localizable", "operator", fallback: "Operator")
   /// Powered by

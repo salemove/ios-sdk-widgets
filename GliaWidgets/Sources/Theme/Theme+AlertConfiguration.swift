@@ -130,6 +130,11 @@ extension Theme {
             shouldShowCloseButton: false
         )
 
+        let unsupportedGvaBroadcastError = MessageAlertConfiguration(
+            title: L10n.gvaNotSupported,
+            message: nil
+        )
+
         return AlertConfiguration(
             leaveQueue: leaveQueue,
             endEngagement: endEngagement,
@@ -147,7 +152,8 @@ extension Theme {
             unexpectedError: unexpected,
             apiError: api,
             unavailableMessageCenter: unavailableMessageCenter,
-            unavailableMessageCenterForBeingUnauthenticated: unavailableMessageCenterForBeingUnauthenticated
+            unavailableMessageCenterForBeingUnauthenticated: unavailableMessageCenterForBeingUnauthenticated,
+            unsupportedGvaBroadcastError: unsupportedGvaBroadcastError
         )
     }
 }
