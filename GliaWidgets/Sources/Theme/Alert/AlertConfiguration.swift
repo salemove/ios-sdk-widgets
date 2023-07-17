@@ -51,6 +51,9 @@ public struct AlertConfiguration {
     /// Configuration of the unavailable message center error alert due to unautheticated visitor.
     public var unavailableMessageCenterForBeingUnauthenticated: MessageAlertConfiguration
 
+    /// Configuration of the unsupported GVA broadcast events error alert.
+    public var unsupportedGvaBroadcastError: MessageAlertConfiguration
+
     ///
     /// - Parameters:
     ///   - leaveQueue: Configuration of the queue leaving confirmation alert.
@@ -70,6 +73,7 @@ public struct AlertConfiguration {
     ///   - apiError: Configuration of the API error alert.
     ///   - unavailableMessageCenter: Configuration of the unavailable message center error alert.
     ///   - unavailableMessageCenterForBeingUnauthenticated: Configuration of the unavailable message center error alert due to unautheticated visitor.
+    ///   - unsupportedGvaBroadcastError: Configuration of the unsupported GVA broadcast events error alert.
     ///
     public init(
         leaveQueue: ConfirmationAlertConfiguration,
@@ -88,7 +92,8 @@ public struct AlertConfiguration {
         unexpectedError: MessageAlertConfiguration,
         apiError: MessageAlertConfiguration,
         unavailableMessageCenter: MessageAlertConfiguration,
-        unavailableMessageCenterForBeingUnauthenticated: MessageAlertConfiguration
+        unavailableMessageCenterForBeingUnauthenticated: MessageAlertConfiguration,
+        unsupportedGvaBroadcastError: MessageAlertConfiguration
     ) {
         self.leaveQueue = leaveQueue
         self.endEngagement = endEngagement
@@ -107,5 +112,6 @@ public struct AlertConfiguration {
         self.apiError = apiError
         self.unavailableMessageCenter = unavailableMessageCenter
         self.unavailableMessageCenterForBeingUnauthenticated = unavailableMessageCenterForBeingUnauthenticated
+        self.unsupportedGvaBroadcastError = unsupportedGvaBroadcastError
     }
 }
