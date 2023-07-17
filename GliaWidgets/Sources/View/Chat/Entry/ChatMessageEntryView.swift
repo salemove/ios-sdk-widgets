@@ -173,7 +173,7 @@ class ChatMessageEntryView: BaseView {
         constraints += textView.trailingAnchor.constraint(equalTo: buttonsStackView.leadingAnchor, constant: -8)
 
         messageContainerView.addSubview(placeholderLabel)
-        placeholderLabel.isAccessibilityElement = false
+        placeholderLabel.isAccessibilityElement = true
         placeholderLabel.translatesAutoresizingMaskIntoConstraints = false
         placeholderLabel.numberOfLines = 0
 

@@ -86,15 +86,31 @@ extension SecureConversations {
                 equalTo: contentView.topAnchor, constant: style.removeButtonTopRightOffset.height
             )
             constraints += removeButton.trailingAnchor.constraint(
-                equalTo: contentView.trailingAnchor, constant: style.removeButtonTopRightOffset.height
+                equalTo: contentView.trailingAnchor, constant: style.removeButtonTopRightOffset.width
             )
             constraints += removeButton.match(value: buttonSize)
 
             contentView.addSubview(infoLabel)
             infoLabel.translatesAutoresizingMaskIntoConstraints = false
+
+            // In order for `infoLabel` to have minimum height, to prevent `stateLabel`
+            // from jumping when `infoLabel` is empty, we need add extra height constraint
+            // with respecting content compression resistance priority to it.
+
+            // Add content compression resistance priority.
+            let lowPriority = UILayoutPriority(rawValue: 750)
+            infoLabel.setContentCompressionResistancePriority(lowPriority, for: .vertical)
+
+            // Add minimum height constraint.
+            let highPriority = UILayoutPriority(rawValue: 1000)
+            // Set desired minimum height and assign priority.
+            let minHeightConstraint = infoLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 17)
+            minHeightConstraint.priority = highPriority
+            constraints += minHeightConstraint
+
             constraints += infoLabel.leadingAnchor.constraint(equalTo: filePreviewView.trailingAnchor, constant: 12)
             constraints += infoLabel.trailingAnchor.constraint(lessThanOrEqualTo: removeButton.leadingAnchor, constant: -80)
-            constraints += infoLabel.topAnchor.constraint(equalTo: filePreviewView.firstBaselineAnchor, constant: 3)
+            constraints += infoLabel.topAnchor.constraint(equalTo: filePreviewView.firstBaselineAnchor, constant: 0)
 
             contentView.addSubview(stateLabel)
             stateLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -370,7 +386,7 @@ extension SecureConversations.FileUploadView.Style {
                 contentInsets = UIEdgeInsets(top: 20, left: 10, bottom: 20, right: 10)
                 cornerRadius = 4
                 backgroundColor = uploadStyle.backgroundColor
-                removeButtonTopRightOffset = .init(width: -5, height: -14)
+                removeButtonTopRightOffset = .init(width: 5, height: -14)
             }
         }
     }
