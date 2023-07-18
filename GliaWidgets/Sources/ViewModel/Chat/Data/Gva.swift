@@ -19,13 +19,26 @@ struct GvaResponseText: Decodable, Equatable {
 
 struct GvaButton: Decodable, Equatable {
     let type: GvaCardType
-    let content: String
+    let content: NSAttributedString
     let options: [GvaOption]
+
+    enum CodingKeys: String, CodingKey {
+        case type, content, options
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        type = try container.decode(GvaCardType.self, forKey: .type)
+        let contentString = try container.decode(String.self, forKey: .content)
+        let modifiedString = contentString.replacingOccurrences(of: "\n", with: "</br>")
+        content = modifiedString.htmlToAttributedString ?? NSAttributedString(string: "")
+        options = try container.decode([GvaOption].self, forKey: .options)
+    }
 }
 
 struct GvaGallery: Decodable, Equatable {
     let type: GvaCardType
-    let galleryCards: [GvaGalleryCard]
+    let content: [GvaGalleryCard]
 }
 
 struct GvaGalleryCard: Decodable, Equatable {
