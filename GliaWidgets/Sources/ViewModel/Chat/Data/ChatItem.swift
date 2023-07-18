@@ -50,7 +50,7 @@ class ChatItem {
                     return nil
                 }
             case let .gvaPersistenButton(button):
-                kind = .gvaPersistentButton(message, persistenButton: button)
+                kind = .gvaPersistentButton(message, persistenButton: button, showImage: true, imageUrl: message.operator?.pictureUrl)
             case let .gvaResponseText(text):
                 kind = .gvaResponseText(message, responseText: text, showImage: true, imageUrl: message.operator?.pictureUrl)
             case let .gvaQuickReply(button):
@@ -83,7 +83,7 @@ extension ChatItem {
         case transferring
         case unreadMessageDivider
         case systemMessage(ChatMessage)
-        case gvaPersistentButton(ChatMessage, persistenButton: GvaButton)
+        case gvaPersistentButton(ChatMessage, persistenButton: GvaButton, showImage: Bool, imageUrl: String?)
         case gvaResponseText(ChatMessage, responseText: GvaResponseText, showImage: Bool, imageUrl: String?)
         case gvaQuickReply(ChatMessage, quickReply: GvaButton)
         case gvaGallery(ChatMessage, gallery: GvaGallery)

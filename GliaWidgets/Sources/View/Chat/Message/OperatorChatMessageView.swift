@@ -66,7 +66,7 @@ class OperatorChatMessageView: ChatMessageView {
 
         addSubview(contentViews)
         contentViews.translatesAutoresizingMaskIntoConstraints = false
-        constraints += contentViews.leadingAnchor.constraint(equalTo: operatorImageViewContainer.trailingAnchor, constant: 4)
+        constraints += contentViews.leadingAnchor.constraint(equalTo: operatorImageViewContainer.trailingAnchor, constant: 8)
         constraints += contentViews.topAnchor.constraint(equalTo: topAnchor, constant: imageViewInsets.top)
         constraints += contentViews.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -imageViewInsets.right)
 
