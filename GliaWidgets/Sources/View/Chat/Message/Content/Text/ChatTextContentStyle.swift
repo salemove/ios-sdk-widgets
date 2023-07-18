@@ -33,7 +33,7 @@ public class ChatTextContentStyle {
         textColor: UIColor,
         textStyle: UIFont.TextStyle = .body,
         backgroundColor: UIColor,
-        cornerRadius: CGFloat = 10,
+        cornerRadius: CGFloat = 8.49,
         accessibility: Accessibility = .unsupported
     ) {
         self.textFont = textFont
