@@ -295,6 +295,8 @@ extension ChatViewModel {
             linkTapped(url)
         case .customCardOptionSelected(let option, let messageId):
             sendSelectedCustomCardOption(option, for: messageId)
+        case .gvaButtonTapped(let option):
+            gvaOptionAction(for: option)()
         }
     }
 }
@@ -824,6 +826,7 @@ extension ChatViewModel {
             option: HtmlMetadata.Option,
             messageId: MessageRenderer.Message.Identifier
         )
+        case gvaButtonTapped(GvaOption)
     }
 
     enum Action {

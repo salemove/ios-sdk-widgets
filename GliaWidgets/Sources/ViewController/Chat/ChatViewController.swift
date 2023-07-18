@@ -93,6 +93,10 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
             viewModel.event(.customCardOptionSelected(option: option, messageId: messageId))
         }
 
+        view.gvaButtonTapped = { option in
+            viewModel.event(.gvaButtonTapped(option))
+        }
+
         var viewModel = viewModel
 
         viewModel.action = { [weak self, weak view] action in

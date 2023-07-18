@@ -23,6 +23,7 @@ class ChatView: EngagementView {
     var chatScrolledToBottom: ((Bool) -> Void)?
     var linkTapped: ((URL) -> Void)?
     var selectCustomCardOption: ((HtmlMetadata.Option, MessageRenderer.Message.Identifier) -> Void)?
+    var gvaButtonTapped: ((GvaOption) -> Void)?
 
     private let style: ChatStyle
     private var messageEntryViewBottomConstraint: NSLayoutConstraint!
@@ -328,10 +329,7 @@ extension ChatView {
         case let .outgoingMessage(message):
             return outgoingMessageContent(message)
         case let .visitorMessage(message, status):
-            return visitorMessageContent(
-                message,
-                status: status
-            )
+            return visitorMessageContent(message, status: status)
         case let .operatorMessage(message, showsImage, imageUrl):
             return operatorMessageContent(
                 message,
@@ -362,11 +360,13 @@ extension ChatView {
             return unreadMessageDividerContent()
         case .systemMessage(let message):
             return systemMessageContent(message)
-        case let .gvaPersistentButton(_, button):
-            // Temporary, since UI hasn't been implemented
-            let textView = UITextView()
-            textView.text = "Persistent Button: \(button.content)"
-            return .gvaPersistentButton(textView)
+        case let .gvaPersistentButton(message, button, showImage, imageUrl):
+            return gvaPersistenButtonContent(
+                message,
+                button: button,
+                showImage: showImage,
+                imageUrl: imageUrl
+            )
         case let .gvaResponseText(message, text, showImage, imageUrl):
             return gvaResponseTextContent(
                 message,
@@ -866,5 +866,41 @@ extension ChatView {
         view.showsOperatorImage = showImage
         view.setOperatorImage(fromUrl: imageUrl, animated: false)
         return .gvaResponseText(view)
+    }
+
+    private func gvaPersistenButtonContent(
+        _ message: ChatMessage,
+        button: GvaButton,
+        showImage: Bool,
+        imageUrl: String?
+    ) -> ChatItemCell.Content {
+        let view = GvaPersistentButtonView(
+            with: style.choiceCard,
+            environment: .init(
+                data: environment.data,
+                uuid: environment.uuid,
+                gcd: environment.gcd,
+                imageViewCache: environment.imageViewCache,
+                uiScreen: environment.uiScreen
+            )
+        )
+
+        view.appendContent(
+            .gvaPersistentButton(button),
+            animated: false
+        )
+
+        view.appendContent(
+            .downloads(
+                message.downloads,
+                accessibility: .init(from: .operator(message.operator?.name ?? style.accessibility.operator))),
+            animated: false
+        )
+        view.onOptionTapped = { [weak self] in self?.gvaButtonTapped?($0) }
+        view.downloadTapped = { [weak self] in self?.downloadTapped?($0) }
+        view.linkTapped = { [weak self] in self?.linkTapped?($0) }
+        view.showsOperatorImage = showImage
+        view.setOperatorImage(fromUrl: imageUrl, animated: false)
+        return .gvaPersistentButton(view)
     }
 }
