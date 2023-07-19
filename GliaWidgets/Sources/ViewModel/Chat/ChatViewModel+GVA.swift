@@ -7,6 +7,17 @@ private extension String {
 }
 
 extension ChatViewModel {
+    func quickReplyOption(_ gvaOption: GvaOption) -> QuickReplyButtonCell.Props {
+        let action = Cmd { [weak self] in
+            self?.gvaOptionAction(for: gvaOption)()
+            self?.action?(.quickReplyPropsUpdated(.hidden))
+        }
+        return .init(
+            title: gvaOption.text,
+            action: action
+        )
+    }
+
     func gvaOptionAction(for option: GvaOption) -> Cmd {
         // If `option.destinationPdBroadcastEvent` is specified,
         // this is broadcast event button, which is not supported
@@ -21,6 +32,33 @@ extension ChatViewModel {
             return urlButtonAction(url: url, urlTarget: option.urlTarget)
         } else {
             return postbackButtonAction(for: option)
+        }
+    }
+
+    func postbackButtonAction(for option: GvaOption) -> Cmd {
+        .init { [weak self] in
+            guard let value = option.value else { return }
+            let singleChoiceOption = SingleChoiceOption(text: option.text, value: value)
+            self?.environment.sendSelectedOptionValue(singleChoiceOption) { [weak self] result in
+                guard let self = self else { return }
+                switch result {
+                case let .success(message):
+                    let chatMessage = ChatMessage(with: message)
+                    let item = ChatItem(
+                        with: chatMessage,
+                        isCustomCardSupported: self.isCustomCardSupported
+                    )
+                    if let item {
+                        self.appendItem(item, to: self.messagesSection, animated: true)
+                    }
+                    self.action?(.scrollToBottom(animated: true))
+                case .failure:
+                    self.showAlert(
+                        with: self.alertConfiguration.unexpectedError,
+                        dismissed: nil
+                    )
+                }
+            }
         }
     }
 }
@@ -53,31 +91,6 @@ private extension ChatViewModel {
                     openUrl(url)
                 } else {
                     return
-                }
-            }
-        }
-    }
-
-    func postbackButtonAction(for option: GvaOption) -> Cmd {
-        .init { [weak self] in
-            guard let value = option.value else { return }
-            let singleChoiceOption = SingleChoiceOption(text: option.text, value: value)
-            self?.environment.sendSelectedOptionValue(singleChoiceOption) { [weak self] result in
-                guard let self = self else { return }
-                switch result {
-                case let .success(message):
-                    let chatMessage = ChatMessage(with: message)
-                    if let item = ChatItem(
-                        with: chatMessage,
-                        isCustomCardSupported: self.isCustomCardSupported
-                    ) {
-                        self.appendItem(item, to: self.messagesSection, animated: true)
-                    }
-                case .failure:
-                    self.showAlert(
-                        with: self.alertConfiguration.unexpectedError,
-                        dismissed: nil
-                    )
                 }
             }
         }

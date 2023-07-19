@@ -5,10 +5,18 @@ public struct GliaVirtualAssistantStyle {
     /// Style of Persistent Button
     public var persistentButton: GvaPersistentButtonStyle
 
+    /// Style for Quick Reply buttons.
+    public var quickReplyButtonStyle: GvaQuickReplyButtonStyle
+
+    /// - Parameters:
+    ///   - persistentButton: Style of Persistent Button
+    ///   - quickReplyButtonStyle: Style for Quick Reply buttons.
     public init(
-        persistentButton: GvaPersistentButtonStyle
+        persistentButton: GvaPersistentButtonStyle,
+        quickReplyButtonStyle: GvaQuickReplyButtonStyle
     ) {
         self.persistentButton = persistentButton
+        self.quickReplyButtonStyle = quickReplyButtonStyle
     }
 
     mutating func apply(

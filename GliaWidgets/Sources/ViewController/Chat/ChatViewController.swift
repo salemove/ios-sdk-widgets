@@ -166,6 +166,8 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
                 view?.unreadMessageIndicatorView.setImage(fromUrl: imageUrl, animated: true)
             case let .fileUploadListPropsUpdated(fileUploadListProps):
                 view?.messageEntryView.uploadListView.props = fileUploadListProps
+            case let .quickReplyPropsUpdated(props):
+                view?.renderQuickReply(props: props)
             }
             self?.renderProps()
         }

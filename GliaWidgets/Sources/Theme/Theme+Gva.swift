@@ -24,6 +24,18 @@ extension Theme {
             )
         )
 
-        return .init(persistentButton: persistentButton)
+        let quickReplyButtonStyle: GvaQuickReplyButtonStyle = .init(
+            textFont: font.buttonLabel,
+            textColor: Color.primary,
+            backgroundColor: .fill(color: Color.baseLight),
+            cornerRadius: 10,
+            borderColor: Color.primary,
+            borderWidth: 1
+        )
+
+        return .init(
+            persistentButton: persistentButton,
+            quickReplyButtonStyle: quickReplyButtonStyle
+        )
     }
 }
