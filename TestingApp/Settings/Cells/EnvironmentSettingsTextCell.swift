@@ -93,10 +93,14 @@ final class EnvironmentSettingsTextCell: SettingsCell {
         contentView.addSubview(stackView)
         stackView.addArrangedSubview(segmentedControl)
         stackView.addArrangedSubview(customEnvironmentUrlTextField)
-        stackView.autoPinEdge(.left, to: .right, of: titleLabel, withOffset: 10)
-        stackView.autoPinEdgesToSuperviewEdges(
-            with: UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 20),
-            excludingEdge: .left
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
+        let insets = UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 20)
+        constraints += stackView.layoutInSuperview(edges: .vertical, insets: insets)
+        constraints += stackView.layoutInSuperview(edges: .trailing, insets: insets)
+        constraints += stackView.leadingAnchor.constraint(
+            equalTo: titleLabel.trailingAnchor,
+            constant: 10
         )
     }
 
