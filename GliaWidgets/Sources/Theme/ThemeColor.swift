@@ -26,6 +26,9 @@ public struct ThemeColor {
     /// Negative system color. By default used as a background color for "End Engagement" button, negative action button in alerts and as file download/upload error icon, progress bar and text color.
     public var systemNegative: UIColor
 
+    /// Light grey color. By default used as a background for gva persistent buttons and gallery cards.
+    public var lightGrey: UIColor
+
     ///
     /// - Parameters:
     ///   - primary: Primary color used by Widgets. By default used as a header background, visitor chat message background, positive alert button background and in many other places.
@@ -44,7 +47,8 @@ public struct ThemeColor {
         baseDark: UIColor? = nil,
         baseShade: UIColor? = nil,
         background: UIColor? = nil,
-        systemNegative: UIColor? = nil
+        systemNegative: UIColor? = nil,
+        lightGrey: UIColor? = nil
     ) {
         self.primary = primary ?? Color.primary
         self.secondary = secondary ?? Color.secondary
@@ -54,5 +58,6 @@ public struct ThemeColor {
         self.baseShade = baseShade ?? Color.baseShade
         self.background = background ?? Color.background
         self.systemNegative = systemNegative ?? Color.systemNegative
+        self.lightGrey = lightGrey ?? Color.lightGrey
     }
 }
