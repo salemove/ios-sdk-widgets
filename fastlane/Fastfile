@@ -12,6 +12,9 @@ platform :ios do
   desc "Creates a pull request in the repository with the required files to increment "\
     "the project version."
   lane :create_pr_for_increment_project_version do |options|
+    sh "git fetch"
+    sh "git checkout development"
+
     type = options[:type]
     new_version = increment_project_version(type: type)
     branch_name = "project-version-increment/#{new_version}"
@@ -75,6 +78,9 @@ platform :ios do
   desc "Creates a pull request in the repository with whatever changes have been made. "\
     "Used in tandem with Bitrise to update dependencies."
   lane :create_pr_for_dependencies_update do |options|
+    sh "git fetch"
+    sh "git checkout development"
+
     version = options[:version]
     checksum = options[:checksum]
     update_core_sdk_version(core_sdk_version: version, core_sdk_checksum: checksum)
