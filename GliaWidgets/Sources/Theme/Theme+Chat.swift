@@ -377,7 +377,8 @@ extension Theme {
             secureTranscriptTitle: Chat.SecureTranscript.headerTitle,
             secureTranscriptHeader: secureTranscriptHeader,
             unreadMessageDivider: unreadMessageDivider,
-            systemMessage: systemMessage
+            systemMessage: systemMessage,
+            gliaVirtualAssistant: gliaVirtualAssistantStyle
         )
     }
 
