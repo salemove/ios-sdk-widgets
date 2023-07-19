@@ -71,7 +71,7 @@ final class SettingsViewController: UIViewController {
         tableView.estimatedRowHeight = 50
 
         view.addSubview(tableView)
-        tableView.autoPinEdgesToSuperviewSafeArea()
+        tableView.layoutIn(view.safeAreaLayoutGuide).activate()
 
         createCells()
         updateConfigurationSection()
