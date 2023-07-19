@@ -1,7 +1,9 @@
 import UIKit
 
-class Button: UIButton {
+class Button: AdjustedTouchAreaButton {
     var tap: (() -> Void)?
+
+    var touchAreaInsets: TouchAreaInsets?
 
     override var isEnabled: Bool {
         didSet {
@@ -16,7 +18,7 @@ class Button: UIButton {
     init(kind: ButtonKind, tap: (() -> Void)? = nil) {
         self.kind = kind
         self.tap = tap
-        super.init(frame: .zero)
+        super.init(touchAreaInsets: kind.properties.touchAreaInsets)
         setup()
         layout()
     }
@@ -57,15 +59,5 @@ class Button: UIButton {
 
     @objc private func tapped() {
         tap?()
-    }
-
-    override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
-        guard let insets = kind.properties.touchAreaInsets else {
-            return super.point(inside: point, with: event)
-        }
-
-        let area = bounds.insetBy(dx: insets.dx, dy: insets.dy)
-
-        return area.contains(point)
     }
 }

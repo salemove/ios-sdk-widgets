@@ -577,9 +577,17 @@ extension ChatViewModel {
                 if isChatBottomReached {
                     action?(.scrollToBottom(animated: true))
                 }
+
+                if case .gvaQuickReply(_, let button, _, _) = item.kind {
+                    let props = button.options.map { quickReplyOption($0) }
+                    action?(.quickReplyPropsUpdated(.shown(props)))
+                }
             }
         default:
-            break
+            // All Quick Reply buttons of the same set should disappear
+            // after the user taps on one of the buttons or when
+            // there is a new message from the user or GVA
+            action?(.quickReplyPropsUpdated(.hidden))
         }
     }
 
@@ -861,6 +869,7 @@ extension ChatViewModel {
         case setOperatorTypingIndicatorIsHiddenTo(Bool, _ isChatScrolledToBottom: Bool)
         case setAttachmentButtonVisibility(MediaPickerButtonVisibility)
         case fileUploadListPropsUpdated(SecureConversations.FileUploadListView.Props)
+        case quickReplyPropsUpdated(QuickReplyView.Props)
     }
 
     enum DelegateEvent {

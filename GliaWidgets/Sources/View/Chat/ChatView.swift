@@ -25,6 +25,7 @@ class ChatView: EngagementView {
     var selectCustomCardOption: ((HtmlMetadata.Option, MessageRenderer.Message.Identifier) -> Void)?
     var gvaButtonTapped: ((GvaOption) -> Void)?
 
+    private lazy var quickReplyView = QuickReplyView(style: style.gliaVirtualAssistant.quickReplyButtonStyle)
     private let style: ChatStyle
     private var messageEntryViewBottomConstraint: NSLayoutConstraint!
     private var callBubble: BubbleView?
@@ -161,6 +162,10 @@ class ChatView: EngagementView {
             typingIndicatorView.heightAnchor.constraint(equalToConstant: 10)
         ])
 
+        addSubview(quickReplyView)
+        constraints += quickReplyView.layoutIn(safeAreaLayoutGuide, edges: .horizontal)
+        constraints += quickReplyView.topAnchor.constraint(equalTo: tableAndIndicatorStack.bottomAnchor)
+
         addSubview(messageEntryView)
         let messageEntryInsets = UIEdgeInsets(
             top: 0,
@@ -176,7 +181,7 @@ class ChatView: EngagementView {
         constraints += messageEntryViewBottomConstraint
 
         constraints += messageEntryView.layoutIn(safeAreaLayoutGuide, edges: .horizontal)
-        constraints += messageEntryView.topAnchor.constraint(equalTo: tableAndIndicatorStack.bottomAnchor)
+        constraints += messageEntryView.topAnchor.constraint(equalTo: quickReplyView.bottomAnchor)
 
         addSubview(unreadMessageIndicatorView)
         unreadMessageIndicatorView.translatesAutoresizingMaskIntoConstraints = false
@@ -310,7 +315,11 @@ extension ChatView {
         tableView.reloadData()
     }
 
-    func renderHeaderProps() {
+    func renderQuickReply(props: QuickReplyView.Props) {
+        quickReplyView.props = props
+    }
+
+    private func renderHeaderProps() {
         header.props = props.header
     }
 }
@@ -371,24 +380,28 @@ extension ChatView {
         case .systemMessage(let message):
             return systemMessageContent(message)
         case let .gvaPersistentButton(message, button, showImage, imageUrl):
-            return gvaPersistenButtonContent(
+            return gvaPersistentButtonContent(
                 message,
                 button: button,
                 showImage: showImage,
                 imageUrl: imageUrl
             )
         case let .gvaResponseText(message, text, showImage, imageUrl):
-            return gvaResponseTextContent(
+            let view = gvaResponseTextView(
                 message,
-                text: text,
+                text: text.content,
                 showImage: showImage,
                 imageUrl: imageUrl
             )
-        case let .gvaQuickReply(_, button):
-            // Temporary, since UI hasn't been implemented
-            let textView = UITextView()
-            textView.text = "Quick Reply: \(button.content)"
-            return .gvaQuickReply(textView)
+            return .gvaResponseText(view)
+        case let .gvaQuickReply(message, button, showImage, imageUrl):
+            let view = gvaResponseTextView(
+                message,
+                text: button.content,
+                showImage: showImage,
+                imageUrl: imageUrl
+            )
+            return .gvaQuickReply(view)
         case let .gvaGallery(_, gallery):
             // Temporary, since UI hasn't been implemented
             let textView = UITextView()
@@ -838,12 +851,12 @@ extension ChatView {
         return .unreadMessagesDivider(messageDivider)
     }
 
-    private func gvaResponseTextContent(
+    private func gvaResponseTextView(
         _ message: ChatMessage,
-        text: GvaResponseText,
+        text: NSAttributedString,
         showImage: Bool,
         imageUrl: String?
-    ) -> ChatItemCell.Content {
+    ) -> GvaResponseTextView {
         let view = GvaResponseTextView(
             with: style.operatorMessage,
             environment: .init(
@@ -856,7 +869,7 @@ extension ChatView {
         )
         view.appendContent(
             .attributedText(
-                text.content,
+                text,
                 accessibility: Self.operatorAccessibilityMessage(
                     for: message,
                     operator: style.accessibility.operator,
@@ -875,10 +888,10 @@ extension ChatView {
         view.linkTapped = { [weak self] in self?.linkTapped?($0) }
         view.showsOperatorImage = showImage
         view.setOperatorImage(fromUrl: imageUrl, animated: false)
-        return .gvaResponseText(view)
+        return view
     }
 
-    private func gvaPersistenButtonContent(
+    private func gvaPersistentButtonContent(
         _ message: ChatMessage,
         button: GvaButton,
         showImage: Bool,
