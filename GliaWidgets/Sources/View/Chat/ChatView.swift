@@ -885,7 +885,7 @@ extension ChatView {
         imageUrl: String?
     ) -> ChatItemCell.Content {
         let view = GvaPersistentButtonView(
-            with: style.choiceCard,
+            with: style,
             environment: .init(
                 data: environment.data,
                 uuid: environment.uuid,
