@@ -17,6 +17,18 @@ extension RemoteConfiguration {
         let typingIndicator: Color?
         let newMessagesDividerColor: Color?
         let newMessagesDividerText: Text?
+        let systemMessage: MessageBalloon?
+        let gva: Gva?
+    }
+
+    struct Gva: Codable {
+        let persistentButton: GvaPersistentButton?
+    }
+
+    struct GvaPersistentButton: Codable {
+        let title: Text?
+        let background: Layer?
+        let button: Button?
     }
 
     struct Header: Codable {
