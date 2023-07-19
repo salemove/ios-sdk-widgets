@@ -523,8 +523,11 @@
 		C0175A172A5D30D7001FACDE /* GvaResponseTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0175A162A5D30D7001FACDE /* GvaResponseTextView.swift */; };
 		C0175A192A5D3C56001FACDE /* ChatView.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0175A182A5D3C56001FACDE /* ChatView.Accessibility.swift */; };
 		C0175A1D2A5D4226001FACDE /* ChatView.TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0175A1C2A5D4226001FACDE /* ChatView.TableView.swift */; };
-		C0175A232A65614E001FACDE /* GVAPersistentButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0175A222A65614E001FACDE /* GVAPersistentButtonView.swift */; };
+		C0175A232A65614E001FACDE /* GvaPersistentButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0175A222A65614E001FACDE /* GvaPersistentButtonView.swift */; };
 		C0175A252A66A431001FACDE /* GvaPersistentButtonOptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0175A242A66A431001FACDE /* GvaPersistentButtonOptionView.swift */; };
+		C0175A282A67D470001FACDE /* GvaPersistentButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0175A272A67D470001FACDE /* GvaPersistentButtonStyle.swift */; };
+		C0175A2A2A67D499001FACDE /* GvaStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0175A292A67D499001FACDE /* GvaStyle.swift */; };
+		C0175A2C2A67E2E9001FACDE /* Theme+Gva.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0175A2B2A67E2E9001FACDE /* Theme+Gva.swift */; };
 		C03A8047292BA76D00DDECA6 /* ChatViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03A8046292BA76D00DDECA6 /* ChatViewControllerTests.swift */; };
 		C03A8049292BC8DB00DDECA6 /* CallViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03A8048292BC8DB00DDECA6 /* CallViewControllerTests.swift */; };
 		C05AB01C295F416700AA381F /* VisitorCodeCloseButtonProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05AB01B295F416700AA381F /* VisitorCodeCloseButtonProperties.swift */; };
@@ -1190,8 +1193,11 @@
 		C0175A162A5D30D7001FACDE /* GvaResponseTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GvaResponseTextView.swift; sourceTree = "<group>"; };
 		C0175A182A5D3C56001FACDE /* ChatView.Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.Accessibility.swift; sourceTree = "<group>"; };
 		C0175A1C2A5D4226001FACDE /* ChatView.TableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.TableView.swift; sourceTree = "<group>"; };
-		C0175A222A65614E001FACDE /* GVAPersistentButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GVAPersistentButtonView.swift; sourceTree = "<group>"; };
+		C0175A222A65614E001FACDE /* GvaPersistentButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GvaPersistentButtonView.swift; sourceTree = "<group>"; };
 		C0175A242A66A431001FACDE /* GvaPersistentButtonOptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GvaPersistentButtonOptionView.swift; sourceTree = "<group>"; };
+		C0175A272A67D470001FACDE /* GvaPersistentButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GvaPersistentButtonStyle.swift; sourceTree = "<group>"; };
+		C0175A292A67D499001FACDE /* GvaStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GvaStyle.swift; sourceTree = "<group>"; };
+		C0175A2B2A67E2E9001FACDE /* Theme+Gva.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Theme+Gva.swift"; sourceTree = "<group>"; };
 		C03A8046292BA76D00DDECA6 /* ChatViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewControllerTests.swift; sourceTree = "<group>"; };
 		C03A8048292BC8DB00DDECA6 /* CallViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallViewControllerTests.swift; sourceTree = "<group>"; };
 		C05AB016295DA9FC00AA381F /* AlertViewController+VisitorCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlertViewController+VisitorCode.swift"; sourceTree = "<group>"; };
@@ -1883,6 +1889,7 @@
 				C0857DEC28D4831E008D171D /* Theme+Text.swift */,
 				C06A7587296ECD75006B69A2 /* Theme+VisitorCode.swift */,
 				84265DEF2983E62100D65842 /* Theme+ScreenSharing.swift */,
+				C0175A2B2A67E2E9001FACDE /* Theme+Gva.swift */,
 			);
 			path = Theme;
 			sourceTree = "<group>";
@@ -1976,6 +1983,7 @@
 		1A60AFD12566990F00E53F53 /* Chat */ = {
 			isa = PBXGroup;
 			children = (
+				C0175A262A67D431001FACDE /* GVA */,
 				1AC7A7822583B65B00567FF8 /* Cells */,
 				9AB3402627FCDD92006E0FE2 /* ChatStyle.Accessibility.swift */,
 				1A60AFE725669C5000E53F53 /* ChatStyle.swift */,
@@ -2139,9 +2147,6 @@
 				845E2F6F283CF94100C04D56 /* VisitorChatMessageStyle.Accessibility.swift */,
 				3197F7AE29E95527008EE9F7 /* SystemMessageView.swift */,
 				3197F7B029E958F4008EE9F7 /* SystemMessageStyle.swift */,
-				C0175A162A5D30D7001FACDE /* GvaResponseTextView.swift */,
-				C0175A222A65614E001FACDE /* GVAPersistentButtonView.swift */,
-				C0175A242A66A431001FACDE /* GvaPersistentButtonOptionView.swift */,
 			);
 			path = Message;
 			sourceTree = "<group>";
@@ -3186,6 +3191,18 @@
 			path = SecureConversations;
 			sourceTree = "<group>";
 		};
+		C0175A262A67D431001FACDE /* GVA */ = {
+			isa = PBXGroup;
+			children = (
+				C0175A162A5D30D7001FACDE /* GvaResponseTextView.swift */,
+				C0175A222A65614E001FACDE /* GvaPersistentButtonView.swift */,
+				C0175A242A66A431001FACDE /* GvaPersistentButtonOptionView.swift */,
+				C0175A272A67D470001FACDE /* GvaPersistentButtonStyle.swift */,
+				C0175A292A67D499001FACDE /* GvaStyle.swift */,
+			);
+			path = GVA;
+			sourceTree = "<group>";
+		};
 		C05E3EDC29C99DEE0013BC81 /* ProximityManager */ = {
 			isa = PBXGroup;
 			children = (
@@ -4076,6 +4093,7 @@
 				3197F7B629F7C2E5008EE9F7 /* SecureConversations.SecureChatModel.swift in Sources */,
 				1A0C9A7125C16F4A00815406 /* Theme+Alert.swift in Sources */,
 				1A38A8AC258B65D00089DE7B /* ChatMessageStyle.swift in Sources */,
+				C0175A282A67D470001FACDE /* GvaPersistentButtonStyle.swift in Sources */,
 				C49A29F22614A85E00819269 /* ChoiceCard.swift in Sources */,
 				1A0C9A6D25C16EED00815406 /* Theme+Call.swift in Sources */,
 				1A60AFAF256680EF00E53F53 /* L10n.swift in Sources */,
@@ -4100,6 +4118,7 @@
 				845E2F7F283F99F200C04D56 /* Theme.Survey.ValidationError.swift in Sources */,
 				1A5F81402588B7BD00A605DA /* ChatMessageEntryStyle.swift in Sources */,
 				C0D2F03D29914BB300803B47 /* VideoCallViewModel.DelegateEvent.swift in Sources */,
+				C0175A2A2A67D499001FACDE /* GvaStyle.swift in Sources */,
 				1A8B61D625C974D0000D780E /* ChatCallUpgradeStyle.swift in Sources */,
 				3100D92D296E946600DEC9CE /* SecureConversations.ConfirmationViewModel.swift in Sources */,
 				3100EEFB293F363100D57F71 /* SecureConversations.WelcomeView.swift in Sources */,
@@ -4170,7 +4189,7 @@
 				1AC7A7552582594200567FF8 /* Configuration.swift in Sources */,
 				75940988298D38C2008B173A /* VisitorCodeCoordinator.swift in Sources */,
 				1A4674B225E907120078FA1C /* AttachmentSourceItemStyle.swift in Sources */,
-				C0175A232A65614E001FACDE /* GVAPersistentButtonView.swift in Sources */,
+				C0175A232A65614E001FACDE /* GvaPersistentButtonView.swift in Sources */,
 				315BAB1A29ADFEBC00FF284B /* ConfirmationStyle+TitleStyle.swift in Sources */,
 				1A0C143625B85C3300B00695 /* CallView.swift in Sources */,
 				1AA738A72578DD0300E1120F /* ConnectStatusStyle.swift in Sources */,
@@ -4279,6 +4298,7 @@
 				EB2CBB1527D8DB95004F178E /* OnHoldOverlayVisualEffectView.swift in Sources */,
 				AFEF5C7129929601005C3D8D /* SecureConversations.FilePreviewView.swift in Sources */,
 				1A4AD3AF256D283700468BFB /* ChatMessageView.swift in Sources */,
+				C0175A2C2A67E2E9001FACDE /* Theme+Gva.swift in Sources */,
 				1A0EDF6D25E7AC100076D1AD /* UIImage+Extensions.swift in Sources */,
 				6E60DD5827146DDB001422EF /* SingleActionAlertConfiguration.swift in Sources */,
 				C49A29E32614A29700819269 /* FilePreviewStyle.swift in Sources */,
