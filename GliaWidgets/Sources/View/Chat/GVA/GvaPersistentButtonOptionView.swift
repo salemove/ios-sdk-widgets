@@ -7,8 +7,13 @@ class GvaPersistentButtonOptionView: BaseView {
     private let textLabel = UILabel()
     private let choiceButton = UIButton()
     private let viewInsets = UIEdgeInsets(top: 10, left: 12, bottom: 10, right: 12)
+    private let style: GvaPersistentButtonStyle.ButtonStyle
 
-    init(text: String?) {
+    init(
+        style: GvaPersistentButtonStyle.ButtonStyle,
+        text: String?
+    ) {
+        self.style = style
         self.text = text
         super.init()
     }
@@ -20,13 +25,13 @@ class GvaPersistentButtonOptionView: BaseView {
 
     override func setup() {
         super.setup()
-        backgroundColor = .clear
-        // TODO: Styling will be done in a subsequent PR
-        layer.backgroundColor = UIColor.white.cgColor
-        layer.cornerRadius = 4
+        layer.cornerRadius = style.cornerRadius
+        layer.borderWidth = style.borderWidth
+        layer.borderColor = style.borderColor.cgColor
+
         textLabel.text = text
-        textLabel.font = .font(weight: .regular, size: 12)
-        textLabel.textColor = UIColor.black
+        textLabel.font = style.textFont
+        textLabel.textColor = style.textColor
         textLabel.textAlignment = .center
         textLabel.numberOfLines = 0
         textLabel.isAccessibilityElement = false
@@ -46,6 +51,18 @@ class GvaPersistentButtonOptionView: BaseView {
         addSubview(choiceButton)
         choiceButton.translatesAutoresizingMaskIntoConstraints = false
         constraints += choiceButton.layoutInSuperview()
+    }
+
+    override func layoutSubviews() {
+        switch style.backgroundColor {
+        case .fill(let color):
+            backgroundColor = color
+        case .gradient(let colors):
+            makeGradientBackground(
+                colors: colors,
+                cornerRadius: style.cornerRadius
+            )
+        }
     }
 
     private func applyStyle(_ style: ChoiceCardOptionStateStyle) {

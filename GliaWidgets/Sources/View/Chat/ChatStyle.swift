@@ -47,7 +47,11 @@ public class ChatStyle: EngagementStyle {
     /// Style for divider of unread messages in secure messaging transcript.
     public var unreadMessageDivider: UnreadMessageDividerStyle
 
+    /// Style of the system message
     public var systemMessage: SystemMessageStyle
+
+    /// Style of the Glia Virtual Assistant
+    public var gliaVirtualAssistant: GliaVirtualAssistantStyle
 
     ///
     /// - Parameters:
@@ -90,7 +94,8 @@ public class ChatStyle: EngagementStyle {
         secureTranscriptTitle: String,
         secureTranscriptHeader: HeaderStyle,
         unreadMessageDivider: UnreadMessageDividerStyle,
-        systemMessage: SystemMessageStyle
+        systemMessage: SystemMessageStyle,
+        gliaVirtualAssistant: GliaVirtualAssistantStyle
     ) {
         self.title = title
         self.visitorMessage = visitorMessage
@@ -108,6 +113,7 @@ public class ChatStyle: EngagementStyle {
         self.secureTranscriptHeader = secureTranscriptHeader
         self.unreadMessageDivider = unreadMessageDivider
         self.systemMessage = systemMessage
+        self.gliaVirtualAssistant = gliaVirtualAssistant
 
         super.init(
             header: header,
@@ -172,6 +178,16 @@ public class ChatStyle: EngagementStyle {
             text: configuration?.newMessagesDividerText,
             assetBuilder: assetsBuilder
         )
+        systemMessage.apply(
+            configuration: configuration?.systemMessage,
+            assetsBuilder: assetsBuilder
+        )
+
+        gliaVirtualAssistant.apply(
+            configuration: configuration?.gva,
+            assetBuilder: assetsBuilder
+        )
+
         configuration?.background?.color.unwrap {
             switch $0.type {
             case .fill:
