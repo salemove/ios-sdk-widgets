@@ -222,6 +222,11 @@
 		754CC61327E27BE2005676E9 /* Survey.SingleChoiceQuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AF8D0A27DD1DD3009EEE2C /* Survey.SingleChoiceQuestionView.swift */; };
 		754CC61527E27C42005676E9 /* Survey.Checkbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754CC61427E27C42005676E9 /* Survey.Checkbox.swift */; };
 		754CC61627E2816F005676E9 /* Survey.InputQuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AF8D0C27DD464A009EEE2C /* Survey.InputQuestionView.swift */; };
+		7552DFA42A683A2C0093519B /* Layoutable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B7BD7F2A39D5A70060794D /* Layoutable.swift */; };
+		7552DFA52A683A2C0093519B /* Makeable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75940955298D386F008B173A /* Makeable.swift */; };
+		7552DFA62A683A2C0093519B /* Layout+UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B7BD7D2A39D5430060794D /* Layout+UIView.swift */; };
+		7552DFA72A683A2C0093519B /* NSLayoutConstraint+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75940957298D386F008B173A /* NSLayoutConstraint+Extensions.swift */; };
+		7552DFA82A683A2C0093519B /* UIStackView.Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75940956298D386F008B173A /* UIStackView.Extensions.swift */; };
 		755D186529A6A4E20009F5E8 /* WelcomeStyle+TitleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755D186429A6A4E20009F5E8 /* WelcomeStyle+TitleStyle.swift */; };
 		755D186729A6A4FA0009F5E8 /* WelcomeStyle+SubtitleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755D186629A6A4FA0009F5E8 /* WelcomeStyle+SubtitleStyle.swift */; };
 		755D186929A6A5270009F5E8 /* WelcomeStyle+CheckMessagesButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755D186829A6A5270009F5E8 /* WelcomeStyle+CheckMessagesButtonStyle.swift */; };
@@ -4341,19 +4346,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7552DFA62A683A2C0093519B /* Layout+UIView.swift in Sources */,
 				1A4AD3D9256FE9D300468BFB /* SettingsTextCell.swift in Sources */,
 				1A4AD3DC256FF67200468BFB /* SettingsFontCell.swift in Sources */,
 				AF35DFEF2A507B4C0038BCA7 /* VisitorInfoViewController.HeaderView.swift in Sources */,
+				7552DFA52A683A2C0093519B /* Makeable.swift in Sources */,
 				1A205D7F25655CEC003AA3CD /* ViewController.swift in Sources */,
 				AFD3C52C2A472B7500BC37A9 /* VisitorInfoModel.swift in Sources */,
 				1A4AD3D6256FE7F800468BFB /* UIColor+Extensions.swift in Sources */,
 				AF11F30728BE6F0C002ACEB4 /* UIAlertController+Extensions.swift in Sources */,
+				7552DFA82A683A2C0093519B /* UIStackView.Extensions.swift in Sources */,
 				AF3BD1DF2A42026D00A7713E /* Command.swift in Sources */,
 				754313CD2870B1C400C9C1C6 /* UserDefaultsStored.swift in Sources */,
 				1A205D7B25655CEC003AA3CD /* AppDelegate.swift in Sources */,
 				AF35DFF32A507D3E0038BCA7 /* UIView+Extensions.swift in Sources */,
 				C0D2F060299F93EC00803B47 /* PlaybookViewController.swift in Sources */,
 				754313CB2870A65400C9C1C6 /* SettingsViewController.Props.swift in Sources */,
+				7552DFA42A683A2C0093519B /* Layoutable.swift in Sources */,
 				7543141828806AEB00C9C1C6 /* EnvironmentSettingsTextCell.swift in Sources */,
 				84265E6E29914DDA00D65842 /* ViewController+CallVisualizer.swift in Sources */,
 				754313CF2870E64600C9C1C6 /* Configuration.Extensions.swift in Sources */,
@@ -4361,6 +4370,7 @@
 				AF3BD1DD2A41D09100A7713E /* VisitorInfoViewController.swift in Sources */,
 				1A4AD3D1256E92F300468BFB /* SettingsColorCell.swift in Sources */,
 				1A4AD3CE256E8F5500468BFB /* SettingsCell.swift in Sources */,
+				7552DFA72A683A2C0093519B /* NSLayoutConstraint+Extensions.swift in Sources */,
 				6B2BFCE2274297F100B68506 /* SettingsSwitchCell.swift in Sources */,
 				1A60AFF52567CE1300E53F53 /* SettingsViewController.swift in Sources */,
 			);
