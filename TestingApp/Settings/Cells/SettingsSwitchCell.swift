@@ -11,9 +11,15 @@ final class SettingsSwitchCell: SettingsCell {
 
     private func layout() {
         contentView.addSubview(switcher)
-        switcher.autoPinEdge(.left, to: .right, of: titleLabel, withOffset: 10, relation: .greaterThanOrEqual)
-        switcher.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 20),
-                                              excludingEdge: .left)
+        switcher.translatesAutoresizingMaskIntoConstraints = false
+        var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
+        let insets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 20)
+        constraints += switcher.layoutInSuperview(edges: .vertical, insets: insets)
+        constraints += switcher.layoutInSuperview(edges: .trailing, insets: insets)
+        constraints += switcher.leadingAnchor.constraint(
+            equalTo: titleLabel.trailingAnchor,
+            constant: 10
+        )
     }
 }
 
@@ -28,8 +34,14 @@ final class SettingsSegmentedCell: SettingsCell {
 
     private func layout() {
         contentView.addSubview(segmentedControl)
-        segmentedControl.autoPinEdge(.left, to: .right, of: titleLabel, withOffset: 10, relation: .greaterThanOrEqual)
-        segmentedControl.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 20),
-                                              excludingEdge: .left)
+        segmentedControl.translatesAutoresizingMaskIntoConstraints = false
+        var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
+        let insets = UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 20)
+        constraints += segmentedControl.layoutInSuperview(edges: .vertical, insets: insets)
+        constraints += segmentedControl.layoutInSuperview(edges: .trailing, insets: insets)
+        constraints += segmentedControl.leadingAnchor.constraint(
+            equalTo: titleLabel.trailingAnchor,
+            constant: 10
+        )
     }
 }

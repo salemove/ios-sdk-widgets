@@ -1,7 +1,6 @@
-import UIKit
-import PureLayout
-import GliaWidgets
 import GliaCoreSDK
+import GliaWidgets
+import UIKit
 
 class ViewController: UIViewController {
     typealias Authentication = GliaWidgets.Glia.Authentication
@@ -174,12 +173,6 @@ extension ViewController {
     }
 
     func presentGlia(_ engagementKind: EngagementKind) throws {
-        let visitorContext: GliaCoreSDK.VisitorContext? = configuration.visitorContext
-            .map(\.assetId)
-            .map(GliaCoreSDK.VisitorContext.AssetId.init(rawValue:))
-            .map(GliaCoreSDK.VisitorContext.ContextType.assetId)
-            .map(GliaCoreSDK.VisitorContext.init)
-
         Glia.sharedInstance.onEvent = { event in
             switch event {
             case .started:
@@ -431,7 +424,6 @@ extension ViewController {
                     self?.alert(message: error.reason)
                 }
             }
-
         }
 
         let isEmptyJwt = { enteredJwt.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }

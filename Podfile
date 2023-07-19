@@ -13,7 +13,6 @@ def swiftlint
 end
 
 target 'TestingApp' do
-    pod 'PureLayout', '~> 3.1'
 end
 
 target 'GliaWidgets' do
