@@ -11,7 +11,6 @@ PODS:
     - GliaCoreDependency (= 1.2)
     - TwilioVoice (= 6.3.1)
     - WebRTC-lib (= 96.0.0)
-  - PureLayout (3.1.9)
   - SnapshotTesting (1.9.0)
   - SwiftLint (0.52.0)
   - TwilioVoice (6.3.1)
@@ -20,7 +19,6 @@ PODS:
 DEPENDENCIES:
   - AccessibilitySnapshot (= 0.5.0)
   - GliaCoreSDK
-  - PureLayout (~> 3.1)
   - SwiftLint
 
 SPEC REPOS:
@@ -28,7 +26,6 @@ SPEC REPOS:
     - AccessibilitySnapshot
     - GliaCoreDependency
     - GliaCoreSDK
-    - PureLayout
     - SnapshotTesting
     - SwiftLint
     - TwilioVoice
@@ -38,12 +35,11 @@ SPEC CHECKSUMS:
   AccessibilitySnapshot: a91e4a69f870188b51f43863d9fc7269d07cdd93
   GliaCoreDependency: 87b3897f0d85321ecf77f1faa829211ad527e54d
   GliaCoreSDK: d0ea050f43cd67f467ab3362c72266accfd11373
-  PureLayout: 5fb5e5429519627d60d079ccb1eaa7265ce7cf88
   SnapshotTesting: 6141c48b6aa76ead61431ca665c14ab9a066c53b
   SwiftLint: 13280e21cdda6786ad908dc6e416afe5acd1fcb7
   TwilioVoice: 098a959181d4607921f5822d3c9f13043ea4075b
   WebRTC-lib: 508fe02efa0c1a3a8867082a77d24c9be5d29aeb
 
-PODFILE CHECKSUM: 2cff546449bcbd614bd806824f1026486bf6619d
+PODFILE CHECKSUM: 7d5082d207510e96493a79de2447e3c505ebb330
 
 COCOAPODS: 1.12.1

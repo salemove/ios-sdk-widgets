@@ -25,7 +25,16 @@ class SettingsCell: UITableViewCell {
 
     private func layout() {
         contentView.addSubview(titleLabel)
-        titleLabel.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 0),
-                                                excludingEdge: .right)
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
+        let insets = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 0)
+        constraints += titleLabel.layoutInSuperview(
+            edges: .vertical,
+            insets: insets
+        )
+        constraints += titleLabel.layoutInSuperview(
+            edges: .leading,
+            insets: insets
+        )
     }
 }
