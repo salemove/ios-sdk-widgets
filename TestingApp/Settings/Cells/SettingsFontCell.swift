@@ -43,10 +43,16 @@ class SettingsFontCell: SettingsCell {
 
     private func layout() {
         contentView.addSubview(pickerView)
-        pickerView.autoSetDimensions(to: CGSize(width: 230, height: 100))
-        pickerView.autoPinEdge(.left, to: .right, of: titleLabel, withOffset: 10)
-        pickerView.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 20),
-                                               excludingEdge: .left)
+        pickerView.translatesAutoresizingMaskIntoConstraints = false
+        var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
+        constraints += pickerView.match(value: 240)
+        constraints += pickerView.leadingAnchor.constraint(
+            equalTo: titleLabel.trailingAnchor,
+            constant: 10
+        )
+        let insets = UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 20)
+        constraints += pickerView.layoutInSuperview(edges: .vertical, insets: insets)
+        constraints += pickerView.layoutInSuperview(edges: .trailing, insets: insets)
     }
 
     private func selectDefaultFont() {
