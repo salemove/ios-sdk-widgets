@@ -1,7 +1,7 @@
 import UIKit
 
 extension CallVisualizer {
-    final class VideoCallCoodinator: FlowCoordinator {
+    final class VideoCallCoordinator: FlowCoordinator {
         typealias ViewController = UIViewController
 
         var delegate: ((DelegateEvent) -> Void)?

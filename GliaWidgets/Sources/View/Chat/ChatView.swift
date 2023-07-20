@@ -310,8 +310,6 @@ extension ChatView {
         )
 
         tapGesture.cancelsTouchesInView = false
-
-        tableView.addGestureRecognizer(tapGesture)
     }
 
     @objc
