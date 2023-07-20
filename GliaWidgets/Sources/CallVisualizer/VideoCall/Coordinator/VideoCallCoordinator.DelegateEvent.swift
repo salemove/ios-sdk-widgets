@@ -1,6 +1,6 @@
 import Foundation
 
-extension CallVisualizer.VideoCallCoodinator {
+extension CallVisualizer.VideoCallCoordinator {
     enum DelegateEvent {
         case close
     }

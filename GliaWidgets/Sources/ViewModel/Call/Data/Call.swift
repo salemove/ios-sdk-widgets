@@ -234,27 +234,30 @@ class Call {
     private func updateMediaStream<Streamable>(_ mediaStream: ObservableValue<MediaStream<Streamable>>,
                                                with stream: Streamable,
                                                isRemote: Bool) {
+        let mediaStreamValue: MediaStream<Streamable>
+        defer {
+            mediaStream.value = mediaStreamValue
+            updateStarted()
+        }
         if isRemote {
             switch mediaStream.value {
             case .none, .remote:
-                mediaStream.value = .remote(stream)
+                mediaStreamValue = .remote(stream)
             case .local(let local):
-                mediaStream.value = .twoWay(local: local, remote: stream)
+                mediaStreamValue = .twoWay(local: local, remote: stream)
             case .twoWay(local: let local, remote: _):
-                mediaStream.value = .twoWay(local: local, remote: stream)
+                mediaStreamValue = .twoWay(local: local, remote: stream)
             }
         } else {
             switch mediaStream.value {
             case .none, .local:
-                mediaStream.value = .local(stream)
+                mediaStreamValue = .local(stream)
             case .remote(let remote):
-                mediaStream.value = .twoWay(local: stream, remote: remote)
+                mediaStreamValue = .twoWay(local: stream, remote: remote)
             case .twoWay(local: _, remote: let remote):
-                mediaStream.value = .twoWay(local: stream, remote: remote)
+                mediaStreamValue = .twoWay(local: stream, remote: remote)
             }
         }
-
-        updateStarted()
     }
 
     private func updateStarted() {
