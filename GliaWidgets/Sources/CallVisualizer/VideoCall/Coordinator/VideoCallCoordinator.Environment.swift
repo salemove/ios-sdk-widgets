@@ -1,6 +1,6 @@
 import Foundation
 
-extension CallVisualizer.VideoCallCoodinator {
+extension CallVisualizer.VideoCallCoordinator {
     struct Environment {
         var data: FoundationBased.Data
         var uuid: () -> UUID

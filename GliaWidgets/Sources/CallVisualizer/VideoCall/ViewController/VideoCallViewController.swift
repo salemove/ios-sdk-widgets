@@ -1,6 +1,6 @@
 import UIKit
 
-public extension CallVisualizer {
+extension CallVisualizer {
     final class VideoCallViewController: UIViewController {
         private let videoCallView: VideoCallView
         private let environment: Environment
@@ -36,11 +36,11 @@ public extension CallVisualizer {
 
         // MARK: - Override
 
-        public override func loadView() {
+        override func loadView() {
             view = videoCallView
         }
 
-        public override func viewDidLoad() {
+        override func viewDidLoad() {
             super.viewDidLoad()
             proximityManager = .init(
                 view: self.view,

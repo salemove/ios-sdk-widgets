@@ -1,6 +1,6 @@
 import UIKit
 
-public extension CallVisualizer {
+extension CallVisualizer {
     final class ScreenSharingViewController: UIViewController {
         private lazy var screenSharingView = ScreenSharingView(props: props.screenSharingViewProps)
         private var props: Props
@@ -18,11 +18,11 @@ public extension CallVisualizer {
 
         // MARK: - View lifecycle
 
-        public override func loadView() {
+        override func loadView() {
             view = screenSharingView
         }
 
-        public override func viewDidLoad() {
+        override func viewDidLoad() {
             super.viewDidLoad()
             renderProps()
         }
