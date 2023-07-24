@@ -167,3 +167,25 @@ extension Snapshotting where Value == UIViewController, Format == UIImage {
             }
     }
 }
+
+extension Snapshotting where Value == UIViewController, Format == UIImage {
+    /// Strategy for making image references with largest dynamic font type for UIViewController.
+    static var extra3LargeFontStrategy: Self {
+        Self.image(
+            traits: UITraitCollection(
+                preferredContentSizeCategory: .accessibilityExtraExtraExtraLarge
+            )
+        )
+    }
+}
+
+extension Snapshotting where Value == UIView, Format == UIImage {
+    /// Strategy for making image references with largest dynamic font type for UIView.
+    static var extra3LargeFontStrategy: Self {
+        Self.image(
+            traits: UITraitCollection(
+                preferredContentSizeCategory: .accessibilityExtraExtraExtraLarge
+            )
+        )
+    }
+}
