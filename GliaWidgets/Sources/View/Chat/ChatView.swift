@@ -25,7 +25,9 @@ class ChatView: EngagementView {
     var selectCustomCardOption: ((HtmlMetadata.Option, MessageRenderer.Message.Identifier) -> Void)?
     var gvaButtonTapped: ((GvaOption) -> Void)?
 
-    private lazy var quickReplyView = QuickReplyView(style: style.gliaVirtualAssistant.quickReplyButtonStyle)
+    private lazy var quickReplyView = QuickReplyView(
+        style: style.gliaVirtualAssistant.quickReplyButton
+    )
     private let style: ChatStyle
     private var messageEntryViewBottomConstraint: NSLayoutConstraint!
     private var callBubble: BubbleView?
