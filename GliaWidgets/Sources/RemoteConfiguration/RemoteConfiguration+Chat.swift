@@ -23,6 +23,7 @@ extension RemoteConfiguration {
 
     struct Gva: Codable {
         let persistentButton: GvaPersistentButton?
+        let quickReplyButton: Button?
     }
 
     struct GvaPersistentButton: Codable {
