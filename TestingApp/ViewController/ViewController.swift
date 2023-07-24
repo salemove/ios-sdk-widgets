@@ -320,7 +320,7 @@ extension ViewController {
 
     func retrieveRemoteConfiguration(_ fileName: String) -> RemoteConfiguration? {
         guard
-            let url = Bundle.main.url(forResource: fileName, withExtension: "json"),
+            let url = Bundle.main.url(forResource: fileName, withExtension: "json", subdirectory: "UnifiedUI"),
             let jsonData = try? Data(contentsOf: url),
             let config = try? JSONDecoder().decode(RemoteConfiguration.self, from: .init(jsonData))
         else {
