@@ -468,6 +468,17 @@
 		9AE9E4B527E0EE2E00BFE239 /* CallViewControllerVoiceOverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE9E4B427E0EE2E00BFE239 /* CallViewControllerVoiceOverTests.swift */; };
 		9AE9E4B727E1E30500BFE239 /* MockHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE9E4B627E1E30500BFE239 /* MockHelpers.swift */; };
 		AD57658B6D7BB11749113284 /* Pods_SnapshotTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9131A19E516E338E979C0C43 /* Pods_SnapshotTests.framework */; };
+		AF03A7AF2A6E7DC40081887D /* AlertViewControllerDynamicTypeFontTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF03A7AE2A6E7DC40081887D /* AlertViewControllerDynamicTypeFontTests.swift */; };
+		AF03A7B12A6E96870081887D /* BubbleViewDynamicTypeFontTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF03A7B02A6E96870081887D /* BubbleViewDynamicTypeFontTests.swift */; };
+		AF03A7B32A6EA5490081887D /* CallViewControllerDynamicTypeFontTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF03A7B22A6EA5490081887D /* CallViewControllerDynamicTypeFontTests.swift */; };
+		AF03A7B52A6EAA950081887D /* ChatCallUpgradeViewDynamicTypeFontTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF03A7B42A6EAA950081887D /* ChatCallUpgradeViewDynamicTypeFontTests.swift */; };
+		AF03A7B72A6EAFBA0081887D /* ChatViewControllerDynamicTypeFontTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF03A7B62A6EAFBA0081887D /* ChatViewControllerDynamicTypeFontTests.swift */; };
+		AF03A7B92A6ED1240081887D /* ScreenShareViewControllerDynamicTypeFontTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF03A7B82A6ED1240081887D /* ScreenShareViewControllerDynamicTypeFontTests.swift */; };
+		AF03A7BB2A6ED73E0081887D /* SecureConversationsWelcomeScreenDynamicTypeFontTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF03A7BA2A6ED73E0081887D /* SecureConversationsWelcomeScreenDynamicTypeFontTests.swift */; };
+		AF03A7BD2A6EDACF0081887D /* SecureConversationsConfirmationScreenDynamicTypeFontTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF03A7BC2A6EDACF0081887D /* SecureConversationsConfirmationScreenDynamicTypeFontTests.swift */; };
+		AF03A7BF2A6EDCBF0081887D /* SurveyViewControllerDynamicTypeFontTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF03A7BE2A6EDCBF0081887D /* SurveyViewControllerDynamicTypeFontTests.swift */; };
+		AF03A7C12A6EDE190081887D /* VideoCallViewControllerDynamicTypeFontTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF03A7C02A6EDE190081887D /* VideoCallViewControllerDynamicTypeFontTests.swift */; };
+		AF03A7C32A6EDF490081887D /* VisitorCodeViewControllerDynamicTypeFontTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF03A7C22A6EDF490081887D /* VisitorCodeViewControllerDynamicTypeFontTests.swift */; };
 		AF0D26D629705FDF00816CCB /* SecureConversations.ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0D26D529705FDE00816CCB /* SecureConversations.ActivityIndicator.swift */; };
 		AF0D26D82971912A00816CCB /* SecureConversations.SendMessageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0D26D72971912A00816CCB /* SecureConversations.SendMessageButton.swift */; };
 		AF10ED8B29B7A4C000E85309 /* ChatViewModel+ChoiceCards.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF10ED8A29B7A4C000E85309 /* ChatViewModel+ChoiceCards.swift */; };
@@ -1144,6 +1155,17 @@
 		9AE9E4B427E0EE2E00BFE239 /* CallViewControllerVoiceOverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallViewControllerVoiceOverTests.swift; sourceTree = "<group>"; };
 		9AE9E4B627E1E30500BFE239 /* MockHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockHelpers.swift; sourceTree = "<group>"; };
 		AB58EB188E5FABE4A07F2ACD /* Pods-GliaWidgets.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliaWidgets.release.xcconfig"; path = "Target Support Files/Pods-GliaWidgets/Pods-GliaWidgets.release.xcconfig"; sourceTree = "<group>"; };
+		AF03A7AE2A6E7DC40081887D /* AlertViewControllerDynamicTypeFontTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertViewControllerDynamicTypeFontTests.swift; sourceTree = "<group>"; };
+		AF03A7B02A6E96870081887D /* BubbleViewDynamicTypeFontTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleViewDynamicTypeFontTests.swift; sourceTree = "<group>"; };
+		AF03A7B22A6EA5490081887D /* CallViewControllerDynamicTypeFontTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallViewControllerDynamicTypeFontTests.swift; sourceTree = "<group>"; };
+		AF03A7B42A6EAA950081887D /* ChatCallUpgradeViewDynamicTypeFontTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCallUpgradeViewDynamicTypeFontTests.swift; sourceTree = "<group>"; };
+		AF03A7B62A6EAFBA0081887D /* ChatViewControllerDynamicTypeFontTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewControllerDynamicTypeFontTests.swift; sourceTree = "<group>"; };
+		AF03A7B82A6ED1240081887D /* ScreenShareViewControllerDynamicTypeFontTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenShareViewControllerDynamicTypeFontTests.swift; sourceTree = "<group>"; };
+		AF03A7BA2A6ED73E0081887D /* SecureConversationsWelcomeScreenDynamicTypeFontTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversationsWelcomeScreenDynamicTypeFontTests.swift; sourceTree = "<group>"; };
+		AF03A7BC2A6EDACF0081887D /* SecureConversationsConfirmationScreenDynamicTypeFontTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversationsConfirmationScreenDynamicTypeFontTests.swift; sourceTree = "<group>"; };
+		AF03A7BE2A6EDCBF0081887D /* SurveyViewControllerDynamicTypeFontTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurveyViewControllerDynamicTypeFontTests.swift; sourceTree = "<group>"; };
+		AF03A7C02A6EDE190081887D /* VideoCallViewControllerDynamicTypeFontTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCallViewControllerDynamicTypeFontTests.swift; sourceTree = "<group>"; };
+		AF03A7C22A6EDF490081887D /* VisitorCodeViewControllerDynamicTypeFontTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorCodeViewControllerDynamicTypeFontTests.swift; sourceTree = "<group>"; };
 		AF0D26D529705FDE00816CCB /* SecureConversations.ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.ActivityIndicator.swift; sourceTree = "<group>"; };
 		AF0D26D72971912A00816CCB /* SecureConversations.SendMessageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.SendMessageButton.swift; sourceTree = "<group>"; };
 		AF10ED8A29B7A4C000E85309 /* ChatViewModel+ChoiceCards.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatViewModel+ChoiceCards.swift"; sourceTree = "<group>"; };
@@ -3099,27 +3121,38 @@
 			children = (
 				846E822728996A5C008EFBF0 /* AlertViewControllerTests.swift */,
 				AF22C8842A6154780004BF3C /* AlertViewControllerLayoutTests.swift */,
+				AF03A7AE2A6E7DC40081887D /* AlertViewControllerDynamicTypeFontTests.swift */,
 				9AB3401227F71D5D006E0FE2 /* BubbleViewVoiceOverTests.swift */,
 				AF22C8862A6182AF0004BF3C /* BubbleViewLayoutTests.swift */,
+				AF03A7B02A6E96870081887D /* BubbleViewDynamicTypeFontTests.swift */,
 				9AE9E4B427E0EE2E00BFE239 /* CallViewControllerVoiceOverTests.swift */,
 				AF22C8882A6184C50004BF3C /* CallViewControllerLayoutTests.swift */,
+				AF03A7B22A6EA5490081887D /* CallViewControllerDynamicTypeFontTests.swift */,
 				9AB3402828002422006E0FE2 /* ChatCallUpgradeViewVoiceOverTests.swift */,
 				AF22C88A2A6186A20004BF3C /* ChatCallUpgradeViewLayoutTests.swift */,
+				AF03A7B42A6EAA950081887D /* ChatCallUpgradeViewDynamicTypeFontTests.swift */,
 				9A1992D627D61F8100161AAE /* ChatViewControllerVoiceOverTests.swift */,
 				AF22C88C2A6188EF0004BF3C /* ChatViewControllerLayoutTests.swift */,
+				AF03A7B62A6EAFBA0081887D /* ChatViewControllerDynamicTypeFontTests.swift */,
 				C07FA04C29B0E41A00E9FB7F /* ScreenShareViewControllerTests.swift */,
 				AF22C88E2A618B9D0004BF3C /* ScreenShareViewControllerLayoutTests.swift */,
+				AF03A7B82A6ED1240081887D /* ScreenShareViewControllerDynamicTypeFontTests.swift */,
 				75CF8D9029C3A85C00CB1524 /* SecureConversationsWelcomeScreenTests.swift */,
 				AF22C8902A6198FF0004BF3C /* SecureConversationsWelcomeScreenLayoutTests.swift */,
+				AF03A7BA2A6ED73E0081887D /* SecureConversationsWelcomeScreenDynamicTypeFontTests.swift */,
 				75CF8DAC29C8F2B500CB1524 /* SecureConversationsConfirmationScreenTests.swift */,
 				AF22C8922A619F5C0004BF3C /* SecureConversationsConfirmationScreenLayoutTests.swift */,
+				AF03A7BC2A6EDACF0081887D /* SecureConversationsConfirmationScreenDynamicTypeFontTests.swift */,
 				9A1992D727D61F8100161AAE /* SnapshotTestCase.swift */,
 				8458769E2823FD18007AC3DF /* SurveyViewControllerVoiceOverTests.swift */,
 				AF22C8942A61A6B80004BF3C /* SurveyViewControllerLayoutTests.swift */,
+				AF03A7BE2A6EDCBF0081887D /* SurveyViewControllerDynamicTypeFontTests.swift */,
 				C07FA04D29B0E41A00E9FB7F /* VideoCallViewControllerTests.swift */,
 				AF22C8962A61A9BF0004BF3C /* VideoCallViewControllerLayoutTests.swift */,
+				AF03A7C02A6EDE190081887D /* VideoCallViewControllerDynamicTypeFontTests.swift */,
 				C07FA04E29B0E41A00E9FB7F /* VisitorCodeViewControllerTests.swift */,
 				AF22C8982A61AE930004BF3C /* VisitorCodeViewControllerLayoutTests.swift */,
+				AF03A7C22A6EDF490081887D /* VisitorCodeViewControllerDynamicTypeFontTests.swift */,
 			);
 			path = SnapshotTests;
 			sourceTree = "<group>";
@@ -4538,16 +4571,24 @@
 			buildActionMask = 2147483647;
 			files = (
 				846E822828996A5C008EFBF0 /* AlertViewControllerTests.swift in Sources */,
+				AF03A7BB2A6ED73E0081887D /* SecureConversationsWelcomeScreenDynamicTypeFontTests.swift in Sources */,
 				75CF8D9129C3A85C00CB1524 /* SecureConversationsWelcomeScreenTests.swift in Sources */,
 				AF22C8972A61A9BF0004BF3C /* VideoCallViewControllerLayoutTests.swift in Sources */,
+				AF03A7BD2A6EDACF0081887D /* SecureConversationsConfirmationScreenDynamicTypeFontTests.swift in Sources */,
+				AF03A7B92A6ED1240081887D /* ScreenShareViewControllerDynamicTypeFontTests.swift in Sources */,
 				9AE9E4B527E0EE2E00BFE239 /* CallViewControllerVoiceOverTests.swift in Sources */,
+				AF03A7BF2A6EDCBF0081887D /* SurveyViewControllerDynamicTypeFontTests.swift in Sources */,
 				AF22C8852A6154780004BF3C /* AlertViewControllerLayoutTests.swift in Sources */,
 				AF22C8872A6182AF0004BF3C /* BubbleViewLayoutTests.swift in Sources */,
+				AF03A7C12A6EDE190081887D /* VideoCallViewControllerDynamicTypeFontTests.swift in Sources */,
 				C07FA05029B0E41A00E9FB7F /* VideoCallViewControllerTests.swift in Sources */,
 				AF22C88D2A6188EF0004BF3C /* ChatViewControllerLayoutTests.swift in Sources */,
+				AF03A7B12A6E96870081887D /* BubbleViewDynamicTypeFontTests.swift in Sources */,
+				AF03A7AF2A6E7DC40081887D /* AlertViewControllerDynamicTypeFontTests.swift in Sources */,
 				AF22C8992A61AE930004BF3C /* VisitorCodeViewControllerLayoutTests.swift in Sources */,
 				9AB3401327F71D5D006E0FE2 /* BubbleViewVoiceOverTests.swift in Sources */,
 				AF22C8932A619F5C0004BF3C /* SecureConversationsConfirmationScreenLayoutTests.swift in Sources */,
+				AF03A7B32A6EA5490081887D /* CallViewControllerDynamicTypeFontTests.swift in Sources */,
 				9A1992D827D61F8100161AAE /* ChatViewControllerVoiceOverTests.swift in Sources */,
 				AF22C8892A6184C50004BF3C /* CallViewControllerLayoutTests.swift in Sources */,
 				8458769F2823FD18007AC3DF /* SurveyViewControllerVoiceOverTests.swift in Sources */,
@@ -4557,9 +4598,12 @@
 				C07FA04F29B0E41A00E9FB7F /* ScreenShareViewControllerTests.swift in Sources */,
 				AF22C8952A61A6B80004BF3C /* SurveyViewControllerLayoutTests.swift in Sources */,
 				9A1992D927D61F8100161AAE /* SnapshotTestCase.swift in Sources */,
+				AF03A7B52A6EAA950081887D /* ChatCallUpgradeViewDynamicTypeFontTests.swift in Sources */,
+				AF03A7C32A6EDF490081887D /* VisitorCodeViewControllerDynamicTypeFontTests.swift in Sources */,
 				AF22C88F2A618B9D0004BF3C /* ScreenShareViewControllerLayoutTests.swift in Sources */,
 				AF22C8912A6198FF0004BF3C /* SecureConversationsWelcomeScreenLayoutTests.swift in Sources */,
 				AF22C88B2A6186A20004BF3C /* ChatCallUpgradeViewLayoutTests.swift in Sources */,
+				AF03A7B72A6EAFBA0081887D /* ChatViewControllerDynamicTypeFontTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
