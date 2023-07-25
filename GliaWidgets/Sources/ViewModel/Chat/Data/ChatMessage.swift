@@ -52,14 +52,10 @@ class ChatMessage: Codable {
         }
 
         if attachment?.type == .singleChoice {
-            return .choiceCard
+            return metadata != nil ? .customCard : .choiceCard
         }
 
-        if metadata == nil {
-            return .none
-        }
-
-        return .customCard
+        return .none
     }
 
     private enum CodingKeys: String, CodingKey {
@@ -127,7 +123,8 @@ class ChatMessage: Codable {
         sender: ChatMessageSender,
         content: String,
         attachment: ChatAttachment?,
-        downloads: [FileDownload]
+        downloads: [FileDownload],
+        metadata: MessageMetadata? = nil
     ) {
         self.id = id
         self.queueID = queueID
@@ -136,5 +133,6 @@ class ChatMessage: Codable {
         self.content = content
         self.attachment = attachment
         self.downloads = downloads
+        self.metadata = metadata
     }
 }
