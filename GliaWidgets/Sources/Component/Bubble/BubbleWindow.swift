@@ -99,7 +99,14 @@ private class BubbleViewController: UIViewController {
         view.addSubview(bubbleView)
         bubbleView.translatesAutoresizingMaskIntoConstraints = false
         var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
-        constraints += bubbleView.layoutInSuperview(insets: UIEdgeInsets(top: edgeInset, left: edgeInset, bottom: -edgeInset, right: -edgeInset))
+        constraints += bubbleView.layoutInSuperview(
+            insets: UIEdgeInsets(
+                top: edgeInset,
+                left: edgeInset,
+                bottom: edgeInset,
+                right: edgeInset
+            )
+        )
     }
 }
 
