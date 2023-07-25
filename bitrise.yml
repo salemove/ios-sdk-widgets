@@ -89,7 +89,7 @@ workflows:
     - cache-push@2: {}
     after_run:
     - _increment_project_version
-  master-build:
+  development-build:
     steps:
     - activate-ssh-key@4:
         run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
@@ -119,13 +119,13 @@ workflows:
         - text: iOS Build Succeeded!
         - webhook_url_on_error: $SLACK_IOS_WEBHOOK
         - channel_on_error: '#tm-mobile'
-        - text_on_error: '@mobile-caretaker iOS Build Failed! (master-build)'
+        - text_on_error: '@mobile-caretaker iOS Build Failed! (development-build)'
         - emoji_on_error: "\U0001F4A5"
         - color_on_error: '#d9482b'
         - from_username_on_error: Bitrise
         - webhook_url: $SLACK_IOS_WEBHOOK
     - cache-push@2: {}
-    description: Workflow for creating builds of master branch. Triggered on each push to master branch, notifies over email + Slack (external)
+    description: Workflow for creating builds of development branch. Triggered on each push to development branch, notifies over email + Slack (external)
   pull-request:
     steps:
     - activate-ssh-key@4:
@@ -249,7 +249,7 @@ app:
     GIT_AUTHOR_EMAIL: bitrise@glia.com
 trigger_map:
 - push_branch: development
-  workflow: master-build
+  workflow: development-build
 - pull_request_target_branch: '*'
   workflow: pull-request
 meta:
