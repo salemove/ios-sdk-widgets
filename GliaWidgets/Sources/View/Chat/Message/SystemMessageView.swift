@@ -28,10 +28,12 @@ final class SystemMessageView: ChatMessageView {
     private func layout() {
         addSubview(contentViews)
 
-        var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
-        constraints += contentViews.layoutInSuperview(edges: .vertical, insets: kInsets)
-        constraints += contentViews.layoutInSuperview(edges: .top, insets: kInsets)
-        constraints += contentViews.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: kInsets.right)
+        NSLayoutConstraint.activate([
+            contentViews.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: kInsets.left),
+            contentViews.trailingAnchor.constraint(lessThanOrEqualTo: self.trailingAnchor, constant: -kInsets.right),
+            contentViews.topAnchor.constraint(equalTo: self.topAnchor, constant: kInsets.top),
+            contentViews.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -kInsets.bottom)
+        ])
     }
 }
 
