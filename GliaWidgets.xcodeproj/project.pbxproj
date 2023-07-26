@@ -3178,6 +3178,7 @@
 				AF755FD92A71583900871E36 /* BubbleWindowLayoutTests.swift */,
 				AF22C8982A61AE930004BF3C /* VisitorCodeViewControllerLayoutTests.swift */,
 				AF03A7C22A6EDF490081887D /* VisitorCodeViewControllerDynamicTypeFontTests.swift */,
+				AF755FD92A71583900871E36 /* BubbleWindowLayoutTests.swift */,
 			);
 			path = SnapshotTests;
 			sourceTree = "<group>";
@@ -4613,6 +4614,7 @@
 				AF22C88D2A6188EF0004BF3C /* ChatViewControllerLayoutTests.swift in Sources */,
 				AF03A7B12A6E96870081887D /* BubbleViewDynamicTypeFontTests.swift in Sources */,
 				AF03A7AF2A6E7DC40081887D /* AlertViewControllerDynamicTypeFontTests.swift in Sources */,
+				AF755FDA2A71583900871E36 /* BubbleWindowLayoutTests.swift in Sources */,
 				AF22C8992A61AE930004BF3C /* VisitorCodeViewControllerLayoutTests.swift in Sources */,
 				9AB3401327F71D5D006E0FE2 /* BubbleViewVoiceOverTests.swift in Sources */,
 				AF22C8932A619F5C0004BF3C /* SecureConversationsConfirmationScreenLayoutTests.swift in Sources */,
