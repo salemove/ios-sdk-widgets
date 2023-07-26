@@ -485,6 +485,7 @@
 		AF6AB34B2989517100003645 /* FileUploader.Failing.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF6AB34A2989517100003645 /* FileUploader.Failing.swift */; };
 		AF6AB34D298A9F2500003645 /* SecureConversations.FileUploadListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF6AB34C298A9F2500003645 /* SecureConversations.FileUploadListViewModel.swift */; };
 		AF6AB34F298AA02400003645 /* SecureConversations.FileUploadListViewModel.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF6AB34E298AA02400003645 /* SecureConversations.FileUploadListViewModel.Environment.swift */; };
+		AF755FDA2A71583900871E36 /* BubbleWindowLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF755FD92A71583900871E36 /* BubbleWindowLayoutTests.swift */; };
 		AF9DB22E2890571A00A0C442 /* RootCoordinator.Environment.Failing.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF9DB22D2890571A00A0C442 /* RootCoordinator.Environment.Failing.swift */; };
 		AF9DB23128905A1D00A0C442 /* ViewFactory.Environment.Failing.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF9DB23028905A1D00A0C442 /* ViewFactory.Environment.Failing.swift */; };
 		AFA2FDEC28907D7C00428E6D /* EngagementCoordinator.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA2FDEB28907D7C00428E6D /* EngagementCoordinator.Environment.swift */; };
@@ -1131,6 +1132,7 @@
 		AF6AB34A2989517100003645 /* FileUploader.Failing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUploader.Failing.swift; sourceTree = "<group>"; };
 		AF6AB34C298A9F2500003645 /* SecureConversations.FileUploadListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.FileUploadListViewModel.swift; sourceTree = "<group>"; };
 		AF6AB34E298AA02400003645 /* SecureConversations.FileUploadListViewModel.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.FileUploadListViewModel.Environment.swift; sourceTree = "<group>"; };
+		AF755FD92A71583900871E36 /* BubbleWindowLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleWindowLayoutTests.swift; sourceTree = "<group>"; };
 		AF9DB22D2890571A00A0C442 /* RootCoordinator.Environment.Failing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCoordinator.Environment.Failing.swift; sourceTree = "<group>"; };
 		AF9DB23028905A1D00A0C442 /* ViewFactory.Environment.Failing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewFactory.Environment.Failing.swift; sourceTree = "<group>"; };
 		AFA2FDEB28907D7C00428E6D /* EngagementCoordinator.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EngagementCoordinator.Environment.swift; sourceTree = "<group>"; };
@@ -2995,6 +2997,9 @@
 				8458769E2823FD18007AC3DF /* SurveyViewControllerVoiceOverTests.swift */,
 				C07FA04D29B0E41A00E9FB7F /* VideoCallViewControllerTests.swift */,
 				C07FA04E29B0E41A00E9FB7F /* VisitorCodeViewControllerTests.swift */,
+				AF22C8982A61AE930004BF3C /* VisitorCodeViewControllerLayoutTests.swift */,
+				AF03A7C22A6EDF490081887D /* VisitorCodeViewControllerDynamicTypeFontTests.swift */,
+				AF755FD92A71583900871E36 /* BubbleWindowLayoutTests.swift */,
 			);
 			path = SnapshotTests;
 			sourceTree = "<group>";
@@ -4384,6 +4389,11 @@
 				75CF8D9129C3A85C00CB1524 /* SecureConversationsWelcomeScreenTests.swift in Sources */,
 				9AE9E4B527E0EE2E00BFE239 /* CallViewControllerVoiceOverTests.swift in Sources */,
 				C07FA05029B0E41A00E9FB7F /* VideoCallViewControllerTests.swift in Sources */,
+				AF22C88D2A6188EF0004BF3C /* ChatViewControllerLayoutTests.swift in Sources */,
+				AF03A7B12A6E96870081887D /* BubbleViewDynamicTypeFontTests.swift in Sources */,
+				AF03A7AF2A6E7DC40081887D /* AlertViewControllerDynamicTypeFontTests.swift in Sources */,
+				AF755FDA2A71583900871E36 /* BubbleWindowLayoutTests.swift in Sources */,
+				AF22C8992A61AE930004BF3C /* VisitorCodeViewControllerLayoutTests.swift in Sources */,
 				9AB3401327F71D5D006E0FE2 /* BubbleViewVoiceOverTests.swift in Sources */,
 				9A1992D827D61F8100161AAE /* ChatViewControllerVoiceOverTests.swift in Sources */,
 				8458769F2823FD18007AC3DF /* SurveyViewControllerVoiceOverTests.swift in Sources */,
