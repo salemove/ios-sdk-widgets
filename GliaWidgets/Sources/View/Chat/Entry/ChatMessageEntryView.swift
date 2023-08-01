@@ -101,6 +101,7 @@ class ChatMessageEntryView: BaseView {
             action: #selector(textViewContainerTap)
         )
         messageContainerView.addGestureRecognizer(tapRecognizer)
+        messageContainerView.accessibilityIdentifier = "chat_messageContainerView"
 
         textView.accessibilityIdentifier = "chat_textView"
         textView.delegate = self
