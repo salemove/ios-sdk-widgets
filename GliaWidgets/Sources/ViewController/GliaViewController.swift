@@ -96,6 +96,7 @@ class GliaViewController: UIViewController {
         bubbleWindow.alpha = 0.0
         bubbleWindow.isHidden = false
         self.bubbleWindow = bubbleWindow
+        bubbleWindow.makeKeyAndVisible()
 
         UIView.animate(
             withDuration: animated ? 0.4 : 0.0,
@@ -115,25 +116,15 @@ class GliaViewController: UIViewController {
     }
 
     private func makeBubbleWindow(bubbleView: BubbleView) -> BubbleWindow {
-        if #available(iOS 13.0, *) {
-            if let windowScene = windowScene() {
-                return BubbleWindow(
-                    bubbleView: bubbleView,
-                    environment: .init(
-                        uiScreen: environment.uiScreen,
-                        uiApplication: environment.uiApplication
-                    ),
-                    windowScene: windowScene
-                )
-            } else {
-                return BubbleWindow(
-                    bubbleView: bubbleView,
-                    environment: .init(
-                        uiScreen: environment.uiScreen,
-                        uiApplication: environment.uiApplication
-                    )
-                )
-            }
+        if let windowScene = windowScene() {
+            return BubbleWindow(
+                bubbleView: bubbleView,
+                environment: .init(
+                    uiScreen: environment.uiScreen,
+                    uiApplication: environment.uiApplication
+                ),
+                windowScene: windowScene
+            )
         } else {
             return BubbleWindow(
                 bubbleView: bubbleView,
