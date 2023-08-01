@@ -5,7 +5,7 @@ enum BubbleKind {
     case view(UIView)
 }
 
-class BubbleView: UIView {
+class BubbleView: BaseView {
     var kind: BubbleKind = .userImage(url: nil) {
         didSet { update(kind) }
     }
@@ -37,14 +37,11 @@ class BubbleView: UIView {
     ) {
         self.style = style
         self.environment = environment
-        super.init(frame: .zero)
-        setup()
-        layout()
+        super.init()
     }
 
-    @available(*, unavailable)
-    required init?(coder _: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    required init() {
+        fatalError("init() has not been implemented")
     }
 
     override func layoutSubviews() {
@@ -98,7 +95,8 @@ class BubbleView: UIView {
         badgeView?.newItemCount = itemCount
     }
 
-    private func setup() {
+    override func setup() {
+        super.setup()
         clipsToBounds = false
         layer.masksToBounds = false
         layer.shadowColor = UIColor.black.cgColor
@@ -118,8 +116,6 @@ class BubbleView: UIView {
 
         update(kind)
     }
-
-    private func layout() {}
 
     private func update(_ kind: BubbleKind) {
         switch kind {
