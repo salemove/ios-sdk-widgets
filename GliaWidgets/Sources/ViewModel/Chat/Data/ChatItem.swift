@@ -56,7 +56,7 @@ class ChatItem {
             case let .gvaQuickReply(button):
                 kind = .gvaQuickReply(message, quickReply: button, showImage: true, imageUrl: message.operator?.pictureUrl)
             case let .gvaGallery(gallery):
-                kind = .gvaGallery(message, gallery: gallery)
+                kind = .gvaGallery(message, gallery: gallery, showImage: true, imageUrl: message.operator?.pictureUrl)
             case .none:
                 kind = .operatorMessage(message, showsImage: false, imageUrl: message.operator?.pictureUrl)
             }
@@ -86,6 +86,6 @@ extension ChatItem {
         case gvaPersistentButton(ChatMessage, persistenButton: GvaButton, showImage: Bool, imageUrl: String?)
         case gvaResponseText(ChatMessage, responseText: GvaResponseText, showImage: Bool, imageUrl: String?)
         case gvaQuickReply(ChatMessage, quickReply: GvaButton, showImage: Bool, imageUrl: String?)
-        case gvaGallery(ChatMessage, gallery: GvaGallery)
+        case gvaGallery(ChatMessage, gallery: GvaGallery, showImage: Bool, imageUrl: String?)
     }
 }
