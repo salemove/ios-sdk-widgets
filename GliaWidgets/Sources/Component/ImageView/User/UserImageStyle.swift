@@ -70,4 +70,13 @@ public struct UserImageStyle: Equatable {
             }
         }
     }
+
+    static var initial: UserImageStyle {
+        .init(
+            placeholderImage: nil,
+            placeholderColor: .clear,
+            placeholderBackgroundColor: .fill(color: .white),
+            imageBackgroundColor: .fill(color: .white)
+        )
+    }
 }
