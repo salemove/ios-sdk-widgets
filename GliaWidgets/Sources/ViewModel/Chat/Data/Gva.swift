@@ -38,13 +38,13 @@ struct GvaButton: Decodable, Equatable {
 
 struct GvaGallery: Decodable, Equatable {
     let type: GvaCardType
-    let content: [GvaGalleryCard]
+    let galleryCards: [GvaGalleryCard]
 }
 
 struct GvaGalleryCard: Decodable, Equatable {
     let title: String
     let subtitle: String?
-    let imageUrl: String?
+    let imageUrl: URL?
     let options: [GvaOption]?
 }
 
