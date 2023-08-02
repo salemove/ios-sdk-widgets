@@ -25,10 +25,12 @@ class ChatView: EngagementView {
     var selectCustomCardOption: ((HtmlMetadata.Option, MessageRenderer.Message.Identifier) -> Void)?
     var gvaButtonTapped: ((GvaOption) -> Void)?
 
+    let style: ChatStyle
+    let environment: Environment
+
     private lazy var quickReplyView = QuickReplyView(
         style: style.gliaVirtualAssistant.quickReplyButton
     )
-    private let style: ChatStyle
     private var messageEntryViewBottomConstraint: NSLayoutConstraint!
     private var callBubble: BubbleView?
     private let keyboardObserver = KeyboardObserver()
@@ -45,7 +47,6 @@ class ChatView: EngagementView {
         return CGRect(x: x, y: y, width: width, height: height)
     }
     private let messageRenderer: MessageRenderer?
-    private let environment: Environment
     private var heightCache: [String: CGFloat] = [:]
 
     var props: Props {
@@ -231,6 +232,14 @@ extension ChatView {
                     default:
                         break
                     }
+
+                case let .gvaGallery(view, _):
+                    switch item.kind {
+                    case let .gvaGallery(_, _, showsImage, imageUrl):
+                        view.showsOperatorImage = showsImage
+                        view.setOperatorImage(fromUrl: imageUrl, animated: animated)
+                    default: break
+                    }
                 default:
                     break
                 }
@@ -343,6 +352,7 @@ extension ChatView {
         }
     }
 
+    // swiftlint:disable function_body_length
     func content(for item: ChatItem) -> ChatItemCell.Content {
         switch item.kind {
         case .queueOperator:
@@ -404,13 +414,11 @@ extension ChatView {
                 imageUrl: imageUrl
             )
             return .gvaQuickReply(view)
-        case let .gvaGallery(_, gallery):
-            // Temporary, since UI hasn't been implemented
-            let textView = UITextView()
-            textView.text = "Gallery: \(gallery.type.rawValue)"
-            return .gvaGallery(textView)
+        case let .gvaGallery(message, gallery, showImage, imageUrl):
+            return gvaGalleryListViewContent(message, gallery: gallery, showsImage: showImage, imageUrl: imageUrl)
         }
     }
+    // swiftlint:enable function_body_length
 
     private func callUpgradeStyle(for callKind: CallKind) -> ChatCallUpgradeStyle {
         return callKind == .audio
