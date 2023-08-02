@@ -42,7 +42,13 @@ extension ChatView: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         guard let item = itemForRow?(indexPath.row, indexPath.section) else { return CGFloat.zero }
-        guard case .none = content(for: item) else { return UITableView.automaticDimension }
-        return CGFloat.zero
+        switch content(for: item) {
+        case .none:
+            return CGFloat.zero
+        case let .gvaGallery(_, height):
+            return height
+        default:
+            return UITableView.automaticDimension
+        }
     }
 }

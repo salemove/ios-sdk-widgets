@@ -1,6 +1,8 @@
 import UIKit
 
 class GvaPersistentButtonOptionView: BaseView {
+    static let height: CGFloat = 42
+
     var tap: (() -> Void)?
 
     private let text: String?
@@ -43,7 +45,7 @@ class GvaPersistentButtonOptionView: BaseView {
         super.defineLayout()
         var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
 
-        heightAnchor.constraint(equalToConstant: 42).isActive = true
+        heightAnchor.constraint(equalToConstant: Self.height).isActive = true
         addSubview(textLabel)
         textLabel.translatesAutoresizingMaskIntoConstraints = false
         constraints += textLabel.layoutInSuperview(insets: viewInsets)
