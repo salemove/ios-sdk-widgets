@@ -15,7 +15,7 @@ class ChatItemCell: UITableViewCell {
         case gvaResponseText(UIView)
         case gvaPersistentButton(UIView)
         case gvaQuickReply(UIView)
-        case gvaGallery(UIView)
+        case gvaGallery(GvaGalleryListView, CGFloat)
 
         var view: UIView? {
             switch self {
@@ -45,7 +45,7 @@ class ChatItemCell: UITableViewCell {
                 return view
             case let .gvaQuickReply(view):
                 return view
-            case let .gvaGallery(view):
+            case let .gvaGallery(view, _):
                 return view
             }
         }
