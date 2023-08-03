@@ -33,6 +33,16 @@ class ChatViewControllerLayoutTests: SnapshotTestCase {
         )
     }
 
+    func test_gvaPersistentButton() throws {
+        let viewController = try ChatViewController.mockGvaPersistentButton()
+        viewController.view.frame = UIScreen.main.bounds
+        assertSnapshot(
+            matching: viewController,
+            as: .image,
+            named: nameForDevice()
+        )
+    }
+
     func test_visitorFileDownloadStates() throws {
         var chatMessages: [ChatMessage] = []
         let viewController = try ChatViewController.mockVisitorFileDownloadStates { messages in

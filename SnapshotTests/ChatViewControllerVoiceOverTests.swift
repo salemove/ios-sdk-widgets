@@ -53,4 +53,14 @@ class ChatViewControllerVoiceOverTests: SnapshotTestCase {
             named: self.nameForDevice()
         )
     }
+
+    func test_gvaPersistentButton() throws {
+        let viewController = try ChatViewController.mockGvaPersistentButton()
+        viewController.view.frame = UIScreen.main.bounds
+        assertSnapshot(
+            matching: viewController,
+            as: .accessibilityImage(precision: Self.possiblePrecision),
+            named: nameForDevice()
+        )
+    }
 }

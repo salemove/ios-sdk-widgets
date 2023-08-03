@@ -863,7 +863,7 @@ extension ChatView {
 
     private func gvaResponseTextView(
         _ message: ChatMessage,
-        text: NSAttributedString,
+        text: NSMutableAttributedString,
         showImage: Bool,
         imageUrl: String?
     ) -> GvaResponseTextView {

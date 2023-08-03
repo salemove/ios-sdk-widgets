@@ -7,7 +7,8 @@ extension ChatMessage {
         sender: ChatMessageSender = .visitor,
         content: String = "",
         attachment: ChatAttachment? = nil,
-        downloads: [FileDownload] = []
+        downloads: [FileDownload] = [],
+        metadata: MessageMetadata? = nil
     ) -> ChatMessage {
         .init(
             id: id,
@@ -16,7 +17,8 @@ extension ChatMessage {
             sender: sender,
             content: content,
             attachment: attachment,
-            downloads: downloads
+            downloads: downloads,
+            metadata: metadata
         )
     }
 }
