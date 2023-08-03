@@ -8,7 +8,9 @@ extension Theme {
             title: .init(
                 textFont: font.bodyText,
                 textColor: .black,
-                backgroundColor: .clear
+                textStyle: .body,
+                backgroundColor: .clear,
+                accessibility: .init(isFontScalingEnabled: true)
             ),
             backgroundColor: .fill(color: color.lightGrey),
             cornerRadius: 10,
@@ -20,7 +22,8 @@ extension Theme {
                 backgroundColor: .fill(color: color.background),
                 cornerRadius: 5,
                 borderColor: .clear,
-                borderWidth: 0
+                borderWidth: 0,
+                accessibility: .init(isFontScalingEnabled: true)
             )
         )
 

@@ -24,17 +24,17 @@ public class ChatTextContentStyle {
     /// - Parameters:
     ///   - textFont: Font of the message text.
     ///   - textColor: Color of the message text.
-    ///   - textStyle: Text style of the message text.
+    ///   - textStyle: Text style of the message text. Necessary for attributed strings.
     ///   - backgroundColor: Background color of the content view.
     ///   - accessibility: Accessibility related properties.
     ///
     public init(
         textFont: UIFont,
         textColor: UIColor,
-        textStyle: UIFont.TextStyle = .body,
+        textStyle: UIFont.TextStyle,
         backgroundColor: UIColor,
         cornerRadius: CGFloat = 8.49,
-        accessibility: Accessibility = .unsupported
+        accessibility: Accessibility
     ) {
         self.textFont = textFont
         self.textColor = textColor
