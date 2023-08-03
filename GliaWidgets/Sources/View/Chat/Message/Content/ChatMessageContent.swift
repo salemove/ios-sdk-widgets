@@ -6,7 +6,7 @@ enum ChatMessageContent {
     case downloads([FileDownload], accessibility: ChatFileContentView.AccessibilityProperties)
     case choiceCard(ChoiceCard)
     case gvaPersistentButton(GvaButton)
-    case attributedText(NSAttributedString, accessibility: TextAccessibilityProperties)
+    case attributedText(NSMutableAttributedString, accessibility: TextAccessibilityProperties)
 
     struct TextAccessibilityProperties {
         let label: String
