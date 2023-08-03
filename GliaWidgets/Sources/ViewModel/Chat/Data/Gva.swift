@@ -2,7 +2,7 @@ import Foundation
 
 struct GvaResponseText: Decodable, Equatable {
     let type: GvaCardType
-    let content: NSAttributedString
+    let content: NSMutableAttributedString
 
     enum CodingKeys: String, CodingKey {
         case type, content
@@ -13,13 +13,13 @@ struct GvaResponseText: Decodable, Equatable {
         type = try container.decode(GvaCardType.self, forKey: .type)
         let contentString = try container.decode(String.self, forKey: .content)
         let modifiedString = contentString.replacingOccurrences(of: "\n", with: "</br>")
-        content = modifiedString.htmlToAttributedString ?? NSAttributedString(string: "")
+        content = modifiedString.htmlToAttributedString ?? NSMutableAttributedString(string: "")
     }
 }
 
 struct GvaButton: Decodable, Equatable {
     let type: GvaCardType
-    let content: NSAttributedString
+    let content: NSMutableAttributedString
     let options: [GvaOption]
 
     enum CodingKeys: String, CodingKey {
@@ -31,8 +31,18 @@ struct GvaButton: Decodable, Equatable {
         type = try container.decode(GvaCardType.self, forKey: .type)
         let contentString = try container.decode(String.self, forKey: .content)
         let modifiedString = contentString.replacingOccurrences(of: "\n", with: "</br>")
-        content = modifiedString.htmlToAttributedString ?? NSAttributedString(string: "")
+        content = modifiedString.htmlToAttributedString ?? NSMutableAttributedString(string: "")
         options = try container.decode([GvaOption].self, forKey: .options)
+    }
+
+    init(
+        type: GvaCardType,
+        content: NSMutableAttributedString,
+        options: [GvaOption]
+    ) {
+        self.type = type
+        self.content = content
+        self.options = options
     }
 }
 
@@ -48,7 +58,7 @@ struct GvaGalleryCard: Decodable, Equatable {
     let options: [GvaOption]?
 }
 
-struct GvaOption: Decodable, Equatable {
+struct GvaOption: Codable, Equatable {
     let text: String
     let value: String?
     let url: String?
@@ -68,7 +78,7 @@ enum GvaUrlTarget: String, Decodable {
     }
 }
 
-enum GvaCardType: String, Decodable {
+enum GvaCardType: String, Codable {
     case persistentButtons
     case quickReplies
     case plainText
@@ -76,7 +86,7 @@ enum GvaCardType: String, Decodable {
 }
 
 private extension StringProtocol {
-    var htmlToAttributedString: NSAttributedString? {
+    var htmlToAttributedString: NSMutableAttributedString? {
         Data(utf8).htmlToAttributedString
     }
     var htmlToString: String {
@@ -85,21 +95,33 @@ private extension StringProtocol {
 }
 
 private extension Data {
-    var htmlToAttributedString: NSAttributedString? {
-        do {
-            let options: [NSAttributedString.DocumentReadingOptionKey: Any] = [
-                .documentType: NSAttributedString.DocumentType.html,
-                .characterEncoding: String.Encoding.utf8.rawValue
-            ]
-            return try NSAttributedString(
-                data: self,
-                options: options,
-                documentAttributes: nil
-            )
-        } catch {
-            debugPrint("HTML-string decoding failed with error:", error)
-            return  nil
+    var htmlToAttributedString: NSMutableAttributedString? {
+        if let string = String(data: self, encoding: .utf8), containsHtml(string) {
+            do {
+                let options: [NSAttributedString.DocumentReadingOptionKey: Any] = [
+                    .documentType: NSAttributedString.DocumentType.html,
+                    .characterEncoding: String.Encoding.utf8.rawValue
+                ]
+                return try NSMutableAttributedString(
+                    data: self,
+                    options: options,
+                    documentAttributes: nil
+                )
+            } catch {
+                debugPrint("HTML-string decoding failed with error:", error)
+                return NSMutableAttributedString(string: string)
+            }
+        } else {
+            return NSMutableAttributedString(string: String(data: self, encoding: .utf8) ?? "")
         }
     }
+
+    func containsHtml(_ string: String) -> Bool {
+        if let _ = string.range(of: "<[^>]+>", options: .regularExpression) {
+            return true
+        }
+        return false
+    }
+
     var htmlToString: String { htmlToAttributedString?.string ?? "" }
 }

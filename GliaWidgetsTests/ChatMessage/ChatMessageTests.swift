@@ -24,27 +24,3 @@ final class ChatMessageTests: XCTestCase {
         XCTAssertEqual(msg.cardType, .customCard)
     }
 }
-
-extension ChatMessage {
-    static func mock(
-        id: String = "mocked-message-id",
-        queueId: String? = "queue-id",
-        operator: ChatOperator? = .init(name: "XCTest Operator", pictureUrl: nil),
-        sender: ChatMessageSender = .`operator`,
-        content: String = "Hello unit test!",
-        attachment: ChatAttachment? = nil,
-        downloads: [FileDownload] = [],
-        metadata: MessageMetadata? = nil
-    ) -> ChatMessage {
-        ChatMessage(
-            id: id,
-            queueID: queueId,
-            operator: `operator`,
-            sender: sender,
-            content: content,
-            attachment: attachment,
-            downloads: downloads,
-            metadata: metadata
-        )
-    }
-}
