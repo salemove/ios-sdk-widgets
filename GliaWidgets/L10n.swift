@@ -118,8 +118,8 @@ public enum L10n {
       /// Operators are no longer available.
       /// Please try again later.
       public static let message = L10n.tr("Localizable", "alert.operatorsUnavailable.message", fallback: "Operators are no longer available.\nPlease try again later.")
-      /// We’re sorry
-      public static let title = L10n.tr("Localizable", "alert.operatorsUnavailable.title", fallback: "We’re sorry")
+      /// We're sorry
+      public static let title = L10n.tr("Localizable", "alert.operatorsUnavailable.title", fallback: "We're sorry")
     }
     public enum ScreenSharing {
       public enum Start {
@@ -332,8 +332,8 @@ public enum L10n {
         public enum Avatar {
           /// Displays operator avatar or placeholder.
           public static let hint = L10n.tr("Localizable", "call.accessibility.operator.avatar.hint", fallback: "Displays operator avatar or placeholder.")
-          /// Avatar
-          public static let label = L10n.tr("Localizable", "call.accessibility.operator.avatar.label", fallback: "Avatar")
+          /// Operator Avatar
+          public static let label = L10n.tr("Localizable", "call.accessibility.operator.avatar.label", fallback: "Operator Avatar")
         }
       }
       public enum OperatorName {
@@ -430,9 +430,8 @@ public enum L10n {
   }
   public enum CallVisualizer {
     public enum ScreenSharing {
-      /// Your Screen
-      /// is Being Shared
-      public static let message = L10n.tr("Localizable", "callVisualizer.screenSharing.message", fallback: "Your Screen\nis Being Shared")
+      /// Your Screen is Being Shared
+      public static let message = L10n.tr("Localizable", "callVisualizer.screenSharing.message", fallback: "Your Screen is Being Shared")
       /// Screen Sharing
       public static let title = L10n.tr("Localizable", "callVisualizer.screenSharing.title", fallback: "Screen Sharing")
       public enum Accessibility {
@@ -468,8 +467,8 @@ public enum L10n {
         public static let refresh = L10n.tr("Localizable", "callVisualizer.visitorCode.action.refresh", fallback: "Refresh")
       }
       public enum Title {
-        /// Could not show visitor code. Please try refreshing.
-        public static let error = L10n.tr("Localizable", "callVisualizer.visitorCode.title.error", fallback: "Could not show visitor code. Please try refreshing.")
+        /// Could not load the visitor code. Please try refreshing.
+        public static let error = L10n.tr("Localizable", "callVisualizer.visitorCode.title.error", fallback: "Could not load the visitor code. Please try refreshing.")
         /// Your Visitor Code
         public static let standard = L10n.tr("Localizable", "callVisualizer.visitorCode.title.standard", fallback: "Your Visitor Code")
       }
@@ -672,6 +671,16 @@ public enum L10n {
       /// End
       public static let title = L10n.tr("Localizable", "chat.endButton.title", fallback: "End")
     }
+    public enum File {
+      public enum Upload {
+        /// Checking safety of the file…
+        public static let scanning = L10n.tr("Localizable", "chat.file.upload.scanning", fallback: "Checking safety of the file…")
+      }
+    }
+    public enum Input {
+      /// Send
+      public static let send = L10n.tr("Localizable", "chat.input.send", fallback: "Send")
+    }
     public enum Message {
       /// Tap on the answer above
       public static let choiceCardPlaceholder = L10n.tr("Localizable", "chat.message.choiceCardPlaceholder", fallback: "Tap on the answer above")
@@ -698,6 +707,10 @@ public enum L10n {
       /// New Messages
       public static let unreadMessageDividerTitle = L10n.tr("Localizable", "chat.secureTranscript.unreadMessageDividerTitle", fallback: "New Messages")
     }
+    public enum Status {
+      /// Operator typing
+      public static let typing = L10n.tr("Localizable", "chat.status.typing", fallback: "Operator typing")
+    }
     public enum Upgrade {
       public enum Audio {
         /// Upgraded to Audio Call
@@ -716,18 +729,68 @@ public enum L10n {
       /// Uploading file…
       public static let uploading = L10n.tr("Localizable", "chat.upload.uploading", fallback: "Uploading file…")
       public enum Error {
-        /// File size over 25mb limit!
-        public static let fileTooBig = L10n.tr("Localizable", "chat.upload.error.fileTooBig", fallback: "File size over 25mb limit!")
+        /// File size over 25MB limit!
+        public static let fileTooBig = L10n.tr("Localizable", "chat.upload.error.fileTooBig", fallback: "File size over 25MB limit!")
         /// Failed to upload.
         public static let generic = L10n.tr("Localizable", "chat.upload.error.generic", fallback: "Failed to upload.")
         /// Network error.
         public static let network = L10n.tr("Localizable", "chat.upload.error.network", fallback: "Network error.")
-        /// Failed to check the safety of the file.
-        public static let safetyCheckFailed = L10n.tr("Localizable", "chat.upload.error.safetyCheckFailed", fallback: "Failed to check the safety of the file.")
+        /// Failed to confirm the safety of the file.
+        public static let safetyCheckFailed = L10n.tr("Localizable", "chat.upload.error.safetyCheckFailed", fallback: "Failed to confirm the safety of the file.")
         /// Invalid file type!
         public static let unsupportedFileType = L10n.tr("Localizable", "chat.upload.error.unsupportedFileType", fallback: "Invalid file type!")
       }
     }
+  }
+  public enum Error {
+    /// Something went wrong
+    public static let general = L10n.tr("Localizable", "error.general", fallback: "Something went wrong")
+    /// Internal error
+    public static let `internal` = L10n.tr("Localizable", "error.internal", fallback: "Internal error")
+  }
+  public enum General {
+    /// Accept
+    public static let accept = L10n.tr("Localizable", "general.accept", fallback: "Accept")
+    /// Back
+    public static let back = L10n.tr("Localizable", "general.back", fallback: "Back")
+    /// Browse
+    public static let browse = L10n.tr("Localizable", "general.browse", fallback: "Browse")
+    /// Cancel
+    public static let cancel = L10n.tr("Localizable", "general.cancel", fallback: "Cancel")
+    /// Close
+    public static let close = L10n.tr("Localizable", "general.close", fallback: "Close")
+    /// Comment
+    public static let comment = L10n.tr("Localizable", "general.comment", fallback: "Comment")
+    /// CompanyName
+    public static let companyName = L10n.tr("Localizable", "general.company_name", fallback: "CompanyName")
+    /// Decline
+    public static let decline = L10n.tr("Localizable", "general.decline", fallback: "Decline")
+    /// Download
+    public static let download = L10n.tr("Localizable", "general.download", fallback: "Download")
+    /// End
+    public static let end = L10n.tr("Localizable", "general.end", fallback: "End")
+    /// Message
+    public static let message = L10n.tr("Localizable", "general.message", fallback: "Message")
+    /// No
+    public static let no = L10n.tr("Localizable", "general.no", fallback: "No")
+    /// Ok
+    public static let ok = L10n.tr("Localizable", "general.ok", fallback: "Ok")
+    /// Open
+    public static let `open` = L10n.tr("Localizable", "general.open", fallback: "Open")
+    /// Powered by Glia
+    public static let poweredBy = L10n.tr("Localizable", "general.powered_by", fallback: "Powered by Glia")
+    /// Retry
+    public static let retry = L10n.tr("Localizable", "general.retry", fallback: "Retry")
+    /// Selected
+    public static let selected = L10n.tr("Localizable", "general.selected", fallback: "Selected")
+    /// Submit
+    public static let submit = L10n.tr("Localizable", "general.submit", fallback: "Submit")
+    /// Thank you!
+    public static let thankYou = L10n.tr("Localizable", "general.thank_you", fallback: "Thank you!")
+    /// Yes
+    public static let yes = L10n.tr("Localizable", "general.yes", fallback: "Yes")
+    /// You
+    public static let you = L10n.tr("Localizable", "general.you", fallback: "You")
   }
   public enum MessageCenter {
     public enum Confirmation {
@@ -735,9 +798,8 @@ public enum L10n {
       public static let checkMessages = L10n.tr("Localizable", "messageCenter.confirmation.checkMessages", fallback: "Check messages")
       /// Messaging
       public static let header = L10n.tr("Localizable", "messageCenter.confirmation.header", fallback: "Messaging")
-      /// Your message has been sent.
-      /// We will get back to you within 48 hours.
-      public static let subtitle = L10n.tr("Localizable", "messageCenter.confirmation.subtitle", fallback: "Your message has been sent.\nWe will get back to you within 48 hours.")
+      /// Your message has been sent. We will get back to you within 48 hours.
+      public static let subtitle = L10n.tr("Localizable", "messageCenter.confirmation.subtitle", fallback: "Your message has been sent. We will get back to you within 48 hours.")
       /// Thank you!
       public static let title = L10n.tr("Localizable", "messageCenter.confirmation.title", fallback: "Thank you!")
       public enum Accessibility {
@@ -752,8 +814,8 @@ public enum L10n {
       public static let checkMessages = L10n.tr("Localizable", "messageCenter.welcome.checkMessages", fallback: "Check messages")
       /// Messaging
       public static let header = L10n.tr("Localizable", "messageCenter.welcome.header", fallback: "Messaging")
-      /// The message cannot exceed {textLength} characters.
-      public static let messageLengthWarning = L10n.tr("Localizable", "messageCenter.welcome.messageLengthWarning", fallback: "The message cannot exceed {textLength} characters.")
+      /// The message cannot exceed 10000 characters.
+      public static let messageLengthWarning = L10n.tr("Localizable", "messageCenter.welcome.messageLengthWarning", fallback: "The message cannot exceed 10000 characters.")
       /// Enter your message
       public static let messageTextViewActive = L10n.tr("Localizable", "messageCenter.welcome.messageTextViewActive", fallback: "Enter your message")
       /// Enter your message
@@ -787,6 +849,20 @@ public enum L10n {
         public static let sendLabel = L10n.tr("Localizable", "messageCenter.welcome.accessibility.sendLabel", fallback: "Send")
       }
     }
+  }
+  public enum Screensharing {
+    public enum VisitorScreen {
+      public enum Disclaimer {
+        /// Depending on your selection, your entire screen might be shared with the operator, not just the application window.
+        public static let info = L10n.tr("Localizable", "screensharing.visitor_screen.disclaimer.info", fallback: "Depending on your selection, your entire screen might be shared with the operator, not just the application window.")
+      }
+    }
+  }
+  public enum SendMessage {
+    /// Send message
+    public static let send = L10n.tr("Localizable", "send_message.send", fallback: "Send message")
+    /// Sending…
+    public static let sending = L10n.tr("Localizable", "send_message.sending", fallback: "Sending…")
   }
   public enum Survey {
     public enum Accessibility {
@@ -870,5 +946,3 @@ private final class BundleToken {
   }()
 }
 // swiftlint:enable convenience_type
-
-// swiftlint:enable all
