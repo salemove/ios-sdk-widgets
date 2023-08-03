@@ -26,7 +26,7 @@
 "alert.operatorEndedEngagement.title" = "Engagement Ended";
 "alert.operatorEndedEngagement.message" = "This engagement has ended.\nThank you!";
 
-"alert.operatorsUnavailable.title" = "We’re sorry";
+"alert.operatorsUnavailable.title" = "We're sorry";
 "alert.operatorsUnavailable.message" = "Operators are no longer available.\nPlease try again later.";
 
 "alert.unexpected.title" = "We're sorry, there has been an unexpected error.";
@@ -85,9 +85,10 @@
 "chat.upload.uploading" = "Uploading file…";
 "chat.upload.uploaded" = "Ready to send";
 "chat.upload.failed" = "Uploading failed";
-"chat.upload.error.fileTooBig" = "File size over 25mb limit!";
+"chat.upload.error.fileTooBig" = "File size over 25MB limit!";
 "chat.upload.error.unsupportedFileType" = "Invalid file type!";
-"chat.upload.error.safetyCheckFailed" = "Failed to check the safety of the file.";
+"chat.upload.error.safetyCheckFailed" = "Failed to confirm the safety of the file.";
+"chat.file.upload.scanning" = "Checking safety of the file…";
 "chat.upload.error.network" = "Network error.";
 "chat.upload.error.generic" = "Failed to upload.";
 "chat.download.download" = "Download";
@@ -174,7 +175,7 @@
 "call.accessibility.callDuration.hint" = "Displays call duration.";
 "call.accessibility.video.operator.label" = "Operator's Video";
 "call.accessibility.video.visitor.label" = "Your Video";
-"call.accessibility.operator.avatar.label" = "Avatar";
+"call.accessibility.operator.avatar.label" = "Operator Avatar";
 "call.accessibility.operator.avatar.hint" = "Displays operator avatar or placeholder.";
 "call.accessibility.connect.queue.firstText.hint" = "Displays operator name.";
 "call.accessibility.connect.queue.secondText.hint" = "Displays call duration.";
@@ -223,7 +224,7 @@
 "survey.accessibility.question.optionButton.unselected.label" = "Unselected: {buttonTitle}";
 "survey.accessibility.validation.title.label" = "Please provide an answer for question above";
 
-"messageCenter.welcome.messageLengthWarning" = "The message cannot exceed {textLength} characters.";
+"messageCenter.welcome.messageLengthWarning" = "The message cannot exceed 10000 characters.";
 "messageCenter.welcome.header" = "Messaging";
 "messageCenter.welcome.title" = "Welcome to Message Center";
 "messageCenter.welcome.subtitle" = "Send a message and we’ll get back to you within 48 hours";
@@ -243,13 +244,13 @@
 "messageCenter.welcome.accessibility.sendHint" = "Sends a secure message.";
 "messageCenter.confirmation.header" = "Messaging";
 "messageCenter.confirmation.title" = "Thank you!";
-"messageCenter.confirmation.subtitle" = "Your message has been sent.\nWe will get back to you within 48 hours.";
+"messageCenter.confirmation.subtitle" = "Your message has been sent. We will get back to you within 48 hours.";
 "messageCenter.confirmation.checkMessages" = "Check messages";
 "messageCenter.confirmation.accessibility.checkMessagesLabel" = "Check messages";
 "messageCenter.confirmation.accessibility.checkMessagesHint" = "Navigates you to the chat transcript.";
 
 "callVisualizer.visitorCode.title.standard" = "Your Visitor Code";
-"callVisualizer.visitorCode.title.error" = "Could not show visitor code. Please try refreshing.";
+"callVisualizer.visitorCode.title.error" = "Could not load the visitor code. Please try refreshing.";
 "callVisualizer.visitorCode.action.refresh" = "Refresh";
 "callVisualizer.visitorCode.action.close" = "Close";
 "callVisualizer.visitorCode.accessibility.titleHint" = "Your five-digit visitor code is";
@@ -258,10 +259,40 @@
 "callVisualizer.visitorCode.accessibility.closeLabel" = "Close Button";
 "callVisualizer.visitorCode.accessibility.closeHint" = "Closes visitor code";
 "callVisualizer.screenSharing.title" = "Screen Sharing";
-"callVisualizer.screenSharing.message" = "Your Screen\nis Being Shared";
+"callVisualizer.screenSharing.message" = "Your Screen is Being Shared";
 "callVisualizer.screenSharing.button.title" = "End Screen Sharing";
 "callVisualizer.screenSharing.accessibility.messageHint" = "Message label";
 "callVisualizer.screenSharing.accessibility.buttonLabel" = "End screen sharing";
 "callVisualizer.screenSharing.accessibility.buttonHint" = "Ends screen sharing";
 
 "gva_not_supported" = "This action is not currently supported on mobile";
+"chat.input.send" = "Send";
+"chat.status.typing" = "Operator typing";
+"error.general" = "Something went wrong";
+"error.internal" = "Internal error";
+
+"general.accept" = "Accept";
+"general.back" = "Back";
+"general.browse" = "Browse";
+"general.cancel" = "Cancel";
+"general.close" = "Close";
+"general.comment" = "Comment";
+"general.company_name" = "CompanyName";
+"general.decline" = "Decline";
+"general.download" = "Download";
+"general.end" = "End";
+"general.message" = "Message";
+"general.no" = "No";
+"general.ok" = "Ok";
+"general.open" = "Open";
+"general.powered_by" = "Powered by Glia";
+"general.retry" = "Retry";
+"general.selected" = "Selected";
+"general.submit" = "Submit";
+"general.thank_you" = "Thank you!";
+"general.yes" = "Yes";
+"general.you" = "You";
+
+"screensharing.visitor_screen.disclaimer.info" = "Depending on your selection, your entire screen might be shared with the operator, not just the application window.";
+"send_message.send" = "Send message";
+"send_message.sending" = "Sending…";
