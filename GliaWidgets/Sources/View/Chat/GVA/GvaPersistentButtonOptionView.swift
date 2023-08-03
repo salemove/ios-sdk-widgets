@@ -27,6 +27,9 @@ class GvaPersistentButtonOptionView: BaseView {
 
     override func setup() {
         super.setup()
+        isAccessibilityElement = true
+        accessibilityLabel = text
+        accessibilityTraits = .button
         layer.cornerRadius = style.cornerRadius
         layer.borderWidth = style.borderWidth
         layer.borderColor = style.borderColor.cgColor
@@ -38,6 +41,11 @@ class GvaPersistentButtonOptionView: BaseView {
         textLabel.numberOfLines = 0
         textLabel.isAccessibilityElement = false
 
+        setFontScalingEnabled(
+            style.accessibility.isFontScalingEnabled,
+            for: textLabel
+        )
+
         choiceButton.addTarget(self, action: #selector(onTap), for: .touchUpInside)
     }
 
@@ -45,7 +53,7 @@ class GvaPersistentButtonOptionView: BaseView {
         super.defineLayout()
         var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
 
-        heightAnchor.constraint(equalToConstant: Self.height).isActive = true
+        heightAnchor.constraint(greaterThanOrEqualToConstant: 42).isActive = true
         addSubview(textLabel)
         textLabel.translatesAutoresizingMaskIntoConstraints = false
         constraints += textLabel.layoutInSuperview(insets: viewInsets)
@@ -64,22 +72,6 @@ class GvaPersistentButtonOptionView: BaseView {
                 colors: colors,
                 cornerRadius: style.cornerRadius
             )
-        }
-    }
-
-    private func applyStyle(_ style: ChoiceCardOptionStateStyle) {
-        setFontScalingEnabled(
-            style.accessibility.isFontScalingEnabled,
-            for: textLabel
-        )
-
-        UIView.transition(with: textLabel, duration: 0.2, options: .transitionCrossDissolve) {
-            self.layer.backgroundColor = style.backgroundColor.cgColor
-            self.textLabel.textColor = style.textColor
-            if let borderColor = style.borderColor {
-                self.layer.borderColor = borderColor.cgColor
-                self.layer.borderWidth = style.borderWidth
-            }
         }
     }
 

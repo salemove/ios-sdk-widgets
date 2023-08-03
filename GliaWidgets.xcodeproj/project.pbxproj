@@ -228,7 +228,6 @@
 		7552DFA72A683A2C0093519B /* NSLayoutConstraint+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75940957298D386F008B173A /* NSLayoutConstraint+Extensions.swift */; };
 		7552DFA82A683A2C0093519B /* UIStackView.Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75940956298D386F008B173A /* UIStackView.Extensions.swift */; };
 		7552DFB12A6FB7DF0093519B /* ChatMessageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7552DFB02A6FB7DF0093519B /* ChatMessageTests.swift */; };
-		7552DFB42A6FBC7F0093519B /* CoreSdk.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7552DFB32A6FBC7F0093519B /* CoreSdk.swift */; };
 		755D186529A6A4E20009F5E8 /* WelcomeStyle+TitleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755D186429A6A4E20009F5E8 /* WelcomeStyle+TitleStyle.swift */; };
 		755D186729A6A4FA0009F5E8 /* WelcomeStyle+SubtitleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755D186629A6A4FA0009F5E8 /* WelcomeStyle+SubtitleStyle.swift */; };
 		755D186929A6A5270009F5E8 /* WelcomeStyle+CheckMessagesButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755D186829A6A5270009F5E8 /* WelcomeStyle+CheckMessagesButtonStyle.swift */; };
@@ -298,6 +297,7 @@
 		75CF8D9129C3A85C00CB1524 /* SecureConversationsWelcomeScreenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CF8D9029C3A85C00CB1524 /* SecureConversationsWelcomeScreenTests.swift */; };
 		75CF8DAD29C8F2B500CB1524 /* SecureConversationsConfirmationScreenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CF8DAC29C8F2B500CB1524 /* SecureConversationsConfirmationScreenTests.swift */; };
 		75F58EE127E7D5300065BA2D /* Survey.ViewController.Props.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F58EE027E7D5300065BA2D /* Survey.ViewController.Props.swift */; };
+		75FD003F2A80E8C5002DC458 /* CoreSdk.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7552DFB32A6FBC7F0093519B /* CoreSdk.swift */; };
 		75FF151427F3A2D600FE7BE2 /* Theme+Survey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FF151327F3A2D600FE7BE2 /* Theme+Survey.swift */; };
 		75FF151727F4E13900FE7BE2 /* Theme.Survey.BooleanQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FF151627F4E13900FE7BE2 /* Theme.Survey.BooleanQuestion.swift */; };
 		75FF151B27F4F52D00FE7BE2 /* Theme.Survey.SingleQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FF151A27F4F52D00FE7BE2 /* Theme.Survey.SingleQuestion.swift */; };
@@ -4475,6 +4475,7 @@
 				754CC61227E2767A005676E9 /* Survey.BooleanQuestionView.swift in Sources */,
 				755D187529A6A6B70009F5E8 /* WelcomeStyle+SendButton.swift in Sources */,
 				6EA3516926E139DA00BF5941 /* GliaViewTransitionController.swift in Sources */,
+				75FD003F2A80E8C5002DC458 /* CoreSdk.swift in Sources */,
 				C0D2F07929A4E3DF00803B47 /* UserImageView.Mock.swift in Sources */,
 				84265E6B29912E2100D65842 /* RemoteConfiguration+CallVisualizer.swift in Sources */,
 				1A1E30C725F9FDAB00850E68 /* ChatImageFileContentView.swift in Sources */,
@@ -4551,7 +4552,6 @@
 				84681A982A61853300DD7406 /* GvaOption.Mock.swift in Sources */,
 				AF6AB34B2989517100003645 /* FileUploader.Failing.swift in Sources */,
 				EB03B00E27FFF6DD0058F6B1 /* CallViewTests.swift in Sources */,
-				7552DFB42A6FBC7F0093519B /* CoreSdk.swift in Sources */,
 				3197F7AD29E6A5C8008EE9F7 /* SecureConversations.FileUploadListView.Mock.swift in Sources */,
 				AF29810929E045CE0005BD55 /* TranscriptModelTests.swift in Sources */,
 				7512A57727BE8A6700319DF1 /* InteractorTests.swift in Sources */,

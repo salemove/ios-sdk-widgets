@@ -153,6 +153,7 @@ extension Theme {
         let visitorText = ChatTextContentStyle(
             textFont: font.bodyText,
             textColor: color.baseLight,
+            textStyle: .body,
             backgroundColor: color.primary,
             accessibility: .init(isFontScalingEnabled: true)
         )
@@ -177,6 +178,7 @@ extension Theme {
         let operatorText = ChatTextContentStyle(
             textFont: font.bodyText,
             textColor: color.baseDark,
+            textStyle: .body,
             backgroundColor: Color.lightGrey,
             accessibility: .init(isFontScalingEnabled: true)
         )
@@ -201,6 +203,7 @@ extension Theme {
         let choiceCardText = ChatTextContentStyle(
             textFont: font.bodyText,
             textColor: color.baseDark,
+            textStyle: .body,
             backgroundColor: color.baseLight,
             accessibility: .init(isFontScalingEnabled: true)
         )
@@ -215,6 +218,7 @@ extension Theme {
         let choiceCardOptionNormalState = ChoiceCardOptionStateStyle(
             textFont: font.bodyText,
             textColor: color.baseDark,
+            textStyle: .body,
             backgroundColor: Color.lightGrey,
             borderColor: nil,
             accessibility: .init(
@@ -225,6 +229,7 @@ extension Theme {
         let choiceCardOptionSelectedState = ChoiceCardOptionStateStyle(
             textFont: font.bodyText,
             textColor: color.baseLight,
+            textStyle: .body,
             backgroundColor: color.primary,
             borderColor: nil,
             accessibility: .init(
@@ -235,6 +240,7 @@ extension Theme {
         let choiceCardOptionDisabledState = ChoiceCardOptionStateStyle(
             textFont: font.bodyText,
             textColor: Color.grey,
+            textStyle: .body,
             backgroundColor: Color.lightGrey,
             borderColor: Color.baseShade,
             accessibility: .init(

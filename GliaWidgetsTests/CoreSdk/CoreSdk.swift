@@ -8,7 +8,9 @@ struct CoreSdkMessageMetadataContainer: Decodable {
     let container: KeyedDecodingContainer<GliaCoreSDK.Message.Metadata.CodingKeys>
 
     init(from decoder: Decoder) throws {
-        self.container = try decoder.container(keyedBy: GliaCoreSDK.Message.Metadata.CodingKeys.self)
+        self.container = try decoder.container(
+            keyedBy: GliaCoreSDK.Message.Metadata.CodingKeys.self
+        )
     }
 
     /// Creates instance with decoding container inside.

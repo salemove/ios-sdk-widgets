@@ -18,6 +18,7 @@ public final class ChoiceCardOptionStateStyle: ChatTextContentStyle {
     public init(
         textFont: UIFont,
         textColor: UIColor,
+        textStyle: UIFont.TextStyle,
         backgroundColor: UIColor,
         borderColor: UIColor?,
         borderWidth: CGFloat = 1,
@@ -28,6 +29,7 @@ public final class ChoiceCardOptionStateStyle: ChatTextContentStyle {
         super.init(
             textFont: textFont,
             textColor: textColor,
+            textStyle: textStyle,
             backgroundColor: backgroundColor,
             accessibility: accessibility
         )
