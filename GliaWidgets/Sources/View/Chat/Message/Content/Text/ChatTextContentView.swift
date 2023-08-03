@@ -6,8 +6,8 @@ class ChatTextContentView: BaseView {
         set { setText(newValue) }
     }
 
-    var attributedText: NSAttributedString? {
-        get { return textView.attributedText }
+    var attributedText: NSMutableAttributedString? {
+        get { return textView.attributedText as? NSMutableAttributedString }
         set { return setAttributedText(newValue) }
     }
 
@@ -68,7 +68,6 @@ class ChatTextContentView: BaseView {
         textView.font = style.textFont
         textView.backgroundColor = .clear
         textView.textColor = style.textColor
-        textView.isAccessibilityElement = false
 
         setFontScalingEnabled(
             style.accessibility.isFontScalingEnabled,
@@ -110,7 +109,7 @@ class ChatTextContentView: BaseView {
         textView.accessibilityIdentifier = text
     }
 
-    private func setAttributedText(_ text: NSAttributedString?) {
+    private func setAttributedText(_ text: NSMutableAttributedString?) {
         guard let text, !text.string.isEmpty else {
             textView.removeFromSuperview()
             return
@@ -124,20 +123,19 @@ class ChatTextContentView: BaseView {
         }
 
         let attributes: [NSAttributedString.Key: Any] = [
-            .font: style.textFont,
+            .font: UIFont.preferredFont(forTextStyle: style.textStyle),
             .foregroundColor: style.textColor
         ]
 
-        let attributedText = NSMutableAttributedString(attributedString: text)
-        attributedText.addAttributes(
+        text.addAttributes(
             attributes,
             range: NSRange(
                 location: 0,
-                length: attributedText.length
+                length: text.length
             )
         )
 
-        textView.attributedText = attributedText
+        textView.attributedText = text
         textView.accessibilityIdentifier = text.string
     }
 }
@@ -168,8 +166,9 @@ extension ChatTextContentView {
             with: ChatTextContentStyle(
                 textFont: .systemFont(ofSize: 10),
                 textColor: .black,
+                textStyle: .body,
                 backgroundColor: .black,
-                accessibility: .unsupported
+                accessibility: .init(isFontScalingEnabled: true)
             ),
             contentAlignment: .left,
             insets: .zero

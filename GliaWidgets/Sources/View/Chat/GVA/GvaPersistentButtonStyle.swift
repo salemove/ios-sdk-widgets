@@ -112,6 +112,9 @@ extension GvaPersistentButtonStyle {
         /// Border width of the button
         public var borderWidth: CGFloat
 
+        /// Accessibility
+        public var accessibility: Accessibility
+
         init(
             textFont: UIFont,
             textColor: UIColor,
@@ -119,7 +122,8 @@ extension GvaPersistentButtonStyle {
             backgroundColor: ColorType,
             cornerRadius: CGFloat,
             borderColor: UIColor,
-            borderWidth: CGFloat
+            borderWidth: CGFloat,
+            accessibility: Accessibility = .unsupported
         ) {
             self.textFont = textFont
             self.textColor = textColor
@@ -128,6 +132,7 @@ extension GvaPersistentButtonStyle {
             self.cornerRadius = cornerRadius
             self.borderColor = borderColor
             self.borderWidth = borderWidth
+            self.accessibility = accessibility
         }
 
         mutating func apply(
@@ -178,5 +183,34 @@ extension GvaPersistentButtonStyle {
                 }
             }
         }
+    }
+}
+
+extension GvaPersistentButtonStyle {
+    /// Accessibility properties for ChoiceCardOptionStateStyle.
+    public struct Accessibility: Equatable {
+        /// Accessibility value.
+        public var value: String
+
+        /// Flag that provides font dynamic type by setting `adjustsFontForContentSizeCategory` for component that supports it.
+        public var isFontScalingEnabled: Bool
+
+        ///
+        /// - Parameters:
+        ///   - value: Accessibility value.
+        ///   - isFontScalingEnabled: Flag that provides font dynamic type by setting `adjustsFontForContentSizeCategory` for component that supports it.
+        public init(
+            value: String = "",
+            isFontScalingEnabled: Bool
+        ) {
+            self.value = value
+            self.isFontScalingEnabled = isFontScalingEnabled
+        }
+
+        /// Accessibility is not supported intentionally.
+        public static let unsupported = Self(
+            value: "",
+            isFontScalingEnabled: false
+        )
     }
 }
