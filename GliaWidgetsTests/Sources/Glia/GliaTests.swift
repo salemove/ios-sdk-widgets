@@ -112,12 +112,11 @@ final class GliaTests: XCTestCase {
 
     func test__messageRenderer() throws {
         let sdk = Glia(environment: .failing)
-        XCTAssertNil(sdk.messageRenderer)
-
-        let messageRendererMock = MessageRenderer.mock
-        sdk.setChatMessageRenderer(messageRenderer: messageRendererMock)
-
         XCTAssertNotNil(sdk.messageRenderer)
+
+        sdk.setChatMessageRenderer(messageRenderer: nil)
+
+        XCTAssertNil(sdk.messageRenderer)
     }
 
     func testOnEventWhenCallVisualizerEngagementStarts() throws {
