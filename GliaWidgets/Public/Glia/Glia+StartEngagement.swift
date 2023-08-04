@@ -80,7 +80,6 @@ extension Glia {
         sceneProvider: SceneProvider? = nil
     ) throws {
         let completion = { [weak self] in
-            self?.setChatMessageRenderer(messageRenderer: .webRenderer)
             try self?.startEngagement(
                 engagementKind: engagementKind,
                 theme: theme,

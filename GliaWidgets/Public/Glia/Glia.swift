@@ -87,7 +87,7 @@ public class Glia {
     var rootCoordinator: EngagementCoordinator?
     var interactor: Interactor?
     var environment: Environment
-    var messageRenderer: MessageRenderer?
+    var messageRenderer: MessageRenderer? = .webRenderer
     var uiConfig: RemoteConfiguration?
     var assetsBuilder: RemoteConfiguration.AssetsBuilder = .standard
 
@@ -152,7 +152,7 @@ public class Glia {
     ///
     /// - Parameter messageRenderer: Custom message renderer.
     ///
-    public func setChatMessageRenderer(messageRenderer: MessageRenderer) {
+    public func setChatMessageRenderer(messageRenderer: MessageRenderer?) {
         self.messageRenderer = messageRenderer
     }
 
