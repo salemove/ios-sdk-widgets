@@ -416,6 +416,53 @@ extension ChatViewController {
         return controller
     }
 
+    static func mockGvaResponseText() throws -> ChatViewController {
+        var chatViewModelEnv = ChatViewModel.Environment.mock
+        chatViewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [URL.mock] }
+        chatViewModelEnv.loadChatMessagesFromHistory = { true }
+
+        let messageUuid = UUID.incrementing
+        let messageId = { messageUuid().uuidString }
+        let queueId = UUID.mock.uuidString
+
+        let jsonData = mockGvaResponseTextJson() ?? Data()
+        let metadataContainer = try CoreSdkMessageMetadataContainer(jsonData: jsonData, jsonDecoder: .init())
+        let metadata = Message.Metadata(container: metadataContainer.container)
+
+        let messages: [ChatMessage] = [
+            .mock(
+                id: messageId(),
+                queueID: queueId,
+                operator: .mock(
+                    name: "Rasmus",
+                    pictureUrl: "https://mock.mock/single_choice/567/image.png"
+                ),
+                sender: .operator,
+                content: "",
+                attachment: nil,
+                downloads: [],
+                metadata: metadata
+            )
+        ]
+
+        chatViewModelEnv.fetchChatHistory = { $0(.success(messages)) }
+
+        var viewFactoryEnv = ViewFactory.Environment.mock
+        viewFactoryEnv.imageViewCache.getImageForKey = { _ in UIImage.mock }
+
+        let chatViewModel = ChatViewModel.mock(environment: chatViewModelEnv)
+        let controller = ChatViewController.mock(
+            chatViewModel: chatViewModel,
+            viewFactory: .init(
+                with: .mock(),
+                messageRenderer: .mock,
+                environment: viewFactoryEnv
+            )
+        )
+        chatViewModel.action?(.setMessageText("Input Message Mock"))
+        return controller
+    }
+
     // MARK: - Visitor File Download States
     static func mockVisitorFileDownloadStates(completion: ([ChatMessage]) -> Void) throws -> ChatViewController {
         var chatViewModelEnv = ChatViewModel.Environment.mock
@@ -485,6 +532,18 @@ extension ChatViewController {
                       "text" : "Third Button"
                     }
                   ]
+                }
+            }
+        """.data(using: .utf8)
+    }
+
+    static private func mockGvaResponseTextJson() -> Data? {
+        """
+            {
+                "metadata":
+                {
+                  "type" : "plainText",
+                  "content" : "This is a Glia Virutal Assistant Response Text.",
                 }
             }
         """.data(using: .utf8)
