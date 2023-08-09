@@ -63,10 +63,6 @@ class ChatMessageView: BaseView {
             )
             contentView.attributedText = text
             contentView.linkTapped = { [weak self] in self?.linkTapped?($0) }
-            contentView.accessibilityProperties = .init(
-                label: accProperties.label,
-                value: accProperties.value
-            )
             appendContentView(contentView, animated: animated)
         default:
             break
