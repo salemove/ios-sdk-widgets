@@ -63,4 +63,14 @@ class ChatViewControllerVoiceOverTests: SnapshotTestCase {
             named: nameForDevice()
         )
     }
+
+    func test_gvaResponseText() throws {
+        let viewController = try ChatViewController.mockGvaResponseText()
+        viewController.view.frame = UIScreen.main.bounds
+        assertSnapshot(
+            matching: viewController,
+            as: .accessibilityImage(precision: Self.possiblePrecision),
+            named: nameForDevice()
+        )
+    }
 }
