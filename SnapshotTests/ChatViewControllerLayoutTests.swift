@@ -53,6 +53,26 @@ class ChatViewControllerLayoutTests: SnapshotTestCase {
         )
     }
 
+    func test_gvaQuickReply() throws {
+        let theme = Theme()
+        let props: QuickReplyView.Props = .shown([
+            .init(title: "First Button", action: .nop),
+            .init(title: "Second Button", action: .nop),
+            .init(title: "Third Button", action: .nop)
+        ])
+        let view: QuickReplyView = .init(
+            style: theme.chat.gliaVirtualAssistant.quickReplyButton,
+            props: props
+        )
+        view.frame = .init(origin: .zero, size: .init(width: 350, height: 200))
+        view.collectionView.heightAnchor.constraint(equalToConstant: 200).isActive = true
+        assertSnapshot(
+            matching: view,
+            as: .image,
+            named: self.nameForDevice()
+        )
+    }
+
     func test_visitorFileDownloadStates() throws {
         var chatMessages: [ChatMessage] = []
         let viewController = try ChatViewController.mockVisitorFileDownloadStates { messages in
