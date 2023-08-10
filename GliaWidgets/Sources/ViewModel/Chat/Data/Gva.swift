@@ -117,10 +117,11 @@ private extension Data {
     }
 
     func containsHtml(_ string: String) -> Bool {
-        if let _ = string.range(of: "<[^>]+>", options: .regularExpression) {
-            return true
+        if string.range(of: "<[^>]+>", options: .regularExpression) == nil {
+            return false
         }
-        return false
+
+        return true
     }
 
     var htmlToString: String { htmlToAttributedString?.string ?? "" }
