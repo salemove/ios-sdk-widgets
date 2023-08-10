@@ -37,5 +37,9 @@ public struct GliaVirtualAssistantStyle {
             configuration?.quickReplyButton,
             assetBuilder: assetBuilder
         )
+        galleryList.apply(
+            configuration: configuration?.galleryCard,
+            assetBuilder: assetBuilder
+        )
     }
 }
