@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		75BC62532A852855004763C8 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BC62522A852855004763C8 /* Configuration.swift */; };
 		C01D12E6292E461C00154A08 /* GliaWidgets in Frameworks */ = {isa = PBXBuildFile; productRef = C01D12E5292E461C00154A08 /* GliaWidgets */; };
 		C03A8021292B7A6700DDECA6 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03A8020292B7A6700DDECA6 /* RootView.swift */; };
 		C03A8023292B7A6700DDECA6 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03A8022292B7A6700DDECA6 /* ContentView.swift */; };
@@ -15,13 +16,13 @@
 		C03A802F292B7AFA00DDECA6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03A802E292B7AFA00DDECA6 /* AppDelegate.swift */; };
 		C03A8035292B7D0E00DDECA6 /* EngagementButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03A8034292B7D0E00DDECA6 /* EngagementButtonStyle.swift */; };
 		C03A8037292B7DFA00DDECA6 /* ContentViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03A8036292B7DFA00DDECA6 /* ContentViewPresenter.swift */; };
-		C03A803C292B7E9C00DDECA6 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03A803B292B7E9C00DDECA6 /* Configuration.swift */; };
 		C03A803F292B7EFB00DDECA6 /* GliaEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03A803E292B7EFB00DDECA6 /* GliaEnvironment.swift */; };
 		C03A8041292B812B00DDECA6 /* AvailabilityModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03A8040292B812B00DDECA6 /* AvailabilityModifier.swift */; };
 		C03A804C292CE2FE00DDECA6 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03A804B292CE2FE00DDECA6 /* Colors.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		75BC62522A852855004763C8 /* Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
 		C03A801D292B7A6700DDECA6 /* Glia Sample Integration.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Glia Sample Integration.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C03A8020292B7A6700DDECA6 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		C03A8022292B7A6700DDECA6 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -30,7 +31,6 @@
 		C03A802E292B7AFA00DDECA6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C03A8034292B7D0E00DDECA6 /* EngagementButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EngagementButtonStyle.swift; sourceTree = "<group>"; };
 		C03A8036292B7DFA00DDECA6 /* ContentViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewPresenter.swift; sourceTree = "<group>"; };
-		C03A803B292B7E9C00DDECA6 /* Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
 		C03A803E292B7EFB00DDECA6 /* GliaEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GliaEnvironment.swift; sourceTree = "<group>"; };
 		C03A8040292B812B00DDECA6 /* AvailabilityModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvailabilityModifier.swift; sourceTree = "<group>"; };
 		C03A804B292CE2FE00DDECA6 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
@@ -67,7 +67,6 @@
 		C03A801F292B7A6700DDECA6 /* Glia Sample Integration */ = {
 			isa = PBXGroup;
 			children = (
-				C03A803B292B7E9C00DDECA6 /* Configuration.swift */,
 				C03A8045292B9FAE00DDECA6 /* Delegate */,
 				C03A8039292B7E5200DDECA6 /* Presenters */,
 				C03A8038292B7E4200DDECA6 /* Views */,
@@ -76,6 +75,7 @@
 				C03A804A292CE2DD00DDECA6 /* Appearance */,
 				C03A8024292B7A6700DDECA6 /* Assets.xcassets */,
 				C03A8026292B7A6700DDECA6 /* Preview Content */,
+				75BC62522A852855004763C8 /* Configuration.swift */,
 			);
 			path = "Glia Sample Integration";
 			sourceTree = "<group>";
@@ -216,8 +216,8 @@
 			files = (
 				C03A803F292B7EFB00DDECA6 /* GliaEnvironment.swift in Sources */,
 				C03A804C292CE2FE00DDECA6 /* Colors.swift in Sources */,
-				C03A803C292B7E9C00DDECA6 /* Configuration.swift in Sources */,
 				C03A802F292B7AFA00DDECA6 /* AppDelegate.swift in Sources */,
+				75BC62532A852855004763C8 /* Configuration.swift in Sources */,
 				C03A8023292B7A6700DDECA6 /* ContentView.swift in Sources */,
 				C03A8035292B7D0E00DDECA6 /* EngagementButtonStyle.swift in Sources */,
 				C03A8021292B7A6700DDECA6 /* RootView.swift in Sources */,
