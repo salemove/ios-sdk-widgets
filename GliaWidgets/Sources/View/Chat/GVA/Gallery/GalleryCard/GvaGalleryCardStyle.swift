@@ -2,15 +2,15 @@ import UIKit
 
 public struct GvaGalleryCardStyle {
     /// Style of the card container.
-    public let cardContainer: ViewStyle
+    public var cardContainer: ViewStyle
     /// Style of the image view.
-    public let imageView: ViewStyle
+    public var imageView: ViewStyle
     /// Style of the card title.
-    public let title: TextStyle
+    public var title: TextStyle
     /// Style of the card subtitle.
-    public let subtitle: TextStyle
+    public var subtitle: TextStyle
     /// Style of the card buttons.
-    public let button: ButtonStyle
+    public var button: ButtonStyle
 
     /// Initialize `GvaGalleryCardStyle` instance.
     /// - Parameters:
@@ -42,18 +42,38 @@ public struct GvaGalleryCardStyle {
             button: .initial
         )
     }
+
+    mutating func apply(
+        configuration: RemoteConfiguration.GVAGalleryCardStyle?,
+        assetBuilder: RemoteConfiguration.AssetsBuilder
+    ) {
+        cardContainer.apply(configuration: configuration?.cardContainer)
+        imageView.apply(configuration: configuration?.imageView)
+        button.apply(
+            configuration: configuration?.button,
+            assetBuilder: assetBuilder
+        )
+        title.apply(
+            configuration: configuration?.title,
+            assetBuilder: assetBuilder
+        )
+        subtitle.apply(
+            configuration: configuration?.subtitle,
+            assetBuilder: assetBuilder
+        )
+    }
 }
 
 public extension GvaGalleryCardStyle {
     struct ViewStyle {
         /// Background color of the view.
-        public let backgroundColor: ColorType
+        public var backgroundColor: ColorType
         /// Corner radius of the view.
-        public let cornerRadius: CGFloat
+        public var cornerRadius: CGFloat
         /// Color of the view's border.
-        public let borderColor: UIColor
+        public var borderColor: UIColor
         /// Width of the view's border.
-        public let borderWidth: CGFloat
+        public var borderWidth: CGFloat
 
         /// Initialize `ViewStyle` instance.
         /// - Parameters:
@@ -81,13 +101,39 @@ public extension GvaGalleryCardStyle {
                 borderWidth: 0
             )
         }
+
+        mutating func apply(configuration: RemoteConfiguration.Layer?) {
+            configuration?.border?.value
+                .map { UIColor(hex: $0) }
+                .first
+                .unwrap { borderColor = $0 }
+
+            configuration?.borderWidth
+                .unwrap { borderWidth = $0 }
+
+            configuration?.cornerRadius
+                .unwrap { cornerRadius = $0 }
+
+            configuration?.color.unwrap {
+                switch $0.type {
+                case .fill:
+                    $0.value
+                        .map { UIColor(hex: $0) }
+                        .first
+                        .unwrap { backgroundColor = .fill(color: $0) }
+                case .gradient:
+                    let colors = $0.value.convertToCgColors()
+                    backgroundColor = .gradient(colors: colors)
+                }
+            }
+        }
     }
 
     struct TextStyle {
         /// Font of the card text label.
-        public let font: UIFont
+        public var font: UIFont
         /// Color of the card text label.
-        public let textColor: UIColor
+        public var textColor: UIColor
         /// Text style of the card text label.
         public var textStyle: UIFont.TextStyle
 
@@ -113,13 +159,28 @@ public extension GvaGalleryCardStyle {
                 textStyle: .body
             )
         }
+
+        mutating func apply(
+            configuration: RemoteConfiguration.Text?,
+            assetBuilder: RemoteConfiguration.AssetsBuilder
+        ) {
+            UIFont.convertToFont(
+                uiFont: assetBuilder.fontBuilder(configuration?.font),
+                textStyle: textStyle
+            ).unwrap { font = $0 }
+
+            configuration?.foreground?.value
+                .map { UIColor(hex: $0) }
+                .first
+                .unwrap { textColor = $0 }
+        }
     }
 
     struct ButtonStyle {
         /// Style of the button title.
-        public let title: TextStyle
+        public var title: TextStyle
         /// Style of the button background.
-        public let background: ViewStyle
+        public var background: ViewStyle
 
         /// Initialize `ButtonStyle` instance.
         /// - Parameters:
@@ -138,6 +199,17 @@ public extension GvaGalleryCardStyle {
                 title: .initial,
                 background: .initial
             )
+        }
+
+        mutating func apply(
+            configuration: RemoteConfiguration.Button?,
+            assetBuilder: RemoteConfiguration.AssetsBuilder
+        ) {
+            title.apply(
+                configuration: configuration?.text,
+                assetBuilder: assetBuilder
+            )
+            background.apply(configuration: configuration?.background)
         }
     }
 }
