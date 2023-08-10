@@ -73,4 +73,24 @@ class ChatViewControllerVoiceOverTests: SnapshotTestCase {
             named: nameForDevice()
         )
     }
+
+    func test_gvaQuickReply() throws {
+        let theme = Theme()
+        let props: QuickReplyView.Props = .shown([
+            .init(title: "First Button", action: .nop),
+            .init(title: "Second Button", action: .nop),
+            .init(title: "Third Button", action: .nop)
+        ])
+        let view: QuickReplyView = .init(
+            style: theme.chat.gliaVirtualAssistant.quickReplyButton,
+            props: props
+        )
+        view.frame = .init(origin: .zero, size: .init(width: 350, height: 200))
+        view.collectionView.heightAnchor.constraint(equalToConstant: 200).isActive = true
+        assertSnapshot(
+            matching: view,
+            as: .accessibilityImage(precision: Self.possiblePrecision),
+            named: self.nameForDevice()
+        )
+    }
 }
