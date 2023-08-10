@@ -1,14 +1,14 @@
 import UIKit
 
 final class QuickReplyView: BaseView {
-    var props: Props = .hidden {
+    var props: Props {
         didSet {
             renderProps()
         }
     }
 
     let style: GvaQuickReplyButtonStyle
-    private lazy var collectionView: SelfSizingCollectionView = {
+    lazy var collectionView: SelfSizingCollectionView = {
         let layout = LeftAlignedCollectionViewFlowLayout()
         layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
         layout.minimumLineSpacing = 0
@@ -21,9 +21,11 @@ final class QuickReplyView: BaseView {
     }()
     private var collectionViewHeightConstraint: NSLayoutConstraint?
 
-    init(style: GvaQuickReplyButtonStyle) {
+    init(style: GvaQuickReplyButtonStyle, props: Props = .hidden) {
         self.style = style
+        self.props = props
         super.init()
+        renderProps()
     }
 
     @available(*, unavailable)
