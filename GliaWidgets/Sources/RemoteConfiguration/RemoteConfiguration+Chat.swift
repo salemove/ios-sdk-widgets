@@ -24,11 +24,25 @@ extension RemoteConfiguration {
     struct Gva: Codable {
         let persistentButton: GvaPersistentButton?
         let quickReplyButton: Button?
+        let galleryCard: GvaGalleryCards?
     }
 
     struct GvaPersistentButton: Codable {
         let title: Text?
         let background: Layer?
+        let button: Button?
+    }
+
+    struct GvaGalleryCards: Codable {
+        let operatorImage: UserImageStyle?
+        let cardStyle: GVAGalleryCardStyle?
+    }
+
+    struct GVAGalleryCardStyle: Codable {
+        let cardContainer: Layer?
+        let imageView: Layer?
+        let title: Text?
+        let subtitle: Text?
         let button: Button?
     }
 
