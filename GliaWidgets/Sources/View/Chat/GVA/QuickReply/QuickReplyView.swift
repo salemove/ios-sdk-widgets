@@ -59,6 +59,19 @@ final class QuickReplyView: BaseView {
             collectionView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor)
         ])
     }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        switch style.backgroundColor {
+        case .fill(let color):
+            collectionView.backgroundColor = color
+        case .gradient(let colors):
+            makeGradientBackground(
+                colors: colors,
+                cornerRadius: style.cornerRadius
+            )
+        }
+    }
 }
 
 // MARK: - Private
