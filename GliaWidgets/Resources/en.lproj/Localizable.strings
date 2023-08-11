@@ -264,4 +264,34 @@
 "callVisualizer.screenSharing.accessibility.buttonLabel" = "End screen sharing";
 "callVisualizer.screenSharing.accessibility.buttonHint" = "Ends screen sharing";
 
-"gva_not_supported" = "This action is not currently supported on mobile";
+"gva.error_unsupported" = "This action is not currently supported on mobile";
+"chat.input.send" = "Send";
+"chat.status.typing" = "Operator typing";
+"error.general" = "Something went wrong";
+"error.internal" = "Internal error";
+
+"general.accept" = "Accept";
+"general.back" = "Back";
+"general.browse" = "Browse";
+"general.cancel" = "Cancel";
+"general.close" = "Close";
+"general.comment" = "Comment";
+"general.company_name" = "CompanyName";
+"general.decline" = "Decline";
+"general.download" = "Download";
+"general.end" = "End";
+"general.message" = "Message";
+"general.no" = "No";
+"general.ok" = "Ok";
+"general.open" = "Open";
+"general.powered_by" = "Powered by Glia";
+"general.retry" = "Retry";
+"general.selected" = "Selected";
+"general.submit" = "Submit";
+"general.thank_you" = "Thank you!";
+"general.yes" = "Yes";
+"general.you" = "You";
+
+"screensharing.visitor_screen.disclaimer.info" = "Depending on your selection, your entire screen might be shared with the operator, not just the application window.";
+"send_message.send" = "Send message";
+"send_message.sending" = "Sending…";

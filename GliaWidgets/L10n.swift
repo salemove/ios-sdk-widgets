@@ -11,7 +11,7 @@ import Foundation
 // swiftlint:disable nesting type_body_length type_name vertical_whitespace_opening_braces
 public enum L10n {
   /// This action is not currently supported on mobile
-  public static let gvaNotSupported = L10n.tr("Localizable", "gva_not_supported", fallback: "This action is not currently supported on mobile")
+  public static let gvaNotSupported = L10n.tr("Localizable", "gva.error_unsupported", fallback: "This action is not currently supported on mobile")
   /// Operator
   public static let `operator` = L10n.tr("Localizable", "operator", fallback: "Operator")
   /// Powered by
