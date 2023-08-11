@@ -265,7 +265,7 @@
 "callVisualizer.screenSharing.accessibility.buttonLabel" = "End screen sharing";
 "callVisualizer.screenSharing.accessibility.buttonHint" = "Ends screen sharing";
 
-"gva_not_supported" = "This action is not currently supported on mobile";
+"gva.error_unsupported" = "This action is not currently supported on mobile";
 "chat.input.send" = "Send";
 "chat.status.typing" = "Operator typing";
 "error.general" = "Something went wrong";
