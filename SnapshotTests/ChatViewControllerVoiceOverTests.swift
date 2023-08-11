@@ -74,6 +74,16 @@ class ChatViewControllerVoiceOverTests: SnapshotTestCase {
         )
     }
 
+    func test_gvaGalleryCard() throws {
+        let viewController = try ChatViewController.mockGvaGalleryCards()
+        viewController.view.frame = UIScreen.main.bounds
+        assertSnapshot(
+            matching: viewController,
+            as: .accessibilityImage(precision: Self.possiblePrecision),
+            named: nameForDevice()
+        )
+    }
+
     func test_gvaQuickReply() throws {
         let theme = Theme()
         let props: QuickReplyView.Props = .shown([
