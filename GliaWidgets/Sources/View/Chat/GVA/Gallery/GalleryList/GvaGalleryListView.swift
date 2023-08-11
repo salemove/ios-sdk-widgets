@@ -47,6 +47,8 @@ final class GvaGalleryListView: BaseView {
         collectionView.dataSource = self
         collectionView.isScrollEnabled = true
         collectionView.showsHorizontalScrollIndicator = false
+        collectionView.isAccessibilityElement = false
+        accessibilityElements = [collectionView]
 
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
