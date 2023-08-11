@@ -1,11 +1,11 @@
 strings:
   inputs: GliaWidgets/Resources/en.lproj/Localizable.strings
   outputs:
-    - templateName: structured-swift4
-      output: GliaWidgets/L10n.swift
+    - templatePath: swiftgen-strings.stencil
+      output: GliaWidgets/Localization.swift
       params:
-        publicAccess: true
-        enumName: L10n
+        publicAccess: false
+        enumName: Localization
 
 xcassets:
   inputs:
