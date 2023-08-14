@@ -79,7 +79,7 @@ extension Survey {
             textView.layer.borderWidth = props.showValidationError ?
                 style.option.highlightedLayer.borderWidth :
                 style.option.normalLayer.borderWidth
-            if let backgroundColor = style.background.background {
+            if let backgroundColor = style.option.normalLayer.background {
                 switch backgroundColor {
                 case .fill(let color):
                     textView.backgroundColor = color
