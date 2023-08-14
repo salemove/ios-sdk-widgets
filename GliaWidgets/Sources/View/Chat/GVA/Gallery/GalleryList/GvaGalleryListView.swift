@@ -68,6 +68,11 @@ final class GvaGalleryListView: BaseView {
         ).activate()
     }
 
+    override func defineLayout() {
+        super.defineLayout()
+        collectionView.backgroundColor = UIColor.clear
+    }
+
     // MARK: - Initialization
 
     init(environment: Environment) {
