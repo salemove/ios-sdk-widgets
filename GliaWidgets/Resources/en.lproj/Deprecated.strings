@@ -1,0 +1,273 @@
+"poweredBy" = "Powered by";
+"operator" = "Operator";
+
+"alert.action.yes" = "Yes";
+"alert.action.no" = "No";
+"alert.action.decline" = "Decline";
+"alert.action.accept" = "Accept";
+"alert.action.ok" = "OK";
+"alert.action.settings" = "Settings";
+"alert.action.cancel" = "Cancel";
+
+"alert.accessibility.action.yes" = "Yes";
+"alert.accessibility.action.no" = "No";
+"alert.accessibility.action.decline" = "Decline";
+"alert.accessibility.action.accept" = "Accept";
+"alert.accessibility.action.ok" = "OK";
+"alert.accessibility.action.settings" = "Settings";
+"alert.accessibility.action.cancel" = "Cancel";
+
+"alert.leaveQueue.title" = "Are you sure you want to leave?";
+"alert.leaveQueue.message" = "You will lose your place in the queue.";
+
+"alert.endEngagement.title" = "End Engagement?";
+"alert.endEngagement.message" = "Are you sure you want to end engagement?";
+
+"alert.operatorEndedEngagement.title" = "Engagement Ended";
+"alert.operatorEndedEngagement.message" = "This engagement has ended.\nThank you!";
+
+"alert.operatorsUnavailable.title" = "We're sorry";
+"alert.operatorsUnavailable.message" = "Operators are no longer available.\nPlease try again later.";
+
+"alert.unexpected.title" = "We're sorry, there has been an unexpected error.";
+"alert.unexpected.message" = "Please try again later.";
+
+"alert.unavailableMessageCenter.title" = "Message Center Unavailable";
+"alert.unavailableMessageCenter.message" = "The Message Center is currently unavailable. Please try again later.";
+"alert.unavailableMessageCenter.notAuthenticatedMessage" = "We could not verify your authentication status.";
+
+"alert.apiError.title" = "We're sorry, there has been an error.";
+"alert.apiError.message" = "{message}";
+
+"alert.mediaUpgrade.title" = "{operatorName} has offered you to upgrade";
+"alert.mediaUpgrade.audio.title" = "Audio";
+"alert.mediaUpgrade.audio.info" = "Speak through your device";
+"alert.mediaUpgrade.phone.title" = "Phone";
+"alert.mediaUpgrade.phone.info" = "Enter your number and we'll call you";
+
+"alert.audioUpgrade.title" = "{operatorName} has offered you to upgrade to audio";
+"alert.videoUpgrade.oneWay.title" = "{operatorName} has offered you to see their video";
+"alert.videoUpgrade.twoWay.title" = "{operatorName} has offered you to upgrade to video";
+
+"alert.microphonePermission.title" = "Unable to access microphone";
+"alert.microphonePermission.message" = "Allow access to your microphone from device menu: “Settings” - “Privacy” - “Microphone”";
+"alert.cameraPermission.title" = "Unable to access camera";
+"alert.cameraPermission.message" = "Allow access to your camera from device menu: “Settings” - “Privacy” - “Camera”";
+
+"alert.mediaSourceNotAvailable.title" = "Unable to access media source";
+"alert.mediaSourceNotAvailable.message" = "This media source is not available on your device";
+
+"alert.screenSharing.start.title" = "{operatorName} has asked you to share your screen";
+"alert.screenSharing.start.message" = "{operatorName} would like to see the screen of your device";
+"alert.screenSharing.stop.title" = "Stop screen sharing?";
+"alert.screenSharing.stop.message" = "Are you sure you want to stop sharing your screen?";
+
+"alert.visitorCode.title" = "Your Visitor Code";
+
+"chat.title" = "Chat";
+"chat.endButton.title" = "End";
+"chat.connect.queue.firstText" = "CompanyName";
+"chat.connect.queue.secondText" = "We're here to help!";
+"chat.connect.connecting.firstText" = "Connecting with {operatorName}";
+"chat.connect.connecting.secondText" = "";
+"chat.connect.connected.firstText" = "{operatorName}";
+"chat.connect.connected.secondText" = "{operatorName} has joined the conversation.";
+"chat.connect.transferring.firstText" = "Transferring";
+"chat.message.enterMessagePlaceholder" = "Enter Message";
+"chat.message.startEngagementPlaceholder" = "Send a message to start chatting";
+"chat.message.choiceCardPlaceholder" = "Tap on the answer above";
+"chat.message.status.delivered" = "Delivered";
+"chat.upgrade.audio.text" = "Upgraded to Audio Call";
+"chat.upgrade.video.text" = "Upgraded to Video Call";
+"chat.pickMedia.photo" = "Photo Library";
+"chat.pickMedia.takePhoto" = "Take Photo or Video";
+"chat.pickMedia.browse" = "Browse";
+"chat.upload.uploading" = "Uploading file…";
+"chat.upload.uploaded" = "Ready to send";
+"chat.upload.failed" = "Uploading failed";
+"chat.upload.error.fileTooBig" = "File size over 25MB limit!";
+"chat.upload.error.unsupportedFileType" = "Invalid file type!";
+"chat.upload.error.safetyCheckFailed" = "Failed to confirm the safety of the file.";
+"chat.file.upload.scanning" = "Checking safety of the file…";
+"chat.upload.error.network" = "Network error.";
+"chat.upload.error.generic" = "Failed to upload.";
+"chat.download.download" = "Download";
+"chat.download.downloading" = "Downloading file…";
+"chat.download.open" = "Open";
+"chat.download.failed" = "Download failed";
+"chat.download.failed.separator" = " | ";
+"chat.download.failed.retry" = "Retry";
+"chat.secureTranscript.headerTitle" = "Messaging";
+"chat.secureTranscript.unreadMessageDividerTitle" = "New Messages";
+
+"chat.accessibility.upload.removeUpload.label" = "Remove upload";
+"chat.accessibility.upload.progress.percentValue" = "{uploadPercentValue}%%";
+"chat.accessibility.upload.progress.fileNameWithProgressValue" = "{uploadedFileName}, {uploadPercentValue}%%";
+
+"chat.accessibility.download.state.none" = "{downloadedFileName}, {downloadedFileState}";
+"chat.accessibility.download.state.downloading" = "{downloadedFileName}, {downloadedFileState} {downloadPercentValue}%%";
+"chat.accessibility.download.state.downloaded" = "{downloadedFileName}, {downloadedFileState}";
+"chat.accessibility.download.state.error" = "{downloadedFileName}, {downloadedFileState}";
+
+"chat.accessibility.message.messageInput.label" = "Message";
+"chat.accessibility.pickMedia.pickAttachmentButton.label" = "Pick attachment";
+"chat.accessibility.message.sendButton.label" = "Send";
+"chat.accessibility.message.attachmentMessageLabel" = "Attachment from {fileSender}";
+"chat.accessibility.message.you" = "You";
+"chat.accessibility.message.choiceCard.buttonState.normal" = "";
+"chat.accessibility.message.choiceCard.buttonState.selected" = "Selected";
+"chat.accessibility.message.choiceCard.buttonState.disabled" = "Disabled";
+"chat.accessibility.header.backButton.label" = "back";
+"chat.accessibility.header.backButton.hint" = "";
+"chat.accessibility.header.endButton.label" = "End";
+"chat.accessibility.header.closeButton.label" = "Close";
+"chat.accessibility.header.closeButton.hint" = "";
+"chat.accessibility.header.endScreenShareButton.label" = "End screen share";
+"chat.accessibility.header.endScreenShareButton.hint" = "";
+"chat.accessibility.message.choiceCard.image.label" = "Choice card";
+"chat.accessibility.message.unreadMessagesIndicator.label" = "Unread messages";
+"chat.accessibility.message.operator.typingIndicator.label" = "{operatorName} is typing";
+"chat.accessibility.operator.avatar.label" = "Avatar";
+"chat.accessibility.operator.avatar.hint" = "Displays operator avatar or placeholder.";
+"chat.accessibility.connect.queue.firstText.hint" = "Displays operator name.";
+"chat.accessibility.connect.queue.secondText.hint" = "Displays call duration.";
+"chat.accessibility.connect.connecting.firstText.hint" = "Displays operator name.";
+"chat.accessibility.connect.connecting.secondText.hint" = "Displays call duration.";
+"chat.accessibility.connect.connected.firstText.hint" = "Displays operator name.";
+"chat.accessibility.connect.connected.secondText.hint" = "Displays call duration.";
+"chat.accessibility.visitorName" = "You";
+"chat.accessibility.chatCallUpgrade.audio.duration.hint" = "Displays call duration.";
+"chat.accessibility.chatCallUpgrade.video.duration.hint" = "Displays call duration.";
+
+"call.audio.title" = "Audio";
+"call.video.title" = "Video";
+"call.endButton.title" = "End";
+"call.connect.queue.firstText" = "CompanyName";
+"call.connect.queue.secondText" = "We're here to help!";
+"call.connect.connecting.firstText" = "Connecting with {operatorName}";
+"call.connect.connecting.secondText" = "";
+"call.connect.connected.firstText" = "{operatorName}";
+"call.connect.connected.secondText" = "{callDuration}";
+"call.connect.transferring.firstText" = "Transferring";
+"call.operator.name" = "{operatorName}";
+"call.topText" = "(By default your video will be off)";
+"call.bottomText" = "You can continue browsing and we’ll connect you automatically.";
+"call.buttons.chat.title" = "Chat";
+"call.buttons.video.title" = "Video";
+"call.buttons.mute.inactive.title" = "Mute";
+"call.buttons.mute.active.title" = "Unmute";
+"call.buttons.speaker.title" = "Speaker";
+"call.buttons.minimize.title" = "Minimize";
+"call.onHold.topText" = "On Hold";
+"call.onHold.bottomText" = "You can continue browsing while you are on hold";
+"call.onHold.localVideoStreamLabelText" = "You";
+
+"call.accessibility.header.backButton.label" = "Back";
+"call.accessibility.header.backButton.hint" = "Activates minimize.";
+"call.accessibility.header.endButton.label" = "End";
+"call.accessibility.header.closeButton.label" = "Close";
+"call.accessibility.header.closeButton.hint" = "";
+"call.accessibility.header.endScreenShareButton.label" = "End";
+"call.accessibility.header.endScreenShareButton.hint" = "";
+"call.accessibility.bubble.label" = "Operator Avatar";
+"call.accessibility.bubble.hint" = "Deactivates minimize.";
+"call.accessibility.operatorName.hint" = "Displays operator name.";
+"call.accessibility.callDuration.hint" = "Displays call duration.";
+"call.accessibility.video.operator.label" = "Operator's Video";
+"call.accessibility.video.visitor.label" = "Your Video";
+"call.accessibility.operator.avatar.label" = "Operator Avatar";
+"call.accessibility.operator.avatar.hint" = "Displays operator avatar or placeholder.";
+"call.accessibility.connect.queue.firstText.hint" = "Displays operator name.";
+"call.accessibility.connect.queue.secondText.hint" = "Displays call duration.";
+"call.accessibility.connect.connecting.firstText.hint" = "Displays operator name.";
+"call.accessibility.connect.connecting.secondText.hint" = "Displays call duration.";
+"call.accessibility.connect.connected.firstText.hint" = "Displays operator name.";
+"call.accessibility.connect.connected.secondText.hint" = "Displays call duration.";
+"call.accessibility.buttons.chat.active.label" = "Selected";
+"call.accessibility.buttons.chat.inactive.label" = "";
+"call.accessibility.buttons.chat.badgeValue.singleItem" = "{badgeValue} unread message";
+"call.accessibility.buttons.chat.badgeValue.multipleItems" = "{badgeValue} unread messages";
+"call.accessibility.buttons.chat.titleAndBadgeValue" = "{buttonTitle}, {badgeValue}";
+"call.accessibility.buttons.video.active.label" = "Selected";
+"call.accessibility.buttons.video.inactive.label" = "";
+"call.accessibility.buttons.video.badgeValue.singleItem" = "";
+"call.accessibility.buttons.video.badgeValue.multipleItems" = "";
+"call.accessibility.buttons.video.titleAndBadgeValue" = "{buttonTitle}, {badgeValue}";
+"call.accessibility.buttons.mute.active.label" = "Selected";
+"call.accessibility.buttons.mute.inactive.label" = "";
+"call.accessibility.buttons.mute.badgeValue.singleItem" = "";
+"call.accessibility.buttons.mute.badgeValue.multipleItems" = "";
+"call.accessibility.buttons.mute.titleAndBadgeValue" = "{buttonTitle}, {badgeValue}";
+"call.accessibility.buttons.speaker.active.label" = "Selected";
+"call.accessibility.buttons.speaker.inactive.label" = "";
+"call.accessibility.buttons.speaker.badgeValue.singleItem" = "";
+"call.accessibility.buttons.speaker.badgeValue.multipleItems" = "";
+"call.accessibility.buttons.speaker.titleAndBadgeValue" = "{buttonTitle}, {badgeValue}";
+"call.accessibility.buttons.minimize.active.label" = "Selected";
+"call.accessibility.buttons.minimize.inactive.label" = "";
+"call.accessibility.buttons.minimize.badgeValue.singleItem" = "";
+"call.accessibility.buttons.minimize.badgeValue.multipleItems" = "";
+"call.accessibility.buttons.minimize.titleAndBadgeValue" = "{buttonTitle}, {badgeValue}";
+
+"survey.action.cancel" = "Cancel";
+"survey.action.submit" = "Submit";
+"survey.action.yes" = "Yes";
+"survey.action.no" = "No";
+"survey.action.validationError" = "Please provide an answer.";
+"survey.question.title.asterisk" = " *";
+
+"survey.accessibility.footer.cancelButton.label" = "Cancel";
+"survey.accessibility.footer.submitButton.label" = "Submit";
+"survey.accessibility.question.title.value" = "Required";
+"survey.accessibility.question.textField.hint" = "Enter the answer";
+"survey.accessibility.question.optionButton.selected.label" = "Selected: {buttonTitle}";
+"survey.accessibility.question.optionButton.unselected.label" = "Unselected: {buttonTitle}";
+"survey.accessibility.validation.title.label" = "Please provide an answer for question above";
+
+"messageCenter.welcome.messageLengthWarning" = "The message cannot exceed 10000 characters.";
+"messageCenter.welcome.header" = "Messaging";
+"messageCenter.welcome.title" = "Welcome to Message Center";
+"messageCenter.welcome.subtitle" = "Send a message and we’ll get back to you within 48 hours";
+"messageCenter.welcome.checkMessages" = "Check messages";
+"messageCenter.welcome.messageTitle" = "Your message";
+"messageCenter.welcome.messageTextViewNormal" = "Enter your message";
+"messageCenter.welcome.messageTextViewActive" = "Enter your message";
+"messageCenter.welcome.messageTextViewDisabled" = "Enter your message";
+"messageCenter.welcome.sendEnabled" = "Send";
+"messageCenter.welcome.sendDisabled" = "Send";
+"messageCenter.welcome.sendLoading" = "Send";
+"messageCenter.welcome.accessibility.checkMessagesLabel" = "Check messages";
+"messageCenter.welcome.accessibility.checkMessagesHint" = "Navigates you to the chat transcript.";
+"messageCenter.welcome.accessibility.filePickerLabel" = "File picker";
+"messageCenter.welcome.accessibility.filePickerHint" = "Opens the file picker to attach media.";
+"messageCenter.welcome.accessibility.sendLabel" = "Send";
+"messageCenter.welcome.accessibility.sendHint" = "Sends a secure message.";
+"messageCenter.confirmation.header" = "Messaging";
+"messageCenter.confirmation.title" = "Thank you!";
+"messageCenter.confirmation.subtitle" = "Your message has been sent. We will get back to you within 48 hours.";
+"messageCenter.confirmation.checkMessages" = "Check messages";
+"messageCenter.confirmation.accessibility.checkMessagesLabel" = "Check messages";
+"messageCenter.confirmation.accessibility.checkMessagesHint" = "Navigates you to the chat transcript.";
+
+"callVisualizer.visitorCode.title.standard" = "Your Visitor Code";
+"callVisualizer.visitorCode.title.error" = "Could not load the visitor code. Please try refreshing.";
+"callVisualizer.visitorCode.action.refresh" = "Refresh";
+"callVisualizer.visitorCode.action.close" = "Close";
+"callVisualizer.visitorCode.accessibility.titleHint" = "Your five-digit visitor code is";
+"callVisualizer.visitorCode.accessibility.refreshLabel" = "Refresh Button";
+"callVisualizer.visitorCode.accessibility.refreshHint" = "Generates new visitor code";
+"callVisualizer.visitorCode.accessibility.closeLabel" = "Close Button";
+"callVisualizer.visitorCode.accessibility.closeHint" = "Closes visitor code";
+"callVisualizer.screenSharing.title" = "Screen Sharing";
+"callVisualizer.screenSharing.message" = "Your Screen is Being Shared";
+"callVisualizer.screenSharing.button.title" = "End Screen Sharing";
+"callVisualizer.screenSharing.accessibility.messageHint" = "Message label";
+"callVisualizer.screenSharing.accessibility.buttonLabel" = "End screen sharing";
+"callVisualizer.screenSharing.accessibility.buttonHint" = "Ends screen sharing";
+
+"gva.error_unsupported" = "This action is not currently supported on mobile";
+"chat.input.send" = "Send";
+"chat.status.typing" = "Operator typing";
+"screensharing.visitor_screen.disclaimer.info" = "Depending on your selection, your entire screen might be shared with the operator, not just the application window.";
+"send_message.send" = "Send message";
+"send_message.sending" = "Sending…";
