@@ -7,8 +7,6 @@ public extension Theme.SurveyStyle {
         public var title: Theme.Text
         /// OptionButton style.
         public var option: OptionButton
-        /// Background style.
-        public var background: Theme.Layer
         /// Text style.
         public var text: Theme.Text
         /// Validation error style.
@@ -62,12 +60,6 @@ public extension Theme.SurveyStyle {
                     textStyle: .caption1,
                     accessibility: .init(isFontScalingEnabled: true)
                 ),
-                background: Theme.Layer(
-                    background: .fill(color: color.background),
-                    borderColor: color.baseNormal.cgColor,
-                    borderWidth: 1,
-                    cornerRadius: 5
-                ),
                 text: .init(
                     color: color.baseDark.hex,
                     font: font.subtitle,
@@ -91,7 +83,6 @@ public extension Theme.SurveyStyle {
                 configuration: configuration?.text,
                 assetsBuilder: assetsBuilder
             )
-            background.apply(configuration: configuration?.background)
             option.apply(
                 configuration: configuration?.option,
                 assetsBuilder: assetsBuilder
