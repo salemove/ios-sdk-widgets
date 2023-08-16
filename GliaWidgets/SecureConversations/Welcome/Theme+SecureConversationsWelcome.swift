@@ -2,7 +2,7 @@ import UIKit
 
 extension Theme {
     var secureConversationsWelcomeStyle: SecureConversations.WelcomeStyle {
-        typealias Welcome = L10n.MessageCenter.Welcome
+        typealias Welcome = Localization.MessageCenter.Welcome
         let chat = chatStyle
 
         var header = chat.header
@@ -25,14 +25,14 @@ extension Theme {
         )
 
         let checkMessagesButtonStyle = SecureConversations.WelcomeStyle.CheckMessagesButtonStyle(
-            title: Welcome.checkMessages,
+            title: Localization.MessageCenter.checkMessages,
             font: font.header2,
             textStyle: .title2,
             color: color.primary,
             accessibility: .init(
                 isFontScalingEnabled: true,
-                label: Welcome.Accessibility.checkMessagesLabel,
-                hint: Welcome.Accessibility.checkMessagesHint
+                label: Localization.MessageCenter.checkMessages,
+                hint: Welcome.CheckMessages.Accessibility.hint
             )
         )
 
@@ -45,7 +45,7 @@ extension Theme {
         )
 
         let messageTextViewNormalStyle = SecureConversations.WelcomeStyle.MessageTextViewNormalStyle(
-            placeholderText: Welcome.messageTextViewNormal,
+            placeholderText: Welcome.MessageTextView.placeholder,
             placeholderFont: font.bodyText,
             placeholderColor: color.baseNormal,
             textFont: font.bodyText,
@@ -59,7 +59,7 @@ extension Theme {
         )
 
         let messageTextViewActiveStyle = SecureConversations.WelcomeStyle.MessageTextViewActiveStyle(
-            placeholderText: Welcome.messageTextViewActive,
+            placeholderText: Welcome.MessageTextView.placeholder,
             placeholderFont: font.bodyText,
             placeholderColor: color.baseNormal,
             textFont: font.bodyText,
@@ -73,7 +73,7 @@ extension Theme {
         )
 
         let messageTextViewDisabledStyle = SecureConversations.WelcomeStyle.MessageTextViewDisabledStyle(
-            placeholderText: Welcome.messageTextViewDisabled,
+            placeholderText: Welcome.MessageTextView.placeholder,
             placeholderFont: font.bodyText,
             placeholderColor: color.baseNormal,
             textFont: font.bodyText,
@@ -93,7 +93,7 @@ extension Theme {
         )
 
         let sendButtonEnabledStyle = SecureConversations.WelcomeStyle.SendButtonEnabledStyle(
-            title: Welcome.sendEnabled,
+            title: Localization.Chat.Input.send,
             font: font.bodyText,
             textStyle: .body,
             textColor: color.baseLight,
@@ -103,13 +103,13 @@ extension Theme {
             cornerRadius: 4,
             accessibility: .init(
                 isFontScalingEnabled: true,
-                label: Welcome.Accessibility.sendLabel,
-                hint: Welcome.Accessibility.sendHint
+                label: Localization.Chat.Input.send,
+                hint: Welcome.Send.Accessibility.hint
             )
         )
 
         let sendButtonDisabledStyle = SecureConversations.WelcomeStyle.SendButtonDisabledStyle(
-            title: Welcome.sendDisabled,
+            title: Localization.Chat.Input.send,
             font: font.bodyText,
             textStyle: .body,
             textColor: .disabledTitle,
@@ -119,13 +119,13 @@ extension Theme {
             cornerRadius: 4,
             accessibility: .init(
                 isFontScalingEnabled: true,
-                label: Welcome.Accessibility.sendLabel,
-                hint: Welcome.Accessibility.sendHint
+                label: Localization.Chat.Input.send,
+                hint: Welcome.Send.Accessibility.hint
             )
         )
 
         let sendButtonLoadingStyle = SecureConversations.WelcomeStyle.SendButtonLoadingStyle(
-            title: Welcome.sendLoading,
+            title: Localization.Chat.Input.send,
             font: font.bodyText,
             textStyle: .body,
             textColor: .disabledTitle,
@@ -136,8 +136,8 @@ extension Theme {
             cornerRadius: 4,
             accessibility: .init(
                 isFontScalingEnabled: true,
-                label: Welcome.Accessibility.sendLabel,
-                hint: Welcome.Accessibility.sendHint
+                label: Localization.Chat.Input.send,
+                hint: Welcome.Send.Accessibility.hint
             )
         )
 
@@ -161,8 +161,8 @@ extension Theme {
             disabledColor: .lightGray,
             accessibility: .init(
                 isFontScalingEnabled: true,
-                accessibilityLabel: Welcome.Accessibility.filePickerLabel,
-                accessibilityHint: Welcome.Accessibility.filePickerHint
+                accessibilityLabel: Welcome.FilePicker.Accessibility.label,
+                accessibilityHint: Welcome.FilePicker.Accessibility.hint
             )
         )
 
@@ -280,7 +280,7 @@ extension Theme {
 
         return .init(
             header: header,
-            headerTitle: Welcome.header,
+            headerTitle: Localization.MessageCenter.header,
             welcomeTitleStyle: welcomeTitleStyle,
             titleImageStyle: titleImageStyle,
             welcomeSubtitleStyle: welcomeSubtitleStyle,
