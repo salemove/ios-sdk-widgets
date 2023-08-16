@@ -52,6 +52,12 @@ final class VisitorInfoModel {
         didSet {
             var rawCustomAttributes: [String: String] = self.visitorInfoUpdate.customAttributes ?? [:]
 
+            // Remove outdated key-values.
+            for (_, attribute) in oldValue {
+                rawCustomAttributes[attribute.key] = nil
+            }
+
+            // Set relevant key-values.
             for (_, attribute) in attributes {
                 rawCustomAttributes[attribute.key] = attribute.value
             }
