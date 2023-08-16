@@ -167,7 +167,6 @@
 "general.you" = "You";
 "gva.error_unsupported" = "This action is not currently supported on mobile.";
 "media.audio.name" = "Audio";
-"media.messaging.description" = "Send a message and we’ll get back to you \nwithin 48 hours";
 "media.phone.name" = "Phone";
 "media.text.name" = "Chat";
 "media.video.name" = "Video";
@@ -179,9 +178,10 @@
 "message_center.not_authenticated.message" = "We could not verify your authentication status.";
 "message_center.unavailable.message" = "The Message Center is currently unavailable. Please try again later.";
 "message_center.unavailable.title" = "Message Center Unavailable";
+"message_center.welcome.subtitle" = "Send a message and we’ll get back to you within 48 hours";
 "message_center.welcome.check_messages.accessibility.hint" = "Navigates you to the chat transcript.";
 "message_center.welcome.file_picker.accessibility.hint" = "Opens the file picker to attach media.";
-"message_center.welcome.file_picker_label.accessibility.label" = "File picker";
+"message_center.welcome.file_picker.accessibility.label" = "File picker";
 "message_center.welcome.message_length_warning" = "The message cannot exceed 10000 characters.";
 "message_center.welcome.message_text_view.placeholder" = "Enter your message";
 "message_center.welcome.message_title" = "Your message";
