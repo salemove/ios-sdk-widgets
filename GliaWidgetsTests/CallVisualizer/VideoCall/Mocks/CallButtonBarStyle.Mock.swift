@@ -43,12 +43,12 @@ extension CallButtonStyle.StateStyle {
         backgroundColor: ColorType = .fill(color: UIColor.white.withAlphaComponent(0.9)),
         image: UIImage = Asset.callChat.image,
         imageColor: ColorType = .fill(color: Color.baseDark),
-        title: String = L10n.Call.Buttons.Chat.title,
+        title: String = Localization.Media.Text.name,
         titleFont: UIFont = .systemFont(ofSize: 12, weight: .regular),
         titleColor: UIColor = Color.baseLight,
         textStyle: UIFont.TextStyle = .caption1,
         accessibility: Accessibility = .init(
-            label: L10n.Call.Accessibility.Buttons.Chat.Active.label
+            label: Localization.General.selected
         )
     ) -> CallButtonStyle.StateStyle {
         return .init(
@@ -67,13 +67,11 @@ extension CallButtonStyle.StateStyle {
         backgroundColor: ColorType = .fill(color: UIColor.black.withAlphaComponent(0.4)),
         image: UIImage = Asset.callChat.image,
         imageColor: ColorType = .fill(color: Color.baseLight),
-        title: String = L10n.Call.Buttons.Chat.title,
+        title: String = Localization.Media.Text.name,
         titleFont: UIFont = .systemFont(ofSize: 12, weight: .regular),
         titleColor: UIColor = Color.baseLight,
         textStyle: UIFont.TextStyle = .caption1,
-        accessibility: Accessibility = .init(
-            label: L10n.Call.Accessibility.Buttons.Chat.Inactive.label
-        )
+        accessibility: Accessibility = .init(label: "")
     ) -> CallButtonStyle.StateStyle {
         return .init(
             backgroundColor: backgroundColor,
@@ -91,13 +89,11 @@ extension CallButtonStyle.StateStyle {
         backgroundColor: ColorType = .fill(color: UIColor.black.withAlphaComponent(0.4)),
         image: UIImage = Asset.callChat.image,
         imageColor: ColorType = .fill(color: Color.baseLight),
-        title: String = L10n.Call.Buttons.Chat.title,
+        title: String = Localization.Media.Text.name,
         titleFont: UIFont = .systemFont(ofSize: 12, weight: .regular),
         titleColor: UIColor = Color.baseLight,
         textStyle: UIFont.TextStyle = .caption1,
-        accessibility: Accessibility = .init(
-            label: L10n.Call.Accessibility.Buttons.Chat.Inactive.label
-        )
+        accessibility: Accessibility = .init(label: "")
     ) -> CallButtonStyle.StateStyle {
         return .init(
             backgroundColor: backgroundColor,
