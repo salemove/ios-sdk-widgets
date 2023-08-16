@@ -831,9 +831,6 @@ extension ChatViewModel {
 }
 
 extension ChatViewModel {
-
-    typealias Strings = L10n.Chat
-
     enum Event {
         case viewDidLoad
         case messageTextChanged(String)
