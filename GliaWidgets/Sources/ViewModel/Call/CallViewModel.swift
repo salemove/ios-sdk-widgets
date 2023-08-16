@@ -2,8 +2,6 @@ import Foundation
 import UIKit
 
 class CallViewModel: EngagementViewModel, ViewModel {
-    private typealias Strings = L10n.Call
-
     var action: ((Action) -> Void)?
     var delegate: ((DelegateEvent) -> Void)?
 
@@ -96,7 +94,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
         case .engaged:
             showConnecting()
 
-            let operatorName = Strings.Operator.name.withOperatorName(
+            let operatorName = L10n.Call.Operator.name.withOperatorName(
                 interactor.engagedOperator?.firstName
             )
 
@@ -139,7 +137,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
     private func update(for callKind: CallKind) {
         switch callKind {
         case .audio:
-            action?(.setTitle(Strings.Audio.title))
+            action?(.setTitle(Localization.Media.Audio.name))
             action?(.setTopTextHidden(true))
         case .video(let direction):
             switch direction {
@@ -150,7 +148,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
                 action?(.setTopTextHidden(true))
             }
 
-            action?(.setTitle(Strings.Video.title))
+            action?(.setTitle(Localization.Media.Video.name))
         }
         updateButtons()
     }
@@ -391,7 +389,7 @@ extension CallViewModel {
     }
 
     private func onDurationChanged(_ duration: Int) {
-        let text = Strings.Connect.Connected.secondText.withCallDuration(
+        let text = L10n.Call.Connect.Connected.secondText.withCallDuration(
             duration.asDurationString
         )
         action?(.setCallDurationText(text))
