@@ -371,11 +371,6 @@ internal enum Localization {
       /// Audio
       internal static let name = Localization.tr("Localizable", "media.audio.name", fallback: "Audio")
     }
-    internal enum Messaging {
-      /// Send a message and we’ll get back to you 
-      /// within 48 hours
-      internal static let description = Localization.tr("Localizable", "media.messaging.description", fallback: "Send a message and we’ll get back to you \nwithin 48 hours")
-    }
     internal enum Phone {
       /// Phone
       internal static let name = Localization.tr("Localizable", "media.phone.name", fallback: "Phone")
@@ -421,6 +416,8 @@ internal enum Localization {
       internal static let messageLengthWarning = Localization.tr("Localizable", "message_center.welcome.message_length_warning", fallback: "The message cannot exceed 10000 characters.")
       /// Your message
       internal static let messageTitle = Localization.tr("Localizable", "message_center.welcome.message_title", fallback: "Your message")
+      /// Send a message and we’ll get back to you within 48 hours
+      internal static let subtitle = Localization.tr("Localizable", "message_center.welcome.subtitle", fallback: "Send a message and we’ll get back to you within 48 hours")
       /// Welcome to Message Center
       internal static let title = Localization.tr("Localizable", "message_center.welcome.title", fallback: "Welcome to Message Center")
       internal enum CheckMessages {
@@ -433,12 +430,8 @@ internal enum Localization {
         internal enum Accessibility {
           /// Opens the file picker to attach media.
           internal static let hint = Localization.tr("Localizable", "message_center.welcome.file_picker.accessibility.hint", fallback: "Opens the file picker to attach media.")
-        }
-      }
-      internal enum FilePickerLabel {
-        internal enum Accessibility {
           /// File picker
-          internal static let label = Localization.tr("Localizable", "message_center.welcome.file_picker_label.accessibility.label", fallback: "File picker")
+          internal static let label = Localization.tr("Localizable", "message_center.welcome.file_picker.accessibility.label", fallback: "File picker")
         }
       }
       internal enum MessageTextView {
