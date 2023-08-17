@@ -477,6 +477,74 @@ class ChatViewModelTests: XCTestCase {
         }
         XCTAssertEqual(calls, [.scrollToBottom(animated: true)])
     }
+
+    func test_messagesIdsFromHistoryAreStoredInHistoryMessageIds() {
+        var viewModelEnv = ChatViewModel.Environment.failing()
+        viewModelEnv.createFileUploadListModel = { _ in .mock() }
+        viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
+        viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
+        viewModelEnv.loadChatMessagesFromHistory = { true }
+        viewModelEnv.fetchSiteConfigurations = { _ in }
+        let expectedMessageId = "expected_message_id"
+        viewModelEnv.fetchChatHistory = { callback in
+            callback(.success([.mock(id: expectedMessageId)]))
+        }
+        let viewModel: ChatViewModel = .mock(environment: viewModelEnv)
+        viewModel.start()
+        XCTAssertEqual(viewModel.historyMessageIds, [expectedMessageId])
+    }
+
+    func test_messageReceivedFromSocketIsDiscarded() {
+        var viewModelEnv = ChatViewModel.Environment.failing()
+        viewModelEnv.createFileUploadListModel = { _ in .mock() }
+        viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
+        viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
+        viewModelEnv.loadChatMessagesFromHistory = { true }
+        viewModelEnv.fetchSiteConfigurations = { _ in }
+        let expectedMessageId = "expected_message_id"
+        viewModelEnv.fetchChatHistory = { callback in
+            callback(.success([.mock(id: expectedMessageId)]))
+        }
+        let viewModel: ChatViewModel = .mock(environment: viewModelEnv)
+        viewModel.start()
+        var actions: [ChatViewModel.Action] = []
+        viewModel.action = {
+            actions.append($0)
+        }
+        viewModel.interactorEvent(.receivedMessage(.mock(id: expectedMessageId)))
+        XCTAssertTrue(actions.isEmpty)
+    }
+
+    func test_messageReceivedFromSocketIsNotDiscarded() {
+        var viewModelEnv = ChatViewModel.Environment.failing()
+        viewModelEnv.createFileUploadListModel = { _ in .mock() }
+        viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
+        viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
+        viewModelEnv.loadChatMessagesFromHistory = { true }
+        viewModelEnv.fetchSiteConfigurations = { _ in }
+        viewModelEnv.fetchChatHistory = { _ in }
+
+        let messageId = "message_id"
+        let viewModel: ChatViewModel = .mock(environment: viewModelEnv)
+        viewModel.start()
+        var actions: [ChatViewModel.Action] = []
+        viewModel.action = {
+            actions.append($0)
+        }
+        viewModel.interactorEvent(.receivedMessage(.mock(id: messageId)))
+        enum Call {
+            case quickReplyPropsUpdatedHidden
+        }
+        var calls: [Call] = []
+        switch actions[0] {
+        case .quickReplyPropsUpdated(.hidden):
+            calls.append(.quickReplyPropsUpdatedHidden)
+        default:
+            break
+        }
+        XCTAssertEqual(actions.count, 1)
+        XCTAssertEqual(calls, [.quickReplyPropsUpdatedHidden])
+    }
 }
 
 extension ChatChoiceCardOption {
