@@ -46,6 +46,10 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     var isViewLoaded: Bool = false
     var isChoiceCardInputModeEnabled: Bool = false
     private (set) var siteConfiguration: CoreSdkClient.Site?
+    // Stored message ids retrieved from history.
+    // They are used to discard messages received from socket
+    // to avoid duplication.
+    private (set) var historyMessageIds: Set<ChatMessage.MessageId> = []
 
     var mediaPickerButtonVisibility: MediaPickerButtonVisibility {
         guard let site = siteConfiguration else { return .disabled }
@@ -372,6 +376,10 @@ extension ChatViewModel {
         environment.fetchChatHistory { [weak self] result in
             guard let self else { return }
             let messages = (try? result.get()) ?? []
+            // Store message ids from history,
+            // to be able to discard duplicates
+            // delivered by sockets.
+            self.historyMessageIds = Set(messages.map(\.id))
             let items = messages.compactMap {
                 ChatItem(
                     with: $0,
@@ -548,6 +556,11 @@ extension ChatViewModel {
     }
 
     private func receivedMessage(_ message: CoreSdkClient.Message) {
+        // Discard messages that have been already received from history
+        // to avoid duplication.
+        guard !historyMessageIds.contains(message.id) else {
+            return
+        }
         switch message.sender.type {
         case .operator, .system:
             let message = ChatMessage(
