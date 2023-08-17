@@ -549,7 +549,7 @@ extension ChatViewModel {
 
     private func receivedMessage(_ message: CoreSdkClient.Message) {
         switch message.sender.type {
-        case .operator:
+        case .operator, .system:
             let message = ChatMessage(
                 with: message,
                 operator: interactor.engagedOperator
