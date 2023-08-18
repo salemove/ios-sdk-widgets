@@ -12,7 +12,7 @@ final class GvaPersistentButtonView: OperatorChatMessageView {
         self.viewStyle = style.gliaVirtualAssistant.persistentButton
         self.environment = environment
         super.init(
-            with: style.operatorMessage,
+            with: style.operatorMessageStyle,
             environment: .init(
                 data: environment.data,
                 uuid: environment.uuid,

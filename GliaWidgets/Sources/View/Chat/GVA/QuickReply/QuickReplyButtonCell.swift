@@ -44,18 +44,27 @@ final class QuickReplyButtonCell: UICollectionViewCell {
     @objc private func tap() {
         props.action()
     }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        guard let style else { return }
+        switch style.backgroundColor {
+        case .fill(let color):
+            button.backgroundColor = color
+        case .gradient(let colors):
+            button.makeGradientBackground(
+                colors: colors,
+                cornerRadius: style.cornerRadius
+            )
+        }
+    }
 }
 
 // MARK: - Private
 
 private extension QuickReplyButtonCell {
     func applyStyle(_ style: GvaQuickReplyButtonStyle) {
-        switch style.backgroundColor {
-        case .fill(let color):
-            button.backgroundColor = color
-        case .gradient(let colors):
-            button.makeGradientBackground(colors: colors)
-        }
         button.setTitleColor(style.textColor, for: .normal)
         button.titleLabel?.font = style.textFont
         button.layer.cornerRadius = style.cornerRadius

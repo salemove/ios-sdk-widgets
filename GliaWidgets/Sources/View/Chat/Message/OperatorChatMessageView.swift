@@ -24,7 +24,7 @@ class OperatorChatMessageView: ChatMessageView {
         }
     }
 
-    private let viewStyle: OperatorChatMessageStyle
+    private let viewStyle: Theme.OperatorMessageStyle
     private var operatorImageView: UserImageView?
     private var operatorImageViewContainer = UIView().makeView()
     private let imageViewInsets = UIEdgeInsets(top: 2, left: 10, bottom: 2, right: 60)
@@ -32,13 +32,22 @@ class OperatorChatMessageView: ChatMessageView {
     private let environment: Environment
 
     init(
-        with style: OperatorChatMessageStyle,
+        with style: Theme.OperatorMessageStyle,
         environment: Environment
     ) {
         viewStyle = style
         self.environment = environment
         super.init(
-            with: style,
+            with: .init(
+                text: style.text,
+                background: style.background,
+                imageFile: style.imageFile,
+                fileDownload: style.fileDownload,
+                accessibility: .init(
+                    value: style.accessibility.value,
+                    isFontScalingEnabled: style.accessibility.isFontScalingEnabled
+                )
+            ),
             contentAlignment: .left,
             environment: .init(uiScreen: environment.uiScreen)
         )

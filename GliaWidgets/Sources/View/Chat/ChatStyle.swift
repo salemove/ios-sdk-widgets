@@ -6,13 +6,13 @@ public class ChatStyle: EngagementStyle {
     public var title: String
 
     /// Style of the message sent by the visitor.
-    public var visitorMessage: VisitorChatMessageStyle
+    public var visitorMessageStyle: Theme.VisitorMessageStyle
 
     /// Style of the message sent by the operator.
-    public var operatorMessage: OperatorChatMessageStyle
+    public var operatorMessageStyle: Theme.OperatorMessageStyle
 
     /// Style of the choice card sent to the visitor by the AI engine.
-    public var choiceCard: ChoiceCardStyle
+    public var choiceCardStyle: Theme.ChoiceCardStyle
 
     /// Style of the message entry area on the bottom of the view.
     public var messageEntry: ChatMessageEntryStyle
@@ -48,7 +48,7 @@ public class ChatStyle: EngagementStyle {
     public var unreadMessageDivider: UnreadMessageDividerStyle
 
     /// Style of the system message
-    public var systemMessage: SystemMessageStyle
+    public var systemMessageStyle: Theme.SystemMessageStyle
 
     /// Style of the Glia Virtual Assistant
     public var gliaVirtualAssistant: GliaVirtualAssistantStyle
@@ -60,8 +60,8 @@ public class ChatStyle: EngagementStyle {
     ///   - backgroundColor: View's background color.
     ///   - preferredStatusBarStyle: Preferred style of the status bar.
     ///   - title: Title shown in the header.
-    ///   - visitorMessage: Style of the message sent by the visitor.
-    ///   - operatorMessage: Style of the message sent by the operator.
+    ///   - visitorMessageStyle: Style of the message sent by the visitor.
+    ///   - operatorMessageStyle: Style of the message sent by the operator.
     ///   - choiceCard: Style of the choice card sent to the visitor by the AI engine.
     ///   - messageEntry: Style of the message entry area on the bottom of the view.
     ///   - audioUpgrade: Style of the audio upgrade view.
@@ -80,9 +80,9 @@ public class ChatStyle: EngagementStyle {
         backgroundColor: ColorType,
         preferredStatusBarStyle: UIStatusBarStyle,
         title: String,
-        visitorMessage: VisitorChatMessageStyle,
-        operatorMessage: OperatorChatMessageStyle,
-        choiceCard: ChoiceCardStyle,
+        visitorMessageStyle: Theme.VisitorMessageStyle,
+        operatorMessageStyle: Theme.OperatorMessageStyle,
+        choiceCardStyle: Theme.ChoiceCardStyle,
         messageEntry: ChatMessageEntryStyle,
         audioUpgrade: ChatCallUpgradeStyle,
         videoUpgrade: ChatCallUpgradeStyle,
@@ -94,13 +94,13 @@ public class ChatStyle: EngagementStyle {
         secureTranscriptTitle: String,
         secureTranscriptHeader: HeaderStyle,
         unreadMessageDivider: UnreadMessageDividerStyle,
-        systemMessage: SystemMessageStyle,
+        systemMessageStyle: Theme.SystemMessageStyle,
         gliaVirtualAssistant: GliaVirtualAssistantStyle
     ) {
         self.title = title
-        self.visitorMessage = visitorMessage
-        self.operatorMessage = operatorMessage
-        self.choiceCard = choiceCard
+        self.visitorMessageStyle = visitorMessageStyle
+        self.operatorMessageStyle = operatorMessageStyle
+        self.choiceCardStyle = choiceCardStyle
         self.messageEntry = messageEntry
         self.audioUpgrade = audioUpgrade
         self.videoUpgrade = videoUpgrade
@@ -112,7 +112,7 @@ public class ChatStyle: EngagementStyle {
         self.secureTranscriptTitle = secureTranscriptTitle
         self.secureTranscriptHeader = secureTranscriptHeader
         self.unreadMessageDivider = unreadMessageDivider
-        self.systemMessage = systemMessage
+        self.systemMessageStyle = systemMessageStyle
         self.gliaVirtualAssistant = gliaVirtualAssistant
 
         super.init(
@@ -136,11 +136,11 @@ public class ChatStyle: EngagementStyle {
             configuration: configuration?.connect,
             assetsBuilder: assetsBuilder
         )
-        visitorMessage.apply(
+        visitorMessageStyle.apply(
             configuration: configuration?.visitorMessage,
             assetsBuilder: assetsBuilder
         )
-        operatorMessage.apply(
+        operatorMessageStyle.apply(
             configuration: configuration?.operatorMessage,
             assetsBuilder: assetsBuilder
         )
@@ -148,7 +148,7 @@ public class ChatStyle: EngagementStyle {
             configuration: configuration?.input,
             assetsBuilder: assetsBuilder
         )
-        choiceCard.apply(
+        choiceCardStyle.apply(
             configuration: configuration?.responseCard,
             assetsBuilder: assetsBuilder
         )
@@ -178,7 +178,7 @@ public class ChatStyle: EngagementStyle {
             text: configuration?.newMessagesDividerText,
             assetBuilder: assetsBuilder
         )
-        systemMessage.apply(
+        systemMessageStyle.apply(
             configuration: configuration?.systemMessage,
             assetsBuilder: assetsBuilder
         )

@@ -3,17 +3,24 @@ import UIKit
 final class ChoiceCardView: OperatorChatMessageView {
     var onOptionTapped: ((ChatChoiceCardOption) -> Void)!
 
-    private let viewStyle: ChoiceCardStyle
+    private let viewStyle: Theme.ChoiceCardStyle
     private let kLayoutMargins = UIEdgeInsets(top: 12, left: 16, bottom: 16, right: 16)
     private let kImageHeight: CGFloat = 200.0
 
     private let environment: Environment
 
-    init(with style: ChoiceCardStyle, environment: Environment) {
+    init(with style: Theme.ChoiceCardStyle, environment: Environment) {
         viewStyle = style
         self.environment = environment
         super.init(
-            with: style,
+            with: .init(
+                text: style.text,
+                background: style.background,
+                imageFile: style.imageFile,
+                fileDownload: style.fileDownload,
+                operatorImage: style.operatorImage,
+                accessibility: .init(isFontScalingEnabled: style.text.accessibility.isFontScalingEnabled)
+            ),
             environment: .init(
                 data: environment.data,
                 uuid: environment.uuid,
@@ -40,10 +47,7 @@ final class ChoiceCardView: OperatorChatMessageView {
 
     private func contentView(for choiceCard: ChoiceCard) -> UIView {
         let containerView = UIView()
-        containerView.backgroundColor = viewStyle.backgroundColor
-        containerView.layer.cornerRadius = viewStyle.cornerRadius
-        containerView.layer.borderWidth = viewStyle.borderWidth
-        containerView.layer.borderColor = viewStyle.frameColor.cgColor
+        containerView.applyBackground(viewStyle.background)
 
         let stackView = UIStackView()
         stackView.axis = .vertical
@@ -72,7 +76,15 @@ final class ChoiceCardView: OperatorChatMessageView {
         }
 
         let textView = ChatTextContentView(
-            with: style.text,
+            with: .init(
+                text: viewStyle.text,
+                background: .init(
+                    borderColor: .clear,
+                    borderWidth: .zero,
+                    cornerRadius: .zero
+                ),
+                accessibility: .init(isFontScalingEnabled: viewStyle.text.accessibility.isFontScalingEnabled)
+            ),
             contentAlignment: .left,
             insets: .zero
         )
