@@ -150,13 +150,6 @@ extension Theme {
             transferring: transferring,
             onHold: onHold
         )
-        let visitorText = ChatTextContentStyle(
-            textFont: font.bodyText,
-            textColor: color.baseLight,
-            textStyle: .body,
-            backgroundColor: color.primary,
-            accessibility: .init(isFontScalingEnabled: true)
-        )
         let visitorImageFile = ChatImageFileContentStyle(
             backgroundColor: color.primary,
             accessibility: .init(
@@ -165,21 +158,28 @@ extension Theme {
                 isFontScalingEnabled: true
             )
         )
-        let visitorMessage = VisitorChatMessageStyle(
-            text: visitorText,
+        let visitorMessage = VisitorMessageStyle(
+            text: .init(
+                color: color.baseLight.hex,
+                font: font.bodyText,
+                textStyle: .body,
+                accessibility: .init(isFontScalingEnabled: true)
+            ),
+            background: .init(
+                background: .fill(color: color.primary),
+                borderColor: .clear,
+                borderWidth: .zero,
+                cornerRadius: 8.49
+            ),
             imageFile: visitorImageFile,
             fileDownload: fileDownload,
-            statusFont: font.caption,
-            statusColor: color.baseNormal,
-            statusTextStyle: .caption1,
+            status: .init(
+                color: color.baseNormal.hex,
+                font: font.caption,
+                textStyle: .caption1,
+                accessibility: .init(isFontScalingEnabled: true)
+            ),
             delivered: Chat.Message.Status.delivered,
-            accessibility: .init(isFontScalingEnabled: true)
-        )
-        let operatorText = ChatTextContentStyle(
-            textFont: font.bodyText,
-            textColor: color.baseDark,
-            textStyle: .body,
-            backgroundColor: Color.lightGrey,
             accessibility: .init(isFontScalingEnabled: true)
         )
         let operatorImageFile = ChatImageFileContentStyle(
@@ -190,22 +190,28 @@ extension Theme {
                 isFontScalingEnabled: true
             )
         )
-        let operatorMessage = OperatorChatMessageStyle(
+        let operatorText = Text(
+            color: color.baseDark.hex,
+            font: font.bodyText,
+            textStyle: .body,
+            accessibility: .init(isFontScalingEnabled: true)
+        )
+        let operatorMessage = OperatorMessageStyle(
             text: operatorText,
+            background: .init(
+                background: .fill(color: Color.lightGrey),
+                borderColor: .clear,
+                borderWidth: .zero,
+                cornerRadius: 8.49
+            ),
             imageFile: operatorImageFile,
             fileDownload: fileDownload,
-            operatorImage: operatorImage
+            operatorImage: operatorImage,
+            accessibility: .init(isFontScalingEnabled: true)
         )
         let operatorTypingIndicator = OperatorTypingIndicatorStyle(
             color: color.primary,
             accessibility: .init(label: Accessibility.Message.Operator.TypingIndicator.label)
-        )
-        let choiceCardText = ChatTextContentStyle(
-            textFont: font.bodyText,
-            textColor: color.baseDark,
-            textStyle: .body,
-            backgroundColor: color.baseLight,
-            accessibility: .init(isFontScalingEnabled: true)
         )
         let choiceCardImageFile = ChatImageFileContentStyle(
             backgroundColor: color.baseLight,
@@ -215,48 +221,68 @@ extension Theme {
                 isFontScalingEnabled: true
             )
         )
-        let choiceCardOptionNormalState = ChoiceCardOptionStateStyle(
-            textFont: font.bodyText,
-            textColor: color.baseDark,
-            textStyle: .body,
-            backgroundColor: Color.lightGrey,
-            borderColor: nil,
+        let choiceCardOptionNormalState = Button(
+            background: .fill(color: Color.lightGrey),
+            title: .init(
+                color: color.baseDark.hex,
+                font: font.bodyText,
+                textStyle: .body,
+                accessibility: .init(isFontScalingEnabled: true)
+            ),
+            cornerRadius: 4,
             accessibility: .init(
-                value: Accessibility.Message.ChoiceCard.ButtonState.normal,
+                label: Accessibility.Message.ChoiceCard.ButtonState.normal,
                 isFontScalingEnabled: true
             )
         )
-        let choiceCardOptionSelectedState = ChoiceCardOptionStateStyle(
-            textFont: font.bodyText,
-            textColor: color.baseLight,
-            textStyle: .body,
-            backgroundColor: color.primary,
-            borderColor: nil,
+        let choiceCardOptionSelectedState = Button(
+            background: .fill(color: Color.primary),
+            title: .init(
+                color: color.baseLight.hex,
+                font: font.bodyText,
+                textStyle: .body,
+                accessibility: .init(isFontScalingEnabled: true)
+            ),
+            cornerRadius: 4,
             accessibility: .init(
-                value: Accessibility.Message.ChoiceCard.ButtonState.selected,
+                label: Accessibility.Message.ChoiceCard.ButtonState.selected,
                 isFontScalingEnabled: true
             )
         )
-        let choiceCardOptionDisabledState = ChoiceCardOptionStateStyle(
-            textFont: font.bodyText,
-            textColor: Color.grey,
-            textStyle: .body,
-            backgroundColor: Color.lightGrey,
-            borderColor: Color.baseShade,
+        let choiceCardOptionDisabledState = Button(
+            background: .fill(color: Color.lightGrey),
+            title: .init(
+                color: Color.grey.hex,
+                font: font.bodyText,
+                textStyle: .body,
+                accessibility: .init(isFontScalingEnabled: true)
+            ),
+            cornerRadius: 4,
+            borderWidth: 1,
+            borderColor: Color.baseShade.toRGBAHex(),
             accessibility: .init(
-                value: Accessibility.Message.ChoiceCard.ButtonState.disabled,
+                label: Accessibility.Message.ChoiceCard.ButtonState.disabled,
                 isFontScalingEnabled: true
             )
         )
-        let choiceCardOption = ChoiceCardOptionStyle(
+        let choiceCardOption = ChoiceCardStyle.Option(
             normal: choiceCardOptionNormalState,
             selected: choiceCardOptionSelectedState,
             disabled: choiceCardOptionDisabledState
         )
         let choiceCard = ChoiceCardStyle(
-            mainText: choiceCardText,
-            frameColor: color.primary,
-            backgroundColor: color.baseLight,
+            text: .init(
+                color: color.baseDark.hex,
+                font: font.bodyText,
+                textStyle: .body,
+                accessibility: .init(isFontScalingEnabled: true)
+            ),
+            background: .init(
+                background: .fill(color: color.baseLight),
+                borderColor: color.primary.cgColor,
+                borderWidth: 1,
+                cornerRadius: 8
+            ),
             imageFile: choiceCardImageFile,
             fileDownload: fileDownload,
             operatorImage: operatorImage,
@@ -355,6 +381,12 @@ extension Theme {
 
         let systemMessage = SystemMessageStyle(
             text: operatorText,
+            background: Theme.Layer(
+                background: .fill(color: Color.lightGrey),
+                borderColor: .clear,
+                borderWidth: .zero,
+                cornerRadius: 8.49
+            ),
             imageFile: operatorImageFile,
             fileDownload: fileDownload
         )
@@ -365,9 +397,9 @@ extension Theme {
             backgroundColor: .fill(color: color.background),
             preferredStatusBarStyle: .lightContent,
             title: Chat.title,
-            visitorMessage: visitorMessage,
-            operatorMessage: operatorMessage,
-            choiceCard: choiceCard,
+            visitorMessageStyle: visitorMessage,
+            operatorMessageStyle: operatorMessage,
+            choiceCardStyle: choiceCard,
             messageEntry: messageEntry,
             audioUpgrade: audioUpgrade,
             videoUpgrade: videoUpgrade,
@@ -383,7 +415,7 @@ extension Theme {
             secureTranscriptTitle: Chat.SecureTranscript.headerTitle,
             secureTranscriptHeader: secureTranscriptHeader,
             unreadMessageDivider: unreadMessageDivider,
-            systemMessage: systemMessage,
+            systemMessageStyle: systemMessage,
             gliaVirtualAssistant: gliaVirtualAssistantStyle
         )
     }

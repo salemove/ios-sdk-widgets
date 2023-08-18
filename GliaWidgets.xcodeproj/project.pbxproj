@@ -375,8 +375,16 @@
 		8491AF022A6FBBBA00CC3E72 /* GvaGalleryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8491AF012A6FBBBA00CC3E72 /* GvaGalleryListView.swift */; };
 		8491AF062A77F16D00CC3E72 /* GvaGalleryCardStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8491AF052A77F16D00CC3E72 /* GvaGalleryCardStyle.swift */; };
 		8491AF0A2A78FED700CC3E72 /* GvaGalleryListViewStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8491AF092A78FED700CC3E72 /* GvaGalleryListViewStyle.swift */; };
+		8491AF0D2A7A9CB900CC3E72 /* Theme.VisitorChatMessageStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8491AF0C2A7A9CB900CC3E72 /* Theme.VisitorChatMessageStyle.swift */; };
+		8491AF132A7ACC5400CC3E72 /* Theme.OperatorChatMessageStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8491AF122A7ACC5400CC3E72 /* Theme.OperatorChatMessageStyle.swift */; };
+		8491AF152A7ACDB000CC3E72 /* Theme.SystemMessageStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8491AF142A7ACDB000CC3E72 /* Theme.SystemMessageStyle.swift */; };
+		8491AF172A7AD1D300CC3E72 /* Theme.ChoiceCardStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8491AF162A7AD1D300CC3E72 /* Theme.ChoiceCardStyle.swift */; };
 		8491AF192A7C140F00CC3E72 /* GvaGalleryCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8491AF182A7C140F00CC3E72 /* GvaGalleryCardView.swift */; };
+		8491AF1D2A7D01BF00CC3E72 /* Theme.ChatMessageStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8491AF1C2A7D01BF00CC3E72 /* Theme.ChatMessageStyle.swift */; };
+		8491AF1F2A7D027D00CC3E72 /* Theme.ChatTextContentStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8491AF1E2A7D027D00CC3E72 /* Theme.ChatTextContentStyle.swift */; };
 		8491AF212A7D1F7900CC3E72 /* ChatView.GvaGallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8491AF202A7D1F7900CC3E72 /* ChatView.GvaGallery.swift */; };
+		8491AF232A8A3EA800CC3E72 /* ChatStyle.Deprecated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8491AF222A8A3EA800CC3E72 /* ChatStyle.Deprecated.swift */; };
+		8491AF272A8E3F6A00CC3E72 /* CGColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8491AF262A8E3F6A00CC3E72 /* CGColor+Extensions.swift */; };
 		84A318A12869ECFC00CA1DE5 /* Unavailable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A318A02869ECFC00CA1DE5 /* Unavailable.swift */; };
 		84CFB7732822700000167258 /* Theme.Button.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CFB7722822700000167258 /* Theme.Button.Accessibility.swift */; };
 		84D2292B28C61C8D00F64FE7 /* WKNavigationPolicyProvider.CustomResponseCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D2292A28C61C8D00F64FE7 /* WKNavigationPolicyProvider.CustomResponseCard.swift */; };
@@ -1071,8 +1079,16 @@
 		8491AF012A6FBBBA00CC3E72 /* GvaGalleryListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GvaGalleryListView.swift; sourceTree = "<group>"; };
 		8491AF052A77F16D00CC3E72 /* GvaGalleryCardStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GvaGalleryCardStyle.swift; sourceTree = "<group>"; };
 		8491AF092A78FED700CC3E72 /* GvaGalleryListViewStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GvaGalleryListViewStyle.swift; sourceTree = "<group>"; };
+		8491AF0C2A7A9CB900CC3E72 /* Theme.VisitorChatMessageStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.VisitorChatMessageStyle.swift; sourceTree = "<group>"; };
+		8491AF122A7ACC5400CC3E72 /* Theme.OperatorChatMessageStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.OperatorChatMessageStyle.swift; sourceTree = "<group>"; };
+		8491AF142A7ACDB000CC3E72 /* Theme.SystemMessageStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.SystemMessageStyle.swift; sourceTree = "<group>"; };
+		8491AF162A7AD1D300CC3E72 /* Theme.ChoiceCardStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.ChoiceCardStyle.swift; sourceTree = "<group>"; };
 		8491AF182A7C140F00CC3E72 /* GvaGalleryCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GvaGalleryCardView.swift; sourceTree = "<group>"; };
+		8491AF1C2A7D01BF00CC3E72 /* Theme.ChatMessageStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.ChatMessageStyle.swift; sourceTree = "<group>"; };
+		8491AF1E2A7D027D00CC3E72 /* Theme.ChatTextContentStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.ChatTextContentStyle.swift; sourceTree = "<group>"; };
 		8491AF202A7D1F7900CC3E72 /* ChatView.GvaGallery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.GvaGallery.swift; sourceTree = "<group>"; };
+		8491AF222A8A3EA800CC3E72 /* ChatStyle.Deprecated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatStyle.Deprecated.swift; sourceTree = "<group>"; };
+		8491AF262A8E3F6A00CC3E72 /* CGColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGColor+Extensions.swift"; sourceTree = "<group>"; };
 		84A318A02869ECFC00CA1DE5 /* Unavailable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Unavailable.swift; sourceTree = "<group>"; };
 		84CFB7722822700000167258 /* Theme.Button.Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.Button.Accessibility.swift; sourceTree = "<group>"; };
 		84D2292A28C61C8D00F64FE7 /* WKNavigationPolicyProvider.CustomResponseCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WKNavigationPolicyProvider.CustomResponseCard.swift; sourceTree = "<group>"; };
@@ -1938,6 +1954,7 @@
 			isa = PBXGroup;
 			children = (
 				1AC7A7AB2587849200567FF8 /* Alert */,
+				8491AF0B2A7A9C9200CC3E72 /* Chat */,
 				75FF151527F4E11000FE7BE2 /* Survey */,
 				1A60AF7925656E0500E53F53 /* Theme.swift */,
 				9A19926D27D3BB7800161AAE /* Theme.Mock.swift */,
@@ -2053,6 +2070,7 @@
 				C0175A262A67D431001FACDE /* GVA */,
 				1AC7A7822583B65B00567FF8 /* Cells */,
 				9AB3402627FCDD92006E0FE2 /* ChatStyle.Accessibility.swift */,
+				8491AF222A8A3EA800CC3E72 /* ChatStyle.Deprecated.swift */,
 				1A60AFE725669C5000E53F53 /* ChatStyle.swift */,
 				1A60AFDC25669A4200E53F53 /* ChatView.swift */,
 				C0175A1C2A5D4226001FACDE /* ChatView.TableView.swift */,
@@ -2187,6 +2205,7 @@
 			isa = PBXGroup;
 			children = (
 				C08D775F28F583D7000461E5 /* Array+Extensions.swift */,
+				8491AF262A8E3F6A00CC3E72 /* CGColor+Extensions.swift */,
 				1A0C9AC725C9493D00815406 /* Int+Extensions.swift */,
 				1A4AF5C625AEEA42002CD0F4 /* Operator+Extensions.swift */,
 				844D3C6B29142C17002887A9 /* Optional+Extensions.swift */,
@@ -3133,6 +3152,19 @@
 			path = Gallery;
 			sourceTree = "<group>";
 		};
+		8491AF0B2A7A9C9200CC3E72 /* Chat */ = {
+			isa = PBXGroup;
+			children = (
+				8491AF1C2A7D01BF00CC3E72 /* Theme.ChatMessageStyle.swift */,
+				8491AF0C2A7A9CB900CC3E72 /* Theme.VisitorChatMessageStyle.swift */,
+				8491AF122A7ACC5400CC3E72 /* Theme.OperatorChatMessageStyle.swift */,
+				8491AF142A7ACDB000CC3E72 /* Theme.SystemMessageStyle.swift */,
+				8491AF162A7AD1D300CC3E72 /* Theme.ChoiceCardStyle.swift */,
+				8491AF1E2A7D027D00CC3E72 /* Theme.ChatTextContentStyle.swift */,
+			);
+			path = Chat;
+			sourceTree = "<group>";
+		};
 		8491AF1A2A7C142100CC3E72 /* GalleryList */ = {
 			isa = PBXGroup;
 			children = (
@@ -4051,6 +4083,7 @@
 				9A19926A27D3BA8700161AAE /* ViewFactory.Environment.Interface.swift in Sources */,
 				1A0EDF8225E8E0150076D1AD /* PopoverViewController.swift in Sources */,
 				84265E4B298D7B1900D65842 /* CallVisualizer.Coordinator.swift in Sources */,
+				8491AF172A7AD1D300CC3E72 /* Theme.ChoiceCardStyle.swift in Sources */,
 				C0D2F07629A4E2CE00803B47 /* ConnectOperatorStyle.Mock.swift in Sources */,
 				75940987298D38C2008B173A /* VisitorCodeViewModel+Environment.swift in Sources */,
 				1A60AFBC256682C800E53F53 /* SubFlowCoordinator.swift in Sources */,
@@ -4090,6 +4123,7 @@
 				1A0C9A7925C16F9700815406 /* Theme+AlertConfiguration.swift in Sources */,
 				AF10ED8F29BF849A00E85309 /* UnreadMessageDividerView.swift in Sources */,
 				1AC8AADD25D419CE00DAFE50 /* VideoStreamView.swift in Sources */,
+				8491AF152A7ACDB000CC3E72 /* Theme.SystemMessageStyle.swift in Sources */,
 				1A4AD3C7256E863900468BFB /* ThemeColor.swift in Sources */,
 				756B8B1E2996BAEA001D2BB2 /* HeaderButton.Props.swift in Sources */,
 				9A1992DB27D6241400161AAE /* ImageView.Cache.Interface.swift in Sources */,
@@ -4104,6 +4138,7 @@
 				846429802A45A1F200943BD6 /* OfferPresenter.swift in Sources */,
 				1A4AF5D325AEF543002CD0F4 /* AlertViewController+Confirmation.swift in Sources */,
 				755D187B29A6A7180009F5E8 /* WelcomeStyle+TitleImageStyle.swift in Sources */,
+				8491AF232A8A3EA800CC3E72 /* ChatStyle.Deprecated.swift in Sources */,
 				1AFB1E7825F8B26800CA460D /* ChatTextContentStyle.swift in Sources */,
 				1AFB1E7425F8B00B00CA460D /* ChatTextContentView.swift in Sources */,
 				845876AE282A95DE007AC3DF /* InputQuestionView.Props.Accessibility.swift in Sources */,
@@ -4125,6 +4160,7 @@
 				3100D92C296E946600DEC9CE /* SecureConversations.ConfirmationViewController.swift in Sources */,
 				9A8130BB27D7A41000220BBD /* FileUpload.Environment.Interface.swift in Sources */,
 				3100D92B296E946600DEC9CE /* SecureConversations+ConfirmationStyle.swift in Sources */,
+				8491AF132A7ACC5400CC3E72 /* Theme.OperatorChatMessageStyle.swift in Sources */,
 				845E2F93283FB6D000C04D56 /* Theme.Survey.Accessibility.swift in Sources */,
 				75940959298D386F008B173A /* UIStackView.Extensions.swift in Sources */,
 				1A0C9A9125C41AB900815406 /* CallButtonBar.swift in Sources */,
@@ -4325,6 +4361,7 @@
 				AF3D520D2983B3DD00AD8E69 /* FileUploader.Environment.Interface.swift in Sources */,
 				1ABD6C5925B5758000D56EFA /* BubbleStyle.swift in Sources */,
 				C0D2F08B29A4E95700803B47 /* ConnectView.Mock.swift in Sources */,
+				8491AF272A8E3F6A00CC3E72 /* CGColor+Extensions.swift in Sources */,
 				C0175A252A66A431001FACDE /* GvaPersistentButtonOptionView.swift in Sources */,
 				AF10ED9129BF85C700E85309 /* UnreadMessageDividerStyle.swift in Sources */,
 				75AF8CF127DBB1F9009EEE2C /* SurveyViewController.View.swift in Sources */,
@@ -4380,6 +4417,7 @@
 				1AA738AE2578E0D500E1120F /* ConnectAnimationView.swift in Sources */,
 				754CC61627E2816F005676E9 /* Survey.InputQuestionView.swift in Sources */,
 				9A1992DF27D62C2E00161AAE /* ImageView.Cache.Mock.swift in Sources */,
+				8491AF0D2A7A9CB900CC3E72 /* Theme.VisitorChatMessageStyle.swift in Sources */,
 				1A2DA72D25EF9DD900032611 /* FileUpload.swift in Sources */,
 				C499A57E26382FAA009962AC /* UnreadMessageIndicatorView.swift in Sources */,
 				31DB0C01287C2EFC00FB288E /* StaticValues.swift in Sources */,
@@ -4430,6 +4468,7 @@
 				75B7BD802A39D5A70060794D /* Layoutable.swift in Sources */,
 				845876AB282A959C007AC3DF /* SingleChoiceQuestionView.Props.Accessibility.swift in Sources */,
 				9AB3402327FC859E006E0FE2 /* CallButtonStyle.StateStyle.Accessibility.swift in Sources */,
+				8491AF1F2A7D027D00CC3E72 /* Theme.ChatTextContentStyle.swift in Sources */,
 				84D2293C28D1FC4B00F64FE7 /* ChatViewModel+CustomCard.swift in Sources */,
 				84265DF02983E62100D65842 /* Theme+ScreenSharing.swift in Sources */,
 				6E9C01AD26D3B8B500EBE1D4 /* OperatorTypingIndicatorView.swift in Sources */,
@@ -4441,6 +4480,7 @@
 				7529F2B427E1D503004D3581 /* Survey.swift in Sources */,
 				84681AA12A66B9F100DD7406 /* SelfSizingCollectionView.swift in Sources */,
 				1A5F494B25CA86CA003E3678 /* Call.swift in Sources */,
+				8491AF1D2A7D01BF00CC3E72 /* Theme.ChatMessageStyle.swift in Sources */,
 				84265E65298D7B2900D65842 /* ScreenSharingView.swift in Sources */,
 				9A1992ED27D6C19E00161AAE /* FileSystemStorage.Environment.Mock.swift in Sources */,
 				1AFB1E6825F7AE3C00CA460D /* ChatAttachment.swift in Sources */,

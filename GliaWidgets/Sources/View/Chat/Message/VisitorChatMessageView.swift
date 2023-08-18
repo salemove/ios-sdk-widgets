@@ -10,11 +10,20 @@ class VisitorChatMessageView: ChatMessageView {
     private let contentInsets = UIEdgeInsets(top: 2, left: 88, bottom: 2, right: 16)
 
     init(
-        with style: VisitorChatMessageStyle,
+        with style: Theme.VisitorMessageStyle,
         environment: Environment
     ) {
         super.init(
-            with: style,
+            with: .init(
+                text: style.text,
+                background: style.background,
+                imageFile: style.imageFile,
+                fileDownload: style.fileDownload,
+                accessibility: .init(
+                    value: style.accessibility.value,
+                    isFontScalingEnabled: style.accessibility.isFontScalingEnabled
+                )
+            ),
             contentAlignment: .right,
             environment: .init(uiScreen: environment.uiScreen)
         )
@@ -26,9 +35,9 @@ class VisitorChatMessageView: ChatMessageView {
         fatalError("init() has not been implemented")
     }
 
-    private func setup(style: VisitorChatMessageStyle) {
-        statusLabel.font = style.statusFont
-        statusLabel.textColor = style.statusColor
+    private func setup(style: Theme.VisitorMessageStyle) {
+        statusLabel.font = style.status.font
+        statusLabel.textColor = UIColor(hex: style.status.color)
         setFontScalingEnabled(
             style.accessibility.isFontScalingEnabled,
             for: statusLabel

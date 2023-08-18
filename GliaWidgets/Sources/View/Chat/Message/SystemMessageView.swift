@@ -1,19 +1,28 @@
 import UIKit
 
 final class SystemMessageView: ChatMessageView {
-    private let viewStyle: SystemMessageStyle
+    private let viewStyle: Theme.SystemMessageStyle
     private let kInsets = UIEdgeInsets(top: 2, left: 10, bottom: 2, right: 96)
     private let kOperatorImageViewSize = CGSize(width: 28, height: 28)
     private let environment: Environment
 
     init(
-        with style: SystemMessageStyle,
+        with style: Theme.SystemMessageStyle,
         environment: Environment
     ) {
         viewStyle = style
         self.environment = environment
         super.init(
-            with: style,
+            with: .init(
+                text: style.text,
+                background: style.background,
+                imageFile: style.imageFile,
+                fileDownload: style.fileDownload,
+                accessibility: .init(
+                    value: style.accessibility.value,
+                    isFontScalingEnabled: style.accessibility.isFontScalingEnabled
+                )
+            ),
             contentAlignment: .left,
             environment: .init(uiScreen: environment.uiScreen)
         )

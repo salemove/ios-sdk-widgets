@@ -22,14 +22,16 @@ public extension Theme.SurveyStyle {
                 title: .init(
                     color: color.baseDark.hex,
                     font: font.mediumSubtitle1,
-                    textStyle: .subheadline
+                    textStyle: .subheadline,
+                    accessibility: .init(isFontScalingEnabled: true)
                 ),
                 tintColor: color.primary.hex,
                 option: .init(
                     title: .init(
                         color: color.baseDark.hex,
                         font: font.bodyText,
-                        textStyle: .body
+                        textStyle: .body,
+                        accessibility: .init(isFontScalingEnabled: true)
                     ),
                     accessibility: .init(isFontScalingEnabled: true)),
                 error: .default(color: color, font: font),
