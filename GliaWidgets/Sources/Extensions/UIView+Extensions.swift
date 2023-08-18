@@ -26,4 +26,24 @@ extension UIView {
 
         return l
     }
+
+    @discardableResult
+    func applyBackground(_ background: Theme.Layer?) -> UIView {
+        guard let background else { return self }
+        background.background.unwrap {
+            switch $0 {
+            case let .fill(color):
+                backgroundColor = color
+            case let .gradient(colors):
+                makeGradientBackground(
+                    colors: colors,
+                    cornerRadius: background.cornerRadius
+                )
+            }
+        }
+        layer.cornerRadius = background.cornerRadius
+        layer.borderColor = background.borderColor
+        layer.borderWidth = background.borderWidth
+        return self
+    }
 }

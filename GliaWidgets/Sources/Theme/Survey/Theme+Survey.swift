@@ -65,15 +65,22 @@ extension Theme.SurveyStyle {
             title: .init(
                 color: color.baseNormal.hex,
                 font: font.header2,
-                textStyle: .title2
+                textStyle: .title2,
+                accessibility: .init(isFontScalingEnabled: true)
             ),
             submitButton: .init(
                 actionButtonStyle: alertStyle.positiveAction,
-                accessibility: .init(label: L10n.Survey.Accessibility.Footer.SubmitButton.label)
+                accessibility: .init(
+                    label: L10n.Survey.Accessibility.Footer.SubmitButton.label,
+                    isFontScalingEnabled: true
+                )
             ),
             cancellButton: .init(
                 actionButtonStyle: alertStyle.negativeAction,
-                accessibility: .init(label: L10n.Survey.Accessibility.Footer.CancelButton.label)
+                accessibility: .init(
+                    label: L10n.Survey.Accessibility.Footer.CancelButton.label,
+                    isFontScalingEnabled: true
+                )
             ),
             booleanQuestion: .default(color: color, font: font),
             scaleQuestion: .default(color: color, font: font),

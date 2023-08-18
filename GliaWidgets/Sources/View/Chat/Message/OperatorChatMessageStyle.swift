@@ -1,6 +1,7 @@
 import UIKit
 
-/// Style of an operator's message.
+/// Deprecated. Style of an operator's message.
+@available(*, deprecated, message: "Deprecated, use ``Theme.OperatorMessageStyle`` instead.")
 public class OperatorChatMessageStyle: ChatMessageStyle {
     /// Style of the operator's image.
     public var operatorImage: UserImageStyle
@@ -56,5 +57,29 @@ public class OperatorChatMessageStyle: ChatMessageStyle {
             assetsBuilder: assetsBuilder
         )
         operatorImage.apply(configuration: configuration?.userImage)
+    }
+
+    func toNewOperatorMessageStyle() -> Theme.OperatorMessageStyle {
+        .init(
+            text: .init(
+                color: text.textColor.hex,
+                font: text.textFont,
+                textStyle: text.textStyle,
+                accessibility: .init(isFontScalingEnabled: text.accessibility.isFontScalingEnabled)
+            ),
+            background: .init(
+                background: .fill(color: text.backgroundColor),
+                borderColor: .clear, // <- Because OperatorChatMessageStyle does not have `borderColor`
+                borderWidth: .zero, // <- Because OperatorChatMessageStyle does not have `borderWidth`
+                cornerRadius: text.cornerRadius
+            ),
+            imageFile: imageFile,
+            fileDownload: fileDownload,
+            operatorImage: operatorImage,
+            accessibility: .init(
+                value: text.accessibility.value,
+                isFontScalingEnabled: text.accessibility.isFontScalingEnabled
+            )
+        )
     }
 }

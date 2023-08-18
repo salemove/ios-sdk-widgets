@@ -6,10 +6,18 @@ extension Theme {
 
         let persistentButton: GvaPersistentButtonStyle = .init(
             title: .init(
-                textFont: font.bodyText,
-                textColor: .black,
-                textStyle: .body,
-                backgroundColor: .clear,
+                text: .init(
+                    color: UIColor.black.hex,
+                    font: font.bodyText,
+                    textStyle: .body,
+                    accessibility: .init(isFontScalingEnabled: true)
+                ),
+                background: .init(
+                    background: .fill(color: .clear),
+                    borderColor: .clear,
+                    borderWidth: .zero,
+                    cornerRadius: 8.49
+                ),
                 accessibility: .init(isFontScalingEnabled: true)
             ),
             backgroundColor: .fill(color: color.lightGrey),
