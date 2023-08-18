@@ -612,7 +612,7 @@ extension ChatView {
         imageUrl: String?
     ) -> ChatItemCell.Content {
         let view = OperatorChatMessageView(
-            with: style.operatorMessage,
+            with: style.operatorMessageStyle,
             environment: .init(
                 data: environment.data,
                 uuid: environment.uuid,
@@ -652,7 +652,7 @@ extension ChatView {
         isActive: Bool
     ) -> ChatItemCell.Content {
         let view = ChoiceCardView(
-            with: style.choiceCard,
+            with: style.choiceCardStyle,
             environment: .init(
                 data: environment.data,
                 uuid: environment.uuid,
@@ -671,7 +671,7 @@ extension ChatView {
 
     private func systemMessageContent(_ message: ChatMessage) -> ChatItemCell.Content {
         let view = SystemMessageView(
-            with: style.systemMessage,
+            with: style.systemMessageStyle,
             environment: .init(
                 uiScreen: environment.uiScreen
             )
@@ -694,7 +694,7 @@ extension ChatView {
 
     private func outgoingMessageContent(_ message: OutgoingMessage) -> ChatItemCell.Content {
         let view = VisitorChatMessageView(
-            with: style.visitorMessage,
+            with: style.visitorMessageStyle,
             environment: .init(uiScreen: environment.uiScreen)
         )
         view.appendContent(
@@ -725,7 +725,7 @@ extension ChatView {
         status: String?
     ) -> ChatItemCell.Content {
         let view = VisitorChatMessageView(
-            with: style.visitorMessage,
+            with: style.visitorMessageStyle,
             environment: .init(uiScreen: environment.uiScreen)
         )
         view.appendContent(
@@ -868,7 +868,7 @@ extension ChatView {
         imageUrl: String?
     ) -> GvaResponseTextView {
         let view = GvaResponseTextView(
-            with: style.operatorMessage,
+            with: style.operatorMessageStyle,
             environment: .init(
                 data: environment.data,
                 uuid: environment.uuid,

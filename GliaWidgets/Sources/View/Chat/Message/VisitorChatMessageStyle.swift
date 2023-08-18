@@ -1,6 +1,7 @@
 import UIKit
 
-/// Style of a visitor's message.
+/// Deprecated. Style of a visitor's message.
+@available(*, deprecated, message: "Deprecated, use ``Theme.VisitorMessageStyle`` instead.")
 public class VisitorChatMessageStyle: ChatMessageStyle {
     /// Font of the message status text.
     public var statusFont: UIFont
@@ -88,6 +89,36 @@ public class VisitorChatMessageStyle: ChatMessageStyle {
         fileDownload.apply(
             configuration: configuration?.file,
             assetsBuilder: assetsBuilder
+        )
+    }
+
+    func toNewVisitorMessageStyle() -> Theme.VisitorMessageStyle {
+        .init(
+            text: .init(
+                color: text.textColor.hex,
+                font: text.textFont,
+                textStyle: text.textStyle,
+                accessibility: .init(isFontScalingEnabled: text.accessibility.isFontScalingEnabled)
+            ),
+            background: .init(
+                background: .fill(color: text.backgroundColor),
+                borderColor: .clear, // <- Because OperatorChatMessageStyle does not have `borderColor`
+                borderWidth: .zero, // <- Because OperatorChatMessageStyle does not have `borderWidth`
+                cornerRadius: text.cornerRadius
+            ),
+            imageFile: imageFile,
+            fileDownload: fileDownload,
+            status: .init(
+                color: statusColor.hex,
+                font: statusFont,
+                textStyle: statusTextStyle,
+                accessibility: .init(isFontScalingEnabled: text.accessibility.isFontScalingEnabled)
+            ),
+            delivered: delivered,
+            accessibility: .init(
+                value: text.accessibility.value,
+                isFontScalingEnabled: text.accessibility.isFontScalingEnabled
+            )
         )
     }
 }

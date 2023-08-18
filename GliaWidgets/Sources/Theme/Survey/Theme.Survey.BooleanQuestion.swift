@@ -20,13 +20,15 @@ public extension Theme.SurveyStyle {
                 title: .init(
                     color: color.baseDark.hex,
                     font: font.mediumSubtitle1,
-                    textStyle: .subheadline
+                    textStyle: .subheadline,
+                    accessibility: .init(isFontScalingEnabled: true)
                 ),
                 option: .init(
                     normalText: .init(
                         color: color.baseDark.hex,
                         font: font.bodyText,
-                        textStyle: .body
+                        textStyle: .body,
+                        accessibility: .init(isFontScalingEnabled: true)
                     ),
                     normalLayer: .init(
                         borderColor: color.baseNormal.cgColor,
@@ -36,7 +38,8 @@ public extension Theme.SurveyStyle {
                     selectedText: .init(
                         color: color.baseLight.hex,
                         font: font.bodyText,
-                        textStyle: .body
+                        textStyle: .body,
+                        accessibility: .init(isFontScalingEnabled: true)
                     ),
                     selectedLayer: .init(
                         background: .fill(color: color.primary),
@@ -47,7 +50,8 @@ public extension Theme.SurveyStyle {
                     highlightedText: .init(
                         color: color.systemNegative.hex,
                         font: font.bodyText,
-                        textStyle: .body
+                        textStyle: .body,
+                        accessibility: .init(isFontScalingEnabled: true)
                     ),
                     highlightedLayer: .init(
                         borderColor: color.systemNegative.cgColor,

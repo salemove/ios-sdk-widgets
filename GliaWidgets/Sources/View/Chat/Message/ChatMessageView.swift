@@ -1,7 +1,7 @@
 import UIKit
 
 class ChatMessageView: BaseView {
-    let style: ChatMessageStyle
+    let style: Theme.ChatMessageStyle
     let contentViews = UIStackView().makeView()
     var fileTapped: ((LocalFile) -> Void)?
     var downloadTapped: ((FileDownload) -> Void)?
@@ -11,7 +11,7 @@ class ChatMessageView: BaseView {
     private let environment: Environment
 
     init(
-        with style: ChatMessageStyle,
+        with style: Theme.ChatMessageStyle,
         contentAlignment: ChatMessageContentAlignment,
         environment: Environment
     ) {
@@ -31,10 +31,18 @@ class ChatMessageView: BaseView {
     }
 
     func appendContent(_ content: ChatMessageContent, animated: Bool) {
+        let style = Theme.ChatTextContentStyle(
+            text: style.text,
+            background: style.background,
+            accessibility: .init(
+                value: style.accessibility.value,
+                isFontScalingEnabled: style.accessibility.isFontScalingEnabled
+            )
+        )
         switch content {
         case let .text(text, accProperties):
             let contentView = ChatTextContentView(
-                with: style.text,
+                with: style,
                 contentAlignment: contentAlignment
             )
             contentView.text = text
@@ -58,7 +66,7 @@ class ChatMessageView: BaseView {
             appendContentViews(contentViews, animated: animated)
         case let .attributedText(text, accProperties):
             let contentView = ChatTextContentView(
-                with: style.text,
+                with: style,
                 contentAlignment: contentAlignment
             )
             contentView.attributedText = text

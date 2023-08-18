@@ -16,4 +16,13 @@ public enum ColorType: Equatable {
             return false
         }
     }
+
+    var color: UIColor {
+        switch self {
+        case let .fill(color):
+            return color
+        case let .gradient(colors):
+            return UIColor(cgColor: colors.first ?? .clear)
+        }
+    }
 }

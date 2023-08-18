@@ -3,7 +3,7 @@ import UIKit
 /// Style of the GVA Persistent Button container
 public struct GvaPersistentButtonStyle {
     /// Title of the container
-    public var title: ChatTextContentStyle
+    public var title: Theme.ChatTextContentStyle
 
     /// Background of the container
     public var backgroundColor: ColorType
@@ -22,7 +22,7 @@ public struct GvaPersistentButtonStyle {
 
     /// Initialization of the object
     public init(
-        title: ChatTextContentStyle,
+        title: Theme.ChatTextContentStyle,
         backgroundColor: ColorType,
         cornerRadius: CGFloat,
         borderWidth: CGFloat,
@@ -52,13 +52,12 @@ public struct GvaPersistentButtonStyle {
     ) {
         UIFont.convertToFont(
             uiFont: assetBuilder.fontBuilder(configuration?.font),
-            textStyle: title.textStyle
-        ).unwrap { title.textFont = $0 }
+            textStyle: title.text.textStyle
+        ).unwrap { title.text.font = $0 }
 
         configuration?.foreground?.value
-            .map { UIColor(hex: $0) }
             .first
-            .unwrap { title.textColor = $0 }
+            .unwrap { title.text.color = $0 }
     }
 
     mutating private func applyBackgroundConfiguration(_ configuration: RemoteConfiguration.Layer?) {

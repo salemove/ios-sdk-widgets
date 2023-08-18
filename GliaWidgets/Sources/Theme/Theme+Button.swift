@@ -47,7 +47,8 @@ extension Theme {
             self.title = .init(
                 color: actionButtonStyle.titleColor.hex,
                 font: actionButtonStyle.titleFont,
-                textStyle: actionButtonStyle.textStyle
+                textStyle: actionButtonStyle.textStyle,
+                accessibility: .init(isFontScalingEnabled: accessibility.isFontScalingEnabled)
             )
             self.cornerRadius = actionButtonStyle.cornerRaidus ?? 0
             self.borderWidth = actionButtonStyle.borderWidth ?? 0

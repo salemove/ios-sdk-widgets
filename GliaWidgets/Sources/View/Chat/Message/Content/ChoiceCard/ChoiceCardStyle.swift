@@ -1,6 +1,7 @@
 import UIKit
 
-/// Style of the choice card sent to the visitor by the AI engine.
+/// Deprecated. Style of the choice card sent to the visitor by the AI engine.
+@available(*, deprecated, message: "Deprecated, use ``Theme.ChoiceCardStyle`` instead.")
 public final class ChoiceCardStyle: OperatorChatMessageStyle {
     /// Color of the choice card's border.
     public var frameColor: UIColor
@@ -92,4 +93,77 @@ public final class ChoiceCardStyle: OperatorChatMessageStyle {
 
         operatorImage.apply(configuration: configuration?.userImage)
     }
+
+    // swiftlint:disable function_body_length
+    func toNewChoiceCardStyle() -> Theme.ChoiceCardStyle {
+        .init(
+            text: .init(
+                color: text.textColor.hex,
+                font: text.textFont,
+                textStyle: text.textStyle,
+                accessibility: .init(isFontScalingEnabled: text.accessibility.isFontScalingEnabled)
+            ),
+            background: .init(
+                background: .fill(color: backgroundColor),
+                borderColor: .clear,
+                borderWidth: .zero,
+                cornerRadius: cornerRadius
+            ),
+            imageFile: imageFile,
+            fileDownload: fileDownload,
+            operatorImage: operatorImage,
+            choiceOption: .init(
+                normal: .init(
+                    background: .fill(color: choiceOption.normal.backgroundColor),
+                    title: .init(
+                        color: choiceOption.normal.textColor.hex,
+                        font: choiceOption.normal.textFont,
+                        textStyle: choiceOption.normal.textStyle,
+                        accessibility: .init(isFontScalingEnabled: choiceOption.normal.accessibility.isFontScalingEnabled)
+                    ),
+                    cornerRadius: choiceOption.normal.cornerRadius,
+                    borderWidth: choiceOption.normal.borderWidth,
+                    borderColor: choiceOption.normal.borderColor?.hex,
+                    accessibility: .init(
+                        label: choiceOption.normal.accessibility.value,
+                        isFontScalingEnabled: choiceOption.normal.accessibility.isFontScalingEnabled
+                    )
+                ),
+                selected: .init(
+                    background: .fill(color: choiceOption.selected.backgroundColor),
+                    title: .init(
+                        color: choiceOption.selected.textColor.hex,
+                        font: choiceOption.selected.textFont,
+                        textStyle: choiceOption.selected.textStyle,
+                        accessibility: .init(isFontScalingEnabled: choiceOption.selected.accessibility.isFontScalingEnabled)
+                    ),
+                    cornerRadius: choiceOption.selected.cornerRadius,
+                    borderWidth: choiceOption.selected.borderWidth,
+                    borderColor: choiceOption.selected.borderColor?.hex,
+                    accessibility: .init(
+                        label: choiceOption.selected.accessibility.value,
+                        isFontScalingEnabled: choiceOption.selected.accessibility.isFontScalingEnabled
+                    )
+                ),
+                disabled: .init(
+                    background: .fill(color: choiceOption.disabled.backgroundColor),
+                    title: .init(
+                        color: choiceOption.disabled.textColor.hex,
+                        font: choiceOption.disabled.textFont,
+                        textStyle: choiceOption.disabled.textStyle,
+                        accessibility: .init(isFontScalingEnabled: choiceOption.disabled.accessibility.isFontScalingEnabled)
+                    ),
+                    cornerRadius: choiceOption.disabled.cornerRadius,
+                    borderWidth: choiceOption.disabled.borderWidth,
+                    borderColor: choiceOption.disabled.borderColor?.hex,
+                    accessibility: .init(
+                        label: choiceOption.disabled.accessibility.value,
+                        isFontScalingEnabled: choiceOption.disabled.accessibility.isFontScalingEnabled
+                    )
+                )
+            ),
+            accessibility: .init(imageLabel: accessibility.imageLabel)
+        )
+    }
+    // swiftlint:enable function_body_length
 }

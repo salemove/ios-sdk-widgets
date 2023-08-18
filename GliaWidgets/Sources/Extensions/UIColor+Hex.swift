@@ -27,7 +27,7 @@ extension UIColor {
         self.init(red: components.R, green: components.G, blue: components.B, alpha: components.a)
     }
 
-    func toHex(alpha: Bool = false) -> String? {
+    func toRGBAHex(alpha: Bool = true) -> String? {
         guard let components = cgColor.components, components.count >= 3 else {
             return nil
         }
