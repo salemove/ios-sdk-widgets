@@ -1,6 +1,12 @@
 import UIKit
 
 /// Base style of a chat message.
+@available(*, deprecated, message: """
+Deprecated, use
+``Theme.VisitorMessageStyle``,
+``Theme.OperatorMessageStyle`` and
+``Theme.SystemMessageStyle`` instead.
+""")
 public class ChatMessageStyle {
     /// Style of the text content.
     public var text: ChatTextContentStyle

@@ -64,6 +64,30 @@ final class GvaGalleryCardView: BaseView {
 
         return .init(width: .contentWidth, height: height)
     }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        switch props.style.cardContainer.backgroundColor {
+        case let .fill(color):
+            backgroundColor = color
+        case let .gradient(colors):
+            makeGradientBackground(
+                colors: colors,
+                cornerRadius: props.style.cardContainer.cornerRadius
+            )
+        }
+
+        switch props.style.imageView.backgroundColor {
+        case let .fill(color):
+            imageView?.backgroundColor = color
+        case let .gradient(colors):
+            imageView?.makeGradientBackground(
+                colors: colors,
+                cornerRadius: props.style.imageView.cornerRadius
+            )
+        }
+    }
 }
 
 // MARK: - Private
@@ -74,12 +98,8 @@ private extension GvaGalleryCardView {
 
         // Container
         layer.cornerRadius = style.cardContainer.cornerRadius
-        switch style.cardContainer.backgroundColor {
-        case let .fill(color):
-            backgroundColor = color
-        case let .gradient(colors):
-            makeGradientBackground(colors: colors)
-        }
+        layer.borderWidth = style.cardContainer.borderWidth
+        layer.borderColor = style.cardContainer.borderColor.cgColor
 
         // Labels
         titleLabel.text = props.title
@@ -102,12 +122,8 @@ private extension GvaGalleryCardView {
 
             imageView.setImage(from: image.url.absoluteString, animated: false)
             imageView.layer.cornerRadius = style.imageView.cornerRadius
-            switch style.imageView.backgroundColor {
-            case let .fill(color):
-                imageView.backgroundColor = color
-            case let .gradient(colors):
-                imageView.makeGradientBackground(colors: colors)
-            }
+            imageView.layer.borderColor = style.imageView.borderColor.cgColor
+            imageView.layer.borderWidth = style.imageView.borderWidth
         } else {
             imageView?.removeFromSuperview()
         }

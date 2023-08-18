@@ -32,13 +32,13 @@ class ChatTextContentView: BaseView {
     var linkTapped: ((URL) -> Void)?
 
     private let textView = UITextView()
-    private let style: ChatTextContentStyle
+    private let style: Theme.ChatTextContentStyle
     private let contentAlignment: ChatMessageContentAlignment
     private let contentView = UIView()
     private let kTextInsets: UIEdgeInsets
 
     init(
-        with style: ChatTextContentStyle,
+        with style: Theme.ChatTextContentStyle,
         contentAlignment: ChatMessageContentAlignment,
         insets: UIEdgeInsets = UIEdgeInsets(top: 12, left: 16, bottom: 12, right: 16)
     ) {
@@ -52,10 +52,14 @@ class ChatTextContentView: BaseView {
         fatalError("init() has not been implemented")
     }
 
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        contentView.applyBackground(style.background)
+    }
+
     override func setup() {
         super.setup()
-        contentView.backgroundColor = style.backgroundColor
-        contentView.layer.cornerRadius = style.cornerRadius
 
         textView.delegate = self
         textView.isScrollEnabled = false
@@ -65,9 +69,9 @@ class ChatTextContentView: BaseView {
         textView.textContainer.lineFragmentPadding = 0
         textView.dataDetectorTypes = [.link, .phoneNumber]
         textView.linkTextAttributes = [.underlineStyle: NSUnderlineStyle.single.rawValue]
-        textView.font = style.textFont
+        textView.font = style.text.font
         textView.backgroundColor = .clear
-        textView.textColor = style.textColor
+        textView.textColor = UIColor(hex: style.text.color)
 
         setFontScalingEnabled(
             style.accessibility.isFontScalingEnabled,
@@ -121,10 +125,9 @@ class ChatTextContentView: BaseView {
             var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
             constraints += textView.layoutInSuperview(insets: kTextInsets)
         }
-
         let attributes: [NSAttributedString.Key: Any] = [
-            .font: UIFont.preferredFont(forTextStyle: style.textStyle),
-            .foregroundColor: style.textColor
+            .font: UIFont.preferredFont(forTextStyle: style.text.textStyle),
+            .foregroundColor: UIColor(hex: style.text.color)
         ]
 
         text.addAttributes(
@@ -163,11 +166,19 @@ extension ChatTextContentView {
 extension ChatTextContentView {
     static func mock(environment: Environment) -> ChatTextContentView {
         ChatTextContentView(
-            with: ChatTextContentStyle(
-                textFont: .systemFont(ofSize: 10),
-                textColor: .black,
-                textStyle: .body,
-                backgroundColor: .black,
+            with: Theme.ChatTextContentStyle(
+                text: .init(
+                    color: UIColor.black.hex,
+                    font: .systemFont(ofSize: 10),
+                    textStyle: .body,
+                    accessibility: .init(isFontScalingEnabled: true)
+                ),
+                background: .init(
+                    background: .fill(color: .black),
+                    borderColor: UIColor.clear.cgColor,
+                    borderWidth: 0,
+                    cornerRadius: 8.49
+                ),
                 accessibility: .init(isFontScalingEnabled: true)
             ),
             contentAlignment: .left,
