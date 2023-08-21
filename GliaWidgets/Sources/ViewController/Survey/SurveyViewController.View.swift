@@ -28,7 +28,7 @@ extension Survey {
             $0.layer.shadowRadius = 8
         }
         let cancelButton = UIButton(type: .custom).make {
-            $0.setTitle(L10n.Survey.Action.cancel, for: .normal)
+            $0.setTitle(Localization.General.cancel, for: .normal)
             $0.titleLabel?.numberOfLines = 0
             // Using `byWordWrapping` prevents button text
             // from getting truncated, for example for large
@@ -36,7 +36,7 @@ extension Survey {
             $0.titleLabel?.lineBreakMode = .byWordWrapping
         }
         let submitButton = UIButton(type: .custom).make {
-            $0.setTitle(L10n.Survey.Action.submit, for: .normal)
+            $0.setTitle(Localization.General.submit, for: .normal)
             $0.titleLabel?.numberOfLines = 0
             $0.titleLabel?.lineBreakMode = .byWordWrapping
         }
@@ -189,7 +189,7 @@ extension NSAttributedString {
         if isRequired {
             mutableString.append(
                 .init(
-                    string: L10n.Survey.Question.Title.asterisk,
+                    string: "*",
                     attributes: [
                         .foregroundColor: UIColor.red,
                         .font: font
