@@ -22,6 +22,7 @@ extension ChatView {
             style: style.gliaVirtualAssistant.galleryList
         )
         view.showsOperatorImage = showsImage
+        view.setOperatorImage(fromUrl: imageUrl, animated: false)
         return .gvaGallery(view, height)
     }
 
