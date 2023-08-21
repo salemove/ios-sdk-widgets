@@ -1,30 +1,27 @@
 extension Theme {
     var alertStyle: AlertStyle {
-        typealias Alert = L10n.Alert
-        typealias Accessibility = Alert.Accessibility
-
         let negativeAction = ActionButtonStyle(
-            title: Alert.Action.no,
+            title: Localization.General.no,
             titleFont: font.buttonLabel,
             titleColor: color.baseLight,
             backgroundColor: .fill(color: color.systemNegative),
             accessibility: .init(
-                label: Accessibility.Action.no,
+                label: Localization.General.no,
                 isFontScalingEnabled: true
             )
         )
         let positiveAction = ActionButtonStyle(
-            title: Alert.Action.yes,
+            title: Localization.General.yes,
             titleFont: font.buttonLabel,
             titleColor: color.baseLight,
             backgroundColor: .fill(color: color.primary),
             accessibility: .init(
-                label: Accessibility.Action.yes,
+                label: Localization.General.yes,
                 isFontScalingEnabled: true
             )
         )
         let poweredBy = PoweredByStyle(
-            text: L10n.poweredBy,
+            text: Localization.General.poweredBy,
             font: font.caption,
             accessibility: .init(isFontScalingEnabled: true)
         )
