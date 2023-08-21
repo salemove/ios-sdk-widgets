@@ -167,8 +167,8 @@ public enum L10n {
     }
   }
   public enum Call {
-    /// You can continue browsing and we’ll connect you automatically.
-    public static let bottomText = L10n.tr("Deprecated", "call.bottomText", fallback: "You can continue browsing and we’ll connect you automatically.")
+    /// You can continue browsing and we will connect you automatically.
+    public static let bottomText = L10n.tr("Deprecated", "call.bottomText", fallback: "You can continue browsing and we will connect you automatically.")
     /// (By default your video will be off)
     public static let topText = L10n.tr("Deprecated", "call.topText", fallback: "(By default your video will be off)")
     public enum Accessibility {
@@ -401,8 +401,8 @@ public enum L10n {
       public enum Queue {
         /// CompanyName
         public static let firstText = L10n.tr("Deprecated", "call.connect.queue.firstText", fallback: "CompanyName")
-        /// We're here to help!
-        public static let secondText = L10n.tr("Deprecated", "call.connect.queue.secondText", fallback: "We're here to help!")
+        /// We are here to help!
+        public static let secondText = L10n.tr("Deprecated", "call.connect.queue.secondText", fallback: "We are here to help!")
       }
       public enum Transferring {
         /// Transferring
@@ -645,8 +645,8 @@ public enum L10n {
       public enum Queue {
         /// CompanyName
         public static let firstText = L10n.tr("Deprecated", "chat.connect.queue.firstText", fallback: "CompanyName")
-        /// We're here to help!
-        public static let secondText = L10n.tr("Deprecated", "chat.connect.queue.secondText", fallback: "We're here to help!")
+        /// We are here to help!
+        public static let secondText = L10n.tr("Deprecated", "chat.connect.queue.secondText", fallback: "We are here to help!")
       }
       public enum Transferring {
         /// Transferring
@@ -869,8 +869,8 @@ public enum L10n {
     }
     public enum Question {
       public enum Title {
-        ///  *
-        public static let asterisk = L10n.tr("Deprecated", "survey.question.title.asterisk", fallback: " *")
+        /// *
+        public static let asterisk = L10n.tr("Deprecated", "survey.question.title.asterisk", fallback: "*")
       }
     }
   }
