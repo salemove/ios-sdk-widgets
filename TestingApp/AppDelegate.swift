@@ -4,6 +4,14 @@ import GliaCoreSDK
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
+    lazy var deeplinkService: DeeplinksService = {
+        let deepLinksHandlers: [DeeplinksService.Host: DeeplinkHandler.Type] = [
+            .configure: ConfigurationDeeplinkHandler.self,
+            .widgets: SettingsDeeplinkHandler.self
+        ]
+        return .init(window: window, handlers: deepLinksHandlers)
+    }()
+
 
     func applicationDidFinishLaunching(_ application: UIApplication) {
         handleProcessInfo()
@@ -15,8 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         open url: URL,
         options: [UIApplication.OpenURLOptionsKey: Any] = [:]
     ) -> Bool {
-        handleConfigurationUrl(url: url)
-        return true
+        deeplinkService.openUrl(url, withOptions: options)
     }
 
     func application(
@@ -45,28 +52,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         debugPrint(configurationUrl)
 
         guard let url = URL(string: configurationUrl) else { return }
-        handleConfigurationUrl(url: url)
-    }
-
-    @discardableResult
-    private func handleConfigurationUrl(url: URL) -> Bool {
-        guard
-            let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
-            let queryItems = components.queryItems
-        else {
-            debugPrint("URL is not valid. url='\(url.absoluteString)'.")
-            return false
-        }
-
-        guard let root = window?.rootViewController as? ViewController else {
-            return false
-        }
-
-        if components.host == "configure" {
-            root.updateConfiguration(with: queryItems)
-        }
-
-        return true
+        deeplinkService.openUrl(url, withOptions: [:])
     }
 
     private func handleSetAnimationsEnabled() {
