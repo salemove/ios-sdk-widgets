@@ -11,7 +11,7 @@ extension ScreenSharingViewStyle {
         return ScreenSharingViewStyle(
             title: title,
             header: .mock(),
-            messageText: L10n.CallVisualizer.ScreenSharing.message,
+            messageText: Localization.CallVisualizer.ScreenSharing.message,
             messageTextFont: messageTextFont,
             messageTextColor: Color.baseDark,
             buttonStyle: .mock(titleFont: buttonTitleFont),

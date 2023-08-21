@@ -32,7 +32,7 @@ public struct Configuration {
         visitorContext: VisitorContext? = nil,
         pushNotifications: PushNotifications = .disabled,
         isWhiteLabelApp: Bool = false,
-        companyName: String = L10n.Chat.Connect.Queue.firstText
+        companyName: String = ""
     ) {
         self.authorizationMethod = authorizationMethod
         self.environment = environment
