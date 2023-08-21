@@ -26,7 +26,7 @@ extension Survey.ViewController.Props {
                 )),
                 makeInputPropsMock(),
                 makeBooleanPropsMock(selectedOption: .init(
-                    name: L10n.Survey.Action.yes,
+                    name: Localization.General.yes,
                     value: true
                 )),
                 makeSinglePropsMock(selectedOption: .init(
@@ -90,8 +90,8 @@ private extension Survey.ViewController.Props {
             accessibility: .init(value: "Required")
         )
         props.options = [
-            .init(name: L10n.Survey.Action.yes, value: true),
-            .init(name: L10n.Survey.Action.no, value: false)
+            .init(name: Localization.General.yes, value: true),
+            .init(name: Localization.General.no, value: false)
         ].compactMap { $0 }
         props.selected = selectedOption
         return props

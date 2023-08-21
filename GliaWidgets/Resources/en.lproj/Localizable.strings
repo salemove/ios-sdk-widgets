@@ -124,7 +124,7 @@
 "chat.upgrade.audio.text" = "Upgraded to Audio Call";
 "chat.upgrade.video.text" = "Upgraded to Video Call";
 "chat.upload.remove.accessibility.label" = "Remove upload";
-"engagement.connect.placeholder" = "We are here to help";
+"engagement.connect.placeholder" = "We are here to help!";
 "engagement.connect.with" = "Connecting with {operatorName}";
 "engagement.default_operator_name" = "Operator";
 "engagement.end.confirmation.header" = "End Engagement?";
@@ -139,6 +139,7 @@
 "engagement.queue_leave.message" = "You will lose your place in the queue.";
 "engagement.queue_reconnection_failed.try_again" = "Please try again.";
 "engagement.queue_transferring.message" = "Transferring";
+"engagement.queue_wait.video_notice" = "(By default your video will be off)";
 "engagement.queue_wait.message" = "You can continue browsing and we will connect you automatically.";
 "engagement.secure_messaging.title" = "Messaging";
 "error.general" = "Something went wrong";
@@ -158,7 +159,7 @@
 "general.no" = "No";
 "general.ok" = "Ok";
 "general.open" = "Open";
-"general.powered_by" = "Powered by Glia";
+"general.powered_by" = "Powered by";
 "general.retry" = "Retry";
 "general.selected" = "Selected";
 "general.submit" = "Submit";
@@ -188,7 +189,8 @@
 "message_center.welcome.send.accessibility.hint" = "Sends a secure message.";
 "message_center.welcome.title" = "Welcome to Message Center";
 "screen_sharing.visitor_screen.disclaimer.title" = "You are about to share your screen";
-"screen_sharing.visitor_screen.end" = "End screen sharing";
+"screen_sharing.visitor_screen.end" = "End Screen Sharing";
+"screen_sharing.visitor_screen.end.accessibility.hint" = "Ends screen sharing";
 "screensharing.visitor_screen.disclaimer.info" = "Depending on your selection, your entire screen might be shared with the operator, not just the application window.";
 "send_message.send" = "Send message";
 "send_message.sending" = "Sending…";

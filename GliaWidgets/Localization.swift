@@ -258,8 +258,8 @@ internal enum Localization {
     /// {operatorName} has offered you to upgrade
     internal static let offerUpgrade = Localization.tr("Localizable", "engagement.offer_upgrade", fallback: "{operatorName} has offered you to upgrade")
     internal enum Connect {
-      /// We are here to help
-      internal static let placeholder = Localization.tr("Localizable", "engagement.connect.placeholder", fallback: "We are here to help")
+      /// We are here to help!
+      internal static let placeholder = Localization.tr("Localizable", "engagement.connect.placeholder", fallback: "We are here to help!")
       /// Connecting with {operatorName}
       internal static let with = Localization.tr("Localizable", "engagement.connect.with", fallback: "Connecting with {operatorName}")
     }
@@ -302,6 +302,8 @@ internal enum Localization {
     internal enum QueueWait {
       /// You can continue browsing and we will connect you automatically.
       internal static let message = Localization.tr("Localizable", "engagement.queue_wait.message", fallback: "You can continue browsing and we will connect you automatically.")
+      /// (By default your video will be off)
+      internal static let videoNotice = Localization.tr("Localizable", "engagement.queue_wait.video_notice", fallback: "(By default your video will be off)")
     }
     internal enum SecureMessaging {
       /// Messaging
@@ -347,8 +349,8 @@ internal enum Localization {
     internal static let ok = Localization.tr("Localizable", "general.ok", fallback: "Ok")
     /// Open
     internal static let `open` = Localization.tr("Localizable", "general.open", fallback: "Open")
-    /// Powered by Glia
-    internal static let poweredBy = Localization.tr("Localizable", "general.powered_by", fallback: "Powered by Glia")
+    /// Powered by
+    internal static let poweredBy = Localization.tr("Localizable", "general.powered_by", fallback: "Powered by")
     /// Retry
     internal static let retry = Localization.tr("Localizable", "general.retry", fallback: "Retry")
     /// Selected
@@ -448,11 +450,17 @@ internal enum Localization {
   }
   internal enum ScreenSharing {
     internal enum VisitorScreen {
-      /// End screen sharing
-      internal static let end = Localization.tr("Localizable", "screen_sharing.visitor_screen.end", fallback: "End screen sharing")
+      /// End Screen Sharing
+      internal static let end = Localization.tr("Localizable", "screen_sharing.visitor_screen.end", fallback: "End Screen Sharing")
       internal enum Disclaimer {
         /// You are about to share your screen
         internal static let title = Localization.tr("Localizable", "screen_sharing.visitor_screen.disclaimer.title", fallback: "You are about to share your screen")
+      }
+      internal enum End {
+        internal enum Accessibility {
+          /// Ends screen sharing
+          internal static let hint = Localization.tr("Localizable", "screen_sharing.visitor_screen.end.accessibility.hint", fallback: "Ends screen sharing")
+        }
       }
     }
   }
