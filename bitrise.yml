@@ -149,6 +149,9 @@ workflows:
         inputs:
         - scheme: $SNAPSHOTS_SCHEME
         - destination: platform=iOS Simulator,name=iPhone 13,OS=15.2
+    - xcode-test@4:
+        inputs:
+        - scheme: $TESTING_APP_TESTS_SCHEME
     - xcode-archive@4:
         inputs:
         - scheme: $APP_SCHEME
@@ -241,6 +244,9 @@ app:
   - opts:
       is_expand: false
     SNAPSHOTS_SCHEME: SnapshotTests
+  - opts:
+      is_expand: false
+    TESTING_APP_TESTS_SCHEME: TestingAppTests
   - opts:
       is_expand: false
     GIT_AUTHOR_NAME: BitriseBot
