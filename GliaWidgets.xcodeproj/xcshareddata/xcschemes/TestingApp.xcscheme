@@ -38,6 +38,17 @@
                ReferencedContainer = "container:GliaWidgets.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "8491AF392A94E4E300CC3E72"
+               BuildableName = "TestingAppTests.xctest"
+               BlueprintName = "TestingAppTests"
+               ReferencedContainer = "container:GliaWidgets.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
