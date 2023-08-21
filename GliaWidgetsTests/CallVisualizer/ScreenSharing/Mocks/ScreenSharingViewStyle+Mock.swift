@@ -9,7 +9,7 @@ extension ScreenSharingViewStyle {
         ScreenSharingViewStyle(
             title: title,
             header: .mock(),
-            messageText: L10n.CallVisualizer.ScreenSharing.message,
+            messageText: Localization.CallVisualizer.ScreenSharing.message,
             messageTextFont: .systemFont(ofSize: 20, weight: .regular),
             messageTextColor: Color.baseDark,
             buttonStyle: .mock(),

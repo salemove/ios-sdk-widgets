@@ -2,9 +2,6 @@ import UIKit
 
 extension Theme {
     var callStyle: CallStyle {
-        typealias Call = L10n.Call
-        typealias Accessibility = Call.Accessibility
-
         let onHoldOverlay = OnHoldOverlayStyle(
             image: Asset.callOnHold.image,
             imageColor: .fill(color: .white),
@@ -14,25 +11,25 @@ extension Theme {
             image: Asset.back.image,
             color: color.baseLight,
             accessibility: .init(
-                label: Accessibility.Header.BackButton.label,
-                hint: Accessibility.Header.BackButton.hint
+                label: Localization.General.back,
+                hint: Localization.Call.Header.Close.Button.Accessibility.hint
             )
         )
         let closeButton = HeaderButtonStyle(
             image: Asset.close.image,
             color: color.baseLight,
             accessibility: .init(
-                label: Accessibility.Header.CloseButton.label,
-                hint: Accessibility.Header.CloseButton.hint
+                label: Localization.General.close,
+                hint: ""
             )
         )
         let endButton = ActionButtonStyle(
-            title: Call.EndButton.title,
+            title: Localization.General.end,
             titleFont: font.buttonLabel,
             titleColor: color.baseLight,
             backgroundColor: .fill(color: color.systemNegative),
             accessibility: .init(
-                label: Accessibility.Header.EndButton.label,
+                label: Localization.General.end,
                 isFontScalingEnabled: true
             )
         )
@@ -40,8 +37,8 @@ extension Theme {
             image: Asset.startScreenShare.image,
             color: color.baseLight,
             accessibility: .init(
-                label: Accessibility.Header.EndScreenShareButton.label,
-                hint: Accessibility.Header.EndScreenShareButton.hint
+                label: Localization.General.end,
+                hint: ""
             )
         )
         let header = HeaderStyle(
@@ -66,72 +63,72 @@ extension Theme {
             animationColor: .lightGray,
             onHoldOverlay: onHoldOverlay,
             accessibility: .init(
-                label: Accessibility.Operator.Avatar.label,
-                hint: Accessibility.Operator.Avatar.hint
+                label: Localization.Call.Operator.Avatar.Accessibility.label,
+                hint: Localization.Call.Operator.Avatar.Accessibility.hint
             )
         )
         let queue = ConnectStatusStyle(
-            firstText: Call.Connect.Queue.firstText,
+            firstText: Localization.General.companyName,
             firstTextFont: font.header1,
             firstTextFontColor: color.baseLight,
             firstTextStyle: .title1,
-            secondText: Call.Connect.Queue.secondText,
+            secondText: Localization.Engagement.Connect.placeholder,
             secondTextFont: font.subtitle,
             secondTextFontColor: color.baseLight,
             secondTextStyle: .footnote,
             accessibility: .init(
-                firstTextHint: Accessibility.Connect.Queue.FirstText.hint,
+                firstTextHint: Localization.Call.Connect.FirstText.Accessibility.hint,
                 secondTextHint: nil,
                 isFontScalingEnabled: true
             )
         )
         let connecting = ConnectStatusStyle(
-            firstText: Call.Connect.Connecting.firstText,
+            firstText: Localization.Engagement.Connect.with,
             firstTextFont: font.header2,
             firstTextFontColor: color.baseLight,
             firstTextStyle: .title2,
-            secondText: Call.Connect.Connecting.secondText,
+            secondText: "",
             secondTextFont: font.header2,
             secondTextFontColor: color.baseLight,
             secondTextStyle: .title2,
             accessibility: .init(
-                firstTextHint: Accessibility.Connect.Connecting.FirstText.hint,
+                firstTextHint: Localization.Call.Connect.FirstText.Accessibility.hint,
                 secondTextHint: nil,
                 isFontScalingEnabled: true
             )
         )
         let connected = ConnectStatusStyle(
-            firstText: Call.Connect.Connected.firstText,
+            firstText: L10n.Call.Connect.Connected.firstText,
             firstTextFont: font.header1,
             firstTextFontColor: color.baseLight,
             firstTextStyle: .title1,
-            secondText: Call.Connect.Connected.secondText,
+            secondText: L10n.Call.Connect.Connected.secondText,
             secondTextFont: font.subtitle,
             secondTextFontColor: color.baseLight,
             secondTextStyle: .footnote,
             accessibility: .init(
-                firstTextHint: Accessibility.Connect.Connected.FirstText.hint,
-                secondTextHint: Accessibility.Connect.Connected.SecondText.hint,
+                firstTextHint: Localization.Call.Connect.FirstText.Accessibility.hint,
+                secondTextHint: Localization.Call.Connect.SecondText.Accessibility.hint,
                 isFontScalingEnabled: true
             )
         )
         let onHold = ConnectStatusStyle(
-            firstText: Call.Connect.Connected.firstText,
+            firstText: L10n.Call.Connect.Connected.firstText,
             firstTextFont: font.header1,
             firstTextFontColor: color.baseLight,
             firstTextStyle: .title1,
-            secondText: Call.Connect.Connected.secondText,
+            secondText: L10n.Call.Connect.Connected.secondText,
             secondTextFont: font.subtitle,
             secondTextFontColor: color.baseLight,
             secondTextStyle: .footnote,
             accessibility: .init(
-                firstTextHint: Accessibility.Connect.Connected.FirstText.hint,
+                firstTextHint: Localization.Call.Connect.FirstText.Accessibility.hint,
                 secondTextHint: nil,
                 isFontScalingEnabled: true
             )
         )
         let transferring = ConnectStatusStyle(
-            firstText: Call.Connect.Transferring.firstText,
+            firstText: Localization.Engagement.QueueTransferring.message,
             firstTextFont: font.header1,
             firstTextFontColor: color.baseLight,
             firstTextStyle: .title1,
@@ -149,9 +146,9 @@ extension Theme {
             onHold: onHold
         )
         let onHoldStyle = CallStyle.OnHoldStyle(
-            onHoldText: Call.OnHold.topText,
-            descriptionText: Call.OnHold.bottomText,
-            localVideoStreamLabelText: Call.OnHold.localVideoStreamLabelText,
+            onHoldText: Localization.Call.onHold,
+            descriptionText: Localization.Call.OnHold.bottomText,
+            localVideoStreamLabelText: Localization.General.you,
             localVideoStreamLabelFont: font.mediumSubtitle2,
             localVideoStreamLabelColor: color.baseLight
         )
@@ -161,35 +158,32 @@ extension Theme {
             connect: connect,
             backgroundColor: .fill(color: .white),
             preferredStatusBarStyle: .lightContent,
-            audioTitle: Call.Audio.title,
-            videoTitle: Call.Video.title,
-            operatorName: Call.Operator.name,
+            audioTitle: Localization.Media.Audio.name,
+            videoTitle: Localization.Media.Video.name,
+            operatorName: L10n.Call.Operator.name,
             operatorNameFont: font.header1,
             operatorNameColor: color.baseLight,
             durationFont: font.bodyText,
             durationColor: color.baseLight,
-            topText: Call.topText,
+            topText: Localization.Engagement.QueueWait.videoNotice,
             topTextFont: font.subtitle,
             topTextColor: color.baseLight,
-            bottomText: Call.bottomText,
+            bottomText: Localization.Engagement.QueueWait.message,
             bottomTextFont: font.bodyText,
             bottomTextColor: color.baseLight,
             buttonBar: buttonBarStyle,
             onHoldStyle: onHoldStyle,
             accessibility: .init(
-                operatorNameHint: Accessibility.OperatorName.hint,
-                durationHint: Accessibility.CallDuration.hint,
-                localVideoLabel: Accessibility.Video.Visitor.label,
-                remoteVideoLabel: Accessibility.Video.Operator.label,
+                operatorNameHint: Localization.Call.Connect.FirstText.Accessibility.hint,
+                durationHint: Localization.Call.Connect.SecondText.Accessibility.hint,
+                localVideoLabel: Localization.Call.Video.Visitor.Accessibility.label,
+                remoteVideoLabel: Localization.Call.Video.Operator.Accessibility.label,
                 isFontScalingEnabled: true
             )
         )
     }
 
     private var buttonBarStyle: CallButtonBarStyle {
-        typealias Buttons = L10n.Call.Buttons
-        typealias Accessibility = L10n.Call.Accessibility
-
         let activeBackgroundColor: ColorType = .fill(color: UIColor.white.withAlphaComponent(0.9))
         let inactiveBackgroundColor: ColorType = .fill(color: UIColor.black.withAlphaComponent(0.4))
         let activeImageColor: ColorType = .fill(color: color.baseDark)
@@ -204,42 +198,38 @@ extension Theme {
                 backgroundColor: activeBackgroundColor,
                 image: Asset.callChat.image,
                 imageColor: activeImageColor,
-                title: Buttons.Chat.title,
+                title: Localization.Media.Text.name,
                 titleFont: activeTitleFont,
                 titleColor: activeTitleColor,
                 textStyle: .caption1,
                 accessibility: .init(
-                    label: Accessibility.Buttons.Chat.Active.label
+                    label: Localization.General.selected
                 )
             ),
             inactive: CallButtonStyle.StateStyle(
                 backgroundColor: inactiveBackgroundColor,
                 image: Asset.callChat.image,
                 imageColor: inactiveImageColor,
-                title: Buttons.Chat.title,
+                title: Localization.Media.Text.name,
                 titleFont: inactiveTitleFont,
                 titleColor: inactiveTitleColor,
                 textStyle: .caption1,
-                accessibility: .init(
-                    label: Accessibility.Buttons.Chat.Inactive.label
-                )
+                accessibility: .init(label: "")
             ),
             selected: CallButtonStyle.StateStyle(
                 backgroundColor: inactiveBackgroundColor,
                 image: Asset.callChat.image,
                 imageColor: inactiveImageColor,
-                title: Buttons.Chat.title,
+                title: Localization.Media.Text.name,
                 titleFont: inactiveTitleFont,
                 titleColor: inactiveTitleColor,
                 textStyle: .caption1,
-                accessibility: .init(
-                    label: Accessibility.Buttons.Chat.Inactive.label
-                )
+                accessibility: .init(label: "")
             ),
             accessibility: .init(
-                singleItemBadgeValue: Accessibility.Buttons.Chat.BadgeValue.singleItem,
-                multipleItemsBadgeValue: Accessibility.Buttons.Chat.BadgeValue.multipleItems,
-                titleAndBadgeValue: Accessibility.Buttons.Chat.titleAndBadgeValue,
+                singleItemBadgeValue: Localization.Call.Buttons.Chat.BadgeValue.SingleItem.Accessibility.label,
+                multipleItemsBadgeValue: Localization.Call.Buttons.Chat.BadgeValue.MultipleItems.Accessibility.label,
+                titleAndBadgeValue: L10n.Call.Accessibility.Buttons.Chat.titleAndBadgeValue,
                 isFontScalingEnabled: true
             )
         )
@@ -248,42 +238,38 @@ extension Theme {
                 backgroundColor: activeBackgroundColor,
                 image: Asset.callVideoActive.image,
                 imageColor: activeImageColor,
-                title: Buttons.Video.title,
+                title: Localization.Media.Video.name,
                 titleFont: activeTitleFont,
                 titleColor: activeTitleColor,
                 textStyle: .caption1,
                 accessibility: .init(
-                    label: Accessibility.Buttons.Video.Active.label
+                    label: Localization.General.selected
                 )
             ),
             inactive: CallButtonStyle.StateStyle(
                 backgroundColor: inactiveBackgroundColor,
                 image: Asset.callVideoInactive.image,
                 imageColor: inactiveImageColor,
-                title: Buttons.Video.title,
+                title: Localization.Media.Video.name,
                 titleFont: inactiveTitleFont,
                 titleColor: inactiveTitleColor,
                 textStyle: .caption1,
-                accessibility: .init(
-                    label: Accessibility.Buttons.Video.Inactive.label
-                )
+                accessibility: .init(label: "")
             ),
             selected: CallButtonStyle.StateStyle(
                 backgroundColor: inactiveBackgroundColor,
                 image: Asset.callVideoInactive.image,
                 imageColor: inactiveImageColor,
-                title: Buttons.Video.title,
+                title: Localization.Media.Video.name,
                 titleFont: inactiveTitleFont,
                 titleColor: inactiveTitleColor,
                 textStyle: .caption1,
-                accessibility: .init(
-                    label: Accessibility.Buttons.Video.Inactive.label
-                )
+                accessibility: .init(label: "")
             ),
             accessibility: .init(
-                singleItemBadgeValue: Accessibility.Buttons.Video.BadgeValue.singleItem,
-                multipleItemsBadgeValue: Accessibility.Buttons.Video.BadgeValue.multipleItems,
-                titleAndBadgeValue: Accessibility.Buttons.Video.titleAndBadgeValue,
+                singleItemBadgeValue: "",
+                multipleItemsBadgeValue: "",
+                titleAndBadgeValue: L10n.Call.Accessibility.Buttons.Video.titleAndBadgeValue,
                 isFontScalingEnabled: true
             )
         )
@@ -292,42 +278,38 @@ extension Theme {
                 backgroundColor: activeBackgroundColor,
                 image: Asset.callMuteActive.image,
                 imageColor: activeImageColor,
-                title: Buttons.Mute.Active.title,
+                title: Localization.Call.Button.unmute,
                 titleFont: activeTitleFont,
                 titleColor: activeTitleColor,
                 textStyle: .caption1,
                 accessibility: .init(
-                    label: Accessibility.Buttons.Mute.Active.label
+                    label: Localization.General.selected
                 )
             ),
             inactive: CallButtonStyle.StateStyle(
                 backgroundColor: inactiveBackgroundColor,
                 image: Asset.callMuteInactive.image,
                 imageColor: inactiveImageColor,
-                title: Buttons.Mute.Inactive.title,
+                title: Localization.Call.Button.mute,
                 titleFont: inactiveTitleFont,
                 titleColor: inactiveTitleColor,
                 textStyle: .caption1,
-                accessibility: .init(
-                    label: Accessibility.Buttons.Mute.Inactive.label
-                )
+                accessibility: .init(label: "")
             ),
             selected: CallButtonStyle.StateStyle(
                 backgroundColor: inactiveBackgroundColor,
                 image: Asset.callMuteInactive.image,
                 imageColor: inactiveImageColor,
-                title: Buttons.Mute.Inactive.title,
+                title: Localization.Call.Button.mute,
                 titleFont: inactiveTitleFont,
                 titleColor: inactiveTitleColor,
                 textStyle: .caption1,
-                accessibility: .init(
-                    label: Accessibility.Buttons.Mute.Inactive.label
-                )
+                accessibility: .init(label: "")
             ),
             accessibility: .init(
-                singleItemBadgeValue: Accessibility.Buttons.Mute.BadgeValue.singleItem,
-                multipleItemsBadgeValue: Accessibility.Buttons.Mute.BadgeValue.multipleItems,
-                titleAndBadgeValue: Accessibility.Buttons.Mute.titleAndBadgeValue,
+                singleItemBadgeValue: "",
+                multipleItemsBadgeValue: "",
+                titleAndBadgeValue: L10n.Call.Accessibility.Buttons.Mute.titleAndBadgeValue,
                 isFontScalingEnabled: true
             )
         )
@@ -336,42 +318,38 @@ extension Theme {
                 backgroundColor: activeBackgroundColor,
                 image: Asset.callSpeakerActive.image,
                 imageColor: activeImageColor,
-                title: Buttons.Speaker.title,
+                title: Localization.Call.Button.speaker,
                 titleFont: activeTitleFont,
                 titleColor: activeTitleColor,
                 textStyle: .caption1,
                 accessibility: .init(
-                    label: Accessibility.Buttons.Speaker.Active.label
+                    label: Localization.General.selected
                 )
             ),
             inactive: CallButtonStyle.StateStyle(
                 backgroundColor: inactiveBackgroundColor,
                 image: Asset.callSpeakerInactive.image,
                 imageColor: inactiveImageColor,
-                title: Buttons.Speaker.title,
+                title: Localization.Call.Button.speaker,
                 titleFont: inactiveTitleFont,
                 titleColor: inactiveTitleColor,
                 textStyle: .caption1,
-                accessibility: .init(
-                    label: Accessibility.Buttons.Speaker.Inactive.label
-                )
+                accessibility: .init(label: "")
             ),
             selected: CallButtonStyle.StateStyle(
                 backgroundColor: inactiveBackgroundColor,
                 image: Asset.callSpeakerInactive.image,
                 imageColor: inactiveImageColor,
-                title: Buttons.Speaker.title,
+                title: Localization.Call.Button.speaker,
                 titleFont: inactiveTitleFont,
                 titleColor: inactiveTitleColor,
                 textStyle: .caption1,
-                accessibility: .init(
-                    label: Accessibility.Buttons.Speaker.Inactive.label
-                )
+                accessibility: .init(label: "")
             ),
             accessibility: .init(
-                singleItemBadgeValue: Accessibility.Buttons.Speaker.BadgeValue.singleItem,
-                multipleItemsBadgeValue: Accessibility.Buttons.Speaker.BadgeValue.multipleItems,
-                titleAndBadgeValue: Accessibility.Buttons.Speaker.titleAndBadgeValue,
+                singleItemBadgeValue: "",
+                multipleItemsBadgeValue: "",
+                titleAndBadgeValue: L10n.Call.Accessibility.Buttons.Speaker.titleAndBadgeValue,
                 isFontScalingEnabled: true
             )
         )
@@ -380,42 +358,38 @@ extension Theme {
                 backgroundColor: activeBackgroundColor,
                 image: Asset.callMiminize.image,
                 imageColor: activeImageColor,
-                title: Buttons.Minimize.title,
+                title: Localization.Engagement.minimizeVideoButton,
                 titleFont: activeTitleFont,
                 titleColor: activeTitleColor,
                 textStyle: .caption1,
                 accessibility: .init(
-                    label: Accessibility.Buttons.Minimize.Active.label
+                    label: Localization.General.selected
                 )
             ),
             inactive: CallButtonStyle.StateStyle(
                 backgroundColor: inactiveBackgroundColor,
                 image: Asset.callMiminize.image,
                 imageColor: inactiveImageColor,
-                title: Buttons.Minimize.title,
+                title: Localization.Engagement.minimizeVideoButton,
                 titleFont: inactiveTitleFont,
                 titleColor: inactiveTitleColor,
                 textStyle: .caption1,
-                accessibility: .init(
-                    label: Accessibility.Buttons.Minimize.Inactive.label
-                )
+                accessibility: .init(label: "")
             ),
             selected: CallButtonStyle.StateStyle(
                 backgroundColor: inactiveBackgroundColor,
                 image: Asset.callMiminize.image,
                 imageColor: inactiveImageColor,
-                title: Buttons.Minimize.title,
+                title: Localization.Engagement.minimizeVideoButton,
                 titleFont: inactiveTitleFont,
                 titleColor: inactiveTitleColor,
                 textStyle: .caption1,
-                accessibility: .init(
-                    label: Accessibility.Buttons.Minimize.Inactive.label
-                )
+                accessibility: .init(label: "")
             ),
             accessibility: .init(
-                singleItemBadgeValue: Accessibility.Buttons.Minimize.BadgeValue.singleItem,
-                multipleItemsBadgeValue: Accessibility.Buttons.Minimize.BadgeValue.multipleItems,
-                titleAndBadgeValue: Accessibility.Buttons.Minimize.titleAndBadgeValue,
+                singleItemBadgeValue: "",
+                multipleItemsBadgeValue: "",
+                titleAndBadgeValue: L10n.Call.Accessibility.Buttons.Minimize.titleAndBadgeValue,
                 isFontScalingEnabled: true
             )
         )
