@@ -18,7 +18,7 @@ final class GvaGalleryListView: BaseView {
     }
 
     let sectionInsets = UIEdgeInsets(top: 8, left: 44, bottom: 8, right: 16)
-    private let operatorImageInsets = UIEdgeInsets(top: 0, left: 8, bottom: 16, right: 0)
+    private let operatorImageInsets = UIEdgeInsets(top: 0, left: 8, bottom: 8, right: 0)
     private let environment: Environment
 
     private lazy var operatorImageView = UserImageView(
