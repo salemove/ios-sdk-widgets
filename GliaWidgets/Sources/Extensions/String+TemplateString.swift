@@ -1,6 +1,6 @@
 extension String {
     func withOperatorName(_ name: String?) -> String {
-        let name = name ?? L10n.operator
+        let name = name ?? Localization.Engagement.defaultOperatorName
         return replacingOccurrences(of: "{operatorName}", with: name)
     }
 
