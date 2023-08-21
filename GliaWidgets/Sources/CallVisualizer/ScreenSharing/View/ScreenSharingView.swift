@@ -46,8 +46,8 @@ extension CallVisualizer {
             $0.titleLabel?.numberOfLines = 0
             $0.titleLabel?.translatesAutoresizingMaskIntoConstraints = false
             $0.accessibilityIdentifier = "end_screen_sharing_button"
-            $0.accessibilityLabel = L10n.CallVisualizer.ScreenSharing.Accessibility.buttonLabel
-            $0.accessibilityHint = L10n.CallVisualizer.ScreenSharing.Accessibility.buttonHint
+            $0.accessibilityLabel = Localization.ScreenSharing.VisitorScreen.end
+            $0.accessibilityHint = Localization.ScreenSharing.VisitorScreen.End.Accessibility.hint
         }
         private lazy var contentStackView = UIStackView.make(
             .vertical,

@@ -123,7 +123,7 @@ extension Survey.ViewController.Props {
     ) -> Survey.ScaleQuestionView.Props {
 
         let accessibilityValue = sdkQuestion.required
-        ? L10n.Survey.Accessibility.Question.Title.value
+        ? Localization.Survey.Question.Title.Accessibility.label
         : nil
 
         var scaleProps = Survey.ScaleQuestionView.Props(
@@ -163,7 +163,7 @@ extension Survey.ViewController.Props {
     ) -> Survey.BooleanQuestionView.Props {
 
         let accessibilityValue = sdkQuestion.required
-        ? L10n.Survey.Accessibility.Question.Title.value
+        ? Localization.Survey.Question.Title.Accessibility.label
         : nil
 
         var booleanProps = Survey.BooleanQuestionView.Props(
@@ -183,8 +183,8 @@ extension Survey.ViewController.Props {
             updateProps(newViewControllerProps)
         }
         booleanProps.options = [
-            .init(name: L10n.Survey.Action.yes, value: true, select: handleBooleanOptionSelection),
-            .init(name: L10n.Survey.Action.no, value: false, select: handleBooleanOptionSelection)
+            .init(name: Localization.General.yes, value: true, select: handleBooleanOptionSelection),
+            .init(name: Localization.General.no, value: false, select: handleBooleanOptionSelection)
         ]
 
         return booleanProps
@@ -200,7 +200,7 @@ extension Survey.ViewController.Props {
     ) -> Survey.SingleChoiceQuestionView.Props {
 
         let accessibilityValue = sdkQuestion.required
-        ? L10n.Survey.Accessibility.Question.Title.value
+        ? Localization.Survey.Question.Title.Accessibility.label
         : nil
 
         var scaleProps = Survey.SingleChoiceQuestionView.Props(
@@ -241,7 +241,7 @@ extension Survey.ViewController.Props {
     ) -> Survey.InputQuestionView.Props {
 
         let accessibilityValue = sdkQuestion.required
-        ? L10n.Survey.Accessibility.Question.Title.value
+        ? Localization.Survey.Question.Title.Accessibility.label
         : nil
 
         var inputProps = Survey.InputQuestionView.Props(
@@ -250,7 +250,7 @@ extension Survey.ViewController.Props {
             isRequired: sdkQuestion.required,
             accessibility: .init(
                 titleValue: accessibilityValue,
-                fieldHint: L10n.Survey.Accessibility.Question.TextField.hint
+                fieldHint: Localization.Survey.Question.TextField.Accessibility.hint
             )
         )
         inputProps.textDidChange = { newValue in
