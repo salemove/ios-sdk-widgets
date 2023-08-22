@@ -49,7 +49,7 @@ extension ChatView {
                 )
             } ?? []
             var image: GvaGalleryCardView.Props.Image?
-            if let url = card.imageUrl {
+            if let urlString = card.imageUrl, let url = URL(string: urlString) {
                 image = GvaGalleryCardView.Props.Image(
                     url: url,
                     environment: .init(
