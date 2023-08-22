@@ -54,7 +54,7 @@ struct GvaGallery: Decodable, Equatable {
 struct GvaGalleryCard: Decodable, Equatable {
     let title: String
     let subtitle: String?
-    let imageUrl: URL?
+    let imageUrl: String?
     let options: [GvaOption]?
 }
 
