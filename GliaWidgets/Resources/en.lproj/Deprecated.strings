@@ -67,7 +67,7 @@
 "chat.title" = "Chat";
 "chat.endButton.title" = "End";
 "chat.connect.queue.firstText" = "CompanyName";
-"chat.connect.queue.secondText" = "We're here to help!";
+"chat.connect.queue.secondText" = "We are here to help!";
 "chat.connect.connecting.firstText" = "Connecting with {operatorName}";
 "chat.connect.connecting.secondText" = "";
 "chat.connect.connected.firstText" = "{operatorName}";
@@ -143,7 +143,7 @@
 "call.video.title" = "Video";
 "call.endButton.title" = "End";
 "call.connect.queue.firstText" = "CompanyName";
-"call.connect.queue.secondText" = "We're here to help!";
+"call.connect.queue.secondText" = "We are here to help!";
 "call.connect.connecting.firstText" = "Connecting with {operatorName}";
 "call.connect.connecting.secondText" = "";
 "call.connect.connected.firstText" = "{operatorName}";
@@ -151,7 +151,7 @@
 "call.connect.transferring.firstText" = "Transferring";
 "call.operator.name" = "{operatorName}";
 "call.topText" = "(By default your video will be off)";
-"call.bottomText" = "You can continue browsing and we’ll connect you automatically.";
+"call.bottomText" = "You can continue browsing and we will connect you automatically.";
 "call.buttons.chat.title" = "Chat";
 "call.buttons.video.title" = "Video";
 "call.buttons.mute.inactive.title" = "Mute";
@@ -214,7 +214,7 @@
 "survey.action.yes" = "Yes";
 "survey.action.no" = "No";
 "survey.action.validationError" = "Please provide an answer.";
-"survey.question.title.asterisk" = " *";
+"survey.question.title.asterisk" = "*";
 
 "survey.accessibility.footer.cancelButton.label" = "Cancel";
 "survey.accessibility.footer.submitButton.label" = "Submit";
