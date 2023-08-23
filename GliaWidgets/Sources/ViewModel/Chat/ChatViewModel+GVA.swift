@@ -37,27 +37,32 @@ extension ChatViewModel {
 
     func postbackButtonAction(for option: GvaOption) -> Cmd {
         .init { [weak self] in
-            guard let value = option.value else { return }
-            let singleChoiceOption = SingleChoiceOption(text: option.text, value: value)
-            self?.environment.sendSelectedOptionValue(singleChoiceOption) { [weak self] result in
-                guard let self = self else { return }
-                switch result {
-                case let .success(message):
-                    let chatMessage = ChatMessage(with: message)
-                    let item = ChatItem(
-                        with: chatMessage,
-                        isCustomCardSupported: self.isCustomCardSupported
-                    )
-                    if let item {
-                        self.appendItem(item, to: self.messagesSection, animated: true)
-                    }
-                    self.action?(.scrollToBottom(animated: true))
-                case .failure:
-                    self.showAlert(
-                        with: self.alertConfiguration.unexpectedError,
-                        dismissed: nil
-                    )
-                }
+            guard let self, let value = option.value else { return }
+
+            let attachment = CoreSdkClient.Attachment(
+                type: .singleChoiceResponse,
+                selectedOption: option.value,
+                options: nil,
+                files: nil,
+                imageUrl: nil
+            )
+
+            let outgoingMessage = OutgoingMessage(
+                content: option.text,
+                attachment: attachment
+            )
+
+            switch self.interactor.state {
+            case .engaged:
+                let singleChoiceOption = SingleChoiceOption(text: option.text, value: value)
+                self.sendOption(singleChoiceOption)
+
+            case .enqueued:
+                self.handle(pendingMessage: outgoingMessage)
+
+            case .enqueueing, .ended, .none:
+                self.handle(pendingMessage: outgoingMessage)
+                self.enqueue(mediaType: .text)
             }
         }
     }
@@ -66,7 +71,7 @@ extension ChatViewModel {
 private extension ChatViewModel {
     func urlButtonAction(url: URL, urlTarget: String?) -> Cmd {
         .init { [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
 
             let openUrl = { [weak self] url in
                 guard let self = self else { return }
@@ -98,11 +103,34 @@ private extension ChatViewModel {
 
     func broadcastEventButtonAction() -> Cmd {
         .init { [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
             self.showAlert(
                 with: self.alertConfiguration.unsupportedGvaBroadcastError,
                 dismissed: nil
             )
+        }
+    }
+
+    func sendOption(_ option: SingleChoiceOption) {
+        environment.sendSelectedOptionValue(option) { [weak self] result in
+            guard let self else { return }
+            switch result {
+            case let .success(message):
+                let chatMessage = ChatMessage(with: message)
+                let item = ChatItem(
+                    with: chatMessage,
+                    isCustomCardSupported: self.isCustomCardSupported
+                )
+                if let item {
+                    self.appendItem(item, to: self.messagesSection, animated: true)
+                }
+                self.action?(.scrollToBottom(animated: true))
+            case .failure:
+                self.showAlert(
+                    with: self.alertConfiguration.unexpectedError,
+                    dismissed: nil
+                )
+            }
         }
     }
 }
