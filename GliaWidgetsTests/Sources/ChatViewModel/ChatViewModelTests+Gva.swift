@@ -50,11 +50,35 @@ extension ChatViewModelTests {
         env.sendSelectedOptionValue = { option, _ in
             calls.append(.sendOption(option.text, option.value))
         }
-        viewModel = .mock(environment: env)
+        let interactorMock = Interactor.mock()
+        interactorMock.state = .engaged(nil)
+        viewModel = .mock(interactor: interactorMock, environment: env)
 
         viewModel.gvaOptionAction(for: option)()
 
         XCTAssertEqual(calls, [.sendOption("text", "value")])
+    }
+
+    func test_gvaPostbackButtonActionTriggersStartEngagement() {
+        let option = GvaOption.mock(text: "text", value: "value")
+        var calls: [Call] = []
+        var env = ChatViewModel.Environment.mock
+        // To ensure `open` is not called in case of URL Button
+        env.uiApplication.open = { url in
+            calls.append(.openUrl(url.absoluteString))
+        }
+        // To ensure `sendSelectedOptionValue` is not called in case of Postback Button
+        env.sendSelectedOptionValue = { option, _ in
+            calls.append(.sendOption(option.text, option.value))
+        }
+        let interactorMock = Interactor.mock()
+        interactorMock.state = .none
+        viewModel = .mock(interactor: interactorMock, environment: env)
+
+        viewModel.gvaOptionAction(for: option)()
+
+        XCTAssertEqual(calls, [])
+        XCTAssertEqual(interactorMock.state, .enqueueing)
     }
 
     func test_broadcastEventAction() {
