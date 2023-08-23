@@ -223,7 +223,10 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             fetchSiteConfigurations()
 
             pendingMessages.forEach { [weak self] outgoingMessage in
-                self?.interactor.send(outgoingMessage.content, attachment: nil) { [weak self] message in
+                self?.interactor.send(
+                    outgoingMessage.content,
+                    attachment: outgoingMessage.attachment
+                ) { [weak self] message in
                     guard let self = self else { return }
 
                     self.replace(
@@ -501,7 +504,7 @@ extension ChatViewModel {
         messageText = ""
     }
 
-    private func handle(pendingMessage: OutgoingMessage) {
+    func handle(pendingMessage: OutgoingMessage) {
         switch interactor.state {
         case .engaged: return
         case .enqueueing, .enqueued, .ended, .none:
