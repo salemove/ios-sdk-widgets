@@ -17,11 +17,11 @@ public extension Theme.SurveyStyle {
             font: ThemeFont
         ) -> Self {
             .init(
-                message: L10n.Survey.Action.validationError,
+                message: Localization.Survey.Action.validationError,
                 color: color.systemNegative.hex,
                 font: font.caption,
                 accessibility: .init(
-                    label: L10n.Survey.Accessibility.Validation.Title.label,
+                    label: Localization.Survey.Validation.Title.Accessibility.label,
                     isFontScalingEnabled: true
                 )
             )
