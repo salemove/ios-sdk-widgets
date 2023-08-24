@@ -68,11 +68,11 @@ internal enum Localization {
       }
     }
     internal enum Header {
-      internal enum Close {
+      internal enum Back {
         internal enum Button {
           internal enum Accessibility {
             /// Activates minimize.
-            internal static let hint = Localization.tr("Localizable", "call.header.close.button.accessibility.hint", fallback: "Activates minimize.")
+            internal static let hint = Localization.tr("Localizable", "call.header.back.button.accessibility.hint", fallback: "Activates minimize.")
           }
         }
       }
@@ -165,19 +165,45 @@ internal enum Localization {
     internal static let operatorJoined = Localization.tr("Localizable", "chat.operator_joined", fallback: "{operatorName} has joined the conversation.")
     /// New Messages
     internal static let unreadMessageDivider = Localization.tr("Localizable", "chat.unread_message_divider", fallback: "New Messages")
-    internal enum Attachement {
+    internal enum Attachment {
       /// Photo Library
-      internal static let photoLibrary = Localization.tr("Localizable", "chat.attachement.photo_library", fallback: "Photo Library")
+      internal static let photoLibrary = Localization.tr("Localizable", "chat.attachment.photo_library", fallback: "Photo Library")
       /// Take Photo or Video
-      internal static let takePhoto = Localization.tr("Localizable", "chat.attachement.take_photo", fallback: "Take Photo or Video")
+      internal static let takePhoto = Localization.tr("Localizable", "chat.attachment.take_photo", fallback: "Take Photo or Video")
+      internal enum Message {
+        internal enum Accessibility {
+          /// Attachment from {fileSender}
+          internal static let label = Localization.tr("Localizable", "chat.attachment.message.accessibility.label", fallback: "Attachment from {fileSender}")
+        }
+      }
       internal enum Upload {
         /// Invalid file type!
-        internal static let unsupportedFile = Localization.tr("Localizable", "chat.attachement.upload.unsupported_file", fallback: "Invalid file type!")
+        internal static let unsupportedFile = Localization.tr("Localizable", "chat.attachment.upload.unsupported_file", fallback: "Invalid file type!")
+      }
+    }
+    internal enum ChoiceCard {
+      internal enum Button {
+        internal enum Disabled {
+          internal enum Accessibility {
+            /// Disabled
+            internal static let label = Localization.tr("Localizable", "chat.choice_card.button.disabled.accessibility.label", fallback: "Disabled")
+          }
+        }
+      }
+      internal enum Image {
+        internal enum Accessibility {
+          /// Choice card
+          internal static let label = Localization.tr("Localizable", "chat.choice_card.image.accessibility.label", fallback: "Choice card")
+        }
       }
     }
     internal enum Download {
+      /// Download
+      internal static let download = Localization.tr("Localizable", "chat.download.download", fallback: "Download")
       /// Downloading file…
       internal static let downloading = Localization.tr("Localizable", "chat.download.downloading", fallback: "Downloading file…")
+      /// Download failed
+      internal static let failed = Localization.tr("Localizable", "chat.download.failed", fallback: "Download failed")
     }
     internal enum Duration {
       internal enum Accessibility {
@@ -193,8 +219,12 @@ internal enum Localization {
       internal enum Upload {
         /// Uploading failed
         internal static let failed = Localization.tr("Localizable", "chat.file.upload.failed", fallback: "Uploading failed")
+        /// Network error.
+        internal static let genericError = Localization.tr("Localizable", "chat.file.upload.generic_error", fallback: "Network error.")
         /// Uploading file…
         internal static let inProgress = Localization.tr("Localizable", "chat.file.upload.in_progress", fallback: "Uploading file…")
+        /// Network error.
+        internal static let networkError = Localization.tr("Localizable", "chat.file.upload.network_error", fallback: "Network error.")
         /// Checking safety of the file…
         internal static let scanning = Localization.tr("Localizable", "chat.file.upload.scanning", fallback: "Checking safety of the file…")
         /// Ready to send
@@ -208,6 +238,8 @@ internal enum Localization {
       internal static let send = Localization.tr("Localizable", "chat.input.send", fallback: "Send")
     }
     internal enum Message {
+      /// Tap on the answer above
+      internal static let choiceCardPlaceholder = Localization.tr("Localizable", "chat.message.choice_card_placeholder", fallback: "Tap on the answer above")
       /// Send a message to start chatting
       internal static let startEngagementPlaceholder = Localization.tr("Localizable", "chat.message.start_engagement_placeholder", fallback: "Send a message to start chatting")
       internal enum Unread {
@@ -236,6 +268,12 @@ internal enum Localization {
       internal static let delivered = Localization.tr("Localizable", "chat.status.delivered", fallback: "Delivered")
       /// Operator typing
       internal static let typing = Localization.tr("Localizable", "chat.status.typing", fallback: "Operator typing")
+      internal enum Typing {
+        internal enum Accessibility {
+          /// {operatorName} is typing
+          internal static let label = Localization.tr("Localizable", "chat.status.typing.accessibility.label", fallback: "{operatorName} is typing")
+        }
+      }
     }
     internal enum Upgrade {
       internal enum Audio {
@@ -263,6 +301,34 @@ internal enum Localization {
     internal static let minimizeVideoButton = Localization.tr("Localizable", "engagement.minimize_video_button", fallback: "Minimize")
     /// {operatorName} has offered you to upgrade
     internal static let offerUpgrade = Localization.tr("Localizable", "engagement.offer_upgrade", fallback: "{operatorName} has offered you to upgrade")
+    internal enum Alert {
+      internal enum Camera {
+        /// Unable to access camera
+        internal static let header = Localization.tr("Localizable", "engagement.alert.camera.header", fallback: "Unable to access camera")
+      }
+      internal enum MediaSource {
+        /// Unable to access media source
+        internal static let header = Localization.tr("Localizable", "engagement.alert.media_source.header", fallback: "Unable to access media source")
+      }
+      internal enum Microphone {
+        /// Unable to access microphone
+        internal static let header = Localization.tr("Localizable", "engagement.alert.microphone.header", fallback: "Unable to access microphone")
+      }
+      internal enum ScreenSharing {
+        internal enum Start {
+          /// {operatorName} has asked you to share your screen
+          internal static let header = Localization.tr("Localizable", "engagement.alert.screen_sharing.start.header", fallback: "{operatorName} has asked you to share your screen")
+          /// {operatorName} would like to see the screen of your device
+          internal static let message = Localization.tr("Localizable", "engagement.alert.screen_sharing.start.message", fallback: "{operatorName} would like to see the screen of your device")
+        }
+        internal enum Stop {
+          /// Stop screen sharing?
+          internal static let header = Localization.tr("Localizable", "engagement.alert.screen_sharing.stop.header", fallback: "Stop screen sharing?")
+          /// Are you sure you want to stop sharing your screen?
+          internal static let message = Localization.tr("Localizable", "engagement.alert.screen_sharing.stop.message", fallback: "Are you sure you want to stop sharing your screen?")
+        }
+      }
+    }
     internal enum Connect {
       /// We are here to help!
       internal static let placeholder = Localization.tr("Localizable", "engagement.connect.placeholder", fallback: "We are here to help!")
@@ -284,6 +350,16 @@ internal enum Localization {
       /// Thank you!
       internal static let message = Localization.tr("Localizable", "engagement.ended.message", fallback: "This engagement has ended.\nThank you!")
     }
+    internal enum MediaUpgrade {
+      internal enum Audio {
+        /// Speak through your device
+        internal static let info = Localization.tr("Localizable", "engagement.media_upgrade.audio.info", fallback: "Speak through your device")
+      }
+      internal enum Phone {
+        /// Enter your number and we'll call you
+        internal static let info = Localization.tr("Localizable", "engagement.media_upgrade.phone.info", fallback: "Enter your number and we'll call you")
+      }
+    }
     internal enum QueueClosed {
       /// We're sorry
       internal static let header = Localization.tr("Localizable", "engagement.queue_closed.header", fallback: "We're sorry")
@@ -298,8 +374,8 @@ internal enum Localization {
       internal static let message = Localization.tr("Localizable", "engagement.queue_leave.message", fallback: "You will lose your place in the queue.")
     }
     internal enum QueueReconnectionFailed {
-      /// Please try again.
-      internal static let tryAgain = Localization.tr("Localizable", "engagement.queue_reconnection_failed.try_again", fallback: "Please try again.")
+      /// Please try again later.
+      internal static let tryAgain = Localization.tr("Localizable", "engagement.queue_reconnection_failed.try_again", fallback: "Please try again later.")
     }
     internal enum QueueTransferring {
       /// Transferring
@@ -308,8 +384,6 @@ internal enum Localization {
     internal enum QueueWait {
       /// You can continue browsing and we will connect you automatically.
       internal static let message = Localization.tr("Localizable", "engagement.queue_wait.message", fallback: "You can continue browsing and we will connect you automatically.")
-      /// (By default your video will be off)
-      internal static let videoNotice = Localization.tr("Localizable", "engagement.queue_wait.video_notice", fallback: "(By default your video will be off)")
     }
     internal enum SecureMessaging {
       /// Messaging
@@ -373,6 +447,28 @@ internal enum Localization {
   internal enum Gva {
     /// This action is not currently supported on mobile.
     internal static let errorUnsupported = Localization.tr("Localizable", "gva.error_unsupported", fallback: "This action is not currently supported on mobile.")
+  }
+  internal enum Ios {
+    internal enum Engagement {
+      internal enum Alert {
+        internal enum Camera {
+          /// Allow access to your camera from device menu: “Settings” - “Privacy” - “Camera”
+          internal static let message = Localization.tr("Localizable", "ios.engagement.alert.camera.message", fallback: "Allow access to your camera from device menu: “Settings” - “Privacy” - “Camera”")
+        }
+        internal enum MediaSource {
+          /// This media source is not available on your device
+          internal static let message = Localization.tr("Localizable", "ios.engagement.alert.media_source.message", fallback: "This media source is not available on your device")
+        }
+        internal enum Microphone {
+          /// Allow access to your microphone from device menu: “Settings” - “Privacy” - “Microphone”
+          internal static let message = Localization.tr("Localizable", "ios.engagement.alert.microphone.message", fallback: "Allow access to your microphone from device menu: “Settings” - “Privacy” - “Microphone”")
+        }
+      }
+      internal enum QueueWait {
+        /// (By default your video will be off)
+        internal static let videoNotice = Localization.tr("Localizable", "ios.engagement.queue_wait.video_notice", fallback: "(By default your video will be off)")
+      }
+    }
   }
   internal enum Media {
     internal enum Audio {
