@@ -22,8 +22,8 @@ extension Theme {
             badge: badge,
             onHoldOverlay: onHoldOverlay,
             accessibility: .init(
-                label: L10n.Call.Accessibility.Bubble.label,
-                hint: L10n.Call.Accessibility.Bubble.hint
+                label: Localization.Call.Bubble.Accessibility.label,
+                hint: Localization.Call.Bubble.Accessibility.hint
             )
         )
     }

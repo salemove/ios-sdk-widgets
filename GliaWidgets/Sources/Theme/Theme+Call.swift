@@ -12,7 +12,7 @@ extension Theme {
             color: color.baseLight,
             accessibility: .init(
                 label: Localization.General.back,
-                hint: Localization.Call.Header.Close.Button.Accessibility.hint
+                hint: Localization.Call.Header.Back.Button.Accessibility.hint
             )
         )
         let closeButton = HeaderButtonStyle(
@@ -165,7 +165,7 @@ extension Theme {
             operatorNameColor: color.baseLight,
             durationFont: font.bodyText,
             durationColor: color.baseLight,
-            topText: Localization.Engagement.QueueWait.videoNotice,
+            topText: Localization.Ios.Engagement.QueueWait.videoNotice,
             topTextFont: font.subtitle,
             topTextColor: color.baseLight,
             bottomText: Localization.Engagement.QueueWait.message,
