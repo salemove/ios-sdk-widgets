@@ -390,6 +390,11 @@ extension ChatViewModel {
                     fromHistory: self.environment.loadChatMessagesFromHistory()
                 )
             }
+            if let item = items.last, case .gvaQuickReply(_, let button, _, _) = item.kind {
+                let props = button.options.map { self.quickReplyOption($0) }
+                self.action?(.quickReplyPropsUpdated(.shown(props)))
+            }
+
             self.historySection.set(items)
             self.action?(.refreshSection(self.historySection.index))
             self.action?(.scrollToBottom(animated: false))
