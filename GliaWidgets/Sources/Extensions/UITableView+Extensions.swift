@@ -21,25 +21,28 @@ internal extension UITableView {
     }
 
     func scrollToBottom(animated: Bool) {
-        guard
-            let section = (0 ..< numberOfSections)
+        // Perform calculations on the main thread to prevent potential race conditions.
+        // There's a possibility that the section and row counts could change during the
+        // calculation process. If not handled, this could lead to an attempt to scroll
+        // out-of-bounds, resulting in a crash.
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+
+            // Identify the last section with at least one row.
+            let section = (0..<self.numberOfSections)
                 .reversed()
-                .first(where: { numberOfRows(inSection: $0) > 0 })
-        else { return }
+                .first { self.numberOfRows(inSection: $0) > 0 }
 
-        let rowCount = numberOfRows(inSection: section)
-        let indexPath = IndexPath(row: rowCount - 1, section: section)
+            guard let validSection = section else { return }
+            let rowCount = self.numberOfRows(inSection: validSection)
 
-        DispatchQueue.main.async { [weak self] in
-            self?.scrollToRow(at: indexPath, at: .bottom, animated: animated)
-        }
-    }
+            // Ensure there's at least one row in the identified section.
+            guard rowCount >= 1 else { return }
 
-    func scrollToTop(animated: Bool) {
-        guard numberOfRows(inSection: 0) > 0 else { return }
-        let indexPath = IndexPath(row: 0, section: 0)
-        DispatchQueue.main.async { [weak self] in
-            self?.scrollToRow(at: indexPath, at: .bottom, animated: animated)
+            let lastRowIndex = rowCount - 1
+            let indexPath = IndexPath(row: lastRowIndex, section: validSection)
+
+            self.scrollToRow(at: indexPath, at: .bottom, animated: animated)
         }
     }
 }
