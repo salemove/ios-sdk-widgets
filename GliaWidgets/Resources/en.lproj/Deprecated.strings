@@ -117,7 +117,7 @@
 "chat.accessibility.message.choiceCard.buttonState.normal" = "";
 "chat.accessibility.message.choiceCard.buttonState.selected" = "Selected";
 "chat.accessibility.message.choiceCard.buttonState.disabled" = "Disabled";
-"chat.accessibility.header.backButton.label" = "back";
+"chat.accessibility.header.backButton.label" = "Back";
 "chat.accessibility.header.backButton.hint" = "";
 "chat.accessibility.header.endButton.label" = "End";
 "chat.accessibility.header.closeButton.label" = "Close";
