@@ -544,7 +544,7 @@ public enum L10n {
           /// 
           public static let hint = L10n.tr("Localizable", "chat.accessibility.header.backButton.hint", fallback: "")
           /// back
-          public static let label = L10n.tr("Localizable", "chat.accessibility.header.backButton.label", fallback: "back")
+          public static let label = L10n.tr("Localizable", "chat.accessibility.header.backButton.label", fallback: "Back")
         }
         public enum CloseButton {
           /// 
