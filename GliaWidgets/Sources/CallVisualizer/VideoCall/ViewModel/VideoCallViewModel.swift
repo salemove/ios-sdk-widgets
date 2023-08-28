@@ -101,7 +101,7 @@ extension CallVisualizer {
             videoButtonState = .active
             videoButtonEnabled = true
             minimizeButtonEnabled = true
-            title = L10n.Call.Video.title
+            title = Localization.Media.Video.name
             callDuration = ""
             topLabelHidden = false
             endScreenShareButtonHidden = environment.screenShareHandler.status().value == .stopped
@@ -505,7 +505,7 @@ private extension CallVisualizer.VideoCallViewModel {
             default:
                 topLabelHidden = true
             }
-            title = L10n.Call.Video.title
+            title = Localization.Media.Video.name
         }
         updateButtons()
     }

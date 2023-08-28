@@ -213,8 +213,8 @@ internal enum Localization {
       internal enum Upload {
         /// Uploading failed
         internal static let failed = Localization.tr("Localizable", "chat.file.upload.failed", fallback: "Uploading failed")
-        /// Network error.
-        internal static let genericError = Localization.tr("Localizable", "chat.file.upload.generic_error", fallback: "Network error.")
+        /// Failed to upload.
+        internal static let genericError = Localization.tr("Localizable", "chat.file.upload.generic_error", fallback: "Failed to upload.")
         /// Uploading file…
         internal static let inProgress = Localization.tr("Localizable", "chat.file.upload.in_progress", fallback: "Uploading file…")
         /// Network error.

@@ -75,8 +75,8 @@ extension CallVisualizer {
         let refreshButton = UIButton().make { button in
             button.accessibilityIdentifier = "visitor_code_refresh_button"
             button.accessibilityTraits = .button
-            button.accessibilityLabel = L10n.CallVisualizer.VisitorCode.Accessibility.refreshLabel
-            button.accessibilityHint = L10n.CallVisualizer.VisitorCode.Accessibility.refreshHint
+            button.accessibilityLabel = Localization.CallVisualizer.VisitorCode.Refresh.Accessibility.label
+            button.accessibilityHint = Localization.CallVisualizer.VisitorCode.Refresh.Accessibility.hint
         }
         let spinnerView = UIImageView().make { imageView in
             imageView.image = Asset.spinner.image.withRenderingMode(.alwaysTemplate)
@@ -102,8 +102,8 @@ extension CallVisualizer {
         ).make { button in
             button.accessibilityIdentifier = "visitor_code_alert_close_button"
             button.accessibilityTraits = .button
-            button.accessibilityLabel = L10n.CallVisualizer.VisitorCode.Accessibility.closeLabel
-            button.accessibilityHint = L10n.CallVisualizer.VisitorCode.Accessibility.closeHint
+            button.accessibilityLabel = Localization.CallVisualizer.VisitorCode.Close.Accessibility.label
+            button.accessibilityHint = Localization.CallVisualizer.VisitorCode.Close.Accessibility.hint
         }
 
         lazy var poweredBy: PoweredBy = PoweredBy(style: props.style.poweredBy)
@@ -266,15 +266,15 @@ extension CallVisualizer.VisitorCodeView {
         switch props.viewState {
         case .success(visitorCode: let code):
             renderedVisitorCode = code
-            titleLabel.text = L10n.CallVisualizer.VisitorCode.Title.standard
+            titleLabel.text = Localization.CallVisualizer.VisitorCode.title
             renderVisitorCode()
-            titleLabel.accessibilityHint = L10n.CallVisualizer.VisitorCode.Accessibility.titleHint
+            titleLabel.accessibilityHint = Localization.CallVisualizer.VisitorCode.Title.Accessibility.hint
         case .error:
-            titleLabel.text = L10n.CallVisualizer.VisitorCode.Title.error
+            titleLabel.text = Localization.VisitorCode.failed
             renderError()
             titleLabel.accessibilityHint = nil
         case .loading:
-            titleLabel.text = L10n.CallVisualizer.VisitorCode.Title.standard
+            titleLabel.text = Localization.CallVisualizer.VisitorCode.title
             renderSpinner()
         }
         setFontScalingEnabled(
