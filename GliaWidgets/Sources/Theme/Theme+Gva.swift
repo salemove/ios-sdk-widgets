@@ -9,7 +9,7 @@ extension Theme {
                 text: .init(
                     color: UIColor.black.hex,
                     font: font.bodyText,
-                    textStyle: .body,
+                    textStyle: .headline,
                     accessibility: .init(isFontScalingEnabled: true)
                 ),
                 background: .init(
@@ -58,7 +58,7 @@ extension Theme {
                 borderWidth: 0
             ),
             title: .init(
-                font: font.bodyText,
+                font: font.mediumSubtitle1,
                 textColor: .black,
                 textStyle: .body
             ),
