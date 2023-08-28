@@ -9,7 +9,7 @@ extension Theme {
         header.backButton = nil
 
         let welcomeTitleStyle = SecureConversations.WelcomeStyle.TitleStyle(
-            text: Welcome.title,
+            text: Localization.MessageCenter.Welcome.title,
             font: font.header3,
             textStyle: .title3,
             color: .black,
@@ -17,7 +17,7 @@ extension Theme {
         )
 
         let welcomeSubtitleStyle = SecureConversations.WelcomeStyle.SubtitleStyle(
-            text: Welcome.subtitle,
+            text: Localization.MessageCenter.Welcome.subtitle,
             font: font.subtitle,
             textStyle: .footnote,
             color: .black,
@@ -32,12 +32,12 @@ extension Theme {
             accessibility: .init(
                 isFontScalingEnabled: true,
                 label: Localization.MessageCenter.checkMessages,
-                hint: Welcome.CheckMessages.Accessibility.hint
+                hint: Localization.MessageCenter.Welcome.CheckMessages.Accessibility.hint
             )
         )
 
         let messageTitleStyle = SecureConversations.WelcomeStyle.MessageTitleStyle(
-            title: Welcome.messageTitle,
+            title: Localization.MessageCenter.Welcome.messageTitle,
             font: font.mediumSubtitle1,
             textStyle: .subheadline,
             color: .black,
@@ -45,7 +45,7 @@ extension Theme {
         )
 
         let messageTextViewNormalStyle = SecureConversations.WelcomeStyle.MessageTextViewNormalStyle(
-            placeholderText: Welcome.MessageTextView.placeholder,
+            placeholderText: Localization.MessageCenter.Welcome.MessageTextView.placeholder,
             placeholderFont: font.bodyText,
             placeholderColor: color.baseNormal,
             textFont: font.bodyText,
@@ -59,7 +59,7 @@ extension Theme {
         )
 
         let messageTextViewActiveStyle = SecureConversations.WelcomeStyle.MessageTextViewActiveStyle(
-            placeholderText: Welcome.MessageTextView.placeholder,
+            placeholderText: Localization.MessageCenter.Welcome.MessageTextView.placeholder,
             placeholderFont: font.bodyText,
             placeholderColor: color.baseNormal,
             textFont: font.bodyText,
@@ -73,7 +73,7 @@ extension Theme {
         )
 
         let messageTextViewDisabledStyle = SecureConversations.WelcomeStyle.MessageTextViewDisabledStyle(
-            placeholderText: Welcome.MessageTextView.placeholder,
+            placeholderText: Localization.MessageCenter.Welcome.MessageTextView.placeholder,
             placeholderFont: font.bodyText,
             placeholderColor: color.baseNormal,
             textFont: font.bodyText,
@@ -104,7 +104,7 @@ extension Theme {
             accessibility: .init(
                 isFontScalingEnabled: true,
                 label: Localization.Chat.Input.send,
-                hint: Welcome.Send.Accessibility.hint
+                hint: Localization.MessageCenter.Welcome.Send.Accessibility.hint
             )
         )
 
@@ -120,7 +120,7 @@ extension Theme {
             accessibility: .init(
                 isFontScalingEnabled: true,
                 label: Localization.Chat.Input.send,
-                hint: Welcome.Send.Accessibility.hint
+                hint: Localization.MessageCenter.Welcome.Send.Accessibility.hint
             )
         )
 
@@ -137,7 +137,7 @@ extension Theme {
             accessibility: .init(
                 isFontScalingEnabled: true,
                 label: Localization.Chat.Input.send,
-                hint: Welcome.Send.Accessibility.hint
+                hint: Localization.MessageCenter.Welcome.Send.Accessibility.hint
             )
         )
 
@@ -152,7 +152,7 @@ extension Theme {
             textFont: .systemFont(ofSize: 12.0),
             textStyle: .caption1,
             iconColor: color.systemNegative,
-            messageLengthLimitText: L10n.MessageCenter.Welcome.messageLengthWarning,
+            messageLengthLimitText: Localization.MessageCenter.Welcome.messageLengthWarning,
             accessibility: .init(isFontScalingEnabled: true)
         )
 
@@ -161,8 +161,8 @@ extension Theme {
             disabledColor: .lightGray,
             accessibility: .init(
                 isFontScalingEnabled: true,
-                accessibilityLabel: Welcome.FilePicker.Accessibility.label,
-                accessibilityHint: Welcome.FilePicker.Accessibility.hint
+                accessibilityLabel: Localization.MessageCenter.Welcome.FilePicker.Accessibility.label,
+                accessibilityHint: Localization.MessageCenter.Welcome.FilePicker.Accessibility.hint
             )
         )
 
@@ -172,11 +172,6 @@ extension Theme {
         )
 
         var uploadListStyle: MessageCenterFileUploadListStyle {
-            // TODO: Introduce dedicated localization for Secure conversations upload list instaed of using Chat's one.
-            // MOB-1831
-            typealias Upload = L10n.Chat.Upload
-            typealias Accessibility = L10n.Chat.Accessibility.Upload
-
             let filePreview = FilePreviewStyle(
                 fileFont: font.subtitle,
                 fileColor: color.baseLight,
@@ -187,30 +182,30 @@ extension Theme {
                 accessibility: .init(isFontScalingEnabled: true)
             )
             let uploading = FileUploadStateStyle(
-                text: Upload.uploading,
+                text: Localization.Chat.File.Upload.inProgress,
                 font: font.mediumSubtitle2,
                 textColor: color.baseDark,
                 infoFont: font.caption,
                 infoColor: color.baseNormal
             )
             let uploaded = FileUploadStateStyle(
-                text: Upload.uploaded,
+                text: Localization.Chat.File.Upload.success,
                 font: font.mediumSubtitle2,
                 textColor: color.baseDark,
                 infoFont: font.caption,
                 infoColor: color.baseNormal
             )
             let error = FileUploadErrorStateStyle(
-                text: Upload.failed,
+                text: Localization.Chat.File.Upload.failed,
                 font: font.mediumSubtitle2,
                 textColor: color.baseDark,
                 infoFont: font.caption,
                 infoColor: color.systemNegative,
-                infoFileTooBig: Upload.Error.fileTooBig,
-                infoUnsupportedFileType: Upload.Error.unsupportedFileType,
-                infoSafetyCheckFailed: Upload.Error.safetyCheckFailed,
-                infoNetworkError: Upload.Error.network,
-                infoGenericError: Upload.Error.generic
+                infoFileTooBig: Localization.Chat.File.tooLargeError,
+                infoUnsupportedFileType: Localization.Chat.Attachment.Upload.unsupportedFile,
+                infoSafetyCheckFailed: Localization.Chat.File.infectedError,
+                infoNetworkError: Localization.Chat.File.Upload.networkError,
+                infoGenericError: Localization.Chat.File.Upload.genericError
             )
             let upload = MessageCenterFileUploadStyle(
                 filePreview: filePreview,
@@ -224,9 +219,9 @@ extension Theme {
                 removeButtonColor: color.baseNormal,
                 backgroundColor: .commonGray,
                 accessibility: .init(
-                    removeButtonAccessibilityLabel: Accessibility.RemoveUpload.label,
-                    progressPercentValue: Accessibility.Progress.percentValue,
-                    fileNameWithProgressValue: Accessibility.Progress.fileNameWithProgressValue,
+                    removeButtonAccessibilityLabel: Localization.Chat.Upload.Remove.Accessibility.label,
+                    progressPercentValue: L10n.Chat.Accessibility.Upload.Progress.percentValue,
+                    fileNameWithProgressValue: L10n.Chat.Accessibility.Upload.Progress.fileNameWithProgressValue,
                     isFontScalingEnabled: true
                 )
             )
@@ -237,15 +232,13 @@ extension Theme {
         // TODO: Introduce dedicated localization for Secure conversations upload list instaed of using Chat's one.
         // MOB-1831
         var pickMediaStyle: AttachmentSourceListStyle {
-           typealias Chat = L10n.Chat.PickMedia
-
            let itemFont = font.bodyText
            let itemFontColor = color.baseDark
            let itemIconColor = color.baseDark
 
            let pickPhoto = AttachmentSourceItemStyle(
                kind: .photoLibrary,
-               title: Chat.photo,
+               title: Localization.Chat.Attachment.photoLibrary,
                titleFont: itemFont,
                titleColor: itemFontColor,
                icon: Asset.photoLibraryIcon.image,
@@ -254,7 +247,7 @@ extension Theme {
            )
            let takePhoto = AttachmentSourceItemStyle(
                kind: .takePhoto,
-               title: Chat.takePhoto,
+               title: Localization.Chat.Attachment.takePhoto,
                titleFont: itemFont,
                titleColor: itemFontColor,
                icon: Asset.cameraIcon.image,
@@ -263,7 +256,7 @@ extension Theme {
            )
            let browse = AttachmentSourceItemStyle(
                kind: .browse,
-               title: Chat.browse,
+               title: Localization.General.browse,
                titleFont: itemFont,
                titleColor: itemFontColor,
                icon: Asset.browseIcon.image,
