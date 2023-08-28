@@ -2,7 +2,6 @@ import Foundation
 import UIKit
 
 extension Theme {
-
     public struct SurveyStyle {
         /// Layer style.
         public var layer: Layer
@@ -53,7 +52,6 @@ extension Theme.SurveyStyle {
         font: ThemeFont,
         alertStyle: AlertStyle
     ) -> Self {
-
         let font = ThemeFontStyle.default.font
 
         return .init(
@@ -71,14 +69,14 @@ extension Theme.SurveyStyle {
             submitButton: .init(
                 actionButtonStyle: alertStyle.positiveAction,
                 accessibility: .init(
-                    label: L10n.Survey.Accessibility.Footer.SubmitButton.label,
+                    label: Localization.General.submit,
                     isFontScalingEnabled: true
                 )
             ),
             cancellButton: .init(
                 actionButtonStyle: alertStyle.negativeAction,
                 accessibility: .init(
-                    label: L10n.Survey.Accessibility.Footer.CancelButton.label,
+                    label: Localization.General.cancel,
                     isFontScalingEnabled: true
                 )
             ),
