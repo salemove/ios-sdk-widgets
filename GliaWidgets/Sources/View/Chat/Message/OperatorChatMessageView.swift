@@ -27,7 +27,7 @@ class OperatorChatMessageView: ChatMessageView {
     private let viewStyle: Theme.OperatorMessageStyle
     private var operatorImageView: UserImageView?
     private var operatorImageViewContainer = UIView().makeView()
-    private let imageViewInsets = UIEdgeInsets(top: 2, left: 10, bottom: 2, right: 60)
+    private let imageViewInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 60)
     private let operatorImageViewSize: CGFloat = 28
     private let environment: Environment
 
