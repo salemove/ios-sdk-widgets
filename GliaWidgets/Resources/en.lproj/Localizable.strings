@@ -115,7 +115,7 @@
 "chat.file.upload.scanning" = "Checking safety of the file…";
 "chat.file.upload.success" = "Ready to send";
 "chat.file.upload.network_error" = "Network error.";
-"chat.file.upload.generic_error" = "Network error.";
+"chat.file.upload.generic_error" = "Failed to upload.";
 "chat.input.placeholder" = "Enter Message";
 "chat.input.send" = "Send";
 "chat.message.unread.accessibility.label" = "Unread messages";
