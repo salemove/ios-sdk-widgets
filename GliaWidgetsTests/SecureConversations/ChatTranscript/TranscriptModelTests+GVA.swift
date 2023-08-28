@@ -1,7 +1,7 @@
 @testable import GliaWidgets
 import XCTest
 
-extension ChatViewModelTests {
+extension SecureConversationsTranscriptModelTests {
     func test_gvaLinkButtonAction() {
         let options: [GvaOption] = [
             .mock(url: "http://mock.mock"),
@@ -13,17 +13,15 @@ extension ChatViewModelTests {
             .mock(url: "tel:12345678")
         ]
         var calls: [Call] = []
-        var env = ChatViewModel.Environment.mock
-        env.uiApplication.canOpenURL = { _ in true }
-        env.uiApplication.open = { url in
+
+        let viewModel = createViewModel()
+        viewModel.environment.uiApplication.open = { url in
             calls.append(.openUrl(url.absoluteString))
         }
-        // To ensure `sendSelectedOptionValue` is not called in case of URL Button
-        env.sendSelectedOptionValue = { option, _ in
-            calls.append(.sendOption(option.text, option.value))
+        viewModel.environment.sendSecureMessage = { message, attachment, _, _ in
+            calls.append(.sendOption(message, attachment?.selectedOption))
+            return .mock
         }
-        viewModel = .mock(environment: env)
-
         options.forEach {
             viewModel.gvaOptionAction(for: $0)()
         }
@@ -42,49 +40,24 @@ extension ChatViewModelTests {
     func test_gvaPostbackButtonAction() {
         let option = GvaOption.mock(text: "text", value: "value")
         var calls: [Call] = []
-        var env = ChatViewModel.Environment.mock
+        let viewModel = createViewModel()
         // To ensure `open` is not called in case of URL Button
-        env.uiApplication.open = { url in
+        viewModel.environment.uiApplication.open = { url in
             calls.append(.openUrl(url.absoluteString))
         }
-        env.sendSelectedOptionValue = { option, _ in
-            calls.append(.sendOption(option.text, option.value))
+        viewModel.environment.sendSecureMessage = { message, attachment, _, _ in
+            calls.append(.sendOption(message, attachment?.selectedOption))
+            return .mock
         }
-        let interactorMock = Interactor.mock()
-        interactorMock.state = .engaged(nil)
-        viewModel = .mock(interactor: interactorMock, environment: env)
-
         viewModel.gvaOptionAction(for: option)()
 
         XCTAssertEqual(calls, [.sendOption("text", "value")])
     }
 
-    func test_gvaPostbackButtonActionTriggersStartEngagement() {
-        let option = GvaOption.mock(text: "text", value: "value")
-        var calls: [Call] = []
-        var env = ChatViewModel.Environment.mock
-        // To ensure `open` is not called in case of URL Button
-        env.uiApplication.open = { url in
-            calls.append(.openUrl(url.absoluteString))
-        }
-        // To ensure `sendSelectedOptionValue` is not called in case of Postback Button
-        env.sendSelectedOptionValue = { option, _ in
-            calls.append(.sendOption(option.text, option.value))
-        }
-        let interactorMock = Interactor.mock()
-        interactorMock.state = .none
-        viewModel = .mock(interactor: interactorMock, environment: env)
-
-        viewModel.gvaOptionAction(for: option)()
-
-        XCTAssertEqual(calls, [])
-        XCTAssertEqual(interactorMock.state, .enqueueing)
-    }
-
     func test_broadcastEventAction() {
         let option = GvaOption.mock(text: "text", destinationPdBroadcastEvent: "mock")
         var calls: [Call] = []
-        viewModel = .mock(environment: .mock)
+        let viewModel = createViewModel()
         viewModel.engagementAction = { action in
             guard case .showAlert = action else { return }
             calls.append(.showAlert)
@@ -96,10 +69,32 @@ extension ChatViewModelTests {
     }
 }
 
-private extension ChatViewModelTests {
+private extension SecureConversationsTranscriptModelTests {
     enum Call: Equatable {
         case openUrl(String?)
         case sendOption(String?, String?)
         case showAlert
+    }
+
+    func createViewModel() -> TranscriptModel {
+        var modelEnv = TranscriptModel.Environment.failing
+        modelEnv.fileManager = .mock
+        modelEnv.createFileUploadListModel = { _ in .mock() }
+        modelEnv.listQueues = { callback in callback([], nil) }
+        modelEnv.uiApplication.canOpenURL = { _ in true }
+        let availabilityEnv = SecureConversations.Availability.Environment(
+            listQueues: modelEnv.listQueues,
+            queueIds: modelEnv.queueIds,
+            isAuthenticated: { true }
+        )
+
+        return TranscriptModel(
+            isCustomCardSupported: false,
+            environment: modelEnv,
+            availability: .init(environment: availabilityEnv),
+            deliveredStatusText: "",
+            interactor: .failing,
+            alertConfiguration: .mock()
+        )
     }
 }

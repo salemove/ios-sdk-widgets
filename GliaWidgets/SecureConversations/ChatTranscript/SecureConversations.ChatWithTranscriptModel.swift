@@ -471,9 +471,8 @@ extension SecureConversations {
             case .customCardOptionSelected:
                 // Not supported for transcript.
                 break
-            case .gvaButtonTapped:
-                // Not supported for transcript
-                break
+            case let .gvaButtonTapped(option):
+                gvaOptionAction(for: option)()
             }
         }
 
