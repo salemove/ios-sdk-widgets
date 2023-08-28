@@ -27,7 +27,7 @@ final class GvaResponseTextView: ChatMessageView {
     private let viewStyle: Theme.OperatorMessageStyle
     private var operatorImageView: UserImageView?
     private let operatorImageViewContainer = UIView().makeView()
-    private let imageViewInsets = UIEdgeInsets(top: 4, left: 8, bottom: 2, right: 60)
+    private let imageViewInsets = UIEdgeInsets(top: 8, left: 8, bottom: 2, right: 60)
     private let operatorImageViewSize: CGFloat = 28
     private let environment: Environment
 
@@ -69,7 +69,7 @@ final class GvaResponseTextView: ChatMessageView {
         var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
         constraints += operatorImageViewContainer.match(value: operatorImageViewSize)
         constraints += operatorImageViewContainer.leadingAnchor.constraint(equalTo: leadingAnchor, constant: imageViewInsets.left)
-        constraints += operatorImageViewContainer.bottomAnchor.constraint(equalTo: bottomAnchor)
+        constraints += operatorImageViewContainer.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -imageViewInsets.top)
         constraints += operatorImageViewContainer.topAnchor.constraint(greaterThanOrEqualTo: topAnchor, constant: imageViewInsets.top)
 
         addSubview(contentViews)
@@ -78,7 +78,7 @@ final class GvaResponseTextView: ChatMessageView {
         constraints += contentViews.topAnchor.constraint(equalTo: topAnchor, constant: imageViewInsets.top)
         constraints += contentViews.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -imageViewInsets.right)
 
-        constraints += contentViews.bottomAnchor.constraint(equalTo: bottomAnchor)
+        constraints += contentViews.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -imageViewInsets.top)
     }
 }
 
