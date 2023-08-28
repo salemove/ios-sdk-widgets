@@ -1,12 +1,11 @@
 import Foundation
-import GliaCoreSDK
 
 private extension String {
     static let gvaOptionUrlTargetModal = "modal"
     static let gvaOptionUrlTargetSelf = "self"
 }
 
-extension ChatViewModel {
+extension SecureConversations.TranscriptModel {
     func quickReplyOption(_ gvaOption: GvaOption) -> QuickReplyButtonCell.Props {
         let action = Cmd { [weak self] in
             self?.gvaOptionAction(for: gvaOption)()
@@ -35,41 +34,16 @@ extension ChatViewModel {
         // to the server as `SingleChoiceOption`
         return postbackButtonAction(for: option)
     }
-
-    func postbackButtonAction(for option: GvaOption) -> Cmd {
-        .init { [weak self] in
-            guard let self, let value = option.value else { return }
-
-            let attachment = CoreSdkClient.Attachment(
-                type: .singleChoiceResponse,
-                selectedOption: option.value,
-                options: nil,
-                files: nil,
-                imageUrl: nil
-            )
-
-            let outgoingMessage = OutgoingMessage(
-                content: option.text,
-                attachment: attachment
-            )
-
-            switch self.interactor.state {
-            case .engaged:
-                let singleChoiceOption = SingleChoiceOption(text: option.text, value: value)
-                self.sendOption(singleChoiceOption)
-
-            case .enqueued:
-                self.handle(pendingMessage: outgoingMessage)
-
-            case .enqueueing, .ended, .none:
-                self.handle(pendingMessage: outgoingMessage)
-                self.enqueue(mediaType: .text)
-            }
-        }
-    }
 }
 
-private extension ChatViewModel {
+// MARK: - Private
+private extension SecureConversations.TranscriptModel {
+    func postbackButtonAction(for option: GvaOption) -> Cmd {
+        .init { [weak self] in
+            self?.sendGvaOption(option)
+        }
+    }
+
     func urlButtonAction(url: URL, urlTarget: String?) -> Cmd {
         .init { [weak self] in
             guard let self else { return }
@@ -112,25 +86,42 @@ private extension ChatViewModel {
         }
     }
 
-    func sendOption(_ option: SingleChoiceOption) {
-        environment.sendSelectedOptionValue(option) { [weak self] result in
-            guard let self else { return }
+    func sendGvaOption(_ option: GvaOption) {
+        let attachment = CoreSdkClient.Attachment(
+            type: .singleChoiceResponse,
+            selectedOption: option.value,
+            options: nil,
+            files: nil,
+            imageUrl: nil
+        )
+
+        let outgoingMessage = OutgoingMessage(
+            content: option.text,
+            attachment: attachment
+        )
+
+        appendItem(
+            .init(kind: .outgoingMessage(outgoingMessage)),
+            to: pendingSection,
+            animated: true
+        )
+
+        _ = environment.sendSecureMessage(
+            option.text,
+            attachment,
+            environment.queueIds
+        ) { [weak self] result in
+            guard let self = self else { return }
             switch result {
             case let .success(message):
-                let chatMessage = ChatMessage(with: message)
-                let item = ChatItem(
-                    with: chatMessage,
-                    isCustomCardSupported: self.isCustomCardSupported
+                self.replace(
+                    outgoingMessage,
+                    uploads: [],
+                    with: message,
+                    in: self.pendingSection
                 )
-                if let item {
-                    self.appendItem(item, to: self.messagesSection, animated: true)
-                }
-                self.action?(.scrollToBottom(animated: true))
             case .failure:
-                self.showAlert(
-                    with: self.alertConfiguration.unexpectedError,
-                    dismissed: nil
-                )
+                self.showAlert(with: self.environment.alertConfiguration.unexpectedError)
             }
         }
     }
