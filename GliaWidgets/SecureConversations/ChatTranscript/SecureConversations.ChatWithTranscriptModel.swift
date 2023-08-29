@@ -798,6 +798,11 @@ extension SecureConversations.TranscriptModel {
                     self.markMessagesAsRead()
                 }
 
+                if let item = items.last, case .gvaQuickReply(_, let button, _, _) = item.kind {
+                    let props = button.options.map { self.quickReplyOption($0) }
+                    self.action?(.quickReplyPropsUpdated(.shown(props)))
+                }
+
                 switch self.environment.interactor.state {
                 // If engagement has been started
                 // we signal perform upgrade.
