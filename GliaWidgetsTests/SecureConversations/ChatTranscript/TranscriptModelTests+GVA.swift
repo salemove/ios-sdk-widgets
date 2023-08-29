@@ -67,6 +67,58 @@ extension SecureConversationsTranscriptModelTests {
 
         XCTAssertEqual(calls, [.showAlert])
     }
+
+    func test_quickReplyIsShownWhenItIsLastMessage() throws {
+        enum Call { case quickReply }
+        var calls: [Call] = []
+
+        var modelEnv = TranscriptModel.Environment.failing
+        modelEnv.fileManager = .mock
+        modelEnv.createFileUploadListModel = { _ in .mock() }
+        modelEnv.listQueues = { callback in callback([], nil) }
+        modelEnv.uiApplication.canOpenURL = { _ in true }
+
+        let json = """
+        { "id": "mock", "sender": 1, "content": "mock",
+        "metadata": { "type": "quickReplies",
+        "options": [{ "text": "mock" }], "content": "mock"
+        }}
+        """.utf8
+        let message = try JSONDecoder().decode(
+            ChatMessage.self,
+            from: Data(json)
+        )
+        modelEnv.fetchChatHistory = { $0(.success([message])) }
+        modelEnv.loadChatMessagesFromHistory = { true }
+        modelEnv.fetchSiteConfigurations = { _ in }
+        modelEnv.getSecureUnreadMessageCount = { $0(.success(0)) }
+        modelEnv.startSocketObservation = {}
+        let scheduler = CoreSdkClient.ReactiveSwift.TestScheduler()
+        modelEnv.messagesWithUnreadCountLoaderScheduler = scheduler
+
+        let availabilityEnv = SecureConversations.Availability.Environment(
+            listQueues: modelEnv.listQueues,
+            queueIds: modelEnv.queueIds,
+            isAuthenticated: { true }
+        )
+
+        let viewModel = TranscriptModel(
+            isCustomCardSupported: false,
+            environment: modelEnv,
+            availability: .init(environment: availabilityEnv),
+            deliveredStatusText: "",
+            interactor: .failing,
+            alertConfiguration: .mock()
+        )
+        viewModel.action = { action in
+            guard case .quickReplyPropsUpdated = action else { return }
+            calls.append(.quickReply)
+        }
+        viewModel.start()
+        scheduler.run()
+
+        XCTAssertEqual(calls, [.quickReply])
+    }
 }
 
 private extension SecureConversationsTranscriptModelTests {
