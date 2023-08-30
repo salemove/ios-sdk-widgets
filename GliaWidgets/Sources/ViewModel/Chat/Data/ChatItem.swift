@@ -5,7 +5,14 @@ class ChatItem {
         switch kind {
         // CustomCard was added to be able to handle as regular operator message
         // in case when metadata can't be handled.
-        case .operatorMessage, .choiceCard, .customCard, .systemMessage:
+        case .operatorMessage,
+                .choiceCard,
+                .customCard,
+                .systemMessage,
+                .gvaResponseText,
+                .gvaPersistentButton,
+                .gvaQuickReply,
+                .gvaGallery:
             return true
         default:
             return false
@@ -50,13 +57,13 @@ class ChatItem {
                     return nil
                 }
             case let .gvaPersistenButton(button):
-                kind = .gvaPersistentButton(message, persistenButton: button, showImage: true, imageUrl: message.operator?.pictureUrl)
+                kind = .gvaPersistentButton(message, persistenButton: button, showImage: false, imageUrl: message.operator?.pictureUrl)
             case let .gvaResponseText(text):
-                kind = .gvaResponseText(message, responseText: text, showImage: true, imageUrl: message.operator?.pictureUrl)
+                kind = .gvaResponseText(message, responseText: text, showImage: false, imageUrl: message.operator?.pictureUrl)
             case let .gvaQuickReply(button):
-                kind = .gvaQuickReply(message, quickReply: button, showImage: true, imageUrl: message.operator?.pictureUrl)
+                kind = .gvaQuickReply(message, quickReply: button, showImage: false, imageUrl: message.operator?.pictureUrl)
             case let .gvaGallery(gallery):
-                kind = .gvaGallery(message, gallery: gallery, showImage: true, imageUrl: message.operator?.pictureUrl)
+                kind = .gvaGallery(message, gallery: gallery, showImage: false, imageUrl: message.operator?.pictureUrl)
             case .none:
                 kind = .operatorMessage(message, showsImage: false, imageUrl: message.operator?.pictureUrl)
             }
