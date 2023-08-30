@@ -3,17 +3,21 @@ import XCTest
 
 final class ChatItemTests: XCTestCase {
     func testIsOperatorReturnsTrueForExpectedKindCases() {
-        let callUpgrade = ChatItem.Kind.callUpgrade(.init(with: .audio), duration: .init(with: .zero))
-        let choiceCard = ChatItem.Kind.choiceCard(.mock(), showsImage: false, imageUrl: "", isActive: false)
-        let customCard = ChatItem.Kind.customCard(.mock(), showsImage: false, imageUrl: nil, isActive: false)
-        let operatorConnected = ChatItem.Kind.operatorConnected(name: nil, imageUrl: nil)
-        let queueOperator = ChatItem.Kind.queueOperator
-        let outgoingMessage = ChatItem.Kind.outgoingMessage(.mock())
-        let operatorMessage = ChatItem.Kind.operatorMessage(.mock(), showsImage: false, imageUrl: nil)
-        let systemMessage = ChatItem.Kind.systemMessage(.mock())
-        let unreadMessageDivider = ChatItem.Kind.unreadMessageDivider
-        let visitorMessage = ChatItem.Kind.visitorMessage(.mock(), status: nil)
-        let transferring = ChatItem.Kind.transferring
+        let callUpgrade = ChatItem.Kind.mock(kind: .callUpgrade)
+        let choiceCard = ChatItem.Kind.mock(kind: .choiceCard)
+        let customCard = ChatItem.Kind.mock(kind: .customCard)
+        let operatorConnected = ChatItem.Kind.mock(kind: .operatorConnected)
+        let queueOperator = ChatItem.Kind.mock(kind: .queueOperator)
+        let outgoingMessage = ChatItem.Kind.mock(kind: .outgoingMessage)
+        let operatorMessage = ChatItem.Kind.mock(kind: .operatorMessage)
+        let systemMessage = ChatItem.Kind.mock(kind: .systemMessage)
+        let unreadMessageDivider = ChatItem.Kind.mock(kind: .unreadMessageDivider)
+        let visitorMessage = ChatItem.Kind.mock(kind: .visitorMessage)
+        let transferring = ChatItem.Kind.mock(kind: .transferring)
+        let gvaResponseText = ChatItem.Kind.mock(kind: .gvaResponseText)
+        let gvaPersistentButton = ChatItem.Kind.mock(kind: .gvaPersistentButton)
+        let gvaQuickReply = ChatItem.Kind.mock(kind: .gvaQuickReply)
+        let gvaGallery = ChatItem.Kind.mock(kind: .gvaGallery)
         let kinds: [ChatItem.Kind] = [
             callUpgrade,
             choiceCard,
@@ -25,7 +29,11 @@ final class ChatItemTests: XCTestCase {
             systemMessage,
             unreadMessageDivider,
             visitorMessage,
-            transferring
+            transferring,
+            gvaResponseText,
+            gvaPersistentButton,
+            gvaQuickReply,
+            gvaGallery
         ]
         for kind in kinds {
             let chatItem = ChatItem(kind: kind)
@@ -41,5 +49,3 @@ final class ChatItemTests: XCTestCase {
         }
     }
 }
-
-

@@ -12,9 +12,9 @@ class ChatItemCell: UITableViewCell {
         case callUpgrade(ChatCallUpgradeView)
         case unreadMessagesDivider(UnreadMessageDividerView)
         case systemMessage(SystemMessageView)
-        case gvaResponseText(UIView)
-        case gvaPersistentButton(UIView)
-        case gvaQuickReply(UIView)
+        case gvaResponseText(GvaResponseTextView)
+        case gvaPersistentButton(GvaPersistentButtonView)
+        case gvaQuickReply(GvaResponseTextView)
         case gvaGallery(GvaGalleryListView, CGFloat)
 
         var view: UIView? {
