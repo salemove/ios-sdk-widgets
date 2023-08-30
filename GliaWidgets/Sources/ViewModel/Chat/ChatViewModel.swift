@@ -61,7 +61,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         return .enabled(.enagagementConnection(isConnected: environment.getCurrentEngagement() != nil))
     }
 
-    let shouldSkipEnqueueingState: Bool
+    let chatType: ChatType
 
     // swiftlint:disable function_body_length
     init(
@@ -75,7 +75,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         isWindowVisible: ObservableValue<Bool>,
         startAction: StartAction,
         deliveredStatusText: String,
-        shouldSkipEnqueueingState: Bool,
+        chatType: ChatType,
         environment: Environment
 
     ) {
@@ -83,7 +83,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
         self.showsCallBubble = showsCallBubble
         self.isCustomCardSupported = isCustomCardSupported
         self.startAction = startAction
-        self.shouldSkipEnqueueingState = shouldSkipEnqueueingState
+        self.chatType = chatType
         let uploader = FileUploader(
             maximumUploads: Self.maximumUploads,
             environment: .init(
@@ -187,7 +187,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
 
         switch state {
         case .enqueueing:
-            guard !shouldSkipEnqueueingState else { return }
+            guard !Self.shouldSkipEnqueueingState(for: chatType) else { return }
             let item = ChatItem(kind: .queueOperator)
 
             appendItem(
@@ -212,6 +212,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             )
 
             action?(.connected(name: name, imageUrl: pictureUrl))
+            action?(.scrollToBottom(animated: false))
             action?(.setMessageEntryEnabled(true))
 
             switch screenShareHandler.status().value {
@@ -523,7 +524,7 @@ extension ChatViewModel {
             pendingMessages.append(pendingMessage)
 
             // Avoid showing enqueud operator according to parameter.
-            if !shouldSkipEnqueueingState {
+            if Self.shouldSkipEnqueueingState(for: chatType) {
                 let queueItem = ChatItem(kind: .queueOperator)
                 queueOperatorSection.set([queueItem])
                 action?(.refreshSection(queueOperatorSection.index))
@@ -836,6 +837,16 @@ extension ChatViewModel {
 }
 
 extension ChatViewModel {
+    static func shouldSkipEnqueueingState(for chatType: ChatType) -> Bool {
+        switch chatType {
+        case .secureTranscript: return true
+        case .authenticated: return false
+        case .nonAuthenticated: return false
+        }
+    }
+}
+
+extension ChatViewModel {
 
     typealias Strings = L10n.Chat
 
@@ -910,5 +921,11 @@ extension ChatViewModel {
     enum StartAction {
         case startEngagement
         case none
+    }
+
+    enum ChatType {
+        case secureTranscript
+        case authenticated
+        case nonAuthenticated
     }
 }
