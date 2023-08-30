@@ -25,7 +25,7 @@ class ChatViewModelTests: XCTestCase {
             isWindowVisible: .init(with: true),
             startAction: .none,
             deliveredStatusText: "Delivered",
-            shouldSkipEnqueueingState: false,
+            chatType: .nonAuthenticated,
             environment: .init(
                 fetchFile: { _, _, _ in },
                 downloadSecureFile: { _, _, _ in .mock },
@@ -64,6 +64,48 @@ class ChatViewModelTests: XCTestCase {
         viewModel.sendChoiceCardResponse(choiceCardMock, to: "mocked-message-id")
 
         XCTAssertEqual(calls, [.sendSelectedOptionValue])
+    }
+
+    func test_secureTranscriptChatTypeCases() throws {
+        let viewModel: ChatViewModel = .mock(chatType: .secureTranscript)
+        viewModel.update(for: .enqueueing)
+        XCTAssertEqual(viewModel.queueOperatorSection.itemCount, 0)
+        viewModel.handle(pendingMessage: .mock())
+        XCTAssertEqual(viewModel.queueOperatorSection.itemCount, 1)
+    }
+
+    func test_authenticatedChatTypeCases() throws {
+        let viewModel: ChatViewModel = .mock(chatType: .authenticated)
+        viewModel.update(for: .enqueueing)
+        XCTAssertEqual(viewModel.queueOperatorSection.itemCount, 1)
+        viewModel.handle(pendingMessage: .mock())
+        XCTAssertEqual(viewModel.queueOperatorSection.itemCount, 1)
+    }
+
+    func test_nonAuthenticatedChatTypeCases() throws {
+        let viewModel: ChatViewModel = .mock(chatType: .nonAuthenticated)
+        viewModel.update(for: .enqueueing)
+        XCTAssertEqual(viewModel.queueOperatorSection.itemCount, 1)
+        viewModel.handle(pendingMessage: .mock())
+        XCTAssertEqual(viewModel.queueOperatorSection.itemCount, 1)
+    }
+
+    func test_chatTypeResponse() throws {
+        var chatType = ChatCoordinator.chatType(
+            startWithSecureTranscriptFlow: true,
+            isAuthenticated: true
+        )
+        XCTAssertEqual(chatType, .secureTranscript)
+        chatType = ChatCoordinator.chatType(
+            startWithSecureTranscriptFlow: false,
+            isAuthenticated: true
+        )
+        XCTAssertEqual(chatType, .authenticated)
+        chatType = ChatCoordinator.chatType(
+            startWithSecureTranscriptFlow: false,
+            isAuthenticated: false
+        )
+        XCTAssertEqual(chatType, .nonAuthenticated)
     }
 
     func test__startCallsSDKConfigureWithInteractorAndСonfigureWithConfiguration() throws {

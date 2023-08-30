@@ -267,7 +267,7 @@ extension ChatViewController {
             // Even though we are using the chat view model already,
             // if the engagement is not active, we still need to show
             // secure transcript UI.
-            if chatViewModel.shouldSkipEnqueueingState {
+            if chatViewModel.chatType == .secureTranscript {
                 return chatViewModel.activeEngagement != nil
                 ? .chat
                 : .secureTranscript(needsTextInput: true)
