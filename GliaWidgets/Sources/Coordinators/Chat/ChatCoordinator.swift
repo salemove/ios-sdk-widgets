@@ -144,6 +144,10 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
 // MARK: Chat model
 extension ChatCoordinator {
     private func chatModel() -> ChatViewModel {
+        let chatType = Self.chatType(
+            startWithSecureTranscriptFlow: startWithSecureTranscriptFlow,
+            isAuthenticated: environment.isAuthenticated()
+        )
         let viewModel = ChatViewModel(
             interactor: interactor,
             alertConfiguration: viewFactory.theme.alertConfiguration,
@@ -155,8 +159,7 @@ extension ChatCoordinator {
             isWindowVisible: isWindowVisible,
             startAction: startAction,
             deliveredStatusText: viewFactory.theme.chat.visitorMessage.delivered,
-            // We should not show enqueueing state in case of secure transcript flow.
-            shouldSkipEnqueueingState: startWithSecureTranscriptFlow,
+            chatType: chatType,
             environment: Self.enviromentForChatModel(environment: environment, viewFactory: viewFactory)
         )
         viewModel.isInteractableCard = viewFactory.messageRenderer?.isInteractable
@@ -344,5 +347,22 @@ extension ChatCoordinator {
            stopSocketObservation: environment.stopSocketObservation,
            sendSelectedOptionValue: environment.sendSelectedOptionValue
        )
+    }
+}
+
+// MARK: - Static methods
+
+extension ChatCoordinator {
+    static func chatType(
+        startWithSecureTranscriptFlow: Bool,
+        isAuthenticated: Bool
+    ) -> ChatViewModel.ChatType {
+        if startWithSecureTranscriptFlow {
+            return .secureTranscript
+        } else if isAuthenticated {
+            return .authenticated
+        } else {
+            return .nonAuthenticated
+        }
     }
 }

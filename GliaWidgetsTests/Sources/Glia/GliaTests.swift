@@ -49,7 +49,8 @@ final class GliaTests: XCTestCase {
         gliaEnv.fileManager = fileManager
         gliaEnv.coreSdk.configureWithInteractor = { _ in }
         gliaEnv.createFileUploadListModel = { _ in .mock() }
-
+        
+        gliaEnv.coreSdk.authentication = { _ in .mock }
         gliaEnv.coreSdk.configureWithConfiguration = { _, callback in callback?() }
         gliaEnv.coreSdk.queueForEngagement = { _, _, _, _, _, callback in
             callback(.mock, nil)
