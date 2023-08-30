@@ -11,6 +11,7 @@ extension ChatViewModel {
         isWindowVisible: ObservableValue<Bool> = .init(with: true),
         startAction: StartAction = .startEngagement,
         deliveredStatusText: String = "Delivered",
+        chatType: ChatViewModel.ChatType = .nonAuthenticated,
         environment: Environment = .mock
     ) -> ChatViewModel {
         ChatViewModel(
@@ -24,7 +25,7 @@ extension ChatViewModel {
             isWindowVisible: isWindowVisible,
             startAction: startAction,
             deliveredStatusText: deliveredStatusText,
-            shouldSkipEnqueueingState: false,
+            chatType: chatType,
             environment: environment
         )
     }
