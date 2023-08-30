@@ -635,6 +635,9 @@ extension SecureConversations.WelcomeView {
             renderedActive = props.isActive
 
             textView.accessibilityIdentifier = "secureConversations_welcome_textView"
+
+            setFontScalingEnabled(style.isFontScalingEnabled, for: textView)
+            setFontScalingEnabled(style.isFontScalingEnabled, for: placeholderLabel)
         }
 
         var renderedActive: Bool = false {
@@ -669,6 +672,7 @@ extension SecureConversations.WelcomeView.MessageTextView {
             var borderWidth: Double
             var cornerRadius: Double
             var backgroundColor: UIColor
+            var isFontScalingEnabled: Bool
         }
 
         let style: Style
@@ -725,7 +729,8 @@ extension SecureConversations.WelcomeView.MessageTextView.UIKitProps.Style {
             borderColor: activeStyle.borderColor,
             borderWidth: activeStyle.borderWidth,
             cornerRadius: activeStyle.cornerRadius,
-            backgroundColor: activeStyle.backgroundColor
+            backgroundColor: activeStyle.backgroundColor,
+            isFontScalingEnabled: activeStyle.accessibility.isFontScalingEnabled
         )
     }
 
@@ -739,7 +744,8 @@ extension SecureConversations.WelcomeView.MessageTextView.UIKitProps.Style {
             borderColor: disabledStyle.borderColor,
             borderWidth: disabledStyle.borderWidth,
             cornerRadius: disabledStyle.cornerRadius,
-            backgroundColor: disabledStyle.backgroundColor
+            backgroundColor: disabledStyle.backgroundColor,
+            isFontScalingEnabled: disabledStyle.accessibility.isFontScalingEnabled
         )
     }
 
@@ -753,7 +759,8 @@ extension SecureConversations.WelcomeView.MessageTextView.UIKitProps.Style {
             borderColor: normalStyle.borderColor,
             borderWidth: normalStyle.borderWidth,
             cornerRadius: normalStyle.cornerRadius,
-            backgroundColor: normalStyle.backgroundColor
+            backgroundColor: normalStyle.backgroundColor,
+            isFontScalingEnabled: normalStyle.accessibility.isFontScalingEnabled
         )
     }
 }
