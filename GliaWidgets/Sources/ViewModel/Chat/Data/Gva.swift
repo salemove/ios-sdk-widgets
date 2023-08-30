@@ -1,13 +1,15 @@
 import Foundation
 
-struct GvaResponseText: Decodable, Equatable {
+struct GvaResponseText: Equatable {
     let type: GvaCardType
     let content: NSMutableAttributedString
 
     enum CodingKeys: String, CodingKey {
         case type, content
     }
+}
 
+extension GvaResponseText: Decodable {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         type = try container.decode(GvaCardType.self, forKey: .type)
@@ -17,7 +19,7 @@ struct GvaResponseText: Decodable, Equatable {
     }
 }
 
-struct GvaButton: Decodable, Equatable {
+struct GvaButton: Equatable {
     let type: GvaCardType
     let content: NSMutableAttributedString
     let options: [GvaOption]
@@ -25,7 +27,9 @@ struct GvaButton: Decodable, Equatable {
     enum CodingKeys: String, CodingKey {
         case type, content, options
     }
+}
 
+extension GvaButton: Decodable {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         type = try container.decode(GvaCardType.self, forKey: .type)
@@ -33,16 +37,6 @@ struct GvaButton: Decodable, Equatable {
         let modifiedString = contentString.replacingOccurrences(of: "\n", with: "</br>")
         content = modifiedString.htmlToAttributedString ?? NSMutableAttributedString(string: "")
         options = try container.decode([GvaOption].self, forKey: .options)
-    }
-
-    init(
-        type: GvaCardType,
-        content: NSMutableAttributedString,
-        options: [GvaOption]
-    ) {
-        self.type = type
-        self.content = content
-        self.options = options
     }
 }
 

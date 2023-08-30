@@ -240,6 +240,27 @@ extension ChatView {
                         view.setOperatorImage(fromUrl: imageUrl, animated: animated)
                     default: break
                     }
+                case let .gvaQuickReply(view):
+                    switch item.kind {
+                    case let .gvaGallery(_, _, showsImage, imageUrl):
+                        view.showsOperatorImage = showsImage
+                        view.setOperatorImage(fromUrl: imageUrl, animated: animated)
+                    default: break
+                    }
+                case let .gvaResponseText(view):
+                    switch item.kind {
+                    case let .gvaResponseText(_, _, showsImage, imageUrl):
+                        view.showsOperatorImage = showsImage
+                        view.setOperatorImage(fromUrl: imageUrl, animated: animated)
+                    default: break
+                    }
+                case let .gvaPersistentButton(view):
+                    switch item.kind {
+                    case let .gvaPersistentButton(_, _, showsImage, imageUrl):
+                        view.showsOperatorImage = showsImage
+                        view.setOperatorImage(fromUrl: imageUrl, animated: animated)
+                    default: break
+                    }
                 default:
                     break
                 }
