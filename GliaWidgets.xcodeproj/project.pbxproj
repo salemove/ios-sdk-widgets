@@ -397,6 +397,7 @@
 		8491AF522A9F813200CC3E72 /* SecureConversations.TranscriptModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8491AF512A9F813200CC3E72 /* SecureConversations.TranscriptModel.swift */; };
 		8491AF552AA0934A00CC3E72 /* GVA.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8491AF542AA0934900CC3E72 /* GVA.Mock.swift */; };
 		8491AF572AA0964800CC3E72 /* ChatItem.Kind.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8491AF562AA0964800CC3E72 /* ChatItem.Kind.Mock.swift */; };
+		8491AF632AA20F9D00CC3E72 /* GliaViewControllerDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8491AF622AA20F9D00CC3E72 /* GliaViewControllerDelegateMock.swift */; };
 		84A318A12869ECFC00CA1DE5 /* Unavailable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A318A02869ECFC00CA1DE5 /* Unavailable.swift */; };
 		84CFB7732822700000167258 /* Theme.Button.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CFB7722822700000167258 /* Theme.Button.Accessibility.swift */; };
 		84D2292B28C61C8D00F64FE7 /* WKNavigationPolicyProvider.CustomResponseCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D2292A28C61C8D00F64FE7 /* WKNavigationPolicyProvider.CustomResponseCard.swift */; };
@@ -1121,6 +1122,7 @@
 		8491AF512A9F813200CC3E72 /* SecureConversations.TranscriptModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.TranscriptModel.swift; sourceTree = "<group>"; };
 		8491AF542AA0934900CC3E72 /* GVA.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GVA.Mock.swift; sourceTree = "<group>"; };
 		8491AF562AA0964800CC3E72 /* ChatItem.Kind.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatItem.Kind.Mock.swift; sourceTree = "<group>"; };
+		8491AF622AA20F9D00CC3E72 /* GliaViewControllerDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GliaViewControllerDelegateMock.swift; sourceTree = "<group>"; };
 		84A318A02869ECFC00CA1DE5 /* Unavailable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Unavailable.swift; sourceTree = "<group>"; };
 		84CFB7722822700000167258 /* Theme.Button.Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.Button.Accessibility.swift; sourceTree = "<group>"; };
 		84D2292A28C61C8D00F64FE7 /* WKNavigationPolicyProvider.CustomResponseCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WKNavigationPolicyProvider.CustomResponseCard.swift; sourceTree = "<group>"; };
@@ -3182,6 +3184,7 @@
 		846A5C4329F6BEB60049B29F /* Glia */ = {
 			isa = PBXGroup;
 			children = (
+				8491AF612AA20F8F00CC3E72 /* Mocks */,
 				7512A5A627C3926500319DF1 /* GliaTests.swift */,
 				846A5C4429F6BEFA0049B29F /* GliaTests+StartEngagement.swift */,
 			);
@@ -3263,6 +3266,14 @@
 			children = (
 				8491AF542AA0934900CC3E72 /* GVA.Mock.swift */,
 				8491AF562AA0964800CC3E72 /* ChatItem.Kind.Mock.swift */,
+			);
+			path = Mocks;
+			sourceTree = "<group>";
+		};
+		8491AF612AA20F8F00CC3E72 /* Mocks */ = {
+			isa = PBXGroup;
+			children = (
+				8491AF622AA20F9D00CC3E72 /* GliaViewControllerDelegateMock.swift */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -4757,6 +4768,7 @@
 				EB7A1508286D98000035AC62 /* FileUploader.Environment.Failing.swift in Sources */,
 				AF2355A229C9EC7E007D9896 /* IdCollectionTests.swift in Sources */,
 				8491AF572AA0964800CC3E72 /* ChatItem.Kind.Mock.swift in Sources */,
+				8491AF632AA20F9D00CC3E72 /* GliaViewControllerDelegateMock.swift in Sources */,
 				84681A952A61844000DD7406 /* ChatViewModelTests+Gva.swift in Sources */,
 				847A7643285A1914004044D1 /* FileUploadListViewModelTests.swift in Sources */,
 				9A1992E727D66C7400161AAE /* UIKitBased.Failing.swift in Sources */,

@@ -251,4 +251,37 @@ final class GliaTests: XCTestCase {
 
         XCTAssertEqual(resultingError as? GliaError, GliaError.clearingVisitorSessionDuringEngagementIsNotAllowed)
     }
+
+    func test_minimize() {
+        let sdk = Glia(environment: .failing)
+        let coordinator = EngagementCoordinator.mock()
+        let delegate = GliaViewControllerDelegateMock()
+        let gliaVC = GliaViewController.mock(delegate: delegate)
+        coordinator.gliaViewController = gliaVC
+        sdk.rootCoordinator = coordinator
+
+        sdk.minimize()
+
+        XCTAssertTrue(delegate.invokedEventCall)
+        XCTAssertEqual(delegate.invokedEventCallCount, 1)
+        XCTAssertEqual(delegate.invokedEventCallParameter, .minimized)
+        XCTAssertEqual(delegate.invokedEventCallParameterList, [.minimized])
+    }
+
+    func test_maximize() throws {
+        let sdk = Glia(environment: .failing)
+        let coordinator = EngagementCoordinator.mock()
+        let delegate = GliaViewControllerDelegateMock()
+        let gliaVC = GliaViewController.mock(delegate: delegate)
+        coordinator.gliaViewController = gliaVC
+        sdk.rootCoordinator = coordinator
+
+        try sdk.resume()
+
+        XCTAssertTrue(delegate.invokedEventCall)
+        XCTAssertEqual(delegate.invokedEventCallCount, 1)
+        XCTAssertEqual(delegate.invokedEventCallParameter, .maximized)
+        XCTAssertEqual(delegate.invokedEventCallParameterList, [.maximized])
+    }
 }
+
