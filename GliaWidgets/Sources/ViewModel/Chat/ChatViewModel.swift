@@ -720,22 +720,8 @@ extension ChatViewModel {
     }
 
     func linkTapped(_ url: URL) {
-        switch url.scheme?.lowercased() {
-        case "tel",
-            "mailto":
-            guard
-                environment.uiApplication.canOpenURL(url)
-            else { return }
-
-            environment.uiApplication.open(url)
-
-        case "http",
-            "https":
-            delegate?(.openLink(url))
-
-        default:
-            return
-        }
+        guard environment.uiApplication.canOpenURL(url) else { return }
+        environment.uiApplication.open(url)
     }
 
     private func downloadTapped(_ download: FileDownload) {
@@ -915,7 +901,6 @@ extension ChatViewModel {
         case secureTranscriptUpgradedToLiveChat(ChatViewController)
         case showFile(LocalFile)
         case call
-        case openLink(URL)
     }
 
     enum StartAction {
