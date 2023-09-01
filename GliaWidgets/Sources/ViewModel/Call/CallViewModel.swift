@@ -93,11 +93,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
             action?(.queue)
         case .engaged:
             showConnecting()
-
-            let operatorName = L10n.Call.Operator.name.withOperatorName(
-                interactor.engagedOperator?.firstName
-            )
-
+            let operatorName = interactor.engagedOperator?.firstName ?? Localization.Engagement.defaultOperatorName
             action?(.setOperatorName(operatorName))
         case .ended:
             call.end()
@@ -389,9 +385,7 @@ extension CallViewModel {
     }
 
     private func onDurationChanged(_ duration: Int) {
-        let text = L10n.Call.Connect.Connected.secondText.withCallDuration(
-            duration.asDurationString
-        )
+        let text = duration.asDurationString
         action?(.setCallDurationText(text))
     }
 }

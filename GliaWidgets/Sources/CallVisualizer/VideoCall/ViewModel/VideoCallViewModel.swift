@@ -487,9 +487,7 @@ private extension CallVisualizer.VideoCallViewModel {
 
 private extension CallVisualizer.VideoCallViewModel {
     func onDurationChanged(_ duration: Int) {
-        let text = L10n.Call.Connect.Connected.secondText.withCallDuration(
-            duration.asDurationString
-        )
+        let text = duration.asDurationString
         callDuration = text
     }
 
