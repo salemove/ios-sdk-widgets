@@ -93,11 +93,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
             action?(.queue)
         case .engaged:
             showConnecting()
-
-            let operatorName = L10n.Call.Operator.name.withOperatorName(
-                interactor.engagedOperator?.firstName
-            )
-
+            let operatorName = Localization.operatorName(interactor.engagedOperator?.firstName)
             action?(.setOperatorName(operatorName))
         case .ended:
             call.end()

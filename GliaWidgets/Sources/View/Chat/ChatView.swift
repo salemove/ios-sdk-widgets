@@ -85,10 +85,15 @@ class ChatView: EngagementView {
             style: style.operatorTypingIndicator
         )
         typingIndicatorContainer.isAccessibilityElement = true
-        typingIndicatorContainer.accessibilityLabel =
-        style.operatorTypingIndicator.accessibility.label.withOperatorName(
-            OperatorTypingIndicatorView.AccessibilityProperties(operatorName: style.accessibility.operator).operatorName
+
+        let operatorName = OperatorTypingIndicatorView.AccessibilityProperties(
+            operatorName: style.accessibility.operator
+        ).operatorName
+        typingIndicatorContainer.accessibilityLabel = Localization.operatorName(
+            operatorName,
+            on: style.operatorTypingIndicator.accessibility.label
         )
+
         self.props = props
         super.init(
             with: style,

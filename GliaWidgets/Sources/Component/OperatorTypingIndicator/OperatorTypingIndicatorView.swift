@@ -64,7 +64,10 @@ final class OperatorTypingIndicatorView: BaseView {
     }
 
     private func updateAccessibility() {
-        accessibilityLabel = style.accessibility.label.withOperatorName(accessibilityProperties.operatorName)
+        accessibilityLabel = Localization.operatorName(
+            accessibilityProperties.operatorName,
+            on: style.accessibility.label
+        )
     }
 }
 

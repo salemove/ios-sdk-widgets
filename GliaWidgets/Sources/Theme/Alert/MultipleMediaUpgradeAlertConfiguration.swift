@@ -14,7 +14,7 @@ public struct MultipleMediaUpgradeAlertConfiguration {
 
     func withOperatorName(_ name: String?) -> MultipleMediaUpgradeAlertConfiguration {
         return MultipleMediaUpgradeAlertConfiguration(
-            title: title.withOperatorName(name),
+            title: Localization.operatorName(name, on: title),
             audioUpgradeAction: audioUpgradeAction,
             phoneUpgradeAction: phoneUpgradeAction,
             showsPoweredBy: showsPoweredBy

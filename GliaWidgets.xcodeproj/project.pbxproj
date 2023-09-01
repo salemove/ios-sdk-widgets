@@ -180,6 +180,8 @@
 		3100EEFD293F757E00D57F71 /* SecureConversations.WelcomeStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3100EEFC293F757E00D57F71 /* SecureConversations.WelcomeStyle.swift */; };
 		3100EEFF293F7E0900D57F71 /* Theme+SecureConversationsWelcome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3100EEFE293F7E0900D57F71 /* Theme+SecureConversationsWelcome.swift */; };
 		3115D45C29A4FD3F00D99561 /* SecureConversations.Availability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3115D45B29A4FD3F00D99561 /* SecureConversations.Availability.swift */; };
+		31184BDC2AA0AF4F00E4BC5D /* Localization+BackwardsCompatibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31184BDB2AA0AF4F00E4BC5D /* Localization+BackwardsCompatibility.swift */; };
+		31184BDF2AA0C46000E4BC5D /* StringTemplateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31184BDE2AA0C46000E4BC5D /* StringTemplateTests.swift */; };
 		311CAFCD29F8FAE20067B59F /* SecureConversations.TranscriptModel+CustomCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 311CAFCC29F8FAE20067B59F /* SecureConversations.TranscriptModel+CustomCard.swift */; };
 		313EBD552943116E008E9597 /* SecureConversations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313EBD542943116E008E9597 /* SecureConversations.swift */; };
 		3142696A29FFB712003DF62E /* Interactor.Failing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3142696929FFB712003DF62E /* Interactor.Failing.swift */; };
@@ -904,6 +906,8 @@
 		3100EEFC293F757E00D57F71 /* SecureConversations.WelcomeStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.WelcomeStyle.swift; sourceTree = "<group>"; };
 		3100EEFE293F7E0900D57F71 /* Theme+SecureConversationsWelcome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Theme+SecureConversationsWelcome.swift"; sourceTree = "<group>"; };
 		3115D45B29A4FD3F00D99561 /* SecureConversations.Availability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.Availability.swift; sourceTree = "<group>"; };
+		31184BDB2AA0AF4F00E4BC5D /* Localization+BackwardsCompatibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Localization+BackwardsCompatibility.swift"; sourceTree = "<group>"; };
+		31184BDE2AA0C46000E4BC5D /* StringTemplateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringTemplateTests.swift; sourceTree = "<group>"; };
 		311CAFCC29F8FAE20067B59F /* SecureConversations.TranscriptModel+CustomCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SecureConversations.TranscriptModel+CustomCard.swift"; sourceTree = "<group>"; };
 		313EBD542943116E008E9597 /* SecureConversations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.swift; sourceTree = "<group>"; };
 		3142696929FFB712003DF62E /* Interactor.Failing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interactor.Failing.swift; sourceTree = "<group>"; };
@@ -1982,6 +1986,7 @@
 				1A60AFA225667EA300E53F53 /* Assets.xcassets */,
 				31E35AB62A852C09006EC7FB /* Localizable.strings */,
 				1A60AFAC2566806000E53F53 /* Deprecated.strings */,
+				31184BDB2AA0AF4F00E4BC5D /* Localization+BackwardsCompatibility.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -2522,6 +2527,14 @@
 			path = GliaWidgets/SecureConversations/Confirmation;
 			sourceTree = SOURCE_ROOT;
 		};
+		31184BDD2AA0C44B00E4BC5D /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				31184BDE2AA0C46000E4BC5D /* StringTemplateTests.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		313EBD53294310EE008E9597 /* SecureConversations */ = {
 			isa = PBXGroup;
 			children = (
@@ -2611,6 +2624,7 @@
 		7512A57827BF9FB800319DF1 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				31184BDD2AA0C44B00E4BC5D /* Extensions */,
 				84681A932A61840700DD7406 /* ChatViewModel */,
 				846429812A45DA5900943BD6 /* AlertViewController */,
 				846A5C4329F6BEB60049B29F /* Glia */,
@@ -4502,6 +4516,7 @@
 				84D2293E28D36B2A00F64FE7 /* UIColor+Hex.swift in Sources */,
 				75C1143629A406F00004E5F7 /* SecureConversations+RemoteConfig.swift in Sources */,
 				754CC61327E27BE2005676E9 /* Survey.SingleChoiceQuestionView.swift in Sources */,
+				31184BDC2AA0AF4F00E4BC5D /* Localization+BackwardsCompatibility.swift in Sources */,
 				1A0C9A6725C16DC400815406 /* Theme+Chat.swift in Sources */,
 				75940985298D38C2008B173A /* VisitorCodeCoordinator+DelegateEvent.swift in Sources */,
 				1A0C9AC225C9400000815406 /* CallDurationCounter.swift in Sources */,
@@ -4700,6 +4715,7 @@
 				EB03B00E27FFF6DD0058F6B1 /* CallViewTests.swift in Sources */,
 				3197F7AD29E6A5C8008EE9F7 /* SecureConversations.FileUploadListView.Mock.swift in Sources */,
 				AF29810929E045CE0005BD55 /* TranscriptModelTests.swift in Sources */,
+				31184BDF2AA0C46000E4BC5D /* StringTemplateTests.swift in Sources */,
 				7512A57727BE8A6700319DF1 /* InteractorTests.swift in Sources */,
 				AF29811529E6D76A0005BD55 /* FileDownloadTests.swift in Sources */,
 				C096B40B297EBDE400F0C552 /* VisitorCodeTests.swift in Sources */,
