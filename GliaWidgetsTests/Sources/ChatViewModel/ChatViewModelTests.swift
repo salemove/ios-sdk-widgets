@@ -322,63 +322,51 @@ class ChatViewModelTests: XCTestCase {
     }
     
     func test_handleUrlWithLinkOpensCalsLinkTapped() throws {
-        enum Call: Equatable { case linkTapped(URL) }
+        enum Call: Equatable { case canOpen(URL), open(URL) }
         var calls: [Call] = []
         var viewModelEnv = ChatViewModel.Environment.failing()
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
         viewModelEnv.createFileUploadListModel = { _ in .mock() }
+        viewModelEnv.uiApplication.canOpenURL = { url in
+            calls.append(.canOpen(url))
+            return true
+        }
+        viewModelEnv.uiApplication.open = { url in
+            calls.append(.open(url))
+        }
         let viewModel: ChatViewModel = .mock(
             interactor: .mock(),
             environment: viewModelEnv
         )
 
-        viewModel.delegate = { event in
-            switch event {
-            case .openLink(let url):
-                calls.append(.linkTapped(url))
-
-            default:
-                break
-            }
-        }
-
         let linkUrl = URL(string: "https://mock.mock")!
         viewModel.linkTapped(linkUrl)
 
-        XCTAssertEqual(calls, [.linkTapped(linkUrl)])
+        XCTAssertEqual(calls, [.canOpen(linkUrl), .open(linkUrl)])
     }
 
-    func test_handleUrlWithRandomSchemeDoesNothing() throws {
-        enum Call: Equatable {
-            case linkTapped(URL)
-            case openUrl(URL)
-        }
+    func test_handleUrlWithRandomScheme() throws {
+        enum Call: Equatable { case canOpen(URL), open(URL) }
     
         var calls: [Call] = []
         var viewModelEnv = ChatViewModel.Environment.failing()
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
         viewModelEnv.createFileUploadListModel = { _ in .mock() }
-        viewModelEnv.uiApplication.canOpenURL = { _ in true }
+        viewModelEnv.uiApplication.canOpenURL = { url in
+            calls.append(.canOpen(url))
+            return true
+        }
         viewModelEnv.uiApplication.open = {
-            calls.append(.openUrl($0))
+            calls.append(.open($0))
         }
         let viewModel: ChatViewModel = .mock(interactor: .mock(), environment: viewModelEnv)
-        viewModel.delegate = { event in
-            switch event {
-            case .openLink(let url):
-                calls.append(.linkTapped(url))
-
-            default:
-                break
-            }
-        }
     
-        let mockUrl = URL(string: "mock:mock")!
+        let mockUrl = try XCTUnwrap(URL(string: "mock://mock"))
         viewModel.linkTapped(mockUrl)
 
-        XCTAssertEqual(calls, [])
+        XCTAssertEqual(calls, [.canOpen(mockUrl), .open(mockUrl)])
     }
 
     func test_deliveryStatusText() {
