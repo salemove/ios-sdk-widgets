@@ -22,8 +22,8 @@ public struct ScreenShareOfferAlertConfiguration {
 
     func withOperatorName(_ name: String?) -> ScreenShareOfferAlertConfiguration {
         return ScreenShareOfferAlertConfiguration(
-            title: title.withOperatorName(name),
-            message: message.withOperatorName(name),
+            title: Localization.operatorName(name, on: title),
+            message: Localization.operatorName(name, on: message),
             titleImage: titleImage,
             decline: decline,
             accept: accept,

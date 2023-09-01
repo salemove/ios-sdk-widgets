@@ -9,7 +9,12 @@ public class CallStyle: EngagementStyle {
     /// Title for the video call.
     public var videoTitle: String
 
-    /// A text to display operator's name. Include `{operatorName}` template parameter in the string to display operator's name.
+    /// A text to display operator's name.
+    @available(
+        *,
+         deprecated,
+         message: "Use custom locales in the Glia Hub."
+    )
     public var operatorName: String
 
     /// Font of the operator's name text.
@@ -71,7 +76,7 @@ public class CallStyle: EngagementStyle {
     ///   - preferredStatusBarStyle: Preferred style of the status bar.
     ///   - audioTitle: Title for audio call.
     ///   - videoTitle: Title for video call.
-    ///   - operatorName: A text to display operator's name. Include `{operatorName}` template parameter in the string to display operator's name.
+    ///   - operatorName: A text to display operator's name.
     ///   - operatorNameFont: Font of the operator's name text.
     ///   - operatorNameColor: Color of the operator's name text.
     ///   - operatorNameTextStyle: Text style of the operator's name text.

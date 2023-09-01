@@ -2,7 +2,7 @@ import UIKit
 
 /// Style of a connect status. These are used when visitor is in enqueued, connecting, and connected state.
 public struct ConnectStatusStyle: Equatable {
-    /// First status text. Include `{operatorName}` template parameter in the string to display operator's name.
+    /// First status text.
     public var firstText: String?
 
     /// Font of the first status text.
@@ -14,7 +14,7 @@ public struct ConnectStatusStyle: Equatable {
     /// Text style of the first status text.
     public var firstTextStyle: UIFont.TextStyle
 
-    /// Second status text. Include `{operatorName}` template parameter in the string to display operator's name.
+    /// Second status text.
     public var secondText: String?
 
     /// Font of the second status text.
@@ -31,11 +31,11 @@ public struct ConnectStatusStyle: Equatable {
 
     ///
     /// - Parameters:
-    ///   - firstText: First status text. Include `{operatorName}` template parameter in the string to display operator's name.
+    ///   - firstText: First status text.
     ///   - firstTextFont: Font of the first status text.
     ///   - firstTextFontColor: Color of the first status text.
     ///   - firstTextStyle: Text style of the first status text.
-    ///   - secondText: Second status text. Include `{operatorName}` template parameter in the string to display operator's name.
+    ///   - secondText: Second status text.
     ///   - secondTextFont: Font of the second status text.
     ///   - secondTextFontColor: Color of the second status text.
     ///   - secondTextStyle: Text style of the second status text.

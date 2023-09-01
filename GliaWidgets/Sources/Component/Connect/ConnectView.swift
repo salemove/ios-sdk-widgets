@@ -108,7 +108,7 @@ final class ConnectView: BaseView {
             operatorView.startAnimating(animated: animated)
             operatorView.imageView.setPlaceholderImage(style.connectOperator.operatorImage.placeholderImage)
             operatorView.imageView.setOperatorImage(fromUrl: imageUrl, animated: true)
-            let firstText = style.connecting.firstText?.withOperatorName(name)
+            let firstText = Localization.operatorName(name, on: style.connecting.firstText)
             statusView.setFirstText(firstText, animated: animated)
             statusView.setSecondText(nil, animated: animated)
             statusView.setStyle(style.connecting)
@@ -120,9 +120,8 @@ final class ConnectView: BaseView {
             operatorView.imageView.setPlaceholderImage(style.connectOperator.operatorImage.placeholderImage)
             operatorView.imageView.setOperatorImage(fromUrl: imageUrl, animated: true)
             if let name = name {
-                let firstText = style.connected.firstText?.withOperatorName(name)
-                let secondText = style.connected.secondText?
-                    .withOperatorName(name)
+                let firstText = Localization.operatorName(name, on: style.connected.firstText)
+                let secondText = Localization.operatorName(name, on: style.connected.secondText)
                     .withCallDuration("00:00")
                 statusView.setFirstText(firstText, animated: animated)
                 statusView.setSecondText(secondText, animated: animated)

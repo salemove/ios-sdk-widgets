@@ -273,7 +273,7 @@ extension CallVisualizer.VideoCallViewModel {
             operatorImagePlaceholder = style.connect.connectOperator.operatorImage.placeholderImage
             setOperatorImage(from: imageUrl, animated: animated)
             operatorImageVisible = true
-            let firstText = style.connect.connecting.firstText?.withOperatorName(name)
+            let firstText = Localization.operatorName(name, on: style.connect.connecting.firstText)
             statusFirstText = .init(text: firstText, animated: animated)
             statusSecondText = .init(text: nil, animated: animated)
             statusStyle = style.connect.connecting
@@ -286,9 +286,8 @@ extension CallVisualizer.VideoCallViewModel {
             setOperatorImage(from: imageUrl, animated: animated)
             operatorImageVisible = false
             if let name = name {
-                let firstText = style.connect.connected.firstText?.withOperatorName(name)
-                let secondText = style.connect.connected.secondText?
-                    .withOperatorName(name)
+                let firstText = Localization.operatorName(name, on: style.connect.connected.firstText)
+                let secondText = Localization.operatorName(name, on: style.connect.connected.secondText)
                     .withCallDuration("00:00")
                 statusFirstText = .init(text: firstText, animated: animated)
                 statusSecondText = .init(text: secondText, animated: animated)

@@ -19,7 +19,7 @@ public struct SingleMediaUpgradeAlertConfiguration {
 
     func withOperatorName(_ name: String?) -> SingleMediaUpgradeAlertConfiguration {
         return SingleMediaUpgradeAlertConfiguration(
-            title: title.withOperatorName(name),
+            title: Localization.operatorName(name, on: title),
             titleImage: titleImage,
             decline: decline,
             accept: accept,
