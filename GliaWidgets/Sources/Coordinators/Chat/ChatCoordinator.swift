@@ -131,14 +131,6 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
         quickLookController = controller
         navigationPresenter.present(controller.viewController)
     }
-
-    private func presentWebViewController(with url: URL) {
-        let configuration = SFSafariViewController.Configuration()
-        configuration.entersReaderIfAvailable = true
-        let safariViewController = SFSafariViewController(url: url, configuration: configuration)
-        safariViewController.view.accessibilityIdentifier = "safari_root_view"
-        navigationPresenter.present(safariViewController)
-    }
 }
 
 // MARK: Chat model
@@ -198,8 +190,6 @@ extension ChatCoordinator {
                 self?.presentQuickLookController(with: file)
             case .call:
                 self?.delegate?(.call)
-            case .openLink(let url):
-                self?.presentWebViewController(with: url)
             }
         }
 
@@ -279,8 +269,6 @@ extension ChatCoordinator {
             switch event {
             case .showFile(let file):
                 self?.presentQuickLookController(with: file)
-            case .openLink(let url):
-                self?.presentWebViewController(with: url)
             case let .showAlertAsView(conf, accessibilityIdentifier, dismissed):
                 controller()?.presentAlertAsView(
                     with: conf,
