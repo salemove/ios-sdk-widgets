@@ -11,7 +11,6 @@ extension SecureConversations {
 
         enum DelegateEvent {
             case showFile(LocalFile)
-            case openLink(URL)
             case showAlertAsView(
                 MessageAlertConfiguration,
                 accessibilityIdentifier: String?,
@@ -400,22 +399,8 @@ extension SecureConversations.TranscriptModel {
     }
 
     func linkTapped(_ url: URL) {
-        switch url.scheme?.lowercased() {
-        case "tel",
-            "mailto":
-            guard
-                environment.uiApplication.canOpenURL(url)
-            else { return }
-
-            environment.uiApplication.open(url)
-
-        case "http",
-            "https":
-            delegate?(.openLink(url))
-
-        default:
-            return
-        }
+        guard environment.uiApplication.canOpenURL(url) else { return }
+        environment.uiApplication.open(url)
     }
 }
 
