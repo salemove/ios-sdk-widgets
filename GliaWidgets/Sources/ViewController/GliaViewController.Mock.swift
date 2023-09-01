@@ -1,9 +1,9 @@
 #if DEBUG
 extension GliaViewController {
     static func mock(
-        bubbleView: BubbleView,
-        delegate: GliaViewControllerDelegate?,
-        features: Features
+        bubbleView: BubbleView = .mock(),
+        delegate: GliaViewControllerDelegate? = nil,
+        features: Features = .all
     ) -> GliaViewController {
         .init(
             bubbleView: bubbleView,

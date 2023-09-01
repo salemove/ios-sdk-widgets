@@ -138,6 +138,13 @@ public class Glia {
         startObservingInteractorEvents()
     }
 
+    /// Minimizes engagement view if ongoing engagement exists.
+    /// Use this function for hiding the engagement view programmatically during ongoing engagement.
+    /// If you do so, the operator bubble appears.
+    public func minimize() {
+        rootCoordinator?.minimize()
+    }
+
     /// Maximizes engagement view if ongoing engagment exists.
     /// Throws error if ongoing engagement not exist.
     /// Use this function for resuming engagement view If bubble is hidden programmatically and you need to

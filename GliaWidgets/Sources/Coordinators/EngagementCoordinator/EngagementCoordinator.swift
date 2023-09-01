@@ -9,6 +9,7 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
         }
     }
 
+    var gliaViewController: GliaViewController?
     private let interactor: Interactor
     private let viewFactory: ViewFactory
     private weak var sceneProvider: SceneProvider?
@@ -21,7 +22,6 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
     private let navigationController = NavigationController()
     private let navigationPresenter: NavigationPresenter
     private let gliaPresenter: GliaPresenter
-    private var gliaViewController: GliaViewController?
     private let kBubbleViewSize: CGFloat = 60.0
     private let features: Features
     private let environment: Environment
@@ -590,6 +590,9 @@ extension EngagementCoordinator: GliaViewControllerDelegate {
 }
 
 extension EngagementCoordinator {
+    func minimize() {
+        gliaViewController?.minimize(animated: true)
+    }
 
     func maximize() {
         gliaViewController?.maximize(animated: true)

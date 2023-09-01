@@ -5,7 +5,7 @@ extension EngagementCoordinator {
         viewFactory: ViewFactory = .mock(),
         sceneProvider: SceneProvider? = nil,
         engagementKind: EngagementKind = .audioCall,
-        screenShareHandler: ScreenShareHandler,
+        screenShareHandler: ScreenShareHandler = .mock,
         features: Features = .all,
         environment: Environment = .mock
     ) -> EngagementCoordinator {
