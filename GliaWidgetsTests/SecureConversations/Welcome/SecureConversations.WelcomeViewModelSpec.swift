@@ -126,7 +126,7 @@ extension SecureConversationsWelcomeViewModelTests {
 extension SecureConversationsWelcomeViewModelTests {
     func testSuccessfulMessageSend() {
         var isCalled = false
-        viewModel.environment.sendSecureMessage = { _, _, _, completion in
+        viewModel.environment.sendSecureMessagePayload = { _, _, completion in
             let mockedMessage = CoreSdkClient.Message(
                 id: UUID.mock.uuidString,
                 content: "Content",
@@ -156,7 +156,7 @@ extension SecureConversationsWelcomeViewModelTests {
     func testFailedMessageSend() {
         var isCalled = false
         var messageAlertConfiguration: MessageAlertConfiguration?
-        viewModel.environment.sendSecureMessage = { _, _, _, completion in
+        viewModel.environment.sendSecureMessagePayload = { _, _, completion in
             completion(.failure(CoreSdkClient.GliaCoreError(reason: "")))
 
             return .mock

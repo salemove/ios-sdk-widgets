@@ -95,10 +95,8 @@ private extension SecureConversations.TranscriptModel {
             imageUrl: nil
         )
 
-        let outgoingMessage = OutgoingMessage(
-            content: option.text,
-            attachment: attachment
-        )
+        let payload = environment.createSendMessagePayload(option.text, attachment)
+        let outgoingMessage = OutgoingMessage(payload: payload)
 
         appendItem(
             .init(kind: .outgoingMessage(outgoingMessage)),
@@ -106,9 +104,8 @@ private extension SecureConversations.TranscriptModel {
             animated: true
         )
 
-        _ = environment.sendSecureMessage(
-            option.text,
-            attachment,
+        _ = environment.sendSecureMessagePayload(
+            outgoingMessage.payload,
             environment.queueIds
         ) { [weak self] result in
             guard let self = self else { return }

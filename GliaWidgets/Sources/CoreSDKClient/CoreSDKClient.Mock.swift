@@ -16,7 +16,7 @@ extension CoreSdkClient {
         queueForEngagement: { _, _, _, _, _, _ in },
         requestMediaUpgradeWithOffer: { _, _ in },
         sendMessagePreview: { _, _ in },
-        sendMessageWithAttachment: { _, _, _ in },
+        sendMessageWithMessagePayload: { _, _ in },
         cancelQueueTicket: { _, _ in },
         endEngagement: { _ in },
         requestEngagedOperator: { _ in },
@@ -28,13 +28,14 @@ extension CoreSdkClient {
         authentication: { _ in .mock },
         fetchChatHistory: { _ in },
         requestVisitorCode: { _ in fatalError() },
-        sendSecureMessage: { _, _, _, _ in .mock },
+        sendSecureMessagePayload: { _, _, _ in .mock },
         uploadSecureFile: { _, _, _ in .mock },
         getSecureUnreadMessageCount: { _ in },
         secureMarkMessagesAsRead: { _ in .mock },
         downloadSecureFile: { _, _, _ in .mock },
         startSocketObservation: {},
-        stopSocketObservation: {}
+        stopSocketObservation: {},
+        createSendMessagePayload: { _, _ in .mock() }
     )
 }
 

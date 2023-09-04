@@ -24,7 +24,7 @@ extension EngagementCoordinator {
         var notificationCenter: FoundationBased.NotificationCenter
         var fetchChatHistory: CoreSdkClient.FetchChatHistory
         var listQueues: CoreSdkClient.ListQueues
-        var sendSecureMessage: CoreSdkClient.SendSecureMessage
+        var sendSecureMessagePayload: CoreSdkClient.SendSecureMessagePayload
         var createFileUploader: FileUploader.Create
         var createFileUploadListModel: SecureConversations.FileUploadListViewModel.Create
         var uploadSecureFile: CoreSdkClient.SecureConversationsUploadFile
@@ -36,5 +36,6 @@ extension EngagementCoordinator {
         var startSocketObservation: CoreSdkClient.StartSocketObservation
         var stopSocketObservation: CoreSdkClient.StopSocketObservation
         var pushNotifications: CoreSdkClient.PushNotifications
+        var createSendMessagePayload: CoreSdkClient.CreateSendMessagePayload
     }
 }

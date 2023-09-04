@@ -3,13 +3,11 @@ import Foundation
 #if DEBUG
 extension OutgoingMessage {
     static func mock(
-        id: String = UUID.mock.uuidString,
-        content: String = "",
+        payload: CoreSdkClient.SendMessagePayload = .mock(),
         files: [LocalFile] = []
     ) -> OutgoingMessage {
-        .init(
-            id: id,
-            content: content,
+        OutgoingMessage(
+            payload: payload,
             files: files
         )
     }
