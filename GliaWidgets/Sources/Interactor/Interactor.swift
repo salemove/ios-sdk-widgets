@@ -181,22 +181,11 @@ extension Interactor {
     }
 
     func send(
-        _ message: String,
-        attachment: CoreSdkClient.Attachment?,
-        success: @escaping (CoreSdkClient.Message) -> Void,
-        failure: @escaping (CoreSdkClient.SalemoveError) -> Void
+        messagePayload: CoreSdkClient.SendMessagePayload,
+        completion: @escaping (Result<CoreSdkClient.Message, CoreSdkClient.GliaCoreError>) -> Void
     ) {
         withConfiguration { [weak self] in
-            self?.environment.coreSdk.sendMessageWithAttachment(
-                message,
-                attachment
-            ) { message, error in
-                if let error = error {
-                    failure(error)
-                } else if let message = message {
-                    success(message)
-                }
-            }
+            self?.environment.coreSdk.sendMessageWithMessagePayload(messagePayload, completion)
         }
     }
 

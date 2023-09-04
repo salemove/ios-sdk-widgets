@@ -42,7 +42,7 @@ extension SecureConversations {
                     welcomeStyle: viewFactory.theme.secureConversationsWelcome,
                     queueIds: environment.queueIds,
                     listQueues: environment.listQueues,
-                    sendSecureMessage: environment.sendSecureMessage,
+                    sendSecureMessagePayload: environment.sendSecureMessagePayload,
                     alertConfiguration: viewFactory.theme.alertConfiguration,
                     fileUploader: environment.createFileUploader(
                         SecureConversations.WelcomeViewModel.maximumUploads,
@@ -64,7 +64,8 @@ extension SecureConversations {
                     stopSocketObservation: environment.stopSocketObservation,
                     getCurrentEngagement: environment.getCurrentEngagement,
                     uploadSecureFile: environment.uploadSecureFile,
-                    uploadFileToEngagement: environment.uploadFileToEngagement
+                    uploadFileToEngagement: environment.uploadFileToEngagement,
+                    createSendMessagePayload: environment.createSendMessagePayload
                 ),
                 availability: .init(
                     environment: .init(
@@ -274,7 +275,7 @@ extension SecureConversations.Coordinator {
                 uiApplication: environment.uiApplication,
                 fetchChatHistory: environment.fetchChatHistory,
                 createFileUploadListModel: environment.createFileUploadListModel,
-                sendSecureMessage: environment.sendSecureMessage,
+                sendSecureMessagePayload: environment.sendSecureMessagePayload,
                 queueIds: environment.queueIds,
                 listQueues: environment.listQueues,
                 secureUploadFile: environment.uploadSecureFile,
@@ -285,7 +286,8 @@ extension SecureConversations.Coordinator {
                 isAuthenticated: environment.isAuthenticated,
                 interactor: environment.interactor,
                 startSocketObservation: environment.startSocketObservation,
-                stopSocketObservation: environment.stopSocketObservation
+                stopSocketObservation: environment.stopSocketObservation,
+                createSendMessagePayload: environment.createSendMessagePayload
             ),
             startWithSecureTranscriptFlow: true
         )
@@ -314,7 +316,7 @@ extension SecureConversations.Coordinator {
     struct Environment {
         var queueIds: [String]
         var listQueues: CoreSdkClient.ListQueues
-        var sendSecureMessage: CoreSdkClient.SendSecureMessage
+        var sendSecureMessagePayload: CoreSdkClient.SendSecureMessagePayload
         var createFileUploader: FileUploader.Create
         var uploadSecureFile: CoreSdkClient.SecureConversationsUploadFile
         var fileManager: FoundationBased.FileManager
@@ -350,6 +352,7 @@ extension SecureConversations.Coordinator {
         var isAuthenticated: () -> Bool
         var startSocketObservation: CoreSdkClient.StartSocketObservation
         var stopSocketObservation: CoreSdkClient.StopSocketObservation
+        var createSendMessagePayload: CoreSdkClient.CreateSendMessagePayload
     }
 
     enum DelegateEvent {

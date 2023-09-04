@@ -2,27 +2,19 @@ import Foundation
 import GliaCoreSDK
 
 class OutgoingMessage: Equatable {
-    let id: String
-    let content: String
     let files: [LocalFile]
-    let attachment: Attachment?
+    var payload: CoreSdkClient.SendMessagePayload
 
     init(
-        id: String = UUID().uuidString,
-        content: String,
-        files: [LocalFile] = [],
-        attachment: Attachment? = nil
+        payload: CoreSdkClient.SendMessagePayload,
+        files: [LocalFile] = []
     ) {
-        self.id = id
-        self.content = content
+        self.payload = payload
         self.files = files
-        self.attachment = attachment
     }
 
     static func == (lhs: OutgoingMessage, rhs: OutgoingMessage) -> Bool {
-        lhs.id == rhs.id &&
-        lhs.content == rhs.content &&
-        lhs.files == rhs.files &&
-        lhs.attachment == rhs.attachment
+        lhs.payload == rhs.payload &&
+        lhs.files == rhs.files
     }
 }

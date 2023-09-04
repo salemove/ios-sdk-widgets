@@ -220,7 +220,8 @@ extension ChatCoordinator {
             uiApplication: environment.uiApplication,
             fetchChatHistory: environment.fetchChatHistory,
             fileUploadListStyle: viewFactory.theme.chatStyle.messageEntry.uploadList,
-            createFileUploadListModel: environment.createFileUploadListModel
+            createFileUploadListModel: environment.createFileUploadListModel,
+            createSendMessagePayload: environment.createSendMessagePayload
         )
     }
 }
@@ -241,7 +242,7 @@ extension ChatCoordinator {
                     isAuthenticated: environment.isAuthenticated
                 )
             ),
-            deliveredStatusText: viewFactory.theme.chat.visitorMessage.delivered,
+            deliveredStatusText: viewFactory.theme.chat.visitorMessageStyle.delivered,
             interactor: interactor,
             alertConfiguration: viewFactory.theme.alertConfiguration
         )
@@ -318,7 +319,7 @@ extension ChatCoordinator {
            loadChatMessagesFromHistory: environment.fromHistory,
            fetchChatHistory: environment.fetchChatHistory,
            uiApplication: environment.uiApplication,
-           sendSecureMessage: environment.sendSecureMessage,
+           sendSecureMessagePayload: environment.sendSecureMessagePayload,
            queueIds: environment.queueIds,
            listQueues: environment.listQueues,
            alertConfiguration: viewFactory.theme.alertConfiguration,
@@ -333,7 +334,8 @@ extension ChatCoordinator {
            interactor: environment.interactor,
            startSocketObservation: environment.startSocketObservation,
            stopSocketObservation: environment.stopSocketObservation,
-           sendSelectedOptionValue: environment.sendSelectedOptionValue
+           sendSelectedOptionValue: environment.sendSelectedOptionValue,
+           createSendMessagePayload: environment.createSendMessagePayload
        )
     }
 }

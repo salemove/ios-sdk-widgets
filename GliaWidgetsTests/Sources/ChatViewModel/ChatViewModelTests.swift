@@ -56,6 +56,9 @@ class ChatViewModelTests: XCTestCase {
                 fileUploadListStyle: .mock,
                 createFileUploadListModel: { _ in
                     .mock()
+                },
+                createSendMessagePayload: { _, _ in
+                    .mock()
                 }
             )
         )
@@ -374,14 +377,14 @@ class ChatViewModelTests: XCTestCase {
         let messageContent = "Message"
 
         var environment: Interactor.Environment = .mock
-        environment.coreSdk.sendMessageWithAttachment = { message, attachment, completion in
+        environment.coreSdk.sendMessageWithMessagePayload = { _, completion in
             let coreSdkMessage = Message(
                 id: UUID().uuidString,
                 content: messageContent,
                 sender: MessageSender.mock,
                 metadata: nil
             )
-            completion(coreSdkMessage, nil)
+            completion(.success(coreSdkMessage))
         }
 
         // `sendMessageWithAttachment` goes through this method first, so if
@@ -556,6 +559,7 @@ class ChatViewModelTests: XCTestCase {
 
         let messageId = "message_id"
         let viewModel: ChatViewModel = .mock(environment: viewModelEnv)
+        viewModel.isViewLoaded = true
         viewModel.start()
         var actions: [ChatViewModel.Action] = []
         viewModel.action = {
@@ -572,8 +576,7 @@ class ChatViewModelTests: XCTestCase {
         default:
             break
         }
-        XCTAssertEqual(actions.count, 1)
-        XCTAssertEqual(calls, [.quickReplyPropsUpdatedHidden])
+        XCTAssertEqual(viewModel.receivedMessageIds, [messageId.uppercased()])
     }
 }
 

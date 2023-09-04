@@ -16,7 +16,7 @@ extension CoreSdkClient {
                 .queueForEngagement(queueID:visitorContext:shouldCloseAllQueues:mediaType:options:completion:),
             requestMediaUpgradeWithOffer: GliaCore.sharedInstance.requestMediaUpgrade(offer:completion:),
             sendMessagePreview: GliaCore.sharedInstance.sendMessagePreview(message:completion:),
-            sendMessageWithAttachment: GliaCore.sharedInstance.send(message:attachment:completion:),
+            sendMessageWithMessagePayload: GliaCore.sharedInstance.send(messagePayload:completion:),
             cancelQueueTicket: GliaCore.sharedInstance.cancel(queueTicket:completion:),
             endEngagement: GliaCore.sharedInstance.endEngagement(completion:),
             requestEngagedOperator: GliaCore.sharedInstance.requestEngagedOperator(completion:),
@@ -39,13 +39,14 @@ extension CoreSdkClient {
                 }
             },
             requestVisitorCode: GliaCore.sharedInstance.callVisualizer.requestVisitorCode(completion:),
-            sendSecureMessage: GliaCore.sharedInstance.secureConversations.send(secureMessage:attachment:queueIds:completion:),
+            sendSecureMessagePayload: GliaCore.sharedInstance.secureConversations.send(secureMessagePayload:queueIds:completion:),
             uploadSecureFile: GliaCore.sharedInstance.secureConversations.uploadFile(_:progress:completion:),
             getSecureUnreadMessageCount: GliaCore.sharedInstance.secureConversations.getUnreadMessageCount(completion:),
             secureMarkMessagesAsRead: GliaCore.sharedInstance.secureConversations.markMessagesAsRead(completion:),
             downloadSecureFile: GliaCore.sharedInstance.secureConversations.downloadFile(_:progress:completion:),
             startSocketObservation: GliaCore.sharedInstance.startSocketObservation,
-            stopSocketObservation: GliaCore.sharedInstance.stopSocketObservation
+            stopSocketObservation: GliaCore.sharedInstance.stopSocketObservation,
+            createSendMessagePayload: CoreSdkClient.SendMessagePayload.init(content:attachment:)
         )
     }()
 }
