@@ -114,7 +114,7 @@ extension Theme {
         )
         let api = MessageAlertConfiguration(
             title: Localization.Error.Unexpected.title,
-            message: L10n.Alert.ApiError.message
+            message: Localization.Templates.errorMessage
         )
         let unavailableMessageCenter = MessageAlertConfiguration(
             title: Localization.MessageCenter.Unavailable.title,
