@@ -98,11 +98,11 @@ extension Theme {
             )
         )
         let connected = ConnectStatusStyle(
-            firstText: L10n.Call.Connect.Connected.firstText,
+            firstText: Localization.Templates.operatorName,
             firstTextFont: font.header1,
             firstTextFontColor: color.baseLight,
             firstTextStyle: .title1,
-            secondText: L10n.Call.Connect.Connected.secondText,
+            secondText: Localization.Templates.callDuration,
             secondTextFont: font.subtitle,
             secondTextFontColor: color.baseLight,
             secondTextStyle: .footnote,
@@ -113,11 +113,11 @@ extension Theme {
             )
         )
         let onHold = ConnectStatusStyle(
-            firstText: L10n.Call.Connect.Connected.firstText,
+            firstText: Localization.Templates.operatorName,
             firstTextFont: font.header1,
             firstTextFontColor: color.baseLight,
             firstTextStyle: .title1,
-            secondText: L10n.Call.Connect.Connected.secondText,
+            secondText: Localization.Templates.callDuration,
             secondTextFont: font.subtitle,
             secondTextFontColor: color.baseLight,
             secondTextStyle: .footnote,
@@ -160,7 +160,7 @@ extension Theme {
             preferredStatusBarStyle: .lightContent,
             audioTitle: Localization.Media.Audio.name,
             videoTitle: Localization.Media.Video.name,
-            operatorName: L10n.Call.Operator.name,
+            operatorName: Localization.Templates.operatorName,
             operatorNameFont: font.header1,
             operatorNameColor: color.baseLight,
             durationFont: font.bodyText,
@@ -229,7 +229,7 @@ extension Theme {
             accessibility: .init(
                 singleItemBadgeValue: Localization.Call.Buttons.Chat.BadgeValue.SingleItem.Accessibility.label,
                 multipleItemsBadgeValue: Localization.Call.Buttons.Chat.BadgeValue.MultipleItems.Accessibility.label,
-                titleAndBadgeValue: L10n.Call.Accessibility.Buttons.Chat.titleAndBadgeValue,
+                titleAndBadgeValue: Localization.Templates.titleAndBadgeValue,
                 isFontScalingEnabled: true
             )
         )
@@ -269,7 +269,7 @@ extension Theme {
             accessibility: .init(
                 singleItemBadgeValue: "",
                 multipleItemsBadgeValue: "",
-                titleAndBadgeValue: L10n.Call.Accessibility.Buttons.Video.titleAndBadgeValue,
+                titleAndBadgeValue: Localization.Templates.titleAndBadgeValue,
                 isFontScalingEnabled: true
             )
         )
@@ -309,7 +309,7 @@ extension Theme {
             accessibility: .init(
                 singleItemBadgeValue: "",
                 multipleItemsBadgeValue: "",
-                titleAndBadgeValue: L10n.Call.Accessibility.Buttons.Mute.titleAndBadgeValue,
+                titleAndBadgeValue: Localization.Templates.titleAndBadgeValue,
                 isFontScalingEnabled: true
             )
         )
@@ -349,7 +349,7 @@ extension Theme {
             accessibility: .init(
                 singleItemBadgeValue: "",
                 multipleItemsBadgeValue: "",
-                titleAndBadgeValue: L10n.Call.Accessibility.Buttons.Speaker.titleAndBadgeValue,
+                titleAndBadgeValue: Localization.Templates.titleAndBadgeValue,
                 isFontScalingEnabled: true
             )
         )
@@ -389,7 +389,7 @@ extension Theme {
             accessibility: .init(
                 singleItemBadgeValue: "",
                 multipleItemsBadgeValue: "",
-                titleAndBadgeValue: L10n.Call.Accessibility.Buttons.Minimize.titleAndBadgeValue,
+                titleAndBadgeValue: Localization.Templates.titleAndBadgeValue,
                 isFontScalingEnabled: true
             )
         )

@@ -16,9 +16,11 @@ extension Survey {
                 var label: String {
                     switch state {
                     case .selected:
-                        return L10n.Survey.Accessibility.Question.OptionButton.Selected.label.withButtonTitle(title)
+                        return Localization.Survey.Question.OptionButton.Selected.Accessibility.label
+                            .withButtonTitle(title)
                     case .active, .highlighted:
-                        return L10n.Survey.Accessibility.Question.OptionButton.Unselected.label.withButtonTitle(title)
+                        return Localization.Survey.Question.OptionButton.Unselected.Accessibility.label
+                            .withButtonTitle(title)
                     }
                 }
                 return .init(label: label)
