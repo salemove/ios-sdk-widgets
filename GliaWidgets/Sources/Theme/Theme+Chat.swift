@@ -100,7 +100,7 @@ extension Theme {
             )
         )
         let connected = ConnectStatusStyle(
-            firstText: L10n.Chat.Connect.Connected.firstText,
+            firstText: Localization.Templates.operatorName,
             firstTextFont: font.header1,
             firstTextFontColor: color.baseDark,
             firstTextStyle: .title1,
@@ -115,7 +115,7 @@ extension Theme {
             )
         )
         let onHold = ConnectStatusStyle(
-            firstText: L10n.Chat.Connect.Connected.firstText,
+            firstText: Localization.Templates.operatorName,
             firstTextFont: font.header1,
             firstTextFontColor: color.baseLight,
             firstTextStyle: .title1,
@@ -465,8 +465,8 @@ extension Theme {
             removeButtonColor: color.baseNormal,
             accessibility: .init(
                 removeButtonAccessibilityLabel: Localization.Chat.Upload.Remove.Accessibility.label,
-                progressPercentValue: L10n.Chat.Accessibility.Upload.Progress.percentValue,
-                fileNameWithProgressValue: L10n.Chat.Accessibility.Upload.Progress.fileNameWithProgressValue,
+                progressPercentValue: Localization.Templates.percentValue,
+                fileNameWithProgressValue: Localization.Templates.fileNameWithProgressValue,
                 isFontScalingEnabled: true
             )
         )
@@ -536,10 +536,10 @@ extension Theme {
                 isFontScalingEnabled: true
             ),
             downloadAccessibility: .init(
-                noneState: L10n.Chat.Accessibility.Download.State.none,
-                downloadingState: L10n.Chat.Accessibility.Download.State.downloading,
-                downloadedState: L10n.Chat.Accessibility.Download.State.downloaded,
-                errorState: L10n.Chat.Accessibility.Download.State.error
+                noneState: Localization.Templates.downloadWithFileState,
+                downloadingState: Localization.Templates.downloadWithFileStateAndPercentValue,
+                downloadedState: Localization.Templates.downloadWithFileState,
+                errorState: Localization.Templates.downloadWithFileState
             )
         )
     }
