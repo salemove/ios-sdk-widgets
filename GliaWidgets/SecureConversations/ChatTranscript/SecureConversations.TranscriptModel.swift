@@ -297,19 +297,24 @@ extension SecureConversations.TranscriptModel {
         let uploads = fileUploadListModel.succeededUploads
         let localFiles = uploads.map(\.localFile)
 
+        let payload = environment.createSendMessagePayload(
+            messageText,
+            fileUploadListModel.attachment
+        )
+
         let outgoingMessage = OutgoingMessage(
-            content: messageText,
+            payload: payload,
             files: localFiles
         )
+
         appendItem(
             .init(kind: .outgoingMessage(outgoingMessage)),
             to: pendingSection,
             animated: true
         )
 
-        _ = environment.sendSecureMessage(
-            messageText,
-            fileUploadListModel.attachment,
+        _ = environment.sendSecureMessagePayload(
+            outgoingMessage.payload,
             environment.queueIds
         ) { [weak self] result in
             guard let self = self else { return }
@@ -726,10 +731,11 @@ extension SecureConversations.TranscriptModel {
             let withPossibleAttachment = list.last(where: { $0.message.attachment != nil })?.message ?? messageSource.message
             // We try to reuse outgoing message to show `delivered` status
             // to indicated that message is delivered.
-            let outgoingMessage = list.last(where: { $0.outgoingMessage != nil })?.outgoingMessage ?? OutgoingMessage(
-                content: messageSource.message.content,
-                files: fileUploadListModel.succeededUploads.map(\.localFile)
-            )
+            let outgoingMessage = list.last(where: { $0.outgoingMessage != nil })?.outgoingMessage ??
+                OutgoingMessage(
+                    payload: self.environment.createSendMessagePayload(messageSource.message.content, nil),
+                    files: fileUploadListModel.succeededUploads.map(\.localFile)
+                )
             self.replace(
                 outgoingMessage,
                 uploads: fileUploadListModel.succeededUploads,

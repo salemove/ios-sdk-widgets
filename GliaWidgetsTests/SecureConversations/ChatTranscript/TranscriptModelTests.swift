@@ -296,10 +296,13 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.fetchChatHistory = { _ in }
         modelEnv.fetchSiteConfigurations = { _ in }
         modelEnv.getSecureUnreadMessageCount = { _ in  }
-        enum Call: Equatable { case sendSecureMessage }
+        modelEnv.createSendMessagePayload = {
+            .mock(messageIdSuffix: "mock", content: $0, attachment: $1)
+        }
+        enum Call: Equatable { case sendSecureMessagePayload }
         var calls: [Call] = []
-        modelEnv.sendSecureMessage = { _, _, _, _ in
-            calls.append(.sendSecureMessage)
+        modelEnv.sendSecureMessagePayload = { _, _, _ in
+            calls.append(.sendSecureMessagePayload)
             return .mock
         }
         let availabilityEnv = SecureConversations.Availability.Environment(
@@ -321,7 +324,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
 
         viewModel.event(.messageTextChanged(nonEmptyText))
         viewModel.sendMessage()
-        XCTAssertEqual(calls, [.sendSecureMessage])
+        XCTAssertEqual(calls, [.sendSecureMessagePayload])
     }
 
     func testLoadHistoryAlsoInvokesUnreadMessageCount() {

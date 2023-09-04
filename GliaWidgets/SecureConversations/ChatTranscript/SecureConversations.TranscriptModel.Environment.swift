@@ -14,7 +14,7 @@ extension SecureConversations.TranscriptModel {
         var loadChatMessagesFromHistory: () -> Bool
         var fetchChatHistory: CoreSdkClient.FetchChatHistory
         var uiApplication: UIKitBased.UIApplication
-        var sendSecureMessage: CoreSdkClient.SendSecureMessage
+        var sendSecureMessagePayload: CoreSdkClient.SendSecureMessagePayload
         var queueIds: [String]
         var listQueues: CoreSdkClient.ListQueues
         var alertConfiguration: AlertConfiguration
@@ -30,5 +30,6 @@ extension SecureConversations.TranscriptModel {
         var startSocketObservation: CoreSdkClient.StartSocketObservation
         var stopSocketObservation: CoreSdkClient.StopSocketObservation
         var sendSelectedOptionValue: CoreSdkClient.SendSelectedOptionValue
+        var createSendMessagePayload: CoreSdkClient.CreateSendMessagePayload
     }
 }

@@ -33,7 +33,7 @@ extension ChatView {
     ) -> ChatMessageContent.TextAccessibilityProperties {
         .init(
             label: visitor,
-            value: outgoingMessage.content,
+            value: outgoingMessage.payload.content,
             isFontScalingEnabled: isFontScalingEnabled
         )
     }

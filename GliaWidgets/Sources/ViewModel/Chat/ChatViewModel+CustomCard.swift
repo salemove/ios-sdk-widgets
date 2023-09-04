@@ -17,10 +17,8 @@ extension ChatViewModel {
             imageUrl: nil
         )
 
-        let outgoingMessage = OutgoingMessage(
-            content: option.text,
-            files: []
-        )
+        let payload = environment.createSendMessagePayload(option.text, nil)
+        let outgoingMessage = OutgoingMessage(payload: payload)
 
         let item = ChatItem(with: outgoingMessage)
         appendItem(item, to: messagesSection, animated: true)
@@ -57,12 +55,16 @@ extension ChatViewModel {
             )
         }
 
-        interactor.send(
-            option.text,
-            attachment: attachment,
-            success: success,
-            failure: failure
-        )
+        let messagePayload = environment.createSendMessagePayload(option.text, attachment)
+
+        interactor.send(messagePayload: messagePayload) { result in
+            switch result {
+            case let .success(message):
+                success(message)
+            case let .failure(error):
+                failure(error)
+            }
+        }
     }
 
     private func updateCustomCard(

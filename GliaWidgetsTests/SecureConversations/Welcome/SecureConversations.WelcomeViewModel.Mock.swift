@@ -15,7 +15,7 @@ extension SecureConversations.WelcomeViewModel.Environment {
         welcomeStyle: Theme().secureConversationsWelcomeStyle,
         queueIds: [],
         listQueues: { _ in },
-        sendSecureMessage: { _, _, _, _ in return .mock },
+        sendSecureMessagePayload: { _, _, _ in return .mock },
         alertConfiguration: .mock(),
         fileUploader: .mock(),
         uiApplication: .mock,
@@ -25,7 +25,8 @@ extension SecureConversations.WelcomeViewModel.Environment {
         stopSocketObservation: {},
         getCurrentEngagement: { .mock() },
         uploadSecureFile: { _, _, _ in .mock },
-        uploadFileToEngagement: { _, _, _ in }
+        uploadFileToEngagement: { _, _, _ in },
+        createSendMessagePayload: { _, _ in .mock() }
     )
 }
 

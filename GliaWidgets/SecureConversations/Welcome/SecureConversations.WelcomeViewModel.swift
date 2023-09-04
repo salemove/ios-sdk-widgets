@@ -120,9 +120,13 @@ private extension SecureConversations.WelcomeViewModel {
 
         sendMessageRequestState = .loading
 
-        _ = environment.sendSecureMessage(
+        let payload = environment.createSendMessagePayload(
             messageText,
-            fileUploadListModel.attachment,
+            fileUploadListModel.attachment
+        )
+
+        _ = environment.sendSecureMessagePayload(
+            payload,
             queueIds
         ) { [weak self, alertConfiguration = environment.alertConfiguration] result in
             self?.sendMessageRequestState = .waiting
@@ -406,7 +410,7 @@ extension SecureConversations.WelcomeViewModel {
         var welcomeStyle: SecureConversations.WelcomeStyle
         var queueIds: [String]
         var listQueues: CoreSdkClient.ListQueues
-        var sendSecureMessage: CoreSdkClient.SendSecureMessage
+        var sendSecureMessagePayload: CoreSdkClient.SendSecureMessagePayload
         var alertConfiguration: AlertConfiguration
         var fileUploader: FileUploader
         var uiApplication: UIKitBased.UIApplication
@@ -417,6 +421,7 @@ extension SecureConversations.WelcomeViewModel {
         var getCurrentEngagement: CoreSdkClient.GetCurrentEngagement
         var uploadSecureFile: CoreSdkClient.SecureConversationsUploadFile
         var uploadFileToEngagement: CoreSdkClient.UploadFileToEngagement
+        var createSendMessagePayload: CoreSdkClient.CreateSendMessagePayload
     }
 }
 
