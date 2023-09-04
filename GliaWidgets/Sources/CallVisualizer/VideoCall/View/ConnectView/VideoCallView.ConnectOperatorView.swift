@@ -56,9 +56,7 @@ extension CallVisualizer.VideoCallView {
             var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
             constraints += imageView.centerXAnchor.constraint(equalTo: centerXAnchor)
             constraints += imageView.centerYAnchor.constraint(equalTo: centerYAnchor)
-            constraints += imageView.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor)
             constraints += imageView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor)
-            constraints += imageView.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor)
             constraints += imageView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor)
             widthConstraint = imageView.match(.width, value: props.size.size.width).first
             heightConstraint = imageView.match(.height, value: props.size.size.height).first

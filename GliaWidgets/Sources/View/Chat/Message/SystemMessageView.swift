@@ -3,7 +3,6 @@ import UIKit
 final class SystemMessageView: ChatMessageView {
     private let viewStyle: Theme.SystemMessageStyle
     private let kInsets = UIEdgeInsets(top: 2, left: 10, bottom: 2, right: 96)
-    private let kOperatorImageViewSize = CGSize(width: 28, height: 28)
     private let environment: Environment
 
     init(
