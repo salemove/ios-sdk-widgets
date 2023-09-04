@@ -20,7 +20,7 @@ extension ChatCoordinator {
         var uiApplication: UIKitBased.UIApplication
         var fetchChatHistory: CoreSdkClient.FetchChatHistory
         var createFileUploadListModel: SecureConversations.FileUploadListViewModel.Create
-        var sendSecureMessage: CoreSdkClient.SendSecureMessage
+        var sendSecureMessagePayload: CoreSdkClient.SendSecureMessagePayload
         var queueIds: [String]
         var listQueues: CoreSdkClient.ListQueues
         var secureUploadFile: CoreSdkClient.SecureConversationsUploadFile
@@ -32,5 +32,6 @@ extension ChatCoordinator {
         var interactor: Interactor
         var startSocketObservation: CoreSdkClient.StartSocketObservation
         var stopSocketObservation: CoreSdkClient.StopSocketObservation
+        var createSendMessagePayload: CoreSdkClient.CreateSendMessagePayload
     }
 }

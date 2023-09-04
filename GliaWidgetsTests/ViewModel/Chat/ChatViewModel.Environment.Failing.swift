@@ -52,6 +52,10 @@ extension ChatViewModel.Environment {
             createFileUploadListModel: { _ in
                 fail("\(Self.self).createFileUploadListModel")
                 return .mock()
+            },
+            createSendMessagePayload: { _, _ in
+                fail("\(Self.self).createSendMessagePayload")
+                return .mock()
             }
         )
     }

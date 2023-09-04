@@ -1,7 +1,7 @@
 @testable import GliaWidgets
 
 extension EngagementCoordinator.Environment {
-    static let failing = Self.init(
+    static let failing = Self(
         fetchFile: { _, _, _ in
             fail("\(Self.self).fetchFile")
         },
@@ -46,9 +46,9 @@ extension EngagementCoordinator.Environment {
         notificationCenter: .failing,
         fetchChatHistory: { _ in fail("\(Self.self).fetchChatHistory")},
         listQueues: { _ in fail("\(Self.self).listQueues") },
-        sendSecureMessage: { _, _, _, _ in
-            fail("\(Self.self).sendScureMessage")
-            return .init()
+        sendSecureMessagePayload: { _, _, _ in
+            fail("\(Self.self).sendSecureMessagePayload")
+            return .mock
         },
         createFileUploader: { _, _ in
             .failing
@@ -84,6 +84,10 @@ extension EngagementCoordinator.Environment {
         stopSocketObservation: {
             fail("\(Self.self).stopSocketObservation")
         },
-        pushNotifications: .failing
+        pushNotifications: .failing,
+        createSendMessagePayload: { _, _ in
+            fail("\(Self.self).createSendMessagePayload")
+            return .mock()
+        }
     )
 }

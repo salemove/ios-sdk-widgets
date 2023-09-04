@@ -7,7 +7,7 @@ extension ChatItem.Kind: Equatable {
             return true
 
         case (.outgoingMessage(let lhsMessage), .outgoingMessage(let rhsMessage)):
-            return lhsMessage.id == rhsMessage.id
+            return lhsMessage.payload.messageId == rhsMessage.payload.messageId
 
         case (.visitorMessage(let lhsMessage, _), .visitorMessage(let rhsMessage, _)):
             return lhsMessage.id == rhsMessage.id

@@ -14,7 +14,7 @@ extension CoreSdkClient {
         queueForEngagement: { _, _, _, _, _, _ in fail("\(Self.self).queueForEngagement") },
         requestMediaUpgradeWithOffer: { _, _ in fail("\(Self.self).requestMediaUpgradeWithOffer") },
         sendMessagePreview: { _, _ in fail("\(Self.self).sendMessagePreview") },
-        sendMessageWithAttachment: { _, _, _ in fail("\(Self.self).sendMessageWithAttachment") },
+        sendMessageWithMessagePayload: { _, _ in fail("\(Self.self).sendMessageWithMessagePayload") },
         cancelQueueTicket: { _, _ in fail("cancelQueueTicket") },
         endEngagement: { _ in fail("\(Self.self).endEngagement") },
         requestEngagedOperator: { _ in fail("\(Self.self).requestEngagedOperator") },
@@ -32,9 +32,9 @@ extension CoreSdkClient {
             fail("\(Self.self).requestVisitorCode")
             return .init()
         },
-        sendSecureMessage: { _, _, _, _ in
-            fail("\(Self.self).sendSecureMessage")
-            return .init()
+        sendSecureMessagePayload: { _, _, _ in
+            fail("\(Self.self).sendSecureMessagePayload")
+            return .mock
         },
         uploadSecureFile: { _, _, _ in
             fail("\(Self.self).uploadSecureFile")
@@ -56,6 +56,10 @@ extension CoreSdkClient {
         },
         stopSocketObservation: {
             fail("\(Self.self).stopSocketObservation")
+        },
+        createSendMessagePayload: { _, _ in
+            fail("\(Self.self).createSendMessagePayload")
+            return .mock()
         }
     )
 }
