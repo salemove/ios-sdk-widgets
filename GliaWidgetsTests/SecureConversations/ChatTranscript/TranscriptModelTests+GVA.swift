@@ -18,8 +18,8 @@ extension SecureConversationsTranscriptModelTests {
         viewModel.environment.uiApplication.open = { url in
             calls.append(.openUrl(url.absoluteString))
         }
-        viewModel.environment.sendSecureMessage = { message, attachment, _, _ in
-            calls.append(.sendOption(message, attachment?.selectedOption))
+        viewModel.environment.sendSecureMessagePayload = { payload, _, _ in
+            calls.append(.sendOption(payload.content, payload.attachment?.selectedOption))
             return .mock
         }
         options.forEach {
@@ -45,9 +45,16 @@ extension SecureConversationsTranscriptModelTests {
         viewModel.environment.uiApplication.open = { url in
             calls.append(.openUrl(url.absoluteString))
         }
-        viewModel.environment.sendSecureMessage = { message, attachment, _, _ in
-            calls.append(.sendOption(message, attachment?.selectedOption))
+        viewModel.environment.sendSecureMessagePayload = { payload, _, _ in
+            calls.append(.sendOption(payload.content, payload.attachment?.selectedOption))
             return .mock
+        }
+        viewModel.environment.createSendMessagePayload = {
+            .mock(
+                messageIdSuffix: "mockSuffix",
+                content: $0,
+                attachment: $1
+            )
         }
         viewModel.gvaOptionAction(for: option)()
 

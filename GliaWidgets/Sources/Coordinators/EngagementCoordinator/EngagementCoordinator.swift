@@ -243,7 +243,7 @@ extension EngagementCoordinator {
                 uiApplication: environment.uiApplication,
                 fetchChatHistory: environment.fetchChatHistory,
                 createFileUploadListModel: environment.createFileUploadListModel,
-                sendSecureMessage: environment.sendSecureMessage,
+                sendSecureMessagePayload: environment.sendSecureMessagePayload,
                 queueIds: [interactor.queueID],
                 listQueues: environment.listQueues,
                 secureUploadFile: environment.uploadSecureFile,
@@ -254,7 +254,8 @@ extension EngagementCoordinator {
                 isAuthenticated: environment.isAuthenticated,
                 interactor: interactor,
                 startSocketObservation: environment.startSocketObservation,
-                stopSocketObservation: environment.stopSocketObservation
+                stopSocketObservation: environment.stopSocketObservation,
+                createSendMessagePayload: environment.createSendMessagePayload
             ),
             startWithSecureTranscriptFlow: false
         )
@@ -346,7 +347,8 @@ extension EngagementCoordinator {
                 uiDevice: environment.uiDevice,
                 notificationCenter: environment.notificationCenter,
                 fetchChatHistory: environment.fetchChatHistory,
-                createFileUploadListModel: environment.createFileUploadListModel
+                createFileUploadListModel: environment.createFileUploadListModel,
+                createSendMessagePayload: environment.createSendMessagePayload
             )
         )
         coordinator.delegate = { [weak self] event in
@@ -441,7 +443,7 @@ extension EngagementCoordinator {
             environment: .init(
                 queueIds: [interactor.queueID],
                 listQueues: environment.listQueues,
-                sendSecureMessage: environment.sendSecureMessage,
+                sendSecureMessagePayload: environment.sendSecureMessagePayload,
                 createFileUploader: environment.createFileUploader,
                 uploadSecureFile: environment.uploadSecureFile,
                 fileManager: environment.fileManager,
@@ -476,7 +478,8 @@ extension EngagementCoordinator {
                 downloadSecureFile: environment.downloadSecureFile,
                 isAuthenticated: environment.isAuthenticated,
                 startSocketObservation: environment.startSocketObservation,
-                stopSocketObservation: environment.stopSocketObservation
+                stopSocketObservation: environment.stopSocketObservation,
+                createSendMessagePayload: environment.createSendMessagePayload
             )
         )
 

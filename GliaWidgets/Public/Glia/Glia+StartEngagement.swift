@@ -138,7 +138,7 @@ extension Glia {
                 notificationCenter: environment.notificationCenter,
                 fetchChatHistory: environment.coreSdk.fetchChatHistory,
                 listQueues: environment.coreSdk.listQueues,
-                sendSecureMessage: environment.coreSdk.sendSecureMessage,
+                sendSecureMessagePayload: environment.coreSdk.sendSecureMessagePayload,
                 createFileUploader: environment.createFileUploader,
                 createFileUploadListModel: environment.createFileUploadListModel,
                 uploadSecureFile: environment.coreSdk.uploadSecureFile,
@@ -156,7 +156,8 @@ extension Glia {
                 },
                 startSocketObservation: environment.coreSdk.startSocketObservation,
                 stopSocketObservation: environment.coreSdk.stopSocketObservation,
-                pushNotifications: environment.coreSdk.pushNotifications
+                pushNotifications: environment.coreSdk.pushNotifications,
+                createSendMessagePayload: environment.coreSdk.createSendMessagePayload
             )
         )
         rootCoordinator?.delegate = { [weak self] event in

@@ -48,10 +48,8 @@ extension ChatViewModel {
                 imageUrl: nil
             )
 
-            let outgoingMessage = OutgoingMessage(
-                content: option.text,
-                attachment: attachment
-            )
+            let payload = self.environment.createSendMessagePayload(option.text, attachment)
+            let outgoingMessage = OutgoingMessage(payload: payload)
 
             switch self.interactor.state {
             case .engaged:

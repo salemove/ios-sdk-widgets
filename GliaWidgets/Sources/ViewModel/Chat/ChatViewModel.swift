@@ -1,6 +1,6 @@
 import Foundation
 
-class ChatViewModel: EngagementViewModel, ViewModel {
+class ChatViewModel: EngagementViewModel {
     typealias ActionCallback = (Action) -> Void
     typealias DelegateCallback = (DelegateEvent) -> Void
 
@@ -50,6 +50,7 @@ class ChatViewModel: EngagementViewModel, ViewModel {
     // They are used to discard messages received from socket
     // to avoid duplication.
     private (set) var historyMessageIds: Set<ChatMessage.MessageId> = []
+    private (set) var receivedMessageIds: Set<ChatMessage.MessageId> = []
 
     var mediaPickerButtonVisibility: MediaPickerButtonVisibility {
         guard let site = siteConfiguration else { return .disabled }
@@ -224,27 +225,27 @@ class ChatViewModel: EngagementViewModel, ViewModel {
             fetchSiteConfigurations()
 
             pendingMessages.forEach { [weak self] outgoingMessage in
-                self?.interactor.send(
-                    outgoingMessage.content,
-                    attachment: outgoingMessage.attachment
-                ) { [weak self] message in
-                    guard let self = self else { return }
+                self?.interactor.send(messagePayload: outgoingMessage.payload) {  [weak self] result in
+                    switch result {
+                    case let .success(message):
+                        guard let self else { return }
 
-                    self.replace(
-                        outgoingMessage,
-                        uploads: [],
-                        with: message,
-                        in: self.messagesSection
-                    )
+                        self.replace(
+                            outgoingMessage,
+                            uploads: [],
+                            with: message,
+                            in: self.messagesSection
+                        )
 
-                    self.action?(.scrollToBottom(animated: true))
-                } failure: { [weak self] _ in
-                    guard let self = self else { return }
+                        self.action?(.scrollToBottom(animated: true))
+                    case .failure:
+                        guard let self else { return }
 
-                    self.showAlert(
-                        with: self.alertConfiguration.unexpectedError,
-                        dismissed: nil
-                    )
+                        self.showAlert(
+                            with: self.alertConfiguration.unexpectedError,
+                            dismissed: nil
+                        )
+                    }
                 }
             }
 
@@ -454,6 +455,14 @@ extension ChatViewModel {
 // MARK: Message
 
 extension ChatViewModel {
+    func registerReceivedMessage(messageId: ChatMessage.MessageId) {
+        self.receivedMessageIds.insert(messageId.uppercased())
+    }
+
+    func hasReceivedMessage(messageId: ChatMessage.MessageId) -> Bool {
+        self.receivedMessageIds.contains(messageId.uppercased())
+    }
+
     private func sendMessagePreview(_ message: String) {
         interactor.sendMessagePreview(message)
     }
@@ -464,8 +473,11 @@ extension ChatViewModel {
         let attachment = fileUploadListModel.attachment
         let uploads = fileUploadListModel.succeededUploads
         let files = uploads.map { $0.localFile }
+
+        let payload = environment.createSendMessagePayload(messageText, nil)
+
         let outgoingMessage = OutgoingMessage(
-            content: messageText,
+            payload: payload,
             files: files
         )
 
@@ -479,24 +491,35 @@ extension ChatViewModel {
             let messageTextTemp = messageText
             messageText = ""
 
-            interactor.send(messageTextTemp, attachment: attachment) { [weak self] message in
-                guard let self = self else { return }
+            // In order to keep using same payload, with its
+            // initial ID, we make mutable copy of it
+            // and assign attachment and content accordingly
+            // before passing payload to send-message request.
+            var messagePayload = outgoingMessage.payload
+            messagePayload.content = messageTextTemp
+            messagePayload.attachment = attachment
+            interactor.send(messagePayload: messagePayload) { [weak self] result in
+                guard let self else { return }
 
-                self.replace(
-                    outgoingMessage,
-                    uploads: uploads,
-                    with: message,
-                    in: self.messagesSection
-                )
+                switch result {
+                case let .success(message):
+                    if !self.hasReceivedMessage(messageId: message.id) {
+                        self.registerReceivedMessage(messageId: message.id)
+                        self.replace(
+                            outgoingMessage,
+                            uploads: uploads,
+                            with: message,
+                            in: self.messagesSection
+                        )
+                        self.action?(.scrollToBottom(animated: true))
+                    }
 
-                self.action?(.scrollToBottom(animated: true))
-            } failure: { [weak self] _ in
-                guard let self = self else { return }
-
-                self.showAlert(
-                    with: self.alertConfiguration.unexpectedError,
-                    dismissed: nil
-                )
+                case .failure:
+                    self.showAlert(
+                        with: self.alertConfiguration.unexpectedError,
+                        dismissed: nil
+                    )
+                }
             }
 
         case .enqueued:
@@ -540,16 +563,14 @@ extension ChatViewModel {
         with message: CoreSdkClient.Message,
         in section: Section<ChatItem>
     ) {
-        SecureConversations.ChatWithTranscriptModel
-            .replace(
-                outgoingMessage,
-                uploads: uploads,
-                with: message,
-                in: section,
-                deliveredStatusText: deliveredStatusText,
-                downloader: downloader,
-                action: action
-            )
+        SecureConversations.ChatWithTranscriptModel.replace(
+            outgoingMessage.payload.messageId.rawValue,
+            with: message,
+            in: section,
+            deliveredStatusText: deliveredStatusText,
+            downloader: downloader,
+            action: action
+        )
     }
 
     @discardableResult
@@ -564,14 +585,90 @@ extension ChatViewModel {
         return isValid
     }
 
+    func addChatItemToMessagesSection(
+            evaluating message: ChatMessage,
+            replacingWith receivedMessage: CoreSdkClient.Message,
+            _ item: ChatItem
+    ) {
+        // In order keep visitor session in sync between
+        // multiple devices/web we need to treat visitor messages
+        // with extra checks:
+        if message.sender == .visitor {
+            // Since message can be sent from current app,
+            // we need to check if there's outgoing message
+            // to match received message.
+            var isMatchingOutgoingMessage = false
+            // It is likely that outgoing message is located
+            // at the end of message list (which is usually the case),
+            // so traversing it in reversed order will save some
+            // processing time.
+            for chatItem in messagesSection.items.reversed() {
+                switch chatItem.kind {
+                case let .outgoingMessage(outgoingMessage)
+                    where outgoingMessage.payload.messageId.rawValue.uppercased() == message.id.uppercased():
+                    isMatchingOutgoingMessage = true
+                default:
+                    break
+
+                }
+                // Early out if match was found.
+                if isMatchingOutgoingMessage {
+                    break
+                }
+            }
+
+            // If there's outgoing message, replace it
+            // with delivered one.
+            if isMatchingOutgoingMessage {
+                SecureConversations.ChatWithTranscriptModel.replace(
+                    message.id,
+                    with: receivedMessage,
+                    in: self.messagesSection,
+                    deliveredStatusText: self.deliveredStatusText,
+                    downloader: self.downloader,
+                    action: self.action
+                )
+                // Otherwise append new message and
+                // replace it with 'delivered' status.
+            } else {
+                appendItem(item, to: messagesSection, animated: true)
+                SecureConversations.ChatWithTranscriptModel.replace(
+                    message.id,
+                    with: receivedMessage,
+                    in: self.messagesSection,
+                    deliveredStatusText: self.deliveredStatusText,
+                    downloader: self.downloader,
+                    action: self.action
+                )
+            }
+        } else {
+            // Non-visitor messages are to be just added
+            // to `messageSection`.
+            appendItem(item, to: messagesSection, animated: true)
+        }
+    }
+
     private func receivedMessage(_ message: CoreSdkClient.Message) {
         // Discard messages that have been already received from history
         // to avoid duplication.
         guard !historyMessageIds.contains(message.id) else {
             return
         }
+
+        // Discard messages that have been already received.
+        // This can happen in case if socket will delay
+        // message delivery and it will be added during
+        // REST API response.
+        guard !hasReceivedMessage(messageId: message.id) else {
+            return
+        }
+
+        registerReceivedMessage(messageId: message.id)
+
+        let receivedMessage = message
+
         switch message.sender.type {
-        case .operator, .system:
+        case .operator, .system, .visitor:
             let message = ChatMessage(
                 with: message,
                 operator: interactor.engagedOperator
@@ -582,11 +679,13 @@ extension ChatViewModel {
             ) {
                 unreadMessages.received(1)
 
-                guard isViewLoaded else { return }
+                guard isViewLoaded else {
+                    return
+                }
 
                 let isChatBottomReached = isChatScrolledToBottom.value
 
-                appendItem(item, to: messagesSection, animated: true)
+                addChatItemToMessagesSection(evaluating: message, replacingWith: receivedMessage, item)
                 action?(.updateItemsUserImage(animated: true))
 
                 let choiceCardInputModeEnabled = message.cardType == .choiceCard || self.isInteractableCustomCard(message)
@@ -829,88 +928,5 @@ extension ChatViewModel {
         case .authenticated: return false
         case .nonAuthenticated: return false
         }
-    }
-}
-
-extension ChatViewModel {
-
-    typealias Strings = L10n.Chat
-
-    enum Event {
-        case viewDidLoad
-        case messageTextChanged(String)
-        case sendTapped
-        case removeUploadTapped(FileUpload)
-        case pickMediaTapped
-        case callBubbleTapped
-        case fileTapped(LocalFile)
-        case downloadTapped(FileDownload)
-        case choiceOptionSelected(ChatChoiceCardOption, String)
-        case chatScrolled(bottomReached: Bool)
-        case linkTapped(URL)
-        case customCardOptionSelected(
-            option: HtmlMetadata.Option,
-            messageId: MessageRenderer.Message.Identifier
-        )
-        case gvaButtonTapped(GvaOption)
-    }
-
-    enum Action {
-        case queue
-        case connected(name: String?, imageUrl: String?)
-        case transferring
-        case setMessageEntryEnabled(Bool)
-        case setChoiceCardInputModeEnabled(Bool)
-        case setMessageText(String)
-        case sendButtonHidden(Bool)
-        case pickMediaButtonEnabled(Bool)
-        case appendRows(Int, to: Int, animated: Bool)
-        case refreshRow(Int, in: Int, animated: Bool)
-        case refreshRows([Int], in: Int, animated: Bool)
-        case refreshSection(Int, animated: Bool = false)
-        case refreshAll
-        case scrollToBottom(animated: Bool)
-        case updateItemsUserImage(animated: Bool)
-        case addUpload(FileUpload)
-        case removeUpload(FileUpload)
-        case removeAllUploads
-        case presentMediaPicker(itemSelected: (AttachmentSourceItemKind) -> Void)
-        case offerMediaUpgrade(
-            SingleMediaUpgradeAlertConfiguration,
-            accepted: () -> Void,
-            declined: () -> Void
-        )
-        case showCallBubble(imageUrl: String?)
-        case setCallBubbleImage(imageUrl: String?)
-        case updateUnreadMessageIndicator(itemCount: Int)
-        case setUnreadMessageIndicatorImage(imageUrl: String?)
-        case setOperatorTypingIndicatorIsHiddenTo(Bool, _ isChatScrolledToBottom: Bool)
-        case setAttachmentButtonVisibility(MediaPickerButtonVisibility)
-        case fileUploadListPropsUpdated(SecureConversations.FileUploadListView.Props)
-        case quickReplyPropsUpdated(QuickReplyView.Props)
-    }
-
-    enum DelegateEvent {
-        case pickMedia(ObservableValue<MediaPickerEvent>)
-        case takeMedia(ObservableValue<MediaPickerEvent>)
-        case pickFile(ObservableValue<FilePickerEvent>)
-        case mediaUpgradeAccepted(
-            offer: CoreSdkClient.MediaUpgradeOffer,
-            answer: CoreSdkClient.AnswerWithSuccessBlock
-        )
-        case secureTranscriptUpgradedToLiveChat(ChatViewController)
-        case showFile(LocalFile)
-        case call
-    }
-
-    enum StartAction {
-        case startEngagement
-        case none
-    }
-
-    enum ChatType {
-        case secureTranscript
-        case authenticated
-        case nonAuthenticated
     }
 }

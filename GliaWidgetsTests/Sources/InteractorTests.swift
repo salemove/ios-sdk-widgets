@@ -435,19 +435,21 @@ class InteractorTests: XCTestCase {
         }
         var callbacks: [Callback] = []
         var interactorEnv = Interactor.Environment.failing
-        interactorEnv.coreSdk.sendMessageWithAttachment = { _, _, _ in
+        interactorEnv.coreSdk.sendMessageWithMessagePayload = { _, _ in
             callbacks.append(.sendMessageWithAttachment)
         }
         interactorEnv.coreSdk.configureWithInteractor = { _ in }
         interactorEnv.coreSdk.configureWithConfiguration = { $1?() }
         let interactor = Interactor.mock(environment: interactorEnv)
         
-        interactor.send(
-            "mock-message",
-            attachment: nil,
-            success: { _ in },
-            failure: { XCTFail($0.reason) }
-        )
+        interactor.send(messagePayload: .mock(content: "mock-message")) { result in
+            switch result {
+            case .success:
+                break
+            case let .failure(error):
+                XCTFail(error.reason)
+            }
+        }
         
         XCTAssertEqual(callbacks, [.sendMessageWithAttachment])
     }

@@ -29,8 +29,8 @@ extension SecureConversations.TranscriptModel.Environment {
             fail("\(Self.self).fetchChatHistory")
         },
         uiApplication: .failing,
-        sendSecureMessage: { _, _, _, _ in
-            fail("\(Self.self).sendSecureMessage")
+        sendSecureMessagePayload: { _, _, _ in
+            fail("\(Self.self).sendSecureMessagePayload")
             return .mock
         },
         queueIds: [],
@@ -71,6 +71,10 @@ extension SecureConversations.TranscriptModel.Environment {
         },
         sendSelectedOptionValue: { _, _ in
             fail("\(Self.self).sendSelectedOptionValue")
+        },
+        createSendMessagePayload: { _, _ in
+            fail("\(Self.self).createSendMessagePayload")
+            return .mock()
         }
     )
 }

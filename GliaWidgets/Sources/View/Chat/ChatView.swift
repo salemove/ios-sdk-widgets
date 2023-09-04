@@ -720,7 +720,7 @@ extension ChatView {
         )
         view.appendContent(
             .text(
-                message.content,
+                message.payload.content,
                 accessibility: Self.visitorAccessibilityOutgoingMessage(
                     for: message,
                     visitor: style.accessibility.visitor,

@@ -58,12 +58,12 @@ struct CoreSdkClient {
     ) -> Void
     var sendMessagePreview: SendMessagePreview
 
-    typealias SendMessageWithAttachment = (
-        _ message: String,
-        _ attachment: Self.Attachment?,
-        _ completion: @escaping Self.MessageBlock
-    ) -> Void
-    var sendMessageWithAttachment: SendMessageWithAttachment
+    typealias SendMessageWithMessagePayloadCallback = (Result<CoreSdkClient.Message, CoreSdkClient.GliaCoreError>) -> Void
+        typealias SendMessageWithMessagePayload = (
+            _ sendMessagePayload: Self.SendMessagePayload,
+            _ completion: @escaping SendMessageWithMessagePayloadCallback
+        ) -> Void
+    var sendMessageWithMessagePayload: SendMessageWithMessagePayload
 
     typealias CancelQueueTicket = (
         _ queueTicket: Self.QueueTicket,
@@ -115,13 +115,12 @@ struct CoreSdkClient {
     typealias RequestVisitorCode = (_ completion: @escaping (VisitorCodeBlock) -> Void) -> GliaCore.Cancellable
     var requestVisitorCode: RequestVisitorCode
 
-    typealias SendSecureMessage = (
-        _ secureMessage: String,
-        _ attachment: Self.Attachment?,
+    typealias SendSecureMessagePayload = (
+        _ secureMessagePayload: SendMessagePayload,
         _ queueIds: [String],
         _ completion: @escaping (Result<Self.Message, Error>) -> Void
     ) -> Self.Cancellable
-    var sendSecureMessage: SendSecureMessage
+    var sendSecureMessagePayload: SendSecureMessagePayload
 
     typealias SecureConversationsUploadFile = (
         _ file: EngagementFile,
@@ -149,6 +148,9 @@ struct CoreSdkClient {
 
     typealias StopSocketObservation = () -> Void
     var stopSocketObservation: StopSocketObservation
+
+    typealias CreateSendMessagePayload = (_ content: String, _ attachment: Attachment?) -> SendMessagePayload
+    var createSendMessagePayload: CreateSendMessagePayload
 }
 
 extension CoreSdkClient {
@@ -248,5 +250,5 @@ extension CoreSdkClient {
     typealias EngagementSource = GliaCoreSDK.EngagementSource
     typealias Cancellable = GliaCore.Cancellable
     typealias ReactiveSwift = GliaCoreDependency.ReactiveSwift
-
+    typealias SendMessagePayload = GliaCoreSDK.SendMessagePayload
 }

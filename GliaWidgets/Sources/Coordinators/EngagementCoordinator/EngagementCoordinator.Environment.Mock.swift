@@ -23,7 +23,7 @@ extension EngagementCoordinator.Environment {
         notificationCenter: .mock,
         fetchChatHistory: { _ in },
         listQueues: { _ in },
-        sendSecureMessage: { _, _, _, _ in .init() },
+        sendSecureMessagePayload: { _, _, _ in .mock },
         createFileUploader: FileUploader.mock,
         createFileUploadListModel: SecureConversations.FileUploadListViewModel.mock(environment:),
         uploadSecureFile: { _, _, _ in .mock },
@@ -34,7 +34,8 @@ extension EngagementCoordinator.Environment {
         isAuthenticated: { false },
         startSocketObservation: {},
         stopSocketObservation: {},
-        pushNotifications: .mock
+        pushNotifications: .mock,
+        createSendMessagePayload: { _, _ in .mock() }
     )
 }
 #endif
