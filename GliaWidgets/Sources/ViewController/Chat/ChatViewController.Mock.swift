@@ -194,7 +194,9 @@ extension ChatViewController {
         factoryEnv.data.dataWithContentsOfFileUrl = { _ in UIImage.mock.pngData() ?? Data() }
         factoryEnv.imageViewCache.getImageForKey = { _ in  .mock }
         let viewFactory = ViewFactory.mock(environment: factoryEnv)
-        return .mock(chatViewModel: chatViewModel, viewFactory: viewFactory)
+        let controller: ChatViewController = .mock(chatViewModel: chatViewModel, viewFactory: viewFactory)
+        controller.view.updateConstraints()
+        return controller
     }
 
     // MARK: - Visitor Uploaded File States
@@ -313,6 +315,7 @@ extension ChatViewController {
         chatViewModel.action?(.setOperatorTypingIndicatorIsHiddenTo(false, false))
 
         chatViewModel.action?(.fileUploadListPropsUpdated(chatViewModel.fileUploadListModel.props()))
+        controller.view.updateConstraints()
         return controller
     }
 
@@ -363,6 +366,7 @@ extension ChatViewController {
                 environment: viewFactoryEnv
             )
         )
+        controller.view.updateConstraints()
         chatViewModel.action?(.setMessageText("Input Message Mock"))
         return controller
     }
@@ -412,6 +416,7 @@ extension ChatViewController {
                 environment: viewFactoryEnv
             )
         )
+        controller.view.updateConstraints()
         chatViewModel.action?(.setMessageText("Input Message Mock"))
         return controller
     }
@@ -459,6 +464,7 @@ extension ChatViewController {
                 environment: viewFactoryEnv
             )
         )
+        controller.view.updateConstraints()
         chatViewModel.action?(.setMessageText("Input Message Mock"))
         return controller
     }
@@ -506,6 +512,7 @@ extension ChatViewController {
                 environment: viewFactoryEnv
             )
         )
+        controller.view.updateConstraints()
         chatViewModel.action?(.setMessageText("Input Message Mock"))
         return controller
     }
@@ -554,6 +561,7 @@ extension ChatViewController {
         let interactor = Interactor.mock(environment: interEnv)
         let chatViewModel = ChatViewModel.mock(interactor: interactor, environment: chatViewModelEnv)
         let controller = ChatViewController.mock(chatViewModel: chatViewModel)
+        controller.view.updateConstraints()
         completion(messages)
         return controller
     }
