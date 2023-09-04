@@ -220,8 +220,8 @@ extension Theme {
                 backgroundColor: .commonGray,
                 accessibility: .init(
                     removeButtonAccessibilityLabel: Localization.Chat.Upload.Remove.Accessibility.label,
-                    progressPercentValue: L10n.Chat.Accessibility.Upload.Progress.percentValue,
-                    fileNameWithProgressValue: L10n.Chat.Accessibility.Upload.Progress.fileNameWithProgressValue,
+                    progressPercentValue: Localization.Templates.percentValue,
+                    fileNameWithProgressValue: Localization.Templates.fileNameWithProgressValue,
                     isFontScalingEnabled: true
                 )
             )
