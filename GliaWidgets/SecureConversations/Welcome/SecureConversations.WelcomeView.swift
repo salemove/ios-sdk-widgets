@@ -169,7 +169,6 @@ extension SecureConversations {
             super.setup()
             subscribeToNotification(UIResponder.keyboardWillShowNotification, selector: #selector(keyboardWillShow))
             subscribeToNotification(UIResponder.keyboardWillHideNotification, selector: #selector(keyboardWillHide))
-            addSubview(header)
             addSubview(scrollView)
             scrollView.addSubview(rootStackView)
         }
@@ -335,12 +334,10 @@ extension SecureConversations.WelcomeView {
 // MARK: - Define layout
 extension SecureConversations.WelcomeView {
     func defineHeaderLayout() {
-        header.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            header.leadingAnchor.constraint(equalTo: leadingAnchor),
-            header.trailingAnchor.constraint(equalTo: trailingAnchor),
-            header.topAnchor.constraint(equalTo: topAnchor)
-        ])
+        addSubview(header)
+        var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
+        constraints += header.layoutInSuperview(edges: .horizontal)
+        constraints += header.layoutInSuperview(edges: .top)
     }
 
     func defineScrollViewLayout() {
