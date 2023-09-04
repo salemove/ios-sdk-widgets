@@ -193,7 +193,10 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
         using viewModel: SecureConversations.ChatWithTranscriptModel
     ) -> ChatViewController.Props {
         let chatTheme = viewFactory.theme.chat
-        let endEvent = Cmd { viewModel.event(EngagementViewModel.Event.closeTapped) }
+        let endEvent = Cmd { [weak self] in
+            self?.view.endEditing(true)
+            viewModel.event(EngagementViewModel.Event.closeTapped)
+        }
         let backEvent = Cmd { viewModel.event(EngagementViewModel.Event.backTapped) }
         let closeEvent = Cmd { viewModel.event(EngagementViewModel.Event.closeTapped) }
         let endScreenSharingEvent = Cmd { viewModel.event(EngagementViewModel.Event.endScreenSharingTapped) }

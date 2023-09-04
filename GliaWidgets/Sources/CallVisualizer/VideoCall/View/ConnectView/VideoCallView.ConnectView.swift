@@ -39,7 +39,6 @@ extension CallVisualizer.VideoCallView {
         private lazy var stackView = UIStackView().make {
             $0.axis = .vertical
             $0.spacing = 1
-            $0.distribution = .fillProportionally
         }
 
         // MARK: - Initializer
@@ -81,7 +80,7 @@ extension CallVisualizer.VideoCallView {
                 insets: insets
             )
             constraints += stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: insets.bottom)
-            constraints += operatorView.heightAnchor.constraint(equalToConstant: 120)
+            constraints += operatorView.heightAnchor.constraint(equalToConstant: 142)
         }
     }
 }

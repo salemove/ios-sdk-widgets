@@ -105,7 +105,6 @@ class ChatView: EngagementView {
             headerProps: props.header
         )
         self.accessibilityIdentifier = "chat_root_view"
-        defineLayout()
     }
 
     required init() { fatalError("init() has not been implemented") }
@@ -152,18 +151,10 @@ class ChatView: EngagementView {
         constraints += [
             typingIndicatorView.leadingAnchor.constraint(equalTo: typingIndicatorContainer.leadingAnchor, constant: 10),
             typingIndicatorView.topAnchor.constraint(equalTo: typingIndicatorContainer.topAnchor, constant: 10),
-            typingIndicatorView.bottomAnchor.constraint(equalTo: typingIndicatorContainer.bottomAnchor),
-            typingIndicatorView.widthAnchor.constraint(equalToConstant: 28),
-            typingIndicatorView.heightAnchor.constraint(equalToConstant: 14)
-        ]
-
-        NSLayoutConstraint.activate([
-            typingIndicatorView.leadingAnchor.constraint(equalTo: typingIndicatorContainer.leadingAnchor, constant: 10),
-            typingIndicatorView.topAnchor.constraint(equalTo: typingIndicatorContainer.topAnchor, constant: 10),
             typingIndicatorView.bottomAnchor.constraint(equalTo: typingIndicatorContainer.bottomAnchor, constant: -8),
             typingIndicatorView.widthAnchor.constraint(equalToConstant: 28),
             typingIndicatorView.heightAnchor.constraint(equalToConstant: 10)
-        ])
+        ]
 
         addSubview(quickReplyView)
         constraints += quickReplyView.layoutIn(safeAreaLayoutGuide, edges: .horizontal)

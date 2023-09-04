@@ -85,9 +85,7 @@ final class ConnectOperatorView: BaseView {
 
         constraints += imageView.centerXAnchor.constraint(equalTo: centerXAnchor)
         constraints += imageView.centerYAnchor.constraint(equalTo: centerYAnchor)
-        constraints += imageView.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor)
         constraints += imageView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor)
-        constraints += imageView.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor)
         constraints += imageView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor)
 
         widthConstraint = imageView.widthAnchor.constraint(equalToConstant: size.width)
