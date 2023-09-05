@@ -89,6 +89,98 @@ extension Glia {
     public func requestVisitorCode(completion: @escaping (Result<VisitorCode, Swift.Error>) -> Void) {
         _ = environment.coreSdk.requestVisitorCode(completion)
     }
+
+    /// Deprecated, use ``Glia.configure(with:uiConfig:assetsBuilder:completion)`` instead.
+    @available(*, deprecated, message: "Deprecated, use ``Glia.configure(with:uiConfig:assetsBuilder:completion`` instead.")
+    public func configure(
+        with configuration: Configuration,
+        queueId: String,
+        uiConfig: RemoteConfiguration? = nil,
+        assetsBuilder: RemoteConfiguration.AssetsBuilder = .standard,
+        completion: (() -> Void)? = nil
+    ) throws {
+        guard environment.coreSdk.getCurrentEngagement() == nil else {
+            throw GliaError.configuringDuringEngagementIsNotAllowed
+        }
+        self.uiConfig = uiConfig
+        self.assetsBuilder = assetsBuilder
+
+        let createdInteractor = Interactor(
+            configuration: configuration,
+            queueIds: [queueId],
+            environment: .init(coreSdk: environment.coreSdk, gcd: environment.gcd)
+        )
+
+        interactor = createdInteractor
+
+        if let callback = completion {
+            createdInteractor.withConfiguration { [weak createdInteractor] in
+                guard let interactor = createdInteractor else { return }
+                    interactor.state = GliaCore.sharedInstance
+                        .getCurrentEngagement()?.engagedOperator
+                        .map(InteractorState.engaged) ?? interactor.state
+                    callback()
+            }
+        }
+
+        startObservingInteractorEvents()
+    }
+
+    /// Deprecated, use ``Glia.startEngagement(engagementKind:in:theme:features:sceneProvider:)`` instead.
+    @available(*,
+         deprecated,
+         message: "Deprecated, use ``Glia.startEngagement(engagementKind:in:theme:features:sceneProvider:)`` instead."
+    )
+    public func startEngagement(
+        engagementKind: EngagementKind,
+        theme: Theme = Theme(),
+        features: Features = .all,
+        sceneProvider: SceneProvider? = nil
+    ) throws {
+        try startEngagement(
+            engagementKind: engagementKind,
+            in: [],
+            theme: theme,
+            features: features,
+            sceneProvider: sceneProvider
+        )
+    }
+
+    /// Deprecated, use ``Deprecated, use ``Glia.configure(with:uiConfig:assetsBuilder:completion`` and ``Glia.startEngagement(engagementKind:in:theme:features:sceneProvider:)`` instead.`` instead.
+    @available(*,
+         deprecated,
+         message: """
+            Deprecated, use ``Glia.configure(with:uiConfig:assetsBuilder:completion`` and \
+            ``Glia.startEngagement(engagementKind:in:theme:features:sceneProvider:)`` instead.
+            """
+    )
+    public func start(
+        _ engagementKind: EngagementKind,
+        configuration: Configuration,
+        queueID: String,
+        theme: Theme = Theme(),
+        features: Features = .all,
+        sceneProvider: SceneProvider? = nil
+    ) throws {
+        let completion = { [weak self] in
+            try self?.startEngagement(
+                engagementKind: engagementKind,
+                theme: theme,
+                features: features,
+                sceneProvider: sceneProvider
+            )
+        }
+        do {
+            try configure(
+                with: configuration,
+                queueId: queueID
+            ) {
+                try? completion()
+            }
+        } catch GliaError.configuringDuringEngagementIsNotAllowed {
+            try completion()
+        }
+    }
 }
 
 extension Glia.Authentication {

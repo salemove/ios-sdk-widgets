@@ -75,7 +75,7 @@ extension ChatViewModelTests {
             XCTFail("sendMessageWithMessagePayload should not be called")
         }
         interactorEnv.gcd.mainQueue.asyncIfNeeded = { _ in }
-        interactorEnv.coreSdk.queueForEngagement = { _, _, _, _, _, _ in }
+        interactorEnv.coreSdk.queueForEngagement = { _, _ in }
         interactorEnv.coreSdk.configureWithInteractor = { _ in }
 
         let interactorMock = Interactor.mock(environment: interactorEnv)

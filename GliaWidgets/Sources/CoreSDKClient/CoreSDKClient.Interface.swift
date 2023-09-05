@@ -31,12 +31,8 @@ struct CoreSdkClient {
     var listQueues: ListQueues
 
     typealias QueueForEngagement = (
-        _ queueID: String,
-        _ visitorContext: Self.VisitorContext?,
-        _ shouldCloseAllQueues: Bool,
-        _ mediaType: Self.MediaType,
-        _ options: Self.EngagementOptions?,
-        _ completion: @escaping Self.QueueTicketBlock
+        _ options: GliaCoreSDK.QueueForEngagementOptions,
+        _ completion: @escaping (Result<GliaCoreSDK.QueueTicket, GliaCoreSDK.GliaCoreError>) -> Void
     ) -> Void
     var queueForEngagement: QueueForEngagement
 

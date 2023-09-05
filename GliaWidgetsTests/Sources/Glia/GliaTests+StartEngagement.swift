@@ -25,11 +25,11 @@ extension GliaTests {
         }
     }
 
-    func testStartEngagementThrowsErrorWhenSdkIsNotConfigured() {
+    func testStartEngagementThrowsErrorWhenSdkHasNoQueueIds() {
         let sdk = Glia(environment: .failing)
 
         XCTAssertThrowsError(try sdk.startEngagement(engagementKind: .chat)) { error in
-            XCTAssertEqual(error as? GliaError, GliaError.sdkIsNotConfigured)
+            XCTAssertEqual(error as? GliaError, GliaError.startingEngagementWithNoQueueIdsIsNotAllowed)
         }
     }
 

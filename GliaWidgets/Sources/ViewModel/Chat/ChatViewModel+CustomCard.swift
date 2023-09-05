@@ -89,7 +89,6 @@ extension ChatViewModel {
         ) = customCardItem.kind else { return }
 
         message.attachment?.selectedOption = selectedOption?.value
-        message.queueID = interactor.queueID
         let item = ChatItem(kind: .customCard(
             message,
             showsImage: showsImage,
