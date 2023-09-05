@@ -27,7 +27,6 @@ enum ChatMessageSender: Int, Codable {
 class ChatMessage: Codable {
     typealias MessageId = String
     let id: MessageId
-    var queueID: String?
     let `operator`: ChatOperator?
     let sender: ChatMessageSender
     let content: String
@@ -61,7 +60,6 @@ class ChatMessage: Codable {
 
     private enum CodingKeys: String, CodingKey {
         case id
-        case queueID
         case `operator`
         case sender
         case content
@@ -73,7 +71,6 @@ class ChatMessage: Codable {
          queueID: String? = nil,
          operator salemoveOperator: CoreSdkClient.Operator? = nil) {
         id = message.id
-        self.queueID = queueID
 
         if let salemoveOperator = salemoveOperator {
             self.operator = ChatOperator(with: salemoveOperator)
@@ -92,7 +89,6 @@ class ChatMessage: Codable {
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.id = try container.decode(String.self, forKey: .id)
-        self.queueID = try container.decodeIfPresent(String.self, forKey: .queueID)
         self.operator = try container.decodeIfPresent(ChatOperator.self, forKey: .operator)
         self.sender = try container.decode(ChatMessageSender.self, forKey: .sender)
         self.content = try container.decode(String.self, forKey: .content)
@@ -108,7 +104,6 @@ class ChatMessage: Codable {
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)
-        try container.encode(queueID, forKey: .queueID)
         try container.encode(`operator`, forKey: .operator)
         try container.encode(sender, forKey: .sender)
         try container.encode(content, forKey: .content)
@@ -119,7 +114,6 @@ class ChatMessage: Codable {
 
     init(
         id: String,
-        queueID: String?,
         `operator`: ChatOperator?,
         sender: ChatMessageSender,
         content: String,
@@ -128,7 +122,6 @@ class ChatMessage: Codable {
         metadata: MessageMetadata? = nil
     ) {
         self.id = id
-        self.queueID = queueID
         self.operator = `operator`
         self.sender = sender
         self.content = content

@@ -31,12 +31,12 @@ class InteractorTests: XCTestCase {
         coreSdk.configureWithInteractor = { _ in
             coreSdkCalls.append(.configureWithInteractor)
         }
-        coreSdk.queueForEngagement = { _, _, _, _, _, _ in
+        coreSdk.queueForEngagement = { _, _ in
             coreSdkCalls.append(.queueForEngagement)
         }
         interactor = .init(
             configuration: mock.config,
-            queueID: mock.queueId,
+            queueIds: [mock.queueId],
             environment: .init(coreSdk: coreSdk, gcd: .failing)
         )
 
@@ -110,7 +110,7 @@ class InteractorTests: XCTestCase {
 
         interactor = .init(
             configuration: mock.config,
-            queueID: mock.queueId,
+            queueIds: [mock.queueId],
             environment: .init(coreSdk: .failing, gcd: .mock)
         )
 
@@ -159,7 +159,7 @@ class InteractorTests: XCTestCase {
         var interactorEnv = Interactor.Environment.failing
         interactorEnv.coreSdk.configureWithInteractor = { _ in }
         interactorEnv.coreSdk.configureWithConfiguration = { $1?() }
-        interactorEnv.coreSdk.queueForEngagement = { _, _, _, _, _, _ in }
+        interactorEnv.coreSdk.queueForEngagement = { _, _ in }
         interactorEnv.gcd = .mock
         let interactor = Interactor.mock(environment: interactorEnv)
 
@@ -191,8 +191,8 @@ class InteractorTests: XCTestCase {
         var interactorEnv = Interactor.Environment.failing
         interactorEnv.coreSdk.configureWithInteractor = { _ in }
         interactorEnv.coreSdk.configureWithConfiguration = { $1?() }
-        interactorEnv.coreSdk.queueForEngagement = { _, _, _, _, _, completion in
-            completion(.mock, nil)
+        interactorEnv.coreSdk.queueForEngagement = { _, completion in
+            completion(.success(.mock))
         }
         interactorEnv.gcd = .mock
         let interactor = Interactor.mock(environment: interactorEnv)
@@ -226,8 +226,8 @@ class InteractorTests: XCTestCase {
         var interactorEnv = Interactor.Environment.failing
         interactorEnv.coreSdk.configureWithInteractor = { _ in }
         interactorEnv.coreSdk.configureWithConfiguration = { $1?() }
-        interactorEnv.coreSdk.queueForEngagement = { _, _, _, _, _, completion in
-            completion(nil, .mock())
+        interactorEnv.coreSdk.queueForEngagement = { _, completion in
+            completion(.failure(.mock()))
         }
         interactorEnv.gcd = .mock
         let interactor = Interactor.mock(environment: interactorEnv)

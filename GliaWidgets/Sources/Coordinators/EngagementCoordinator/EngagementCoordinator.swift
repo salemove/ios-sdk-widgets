@@ -243,7 +243,7 @@ extension EngagementCoordinator {
                 fetchChatHistory: environment.fetchChatHistory,
                 createFileUploadListModel: environment.createFileUploadListModel,
                 sendSecureMessagePayload: environment.sendSecureMessagePayload,
-                queueIds: [interactor.queueID],
+                queueIds: interactor.queueIds,
                 listQueues: environment.listQueues,
                 secureUploadFile: environment.uploadSecureFile,
                 getSecureUnreadMessageCount: environment.getSecureUnreadMessageCount,
@@ -439,7 +439,7 @@ extension EngagementCoordinator {
             viewFactory: viewFactory,
             navigationPresenter: navigationPresenter,
             environment: .init(
-                queueIds: [interactor.queueID],
+                queueIds: interactor.queueIds,
                 listQueues: environment.listQueues,
                 sendSecureMessagePayload: environment.sendSecureMessagePayload,
                 createFileUploader: environment.createFileUploader,

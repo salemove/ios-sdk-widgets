@@ -11,8 +11,16 @@ extension CoreSdkClient {
             configureWithConfiguration: GliaCore.sharedInstance.configure(with:completion:),
             configureWithInteractor: GliaCore.sharedInstance.configure(interactor:),
             listQueues: GliaCore.sharedInstance.listQueues(completion:),
-            queueForEngagement: GliaCore.sharedInstance
-                .queueForEngagement(queueID:visitorContext:shouldCloseAllQueues:mediaType:options:completion:),
+            queueForEngagement: { options, completion in
+                let options = QueueForEngagementOptions(
+                    queueIds: options.queueIds,
+                    visitorContext: options.visitorContext,
+                    shouldCloseAllQueues: options.shouldCloseAllQueues,
+                    mediaType: options.mediaType,
+                    engagementOptions: options.engagementOptions
+                )
+                GliaCore.sharedInstance.queueForEngagement(using: options, completion: completion)
+            },
             requestMediaUpgradeWithOffer: GliaCore.sharedInstance.requestMediaUpgrade(offer:completion:),
             sendMessagePreview: GliaCore.sharedInstance.sendMessagePreview(message:completion:),
             sendMessageWithMessagePayload: GliaCore.sharedInstance.send(messagePayload:completion:),

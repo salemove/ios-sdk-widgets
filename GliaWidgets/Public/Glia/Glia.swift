@@ -98,7 +98,6 @@ public class Glia {
     /// Setup SDK using specific engagement configuration without starting the engagement.
     /// - Parameters:
     ///   - configuration: Engagement configuration.
-    ///   - queueId: Queue identifier.
     ///   - visitorContext: Visitor context.
     ///   - uiConfig: Remote UI configuration.
     ///   - assetsBuilder: Provides assets for remote configuration.
@@ -106,7 +105,6 @@ public class Glia {
     ///   Passing  `nil` will defer configuration. Passing closure will start configuration immediately.
     public func configure(
         with configuration: Configuration,
-        queueId: String,
         uiConfig: RemoteConfiguration? = nil,
         assetsBuilder: RemoteConfiguration.AssetsBuilder = .standard,
         completion: (() -> Void)? = nil
@@ -119,7 +117,7 @@ public class Glia {
 
         let createdInteractor = Interactor(
             configuration: configuration,
-            queueID: queueId,
+            queueIds: [],
             environment: .init(coreSdk: environment.coreSdk, gcd: environment.gcd)
         )
 
@@ -266,8 +264,8 @@ public class Glia {
 
 // MARK: - Private
 
-private extension Glia {
-    func startObservingInteractorEvents() {
+extension Glia {
+    internal func startObservingInteractorEvents() {
         interactor?.addObserver(self) { [weak self] event in
             guard
                 let engagement = self?.environment.coreSdk.getCurrentEngagement(),
