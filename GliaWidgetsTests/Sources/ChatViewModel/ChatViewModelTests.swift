@@ -625,8 +625,8 @@ class ChatViewModelTests: XCTestCase {
         interactor.environment.coreSdk.sendMessageWithMessagePayload = { _, completion in
             completion(.success(.mock(id: expectedMessageId)))
         }
-        interactor.environment.coreSdk.queueForEngagement = { _, _, _, _, _, completion in
-            completion(.mock, nil)
+        interactor.environment.coreSdk.queueForEngagement = { _, completion in
+            completion(.success(.mock))
         }
 
         let viewModel: ChatViewModel = .mock(interactor: interactor, environment: viewModelEnv)
@@ -677,8 +677,8 @@ class ChatViewModelTests: XCTestCase {
             viewModel?.interactorEvent(.receivedMessage(.mock(id: expectedMessageId)))
             completion(.success(.mock(id: expectedMessageId)))
         }
-        interactor.environment.coreSdk.queueForEngagement = { _, _, _, _, _, completion in
-            completion(.mock, nil)
+        interactor.environment.coreSdk.queueForEngagement = { _, completion in
+            completion(.success(.mock))
         }
 
         let viewModel: ChatViewModel = .mock(interactor: interactor, environment: viewModelEnv)

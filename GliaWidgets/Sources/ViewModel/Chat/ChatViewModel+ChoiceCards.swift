@@ -53,13 +53,11 @@ extension ChatViewModel {
         ) = choiceCard.kind else { return }
 
         message.attachment?.selectedOption = selection
-        message.queueID = interactor.queueID
 
         let item = ChatItem(
             kind: .visitorMessage(
                 ChatMessage(
                     id: message.id,
-                    queueID: message.queueID,
                     operator: message.operator,
                     sender: message.sender,
                     content: message.attachment?.selectedOption ?? "",

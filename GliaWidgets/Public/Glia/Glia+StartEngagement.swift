@@ -6,6 +6,7 @@ extension Glia {
     ///
     /// - Parameters:
     ///   - engagementKind: Engagement media type.
+    ///   - in: Queue identifiers
     ///   - theme: A custom theme to use with the engagement.
     ///   - visitorContext: Visitor context.
     ///   - features: Set of features to be enabled in the SDK.
@@ -22,15 +23,27 @@ extension Glia {
     ///
     public func startEngagement(
         engagementKind: EngagementKind,
+        in queueIds: [String],
         theme: Theme = Theme(),
         features: Features = .all,
         sceneProvider: SceneProvider? = nil
     ) throws {
+        // `interactor?.queueIds.isEmpty == false` statement is needed for integrators who uses old interface
+        // and pass queue identifier through `configuration` function.
+        guard !queueIds.isEmpty || interactor?.queueIds.isEmpty == false else { throw GliaError.startingEngagementWithNoQueueIdsIsNotAllowed }
         guard engagement == .none else { throw GliaError.engagementExists }
         guard let interactor = self.interactor else { throw GliaError.sdkIsNotConfigured }
         if let engagement = environment.coreSdk.getCurrentEngagement(),
             engagement.source == .callVisualizer {
             throw GliaError.callVisualizerEngagementExists
+        }
+
+        // This check is needed for integrators who uses old interface
+        // and pass queue identifier through `configuration` function,
+        // but would not pass queue ids in this method, so SDK would not override
+        // existed queue id.
+        if !queueIds.isEmpty {
+            interactor.queueIds = queueIds
         }
 
         let viewFactory = ViewFactory(
@@ -46,6 +59,7 @@ extension Glia {
                 uiScreen: environment.uiScreen
             )
         )
+
         startRootCoordinator(
             with: interactor,
             viewFactory: viewFactory,
@@ -55,53 +69,7 @@ extension Glia {
         )
     }
 
-    /// Starts the engagement.
-    ///
-    /// - Parameters:
-    ///   - engagementKind: Engagement media type.
-    ///   - configuration: Engagement configuration.
-    ///   - queueID: Queue identifier.
-    ///   - theme: A custom theme to use with the engagement.
-    ///   - sceneProvider: Used to provide `UIWindowScene` to the framework. Defaults to the first active foreground scene.
-    ///
-    /// - throws:
-    ///   - `GliaCoreSDK.ConfigurationError.invalidSite`
-    ///   - `GliaCoreSDK.ConfigurationError.invalidEnvironment`
-    ///   - `GliaCoreSDK.ConfigurationError.invalidRegionEndpoint`
-    ///   - `GliaCoreSDK.ConfigurationError.invalidSiteApiKey`
-    ///   - `GliaError.engagementExists`
-    ///
-    public func start(
-        _ engagementKind: EngagementKind,
-        configuration: Configuration,
-        queueID: String,
-        theme: Theme = Theme(),
-        features: Features = .all,
-        sceneProvider: SceneProvider? = nil
-    ) throws {
-        let completion = { [weak self] in
-            try self?.startEngagement(
-                engagementKind: engagementKind,
-                theme: theme,
-                features: features,
-                sceneProvider: sceneProvider
-            )
-        }
-        do {
-            try configure(
-                with: configuration,
-                queueId: queueID
-            ) {
-                try? completion()
-            }
-        } catch GliaError.configuringDuringEngagementIsNotAllowed {
-            try completion()
-        }
-    }
-
-    // MARK: - Private
-
-    private func startRootCoordinator(
+    func startRootCoordinator(
         with interactor: Interactor,
         viewFactory: ViewFactory,
         sceneProvider: SceneProvider?,

@@ -14,7 +14,7 @@ extension ChatViewModelTests {
             XCTFail("createSendMessagePayload should not be called")
         }
         interactorEnv.gcd.mainQueue.asyncIfNeeded = { _ in }
-        interactorEnv.coreSdk.queueForEngagement = { _, _, _, _, _, _ in }
+        interactorEnv.coreSdk.queueForEngagement = { _, _ in }
         interactorEnv.coreSdk.configureWithInteractor = { _ in }
         interactorEnv.coreSdk.sendMessageWithMessagePayload = { payload, _ in
             calls.append(.sendOption(payload.content, payload.attachment?.selectedOption))
