@@ -10,7 +10,7 @@ extension CoreSdkClient {
         configureWithConfiguration: { _, _ in fail("\(Self.self).configureWithConfiguration") },
         configureWithInteractor: { _ in fail("\(Self.self).configureWithInteractor") },
         listQueues: {_ in fail("\(Self.self).listQueues") },
-        queueForEngagement: { _, _, _, _, _, _ in fail("\(Self.self).queueForEngagement") },
+        queueForEngagement: { _, _ in fail("\(Self.self).queueForEngagement") },
         requestMediaUpgradeWithOffer: { _, _ in fail("\(Self.self).requestMediaUpgradeWithOffer") },
         sendMessagePreview: { _, _ in fail("\(Self.self).sendMessagePreview") },
         sendMessageWithMessagePayload: { _, _ in fail("\(Self.self).sendMessageWithMessagePayload") },
