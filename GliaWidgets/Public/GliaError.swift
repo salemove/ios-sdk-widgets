@@ -6,4 +6,5 @@ public enum GliaError: Error {
     case callVisualizerEngagementExists
     case configuringDuringEngagementIsNotAllowed
     case clearingVisitorSessionDuringEngagementIsNotAllowed
+    case startingEngagementWithNoQueueIdsIsNotAllowed
 }

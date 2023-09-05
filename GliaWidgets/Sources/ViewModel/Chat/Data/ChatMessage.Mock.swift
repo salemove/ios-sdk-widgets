@@ -2,7 +2,6 @@
 extension ChatMessage {
     static func mock(
         id: String = "",
-        queueID: String? = nil,
         `operator`: ChatOperator? = nil,
         sender: ChatMessageSender = .visitor,
         content: String = "",
@@ -12,7 +11,6 @@ extension ChatMessage {
     ) -> ChatMessage {
         .init(
             id: id,
-            queueID: queueID,
             operator: `operator`,
             sender: sender,
             content: content,

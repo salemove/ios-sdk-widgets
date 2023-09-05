@@ -69,7 +69,6 @@ extension ChatViewController {
         let messages: [ChatMessage] = [
             .mock(
                 id: messageId(),
-                queueID: queueId,
                 operator: nil,
                 sender: .visitor,
                 content: "Hi",
@@ -78,7 +77,6 @@ extension ChatViewController {
             ),
             .mock(
                 id: messageId(),
-                queueID: queueId,
                 operator: .mock(name: "John Smith", pictureUrl: URL.mock.absoluteString),
                 sender: .operator,
                 content: "hello",
@@ -87,7 +85,6 @@ extension ChatViewController {
             ),
             .mock(
                 id: messageId(),
-                queueID: queueId,
                 operator: nil,
                 sender: .visitor,
                 content: "",
@@ -111,7 +108,6 @@ extension ChatViewController {
             ),
             .mock(
                 id: messageId(),
-                queueID: queueId,
                 operator: nil,
                 sender: .visitor,
                 content: "Message along with content",
@@ -135,7 +131,6 @@ extension ChatViewController {
             ),
             .mock(
                 id: messageId(),
-                queueID: queueId,
                 operator: .mock(
                     name: "John Doe",
                     pictureUrl: URL.mock.absoluteString
@@ -162,7 +157,6 @@ extension ChatViewController {
             ),
             .mock(
                 id: messageId(),
-                queueID: queueId,
                 operator: .mock(
                     name: "John Smith",
                     pictureUrl: URL.mock.appendingPathComponent("opImage").appendingPathExtension("png").absoluteString
@@ -335,7 +329,6 @@ extension ChatViewController {
         ]
         let messages: [ChatMessage] = [
             .mock(id: messageId(),
-                  queueID: queueId,
                   operator: .mock(
                     name: "Blob",
                     pictureUrl: "https://mock.mock/operator/234/image.png"
@@ -389,7 +382,6 @@ extension ChatViewController {
         let messages: [ChatMessage] = [
             .mock(
                 id: messageId(),
-                queueID: queueId,
                 operator: .mock(
                     name: "Rasmus",
                     pictureUrl: "https://mock.mock/single_choice/567/image.png"
@@ -437,7 +429,6 @@ extension ChatViewController {
         let messages: [ChatMessage] = [
             .mock(
                 id: messageId(),
-                queueID: queueId,
                 operator: .mock(
                     name: "Rasmus",
                     pictureUrl: "https://mock.mock/single_choice/567/image.png"
@@ -485,7 +476,6 @@ extension ChatViewController {
         let messages: [ChatMessage] = [
             .mock(
                 id: messageId(),
-                queueID: queueId,
                 operator: .mock(
                     name: "Rasmus",
                     pictureUrl: "https://mock.mock/single_choice/567/image.png"
@@ -526,7 +516,6 @@ extension ChatViewController {
         (0 ..< 4).map { idx in
             ChatMessage.mock(
                 id: "messageId\(idx)",
-                queueID: "queueId",
                 operator: .mock(
                     name: "John Smith",
                     pictureUrl: URL.mock.appendingPathComponent("opImage").appendingPathExtension("png").absoluteString

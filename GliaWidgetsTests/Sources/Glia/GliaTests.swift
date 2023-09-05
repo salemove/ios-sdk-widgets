@@ -52,8 +52,8 @@ final class GliaTests: XCTestCase {
         
         gliaEnv.coreSdk.authentication = { _ in .mock }
         gliaEnv.coreSdk.configureWithConfiguration = { _, callback in callback?() }
-        gliaEnv.coreSdk.queueForEngagement = { _, _, _, _, _, callback in
-            callback(.mock, nil)
+        gliaEnv.coreSdk.queueForEngagement = { _, callback in
+            callback(.success(.mock))
         }
 
         gliaEnv.uuid = { .mock }

@@ -36,7 +36,7 @@ enum InteractorEvent {
 class Interactor {
     typealias EventHandler = (InteractorEvent) -> Void
 
-    let queueID: String
+    var queueIds: [String]
     var engagedOperator: CoreSdkClient.Operator? {
         switch state {
         case .engaged(let engagedOperator):
@@ -75,10 +75,10 @@ class Interactor {
 
     init(
         configuration: Configuration,
-        queueID: String,
+        queueIds: [String],
         environment: Environment
     ) {
-        self.queueID = queueID
+        self.queueIds = queueIds
         self.configuration = configuration
         self.environment = environment
     }
@@ -155,18 +155,21 @@ extension Interactor {
                 .map(CoreSdkClient.VisitorContext.init(_:))
 
             self.environment.coreSdk.queueForEngagement(
-                self.queueID,
-                coreSdkVisitorContext,
-                // shouldCloseAllQueues is `true` by default core sdk,
-                // here it is passed explicitly
-                true,
-                mediaType,
-                options
-            ) { [weak self] queueTicket, error in
-                if let error = error {
+                .init(
+                    queueIds: self.queueIds,
+                    visitorContext: coreSdkVisitorContext,
+                    // shouldCloseAllQueues is `true` by default core sdk,
+                    // here it is passed explicitly
+                    shouldCloseAllQueues: true,
+                    mediaType: mediaType,
+                    engagementOptions: options
+                )
+            ) { [weak self] result in
+                switch result {
+                case .failure(let error):
                     self?.state = .ended(.byError)
                     failure(error)
-                } else if let ticket = queueTicket {
+                case .success(let ticket):
                     if case .enqueueing = self?.state {
                         self?.state = .enqueued(ticket)
                     }

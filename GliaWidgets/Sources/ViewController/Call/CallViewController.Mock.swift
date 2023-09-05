@@ -24,7 +24,7 @@ extension CallViewController {
         let interactorEnv = Interactor.Environment.mock
         let interactor = Interactor.mock(
             configuration: conf,
-            queueID: queueId,
+            queueId: queueId,
             environment: interactorEnv
         )
         let alertConf = AlertConfiguration.mock()
@@ -59,7 +59,7 @@ extension CallViewController {
         let interactorEnv = Interactor.Environment.mock
         let interactor = Interactor.mock(
             configuration: conf,
-            queueID: queueId,
+            queueId: queueId,
             environment: interactorEnv
         )
         let alertConf = AlertConfiguration.mock()
@@ -97,7 +97,7 @@ extension CallViewController {
         }
         let interactor = Interactor.mock(
             configuration: conf,
-            queueID: queueId,
+            queueId: queueId,
             environment: interactorEnv
         )
         let alertConf = AlertConfiguration.mock()
@@ -150,7 +150,7 @@ extension CallViewController {
         let interactorEnv = Interactor.Environment.mock
         let interactor = Interactor.mock(
             configuration: conf,
-            queueID: queueId,
+            queueId: queueId,
             environment: interactorEnv
         )
         let alertConf = AlertConfiguration.mock()
@@ -198,7 +198,7 @@ extension CallViewController {
         let interactorEnv = Interactor.Environment.mock
         let interactor = Interactor.mock(
             configuration: conf,
-            queueID: queueId,
+            queueId: queueId,
             environment: interactorEnv
         )
         let alertConf = AlertConfiguration.mock()
@@ -233,7 +233,7 @@ extension CallViewController {
         let interactorEnv = Interactor.Environment.mock
         let interactor = Interactor.mock(
             configuration: conf,
-            queueID: queueId,
+            queueId: queueId,
             environment: interactorEnv
         )
         let alertConf = AlertConfiguration.mock()
