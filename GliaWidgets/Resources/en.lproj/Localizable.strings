@@ -90,7 +90,6 @@
 "call.video.operator.accessibility.label" = "Operator's Video";
 "call.video.visitor.accessibility.label" = "Your Video";
 "call_visualizer.screen_sharing.message" = "Your Screen is Being Shared";
-"call_visualizer.screen_sharing.message.accessibility.hint" = "Message label";
 "call_visualizer.screen_sharing.title" = "Screen Sharing";
 "call_visualizer.visitor_code.action.close" = "Close";
 "call_visualizer.visitor_code.action.refresh" = "Refresh";
