@@ -37,7 +37,6 @@ extension CallVisualizer {
             $0.numberOfLines = 2
             $0.textAlignment = .center
             $0.accessibilityIdentifier = "end_screen_sharing_message"
-            $0.accessibilityHint = L10n.CallVisualizer.ScreenSharing.Accessibility.messageHint
         }
         private lazy var endScreenSharingButton = ActionButton(props: props.endScreenSharing).make {
             $0.setImage(props.style.buttonIcon, for: .normal)
