@@ -118,12 +118,6 @@ internal enum Localization {
       internal static let message = Localization.tr("Localizable", "call_visualizer.screen_sharing.message", fallback: "Your Screen is Being Shared")
       /// Screen Sharing
       internal static let title = Localization.tr("Localizable", "call_visualizer.screen_sharing.title", fallback: "Screen Sharing")
-      internal enum Message {
-        internal enum Accessibility {
-          /// Message label
-          internal static let hint = Localization.tr("Localizable", "call_visualizer.screen_sharing.message.accessibility.hint", fallback: "Message label")
-        }
-      }
     }
     internal enum VisitorCode {
       /// Your Visitor Code
