@@ -129,10 +129,7 @@ class ViewController: UIViewController {
             // only if such engagement exists, we need
             // to configure SDK, and only then attempt
             // to end engagement.
-            try Glia.sharedInstance.configure(
-                with: configuration,
-                queueId: queueId
-            ) {
+            try Glia.sharedInstance.configure(with: configuration) {
                 Glia.sharedInstance.endEngagement { result in
                     print("End engagement operation has been executed. Result='\(result)'.")
                 }
@@ -220,7 +217,6 @@ extension ViewController {
         do {
             try Glia.sharedInstance.configure(
                 with: configuration,
-                queueId: queueId,
                 uiConfig: uiConfig
             ) {
                 completion("SDK has been configured")
