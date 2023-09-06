@@ -260,6 +260,33 @@ public class Glia {
             failure: { completion(.failure($0)) }
         )
     }
+
+    /// List all Queues of the configured site.
+    /// It is also possible to monitor Queues changes with [subscribeForUpdates](x-source-tag://subscribeForUpdates) method.
+    /// If the request is unsuccessful for any reason then the completion will have an Error.
+    /// - Parameters:
+    ///   - completion: A callback that will return the Result struct with `Queue` list or `GliaCoreError`
+    ///
+    public func listQueues(_ completion: @escaping (Result<[Queue], Error>) -> Void) {
+        guard interactor != nil else {
+            completion(.failure(GliaError.sdkIsNotConfigured))
+            return
+        }
+
+        environment.coreSdk.listQueues { queues, error in
+            if let error {
+                completion(.failure(error))
+                return
+            }
+
+            if let queues {
+                completion(.success(queues))
+                return
+            }
+
+            completion(.failure(GliaError.internalError))
+        }
+    }
 }
 
 // MARK: - Private

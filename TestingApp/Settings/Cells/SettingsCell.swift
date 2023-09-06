@@ -1,6 +1,9 @@
 import UIKit
 
 class SettingsCell: UITableViewCell {
+    lazy var contentStackView = UIStackView.make(.horizontal, spacing: 8)(
+        titleLabel
+    )
     let titleLabel = UILabel()
 
     init(title: String) {
@@ -21,20 +24,17 @@ class SettingsCell: UITableViewCell {
         titleLabel.font = .systemFont(ofSize: 15)
         titleLabel.textColor = .darkGray
         titleLabel.numberOfLines = 0
+        titleLabel.lineBreakMode = .byWordWrapping
+        titleLabel.minimumScaleFactor = 0.8
     }
 
     private func layout() {
-        contentView.addSubview(titleLabel)
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        contentStackView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(contentStackView)
         var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
-        let insets = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 0)
-        constraints += titleLabel.layoutInSuperview(
-            edges: .vertical,
-            insets: insets
-        )
-        constraints += titleLabel.layoutInSuperview(
-            edges: .leading,
-            insets: insets
-        )
+        let insets = UIEdgeInsets(top: 4, left: 16, bottom: 4, right: 16)
+        constraints += contentStackView.layoutInSuperview(insets: insets)
+
+        titleLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
     }
 }
