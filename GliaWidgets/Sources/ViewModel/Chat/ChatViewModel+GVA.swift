@@ -38,7 +38,7 @@ extension ChatViewModel {
 
     func postbackButtonAction(for option: GvaOption) -> Cmd {
         .init { [weak self] in
-            guard let self, let value = option.value else { return }
+            guard let self else { return }
 
             let attachment = CoreSdkClient.Attachment(
                 type: .singleChoiceResponse,
@@ -53,8 +53,7 @@ extension ChatViewModel {
 
             switch self.interactor.state {
             case .engaged:
-                let singleChoiceOption = SingleChoiceOption(text: option.text, value: value)
-                self.sendOption(singleChoiceOption)
+                self.sendMessage(outgoingMessage)
 
             case .enqueued:
                 self.handle(pendingMessage: outgoingMessage)
@@ -110,20 +109,24 @@ private extension ChatViewModel {
         }
     }
 
-    func sendOption(_ option: SingleChoiceOption) {
-        environment.sendSelectedOptionValue(option) { [weak self] result in
+    func sendMessage(_ outgoingMessage: OutgoingMessage) {
+        let item = ChatItem(with: outgoingMessage)
+        appendItem(item, to: messagesSection, animated: true)
+        action?(.scrollToBottom(animated: true))
+
+        interactor.send(messagePayload: outgoingMessage.payload) { [weak self] result in
             guard let self else { return }
             switch result {
             case let .success(message):
-                let chatMessage = ChatMessage(with: message)
-                let item = ChatItem(
-                    with: chatMessage,
-                    isCustomCardSupported: self.isCustomCardSupported
-                )
-                if let item {
-                    self.appendItem(item, to: self.messagesSection, animated: true)
+                if !self.hasReceivedMessage(messageId: message.id) {
+                    self.registerReceivedMessage(messageId: message.id)
+                    self.replace(
+                        outgoingMessage,
+                        uploads: [],
+                        with: message,
+                        in: self.messagesSection
+                    )
                 }
-                self.action?(.scrollToBottom(animated: true))
             case .failure:
                 self.showAlert(
                     with: self.alertConfiguration.unexpectedError,
