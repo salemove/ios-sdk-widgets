@@ -97,22 +97,48 @@ private extension SettingsViewController {
     private func createCells() {
         siteApiKeyIdCell = SettingsTextCell(
             title: "Identifier:",
-            text: props.config.siteApiKeyId
+            text: props.config.siteApiKeyId,
+            isRequired: true
         )
         siteApiKeyIdCell.textField.accessibilityIdentifier = "settings_siteApiKeyId_textfield"
         siteApiKeySecretCell = SettingsTextCell(
             title: "Secret:",
-            text: props.config.siteApiKeySecret
+            text: props.config.siteApiKeySecret,
+            isRequired: true
         )
         siteApiKeySecretCell.textField.accessibilityIdentifier = "settings_siteApiKeySecret_textfield"
         siteCell = SettingsTextCell(
             title: "Site:",
-            text: props.config.site
+            text: props.config.site,
+            isRequired: true
         )
         siteCell.textField.accessibilityIdentifier = "settings_siteId_textfield"
         queueIDCell = SettingsTextCell(
             title: "Queue ID:",
-            text: props.queueId
+            text: props.queueId,
+            extraButton: .init(title: "List queues", tap: { [weak self] in
+                let alert = UIAlertController(title: "List queues", message: "Please choose queue", preferredStyle: .alert)
+
+                Glia.sharedInstance.listQueues { [weak self] result in
+                    switch result {
+                    case .success(let queues):
+                        queues.forEach { queue in
+                            alert.addAction(.init(title: queue.name, style: .default) { _ in
+                                self?.queueIDCell.textField.text = queue.id
+                                self?.props.changeQueueId(queue.id)
+                                alert.dismiss(animated: true)
+                            })
+                        }
+                    case .failure(let failure):
+                        let action = UIAlertAction(title: "\(failure)", style: .default)
+                        action.isEnabled = false
+                        alert.addAction(action)
+                    }
+                    alert.addAction(.init(title: "Close", style: .cancel))
+                }
+
+                self?.present(alert, animated: true)
+            })
         )
         queueIDCell.textField.accessibilityIdentifier = "settings_queueId_textfield"
         environmentCell = EnvironmentSettingsTextCell(
