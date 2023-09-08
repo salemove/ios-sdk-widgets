@@ -3,7 +3,6 @@ import Foundation
 extension EngagementCoordinator {
     struct Environment {
         var fetchFile: CoreSdkClient.FetchFile
-        var sendSelectedOptionValue: CoreSdkClient.SendSelectedOptionValue
         var uploadFileToEngagement: CoreSdkClient.UploadFileToEngagement
         var audioSession: Glia.Environment.AudioSession
         var uuid: () -> UUID

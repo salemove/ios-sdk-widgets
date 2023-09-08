@@ -8,7 +8,6 @@ extension CoreSdkClient {
             clearSession: GliaCore.sharedInstance.clearSession,
             fetchVisitorInfo: GliaCore.sharedInstance.fetchVisitorInfo(_:),
             updateVisitorInfo: GliaCore.sharedInstance.updateVisitorInfo(_:completion:),
-            sendSelectedOptionValue: GliaCore.sharedInstance.send(option:completion:),
             configureWithConfiguration: GliaCore.sharedInstance.configure(with:completion:),
             configureWithInteractor: GliaCore.sharedInstance.configure(interactor:),
             listQueues: GliaCore.sharedInstance.listQueues(completion:),

@@ -4,7 +4,6 @@ extension EngagementViewModel {
     struct Environment {
         var fetchFile: CoreSdkClient.FetchFile
         var downloadSecureFile: CoreSdkClient.DownloadSecureFile
-        var sendSelectedOptionValue: CoreSdkClient.SendSelectedOptionValue
         var uploadFileToEngagement: CoreSdkClient.UploadFileToEngagement
         var fileManager: FoundationBased.FileManager
         var data: FoundationBased.Data

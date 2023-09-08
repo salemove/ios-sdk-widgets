@@ -258,7 +258,6 @@ extension SecureConversations.Coordinator {
             startAction: .startEngagement,
             environment: .init(
                 fetchFile: environment.fetchFile,
-                sendSelectedOptionValue: environment.sendSelectedOptionValue,
                 uploadFileToEngagement: environment.uploadFileToEngagement,
                 fileManager: environment.fileManager,
                 data: environment.data,
@@ -340,7 +339,6 @@ extension SecureConversations.Coordinator {
         var showsCallBubble: Bool
         var screenShareHandler: ScreenShareHandler
         var isWindowVisible: ObservableValue<Bool>
-        var sendSelectedOptionValue: CoreSdkClient.SendSelectedOptionValue
         var uploadFileToEngagement: CoreSdkClient.UploadFileToEngagement
         var getCurrentEngagement: CoreSdkClient.GetCurrentEngagement
         var submitSurveyAnswer: CoreSdkClient.SubmitSurveyAnswer
