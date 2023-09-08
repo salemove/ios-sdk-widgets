@@ -14,6 +14,7 @@ class ChatViewModelTests: XCTestCase {
         var fileManager = FoundationBased.FileManager.failing
         fileManager.urlsForDirectoryInDomainMask = { _, _ in [URL(fileURLWithPath: "/i/m/mocked/url")] }
         fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
+        let choiceCardMock = try ChatChoiceCardOption.mock()
         viewModel = .init(
             interactor: .mock(),
             alertConfiguration: .mock(),
@@ -29,9 +30,6 @@ class ChatViewModelTests: XCTestCase {
             environment: .init(
                 fetchFile: { _, _, _ in },
                 downloadSecureFile: { _, _, _ in .mock },
-                sendSelectedOptionValue: { _, _ in
-                    calls.append(.sendSelectedOptionValue)
-                },
                 uploadFileToEngagement: { _, _, _ in },
                 fileManager: fileManager,
                 data: .failing,
@@ -57,13 +55,16 @@ class ChatViewModelTests: XCTestCase {
                 createFileUploadListModel: { _ in
                     .mock()
                 },
-                createSendMessagePayload: { _, _ in
-                    .mock()
+                createSendMessagePayload: { text, attachment in
+                    if text == choiceCardMock.text,
+                       attachment?.type == .singleChoiceResponse {
+                        calls.append(.sendSelectedOptionValue)
+                    }
+                    return .mock()
                 }
             )
         )
 
-        let choiceCardMock = try ChatChoiceCardOption.mock()
         viewModel.sendChoiceCardResponse(choiceCardMock, to: "mocked-message-id")
 
         XCTAssertEqual(calls, [.sendSelectedOptionValue])

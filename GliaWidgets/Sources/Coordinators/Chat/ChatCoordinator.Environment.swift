@@ -3,7 +3,6 @@ import Foundation
 extension ChatCoordinator {
     struct Environment {
         var fetchFile: CoreSdkClient.FetchFile
-        var sendSelectedOptionValue: CoreSdkClient.SendSelectedOptionValue
         var uploadFileToEngagement: CoreSdkClient.UploadFileToEngagement
         var fileManager: FoundationBased.FileManager
         var data: FoundationBased.Data

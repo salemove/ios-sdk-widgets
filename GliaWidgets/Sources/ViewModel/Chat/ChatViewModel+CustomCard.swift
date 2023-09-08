@@ -17,8 +17,10 @@ extension ChatViewModel {
             imageUrl: nil
         )
 
-        let payload = environment.createSendMessagePayload(option.text, nil)
+        let payload = environment.createSendMessagePayload(option.text, attachment)
         let outgoingMessage = OutgoingMessage(payload: payload)
+
+        registerReceivedMessage(messageId: payload.messageId.rawValue)
 
         let item = ChatItem(with: outgoingMessage)
         appendItem(item, to: messagesSection, animated: true)
@@ -32,7 +34,6 @@ extension ChatViewModel {
                 selectedOption: option,
                 isActive: false
             )
-
             self.replace(
                 outgoingMessage,
                 uploads: [],
@@ -55,9 +56,7 @@ extension ChatViewModel {
             )
         }
 
-        let messagePayload = environment.createSendMessagePayload(option.text, attachment)
-
-        interactor.send(messagePayload: messagePayload) { result in
+        interactor.send(messagePayload: payload) { result in
             switch result {
             case let .success(message):
                 success(message)

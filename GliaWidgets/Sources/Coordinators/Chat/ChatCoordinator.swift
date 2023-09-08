@@ -203,7 +203,6 @@ extension ChatCoordinator {
         ChatViewModel.Environment(
             fetchFile: environment.fetchFile,
             downloadSecureFile: environment.downloadSecureFile,
-            sendSelectedOptionValue: environment.sendSelectedOptionValue,
             uploadFileToEngagement: environment.uploadFileToEngagement,
             fileManager: environment.fileManager,
             data: environment.data,
@@ -334,7 +333,6 @@ extension ChatCoordinator {
            interactor: environment.interactor,
            startSocketObservation: environment.startSocketObservation,
            stopSocketObservation: environment.stopSocketObservation,
-           sendSelectedOptionValue: environment.sendSelectedOptionValue,
            createSendMessagePayload: environment.createSendMessagePayload
        )
     }
