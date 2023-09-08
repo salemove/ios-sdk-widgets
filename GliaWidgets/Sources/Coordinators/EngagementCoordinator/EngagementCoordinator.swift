@@ -226,7 +226,6 @@ extension EngagementCoordinator {
             startAction: startAction,
             environment: .init(
                 fetchFile: environment.fetchFile,
-                sendSelectedOptionValue: environment.sendSelectedOptionValue,
                 uploadFileToEngagement: environment.uploadFileToEngagement,
                 fileManager: environment.fileManager,
                 data: environment.data,
@@ -328,7 +327,6 @@ extension EngagementCoordinator {
             environment: .init(
                 fetchFile: environment.fetchFile,
                 downloadSecureFile: environment.downloadSecureFile,
-                sendSelectedOptionValue: environment.sendSelectedOptionValue,
                 uploadFileToEngagement: environment.uploadFileToEngagement,
                 fileManager: environment.fileManager,
                 data: environment.data,
@@ -467,7 +465,6 @@ extension EngagementCoordinator {
                 showsCallBubble: false,
                 screenShareHandler: screenShareHandler,
                 isWindowVisible: isWindowVisible,
-                sendSelectedOptionValue: environment.sendSelectedOptionValue,
                 uploadFileToEngagement: environment.uploadFileToEngagement,
                 getCurrentEngagement: environment.getCurrentEngagement,
                 submitSurveyAnswer: environment.submitSurveyAnswer,

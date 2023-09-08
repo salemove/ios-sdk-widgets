@@ -2,7 +2,6 @@
 extension EngagementCoordinator.Environment {
     static let mock = Self(
         fetchFile: { _, _, _ in },
-        sendSelectedOptionValue: { _, _ in },
         uploadFileToEngagement: { _, _, _ in },
         audioSession: .mock,
         uuid: { .mock },

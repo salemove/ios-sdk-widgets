@@ -117,7 +117,6 @@ extension Glia {
             features: features,
             environment: .init(
                 fetchFile: environment.coreSdk.fetchFile,
-                sendSelectedOptionValue: environment.coreSdk.sendSelectedOptionValue,
                 uploadFileToEngagement: environment.coreSdk.uploadFileToEngagement,
                 audioSession: environment.audioSession,
                 uuid: environment.uuid,

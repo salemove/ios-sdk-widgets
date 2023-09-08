@@ -3,8 +3,19 @@ import GliaCoreSDK
 
 extension ChatViewModel {
     func sendChoiceCardResponse(_ option: ChatChoiceCardOption, to messageId: String) {
-        guard let option = option.asSingleChoiceOption() else { return }
-        environment.sendSelectedOptionValue(option) { [weak self] result in
+        guard let text = option.text else { return }
+        let attachment = CoreSdkClient.Attachment(
+            type: .singleChoiceResponse,
+            selectedOption: option.value,
+            options: nil,
+            files: nil,
+            imageUrl: nil
+        )
+
+        let payload = self.environment.createSendMessagePayload(text, attachment)
+        registerReceivedMessage(messageId: payload.messageId.rawValue)
+
+        interactor.send(messagePayload: payload) { [weak self] result in
             guard let self = self else { return }
 
             switch result {

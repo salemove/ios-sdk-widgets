@@ -7,7 +7,6 @@ extension CoreSdkClient {
         clearSession: { fail("\(Self.self).clearSession") },
         fetchVisitorInfo: { _ in fail("\(Self.self).fetchVisitorInfo") },
         updateVisitorInfo: { _, _ in fail("\(Self.self).updateVisitorInfo") },
-        sendSelectedOptionValue: { _, _ in fail("\(Self.self).sendSelectedOptionValue") },
         configureWithConfiguration: { _, _ in fail("\(Self.self).configureWithConfiguration") },
         configureWithInteractor: { _ in fail("\(Self.self).configureWithInteractor") },
         listQueues: {_ in fail("\(Self.self).listQueues") },
