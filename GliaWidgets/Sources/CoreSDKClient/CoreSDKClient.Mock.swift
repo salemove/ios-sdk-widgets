@@ -9,7 +9,6 @@ extension CoreSdkClient {
         clearSession: {},
         fetchVisitorInfo: { _ in },
         updateVisitorInfo: { _, _ in },
-        sendSelectedOptionValue: { _, _ in },
         configureWithConfiguration: { _, _ in },
         configureWithInteractor: { _ in },
         listQueues: { _ in },

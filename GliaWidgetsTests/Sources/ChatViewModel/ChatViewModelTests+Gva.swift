@@ -18,9 +18,11 @@ extension ChatViewModelTests {
         env.uiApplication.open = { url in
             calls.append(.openUrl(url.absoluteString))
         }
-        // To ensure `sendSelectedOptionValue` is not called in case of URL Button
-        env.sendSelectedOptionValue = { option, _ in
-            calls.append(.sendOption(option.text, option.value))
+
+        // To ensure `createSendMessagePayload` is not called in case of URL Button
+        env.createSendMessagePayload = { _, _ in
+            XCTFail("createSendMessagePayload should not be called")
+            return .mock()
         }
         viewModel = .mock(environment: env)
 
@@ -67,23 +69,29 @@ extension ChatViewModelTests {
 
     func test_gvaPostbackButtonActionTriggersStartEngagement() {
         let option = GvaOption.mock(text: "text", value: "value")
-        var calls: [Call] = []
-        var env = ChatViewModel.Environment.mock
-        // To ensure `open` is not called in case of URL Button
-        env.uiApplication.open = { url in
-            calls.append(.openUrl(url.absoluteString))
+        var interactorEnv = Interactor.Environment.failing
+        // To ensure `sendMessageWithMessagePayload` is not called in case of Postback Button
+        interactorEnv.coreSdk.sendMessageWithMessagePayload = { _, _ in
+            XCTFail("sendMessageWithMessagePayload should not be called")
         }
-        // To ensure `sendSelectedOptionValue` is not called in case of Postback Button
-        env.sendSelectedOptionValue = { option, _ in
-            calls.append(.sendOption(option.text, option.value))
-        }
-        let interactorMock = Interactor.mock()
+        interactorEnv.gcd.mainQueue.asyncIfNeeded = { _ in }
+        interactorEnv.coreSdk.queueForEngagement = { _, _, _, _, _, _ in }
+        interactorEnv.coreSdk.configureWithInteractor = { _ in }
+
+        let interactorMock = Interactor.mock(environment: interactorEnv)
         interactorMock.state = .none
+        interactorMock.isConfigurationPerformed = true
+
+        var env = ChatViewModel.Environment.failing()
+        env.fileManager.fileExistsAtPath = { _ in true }
+        env.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
+        env.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
+        env.createFileUploadListModel = { _ in .mock() }
+        env.createSendMessagePayload = { _, _ in .mock() }
         viewModel = .mock(interactor: interactorMock, environment: env)
 
         viewModel.gvaOptionAction(for: option)()
 
-        XCTAssertEqual(calls, [])
         XCTAssertEqual(interactorMock.state, .enqueueing)
     }
 

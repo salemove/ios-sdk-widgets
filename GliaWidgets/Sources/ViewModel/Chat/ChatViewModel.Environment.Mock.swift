@@ -6,7 +6,6 @@ extension ChatViewModel.Environment {
     static let mock = Self(
         fetchFile: { _, _, _ in },
         downloadSecureFile: { _, _, _ in .mock },
-        sendSelectedOptionValue: { _, _ in },
         uploadFileToEngagement: { _, _, _ in },
         fileManager: .mock,
         data: .mock,

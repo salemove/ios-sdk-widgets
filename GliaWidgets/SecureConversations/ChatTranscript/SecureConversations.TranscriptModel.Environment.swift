@@ -29,7 +29,6 @@ extension SecureConversations.TranscriptModel {
         var interactor: Interactor
         var startSocketObservation: CoreSdkClient.StartSocketObservation
         var stopSocketObservation: CoreSdkClient.StopSocketObservation
-        var sendSelectedOptionValue: CoreSdkClient.SendSelectedOptionValue
         var createSendMessagePayload: CoreSdkClient.CreateSendMessagePayload
     }
 }
