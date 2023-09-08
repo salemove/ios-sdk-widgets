@@ -12,9 +12,6 @@ extension ChatViewModel.Environment {
                 fail("\(Self.self).downloadSecureFile")
                 return .mock
             },
-            sendSelectedOptionValue: { _, _ in
-                fail("\(Self.self).sendSelectedOptionValue")
-            },
             uploadFileToEngagement: { _, _, _ in
                 fail("\(Self.self).uploadFileToEngagement")
             },

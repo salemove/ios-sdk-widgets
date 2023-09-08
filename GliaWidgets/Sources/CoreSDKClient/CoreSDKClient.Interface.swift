@@ -16,12 +16,6 @@ struct CoreSdkClient {
     ) -> Void
     var updateVisitorInfo: UpdateVisitorInfo
 
-    typealias SendSelectedOptionValue = (
-        _ singleChoiceOption: SingleChoiceOption,
-        _ completion: @escaping (Result<Self.Message, Error>) -> Void
-    ) -> Void
-    var sendSelectedOptionValue: SendSelectedOptionValue
-
     typealias ConfigureWithConfiguration = (
         _ sdkConfiguration: Self.Salemove.Configuration,
         _ completion: (() -> Void)?

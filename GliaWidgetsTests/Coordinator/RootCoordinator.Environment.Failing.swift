@@ -5,9 +5,6 @@ extension EngagementCoordinator.Environment {
         fetchFile: { _, _, _ in
             fail("\(Self.self).fetchFile")
         },
-        sendSelectedOptionValue: { _, _ in
-            fail("\(Self.self).sendSelectedOptionValue")
-        },
         uploadFileToEngagement: { _, _, _ in
             fail("\(Self.self).uploadFileToEngagement")
         },
