@@ -81,7 +81,7 @@ class ActionButton: UIButton {
     private func layout() {
         renderProps()
         NSLayoutConstraint.activate([
-            heightAnchor.constraint(equalToConstant: props.height)
+            heightAnchor.constraint(greaterThanOrEqualToConstant: props.height)
         ])
     }
 
