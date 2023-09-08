@@ -20,6 +20,8 @@ extension Survey {
 
         // MARK: - Button container
 
+        private let buttonTitleInsets = UIEdgeInsets(top: 6, left: 16, bottom: 6, right: 16)
+
         let buttonContainer = UIView().makeView {
             $0.layer.masksToBounds = false
             $0.layer.shadowColor = UIColor.black.cgColor
@@ -66,49 +68,49 @@ extension Survey {
         override func defineLayout() {
             super.defineLayout()
             backgroundColor = .black.withAlphaComponent(0.8)
+            cancelButton.titleLabel?.translatesAutoresizingMaskIntoConstraints = false
+            submitButton.titleLabel?.translatesAutoresizingMaskIntoConstraints = false
 
-            NSLayoutConstraint.activate([
-                scrollView.topAnchor.constraint(greaterThanOrEqualTo: safeAreaLayoutGuide.topAnchor),
-                scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
-                scrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
-                scrollView.bottomAnchor.constraint(equalTo: buttonContainer.topAnchor),
+            var constraints: [NSLayoutConstraint] = []; defer { constraints.activate() }
+            constraints += scrollView.topAnchor.constraint(greaterThanOrEqualTo: safeAreaLayoutGuide.topAnchor)
+            constraints += scrollView.leadingAnchor.constraint(equalTo: leadingAnchor)
+            constraints += scrollView.trailingAnchor.constraint(equalTo: trailingAnchor)
+            constraints += scrollView.bottomAnchor.constraint(equalTo: buttonContainer.topAnchor)
+            constraints += scrollView.frameLayoutGuide.heightAnchor.constraint(
+                equalTo: contentContainerStackView.heightAnchor,
+                constant: Self.contentPadding * 2
+            ).priority(.defaultLow)
+            constraints += contentContainerStackView.topAnchor.constraint(
+                equalTo: scrollView.topAnchor,
+                constant: Self.contentPadding
+            )
+            constraints += contentContainerStackView.leadingAnchor.constraint(
+                equalTo: scrollView.leadingAnchor,
+                constant: Self.contentPadding
+            )
+            constraints += contentContainerStackView.trailingAnchor.constraint(
+                equalTo: scrollView.frameLayoutGuide.trailingAnchor,
+                constant: -Self.contentPadding
+            )
+            constraints += contentContainerStackView.heightAnchor.constraint(
+                equalTo: scrollView.contentLayoutGuide.heightAnchor,
+                constant: -2 * Self.contentPadding
+            )
 
-                scrollView.frameLayoutGuide.heightAnchor.constraint(
-                    equalTo: contentContainerStackView.heightAnchor,
-                    constant: Self.contentPadding * 2
-                ).priority(.defaultLow),
+            constraints += buttonContainer.bottomAnchor.constraint(equalTo: bottomAnchor).identifier(.bottom)
+            constraints += buttonContainer.leadingAnchor.constraint(equalTo: leadingAnchor)
+            constraints += buttonContainer.trailingAnchor.constraint(equalTo: trailingAnchor)
+            constraints += buttonStackView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -Self.contentPadding)
+            constraints += buttonStackView.topAnchor.constraint(equalTo: buttonContainer.topAnchor, constant: Self.contentPadding)
+            constraints += buttonStackView.leadingAnchor.constraint(equalTo: buttonContainer.leadingAnchor, constant: Self.contentPadding)
+            constraints += buttonStackView.trailingAnchor.constraint(equalTo: buttonContainer.trailingAnchor, constant: -Self.contentPadding)
+            constraints += cancelButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 44)
+            constraints += submitButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 44)
+            constraints += cancelButton.widthAnchor.constraint(lessThanOrEqualTo: submitButton.widthAnchor)
+            constraints += submitButton.widthAnchor.constraint(lessThanOrEqualTo: cancelButton.widthAnchor)
 
-                contentContainerStackView.topAnchor.constraint(
-                    equalTo: scrollView.topAnchor,
-                    constant: Self.contentPadding
-                ),
-                contentContainerStackView.leadingAnchor.constraint(
-                    equalTo: scrollView.leadingAnchor,
-                    constant: Self.contentPadding
-                ),
-                contentContainerStackView.trailingAnchor.constraint(
-                    equalTo: scrollView.frameLayoutGuide.trailingAnchor,
-                    constant: -Self.contentPadding
-                ),
-                contentContainerStackView.heightAnchor.constraint(
-                    equalTo: scrollView.contentLayoutGuide.heightAnchor,
-                    constant: -2 * Self.contentPadding
-                ),
-
-                buttonContainer.bottomAnchor.constraint(equalTo: bottomAnchor).identifier(.bottom),
-                buttonContainer.leadingAnchor.constraint(equalTo: leadingAnchor),
-                buttonContainer.trailingAnchor.constraint(equalTo: trailingAnchor),
-
-                buttonStackView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -Self.contentPadding),
-                buttonStackView.topAnchor.constraint(equalTo: buttonContainer.topAnchor, constant: Self.contentPadding),
-                buttonStackView.leadingAnchor.constraint(equalTo: buttonContainer.leadingAnchor, constant: Self.contentPadding),
-                buttonStackView.trailingAnchor.constraint(equalTo: buttonContainer.trailingAnchor, constant: -Self.contentPadding),
-
-                cancelButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 44),
-                submitButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 44),
-                cancelButton.widthAnchor.constraint(lessThanOrEqualTo: submitButton.widthAnchor),
-                submitButton.widthAnchor.constraint(lessThanOrEqualTo: cancelButton.widthAnchor)
-            ])
+            constraints += constraintsForTitleLabel(of: cancelButton, withInsets: buttonTitleInsets)
+            constraints += constraintsForTitleLabel(of: submitButton, withInsets: buttonTitleInsets)
         }
 
         override func layoutSubviews() {
@@ -169,6 +171,16 @@ extension Survey {
         // MARK: - Private
 
         private static let contentPadding: CGFloat = 24
+
+        private func constraintsForTitleLabel(of button: UIButton, withInsets insets: UIEdgeInsets) -> [NSLayoutConstraint] {
+            guard let titleLabel = button.titleLabel else { return [] }
+            return [
+                titleLabel.topAnchor.constraint(greaterThanOrEqualTo: button.topAnchor, constant: insets.top),
+                titleLabel.bottomAnchor.constraint(lessThanOrEqualTo: button.bottomAnchor, constant: -insets.bottom),
+                titleLabel.leadingAnchor.constraint(equalTo: button.leadingAnchor, constant: insets.left),
+                titleLabel.trailingAnchor.constraint(equalTo: button.trailingAnchor, constant: -insets.right)
+            ]
+        }
     }
 }
 
