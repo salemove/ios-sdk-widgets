@@ -51,6 +51,7 @@ class ChatCallUpgradeView: UIView {
 
         textLabel.text = style.text
         textLabel.font = style.textFont
+        textLabel.numberOfLines = 0
         textLabel.textColor = style.textColor
         textLabel.textAlignment = .center
 
