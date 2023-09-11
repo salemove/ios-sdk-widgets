@@ -16,7 +16,7 @@ extension Theme {
             negativeTitle: Alert.Action.no,
             positiveTitle: Alert.Action.yes,
             switchButtonBackgroundColors: true,
-            showsPoweredBy: false
+            showsPoweredBy: true
         )
         let operatorEndedEngagement = SingleActionAlertConfiguration(
             title: Alert.OperatorEndedEngagement.title,
