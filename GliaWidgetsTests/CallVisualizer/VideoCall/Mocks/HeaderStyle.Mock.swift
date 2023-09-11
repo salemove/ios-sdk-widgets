@@ -38,13 +38,15 @@ extension ActionButtonStyle {
         title: String = L10n.CallVisualizer.ScreenSharing.Button.title,
         titleFont: UIFont = .systemFont(ofSize: 16, weight: .regular),
         titleColor: UIColor = .white,
-        backgroundColor: ColorType = .fill(color: Color.systemNegative)
+        backgroundColor: ColorType = .fill(color: Color.systemNegative),
+        accessibility: Accessibility = .init(label: "", isFontScalingEnabled: true)
     ) -> ActionButtonStyle {
         return .init(
             title: title,
             titleFont: titleFont,
             titleColor: titleColor,
-            backgroundColor: backgroundColor
+            backgroundColor: backgroundColor,
+            accessibility: accessibility
         )
     }
 }
