@@ -37,11 +37,14 @@ extension CallVisualizer {
             $0.numberOfLines = 2
             $0.textAlignment = .center
             $0.accessibilityIdentifier = "end_screen_sharing_message"
+            $0.translatesAutoresizingMaskIntoConstraints = false
         }
         private lazy var endScreenSharingButton = ActionButton(props: props.endScreenSharing).make {
             $0.setImage(props.style.buttonIcon, for: .normal)
             $0.tintColor = props.style.buttonStyle.titleColor
             $0.titleEdgeInsets = .init(top: 0, left: 8, bottom: 0, right: 0)
+            $0.titleLabel?.numberOfLines = 0
+            $0.titleLabel?.translatesAutoresizingMaskIntoConstraints = false
             $0.accessibilityIdentifier = "end_screen_sharing_button"
             $0.accessibilityLabel = L10n.CallVisualizer.ScreenSharing.Accessibility.buttonLabel
             $0.accessibilityHint = L10n.CallVisualizer.ScreenSharing.Accessibility.buttonHint
@@ -87,7 +90,20 @@ extension CallVisualizer {
             constraints += contentStackView.centerYAnchor.constraint(equalTo: centerYAnchor)
             constraints += contentStackView.layoutIn(layoutMarginsGuide, edges: .horizontal, insets: .init(top: 0, left: 42, bottom: 0, right: 42))
 
-            constraints += endScreenSharingButton.match(.height, value: 40)
+            constraints += endScreenSharingButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 40)
+
+            if let imageView = endScreenSharingButton.imageView {
+                constraints += imageView.widthAnchor.constraint(equalToConstant: 24)
+            }
+
+            setFontScalingEnabled(
+                props.style.accessibility.isFontScalingEnabled,
+                for: messageLabel
+            )
+            setFontScalingEnabled(
+                props.style.buttonStyle.accessibility.isFontScalingEnabled,
+                for: endScreenSharingButton
+            )
         }
 
         override func layoutSubviews() {
@@ -105,11 +121,6 @@ extension CallVisualizer {
 
 private extension CallVisualizer.ScreenSharingView {
     func renderProps() {
-        setFontScalingEnabled(
-            props.style.accessibility.isFontScalingEnabled,
-            for: messageLabel
-        )
-
         header.props = props.header
         endScreenSharingButton.props = props.endScreenSharing
     }
