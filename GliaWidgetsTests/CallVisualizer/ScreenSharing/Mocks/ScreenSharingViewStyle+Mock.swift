@@ -4,18 +4,20 @@ import UIKit
 
 extension ScreenSharingViewStyle {
     static func mock(
-        title: String = ""
+        title: String = "",
+        messageTextFont: UIFont = .systemFont(ofSize: 20, weight: .medium),
+        buttonTitleFont: UIFont = .systemFont(ofSize: 16, weight: .regular)
     ) -> ScreenSharingViewStyle {
-        ScreenSharingViewStyle(
+        return ScreenSharingViewStyle(
             title: title,
             header: .mock(),
             messageText: L10n.CallVisualizer.ScreenSharing.message,
-            messageTextFont: .systemFont(ofSize: 20, weight: .regular),
+            messageTextFont: messageTextFont,
             messageTextColor: Color.baseDark,
-            buttonStyle: .mock(),
+            buttonStyle: .mock(titleFont: buttonTitleFont),
             buttonIcon: Asset.startScreenShare.image,
             backgroundColor: .fill(color: .white),
-            accessibility: .unsupported
+            accessibility: .init(isFontScalingEnabled: true)
         )
     }
 }
