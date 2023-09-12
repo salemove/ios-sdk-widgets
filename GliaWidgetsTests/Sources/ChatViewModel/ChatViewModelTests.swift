@@ -579,6 +579,128 @@ class ChatViewModelTests: XCTestCase {
         }
         XCTAssertEqual(viewModel.receivedMessageIds, [messageId.uppercased()])
     }
+
+    func test_messageReceivedFromSocketWithSameIdIsDiscarded() {
+        var viewModelEnv = ChatViewModel.Environment.failing()
+        viewModelEnv.createFileUploadListModel = { _ in .mock() }
+        viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
+        viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
+        viewModelEnv.loadChatMessagesFromHistory = { true }
+        viewModelEnv.fetchSiteConfigurations = { _ in }
+        let expectedMessageId = "expected_message_id"
+        viewModelEnv.fetchChatHistory = { callback in
+            callback(.success([]))
+        }
+        let viewModel: ChatViewModel = .mock(environment: viewModelEnv)
+        viewModel.isViewLoaded = true
+        viewModel.start()
+
+        viewModel.interactorEvent(.receivedMessage(.mock(id: expectedMessageId)))
+        viewModel.interactorEvent(.receivedMessage(.mock(id: expectedMessageId)))
+        XCTAssertEqual(viewModel.messagesSection.items.count, 1)
+        XCTAssertEqual(viewModel.receivedMessageIds, [expectedMessageId.uppercased()])
+    }
+
+    func test_messageReceivedFirstFromRestDiscardsSameOneFromSocket() throws {
+        var viewModelEnv = ChatViewModel.Environment.failing()
+        viewModelEnv.createFileUploadListModel = { _ in .mock() }
+        viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
+        viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
+        viewModelEnv.loadChatMessagesFromHistory = { true }
+        viewModelEnv.fetchSiteConfigurations = { _ in }
+        let messageIdSuffix = "1D_123"
+        let expectedMessageId = "expected_message_id"
+        viewModelEnv.fetchChatHistory = { callback in
+            callback(.success([]))
+        }
+        viewModelEnv.createSendMessagePayload = {
+            .mock(messageIdSuffix: messageIdSuffix, content: $0, attachment: $1)
+        }
+
+        let interactor = Interactor.failing
+        interactor.environment.gcd.mainQueue.asyncIfNeeded = { $0() }
+        interactor.environment.coreSdk.configureWithInteractor = { _ in }
+        interactor.environment.coreSdk.configureWithConfiguration = { _, callback in callback?() }
+        interactor.environment.coreSdk.sendMessagePreview = { _, _ in }
+        interactor.environment.coreSdk.sendMessageWithMessagePayload = { _, completion in
+            completion(.success(.mock(id: expectedMessageId)))
+        }
+        interactor.environment.coreSdk.queueForEngagement = { _, _, _, _, _, completion in
+            completion(.mock, nil)
+        }
+
+        let viewModel: ChatViewModel = .mock(interactor: interactor, environment: viewModelEnv)
+        viewModel.isViewLoaded = true
+        viewModel.start()
+        interactor.state = .engaged(.mock())
+        viewModel.invokeSetTextAndSendMessage(text: "Mock send message.")
+
+        viewModel.interactorEvent(.receivedMessage(.mock(id: expectedMessageId)))
+
+        let lastMessage = viewModel.messagesSection.items.last?.kind
+        var receivedMessage: ChatMessage?
+        switch try XCTUnwrap(lastMessage) {
+        case let .visitorMessage(message, _):
+            receivedMessage = message
+        default:
+            XCTFail("Expected visitor message. Got \(String(describing: lastMessage)) instead.")
+        }
+
+        XCTAssertEqual(viewModel.messagesSection.items.count, 2)
+        XCTAssertEqual(viewModel.receivedMessageIds, [expectedMessageId.uppercased()])
+        XCTAssertEqual(try XCTUnwrap(receivedMessage).id, expectedMessageId)
+    }
+
+    func test_messageReceivedFirstFromSocketDiscardsSameOneFromRest() throws {
+        var viewModelEnv = ChatViewModel.Environment.failing()
+        viewModelEnv.createFileUploadListModel = { _ in .mock() }
+        viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
+        viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
+        viewModelEnv.loadChatMessagesFromHistory = { true }
+        viewModelEnv.fetchSiteConfigurations = { _ in }
+        let messageIdSuffix = "1D_123"
+        let expectedMessageId = "expected_message_id"
+        viewModelEnv.fetchChatHistory = { callback in
+            callback(.success([]))
+        }
+        viewModelEnv.createSendMessagePayload = {
+            .mock(messageIdSuffix: messageIdSuffix, content: $0, attachment: $1)
+        }
+
+        let interactor = Interactor.failing
+        interactor.environment.gcd.mainQueue.asyncIfNeeded = { $0() }
+        interactor.environment.coreSdk.configureWithInteractor = { _ in }
+        interactor.environment.coreSdk.configureWithConfiguration = { _, callback in callback?() }
+        interactor.environment.coreSdk.sendMessagePreview = { _, _ in }
+        interactor.environment.coreSdk.sendMessageWithMessagePayload = { [weak viewModel] _, completion in
+            // Deliver message via socket before REST API response.
+            viewModel?.interactorEvent(.receivedMessage(.mock(id: expectedMessageId)))
+            completion(.success(.mock(id: expectedMessageId)))
+        }
+        interactor.environment.coreSdk.queueForEngagement = { _, _, _, _, _, completion in
+            completion(.mock, nil)
+        }
+
+        let viewModel: ChatViewModel = .mock(interactor: interactor, environment: viewModelEnv)
+        viewModel.isViewLoaded = true
+        viewModel.start()
+        interactor.state = .engaged(.mock())
+        viewModel.invokeSetTextAndSendMessage(text: "Mock send message.")
+        viewModel.interactorEvent(.receivedMessage(.mock(id: expectedMessageId)))
+
+        let lastMessage = viewModel.messagesSection.items.last?.kind
+        var receivedMessage: ChatMessage?
+        switch try XCTUnwrap(lastMessage) {
+        case let .visitorMessage(message, _):
+            receivedMessage = message
+        default:
+            XCTFail("Expected visitor message. Got \(String(describing: lastMessage)) instead.")
+        }
+
+        XCTAssertEqual(viewModel.messagesSection.items.count, 2)
+        XCTAssertEqual(viewModel.receivedMessageIds, [expectedMessageId.uppercased()])
+        XCTAssertEqual(try XCTUnwrap(receivedMessage).id, expectedMessageId)
+    }
 }
 
 extension ChatChoiceCardOption {
