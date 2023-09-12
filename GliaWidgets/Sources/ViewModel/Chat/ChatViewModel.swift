@@ -930,3 +930,13 @@ extension ChatViewModel {
         }
     }
 }
+
+#if DEBUG
+extension ChatViewModel {
+    /// Sets text and immediately sends it. Used for testing.
+    func invokeSetTextAndSendMessage(text: String) {
+        self.messageText = text
+        self.sendMessage()
+    }
+}
+#endif
