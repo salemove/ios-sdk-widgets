@@ -71,7 +71,7 @@ class Interactor {
             }
         }
     }
-    private var environment: Environment
+    var environment: Environment
 
     init(
         configuration: Configuration,
