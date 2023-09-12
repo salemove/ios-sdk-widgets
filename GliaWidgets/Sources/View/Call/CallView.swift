@@ -323,8 +323,8 @@ class CallView: EngagementView {
             .fittingSizeLevel,
             for: .vertical
         )
-        constraints += bottomLabel.bottomAnchor.constraint(equalTo: buttonBar.topAnchor)
-        constraints += bottomLabel.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.6)
+        constraints += bottomLabel.bottomAnchor.constraint(equalTo: buttonBar.topAnchor, constant: -32)
+        constraints += bottomLabel.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.85)
         constraints += bottomLabel.centerXAnchor.constraint(equalTo: centerXAnchor)
 
         addSubview(localVideoView)
