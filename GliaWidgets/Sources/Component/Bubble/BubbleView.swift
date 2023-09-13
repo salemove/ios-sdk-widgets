@@ -28,7 +28,7 @@ class BubbleView: BaseView {
     private let style: BubbleStyle
     private var userImageView: UserImageView?
     private var badgeView: BadgeView?
-    private var onHoldView: OnHoldOverlayView?
+    private let onHoldView: OnHoldOverlayView
     private let environment: Environment
 
     init(
@@ -37,6 +37,9 @@ class BubbleView: BaseView {
     ) {
         self.style = style
         self.environment = environment
+        self.onHoldView = OnHoldOverlayView(style: style.onHoldOverlay)
+        self.onHoldView.clipsToBounds = true
+
         super.init()
     }
 
@@ -54,25 +57,25 @@ class BubbleView: BaseView {
             byRoundingCorners: .allCorners,
             cornerRadii: CGSize(width: cornerRadius, height: cornerRadius)
         ).cgPath
+
+        onHoldView.frame = userImageView?.bounds ?? .zero
+        onHoldView.layer.cornerRadius = cornerRadius
     }
 
     func showOnHoldView() {
-        onHoldView?.removeFromSuperview()
+        onHoldView.removeFromSuperview()
+        // In case of badge-view being shown
+        // place on-hold view under it.
+        if let badgeView {
+            insertSubview(onHoldView, belowSubview: badgeView)
+        } else {
+            addSubview(onHoldView)
+        }
 
-        guard
-            let userImageView = userImageView
-        else { return }
-
-        let onHoldView = OnHoldOverlayView(style: style.onHoldOverlay)
-        self.onHoldView = onHoldView
-
-        userImageView.addSubview(onHoldView)
-        onHoldView.layoutInSuperview().activate()
     }
 
     func hideOnHoldView() {
-        onHoldView?.removeFromSuperview()
-        onHoldView = nil
+        onHoldView.removeFromSuperview()
     }
 
     func setBadge(itemCount: Int) {
@@ -145,8 +148,10 @@ class BubbleView: BaseView {
     private func setView(_ view: UIView) {
         subviews.first?.removeFromSuperview()
         view.isUserInteractionEnabled = false
-
-        addSubview(view)
+        // Insert view at the zero index
+        // to be under other views, like on-hold
+        // and unread-count views.
+        insertSubview(view, at: 0)
         view.layoutInSuperview().activate()
     }
 
