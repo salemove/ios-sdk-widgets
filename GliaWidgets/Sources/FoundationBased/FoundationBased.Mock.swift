@@ -1,5 +1,6 @@
 #if DEBUG
 import Foundation
+import Combine
 
 extension FoundationBased.FileManager {
     static let mock = Self(
@@ -50,7 +51,10 @@ extension FoundationBased.NotificationCenter {
     static let mock = Self(
         addObserverClosure: { _, _, _, _ in },
         removeObserverClosure: { _ in },
-        removeObserverWithNameAndObject: { _, _, _ in }
+        removeObserverWithNameAndObject: { _, _, _ in },
+        publisherForNotification: { _ in
+            Just(Notification(name: NSNotification.Name(rawValue: ""))).eraseToAnyPublisher()
+        }
     )
 }
 

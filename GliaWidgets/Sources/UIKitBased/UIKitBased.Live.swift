@@ -18,7 +18,8 @@ extension UIKitBased.UIApplication {
 extension UIKitBased.UIDevice {
     static let live = Self.init(
         proximityState: { UIDevice.current.proximityState },
-        isProximityMonitoringEnabled: { UIDevice.current.isProximityMonitoringEnabled = $0 }
+        isProximityMonitoringEnabled: { UIDevice.current.isProximityMonitoringEnabled = $0 },
+        orientationDidChangeNotification: { UIDevice.orientationDidChangeNotification }
     )
 }
 

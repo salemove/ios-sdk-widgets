@@ -36,5 +36,6 @@ extension EngagementCoordinator {
         var stopSocketObservation: CoreSdkClient.StopSocketObservation
         var pushNotifications: CoreSdkClient.PushNotifications
         var createSendMessagePayload: CoreSdkClient.CreateSendMessagePayload
+        var orientationManager: OrientationManager
     }
 }
