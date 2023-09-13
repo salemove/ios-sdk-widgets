@@ -183,6 +183,8 @@
 		311CAFCD29F8FAE20067B59F /* SecureConversations.TranscriptModel+CustomCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 311CAFCC29F8FAE20067B59F /* SecureConversations.TranscriptModel+CustomCard.swift */; };
 		313EBD552943116E008E9597 /* SecureConversations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313EBD542943116E008E9597 /* SecureConversations.swift */; };
 		3142696A29FFB712003DF62E /* Interactor.Failing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3142696929FFB712003DF62E /* Interactor.Failing.swift */; };
+		3146C9432AB1851C0047D8CC /* LocalizationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3146C9422AB1851C0047D8CC /* LocalizationTests.swift */; };
+		3146C9492AB18AC70047D8CC /* Localization+StringProviding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3146C9482AB18AC70047D8CC /* Localization+StringProviding.swift */; };
 		315BAB1A29ADFEBC00FF284B /* ConfirmationStyle+TitleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 315BAB1929ADFEBC00FF284B /* ConfirmationStyle+TitleStyle.swift */; };
 		315BAB1C29ADFEC800FF284B /* ConfirmationStyle+SubtitleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 315BAB1B29ADFEC800FF284B /* ConfirmationStyle+SubtitleStyle.swift */; };
 		315BAB1E29ADFED800FF284B /* ConfirmationStyle+CheckMessagesButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 315BAB1D29ADFED800FF284B /* ConfirmationStyle+CheckMessagesButtonStyle.swift */; };
@@ -195,6 +197,7 @@
 		3197F7B429F7C26A008EE9F7 /* SecureConversations.ChatWithTranscriptViewModel+Hashable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3197F7B329F7C26A008EE9F7 /* SecureConversations.ChatWithTranscriptViewModel+Hashable.swift */; };
 		3197F7B629F7C2E5008EE9F7 /* SecureConversations.SecureChatModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3197F7B529F7C2E5008EE9F7 /* SecureConversations.SecureChatModel.swift */; };
 		3197F7B829F7C318008EE9F7 /* SecureConversations.CommonEngagementModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3197F7B729F7C318008EE9F7 /* SecureConversations.CommonEngagementModel.swift */; };
+		31B1F8A92AB093ED009EC5AD /* StringProviding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B1F8A82AB093ED009EC5AD /* StringProviding.swift */; };
 		31D286AD2A00DD2C009192A6 /* SecureConversations.ConfirmationViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31D286AC2A00DD2C009192A6 /* SecureConversations.ConfirmationViewModelTests.swift */; };
 		31D286AF2A00DE2B009192A6 /* SecureConversations.ConfirmationViewModel.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31D286AE2A00DE2B009192A6 /* SecureConversations.ConfirmationViewModel.Mock.swift */; };
 		31DB0C01287C2EFC00FB288E /* StaticValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31DB0C00287C2EFC00FB288E /* StaticValues.swift */; };
@@ -924,6 +927,8 @@
 		311CAFCC29F8FAE20067B59F /* SecureConversations.TranscriptModel+CustomCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SecureConversations.TranscriptModel+CustomCard.swift"; sourceTree = "<group>"; };
 		313EBD542943116E008E9597 /* SecureConversations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.swift; sourceTree = "<group>"; };
 		3142696929FFB712003DF62E /* Interactor.Failing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interactor.Failing.swift; sourceTree = "<group>"; };
+		3146C9422AB1851C0047D8CC /* LocalizationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationTests.swift; sourceTree = "<group>"; };
+		3146C9482AB18AC70047D8CC /* Localization+StringProviding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Localization+StringProviding.swift"; sourceTree = "<group>"; };
 		315BAB1929ADFEBC00FF284B /* ConfirmationStyle+TitleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ConfirmationStyle+TitleStyle.swift"; sourceTree = "<group>"; };
 		315BAB1B29ADFEC800FF284B /* ConfirmationStyle+SubtitleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ConfirmationStyle+SubtitleStyle.swift"; sourceTree = "<group>"; };
 		315BAB1D29ADFED800FF284B /* ConfirmationStyle+CheckMessagesButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ConfirmationStyle+CheckMessagesButtonStyle.swift"; sourceTree = "<group>"; };
@@ -936,6 +941,7 @@
 		3197F7B329F7C26A008EE9F7 /* SecureConversations.ChatWithTranscriptViewModel+Hashable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SecureConversations.ChatWithTranscriptViewModel+Hashable.swift"; sourceTree = "<group>"; };
 		3197F7B529F7C2E5008EE9F7 /* SecureConversations.SecureChatModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.SecureChatModel.swift; sourceTree = "<group>"; };
 		3197F7B729F7C318008EE9F7 /* SecureConversations.CommonEngagementModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.CommonEngagementModel.swift; sourceTree = "<group>"; };
+		31B1F8A82AB093ED009EC5AD /* StringProviding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringProviding.swift; sourceTree = "<group>"; };
 		31D286AC2A00DD2C009192A6 /* SecureConversations.ConfirmationViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.ConfirmationViewModelTests.swift; sourceTree = "<group>"; };
 		31D286AE2A00DE2B009192A6 /* SecureConversations.ConfirmationViewModel.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.ConfirmationViewModel.Mock.swift; sourceTree = "<group>"; };
 		31DB0C00287C2EFC00FB288E /* StaticValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticValues.swift; sourceTree = "<group>"; };
@@ -1676,7 +1682,9 @@
 				1A205D5C25655CB1003AA3CD /* Info.plist */,
 				1A60AFAE256680EF00E53F53 /* L10n.swift */,
 				31E35AB92A8648E9006EC7FB /* Localization.swift */,
+				3146C9482AB18AC70047D8CC /* Localization+StringProviding.swift */,
 				31882C9A2AA21B71009DE4BD /* Localization+Templates.swift */,
+				31B1F8A82AB093ED009EC5AD /* StringProviding.swift */,
 				31DB0C00287C2EFC00FB288E /* StaticValues.swift */,
 			);
 			path = GliaWidgets;
@@ -1685,6 +1693,7 @@
 		1A205D6525655CB2003AA3CD /* GliaWidgetsTests */ = {
 			isa = PBXGroup;
 			children = (
+				3146C9412AB1850A0047D8CC /* Resources */,
 				7552DFB22A6FBC6E0093519B /* CoreSdk */,
 				7552DFAF2A6FB37E0093519B /* ChatMessage */,
 				846A5C3729D18D220049B29F /* ScreenShareHandler */,
@@ -2586,6 +2595,14 @@
 				8491AF5F2AA1EBB600CC3E72 /* TranscriptModelTests+URLs.swift */,
 			);
 			path = ChatTranscript;
+			sourceTree = "<group>";
+		};
+		3146C9412AB1850A0047D8CC /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				3146C9422AB1851C0047D8CC /* LocalizationTests.swift */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		315BAB1829ADFE9E00FF284B /* ConfirmationStyle */ = {
@@ -4383,6 +4400,7 @@
 				846A5C4029ED83C50049B29F /* CallVisualizer.Coordinator.DelegateEvent.swift in Sources */,
 				845876B4282AA296007AC3DF /* ButtonView.Props.Accessibility.swift in Sources */,
 				1A0C9AE025C9624500815406 /* ObservableValue.swift in Sources */,
+				31B1F8A92AB093ED009EC5AD /* StringProviding.swift in Sources */,
 				75940962298D3889008B173A /* MessageMetadata.swift in Sources */,
 				7594094D298D37E8008B173A /* Glia.Environment.Mock.swift in Sources */,
 				1A60AFB9256682AF00E53F53 /* FlowCoordinator.swift in Sources */,
@@ -4654,6 +4672,7 @@
 				3100EEF2293E214B00D57F71 /* SecureConversations.Coordinator.swift in Sources */,
 				1AA738AE2578E0D500E1120F /* ConnectAnimationView.swift in Sources */,
 				754CC61627E2816F005676E9 /* Survey.InputQuestionView.swift in Sources */,
+				3146C9492AB18AC70047D8CC /* Localization+StringProviding.swift in Sources */,
 				9A1992DF27D62C2E00161AAE /* ImageView.Cache.Mock.swift in Sources */,
 				8491AF0D2A7A9CB900CC3E72 /* Theme.VisitorChatMessageStyle.swift in Sources */,
 				1A2DA72D25EF9DD900032611 /* FileUpload.swift in Sources */,
@@ -4887,6 +4906,7 @@
 				84681A952A61844000DD7406 /* ChatViewModelTests+Gva.swift in Sources */,
 				847A7643285A1914004044D1 /* FileUploadListViewModelTests.swift in Sources */,
 				9A1992E727D66C7400161AAE /* UIKitBased.Failing.swift in Sources */,
+				3146C9432AB1851C0047D8CC /* LocalizationTests.swift in Sources */,
 				846A5C3929D18D400049B29F /* ScreenShareHandlerTests.swift in Sources */,
 				9AE05CB62805D2CB00871321 /* Interactor.Environment.Failing.swift in Sources */,
 				846429862A45DB4100943BD6 /* AlertViewController.Kind+Mock.swift in Sources */,
