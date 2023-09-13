@@ -107,6 +107,12 @@ private class BubbleViewController: UIViewController {
                 right: edgeInset
             )
         )
+        // Once `bubbleView` is added to view hierarchy,
+        // we re-render its `isVisitorOnHold` state,
+        // to properly display it. Otherwise it may
+        // not show up due to invalid ('zero') size.
+        let isOnHold = bubbleView.isVisitorOnHold
+        bubbleView.isVisitorOnHold = isOnHold
     }
 }
 
