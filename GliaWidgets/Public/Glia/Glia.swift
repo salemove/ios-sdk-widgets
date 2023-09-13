@@ -57,6 +57,8 @@ public class Glia {
     /// Used to monitor engagement state changes.
     public var onEvent: ((GliaEvent) -> Void)?
 
+    var stringProviding: StringProviding?
+
     public lazy var callVisualizer = CallVisualizer(
         environment: .init(
             data: environment.data,
@@ -126,10 +128,14 @@ public class Glia {
         if let callback = completion {
             createdInteractor.withConfiguration { [weak createdInteractor] in
                 guard let interactor = createdInteractor else { return }
-                    interactor.state = GliaCore.sharedInstance
-                        .getCurrentEngagement()?.engagedOperator
-                        .map(InteractorState.engaged) ?? interactor.state
-                    callback()
+
+                // TODO: Configure string providing from Core SDK here.
+
+                interactor.state = GliaCore.sharedInstance
+                    .getCurrentEngagement()?.engagedOperator
+                    .map(InteractorState.engaged) ?? interactor.state
+
+                callback()
             }
         }
 
