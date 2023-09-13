@@ -65,6 +65,10 @@ extension UIKitBased.UIDevice {
         },
         isProximityMonitoringEnabled: { _ in
             fail("\(Self.self).isProximityMonitoringEnabled")
+        },
+        orientationDidChangeNotification: {
+            fail("\(Self.self).orientationDidChangeNotification")
+            return NSNotification.Name(rawValue: "")
         }
     )
 }

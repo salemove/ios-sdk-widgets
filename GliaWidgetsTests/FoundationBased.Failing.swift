@@ -1,4 +1,5 @@
 @testable import GliaWidgets
+import Combine
 
 extension FoundationBased.FileManager {
     static let failing = Self(
@@ -89,6 +90,10 @@ extension FoundationBased.NotificationCenter {
         },
         removeObserverWithNameAndObject: {_, _, _ in
             fail("\(Self.self).removeObserverWithNameAndObject")
+        },
+        publisherForNotification: { _ in
+            fail("\(Self.self).publisherForNotification")
+            return Empty<Notification, Never>().eraseToAnyPublisher()
         }
     )
 }

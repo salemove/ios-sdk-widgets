@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 
 enum FoundationBased {
     struct FileManager {
@@ -92,6 +93,8 @@ enum FoundationBased {
         func removeObserver(_ observer: Any) {
             removeObserverClosure(observer)
         }
+
+        var publisherForNotification: (NSNotification.Name) -> AnyPublisher<Notification, Never>
     }
 }
 

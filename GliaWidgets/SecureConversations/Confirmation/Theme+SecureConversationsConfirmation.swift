@@ -12,7 +12,7 @@ extension Theme {
 
         let titleStyle = SecureConversations.ConfirmationStyle.TitleStyle(
             text: Confirmation.title,
-            font: font.header3,
+            font: font.header1,
             color: color.baseDark,
             accessibility: .init(isFontScalingEnabled: true)
         )

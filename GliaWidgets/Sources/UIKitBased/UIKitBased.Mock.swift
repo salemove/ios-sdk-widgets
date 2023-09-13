@@ -29,7 +29,8 @@ extension UIImage {
 extension UIKitBased.UIDevice {
     static let mock = Self.init(
         proximityState: { .init() },
-        isProximityMonitoringEnabled: { _ in }
+        isProximityMonitoringEnabled: { _ in },
+        orientationDidChangeNotification: { .init("") }
     )
 }
 

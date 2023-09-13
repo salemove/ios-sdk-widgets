@@ -44,6 +44,7 @@ extension Glia {
         var createFileUploadListModel: SecureConversations.FileUploadListViewModel.Create
         var screenShareHandler: ScreenShareHandler
         var messagesWithUnreadCountLoaderScheduler: CoreSdkClient.ReactiveSwift.DateScheduler
+        var orientationManager: OrientationManager
     }
 }
 
