@@ -385,9 +385,11 @@ extension InteractorState: Equatable {
         switch (lhs, rhs) {
         case (.none, .none),
              (.enqueueing, .enqueueing),
-             (.enqueued, .enqueued),
-             (.ended, .ended):
+             (.enqueued, .enqueued):
             return true
+
+        case (.ended(let lhsReason), .ended(let rhsReason)):
+            return lhsReason == rhsReason
 
         case (.engaged(let lhsOperator), .engaged(let rhsOperator)):
             return lhsOperator == rhsOperator
