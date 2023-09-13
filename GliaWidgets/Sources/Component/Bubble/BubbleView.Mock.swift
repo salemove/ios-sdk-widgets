@@ -1,4 +1,7 @@
 #if DEBUG
+
+import Foundation
+
 extension BubbleView {
     static func mock(
         with bubbleStyle: BubbleStyle = .mock(),
