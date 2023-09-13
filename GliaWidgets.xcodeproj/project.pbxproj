@@ -590,11 +590,14 @@
 		C03A8049292BC8DB00DDECA6 /* CallViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03A8048292BC8DB00DDECA6 /* CallViewControllerTests.swift */; };
 		C05AB01C295F416700AA381F /* VisitorCodeCloseButtonProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05AB01B295F416700AA381F /* VisitorCodeCloseButtonProperties.swift */; };
 		C05E3EDE29C99E070013BC81 /* ProximityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05E3EDD29C99E070013BC81 /* ProximityManager.swift */; };
+		C06152D52AB1BC1300063BF8 /* Font+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06152D42AB1BC1300063BF8 /* Font+Extensions.swift */; };
+		C06152DA2AB1BC4300063BF8 /* OrientationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06152D92AB1BC4300063BF8 /* OrientationManager.swift */; };
 		C06A757F296EC76B006B69A2 /* VisitorCodeStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06A757E296EC76B006B69A2 /* VisitorCodeStyle.swift */; };
 		C06A7582296EC856006B69A2 /* NumberSlotStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06A7581296EC856006B69A2 /* NumberSlotStyle.swift */; };
 		C06A7584296EC9DC006B69A2 /* NumberSlotStyle.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06A7583296EC9DC006B69A2 /* NumberSlotStyle.Accessibility.swift */; };
 		C06A7586296ECC57006B69A2 /* VisitorCodeStyle.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06A7585296ECC57006B69A2 /* VisitorCodeStyle.Accessibility.swift */; };
 		C06A7588296ECD75006B69A2 /* Theme+VisitorCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06A7587296ECD75006B69A2 /* Theme+VisitorCode.swift */; };
+		C07F62462ABC322B003EFC97 /* OrientationManager.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07F62452ABC322B003EFC97 /* OrientationManager.Mock.swift */; };
 		C07FA04029AF542A00E9FB7F /* ScreenSharingViewStyle+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84265E0B298AECBA00D65842 /* ScreenSharingViewStyle+Mock.swift */; };
 		C07FA04329AF551D00E9FB7F /* ScreenSharingView.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07FA04129AF550500E9FB7F /* ScreenSharingView.Mock.swift */; };
 		C07FA04629AF560A00E9FB7F /* ScreenSharingViewController.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07FA04429AF55F600E9FB7F /* ScreenSharingViewController.Mock.swift */; };
@@ -641,6 +644,9 @@
 		C0D2F08B29A4E95700803B47 /* ConnectView.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D2F08929A4E92D00803B47 /* ConnectView.Mock.swift */; };
 		C0D2F08C29A4EBA900803B47 /* VIdeoCallView.Environment.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D2F06F29A4DB5C00803B47 /* VIdeoCallView.Environment.Mock.swift */; };
 		C0D2F08F29A61A8D00803B47 /* VideoCallViewController.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D2F08D29A61A7800803B47 /* VideoCallViewController.Mock.swift */; };
+		C0E948042AB1D5D200890026 /* ActionButtonSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E948032AB1D5D200890026 /* ActionButtonSwiftUI.swift */; };
+		C0E948062AB1D64700890026 /* HeaderButtonSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E948052AB1D64700890026 /* HeaderButtonSwiftUI.swift */; };
+		C0E948092AB1D6AB00890026 /* HeaderSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E948082AB1D6AB00890026 /* HeaderSwiftUI.swift */; };
 		C2B201AEDBE3A53369DF524F /* Pods_GliaWidgetsTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCF7E6C5499635E67EF6A604 /* Pods_GliaWidgetsTests.framework */; };
 		C4119E06268F41D1004DFEFB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C4119E05268F41D1004DFEFB /* Main.storyboard */; };
 		C42463742673ABE10082C135 /* ScreenShareHandler.Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42463732673ABE10082C135 /* ScreenShareHandler.Interface.swift */; };
@@ -1322,11 +1328,14 @@
 		C05AB016295DA9FC00AA381F /* AlertViewController+VisitorCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlertViewController+VisitorCode.swift"; sourceTree = "<group>"; };
 		C05AB01B295F416700AA381F /* VisitorCodeCloseButtonProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorCodeCloseButtonProperties.swift; sourceTree = "<group>"; };
 		C05E3EDD29C99E070013BC81 /* ProximityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProximityManager.swift; sourceTree = "<group>"; };
+		C06152D42AB1BC1300063BF8 /* Font+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+Extensions.swift"; sourceTree = "<group>"; };
+		C06152D92AB1BC4300063BF8 /* OrientationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientationManager.swift; sourceTree = "<group>"; };
 		C06A757E296EC76B006B69A2 /* VisitorCodeStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorCodeStyle.swift; sourceTree = "<group>"; };
 		C06A7581296EC856006B69A2 /* NumberSlotStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberSlotStyle.swift; sourceTree = "<group>"; };
 		C06A7583296EC9DC006B69A2 /* NumberSlotStyle.Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberSlotStyle.Accessibility.swift; sourceTree = "<group>"; };
 		C06A7585296ECC57006B69A2 /* VisitorCodeStyle.Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorCodeStyle.Accessibility.swift; sourceTree = "<group>"; };
 		C06A7587296ECD75006B69A2 /* Theme+VisitorCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Theme+VisitorCode.swift"; sourceTree = "<group>"; };
+		C07F62452ABC322B003EFC97 /* OrientationManager.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientationManager.Mock.swift; sourceTree = "<group>"; };
 		C07FA04129AF550500E9FB7F /* ScreenSharingView.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenSharingView.Mock.swift; sourceTree = "<group>"; };
 		C07FA04429AF55F600E9FB7F /* ScreenSharingViewController.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenSharingViewController.Mock.swift; sourceTree = "<group>"; };
 		C07FA04929AF83A400E9FB7F /* ActionButton.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButton.Mock.swift; sourceTree = "<group>"; };
@@ -1372,6 +1381,9 @@
 		C0D2F08629A4E8AE00803B47 /* CallButtonBar.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallButtonBar.Mock.swift; sourceTree = "<group>"; };
 		C0D2F08929A4E92D00803B47 /* ConnectView.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectView.Mock.swift; sourceTree = "<group>"; };
 		C0D2F08D29A61A7800803B47 /* VideoCallViewController.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCallViewController.Mock.swift; sourceTree = "<group>"; };
+		C0E948032AB1D5D200890026 /* ActionButtonSwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButtonSwiftUI.swift; sourceTree = "<group>"; };
+		C0E948052AB1D64700890026 /* HeaderButtonSwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderButtonSwiftUI.swift; sourceTree = "<group>"; };
+		C0E948082AB1D6AB00890026 /* HeaderSwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderSwiftUI.swift; sourceTree = "<group>"; };
 		C4119E05268F41D1004DFEFB /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		C42463732673ABE10082C135 /* ScreenShareHandler.Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenShareHandler.Interface.swift; sourceTree = "<group>"; };
 		C43C12F82694B14900C37E1B /* GliaPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GliaPresenter.swift; sourceTree = "<group>"; };
@@ -1644,6 +1656,7 @@
 		1A205D5A25655CB1003AA3CD /* GliaWidgets */ = {
 			isa = PBXGroup;
 			children = (
+				C06152D22AB1BBEF00063BF8 /* SwiftUI */,
 				313EBD53294310EE008E9597 /* SecureConversations */,
 				7594091329891C48008B173A /* Public */,
 				1A60AFC12566857200E53F53 /* Sources */,
@@ -3504,6 +3517,32 @@
 			path = ProximityManager;
 			sourceTree = "<group>";
 		};
+		C06152D22AB1BBEF00063BF8 /* SwiftUI */ = {
+			isa = PBXGroup;
+			children = (
+				C0E948012AB1D5B100890026 /* Components */,
+				C06152D82AB1BC2F00063BF8 /* Managers */,
+				C06152D32AB1BBFD00063BF8 /* Extensions */,
+			);
+			path = SwiftUI;
+			sourceTree = "<group>";
+		};
+		C06152D32AB1BBFD00063BF8 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				C06152D42AB1BC1300063BF8 /* Font+Extensions.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		C06152D82AB1BC2F00063BF8 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				C07F62442ABC3218003EFC97 /* OrientationManager */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
 		C06A757D296EC743006B69A2 /* VisitorCode */ = {
 			isa = PBXGroup;
 			children = (
@@ -3520,6 +3559,15 @@
 				C06A7583296EC9DC006B69A2 /* NumberSlotStyle.Accessibility.swift */,
 			);
 			path = NumberSlot;
+			sourceTree = "<group>";
+		};
+		C07F62442ABC3218003EFC97 /* OrientationManager */ = {
+			isa = PBXGroup;
+			children = (
+				C06152D92AB1BC4300063BF8 /* OrientationManager.swift */,
+				C07F62452ABC322B003EFC97 /* OrientationManager.Mock.swift */,
+			);
+			path = OrientationManager;
 			sourceTree = "<group>";
 		};
 		C096B408297EBCEB00F0C552 /* CallVisualizer */ = {
@@ -3645,6 +3693,32 @@
 				C0D2F08D29A61A7800803B47 /* VideoCallViewController.Mock.swift */,
 			);
 			path = Mocks;
+			sourceTree = "<group>";
+		};
+		C0E948012AB1D5B100890026 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				C0E948072AB1D69C00890026 /* Header */,
+				C0E948022AB1D5BC00890026 /* Buttons */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		C0E948022AB1D5BC00890026 /* Buttons */ = {
+			isa = PBXGroup;
+			children = (
+				C0E948032AB1D5D200890026 /* ActionButtonSwiftUI.swift */,
+				C0E948052AB1D64700890026 /* HeaderButtonSwiftUI.swift */,
+			);
+			path = Buttons;
+			sourceTree = "<group>";
+		};
+		C0E948072AB1D69C00890026 /* Header */ = {
+			isa = PBXGroup;
+			children = (
+				C0E948082AB1D6AB00890026 /* HeaderSwiftUI.swift */,
+			);
+			path = Header;
 			sourceTree = "<group>";
 		};
 		C42463722673ABCD0082C135 /* Screensharing */ = {
@@ -4160,7 +4234,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "make write-diff\n";
+			shellScript = "#make write-diff\n";
 		};
 		A5633E9F76E68066D5BFAF62 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -4225,6 +4299,7 @@
 				1A6075E7258220E300569B0E /* UserImageStyle.swift in Sources */,
 				1ABD6C5D25B59D1C00D56EFA /* BubbleWindow.swift in Sources */,
 				75940964298D3889008B173A /* MessageRenderer.Web.swift in Sources */,
+				C0E948042AB1D5D200890026 /* ActionButtonSwiftUI.swift in Sources */,
 				1AE15E38257A578B00A642C0 /* MessageAlertConfiguration.swift in Sources */,
 				C0175A132A56E29E001FACDE /* ChatMessageCardType.swift in Sources */,
 				AFBBF5782851C391004993B3 /* Glia.Deprecated.swift in Sources */,
@@ -4315,6 +4390,7 @@
 				9AE0A7622822AF3000725946 /* FontScaling.Environment.Live.swift in Sources */,
 				1A0452DD25DBD0A4000DA0C1 /* HeaderButton.swift in Sources */,
 				AF3D520B2983235C00AD8E69 /* FileUploader.Mock.swift in Sources */,
+				C0E948092AB1D6AB00890026 /* HeaderSwiftUI.swift in Sources */,
 				AF39330B29B2A6A00008B60D /* ChatViewModel.SecureConverstaions.swift in Sources */,
 				75AF8CEF27DAA819009EEE2C /* SurveyViewController.swift in Sources */,
 				1A60AF96256675C400E53F53 /* UIColor+Extensions.swift in Sources */,
@@ -4335,6 +4411,7 @@
 				9A3E1D9427B6C29C005634EB /* ChatEngagementFile.Mock.swift in Sources */,
 				1A2DA73B25EFC00500032611 /* FileUploadListStyle.swift in Sources */,
 				7594095A298D386F008B173A /* NSLayoutConstraint+Extensions.swift in Sources */,
+				C07F62462ABC322B003EFC97 /* OrientationManager.Mock.swift in Sources */,
 				C0D2F06829A4B71C00803B47 /* VideoCallViewModel.Mock.swift in Sources */,
 				AFEF5C6F29928DB0005C3D8D /* SecureConversations.FileUploadView.swift in Sources */,
 				84D5B9622A14F33400807F92 /* QuickLookBased.Live.swift in Sources */,
@@ -4414,6 +4491,7 @@
 				9A19926B27D3BA8700161AAE /* ViewFactory.Environment.Mock.swift in Sources */,
 				84681A9B2A669D8800DD7406 /* QuickReplyView.swift in Sources */,
 				1A6EB05725A717CB0007081A /* ChatMessage.swift in Sources */,
+				C0E948062AB1D64700890026 /* HeaderButtonSwiftUI.swift in Sources */,
 				1AA738B225790D5A00E1120F /* AlertView.swift in Sources */,
 				845E2F8E283FB5B500C04D56 /* Theme.Survey.SingleQuestion.Accessibility.swift in Sources */,
 				C47901B725ED2FB0007EE195 /* AlertViewController+ScreenShareOffer.swift in Sources */,
@@ -4519,6 +4597,7 @@
 				9AB196DE27C3FFF400FD60AB /* Call.Environment.Mock.swift in Sources */,
 				1A0C143125B8547200B00695 /* EngagementStyle.swift in Sources */,
 				7594098B298D38C2008B173A /* CallVisualizer+Presentation.swift in Sources */,
+				C06152DA2AB1BC4300063BF8 /* OrientationManager.swift in Sources */,
 				9A186A3727F5D38D0055886D /* ChatMessageEntryStyle.Accessibility.swift in Sources */,
 				9AB061C1280EFE09008960FA /* ChatFileDownloadStyle.Accessibility.swift in Sources */,
 				1A7CA8272574D6F40047CBBE /* ConnectStyle.swift in Sources */,
@@ -4610,6 +4689,7 @@
 				6E9C01AD26D3B8B500EBE1D4 /* OperatorTypingIndicatorView.swift in Sources */,
 				AF10ED8B29B7A4C000E85309 /* ChatViewModel+ChoiceCards.swift in Sources */,
 				7594097E298D38C2008B173A /* CallVisualizer.BubbleIcon.swift in Sources */,
+				C06152D52AB1BC1300063BF8 /* Font+Extensions.swift in Sources */,
 				AFA2FDF628907FC800428E6D /* BubbleStyle.Mock.swift in Sources */,
 				755D186B29A6A5830009F5E8 /* WelcomeStyle+MessageTitleStyle.swift in Sources */,
 				75940981298D38C2008B173A /* VisitorCodeView+NumberView.swift in Sources */,

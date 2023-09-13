@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 
 extension FoundationBased.FileManager {
     static let live = Self(
@@ -65,6 +66,7 @@ extension FoundationBased.NotificationCenter {
     static let live = Self(
         addObserverClosure: NotificationCenter.default.addObserver,
         removeObserverClosure: NotificationCenter.default.removeObserver,
-        removeObserverWithNameAndObject: NotificationCenter.default.removeObserver
+        removeObserverWithNameAndObject: NotificationCenter.default.removeObserver,
+        publisherForNotification: { NotificationCenter.default.publisher(for: $0).eraseToAnyPublisher() }
     )
 }

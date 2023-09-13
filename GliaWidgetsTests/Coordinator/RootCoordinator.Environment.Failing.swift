@@ -85,6 +85,7 @@ extension EngagementCoordinator.Environment {
         createSendMessagePayload: { _, _ in
             fail("\(Self.self).createSendMessagePayload")
             return .mock()
-        }
+        }, 
+        orientationManager: .mock()
     )
 }

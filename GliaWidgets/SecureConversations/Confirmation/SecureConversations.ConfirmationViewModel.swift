@@ -1,87 +1,99 @@
 import Foundation
+import UIKit
+import Combine
 
-extension SecureConversations {
-    final class ConfirmationViewModel: ViewModel {
-        var action: ((Action) -> Void)?
+extension SecureConversations.ConfirmationViewSwiftUI {
+    final class Model: ObservableObject {
+        @Published private(set) var orientation: UIInterfaceOrientation
+        let environment: Environment
+        let style: SecureConversations.ConfirmationStyle
         var delegate: ((DelegateEvent) -> Void)?
-        var environment: Environment
+        let orientationManager: OrientationManager
+        var cancellables: Set<AnyCancellable> = []
 
-        init(environment: Environment) {
+        init(
+            environment: Environment,
+            style: SecureConversations.ConfirmationStyle,
+            delegate: ((DelegateEvent) -> Void)?
+        ) {
             self.environment = environment
-        }
-
-        func event(_ event: Event) {
-            switch event {
-            case .closeTapped:
-                delegate?(.closeTapped)
-            }
-        }
-
-        func reportChange() {
-            delegate?(.renderProps(props()))
+            self.style = style
+            self.delegate = delegate
+            self.orientationManager = environment.orientationManager
+            self.orientation = orientationManager.orientation
+            orientationManager.$orientation.sink { [weak self] orientation in
+                self?.orientation = orientation
+            }.store(in: &self.cancellables)
         }
     }
 }
 
-extension SecureConversations.ConfirmationViewModel {
-    func props() -> SecureConversations.ConfirmationViewController.Props {
-        let confirmationStyle = environment.confirmationStyle
-        let confirmationViewProps = SecureConversations.ConfirmationView.Props(
-            style: confirmationStyle,
-            header: Self.buildHeaderProps(
-                style: confirmationStyle,
-                closeButtonCmd: Cmd(closure: { [weak self] in self?.delegate?(.closeTapped) })
-            ),
-            checkMessageButtonTap: Cmd { [weak self] in self?.delegate?(.chatTranscriptScreenRequested) }
-        )
-
-        let viewControllerProps = SecureConversations.ConfirmationViewController.Props(
-            confirmationViewProps: confirmationViewProps
-        )
-
-        return viewControllerProps
+// MARK: - Public Methods
+extension SecureConversations.ConfirmationViewSwiftUI.Model {
+    func event(_ event: Event) {
+        switch event {
+        case .closeTapped:
+            delegate?(.closeTapped)
+        case .chatTranscriptScreenRequested:
+            delegate?(.chatTranscriptScreenRequested)
+        }
     }
+}
 
-    static func buildHeaderProps(
-        style: SecureConversations.ConfirmationStyle,
-        closeButtonCmd: Cmd
-    ) -> Header.Props {
-        let backButton = style.header.backButton.map { HeaderButton.Props(style: $0) }
+// MARK: - Private Methods
+extension SecureConversations.ConfirmationViewSwiftUI.Model {
+    func makeHeaderModel() -> HeaderSwiftUI.Model {
+        let endButtonProps: ActionButtonSwiftUI.Model = .init(
+            style: style.header.endButton,
+            accessibilityIdentifier: "header_end_button",
+            isEnabled: false,
+            isHidden: true
+        )
 
-        return Header.Props(
+        let closeButtonProps: HeaderButtonSwiftUI.Model = .init(
+            tap: Cmd(closure: { [weak self] in
+                self?.delegate?(.closeTapped)
+            }),
+            style: style.header.closeButton,
+            isEnabled: true,
+            isHidden: false
+        )
+
+        let endScreenShareButtonProps: HeaderButtonSwiftUI.Model = .init(
+            style: style.header.endScreenShareButton,
+            isEnabled: false,
+            isHidden: true
+        )
+
+        let environment: HeaderSwiftUI.Environment = .init(uiApplication: environment.uiApplication)
+
+        return .init(
             title: style.headerTitle,
             effect: .none,
-            endButton: .init(style: style.header.endButton, accessibilityIdentifier: "header_end_button"),
-            backButton: backButton,
-            closeButton: .init(tap: closeButtonCmd, style: style.header.closeButton),
-            endScreenshareButton: .init(style: style.header.endScreenShareButton),
-            style: style.header
+            endButton: endButtonProps,
+            backButton: nil,
+            closeButton: closeButtonProps,
+            endScreenshareButton: endScreenShareButtonProps,
+            style: style.header,
+            environment: environment
         )
     }
 }
 
-extension SecureConversations.ConfirmationViewModel {
+// MARK: - Objects
+extension SecureConversations.ConfirmationViewSwiftUI.Model {
     enum Event {
         case closeTapped
-    }
-
-    enum Action {
-        case start
+        case chatTranscriptScreenRequested
     }
 
     enum DelegateEvent {
         case closeTapped
-        case renderProps(SecureConversations.ConfirmationViewController.Props)
         case chatTranscriptScreenRequested
     }
 
-    enum StartAction {
-        case none
-    }
-}
-
-extension SecureConversations.ConfirmationViewModel {
     struct Environment {
-        var confirmationStyle: SecureConversations.ConfirmationStyle
+        var orientationManager: OrientationManager
+        var uiApplication: UIKitBased.UIApplication
     }
 }

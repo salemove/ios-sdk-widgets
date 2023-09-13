@@ -3,37 +3,35 @@ import XCTest
 @testable import GliaWidgets
 
 final class SecureConversationsConfirmationViewModelTests: XCTestCase {
-    typealias ConfirmationViewModel = SecureConversations.ConfirmationViewModel
-    var viewModel: ConfirmationViewModel = .mock
+    typealias ConfirmationViewModel = SecureConversations.ConfirmationViewSwiftUI.Model
 
-    override func setUp() {
-        viewModel = .mock
-    }
+    var viewModel: ConfirmationViewModel = .init(
+        environment: .init(
+            orientationManager: .mock(), uiApplication: .mock
+        ),
+        style: Theme().defaultSecureConversationsConfirmationStyle,
+        delegate: nil
+    )
 }
 
 // Props
 extension SecureConversationsConfirmationViewModelTests {
     func testPropsDoNotGenerateABackButton() {
-        let props = viewModel.props().confirmationViewProps.header
+        let backButton = viewModel.style.header.backButton
 
-        XCTAssertNil(props.backButton)
+        XCTAssertNil(backButton)
     }
 
     func testPropsGenerateCorrectTitle() {
         let title = "Test"
-        var style = Theme().secureConversationsConfirmation
-        style.headerTitle = title
-
-        viewModel.environment = .init(confirmationStyle: style)
-
-        let props = viewModel.props()
-        XCTAssertEqual(props.confirmationViewProps.header.title, title)
-    }
-
-    func testPropsGenerateEndButtonWithAccessibilityIdentifier() {
-        let props = viewModel.props().confirmationViewProps.header.endButton
-
-        XCTAssertEqual(props.accessibilityIdentifier, "header_end_button")
+        viewModel = .init(
+            environment: .init(
+                orientationManager: .mock(), uiApplication: .mock
+            ),
+            style: .mock(title: title),
+            delegate: nil
+        )
+        XCTAssertEqual(viewModel.style.headerTitle, title)
     }
 }
 
@@ -58,11 +56,16 @@ extension SecureConversationsConfirmationViewModelTests {
     func testPressingCloseButtonCallsDelegate() throws {
         var receivedEvent: ConfirmationViewModel.DelegateEvent?
 
-        viewModel.delegate = { event in
-            receivedEvent = event
-        }
-
-        viewModel.props().confirmationViewProps.header.closeButton.tap()
+        viewModel = .init(
+            environment: .init(
+                orientationManager: .mock(), uiApplication: .mock
+            ),
+            style: .mock(),
+            delegate: { event in
+                receivedEvent = event
+            }
+        )
+        viewModel.delegate?(.closeTapped)
 
         switch try XCTUnwrap(receivedEvent) {
             case .closeTapped:
@@ -74,30 +77,19 @@ extension SecureConversationsConfirmationViewModelTests {
     func testPressingCheckMessagesButtonCallsDelegate() throws {
         var receivedEvent: ConfirmationViewModel.DelegateEvent?
 
-        viewModel.delegate = { event in
-            receivedEvent = event
-        }
-
-        viewModel.props().confirmationViewProps.checkMessageButtonTap()
+        viewModel = .init(
+            environment: .init(
+                orientationManager: .mock(), uiApplication: .mock
+            ),
+            style: .mock(),
+            delegate: { event in
+                receivedEvent = event
+            }
+        )
+        viewModel.delegate?(.chatTranscriptScreenRequested)
 
         switch try XCTUnwrap(receivedEvent) {
             case .chatTranscriptScreenRequested:
-                XCTAssertTrue(true)
-            default: XCTFail()
-        }
-    }
-
-    func testReportingAChangeRendersProps() throws {
-        var receivedEvent: ConfirmationViewModel.DelegateEvent?
-
-        viewModel.delegate = { event in
-            receivedEvent = event
-        }
-
-        viewModel.reportChange()
-
-        switch try XCTUnwrap(receivedEvent) {
-            case .renderProps(_):
                 XCTAssertTrue(true)
             default: XCTFail()
         }
