@@ -160,29 +160,24 @@ extension SecureConversations {
         }
 
         func presentSecureConversationsConfirmationViewController() {
-            let viewModel = SecureConversations.ConfirmationViewModel(
-                environment: .init(
-                    confirmationStyle: viewFactory.theme.secureConversationsConfirmation
-                )
+            let environment: ConfirmationViewSwiftUI.Model.Environment = .init(
+                orientationManager: environment.orientationManager,
+                uiApplication: environment.uiApplication
             )
 
-            let controller = SecureConversations.ConfirmationViewController(
-                viewModel: viewModel,
-                viewFactory: viewFactory,
-                props: viewModel.props()
-            )
+            let model = SecureConversations.ConfirmationViewSwiftUI.Model(
+                environment: environment,
+                style: viewFactory.theme.secureConversationsConfirmation,
+                delegate: { [weak self] event in
+                    switch event {
+                    case .closeTapped:
+                        self?.delegate?(.closeTapped(.doNotPresentSurvey))
+                    case .chatTranscriptScreenRequested:
+                        self?.navigateToTranscript()
+                    }
+                })
 
-            viewModel.delegate = { [weak self, weak controller] event in
-                switch event {
-                case .closeTapped:
-                    self?.delegate?(.closeTapped(.doNotPresentSurvey))
-                // Bind changes in view model to view controller.
-                case let .renderProps(props):
-                    controller?.props = props
-                case .chatTranscriptScreenRequested:
-                    self?.navigateToTranscript()
-                }
-            }
+            let controller = SecureConversations.ConfirmationViewController(model: model)
 
             self.navigationPresenter.push(
                 controller,
@@ -326,6 +321,7 @@ extension SecureConversations.Coordinator {
         var uuid: () -> UUID
         var uiApplication: UIKitBased.UIApplication
         var uiScreen: UIKitBased.UIScreen
+        var uiDevice: UIKitBased.UIDevice
         var notificationCenter: FoundationBased.NotificationCenter
         var createFileUploadListModel: SecureConversations.FileUploadListViewModel.Create
         var viewFactory: ViewFactory
@@ -351,6 +347,7 @@ extension SecureConversations.Coordinator {
         var startSocketObservation: CoreSdkClient.StartSocketObservation
         var stopSocketObservation: CoreSdkClient.StopSocketObservation
         var createSendMessagePayload: CoreSdkClient.CreateSendMessagePayload
+        var orientationManager: OrientationManager
     }
 
     enum DelegateEvent {

@@ -452,6 +452,7 @@ extension EngagementCoordinator {
                 uuid: environment.uuid,
                 uiApplication: environment.uiApplication,
                 uiScreen: environment.uiScreen,
+                uiDevice: environment.uiDevice,
                 notificationCenter: environment.notificationCenter,
                 createFileUploadListModel: environment.createFileUploadListModel,
                 viewFactory: viewFactory,
@@ -476,7 +477,8 @@ extension EngagementCoordinator {
                 isAuthenticated: environment.isAuthenticated,
                 startSocketObservation: environment.startSocketObservation,
                 stopSocketObservation: environment.stopSocketObservation,
-                createSendMessagePayload: environment.createSendMessagePayload
+                createSendMessagePayload: environment.createSendMessagePayload, 
+                orientationManager: environment.orientationManager
             )
         )
 

@@ -1,25 +1,14 @@
 import UIKit
+import SwiftUI
 
 extension SecureConversations {
     final class ConfirmationViewController: UIViewController {
-        var props: Props {
-            didSet {
-                guard props != oldValue else { return }
-                renderProps()
-            }
-        }
-
-        private let viewFactory: ViewFactory
-        private let viewModel: ConfirmationViewModel
+        private let model: ConfirmationViewSwiftUI.Model
 
         init(
-            viewModel: ConfirmationViewModel,
-            viewFactory: ViewFactory,
-            props: Props
+            model: ConfirmationViewSwiftUI.Model
         ) {
-            self.viewModel = viewModel
-            self.viewFactory = viewFactory
-            self.props = props
+            self.model = model
             super.init(nibName: nil, bundle: nil)
         }
 
@@ -30,26 +19,22 @@ extension SecureConversations {
 
         override func loadView() {
             super.loadView()
-            renderProps()
-        }
+            let hostingController: UIHostingController<ConfirmationViewSwiftUI>
+            let confirmationView = ConfirmationViewSwiftUI(
+                model: model
+            )
 
-        func renderProps() {
-            let confirmationView: ConfirmationView
-            if let currentView = view as? ConfirmationView {
-                confirmationView = currentView
-            } else {
-                confirmationView = viewFactory.makeSecureConversationsConfirmationView(
-                    props: props.confirmationViewProps
-                )
-                view = confirmationView
-            }
-            confirmationView.props = props.confirmationViewProps
+            hostingController = UIHostingController(rootView: confirmationView)
+            addChild(hostingController)
+            view.addSubview(hostingController.view)
+            hostingController.didMove(toParent: self)
+            hostingController.view.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                hostingController.view.topAnchor.constraint(equalTo: view.topAnchor),
+                hostingController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+                hostingController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                hostingController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+            ])
         }
-    }
-}
-
-extension SecureConversations.ConfirmationViewController {
-    struct Props: Equatable {
-        let confirmationViewProps: SecureConversations.ConfirmationView.Props
     }
 }
