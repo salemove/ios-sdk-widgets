@@ -189,3 +189,34 @@ extension Snapshotting where Value == UIView, Format == UIImage {
         )
     }
 }
+
+extension Snapshotting where Value == UIViewController, Format == UIImage {
+    private static var commonTraitCollection: [UITraitCollection] = [
+            .init(layoutDirection: .leftToRight),
+            .init(userInterfaceIdiom: .phone),
+            .init(horizontalSizeClass: .regular),
+            .init(verticalSizeClass: .compact),
+        ]
+
+    static var extra3LargeFontStrategyLandscape: Self {
+        let traits = UITraitCollection(traitsFrom: [
+            .init(preferredContentSizeCategory: .accessibilityExtraExtraExtraLarge)
+        ] + commonTraitCollection)
+        let safeArea: UIEdgeInsets = .init(top: 0, left: 47, bottom: 21, right: 47)
+        let size: CGSize = .init(width: 844, height: 390)
+        let viewImageConfig: ViewImageConfig = .init(safeArea: safeArea, size: size, traits: traits)
+
+        return Self.image(on: viewImageConfig)
+    }
+
+    static var imageLandscape: Self {
+        let traits = UITraitCollection(traitsFrom: [
+            .init(preferredContentSizeCategory: .medium),
+        ] + commonTraitCollection)
+        let safeArea: UIEdgeInsets = .init(top: 0, left: 47, bottom: 21, right: 47)
+        let size: CGSize = .init(width: 844, height: 390)
+        let viewImageConfig: ViewImageConfig = .init(safeArea: safeArea, size: size, traits: traits)
+
+        return Self.image(on: viewImageConfig)
+    }
+}
