@@ -701,6 +701,31 @@ class ChatViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.receivedMessageIds, [expectedMessageId.uppercased()])
         XCTAssertEqual(try XCTUnwrap(receivedMessage).id, expectedMessageId)
     }
+
+    func test_messageContainedInPendingSectionDiscardsOneDeliveredViaSocket() throws {
+        var viewModelEnv = ChatViewModel.Environment.failing()
+        viewModelEnv.createFileUploadListModel = { _ in .mock() }
+        viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
+        viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
+        viewModelEnv.loadChatMessagesFromHistory = { true }
+        viewModelEnv.fetchSiteConfigurations = { _ in }
+        viewModelEnv.fetchChatHistory = { callback in
+            callback(.success([]))
+        }
+        let viewModel: ChatViewModel = .mock(environment: viewModelEnv)
+        viewModel.isViewLoaded = true
+        viewModel.start()
+        let messageIdSuffix = "1D_123"
+
+        let outgoingMessage = OutgoingMessage(payload: .mock(messageIdSuffix: messageIdSuffix))
+        viewModel.pendingSection.append(
+            .init(kind: .outgoingMessage(outgoingMessage))
+        )
+
+        viewModel.interactorEvent(.receivedMessage(.mock(id: outgoingMessage.payload.messageId.rawValue)))
+        XCTAssertEqual(viewModel.messagesSection.items.count, 0)
+        XCTAssertEqual(viewModel.receivedMessageIds, [])
+    }
 }
 
 extension ChatChoiceCardOption {

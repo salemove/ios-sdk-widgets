@@ -663,6 +663,16 @@ extension ChatViewModel {
             return
         }
 
+        // Discard pending message delivered via socket to
+        // avoid message duplication. Currently pending messages
+        // stay in pending section whole session.
+        for pendingMessage in self.pendingSection.items {
+            if case let .outgoingMessage(outgoingPendingMessage) = pendingMessage.kind,
+                outgoingPendingMessage.payload.messageId.rawValue.uppercased() == message.id.uppercased() {
+                return
+            }
+        }
+
         registerReceivedMessage(messageId: message.id)
 
         let receivedMessage = message
