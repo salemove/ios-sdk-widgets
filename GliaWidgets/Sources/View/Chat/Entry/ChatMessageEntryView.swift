@@ -287,7 +287,6 @@ extension ChatMessageEntryView {
 
 enum MediaPickerButtonVisibility {
     enum ToggledBy {
-        case choiceCard
         case enagagementConnection(isConnected: Bool)
         case secureMessaging
     }
@@ -299,8 +298,6 @@ extension MediaPickerButtonVisibility {
     var isHidden: Bool {
         switch self {
         case .disabled:
-            return true
-        case .enabled(.choiceCard):
             return true
         case let .enabled(.enagagementConnection(isConnected)):
             return !isConnected

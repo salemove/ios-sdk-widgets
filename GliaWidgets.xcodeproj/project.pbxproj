@@ -399,6 +399,7 @@
 		8491AF602AA1EBB600CC3E72 /* TranscriptModelTests+URLs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8491AF5F2AA1EBB600CC3E72 /* TranscriptModelTests+URLs.swift */; };
 		8491AF632AA20F9D00CC3E72 /* GliaViewControllerDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8491AF622AA20F9D00CC3E72 /* GliaViewControllerDelegateMock.swift */; };
 		8491AF652AAB281500CC3E72 /* ChatViewModelTests+CustomCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8491AF642AAB281500CC3E72 /* ChatViewModelTests+CustomCard.swift */; };
+		8491AF672AB8707600CC3E72 /* ChatViewModelTests+Transferring.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8491AF662AB8707600CC3E72 /* ChatViewModelTests+Transferring.swift */; };
 		84A318A12869ECFC00CA1DE5 /* Unavailable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A318A02869ECFC00CA1DE5 /* Unavailable.swift */; };
 		84CFB7732822700000167258 /* Theme.Button.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CFB7722822700000167258 /* Theme.Button.Accessibility.swift */; };
 		84D2292B28C61C8D00F64FE7 /* WKNavigationPolicyProvider.CustomResponseCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D2292A28C61C8D00F64FE7 /* WKNavigationPolicyProvider.CustomResponseCard.swift */; };
@@ -1126,6 +1127,7 @@
 		8491AF5F2AA1EBB600CC3E72 /* TranscriptModelTests+URLs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TranscriptModelTests+URLs.swift"; sourceTree = "<group>"; };
 		8491AF622AA20F9D00CC3E72 /* GliaViewControllerDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GliaViewControllerDelegateMock.swift; sourceTree = "<group>"; };
 		8491AF642AAB281500CC3E72 /* ChatViewModelTests+CustomCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatViewModelTests+CustomCard.swift"; sourceTree = "<group>"; };
+		8491AF662AB8707600CC3E72 /* ChatViewModelTests+Transferring.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatViewModelTests+Transferring.swift"; sourceTree = "<group>"; };
 		84A318A02869ECFC00CA1DE5 /* Unavailable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Unavailable.swift; sourceTree = "<group>"; };
 		84CFB7722822700000167258 /* Theme.Button.Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.Button.Accessibility.swift; sourceTree = "<group>"; };
 		84D2292A28C61C8D00F64FE7 /* WKNavigationPolicyProvider.CustomResponseCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WKNavigationPolicyProvider.CustomResponseCard.swift; sourceTree = "<group>"; };
@@ -3141,6 +3143,7 @@
 				7512A57927BF9FCD00319DF1 /* ChatViewModelTests.swift */,
 				84681A942A61844000DD7406 /* ChatViewModelTests+Gva.swift */,
 				8491AF642AAB281500CC3E72 /* ChatViewModelTests+CustomCard.swift */,
+				8491AF662AB8707600CC3E72 /* ChatViewModelTests+Transferring.swift */,
 			);
 			path = ChatViewModel;
 			sourceTree = "<group>";
@@ -4786,6 +4789,7 @@
 				AF29811229E42F3C0005BD55 /* AvailabilityTests.swift in Sources */,
 				9AE05CB32805C9D900871321 /* ChatViewModel.Environment.Failing.swift in Sources */,
 				7552DFB12A6FB7DF0093519B /* ChatMessageTests.swift in Sources */,
+				8491AF672AB8707600CC3E72 /* ChatViewModelTests+Transferring.swift in Sources */,
 				AFEF5C7429929A8D005C3D8D /* SecureConversations.FileUploadListViewModel.Environment.Failing.swift in Sources */,
 				9A3E1D9D27BA7741005634EB /* FoundationBased.Failing.swift in Sources */,
 				9A3E1D8427B67F1B005634EB /* Helper.swift in Sources */,
