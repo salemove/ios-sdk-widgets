@@ -58,7 +58,6 @@ class ChatViewModel: EngagementViewModel {
         guard environment.getCurrentEngagement() != nil else {
             return .enabled(.enagagementConnection(isConnected: false))
         }
-        guard !isChoiceCardInputModeEnabled else { return .enabled(.choiceCard) }
         return .enabled(.enagagementConnection(isConnected: environment.getCurrentEngagement() != nil))
     }
 
@@ -313,6 +312,7 @@ extension ChatViewModel {
 extension ChatViewModel {
     private func onEngagementTransferring() {
         action?(.setMessageEntryEnabled(false))
+        action?(.setAttachmentButtonVisibility(.disabled))
         appendItem(.init(kind: .transferring), to: messagesSection, animated: true)
         action?(.scrollToBottom(animated: true))
         endScreenSharing()
@@ -320,6 +320,7 @@ extension ChatViewModel {
 
     private func onEngagementTransferred() {
         action?(.setMessageEntryEnabled(true))
+        action?(.setAttachmentButtonVisibility(mediaPickerButtonVisibility))
 
         let engagedOperator = interactor.engagedOperator
         action?(.setCallBubbleImage(imageUrl: engagedOperator?.picture?.url))
