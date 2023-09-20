@@ -56,7 +56,7 @@ extension Theme.SurveyStyle {
 
         return .init(
             layer: .init(
-                background: .fill(color: color.background),
+                background: .fill(color: color.baseLight),
                 borderColor: color.baseDark.cgColor,
                 cornerRadius: 30
             ),

@@ -41,7 +41,7 @@ extension Theme {
             infoFont: font.subtitle,
             infoColor: color.baseDark,
             borderColor: color.primary,
-            backgroundColor: color.background,
+            backgroundColor: color.baseLight,
             icon: Asset.upgradeAudio.image,
             iconColor: color.primary
         )
@@ -53,7 +53,7 @@ extension Theme {
             infoFont: font.subtitle,
             infoColor: color.baseDark,
             borderColor: color.primary,
-            backgroundColor: color.background,
+            backgroundColor: color.baseLight,
             icon: Asset.upgradePhone.image,
             iconColor: color.primary
         )

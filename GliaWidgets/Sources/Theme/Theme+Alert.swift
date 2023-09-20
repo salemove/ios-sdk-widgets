@@ -31,7 +31,7 @@ extension Theme {
             titleImageColor: color.primary,
             messageFont: font.bodyText,
             messageColor: color.baseDark,
-            backgroundColor: .fill(color: color.background),
+            backgroundColor: .fill(color: color.baseLight),
             closeButtonColor: .fill(color: color.baseNormal),
             actionAxis: .horizontal,
             positiveAction: positiveAction,
