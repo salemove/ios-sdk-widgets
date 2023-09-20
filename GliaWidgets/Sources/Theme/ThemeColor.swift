@@ -20,14 +20,11 @@ public struct ThemeColor {
     /// Base shade color. By default used as a separator color between message input area and chat, in attachment source list and as a border color in media upgrae prompts.
     public var baseShade: UIColor
 
-    /// Background color. By default used as a background color for chat, message input area and alerts.
-    public var background: UIColor
-
     /// Negative system color. By default used as a background color for "End Engagement" button, negative action button in alerts and as file download/upload error icon, progress bar and text color.
     public var systemNegative: UIColor
 
     /// Light grey color. By default used as a background for gva persistent buttons and gallery cards.
-    public var lightGrey: UIColor
+    public var baseNeutral: UIColor
 
     ///
     /// - Parameters:
@@ -37,7 +34,6 @@ public struct ThemeColor {
     ///   - baseLight: Base light color. By default used as a text color in chat/call view title, visitor chat message, "End Engagement" button,  queue/connection views and operator name in calls, alert titles and some other labels.
     ///   - baseDark: Base dark color. By default used as a text color in chat queue/connect views, operator chat messages, choice cards, message entry area, upgrade prompts, attachment source list and some other labels.
     ///   - baseShade: Base shade color. By default used as a separator color between message input area and chat, in attachment source list and as a border color in media upgrae prompts.
-    ///   - background: Background color. By default used as a background color for chat, message input area and alerts.
     ///   - systemNegative: Negative system color. By default used as a background color for "End Engagement" button, negative action button in alerts and as file download/upload error icon, progress bar and text color.
     public init(
         primary: UIColor? = nil,
@@ -46,9 +42,8 @@ public struct ThemeColor {
         baseLight: UIColor? = nil,
         baseDark: UIColor? = nil,
         baseShade: UIColor? = nil,
-        background: UIColor? = nil,
         systemNegative: UIColor? = nil,
-        lightGrey: UIColor? = nil
+        baseNeutral: UIColor? = nil
     ) {
         self.primary = primary ?? Color.primary
         self.secondary = secondary ?? Color.secondary
@@ -56,8 +51,7 @@ public struct ThemeColor {
         self.baseLight = baseLight ?? Color.baseLight
         self.baseDark = baseDark ?? Color.baseDark
         self.baseShade = baseShade ?? Color.baseShade
-        self.background = background ?? Color.background
         self.systemNegative = systemNegative ?? Color.systemNegative
-        self.lightGrey = lightGrey ?? Color.lightGrey
+        self.baseNeutral = baseNeutral ?? Color.baseNeutral
     }
 }

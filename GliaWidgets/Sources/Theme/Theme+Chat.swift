@@ -180,7 +180,7 @@ extension Theme {
             accessibility: .init(isFontScalingEnabled: true)
         )
         let operatorImageFile = ChatImageFileContentStyle(
-            backgroundColor: Color.lightGrey,
+            backgroundColor: color.baseNeutral,
             accessibility: .init(
                 contentAccessibilityLabel: Localization.Chat.Attachment.Message.Accessibility.label,
                 youAccessibilityPlaceholder: Localization.General.you,
@@ -196,7 +196,7 @@ extension Theme {
         let operatorMessage = OperatorMessageStyle(
             text: operatorText,
             background: .init(
-                background: .fill(color: Color.lightGrey),
+                background: .fill(color: color.baseNeutral),
                 borderColor: .clear,
                 borderWidth: .zero,
                 cornerRadius: 8.49
@@ -219,7 +219,7 @@ extension Theme {
             )
         )
         let choiceCardOptionNormalState = Button(
-            background: .fill(color: Color.lightGrey),
+            background: .fill(color: color.baseNeutral),
             title: .init(
                 color: color.baseDark.hex,
                 font: font.bodyText,
@@ -233,7 +233,7 @@ extension Theme {
             )
         )
         let choiceCardOptionSelectedState = Button(
-            background: .fill(color: Color.primary),
+            background: .fill(color: color.primary),
             title: .init(
                 color: color.baseLight.hex,
                 font: font.bodyText,
@@ -247,16 +247,16 @@ extension Theme {
             )
         )
         let choiceCardOptionDisabledState = Button(
-            background: .fill(color: Color.lightGrey),
+            background: .fill(color: color.baseNeutral),
             title: .init(
-                color: Color.grey.hex,
+                color: color.baseShade.hex,
                 font: font.bodyText,
                 textStyle: .body,
                 accessibility: .init(isFontScalingEnabled: true)
             ),
             cornerRadius: 4,
             borderWidth: 1,
-            borderColor: Color.baseShade.toRGBAHex(),
+            borderColor: color.baseShade.toRGBAHex(),
             accessibility: .init(
                 label: Localization.Chat.ChoiceCard.Button.Disabled.Accessibility.label,
                 isFontScalingEnabled: true
@@ -305,7 +305,7 @@ extension Theme {
             placeholderFont: font.bodyText,
             placeholderColor: color.baseNormal,
             separatorColor: color.baseShade,
-            backgroundColor: color.background,
+            backgroundColor: color.baseLight,
             mediaButton: mediaButton,
             sendButton: sendButton,
             uploadList: uploadListStyle,
@@ -372,14 +372,14 @@ extension Theme {
             title: Localization.Chat.unreadMessageDivider,
             titleColor: Color.baseNormal,
             titleFont: font.buttonLabel,
-            lineColor: Color.primary,
+            lineColor: color.primary,
             accessibility: .init(isFontScalingEnabled: true)
         )
 
         let systemMessage = SystemMessageStyle(
             text: operatorText,
             background: Theme.Layer(
-                background: .fill(color: Color.lightGrey),
+                background: .fill(color: color.baseNeutral),
                 borderColor: .clear,
                 borderWidth: .zero,
                 cornerRadius: 8.49
@@ -391,7 +391,7 @@ extension Theme {
         return ChatStyle(
             header: header,
             connect: connect,
-            backgroundColor: .fill(color: color.background),
+            backgroundColor: .fill(color: color.baseLight),
             preferredStatusBarStyle: .lightContent,
             title: Localization.Engagement.Chat.title,
             visitorMessageStyle: visitorMessage,
@@ -424,7 +424,7 @@ extension Theme {
             errorIcon: Asset.uploadError.image,
             errorIconColor: color.systemNegative,
             backgroundColor: color.primary,
-            errorBackgroundColor: Color.lightGrey,
+            errorBackgroundColor: color.baseNeutral,
             accessibility: .init(isFontScalingEnabled: true)
         )
         let uploading = FileUploadStateStyle(
@@ -460,7 +460,7 @@ extension Theme {
             error: error,
             progressColor: color.primary,
             errorProgressColor: color.systemNegative,
-            progressBackgroundColor: Color.lightGrey,
+            progressBackgroundColor: color.baseNeutral,
             removeButtonImage: Asset.uploadRemove.image,
             removeButtonColor: color.baseNormal,
             accessibility: .init(
@@ -481,7 +481,7 @@ extension Theme {
             errorIcon: Asset.uploadError.image,
             errorIconColor: color.systemNegative,
             backgroundColor: color.primary,
-            errorBackgroundColor: Color.lightGrey,
+            errorBackgroundColor: color.baseNeutral,
             accessibility: .init(isFontScalingEnabled: true)
         )
         let download = ChatFileDownloadStateStyle(
@@ -527,9 +527,9 @@ extension Theme {
             error: error,
             progressColor: color.primary,
             errorProgressColor: color.systemNegative,
-            progressBackgroundColor: Color.lightGrey,
+            progressBackgroundColor: color.baseNeutral,
             backgroundColor: .white,
-            borderColor: Color.lightGrey,
+            borderColor: color.baseNeutral,
             accessibility: .init(
                 contentAccessibilityLabel: Localization.Chat.Attachment.Message.Accessibility.label,
                 youAccessibilityPlaceholder: Localization.General.you,
@@ -580,7 +580,7 @@ extension Theme {
         return AttachmentSourceListStyle(
             items: [pickPhoto, takePhoto, browse],
             separatorColor: color.baseShade,
-            backgroundColor: Color.lightGrey
+            backgroundColor: color.baseNeutral
         )
     }
 }

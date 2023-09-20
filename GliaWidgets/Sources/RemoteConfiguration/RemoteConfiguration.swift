@@ -20,8 +20,8 @@ extension RemoteConfiguration {
         let baseLight: String?
         let baseDark: String?
         let baseShade: String?
-        let background: String?
         let systemNegative: String?
+        let baseNeutral: String?
     }
 }
 

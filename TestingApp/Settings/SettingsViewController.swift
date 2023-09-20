@@ -186,7 +186,7 @@ private extension SettingsViewController {
         )
         backgroundColorCell = SettingsColorCell(
             title: "Background:",
-            color: props.theme.color.background
+            color: props.theme.color.baseLight
         )
         systemNegativeColorCell = SettingsColorCell(
             title: "System negative:",
@@ -316,7 +316,6 @@ private extension SettingsViewController {
             baseLight: baseLightColorCell.color,
             baseDark: baseDarkColorCell.color,
             baseShade: baseShadeColorCell.color,
-            background: backgroundColorCell.color,
             systemNegative: systemNegativeColorCell.color
         )
         let font = ThemeFont(
