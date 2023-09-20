@@ -20,14 +20,14 @@ extension Theme {
                 ),
                 accessibility: .init(isFontScalingEnabled: true)
             ),
-            backgroundColor: .fill(color: color.lightGrey),
+            backgroundColor: .fill(color: color.baseNeutral),
             cornerRadius: 10,
             borderWidth: 0,
             borderColor: .clear,
             button: .init(
                 textFont: font.caption,
-                textColor: .black,
-                backgroundColor: .fill(color: color.background),
+                textColor: color.baseDark,
+                backgroundColor: .fill(color: color.baseLight),
                 cornerRadius: 5,
                 borderColor: .clear,
                 borderWidth: 0,
@@ -37,16 +37,16 @@ extension Theme {
 
         let quickReplyButton: GvaQuickReplyButtonStyle = .init(
             textFont: font.buttonLabel,
-            textColor: Color.primary,
-            backgroundColor: .fill(color: Color.baseLight),
+            textColor: color.primary,
+            backgroundColor: .fill(color: color.baseLight),
             cornerRadius: 10,
-            borderColor: Color.primary,
+            borderColor: color.primary,
             borderWidth: 1
         )
 
         let galleryCard: GvaGalleryCardStyle = .init(
             cardContainer: .init(
-                backgroundColor: .fill(color: color.lightGrey),
+                backgroundColor: .fill(color: color.baseNeutral),
                 cornerRadius: 8,
                 borderColor: .clear,
                 borderWidth: 0
@@ -59,22 +59,22 @@ extension Theme {
             ),
             title: .init(
                 font: font.mediumSubtitle1,
-                textColor: .black,
+                textColor: color.baseDark,
                 textStyle: .body
             ),
             subtitle: .init(
                 font: font.caption,
-                textColor: .black,
+                textColor: color.baseDark,
                 textStyle: .caption1
             ),
             button: .init(
                 title: .init(
                     font: font.caption,
-                    textColor: .black,
+                    textColor: color.baseDark,
                     textStyle: .caption1
                 ),
                 background: .init(
-                    backgroundColor: .fill(color: color.background),
+                    backgroundColor: .fill(color: color.baseLight),
                     cornerRadius: 8,
                     borderColor: .clear,
                     borderWidth: 0

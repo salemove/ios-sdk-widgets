@@ -54,7 +54,7 @@ extension Theme {
             borderColor: color.baseNormal,
             borderWidth: 1,
             cornerRadius: 4,
-            backgroundColor: color.background,
+            backgroundColor: color.baseLight,
             accessibility: .init(isFontScalingEnabled: true)
         )
 
@@ -68,7 +68,7 @@ extension Theme {
             borderColor: color.primary,
             borderWidth: 1,
             cornerRadius: 4,
-            backgroundColor: color.background,
+            backgroundColor: color.baseLight,
             accessibility: .init(isFontScalingEnabled: true)
         )
 
@@ -178,7 +178,7 @@ extension Theme {
                 errorIcon: Asset.uploadError.image,
                 errorIconColor: color.systemNegative,
                 backgroundColor: color.primary,
-                errorBackgroundColor: Color.lightGrey,
+                errorBackgroundColor: color.baseNeutral,
                 accessibility: .init(isFontScalingEnabled: true)
             )
             let uploading = FileUploadStateStyle(
@@ -214,7 +214,7 @@ extension Theme {
                 error: error,
                 progressColor: color.primary,
                 errorProgressColor: color.systemNegative,
-                progressBackgroundColor: Color.lightGrey,
+                progressBackgroundColor: color.baseNeutral,
                 removeButtonImage: Asset.mcRemoveUpload.image,
                 removeButtonColor: color.baseNormal,
                 backgroundColor: .commonGray,
@@ -267,7 +267,7 @@ extension Theme {
            return AttachmentSourceListStyle(
                items: [pickPhoto, takePhoto, browse],
                separatorColor: color.baseShade,
-               backgroundColor: Color.lightGrey
+               backgroundColor: color.baseNeutral
            )
        }
 
@@ -285,7 +285,7 @@ extension Theme {
             filePickerButtonStyle: filePickerButtonStyle,
             attachmentListStyle: uploadListStyle,
             pickMediaStyle: pickMediaStyle,
-            backgroundColor: color.background
+            backgroundColor: color.baseLight
         )
     }
 }
