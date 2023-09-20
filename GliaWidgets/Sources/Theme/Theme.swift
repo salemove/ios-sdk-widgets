@@ -91,8 +91,8 @@ public class Theme {
                     baseLight: config.globalColors?.baseLight.map { UIColor(hex: $0) },
                     baseDark: config.globalColors?.baseDark.map { UIColor(hex: $0) },
                     baseShade: config.globalColors?.baseShade.map { UIColor(hex: $0) },
-                    background: config.globalColors?.background.map { UIColor(hex: $0) },
-                    systemNegative: config.globalColors?.systemNegative.map { UIColor(hex: $0) }
+                    systemNegative: config.globalColors?.systemNegative.map { UIColor(hex: $0) },
+                    baseNeutral: config.globalColors?.baseNeutral.map { UIColor(hex: $0) }
                 )
             )
         )

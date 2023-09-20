@@ -33,7 +33,7 @@ public extension Theme.SurveyStyle {
                         accessibility: .init(isFontScalingEnabled: true)
                     ),
                     normalLayer: .init(
-                        background: .fill(color: Color.baseLight),
+                        background: .fill(color: color.baseLight),
                         borderColor: color.baseNormal.cgColor,
                         borderWidth: 1,
                         cornerRadius: 4
