@@ -477,7 +477,7 @@ extension EngagementCoordinator {
                 isAuthenticated: environment.isAuthenticated,
                 startSocketObservation: environment.startSocketObservation,
                 stopSocketObservation: environment.stopSocketObservation,
-                createSendMessagePayload: environment.createSendMessagePayload, 
+                createSendMessagePayload: environment.createSendMessagePayload,
                 orientationManager: environment.orientationManager
             )
         )

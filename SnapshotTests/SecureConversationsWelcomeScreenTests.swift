@@ -3,7 +3,7 @@ import AccessibilitySnapshot
 import SnapshotTesting
 import XCTest
 
-class SecureConversationsWelcomeScreenTests: SnapshotTestCase {
+final class SecureConversationsWelcomeScreenTests: SnapshotTestCase {
     let theme = Theme.mock()
 
     func test_welcomeView() {

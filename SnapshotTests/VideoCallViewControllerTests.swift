@@ -3,7 +3,7 @@ import AccessibilitySnapshot
 import SnapshotTesting
 import XCTest
 
-class VideoCallViewControllerTests: SnapshotTestCase {
+final class VideoCallViewControllerTests: SnapshotTestCase {
     func testVideoCallViewController() {
         let videoCallViewProps: CallVisualizer.VideoCallView.Props = .mock(
             buttonBarProps: .mock(

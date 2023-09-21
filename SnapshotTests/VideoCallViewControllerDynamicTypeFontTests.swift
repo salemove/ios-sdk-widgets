@@ -56,6 +56,11 @@ final class VideoCallViewControllerDynamicTypeFontTests: SnapshotTestCase {
             as: .extra3LargeFontStrategy,
             named: nameForDevice()
         )
+        assertSnapshot(
+            matching: videoCallViewController,
+            as: .extra3LargeFontStrategyLandscape,
+            named: nameForDevice(.landscape)
+        )
     }
 }
 // swiftlint:enable type_name

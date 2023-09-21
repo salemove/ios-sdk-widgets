@@ -2,7 +2,7 @@
 import SnapshotTesting
 import XCTest
 
-class CallViewControllerLayoutTests: SnapshotTestCase {
+final class CallViewControllerLayoutTests: SnapshotTestCase {
     func test_audioCallQueueState() throws {
         let viewController = try CallViewController.mockAudioCallQueueState()
         viewController.view.frame = UIScreen.main.bounds
@@ -10,6 +10,11 @@ class CallViewControllerLayoutTests: SnapshotTestCase {
             matching: viewController,
             as: .image,
             named: nameForDevice()
+        )
+        assertSnapshot(
+            matching: viewController,
+            as: .imageLandscape,
+            named: nameForDevice(.landscape)
         )
     }
 
@@ -21,6 +26,11 @@ class CallViewControllerLayoutTests: SnapshotTestCase {
             as: .image,
             named: nameForDevice()
         )
+        assertSnapshot(
+            matching: viewController,
+            as: .imageLandscape,
+            named: nameForDevice(.landscape)
+        )
     }
 
     func test_audioCallConnectedState() throws {
@@ -30,6 +40,11 @@ class CallViewControllerLayoutTests: SnapshotTestCase {
             matching: viewController,
             as: .image,
             named: nameForDevice()
+        )
+        assertSnapshot(
+            matching: viewController,
+            as: .imageLandscape,
+            named: nameForDevice(.landscape)
         )
     }
 
@@ -41,6 +56,11 @@ class CallViewControllerLayoutTests: SnapshotTestCase {
             as: .image,
             named: nameForDevice()
         )
+        assertSnapshot(
+            matching: viewController,
+            as: .imageLandscape,
+            named: nameForDevice(.landscape)
+        )
     }
 
     func test_mockVideoCallQueueState() throws {
@@ -51,6 +71,11 @@ class CallViewControllerLayoutTests: SnapshotTestCase {
             as: .image,
             named: nameForDevice()
         )
+        assertSnapshot(
+            matching: viewController,
+            as: .imageLandscape,
+            named: nameForDevice(.landscape)
+        )
     }
 
     func test_mockVideoCallConnectedState() throws {
@@ -60,6 +85,11 @@ class CallViewControllerLayoutTests: SnapshotTestCase {
             matching: viewController,
             as: .image,
             named: nameForDevice()
+        )
+        assertSnapshot(
+            matching: viewController,
+            as: .imageLandscape,
+            named: nameForDevice(.landscape)
         )
     }
 }

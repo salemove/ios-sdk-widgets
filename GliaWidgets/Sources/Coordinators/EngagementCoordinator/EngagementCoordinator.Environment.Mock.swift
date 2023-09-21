@@ -34,7 +34,7 @@ extension EngagementCoordinator.Environment {
         startSocketObservation: {},
         stopSocketObservation: {},
         pushNotifications: .mock,
-        createSendMessagePayload: { _, _ in .mock() }, 
+        createSendMessagePayload: { _, _ in .mock() },
         orientationManager: .mock()
     )
 }

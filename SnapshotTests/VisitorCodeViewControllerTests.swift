@@ -3,7 +3,7 @@ import AccessibilitySnapshot
 import SnapshotTesting
 import XCTest
 
-class VisitorCodeViewControllerTests: SnapshotTestCase {
+final class VisitorCodeViewControllerTests: SnapshotTestCase {
     func testVisitorCodeAlertWhenLoading() {
         let props: CallVisualizer.VisitorCodeViewController.Props = .init(
             visitorCodeViewProps: .init(
