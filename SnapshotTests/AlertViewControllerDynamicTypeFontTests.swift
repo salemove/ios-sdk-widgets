@@ -15,6 +15,11 @@ final class AlertViewControllerDynamicTypeFontTests: SnapshotTestCase {
             as: .extra3LargeFontStrategy,
             named: nameForDevice()
         )
+        assertSnapshot(
+            matching: alert,
+            as: .extra3LargeFontStrategyLandscape,
+            named: nameForDevice(.landscape)
+        )
     }
 
     func test_mediaUpgradeOffer_extra3Large() {
@@ -27,6 +32,11 @@ final class AlertViewControllerDynamicTypeFontTests: SnapshotTestCase {
             matching: alert,
             as: .extra3LargeFontStrategy,
             named: nameForDevice()
+        )
+        assertSnapshot(
+            matching: alert,
+            as: .extra3LargeFontStrategyLandscape,
+            named: nameForDevice(.landscape)
         )
     }
 
@@ -41,6 +51,11 @@ final class AlertViewControllerDynamicTypeFontTests: SnapshotTestCase {
             as: .extra3LargeFontStrategy,
             named: nameForDevice()
         )
+        assertSnapshot(
+            matching: alert,
+            as: .extra3LargeFontStrategyLandscape,
+            named: nameForDevice(.landscape)
+        )
     }
 
     func test_singleAction_extra3Large() {
@@ -53,6 +68,11 @@ final class AlertViewControllerDynamicTypeFontTests: SnapshotTestCase {
             matching: alert,
             as: .extra3LargeFontStrategy,
             named: nameForDevice()
+        )
+        assertSnapshot(
+            matching: alert,
+            as: .extra3LargeFontStrategyLandscape,
+            named: nameForDevice(.landscape)
         )
     }
 

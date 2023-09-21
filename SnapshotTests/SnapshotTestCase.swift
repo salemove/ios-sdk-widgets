@@ -50,15 +50,46 @@ extension SnapshotTestCase {
         }
     }
 
-    func nameForDevice(baseName: String? = nil) -> String {
+    /// This method sets the name for the snapshot tests by taking one parameter. 
+    /// Depending of the case passed in, either prefix, suffix, or nothing
+    /// additional will be added to the the base name. The method returns a string.
+    func nameForDevice(_ baseName: NameForDevice = .portrait) -> String {
         let size = UIScreen.main.bounds.size
         let scale = UIScreen.main.scale
         let version = UIDevice.current.systemVersion
         let deviceName = "\(Int(size.width))x\(Int(size.height))-\(version)-\(Int(scale))x"
 
-        return [baseName, deviceName]
-            .compactMap { $0 }
-            .joined(separator: "-")
+        switch baseName {
+        case let .baseName(value):
+            return [value, deviceName]
+                .compactMap { $0 }
+                .joined(separator: "-")
+        case .portrait:
+            return "\(deviceName)"
+        case .landscape:
+            return "\(deviceName)-landscape"
+        }
+    }
+
+    /// All available cases for the snapshot tests name. This Enum
+    /// conforms to ExpressibleByStringLiteral allowing a string to be
+    /// passed instead of a case, that will convert it to baseName case.
+    ///
+    /// - baseName(String?) case is a string that can be added as prefix
+    /// to the test name
+    ///
+    /// - portrait case serves as a default case for snapshot tests and
+    /// won't add anything additional to the name
+    ///
+    /// - landscape case will add suffix to the end of the name
+    enum NameForDevice: ExpressibleByStringLiteral {
+        case baseName(String?)
+        case portrait
+        case landscape
+
+        init(stringLiteral value: String) {
+            self = .baseName(value)
+        }
     }
 }
 
@@ -188,16 +219,32 @@ extension Snapshotting where Value == UIView, Format == UIImage {
             )
         )
     }
+
+    static var extra3LargeFontStrategyLandscape: Self {
+        let traits = UITraitCollection(traitsFrom: [
+            .init(preferredContentSizeCategory: .accessibilityExtraExtraExtraLarge)
+        ] + commonTraitCollection)
+
+        return Self.image(traits: traits)
+    }
+
+    static var imageLandscape: Self {
+        let traits = UITraitCollection(traitsFrom: [
+            .init(preferredContentSizeCategory: .medium),
+        ] + commonTraitCollection)
+
+        return Self.image(traits: traits)
+    }
+
+    private static var commonTraitCollection: [UITraitCollection] = [
+        .init(layoutDirection: .leftToRight),
+        .init(userInterfaceIdiom: .phone),
+        .init(horizontalSizeClass: .regular),
+        .init(verticalSizeClass: .compact),
+    ]
 }
 
 extension Snapshotting where Value == UIViewController, Format == UIImage {
-    private static var commonTraitCollection: [UITraitCollection] = [
-            .init(layoutDirection: .leftToRight),
-            .init(userInterfaceIdiom: .phone),
-            .init(horizontalSizeClass: .regular),
-            .init(verticalSizeClass: .compact),
-        ]
-
     static var extra3LargeFontStrategyLandscape: Self {
         let traits = UITraitCollection(traitsFrom: [
             .init(preferredContentSizeCategory: .accessibilityExtraExtraExtraLarge)
@@ -219,4 +266,11 @@ extension Snapshotting where Value == UIViewController, Format == UIImage {
 
         return Self.image(on: viewImageConfig)
     }
+
+    private static var commonTraitCollection: [UITraitCollection] = [
+        .init(layoutDirection: .leftToRight),
+        .init(userInterfaceIdiom: .phone),
+        .init(horizontalSizeClass: .regular),
+        .init(verticalSizeClass: .compact),
+    ]
 }

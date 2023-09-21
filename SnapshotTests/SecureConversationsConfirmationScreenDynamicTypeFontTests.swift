@@ -20,7 +20,12 @@ final class SecureConversationsConfirmationScreenDynamicTypeFontTests: SnapshotT
         assertSnapshot(
             matching: viewController.view,
             as: .extra3LargeFontStrategy,
-            named: self.nameForDevice()
+            named: nameForDevice()
+        )
+        assertSnapshot(
+            matching: viewController.view,
+            as: .extra3LargeFontStrategyLandscape,
+            named: nameForDevice(.landscape)
         )
     }
 }

@@ -21,7 +21,12 @@ final class SecureConversationsWelcomeScreenDynamicTypeFontTests: SnapshotTestCa
         assertSnapshot(
             matching: viewController.view,
             as: .extra3LargeFontStrategy,
-            named: self.nameForDevice()
+            named: nameForDevice()
+        )
+        assertSnapshot(
+            matching: viewController.view,
+            as: .extra3LargeFontStrategyLandscape,
+            named: nameForDevice(.landscape)
         )
     }
 
@@ -43,7 +48,12 @@ final class SecureConversationsWelcomeScreenDynamicTypeFontTests: SnapshotTestCa
         assertSnapshot(
             matching: viewController.view,
             as: .extra3LargeFontStrategy,
-            named: self.nameForDevice()
+            named: nameForDevice()
+        )
+        assertSnapshot(
+            matching: viewController.view,
+            as: .extra3LargeFontStrategyLandscape,
+            named: nameForDevice(.landscape)
         )
     }
 
@@ -59,7 +69,12 @@ final class SecureConversationsWelcomeScreenDynamicTypeFontTests: SnapshotTestCa
         assertSnapshot(
             matching: viewController.view,
             as: .extra3LargeFontStrategy,
-            named: self.nameForDevice()
+            named: nameForDevice()
+        )
+        assertSnapshot(
+            matching: viewController.view,
+            as: .extra3LargeFontStrategyLandscape,
+            named: nameForDevice(.landscape)
         )
     }
 
