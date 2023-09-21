@@ -5,11 +5,12 @@ extension CoreSdkClient {
         pushNotifications: .failing,
         createAppDelegate: { .failing },
         clearSession: { fail("\(Self.self).clearSession") },
+        localeProvider: .failing,
         fetchVisitorInfo: { _ in fail("\(Self.self).fetchVisitorInfo") },
         updateVisitorInfo: { _, _ in fail("\(Self.self).updateVisitorInfo") },
         configureWithConfiguration: { _, _ in fail("\(Self.self).configureWithConfiguration") },
         configureWithInteractor: { _ in fail("\(Self.self).configureWithInteractor") },
-        listQueues: {_ in fail("\(Self.self).listQueues") },
+        listQueues: { _ in fail("\(Self.self).listQueues") },
         queueForEngagement: { _, _ in fail("\(Self.self).queueForEngagement") },
         requestMediaUpgradeWithOffer: { _, _ in fail("\(Self.self).requestMediaUpgradeWithOffer") },
         sendMessagePreview: { _, _ in fail("\(Self.self).sendMessagePreview") },
@@ -86,6 +87,15 @@ extension CoreSdkClient.AppDelegate {
         },
         applicationDidBecomeActive: { _ in
             fail("\(Self.self).applicationDidBecomeActive")
+        }
+    )
+}
+
+extension CoreSdkClient.LocaleProvider {
+    static let failing = Self(
+        getRemoteString: { _ in
+            fail("\(Self.self).getRemoteString")
+            return nil
         }
     )
 }

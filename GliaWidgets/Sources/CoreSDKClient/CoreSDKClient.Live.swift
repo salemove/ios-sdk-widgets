@@ -6,6 +6,7 @@ extension CoreSdkClient {
             pushNotifications: .live,
             createAppDelegate: Self.AppDelegate.live,
             clearSession: GliaCore.sharedInstance.clearSession,
+            localeProvider: .init(getRemoteString: GliaCore.sharedInstance.localeProvider.getRemoteString(_:)),
             fetchVisitorInfo: GliaCore.sharedInstance.fetchVisitorInfo(_:),
             updateVisitorInfo: GliaCore.sharedInstance.updateVisitorInfo(_:completion:),
             configureWithConfiguration: GliaCore.sharedInstance.configure(with:completion:),
