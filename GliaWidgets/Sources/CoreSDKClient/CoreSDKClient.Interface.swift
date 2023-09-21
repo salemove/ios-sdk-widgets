@@ -6,6 +6,7 @@ struct CoreSdkClient {
     var pushNotifications: PushNotifications
     var createAppDelegate: () -> AppDelegate
     var clearSession: () -> Void
+    var localeProvider: LocaleProvider
 
     typealias FetchVisitorInfo = (_ completion: @escaping (Result<Self.Salemove.VisitorInfo, Error>) -> Void) -> Void
     var fetchVisitorInfo: FetchVisitorInfo
@@ -168,6 +169,13 @@ extension CoreSdkClient {
         ) -> Bool
 
         var applicationDidBecomeActive: (_ application: UIApplication) -> Void
+    }
+}
+
+extension CoreSdkClient {
+    struct LocaleProvider {
+        typealias CustomLocaleGetRemoteString = ((String) -> String?)
+        var getRemoteString: CustomLocaleGetRemoteString
     }
 }
 

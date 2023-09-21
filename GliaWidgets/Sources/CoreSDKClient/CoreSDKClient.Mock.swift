@@ -7,6 +7,7 @@ extension CoreSdkClient {
         pushNotifications: .mock,
         createAppDelegate: { .mock },
         clearSession: {},
+        localeProvider: .mock,
         fetchVisitorInfo: { _ in },
         updateVisitorInfo: { _, _ in },
         configureWithConfiguration: { _, _ in },
@@ -51,6 +52,10 @@ extension CoreSdkClient.AppDelegate {
         applicationDidFinishLaunchingWithOptions: { _, _ in false },
         applicationDidBecomeActive: { _ in }
     )
+}
+
+extension CoreSdkClient.LocaleProvider {
+    static let mock = Self(getRemoteString: { _ in nil })
 }
 
 extension CoreSdkClient.EngagementFile {
