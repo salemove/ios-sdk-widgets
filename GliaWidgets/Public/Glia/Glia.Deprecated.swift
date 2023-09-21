@@ -114,12 +114,15 @@ extension Glia {
         interactor = createdInteractor
 
         if let callback = completion {
-            createdInteractor.withConfiguration { [weak createdInteractor] in
-                guard let interactor = createdInteractor else { return }
-                    interactor.state = GliaCore.sharedInstance
-                        .getCurrentEngagement()?.engagedOperator
-                        .map(InteractorState.engaged) ?? interactor.state
-                    callback()
+            createdInteractor.withConfiguration { [weak createdInteractor, weak self] in
+                guard let createdInteractor, let self else { return }
+
+                self.stringProviding = .init(getRemoteString: self.environment.coreSdk.localeProvider.getRemoteString)
+
+                createdInteractor.state = self.environment.coreSdk
+                    .getCurrentEngagement()?.engagedOperator
+                    .map(InteractorState.engaged) ?? createdInteractor.state
+                callback()
             }
         }
 
