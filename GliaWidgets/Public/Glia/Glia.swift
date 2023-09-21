@@ -126,14 +126,14 @@ public class Glia {
         interactor = createdInteractor
 
         if let callback = completion {
-            createdInteractor.withConfiguration { [weak createdInteractor] in
-                guard let interactor = createdInteractor else { return }
+            createdInteractor.withConfiguration { [weak createdInteractor, weak self] in
+                guard let createdInteractor, let self else { return }
 
-                // TODO: Configure string providing from Core SDK here.
+                self.stringProviding = .init(getRemoteString: self.environment.coreSdk.localeProvider.getRemoteString)
 
-                interactor.state = GliaCore.sharedInstance
+                createdInteractor.state = self.environment.coreSdk
                     .getCurrentEngagement()?.engagedOperator
-                    .map(InteractorState.engaged) ?? interactor.state
+                    .map(InteractorState.engaged) ?? createdInteractor.state
 
                 callback()
             }
@@ -149,7 +149,7 @@ public class Glia {
         rootCoordinator?.minimize()
     }
 
-    /// Maximizes engagement view if ongoing engagment exists.
+    /// Maximizes engagement view if ongoing engagement exists.
     /// Throws error if ongoing engagement not exist.
     /// Use this function for resuming engagement view If bubble is hidden programmatically and you need to
     /// present engagement view.
