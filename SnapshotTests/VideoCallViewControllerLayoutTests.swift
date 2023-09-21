@@ -2,7 +2,7 @@
 import SnapshotTesting
 import XCTest
 
-class VideoCallViewControllerLayoutTests: SnapshotTestCase {
+final class VideoCallViewControllerLayoutTests: SnapshotTestCase {
     func testVideoCallViewController() {
         let videoCallViewProps: CallVisualizer.VideoCallView.Props = .mock(
             buttonBarProps: .mock(
@@ -54,6 +54,11 @@ class VideoCallViewControllerLayoutTests: SnapshotTestCase {
             matching: videoCallViewController,
             as: .image,
             named: nameForDevice()
+        )
+        assertSnapshot(
+            matching: videoCallViewController,
+            as: .imageLandscape,
+            named: nameForDevice(.landscape)
         )
     }
 }

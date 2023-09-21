@@ -3,7 +3,7 @@ import AccessibilitySnapshot
 import SnapshotTesting
 import XCTest
 
-class ScreenShareViewControllerTests: SnapshotTestCase {
+final class ScreenShareViewControllerTests: SnapshotTestCase {
     func testScreenShareViewController() {
         let theme = Theme()
         let font = theme.font

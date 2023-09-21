@@ -2,7 +2,7 @@
 import SnapshotTesting
 import XCTest
 
-class SecureConversationsConfirmationScreenLayoutTests: SnapshotTestCase {
+final class SecureConversationsConfirmationScreenLayoutTests: SnapshotTestCase {
     let theme = Theme.mock()
 
     func test_confirmationView() {
@@ -19,7 +19,12 @@ class SecureConversationsConfirmationScreenLayoutTests: SnapshotTestCase {
         assertSnapshot(
             matching: viewController,
             as: .image,
-            named: self.nameForDevice()
+            named: nameForDevice()
+        )
+        assertSnapshot(
+            matching: viewController,
+            as: .imageLandscape,
+            named: nameForDevice(.landscape)
         )
     }
 }

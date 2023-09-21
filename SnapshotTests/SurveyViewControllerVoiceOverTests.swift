@@ -3,9 +3,13 @@ import AccessibilitySnapshot
 import SnapshotTesting
 import XCTest
 
-class SurveyViewControllerVoiceOverTests: SnapshotTestCase {
+final class SurveyViewControllerVoiceOverTests: SnapshotTestCase {
     func test_emptySurvey() {
-        let viewController = Survey.ViewController(viewFactory: .mock(), environment: .init(notificationCenter: .mock), props: .emptyPropsMock())
+        let viewController = Survey.ViewController(
+            viewFactory: .mock(),
+            environment: .init(notificationCenter: .mock),
+            props: .emptyPropsMock()
+        )
         viewController.view.frame = UIScreen.main.bounds
         assertSnapshot(
             matching: viewController,
@@ -15,7 +19,11 @@ class SurveyViewControllerVoiceOverTests: SnapshotTestCase {
     }
 
     func test_filledSurvey() {
-        let viewController = Survey.ViewController(viewFactory: .mock(), environment: .init(notificationCenter: .mock), props: .filledPropsMock())
+        let viewController = Survey.ViewController(
+            viewFactory: .mock(),
+            environment: .init(notificationCenter: .mock),
+            props: .filledPropsMock()
+        )
         viewController.view.frame = UIScreen.main.bounds
         assertSnapshot(
             matching: viewController,
@@ -25,7 +33,11 @@ class SurveyViewControllerVoiceOverTests: SnapshotTestCase {
     }
 
     func test_emptySurveyErrorState() {
-        let viewController = Survey.ViewController(viewFactory: .mock(), environment: .init(notificationCenter: .mock), props: .errorPropsMock())
+        let viewController = Survey.ViewController(
+            viewFactory: .mock(),
+            environment: .init(notificationCenter: .mock),
+            props: .errorPropsMock()
+        )
         viewController.view.frame = UIScreen.main.bounds
         assertSnapshot(
             matching: viewController,

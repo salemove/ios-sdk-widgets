@@ -11,6 +11,11 @@ final class CallViewControllerDynamicTypeFontTests: SnapshotTestCase {
             as: .extra3LargeFontStrategy,
             named: nameForDevice()
         )
+        assertSnapshot(
+            matching: viewController,
+            as: .extra3LargeFontStrategyLandscape,
+            named: nameForDevice(.landscape)
+        )
     }
 
     func test_audioCallConnectingState_extra3Large() throws {
@@ -20,6 +25,11 @@ final class CallViewControllerDynamicTypeFontTests: SnapshotTestCase {
             matching: viewController,
             as: .extra3LargeFontStrategy,
             named: nameForDevice()
+        )
+        assertSnapshot(
+            matching: viewController,
+            as: .extra3LargeFontStrategyLandscape,
+            named: nameForDevice(.landscape)
         )
     }
 
@@ -31,6 +41,11 @@ final class CallViewControllerDynamicTypeFontTests: SnapshotTestCase {
             as: .extra3LargeFontStrategy,
             named: nameForDevice()
         )
+        assertSnapshot(
+            matching: viewController,
+            as: .extra3LargeFontStrategyLandscape,
+            named: nameForDevice(.landscape)
+        )
     }
 
     func test_mockVideoCallConnectingState_extra3Large() throws {
@@ -40,6 +55,11 @@ final class CallViewControllerDynamicTypeFontTests: SnapshotTestCase {
             matching: viewController,
             as: .extra3LargeFontStrategy,
             named: nameForDevice()
+        )
+        assertSnapshot(
+            matching: viewController,
+            as: .extra3LargeFontStrategyLandscape,
+            named: nameForDevice(.landscape)
         )
     }
 
@@ -51,6 +71,11 @@ final class CallViewControllerDynamicTypeFontTests: SnapshotTestCase {
             as: .extra3LargeFontStrategy,
             named: nameForDevice()
         )
+        assertSnapshot(
+            matching: viewController,
+            as: .extra3LargeFontStrategyLandscape,
+            named: nameForDevice(.landscape)
+        )
     }
 
     func test_mockVideoCallConnectedState_extra3Large() throws {
@@ -60,6 +85,11 @@ final class CallViewControllerDynamicTypeFontTests: SnapshotTestCase {
             matching: viewController,
             as: .extra3LargeFontStrategy,
             named: nameForDevice()
+        )
+        assertSnapshot(
+            matching: viewController,
+            as: .extra3LargeFontStrategyLandscape,
+            named: nameForDevice(.landscape)
         )
     }
 }

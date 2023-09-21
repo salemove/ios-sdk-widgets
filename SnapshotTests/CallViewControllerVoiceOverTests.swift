@@ -3,7 +3,7 @@ import AccessibilitySnapshot
 import SnapshotTesting
 import XCTest
 
-class CallViewControllerVoiceOverTests: SnapshotTestCase {
+final class CallViewControllerVoiceOverTests: SnapshotTestCase {
     func test_audioCallQueueState() throws {
         let viewController = try CallViewController.mockAudioCallQueueState()
         viewController.view.frame = UIScreen.main.bounds

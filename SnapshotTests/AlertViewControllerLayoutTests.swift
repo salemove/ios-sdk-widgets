@@ -2,7 +2,7 @@
 import SnapshotTesting
 import XCTest
 
-class AlertViewControllerLayoutTests: SnapshotTestCase {
+final class AlertViewControllerLayoutTests: SnapshotTestCase {
     func test_screenSharingOffer() {
         let alert = alert(ofKind: .screenShareOffer(
             .mock(),
@@ -13,6 +13,11 @@ class AlertViewControllerLayoutTests: SnapshotTestCase {
             matching: alert,
             as: .image,
             named: nameForDevice()
+        )
+        assertSnapshot(
+            matching: alert,
+            as: .imageLandscape,
+            named: nameForDevice(.landscape)
         )
     }
 
@@ -27,6 +32,11 @@ class AlertViewControllerLayoutTests: SnapshotTestCase {
             as: .image,
             named: nameForDevice()
         )
+        assertSnapshot(
+            matching: alert,
+            as: .imageLandscape,
+            named: nameForDevice(.landscape)
+        )
     }
 
     func test_messageAlert() {
@@ -40,6 +50,11 @@ class AlertViewControllerLayoutTests: SnapshotTestCase {
             as: .image,
             named: nameForDevice()
         )
+        assertSnapshot(
+            matching: alert,
+            as: .imageLandscape,
+            named: nameForDevice(.landscape)
+        )
     }
 
     func test_singleAction() {
@@ -52,6 +67,11 @@ class AlertViewControllerLayoutTests: SnapshotTestCase {
             matching: alert,
             as: .image,
             named: nameForDevice()
+        )
+        assertSnapshot(
+            matching: alert,
+            as: .imageLandscape,
+            named: nameForDevice(.landscape)
         )
     }
 

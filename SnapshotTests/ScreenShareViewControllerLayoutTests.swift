@@ -2,7 +2,7 @@
 import SnapshotTesting
 import XCTest
 
-class ScreenShareViewControllerLayoutTests: SnapshotTestCase {
+final class ScreenShareViewControllerLayoutTests: SnapshotTestCase {
     func testScreenShareViewController() {
         let theme = Theme()
         let font = theme.font
@@ -26,6 +26,11 @@ class ScreenShareViewControllerLayoutTests: SnapshotTestCase {
             matching: screenShareViewController,
             as: .image,
             named: nameForDevice()
+        )
+        assertSnapshot(
+            matching: screenShareViewController,
+            as: .imageLandscape,
+            named: nameForDevice(.landscape)
         )
     }
 }

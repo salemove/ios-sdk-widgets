@@ -19,6 +19,11 @@ final class VisitorCodeViewControllerDynamicTypeFontTests: SnapshotTestCase {
             as: .extra3LargeFontStrategy,
             named: nameForDevice()
         )
+        assertSnapshot(
+            matching: visitorCodeViewController,
+            as: .extra3LargeFontStrategyLandscape,
+            named: nameForDevice(.landscape)
+        )
     }
 
     func testVisitorCodeAlertWhenError() {
@@ -35,6 +40,11 @@ final class VisitorCodeViewControllerDynamicTypeFontTests: SnapshotTestCase {
             matching: visitorCodeViewController,
             as: .extra3LargeFontStrategy,
             named: nameForDevice()
+        )
+        assertSnapshot(
+            matching: visitorCodeViewController,
+            as: .extra3LargeFontStrategyLandscape,
+            named: nameForDevice(.landscape)
         )
     }
 
@@ -53,6 +63,11 @@ final class VisitorCodeViewControllerDynamicTypeFontTests: SnapshotTestCase {
             as: .extra3LargeFontStrategy,
             named: nameForDevice()
         )
+        assertSnapshot(
+            matching: visitorCodeViewController,
+            as: .extra3LargeFontStrategyLandscape,
+            named: nameForDevice(.landscape)
+        )
     }
 
     func testVisitorCodeEmbeddedWhenLoading() {
@@ -69,6 +84,11 @@ final class VisitorCodeViewControllerDynamicTypeFontTests: SnapshotTestCase {
             matching: visitorCodeViewController,
             as: .extra3LargeFontStrategy,
             named: nameForDevice()
+        )
+        assertSnapshot(
+            matching: visitorCodeViewController,
+            as: .extra3LargeFontStrategyLandscape,
+            named: nameForDevice(.landscape)
         )
     }
 
@@ -87,6 +107,11 @@ final class VisitorCodeViewControllerDynamicTypeFontTests: SnapshotTestCase {
             as: .extra3LargeFontStrategy,
             named: nameForDevice()
         )
+        assertSnapshot(
+            matching: visitorCodeViewController,
+            as: .extra3LargeFontStrategyLandscape,
+            named: nameForDevice(.landscape)
+        )
     }
     func testVisitorCodeEmbeddedWhenSuccess() {
         let props: CallVisualizer.VisitorCodeViewController.Props = .init(
@@ -102,6 +127,11 @@ final class VisitorCodeViewControllerDynamicTypeFontTests: SnapshotTestCase {
             matching: visitorCodeViewController,
             as: .extra3LargeFontStrategy,
             named: nameForDevice()
+        )
+        assertSnapshot(
+            matching: visitorCodeViewController,
+            as: .extra3LargeFontStrategyLandscape,
+            named: nameForDevice(.landscape)
         )
     }
 }
