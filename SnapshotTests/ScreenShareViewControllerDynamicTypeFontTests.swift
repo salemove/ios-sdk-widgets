@@ -28,6 +28,11 @@ final class ScreenShareViewControllerDynamicTypeFontTests: SnapshotTestCase {
             as: .extra3LargeFontStrategy,
             named: nameForDevice()
         )
+        assertSnapshot(
+            matching: screenShareViewController,
+            as: .extra3LargeFontStrategyLandscape,
+            named: nameForDevice(.landscape)
+        )
     }
 }
 // swiftlint:enable type_name

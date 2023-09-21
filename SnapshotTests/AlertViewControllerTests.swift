@@ -3,7 +3,7 @@ import AccessibilitySnapshot
 import SnapshotTesting
 import XCTest
 
-class AlertViewControllerTests: SnapshotTestCase {
+final class AlertViewControllerTests: SnapshotTestCase {
     func test_screenSharingOffer() {
         let alert = alert(ofKind: .screenShareOffer(
             .mock(),

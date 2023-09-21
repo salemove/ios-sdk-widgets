@@ -2,7 +2,7 @@
 import SnapshotTesting
 import XCTest
 
-class ChatViewControllerLayoutTests: SnapshotTestCase {
+final class ChatViewControllerLayoutTests: SnapshotTestCase {
     func test_messagesFromHistory() {
         let viewController = ChatViewController.mockHistoryMessagesScreen()
         viewController.view.frame = UIScreen.main.bounds
@@ -10,6 +10,11 @@ class ChatViewControllerLayoutTests: SnapshotTestCase {
             matching: viewController,
             as: .image,
             named: nameForDevice()
+        )
+        assertSnapshot(
+            matching: viewController,
+            as: .imageLandscape,
+            named: nameForDevice(.landscape)
         )
     }
 
@@ -21,6 +26,11 @@ class ChatViewControllerLayoutTests: SnapshotTestCase {
             as: .image,
             named: nameForDevice()
         )
+        assertSnapshot(
+            matching: viewController,
+            as: .imageLandscape,
+            named: nameForDevice(.landscape)
+        )
     }
 
     func test_choiceCard() throws {
@@ -30,6 +40,11 @@ class ChatViewControllerLayoutTests: SnapshotTestCase {
             matching: viewController,
             as: .image,
             named: nameForDevice()
+        )
+        assertSnapshot(
+            matching: viewController,
+            as: .imageLandscape,
+            named: nameForDevice(.landscape)
         )
     }
 
@@ -41,6 +56,11 @@ class ChatViewControllerLayoutTests: SnapshotTestCase {
             as: .image,
             named: nameForDevice()
         )
+        assertSnapshot(
+            matching: viewController,
+            as: .imageLandscape,
+            named: nameForDevice(.landscape)
+        )
     }
 
     func test_gvaResponseText() throws {
@@ -51,6 +71,11 @@ class ChatViewControllerLayoutTests: SnapshotTestCase {
             as: .image,
             named: nameForDevice()
         )
+        assertSnapshot(
+            matching: viewController,
+            as: .imageLandscape,
+            named: nameForDevice(.landscape)
+        )
     }
 
     func test_gvaGalleryCard() throws {
@@ -60,6 +85,11 @@ class ChatViewControllerLayoutTests: SnapshotTestCase {
             matching: viewController,
             as: .image,
             named: nameForDevice()
+        )
+        assertSnapshot(
+            matching: viewController,
+            as: .imageLandscape,
+            named: nameForDevice(.landscape)
         )
     }
 
@@ -79,7 +109,12 @@ class ChatViewControllerLayoutTests: SnapshotTestCase {
         assertSnapshot(
             matching: view,
             as: .image,
-            named: self.nameForDevice()
+            named: nameForDevice()
+        )
+        assertSnapshot(
+            matching: view,
+            as: .imageLandscape,
+            named: nameForDevice(.landscape)
         )
     }
 
@@ -99,7 +134,12 @@ class ChatViewControllerLayoutTests: SnapshotTestCase {
         assertSnapshot(
             matching: viewController,
             as: .image,
-            named: self.nameForDevice()
+            named: nameForDevice()
+        )
+        assertSnapshot(
+            matching: viewController,
+            as: .imageLandscape,
+            named: nameForDevice(.landscape)
         )
     }
 }

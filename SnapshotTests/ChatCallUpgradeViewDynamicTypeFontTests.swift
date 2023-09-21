@@ -10,6 +10,11 @@ final class ChatCallUpgradeViewDynamicTypeFontTests: SnapshotTestCase {
             matching: upgradeView,
             as: .extra3LargeFontStrategy
         )
+        assertSnapshot(
+            matching: upgradeView,
+            as: .extra3LargeFontStrategyLandscape,
+            named: nameForDevice(.landscape)
+        )
     }
 
     func test_chatCallUpgradeViewToVideo_extra3Large() {
@@ -18,6 +23,11 @@ final class ChatCallUpgradeViewDynamicTypeFontTests: SnapshotTestCase {
         assertSnapshot(
             matching: upgradeView,
             as: .extra3LargeFontStrategy
+        )
+        assertSnapshot(
+            matching: upgradeView,
+            as: .extra3LargeFontStrategyLandscape,
+            named: nameForDevice(.landscape)
         )
     }
 }

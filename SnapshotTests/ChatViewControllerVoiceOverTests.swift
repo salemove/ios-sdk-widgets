@@ -3,7 +3,7 @@ import AccessibilitySnapshot
 import SnapshotTesting
 import XCTest
 
-class ChatViewControllerVoiceOverTests: SnapshotTestCase {
+final class ChatViewControllerVoiceOverTests: SnapshotTestCase {
     func test_messagesFromHistory() {
         let viewController = ChatViewController.mockHistoryMessagesScreen()
         viewController.view.frame = UIScreen.main.bounds

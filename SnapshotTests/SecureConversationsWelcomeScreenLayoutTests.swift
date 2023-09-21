@@ -2,7 +2,7 @@
 import SnapshotTesting
 import XCTest
 
-class SecureConversationsWelcomeScreenLayoutTests: SnapshotTestCase {
+final class SecureConversationsWelcomeScreenLayoutTests: SnapshotTestCase {
     let theme = Theme.mock()
 
     func test_welcomeView() {
@@ -20,7 +20,12 @@ class SecureConversationsWelcomeScreenLayoutTests: SnapshotTestCase {
         assertSnapshot(
             matching: viewController.view,
             as: .image,
-            named: self.nameForDevice()
+            named: nameForDevice()
+        )
+        assertSnapshot(
+            matching: viewController.view,
+            as: .imageLandscape,
+            named: nameForDevice(.landscape)
         )
     }
 
@@ -42,7 +47,12 @@ class SecureConversationsWelcomeScreenLayoutTests: SnapshotTestCase {
         assertSnapshot(
             matching: viewController.view,
             as: .image,
-            named: self.nameForDevice()
+            named: nameForDevice()
+        )
+        assertSnapshot(
+            matching: viewController.view,
+            as: .imageLandscape,
+            named: nameForDevice(.landscape)
         )
     }
 
@@ -58,7 +68,12 @@ class SecureConversationsWelcomeScreenLayoutTests: SnapshotTestCase {
         assertSnapshot(
             matching: viewController.view,
             as: .image,
-            named: self.nameForDevice()
+            named: nameForDevice()
+        )
+        assertSnapshot(
+            matching: viewController.view,
+            as: .imageLandscape,
+            named: nameForDevice(.landscape)
         )
     }
 

@@ -11,6 +11,11 @@ final class ChatViewControllerDynamicTypeFontTests: SnapshotTestCase {
             as: .extra3LargeFontStrategy,
             named: nameForDevice()
         )
+        assertSnapshot(
+            matching: viewController,
+            as: .extra3LargeFontStrategyLandscape,
+            named: nameForDevice(.landscape)
+        )
     }
 
     func test_visitorUploadedFileStates_extra3Large() throws {
@@ -21,6 +26,11 @@ final class ChatViewControllerDynamicTypeFontTests: SnapshotTestCase {
             as: .extra3LargeFontStrategy,
             named: nameForDevice()
         )
+        assertSnapshot(
+            matching: viewController,
+            as: .extra3LargeFontStrategyLandscape,
+            named: nameForDevice(.landscape)
+        )
     }
 
     func test_choiceCard_extra3Large() throws {
@@ -30,6 +40,11 @@ final class ChatViewControllerDynamicTypeFontTests: SnapshotTestCase {
             matching: viewController,
             as: .extra3LargeFontStrategy,
             named: nameForDevice()
+        )
+        assertSnapshot(
+            matching: viewController,
+            as: .extra3LargeFontStrategyLandscape,
+            named: nameForDevice(.landscape)
         )
     }
 
@@ -49,7 +64,12 @@ final class ChatViewControllerDynamicTypeFontTests: SnapshotTestCase {
         assertSnapshot(
             matching: viewController,
             as: .extra3LargeFontStrategy,
-            named: self.nameForDevice()
+            named: nameForDevice()
+        )
+        assertSnapshot(
+            matching: viewController,
+            as: .extra3LargeFontStrategyLandscape,
+            named: nameForDevice(.landscape)
         )
     }
 }

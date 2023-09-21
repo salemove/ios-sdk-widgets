@@ -2,7 +2,7 @@
 import SnapshotTesting
 import XCTest
 
-class VisitorCodeViewControllerLayoutTests: SnapshotTestCase {
+final class VisitorCodeViewControllerLayoutTests: SnapshotTestCase {
     func testVisitorCodeAlertWhenLoading() {
         let props: CallVisualizer.VisitorCodeViewController.Props = .init(
             visitorCodeViewProps: .init(
@@ -17,6 +17,11 @@ class VisitorCodeViewControllerLayoutTests: SnapshotTestCase {
             matching: visitorCodeViewController,
             as: .image,
             named: nameForDevice()
+        )
+        assertSnapshot(
+            matching: visitorCodeViewController,
+            as: .imageLandscape,
+            named: nameForDevice(.landscape)
         )
     }
 
@@ -35,6 +40,11 @@ class VisitorCodeViewControllerLayoutTests: SnapshotTestCase {
             as: .accessibilityImage(precision: Self.possiblePrecision),
             named: nameForDevice()
         )
+        assertSnapshot(
+            matching: visitorCodeViewController,
+            as: .imageLandscape,
+            named: nameForDevice(.landscape)
+        )
     }
 
     func testVisitorCodeAlertWhenSuccess() {
@@ -51,6 +61,11 @@ class VisitorCodeViewControllerLayoutTests: SnapshotTestCase {
             matching: visitorCodeViewController,
             as: .accessibilityImage(precision: Self.possiblePrecision),
             named: nameForDevice()
+        )
+        assertSnapshot(
+            matching: visitorCodeViewController,
+            as: .imageLandscape,
+            named: nameForDevice(.landscape)
         )
     }
 
@@ -69,6 +84,11 @@ class VisitorCodeViewControllerLayoutTests: SnapshotTestCase {
             as: .accessibilityImage(precision: Self.possiblePrecision),
             named: nameForDevice()
         )
+        assertSnapshot(
+            matching: visitorCodeViewController,
+            as: .imageLandscape,
+            named: nameForDevice(.landscape)
+        )
     }
 
     func testVisitorCodeEmbeddedWhenError() {
@@ -86,6 +106,11 @@ class VisitorCodeViewControllerLayoutTests: SnapshotTestCase {
             as: .accessibilityImage(precision: Self.possiblePrecision),
             named: nameForDevice()
         )
+        assertSnapshot(
+            matching: visitorCodeViewController,
+            as: .imageLandscape,
+            named: nameForDevice(.landscape)
+        )
     }
     func testVisitorCodeEmbeddedWhenSuccess() {
         let props: CallVisualizer.VisitorCodeViewController.Props = .init(
@@ -101,6 +126,11 @@ class VisitorCodeViewControllerLayoutTests: SnapshotTestCase {
             matching: visitorCodeViewController,
             as: .accessibilityImage(precision: Self.possiblePrecision),
             named: nameForDevice()
+        )
+        assertSnapshot(
+            matching: visitorCodeViewController,
+            as: .imageLandscape,
+            named: nameForDevice(.landscape)
         )
     }
 }
