@@ -19,7 +19,8 @@ struct HeaderButtonSwiftUI: View {
             .accessibility(label: Text(model.style.accessibility.label))
             .accessibility(addTraits: .isButton)
             .accessibility(removeTraits: .isImage)
-            .onTapGesture(perform: model.tap.callAsFunction)
+            .onTapGesture(perform: model.tap.execute)
+            .migrationAccessibilityIdentifier(model.accessibilityIdentifier)
     }
 }
 
@@ -27,6 +28,7 @@ extension HeaderButtonSwiftUI {
     final class Model: ObservableObject {
         var tap: Cmd
         var style: HeaderButtonStyle
+        var accessibilityIdentifier: String
         var size: CGSize
         var isEnabled: Bool
         var isHidden: Bool
@@ -34,6 +36,7 @@ extension HeaderButtonSwiftUI {
         init(
             tap: Cmd = .nop,
             style: HeaderButtonStyle,
+            accessibilityIdentifier: String,
             size: CGSize = CGSize(width: 14, height: 14),
             isEnabled: Bool,
             isHidden: Bool
@@ -43,6 +46,7 @@ extension HeaderButtonSwiftUI {
             self.size = size
             self.isEnabled = isEnabled
             self.isHidden = isHidden
+            self.accessibilityIdentifier = accessibilityIdentifier
         }
     }
 }
