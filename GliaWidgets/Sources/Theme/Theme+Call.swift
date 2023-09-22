@@ -68,7 +68,7 @@ extension Theme {
             )
         )
         let queue = ConnectStatusStyle(
-            firstText: Localization.General.companyName,
+            firstText: "",
             firstTextFont: font.header1,
             firstTextFontColor: color.baseLight,
             firstTextStyle: .title1,

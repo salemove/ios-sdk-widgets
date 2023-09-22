@@ -46,6 +46,16 @@ extension Glia {
             interactor.queueIds = queueIds
         }
 
+        theme.chat.connect.queue.firstText = companyName(
+            using: interactor,
+            currentName: theme.chat.connect.queue.firstText
+        )
+
+        theme.call.connect.queue.firstText = companyName(
+            using: interactor,
+            currentName: theme.call.connect.queue.firstText
+        )
+
         let viewFactory = ViewFactory(
             with: theme,
             messageRenderer: messageRenderer,
@@ -67,6 +77,35 @@ extension Glia {
             engagementKind: engagementKind,
             features: features
         )
+    }
+
+    func companyName(
+        using interactor: Interactor,
+        currentName: String?
+    ) -> String {
+        // As the default value is empty, it means that the integrator
+        // has set a value on the theme itself. Return that same value.
+        if let currentName, !currentName.isEmpty {
+            return currentName
+        }
+
+        let companyNameStringKey = "general.company_name"
+
+        // Company name has been set on the custom locale.
+        if let remoteCompanyName = stringProviding?.getRemoteString(companyNameStringKey) {
+            return remoteCompanyName
+        }
+        // Integrator has not set a company name in the custom locale,
+        // but has set it on the configuration.
+        else if !interactor.configuration.companyName.isEmpty {
+            return interactor.configuration.companyName
+        }
+        // Integrator has not set a company name anywhere, use the default.
+        else {
+            // This will return the fallback value every time, because we have
+            // already determined that the remote string is empty.
+            return Localization.General.companyName
+        }
     }
 
     func startRootCoordinator(
@@ -124,7 +163,7 @@ extension Glia {
                 startSocketObservation: environment.coreSdk.startSocketObservation,
                 stopSocketObservation: environment.coreSdk.stopSocketObservation,
                 pushNotifications: environment.coreSdk.pushNotifications,
-                createSendMessagePayload: environment.coreSdk.createSendMessagePayload, 
+                createSendMessagePayload: environment.coreSdk.createSendMessagePayload,
                 orientationManager: environment.orientationManager
             )
         )
