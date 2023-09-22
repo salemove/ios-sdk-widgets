@@ -1694,7 +1694,6 @@
 			isa = PBXGroup;
 			children = (
 				3146C9412AB1850A0047D8CC /* Resources */,
-				7552DFB22A6FBC6E0093519B /* CoreSdk */,
 				7552DFAF2A6FB37E0093519B /* ChatMessage */,
 				846A5C3729D18D220049B29F /* ScreenShareHandler */,
 				AFEF5C7229929A73005C3D8D /* SecureConversations */,
@@ -2690,13 +2689,6 @@
 				7552DFB02A6FB7DF0093519B /* ChatMessageTests.swift */,
 			);
 			path = ChatMessage;
-			sourceTree = "<group>";
-		};
-		7552DFB22A6FBC6E0093519B /* CoreSdk */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = CoreSdk;
 			sourceTree = "<group>";
 		};
 		755D186329A6A4B10009F5E8 /* WelcomeStyle */ = {
