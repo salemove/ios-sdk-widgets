@@ -49,7 +49,7 @@ final class GliaTests: XCTestCase {
         gliaEnv.fileManager = fileManager
         gliaEnv.coreSdk.configureWithInteractor = { _ in }
         gliaEnv.createFileUploadListModel = { _ in .mock() }
-        
+        gliaEnv.coreSdk.localeProvider.getRemoteString = { _ in nil }
         gliaEnv.coreSdk.authentication = { _ in .mock }
         gliaEnv.coreSdk.configureWithConfiguration = { _, callback in callback?() }
         gliaEnv.coreSdk.queueForEngagement = { _, callback in
@@ -284,4 +284,3 @@ final class GliaTests: XCTestCase {
         XCTAssertEqual(delegate.invokedEventCallParameterList, [.maximized])
     }
 }
-
