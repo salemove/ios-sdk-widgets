@@ -51,4 +51,127 @@ extension GliaTests {
         XCTAssertTrue(interactor.isConfigurationPerformed)
         XCTAssertEqual(calls, [.configureWithInteractor, .configureWithConfiguration])
     }
+
+    func testCompanyNameIsReceivedFromTheme() throws {
+        var environment = Glia.Environment.failing
+        var resultingViewFactory: ViewFactory?
+
+        environment.createRootCoordinator = { _, viewFactory, _, _, _, _, _ in
+            resultingViewFactory = viewFactory
+
+            return .mock(
+                interactor: .mock(environment: .failing),
+                viewFactory: viewFactory,
+                sceneProvider: nil,
+                engagementKind: .none,
+                screenShareHandler: .mock,
+                features: [],
+                environment: .failing
+            )
+        }
+
+        let sdk = Glia(environment: environment)
+
+        let theme = Theme()
+        theme.call.connect.queue.firstText = "Glia 1"
+        theme.chat.connect.queue.firstText = "Glia 2"
+
+        try sdk.configure(with: .mock())
+        try sdk.startEngagement(engagementKind: .chat, in: ["queueId"], theme: theme)
+
+        let configuredSdkTheme = resultingViewFactory?.theme
+        XCTAssertEqual(configuredSdkTheme?.call.connect.queue.firstText, "Glia 1")
+        XCTAssertEqual(configuredSdkTheme?.chat.connect.queue.firstText, "Glia 2")
+    }
+
+    func testCompanyNameIsReceivedFromRemoteStrings() throws {
+        var environment = Glia.Environment.failing
+        var resultingViewFactory: ViewFactory?
+
+        environment.createRootCoordinator = { _, viewFactory, _, _, _, _, _ in
+            resultingViewFactory = viewFactory
+
+            return .mock(
+                interactor: .mock(environment: .failing),
+                viewFactory: viewFactory,
+                sceneProvider: nil,
+                engagementKind: .none,
+                screenShareHandler: .mock,
+                features: [],
+                environment: .failing
+            )
+        }
+
+        environment.coreSdk.localeProvider.getRemoteString = { _ in "Glia" }
+        environment.coreSdk.configureWithInteractor = { _ in }
+        environment.coreSdk.configureWithConfiguration = { _, completion in
+            completion?()
+        }
+        environment.coreSdk.getCurrentEngagement = { nil }
+
+        let sdk = Glia(environment: environment)
+
+        try sdk.configure(with: .mock()) { }
+        try sdk.startEngagement(engagementKind: .chat, in: ["queueId"])
+
+        let configuredSdkTheme = resultingViewFactory?.theme
+        XCTAssertEqual(configuredSdkTheme?.call.connect.queue.firstText, "Glia")
+        XCTAssertEqual(configuredSdkTheme?.chat.connect.queue.firstText, "Glia")
+    }
+
+    func testCompanyNameIsReceivedFromConfiguration() throws {
+        var environment = Glia.Environment.failing
+        var resultingViewFactory: ViewFactory?
+
+        environment.createRootCoordinator = { _, viewFactory, _, _, _, _, _ in
+            resultingViewFactory = viewFactory
+
+            return .mock(
+                interactor: .mock(environment: .failing),
+                viewFactory: viewFactory,
+                sceneProvider: nil,
+                engagementKind: .none,
+                screenShareHandler: .mock,
+                features: [],
+                environment: .failing
+            )
+        }
+
+        let sdk = Glia(environment: environment)
+
+        try sdk.configure(with: .mock(companyName: "Glia"))
+        try sdk.startEngagement(engagementKind: .chat, in: ["queueId"])
+
+        let configuredSdkTheme = resultingViewFactory?.theme
+        XCTAssertEqual(configuredSdkTheme?.call.connect.queue.firstText, "Glia")
+        XCTAssertEqual(configuredSdkTheme?.chat.connect.queue.firstText, "Glia")
+    }
+
+    func testCompanyNameIsReceivedFromLocalStrings() throws {
+        var environment = Glia.Environment.failing
+        var resultingViewFactory: ViewFactory?
+
+        environment.createRootCoordinator = { _, viewFactory, _, _, _, _, _ in
+            resultingViewFactory = viewFactory
+
+            return .mock(
+                interactor: .mock(environment: .failing),
+                viewFactory: viewFactory,
+                sceneProvider: nil,
+                engagementKind: .none,
+                screenShareHandler: .mock,
+                features: [],
+                environment: .failing
+            )
+        }
+
+        let sdk = Glia(environment: environment)
+
+        try sdk.configure(with: .mock())
+        try sdk.startEngagement(engagementKind: .chat, in: ["queueId"])
+
+        let configuredSdkTheme = resultingViewFactory?.theme
+        XCTAssertEqual(configuredSdkTheme?.call.connect.queue.firstText, "CompanyName")
+        XCTAssertEqual(configuredSdkTheme?.chat.connect.queue.firstText, "CompanyName")
+    }
 }

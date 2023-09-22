@@ -43,6 +43,7 @@ extension CallViewController {
             startWith: startAction
         )
         let theme = Theme.mock()
+        theme.call.connect.queue.firstText = "CompanyName"
         let viewFactEnv = ViewFactory.Environment.mock
         let viewFactory: ViewFactory = .mock(
             theme: theme,
@@ -217,6 +218,7 @@ extension CallViewController {
             startWith: startAction
         )
         let theme = Theme.mock()
+        theme.call.connect.queue.firstText = "CompanyName"
         let viewFactEnv = ViewFactory.Environment.mock
         let viewFactory: ViewFactory = .mock(
             theme: theme,
