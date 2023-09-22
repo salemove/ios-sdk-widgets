@@ -55,12 +55,14 @@ extension SecureConversations.ConfirmationViewSwiftUI.Model {
                 self?.delegate?(.closeTapped)
             }),
             style: style.header.closeButton,
+            accessibilityIdentifier: "header_close_button",
             isEnabled: true,
             isHidden: false
         )
 
         let endScreenShareButtonProps: HeaderButtonSwiftUI.Model = .init(
             style: style.header.endScreenShareButton,
+            accessibilityIdentifier: "header_end_screen_sharing_button",
             isEnabled: false,
             isHidden: true
         )
