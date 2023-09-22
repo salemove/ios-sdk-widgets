@@ -519,6 +519,7 @@
 		AF10ED8F29BF849A00E85309 /* UnreadMessageDividerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF10ED8E29BF849A00E85309 /* UnreadMessageDividerView.swift */; };
 		AF10ED9129BF85C700E85309 /* UnreadMessageDividerStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF10ED9029BF85C700E85309 /* UnreadMessageDividerStyle.swift */; };
 		AF11F30728BE6F0C002ACEB4 /* UIAlertController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF11F30628BE6F0C002ACEB4 /* UIAlertController+Extensions.swift */; };
+		AF18F1D52ABD954500121627 /* View+Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF18F1D42ABD954500121627 /* View+Accessibility.swift */; };
 		AF22C8852A6154780004BF3C /* AlertViewControllerLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF22C8842A6154780004BF3C /* AlertViewControllerLayoutTests.swift */; };
 		AF22C8872A6182AF0004BF3C /* BubbleViewLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF22C8862A6182AF0004BF3C /* BubbleViewLayoutTests.swift */; };
 		AF22C8892A6184C50004BF3C /* CallViewControllerLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF22C8882A6184C50004BF3C /* CallViewControllerLayoutTests.swift */; };
@@ -1256,6 +1257,7 @@
 		AF10ED8E29BF849A00E85309 /* UnreadMessageDividerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnreadMessageDividerView.swift; sourceTree = "<group>"; };
 		AF10ED9029BF85C700E85309 /* UnreadMessageDividerStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnreadMessageDividerStyle.swift; sourceTree = "<group>"; };
 		AF11F30628BE6F0C002ACEB4 /* UIAlertController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIAlertController+Extensions.swift"; sourceTree = "<group>"; };
+		AF18F1D42ABD954500121627 /* View+Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Accessibility.swift"; sourceTree = "<group>"; };
 		AF22C8842A6154780004BF3C /* AlertViewControllerLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertViewControllerLayoutTests.swift; sourceTree = "<group>"; };
 		AF22C8862A6182AF0004BF3C /* BubbleViewLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleViewLayoutTests.swift; sourceTree = "<group>"; };
 		AF22C8882A6184C50004BF3C /* CallViewControllerLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallViewControllerLayoutTests.swift; sourceTree = "<group>"; };
@@ -3530,6 +3532,7 @@
 			isa = PBXGroup;
 			children = (
 				C06152D42AB1BC1300063BF8 /* Font+Extensions.swift */,
+				AF18F1D42ABD954500121627 /* View+Accessibility.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -4523,6 +4526,7 @@
 				845876B1282A9EAF007AC3DF /* CheckboxView.Props.Accessibility.swift in Sources */,
 				1A4AF5CD25AEF4A0002CD0F4 /* AlertViewController+Message.swift in Sources */,
 				AFCF8A5C2A02AB3000B7ABB3 /* OutgoingMessage.Mock.swift in Sources */,
+				AF18F1D52ABD954500121627 /* View+Accessibility.swift in Sources */,
 				C0D2F08F29A61A8D00803B47 /* VideoCallViewController.Mock.swift in Sources */,
 				1A7CA8242574D68E0047CBBE /* ConnectStatusView.swift in Sources */,
 				845E2F78283E2D4200C04D56 /* PoweredByStyle.swift in Sources */,
