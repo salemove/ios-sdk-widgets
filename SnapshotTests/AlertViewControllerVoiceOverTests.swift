@@ -3,18 +3,14 @@ import AccessibilitySnapshot
 import SnapshotTesting
 import XCTest
 
-final class AlertViewControllerTests: SnapshotTestCase {
+final class AlertViewControllerVoiceOverTests: SnapshotTestCase {
     func test_screenSharingOffer() {
         let alert = alert(ofKind: .screenShareOffer(
             .mock(),
             accepted: {},
             declined: {}
         ))
-        assertSnapshot(
-            matching: alert,
-            as: .accessibilityImage(precision: Self.possiblePrecision),
-            named: nameForDevice()
-        )
+        alert.assertSnapshot(as: .accessibilityImage)
     }
 
     func test_mediaUpgradeOffer() {
@@ -23,11 +19,7 @@ final class AlertViewControllerTests: SnapshotTestCase {
             accepted: {},
             declined: {}
         ))
-        assertSnapshot(
-            matching: alert,
-            as: .accessibilityImage(precision: Self.possiblePrecision),
-            named: nameForDevice()
-        )
+        alert.assertSnapshot(as: .accessibilityImage)
     }
 
     func test_messageAlert() {
@@ -36,11 +28,7 @@ final class AlertViewControllerTests: SnapshotTestCase {
             accessibilityIdentifier: nil,
             dismissed: {}
         ))
-        assertSnapshot(
-            matching: alert,
-            as: .accessibilityImage(precision: Self.possiblePrecision),
-            named: nameForDevice()
-        )
+        alert.assertSnapshot(as: .accessibilityImage)
     }
 
     func test_singleAction() {
@@ -49,11 +37,7 @@ final class AlertViewControllerTests: SnapshotTestCase {
             accessibilityIdentifier: "mocked-accessibility-identifier",
             actionTapped: {}
         ))
-        assertSnapshot(
-            matching: alert,
-            as: .accessibilityImage(precision: Self.possiblePrecision),
-            named: nameForDevice()
-        )
+        alert.assertSnapshot(as: .accessibilityImage)
     }
 
     private func alert(ofKind kind: AlertViewController.Kind) -> AlertViewController {
@@ -61,7 +45,6 @@ final class AlertViewControllerTests: SnapshotTestCase {
             kind: kind,
             viewFactory: .mock()
         )
-        viewController.view.frame = UIScreen.main.bounds
         return viewController
     }
 }

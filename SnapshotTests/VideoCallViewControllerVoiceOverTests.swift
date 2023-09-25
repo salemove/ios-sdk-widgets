@@ -3,7 +3,7 @@ import AccessibilitySnapshot
 import SnapshotTesting
 import XCTest
 
-final class VideoCallViewControllerTests: SnapshotTestCase {
+final class VideoCallViewControllerVoiceOverTests: SnapshotTestCase {
     func testVideoCallViewController() {
         let videoCallViewProps: CallVisualizer.VideoCallView.Props = .mock(
             buttonBarProps: .mock(
@@ -48,13 +48,7 @@ final class VideoCallViewControllerTests: SnapshotTestCase {
         )
         let props: CallVisualizer.VideoCallViewController.Props = .init(videoCallViewProps: videoCallViewProps)
 
-        let videoCallViewController: CallVisualizer.VideoCallViewController = .mock(props: props)
-        videoCallViewController.view.frame = UIScreen.main.bounds
-
-        assertSnapshot(
-            matching: videoCallViewController,
-            as: .accessibilityImage(precision: Self.possiblePrecision),
-            named: nameForDevice()
-        )
+        let viewController: CallVisualizer.VideoCallViewController = .mock(props: props)
+        viewController.assertSnapshot(as: .accessibilityImage)
     }
 }

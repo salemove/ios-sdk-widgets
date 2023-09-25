@@ -21,18 +21,8 @@ final class ScreenShareViewControllerDynamicTypeFontTests: SnapshotTestCase {
             )
         )
         let screenShareViewController = CallVisualizer.ScreenSharingViewController(props: props)
-        screenShareViewController.view.frame = UIScreen.main.bounds
-
-        assertSnapshot(
-            matching: screenShareViewController,
-            as: .extra3LargeFontStrategy,
-            named: nameForDevice()
-        )
-        assertSnapshot(
-            matching: screenShareViewController,
-            as: .extra3LargeFontStrategyLandscape,
-            named: nameForDevice(.landscape)
-        )
+        screenShareViewController.assertSnapshot(as: .extra3LargeFont, in: .portrait)
+        screenShareViewController.assertSnapshot(as: .extra3LargeFont, in: .landscape)
     }
 }
 // swiftlint:enable type_name

@@ -15,18 +15,8 @@ final class SecureConversationsWelcomeScreenLayoutTests: SnapshotTestCase {
             props: .welcome(props),
             environment: .init(gcd: .live, uiScreen: .mock, notificationCenter: .mock)
         )
-        viewController.view.frame = UIScreen.main.bounds
-
-        assertSnapshot(
-            matching: viewController.view,
-            as: .image,
-            named: nameForDevice()
-        )
-        assertSnapshot(
-            matching: viewController.view,
-            as: .imageLandscape,
-            named: nameForDevice(.landscape)
-        )
+        viewController.assertSnapshot(as: .image, in: .portrait)
+        viewController.assertSnapshot(as: .image, in: .landscape)
     }
 
     func test_welcomeWithAttachments() {
@@ -42,18 +32,8 @@ final class SecureConversationsWelcomeScreenLayoutTests: SnapshotTestCase {
             props: .welcome(props),
             environment: .init(gcd: .live, uiScreen: .mock, notificationCenter: .mock)
         )
-        viewController.view.frame = UIScreen.main.bounds
-
-        assertSnapshot(
-            matching: viewController.view,
-            as: .image,
-            named: nameForDevice()
-        )
-        assertSnapshot(
-            matching: viewController.view,
-            as: .imageLandscape,
-            named: nameForDevice(.landscape)
-        )
+        viewController.assertSnapshot(as: .image, in: .portrait)
+        viewController.assertSnapshot(as: .image, in: .landscape)
     }
 
     func test_welcomeViewController_withValidationError() {
@@ -63,18 +43,8 @@ final class SecureConversationsWelcomeScreenLayoutTests: SnapshotTestCase {
             props: .welcome(props),
             environment: .init(gcd: .live, uiScreen: .mock, notificationCenter: .mock)
         )
-        viewController.view.frame = UIScreen.main.bounds
-
-        assertSnapshot(
-            matching: viewController.view,
-            as: .image,
-            named: nameForDevice()
-        )
-        assertSnapshot(
-            matching: viewController.view,
-            as: .imageLandscape,
-            named: nameForDevice(.landscape)
-        )
+        viewController.assertSnapshot(as: .image, in: .portrait)
+        viewController.assertSnapshot(as: .image, in: .landscape)
     }
 
     // MARK: - Helpers

@@ -47,18 +47,8 @@ final class VideoCallViewControllerLayoutTests: SnapshotTestCase {
         )
         let props: CallVisualizer.VideoCallViewController.Props = .init(videoCallViewProps: videoCallViewProps)
 
-        let videoCallViewController: CallVisualizer.VideoCallViewController = .mock(props: props)
-        videoCallViewController.view.frame = UIScreen.main.bounds
-
-        assertSnapshot(
-            matching: videoCallViewController,
-            as: .image,
-            named: nameForDevice()
-        )
-        assertSnapshot(
-            matching: videoCallViewController,
-            as: .imageLandscape,
-            named: nameForDevice(.landscape)
-        )
+        let viewController: CallVisualizer.VideoCallViewController = .mock(props: props)
+        viewController.assertSnapshot(as: .image, in: .portrait)
+        viewController.assertSnapshot(as: .image, in: .landscape)
     }
 }

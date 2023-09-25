@@ -1,8 +1,9 @@
+import AccessibilitySnapshot
 @testable import GliaWidgets
 import SnapshotTesting
 import XCTest
 
-final class VisitorCodeViewControllerLayoutTests: SnapshotTestCase {
+final class VisitorCodeViewControllerVoiceOverTests: SnapshotTestCase {
     func testVisitorCodeAlertWhenLoading() {
         let props: CallVisualizer.VisitorCodeViewController.Props = .init(
             visitorCodeViewProps: .init(
@@ -11,8 +12,7 @@ final class VisitorCodeViewControllerLayoutTests: SnapshotTestCase {
             )
         )
         let viewController = CallVisualizer.VisitorCodeViewController(props: props)
-        viewController.assertSnapshot(as: .image, in: .portrait)
-        viewController.assertSnapshot(as: .image, in: .landscape)
+        viewController.assertSnapshot(as: .accessibilityImage)
     }
 
     func testVisitorCodeAlertWhenError() {
@@ -23,8 +23,7 @@ final class VisitorCodeViewControllerLayoutTests: SnapshotTestCase {
             )
         )
         let viewController = CallVisualizer.VisitorCodeViewController(props: props)
-        viewController.assertSnapshot(as: .image, in: .portrait)
-        viewController.assertSnapshot(as: .image, in: .landscape)
+        viewController.assertSnapshot(as: .accessibilityImage)
     }
 
     func testVisitorCodeAlertWhenSuccess() {
@@ -35,8 +34,7 @@ final class VisitorCodeViewControllerLayoutTests: SnapshotTestCase {
             )
         )
         let viewController = CallVisualizer.VisitorCodeViewController(props: props)
-        viewController.assertSnapshot(as: .image, in: .portrait)
-        viewController.assertSnapshot(as: .image, in: .landscape)
+        viewController.assertSnapshot(as: .accessibilityImage)
     }
 
     func testVisitorCodeEmbeddedWhenLoading() {
@@ -47,8 +45,7 @@ final class VisitorCodeViewControllerLayoutTests: SnapshotTestCase {
             )
         )
         let viewController = CallVisualizer.VisitorCodeViewController(props: props)
-        viewController.assertSnapshot(as: .image, in: .portrait)
-        viewController.assertSnapshot(as: .image, in: .landscape)
+        viewController.assertSnapshot(as: .accessibilityImage)
     }
 
     func testVisitorCodeEmbeddedWhenError() {
@@ -59,8 +56,7 @@ final class VisitorCodeViewControllerLayoutTests: SnapshotTestCase {
             )
         )
         let viewController = CallVisualizer.VisitorCodeViewController(props: props)
-        viewController.assertSnapshot(as: .image, in: .portrait)
-        viewController.assertSnapshot(as: .image, in: .landscape)
+        viewController.assertSnapshot(as: .accessibilityImage)
     }
     func testVisitorCodeEmbeddedWhenSuccess() {
         let props: CallVisualizer.VisitorCodeViewController.Props = .init(
@@ -70,7 +66,6 @@ final class VisitorCodeViewControllerLayoutTests: SnapshotTestCase {
             )
         )
         let viewController = CallVisualizer.VisitorCodeViewController(props: props)
-        viewController.assertSnapshot(as: .image, in: .portrait)
-        viewController.assertSnapshot(as: .image, in: .landscape)
+        viewController.assertSnapshot(as: .accessibilityImage)
     }
 }
