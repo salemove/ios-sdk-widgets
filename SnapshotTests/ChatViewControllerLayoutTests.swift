@@ -5,92 +5,38 @@ import XCTest
 final class ChatViewControllerLayoutTests: SnapshotTestCase {
     func test_messagesFromHistory() {
         let viewController = ChatViewController.mockHistoryMessagesScreen()
-        viewController.view.frame = UIScreen.main.bounds
-        assertSnapshot(
-            matching: viewController,
-            as: .image,
-            named: nameForDevice()
-        )
-        assertSnapshot(
-            matching: viewController,
-            as: .imageLandscape,
-            named: nameForDevice(.landscape)
-        )
+        viewController.assertSnapshot(as: .image, in: .portrait)
+        viewController.assertSnapshot(as: .image, in: .landscape)
     }
 
     func test_visitorUploadedFileStates() throws {
         let viewController = try ChatViewController.mockVisitorFileUploadStates()
-        viewController.view.frame = UIScreen.main.bounds
-        assertSnapshot(
-            matching: viewController,
-            as: .image,
-            named: nameForDevice()
-        )
-        assertSnapshot(
-            matching: viewController,
-            as: .imageLandscape,
-            named: nameForDevice(.landscape)
-        )
+        viewController.assertSnapshot(as: .image, in: .portrait)
+        viewController.assertSnapshot(as: .image, in: .landscape)
     }
 
     func test_choiceCard() throws {
         let viewController = try ChatViewController.mockChoiceCard()
-        viewController.view.frame = UIScreen.main.bounds
-        assertSnapshot(
-            matching: viewController,
-            as: .image,
-            named: nameForDevice()
-        )
-        assertSnapshot(
-            matching: viewController,
-            as: .imageLandscape,
-            named: nameForDevice(.landscape)
-        )
+        viewController.assertSnapshot(as: .image, in: .portrait)
+        viewController.assertSnapshot(as: .image, in: .landscape)
     }
 
     func test_gvaPersistentButton() throws {
         let viewController = try ChatViewController.mockGvaPersistentButton()
-        viewController.view.frame = UIScreen.main.bounds
-        assertSnapshot(
-            matching: viewController,
-            as: .image,
-            named: nameForDevice()
-        )
-        assertSnapshot(
-            matching: viewController,
-            as: .imageLandscape,
-            named: nameForDevice(.landscape)
-        )
+        viewController.assertSnapshot(as: .image, in: .portrait)
+        viewController.assertSnapshot(as: .image, in: .landscape)
     }
 
     func test_gvaResponseText() throws {
         let viewController = try ChatViewController.mockGvaResponseText()
-        viewController.view.frame = UIScreen.main.bounds
-        assertSnapshot(
-            matching: viewController,
-            as: .image,
-            named: nameForDevice()
-        )
-        assertSnapshot(
-            matching: viewController,
-            as: .imageLandscape,
-            named: nameForDevice(.landscape)
-        )
+        viewController.assertSnapshot(as: .image, in: .portrait)
+        viewController.assertSnapshot(as: .image, in: .landscape)
     }
 
     func test_gvaGalleryCard() throws {
         let viewController = try ChatViewController.mockGvaGalleryCards()
-        viewController.view.frame = UIScreen.main.bounds
-        assertSnapshot(
-            matching: viewController,
-            as: .image,
-            named: nameForDevice()
-        )
-        assertSnapshot(
-            matching: viewController,
-            as: .imageLandscape,
-            named: nameForDevice(.landscape)
-        )
+        viewController.assertSnapshot(as: .image, in: .portrait)
+        viewController.assertSnapshot(as: .image, in: .landscape)
     }
 
     func test_gvaQuickReply() throws {
@@ -106,16 +52,8 @@ final class ChatViewControllerLayoutTests: SnapshotTestCase {
         )
         view.frame = .init(origin: .zero, size: .init(width: 350, height: 200))
         view.collectionView.heightAnchor.constraint(equalToConstant: 200).isActive = true
-        assertSnapshot(
-            matching: view,
-            as: .image,
-            named: nameForDevice()
-        )
-        assertSnapshot(
-            matching: view,
-            as: .imageLandscape,
-            named: nameForDevice(.landscape)
-        )
+        view.assertSnapshot(as: .image, in: .portrait)
+        view.assertSnapshot(as: .image, in: .landscape)
     }
 
     func test_visitorFileDownloadStates() throws {
@@ -131,15 +69,7 @@ final class ChatViewControllerLayoutTests: SnapshotTestCase {
         chatMessages[1].downloads[0].state.value = .downloading(progress: .init(with: 0.5))
         chatMessages[2].downloads[0].state.value = .downloaded(.mock())
         chatMessages[3].downloads[0].state.value = .error(.deleted)
-        assertSnapshot(
-            matching: viewController,
-            as: .image,
-            named: nameForDevice()
-        )
-        assertSnapshot(
-            matching: viewController,
-            as: .imageLandscape,
-            named: nameForDevice(.landscape)
-        )
+        viewController.assertSnapshot(as: .image, in: .portrait)
+        viewController.assertSnapshot(as: .image, in: .landscape)
     }
 }

@@ -9,16 +9,8 @@ final class AlertViewControllerLayoutTests: SnapshotTestCase {
             accepted: {},
             declined: {}
         ))
-        assertSnapshot(
-            matching: alert,
-            as: .image,
-            named: nameForDevice()
-        )
-        assertSnapshot(
-            matching: alert,
-            as: .imageLandscape,
-            named: nameForDevice(.landscape)
-        )
+        alert.assertSnapshot(as: .image, in: .portrait)
+        alert.assertSnapshot(as: .image, in: .landscape)
     }
 
     func test_mediaUpgradeOffer() {
@@ -27,16 +19,8 @@ final class AlertViewControllerLayoutTests: SnapshotTestCase {
             accepted: {},
             declined: {}
         ))
-        assertSnapshot(
-            matching: alert,
-            as: .image,
-            named: nameForDevice()
-        )
-        assertSnapshot(
-            matching: alert,
-            as: .imageLandscape,
-            named: nameForDevice(.landscape)
-        )
+        alert.assertSnapshot(as: .image, in: .portrait)
+        alert.assertSnapshot(as: .image, in: .landscape)
     }
 
     func test_messageAlert() {
@@ -45,16 +29,8 @@ final class AlertViewControllerLayoutTests: SnapshotTestCase {
             accessibilityIdentifier: nil,
             dismissed: {}
         ))
-        assertSnapshot(
-            matching: alert,
-            as: .image,
-            named: nameForDevice()
-        )
-        assertSnapshot(
-            matching: alert,
-            as: .imageLandscape,
-            named: nameForDevice(.landscape)
-        )
+        alert.assertSnapshot(as: .image, in: .portrait)
+        alert.assertSnapshot(as: .image, in: .landscape)
     }
 
     func test_singleAction() {
@@ -63,16 +39,8 @@ final class AlertViewControllerLayoutTests: SnapshotTestCase {
             accessibilityIdentifier: "mocked-accessibility-identifier",
             actionTapped: {}
         ))
-        assertSnapshot(
-            matching: alert,
-            as: .image,
-            named: nameForDevice()
-        )
-        assertSnapshot(
-            matching: alert,
-            as: .imageLandscape,
-            named: nameForDevice(.landscape)
-        )
+        alert.assertSnapshot(as: .image, in: .portrait)
+        alert.assertSnapshot(as: .image, in: .landscape)
     }
 
     private func alert(ofKind kind: AlertViewController.Kind) -> AlertViewController {
@@ -80,7 +48,6 @@ final class AlertViewControllerLayoutTests: SnapshotTestCase {
             kind: kind,
             viewFactory: .mock()
         )
-        viewController.view.frame = UIScreen.main.bounds
         return viewController
     }
 }

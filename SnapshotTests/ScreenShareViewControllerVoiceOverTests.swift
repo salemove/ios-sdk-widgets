@@ -3,7 +3,7 @@ import AccessibilitySnapshot
 import SnapshotTesting
 import XCTest
 
-final class ScreenShareViewControllerTests: SnapshotTestCase {
+final class ScreenShareViewControllerVoiceOverTests: SnapshotTestCase {
     func testScreenShareViewController() {
         let theme = Theme()
         let font = theme.font
@@ -21,12 +21,6 @@ final class ScreenShareViewControllerTests: SnapshotTestCase {
             )
         )
         let screenShareViewController = CallVisualizer.ScreenSharingViewController(props: props)
-        screenShareViewController.view.frame = UIScreen.main.bounds
-
-        assertSnapshot(
-            matching: screenShareViewController,
-            as: .accessibilityImage(precision: Self.possiblePrecision),
-            named: nameForDevice()
-        )
+        screenShareViewController.assertSnapshot(as: .accessibilityImage)
     }
 }
