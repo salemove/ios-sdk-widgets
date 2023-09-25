@@ -14,6 +14,7 @@ final class BubbleWindowLayoutTests: XCTestCase {
             )
         )
         bubbleWindow.makeKeyAndVisible()
-        assertSnapshot(matching: bubbleWindow, as: .image)
+        bubbleWindow.assertSnapshot(as: .image, in: .portrait)
+        bubbleWindow.assertSnapshot(as: .image, in: .landscape)
     }
 }

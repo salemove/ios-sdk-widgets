@@ -6,32 +6,17 @@ import XCTest
 final class ChatViewControllerVoiceOverTests: SnapshotTestCase {
     func test_messagesFromHistory() {
         let viewController = ChatViewController.mockHistoryMessagesScreen()
-        viewController.view.frame = UIScreen.main.bounds
-        assertSnapshot(
-            matching: viewController,
-            as: .accessibilityImage(precision: Self.possiblePrecision),
-            named: nameForDevice()
-        )
+        viewController.assertSnapshot(as: .accessibilityImage)
     }
 
     func test_visitorUploadedFileStates() throws {
         let viewController = try ChatViewController.mockVisitorFileUploadStates()
-        viewController.view.frame = UIScreen.main.bounds
-        assertSnapshot(
-            matching: viewController,
-            as: .accessibilityImage(precision: Self.possiblePrecision),
-            named: nameForDevice()
-        )
+        viewController.assertSnapshot(as: .accessibilityImage)
     }
 
     func test_choiceCard() throws {
         let viewController = try ChatViewController.mockChoiceCard()
-        viewController.view.frame = UIScreen.main.bounds
-        assertSnapshot(
-            matching: viewController,
-            as: .accessibilityImage(precision: Self.possiblePrecision),
-            named: nameForDevice()
-        )
+        viewController.assertSnapshot(as: .accessibilityImage)
     }
 
     func test_visitorFileDownloadStates() throws {
@@ -47,41 +32,22 @@ final class ChatViewControllerVoiceOverTests: SnapshotTestCase {
         chatMessages[1].downloads[0].state.value = .downloading(progress: .init(with: 0.5))
         chatMessages[2].downloads[0].state.value = .downloaded(.mock())
         chatMessages[3].downloads[0].state.value = .error(.deleted)
-        assertSnapshot(
-            matching: viewController,
-            as: .accessibilityImage(precision: Self.possiblePrecision),
-            named: self.nameForDevice()
-        )
+        viewController.assertSnapshot(as: .accessibilityImage)
     }
 
     func test_gvaPersistentButton() throws {
         let viewController = try ChatViewController.mockGvaPersistentButton()
-        viewController.view.frame = UIScreen.main.bounds
-        assertSnapshot(
-            matching: viewController,
-            as: .accessibilityImage(precision: Self.possiblePrecision),
-            named: nameForDevice()
-        )
+        viewController.assertSnapshot(as: .accessibilityImage)
     }
 
     func test_gvaResponseText() throws {
         let viewController = try ChatViewController.mockGvaResponseText()
-        viewController.view.frame = UIScreen.main.bounds
-        assertSnapshot(
-            matching: viewController,
-            as: .accessibilityImage(precision: Self.possiblePrecision),
-            named: nameForDevice()
-        )
+        viewController.assertSnapshot(as: .accessibilityImage)
     }
 
     func test_gvaGalleryCard() throws {
         let viewController = try ChatViewController.mockGvaGalleryCards()
-        viewController.view.frame = UIScreen.main.bounds
-        assertSnapshot(
-            matching: viewController,
-            as: .accessibilityImage(precision: Self.possiblePrecision),
-            named: nameForDevice()
-        )
+        viewController.assertSnapshot(as: .accessibilityImage)
     }
 
     func test_gvaQuickReply() throws {
@@ -97,10 +63,6 @@ final class ChatViewControllerVoiceOverTests: SnapshotTestCase {
         )
         view.frame = .init(origin: .zero, size: .init(width: 350, height: 200))
         view.collectionView.heightAnchor.constraint(equalToConstant: 200).isActive = true
-        assertSnapshot(
-            matching: view,
-            as: .accessibilityImage(precision: Self.possiblePrecision),
-            named: self.nameForDevice()
-        )
+        view.assertSnapshot(as: .accessibilityImage)
     }
 }

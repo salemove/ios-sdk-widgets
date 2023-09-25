@@ -48,19 +48,9 @@ final class VideoCallViewControllerDynamicTypeFontTests: SnapshotTestCase {
         )
         let props: CallVisualizer.VideoCallViewController.Props = .init(videoCallViewProps: videoCallViewProps)
 
-        let videoCallViewController: CallVisualizer.VideoCallViewController = .mock(props: props)
-        videoCallViewController.view.frame = UIScreen.main.bounds
-
-        assertSnapshot(
-            matching: videoCallViewController,
-            as: .extra3LargeFontStrategy,
-            named: nameForDevice()
-        )
-        assertSnapshot(
-            matching: videoCallViewController,
-            as: .extra3LargeFontStrategyLandscape,
-            named: nameForDevice(.landscape)
-        )
+        let viewController: CallVisualizer.VideoCallViewController = .mock(props: props)
+        viewController.assertSnapshot(as: .extra3LargeFont, in: .portrait)
+        viewController.assertSnapshot(as: .extra3LargeFont, in: .landscape)
     }
 }
 // swiftlint:enable type_name

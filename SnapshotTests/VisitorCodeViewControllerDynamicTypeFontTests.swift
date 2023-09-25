@@ -11,19 +11,9 @@ final class VisitorCodeViewControllerDynamicTypeFontTests: SnapshotTestCase {
                 viewState: .loading
             )
         )
-        let visitorCodeViewController = CallVisualizer.VisitorCodeViewController(props: props)
-        visitorCodeViewController.view.frame = UIScreen.main.bounds
-
-        assertSnapshot(
-            matching: visitorCodeViewController,
-            as: .extra3LargeFontStrategy,
-            named: nameForDevice()
-        )
-        assertSnapshot(
-            matching: visitorCodeViewController,
-            as: .extra3LargeFontStrategyLandscape,
-            named: nameForDevice(.landscape)
-        )
+        let viewController = CallVisualizer.VisitorCodeViewController(props: props)
+        viewController.assertSnapshot(as: .extra3LargeFont, in: .portrait)
+        viewController.assertSnapshot(as: .extra3LargeFont, in: .landscape)
     }
 
     func testVisitorCodeAlertWhenError() {
@@ -33,19 +23,9 @@ final class VisitorCodeViewControllerDynamicTypeFontTests: SnapshotTestCase {
                 viewState: .error(refreshTap: .nop)
             )
         )
-        let visitorCodeViewController = CallVisualizer.VisitorCodeViewController(props: props)
-        visitorCodeViewController.view.frame = UIScreen.main.bounds
-
-        assertSnapshot(
-            matching: visitorCodeViewController,
-            as: .extra3LargeFontStrategy,
-            named: nameForDevice()
-        )
-        assertSnapshot(
-            matching: visitorCodeViewController,
-            as: .extra3LargeFontStrategyLandscape,
-            named: nameForDevice(.landscape)
-        )
+        let viewController = CallVisualizer.VisitorCodeViewController(props: props)
+        viewController.assertSnapshot(as: .extra3LargeFont, in: .portrait)
+        viewController.assertSnapshot(as: .extra3LargeFont, in: .landscape)
     }
 
     func testVisitorCodeAlertWhenSuccess() {
@@ -55,19 +35,9 @@ final class VisitorCodeViewControllerDynamicTypeFontTests: SnapshotTestCase {
                 viewState: .success(visitorCode: "12345")
             )
         )
-        let visitorCodeViewController = CallVisualizer.VisitorCodeViewController(props: props)
-        visitorCodeViewController.view.frame = UIScreen.main.bounds
-
-        assertSnapshot(
-            matching: visitorCodeViewController,
-            as: .extra3LargeFontStrategy,
-            named: nameForDevice()
-        )
-        assertSnapshot(
-            matching: visitorCodeViewController,
-            as: .extra3LargeFontStrategyLandscape,
-            named: nameForDevice(.landscape)
-        )
+        let viewController = CallVisualizer.VisitorCodeViewController(props: props)
+        viewController.assertSnapshot(as: .extra3LargeFont, in: .portrait)
+        viewController.assertSnapshot(as: .extra3LargeFont, in: .landscape)
     }
 
     func testVisitorCodeEmbeddedWhenLoading() {
@@ -77,19 +47,9 @@ final class VisitorCodeViewControllerDynamicTypeFontTests: SnapshotTestCase {
                 viewState: .loading
             )
         )
-        let visitorCodeViewController = CallVisualizer.VisitorCodeViewController(props: props)
-        visitorCodeViewController.view.frame = UIScreen.main.bounds
-
-        assertSnapshot(
-            matching: visitorCodeViewController,
-            as: .extra3LargeFontStrategy,
-            named: nameForDevice()
-        )
-        assertSnapshot(
-            matching: visitorCodeViewController,
-            as: .extra3LargeFontStrategyLandscape,
-            named: nameForDevice(.landscape)
-        )
+        let viewController = CallVisualizer.VisitorCodeViewController(props: props)
+        viewController.assertSnapshot(as: .extra3LargeFont, in: .portrait)
+        viewController.assertSnapshot(as: .extra3LargeFont, in: .landscape)
     }
 
     func testVisitorCodeEmbeddedWhenError() {
@@ -99,19 +59,9 @@ final class VisitorCodeViewControllerDynamicTypeFontTests: SnapshotTestCase {
                 viewState: .error(refreshTap: .nop)
             )
         )
-        let visitorCodeViewController = CallVisualizer.VisitorCodeViewController(props: props)
-        visitorCodeViewController.view.frame = UIScreen.main.bounds
-
-        assertSnapshot(
-            matching: visitorCodeViewController,
-            as: .extra3LargeFontStrategy,
-            named: nameForDevice()
-        )
-        assertSnapshot(
-            matching: visitorCodeViewController,
-            as: .extra3LargeFontStrategyLandscape,
-            named: nameForDevice(.landscape)
-        )
+        let viewController = CallVisualizer.VisitorCodeViewController(props: props)
+        viewController.assertSnapshot(as: .extra3LargeFont, in: .portrait)
+        viewController.assertSnapshot(as: .extra3LargeFont, in: .landscape)
     }
     func testVisitorCodeEmbeddedWhenSuccess() {
         let props: CallVisualizer.VisitorCodeViewController.Props = .init(
@@ -120,19 +70,9 @@ final class VisitorCodeViewControllerDynamicTypeFontTests: SnapshotTestCase {
                 viewState: .success(visitorCode: "12345")
             )
         )
-        let visitorCodeViewController = CallVisualizer.VisitorCodeViewController(props: props)
-        visitorCodeViewController.view.frame = UIScreen.main.bounds
-
-        assertSnapshot(
-            matching: visitorCodeViewController,
-            as: .extra3LargeFontStrategy,
-            named: nameForDevice()
-        )
-        assertSnapshot(
-            matching: visitorCodeViewController,
-            as: .extra3LargeFontStrategyLandscape,
-            named: nameForDevice(.landscape)
-        )
+        let viewController = CallVisualizer.VisitorCodeViewController(props: props)
+        viewController.assertSnapshot(as: .extra3LargeFont, in: .portrait)
+        viewController.assertSnapshot(as: .extra3LargeFont, in: .landscape)
     }
 }
 // swiftlint:enable type_name

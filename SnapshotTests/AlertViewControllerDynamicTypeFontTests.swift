@@ -10,16 +10,8 @@ final class AlertViewControllerDynamicTypeFontTests: SnapshotTestCase {
             accepted: {},
             declined: {}
         ))
-        assertSnapshot(
-            matching: alert,
-            as: .extra3LargeFontStrategy,
-            named: nameForDevice()
-        )
-        assertSnapshot(
-            matching: alert,
-            as: .extra3LargeFontStrategyLandscape,
-            named: nameForDevice(.landscape)
-        )
+        alert.assertSnapshot(as: .extra3LargeFont, in: .portrait)
+        alert.assertSnapshot(as: .extra3LargeFont, in: .landscape)
     }
 
     func test_mediaUpgradeOffer_extra3Large() {
@@ -28,16 +20,8 @@ final class AlertViewControllerDynamicTypeFontTests: SnapshotTestCase {
             accepted: {},
             declined: {}
         ))
-        assertSnapshot(
-            matching: alert,
-            as: .extra3LargeFontStrategy,
-            named: nameForDevice()
-        )
-        assertSnapshot(
-            matching: alert,
-            as: .extra3LargeFontStrategyLandscape,
-            named: nameForDevice(.landscape)
-        )
+        alert.assertSnapshot(as: .extra3LargeFont, in: .portrait)
+        alert.assertSnapshot(as: .extra3LargeFont, in: .landscape)
     }
 
     func test_messageAlert_extra3Large() {
@@ -46,16 +30,8 @@ final class AlertViewControllerDynamicTypeFontTests: SnapshotTestCase {
             accessibilityIdentifier: nil,
             dismissed: {}
         ))
-        assertSnapshot(
-            matching: alert,
-            as: .extra3LargeFontStrategy,
-            named: nameForDevice()
-        )
-        assertSnapshot(
-            matching: alert,
-            as: .extra3LargeFontStrategyLandscape,
-            named: nameForDevice(.landscape)
-        )
+        alert.assertSnapshot(as: .extra3LargeFont, in: .portrait)
+        alert.assertSnapshot(as: .extra3LargeFont, in: .landscape)
     }
 
     func test_singleAction_extra3Large() {
@@ -64,16 +40,8 @@ final class AlertViewControllerDynamicTypeFontTests: SnapshotTestCase {
             accessibilityIdentifier: "mocked-accessibility-identifier",
             actionTapped: {}
         ))
-        assertSnapshot(
-            matching: alert,
-            as: .extra3LargeFontStrategy,
-            named: nameForDevice()
-        )
-        assertSnapshot(
-            matching: alert,
-            as: .extra3LargeFontStrategyLandscape,
-            named: nameForDevice(.landscape)
-        )
+        alert.assertSnapshot(as: .extra3LargeFont, in: .portrait)
+        alert.assertSnapshot(as: .extra3LargeFont, in: .landscape)
     }
 
     private func alert(ofKind kind: AlertViewController.Kind) -> AlertViewController {
@@ -81,7 +49,6 @@ final class AlertViewControllerDynamicTypeFontTests: SnapshotTestCase {
             kind: kind,
             viewFactory: .mock()
         )
-        viewController.view.frame = UIScreen.main.bounds
         return viewController
     }
 }

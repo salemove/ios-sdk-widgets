@@ -9,17 +9,8 @@ final class SurveyViewControllerLayoutTests: SnapshotTestCase {
             environment: .init(notificationCenter: .mock),
             props: .emptyPropsMock()
         )
-        viewController.view.frame = UIScreen.main.bounds
-        assertSnapshot(
-            matching: viewController,
-            as: .image,
-            named: nameForDevice()
-        )
-        assertSnapshot(
-            matching: viewController,
-            as: .imageLandscape,
-            named: nameForDevice(.landscape)
-        )
+        viewController.assertSnapshot(as: .image, in: .portrait)
+        viewController.assertSnapshot(as: .image, in: .landscape)
     }
 
     func test_filledSurvey() {
@@ -28,17 +19,8 @@ final class SurveyViewControllerLayoutTests: SnapshotTestCase {
             environment: .init(notificationCenter: .mock),
             props: .filledPropsMock()
         )
-        viewController.view.frame = UIScreen.main.bounds
-        assertSnapshot(
-            matching: viewController,
-            as: .image,
-            named: nameForDevice()
-        )
-        assertSnapshot(
-            matching: viewController,
-            as: .imageLandscape,
-            named: nameForDevice(.landscape)
-        )
+        viewController.assertSnapshot(as: .image, in: .portrait)
+        viewController.assertSnapshot(as: .image, in: .landscape)
     }
 
     func test_emptySurveyErrorState() {
@@ -47,16 +29,7 @@ final class SurveyViewControllerLayoutTests: SnapshotTestCase {
             environment: .init(notificationCenter: .mock),
             props: .errorPropsMock()
         )
-        viewController.view.frame = UIScreen.main.bounds
-        assertSnapshot(
-            matching: viewController,
-            as: .image,
-            named: nameForDevice()
-        )
-        assertSnapshot(
-            matching: viewController,
-            as: .imageLandscape,
-            named: nameForDevice(.landscape)
-        )
+        viewController.assertSnapshot(as: .image, in: .portrait)
+        viewController.assertSnapshot(as: .image, in: .landscape)
     }
 }

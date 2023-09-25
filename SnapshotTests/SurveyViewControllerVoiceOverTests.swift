@@ -10,12 +10,7 @@ final class SurveyViewControllerVoiceOverTests: SnapshotTestCase {
             environment: .init(notificationCenter: .mock),
             props: .emptyPropsMock()
         )
-        viewController.view.frame = UIScreen.main.bounds
-        assertSnapshot(
-            matching: viewController,
-            as: .accessibilityImage(precision: Self.possiblePrecision),
-            named: nameForDevice()
-        )
+        viewController.assertSnapshot(as: .accessibilityImage)
     }
 
     func test_filledSurvey() {
@@ -24,12 +19,7 @@ final class SurveyViewControllerVoiceOverTests: SnapshotTestCase {
             environment: .init(notificationCenter: .mock),
             props: .filledPropsMock()
         )
-        viewController.view.frame = UIScreen.main.bounds
-        assertSnapshot(
-            matching: viewController,
-            as: .accessibilityImage(precision: Self.possiblePrecision),
-            named: nameForDevice()
-        )
+        viewController.assertSnapshot(as: .accessibilityImage)
     }
 
     func test_emptySurveyErrorState() {
@@ -38,11 +28,6 @@ final class SurveyViewControllerVoiceOverTests: SnapshotTestCase {
             environment: .init(notificationCenter: .mock),
             props: .errorPropsMock()
         )
-        viewController.view.frame = UIScreen.main.bounds
-        assertSnapshot(
-            matching: viewController,
-            as: .accessibilityImage(precision: Self.possiblePrecision),
-            named: nameForDevice()
-        )
+        viewController.assertSnapshot(as: .accessibilityImage)
     }
 }

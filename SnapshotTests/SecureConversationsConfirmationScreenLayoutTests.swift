@@ -14,17 +14,7 @@ final class SecureConversationsConfirmationScreenLayoutTests: SnapshotTestCase {
             delegate: nil
         )
         let viewController = SecureConversations.ConfirmationViewController(model: model)
-        viewController.view.frame = UIScreen.main.bounds
-
-        assertSnapshot(
-            matching: viewController,
-            as: .image,
-            named: nameForDevice()
-        )
-        assertSnapshot(
-            matching: viewController,
-            as: .imageLandscape,
-            named: nameForDevice(.landscape)
-        )
+        viewController.assertSnapshot(as: .image, in: .portrait)
+        viewController.assertSnapshot(as: .image, in: .landscape)
     }
 }

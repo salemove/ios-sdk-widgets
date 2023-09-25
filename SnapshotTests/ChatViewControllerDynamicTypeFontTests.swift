@@ -5,47 +5,20 @@ import XCTest
 final class ChatViewControllerDynamicTypeFontTests: SnapshotTestCase {
     func test_messagesFromHistory_extra3Large() {
         let viewController = ChatViewController.mockHistoryMessagesScreen()
-        viewController.view.frame = UIScreen.main.bounds
-        assertSnapshot(
-            matching: viewController,
-            as: .extra3LargeFontStrategy,
-            named: nameForDevice()
-        )
-        assertSnapshot(
-            matching: viewController,
-            as: .extra3LargeFontStrategyLandscape,
-            named: nameForDevice(.landscape)
-        )
+        viewController.assertSnapshot(as: .extra3LargeFont, in: .portrait)
+        viewController.assertSnapshot(as: .extra3LargeFont, in: .landscape)
     }
 
     func test_visitorUploadedFileStates_extra3Large() throws {
         let viewController = try ChatViewController.mockVisitorFileUploadStates()
-        viewController.view.frame = UIScreen.main.bounds
-        assertSnapshot(
-            matching: viewController,
-            as: .extra3LargeFontStrategy,
-            named: nameForDevice()
-        )
-        assertSnapshot(
-            matching: viewController,
-            as: .extra3LargeFontStrategyLandscape,
-            named: nameForDevice(.landscape)
-        )
+        viewController.assertSnapshot(as: .extra3LargeFont, in: .portrait)
+        viewController.assertSnapshot(as: .extra3LargeFont, in: .landscape)
     }
 
     func test_choiceCard_extra3Large() throws {
         let viewController = try ChatViewController.mockChoiceCard()
-        viewController.view.frame = UIScreen.main.bounds
-        assertSnapshot(
-            matching: viewController,
-            as: .extra3LargeFontStrategy,
-            named: nameForDevice()
-        )
-        assertSnapshot(
-            matching: viewController,
-            as: .extra3LargeFontStrategyLandscape,
-            named: nameForDevice(.landscape)
-        )
+        viewController.assertSnapshot(as: .extra3LargeFont, in: .portrait)
+        viewController.assertSnapshot(as: .extra3LargeFont, in: .landscape)
     }
 
     func test_visitorFileDownloadStates_extra3Large() throws {
@@ -61,15 +34,7 @@ final class ChatViewControllerDynamicTypeFontTests: SnapshotTestCase {
         chatMessages[1].downloads[0].state.value = .downloading(progress: .init(with: 0.5))
         chatMessages[2].downloads[0].state.value = .downloaded(.mock())
         chatMessages[3].downloads[0].state.value = .error(.deleted)
-        assertSnapshot(
-            matching: viewController,
-            as: .extra3LargeFontStrategy,
-            named: nameForDevice()
-        )
-        assertSnapshot(
-            matching: viewController,
-            as: .extra3LargeFontStrategyLandscape,
-            named: nameForDevice(.landscape)
-        )
+        viewController.assertSnapshot(as: .extra3LargeFont, in: .portrait)
+        viewController.assertSnapshot(as: .extra3LargeFont, in: .landscape)
     }
 }

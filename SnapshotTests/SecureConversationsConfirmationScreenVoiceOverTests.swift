@@ -3,7 +3,7 @@ import AccessibilitySnapshot
 import SnapshotTesting
 import XCTest
 
-final class SecureConversationsConfirmationScreenTests: SnapshotTestCase {
+final class SecureConversationsConfirmationScreenVoiceOverTests: SnapshotTestCase {
     let theme = Theme.mock()
 
     func test_confirmationView() {
@@ -15,12 +15,6 @@ final class SecureConversationsConfirmationScreenTests: SnapshotTestCase {
             delegate: nil
         )
         let viewController = SecureConversations.ConfirmationViewController(model: model)
-        viewController.view.frame = UIScreen.main.bounds
-
-        assertSnapshot(
-            matching: viewController.view,
-            as: .accessibilityImage(precision: Self.possiblePrecision),
-            named: self.nameForDevice()
-        )
+        viewController.assertSnapshot(as: .accessibilityImage)
     }
 }
