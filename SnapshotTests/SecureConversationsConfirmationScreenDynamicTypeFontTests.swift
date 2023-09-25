@@ -15,18 +15,8 @@ final class SecureConversationsConfirmationScreenDynamicTypeFontTests: SnapshotT
             delegate: nil
         )
         let viewController = SecureConversations.ConfirmationViewController(model: model)
-        viewController.view.frame = UIScreen.main.bounds
-
-        assertSnapshot(
-            matching: viewController.view,
-            as: .extra3LargeFontStrategy,
-            named: nameForDevice()
-        )
-        assertSnapshot(
-            matching: viewController.view,
-            as: .extra3LargeFontStrategyLandscape,
-            named: nameForDevice(.landscape)
-        )
+        viewController.assertSnapshot(as: .extra3LargeFont, in: .portrait)
+        viewController.assertSnapshot(as: .extra3LargeFont, in: .landscape)
     }
 }
 // swiftlint:enable type_name

@@ -3,7 +3,7 @@ import AccessibilitySnapshot
 import SnapshotTesting
 import XCTest
 
-final class SecureConversationsWelcomeScreenTests: SnapshotTestCase {
+final class SecureConversationsWelcomeScreenVoiceOverTests: SnapshotTestCase {
     let theme = Theme.mock()
 
     func test_welcomeView() {
@@ -16,13 +16,7 @@ final class SecureConversationsWelcomeScreenTests: SnapshotTestCase {
             props: .welcome(props),
             environment: .init(gcd: .live, uiScreen: .mock, notificationCenter: .mock)
         )
-        viewController.view.frame = UIScreen.main.bounds
-
-        assertSnapshot(
-            matching: viewController.view,
-            as: .accessibilityImage(precision: Self.possiblePrecision),
-            named: self.nameForDevice()
-        )
+        viewController.assertSnapshot(as: .accessibilityImage)
     }
 
     func test_welcomeWithAttachments() {
@@ -38,13 +32,7 @@ final class SecureConversationsWelcomeScreenTests: SnapshotTestCase {
             props: .welcome(props),
             environment: .init(gcd: .live, uiScreen: .mock, notificationCenter: .mock)
         )
-        viewController.view.frame = UIScreen.main.bounds
-
-        assertSnapshot(
-            matching: viewController.view,
-            as: .accessibilityImage(precision: Self.possiblePrecision),
-            named: self.nameForDevice()
-        )
+        viewController.assertSnapshot(as: .accessibilityImage)
     }
 
     func test_welcomeViewController_withValidationError() {
@@ -54,13 +42,7 @@ final class SecureConversationsWelcomeScreenTests: SnapshotTestCase {
             props: .welcome(props),
             environment: .init(gcd: .live, uiScreen: .mock, notificationCenter: .mock)
         )
-        viewController.view.frame = UIScreen.main.bounds
-
-        assertSnapshot(
-            matching: viewController.view,
-            as: .accessibilityImage(precision: Self.possiblePrecision),
-            named: self.nameForDevice()
-        )
+        viewController.assertSnapshot(as: .accessibilityImage)
     }
 
     // MARK: - Helpers

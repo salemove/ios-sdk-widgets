@@ -296,8 +296,8 @@
 		75C48498299AC71F003EC223 /* Header+Playbook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C48497299AC71F003EC223 /* Header+Playbook.swift */; };
 		75CF8D6129B3F1E400CB1524 /* Configuration+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CF8D6029B3F1E400CB1524 /* Configuration+Mock.swift */; };
 		75CF8D6329B7DD8300CB1524 /* SecureConversations+ConfirmationStyle+RemoteConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CF8D6229B7DD8300CB1524 /* SecureConversations+ConfirmationStyle+RemoteConfig.swift */; };
-		75CF8D9129C3A85C00CB1524 /* SecureConversationsWelcomeScreenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CF8D9029C3A85C00CB1524 /* SecureConversationsWelcomeScreenTests.swift */; };
-		75CF8DAD29C8F2B500CB1524 /* SecureConversationsConfirmationScreenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CF8DAC29C8F2B500CB1524 /* SecureConversationsConfirmationScreenTests.swift */; };
+		75CF8D9129C3A85C00CB1524 /* SecureConversationsWelcomeScreenVoiceOverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CF8D9029C3A85C00CB1524 /* SecureConversationsWelcomeScreenVoiceOverTests.swift */; };
+		75CF8DAD29C8F2B500CB1524 /* SecureConversationsConfirmationScreenVoiceOverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CF8DAC29C8F2B500CB1524 /* SecureConversationsConfirmationScreenVoiceOverTests.swift */; };
 		75F58EE127E7D5300065BA2D /* Survey.ViewController.Props.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F58EE027E7D5300065BA2D /* Survey.ViewController.Props.swift */; };
 		75FF151427F3A2D600FE7BE2 /* Theme+Survey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FF151327F3A2D600FE7BE2 /* Theme+Survey.swift */; };
 		75FF151727F4E13900FE7BE2 /* Theme.Survey.BooleanQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FF151627F4E13900FE7BE2 /* Theme.Survey.BooleanQuestion.swift */; };
@@ -368,7 +368,7 @@
 		846A5C3E29D1C7B00049B29F /* CallVisualizerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846A5C3D29D1C7B00049B29F /* CallVisualizerTests.swift */; };
 		846A5C4029ED83C50049B29F /* CallVisualizer.Coordinator.DelegateEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846A5C3F29ED83C50049B29F /* CallVisualizer.Coordinator.DelegateEvent.swift */; };
 		846A5C4529F6BEFA0049B29F /* GliaTests+StartEngagement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846A5C4429F6BEFA0049B29F /* GliaTests+StartEngagement.swift */; };
-		846E822828996A5C008EFBF0 /* AlertViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846E822728996A5C008EFBF0 /* AlertViewControllerTests.swift */; };
+		846E822828996A5C008EFBF0 /* AlertViewControllerVoiceOverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846E822728996A5C008EFBF0 /* AlertViewControllerVoiceOverTests.swift */; };
 		847A7643285A1914004044D1 /* FileUploadListViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847A7642285A1914004044D1 /* FileUploadListViewModelTests.swift */; };
 		8491AF002A6FB44200CC3E72 /* GvaGalleryCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8491AEFF2A6FB44200CC3E72 /* GvaGalleryCardCell.swift */; };
 		8491AF022A6FBBBA00CC3E72 /* GvaGalleryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8491AF012A6FBBBA00CC3E72 /* GvaGalleryListView.swift */; };
@@ -599,13 +599,15 @@
 		C06A7586296ECC57006B69A2 /* VisitorCodeStyle.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06A7585296ECC57006B69A2 /* VisitorCodeStyle.Accessibility.swift */; };
 		C06A7588296ECD75006B69A2 /* Theme+VisitorCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06A7587296ECD75006B69A2 /* Theme+VisitorCode.swift */; };
 		C07F62462ABC322B003EFC97 /* OrientationManager.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07F62452ABC322B003EFC97 /* OrientationManager.Mock.swift */; };
+		C07F62772AC1BA2B003EFC97 /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07F62762AC1BA2B003EFC97 /* UIViewController+Extensions.swift */; };
+		C07F62832AC33BB9003EFC97 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07F62822AC33BB9003EFC97 /* UIView+Extensions.swift */; };
 		C07FA04029AF542A00E9FB7F /* ScreenSharingViewStyle+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84265E0B298AECBA00D65842 /* ScreenSharingViewStyle+Mock.swift */; };
 		C07FA04329AF551D00E9FB7F /* ScreenSharingView.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07FA04129AF550500E9FB7F /* ScreenSharingView.Mock.swift */; };
 		C07FA04629AF560A00E9FB7F /* ScreenSharingViewController.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07FA04429AF55F600E9FB7F /* ScreenSharingViewController.Mock.swift */; };
 		C07FA04B29AF83B900E9FB7F /* ActionButton.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07FA04929AF83A400E9FB7F /* ActionButton.Mock.swift */; };
-		C07FA04F29B0E41A00E9FB7F /* ScreenShareViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07FA04C29B0E41A00E9FB7F /* ScreenShareViewControllerTests.swift */; };
-		C07FA05029B0E41A00E9FB7F /* VideoCallViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07FA04D29B0E41A00E9FB7F /* VideoCallViewControllerTests.swift */; };
-		C07FA05129B0E41A00E9FB7F /* VisitorCodeViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07FA04E29B0E41A00E9FB7F /* VisitorCodeViewControllerTests.swift */; };
+		C07FA04F29B0E41A00E9FB7F /* ScreenShareViewControllerVoiceOverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07FA04C29B0E41A00E9FB7F /* ScreenShareViewControllerVoiceOverTests.swift */; };
+		C07FA05029B0E41A00E9FB7F /* VideoCallViewControllerVoiceOverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07FA04D29B0E41A00E9FB7F /* VideoCallViewControllerVoiceOverTests.swift */; };
+		C07FA05129B0E41A00E9FB7F /* VisitorCodeViewControllerVoiceOverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07FA04E29B0E41A00E9FB7F /* VisitorCodeViewControllerVoiceOverTests.swift */; };
 		C0857DE528D470C1008D171D /* Theme+Shadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0857DE428D470C1008D171D /* Theme+Shadow.swift */; };
 		C0857DE728D470F2008D171D /* Theme+Layer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0857DE628D470F2008D171D /* Theme+Layer.swift */; };
 		C0857DEB28D482D0008D171D /* Theme+Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0857DEA28D482D0008D171D /* Theme+Button.swift */; };
@@ -1028,8 +1030,8 @@
 		75C48497299AC71F003EC223 /* Header+Playbook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Header+Playbook.swift"; sourceTree = "<group>"; };
 		75CF8D6029B3F1E400CB1524 /* Configuration+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Configuration+Mock.swift"; sourceTree = "<group>"; };
 		75CF8D6229B7DD8300CB1524 /* SecureConversations+ConfirmationStyle+RemoteConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SecureConversations+ConfirmationStyle+RemoteConfig.swift"; sourceTree = "<group>"; };
-		75CF8D9029C3A85C00CB1524 /* SecureConversationsWelcomeScreenTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversationsWelcomeScreenTests.swift; sourceTree = "<group>"; };
-		75CF8DAC29C8F2B500CB1524 /* SecureConversationsConfirmationScreenTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversationsConfirmationScreenTests.swift; sourceTree = "<group>"; };
+		75CF8D9029C3A85C00CB1524 /* SecureConversationsWelcomeScreenVoiceOverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversationsWelcomeScreenVoiceOverTests.swift; sourceTree = "<group>"; };
+		75CF8DAC29C8F2B500CB1524 /* SecureConversationsConfirmationScreenVoiceOverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversationsConfirmationScreenVoiceOverTests.swift; sourceTree = "<group>"; };
 		75F58EE027E7D5300065BA2D /* Survey.ViewController.Props.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Survey.ViewController.Props.swift; sourceTree = "<group>"; };
 		75FF151327F3A2D600FE7BE2 /* Theme+Survey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Theme+Survey.swift"; sourceTree = "<group>"; };
 		75FF151627F4E13900FE7BE2 /* Theme.Survey.BooleanQuestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.Survey.BooleanQuestion.swift; sourceTree = "<group>"; };
@@ -1102,7 +1104,7 @@
 		846A5C3D29D1C7B00049B29F /* CallVisualizerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallVisualizerTests.swift; sourceTree = "<group>"; };
 		846A5C3F29ED83C50049B29F /* CallVisualizer.Coordinator.DelegateEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallVisualizer.Coordinator.DelegateEvent.swift; sourceTree = "<group>"; };
 		846A5C4429F6BEFA0049B29F /* GliaTests+StartEngagement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GliaTests+StartEngagement.swift"; sourceTree = "<group>"; };
-		846E822728996A5C008EFBF0 /* AlertViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertViewControllerTests.swift; sourceTree = "<group>"; };
+		846E822728996A5C008EFBF0 /* AlertViewControllerVoiceOverTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertViewControllerVoiceOverTests.swift; sourceTree = "<group>"; };
 		847A7642285A1914004044D1 /* FileUploadListViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUploadListViewModelTests.swift; sourceTree = "<group>"; };
 		8491AEFF2A6FB44200CC3E72 /* GvaGalleryCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GvaGalleryCardCell.swift; sourceTree = "<group>"; };
 		8491AF012A6FBBBA00CC3E72 /* GvaGalleryListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GvaGalleryListView.swift; sourceTree = "<group>"; };
@@ -1338,12 +1340,14 @@
 		C06A7585296ECC57006B69A2 /* VisitorCodeStyle.Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorCodeStyle.Accessibility.swift; sourceTree = "<group>"; };
 		C06A7587296ECD75006B69A2 /* Theme+VisitorCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Theme+VisitorCode.swift"; sourceTree = "<group>"; };
 		C07F62452ABC322B003EFC97 /* OrientationManager.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientationManager.Mock.swift; sourceTree = "<group>"; };
+		C07F62762AC1BA2B003EFC97 /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
+		C07F62822AC33BB9003EFC97 /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
 		C07FA04129AF550500E9FB7F /* ScreenSharingView.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenSharingView.Mock.swift; sourceTree = "<group>"; };
 		C07FA04429AF55F600E9FB7F /* ScreenSharingViewController.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenSharingViewController.Mock.swift; sourceTree = "<group>"; };
 		C07FA04929AF83A400E9FB7F /* ActionButton.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButton.Mock.swift; sourceTree = "<group>"; };
-		C07FA04C29B0E41A00E9FB7F /* ScreenShareViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenShareViewControllerTests.swift; sourceTree = "<group>"; };
-		C07FA04D29B0E41A00E9FB7F /* VideoCallViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoCallViewControllerTests.swift; sourceTree = "<group>"; };
-		C07FA04E29B0E41A00E9FB7F /* VisitorCodeViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisitorCodeViewControllerTests.swift; sourceTree = "<group>"; };
+		C07FA04C29B0E41A00E9FB7F /* ScreenShareViewControllerVoiceOverTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenShareViewControllerVoiceOverTests.swift; sourceTree = "<group>"; };
+		C07FA04D29B0E41A00E9FB7F /* VideoCallViewControllerVoiceOverTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoCallViewControllerVoiceOverTests.swift; sourceTree = "<group>"; };
+		C07FA04E29B0E41A00E9FB7F /* VisitorCodeViewControllerVoiceOverTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisitorCodeViewControllerVoiceOverTests.swift; sourceTree = "<group>"; };
 		C0857DE428D470C1008D171D /* Theme+Shadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Theme+Shadow.swift"; sourceTree = "<group>"; };
 		C0857DE628D470F2008D171D /* Theme+Layer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Theme+Layer.swift"; sourceTree = "<group>"; };
 		C0857DEA28D482D0008D171D /* Theme+Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Theme+Button.swift"; sourceTree = "<group>"; };
@@ -3342,7 +3346,8 @@
 		9A1992CE27D61F5400161AAE /* SnapshotTests */ = {
 			isa = PBXGroup;
 			children = (
-				846E822728996A5C008EFBF0 /* AlertViewControllerTests.swift */,
+				C07F62752AC1BA0E003EFC97 /* extensions */,
+				846E822728996A5C008EFBF0 /* AlertViewControllerVoiceOverTests.swift */,
 				AF22C8842A6154780004BF3C /* AlertViewControllerLayoutTests.swift */,
 				AF03A7AE2A6E7DC40081887D /* AlertViewControllerDynamicTypeFontTests.swift */,
 				9AB3401227F71D5D006E0FE2 /* BubbleViewVoiceOverTests.swift */,
@@ -3357,22 +3362,23 @@
 				9A1992D627D61F8100161AAE /* ChatViewControllerVoiceOverTests.swift */,
 				AF22C88C2A6188EF0004BF3C /* ChatViewControllerLayoutTests.swift */,
 				AF03A7B62A6EAFBA0081887D /* ChatViewControllerDynamicTypeFontTests.swift */,
-				C07FA04C29B0E41A00E9FB7F /* ScreenShareViewControllerTests.swift */,
+				C07FA04C29B0E41A00E9FB7F /* ScreenShareViewControllerVoiceOverTests.swift */,
 				AF22C88E2A618B9D0004BF3C /* ScreenShareViewControllerLayoutTests.swift */,
 				AF03A7B82A6ED1240081887D /* ScreenShareViewControllerDynamicTypeFontTests.swift */,
-				75CF8D9029C3A85C00CB1524 /* SecureConversationsWelcomeScreenTests.swift */,
+				75CF8D9029C3A85C00CB1524 /* SecureConversationsWelcomeScreenVoiceOverTests.swift */,
 				AF22C8902A6198FF0004BF3C /* SecureConversationsWelcomeScreenLayoutTests.swift */,
 				AF03A7BA2A6ED73E0081887D /* SecureConversationsWelcomeScreenDynamicTypeFontTests.swift */,
-				75CF8DAC29C8F2B500CB1524 /* SecureConversationsConfirmationScreenTests.swift */,
+				75CF8DAC29C8F2B500CB1524 /* SecureConversationsConfirmationScreenVoiceOverTests.swift */,
 				AF22C8922A619F5C0004BF3C /* SecureConversationsConfirmationScreenLayoutTests.swift */,
 				AF03A7BC2A6EDACF0081887D /* SecureConversationsConfirmationScreenDynamicTypeFontTests.swift */,
 				9A1992D727D61F8100161AAE /* SnapshotTestCase.swift */,
 				8458769E2823FD18007AC3DF /* SurveyViewControllerVoiceOverTests.swift */,
 				AF22C8942A61A6B80004BF3C /* SurveyViewControllerLayoutTests.swift */,
 				AF03A7BE2A6EDCBF0081887D /* SurveyViewControllerDynamicTypeFontTests.swift */,
-				C07FA04D29B0E41A00E9FB7F /* VideoCallViewControllerTests.swift */,
+				C07FA04D29B0E41A00E9FB7F /* VideoCallViewControllerVoiceOverTests.swift */,
 				AF22C8962A61A9BF0004BF3C /* VideoCallViewControllerLayoutTests.swift */,
 				AF03A7C02A6EDE190081887D /* VideoCallViewControllerDynamicTypeFontTests.swift */,
+				C07FA04E29B0E41A00E9FB7F /* VisitorCodeViewControllerVoiceOverTests.swift */,
 				C07FA04E29B0E41A00E9FB7F /* VisitorCodeViewControllerTests.swift */,
 				AF755FD92A71583900871E36 /* BubbleWindowLayoutTests.swift */,
 				AF22C8982A61AE930004BF3C /* VisitorCodeViewControllerLayoutTests.swift */,
@@ -3571,6 +3577,15 @@
 				C07F62452ABC322B003EFC97 /* OrientationManager.Mock.swift */,
 			);
 			path = OrientationManager;
+			sourceTree = "<group>";
+		};
+		C07F62752AC1BA0E003EFC97 /* extensions */ = {
+			isa = PBXGroup;
+			children = (
+				C07F62762AC1BA2B003EFC97 /* UIViewController+Extensions.swift */,
+				C07F62822AC33BB9003EFC97 /* UIView+Extensions.swift */,
+			);
+			path = extensions;
 			sourceTree = "<group>";
 		};
 		C096B408297EBCEB00F0C552 /* CallVisualizer */ = {
@@ -4939,17 +4954,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				846E822828996A5C008EFBF0 /* AlertViewControllerTests.swift in Sources */,
+				846E822828996A5C008EFBF0 /* AlertViewControllerVoiceOverTests.swift in Sources */,
 				AF03A7BB2A6ED73E0081887D /* SecureConversationsWelcomeScreenDynamicTypeFontTests.swift in Sources */,
-				75CF8D9129C3A85C00CB1524 /* SecureConversationsWelcomeScreenTests.swift in Sources */,
+				75CF8D9129C3A85C00CB1524 /* SecureConversationsWelcomeScreenVoiceOverTests.swift in Sources */,
 				AF22C8972A61A9BF0004BF3C /* VideoCallViewControllerLayoutTests.swift in Sources */,
+				C07F62772AC1BA2B003EFC97 /* UIViewController+Extensions.swift in Sources */,
 				AF03A7BD2A6EDACF0081887D /* SecureConversationsConfirmationScreenDynamicTypeFontTests.swift in Sources */,
 				AF03A7B92A6ED1240081887D /* ScreenShareViewControllerDynamicTypeFontTests.swift in Sources */,
+				C07F62832AC33BB9003EFC97 /* UIView+Extensions.swift in Sources */,
 				9AE9E4B527E0EE2E00BFE239 /* CallViewControllerVoiceOverTests.swift in Sources */,
 				AF03A7BF2A6EDCBF0081887D /* SurveyViewControllerDynamicTypeFontTests.swift in Sources */,
 				AF22C8852A6154780004BF3C /* AlertViewControllerLayoutTests.swift in Sources */,
 				AF22C8872A6182AF0004BF3C /* BubbleViewLayoutTests.swift in Sources */,
 				AF03A7C12A6EDE190081887D /* VideoCallViewControllerDynamicTypeFontTests.swift in Sources */,
+				C07FA05029B0E41A00E9FB7F /* VideoCallViewControllerVoiceOverTests.swift in Sources */,
 				C07FA05029B0E41A00E9FB7F /* VideoCallViewControllerTests.swift in Sources */,
 				AF755FDA2A71583900871E36 /* BubbleWindowLayoutTests.swift in Sources */,
 				AF22C88D2A6188EF0004BF3C /* ChatViewControllerLayoutTests.swift in Sources */,
@@ -4963,10 +4981,10 @@
 				9A1992D827D61F8100161AAE /* ChatViewControllerVoiceOverTests.swift in Sources */,
 				AF22C8892A6184C50004BF3C /* CallViewControllerLayoutTests.swift in Sources */,
 				8458769F2823FD18007AC3DF /* SurveyViewControllerVoiceOverTests.swift in Sources */,
-				C07FA05129B0E41A00E9FB7F /* VisitorCodeViewControllerTests.swift in Sources */,
-				75CF8DAD29C8F2B500CB1524 /* SecureConversationsConfirmationScreenTests.swift in Sources */,
+				C07FA05129B0E41A00E9FB7F /* VisitorCodeViewControllerVoiceOverTests.swift in Sources */,
+				75CF8DAD29C8F2B500CB1524 /* SecureConversationsConfirmationScreenVoiceOverTests.swift in Sources */,
 				9AB3402928002422006E0FE2 /* ChatCallUpgradeViewVoiceOverTests.swift in Sources */,
-				C07FA04F29B0E41A00E9FB7F /* ScreenShareViewControllerTests.swift in Sources */,
+				C07FA04F29B0E41A00E9FB7F /* ScreenShareViewControllerVoiceOverTests.swift in Sources */,
 				AF22C8952A61A6B80004BF3C /* SurveyViewControllerLayoutTests.swift in Sources */,
 				9A1992D927D61F8100161AAE /* SnapshotTestCase.swift in Sources */,
 				AF03A7B52A6EAA950081887D /* ChatCallUpgradeViewDynamicTypeFontTests.swift in Sources */,

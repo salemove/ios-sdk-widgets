@@ -9,17 +9,8 @@ final class SurveyViewControllerDynamicTypeFontTests: SnapshotTestCase {
             environment: .init(notificationCenter: .mock),
             props: .emptyPropsMock()
         )
-        viewController.view.frame = UIScreen.main.bounds
-        assertSnapshot(
-            matching: viewController,
-            as: .extra3LargeFontStrategy,
-            named: nameForDevice()
-        )
-        assertSnapshot(
-            matching: viewController,
-            as: .extra3LargeFontStrategyLandscape,
-            named: nameForDevice(.landscape)
-        )
+        viewController.assertSnapshot(as: .extra3LargeFont, in: .portrait)
+        viewController.assertSnapshot(as: .extra3LargeFont, in: .landscape)
     }
 
     func test_filledSurvey_extra3Large() {
@@ -28,17 +19,8 @@ final class SurveyViewControllerDynamicTypeFontTests: SnapshotTestCase {
             environment: .init(notificationCenter: .mock),
             props: .filledPropsMock()
         )
-        viewController.view.frame = UIScreen.main.bounds
-        assertSnapshot(
-            matching: viewController,
-            as: .extra3LargeFontStrategy,
-            named: nameForDevice()
-        )
-        assertSnapshot(
-            matching: viewController,
-            as: .extra3LargeFontStrategyLandscape,
-            named: nameForDevice(.landscape)
-        )
+        viewController.assertSnapshot(as: .extra3LargeFont, in: .portrait)
+        viewController.assertSnapshot(as: .extra3LargeFont, in: .landscape)
     }
 
     func test_emptySurveyErrorState_extra3Large() {
@@ -47,16 +29,7 @@ final class SurveyViewControllerDynamicTypeFontTests: SnapshotTestCase {
             environment: .init(notificationCenter: .mock),
             props: .errorPropsMock()
         )
-        viewController.view.frame = UIScreen.main.bounds
-        assertSnapshot(
-            matching: viewController,
-            as: .extra3LargeFontStrategy,
-            named: nameForDevice()
-        )
-        assertSnapshot(
-            matching: viewController,
-            as: .extra3LargeFontStrategyLandscape,
-            named: nameForDevice(.landscape)
-        )
+        viewController.assertSnapshot(as: .extra3LargeFont, in: .portrait)
+        viewController.assertSnapshot(as: .extra3LargeFont, in: .landscape)
     }
 }

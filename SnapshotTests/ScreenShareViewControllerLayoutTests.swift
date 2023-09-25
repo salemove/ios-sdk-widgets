@@ -20,17 +20,7 @@ final class ScreenShareViewControllerLayoutTests: SnapshotTestCase {
             )
         )
         let screenShareViewController = CallVisualizer.ScreenSharingViewController(props: props)
-        screenShareViewController.view.frame = UIScreen.main.bounds
-
-        assertSnapshot(
-            matching: screenShareViewController,
-            as: .image,
-            named: nameForDevice()
-        )
-        assertSnapshot(
-            matching: screenShareViewController,
-            as: .imageLandscape,
-            named: nameForDevice(.landscape)
-        )
+        screenShareViewController.assertSnapshot(as: .image, in: .portrait)
+        screenShareViewController.assertSnapshot(as: .image, in: .landscape)
     }
 }
