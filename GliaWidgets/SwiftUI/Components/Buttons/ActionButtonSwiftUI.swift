@@ -25,10 +25,10 @@ struct ActionButtonSwiftUI: View {
                 x: model.style.shadowOffset?.width ?? 0,
                 y: model.style.shadowOffset?.height ?? 0
             )
-            .accessibility(identifier: model.accessibilityIdentifier)
-            .accessibility(addTraits: .isButton)
-            .accessibility(removeTraits: .isImage)
-            .onTapGesture(perform: model.tap.callAsFunction)
+            .migrationAccessibilityIdentifier(model.accessibilityIdentifier)
+            .migrationAccessibilityAddTrait(.isButton)
+            .migrationAccessibilityRemoveTrait(.isImage)
+            .onTapGesture(perform: model.tap.execute)
     }
 }
 

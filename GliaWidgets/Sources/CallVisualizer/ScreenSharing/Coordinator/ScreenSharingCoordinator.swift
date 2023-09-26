@@ -6,7 +6,7 @@ extension CallVisualizer {
         var delegate: ((DelegateEvent) -> Void)?
 
         private let environment: Environment
-        private var viewModel: ScreenSharingViewModel?
+        private var viewModel: ScreenSharingView.Model?
         var viewController: ScreenSharingViewController?
 
         // MARK: - Initialization
@@ -24,40 +24,31 @@ extension CallVisualizer {
         // MARK: - Private
 
         private func showEndScreenSharingViewController() -> ViewController {
-            let viewModel = ScreenSharingViewModel(
-                style: environment.theme.screenSharing,
-                environment: .init(screenShareHandler: environment.screenShareHandler)
+            let environment: ScreenSharingView.Model.Environment = .init(
+                orientationManager: self.environment.orientationManager,
+                uiApplication: .live,
+                screenShareHandler: environment.screenShareHandler
+            )
+            let model: ScreenSharingView.Model = .init(
+                style: self.environment.theme.screenSharing,
+                environment: environment
             )
 
-            self.viewModel = viewModel
+            self.viewModel = model
 
-            let viewController = ScreenSharingViewController(props: viewModel.props())
+            let viewController: ScreenSharingViewController = .init(model: model)
             viewController.modalPresentationStyle = .overFullScreen
             self.viewController = viewController
 
-            viewModel.delegate = .init { [weak self, weak viewController] event in
+            model.delegate = .init { [weak self, weak viewController] event in
                 switch event {
-                case .close:
+                case .closeTapped:
                     viewController?.dismiss(animated: true)
                     self?.delegate?(.close)
                 }
             }
 
             return viewController
-        }
-
-        private static func createHeaderProps(with header: HeaderStyle) -> Header.Props {
-            let backButton = header.backButton.map { HeaderButton.Props(style: $0) }
-
-            return .init(
-                title: "",
-                effect: .none,
-                endButton: .init(),
-                backButton: backButton,
-                closeButton: .init(style: header.closeButton),
-                endScreenshareButton: .init(style: header.endScreenShareButton),
-                style: header
-            )
         }
     }
 }

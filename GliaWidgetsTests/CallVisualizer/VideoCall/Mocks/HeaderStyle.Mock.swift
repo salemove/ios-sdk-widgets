@@ -26,7 +26,7 @@ extension HeaderStyle {
 
 extension HeaderButtonStyle {
     static func mock(
-        image: UIImage = .mock,
+        image: UIImage = Asset.back.image,
         color: UIColor = .white,
         accessibility: Accessibility = .init(label: "", hint: "")
     ) -> HeaderButtonStyle {

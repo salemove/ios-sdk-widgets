@@ -182,7 +182,8 @@ extension CallVisualizer {
             let coordinator = ScreenSharingCoordinator(
                 environment: .init(
                     theme: environment.viewFactory.theme,
-                    screenShareHandler: environment.screenShareHandler
+                    screenShareHandler: environment.screenShareHandler,
+                    orientationManager: environment.orientationManager
                 )
             )
 
