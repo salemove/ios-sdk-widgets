@@ -5,9 +5,7 @@ extension SecureConversations {
     final class ConfirmationViewController: UIViewController {
         private let model: ConfirmationViewSwiftUI.Model
 
-        init(
-            model: ConfirmationViewSwiftUI.Model
-        ) {
+        init(model: ConfirmationViewSwiftUI.Model) {
             self.model = model
             super.init(nibName: nil, bundle: nil)
         }
@@ -20,11 +18,10 @@ extension SecureConversations {
         override func loadView() {
             super.loadView()
             let hostingController: UIHostingController<ConfirmationViewSwiftUI>
-            let confirmationView = ConfirmationViewSwiftUI(
-                model: model
-            )
+            let confirmationView = ConfirmationViewSwiftUI(model: model)
 
             hostingController = UIHostingController(rootView: confirmationView)
+            hostingController.willMove(toParent: self)
             addChild(hostingController)
             view.addSubview(hostingController.view)
             hostingController.didMove(toParent: self)
