@@ -40,7 +40,7 @@ private extension SecureConversations.ConfirmationViewSwiftUI {
             .frame(width: model.orientation.isPortrait ? 100.0 : 70.0)
             .foregroundColor(SwiftUI.Color(model.style.confirmationImageTint))
             .padding(.bottom, model.orientation.isPortrait ? 32 : 8)
-            .accessibility(hidden: true)
+            .migrationAccessibilityHidden(true)
     }
 
     @ViewBuilder
@@ -80,8 +80,8 @@ private extension SecureConversations.ConfirmationViewSwiftUI {
                 .background(SwiftUI.Color(model.style.checkMessagesButtonStyle.backgroundColor))
                 .cornerRadius(4)
         }
-        .accessibility(identifier: "secureConversations_confirmationCheckMessages_button")
-        .accessibility(label: Text(model.style.checkMessagesButtonStyle.accessibility.label))
-        .accessibility(hint: Text(model.style.checkMessagesButtonStyle.accessibility.hint))
+        .migrationAccessibilityIdentifier("secureConversations_confirmationCheckMessages_button")
+        .migrationAccessibilityLabel(model.style.checkMessagesButtonStyle.accessibility.label)
+        .migrationAccessibilityHint(model.style.checkMessagesButtonStyle.accessibility.hint)
     }
 }

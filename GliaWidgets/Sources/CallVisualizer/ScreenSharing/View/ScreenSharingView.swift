@@ -1,127 +1,59 @@
-import UIKit
+import SwiftUI
 
 extension CallVisualizer {
-    final class ScreenSharingView: BaseView {
+    struct ScreenSharingView: View {
+        @ObservedObject var model: Model
 
-        // MARK: - Props
-
-        struct Props: Equatable {
-            let style: ScreenSharingViewStyle
-            let header: Header.Props
-            let endScreenSharing: ActionButton.Props
-
-            init(
-                style: ScreenSharingViewStyle,
-                header: Header.Props,
-                endScreenSharing: ActionButton.Props
-            ) {
-                self.style = style
-                self.header = header
-                self.endScreenSharing = endScreenSharing
-            }
-        }
-
-        // MARK: - Properties
-
-        private lazy var header = Header(props: props.header)
-            .make { header in
-                header.endScreenShareButton.isHidden = true
-                header.closeButton.isHidden = true
-                header.endButton.isHidden = true
-            }
-        private lazy var messageLabel = UILabel().make {
-            $0.font = props.style.messageTextFont
-            $0.textColor = props.style.messageTextColor
-            $0.text = props.style.messageText
-            $0.adjustsFontSizeToFitWidth = true
-            $0.numberOfLines = 2
-            $0.textAlignment = .center
-            $0.accessibilityIdentifier = "end_screen_sharing_message"
-            $0.translatesAutoresizingMaskIntoConstraints = false
-        }
-        private lazy var endScreenSharingButton = ActionButton(props: props.endScreenSharing).make {
-            $0.setImage(props.style.buttonIcon, for: .normal)
-            $0.tintColor = props.style.buttonStyle.titleColor
-            $0.titleEdgeInsets = .init(top: 0, left: 8, bottom: 0, right: 0)
-            $0.titleLabel?.numberOfLines = 0
-            $0.titleLabel?.translatesAutoresizingMaskIntoConstraints = false
-            $0.accessibilityIdentifier = "end_screen_sharing_button"
-            $0.accessibilityLabel = Localization.ScreenSharing.VisitorScreen.End.title
-            $0.accessibilityHint = Localization.ScreenSharing.VisitorScreen.End.Accessibility.hint
-        }
-        private lazy var contentStackView = UIStackView.make(
-            .vertical,
-            spacing: 16
-        )(
-            messageLabel,
-            endScreenSharingButton
-        )
-
-        var props: Props {
-            didSet {
-                renderProps()
-            }
-        }
-
-        // MARK: - Initialization
-
-        init(props: Props) {
-            self.props = props
-            super.init()
-        }
-
-        required init() {
-            fatalError("init() has not been implemented")
-        }
-
-        // MARK: - Overrides
-
-        override func setup() {
-            super.setup()
-
-            addSubview(header)
-            header.translatesAutoresizingMaskIntoConstraints = false
-            var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
-            constraints += header.layoutInSuperview(edges: .horizontal)
-
-            addSubview(contentStackView)
-            contentStackView.translatesAutoresizingMaskIntoConstraints = false
-            constraints += contentStackView.centerXAnchor.constraint(equalTo: centerXAnchor)
-            constraints += contentStackView.centerYAnchor.constraint(equalTo: centerYAnchor)
-            constraints += contentStackView.layoutIn(layoutMarginsGuide, edges: .horizontal, insets: .init(top: 0, left: 42, bottom: 0, right: 42))
-
-            constraints += endScreenSharingButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 40)
-
-            if let imageView = endScreenSharingButton.imageView {
-                constraints += imageView.widthAnchor.constraint(equalToConstant: 24)
-            }
-
-            setFontScalingEnabled(
-                props.style.accessibility.isFontScalingEnabled,
-                for: messageLabel
-            )
-            setFontScalingEnabled(
-                props.style.buttonStyle.accessibility.isFontScalingEnabled,
-                for: endScreenSharingButton
-            )
-        }
-
-        override func layoutSubviews() {
-            switch props.style.backgroundColor {
-            case .fill(let color):
-                backgroundColor = color
-            case .gradient(let colors):
-                makeGradientBackground(colors: colors)
+        var body: some View {
+            ZStack {
+                Background(model.style.backgroundColor)
+                    .edgesIgnoringSafeArea(.all)
+                VStack(spacing: 0) {
+                    HeaderSwiftUI(model: model.makeHeaderModel())
+                    VStack(spacing: 16) {
+                        mainLabel
+                        endScreenShareButton
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                }.edgesIgnoringSafeArea(.top)
             }
         }
     }
 }
 
-// MARK: - Private
+extension CallVisualizer.ScreenSharingView {
+    var mainLabel: some View {
+        Text(model.style.messageText)
+            .font(.convert(model.style.messageTextFont))
+            .foregroundColor(SwiftUI.Color(model.style.messageTextColor))
+            .lineLimit(2)
+            .multilineTextAlignment(.center)
+            .migrationAccessibilityIdentifier("end_screen_sharing_message")
+    }
 
-private extension CallVisualizer.ScreenSharingView {
-    func renderProps() {
-        header.props = props.header
-        endScreenSharingButton.props = props.endScreenSharing
+    var endScreenShareButton: some View {
+        SwiftUI.Button(action: {
+            model.event(.endScreenShareTapped)
+        }, label: {
+            HStack(spacing: 8) {
+                SwiftUI.Image(uiImage: model.style.buttonIcon)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(height: 24)
+                    .foregroundColor(SwiftUI.Color(model.style.buttonStyle.titleColor))
+                Text(model.style.buttonStyle.title)
+                    .font(.convert(model.style.buttonStyle.titleFont))
+                    .foregroundColor(SwiftUI.Color(model.style.buttonStyle.titleColor))
+                    .lineLimit(nil)
+            }
+            .padding(.horizontal, 4)
+            .frame(maxWidth: .infinity, minHeight: 40, idealHeight: 40)
+            .background(Background(model.style.buttonStyle.backgroundColor))
+            .cornerRadius(4)
+            .padding(.horizontal, 60)
+        })
+        .migrationAccessibilityIdentifier("end_screen_sharing_button")
+        .migrationAccessibilityLabel(L10n.CallVisualizer.ScreenSharing.Accessibility.buttonLabel)
+        .migrationAccessibilityHint(L10n.CallVisualizer.ScreenSharing.Accessibility.buttonHint)
     }
 }

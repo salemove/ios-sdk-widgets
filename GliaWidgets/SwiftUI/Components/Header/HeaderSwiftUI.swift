@@ -26,9 +26,9 @@ struct HeaderSwiftUI: View {
             Text(model.title)
                 .font(.convert(model.style.titleFont))
                 .foregroundColor(SwiftUI.Color(model.style.titleColor))
-                .accessibility(identifier: "header_view_title_label")
-                .accessibility(label: Text(model.title))
-                .accessibility(addTraits: .isHeader)
+                .migrationAccessibilityIdentifier("header_view_title_label")
+                .migrationAccessibilityLabel(model.title)
+                .migrationAccessibilityAddTrait(.isHeader)
         }
         .padding(.horizontal, 16)
         .padding(.bottom, 12)
