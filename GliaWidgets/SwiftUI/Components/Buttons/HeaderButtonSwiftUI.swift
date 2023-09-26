@@ -16,11 +16,11 @@ struct HeaderButtonSwiftUI: View {
             .contentShape(Rectangle())
             .foregroundColor(SwiftUI.Color(model.style.color))
             .opacity(model.isEnabled ? 1.0 : 0.6)
-            .accessibility(label: Text(model.style.accessibility.label))
-            .accessibility(addTraits: .isButton)
-            .accessibility(removeTraits: .isImage)
-            .onTapGesture(perform: model.tap.execute)
+            .migrationAccessibilityLabel(model.style.accessibility.label)
+            .migrationAccessibilityAddTrait(.isButton)
+            .migrationAccessibilityRemoveTrait(.isImage)
             .migrationAccessibilityIdentifier(model.accessibilityIdentifier)
+            .onTapGesture(perform: model.tap.execute)
     }
 }
 

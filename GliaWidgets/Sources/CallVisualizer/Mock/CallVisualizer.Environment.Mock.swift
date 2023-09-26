@@ -21,7 +21,8 @@ extension CallVisualizer.Environment {
         engagedOperator: { .mock() },
         uiConfig: { nil },
         assetsBuilder: { .standard },
-        getCurrentEngagement: CoreSdkClient.mock.getCurrentEngagement
+        getCurrentEngagement: CoreSdkClient.mock.getCurrentEngagement,
+        orientationManager: .mock()
     )
 }
 

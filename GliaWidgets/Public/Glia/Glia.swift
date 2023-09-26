@@ -83,7 +83,8 @@ public class Glia {
             uiConfig: { [weak self] in self?.uiConfig },
             assetsBuilder: { [weak self] in self?.assetsBuilder ?? .standard },
             getCurrentEngagement: environment.coreSdk.getCurrentEngagement,
-            eventHandler: onEvent
+            eventHandler: onEvent,
+            orientationManager: environment.orientationManager
         )
     )
     var rootCoordinator: EngagementCoordinator?

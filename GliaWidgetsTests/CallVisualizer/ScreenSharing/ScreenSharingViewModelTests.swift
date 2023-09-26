@@ -3,12 +3,11 @@ import XCTest
 
 final class ScreenSharingViewModelTests: XCTestCase {
 
-    private var viewModel: CallVisualizer.ScreenSharingViewModel!
+    private var model: CallVisualizer.ScreenSharingView.Model!
 
     override func tearDownWithError() throws {
         try super.tearDownWithError()
-
-        viewModel = nil
+        model = nil
     }
 
     func test_end_screen_sharing() throws {
@@ -18,15 +17,9 @@ final class ScreenSharingViewModelTests: XCTestCase {
             isRunning = false
         }
 
-        viewModel = CallVisualizer.ScreenSharingViewModel(
-            style: ScreenSharingViewStyle.mock(),
-            environment: .init(screenShareHandler: screenShareHandlerMock)
-        )
-
-        let props = viewModel.props()
-
+        model = .mock(screenSharingHandler: screenShareHandlerMock)
         XCTAssertTrue(isRunning)
-        props.screenSharingViewProps.endScreenSharing.tap.execute()
+        model.event(.endScreenShareTapped)
         XCTAssertFalse(isRunning)
     }
 
@@ -34,20 +27,14 @@ final class ScreenSharingViewModelTests: XCTestCase {
         enum Call { case close }
         var calls: [Call] = []
 
-        viewModel = CallVisualizer.ScreenSharingViewModel(
-            style: .mock(),
-            environment: .init(screenShareHandler: ScreenShareHandler.mock)
-        )
-        viewModel.delegate = Command { event in
+        model = .mock()
+        model.delegate = Command { event in
             switch event {
-            case .close:
+            case .closeTapped:
                 calls.append(.close)
             }
         }
-        let props = viewModel.props()
-
-        props.screenSharingViewProps.endScreenSharing.tap.execute()
-        props.screenSharingViewProps.header.backButton?.tap()
+        model.event(.closeTapped)
         XCTAssertEqual(calls, [.close])
     }
 }

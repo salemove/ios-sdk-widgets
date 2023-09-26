@@ -4,7 +4,7 @@ import UIKit
 
 extension ScreenSharingViewStyle {
     static func mock(
-        title: String = "",
+        title: String = "Screen Sharing",
         messageTextFont: UIFont = .systemFont(ofSize: 20, weight: .medium),
         buttonTitleFont: UIFont = .systemFont(ofSize: 16, weight: .regular)
     ) -> ScreenSharingViewStyle {
