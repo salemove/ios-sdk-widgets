@@ -618,6 +618,7 @@
 		C08D776228F58A18000461E5 /* ColorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08D776128F58A18000461E5 /* ColorType.swift */; };
 		C08D776428F5910A000461E5 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08D776328F5910A000461E5 /* UIView+Extensions.swift */; };
 		C096B40B297EBDE400F0C552 /* VisitorCodeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C096B40A297EBDE400F0C552 /* VisitorCodeTests.swift */; };
+		C0B325E72AC5A8FA006BC430 /* AlertViewController+LiveObservationConfirmation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B325E62AC5A8FA006BC430 /* AlertViewController+LiveObservationConfirmation.swift */; };
 		C0D2F02C2991219100803B47 /* VideoCallCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D2F02B2991219100803B47 /* VideoCallCoordinator.swift */; };
 		C0D2F02E2991221900803B47 /* VideoCallCoordinator.DelegateEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D2F02D2991221900803B47 /* VideoCallCoordinator.DelegateEvent.swift */; };
 		C0D2F0302991229F00803B47 /* VideoCallCoordinator.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D2F02F2991229F00803B47 /* VideoCallCoordinator.Environment.swift */; };
@@ -1361,6 +1362,7 @@
 		C08D776128F58A18000461E5 /* ColorType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorType.swift; sourceTree = "<group>"; };
 		C08D776328F5910A000461E5 /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
 		C096B40A297EBDE400F0C552 /* VisitorCodeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorCodeTests.swift; sourceTree = "<group>"; };
+		C0B325E62AC5A8FA006BC430 /* AlertViewController+LiveObservationConfirmation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlertViewController+LiveObservationConfirmation.swift"; sourceTree = "<group>"; };
 		C0D2F02B2991219100803B47 /* VideoCallCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCallCoordinator.swift; sourceTree = "<group>"; };
 		C0D2F02D2991221900803B47 /* VideoCallCoordinator.DelegateEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCallCoordinator.DelegateEvent.swift; sourceTree = "<group>"; };
 		C0D2F02F2991229F00803B47 /* VideoCallCoordinator.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCallCoordinator.Environment.swift; sourceTree = "<group>"; };
@@ -2365,6 +2367,7 @@
 				C47901B625ED2FB0007EE195 /* AlertViewController+ScreenShareOffer.swift */,
 				6E60DD5527146C9D001422EF /* AlertViewController+SingleAction.swift */,
 				C05AB016295DA9FC00AA381F /* AlertViewController+VisitorCode.swift */,
+				C0B325E62AC5A8FA006BC430 /* AlertViewController+LiveObservationConfirmation.swift */,
 			);
 			path = Alert;
 			sourceTree = "<group>";
@@ -4362,6 +4365,7 @@
 				AF10ED8F29BF849A00E85309 /* UnreadMessageDividerView.swift in Sources */,
 				1AC8AADD25D419CE00DAFE50 /* VideoStreamView.swift in Sources */,
 				8491AF152A7ACDB000CC3E72 /* Theme.SystemMessageStyle.swift in Sources */,
+				C0B325E72AC5A8FA006BC430 /* AlertViewController+LiveObservationConfirmation.swift in Sources */,
 				1A4AD3C7256E863900468BFB /* ThemeColor.swift in Sources */,
 				756B8B1E2996BAEA001D2BB2 /* HeaderButton.Props.swift in Sources */,
 				9A1992DB27D6241400161AAE /* ImageView.Cache.Interface.swift in Sources */,
