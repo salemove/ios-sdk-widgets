@@ -123,7 +123,7 @@ extension Survey.ViewController.Props {
     ) -> Survey.ScaleQuestionView.Props {
 
         let accessibilityValue = sdkQuestion.required
-        ? Localization.Survey.Question.Title.Accessibility.label
+        ? Localization.Survey.Question.Required.Accessibility.label
         : nil
 
         var scaleProps = Survey.ScaleQuestionView.Props(
@@ -163,7 +163,7 @@ extension Survey.ViewController.Props {
     ) -> Survey.BooleanQuestionView.Props {
 
         let accessibilityValue = sdkQuestion.required
-        ? Localization.Survey.Question.Title.Accessibility.label
+        ? Localization.Survey.Question.Required.Accessibility.label
         : nil
 
         var booleanProps = Survey.BooleanQuestionView.Props(
@@ -200,7 +200,7 @@ extension Survey.ViewController.Props {
     ) -> Survey.SingleChoiceQuestionView.Props {
 
         let accessibilityValue = sdkQuestion.required
-        ? Localization.Survey.Question.Title.Accessibility.label
+        ? Localization.Survey.Question.Required.Accessibility.label
         : nil
 
         var scaleProps = Survey.SingleChoiceQuestionView.Props(
@@ -241,7 +241,7 @@ extension Survey.ViewController.Props {
     ) -> Survey.InputQuestionView.Props {
 
         let accessibilityValue = sdkQuestion.required
-        ? Localization.Survey.Question.Title.Accessibility.label
+        ? Localization.Survey.Question.Required.Accessibility.label
         : nil
 
         var inputProps = Survey.InputQuestionView.Props(
@@ -250,7 +250,7 @@ extension Survey.ViewController.Props {
             isRequired: sdkQuestion.required,
             accessibility: .init(
                 titleValue: accessibilityValue,
-                fieldHint: Localization.Survey.Question.TextField.Accessibility.hint
+                fieldHint: Localization.Survey.Question.Input.Accessibility.hint
             )
         )
         inputProps.textDidChange = { newValue in

@@ -21,7 +21,7 @@ extension Theme {
             )
         )
         let poweredBy = PoweredByStyle(
-            text: Localization.General.poweredBy,
+            text: Localization.General.powered,
             font: font.caption,
             accessibility: .init(isFontScalingEnabled: true)
         )

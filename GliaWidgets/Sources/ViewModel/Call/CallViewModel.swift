@@ -93,7 +93,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
             action?(.queue)
         case .engaged:
             showConnecting()
-            let operatorName = interactor.engagedOperator?.firstName ?? Localization.Engagement.defaultOperatorName
+            let operatorName = interactor.engagedOperator?.firstName ?? Localization.Engagement.defaultOperator
             action?(.setOperatorName(operatorName))
         case .ended:
             call.end()
@@ -133,7 +133,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
     private func update(for callKind: CallKind) {
         switch callKind {
         case .audio:
-            action?(.setTitle(Localization.Media.Audio.name))
+            action?(.setTitle(Localization.Engagement.Audio.title))
             action?(.setTopTextHidden(true))
         case .video(let direction):
             switch direction {
@@ -144,7 +144,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
                 action?(.setTopTextHidden(true))
             }
 
-            action?(.setTitle(Localization.Media.Video.name))
+            action?(.setTitle(Localization.Engagement.Video.title))
         }
         updateButtons()
     }

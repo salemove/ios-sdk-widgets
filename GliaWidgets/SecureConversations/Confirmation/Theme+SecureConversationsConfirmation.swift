@@ -23,7 +23,7 @@ extension Theme {
         )
 
         let checkMessagesButtonStyle = SecureConversations.ConfirmationStyle.CheckMessagesButtonStyle(
-            title: Localization.MessageCenter.checkMessages,
+            title: Localization.MessageCenter.Welcome.checkMessages,
             font: font.bodyText,
             textColor: color.baseLight,
             backgroundColor: color.primary,
