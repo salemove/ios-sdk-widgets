@@ -482,6 +482,14 @@ internal enum Localization {
       }
     }
   }
+  internal enum LiveObservation {
+    internal enum Confirm {
+      /// Please allow the {companyName} representative to view this application screen for improved support.
+      internal static let message = Localization.tr("Localizable", "live_observation.confirm.message", fallback: "Please allow the {companyName} representative to view this application screen for improved support.")
+      /// Before We Continue
+      internal static let title = Localization.tr("Localizable", "live_observation.confirm.title", fallback: "Before We Continue")
+    }
+  }
   internal enum MediaUpgrade {
     internal enum Audio {
       /// {operatorName} has offered you to upgrade to audio
