@@ -63,8 +63,8 @@ extension Theme {
             animationColor: .lightGray,
             onHoldOverlay: onHoldOverlay,
             accessibility: .init(
-                label: Localization.Call.Operator.Avatar.Accessibility.label,
-                hint: Localization.Call.Operator.Avatar.Accessibility.hint
+                label: Localization.Call.OperatorAvatar.Accessibility.label,
+                hint: Localization.Call.OperatorAvatar.Accessibility.hint
             )
         )
         let queue = ConnectStatusStyle(
@@ -72,7 +72,7 @@ extension Theme {
             firstTextFont: font.header1,
             firstTextFontColor: color.baseLight,
             firstTextStyle: .title1,
-            secondText: Localization.Engagement.Connect.placeholder,
+            secondText: Localization.Engagement.ConnectionScreen.message,
             secondTextFont: font.subtitle,
             secondTextFontColor: color.baseLight,
             secondTextStyle: .footnote,
@@ -83,7 +83,7 @@ extension Theme {
             )
         )
         let connecting = ConnectStatusStyle(
-            firstText: Localization.Engagement.Connect.with,
+            firstText: Localization.Engagement.ConnectionScreen.connectWith,
             firstTextFont: font.header2,
             firstTextFontColor: color.baseLight,
             firstTextStyle: .title2,
@@ -128,7 +128,7 @@ extension Theme {
             )
         )
         let transferring = ConnectStatusStyle(
-            firstText: Localization.Engagement.QueueTransferring.message,
+            firstText: Localization.Engagement.Queue.transferring,
             firstTextFont: font.header1,
             firstTextFontColor: color.baseLight,
             firstTextStyle: .title1,
@@ -146,7 +146,7 @@ extension Theme {
             onHold: onHold
         )
         let onHoldStyle = CallStyle.OnHoldStyle(
-            onHoldText: Localization.Call.onHold,
+            onHoldText: Localization.Call.OnHold.icon,
             descriptionText: Localization.Call.OnHold.bottomText,
             localVideoStreamLabelText: Localization.General.you,
             localVideoStreamLabelFont: font.mediumSubtitle2,
@@ -158,14 +158,14 @@ extension Theme {
             connect: connect,
             backgroundColor: .fill(color: .white),
             preferredStatusBarStyle: .lightContent,
-            audioTitle: Localization.Media.Audio.name,
-            videoTitle: Localization.Media.Video.name,
+            audioTitle: Localization.Engagement.Audio.title,
+            videoTitle: Localization.Engagement.Video.title,
             operatorName: Localization.Templates.operatorName,
             operatorNameFont: font.header1,
             operatorNameColor: color.baseLight,
             durationFont: font.bodyText,
             durationColor: color.baseLight,
-            topText: Localization.Ios.Engagement.QueueWait.videoNotice,
+            topText: Localization.Ios.Engagement.ConnectionScreen.videoNotice,
             topTextFont: font.subtitle,
             topTextColor: color.baseLight,
             bottomText: Localization.Engagement.QueueWait.message,
@@ -176,8 +176,8 @@ extension Theme {
             accessibility: .init(
                 operatorNameHint: Localization.Call.Connect.FirstText.Accessibility.hint,
                 durationHint: Localization.Call.Connect.SecondText.Accessibility.hint,
-                localVideoLabel: Localization.Call.Video.Visitor.Accessibility.label,
-                remoteVideoLabel: Localization.Call.Video.Operator.Accessibility.label,
+                localVideoLabel: Localization.Call.VisitorVideo.Accessibility.label,
+                remoteVideoLabel: Localization.Call.OperatorVideo.Accessibility.label,
                 isFontScalingEnabled: true
             )
         )
@@ -198,7 +198,7 @@ extension Theme {
                 backgroundColor: activeBackgroundColor,
                 image: Asset.callChat.image,
                 imageColor: activeImageColor,
-                title: Localization.Media.Text.name,
+                title: Localization.Engagement.Chat.title,
                 titleFont: activeTitleFont,
                 titleColor: activeTitleColor,
                 textStyle: .caption1,
@@ -210,7 +210,7 @@ extension Theme {
                 backgroundColor: inactiveBackgroundColor,
                 image: Asset.callChat.image,
                 imageColor: inactiveImageColor,
-                title: Localization.Media.Text.name,
+                title: Localization.Engagement.Chat.title,
                 titleFont: inactiveTitleFont,
                 titleColor: inactiveTitleColor,
                 textStyle: .caption1,
@@ -220,7 +220,7 @@ extension Theme {
                 backgroundColor: inactiveBackgroundColor,
                 image: Asset.callChat.image,
                 imageColor: inactiveImageColor,
-                title: Localization.Media.Text.name,
+                title: Localization.Engagement.Chat.title,
                 titleFont: inactiveTitleFont,
                 titleColor: inactiveTitleColor,
                 textStyle: .caption1,
@@ -238,7 +238,7 @@ extension Theme {
                 backgroundColor: activeBackgroundColor,
                 image: Asset.callVideoActive.image,
                 imageColor: activeImageColor,
-                title: Localization.Media.Video.name,
+                title: Localization.Engagement.Video.title,
                 titleFont: activeTitleFont,
                 titleColor: activeTitleColor,
                 textStyle: .caption1,
@@ -250,7 +250,7 @@ extension Theme {
                 backgroundColor: inactiveBackgroundColor,
                 image: Asset.callVideoInactive.image,
                 imageColor: inactiveImageColor,
-                title: Localization.Media.Video.name,
+                title: Localization.Engagement.Video.title,
                 titleFont: inactiveTitleFont,
                 titleColor: inactiveTitleColor,
                 textStyle: .caption1,
@@ -260,7 +260,7 @@ extension Theme {
                 backgroundColor: inactiveBackgroundColor,
                 image: Asset.callVideoInactive.image,
                 imageColor: inactiveImageColor,
-                title: Localization.Media.Video.name,
+                title: Localization.Engagement.Video.title,
                 titleFont: inactiveTitleFont,
                 titleColor: inactiveTitleColor,
                 textStyle: .caption1,
@@ -273,12 +273,13 @@ extension Theme {
                 isFontScalingEnabled: true
             )
         )
+#warning("check Localization.Call.Unmute.button")
         let muteButton = CallButtonStyle(
             active: CallButtonStyle.StateStyle(
                 backgroundColor: activeBackgroundColor,
                 image: Asset.callMuteActive.image,
                 imageColor: activeImageColor,
-                title: Localization.Call.Button.unmute,
+                title: Localization.Call.Unmute.button,
                 titleFont: activeTitleFont,
                 titleColor: activeTitleColor,
                 textStyle: .caption1,
@@ -290,7 +291,7 @@ extension Theme {
                 backgroundColor: inactiveBackgroundColor,
                 image: Asset.callMuteInactive.image,
                 imageColor: inactiveImageColor,
-                title: Localization.Call.Button.mute,
+                title: Localization.Call.Mute.button,
                 titleFont: inactiveTitleFont,
                 titleColor: inactiveTitleColor,
                 textStyle: .caption1,
@@ -300,7 +301,7 @@ extension Theme {
                 backgroundColor: inactiveBackgroundColor,
                 image: Asset.callMuteInactive.image,
                 imageColor: inactiveImageColor,
-                title: Localization.Call.Button.mute,
+                title: Localization.Call.Mute.button,
                 titleFont: inactiveTitleFont,
                 titleColor: inactiveTitleColor,
                 textStyle: .caption1,
@@ -318,7 +319,7 @@ extension Theme {
                 backgroundColor: activeBackgroundColor,
                 image: Asset.callSpeakerActive.image,
                 imageColor: activeImageColor,
-                title: Localization.Call.Button.speaker,
+                title: Localization.Call.Speaker.button,
                 titleFont: activeTitleFont,
                 titleColor: activeTitleColor,
                 textStyle: .caption1,
@@ -330,7 +331,7 @@ extension Theme {
                 backgroundColor: inactiveBackgroundColor,
                 image: Asset.callSpeakerInactive.image,
                 imageColor: inactiveImageColor,
-                title: Localization.Call.Button.speaker,
+                title: Localization.Call.Speaker.button,
                 titleFont: inactiveTitleFont,
                 titleColor: inactiveTitleColor,
                 textStyle: .caption1,
@@ -340,7 +341,7 @@ extension Theme {
                 backgroundColor: inactiveBackgroundColor,
                 image: Asset.callSpeakerInactive.image,
                 imageColor: inactiveImageColor,
-                title: Localization.Call.Button.speaker,
+                title: Localization.Call.Speaker.button,
                 titleFont: inactiveTitleFont,
                 titleColor: inactiveTitleColor,
                 textStyle: .caption1,
@@ -358,7 +359,7 @@ extension Theme {
                 backgroundColor: activeBackgroundColor,
                 image: Asset.callMiminize.image,
                 imageColor: activeImageColor,
-                title: Localization.Engagement.minimizeVideoButton,
+                title: Localization.Engagement.MinimizeVideo.button,
                 titleFont: activeTitleFont,
                 titleColor: activeTitleColor,
                 textStyle: .caption1,
@@ -370,7 +371,7 @@ extension Theme {
                 backgroundColor: inactiveBackgroundColor,
                 image: Asset.callMiminize.image,
                 imageColor: inactiveImageColor,
-                title: Localization.Engagement.minimizeVideoButton,
+                title: Localization.Engagement.MinimizeVideo.button,
                 titleFont: inactiveTitleFont,
                 titleColor: inactiveTitleColor,
                 textStyle: .caption1,
@@ -380,7 +381,7 @@ extension Theme {
                 backgroundColor: inactiveBackgroundColor,
                 image: Asset.callMiminize.image,
                 imageColor: inactiveImageColor,
-                title: Localization.Engagement.minimizeVideoButton,
+                title: Localization.Engagement.MinimizeVideo.button,
                 titleFont: inactiveTitleFont,
                 titleColor: inactiveTitleColor,
                 textStyle: .caption1,

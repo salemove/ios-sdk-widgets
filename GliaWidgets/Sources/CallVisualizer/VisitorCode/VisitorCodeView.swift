@@ -102,7 +102,7 @@ extension CallVisualizer {
         ).make { button in
             button.accessibilityIdentifier = "visitor_code_alert_close_button"
             button.accessibilityTraits = .button
-            button.accessibilityLabel = Localization.CallVisualizer.VisitorCode.Close.Accessibility.label
+            button.accessibilityLabel = Localization.General.Close.accessibility
             button.accessibilityHint = Localization.CallVisualizer.VisitorCode.Close.Accessibility.hint
         }
 

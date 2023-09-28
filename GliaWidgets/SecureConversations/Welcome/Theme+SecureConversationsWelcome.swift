@@ -25,13 +25,13 @@ extension Theme {
         )
 
         let checkMessagesButtonStyle = SecureConversations.WelcomeStyle.CheckMessagesButtonStyle(
-            title: Localization.MessageCenter.checkMessages,
+            title: Localization.MessageCenter.Welcome.checkMessages,
             font: font.header2,
             textStyle: .title2,
             color: color.primary,
             accessibility: .init(
                 isFontScalingEnabled: true,
-                label: Localization.MessageCenter.checkMessages,
+                label: Localization.MessageCenter.Welcome.checkMessages,
                 hint: Localization.MessageCenter.Welcome.CheckMessages.Accessibility.hint
             )
         )
@@ -45,7 +45,7 @@ extension Theme {
         )
 
         let messageTextViewNormalStyle = SecureConversations.WelcomeStyle.MessageTextViewNormalStyle(
-            placeholderText: Localization.MessageCenter.Welcome.MessageTextView.placeholder,
+            placeholderText: Localization.MessageCenter.Welcome.MessageInput.placeholder,
             placeholderFont: font.bodyText,
             placeholderColor: color.baseNormal,
             textFont: font.bodyText,
@@ -59,7 +59,7 @@ extension Theme {
         )
 
         let messageTextViewActiveStyle = SecureConversations.WelcomeStyle.MessageTextViewActiveStyle(
-            placeholderText: Localization.MessageCenter.Welcome.MessageTextView.placeholder,
+            placeholderText: Localization.MessageCenter.Welcome.MessageInput.placeholder,
             placeholderFont: font.bodyText,
             placeholderColor: color.baseNormal,
             textFont: font.bodyText,
@@ -73,7 +73,7 @@ extension Theme {
         )
 
         let messageTextViewDisabledStyle = SecureConversations.WelcomeStyle.MessageTextViewDisabledStyle(
-            placeholderText: Localization.MessageCenter.Welcome.MessageTextView.placeholder,
+            placeholderText: Localization.MessageCenter.Welcome.MessageInput.placeholder,
             placeholderFont: font.bodyText,
             placeholderColor: color.baseNormal,
             textFont: font.bodyText,
@@ -93,7 +93,7 @@ extension Theme {
         )
 
         let sendButtonEnabledStyle = SecureConversations.WelcomeStyle.SendButtonEnabledStyle(
-            title: Localization.Chat.Input.send,
+            title: Localization.General.send,
             font: font.bodyText,
             textStyle: .body,
             textColor: color.baseLight,
@@ -103,13 +103,13 @@ extension Theme {
             cornerRadius: 4,
             accessibility: .init(
                 isFontScalingEnabled: true,
-                label: Localization.Chat.Input.send,
+                label: Localization.General.send,
                 hint: Localization.MessageCenter.Welcome.Send.Accessibility.hint
             )
         )
 
         let sendButtonDisabledStyle = SecureConversations.WelcomeStyle.SendButtonDisabledStyle(
-            title: Localization.Chat.Input.send,
+            title: Localization.General.send,
             font: font.bodyText,
             textStyle: .body,
             textColor: .disabledTitle,
@@ -119,13 +119,13 @@ extension Theme {
             cornerRadius: 4,
             accessibility: .init(
                 isFontScalingEnabled: true,
-                label: Localization.Chat.Input.send,
+                label: Localization.General.send,
                 hint: Localization.MessageCenter.Welcome.Send.Accessibility.hint
             )
         )
 
         let sendButtonLoadingStyle = SecureConversations.WelcomeStyle.SendButtonLoadingStyle(
-            title: Localization.Chat.Input.send,
+            title: Localization.General.send,
             font: font.bodyText,
             textStyle: .body,
             textColor: .disabledTitle,
@@ -136,7 +136,7 @@ extension Theme {
             cornerRadius: 4,
             accessibility: .init(
                 isFontScalingEnabled: true,
-                label: Localization.Chat.Input.send,
+                label: Localization.General.send,
                 hint: Localization.MessageCenter.Welcome.Send.Accessibility.hint
             )
         )
@@ -152,7 +152,7 @@ extension Theme {
             textFont: .systemFont(ofSize: 12.0),
             textStyle: .caption1,
             iconColor: color.systemNegative,
-            messageLengthLimitText: Localization.MessageCenter.Welcome.messageLengthWarning,
+            messageLengthLimitText: Localization.MessageCenter.Welcome.MessageLength.error,
             accessibility: .init(isFontScalingEnabled: true)
         )
 
@@ -201,9 +201,9 @@ extension Theme {
                 textColor: color.baseDark,
                 infoFont: font.caption,
                 infoColor: color.systemNegative,
-                infoFileTooBig: Localization.Chat.File.tooLargeError,
-                infoUnsupportedFileType: Localization.Chat.Attachment.Upload.unsupportedFile,
-                infoSafetyCheckFailed: Localization.Chat.File.infectedError,
+                infoFileTooBig: Localization.Chat.File.SizeLimit.error,
+                infoUnsupportedFileType: Localization.Chat.Attachment.unsupportedFile,
+                infoSafetyCheckFailed: Localization.Chat.File.InfectedFile.error,
                 infoNetworkError: Localization.Chat.File.Upload.networkError,
                 infoGenericError: Localization.Chat.File.Upload.genericError
             )
@@ -219,7 +219,7 @@ extension Theme {
                 removeButtonColor: color.baseNormal,
                 backgroundColor: .commonGray,
                 accessibility: .init(
-                    removeButtonAccessibilityLabel: Localization.Chat.Upload.Remove.Accessibility.label,
+                    removeButtonAccessibilityLabel: Localization.Chat.File.RemoveUpload.Accessibility.label,
                     progressPercentValue: Localization.Templates.percentValue,
                     fileNameWithProgressValue: Localization.Templates.fileNameWithProgressValue,
                     isFontScalingEnabled: true
