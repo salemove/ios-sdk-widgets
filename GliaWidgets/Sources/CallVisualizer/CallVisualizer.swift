@@ -58,6 +58,7 @@ public final class CallVisualizer {
                         self?.environment.eventHandler?(.maximized)
                     }
                 },
+                interactorProviding: environment.interactorProviding()
                 orientationManager: environment.orientationManager
             )
         )

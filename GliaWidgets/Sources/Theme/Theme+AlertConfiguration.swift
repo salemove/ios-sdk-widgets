@@ -133,6 +133,15 @@ extension Theme {
             message: nil
         )
 
+        let liveObservationConfirmation = ConfirmationAlertConfiguration(
+            title: Localization.LiveObservation.Confirm.title,
+            message: Localization.LiveObservation.Confirm.message,
+            negativeTitle: Localization.General.cancel,
+            positiveTitle: Localization.General.allow,
+            switchButtonBackgroundColors: true,
+            showsPoweredBy: showsPoweredBy
+        )
+
         return AlertConfiguration(
             leaveQueue: leaveQueue,
             endEngagement: endEngagement,
@@ -151,7 +160,8 @@ extension Theme {
             apiError: api,
             unavailableMessageCenter: unavailableMessageCenter,
             unavailableMessageCenterForBeingUnauthenticated: unavailableMessageCenterForBeingUnauthenticated,
-            unsupportedGvaBroadcastError: unsupportedGvaBroadcastError
+            unsupportedGvaBroadcastError: unsupportedGvaBroadcastError,
+            liveObservationConfirmation: liveObservationConfirmation
         )
     }
 }
