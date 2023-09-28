@@ -15,7 +15,7 @@ private let bundleManaging: BundleManaging = .live
 // swiftlint:disable superfluous_disable_command
 // swiftlint:disable file_length
 
-@available(*, unavailable, renamed: "ImageAsset")
+@available(*, deprecated, renamed: "ImageAsset")
 public typealias AssetType = ImageAsset
 
 public struct ImageAsset {
@@ -132,7 +132,7 @@ public enum Asset {
       spinner,
     ]
     // swiftlint:enable trailing_comma
-    @available(*, unavailable, renamed: "allImages")
+    @available(*, deprecated, renamed: "allImages")
     public static let allValues: [AssetType] = allImages
 }
 // swiftlint:enable identifier_name line_length nesting type_body_length type_name

@@ -28,11 +28,17 @@ class AlertViewController: UIViewController, Replaceable {
             declined: () -> Void
         )
 
+        case liveObservationConfirmation(
+            ConfirmationAlertConfiguration,
+            accepted: () -> Void,
+            declined: () -> Void
+        )
+
         /// Indicating presentation priority of an alert.
         /// Based on comparing values we can decide whether an alert can be replaced with another alert.
         fileprivate var presentationPriority: PresentationPriority {
             switch self {
-            case .singleAction:
+            case .singleAction, .liveObservationConfirmation:
                 return .highest
             case .confirmation:
                 return .high
@@ -160,6 +166,8 @@ class AlertViewController: UIViewController, Replaceable {
                 accepted: accepted,
                 declined: declined
             )
+        case .liveObservationConfirmation(let conf, let accepted, let declined):
+            return makeLiveObservationAlertView(with: conf, accepted: accepted, declined: declined)
         }
     }
 
