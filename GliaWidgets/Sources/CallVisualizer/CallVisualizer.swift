@@ -57,7 +57,8 @@ public final class CallVisualizer {
                     case .maximized:
                         self?.environment.eventHandler?(.maximized)
                     }
-                }
+                },
+                interactorProviding: environment.interactorProviding()
             )
         )
     }()

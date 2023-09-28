@@ -321,6 +321,8 @@ internal enum Localization {
   internal enum General {
     /// Accept
     internal static let accept = Localization.tr("Localizable", "general.accept", fallback: "Accept")
+    /// Allow
+    internal static let allow = Localization.tr("Localizable", "general.allow", fallback: "Allow")
     /// Back
     internal static let back = Localization.tr("Localizable", "general.back", fallback: "Back")
     /// Browse
@@ -365,6 +367,14 @@ internal enum Localization {
   internal enum Gva {
     /// This action is not currently supported on mobile.
     internal static let errorUnsupported = Localization.tr("Localizable", "gva.error_unsupported", fallback: "This action is not currently supported on mobile.")
+  }
+  internal enum LiveObservation {
+    internal enum Confirm {
+      /// 
+      internal static let message = Localization.tr("Localizable", "live_observation.confirm.message", fallback: "Please allow the {company name} representative to view this application screen for improved support.")
+      ///
+      internal static let title = Localization.tr("Localizable", "live_observation.confirm.title", fallback: "Before We Continue")
+    }
   }
   internal enum Media {
     internal enum Audio {

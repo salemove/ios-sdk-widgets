@@ -128,6 +128,7 @@ final class GliaTests: XCTestCase {
 
         var gliaEnv = Glia.Environment.failing
         gliaEnv.gcd.mainQueue.asyncIfNeeded = { callback in callback() }
+        gliaEnv.callVisualizerPresenter = .init(presenter: { nil })
 
         let sdk = Glia(environment: gliaEnv)
         sdk.onEvent = {

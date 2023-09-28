@@ -20,5 +20,6 @@ extension CallVisualizer.Coordinator {
         var date: () -> Date
         var engagedOperator: () -> CoreSdkClient.Operator?
         var eventHandler: (DelegateEvent) -> Void
+        var interactorProviding: Interactor?
     }
 }

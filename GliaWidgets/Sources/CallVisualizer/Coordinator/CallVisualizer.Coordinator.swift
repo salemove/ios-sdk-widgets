@@ -57,12 +57,12 @@ extension CallVisualizer {
             declined: @escaping () -> Void
         ) {
             let acceptedHandler = { [weak self] in
-                self?.mediaUpgradeViewController = nil
+                self?.alertViewController = nil
                 self?.observeScreenSharingHandlerState()
                 accepted()
             }
             let declinedHandler = { [weak self] in
-                self?.mediaUpgradeViewController = nil
+                self?.alertViewController = nil
                 declined()
             }
 
@@ -74,7 +74,7 @@ extension CallVisualizer {
                 ),
                 viewFactory: environment.viewFactory
             )
-            mediaUpgradeViewController = alert
+            alertViewController = alert
             presentAlert(alert)
         }
 
@@ -86,7 +86,7 @@ extension CallVisualizer {
         ) {
             func actionWrapper(_ action: @escaping () -> Void) -> () -> Void {
                 return { [weak self] in
-                    self?.mediaUpgradeViewController = nil
+                    self?.alertViewController = nil
                     action()
                 }
             }
@@ -99,7 +99,7 @@ extension CallVisualizer {
                 ),
                 viewFactory: environment.viewFactory
             )
-            mediaUpgradeViewController = alert
+            alertViewController = alert
             presentAlert(alert)
         }
 
@@ -125,10 +125,42 @@ extension CallVisualizer {
             }
         }
 
+        func showConfirmationAlert() {
+            let alert = AlertViewController(
+                kind: .liveObservationConfirmation(
+                    environment.viewFactory.theme.alertConfiguration.liveObservationConfirmation,
+                    accepted: { [weak self] in
+                        self?.alertViewController = nil
+                        self?.closeVisitorCode()
+                    },
+                    declined: { [weak self] in
+                        self?.alertViewController = nil
+                        self?.closeVisitorCode()
+                        self?.declineEngagement()
+                    }
+                ),
+                viewFactory: environment.viewFactory
+            )
+            self.alertViewController = alert
+            self.presentAlert(alert)
+        }
+
         func handleEngagementRequestAccepted() {
             visitorCodeCoordinator?.delegate?(.engagementAccepted)
+            showConfirmationAlert()
+        }
+
+        func closeVisitorCode() {
             visitorCodeCoordinator?.codeViewController?.dismiss(animated: true)
             visitorCodeCoordinator = nil
+        }
+
+        func declineEngagement() {
+            environment.interactorProviding?.endEngagement(
+                success: {},
+                failure: { _ in }
+            )
+            end()
         }
 
         func end() {
@@ -176,7 +208,7 @@ extension CallVisualizer {
         private var visitorCodeCoordinator: VisitorCodeCoordinator?
         private var screenSharingCoordinator: ScreenSharingCoordinator?
         private var videoCallCoordinator: VideoCallCoordinator?
-        private var mediaUpgradeViewController: AlertViewController?
+        private var alertViewController: AlertViewController?
 
         private func buildScreenSharingViewController(uiConfig: RemoteConfiguration? = nil) -> UIViewController {
             let coordinator = ScreenSharingCoordinator(
@@ -281,8 +313,8 @@ private extension CallVisualizer.Coordinator {
         // Possible cases:
         // - Presented over integrators screen (or Testing app main screen)
         // - Presented over Glia Call Visualizer screens
-        mediaUpgradeViewController?.dismiss(animated: true)
-        mediaUpgradeViewController = nil
+        alertViewController?.dismiss(animated: true)
+        alertViewController = nil
 
         // Presented flow can consist of:
         // - Only screen sharing screen is presented from Root (Main) controller.
