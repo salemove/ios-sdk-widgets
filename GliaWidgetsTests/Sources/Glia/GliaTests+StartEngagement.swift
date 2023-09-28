@@ -171,7 +171,7 @@ extension GliaTests {
         try sdk.startEngagement(engagementKind: .chat, in: ["queueId"])
 
         let configuredSdkTheme = resultingViewFactory?.theme
-        XCTAssertEqual(configuredSdkTheme?.call.connect.queue.firstText, "CompanyName")
-        XCTAssertEqual(configuredSdkTheme?.chat.connect.queue.firstText, "CompanyName")
+        XCTAssertEqual(configuredSdkTheme?.call.connect.queue.firstText, "Company Name")
+        XCTAssertEqual(configuredSdkTheme?.chat.connect.queue.firstText, "Company Name")
     }
 }
