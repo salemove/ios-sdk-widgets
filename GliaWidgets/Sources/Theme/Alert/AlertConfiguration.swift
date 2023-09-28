@@ -54,6 +54,9 @@ public struct AlertConfiguration {
     /// Configuration of the unsupported GVA broadcast events error alert.
     public var unsupportedGvaBroadcastError: MessageAlertConfiguration
 
+    /// Configuration of the live observation aknwoledgement
+    public var liveObservationConfirmation: ConfirmationAlertConfiguration
+
     ///
     /// - Parameters:
     ///   - leaveQueue: Configuration of the queue leaving confirmation alert.
@@ -93,7 +96,8 @@ public struct AlertConfiguration {
         apiError: MessageAlertConfiguration,
         unavailableMessageCenter: MessageAlertConfiguration,
         unavailableMessageCenterForBeingUnauthenticated: MessageAlertConfiguration,
-        unsupportedGvaBroadcastError: MessageAlertConfiguration
+        unsupportedGvaBroadcastError: MessageAlertConfiguration,
+        liveObservationConfirmation: ConfirmationAlertConfiguration
     ) {
         self.leaveQueue = leaveQueue
         self.endEngagement = endEngagement
@@ -113,5 +117,6 @@ public struct AlertConfiguration {
         self.unavailableMessageCenter = unavailableMessageCenter
         self.unavailableMessageCenterForBeingUnauthenticated = unavailableMessageCenterForBeingUnauthenticated
         self.unsupportedGvaBroadcastError = unsupportedGvaBroadcastError
+        self.liveObservationConfirmation = liveObservationConfirmation
     }
 }
