@@ -13,14 +13,14 @@ extension Theme {
         )
 
         let actionButton = ActionButtonStyle(
-            title: Localization.CallVisualizer.VisitorCode.Action.refresh,
+            title: Localization.General.refresh,
             titleFont: font.buttonLabel,
             titleColor: color.baseLight,
             backgroundColor: .fill(color: color.primary)
         )
 
         let poweredBy = PoweredByStyle(
-            text: Localization.General.poweredBy,
+            text: Localization.General.powered,
             font: font.caption,
             accessibility: .init(isFontScalingEnabled: true)
         )

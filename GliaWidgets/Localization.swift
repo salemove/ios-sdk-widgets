@@ -15,25 +15,41 @@ internal enum Localization {
       /// Settings
       internal static let settings = Localization.tr("Localizable", "alert.action.settings", fallback: "Settings")
     }
-  }
-  internal enum Call {
-    /// On Hold
-    internal static let onHold = Localization.tr("Localizable", "call.on_hold", fallback: "On Hold")
-    internal enum Bubble {
-      internal enum Accessibility {
-        /// Deactivates minimize.
-        internal static let hint = Localization.tr("Localizable", "call.bubble.accessibility.hint", fallback: "Deactivates minimize.")
-        /// Operator Avatar
-        internal static let label = Localization.tr("Localizable", "call.bubble.accessibility.label", fallback: "Operator Avatar")
+    internal enum CameraAccess {
+      /// Unable to access camera
+      internal static let error = Localization.tr("Localizable", "alert.camera_access.error", fallback: "Unable to access camera")
+    }
+    internal enum MediaSourceAccess {
+      /// Unable to access media source
+      internal static let error = Localization.tr("Localizable", "alert.media_source_access.error", fallback: "Unable to access media source")
+    }
+    internal enum MicrophoneAccess {
+      /// Unable to access microphone
+      internal static let error = Localization.tr("Localizable", "alert.microphone_access.error", fallback: "Unable to access microphone")
+    }
+    internal enum ScreenSharing {
+      internal enum Start {
+        /// Start Screen Sharing
+        internal static let header = Localization.tr("Localizable", "alert.screen_sharing.start.header", fallback: "Start Screen Sharing")
+        /// {operatorName} has asked you to share your screen.
+        internal static let message = Localization.tr("Localizable", "alert.screen_sharing.start.message", fallback: "{operatorName} has asked you to share your screen.")
+      }
+      internal enum Stop {
+        /// Stop Screen Sharing?
+        internal static let header = Localization.tr("Localizable", "alert.screen_sharing.stop.header", fallback: "Stop Screen Sharing?")
+        /// Are you sure you want to stop sharing your screen?
+        internal static let message = Localization.tr("Localizable", "alert.screen_sharing.stop.message", fallback: "Are you sure you want to stop sharing your screen?")
       }
     }
-    internal enum Button {
-      /// Mute
-      internal static let mute = Localization.tr("Localizable", "call.button.mute", fallback: "Mute")
-      /// Speaker
-      internal static let speaker = Localization.tr("Localizable", "call.button.speaker", fallback: "Speaker")
-      /// Unmute
-      internal static let unmute = Localization.tr("Localizable", "call.button.unmute", fallback: "Unmute")
+  }
+  internal enum Call {
+    internal enum Bubble {
+      internal enum Accessibility {
+        /// Expands call view.
+        internal static let hint = Localization.tr("Localizable", "call.bubble.accessibility.hint", fallback: "Expands call view.")
+        /// Go back to the engagement.
+        internal static let label = Localization.tr("Localizable", "call.bubble.accessibility.label", fallback: "Go back to the engagement.")
+      }
     }
     internal enum Buttons {
       internal enum Chat {
@@ -67,48 +83,64 @@ internal enum Localization {
         }
       }
     }
+    internal enum Duration {
+      internal enum Accessibility {
+        /// Call duration.
+        internal static let label = Localization.tr("Localizable", "call.duration.accessibility.label", fallback: "Call duration.")
+      }
+    }
     internal enum Header {
       internal enum Back {
         internal enum Button {
           internal enum Accessibility {
-            /// Activates minimize.
-            internal static let hint = Localization.tr("Localizable", "call.header.back.button.accessibility.hint", fallback: "Activates minimize.")
+            /// Minimizes call view.
+            internal static let hint = Localization.tr("Localizable", "call.header.back.button.accessibility.hint", fallback: "Minimizes call view.")
           }
         }
       }
     }
+    internal enum Mute {
+      /// Mute
+      internal static let button = Localization.tr("Localizable", "call.mute.button", fallback: "Mute")
+    }
     internal enum OnHold {
       /// You can continue browsing while you are on hold
-      internal static let bottomText = Localization.tr("Localizable", "call.onHold.bottom_text", fallback: "You can continue browsing while you are on hold")
+      internal static let bottomText = Localization.tr("Localizable", "call.on_hold.bottom_text", fallback: "You can continue browsing while you are on hold")
+      /// On Hold
+      internal static let icon = Localization.tr("Localizable", "call.on_hold.icon", fallback: "On Hold")
     }
-    internal enum Operator {
-      internal enum Avatar {
-        internal enum Accessibility {
-          /// Displays operator avatar or placeholder.
-          internal static let hint = Localization.tr("Localizable", "call.operator.avatar.accessibility.hint", fallback: "Displays operator avatar or placeholder.")
-          /// Operator Avatar
-          internal static let label = Localization.tr("Localizable", "call.operator.avatar.accessibility.label", fallback: "Operator Avatar")
-        }
+    internal enum OperatorAvatar {
+      internal enum Accessibility {
+        /// Shows operator picture.
+        internal static let hint = Localization.tr("Localizable", "call.operator_avatar.accessibility.hint", fallback: "Shows operator picture.")
+        /// Operator Picture
+        internal static let label = Localization.tr("Localizable", "call.operator_avatar.accessibility.label", fallback: "Operator Picture")
       }
     }
     internal enum OperatorName {
       internal enum Accessibility {
-        /// Displays operator name.
-        internal static let hint = Localization.tr("Localizable", "call.operator_name.accessibility.hint", fallback: "Displays operator name.")
+        /// Shows operator name.
+        internal static let hint = Localization.tr("Localizable", "call.operator_name.accessibility.hint", fallback: "Shows operator name.")
       }
     }
-    internal enum Video {
-      internal enum Operator {
-        internal enum Accessibility {
-          /// Operator's Video
-          internal static let label = Localization.tr("Localizable", "call.video.operator.accessibility.label", fallback: "Operator's Video")
-        }
+    internal enum OperatorVideo {
+      internal enum Accessibility {
+        /// Operator's Video
+        internal static let label = Localization.tr("Localizable", "call.operator_video.accessibility.label", fallback: "Operator's Video")
       }
-      internal enum Visitor {
-        internal enum Accessibility {
-          /// Your Video
-          internal static let label = Localization.tr("Localizable", "call.video.visitor.accessibility.label", fallback: "Your Video")
-        }
+    }
+    internal enum Speaker {
+      /// Speaker
+      internal static let button = Localization.tr("Localizable", "call.speaker.button", fallback: "Speaker")
+    }
+    internal enum Unmute {
+      /// Unmute
+      internal static let button = Localization.tr("Localizable", "call.unmute.button", fallback: "Unmute")
+    }
+    internal enum VisitorVideo {
+      internal enum Accessibility {
+        /// Your Video
+        internal static let label = Localization.tr("Localizable", "call.visitor_video.accessibility.label", fallback: "Your Video")
       }
     }
   }
@@ -116,38 +148,32 @@ internal enum Localization {
     internal enum ScreenSharing {
       /// Your Screen is Being Shared
       internal static let message = Localization.tr("Localizable", "call_visualizer.screen_sharing.message", fallback: "Your Screen is Being Shared")
-      /// Screen Sharing
-      internal static let title = Localization.tr("Localizable", "call_visualizer.screen_sharing.title", fallback: "Screen Sharing")
+      internal enum Header {
+        /// Screen Sharing
+        internal static let title = Localization.tr("Localizable", "call_visualizer.screen_sharing.header.title", fallback: "Screen Sharing")
+      }
     }
     internal enum VisitorCode {
       /// Your Visitor Code
       internal static let title = Localization.tr("Localizable", "call_visualizer.visitor_code.title", fallback: "Your Visitor Code")
-      internal enum Action {
-        /// Close
-        internal static let close = Localization.tr("Localizable", "call_visualizer.visitor_code.action.close", fallback: "Close")
-        /// Refresh
-        internal static let refresh = Localization.tr("Localizable", "call_visualizer.visitor_code.action.refresh", fallback: "Refresh")
-      }
       internal enum Close {
         internal enum Accessibility {
-          /// Closes visitor code
-          internal static let hint = Localization.tr("Localizable", "call_visualizer.visitor_code.close.accessibility.hint", fallback: "Closes visitor code")
-          /// Close Button
-          internal static let label = Localization.tr("Localizable", "call_visualizer.visitor_code.close.accessibility.label", fallback: "Close Button")
+          /// Closes the visitor code
+          internal static let hint = Localization.tr("Localizable", "call_visualizer.visitor_code.close.accessibility.hint", fallback: "Closes the visitor code")
         }
       }
       internal enum Refresh {
         internal enum Accessibility {
-          /// Generates new visitor code
-          internal static let hint = Localization.tr("Localizable", "call_visualizer.visitor_code.refresh.accessibility.hint", fallback: "Generates new visitor code")
+          /// Generates a new visitor code
+          internal static let hint = Localization.tr("Localizable", "call_visualizer.visitor_code.refresh.accessibility.hint", fallback: "Generates a new visitor code")
           /// Refresh Button
           internal static let label = Localization.tr("Localizable", "call_visualizer.visitor_code.refresh.accessibility.label", fallback: "Refresh Button")
         }
       }
       internal enum Title {
         internal enum Accessibility {
-          /// Your five-digit visitor code is
-          internal static let hint = Localization.tr("Localizable", "call_visualizer.visitor_code.title.accessibility.hint", fallback: "Your five-digit visitor code is")
+          /// Shows the five-digit visitor code.
+          internal static let hint = Localization.tr("Localizable", "call_visualizer.visitor_code.title.accessibility.hint", fallback: "Shows the five-digit visitor code.")
         }
       }
     }
@@ -155,8 +181,6 @@ internal enum Localization {
   internal enum Chat {
     /// Pick attachment
     internal static let attachFiles = Localization.tr("Localizable", "chat.attach_files", fallback: "Pick attachment")
-    /// {operatorName} has joined the conversation.
-    internal static let operatorJoined = Localization.tr("Localizable", "chat.operator_joined", fallback: "{operatorName} has joined the conversation.")
     /// New Messages
     internal static let unreadMessageDivider = Localization.tr("Localizable", "chat.unread_message_divider", fallback: "New Messages")
     internal enum Attachment {
@@ -164,18 +188,18 @@ internal enum Localization {
       internal static let photoLibrary = Localization.tr("Localizable", "chat.attachment.photo_library", fallback: "Photo Library")
       /// Take Photo or Video
       internal static let takePhoto = Localization.tr("Localizable", "chat.attachment.take_photo", fallback: "Take Photo or Video")
+      /// This file type is not supported.
+      internal static let unsupportedFile = Localization.tr("Localizable", "chat.attachment.unsupported_file", fallback: "This file type is not supported.")
       internal enum Message {
         internal enum Accessibility {
           /// Attachment from {fileSender}
           internal static let label = Localization.tr("Localizable", "chat.attachment.message.accessibility.label", fallback: "Attachment from {fileSender}")
         }
       }
-      internal enum Upload {
-        /// Invalid file type!
-        internal static let unsupportedFile = Localization.tr("Localizable", "chat.attachment.upload.unsupported_file", fallback: "Invalid file type!")
-      }
     }
     internal enum ChoiceCard {
+      /// Tap on the answer above
+      internal static let placeholderMessage = Localization.tr("Localizable", "chat.choice_card.placeholder_message", fallback: "Tap on the answer above")
       internal enum Button {
         internal enum Disabled {
           internal enum Accessibility {
@@ -192,35 +216,37 @@ internal enum Localization {
       }
     }
     internal enum Download {
-      /// Download
-      internal static let download = Localization.tr("Localizable", "chat.download.download", fallback: "Download")
       /// Downloading file…
       internal static let downloading = Localization.tr("Localizable", "chat.download.downloading", fallback: "Downloading file…")
-      /// Download failed
-      internal static let failed = Localization.tr("Localizable", "chat.download.failed", fallback: "Download failed")
-    }
-    internal enum Duration {
-      internal enum Accessibility {
-        /// Displays call duration.
-        internal static let label = Localization.tr("Localizable", "chat.duration.accessibility.label", fallback: "Displays call duration.")
-      }
+      /// Could not download the file.
+      internal static let failed = Localization.tr("Localizable", "chat.download.failed", fallback: "Could not download the file.")
     }
     internal enum File {
-      /// Failed to confirm the safety of the file.
-      internal static let infectedError = Localization.tr("Localizable", "chat.file.infected_error", fallback: "Failed to confirm the safety of the file.")
-      /// File size over 25MB limit!
-      internal static let tooLargeError = Localization.tr("Localizable", "chat.file.too_large_error", fallback: "File size over 25MB limit!")
+      internal enum InfectedFile {
+        /// The safety of the file could not be confirmed.
+        internal static let error = Localization.tr("Localizable", "chat.file.infected_file.error", fallback: "The safety of the file could not be confirmed.")
+      }
+      internal enum RemoveUpload {
+        internal enum Accessibility {
+          /// Remove upload
+          internal static let label = Localization.tr("Localizable", "chat.file.remove_upload.accessibility.label", fallback: "Remove upload")
+        }
+      }
+      internal enum SizeLimit {
+        /// File size must be less than 25 MB.
+        internal static let error = Localization.tr("Localizable", "chat.file.size_limit.error", fallback: "File size must be less than 25 MB.")
+      }
       internal enum Upload {
-        /// Uploading failed
-        internal static let failed = Localization.tr("Localizable", "chat.file.upload.failed", fallback: "Uploading failed")
-        /// Failed to upload.
-        internal static let genericError = Localization.tr("Localizable", "chat.file.upload.generic_error", fallback: "Failed to upload.")
+        /// Could not upload the file.
+        internal static let failed = Localization.tr("Localizable", "chat.file.upload.failed", fallback: "Could not upload the file.")
+        /// Could not upload the file.
+        internal static let genericError = Localization.tr("Localizable", "chat.file.upload.generic_error", fallback: "Could not upload the file.")
         /// Uploading file…
         internal static let inProgress = Localization.tr("Localizable", "chat.file.upload.in_progress", fallback: "Uploading file…")
-        /// Network error.
-        internal static let networkError = Localization.tr("Localizable", "chat.file.upload.network_error", fallback: "Network error.")
-        /// Checking safety of the file…
-        internal static let scanning = Localization.tr("Localizable", "chat.file.upload.scanning", fallback: "Checking safety of the file…")
+        /// Could not upload the file due to a network issue.
+        internal static let networkError = Localization.tr("Localizable", "chat.file.upload.network_error", fallback: "Could not upload the file due to a network issue.")
+        /// Checking file security…
+        internal static let scanning = Localization.tr("Localizable", "chat.file.upload.scanning", fallback: "Checking file security…")
         /// Ready to send
         internal static let success = Localization.tr("Localizable", "chat.file.upload.success", fallback: "Ready to send")
       }
@@ -228,12 +254,20 @@ internal enum Localization {
     internal enum Input {
       /// Enter Message
       internal static let placeholder = Localization.tr("Localizable", "chat.input.placeholder", fallback: "Enter Message")
-      /// Send
-      internal static let send = Localization.tr("Localizable", "chat.input.send", fallback: "Send")
+    }
+    internal enum MediaUpgrade {
+      internal enum Audio {
+        /// Upgraded to Audio
+        internal static let systemMessage = Localization.tr("Localizable", "chat.media_upgrade.audio.system_message", fallback: "Upgraded to Audio")
+      }
+      internal enum Video {
+        /// Upgraded to Video
+        internal static let systemMessage = Localization.tr("Localizable", "chat.media_upgrade.video.system_message", fallback: "Upgraded to Video")
+      }
     }
     internal enum Message {
-      /// Tap on the answer above
-      internal static let choiceCardPlaceholder = Localization.tr("Localizable", "chat.message.choice_card_placeholder", fallback: "Tap on the answer above")
+      /// Delivered
+      internal static let delivered = Localization.tr("Localizable", "chat.message.delivered", fallback: "Delivered")
       /// Send a message to start chatting
       internal static let startEngagementPlaceholder = Localization.tr("Localizable", "chat.message.start_engagement_placeholder", fallback: "Send a message to start chatting")
       internal enum Unread {
@@ -243,25 +277,25 @@ internal enum Localization {
         }
       }
     }
-    internal enum Operator {
-      internal enum Avatar {
-        internal enum Accessibility {
-          /// Avatar
-          internal static let label = Localization.tr("Localizable", "chat.operator.avatar.accessibility.label", fallback: "Avatar")
-        }
+    internal enum OperatorAvatar {
+      internal enum Accessibility {
+        /// Operator Picture
+        internal static let label = Localization.tr("Localizable", "chat.operator_avatar.accessibility.label", fallback: "Operator Picture")
       }
-      internal enum Name {
-        internal enum Accessibility {
-          /// Displays operator name.
-          internal static let label = Localization.tr("Localizable", "chat.operator.name.accessibility.label", fallback: "Displays operator name.")
-        }
+    }
+    internal enum OperatorJoined {
+      /// {operatorName} has joined the conversation.
+      internal static let systemMessage = Localization.tr("Localizable", "chat.operator_joined.system_message", fallback: "{operatorName} has joined the conversation.")
+    }
+    internal enum OperatorName {
+      internal enum Accessibility {
+        /// Operator Name
+        internal static let label = Localization.tr("Localizable", "chat.operator_name.accessibility.label", fallback: "Operator Name")
       }
     }
     internal enum Status {
-      /// Delivered
-      internal static let delivered = Localization.tr("Localizable", "chat.status.delivered", fallback: "Delivered")
-      /// Operator typing
-      internal static let typing = Localization.tr("Localizable", "chat.status.typing", fallback: "Operator typing")
+      /// Operator is typing
+      internal static let typing = Localization.tr("Localizable", "chat.status.typing", fallback: "Operator is typing")
       internal enum Typing {
         internal enum Accessibility {
           /// {operatorName} is typing
@@ -269,69 +303,27 @@ internal enum Localization {
         }
       }
     }
-    internal enum Upgrade {
-      internal enum Audio {
-        /// Upgraded to Audio Call
-        internal static let text = Localization.tr("Localizable", "chat.upgrade.audio.text", fallback: "Upgraded to Audio Call")
-      }
-      internal enum Video {
-        /// Upgraded to Video Call
-        internal static let text = Localization.tr("Localizable", "chat.upgrade.video.text", fallback: "Upgraded to Video Call")
-      }
-    }
-    internal enum Upload {
-      internal enum Remove {
-        internal enum Accessibility {
-          /// Remove upload
-          internal static let label = Localization.tr("Localizable", "chat.upload.remove.accessibility.label", fallback: "Remove upload")
-        }
-      }
-    }
   }
   internal enum Engagement {
     /// Operator
-    internal static let defaultOperatorName = Localization.tr("Localizable", "engagement.default_operator_name", fallback: "Operator")
-    /// Minimize
-    internal static let minimizeVideoButton = Localization.tr("Localizable", "engagement.minimize_video_button", fallback: "Minimize")
-    /// {operatorName} has offered you to upgrade
-    internal static let offerUpgrade = Localization.tr("Localizable", "engagement.offer_upgrade", fallback: "{operatorName} has offered you to upgrade")
-    internal enum Alert {
-      internal enum Camera {
-        /// Unable to access camera
-        internal static let header = Localization.tr("Localizable", "engagement.alert.camera.header", fallback: "Unable to access camera")
-      }
-      internal enum MediaSource {
-        /// Unable to access media source
-        internal static let header = Localization.tr("Localizable", "engagement.alert.media_source.header", fallback: "Unable to access media source")
-      }
-      internal enum Microphone {
-        /// Unable to access microphone
-        internal static let header = Localization.tr("Localizable", "engagement.alert.microphone.header", fallback: "Unable to access microphone")
-      }
-      internal enum ScreenSharing {
-        internal enum Start {
-          /// {operatorName} has asked you to share your screen
-          internal static let header = Localization.tr("Localizable", "engagement.alert.screen_sharing.start.header", fallback: "{operatorName} has asked you to share your screen")
-          /// {operatorName} would like to see the screen of your device
-          internal static let message = Localization.tr("Localizable", "engagement.alert.screen_sharing.start.message", fallback: "{operatorName} would like to see the screen of your device")
-        }
-        internal enum Stop {
-          /// Stop screen sharing?
-          internal static let header = Localization.tr("Localizable", "engagement.alert.screen_sharing.stop.header", fallback: "Stop screen sharing?")
-          /// Are you sure you want to stop sharing your screen?
-          internal static let message = Localization.tr("Localizable", "engagement.alert.screen_sharing.stop.message", fallback: "Are you sure you want to stop sharing your screen?")
-        }
-      }
+    internal static let defaultOperator = Localization.tr("Localizable", "engagement.default_operator", fallback: "Operator")
+    internal enum Audio {
+      /// Audio
+      internal static let title = Localization.tr("Localizable", "engagement.audio.title", fallback: "Audio")
     }
-    internal enum Connect {
-      /// We are here to help!
-      internal static let placeholder = Localization.tr("Localizable", "engagement.connect.placeholder", fallback: "We are here to help!")
+    internal enum Chat {
+      /// Chat
+      internal static let title = Localization.tr("Localizable", "engagement.chat.title", fallback: "Chat")
+    }
+    internal enum ConnectionScreen {
       /// Connecting with {operatorName}
-      internal static let with = Localization.tr("Localizable", "engagement.connect.with", fallback: "Connecting with {operatorName}")
+      internal static let connectWith = Localization.tr("Localizable", "engagement.connection_screen.connect_with", fallback: "Connecting with {operatorName}")
+      /// We are here to help!
+      internal static let message = Localization.tr("Localizable", "engagement.connection_screen.message", fallback: "We are here to help!")
     }
     internal enum End {
-      /// Are you sure you want to end engagement?
-      internal static let message = Localization.tr("Localizable", "engagement.end.message", fallback: "Are you sure you want to end engagement?")
+      /// Are you sure you want to end this engagement?
+      internal static let message = Localization.tr("Localizable", "engagement.end.message", fallback: "Are you sure you want to end this engagement?")
       internal enum Confirmation {
         /// End Engagement?
         internal static let header = Localization.tr("Localizable", "engagement.end.confirmation.header", fallback: "End Engagement?")
@@ -345,35 +337,45 @@ internal enum Localization {
       internal static let message = Localization.tr("Localizable", "engagement.ended.message", fallback: "This engagement has ended.\nThank you!")
     }
     internal enum MediaUpgrade {
+      /// {operatorName} has offered you to upgrade.
+      internal static let offer = Localization.tr("Localizable", "engagement.media_upgrade.offer", fallback: "{operatorName} has offered you to upgrade.")
       internal enum Audio {
         /// Speak through your device
         internal static let info = Localization.tr("Localizable", "engagement.media_upgrade.audio.info", fallback: "Speak through your device")
       }
       internal enum Phone {
-        /// Enter your number and we'll call you
-        internal static let info = Localization.tr("Localizable", "engagement.media_upgrade.phone.info", fallback: "Enter your number and we'll call you")
+        /// Enter your number and will call you back.
+        internal static let info = Localization.tr("Localizable", "engagement.media_upgrade.phone.info", fallback: "Enter your number and will call you back.")
       }
     }
-    internal enum QueueClosed {
-      /// We're sorry
-      internal static let header = Localization.tr("Localizable", "engagement.queue_closed.header", fallback: "We're sorry")
-      /// Operators are no longer available. 
-      /// Please try again later.
-      internal static let message = Localization.tr("Localizable", "engagement.queue_closed.message", fallback: "Operators are no longer available. \nPlease try again later.")
+    internal enum MinimizeVideo {
+      /// Minimize
+      internal static let button = Localization.tr("Localizable", "engagement.minimize_video.button", fallback: "Minimize")
     }
-    internal enum QueueLeave {
-      /// Are you sure you want to leave?
-      internal static let header = Localization.tr("Localizable", "engagement.queue_leave.header", fallback: "Are you sure you want to leave?")
-      /// You will lose your place in the queue.
-      internal static let message = Localization.tr("Localizable", "engagement.queue_leave.message", fallback: "You will lose your place in the queue.")
+    internal enum Phone {
+      /// Phone
+      internal static let title = Localization.tr("Localizable", "engagement.phone.title", fallback: "Phone")
     }
-    internal enum QueueReconnectionFailed {
-      /// Please try again later.
-      internal static let tryAgain = Localization.tr("Localizable", "engagement.queue_reconnection_failed.try_again", fallback: "Please try again later.")
-    }
-    internal enum QueueTransferring {
+    internal enum Queue {
       /// Transferring
-      internal static let message = Localization.tr("Localizable", "engagement.queue_transferring.message", fallback: "Transferring")
+      internal static let transferring = Localization.tr("Localizable", "engagement.queue.transferring", fallback: "Transferring")
+      internal enum Closed {
+        /// We are sorry! The queue is closed.
+        internal static let header = Localization.tr("Localizable", "engagement.queue.closed.header", fallback: "We are sorry! The queue is closed.")
+        /// Operators are no longer available. 
+        /// Please try again later.
+        internal static let message = Localization.tr("Localizable", "engagement.queue.closed.message", fallback: "Operators are no longer available. \nPlease try again later.")
+      }
+      internal enum Leave {
+        /// Are you sure you want to leave?
+        internal static let header = Localization.tr("Localizable", "engagement.queue.leave.header", fallback: "Are you sure you want to leave?")
+        /// You will lose your place in the queue.
+        internal static let message = Localization.tr("Localizable", "engagement.queue.leave.message", fallback: "You will lose your place in the queue.")
+      }
+      internal enum Reconnection {
+        /// Please try again later.
+        internal static let failed = Localization.tr("Localizable", "engagement.queue.reconnection.failed", fallback: "Please try again later.")
+      }
     }
     internal enum QueueWait {
       /// You can continue browsing and we will connect you automatically.
@@ -383,16 +385,18 @@ internal enum Localization {
       /// Messaging
       internal static let title = Localization.tr("Localizable", "engagement.secure_messaging.title", fallback: "Messaging")
     }
+    internal enum Video {
+      /// Video
+      internal static let title = Localization.tr("Localizable", "engagement.video.title", fallback: "Video")
+    }
   }
   internal enum Error {
-    /// Something went wrong
-    internal static let general = Localization.tr("Localizable", "error.general", fallback: "Something went wrong")
-    /// Internal error
-    internal static let `internal` = Localization.tr("Localizable", "error.internal", fallback: "Internal error")
-    internal enum Unexpected {
-      /// We're sorry, there has been an unexpected error.
-      internal static let title = Localization.tr("Localizable", "error.unexpected.title", fallback: "We're sorry, there has been an unexpected error.")
-    }
+    /// Something went wrong.
+    internal static let general = Localization.tr("Localizable", "error.general", fallback: "Something went wrong.")
+    /// Something went wrong.
+    internal static let `internal` = Localization.tr("Localizable", "error.internal", fallback: "Something went wrong.")
+    /// Something went wrong.
+    internal static let unexpected = Localization.tr("Localizable", "error.unexpected", fallback: "Something went wrong.")
   }
   internal enum General {
     /// Accept
@@ -407,8 +411,8 @@ internal enum Localization {
     internal static let close = Localization.tr("Localizable", "general.close", fallback: "Close")
     /// Comment
     internal static let comment = Localization.tr("Localizable", "general.comment", fallback: "Comment")
-    /// CompanyName
-    internal static let companyName = Localization.tr("Localizable", "general.company_name", fallback: "CompanyName")
+    /// Company Name
+    internal static let companyName = Localization.tr("Localizable", "general.company_name", fallback: "Company Name")
     /// Decline
     internal static let decline = Localization.tr("Localizable", "general.decline", fallback: "Decline")
     /// Download
@@ -424,11 +428,17 @@ internal enum Localization {
     /// Open
     internal static let `open` = Localization.tr("Localizable", "general.open", fallback: "Open")
     /// Powered by
-    internal static let poweredBy = Localization.tr("Localizable", "general.powered_by", fallback: "Powered by")
+    internal static let powered = Localization.tr("Localizable", "general.powered", fallback: "Powered by")
+    /// Refresh
+    internal static let refresh = Localization.tr("Localizable", "general.refresh", fallback: "Refresh")
     /// Retry
     internal static let retry = Localization.tr("Localizable", "general.retry", fallback: "Retry")
     /// Selected
     internal static let selected = Localization.tr("Localizable", "general.selected", fallback: "Selected")
+    /// Send
+    internal static let send = Localization.tr("Localizable", "general.send", fallback: "Send")
+    /// Sending…
+    internal static let sending = Localization.tr("Localizable", "general.sending", fallback: "Sending…")
     /// Submit
     internal static let submit = Localization.tr("Localizable", "general.submit", fallback: "Submit")
     /// Thank you!
@@ -437,54 +447,56 @@ internal enum Localization {
     internal static let yes = Localization.tr("Localizable", "general.yes", fallback: "Yes")
     /// You
     internal static let you = Localization.tr("Localizable", "general.you", fallback: "You")
+    internal enum Close {
+      /// Close Button
+      internal static let accessibility = Localization.tr("Localizable", "general.close.accessibility", fallback: "Close Button")
+    }
   }
   internal enum Gva {
-    /// This action is not currently supported on mobile.
-    internal static let errorUnsupported = Localization.tr("Localizable", "gva.error_unsupported", fallback: "This action is not currently supported on mobile.")
+    internal enum UnsupportedAction {
+      /// This action is not currently supported on mobile.
+      internal static let error = Localization.tr("Localizable", "gva.unsupported_action.error", fallback: "This action is not currently supported on mobile.")
+    }
   }
   internal enum Ios {
-    internal enum Engagement {
-      internal enum Alert {
-        internal enum Camera {
-          /// Allow access to your camera from device menu: “Settings” - “Privacy” - “Camera”
-          internal static let message = Localization.tr("Localizable", "ios.engagement.alert.camera.message", fallback: "Allow access to your camera from device menu: “Settings” - “Privacy” - “Camera”")
-        }
-        internal enum MediaSource {
-          /// This media source is not available on your device
-          internal static let message = Localization.tr("Localizable", "ios.engagement.alert.media_source.message", fallback: "This media source is not available on your device")
-        }
-        internal enum Microphone {
-          /// Allow access to your microphone from device menu: “Settings” - “Privacy” - “Microphone”
-          internal static let message = Localization.tr("Localizable", "ios.engagement.alert.microphone.message", fallback: "Allow access to your microphone from device menu: “Settings” - “Privacy” - “Microphone”")
-        }
+    internal enum Alert {
+      internal enum CameraAccess {
+        /// Allow access to your camera in 'Settings' - 'Privacy & Security' - 'Camera'
+        internal static let message = Localization.tr("Localizable", "ios.alert.camera_access.message", fallback: "Allow access to your camera in 'Settings' - 'Privacy & Security' - 'Camera'")
       }
-      internal enum QueueWait {
-        /// (By default your video will be off)
-        internal static let videoNotice = Localization.tr("Localizable", "ios.engagement.queue_wait.video_notice", fallback: "(By default your video will be off)")
+      internal enum MediaSource {
+        /// This media source is not available on your device
+        internal static let message = Localization.tr("Localizable", "ios.alert.media_source.message", fallback: "This media source is not available on your device")
+      }
+      internal enum MicrophoneAccess {
+        /// Allow access to your microphone in 'Settings' - 'Privacy & Security' - 'Microphone'
+        internal static let message = Localization.tr("Localizable", "ios.alert.microphone_access.message", fallback: "Allow access to your microphone in 'Settings' - 'Privacy & Security' - 'Microphone'")
+      }
+    }
+    internal enum Engagement {
+      internal enum ConnectionScreen {
+        /// (By default, your video will be turned off)
+        internal static let videoNotice = Localization.tr("Localizable", "ios.engagement.connection_screen.video_notice", fallback: "(By default, your video will be turned off)")
       }
     }
   }
-  internal enum Media {
+  internal enum MediaUpgrade {
     internal enum Audio {
-      /// Audio
-      internal static let name = Localization.tr("Localizable", "media.audio.name", fallback: "Audio")
-    }
-    internal enum Phone {
-      /// Phone
-      internal static let name = Localization.tr("Localizable", "media.phone.name", fallback: "Phone")
-    }
-    internal enum Text {
-      /// Chat
-      internal static let name = Localization.tr("Localizable", "media.text.name", fallback: "Chat")
+      /// {operatorName} has offered you to upgrade to audio
+      internal static let title = Localization.tr("Localizable", "media_upgrade.audio.title", fallback: "{operatorName} has offered you to upgrade to audio")
     }
     internal enum Video {
-      /// Video
-      internal static let name = Localization.tr("Localizable", "media.video.name", fallback: "Video")
+      internal enum OneWay {
+        /// {operatorName} has offered you to see their video
+        internal static let title = Localization.tr("Localizable", "media_upgrade.video.one_way.title", fallback: "{operatorName} has offered you to see their video")
+      }
+      internal enum TwoWay {
+        /// {operatorName} has offered you to upgrade to video
+        internal static let title = Localization.tr("Localizable", "media_upgrade.video.two_way.title", fallback: "{operatorName} has offered you to upgrade to video")
+      }
     }
   }
   internal enum MessageCenter {
-    /// Check messages
-    internal static let checkMessages = Localization.tr("Localizable", "message_center.check_messages", fallback: "Check messages")
     /// Messaging
     internal static let header = Localization.tr("Localizable", "message_center.header", fallback: "Messaging")
     internal enum Confirmation {
@@ -510,12 +522,12 @@ internal enum Localization {
       internal static let title = Localization.tr("Localizable", "message_center.unavailable.title", fallback: "Message Center Unavailable")
     }
     internal enum Welcome {
-      /// The message cannot exceed 10000 characters.
-      internal static let messageLengthWarning = Localization.tr("Localizable", "message_center.welcome.message_length_warning", fallback: "The message cannot exceed 10000 characters.")
+      /// Check messages
+      internal static let checkMessages = Localization.tr("Localizable", "message_center.welcome.check_messages", fallback: "Check messages")
       /// Your message
       internal static let messageTitle = Localization.tr("Localizable", "message_center.welcome.message_title", fallback: "Your message")
-      /// Send a message and we’ll get back to you within 48 hours
-      internal static let subtitle = Localization.tr("Localizable", "message_center.welcome.subtitle", fallback: "Send a message and we’ll get back to you within 48 hours")
+      /// Send a message and we will get back to you within 48 hours.
+      internal static let subtitle = Localization.tr("Localizable", "message_center.welcome.subtitle", fallback: "Send a message and we will get back to you within 48 hours.")
       /// Welcome to Message Center
       internal static let title = Localization.tr("Localizable", "message_center.welcome.title", fallback: "Welcome to Message Center")
       internal enum CheckMessages {
@@ -532,9 +544,13 @@ internal enum Localization {
           internal static let label = Localization.tr("Localizable", "message_center.welcome.file_picker.accessibility.label", fallback: "File picker")
         }
       }
-      internal enum MessageTextView {
+      internal enum MessageInput {
         /// Enter your message
-        internal static let placeholder = Localization.tr("Localizable", "message_center.welcome.message_text_view.placeholder", fallback: "Enter your message")
+        internal static let placeholder = Localization.tr("Localizable", "message_center.welcome.message_input.placeholder", fallback: "Enter your message")
+      }
+      internal enum MessageLength {
+        /// The message cannot exceed 10,000 characters.
+        internal static let error = Localization.tr("Localizable", "message_center.welcome.message_length.error", fallback: "The message cannot exceed 10,000 characters.")
       }
       internal enum Send {
         internal enum Accessibility {
@@ -546,13 +562,15 @@ internal enum Localization {
   }
   internal enum ScreenSharing {
     internal enum VisitorScreen {
-      /// End Screen Sharing
-      internal static let end = Localization.tr("Localizable", "screen_sharing.visitor_screen.end", fallback: "End Screen Sharing")
       internal enum Disclaimer {
+        /// Depending on your selection, your entire screen might be shared with the operator, not just the application window.
+        internal static let info = Localization.tr("Localizable", "screen_sharing.visitor_screen.disclaimer.info", fallback: "Depending on your selection, your entire screen might be shared with the operator, not just the application window.")
         /// You are about to share your screen
         internal static let title = Localization.tr("Localizable", "screen_sharing.visitor_screen.disclaimer.title", fallback: "You are about to share your screen")
       }
       internal enum End {
+        /// End Screen Sharing
+        internal static let title = Localization.tr("Localizable", "screen_sharing.visitor_screen.end.title", fallback: "End Screen Sharing")
         internal enum Accessibility {
           /// Ends screen sharing
           internal static let hint = Localization.tr("Localizable", "screen_sharing.visitor_screen.end.accessibility.hint", fallback: "Ends screen sharing")
@@ -560,26 +578,18 @@ internal enum Localization {
       }
     }
   }
-  internal enum Screensharing {
-    internal enum VisitorScreen {
-      internal enum Disclaimer {
-        /// Depending on your selection, your entire screen might be shared with the operator, not just the application window.
-        internal static let info = Localization.tr("Localizable", "screensharing.visitor_screen.disclaimer.info", fallback: "Depending on your selection, your entire screen might be shared with the operator, not just the application window.")
-      }
-    }
-  }
-  internal enum SendMessage {
-    /// Send message
-    internal static let send = Localization.tr("Localizable", "send_message.send", fallback: "Send message")
-    /// Sending…
-    internal static let sending = Localization.tr("Localizable", "send_message.sending", fallback: "Sending…")
-  }
   internal enum Survey {
     internal enum Action {
       /// Please provide an answer.
       internal static let validationError = Localization.tr("Localizable", "survey.action.validation_error", fallback: "Please provide an answer.")
     }
     internal enum Question {
+      internal enum Input {
+        internal enum Accessibility {
+          /// Enter the answer
+          internal static let hint = Localization.tr("Localizable", "survey.question.input.accessibility.hint", fallback: "Enter the answer")
+        }
+      }
       internal enum OptionButton {
         internal enum Selected {
           internal enum Accessibility {
@@ -594,41 +604,19 @@ internal enum Localization {
           }
         }
       }
-      internal enum TextField {
+      internal enum Required {
         internal enum Accessibility {
-          /// Enter the answer
-          internal static let hint = Localization.tr("Localizable", "survey.question.text_field.accessibility.hint", fallback: "Enter the answer")
-        }
-      }
-      internal enum Title {
-        internal enum Accessibility {
-          /// Required
-          internal static let label = Localization.tr("Localizable", "survey.question.title.accessibility.label", fallback: "Required")
+          /// This is a required question.
+          internal static let label = Localization.tr("Localizable", "survey.question.required.accessibility.label", fallback: "This is a required question.")
         }
       }
     }
     internal enum Validation {
       internal enum Title {
         internal enum Accessibility {
-          /// Please provide an answer for question above
-          internal static let label = Localization.tr("Localizable", "survey.validation.title.accessibility.label", fallback: "Please provide an answer for question above")
+          /// Please provide an answer for the question above.
+          internal static let label = Localization.tr("Localizable", "survey.validation.title.accessibility.label", fallback: "Please provide an answer for the question above.")
         }
-      }
-    }
-  }
-  internal enum Upgrade {
-    internal enum Audio {
-      /// {operatorName} has offered you to upgrade to audio
-      internal static let title = Localization.tr("Localizable", "upgrade.audio.title", fallback: "{operatorName} has offered you to upgrade to audio")
-    }
-    internal enum Video {
-      internal enum OneWay {
-        /// {operatorName} has offered you to see their video
-        internal static let title = Localization.tr("Localizable", "upgrade.video.one_way.title", fallback: "{operatorName} has offered you to see their video")
-      }
-      internal enum TwoWay {
-        /// {operatorName} has offered you to upgrade to video
-        internal static let title = Localization.tr("Localizable", "upgrade.video.two_way.title", fallback: "{operatorName} has offered you to upgrade to video")
       }
     }
   }

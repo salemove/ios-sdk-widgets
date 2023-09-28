@@ -35,7 +35,7 @@ extension Theme {
             image: Asset.startScreenShare.image,
             color: color.baseLight,
             accessibility: .init(
-                label: Localization.ScreenSharing.VisitorScreen.end,
+                label: Localization.ScreenSharing.VisitorScreen.End.title,
                 hint: ""
             )
         )
@@ -65,8 +65,8 @@ extension Theme {
             animationColor: color.primary,
             onHoldOverlay: onHoldOverlay,
             accessibility: .init(
-                label: Localization.Chat.Operator.Avatar.Accessibility.label,
-                hint: Localization.Call.Operator.Avatar.Accessibility.hint
+                label: Localization.Chat.OperatorAvatar.Accessibility.label,
+                hint: Localization.Call.OperatorAvatar.Accessibility.hint
             )
         )
         let queue = ConnectStatusStyle(
@@ -74,18 +74,18 @@ extension Theme {
             firstTextFont: font.header1,
             firstTextFontColor: color.baseDark,
             firstTextStyle: .title1,
-            secondText: Localization.Engagement.Connect.placeholder,
+            secondText: Localization.Engagement.ConnectionScreen.message,
             secondTextFont: font.subtitle,
             secondTextFontColor: color.baseNormal,
             secondTextStyle: .footnote,
             accessibility: .init(
-                firstTextHint: Localization.Chat.Operator.Name.Accessibility.label,
+                firstTextHint: Localization.Chat.OperatorName.Accessibility.label,
                 secondTextHint: nil,
                 isFontScalingEnabled: true
             )
         )
         let connecting = ConnectStatusStyle(
-            firstText: Localization.Engagement.Connect.with,
+            firstText: Localization.Engagement.ConnectionScreen.connectWith,
             firstTextFont: font.header2,
             firstTextFontColor: color.baseDark,
             firstTextStyle: .title2,
@@ -94,7 +94,7 @@ extension Theme {
             secondTextFontColor: color.baseDark,
             secondTextStyle: .title2,
             accessibility: .init(
-                firstTextHint: Localization.Chat.Operator.Name.Accessibility.label,
+                firstTextHint: Localization.Chat.OperatorName.Accessibility.label,
                 secondTextHint: nil,
                 isFontScalingEnabled: true
             )
@@ -104,12 +104,12 @@ extension Theme {
             firstTextFont: font.header1,
             firstTextFontColor: color.baseDark,
             firstTextStyle: .title1,
-            secondText: Localization.Chat.operatorJoined,
+            secondText: Localization.Chat.OperatorJoined.systemMessage,
             secondTextFont: font.subtitle,
             secondTextFontColor: color.primary,
             secondTextStyle: .footnote,
             accessibility: .init(
-                firstTextHint: Localization.Chat.Operator.Name.Accessibility.label,
+                firstTextHint: Localization.Chat.OperatorName.Accessibility.label,
                 secondTextHint: nil,
                 isFontScalingEnabled: true
             )
@@ -119,18 +119,18 @@ extension Theme {
             firstTextFont: font.header1,
             firstTextFontColor: color.baseLight,
             firstTextStyle: .title1,
-            secondText: Localization.Chat.operatorJoined,
+            secondText: Localization.Chat.OperatorJoined.systemMessage,
             secondTextFont: font.subtitle,
             secondTextFontColor: color.baseLight,
             secondTextStyle: .footnote,
             accessibility: .init(
-                firstTextHint: Localization.Chat.Operator.Name.Accessibility.label,
+                firstTextHint: Localization.Chat.OperatorName.Accessibility.label,
                 secondTextHint: nil,
                 isFontScalingEnabled: true
             )
         )
         let transferring = ConnectStatusStyle(
-            firstText: Localization.Engagement.QueueTransferring.message,
+            firstText: Localization.Engagement.Queue.transferring,
             firstTextFont: font.header1,
             firstTextFontColor: color.baseDark,
             firstTextStyle: .title1,
@@ -176,7 +176,7 @@ extension Theme {
                 textStyle: .caption1,
                 accessibility: .init(isFontScalingEnabled: true)
             ),
-            delivered: Localization.Chat.Status.delivered,
+            delivered: Localization.Chat.Message.delivered,
             accessibility: .init(isFontScalingEnabled: true)
         )
         let operatorImageFile = ChatImageFileContentStyle(
@@ -294,14 +294,14 @@ extension Theme {
         let sendButton = MessageButtonStyle(
             image: Asset.chatSend.image,
             color: color.primary,
-            accessibility: .init(accessibilityLabel: Localization.Chat.Input.send)
+            accessibility: .init(accessibilityLabel: Localization.General.send)
         )
         let messageEntry = ChatMessageEntryStyle(
             messageFont: font.bodyText,
             messageColor: color.baseDark,
             enterMessagePlaceholder: Localization.Chat.Input.placeholder,
             startEngagementPlaceholder: Localization.Chat.Message.startEngagementPlaceholder,
-            choiceCardPlaceholder: Localization.Chat.Message.choiceCardPlaceholder,
+            choiceCardPlaceholder: Localization.Chat.ChoiceCard.placeholderMessage,
             placeholderFont: font.bodyText,
             placeholderColor: color.baseNormal,
             separatorColor: color.baseShade,
@@ -317,28 +317,28 @@ extension Theme {
         let audioUpgrade = ChatCallUpgradeStyle(
             icon: Asset.upgradeAudio.image,
             iconColor: color.primary,
-            text: Localization.Chat.Upgrade.Audio.text,
+            text: Localization.Chat.MediaUpgrade.Audio.systemMessage,
             textFont: font.bodyText,
             textColor: color.baseDark,
             durationFont: font.bodyText,
             durationColor: color.baseNormal,
             borderColor: color.baseShade,
             accessibility: .init(
-                durationTextHint: Localization.Chat.Duration.Accessibility.label,
+                durationTextHint: Localization.Call.Duration.Accessibility.label,
                 isFontScalingEnabled: true
             )
         )
         let videoUpgrade = ChatCallUpgradeStyle(
             icon: Asset.upgradeVideo.image,
             iconColor: color.primary,
-            text: Localization.Chat.Upgrade.Video.text,
+            text: Localization.Chat.MediaUpgrade.Video.systemMessage,
             textFont: font.bodyText,
             textColor: color.baseDark,
             durationFont: font.bodyText,
             durationColor: color.baseNormal,
             borderColor: color.baseShade,
             accessibility: .init(
-                durationTextHint: Localization.Chat.Duration.Accessibility.label,
+                durationTextHint: Localization.Call.Duration.Accessibility.label,
                 isFontScalingEnabled: true
             )
         )
@@ -352,7 +352,7 @@ extension Theme {
         let callBubble = BubbleStyle(
             userImage: userImage,
             accessibility: .init(
-                label: Localization.Call.Operator.Avatar.Accessibility.label,
+                label: Localization.Call.OperatorAvatar.Accessibility.label,
                 hint: Localization.Call.Bubble.Accessibility.hint
             )
         )
@@ -393,7 +393,7 @@ extension Theme {
             connect: connect,
             backgroundColor: .fill(color: color.background),
             preferredStatusBarStyle: .lightContent,
-            title: Localization.Media.Text.name,
+            title: Localization.Engagement.Chat.title,
             visitorMessageStyle: visitorMessage,
             operatorMessageStyle: operatorMessage,
             choiceCardStyle: choiceCard,
@@ -405,7 +405,7 @@ extension Theme {
             unreadMessageIndicator: unreadMessageIndicator,
             operatorTypingIndicator: operatorTypingIndicator,
             accessibility: .init(
-                operator: Localization.Engagement.defaultOperatorName,
+                operator: Localization.Engagement.defaultOperator,
                 visitor: Localization.General.you,
                 isFontScalingEnabled: true
             ),
@@ -447,9 +447,9 @@ extension Theme {
             textColor: color.baseDark,
             infoFont: font.caption,
             infoColor: color.systemNegative,
-            infoFileTooBig: Localization.Chat.File.tooLargeError,
-            infoUnsupportedFileType: Localization.Chat.Attachment.Upload.unsupportedFile,
-            infoSafetyCheckFailed: Localization.Chat.File.infectedError,
+            infoFileTooBig: Localization.Chat.File.SizeLimit.error,
+            infoUnsupportedFileType: Localization.Chat.Attachment.unsupportedFile,
+            infoSafetyCheckFailed: Localization.Chat.File.InfectedFile.error,
             infoNetworkError: Localization.Chat.File.Upload.networkError,
             infoGenericError: Localization.Chat.File.Upload.genericError
         )
@@ -464,7 +464,7 @@ extension Theme {
             removeButtonImage: Asset.uploadRemove.image,
             removeButtonColor: color.baseNormal,
             accessibility: .init(
-                removeButtonAccessibilityLabel: Localization.Chat.Upload.Remove.Accessibility.label,
+                removeButtonAccessibilityLabel: Localization.Chat.File.RemoveUpload.Accessibility.label,
                 progressPercentValue: Localization.Templates.percentValue,
                 fileNameWithProgressValue: Localization.Templates.fileNameWithProgressValue,
                 isFontScalingEnabled: true
@@ -485,7 +485,7 @@ extension Theme {
             accessibility: .init(isFontScalingEnabled: true)
         )
         let download = ChatFileDownloadStateStyle(
-            text: Localization.Chat.Download.download,
+            text: Localization.General.download,
             font: font.mediumSubtitle2,
             textColor: color.baseDark,
             infoFont: font.caption,

@@ -1,8 +1,8 @@
 extension Theme {
     var alertConfigurationStyle: AlertConfiguration {
         let leaveQueue = ConfirmationAlertConfiguration(
-            title: Localization.Engagement.QueueLeave.header,
-            message: Localization.Engagement.QueueLeave.message,
+            title: Localization.Engagement.Queue.Leave.header,
+            message: Localization.Engagement.Queue.Leave.message,
             negativeTitle: Localization.General.no,
             positiveTitle: Localization.General.yes,
             switchButtonBackgroundColors: true,
@@ -22,19 +22,19 @@ extension Theme {
             buttonTitle: Localization.General.ok
         )
         let endScreenShare = ConfirmationAlertConfiguration(
-            title: Localization.Engagement.Alert.ScreenSharing.Stop.header,
-            message: Localization.Engagement.Alert.ScreenSharing.Stop.message,
+            title: Localization.Alert.ScreenSharing.Stop.header,
+            message: Localization.Alert.ScreenSharing.Stop.message,
             negativeTitle: Localization.General.no,
             positiveTitle: Localization.General.yes,
             switchButtonBackgroundColors: true,
             showsPoweredBy: showsPoweredBy
         )
         let operatorsUnavailable = MessageAlertConfiguration(
-            title: Localization.Engagement.QueueClosed.header,
-            message: Localization.Engagement.QueueClosed.message
+            title: Localization.Engagement.Queue.Closed.header,
+            message: Localization.Engagement.Queue.Closed.message
         )
         let audioAction = MediaUpgradeActionStyle(
-            title: Localization.Media.Audio.name,
+            title: Localization.Engagement.Audio.title,
             titleFont: font.header3,
             titleColor: color.baseDark,
             info: Localization.Engagement.MediaUpgrade.Audio.info,
@@ -46,7 +46,7 @@ extension Theme {
             iconColor: color.primary
         )
         let phoneAction = MediaUpgradeActionStyle(
-            title: Localization.Media.Phone.name,
+            title: Localization.Engagement.Phone.title,
             titleFont: font.header3,
             titleColor: color.baseDark,
             info: Localization.Engagement.MediaUpgrade.Phone.info,
@@ -58,62 +58,62 @@ extension Theme {
             iconColor: color.primary
         )
         let mediaUpgrade = MultipleMediaUpgradeAlertConfiguration(
-            title: Localization.Engagement.offerUpgrade,
+            title: Localization.Engagement.MediaUpgrade.offer,
             audioUpgradeAction: audioAction,
             phoneUpgradeAction: phoneAction,
             showsPoweredBy: showsPoweredBy
         )
         let audioUpgrade = SingleMediaUpgradeAlertConfiguration(
-            title: Localization.Upgrade.Audio.title,
+            title: Localization.MediaUpgrade.Audio.title,
             titleImage: Asset.upgradeAudio.image,
             decline: Localization.General.decline,
             accept: Localization.General.accept,
             showsPoweredBy: showsPoweredBy
         )
         let oneWayVideoUpgrade = SingleMediaUpgradeAlertConfiguration(
-            title: Localization.Upgrade.Video.OneWay.title,
+            title: Localization.MediaUpgrade.Video.OneWay.title,
             titleImage: Asset.upgradeVideo.image,
             decline: Localization.General.decline,
             accept: Localization.General.accept,
             showsPoweredBy: showsPoweredBy
         )
         let twoWayVideoUpgrade = SingleMediaUpgradeAlertConfiguration(
-            title: Localization.Upgrade.Video.TwoWay.title,
+            title: Localization.MediaUpgrade.Video.TwoWay.title,
             titleImage: Asset.upgradeVideo.image,
             decline: Localization.General.decline,
             accept: Localization.General.accept,
             showsPoweredBy: showsPoweredBy
         )
         let screenShareOffer = ScreenShareOfferAlertConfiguration(
-            title: Localization.Engagement.Alert.ScreenSharing.Start.header,
-            message: Localization.Engagement.Alert.ScreenSharing.Start.message,
+            title: Localization.Alert.ScreenSharing.Start.header,
+            message: Localization.Alert.ScreenSharing.Start.message,
             titleImage: Asset.startScreenShare.image,
             decline: Localization.General.decline,
             accept: Localization.General.accept,
             showsPoweredBy: showsPoweredBy
         )
         let microphoneSettings = SettingsAlertConfiguration(
-            title: Localization.Engagement.Alert.Microphone.header,
-            message: Localization.Ios.Engagement.Alert.Microphone.message,
+            title: Localization.Alert.MicrophoneAccess.error,
+            message: Localization.Ios.Alert.MicrophoneAccess.message,
             settingsTitle: Localization.Alert.Action.settings,
             cancelTitle: Localization.General.cancel
         )
         let cameraSettings = SettingsAlertConfiguration(
-            title: Localization.Engagement.Alert.Camera.header,
-            message: Localization.Ios.Engagement.Alert.Camera.message,
+            title: Localization.Alert.CameraAccess.error,
+            message: Localization.Ios.Alert.CameraAccess.message,
             settingsTitle: Localization.Alert.Action.settings,
             cancelTitle: Localization.General.cancel
         )
         let mediaSourceNotAvailable = MessageAlertConfiguration(
-            title: Localization.Engagement.Alert.MediaSource.header,
-            message: Localization.Ios.Engagement.Alert.MediaSource.message
+            title: Localization.Alert.MediaSourceAccess.error,
+            message: Localization.Ios.Alert.MediaSource.message
         )
         let unexpected = MessageAlertConfiguration(
-            title: Localization.Error.Unexpected.title,
-            message: Localization.Engagement.QueueReconnectionFailed.tryAgain
+            title: Localization.Error.unexpected,
+            message: Localization.Engagement.Queue.Reconnection.failed
         )
         let api = MessageAlertConfiguration(
-            title: Localization.Error.Unexpected.title,
+            title: Localization.Error.unexpected,
             message: Localization.Templates.errorMessage
         )
         let unavailableMessageCenter = MessageAlertConfiguration(
@@ -129,7 +129,7 @@ extension Theme {
         )
 
         let unsupportedGvaBroadcastError = MessageAlertConfiguration(
-            title: Localization.Gva.errorUnsupported,
+            title: Localization.Gva.UnsupportedAction.error,
             message: nil
         )
 
