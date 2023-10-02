@@ -346,5 +346,84 @@ class CallViewModelTests: XCTestCase {
         viewModel.start()
 
         XCTAssertEqual(call.state.value, .none)
+    func test_viewModelStartDoesNotInitiateEnqueuingWithStartActionAsEngagement() {
+        let viewModel: CallViewModel = .mock()
+        viewModel.start()
+
+        XCTAssertEqual(viewModel.interactor.state, .none)
+    }
+
+    func test_liveObservationAlertPresentationInitiatedWhenInteractorStateIsEnqueuing() {
+        enum Call {
+            case showLiveObservationAlert
+        }
+        var calls: [Call] = []
+        let interactor: Interactor = .mock()
+        let viewModel: CallViewModel = .mock(interactor: interactor)
+        viewModel.engagementAction = { action in
+            switch action {
+            case .showLiveObservationConfirmation:
+                calls.append(.showLiveObservationAlert)
+            default:
+                XCTFail()
+            }
+        }
+        interactor.state = .enqueueing(.audio)
+        XCTAssertEqual(calls, [.showLiveObservationAlert])
+    }
+
+    func test_liveObservationAllowTriggersEnqueue() {
+        var interactorEnv: Interactor.Environment = .mock
+        interactorEnv.coreSdk.queueForEngagement = { _, completion in
+            completion(.success(.mock))
+        }
+
+        let interactor: Interactor = .mock(environment: interactorEnv)
+        interactor.isConfigurationPerformed = true
+
+        var alertConfig: LiveObservation.Confirmation?
+
+        let viewModel: CallViewModel = .mock(interactor: interactor)
+        viewModel.engagementAction = { action in
+            switch action {
+            case let .showLiveObservationConfirmation(config):
+                alertConfig = config
+            default:
+                XCTFail()
+            }
+        }
+        interactor.state = .enqueueing(.audio)
+        alertConfig?.accepted()
+        XCTAssertEqual(interactor.state, .enqueued(.mock))
+    }
+
+    func test_liveObservationDeclineTriggersNone() {
+        enum Call {
+            case queueForEngagement
+        }
+        var calls: [Call] = []
+        var interactorEnv: Interactor.Environment = .mock
+        interactorEnv.coreSdk.queueForEngagement = { _, _ in
+            calls.append(.queueForEngagement)
+        }
+
+        let interactor: Interactor = .mock(environment: interactorEnv)
+        interactor.isConfigurationPerformed = true
+
+        var alertConfig: LiveObservation.Confirmation?
+
+        let viewModel: CallViewModel = .mock(interactor: interactor)
+        viewModel.engagementAction = { action in
+            switch action {
+            case let .showLiveObservationConfirmation(config):
+                alertConfig = config
+            default:
+                XCTFail()
+            }
+        }
+        interactor.state = .enqueueing(.audio)
+        alertConfig?.declined()
+        XCTAssertEqual(interactor.state, .ended(.byVisitor))
+        XCTAssertTrue(calls.isEmpty)
     }
 }

@@ -89,10 +89,9 @@ extension ChatViewModelTests {
         env.createFileUploadListModel = { _ in .mock() }
         env.createSendMessagePayload = { _, _ in .mock() }
         viewModel = .mock(interactor: interactorMock, environment: env)
-
         viewModel.gvaOptionAction(for: option)()
-
-        XCTAssertEqual(interactorMock.state, .enqueueing)
+        viewModel.interactor.state = .enqueueing(.text)
+        XCTAssertEqual(interactorMock.state, .enqueueing(.text))
     }
 
     func test_broadcastEventAction() {

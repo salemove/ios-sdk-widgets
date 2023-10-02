@@ -88,9 +88,8 @@ class CallViewModel: EngagementViewModel, ViewModel {
         }
 
         switch startWith {
-        case .engagement(let mediaType):
-            enqueue(mediaType: mediaType)
-
+        case .engagement:
+            break
         case .call(offer: let offer, answer: let answer):
             call.upgrade(to: offer)
             showConnecting()
