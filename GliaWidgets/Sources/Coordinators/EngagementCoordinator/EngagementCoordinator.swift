@@ -50,6 +50,7 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
 
     // swiftlint:disable function_body_length
     func start() {
+
         switch engagementKind {
         case .none:
             break
@@ -59,6 +60,7 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
                 showsCallBubble: false
             )
             engagement = .chat(chatViewController)
+            interactor.state = .enqueueing(.text)
             navigationPresenter.setViewControllers(
                 [chatViewController],
                 animated: false
@@ -81,14 +83,14 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
             call.kind.addObserver(self) { [weak self] _, _ in
                 self?.engagementKind = EngagementKind(with: call.kind.value)
             }
-            let chatViewController = startChat(
-                withAction: .none,
-                showsCallBubble: true
-            )
-
             let callViewController = startCall(
                 call,
                 withAction: .engagement(mediaType: mediaType)
+            )
+            interactor.state = .enqueueing(mediaType)
+            let chatViewController = startChat(
+                withAction: .none,
+                showsCallBubble: true
             )
 
             engagement = .call(
@@ -97,6 +99,7 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
                 .none,
                 call
             )
+
             navigationPresenter.setViewControllers(
                 [callViewController],
                 animated: false

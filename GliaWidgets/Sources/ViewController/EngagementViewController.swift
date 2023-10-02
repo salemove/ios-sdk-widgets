@@ -3,6 +3,7 @@ import UIKit
 class EngagementViewController: UIViewController, AlertPresenter, MediaUpgradePresenter, ScreenShareOfferPresenter {
     let viewFactory: ViewFactory
     private var viewModel: CommonEngagementModel
+    private var pendingLiveObservationConfirmation: LiveObservation.Confirmation?
 
     init(viewModel: CommonEngagementModel, viewFactory: ViewFactory) {
         self.viewModel = viewModel
@@ -27,6 +28,11 @@ class EngagementViewController: UIViewController, AlertPresenter, MediaUpgradePr
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         viewModel.event(.viewDidAppear)
+        viewModel.setViewAppeared()
+        if let alertConfig = pendingLiveObservationConfirmation {
+            showLiveObservationConfirmationAlert(with: alertConfig)
+            pendingLiveObservationConfirmation = nil
+        }
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -63,6 +69,8 @@ class EngagementViewController: UIViewController, AlertPresenter, MediaUpgradePr
                 view?.header.showEndButton()
             case .showEndScreenShareButton:
                 view?.header.showEndScreenSharingButton()
+            case let .showLiveObservationConfirmation(configuration):
+                self.showLiveObservationConfirmation(with: configuration)
             }
         }
     }
@@ -70,5 +78,27 @@ class EngagementViewController: UIViewController, AlertPresenter, MediaUpgradePr
     func swapAndBindEgagementViewModel(_ engagementModel: CommonEngagementModel) {
         self.viewModel = engagementModel
         bind(engagementViewModel: engagementModel)
+    }
+
+    private func showLiveObservationConfirmation(
+        with config: LiveObservation.Confirmation
+    ) {
+        switch viewModel.hasViewAppeared {
+        case true: showLiveObservationConfirmationAlert(with: config)
+        case false: pendingLiveObservationConfirmation = config
+        }
+    }
+
+    private func showLiveObservationConfirmationAlert(with config: LiveObservation.Confirmation) {
+        let alert = AlertViewController(
+            kind: .liveObservationConfirmation(
+                config.conf,
+                accepted: config.accepted,
+                declined: config.declined
+            ),
+            viewFactory: self.viewFactory
+        )
+
+        replacePresentedOfferIfPossible(with: alert)
     }
 }
