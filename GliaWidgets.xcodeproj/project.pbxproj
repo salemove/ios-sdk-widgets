@@ -609,6 +609,8 @@
 		C0175A282A67D470001FACDE /* GvaPersistentButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0175A272A67D470001FACDE /* GvaPersistentButtonStyle.swift */; };
 		C0175A2A2A67D499001FACDE /* GvaStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0175A292A67D499001FACDE /* GvaStyle.swift */; };
 		C0175A2C2A67E2E9001FACDE /* Theme+Gva.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0175A2B2A67E2E9001FACDE /* Theme+Gva.swift */; };
+		C02248A72AD53DDA00CC4930 /* LiveObservationConfirmation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02248A62AD53DDA00CC4930 /* LiveObservationConfirmation.swift */; };
+		C02248AA2AD53E6100CC4930 /* LiveObservation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02248A92AD53E6100CC4930 /* LiveObservation.swift */; };
 		C039FA7F2B19EB6E00DFD0E0 /* MediaPickerLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C039FA7E2B19EB6E00DFD0E0 /* MediaPickerLayoutTests.swift */; };
 		C039FA812B19ECBA00DFD0E0 /* MediaPickerDynamicFontTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C039FA802B19ECBA00DFD0E0 /* MediaPickerDynamicFontTests.swift */; };
 		C039FA832B19ED7D00DFD0E0 /* MediaPickerVoiceOverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C039FA822B19ED7D00DFD0E0 /* MediaPickerVoiceOverTests.swift */; };
@@ -1368,6 +1370,8 @@
 		C0175A272A67D470001FACDE /* GvaPersistentButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GvaPersistentButtonStyle.swift; sourceTree = "<group>"; };
 		C0175A292A67D499001FACDE /* GvaStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GvaStyle.swift; sourceTree = "<group>"; };
 		C0175A2B2A67E2E9001FACDE /* Theme+Gva.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Theme+Gva.swift"; sourceTree = "<group>"; };
+		C02248A62AD53DDA00CC4930 /* LiveObservationConfirmation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveObservationConfirmation.swift; sourceTree = "<group>"; };
+		C02248A92AD53E6100CC4930 /* LiveObservation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveObservation.swift; sourceTree = "<group>"; };
 		C039FA7E2B19EB6E00DFD0E0 /* MediaPickerLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPickerLayoutTests.swift; sourceTree = "<group>"; };
 		C039FA802B19ECBA00DFD0E0 /* MediaPickerDynamicFontTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPickerDynamicFontTests.swift; sourceTree = "<group>"; };
 		C039FA822B19ED7D00DFD0E0 /* MediaPickerVoiceOverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPickerVoiceOverTests.swift; sourceTree = "<group>"; };
@@ -2103,6 +2107,7 @@
 		1A60AFC12566857200E53F53 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				C02248A82AD53DDF00CC4930 /* LiveObservation */,
 				AF7753152B1DBF8900E523A2 /* GliaLogging */,
 				AF1C19782B14FC4900F8810F /* ConditionalCompilationClient */,
 				AF62910D2B0813B000D3D76B /* SwiftBased */,
@@ -3615,6 +3620,15 @@
 			path = GVA;
 			sourceTree = "<group>";
 		};
+		C02248A82AD53DDF00CC4930 /* LiveObservation */ = {
+			isa = PBXGroup;
+			children = (
+				C02248A92AD53E6100CC4930 /* LiveObservation.swift */,
+				C02248A62AD53DDA00CC4930 /* LiveObservationConfirmation.swift */,
+			);
+			path = LiveObservation;
+			sourceTree = "<group>";
+		};
 		C05E3EDC29C99DEE0013BC81 /* ProximityManager */ = {
 			isa = PBXGroup;
 			children = (
@@ -4578,6 +4592,7 @@
 				84D2293028C61FF300F64FE7 /* WKNavigationPolicyProvider.Mock.swift in Sources */,
 				1A0C144425B868FC00B00695 /* CallCoordinator.swift in Sources */,
 				8491AF022A6FBBBA00CC3E72 /* GvaGalleryListView.swift in Sources */,
+				C02248A72AD53DDA00CC4930 /* LiveObservationConfirmation.swift in Sources */,
 				7594098C298D38C2008B173A /* CallVisualizer+Environment.swift in Sources */,
 				1A1E309B25F8E1F700850E68 /* DataStorage.swift in Sources */,
 				AF6AB34D298A9F2500003645 /* SecureConversations.FileUploadListViewModel.swift in Sources */,
@@ -4859,6 +4874,7 @@
 				AF3D520F2983BC5600AD8E69 /* FileUploader.Environment.Mock.swift in Sources */,
 				C43D7A1125FF92680064B1DA /* ChoiceCardStyle.swift in Sources */,
 				9A186A4127F605B90055886D /* HeaderButtonStyle.Accessibility.swift in Sources */,
+				C02248AA2AD53E6100CC4930 /* LiveObservation.swift in Sources */,
 				9AB196D827C3E27300FD60AB /* ChatViewModel.Environment.Mock.swift in Sources */,
 				AF1C197C2B14FD0900F8810F /* ConditionalCompilationClient.Live.swift in Sources */,
 				3100EEFF293F7E0900D57F71 /* Theme+SecureConversationsWelcome.swift in Sources */,

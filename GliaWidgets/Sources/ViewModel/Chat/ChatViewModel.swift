@@ -168,18 +168,7 @@ class ChatViewModel: EngagementViewModel {
 
     override func start() {
         super.start()
-
-        loadHistory { [weak self] history in
-            guard let self = self else { return }
-            // We only proceed to considering enqueue flow if `startAction` is about starting of engagement.
-            guard case .startEngagement = self.startAction else { return }
-            // We enqueue eagerly in case if this is the first engagement for visitor (by  evaluating previous chat history)
-            // or in case if engagement has been restored.
-
-            if history.isEmpty || self.environment.getCurrentEngagement() != nil {
-                self.enqueue(mediaType: .text)
-            }
-        }
+        loadHistory()
     }
 
     override func update(for state: InteractorState) {
@@ -198,7 +187,6 @@ class ChatViewModel: EngagementViewModel {
 
             action?(.queue)
             action?(.scrollToBottom(animated: true))
-
         case .engaged(let engagedOperator):
             environment.log.prefixed(Self.self).info("Operator connected")
             let name = engagedOperator?.firstName
@@ -248,7 +236,6 @@ class ChatViewModel: EngagementViewModel {
                     }
                 }
             }
-
         default:
             break
         }
@@ -381,7 +368,7 @@ extension ChatViewModel {
 // MARK: History
 
 extension ChatViewModel {
-    private func loadHistory(_ completion: @escaping ([ChatMessage]) -> Void) {
+    private func loadHistory() {
         environment.fetchChatHistory { [weak self] result in
             guard let self else { return }
             let messages = (try? result.get()) ?? []
@@ -404,7 +391,6 @@ extension ChatViewModel {
             self.historySection.set(items)
             self.action?(.refreshSection(self.historySection.index))
             self.action?(.scrollToBottom(animated: false))
-            completion(messages)
         }
     }
 }

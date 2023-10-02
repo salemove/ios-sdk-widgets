@@ -2,7 +2,7 @@ import Foundation
 
 enum InteractorState {
     case none
-    case enqueueing
+    case enqueueing(CoreSdkClient.MediaType)
     case enqueued(CoreSdkClient.QueueTicket)
     case engaged(CoreSdkClient.Operator?)
     case ended(EndEngagementReason)

@@ -29,7 +29,6 @@ extension SecureConversations {
 
         var action: ActionCallback?
         var delegate: DelegateCallback?
-
         var engagementAction: EngagementViewModel.ActionCallback?
         var engagementDelegate: EngagementViewModel.DelegateCallback?
 
@@ -43,7 +42,7 @@ extension SecureConversations {
 
         private let downloader: FileDownloader
         let fileUploadListModel: SecureConversations.FileUploadListViewModel
-
+        private (set) var hasViewAppeared: Bool
         private (set) var messageText = "" {
             didSet {
                 validateMessage()
@@ -121,7 +120,7 @@ extension SecureConversations {
             self.deliveredStatusText = deliveredStatusText
             self.interactor = interactor
             self.alertConfiguration = alertConfiguration
-
+            self.hasViewAppeared = false
             let uploader = FileUploader(
                 maximumUploads: Self.maximumUploads,
                 environment: .init(
@@ -764,3 +763,9 @@ extension SecureConversations.TranscriptModel {
     }
 }
 #endif
+// MARK: View Appeared
+extension SecureConversations.TranscriptModel {
+    func setViewAppeared() {
+        hasViewAppeared = true
+    }
+}
