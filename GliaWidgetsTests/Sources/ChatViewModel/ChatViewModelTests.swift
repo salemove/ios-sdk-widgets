@@ -74,7 +74,7 @@ class ChatViewModelTests: XCTestCase {
 
     func test_secureTranscriptChatTypeCases() throws {
         let viewModel: ChatViewModel = .mock(chatType: .secureTranscript)
-        viewModel.update(for: .enqueueing)
+        viewModel.update(for: .enqueueing(.text))
         XCTAssertEqual(viewModel.queueOperatorSection.itemCount, 0)
         viewModel.handle(pendingMessage: .mock())
         XCTAssertEqual(viewModel.queueOperatorSection.itemCount, 1)
@@ -82,7 +82,7 @@ class ChatViewModelTests: XCTestCase {
 
     func test_authenticatedChatTypeCases() throws {
         let viewModel: ChatViewModel = .mock(chatType: .authenticated)
-        viewModel.update(for: .enqueueing)
+        viewModel.update(for: .enqueueing(.text))
         XCTAssertEqual(viewModel.queueOperatorSection.itemCount, 1)
         viewModel.handle(pendingMessage: .mock())
         XCTAssertEqual(viewModel.queueOperatorSection.itemCount, 1)
@@ -90,7 +90,7 @@ class ChatViewModelTests: XCTestCase {
 
     func test_nonAuthenticatedChatTypeCases() throws {
         let viewModel: ChatViewModel = .mock(chatType: .nonAuthenticated)
-        viewModel.update(for: .enqueueing)
+        viewModel.update(for: .enqueueing(.text))
         XCTAssertEqual(viewModel.queueOperatorSection.itemCount, 1)
         viewModel.handle(pendingMessage: .mock())
         XCTAssertEqual(viewModel.queueOperatorSection.itemCount, 1)
@@ -128,7 +128,7 @@ class ChatViewModelTests: XCTestCase {
         let mockOperator: CoreSdkClient.Operator = .mock()
 
         XCTAssertEqual(0, viewModel.numberOfItems(in: queueSectionIndex))
-        viewModel.update(for: .enqueueing)
+        viewModel.update(for: .enqueueing(.text))
         XCTAssertEqual(1, viewModel.numberOfItems(in: queueSectionIndex))
         viewModel.update(for: .engaged(mockOperator))
         XCTAssertEqual(0, viewModel.numberOfItems(in: queueSectionIndex))
@@ -247,7 +247,7 @@ class ChatViewModelTests: XCTestCase {
         let viewModel = ChatViewModel.mock(interactor: interactor, environment: viewModelEnv)
 
         // When
-        viewModel.update(for: .enqueueing)
+        viewModel.update(for: .enqueueing(.text))
 
         // Then
         XCTAssertEqual(calls, [])
@@ -703,6 +703,7 @@ class ChatViewModelTests: XCTestCase {
         let viewModel: ChatViewModel = .mock(interactor: interactor, environment: viewModelEnv)
         viewModel.isViewLoaded = true
         viewModel.start()
+        viewModel.interactor.state = .enqueueing(.text)
         interactor.state = .engaged(.mock())
         viewModel.invokeSetTextAndSendMessage(text: "Mock send message.")
         viewModel.interactorEvent(.receivedMessage(.mock(id: expectedMessageId)))
@@ -744,6 +745,80 @@ class ChatViewModelTests: XCTestCase {
         viewModel.interactorEvent(.receivedMessage(.mock(id: outgoingMessage.payload.messageId.rawValue)))
         XCTAssertEqual(viewModel.messagesSection.items.count, 0)
         XCTAssertEqual(viewModel.receivedMessageIds, [])
+    }
+
+    func test_liveObservationAlertPresentationInitiatedWhenInteractorStateIsEnqueuing() {
+        enum Call {
+            case showLiveObservationAlert
+        }
+        var calls: [Call] = []
+        let interactor: Interactor = .mock()
+        let viewModel: ChatViewModel = .mock(interactor: interactor)
+        viewModel.engagementAction = { action in
+            switch action {
+            case .showLiveObservationConfirmation:
+                calls.append(.showLiveObservationAlert)
+            default:
+                XCTFail()
+            }
+        }
+        interactor.state = .enqueueing(.audio)
+        XCTAssertEqual(calls, [.showLiveObservationAlert])
+    }
+
+    func test_liveObservationAllowTriggersEnqueue() {
+        var interactorEnv: Interactor.Environment = .mock
+        interactorEnv.coreSdk.queueForEngagement = { _, completion in
+            completion(.success(.mock))
+        }
+
+        let interactor: Interactor = .mock(environment: interactorEnv)
+        interactor.isConfigurationPerformed = true
+
+        var alertConfig: LiveObservation.Confirmation?
+
+        let viewModel: ChatViewModel = .mock(interactor: interactor)
+        viewModel.engagementAction = { action in
+            switch action {
+            case let .showLiveObservationConfirmation(config):
+                alertConfig = config
+            default:
+                XCTFail()
+            }
+        }
+        interactor.state = .enqueueing(.audio)
+        alertConfig?.accepted()
+        XCTAssertEqual(interactor.state, .enqueued(.mock))
+    }
+
+    func test_liveObservationDeclineTriggersNone() {
+        enum Call {
+            case queueForEngagement
+        }
+        var calls: [Call] = []
+        var interactorEnv: Interactor.Environment = .mock
+        interactorEnv.coreSdk.queueForEngagement = { _, _ in
+            calls.append(.queueForEngagement)
+        }
+
+        let interactor: Interactor = .mock(environment: interactorEnv)
+        interactor.isConfigurationPerformed = true
+
+        var alertConfig: LiveObservation.Confirmation?
+
+        let viewModel: ChatViewModel = .mock(interactor: interactor)
+        viewModel.engagementAction = { action in
+            switch action {
+            case let .showLiveObservationConfirmation(config):
+                alertConfig = config
+            default:
+                XCTFail()
+            }
+        }
+        interactor.state = .enqueueing(.audio)
+        alertConfig?.declined()
+        XCTAssertEqual(interactor.state, .ended(.byVisitor))
+        XCTAssertTrue(calls.isEmpty)
     }
 }
 
