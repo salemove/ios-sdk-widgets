@@ -2,7 +2,7 @@ import Foundation
 
 enum InteractorState {
     case none
-    case enqueueing
+    case enqueueing(CoreSdkClient.MediaType)
     case enqueued(CoreSdkClient.QueueTicket)
     case engaged(CoreSdkClient.Operator?)
     case ended(EndEngagementReason)
@@ -140,8 +140,6 @@ extension Interactor {
         success: @escaping () -> Void,
         failure: @escaping (CoreSdkClient.SalemoveError) -> Void
     ) {
-        state = .enqueueing
-
         let options = mediaType == .audio || mediaType == .video
         ? CoreSdkClient.EngagementOptions(mediaDirection: .twoWay)
             : nil

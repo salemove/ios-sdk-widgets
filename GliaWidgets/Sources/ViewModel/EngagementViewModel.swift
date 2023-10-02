@@ -6,13 +6,12 @@ class EngagementViewModel: CommonEngagementModel {
     static let alertSingleActionAccessibilityIdentifier = "alert_close_engagementEnded"
     var engagementAction: ActionCallback?
     var engagementDelegate: DelegateCallback?
-
     let interactor: Interactor
     let alertConfiguration: AlertConfiguration
     let environment: Environment
     let screenShareHandler: ScreenShareHandler
     var activeEngagement: CoreSdkClient.Engagement?
-
+    private(set) var hasViewAppeared: Bool
     private(set) var isViewActive = ObservableValue<Bool>(with: false)
 
     init(
@@ -25,6 +24,7 @@ class EngagementViewModel: CommonEngagementModel {
         self.alertConfiguration = alertConfiguration
         self.screenShareHandler = screenShareHandler
         self.environment = environment
+        self.hasViewAppeared = false
         self.interactor.addObserver(self) { [weak self] event in
             self?.interactorEvent(event)
         }
@@ -129,7 +129,6 @@ class EngagementViewModel: CommonEngagementModel {
             activeEngagement = environment.getCurrentEngagement()
 
         case .ended(let reason) where reason == .byVisitor:
-
             engagementDelegate?(
                 .engaged(
                     operatorImageUrl: nil
@@ -161,7 +160,8 @@ class EngagementViewModel: CommonEngagementModel {
                     )
                 )
             })
-
+        case let .enqueueing(mediaType):
+            showLiveObservationConfirmation(in: mediaType)
         default:
             break
         }
@@ -231,6 +231,10 @@ class EngagementViewModel: CommonEngagementModel {
             self.engagementDelegate?(.finished)
         }
         self.screenShareHandler.stop(nil)
+    }
+
+    func setViewAppeared() {
+        hasViewAppeared = true
     }
 }
 
@@ -314,6 +318,29 @@ private extension EngagementViewModel {
     }
 }
 
+// MARK: Live Observation
+
+extension EngagementViewModel {
+    private func showLiveObservationConfirmation(in mediaType: CoreSdkClient.MediaType) {
+        let liveObservationAlertConfig = createLiveObservationAlertConfig(with: mediaType)
+        engagementAction?(.showLiveObservationConfirmation(liveObservationAlertConfig))
+    }
+
+    private func createLiveObservationAlertConfig(
+        with mediaType: CoreSdkClient.MediaType
+    ) -> LiveObservation.Confirmation {
+        .init(
+            conf: self.alertConfiguration.liveObservationConfirmation,
+            accepted: { [weak self] in
+                self?.enqueue(mediaType: mediaType)
+            },
+            declined: { [weak self] in
+                self?.endSession()
+            }
+        )
+    }
+}
+
 extension EngagementViewModel: Hashable {
     static func == (lhs: EngagementViewModel, rhs: EngagementViewModel) -> Bool {
         return ObjectIdentifier(lhs) == ObjectIdentifier(rhs)
@@ -362,6 +389,7 @@ extension EngagementViewModel {
         )
         case showEndButton
         case showEndScreenShareButton
+        case showLiveObservationConfirmation(LiveObservation.Confirmation)
     }
 
     enum DelegateEvent {
