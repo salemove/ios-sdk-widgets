@@ -114,7 +114,7 @@ class InteractorTests: XCTestCase {
                 return
             }
         }
-
+        interactor.state = .enqueueing(.text)
         interactor.enqueueForEngagement(
             mediaType: .text,
             success: {},
@@ -149,6 +149,7 @@ class InteractorTests: XCTestCase {
             }
         }
 
+        interactor.state = .enqueued(.mock)
         interactor.enqueueForEngagement(
             mediaType: .text,
             success: {},
@@ -218,7 +219,7 @@ class InteractorTests: XCTestCase {
         interactorEnv.gcd = .mock
         let interactor = Interactor.mock(environment: interactorEnv)
         
-        interactor.state = .enqueueing
+        interactor.state = .enqueueing(.text)
         interactor.addObserver(self) { event in
             switch event {
             case .stateChanged(let state):
@@ -328,7 +329,7 @@ class InteractorTests: XCTestCase {
         interactorEnv.gcd = .mock
         let interactor = Interactor.mock(environment: interactorEnv)
         
-        interactor.state = .enqueueing
+        interactor.state = .enqueueing(.text)
         interactor.addObserver(self) { event in
             switch event {
             case .stateChanged(let state):
