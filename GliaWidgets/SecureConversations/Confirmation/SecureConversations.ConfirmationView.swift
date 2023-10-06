@@ -80,7 +80,7 @@ private extension SecureConversations.ConfirmationViewSwiftUI {
                 .background(SwiftUI.Color(model.style.checkMessagesButtonStyle.backgroundColor))
                 .cornerRadius(4)
         }
-        .migrationAccessibilityIdentifier("secureConversations_welcomeCheckMessages_button")
+        .migrationAccessibilityIdentifier("secureConversations_confirmationCheckMessages_button")
         .migrationAccessibilityLabel(model.style.checkMessagesButtonStyle.accessibility.label)
         .migrationAccessibilityHint(model.style.checkMessagesButtonStyle.accessibility.hint)
     }
