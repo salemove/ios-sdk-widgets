@@ -460,15 +460,6 @@ internal enum Localization {
       internal static let error = Localization.tr("Localizable", "gva.unsupported_action.error", fallback: "This action is not currently supported on mobile.")
     }
   }
-  internal enum LiveObservation {
-    internal enum Confirm {
-      /// 
-      internal static let message = Localization.tr("Localizable", "live_observation.confirm.message", fallback: "Please allow the {company name} representative to view this application screen for improved support.")
-      ///
-      internal static let title = Localization.tr("Localizable", "live_observation.confirm.title", fallback: "Before We Continue")
-    }
-  }
-  internal enum Media {
   internal enum Ios {
     internal enum Alert {
       internal enum CameraAccess {
@@ -489,6 +480,14 @@ internal enum Localization {
         /// (By default, your video will be turned off)
         internal static let videoNotice = Localization.tr("Localizable", "ios.engagement.connection_screen.video_notice", fallback: "(By default, your video will be turned off)")
       }
+    }
+  }
+  internal enum LiveObservation {
+    internal enum Confirm {
+      /// Please allow the {companyName} representative to view this application screen for improved support.
+      internal static let message = Localization.tr("Localizable", "live_observation.confirm.message", fallback: "Please allow the {companyName} representative to view this application screen for improved support.")
+      /// Before We Continue
+      internal static let title = Localization.tr("Localizable", "live_observation.confirm.title", fallback: "Before We Continue")
     }
   }
   internal enum MediaUpgrade {
