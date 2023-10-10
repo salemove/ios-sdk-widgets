@@ -111,8 +111,13 @@ extension GliaTests {
 
         let sdk = Glia(environment: environment)
 
+        // Even if theme is set, the remote string takes priority.
+        let theme = Theme()
+        theme.call.connect.queue.firstText = "Glia 1"
+        theme.chat.connect.queue.firstText = "Glia 2"
+
         try sdk.configure(with: .mock()) { }
-        try sdk.startEngagement(engagementKind: .chat, in: ["queueId"])
+        try sdk.startEngagement(engagementKind: .chat, in: ["queueId"], theme: theme)
 
         let configuredSdkTheme = resultingViewFactory?.theme
         XCTAssertEqual(configuredSdkTheme?.call.connect.queue.firstText, "Glia")
@@ -173,5 +178,44 @@ extension GliaTests {
         let configuredSdkTheme = resultingViewFactory?.theme
         XCTAssertEqual(configuredSdkTheme?.call.connect.queue.firstText, "Company Name")
         XCTAssertEqual(configuredSdkTheme?.chat.connect.queue.firstText, "Company Name")
+    }
+
+    func testCompanyNameIsReceivedFromThemeIfCustomLocalesIsEmpty() throws {
+        var environment = Glia.Environment.failing
+        var resultingViewFactory: ViewFactory?
+
+        environment.createRootCoordinator = { _, viewFactory, _, _, _, _, _ in
+            resultingViewFactory = viewFactory
+
+            return .mock(
+                interactor: .mock(environment: .failing),
+                viewFactory: viewFactory,
+                sceneProvider: nil,
+                engagementKind: .none,
+                screenShareHandler: .mock,
+                features: [],
+                environment: .failing
+            )
+        }
+
+        environment.coreSdk.localeProvider.getRemoteString = { _ in "" }
+        environment.coreSdk.configureWithInteractor = { _ in }
+        environment.coreSdk.configureWithConfiguration = { _, completion in
+            completion?()
+        }
+        environment.coreSdk.getCurrentEngagement = { nil }
+
+        let sdk = Glia(environment: environment)
+
+        let theme = Theme()
+        theme.call.connect.queue.firstText = "Glia 1"
+        theme.chat.connect.queue.firstText = "Glia 2"
+
+        try sdk.configure(with: .mock())
+        try sdk.startEngagement(engagementKind: .chat, in: ["queueId"], theme: theme)
+
+        let configuredSdkTheme = resultingViewFactory?.theme
+        XCTAssertEqual(configuredSdkTheme?.call.connect.queue.firstText, "Glia 1")
+        XCTAssertEqual(configuredSdkTheme?.chat.connect.queue.firstText, "Glia 2")
     }
 }

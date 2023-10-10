@@ -48,12 +48,12 @@ extension Glia {
 
         theme.chat.connect.queue.firstText = companyName(
             using: interactor,
-            currentName: theme.chat.connect.queue.firstText
+            themeCompanyName: theme.chat.connect.queue.firstText
         )
 
         theme.call.connect.queue.firstText = companyName(
             using: interactor,
-            currentName: theme.call.connect.queue.firstText
+            themeCompanyName: theme.call.connect.queue.firstText
         )
 
         let viewFactory = ViewFactory(
@@ -81,19 +81,20 @@ extension Glia {
 
     func companyName(
         using interactor: Interactor,
-        currentName: String?
+        themeCompanyName: String?
     ) -> String {
-        // As the default value is empty, it means that the integrator
-        // has set a value on the theme itself. Return that same value.
-        if let currentName, !currentName.isEmpty {
-            return currentName
-        }
-
         let companyNameStringKey = "general.company_name"
 
-        // Company name has been set on the custom locale.
-        if let remoteCompanyName = stringProviding?.getRemoteString(companyNameStringKey) {
+        // Company name has been set on the custom locale and is not empty.
+        if let remoteCompanyName = stringProviding?.getRemoteString(companyNameStringKey),
+            !remoteCompanyName.isEmpty {
             return remoteCompanyName
+        }
+        // As the default value in the theme is not empty, it means that
+        // the integrator has set a value on the theme itself. Return that
+        // same value.
+        else if let themeCompanyName, !themeCompanyName.isEmpty {
+            return themeCompanyName
         }
         // Integrator has not set a company name in the custom locale,
         // but has set it on the configuration.
