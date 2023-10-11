@@ -49,6 +49,7 @@ class ViewController: UIViewController {
     @IBOutlet var toggleAuthenticateButton: UIButton!
     @IBOutlet var configureButton: UIButton!
     @IBOutlet var secureConversationsButton: UIButton!
+    @IBOutlet var autoConfigureSdkToggle: UISwitch!
 
     @IBAction private func settingsTapped() {
         presentSettings()
@@ -194,35 +195,55 @@ extension ViewController {
         #endif
         configuration.pushNotifications = pushNotifications
 
-        try Glia.sharedInstance.start(
-            engagementKind,
-            configuration: configuration,
-            queueID: queueId,
-            theme: theme,
-            features: features
-        )
+        let startEngagement = {
+            do {
+                try Glia.sharedInstance.startEngagement(
+                    engagementKind: engagementKind,
+                    in: [self.queueId]
+                )
+            } catch {
+                self.showErrorAlert(using: error)
+            }
+        }
+
+        if autoConfigureSdkToggle.isOn {
+            configureSDK(uiConfig: nil) { [weak self] result in
+                switch result {
+                case .success:
+                    startEngagement()
+                case let .failure(error):
+                    self?.showErrorAlert(using: error)
+                }
+            }
+        } else {
+            startEngagement()
+        }
     }
 
-    func configureSDK(uiConfig: RemoteConfiguration?) {
+    func configureSDK(
+        uiConfig: RemoteConfiguration?,
+        completion: ((Result<Void, Error>) -> Void)? = nil
+    ) {
         let originalTitle = configureButton.title(for: .normal)
         let originalIdentifier = configureButton.accessibilityIdentifier
         configureButton.setTitle("Configuring ...", for: .normal)
         configureButton.accessibilityIdentifier = "main_configure_sdk_button_loading"
 
-        let completion = { [weak self] printable in
+        let completionBlock = { [weak self] printable in
             self?.configureButton.setTitle(originalTitle, for: .normal)
             self?.configureButton.accessibilityIdentifier = originalIdentifier
             debugPrint(printable)
         }
         do {
             try Glia.sharedInstance.configure(
-                with: configuration,
-                uiConfig: uiConfig
+                with: configuration
             ) {
-                completion("SDK has been configured")
+                completionBlock("SDK has been configured")
+                completion?(.success(()))
             }
         } catch {
-            completion(error)
+            completionBlock(error)
+            completion?(.failure(error))
         }
     }
 
