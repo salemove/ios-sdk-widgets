@@ -22,5 +22,6 @@ extension CallVisualizer.Coordinator {
         var eventHandler: (DelegateEvent) -> Void
         var orientationManager: OrientationManager
         var proximityManager: ProximityManager
+        var interactorProviding: Interactor?
     }
 }

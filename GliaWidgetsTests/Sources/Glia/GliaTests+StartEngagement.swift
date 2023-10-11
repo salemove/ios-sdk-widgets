@@ -317,6 +317,7 @@ extension GliaTests {
         let theme = Theme()
         theme.call.connect.queue.firstText = "Glia 1"
         theme.chat.connect.queue.firstText = "Glia 2"
+        theme.alertConfiguration.liveObservationConfirmation.message = "Glia 3"
 
         try sdk.configure(with: .mock(), theme: theme) { _ in
             do {
@@ -329,6 +330,7 @@ extension GliaTests {
         let configuredSdkTheme = resultingViewFactory?.theme
         XCTAssertEqual(configuredSdkTheme?.call.connect.queue.firstText, "Glia 1")
         XCTAssertEqual(configuredSdkTheme?.chat.connect.queue.firstText, "Glia 2")
+        XCTAssertEqual(configuredSdkTheme?.alertConfiguration.liveObservationConfirmation.message?.contains("Glia 3"), true)
     }
 
     func testCompanyNameIsReceivedFromLocalFallbackIfCustomLocalesIsEmpty() throws {
