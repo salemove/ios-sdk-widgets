@@ -335,4 +335,16 @@ class CallViewModelTests: XCTestCase {
 
         XCTAssertEqual(call.kind.value, .audio)
     }
+
+    func test_startMethodDoesNotHandleInteractorStateEnded() {
+        let interactor: Interactor = .mock()
+        interactor.state = .ended(.byOperator)
+        let call: Call = .mock()
+        let viewModel: CallViewModel = .mock(interactor: interactor, call: call)
+
+        XCTAssertEqual(call.state.value, .none)
+        viewModel.start()
+
+        XCTAssertEqual(call.state.value, .none)
+    }
 }
