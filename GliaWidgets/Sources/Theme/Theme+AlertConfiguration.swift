@@ -6,7 +6,7 @@ extension Theme {
             negativeTitle: Localization.General.no,
             positiveTitle: Localization.General.yes,
             switchButtonBackgroundColors: true,
-            showsPoweredBy: false
+            showsPoweredBy: showsPoweredBy
         )
         let endEngagement = ConfirmationAlertConfiguration(
             title: Localization.Engagement.End.Confirmation.header,
@@ -14,7 +14,7 @@ extension Theme {
             negativeTitle: Localization.General.no,
             positiveTitle: Localization.General.yes,
             switchButtonBackgroundColors: true,
-            showsPoweredBy: true
+            showsPoweredBy: showsPoweredBy
         )
         let operatorEndedEngagement = SingleActionAlertConfiguration(
             title: Localization.Engagement.Ended.header,
