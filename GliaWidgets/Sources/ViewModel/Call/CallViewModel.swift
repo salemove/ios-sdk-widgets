@@ -72,7 +72,20 @@ class CallViewModel: EngagementViewModel, ViewModel {
         super.start()
 
         update(for: call.kind.value)
-        update(for: interactor.state)
+
+        // In the case when SDK is configured once and then
+        // visitor has several Audio/Video engagements in a raw,
+        // after ending each of them, `interactor.state` has `.ended` value,
+        // which causes calling `call.end()` on the start of the next
+        // Audio/Video engagement. That `call.end()` breaks the flow and SDK does not
+        // handle `connected` state properly. So we need to skip handling `.ended` state
+        // on the start of a new engagement.
+        switch interactor.state {
+        case .ended:
+            break
+        default:
+            update(for: interactor.state)
+        }
 
         switch startWith {
         case .engagement(let mediaType):

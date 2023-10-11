@@ -11,6 +11,8 @@ class EngagementViewModel: CommonEngagementModel {
     let alertConfiguration: AlertConfiguration
     let environment: Environment
     let screenShareHandler: ScreenShareHandler
+    // Need to keep strong reference of `activeEngagement`,
+    // to be able to fetch survey after ending engagement
     var activeEngagement: CoreSdkClient.Engagement?
 
     private(set) var isViewActive = ObservableValue<Bool>(with: false)
@@ -225,10 +227,10 @@ class EngagementViewModel: CommonEngagementModel {
     }
 
     func endSession() {
-        interactor.endSession {
-            self.engagementDelegate?(.finished)
-        } failure: { _ in
-            self.engagementDelegate?(.finished)
+        interactor.endSession { [weak self] in
+            self?.engagementDelegate?(.finished)
+        } failure: { [weak self] _ in
+            self?.engagementDelegate?(.finished)
         }
         self.screenShareHandler.stop(nil)
     }
