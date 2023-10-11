@@ -227,6 +227,7 @@ extension CallVisualizer {
             rotation.toValue = CGFloat.pi * 2
             rotation.duration = 1.0
             rotation.repeatCount = Float.infinity
+            rotation.isRemovedOnCompletion = false
             spinnerView.tintColor = props.style.loadingProgressColor
             spinnerView.layer.add(rotation, forKey: "Spin")
         }
