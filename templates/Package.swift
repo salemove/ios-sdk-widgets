@@ -11,10 +11,6 @@ let package = Package(
         .library(
             name: "GliaWidgets",
             targets: ["GliaWidgetsSDK"]
-        ),
-        .library(
-            name: "GliaWidgets-xcframework",
-            targets: ["GliaWidgetsSDK-xcframework"]
         )
     ],
     targets: [
@@ -38,11 +34,6 @@ let package = Package(
             url: "https://github.com/salemove/ios-bundle/releases/download/${CORE_SDK_VERSION}/GliaCoreSDK.xcframework.zip",
             checksum: "${CORE_SDK_CHECKSUM}"
         ),
-        .binaryTarget(
-            name: "GliaWidgetsXcf",
-            url: "https://github.com/salemove/ios-sdk-widgets/releases/download/2.0.1/GliaWidgetsXcf.xcframework.zip",
-            checksum: "26f6e0bc6e32f4223f635d8de8aa4877338aed7a323f2127a05980f347ac1f9a"
-        ),
         .target(
             name: "GliaWidgets",
             path: "GliaWidgets",
@@ -63,16 +54,6 @@ let package = Package(
                 "TwilioVoice",
                 "WebRTC",
                 "GliaWidgets"
-            ]
-        ),
-        .target(
-            name: "GliaWidgetsSDK-xcframework",
-            dependencies: [
-                "GliaCoreSDK",
-                "GliaWidgetsXcf",
-                "GliaCoreDependency",
-                "TwilioVoice",
-                "WebRTC"
             ]
         )
     ]
