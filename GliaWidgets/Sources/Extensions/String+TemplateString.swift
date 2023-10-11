@@ -43,4 +43,8 @@ extension String {
     func withTextLength(_ value: String) -> String {
         replacingOccurrences(of: "{textLength}", with: value)
     }
+
+    func withCompanyName(_ companyName: String) -> String {
+        return self.replacingOccurrences(of: "{companyName}", with: companyName)
+    }
 }
