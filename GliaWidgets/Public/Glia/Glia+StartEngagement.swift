@@ -46,18 +46,11 @@ extension Glia {
             interactor.queueIds = queueIds
         }
 
-        theme.chat.connect.queue.firstText = companyName(
-            using: interactor,
-            themeCompanyName: theme.chat.connect.queue.firstText
-        )
-
-        theme.call.connect.queue.firstText = companyName(
-            using: interactor,
-            themeCompanyName: theme.call.connect.queue.firstText
-        )
+        // Apply company name to theme and get the modified theme
+        let modifiedTheme = applyCompanyName(using: interactor, theme: theme)
 
         let viewFactory = ViewFactory(
-            with: theme,
+            with: modifiedTheme,
             messageRenderer: messageRenderer,
             environment: .init(
                 data: environment.data,
@@ -107,6 +100,28 @@ extension Glia {
             // already determined that the remote string is empty.
             return Localization.General.companyName
         }
+    }
+
+    private func applyCompanyName(using interactor: Interactor, theme: Theme) -> Theme {
+        theme.chat.connect.queue.firstText = companyName(
+            using: interactor,
+            themeCompanyName: theme.chat.connect.queue.firstText
+        )
+
+        theme.call.connect.queue.firstText = companyName(
+            using: interactor,
+            themeCompanyName: theme.call.connect.queue.firstText
+        )
+
+        // Live Observation Confirmation Alert Message
+        let companyName = companyName(
+            using: interactor,
+            themeCompanyName: theme.alertConfiguration.liveObservationConfirmation.message
+        )
+        var liveObservationConfirmationMessage = Localization.LiveObservation.Confirm.message.withCompanyName(companyName)
+        theme.alertConfiguration.liveObservationConfirmation.message = liveObservationConfirmationMessage
+
+        return theme
     }
 
     func startRootCoordinator(

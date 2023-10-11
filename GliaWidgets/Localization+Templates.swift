@@ -10,5 +10,6 @@ extension Localization {
         static let errorMessage = "{message}"
         static let downloadWithFileState = "{downloadedFileName}, {downloadedFileState}"
         static let downloadWithFileStateAndPercentValue = "{downloadedFileName}, {downloadedFileState} {downloadPercentValue}%"
+        static let companyName = "{companyName}"
     }
 }
