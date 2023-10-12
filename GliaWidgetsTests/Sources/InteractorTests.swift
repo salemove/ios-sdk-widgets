@@ -447,4 +447,34 @@ class InteractorTests: XCTestCase {
 
         XCTAssertEqual(callbacks, [.mediaUpgradeOffered])
     }
+
+    func test_endEngagementSetsStateToEndedByVisitor() {
+        var interactorEnv = Interactor.Environment.failing
+        interactorEnv.coreSdk.endEngagement = { completion in completion(true, nil) }
+        let interactor = Interactor.mock(environment: interactorEnv)
+        interactor.state = .engaged(.mock())
+
+        interactor.endSession(success: {}, failure: { _ in })
+
+        XCTAssertEqual(interactor.state, .ended(.byVisitor))
+    }
+
+    func test_endWithReasonSetsProperState() {
+        let interactor = Interactor.failing
+        interactor.state = .engaged(.mock())
+        typealias Item = (reason: CoreSdkClient.EngagementEndingReason, state: InteractorState)
+
+        let items: [Item] = [
+            (.visitorHungUp, .ended(.byVisitor)),
+            (.operatorHungUp, .ended(.byOperator)),
+            (.error, .ended(.byError))
+        ]
+
+        let test: (Item) -> Void = { item in
+            interactor.end(with: item.reason)
+            XCTAssertEqual(interactor.state, item.state)
+        }
+
+        items.forEach(test)
+    }
 }
