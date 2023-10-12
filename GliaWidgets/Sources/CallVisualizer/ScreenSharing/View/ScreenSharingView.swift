@@ -53,7 +53,7 @@ extension CallVisualizer.ScreenSharingView {
             .padding(.horizontal, 60)
         })
         .migrationAccessibilityIdentifier("end_screen_sharing_button")
-        .migrationAccessibilityLabel(L10n.CallVisualizer.ScreenSharing.Accessibility.buttonLabel)
-        .migrationAccessibilityHint(L10n.CallVisualizer.ScreenSharing.Accessibility.buttonHint)
+        .migrationAccessibilityLabel(Localization.ScreenSharing.VisitorScreen.End.title)
+        .migrationAccessibilityHint(Localization.ScreenSharing.VisitorScreen.End.Accessibility.hint)
     }
 }
