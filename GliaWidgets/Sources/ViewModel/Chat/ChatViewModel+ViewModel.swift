@@ -1,8 +1,6 @@
 import Foundation
 
 extension ChatViewModel: ViewModel {
-    typealias Strings = L10n.Chat
-
     enum Event {
         case viewDidLoad
         case messageTextChanged(String)
