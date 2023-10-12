@@ -12,29 +12,29 @@ final class VideoCallViewControllerVoiceOverTests: SnapshotTestCase {
                     videButton: .mock(
                         inactive: .activeMock(
                             image: Asset.callVideoActive.image,
-                            title: L10n.Call.Buttons.Video.title,
-                            accessibility: .init(label: L10n.Call.Accessibility.Buttons.Video.Active.label)
+                            title: Localization.Engagement.Video.title,
+                            accessibility: .init(label: Localization.General.selected)
                         )
                     ),
                     muteButton: .mock(
                         inactive: .inactiveMock(
                             image: Asset.callMuteInactive.image,
-                            title: L10n.Call.Buttons.Mute.Inactive.title,
-                            accessibility: .init(label: L10n.Call.Accessibility.Buttons.Mute.Inactive.label)
+                            title: Localization.Call.Mute.button,
+                            accessibility: .init(label: "")
                         )
                     ),
                     speakerButton: .mock(
                         inactive: .inactiveMock(
                             image: Asset.callSpeakerInactive.image,
-                            title: L10n.Call.Buttons.Speaker.title,
-                            accessibility: .init(label: L10n.Call.Accessibility.Buttons.Speaker.Inactive.label)
+                            title: Localization.Call.Speaker.button,
+                            accessibility: .init(label: "")
                         )
                     ),
                     minimizeButton: .mock(
                         inactive: .inactiveMock(
                             image: Asset.callMiminize.image,
-                            title: L10n.Call.Buttons.Minimize.title,
-                            accessibility: .init(label: L10n.Call.Accessibility.Buttons.Minimize.Inactive.label)
+                            title: Localization.Engagement.MinimizeVideo.button,
+                            accessibility: .init(label: "")
                         )
                     ),
                     badge: .mock()
