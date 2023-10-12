@@ -168,6 +168,8 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
                 view?.messageEntryView.uploadListView.props = fileUploadListProps
             case let .quickReplyPropsUpdated(props):
                 view?.renderQuickReply(props: props)
+            case .transcript(.messageCenterAvailabilityUpdated):
+                break
             }
             self?.renderProps()
         }

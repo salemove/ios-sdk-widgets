@@ -59,7 +59,11 @@ extension SecureConversations {
         var availability: Availability
         var interactor: Interactor
 
-        private (set) var isSecureConversationsAvailable: Bool = true
+        private (set) var isSecureConversationsAvailable: Bool = true {
+            didSet {
+                action?(.transcript(.messageCenterAvailabilityUpdated))
+            }
+        }
 
         var siteConfiguration: CoreSdkClient.Site?
 
@@ -175,6 +179,7 @@ extension SecureConversations {
                     let configuration = self.environment.alertConfiguration.unavailableMessageCenter
                     self.reportMessageCenterUnavailable(configuration: configuration)
                 case .success(.unavailable(.unauthenticated)):
+                    self.isSecureConversationsAvailable = false
                     let configuration = self.environment.alertConfiguration.unavailableMessageCenterForBeingUnauthenticated
                     self.reportMessageCenterUnavailable(configuration: configuration)
                 }
@@ -746,3 +751,12 @@ extension SecureConversations.TranscriptModel {
 
     }
 }
+
+#if DEBUG
+extension SecureConversations.TranscriptModel {
+    /// Setter for `isSecureConversationsAvailable`. Used in unit tests.
+    func setIsSecureConversationsAvailable(_ available: Bool) {
+        self.isSecureConversationsAvailable = available
+    }
+}
+#endif
