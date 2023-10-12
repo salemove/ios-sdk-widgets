@@ -21,6 +21,10 @@ extension ChatViewModel: ViewModel {
     }
 
     enum Action {
+        /// Actions specific for `TranscriptModel`.
+        enum TranscriptAction {
+            case messageCenterAvailabilityUpdated
+        }
         case queue
         case connected(name: String?, imageUrl: String?)
         case transferring
@@ -53,6 +57,7 @@ extension ChatViewModel: ViewModel {
         case setAttachmentButtonVisibility(MediaPickerButtonVisibility)
         case fileUploadListPropsUpdated(SecureConversations.FileUploadListView.Props)
         case quickReplyPropsUpdated(QuickReplyView.Props)
+        case transcript(TranscriptAction)
     }
 
     enum DelegateEvent {
