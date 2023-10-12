@@ -351,6 +351,7 @@
 		845E2F9D283FCB1400C04D56 /* Theme.Survey.Checkbox.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845E2F9C283FCB1400C04D56 /* Theme.Survey.Checkbox.Accessibility.swift */; };
 		84602A742AE94DE50031E606 /* ProximityManager.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84602A732AE94DE50031E606 /* ProximityManager.Mock.swift */; };
 		84602A772AEA5BEA0031E606 /* ProximityManager.Failing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84602A762AEA5BEA0031E606 /* ProximityManager.Failing.swift */; };
+		84602A792AEAB7CA0031E606 /* Survey.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84602A782AEAB7CA0031E606 /* Survey.Mock.swift */; };
 		8464297A2A44937600943BD6 /* AlertViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846429792A44937600943BD6 /* AlertViewControllerTests.swift */; };
 		8464297D2A459E7D00943BD6 /* UIViewController+Replaceble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8464297C2A459E7D00943BD6 /* UIViewController+Replaceble.swift */; };
 		846429802A45A1F200943BD6 /* OfferPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8464297F2A45A1F200943BD6 /* OfferPresenter.swift */; };
@@ -1093,6 +1094,7 @@
 		845E2F9C283FCB1400C04D56 /* Theme.Survey.Checkbox.Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.Survey.Checkbox.Accessibility.swift; sourceTree = "<group>"; };
 		84602A732AE94DE50031E606 /* ProximityManager.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProximityManager.Mock.swift; sourceTree = "<group>"; };
 		84602A762AEA5BEA0031E606 /* ProximityManager.Failing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProximityManager.Failing.swift; sourceTree = "<group>"; };
+		84602A782AEAB7CA0031E606 /* Survey.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Survey.Mock.swift; sourceTree = "<group>"; };
 		846429792A44937600943BD6 /* AlertViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertViewControllerTests.swift; sourceTree = "<group>"; };
 		8464297C2A459E7D00943BD6 /* UIViewController+Replaceble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Replaceble.swift"; sourceTree = "<group>"; };
 		8464297F2A45A1F200943BD6 /* OfferPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferPresenter.swift; sourceTree = "<group>"; };
@@ -3180,6 +3182,7 @@
 			isa = PBXGroup;
 			children = (
 				84681A972A61853300DD7406 /* GvaOption.Mock.swift */,
+				84602A782AEAB7CA0031E606 /* Survey.Mock.swift */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -4940,6 +4943,7 @@
 				846429832A45DA7500943BD6 /* AlertViewController+Mock.swift in Sources */,
 				846A5C4529F6BEFA0049B29F /* GliaTests+StartEngagement.swift in Sources */,
 				7512A57A27BF9FCD00319DF1 /* ChatViewModelTests.swift in Sources */,
+				84602A792AEAB7CA0031E606 /* Survey.Mock.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

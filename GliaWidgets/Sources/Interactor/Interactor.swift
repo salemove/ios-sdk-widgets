@@ -59,7 +59,6 @@ class Interactor {
     var currentEngagement: CoreSdkClient.Engagement?
 
     private var observers = [() -> (AnyObject?, EventHandler)]()
-    private var isEngagementEndedByVisitor = false
 
     var state: InteractorState = .none {
         didSet {
@@ -159,8 +158,6 @@ extension Interactor {
         success: @escaping () -> Void,
         failure: @escaping (CoreSdkClient.SalemoveError) -> Void
     ) {
-        isEngagementEndedByVisitor = true
-
         switch state {
         case .none:
             success()
@@ -203,10 +200,11 @@ extension Interactor {
         success: @escaping () -> Void,
         failure: @escaping (CoreSdkClient.SalemoveError) -> Void
     ) {
-        environment.coreSdk.endEngagement { _, error in
+        environment.coreSdk.endEngagement { [weak self] _, error in
             if let error = error {
                 failure(error)
             } else {
+                self?.state = .ended(.byVisitor)
                 success()
             }
         }
@@ -335,7 +333,16 @@ extension Interactor: CoreSdkClient.Interactable {
 
     func end(with reason: CoreSdkClient.EngagementEndingReason) {
         currentEngagement = environment.coreSdk.getCurrentEngagement()
-        state = isEngagementEndedByVisitor == true ? .ended(.byVisitor) : .ended(.byOperator)
+        switch reason {
+        case .visitorHungUp:
+            state = .ended(.byVisitor)
+        case .operatorHungUp:
+            state = .ended(.byOperator)
+        case .error:
+            state = .ended(.byError)
+        @unknown default:
+            state = .ended(.byError)
+        }
     }
 
     func fail(error: CoreSdkClient.SalemoveError) {
