@@ -353,4 +353,34 @@ final class GliaTests: XCTestCase {
         XCTAssertNil(sdk.rootCoordinator)
         XCTAssertNil(rootCoordinator)
     }
+
+    func test_screenSharingIsStoppedWhenCallVisualizerEngagementIsEnded() throws {
+        enum Call { case ended }
+        var calls: [Call] = []
+        var gliaEnv = Glia.Environment.failing
+        let screenShareHandler: ScreenShareHandler = .mock
+        screenShareHandler.status().value = .started
+        gliaEnv.screenShareHandler = screenShareHandler
+        gliaEnv.gcd.mainQueue.asyncIfNeeded = { callback in callback() }
+        gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _, callback in
+            callback?()
+        }
+        gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
+        let sdk = Glia(environment: gliaEnv)
+        try sdk.configure(with: .mock()) {}
+        sdk.callVisualizer.delegate?(.visitorCodeIsRequested)
+        sdk.environment.coreSdk.getCurrentEngagement = { .mock(source: .callVisualizer) }
+        sdk.onEvent = { event in
+            switch event {
+            case .ended:
+                calls.append(.ended)
+            default:
+                XCTFail("There is should be no another event")
+            }
+        }
+        sdk.interactor?.state = .ended(.byVisitor)
+
+        XCTAssertEqual(screenShareHandler.status().value, .stopped)
+        XCTAssertEqual(calls, [.ended])
+    }
 }

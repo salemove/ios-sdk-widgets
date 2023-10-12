@@ -338,7 +338,7 @@ extension Glia {
             case let .videoStreamAdded(stream):
                 self?.callVisualizer.addVideoStream(stream: stream)
             case let .stateChanged(state):
-                if state == .ended(.byOperator) {
+                if case .ended = state {
                     self?.callVisualizer.endSession()
                     self?.onEvent?(.ended)
                 } else if case .engaged = state {
