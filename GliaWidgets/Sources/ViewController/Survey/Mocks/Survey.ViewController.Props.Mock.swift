@@ -16,6 +16,23 @@ extension Survey.ViewController.Props {
         )
     }
 
+    static func emptyPropsMockWithDefaultValue() -> Survey.ViewController.Props {
+        return Survey.ViewController.Props(
+            header: "Survey title",
+            props: [
+                makeScalePropsMock(),
+                makeInputPropsMock(),
+                makeBooleanPropsMock(),
+                makeSinglePropsMock(defaultOption: .init(
+                    name: "Second option",
+                    value: "\(2)"
+                ))
+            ],
+            submit: { _ in },
+            cancel: {}
+        )
+    }
+
     static func filledPropsMock() -> Survey.ViewController.Props {
         return Survey.ViewController.Props(
             header: "Survey title",
@@ -99,6 +116,7 @@ private extension Survey.ViewController.Props {
 
     static func makeSinglePropsMock(
         selectedOption: Survey.Option<String>? = nil,
+        defaultOption: Survey.Option<String>? = nil,
         showValidationError: Bool = false
     ) -> Survey.SingleChoiceQuestionView.Props {
         var props = Survey.SingleChoiceQuestionView.Props(
@@ -113,6 +131,7 @@ private extension Survey.ViewController.Props {
             .init(name: "Second option", value: "\(2)"),
             .init(name: "Third option", value: "\(3)")
         ].compactMap { $0 }
+        props.defaultOption = defaultOption
         props.selected = selectedOption
         return props
     }
