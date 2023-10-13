@@ -85,14 +85,33 @@ extension Survey {
             zip(props.options, optionsStack.arrangedSubviews)
                 .forEach { opt, view in
                     guard let checkboxView = view as? CheckboxView else { return }
+
+                    let state = Self.handleSelection(with: props, option: opt)
+
                     checkboxView.props = .init(
                         title: opt.name,
-                        state: props.selected == opt ? .selected : .active
+                        state: state
                     ) {
                         opt.select(opt)
                     }
                 }
             validationError.isHidden = !props.showValidationError
+        }
+
+        static func handleSelection(
+            with props: Props,
+            option opt: Survey.Option<String>
+        ) -> CheckboxView.State {
+            // If user selected or it should be selected by default.
+            let isSelected = props.selected == opt || props.defaultOption == opt
+
+            // Trigger selection manually because the option has
+            // been selected by default, not because of user input.
+            if isSelected, props.selected == nil {
+                opt.select(opt)
+            }
+
+            return isSelected ? .selected : .active
         }
 
         // MARK: - Private
@@ -109,6 +128,7 @@ extension Survey.SingleChoiceQuestionView {
         var showValidationError: Bool
         var options: [Survey.Option<String>]
         var selected: Survey.Option<String>?
+        var defaultOption: Survey.Option<String>?
         var answerContainer: CoreSdkClient.SurveyAnswerContainer?
         let accessibility: Accessibility
 
@@ -124,6 +144,7 @@ extension Survey.SingleChoiceQuestionView {
             showValidationError: Bool = false,
             options: [Survey.Option<String>] = [],
             selected: Survey.Option<String>? = nil,
+            defaultOption: Survey.Option<String>? = nil,
             answerContainer: CoreSdkClient.SurveyAnswerContainer? = nil,
             accessibility: Accessibility
         ) {
@@ -133,6 +154,7 @@ extension Survey.SingleChoiceQuestionView {
             self.showValidationError = showValidationError
             self.options = options
             self.selected = selected
+            self.defaultOption = defaultOption
             self.answerContainer = answerContainer
             self.accessibility = accessibility
         }

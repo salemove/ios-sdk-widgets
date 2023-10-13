@@ -203,10 +203,24 @@ extension Survey.ViewController.Props {
         ? Localization.Survey.Question.Required.Accessibility.label
         : nil
 
+        let defaultOption: Survey.Option<String>? = {
+            let defaultOption = sdkQuestion.options?.first {
+                $0.isDefault == true
+            }
+
+            guard let defaultOption else { return nil }
+
+            return .init(
+                name: defaultOption.label,
+                value: defaultOption.id.rawValue
+            )
+        }()
+
         var scaleProps = Survey.SingleChoiceQuestionView.Props(
             id: sdkQuestion.id.rawValue,
             title: sdkQuestion.text,
             isRequired: sdkQuestion.required,
+            defaultOption: defaultOption,
             accessibility: .init(value: accessibilityValue)
         )
         let handleSingleOptionSelection = { (option: Survey.Option<String>) in
