@@ -13,6 +13,15 @@ final class SurveyViewControllerVoiceOverTests: SnapshotTestCase {
         viewController.assertSnapshot(as: .accessibilityImage)
     }
 
+    func test_emptySurveyWithDefaultValue() {
+        let viewController = Survey.ViewController(
+            viewFactory: .mock(),
+            environment: .init(notificationCenter: .mock),
+            props: .emptyPropsMockWithDefaultValue()
+        )
+        viewController.assertSnapshot(as: .accessibilityImage)
+    }
+
     func test_filledSurvey() {
         let viewController = Survey.ViewController(
             viewFactory: .mock(),
