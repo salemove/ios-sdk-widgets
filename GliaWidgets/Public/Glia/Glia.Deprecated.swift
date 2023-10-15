@@ -99,34 +99,12 @@ extension Glia {
         assetsBuilder: RemoteConfiguration.AssetsBuilder = .standard,
         completion: (() -> Void)? = nil
     ) throws {
-        guard environment.coreSdk.getCurrentEngagement() == nil else {
-            throw GliaError.configuringDuringEngagementIsNotAllowed
-        }
-        self.uiConfig = uiConfig
-        self.assetsBuilder = assetsBuilder
-
-        let createdInteractor = Interactor(
-            configuration: configuration,
-            queueIds: [queueId],
-            environment: .init(coreSdk: environment.coreSdk, gcd: environment.gcd)
+        try configure(
+            with: configuration,
+            uiConfig: uiConfig,
+            assetsBuilder: assetsBuilder,
+            completion: completion
         )
-
-        interactor = createdInteractor
-
-        if let callback = completion {
-            createdInteractor.withConfiguration { [weak createdInteractor, weak self] in
-                guard let createdInteractor, let self else { return }
-
-                self.stringProviding = .init(getRemoteString: self.environment.coreSdk.localeProvider.getRemoteString)
-
-                createdInteractor.state = self.environment.coreSdk
-                    .getCurrentEngagement()?.engagedOperator
-                    .map(InteractorState.engaged) ?? createdInteractor.state
-                callback()
-            }
-        }
-
-        startObservingInteractorEvents()
     }
 
     /// Deprecated, use ``Glia.startEngagement(engagementKind:in:theme:features:sceneProvider:)`` instead.
@@ -168,16 +146,14 @@ extension Glia {
         let completion = { [weak self] in
             try self?.startEngagement(
                 engagementKind: engagementKind,
+                in: [queueID],
                 theme: theme,
                 features: features,
                 sceneProvider: sceneProvider
             )
         }
         do {
-            try configure(
-                with: configuration,
-                queueId: queueID
-            ) {
+            try configure(with: configuration) {
                 try? completion()
             }
         } catch GliaError.configuringDuringEngagementIsNotAllowed {

@@ -195,7 +195,8 @@ extension EngagementCoordinator {
             },
             endEditing: { viewController.view.endEditing(true) },
             updateProps: { viewController.props = $0 },
-            onError: { _ in
+            onError: { [weak self] _ in
+                guard let self else { return }
                 viewController.presentAlert(
                     with: self.viewFactory.theme.alertConfiguration.unexpectedError
                 )

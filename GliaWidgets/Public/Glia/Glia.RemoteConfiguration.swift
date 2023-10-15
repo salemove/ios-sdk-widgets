@@ -40,7 +40,7 @@ extension Glia {
             uiConfig: uiConfig,
             assetsBuilder: assetsBuilder
         )
-        if let config = interactor?.configuration {
+        if let config = configuration {
             theme.showsPoweredBy = !config.isWhiteLabelApp
             theme.chat.connect.queue.firstText = config.companyName
             theme.call.connect.queue.firstText = config.companyName

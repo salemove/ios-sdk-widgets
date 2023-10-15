@@ -3,12 +3,12 @@ import Foundation
 
 extension Interactor {
     static func mock(
-        configuration: Configuration = .mock(),
+        visitorContext: Configuration.VisitorContext? = nil,
         queueId: String = UUID.mock.uuidString,
         environment: Environment = .mock
     ) -> Interactor {
         .init(
-            configuration: configuration,
+            visitorContext: visitorContext,
             queueIds: [queueId],
             environment: environment
         )

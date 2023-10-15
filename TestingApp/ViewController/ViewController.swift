@@ -56,10 +56,8 @@ class ViewController: UIViewController {
     }
 
     @IBAction private func chatTapped() {
-        do {
+        catchingError {
             try presentGlia(.chat)
-        } catch {
-            showErrorAlert(using: error)
         }
     }
 
