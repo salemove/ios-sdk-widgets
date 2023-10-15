@@ -19,11 +19,9 @@ extension CallViewController {
     }
 
     static func mockAudioCallQueueState() throws -> CallViewController {
-        let conf = Configuration.mock()
         let queueId = UUID.mock.uuidString
         let interactorEnv = Interactor.Environment.mock
         let interactor = Interactor.mock(
-            configuration: conf,
             queueId: queueId,
             environment: interactorEnv
         )
@@ -55,11 +53,9 @@ extension CallViewController {
     }
 
     static func mockAudioCallConnectingState() throws -> CallViewController {
-        let conf = Configuration.mock()
         let queueId = UUID.mock.uuidString
         let interactorEnv = Interactor.Environment.mock
         let interactor = Interactor.mock(
-            configuration: conf,
             queueId: queueId,
             environment: interactorEnv
         )
@@ -90,14 +86,12 @@ extension CallViewController {
     }
 
     static func mockAudioCallConnectedState() throws -> CallViewController {
-        let conf = Configuration.mock()
         let queueId = UUID.mock.uuidString
         var interactorEnv = Interactor.Environment.mock
         interactorEnv.coreSdk.configureWithConfiguration = { _, callback in
             callback?()
         }
         let interactor = Interactor.mock(
-            configuration: conf,
             queueId: queueId,
             environment: interactorEnv
         )
@@ -146,11 +140,9 @@ extension CallViewController {
     }
 
     static func mockVideoCallConnectingState() throws -> CallViewController {
-        let conf = Configuration.mock()
         let queueId = UUID.mock.uuidString
         let interactorEnv = Interactor.Environment.mock
         let interactor = Interactor.mock(
-            configuration: conf,
             queueId: queueId,
             environment: interactorEnv
         )
@@ -194,11 +186,9 @@ extension CallViewController {
     }
 
     static func mockVideoCallQueueState() throws -> CallViewController {
-        let conf = Configuration.mock()
         let queueId = UUID.mock.uuidString
         let interactorEnv = Interactor.Environment.mock
         let interactor = Interactor.mock(
-            configuration: conf,
             queueId: queueId,
             environment: interactorEnv
         )
@@ -230,11 +220,9 @@ extension CallViewController {
     }
 
     static func mockVideoCallConnectedState() throws -> CallViewController {
-        let conf = Configuration.mock()
         let queueId = UUID.mock.uuidString
         let interactorEnv = Interactor.Environment.mock
         let interactor = Interactor.mock(
-            configuration: conf,
             queueId: queueId,
             environment: interactorEnv
         )

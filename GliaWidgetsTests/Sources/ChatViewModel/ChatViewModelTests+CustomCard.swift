@@ -21,7 +21,7 @@ extension ChatViewModelTests {
         }
         let interactorMock = Interactor.mock(environment: interactorEnv)
         interactorMock.state = .engaged(nil)
-        interactorMock.isConfigurationPerformed = true
+//        interactorMock.isConfigurationPerformed = true
 
         var env = ChatViewModel.Environment.failing()
         env.fileManager.fileExistsAtPath = { _ in true }
