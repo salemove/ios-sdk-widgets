@@ -9,22 +9,38 @@ extension GliaTests {
     }
 
     func testStartEngagementThrowsErrorWhenEngagementAlreadyExists() throws {
-        let sdk = Glia(environment: .failing)
+        var sdkEnv = Glia.Environment.failing
+        sdkEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
+            completion?()
+        }
+        let sdk = Glia(environment: sdkEnv)
         sdk.rootCoordinator = .mock(engagementKind: .chat, screenShareHandler: .mock)
-        try sdk.configure(with: .mock(), queueId: "queueID")
+        try sdk.configure(with: .mock())
 
-        XCTAssertThrowsError(try sdk.startEngagement(engagementKind: .chat)) { error in
+        XCTAssertThrowsError(
+            try sdk.startEngagement(
+                engagementKind: .chat,
+                in: ["queueID"]
+            )
+        ) { error in
             XCTAssertEqual(error as? GliaError, GliaError.engagementExists)
         }
     }
 
     func testStartEngagementThrowsErrorDuringActiveCallVisualizerEngagement() throws {
         let sdk = Glia(environment: .failing)
-        try sdk.configure(with: .mock(), queueId: "queueID")
-
+        sdk.environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
+            completion?()
+        }
+        try sdk.configure(with: .mock())
         sdk.environment.coreSdk.getCurrentEngagement = { .mock(source: .callVisualizer) }
 
-        XCTAssertThrowsError(try sdk.startEngagement(engagementKind: .chat)) { error in
+        XCTAssertThrowsError(
+            try sdk.startEngagement(
+                engagementKind: .chat,
+                in: ["queueID"]
+            )
+        ) { error in
             XCTAssertEqual(error as? GliaError, GliaError.callVisualizerEngagementExists)
         }
     }
@@ -32,7 +48,12 @@ extension GliaTests {
     func testStartEngagementThrowsErrorWhenSdkHasNoQueueIds() {
         let sdk = Glia(environment: .failing)
 
-        XCTAssertThrowsError(try sdk.startEngagement(engagementKind: .chat)) { error in
+        XCTAssertThrowsError(
+            try sdk.startEngagement(
+                engagementKind: .chat,
+                in: []
+            )
+        ) { error in
             XCTAssertEqual(error as? GliaError, GliaError.startingEngagementWithNoQueueIdsIsNotAllowed)
         }
     }
@@ -41,19 +62,23 @@ extension GliaTests {
         enum Call { case configureWithInteractor, configureWithConfiguration }
         var calls: [Call] = []
         var environment = Glia.Environment.failing
-        environment.coreSdk.configureWithInteractor = { _ in
+        environment.coreSDKConfigurator.configureWithInteractor = { _ in
             calls.append(.configureWithInteractor)
         }
-        environment.coreSdk.configureWithConfiguration = { _, _ in
+        environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             calls.append(.configureWithConfiguration)
+            completion?()
+        }
+        environment.coreSdk.localeProvider.getRemoteString = { _ in nil }
+        environment.createRootCoordinator = { _, _, _, _, _, _, _ in
+            .mock()
         }
         let sdk = Glia(environment: environment)
 
         try sdk.start(.chat, configuration: .mock(), queueID: "queueId", visitorContext: nil)
 
-        let interactor = try XCTUnwrap(sdk.interactor)
-        XCTAssertTrue(interactor.isConfigurationPerformed)
-        XCTAssertEqual(calls, [.configureWithInteractor, .configureWithConfiguration])
+        XCTAssertTrue(sdk.isConfigured)
+        XCTAssertEqual(calls, [.configureWithConfiguration, .configureWithInteractor])
     }
 
     func testCompanyNameIsReceivedFromTheme() throws {
@@ -73,6 +98,11 @@ extension GliaTests {
                 environment: .failing
             )
         }
+        environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
+            completion?()
+        }
+        environment.coreSDKConfigurator.configureWithInteractor = { _ in }
+        environment.coreSdk.localeProvider.getRemoteString = { _ in nil }
 
         let sdk = Glia(environment: environment)
 
@@ -107,10 +137,10 @@ extension GliaTests {
         }
 
         environment.coreSdk.localeProvider.getRemoteString = { _ in "Glia" }
-        environment.coreSdk.configureWithInteractor = { _ in }
-        environment.coreSdk.configureWithConfiguration = { _, completion in
+        environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             completion?()
         }
+        environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         environment.coreSdk.getCurrentEngagement = { nil }
 
         let sdk = Glia(environment: environment)
@@ -145,6 +175,11 @@ extension GliaTests {
                 environment: .failing
             )
         }
+        environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
+            completion?()
+        }
+        environment.coreSDKConfigurator.configureWithInteractor = { _ in }
+        environment.coreSdk.localeProvider.getRemoteString = { _ in nil }
 
         let sdk = Glia(environment: environment)
 
@@ -173,6 +208,11 @@ extension GliaTests {
                 environment: .failing
             )
         }
+        environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
+            completion?()
+        }
+        environment.coreSDKConfigurator.configureWithInteractor = { _ in }
+        environment.coreSdk.localeProvider.getRemoteString = { _ in nil }
 
         let sdk = Glia(environment: environment)
 
@@ -203,10 +243,10 @@ extension GliaTests {
         }
 
         environment.coreSdk.localeProvider.getRemoteString = { _ in "" }
-        environment.coreSdk.configureWithInteractor = { _ in }
-        environment.coreSdk.configureWithConfiguration = { _, completion in
+        environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             completion?()
         }
+        environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         environment.coreSdk.getCurrentEngagement = { nil }
 
         let sdk = Glia(environment: environment)

@@ -3,7 +3,7 @@ import Foundation
 
 extension Interactor {
     static let failing = Interactor(
-        configuration: .mock(),
+        visitorContext: nil,
         queueIds: ["mocked-id"],
         environment: .failing
     )

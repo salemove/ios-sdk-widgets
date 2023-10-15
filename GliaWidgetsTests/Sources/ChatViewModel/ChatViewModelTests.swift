@@ -111,32 +111,6 @@ class ChatViewModelTests: XCTestCase {
         )
         XCTAssertEqual(chatType, .nonAuthenticated)
     }
-
-    func test__startCallsSDKConfigureWithInteractorAndСonfigureWithConfiguration() throws {
-        var interactorEnv = Interactor.Environment.init(
-            coreSdk: .failing,
-            gcd: .mock
-        )
-        enum Calls {
-            case configureWithConfiguration, configureWithInteractor
-        }
-        var calls: [Calls] = []
-        interactorEnv.coreSdk.configureWithConfiguration = { _, _ in
-            calls.append(.configureWithConfiguration)
-        }
-        interactorEnv.coreSdk.configureWithInteractor = { _ in
-            calls.append(.configureWithInteractor)
-        }
-        let interactor = Interactor.mock(environment: interactorEnv)
-        var viewModelEnv = ChatViewModel.Environment.failing(fetchChatHistory: { $0(.success([])) })
-        viewModelEnv.createFileUploadListModel = { _ in .mock() }
-        viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
-        viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
-        viewModelEnv.loadChatMessagesFromHistory = { true }
-        let viewModel = ChatViewModel.mock(interactor: interactor, environment: viewModelEnv)
-        viewModel.start()
-        XCTAssertEqual(calls, [.configureWithInteractor, .configureWithConfiguration])
-    }
     
     func test_onInteractorStateEngagedClearsChatQueueSection() throws {
         var viewModelEnv = ChatViewModel.Environment.failing()

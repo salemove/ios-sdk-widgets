@@ -55,6 +55,10 @@ final class GliaTests: XCTestCase {
         gliaEnv.coreSdk.queueForEngagement = { _, callback in
             callback(.success(.mock))
         }
+        gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
+            completion?()
+        }
+        gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
 
         gliaEnv.uuid = { .mock }
         gliaEnv.gcd.mainQueue.asyncIfNeeded = { callback in callback() }
@@ -92,7 +96,6 @@ final class GliaTests: XCTestCase {
 
         let sdk = Glia(environment: gliaEnv)
         let kind = EngagementKind.audioCall
-        let site = "site"
         let queueID = "queueID"
         let visitorContext = VisitorContext.mock()
 
@@ -128,16 +131,17 @@ final class GliaTests: XCTestCase {
 
         var gliaEnv = Glia.Environment.failing
         gliaEnv.gcd.mainQueue.asyncIfNeeded = { callback in callback() }
+        gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
+            completion?()
+        }
+        gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
 
         let sdk = Glia(environment: gliaEnv)
         sdk.onEvent = {
             calls.append(.onEvent($0))
         }
-        try sdk.configure(
-            with: .mock(),
-            queueId: "queueId"
-        )
-
+        try sdk.configure(with: .mock())
+        sdk.callVisualizer.delegate?(.visitorCodeIsRequested)
         sdk.environment.coreSdk.getCurrentEngagement = { .mock(source: .callVisualizer) }
 
         sdk.interactor?.state = .engaged(nil)
@@ -155,15 +159,17 @@ final class GliaTests: XCTestCase {
         gliaEnv.coreSdk.configureWithInteractor = { _ in }
         gliaEnv.coreSdk.configureWithConfiguration = { _, _ in }
         gliaEnv.gcd.mainQueue.asyncIfNeeded = { callback in callback() }
+        gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
+            completion?()
+        }
+        gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
 
         let sdk = Glia(environment: gliaEnv)
         sdk.onEvent = {
             calls.append(.onEvent($0))
         }
-        try sdk.configure(
-            with: .mock(),
-            queueId: "queueId"
-        )
+        try sdk.configure(with: .mock())
+        sdk.callVisualizer.delegate?(.visitorCodeIsRequested)
 
         sdk.environment.coreSdk.getCurrentEngagement = { .mock(source: .callVisualizer) }
         sdk.interactor?.state = .ended(.byOperator)
@@ -180,15 +186,17 @@ final class GliaTests: XCTestCase {
         var gliaEnv = Glia.Environment.failing
         gliaEnv.callVisualizerPresenter = .init(presenter: { nil })
         gliaEnv.gcd.mainQueue.asyncIfNeeded = { callback in callback() }
+        gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
+            completion?()
+        }
+        gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
 
         let sdk = Glia(environment: gliaEnv)
         sdk.onEvent = {
             calls.append(.onEvent($0))
         }
-        try sdk.configure(
-            with: .mock(),
-            queueId: "queueId"
-        )
+        try sdk.configure(with: .mock())
+        sdk.callVisualizer.delegate?(.visitorCodeIsRequested)
         sdk.environment.coreSdk.getCurrentEngagement = { .mock(source: .callVisualizer) }
 
         sdk.callVisualizer.coordinator.showEndScreenSharingViewController()
@@ -209,14 +217,17 @@ final class GliaTests: XCTestCase {
         gliaEnv.callVisualizerPresenter = .init(presenter: { nil })
         gliaEnv.gcd.mainQueue.asyncIfNeeded = { callback in callback() }
         gliaEnv.notificationCenter.addObserverClosure = { _, _, _, _ in }
+        gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
+            completion?()
+        }
+        gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
+
         let sdk = Glia(environment: gliaEnv)
         sdk.onEvent = {
             calls.append(.onEvent($0))
         }
-        try sdk.configure(
-            with: .mock(),
-            queueId: "queueId"
-        )
+        try sdk.configure(with: .mock())
+        sdk.callVisualizer.delegate?(.visitorCodeIsRequested)
         sdk.environment.coreSdk.getCurrentEngagement = { .mock(source: .callVisualizer) }
 
         sdk.callVisualizer.coordinator.showVideoCallViewController()
@@ -282,5 +293,63 @@ final class GliaTests: XCTestCase {
         XCTAssertEqual(delegate.invokedEventCallCount, 1)
         XCTAssertEqual(delegate.invokedEventCallParameter, .maximized)
         XCTAssertEqual(delegate.invokedEventCallParameterList, [.maximized])
+    }
+
+    func test_isConfiguredIsInitiallyFalse() {
+        XCTAssertFalse(Glia(environment: .failing).isConfigured)
+    }
+
+    func test_isConfiguredIsTrueWhenConfigurationPerformed() throws {
+        var environment = Glia.Environment.failing
+        environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
+            completion?()
+        }
+        let sdk = Glia(environment: environment)
+        try sdk.configure(with: .mock())
+        XCTAssertTrue(sdk.isConfigured)
+    }
+
+    func test_isConfiguredIsFalseWhenConfigureWithConfigurationThrowsError() throws {
+        var environment = Glia.Environment.failing
+        environment.coreSDKConfigurator.configureWithConfiguration = { _, _ in
+            throw CoreSdkClient.GliaCoreError.mock()
+        }
+        let sdk = Glia(environment: environment)
+        try sdk.configure(with: .mock())
+        XCTAssertFalse(sdk.isConfigured)
+    }
+
+    func test_engagementCoordinatorGetsDeallocated() throws {
+        var environment = Glia.Environment.failing
+        environment.coreSDKConfigurator.configureWithConfiguration = {
+            _, callback in
+            callback?()
+        }
+        environment.coreSDKConfigurator.configureWithInteractor = { _ in }
+        environment.coreSdk.localeProvider.getRemoteString = { _ in nil }
+        environment.createRootCoordinator = { _, _, _, _, _, _, _ in  .mock() }
+        let configuration = Configuration.mock()
+
+        let sdk = Glia(environment: environment)
+        enum Call {
+            case configureWithConfiguration
+        }
+        var calls: [Call] = []
+        try sdk.configure(with: configuration) {
+            calls.append(.configureWithConfiguration)
+        }
+        try sdk.startEngagement(
+            engagementKind: .chat,
+            in: ["mockedQueueId"]
+        )
+        weak var rootCoordinator = sdk.rootCoordinator
+        XCTAssertNotNil(rootCoordinator)
+        var endEngagementResult: Result<Void, Error>?
+        sdk.endEngagement { result in
+            endEngagementResult = result
+        }
+        XCTAssertNoThrow(try XCTUnwrap(endEngagementResult))
+        XCTAssertNil(sdk.rootCoordinator)
+        XCTAssertNil(rootCoordinator)
     }
 }

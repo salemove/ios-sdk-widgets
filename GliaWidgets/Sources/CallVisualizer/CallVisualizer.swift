@@ -13,6 +13,7 @@ import GliaCoreSDK
 ///  3. Handling engagement, featuring video calling, screen sharing, and much more in future.
 public final class CallVisualizer {
     private var environment: Environment
+    var delegate: ((Action) -> Void)?
     lazy var coordinator: Coordinator = {
         var theme = Theme()
         if let uiConfig = environment.uiConfig() {
@@ -80,6 +81,7 @@ public final class CallVisualizer {
     /// - Parameter source: The current viewController to present from.
     ///
     public func showVisitorCodeViewController(from source: UIViewController) {
+        delegate?(.visitorCodeIsRequested)
         coordinator.showVisitorCodeViewController(by: .alert(source))
     }
 
@@ -103,6 +105,7 @@ public final class CallVisualizer {
         into container: UIView,
         onEngagementAccepted: @escaping () -> Void
     ) {
+        delegate?(.visitorCodeIsRequested)
         coordinator.showVisitorCodeViewController(
             by: .embedded(container, onEngagementAccepted: onEngagementAccepted)
         )

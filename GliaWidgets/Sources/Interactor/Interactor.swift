@@ -36,7 +36,7 @@ enum InteractorEvent {
 class Interactor {
     typealias EventHandler = (InteractorEvent) -> Void
 
-    var queueIds: [String]
+    let queueIds: [String]
     var engagedOperator: CoreSdkClient.Operator? {
         switch state {
         case .engaged(let engagedOperator):
@@ -55,11 +55,8 @@ class Interactor {
         }
     }
 
-    let configuration: Configuration
+    let visitorContext: Configuration.VisitorContext?
     var currentEngagement: CoreSdkClient.Engagement?
-
-    /// Flag indicating if configuration was already performed.
-    var isConfigurationPerformed: Bool = false
 
     private var observers = [() -> (AnyObject?, EventHandler)]()
     private var isEngagementEndedByVisitor = false
@@ -74,13 +71,17 @@ class Interactor {
     var environment: Environment
 
     init(
-        configuration: Configuration,
+        visitorContext: Configuration.VisitorContext?,
         queueIds: [String],
         environment: Environment
     ) {
         self.queueIds = queueIds
-        self.configuration = configuration
+        self.visitorContext = visitorContext
         self.environment = environment
+    }
+
+    deinit {
+        print("☠️", Self.self, ObjectIdentifier(self))
     }
 
     func addObserver(_ observer: AnyObject, handler: @escaping EventHandler) {
@@ -104,34 +105,6 @@ class Interactor {
                 }
             }
     }
-
-    func withConfiguration(_ action: @escaping () -> Void) {
-        environment.coreSdk.configureWithInteractor(self)
-        // Perform configuration only if it was not done previously.
-        // Otherwise side effects may occur. For example `onHold` callback
-        // stops being triggered for audio stream.
-        if isConfigurationPerformed {
-            // Early out if configuration is already performed. 
-            action()
-        } else {
-            // Mark configuration applied and perfrom configuration.
-            isConfigurationPerformed = true
-
-            do {
-                let sdkConfiguration = try CoreSdkClient.Salemove.Configuration(
-                    siteId: configuration.site,
-                    region: configuration.environment.region,
-                    authorizingMethod: configuration.authorizationMethod.coreAuthorizationMethod,
-                    pushNotifications: configuration.pushNotifications.coreSdk
-                )
-                environment.coreSdk.configureWithConfiguration(sdkConfiguration) {
-                    action()
-                }
-            } catch {
-                debugPrint("💥 Core SDK configuration is not valid. Unexpected error='\(error)'.")
-            }
-        }
-    }
 }
 
 extension Interactor {
@@ -144,37 +117,33 @@ extension Interactor {
 
         let options = mediaType == .audio || mediaType == .video
         ? CoreSdkClient.EngagementOptions(mediaDirection: .twoWay)
-            : nil
+        : nil
 
-        withConfiguration { [weak self] in
-            guard let self = self else { return }
+        let coreSdkVisitorContext: CoreSdkClient.VisitorContext? = (self.visitorContext?.assetId)
+            .map(CoreSdkClient.VisitorContext.AssetId.init(rawValue:))
+            .map(CoreSdkClient.VisitorContext.ContextType.assetId)
+            .map(CoreSdkClient.VisitorContext.init(_:))
 
-            let coreSdkVisitorContext: CoreSdkClient.VisitorContext? = (self.configuration.visitorContext?.assetId)
-                .map(CoreSdkClient.VisitorContext.AssetId.init(rawValue:))
-                .map(CoreSdkClient.VisitorContext.ContextType.assetId)
-                .map(CoreSdkClient.VisitorContext.init(_:))
-
-            self.environment.coreSdk.queueForEngagement(
-                .init(
-                    queueIds: self.queueIds,
-                    visitorContext: coreSdkVisitorContext,
-                    // shouldCloseAllQueues is `true` by default core sdk,
-                    // here it is passed explicitly
-                    shouldCloseAllQueues: true,
-                    mediaType: mediaType,
-                    engagementOptions: options
-                )
-            ) { [weak self] result in
-                switch result {
-                case .failure(let error):
-                    self?.state = .ended(.byError)
-                    failure(error)
-                case .success(let ticket):
-                    if case .enqueueing = self?.state {
-                        self?.state = .enqueued(ticket)
-                    }
-                    success()
+        self.environment.coreSdk.queueForEngagement(
+            .init(
+                queueIds: self.queueIds,
+                visitorContext: coreSdkVisitorContext,
+                // shouldCloseAllQueues is `true` by default core sdk,
+                // here it is passed explicitly
+                shouldCloseAllQueues: true,
+                mediaType: mediaType,
+                engagementOptions: options
+            )
+        ) { [weak self] result in
+            switch result {
+            case .failure(let error):
+                self?.state = .ended(.byError)
+                failure(error)
+            case .success(let ticket):
+                if case .enqueueing = self?.state {
+                    self?.state = .enqueued(ticket)
                 }
+                success()
             }
         }
     }
@@ -187,9 +156,7 @@ extension Interactor {
         messagePayload: CoreSdkClient.SendMessagePayload,
         completion: @escaping (Result<CoreSdkClient.Message, CoreSdkClient.GliaCoreError>) -> Void
     ) {
-        withConfiguration { [weak self] in
-            self?.environment.coreSdk.sendMessageWithMessagePayload(messagePayload, completion)
-        }
+        environment.coreSdk.sendMessageWithMessagePayload(messagePayload, completion)
     }
 
     func endSession(
@@ -276,7 +243,7 @@ extension Interactor: CoreSdkClient.Interactable {
                     debugPrint(reason)
                 }
             }
-            let coreSdkVisitorContext: CoreSdkClient.VisitorContext? = (self?.configuration.visitorContext?.assetId)
+            let coreSdkVisitorContext: CoreSdkClient.VisitorContext? = (self?.visitorContext?.assetId)
                 .map(CoreSdkClient.VisitorContext.AssetId.init(rawValue:))
                 .map(CoreSdkClient.VisitorContext.ContextType.assetId)
                 .map(CoreSdkClient.VisitorContext.init(_:))
