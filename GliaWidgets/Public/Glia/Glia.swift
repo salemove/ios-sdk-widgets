@@ -94,6 +94,8 @@ public class Glia {
     var uiConfig: RemoteConfiguration?
     var assetsBuilder: RemoteConfiguration.AssetsBuilder = .standard
 
+    var configuration: Configuration?
+
     init(environment: Environment) {
         self.environment = environment
     }
@@ -117,30 +119,33 @@ public class Glia {
         }
         self.uiConfig = uiConfig
         self.assetsBuilder = assetsBuilder
+        self.configuration = configuration
 
-        let createdInteractor = Interactor(
-            configuration: configuration,
-            queueIds: [],
-            environment: .init(coreSdk: environment.coreSdk, gcd: environment.gcd)
-        )
-
-        interactor = createdInteractor
-
-        if let callback = completion {
-            createdInteractor.withConfiguration { [weak createdInteractor, weak self] in
-                guard let createdInteractor, let self else { return }
-
-                self.stringProviding = .init(getRemoteString: self.environment.coreSdk.localeProvider.getRemoteString)
-
-                createdInteractor.state = self.environment.coreSdk
-                    .getCurrentEngagement()?.engagedOperator
-                    .map(InteractorState.engaged) ?? createdInteractor.state
-
-                callback()
+        self.callVisualizer.delegate = { action in
+            switch action {
+            case .visitorCodeIsRequested:
+                self.setupInteractor(configuration: configuration)
             }
         }
 
-        startObservingInteractorEvents()
+        // TODO: - Non-optional completion will be added in MOB-2784
+        do {
+            try environment.coreSDKConfigurator.configureWithConfiguration(configuration) { [weak self] in
+                guard let self else { return }
+                let getRemoteString = self.environment.coreSdk.localeProvider.getRemoteString
+                self.stringProviding = .init(getRemoteString: getRemoteString)
+
+                if let engagement = self.environment.coreSdk.getCurrentEngagement(),
+                   engagement.source == .callVisualizer {
+                    self.setupInteractor(configuration: configuration)
+                }
+
+                completion?()
+            }
+        } catch {
+            self.configuration = nil
+            debugPrint("💥 Core SDK configuration is not valid. Unexpected error='\(error)'.")
+        }
     }
 
     /// Minimizes engagement view if ongoing engagement exists.
@@ -296,7 +301,7 @@ public class Glia {
     }
 }
 
-// MARK: - Private
+// MARK: - Internal
 
 extension Glia {
     internal func startObservingInteractorEvents() {
@@ -344,4 +349,34 @@ extension Glia {
             }
         }
     }
+
+    @discardableResult
+    func setupInteractor(
+        configuration: Configuration,
+        queueIds: [String] = []
+    ) -> Interactor {
+        let interactor = Interactor(
+            visitorContext: configuration.visitorContext,
+            queueIds: queueIds,
+            environment: .init(coreSdk: environment.coreSdk, gcd: environment.gcd)
+        )
+
+        interactor.state = environment.coreSdk
+            .getCurrentEngagement()?.engagedOperator
+            .map(InteractorState.engaged) ?? interactor.state
+
+        environment.coreSDKConfigurator.configureWithInteractor(interactor)
+        self.interactor = interactor
+
+        startObservingInteractorEvents()
+        return interactor
+    }
 }
+
+#if DEBUG
+extension Glia {
+    var isConfigured: Bool {
+        configuration != nil
+    }
+}
+#endif

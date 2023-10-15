@@ -28,31 +28,27 @@ extension Glia {
         features: Features = .all,
         sceneProvider: SceneProvider? = nil
     ) throws {
-        // `interactor?.queueIds.isEmpty == false` statement is needed for integrators who uses old interface
-        // and pass queue identifier through `configuration` function.
-        guard !queueIds.isEmpty || interactor?.queueIds.isEmpty == false else { throw GliaError.startingEngagementWithNoQueueIdsIsNotAllowed }
+        guard !queueIds.isEmpty else { throw GliaError.startingEngagementWithNoQueueIdsIsNotAllowed }
         guard engagement == .none else { throw GliaError.engagementExists }
-        guard let interactor = self.interactor else { throw GliaError.sdkIsNotConfigured }
+        guard let configuration = self.configuration else { throw GliaError.sdkIsNotConfigured }
         if let engagement = environment.coreSdk.getCurrentEngagement(),
             engagement.source == .callVisualizer {
             throw GliaError.callVisualizerEngagementExists
         }
 
-        // This check is needed for integrators who uses old interface
-        // and pass queue identifier through `configuration` function,
-        // but would not pass queue ids in this method, so SDK would not override
-        // existed queue id.
-        if !queueIds.isEmpty {
-            interactor.queueIds = queueIds
-        }
+        // Creates interactor instance
+        let createdInteractor = setupInteractor(
+            configuration: configuration,
+            queueIds: queueIds
+        )
 
         theme.chat.connect.queue.firstText = companyName(
-            using: interactor,
+            using: configuration,
             themeCompanyName: theme.chat.connect.queue.firstText
         )
 
         theme.call.connect.queue.firstText = companyName(
-            using: interactor,
+            using: configuration,
             themeCompanyName: theme.call.connect.queue.firstText
         )
 
@@ -71,7 +67,7 @@ extension Glia {
         )
 
         startRootCoordinator(
-            with: interactor,
+            with: createdInteractor,
             viewFactory: viewFactory,
             sceneProvider: sceneProvider,
             engagementKind: engagementKind,
@@ -80,7 +76,7 @@ extension Glia {
     }
 
     func companyName(
-        using interactor: Interactor,
+        using configuration: Configuration,
         themeCompanyName: String?
     ) -> String {
         let companyNameStringKey = "general.company_name"
@@ -98,8 +94,8 @@ extension Glia {
         }
         // Integrator has not set a company name in the custom locale,
         // but has set it on the configuration.
-        else if !interactor.configuration.companyName.isEmpty {
-            return interactor.configuration.companyName
+        else if !configuration.companyName.isEmpty {
+            return configuration.companyName
         }
         // Integrator has not set a company name anywhere, use the default.
         else {
