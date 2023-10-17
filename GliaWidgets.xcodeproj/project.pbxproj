@@ -589,6 +589,8 @@
 		C0175A2C2A67E2E9001FACDE /* Theme+Gva.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0175A2B2A67E2E9001FACDE /* Theme+Gva.swift */; };
 		C02248A72AD53DDA00CC4930 /* LiveObservationConfirmation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02248A62AD53DDA00CC4930 /* LiveObservationConfirmation.swift */; };
 		C02248AA2AD53E6100CC4930 /* LiveObservation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02248A92AD53E6100CC4930 /* LiveObservation.swift */; };
+		C02248AE2ADD791C00CC4930 /* FpsMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02248AD2ADD791C00CC4930 /* FpsMonitor.swift */; };
+		C02248B02ADD797F00CC4930 /* NetworkConnectionMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02248AF2ADD797F00CC4930 /* NetworkConnectionMonitor.swift */; };
 		C03A8047292BA76D00DDECA6 /* ChatViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03A8046292BA76D00DDECA6 /* ChatViewControllerTests.swift */; };
 		C03A8049292BC8DB00DDECA6 /* CallViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03A8048292BC8DB00DDECA6 /* CallViewControllerTests.swift */; };
 		C05AB01C295F416700AA381F /* VisitorCodeCloseButtonProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05AB01B295F416700AA381F /* VisitorCodeCloseButtonProperties.swift */; };
@@ -1333,6 +1335,8 @@
 		C0175A2B2A67E2E9001FACDE /* Theme+Gva.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Theme+Gva.swift"; sourceTree = "<group>"; };
 		C02248A62AD53DDA00CC4930 /* LiveObservationConfirmation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveObservationConfirmation.swift; sourceTree = "<group>"; };
 		C02248A92AD53E6100CC4930 /* LiveObservation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveObservation.swift; sourceTree = "<group>"; };
+		C02248AD2ADD791C00CC4930 /* FpsMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FpsMonitor.swift; sourceTree = "<group>"; };
+		C02248AF2ADD797F00CC4930 /* NetworkConnectionMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkConnectionMonitor.swift; sourceTree = "<group>"; };
 		C03A8046292BA76D00DDECA6 /* ChatViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewControllerTests.swift; sourceTree = "<group>"; };
 		C03A8048292BC8DB00DDECA6 /* CallViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallViewControllerTests.swift; sourceTree = "<group>"; };
 		C05AB016295DA9FC00AA381F /* AlertViewController+VisitorCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlertViewController+VisitorCode.swift"; sourceTree = "<group>"; };
@@ -2061,6 +2065,8 @@
 		1A60AFC12566857200E53F53 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				C02248AC2ADD78F000CC4930 /* FpsMonitor */,
+				C02248AB2ADD785800CC4930 /* NetworkConnectionMonitor */,
 				C02248A82AD53DDF00CC4930 /* LiveObservation */,
 				84D5B95E2A14DEFD00807F92 /* QuickLookBased */,
 				C05E3EDC29C99DEE0013BC81 /* ProximityManager */,
@@ -3525,6 +3531,22 @@
 			path = LiveObservation;
 			sourceTree = "<group>";
 		};
+		C02248AB2ADD785800CC4930 /* NetworkConnectionMonitor */ = {
+			isa = PBXGroup;
+			children = (
+				C02248AF2ADD797F00CC4930 /* NetworkConnectionMonitor.swift */,
+			);
+			path = NetworkConnectionMonitor;
+			sourceTree = "<group>";
+		};
+		C02248AC2ADD78F000CC4930 /* FpsMonitor */ = {
+			isa = PBXGroup;
+			children = (
+				C02248AD2ADD791C00CC4930 /* FpsMonitor.swift */,
+			);
+			path = FpsMonitor;
+			sourceTree = "<group>";
+		};
 		C05E3EDC29C99DEE0013BC81 /* ProximityManager */ = {
 			isa = PBXGroup;
 			children = (
@@ -4545,6 +4567,7 @@
 				1A8366B025FF40AB005FE7EE /* LocalFile.swift in Sources */,
 				84265E62298D7B2900D65842 /* ScreenSharingCoordinator+DelegateEvent.swift in Sources */,
 				C0D2F048299272D100803B47 /* VideoCallView.ConnectOperatorView.swift in Sources */,
+				C02248B02ADD797F00CC4930 /* NetworkConnectionMonitor.swift in Sources */,
 				9A3E1D8A27B6B824005634EB /* FileDownload.Environment.Interface.swift in Sources */,
 				C0175A152A56E2DD001FACDE /* Gva.swift in Sources */,
 				9A8130B727D7578500220BBD /* LocalFile.Environment.Mock.swift in Sources */,
@@ -4713,6 +4736,7 @@
 				3115D45C29A4FD3F00D99561 /* SecureConversations.Availability.swift in Sources */,
 				9A19926E27D3BB7800161AAE /* Theme.Mock.swift in Sources */,
 				9AE9E4B127E0E45200BFE239 /* CallViewController.Mock.swift in Sources */,
+				C02248AE2ADD791C00CC4930 /* FpsMonitor.swift in Sources */,
 				9AE0A7642822B02C00725946 /* FontScaling.Environment.Mock.swift in Sources */,
 				AFC40C1C29965F0F001B4C53 /* SecureConversations.ChatWithTranscriptModel.swift in Sources */,
 				6B48213E2735873300F2900A /* Feature.swift in Sources */,

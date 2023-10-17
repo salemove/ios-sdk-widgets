@@ -346,6 +346,8 @@ class CallViewModelTests: XCTestCase {
         viewModel.start()
 
         XCTAssertEqual(call.state.value, .none)
+    }
+
     func test_viewModelStartDoesNotInitiateEnqueuingWithStartActionAsEngagement() {
         let viewModel: CallViewModel = .mock()
         viewModel.start()

@@ -32,7 +32,8 @@ extension Glia.Environment {
             uiApplication: .live,
             uiDevice: .live,
             notificationCenter: .live
-        ))
+        )), 
+        networkConnectionMonitor: .init()
     )
 }
 
