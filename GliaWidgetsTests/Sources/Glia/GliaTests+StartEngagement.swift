@@ -4,6 +4,10 @@ import XCTest
 @testable import GliaWidgets
 
 extension GliaTests {
+    override class func tearDown() {
+        Glia.sharedInstance.stringProviding = nil
+    }
+
     func testStartEngagementThrowsErrorWhenEngagementAlreadyExists() throws {
         let sdk = Glia(environment: .failing)
         sdk.rootCoordinator = .mock(engagementKind: .chat, screenShareHandler: .mock)
@@ -217,5 +221,44 @@ extension GliaTests {
         let configuredSdkTheme = resultingViewFactory?.theme
         XCTAssertEqual(configuredSdkTheme?.call.connect.queue.firstText, "Glia 1")
         XCTAssertEqual(configuredSdkTheme?.chat.connect.queue.firstText, "Glia 2")
+    }
+
+    func testCompanyNameIsReceivedFromLocalFallbackIfCustomLocalesIsEmpty() throws {
+        var environment = Glia.Environment.failing
+        var resultingViewFactory: ViewFactory?
+
+        environment.createRootCoordinator = { _, viewFactory, _, _, _, _, _ in
+            resultingViewFactory = viewFactory
+
+            return .mock(
+                interactor: .mock(environment: .failing),
+                viewFactory: viewFactory,
+                sceneProvider: nil,
+                engagementKind: .none,
+                screenShareHandler: .mock,
+                features: [],
+                environment: .failing
+            )
+        }
+
+        environment.coreSdk.localeProvider.getRemoteString = { _ in "" }
+        environment.coreSdk.configureWithInteractor = { _ in }
+        environment.coreSdk.configureWithConfiguration = { _, completion in
+            // Simulating what happens in the Widgets when the configuration gets done
+            Glia.sharedInstance.stringProviding = StringProviding(
+                getRemoteString: environment.coreSdk.localeProvider.getRemoteString
+            )
+            completion?()
+        }
+        environment.coreSdk.getCurrentEngagement = { nil }
+
+        let sdk = Glia(environment: environment)
+        try sdk.configure(with: .mock(), completion: {})
+        try sdk.startEngagement(engagementKind: .chat, in: ["queueId"])
+        
+        let configuredSdkTheme = resultingViewFactory?.theme
+        let localFallbackCompanyName = "Company Name"
+        XCTAssertEqual(configuredSdkTheme?.call.connect.queue.firstText, localFallbackCompanyName)
+        XCTAssertEqual(configuredSdkTheme?.chat.connect.queue.firstText, localFallbackCompanyName)
     }
 }
