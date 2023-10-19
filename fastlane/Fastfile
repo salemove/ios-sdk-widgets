@@ -86,7 +86,7 @@ platform :ios do
     update_core_sdk_version(core_sdk_version: version, core_sdk_checksum: checksum)
 
     branch_name = 'dependencies-update'
-    message = "Update dependencies declared in `Podfile`"
+    message = "Update dependencies declared in `Podfile` and `Package.swift`"
 
     sh "cd .. && scripts/commit_unstaged_changes.sh '#{branch_name}' '#{message}'"
     create_pull_request(
@@ -108,8 +108,8 @@ platform :ios do
     core_sdk_checksum = options[:core_sdk_checksum]
     UI.user_error!("No Core SDK checksum specified") unless !core_sdk_checksum.nil?
 
+    sh("sed -i '' \"s/.*GliaCoreSDK.*/  s.dependency 'GliaCoreSDK', '#{core_sdk_version}'/g\" ../templates/GliaWidgets.podspec")
     sh("cp ../templates/GliaWidgets.podspec ../GliaWidgets.podspec")
-    sh("sed -i '' \"s/.*GliaCoreSDK.*/  s.dependency 'GliaCoreSDK', '#{core_sdk_version}'/g\" ../GliaWidgets.podspec")
     sh("sed -i '' \"s/.*  s.version.*/  s.version               = '#{project_version}'/g\" ../GliaWidgets.podspec")
 
     sh("cp ../templates/Package.swift ../Package.swift")

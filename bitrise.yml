@@ -184,7 +184,7 @@ workflows:
         - command: update
     - fastlane@3:
         inputs:
-        - lane: ios create_pr_for_dependencies_update
+        - lane: ios create_pr_for_dependencies_update version:$VERSION checksum:$CHECKSUM
   upload_to_appstore_connect:
     steps:
     - activate-ssh-key@4:
