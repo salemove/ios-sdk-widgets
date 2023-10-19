@@ -55,6 +55,10 @@ import Foundation
   {{accessModifier}} static var {{string.name|swiftIdentifier:"pretty"|lowerFirstWord|escapeReservedKeywords}}: String { return {{enumName}}.tr("{{table}}", "{{string.key}}", fallback: "{{translation}}") }
   {% else %}
   {{accessModifier}} static let {{string.name|swiftIdentifier:"pretty"|lowerFirstWord|escapeReservedKeywords}} = {{enumName}}.tr("{{table}}", "{{string.key}}", fallback: "{{translation}}")
+  {% if string.key == "general.company_name" %}
+  /// {{translation}} without asking string provider
+  {{accessModifier}} static let {{string.name|swiftIdentifier:"pretty"|lowerFirstWord|escapeReservedKeywords}}LocalFallbackOnly = {{enumName}}.tr("{{table}}", "{{string.key}}", fallback: "{{translation}}", stringProviding: nil)
+  {% endif %}
   {% endif %}
   {% endfor %}
   {% for child in item.children %}

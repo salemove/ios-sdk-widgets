@@ -413,6 +413,8 @@ internal enum Localization {
     internal static let comment = Localization.tr("Localizable", "general.comment", fallback: "Comment")
     /// Company Name
     internal static let companyName = Localization.tr("Localizable", "general.company_name", fallback: "Company Name")
+    /// Company Name without asking string provider
+    internal static let companyNameLocalFallbackOnly = Localization.tr("Localizable", "general.company_name", fallback: "Company Name", stringProviding: nil)
     /// Decline
     internal static let decline = Localization.tr("Localizable", "general.decline", fallback: "Decline")
     /// Download
