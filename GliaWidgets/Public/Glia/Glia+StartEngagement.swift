@@ -105,7 +105,7 @@ extension Glia {
         else {
             // This will return the fallback value every time, because we have
             // already determined that the remote string is empty.
-            return Localization.General.companyName
+            return Localization.General.companyNameLocalFallbackOnly
         }
     }
 
