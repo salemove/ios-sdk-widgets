@@ -31,7 +31,7 @@ class ChatView: EngagementView {
     private lazy var quickReplyView = QuickReplyView(
         style: style.gliaVirtualAssistant.quickReplyButton
     )
-    private var messageEntryViewBottomConstraint: NSLayoutConstraint!
+    private var messageEntryViewBottomConstraint: NSLayoutConstraint?
     private var callBubble: BubbleView?
     private let keyboardObserver = KeyboardObserver()
     private let kUnreadMessageIndicatorInset: CGFloat = -3
@@ -172,7 +172,9 @@ class ChatView: EngagementView {
             edges: .bottom,
             insets: messageEntryInsets
         ).first
-        constraints += messageEntryViewBottomConstraint
+        if let messageEntryViewBottomConstraint {
+            constraints += messageEntryViewBottomConstraint
+        }
 
         constraints += messageEntryView.layoutIn(safeAreaLayoutGuide, edges: .horizontal)
         constraints += messageEntryView.topAnchor.constraint(equalTo: quickReplyView.bottomAnchor)
@@ -584,15 +586,18 @@ extension ChatView {
 
 extension ChatView {
     private func observeKeyboard() {
-        keyboardObserver.keyboardWillShow = { [unowned self] properties in
-            let bottomInset = safeAreaInsets.bottom
+        keyboardObserver.keyboardWillShow = { [weak self] properties in
+            guard let self else { return }
+
+            let bottomInset = self.safeAreaInsets.bottom
             let newEntryConstraint = -properties.finalFrame.height + bottomInset
+
             UIView.animate(
                 withDuration: properties.duration,
                 delay: 0.0,
                 options: properties.animationOptions,
                 animations: { [weak self] in
-                    self?.messageEntryViewBottomConstraint.constant = newEntryConstraint
+                    self?.messageEntryViewBottomConstraint?.constant = newEntryConstraint
                     self?.layoutIfNeeded()
                 },
                 completion: { [weak self] _ in
@@ -601,13 +606,13 @@ extension ChatView {
             )
         }
 
-        keyboardObserver.keyboardWillHide = { [unowned self] properties in
+        keyboardObserver.keyboardWillHide = { [weak self] properties in
             UIView.animate(
                 withDuration: properties.duration,
                 delay: 0.0,
                 options: properties.animationOptions,
                 animations: { [weak self] in
-                    self?.messageEntryViewBottomConstraint.constant = 0
+                    self?.messageEntryViewBottomConstraint?.constant = 0
                     self?.layoutIfNeeded()
                 }
             )
