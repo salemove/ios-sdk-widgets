@@ -91,7 +91,7 @@ extension Glia {
     }
 
     /// Deprecated, use ``Glia.configure(with:uiConfig:assetsBuilder:completion)`` instead.
-    @available(*, deprecated, message: "Deprecated, use ``Glia.configure(with:uiConfig:assetsBuilder:completion`` instead.")
+    @available(*, deprecated, message: "Deprecated, use ``Glia.configure(with:uiConfig:assetsBuilder:completion:)`` instead.")
     public func configure(
         with configuration: Configuration,
         queueId: String,
@@ -149,11 +149,11 @@ extension Glia {
         )
     }
 
-    /// Deprecated, use ``Deprecated, use ``Glia.configure(with:uiConfig:assetsBuilder:completion`` and ``Glia.startEngagement(engagementKind:in:theme:features:sceneProvider:)`` instead.`` instead.
+    /// Deprecated, use ``Glia.configure(with:uiConfig:assetsBuilder:completion:)`` and ``Glia.startEngagement(engagementKind:in:theme:features:sceneProvider:)`` instead.
     @available(*,
          deprecated,
          message: """
-            Deprecated, use ``Glia.configure(with:uiConfig:assetsBuilder:completion`` and \
+            Deprecated, use ``Glia.configure(with:uiConfig:assetsBuilder:completion:)`` and \
             ``Glia.startEngagement(engagementKind:in:theme:features:sceneProvider:)`` instead.
             """
     )
@@ -183,6 +183,30 @@ extension Glia {
         } catch GliaError.configuringDuringEngagementIsNotAllowed {
             try completion()
         }
+    }
+
+    /// Deprecated, use ``Glia.startEngagementWithConfig(engagement:in:uiConfig:assetsBuilder:features:sceneProvider:)`` instead.
+    @available(*,
+                deprecated,
+                message: """
+            Deprecated, use ``Glia.startEngagementWithConfig(engagement:in:uiConfig:assetsBuilder:features:sceneProvider:)`` instead.
+            """
+    )
+    public func startEngagementWithConfig(
+        engagement: EngagementKind,
+        uiConfig: RemoteConfiguration,
+        assetsBuilder: RemoteConfiguration.AssetsBuilder = .standard,
+        features: Features = .all,
+        sceneProvider: SceneProvider? = nil
+    ) throws {
+        try startEngagementWithConfig(
+            engagement: engagement,
+            in: [],
+            uiConfig: uiConfig,
+            assetsBuilder: assetsBuilder,
+            features: features,
+            sceneProvider: sceneProvider
+        )
     }
 }
 
