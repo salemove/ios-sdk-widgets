@@ -6,6 +6,7 @@ extension Glia {
     ///
     /// - Parameters:
     ///   - engagementKind: Engagement media type.
+    ///   - in: Queue identifiers
     ///   - uiConfig: Remote UI configuration.
     ///   - assetsBuilder: Provides assets for remote configuration.
     ///   - features: Set of features to be enabled in the SDK.
@@ -22,6 +23,7 @@ extension Glia {
     ///
     public func startEngagementWithConfig(
         engagement: EngagementKind,
+        in queueIds: [String],
         uiConfig: RemoteConfiguration,
         assetsBuilder: RemoteConfiguration.AssetsBuilder = .standard,
         features: Features = .all,
@@ -46,6 +48,7 @@ extension Glia {
 
         try startEngagement(
             engagementKind: engagement,
+            in: queueIds,
             theme: theme,
             features: features,
             sceneProvider: sceneProvider
