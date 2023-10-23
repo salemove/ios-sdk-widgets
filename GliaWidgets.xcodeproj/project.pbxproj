@@ -198,6 +198,9 @@
 		3197F7B629F7C2E5008EE9F7 /* SecureConversations.SecureChatModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3197F7B529F7C2E5008EE9F7 /* SecureConversations.SecureChatModel.swift */; };
 		3197F7B829F7C318008EE9F7 /* SecureConversations.CommonEngagementModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3197F7B729F7C318008EE9F7 /* SecureConversations.CommonEngagementModel.swift */; };
 		31B1F8A92AB093ED009EC5AD /* StringProviding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B1F8A82AB093ED009EC5AD /* StringProviding.swift */; };
+		31CA0F6A2AE6947500A55685 /* CallVisualizer.Environment.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75940978298D38C2008B173A /* CallVisualizer.Environment.Mock.swift */; };
+		31CA0F6B2AE6947800A55685 /* CallVisualizer.VisitorCodeViewModel.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75940979298D38C2008B173A /* CallVisualizer.VisitorCodeViewModel.Mock.swift */; };
+		31CA0F6C2AE6947D00A55685 /* ScreenSharingViewModel.mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07F62802AC3057C003EFC97 /* ScreenSharingViewModel.mock.swift */; };
 		31D286AD2A00DD2C009192A6 /* SecureConversations.ConfirmationViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31D286AC2A00DD2C009192A6 /* SecureConversations.ConfirmationViewModelTests.swift */; };
 		31D286AF2A00DE2B009192A6 /* SecureConversations.ConfirmationViewModel.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31D286AE2A00DE2B009192A6 /* SecureConversations.ConfirmationViewModel.Mock.swift */; };
 		31DB0C01287C2EFC00FB288E /* StaticValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31DB0C00287C2EFC00FB288E /* StaticValues.swift */; };
@@ -282,8 +285,6 @@
 		75940986298D38C2008B173A /* VisitorCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75940974298D38C2008B173A /* VisitorCodeView.swift */; };
 		75940987298D38C2008B173A /* VisitorCodeViewModel+Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75940975298D38C2008B173A /* VisitorCodeViewModel+Environment.swift */; };
 		75940988298D38C2008B173A /* VisitorCodeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75940976298D38C2008B173A /* VisitorCodeCoordinator.swift */; };
-		75940989298D38C2008B173A /* CallVisualizer.Environment.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75940978298D38C2008B173A /* CallVisualizer.Environment.Mock.swift */; };
-		7594098A298D38C2008B173A /* CallVisualizer.VisitorCodeViewModel.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75940979298D38C2008B173A /* CallVisualizer.VisitorCodeViewModel.Mock.swift */; };
 		7594098B298D38C2008B173A /* CallVisualizer+Presentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7594097A298D38C2008B173A /* CallVisualizer+Presentation.swift */; };
 		7594098C298D38C2008B173A /* CallVisualizer+Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7594097B298D38C2008B173A /* CallVisualizer+Environment.swift */; };
 		7594098D298D38C2008B173A /* CallVisualizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7594097C298D38C2008B173A /* CallVisualizer.swift */; };
@@ -602,7 +603,6 @@
 		C07F62772AC1BA2B003EFC97 /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07F62762AC1BA2B003EFC97 /* UIViewController+Extensions.swift */; };
 		C07F62792AC2D2E8003EFC97 /* BackgroundSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07F62782AC2D2E8003EFC97 /* BackgroundSwiftUI.swift */; };
 		C07F627D2AC2F31F003EFC97 /* ScreenSharingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07F627C2AC2F31F003EFC97 /* ScreenSharingViewModel.swift */; };
-		C07F62812AC3057C003EFC97 /* ScreenSharingViewModel.mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07F62802AC3057C003EFC97 /* ScreenSharingViewModel.mock.swift */; };
 		C07F62832AC33BB9003EFC97 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07F62822AC33BB9003EFC97 /* UIView+Extensions.swift */; };
 		C07FA04029AF542A00E9FB7F /* ScreenSharingViewStyle+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84265E0B298AECBA00D65842 /* ScreenSharingViewStyle+Mock.swift */; };
 		C07FA04B29AF83B900E9FB7F /* ActionButton.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07FA04929AF83A400E9FB7F /* ActionButton.Mock.swift */; };
@@ -2883,7 +2883,6 @@
 				84265E4D298D7B2900D65842 /* ScreenSharing */,
 				84265E48298D7B1900D65842 /* Coordinator */,
 				7594096D298D38C2008B173A /* VisitorCode */,
-				75940977298D38C2008B173A /* Mock */,
 				7594097A298D38C2008B173A /* CallVisualizer+Presentation.swift */,
 				7594096A298D38C2008B173A /* CallVisualizer.BubbleIcon.swift */,
 				7594097B298D38C2008B173A /* CallVisualizer+Environment.swift */,
@@ -2906,16 +2905,6 @@
 				75940976298D38C2008B173A /* VisitorCodeCoordinator.swift */,
 			);
 			path = VisitorCode;
-			sourceTree = "<group>";
-		};
-		75940977298D38C2008B173A /* Mock */ = {
-			isa = PBXGroup;
-			children = (
-				75940978298D38C2008B173A /* CallVisualizer.Environment.Mock.swift */,
-				75940979298D38C2008B173A /* CallVisualizer.VisitorCodeViewModel.Mock.swift */,
-				C07F62802AC3057C003EFC97 /* ScreenSharingViewModel.mock.swift */,
-			);
-			path = Mock;
 			sourceTree = "<group>";
 		};
 		75AF8CED27DA3D41009EEE2C /* Survey */ = {
@@ -2981,6 +2970,9 @@
 		84265E0A298AE9F300D65842 /* Mocks */ = {
 			isa = PBXGroup;
 			children = (
+				75940978298D38C2008B173A /* CallVisualizer.Environment.Mock.swift */,
+				75940979298D38C2008B173A /* CallVisualizer.VisitorCodeViewModel.Mock.swift */,
+				C07F62802AC3057C003EFC97 /* ScreenSharingViewModel.mock.swift */,
 				84265E0B298AECBA00D65842 /* ScreenSharingViewStyle+Mock.swift */,
 				C07FA04929AF83A400E9FB7F /* ActionButton.Mock.swift */,
 			);
@@ -3372,8 +3364,6 @@
 				AF22C8962A61A9BF0004BF3C /* VideoCallViewControllerLayoutTests.swift */,
 				AF03A7C02A6EDE190081887D /* VideoCallViewControllerDynamicTypeFontTests.swift */,
 				C07FA04E29B0E41A00E9FB7F /* VisitorCodeViewControllerVoiceOverTests.swift */,
-				C07FA04E29B0E41A00E9FB7F /* VisitorCodeViewControllerTests.swift */,
-				AF755FD92A71583900871E36 /* BubbleWindowLayoutTests.swift */,
 				AF22C8982A61AE930004BF3C /* VisitorCodeViewControllerLayoutTests.swift */,
 				AF03A7C22A6EDF490081887D /* VisitorCodeViewControllerDynamicTypeFontTests.swift */,
 				AF755FD92A71583900871E36 /* BubbleWindowLayoutTests.swift */,
@@ -4392,6 +4382,7 @@
 				845876B4282AA296007AC3DF /* ButtonView.Props.Accessibility.swift in Sources */,
 				1A0C9AE025C9624500815406 /* ObservableValue.swift in Sources */,
 				31B1F8A92AB093ED009EC5AD /* StringProviding.swift in Sources */,
+				31CA0F6A2AE6947500A55685 /* CallVisualizer.Environment.Mock.swift in Sources */,
 				75940962298D3889008B173A /* MessageMetadata.swift in Sources */,
 				7594094D298D37E8008B173A /* Glia.Environment.Mock.swift in Sources */,
 				1A60AFB9256682AF00E53F53 /* FlowCoordinator.swift in Sources */,
@@ -4484,7 +4475,6 @@
 				C0D2F08C29A4EBA900803B47 /* VIdeoCallView.Environment.Mock.swift in Sources */,
 				313EBD552943116E008E9597 /* SecureConversations.swift in Sources */,
 				7529F2B627E1EB9A004D3581 /* Survey.ButtonView.swift in Sources */,
-				C07F62812AC3057C003EFC97 /* ScreenSharingViewModel.mock.swift in Sources */,
 				C49A29E42614A29700819269 /* FilePreviewView.swift in Sources */,
 				1A5F815F258A43E600A605DA /* Section.swift in Sources */,
 				1A60AFBF2566834400E53F53 /* BaseViewController.swift in Sources */,
@@ -4715,6 +4705,7 @@
 				845876AB282A959C007AC3DF /* SingleChoiceQuestionView.Props.Accessibility.swift in Sources */,
 				9AB3402327FC859E006E0FE2 /* CallButtonStyle.StateStyle.Accessibility.swift in Sources */,
 				8491AF1F2A7D027D00CC3E72 /* Theme.ChatTextContentStyle.swift in Sources */,
+				31CA0F6C2AE6947D00A55685 /* ScreenSharingViewModel.mock.swift in Sources */,
 				84D2293C28D1FC4B00F64FE7 /* ChatViewModel+CustomCard.swift in Sources */,
 				84265DF02983E62100D65842 /* Theme+ScreenSharing.swift in Sources */,
 				6E9C01AD26D3B8B500EBE1D4 /* OperatorTypingIndicatorView.swift in Sources */,
@@ -4804,9 +4795,7 @@
 				C0175A192A5D3C56001FACDE /* ChatView.Accessibility.swift in Sources */,
 				C08D776228F58A18000461E5 /* ColorType.swift in Sources */,
 				84EFB05B28AA90220005E270 /* CustomCardContainerView.swift in Sources */,
-				7594098A298D38C2008B173A /* CallVisualizer.VisitorCodeViewModel.Mock.swift in Sources */,
 				9AB3401D27FB4F3C006E0FE2 /* ConnectOperatorStyle.Accessibility.swift in Sources */,
-				75940989298D38C2008B173A /* CallVisualizer.Environment.Mock.swift in Sources */,
 				AFA2FDF028907E3900428E6D /* EngagementCoordinator.Mock.swift in Sources */,
 				C05E3EDE29C99E070013BC81 /* ProximityManager.swift in Sources */,
 				9A1992E527D6679300161AAE /* UIKitBased.Live.swift in Sources */,
@@ -4825,6 +4814,7 @@
 				1A4674C825ED084A0078FA1C /* MediaPickerViewModel.swift in Sources */,
 				9A186A3927F5E3010055886D /* MessageButtonStyle.Accessibility.swift in Sources */,
 				C0D2F08829A4E8E100803B47 /* CallButtonBar.Mock.swift in Sources */,
+				31CA0F6B2AE6947800A55685 /* CallVisualizer.VisitorCodeViewModel.Mock.swift in Sources */,
 				9AB196D627C3E1E400FD60AB /* ChatViewModel.Environment.Interface.swift in Sources */,
 				3197F7B429F7C26A008EE9F7 /* SecureConversations.ChatWithTranscriptViewModel+Hashable.swift in Sources */,
 				AF0D26D82971912A00816CCB /* SecureConversations.SendMessageButton.swift in Sources */,
@@ -4980,7 +4970,7 @@
 				AF22C8872A6182AF0004BF3C /* BubbleViewLayoutTests.swift in Sources */,
 				AF03A7C12A6EDE190081887D /* VideoCallViewControllerDynamicTypeFontTests.swift in Sources */,
 				C07FA05029B0E41A00E9FB7F /* VideoCallViewControllerVoiceOverTests.swift in Sources */,
-				C07FA05029B0E41A00E9FB7F /* VideoCallViewControllerTests.swift in Sources */,
+				C07FA05029B0E41A00E9FB7F /* VideoCallViewControllerVoiceOverTests.swift in Sources */,
 				AF755FDA2A71583900871E36 /* BubbleWindowLayoutTests.swift in Sources */,
 				AF22C88D2A6188EF0004BF3C /* ChatViewControllerLayoutTests.swift in Sources */,
 				AF03A7B12A6E96870081887D /* BubbleViewDynamicTypeFontTests.swift in Sources */,
