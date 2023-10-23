@@ -297,6 +297,7 @@ extension ViewController {
 
         try? Glia.sharedInstance.startEngagementWithConfig(
             engagement: kind,
+            in: [queueId],
             uiConfig: config
         )
     }
