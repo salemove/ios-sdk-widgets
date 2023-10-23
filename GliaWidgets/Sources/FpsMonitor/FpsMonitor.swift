@@ -1,9 +1,18 @@
 import Foundation
 import Combine
 
-class FpsMonitor {
-    @Published private(set) var currentFPS: Int = 1
+/// `FpsMonitor` is responsible for monitoring the current network 
+/// connection type and adjusting the frame rate (FPS) accordingly.
+///
+/// This class listens for changes in the network connection 
+/// type and updates the `currentFPS` based on the provided
+/// `unlimitedFps` and `meteredFps` values.
+final class FpsMonitor {
+    var currentFPS: AnyPublisher<Int, Never> {
+        return currentFPSSubject.eraseToAnyPublisher()
+    }
 
+    private var currentFPSSubject = CurrentValueSubject<Int, Never>(1)
     private let unlimitedFps: Int
     private let meteredFps: Int
     private var cancellables: Set<AnyCancellable> = []
@@ -16,7 +25,7 @@ class FpsMonitor {
         self.unlimitedFps = unlimitedFps
         self.meteredFps = meteredFps
 
-        environment.networkMonitor.$connectionType
+        environment.networkMonitor.connectionTypePublisher
             .map { connectionType -> Int in
                 switch connectionType {
                 case .unlimited:
@@ -25,7 +34,7 @@ class FpsMonitor {
                     return self.meteredFps
                 }
             }
-            .assign(to: \.currentFPS, on: self)
+            .subscribe(currentFPSSubject)
             .store(in: &cancellables)
     }
 }

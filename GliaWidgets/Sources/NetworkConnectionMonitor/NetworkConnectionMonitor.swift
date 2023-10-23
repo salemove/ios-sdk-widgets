@@ -1,9 +1,13 @@
-import Network
 import Combine
+import Network
 
-class NetworkConnectionMonitor: ObservableObject {
-    @Published private(set) var connectionType: ConnectionType = .unknown
+final class NetworkConnectionMonitor {
 
+    var connectionTypePublisher: AnyPublisher<ConnectionType, Never> {
+        return connectionTypeSubject.eraseToAnyPublisher()
+    }
+
+    private var connectionTypeSubject = CurrentValueSubject<ConnectionType, Never>(.unknown)
     private var monitor: NWPathMonitor?
     private var queue = DispatchQueue(label: "NetworkMonitor")
 
@@ -11,19 +15,21 @@ class NetworkConnectionMonitor: ObservableObject {
         monitor = NWPathMonitor()
         monitor?.pathUpdateHandler = { [weak self] path in
             guard let self = self else { return }
-            guard path.status == .satisfied else { 
-                // No conection to the internet
-                self.connectionType = .unknown
+
+            var connectionType: ConnectionType = .unknown
+
+            guard path.status == .satisfied else {
+                self.connectionTypeSubject.send(connectionType)
                 return
             }
 
             if path.usesInterfaceType(.wifi) {
-                self.connectionType = .unlimited
+                connectionType = .unlimited
             } else if path.usesInterfaceType(.cellular) {
-                self.connectionType = .metered
-            } else {
-                self.connectionType = .unknown
+                connectionType = .metered
             }
+
+            self.connectionTypeSubject.send(connectionType)
         }
 
         monitor?.start(queue: queue)
