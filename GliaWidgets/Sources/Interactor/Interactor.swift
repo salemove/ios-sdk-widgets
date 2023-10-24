@@ -80,10 +80,6 @@ class Interactor {
         self.environment = environment
     }
 
-    deinit {
-        print("☠️", Self.self, ObjectIdentifier(self))
-    }
-
     func addObserver(_ observer: AnyObject, handler: @escaping EventHandler) {
         guard !observers.contains(where: { $0().0 === observer }) else { return }
         observers.append { [weak observer] in (observer, handler) }

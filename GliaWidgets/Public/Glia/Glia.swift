@@ -94,7 +94,7 @@ public class Glia {
     var uiConfig: RemoteConfiguration?
     var assetsBuilder: RemoteConfiguration.AssetsBuilder = .standard
 
-    var configuration: Configuration?
+    private(set) var configuration: Configuration?
 
     init(environment: Environment) {
         self.environment = environment
@@ -375,6 +375,7 @@ extension Glia {
 
 #if DEBUG
 extension Glia {
+    /// Used for unit tests only
     var isConfigured: Bool {
         configuration != nil
     }
