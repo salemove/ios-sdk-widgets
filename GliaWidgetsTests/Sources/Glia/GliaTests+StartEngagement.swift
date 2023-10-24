@@ -282,8 +282,8 @@ extension GliaTests {
         }
 
         environment.coreSdk.localeProvider.getRemoteString = { _ in "" }
-        environment.coreSdk.configureWithInteractor = { _ in }
-        environment.coreSdk.configureWithConfiguration = { _, completion in
+        environment.coreSDKConfigurator.configureWithInteractor = { _ in }
+        environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             // Simulating what happens in the Widgets when the configuration gets done
             Glia.sharedInstance.stringProviding = StringProviding(
                 getRemoteString: environment.coreSdk.localeProvider.getRemoteString
