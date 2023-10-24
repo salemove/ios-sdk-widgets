@@ -92,16 +92,17 @@ class ViewController: UIViewController {
     private func showErrorAlert(using error: Error) {
         guard let gliaError = error as? GliaError else { return }
 
-        switch error {
+        switch gliaError {
         case GliaError.engagementExists:
             alert(message: "Failed to start\nEngagement is ongoing, please use 'Resume' button")
         case GliaError.engagementNotExist:
             alert(message: "Failed to start\nNo ongoing engagement. Please start a new one with 'Start chat' button")
         case GliaError.callVisualizerEngagementExists:
             alert(message: "Failed to start\nCall Visualizer engagement is ongoing")
+        case GliaError.configuringDuringEngagementIsNotAllowed:
+            alert(message: "The operation couldn't be completed. '\(gliaError)'.")
         default:
             alert(message: "Failed to start\nCheck Glia parameters in Settings")
-
         }
     }
 
@@ -118,7 +119,10 @@ class ViewController: UIViewController {
             if let fileName = fileName {
                 config = self?.retrieveRemoteConfiguration(fileName)
             }
-            self?.configureSDK(uiConfig: config)
+            self?.configureSDK(uiConfig: config) { [weak self] result in
+                guard case let .failure(error) = result else { return }
+                self?.showErrorAlert(using: error)
+            }
         }
     }
 
@@ -194,13 +198,11 @@ extension ViewController {
         configuration.pushNotifications = pushNotifications
 
         let startEngagement = {
-            do {
+            self.catchingError {
                 try Glia.sharedInstance.startEngagement(
                     engagementKind: engagementKind,
                     in: [self.queueId]
                 )
-            } catch {
-                self.showErrorAlert(using: error)
             }
         }
 
