@@ -20,7 +20,6 @@ extension ChatViewModelTests {
         interactorEnv.coreSdk.queueForEngagement = { _, _ in }
         interactorEnv.coreSdk.configureWithInteractor = { _ in }
         let interactorMock = Interactor.mock(environment: interactorEnv)
-//        interactorMock.isConfigurationPerformed = true
 
         var env = ChatViewModel.Environment.failing()
         env.fileManager.fileExistsAtPath = { _ in true }
