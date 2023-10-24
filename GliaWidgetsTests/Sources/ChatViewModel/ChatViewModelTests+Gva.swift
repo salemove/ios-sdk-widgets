@@ -58,7 +58,6 @@ extension ChatViewModelTests {
         }
         let interactorMock = Interactor.mock(environment: interactorEnv)
         interactorMock.state = .engaged(nil)
-//        interactorMock.isConfigurationPerformed = true
 
         viewModel = .mock(interactor: interactorMock, environment: env)
 
@@ -80,7 +79,6 @@ extension ChatViewModelTests {
 
         let interactorMock = Interactor.mock(environment: interactorEnv)
         interactorMock.state = .none
-//        interactorMock.isConfigurationPerformed = true
 
         var env = ChatViewModel.Environment.failing()
         env.fileManager.fileExistsAtPath = { _ in true }
@@ -136,7 +134,6 @@ extension ChatViewModelTests {
         }
         let interactorMock = Interactor.mock(environment: interactorEnv)
         interactorMock.state = .engaged(nil)
-//        interactorMock.isConfigurationPerformed = true
         let viewModel = ChatViewModel.mock(interactor: interactorMock, environment: env)
 
         let messagesSectionIndex = 3
