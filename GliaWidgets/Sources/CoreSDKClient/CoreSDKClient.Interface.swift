@@ -19,7 +19,7 @@ struct CoreSdkClient {
 
     typealias ConfigureWithConfiguration = (
         _ sdkConfiguration: Self.Salemove.Configuration,
-        _ completion: (() -> Void)?
+        _ completion: @escaping Self.ConfigureCompletion
     ) -> Void
     var configureWithConfiguration: ConfigureWithConfiguration
 
@@ -249,4 +249,5 @@ extension CoreSdkClient {
     typealias Cancellable = GliaCore.Cancellable
     typealias ReactiveSwift = GliaCoreDependency.ReactiveSwift
     typealias SendMessagePayload = GliaCoreSDK.SendMessagePayload
+    typealias ConfigureCompletion = GliaCoreSDK.GliaCore.ConfigureCompletion
 }

@@ -11,7 +11,7 @@ extension GliaTests {
     func testStartEngagementThrowsErrorWhenEngagementAlreadyExists() throws {
         var sdkEnv = Glia.Environment.failing
         sdkEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
-            completion?()
+            completion(.success(()))
         }
         let sdk = Glia(environment: sdkEnv)
         sdk.rootCoordinator = .mock(engagementKind: .chat, screenShareHandler: .mock)
@@ -30,9 +30,9 @@ extension GliaTests {
     func testStartEngagementThrowsErrorDuringActiveCallVisualizerEngagement() throws {
         let sdk = Glia(environment: .failing)
         sdk.environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
-            completion?()
+            completion(.success(()))
         }
-        try sdk.configure(with: .mock())
+        try sdk.configure(with: .mock()) {}
         sdk.environment.coreSdk.getCurrentEngagement = { .mock(source: .callVisualizer) }
 
         XCTAssertThrowsError(
@@ -67,7 +67,7 @@ extension GliaTests {
         }
         environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             calls.append(.configureWithConfiguration)
-            completion?()
+            completion(.success(()))
         }
         environment.coreSdk.localeProvider.getRemoteString = { _ in nil }
         environment.createRootCoordinator = { _, _, _, _, _, _, _ in
@@ -99,7 +99,7 @@ extension GliaTests {
             )
         }
         environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
-            completion?()
+            completion(.success(()))
         }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         environment.coreSdk.localeProvider.getRemoteString = { _ in nil }
@@ -110,8 +110,13 @@ extension GliaTests {
         theme.call.connect.queue.firstText = "Glia 1"
         theme.chat.connect.queue.firstText = "Glia 2"
 
-        try sdk.configure(with: .mock())
-        try sdk.startEngagement(engagementKind: .chat, in: ["queueId"], theme: theme)
+        try sdk.configure(with: .mock()) {
+            do {
+                try sdk.startEngagement(engagementKind: .chat, in: ["queueId"], theme: theme)
+            } catch {
+                XCTFail("startEngagement unexpectedly failed with error \(error), but should succeed instead.")
+            }
+        }
 
         let configuredSdkTheme = resultingViewFactory?.theme
         XCTAssertEqual(configuredSdkTheme?.call.connect.queue.firstText, "Glia 1")
@@ -138,7 +143,7 @@ extension GliaTests {
 
         environment.coreSdk.localeProvider.getRemoteString = { _ in "Glia" }
         environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
-            completion?()
+            completion(.success(()))
         }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         environment.coreSdk.getCurrentEngagement = { nil }
@@ -150,8 +155,13 @@ extension GliaTests {
         theme.call.connect.queue.firstText = "Glia 1"
         theme.chat.connect.queue.firstText = "Glia 2"
 
-        try sdk.configure(with: .mock()) { }
-        try sdk.startEngagement(engagementKind: .chat, in: ["queueId"], theme: theme)
+        try sdk.configure(with: .mock()) {
+            do {
+                try sdk.startEngagement(engagementKind: .chat, in: ["queueId"], theme: theme)
+            } catch {
+                XCTFail("startEngagement unexpectedly failed with error \(error), but should succeed instead.")
+            }
+        }
 
         let configuredSdkTheme = resultingViewFactory?.theme
         XCTAssertEqual(configuredSdkTheme?.call.connect.queue.firstText, "Glia")
@@ -176,15 +186,20 @@ extension GliaTests {
             )
         }
         environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
-            completion?()
+            completion(.success(()))
         }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         environment.coreSdk.localeProvider.getRemoteString = { _ in nil }
 
         let sdk = Glia(environment: environment)
 
-        try sdk.configure(with: .mock(companyName: "Glia"))
-        try sdk.startEngagement(engagementKind: .chat, in: ["queueId"])
+        try sdk.configure(with: .mock(companyName: "Glia")) {
+            do {
+                try sdk.startEngagement(engagementKind: .chat, in: ["queueId"])
+            } catch {
+                XCTFail("startEngagement unexpectedly failed with error \(error), but should succeed instead.")
+            }
+        }
 
         let configuredSdkTheme = resultingViewFactory?.theme
         XCTAssertEqual(configuredSdkTheme?.call.connect.queue.firstText, "Glia")
@@ -209,15 +224,20 @@ extension GliaTests {
             )
         }
         environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
-            completion?()
+            completion(.success(()))
         }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         environment.coreSdk.localeProvider.getRemoteString = { _ in nil }
 
         let sdk = Glia(environment: environment)
 
-        try sdk.configure(with: .mock())
-        try sdk.startEngagement(engagementKind: .chat, in: ["queueId"])
+        try sdk.configure(with: .mock()) {
+            do {
+                try sdk.startEngagement(engagementKind: .chat, in: ["queueId"])
+            } catch {
+                XCTFail("startEngagement unexpectedly failed with error \(error), but should succeed instead.")
+            }
+        }
 
         let configuredSdkTheme = resultingViewFactory?.theme
         XCTAssertEqual(configuredSdkTheme?.call.connect.queue.firstText, "Company Name")
@@ -244,7 +264,7 @@ extension GliaTests {
 
         environment.coreSdk.localeProvider.getRemoteString = { _ in "" }
         environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
-            completion?()
+            completion(.success(()))
         }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         environment.coreSdk.getCurrentEngagement = { nil }
@@ -255,8 +275,13 @@ extension GliaTests {
         theme.call.connect.queue.firstText = "Glia 1"
         theme.chat.connect.queue.firstText = "Glia 2"
 
-        try sdk.configure(with: .mock())
-        try sdk.startEngagement(engagementKind: .chat, in: ["queueId"], theme: theme)
+        try sdk.configure(with: .mock()) {
+            do {
+                try sdk.startEngagement(engagementKind: .chat, in: ["queueId"], theme: theme)
+            } catch {
+                XCTFail("startEngagement unexpectedly failed with error \(error), but should succeed instead.")
+            }
+        }
 
         let configuredSdkTheme = resultingViewFactory?.theme
         XCTAssertEqual(configuredSdkTheme?.call.connect.queue.firstText, "Glia 1")
@@ -288,14 +313,14 @@ extension GliaTests {
             Glia.sharedInstance.stringProviding = StringProviding(
                 getRemoteString: environment.coreSdk.localeProvider.getRemoteString
             )
-            completion?()
+            completion(.success(()))
         }
         environment.coreSdk.getCurrentEngagement = { nil }
 
         let sdk = Glia(environment: environment)
         try sdk.configure(with: .mock(), completion: {})
         try sdk.startEngagement(engagementKind: .chat, in: ["queueId"])
-        
+
         let configuredSdkTheme = resultingViewFactory?.theme
         let localFallbackCompanyName = "Company Name"
         XCTAssertEqual(configuredSdkTheme?.call.connect.queue.firstText, localFallbackCompanyName)

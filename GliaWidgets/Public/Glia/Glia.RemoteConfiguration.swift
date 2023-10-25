@@ -18,7 +18,7 @@ extension Glia {
     ///   - `GliaError.engagementExists
     ///   - `GliaError.sdkIsNotConfigured`
     ///
-    /// - Important: Note, that `configure(with:queueID:visitorContext:)` must be called initially prior to this method,
+    /// - Important: Note, that `configure(with:uiConfig:assetsBuilder:completion:)` must be called initially prior to this method,
     /// because `GliaError.sdkIsNotConfigured` will occur otherwise.
     ///
     public func startEngagementWithConfig(
