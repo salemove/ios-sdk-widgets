@@ -104,23 +104,25 @@ public class Glia {
     /// Setup SDK using specific engagement configuration without starting the engagement.
     /// - Parameters:
     ///   - configuration: Engagement configuration.
-    ///   - visitorContext: Visitor context.
     ///   - uiConfig: Remote UI configuration.
     ///   - assetsBuilder: Provides assets for remote configuration.
-    ///   - completion: Optional completion handler that will be fired once configuration is complete.
-    ///   Passing  `nil` will defer configuration. Passing closure will start configuration immediately.
+    ///   - completion: Completion handler that will be fired once configuration is complete.
     public func configure(
         with configuration: Configuration,
         uiConfig: RemoteConfiguration? = nil,
         assetsBuilder: RemoteConfiguration.AssetsBuilder = .standard,
-        completion: (() -> Void)? = nil
+        completion: @escaping (Result<Void, Error>) -> Void
     ) throws {
         guard environment.coreSdk.getCurrentEngagement() == nil else {
             throw GliaError.configuringDuringEngagementIsNotAllowed
         }
         self.uiConfig = uiConfig
         self.assetsBuilder = assetsBuilder
-        self.configuration = configuration
+        // `configuration` should be erased to avoid cases when integrators
+        // call `configure` and `startEngagement` asynchronously, and
+        // second-time configuration has not been complete, but `startEngagement`
+        // is fired and SDK has previous `configuration`.
+        self.configuration = nil
 
         self.callVisualizer.delegate = { action in
             switch action {
@@ -129,10 +131,15 @@ public class Glia {
             }
         }
 
-        // TODO: - Non-optional completion will be added in MOB-2784
-        do {
-            try environment.coreSDKConfigurator.configureWithConfiguration(configuration) { [weak self] in
-                guard let self else { return }
+        try environment.coreSDKConfigurator.configureWithConfiguration(configuration) { [weak self] result in
+            guard let self else { return }
+            switch result {
+            case .success:
+                // Storing `configuration` needs to be done once configuring SDK is complete
+                // Otherwise integrator can call `configure` and `startEngagement`
+                // asynchronously, without waiting configuration completion.
+                self.configuration = configuration
+
                 let getRemoteString = self.environment.coreSdk.localeProvider.getRemoteString
                 self.stringProviding = .init(getRemoteString: getRemoteString)
 
@@ -141,11 +148,11 @@ public class Glia {
                     self.setupInteractor(configuration: configuration)
                 }
 
-                completion?()
+                completion(.success(()))
+            case let .failure(error):
+                debugPrint("💥 Core SDK configuration is not valid. Unexpected error='\(error)'.")
+                completion(.failure(error))
             }
-        } catch {
-            self.configuration = nil
-            debugPrint("💥 Core SDK configuration is not valid. Unexpected error='\(error)'.")
         }
     }
 
@@ -208,11 +215,11 @@ public class Glia {
     /// - `GliaCoreSDK.ConfigurationError.invalidEnvironment`
     /// - `GliaError.sdkIsNotConfigured`
     ///
-    /// - Important: Note, that in case of engagement has not been started yet, `configure(with:queueID:visitorContext:)` must be called initially prior to this method,
+    /// - Important: Note, that in case of engagement has not been started yet, `configure(with:uiConfig:assetsBuilder:completion:)` must be called initially prior to this method,
     /// because `GliaError.sdkIsNotConfigured` will occur otherwise.
     ///
     public func fetchVisitorInfo(completion: @escaping (Result<GliaCore.VisitorInfo, Error>) -> Void) {
-        guard interactor != nil else {
+        guard configuration != nil else {
             completion(.failure(GliaError.sdkIsNotConfigured))
             return
         }
@@ -242,14 +249,14 @@ public class Glia {
     /// - `GliaCoreSDK.ConfigurationError.invalidEnvironment`
     /// - `GliaError.sdkIsNotConfigured`
     ///
-    /// - Important: Note, that in case of engagement has not been started yet, `configure(with:queueID:visitorContext:)` must be called initially prior to this method,
+    /// - Important: Note, that in case of engagement has not been started yet, `configure(with:uiConfig:assetsBuilder:completion:)` must be called initially prior to this method,
     /// because `GliaError.sdkIsNotConfigured` will occur otherwise.
     ///
     public func updateVisitorInfo(
         _ info: VisitorInfoUpdate,
         completion: @escaping (Result<Bool, Error>) -> Void
     ) {
-        guard interactor != nil else {
+        guard configuration != nil else {
             completion(.failure(GliaError.sdkIsNotConfigured))
             return
         }
@@ -263,7 +270,7 @@ public class Glia {
             rootCoordinator = nil
         }
 
-        guard interactor != nil else {
+        guard configuration != nil else {
             completion(.failure(GliaError.sdkIsNotConfigured))
             return
         }
@@ -278,10 +285,10 @@ public class Glia {
     /// It is also possible to monitor Queues changes with [subscribeForUpdates](x-source-tag://subscribeForUpdates) method.
     /// If the request is unsuccessful for any reason then the completion will have an Error.
     /// - Parameters:
-    ///   - completion: A callback that will return the Result struct with `Queue` list or `GliaCoreError`
+    ///   - completion: A callback that will return the Result struct with `Queue` list or `GliaCoreError`.
     ///
     public func listQueues(_ completion: @escaping (Result<[Queue], Error>) -> Void) {
-        guard interactor != nil else {
+        guard configuration != nil else {
             completion(.failure(GliaError.sdkIsNotConfigured))
             return
         }

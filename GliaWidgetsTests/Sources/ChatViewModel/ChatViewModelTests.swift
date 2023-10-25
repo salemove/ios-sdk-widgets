@@ -367,7 +367,7 @@ class ChatViewModelTests: XCTestCase {
         // we use the mocked one, which doesn't execute the completion,
         // `sendMessageWithAttachment` will not be executed.
         environment.coreSdk.configureWithConfiguration = { _, completion in
-            completion?()
+            completion(.success(()))
         }
 
         let viewModel: ChatViewModel = .mock(
@@ -595,7 +595,7 @@ class ChatViewModelTests: XCTestCase {
         let interactor = Interactor.failing
         interactor.environment.gcd.mainQueue.asyncIfNeeded = { $0() }
         interactor.environment.coreSdk.configureWithInteractor = { _ in }
-        interactor.environment.coreSdk.configureWithConfiguration = { _, callback in callback?() }
+        interactor.environment.coreSdk.configureWithConfiguration = { _, callback in callback(.success(())) }
         interactor.environment.coreSdk.sendMessagePreview = { _, _ in }
         interactor.environment.coreSdk.sendMessageWithMessagePayload = { _, completion in
             completion(.success(.mock(id: expectedMessageId)))
@@ -645,7 +645,7 @@ class ChatViewModelTests: XCTestCase {
         let interactor = Interactor.failing
         interactor.environment.gcd.mainQueue.asyncIfNeeded = { $0() }
         interactor.environment.coreSdk.configureWithInteractor = { _ in }
-        interactor.environment.coreSdk.configureWithConfiguration = { _, callback in callback?() }
+        interactor.environment.coreSdk.configureWithConfiguration = { _, callback in callback(.success(())) }
         interactor.environment.coreSdk.sendMessagePreview = { _, _ in }
         interactor.environment.coreSdk.sendMessageWithMessagePayload = { [weak viewModel] _, completion in
             // Deliver message via socket before REST API response.
