@@ -22,5 +22,6 @@ extension EngagementViewModel {
         var fileUploadListStyle: FileUploadListStyle
         var createFileUploadListModel: SecureConversations.FileUploadListViewModel.Create
         var createSendMessagePayload: CoreSdkClient.CreateSendMessagePayload
+        var proximityManager: ProximityManager
     }
 }

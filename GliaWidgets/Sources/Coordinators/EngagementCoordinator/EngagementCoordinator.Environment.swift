@@ -19,7 +19,6 @@ extension EngagementCoordinator {
         var submitSurveyAnswer: CoreSdkClient.SubmitSurveyAnswer
         var uiApplication: UIKitBased.UIApplication
         var uiScreen: UIKitBased.UIScreen
-        var uiDevice: UIKitBased.UIDevice
         var notificationCenter: FoundationBased.NotificationCenter
         var fetchChatHistory: CoreSdkClient.FetchChatHistory
         var listQueues: CoreSdkClient.ListQueues
@@ -37,5 +36,6 @@ extension EngagementCoordinator {
         var pushNotifications: CoreSdkClient.PushNotifications
         var createSendMessagePayload: CoreSdkClient.CreateSendMessagePayload
         var orientationManager: OrientationManager
+        var proximityManager: ProximityManager
     }
 }

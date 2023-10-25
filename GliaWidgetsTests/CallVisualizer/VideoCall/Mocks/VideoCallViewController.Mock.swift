@@ -2,12 +2,9 @@
 
 extension CallVisualizer.VideoCallViewController {
     static func mock(
-        props: Props = .init(videoCallViewProps: .mock()),
+        props: Props = .init(videoCallViewProps: .mock(), viewDidLoad: .nop),
         environment: CallVisualizer.VideoCallViewController.Environment = .init(
             videoCallView: .mock,
-            uiApplication: .mock,
-            uiScreen: .mock,
-            uiDevice: .mock,
             notificationCenter: .mock
         )
     ) -> CallVisualizer.VideoCallViewController {

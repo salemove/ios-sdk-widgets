@@ -21,5 +21,6 @@ extension CallVisualizer.Coordinator {
         var engagedOperator: () -> CoreSdkClient.Operator?
         var eventHandler: (DelegateEvent) -> Void
         var orientationManager: OrientationManager
+        var proximityManager: ProximityManager
     }
 }

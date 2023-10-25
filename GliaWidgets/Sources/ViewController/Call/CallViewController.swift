@@ -3,7 +3,6 @@ import UIKit
 final class CallViewController: EngagementViewController {
     private let viewModel: CallViewModel
     private let environment: Environment
-    private var proximityManager: ProximityManager?
 
     init(viewModel: CallViewModel, viewFactory: ViewFactory, environment: Environment) {
         self.environment = environment
@@ -13,7 +12,6 @@ final class CallViewController: EngagementViewController {
 
     deinit {
         environment.notificationCenter.removeObserver(self)
-        proximityManager?.stop()
     }
 
     override public func loadView() {
@@ -30,17 +28,7 @@ final class CallViewController: EngagementViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        proximityManager = .init(
-            view: self.view,
-            environment: .init(
-                uiApplication: environment.uiApplication,
-                uiDevice: environment.uiDevice,
-                uiScreen: environment.uiScreen,
-                notificationCenter: environment.notificationCenter
-            )
-        )
         viewModel.event(.viewDidLoad)
-        proximityManager?.start()
 
         environment.notificationCenter.addObserver(
             self,
@@ -189,9 +177,6 @@ private extension CallButton.State {
 
 extension CallViewController {
     struct Environment {
-        var uiApplication: UIKitBased.UIApplication
-        var uiScreen: UIKitBased.UIScreen
-        var uiDevice: UIKitBased.UIDevice
         var notificationCenter: FoundationBased.NotificationCenter
     }
 }

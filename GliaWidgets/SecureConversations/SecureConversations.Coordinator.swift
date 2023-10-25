@@ -281,7 +281,8 @@ extension SecureConversations.Coordinator {
                 interactor: environment.interactor,
                 startSocketObservation: environment.startSocketObservation,
                 stopSocketObservation: environment.stopSocketObservation,
-                createSendMessagePayload: environment.createSendMessagePayload
+                createSendMessagePayload: environment.createSendMessagePayload,
+                proximityManager: environment.proximityManager
             ),
             startWithSecureTranscriptFlow: true
         )
@@ -321,7 +322,6 @@ extension SecureConversations.Coordinator {
         var uuid: () -> UUID
         var uiApplication: UIKitBased.UIApplication
         var uiScreen: UIKitBased.UIScreen
-        var uiDevice: UIKitBased.UIDevice
         var notificationCenter: FoundationBased.NotificationCenter
         var createFileUploadListModel: SecureConversations.FileUploadListViewModel.Create
         var viewFactory: ViewFactory
@@ -348,6 +348,7 @@ extension SecureConversations.Coordinator {
         var stopSocketObservation: CoreSdkClient.StopSocketObservation
         var createSendMessagePayload: CoreSdkClient.CreateSendMessagePayload
         var orientationManager: OrientationManager
+        var proximityManager: ProximityManager
     }
 
     enum DelegateEvent {

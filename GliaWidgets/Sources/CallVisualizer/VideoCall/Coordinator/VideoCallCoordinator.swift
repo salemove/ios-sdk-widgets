@@ -44,7 +44,8 @@ extension CallVisualizer {
                     notificationCenter: environment.notificationCenter,
                     date: environment.date,
                     engagedOperator: environment.engagedOperator,
-                    screenShareHandler: environment.screenShareHandler
+                    screenShareHandler: environment.screenShareHandler,
+                    proximityManager: environment.proximityManager
                 ),
                 call: call
             )
@@ -57,9 +58,6 @@ extension CallVisualizer {
                         gcd: environment.gcd,
                         uiScreen: environment.uiScreen
                     ),
-                    uiApplication: environment.uiApplication,
-                    uiScreen: environment.uiScreen,
-                    uiDevice: environment.uiDevice,
                     notificationCenter: environment.notificationCenter
                 )
             )

@@ -130,6 +130,10 @@ extension CallVisualizer {
                 object: nil
             )
         }
+
+        deinit {
+            environment.proximityManager.stop()
+        }
     }
 }
 
@@ -180,7 +184,10 @@ extension CallVisualizer.VideoCallViewModel {
                     ),
                     style: style.header
                 )
-            )
+            ),
+            viewDidLoad: .init { [weak self] in
+                self?.environment.proximityManager.start()
+            }
         )
     }
 
