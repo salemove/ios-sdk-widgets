@@ -37,9 +37,10 @@ final class GliaTests: XCTestCase {
 
     func test__deprecated_start_passes_all_arguments_to_interactor() throws {
         var gliaEnv = Glia.Environment.failing
-        gliaEnv.uiDevice.isProximityMonitoringEnabled = { _ in }
-        gliaEnv.uiScreen.brightness = { 0 }
-        gliaEnv.uiApplication.isIdleTimerDisabled = { _ in }
+        var proximityManagerEnv = ProximityManager.Environment.failing
+        proximityManagerEnv.uiDevice.isProximityMonitoringEnabled = { _ in }
+        proximityManagerEnv.uiApplication.isIdleTimerDisabled = { _ in }
+        gliaEnv.proximityManager = .init(environment: proximityManagerEnv)
         gliaEnv.notificationCenter.removeObserverClosure = { _ in }
         gliaEnv.notificationCenter.removeObserverWithNameAndObject = { _, _, _ in }
         gliaEnv.notificationCenter.addObserverClosure = { _, _, _, _ in }
@@ -95,15 +96,12 @@ final class GliaTests: XCTestCase {
         }
 
         let sdk = Glia(environment: gliaEnv)
-        let kind = EngagementKind.audioCall
-        let queueID = "queueID"
-        let visitorContext = VisitorContext.mock()
 
         try sdk.start(
-            kind,
+            .audioCall,
             configuration: .mock(),
-            queueID: queueID,
-            visitorContext: visitorContext,
+            queueID: "queueID",
+            visitorContext: .mock(),
             theme: expectedTheme,
             features: .all,
             sceneProvider: expectedSceneProvider
@@ -212,6 +210,10 @@ final class GliaTests: XCTestCase {
         var calls = [Call]()
 
         var gliaEnv = Glia.Environment.failing
+        var proximityManagerEnv = ProximityManager.Environment.failing
+        proximityManagerEnv.uiDevice.isProximityMonitoringEnabled = { _ in }
+        proximityManagerEnv.uiApplication.isIdleTimerDisabled = { _ in }
+        gliaEnv.proximityManager = .init(environment: proximityManagerEnv)
         gliaEnv.uuid = { .mock }
         gliaEnv.uiApplication.windows = { [] }
         gliaEnv.callVisualizerPresenter = .init(presenter: { nil })
@@ -321,8 +323,7 @@ final class GliaTests: XCTestCase {
 
     func test_engagementCoordinatorGetsDeallocated() throws {
         var environment = Glia.Environment.failing
-        environment.coreSDKConfigurator.configureWithConfiguration = {
-            _, callback in
+        environment.coreSDKConfigurator.configureWithConfiguration = { _, callback in
             callback?()
         }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }

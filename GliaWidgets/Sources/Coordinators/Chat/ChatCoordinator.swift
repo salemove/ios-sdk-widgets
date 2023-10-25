@@ -220,7 +220,8 @@ extension ChatCoordinator {
             fetchChatHistory: environment.fetchChatHistory,
             fileUploadListStyle: viewFactory.theme.chatStyle.messageEntry.uploadList,
             createFileUploadListModel: environment.createFileUploadListModel,
-            createSendMessagePayload: environment.createSendMessagePayload
+            createSendMessagePayload: environment.createSendMessagePayload,
+            proximityManager: environment.proximityManager
         )
     }
 }

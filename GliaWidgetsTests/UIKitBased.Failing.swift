@@ -38,14 +38,6 @@ extension UIKitBased.UIApplication {
 
 extension UIKitBased.UIScreen {
     static let failing = Self(
-        brightness: {
-            fail("\(Self.self).brightness")
-            return 0.0
-        },
-        setBrightness: { _ in
-            fail("\(Self.self).setBrightness")
-            return
-        },
         bounds: {
             fail("\(Self.self).bounds")
             return CGRect()

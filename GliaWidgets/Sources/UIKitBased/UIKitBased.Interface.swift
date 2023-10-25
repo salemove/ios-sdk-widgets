@@ -21,8 +21,6 @@ enum UIKitBased {
     }
 
     struct UIScreen {
-        var brightness: () -> CGFloat
-        var setBrightness: (CGFloat) -> Void
         var bounds: () -> CGRect
         var scale: () -> CGFloat
     }

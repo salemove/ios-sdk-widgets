@@ -137,7 +137,6 @@ extension Glia {
                 submitSurveyAnswer: environment.coreSdk.submitSurveyAnswer,
                 uiApplication: environment.uiApplication,
                 uiScreen: environment.uiScreen,
-                uiDevice: environment.uiDevice,
                 notificationCenter: environment.notificationCenter,
                 fetchChatHistory: environment.coreSdk.fetchChatHistory,
                 listQueues: environment.coreSdk.listQueues,
@@ -161,7 +160,8 @@ extension Glia {
                 stopSocketObservation: environment.coreSdk.stopSocketObservation,
                 pushNotifications: environment.coreSdk.pushNotifications,
                 createSendMessagePayload: environment.coreSdk.createSendMessagePayload,
-                orientationManager: environment.orientationManager
+                orientationManager: environment.orientationManager,
+                proximityManager: environment.proximityManager
             )
         )
         rootCoordinator?.delegate = { [weak self] event in

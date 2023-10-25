@@ -255,7 +255,8 @@ extension EngagementCoordinator {
                 interactor: interactor,
                 startSocketObservation: environment.startSocketObservation,
                 stopSocketObservation: environment.stopSocketObservation,
-                createSendMessagePayload: environment.createSendMessagePayload
+                createSendMessagePayload: environment.createSendMessagePayload,
+                proximityManager: environment.proximityManager
             ),
             startWithSecureTranscriptFlow: false
         )
@@ -343,11 +344,11 @@ extension EngagementCoordinator {
                 uuid: environment.uuid,
                 uiApplication: environment.uiApplication,
                 uiScreen: environment.uiScreen,
-                uiDevice: environment.uiDevice,
                 notificationCenter: environment.notificationCenter,
                 fetchChatHistory: environment.fetchChatHistory,
                 createFileUploadListModel: environment.createFileUploadListModel,
-                createSendMessagePayload: environment.createSendMessagePayload
+                createSendMessagePayload: environment.createSendMessagePayload,
+                proximityManager: environment.proximityManager
             )
         )
         coordinator.delegate = { [weak self] event in
@@ -453,7 +454,6 @@ extension EngagementCoordinator {
                 uuid: environment.uuid,
                 uiApplication: environment.uiApplication,
                 uiScreen: environment.uiScreen,
-                uiDevice: environment.uiDevice,
                 notificationCenter: environment.notificationCenter,
                 createFileUploadListModel: environment.createFileUploadListModel,
                 viewFactory: viewFactory,
@@ -479,7 +479,8 @@ extension EngagementCoordinator {
                 startSocketObservation: environment.startSocketObservation,
                 stopSocketObservation: environment.stopSocketObservation,
                 createSendMessagePayload: environment.createSendMessagePayload,
-                orientationManager: environment.orientationManager
+                orientationManager: environment.orientationManager,
+                proximityManager: environment.proximityManager
             )
         )
 

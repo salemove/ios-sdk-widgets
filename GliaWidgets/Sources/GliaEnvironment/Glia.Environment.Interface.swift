@@ -46,6 +46,7 @@ extension Glia {
         var messagesWithUnreadCountLoaderScheduler: CoreSdkClient.ReactiveSwift.DateScheduler
         var orientationManager: OrientationManager
         var coreSDKConfigurator: CoreSDKConfigurator
+        var proximityManager: ProximityManager
     }
 }
 

@@ -25,8 +25,6 @@ extension UIKitBased.UIDevice {
 
 extension UIKitBased.UIScreen {
     static let live = Self.init(
-        brightness: { UIScreen.main.brightness },
-        setBrightness: { UIScreen.main.brightness = $0 },
         bounds: { UIScreen.main.bounds },
         scale: { UIScreen.main.scale }
     )

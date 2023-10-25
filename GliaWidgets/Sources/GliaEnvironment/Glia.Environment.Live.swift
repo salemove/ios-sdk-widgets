@@ -33,7 +33,11 @@ extension Glia.Environment {
             uiDevice: .live,
             notificationCenter: .live
         )),
-        coreSDKConfigurator: .create(coreSdk: .live)
+        coreSDKConfigurator: .create(coreSdk: .live),
+        proximityManager: .init(environment: .init(
+            uiApplication: .live,
+            uiDevice: .live
+        ))
     )
 }
 

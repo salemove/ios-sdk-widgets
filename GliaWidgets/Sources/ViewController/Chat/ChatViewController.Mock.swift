@@ -63,7 +63,6 @@ extension ChatViewController {
         let messageId = { messageUuid().uuidString }
         let fileUuid = UUID.incrementing
         let fileId = { fileUuid().uuidString }
-        let queueId = UUID.mock.uuidString
         let operatorAttachmentURL = URL.mock.appendingPathComponent("image").appendingPathExtension("png")
 
         let messages: [ChatMessage] = [
@@ -320,7 +319,6 @@ extension ChatViewController {
         chatViewModelEnv.loadChatMessagesFromHistory = { true }
         let messageUuid = UUID.incrementing
         let messageId = { messageUuid().uuidString }
-        let queueId = UUID.mock.uuidString
 
         let options = [
             ChatChoiceCardOption(with: try .mock(text: "Four", value: "ruof")),
@@ -373,7 +371,6 @@ extension ChatViewController {
 
         let messageUuid = UUID.incrementing
         let messageId = { messageUuid().uuidString }
-        let queueId = UUID.mock.uuidString
 
         let jsonData = mockGvaPersistentButtonJson() ?? Data()
         let metadataContainer = try CoreSdkMessageMetadataContainer(jsonData: jsonData, jsonDecoder: .init())
@@ -420,7 +417,6 @@ extension ChatViewController {
 
         let messageUuid = UUID.incrementing
         let messageId = { messageUuid().uuidString }
-        let queueId = UUID.mock.uuidString
 
         let jsonData = mockGvaResponseTextJson() ?? Data()
         let metadataContainer = try CoreSdkMessageMetadataContainer(jsonData: jsonData, jsonDecoder: .init())
@@ -467,7 +463,6 @@ extension ChatViewController {
 
         let messageUuid = UUID.incrementing
         let messageId = { messageUuid().uuidString }
-        let queueId = UUID.mock.uuidString
 
         let jsonData = mockGvaGalleryCardJson() ?? Data()
         let metadataContainer = try CoreSdkMessageMetadataContainer(jsonData: jsonData, jsonDecoder: .init())
