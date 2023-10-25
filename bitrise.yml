@@ -89,6 +89,7 @@ workflows:
     - cache-push@2: {}
     after_run:
     - _increment_project_version
+    - increment_widgets_version_in_cortex_financial
   development-build:
     steps:
     - activate-ssh-key@4:
@@ -126,6 +127,40 @@ workflows:
         - webhook_url: $SLACK_IOS_WEBHOOK
     - cache-push@2: {}
     description: Workflow for creating builds of development branch. Triggered on each push to development branch, notifies over email + Slack (external)
+  increment_widgets_version_in_cortex_financial:
+    steps:
+    - script@1:
+        inputs:
+        - content: |-
+            #!/usr/bin/env bash
+            # fail if any commands fails
+            set -e
+            # make pipelines' return status equal the last command to exit with a non-zero status, or zero if all commands exit successfully
+            set -o pipefail
+            # debug log
+            set -x
+
+            curl https://app.bitrise.io/app/$CORTEX_DEMO_APP_SLUG/build/start.json -L --data \
+            '{
+                "hook_info": {
+                    "type": "bitrise",
+                    "build_trigger_token": "'"$CORTEX_DEMO_BUILD_TRIGGER_TOKEN"'"
+                },
+                "build_params": {
+                    "branch": "master",
+                    "workflow_id": "update_dependencies",
+                    "environments": [{
+                        "mapped_to": "VERSION",
+                        "value": "'"$NEW_VERSION"'",
+                        "is_expand": false
+                    }]
+                },
+                "triggered_by":"curl"
+            }'
+    envs:
+    - opts:
+        is_expand: false
+      VERSION_INCREMENT_TYPE: patch
   pull-request:
     steps:
     - activate-ssh-key@4:
