@@ -59,6 +59,10 @@ class CallViewModel: EngagementViewModel, ViewModel {
         }
     }
 
+    deinit {
+        environment.proximityManager.stop()
+    }
+
     func event(_ event: Event) {
         switch event {
         case .viewDidLoad:
@@ -71,6 +75,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
     override func start() {
         super.start()
 
+        environment.proximityManager.start()
         update(for: call.kind.value)
 
         // In the case when SDK is configured once and then

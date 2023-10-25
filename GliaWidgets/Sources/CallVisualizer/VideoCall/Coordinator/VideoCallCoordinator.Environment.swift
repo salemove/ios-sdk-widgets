@@ -14,5 +14,6 @@ extension CallVisualizer.VideoCallCoordinator {
         var date: () -> Date
         var engagedOperator: () -> CoreSdkClient.Operator?
         var screenShareHandler: ScreenShareHandler
+        var proximityManager: ProximityManager
     }
 }

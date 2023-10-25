@@ -36,8 +36,6 @@ extension UIKitBased.UIDevice {
 
 extension UIKitBased.UIScreen {
     static let mock = Self.init(
-        brightness: { .init() },
-        setBrightness: { _ in },
         bounds: { UIScreen.main.bounds },
         scale: { .init() }
     )

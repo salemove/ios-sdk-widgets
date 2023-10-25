@@ -39,9 +39,8 @@ extension EngagementCoordinator.Environment {
         },
         uiApplication: .failing,
         uiScreen: .failing,
-        uiDevice: .failing,
         notificationCenter: .failing,
-        fetchChatHistory: { _ in fail("\(Self.self).fetchChatHistory")},
+        fetchChatHistory: { _ in fail("\(Self.self).fetchChatHistory") },
         listQueues: { _ in fail("\(Self.self).listQueues") },
         sendSecureMessagePayload: { _, _, _ in
             fail("\(Self.self).sendSecureMessagePayload")
@@ -85,7 +84,8 @@ extension EngagementCoordinator.Environment {
         createSendMessagePayload: { _, _ in
             fail("\(Self.self).createSendMessagePayload")
             return .mock()
-        }, 
-        orientationManager: .mock()
+        },
+        orientationManager: .mock(),
+        proximityManager: .failing
     )
 }

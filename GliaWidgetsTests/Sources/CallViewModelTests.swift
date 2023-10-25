@@ -347,4 +347,42 @@ class CallViewModelTests: XCTestCase {
 
         XCTAssertEqual(call.state.value, .none)
     }
+
+    func test_proximityManagerStartsAndStops() {
+        enum Call: Equatable { case isIdleTimerDisabled(Bool), isProximityMonitoringEnabled(Bool) }
+        var calls: [Call] = []
+        var env = CallViewModel.Environment.failing()
+        var proximityManagerEnv = ProximityManager.Environment.failing
+        proximityManagerEnv.uiApplication.isIdleTimerDisabled = { value in
+            calls.append(.isIdleTimerDisabled(value))
+        }
+        proximityManagerEnv.uiDevice.isProximityMonitoringEnabled = { value in
+            calls.append(.isProximityMonitoringEnabled(value))
+        }
+        env.proximityManager = .init(environment: proximityManagerEnv)
+        viewModel = .init(
+            interactor: .mock(),
+            alertConfiguration: .mock(),
+            screenShareHandler: .mock,
+            environment: env,
+            call: .mock(),
+            unreadMessages: .init(with: 0),
+            startWith: .engagement(mediaType: .video)
+        )
+
+        viewModel.event(.viewDidLoad)
+
+        XCTAssertEqual(calls, [
+            .isIdleTimerDisabled(true),
+            .isProximityMonitoringEnabled(true)
+        ])
+
+        viewModel = nil
+        XCTAssertEqual(calls, [
+            .isIdleTimerDisabled(true),
+            .isProximityMonitoringEnabled(true),
+            .isIdleTimerDisabled(false),
+            .isProximityMonitoringEnabled(false)
+        ])
+    }
 }

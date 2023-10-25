@@ -10,9 +10,6 @@ class CallViewControllerTests: XCTestCase {
                 viewModel: CallViewModel.mock(environment: CallViewModel.Environment.mock),
                 viewFactory: ViewFactory.mock(),
                 environment: .init(
-                    uiApplication: .mock,
-                    uiScreen: .mock,
-                    uiDevice: .mock,
                     notificationCenter: .mock
                 )
             )

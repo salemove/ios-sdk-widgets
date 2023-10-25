@@ -4,7 +4,6 @@ extension CallVisualizer {
     final class VideoCallViewController: UIViewController {
         private let videoCallView: VideoCallView
         private let environment: Environment
-        private var proximityManager: ProximityManager?
 
         var props: Props {
             didSet {
@@ -24,10 +23,6 @@ extension CallVisualizer {
             super.init(nibName: nil, bundle: nil)
         }
 
-        deinit {
-            proximityManager?.stop()
-        }
-
         // MARK: - Required
 
         required init?(coder: NSCoder) {
@@ -42,16 +37,7 @@ extension CallVisualizer {
 
         override func viewDidLoad() {
             super.viewDidLoad()
-            proximityManager = .init(
-                view: self.view,
-                environment: .init(
-                    uiApplication: environment.uiApplication,
-                    uiDevice: environment.uiDevice,
-                    uiScreen: environment.uiScreen,
-                    notificationCenter: environment.notificationCenter
-                )
-            )
-            proximityManager?.start()
+            props.viewDidLoad()
         }
     }
 }
@@ -61,6 +47,7 @@ extension CallVisualizer {
 extension CallVisualizer.VideoCallViewController {
     struct Props: Equatable {
         let videoCallViewProps: CallVisualizer.VideoCallView.Props
+        let viewDidLoad: Cmd
     }
 }
 
@@ -69,9 +56,6 @@ extension CallVisualizer.VideoCallViewController {
 extension CallVisualizer.VideoCallViewController {
     struct Environment {
         var videoCallView: CallVisualizer.VideoCallView.Environment
-        var uiApplication: UIKitBased.UIApplication
-        var uiScreen: UIKitBased.UIScreen
-        var uiDevice: UIKitBased.UIDevice
         var notificationCenter: FoundationBased.NotificationCenter
     }
 }

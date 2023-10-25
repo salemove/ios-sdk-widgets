@@ -18,7 +18,6 @@ extension EngagementCoordinator.Environment {
         submitSurveyAnswer: { _, _, _, _ in },
         uiApplication: .mock,
         uiScreen: .mock,
-        uiDevice: .mock,
         notificationCenter: .mock,
         fetchChatHistory: { _ in },
         listQueues: { _ in },
@@ -35,7 +34,8 @@ extension EngagementCoordinator.Environment {
         stopSocketObservation: {},
         pushNotifications: .mock,
         createSendMessagePayload: { _, _ in .mock() },
-        orientationManager: .mock()
+        orientationManager: .mock(),
+        proximityManager: .mock
     )
 }
 #endif

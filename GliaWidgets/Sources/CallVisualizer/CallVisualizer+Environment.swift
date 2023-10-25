@@ -24,5 +24,6 @@ extension CallVisualizer {
         var getCurrentEngagement: CoreSdkClient.GetCurrentEngagement
         var eventHandler: ((GliaEvent) -> Void)?
         var orientationManager: OrientationManager
+        var proximityManager: ProximityManager
     }
 }

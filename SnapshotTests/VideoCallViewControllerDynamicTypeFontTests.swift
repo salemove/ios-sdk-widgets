@@ -46,7 +46,10 @@ final class VideoCallViewControllerDynamicTypeFontTests: SnapshotTestCase {
                 backButton: .init(style: .mock(image: Asset.back.image))
             )
         )
-        let props: CallVisualizer.VideoCallViewController.Props = .init(videoCallViewProps: videoCallViewProps)
+        let props: CallVisualizer.VideoCallViewController.Props = .init(
+            videoCallViewProps: videoCallViewProps,
+            viewDidLoad: .nop
+        )
 
         let viewController: CallVisualizer.VideoCallViewController = .mock(props: props)
         viewController.assertSnapshot(as: .extra3LargeFont, in: .portrait)

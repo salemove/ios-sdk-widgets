@@ -1,4 +1,3 @@
-
 #if DEBUG
 
 extension CallVisualizer.VideoCallViewModel.Environment {
@@ -12,7 +11,8 @@ extension CallVisualizer.VideoCallViewModel.Environment {
         notificationCenter: .mock,
         date: { .mock },
         engagedOperator: { .mock() },
-        screenShareHandler: .mock
+        screenShareHandler: .mock,
+        proximityManager: .mock
     )
 }
 

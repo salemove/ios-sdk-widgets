@@ -61,7 +61,8 @@ class ChatViewModelTests: XCTestCase {
                         calls.append(.sendSelectedOptionValue)
                     }
                     return .mock()
-                }
+                },
+                proximityManager: .mock
             )
         )
 
@@ -111,7 +112,7 @@ class ChatViewModelTests: XCTestCase {
         )
         XCTAssertEqual(chatType, .nonAuthenticated)
     }
-    
+
     func test_onInteractorStateEngagedClearsChatQueueSection() throws {
         var viewModelEnv = ChatViewModel.Environment.failing()
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
@@ -129,7 +130,7 @@ class ChatViewModelTests: XCTestCase {
         viewModel.update(for: .engaged(mockOperator))
         XCTAssertEqual(0, viewModel.numberOfItems(in: queueSectionIndex))
     }
-    
+
     func test_onEngagementTransferringAddsTransferringItemToTheEndOfChat() throws {
         var interactorEnv: Interactor.Environment = .failing
         interactorEnv.gcd.mainQueue.asyncIfNeeded = { $0() }
@@ -139,10 +140,10 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
         viewModelEnv.loadChatMessagesFromHistory = { true }
         viewModelEnv.fetchSiteConfigurations = { _ in }
-        
+
         let interactor: Interactor = .mock(environment: interactorEnv)
         let viewModel: ChatViewModel = .mock(interactor: interactor, environment: viewModelEnv)
-        
+
         interactor.onEngagementTransferring()
 
         let lastSectionIndex = viewModel.numberOfSections - 1
@@ -151,7 +152,7 @@ class ChatViewModelTests: XCTestCase {
 
         XCTAssertEqual(lastItemKind, .transferring)
     }
-    
+
     func test_onEngagementTransferRemovesTransferringItemFromChat() throws {
         var interactorEnv: Interactor.Environment = .failing
         interactorEnv.gcd.mainQueue.asyncIfNeeded = { $0() }
@@ -164,7 +165,7 @@ class ChatViewModelTests: XCTestCase {
 
         let interactor: Interactor = .mock(environment: interactorEnv)
         let viewModel: ChatViewModel = .mock(interactor: interactor, environment: viewModelEnv)
-        
+
         interactor.onEngagementTransferring()
 
         let lastSectionIndex = viewModel.numberOfSections - 1
@@ -178,7 +179,7 @@ class ChatViewModelTests: XCTestCase {
 
         XCTAssertFalse(viewModel.messagesSection.items.contains(where: { $0.kind == .transferring }))
     }
-    
+
     func test_onEngagementTransferAddsOperatorConnectedChatItemToTheEndOfChat() throws {
         var interactorEnv: Interactor.Environment = .failing
         interactorEnv.gcd.mainQueue.asyncIfNeeded = { $0() }
@@ -258,7 +259,7 @@ class ChatViewModelTests: XCTestCase {
         // Then
         XCTAssertEqual(calls, [.fetchSiteConfigurations])
 	}
-    
+
     func test_handleUrlWithPhoneOpensURLWithUIApplication() throws {
         enum Call: Equatable { case openUrl(URL) }
 
@@ -278,7 +279,7 @@ class ChatViewModelTests: XCTestCase {
 
         XCTAssertEqual(calls, [.openUrl(telUrl)])
     }
-    
+
     func test_handleUrlWithEmailOpensURLWithUIApplication() throws {
         enum Call: Equatable { case openUrl(URL) }
 
@@ -293,12 +294,12 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.createFileUploadListModel = { _ in .mock() }
         let viewModel: ChatViewModel = .mock(interactor: .mock(), environment: viewModelEnv)
 
-        let mailUrl = URL(string: "mailto:mock@mock.mock")!
+        let mailUrl = try XCTUnwrap(URL(string: "mailto:mock@mock.mock"))
         viewModel.linkTapped(mailUrl)
 
         XCTAssertEqual(calls, [.openUrl(mailUrl)])
     }
-    
+
     func test_handleUrlWithLinkOpensCalsLinkTapped() throws {
         enum Call: Equatable { case canOpen(URL), open(URL) }
         var calls: [Call] = []
@@ -318,7 +319,7 @@ class ChatViewModelTests: XCTestCase {
             environment: viewModelEnv
         )
 
-        let linkUrl = URL(string: "https://mock.mock")!
+        let linkUrl = try XCTUnwrap(URL(string: "https://mock.mock"))
         viewModel.linkTapped(linkUrl)
 
         XCTAssertEqual(calls, [.canOpen(linkUrl), .open(linkUrl)])
@@ -326,7 +327,7 @@ class ChatViewModelTests: XCTestCase {
 
     func test_handleUrlWithRandomScheme() throws {
         enum Call: Equatable { case canOpen(URL), open(URL) }
-    
+
         var calls: [Call] = []
         var viewModelEnv = ChatViewModel.Environment.failing()
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
@@ -340,7 +341,7 @@ class ChatViewModelTests: XCTestCase {
             calls.append(.open($0))
         }
         let viewModel: ChatViewModel = .mock(interactor: .mock(), environment: viewModelEnv)
-    
+
         let mockUrl = try XCTUnwrap(URL(string: "mock://mock"))
         viewModel.linkTapped(mockUrl)
 
@@ -403,7 +404,7 @@ class ChatViewModelTests: XCTestCase {
         typealias FileUploadListViewModel = SecureConversations.FileUploadListViewModel
         var fileManager = FoundationBased.FileManager.failing
         fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
-        fileManager.createDirectoryAtUrlWithIntermediateDirectories =  { _, _, _ in }
+        fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
 
         var transcriptModelEnv = TranscriptModel.Environment.failing
         transcriptModelEnv.fileManager = fileManager
