@@ -81,7 +81,8 @@ private extension CallCoordinator {
                 fetchChatHistory: environment.fetchChatHistory,
                 fileUploadListStyle: viewFactory.theme.chatStyle.messageEntry.uploadList,
                 createFileUploadListModel: environment.createFileUploadListModel,
-                createSendMessagePayload: environment.createSendMessagePayload
+                createSendMessagePayload: environment.createSendMessagePayload,
+                proximityManager: environment.proximityManager
             ),
             call: call,
             unreadMessages: unreadMessages,
@@ -97,9 +98,6 @@ private extension CallCoordinator {
             viewModel: viewModel,
             viewFactory: viewFactory,
             environment: .init(
-                uiApplication: environment.uiApplication,
-                uiScreen: environment.uiScreen,
-                uiDevice: environment.uiDevice,
                 notificationCenter: environment.notificationCenter
             )
         )
@@ -147,10 +145,10 @@ extension CallCoordinator {
         var uuid: () -> UUID
         var uiApplication: UIKitBased.UIApplication
         var uiScreen: UIKitBased.UIScreen
-        var uiDevice: UIKitBased.UIDevice
         var notificationCenter: FoundationBased.NotificationCenter
         var fetchChatHistory: CoreSdkClient.FetchChatHistory
         var createFileUploadListModel: SecureConversations.FileUploadListViewModel.Create
         var createSendMessagePayload: CoreSdkClient.CreateSendMessagePayload
+        var proximityManager: ProximityManager
     }
 }

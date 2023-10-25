@@ -80,6 +80,37 @@ final class VideoCallTests: XCTestCase {
 
         XCTAssertTrue(props.videoCallViewProps.endScreenShareButtonHidden)
     }
+
+    func test_proximityManagerStartsAndStops() {
+        enum Call: Equatable { case isIdleTimerDisabled(Bool), isProximityMonitoringEnabled(Bool) }
+        var calls: [Call] = []
+        var env = CallVisualizer.VideoCallViewModel.Environment.mock
+        var proximityManagerEnv = ProximityManager.Environment.failing
+        proximityManagerEnv.uiApplication.isIdleTimerDisabled = { value in
+            calls.append(.isIdleTimerDisabled(value))
+        }
+        proximityManagerEnv.uiDevice.isProximityMonitoringEnabled = { value in
+            calls.append(.isProximityMonitoringEnabled(value))
+        }
+        env.proximityManager = .init(environment: proximityManagerEnv)
+        var viewModel: CallVisualizer.VideoCallViewModel? = .mock(environment: env)
+        let props = viewModel?.makeProps()
+
+        props?.viewDidLoad()
+
+        XCTAssertEqual(calls, [
+            .isIdleTimerDisabled(true),
+            .isProximityMonitoringEnabled(true)
+        ])
+
+        viewModel = nil
+        XCTAssertEqual(calls, [
+            .isIdleTimerDisabled(true),
+            .isProximityMonitoringEnabled(true),
+            .isIdleTimerDisabled(false),
+            .isProximityMonitoringEnabled(false)
+        ])
+    }
 }
 
 private extension VideoCallTests {

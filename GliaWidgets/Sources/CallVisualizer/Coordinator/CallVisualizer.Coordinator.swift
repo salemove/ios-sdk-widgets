@@ -214,7 +214,8 @@ extension CallVisualizer {
                     notificationCenter: environment.notificationCenter,
                     date: environment.date,
                     engagedOperator: environment.engagedOperator,
-                    screenShareHandler: environment.screenShareHandler
+                    screenShareHandler: environment.screenShareHandler,
+                    proximityManager: environment.proximityManager
                 ),
                 theme: environment.viewFactory.theme,
                 call: .init(
