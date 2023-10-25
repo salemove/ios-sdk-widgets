@@ -90,19 +90,22 @@ class ViewController: UIViewController {
     }
 
     private func showErrorAlert(using error: Error) {
-        guard let gliaError = error as? GliaError else { return }
+        if let gliaError = error as? GliaError {
 
-        switch gliaError {
-        case GliaError.engagementExists:
-            alert(message: "Failed to start\nEngagement is ongoing, please use 'Resume' button")
-        case GliaError.engagementNotExist:
-            alert(message: "Failed to start\nNo ongoing engagement. Please start a new one with 'Start chat' button")
-        case GliaError.callVisualizerEngagementExists:
-            alert(message: "Failed to start\nCall Visualizer engagement is ongoing")
-        case GliaError.configuringDuringEngagementIsNotAllowed:
-            alert(message: "The operation couldn't be completed. '\(gliaError)'.")
-        default:
-            alert(message: "Failed to start\nCheck Glia parameters in Settings")
+            switch gliaError {
+            case GliaError.engagementExists:
+                alert(message: "Failed to start\nEngagement is ongoing, please use 'Resume' button")
+            case GliaError.engagementNotExist:
+                alert(message: "Failed to start\nNo ongoing engagement. Please start a new one with 'Start chat' button")
+            case GliaError.callVisualizerEngagementExists:
+                alert(message: "Failed to start\nCall Visualizer engagement is ongoing")
+            case GliaError.configuringDuringEngagementIsNotAllowed:
+                alert(message: "The operation couldn't be completed. '\(gliaError)'.")
+            default:
+                alert(message: "Failed to start\nCheck Glia parameters in Settings")
+            }
+        } else {
+            alert(message: "Failed to execute with error: \(error)\nCheck Glia parameters in Settings")
         }
     }
 
@@ -127,15 +130,18 @@ class ViewController: UIViewController {
     }
 
     @IBAction private func endEngagementTapped() {
-        self.catchingError {
-            // Since ending of engagement is possible
-            // only if such engagement exists, we need
-            // to configure SDK, and only then attempt
-            // to end engagement.
-            try Glia.sharedInstance.configure(with: configuration) {
+        // Since ending of engagement is possible
+        // only if such engagement exists, we need
+        // to configure SDK, and only then attempt
+        // to end engagement.
+        configureSDK(uiConfig: nil) { [weak self] result in
+            switch result {
+            case .success:
                 Glia.sharedInstance.endEngagement { result in
                     print("End engagement operation has been executed. Result='\(result)'.")
                 }
+            case let .failure(error):
+                self?.showErrorAlert(using: error)
             }
         }
     }
@@ -237,9 +243,15 @@ extension ViewController {
         do {
             try Glia.sharedInstance.configure(
                 with: configuration
-            ) {
-                completionBlock("SDK has been configured")
-                completion?(.success(()))
+            ) { result in
+                switch result {
+                case .success:
+                    completionBlock("SDK has been configured")
+                    completion?(.success(()))
+                case let .failure(error):
+                    completionBlock(error)
+                    completion?(.failure(error))
+                }
             }
         } catch {
             completionBlock(error)
@@ -288,18 +300,30 @@ extension ViewController {
     }
 
     private func startEngagement(with kind: EngagementKind, config name: String) {
-        try? Glia.sharedInstance.configure(
-            with: configuration,
-            queueId: queueId
-        )
-
         guard let config = retrieveRemoteConfiguration(name) else { return }
 
-        try? Glia.sharedInstance.startEngagementWithConfig(
-            engagement: kind,
-            in: [queueId],
-            uiConfig: config
-        )
+        let startEngagement = {
+            self.catchingError {
+                try Glia.sharedInstance.startEngagementWithConfig(
+                    engagement: kind,
+                    in: [self.queueId],
+                    uiConfig: config
+                )
+            }
+        }
+
+        if autoConfigureSdkToggle.isOn {
+            configureSDK(uiConfig: nil) { [weak self] result in
+                switch result {
+                case .success:
+                    startEngagement()
+                case let .failure(error):
+                    self?.showErrorAlert(using: error)
+                }
+            }
+        } else {
+            startEngagement()
+        }
     }
 
     private func jsonNames() -> [String] {
@@ -379,10 +403,7 @@ extension ViewController {
 
     @IBAction private func toggleAuthentication() {
         catchingError {
-            try Glia.sharedInstance.configure(
-                with: configuration,
-                queueId: queueId
-            ) { [weak self] in
+            try Glia.sharedInstance.configure(with: configuration) { [weak self] in
                 guard let self = self else { return }
                 self.catchingError {
                     let authentication = try Self.authentication()

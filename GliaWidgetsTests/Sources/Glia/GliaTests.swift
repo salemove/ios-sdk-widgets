@@ -52,12 +52,11 @@ final class GliaTests: XCTestCase {
         gliaEnv.createFileUploadListModel = { _ in .mock() }
         gliaEnv.coreSdk.localeProvider.getRemoteString = { _ in nil }
         gliaEnv.coreSdk.authentication = { _ in .mock }
-        gliaEnv.coreSdk.configureWithConfiguration = { _, callback in callback?() }
         gliaEnv.coreSdk.queueForEngagement = { _, callback in
             callback(.success(.mock))
         }
         gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
-            completion?()
+            completion(.success(()))
         }
         gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
 
@@ -130,7 +129,7 @@ final class GliaTests: XCTestCase {
         var gliaEnv = Glia.Environment.failing
         gliaEnv.gcd.mainQueue.asyncIfNeeded = { callback in callback() }
         gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
-            completion?()
+            completion(.success(()))
         }
         gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
 
@@ -138,7 +137,7 @@ final class GliaTests: XCTestCase {
         sdk.onEvent = {
             calls.append(.onEvent($0))
         }
-        try sdk.configure(with: .mock())
+        try sdk.configure(with: .mock()) {}
         sdk.callVisualizer.delegate?(.visitorCodeIsRequested)
         sdk.environment.coreSdk.getCurrentEngagement = { .mock(source: .callVisualizer) }
 
@@ -158,7 +157,7 @@ final class GliaTests: XCTestCase {
         gliaEnv.coreSdk.configureWithConfiguration = { _, _ in }
         gliaEnv.gcd.mainQueue.asyncIfNeeded = { callback in callback() }
         gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
-            completion?()
+            completion(.success(()))
         }
         gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
 
@@ -166,7 +165,7 @@ final class GliaTests: XCTestCase {
         sdk.onEvent = {
             calls.append(.onEvent($0))
         }
-        try sdk.configure(with: .mock())
+        try sdk.configure(with: .mock()) {}
         sdk.callVisualizer.delegate?(.visitorCodeIsRequested)
 
         sdk.environment.coreSdk.getCurrentEngagement = { .mock(source: .callVisualizer) }
@@ -185,7 +184,7 @@ final class GliaTests: XCTestCase {
         gliaEnv.callVisualizerPresenter = .init(presenter: { nil })
         gliaEnv.gcd.mainQueue.asyncIfNeeded = { callback in callback() }
         gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
-            completion?()
+            completion(.success(()))
         }
         gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
 
@@ -193,7 +192,7 @@ final class GliaTests: XCTestCase {
         sdk.onEvent = {
             calls.append(.onEvent($0))
         }
-        try sdk.configure(with: .mock())
+        try sdk.configure(with: .mock()) {}
         sdk.callVisualizer.delegate?(.visitorCodeIsRequested)
         sdk.environment.coreSdk.getCurrentEngagement = { .mock(source: .callVisualizer) }
 
@@ -220,7 +219,7 @@ final class GliaTests: XCTestCase {
         gliaEnv.gcd.mainQueue.asyncIfNeeded = { callback in callback() }
         gliaEnv.notificationCenter.addObserverClosure = { _, _, _, _ in }
         gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
-            completion?()
+            completion(.success(()))
         }
         gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
 
@@ -228,7 +227,7 @@ final class GliaTests: XCTestCase {
         sdk.onEvent = {
             calls.append(.onEvent($0))
         }
-        try sdk.configure(with: .mock())
+        try sdk.configure(with: .mock()) {}
         sdk.callVisualizer.delegate?(.visitorCodeIsRequested)
         sdk.environment.coreSdk.getCurrentEngagement = { .mock(source: .callVisualizer) }
 
@@ -243,7 +242,7 @@ final class GliaTests: XCTestCase {
         environment.coreSdk.getCurrentEngagement = { .mock() }
         let sdk = Glia(environment: environment)
 
-        XCTAssertThrowsError(try sdk.configure(with: .mock(), queueId: "queueId")) { error in
+        XCTAssertThrowsError(try sdk.configure(with: .mock()) {}) { error in
             XCTAssertEqual(error as? GliaError, GliaError.configuringDuringEngagementIsNotAllowed)
         }
     }
@@ -304,27 +303,46 @@ final class GliaTests: XCTestCase {
     func test_isConfiguredIsTrueWhenConfigurationPerformed() throws {
         var environment = Glia.Environment.failing
         environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
-            completion?()
+            completion(.success(()))
         }
         let sdk = Glia(environment: environment)
-        try sdk.configure(with: .mock())
+        try sdk.configure(with: .mock()) {}
         XCTAssertTrue(sdk.isConfigured)
     }
 
-    func test_isConfiguredIsFalseWhenConfigureWithConfigurationThrowsError() throws {
+    func test_isConfiguredIsFalseWhenSecondConfigureCallThrowsError() throws {
+        var environment = Glia.Environment.failing
+        var isFirstConfigure = true
+        environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
+            if isFirstConfigure {
+                isFirstConfigure = false
+                completion(.success(()))
+            } else {
+                throw CoreSdkClient.GliaCoreError.mock()
+            }
+        }
+        let sdk = Glia(environment: environment)
+        try sdk.configure(with: .mock()) {}
+        XCTAssertTrue(sdk.isConfigured)
+
+        try? sdk.configure(with: .mock()) {}
+        XCTAssertFalse(sdk.isConfigured)
+    }
+
+    func test_isConfiguredIsFalseWhenConfigureWithConfigurationThrowsError() {
         var environment = Glia.Environment.failing
         environment.coreSDKConfigurator.configureWithConfiguration = { _, _ in
             throw CoreSdkClient.GliaCoreError.mock()
         }
         let sdk = Glia(environment: environment)
-        try sdk.configure(with: .mock())
+        try? sdk.configure(with: .mock()) {}
         XCTAssertFalse(sdk.isConfigured)
     }
 
     func test_engagementCoordinatorGetsDeallocated() throws {
         var environment = Glia.Environment.failing
         environment.coreSDKConfigurator.configureWithConfiguration = { _, callback in
-            callback?()
+            callback(.success(()))
         }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         environment.coreSdk.localeProvider.getRemoteString = { _ in nil }
@@ -363,7 +381,7 @@ final class GliaTests: XCTestCase {
         gliaEnv.screenShareHandler = screenShareHandler
         gliaEnv.gcd.mainQueue.asyncIfNeeded = { callback in callback() }
         gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _, callback in
-            callback?()
+            callback(.success(()))
         }
         gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
         let sdk = Glia(environment: gliaEnv)

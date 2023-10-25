@@ -199,7 +199,7 @@ extension ChatViewController {
         chatViewModelEnv.fetchChatHistory = { $0(.success([])) }
         var interEnv = Interactor.Environment.mock
         interEnv.coreSdk.configureWithConfiguration = { _, callback in
-            callback?()
+            callback(.success(()))
         }
         let interactor = Interactor.mock(environment: interEnv)
         let generateUUID = UUID.incrementing
@@ -540,7 +540,7 @@ extension ChatViewController {
         chatViewModelEnv.fetchChatHistory = { $0(.success(messages)) }
         var interEnv = Interactor.Environment.mock
         interEnv.coreSdk.configureWithConfiguration = { _, callback in
-            callback?()
+            callback(.success(()))
         }
         let interactor = Interactor.mock(environment: interEnv)
         let chatViewModel = ChatViewModel.mock(interactor: interactor, environment: chatViewModelEnv)

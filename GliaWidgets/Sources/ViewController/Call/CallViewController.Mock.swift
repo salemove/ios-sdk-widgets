@@ -86,7 +86,7 @@ extension CallViewController {
         let queueId = UUID.mock.uuidString
         var interactorEnv = Interactor.Environment.mock
         interactorEnv.coreSdk.configureWithConfiguration = { _, callback in
-            callback?()
+            callback(.success(()))
         }
         let interactor = Interactor.mock(
             queueId: queueId,

@@ -2,7 +2,7 @@ import GliaCoreSDK
 
 extension Glia {
     /// Deprecated.
-    @available(*, unavailable, message: "Use configure(with:queueId:uiConfig:assetsBuilder:completion:) instead.")
+    @available(*, unavailable, message: "Use configure(with:uiConfig:assetsBuilder:completion:) instead.")
     public func configure(
         with configuration: Configuration,
         queueId: String,
@@ -183,6 +183,27 @@ extension Glia {
             features: features,
             sceneProvider: sceneProvider
         )
+    }
+
+    /// Deprecated, use the `configure` method that provides a `Result` in its completion instead.
+    @available(*, deprecated, message: "Use the `configure` method that provides a `Result` in its completion instead.")
+    public func configure(
+        with configuration: Configuration,
+        uiConfig: RemoteConfiguration? = nil,
+        assetsBuilder: RemoteConfiguration.AssetsBuilder = .standard,
+        completion: (() -> Void)? = nil
+    ) throws {
+        try configure(
+            with: configuration,
+            uiConfig: uiConfig,
+            assetsBuilder: assetsBuilder
+        ) { result in
+            defer {
+                completion?()
+            }
+            guard case let .failure(error) = result else { return }
+            debugPrint("💥 Core SDK configuration is not valid. Unexpected error='\(error)'.")
+        }
     }
 }
 
