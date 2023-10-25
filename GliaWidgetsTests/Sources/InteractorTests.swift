@@ -99,7 +99,7 @@ class InteractorTests: XCTestCase {
         var callbacks: [Callback] = []
         var interactorEnv = Interactor.Environment.failing
         interactorEnv.coreSdk.configureWithInteractor = { _ in }
-        interactorEnv.coreSdk.configureWithConfiguration = { $1?() }
+        interactorEnv.coreSdk.configureWithConfiguration = { $1(.success(())) }
         interactorEnv.coreSdk.queueForEngagement = { _, _ in }
         interactorEnv.gcd = .mock
         let interactor = Interactor.mock(environment: interactorEnv)
@@ -131,7 +131,7 @@ class InteractorTests: XCTestCase {
         var callbacks: [Callback] = []
         var interactorEnv = Interactor.Environment.failing
         interactorEnv.coreSdk.configureWithInteractor = { _ in }
-        interactorEnv.coreSdk.configureWithConfiguration = { $1?() }
+        interactorEnv.coreSdk.configureWithConfiguration = { $1(.success(())) }
         interactorEnv.coreSdk.queueForEngagement = { _, completion in
             completion(.success(.mock))
         }
@@ -166,7 +166,7 @@ class InteractorTests: XCTestCase {
         var callbacks: [Callback] = []
         var interactorEnv = Interactor.Environment.failing
         interactorEnv.coreSdk.configureWithInteractor = { _ in }
-        interactorEnv.coreSdk.configureWithConfiguration = { $1?() }
+        interactorEnv.coreSdk.configureWithConfiguration = { $1(.success(())) }
         interactorEnv.coreSdk.queueForEngagement = { _, completion in
             completion(.failure(.mock()))
         }
@@ -380,7 +380,7 @@ class InteractorTests: XCTestCase {
             callbacks.append(.sendMessageWithAttachment)
         }
         interactorEnv.coreSdk.configureWithInteractor = { _ in }
-        interactorEnv.coreSdk.configureWithConfiguration = { $1?() }
+        interactorEnv.coreSdk.configureWithConfiguration = { $1(.success(())) }
         let interactor = Interactor.mock(environment: interactorEnv)
         
         interactor.send(messagePayload: .mock(content: "mock-message")) { result in

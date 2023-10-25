@@ -2,7 +2,7 @@ import Foundation
 
 struct CoreSDKConfigurator {
     var configureWithInteractor: CoreSdkClient.ConfigureWithInteractor
-    var configureWithConfiguration: (Configuration, (() -> Void)?) throws -> Void
+    var configureWithConfiguration: (Configuration, @escaping (Result<Void, Error>) -> Void) throws -> Void
 }
 
 extension CoreSDKConfigurator {
@@ -16,9 +16,7 @@ extension CoreSDKConfigurator {
                     authorizingMethod: configuration.authorizationMethod.coreAuthorizationMethod,
                     pushNotifications: configuration.pushNotifications.coreSdk
                 )
-                coreSdk.configureWithConfiguration(sdkConfiguration) {
-                    completion?()
-                }
+                coreSdk.configureWithConfiguration(sdkConfiguration, completion)
             }
         )
     }

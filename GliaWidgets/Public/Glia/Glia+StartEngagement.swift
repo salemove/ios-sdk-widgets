@@ -18,7 +18,7 @@ extension Glia {
     ///   - `GliaError.engagementExists
     ///   - `GliaError.sdkIsNotConfigured`
     ///
-    /// - Important: Note, that `configure(with:queueID:visitorContext:)` must be called initially prior to this method,
+    /// - Important: Note, that `configure(with:uiConfig:assetsBuilder:completion:)` must be called initially prior to this method,
     /// because `GliaError.sdkIsNotConfigured` will occur otherwise.
     ///
     public func startEngagement(
@@ -28,7 +28,10 @@ extension Glia {
         features: Features = .all,
         sceneProvider: SceneProvider? = nil
     ) throws {
-        guard !queueIds.isEmpty else { throw GliaError.startingEngagementWithNoQueueIdsIsNotAllowed }
+        let trimmedQueueIds = queueIds
+            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+            .filter { !$0.isEmpty }
+        guard !trimmedQueueIds.isEmpty else { throw GliaError.startingEngagementWithNoQueueIdsIsNotAllowed }
         guard engagement == .none else { throw GliaError.engagementExists }
         guard let configuration = self.configuration else { throw GliaError.sdkIsNotConfigured }
         if let engagement = environment.coreSdk.getCurrentEngagement(),
@@ -39,7 +42,7 @@ extension Glia {
         // Creates interactor instance
         let createdInteractor = setupInteractor(
             configuration: configuration,
-            queueIds: queueIds
+            queueIds: trimmedQueueIds
         )
 
         theme.chat.connect.queue.firstText = companyName(
