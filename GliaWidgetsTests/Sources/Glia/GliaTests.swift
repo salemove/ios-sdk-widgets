@@ -60,7 +60,7 @@ final class GliaTests: XCTestCase {
             completion?()
         }
         gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
-
+        gliaEnv.coreSdk.fetchSiteConfigurations = { _ in }
         gliaEnv.uuid = { .mock }
         gliaEnv.gcd.mainQueue.asyncIfNeeded = { callback in callback() }
 
@@ -132,6 +132,7 @@ final class GliaTests: XCTestCase {
         gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             completion?()
         }
+        gliaEnv.callVisualizerPresenter = .init(presenter: { nil })
         gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
 
         let sdk = Glia(environment: gliaEnv)
