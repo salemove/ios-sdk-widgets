@@ -346,6 +346,7 @@ class CallViewModelTests: XCTestCase {
         viewModel.start()
 
         XCTAssertEqual(call.state.value, .none)
+    }
     func test_viewModelStartDoesNotInitiateEnqueuingWithStartActionAsEngagement() {
         let viewModel: CallViewModel = .mock()
         viewModel.start()
@@ -353,13 +354,22 @@ class CallViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.interactor.state, .none)
     }
 
-    func test_liveObservationAlertPresentationInitiatedWhenInteractorStateIsEnqueuing() {
+    func test_liveObservationAlertPresentationInitiatedWhenInteractorStateIsEnqueuing() throws {
         enum Call {
             case showLiveObservationAlert
         }
         var calls: [Call] = []
         let interactor: Interactor = .mock()
-        let viewModel: CallViewModel = .mock(interactor: interactor)
+        let site: CoreSdkClient.Site = try .mock()
+
+        var viewModelEnvironment: EngagementViewModel.Environment = .mock
+        viewModelEnvironment.fetchSiteConfigurations = { completion in
+            completion(.success(site))
+        }
+        let viewModel: ChatViewModel = .mock(
+            interactor: interactor,
+            environment: viewModelEnvironment
+        )
         viewModel.engagementAction = { action in
             switch action {
             case .showLiveObservationConfirmation:
@@ -372,18 +382,24 @@ class CallViewModelTests: XCTestCase {
         XCTAssertEqual(calls, [.showLiveObservationAlert])
     }
 
-    func test_liveObservationAllowTriggersEnqueue() {
+    func test_liveObservationAllowTriggersEnqueue() throws {
         var interactorEnv: Interactor.Environment = .mock
         interactorEnv.coreSdk.queueForEngagement = { _, completion in
             completion(.success(.mock))
         }
 
         let interactor: Interactor = .mock(environment: interactorEnv)
-        interactor.isConfigurationPerformed = true
-
         var alertConfig: LiveObservation.Confirmation?
+        let site: CoreSdkClient.Site = try .mock()
 
-        let viewModel: CallViewModel = .mock(interactor: interactor)
+        var viewModelEnvironment: EngagementViewModel.Environment = .mock
+        viewModelEnvironment.fetchSiteConfigurations = { completion in
+            completion(.success(site))
+        }
+        let viewModel: ChatViewModel = .mock(
+            interactor: interactor,
+            environment: viewModelEnvironment
+        )
         viewModel.engagementAction = { action in
             switch action {
             case let .showLiveObservationConfirmation(config):
@@ -397,7 +413,7 @@ class CallViewModelTests: XCTestCase {
         XCTAssertEqual(interactor.state, .enqueued(.mock))
     }
 
-    func test_liveObservationDeclineTriggersNone() {
+    func test_liveObservationDeclineTriggersNone() throws {
         enum Call {
             case queueForEngagement
         }
@@ -408,11 +424,17 @@ class CallViewModelTests: XCTestCase {
         }
 
         let interactor: Interactor = .mock(environment: interactorEnv)
-        interactor.isConfigurationPerformed = true
-
         var alertConfig: LiveObservation.Confirmation?
+        let site: CoreSdkClient.Site = try .mock()
 
-        let viewModel: CallViewModel = .mock(interactor: interactor)
+        var viewModelEnvironment: EngagementViewModel.Environment = .mock
+        viewModelEnvironment.fetchSiteConfigurations = { completion in
+            completion(.success(site))
+        }
+        let viewModel: ChatViewModel = .mock(
+            interactor: interactor,
+            environment: viewModelEnvironment
+        )
         viewModel.engagementAction = { action in
             switch action {
             case let .showLiveObservationConfirmation(config):
