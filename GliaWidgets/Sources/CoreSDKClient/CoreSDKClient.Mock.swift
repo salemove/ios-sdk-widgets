@@ -426,13 +426,15 @@ extension CoreSdkClient.Site {
         id: UUID = .mock,
         allowedFileSenders: AllowedFileSenders.Mock = .mock,
         maskingRegularExpressions: [String] = [],
-        visitorAppDefaultLocale: String = "en-US"
+        visitorAppDefaultLocale: String = "en-US",
+        mobileConfirmDialog: Bool = true
     ) throws -> Self {
         struct Mock: Codable {
             let id: UUID
             let allowedFileSenders: CoreSdkClient.Site.AllowedFileSenders.Mock
             let maskingRegularExpressions: [String]
             let visitorAppDefaultLocale: String
+            let mobileConfirmDialog: Bool
         }
         return try JSONDecoder()
             .decode(
@@ -443,7 +445,8 @@ extension CoreSdkClient.Site {
                             id: id,
                             allowedFileSenders: allowedFileSenders,
                             maskingRegularExpressions: maskingRegularExpressions,
-                            visitorAppDefaultLocale: visitorAppDefaultLocale
+                            visitorAppDefaultLocale: visitorAppDefaultLocale,
+                            mobileConfirmDialog: mobileConfirmDialog
                         )
                     )
             )
