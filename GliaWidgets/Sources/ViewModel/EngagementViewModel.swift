@@ -163,7 +163,18 @@ class EngagementViewModel: CommonEngagementModel {
                 )
             })
         case let .enqueueing(mediaType):
-            showLiveObservationConfirmation(in: mediaType)
+            environment.fetchSiteConfigurations { result in
+                switch result {
+                case let .success(site):
+                    if site.mobileConfirmDialog == false {
+                        self.enqueue(mediaType: mediaType)
+                    } else {
+                        self.showLiveObservationConfirmation(in: mediaType)
+                    }
+                case .failure:
+                    self.showAlert(with: self.alertConfiguration.unexpectedError, dismissed: nil)
+                }
+            }
         default:
             break
         }
