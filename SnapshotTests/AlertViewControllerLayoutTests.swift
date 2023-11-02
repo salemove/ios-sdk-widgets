@@ -43,6 +43,16 @@ final class AlertViewControllerLayoutTests: SnapshotTestCase {
         alert.assertSnapshot(as: .image, in: .landscape)
     }
 
+    func test_liveObservationConfirmationAlert() {
+        let alert = alert(ofKind: .liveObservationConfirmation(
+            .liveObservationMock(),
+            accepted: {},
+            declined: {}
+        ))
+        alert.assertSnapshot(as: .image, in: .portrait)
+        alert.assertSnapshot(as: .image, in: .landscape)
+    }
+
     private func alert(ofKind kind: AlertViewController.Kind) -> AlertViewController {
         let viewController = AlertViewController(
             kind: kind,

@@ -44,6 +44,16 @@ final class AlertViewControllerDynamicTypeFontTests: SnapshotTestCase {
         alert.assertSnapshot(as: .extra3LargeFont, in: .landscape)
     }
 
+    func test_liveObservationConfirmationAlert() {
+        let alert = alert(ofKind: .liveObservationConfirmation(
+            .liveObservationMock(),
+            accepted: {},
+            declined: {}
+        ))
+        alert.assertSnapshot(as: .extra3LargeFont, in: .portrait)
+        alert.assertSnapshot(as: .extra3LargeFont, in: .landscape)
+    }
+
     private func alert(ofKind kind: AlertViewController.Kind) -> AlertViewController {
         let viewController = AlertViewController(
             kind: kind,
