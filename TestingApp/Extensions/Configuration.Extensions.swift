@@ -8,7 +8,8 @@ extension Configuration {
         .init(
             authorizationMethod: .siteApiKey(id: "", secret: ""),
             environment: env,
-            site: ""
+            site: "",
+            manualLocaleOverride: nil
         )
     }
 }
@@ -25,15 +26,17 @@ extension Configuration {
             return nil
         }
 
-        let visitorAssetId = queryItems.first(where: { $0.name == "visitor_context_asset_id" })?.value ?? ""
+        let visitorAssetId = queryItems.first { $0.name == "visitor_context_asset_id" }?.value ?? ""
         let visitorContext = UUID(uuidString: visitorAssetId)
             .map(Configuration.VisitorContext.init(assetId:))
+        let manualLocaleOverride = queryItems.first { $0.name == "manual_locale_override" }?.value ?? nil
 
         self = .init(
             authorizationMethod: .siteApiKey(id: siteApiKeyId, secret: siteApiKeySecret),
             environment: environment,
             site: siteId,
-            visitorContext: visitorContext
+            visitorContext: visitorContext,
+            manualLocaleOverride: manualLocaleOverride
         )
     }
 }
@@ -56,7 +59,12 @@ private extension Environment {
 
 extension Configuration: Codable {
     enum CodingKeys: String, CodingKey {
-        case authorizationMethod, environment, site, visitorContext, pushNotifications
+        case authorizationMethod,
+             environment,
+             site,
+             visitorContext,
+             pushNotifications,
+             manualLocaleOverride
     }
 
     public init(from decoder: Decoder) throws {
@@ -66,7 +74,8 @@ extension Configuration: Codable {
             environment: container.decode(Environment.self, forKey: .environment),
             site: container.decode(String.self, forKey: .site),
             visitorContext: container.decodeIfPresent(VisitorContext.self, forKey: .visitorContext),
-            pushNotifications: container.decodeIfPresent(PushNotifications.self, forKey: .pushNotifications) ?? .disabled
+            pushNotifications: container.decodeIfPresent(PushNotifications.self, forKey: .pushNotifications) ?? .disabled,
+            manualLocaleOverride: container.decodeIfPresent(String.self, forKey: .manualLocaleOverride) ?? nil
         )
     }
 
@@ -77,6 +86,7 @@ extension Configuration: Codable {
         try container.encode(site, forKey: .site)
         try container.encode(visitorContext, forKey: .visitorContext)
         try container.encode(pushNotifications, forKey: .pushNotifications)
+        try container.encode(manualLocaleOverride, forKey: .manualLocaleOverride)
     }
 }
 
@@ -163,6 +173,8 @@ extension Configuration.PushNotifications: RawRepresentable, Codable {
             return "sandbox"
         case .production:
             return "production"
+        @unknown default:
+            return ""
         }
     }
 

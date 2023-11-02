@@ -17,6 +17,9 @@ public struct Configuration {
     public let isWhiteLabelApp: Bool
     /// Company name. Appears during connection with operator.
     public let companyName: String
+    /// The name of the manual locale override. If not set, or if set as `nil`,
+    /// then the default locale from site settings will be used.
+    public var manualLocaleOverride: String?
     /// Initializes the configuration.
     ///
     /// - Parameters:
@@ -24,7 +27,8 @@ public struct Configuration {
     ///   - environment: The environment to use.
     ///   - site: The site to use.
     ///   - visitorContext: Additional context about the visitor that operator may need.
-    ///
+    ///   - manualLocaleOverride: The name of the manual locale override.
+    ///   If not set, or if set as `nil`, then the default locale from site settings will be used.
     public init(
         authorizationMethod: AuthorizationMethod,
         environment: Environment,
@@ -32,7 +36,8 @@ public struct Configuration {
         visitorContext: VisitorContext? = nil,
         pushNotifications: PushNotifications = .disabled,
         isWhiteLabelApp: Bool = false,
-        companyName: String = ""
+        companyName: String = "",
+        manualLocaleOverride: String? = nil
     ) {
         self.authorizationMethod = authorizationMethod
         self.environment = environment
@@ -41,6 +46,7 @@ public struct Configuration {
         self.pushNotifications = pushNotifications
         self.isWhiteLabelApp = isWhiteLabelApp
         self.companyName = companyName
+        self.manualLocaleOverride = manualLocaleOverride
     }
 }
 

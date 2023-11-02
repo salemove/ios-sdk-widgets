@@ -149,9 +149,23 @@ public class Glia {
                 }
 
                 completion(.success(()))
-            case let .failure(error):
+            case .failure(let error):
+                typealias ProcessError = CoreSdkClient.ConfigurationProcessError
+                var errorForCompletion: GliaError = .internalError
+
+                // To avoid the integrator having to figure out if an error is a `GliaError`
+                // or a `ConfigurationProcessError`, the `ConfigurationProcessError` is translated
+                // into a `GliaError`.
+                if let processError = error as? ProcessError {
+                    if processError == .invalidSiteApiKeyCredentials {
+                        errorForCompletion = GliaError.invalidSiteApiKeyCredentials
+                    } else if processError == .localeRetrieval {
+                        errorForCompletion = GliaError.invalidLocale
+                    }
+                }
+
                 debugPrint("💥 Core SDK configuration is not valid. Unexpected error='\(error)'.")
-                completion(.failure(error))
+                completion(.failure(errorForCompletion))
             }
         }
     }
