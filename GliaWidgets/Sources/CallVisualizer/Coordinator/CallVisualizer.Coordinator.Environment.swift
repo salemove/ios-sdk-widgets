@@ -23,5 +23,6 @@ extension CallVisualizer.Coordinator {
         var orientationManager: OrientationManager
         var proximityManager: ProximityManager
         var interactorProviding: Interactor?
+        var fetchSiteConfigurations: CoreSdkClient.FetchSiteConfigurations
     }
 }
