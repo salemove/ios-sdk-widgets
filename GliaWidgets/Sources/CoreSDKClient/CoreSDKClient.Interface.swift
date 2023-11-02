@@ -198,6 +198,7 @@ extension CoreSdkClient {
     typealias FileError = GliaCoreSDK.FileError
     typealias GeneralError = GliaCoreSDK.GeneralError
     typealias GliaCoreError = GliaCoreSDK.GliaCoreError
+    typealias ConfigurationProcessError = GliaCoreSDK.GliaCore.ConfigurationProcessError
     typealias Interactable = GliaCoreSDK.Interactable
     typealias MediaDirection = GliaCoreSDK.MediaDirection
     typealias MediaError = GliaCoreSDK.MediaError

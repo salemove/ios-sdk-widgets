@@ -15,6 +15,7 @@ final class SettingsViewController: UIViewController {
     private var queueIDCell: SettingsTextCell!
     private var environmentCell: EnvironmentSettingsTextCell!
     private var visitorContextAssedIdCell: SettingsTextCell!
+    private var manualLocaleOverrideCell: SettingsTextCell!
     private var bubbleFeatureCell: SettingsSwitchCell!
     private var primaryColorCell: SettingsColorCell!
     private var secondaryColorCell: SettingsColorCell!
@@ -151,6 +152,13 @@ private extension SettingsViewController {
             text: props.config.visitorContext?.assetId.uuidString ?? ""
         )
         visitorContextAssedIdCell.textField.accessibilityIdentifier = "settings_visitor_context_assetId_textfield"
+
+        manualLocaleOverrideCell = SettingsTextCell(
+            title: "Manual locale override:",
+            text: props.config.manualLocaleOverride ?? ""
+        )
+        manualLocaleOverrideCell.textField.accessibilityIdentifier = "settings_manual_locale_override_textfield"
+
         bubbleFeatureCell = SettingsSwitchCell(
             title: "Present \"Bubble\" overlay in engagement time",
             isOn: props.features ~= .bubbleView
@@ -272,7 +280,8 @@ private extension SettingsViewController {
             siteApiKeyIdCell,
             siteApiKeySecretCell,
             queueIDCell,
-            visitorContextAssedIdCell
+            visitorContextAssedIdCell,
+            manualLocaleOverrideCell
         ]
         configurationSection = Section(
             title: "Glia configuration",
@@ -284,12 +293,16 @@ private extension SettingsViewController {
     private func updateConfiguration() {
         let uuid = UUID(uuidString: visitorContextAssedIdCell.textField.text ?? "")
 
+        let manualLocaleOverrideText =  manualLocaleOverrideCell.textField.text ?? ""
+        let manualLocaleOverride = manualLocaleOverrideText.isEmpty ? nil : manualLocaleOverrideText
+
         props.changeConfig(
             Configuration(
                 authorizationMethod: siteApiKey,
                 environment: environmentCell.environment,
                 site: siteCell.textField.text ?? "",
-                visitorContext: uuid.map { Configuration.VisitorContext(assetId: $0) }
+                visitorContext: uuid.map { Configuration.VisitorContext(assetId: $0) },
+                manualLocaleOverride: manualLocaleOverride
             )
         )
 

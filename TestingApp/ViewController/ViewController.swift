@@ -91,7 +91,6 @@ class ViewController: UIViewController {
 
     private func showErrorAlert(using error: Error) {
         if let gliaError = error as? GliaError {
-
             switch gliaError {
             case GliaError.engagementExists:
                 alert(message: "Failed to start\nEngagement is ongoing, please use 'Resume' button")
@@ -101,6 +100,10 @@ class ViewController: UIViewController {
                 alert(message: "Failed to start\nCall Visualizer engagement is ongoing")
             case GliaError.configuringDuringEngagementIsNotAllowed:
                 alert(message: "The operation couldn't be completed. '\(gliaError)'.")
+            case GliaError.invalidSiteApiKeyCredentials:
+                alert(message: "Failed to configure the SDK, invalid credentials")
+            case GliaError.invalidLocale:
+                alert(message: "Failed to configure the SDK, invalid locale override specified")
             default:
                 alert(message: "Failed to start\nCheck Glia parameters in Settings")
             }
@@ -240,6 +243,7 @@ extension ViewController {
             self?.configureButton.accessibilityIdentifier = originalIdentifier
             debugPrint(printable)
         }
+
         do {
             try Glia.sharedInstance.configure(
                 with: configuration
@@ -249,7 +253,7 @@ extension ViewController {
                     completionBlock("SDK has been configured")
                     completion?(.success(()))
                 case let .failure(error):
-                    completionBlock(error)
+                    completionBlock("Error configuring the SDK")
                     completion?(.failure(error))
                 }
             }
@@ -373,7 +377,6 @@ extension ViewController {
     }
 
     func setupPushHandler() {
-        let waitForActiveEngagement = GliaCore.sharedInstance.waitForActiveEngagement(completion:)
         GliaCore.sharedInstance.pushNotifications.handler = { [weak self] push in
             switch (push.type, push.timing) {
             // Open chat transcript only when the push notification has come
@@ -403,19 +406,26 @@ extension ViewController {
 
     @IBAction private func toggleAuthentication() {
         catchingError {
-            try Glia.sharedInstance.configure(with: configuration) { [weak self] in
+            try Glia.sharedInstance.configure(with: configuration) { [weak self] result in
                 guard let self = self else { return }
-                self.catchingError {
-                    let authentication = try Self.authentication()
-                    switch authentication.isAuthenticated {
-                    case false:
-                        self.showAuthorize(with: authentication)
-                    case true:
-                        self.showDeauthorize(
-                            authorization: authentication,
-                            from: self.toggleAuthenticateButton
-                        )
+
+                switch result {
+                case .success:
+                    self.catchingError {
+                        let authentication = try Self.authentication()
+                        switch authentication.isAuthenticated {
+                        case false:
+                            self.showAuthorize(with: authentication)
+                        case true:
+                            self.showDeauthorize(
+                                authorization: authentication,
+                                from: self.toggleAuthenticateButton
+                            )
+                        }
                     }
+
+                case .failure(let error):
+                    self.showErrorAlert(using: error)
                 }
             }
         }
