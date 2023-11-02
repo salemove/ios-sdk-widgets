@@ -163,7 +163,8 @@ class EngagementViewModel: CommonEngagementModel {
                 )
             })
         case let .enqueueing(mediaType):
-            environment.fetchSiteConfigurations { result in
+            environment.fetchSiteConfigurations { [weak self] result in
+                guard let self else { return }
                 switch result {
                 case let .success(site):
                     if site.mobileConfirmDialog == false {
