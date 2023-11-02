@@ -26,5 +26,6 @@ extension CallVisualizer {
         var orientationManager: OrientationManager
         var proximityManager: ProximityManager
         var log: CoreSdkClient.Logger
+        var fetchSiteConfigurations: CoreSdkClient.FetchSiteConfigurations
     }
 }

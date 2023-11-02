@@ -174,7 +174,7 @@ final class GliaTests: XCTestCase {
         }
         gliaEnv.callVisualizerPresenter = .init(presenter: { nil })
         gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
-
+        gliaEnv.coreSdk.fetchSiteConfigurations = { _ in }
         let sdk = Glia(environment: gliaEnv)
         sdk.onEvent = {
             calls.append(.onEvent($0))
