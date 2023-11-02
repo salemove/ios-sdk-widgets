@@ -86,7 +86,8 @@ public class Glia {
             eventHandler: onEvent,
             orientationManager: environment.orientationManager,
             proximityManager: environment.proximityManager,
-            log: loggerPhase.logger
+            log: loggerPhase.logger,
+            fetchSiteConfigurations: environment.coreSdk.fetchSiteConfigurations
         )
     )
     var rootCoordinator: EngagementCoordinator?

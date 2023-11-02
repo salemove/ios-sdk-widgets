@@ -24,7 +24,8 @@ extension CallVisualizer.Environment {
         getCurrentEngagement: CoreSdkClient.mock.getCurrentEngagement,
         orientationManager: .mock(),
         proximityManager: .mock,
-        log: .mock
+        log: .mock,
+        fetchSiteConfigurations: { _ in }
     )
 }
 
