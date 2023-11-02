@@ -14,7 +14,8 @@ extension CoreSDKConfigurator {
                     siteId: configuration.site,
                     region: configuration.environment.region,
                     authorizingMethod: configuration.authorizationMethod.coreAuthorizationMethod,
-                    pushNotifications: configuration.pushNotifications.coreSdk
+                    pushNotifications: configuration.pushNotifications.coreSdk,
+                    manualLocaleOverride: configuration.manualLocaleOverride
                 )
                 coreSdk.configureWithConfiguration(sdkConfiguration, completion)
             }

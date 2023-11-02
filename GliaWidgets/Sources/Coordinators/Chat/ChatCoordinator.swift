@@ -78,7 +78,6 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
         )
         self.controller = chatController
         return chatController
-
     }
 
     private func presentMediaPickerController(

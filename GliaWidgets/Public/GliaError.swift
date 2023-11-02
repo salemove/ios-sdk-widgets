@@ -7,5 +7,7 @@ public enum GliaError: Error {
     case configuringDuringEngagementIsNotAllowed
     case clearingVisitorSessionDuringEngagementIsNotAllowed
     case startingEngagementWithNoQueueIdsIsNotAllowed
+    case invalidSiteApiKeyCredentials
+    case invalidLocale
     case internalError
 }
