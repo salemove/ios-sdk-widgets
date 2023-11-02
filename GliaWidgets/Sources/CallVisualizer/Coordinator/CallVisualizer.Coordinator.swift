@@ -150,7 +150,32 @@ extension CallVisualizer {
 
         func handleEngagementRequestAccepted() {
             visitorCodeCoordinator?.delegate?(.engagementAccepted)
-            showConfirmationAlert()
+            environment.fetchSiteConfigurations { [weak self] result in
+                switch result {
+                case let .success(site):
+                    if site.mobileConfirmDialog == true {
+                        self?.showConfirmationAlert()
+                    }
+                case .failure:
+                    self?.showUnexpectedErrorAlert()
+                }
+            }
+        }
+
+        func showUnexpectedErrorAlert() {
+            let config: MessageAlertConfiguration = environment.viewFactory.theme.alertConfiguration.unexpectedError
+            let alert = AlertViewController(
+                kind: .message(
+                    config,
+                    accessibilityIdentifier: nil,
+                    dismissed: { [weak self] in
+                        self?.declineEngagement()
+                    }
+                ),
+                viewFactory: environment.viewFactory
+            )
+            self.alertViewController = alert
+            self.presentAlert(alert)
         }
 
         func closeVisitorCode() {
