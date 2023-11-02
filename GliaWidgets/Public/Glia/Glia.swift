@@ -85,7 +85,8 @@ public class Glia {
             getCurrentEngagement: environment.coreSdk.getCurrentEngagement,
             eventHandler: onEvent,
             orientationManager: environment.orientationManager,
-            proximityManager: environment.proximityManager
+            proximityManager: environment.proximityManager,
+            fetchSiteConfigurations: environment.coreSdk.fetchSiteConfigurations
         )
     )
     var rootCoordinator: EngagementCoordinator?

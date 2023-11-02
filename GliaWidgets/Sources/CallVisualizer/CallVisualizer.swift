@@ -57,7 +57,8 @@ public final class CallVisualizer {
                 },
                 orientationManager: environment.orientationManager,
                 proximityManager: environment.proximityManager,
-                interactorProviding: environment.interactorProviding()
+                interactorProviding: environment.interactorProviding(),
+                fetchSiteConfigurations: environment.fetchSiteConfigurations
             )
         )
     }()
