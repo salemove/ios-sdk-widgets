@@ -365,7 +365,7 @@ class InteractorTests: XCTestCase {
             }
         }
 
-        interactor.end(with: .natural)
+        interactor.end(with: .operatorHungUp)
 
         XCTAssertEqual(callbacks, [.ended])
     }
