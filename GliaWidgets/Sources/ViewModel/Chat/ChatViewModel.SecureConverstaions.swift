@@ -14,6 +14,7 @@ extension ChatViewModel {
                 upload.environment.uploadFile = .toEngagement(environment.uploadFileToEngagement)
                 return upload
             }
+        event(.messageTextChanged(transcript.messageText))
         // Since we have modified file upload list view model,
         // we need to report about this change manually
         // to keep UI in sync with data.
