@@ -214,9 +214,19 @@ workflows:
             set -x
 
             git checkout development
-    - cocoapods-install@2:
+    - script@1:
         inputs:
-        - command: update
+        - content: |-
+            #!/usr/bin/env bash
+            # fail if any commands fails
+            set -e
+            # make pipelines' return status equal the last command to exit with a non-zero status, or zero if all commands exit successfully
+            set -o pipefail
+            # debug log
+            set -x
+
+            cd $BITRISE_SOURCE_DIR
+            pod update --repo-update
     - fastlane@3:
         inputs:
         - lane: ios create_pr_for_dependencies_update version:$VERSION checksum:$CHECKSUM
