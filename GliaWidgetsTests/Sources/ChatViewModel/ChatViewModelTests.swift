@@ -454,6 +454,7 @@ class ChatViewModelTests: XCTestCase {
                 break
             }
         }
+        transcriptModel.event(.messageTextChanged("mock"))
         chatViewModel.migrate(from: transcriptModel)
 
         let itemKind = chatViewModel.pendingSection.items.first(
@@ -481,6 +482,7 @@ class ChatViewModelTests: XCTestCase {
         }))
         XCTAssertTrue(chatViewModel.isViewActive.value)
         XCTAssertEqual(chatViewModel.isViewLoaded, transcriptModel.isViewLoaded)
+        XCTAssertEqual(chatViewModel.messageText, transcriptModel.messageText)
         enum Call: Equatable {
             case scrollToBottom(animated: Bool)
         }
