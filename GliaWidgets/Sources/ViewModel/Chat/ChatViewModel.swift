@@ -34,7 +34,7 @@ class ChatViewModel: EngagementViewModel {
 
     private let downloader: FileDownloader
     private let deliveredStatusText: String
-    private var messageText = "" {
+    private (set) var messageText = "" {
         didSet {
             validateMessage()
             sendMessagePreview(messageText)
