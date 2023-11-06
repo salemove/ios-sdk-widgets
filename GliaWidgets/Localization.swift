@@ -401,6 +401,8 @@ internal enum Localization {
   internal enum General {
     /// Accept
     internal static var accept: String { Localization.tr("Localizable", "general.accept", fallback: "Accept") }
+    /// Allow
+    internal static var allow: String { Localization.tr("Localizable", "general.allow", fallback: "Allow") }
     /// Back
     internal static var back: String { Localization.tr("Localizable", "general.back", fallback: "Back") }
     /// Browse
@@ -485,9 +487,13 @@ internal enum Localization {
   internal enum LiveObservation {
     internal enum Confirm {
       /// Please allow the {companyName} representative to view this application screen for improved support.
-      internal static let message = Localization.tr("Localizable", "live_observation.confirm.message", fallback: "Please allow the {companyName} representative to view this application screen for improved support.")
+      internal static var message: String { Localization.tr("Localizable", "live_observation.confirm.message", fallback: "Please allow the {companyName} representative to view this application screen for improved support.") }
       /// Before We Continue
-      internal static let title = Localization.tr("Localizable", "live_observation.confirm.title", fallback: "Before We Continue")
+      internal static var title: String { Localization.tr("Localizable", "live_observation.confirm.title", fallback: "Before We Continue") }
+    }
+    internal enum Indicator {
+      /// App screen is visible to the agent
+      internal static var message: String { Localization.tr("Localizable", "live_observation.indicator.message", fallback: "App screen is visible to the agent") }
     }
   }
   internal enum MediaUpgrade {
