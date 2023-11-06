@@ -3,6 +3,8 @@ import UIKit
 
 extension CallVisualizer {
     final class Coordinator {
+        private let snackBar = SnackBar()
+
         init(environment: Environment) {
             self.environment = environment
             self.bubbleView = environment.viewFactory.makeBubbleView()
@@ -153,6 +155,7 @@ extension CallVisualizer {
             environment.fetchSiteConfigurations { [weak self] result in
                 switch result {
                 case let .success(site):
+                    self?.showSnackBarMessage(Localization.LiveObservation.Indicator.message)
                     if site.mobileConfirmDialog == true {
                         self?.showConfirmationAlert()
                     }
@@ -436,6 +439,29 @@ private extension CallVisualizer.Coordinator {
         replaceable.dismiss(animated: true) {
             presenting?.present(alert, animated: true)
         }
+    }
+
+    func showSnackBarMessage(_ text: String) {
+        guard let style = visitorCodeCoordinator?.theme.snackBar else { return }
+        snackBar.present(
+            text: Localization.LiveObservation.Indicator.message,
+            style: style,
+            for: topMostViewController,
+            timerProviding: environment.timerProviding
+        )
+    }
+
+    private var topMostViewController: UIViewController {
+        let window = UIApplication.shared.windows.first { $0.isKeyWindow }
+        guard var presenter = window?.rootViewController else {
+            fatalError("Could not find UIViewController to present on")
+        }
+
+        while let presentedViewController = presenter.presentedViewController {
+            presenter = presentedViewController
+        }
+
+        return presenter
     }
 }
 
