@@ -23,24 +23,24 @@ public class Theme {
     public var font: ThemeFont
 
     /// Chat view style.
-    public lazy var chat: ChatStyle = { return chatStyle }()
+    public lazy var chat: ChatStyle = { chatStyle }()
 
     /// Call view style.
-    public lazy var call: CallStyle = { return callStyle }()
+    public lazy var call: CallStyle = { callStyle }()
 
     /// Secure conversations welcome style.
     public lazy var secureConversationsWelcome: SecureConversations.WelcomeStyle = {
-        return secureConversationsWelcomeStyle
+        secureConversationsWelcomeStyle
     }()
 
     /// Alert view style.
-    public lazy var alert: AlertStyle = { return alertStyle }()
+    public lazy var alert: AlertStyle = { alertStyle }()
 
     /// Configurations for the alerts.
-    public lazy var alertConfiguration: AlertConfiguration = { return alertConfigurationStyle }()
+    public lazy var alertConfiguration: AlertConfiguration = { alertConfigurationStyle }()
 
     /// Style of the minimized bubble.
-    public lazy var minimizedBubble: BubbleStyle = { return minimizedBubbleStyle }()
+    public lazy var minimizedBubble: BubbleStyle = { minimizedBubbleStyle }()
 
     /// Survey view style.
     public lazy var survey: SurveyStyle = .default(
@@ -50,16 +50,22 @@ public class Theme {
     )
 
     /// Call Visualizer Visitor Code view style.
-    public lazy var visitorCode: VisitorCodeStyle = { return visitorCodeStyle }()
+    public lazy var visitorCode: VisitorCodeStyle = { visitorCodeStyle }()
 
     /// Call Visualizer Screen Sharing View style.
-    public lazy var screenSharing: ScreenSharingViewStyle = { return screenSharingStyle }()
+    public lazy var screenSharing: ScreenSharingViewStyle = { screenSharingStyle }()
 
     // Confirmation Screen in Secure Conversation flow style.
     public lazy var secureConversationsConfirmation: SecureConversations.ConfirmationStyle = defaultSecureConversationsConfirmationStyle
 
     /// Controls the visibility of the "Powered by" text and image.
     public var showsPoweredBy: Bool
+
+    /// Snack bar View style.
+    public lazy var snackBar: SnackBarStyle = { snackBarStyle }()
+
+    /// Inverted snack bar View style.
+    public lazy var invertedSnackBar: SnackBarStyle = { invertedSnackBarStyle }()
 
     /// Initilizes the theme with base color and font style.
     ///
@@ -131,6 +137,10 @@ public class Theme {
         )
         secureConversationsConfirmation.apply(
             configuration: config.secureConversationsConfirmationScreen,
+            assetsBuilder: assetsBuilder
+        )
+        snackBar.apply(
+            configuration: config.snackBar,
             assetsBuilder: assetsBuilder
         )
     }
