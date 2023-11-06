@@ -226,7 +226,11 @@
 		7512A5A727C3926500319DF1 /* GliaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7512A5A627C3926500319DF1 /* GliaTests.swift */; };
 		7529F2B427E1D503004D3581 /* Survey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7529F2B327E1D503004D3581 /* Survey.swift */; };
 		7529F2B627E1EB9A004D3581 /* Survey.ButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7529F2B527E1EB9A004D3581 /* Survey.ButtonView.swift */; };
+		752A83382AF5977B005E468D /* SerialQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752A83372AF5977B005E468D /* SerialQueue.swift */; };
+		752A833A2AF59EAE005E468D /* SnackBar+Presenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752A83392AF59EAE005E468D /* SnackBar+Presenter.swift */; };
+		752A833C2AF59EDB005E468D /* SnackBar+View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752A833B2AF59EDB005E468D /* SnackBar+View.swift */; };
 		753A56B927CFEB730050D8E6 /* ChatViewModel.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB196DF27C401F600FD60AB /* ChatViewModel.Mock.swift */; };
+		753B05F82AFC1D750084611E /* SerialQueueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753B05F72AFC1D750084611E /* SerialQueueTests.swift */; };
 		754313CB2870A65400C9C1C6 /* SettingsViewController.Props.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754313CA2870A65400C9C1C6 /* SettingsViewController.Props.swift */; };
 		754313CD2870B1C400C9C1C6 /* UserDefaultsStored.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754313CC2870B1C400C9C1C6 /* UserDefaultsStored.swift */; };
 		754313CF2870E64600C9C1C6 /* Configuration.Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754313CE2870E64600C9C1C6 /* Configuration.Extensions.swift */; };
@@ -306,6 +310,9 @@
 		75CF8D6329B7DD8300CB1524 /* SecureConversations+ConfirmationStyle+RemoteConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CF8D6229B7DD8300CB1524 /* SecureConversations+ConfirmationStyle+RemoteConfig.swift */; };
 		75CF8D9129C3A85C00CB1524 /* SecureConversationsWelcomeScreenVoiceOverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CF8D9029C3A85C00CB1524 /* SecureConversationsWelcomeScreenVoiceOverTests.swift */; };
 		75CF8DAD29C8F2B500CB1524 /* SecureConversationsConfirmationScreenVoiceOverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CF8DAC29C8F2B500CB1524 /* SecureConversationsConfirmationScreenVoiceOverTests.swift */; };
+		75D987F82AF2BA500016A702 /* RemoteConfiguration+SnackBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D987F72AF2BA500016A702 /* RemoteConfiguration+SnackBar.swift */; };
+		75D987FA2AF2BB330016A702 /* Theme+SnackBarStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D987F92AF2BB330016A702 /* Theme+SnackBarStyle.swift */; };
+		75D987FC2AF2D9F90016A702 /* SnackBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D987FB2AF2D9F90016A702 /* SnackBar.swift */; };
 		75F58EE127E7D5300065BA2D /* Survey.ViewController.Props.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F58EE027E7D5300065BA2D /* Survey.ViewController.Props.swift */; };
 		75FF151427F3A2D600FE7BE2 /* Theme+Survey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FF151327F3A2D600FE7BE2 /* Theme+Survey.swift */; };
 		75FF151727F4E13900FE7BE2 /* Theme.Survey.BooleanQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FF151627F4E13900FE7BE2 /* Theme.Survey.BooleanQuestion.swift */; };
@@ -981,6 +988,10 @@
 		7512A5A627C3926500319DF1 /* GliaTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GliaTests.swift; sourceTree = "<group>"; };
 		7529F2B327E1D503004D3581 /* Survey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Survey.swift; sourceTree = "<group>"; };
 		7529F2B527E1EB9A004D3581 /* Survey.ButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Survey.ButtonView.swift; sourceTree = "<group>"; };
+		752A83372AF5977B005E468D /* SerialQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SerialQueue.swift; sourceTree = "<group>"; };
+		752A83392AF59EAE005E468D /* SnackBar+Presenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SnackBar+Presenter.swift"; sourceTree = "<group>"; };
+		752A833B2AF59EDB005E468D /* SnackBar+View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SnackBar+View.swift"; sourceTree = "<group>"; };
+		753B05F72AFC1D750084611E /* SerialQueueTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SerialQueueTests.swift; sourceTree = "<group>"; };
 		754313CA2870A65400C9C1C6 /* SettingsViewController.Props.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.Props.swift; sourceTree = "<group>"; };
 		754313CC2870B1C400C9C1C6 /* UserDefaultsStored.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsStored.swift; sourceTree = "<group>"; };
 		754313CE2870E64600C9C1C6 /* Configuration.Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.Extensions.swift; sourceTree = "<group>"; };
@@ -1056,6 +1067,9 @@
 		75CF8D6229B7DD8300CB1524 /* SecureConversations+ConfirmationStyle+RemoteConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SecureConversations+ConfirmationStyle+RemoteConfig.swift"; sourceTree = "<group>"; };
 		75CF8D9029C3A85C00CB1524 /* SecureConversationsWelcomeScreenVoiceOverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversationsWelcomeScreenVoiceOverTests.swift; sourceTree = "<group>"; };
 		75CF8DAC29C8F2B500CB1524 /* SecureConversationsConfirmationScreenVoiceOverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversationsConfirmationScreenVoiceOverTests.swift; sourceTree = "<group>"; };
+		75D987F72AF2BA500016A702 /* RemoteConfiguration+SnackBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RemoteConfiguration+SnackBar.swift"; sourceTree = "<group>"; };
+		75D987F92AF2BB330016A702 /* Theme+SnackBarStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Theme+SnackBarStyle.swift"; sourceTree = "<group>"; };
+		75D987FB2AF2D9F90016A702 /* SnackBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnackBar.swift; sourceTree = "<group>"; };
 		75F58EE027E7D5300065BA2D /* Survey.ViewController.Props.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Survey.ViewController.Props.swift; sourceTree = "<group>"; };
 		75FF151327F3A2D600FE7BE2 /* Theme+Survey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Theme+Survey.swift"; sourceTree = "<group>"; };
 		75FF151627F4E13900FE7BE2 /* Theme.Survey.BooleanQuestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.Survey.BooleanQuestion.swift; sourceTree = "<group>"; };
@@ -2081,6 +2095,7 @@
 				8491AF0B2A7A9C9200CC3E72 /* Chat */,
 				75FF151527F4E11000FE7BE2 /* Survey */,
 				1A60AF7925656E0500E53F53 /* Theme.swift */,
+				75D987F92AF2BB330016A702 /* Theme+SnackBarStyle.swift */,
 				9A19926D27D3BB7800161AAE /* Theme.Mock.swift */,
 				1A0C9A6625C16DC400815406 /* Theme+Chat.swift */,
 				1A0C9A6C25C16EED00815406 /* Theme+Call.swift */,
@@ -2730,6 +2745,7 @@
 				EB7A1509286D98270035AC62 /* FileUploaderTests.swift */,
 				C03A8046292BA76D00DDECA6 /* ChatViewControllerTests.swift */,
 				C03A8048292BC8DB00DDECA6 /* CallViewControllerTests.swift */,
+				753B05F72AFC1D750084611E /* SerialQueueTests.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -2849,6 +2865,7 @@
 			isa = PBXGroup;
 			children = (
 				7594093B298D376A008B173A /* RemoteConfiguration.swift */,
+				75D987F72AF2BA500016A702 /* RemoteConfiguration+SnackBar.swift */,
 				75C1143329A3F58E0004E5F7 /* RemoteConfiguration+SecureConversationsWelcomeScreen.swift */,
 				7594093A298D376A008B173A /* RemoteConfiguration+AssetsBuilder.swift */,
 				84265E6A29912E2100D65842 /* RemoteConfiguration+CallVisualizer.swift */,
@@ -2990,6 +3007,17 @@
 				845876A3282A8FEF007AC3DF /* ScaleQuestionView */,
 			);
 			path = Components;
+			sourceTree = "<group>";
+		};
+		75D987F22AF29EF50016A702 /* SnackBarView */ = {
+			isa = PBXGroup;
+			children = (
+				75D987FB2AF2D9F90016A702 /* SnackBar.swift */,
+				752A833B2AF59EDB005E468D /* SnackBar+View.swift */,
+				752A83392AF59EAE005E468D /* SnackBar+Presenter.swift */,
+				752A83372AF5977B005E468D /* SerialQueue.swift */,
+			);
+			path = SnackBarView;
 			sourceTree = "<group>";
 		};
 		75FF151527F4E11000FE7BE2 /* Survey */ = {
@@ -3843,6 +3871,7 @@
 		C0E948012AB1D5B100890026 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				75D987F22AF29EF50016A702 /* SnackBarView */,
 				C0E948072AB1D69C00890026 /* Header */,
 				C0E948022AB1D5BC00890026 /* Buttons */,
 				C07F62782AC2D2E8003EFC97 /* BackgroundSwiftUI.swift */,
@@ -4455,6 +4484,7 @@
 				75FF151D27F4F8E000FE7BE2 /* Theme.Survey.InputQuestion.swift in Sources */,
 				8491AF0A2A78FED700CC3E72 /* GvaGalleryListViewStyle.swift in Sources */,
 				845E2F9D283FCB1400C04D56 /* Theme.Survey.Checkbox.Accessibility.swift in Sources */,
+				752A833C2AF59EDB005E468D /* SnackBar+View.swift in Sources */,
 				C0D2F0542993CCD100803B47 /* VideoCallView.CallButtonBar.swift in Sources */,
 				1AC7A77B25838AE800567FF8 /* ChatItem.swift in Sources */,
 				9A3E1D8C27B6B888005634EB /* FileDownload.Environment.Mock.swift in Sources */,
@@ -4606,6 +4636,8 @@
 				C07FA04B29AF83B900E9FB7F /* ActionButton.Mock.swift in Sources */,
 				C0D2F08C29A4EBA900803B47 /* VIdeoCallView.Environment.Mock.swift in Sources */,
 				313EBD552943116E008E9597 /* SecureConversations.swift in Sources */,
+				752A83382AF5977B005E468D /* SerialQueue.swift in Sources */,
+				752A833A2AF59EAE005E468D /* SnackBar+Presenter.swift in Sources */,
 				7529F2B627E1EB9A004D3581 /* Survey.ButtonView.swift in Sources */,
 				C49A29E42614A29700819269 /* FilePreviewView.swift in Sources */,
 				1A5F815F258A43E600A605DA /* Section.swift in Sources */,
@@ -4648,6 +4680,7 @@
 				845E2F8E283FB5B500C04D56 /* Theme.Survey.SingleQuestion.Accessibility.swift in Sources */,
 				C47901B725ED2FB0007EE195 /* AlertViewController+ScreenShareOffer.swift in Sources */,
 				1A8366B025FF40AB005FE7EE /* LocalFile.swift in Sources */,
+				75D987F82AF2BA500016A702 /* RemoteConfiguration+SnackBar.swift in Sources */,
 				84265E62298D7B2900D65842 /* ScreenSharingCoordinator+DelegateEvent.swift in Sources */,
 				C0D2F048299272D100803B47 /* VideoCallView.ConnectOperatorView.swift in Sources */,
 				9A3E1D8A27B6B824005634EB /* FileDownload.Environment.Interface.swift in Sources */,
@@ -4686,6 +4719,7 @@
 				C0175A2A2A67D499001FACDE /* GvaStyle.swift in Sources */,
 				1A8B61D625C974D0000D780E /* ChatCallUpgradeStyle.swift in Sources */,
 				3100D92D296E946600DEC9CE /* SecureConversations.ConfirmationViewModel.swift in Sources */,
+				75D987FC2AF2D9F90016A702 /* SnackBar.swift in Sources */,
 				3100EEFB293F363100D57F71 /* SecureConversations.WelcomeView.swift in Sources */,
 				1A475BBC25DFA10100296D55 /* UnreadMessagesHandler.swift in Sources */,
 				845E2F85283FA90200C04D56 /* Theme.Survey.ValidationError.Accessibility.swift in Sources */,
@@ -4841,6 +4875,7 @@
 				31DD41652A57105400F92612 /* SecureConversations.TranscriptModel.Environment.swift in Sources */,
 				AFF9542A2ADD8DB600C277E0 /* CoreSDKConfigurator.Mock.swift in Sources */,
 				1A277A1225FA604E009FE131 /* ChatFileContentView.swift in Sources */,
+				75D987FA2AF2BB330016A702 /* Theme+SnackBarStyle.swift in Sources */,
 				75B7BD802A39D5A70060794D /* Layoutable.swift in Sources */,
 				845876AB282A959C007AC3DF /* SingleChoiceQuestionView.Props.Accessibility.swift in Sources */,
 				9AB3402327FC859E006E0FE2 /* CallButtonStyle.StateStyle.Accessibility.swift in Sources */,
@@ -4979,6 +5014,7 @@
 				C03A8049292BC8DB00DDECA6 /* CallViewControllerTests.swift in Sources */,
 				84D5B9662A15204400807F92 /* QuickLookBased.Failing.swift in Sources */,
 				84602A772AEA5BEA0031E606 /* ProximityManager.Failing.swift in Sources */,
+				753B05F82AFC1D750084611E /* SerialQueueTests.swift in Sources */,
 				84681A982A61853300DD7406 /* GvaOption.Mock.swift in Sources */,
 				AF6AB34B2989517100003645 /* FileUploader.Failing.swift in Sources */,
 				EB03B00E27FFF6DD0058F6B1 /* CallViewTests.swift in Sources */,

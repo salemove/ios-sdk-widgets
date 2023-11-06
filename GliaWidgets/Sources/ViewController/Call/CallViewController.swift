@@ -3,6 +3,7 @@ import UIKit
 final class CallViewController: EngagementViewController {
     private let viewModel: CallViewModel
     private let environment: Environment
+    let snackBar = SnackBar()
 
     init(viewModel: CallViewModel, viewFactory: ViewFactory, environment: Environment) {
         self.environment = environment
@@ -66,6 +67,7 @@ final class CallViewController: EngagementViewController {
         }
 
         self.viewModel.action = { [weak self] action in
+            guard let self else { return }
             switch action {
             case .queue:
                 view.setConnectState(.queue, animated: false)
@@ -104,7 +106,7 @@ final class CallViewController: EngagementViewController {
                 let button = CallButton.Kind(with: button)
                 view.buttonBar.setButton(button, badgeItemCount: itemCount)
             case .offerMediaUpgrade(let conf, accepted: let accepted, declined: let declined):
-                self?.offerMediaUpgrade(with: conf, accepted: accepted, declined: declined)
+                self.offerMediaUpgrade(with: conf, accepted: accepted, declined: declined)
             case .setRemoteVideo(let streamView):
                 view.remoteVideoView.streamView = streamView
             case .setLocalVideo(let streamView):
@@ -113,6 +115,14 @@ final class CallViewController: EngagementViewController {
                 view.isVisitrOnHold = isOnHold
             case .transferring:
                 view.setConnectState(.transferring, animated: true)
+            case .showSnackBarView(let text):
+                self.snackBar.present(
+                    text: text,
+                    style: self.viewFactory.theme.invertedSnackBar,
+                    for: self,
+                    bottomOffset: -100,
+                    timerProviding: self.environment.timerProviding
+                )
             }
         }
     }
@@ -178,5 +188,6 @@ private extension CallButton.State {
 extension CallViewController {
     struct Environment {
         var notificationCenter: FoundationBased.NotificationCenter
+        var timerProviding: FoundationBased.Timer.Providing
     }
 }
