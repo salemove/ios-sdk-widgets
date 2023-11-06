@@ -226,3 +226,5 @@
 "visitor_code.failed" = "Could not load the visitor code. Please try refreshing.";
 "live_observation.confirm.title" = "Before We Continue";
 "live_observation.confirm.message" = "Please allow the {companyName} representative to view this application screen for improved support.";
+"live_observation.confirm.message" = "Please allow the {companyName} representative to view this application screen for improved support.";
+"live_observation.indicator.message" = "App screen is visible to the agent";
