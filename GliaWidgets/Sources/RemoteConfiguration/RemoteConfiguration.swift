@@ -10,6 +10,7 @@ public struct RemoteConfiguration: Codable {
     let callVisualizer: CallVisualizer?
     let secureConversationsWelcomeScreen: SecureConversationsWelcomeScreen?
     let secureConversationsConfirmationScreen: SecureConversationsConfirmationScreen?
+    let snackBar: SnackBar?
 }
 
 extension RemoteConfiguration {

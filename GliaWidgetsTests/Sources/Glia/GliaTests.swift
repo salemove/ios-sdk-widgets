@@ -567,7 +567,8 @@ final class GliaTests: XCTestCase {
             bubble: nil,
             callVisualizer: nil,
             secureConversationsWelcomeScreen: nil,
-            secureConversationsConfirmationScreen: nil
+            secureConversationsConfirmationScreen: nil,
+            snackBar: nil
         )
 
         let theme = Theme(colorStyle: .custom(themeColor))
