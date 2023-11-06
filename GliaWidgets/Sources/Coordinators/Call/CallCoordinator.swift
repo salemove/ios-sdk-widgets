@@ -98,7 +98,8 @@ private extension CallCoordinator {
             viewModel: viewModel,
             viewFactory: viewFactory,
             environment: .init(
-                notificationCenter: environment.notificationCenter
+                notificationCenter: environment.notificationCenter,
+                timerProviding: environment.timerProviding
             )
         )
     }
