@@ -7,7 +7,6 @@ extension Glia {
     /// - Parameters:
     ///   - engagementKind: Engagement media type.
     ///   - in: Queue identifiers
-    ///   - theme: A custom theme to use with the engagement.
     ///   - visitorContext: Visitor context.
     ///   - features: Set of features to be enabled in the SDK.
     ///   - sceneProvider: Used to provide `UIWindowScene` to the framework. Defaults to the first active foreground scene.
@@ -24,7 +23,6 @@ extension Glia {
     public func startEngagement(
         engagementKind: EngagementKind,
         in queueIds: [String],
-        theme: Theme = Theme(),
         features: Features = .all,
         sceneProvider: SceneProvider? = nil
     ) throws {

@@ -19,7 +19,7 @@ extension CallVisualizer {
         var audioSession: Glia.Environment.AudioSession
         var date: () -> Date
         var engagedOperator: () -> CoreSdkClient.Operator?
-        var uiConfig: () -> RemoteConfiguration?
+        var theme: Theme
         var assetsBuilder: () -> RemoteConfiguration.AssetsBuilder
         var getCurrentEngagement: CoreSdkClient.GetCurrentEngagement
         var eventHandler: ((GliaEvent) -> Void)?
