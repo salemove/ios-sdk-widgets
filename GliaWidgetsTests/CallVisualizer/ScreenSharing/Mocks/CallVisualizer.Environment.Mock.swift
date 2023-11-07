@@ -19,7 +19,7 @@ extension CallVisualizer.Environment {
         audioSession: .mock,
         date: { .mock },
         engagedOperator: { .mock() },
-        uiConfig: { nil },
+        theme: .init(),
         assetsBuilder: { .standard },
         getCurrentEngagement: CoreSdkClient.mock.getCurrentEngagement,
         orientationManager: .mock(),

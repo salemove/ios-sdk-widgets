@@ -80,7 +80,7 @@ public class Glia {
             engagedOperator: { [weak self] in
                 self?.environment.coreSdk.getCurrentEngagement()?.engagedOperator
             },
-            uiConfig: { [weak self] in self?.uiConfig },
+            theme: theme,
             assetsBuilder: { [weak self] in self?.assetsBuilder ?? .standard },
             getCurrentEngagement: environment.coreSdk.getCurrentEngagement,
             eventHandler: onEvent,
@@ -92,23 +92,26 @@ public class Glia {
     var interactor: Interactor?
     var environment: Environment
     var messageRenderer: MessageRenderer? = .webRenderer
-    var uiConfig: RemoteConfiguration?
+    var theme: Theme
     var assetsBuilder: RemoteConfiguration.AssetsBuilder = .standard
 
     private(set) var configuration: Configuration?
 
     init(environment: Environment) {
         self.environment = environment
+        self.theme = Theme()
     }
 
     /// Setup SDK using specific engagement configuration without starting the engagement.
     /// - Parameters:
     ///   - configuration: Engagement configuration.
+    ///   - theme: A custom theme to use with the engagement.
     ///   - uiConfig: Remote UI configuration.
     ///   - assetsBuilder: Provides assets for remote configuration.
     ///   - completion: Completion handler that will be fired once configuration is complete.
     public func configure(
         with configuration: Configuration,
+        theme: Theme = Theme(),
         uiConfig: RemoteConfiguration? = nil,
         assetsBuilder: RemoteConfiguration.AssetsBuilder = .standard,
         completion: @escaping (Result<Void, Error>) -> Void
@@ -116,7 +119,11 @@ public class Glia {
         guard environment.coreSdk.getCurrentEngagement() == nil else {
             throw GliaError.configuringDuringEngagementIsNotAllowed
         }
-        self.uiConfig = uiConfig
+
+        if let uiConfig {
+            theme.apply(configuration: uiConfig, assetsBuilder: assetsBuilder)
+        }
+        self.theme = theme
         self.assetsBuilder = assetsBuilder
         // `configuration` should be erased to avoid cases when integrators
         // call `configure` and `startEngagement` asynchronously, and

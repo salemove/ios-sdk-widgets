@@ -121,11 +121,7 @@ class ViewController: UIViewController {
 
     @IBAction private func configureSDKTapped() {
         showRemoteConfigAlert { [weak self] fileName in
-            var config: RemoteConfiguration?
-            if let fileName = fileName {
-                config = self?.retrieveRemoteConfiguration(fileName)
-            }
-            self?.configureSDK(uiConfig: config) { [weak self] result in
+            self?.configureSDK(uiConfigName: fileName) { [weak self] result in
                 guard case let .failure(error) = result else { return }
                 self?.showErrorAlert(using: error)
             }
@@ -137,7 +133,7 @@ class ViewController: UIViewController {
         // only if such engagement exists, we need
         // to configure SDK, and only then attempt
         // to end engagement.
-        configureSDK(uiConfig: nil) { [weak self] result in
+        configureSDK(uiConfigName: nil) { [weak self] result in
             switch result {
             case .success:
                 Glia.sharedInstance.endEngagement { result in
@@ -156,7 +152,7 @@ class ViewController: UIViewController {
                 return
             }
             self?.showEngagementKindActionSheet { kind in
-                self?.startEngagement(with: kind, config: fileName)
+                self?.startEngagement(with: kind)
             }
         }
     }
@@ -216,7 +212,7 @@ extension ViewController {
         }
 
         if autoConfigureSdkToggle.isOn {
-            configureSDK(uiConfig: nil) { [weak self] result in
+            configureSDK(uiConfigName: nil) { [weak self] result in
                 switch result {
                 case .success:
                     startEngagement()
@@ -230,7 +226,7 @@ extension ViewController {
     }
 
     func configureSDK(
-        uiConfig: RemoteConfiguration?,
+        uiConfigName: String?,
         completion: ((Result<Void, Error>) -> Void)? = nil
     ) {
         let originalTitle = configureButton.title(for: .normal)
@@ -244,9 +240,13 @@ extension ViewController {
             debugPrint(printable)
         }
 
+        let uiConfig = retrieveRemoteConfiguration(uiConfigName)
+
         do {
             try Glia.sharedInstance.configure(
-                with: configuration
+                with: configuration, 
+                theme: Theme(),
+                uiConfig: uiConfig
             ) { result in
                 switch result {
                 case .success:
@@ -303,21 +303,18 @@ extension ViewController {
         present(alert, animated: true)
     }
 
-    private func startEngagement(with kind: EngagementKind, config name: String) {
-        guard let config = retrieveRemoteConfiguration(name) else { return }
-
+    private func startEngagement(with kind: EngagementKind) {
         let startEngagement = {
             self.catchingError {
-                try Glia.sharedInstance.startEngagementWithConfig(
-                    engagement: kind,
-                    in: [self.queueId],
-                    uiConfig: config
+                try Glia.sharedInstance.startEngagement(
+                    engagementKind: kind,
+                    in: [self.queueId]
                 )
             }
         }
 
         if autoConfigureSdkToggle.isOn {
-            configureSDK(uiConfig: nil) { [weak self] result in
+            configureSDK(uiConfigName: nil) { [weak self] result in
                 switch result {
                 case .success:
                     startEngagement()
@@ -364,13 +361,13 @@ extension ViewController {
         present(alert, animated: true)
     }
 
-    func retrieveRemoteConfiguration(_ fileName: String) -> RemoteConfiguration? {
+    func retrieveRemoteConfiguration(_ fileName: String?) -> RemoteConfiguration? {
         guard
             let url = Bundle.main.url(forResource: fileName, withExtension: "json", subdirectory: "UnifiedUI"),
             let jsonData = try? Data(contentsOf: url),
             let config = try? JSONDecoder().decode(RemoteConfiguration.self, from: .init(jsonData))
         else {
-            alert(message: "Could not decode RemoteConfiguration.")
+            print("Could not decode RemoteConfiguration.")
             return nil
         }
         return config
@@ -406,7 +403,10 @@ extension ViewController {
 
     @IBAction private func toggleAuthentication() {
         catchingError {
-            try Glia.sharedInstance.configure(with: configuration) { [weak self] result in
+            try Glia.sharedInstance.configure(
+                with: configuration,
+                theme: Theme()
+            ) { [weak self] result in
                 guard let self = self else { return }
 
                 switch result {
@@ -423,7 +423,6 @@ extension ViewController {
                             )
                         }
                     }
-
                 case .failure(let error):
                     self.showErrorAlert(using: error)
                 }
