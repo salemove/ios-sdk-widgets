@@ -15,12 +15,8 @@ public final class CallVisualizer {
     private var environment: Environment
     var delegate: ((Action) -> Void)?
     lazy var coordinator: Coordinator = {
-        var theme = Theme()
-        if let uiConfig = environment.uiConfig() {
-            theme = .init(uiConfig: uiConfig, assetsBuilder: environment.assetsBuilder())
-        }
         let viewFactory = ViewFactory(
-            with: theme,
+            with: environment.theme,
             messageRenderer: nil,
             environment: .init(
                 data: environment.data,
