@@ -1,6 +1,4 @@
-import Foundation
 import QuickLook
-import UIKit
 
 struct QuickLookBased {
     struct ThumbnailGenerator {

@@ -1,0 +1,18 @@
+included: # paths to include during linting. `--path` is ignored if present.
+  - GliaWidgets
+
+excluded: # paths to ignore during linting. Takes precedence over `included`.
+  - Pods
+
+# Custom Rules
+custom_rules:
+  import_foundation_or_uikit:
+    included: ".*\\.swift$"  # Apply to all .swift files
+    name: "File should start with an import statement for Foundation or UIKit"
+    regex: '^(import Foundation|import UIKit)'
+    match_kinds: [identifier]  # Check the identifiers for import statements
+    message: "File should start with 'import Foundation' or 'import UIKit'"
+    severity: error
+
+# standard linting rules can be added below as needed
+
