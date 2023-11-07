@@ -110,9 +110,9 @@ extension GliaTests {
         theme.call.connect.queue.firstText = "Glia 1"
         theme.chat.connect.queue.firstText = "Glia 2"
 
-        try sdk.configure(with: .mock()) {
+        try sdk.configure(with: .mock(), theme: theme) { _ in 
             do {
-                try sdk.startEngagement(engagementKind: .chat, in: ["queueId"], theme: theme)
+                try sdk.startEngagement(engagementKind: .chat, in: ["queueId"])
             } catch {
                 XCTFail("startEngagement unexpectedly failed with error \(error), but should succeed instead.")
             }
@@ -275,9 +275,9 @@ extension GliaTests {
         theme.call.connect.queue.firstText = "Glia 1"
         theme.chat.connect.queue.firstText = "Glia 2"
 
-        try sdk.configure(with: .mock()) {
+        try sdk.configure(with: .mock(), theme: theme) { _ in
             do {
-                try sdk.startEngagement(engagementKind: .chat, in: ["queueId"], theme: theme)
+                try sdk.startEngagement(engagementKind: .chat, in: ["queueId"])
             } catch {
                 XCTFail("startEngagement unexpectedly failed with error \(error), but should succeed instead.")
             }

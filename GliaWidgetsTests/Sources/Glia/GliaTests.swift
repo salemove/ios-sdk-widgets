@@ -401,4 +401,52 @@ final class GliaTests: XCTestCase {
         XCTAssertEqual(screenShareHandler.status().value, .stopped)
         XCTAssertEqual(calls, [.ended])
     }
+
+    func test_remoteConfigIsAppliedToThemeUponConfigure() throws {
+        let themeColor: ThemeColor = .init(
+            primary: .red,
+            systemNegative: .red
+        )
+
+        let globalColors: RemoteConfiguration.GlobalColors = .init(
+            primary: "#00FF00",
+            secondary: "#00FF00",
+            baseNormal: "#00FF00",
+            baseLight: "#00FF00",
+            baseDark: "#00FF00",
+            baseShade: "#00FF00",
+            systemNegative: "#00FF00",
+            baseNeutral: "#00FF00"
+        )
+
+        let uiConfig: RemoteConfiguration = .init(
+            globalColors: globalColors,
+            callScreen: nil,
+            chatScreen: nil,
+            surveyScreen: nil,
+            alert: nil,
+            bubble: nil,
+            callVisualizer: nil,
+            secureConversationsWelcomeScreen: nil,
+            secureConversationsConfirmationScreen: nil
+        )
+
+        let theme = Theme(colorStyle: .custom(themeColor))
+        var environment = Glia.Environment.failing
+        environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
+            completion(.success(()))
+        }
+        let sdk = Glia(environment: environment)
+        let configuration = Configuration.mock()
+        try sdk.configure(
+            with: configuration,
+            theme: theme,
+            uiConfig: uiConfig)
+        { _ in }
+
+        let primaryColorHex = sdk.theme.color.primary.toRGBAHex(alpha: false)
+        let systemNegativeHex = sdk.theme.color.systemNegative.toRGBAHex(alpha: false)
+        XCTAssertEqual(primaryColorHex, "#00FF00")
+        XCTAssertEqual(systemNegativeHex, "#00FF00")
+    }
 }
