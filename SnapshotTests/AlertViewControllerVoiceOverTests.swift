@@ -40,6 +40,15 @@ final class AlertViewControllerVoiceOverTests: SnapshotTestCase {
         alert.assertSnapshot(as: .accessibilityImage)
     }
 
+    func test_liveObservationConfirmationAlert() {
+        let alert = alert(ofKind: .liveObservationConfirmation(
+            .liveObservationMock(),
+            accepted: {},
+            declined: {}
+        ))
+        alert.assertSnapshot(as: .accessibilityImage)
+    }
+
     private func alert(ofKind kind: AlertViewController.Kind) -> AlertViewController {
         let viewController = AlertViewController(
             kind: kind,
