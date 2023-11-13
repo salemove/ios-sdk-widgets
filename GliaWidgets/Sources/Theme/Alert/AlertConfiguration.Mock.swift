@@ -58,6 +58,16 @@ extension ConfirmationAlertConfiguration {
     static func mock() -> Self {
         .init(showsPoweredBy: true)
     }
+
+    static func liveObservationMock() -> Self {
+        .init(
+            title: "Live Observation Confirmation",
+            message: "This is mock message",
+            negativeTitle: "Cancel",
+            positiveTitle: "Allow",
+            showsPoweredBy: true
+        )
+    }
 }
 
 extension SingleMediaUpgradeAlertConfiguration {
