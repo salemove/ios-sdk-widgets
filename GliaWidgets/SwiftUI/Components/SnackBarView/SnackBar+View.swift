@@ -10,13 +10,16 @@ extension SnackBar {
         @State private var currentOffset: CGFloat = 300
         let style: Theme.SnackBarStyle
         var offset: CGFloat = 0
+        let isAnimated: Bool
 
         init(
             style: Theme.SnackBarStyle,
-            publisher: AnyPublisher<ViewState, Never>
+            publisher: AnyPublisher<ViewState, Never>,
+            isAnimated: Bool = true
         ) {
             self.style = style
             self.publisher = publisher
+            self.isAnimated = isAnimated
         }
 
         var body: some View {
@@ -33,18 +36,26 @@ extension SnackBar {
                     switch newState {
                     case .appear(let text):
                         self.text = text
-                        withAnimation {
+                        if isAnimated {
+                            withAnimation {
+                                self.currentOffset = offset
+                            }
+                        } else {
                             self.currentOffset = offset
                         }
+
                     case .disappear:
-                        withAnimation {
+                        if isAnimated {
+                            withAnimation {
+                                self.currentOffset = 300
+                            }
+                        } else {
                             self.currentOffset = 300
                         }
                     }
                 }
         }
     }
-
 }
 
 struct SnackBarContentView_Previews: PreviewProvider {

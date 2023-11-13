@@ -50,4 +50,14 @@ final class AlertViewControllerLayoutTests: SnapshotTestCase {
         )
         return viewController
     }
+
+    func test_liveObservationConfirmationAlert() {
+        let alert = alert(ofKind: .liveObservationConfirmation(
+            .liveObservationMock(),
+            accepted: {},
+            declined: {}
+        ))
+        alert.assertSnapshot(as: .image, in: .portrait)
+        alert.assertSnapshot(as: .image, in: .landscape)
+    }
 }
