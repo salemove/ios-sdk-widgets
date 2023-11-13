@@ -667,6 +667,10 @@
 		C0E948042AB1D5D200890026 /* ActionButtonSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E948032AB1D5D200890026 /* ActionButtonSwiftUI.swift */; };
 		C0E948062AB1D64700890026 /* HeaderButtonSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E948052AB1D64700890026 /* HeaderButtonSwiftUI.swift */; };
 		C0E948092AB1D6AB00890026 /* HeaderSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E948082AB1D6AB00890026 /* HeaderSwiftUI.swift */; };
+		C0EC58CC2B0275DE00E78C70 /* SnackBarLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EC58CB2B0275DE00E78C70 /* SnackBarLayoutTests.swift */; };
+		C0EC58CE2B02775100E78C70 /* SnackBar+View+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EC58CD2B02775100E78C70 /* SnackBar+View+Mock.swift */; };
+		C0EC58D02B028FB100E78C70 /* SnackBarVoiceOverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EC58CF2B028FB100E78C70 /* SnackBarVoiceOverTests.swift */; };
+		C0EC58D22B02909500E78C70 /* SnackBarDynamicTypeFontTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EC58D12B02909500E78C70 /* SnackBarDynamicTypeFontTests.swift */; };
 		C2B201AEDBE3A53369DF524F /* Pods_GliaWidgetsTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCF7E6C5499635E67EF6A604 /* Pods_GliaWidgetsTests.framework */; };
 		C4119E06268F41D1004DFEFB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C4119E05268F41D1004DFEFB /* Main.storyboard */; };
 		C42463742673ABE10082C135 /* ScreenShareHandler.Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42463732673ABE10082C135 /* ScreenShareHandler.Interface.swift */; };
@@ -1424,6 +1428,10 @@
 		C0E948032AB1D5D200890026 /* ActionButtonSwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButtonSwiftUI.swift; sourceTree = "<group>"; };
 		C0E948052AB1D64700890026 /* HeaderButtonSwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderButtonSwiftUI.swift; sourceTree = "<group>"; };
 		C0E948082AB1D6AB00890026 /* HeaderSwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderSwiftUI.swift; sourceTree = "<group>"; };
+		C0EC58CB2B0275DE00E78C70 /* SnackBarLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnackBarLayoutTests.swift; sourceTree = "<group>"; };
+		C0EC58CD2B02775100E78C70 /* SnackBar+View+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SnackBar+View+Mock.swift"; sourceTree = "<group>"; };
+		C0EC58CF2B028FB100E78C70 /* SnackBarVoiceOverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnackBarVoiceOverTests.swift; sourceTree = "<group>"; };
+		C0EC58D12B02909500E78C70 /* SnackBarDynamicTypeFontTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnackBarDynamicTypeFontTests.swift; sourceTree = "<group>"; };
 		C4119E05268F41D1004DFEFB /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		C42463732673ABE10082C135 /* ScreenShareHandler.Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenShareHandler.Interface.swift; sourceTree = "<group>"; };
 		C43C12F82694B14900C37E1B /* GliaPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GliaPresenter.swift; sourceTree = "<group>"; };
@@ -2978,6 +2986,7 @@
 			isa = PBXGroup;
 			children = (
 				75D987FB2AF2D9F90016A702 /* SnackBar.swift */,
+				C0EC58CD2B02775100E78C70 /* SnackBar+View+Mock.swift */,
 				752A833B2AF59EDB005E468D /* SnackBar+View.swift */,
 				752A83392AF59EAE005E468D /* SnackBar+Presenter.swift */,
 				752A83372AF5977B005E468D /* SerialQueue.swift */,
@@ -3436,6 +3445,9 @@
 				AF22C8982A61AE930004BF3C /* VisitorCodeViewControllerLayoutTests.swift */,
 				AF03A7C22A6EDF490081887D /* VisitorCodeViewControllerDynamicTypeFontTests.swift */,
 				AF755FD92A71583900871E36 /* BubbleWindowLayoutTests.swift */,
+				C0EC58CB2B0275DE00E78C70 /* SnackBarLayoutTests.swift */,
+				C0EC58D12B02909500E78C70 /* SnackBarDynamicTypeFontTests.swift */,
+				C0EC58CF2B028FB100E78C70 /* SnackBarVoiceOverTests.swift */,
 			);
 			path = SnapshotTests;
 			sourceTree = "<group>";
@@ -4415,6 +4427,7 @@
 				C0D2F07C29A4E47200803B47 /* ConnectOperatorView.Mock.swift in Sources */,
 				C08D776028F583D7000461E5 /* Array+Extensions.swift in Sources */,
 				9AE9E4B727E1E30500BFE239 /* MockHelpers.swift in Sources */,
+				C0EC58CE2B02775100E78C70 /* SnackBar+View+Mock.swift in Sources */,
 				8464297D2A459E7D00943BD6 /* UIViewController+Replaceble.swift in Sources */,
 				1A2DA72625EF892600032611 /* FilePickerController.swift in Sources */,
 				1ABD6C9625B6F46700D56EFA /* AlertViewController+SingleMediaUpgrade.swift in Sources */,
@@ -5054,6 +5067,8 @@
 			files = (
 				846E822828996A5C008EFBF0 /* AlertViewControllerVoiceOverTests.swift in Sources */,
 				AF03A7BB2A6ED73E0081887D /* SecureConversationsWelcomeScreenDynamicTypeFontTests.swift in Sources */,
+				C0EC58CC2B0275DE00E78C70 /* SnackBarLayoutTests.swift in Sources */,
+				C0EC58D22B02909500E78C70 /* SnackBarDynamicTypeFontTests.swift in Sources */,
 				75CF8D9129C3A85C00CB1524 /* SecureConversationsWelcomeScreenVoiceOverTests.swift in Sources */,
 				AF22C8972A61A9BF0004BF3C /* VideoCallViewControllerLayoutTests.swift in Sources */,
 				C07F62772AC1BA2B003EFC97 /* UIViewController+Extensions.swift in Sources */,
@@ -5065,6 +5080,7 @@
 				AF22C8852A6154780004BF3C /* AlertViewControllerLayoutTests.swift in Sources */,
 				AF22C8872A6182AF0004BF3C /* BubbleViewLayoutTests.swift in Sources */,
 				AF03A7C12A6EDE190081887D /* VideoCallViewControllerDynamicTypeFontTests.swift in Sources */,
+				C0EC58D02B028FB100E78C70 /* SnackBarVoiceOverTests.swift in Sources */,
 				C07FA05029B0E41A00E9FB7F /* VideoCallViewControllerVoiceOverTests.swift in Sources */,
 				C07FA05029B0E41A00E9FB7F /* VideoCallViewControllerVoiceOverTests.swift in Sources */,
 				AF755FDA2A71583900871E36 /* BubbleWindowLayoutTests.swift in Sources */,
