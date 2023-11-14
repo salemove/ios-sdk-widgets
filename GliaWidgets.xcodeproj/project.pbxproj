@@ -4023,8 +4023,9 @@
 		1A205D4F25655CB1003AA3CD /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1420;
-				LastUpgradeCheck = 1240;
+				LastUpgradeCheck = 1430;
 				TargetAttributes = {
 					1A205D5725655CB1003AA3CD = {
 						CreatedOnToolsVersion = 12.1;
@@ -5010,12 +5011,10 @@
 				AF22C8872A6182AF0004BF3C /* BubbleViewLayoutTests.swift in Sources */,
 				AF03A7C12A6EDE190081887D /* VideoCallViewControllerDynamicTypeFontTests.swift in Sources */,
 				C07FA05029B0E41A00E9FB7F /* VideoCallViewControllerVoiceOverTests.swift in Sources */,
-				C07FA05029B0E41A00E9FB7F /* VideoCallViewControllerVoiceOverTests.swift in Sources */,
 				AF755FDA2A71583900871E36 /* BubbleWindowLayoutTests.swift in Sources */,
 				AF22C88D2A6188EF0004BF3C /* ChatViewControllerLayoutTests.swift in Sources */,
 				AF03A7B12A6E96870081887D /* BubbleViewDynamicTypeFontTests.swift in Sources */,
 				AF03A7AF2A6E7DC40081887D /* AlertViewControllerDynamicTypeFontTests.swift in Sources */,
-				AF755FDA2A71583900871E36 /* BubbleWindowLayoutTests.swift in Sources */,
 				AF22C8992A61AE930004BF3C /* VisitorCodeViewControllerLayoutTests.swift in Sources */,
 				9AB3401327F71D5D006E0FE2 /* BubbleViewVoiceOverTests.swift in Sources */,
 				AF22C8932A619F5C0004BF3C /* SecureConversationsConfirmationScreenLayoutTests.swift in Sources */,
@@ -5231,6 +5230,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = GliaWidgets/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -5239,6 +5239,8 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				PRODUCT_BUNDLE_IDENTIFIER = com.glia.sdk.widgets;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -5261,6 +5263,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = GliaWidgets/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -5269,6 +5272,8 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				PRODUCT_BUNDLE_IDENTIFIER = com.glia.sdk.widgets;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
