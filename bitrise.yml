@@ -173,7 +173,11 @@ workflows:
             make clone-snapshots-ci repo_url="https://$GITHUB_USERNAME:$GITHUB_API_TOKEN@$SNAPSHOTS_REPO"
     - cache-pull@2: {}
     - certificate-and-profile-installer@1: {}
-    - cocoapods-install@2: {}
+    - script:
+        inputs:
+        - content: |-
+            bundle install
+    - cocoapods-install: {}
     - recreate-user-schemes@1:
         inputs:
         - project_path: $BITRISE_PROJECT_PATH
