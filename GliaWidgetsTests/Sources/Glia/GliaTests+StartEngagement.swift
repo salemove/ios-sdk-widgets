@@ -15,7 +15,7 @@ extension GliaTests {
         }
         let sdk = Glia(environment: sdkEnv)
         sdk.rootCoordinator = .mock(engagementKind: .chat, screenShareHandler: .mock)
-        try sdk.configure(with: .mock())
+        try sdk.configure(with: .mock(), theme: .mock()) { _ in }
 
         XCTAssertThrowsError(
             try sdk.startEngagement(
@@ -32,7 +32,7 @@ extension GliaTests {
         sdk.environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             completion(.success(()))
         }
-        try sdk.configure(with: .mock()) {}
+        try sdk.configure(with: .mock(), theme: .mock()) { _ in }
         sdk.environment.coreSdk.getCurrentEngagement = { .mock(source: .callVisualizer) }
 
         XCTAssertThrowsError(
@@ -75,7 +75,7 @@ extension GliaTests {
         }
         let sdk = Glia(environment: environment)
 
-        try sdk.start(.chat, configuration: .mock(), queueID: "queueId", visitorContext: nil)
+        try sdk.start(.chat, configuration: .mock(), queueID: "queueId", theme: .mock())
 
         XCTAssertTrue(sdk.isConfigured)
         XCTAssertEqual(calls, [.configureWithConfiguration, .configureWithInteractor])
@@ -155,9 +155,9 @@ extension GliaTests {
         theme.call.connect.queue.firstText = "Glia 1"
         theme.chat.connect.queue.firstText = "Glia 2"
 
-        try sdk.configure(with: .mock()) {
+        try sdk.configure(with: .mock(), theme: .mock()) { _ in
             do {
-                try sdk.startEngagement(engagementKind: .chat, in: ["queueId"], theme: theme)
+                try sdk.startEngagement(engagementKind: .chat, in: ["queueId"])
             } catch {
                 XCTFail("startEngagement unexpectedly failed with error \(error), but should succeed instead.")
             }
@@ -193,7 +193,7 @@ extension GliaTests {
 
         let sdk = Glia(environment: environment)
 
-        try sdk.configure(with: .mock(companyName: "Glia")) {
+        try sdk.configure(with: .mock(companyName: "Glia"), theme: .mock()) { _ in
             do {
                 try sdk.startEngagement(engagementKind: .chat, in: ["queueId"])
             } catch {
@@ -231,7 +231,7 @@ extension GliaTests {
 
         let sdk = Glia(environment: environment)
 
-        try sdk.configure(with: .mock()) {
+        try sdk.configure(with: .mock(), theme: .mock()) { _ in
             do {
                 try sdk.startEngagement(engagementKind: .chat, in: ["queueId"])
             } catch {
@@ -318,7 +318,7 @@ extension GliaTests {
         environment.coreSdk.getCurrentEngagement = { nil }
 
         let sdk = Glia(environment: environment)
-        try sdk.configure(with: .mock(), completion: {})
+        try sdk.configure(with: .mock(), theme: .mock()) { _ in }
         try sdk.startEngagement(engagementKind: .chat, in: ["queueId"])
 
         let configuredSdkTheme = resultingViewFactory?.theme

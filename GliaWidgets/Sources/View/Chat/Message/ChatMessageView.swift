@@ -64,7 +64,7 @@ class ChatMessageView: BaseView {
                 accessibilityProperties: accProperties
             )
             appendContentViews(contentViews, animated: animated)
-        case let .attributedText(text, accProperties):
+        case let .attributedText(text, _):
             let contentView = ChatTextContentView(
                 with: style,
                 contentAlignment: contentAlignment

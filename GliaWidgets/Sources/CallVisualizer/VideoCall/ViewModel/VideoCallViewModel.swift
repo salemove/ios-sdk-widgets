@@ -82,14 +82,10 @@ extension CallVisualizer {
                 )
             )
 
-            if #available(iOS 13.0, *) {
-                let windows = environment.uiApplication.windows()
-                interfaceOrientation = windows.first(where: {
-                    $0.isKeyWindow
-                })?.windowScene?.interfaceOrientation ?? .portrait
-            } else {
-                interfaceOrientation = environment.uiApplication.statusBarOrientation()
-            }
+            let windows = environment.uiApplication.windows()
+            interfaceOrientation = windows.first(where: {
+                $0.isKeyWindow
+            })?.windowScene?.interfaceOrientation ?? .portrait
 
             connectOperatorSize = .init(size: .normal, animated: true)
             operatorImageVisible = false
@@ -323,14 +319,10 @@ private extension CallVisualizer.VideoCallViewModel {
     }
 
     func handleOrientationChange() {
-        if #available(iOS 13.0, *) {
-            let windows = environment.uiApplication.windows()
-            interfaceOrientation = windows.first(where: {
-                $0.isKeyWindow
-            })?.windowScene?.interfaceOrientation ?? .portrait
-        } else {
-            interfaceOrientation = environment.uiApplication.statusBarOrientation()
-        }
+        let windows = environment.uiApplication.windows()
+        interfaceOrientation = windows.first(where: {
+            $0.isKeyWindow
+        })?.windowScene?.interfaceOrientation ?? .portrait
     }
 
     func toggleVideo() {

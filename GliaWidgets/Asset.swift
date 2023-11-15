@@ -138,7 +138,6 @@ public enum Asset {
 // swiftlint:enable identifier_name line_length nesting type_body_length type_name
 
 public extension Image {
-  @available(iOS 1.0, tvOS 1.0, watchOS 1.0, *)
   @available(OSX, unavailable,
     message: "This initializer is unsafe on macOS, please use the ImageAsset.image property")
   convenience init!(asset: ImageAsset) {

@@ -28,10 +28,6 @@ extension UIKitBased.UIApplication {
         windows: {
             fail("\(Self.self).window")
             return []
-        },
-        statusBarOrientation: {
-            fail("\(Self.self).statusBarOrientation")
-            return .portrait
         }
     )
 }
