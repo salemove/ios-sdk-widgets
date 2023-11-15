@@ -36,9 +36,9 @@ import Foundation
 }
 
 extension UserDefaultsStored {
-    struct Coder<Value> {
-        var decode: (Any?) -> Value?
-        var encode: (Value?) -> Any?
+    struct Coder<CoderValue> {
+        var decode: (Any?) -> CoderValue?
+        var encode: (CoderValue?) -> Any?
     }
 }
 
