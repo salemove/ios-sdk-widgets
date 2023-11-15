@@ -74,7 +74,6 @@ final class GliaTests: XCTestCase {
 
         class MockedSceneProvider: SceneProvider {
             init () {}
-            @available(iOS 13.0, *)
             func windowScene() -> UIWindowScene? {
                 UIWindow().windowScene
             }
@@ -99,8 +98,7 @@ final class GliaTests: XCTestCase {
         try sdk.start(
             .audioCall,
             configuration: .mock(),
-            queueID: "queueID",
-            visitorContext: .mock(),
+            queueID: "queueId",
             theme: expectedTheme,
             features: .all,
             sceneProvider: expectedSceneProvider
@@ -137,7 +135,7 @@ final class GliaTests: XCTestCase {
         sdk.onEvent = {
             calls.append(.onEvent($0))
         }
-        try sdk.configure(with: .mock()) {}
+        try sdk.configure(with: .mock(), theme: .mock()) { _ in }
         sdk.callVisualizer.delegate?(.visitorCodeIsRequested)
         sdk.environment.coreSdk.getCurrentEngagement = { .mock(source: .callVisualizer) }
 
@@ -165,7 +163,7 @@ final class GliaTests: XCTestCase {
         sdk.onEvent = {
             calls.append(.onEvent($0))
         }
-        try sdk.configure(with: .mock()) {}
+        try sdk.configure(with: .mock(), theme: .mock()) { _ in }
         sdk.callVisualizer.delegate?(.visitorCodeIsRequested)
 
         sdk.environment.coreSdk.getCurrentEngagement = { .mock(source: .callVisualizer) }
@@ -192,7 +190,7 @@ final class GliaTests: XCTestCase {
         sdk.onEvent = {
             calls.append(.onEvent($0))
         }
-        try sdk.configure(with: .mock()) {}
+        try sdk.configure(with: .mock(), theme: .mock()) { _ in }
         sdk.callVisualizer.delegate?(.visitorCodeIsRequested)
         sdk.environment.coreSdk.getCurrentEngagement = { .mock(source: .callVisualizer) }
 
@@ -227,7 +225,7 @@ final class GliaTests: XCTestCase {
         sdk.onEvent = {
             calls.append(.onEvent($0))
         }
-        try sdk.configure(with: .mock()) {}
+        try sdk.configure(with: .mock(), theme: .mock()) { _ in }
         sdk.callVisualizer.delegate?(.visitorCodeIsRequested)
         sdk.environment.coreSdk.getCurrentEngagement = { .mock(source: .callVisualizer) }
 
@@ -242,7 +240,7 @@ final class GliaTests: XCTestCase {
         environment.coreSdk.getCurrentEngagement = { .mock() }
         let sdk = Glia(environment: environment)
 
-        XCTAssertThrowsError(try sdk.configure(with: .mock()) {}) { error in
+        XCTAssertThrowsError(try sdk.configure(with: .mock(), theme: .mock()) { _ in }) { error in
             XCTAssertEqual(error as? GliaError, GliaError.configuringDuringEngagementIsNotAllowed)
         }
     }
@@ -306,7 +304,7 @@ final class GliaTests: XCTestCase {
             completion(.success(()))
         }
         let sdk = Glia(environment: environment)
-        try sdk.configure(with: .mock()) {}
+        try sdk.configure(with: .mock(), theme: .mock()) { _ in }
         XCTAssertTrue(sdk.isConfigured)
     }
 
@@ -322,10 +320,10 @@ final class GliaTests: XCTestCase {
             }
         }
         let sdk = Glia(environment: environment)
-        try sdk.configure(with: .mock()) {}
+        try sdk.configure(with: .mock(), theme: .mock()) { _ in }
         XCTAssertTrue(sdk.isConfigured)
 
-        try? sdk.configure(with: .mock()) {}
+        try? sdk.configure(with: .mock(), theme: .mock()) { _ in }
         XCTAssertFalse(sdk.isConfigured)
     }
 
@@ -335,7 +333,7 @@ final class GliaTests: XCTestCase {
             throw CoreSdkClient.GliaCoreError.mock()
         }
         let sdk = Glia(environment: environment)
-        try? sdk.configure(with: .mock()) {}
+        try? sdk.configure(with: .mock(), theme: .mock()) { _ in }
         XCTAssertFalse(sdk.isConfigured)
     }
 
@@ -354,7 +352,7 @@ final class GliaTests: XCTestCase {
             case configureWithConfiguration
         }
         var calls: [Call] = []
-        try sdk.configure(with: configuration) {
+        try sdk.configure(with: .mock(), theme: .mock()) { _ in
             calls.append(.configureWithConfiguration)
         }
         try sdk.startEngagement(
@@ -385,7 +383,7 @@ final class GliaTests: XCTestCase {
         }
         gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
         let sdk = Glia(environment: gliaEnv)
-        try sdk.configure(with: .mock()) {}
+        try sdk.configure(with: .mock(), theme: .mock()) { _ in }
         sdk.callVisualizer.delegate?(.visitorCodeIsRequested)
         sdk.environment.coreSdk.getCurrentEngagement = { .mock(source: .callVisualizer) }
         sdk.onEvent = { event in

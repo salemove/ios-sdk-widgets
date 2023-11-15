@@ -13,8 +13,7 @@ extension UIKitBased.UIApplication {
         canOpenURL: { _ in false },
         preferredContentSizeCategory: { .unspecified },
         isIdleTimerDisabled: { _ in },
-        windows: { .init() },
-        statusBarOrientation: { .portrait }
+        windows: { .init() }
     )
 }
 

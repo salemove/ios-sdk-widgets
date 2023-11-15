@@ -749,7 +749,7 @@ extension ChatViewModel {
 
 extension ChatViewModel {
     private func presentMediaPicker() {
-        let itemSelected = { (kind: AttachmentSourceItemKind) -> Void in
+        let itemSelected = { (kind: AttachmentSourceItemKind) in
             let media = ObservableValue<MediaPickerEvent>(with: .none)
             media.addObserver(self) { [weak self] event, _ in
                 guard let self = self else { return }

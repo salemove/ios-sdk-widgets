@@ -29,8 +29,8 @@ extension UIColor {
         let hex: String = hex.trimmingCharacters(in: Self.trimmingCharacters)
         let scanner = Scanner(string: hex)
 
-        var color: UInt32 = 0
-        scanner.scanHexInt32(&color)
+        var color: UInt64 = 0
+        scanner.scanHexInt64(&color)
 
         let mask = 0x000000FF
         let r = CGFloat(Int(color >> 16) & mask) / 255.0

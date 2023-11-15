@@ -149,7 +149,7 @@ extension ChatCoordinator {
             isCustomCardSupported: viewFactory.messageRenderer != nil,
             isWindowVisible: isWindowVisible,
             startAction: startAction,
-            deliveredStatusText: viewFactory.theme.chat.visitorMessage.delivered,
+            deliveredStatusText: viewFactory.theme.chat.visitorMessageStyle.delivered,
             chatType: chatType,
             environment: Self.enviromentForChatModel(environment: environment, viewFactory: viewFactory)
         )

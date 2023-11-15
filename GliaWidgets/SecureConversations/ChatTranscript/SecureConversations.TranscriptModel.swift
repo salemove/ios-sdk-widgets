@@ -417,7 +417,7 @@ extension SecureConversations.TranscriptModel {
 // MARK: Handling of file-picker
 extension SecureConversations.TranscriptModel {
     private func presentMediaPicker() {
-        let itemSelected = { [weak self] (kind: AttachmentSourceItemKind) -> Void in
+        let itemSelected = { [weak self] (kind: AttachmentSourceItemKind) in
             let media = ObservableValue<MediaPickerEvent>(with: .none)
             guard let self = self else { return }
             media.addObserver(self) { [weak self] event, _ in

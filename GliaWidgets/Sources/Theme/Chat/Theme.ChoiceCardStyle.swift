@@ -152,7 +152,7 @@ extension Theme.ChoiceCardStyle {
                     textFont: choiceOption.normal.title.font,
                     textColor: UIColor(hex: choiceOption.normal.title.color),
                     textStyle: choiceOption.normal.title.textStyle,
-                    backgroundColor: choiceOption.normal.background.color ?? .clear,
+                    backgroundColor: choiceOption.normal.background.color,
                     borderColor: UIColor(hex: choiceOption.normal.borderColor ?? ""),
                     borderWidth: choiceOption.normal.borderWidth,
                     accessibility: .init(
@@ -164,7 +164,7 @@ extension Theme.ChoiceCardStyle {
                     textFont: choiceOption.selected.title.font,
                     textColor: UIColor(hex: choiceOption.selected.title.color),
                     textStyle: choiceOption.selected.title.textStyle,
-                    backgroundColor: choiceOption.selected.background.color ?? .clear,
+                    backgroundColor: choiceOption.selected.background.color,
                     borderColor: UIColor(hex: choiceOption.selected.borderColor ?? ""),
                     borderWidth: choiceOption.selected.borderWidth,
                     accessibility: .init(
@@ -176,7 +176,7 @@ extension Theme.ChoiceCardStyle {
                     textFont: choiceOption.disabled.title.font,
                     textColor: UIColor(hex: choiceOption.disabled.title.color),
                     textStyle: choiceOption.disabled.title.textStyle,
-                    backgroundColor: choiceOption.disabled.background.color ?? .clear,
+                    backgroundColor: choiceOption.disabled.background.color,
                     borderColor: UIColor(hex: choiceOption.disabled.borderColor ?? ""),
                     borderWidth: choiceOption.disabled.borderWidth,
                     accessibility: .init(

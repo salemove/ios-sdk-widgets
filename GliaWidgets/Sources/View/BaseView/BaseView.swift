@@ -3,14 +3,11 @@ import UIKit
 class BaseView: UIView {
 
     var currentOrientation: UIInterfaceOrientation {
-        guard
-            #available(iOS 13.0, *),
-            let orientation = UIApplication.shared.windows.first?.windowScene?.interfaceOrientation
-        else {
-            return UIApplication.shared.statusBarOrientation
+        guard let windowScene = UIApplication.shared.windows.first?.windowScene else {
+            return .portrait
         }
 
-        return orientation
+        return windowScene.interfaceOrientation
     }
 
     required init() {
