@@ -11,7 +11,6 @@ enum UIKitBased {
         var preferredContentSizeCategory: () -> UIContentSizeCategory
         var isIdleTimerDisabled: (Bool) -> Void
         var windows: () -> [UIKit.UIWindow]
-        var statusBarOrientation: () -> UIInterfaceOrientation
     }
 
     struct UIDevice {

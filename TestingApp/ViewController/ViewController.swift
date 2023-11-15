@@ -147,7 +147,7 @@ class ViewController: UIViewController {
 
     @IBAction private func remoteConfigTapped() {
         showRemoteConfigAlert { [weak self] fileName in
-            guard let fileName = fileName else {
+            guard fileName != nil else {
                 self?.alert(message: "Could not find any json file")
                 return
             }

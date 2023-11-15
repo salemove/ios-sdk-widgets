@@ -431,7 +431,7 @@ extension SecureConversations.WelcomeViewModel {
         from originView: UIView,
         alertConfiguration: AlertConfiguration
     ) {
-        let itemSelected = { (kind: AttachmentSourceItemKind) -> Void in
+        let itemSelected = { (kind: AttachmentSourceItemKind) in
             let media = Command<MediaPickerEvent> { [weak self] event in
                 guard let self = self else { return }
                 switch event {

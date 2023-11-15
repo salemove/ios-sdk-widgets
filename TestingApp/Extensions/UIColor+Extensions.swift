@@ -21,17 +21,21 @@ extension UIColor {
     }
 
     convenience init(hex: String, alpha: CGFloat = 1.0) {
-        let hex: String = hex.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-        let scanner = Scanner(string: hex)
+        let hex: String = hex.trimmingCharacters(in: .whitespacesAndNewlines)
+        let start = hex.index(hex.startIndex, offsetBy: hex.hasPrefix("#") ? 1 : 0)
+        let hexColor = String(hex[start...])
 
-        var color: UInt32 = 0
-        scanner.scanHexInt32(&color)
+        let scanner = Scanner(string: hexColor)
+        var hexNumber: UInt64 = 0
 
-        let mask = 0x000000FF
-        let r = CGFloat(Int(color >> 16) & mask) / 255.0
-        let g = CGFloat(Int(color >> 8) & mask) / 255.0
-        let b = CGFloat(Int(color) & mask) / 255.0
+        if scanner.scanHexInt64(&hexNumber) {
+            let r = CGFloat((hexNumber & 0xff0000) >> 16) / 255.0
+            let g = CGFloat((hexNumber & 0x00ff00) >> 8) / 255.0
+            let b = CGFloat(hexNumber & 0x0000ff) / 255.0
 
-        self.init(red: r, green: g, blue: b, alpha: alpha)
+            self.init(red: r, green: g, blue: b, alpha: alpha)
+        } else {
+            self.init(red: 0, green: 0, blue: 0, alpha: 0)
+        }
     }
 }
