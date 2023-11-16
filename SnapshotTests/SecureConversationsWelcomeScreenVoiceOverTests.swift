@@ -95,9 +95,23 @@ final class SecureConversationsWelcomeScreenVoiceOverTests: SnapshotTestCase {
             warningMessage: .init(text: warningMessage, animated: false),
             fileUploadListProps: .init(
                 maxUnscrollableViews: 3,
-                style: .chat(.mock),
+                style: .messageCenter(
+                    .init(item: .init(
+                        filePreview: .mock,
+                        uploading: .mock,
+                        uploaded: .mock,
+                        error: .mock,
+                        progressColor: Color.primary, 
+                        errorProgressColor: Color.systemNegative,
+                        progressBackgroundColor: .clear,
+                        removeButtonImage: .mock,
+                        removeButtonColor: Color.baseShade,
+                        backgroundColor: Color.baseNeutral)
+                    )
+                ),
                 uploads: .init(uploads),
-                isScrollingEnabled: true
+                isScrollingEnabled: true, 
+                preferredContentSizeCategoryChanged: .nop
             ),
             headerProps: headerProps,
             isUiHidden: false
