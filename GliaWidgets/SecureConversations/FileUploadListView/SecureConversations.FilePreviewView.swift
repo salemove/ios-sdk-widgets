@@ -26,7 +26,7 @@ extension SecureConversations {
 
         private let imageView = UIImageView()
         private let label = UILabel()
-        private let kSize = CGSize(width: 52, height: 52)
+        private let kSize = CGSize(width: 53, height: 53)
         private let environment: Environment
 
         init(environment: Environment) {

@@ -10,7 +10,6 @@ extension SecureConversations {
         }
         var props: Props {
             didSet {
-                guard props != oldValue else { return }
                 renderProps()
             }
         }
@@ -42,7 +41,7 @@ extension SecureConversations {
         func renderProps() {
             switch props {
             case let .welcome(welcomeProps):
-            renderWelcome(props: welcomeProps)
+                renderWelcome(props: welcomeProps)
             }
         }
 
