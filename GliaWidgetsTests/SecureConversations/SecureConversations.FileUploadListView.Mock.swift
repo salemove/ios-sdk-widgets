@@ -8,6 +8,7 @@ extension SecureConversations.FileUploadListView.Props {
             FileUploadListStyle(item: FileUploadStyle.initial)
         ),
         uploads: .init([]),
-        isScrollingEnabled: false
+        isScrollingEnabled: false,
+        preferredContentSizeCategoryChanged: .nop
     )
 }

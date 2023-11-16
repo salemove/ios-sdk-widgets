@@ -7,13 +7,15 @@ extension SecureConversations {
             let style: FileUploadListView.Style
             let uploads: IdCollection<FileUploadView.Props.Identifier, FileUploadView.Props>
             let isScrollingEnabled: Bool
+            let preferredContentSizeCategoryChanged: Cmd
         }
 
         var props: Props = .init(
             maxUnscrollableViews: 2,
             style: .chat(.initial),
             uploads: .init(),
-            isScrollingEnabled: false
+            isScrollingEnabled: false,
+            preferredContentSizeCategoryChanged: .nop
         ) {
             didSet {
                 renderProps()
@@ -45,14 +47,12 @@ extension SecureConversations {
 
         func addUploadView(_ uploadView: FileUploadView) {
             stackView.insertArrangedSubview(uploadView, at: 0)
-            updateHeight()
             addAccessibilityProperties(for: uploadView)
         }
 
         func removeUploadView(_ uploadView: FileUploadView) {
             stackView.removeArrangedSubview(uploadView)
             uploadView.removeFromSuperview()
-            updateHeight()
             removeAccessibilityProperties(for: uploadView)
         }
 
@@ -62,8 +62,17 @@ extension SecureConversations {
             updateHeight()
         }
 
+        override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+            super.traitCollectionDidChange(previousTraitCollection)
+            if traitCollection.preferredContentSizeCategory != previousTraitCollection?.preferredContentSizeCategory {
+                props.preferredContentSizeCategoryChanged()
+            }
+        }
+
         private func setup() {
             stackView.axis = .vertical
+            stackView.distribution = .equalSpacing
+            stackView.alignment = .fill
             // Assign empty array, because `accessibilityElements` is nil initially,
             // and we need to append to/remove from it when views
             // are added to/removed from stack view
@@ -167,6 +176,8 @@ extension SecureConversations {
             let style = Style.Properties(style: props.style)
             stackView.spacing = style.spacing
             scrollView.isScrollEnabled = props.isScrollingEnabled
+
+            updateHeight()
         }
     }
 }
