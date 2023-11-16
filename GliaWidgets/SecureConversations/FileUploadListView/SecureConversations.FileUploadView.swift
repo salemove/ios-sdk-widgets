@@ -15,9 +15,9 @@ extension SecureConversations {
         static func height(for style: Style) -> CGFloat {
             switch style {
             case .chat:
-                return 60
+                return 53
             case .messageCenter:
-                return 80
+                return 53
             }
         }
 
@@ -59,17 +59,12 @@ extension SecureConversations {
 
             removeButton.addTarget(self, action: #selector(remove), for: .touchUpInside)
             removeButton.accessibilityIdentifier = "secureConversations_remove_attachment_button"
-            isAccessibilityElement = true
+            contentView.accessibilityElements = [infoLabel, stateLabel, removeButton]
         }
 
         private func layout() {
             var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
-            constraints += match(
-                .height,
-                value: Self.height(for: props.style),
-                relation: .greaterThanOrEqual
-            )
-
+            constraints += contentView.heightAnchor.constraint(greaterThanOrEqualToConstant: Self.height(for: props.style))
             addSubview(contentView)
             contentView.translatesAutoresizingMaskIntoConstraints = false
             let style = Style.Properties(style: props.style)
@@ -78,7 +73,7 @@ extension SecureConversations {
             contentView.addSubview(filePreviewView)
             filePreviewView.translatesAutoresizingMaskIntoConstraints = false
             constraints += filePreviewView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor)
-            constraints += filePreviewView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
+            constraints += filePreviewView.topAnchor.constraint(equalTo: contentView.topAnchor)
 
             contentView.addSubview(removeButton)
             removeButton.translatesAutoresizingMaskIntoConstraints = false
@@ -98,7 +93,7 @@ extension SecureConversations {
             // with respecting content compression resistance priority to it.
 
             // Add content compression resistance priority.
-            let lowPriority = UILayoutPriority(rawValue: 750)
+            let lowPriority = UILayoutPriority(rawValue: 1000)
             infoLabel.setContentCompressionResistancePriority(lowPriority, for: .vertical)
 
             // Add minimum height constraint.
@@ -109,21 +104,21 @@ extension SecureConversations {
             constraints += minHeightConstraint
 
             constraints += infoLabel.leadingAnchor.constraint(equalTo: filePreviewView.trailingAnchor, constant: 12)
-            constraints += infoLabel.trailingAnchor.constraint(lessThanOrEqualTo: removeButton.leadingAnchor, constant: -80)
-            constraints += infoLabel.topAnchor.constraint(equalTo: filePreviewView.firstBaselineAnchor, constant: 0)
-
+            constraints += infoLabel.trailingAnchor.constraint(lessThanOrEqualTo: removeButton.leadingAnchor, constant: -50)
+            constraints += infoLabel.topAnchor.constraint(equalTo: contentView.topAnchor)
             contentView.addSubview(stateLabel)
             stateLabel.translatesAutoresizingMaskIntoConstraints = false
             constraints += stateLabel.topAnchor.constraint(equalTo: infoLabel.bottomAnchor, constant: 4)
-            constraints += stateLabel.leadingAnchor.constraint(equalTo: infoLabel.leadingAnchor)
-            constraints += stateLabel.trailingAnchor.constraint(equalTo: infoLabel.trailingAnchor)
+            constraints += stateLabel.leadingAnchor.constraint(equalTo: filePreviewView.trailingAnchor, constant: 12)
+            constraints += stateLabel.trailingAnchor.constraint(lessThanOrEqualTo: removeButton.leadingAnchor, constant: -50)
+            constraints += stateLabel.bottomAnchor.constraint(equalTo: progressView.topAnchor, constant: -4)
 
             contentView.addSubview(progressView)
             progressView.translatesAutoresizingMaskIntoConstraints = false
             constraints += progressView.heightAnchor.constraint(equalToConstant: 8)
-            constraints += progressView.lastBaselineAnchor.constraint(equalTo: filePreviewView.lastBaselineAnchor)
             constraints += progressView.leadingAnchor.constraint(equalTo: stateLabel.leadingAnchor)
-            constraints += progressView.trailingAnchor.constraint(equalTo: removeButton.leadingAnchor, constant: -80)
+            constraints += progressView.trailingAnchor.constraint(equalTo: removeButton.leadingAnchor, constant: -50)
+            constraints += progressView.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor)
         }
 
         func renderProps() {
@@ -147,6 +142,7 @@ extension SecureConversations {
 
             self.layer.cornerRadius = style.cornerRadius
             self.backgroundColor = style.backgroundColor
+            self.layoutIfNeeded()
         }
 
         private func update(for state: FileUpload.State) {
@@ -198,7 +194,7 @@ extension SecureConversations {
             case .error(let error):
                 filePreviewView.props = .init(style: style.filePreview, kind: .error)
                 infoLabel.text = errorText(from: style.error, for: error)
-                infoLabel.numberOfLines = 2
+                infoLabel.numberOfLines = 0
                 infoLabel.font = style.error.infoFont
                 infoLabel.textColor = style.error.infoColor
                 stateLabel.text = style.error.text
@@ -229,18 +225,6 @@ extension SecureConversations {
 
         @objc private func remove() {
             props.removeTapped()
-        }
-
-        override func layoutSubviews() {
-            super.layoutSubviews()
-            // Make FileUploadView `accessibilityFrame` smaller
-            // to allow VoiceOver to "see" `removeButton`
-            var accFrame = self.frame
-            let style = Style.Properties(style: props.style)
-
-            let insetX = style.contentInsets.left + style.contentInsets.right + buttonSize
-            accFrame.size.width -= insetX
-            accessibilityFrame = UIAccessibility.convertToScreenCoordinates(accFrame, in: self)
         }
 
         static func accessibleProgress(_ progress: String, to source: String?, accessibility: FileUploadStyle.Accessibility) -> String? {
@@ -368,7 +352,7 @@ extension SecureConversations.FileUploadView.Style {
                 removeButtonImage = uploadStyle.removeButtonImage
                 removeButtonColor = uploadStyle.removeButtonColor
                 accessibility = uploadStyle.accessibility
-                contentInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+                contentInsets = UIEdgeInsets(top: 8, left: 10, bottom: 0, right: 10)
                 cornerRadius = 0
                 backgroundColor = .clear
                 removeButtonTopRightOffset = .zero
@@ -383,10 +367,10 @@ extension SecureConversations.FileUploadView.Style {
                 removeButtonImage = uploadStyle.removeButtonImage
                 removeButtonColor = uploadStyle.removeButtonColor
                 accessibility = uploadStyle.accessibility
-                contentInsets = UIEdgeInsets(top: 20, left: 10, bottom: 20, right: 10)
+                contentInsets = UIEdgeInsets(top: 8, left: 10, bottom: 8, right: 10)
                 cornerRadius = 4
                 backgroundColor = uploadStyle.backgroundColor
-                removeButtonTopRightOffset = .init(width: 5, height: -14)
+                removeButtonTopRightOffset = .init(width: 5, height: -5)
             }
         }
     }

@@ -225,30 +225,6 @@ extension ChatViewController {
         let date = Date.mock
         var fileUploadEnv: FileUpload.Environment = .mock
         fileUploadEnv.uuid = generateUUID
-        let fileUpload: FileUpload = .mock(
-            localFile: .mock(
-                url: localFileURL,
-                environment: .init(
-                    fileManager: fileManager,
-                    gcd: gcd,
-                    uiScreen: uiScreen,
-                    thumbnailGenerator: .mock
-                )
-            ),
-            storage: FileSystemStorage.mock(
-                directory: .documents(fileManager),
-                expiration: .none,
-                environment: .init(
-                    fileManager: fileManager,
-                    data: data,
-                    date: { date }
-                )
-            ),
-            environment: fileUploadEnv
-        )
-        fileUpload.state.value = .uploading(progress: .init(with: 0.5))
-        fileUploadListModel.environment.uploader.uploads.append(fileUpload)
-
         let fileUploadComplete: FileUpload = .mock(
             localFile: .mock(
                 url: localFileURL,

@@ -82,7 +82,7 @@ extension UUID {
 }
 
 extension URL {
-    static let mock = Self(string: "https://mock.mock").unsafelyUnwrapped
+    static let mock = Self(string: "https://mock.mock/mock").unsafelyUnwrapped
     static let mockFilePath = Self(fileURLWithPath: "file://mock/mock")
 }
 #endif

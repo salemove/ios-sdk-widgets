@@ -100,7 +100,8 @@ extension SecureConversations {
                 maxUnscrollableViews: maxUnscrollableViews,
                 style: environment.style,
                 uploads: uploads,
-                isScrollingEnabled: environment.scrollingBehaviour.isScrollingEnabled
+                isScrollingEnabled: environment.scrollingBehaviour.isScrollingEnabled,
+                preferredContentSizeCategoryChanged: preferredContentSizeCategoryChanged
             )
             return props
         }
@@ -130,6 +131,12 @@ extension SecureConversations.FileUploadListViewModel {
             } else {
                 return .maxUnscrollableViewsOnLargeContentSizeCategory
             }
+        }
+    }
+
+    var preferredContentSizeCategoryChanged: Cmd {
+        .init { [weak self] in
+            self?.reportChange()
         }
     }
 }
