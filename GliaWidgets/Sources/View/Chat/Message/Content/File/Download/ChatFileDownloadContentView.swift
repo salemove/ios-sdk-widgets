@@ -44,11 +44,15 @@ class ChatFileDownloadContentView: ChatFileContentView {
         layer.borderColor = style.borderColor.cgColor
 
         infoLabel.lineBreakMode = .byTruncatingMiddle
+        stateLabel.adjustsFontSizeToFitWidth = true
         setFontScalingEnabled(
             style.accessibility.isFontScalingEnabled,
             for: infoLabel
         )
-
+        setFontScalingEnabled(
+            style.accessibility.isFontScalingEnabled,
+            for: stateLabel
+        )
         progressView.backgroundColor = style.progressBackgroundColor
         progressView.clipsToBounds = true
         progressView.layer.cornerRadius = 4
@@ -57,20 +61,20 @@ class ChatFileDownloadContentView: ChatFileContentView {
     override func layout() {
         super.layout()
         var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
-
         addSubview(contentView)
         contentView.translatesAutoresizingMaskIntoConstraints = false
         constraints += contentView.layoutInSuperview(insets: kContentInsets)
 
         contentView.addSubview(filePreviewView)
         filePreviewView.translatesAutoresizingMaskIntoConstraints = false
-        constraints += filePreviewView.layoutInSuperview(edges: .vertical)
+        constraints += filePreviewView.topAnchor.constraint(equalTo: contentView.topAnchor)
         constraints += filePreviewView.layoutInSuperview(edges: .leading)
 
         contentView.addSubview(infoLabel)
         infoLabel.translatesAutoresizingMaskIntoConstraints = false
-        constraints += infoLabel.topAnchor.constraint(equalTo: filePreviewView.topAnchor, constant: 4)
+        constraints += infoLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 17)
         constraints += infoLabel.leadingAnchor.constraint(equalTo: filePreviewView.trailingAnchor, constant: 12)
+        constraints += infoLabel.topAnchor.constraint(equalTo: filePreviewView.topAnchor, constant: 4)
         constraints += infoLabel.layoutInSuperview(edges: .trailing)
 
         contentView.addSubview(stateLabel)
@@ -78,12 +82,13 @@ class ChatFileDownloadContentView: ChatFileContentView {
         constraints += stateLabel.topAnchor.constraint(equalTo: infoLabel.bottomAnchor, constant: 4)
         constraints += stateLabel.leadingAnchor.constraint(equalTo: filePreviewView.trailingAnchor, constant: 12)
         constraints += stateLabel.layoutInSuperview(edges: .trailing)
+        constraints += stateLabel.bottomAnchor.constraint(equalTo: progressView.topAnchor, constant: -4)
 
         contentView.addSubview(progressView)
         progressView.translatesAutoresizingMaskIntoConstraints = false
-        constraints += progressView.match(.height, value: 8)
-        constraints += progressView.bottomAnchor.constraint(equalTo: filePreviewView.bottomAnchor)
-        constraints += progressView.leadingAnchor.constraint(equalTo: filePreviewView.trailingAnchor, constant: 12)
+        constraints += progressView.heightAnchor.constraint(equalToConstant: 8)
+        constraints += progressView.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor)
+        constraints += progressView.leadingAnchor.constraint(equalTo: stateLabel.leadingAnchor)
         constraints += progressView.layoutInSuperview(edges: .trailing)
     }
 
