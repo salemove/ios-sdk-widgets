@@ -57,7 +57,7 @@ public class Glia {
     /// Used to monitor engagement state changes.
     public var onEvent: ((GliaEvent) -> Void)?
 
-    var stringProviding: StringProviding?
+    var stringProvidingPhase: StringProvidingPhase = .notConfigured
 
     public lazy var callVisualizer = CallVisualizer(
         environment: .init(
@@ -160,7 +160,7 @@ public class Glia {
                 self.configuration = configuration
 
                 let getRemoteString = self.environment.coreSdk.localeProvider.getRemoteString
-                self.stringProviding = .init(getRemoteString: getRemoteString)
+                self.stringProvidingPhase = .configured(getRemoteString)
 
                 if let engagement = self.environment.coreSdk.getCurrentEngagement(),
                    engagement.source == .callVisualizer {

@@ -3,6 +3,7 @@ import UIKit
 extension AlertViewController {
     func makeLiveObservationAlertView(
         with conf: ConfirmationAlertConfiguration,
+        link: @escaping (URL) -> Void,
         accepted: @escaping () -> Void,
         declined: @escaping () -> Void
     ) -> AlertView {
@@ -12,11 +13,28 @@ extension AlertViewController {
         alertView.showsPoweredBy = conf.showsPoweredBy
         alertView.showsCloseButton = false
 
-        var declineButtonStyle = viewFactory.theme.alert.negativeAction
+        let alertStyle = viewFactory.theme.alert
+        var declineButtonStyle = alertStyle.negativeAction
         declineButtonStyle.title = conf.negativeTitle ?? ""
 
-        var acceptButtonStyle = viewFactory.theme.alert.positiveAction
+        var acceptButtonStyle = alertStyle.positiveAction
         acceptButtonStyle.title = conf.positiveTitle ?? ""
+
+        if let firstLinkButton = linkButton(
+            for: conf.firstLinkButtonUrl,
+            style: alertStyle.firstLinkAction,
+            action: .init(closure: link)
+        ) {
+            alertView.addLinkButton(firstLinkButton)
+        }
+
+        if let secondLinkButton = linkButton(
+            for: conf.secondLinkButtonUrl,
+            style: alertStyle.secondLinkAction,
+            action: .init(closure: link)
+        ) {
+            alertView.addLinkButton(secondLinkButton)
+        }
 
         let declineButton = ActionButton(
             props: .init(
@@ -35,5 +53,22 @@ extension AlertViewController {
         alertView.addActionView(acceptButton)
 
         return alertView
+    }
+
+    private func linkButton(
+        for url: String?,
+        style: ActionButtonStyle,
+        action: Command<URL>
+    ) -> ActionButton? {
+        guard let buttonUrlString = url,
+              let buttonUrl = URL(string: buttonUrlString)
+        else { return nil }
+        return ActionButton(
+            props: .init(
+                style: style,
+                height: 34,
+                tap: .init { action(buttonUrl) }
+            )
+        )
     }
 }

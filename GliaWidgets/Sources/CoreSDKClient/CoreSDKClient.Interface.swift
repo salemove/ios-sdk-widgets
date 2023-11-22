@@ -177,7 +177,7 @@ extension CoreSdkClient {
 
 extension CoreSdkClient {
     struct LocaleProvider {
-        typealias CustomLocaleGetRemoteString = ((String) -> String?)
+        typealias CustomLocaleGetRemoteString = (String) -> String?
         var getRemoteString: CustomLocaleGetRemoteString
     }
 }
