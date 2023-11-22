@@ -6,7 +6,7 @@ final class LocalizationTests: XCTestCase {
     let testString = "Glia"
 
     func test_stringProvider() {
-        let stringProviding = StringProviding(getRemoteString: { _ in self.testString })
+        let stringProviding = StringProvidingPhase.configured({ _ in self.testString })
 
         let localizationString = Localization.tr(
             "",
@@ -29,7 +29,7 @@ final class LocalizationTests: XCTestCase {
     }
 
     func test_fallbackWhenStringProvidingReturnsNil() {
-        let stringProviding = StringProviding(getRemoteString: { _ in nil })
+        let stringProviding = StringProvidingPhase.configured({ _ in nil })
 
         let localizationString = Localization.tr(
             "",
@@ -52,7 +52,7 @@ final class LocalizationTests: XCTestCase {
     }
 
     func test_fileFromStringWhenStringProvidingReturnsNil() {
-        let stringProviding = StringProviding(getRemoteString: { _ in nil })
+        let stringProviding = StringProvidingPhase.configured({ _ in nil })
 
         let localizationString = Localization.tr(
             "Localizable",

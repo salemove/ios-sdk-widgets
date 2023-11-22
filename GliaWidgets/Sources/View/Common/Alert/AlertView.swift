@@ -64,6 +64,8 @@ class AlertView: BaseView {
     private let titleLabel = UILabel().makeView()
     private let messageLabel = UILabel().makeView()
     private let stackView = UIStackView().makeView()
+    private let topContentStackView = UIStackView().makeView()
+    private let linkButtonStackView = UIStackView().makeView()
     private let actionsStackView = UIStackView().makeView()
     private let kContentInsets = UIEdgeInsets(top: 28, left: 32, bottom: 28, right: 32)
     private let kCornerRadius: CGFloat = 30
@@ -101,6 +103,11 @@ class AlertView: BaseView {
         ).cgPath
     }
 
+    func addLinkButton(_ contentView: UIView) {
+        linkButtonStackView.isHidden = false
+        linkButtonStackView.addArrangedSubview(contentView)
+    }
+
     func addActionView(_ actionView: UIView) {
         actionsStackView.addArrangedSubview(actionView)
     }
@@ -119,11 +126,22 @@ class AlertView: BaseView {
         stackView.axis = .vertical
         stackView.spacing = 16
         stackView.addArrangedSubviews([
-            titleImageViewContainer,
-            titleLabel,
-            messageLabel,
+            topContentStackView,
+            linkButtonStackView,
             actionsStackView
         ])
+
+        topContentStackView.axis = .vertical
+        topContentStackView.spacing = 16
+        topContentStackView.addArrangedSubviews([
+            titleImageViewContainer,
+            titleLabel,
+            messageLabel
+        ])
+
+        linkButtonStackView.isHidden = true
+        linkButtonStackView.axis = .vertical
+        linkButtonStackView.spacing = 12
 
         titleImageView.contentMode = .scaleAspectFit
         titleImageView.tintColor = style.titleImageColor

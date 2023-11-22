@@ -76,7 +76,7 @@ extension Glia {
         let companyNameStringKey = "general.company_name"
 
         // Company name has been set on the custom locale and is not empty.
-        if let remoteCompanyName = stringProviding?.getRemoteString(companyNameStringKey),
+        if let remoteCompanyName = stringProvidingPhase(companyNameStringKey),
             !remoteCompanyName.isEmpty {
             return remoteCompanyName
         }
@@ -113,9 +113,9 @@ extension Glia {
         // Live Observation Confirmation Alert Message
         let companyName = companyName(
             using: configuration,
-            themeCompanyName: theme.alertConfiguration.liveObservationConfirmation.message
+            themeCompanyName: nil
         )
-        var liveObservationConfirmationMessage = Localization.LiveObservation.Confirm.message.withCompanyName(companyName)
+        var liveObservationConfirmationMessage = Localization.Engagement.Confirm.message.withCompanyName(companyName)
         theme.alertConfiguration.liveObservationConfirmation.message = liveObservationConfirmationMessage
 
         return theme
