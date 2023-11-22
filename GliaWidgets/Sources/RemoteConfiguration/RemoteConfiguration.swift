@@ -49,6 +49,7 @@ extension RemoteConfiguration {
         let message: Text?
         let backgroundColor: Color?
         let closeButtonColor: Color?
+        let linkButton: Button?
         let positiveButton: Button?
         let negativeButton: Button?
         let buttonAxis: Axis?
