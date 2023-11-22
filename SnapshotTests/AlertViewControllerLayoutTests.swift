@@ -54,6 +54,7 @@ final class AlertViewControllerLayoutTests: SnapshotTestCase {
     func test_liveObservationConfirmationAlert() {
         let alert = alert(ofKind: .liveObservationConfirmation(
             .liveObservationMock(),
+            link: { _ in },
             accepted: {},
             declined: {}
         ))
