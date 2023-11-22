@@ -30,6 +30,7 @@ class AlertViewController: UIViewController, Replaceable {
 
         case liveObservationConfirmation(
             ConfirmationAlertConfiguration,
+            link: (URL) -> Void,
             accepted: () -> Void,
             declined: () -> Void
         )
@@ -136,38 +137,43 @@ class AlertViewController: UIViewController, Replaceable {
 
     private func makeAlertView() -> AlertView {
         switch kind {
-        case .message(let conf, let accessibilityIdentifier, let dismissed):
+        case let .message(conf, accessibilityIdentifier, dismissed):
             return makeMessageAlertView(
                 with: conf,
                 accessibilityIdentifier: accessibilityIdentifier,
                 dismissed: dismissed
             )
-        case .confirmation(let conf, let accessibilityIdentifier, let confirmed):
+        case let .confirmation(conf, accessibilityIdentifier, confirmed):
             return makeConfirmationAlertView(
                 with: conf,
                 accessibilityIdentifier: accessibilityIdentifier,
                 confirmed: confirmed
             )
-        case .singleAction(let conf, let accessibilityIdentifier, let actionTapped):
+        case let .singleAction(conf, accessibilityIdentifier, actionTapped):
             return makeSingleActionAlertView(
                 with: conf,
                 accessibilityIdentifier: accessibilityIdentifier,
                 actionTapped: actionTapped
             )
-        case .singleMediaUpgrade(let conf, accepted: let accepted, declined: let declined):
+        case let .singleMediaUpgrade(conf, accepted, declined):
             return makeMediaUpgradeAlertView(
                 with: conf,
                 accepted: accepted,
                 declined: declined
             )
-        case .screenShareOffer(let conf, accepted: let accepted, declined: let declined):
+        case let .screenShareOffer(conf, accepted, declined):
             return makeScreenShareOfferAlertView(
                 with: conf,
                 accepted: accepted,
                 declined: declined
             )
-        case .liveObservationConfirmation(let conf, let accepted, let declined):
-            return makeLiveObservationAlertView(with: conf, accepted: accepted, declined: declined)
+        case let .liveObservationConfirmation(conf, link, accepted, declined):
+            return makeLiveObservationAlertView(
+                with: conf,
+                link: link,
+                accepted: accepted,
+                declined: declined
+            )
         }
     }
 

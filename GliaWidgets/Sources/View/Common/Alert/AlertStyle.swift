@@ -29,6 +29,12 @@ public struct AlertStyle: Equatable {
     /// Color of the close button.
     public var closeButtonColor: ColorType
 
+    /// Style of the first link action button.
+    public var firstLinkAction: ActionButtonStyle
+
+    /// Style of the second link action button.
+    public var secondLinkAction: ActionButtonStyle
+
     /// Direction of the action buttons.
     public var actionAxis: NSLayoutConstraint.Axis
 
@@ -55,6 +61,8 @@ public struct AlertStyle: Equatable {
     ///   - messageTextStyle: Text style of the message text.
     ///   - backgroundColor: Background color of the view.
     ///   - closeButtonColor: Color of the close button.
+    ///   - firstLinkAction: Style of the first link action button.
+    ///   - secondLinkAction: Style of the second link action button.
     ///   - actionAxis: Direction of the action buttons.
     ///   - positiveAction: Style of a positive action button.
     ///   - negativeAction: Style of a negative action button.
@@ -71,6 +79,8 @@ public struct AlertStyle: Equatable {
         messageTextStyle: UIFont.TextStyle = .body,
         backgroundColor: ColorType,
         closeButtonColor: ColorType,
+        firstLinkAction: ActionButtonStyle,
+        secondLinkAction: ActionButtonStyle,
         actionAxis: NSLayoutConstraint.Axis,
         positiveAction: ActionButtonStyle,
         negativeAction: ActionButtonStyle,
@@ -86,6 +96,8 @@ public struct AlertStyle: Equatable {
         self.messageTextStyle = messageTextStyle
         self.backgroundColor = backgroundColor
         self.closeButtonColor = closeButtonColor
+        self.firstLinkAction = firstLinkAction
+        self.secondLinkAction = secondLinkAction
         self.actionAxis = actionAxis
         self.positiveAction = positiveAction
         self.negativeAction = negativeAction
@@ -98,6 +110,14 @@ public struct AlertStyle: Equatable {
         configuration: RemoteConfiguration.Alert?,
         assetsBuilder: RemoteConfiguration.AssetsBuilder
     ) {
+        firstLinkAction.apply(
+            configuration: configuration?.linkButton,
+            assetsBuilder: assetsBuilder
+        )
+        secondLinkAction.apply(
+            configuration: configuration?.linkButton,
+            assetsBuilder: assetsBuilder
+        )
         positiveAction.apply(
             configuration: configuration?.positiveButton,
             assetsBuilder: assetsBuilder
