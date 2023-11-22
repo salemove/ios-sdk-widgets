@@ -134,8 +134,10 @@ extension Theme {
         )
 
         let liveObservationConfirmation = ConfirmationAlertConfiguration(
-            title: Localization.LiveObservation.Confirm.title,
-            message: Localization.LiveObservation.Confirm.message,
+            title: Localization.Engagement.Confirm.title,
+            message: Localization.Engagement.Confirm.message,
+            firstLinkButtonUrl: Localization.Engagement.Confirm.Link1.url,
+            secondLinkButtonUrl: Localization.Engagement.Confirm.Link2.url,
             negativeTitle: Localization.General.cancel,
             positiveTitle: Localization.General.allow,
             switchButtonBackgroundColors: true,

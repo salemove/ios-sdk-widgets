@@ -134,6 +134,9 @@ extension CallVisualizer {
             let alert = AlertViewController(
                 kind: .liveObservationConfirmation(
                     environment.viewFactory.theme.alertConfiguration.liveObservationConfirmation,
+                    link: { _ in
+                        // TODO: Add navigating to WebView controller
+                    },
                     accepted: { [weak self] in
                         self?.alertViewController = nil
                         self?.closeVisitorCode()

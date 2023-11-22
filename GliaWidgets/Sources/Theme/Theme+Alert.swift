@@ -1,5 +1,25 @@
 extension Theme {
     var alertStyle: AlertStyle {
+        let firstLinkAction = ActionButtonStyle(
+            title: Localization.Engagement.Confirm.Link1.text,
+            titleFont: font.buttonLabel,
+            titleColor: color.primary,
+            backgroundColor: .fill(color: .clear),
+            accessibility: .init(
+                label: Localization.Engagement.Confirm.Link1.Accessibility.label,
+                isFontScalingEnabled: true
+            )
+        )
+        let secondLinkAction = ActionButtonStyle(
+            title: Localization.Engagement.Confirm.Link2.text,
+            titleFont: font.buttonLabel,
+            titleColor: color.primary,
+            backgroundColor: .fill(color: .clear),
+            accessibility: .init(
+                label: Localization.Engagement.Confirm.Link2.Accessibility.label,
+                isFontScalingEnabled: true
+            )
+        )
         let negativeAction = ActionButtonStyle(
             title: Localization.General.no,
             titleFont: font.buttonLabel,
@@ -33,6 +53,8 @@ extension Theme {
             messageColor: color.baseDark,
             backgroundColor: .fill(color: color.baseLight),
             closeButtonColor: .fill(color: color.baseNormal),
+            firstLinkAction: firstLinkAction,
+            secondLinkAction: secondLinkAction,
             actionAxis: .horizontal,
             positiveAction: positiveAction,
             negativeAction: negativeAction,

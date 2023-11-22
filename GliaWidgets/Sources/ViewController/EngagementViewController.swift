@@ -93,6 +93,7 @@ class EngagementViewController: UIViewController, AlertPresenter, MediaUpgradePr
         let alert = AlertViewController(
             kind: .liveObservationConfirmation(
                 config.conf,
+                link: config.link,
                 accepted: config.accepted,
                 declined: config.declined
             ),

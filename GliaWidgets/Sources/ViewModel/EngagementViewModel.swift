@@ -362,6 +362,9 @@ extension EngagementViewModel {
     ) -> LiveObservation.Confirmation {
         .init(
             conf: self.alertConfiguration.liveObservationConfirmation,
+            link: { _ in
+                // TODO: Add navigating to WebView controller
+            },
             accepted: { [weak self] in
                 self?.enqueue(mediaType: mediaType)
             },

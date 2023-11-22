@@ -224,7 +224,13 @@
 "media_upgrade.video.one_way.title" = "{operatorName} has offered you to see their video";
 "media_upgrade.video.two_way.title" = "{operatorName} has offered you to upgrade to video";
 "visitor_code.failed" = "Could not load the visitor code. Please try refreshing.";
-"live_observation.confirm.title" = "Before We Continue";
-"live_observation.confirm.message" = "Please allow the {companyName} representative to view this application screen for improved support.";
-"live_observation.confirm.message" = "Please allow the {companyName} representative to view this application screen for improved support.";
+"engagement.confirm.title" = "Before We Continue";
+"engagement.confirm.message" = "Please allow the {companyName} representative to view this application screen for improved support.";
+"engagement.confirm.link1.text" = "Terms and Conditions";
+"engagement.confirm.link1.url" = "http://some_company.com/terms_and_conditions";
+"engagement.confirm.link1.accessibility.label" = "Terms and Conditions";
+"engagement.confirm.link2.text" = "Privacy Policies";
+"engagement.confirm.link2.url" = "http://some_company.com/privacy_policies";
+"engagement.confirm.link2.accessibility.label" = "Privacy Policies";
+
 "live_observation.indicator.message" = "App screen is visible to the agent";
