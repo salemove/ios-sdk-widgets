@@ -315,6 +315,32 @@ internal enum Localization {
       /// Chat
       internal static var title: String { Localization.tr("Localizable", "engagement.chat.title", fallback: "Chat") }
     }
+    internal enum Confirm {
+      /// Please allow the {companyName} representative to view this application screen for improved support.
+      internal static var message: String { Localization.tr("Localizable", "engagement.confirm.message", fallback: "Please allow the {companyName} representative to view this application screen for improved support.") }
+      /// Before We Continue
+      internal static var title: String { Localization.tr("Localizable", "engagement.confirm.title", fallback: "Before We Continue") }
+      internal enum Link1 {
+        /// Terms and Conditions
+        internal static var text: String { Localization.tr("Localizable", "engagement.confirm.link1.text", fallback: "Terms and Conditions") }
+        /// http://some_company.com/terms_and_conditions
+        internal static var url: String { Localization.tr("Localizable", "engagement.confirm.link1.url", fallback: "") }
+        internal enum Accessibility {
+          /// Terms and Conditions
+          internal static var label: String { Localization.tr("Localizable", "engagement.confirm.link1.accessibility.label", fallback: "Terms and Conditions") }
+        }
+      }
+      internal enum Link2 {
+        /// Privacy Policies
+        internal static var text: String { Localization.tr("Localizable", "engagement.confirm.link2.text", fallback: "Privacy Policies") }
+        /// http://some_company.com/privacy_policies
+        internal static var url: String { Localization.tr("Localizable", "engagement.confirm.link2.url", fallback: "") }
+        internal enum Accessibility {
+          /// Privacy Policies
+          internal static var label: String { Localization.tr("Localizable", "engagement.confirm.link2.accessibility.label", fallback: "Privacy Policies") }
+        }
+      }
+    }
     internal enum ConnectionScreen {
       /// Connecting with {operatorName}
       internal static var connectWith: String { Localization.tr("Localizable", "engagement.connection_screen.connect_with", fallback: "Connecting with {operatorName}") }
@@ -485,12 +511,6 @@ internal enum Localization {
     }
   }
   internal enum LiveObservation {
-    internal enum Confirm {
-      /// Please allow the {companyName} representative to view this application screen for improved support.
-      internal static var message: String { Localization.tr("Localizable", "live_observation.confirm.message", fallback: "Please allow the {companyName} representative to view this application screen for improved support.") }
-      /// Before We Continue
-      internal static var title: String { Localization.tr("Localizable", "live_observation.confirm.title", fallback: "Before We Continue") }
-    }
     internal enum Indicator {
       /// App screen is visible to the agent
       internal static var message: String { Localization.tr("Localizable", "live_observation.indicator.message", fallback: "App screen is visible to the agent") }

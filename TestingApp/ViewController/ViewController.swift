@@ -206,7 +206,8 @@ extension ViewController {
             self.catchingError {
                 try Glia.sharedInstance.startEngagement(
                     engagementKind: engagementKind,
-                    in: [self.queueId]
+                    in: [self.queueId],
+                    theme: self.theme
                 )
             }
         }

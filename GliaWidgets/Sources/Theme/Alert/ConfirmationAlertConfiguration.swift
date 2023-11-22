@@ -6,6 +6,12 @@ public struct ConfirmationAlertConfiguration {
     /// Message of the alert.
     public var message: String?
 
+    /// First link button url value.
+    public var firstLinkButtonUrl: String?
+
+    /// Second link button url value.
+    public var secondLinkButtonUrl: String?
+
     /// Title of the negative action button.
     public var negativeTitle: String?
 
