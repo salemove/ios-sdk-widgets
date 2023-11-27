@@ -37,7 +37,9 @@ extension Glia.Environment {
         proximityManager: .init(environment: .init(
             uiApplication: .live,
             uiDevice: .live
-        ))
+        )),
+        print: .live,
+        conditionalCompilation: .live
     )
 }
 
