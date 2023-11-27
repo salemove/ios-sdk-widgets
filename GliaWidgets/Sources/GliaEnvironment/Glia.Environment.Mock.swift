@@ -28,7 +28,9 @@ extension Glia.Environment {
         messagesWithUnreadCountLoaderScheduler: CoreSdkClient.reactiveSwiftDateSchedulerMock,
         orientationManager: .mock(),
         coreSDKConfigurator: .mock,
-        proximityManager: .mock
+        proximityManager: .mock,
+        print: .mock,
+        conditionalCompilation: .mock
     )
 }
 

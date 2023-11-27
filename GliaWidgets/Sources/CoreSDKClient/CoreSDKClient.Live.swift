@@ -1,4 +1,4 @@
-import GliaCoreSDK
+@_spi(GliaWidgets) import GliaCoreSDK
 
 extension CoreSdkClient {
     static let live: Self = {
@@ -54,7 +54,8 @@ extension CoreSdkClient {
             downloadSecureFile: GliaCore.sharedInstance.secureConversations.downloadFile(_:progress:completion:),
             startSocketObservation: GliaCore.sharedInstance.startSocketObservation,
             stopSocketObservation: GliaCore.sharedInstance.stopSocketObservation,
-            createSendMessagePayload: CoreSdkClient.SendMessagePayload.init(content:attachment:)
+            createSendMessagePayload: CoreSdkClient.SendMessagePayload.init(content:attachment:),
+            createLogger: { try Logger(GliaCore.sharedInstance.createLogger(externalParameters: $0)) }
         )
     }()
 }

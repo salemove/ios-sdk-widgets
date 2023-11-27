@@ -60,6 +60,10 @@ extension CoreSdkClient {
         createSendMessagePayload: { _, _ in
             fail("\(Self.self).createSendMessagePayload")
             return .mock()
+        },
+        createLogger: { _ in
+            fail("\(Self.self).createLogger")
+            return Logger.mock
         }
     )
 }
@@ -96,6 +100,48 @@ extension CoreSdkClient.LocaleProvider {
         getRemoteString: { _ in
             fail("\(Self.self).getRemoteString")
             return nil
+        }
+    )
+}
+
+extension CoreSdkClient.Logger {
+    static let failing = Self(
+        oneTimeClosure: {
+            fail("\(Self.self).oneTimeClosure")
+            return Self.mock
+        },
+        prefixedClosure: { _ in
+            fail("\(Self.self).prefixedClosure")
+            return Self.mock
+        },
+        localLoggerClosure: {
+            fail("\(Self.self).localLoggerClosure")
+            return nil
+        },
+        remoteLoggerClosure: {
+            fail("\(Self.self).remoteLoggerClosure")
+            return nil
+        },
+        errorClosure: { _, _, _, _ in
+            fail("\(Self.self).errorClosure")
+        },
+        warningClosure: { _, _, _, _ in
+            fail("\(Self.self).warningClosure")
+        },
+        infoClosure: { _, _, _, _ in
+            fail("\(Self.self).infoClosure")
+        },
+        debugClosure: { _, _, _, _ in
+            fail("\(Self.self).debugClosure")
+        },
+        configureLocalLogLevelClosure: { _ in
+            fail("\(Self.self).configureLocalLogLevelClosure")
+        },
+        configureRemoteLogLevelClosure: {_ in
+            fail("\(Self.self).configureLocalLogLevelClosure")
+        },
+        reportDeprecatedMethodClosure: { _, _, _, _ in
+            fail("\(Self.self).reportDeprecatedMethodClosure")
         }
     )
 }

@@ -10,6 +10,11 @@ extension GliaTests {
 
     func testStartEngagementThrowsErrorWhenEngagementAlreadyExists() throws {
         var sdkEnv = Glia.Environment.failing
+        var logger = CoreSdkClient.Logger.failing
+        logger.configureLocalLogLevelClosure = { _ in }
+        logger.configureRemoteLogLevelClosure = { _ in }
+        sdkEnv.coreSdk.createLogger = { _ in logger }
+        sdkEnv.conditionalCompilation.isDebug = { true }
         sdkEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             completion(.success(()))
         }
@@ -28,13 +33,18 @@ extension GliaTests {
     }
 
     func testStartEngagementThrowsErrorDuringActiveCallVisualizerEngagement() throws {
-        let sdk = Glia(environment: .failing)
+        var logger = CoreSdkClient.Logger.failing
+        logger.configureLocalLogLevelClosure = { _ in }
+        logger.configureRemoteLogLevelClosure = { _ in }
+        var gliaEnv = Glia.Environment.failing
+        gliaEnv.coreSdk.createLogger = { _ in logger }
+        let sdk = Glia(environment: gliaEnv)
+        sdk.environment.conditionalCompilation.isDebug = { true }
         sdk.environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             completion(.success(()))
         }
         try sdk.configure(with: .mock(), theme: .mock()) { _ in }
         sdk.environment.coreSdk.getCurrentEngagement = { .mock(source: .callVisualizer) }
-
         XCTAssertThrowsError(
             try sdk.startEngagement(
                 engagementKind: .chat,
@@ -62,6 +72,11 @@ extension GliaTests {
         enum Call { case configureWithInteractor, configureWithConfiguration }
         var calls: [Call] = []
         var environment = Glia.Environment.failing
+        var logger = CoreSdkClient.Logger.failing
+        logger.configureLocalLogLevelClosure = { _ in }
+        logger.configureRemoteLogLevelClosure = { _ in }
+        environment.coreSdk.createLogger = { _ in logger }
+        environment.conditionalCompilation.isDebug = { true }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in
             calls.append(.configureWithInteractor)
         }
@@ -83,8 +98,12 @@ extension GliaTests {
 
     func testCompanyNameIsReceivedFromTheme() throws {
         var environment = Glia.Environment.failing
+        var logger = CoreSdkClient.Logger.failing
+        logger.configureLocalLogLevelClosure = { _ in }
+        logger.configureRemoteLogLevelClosure = { _ in }
+        environment.coreSdk.createLogger = { _ in logger }
+        environment.conditionalCompilation.isDebug = { true }
         var resultingViewFactory: ViewFactory?
-
         environment.createRootCoordinator = { _, viewFactory, _, _, _, _, _ in
             resultingViewFactory = viewFactory
 
@@ -110,7 +129,7 @@ extension GliaTests {
         theme.call.connect.queue.firstText = "Glia 1"
         theme.chat.connect.queue.firstText = "Glia 2"
 
-        try sdk.configure(with: .mock(), theme: theme) { _ in 
+        try sdk.configure(with: .mock(), theme: theme) { _ in
             do {
                 try sdk.startEngagement(engagementKind: .chat, in: ["queueId"])
             } catch {
@@ -140,13 +159,17 @@ extension GliaTests {
                 environment: .failing
             )
         }
-
+        environment.conditionalCompilation.isDebug = { true }
         environment.coreSdk.localeProvider.getRemoteString = { _ in "Glia" }
         environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             completion(.success(()))
         }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         environment.coreSdk.getCurrentEngagement = { nil }
+        var logger = CoreSdkClient.Logger.failing
+        logger.configureLocalLogLevelClosure = { _ in }
+        logger.configureRemoteLogLevelClosure = { _ in }
+        environment.coreSdk.createLogger = { _ in logger }
 
         let sdk = Glia(environment: environment)
 
@@ -170,6 +193,13 @@ extension GliaTests {
 
     func testCompanyNameIsReceivedFromConfiguration() throws {
         var environment = Glia.Environment.failing
+        environment.coreSdk.createLogger = { _ in .failing }
+        environment.conditionalCompilation.isDebug = { true }
+        var logger = CoreSdkClient.Logger.failing
+        logger.configureLocalLogLevelClosure = { _ in }
+        logger.configureRemoteLogLevelClosure = { _ in }
+        environment.coreSdk.createLogger = { _ in logger }
+
         var resultingViewFactory: ViewFactory?
 
         environment.createRootCoordinator = { _, viewFactory, _, _, _, _, _ in
@@ -208,6 +238,13 @@ extension GliaTests {
 
     func testCompanyNameIsReceivedFromLocalStrings() throws {
         var environment = Glia.Environment.failing
+        environment.coreSdk.createLogger = { _ in .failing }
+        environment.conditionalCompilation.isDebug = { true }
+        var logger = CoreSdkClient.Logger.failing
+        logger.configureLocalLogLevelClosure = { _ in }
+        logger.configureRemoteLogLevelClosure = { _ in }
+        environment.coreSdk.createLogger = { _ in logger }
+
         var resultingViewFactory: ViewFactory?
 
         environment.createRootCoordinator = { _, viewFactory, _, _, _, _, _ in
@@ -246,6 +283,12 @@ extension GliaTests {
 
     func testCompanyNameIsReceivedFromThemeIfCustomLocalesIsEmpty() throws {
         var environment = Glia.Environment.failing
+        var logger = CoreSdkClient.Logger.failing
+        logger.configureLocalLogLevelClosure = { _ in }
+        logger.configureRemoteLogLevelClosure = { _ in }
+        environment.coreSdk.createLogger = { _ in logger }
+        environment.conditionalCompilation.isDebug = { true }
+
         var resultingViewFactory: ViewFactory?
 
         environment.createRootCoordinator = { _, viewFactory, _, _, _, _, _ in
@@ -290,6 +333,12 @@ extension GliaTests {
 
     func testCompanyNameIsReceivedFromLocalFallbackIfCustomLocalesIsEmpty() throws {
         var environment = Glia.Environment.failing
+        var logger = CoreSdkClient.Logger.failing
+        logger.configureLocalLogLevelClosure = { _ in }
+        logger.configureRemoteLogLevelClosure = { _ in }
+        environment.coreSdk.createLogger = { _ in logger }
+        environment.conditionalCompilation.isDebug = { true }
+
         var resultingViewFactory: ViewFactory?
 
         environment.createRootCoordinator = { _, viewFactory, _, _, _, _, _ in

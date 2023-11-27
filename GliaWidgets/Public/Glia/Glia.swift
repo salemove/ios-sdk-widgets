@@ -94,12 +94,20 @@ public class Glia {
     var messageRenderer: MessageRenderer? = .webRenderer
     var theme: Theme
     var assetsBuilder: RemoteConfiguration.AssetsBuilder = .standard
+    var loggerPhase: LoggerPhase
 
     private(set) var configuration: Configuration?
 
     init(environment: Environment) {
         self.environment = environment
         self.theme = Theme()
+        self.loggerPhase = .notConfigured(
+            .init(
+                NotConfiguredLogger(
+                    environment: .init(print: environment.print)
+                )
+            )
+        )
     }
 
     /// Setup SDK using specific engagement configuration without starting the engagement.
@@ -142,6 +150,9 @@ public class Glia {
             guard let self else { return }
             switch result {
             case .success:
+                defer {
+                    self.setupLogging()
+                }
                 // Storing `configuration` needs to be done once configuring SDK is complete
                 // Otherwise integrator can call `configure` and `startEngagement`
                 // asynchronously, without waiting configuration completion.

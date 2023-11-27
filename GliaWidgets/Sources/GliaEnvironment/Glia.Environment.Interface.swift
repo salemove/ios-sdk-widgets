@@ -47,6 +47,8 @@ extension Glia {
         var orientationManager: OrientationManager
         var coreSDKConfigurator: CoreSDKConfigurator
         var proximityManager: ProximityManager
+        var print: SwiftBased.Print
+        var conditionalCompilation: ConditionalCompilationClient
     }
 }
 
