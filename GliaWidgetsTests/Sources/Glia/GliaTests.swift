@@ -37,6 +37,11 @@ final class GliaTests: XCTestCase {
 
     func test__deprecated_start_passes_all_arguments_to_interactor() throws {
         var gliaEnv = Glia.Environment.failing
+        var logger = CoreSdkClient.Logger.failing
+        logger.configureLocalLogLevelClosure = { _ in }
+        logger.configureRemoteLogLevelClosure = { _ in }
+        gliaEnv.coreSdk.createLogger = { _ in logger }
+        gliaEnv.conditionalCompilation.isDebug = { true }
         var proximityManagerEnv = ProximityManager.Environment.failing
         proximityManagerEnv.uiDevice.isProximityMonitoringEnabled = { _ in }
         proximityManagerEnv.uiApplication.isIdleTimerDisabled = { _ in }
@@ -110,6 +115,8 @@ final class GliaTests: XCTestCase {
     }
 
     func test__messageRenderer() throws {
+        var environment = Glia.Environment.failing
+        environment.coreSdk.createLogger = { _ in .failing }
         let sdk = Glia(environment: .failing)
         XCTAssertNotNil(sdk.messageRenderer)
 
@@ -125,6 +132,11 @@ final class GliaTests: XCTestCase {
         var calls = [Call]()
 
         var gliaEnv = Glia.Environment.failing
+        gliaEnv.conditionalCompilation.isDebug = { true }
+        var logger = CoreSdkClient.Logger.failing
+        logger.configureLocalLogLevelClosure = { _ in }
+        logger.configureRemoteLogLevelClosure = { _ in }
+        gliaEnv.coreSdk.createLogger = { _ in logger }
         gliaEnv.gcd.mainQueue.asyncIfNeeded = { callback in callback() }
         gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             completion(.success(()))
@@ -151,6 +163,11 @@ final class GliaTests: XCTestCase {
         var calls = [Call]()
 
         var gliaEnv = Glia.Environment.failing
+        var logger = CoreSdkClient.Logger.failing
+        logger.configureLocalLogLevelClosure = { _ in }
+        logger.configureRemoteLogLevelClosure = { _ in }
+        gliaEnv.coreSdk.createLogger = { _ in logger }
+        gliaEnv.conditionalCompilation.isDebug = { true }
         gliaEnv.coreSdk.configureWithInteractor = { _ in }
         gliaEnv.coreSdk.configureWithConfiguration = { _, _ in }
         gliaEnv.gcd.mainQueue.asyncIfNeeded = { callback in callback() }
@@ -179,6 +196,11 @@ final class GliaTests: XCTestCase {
         var calls = [Call]()
 
         var gliaEnv = Glia.Environment.failing
+        var logger = CoreSdkClient.Logger.failing
+        logger.configureLocalLogLevelClosure = { _ in }
+        logger.configureRemoteLogLevelClosure = { _ in }
+        gliaEnv.coreSdk.createLogger = { _ in logger }
+        gliaEnv.conditionalCompilation.isDebug = { true }
         gliaEnv.callVisualizerPresenter = .init(presenter: { nil })
         gliaEnv.gcd.mainQueue.asyncIfNeeded = { callback in callback() }
         gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
@@ -207,6 +229,11 @@ final class GliaTests: XCTestCase {
         var calls = [Call]()
 
         var gliaEnv = Glia.Environment.failing
+        var logger = CoreSdkClient.Logger.failing
+        logger.configureLocalLogLevelClosure = { _ in }
+        logger.configureRemoteLogLevelClosure = { _ in }
+        gliaEnv.coreSdk.createLogger = { _ in logger }
+        gliaEnv.conditionalCompilation.isDebug = { true }
         var proximityManagerEnv = ProximityManager.Environment.failing
         proximityManagerEnv.uiDevice.isProximityMonitoringEnabled = { _ in }
         proximityManagerEnv.uiApplication.isIdleTimerDisabled = { _ in }
@@ -237,6 +264,7 @@ final class GliaTests: XCTestCase {
 
     func testConfigureThrowsErrorDuringActiveEngagement() throws {
         var environment = Glia.Environment.failing
+        environment.coreSdk.createLogger = { _ in .failing }
         environment.coreSdk.getCurrentEngagement = { .mock() }
         let sdk = Glia(environment: environment)
 
@@ -247,6 +275,7 @@ final class GliaTests: XCTestCase {
 
     func testClearVisitorSessionThrowsErrorDuringActiveEngagement() throws {
         var environment = Glia.Environment.failing
+        environment.coreSdk.createLogger = { _ in .failing }
         environment.coreSdk.getCurrentEngagement = { .mock() }
         let sdk = Glia(environment: environment)
 
@@ -300,9 +329,14 @@ final class GliaTests: XCTestCase {
 
     func test_isConfiguredIsTrueWhenConfigurationPerformed() throws {
         var environment = Glia.Environment.failing
+        var logger = CoreSdkClient.Logger.failing
+        logger.configureLocalLogLevelClosure = { _ in }
+        logger.configureRemoteLogLevelClosure = { _ in }
+        environment.coreSdk.createLogger = { _ in logger }
         environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             completion(.success(()))
         }
+        environment.conditionalCompilation.isDebug = { true }
         let sdk = Glia(environment: environment)
         try sdk.configure(with: .mock(), theme: .mock()) { _ in }
         XCTAssertTrue(sdk.isConfigured)
@@ -310,6 +344,11 @@ final class GliaTests: XCTestCase {
 
     func test_isConfiguredIsFalseWhenSecondConfigureCallThrowsError() throws {
         var environment = Glia.Environment.failing
+        var logger = CoreSdkClient.Logger.failing
+        logger.configureLocalLogLevelClosure = { _ in }
+        logger.configureRemoteLogLevelClosure = { _ in }
+        environment.coreSdk.createLogger = { _ in logger }
+        environment.conditionalCompilation.isDebug = { true }
         var isFirstConfigure = true
         environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             if isFirstConfigure {
@@ -329,6 +368,7 @@ final class GliaTests: XCTestCase {
 
     func test_isConfiguredIsFalseWhenConfigureWithConfigurationThrowsError() {
         var environment = Glia.Environment.failing
+        environment.coreSdk.createLogger = { _ in .failing }
         environment.coreSDKConfigurator.configureWithConfiguration = { _, _ in
             throw CoreSdkClient.GliaCoreError.mock()
         }
@@ -339,13 +379,17 @@ final class GliaTests: XCTestCase {
 
     func test_engagementCoordinatorGetsDeallocated() throws {
         var environment = Glia.Environment.failing
+        var logger = CoreSdkClient.Logger.failing
+        logger.configureLocalLogLevelClosure = { _ in }
+        logger.configureRemoteLogLevelClosure = { _ in }
+        environment.coreSdk.createLogger = { _ in logger }
         environment.coreSDKConfigurator.configureWithConfiguration = { _, callback in
             callback(.success(()))
         }
+        environment.conditionalCompilation.isDebug = { true }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         environment.coreSdk.localeProvider.getRemoteString = { _ in nil }
         environment.createRootCoordinator = { _, _, _, _, _, _, _ in  .mock() }
-        let configuration = Configuration.mock()
 
         let sdk = Glia(environment: environment)
         enum Call {
@@ -374,6 +418,11 @@ final class GliaTests: XCTestCase {
         enum Call { case ended }
         var calls: [Call] = []
         var gliaEnv = Glia.Environment.failing
+        var logger = CoreSdkClient.Logger.failing
+        logger.configureLocalLogLevelClosure = { _ in }
+        logger.configureRemoteLogLevelClosure = { _ in }
+        gliaEnv.coreSdk.createLogger = { _ in logger }
+        gliaEnv.conditionalCompilation.isDebug = { true }
         let screenShareHandler: ScreenShareHandler = .mock
         screenShareHandler.status().value = .started
         gliaEnv.screenShareHandler = screenShareHandler
@@ -431,6 +480,11 @@ final class GliaTests: XCTestCase {
 
         let theme = Theme(colorStyle: .custom(themeColor))
         var environment = Glia.Environment.failing
+        var logger = CoreSdkClient.Logger.failing
+        logger.configureLocalLogLevelClosure = { _ in }
+        logger.configureRemoteLogLevelClosure = { _ in }
+        environment.coreSdk.createLogger = { _ in logger }
+        environment.conditionalCompilation.isDebug = { true }
         environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             completion(.success(()))
         }

@@ -27,7 +27,7 @@ extension CoreSdkClient {
         submitSurveyAnswer: { _, _, _, _ in },
         authentication: { _ in .mock },
         fetchChatHistory: { _ in },
-        requestVisitorCode: { _ in fatalError() },
+        requestVisitorCode: { _ in .mock },
         sendSecureMessagePayload: { _, _, _ in .mock },
         uploadSecureFile: { _, _, _ in .mock },
         getSecureUnreadMessageCount: { _ in },
@@ -35,7 +35,8 @@ extension CoreSdkClient {
         downloadSecureFile: { _, _, _ in .mock },
         startSocketObservation: {},
         stopSocketObservation: {},
-        createSendMessagePayload: { _, _ in .mock() }
+        createSendMessagePayload: { _, _ in .mock() },
+        createLogger: { _ in Logger.mock }
     )
 }
 
@@ -483,5 +484,4 @@ extension CoreSdkClient.Engagement {
         )
     }
 }
-
 #endif

@@ -1,4 +1,4 @@
-import GliaCoreSDK
+@_spi(GliaWidgets) import GliaCoreSDK
 import UIKit
 import GliaCoreDependency
 
@@ -142,6 +142,9 @@ struct CoreSdkClient {
 
     typealias CreateSendMessagePayload = (_ content: String, _ attachment: Attachment?) -> SendMessagePayload
     var createSendMessagePayload: CreateSendMessagePayload
+
+    typealias CreateLogger = ([String: String]) throws -> Logger
+    var createLogger: CreateLogger
 }
 
 extension CoreSdkClient {
@@ -251,4 +254,8 @@ extension CoreSdkClient {
     typealias ReactiveSwift = GliaCoreDependency.ReactiveSwift
     typealias SendMessagePayload = GliaCoreSDK.SendMessagePayload
     typealias ConfigureCompletion = GliaCoreSDK.GliaCore.ConfigureCompletion
+    typealias Logging = GliaCoreSDK.Logging
+    typealias LogConfigurable = GliaCoreSDK.LogConfigurable
+    typealias LoggingError = GliaCoreSDK.LoggingError
+    typealias LogLevel = GliaCoreSDK.LogLevel
 }
