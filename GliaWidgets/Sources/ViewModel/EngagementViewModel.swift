@@ -345,8 +345,8 @@ extension EngagementViewModel {
     ) -> LiveObservation.Confirmation {
         .init(
             conf: self.alertConfiguration.liveObservationConfirmation,
-            link: { _ in
-                // TODO: Add navigating to WebView controller
+            link: { [weak self] link in
+                self?.engagementDelegate?(.openLink(link))
             },
             accepted: { [weak self] in
                 self?.enqueue(mediaType: mediaType)
@@ -411,6 +411,7 @@ extension EngagementViewModel {
 
     enum DelegateEvent {
         case back
+        case openLink(WebViewController.Link)
         case engaged(operatorImageUrl: String?)
         case finished
     }

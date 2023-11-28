@@ -24,7 +24,7 @@ final class VideoCallTests: XCTestCase {
         let props = viewModel.makeProps()
 
         XCTAssertTrue(isRunning)
-        props.videoCallViewProps.headerProps.endScreenshareButton.tap()
+        props.videoCallViewProps.headerProps.endScreenshareButton?.tap()
         XCTAssertFalse(isRunning)
     }
 

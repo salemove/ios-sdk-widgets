@@ -30,7 +30,7 @@ class AlertViewController: UIViewController, Replaceable {
 
         case liveObservationConfirmation(
             ConfirmationAlertConfiguration,
-            link: (URL) -> Void,
+            link: (WebViewController.Link) -> Void,
             accepted: () -> Void,
             declined: () -> Void
         )

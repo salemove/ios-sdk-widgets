@@ -3,7 +3,7 @@ import UIKit
 extension AlertViewController {
     func makeLiveObservationAlertView(
         with conf: ConfirmationAlertConfiguration,
-        link: @escaping (URL) -> Void,
+        link: @escaping (WebViewController.Link) -> Void,
         accepted: @escaping () -> Void,
         declined: @escaping () -> Void
     ) -> AlertView {
@@ -58,16 +58,17 @@ extension AlertViewController {
     private func linkButton(
         for url: String?,
         style: ActionButtonStyle,
-        action: Command<URL>
+        action: Command<(WebViewController.Link)>
     ) -> ActionButton? {
-        guard let buttonUrlString = url,
+        guard !style.title.isEmpty,
+              let buttonUrlString = url,
               let buttonUrl = URL(string: buttonUrlString)
         else { return nil }
         return ActionButton(
             props: .init(
                 style: style,
                 height: 34,
-                tap: .init { action(buttonUrl) }
+                tap: .init { action((title: style.title, url: buttonUrl)) }
             )
         )
     }
