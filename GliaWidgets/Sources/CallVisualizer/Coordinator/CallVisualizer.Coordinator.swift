@@ -110,88 +110,28 @@ extension CallVisualizer {
             showVideoCallViewController()
         }
 
-        func showEndScreenSharingViewController() {
-            let viewController = buildScreenSharingViewController()
-            environment
-                .presenter
-                .getInstance()?
-                .present(viewController, animated: true)
-        }
-
-        func resumeVideoCallViewController() {
-            if let viewController = videoCallCoordinator?.resume() {
-                environment
-                    .presenter
-                    .getInstance()?
-                    .present(viewController, animated: true)
-            }
-        }
-
-        func showConfirmationAlert() {
-            let alert = AlertViewController(
-                kind: .liveObservationConfirmation(
-                    environment.viewFactory.theme.alertConfiguration.liveObservationConfirmation,
-                    link: { _ in
-                        // TODO: Add navigating to WebView controller
-                    },
-                    accepted: { [weak self] in
-                        self?.alertViewController = nil
-                        self?.closeVisitorCode()
-                    },
-                    declined: { [weak self] in
-                        self?.alertViewController = nil
-                        self?.closeVisitorCode()
-                        self?.declineEngagement()
+        func handleEngagementRequestAccepted(_ answer: Command<Bool>) {
+            fetchSiteConfigurations { [weak self] site in
+                let showSnackBarIfNeeded: () -> Void = {
+                    if site.observationIndication {
+                        self?.showSnackBarMessage()
                     }
-                ),
-                viewFactory: environment.viewFactory
-            )
-            self.alertViewController = alert
-            self.presentAlert(alert)
-        }
-
-        func handleEngagementRequestAccepted() {
-            visitorCodeCoordinator?.delegate?(.engagementAccepted)
-            environment.fetchSiteConfigurations { [weak self] result in
-                switch result {
-                case let .success(site):
-                    self?.showSnackBarMessage(Localization.LiveObservation.Indicator.message)
-                    if site.mobileConfirmDialog == true {
-                        self?.showConfirmationAlert()
+                }
+                let completion: Command<Bool> = .init { isAccepted in
+                    if isAccepted {
+                        showSnackBarIfNeeded()
                     }
-                case .failure:
-                    self?.showUnexpectedErrorAlert()
+                    answer(isAccepted)
+                }
+                self?.closeVisitorCode {
+                    if site.mobileConfirmDialog {
+                        self?.showConfirmationAlert(completion)
+                    } else {
+                        showSnackBarIfNeeded()
+                        answer(true)
+                    }
                 }
             }
-        }
-
-        func showUnexpectedErrorAlert() {
-            let config: MessageAlertConfiguration = environment.viewFactory.theme.alertConfiguration.unexpectedError
-            let alert = AlertViewController(
-                kind: .message(
-                    config,
-                    accessibilityIdentifier: nil,
-                    dismissed: { [weak self] in
-                        self?.declineEngagement()
-                    }
-                ),
-                viewFactory: environment.viewFactory
-            )
-            self.alertViewController = alert
-            self.presentAlert(alert)
-        }
-
-        func closeVisitorCode() {
-            visitorCodeCoordinator?.codeViewController?.dismiss(animated: true)
-            visitorCodeCoordinator = nil
-        }
-
-        func declineEngagement() {
-            environment.interactorProviding?.endEngagement(
-                success: {},
-                failure: { _ in }
-            )
-            end()
         }
 
         func end() {
@@ -240,105 +180,82 @@ extension CallVisualizer {
         private var screenSharingCoordinator: ScreenSharingCoordinator?
         private var videoCallCoordinator: VideoCallCoordinator?
         private var alertViewController: AlertViewController?
+    }
+}
 
-        private func buildScreenSharingViewController(uiConfig: RemoteConfiguration? = nil) -> UIViewController {
-            let coordinator = ScreenSharingCoordinator(
+// MARK: - Video screen
+
+extension CallVisualizer.Coordinator {
+    func showVideoCallViewController() {
+        createOperatorImageBubbleView()
+        let viewController = buildVideoCallViewController()
+        environment
+            .presenter
+            .getInstance()?
+            .present(viewController, animated: true)
+        environment.eventHandler(.maximized)
+    }
+
+    private func buildVideoCallViewController() -> UIViewController {
+        let coordinator = CallVisualizer.VideoCallCoordinator(
+            environment: .init(
+                data: environment.data,
+                uuid: environment.uuid,
+                gcd: environment.gcd,
+                imageViewCache: environment.imageViewCache,
+                timerProviding: environment.timerProviding,
+                uiApplication: environment.uiApplication,
+                uiScreen: environment.uiScreen,
+                uiDevice: environment.uiDevice,
+                notificationCenter: environment.notificationCenter,
+                date: environment.date,
+                engagedOperator: environment.engagedOperator,
+                screenShareHandler: environment.screenShareHandler,
+                proximityManager: environment.proximityManager
+            ),
+            theme: environment.viewFactory.theme,
+            call: .init(
+                .video(direction: .twoWay),
                 environment: .init(
-                    theme: environment.viewFactory.theme,
-                    screenShareHandler: environment.screenShareHandler,
-                    orientationManager: environment.orientationManager
+                    audioSession: environment.audioSession,
+                    uuid: environment.uuid
                 )
             )
+        )
 
-            coordinator.delegate = { [weak self] event in
-                switch event {
-                case .close:
-                    self?.screenSharingCoordinator = nil
-                }
+        let viewController = coordinator.start()
+        self.videoCallCoordinator = coordinator
+
+        coordinator.delegate = { [weak self] event in
+            switch event {
+            case .close:
+                self?.closeFlow()
+                self?.screenSharingCoordinator = nil
             }
-
-            let viewController = coordinator.start()
-            self.screenSharingCoordinator = coordinator
-
-            return viewController
         }
 
-        private func buildVideoCallViewController() -> UIViewController {
-            let coordinator = VideoCallCoordinator(
-                environment: .init(
-                    data: environment.data,
-                    uuid: environment.uuid,
-                    gcd: environment.gcd,
-                    imageViewCache: environment.imageViewCache,
-                    timerProviding: environment.timerProviding,
-                    uiApplication: environment.uiApplication,
-                    uiScreen: environment.uiScreen,
-                    uiDevice: environment.uiDevice,
-                    notificationCenter: environment.notificationCenter,
-                    date: environment.date,
-                    engagedOperator: environment.engagedOperator,
-                    screenShareHandler: environment.screenShareHandler,
-                    proximityManager: environment.proximityManager
-                ),
-                theme: environment.viewFactory.theme,
-                call: .init(
-                    .video(direction: .twoWay),
-                    environment: .init(
-                        audioSession: environment.audioSession,
-                        uuid: environment.uuid
-                    )
-                )
-            )
+        return viewController
+    }
 
-            let viewController = coordinator.start()
-            self.videoCallCoordinator = coordinator
-
-            coordinator.delegate = { [weak self] event in
-                switch event {
-                case .close:
-                    self?.closeFlow()
-                    self?.screenSharingCoordinator = nil
-                }
-            }
-
-            return viewController
-        }
-
-        func showVideoCallViewController() {
-            createOperatorImageBubbleView()
-            let viewController = buildVideoCallViewController()
+    func resumeVideoCallViewController() {
+        if let viewController = videoCallCoordinator?.resume() {
             environment
                 .presenter
                 .getInstance()?
                 .present(viewController, animated: true)
-            environment.eventHandler(.maximized)
         }
     }
 }
 
-// MARK: - Private
+// MARK: - Ending engagement
 
-private extension CallVisualizer.Coordinator {
-    func observeScreenSharingHandlerState() {
-        self.environment
-            .screenShareHandler
-            .status()
-            .addObserver(self) { [weak self] newStatus, _ in
-                guard self?.videoCallCoordinator == nil else { return }
-                switch newStatus {
-                case .started:
-                    self?.createScreenShareBubbleView()
-                case .stopped:
-                    self?.screenSharingCoordinator?.viewController?.dismiss(animated: true)
-                    self?.screenSharingCoordinator = nil
-                    self?.removeBubbleView()
-                }
-            }
-    }
-
-    func stopObservingScreenSharingHandlerState() {
-        environment.screenShareHandler.status().removeObserver(self)
-        environment.screenShareHandler.stop(nil)
+extension CallVisualizer.Coordinator {
+    func declineEngagement() {
+        environment.interactorProviding?.endEngagement(
+            success: {},
+            failure: { _ in }
+        )
+        end()
     }
 
     func closeFlow() {
@@ -371,6 +288,147 @@ private extension CallVisualizer.Coordinator {
         }
     }
 
+    func closeVisitorCode(_ completion: (() -> Void)? = nil) {
+        visitorCodeCoordinator?.delegate?(.engagementAccepted)
+        visitorCodeCoordinator?.codeViewController?.dismiss(animated: true, completion: completion)
+        visitorCodeCoordinator = nil
+    }
+}
+
+// MARK: - Screen sharing
+
+extension CallVisualizer.Coordinator {
+    private func observeScreenSharingHandlerState() {
+        self.environment
+            .screenShareHandler
+            .status()
+            .addObserver(self) { [weak self] newStatus, _ in
+                guard self?.videoCallCoordinator == nil else { return }
+                switch newStatus {
+                case .started:
+                    self?.createScreenShareBubbleView()
+                case .stopped:
+                    self?.screenSharingCoordinator?.viewController?.dismiss(animated: true)
+                    self?.screenSharingCoordinator = nil
+                    self?.removeBubbleView()
+                }
+            }
+    }
+
+    private func stopObservingScreenSharingHandlerState() {
+        environment.screenShareHandler.status().removeObserver(self)
+        environment.screenShareHandler.stop(nil)
+    }
+
+    private func buildScreenSharingViewController(uiConfig: RemoteConfiguration? = nil) -> UIViewController {
+        let coordinator = CallVisualizer.ScreenSharingCoordinator(
+            environment: .init(
+                theme: environment.viewFactory.theme,
+                screenShareHandler: environment.screenShareHandler,
+                orientationManager: environment.orientationManager
+            )
+        )
+
+        coordinator.delegate = { [weak self] event in
+            switch event {
+            case .close:
+                self?.screenSharingCoordinator = nil
+            }
+        }
+
+        let viewController = coordinator.start()
+        self.screenSharingCoordinator = coordinator
+
+        return viewController
+    }
+
+    func showEndScreenSharingViewController() {
+        let viewController = buildScreenSharingViewController()
+        environment
+            .presenter
+            .getInstance()?
+            .present(viewController, animated: true)
+    }
+}
+
+// MARK: - Site configurations
+
+private extension CallVisualizer.Coordinator {
+    func fetchSiteConfigurations(_ completion: @escaping (CoreSdkClient.Site) -> Void) {
+        environment.fetchSiteConfigurations { [weak self] result in
+            switch result {
+            case let .success(site):
+                completion(site)
+            case .failure:
+                self?.showUnexpectedErrorAlert()
+            }
+        }
+    }
+}
+
+// MARK: - Alert
+
+private extension CallVisualizer.Coordinator {
+    func presentAlert(_ alert: AlertViewController) {
+        let topController = environment.presenter.getInstance()
+
+        // If replaceable is not nil, that means some AlertViewController is presented,
+        // and we need to decide whether to replace presented alert.
+        // Otherwise, just present requested alert.
+        guard let replaceable = topController as? Replaceable else {
+            topController?.present(alert, animated: true)
+            return
+        }
+        let presenting = replaceable.presentingViewController
+        guard replaceable.isReplaceable(with: alert) else { return }
+        replaceable.dismiss(animated: true) {
+            presenting?.present(alert, animated: true)
+        }
+    }
+
+    func showConfirmationAlert(_ answer: Command<Bool>) {
+        let alert = AlertViewController(
+            kind: .liveObservationConfirmation(
+                environment.viewFactory.theme.alertConfiguration.liveObservationConfirmation,
+                link: { [weak self] link in
+                    self?.presentSafariViewController(for: link)
+                },
+                accepted: { [weak self] in
+                    answer(true)
+                    self?.alertViewController = nil
+                },
+                declined: { [weak self] in
+                    answer(false)
+                    self?.alertViewController = nil
+                    self?.declineEngagement()
+                }
+            ),
+            viewFactory: environment.viewFactory
+        )
+        self.alertViewController = alert
+        self.presentAlert(alert)
+    }
+
+    func showUnexpectedErrorAlert() {
+        let config: MessageAlertConfiguration = environment.viewFactory.theme.alertConfiguration.unexpectedError
+        let alert = AlertViewController(
+            kind: .message(
+                config,
+                accessibilityIdentifier: nil,
+                dismissed: { [weak self] in
+                    self?.declineEngagement()
+                }
+            ),
+            viewFactory: environment.viewFactory
+        )
+        alertViewController = alert
+        presentAlert(alert)
+    }
+}
+
+// MARK: - Bubble
+
+private extension CallVisualizer.Coordinator {
     func createScreenShareBubbleView() {
         guard let parent = environment.presenter.getInstance()?.view else { return }
         bubbleView.kind = .view(screensharingImageView)
@@ -419,35 +477,64 @@ private extension CallVisualizer.Coordinator {
             centerY = superview.frame.height - bubbleView.frame.height / 2 - superview.safeAreaInsets.bottom
         }
     }
+}
 
-    func presentAlert(_ alert: AlertViewController) {
-        let topController = environment.presenter.getInstance()
+// MARK: - WebViewController
 
-        // If replaceable is not nil, that means some AlertViewController is presented,
-        // and we need to decide whether to replace presented alert.
-        // Otherwise, just present requested alert.
-        guard let replaceable = topController as? Replaceable else {
-            topController?.present(alert, animated: true)
-            return
+private extension CallVisualizer.Coordinator {
+    func presentSafariViewController(for link: WebViewController.Link) {
+        let openBrowser = Command<URL> { [weak self] url in
+            guard let self,
+                  self.environment.uiApplication.canOpenURL(url)
+            else { return }
+            self.environment.uiApplication.open(url)
         }
-        let presenting = replaceable.presentingViewController
-        guard replaceable.isReplaceable(with: alert) else { return }
-        replaceable.dismiss(animated: true) {
-            presenting?.present(alert, animated: true)
+        let close = Cmd { [weak self] in
+            self?.environment
+                .presenter
+                .getInstance()?
+                .dismiss(animated: true)
         }
+        let theme = environment.viewFactory.theme
+        let headerProps = Header.Props(
+            title: link.title,
+            effect: .none,
+            endButton: nil,
+            backButton: nil,
+            closeButton: .init(tap: close, style: theme.chat.header.closeButton),
+            endScreenshareButton: nil,
+            style: theme.chat.header
+        )
+
+        let props: WebViewController.Props = .init(
+            link: link,
+            header: headerProps,
+            externalOpen: openBrowser
+        )
+
+        let viewController = WebViewController(props: props)
+        viewController.modalPresentationStyle = .fullScreen
+        environment
+            .presenter
+            .getInstance()?
+            .present(viewController, animated: true)
     }
+}
 
-    func showSnackBarMessage(_ text: String) {
-        guard let style = visitorCodeCoordinator?.theme.snackBar else { return }
+// MARK: - Live Observation
+
+private extension CallVisualizer.Coordinator {
+    func showSnackBarMessage() {
+        let style = environment.viewFactory.theme.snackBar
         snackBar.present(
-            text: Localization.LiveObservation.Indicator.message,
+            text: style.text,
             style: style,
             for: topMostViewController,
             timerProviding: environment.timerProviding
         )
     }
 
-    private var topMostViewController: UIViewController {
+    var topMostViewController: UIViewController {
         let window = UIApplication.shared.windows.first { $0.isKeyWindow }
         guard var presenter = window?.rootViewController else {
             fatalError("Could not find UIViewController to present on")
@@ -458,28 +545,5 @@ private extension CallVisualizer.Coordinator {
         }
 
         return presenter
-    }
-}
-
-extension CallVisualizer {
-    public struct Presenter {
-        init(presenter: @escaping () -> UIViewController?) {
-            self.getInstance = presenter
-        }
-        let getInstance: () -> UIViewController?
-    }
-}
-
-extension CallVisualizer.Presenter {
-    static func topViewController(application: UIKitBased.UIApplication) -> Self {
-        .init {
-            if var topController = application.windows().first(where: { $0.isKeyWindow })?.rootViewController {
-                while let presentedViewController = topController.presentedViewController {
-                    topController = presentedViewController
-                }
-                return topController
-            }
-            return nil
-        }
     }
 }

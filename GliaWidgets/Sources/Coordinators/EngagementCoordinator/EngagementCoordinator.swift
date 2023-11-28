@@ -293,6 +293,8 @@ extension EngagementCoordinator {
                 popCoordinator()
                 end()
             }
+        case let .openLink(link):
+            presentSafariViewController(for: link)
         case .engaged(let operatorImageUrl):
             gliaViewController?.bubbleKind = .userImage(url: operatorImageUrl)
         case .mediaUpgradeAccepted(let offer, let answer):
@@ -368,6 +370,8 @@ extension EngagementCoordinator {
                 default:
                     break
                 }
+            case let .openLink(link):
+                self.presentSafariViewController(for: link)
             case .engaged(let operatorImageUrl):
                 self.gliaViewController?.bubbleKind = .userImage(url: operatorImageUrl)
             case .chat:
@@ -576,6 +580,41 @@ extension EngagementCoordinator {
 
     private func upgradeSecureTranscriptToChat(chatViewController: ChatViewController) {
         engagement = .chat(chatViewController)
+    }
+}
+
+extension EngagementCoordinator {
+    func presentSafariViewController(for link: WebViewController.Link) {
+        let openBrowser = Command<URL> { [weak self] url in
+            guard let self,
+                  self.environment.uiApplication.canOpenURL(url)
+            else { return }
+            self.environment.uiApplication.open(url)
+        }
+        let viewController = WebViewController()
+        viewController.modalPresentationStyle = .fullScreen
+
+        let close = Cmd { [weak viewController] in
+            viewController?.dismiss(animated: true)
+        }
+        let theme = viewFactory.theme
+        let headerProps = Header.Props(
+            title: link.title,
+            effect: .none,
+            endButton: nil,
+            backButton: nil,
+            closeButton: .init(tap: close, style: theme.webView.header.closeButton),
+            endScreenshareButton: nil,
+            style: theme.webView.header
+        )
+
+        let props: WebViewController.Props = .init(
+            link: link,
+            header: headerProps,
+            externalOpen: openBrowser
+        )
+        viewController.props = props
+        gliaPresenter.present(viewController, animated: true)
     }
 }
 

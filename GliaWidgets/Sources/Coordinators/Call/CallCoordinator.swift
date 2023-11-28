@@ -3,6 +3,7 @@ import UIKit
 class CallCoordinator: SubFlowCoordinator, FlowCoordinator {
     enum DelegateEvent {
         case back
+        case openLink(WebViewController.Link)
         case engaged(operatorImageUrl: String?)
         case visitorOnHoldUpdated(isOnHold: Bool)
         case chat
@@ -108,6 +109,8 @@ private extension CallCoordinator {
         switch event {
         case .back:
             delegate?(.back)
+        case let .openLink(link):
+            delegate?(.openLink(link))
         case .engaged(let url):
             delegate?(.engaged(operatorImageUrl: url))
         case .finished:
