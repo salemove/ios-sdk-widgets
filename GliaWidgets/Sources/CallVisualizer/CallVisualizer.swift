@@ -123,8 +123,8 @@ extension CallVisualizer {
         coordinator.handleAcceptedUpgrade()
     }
 
-    func handleEngagementRequestAccepted() {
-        coordinator.handleEngagementRequestAccepted()
+    func handleEngagementRequestAccepted(_ answer: Command<Bool>) {
+        coordinator.handleEngagementRequestAccepted(answer)
     }
 
     func addVideoStream(stream: CoreSdkClient.VideoStreamable) {
