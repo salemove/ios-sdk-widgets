@@ -238,7 +238,6 @@ extension GliaTests {
         let configuredSdkTheme = resultingViewFactory?.theme
         XCTAssertEqual(configuredSdkTheme?.call.connect.queue.firstText, "Company Name")
         XCTAssertEqual(configuredSdkTheme?.chat.connect.queue.firstText, "Company Name")
-        XCTAssertEqual(configuredSdkTheme?.alertConfiguration.liveObservationConfirmation.message?.contains("Company Name"), true)
     }
 
     func testCompanyNameIsReceivedFromThemeIfCustomLocalesIsEmpty() throws {

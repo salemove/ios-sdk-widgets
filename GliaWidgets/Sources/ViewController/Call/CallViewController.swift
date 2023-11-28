@@ -51,14 +51,18 @@ final class CallViewController: EngagementViewController {
         guard let view = view as? CallView else { return }
         view.checkBarsOrientation()
     }
+}
 
+// MARK: - Private
+
+private extension CallViewController {
     @objc
-    private func deviceDidRotate() {
+    func deviceDidRotate() {
         guard let view = view as? CallView else { return }
         view.didRotate()
     }
 
-    private func bind(viewModel: CallViewModel, to view: CallView) {
+    func bind(viewModel: CallViewModel, to view: CallView) {
         view.header.showBackButton()
         view.header.showCloseButton()
 
@@ -115,19 +119,13 @@ final class CallViewController: EngagementViewController {
                 view.isVisitrOnHold = isOnHold
             case .transferring:
                 view.setConnectState(.transferring, animated: true)
-            case .showSnackBarView(let text):
-                self.snackBar.present(
-                    text: text,
-                    style: self.viewFactory.theme.invertedSnackBar,
-                    for: self,
-                    bottomOffset: -100,
-                    timerProviding: self.environment.timerProviding
-                )
+            case .showSnackBarView:
+                self.showSnackBarView()
             }
         }
     }
 
-    private static func buildNewHeaderProps(newTitle: String, props: Header.Props) -> Header.Props {
+    static func buildNewHeaderProps(newTitle: String, props: Header.Props) -> Header.Props {
         Header.Props(
             title: newTitle,
             effect: props.effect,
@@ -136,6 +134,17 @@ final class CallViewController: EngagementViewController {
             closeButton: props.closeButton,
             endScreenshareButton: props.endScreenshareButton,
             style: props.style
+        )
+    }
+
+    func showSnackBarView() {
+        let style = viewFactory.theme.invertedSnackBar
+        snackBar.present(
+            text: style.text,
+            style: style,
+            for: self,
+            bottomOffset: -100,
+            timerProviding: environment.timerProviding
         )
     }
 }

@@ -328,6 +328,12 @@
 		84265E6B29912E2100D65842 /* RemoteConfiguration+CallVisualizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84265E6A29912E2100D65842 /* RemoteConfiguration+CallVisualizer.swift */; };
 		84265E6E29914DDA00D65842 /* ViewController+CallVisualizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84265E6D29914DDA00D65842 /* ViewController+CallVisualizer.swift */; };
 		844D3C6C29142C17002887A9 /* Optional+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844D3C6B29142C17002887A9 /* Optional+Extensions.swift */; };
+		84520BDB2B0FA15A00F97617 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84520BDA2B0FA15A00F97617 /* WebViewController.swift */; };
+		84520BDD2B10C16E00F97617 /* WebViewController.Props.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84520BDC2B10C16E00F97617 /* WebViewController.Props.swift */; };
+		84520BE12B14B8F800F97617 /* WebViewStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84520BE02B14B8F800F97617 /* WebViewStyle.swift */; };
+		84520BE32B14B97A00F97617 /* Theme+WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84520BE22B14B97A00F97617 /* Theme+WebView.swift */; };
+		84520BE52B14BAA200F97617 /* RemoteConfiguration+WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84520BE42B14BAA200F97617 /* RemoteConfiguration+WebView.swift */; };
+		84520BEB2B1887DF00F97617 /* CallVisualizer.Presenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84520BEA2B1887DF00F97617 /* CallVisualizer.Presenter.swift */; };
 		8458769F2823FD18007AC3DF /* SurveyViewControllerVoiceOverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8458769E2823FD18007AC3DF /* SurveyViewControllerVoiceOverTests.swift */; };
 		845876A22823FF34007AC3DF /* Survey.ViewController.Props.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845876A12823FF34007AC3DF /* Survey.ViewController.Props.Mock.swift */; };
 		845876A5282A9015007AC3DF /* ScaleQuestionView.Props.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845876A4282A9015007AC3DF /* ScaleQuestionView.Props.Accessibility.swift */; };
@@ -1084,6 +1090,12 @@
 		84265E6A29912E2100D65842 /* RemoteConfiguration+CallVisualizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RemoteConfiguration+CallVisualizer.swift"; sourceTree = "<group>"; };
 		84265E6D29914DDA00D65842 /* ViewController+CallVisualizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+CallVisualizer.swift"; sourceTree = "<group>"; };
 		844D3C6B29142C17002887A9 /* Optional+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Optional+Extensions.swift"; sourceTree = "<group>"; };
+		84520BDA2B0FA15A00F97617 /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
+		84520BDC2B10C16E00F97617 /* WebViewController.Props.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.Props.swift; sourceTree = "<group>"; };
+		84520BE02B14B8F800F97617 /* WebViewStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewStyle.swift; sourceTree = "<group>"; };
+		84520BE22B14B97A00F97617 /* Theme+WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Theme+WebView.swift"; sourceTree = "<group>"; };
+		84520BE42B14BAA200F97617 /* RemoteConfiguration+WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RemoteConfiguration+WebView.swift"; sourceTree = "<group>"; };
+		84520BEA2B1887DF00F97617 /* CallVisualizer.Presenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallVisualizer.Presenter.swift; sourceTree = "<group>"; };
 		8458769E2823FD18007AC3DF /* SurveyViewControllerVoiceOverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurveyViewControllerVoiceOverTests.swift; sourceTree = "<group>"; };
 		845876A12823FF34007AC3DF /* Survey.ViewController.Props.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Survey.ViewController.Props.Mock.swift; sourceTree = "<group>"; };
 		845876A4282A9015007AC3DF /* ScaleQuestionView.Props.Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleQuestionView.Props.Accessibility.swift; sourceTree = "<group>"; };
@@ -2090,6 +2102,7 @@
 				C06A7587296ECD75006B69A2 /* Theme+VisitorCode.swift */,
 				84265DEF2983E62100D65842 /* Theme+ScreenSharing.swift */,
 				C0175A2B2A67E2E9001FACDE /* Theme+Gva.swift */,
+				84520BE22B14B97A00F97617 /* Theme+WebView.swift */,
 			);
 			path = Theme;
 			sourceTree = "<group>";
@@ -2097,6 +2110,7 @@
 		1A60AFC12566857200E53F53 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				84520BD92B0FA14700F97617 /* WebViewController */,
 				C02248A82AD53DDF00CC4930 /* LiveObservation */,
 				84D5B95E2A14DEFD00807F92 /* QuickLookBased */,
 				C05E3EDC29C99DEE0013BC81 /* ProximityManager */,
@@ -2844,6 +2858,7 @@
 				7594093A298D376A008B173A /* RemoteConfiguration+AssetsBuilder.swift */,
 				84265E6A29912E2100D65842 /* RemoteConfiguration+CallVisualizer.swift */,
 				7594093C298D376A008B173A /* RemoteConfiguration+Chat.swift */,
+				84520BE42B14BAA200F97617 /* RemoteConfiguration+WebView.swift */,
 			);
 			path = RemoteConfiguration;
 			sourceTree = "<group>";
@@ -3045,6 +3060,7 @@
 				84265E49298D7B1900D65842 /* CallVisualizer.Coordinator.swift */,
 				84265E4A298D7B1900D65842 /* CallVisualizer.Coordinator.Environment.swift */,
 				846A5C3F29ED83C50049B29F /* CallVisualizer.Coordinator.DelegateEvent.swift */,
+				84520BEA2B1887DF00F97617 /* CallVisualizer.Presenter.swift */,
 			);
 			path = Coordinator;
 			sourceTree = "<group>";
@@ -3094,6 +3110,16 @@
 				84265E6D29914DDA00D65842 /* ViewController+CallVisualizer.swift */,
 			);
 			path = ViewController;
+			sourceTree = "<group>";
+		};
+		84520BD92B0FA14700F97617 /* WebViewController */ = {
+			isa = PBXGroup;
+			children = (
+				84520BDA2B0FA15A00F97617 /* WebViewController.swift */,
+				84520BDC2B10C16E00F97617 /* WebViewController.Props.swift */,
+				84520BE02B14B8F800F97617 /* WebViewStyle.swift */,
+			);
+			path = WebViewController;
 			sourceTree = "<group>";
 		};
 		845876A02823FF21007AC3DF /* Mocks */ = {
@@ -4491,6 +4517,7 @@
 				C07F627D2AC2F31F003EFC97 /* ScreenSharingViewModel.swift in Sources */,
 				1A0C9A9125C41AB900815406 /* CallButtonBar.swift in Sources */,
 				C0D2F0302991229F00803B47 /* VideoCallCoordinator.Environment.swift in Sources */,
+				84520BE52B14BAA200F97617 /* RemoteConfiguration+WebView.swift in Sources */,
 				1AE15E3B257A5CC900A642C0 /* AlertConfiguration.swift in Sources */,
 				C07F62792AC2D2E8003EFC97 /* BackgroundSwiftUI.swift in Sources */,
 				75AF8D1027DFF4B3009EEE2C /* Survey.ValidationErrorView.swift in Sources */,
@@ -4515,6 +4542,7 @@
 				C06A7588296ECD75006B69A2 /* Theme+VisitorCode.swift in Sources */,
 				C0857DED28D4831E008D171D /* Theme+Text.swift in Sources */,
 				845876A22823FF34007AC3DF /* Survey.ViewController.Props.Mock.swift in Sources */,
+				84520BDD2B10C16E00F97617 /* WebViewController.Props.swift in Sources */,
 				1A4674B625E907320078FA1C /* AttachmentSourceListStyle.swift in Sources */,
 				75940946298D378A008B173A /* CoreSDKClient.Live.swift in Sources */,
 				7594098F298D3929008B173A /* Glia.OpaqueAuthentication.swift in Sources */,
@@ -4716,6 +4744,7 @@
 				1A4AD3CA256E864800468BFB /* ThemeColorStyle.swift in Sources */,
 				AFA2FDF228907E9D00428E6D /* GliaViewController.Mock.swift in Sources */,
 				9AB196DE27C3FFF400FD60AB /* Call.Environment.Mock.swift in Sources */,
+				84520BE12B14B8F800F97617 /* WebViewStyle.swift in Sources */,
 				1A0C143125B8547200B00695 /* EngagementStyle.swift in Sources */,
 				7594098B298D38C2008B173A /* CallVisualizer+Presentation.swift in Sources */,
 				C06152DA2AB1BC4300063BF8 /* OrientationManager.swift in Sources */,
@@ -4769,6 +4798,7 @@
 				847956402ADED7A2004EF60C /* CallVisualizer+Action.swift in Sources */,
 				AF10ED8D29BA210500E85309 /* SecureConversations.MessagesWithUnreadCountLoader.swift in Sources */,
 				C0D2F04A2992765F00803B47 /* VideoCallView.OperatorImageView.swift in Sources */,
+				84520BDB2B0FA15A00F97617 /* WebViewController.swift in Sources */,
 				755D186F29A6A6160009F5E8 /* WelcomeStyle+MessageTextViewDisabledStyle.swift in Sources */,
 				1ABD6C8125B6E97400D56EFA /* MultipleMediaUpgradeAlertConfiguration.swift in Sources */,
 				845E2F6C2837EF2E00C04D56 /* FilePreviewStyle.Accessibility.swift in Sources */,
@@ -4834,6 +4864,7 @@
 				AF3D520F2983BC5600AD8E69 /* FileUploader.Environment.Mock.swift in Sources */,
 				C43D7A1125FF92680064B1DA /* ChoiceCardStyle.swift in Sources */,
 				9A186A4127F605B90055886D /* HeaderButtonStyle.Accessibility.swift in Sources */,
+				84520BEB2B1887DF00F97617 /* CallVisualizer.Presenter.swift in Sources */,
 				C02248AA2AD53E6100CC4930 /* LiveObservation.swift in Sources */,
 				9AB196D827C3E27300FD60AB /* ChatViewModel.Environment.Mock.swift in Sources */,
 				3100EEFF293F7E0900D57F71 /* Theme+SecureConversationsWelcome.swift in Sources */,
@@ -4895,6 +4926,7 @@
 				C0D2F03B299149D600803B47 /* VideoCallViewModel.swift in Sources */,
 				C0D2F02E2991221900803B47 /* VideoCallCoordinator.DelegateEvent.swift in Sources */,
 				1A2DA73125EFA77E00032611 /* FileUploader.swift in Sources */,
+				84520BE32B14B97A00F97617 /* Theme+WebView.swift in Sources */,
 				1A60B0272568070800E53F53 /* UIStackView+Extensions.swift in Sources */,
 				75940945298D378A008B173A /* CoreSDKClient.Mock.swift in Sources */,
 				C0175A192A5D3C56001FACDE /* ChatView.Accessibility.swift in Sources */,
