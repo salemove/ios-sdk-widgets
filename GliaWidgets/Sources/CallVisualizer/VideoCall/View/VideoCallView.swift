@@ -72,9 +72,9 @@ extension CallVisualizer {
         }
 
         private lazy var header = Header(props: props.headerProps).make { header in
-            header.endButton.isHidden = true
-            header.closeButton.isHidden = true
-            header.endScreenShareButton.isHidden = true
+            header.endButton?.isHidden = true
+            header.closeButton?.isHidden = true
+            header.endScreenShareButton?.isHidden = true
 
             if let backButton = props.style.header.backButton {
                 header.backButton?.accessibilityLabel = backButton.accessibility.label
@@ -287,7 +287,7 @@ private extension CallVisualizer.VideoCallView {
         renderRemoteVideoStream = props.remoteVideoStream
         renderLocalVideoStream = props.localVideoStream
         topLabel.isHidden = props.topLabelHidden
-        header.endScreenShareButton.isHidden = props.endScreenShareButtonHidden
+        header.endScreenShareButton?.isHidden = props.endScreenShareButtonHidden
         connectView.isHidden = props.connectViewHidden
         topStackView.alpha = props.topStackAlpha
         header.props = props.headerProps

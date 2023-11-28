@@ -71,6 +71,7 @@ struct SnackBarContentView_Previews: PreviewProvider {
 
 extension Theme.SnackBarStyle {
     static let defaultStyle: Self = .init(
+        text: Localization.LiveObservation.Indicator.message,
         background: .init(hex: "#2C0735"),
         textColor: .init(hex: "#FFFFFF"),
         textFont: UIFont.systemFont(ofSize: 17, weight: .regular),

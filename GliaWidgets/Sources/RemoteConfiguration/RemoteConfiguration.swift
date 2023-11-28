@@ -11,6 +11,7 @@ public struct RemoteConfiguration: Codable {
     let secureConversationsWelcomeScreen: SecureConversationsWelcomeScreen?
     let secureConversationsConfirmationScreen: SecureConversationsConfirmationScreen?
     let snackBar: SnackBar?
+    let webBrowserScreen: WebView?
 }
 
 extension RemoteConfiguration {

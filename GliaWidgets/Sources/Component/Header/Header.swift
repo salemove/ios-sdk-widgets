@@ -10,9 +10,9 @@ final class Header: BaseView {
     }
 
     var backButton: HeaderButton?
-    var closeButton: HeaderButton
-    var endButton: ActionButton
-    var endScreenShareButton: HeaderButton
+    var closeButton: HeaderButton?
+    var endButton: ActionButton?
+    var endScreenShareButton: HeaderButton?
 
     var props: Props {
         didSet {
@@ -35,10 +35,15 @@ final class Header: BaseView {
         }
 
         self.props = props
-        self.closeButton = HeaderButton(with: props.closeButton)
-        self.endButton = ActionButton(props: props.endButton)
-
-        self.endScreenShareButton = HeaderButton(with: props.endScreenshareButton)
+        if let closeButtonProps = props.closeButton {
+            self.closeButton = HeaderButton(with: closeButtonProps)
+        }
+        if let endButtonProps = props.endButton {
+            self.endButton = ActionButton(props: endButtonProps)
+        }
+        if let endScreenshareProps = props.endScreenshareButton {
+            self.endScreenShareButton = HeaderButton(with: endScreenshareProps)
+        }
         super.init()
         self.titleLabel.accessibilityTraits = .header
     }
@@ -63,9 +68,12 @@ final class Header: BaseView {
         if let backButtonProps = props.backButton {
             backButton?.props = backButtonProps
         }
-
-        closeButton.props = props.closeButton
-        endButton.props = props.endButton
+        if let closeButtonProps = props.closeButton {
+            closeButton?.props = closeButtonProps
+        }
+        if let endButtonProps = props.endButton {
+            endButton?.props = endButtonProps
+        }
 
         titleLabel.text = props.title
         titleLabel.accessibilityLabel = props.title
@@ -75,8 +83,8 @@ final class Header: BaseView {
         titleLabel.font = props.style.titleFont
         titleLabel.textColor = props.style.titleColor
 
-        closeButton.accessibilityLabel = props.style.closeButton.accessibility.label
-        endButton.accessibilityLabel = props.style.endButton.accessibility.label
+        closeButton?.accessibilityLabel = props.style.closeButton.accessibility.label
+        endButton?.accessibilityLabel = props.style.endButton.accessibility.label
         setFontScalingEnabled(
             props.style.accessibility.isFontScalingEnabled,
             for: titleLabel
@@ -88,21 +96,21 @@ final class Header: BaseView {
     }
 
     func showCloseButton() {
-        endButton.isHidden = true
-        endScreenShareButton.isHidden = true
-        closeButton.isHidden = false
+        endButton?.isHidden = true
+        endScreenShareButton?.isHidden = true
+        closeButton?.isHidden = false
     }
 
     func showEndButton() {
-        endButton.isHidden = false
-        closeButton.isHidden = true
-        endScreenShareButton.isHidden = true
+        endButton?.isHidden = false
+        closeButton?.isHidden = true
+        endScreenShareButton?.isHidden = true
     }
 
     func showEndScreenSharingButton() {
-        endButton.isHidden = false
-        endScreenShareButton.isHidden = false
-        closeButton.isHidden = true
+        endButton?.isHidden = false
+        endScreenShareButton?.isHidden = false
+        closeButton?.isHidden = true
     }
 
     override func setup() {
@@ -112,7 +120,7 @@ final class Header: BaseView {
         rightItemContainer.spacing = 16
         rightItemContainer.alignment = .center
         backButton?.accessibilityIdentifier = "header_back_button"
-        closeButton.accessibilityIdentifier = "header_close_button"
+        closeButton?.accessibilityIdentifier = "header_close_button"
     }
 
     override func defineLayout() {
@@ -145,7 +153,15 @@ final class Header: BaseView {
             constraints += backButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
         }
 
-        rightItemContainer.addArrangedSubviews([endScreenShareButton, endButton, closeButton])
+        if let endScreenShareButton {
+            rightItemContainer.addArrangedSubview(endScreenShareButton)
+        }
+        if let endButton {
+            rightItemContainer.addArrangedSubview(endButton)
+        }
+        if let closeButton {
+            rightItemContainer.addArrangedSubview(closeButton)
+        }
         contentView.addSubview(rightItemContainer)
         rightItemContainer.translatesAutoresizingMaskIntoConstraints = false
         constraints += rightItemContainer.layoutInSuperview(edges: .trailing)

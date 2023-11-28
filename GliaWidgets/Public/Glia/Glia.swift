@@ -354,7 +354,14 @@ extension Glia {
             guard
                 let engagement = self?.environment.coreSdk.getCurrentEngagement(),
                 engagement.source == .callVisualizer
-            else { return }
+            else {
+                switch event {
+                case let .onEngagementRequest(action):
+                    self?.callVisualizer.handleEngagementRequestAccepted(action)
+                default: return
+                }
+                return
+            }
 
             switch event {
             case .screenShareOffer(answer: let answer):
@@ -386,7 +393,6 @@ extension Glia {
                     self?.callVisualizer.endSession()
                     self?.onEvent?(.ended)
                 } else if case .engaged = state {
-                    self?.callVisualizer.handleEngagementRequestAccepted()
                     self?.onEvent?(.started)
                 }
             default:
