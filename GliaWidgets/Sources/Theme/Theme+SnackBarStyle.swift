@@ -3,6 +3,7 @@ import UIKit
 extension Theme {
     var snackBarStyle: SnackBarStyle {
         .init(
+            text: Localization.LiveObservation.Indicator.message,
             background: color.baseDark,
             textColor: color.baseLight,
             textFont: .font(weight: .regular, size: 17),
@@ -12,6 +13,7 @@ extension Theme {
 
     var invertedSnackBarStyle: SnackBarStyle {
         .init(
+            text: Localization.LiveObservation.Indicator.message,
             background: color.baseLight,
             textColor: color.baseDark,
             textFont: .font(weight: .regular, size: 17),
@@ -20,7 +22,9 @@ extension Theme {
     }
 
     public struct SnackBarStyle: Equatable {
-        /// View's background color
+        /// SnackBar message text.
+        public var text: String
+        /// View's background color.
         public var background: UIColor
         /// Snack message text color.
         public var textColor: UIColor

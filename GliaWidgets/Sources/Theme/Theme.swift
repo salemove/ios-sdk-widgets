@@ -67,6 +67,9 @@ public class Theme {
     /// Inverted snack bar View style.
     public lazy var invertedSnackBar: SnackBarStyle = { invertedSnackBarStyle }()
 
+    /// Chat view style.
+    public lazy var webView: WebViewStyle = { webViewStyle }()
+
     /// Initilizes the theme with base color and font style.
     ///
     /// - Parameters:
@@ -143,6 +146,10 @@ public class Theme {
             configuration: config.snackBar,
             assetsBuilder: assetsBuilder
         )
+        webView.apply(
+            configuration: config.webBrowserScreen,
+            assetsBuilder: assetsBuilder
+        )
     }
 
     func apply(
@@ -187,6 +194,14 @@ public class Theme {
         )
         secureConversationsConfirmation.apply(
             configuration: configuration.secureConversationsConfirmationScreen,
+            assetsBuilder: assetsBuilder
+        )
+        snackBar.apply(
+            configuration: configuration.snackBar,
+            assetsBuilder: assetsBuilder
+        )
+        webView.apply(
+            configuration: configuration.webBrowserScreen,
             assetsBuilder: assetsBuilder
         )
     }
