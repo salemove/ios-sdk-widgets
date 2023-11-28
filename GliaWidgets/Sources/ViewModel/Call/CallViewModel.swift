@@ -123,7 +123,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
             showConnecting()
             let operatorName = interactor.engagedOperator?.firstName ?? Localization.Engagement.defaultOperator
             action?(.setOperatorName(operatorName))
-            action?(.showSnackBarView(text: Localization.LiveObservation.Indicator.message))
+            action?(.showSnackBarView)
         case .ended:
             call.end()
         default:
@@ -567,7 +567,7 @@ extension CallViewModel {
         case setRemoteVideo(CoreSdkClient.StreamView?)
         case setLocalVideo(CoreSdkClient.StreamView?)
         case setVisitorOnHold(isOnHold: Bool)
-        case showSnackBarView(text: String)
+        case showSnackBarView
     }
 
     enum DelegateEvent {
