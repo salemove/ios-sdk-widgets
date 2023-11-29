@@ -34,5 +34,6 @@ extension ChatCoordinator {
         var createSendMessagePayload: CoreSdkClient.CreateSendMessagePayload
         var proximityManager: ProximityManager
         var log: CoreSdkClient.Logger
+        var timerProviding: FoundationBased.Timer.Providing
     }
 }

@@ -12,7 +12,8 @@ extension CallViewController {
             environment: .init(
                 notificationCenter: .mock,
                 log: .mock,
-                timerProviding: .mock
+                timerProviding: .mock,
+                gcd: .mock
             )
         )
     }

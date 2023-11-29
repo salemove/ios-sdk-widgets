@@ -316,14 +316,14 @@ internal enum Localization {
       internal static var title: String { Localization.tr("Localizable", "engagement.chat.title", fallback: "Chat") }
     }
     internal enum Confirm {
-      /// Please allow the {companyName} representative to view this application screen for improved support.
-      internal static var message: String { Localization.tr("Localizable", "engagement.confirm.message", fallback: "Please allow the {companyName} representative to view this application screen for improved support.") }
+      /// Please allow our representative to view this application screen for improved support.
+      internal static var message: String { Localization.tr("Localizable", "engagement.confirm.message", fallback: "Please allow our representative to view this application screen for improved support.") }
       /// Before We Continue
       internal static var title: String { Localization.tr("Localizable", "engagement.confirm.title", fallback: "Before We Continue") }
       internal enum Link1 {
         /// Terms and Conditions
         internal static var text: String { Localization.tr("Localizable", "engagement.confirm.link1.text", fallback: "Terms and Conditions") }
-        /// http://some_company.com/terms_and_conditions
+        /// 
         internal static var url: String { Localization.tr("Localizable", "engagement.confirm.link1.url", fallback: "") }
         internal enum Accessibility {
           /// Terms and Conditions
@@ -333,7 +333,7 @@ internal enum Localization {
       internal enum Link2 {
         /// Privacy Policies
         internal static var text: String { Localization.tr("Localizable", "engagement.confirm.link2.text", fallback: "Privacy Policies") }
-        /// http://some_company.com/privacy_policies
+        /// 
         internal static var url: String { Localization.tr("Localizable", "engagement.confirm.link2.url", fallback: "") }
         internal enum Accessibility {
           /// Privacy Policies
@@ -512,8 +512,8 @@ internal enum Localization {
   }
   internal enum LiveObservation {
     internal enum Indicator {
-      /// App screen is visible to the agent
-      internal static var message: String { Localization.tr("Localizable", "live_observation.indicator.message", fallback: "App screen is visible to the agent") }
+      /// Your app screen is visible to the operator.
+      internal static var message: String { Localization.tr("Localizable", "live_observation.indicator.message", fallback: "Your app screen is visible to the operator.") }
     }
   }
   internal enum MediaUpgrade {

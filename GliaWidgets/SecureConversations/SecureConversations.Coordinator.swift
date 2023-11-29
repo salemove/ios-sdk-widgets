@@ -290,7 +290,8 @@ extension SecureConversations.Coordinator {
                 stopSocketObservation: environment.stopSocketObservation,
                 createSendMessagePayload: environment.createSendMessagePayload,
                 proximityManager: environment.proximityManager,
-                log: environment.log
+                log: environment.log,
+                timerProviding: environment.timerProviding
             ),
             startWithSecureTranscriptFlow: true
         )
@@ -358,6 +359,7 @@ extension SecureConversations.Coordinator {
         var orientationManager: OrientationManager
         var proximityManager: ProximityManager
         var log: CoreSdkClient.Logger
+        var timerProviding: FoundationBased.Timer.Providing
     }
 
     enum DelegateEvent {
