@@ -908,6 +908,7 @@ extension ChatViewModel {
                 self.action?(
                     .setAttachmentButtonVisibility(self.mediaPickerButtonVisibility)
                 )
+                self.showSnackBarIfNeeded()
             case .failure:
                 self.showAlert(
                     with: self.alertConfiguration.unexpectedError,

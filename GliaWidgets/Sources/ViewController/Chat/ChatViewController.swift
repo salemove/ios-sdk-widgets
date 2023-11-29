@@ -7,15 +7,17 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
             renderProps()
         }
     }
+    private let environment: Environment
     private var lastVisibleRowIndexPath: IndexPath?
 
     init(
         viewModel: SecureConversations.ChatWithTranscriptModel,
-        viewFactory: ViewFactory
+        environment: Environment
     ) {
         self.viewModel = viewModel
+        self.environment = environment
 
-        super.init(viewModel: viewModel.engagementModel, viewFactory: viewFactory)
+        super.init(viewModel: viewModel.engagementModel, viewFactory: environment.viewFactory)
     }
 
     override public func loadView() {
@@ -100,6 +102,7 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
         var viewModel = viewModel
 
         viewModel.action = { [weak self, weak view] action in
+            guard let self else { return }
             switch action {
             case .queue:
                 view?.setConnectState(.queue, animated: false)
@@ -141,12 +144,12 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
                 view?.messageEntryView.uploadListView.removeAllUploadViews()
             case .presentMediaPicker(let itemSelected):
                 guard let view = view else { return }
-                self?.presentMediaPicker(
+                self.presentMediaPicker(
                     from: view.messageEntryView.pickMediaButton,
                     itemSelected: itemSelected
                 )
             case .offerMediaUpgrade(let conf, let accepted, let declined):
-                self?.offerMediaUpgrade(with: conf, accepted: accepted, declined: declined)
+                self.offerMediaUpgrade(with: conf, accepted: accepted, declined: declined)
             case .showCallBubble(let imageUrl):
                 view?.showCallBubble(with: imageUrl, animated: true)
             case .updateUnreadMessageIndicator(let count):
@@ -170,8 +173,18 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
                 view?.renderQuickReply(props: props)
             case .transcript(.messageCenterAvailabilityUpdated):
                 break
+            case .showSnackBarView:
+                let style = self.environment.viewFactory.theme.snackBarStyle
+                self.snackBar.present(
+                    text: style.text,
+                    style: style,
+                    for: self,
+                    bottomOffset: 0,
+                    timerProviding: self.environment.timerProviding,
+                    gcd: self.environment.gcd
+                )
             }
-            self?.renderProps()
+            self.renderProps()
         }
     }
     // swiftlint:enable function_body_length

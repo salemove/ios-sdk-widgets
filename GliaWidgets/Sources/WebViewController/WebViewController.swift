@@ -6,7 +6,7 @@ final class WebViewController: UIViewController {
             renderProps()
         }
     }
-    private lazy var header = Header()
+    private lazy var header = Header(props: props.header)
     private lazy var webView: WKWebView = {
         let webView = WKWebView()
         webView.navigationDelegate = self
@@ -49,14 +49,13 @@ private extension WebViewController {
     }
 
     func loadRequest() {
-        guard let url = props.link?.url else { return }
+        guard let url = props.link else { return }
         let request = URLRequest(url: url)
         webView.load(request)
     }
 
     func renderProps() {
-        guard let headerProps = props.header else { return }
-        header.props = headerProps
+        header.props = props.header
     }
 }
 
