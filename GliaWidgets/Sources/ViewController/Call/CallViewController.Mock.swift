@@ -11,7 +11,8 @@ extension CallViewController {
             viewFactory: viewFactory,
             environment: .init(
                 notificationCenter: .mock,
-                timerProviding: .mock
+                timerProviding: .mock,
+                gcd: .mock
             )
         )
     }

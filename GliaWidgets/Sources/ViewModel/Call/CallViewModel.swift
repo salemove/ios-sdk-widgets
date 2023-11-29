@@ -112,7 +112,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
             showConnecting()
             let operatorName = interactor.engagedOperator?.firstName ?? Localization.Engagement.defaultOperator
             action?(.setOperatorName(operatorName))
-            action?(.showSnackBarView)
+            showSnackBarIfNeeded()
         case .ended:
             call.end()
         default:
@@ -252,6 +252,16 @@ class CallViewModel: EngagementViewModel, ViewModel {
             }
         default:
             showAlert(for: error)
+        }
+    }
+
+    func showSnackBarIfNeeded() {
+        environment.fetchSiteConfigurations { [weak self] result in
+            switch result {
+            case let .success(site) where site.observationIndication:
+                self?.action?(.showSnackBarView)
+            default: return
+            }
         }
     }
 

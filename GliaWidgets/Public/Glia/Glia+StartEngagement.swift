@@ -104,20 +104,10 @@ extension Glia {
             using: configuration,
             themeCompanyName: theme.chat.connect.queue.firstText
         )
-
         theme.call.connect.queue.firstText = companyName(
             using: configuration,
             themeCompanyName: theme.call.connect.queue.firstText
         )
-
-        // Live Observation Confirmation Alert Message
-        let companyName = companyName(
-            using: configuration,
-            themeCompanyName: nil
-        )
-        var liveObservationConfirmationMessage = Localization.Engagement.Confirm.message.withCompanyName(companyName)
-        theme.alertConfiguration.liveObservationConfirmation.message = liveObservationConfirmationMessage
-
         return theme
     }
 

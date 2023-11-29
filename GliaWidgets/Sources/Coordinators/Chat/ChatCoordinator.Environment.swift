@@ -33,5 +33,6 @@ extension ChatCoordinator {
         var stopSocketObservation: CoreSdkClient.StopSocketObservation
         var createSendMessagePayload: CoreSdkClient.CreateSendMessagePayload
         var proximityManager: ProximityManager
+        var timerProviding: FoundationBased.Timer.Providing
     }
 }
