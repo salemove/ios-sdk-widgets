@@ -103,7 +103,8 @@ private extension CallCoordinator {
             environment: .init(
                 notificationCenter: environment.notificationCenter,
                 log: environment.log,
-                timerProviding: environment.timerProviding
+                timerProviding: environment.timerProviding,
+                gcd: environment.gcd
             )
         )
     }

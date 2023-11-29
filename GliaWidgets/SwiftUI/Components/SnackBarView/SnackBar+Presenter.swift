@@ -50,9 +50,9 @@ extension SnackBar {
         }
 
         func remove() {
-            parentViewController?.children
-                .filter { $0 as? UIHostingController<ContentView> != nil }
-                .forEach { $0.removeFromParent() }
+            hostingController.willMove(toParent: nil)
+            hostingController.view.removeFromSuperview()
+            hostingController.removeFromParent()
         }
 
         func show(
@@ -71,6 +71,9 @@ extension SnackBar {
                         repeats: false
                     ) { [weak self] _ in
                         self?.updatePublisher.send(.disappear)
+                        self?.environment.gcd.mainQueue.asyncAfterDeadline(.now() + 0.5) { [weak self] in
+                            self?.remove()
+                        }
                         done()
                     }
                 }
@@ -82,5 +85,6 @@ extension SnackBar {
 extension SnackBar.Presenter {
     struct Environment {
         let timerProviding: FoundationBased.Timer.Providing
+        let gcd: GCD
     }
 }

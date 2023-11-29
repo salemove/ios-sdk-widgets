@@ -149,6 +149,14 @@ extension CallVisualizer {
             videoCallCoordinator?.call.updateVideoStream(with: stream)
         }
 
+        func showSnackBarIfNeeded() {
+            fetchSiteConfigurations { [weak self] site in
+                if site.observationIndication {
+                    self?.showSnackBarMessage()
+                }
+            }
+        }
+
         // MARK: - Private
         private let environment: Environment
         private let bubbleSize = CGSize(width: 60, height: 60)
@@ -297,8 +305,12 @@ extension CallVisualizer.Coordinator {
 
     func closeVisitorCode(_ completion: (() -> Void)? = nil) {
         visitorCodeCoordinator?.delegate?(.engagementAccepted)
-        visitorCodeCoordinator?.codeViewController?.dismiss(animated: true, completion: completion)
-        visitorCodeCoordinator = nil
+        if let visitorCode = visitorCodeCoordinator?.codeViewController {
+            visitorCode.dismiss(animated: true, completion: completion)
+            visitorCodeCoordinator = nil
+        } else {
+            completion?()
+        }
     }
 }
 
@@ -514,7 +526,7 @@ private extension CallVisualizer.Coordinator {
         )
 
         let props: WebViewController.Props = .init(
-            link: link,
+            link: link.url,
             header: headerProps,
             externalOpen: openBrowser
         )
@@ -537,7 +549,8 @@ private extension CallVisualizer.Coordinator {
             text: style.text,
             style: style,
             for: topMostViewController,
-            timerProviding: environment.timerProviding
+            timerProviding: environment.timerProviding,
+            gcd: environment.gcd
         )
     }
 

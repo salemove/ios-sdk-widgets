@@ -3,7 +3,6 @@ import UIKit
 final class CallViewController: EngagementViewController {
     private let viewModel: CallViewModel
     private let environment: Environment
-    let snackBar = SnackBar()
 
     init(viewModel: CallViewModel, viewFactory: ViewFactory, environment: Environment) {
         self.environment = environment
@@ -145,7 +144,8 @@ private extension CallViewController {
             style: style,
             for: self,
             bottomOffset: -100,
-            timerProviding: environment.timerProviding
+            timerProviding: environment.timerProviding,
+            gcd: environment.gcd
         )
     }
 }
@@ -200,5 +200,6 @@ extension CallViewController {
         var notificationCenter: FoundationBased.NotificationCenter
         var log: CoreSdkClient.Logger
         var timerProviding: FoundationBased.Timer.Providing
+        var gcd: GCD
     }
 }

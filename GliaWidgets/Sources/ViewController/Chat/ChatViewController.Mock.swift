@@ -7,11 +7,16 @@ import GliaCoreSDK
 extension ChatViewController {
     static func mock(
         chatViewModel: ChatViewModel = .mock(),
+        timerProviding: FoundationBased.Timer.Providing = .mock,
         viewFactory: ViewFactory = .mock()
     ) -> ChatViewController {
         ChatViewController(
             viewModel: .chat(chatViewModel),
-            viewFactory: viewFactory
+            environment: .init(
+                timerProviding: timerProviding,
+                viewFactory: viewFactory,
+                gcd: .mock
+            )
         )
     }
 
