@@ -269,7 +269,8 @@ extension EngagementCoordinator {
                 stopSocketObservation: environment.stopSocketObservation,
                 createSendMessagePayload: environment.createSendMessagePayload,
                 proximityManager: environment.proximityManager,
-                log: environment.log
+                log: environment.log,
+                timerProviding: environment.timerProviding
             ),
             startWithSecureTranscriptFlow: false
         )
@@ -502,7 +503,8 @@ extension EngagementCoordinator {
                 createSendMessagePayload: environment.createSendMessagePayload,
                 orientationManager: environment.orientationManager,
                 proximityManager: environment.proximityManager,
-                log: environment.log
+                log: environment.log,
+                timerProviding: environment.timerProviding
             )
         )
 
@@ -640,7 +642,7 @@ extension EngagementCoordinator {
         )
 
         let props: WebViewController.Props = .init(
-            link: link,
+            link: link.url,
             header: headerProps,
             externalOpen: openBrowser
         )

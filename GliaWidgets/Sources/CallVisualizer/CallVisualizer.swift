@@ -136,6 +136,10 @@ extension CallVisualizer {
         stopObservingInteractorEvents()
     }
 
+    func handleRestoredEngagement() {
+        coordinator.showSnackBarIfNeeded()
+    }
+
     func offerScreenShare(
         from operators: [CoreSdkClient.Operator],
         configuration: ScreenShareOfferAlertConfiguration,

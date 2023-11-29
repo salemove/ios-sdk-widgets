@@ -12,7 +12,8 @@ class CallViewControllerTests: XCTestCase {
                 environment: .init(
                     notificationCenter: .mock,
                     log: .mock,
-                    timerProviding: .mock
+                    timerProviding: .mock,
+                    gcd: .mock
                 )
             )
             weakViewController = viewController

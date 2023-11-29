@@ -141,7 +141,7 @@ class AlertView: BaseView {
 
         linkButtonStackView.isHidden = true
         linkButtonStackView.axis = .vertical
-        linkButtonStackView.spacing = 12
+        linkButtonStackView.spacing = 8
 
         titleImageView.contentMode = .scaleAspectFit
         titleImageView.tintColor = style.titleImageColor
