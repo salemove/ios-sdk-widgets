@@ -2,6 +2,7 @@ import UIKit
 
 class EngagementViewController: UIViewController, AlertPresenter, MediaUpgradePresenter, ScreenShareOfferPresenter {
     let viewFactory: ViewFactory
+    let snackBar = SnackBar()
     private var viewModel: CommonEngagementModel
     private var pendingLiveObservationConfirmation: LiveObservation.Confirmation?
 

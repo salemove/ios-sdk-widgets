@@ -337,6 +337,8 @@
 		84520BE12B14B8F800F97617 /* WebViewStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84520BE02B14B8F800F97617 /* WebViewStyle.swift */; };
 		84520BE32B14B97A00F97617 /* Theme+WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84520BE22B14B97A00F97617 /* Theme+WebView.swift */; };
 		84520BE52B14BAA200F97617 /* RemoteConfiguration+WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84520BE42B14BAA200F97617 /* RemoteConfiguration+WebView.swift */; };
+		84520BE72B1769AB00F97617 /* ChatViewController.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84520BE62B1769AB00F97617 /* ChatViewController.Environment.swift */; };
+		84520BE92B176C6500F97617 /* ChatViewModel+LiveObservation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84520BE82B176C6500F97617 /* ChatViewModel+LiveObservation.swift */; };
 		84520BEB2B1887DF00F97617 /* CallVisualizer.Presenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84520BEA2B1887DF00F97617 /* CallVisualizer.Presenter.swift */; };
 		8458769F2823FD18007AC3DF /* SurveyViewControllerVoiceOverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8458769E2823FD18007AC3DF /* SurveyViewControllerVoiceOverTests.swift */; };
 		845876A22823FF34007AC3DF /* Survey.ViewController.Props.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845876A12823FF34007AC3DF /* Survey.ViewController.Props.Mock.swift */; };
@@ -694,7 +696,6 @@
 		C0EC58CE2B02775100E78C70 /* SnackBar+View+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EC58CD2B02775100E78C70 /* SnackBar+View+Mock.swift */; };
 		C0EC58D02B028FB100E78C70 /* SnackBarVoiceOverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EC58CF2B028FB100E78C70 /* SnackBarVoiceOverTests.swift */; };
 		C0EC58D22B02909500E78C70 /* SnackBarDynamicTypeFontTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EC58D12B02909500E78C70 /* SnackBarDynamicTypeFontTests.swift */; };
-		C2B201AEDBE3A53369DF524F /* Pods_GliaWidgetsTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCF7E6C5499635E67EF6A604 /* Pods_GliaWidgetsTests.framework */; };
 		C4119E06268F41D1004DFEFB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C4119E05268F41D1004DFEFB /* Main.storyboard */; };
 		C42463742673ABE10082C135 /* ScreenShareHandler.Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42463732673ABE10082C135 /* ScreenShareHandler.Interface.swift */; };
 		C43C12F92694B14900C37E1B /* GliaPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43C12F82694B14900C37E1B /* GliaPresenter.swift */; };
@@ -947,6 +948,7 @@
 		1AFB1E6725F7AE3C00CA460D /* ChatAttachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatAttachment.swift; sourceTree = "<group>"; };
 		1AFB1E7325F8B00B00CA460D /* ChatTextContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTextContentView.swift; sourceTree = "<group>"; };
 		1AFB1E7725F8B26800CA460D /* ChatTextContentStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTextContentStyle.swift; sourceTree = "<group>"; };
+		235300A49A5836A51EB1C4E8 /* Pods-GliaWidgets.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliaWidgets.release.xcconfig"; path = "Target Support Files/Pods-GliaWidgets/Pods-GliaWidgets.release.xcconfig"; sourceTree = "<group>"; };
 		2797F86D83B9055FAD6E596E /* Pods-SnapshotTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SnapshotTests.debug.xcconfig"; path = "Target Support Files/Pods-SnapshotTests/Pods-SnapshotTests.debug.xcconfig"; sourceTree = "<group>"; };
 		3100D924296E946600DEC9CE /* SecureConversations.ConfirmationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecureConversations.ConfirmationView.swift; sourceTree = "<group>"; };
 		3100D925296E946600DEC9CE /* Theme+SecureConversationsConfirmation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Theme+SecureConversationsConfirmation.swift"; sourceTree = "<group>"; };
@@ -1107,6 +1109,8 @@
 		84520BE02B14B8F800F97617 /* WebViewStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewStyle.swift; sourceTree = "<group>"; };
 		84520BE22B14B97A00F97617 /* Theme+WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Theme+WebView.swift"; sourceTree = "<group>"; };
 		84520BE42B14BAA200F97617 /* RemoteConfiguration+WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RemoteConfiguration+WebView.swift"; sourceTree = "<group>"; };
+		84520BE62B1769AB00F97617 /* ChatViewController.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.Environment.swift; sourceTree = "<group>"; };
+		84520BE82B176C6500F97617 /* ChatViewModel+LiveObservation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatViewModel+LiveObservation.swift"; sourceTree = "<group>"; };
 		84520BEA2B1887DF00F97617 /* CallVisualizer.Presenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallVisualizer.Presenter.swift; sourceTree = "<group>"; };
 		8458769E2823FD18007AC3DF /* SurveyViewControllerVoiceOverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurveyViewControllerVoiceOverTests.swift; sourceTree = "<group>"; };
 		845876A12823FF34007AC3DF /* Survey.ViewController.Props.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Survey.ViewController.Props.Mock.swift; sourceTree = "<group>"; };
@@ -2257,6 +2261,7 @@
 			children = (
 				1A60AFDF25669A6100E53F53 /* ChatViewController.swift */,
 				9AB196E127C4045B00FD60AB /* ChatViewController.Mock.swift */,
+				84520BE62B1769AB00F97617 /* ChatViewController.Environment.swift */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -2275,6 +2280,7 @@
 				9AB196D727C3E27300FD60AB /* ChatViewModel.Environment.Mock.swift */,
 				84681A8D2A5ED76300DD7406 /* ChatViewModel+GVA.swift */,
 				AFA1A9942AA9248400095BE8 /* ChatViewModel+ViewModel.swift */,
+				84520BE82B176C6500F97617 /* ChatViewModel+LiveObservation.swift */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -2740,13 +2746,13 @@
 			isa = PBXGroup;
 			children = (
 				ED1D803B381FC5E9BA52369D /* Pods-GliaWidgets.debug.xcconfig */,
-				C09AA1E6459C6D1E0AE966FD /* Pods-GliaWidgets.release.xcconfig */,
 				F236A919340FCAD39E298CBA /* Pods-GliaWidgetsTests.debug.xcconfig */,
 				9C62CEB9A025A9B237B5B6D4 /* Pods-GliaWidgetsTests.release.xcconfig */,
 				2797F86D83B9055FAD6E596E /* Pods-SnapshotTests.debug.xcconfig */,
 				A6B4EA9D32FC1BA2FD92205F /* Pods-SnapshotTests.release.xcconfig */,
 				952FC6DF09F123A2951ABECF /* Pods-TestingApp.debug.xcconfig */,
 				A25645CFF3AB0DBFACD8659B /* Pods-TestingApp.release.xcconfig */,
+				235300A49A5836A51EB1C4E8 /* Pods-GliaWidgets.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -4589,6 +4595,7 @@
 				3197F7B129E958F4008EE9F7 /* SystemMessageStyle.swift in Sources */,
 				3100D92C296E946600DEC9CE /* SecureConversations.ConfirmationViewController.swift in Sources */,
 				9A8130BB27D7A41000220BBD /* FileUpload.Environment.Interface.swift in Sources */,
+				84520BE72B1769AB00F97617 /* ChatViewController.Environment.swift in Sources */,
 				3100D92B296E946600DEC9CE /* SecureConversations+ConfirmationStyle.swift in Sources */,
 				8491AF132A7ACC5400CC3E72 /* Theme.OperatorChatMessageStyle.swift in Sources */,
 				845E2F93283FB6D000C04D56 /* Theme.Survey.Accessibility.swift in Sources */,
@@ -4748,6 +4755,7 @@
 				C0D2F0412992585A00803B47 /* VideoCallView.ConnectView.swift in Sources */,
 				1A56D53D257E24A400141BC8 /* PoweredBy.swift in Sources */,
 				6EEAD84E2701A8C10074C191 /* ChoiceCardOptionStateStyle.swift in Sources */,
+				84520BE92B176C6500F97617 /* ChatViewModel+LiveObservation.swift in Sources */,
 				845876B1282A9EAF007AC3DF /* CheckboxView.Props.Accessibility.swift in Sources */,
 				1A4AF5CD25AEF4A0002CD0F4 /* AlertViewController+Message.swift in Sources */,
 				AFCF8A5C2A02AB3000B7ABB3 /* OutgoingMessage.Mock.swift in Sources */,
@@ -5449,7 +5457,7 @@
 		};
 		1A205D6E25655CB2003AA3CD /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C09AA1E6459C6D1E0AE966FD /* Pods-GliaWidgets.release.xcconfig */;
+			baseConfigurationReference = 235300A49A5836A51EB1C4E8 /* Pods-GliaWidgets.release.xcconfig */;
 			buildSettings = {
 				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
 				CLANG_ENABLE_MODULES = YES;

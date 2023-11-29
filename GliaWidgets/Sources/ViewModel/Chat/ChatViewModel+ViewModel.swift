@@ -58,6 +58,7 @@ extension ChatViewModel: ViewModel {
         case fileUploadListPropsUpdated(SecureConversations.FileUploadListView.Props)
         case quickReplyPropsUpdated(QuickReplyView.Props)
         case transcript(TranscriptAction)
+        case showSnackBarView
     }
 
     enum DelegateEvent {

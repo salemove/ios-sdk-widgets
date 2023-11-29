@@ -169,6 +169,7 @@ public class Glia {
                 if let engagement = self.environment.coreSdk.getCurrentEngagement(),
                    engagement.source == .callVisualizer {
                     self.setupInteractor(configuration: configuration)
+                    self.callVisualizer.handleRestoredEngagement()
                 }
 
                 completion(.success(()))

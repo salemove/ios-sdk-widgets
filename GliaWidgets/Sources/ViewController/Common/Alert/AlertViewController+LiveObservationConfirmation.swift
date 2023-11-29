@@ -67,7 +67,7 @@ extension AlertViewController {
         return ActionButton(
             props: .init(
                 style: style,
-                height: 34,
+                height: 45,
                 tap: .init { action((title: style.title, url: buttonUrl)) }
             )
         )
