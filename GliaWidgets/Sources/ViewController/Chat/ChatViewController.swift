@@ -183,7 +183,6 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
         presentPopover(
             with: viewFactory.theme.chat.pickMedia,
             from: sourceView,
-            arrowDirections: [.down],
             itemSelected: { [weak self] in
                 self?.dismiss(animated: true, completion: nil)
                 itemSelected($0)
