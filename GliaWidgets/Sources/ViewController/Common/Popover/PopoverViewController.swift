@@ -8,7 +8,6 @@ final class PopoverViewController: UIViewController, Replaceable {
 
     init(with contentView: UIView,
          presentFrom sourceView: UIView,
-         arrowDirections: UIPopoverArrowDirection = .any,
          contentInsets: UIEdgeInsets = .zero,
          minimumWidth: CGFloat = 250) {
         self.contentView = contentView
@@ -19,7 +18,6 @@ final class PopoverViewController: UIViewController, Replaceable {
         modalPresentationStyle = .popover
         popoverPresentationController?.sourceView = sourceView
         popoverPresentationController?.sourceRect = sourceView.bounds
-        popoverPresentationController?.permittedArrowDirections = arrowDirections
         popoverPresentationController?.delegate = self
     }
 
