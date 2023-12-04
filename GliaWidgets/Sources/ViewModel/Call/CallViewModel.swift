@@ -269,7 +269,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
     func showSnackBarIfNeeded() {
         environment.fetchSiteConfigurations { [weak self] result in
             switch result {
-            case let .success(site) where site.observationIndication:
+            case let .success(site) where site.mobileObservationIndicationEnabled:
                 self?.action?(.showSnackBarView)
             default: return
             }

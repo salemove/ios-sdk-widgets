@@ -781,7 +781,7 @@ class ChatViewModelTests: XCTestCase {
         }
 
         let interactor: Interactor = .mock(environment: interactorEnv)
-        var alertConfig: LiveObservation.Confirmation?
+        var alertConfig: GliaWidgets.LiveObservation.Confirmation?
         let site: CoreSdkClient.Site = try .mock()
         
         var viewModelEnvironment: EngagementViewModel.Environment = .mock
@@ -817,7 +817,7 @@ class ChatViewModelTests: XCTestCase {
         }
 
         let interactor: Interactor = .mock(environment: interactorEnv)
-        var alertConfig: LiveObservation.Confirmation?
+        var alertConfig: GliaWidgets.LiveObservation.Confirmation?
         let site: CoreSdkClient.Site = try .mock()
 
         var viewModelEnvironment: EngagementViewModel.Environment = .mock
