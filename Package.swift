@@ -10,7 +10,7 @@ let package = Package(
     products: [
         .library(
             name: "GliaWidgets",
-            targets: ["GliaWidgetsSDK"]
+            targets: ["GliaWidgets"]
         )
     ],
     targets: [
@@ -36,6 +36,12 @@ let package = Package(
         ),
         .target(
             name: "GliaWidgets",
+            dependencies: [
+                .target(name: "GliaCoreDependency"),
+                .target(name: "TwilioVoice"),
+                .target(name: "WebRTC"),
+                .target(name: "GliaCoreSDK"),
+            ],
             path: "GliaWidgets",
             exclude: [
                 "Cartfile.resolved",
@@ -44,16 +50,6 @@ let package = Package(
             ],
             resources: [
                 .process("Resources")
-            ]
-        ),
-        .target(
-            name: "GliaWidgetsSDK",
-            dependencies: [
-                "GliaCoreSDK",
-                "GliaCoreDependency",
-                "TwilioVoice",
-                "WebRTC",
-                "GliaWidgets"
             ]
         )
     ]
