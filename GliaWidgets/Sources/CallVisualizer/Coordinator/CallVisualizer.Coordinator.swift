@@ -113,7 +113,7 @@ extension CallVisualizer {
         func handleEngagementRequestAccepted(_ answer: Command<Bool>) {
             fetchSiteConfigurations { [weak self] site in
                 let showSnackBarIfNeeded: () -> Void = {
-                    if site.observationIndication {
+                    if site.mobileObservationIndicationEnabled {
                         self?.showSnackBarMessage()
                     }
                 }
@@ -124,7 +124,7 @@ extension CallVisualizer {
                     answer(isAccepted)
                 }
                 self?.closeVisitorCode {
-                    if site.mobileConfirmDialog {
+                    if site.mobileConfirmDialogEnabled {
                         self?.showConfirmationAlert(completion)
                     } else {
                         showSnackBarIfNeeded()
@@ -148,7 +148,7 @@ extension CallVisualizer {
 
         func showSnackBarIfNeeded() {
             fetchSiteConfigurations { [weak self] site in
-                if site.observationIndication {
+                if site.mobileObservationIndicationEnabled {
                     self?.showSnackBarMessage()
                 }
             }
