@@ -483,6 +483,19 @@ final class GliaTests: XCTestCase {
         var logger = CoreSdkClient.Logger.failing
         logger.configureLocalLogLevelClosure = { _ in }
         logger.configureRemoteLogLevelClosure = { _ in }
+        logger.remoteLoggerClosure = { logger }
+        var prefixes: [String] = []
+        logger.prefixedClosure = { prefixValue in
+            prefixes.append(prefixValue)
+            return logger
+        }
+
+        logger.oneTimeClosure = { logger }
+        var messages: [String] = []
+        logger.infoClosure = { message, _, _, _ in
+            messages.append("\(message())")
+        }
+
         environment.coreSdk.createLogger = { _ in logger }
         environment.conditionalCompilation.isDebug = { true }
         environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
@@ -500,5 +513,7 @@ final class GliaTests: XCTestCase {
         let systemNegativeHex = sdk.theme.color.systemNegative.toRGBAHex(alpha: false)
         XCTAssertEqual(primaryColorHex, "#00FF00")
         XCTAssertEqual(systemNegativeHex, "#00FF00")
+        XCTAssertEqual(prefixes, ["Glia"])
+        XCTAssertEqual(messages, ["Setting Unified UI Config"])
     }
 }

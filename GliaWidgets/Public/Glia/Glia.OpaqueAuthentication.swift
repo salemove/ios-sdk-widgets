@@ -7,6 +7,7 @@ extension Glia {
         var authenticateWithIdToken: (_ idToken: IdToken, _ accessToken: AccessToken?, _ callback: @escaping Callback) -> Void
         var deauthenticateWithCallback: (@escaping Callback) -> Void
         var isAuthenticatedClosure: () -> Bool
+        var environment: Environment
     }
 }
 
@@ -81,7 +82,8 @@ extension Glia {
             },
             isAuthenticatedClosure: {
                 auth.isAuthenticated
-            }
+            },
+            environment: .init(log: loggerPhase.logger)
         )
     }
 }
@@ -133,5 +135,11 @@ extension Glia.Authentication {
 extension Glia.Authentication.Error {
     init(error: CoreSdkClient.SalemoveError) {
         self.reason = error.reason
+    }
+}
+
+extension Glia.Authentication {
+    struct Environment {
+        var log: CoreSdkClient.Logger
     }
 }

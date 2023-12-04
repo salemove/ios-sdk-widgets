@@ -73,6 +73,7 @@ extension GliaTests {
         var calls: [Call] = []
         var environment = Glia.Environment.failing
         var logger = CoreSdkClient.Logger.failing
+        logger.remoteLoggerClosure = { .failing }
         logger.configureLocalLogLevelClosure = { _ in }
         logger.configureRemoteLogLevelClosure = { _ in }
         environment.coreSdk.createLogger = { _ in logger }
@@ -89,7 +90,6 @@ extension GliaTests {
             .mock()
         }
         let sdk = Glia(environment: environment)
-
         try sdk.start(.chat, configuration: .mock(), queueID: "queueId", theme: .mock())
 
         XCTAssertTrue(sdk.isConfigured)
