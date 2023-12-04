@@ -152,6 +152,10 @@ public class Glia {
             case .success:
                 defer {
                     self.setupLogging()
+                    if uiConfig != nil {
+                        self.loggerPhase.logger.remoteLogger?.oneTime.prefixed(Self.self)
+                            .info("Setting Unified UI Config")
+                    }
                 }
                 // Storing `configuration` needs to be done once configuring SDK is complete
                 // Otherwise integrator can call `configure` and `startEngagement`

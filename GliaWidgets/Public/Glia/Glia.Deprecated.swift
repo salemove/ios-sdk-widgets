@@ -8,6 +8,7 @@ extension Glia {
          message: "Use clearVisitorSession(_:) instead."
     )
     public func clearVisitorSession() {
+        loggerPhase.logger.oneTime.remoteLogger?.reportDeprecatedMethod(context: Self.self)
         if environment.coreSdk.getCurrentEngagement() != nil {
             print("⚠️ Don't call `clearVisitorSession` during active engagement. Otherwise, it might break the engagement interaction.")
         }
@@ -17,6 +18,7 @@ extension Glia {
     /// Deprecated, use ``callVisualizer.showVisitorCodeViewController`` instead.
     @available(*, deprecated, message: "Deprecated, use ``CallVisualizer.showVisitorCodeViewController`` instead.")
     public func requestVisitorCode(completion: @escaping (Result<VisitorCode, Swift.Error>) -> Void) {
+        loggerPhase.logger.oneTime.remoteLogger?.reportDeprecatedMethod(context: Self.self)
         _ = environment.coreSdk.requestVisitorCode(completion)
     }
 
@@ -29,6 +31,7 @@ extension Glia {
         assetsBuilder: RemoteConfiguration.AssetsBuilder = .standard,
         completion: (() -> Void)? = nil
     ) throws {
+        loggerPhase.logger.oneTime.remoteLogger?.reportDeprecatedMethod(context: Self.self)
         try configure(
             with: configuration,
             uiConfig: uiConfig,
@@ -48,6 +51,7 @@ extension Glia {
         features: Features = .all,
         sceneProvider: SceneProvider? = nil
     ) throws {
+        loggerPhase.logger.oneTime.remoteLogger?.reportDeprecatedMethod(context: Self.self)
         try startEngagement(
             engagementKind: engagementKind,
             in: [],
@@ -73,6 +77,7 @@ extension Glia {
         features: Features = .all,
         sceneProvider: SceneProvider? = nil
     ) throws {
+        loggerPhase.logger.oneTime.remoteLogger?.reportDeprecatedMethod(context: Self.self)
         let completion = { [weak self] in
             try self?.startEngagement(
                 engagementKind: engagementKind,
@@ -105,6 +110,7 @@ extension Glia {
         features: Features = .all,
         sceneProvider: SceneProvider? = nil
     ) throws {
+        loggerPhase.logger.oneTime.remoteLogger?.reportDeprecatedMethod(context: Self.self)
         try startEngagementWithConfig(
             engagement: engagement,
             in: [],
@@ -123,6 +129,7 @@ extension Glia {
         assetsBuilder: RemoteConfiguration.AssetsBuilder = .standard,
         completion: (() -> Void)? = nil
     ) throws {
+        loggerPhase.logger.oneTime.remoteLogger?.reportDeprecatedMethod(context: Self.self)
         try configure(
             with: configuration,
             uiConfig: uiConfig,
@@ -151,6 +158,7 @@ extension Glia {
         features: Features = .all,
         sceneProvider: SceneProvider? = nil
     ) throws {
+        loggerPhase.logger.oneTime.remoteLogger?.reportDeprecatedMethod(context: Self.self)
         // Store assetsBuilder and apply remote config to have ability to
         // apply them for Call Visualizer flow if integrator use
         // old `configure` method
@@ -186,6 +194,7 @@ extension Glia {
         features: Features = .all,
         sceneProvider: SceneProvider? = nil
     ) throws {
+        loggerPhase.logger.oneTime.remoteLogger?.reportDeprecatedMethod(context: Self.self)
         self.theme = theme
         try startEngagement(
             engagementKind: engagementKind,
@@ -206,6 +215,7 @@ extension Glia {
         assetsBuilder: RemoteConfiguration.AssetsBuilder = .standard,
         completion: @escaping (Result<Void, Error>) -> Void
     ) throws {
+        loggerPhase.logger.oneTime.remoteLogger?.reportDeprecatedMethod(context: Self.self)
         try configure(
             with: configuration,
             theme: Theme(),
@@ -222,6 +232,7 @@ extension Glia.Authentication {
         with idToken: IdToken,
         completion: @escaping (Result<Void, Error>) -> Void
     ) {
+        environment.log.oneTime.reportDeprecatedMethod(context: Self.self)
         self.authenticateWithIdToken(
             idToken,
             nil,
