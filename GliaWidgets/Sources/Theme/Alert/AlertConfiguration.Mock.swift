@@ -68,6 +68,18 @@ extension ConfirmationAlertConfiguration {
             showsPoweredBy: true
         )
     }
+
+    static func liveObservationWithLinksMock() -> Self {
+        .init(
+            title: "Live Observation Confirmation",
+            message: "This is mock message",
+            firstLinkButtonUrl: "https://www.google.com",
+            secondLinkButtonUrl: "https://www.google.ee",
+            negativeTitle: "Cancel",
+            positiveTitle: "Allow",
+            showsPoweredBy: true
+        )
+    }
 }
 
 extension SingleMediaUpgradeAlertConfiguration {
