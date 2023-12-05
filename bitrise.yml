@@ -39,6 +39,10 @@ workflows:
     - git-clone@8: {}
     - cache-pull@2: {}
     - certificate-and-profile-installer@1: {}
+    - script:
+        inputs:
+        - content: |-
+            bundle install
     - cocoapods-install@2: {}
     - recreate-user-schemes@1:
         inputs:
@@ -66,6 +70,10 @@ workflows:
         - clone_depth: "-1"
         - fetch_tags: "yes"
     - cache-pull@2: {}
+    - script:
+        inputs:
+        - content: |-
+            bundle install
     - cocoapods-install@2: {}
     - xcode-test@4:
         inputs:
@@ -97,6 +105,10 @@ workflows:
     - git-clone@8: {}
     - cache-pull@2: {}
     - certificate-and-profile-installer@1: {}
+    - script:
+        inputs:
+        - content: |-
+            bundle install
     - cocoapods-install@2: {}
     - recreate-user-schemes@1:
         inputs:
@@ -241,6 +253,10 @@ workflows:
     - git-clone@8: {}
     - cache-pull@2: {}
     - certificate-and-profile-installer@1: {}
+    - script:
+        inputs:
+        - content: |-
+            bundle install
     - cocoapods-install@2: {}
     - bitrise-step-stamp-appicon-with-version-number@1:
         inputs:
