@@ -58,6 +58,19 @@ final class AlertViewControllerLayoutTests: SnapshotTestCase {
             accepted: {},
             declined: {}
         ))
+
+        alert.assertSnapshot(as: .image, in: .portrait)
+        alert.assertSnapshot(as: .image, in: .landscape)
+    }
+
+    func test_liveObservationConfirmationAlertWithLinks() {
+        let alert = alert(ofKind: .liveObservationConfirmation(
+            .liveObservationWithLinksMock(),
+            link: { _ in },
+            accepted: {},
+            declined: {}
+        ))
+
         alert.assertSnapshot(as: .image, in: .portrait)
         alert.assertSnapshot(as: .image, in: .landscape)
     }
