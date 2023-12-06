@@ -175,10 +175,12 @@ extension SecureConversations {
                 case .success(.available):
                     self.isSecureConversationsAvailable = true
                 case .failure, .success(.unavailable(.emptyQueue)):
+                    self.environment.log.prefixed(Self.self).info("Show Message Center Unavailable Dialog")
                     self.isSecureConversationsAvailable = false
                     let configuration = self.environment.alertConfiguration.unavailableMessageCenter
                     self.reportMessageCenterUnavailable(configuration: configuration)
                 case .success(.unavailable(.unauthenticated)):
+                    self.environment.log.prefixed(Self.self).info("Show Unauthenticated Dialog")
                     self.isSecureConversationsAvailable = false
                     let configuration = self.environment.alertConfiguration.unavailableMessageCenterForBeingUnauthenticated
                     self.reportMessageCenterUnavailable(configuration: configuration)
@@ -327,6 +329,7 @@ extension SecureConversations.TranscriptModel {
             case let .success(message):
                 self.receiveMessage(from: .api(message, outgoingMessage: outgoingMessage))
             case .failure:
+                self.environment.log.prefixed(Self.self).info("Show Unexpected error Dialog")
                 self.showAlert(with: self.environment.alertConfiguration.unexpectedError)
             }
         }
@@ -533,6 +536,7 @@ extension SecureConversations.TranscriptModel {
                 self.siteConfiguration = site
                 self.action?(.setAttachmentButtonVisibility(self.mediaPickerButtonVisibility))
             case .failure:
+                self.environment.log.prefixed(Self.self).info("Show Unexpected error Dialog")
                 self.showAlert(
                     with: self.environment.alertConfiguration.unexpectedError,
                     dismissed: nil

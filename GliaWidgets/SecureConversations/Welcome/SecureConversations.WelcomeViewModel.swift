@@ -128,13 +128,14 @@ private extension SecureConversations.WelcomeViewModel {
         _ = environment.sendSecureMessagePayload(
             payload,
             queueIds
-        ) { [weak self, alertConfiguration = environment.alertConfiguration] result in
+        ) { [weak self, alertConfiguration = environment.alertConfiguration, environment] result in
             self?.sendMessageRequestState = .waiting
 
             switch result {
             case .success:
                 self?.delegate?(.confirmationScreenRequested)
             case .failure:
+                environment.log.prefixed(Self.self).info("Show Unexpected error Dialog")
                 self?.delegate?(
                     .showAlert(
                         alertConfiguration.unexpectedError,
@@ -151,6 +152,7 @@ private extension SecureConversations.WelcomeViewModel {
             case let .success(site):
                 self?.isAttachmentsAvailable = site.allowedFileSenders.visitor
             case .failure:
+                self?.environment.log.prefixed(Self.self).info("Show Unexpected error Dialog")
                 self?.delegate?(
                     .showAlert(
                         alertConfiguration.unexpectedError,
@@ -422,6 +424,7 @@ extension SecureConversations.WelcomeViewModel {
         var uploadSecureFile: CoreSdkClient.SecureConversationsUploadFile
         var uploadFileToEngagement: CoreSdkClient.UploadFileToEngagement
         var createSendMessagePayload: CoreSdkClient.CreateSendMessagePayload
+        var log: CoreSdkClient.Logger
     }
 }
 

@@ -15,5 +15,6 @@ extension CallVisualizer.VideoCallCoordinator {
         var engagedOperator: () -> CoreSdkClient.Operator?
         var screenShareHandler: ScreenShareHandler
         var proximityManager: ProximityManager
+        var log: CoreSdkClient.Logger
     }
 }

@@ -23,6 +23,7 @@ extension ChatViewModel {
                 let selection = message.content
                 self.respond(to: messageId, with: selection)
             case .failure:
+                self.environment.log.prefixed(Self.self).info("Show Unexpected error Dialog")
                 self.showAlert(
                     with: self.alertConfiguration.unexpectedError,
                     dismissed: nil

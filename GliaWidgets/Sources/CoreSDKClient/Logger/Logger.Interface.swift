@@ -6,10 +6,10 @@ extension CoreSdkClient {
         var prefixedClosure: (String) -> Logger
         var localLoggerClosure: () -> Logger?
         var remoteLoggerClosure: () -> Logger?
-        var errorClosure: (_ object: @autoclosure () -> Any, _ file: String, _ function: String, _ line: Int) -> Void
-        var warningClosure: (_ object: @autoclosure () -> Any, _ file: String, _ function: String, _ line: Int) -> Void
-        var infoClosure: (_ object: @autoclosure () -> Any, _ file: String, _ function: String, _ line: Int) -> Void
-        var debugClosure: (_ object: @autoclosure () -> Any, _ file: String, _ function: String, _ line: Int) -> Void
+        var errorClosure: (_ object: Any, _ file: String, _ function: String, _ line: Int) -> Void
+        var warningClosure: (_ object: Any, _ file: String, _ function: String, _ line: Int) -> Void
+        var infoClosure: (_ object: Any, _ file: String, _ function: String, _ line: Int) -> Void
+        var debugClosure: (_ object: Any, _ file: String, _ function: String, _ line: Int) -> Void
         var configureLocalLogLevelClosure: (LogLevel) throws -> Void
         var configureRemoteLogLevelClosure: (LogLevel) throws -> Void
         var reportDeprecatedMethodClosure: (_ context: String, _ file: String, _ function: String, _ line: Int) -> Void

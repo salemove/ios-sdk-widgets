@@ -25,5 +25,6 @@ extension CallVisualizer {
         var eventHandler: ((GliaEvent) -> Void)?
         var orientationManager: OrientationManager
         var proximityManager: ProximityManager
+        var log: CoreSdkClient.Logger
     }
 }

@@ -27,10 +27,15 @@ class InteractorTests: XCTestCase {
         coreSdk.queueForEngagement = { _, _ in
             coreSdkCalls.append(.queueForEngagement)
         }
+
+        var interactorEnv = Interactor.Environment(coreSdk: coreSdk, gcd: .failing, log: .failing)
+        interactorEnv.log.infoClosure = { _, _, _, _ in }
+        interactorEnv.log.prefixedClosure = { _ in interactorEnv.log }
+
         interactor = .init(
             visitorContext: nil,
             queueIds: [mock.queueId],
-            environment: .init(coreSdk: coreSdk, gcd: .failing)
+            environment: interactorEnv
         )
 
         interactor.enqueueForEngagement(mediaType: .text) {} failure: {
@@ -52,7 +57,7 @@ class InteractorTests: XCTestCase {
         interactor = .init(
             visitorContext: nil,
             queueIds: [mock.queueId],
-            environment: .init(coreSdk: .failing, gcd: .mock)
+            environment: .init(coreSdk: .failing, gcd: .mock, log: .failing)
         )
 
         interactor.addObserver(self, handler: { event in
@@ -101,6 +106,8 @@ class InteractorTests: XCTestCase {
         interactorEnv.coreSdk.configureWithInteractor = { _ in }
         interactorEnv.coreSdk.configureWithConfiguration = { $1(.success(())) }
         interactorEnv.coreSdk.queueForEngagement = { _, _ in }
+        interactorEnv.log.infoClosure = { _, _, _, _ in }
+        interactorEnv.log.prefixedClosure = { _ in interactorEnv.log }
         interactorEnv.gcd = .mock
         let interactor = Interactor.mock(environment: interactorEnv)
 
@@ -130,6 +137,10 @@ class InteractorTests: XCTestCase {
         }
         var callbacks: [Callback] = []
         var interactorEnv = Interactor.Environment.failing
+        var log = CoreSdkClient.Logger.failing
+        log.infoClosure = { _, _, _, _ in }
+        log.prefixedClosure = { _ in log }
+        interactorEnv.log = log
         interactorEnv.coreSdk.configureWithInteractor = { _ in }
         interactorEnv.coreSdk.configureWithConfiguration = { $1(.success(())) }
         interactorEnv.coreSdk.queueForEngagement = { _, completion in
@@ -165,6 +176,10 @@ class InteractorTests: XCTestCase {
         }
         var callbacks: [Callback] = []
         var interactorEnv = Interactor.Environment.failing
+        var log = interactorEnv.log
+        log.prefixedClosure = { _ in log }
+        log.infoClosure = { _, _, _, _ in }
+        interactorEnv.log = log
         interactorEnv.coreSdk.configureWithInteractor = { _ in }
         interactorEnv.coreSdk.configureWithConfiguration = { $1(.success(())) }
         interactorEnv.coreSdk.queueForEngagement = { _, completion in
@@ -244,6 +259,10 @@ class InteractorTests: XCTestCase {
         }
         var callbacks: [Callback] = []
         var interactorEnv = Interactor.Environment.failing
+        var logger = CoreSdkClient.Logger.failing
+        logger.prefixedClosure = { _ in logger }
+        logger.infoClosure = { _, _, _, _ in }
+        interactorEnv.log = logger
         interactorEnv.coreSdk.cancelQueueTicket = { _, _ in
             callbacks.append(.cancelQueueCalled)
         }
@@ -268,6 +287,8 @@ class InteractorTests: XCTestCase {
         interactorEnv.coreSdk.endEngagement = { _ in
             callbacks.append(.endEngagementCalled)
         }
+        interactorEnv.log.infoClosure = { _, _, _, _ in }
+        interactorEnv.log.prefixedClosure = { _ in interactorEnv.log }
         let interactor = Interactor.mock(environment: interactorEnv)
         
         interactor.state = .engaged(.mock())
@@ -285,6 +306,10 @@ class InteractorTests: XCTestCase {
         }
         var callbacks: [Callback] = []
         var interactorEnv = Interactor.Environment.failing
+        var logger = CoreSdkClient.Logger.failing
+        logger.prefixedClosure = { _ in logger }
+        logger.infoClosure = { _, _, _, _ in }
+        interactorEnv.log = logger
         interactorEnv.coreSdk.cancelQueueTicket = { _, _ in
             callbacks.append(.cancelQueueTicket)
         }
@@ -308,6 +333,8 @@ class InteractorTests: XCTestCase {
         interactorEnv.coreSdk.endEngagement = { _ in
             callbacks.append(.endEngagement)
         }
+        interactorEnv.log.infoClosure = { _, _, _, _ in }
+        interactorEnv.log.prefixedClosure = { _ in interactorEnv.log }
         let interactor = Interactor.mock(environment: interactorEnv)
 
         interactor.endEngagement(
@@ -450,6 +477,8 @@ class InteractorTests: XCTestCase {
 
     func test_endEngagementSetsStateToEndedByVisitor() {
         var interactorEnv = Interactor.Environment.failing
+        interactorEnv.log.infoClosure = { _, _, _, _ in }
+        interactorEnv.log.prefixedClosure = { _ in interactorEnv.log }
         interactorEnv.coreSdk.endEngagement = { completion in completion(true, nil) }
         let interactor = Interactor.mock(environment: interactorEnv)
         interactor.state = .engaged(.mock())

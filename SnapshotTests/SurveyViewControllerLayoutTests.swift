@@ -6,7 +6,7 @@ final class SurveyViewControllerLayoutTests: SnapshotTestCase {
     func test_emptySurvey() {
         let viewController = Survey.ViewController(
             viewFactory: .mock(),
-            environment: .init(notificationCenter: .mock),
+            environment: .init(notificationCenter: .mock, log: .mock),
             props: .emptyPropsMock()
         )
         viewController.assertSnapshot(as: .image, in: .portrait)
@@ -16,7 +16,7 @@ final class SurveyViewControllerLayoutTests: SnapshotTestCase {
     func test_filledSurvey() {
         let viewController = Survey.ViewController(
             viewFactory: .mock(),
-            environment: .init(notificationCenter: .mock),
+            environment: .init(notificationCenter: .mock, log: .mock),
             props: .filledPropsMock()
         )
         viewController.assertSnapshot(as: .image, in: .portrait)
@@ -26,7 +26,7 @@ final class SurveyViewControllerLayoutTests: SnapshotTestCase {
     func test_emptySurveyErrorState() {
         let viewController = Survey.ViewController(
             viewFactory: .mock(),
-            environment: .init(notificationCenter: .mock),
+            environment: .init(notificationCenter: .mock, log: .mock),
             props: .errorPropsMock()
         )
         viewController.assertSnapshot(as: .image, in: .portrait)

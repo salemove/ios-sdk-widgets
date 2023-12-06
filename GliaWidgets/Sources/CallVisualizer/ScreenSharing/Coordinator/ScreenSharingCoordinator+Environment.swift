@@ -5,5 +5,6 @@ extension CallVisualizer.ScreenSharingCoordinator {
         let theme: Theme
         let screenShareHandler: ScreenShareHandler
         let orientationManager: OrientationManager
+        var log: CoreSdkClient.Logger
     }
 }

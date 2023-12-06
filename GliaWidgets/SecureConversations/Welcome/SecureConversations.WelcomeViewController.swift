@@ -7,6 +7,7 @@ extension SecureConversations {
             let gcd: GCD
             let uiScreen: UIKitBased.UIScreen
             let notificationCenter: FoundationBased.NotificationCenter
+            var log: CoreSdkClient.Logger
         }
         var props: Props {
             didSet {
@@ -61,6 +62,10 @@ extension SecureConversations {
                 view = welcomeView
             }
             welcomeView.props = props
+        }
+
+        deinit {
+            environment.log.prefixed(Self.self).info("Destroy Message Center screen")
         }
     }
 }

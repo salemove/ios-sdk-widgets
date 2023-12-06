@@ -9,5 +9,6 @@ extension ViewFactory {
         var timerProviding: FoundationBased.Timer.Providing
         var uiApplication: UIKitBased.UIApplication
         var uiScreen: UIKitBased.UIScreen
+        var log: CoreSdkClient.Logger
     }
 }

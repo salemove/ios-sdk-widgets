@@ -200,6 +200,7 @@ class ChatViewModel: EngagementViewModel {
             action?(.scrollToBottom(animated: true))
 
         case .engaged(let engagedOperator):
+            environment.log.prefixed(Self.self).info("Operator connected")
             let name = engagedOperator?.firstName
             let pictureUrl = engagedOperator?.picture?.url
             let chatItem = ChatItem(kind: .operatorConnected(name: name, imageUrl: pictureUrl))
@@ -239,7 +240,7 @@ class ChatViewModel: EngagementViewModel {
                         self.action?(.scrollToBottom(animated: true))
                     case .failure:
                         guard let self else { return }
-
+                        self.environment.log.prefixed(Self.self).info("Show Unexpected error Dialog")
                         self.showAlert(
                             with: self.alertConfiguration.unexpectedError,
                             dismissed: nil
@@ -269,6 +270,8 @@ class ChatViewModel: EngagementViewModel {
             onEngagementTransferring()
         case .engagementTransferred:
             onEngagementTransferred()
+        case .stateChanged(.engaged):
+            environment.log.prefixed(Self.self).info("New engagement loaded")
         default:
             break
         }
@@ -415,13 +418,25 @@ extension ChatViewModel {
     ) {
         switch offer.type {
         case .audio:
+            environment.log.prefixed(Self.self).info("Audio upgrade requested")
+            environment.log.prefixed(Self.self).info("Show Upgrade Audio Dialog")
             offerMediaUpgrade(
                 with: alertConfiguration.audioUpgrade,
                 offer: offer,
                 answer: answer
             )
         case .video:
-            let configuration = offer.direction == .oneWay
+            let isOneWay = offer.direction == .oneWay
+
+            environment.log.prefixed(Self.self).info(
+                isOneWay ? "1 way video upgrade requested" : "2 way video upgrade requested"
+            )
+
+            environment.log.prefixed(Self.self).info(
+                isOneWay ? "Show Upgrade 1WayVideo Dialog" : "Show Upgrade 2WayVideo Dialog"
+            )
+
+            let configuration = isOneWay
                 ? alertConfiguration.oneWayVideoUpgrade
                 : alertConfiguration.twoWayVideoUpgrade
             offerMediaUpgrade(
@@ -447,8 +462,14 @@ extension ChatViewModel {
         }
         action?(.offerMediaUpgrade(
             configuration.withOperatorName(operatorName),
-            accepted: { onAccepted() },
-            declined: { answer(false, nil) }
+            accepted: { [environment] in
+                environment.log.prefixed(Self.self).info("Upgrade offer accepted by visitor")
+                onAccepted()
+            },
+            declined: { [environment] in
+                environment.log.prefixed(Self.self).info("Upgrade offer declined by visitor")
+                answer(false, nil)
+            }
         ))
     }
 }
@@ -499,7 +520,7 @@ extension ChatViewModel {
             var messagePayload = outgoingMessage.payload
             messagePayload.content = messageTextTemp
             messagePayload.attachment = attachment
-            interactor.send(messagePayload: messagePayload) { [weak self] result in
+            interactor.send(messagePayload: messagePayload) { [weak self, environment] result in
                 guard let self else { return }
 
                 switch result {
@@ -516,6 +537,8 @@ extension ChatViewModel {
                     }
 
                 case .failure:
+                    environment.log.prefixed(Self.self).info("Message send exception")
+                    environment.log.prefixed(Self.self).info("Show Unexpected error Dialog")
                     self.showAlert(
                         with: self.alertConfiguration.unexpectedError,
                         dismissed: nil
@@ -923,6 +946,7 @@ extension ChatViewModel {
                     .setAttachmentButtonVisibility(self.mediaPickerButtonVisibility)
                 )
             case .failure:
+                self.environment.log.prefixed(Self.self).info("Show Unexpected error Dialog")
                 self.showAlert(
                     with: self.alertConfiguration.unexpectedError,
                     dismissed: nil

@@ -72,6 +72,7 @@ extension SecureConversations.TranscriptModel.Environment {
         createSendMessagePayload: { _, _ in
             fail("\(Self.self).createSendMessagePayload")
             return .mock()
-        }
+        },
+        log: .failing
     )
 }

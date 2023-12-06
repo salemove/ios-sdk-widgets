@@ -14,7 +14,7 @@ final class SecureConversationsWelcomeScreenDynamicTypeFontTests: SnapshotTestCa
         let viewController = SecureConversations.WelcomeViewController(
             viewFactory: .mock(theme: theme, messageRenderer: nil, environment: .mock),
             props: .welcome(props),
-            environment: .init(gcd: .live, uiScreen: .mock, notificationCenter: .mock)
+            environment: .init(gcd: .live, uiScreen: .mock, notificationCenter: .mock, log: .mock)
         )
         viewController.assertSnapshot(as: .extra3LargeFont, in: .portrait)
         viewController.assertSnapshot(as: .extra3LargeFont, in: .landscape)
@@ -31,7 +31,7 @@ final class SecureConversationsWelcomeScreenDynamicTypeFontTests: SnapshotTestCa
         let viewController = SecureConversations.WelcomeViewController(
             viewFactory: .mock(theme: theme, messageRenderer: nil, environment: .mock),
             props: .welcome(props),
-            environment: .init(gcd: .live, uiScreen: .mock, notificationCenter: .mock)
+            environment: .init(gcd: .live, uiScreen: .mock, notificationCenter: .mock, log: .mock)
         )
         viewController.assertSnapshot(as: .extra3LargeFont, in: .portrait)
         viewController.assertSnapshot(as: .extra3LargeFont, in: .landscape)
@@ -42,7 +42,7 @@ final class SecureConversationsWelcomeScreenDynamicTypeFontTests: SnapshotTestCa
         let viewController = SecureConversations.WelcomeViewController(
             viewFactory: .mock(theme: theme, messageRenderer: nil, environment: .mock),
             props: .welcome(props),
-            environment: .init(gcd: .live, uiScreen: .mock, notificationCenter: .mock)
+            environment: .init(gcd: .live, uiScreen: .mock, notificationCenter: .mock, log: .mock)
         )
         viewController.assertSnapshot(as: .extra3LargeFont, in: .portrait)
         viewController.assertSnapshot(as: .extra3LargeFont, in: .landscape)

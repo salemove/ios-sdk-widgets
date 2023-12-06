@@ -78,6 +78,10 @@ private extension SecureConversationsTranscriptModelTests {
 
     func createViewModel() -> TranscriptModel {
         var modelEnv = TranscriptModel.Environment.failing
+        var logger = CoreSdkClient.Logger.failing
+        logger.prefixedClosure = { _ in logger }
+        logger.infoClosure = { _, _, _, _ in }
+        modelEnv.log = logger
         modelEnv.fileManager = .mock
         modelEnv.createFileUploadListModel = { _ in .mock() }
         modelEnv.listQueues = { callback in callback([], nil) }

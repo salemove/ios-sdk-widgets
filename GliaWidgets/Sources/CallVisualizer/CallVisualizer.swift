@@ -25,7 +25,8 @@ public final class CallVisualizer {
                 imageViewCache: environment.imageViewCache,
                 timerProviding: environment.timerProviding,
                 uiApplication: environment.uiApplication,
-                uiScreen: environment.uiScreen
+                uiScreen: environment.uiScreen,
+                log: environment.log
             )
         )
         return Coordinator(
@@ -56,7 +57,8 @@ public final class CallVisualizer {
                     }
                 },
                 orientationManager: environment.orientationManager,
-                proximityManager: environment.proximityManager
+                proximityManager: environment.proximityManager,
+                log: environment.log
             )
         )
     }()
@@ -78,6 +80,7 @@ public final class CallVisualizer {
     /// - Parameter source: The current viewController to present from.
     ///
     public func showVisitorCodeViewController(from source: UIViewController) {
+        environment.log.prefixed(Self.self).info("Show Visitor Code Dialog")
         delegate?(.visitorCodeIsRequested)
         coordinator.showVisitorCodeViewController(by: .alert(source))
     }
@@ -102,6 +105,7 @@ public final class CallVisualizer {
         into container: UIView,
         onEngagementAccepted: @escaping () -> Void
     ) {
+        environment.log.prefixed(Self.self).info("Show Visitor Code Dialog")
         delegate?(.visitorCodeIsRequested)
         coordinator.showVisitorCodeViewController(
             by: .embedded(container, onEngagementAccepted: onEngagementAccepted)
@@ -113,6 +117,7 @@ public final class CallVisualizer {
 
 extension CallVisualizer {
     func handleAcceptedUpgrade() {
+        environment.log.prefixed(Self.self).info("Incoming Call Visualizer engagement auto accepted")
         coordinator.handleAcceptedUpgrade()
     }
 
@@ -157,14 +162,24 @@ extension CallVisualizer {
         let alertConfiguration = Theme().alertConfiguration
         switch offer.type {
         case .video:
-            let configuration = offer.direction == .oneWay
+            let isOneWay = offer.direction == .oneWay
+            let configuration = isOneWay
             ? alertConfiguration.oneWayVideoUpgrade
             : alertConfiguration.twoWayVideoUpgrade
+            environment.log.prefixed(Self.self).info(
+                isOneWay ? "1 way video upgrade requested" : "2 way video upgrade requested"
+            )
             coordinator.offerMediaUpgrade(
                 from: operators,
                 configuration: configuration,
-                accepted: accepted,
-                declined: declined
+                accepted: { [environment] in
+                    environment.log.prefixed(Self.self).info("Upgrade offer accepted by visitor")
+                    accepted()
+                },
+                declined: { [environment] in
+                    environment.log.prefixed(Self.self).info("Upgrade offer declined by visitor")
+                    declined()
+                }
             )
         default:
             break
@@ -183,6 +198,8 @@ extension CallVisualizer {
             switch event {
             case let .screenSharingStateChanged(state):
                 self?.environment.screenShareHandler.updateState(state)
+            case .stateChanged(.ended):
+                self?.environment.log.prefixed(Self.self).info("Call visualizer engagement ended")
             default:
                 break
             }

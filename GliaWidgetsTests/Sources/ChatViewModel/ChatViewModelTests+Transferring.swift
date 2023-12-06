@@ -19,9 +19,14 @@ extension ChatViewModelTests {
         interactorEnv.gcd.mainQueue.asyncIfNeeded = { $0() }
         interactorEnv.coreSdk.queueForEngagement = { _, _ in }
         interactorEnv.coreSdk.configureWithInteractor = { _ in }
+        var log = interactorEnv.log
+        log.prefixedClosure = { _ in log }
+        log.infoClosure = { _, _, _, _ in }
+        interactorEnv.log = log
         let interactorMock = Interactor.mock(environment: interactorEnv)
 
         var env = ChatViewModel.Environment.failing()
+        env.log = log
         env.fileManager.fileExistsAtPath = { _ in true }
         env.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
         env.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }

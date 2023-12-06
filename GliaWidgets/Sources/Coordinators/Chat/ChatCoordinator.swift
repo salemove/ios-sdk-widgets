@@ -72,6 +72,8 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
         ? .transcript(transcriptModel(with: { [weak self] in self?.controller }))
             : .chat(chatModel())
 
+        environment.log.prefixed(Self.self).info("Create Chat screen")
+
         let chatController = ChatViewController(
             viewModel: model,
             viewFactory: viewFactory
@@ -105,7 +107,10 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
     }
 
     private func presentFilePickerController(with pickerEvent: ObservableValue<FilePickerEvent>) {
-        let viewModel = FilePickerViewModel(pickerEvent: pickerEvent)
+        let viewModel = FilePickerViewModel(
+            pickerEvent: pickerEvent,
+            environment: .init(log: environment.log)
+        )
         viewModel.delegate = { [weak self] event in
             switch event {
             case .finished:
@@ -220,7 +225,8 @@ extension ChatCoordinator {
             fileUploadListStyle: viewFactory.theme.chatStyle.messageEntry.uploadList,
             createFileUploadListModel: environment.createFileUploadListModel,
             createSendMessagePayload: environment.createSendMessagePayload,
-            proximityManager: environment.proximityManager
+            proximityManager: environment.proximityManager,
+            log: environment.log
         )
     }
 }
@@ -333,7 +339,8 @@ extension ChatCoordinator {
            interactor: environment.interactor,
            startSocketObservation: environment.startSocketObservation,
            stopSocketObservation: environment.stopSocketObservation,
-           createSendMessagePayload: environment.createSendMessagePayload
+           createSendMessagePayload: environment.createSendMessagePayload,
+           log: environment.log
        )
     }
 }

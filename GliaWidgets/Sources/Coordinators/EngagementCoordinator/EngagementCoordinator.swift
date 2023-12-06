@@ -167,6 +167,7 @@ extension EngagementCoordinator {
                 dismissGliaViewController()
                 return
             }
+            self?.environment.log.prefixed(Self.self).info("Survey loaded")
             self?.presentSurvey(
                 engagementId: engagement.id,
                 survey: survey,
@@ -180,14 +181,21 @@ extension EngagementCoordinator {
         survey: CoreSdkClient.Survey,
         dismissGliaViewController: @escaping () -> Void?
     ) {
+        environment.log.prefixed(Self.self).info("Create Survey screen")
         let viewController = Survey.ViewController(
             viewFactory: self.viewFactory,
-            environment: .init(notificationCenter: self.environment.notificationCenter)
+            environment: .init(
+                notificationCenter: self.environment.notificationCenter,
+                log: environment.log
+            )
         )
         viewController.props = .live(
             sdkSurvey: survey,
             engagementId: engagementId,
-            submitSurveyAnswer: self.environment.submitSurveyAnswer,
+            submitSurveyAnswer: { [environment] in
+                environment.log.prefixed(Self.self).info("Submit survey answers")
+                environment.submitSurveyAnswer($0, $1, $2, $3)
+            },
             cancel: {
                 viewController.dismiss(animated: true) {
                     dismissGliaViewController()
@@ -197,6 +205,7 @@ extension EngagementCoordinator {
             updateProps: { viewController.props = $0 },
             onError: { [weak self] _ in
                 guard let self else { return }
+                self.environment.log.prefixed(Self.self).info("Show Unexpected error Dialog")
                 viewController.presentAlert(
                     with: self.viewFactory.theme.alertConfiguration.unexpectedError
                 )
@@ -256,7 +265,8 @@ extension EngagementCoordinator {
                 startSocketObservation: environment.startSocketObservation,
                 stopSocketObservation: environment.stopSocketObservation,
                 createSendMessagePayload: environment.createSendMessagePayload,
-                proximityManager: environment.proximityManager
+                proximityManager: environment.proximityManager,
+                log: environment.log
             ),
             startWithSecureTranscriptFlow: false
         )
@@ -348,7 +358,8 @@ extension EngagementCoordinator {
                 fetchChatHistory: environment.fetchChatHistory,
                 createFileUploadListModel: environment.createFileUploadListModel,
                 createSendMessagePayload: environment.createSendMessagePayload,
-                proximityManager: environment.proximityManager
+                proximityManager: environment.proximityManager,
+                log: environment.log
             )
         )
         coordinator.delegate = { [weak self] event in
@@ -406,7 +417,8 @@ extension EngagementCoordinator {
                     features: features,
                     environment: .init(
                         uiApplication: environment.uiApplication,
-                        uiScreen: environment.uiScreen
+                        uiScreen: environment.uiScreen,
+                        log: environment.log
                     )
                 )
             } else {
@@ -416,7 +428,8 @@ extension EngagementCoordinator {
                     features: features,
                     environment: .init(
                         uiApplication: environment.uiApplication,
-                        uiScreen: environment.uiScreen
+                        uiScreen: environment.uiScreen,
+                        log: environment.log
                     )
                 )
             }
@@ -427,7 +440,8 @@ extension EngagementCoordinator {
                 features: features,
                 environment: .init(
                     uiApplication: environment.uiApplication,
-                    uiScreen: environment.uiScreen
+                    uiScreen: environment.uiScreen,
+                    log: environment.log
                 )
             )
         }
@@ -480,7 +494,8 @@ extension EngagementCoordinator {
                 stopSocketObservation: environment.stopSocketObservation,
                 createSendMessagePayload: environment.createSendMessagePayload,
                 orientationManager: environment.orientationManager,
-                proximityManager: environment.proximityManager
+                proximityManager: environment.proximityManager,
+                log: environment.log
             )
         )
 
@@ -542,7 +557,20 @@ extension EngagementCoordinator {
             call.kind.addObserver(self) { [weak self] _, _ in
                 self?.engagementKind = EngagementKind(with: call.kind.value)
             }
-            let callViewController = startCall(call, withAction: .call(offer: offer, answer: answer))
+            let callViewController = startCall(
+                call,
+                withAction: .call(
+                    offer: offer,
+                    answer: { [environment] accepted, successHandler in
+                            environment.log.prefixed(Self.self).info(
+                                accepted ? "Media upgrade request accepted by visitor"
+                                         : "Media upgrade request declined by visitor"
+                            )
+
+                        answer(accepted, successHandler)
+                    }
+                )
+            )
             engagement = .call(
                 callViewController,
                 chatViewController,
@@ -565,6 +593,9 @@ extension EngagementCoordinator {
                 animated: true
             )
             answer(true, nil)
+            environment.log.prefixed(Self.self).info(
+                "Media upgrade request accepted by visitor"
+            )
 
         case .secureConversations, .none:
             break

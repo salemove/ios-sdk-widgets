@@ -50,7 +50,10 @@ extension Glia {
         }
 
         return .init(
-            authenticateWithIdToken: { idToken, accessToken, callback in
+            authenticateWithIdToken: { [weak self] idToken, accessToken, callback in
+                self?.loggerPhase.logger.prefixed(Self.self).info(
+                    "Authenticate. Is external access token used: \(accessToken != nil)"
+                )
                 auth.authenticate(
                     with: .init(rawValue: idToken),
                     externalAccessToken: accessToken.map { .init(rawValue: $0) }
@@ -67,7 +70,8 @@ extension Glia {
                     callback(result.mapError(Glia.Authentication.Error.init) )
                 }
             },
-            deauthenticateWithCallback: { callback in
+            deauthenticateWithCallback: { [weak self] callback in
+                self?.loggerPhase.logger.prefixed(Self.self).info("De-authenticate")
                 auth.deauthenticate { result in
                     switch result {
                     case .success:

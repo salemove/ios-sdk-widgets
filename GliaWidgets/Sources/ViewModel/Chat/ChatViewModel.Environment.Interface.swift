@@ -23,5 +23,6 @@ extension EngagementViewModel {
         var createFileUploadListModel: SecureConversations.FileUploadListViewModel.Create
         var createSendMessagePayload: CoreSdkClient.CreateSendMessagePayload
         var proximityManager: ProximityManager
+        var log: CoreSdkClient.Logger
     }
 }

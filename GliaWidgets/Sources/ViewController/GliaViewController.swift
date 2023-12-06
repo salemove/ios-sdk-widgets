@@ -63,6 +63,7 @@ class GliaViewController: UIViewController {
     }
 
     func maximize(animated: Bool) {
+        environment.log.prefixed(Self.self).info("Bubble: hide application-only bubble")
         UIView.animate(
             withDuration: animated ? 0.4 : 0.0,
             delay: 0.0,
@@ -85,6 +86,7 @@ class GliaViewController: UIViewController {
     }
 
     func minimize(animated: Bool) {
+        environment.log.prefixed(Self.self).info("Bubble: show application-only bubble")
         defer { delegate?.event(.minimized) }
         guard let bubbleView = bubbleView else {
             return
@@ -178,5 +180,6 @@ extension GliaViewController {
     struct Environment {
         var uiApplication: UIKitBased.UIApplication
         var uiScreen: UIKitBased.UIScreen
+        var log: CoreSdkClient.Logger
     }
 }

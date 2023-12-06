@@ -9,7 +9,6 @@ extension SecureConversations.WelcomeViewModel {
     )
 }
 
-
 extension SecureConversations.WelcomeViewModel.Environment {
     static let mock: SecureConversations.WelcomeViewModel.Environment = .init(
         welcomeStyle: Theme().secureConversationsWelcomeStyle,
@@ -26,7 +25,8 @@ extension SecureConversations.WelcomeViewModel.Environment {
         getCurrentEngagement: { .mock() },
         uploadSecureFile: { _, _, _ in .mock },
         uploadFileToEngagement: { _, _, _ in },
-        createSendMessagePayload: { _, _ in .mock() }
+        createSendMessagePayload: { _, _ in .mock() },
+        log: .mock
     )
 }
 

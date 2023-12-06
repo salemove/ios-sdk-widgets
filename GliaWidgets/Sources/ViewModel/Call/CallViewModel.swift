@@ -10,6 +10,17 @@ class CallViewModel: EngagementViewModel, ViewModel {
     private let durationCounter: CallDurationCounter
     private let unreadMessages: ObservableValue<Int>
 
+    /// Speaker button state used for logging.
+    private (set) var loggedSpeakerButtonOnState: Bool = false {
+        didSet {
+            guard loggedSpeakerButtonOnState != oldValue else { return }
+            environment.log.prefixed(Self.self).info(
+                "Speaker value changed to \(loggedSpeakerButtonOnState)",
+                function: "\(\CallViewModel.loggedSpeakerButtonOnState)"
+            )
+        }
+    }
+
     init(
         interactor: Interactor,
         alertConfiguration: AlertConfiguration,
@@ -43,8 +54,8 @@ class CallViewModel: EngagementViewModel, ViewModel {
         self.call.state.addObserver(self) { [weak self] state, _ in
             self?.onStateChanged(state)
         }
-        self.call.video.stream.addObserver(self) { [weak self] audio, _ in
-            self?.onVideoChanged(audio)
+        self.call.video.stream.addObserver(self) { [weak self] video, _ in
+            self?.onVideoChanged(video)
         }
         self.call.audio.stream.addObserver(self) { [weak self] audio, _ in
             self?.onAudioChanged(audio)
@@ -281,6 +292,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
 
 extension CallViewModel {
     private func onEngagementTransferring() {
+        environment.log.prefixed(Self.self).info("Transfer the call")
         endScreenSharing()
         call.transfer()
         durationCounter.stop()
@@ -295,9 +307,15 @@ extension CallViewModel {
     ) {
         switch offer.type {
         case .video:
-            let configuration = offer.direction == .oneWay
+            let isOneWayVideoUpgrade = offer.direction == .oneWay
+            let configuration = isOneWayVideoUpgrade
                 ? alertConfiguration.oneWayVideoUpgrade
                 : alertConfiguration.twoWayVideoUpgrade
+
+            environment.log.prefixed(Self.self).info(
+                isOneWayVideoUpgrade ? "1 way video upgrade requested" : "2 way video upgrade requested"
+            )
+
             offerMediaUpgrade(
                 with: configuration,
                 offer: offer,
@@ -374,6 +392,7 @@ extension CallViewModel {
         case .none:
             break
         case .started:
+            environment.log.prefixed(Self.self).info("Audio or video call started")
             showConnected()
             durationCounter.start { [weak self] duration in
                 guard self?.call.state.value == .started else { return }
@@ -465,6 +484,7 @@ extension CallViewModel {
             : .inactive
         action?(.setButtonEnabled(.speaker, enabled: enabled))
         action?(.setButtonState(.speaker, state: state))
+        self.loggedSpeakerButtonOnState = enabled
     }
 
     private func updateMinimizeButton() {
