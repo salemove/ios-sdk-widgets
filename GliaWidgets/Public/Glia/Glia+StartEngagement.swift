@@ -63,7 +63,8 @@ extension Glia {
                 imageViewCache: environment.imageViewCache,
                 timerProviding: environment.timerProviding,
                 uiApplication: environment.uiApplication,
-                uiScreen: environment.uiScreen
+                uiScreen: environment.uiScreen,
+                log: loggerPhase.logger
             )
         )
 
@@ -162,7 +163,9 @@ extension Glia {
                 pushNotifications: environment.coreSdk.pushNotifications,
                 createSendMessagePayload: environment.coreSdk.createSendMessagePayload,
                 orientationManager: environment.orientationManager,
-                proximityManager: environment.proximityManager
+                proximityManager: environment.proximityManager,
+                log: loggerPhase.logger
+
             )
         )
         rootCoordinator?.delegate = { [weak self] event in

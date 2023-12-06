@@ -6,6 +6,10 @@ final class FilePickerController: NSObject {
         documentPicker.delegate = self
         documentPicker.allowsMultipleSelection = false
         documentPicker.modalPresentationStyle = .fullScreen
+        viewModel.environment.log.prefixed(Self.self).info(
+            "Create File Preview screen",
+            function: "\(\Self.viewController)"
+        )
         return documentPicker
     }
 
@@ -13,6 +17,10 @@ final class FilePickerController: NSObject {
 
     init(viewModel: FilePickerViewModel) {
         self.viewModel = viewModel
+    }
+
+    deinit {
+        viewModel.environment.log.prefixed(Self.self).info("Destroy File Preview screen")
     }
 }
 

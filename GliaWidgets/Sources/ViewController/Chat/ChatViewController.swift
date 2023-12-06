@@ -243,6 +243,10 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
             chatView.messageEntryView.isHidden = !needsTextInput
         }
     }
+
+    deinit {
+        viewModel.environment.log.prefixed(Self.self).info("Destroy Chat screen")
+    }
 }
 
 extension ChatViewController {

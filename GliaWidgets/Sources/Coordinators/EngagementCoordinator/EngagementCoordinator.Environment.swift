@@ -37,5 +37,6 @@ extension EngagementCoordinator {
         var createSendMessagePayload: CoreSdkClient.CreateSendMessagePayload
         var orientationManager: OrientationManager
         var proximityManager: ProximityManager
+        var log: CoreSdkClient.Logger
     }
 }

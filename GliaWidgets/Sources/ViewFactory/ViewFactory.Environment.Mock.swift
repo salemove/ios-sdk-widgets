@@ -7,7 +7,8 @@ extension ViewFactory.Environment {
         imageViewCache: .mock,
         timerProviding: .mock,
         uiApplication: .mock,
-        uiScreen: .mock
+        uiScreen: .mock,
+        log: .mock
     )
 }
 #endif

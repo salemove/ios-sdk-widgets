@@ -24,10 +24,12 @@ extension CallVisualizer {
         // MARK: - Private
 
         private func showEndScreenSharingViewController() -> ViewController {
+            self.environment.log.prefixed(Self.self).info("Create End Screen Sharing screen")
             let environment: ScreenSharingView.Model.Environment = .init(
                 orientationManager: self.environment.orientationManager,
                 uiApplication: .live,
-                screenShareHandler: environment.screenShareHandler
+                screenShareHandler: environment.screenShareHandler,
+                log: environment.log
             )
             let model: ScreenSharingView.Model = .init(
                 style: self.environment.theme.screenSharing,

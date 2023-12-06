@@ -13,7 +13,7 @@ final class SecureConversationsWelcomeScreenLayoutTests: SnapshotTestCase {
         let viewController = SecureConversations.WelcomeViewController(
             viewFactory: .mock(theme: theme, messageRenderer: nil, environment: .mock),
             props: .welcome(props),
-            environment: .init(gcd: .live, uiScreen: .mock, notificationCenter: .mock)
+            environment: .init(gcd: .live, uiScreen: .mock, notificationCenter: .mock, log: .mock)
         )
         viewController.assertSnapshot(as: .image, in: .portrait)
         viewController.assertSnapshot(as: .image, in: .landscape)
@@ -30,7 +30,7 @@ final class SecureConversationsWelcomeScreenLayoutTests: SnapshotTestCase {
         let viewController = SecureConversations.WelcomeViewController(
             viewFactory: .mock(theme: theme, messageRenderer: nil, environment: .mock),
             props: .welcome(props),
-            environment: .init(gcd: .live, uiScreen: .mock, notificationCenter: .mock)
+            environment: .init(gcd: .live, uiScreen: .mock, notificationCenter: .mock, log: .mock)
         )
         viewController.assertSnapshot(as: .image, in: .portrait)
         viewController.assertSnapshot(as: .image, in: .landscape)
@@ -41,7 +41,7 @@ final class SecureConversationsWelcomeScreenLayoutTests: SnapshotTestCase {
         let viewController = SecureConversations.WelcomeViewController(
             viewFactory: .mock(theme: theme, messageRenderer: nil, environment: .mock),
             props: .welcome(props),
-            environment: .init(gcd: .live, uiScreen: .mock, notificationCenter: .mock)
+            environment: .init(gcd: .live, uiScreen: .mock, notificationCenter: .mock, log: .mock)
         )
         viewController.assertSnapshot(as: .image, in: .portrait)
         viewController.assertSnapshot(as: .image, in: .landscape)

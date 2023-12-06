@@ -8,6 +8,7 @@ extension Glia {
          message: "Use clearVisitorSession(_:) instead."
     )
     public func clearVisitorSession() {
+        loggerPhase.logger.prefixed(Self.self).info("Clear visitor session")
         loggerPhase.logger.oneTime.remoteLogger?.reportDeprecatedMethod(context: Self.self)
         if environment.coreSdk.getCurrentEngagement() != nil {
             print("⚠️ Don't call `clearVisitorSession` during active engagement. Otherwise, it might break the engagement interaction.")

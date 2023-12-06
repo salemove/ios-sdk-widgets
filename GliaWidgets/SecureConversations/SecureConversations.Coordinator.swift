@@ -65,7 +65,8 @@ extension SecureConversations {
                     getCurrentEngagement: environment.getCurrentEngagement,
                     uploadSecureFile: environment.uploadSecureFile,
                     uploadFileToEngagement: environment.uploadFileToEngagement,
-                    createSendMessagePayload: environment.createSendMessagePayload
+                    createSendMessagePayload: environment.createSendMessagePayload,
+                    log: environment.log
                 ),
                 availability: .init(
                     environment: .init(
@@ -78,6 +79,7 @@ extension SecureConversations {
         }
 
         private func makeSecureConversationsWelcomeViewController() -> SecureConversations.WelcomeViewController {
+            environment.log.prefixed(Self.self).info("Create Message Center screen")
             let viewModel = makeWelcomeViewModel()
 
             let controller = SecureConversations.WelcomeViewController(
@@ -86,7 +88,8 @@ extension SecureConversations {
                 environment: .init(
                     gcd: environment.gcd,
                     uiScreen: environment.uiScreen,
-                    notificationCenter: environment.notificationCenter
+                    notificationCenter: environment.notificationCenter,
+                    log: environment.log
                 )
             )
 
@@ -160,6 +163,7 @@ extension SecureConversations {
         }
 
         func presentSecureConversationsConfirmationViewController() {
+            environment.log.prefixed(Self.self).info("Show Message Center Confirmation screen")
             let environment: ConfirmationViewSwiftUI.Model.Environment = .init(
                 orientationManager: environment.orientationManager,
                 uiApplication: environment.uiApplication
@@ -219,7 +223,10 @@ extension SecureConversations {
         private func presentFilePickerController(with pickerEvent: Command<FilePickerEvent>) {
             let observable = ObservableValue<FilePickerEvent>(with: .none)
             observable.addObserver(self, update: { event, _ in pickerEvent(event) })
-            let viewModel = FilePickerViewModel(pickerEvent: observable)
+            let viewModel = FilePickerViewModel(
+                pickerEvent: observable,
+                environment: .init(log: environment.log)
+            )
             viewModel.delegate = { [weak self] event in
                 switch event {
                 case .finished:
@@ -282,7 +289,8 @@ extension SecureConversations.Coordinator {
                 startSocketObservation: environment.startSocketObservation,
                 stopSocketObservation: environment.stopSocketObservation,
                 createSendMessagePayload: environment.createSendMessagePayload,
-                proximityManager: environment.proximityManager
+                proximityManager: environment.proximityManager,
+                log: environment.log
             ),
             startWithSecureTranscriptFlow: true
         )
@@ -349,6 +357,7 @@ extension SecureConversations.Coordinator {
         var createSendMessagePayload: CoreSdkClient.CreateSendMessagePayload
         var orientationManager: OrientationManager
         var proximityManager: ProximityManager
+        var log: CoreSdkClient.Logger
     }
 
     enum DelegateEvent {

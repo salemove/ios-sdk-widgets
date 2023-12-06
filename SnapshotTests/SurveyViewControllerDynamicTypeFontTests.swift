@@ -6,7 +6,7 @@ final class SurveyViewControllerDynamicTypeFontTests: SnapshotTestCase {
     func test_emptySurvey_extra3Large() {
         let viewController = Survey.ViewController(
             viewFactory: .mock(),
-            environment: .init(notificationCenter: .mock),
+            environment: .init(notificationCenter: .mock, log: .mock),
             props: .emptyPropsMock()
         )
         viewController.assertSnapshot(as: .extra3LargeFont, in: .portrait)
@@ -16,7 +16,7 @@ final class SurveyViewControllerDynamicTypeFontTests: SnapshotTestCase {
     func test_filledSurvey_extra3Large() {
         let viewController = Survey.ViewController(
             viewFactory: .mock(),
-            environment: .init(notificationCenter: .mock),
+            environment: .init(notificationCenter: .mock, log: .mock),
             props: .filledPropsMock()
         )
         viewController.assertSnapshot(as: .extra3LargeFont, in: .portrait)
@@ -26,7 +26,7 @@ final class SurveyViewControllerDynamicTypeFontTests: SnapshotTestCase {
     func test_emptySurveyErrorState_extra3Large() {
         let viewController = Survey.ViewController(
             viewFactory: .mock(),
-            environment: .init(notificationCenter: .mock),
+            environment: .init(notificationCenter: .mock, log: .mock),
             props: .errorPropsMock()
         )
         viewController.assertSnapshot(as: .extra3LargeFont, in: .portrait)

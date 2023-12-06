@@ -45,7 +45,8 @@ extension CallVisualizer {
                     date: environment.date,
                     engagedOperator: environment.engagedOperator,
                     screenShareHandler: environment.screenShareHandler,
-                    proximityManager: environment.proximityManager
+                    proximityManager: environment.proximityManager,
+                    log: environment.log
                 ),
                 call: call
             )

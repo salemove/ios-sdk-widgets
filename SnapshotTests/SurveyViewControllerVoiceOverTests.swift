@@ -7,7 +7,7 @@ final class SurveyViewControllerVoiceOverTests: SnapshotTestCase {
     func test_emptySurvey() {
         let viewController = Survey.ViewController(
             viewFactory: .mock(),
-            environment: .init(notificationCenter: .mock),
+            environment: .init(notificationCenter: .mock, log: .mock),
             props: .emptyPropsMock()
         )
         viewController.assertSnapshot(as: .accessibilityImage)
@@ -16,7 +16,7 @@ final class SurveyViewControllerVoiceOverTests: SnapshotTestCase {
     func test_emptySurveyWithDefaultValue() {
         let viewController = Survey.ViewController(
             viewFactory: .mock(),
-            environment: .init(notificationCenter: .mock),
+            environment: .init(notificationCenter: .mock, log: .mock),
             props: .emptyPropsMockWithDefaultValue()
         )
         viewController.assertSnapshot(as: .accessibilityImage)
@@ -25,7 +25,7 @@ final class SurveyViewControllerVoiceOverTests: SnapshotTestCase {
     func test_filledSurvey() {
         let viewController = Survey.ViewController(
             viewFactory: .mock(),
-            environment: .init(notificationCenter: .mock),
+            environment: .init(notificationCenter: .mock, log: .mock),
             props: .filledPropsMock()
         )
         viewController.assertSnapshot(as: .accessibilityImage)
@@ -34,7 +34,7 @@ final class SurveyViewControllerVoiceOverTests: SnapshotTestCase {
     func test_emptySurveyErrorState() {
         let viewController = Survey.ViewController(
             viewFactory: .mock(),
-            environment: .init(notificationCenter: .mock),
+            environment: .init(notificationCenter: .mock, log: .mock),
             props: .errorPropsMock()
         )
         viewController.assertSnapshot(as: .accessibilityImage)

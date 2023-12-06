@@ -62,7 +62,8 @@ class ChatViewModelTests: XCTestCase {
                     }
                     return .mock()
                 },
-                proximityManager: .mock
+                proximityManager: .mock,
+                log: .mock
             )
         )
 
@@ -119,6 +120,8 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
         viewModelEnv.fetchSiteConfigurations = { _ in }
         viewModelEnv.createFileUploadListModel = { _ in .mock() }
+        viewModelEnv.log.infoClosure = { _, _, _, _ in }
+        viewModelEnv.log.prefixedClosure = { _ in viewModelEnv.log }
         let interactor: Interactor = .mock()
         let viewModel: ChatViewModel = .mock(interactor: interactor, environment: viewModelEnv)
         let queueSectionIndex: Int = viewModel.queueOperatorSection.index
@@ -134,8 +137,14 @@ class ChatViewModelTests: XCTestCase {
     func test_onEngagementTransferringAddsTransferringItemToTheEndOfChat() throws {
         var interactorEnv: Interactor.Environment = .failing
         interactorEnv.gcd.mainQueue.asyncIfNeeded = { $0() }
+        interactorEnv.log.infoClosure = { _, _, _, _ in }
+        interactorEnv.log.prefixedClosure = { _ in interactorEnv.log }
         var viewModelEnv = ChatViewModel.Environment.failing()
         viewModelEnv.createFileUploadListModel = { _ in .mock() }
+        var logger = CoreSdkClient.Logger.failing
+        logger.prefixedClosure = { _ in logger }
+        logger.infoClosure = { _, _, _, _ in }
+        viewModelEnv.log = logger
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
         viewModelEnv.loadChatMessagesFromHistory = { true }
@@ -156,12 +165,16 @@ class ChatViewModelTests: XCTestCase {
     func test_onEngagementTransferRemovesTransferringItemFromChat() throws {
         var interactorEnv: Interactor.Environment = .failing
         interactorEnv.gcd.mainQueue.asyncIfNeeded = { $0() }
+        interactorEnv.log.infoClosure = { _, _, _, _ in }
+        interactorEnv.log.prefixedClosure = { _ in interactorEnv.log }
         var viewModelEnv = ChatViewModel.Environment.failing()
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
         viewModelEnv.loadChatMessagesFromHistory = { true }
         viewModelEnv.fetchSiteConfigurations = { _ in }
         viewModelEnv.createFileUploadListModel = { _ in .mock() }
+        viewModelEnv.log.infoClosure = { _, _, _, _ in }
+        viewModelEnv.log.prefixedClosure = { _ in viewModelEnv.log }
 
         let interactor: Interactor = .mock(environment: interactorEnv)
         let viewModel: ChatViewModel = .mock(interactor: interactor, environment: viewModelEnv)
@@ -189,6 +202,8 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.loadChatMessagesFromHistory = { true }
         viewModelEnv.fetchSiteConfigurations = { _ in }
         viewModelEnv.createFileUploadListModel = { _ in .mock() }
+        viewModelEnv.log.infoClosure = { _, _, _, _ in }
+        viewModelEnv.log.prefixedClosure = { _ in viewModelEnv.log }
 
         let interactor: Interactor = .mock(environment: interactorEnv)
         let viewModel: ChatViewModel = .mock(interactor: interactor, environment: viewModelEnv)
@@ -220,7 +235,7 @@ class ChatViewModelTests: XCTestCase {
         // Given
         enum Calls { case fetchSiteConfigurations }
         var calls: [Calls] = []
-        let interactorEnv = Interactor.Environment(coreSdk: .failing, gcd: .mock)
+        let interactorEnv = Interactor.Environment(coreSdk: .failing, gcd: .mock, log: .mock)
         let interactor = Interactor.mock(environment: interactorEnv)
         var viewModelEnv = ChatViewModel.Environment.failing()
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
@@ -242,9 +257,15 @@ class ChatViewModelTests: XCTestCase {
         // Given
         enum Calls { case fetchSiteConfigurations }
         var calls: [Calls] = []
-        let interactorEnv = Interactor.Environment.init(coreSdk: .failing, gcd: .mock)
+        var interactorEnv = Interactor.Environment.init(coreSdk: .failing, gcd: .mock, log: .mock)
+        var interactorLog = CoreSdkClient.Logger.failing
+        interactorLog.infoClosure = { _, _, _, _ in }
+        interactorLog.prefixedClosure = { _ in interactorLog }
+        interactorEnv.log = interactorLog
         let interactor = Interactor.mock(environment: interactorEnv)
         var viewModelEnv = ChatViewModel.Environment.failing()
+        viewModelEnv.log.infoClosure = { _, _, _, _ in }
+        viewModelEnv.log.prefixedClosure = { _ in viewModelEnv.log }
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
         viewModelEnv.fetchSiteConfigurations = { _ in
@@ -274,7 +295,7 @@ class ChatViewModelTests: XCTestCase {
         }
         let viewModel: ChatViewModel = .mock(interactor: .mock(), environment: viewModelEnv)
 
-        let telUrl = URL(string: "tel:12345678")!
+        let telUrl = try XCTUnwrap(URL(string: "tel:12345678"))
         viewModel.linkTapped(telUrl)
 
         XCTAssertEqual(calls, [.openUrl(telUrl)])
@@ -420,6 +441,11 @@ class ChatViewModelTests: XCTestCase {
         let transcriptFileUploadListModel = FileUploadListViewModel(environment: transcriptFileUploadListModelEnv)
         transcriptModelEnv.createFileUploadListModel = { _ in transcriptFileUploadListModel }
         transcriptModelEnv.listQueues = { callback in callback([], nil) }
+        var logger = CoreSdkClient.Logger.failing
+        logger.prefixedClosure = { _ in logger }
+        logger.infoClosure = { _, _, _, _ in }
+        transcriptModelEnv.log = logger
+
         let availabilityEnv = SecureConversations.Availability.Environment(
             listQueues: transcriptModelEnv.listQueues,
             queueIds: transcriptModelEnv.queueIds,
@@ -585,6 +611,10 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
         viewModelEnv.loadChatMessagesFromHistory = { true }
         viewModelEnv.fetchSiteConfigurations = { _ in }
+        var log = viewModelEnv.log
+        log.prefixedClosure = { _ in log }
+        log.infoClosure = { _, _, _, _ in }
+        viewModelEnv.log = log
         let messageIdSuffix = "1D_123"
         let expectedMessageId = "expected_message_id"
         viewModelEnv.fetchChatHistory = { callback in
@@ -595,6 +625,10 @@ class ChatViewModelTests: XCTestCase {
         }
 
         let interactor = Interactor.failing
+        var interactorLog = CoreSdkClient.Logger.failing
+        interactorLog.infoClosure = { _, _, _, _ in }
+        interactorLog.prefixedClosure = { _ in interactorLog }
+        interactor.environment.log = interactorLog
         interactor.environment.gcd.mainQueue.asyncIfNeeded = { $0() }
         interactor.environment.coreSdk.configureWithInteractor = { _ in }
         interactor.environment.coreSdk.configureWithConfiguration = { _, callback in callback(.success(())) }
@@ -635,6 +669,10 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
         viewModelEnv.loadChatMessagesFromHistory = { true }
         viewModelEnv.fetchSiteConfigurations = { _ in }
+        var log = viewModelEnv.log
+        log.prefixedClosure = { _ in log }
+        log.infoClosure = { _, _, _, _ in }
+        viewModelEnv.log = log
         let messageIdSuffix = "1D_123"
         let expectedMessageId = "expected_message_id"
         viewModelEnv.fetchChatHistory = { callback in
@@ -645,6 +683,10 @@ class ChatViewModelTests: XCTestCase {
         }
 
         let interactor = Interactor.failing
+        var interactorLog = interactor.environment.log
+        interactorLog.prefixedClosure = { _ in log }
+        interactorLog.infoClosure = { _, _, _, _ in }
+        interactor.environment.log = interactorLog
         interactor.environment.gcd.mainQueue.asyncIfNeeded = { $0() }
         interactor.environment.coreSdk.configureWithInteractor = { _ in }
         interactor.environment.coreSdk.configureWithConfiguration = { _, callback in callback(.success(())) }
