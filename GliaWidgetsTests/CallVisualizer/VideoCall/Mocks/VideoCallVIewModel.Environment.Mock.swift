@@ -12,7 +12,8 @@ extension CallVisualizer.VideoCallViewModel.Environment {
         date: { .mock },
         engagedOperator: { .mock() },
         screenShareHandler: .mock,
-        proximityManager: .mock
+        proximityManager: .mock,
+        log: .mock
     )
 }
 

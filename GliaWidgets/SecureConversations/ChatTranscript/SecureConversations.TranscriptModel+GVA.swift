@@ -107,7 +107,7 @@ private extension SecureConversations.TranscriptModel {
         _ = environment.sendSecureMessagePayload(
             outgoingMessage.payload,
             environment.queueIds
-        ) { [weak self] result in
+        ) { [weak self, environment] result in
             guard let self = self else { return }
             switch result {
             case let .success(message):
@@ -118,6 +118,7 @@ private extension SecureConversations.TranscriptModel {
                     in: self.pendingSection
                 )
             case .failure:
+                environment.log.prefixed(Self.self).info("Show Unexpected error Dialog")
                 self.showAlert(with: self.environment.alertConfiguration.unexpectedError)
             }
         }

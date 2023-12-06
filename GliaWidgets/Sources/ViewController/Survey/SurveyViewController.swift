@@ -128,6 +128,10 @@ extension Survey {
                     update(view)
                 }
         }
+
+        deinit {
+            environment.log.prefixed(Self.self).info("Destroy Survey screen")
+        }
     }
 }
 
@@ -186,5 +190,6 @@ extension Survey.ViewController {
 extension Survey.ViewController {
     struct Environment {
         var notificationCenter: FoundationBased.NotificationCenter
+        var log: CoreSdkClient.Logger
     }
 }

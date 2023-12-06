@@ -54,7 +54,8 @@ extension ChatViewModel.Environment {
                 fail("\(Self.self).createSendMessagePayload")
                 return .mock()
             },
-            proximityManager: .failing
+            proximityManager: .failing,
+            log: .failing
         )
     }
 }

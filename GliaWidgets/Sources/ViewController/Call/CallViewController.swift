@@ -11,6 +11,7 @@ final class CallViewController: EngagementViewController {
     }
 
     deinit {
+        environment.log.prefixed(Self.self).info("Destroy Call screen")
         environment.notificationCenter.removeObserver(self)
     }
 
@@ -178,5 +179,6 @@ private extension CallButton.State {
 extension CallViewController {
     struct Environment {
         var notificationCenter: FoundationBased.NotificationCenter
+        var log: CoreSdkClient.Logger
     }
 }

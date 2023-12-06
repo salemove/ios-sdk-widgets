@@ -11,7 +11,8 @@ extension GliaViewController {
             features: features,
             environment: .init(
                 uiApplication: .mock,
-                uiScreen: .mock
+                uiScreen: .mock,
+                log: .mock
             )
         )
     }

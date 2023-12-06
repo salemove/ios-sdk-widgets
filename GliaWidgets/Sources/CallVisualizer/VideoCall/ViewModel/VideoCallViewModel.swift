@@ -512,6 +512,7 @@ private extension CallVisualizer.VideoCallViewModel {
         case .none:
             break
         case .started:
+            environment.log.prefixed(Self.self).info("Engagement started")
             showConnected()
             durationCounter.start { [weak self] duration in
                 guard self?.call.state.value == .started else { return }
@@ -522,6 +523,7 @@ private extension CallVisualizer.VideoCallViewModel {
             setConnectViewState(.connecting(name: engagedOperator?.firstName, imageUrl: engagedOperator?.picture?.url), animated: true)
             connectOperatorSize = .init(size: .normal, animated: true)
         case .ended:
+            environment.log.prefixed(Self.self).info("Engagement ended")
             durationCounter.stop()
         }
         updateButtons()

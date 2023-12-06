@@ -11,6 +11,7 @@ extension ViewFactory.Environment {
         imageViewCache: .failing,
         timerProviding: .failing,
         uiApplication: .failing,
-        uiScreen: .failing
+        uiScreen: .failing,
+        log: .failing
     )
 }

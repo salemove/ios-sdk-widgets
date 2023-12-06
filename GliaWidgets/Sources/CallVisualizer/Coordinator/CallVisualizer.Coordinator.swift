@@ -35,6 +35,7 @@ extension CallVisualizer {
                 switch event {
                 case .closeTap:
                     self?.visitorCodeCoordinator = nil
+                    self?.environment.log.prefixed(Self.self).info("Dismiss Visitor Code Dialog")
                 case .engagementAccepted:
                     switch coordinator.presentation {
                     case let .embedded(_, onEngagementAccepted: callback):
@@ -65,6 +66,8 @@ extension CallVisualizer {
                 self?.mediaUpgradeViewController = nil
                 declined()
             }
+
+            environment.log.prefixed(Self.self).info("Show Start Screen Sharing Dialog")
 
             let alert = AlertViewController(
                 kind: .screenShareOffer(
@@ -183,7 +186,8 @@ extension CallVisualizer {
                 environment: .init(
                     theme: environment.viewFactory.theme,
                     screenShareHandler: environment.screenShareHandler,
-                    orientationManager: environment.orientationManager
+                    orientationManager: environment.orientationManager,
+                    log: environment.log
                 )
             )
 
@@ -215,7 +219,8 @@ extension CallVisualizer {
                     date: environment.date,
                     engagedOperator: environment.engagedOperator,
                     screenShareHandler: environment.screenShareHandler,
-                    proximityManager: environment.proximityManager
+                    proximityManager: environment.proximityManager,
+                    log: environment.log
                 ),
                 theme: environment.viewFactory.theme,
                 call: .init(
@@ -265,10 +270,12 @@ private extension CallVisualizer.Coordinator {
                 switch newStatus {
                 case .started:
                     self?.createScreenShareBubbleView()
+                    self?.environment.log.prefixed(Self.self).info("Screen sharing started")
                 case .stopped:
                     self?.screenSharingCoordinator?.viewController?.dismiss(animated: true)
                     self?.screenSharingCoordinator = nil
                     self?.removeBubbleView()
+                    self?.environment.log.prefixed(Self.self).info("Screen sharing ended")
                 }
             }
     }

@@ -591,6 +591,7 @@
 		AFCF8A5A2A02A97100B7ABB3 /* ChatItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCF8A592A02A97100B7ABB3 /* ChatItemTests.swift */; };
 		AFCF8A5C2A02AB3000B7ABB3 /* OutgoingMessage.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCF8A5B2A02AB3000B7ABB3 /* OutgoingMessage.Mock.swift */; };
 		AFD3C52C2A472B7500BC37A9 /* VisitorInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD3C52B2A472B7500BC37A9 /* VisitorInfoModel.swift */; };
+		AFE7C7F82B28F15B00997B6A /* Logger.Implementation.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFE7C7F72B28F15B00997B6A /* Logger.Implementation.swift */; };
 		AFEF5C6F29928DB0005C3D8D /* SecureConversations.FileUploadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFEF5C6E29928DB0005C3D8D /* SecureConversations.FileUploadView.swift */; };
 		AFEF5C7129929601005C3D8D /* SecureConversations.FilePreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFEF5C7029929601005C3D8D /* SecureConversations.FilePreviewView.swift */; };
 		AFEF5C7429929A8D005C3D8D /* SecureConversations.FileUploadListViewModel.Environment.Failing.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFEF5C7329929A8D005C3D8D /* SecureConversations.FileUploadListViewModel.Environment.Failing.swift */; };
@@ -1347,6 +1348,7 @@
 		AFCF8A592A02A97100B7ABB3 /* ChatItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatItemTests.swift; sourceTree = "<group>"; };
 		AFCF8A5B2A02AB3000B7ABB3 /* OutgoingMessage.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutgoingMessage.Mock.swift; sourceTree = "<group>"; };
 		AFD3C52B2A472B7500BC37A9 /* VisitorInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorInfoModel.swift; sourceTree = "<group>"; };
+		AFE7C7F72B28F15B00997B6A /* Logger.Implementation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.Implementation.swift; sourceTree = "<group>"; };
 		AFEF5C6E29928DB0005C3D8D /* SecureConversations.FileUploadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.FileUploadView.swift; sourceTree = "<group>"; };
 		AFEF5C7029929601005C3D8D /* SecureConversations.FilePreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.FilePreviewView.swift; sourceTree = "<group>"; };
 		AFEF5C7329929A8D005C3D8D /* SecureConversations.FileUploadListViewModel.Environment.Failing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.FileUploadListViewModel.Environment.Failing.swift; sourceTree = "<group>"; };
@@ -3530,6 +3532,7 @@
 				AF77530F2B19EB9500E523A2 /* Logger.Interface.swift */,
 				AF7753112B19EC3200E523A2 /* Logger.Live.swift */,
 				AF7753132B19ED4F00E523A2 /* Logger.Mock.swift */,
+				AFE7C7F72B28F15B00997B6A /* Logger.Implementation.swift */,
 			);
 			path = Logger;
 			sourceTree = "<group>";
@@ -4587,6 +4590,7 @@
 				75940983298D38C2008B173A /* VisitorCodeViewModel+Delegate.swift in Sources */,
 				C07FA04B29AF83B900E9FB7F /* ActionButton.Mock.swift in Sources */,
 				C0D2F08C29A4EBA900803B47 /* VIdeoCallView.Environment.Mock.swift in Sources */,
+				AFE7C7F82B28F15B00997B6A /* Logger.Implementation.swift in Sources */,
 				313EBD552943116E008E9597 /* SecureConversations.swift in Sources */,
 				7529F2B627E1EB9A004D3581 /* Survey.ButtonView.swift in Sources */,
 				C49A29E42614A29700819269 /* FilePreviewView.swift in Sources */,

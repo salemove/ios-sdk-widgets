@@ -38,5 +38,9 @@ extension CallVisualizer {
                 hostingController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor)
             ])
         }
+
+        deinit {
+            model.environment.log.prefixed(Self.self).info("Destroy End Screen Sharing screen")
+        }
     }
 }

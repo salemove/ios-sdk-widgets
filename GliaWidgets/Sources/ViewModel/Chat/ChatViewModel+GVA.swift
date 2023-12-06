@@ -128,6 +128,7 @@ private extension ChatViewModel {
                     )
                 }
             case .failure:
+                self.environment.log.prefixed(Self.self).info("Show Unexpected error Dialog")
                 self.showAlert(
                     with: self.alertConfiguration.unexpectedError,
                     dismissed: nil

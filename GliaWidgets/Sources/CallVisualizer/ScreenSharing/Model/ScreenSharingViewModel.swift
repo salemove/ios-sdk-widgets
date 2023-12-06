@@ -97,6 +97,7 @@ extension CallVisualizer.ScreenSharingView.Model {
         let orientationManager: OrientationManager
         let uiApplication: UIKitBased.UIApplication
         let screenShareHandler: ScreenShareHandler
+        var log: CoreSdkClient.Logger
     }
 
     enum DelegateEvent {

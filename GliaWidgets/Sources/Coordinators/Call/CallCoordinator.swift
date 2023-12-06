@@ -57,6 +57,7 @@ private extension CallCoordinator {
         call: Call,
         startAction: CallViewModel.StartAction
     ) -> CallViewController {
+        environment.log.prefixed(Self.self).info("Create Call screen")
         let viewModel = CallViewModel(
             interactor: interactor,
             alertConfiguration: viewFactory.theme.alertConfiguration,
@@ -82,7 +83,8 @@ private extension CallCoordinator {
                 fileUploadListStyle: viewFactory.theme.chatStyle.messageEntry.uploadList,
                 createFileUploadListModel: environment.createFileUploadListModel,
                 createSendMessagePayload: environment.createSendMessagePayload,
-                proximityManager: environment.proximityManager
+                proximityManager: environment.proximityManager,
+                log: environment.log
             ),
             call: call,
             unreadMessages: unreadMessages,
@@ -98,7 +100,8 @@ private extension CallCoordinator {
             viewModel: viewModel,
             viewFactory: viewFactory,
             environment: .init(
-                notificationCenter: environment.notificationCenter
+                notificationCenter: environment.notificationCenter,
+                log: environment.log
             )
         )
     }
@@ -150,5 +153,6 @@ extension CallCoordinator {
         var createFileUploadListModel: SecureConversations.FileUploadListViewModel.Create
         var createSendMessagePayload: CoreSdkClient.CreateSendMessagePayload
         var proximityManager: ProximityManager
+        var log: CoreSdkClient.Logger
     }
 }

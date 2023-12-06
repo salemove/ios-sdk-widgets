@@ -76,6 +76,8 @@ extension ChatViewModelTests {
         interactorEnv.gcd.mainQueue.asyncIfNeeded = { _ in }
         interactorEnv.coreSdk.queueForEngagement = { _, _ in }
         interactorEnv.coreSdk.configureWithInteractor = { _ in }
+        interactorEnv.log.infoClosure = { _, _, _, _ in }
+        interactorEnv.log.prefixedClosure = { _ in interactorEnv.log }
 
         let interactorMock = Interactor.mock(environment: interactorEnv)
         interactorMock.state = .none

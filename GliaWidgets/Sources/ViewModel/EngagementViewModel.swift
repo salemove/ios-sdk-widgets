@@ -147,7 +147,7 @@ class EngagementViewModel: CommonEngagementModel {
                     self.endSession()
                     return
                 }
-
+                self.environment.log.prefixed(Self.self).info("Show Engagement Ended Dialog")
                 self.engagementAction?(
                     .showSingleActionAlert(
                         self.alertConfiguration.operatorEndedEngagement,
@@ -194,10 +194,12 @@ class EngagementViewModel: CommonEngagementModel {
     }
 
     func showAlert(for error: Error) {
+        environment.log.prefixed(Self.self).info("Show Unexpected error Dialog")
         showAlert(with: alertConfiguration.unexpectedError)
     }
 
     func showAlert(for error: CoreSdkClient.SalemoveError) {
+        environment.log.prefixed(Self.self).info("Show Unexpected error Dialog")
         showAlert(with: alertConfiguration.unexpectedError)
     }
 
@@ -218,12 +220,16 @@ class EngagementViewModel: CommonEngagementModel {
     }
 
     func updateScreenSharingState(to state: CoreSdkClient.VisitorScreenSharingState) {
+        if state.status == .sharing {
+            environment.log.prefixed(Self.self).info("Screen sharing started")
+        }
         screenShareHandler.updateState(state)
     }
 
     func endScreenSharing() {
         screenShareHandler.stop(nil)
         engagementAction?(.showEndButton)
+        environment.log.prefixed(Self.self).info("Screen sharing ended")
     }
 
     func endSession() {
@@ -244,14 +250,21 @@ private extension EngagementViewModel {
         let configuration = alertConfiguration.screenShareOffer
         engagementAction?(.offerScreenShare(
             configuration.withOperatorName(operatorName),
-            accepted: { answer(true) },
-            declined: { answer(false) }
+            accepted: { [environment] in
+                environment.log.prefixed(Self.self).info("Screen sharing accepted by visitor")
+                answer(true)
+            },
+            declined: { [environment] in
+                environment.log.prefixed(Self.self).info("Screen sharing declined by visitor")
+                answer(false)
+            }
         ))
     }
 
     private func closeTapped() {
         switch interactor.state {
         case .enqueueing, .enqueued:
+            environment.log.prefixed(Self.self).info("Show Exit Queue Dialog")
             engagementAction?(
                 .confirm(
                     alertConfiguration.leaveQueue,
@@ -262,6 +275,7 @@ private extension EngagementViewModel {
                 )
             )
         case .engaged:
+            environment.log.prefixed(Self.self).info("Show End Engagement Dialog")
             engagementAction?(
                 .confirm(
                     alertConfiguration.endEngagement,
@@ -287,18 +301,21 @@ private extension EngagementViewModel {
                     dismissed: { self.endSession() }
                 )
             case .queueFull:
+                environment.log.prefixed(Self.self).info("Show No More Operators Dialog")
                 showAlert(
                     with: alertConfiguration.operatorsUnavailable,
                     accessibilityIdentifier: "alert_queue_full",
                     dismissed: { self.endSession() }
                 )
             default:
+                environment.log.prefixed(Self.self).info("Show Unexpected error Dialog")
                 showAlert(
                     with: alertConfiguration.unexpectedError,
                     dismissed: { self.endSession() }
                 )
             }
         default:
+            environment.log.prefixed(Self.self).info("Show Unexpected error Dialog")
             showAlert(
                 with: alertConfiguration.unexpectedError,
                 dismissed: { self.endSession() }

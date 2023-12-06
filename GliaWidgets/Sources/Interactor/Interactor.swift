@@ -110,6 +110,17 @@ extension Interactor {
     ) {
         state = .enqueueing
 
+        switch mediaType {
+        case .text:
+             environment.log.prefixed(Self.self).info("Start queueing for chat engagement")
+        case .audio, .video:
+            environment.log.prefixed(Self.self).info("Start queueing for media engagement")
+        case .unknown, .phone, .messaging:
+            break
+        @unknown default:
+            break
+        }
+
         let options = mediaType == .audio || mediaType == .video
         ? CoreSdkClient.EngagementOptions(mediaDirection: .twoWay)
         : nil
@@ -132,9 +143,11 @@ extension Interactor {
         ) { [weak self] result in
             switch result {
             case .failure(let error):
+                self?.environment.log.prefixed(Self.self).info("Queue for engagement stopped due to error or empty queue")
                 self?.state = .ended(.byError)
                 failure(error)
             case .success(let ticket):
+
                 if case .enqueueing = self?.state {
                     self?.state = .enqueued(ticket)
                 }
@@ -186,6 +199,7 @@ extension Interactor {
         success: @escaping () -> Void,
         failure: @escaping (CoreSdkClient.SalemoveError) -> Void
     ) {
+        environment.log.prefixed(Self.self).info("Cancel queue ticket")
         environment.coreSdk.cancelQueueTicket(ticket) { [weak self] _, error in
             if let error = error {
                 failure(error)
@@ -255,7 +269,11 @@ extension Interactor: CoreSdkClient.Interactable {
     }
 
     var onEngagementTransferring: CoreSdkClient.EngagementTransferringBlock {
-        return { [weak self] in
+        return { [weak self, environment] in
+            environment.log.prefixed(Self.self).info(
+                "Transfer engagement",
+                function: "\(\Interactor.onEngagementTransferring)"
+            )
             self?.notify(.engagementTransferring)
         }
     }

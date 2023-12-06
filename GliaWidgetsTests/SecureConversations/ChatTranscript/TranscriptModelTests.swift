@@ -7,6 +7,10 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
 
     func testEmptyQueueSetsIsSecureConversationsAvailableToFalse() {
         var modelEnv = TranscriptModel.Environment.failing
+        var logger = CoreSdkClient.Logger.failing
+        logger.prefixedClosure = { _ in logger }
+        logger.infoClosure = { _, _, _, _ in }
+        modelEnv.log = logger
         modelEnv.fileManager = .mock
         modelEnv.createFileUploadListModel = { _ in .mock() }
         modelEnv.listQueues = { callback in callback([], nil) }
@@ -31,6 +35,10 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
 
     func testUnauthenticatedVisitorSetsIsSecureConversationsAvailableToFalse() {
         var modelEnv = TranscriptModel.Environment.failing
+        var logger = CoreSdkClient.Logger.failing
+        logger.prefixedClosure = { _ in logger }
+        logger.infoClosure = { _, _, _, _ in }
+        modelEnv.log = logger
         modelEnv.fileManager = .mock
         modelEnv.createFileUploadListModel = { _ in .mock() }
         modelEnv.listQueues = { callback in callback(nil, .mock()) }
@@ -547,6 +555,10 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnvironment.createFileUploadListModel = {
             .mock(environment: $0)
         }
+        var logger = CoreSdkClient.Logger.failing
+        logger.prefixedClosure = { _ in logger }
+        logger.infoClosure = { _, _, _, _ in }
+        modelEnvironment.log = logger
         var availabilityEnv = SecureConversations.Availability.Environment.failing
         availabilityEnv.listQueues = { callback in
             callback([], nil)
@@ -565,6 +577,10 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
 
     func testIsSecureConversationsAvailableIsFalseDueToUnauthenticated() {
         var modelEnvironment = TranscriptModel.Environment.failing
+        var logger = CoreSdkClient.Logger.failing
+        logger.prefixedClosure = { _ in logger }
+        logger.infoClosure = { _, _, _, _ in }
+        modelEnvironment.log = logger
         modelEnvironment.fileManager = .mock
         modelEnvironment.createFileUploadListModel = {
             .mock(environment: $0)
@@ -587,6 +603,10 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
 
     func testIsSecureConversationsAvailableIsFalseDueToListQueuesError() {
         var modelEnvironment = TranscriptModel.Environment.failing
+        var logger = CoreSdkClient.Logger.failing
+        logger.prefixedClosure = { _ in logger }
+        logger.infoClosure = { _, _, _, _ in }
+        modelEnvironment.log = logger
         modelEnvironment.fileManager = .mock
         modelEnvironment.createFileUploadListModel = {
             .mock(environment: $0)
@@ -609,6 +629,10 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
 
     func testIsSecureConversationsAvailableIsTrue() {
         var modelEnvironment = TranscriptModel.Environment.failing
+        var logger = CoreSdkClient.Logger.failing
+        logger.prefixedClosure = { _ in logger }
+        logger.infoClosure = { _, _, _, _ in }
+        modelEnvironment.log = logger
         modelEnvironment.fileManager = .mock
         modelEnvironment.createFileUploadListModel = {
             .mock(environment: $0)
@@ -631,6 +655,10 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
 
     func testSetIsSecureConversationsAvailableCallsAction() throws {
         var modelEnvironment = TranscriptModel.Environment.failing
+        var logger = CoreSdkClient.Logger.failing
+        logger.prefixedClosure = { _ in logger }
+        logger.infoClosure = { _, _, _, _ in }
+        modelEnvironment.log = logger
         modelEnvironment.fileManager = .mock
         modelEnvironment.createFileUploadListModel = {
             .mock(environment: $0)

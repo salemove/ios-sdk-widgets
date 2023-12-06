@@ -86,6 +86,7 @@ extension EngagementCoordinator.Environment {
             return .mock()
         },
         orientationManager: .mock(),
-        proximityManager: .failing
+        proximityManager: .failing,
+        log: .failing
     )
 }

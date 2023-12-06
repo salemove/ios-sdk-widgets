@@ -85,7 +85,8 @@ public class Glia {
             getCurrentEngagement: environment.coreSdk.getCurrentEngagement,
             eventHandler: onEvent,
             orientationManager: environment.orientationManager,
-            proximityManager: environment.proximityManager
+            proximityManager: environment.proximityManager,
+            log: loggerPhase.logger
         )
     )
     var rootCoordinator: EngagementCoordinator?
@@ -101,13 +102,24 @@ public class Glia {
     init(environment: Environment) {
         self.environment = environment
         self.theme = Theme()
-        self.loggerPhase = .notConfigured(
-            .init(
-                NotConfiguredLogger(
-                    environment: .init(print: environment.print)
-                )
-            )
-        )
+
+        do {
+            let logger = try environment.coreSdk.createLogger(CoreSdkClient.Logger.loggerParameters)
+            if environment.conditionalCompilation.isDebug() {
+            // In debug mode local and remote logs are turned off.
+                try logger.configureLocalLogLevel(.none)
+                try logger.configureRemoteLogLevel(.none)
+            // In non-debug mode local logs are turned off and remote are on.
+            } else {
+                try logger.configureLocalLogLevel(.none)
+                try logger.configureRemoteLogLevel(.info)
+            }
+
+            loggerPhase = .configured(logger)
+        } catch {
+            environment.print("Unable to configure logger: '\(error)'.")
+            self.loggerPhase = .notConfigured(.notConfigured)
+        }
     }
 
     /// Setup SDK using specific engagement configuration without starting the engagement.
@@ -151,9 +163,9 @@ public class Glia {
             switch result {
             case .success:
                 defer {
-                    self.setupLogging()
+                    self.loggerPhase.logger.prefixed(Self.self).info("Initialize Glia Widgets SDK")
                     if uiConfig != nil {
-                        self.loggerPhase.logger.remoteLogger?.oneTime.prefixed(Self.self)
+                        self.loggerPhase.logger.remoteLogger?.prefixed(Self.self)
                             .info("Setting Unified UI Config")
                     }
                 }
@@ -225,6 +237,7 @@ public class Glia {
     /// because `GliaError.clearingVisitorSessionDuringEngagementIsNotAllowed` will occur otherwise.
     ///
     public func clearVisitorSession(_ completion: @escaping (Result<Void, Error>) -> Void) {
+        loggerPhase.logger.prefixed(Self.self).info("Clear visitor session")
         guard environment.coreSdk.getCurrentEngagement() == nil else {
             completion(.failure(GliaError.clearingVisitorSessionDuringEngagementIsNotAllowed))
             return
@@ -301,6 +314,8 @@ public class Glia {
 
     /// Ends active engagement if existing and closes Widgets SDK UI (includes bubble).
     public func endEngagement(_ completion: @escaping (Result<Void, Error>) -> Void) {
+        loggerPhase.logger.prefixed(Self.self).info("End engagement by integrator")
+
         defer {
             onEvent?(.ended)
             rootCoordinator = nil
@@ -361,8 +376,14 @@ extension Glia {
                     self?.callVisualizer.offerScreenShare(
                         from: operators ?? [],
                         configuration: Theme().alertConfiguration.screenShareOffer,
-                        accepted: { answer(true) },
-                        declined: { answer(false) }
+                        accepted: { [weak self] in
+                            self?.loggerPhase.logger.prefixed(Self.self).info("Screen sharing accepted by visitor")
+                            answer(true)
+                        },
+                        declined: {
+                            self?.loggerPhase.logger.prefixed(Self.self).info("Screen sharing declined by visitor")
+                            answer(false)
+                        }
                     )
                 }
             case let .upgradeOffer(offer, answer):
@@ -384,9 +405,12 @@ extension Glia {
                 if case .ended = state {
                     self?.callVisualizer.endSession()
                     self?.onEvent?(.ended)
+                    self?.loggerPhase.logger.prefixed(Self.self).info("Engagement ended")
                 } else if case .engaged = state {
+                    self?.loggerPhase.logger.prefixed(Self.self).info("New Call visualizer engagement loaded")
                     self?.callVisualizer.handleEngagementRequestAccepted()
                     self?.onEvent?(.started)
+                    self?.loggerPhase.logger.prefixed(Self.self).info("Engagement started")
                 }
             default:
                 break
@@ -402,7 +426,11 @@ extension Glia {
         let interactor = Interactor(
             visitorContext: configuration.visitorContext,
             queueIds: queueIds,
-            environment: .init(coreSdk: environment.coreSdk, gcd: environment.gcd)
+            environment: .init(
+                coreSdk: environment.coreSdk,
+                gcd: environment.gcd,
+                log: loggerPhase.logger
+            )
         )
 
         interactor.state = environment.coreSdk

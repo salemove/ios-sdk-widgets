@@ -324,3 +324,18 @@ extension SecureConversations.ChatWithTranscriptModel {
 extension SecureConversations {
     typealias ChatWithTranscriptModel = SecureChatModel<ChatViewModel, TranscriptModel>
 }
+
+extension SecureConversations.ChatWithTranscriptModel {
+    var environment: Environment {
+        switch self {
+        case let .chat(model):
+            return .init(log: model.environment.log)
+        case let .transcript(model):
+            return .init(log: model.environment.log)
+        }
+    }
+
+    struct Environment {
+        var log: CoreSdkClient.Logger
+    }
+}
