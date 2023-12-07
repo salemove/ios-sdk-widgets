@@ -17,7 +17,13 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
         self.viewModel = viewModel
         self.environment = environment
 
-        super.init(viewModel: viewModel.engagementModel, viewFactory: environment.viewFactory)
+        super.init(
+            viewModel: viewModel.engagementModel,
+            environment: .init(
+                viewFactory: environment.viewFactory,
+                snackBar: environment.snackBar
+            )
+        )
     }
 
     override public func loadView() {
@@ -175,7 +181,7 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
                 break
             case .showSnackBarView:
                 let style = self.environment.viewFactory.theme.snackBarStyle
-                self.snackBar.present(
+                self.environment.snackBar.present(
                     text: style.text,
                     style: style,
                     for: self,

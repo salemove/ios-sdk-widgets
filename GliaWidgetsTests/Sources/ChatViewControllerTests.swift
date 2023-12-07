@@ -28,11 +28,54 @@ class ChatViewControllerTests: XCTestCase {
                 environment: .init(
                     timerProviding: .mock,
                     viewFactory: .mock(),
-                    gcd: .mock
+                    gcd: .mock,
+                    snackBar: .mock
                 )
             )
             weakViewController = viewController
         }
         XCTAssertNil(weakViewController, "ChatViewController not deinitilized")
+    }
+
+    func testLiveObservationIndicatorIsPresented() throws {
+        enum Call { case presentSnackBar }
+        var calls: [Call] = []
+
+        var viewModelEnv = ChatViewModel.Environment.failing { completion in
+            completion(.success([]))
+        }
+        let site = try CoreSdkClient.Site.mock(
+            mobileConfirmDialogEnabled: false,
+            mobileObservationIndicationEnabled: true
+        )
+        viewModelEnv.fetchSiteConfigurations = { completion in
+            completion(.success(site))
+        }
+        viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
+        viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
+        viewModelEnv.createFileUploadListModel = { _ in .mock() }
+
+        let interactor = Interactor.failing
+        interactor.environment.gcd.mainQueue.asyncIfNeeded = { $0() }
+        let viewModel = ChatViewModel.mock(interactor: interactor, environment: viewModelEnv)
+
+        var snackBar = SnackBar.failing
+        snackBar.present = { _, _, _, _, _, _ in
+            calls.append(.presentSnackBar)
+        }
+        let env = ChatViewController.Environment(
+            timerProviding: .failing,
+            viewFactory: .mock(),
+            gcd: .failing,
+            snackBar: snackBar
+        )
+        let viewController = ChatViewController(
+            viewModel: .chat(viewModel),
+            environment: env
+        )
+        viewController.loadView()
+        interactor.state = .engaged(nil)
+
+        XCTAssertEqual(calls, [.presentSnackBar])
     }
 }

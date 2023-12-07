@@ -97,11 +97,12 @@ private extension CallCoordinator {
         }
         return CallViewController(
             viewModel: viewModel,
-            viewFactory: viewFactory,
             environment: .init(
+                viewFactory: viewFactory,
                 notificationCenter: environment.notificationCenter,
                 timerProviding: environment.timerProviding,
-                gcd: environment.gcd
+                gcd: environment.gcd,
+                snackBar: environment.snackBar
             )
         )
     }
@@ -155,5 +156,6 @@ extension CallCoordinator {
         var createFileUploadListModel: SecureConversations.FileUploadListViewModel.Create
         var createSendMessagePayload: CoreSdkClient.CreateSendMessagePayload
         var proximityManager: ProximityManager
+        var snackBar: SnackBar
     }
 }

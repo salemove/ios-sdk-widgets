@@ -4,15 +4,20 @@ import UIKit
 extension CallViewController {
     static func mock(
         viewModel: CallViewModel = .mock(),
-        viewFactory: ViewFactory = .mock()
+        viewFactory: ViewFactory = .mock(),
+        notificationCenter: FoundationBased.NotificationCenter = .mock,
+        timerProviding: FoundationBased.Timer.Providing = .mock,
+        gcd: GCD = .mock,
+        snackBar: SnackBar = .mock
     ) -> CallViewController {
         .init(
             viewModel: viewModel,
-            viewFactory: viewFactory,
             environment: .init(
-                notificationCenter: .mock,
-                timerProviding: .mock,
-                gcd: .mock
+                viewFactory: viewFactory,
+                notificationCenter: notificationCenter,
+                timerProviding: timerProviding,
+                gcd: gcd,
+                snackBar: snackBar
             )
         )
     }

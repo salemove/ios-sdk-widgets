@@ -30,7 +30,8 @@ extension Glia.Environment {
         coreSDKConfigurator: .mock,
         proximityManager: .mock,
         print: .mock,
-        conditionalCompilation: .mock
+        conditionalCompilation: .mock,
+        snackBar: .mock
     )
 }
 

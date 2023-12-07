@@ -24,5 +24,6 @@ extension CallVisualizer.Coordinator {
         var proximityManager: ProximityManager
         var interactorProviding: Interactor?
         var fetchSiteConfigurations: CoreSdkClient.FetchSiteConfigurations
+        var snackBar: SnackBar
     }
 }

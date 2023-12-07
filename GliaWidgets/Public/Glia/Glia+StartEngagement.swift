@@ -167,7 +167,8 @@ extension Glia {
                 pushNotifications: environment.coreSdk.pushNotifications,
                 createSendMessagePayload: environment.coreSdk.createSendMessagePayload,
                 orientationManager: environment.orientationManager,
-                proximityManager: environment.proximityManager
+                proximityManager: environment.proximityManager,
+                snackBar: environment.snackBar
             )
         )
         rootCoordinator?.delegate = { [weak self] event in

@@ -260,7 +260,8 @@ extension EngagementCoordinator {
                 stopSocketObservation: environment.stopSocketObservation,
                 createSendMessagePayload: environment.createSendMessagePayload,
                 proximityManager: environment.proximityManager,
-                timerProviding: environment.timerProviding
+                timerProviding: environment.timerProviding,
+                snackBar: environment.snackBar
             ),
             startWithSecureTranscriptFlow: false
         )
@@ -354,7 +355,8 @@ extension EngagementCoordinator {
                 fetchChatHistory: environment.fetchChatHistory,
                 createFileUploadListModel: environment.createFileUploadListModel,
                 createSendMessagePayload: environment.createSendMessagePayload,
-                proximityManager: environment.proximityManager
+                proximityManager: environment.proximityManager,
+                snackBar: environment.snackBar
             )
         )
         coordinator.delegate = { [weak self] event in
@@ -489,7 +491,8 @@ extension EngagementCoordinator {
                 createSendMessagePayload: environment.createSendMessagePayload,
                 orientationManager: environment.orientationManager,
                 proximityManager: environment.proximityManager,
-                timerProviding: environment.timerProviding
+                timerProviding: environment.timerProviding,
+                snackBar: environment.snackBar
             )
         )
 

@@ -3,8 +3,6 @@ import UIKit
 
 extension CallVisualizer {
     final class Coordinator {
-        private let snackBar = SnackBar()
-
         init(environment: Environment) {
             self.environment = environment
             self.bubbleView = environment.viewFactory.makeBubbleView()
@@ -538,7 +536,7 @@ private extension CallVisualizer.Coordinator {
 private extension CallVisualizer.Coordinator {
     func showSnackBarMessage() {
         let style = environment.viewFactory.theme.snackBar
-        snackBar.present(
+        environment.snackBar.present(
             text: style.text,
             style: style,
             for: topMostViewController,

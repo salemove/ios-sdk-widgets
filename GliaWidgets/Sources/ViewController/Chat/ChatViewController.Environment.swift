@@ -5,5 +5,6 @@ extension ChatViewController {
         var timerProviding: FoundationBased.Timer.Providing
         var viewFactory: ViewFactory
         var gcd: GCD
+        var snackBar: SnackBar
     }
 }
