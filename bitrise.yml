@@ -39,6 +39,10 @@ workflows:
     - git-clone@8: {}
     - cache-pull@2: {}
     - certificate-and-profile-installer@1: {}
+    - script:
+        inputs:
+        - content: |-
+            bundle install
     - cocoapods-install@2: {}
     - recreate-user-schemes@1:
         inputs:
@@ -66,6 +70,10 @@ workflows:
         - clone_depth: "-1"
         - fetch_tags: "yes"
     - cache-pull@2: {}
+    - script:
+        inputs:
+        - content: |-
+            bundle install
     - cocoapods-install@2: {}
     - xcode-test@4:
         inputs:
@@ -97,6 +105,10 @@ workflows:
     - git-clone@8: {}
     - cache-pull@2: {}
     - certificate-and-profile-installer@1: {}
+    - script:
+        inputs:
+        - content: |-
+            bundle install
     - cocoapods-install@2: {}
     - recreate-user-schemes@1:
         inputs:
@@ -173,7 +185,11 @@ workflows:
             make clone-snapshots-ci repo_url="https://$GITHUB_USERNAME:$GITHUB_API_TOKEN@$SNAPSHOTS_REPO"
     - cache-pull@2: {}
     - certificate-and-profile-installer@1: {}
-    - cocoapods-install@2: {}
+    - script:
+        inputs:
+        - content: |-
+            bundle install
+    - cocoapods-install: {}
     - recreate-user-schemes@1:
         inputs:
         - project_path: $BITRISE_PROJECT_PATH
@@ -214,9 +230,19 @@ workflows:
             set -x
 
             git checkout development
-    - cocoapods-install@2:
+    - script@1:
         inputs:
-        - command: update
+        - content: |-
+            #!/usr/bin/env bash
+            # fail if any commands fails
+            set -e
+            # make pipelines' return status equal the last command to exit with a non-zero status, or zero if all commands exit successfully
+            set -o pipefail
+            # debug log
+            set -x
+
+            cd $BITRISE_SOURCE_DIR
+            pod update --repo-update
     - fastlane@3:
         inputs:
         - lane: ios create_pr_for_dependencies_update version:$VERSION checksum:$CHECKSUM
@@ -227,6 +253,10 @@ workflows:
     - git-clone@8: {}
     - cache-pull@2: {}
     - certificate-and-profile-installer@1: {}
+    - script:
+        inputs:
+        - content: |-
+            bundle install
     - cocoapods-install@2: {}
     - bitrise-step-stamp-appicon-with-version-number@1:
         inputs:
