@@ -417,7 +417,6 @@ extension Glia {
                     self?.loggerPhase.logger.prefixed(Self.self).info("Engagement ended")
                 } else if case .engaged = state {
                     self?.loggerPhase.logger.prefixed(Self.self).info("New Call visualizer engagement loaded")
-                    self?.callVisualizer.handleEngagementRequestAccepted()
                     self?.onEvent?(.started)
                     self?.loggerPhase.logger.prefixed(Self.self).info("Engagement started")
                 }
