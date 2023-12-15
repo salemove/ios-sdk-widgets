@@ -109,7 +109,7 @@ extension Interactor {
         success: @escaping () -> Void,
         failure: @escaping (CoreSdkClient.SalemoveError) -> Void
     ) {
-        state = .enqueueing
+        state = .enqueueing(mediaType)
 
         switch mediaType {
         case .text:
