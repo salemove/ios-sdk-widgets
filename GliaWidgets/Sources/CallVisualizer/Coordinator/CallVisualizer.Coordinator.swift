@@ -222,16 +222,13 @@ extension CallVisualizer.Coordinator {
                 date: environment.date,
                 engagedOperator: environment.engagedOperator,
                 screenShareHandler: environment.screenShareHandler,
-                proximityManager: environment.proximityManager
+                proximityManager: environment.proximityManager,
+                log: environment.log
             ),
             theme: environment.viewFactory.theme,
             call: .init(
                 .video(direction: .twoWay),
                 environment: .init(
-                    theme: environment.viewFactory.theme,
-                    screenShareHandler: environment.screenShareHandler,
-                    orientationManager: environment.orientationManager,
-                    log: environment.log,
                     audioSession: environment.audioSession,
                     uuid: environment.uuid
                 )
@@ -344,7 +341,8 @@ extension CallVisualizer.Coordinator {
             environment: .init(
                 theme: environment.viewFactory.theme,
                 screenShareHandler: environment.screenShareHandler,
-                orientationManager: environment.orientationManager
+                orientationManager: environment.orientationManager,
+                log: environment.log
             )
         )
 
