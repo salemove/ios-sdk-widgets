@@ -60,7 +60,8 @@ public final class CallVisualizer {
                 proximityManager: environment.proximityManager,
                 log: environment.log,
                 interactorProviding: environment.interactorProviding(),
-                fetchSiteConfigurations: environment.fetchSiteConfigurations
+                fetchSiteConfigurations: environment.fetchSiteConfigurations,
+                snackBar: environment.snackBar
             )
         )
     }()

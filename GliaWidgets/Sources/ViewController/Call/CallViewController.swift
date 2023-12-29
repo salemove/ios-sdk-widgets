@@ -4,10 +4,19 @@ final class CallViewController: EngagementViewController {
     private let viewModel: CallViewModel
     private let environment: Environment
 
-    init(viewModel: CallViewModel, viewFactory: ViewFactory, environment: Environment) {
+    init(
+        viewModel: CallViewModel,
+        environment: Environment
+    ) {
         self.environment = environment
         self.viewModel = viewModel
-        super.init(viewModel: viewModel, viewFactory: viewFactory)
+        super.init(
+            viewModel: viewModel,
+            environment: .init(
+                viewFactory: environment.viewFactory,
+                snackBar: environment.snackBar
+            )
+        )
     }
 
     deinit {
@@ -139,7 +148,7 @@ private extension CallViewController {
 
     func showSnackBarView() {
         let style = viewFactory.theme.invertedSnackBar
-        snackBar.present(
+        environment.snackBar.present(
             text: style.text,
             style: style,
             for: self,
@@ -197,9 +206,11 @@ private extension CallButton.State {
 
 extension CallViewController {
     struct Environment {
+        var viewFactory: ViewFactory
         var notificationCenter: FoundationBased.NotificationCenter
         var log: CoreSdkClient.Logger
         var timerProviding: FoundationBased.Timer.Providing
         var gcd: GCD
+        var snackBar: SnackBar
     }
 }

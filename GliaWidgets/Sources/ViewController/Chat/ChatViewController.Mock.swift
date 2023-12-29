@@ -8,14 +8,17 @@ extension ChatViewController {
     static func mock(
         chatViewModel: ChatViewModel = .mock(),
         timerProviding: FoundationBased.Timer.Providing = .mock,
-        viewFactory: ViewFactory = .mock()
+        viewFactory: ViewFactory = .mock(),
+        gcd: GCD = .mock,
+        snackBar: SnackBar = .mock
     ) -> ChatViewController {
         ChatViewController(
             viewModel: .chat(chatViewModel),
             environment: .init(
                 timerProviding: timerProviding,
                 viewFactory: viewFactory,
-                gcd: .mock
+                gcd: gcd,
+                snackBar: snackBar
             )
         )
     }

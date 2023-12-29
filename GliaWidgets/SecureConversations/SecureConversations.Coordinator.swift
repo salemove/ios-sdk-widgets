@@ -291,7 +291,8 @@ extension SecureConversations.Coordinator {
                 createSendMessagePayload: environment.createSendMessagePayload,
                 proximityManager: environment.proximityManager,
                 log: environment.log,
-                timerProviding: environment.timerProviding
+                timerProviding: environment.timerProviding,
+                snackBar: environment.snackBar
             ),
             startWithSecureTranscriptFlow: true
         )
@@ -360,6 +361,7 @@ extension SecureConversations.Coordinator {
         var proximityManager: ProximityManager
         var log: CoreSdkClient.Logger
         var timerProviding: FoundationBased.Timer.Providing
+        var snackBar: SnackBar
     }
 
     enum DelegateEvent {

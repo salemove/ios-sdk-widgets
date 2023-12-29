@@ -59,7 +59,8 @@ extension Glia.Environment {
         coreSDKConfigurator: .failing,
         proximityManager: .failing,
         print: .failing,
-        conditionalCompilation: .failing
+        conditionalCompilation: .failing,
+        snackBar: .failing
     )
 }
 
