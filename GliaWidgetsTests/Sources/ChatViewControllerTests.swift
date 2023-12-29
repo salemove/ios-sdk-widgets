@@ -38,7 +38,9 @@ class ChatViewControllerTests: XCTestCase {
     }
 
     func testLiveObservationIndicatorIsPresented() throws {
-        enum Call { case presentSnackBar }
+        enum Call: Equatable {
+            case presentSnackBar, prefixedLog(String)
+        }
         var calls: [Call] = []
 
         var viewModelEnv = ChatViewModel.Environment.failing { completion in
@@ -54,7 +56,10 @@ class ChatViewControllerTests: XCTestCase {
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
         viewModelEnv.createFileUploadListModel = { _ in .mock() }
-
+        viewModelEnv.log.prefixedClosure = {
+            calls.append(.prefixedLog($0))
+            return .mock
+        }
         let interactor = Interactor.failing
         interactor.environment.gcd.mainQueue.asyncIfNeeded = { $0() }
         let viewModel = ChatViewModel.mock(interactor: interactor, environment: viewModelEnv)
@@ -76,6 +81,12 @@ class ChatViewControllerTests: XCTestCase {
         viewController.loadView()
         interactor.state = .engaged(nil)
 
-        XCTAssertEqual(calls, [.presentSnackBar])
+        XCTAssertEqual(
+            calls, [
+                .prefixedLog("ChatViewModel"),
+                .presentSnackBar,
+                .prefixedLog("ChatViewModel")
+            ]
+        )
     }
 }
