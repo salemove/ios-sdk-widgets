@@ -59,6 +59,7 @@ class CallViewControllerTests: XCTestCase {
         let env = CallViewController.Environment(
             viewFactory: .mock(),
             notificationCenter: notificationCenter,
+            log: .mock,
             timerProviding: .failing,
             gcd: .failing,
             snackBar: snackBar
