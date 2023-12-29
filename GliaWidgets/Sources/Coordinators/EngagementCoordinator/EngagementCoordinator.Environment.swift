@@ -38,5 +38,6 @@ extension EngagementCoordinator {
         var orientationManager: OrientationManager
         var proximityManager: ProximityManager
         var log: CoreSdkClient.Logger
+        var snackBar: SnackBar
     }
 }

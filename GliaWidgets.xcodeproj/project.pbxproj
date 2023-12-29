@@ -312,7 +312,7 @@
 		75CF8DAD29C8F2B500CB1524 /* SecureConversationsConfirmationScreenVoiceOverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CF8DAC29C8F2B500CB1524 /* SecureConversationsConfirmationScreenVoiceOverTests.swift */; };
 		75D987F82AF2BA500016A702 /* RemoteConfiguration+SnackBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D987F72AF2BA500016A702 /* RemoteConfiguration+SnackBar.swift */; };
 		75D987FA2AF2BB330016A702 /* Theme+SnackBarStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D987F92AF2BB330016A702 /* Theme+SnackBarStyle.swift */; };
-		75D987FC2AF2D9F90016A702 /* SnackBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D987FB2AF2D9F90016A702 /* SnackBar.swift */; };
+		75D987FC2AF2D9F90016A702 /* SnackBar.Live.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D987FB2AF2D9F90016A702 /* SnackBar.Live.swift */; };
 		75F58EE127E7D5300065BA2D /* Survey.ViewController.Props.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F58EE027E7D5300065BA2D /* Survey.ViewController.Props.swift */; };
 		75FF151427F3A2D600FE7BE2 /* Theme+Survey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FF151327F3A2D600FE7BE2 /* Theme+Survey.swift */; };
 		75FF151727F4E13900FE7BE2 /* Theme.Survey.BooleanQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FF151627F4E13900FE7BE2 /* Theme.Survey.BooleanQuestion.swift */; };
@@ -340,6 +340,10 @@
 		84520BE72B1769AB00F97617 /* ChatViewController.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84520BE62B1769AB00F97617 /* ChatViewController.Environment.swift */; };
 		84520BE92B176C6500F97617 /* ChatViewModel+LiveObservation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84520BE82B176C6500F97617 /* ChatViewModel+LiveObservation.swift */; };
 		84520BEB2B1887DF00F97617 /* CallVisualizer.Presenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84520BEA2B1887DF00F97617 /* CallVisualizer.Presenter.swift */; };
+		84520BED2B19FD3000F97617 /* CallVisualizerTests+LO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84520BEC2B19FD3000F97617 /* CallVisualizerTests+LO.swift */; };
+		84520BF12B208D7800F97617 /* SnackBar.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84520BF02B208D7800F97617 /* SnackBar.Mock.swift */; };
+		84520BF32B208DE200F97617 /* SnackBar.Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84520BF22B208DE200F97617 /* SnackBar.Interface.swift */; };
+		84520BF62B20936F00F97617 /* SnackBar.Failing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84520BF52B20936F00F97617 /* SnackBar.Failing.swift */; };
 		8458769F2823FD18007AC3DF /* SurveyViewControllerVoiceOverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8458769E2823FD18007AC3DF /* SurveyViewControllerVoiceOverTests.swift */; };
 		845876A22823FF34007AC3DF /* Survey.ViewController.Props.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845876A12823FF34007AC3DF /* Survey.ViewController.Props.Mock.swift */; };
 		845876A5282A9015007AC3DF /* ScaleQuestionView.Props.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845876A4282A9015007AC3DF /* ScaleQuestionView.Props.Accessibility.swift */; };
@@ -1083,7 +1087,7 @@
 		75CF8DAC29C8F2B500CB1524 /* SecureConversationsConfirmationScreenVoiceOverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversationsConfirmationScreenVoiceOverTests.swift; sourceTree = "<group>"; };
 		75D987F72AF2BA500016A702 /* RemoteConfiguration+SnackBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RemoteConfiguration+SnackBar.swift"; sourceTree = "<group>"; };
 		75D987F92AF2BB330016A702 /* Theme+SnackBarStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Theme+SnackBarStyle.swift"; sourceTree = "<group>"; };
-		75D987FB2AF2D9F90016A702 /* SnackBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnackBar.swift; sourceTree = "<group>"; };
+		75D987FB2AF2D9F90016A702 /* SnackBar.Live.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnackBar.Live.swift; sourceTree = "<group>"; };
 		75F58EE027E7D5300065BA2D /* Survey.ViewController.Props.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Survey.ViewController.Props.swift; sourceTree = "<group>"; };
 		75FF151327F3A2D600FE7BE2 /* Theme+Survey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Theme+Survey.swift"; sourceTree = "<group>"; };
 		75FF151627F4E13900FE7BE2 /* Theme.Survey.BooleanQuestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.Survey.BooleanQuestion.swift; sourceTree = "<group>"; };
@@ -1113,6 +1117,10 @@
 		84520BE62B1769AB00F97617 /* ChatViewController.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.Environment.swift; sourceTree = "<group>"; };
 		84520BE82B176C6500F97617 /* ChatViewModel+LiveObservation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatViewModel+LiveObservation.swift"; sourceTree = "<group>"; };
 		84520BEA2B1887DF00F97617 /* CallVisualizer.Presenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallVisualizer.Presenter.swift; sourceTree = "<group>"; };
+		84520BEC2B19FD3000F97617 /* CallVisualizerTests+LO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CallVisualizerTests+LO.swift"; sourceTree = "<group>"; };
+		84520BF02B208D7800F97617 /* SnackBar.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnackBar.Mock.swift; sourceTree = "<group>"; };
+		84520BF22B208DE200F97617 /* SnackBar.Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnackBar.Interface.swift; sourceTree = "<group>"; };
+		84520BF52B20936F00F97617 /* SnackBar.Failing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnackBar.Failing.swift; sourceTree = "<group>"; };
 		8458769E2823FD18007AC3DF /* SurveyViewControllerVoiceOverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurveyViewControllerVoiceOverTests.swift; sourceTree = "<group>"; };
 		845876A12823FF34007AC3DF /* Survey.ViewController.Props.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Survey.ViewController.Props.Mock.swift; sourceTree = "<group>"; };
 		845876A4282A9015007AC3DF /* ScaleQuestionView.Props.Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleQuestionView.Props.Accessibility.swift; sourceTree = "<group>"; };
@@ -1775,6 +1783,7 @@
 		1A205D6525655CB2003AA3CD /* GliaWidgetsTests */ = {
 			isa = PBXGroup;
 			children = (
+				84520BF42B20935B00F97617 /* LiveObservations */,
 				3146C9412AB1850A0047D8CC /* Resources */,
 				7552DFAF2A6FB37E0093519B /* ChatMessage */,
 				846A5C3729D18D220049B29F /* ScreenShareHandler */,
@@ -3044,7 +3053,9 @@
 		75D987F22AF29EF50016A702 /* SnackBarView */ = {
 			isa = PBXGroup;
 			children = (
-				75D987FB2AF2D9F90016A702 /* SnackBar.swift */,
+				84520BF22B208DE200F97617 /* SnackBar.Interface.swift */,
+				75D987FB2AF2D9F90016A702 /* SnackBar.Live.swift */,
+				84520BF02B208D7800F97617 /* SnackBar.Mock.swift */,
 				C0EC58CD2B02775100E78C70 /* SnackBar+View+Mock.swift */,
 				752A833B2AF59EDB005E468D /* SnackBar+View.swift */,
 				752A83392AF59EAE005E468D /* SnackBar+Presenter.swift */,
@@ -3164,6 +3175,14 @@
 				84520BE02B14B8F800F97617 /* WebViewStyle.swift */,
 			);
 			path = WebViewController;
+			sourceTree = "<group>";
+		};
+		84520BF42B20935B00F97617 /* LiveObservations */ = {
+			isa = PBXGroup;
+			children = (
+				84520BF52B20936F00F97617 /* SnackBar.Failing.swift */,
+			);
+			path = LiveObservations;
 			sourceTree = "<group>";
 		};
 		845876A02823FF21007AC3DF /* Mocks */ = {
@@ -3798,6 +3817,7 @@
 				84265E05298AE93700D65842 /* ScreenSharing */,
 				C096B40A297EBDE400F0C552 /* VisitorCodeTests.swift */,
 				846A5C3D29D1C7B00049B29F /* CallVisualizerTests.swift */,
+				84520BEC2B19FD3000F97617 /* CallVisualizerTests+LO.swift */,
 			);
 			path = CallVisualizer;
 			sourceTree = "<group>";
@@ -4665,6 +4685,7 @@
 				C0857DEB28D482D0008D171D /* Theme+Button.swift in Sources */,
 				EB2CBB1027D89F74004F178E /* OnHoldOverlayView.swift in Sources */,
 				9AB3401727F74D66006E0FE2 /* ChoiceCardStyle.Accessibility.swift in Sources */,
+				84520BF32B208DE200F97617 /* SnackBar.Interface.swift in Sources */,
 				9A8130B527D7563000220BBD /* LocalFile.Environment.Interface.swift in Sources */,
 				9AB3401B27FB4720006E0FE2 /* OperatorTypingIndicatorStyle.Accessibility.swift in Sources */,
 				1AA738B625790D9900E1120F /* ActionButton.swift in Sources */,
@@ -4773,7 +4794,7 @@
 				C0175A2A2A67D499001FACDE /* GvaStyle.swift in Sources */,
 				1A8B61D625C974D0000D780E /* ChatCallUpgradeStyle.swift in Sources */,
 				3100D92D296E946600DEC9CE /* SecureConversations.ConfirmationViewModel.swift in Sources */,
-				75D987FC2AF2D9F90016A702 /* SnackBar.swift in Sources */,
+				75D987FC2AF2D9F90016A702 /* SnackBar.Live.swift in Sources */,
 				3100EEFB293F363100D57F71 /* SecureConversations.WelcomeView.swift in Sources */,
 				1A475BBC25DFA10100296D55 /* UnreadMessagesHandler.swift in Sources */,
 				845E2F85283FA90200C04D56 /* Theme.Survey.ValidationError.Accessibility.swift in Sources */,
@@ -5016,6 +5037,7 @@
 				1A60B04A256C0E0100E53F53 /* ChatItemCell.swift in Sources */,
 				1A4AD3BE256D37FD00468BFB /* UITableView+Extensions.swift in Sources */,
 				9A19926327D3BA3A00161AAE /* GCD.Mock.swift in Sources */,
+				84520BF12B208D7800F97617 /* SnackBar.Mock.swift in Sources */,
 				1A4AD3C1256E74C600468BFB /* ThemeFont.swift in Sources */,
 				1A5F495525CBE84A003E3678 /* SettingsAlertConfiguration.swift in Sources */,
 				1A60AFEC2566A0E700E53F53 /* NavigationController.swift in Sources */,
@@ -5086,7 +5108,9 @@
 				9A8130C227D9095200220BBD /* FileDownload.Failing.swift in Sources */,
 				3189DD9429DEFAC600D68E9F /* SecureConversations.WelcomeViewModelSpec.swift in Sources */,
 				AF4D821C29D6E572007763F8 /* TranscriptModel.DividedChatItemsForUnreadCountTests.swift in Sources */,
+				84520BF62B20936F00F97617 /* SnackBar.Failing.swift in Sources */,
 				AF1C19802B14FE9F00F8810F /* ConditionalCompilationClient.Failing.swift in Sources */,
+				84520BED2B19FD3000F97617 /* CallVisualizerTests+LO.swift in Sources */,
 				9A19927027D3BCAE00161AAE /* GCD.Failing.swift in Sources */,
 				3142696A29FFB712003DF62E /* Interactor.Failing.swift in Sources */,
 				8491AF602AA1EBB600CC3E72 /* TranscriptModelTests+URLs.swift in Sources */,
