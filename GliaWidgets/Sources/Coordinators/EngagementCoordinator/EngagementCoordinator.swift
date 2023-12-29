@@ -270,7 +270,8 @@ extension EngagementCoordinator {
                 createSendMessagePayload: environment.createSendMessagePayload,
                 proximityManager: environment.proximityManager,
                 log: environment.log,
-                timerProviding: environment.timerProviding
+                timerProviding: environment.timerProviding,
+                snackBar: environment.snackBar
             ),
             startWithSecureTranscriptFlow: false
         )
@@ -365,7 +366,8 @@ extension EngagementCoordinator {
                 createFileUploadListModel: environment.createFileUploadListModel,
                 createSendMessagePayload: environment.createSendMessagePayload,
                 proximityManager: environment.proximityManager,
-                log: environment.log
+                log: environment.log,
+                snackBar: environment.snackBar
             )
         )
         coordinator.delegate = { [weak self] event in
@@ -504,7 +506,8 @@ extension EngagementCoordinator {
                 orientationManager: environment.orientationManager,
                 proximityManager: environment.proximityManager,
                 log: environment.log,
-                timerProviding: environment.timerProviding
+                timerProviding: environment.timerProviding,
+                snackBar: environment.snackBar
             )
         )
 

@@ -36,7 +36,8 @@ extension EngagementCoordinator.Environment {
         createSendMessagePayload: { _, _ in .mock() },
         orientationManager: .mock(),
         proximityManager: .mock,
-        log: .mock
+        log: .mock,
+        snackBar: .mock
     )
 }
 #endif

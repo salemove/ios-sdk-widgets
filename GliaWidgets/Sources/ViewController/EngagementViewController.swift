@@ -1,14 +1,19 @@
 import UIKit
 
 class EngagementViewController: UIViewController, AlertPresenter, MediaUpgradePresenter, ScreenShareOfferPresenter {
-    let viewFactory: ViewFactory
-    let snackBar = SnackBar()
+    var viewFactory: ViewFactory {
+        environment.viewFactory
+    }
+    private let environment: Environment
     private var viewModel: CommonEngagementModel
     private var pendingLiveObservationConfirmation: LiveObservation.Confirmation?
 
-    init(viewModel: CommonEngagementModel, viewFactory: ViewFactory) {
+    init(
+        viewModel: CommonEngagementModel,
+        environment: Environment
+    ) {
         self.viewModel = viewModel
-        self.viewFactory = viewFactory
+        self.environment = environment
 
         super.init(nibName: nil, bundle: nil)
 
@@ -98,9 +103,16 @@ class EngagementViewController: UIViewController, AlertPresenter, MediaUpgradePr
                 accepted: config.accepted,
                 declined: config.declined
             ),
-            viewFactory: self.viewFactory
+            viewFactory: self.environment.viewFactory
         )
 
         replacePresentedOfferIfPossible(with: alert)
+    }
+}
+
+extension EngagementViewController {
+    struct Environment {
+        var viewFactory: ViewFactory
+        var snackBar: SnackBar
     }
 }

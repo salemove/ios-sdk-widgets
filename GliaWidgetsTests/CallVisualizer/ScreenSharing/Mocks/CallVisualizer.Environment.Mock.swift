@@ -25,7 +25,8 @@ extension CallVisualizer.Environment {
         orientationManager: .mock(),
         proximityManager: .mock,
         log: .mock,
-        fetchSiteConfigurations: { _ in }
+        fetchSiteConfigurations: { _ in },
+        snackBar: .mock
     )
 }
 

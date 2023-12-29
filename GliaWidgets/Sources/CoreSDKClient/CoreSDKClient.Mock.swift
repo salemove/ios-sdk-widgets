@@ -428,14 +428,18 @@ extension CoreSdkClient.Site {
         allowedFileSenders: AllowedFileSenders.Mock = .mock,
         maskingRegularExpressions: [String] = [],
         visitorAppDefaultLocale: String = "en-US",
-        mobileConfirmDialog: Bool = true
+        mobileObservationEnabled: Bool = true,
+        mobileConfirmDialogEnabled: Bool = true,
+        mobileObservationIndicationEnabled: Bool = true
     ) throws -> Self {
         struct Mock: Codable {
             let id: UUID
             let allowedFileSenders: CoreSdkClient.Site.AllowedFileSenders.Mock
             let maskingRegularExpressions: [String]
             let visitorAppDefaultLocale: String
-            let mobileConfirmDialog: Bool
+            let mobileObservationEnabled: Bool
+            let mobileConfirmDialogEnabled: Bool
+            let mobileObservationIndicationEnabled: Bool
         }
         return try JSONDecoder()
             .decode(
@@ -447,7 +451,9 @@ extension CoreSdkClient.Site {
                             allowedFileSenders: allowedFileSenders,
                             maskingRegularExpressions: maskingRegularExpressions,
                             visitorAppDefaultLocale: visitorAppDefaultLocale,
-                            mobileConfirmDialog: mobileConfirmDialog
+                            mobileObservationEnabled: mobileObservationEnabled,
+                            mobileConfirmDialogEnabled: mobileConfirmDialogEnabled,
+                            mobileObservationIndicationEnabled: mobileObservationIndicationEnabled
                         )
                     )
             )

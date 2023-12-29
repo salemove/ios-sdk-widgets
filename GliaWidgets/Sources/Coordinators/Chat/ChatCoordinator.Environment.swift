@@ -35,5 +35,6 @@ extension ChatCoordinator {
         var proximityManager: ProximityManager
         var log: CoreSdkClient.Logger
         var timerProviding: FoundationBased.Timer.Providing
+        var snackBar: SnackBar
     }
 }

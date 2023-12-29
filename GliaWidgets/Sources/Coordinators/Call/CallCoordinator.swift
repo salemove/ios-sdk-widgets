@@ -99,12 +99,13 @@ private extension CallCoordinator {
         }
         return CallViewController(
             viewModel: viewModel,
-            viewFactory: viewFactory,
             environment: .init(
+                viewFactory: viewFactory,
                 notificationCenter: environment.notificationCenter,
                 log: environment.log,
                 timerProviding: environment.timerProviding,
-                gcd: environment.gcd
+                gcd: environment.gcd,
+                snackBar: environment.snackBar
             )
         )
     }
@@ -159,5 +160,6 @@ extension CallCoordinator {
         var createSendMessagePayload: CoreSdkClient.CreateSendMessagePayload
         var proximityManager: ProximityManager
         var log: CoreSdkClient.Logger
+        var snackBar: SnackBar
     }
 }
