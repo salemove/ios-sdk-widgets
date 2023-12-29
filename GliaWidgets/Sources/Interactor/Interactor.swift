@@ -109,8 +109,6 @@ extension Interactor {
         success: @escaping () -> Void,
         failure: @escaping (CoreSdkClient.SalemoveError) -> Void
     ) {
-        state = .enqueueing(mediaType)
-
         switch mediaType {
         case .text:
              environment.log.prefixed(Self.self).info("Start queueing for chat engagement")
