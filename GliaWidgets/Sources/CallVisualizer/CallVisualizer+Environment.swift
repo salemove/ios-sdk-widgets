@@ -27,5 +27,6 @@ extension CallVisualizer {
         var proximityManager: ProximityManager
         var log: CoreSdkClient.Logger
         var fetchSiteConfigurations: CoreSdkClient.FetchSiteConfigurations
+        var snackBar: SnackBar
     }
 }

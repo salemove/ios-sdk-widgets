@@ -25,5 +25,6 @@ extension CallVisualizer.Coordinator {
         var log: CoreSdkClient.Logger
         var interactorProviding: Interactor?
         var fetchSiteConfigurations: CoreSdkClient.FetchSiteConfigurations
+        var snackBar: SnackBar
     }
 }

@@ -39,7 +39,8 @@ extension Glia.Environment {
             uiDevice: .live
         )),
         print: .live,
-        conditionalCompilation: .live
+        conditionalCompilation: .live,
+        snackBar: .live
     )
 }
 

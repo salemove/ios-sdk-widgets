@@ -49,6 +49,7 @@ extension Glia {
         var proximityManager: ProximityManager
         var print: SwiftBased.Print
         var conditionalCompilation: ConditionalCompilationClient
+        var snackBar: SnackBar
     }
 }
 
