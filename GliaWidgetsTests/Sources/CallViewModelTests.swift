@@ -102,6 +102,64 @@ class CallViewModelTests: XCTestCase {
         XCTAssertTrue(isLocalAudioStreamMuted)
     }
 
+    func test_localVideoIsNotEnabledWhenUpgradingFromAudioToVideoWhileOnHold() throws {
+        var isLocalVideoStreamPaused: Bool = false
+
+        call = .init(
+            .audio,
+            environment: .mock
+        )
+
+        let interactor: Interactor = .mock()
+
+        viewModel = .init(
+            interactor: interactor,
+            alertConfiguration: .mock(),
+            screenShareHandler: .mock,
+            environment: .mock,
+            call: call,
+            unreadMessages: .init(with: 0),
+            startWith: .engagement(mediaType: .video)
+        )
+
+        let remoteVideoStream = CoreSdkClient.MockVideoStreamable.mock(
+            getStreamViewFunc: { .init() },
+            playVideoFunc: {},
+            pauseFunc: {},
+            resumeFunc: {},
+            stopFunc: {},
+            getIsPausedFunc: { false },
+            setIsPausedFunc: { _ in },
+            getIsRemoteFunc: { true },
+            setIsRemoteFunc: { _ in }
+        )
+
+        let localVideoStream = CoreSdkClient.MockVideoStreamable.mock(
+            getStreamViewFunc: { .init() },
+            playVideoFunc: {},
+            pauseFunc: { isLocalVideoStreamPaused = true },
+            resumeFunc: { isLocalVideoStreamPaused = false },
+            stopFunc: {},
+            getIsPausedFunc: { isLocalVideoStreamPaused },
+            setIsPausedFunc: { isLocalVideoStreamPaused = $0 },
+            getIsRemoteFunc: { false },
+            setIsRemoteFunc: { _ in }
+        )
+
+        call.updateVideoStream(with: remoteVideoStream)
+        call.updateVideoStream(with: localVideoStream)
+
+        remoteVideoStream.onHold?(true)
+
+        XCTAssertTrue(isLocalVideoStreamPaused)
+
+        let offer = try CoreSdkClient.MediaUpgradeOffer(type: .video, direction: .twoWay)
+
+        interactor.notify(.updateOffer(offer))
+
+        XCTAssertTrue(isLocalVideoStreamPaused)
+    }
+
     // swiftlint:disable function_body_length
     func test_toggleCallOnHoldRestoresPreviousLocalVideoAndAudioState() throws {
         var isLocalAudioStreamMuted: Bool = false
