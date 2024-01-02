@@ -236,36 +236,6 @@ class CallViewModel: EngagementViewModel, ViewModel {
         }
     }
 
-    private func handleAudioStreamError(_ error: CoreSdkClient.SalemoveError) {
-        switch error.error {
-        case let mediaError as CoreSdkClient.MediaError:
-            switch mediaError {
-            case .permissionDenied:
-                showSettingsAlert(
-                    with: alertConfiguration.microphoneSettings
-                )
-            default:
-                showAlert(for: error)
-            }
-        default:
-            showAlert(for: error)
-        }
-    }
-
-    private func handleVideoStreamError(_ error: CoreSdkClient.SalemoveError) {
-        switch error.error {
-        case let mediaError as CoreSdkClient.MediaError:
-            switch mediaError {
-            case .permissionDenied:
-                showSettingsAlert(with: alertConfiguration.cameraSettings)
-            default:
-                showAlert(for: error)
-            }
-        default:
-            showAlert(for: error)
-        }
-    }
-
     func showSnackBarIfNeeded() {
         environment.fetchSiteConfigurations { [weak self] result in
             switch result {
@@ -285,9 +255,9 @@ class CallViewModel: EngagementViewModel, ViewModel {
         case .videoStreamAdded(let stream):
             call.updateVideoStream(with: stream)
         case .audioStreamError(let error):
-            handleAudioStreamError(error)
+            handleStreamError(error, with: alertConfiguration.microphoneSettings)
         case .videoStreamError(let error):
-            handleVideoStreamError(error)
+            handleStreamError(error, with: alertConfiguration.cameraSettings)
         case .upgradeOffer(let offer, answer: let answer):
             offerMediaUpgrade(offer, answer: answer)
         case .updateOffer(let offer):
@@ -301,6 +271,22 @@ class CallViewModel: EngagementViewModel, ViewModel {
 }
 
 extension CallViewModel {
+    private func handleStreamError(
+        _ error: CoreSdkClient.SalemoveError,
+        with message: SettingsAlertConfiguration
+    ) {
+        switch error.error {
+        case let mediaError as CoreSdkClient.MediaError where mediaError == .permissionDenied:
+            showSettingsAlert(
+                with: message
+            )
+        default:
+            showAlert(
+                for: error
+            )
+        }
+    }
+
     private func onEngagementTransferring() {
         environment.log.prefixed(Self.self).info("Transfer the call")
         endScreenSharing()
@@ -367,7 +353,14 @@ extension CallViewModel {
     private func showLocalVideo(with stream: CoreSdkClient.VideoStreamable) {
         action?(.switchToVideoMode)
         action?(.setLocalVideo(stream.getStreamView()))
-        stream.playVideo()
+        stream.onHold = { isOnHold in
+            // onHold case is not handled deliberately because it
+            // is handled elsewhere. This logic may need some adjustments
+            // in future
+            if !isOnHold {
+                stream.playVideo()
+            }
+        }
     }
 
     private func hideRemoteVideo() {
