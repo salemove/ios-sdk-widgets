@@ -18,7 +18,7 @@ extension CallVisualizerTests {
             completion(.success(site))
         }
         gliaEnv.callVisualizerPresenter = .init(presenter: { nil })
-        gliaEnv.gcd.mainQueue.asyncIfNeeded = { $0() }
+        gliaEnv.gcd.mainQueue.async = { $0() }
         var interactable: CoreSdkClient.Interactable?
         gliaEnv.coreSDKConfigurator.configureWithInteractor = { interactor in
             interactable = interactor

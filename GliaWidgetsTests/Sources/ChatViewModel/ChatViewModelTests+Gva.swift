@@ -73,7 +73,7 @@ extension ChatViewModelTests {
         interactorEnv.coreSdk.sendMessageWithMessagePayload = { _, _ in
             XCTFail("sendMessageWithMessagePayload should not be called")
         }
-        interactorEnv.gcd.mainQueue.asyncIfNeeded = { _ in }
+        interactorEnv.gcd.mainQueue.async = { _ in }
         interactorEnv.coreSdk.queueForEngagement = { _, _ in }
         interactorEnv.coreSdk.configureWithInteractor = { _ in }
         interactorEnv.log.infoClosure = { _, _, _, _ in }

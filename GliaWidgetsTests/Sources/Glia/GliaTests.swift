@@ -89,7 +89,7 @@ final class GliaTests: XCTestCase {
         gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
         gliaEnv.coreSdk.fetchSiteConfigurations = { _ in }
         gliaEnv.uuid = { .mock }
-        gliaEnv.gcd.mainQueue.asyncIfNeeded = { callback in callback() }
+        gliaEnv.gcd.mainQueue.async = { callback in callback() }
 
         let expectedTheme = Theme.mock(
             colorStyle: .custom(.init()),
@@ -168,7 +168,7 @@ final class GliaTests: XCTestCase {
         logger.infoClosure = { _, _, _, _ in }
         logger.prefixedClosure = { _ in logger }
         gliaEnv.coreSdk.createLogger = { _ in logger }
-        gliaEnv.gcd.mainQueue.asyncIfNeeded = { callback in callback() }
+        gliaEnv.gcd.mainQueue.async = { callback in callback() }
         gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             completion(.success(()))
         }
@@ -204,7 +204,7 @@ final class GliaTests: XCTestCase {
         gliaEnv.conditionalCompilation.isDebug = { true }
         gliaEnv.coreSdk.configureWithInteractor = { _ in }
         gliaEnv.coreSdk.configureWithConfiguration = { _, _ in }
-        gliaEnv.gcd.mainQueue.asyncIfNeeded = { callback in callback() }
+        gliaEnv.gcd.mainQueue.async = { callback in callback() }
         gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             completion(.success(()))
         }
@@ -239,7 +239,7 @@ final class GliaTests: XCTestCase {
         gliaEnv.coreSdk.createLogger = { _ in logger }
         gliaEnv.conditionalCompilation.isDebug = { true }
         gliaEnv.callVisualizerPresenter = .init(presenter: { nil })
-        gliaEnv.gcd.mainQueue.asyncIfNeeded = { callback in callback() }
+        gliaEnv.gcd.mainQueue.async = { callback in callback() }
         gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             completion(.success(()))
         }
@@ -280,7 +280,7 @@ final class GliaTests: XCTestCase {
         gliaEnv.uuid = { .mock }
         gliaEnv.uiApplication.windows = { [] }
         gliaEnv.callVisualizerPresenter = .init(presenter: { nil })
-        gliaEnv.gcd.mainQueue.asyncIfNeeded = { callback in callback() }
+        gliaEnv.gcd.mainQueue.async = { callback in callback() }
         gliaEnv.notificationCenter.addObserverClosure = { _, _, _, _ in }
         gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             completion(.success(()))
@@ -518,7 +518,7 @@ final class GliaTests: XCTestCase {
         let screenShareHandler: ScreenShareHandler = .mock
         screenShareHandler.status().value = .started
         gliaEnv.screenShareHandler = screenShareHandler
-        gliaEnv.gcd.mainQueue.asyncIfNeeded = { callback in callback() }
+        gliaEnv.gcd.mainQueue.async = { callback in callback() }
         gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _, callback in
             callback(.success(()))
         }

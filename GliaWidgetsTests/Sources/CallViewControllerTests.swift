@@ -43,7 +43,7 @@ class CallViewControllerTests: XCTestCase {
         viewModelEnv.proximityManager = .init(environment: proximityManagerEnv)
 
         let interactor = Interactor.failing
-        interactor.environment.gcd.mainQueue.asyncIfNeeded = { $0() }
+        interactor.environment.gcd.mainQueue.async = { $0() }
         let viewModel = CallViewModel.mock(interactor: interactor, environment: viewModelEnv)
 
         var snackBar = SnackBar.failing
