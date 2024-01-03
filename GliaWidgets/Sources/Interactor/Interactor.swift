@@ -96,7 +96,7 @@ class Interactor {
             .forEach {
                 let handler = $0.1
 
-                environment.gcd.mainQueue.asyncIfNeeded {
+                environment.gcd.mainQueue.async {
                     handler(event)
                 }
             }
