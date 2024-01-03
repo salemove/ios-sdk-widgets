@@ -136,7 +136,7 @@ class ChatViewModelTests: XCTestCase {
 
     func test_onEngagementTransferringAddsTransferringItemToTheEndOfChat() throws {
         var interactorEnv: Interactor.Environment = .failing
-        interactorEnv.gcd.mainQueue.asyncIfNeeded = { $0() }
+        interactorEnv.gcd.mainQueue.async = { $0() }
         interactorEnv.log.infoClosure = { _, _, _, _ in }
         interactorEnv.log.prefixedClosure = { _ in interactorEnv.log }
         var viewModelEnv = ChatViewModel.Environment.failing()
@@ -164,7 +164,7 @@ class ChatViewModelTests: XCTestCase {
 
     func test_onEngagementTransferRemovesTransferringItemFromChat() throws {
         var interactorEnv: Interactor.Environment = .failing
-        interactorEnv.gcd.mainQueue.asyncIfNeeded = { $0() }
+        interactorEnv.gcd.mainQueue.async = { $0() }
         interactorEnv.log.infoClosure = { _, _, _, _ in }
         interactorEnv.log.prefixedClosure = { _ in interactorEnv.log }
         var viewModelEnv = ChatViewModel.Environment.failing()
@@ -195,7 +195,7 @@ class ChatViewModelTests: XCTestCase {
 
     func test_onEngagementTransferAddsOperatorConnectedChatItemToTheEndOfChat() throws {
         var interactorEnv: Interactor.Environment = .failing
-        interactorEnv.gcd.mainQueue.asyncIfNeeded = { $0() }
+        interactorEnv.gcd.mainQueue.async = { $0() }
         var viewModelEnv = ChatViewModel.Environment.failing()
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
@@ -629,7 +629,7 @@ class ChatViewModelTests: XCTestCase {
         interactorLog.infoClosure = { _, _, _, _ in }
         interactorLog.prefixedClosure = { _ in interactorLog }
         interactor.environment.log = interactorLog
-        interactor.environment.gcd.mainQueue.asyncIfNeeded = { $0() }
+        interactor.environment.gcd.mainQueue.async = { $0() }
         interactor.environment.coreSdk.configureWithInteractor = { _ in }
         interactor.environment.coreSdk.configureWithConfiguration = { _, callback in callback(.success(())) }
         interactor.environment.coreSdk.sendMessagePreview = { _, _ in }
@@ -687,7 +687,7 @@ class ChatViewModelTests: XCTestCase {
         interactorLog.prefixedClosure = { _ in log }
         interactorLog.infoClosure = { _, _, _, _ in }
         interactor.environment.log = interactorLog
-        interactor.environment.gcd.mainQueue.asyncIfNeeded = { $0() }
+        interactor.environment.gcd.mainQueue.async = { $0() }
         interactor.environment.coreSdk.configureWithInteractor = { _ in }
         interactor.environment.coreSdk.configureWithConfiguration = { _, callback in callback(.success(())) }
         interactor.environment.coreSdk.sendMessagePreview = { _, _ in }

@@ -248,7 +248,7 @@ class CallViewModelTests: XCTestCase {
         var calls: [Calls] = []
 
         var interactorEnv: Interactor.Environment = .failing
-        interactorEnv.gcd.mainQueue.asyncIfNeeded = { $0() }
+        interactorEnv.gcd.mainQueue.async = { $0() }
         let interactor: Interactor = .mock(environment: interactorEnv)
 
         call = .init(
@@ -290,7 +290,7 @@ class CallViewModelTests: XCTestCase {
     // swiftlint:disable function_body_length
     func test_engagementTransferringReleasesStreams() throws {
         var interactorEnv: Interactor.Environment = .failing
-        interactorEnv.gcd.mainQueue.asyncIfNeeded = { $0() }
+        interactorEnv.gcd.mainQueue.async = { $0() }
         let interactor: Interactor = .mock(environment: interactorEnv)
         let remoteAudioStream = CoreSdkClient.MockAudioStreamable.mock(
             muteFunc: {},
@@ -367,7 +367,7 @@ class CallViewModelTests: XCTestCase {
 
     func test_interactorEventUpdatesCallMediaState() throws {
         var interactorEnv: Interactor.Environment = .failing
-        interactorEnv.gcd.mainQueue.asyncIfNeeded = { $0() }
+        interactorEnv.gcd.mainQueue.async = { $0() }
         let interactor: Interactor = .mock(environment: interactorEnv)
 
         let offer = try CoreSdkClient.MediaUpgradeOffer(type: .audio, direction: .oneWay)

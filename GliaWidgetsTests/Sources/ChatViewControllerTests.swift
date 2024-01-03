@@ -61,7 +61,7 @@ class ChatViewControllerTests: XCTestCase {
             return .mock
         }
         let interactor = Interactor.failing
-        interactor.environment.gcd.mainQueue.asyncIfNeeded = { $0() }
+        interactor.environment.gcd.mainQueue.async = { $0() }
         let viewModel = ChatViewModel.mock(interactor: interactor, environment: viewModelEnv)
 
         var snackBar = SnackBar.failing
