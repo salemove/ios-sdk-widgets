@@ -81,7 +81,8 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
                 timerProviding: environment.timerProviding,
                 viewFactory: viewFactory,
                 gcd: environment.gcd,
-                snackBar: environment.snackBar
+                snackBar: environment.snackBar,
+                notificationCenter: environment.notificationCenter
             )
         )
         self.controller = chatController

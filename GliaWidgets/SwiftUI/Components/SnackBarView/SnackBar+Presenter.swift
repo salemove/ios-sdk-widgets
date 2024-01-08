@@ -28,6 +28,7 @@ extension SnackBar {
                 )
             )
             self.environment = environment
+            self.monitorKeyboard()
         }
 
         func add() {
@@ -43,7 +44,7 @@ extension SnackBar {
             hostingController.view.translatesAutoresizingMaskIntoConstraints = false
              NSLayoutConstraint.activate([
                 hostingController.view.topAnchor.constraint(greaterThanOrEqualTo: parent.view.topAnchor),
-                hostingController.view.bottomAnchor.constraint(equalTo: parent.view.bottomAnchor),
+                hostingController.view.bottomAnchor.constraint(equalTo: parent.view.bottomAnchor, constant: 64),
                 hostingController.view.leadingAnchor.constraint(equalTo: parent.view.leadingAnchor),
                 hostingController.view.trailingAnchor.constraint(equalTo: parent.view.trailingAnchor)
              ])
@@ -82,9 +83,33 @@ extension SnackBar {
     }
 }
 
+private extension SnackBar.Presenter {
+    func monitorKeyboard() {
+        subscribeToNotification(UIResponder.keyboardWillShowNotification, selector: #selector(keyboardWillShow))
+    }
+
+    func subscribeToNotification(
+        _ notification: NSNotification.Name,
+        selector: Selector
+    ) {
+        environment.notificationCenter.addObserver(
+            self,
+            selector: selector,
+            name: notification,
+            object: nil
+        )
+    }
+
+    @objc
+    func keyboardWillShow(notification: NSNotification) {
+        self.updatePublisher.send(.keyboardWillShow)
+    }
+}
+
 extension SnackBar.Presenter {
     struct Environment {
         let timerProviding: FoundationBased.Timer.Providing
+        let notificationCenter: FoundationBased.NotificationCenter
         let gcd: GCD
     }
 }

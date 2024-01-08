@@ -292,7 +292,8 @@ extension SecureConversations.Coordinator {
                 proximityManager: environment.proximityManager,
                 log: environment.log,
                 timerProviding: environment.timerProviding,
-                snackBar: environment.snackBar
+                snackBar: environment.snackBar,
+                notificationCenter: environment.notificationCenter
             ),
             startWithSecureTranscriptFlow: true
         )

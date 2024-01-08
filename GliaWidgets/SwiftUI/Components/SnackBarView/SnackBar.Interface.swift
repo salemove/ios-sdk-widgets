@@ -7,7 +7,8 @@ struct SnackBar {
         _ viewController: UIViewController,
         _ bottomOffset: CGFloat,
         _ timerProviding: FoundationBased.Timer.Providing,
-        _ gcd: GCD
+        _ gcd: GCD,
+        _ notificationCenter: FoundationBased.NotificationCenter
     ) -> Void
 
     func present(
@@ -16,7 +17,8 @@ struct SnackBar {
         for viewController: UIViewController,
         bottomOffset: CGFloat = 0,
         timerProviding: FoundationBased.Timer.Providing,
-        gcd: GCD
+        gcd: GCD,
+        notificationCenter: FoundationBased.NotificationCenter
     ) {
         present(
             text,
@@ -24,7 +26,8 @@ struct SnackBar {
             viewController,
             bottomOffset,
             timerProviding,
-            gcd
+            gcd,
+            notificationCenter
         )
     }
 }
