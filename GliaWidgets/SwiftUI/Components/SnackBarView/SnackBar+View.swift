@@ -1,9 +1,14 @@
 import Combine
 import SwiftUI
+import UIKit
 
 extension SnackBar {
     struct ContentView: View {
-        enum ViewState { case appear(String), disappear }
+        enum ViewState {
+            case appear(String)
+            case disappear
+            case keyboardWillShow
+        }
         let publisher: AnyPublisher<ViewState, Never>
 
         @State private var text = ""
@@ -30,7 +35,7 @@ extension SnackBar {
                 .cornerRadius(4)
                 .foregroundColor(SwiftUI.Color(style.textColor))
                 .font(.convert(style.textFont))
-                .padding()
+                .padding(.horizontal)
                 .offset(y: currentOffset)
                 .onReceive(publisher) { newState in
                     switch newState {
@@ -52,6 +57,11 @@ extension SnackBar {
                         } else {
                             self.currentOffset = 300
                         }
+                    case .keyboardWillShow:
+                        withAnimation(.linear(duration: 0.015)) {
+                            self.currentOffset = -60
+                        }
+
                     }
                 }
         }

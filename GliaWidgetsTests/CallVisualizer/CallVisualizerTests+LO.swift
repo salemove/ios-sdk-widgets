@@ -26,7 +26,7 @@ extension CallVisualizerTests {
         gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             completion(.success(()))
         }
-        gliaEnv.snackBar.present = { _, _, _, _, _, _ in
+        gliaEnv.snackBar.present = { _, _, _, _, _, _, _ in
             calls.append(.presentSnackBar)
         }
         let sdk = Glia(environment: gliaEnv)
@@ -44,7 +44,7 @@ extension CallVisualizerTests {
 
         var gliaEnv = Glia.Environment.failing
         gliaEnv.conditionalCompilation.isDebug = { true }
-        gliaEnv.snackBar.present = { _, _, _, _, _, _ in
+        gliaEnv.snackBar.present = { _, _, _, _, _, _, _ in
             calls.append(.presentSnackBar)
         }
         gliaEnv.coreSdk.createLogger = { _ in .mock }
