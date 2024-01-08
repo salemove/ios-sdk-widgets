@@ -36,5 +36,6 @@ extension ChatCoordinator {
         var log: CoreSdkClient.Logger
         var timerProviding: FoundationBased.Timer.Providing
         var snackBar: SnackBar
+        var notificationCenter: FoundationBased.NotificationCenter
     }
 }

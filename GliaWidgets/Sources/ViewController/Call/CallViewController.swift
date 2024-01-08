@@ -154,7 +154,8 @@ private extension CallViewController {
             for: self,
             bottomOffset: -100,
             timerProviding: environment.timerProviding,
-            gcd: environment.gcd
+            gcd: environment.gcd,
+            notificationCenter: environment.notificationCenter
         )
     }
 }

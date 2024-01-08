@@ -185,9 +185,10 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
                     text: style.text,
                     style: style,
                     for: self,
-                    bottomOffset: 0,
+                    bottomOffset: -128,
                     timerProviding: self.environment.timerProviding,
-                    gcd: self.environment.gcd
+                    gcd: self.environment.gcd,
+                    notificationCenter: self.environment.notificationCenter
                 )
             }
             self.renderProps()

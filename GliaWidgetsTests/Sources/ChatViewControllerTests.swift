@@ -29,7 +29,8 @@ class ChatViewControllerTests: XCTestCase {
                     timerProviding: .mock,
                     viewFactory: .mock(),
                     gcd: .mock,
-                    snackBar: .mock
+                    snackBar: .mock,
+                    notificationCenter: .mock
                 )
             )
             weakViewController = viewController
@@ -65,14 +66,15 @@ class ChatViewControllerTests: XCTestCase {
         let viewModel = ChatViewModel.mock(interactor: interactor, environment: viewModelEnv)
 
         var snackBar = SnackBar.failing
-        snackBar.present = { _, _, _, _, _, _ in
+        snackBar.present = { _, _, _, _, _, _, _ in
             calls.append(.presentSnackBar)
         }
         let env = ChatViewController.Environment(
             timerProviding: .failing,
             viewFactory: .mock(),
             gcd: .failing,
-            snackBar: snackBar
+            snackBar: snackBar,
+            notificationCenter: .failing
         )
         let viewController = ChatViewController(
             viewModel: .chat(viewModel),

@@ -546,7 +546,8 @@ private extension CallVisualizer.Coordinator {
             style: style,
             for: topMostViewController,
             timerProviding: environment.timerProviding,
-            gcd: environment.gcd
+            gcd: environment.gcd,
+            notificationCenter: environment.notificationCenter
         )
     }
 

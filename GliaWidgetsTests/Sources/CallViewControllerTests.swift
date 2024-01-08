@@ -47,7 +47,7 @@ class CallViewControllerTests: XCTestCase {
         let viewModel = CallViewModel.mock(interactor: interactor, environment: viewModelEnv)
 
         var snackBar = SnackBar.failing
-        snackBar.present = { _, _, _, _, _, _ in
+        snackBar.present = { _, _, _, _, _, _, _ in
             calls.append(.presentSnackBar)
         }
 
