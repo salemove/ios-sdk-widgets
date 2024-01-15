@@ -48,7 +48,8 @@ class ChatViewControllerTests: XCTestCase {
             completion(.success([]))
         }
         let site = try CoreSdkClient.Site.mock(
-            mobileConfirmDialogEnabled: false,
+            mobileObservationEnabled: true,
+            mobileConfirmDialogEnabled: true,
             mobileObservationIndicationEnabled: true
         )
         viewModelEnv.fetchSiteConfigurations = { completion in
@@ -82,7 +83,6 @@ class ChatViewControllerTests: XCTestCase {
         )
         viewController.loadView()
         interactor.state = .engaged(nil)
-
         XCTAssertEqual(
             calls, [
                 .prefixedLog("ChatViewModel"),
@@ -90,5 +90,102 @@ class ChatViewControllerTests: XCTestCase {
                 .prefixedLog("ChatViewModel")
             ]
         )
+    }
+
+    func testLiveObservationIndicationIsDisabled() throws {
+        enum Call: Equatable {
+            case presentSnackBar, prefixedLog(String)
+        }
+        var calls: [Call] = []
+
+        var viewModelEnv = ChatViewModel.Environment.failing { completion in
+            completion(.success([]))
+        }
+        let site = try CoreSdkClient.Site.mock(
+            mobileObservationEnabled: true,
+            mobileConfirmDialogEnabled: true,
+            mobileObservationIndicationEnabled: false
+        )
+        viewModelEnv.fetchSiteConfigurations = { completion in
+            completion(.success(site))
+        }
+        viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
+        viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
+        viewModelEnv.createFileUploadListModel = { _ in .mock() }
+        viewModelEnv.log.prefixedClosure = {
+            calls.append(.prefixedLog($0))
+            return .mock
+        }
+        let interactor = Interactor.failing
+        interactor.environment.gcd.mainQueue.async = { $0() }
+        let viewModel = ChatViewModel.mock(interactor: interactor, environment: viewModelEnv)
+
+        var snackBar = SnackBar.failing
+        snackBar.present = { _, _, _, _, _, _, _ in
+            calls.append(.presentSnackBar)
+        }
+        let env = ChatViewController.Environment(
+            timerProviding: .failing,
+            viewFactory: .mock(),
+            gcd: .failing,
+            snackBar: snackBar,
+            notificationCenter: .failing
+        )
+        let viewController = ChatViewController(
+            viewModel: .chat(viewModel),
+            environment: env
+        )
+        viewController.loadView()
+        interactor.state = .engaged(nil)
+        XCTAssertFalse(calls.contains(.presentSnackBar))
+    }
+
+    func testLiveObservationIsDisabled() throws {
+        enum Call: Equatable {
+            case presentSnackBar, prefixedLog(String)
+        }
+        var calls: [Call] = []
+
+        var viewModelEnv = ChatViewModel.Environment.failing { completion in
+            completion(.success([]))
+        }
+        let site = try CoreSdkClient.Site.mock(
+            mobileObservationEnabled: false,
+            mobileConfirmDialogEnabled: true,
+            mobileObservationIndicationEnabled: true
+        )
+        viewModelEnv.fetchSiteConfigurations = { completion in
+            completion(.success(site))
+        }
+        viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
+        viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
+        viewModelEnv.createFileUploadListModel = { _ in .mock() }
+        viewModelEnv.log.prefixedClosure = {
+            calls.append(.prefixedLog($0))
+            return .mock
+        }
+        let interactor = Interactor.failing
+        interactor.environment.gcd.mainQueue.async = { $0() }
+        let viewModel = ChatViewModel.mock(interactor: interactor, environment: viewModelEnv)
+
+        var snackBar = SnackBar.failing
+        snackBar.present = { _, _, _, _, _, _, _ in
+            calls.append(.presentSnackBar)
+        }
+        let env = ChatViewController.Environment(
+            timerProviding: .failing,
+            viewFactory: .mock(),
+            gcd: .failing,
+            snackBar: snackBar,
+            notificationCenter: .failing
+        )
+        let viewController = ChatViewController(
+            viewModel: .chat(viewModel),
+            environment: env
+        )
+        viewController.loadView()
+        interactor.state = .engaged(nil)
+        print(calls)
+        XCTAssertFalse(calls.contains(.presentSnackBar))
     }
 }

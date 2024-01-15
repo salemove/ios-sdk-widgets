@@ -2,8 +2,8 @@ import Foundation
 
 extension ChatViewModel {
     func showSnackBarIfNeeded() {
-        if siteConfiguration?.mobileObservationIndicationEnabled == true {
-            action?(.showSnackBarView)
-        }
+        guard siteConfiguration?.mobileObservationEnabled == true else { return }
+        guard siteConfiguration?.mobileObservationIndicationEnabled == true else { return }
+        action?(.showSnackBarView)
     }
 }
