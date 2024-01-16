@@ -2,7 +2,7 @@ import UIKit
 import AVFoundation
 
 final class MediaPickerController: NSObject {
-    private let viewModel: MediaPickerViewModel
+    let viewModel: MediaPickerViewModel
 
     private var viewController: UIImagePickerController {
         let source = UIImagePickerController.SourceType(with: viewModel.source)
