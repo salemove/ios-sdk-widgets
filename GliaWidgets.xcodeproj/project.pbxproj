@@ -432,6 +432,7 @@
 		8491AF652AAB281500CC3E72 /* ChatViewModelTests+CustomCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8491AF642AAB281500CC3E72 /* ChatViewModelTests+CustomCard.swift */; };
 		8491AF672AB8707600CC3E72 /* ChatViewModelTests+Transferring.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8491AF662AB8707600CC3E72 /* ChatViewModelTests+Transferring.swift */; };
 		84A318A12869ECFC00CA1DE5 /* Unavailable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A318A02869ECFC00CA1DE5 /* Unavailable.swift */; };
+		84CD035F2B56DEE300E7A1DC /* SensitiveDataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CD035E2B56DEE300E7A1DC /* SensitiveDataViewController.swift */; };
 		84CFB7732822700000167258 /* Theme.Button.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CFB7722822700000167258 /* Theme.Button.Accessibility.swift */; };
 		84D2292B28C61C8D00F64FE7 /* WKNavigationPolicyProvider.CustomResponseCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D2292A28C61C8D00F64FE7 /* WKNavigationPolicyProvider.CustomResponseCard.swift */; };
 		84D2292E28C61DFA00F64FE7 /* WKNavigationPolicyProvider.Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D2292D28C61DFA00F64FE7 /* WKNavigationPolicyProvider.Interface.swift */; };
@@ -1213,6 +1214,7 @@
 		8491AF642AAB281500CC3E72 /* ChatViewModelTests+CustomCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatViewModelTests+CustomCard.swift"; sourceTree = "<group>"; };
 		8491AF662AB8707600CC3E72 /* ChatViewModelTests+Transferring.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatViewModelTests+Transferring.swift"; sourceTree = "<group>"; };
 		84A318A02869ECFC00CA1DE5 /* Unavailable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Unavailable.swift; sourceTree = "<group>"; };
+		84CD035E2B56DEE300E7A1DC /* SensitiveDataViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensitiveDataViewController.swift; sourceTree = "<group>"; };
 		84CFB7722822700000167258 /* Theme.Button.Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.Button.Accessibility.swift; sourceTree = "<group>"; };
 		84D2292A28C61C8D00F64FE7 /* WKNavigationPolicyProvider.CustomResponseCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WKNavigationPolicyProvider.CustomResponseCard.swift; sourceTree = "<group>"; };
 		84D2292D28C61DFA00F64FE7 /* WKNavigationPolicyProvider.Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WKNavigationPolicyProvider.Interface.swift; sourceTree = "<group>"; };
@@ -1820,6 +1822,7 @@
 		1A205D7925655CEC003AA3CD /* TestingApp */ = {
 			isa = PBXGroup;
 			children = (
+				84CD035D2B56DECA00E7A1DC /* SensitiveData */,
 				8491AF282A9394AF00CC3E72 /* DeeplinkService */,
 				AFD3C52A2A472B1C00BC37A9 /* VisitorInfo */,
 				C0D2F05E299F93EC00803B47 /* Playbook */,
@@ -3472,6 +3475,14 @@
 				8491AF622AA20F9D00CC3E72 /* GliaViewControllerDelegateMock.swift */,
 			);
 			path = Mocks;
+			sourceTree = "<group>";
+		};
+		84CD035D2B56DECA00E7A1DC /* SensitiveData */ = {
+			isa = PBXGroup;
+			children = (
+				84CD035E2B56DEE300E7A1DC /* SensitiveDataViewController.swift */,
+			);
+			path = SensitiveData;
 			sourceTree = "<group>";
 		};
 		84D2292C28C61DE000F64FE7 /* WKNavigationPolicyProvider */ = {
@@ -5207,6 +5218,7 @@
 				AF11F30728BE6F0C002ACEB4 /* UIAlertController+Extensions.swift in Sources */,
 				7552DFA82A683A2C0093519B /* UIStackView.Extensions.swift in Sources */,
 				AF3BD1DF2A42026D00A7713E /* Command.swift in Sources */,
+				84CD035F2B56DEE300E7A1DC /* SensitiveDataViewController.swift in Sources */,
 				8491AF2E2A93975100CC3E72 /* ConfigurationDeeplinkHandler.swift in Sources */,
 				754313CD2870B1C400C9C1C6 /* UserDefaultsStored.swift in Sources */,
 				1A205D7B25655CEC003AA3CD /* AppDelegate.swift in Sources */,
