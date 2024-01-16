@@ -89,6 +89,12 @@ class ViewController: UIViewController {
         }
     }
 
+    @IBAction private func showSensitiveDataTapped() {
+        let controller = SensitiveDataViewController()
+        let navigation = UINavigationController(rootViewController: controller)
+        present(navigation, animated: true)
+    }
+
     private func showErrorAlert(using error: Error) {
         if let gliaError = error as? GliaError {
             switch gliaError {
