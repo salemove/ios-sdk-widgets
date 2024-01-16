@@ -8,7 +8,7 @@ final class FilePickerController: NSObject {
         documentPicker.modalPresentationStyle = .fullScreen
         viewModel.environment.log.prefixed(Self.self).info(
             "Create File Preview screen",
-            function: "\(\Self.viewController)"
+            function: "\(\FilePickerController.viewController)"
         )
         return documentPicker
     }

@@ -7,8 +7,8 @@ extension SecureConversations {
         private let viewFactory: ViewFactory
         private let navigationPresenter: NavigationPresenter
         private let environment: Environment
-        private var viewModel: SecureConversations.WelcomeViewModel?
-        private var selectedPickerController: SelectedPickerController?
+        private(set) var viewModel: SecureConversations.WelcomeViewModel?
+        private(set) var selectedPickerController: SelectedPickerController?
         private var messagingInitialScreen: SecureConversations.InitialScreen
 
         init(
