@@ -134,7 +134,6 @@ class CallViewModel: EngagementViewModel, ViewModel {
     private func setVisitorOnHold(_ isOnHold: Bool) {
         if isOnHold {
             call.video.stream.value.localStream?.pause()
-            call.audio.stream.value.localStream?.mute()
             action?(.setButtonState(.mute, state: .active))
         } else {
             if !call.hasVisitorMutedAudio {

@@ -99,7 +99,7 @@ class CallViewModelTests: XCTestCase {
         XCTAssertFalse(isVideoButtonEnabled)
         XCTAssertFalse(isMuteButtonEnabled)
         XCTAssertTrue(isLocalVideoStreamPaused)
-        XCTAssertTrue(isLocalAudioStreamMuted)
+        XCTAssertFalse(isLocalAudioStreamMuted)
     }
 
     func test_localVideoIsNotEnabledWhenUpgradingFromAudioToVideoWhileOnHold() throws {
