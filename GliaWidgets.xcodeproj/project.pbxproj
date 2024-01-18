@@ -211,6 +211,8 @@
 		31DD41652A57105400F92612 /* SecureConversations.TranscriptModel.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31DD41642A57105400F92612 /* SecureConversations.TranscriptModel.Environment.swift */; };
 		31E35AB82A852C09006EC7FB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 31E35AB62A852C09006EC7FB /* Localizable.strings */; };
 		31E35ABA2A8648E9006EC7FB /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31E35AB92A8648E9006EC7FB /* Localization.swift */; };
+		31FF0DCB2B5907C600834AFB /* ChatCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31FF0DC92B5907C600834AFB /* ChatCoordinatorTests.swift */; };
+		31FF0DCC2B5907C600834AFB /* ChatCoordinator.Environment.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31FF0DCA2B5907C600834AFB /* ChatCoordinator.Environment.Mock.swift */; };
 		470A2A18BEAC7BE3FC48E99F /* Pods_TestingApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC2C9ED342FA5228B7E8BCEE /* Pods_TestingApp.framework */; };
 		476B3340DAE8B9D71834B216 /* Pods_SnapshotTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BF80688D6DD761AADD4A046 /* Pods_SnapshotTests.framework */; };
 		540DA2E4F381F57717A466E8 /* Pods_GliaWidgetsTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B97A8A0B9AD30D0AB8666042 /* Pods_GliaWidgetsTests.framework */; };
@@ -998,6 +1000,8 @@
 		31DD41642A57105400F92612 /* SecureConversations.TranscriptModel.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.TranscriptModel.Environment.swift; sourceTree = "<group>"; };
 		31E35AB72A852C09006EC7FB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		31E35AB92A8648E9006EC7FB /* Localization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Localization.swift; sourceTree = "<group>"; };
+		31FF0DC92B5907C600834AFB /* ChatCoordinatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatCoordinatorTests.swift; sourceTree = "<group>"; };
+		31FF0DCA2B5907C600834AFB /* ChatCoordinator.Environment.Mock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatCoordinator.Environment.Mock.swift; sourceTree = "<group>"; };
 		6B2BFCE1274297F100B68506 /* SettingsSwitchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSwitchCell.swift; sourceTree = "<group>"; };
 		6B48213D2735873300F2900A /* Feature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feature.swift; sourceTree = "<group>"; };
 		6E60DD5527146C9D001422EF /* AlertViewController+SingleAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlertViewController+SingleAction.swift"; sourceTree = "<group>"; };
@@ -2772,6 +2776,24 @@
 			path = Confirmation;
 			sourceTree = "<group>";
 		};
+		31FF0DC72B5907C600834AFB /* Coordinators */ = {
+			isa = PBXGroup;
+			children = (
+				31FF0DC82B5907C600834AFB /* Chat */,
+			);
+			name = Coordinators;
+			path = GliaWidgetsTests/Sources/Coordinators;
+			sourceTree = SOURCE_ROOT;
+		};
+		31FF0DC82B5907C600834AFB /* Chat */ = {
+			isa = PBXGroup;
+			children = (
+				31FF0DC92B5907C600834AFB /* ChatCoordinatorTests.swift */,
+				31FF0DCA2B5907C600834AFB /* ChatCoordinator.Environment.Mock.swift */,
+			);
+			path = Chat;
+			sourceTree = "<group>";
+		};
 		69BB38CE6B54F4C95ED474B6 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -2790,6 +2812,7 @@
 		7512A57827BF9FB800319DF1 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				31FF0DC72B5907C600834AFB /* Coordinators */,
 				84602A752AEA5BDE0031E606 /* ProximityManager */,
 				84681A932A61840700DD7406 /* ChatViewModel */,
 				846429812A45DA5900943BD6 /* AlertViewController */,
@@ -5180,6 +5203,7 @@
 				84681A952A61844000DD7406 /* ChatViewModelTests+Gva.swift in Sources */,
 				847A7643285A1914004044D1 /* FileUploadListViewModelTests.swift in Sources */,
 				9A1992E727D66C7400161AAE /* UIKitBased.Failing.swift in Sources */,
+				31FF0DCB2B5907C600834AFB /* ChatCoordinatorTests.swift in Sources */,
 				3146C9432AB1851C0047D8CC /* LocalizationTests.swift in Sources */,
 				846A5C3929D18D400049B29F /* ScreenShareHandlerTests.swift in Sources */,
 				9AE05CB62805D2CB00871321 /* Interactor.Environment.Failing.swift in Sources */,
@@ -5193,6 +5217,7 @@
 				9A3E1D9D27BA7741005634EB /* FoundationBased.Failing.swift in Sources */,
 				9A3E1D8427B67F1B005634EB /* Helper.swift in Sources */,
 				C0175A0F2A55A624001FACDE /* ChatMessagaEntryViewTests.swift in Sources */,
+				31FF0DCC2B5907C600834AFB /* ChatCoordinator.Environment.Mock.swift in Sources */,
 				9A8130C627D90B3800220BBD /* FileSystemStorage.Failing.swift in Sources */,
 				846429832A45DA7500943BD6 /* AlertViewController+Mock.swift in Sources */,
 				846A5C4529F6BEFA0049B29F /* GliaTests+StartEngagement.swift in Sources */,
