@@ -26,9 +26,9 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
     private let isWindowVisible: ObservableValue<Bool>
     private let startAction: ChatViewModel.StartAction
     private let screenShareHandler: ScreenShareHandler
-    private var mediaPickerController: MediaPickerController?
-    private var filePickerController: FilePickerController?
-    private var quickLookController: QuickLookController?
+    private(set) var mediaPickerController: MediaPickerController?
+    private(set) var filePickerController: FilePickerController?
+    private(set) var quickLookController: QuickLookController?
     private let environment: Environment
     private let startWithSecureTranscriptFlow: Bool
     private weak var controller: ChatViewController?
