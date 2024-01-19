@@ -1,7 +1,7 @@
 import UIKit
 
 final class CallViewController: EngagementViewController {
-    private let viewModel: CallViewModel
+    let viewModel: CallViewModel
     private let environment: Environment
 
     init(
