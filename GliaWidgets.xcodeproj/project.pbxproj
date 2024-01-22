@@ -190,6 +190,8 @@
 		315BAB1A29ADFEBC00FF284B /* ConfirmationStyle+TitleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 315BAB1929ADFEBC00FF284B /* ConfirmationStyle+TitleStyle.swift */; };
 		315BAB1C29ADFEC800FF284B /* ConfirmationStyle+SubtitleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 315BAB1B29ADFEC800FF284B /* ConfirmationStyle+SubtitleStyle.swift */; };
 		315BAB1E29ADFED800FF284B /* ConfirmationStyle+CheckMessagesButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 315BAB1D29ADFED800FF284B /* ConfirmationStyle+CheckMessagesButtonStyle.swift */; };
+		31758EC02B5E9E22007BBD9F /* VideoCallCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31758EBE2B5E9E22007BBD9F /* VideoCallCoordinatorTests.swift */; };
+		31758EC12B5E9E22007BBD9F /* CallVisualizer.VideoCallCoordinator.Environment.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31758EBF2B5E9E22007BBD9F /* CallVisualizer.VideoCallCoordinator.Environment.Mock.swift */; };
 		31882C9B2AA21B71009DE4BD /* Localization+Templates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31882C9A2AA21B71009DE4BD /* Localization+Templates.swift */; };
 		3189DD9429DEFAC600D68E9F /* SecureConversations.WelcomeViewModelSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3189DD9329DEFAC600D68E9F /* SecureConversations.WelcomeViewModelSpec.swift */; };
 		3189DD9629E4331200D68E9F /* SecureConversations.WelcomeViewModel.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3189DD9529E4331200D68E9F /* SecureConversations.WelcomeViewModel.Mock.swift */; };
@@ -984,6 +986,8 @@
 		315BAB1929ADFEBC00FF284B /* ConfirmationStyle+TitleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ConfirmationStyle+TitleStyle.swift"; sourceTree = "<group>"; };
 		315BAB1B29ADFEC800FF284B /* ConfirmationStyle+SubtitleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ConfirmationStyle+SubtitleStyle.swift"; sourceTree = "<group>"; };
 		315BAB1D29ADFED800FF284B /* ConfirmationStyle+CheckMessagesButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ConfirmationStyle+CheckMessagesButtonStyle.swift"; sourceTree = "<group>"; };
+		31758EBE2B5E9E22007BBD9F /* VideoCallCoordinatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoCallCoordinatorTests.swift; sourceTree = "<group>"; };
+		31758EBF2B5E9E22007BBD9F /* CallVisualizer.VideoCallCoordinator.Environment.Mock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallVisualizer.VideoCallCoordinator.Environment.Mock.swift; sourceTree = "<group>"; };
 		31882C9A2AA21B71009DE4BD /* Localization+Templates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Localization+Templates.swift"; sourceTree = "<group>"; };
 		3189DD9329DEFAC600D68E9F /* SecureConversations.WelcomeViewModelSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.WelcomeViewModelSpec.swift; sourceTree = "<group>"; };
 		3189DD9529E4331200D68E9F /* SecureConversations.WelcomeViewModel.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.WelcomeViewModel.Mock.swift; sourceTree = "<group>"; };
@@ -2808,6 +2812,31 @@
 			path = Call;
 			sourceTree = "<group>";
 		};
+		31FF0DD22B5AB82000834AFB /* CallVisualizer */ = {
+			isa = PBXGroup;
+			children = (
+				31FF0DD32B5AB82900834AFB /* VideoCall */,
+			);
+			path = CallVisualizer;
+			sourceTree = "<group>";
+		};
+		31FF0DD32B5AB82900834AFB /* VideoCall */ = {
+			isa = PBXGroup;
+			children = (
+				31FF0DD42B5AB82F00834AFB /* Coordinator */,
+			);
+			path = VideoCall;
+			sourceTree = "<group>";
+		};
+		31FF0DD42B5AB82F00834AFB /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				31758EBF2B5E9E22007BBD9F /* CallVisualizer.VideoCallCoordinator.Environment.Mock.swift */,
+				31758EBE2B5E9E22007BBD9F /* VideoCallCoordinatorTests.swift */,
+			);
+			path = Coordinator;
+			sourceTree = "<group>";
+		};
 		69BB38CE6B54F4C95ED474B6 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -2826,6 +2855,7 @@
 		7512A57827BF9FB800319DF1 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				31FF0DD22B5AB82000834AFB /* CallVisualizer */,
 				31FF0DC72B5907C600834AFB /* Coordinators */,
 				84602A752AEA5BDE0031E606 /* ProximityManager */,
 				84681A932A61840700DD7406 /* ChatViewModel */,
@@ -5225,6 +5255,8 @@
 				9AE05CB62805D2CB00871321 /* Interactor.Environment.Failing.swift in Sources */,
 				846429862A45DB4100943BD6 /* AlertViewController.Kind+Mock.swift in Sources */,
 				AF29811229E42F3C0005BD55 /* AvailabilityTests.swift in Sources */,
+				31758EC12B5E9E22007BBD9F /* CallVisualizer.VideoCallCoordinator.Environment.Mock.swift in Sources */,
+				31758EC02B5E9E22007BBD9F /* VideoCallCoordinatorTests.swift in Sources */,
 				9AE05CB32805C9D900871321 /* ChatViewModel.Environment.Failing.swift in Sources */,
 				7552DFB12A6FB7DF0093519B /* ChatMessageTests.swift in Sources */,
 				8491AF672AB8707600CC3E72 /* ChatViewModelTests+Transferring.swift in Sources */,
