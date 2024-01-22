@@ -74,6 +74,8 @@ class ChatImageFileContentView: ChatFileContentView {
         default:
             imageView.image = nil
         }
+
+        updateAccessibilityIdentifier(with: download)
     }
 
     private func setImage(from file: LocalFile) {
@@ -85,5 +87,11 @@ class ChatImageFileContentView: ChatFileContentView {
 
     private func setImage(_ image: UIImage?) {
         imageView.image = image
+    }
+
+    private func updateAccessibilityIdentifier(with download: FileDownload) {
+        accessibilityIdentifier = download.file.name.map {
+            "chat_message_image_\($0)_\(download.state.value.accessibilityString)"
+        }
     }
 }
