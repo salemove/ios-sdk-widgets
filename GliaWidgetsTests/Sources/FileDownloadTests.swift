@@ -17,12 +17,12 @@ class FileDownloadTests: XCTestCase {
         let generalFileUrl = try XCTUnwrap(
             URL(string: "https://mock.mock.mock.moc")
         )
-        
+
         enum Fetch: Equatable {
             case engagement
             case secureMessaging
         }
-        
+
         let env = FetchFile.Environment(
             fetchFile: { _, _, _ in },
             downloadSecureFile: { _, _, _ in .mock }
@@ -40,5 +40,23 @@ class FileDownloadTests: XCTestCase {
         XCTAssertEqual(evaluateFile(.init(url: engagementFileUrl)), .engagement)
         XCTAssertEqual(evaluateFile(.init(url: secureMessagingFileUrl)), .secureMessaging)
         XCTAssertEqual(evaluateFile(.init(url: generalFileUrl)), .engagement)
+    }
+
+    func testAccessibilityStrings() {
+        let strings = [
+            "none",
+            "downloading",
+            "downloaded",
+            "error"
+        ]
+
+        let states: [FileDownload.State] = [
+            .none,
+            .downloading(progress: .init(with: 0)),
+            .downloaded(.mock()),
+            .error(.network)
+        ]
+
+        XCTAssertEqual(states.map(\.accessibilityString), strings)
     }
 }

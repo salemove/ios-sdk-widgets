@@ -25,6 +25,15 @@ class FileDownload {
         case downloading(progress: ObservableValue<Double>)
         case downloaded(LocalFile)
         case error(Error)
+
+        var accessibilityString: String {
+            switch self {
+            case .none: return "none"
+            case .downloading: return "downloading"
+            case .downloaded: return "downloaded"
+            case .error: return "error"
+            }
+        }
     }
 
     let state = ObservableValue<State>(with: .none)
