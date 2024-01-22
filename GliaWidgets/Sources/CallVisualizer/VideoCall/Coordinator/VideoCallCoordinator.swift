@@ -7,7 +7,7 @@ extension CallVisualizer {
         var delegate: ((DelegateEvent) -> Void)?
         private let theme: Theme
         private let environment: Environment
-        private var viewModel: VideoCallViewModel?
+        private(set) var viewModel: VideoCallViewModel?
         let call: Call
         var viewController: VideoCallViewController?
 
