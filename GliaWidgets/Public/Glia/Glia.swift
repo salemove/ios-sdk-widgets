@@ -59,6 +59,21 @@ public class Glia {
 
     var stringProvidingPhase: StringProvidingPhase = .notConfigured
 
+    lazy var localizationProviding: Localization2.Providing = .init(provide: { [weak self] in
+        guard let self else { return .live(stringProviding: { nil }) }
+        switch self.environment.localizationKind {
+        case .live:
+            switch self.stringProvidingPhase {
+            case .notConfigured:
+                return .live(stringProviding: { .notConfigured })
+            case .configured(let config):
+                return .live(stringProviding: { .configured(config) })
+            }
+        case .mock:
+            return .mock
+        }
+    })
+
     public lazy var callVisualizer = CallVisualizer(
         environment: .init(
             data: environment.data,
@@ -88,7 +103,8 @@ public class Glia {
             proximityManager: environment.proximityManager,
             log: loggerPhase.logger,
             fetchSiteConfigurations: environment.coreSdk.fetchSiteConfigurations,
-            snackBar: environment.snackBar
+            snackBar: environment.snackBar,
+            localizationProviding: localizationProviding
         )
     )
     var rootCoordinator: EngagementCoordinator?
@@ -382,16 +398,17 @@ extension Glia {
 
             switch event {
             case .screenShareOffer(answer: let answer):
-                self?.environment.coreSdk.requestEngagedOperator { operators, _ in
-                    self?.callVisualizer.offerScreenShare(
+                guard let self else { return }
+                self.environment.coreSdk.requestEngagedOperator { operators, _ in
+                    self.callVisualizer.offerScreenShare(
                         from: operators ?? [],
-                        configuration: Theme().alertConfiguration.screenShareOffer,
+                        configuration: self.theme.alertConfiguration.screenShareOffer,
                         accepted: { [weak self] in
                             self?.loggerPhase.logger.prefixed(Self.self).info("Screen sharing accepted by visitor")
                             answer(true)
                         },
                         declined: {
-                            self?.loggerPhase.logger.prefixed(Self.self).info("Screen sharing declined by visitor")
+                            self.loggerPhase.logger.prefixed(Self.self).info("Screen sharing declined by visitor")
                             answer(false)
                         }
                     )

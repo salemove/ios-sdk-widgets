@@ -72,11 +72,13 @@ extension CallVisualizer {
             }
         }
 
-        let refreshButton = UIButton().make { button in
+        let localization: Localization2.CallVisualizer.VisitorCode
+
+        lazy var refreshButton = UIButton().make { button in
             button.accessibilityIdentifier = "visitor_code_refresh_button"
             button.accessibilityTraits = .button
-            button.accessibilityLabel = Localization.CallVisualizer.VisitorCode.Refresh.Accessibility.label
-            button.accessibilityHint = Localization.CallVisualizer.VisitorCode.Refresh.Accessibility.hint
+            button.accessibilityLabel = localization.refreshAccessibilityLabel
+            button.accessibilityHint = localization.refreshAccessibilityHint
         }
         let spinnerView = UIImageView().make { imageView in
             imageView.image = Asset.spinner.image.withRenderingMode(.alwaysTemplate)
@@ -103,12 +105,22 @@ extension CallVisualizer {
             button.accessibilityIdentifier = "visitor_code_alert_close_button"
             button.accessibilityTraits = .button
             button.accessibilityLabel = Localization.General.Close.accessibility
-            button.accessibilityHint = Localization.CallVisualizer.VisitorCode.Close.Accessibility.hint
+            button.accessibilityHint = localization.closeAccessibilityHint
         }
 
         lazy var poweredBy: PoweredBy = PoweredBy(style: props.style.poweredBy)
         lazy var visitorCodeStack = UIStackView.make(.horizontal, spacing: 8)()
         private let contentInsets = UIEdgeInsets(top: 24, left: 24, bottom: 21, right: 24)
+
+        init(environment: Environment) {
+            self.localization = environment.localization
+            super.init()
+        }
+
+        @available(*, unavailable)
+        required init() {
+            fatalError("init() has not been implemented")
+        }
 
         override func setup() {
             super.setup()
@@ -267,15 +279,15 @@ extension CallVisualizer.VisitorCodeView {
         switch props.viewState {
         case .success(visitorCode: let code):
             renderedVisitorCode = code
-            titleLabel.text = Localization.CallVisualizer.VisitorCode.title
+            titleLabel.text = localization.title
             renderVisitorCode()
-            titleLabel.accessibilityHint = Localization.CallVisualizer.VisitorCode.Title.Accessibility.hint
+            titleLabel.accessibilityHint = localization.titleAccessibilityHint
         case .error:
-            titleLabel.text = Localization.VisitorCode.failed
+            titleLabel.text = localization.failed
             renderError()
             titleLabel.accessibilityHint = nil
         case .loading:
-            titleLabel.text = Localization.CallVisualizer.VisitorCode.title
+            titleLabel.text = localization.title
             renderSpinner()
         }
         setFontScalingEnabled(
@@ -299,5 +311,11 @@ extension CallVisualizer.VisitorCodeView {
         closeButton.isHidden = props.closeButtonTap == nil
 
         layoutSubviews()
+    }
+}
+
+extension CallVisualizer.VisitorCodeView {
+    struct Environment {
+        let localization: Localization2.CallVisualizer.VisitorCode
     }
 }

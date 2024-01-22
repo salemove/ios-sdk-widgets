@@ -709,6 +709,10 @@
 		C0EC58CE2B02775100E78C70 /* SnackBar+View+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EC58CD2B02775100E78C70 /* SnackBar+View+Mock.swift */; };
 		C0EC58D02B028FB100E78C70 /* SnackBarVoiceOverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EC58CF2B028FB100E78C70 /* SnackBarVoiceOverTests.swift */; };
 		C0EC58D22B02909500E78C70 /* SnackBarDynamicTypeFontTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EC58D12B02909500E78C70 /* SnackBarDynamicTypeFontTests.swift */; };
+		C0ECC7822B5EA59F001F1EEF /* Localization2.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0ECC7812B5EA59F001F1EEF /* Localization2.swift */; };
+		C0ECC7852B5EA76C001F1EEF /* Localization2+Live.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0ECC7842B5EA76C001F1EEF /* Localization2+Live.swift */; };
+		C0ECC7872B5EA7A0001F1EEF /* Localization2+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0ECC7862B5EA7A0001F1EEF /* Localization2+Mock.swift */; };
+		C0ECC7892B5EA963001F1EEF /* Localization2+StringProviding.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0ECC7882B5EA963001F1EEF /* Localization2+StringProviding.swift */; };
 		C4119E06268F41D1004DFEFB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C4119E05268F41D1004DFEFB /* Main.storyboard */; };
 		C42463742673ABE10082C135 /* ScreenShareHandler.Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42463732673ABE10082C135 /* ScreenShareHandler.Interface.swift */; };
 		C43C12F92694B14900C37E1B /* GliaPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43C12F82694B14900C37E1B /* GliaPresenter.swift */; };
@@ -1503,6 +1507,10 @@
 		C0EC58CD2B02775100E78C70 /* SnackBar+View+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SnackBar+View+Mock.swift"; sourceTree = "<group>"; };
 		C0EC58CF2B028FB100E78C70 /* SnackBarVoiceOverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnackBarVoiceOverTests.swift; sourceTree = "<group>"; };
 		C0EC58D12B02909500E78C70 /* SnackBarDynamicTypeFontTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnackBarDynamicTypeFontTests.swift; sourceTree = "<group>"; };
+		C0ECC7812B5EA59F001F1EEF /* Localization2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Localization2.swift; sourceTree = "<group>"; };
+		C0ECC7842B5EA76C001F1EEF /* Localization2+Live.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Localization2+Live.swift"; sourceTree = "<group>"; };
+		C0ECC7862B5EA7A0001F1EEF /* Localization2+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Localization2+Mock.swift"; sourceTree = "<group>"; };
+		C0ECC7882B5EA963001F1EEF /* Localization2+StringProviding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Localization2+StringProviding.swift"; sourceTree = "<group>"; };
 		C4119E05268F41D1004DFEFB /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		C42463732673ABE10082C135 /* ScreenShareHandler.Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenShareHandler.Interface.swift; sourceTree = "<group>"; };
 		C43C12F82694B14900C37E1B /* GliaPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GliaPresenter.swift; sourceTree = "<group>"; };
@@ -1788,6 +1796,7 @@
 				1A205D5C25655CB1003AA3CD /* Info.plist */,
 				1A60AFAE256680EF00E53F53 /* L10n.swift */,
 				31E35AB92A8648E9006EC7FB /* Localization.swift */,
+				C0ECC7832B5EA758001F1EEF /* Localization2 */,
 				3146C9482AB18AC70047D8CC /* Localization+StringProviding.swift */,
 				31882C9A2AA21B71009DE4BD /* Localization+Templates.swift */,
 				31B1F8A82AB093ED009EC5AD /* StringProviding.swift */,
@@ -4029,6 +4038,17 @@
 			path = Header;
 			sourceTree = "<group>";
 		};
+		C0ECC7832B5EA758001F1EEF /* Localization2 */ = {
+			isa = PBXGroup;
+			children = (
+				C0ECC7812B5EA59F001F1EEF /* Localization2.swift */,
+				C0ECC7862B5EA7A0001F1EEF /* Localization2+Mock.swift */,
+				C0ECC7842B5EA76C001F1EEF /* Localization2+Live.swift */,
+				C0ECC7882B5EA963001F1EEF /* Localization2+StringProviding.swift */,
+			);
+			path = Localization2;
+			sourceTree = "<group>";
+		};
 		C42463722673ABCD0082C135 /* Screensharing */ = {
 			isa = PBXGroup;
 			children = (
@@ -4834,6 +4854,7 @@
 				1A0C9A6D25C16EED00815406 /* Theme+Call.swift in Sources */,
 				1A60AFAF256680EF00E53F53 /* L10n.swift in Sources */,
 				9A1992DD27D6254800161AAE /* ImageView.Cache.Live.swift in Sources */,
+				C0ECC7892B5EA963001F1EEF /* Localization2+StringProviding.swift in Sources */,
 				845E2F9B283FCA9000C04D56 /* Theme.Survey.Checkbox.swift in Sources */,
 				C0D2F07F29A4E59200803B47 /* CallButtonBarStyle.Mock.swift in Sources */,
 				755D187F29A6B1B90009F5E8 /* Glia+StartEngagement.swift in Sources */,
@@ -4976,6 +4997,7 @@
 				845E2F88283FB49F00C04D56 /* Theme.Survey.BooleanQuestion.Accessibility.swift in Sources */,
 				C06A7584296EC9DC006B69A2 /* NumberSlotStyle.Accessibility.swift in Sources */,
 				8491AF212A7D1F7900CC3E72 /* ChatView.GvaGallery.swift in Sources */,
+				C0ECC7822B5EA59F001F1EEF /* Localization2.swift in Sources */,
 				847956402ADED7A2004EF60C /* CallVisualizer+Action.swift in Sources */,
 				AF10ED8D29BA210500E85309 /* SecureConversations.MessagesWithUnreadCountLoader.swift in Sources */,
 				C0D2F04A2992765F00803B47 /* VideoCallView.OperatorImageView.swift in Sources */,
@@ -5024,6 +5046,7 @@
 				8491AF1F2A7D027D00CC3E72 /* Theme.ChatTextContentStyle.swift in Sources */,
 				31CA0F6C2AE6947D00A55685 /* ScreenSharingViewModel.mock.swift in Sources */,
 				84D2293C28D1FC4B00F64FE7 /* ChatViewModel+CustomCard.swift in Sources */,
+				C0ECC7852B5EA76C001F1EEF /* Localization2+Live.swift in Sources */,
 				84265DF02983E62100D65842 /* Theme+ScreenSharing.swift in Sources */,
 				6E9C01AD26D3B8B500EBE1D4 /* OperatorTypingIndicatorView.swift in Sources */,
 				AF10ED8B29B7A4C000E85309 /* ChatViewModel+ChoiceCards.swift in Sources */,
@@ -5144,6 +5167,7 @@
 				AF0D26D82971912A00816CCB /* SecureConversations.SendMessageButton.swift in Sources */,
 				8491AF522A9F813200CC3E72 /* SecureConversations.TranscriptModel.swift in Sources */,
 				1A0C9A8625C4090D00815406 /* CallButton.swift in Sources */,
+				C0ECC7872B5EA7A0001F1EEF /* Localization2+Mock.swift in Sources */,
 				9AB196EA27C5390100FD60AB /* ChatAttachment.Mock.swift in Sources */,
 				75940958298D386F008B173A /* Makeable.swift in Sources */,
 				C0857DEF28D9AD32008D171D /* UIFont+Extensions.swift in Sources */,

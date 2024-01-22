@@ -60,7 +60,8 @@ extension Glia.Environment {
         proximityManager: .failing,
         print: .failing,
         conditionalCompilation: .failing,
-        snackBar: .failing
+        snackBar: .failing,
+        localizationKind: .mock
     )
 }
 
