@@ -5,21 +5,6 @@ struct Localization2 {
 }
 
 extension Localization2 {
-    enum Kind {
-        case live
-        case mock
-    }
-
-    struct Providing {
-        var provide: () -> Localization2
-
-        func callAsFunction() -> Localization2 {
-            provide()
-        }
-    }
-}
-
-extension Localization2 {
     struct CallVisualizer {
         var screenSharing: ScreenSharing
         var visitorCode: VisitorCode
@@ -40,8 +25,4 @@ extension Localization2.CallVisualizer {
         let refreshAccessibilityLabel: String
         let failed: String
     }
-}
-
-extension Localization2.Providing {
-    static let mock = Self(provide: { .mock })
 }

@@ -713,6 +713,8 @@
 		C0ECC7852B5EA76C001F1EEF /* Localization2+Live.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0ECC7842B5EA76C001F1EEF /* Localization2+Live.swift */; };
 		C0ECC7872B5EA7A0001F1EEF /* Localization2+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0ECC7862B5EA7A0001F1EEF /* Localization2+Mock.swift */; };
 		C0ECC7892B5EA963001F1EEF /* Localization2+StringProviding.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0ECC7882B5EA963001F1EEF /* Localization2+StringProviding.swift */; };
+		C0ECC78B2B5FA713001F1EEF /* Localization2+Kind.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0ECC78A2B5FA713001F1EEF /* Localization2+Kind.swift */; };
+		C0ECC78D2B5FA728001F1EEF /* Localization2+Provide.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0ECC78C2B5FA728001F1EEF /* Localization2+Provide.swift */; };
 		C4119E06268F41D1004DFEFB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C4119E05268F41D1004DFEFB /* Main.storyboard */; };
 		C42463742673ABE10082C135 /* ScreenShareHandler.Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42463732673ABE10082C135 /* ScreenShareHandler.Interface.swift */; };
 		C43C12F92694B14900C37E1B /* GliaPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43C12F82694B14900C37E1B /* GliaPresenter.swift */; };
@@ -1511,6 +1513,8 @@
 		C0ECC7842B5EA76C001F1EEF /* Localization2+Live.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Localization2+Live.swift"; sourceTree = "<group>"; };
 		C0ECC7862B5EA7A0001F1EEF /* Localization2+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Localization2+Mock.swift"; sourceTree = "<group>"; };
 		C0ECC7882B5EA963001F1EEF /* Localization2+StringProviding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Localization2+StringProviding.swift"; sourceTree = "<group>"; };
+		C0ECC78A2B5FA713001F1EEF /* Localization2+Kind.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Localization2+Kind.swift"; sourceTree = "<group>"; };
+		C0ECC78C2B5FA728001F1EEF /* Localization2+Provide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Localization2+Provide.swift"; sourceTree = "<group>"; };
 		C4119E05268F41D1004DFEFB /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		C42463732673ABE10082C135 /* ScreenShareHandler.Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenShareHandler.Interface.swift; sourceTree = "<group>"; };
 		C43C12F82694B14900C37E1B /* GliaPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GliaPresenter.swift; sourceTree = "<group>"; };
@@ -4042,6 +4046,8 @@
 			isa = PBXGroup;
 			children = (
 				C0ECC7812B5EA59F001F1EEF /* Localization2.swift */,
+				C0ECC78A2B5FA713001F1EEF /* Localization2+Kind.swift */,
+				C0ECC78C2B5FA728001F1EEF /* Localization2+Provide.swift */,
 				C0ECC7862B5EA7A0001F1EEF /* Localization2+Mock.swift */,
 				C0ECC7842B5EA76C001F1EEF /* Localization2+Live.swift */,
 				C0ECC7882B5EA963001F1EEF /* Localization2+StringProviding.swift */,
@@ -4837,6 +4843,7 @@
 				C0E948062AB1D64700890026 /* HeaderButtonSwiftUI.swift in Sources */,
 				1AA738B225790D5A00E1120F /* AlertView.swift in Sources */,
 				845E2F8E283FB5B500C04D56 /* Theme.Survey.SingleQuestion.Accessibility.swift in Sources */,
+				C0ECC78D2B5FA728001F1EEF /* Localization2+Provide.swift in Sources */,
 				C47901B725ED2FB0007EE195 /* AlertViewController+ScreenShareOffer.swift in Sources */,
 				1A8366B025FF40AB005FE7EE /* LocalFile.swift in Sources */,
 				75D987F82AF2BA500016A702 /* RemoteConfiguration+SnackBar.swift in Sources */,
@@ -4886,6 +4893,7 @@
 				845E2F85283FA90200C04D56 /* Theme.Survey.ValidationError.Accessibility.swift in Sources */,
 				9AB3402B28002EE9006E0FE2 /* ChatCallUpgradeStyle.Accessibility.swift in Sources */,
 				9A1992E327D6669900161AAE /* UIKitBased.Interface.swift in Sources */,
+				C0ECC78B2B5FA713001F1EEF /* Localization2+Kind.swift in Sources */,
 				AF0D26D629705FDF00816CCB /* SecureConversations.ActivityIndicator.swift in Sources */,
 				1A60AF7A25656E0500E53F53 /* Theme.swift in Sources */,
 				84CFB7732822700000167258 /* Theme.Button.Accessibility.swift in Sources */,
