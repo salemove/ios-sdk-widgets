@@ -715,6 +715,7 @@
 		C0ECC7892B5EA963001F1EEF /* Localization2+StringProviding.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0ECC7882B5EA963001F1EEF /* Localization2+StringProviding.swift */; };
 		C0ECC78B2B5FA713001F1EEF /* Localization2+Kind.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0ECC78A2B5FA713001F1EEF /* Localization2+Kind.swift */; };
 		C0ECC78D2B5FA728001F1EEF /* Localization2+Provide.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0ECC78C2B5FA728001F1EEF /* Localization2+Provide.swift */; };
+		C0ECC78F2B6139CF001F1EEF /* Localization3.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0ECC78E2B6139CF001F1EEF /* Localization3.swift */; };
 		C4119E06268F41D1004DFEFB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C4119E05268F41D1004DFEFB /* Main.storyboard */; };
 		C42463742673ABE10082C135 /* ScreenShareHandler.Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42463732673ABE10082C135 /* ScreenShareHandler.Interface.swift */; };
 		C43C12F92694B14900C37E1B /* GliaPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43C12F82694B14900C37E1B /* GliaPresenter.swift */; };
@@ -1515,6 +1516,7 @@
 		C0ECC7882B5EA963001F1EEF /* Localization2+StringProviding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Localization2+StringProviding.swift"; sourceTree = "<group>"; };
 		C0ECC78A2B5FA713001F1EEF /* Localization2+Kind.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Localization2+Kind.swift"; sourceTree = "<group>"; };
 		C0ECC78C2B5FA728001F1EEF /* Localization2+Provide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Localization2+Provide.swift"; sourceTree = "<group>"; };
+		C0ECC78E2B6139CF001F1EEF /* Localization3.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Localization3.swift; sourceTree = "<group>"; };
 		C4119E05268F41D1004DFEFB /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		C42463732673ABE10082C135 /* ScreenShareHandler.Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenShareHandler.Interface.swift; sourceTree = "<group>"; };
 		C43C12F82694B14900C37E1B /* GliaPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GliaPresenter.swift; sourceTree = "<group>"; };
@@ -1800,6 +1802,7 @@
 				1A205D5C25655CB1003AA3CD /* Info.plist */,
 				1A60AFAE256680EF00E53F53 /* L10n.swift */,
 				31E35AB92A8648E9006EC7FB /* Localization.swift */,
+				C0ECC78E2B6139CF001F1EEF /* Localization3.swift */,
 				C0ECC7832B5EA758001F1EEF /* Localization2 */,
 				3146C9482AB18AC70047D8CC /* Localization+StringProviding.swift */,
 				31882C9A2AA21B71009DE4BD /* Localization+Templates.swift */,
@@ -4747,6 +4750,7 @@
 				75940946298D378A008B173A /* CoreSDKClient.Live.swift in Sources */,
 				7594098F298D3929008B173A /* Glia.OpaqueAuthentication.swift in Sources */,
 				1A7CA81D2574D6370047CBBE /* ConnectView.swift in Sources */,
+				C0ECC78F2B6139CF001F1EEF /* Localization3.swift in Sources */,
 				1ABD6C5525B574FF00D56EFA /* BubbleView.swift in Sources */,
 				C0D2F04C2992789000803B47 /* VideoCallView.UserImageView.swift in Sources */,
 				C43D7A1525FF9A590064B1DA /* ChatChoiceCardOption.swift in Sources */,

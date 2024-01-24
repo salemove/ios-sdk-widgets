@@ -1,0 +1,65 @@
+// swiftlint:disable all
+// Generated using SwiftGen — https://github.com/SwiftGen/SwiftGen
+
+{% if tables.count > 0 %}
+import Foundation
+
+// swiftlint:disable superfluous_disable_command file_length implicit_return prefer_self_in_static_references
+
+// MARK: - Strings
+
+{% macro parametersBlock types %}
+  {%- for type in types -%}
+    {%- if type == "String" -%}
+    _ p{{forloop.counter}}: Any
+    {%- else -%}
+    _ p{{forloop.counter}}: {{type}}
+    {%- endif -%}
+    {{ ", " if not forloop.last }}
+  {%- endfor -%}
+{% endmacro %}
+{% macro argumentsBlock types %}
+  {%- for type in types -%}
+    {%- if type == "String" -%}
+    String(describing: p{{forloop.counter}})
+    {%- elif type == "UnsafeRawPointer" -%}
+    Int(bitPattern: p{{forloop.counter}})
+    {%- else -%}
+    p{{forloop.counter}}
+    {%- endif -%}
+    {{ ", " if not forloop.last }}
+  {%- endfor -%}
+{% endmacro %}
+{% macro recursiveBlock table item %}
+  {% for child in item.children %}
+  let {{child.name|swiftIdentifier:"pretty"|lowerFirstWord|escapeReservedKeywords}}: {{child.name|swiftIdentifier:"pretty"|escapeReservedKeywords}}
+  struct {{child.name|swiftIdentifier:"pretty"|escapeReservedKeywords}} {
+    {% for string in child.strings %}
+    let {{string.name|swiftIdentifier:"pretty"|lowerFirstWord|escapeReservedKeywords}}: String
+    {% endfor %}
+    {% filter indent:4," ",true %}{% call recursiveBlock table child %}{% endfilter %}
+  }
+  {% endfor %}
+{% endmacro %}
+
+// swiftlint:disable explicit_type_interface function_parameter_count identifier_name line_length
+// swiftlint:disable nesting type_body_length type_name vertical_whitespace_opening_braces
+{% set enumName %}{{param.enumName|default:"L10nX"}}{% endset %}
+struct {{enumName}} {
+  {% if tables.count > 1 or param.forceFileNameEnum %}
+  {% for table in tables %}
+  struct {{table.name|swiftIdentifier:"pretty"|escapeReservedKeywords}} {
+    {% call recursiveBlock table.name table.levels %}
+  }
+  {% endfor %}
+  {% else %}
+  {% call recursiveBlock tables.first.name tables.first.levels %}
+  {% endif %}
+}
+// swiftlint:enable explicit_type_interface function_parameter_count identifier_name line_length
+// swiftlint:disable nesting type_body_length type_name vertical_whitespace_opening_braces
+{% else %}
+// No string found
+{% endif %}
+
+// swiftlint:enable all

@@ -6,6 +6,8 @@ strings:
       params:
         publicAccess: false
         enumName: Localization
+    - templatePath: localization.stencil
+      output: GliaWidgets/Localization3.swift
 
 xcassets:
   inputs:
