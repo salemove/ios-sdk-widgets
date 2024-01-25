@@ -101,12 +101,6 @@ final class GliaTests: XCTestCase {
         var receivedTheme: Theme?
         var receivedFeatures = Features.init()
 
-        class MockedSceneProvider: SceneProvider {
-            init () {}
-            func windowScene() -> UIWindowScene? {
-                UIWindow().windowScene
-            }
-        }
         let expectedSceneProvider = MockedSceneProvider()
         var receivedSceneProvider: SceneProvider?
         gliaEnv.createRootCoordinator = { interactor, viewFactory, sceneProvider, _, screenShareHandler, features, environment in

@@ -10,7 +10,7 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
     }
 
     var gliaViewController: GliaViewController?
-    private let interactor: Interactor
+    let interactor: Interactor
     private let viewFactory: ViewFactory
     private weak var sceneProvider: SceneProvider?
     private var engagement: Engagement = .none
@@ -20,8 +20,8 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
     private let screenShareHandler: ScreenShareHandler
 
     private let navigationController = NavigationController()
-    private let navigationPresenter: NavigationPresenter
-    private let gliaPresenter: GliaPresenter
+    let navigationPresenter: NavigationPresenter
+    let gliaPresenter: GliaPresenter
     private let kBubbleViewSize: CGFloat = 60.0
     private let features: Features
     private let environment: Environment
@@ -50,7 +50,6 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
 
     // swiftlint:disable function_body_length
     func start() {
-
         switch engagementKind {
         case .none:
             break
@@ -699,7 +698,7 @@ extension EngagementKind {
 }
 
 extension EngagementCoordinator {
-    enum DelegateEvent {
+    enum DelegateEvent: Equatable {
         case started
         case engagementChanged(EngagementKind)
         case ended
