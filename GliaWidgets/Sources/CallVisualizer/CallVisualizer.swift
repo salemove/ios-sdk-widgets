@@ -61,7 +61,8 @@ public final class CallVisualizer {
                 log: environment.log,
                 interactorProviding: environment.interactorProviding(),
                 fetchSiteConfigurations: environment.fetchSiteConfigurations,
-                snackBar: environment.snackBar
+                snackBar: environment.snackBar,
+                localizationProviding: environment.localizationProviding
             )
         )
     }()
@@ -166,7 +167,7 @@ extension CallVisualizer {
         accepted: @escaping () -> Void,
         declined: @escaping () -> Void
     ) {
-        let alertConfiguration = Theme().alertConfiguration
+        let alertConfiguration = environment.theme.alertConfiguration
         switch offer.type {
         case .video:
             let isOneWay = offer.direction == .oneWay

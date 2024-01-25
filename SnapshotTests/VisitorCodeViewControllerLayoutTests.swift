@@ -10,7 +10,7 @@ final class VisitorCodeViewControllerLayoutTests: SnapshotTestCase {
                 viewState: .loading
             )
         )
-        let viewController = CallVisualizer.VisitorCodeViewController(props: props)
+        let viewController = CallVisualizer.VisitorCodeViewController(props: props, environment: .mock)
         viewController.assertSnapshot(as: .image, in: .portrait)
         viewController.assertSnapshot(as: .image, in: .landscape)
     }
@@ -22,7 +22,7 @@ final class VisitorCodeViewControllerLayoutTests: SnapshotTestCase {
                 viewState: .error(refreshTap: .nop)
             )
         )
-        let viewController = CallVisualizer.VisitorCodeViewController(props: props)
+        let viewController = CallVisualizer.VisitorCodeViewController(props: props, environment: .mock)
         viewController.assertSnapshot(as: .image, in: .portrait)
         viewController.assertSnapshot(as: .image, in: .landscape)
     }
@@ -34,7 +34,7 @@ final class VisitorCodeViewControllerLayoutTests: SnapshotTestCase {
                 viewState: .success(visitorCode: "12345")
             )
         )
-        let viewController = CallVisualizer.VisitorCodeViewController(props: props)
+        let viewController = CallVisualizer.VisitorCodeViewController(props: props, environment: .mock)
         viewController.assertSnapshot(as: .image, in: .portrait)
         viewController.assertSnapshot(as: .image, in: .landscape)
     }
@@ -46,7 +46,7 @@ final class VisitorCodeViewControllerLayoutTests: SnapshotTestCase {
                 viewState: .loading
             )
         )
-        let viewController = CallVisualizer.VisitorCodeViewController(props: props)
+        let viewController = CallVisualizer.VisitorCodeViewController(props: props, environment: .mock)
         viewController.assertSnapshot(as: .image, in: .portrait)
         viewController.assertSnapshot(as: .image, in: .landscape)
     }
@@ -58,7 +58,7 @@ final class VisitorCodeViewControllerLayoutTests: SnapshotTestCase {
                 viewState: .error(refreshTap: .nop)
             )
         )
-        let viewController = CallVisualizer.VisitorCodeViewController(props: props)
+        let viewController = CallVisualizer.VisitorCodeViewController(props: props, environment: .mock)
         viewController.assertSnapshot(as: .image, in: .portrait)
         viewController.assertSnapshot(as: .image, in: .landscape)
     }
@@ -69,7 +69,7 @@ final class VisitorCodeViewControllerLayoutTests: SnapshotTestCase {
                 viewState: .success(visitorCode: "12345")
             )
         )
-        let viewController = CallVisualizer.VisitorCodeViewController(props: props)
+        let viewController = CallVisualizer.VisitorCodeViewController(props: props, environment: .mock)
         viewController.assertSnapshot(as: .image, in: .portrait)
         viewController.assertSnapshot(as: .image, in: .landscape)
     }

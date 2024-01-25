@@ -47,7 +47,10 @@ extension CallVisualizer {
             viewModel.requestVisitorCode()
             self.viewModel = viewModel
 
-            let codeController = VisitorCodeViewController(props: viewModel.makeProps())
+            let codeController = VisitorCodeViewController(
+                props: viewModel.makeProps(),
+                environment: .init(localization: environment.localizationProviding().callVisualizer.visitorCode)
+            )
             self.codeViewController = codeController
 
             switch presentation {

@@ -26,7 +26,8 @@ extension CallVisualizer {
                 theme: environment.viewFactory.theme,
                 environment: .init(
                     timerProviding: environment.timerProviding,
-                    requestVisitorCode: environment.requestVisitorCode
+                    requestVisitorCode: environment.requestVisitorCode,
+                    localizationProviding: environment.localizationProviding
                 ),
                 presentation: presentation
             )

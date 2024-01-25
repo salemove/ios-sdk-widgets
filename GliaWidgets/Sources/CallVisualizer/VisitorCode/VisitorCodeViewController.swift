@@ -6,10 +6,14 @@ extension CallVisualizer {
             let visitorCodeViewProps: VisitorCodeView.Props
         }
 
-        private let codeView = VisitorCodeView()
+        private let codeView: VisitorCodeView
 
-        init(props: Props) {
+        init(
+            props: Props,
+            environment: Environment
+        ) {
             self.props = props
+            self.codeView = VisitorCodeView(environment: .init(localization: environment.localization))
             super.init(nibName: nil, bundle: nil)
         }
 
@@ -65,3 +69,17 @@ extension CallVisualizer {
         }
     }
 }
+
+extension CallVisualizer.VisitorCodeViewController {
+    struct Environment {
+        let localization: Localization2.CallVisualizer.VisitorCode
+    }
+}
+
+#if DEBUG
+
+extension CallVisualizer.VisitorCodeViewController.Environment {
+    static let mock = Self(localization: Localization2.mock.callVisualizer.visitorCode)
+}
+
+#endif

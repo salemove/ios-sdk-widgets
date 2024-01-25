@@ -31,7 +31,8 @@ extension Glia.Environment {
         proximityManager: .mock,
         print: .mock,
         conditionalCompilation: .mock,
-        snackBar: .mock
+        snackBar: .mock,
+        localizationKind: .mock
     )
 }
 

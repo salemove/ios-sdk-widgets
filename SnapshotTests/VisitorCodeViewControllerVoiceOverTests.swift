@@ -11,7 +11,7 @@ final class VisitorCodeViewControllerVoiceOverTests: SnapshotTestCase {
                 viewState: .loading
             )
         )
-        let viewController = CallVisualizer.VisitorCodeViewController(props: props)
+        let viewController = CallVisualizer.VisitorCodeViewController(props: props, environment: .mock)
         viewController.assertSnapshot(as: .accessibilityImage)
     }
 
@@ -22,7 +22,7 @@ final class VisitorCodeViewControllerVoiceOverTests: SnapshotTestCase {
                 viewState: .error(refreshTap: .nop)
             )
         )
-        let viewController = CallVisualizer.VisitorCodeViewController(props: props)
+        let viewController = CallVisualizer.VisitorCodeViewController(props: props, environment: .mock)
         viewController.assertSnapshot(as: .accessibilityImage)
     }
 
@@ -33,7 +33,7 @@ final class VisitorCodeViewControllerVoiceOverTests: SnapshotTestCase {
                 viewState: .success(visitorCode: "12345")
             )
         )
-        let viewController = CallVisualizer.VisitorCodeViewController(props: props)
+        let viewController = CallVisualizer.VisitorCodeViewController(props: props, environment: .mock)
         viewController.assertSnapshot(as: .accessibilityImage)
     }
 
@@ -44,7 +44,7 @@ final class VisitorCodeViewControllerVoiceOverTests: SnapshotTestCase {
                 viewState: .loading
             )
         )
-        let viewController = CallVisualizer.VisitorCodeViewController(props: props)
+        let viewController = CallVisualizer.VisitorCodeViewController(props: props, environment: .mock)
         viewController.assertSnapshot(as: .accessibilityImage)
     }
 
@@ -55,7 +55,7 @@ final class VisitorCodeViewControllerVoiceOverTests: SnapshotTestCase {
                 viewState: .error(refreshTap: .nop)
             )
         )
-        let viewController = CallVisualizer.VisitorCodeViewController(props: props)
+        let viewController = CallVisualizer.VisitorCodeViewController(props: props, environment: .mock)
         viewController.assertSnapshot(as: .accessibilityImage)
     }
     func testVisitorCodeEmbeddedWhenSuccess() {
@@ -65,7 +65,7 @@ final class VisitorCodeViewControllerVoiceOverTests: SnapshotTestCase {
                 viewState: .success(visitorCode: "12345")
             )
         )
-        let viewController = CallVisualizer.VisitorCodeViewController(props: props)
+        let viewController = CallVisualizer.VisitorCodeViewController(props: props, environment: .mock)
         viewController.assertSnapshot(as: .accessibilityImage)
     }
 }

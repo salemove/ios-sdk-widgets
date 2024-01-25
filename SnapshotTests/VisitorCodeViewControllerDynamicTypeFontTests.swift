@@ -11,7 +11,7 @@ final class VisitorCodeViewControllerDynamicTypeFontTests: SnapshotTestCase {
                 viewState: .loading
             )
         )
-        let viewController = CallVisualizer.VisitorCodeViewController(props: props)
+        let viewController = CallVisualizer.VisitorCodeViewController(props: props, environment: .mock)
         viewController.assertSnapshot(as: .extra3LargeFont, in: .portrait)
         viewController.assertSnapshot(as: .extra3LargeFont, in: .landscape)
     }
@@ -23,7 +23,7 @@ final class VisitorCodeViewControllerDynamicTypeFontTests: SnapshotTestCase {
                 viewState: .error(refreshTap: .nop)
             )
         )
-        let viewController = CallVisualizer.VisitorCodeViewController(props: props)
+        let viewController = CallVisualizer.VisitorCodeViewController(props: props, environment: .mock)
         viewController.assertSnapshot(as: .extra3LargeFont, in: .portrait)
         viewController.assertSnapshot(as: .extra3LargeFont, in: .landscape)
     }
@@ -35,7 +35,7 @@ final class VisitorCodeViewControllerDynamicTypeFontTests: SnapshotTestCase {
                 viewState: .success(visitorCode: "12345")
             )
         )
-        let viewController = CallVisualizer.VisitorCodeViewController(props: props)
+        let viewController = CallVisualizer.VisitorCodeViewController(props: props, environment: .mock)
         viewController.assertSnapshot(as: .extra3LargeFont, in: .portrait)
         viewController.assertSnapshot(as: .extra3LargeFont, in: .landscape)
     }
@@ -47,7 +47,7 @@ final class VisitorCodeViewControllerDynamicTypeFontTests: SnapshotTestCase {
                 viewState: .loading
             )
         )
-        let viewController = CallVisualizer.VisitorCodeViewController(props: props)
+        let viewController = CallVisualizer.VisitorCodeViewController(props: props, environment: .mock)
         viewController.assertSnapshot(as: .extra3LargeFont, in: .portrait)
         viewController.assertSnapshot(as: .extra3LargeFont, in: .landscape)
     }
@@ -59,7 +59,7 @@ final class VisitorCodeViewControllerDynamicTypeFontTests: SnapshotTestCase {
                 viewState: .error(refreshTap: .nop)
             )
         )
-        let viewController = CallVisualizer.VisitorCodeViewController(props: props)
+        let viewController = CallVisualizer.VisitorCodeViewController(props: props, environment: .mock)
         viewController.assertSnapshot(as: .extra3LargeFont, in: .portrait)
         viewController.assertSnapshot(as: .extra3LargeFont, in: .landscape)
     }
@@ -70,7 +70,7 @@ final class VisitorCodeViewControllerDynamicTypeFontTests: SnapshotTestCase {
                 viewState: .success(visitorCode: "12345")
             )
         )
-        let viewController = CallVisualizer.VisitorCodeViewController(props: props)
+        let viewController = CallVisualizer.VisitorCodeViewController(props: props, environment: .mock)
         viewController.assertSnapshot(as: .extra3LargeFont, in: .portrait)
         viewController.assertSnapshot(as: .extra3LargeFont, in: .landscape)
     }
