@@ -15,7 +15,7 @@ final class GliaPresenter {
         }
     }()
 
-    private var topMostViewController: UIViewController {
+    var topMostViewController: UIViewController {
         guard let window = window else {
             fatalError("Could not find key UIWindow to present on")
         }

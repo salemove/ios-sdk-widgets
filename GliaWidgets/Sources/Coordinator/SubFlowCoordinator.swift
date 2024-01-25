@@ -1,9 +1,11 @@
 import Foundation
 
 class SubFlowCoordinator {
-    private var subFlowCoordinators = [Any]()
+    private var subFlowCoordinators: [any FlowCoordinator] = []
 
-    func pushCoordinator<T: FlowCoordinator>(_ coordinator: T) {
+    var coordinators: [any FlowCoordinator] { subFlowCoordinators }
+
+    func pushCoordinator(_ coordinator: any FlowCoordinator) {
         subFlowCoordinators.append(coordinator)
     }
 

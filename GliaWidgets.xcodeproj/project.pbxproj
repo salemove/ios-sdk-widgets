@@ -191,6 +191,8 @@
 		315BAB1E29ADFED800FF284B /* ConfirmationStyle.CheckMessagesButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 315BAB1D29ADFED800FF284B /* ConfirmationStyle.CheckMessagesButtonStyle.swift */; };
 		31758EC02B5E9E22007BBD9F /* VideoCallCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31758EBE2B5E9E22007BBD9F /* VideoCallCoordinatorTests.swift */; };
 		31758EC12B5E9E22007BBD9F /* CallVisualizer.VideoCallCoordinator.Environment.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31758EBF2B5E9E22007BBD9F /* CallVisualizer.VideoCallCoordinator.Environment.Mock.swift */; };
+		31758EC42B5FB192007BBD9F /* EngagementCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31758EC32B5FB192007BBD9F /* EngagementCoordinatorTests.swift */; };
+		31758EC62B5FC182007BBD9F /* SceneProvider.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31758EC52B5FC182007BBD9F /* SceneProvider.Mock.swift */; };
 		31882C9B2AA21B71009DE4BD /* Localization+Templates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31882C9A2AA21B71009DE4BD /* Localization+Templates.swift */; };
 		3189DD9429DEFAC600D68E9F /* SecureConversations.WelcomeViewModelSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3189DD9329DEFAC600D68E9F /* SecureConversations.WelcomeViewModelSpec.swift */; };
 		3189DD9629E4331200D68E9F /* SecureConversations.WelcomeViewModel.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3189DD9529E4331200D68E9F /* SecureConversations.WelcomeViewModel.Mock.swift */; };
@@ -1129,6 +1131,8 @@
 		315BAB1D29ADFED800FF284B /* ConfirmationStyle.CheckMessagesButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationStyle.CheckMessagesButtonStyle.swift; sourceTree = "<group>"; };
 		31758EBE2B5E9E22007BBD9F /* VideoCallCoordinatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoCallCoordinatorTests.swift; sourceTree = "<group>"; };
 		31758EBF2B5E9E22007BBD9F /* CallVisualizer.VideoCallCoordinator.Environment.Mock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallVisualizer.VideoCallCoordinator.Environment.Mock.swift; sourceTree = "<group>"; };
+		31758EC32B5FB192007BBD9F /* EngagementCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EngagementCoordinatorTests.swift; sourceTree = "<group>"; };
+		31758EC52B5FC182007BBD9F /* SceneProvider.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneProvider.Mock.swift; sourceTree = "<group>"; };
 		31882C9A2AA21B71009DE4BD /* Localization+Templates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Localization+Templates.swift"; sourceTree = "<group>"; };
 		3189DD9329DEFAC600D68E9F /* SecureConversations.WelcomeViewModelSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.WelcomeViewModelSpec.swift; sourceTree = "<group>"; };
 		3189DD9529E4331200D68E9F /* SecureConversations.WelcomeViewModel.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.WelcomeViewModel.Mock.swift; sourceTree = "<group>"; };
@@ -3075,6 +3079,14 @@
 			path = ConfirmationStyle;
 			sourceTree = "<group>";
 		};
+		31758EC22B5FB155007BBD9F /* EngagementCoordinator */ = {
+			isa = PBXGroup;
+			children = (
+				31758EC32B5FB192007BBD9F /* EngagementCoordinatorTests.swift */,
+			);
+			path = EngagementCoordinator;
+			sourceTree = "<group>";
+		};
 		3189DD9229DEF62600D68E9F /* Welcome */ = {
 			isa = PBXGroup;
 			children = (
@@ -3122,6 +3134,7 @@
 		31FF0DC72B5907C600834AFB /* Coordinators */ = {
 			isa = PBXGroup;
 			children = (
+				31758EC22B5FB155007BBD9F /* EngagementCoordinator */,
 				31FF0DCD2B5A88E700834AFB /* Call */,
 				31FF0DC82B5907C600834AFB /* Chat */,
 			);
@@ -3904,6 +3917,7 @@
 			isa = PBXGroup;
 			children = (
 				8491AF622AA20F9D00CC3E72 /* GliaViewControllerDelegateMock.swift */,
+				31758EC52B5FC182007BBD9F /* SceneProvider.Mock.swift */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -5907,6 +5921,7 @@
 				C03A8049292BC8DB00DDECA6 /* CallViewControllerTests.swift in Sources */,
 				84D5B9662A15204400807F92 /* QuickLookBased.Failing.swift in Sources */,
 				84602A772AEA5BEA0031E606 /* ProximityManager.Failing.swift in Sources */,
+				31758EC62B5FC182007BBD9F /* SceneProvider.Mock.swift in Sources */,
 				753B05F82AFC1D750084611E /* SerialQueueTests.swift in Sources */,
 				31B278032B55BE670021DEC1 /* SecureConversations.WelcomeViewController.Mock.swift in Sources */,
 				84681A982A61853300DD7406 /* GvaOption.Mock.swift in Sources */,
@@ -5981,6 +5996,7 @@
 				8491AF672AB8707600CC3E72 /* ChatViewModelTests+Transferring.swift in Sources */,
 				AFEF5C7429929A8D005C3D8D /* SecureConversations.FileUploadListViewModel.Environment.Failing.swift in Sources */,
 				AFF9542C2ADDA10600C277E0 /* CoreSDKConfigurator.Failing.swift in Sources */,
+				31758EC42B5FB192007BBD9F /* EngagementCoordinatorTests.swift in Sources */,
 				9A3E1D9D27BA7741005634EB /* FoundationBased.Failing.swift in Sources */,
 				9A3E1D8427B67F1B005634EB /* Helper.swift in Sources */,
 				C0175A0F2A55A624001FACDE /* ChatMessagaEntryViewTests.swift in Sources */,
