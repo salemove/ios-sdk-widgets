@@ -31,16 +31,31 @@ import Foundation
   {%- endfor -%}
 {% endmacro %}
 {% macro recursiveBlock table item %}
-  {% for child in item.children %}
-  let {{child.name|swiftIdentifier:"pretty"|lowerFirstWord|escapeReservedKeywords}}: {{child.name|swiftIdentifier:"pretty"|escapeReservedKeywords}}
+{% for child in item.children %}
+  {% if child.name == "required" %}
+  let requiredObj: Required
+  struct Required {
+    {% for string in child.strings %}
+    let {{string.name|swiftIdentifier:"pretty"|lowerFirstWord|escapeReservedKeywords}}: String
+    {% endfor %}
+    {% filter indent:4 %}
+      {% call recursiveBlock table child %}
+    {% endfilter %}
+  }
+  {% else %}
+  let {{child.name|swiftIdentifier:"pretty"|lowerFirstWord|escapeReservedKeywords}}Obj: {{child.name|swiftIdentifier:"pretty"|escapeReservedKeywords}}
   struct {{child.name|swiftIdentifier:"pretty"|escapeReservedKeywords}} {
     {% for string in child.strings %}
     let {{string.name|swiftIdentifier:"pretty"|lowerFirstWord|escapeReservedKeywords}}: String
     {% endfor %}
-    {% filter indent:4," ",true %}{% call recursiveBlock table child %}{% endfilter %}
+    {% filter indent:4 %}
+      {% call recursiveBlock table child %}
+    {% endfilter %}
   }
-  {% endfor %}
+  {% endif %}
+{% endfor %}
 {% endmacro %}
+
 
 // swiftlint:disable explicit_type_interface function_parameter_count identifier_name line_length
 // swiftlint:disable nesting type_body_length type_name vertical_whitespace_opening_braces

@@ -8,67 +8,68 @@ import Foundation
 // MARK: - Strings
 
 
+
 // swiftlint:disable explicit_type_interface function_parameter_count identifier_name line_length
 // swiftlint:disable nesting type_body_length type_name vertical_whitespace_opening_braces
 struct L10nX {
-  let alert: Alert
+  let alertObj: Alert
   struct Alert {
-      let action: Action
+      let actionObj: Action
       struct Action {
         let settings: String
       }
-      let cameraAccess: CameraAccess
+      let cameraAccessObj: CameraAccess
       struct CameraAccess {
         let error: String
       }
-      let mediaSourceAccess: MediaSourceAccess
+      let mediaSourceAccessObj: MediaSourceAccess
       struct MediaSourceAccess {
         let error: String
       }
-      let microphoneAccess: MicrophoneAccess
+      let microphoneAccessObj: MicrophoneAccess
       struct MicrophoneAccess {
         let error: String
       }
-      let screenSharing: ScreenSharing
+      let screenSharingObj: ScreenSharing
       struct ScreenSharing {
-          let start: Start
+          let startObj: Start
           struct Start {
             let header: String
             let message: String
           }
-          let stop: Stop
+          let stopObj: Stop
           struct Stop {
             let header: String
             let message: String
           }
       }
   }
-  let call: Call
+  let callObj: Call
   struct Call {
-      let bubble: Bubble
+      let bubbleObj: Bubble
       struct Bubble {
-          let accessibility: Accessibility
+          let accessibilityObj: Accessibility
           struct Accessibility {
             let hint: String
             let label: String
           }
       }
-      let buttons: Buttons
+      let buttonsObj: Buttons
       struct Buttons {
-          let chat: Chat
+          let chatObj: Chat
           struct Chat {
-              let badgeValue: BadgeValue
+              let badgeValueObj: BadgeValue
               struct BadgeValue {
-                  let multipleItems: MultipleItems
+                  let multipleItemsObj: MultipleItems
                   struct MultipleItems {
-                      let accessibility: Accessibility
+                      let accessibilityObj: Accessibility
                       struct Accessibility {
                         let label: String
                       }
                   }
-                  let singleItem: SingleItem
+                  let singleItemObj: SingleItem
                   struct SingleItem {
-                      let accessibility: Accessibility
+                      let accessibilityObj: Accessibility
                       struct Accessibility {
                         let label: String
                       }
@@ -76,188 +77,188 @@ struct L10nX {
               }
           }
       }
-      let connect: Connect
+      let connectObj: Connect
       struct Connect {
-          let firstText: FirstText
+          let firstTextObj: FirstText
           struct FirstText {
-              let accessibility: Accessibility
+              let accessibilityObj: Accessibility
               struct Accessibility {
                 let hint: String
               }
           }
-          let secondText: SecondText
+          let secondTextObj: SecondText
           struct SecondText {
-              let accessibility: Accessibility
+              let accessibilityObj: Accessibility
               struct Accessibility {
                 let hint: String
               }
           }
       }
-      let duration: Duration
+      let durationObj: Duration
       struct Duration {
-          let accessibility: Accessibility
+          let accessibilityObj: Accessibility
           struct Accessibility {
             let label: String
           }
       }
-      let header: Header
+      let headerObj: Header
       struct Header {
-          let back: Back
+          let backObj: Back
           struct Back {
-              let button: Button
+              let buttonObj: Button
               struct Button {
-                  let accessibility: Accessibility
+                  let accessibilityObj: Accessibility
                   struct Accessibility {
                     let hint: String
                   }
               }
           }
       }
-      let mute: Mute
+      let muteObj: Mute
       struct Mute {
         let button: String
       }
-      let onHold: OnHold
+      let onHoldObj: OnHold
       struct OnHold {
         let bottomText: String
         let icon: String
       }
-      let operatorAvatar: OperatorAvatar
+      let operatorAvatarObj: OperatorAvatar
       struct OperatorAvatar {
-          let accessibility: Accessibility
+          let accessibilityObj: Accessibility
           struct Accessibility {
             let hint: String
             let label: String
           }
       }
-      let operatorName: OperatorName
+      let operatorNameObj: OperatorName
       struct OperatorName {
-          let accessibility: Accessibility
+          let accessibilityObj: Accessibility
           struct Accessibility {
             let hint: String
           }
       }
-      let operatorVideo: OperatorVideo
+      let operatorVideoObj: OperatorVideo
       struct OperatorVideo {
-          let accessibility: Accessibility
+          let accessibilityObj: Accessibility
           struct Accessibility {
             let label: String
           }
       }
-      let speaker: Speaker
+      let speakerObj: Speaker
       struct Speaker {
         let button: String
       }
-      let unmute: Unmute
+      let unmuteObj: Unmute
       struct Unmute {
         let button: String
       }
-      let visitorVideo: VisitorVideo
+      let visitorVideoObj: VisitorVideo
       struct VisitorVideo {
-          let accessibility: Accessibility
+          let accessibilityObj: Accessibility
           struct Accessibility {
             let label: String
           }
       }
   }
-  let callVisualizer: CallVisualizer
+  let callVisualizerObj: CallVisualizer
   struct CallVisualizer {
-      let screenSharing: ScreenSharing
+      let screenSharingObj: ScreenSharing
       struct ScreenSharing {
         let message: String
-          let header: Header
+          let headerObj: Header
           struct Header {
             let title: String
           }
       }
-      let visitorCode: VisitorCode
+      let visitorCodeObj: VisitorCode
       struct VisitorCode {
         let title: String
-          let close: Close
+          let closeObj: Close
           struct Close {
-              let accessibility: Accessibility
+              let accessibilityObj: Accessibility
               struct Accessibility {
                 let hint: String
               }
           }
-          let refresh: Refresh
+          let refreshObj: Refresh
           struct Refresh {
-              let accessibility: Accessibility
+              let accessibilityObj: Accessibility
               struct Accessibility {
                 let hint: String
                 let label: String
               }
           }
-          let title: Title
+          let titleObj: Title
           struct Title {
-              let accessibility: Accessibility
+              let accessibilityObj: Accessibility
               struct Accessibility {
                 let hint: String
               }
           }
       }
   }
-  let chat: Chat
+  let chatObj: Chat
   struct Chat {
     let attachFiles: String
     let unreadMessageDivider: String
-      let attachment: Attachment
+      let attachmentObj: Attachment
       struct Attachment {
         let photoLibrary: String
         let takePhoto: String
         let unsupportedFile: String
-          let message: Message
+          let messageObj: Message
           struct Message {
-              let accessibility: Accessibility
+              let accessibilityObj: Accessibility
               struct Accessibility {
                 let label: String
               }
           }
       }
-      let choiceCard: ChoiceCard
+      let choiceCardObj: ChoiceCard
       struct ChoiceCard {
         let placeholderMessage: String
-          let button: Button
+          let buttonObj: Button
           struct Button {
-              let disabled: Disabled
+              let disabledObj: Disabled
               struct Disabled {
-                  let accessibility: Accessibility
+                  let accessibilityObj: Accessibility
                   struct Accessibility {
                     let label: String
                   }
               }
           }
-          let image: Image
+          let imageObj: Image
           struct Image {
-              let accessibility: Accessibility
+              let accessibilityObj: Accessibility
               struct Accessibility {
                 let label: String
               }
           }
       }
-      let download: Download
+      let downloadObj: Download
       struct Download {
         let downloading: String
         let failed: String
       }
-      let file: File
+      let fileObj: File
       struct File {
-          let infectedFile: InfectedFile
+          let infectedFileObj: InfectedFile
           struct InfectedFile {
             let error: String
           }
-          let removeUpload: RemoveUpload
+          let removeUploadObj: RemoveUpload
           struct RemoveUpload {
-              let accessibility: Accessibility
+              let accessibilityObj: Accessibility
               struct Accessibility {
                 let label: String
               }
           }
-          let sizeLimit: SizeLimit
+          let sizeLimitObj: SizeLimit
           struct SizeLimit {
             let error: String
           }
-          let upload: Upload
+          let uploadObj: Upload
           struct Upload {
             let failed: String
             let genericError: String
@@ -267,173 +268,173 @@ struct L10nX {
             let success: String
           }
       }
-      let input: Input
+      let inputObj: Input
       struct Input {
         let placeholder: String
       }
-      let mediaUpgrade: MediaUpgrade
+      let mediaUpgradeObj: MediaUpgrade
       struct MediaUpgrade {
-          let audio: Audio
+          let audioObj: Audio
           struct Audio {
             let systemMessage: String
           }
-          let video: Video
+          let videoObj: Video
           struct Video {
             let systemMessage: String
           }
       }
-      let message: Message
+      let messageObj: Message
       struct Message {
         let delivered: String
         let startEngagementPlaceholder: String
-          let unread: Unread
+          let unreadObj: Unread
           struct Unread {
-              let accessibility: Accessibility
+              let accessibilityObj: Accessibility
               struct Accessibility {
                 let label: String
               }
           }
       }
-      let operatorAvatar: OperatorAvatar
+      let operatorAvatarObj: OperatorAvatar
       struct OperatorAvatar {
-          let accessibility: Accessibility
+          let accessibilityObj: Accessibility
           struct Accessibility {
             let label: String
           }
       }
-      let operatorJoined: OperatorJoined
+      let operatorJoinedObj: OperatorJoined
       struct OperatorJoined {
         let systemMessage: String
       }
-      let operatorName: OperatorName
+      let operatorNameObj: OperatorName
       struct OperatorName {
-          let accessibility: Accessibility
+          let accessibilityObj: Accessibility
           struct Accessibility {
             let label: String
           }
       }
-      let status: Status
+      let statusObj: Status
       struct Status {
         let typing: String
-          let typing: Typing
+          let typingObj: Typing
           struct Typing {
-              let accessibility: Accessibility
+              let accessibilityObj: Accessibility
               struct Accessibility {
                 let label: String
               }
           }
       }
   }
-  let engagement: Engagement
+  let engagementObj: Engagement
   struct Engagement {
     let defaultOperator: String
-      let audio: Audio
+      let audioObj: Audio
       struct Audio {
         let title: String
       }
-      let chat: Chat
+      let chatObj: Chat
       struct Chat {
         let title: String
       }
-      let confirm: Confirm
+      let confirmObj: Confirm
       struct Confirm {
         let message: String
         let title: String
-          let link1: Link1
+          let link1Obj: Link1
           struct Link1 {
             let text: String
             let url: String
-              let accessibility: Accessibility
+              let accessibilityObj: Accessibility
               struct Accessibility {
                 let label: String
               }
           }
-          let link2: Link2
+          let link2Obj: Link2
           struct Link2 {
             let text: String
             let url: String
-              let accessibility: Accessibility
+              let accessibilityObj: Accessibility
               struct Accessibility {
                 let label: String
               }
           }
       }
-      let connectionScreen: ConnectionScreen
+      let connectionScreenObj: ConnectionScreen
       struct ConnectionScreen {
         let connectWith: String
         let message: String
       }
-      let end: End
+      let endObj: End
       struct End {
         let message: String
-          let confirmation: Confirmation
+          let confirmationObj: Confirmation
           struct Confirmation {
             let header: String
           }
       }
-      let ended: Ended
+      let endedObj: Ended
       struct Ended {
         let header: String
         let message: String
       }
-      let mediaUpgrade: MediaUpgrade
+      let mediaUpgradeObj: MediaUpgrade
       struct MediaUpgrade {
         let offer: String
-          let audio: Audio
+          let audioObj: Audio
           struct Audio {
             let info: String
           }
-          let phone: Phone
+          let phoneObj: Phone
           struct Phone {
             let info: String
           }
       }
-      let minimizeVideo: MinimizeVideo
+      let minimizeVideoObj: MinimizeVideo
       struct MinimizeVideo {
         let button: String
       }
-      let phone: Phone
+      let phoneObj: Phone
       struct Phone {
         let title: String
       }
-      let queue: Queue
+      let queueObj: Queue
       struct Queue {
         let transferring: String
-          let closed: Closed
+          let closedObj: Closed
           struct Closed {
             let header: String
             let message: String
           }
-          let leave: Leave
+          let leaveObj: Leave
           struct Leave {
             let header: String
             let message: String
           }
-          let reconnection: Reconnection
+          let reconnectionObj: Reconnection
           struct Reconnection {
             let failed: String
           }
       }
-      let queueWait: QueueWait
+      let queueWaitObj: QueueWait
       struct QueueWait {
         let message: String
       }
-      let secureMessaging: SecureMessaging
+      let secureMessagingObj: SecureMessaging
       struct SecureMessaging {
         let title: String
       }
-      let video: Video
+      let videoObj: Video
       struct Video {
         let title: String
       }
   }
-  let error: Error
+  let errorObj: Error
   struct Error {
     let general: String
     let `internal`: String
     let unexpected: String
   }
-  let general: General
+  let generalObj: General
   struct General {
     let accept: String
     let allow: String
@@ -460,201 +461,201 @@ struct L10nX {
     let thankYou: String
     let yes: String
     let you: String
-      let close: Close
+      let closeObj: Close
       struct Close {
         let accessibility: String
       }
   }
-  let gva: Gva
+  let gvaObj: Gva
   struct Gva {
-      let unsupportedAction: UnsupportedAction
+      let unsupportedActionObj: UnsupportedAction
       struct UnsupportedAction {
         let error: String
       }
   }
-  let ios: Ios
+  let iosObj: Ios
   struct Ios {
-      let alert: Alert
+      let alertObj: Alert
       struct Alert {
-          let cameraAccess: CameraAccess
+          let cameraAccessObj: CameraAccess
           struct CameraAccess {
             let message: String
           }
-          let mediaSource: MediaSource
+          let mediaSourceObj: MediaSource
           struct MediaSource {
             let message: String
           }
-          let microphoneAccess: MicrophoneAccess
+          let microphoneAccessObj: MicrophoneAccess
           struct MicrophoneAccess {
             let message: String
           }
       }
-      let engagement: Engagement
+      let engagementObj: Engagement
       struct Engagement {
-          let connectionScreen: ConnectionScreen
+          let connectionScreenObj: ConnectionScreen
           struct ConnectionScreen {
             let videoNotice: String
           }
       }
   }
-  let liveObservation: LiveObservation
+  let liveObservationObj: LiveObservation
   struct LiveObservation {
-      let indicator: Indicator
+      let indicatorObj: Indicator
       struct Indicator {
         let message: String
       }
   }
-  let mediaUpgrade: MediaUpgrade
+  let mediaUpgradeObj: MediaUpgrade
   struct MediaUpgrade {
-      let audio: Audio
+      let audioObj: Audio
       struct Audio {
         let title: String
       }
-      let video: Video
+      let videoObj: Video
       struct Video {
-          let oneWay: OneWay
+          let oneWayObj: OneWay
           struct OneWay {
             let title: String
           }
-          let twoWay: TwoWay
+          let twoWayObj: TwoWay
           struct TwoWay {
             let title: String
           }
       }
   }
-  let messageCenter: MessageCenter
+  let messageCenterObj: MessageCenter
   struct MessageCenter {
     let header: String
-      let confirmation: Confirmation
+      let confirmationObj: Confirmation
       struct Confirmation {
         let subtitle: String
-          let checkMessages: CheckMessages
+          let checkMessagesObj: CheckMessages
           struct CheckMessages {
-              let accessibility: Accessibility
+              let accessibilityObj: Accessibility
               struct Accessibility {
                 let hint: String
                 let label: String
               }
           }
       }
-      let notAuthenticated: NotAuthenticated
+      let notAuthenticatedObj: NotAuthenticated
       struct NotAuthenticated {
         let message: String
       }
-      let unavailable: Unavailable
+      let unavailableObj: Unavailable
       struct Unavailable {
         let message: String
         let title: String
       }
-      let welcome: Welcome
+      let welcomeObj: Welcome
       struct Welcome {
         let checkMessages: String
         let messageTitle: String
         let subtitle: String
         let title: String
-          let checkMessages: CheckMessages
+          let checkMessagesObj: CheckMessages
           struct CheckMessages {
-              let accessibility: Accessibility
+              let accessibilityObj: Accessibility
               struct Accessibility {
                 let hint: String
               }
           }
-          let filePicker: FilePicker
+          let filePickerObj: FilePicker
           struct FilePicker {
-              let accessibility: Accessibility
+              let accessibilityObj: Accessibility
               struct Accessibility {
                 let hint: String
                 let label: String
               }
           }
-          let messageInput: MessageInput
+          let messageInputObj: MessageInput
           struct MessageInput {
             let placeholder: String
           }
-          let messageLength: MessageLength
+          let messageLengthObj: MessageLength
           struct MessageLength {
             let error: String
           }
-          let send: Send
+          let sendObj: Send
           struct Send {
-              let accessibility: Accessibility
+              let accessibilityObj: Accessibility
               struct Accessibility {
                 let hint: String
               }
           }
       }
   }
-  let screenSharing: ScreenSharing
+  let screenSharingObj: ScreenSharing
   struct ScreenSharing {
-      let visitorScreen: VisitorScreen
+      let visitorScreenObj: VisitorScreen
       struct VisitorScreen {
-          let disclaimer: Disclaimer
+          let disclaimerObj: Disclaimer
           struct Disclaimer {
             let info: String
             let title: String
           }
-          let end: End
+          let endObj: End
           struct End {
             let title: String
-              let accessibility: Accessibility
+              let accessibilityObj: Accessibility
               struct Accessibility {
                 let hint: String
               }
           }
       }
   }
-  let survey: Survey
+  let surveyObj: Survey
   struct Survey {
-      let action: Action
+      let actionObj: Action
       struct Action {
         let validationError: String
       }
-      let question: Question
+      let questionObj: Question
       struct Question {
-          let input: Input
+          let inputObj: Input
           struct Input {
-              let accessibility: Accessibility
+              let accessibilityObj: Accessibility
               struct Accessibility {
                 let hint: String
               }
           }
-          let optionButton: OptionButton
+          let optionButtonObj: OptionButton
           struct OptionButton {
-              let selected: Selected
+              let selectedObj: Selected
               struct Selected {
-                  let accessibility: Accessibility
+                  let accessibilityObj: Accessibility
                   struct Accessibility {
                     let label: String
                   }
               }
-              let unselected: Unselected
+              let unselectedObj: Unselected
               struct Unselected {
-                  let accessibility: Accessibility
+                  let accessibilityObj: Accessibility
                   struct Accessibility {
                     let label: String
                   }
               }
           }
-          let `required`: Required
+          let requiredObj: Required
           struct Required {
-              let accessibility: Accessibility
+              let accessibilityObj: Accessibility
               struct Accessibility {
                 let label: String
               }
           }
       }
-      let validation: Validation
+      let validationObj: Validation
       struct Validation {
-          let title: Title
+          let titleObj: Title
           struct Title {
-              let accessibility: Accessibility
+              let accessibilityObj: Accessibility
               struct Accessibility {
                 let label: String
               }
           }
       }
   }
-  let visitorCode: VisitorCode
+  let visitorCodeObj: VisitorCode
   struct VisitorCode {
     let failed: String
   }
