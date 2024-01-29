@@ -9,7 +9,7 @@ Glia Technologies
 ## Requirements
 
 - iOS 13+
-- [Xcode 14+](https://developer.apple.com/xcode/)
+- [Xcode 15.1+](https://developer.apple.com/xcode/)
 - Swift 5.3
 - [Git LFS](https://git-lfs.github.com/)
 - [CocoaPods](https://cocoapods.org/)
