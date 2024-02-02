@@ -5681,6 +5681,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.glia.sdk.widgets-example";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Widgets Example App (Bitrise)";
+				SUPPORTS_OPENING_DOCUMENTS_IN_PLACE = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -5712,6 +5713,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Widgets Example App (Bitrise)";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Widgets - TestingApp | AppStore";
+				SUPPORTS_OPENING_DOCUMENTS_IN_PLACE = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};

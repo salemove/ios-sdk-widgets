@@ -233,7 +233,10 @@ extension SecureConversations {
                     self?.selectedPickerController = nil
                 }
             }
-            let controller = FilePickerController(viewModel: viewModel)
+            let controller = FilePickerController(
+                viewModel: viewModel,
+                environment: .init(fileManager: environment.fileManager)
+            )
             // Keep strong reference, otherwise
             // `controller` will be deallocted, resulting in
             // event not being sent.

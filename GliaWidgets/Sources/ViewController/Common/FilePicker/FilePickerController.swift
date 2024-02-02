@@ -6,6 +6,8 @@ final class FilePickerController: NSObject {
         documentPicker.delegate = self
         documentPicker.allowsMultipleSelection = false
         documentPicker.modalPresentationStyle = .fullScreen
+        let urls = environment.fileManager.urlsForDirectoryInDomainMask(.documentDirectory, .userDomainMask)
+        documentPicker.directoryURL = urls.first
         viewModel.environment.log.prefixed(Self.self).info(
             "Create File Preview screen",
             function: "\(\FilePickerController.viewController)"
@@ -14,9 +16,14 @@ final class FilePickerController: NSObject {
     }
 
     private let viewModel: FilePickerViewModel
+    private let environment: Environment
 
-    init(viewModel: FilePickerViewModel) {
+    init(
+        viewModel: FilePickerViewModel,
+        environment: Environment
+    ) {
         self.viewModel = viewModel
+        self.environment = environment
     }
 
     deinit {
@@ -34,5 +41,11 @@ extension FilePickerController: UIDocumentPickerDelegate {
     func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
         controller.dismiss(animated: true)
         viewModel.event(.cancelled)
+    }
+}
+
+extension FilePickerController {
+    public struct Environment {
+        let fileManager: FoundationBased.FileManager
     }
 }
