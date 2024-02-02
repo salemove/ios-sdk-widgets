@@ -125,7 +125,10 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
             }
         }
 
-        let controller = FilePickerController(viewModel: viewModel)
+        let controller = FilePickerController(
+            viewModel: viewModel,
+            environment: .init(fileManager: environment.fileManager)
+        )
         filePickerController = controller
         navigationPresenter.present(controller.viewController)
     }
