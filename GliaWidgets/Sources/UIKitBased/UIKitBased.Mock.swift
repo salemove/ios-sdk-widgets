@@ -13,7 +13,8 @@ extension UIKitBased.UIApplication {
         canOpenURL: { _ in false },
         preferredContentSizeCategory: { .unspecified },
         isIdleTimerDisabled: { _ in },
-        windows: { .init() }
+        windows: { .init() },
+        connectionScenes: { .init() }
     )
 }
 

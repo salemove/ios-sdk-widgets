@@ -98,6 +98,7 @@ public class Glia {
     var theme: Theme
     var assetsBuilder: RemoteConfiguration.AssetsBuilder = .standard
     var loggerPhase: LoggerPhase
+    var operatorRequestHandlerService: OperatorRequestHandlerService
 
     private(set) var configuration: Configuration?
 
@@ -122,6 +123,29 @@ public class Glia {
             environment.print("Unable to configure logger: '\(error)'.")
             self.loggerPhase = .notConfigured(.notConfigured)
         }
+
+        let viewFactory = ViewFactory(
+            with: theme,
+            messageRenderer: messageRenderer,
+            environment: .init(
+                data: environment.data,
+                uuid: environment.uuid,
+                gcd: environment.gcd,
+                imageViewCache: environment.imageViewCache,
+                timerProviding: environment.timerProviding,
+                uiApplication: environment.uiApplication,
+                uiScreen: environment.uiScreen,
+                log: loggerPhase.logger
+            )
+        )
+
+        operatorRequestHandlerService = .init(
+            environment: .init(
+                uiApplication: environment.uiApplication,
+                log: loggerPhase.logger
+            ),
+            viewFactory: viewFactory
+        )
     }
 
     /// Setup SDK using specific engagement configuration without starting the engagement.
@@ -152,6 +176,8 @@ public class Glia {
         // second-time configuration has not been complete, but `startEngagement`
         // is fired and SDK has previous `configuration`.
         self.configuration = nil
+
+        operatorRequestHandlerService.overrideTheme(theme)
 
         self.callVisualizer.delegate = { action in
             switch action {
@@ -383,30 +409,23 @@ extension Glia {
             switch event {
             case .screenShareOffer(answer: let answer):
                 self?.environment.coreSdk.requestEngagedOperator { operators, _ in
-                    self?.callVisualizer.offerScreenShare(
-                        from: operators ?? [],
-                        configuration: Theme().alertConfiguration.screenShareOffer,
+                    self?.operatorRequestHandlerService.offerScreenShare(
+                        from: operators?.compactMap { $0.name }.joined(separator: ", ") ?? "",
                         accepted: { [weak self] in
-                            self?.loggerPhase.logger.prefixed(Self.self).info("Screen sharing accepted by visitor")
-                            answer(true)
+                            self?.callVisualizer.observeScreenSharingHandlerState()
                         },
-                        declined: {
-                            self?.loggerPhase.logger.prefixed(Self.self).info("Screen sharing declined by visitor")
-                            answer(false)
-                        }
+                        answer: answer
                     )
                 }
             case let .upgradeOffer(offer, answer):
                 self?.environment.coreSdk.requestEngagedOperator { operators, _ in
-                    self?.callVisualizer.offerMediaUpgrade(
-                        from: operators ?? [],
+                    self?.operatorRequestHandlerService.offerMediaUpgrade(
+                        from: operators?.compactMap { $0.name }.joined(separator: ", ") ?? "",
                         offer: offer,
-                        answer: answer,
-                        accepted: {
-                            answer(true, nil)
+                        accepted: { [weak self] in
                             self?.callVisualizer.handleAcceptedUpgrade()
                         },
-                        declined: { answer(false, nil) }
+                        answer: answer
                     )
                 }
             case let .videoStreamAdded(stream):

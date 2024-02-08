@@ -37,7 +37,8 @@ extension EngagementCoordinator.Environment {
         orientationManager: .mock(),
         proximityManager: .mock,
         log: .mock,
-        snackBar: .mock
+        snackBar: .mock,
+        operatorRequestHandlerService: .mock()
     )
 }
 #endif

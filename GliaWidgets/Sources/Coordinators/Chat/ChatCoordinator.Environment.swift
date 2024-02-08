@@ -37,5 +37,6 @@ extension ChatCoordinator {
         var timerProviding: FoundationBased.Timer.Providing
         var snackBar: SnackBar
         var notificationCenter: FoundationBased.NotificationCenter
+        var operatorRequestHandlerService: OperatorRequestHandlerService
     }
 }

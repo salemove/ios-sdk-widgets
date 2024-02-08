@@ -85,7 +85,8 @@ private extension CallCoordinator {
                 createFileUploadListModel: environment.createFileUploadListModel,
                 createSendMessagePayload: environment.createSendMessagePayload,
                 proximityManager: environment.proximityManager,
-                log: environment.log
+                log: environment.log,
+                operatorRequestHandlerService: environment.operatorRequestHandlerService
             ),
             call: call,
             unreadMessages: unreadMessages,
@@ -161,5 +162,6 @@ extension CallCoordinator {
         var proximityManager: ProximityManager
         var log: CoreSdkClient.Logger
         var snackBar: SnackBar
+        var operatorRequestHandlerService: OperatorRequestHandlerService
     }
 }

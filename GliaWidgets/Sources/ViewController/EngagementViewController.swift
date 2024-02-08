@@ -1,6 +1,6 @@
 import UIKit
 
-class EngagementViewController: UIViewController, AlertPresenter, MediaUpgradePresenter, ScreenShareOfferPresenter {
+class EngagementViewController: UIViewController, AlertPresenter {
     var viewFactory: ViewFactory {
         environment.viewFactory
     }
@@ -69,8 +69,6 @@ class EngagementViewController: UIViewController, AlertPresenter, MediaUpgradePr
                 ) { dismissed?() }
             case .showSettingsAlert(let conf, cancelled: let cancelled):
                 self.presentSettingsAlert(with: conf, cancelled: cancelled)
-            case .offerScreenShare(let conf, accepted: let accepted, declined: let declined):
-                self.offerScreenShare(with: conf, accepted: accepted, declined: declined)
             case .showEndButton:
                 view?.header.showEndButton()
             case .showEndScreenShareButton:

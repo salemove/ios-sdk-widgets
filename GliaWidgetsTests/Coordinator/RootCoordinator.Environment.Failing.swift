@@ -88,6 +88,7 @@ extension EngagementCoordinator.Environment {
         orientationManager: .mock(),
         proximityManager: .failing,
         log: .failing,
-        snackBar: .failing
+        snackBar: .failing,
+        operatorRequestHandlerService: .failing
     )
 }

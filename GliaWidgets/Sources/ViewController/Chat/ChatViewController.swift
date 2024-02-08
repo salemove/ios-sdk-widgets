@@ -154,8 +154,6 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
                     from: view.messageEntryView.pickMediaButton,
                     itemSelected: itemSelected
                 )
-            case .offerMediaUpgrade(let conf, let accepted, let declined):
-                self.offerMediaUpgrade(with: conf, accepted: accepted, declined: declined)
             case .showCallBubble(let imageUrl):
                 view?.showCallBubble(with: imageUrl, animated: true)
             case .updateUnreadMessageIndicator(let count):

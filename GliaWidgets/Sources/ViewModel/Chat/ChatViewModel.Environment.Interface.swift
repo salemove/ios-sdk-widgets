@@ -24,5 +24,6 @@ extension EngagementViewModel {
         var createSendMessagePayload: CoreSdkClient.CreateSendMessagePayload
         var proximityManager: ProximityManager
         var log: CoreSdkClient.Logger
+        var operatorRequestHandlerService: OperatorRequestHandlerService
     }
 }
