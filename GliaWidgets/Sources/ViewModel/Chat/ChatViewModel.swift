@@ -402,61 +402,15 @@ extension ChatViewModel {
         _ offer: CoreSdkClient.MediaUpgradeOffer,
         answer: @escaping CoreSdkClient.AnswerWithSuccessBlock
     ) {
-        switch offer.type {
-        case .audio:
-            environment.log.prefixed(Self.self).info("Audio upgrade requested")
-            environment.log.prefixed(Self.self).info("Show Upgrade Audio Dialog")
-            offerMediaUpgrade(
-                with: alertConfiguration.audioUpgrade,
-                offer: offer,
-                answer: answer
-            )
-        case .video:
-            let isOneWay = offer.direction == .oneWay
-
-            environment.log.prefixed(Self.self).info(
-                isOneWay ? "1 way video upgrade requested" : "2 way video upgrade requested"
-            )
-
-            environment.log.prefixed(Self.self).info(
-                isOneWay ? "Show Upgrade 1WayVideo Dialog" : "Show Upgrade 2WayVideo Dialog"
-            )
-
-            let configuration = isOneWay
-                ? alertConfiguration.oneWayVideoUpgrade
-                : alertConfiguration.twoWayVideoUpgrade
-            offerMediaUpgrade(
-                with: configuration,
-                offer: offer,
-                answer: answer
-            )
-        default:
-            break
-        }
-    }
-
-    private func offerMediaUpgrade(
-        with configuration: SingleMediaUpgradeAlertConfiguration,
-        offer: CoreSdkClient.MediaUpgradeOffer,
-        answer: @escaping CoreSdkClient.AnswerWithSuccessBlock
-    ) {
-        guard isViewActive.value else { return }
-        let operatorName = interactor.engagedOperator?.firstName
-        let onAccepted = {
-            self.delegate?(.mediaUpgradeAccepted(offer: offer, answer: answer))
-            self.showCallBubble()
-        }
-        action?(.offerMediaUpgrade(
-            configuration.withOperatorName(operatorName),
-            accepted: { [environment] in
-                environment.log.prefixed(Self.self).info("Upgrade offer accepted by visitor")
-                onAccepted()
+        environment.operatorRequestHandlerService.offerMediaUpgrade(
+            from: interactor.engagedOperator?.name ?? "",
+            offer: offer,
+            accepted: { [weak self] in
+                self?.delegate?(.mediaUpgradeAccepted(offer: offer, answer: answer))
+                self?.showCallBubble()
             },
-            declined: { [environment] in
-                environment.log.prefixed(Self.self).info("Upgrade offer declined by visitor")
-                answer(false, nil)
-            }
-        ))
+            answer: answer
+        )
     }
 }
 

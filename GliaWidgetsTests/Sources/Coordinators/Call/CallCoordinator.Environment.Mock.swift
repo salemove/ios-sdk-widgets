@@ -26,6 +26,7 @@ extension CallCoordinator.Environment {
         createSendMessagePayload: { content, attachment in .mock() },
         proximityManager: .mock,
         log: .mock,
-        snackBar: .mock
+        snackBar: .mock,
+        operatorRequestHandlerService: .mock()
     )
 }

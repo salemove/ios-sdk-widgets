@@ -249,6 +249,7 @@ extension SecureConversations {
 
 // Chat transcript
 extension SecureConversations.Coordinator {
+    // swiftlint:disable function_body_length
     @discardableResult
     private func navigateToTranscript() -> UIViewController {
         let coordinator = ChatCoordinator(
@@ -296,7 +297,8 @@ extension SecureConversations.Coordinator {
                 log: environment.log,
                 timerProviding: environment.timerProviding,
                 snackBar: environment.snackBar,
-                notificationCenter: environment.notificationCenter
+                notificationCenter: environment.notificationCenter,
+                operatorRequestHandlerService: environment.operatorRequestHandlerService
             ),
             startWithSecureTranscriptFlow: true
         )
@@ -319,6 +321,7 @@ extension SecureConversations.Coordinator {
 
         return viewController
     }
+    // swiftlint:enable function_body_length
 }
 
 extension SecureConversations.Coordinator {
@@ -366,6 +369,7 @@ extension SecureConversations.Coordinator {
         var log: CoreSdkClient.Logger
         var timerProviding: FoundationBased.Timer.Providing
         var snackBar: SnackBar
+        var operatorRequestHandlerService: OperatorRequestHandlerService
     }
 
     enum DelegateEvent {

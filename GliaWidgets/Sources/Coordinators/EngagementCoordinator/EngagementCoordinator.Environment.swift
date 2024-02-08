@@ -39,5 +39,6 @@ extension EngagementCoordinator {
         var proximityManager: ProximityManager
         var log: CoreSdkClient.Logger
         var snackBar: SnackBar
+        var operatorRequestHandlerService: OperatorRequestHandlerService
     }
 }

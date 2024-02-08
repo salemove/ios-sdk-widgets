@@ -63,7 +63,8 @@ class ChatViewModelTests: XCTestCase {
                     return .mock()
                 },
                 proximityManager: .mock,
-                log: .mock
+                log: .mock,
+                operatorRequestHandlerService: .mock()
             )
         )
 

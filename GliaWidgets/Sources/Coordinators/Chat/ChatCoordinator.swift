@@ -238,7 +238,8 @@ extension ChatCoordinator {
             createFileUploadListModel: environment.createFileUploadListModel,
             createSendMessagePayload: environment.createSendMessagePayload,
             proximityManager: environment.proximityManager,
-            log: environment.log
+            log: environment.log,
+            operatorRequestHandlerService: environment.operatorRequestHandlerService
         )
     }
 }

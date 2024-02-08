@@ -55,7 +55,8 @@ extension ChatViewModel.Environment {
                 return .mock()
             },
             proximityManager: .failing,
-            log: .failing
+            log: .failing,
+            operatorRequestHandlerService: .failing
         )
     }
 }

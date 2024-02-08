@@ -31,7 +31,8 @@ extension ChatViewModel.Environment {
         createFileUploadListModel: SecureConversations.FileUploadListViewModel.mock(environment:),
         createSendMessagePayload: { _, _ in .mock() },
         proximityManager: .mock,
-        log: .mock
+        log: .mock,
+        operatorRequestHandlerService: .mock()
     )
 }
 #endif

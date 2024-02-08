@@ -141,56 +141,8 @@ extension CallVisualizer {
         coordinator.showSnackBarIfNeeded()
     }
 
-    func offerScreenShare(
-        from operators: [CoreSdkClient.Operator],
-        configuration: ScreenShareOfferAlertConfiguration,
-        accepted: @escaping () -> Void,
-        declined: @escaping () -> Void
-    ) {
-        let acceptedHandler = { [weak self] in
-            self?.startObservingInteractorEvents()
-            accepted()
-        }
-        coordinator.offerScreenShare(
-            from: operators,
-            configuration: configuration,
-            accepted: acceptedHandler,
-            declined: declined
-        )
-    }
-
-    func offerMediaUpgrade(
-        from operators: [CoreSdkClient.Operator],
-        offer: CoreSdkClient.MediaUpgradeOffer,
-        answer: @escaping CoreSdkClient.AnswerWithSuccessBlock,
-        accepted: @escaping () -> Void,
-        declined: @escaping () -> Void
-    ) {
-        let alertConfiguration = Theme().alertConfiguration
-        switch offer.type {
-        case .video:
-            let isOneWay = offer.direction == .oneWay
-            let configuration = isOneWay
-            ? alertConfiguration.oneWayVideoUpgrade
-            : alertConfiguration.twoWayVideoUpgrade
-            environment.log.prefixed(Self.self).info(
-                isOneWay ? "1 way video upgrade requested" : "2 way video upgrade requested"
-            )
-            coordinator.offerMediaUpgrade(
-                from: operators,
-                configuration: configuration,
-                accepted: { [environment] in
-                    environment.log.prefixed(Self.self).info("Upgrade offer accepted by visitor")
-                    accepted()
-                },
-                declined: { [environment] in
-                    environment.log.prefixed(Self.self).info("Upgrade offer declined by visitor")
-                    declined()
-                }
-            )
-        default:
-            break
-        }
+    func observeScreenSharingHandlerState() {
+        coordinator.observeScreenSharingHandlerState()
     }
 }
 

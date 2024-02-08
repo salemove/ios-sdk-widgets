@@ -170,7 +170,8 @@ extension Glia {
                 orientationManager: environment.orientationManager,
                 proximityManager: environment.proximityManager,
                 log: loggerPhase.logger,
-                snackBar: environment.snackBar
+                snackBar: environment.snackBar,
+                operatorRequestHandlerService: operatorRequestHandlerService
             )
         )
         rootCoordinator?.delegate = { [weak self] event in
