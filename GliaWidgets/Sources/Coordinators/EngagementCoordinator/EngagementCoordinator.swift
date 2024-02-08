@@ -272,7 +272,8 @@ extension EngagementCoordinator {
                 log: environment.log,
                 timerProviding: environment.timerProviding,
                 snackBar: environment.snackBar,
-                notificationCenter: environment.notificationCenter
+                notificationCenter: environment.notificationCenter,
+                operatorRequestHandlerService: environment.operatorRequestHandlerService
             ),
             startWithSecureTranscriptFlow: false
         )
@@ -368,7 +369,8 @@ extension EngagementCoordinator {
                 createSendMessagePayload: environment.createSendMessagePayload,
                 proximityManager: environment.proximityManager,
                 log: environment.log,
-                snackBar: environment.snackBar
+                snackBar: environment.snackBar,
+                operatorRequestHandlerService: environment.operatorRequestHandlerService
             )
         )
         coordinator.delegate = { [weak self] event in
@@ -508,7 +510,8 @@ extension EngagementCoordinator {
                 proximityManager: environment.proximityManager,
                 log: environment.log,
                 timerProviding: environment.timerProviding,
-                snackBar: environment.snackBar
+                snackBar: environment.snackBar,
+                operatorRequestHandlerService: environment.operatorRequestHandlerService
             )
         )
 

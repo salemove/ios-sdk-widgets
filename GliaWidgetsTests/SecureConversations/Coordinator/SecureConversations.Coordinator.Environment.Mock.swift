@@ -48,6 +48,7 @@ extension SecureConversations.Coordinator.Environment {
         snackBar: SnackBar(
             present: { text, style, viewController, bottomOffset, timerProviding, gcd, notificationCenter in
             }
-        )
+        ),
+        operatorRequestHandlerService: .mock()
     )
 }

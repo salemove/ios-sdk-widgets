@@ -261,20 +261,11 @@ class EngagementViewModel: CommonEngagementModel {
 // MARK: - Private
 private extension EngagementViewModel {
     private func offerScreenShare(answer: @escaping CoreSdkClient.AnswerBlock) {
-        guard isViewActive.value else { return }
-        let operatorName = interactor.engagedOperator?.firstName
-        let configuration = alertConfiguration.screenShareOffer
-        engagementAction?(.offerScreenShare(
-            configuration.withOperatorName(operatorName),
-            accepted: { [environment] in
-                environment.log.prefixed(Self.self).info("Screen sharing accepted by visitor")
-                answer(true)
-            },
-            declined: { [environment] in
-                environment.log.prefixed(Self.self).info("Screen sharing declined by visitor")
-                answer(false)
-            }
-        ))
+        environment.operatorRequestHandlerService.offerScreenShare(
+            from: interactor.engagedOperator?.firstName ?? "",
+            accepted: {},
+            answer: answer
+        )
     }
 
     private func closeTapped() {
@@ -415,11 +406,6 @@ extension EngagementViewModel {
         case showSettingsAlert(
             SettingsAlertConfiguration,
             cancelled: (() -> Void)?
-        )
-        case offerScreenShare(
-            ScreenShareOfferAlertConfiguration,
-            accepted: () -> Void,
-            declined: () -> Void
         )
         case showEndButton
         case showEndScreenShareButton

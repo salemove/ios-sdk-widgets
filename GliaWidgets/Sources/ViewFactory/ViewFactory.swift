@@ -1,7 +1,7 @@
 import UIKit
 
 class ViewFactory {
-    let theme: Theme
+    private(set) var theme: Theme
     let environment: Environment
     let messageRenderer: MessageRenderer?
 
@@ -13,6 +13,10 @@ class ViewFactory {
         self.theme = theme
         self.messageRenderer = messageRenderer
         self.environment = environment
+    }
+
+    func overrideTheme(with newTheme: Theme) {
+        theme = newTheme
     }
 
     func makeChatView(

@@ -28,6 +28,10 @@ extension UIKitBased.UIApplication {
         windows: {
             fail("\(Self.self).window")
             return []
+        },
+        connectionScenes: {
+            fail("\(Self.self).connectionScenes")
+            return .init()
         }
     )
 }

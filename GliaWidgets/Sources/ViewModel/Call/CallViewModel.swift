@@ -302,44 +302,13 @@ extension CallViewModel {
         _ offer: CoreSdkClient.MediaUpgradeOffer,
         answer: @escaping CoreSdkClient.AnswerWithSuccessBlock
     ) {
-        switch offer.type {
-        case .video:
-            let isOneWayVideoUpgrade = offer.direction == .oneWay
-            let configuration = isOneWayVideoUpgrade
-                ? alertConfiguration.oneWayVideoUpgrade
-                : alertConfiguration.twoWayVideoUpgrade
-
-            environment.log.prefixed(Self.self).info(
-                isOneWayVideoUpgrade ? "1 way video upgrade requested" : "2 way video upgrade requested"
-            )
-
-            offerMediaUpgrade(
-                with: configuration,
-                offer: offer,
-                answer: answer
-            )
-        default:
-            break
-        }
-    }
-
-    private func offerMediaUpgrade(
-        with configuration: SingleMediaUpgradeAlertConfiguration,
-        offer: CoreSdkClient.MediaUpgradeOffer,
-        answer: @escaping CoreSdkClient.AnswerWithSuccessBlock
-    ) {
-        guard isViewActive.value else { return }
-        let operatorName = interactor.engagedOperator?.firstName
-        let onAccepted = {
-            self.call.upgrade(to: offer)
-            answer(true, nil)
-        }
-        action?(
-            .offerMediaUpgrade(
-                configuration.withOperatorName(operatorName),
-                accepted: { onAccepted() },
-                declined: { answer(false, nil) }
-            )
+        environment.operatorRequestHandlerService.offerMediaUpgrade(
+            from: interactor.engagedOperator?.firstName ?? "",
+            offer: offer,
+            accepted: { [weak self] in
+                self?.call.upgrade(to: offer)
+            },
+            answer: answer
         )
     }
 }
@@ -563,11 +532,6 @@ extension CallViewModel {
         case setButtonEnabled(CallButton, enabled: Bool)
         case setButtonState(CallButton, state: CallButtonState)
         case setButtonBadge(CallButton, itemCount: Int)
-        case offerMediaUpgrade(
-            SingleMediaUpgradeAlertConfiguration,
-            accepted: () -> Void,
-            declined: () -> Void
-        )
         case setRemoteVideo(CoreSdkClient.StreamView?)
         case setLocalVideo(CoreSdkClient.StreamView?)
         case setVisitorOnHold(isOnHold: Bool)

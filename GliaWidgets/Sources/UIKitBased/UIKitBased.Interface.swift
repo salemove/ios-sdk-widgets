@@ -11,6 +11,7 @@ enum UIKitBased {
         var preferredContentSizeCategory: () -> UIContentSizeCategory
         var isIdleTimerDisabled: (Bool) -> Void
         var windows: () -> [UIKit.UIWindow]
+        var connectionScenes: () -> Set<UIScene>
     }
 
     struct UIDevice {

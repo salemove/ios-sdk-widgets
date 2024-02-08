@@ -44,11 +44,6 @@ extension ChatViewModel: ViewModel {
         case removeUpload(FileUpload)
         case removeAllUploads
         case presentMediaPicker(itemSelected: (AttachmentSourceItemKind) -> Void)
-        case offerMediaUpgrade(
-            SingleMediaUpgradeAlertConfiguration,
-            accepted: () -> Void,
-            declined: () -> Void
-        )
         case showCallBubble(imageUrl: String?)
         case setCallBubbleImage(imageUrl: String?)
         case updateUnreadMessageIndicator(itemCount: Int)

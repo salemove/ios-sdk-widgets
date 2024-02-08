@@ -51,61 +51,6 @@ extension CallVisualizer {
             self.visitorCodeCoordinator = coordinator
         }
 
-        func offerScreenShare(
-            from operators: [CoreSdkClient.Operator],
-            configuration: ScreenShareOfferAlertConfiguration,
-            accepted: @escaping () -> Void,
-            declined: @escaping () -> Void
-        ) {
-            let acceptedHandler = { [weak self] in
-                self?.alertViewController = nil
-                self?.observeScreenSharingHandlerState()
-                accepted()
-            }
-            let declinedHandler = { [weak self] in
-                self?.alertViewController = nil
-                declined()
-            }
-
-            environment.log.prefixed(Self.self).info("Show Start Screen Sharing Dialog")
-
-            let alert = AlertViewController(
-                kind: .screenShareOffer(
-                    configuration.withOperatorName(operators.compactMap { $0.name }.joined()),
-                    accepted: acceptedHandler,
-                    declined: declinedHandler
-                ),
-                viewFactory: environment.viewFactory
-            )
-            alertViewController = alert
-            presentAlert(alert)
-        }
-
-        func offerMediaUpgrade(
-            from operators: [CoreSdkClient.Operator],
-            configuration: SingleMediaUpgradeAlertConfiguration,
-            accepted: @escaping () -> Void,
-            declined: @escaping () -> Void
-        ) {
-            func actionWrapper(_ action: @escaping () -> Void) -> () -> Void {
-                return { [weak self] in
-                    self?.alertViewController = nil
-                    action()
-                }
-            }
-
-            let alert = AlertViewController(
-                kind: .singleMediaUpgrade(
-                    configuration.withOperatorName(operators.compactMap { $0.name }.joined()),
-                    accepted: actionWrapper(accepted),
-                    declined: actionWrapper(declined)
-                ),
-                viewFactory: environment.viewFactory
-            )
-            alertViewController = alert
-            presentAlert(alert)
-        }
-
         func handleAcceptedUpgrade() {
             guard videoCallCoordinator == nil else { return }
             showVideoCallViewController()
@@ -312,7 +257,7 @@ extension CallVisualizer.Coordinator {
 // MARK: - Screen sharing
 
 extension CallVisualizer.Coordinator {
-    private func observeScreenSharingHandlerState() {
+    func observeScreenSharingHandlerState() {
         self.environment
             .screenShareHandler
             .status()

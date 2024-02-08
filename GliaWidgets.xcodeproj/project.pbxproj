@@ -131,7 +131,6 @@
 		1A6EB05725A717CB0007081A /* ChatMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6EB05625A717CB0007081A /* ChatMessage.swift */; };
 		1A6EBB0325ADB82000EE325D /* MediaUpgradeActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6EBB0225ADB82000EE325D /* MediaUpgradeActionView.swift */; };
 		1A6EBB0725ADB84200EE325D /* MediaUpgradeActionStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6EBB0625ADB84200EE325D /* MediaUpgradeActionStyle.swift */; };
-		1A6EBB2525ADE36900EE325D /* MediaUpgradePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6EBB2425ADE36900EE325D /* MediaUpgradePresenter.swift */; };
 		1A7CA81D2574D6370047CBBE /* ConnectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7CA81C2574D6370047CBBE /* ConnectView.swift */; };
 		1A7CA8212574D6760047CBBE /* ConnectOperatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7CA8202574D6760047CBBE /* ConnectOperatorView.swift */; };
 		1A7CA8242574D68E0047CBBE /* ConnectStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7CA8232574D68E0047CBBE /* ConnectStatusView.swift */; };
@@ -711,6 +710,9 @@
 		C0EC58CE2B02775100E78C70 /* SnackBar+View+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EC58CD2B02775100E78C70 /* SnackBar+View+Mock.swift */; };
 		C0EC58D02B028FB100E78C70 /* SnackBarVoiceOverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EC58CF2B028FB100E78C70 /* SnackBarVoiceOverTests.swift */; };
 		C0EC58D22B02909500E78C70 /* SnackBarDynamicTypeFontTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EC58D12B02909500E78C70 /* SnackBarDynamicTypeFontTests.swift */; };
+		C0ECC7922B70EA03001F1EEF /* OperatorRequestHandlerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0ECC7912B70EA03001F1EEF /* OperatorRequestHandlerService.swift */; };
+		C0ECC7972B7278F2001F1EEF /* OperatorRequestHandlerService+Failing.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0ECC7962B7278F2001F1EEF /* OperatorRequestHandlerService+Failing.swift */; };
+		C0ECC7992B7506D0001F1EEF /* OperatorRequestHandlerService+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0ECC7982B7506D0001F1EEF /* OperatorRequestHandlerService+Mock.swift */; };
 		C4119E06268F41D1004DFEFB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C4119E05268F41D1004DFEFB /* Main.storyboard */; };
 		C42463742673ABE10082C135 /* ScreenShareHandler.Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42463732673ABE10082C135 /* ScreenShareHandler.Interface.swift */; };
 		C43C12F92694B14900C37E1B /* GliaPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43C12F82694B14900C37E1B /* GliaPresenter.swift */; };
@@ -718,7 +720,6 @@
 		C43D7A1125FF92680064B1DA /* ChoiceCardStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43D7A1025FF92680064B1DA /* ChoiceCardStyle.swift */; };
 		C43D7A1525FF9A590064B1DA /* ChatChoiceCardOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43D7A1425FF9A590064B1DA /* ChatChoiceCardOption.swift */; };
 		C460C7782600BCF400449851 /* ChoiceCardOptionStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C460C7772600BCF400449851 /* ChoiceCardOptionStyle.swift */; };
-		C47901AF25ED2E70007EE195 /* ScreenShareOfferPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47901AE25ED2E70007EE195 /* ScreenShareOfferPresenter.swift */; };
 		C47901B325ED2F31007EE195 /* ScreenShareOfferAlertConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47901B225ED2F31007EE195 /* ScreenShareOfferAlertConfiguration.swift */; };
 		C47901B725ED2FB0007EE195 /* AlertViewController+ScreenShareOffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47901B625ED2FB0007EE195 /* AlertViewController+ScreenShareOffer.swift */; };
 		C499A57E26382FAA009962AC /* UnreadMessageIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C499A57D26382FAA009962AC /* UnreadMessageIndicatorView.swift */; };
@@ -926,7 +927,6 @@
 		1A6EB05625A717CB0007081A /* ChatMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessage.swift; sourceTree = "<group>"; };
 		1A6EBB0225ADB82000EE325D /* MediaUpgradeActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaUpgradeActionView.swift; sourceTree = "<group>"; };
 		1A6EBB0625ADB84200EE325D /* MediaUpgradeActionStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaUpgradeActionStyle.swift; sourceTree = "<group>"; };
-		1A6EBB2425ADE36900EE325D /* MediaUpgradePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaUpgradePresenter.swift; sourceTree = "<group>"; };
 		1A7CA81C2574D6370047CBBE /* ConnectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectView.swift; sourceTree = "<group>"; };
 		1A7CA8202574D6760047CBBE /* ConnectOperatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectOperatorView.swift; sourceTree = "<group>"; };
 		1A7CA8232574D68E0047CBBE /* ConnectStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectStatusView.swift; sourceTree = "<group>"; };
@@ -1507,6 +1507,9 @@
 		C0EC58CD2B02775100E78C70 /* SnackBar+View+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SnackBar+View+Mock.swift"; sourceTree = "<group>"; };
 		C0EC58CF2B028FB100E78C70 /* SnackBarVoiceOverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnackBarVoiceOverTests.swift; sourceTree = "<group>"; };
 		C0EC58D12B02909500E78C70 /* SnackBarDynamicTypeFontTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnackBarDynamicTypeFontTests.swift; sourceTree = "<group>"; };
+		C0ECC7912B70EA03001F1EEF /* OperatorRequestHandlerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperatorRequestHandlerService.swift; sourceTree = "<group>"; };
+		C0ECC7962B7278F2001F1EEF /* OperatorRequestHandlerService+Failing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OperatorRequestHandlerService+Failing.swift"; sourceTree = "<group>"; };
+		C0ECC7982B7506D0001F1EEF /* OperatorRequestHandlerService+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OperatorRequestHandlerService+Mock.swift"; sourceTree = "<group>"; };
 		C4119E05268F41D1004DFEFB /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		C42463732673ABE10082C135 /* ScreenShareHandler.Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenShareHandler.Interface.swift; sourceTree = "<group>"; };
 		C43C12F82694B14900C37E1B /* GliaPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GliaPresenter.swift; sourceTree = "<group>"; };
@@ -1515,7 +1518,6 @@
 		C43D7A1425FF9A590064B1DA /* ChatChoiceCardOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatChoiceCardOption.swift; sourceTree = "<group>"; };
 		C460C7772600BCF400449851 /* ChoiceCardOptionStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoiceCardOptionStyle.swift; sourceTree = "<group>"; };
 		C46B2463262F05BE001245A1 /* TestingApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TestingApp.entitlements; sourceTree = "<group>"; };
-		C47901AE25ED2E70007EE195 /* ScreenShareOfferPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenShareOfferPresenter.swift; sourceTree = "<group>"; };
 		C47901B225ED2F31007EE195 /* ScreenShareOfferAlertConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenShareOfferAlertConfiguration.swift; sourceTree = "<group>"; };
 		C47901B625ED2FB0007EE195 /* AlertViewController+ScreenShareOffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlertViewController+ScreenShareOffer.swift"; sourceTree = "<group>"; };
 		C499A57D26382FAA009962AC /* UnreadMessageIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnreadMessageIndicatorView.swift; sourceTree = "<group>"; };
@@ -2178,6 +2180,7 @@
 		1A60AFC12566857200E53F53 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				C0ECC7902B70E9B5001F1EEF /* OperatorRequestHandlerService */,
 				84520BD92B0FA14700F97617 /* WebViewController */,
 				C02248A82AD53DDF00CC4930 /* LiveObservation */,
 				AF7753152B1DBF8900E523A2 /* GliaLogging */,
@@ -2463,11 +2466,9 @@
 				8464297E2A45A1D900943BD6 /* OfferPresenter */,
 				8464297B2A459E3500943BD6 /* Replaceble */,
 				1A5892AF2608C66300E183CC /* QuickLook */,
-				C47901AD25ED2E59007EE195 /* ScreenShare */,
 				1A2DA72425EF891300032611 /* FilePicker */,
 				1A4674CB25ED088B0078FA1C /* MediaPicker */,
 				1A0EDF8925E8E20A0076D1AD /* Popover */,
-				1A6EBB2325ADE35500EE325D /* MediaUpgrade */,
 				1A63B2F1257A3F2D00508478 /* Alert */,
 			);
 			path = Common;
@@ -2504,14 +2505,6 @@
 			children = (
 				1A6EBB0225ADB82000EE325D /* MediaUpgradeActionView.swift */,
 				1A6EBB0625ADB84200EE325D /* MediaUpgradeActionStyle.swift */,
-			);
-			path = MediaUpgrade;
-			sourceTree = "<group>";
-		};
-		1A6EBB2325ADE35500EE325D /* MediaUpgrade */ = {
-			isa = PBXGroup;
-			children = (
-				1A6EBB2425ADE36900EE325D /* MediaUpgradePresenter.swift */,
 			);
 			path = MediaUpgrade;
 			sourceTree = "<group>";
@@ -2855,6 +2848,7 @@
 		7512A57827BF9FB800319DF1 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				C0ECC7952B7278C9001F1EEF /* OperatorRequestsHandlerService */,
 				31FF0DD22B5AB82000834AFB /* CallVisualizer */,
 				31FF0DC72B5907C600834AFB /* Coordinators */,
 				84602A752AEA5BDE0031E606 /* ProximityManager */,
@@ -4059,6 +4053,23 @@
 			path = Header;
 			sourceTree = "<group>";
 		};
+		C0ECC7902B70E9B5001F1EEF /* OperatorRequestHandlerService */ = {
+			isa = PBXGroup;
+			children = (
+				C0ECC7912B70EA03001F1EEF /* OperatorRequestHandlerService.swift */,
+				C0ECC7982B7506D0001F1EEF /* OperatorRequestHandlerService+Mock.swift */,
+			);
+			path = OperatorRequestHandlerService;
+			sourceTree = "<group>";
+		};
+		C0ECC7952B7278C9001F1EEF /* OperatorRequestsHandlerService */ = {
+			isa = PBXGroup;
+			children = (
+				C0ECC7962B7278F2001F1EEF /* OperatorRequestHandlerService+Failing.swift */,
+			);
+			path = OperatorRequestsHandlerService;
+			sourceTree = "<group>";
+		};
 		C42463722673ABCD0082C135 /* Screensharing */ = {
 			isa = PBXGroup;
 			children = (
@@ -4090,14 +4101,6 @@
 				9AB3401A27FB4720006E0FE2 /* OperatorTypingIndicatorStyle.Accessibility.swift */,
 			);
 			path = OperatorTypingIndicator;
-			sourceTree = "<group>";
-		};
-		C47901AD25ED2E59007EE195 /* ScreenShare */ = {
-			isa = PBXGroup;
-			children = (
-				C47901AE25ED2E70007EE195 /* ScreenShareOfferPresenter.swift */,
-			);
-			path = ScreenShare;
 			sourceTree = "<group>";
 		};
 		C4794E6E270673FC00F989F7 /* Animation */ = {
@@ -4730,6 +4733,7 @@
 				1A60AFCE2566958900E53F53 /* ViewFactory.swift in Sources */,
 				C06A7586296ECC57006B69A2 /* VisitorCodeStyle.Accessibility.swift in Sources */,
 				9A186A3B27F5E6B50055886D /* ChatFileContentStyle.Accessibility.swift in Sources */,
+				C0ECC7922B70EA03001F1EEF /* OperatorRequestHandlerService.swift in Sources */,
 				7594091529891C5C008B173A /* Environment.swift in Sources */,
 				9A3E1D9927B6D0DB005634EB /* FoundationBased.Live.swift in Sources */,
 				84265E4C298D7B1900D65842 /* CallVisualizer.Coordinator.Environment.swift in Sources */,
@@ -4818,6 +4822,7 @@
 				1A60AFF12566A4B300E53F53 /* NavigationPresenter.swift in Sources */,
 				AF6291132B0813B000D3D76B /* SwiftBased.Mock.swift in Sources */,
 				1AC7A74F2582571100567FF8 /* Interactor.swift in Sources */,
+				C0ECC7992B7506D0001F1EEF /* OperatorRequestHandlerService+Mock.swift in Sources */,
 				845E2F72283D068000C04D56 /* HeaderStyle.Accessibility.swift in Sources */,
 				AFA1A9952AA9248400095BE8 /* ChatViewModel+ViewModel.swift in Sources */,
 				1A1E30CB25F9FDC400850E68 /* ChatImageFileContentStyle.swift in Sources */,
@@ -4925,7 +4930,6 @@
 				9AE9E4B327E0E60F00BFE239 /* CallViewModel.Mock.swift in Sources */,
 				31882C9B2AA21B71009DE4BD /* Localization+Templates.swift in Sources */,
 				845876A8282A94CF007AC3DF /* BooleanQuestionView.Props.Accessibility.swift in Sources */,
-				1A6EBB2525ADE36900EE325D /* MediaUpgradePresenter.swift in Sources */,
 				1AA738B925790DB400E1120F /* ActionButtonStyle.swift in Sources */,
 				C06A7582296EC856006B69A2 /* NumberSlotStyle.swift in Sources */,
 				1A2DA71F25EF720400032611 /* FilePickerViewModel.swift in Sources */,
@@ -4970,7 +4974,6 @@
 				315BAB1A29ADFEBC00FF284B /* ConfirmationStyle+TitleStyle.swift in Sources */,
 				1A0C143625B85C3300B00695 /* CallView.swift in Sources */,
 				1AA738A72578DD0300E1120F /* ConnectStatusStyle.swift in Sources */,
-				C47901AF25ED2E70007EE195 /* ScreenShareOfferPresenter.swift in Sources */,
 				755D186529A6A4E20009F5E8 /* WelcomeStyle+TitleStyle.swift in Sources */,
 				7594094C298D37E8008B173A /* Glia.Environment.Interface.swift in Sources */,
 				9A19926427D3BA3A00161AAE /* GCD.Live.swift in Sources */,
@@ -5268,6 +5271,7 @@
 				31FF0DCC2B5907C600834AFB /* ChatCoordinator.Environment.Mock.swift in Sources */,
 				9A8130C627D90B3800220BBD /* FileSystemStorage.Failing.swift in Sources */,
 				846429832A45DA7500943BD6 /* AlertViewController+Mock.swift in Sources */,
+				C0ECC7972B7278F2001F1EEF /* OperatorRequestHandlerService+Failing.swift in Sources */,
 				846A5C4529F6BEFA0049B29F /* GliaTests+StartEngagement.swift in Sources */,
 				7512A57A27BF9FCD00319DF1 /* ChatViewModelTests.swift in Sources */,
 				84602A792AEAB7CA0031E606 /* Survey.Mock.swift in Sources */,

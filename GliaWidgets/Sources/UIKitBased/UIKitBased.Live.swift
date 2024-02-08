@@ -10,7 +10,8 @@ extension UIKitBased.UIApplication {
         canOpenURL: UIApplication.shared.canOpenURL,
         preferredContentSizeCategory: { UIApplication.shared.preferredContentSizeCategory },
         isIdleTimerDisabled: { UIApplication.shared.isIdleTimerDisabled = $0 },
-        windows: { UIApplication.shared.windows }
+        windows: { UIApplication.shared.windows },
+        connectionScenes: { UIApplication.shared.connectedScenes }
     )
 }
 
