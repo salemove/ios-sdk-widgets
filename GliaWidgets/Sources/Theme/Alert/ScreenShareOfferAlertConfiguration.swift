@@ -19,7 +19,9 @@ public struct ScreenShareOfferAlertConfiguration {
 
     /// Controls the appearance of the "Powered by" text and logo in the alert.
     public var showsPoweredBy: Bool
+}
 
+extension ScreenShareOfferAlertConfiguration {
     func withOperatorName(_ name: String?) -> ScreenShareOfferAlertConfiguration {
         return ScreenShareOfferAlertConfiguration(
             title: title.withOperatorName(name),

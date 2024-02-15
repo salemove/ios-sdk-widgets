@@ -5,10 +5,13 @@ public extension Theme.SurveyStyle {
     struct ValidationError {
         /// Validation message
         public var message: String
+
         /// Foreground hex color.
         public var color: String
+
         /// Message font.
         public var font: UIFont
+
         /// Accessibility related properties.
         public var accessibility: Accessibility
 

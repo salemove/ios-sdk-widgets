@@ -14,7 +14,6 @@ public struct ConnectOperatorStyle: Equatable {
     /// Style of the visitor on hold overlay view.
     public var onHoldOverlay: OnHoldOverlayStyle
 
-    ///
     /// - Parameters:
     ///   - operatorImage: Style of the operator's image.
     ///   - animationColor: Color of the animated concentric circles extending from the operator's image.
@@ -31,15 +30,5 @@ public struct ConnectOperatorStyle: Equatable {
         self.animationColor = animationColor
         self.onHoldOverlay = onHoldOverlay
         self.accessibility = accessibility
-    }
-
-    mutating func apply(configuration: RemoteConfiguration.Operator?) {
-        configuration?.animationColor?.value
-            .map { UIColor(hex: $0) }
-            .first
-            .unwrap { animationColor = $0 }
-
-        operatorImage.apply(configuration: configuration?.image)
-        onHoldOverlay.apply(configuration: configuration?.onHoldOverlay)
     }
 }

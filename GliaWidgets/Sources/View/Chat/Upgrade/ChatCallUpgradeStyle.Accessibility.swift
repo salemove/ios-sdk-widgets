@@ -3,13 +3,16 @@ extension ChatCallUpgradeStyle {
     public struct Accessibility {
         /// Accessibility hint for text reperesenting time.
         public var durationTextHint: String
-        /// Flag that provides font dynamic type by setting `adjustsFontForContentSizeCategory` for component that supports it.
+
+        /// Flag that provides font dynamic type by setting `adjustsFontForContentSizeCategory` 
+        /// for component that supports it.
         public var isFontScalingEnabled: Bool
 
-        ///
         /// - Parameters:
         ///   - durationTextHint: Accessibility hint for text reperesenting time.
-        ///   - isFontScalingEnabled: Flag that provides font dynamic type by setting `adjustsFontForContentSizeCategory` for component that supports it.
+        ///   - isFontScalingEnabled: Flag that provides font dynamic type by setting 
+        ///    `adjustsFontForContentSizeCategory` for component that supports it.
+        ///
         public init(
             durationTextHint: String,
             isFontScalingEnabled: Bool
@@ -17,11 +20,13 @@ extension ChatCallUpgradeStyle {
             self.durationTextHint = durationTextHint
             self.isFontScalingEnabled = isFontScalingEnabled
         }
-
-        /// Accessibility is not supported intentionally.
-        public static let unsupported = Self(
-            durationTextHint: "",
-            isFontScalingEnabled: false
-        )
     }
+}
+
+extension ChatCallUpgradeStyle.Accessibility {
+    /// Accessibility is not supported intentionally.
+    public static let unsupported = Self(
+        durationTextHint: "",
+        isFontScalingEnabled: false
+    )
 }

@@ -5,18 +5,22 @@ public extension Theme {
     struct OperatorMessageStyle {
         /// Style of the message text.
         public var text: Text
+
         /// Style of the message background.
         public var background: Layer
+
         /// Style of the image content.
         public var imageFile: ChatImageFileContentStyle
+
         /// Style of the image content.
         public var fileDownload: ChatFileDownloadStyle
+
         /// Style of the operator's image.
         public var operatorImage: UserImageStyle
+
         /// Accessibility related properties.
         public var accessibility: Accessibility
 
-        ///
         /// - Parameters:
         ///   - text: Style of the message text.
         ///   - background: Style of the message background.
@@ -40,58 +44,6 @@ public extension Theme {
             self.operatorImage = operatorImage
             self.accessibility = accessibility
         }
-
-        mutating func apply(
-            configuration: RemoteConfiguration.MessageBalloon?,
-            assetsBuilder: RemoteConfiguration.AssetsBuilder
-        ) {
-            background.apply(configuration: configuration?.background)
-
-            configuration?.background?.color?.value
-                .map { UIColor(hex: $0) }
-                .first
-                .unwrap { imageFile.backgroundColor = $0 }
-
-            text.apply(
-                configuration: configuration?.text,
-                assetsBuilder: assetsBuilder
-            )
-
-            fileDownload.apply(
-                configuration: configuration?.file,
-                assetsBuilder: assetsBuilder
-            )
-            operatorImage.apply(configuration: configuration?.userImage)
-        }
-    }
-}
-
-extension Theme.OperatorMessageStyle {
-    /// Accessibility properties for OperatorMessageStyle.
-    public struct Accessibility: Equatable {
-        /// Accessibility value.
-        public var value: String
-
-        /// Flag that provides font dynamic type by setting `adjustsFontForContentSizeCategory` for component that supports it.
-        public var isFontScalingEnabled: Bool
-
-        ///
-        /// - Parameters:
-        ///   - value: Accessibility value.
-        ///   - isFontScalingEnabled: Flag that provides font dynamic type by setting `adjustsFontForContentSizeCategory` for component that supports it.
-        public init(
-            value: String = "",
-            isFontScalingEnabled: Bool
-        ) {
-            self.value = value
-            self.isFontScalingEnabled = isFontScalingEnabled
-        }
-
-        /// Accessibility is not supported intentionally.
-        public static let unsupported = Self(
-            value: "",
-            isFontScalingEnabled: false
-        )
     }
 }
 

@@ -1,21 +1,18 @@
 import UIKit
 
+/// Defines the color type for UI elements which can be either a solid fill or a gradient.
 public enum ColorType: Equatable {
+    /// Represents a solid fill color.
+    /// - Parameters:
+    ///   - color: The `UIColor` used for the fill.
+    ///
     case fill(color: UIColor)
-    case gradient(colors: [CGColor])
 
-    public static func == (lhs: ColorType, rhs: ColorType) -> Bool {
-        switch (lhs, rhs) {
-        case (.fill, .gradient):
-            return false
-        case (.fill(let lhsType), .fill(let rhsType)):
-            return lhsType == rhsType
-        case (.gradient(let lhsType), .gradient(let rhsType)):
-            return lhsType == rhsType
-        case (.gradient, .fill):
-            return false
-        }
-    }
+    /// Represents a gradient color.
+    /// - Parameters:
+    ///  - colors: An array of `CGColor` representing the gradient colors.
+    ///
+    case gradient(colors: [CGColor])
 
     var color: UIColor {
         switch self {

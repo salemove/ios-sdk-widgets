@@ -1,6 +1,7 @@
 import UIKit
 
-/// Style of the list that contains the chat attachment sources. Appears in the media upload menu popover in the message input area in chat.
+/// Style of the list that contains the chat attachment sources. 
+/// Appears in the media upload menu popover in the message input area in chat.
 public class AttachmentSourceListStyle: Equatable {
     /// Possible attachment sources to show, for example: camera, photo gallery or local file system.
     public var items: [AttachmentSourceItemStyle]
@@ -11,9 +12,9 @@ public class AttachmentSourceListStyle: Equatable {
     /// Background color of the view.
     public var backgroundColor: UIColor
 
-    ///
     /// - Parameters:
-    ///   - items: Possible attachment sources to show, for example: camera, photo gallery or local file system.
+    ///   - items: Possible attachment sources to show, for example: camera, 
+    ///     photo gallery, or local file system.
     ///   - separatorColor: Color of a separator line between different attachment source items.
     ///   - backgroundColor: Background color of the view.
     ///
@@ -26,55 +27,4 @@ public class AttachmentSourceListStyle: Equatable {
         self.separatorColor = separatorColor
         self.backgroundColor = backgroundColor
     }
-
-    func apply(
-        configuration: RemoteConfiguration.AttachmentSourceList?,
-        assetsBuilder: RemoteConfiguration.AssetsBuilder
-    ) {
-        configuration?.separator?.value
-            .map { UIColor(hex: $0) }
-            .first
-            .unwrap { separatorColor = $0 }
-
-        configuration?.background?.value
-            .map { UIColor(hex: $0) }
-            .first
-            .unwrap { backgroundColor = $0 }
-
-        configuration?.items?.forEach { item in
-            let sourceType = AttachmentSourceItemKind(rawValue: item.type.rawValue)
-            items.first(where: { $0.kind == sourceType })?
-                .apply(
-                    configuration: item,
-                    assetsBuilder: assetsBuilder
-                )
-        }
-    }
 }
-
-extension AttachmentSourceListStyle {
-    public static func == (lhs: AttachmentSourceListStyle, rhs: AttachmentSourceListStyle) -> Bool {
-        lhs.items == rhs.items &&
-        lhs.separatorColor == rhs.separatorColor &&
-        lhs.backgroundColor == rhs.backgroundColor
-    }
-}
-
-#if DEBUG
-extension AttachmentSourceListStyle {
-    public static func mock() -> AttachmentSourceListStyle {
-        let theme = Theme()
-        let style: AttachmentSourceListStyle = .init(
-            items: [
-                .mock(with: .browse),
-                .mock(with: .photoLibrary),
-                .mock(with: .takePhoto)
-            ],
-            separatorColor: theme.color.baseShade,
-            backgroundColor: theme.color.baseNeutral
-        )
-
-        return style
-    }
-}
-#endif

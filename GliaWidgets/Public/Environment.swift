@@ -4,10 +4,13 @@ import Foundation
 public enum Environment {
     /// Europe
     case europe
+
     /// USA
     case usa
+
     /// Beta environment. For development use.
     case beta
+
     /// Custom environment. For development use.
     case custom(URL)
 

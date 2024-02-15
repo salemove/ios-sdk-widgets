@@ -1,8 +1,8 @@
 import UIKit
 
-/// Style of a file preview.
-///
-/// Appears in message input area before sending the files or in the incoming messages to preview downloads (except for images).
+/// Style of a file preview. Appears in message input area 
+/// before sending the files or in the incoming messages to
+/// preview downloads (except for images).
 public class FilePreviewStyle: Equatable {
     /// Font of the file extension label text.
     public var fileFont: UIFont
@@ -31,7 +31,6 @@ public class FilePreviewStyle: Equatable {
     /// Accessiblity properties for CallStyle.
     public var accessibility: Accessibility
 
-    ///
     /// - Parameters:
     ///   - fileFont: Font of the file extension label text.
     ///   - fileColor: Color of the file extension label text.
@@ -64,67 +63,4 @@ public class FilePreviewStyle: Equatable {
         self.cornerRadius = cornerRadius
         self.accessibility = accessibility
     }
-
-    func apply(
-        configuration: RemoteConfiguration.FilePreview?,
-        assetsBuilder: RemoteConfiguration.AssetsBuilder
-    ) {
-        configuration?.background?.cornerRadius
-            .unwrap { cornerRadius = $0 }
-
-        configuration?.background?.color?.value
-            .map { UIColor(hex: $0) }
-            .first
-            .unwrap { backgroundColor = $0 }
-
-        configuration?.errorBackground?.color?.value
-            .map { UIColor(hex: $0) }
-            .first
-            .unwrap { errorBackgroundColor = $0 }
-
-        configuration?.text?.foreground?.value
-            .map { UIColor(hex: $0) }
-            .first
-            .unwrap { fileColor = $0 }
-
-        UIFont.convertToFont(
-            uiFont: assetsBuilder.fontBuilder(configuration?.text?.font),
-            textStyle: fileTextStyle
-        ).unwrap { fileFont = $0 }
-
-        configuration?.errorIcon?.value
-            .map { UIColor(hex: $0) }
-            .first
-            .unwrap { errorIconColor = $0 }
-    }
 }
-
-extension FilePreviewStyle {
-    public static func == (lhs: FilePreviewStyle, rhs: FilePreviewStyle) -> Bool {
-        lhs.fileFont == rhs.fileFont &&
-        lhs.fileColor == rhs.fileColor &&
-        lhs.fileTextStyle == rhs.fileTextStyle &&
-        lhs.errorIcon == rhs.errorIcon &&
-        lhs.errorIconColor == rhs.errorIconColor &&
-        lhs.backgroundColor == rhs.backgroundColor &&
-        lhs.errorBackgroundColor == rhs.errorBackgroundColor &&
-        lhs.cornerRadius == rhs.cornerRadius &&
-        lhs.accessibility == rhs.accessibility
-    }
-}
-
-#if DEBUG
-extension FilePreviewStyle {
-    static var mock: FilePreviewStyle {
-        FilePreviewStyle(
-            fileFont: .systemFont(ofSize: 10),
-            fileColor: .clear,
-            errorIcon: UIImage(),
-            errorIconColor: .clear,
-            backgroundColor: .clear,
-            errorBackgroundColor: .clear,
-            accessibility: .unsupported
-        )
-    }
-}
-#endif

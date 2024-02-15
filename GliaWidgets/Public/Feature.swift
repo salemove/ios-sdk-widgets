@@ -2,8 +2,12 @@ import Foundation
 
 /// SDK features
 public struct Features: OptionSet {
+    /// Raw value
     public let rawValue: Int
 
+    /// - Parameters:
+    ///   - rawValue: Raw value
+    ///
     public init(rawValue: Int) {
         self.rawValue = rawValue
     }

@@ -4,6 +4,7 @@ import UIKit
 public enum ThemeColorStyle {
     /// Default color style
     case `default`
+
     /// Custom color style
     case custom(ThemeColor)
 }

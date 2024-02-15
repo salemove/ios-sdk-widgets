@@ -3,13 +3,16 @@ public extension Theme.SurveyStyle.ValidationError {
     struct Accessibility {
         /// Accessibility label.
         public var label: String
-        /// Flag that provides font dynamic type by setting `adjustsFontForContentSizeCategory` for component that supports it.
+
+        /// Flag that provides font dynamic type by setting `adjustsFontForContentSizeCategory` 
+        /// for component that supports it.
         public var isFontScalingEnabled: Bool
 
-        ///
         /// - Parameters:
         ///   - label: Accessibility label.
-        ///   - isFontScalingEnabled: Flag that provides font dynamic type by setting `adjustsFontForContentSizeCategory` for component that supports it.
+        ///   - isFontScalingEnabled: Flag that provides font dynamic type by setting 
+        ///   `adjustsFontForContentSizeCategory` for component that supports it.
+        ///
         public init(
             label: String,
             isFontScalingEnabled: Bool

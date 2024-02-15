@@ -16,7 +16,9 @@ public struct SingleMediaUpgradeAlertConfiguration {
 
     /// Controls the appearance of the "Powered by" text and logo in the alert.
     public var showsPoweredBy: Bool
+}
 
+extension SingleMediaUpgradeAlertConfiguration {
     func withOperatorName(_ name: String?) -> SingleMediaUpgradeAlertConfiguration {
         return SingleMediaUpgradeAlertConfiguration(
             title: title.withOperatorName(name),
