@@ -32,18 +32,19 @@ public struct MediaUpgradeActionStyle {
     /// Color (tint) of the icon.
     public var iconColor: UIColor
 
-    ///
     /// - Parameters:
     ///   - title: Title of the media upgrade action. Displayed to the left of the icon, at the top of the view.
     ///   - titleFont: Font of the title.
     ///   - titleColor: Color of the title.
-    ///   - info: Additional information about the media upgrade action. Displayed to the left of the icon, below the title.
+    ///   - info: Additional information about the media upgrade action. Displayed to the left of the icon, below the 
+    ///     title.
     ///   - infoFont: Font of the additional information text.
     ///   - infoColor: Color of the additional information text.
     ///   - borderColor: Color of the border for the entire media upgrade action view. Border width is 1.
     ///   - backgroundColor: Background color of the entire media upgrade action view.
     ///   - icon: Icon that is displayed in the left side of the media upgrade action view.
     ///   - iconColor: Color (tint) of the icon.
+    ///
     public init(
         title: String,
         titleFont: UIFont,

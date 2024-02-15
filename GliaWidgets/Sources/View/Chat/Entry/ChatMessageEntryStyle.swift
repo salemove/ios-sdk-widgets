@@ -47,14 +47,15 @@ public struct ChatMessageEntryStyle {
     /// Accessibility related properties.
     public var accessibility: Accessibility
 
-    ///
     /// - Parameters:
     ///   - messageFont: Font of the message text.
     ///   - messageColor: Color of the message text.
     ///   - messageTextStyle: Text style of the message text.
     ///   - enterMessagePlaceholder: Placeholder text of the message input view used when the user is engaged.
-    ///   - startEngagementPlaceholder:Placeholder text of the message input view used when user input is required to start engagement.
-    ///   - choiceCardPlaceholder: Placeholder text of the message input view used when a choice card is awaiting for the answer.
+    ///   - startEngagementPlaceholder:Placeholder text of the message input view used when user input is 
+    ///     required to start engagement.
+    ///   - choiceCardPlaceholder: Placeholder text of the message input view used when a choice card is
+    ///     awaiting for the answer.
     ///   - placeholderFont: Font of the placeholder text.
     ///   - placeholderColor: Color of the placeholder text.
     ///   - placeholderTextStyle: Text style of the placeholder text.
@@ -97,55 +98,5 @@ public struct ChatMessageEntryStyle {
         self.sendButton = sendButton
         self.uploadList = uploadList
         self.accessibility = accessibility
-    }
-
-    mutating func apply(
-        configuration: RemoteConfiguration.Input?,
-        assetsBuilder: RemoteConfiguration.AssetsBuilder
-    ) {
-        configuration?.background?.color?.value
-            .map { UIColor(hex: $0) }
-            .first
-            .unwrap { backgroundColor = $0 }
-
-        configuration?.text?.foreground?.value
-            .map { UIColor(hex: $0) }
-            .first
-            .unwrap { messageColor = $0 }
-
-        UIFont.convertToFont(
-            uiFont: assetsBuilder.fontBuilder(configuration?.text?.font),
-            textStyle: messageTextStyle
-        ).unwrap { messageFont = $0 }
-
-        configuration?.placeholder?.foreground?.value
-            .map { UIColor(hex: $0) }
-            .first
-            .unwrap { placeholderColor = $0 }
-
-        UIFont.convertToFont(
-            uiFont: assetsBuilder.fontBuilder(configuration?.placeholder?.font),
-            textStyle: placeholderTextStyle
-        ).unwrap { placeholderFont = $0 }
-
-        configuration?.separator?.value
-            .map { UIColor(hex: $0) }
-            .first
-            .unwrap { separatorColor = $0 }
-
-        configuration?.mediaButton?.tintColor?.value
-            .map { UIColor(hex: $0) }
-            .first
-            .unwrap { mediaButton.color = $0 }
-
-        configuration?.sendButton?.tintColor?.value
-            .map { UIColor(hex: $0) }
-            .first
-            .unwrap { sendButton.color = $0 }
-
-        uploadList.apply(
-            configuration: configuration?.fileUploadBar,
-            assetsBuilder: assetsBuilder
-        )
     }
 }

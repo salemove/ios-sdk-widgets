@@ -29,13 +29,14 @@ public struct ConnectStatusStyle: Equatable {
     /// Accessibility releated properties.
     public var accessibility: Accessibility
 
-    ///
     /// - Parameters:
-    ///   - firstText: First status text. Include `{operatorName}` template parameter in the string to display operator's name.
+    ///   - firstText: First status text. Include `{operatorName}` template parameter in 
+    ///     the string to display operator's name.
     ///   - firstTextFont: Font of the first status text.
     ///   - firstTextFontColor: Color of the first status text.
     ///   - firstTextStyle: Text style of the first status text.
-    ///   - secondText: Second status text. Include `{operatorName}` template parameter in the string to display operator's name.
+    ///   - secondText: Second status text. Include `{operatorName}` template parameter in 
+    ///     the string to display operator's name.
     ///   - secondTextFont: Font of the second status text.
     ///   - secondTextFontColor: Color of the second status text.
     ///   - secondTextStyle: Text style of the second status text.
@@ -61,30 +62,5 @@ public struct ConnectStatusStyle: Equatable {
         self.secondTextFontColor = secondTextFontColor
         self.secondTextStyle = secondTextStyle
         self.accessibility = accessibility
-    }
-
-    mutating func apply(
-        configuration: RemoteConfiguration.EngagementState?,
-        assetsBuilder: RemoteConfiguration.AssetsBuilder
-    ) {
-        UIFont.convertToFont(
-            uiFont: assetsBuilder.fontBuilder(configuration?.title?.font),
-            textStyle: firstTextStyle
-        ).unwrap { firstTextFont = $0 }
-
-        configuration?.title?.foreground?.value
-            .map { UIColor(hex: $0) }
-            .first
-            .unwrap { firstTextFontColor = $0 }
-
-        UIFont.convertToFont(
-            uiFont: assetsBuilder.fontBuilder(configuration?.description?.font),
-            textStyle: secondTextStyle
-        ).unwrap { secondTextFont = $0 }
-
-        configuration?.description?.foreground?.value
-            .map { UIColor(hex: $0) }
-            .first
-            .unwrap { secondTextFontColor = $0 }
     }
 }

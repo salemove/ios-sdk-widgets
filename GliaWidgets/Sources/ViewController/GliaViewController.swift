@@ -1,7 +1,11 @@
 import UIKit
 
+/// Defines the events related to the Glia view controller's state.
 public enum GliaViewControllerEvent {
+    /// Indicates that the Glia view controller has been minimized.
     case minimized
+
+    /// Indicates that the Glia view controller has been maximized.
     case maximized
 }
 

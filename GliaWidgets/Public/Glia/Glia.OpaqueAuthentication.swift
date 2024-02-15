@@ -38,6 +38,24 @@ extension Glia.Authentication.Behavior {
 }
 
 extension Glia {
+    /// Initiates authentication with specified behavior, manages UI state reset, 
+    /// and handles authentication operations.
+    ///
+    /// - Parameters:
+    ///   - behavior: The behavior defining how authentication should be handled.
+    ///
+    /// - Throws:
+    ///   - `GliaCoreError(reason: "SDK is not configured properly. Make sure it is fully configured and try again.")`
+    ///   
+    /// - Returns:
+    ///   - `Authentication` object configured with authentication operations
+    ///
+    /// This method prepares the authentication process according to the given behavior, 
+    /// ensuring the UI is reset to its initial state upon successful authentication or deauthentication.
+    /// It returns an `Authentication` instance which provides methods to authenticate with an ID token
+    /// and access token, deauthenticate, and check if currently authenticated. The method also
+    /// configures logging environment and cleans up UI and navigation states as necessary.
+    ///
     public func authentication(with behavior: Glia.Authentication.Behavior) throws -> Authentication {
         let auth = try environment.coreSdk.authentication(behavior.toCoreSdk())
 
@@ -95,14 +113,17 @@ extension Glia {
 extension Glia.Authentication {
     /// JWT token represented by `String`.
     public typealias IdToken = String
+
     /// Access token represented by `String`.
     public typealias AccessToken = String
 
     /// Authenticate visitor.
+    ///
     /// - Parameters:
-    /// - Parameter idToken: JWT token for visitor authentication.
-    /// - Parameter accessToken: Access token for visitor authentication.
-    /// - Parameter completion: Completion handler.
+    ///   - idToken: JWT token for visitor authentication.
+    ///   - accessToken: Access token for visitor authentication.
+    ///   - completion: Completion handler.
+    ///
     public func authenticate(
         with idToken: IdToken,
         accessToken: AccessToken?,
@@ -116,7 +137,10 @@ extension Glia.Authentication {
     }
 
     /// Deauthenticate Visitor.
-    /// - Parameter completion: Completion handler.
+    ///
+    /// - Parameters:
+    ///   - completion: Completion handler.
+    ///
     public func deauthenticate(completion: @escaping (Result<Void, Error>) -> Void) {
         self.deauthenticateWithCallback(completion)
     }

@@ -1,3 +1,5 @@
+import Foundation
+
 /// Configuration of the confirmation alert.
 public struct ConfirmationAlertConfiguration {
     /// Title of the alert.

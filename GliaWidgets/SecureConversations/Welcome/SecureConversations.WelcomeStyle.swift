@@ -40,15 +40,18 @@ extension SecureConversations {
         /// Style for list of message attachments.
         public var attachmentListStyle: MessageCenterFileUploadListStyle
 
-        /// Style of the list that contains the chat attachment sources. Appears in the media upload menu popover in the message input area in welcome screen.
+        /// Style of the list that contains the chat attachment sources. Appears in the media upload 
+        /// menu popover in the message input area in welcome screen.
         public var pickMediaStyle: AttachmentSourceListStyle
 
         /// View's background color.
         public var backgroundColor: UIColor
 
+        /// - Parameters:
         ///   - header: Style of the view's header (navigation bar area).
         ///   - headerTitle: Title shown in the header.
         ///   - welcomeTitleStyle: Style for title shown in the welcome area.
+        ///   - titleImageStyle: Style of the title image.
         ///   - welcomeSubtitleStyle: Style for description showm in the welcome area.
         ///   - checkMessagesButtonStyle: Style for button to check messages.
         ///   - messageTitleStyle: Style for message text view title.
@@ -57,8 +60,10 @@ extension SecureConversations {
         ///   - messageWarningStyle: Style for message warning section.
         ///   - filePickerButtonStyle: Style for file picker button.
         ///   - attachmentListStyle: Style for list of message attachments.
-        ///   - pickMediaStyle: Style of the list that contains the chat attachment sources. Appears in the media upload menu popover in the message input area in welcome screen.
+        ///   - pickMediaStyle: Style of the list that contains the chat attachment sources. 
+        ///     Appears in the media upload menu popover in the message input area in welcome screen.
         ///   - backgroundColor: Welcome area's view background color.
+        ///
         public init(
             header: HeaderStyle,
             headerTitle: String,

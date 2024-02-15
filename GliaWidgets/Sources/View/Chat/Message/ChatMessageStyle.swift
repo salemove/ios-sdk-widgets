@@ -17,7 +17,6 @@ public class ChatMessageStyle {
     /// Style of the downloadable file content.
     public var fileDownload: ChatFileDownloadStyle
 
-    ///
     /// - Parameters:
     ///   - text: Style of the text content.
     ///   - imageFile: Style of the image content.

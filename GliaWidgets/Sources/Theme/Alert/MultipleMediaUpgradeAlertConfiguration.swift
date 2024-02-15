@@ -1,3 +1,5 @@
+import Foundation
+
 /// Configuration of the media upgrade confirmation alert.
 public struct MultipleMediaUpgradeAlertConfiguration {
     /// Title of the alert.
@@ -11,7 +13,9 @@ public struct MultipleMediaUpgradeAlertConfiguration {
 
     /// Controls the appearance of the "Powered by" text and logo in the alert.
     public var showsPoweredBy: Bool
+}
 
+extension MultipleMediaUpgradeAlertConfiguration {
     func withOperatorName(_ name: String?) -> MultipleMediaUpgradeAlertConfiguration {
         return MultipleMediaUpgradeAlertConfiguration(
             title: title.withOperatorName(name),

@@ -56,8 +56,10 @@ private extension Glia {
 public class Glia {
     /// A singleton to access the Glia's interface.
     public static let sharedInstance = Glia(environment: .live)
+
     /// Current engagement media type.
     public var engagement: EngagementKind { return rootCoordinator?.engagementKind ?? .none }
+
     /// Used to monitor engagement state changes.
     public var onEvent: ((GliaEvent) -> Void)?
 
@@ -172,7 +174,13 @@ public class Glia {
     ///   - theme: A custom theme to use with the engagement.
     ///   - uiConfig: Remote UI configuration.
     ///   - assetsBuilder: Provides assets for remote configuration.
-    ///   - completion: Completion handler that will be fired once configuration is complete.
+    ///   - completion: Completion handler that will be fired once configuration is
+    ///     complete.
+    ///
+    /// - Throws:
+    ///   - `GliaError.configuringDuringEngagementIsNotAllowed`
+    ///   - `ConfigurationError`
+    ///
     public func configure(
         with configuration: Configuration,
         theme: Theme = Theme(),
@@ -256,25 +264,28 @@ public class Glia {
     }
 
     /// Minimizes engagement view if ongoing engagement exists.
-    /// Use this function for hiding the engagement view programmatically during ongoing engagement.
-    /// If you do so, the operator bubble appears.
+    /// Use this function to minimize the engagement view programmatically
+    /// during ongoing engagement. If you do so, the chat bubble appears.
+    ///
     public func minimize() {
         rootCoordinator?.minimize()
     }
 
     /// Maximizes engagement view if ongoing engagement exists.
     /// Throws error if ongoing engagement not exist.
-    /// Use this function for resuming engagement view If bubble is hidden programmatically and you need to
-    /// present engagement view.
+    /// Use this function for resuming engagement view if bubble is hidden
+    /// programmatically and you need to present engagement view.
     public func resume() throws {
         guard engagement != .none else { throw GliaError.engagementNotExist }
         rootCoordinator?.maximize()
     }
 
     /// This custom message renderer used for rendering AI custom cards.
-    /// Glia Widgets contains implementation for HTML based custom cards. See MessegeRenderer.webRenderer
+    /// Glia Widgets contains implementation for HTML based custom cards. 
+    /// See MessegeRenderer.webRenderer
     ///
-    /// - Parameter messageRenderer: Custom message renderer.
+    /// - Parameters:
+    ///   - messageRenderer: Custom message renderer.
     ///
     public func setChatMessageRenderer(messageRenderer: MessageRenderer?) {
         self.messageRenderer = messageRenderer
@@ -282,10 +293,12 @@ public class Glia {
 
     /// Clear visitor session
     ///
-    /// - Parameter completion: Completion handler.
+    /// - Parameters:
+    ///   - completion: Completion handler.
     ///
-    /// - Important: Note, that in case of ongoing engagement, `clearVisitorSession` must be called after ending engagement,
-    /// because `GliaError.clearingVisitorSessionDuringEngagementIsNotAllowed` will occur otherwise.
+    /// - Important: Note, that in case of ongoing engagement, `clearVisitorSession` must be called
+    ///   after ending engagement, because `GliaError.clearingVisitorSessionDuringEngagementIsNotAllowed`
+    ///   will occur otherwise.
     ///
     public func clearVisitorSession(_ completion: @escaping (Result<Void, Error>) -> Void) {
         loggerPhase.logger.prefixed(Self.self).info("Clear visitor session")
@@ -299,9 +312,9 @@ public class Glia {
 
     /// Fetch current Visitor's information.
     ///
-    /// The information provided by this endpoint is available to all the Operators observing or interacting with the
-    /// Visitor. This means that this endpoint can be used to provide additional context about the Visitor to the
-    /// Operators.
+    /// The information provided by this endpoint is available to all the operators observing
+    /// or interacting with the visitor. This means that this endpoint can be used to provide
+    /// additional context about the visitor to the operators.
     ///
     /// - Parameters:
     ///   - completion: A callback that will return the update result or `SalemoveError`
@@ -315,8 +328,9 @@ public class Glia {
     /// - `GliaCoreSDK.ConfigurationError.invalidEnvironment`
     /// - `GliaError.sdkIsNotConfigured`
     ///
-    /// - Important: Note, that in case of engagement has not been started yet, `configure(with:uiConfig:assetsBuilder:completion:)` must be called initially prior to this method,
-    /// because `GliaError.sdkIsNotConfigured` will occur otherwise.
+    /// - Important: Note, that in case of engagement has not been started yet,
+    ///   `configure(with:uiConfig:assetsBuilder:completion:)` must be called prior to
+    ///   this method, because `GliaError.sdkIsNotConfigured` will occur otherwise.
     ///
     public func fetchVisitorInfo(completion: @escaping (Result<GliaCore.VisitorInfo, Error>) -> Void) {
         guard configuration != nil else {
@@ -328,13 +342,14 @@ public class Glia {
 
     /// Update current Visitor's information.
     ///
-    /// The information provided by this endpoint is available to all the Operators observing or interacting with the
-    /// Visitor. This means that this endpoint can be used to provide additional context about the Visitor to the
-    /// Operators.
+    /// The information provided by this endpoint is available to all the operators observing
+    /// or interacting with the visitor. This means that this endpoint can be used to provide
+    /// additional context about the visitor to the operators.
     ///
-    /// In a similar manner custom attributes can be also be used to provide additional context. For example, if your
-    /// site separates paying users from free users, then setting a custom attribute of 'user_type' with a value of
-    /// either 'free' or 'paying' depending on the Visitor's account can help Operators prioritize different Visitors.
+    /// In a similar manner custom attributes can be also be used to provide additional context. 
+    /// For example, if your site separates paying users from free users, then setting a custom
+    /// attribute of 'user_type' with a value of either 'free' or 'paying' depending on the visitor's
+    /// account can help operators prioritize different visitors.
     ///
     /// - Parameters:
     ///   - info: The information for updating Visitor
@@ -349,8 +364,9 @@ public class Glia {
     /// - `GliaCoreSDK.ConfigurationError.invalidEnvironment`
     /// - `GliaError.sdkIsNotConfigured`
     ///
-    /// - Important: Note, that in case of engagement has not been started yet, `configure(with:uiConfig:assetsBuilder:completion:)` must be called initially prior to this method,
-    /// because `GliaError.sdkIsNotConfigured` will occur otherwise.
+    /// - Important: Note, that in case of engagement has not been started yet,
+    ///   `configure(with:uiConfig:assetsBuilder:completion:)` must be called prior to
+    ///   this method, because `GliaError.sdkIsNotConfigured` will occur otherwise.
     ///
     public func updateVisitorInfo(
         _ info: VisitorInfoUpdate,
@@ -383,9 +399,10 @@ public class Glia {
         )
     }
 
-    /// List all Queues of the configured site.
-    /// It is also possible to monitor Queues changes with [subscribeForUpdates](x-source-tag://subscribeForUpdates) method.
-    /// If the request is unsuccessful for any reason then the completion will have an Error.
+    /// List all queues of the configured site. It is also possible to monitor queues changes with
+    /// [subscribeForUpdates](x-source-tag://subscribeForUpdates) method. If the request is unsuccessful
+    /// for any reason then the completion will have an Error.
+    /// 
     /// - Parameters:
     ///   - completion: A callback that will return the Result struct with `Queue` list or `GliaCoreError`.
     ///

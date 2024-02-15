@@ -1,3 +1,5 @@
+import Foundation
+
 /// Configuration of the alert that offers to go to the app's settings in the Settings app.
 public struct SettingsAlertConfiguration {
     /// Title of the alert.

@@ -5,10 +5,13 @@ public extension Theme.SurveyStyle {
     struct ScaleQuestion {
         /// Title style.
         public var title: Theme.Text
+
         /// OptionButton style.
         public var option: OptionButton
+
         /// Validation error style
         public var error: ValidationError
+
         /// Accessibility related properties.
         public var accessibility: Accessibility
 

@@ -2,11 +2,24 @@ import UIKit
 
 /// Style of the on hold overlay view (used in bubble & call views).
 public struct OnHoldOverlayStyle: Equatable {
+    /// The overlay image.
     public var image: UIImage
+
+    /// The overlay image color.
     public var imageColor: ColorType
+
+    /// The overlay image size.
     public var imageSize: CGSize
+
+    /// The overlay background color.
     public var backgroundColor: ColorType
 
+    /// - Parameters:
+    ///   - image: The overlay image.
+    ///   - imageColor: The overlay image color.
+    ///   - imageSize: The overlay image size.
+    ///   - backgroundColor: The overlay background color.
+    ///
     public init(
         image: UIImage,
         imageColor: ColorType,
@@ -17,35 +30,6 @@ public struct OnHoldOverlayStyle: Equatable {
         self.imageColor = imageColor
         self.imageSize = imageSize
         self.backgroundColor = backgroundColor
-    }
-
-    /// Apply onHoldOverlay style remote configuration
-    mutating func apply(configuration: RemoteConfiguration.OnHoldOverlayStyle?) {
-        configuration?.tintColor.unwrap {
-            switch $0.type {
-            case .fill:
-                $0.value
-                    .map { UIColor(hex: $0) }
-                    .first
-                    .unwrap { imageColor = .fill(color: $0) }
-            case .gradient:
-                let colors = $0.value.convertToCgColors()
-                imageColor = .gradient(colors: colors)
-            }
-        }
-
-        configuration?.backgroundColor.unwrap {
-            switch $0.type {
-            case .fill:
-                $0.value
-                    .map { UIColor(hex: $0) }
-                    .first
-                    .unwrap { backgroundColor = .fill(color: $0) }
-            case .gradient:
-                let colors = $0.value.convertToCgColors()
-                backgroundColor = .gradient(colors: colors)
-            }
-        }
     }
 }
 

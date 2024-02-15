@@ -57,7 +57,6 @@ public struct AlertConfiguration {
     /// Configuration of the live observation aknwoledgement
     public var liveObservationConfirmation: ConfirmationAlertConfiguration
 
-    ///
     /// - Parameters:
     ///   - leaveQueue: Configuration of the queue leaving confirmation alert.
     ///   - endEngagement: Configuration of the engagement ending confirmation alert.
@@ -75,9 +74,11 @@ public struct AlertConfiguration {
     ///   - unexpectedError: Configuration of the unexpected error alert.
     ///   - apiError: Configuration of the API error alert.
     ///   - unavailableMessageCenter: Configuration of the unavailable message center error alert.
-    ///   - unavailableMessageCenterForBeingUnauthenticated: Configuration of the unavailable message center error alert due to unautheticated visitor.
+    ///   - unavailableMessageCenterForBeingUnauthenticated: Configuration of the unavailable message center error alert 
+    ///     due to unauthenticated visitor.
     ///   - unsupportedGvaBroadcastError: Configuration of the unsupported GVA broadcast events error alert.
-    ///
+    ///   - liveObservationConfirmation: Configuration of the Live Observation confirmation alert
+    ///   
     public init(
         leaveQueue: ConfirmationAlertConfiguration,
         endEngagement: ConfirmationAlertConfiguration,

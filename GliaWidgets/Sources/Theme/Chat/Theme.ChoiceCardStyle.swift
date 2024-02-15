@@ -5,20 +5,25 @@ public extension Theme {
     struct ChoiceCardStyle {
         /// Style of the message text.
         public var text: Text
+
         /// Style of the message background.
         public var background: Layer
+
         /// Style of the image content.
         public var imageFile: ChatImageFileContentStyle
+
         /// Style of the image content.
         public var fileDownload: ChatFileDownloadStyle
+
         /// Style of the operator's image.
         public var operatorImage: UserImageStyle
+
         /// Styles of the choice card's answer options.
         public var choiceOption: Option
+
         /// Accessibility related properties.
         public var accessibility: Accessibility
 
-        ///
         /// - Parameters:
         ///   - text: Style of the message text.
         ///   - background: Style of the message background.
@@ -44,87 +49,6 @@ public extension Theme {
             self.operatorImage = operatorImage
             self.choiceOption = choiceOption
             self.accessibility = accessibility
-        }
-
-        mutating func apply(
-            configuration: RemoteConfiguration.ResponseCard?,
-            assetsBuilder: RemoteConfiguration.AssetsBuilder
-        ) {
-            background.apply(configuration: configuration?.background)
-
-            choiceOption.apply(
-                configuration: configuration?.option,
-                assetsBuilder: assetsBuilder
-            )
-
-            text.apply(
-                configuration: configuration?.text,
-                assetsBuilder: assetsBuilder
-            )
-
-            operatorImage.apply(configuration: configuration?.userImage)
-        }
-    }
-}
-
-extension Theme.ChoiceCardStyle {
-    /// Accessibility properties for ChoiceCardStyle.
-    public struct Accessibility: Equatable {
-        /// Accessibility label for image.
-        public var imageLabel: String
-
-        ///
-        /// - Parameters imageLabel: Accessibility label for image.
-        public init(imageLabel: String) {
-            self.imageLabel = imageLabel
-        }
-
-        /// Accessibility is not supported intentionally.
-        public static let unsupported = Self(imageLabel: "")
-    }
-}
-
-public extension Theme.ChoiceCardStyle {
-    struct Option {
-        /// Style of an option in an active state - choice card has not been answered by the visitor yet.
-        public var normal: Theme.Button
-        /// Style of an option in a selected state - choice card has already been answered by the visitor.
-        public var selected: Theme.Button
-        /// Style of an option in a disabled state - choice card has already been answered by the visitor or the choice card became inactive (e.g. engagement ended).
-        public var disabled: Theme.Button
-
-        ///
-        /// - Parameters:
-        ///   - normal: Style of an option in an active state - choice card has not been answered by the visitor yet.
-        ///   - selected: Style of an option in a selected state - choice card has already been answered by the visitor.
-        ///   - disabled: Style of an option in a disabled state - choice card has already been answered by the visitor or the choice card became inactive (e.g. engagement ended).
-        ///
-        public init(
-            normal: Theme.Button,
-            selected: Theme.Button,
-            disabled: Theme.Button
-        ) {
-            self.normal = normal
-            self.selected = selected
-            self.disabled = disabled
-        }
-
-        mutating func apply(
-            configuration: RemoteConfiguration.ResponseCardOption?,
-            assetsBuilder: RemoteConfiguration.AssetsBuilder
-        ) {
-            normal.apply(
-                configuration: configuration?.normal,
-                assetsBuilder: assetsBuilder
-            )
-            selected.apply(
-                configuration: configuration?.selected,
-                assetsBuilder: assetsBuilder
-            )
-            disabled.apply(
-                configuration: configuration?.disabled,
-                assetsBuilder: assetsBuilder
-            )
         }
     }
 }

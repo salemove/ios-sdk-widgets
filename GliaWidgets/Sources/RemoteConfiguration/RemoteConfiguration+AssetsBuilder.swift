@@ -24,8 +24,8 @@ public extension RemoteConfiguration {
         )
 
         /// Initilizes the assets builder with font-building closure.
-        ///
-        /// - Parameter fontBuilder: Closure that provides the UIFont instance for appropriate Font configururation structure.
+        /// - Parameters:
+        ///   - fontBuilder: Closure that provides the `UIFont` instance for appropriate `Font` configuration structure.
         ///
         public init(fontBuilder: @escaping (RemoteConfiguration.Font?) -> UIFont?) {
             self.fontBuilder = fontBuilder

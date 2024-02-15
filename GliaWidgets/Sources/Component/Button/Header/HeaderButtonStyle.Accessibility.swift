@@ -6,10 +6,10 @@ extension HeaderButtonStyle {
         /// Accessibility hint.
         public var hint: String
 
-        ///
         /// - Parameters:
         ///   - label: Accessiblity label.
         ///   - hint: Accessibility hint.
+        ///
         public init(
             label: String,
             hint: String
@@ -17,11 +17,13 @@ extension HeaderButtonStyle {
             self.label = label
             self.hint = hint
         }
-
-        /// Accessibility is not supported intentionally.
-        public static let unsupported = Self(
-            label: "",
-            hint: ""
-        )
     }
+}
+
+extension HeaderButtonStyle.Accessibility {
+    /// Accessibility is not supported intentionally.
+    public static let unsupported = Self(
+        label: "",
+        hint: ""
+    )
 }

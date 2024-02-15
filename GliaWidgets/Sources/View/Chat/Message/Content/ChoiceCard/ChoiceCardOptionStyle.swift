@@ -8,10 +8,10 @@ public final class ChoiceCardOptionStyle {
     /// Style of an option in a selected state - choice card has already been answered by the visitor.
     public var selected: ChoiceCardOptionStateStyle
 
-    /// Style of an option in a disabled state - choice card has already been answered by the visitor or the choice card became inactive (e.g. engagement ended).
+    /// Style of an option in a disabled state - choice card has already been answered by the visitor 
+    /// or the choice card became inactive (e.g. engagement ended).
     public var disabled: ChoiceCardOptionStateStyle
 
-    ///
     /// - Parameters:
     ///   - normal: Style of an option in an active state - choice card has not been answered by the visitor yet.
     ///   - selected: Style of an option in a selected state - choice card has already been answered by the visitor.
@@ -25,23 +25,5 @@ public final class ChoiceCardOptionStyle {
         self.normal = normal
         self.selected = selected
         self.disabled = disabled
-    }
-
-    func apply(
-        configuration: RemoteConfiguration.ResponseCardOption?,
-        assetsBuilder: RemoteConfiguration.AssetsBuilder
-    ) {
-        normal.apply(
-            configuration: configuration?.normal,
-            assetsBuilder: assetsBuilder
-        )
-        selected.apply(
-            configuration: configuration?.selected,
-            assetsBuilder: assetsBuilder
-        )
-        disabled.apply(
-            configuration: configuration?.disabled,
-            assetsBuilder: assetsBuilder
-        )
     }
 }

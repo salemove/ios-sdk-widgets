@@ -7,9 +7,9 @@ extension Glia {
     /// - Parameters:
     ///   - engagementKind: Engagement media type.
     ///   - in: Queue identifiers
-    ///   - visitorContext: Visitor context.
     ///   - features: Set of features to be enabled in the SDK.
-    ///   - sceneProvider: Used to provide `UIWindowScene` to the framework. Defaults to the first active foreground scene.
+    ///   - sceneProvider: Used to provide `UIWindowScene` to the framework. Defaults to
+    ///     the first active foreground scene.
     ///
     /// - throws:
     ///   - `GliaCoreSDK.ConfigurationError.invalidSite`
@@ -17,8 +17,8 @@ extension Glia {
     ///   - `GliaError.engagementExists
     ///   - `GliaError.sdkIsNotConfigured`
     ///
-    /// - Important: Note, that `configure(with:uiConfig:assetsBuilder:completion:)` must be called initially prior to this method,
-    /// because `GliaError.sdkIsNotConfigured` will occur otherwise.
+    /// - Important: Note, that `configure(with:uiConfig:assetsBuilder:completion:)` must be called
+    ///   initially prior to this method, because `GliaError.sdkIsNotConfigured` will occur otherwise.
     ///
     public func startEngagement(
         engagementKind: EngagementKind,

@@ -26,7 +26,6 @@ public class AttachmentSourceItemStyle: Equatable {
     /// Accessibility related properties.
     public var accessibility: Accessibility
 
-    ///
     /// - Parameters:
     ///   - kind: Kind of an item shown in the attachment source list view (e.g. Photo Library, Take Photo or Browse).
     ///   - title: Title of the attachment source list item (e.g. "Take Photo").
@@ -56,74 +55,4 @@ public class AttachmentSourceItemStyle: Equatable {
         self.iconColor = iconColor
         self.accessibility = accessibility
     }
-
-    func apply(
-        configuration: RemoteConfiguration.AttachmentSource?,
-        assetsBuilder: RemoteConfiguration.AssetsBuilder
-    ) {
-        configuration?.tintColor?.value
-            .map { UIColor(hex: $0) }
-            .first
-            .unwrap { iconColor = $0 }
-
-        configuration?.text?.foreground?.value
-            .map { UIColor(hex: $0) }
-            .first
-            .unwrap { titleColor = $0 }
-
-        UIFont.convertToFont(
-            uiFont: assetsBuilder.fontBuilder(configuration?.text?.font),
-            textStyle: titleTextStyle
-        ).unwrap { titleFont = $0 }
-    }
 }
-
-extension AttachmentSourceItemStyle {
-    public static func == (lhs: AttachmentSourceItemStyle, rhs: AttachmentSourceItemStyle) -> Bool {
-        lhs.kind == rhs.kind &&
-        lhs.title == rhs.title &&
-        lhs.titleFont == rhs.titleFont &&
-        lhs.titleColor == rhs.titleColor &&
-        lhs.titleTextStyle == rhs.titleTextStyle &&
-        lhs.icon == rhs.icon &&
-        lhs.iconColor == rhs.iconColor &&
-        lhs.accessibility == rhs.accessibility
-    }
-}
-
-#if DEBUG
-extension AttachmentSourceItemStyle {
-    public static func mock(with kind: AttachmentSourceItemKind) -> AttachmentSourceItemStyle {
-        let theme = Theme()
-        let titleFont = theme.font.bodyText
-        let titleColor = theme.color.baseDark
-        let iconColor = theme.color.baseDark
-        var title: String
-        var icon: UIImage
-
-        switch kind {
-        case .photoLibrary:
-            title = "Photo Library"
-            icon = Asset.photoLibraryIcon.image
-        case .takePhoto:
-            title = "Take phone"
-            icon = Asset.cameraIcon.image
-        case .browse:
-            title = "Browse"
-            icon = Asset.browseIcon.image
-        }
-
-        let item: AttachmentSourceItemStyle = .init(
-            kind: kind,
-            title: title,
-            titleFont: titleFont,
-            titleColor: titleColor,
-            icon: icon,
-            iconColor: iconColor,
-            accessibility: .init(isFontScalingEnabled: true)
-        )
-
-        return item
-    }
-}
-#endif
