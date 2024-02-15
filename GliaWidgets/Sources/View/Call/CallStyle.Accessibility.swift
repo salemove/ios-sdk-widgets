@@ -3,22 +3,28 @@ extension CallStyle {
     public struct Accessibility: Equatable {
         /// Accessibility hint for operator name label.
         public var operatorNameHint: String
+
         /// Accessibility hint for call duration label.
         public var durationHint: String
+
         /// Accessibility label for local (visitor) video.
         public var localVideoLabel: String
+
         /// Accessibility label for remote (operator) video.
         public var remoteVideoLabel: String
-        /// Flag that provides font dynamic type by setting `adjustsFontForContentSizeCategory` for component that supports it.
+
+        /// Flag that provides font dynamic type by setting `adjustsFontForContentSizeCategory` 
+        /// for component that supports it.
         public var isFontScalingEnabled: Bool
 
-        ///
         /// - Parameters:
         ///   - operatorNameHint: Accessibility hint for operator name label.
         ///   - durationHint: Accessibility hint for call duration label.
         ///   - localVideoLabel: Accessibility label for local (visitor) video.
         ///   - remoteVideoLabel: Accessibility label for remote (operator) video.
-        ///   - isFontScalingEnabled: Flag that provides font dynamic type by setting `adjustsFontForContentSizeCategory` for component that supports it.
+        ///   - isFontScalingEnabled: Flag that provides font dynamic type by setting 
+        ///    `adjustsFontForContentSizeCategory` for component that supports it.
+        ///
         public init(
             operatorNameHint: String,
             durationHint: String,
@@ -32,14 +38,16 @@ extension CallStyle {
             self.remoteVideoLabel = remoteVideoLabel
             self.isFontScalingEnabled = isFontScalingEnabled
         }
-
-        /// Accessibility is not supported intentionally.
-        public static let unsupported = Self(
-            operatorNameHint: "",
-            durationHint: "",
-            localVideoLabel: "",
-            remoteVideoLabel: "",
-            isFontScalingEnabled: false
-        )
     }
+}
+
+extension CallStyle.Accessibility {
+    /// Accessibility is not supported intentionally.
+    public static let unsupported = Self(
+        operatorNameHint: "",
+        durationHint: "",
+        localVideoLabel: "",
+        remoteVideoLabel: "",
+        isFontScalingEnabled: false
+    )
 }

@@ -1,6 +1,8 @@
 import UIKit
 
-/// Style of a button that only consists of a single image. It is displayed in the app navigation bar (header). Used for "Back", "Exit queue" and "End screen share" buttons.
+/// Style of a button that only consists of a single image. 
+/// It is displayed in the app navigation bar (header).
+/// Used for "Back", "Exit queue", and "End screen share" buttons.
 public struct HeaderButtonStyle: Equatable {
     /// Image of the button.
     public var image: UIImage
@@ -11,11 +13,11 @@ public struct HeaderButtonStyle: Equatable {
     /// Accessibility related properties.
     public var accessibility: Accessibility
 
-    ///
     /// - Parameters:
     ///   - image: Image of the button.
     ///   - color: Color of the button's image.
     ///   - accessibility: Accessibility related properties.
+    ///
     public init(
         image: UIImage,
         color: UIColor,
@@ -24,12 +26,5 @@ public struct HeaderButtonStyle: Equatable {
         self.image = image
         self.color = color
         self.accessibility = accessibility
-    }
-
-    mutating func apply(configuration: RemoteConfiguration.Button?) {
-        configuration?.tintColor?.value
-            .map { UIColor(hex: $0) }
-            .first
-            .unwrap { color = $0 }
     }
 }

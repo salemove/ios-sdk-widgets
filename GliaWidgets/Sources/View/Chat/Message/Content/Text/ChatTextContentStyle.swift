@@ -20,7 +20,6 @@ public class ChatTextContentStyle {
     /// Accessibility related properties.
     public var accessibility: Accessibility
 
-    ///
     /// - Parameters:
     ///   - textFont: Font of the message text.
     ///   - textColor: Color of the message text.

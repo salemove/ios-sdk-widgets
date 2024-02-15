@@ -1,3 +1,5 @@
+import Foundation
+
 /// Configuration of the operator ending the engagement alert.
 public struct SingleActionAlertConfiguration {
     /// Title of the alert.

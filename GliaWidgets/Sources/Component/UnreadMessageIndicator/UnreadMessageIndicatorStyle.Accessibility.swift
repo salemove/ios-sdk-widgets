@@ -4,13 +4,16 @@ extension UnreadMessageIndicatorStyle {
         /// Accessibility label.
         public var label: String
 
+        /// - Parameters:
+        ///   - label: Accessibility label
         ///
-        /// - Parameter label: Accessibility label.
         public init(label: String) {
             self.label = label
         }
-
-        /// Accessibility is not supported intentionally.
-        public static let unsupported = Self(label: "")
     }
+}
+
+extension UnreadMessageIndicatorStyle.Accessibility {
+    /// Accessibility is not supported intentionally.
+    public static let unsupported = Self(label: "")
 }

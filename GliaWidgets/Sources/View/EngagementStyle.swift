@@ -12,9 +12,9 @@ public class EngagementStyle: Equatable {
     /// View's background color.
     public var backgroundColor: ColorType
 
+    /// View's preferred status bar style.
     public var preferredStatusBarStyle: UIStatusBarStyle
 
-    ///
     /// - Parameters:
     ///   - header: Style of the view's header (navigation bar area).
     ///   - connect: Styles for different engagement connection states.
@@ -31,14 +31,5 @@ public class EngagementStyle: Equatable {
         self.connect = connect
         self.backgroundColor = backgroundColor
         self.preferredStatusBarStyle = preferredStatusBarStyle
-    }
-}
-
-extension EngagementStyle {
-    public static func == (lhs: EngagementStyle, rhs: EngagementStyle) -> Bool {
-        return lhs.header == rhs.header &&
-               lhs.connect == rhs.connect &&
-               lhs.backgroundColor == rhs.backgroundColor &&
-               lhs.preferredStatusBarStyle == rhs.preferredStatusBarStyle
     }
 }

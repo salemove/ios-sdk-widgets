@@ -145,9 +145,9 @@ extension Survey {
                 }
                 this.scrollView.layer.cornerRadius = theme.survey.layer.cornerRadius
 
-                this.cancelButton.update(with: theme.survey.cancellButton)
+                this.cancelButton.update(with: theme.survey.cancelButton)
                 this.submitButton.update(with: theme.survey.submitButton)
-                this.cancelButton.accessibilityLabel = theme.survey.cancellButton.accessibility.label
+                this.cancelButton.accessibilityLabel = theme.survey.cancelButton.accessibility.label
                 this.submitButton.accessibilityLabel = theme.survey.submitButton.accessibility.label
 
                 this.header.accessibilityTraits = .header

@@ -4,22 +4,30 @@ import Foundation
 public struct Configuration {
     /// Site authorization method
     public let authorizationMethod: AuthorizationMethod
+
     /// Environment
     public let environment: Environment
+
     /// Site
     public let site: String
+
     /// Visitor Context
     public let visitorContext: VisitorContext?
+
     /// Push notifications state. Pass `sandbox` to use push notifications during
     /// development/debug time, and `production` for release.
     public var pushNotifications: PushNotifications
+
     /// Controls the visibility of the "Powered by" text and image.
     public let isWhiteLabelApp: Bool
+
     /// Company name. Appears during connection with operator.
     public let companyName: String
+
     /// The name of the manual locale override. If not set, or if set as `nil`,
     /// then the default locale from site settings will be used.
     public var manualLocaleOverride: String?
+
     /// Initializes the configuration.
     ///
     /// - Parameters:
@@ -27,8 +35,12 @@ public struct Configuration {
     ///   - environment: The environment to use.
     ///   - site: The site to use.
     ///   - visitorContext: Additional context about the visitor that operator may need.
-    ///   - manualLocaleOverride: The name of the manual locale override.
-    ///   If not set, or if set as `nil`, then the default locale from site settings will be used.
+    ///   - pushNotifications: Push notifications to use.
+    ///   - isWhiteLabelApp: Boolean for whether the app is white label or not.
+    ///   - companyName: Name of the company.
+    ///   - manualLocaleOverride: The name of the manual locale override. If not set, 
+    ///   or if set as `nil`, then the default locale from site settings will be used.
+    ///
     public init(
         authorizationMethod: AuthorizationMethod,
         environment: Environment,
@@ -80,8 +92,16 @@ extension Configuration {
 }
 
 extension Configuration {
+    /// Represents the configuration options for push notifications within the SDK.
     public enum PushNotifications {
-        case disabled, sandbox, production
+        /// Push notifications are disabled.
+        case disabled
+
+        /// Push notifications are configured for sandbox environment. Suitable for testing.
+        case sandbox
+
+        /// Push notifications are configured for production environment.
+        case production
 
         var coreSdk: CoreSdkClient.Salemove.Configuration.PushNotifications {
             switch self {

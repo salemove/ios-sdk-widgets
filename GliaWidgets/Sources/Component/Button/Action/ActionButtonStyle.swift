@@ -1,6 +1,8 @@
 import UIKit
 
-/// Style of an action button. This button contains a title placed on a rectangular background. Used for positive and negative actions in alerts and in the navigation bar (header) for the engagement ending button.
+/// Style of an action button. This button contains a title placed on a rectangular background. 
+/// Used for positive and negative actions in alerts and in the navigation bar (header)
+/// for the engagement ending button.
 public struct ActionButtonStyle: Equatable {
     /// Title of the button.
     public var title: String
@@ -41,11 +43,11 @@ public struct ActionButtonStyle: Equatable {
     /// Accessibility related properties.
     public var accessibility: Accessibility
 
-    ///
     /// - Parameters:
     ///   - title: Title of the button.
     ///   - titleFont: Font of the title.
     ///   - titleColor: Color of the title.
+    ///   - textStyle: Style of the title.
     ///   - backgroundColor: Background color of the button.
     ///   - cornerRaidus: Corner radius of the button.
     ///   - shadowOffset: Shadow offset of the button.
@@ -84,66 +86,5 @@ public struct ActionButtonStyle: Equatable {
         self.borderWidth = borderWidth
         self.borderColor = borderColor
         self.accessibility = accessibility
-    }
-
-    /// Apply Button from remote configuration
-    mutating func apply(
-        configuration: RemoteConfiguration.Button?,
-        assetsBuilder: RemoteConfiguration.AssetsBuilder
-    ) {
-        UIFont.convertToFont(
-            uiFont: assetsBuilder.fontBuilder(configuration?.text?.font),
-            textStyle: textStyle
-        ).unwrap { titleFont = $0 }
-
-        configuration?.text?.alignment.unwrap { _ in
-            // The logic for duration alignment has not been implemented
-        }
-
-        configuration?.text?.background.unwrap { _ in
-            // The logic for duration background has not been implemented
-        }
-
-        configuration?.text?.foreground?.value
-            .map { UIColor(hex: $0) }
-            .first
-            .unwrap { titleColor = $0 }
-
-        configuration?.background?.color.unwrap {
-            switch $0.type {
-            case .fill:
-                $0.value
-                    .map { UIColor(hex: $0) }
-                    .first
-                    .unwrap { backgroundColor = .fill(color: $0) }
-            case .gradient:
-                let colors = $0.value.convertToCgColors()
-                backgroundColor = .gradient(colors: colors)
-            }
-        }
-
-        configuration?.background?.cornerRadius
-            .unwrap { cornerRaidus = $0 }
-
-        configuration?.background?.borderWidth
-            .unwrap { borderWidth = $0 }
-
-        configuration?.background?.border?.value
-            .map { UIColor(hex: $0) }
-            .first
-            .unwrap { borderColor = $0 }
-
-        configuration?.shadow?.color?.value
-            .map { UIColor(hex: $0) }
-            .first
-            .unwrap { shadowColor = $0 }
-
-        configuration?.shadow?.offset.unwrap {
-            shadowOffset = .init(width: $0, height: $0)
-        }
-
-        configuration?.shadow?.opacity.unwrap {
-            shadowOpacity = Float($0)
-        }
     }
 }

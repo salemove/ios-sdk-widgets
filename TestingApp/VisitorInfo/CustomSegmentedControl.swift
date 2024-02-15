@@ -146,7 +146,6 @@ class CustomSegmentedControl: UIControl {
     }
 
     // MARK: - Public API
-
     func setSelectedSegmentIndex(_ index: Int, sendActions: Bool) {
         guard segments.indices.contains(index) else { return }
         setSelectedSegment(index, sendActions: sendActions)

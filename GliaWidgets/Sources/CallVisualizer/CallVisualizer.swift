@@ -80,7 +80,8 @@ public final class CallVisualizer {
     /// Once Operator uses the Visitor code to initiate an engagement, the code will expire immediately. When the Visitor Code
     /// expires this function will return a new Visitor code.
     ///
-    /// - Parameter source: The current viewController to present from.
+    /// - Parameters:
+    ///   - source: The current `viewController` to present from.
     ///
     public func showVisitorCodeViewController(from source: UIViewController) {
         environment.log.prefixed(Self.self).info("Show Visitor Code Dialog")
@@ -101,8 +102,8 @@ public final class CallVisualizer {
     /// - Parameters:
     ///   - container: The view into which you want to embed VisitorCode view.
     ///   - onEngagementAccepted: callback can be used, that is called when engagement has been accepted.
-    ///   One of the use cases may be calling for visitor code again, because in the moment when engagement
-    ///   was accepted, the displayed visitor code becomes obsolete.
+    ///     One of the use cases may be calling for visitor code again, because in the moment when engagement
+    ///     was accepted, the displayed visitor code became obsolete.
     ///
     public func embedVisitorCodeView(
         into container: UIView,

@@ -1,6 +1,7 @@
 import UIKit
 
-/// Style of a badge view. A badge is used to show unread message count on the minimized bubble and on the chat button in the call view.
+/// Style of a badge view. A badge is used to show unread message count 
+/// on the minimized bubble and on the chat button in the call view.
 public struct BadgeStyle: Equatable {
     /// Font of the text.
     public var font: UIFont
@@ -20,12 +21,13 @@ public struct BadgeStyle: Equatable {
     /// Border width of the view.
     public var borderWidth: CGFloat
 
-    ///
     /// - Parameters:
     ///   - font: Font of the text.
     ///   - fontColor: Color of the text.
     ///   - textStyle: Text style of the text.
     ///   - backgroundColor: Background color of the view.
+    ///   - borderColor: Border color of the view
+    ///   - borderWidth: Border width of the view
     ///
     public init(
         font: UIFont,
@@ -41,49 +43,5 @@ public struct BadgeStyle: Equatable {
         self.backgroundColor = backgroundColor
         self.borderColor = borderColor
         self.borderWidth = borderWidth
-    }
-
-    /// Apply badge remote configuration
-    mutating func apply(
-        configuration: RemoteConfiguration.Badge?,
-        assetsBuilder: RemoteConfiguration.AssetsBuilder
-    ) {
-        UIFont.convertToFont(
-            uiFont: assetsBuilder.fontBuilder(configuration?.font),
-            textStyle: textStyle
-        ).unwrap { font = $0 }
-
-        configuration?.fontColor?.value
-            .map { UIColor(hex: $0) }
-            .first
-            .unwrap { fontColor = $0 }
-
-        configuration?.background?.color.unwrap {
-            switch $0.type {
-            case .fill:
-                $0.value
-                    .map { UIColor(hex: $0) }
-                    .first
-                    .unwrap { backgroundColor = .fill(color: $0) }
-            case .gradient:
-                let colors = $0.value.convertToCgColors()
-                backgroundColor = .gradient(colors: colors)
-            }
-        }
-
-        configuration?.background?.border.unwrap {
-            switch $0.type {
-            case .fill:
-                $0.value
-                    .map { UIColor(hex: $0) }
-                    .first
-                    .unwrap { borderColor = .fill(color: $0) }
-            case .gradient:
-                break
-            }
-        }
-
-        configuration?.background?.borderWidth
-            .unwrap { borderWidth = $0 }
     }
 }
