@@ -4,8 +4,6 @@ class ChatViewModel: EngagementViewModel {
     typealias ActionCallback = (Action) -> Void
     typealias DelegateCallback = (DelegateEvent) -> Void
 
-    static let maximumUploads = 25
-
     var action: ActionCallback?
     var delegate: DelegateCallback?
     // Used to check whether custom card contains interactable metadata.
@@ -76,8 +74,8 @@ class ChatViewModel: EngagementViewModel {
         startAction: StartAction,
         deliveredStatusText: String,
         chatType: ChatType,
-        environment: Environment
-
+        environment: Environment,
+        maximumUploads: () -> Int
     ) {
         self.call = call
         self.showsCallBubble = showsCallBubble
@@ -85,7 +83,7 @@ class ChatViewModel: EngagementViewModel {
         self.startAction = startAction
         self.chatType = chatType
         let uploader = FileUploader(
-            maximumUploads: Self.maximumUploads,
+            maximumUploads: maximumUploads(),
             environment: .init(
                 uploadFile: .toEngagement(environment.uploadFileToEngagement),
                 fileManager: environment.fileManager,

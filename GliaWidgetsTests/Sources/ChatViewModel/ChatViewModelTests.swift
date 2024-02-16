@@ -65,7 +65,8 @@ class ChatViewModelTests: XCTestCase {
                 proximityManager: .mock,
                 log: .mock,
                 operatorRequestHandlerService: .mock()
-            )
+            ),
+            maximumUploads: { 2 }
         )
 
         viewModel.sendChoiceCardResponse(choiceCardMock, to: "mocked-message-id")
@@ -430,6 +431,7 @@ class ChatViewModelTests: XCTestCase {
 
         var transcriptModelEnv = TranscriptModel.Environment.failing
         transcriptModelEnv.fileManager = fileManager
+        transcriptModelEnv.maximumUploads = { 2 }
         var uploaderEnv = FileUploader.Environment.failing
         uploaderEnv.fileManager = fileManager
         let transcriptFileUploadListModelEnv = FileUploadListViewModel.Environment.failing(
@@ -442,6 +444,7 @@ class ChatViewModelTests: XCTestCase {
         let transcriptFileUploadListModel = FileUploadListViewModel(environment: transcriptFileUploadListModelEnv)
         transcriptModelEnv.createFileUploadListModel = { _ in transcriptFileUploadListModel }
         transcriptModelEnv.listQueues = { callback in callback([], nil) }
+        transcriptModelEnv.maximumUploads = { 2 }
         var logger = CoreSdkClient.Logger.failing
         logger.prefixedClosure = { _ in logger }
         logger.infoClosure = { _, _, _, _ in }

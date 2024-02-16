@@ -25,7 +25,6 @@ extension SecureConversations {
         typealias Event = ChatViewModel.Event
 
         static let messageTextLimit = WelcomeViewModel.messageTextLimit
-        static let maximumUploads = WelcomeViewModel.maximumUploads
 
         var action: ActionCallback?
         var delegate: DelegateCallback?
@@ -122,7 +121,7 @@ extension SecureConversations {
             self.alertConfiguration = alertConfiguration
             self.hasViewAppeared = false
             let uploader = FileUploader(
-                maximumUploads: Self.maximumUploads,
+                maximumUploads: environment.maximumUploads(),
                 environment: .init(
                     uploadFile: .toSecureMessaging(environment.secureUploadFile),
                     fileManager: environment.fileManager,

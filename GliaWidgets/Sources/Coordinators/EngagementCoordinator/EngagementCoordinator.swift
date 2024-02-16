@@ -273,7 +273,8 @@ extension EngagementCoordinator {
                 timerProviding: environment.timerProviding,
                 snackBar: environment.snackBar,
                 notificationCenter: environment.notificationCenter,
-                operatorRequestHandlerService: environment.operatorRequestHandlerService
+                operatorRequestHandlerService: environment.operatorRequestHandlerService,
+                maximumUploads: environment.maximumUploads
             ),
             startWithSecureTranscriptFlow: false
         )
@@ -511,7 +512,8 @@ extension EngagementCoordinator {
                 log: environment.log,
                 timerProviding: environment.timerProviding,
                 snackBar: environment.snackBar,
-                operatorRequestHandlerService: environment.operatorRequestHandlerService
+                operatorRequestHandlerService: environment.operatorRequestHandlerService,
+                maximumUploads: environment.maximumUploads
             )
         )
 

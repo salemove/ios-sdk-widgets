@@ -166,7 +166,8 @@ extension ChatCoordinator {
             startAction: startAction,
             deliveredStatusText: viewFactory.theme.chat.visitorMessageStyle.delivered,
             chatType: chatType,
-            environment: Self.enviromentForChatModel(environment: environment, viewFactory: viewFactory)
+            environment: Self.enviromentForChatModel(environment: environment, viewFactory: viewFactory),
+            maximumUploads: environment.maximumUploads
         )
         viewModel.isInteractableCard = viewFactory.messageRenderer?.isInteractable
         viewModel.shouldShowCard = viewFactory.messageRenderer?.shouldShowCard
@@ -353,7 +354,8 @@ extension ChatCoordinator {
            startSocketObservation: environment.startSocketObservation,
            stopSocketObservation: environment.stopSocketObservation,
            createSendMessagePayload: environment.createSendMessagePayload,
-           log: environment.log
+           log: environment.log,
+           maximumUploads: environment.maximumUploads
        )
     }
 }

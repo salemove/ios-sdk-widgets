@@ -15,7 +15,6 @@ extension SecureConversations {
         static let unavailableMessageCenterAlertAccIdentidier = "unavailable_message_center_alert_identifier"
 
         static let messageTextLimit = 10_000
-        static let maximumUploads = 25
 
         var action: ((Action) -> Void)?
         var delegate: ((DelegateEvent) -> Void)?
