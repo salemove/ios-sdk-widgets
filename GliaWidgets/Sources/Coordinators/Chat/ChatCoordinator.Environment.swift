@@ -38,5 +38,6 @@ extension ChatCoordinator {
         var snackBar: SnackBar
         var notificationCenter: FoundationBased.NotificationCenter
         var operatorRequestHandlerService: OperatorRequestHandlerService
+        var maximumUploads: () -> Int
     }
 }

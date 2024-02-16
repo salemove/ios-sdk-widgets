@@ -49,6 +49,7 @@ extension SecureConversations.Coordinator.Environment {
             present: { text, style, viewController, bottomOffset, timerProviding, gcd, notificationCenter in
             }
         ),
-        operatorRequestHandlerService: .mock()
+        operatorRequestHandlerService: .mock(), 
+        maximumUploads: { 2 }
     )
 }

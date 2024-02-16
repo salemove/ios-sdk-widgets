@@ -50,6 +50,7 @@ extension Glia {
         var print: SwiftBased.Print
         var conditionalCompilation: ConditionalCompilationClient
         var snackBar: SnackBar
+        var processInfo: ProcessInfoHandling
     }
 }
 

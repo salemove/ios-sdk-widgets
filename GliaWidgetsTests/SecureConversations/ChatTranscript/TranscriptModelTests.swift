@@ -14,6 +14,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.fileManager = .mock
         modelEnv.createFileUploadListModel = { _ in .mock() }
         modelEnv.listQueues = { callback in callback([], nil) }
+        modelEnv.maximumUploads = { 2 }
         let availabilityEnv = SecureConversations.Availability.Environment(
             listQueues: modelEnv.listQueues,
             queueIds: modelEnv.queueIds,
@@ -42,6 +43,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.fileManager = .mock
         modelEnv.createFileUploadListModel = { _ in .mock() }
         modelEnv.listQueues = { callback in callback(nil, .mock()) }
+        modelEnv.maximumUploads = { 2 }
         let availabilityEnv = SecureConversations.Availability.Environment(
             listQueues: modelEnv.listQueues,
             queueIds: modelEnv.queueIds,
@@ -69,6 +71,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.fetchChatHistory = { _ in }
         modelEnv.getSecureUnreadMessageCount = { _ in }
         modelEnv.startSocketObservation = {}
+        modelEnv.maximumUploads = { 2 }
         let site = try CoreSdkClient.Site.mock(allowedFileSenders: .mock(visitor: true))
         modelEnv.fetchSiteConfigurations = { callback in
             callback(.success(site))
@@ -101,6 +104,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.fileManager = .mock
         modelEnv.createFileUploadListModel = { _ in .mock() }
         modelEnv.listQueues = { _ in }
+        modelEnv.maximumUploads = { 2 }
         enum Call: String, Equatable {
             case fetchChatHistory
             case loadSiteConfiguration
@@ -149,6 +153,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.fetchSiteConfigurations = { _ in }
         modelEnv.getSecureUnreadMessageCount = { _ in  }
         modelEnv.startSocketObservation = {}
+        modelEnv.maximumUploads = { 2 }
         let availabilityEnv = SecureConversations.Availability.Environment(
             listQueues: modelEnv.listQueues,
             queueIds: modelEnv.queueIds,
@@ -194,6 +199,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.fetchChatHistory = { _ in }
         modelEnv.fetchSiteConfigurations = { _ in }
         modelEnv.getSecureUnreadMessageCount = { _ in  }
+        modelEnv.maximumUploads = { 2 }
         let availabilityEnv = SecureConversations.Availability.Environment(
             listQueues: modelEnv.listQueues,
             queueIds: modelEnv.queueIds,
@@ -234,6 +240,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.fetchChatHistory = { _ in }
         modelEnv.fetchSiteConfigurations = { _ in }
         modelEnv.getSecureUnreadMessageCount = { _ in  }
+        modelEnv.maximumUploads = { 2 }
         let availabilityEnv = SecureConversations.Availability.Environment(
             listQueues: modelEnv.listQueues,
             queueIds: modelEnv.queueIds,
@@ -270,6 +277,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.fetchChatHistory = { _ in }
         modelEnv.fetchSiteConfigurations = { _ in }
         modelEnv.getSecureUnreadMessageCount = { _ in  }
+        modelEnv.maximumUploads = { 2 }
         let availabilityEnv = SecureConversations.Availability.Environment(
             listQueues: modelEnv.listQueues,
             queueIds: modelEnv.queueIds,
@@ -306,6 +314,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.createSendMessagePayload = {
             .mock(messageIdSuffix: "mock", content: $0, attachment: $1)
         }
+        modelEnv.maximumUploads = { 2 }
         enum Call: Equatable { case sendSecureMessagePayload }
         var calls: [Call] = []
         modelEnv.sendSecureMessagePayload = { _, _, _ in
@@ -344,6 +353,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.fetchChatHistory = { _ in }
         modelEnv.fetchSiteConfigurations = { _ in }
         modelEnv.startSocketObservation = {}
+        modelEnv.maximumUploads = { 2 }
         enum Call: Equatable { case getSecureUnreadMessageCount }
         var calls: [Call] = []
         modelEnv.getSecureUnreadMessageCount = { _ in
@@ -378,6 +388,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.fileManager = .mock
         modelEnv.createFileUploadListModel = { _ in fileUploadListModel }
         modelEnv.listQueues = { _ in }
+        modelEnv.maximumUploads = { 2 }
         modelEnv.fetchChatHistory = { callback in
             callback(.success([.mock(sender: .operator)]))
         }
@@ -430,6 +441,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.listQueues = { _ in }
         modelEnv.fetchSiteConfigurations = { _ in }
         modelEnv.fetchChatHistory = { _ in }
+        modelEnv.maximumUploads = { 2 }
         modelEnv.getSecureUnreadMessageCount = { callback in
             callback(.success(0))
         }
@@ -494,6 +506,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.listQueues = { _ in }
         modelEnv.fetchSiteConfigurations = { _ in }
         modelEnv.fetchChatHistory = { _ in }
+        modelEnv.maximumUploads = { 2 }
         modelEnv.getSecureUnreadMessageCount = { callback in
             callback(.success(0))
         }
@@ -552,6 +565,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
     func testIsSecureConversationsAvailableIsFalseIsDueToEmptyQueue() {
         var modelEnvironment = TranscriptModel.Environment.failing
         modelEnvironment.fileManager = .mock
+        modelEnvironment.maximumUploads = { 2 }
         modelEnvironment.createFileUploadListModel = {
             .mock(environment: $0)
         }
@@ -582,6 +596,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         logger.infoClosure = { _, _, _, _ in }
         modelEnvironment.log = logger
         modelEnvironment.fileManager = .mock
+        modelEnvironment.maximumUploads = { 2 }
         modelEnvironment.createFileUploadListModel = {
             .mock(environment: $0)
         }
@@ -608,6 +623,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         logger.infoClosure = { _, _, _, _ in }
         modelEnvironment.log = logger
         modelEnvironment.fileManager = .mock
+        modelEnvironment.maximumUploads = { 2 }
         modelEnvironment.createFileUploadListModel = {
             .mock(environment: $0)
         }
@@ -634,6 +650,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         logger.infoClosure = { _, _, _, _ in }
         modelEnvironment.log = logger
         modelEnvironment.fileManager = .mock
+        modelEnvironment.maximumUploads = { 2 }
         modelEnvironment.createFileUploadListModel = {
             .mock(environment: $0)
         }
@@ -660,6 +677,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         logger.infoClosure = { _, _, _, _ in }
         modelEnvironment.log = logger
         modelEnvironment.fileManager = .mock
+        modelEnvironment.maximumUploads = { 2 }
         modelEnvironment.createFileUploadListModel = {
             .mock(environment: $0)
         }

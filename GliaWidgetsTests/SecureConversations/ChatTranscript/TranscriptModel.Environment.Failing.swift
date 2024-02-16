@@ -73,6 +73,10 @@ extension SecureConversations.TranscriptModel.Environment {
             fail("\(Self.self).createSendMessagePayload")
             return .mock()
         },
-        log: .failing
+        log: .failing,
+        maximumUploads: {
+            fail("\(Self.self).maximumUploads")
+            return 2
+        }
     )
 }

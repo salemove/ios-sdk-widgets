@@ -171,7 +171,8 @@ extension Glia {
                 proximityManager: environment.proximityManager,
                 log: loggerPhase.logger,
                 snackBar: environment.snackBar,
-                operatorRequestHandlerService: operatorRequestHandlerService
+                operatorRequestHandlerService: operatorRequestHandlerService,
+                maximumUploads: { self.maximumUploads }
             )
         )
         rootCoordinator?.delegate = { [weak self] event in

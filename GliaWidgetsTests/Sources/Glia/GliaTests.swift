@@ -65,6 +65,7 @@ final class GliaTests: XCTestCase {
         gliaEnv.coreSdk.createLogger = { _ in logger }
         gliaEnv.conditionalCompilation.isDebug = { true }
         gliaEnv.print = .mock
+        gliaEnv.processInfo.info = { [:] } 
         var proximityManagerEnv = ProximityManager.Environment.failing
         proximityManagerEnv.uiDevice.isProximityMonitoringEnabled = { _ in }
         proximityManagerEnv.uiApplication.isIdleTimerDisabled = { _ in }

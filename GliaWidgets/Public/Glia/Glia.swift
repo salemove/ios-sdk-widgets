@@ -48,6 +48,10 @@ public protocol SceneProvider: AnyObject {
     func windowScene() -> UIWindowScene?
 }
 
+private extension Glia {
+    static let maximumUploads = 25
+}
+
 /// Glia's engagement interface.
 public class Glia {
     /// A singleton to access the Glia's interface.
@@ -58,6 +62,18 @@ public class Glia {
     public var onEvent: ((GliaEvent) -> Void)?
 
     var stringProvidingPhase: StringProvidingPhase = .notConfigured
+
+    lazy var maximumUploads: Int = {
+        var value = Self.maximumUploads
+        /// `MAXIMUM_UPLOADS_PER_MESSAGE` is used in acceptance tests to decrease the time
+        /// for uploading maximum number of files in a single message.
+        if let stringValue = environment.processInfo.value(for: .maximumUploads) {
+            /// Round to 1, because the attachment button doesn't turns to disabled state
+            /// if the value is set to 0.
+            value = max(Int(stringValue) ?? 1, 1)
+        }
+        return value
+    }()
 
     public lazy var callVisualizer = CallVisualizer(
         environment: .init(

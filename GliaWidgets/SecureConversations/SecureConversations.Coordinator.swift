@@ -45,7 +45,7 @@ extension SecureConversations {
                     sendSecureMessagePayload: environment.sendSecureMessagePayload,
                     alertConfiguration: viewFactory.theme.alertConfiguration,
                     fileUploader: environment.createFileUploader(
-                        SecureConversations.WelcomeViewModel.maximumUploads,
+                        environment.maximumUploads(),
                         .init(
                             uploadFile: .toSecureMessaging(environment.uploadSecureFile),
                             fileManager: environment.fileManager,
@@ -298,7 +298,8 @@ extension SecureConversations.Coordinator {
                 timerProviding: environment.timerProviding,
                 snackBar: environment.snackBar,
                 notificationCenter: environment.notificationCenter,
-                operatorRequestHandlerService: environment.operatorRequestHandlerService
+                operatorRequestHandlerService: environment.operatorRequestHandlerService,
+                maximumUploads: environment.maximumUploads
             ),
             startWithSecureTranscriptFlow: true
         )
@@ -370,6 +371,7 @@ extension SecureConversations.Coordinator {
         var timerProviding: FoundationBased.Timer.Providing
         var snackBar: SnackBar
         var operatorRequestHandlerService: OperatorRequestHandlerService
+        var maximumUploads: () -> Int
     }
 
     enum DelegateEvent {
