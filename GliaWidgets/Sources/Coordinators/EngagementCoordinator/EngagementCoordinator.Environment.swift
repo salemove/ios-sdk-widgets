@@ -40,5 +40,6 @@ extension EngagementCoordinator {
         var log: CoreSdkClient.Logger
         var snackBar: SnackBar
         var operatorRequestHandlerService: OperatorRequestHandlerService
+        var maximumUploads: () -> Int
     }
 }

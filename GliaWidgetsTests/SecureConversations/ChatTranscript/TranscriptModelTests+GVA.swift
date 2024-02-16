@@ -84,6 +84,7 @@ extension SecureConversationsTranscriptModelTests {
         modelEnv.createFileUploadListModel = { _ in .mock() }
         modelEnv.listQueues = { callback in callback([], nil) }
         modelEnv.uiApplication.canOpenURL = { _ in true }
+        modelEnv.maximumUploads = { 2 }
         var logger = CoreSdkClient.Logger.failing
         logger.prefixedClosure = { _ in logger }
         logger.infoClosure = { _, _, _, _ in }
@@ -149,6 +150,7 @@ private extension SecureConversationsTranscriptModelTests {
         modelEnv.createFileUploadListModel = { _ in .mock() }
         modelEnv.listQueues = { callback in callback([], nil) }
         modelEnv.uiApplication.canOpenURL = { _ in true }
+        modelEnv.maximumUploads = { 2 }
         let availabilityEnv = SecureConversations.Availability.Environment(
             listQueues: modelEnv.listQueues,
             queueIds: modelEnv.queueIds,

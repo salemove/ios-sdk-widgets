@@ -38,6 +38,7 @@ extension ChatCoordinator.Environment {
         timerProviding: .mock,
         snackBar: .mock,
         notificationCenter: .mock,
-        operatorRequestHandlerService: .mock()
+        operatorRequestHandlerService: .mock(),
+        maximumUploads: { 2 }
     )
 }

@@ -31,5 +31,6 @@ extension SecureConversations.TranscriptModel {
         var stopSocketObservation: CoreSdkClient.StopSocketObservation
         var createSendMessagePayload: CoreSdkClient.CreateSendMessagePayload
         var log: CoreSdkClient.Logger
+        var maximumUploads: () -> Int
     }
 }

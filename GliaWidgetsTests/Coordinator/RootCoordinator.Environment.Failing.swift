@@ -89,6 +89,10 @@ extension EngagementCoordinator.Environment {
         proximityManager: .failing,
         log: .failing,
         snackBar: .failing,
-        operatorRequestHandlerService: .failing
+        operatorRequestHandlerService: .failing,
+        maximumUploads: {
+            fail("\(Self.self).maximumUploads")
+            return 2
+        }
     )
 }

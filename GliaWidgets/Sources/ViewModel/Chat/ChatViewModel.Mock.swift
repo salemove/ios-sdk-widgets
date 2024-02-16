@@ -12,7 +12,8 @@ extension ChatViewModel {
         startAction: StartAction = .startEngagement,
         deliveredStatusText: String = "Delivered",
         chatType: ChatViewModel.ChatType = .nonAuthenticated,
-        environment: Environment = .mock
+        environment: Environment = .mock,
+        maximumUploads: () -> Int = { 2 }
     ) -> ChatViewModel {
         ChatViewModel(
             interactor: interactor,
@@ -26,7 +27,8 @@ extension ChatViewModel {
             startAction: startAction,
             deliveredStatusText: deliveredStatusText,
             chatType: chatType,
-            environment: environment
+            environment: environment,
+            maximumUploads: maximumUploads
         )
     }
 }

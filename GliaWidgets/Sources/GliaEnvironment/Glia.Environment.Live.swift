@@ -40,7 +40,8 @@ extension Glia.Environment {
         )),
         print: .live,
         conditionalCompilation: .live,
-        snackBar: .live
+        snackBar: .live,
+        processInfo: .live
     )
 }
 
