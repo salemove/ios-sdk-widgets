@@ -490,6 +490,7 @@ private extension CallVisualizer.Coordinator {
             text: style.text,
             style: style,
             for: topMostViewController,
+            bottomOffset: -60,
             timerProviding: environment.timerProviding,
             gcd: environment.gcd,
             notificationCenter: environment.notificationCenter
