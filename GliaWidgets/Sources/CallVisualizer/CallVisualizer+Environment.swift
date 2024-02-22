@@ -28,5 +28,7 @@ extension CallVisualizer {
         var log: CoreSdkClient.Logger
         var fetchSiteConfigurations: CoreSdkClient.FetchSiteConfigurations
         var snackBar: SnackBar
+        var coreSdk: CoreSdkClient
+        var operatorRequestHandlerService: OperatorRequestHandlerService
     }
 }

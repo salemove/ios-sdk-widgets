@@ -86,7 +86,6 @@ public final class CallVisualizer {
         environment.log.prefixed(Self.self).info("Show Visitor Code Dialog")
         delegate?(.visitorCodeIsRequested)
         coordinator.showVisitorCodeViewController(by: .alert(source))
-        startObservingInteractorEvents()
     }
 
     /// Show VisitorCode embedded view for current Visitor.
@@ -114,7 +113,6 @@ public final class CallVisualizer {
         coordinator.showVisitorCodeViewController(
             by: .embedded(container, onEngagementAccepted: onEngagementAccepted)
         )
-        startObservingInteractorEvents()
     }
 }
 
@@ -136,7 +134,7 @@ extension CallVisualizer {
 
     func endSession() {
         coordinator.end()
-        stopObservingInteractorEvents()
+        delegate?(.engagementEnded)
     }
 
     func handleRestoredEngagement() {
@@ -158,10 +156,48 @@ extension CallVisualizer {
                 self?.environment.log.prefixed(Self.self).info("Call visualizer engagement ended")
             }
 
-            guard let engagement = self?.environment.getCurrentEngagement(), engagement.source == .callVisualizer else {
+            guard
+                let engagement = self?.environment.getCurrentEngagement(),
+                engagement.source == .callVisualizer
+            else {
+                switch event {
+                case let .onEngagementRequest(action):
+                    self?.handleEngagementRequestAccepted(action)
+                default: return
+                }
                 return
             }
+
             switch event {
+            case .screenShareOffer(answer: let answer):
+                self?.environment.coreSdk.requestEngagedOperator { operators, _ in
+                    self?.environment.operatorRequestHandlerService.offerScreenShare(
+                        from: operators?.compactMap { $0.name }.joined(separator: ", ") ?? "",
+                        accepted: { [weak self] in
+                            self?.observeScreenSharingHandlerState()
+                        },
+                        answer: answer
+                    )
+                }
+            case let .upgradeOffer(offer, answer):
+                self?.environment.coreSdk.requestEngagedOperator { operators, _ in
+                    self?.environment.operatorRequestHandlerService.offerMediaUpgrade(
+                        from: operators?.compactMap { $0.name }.joined(separator: ", ") ?? "",
+                        offer: offer,
+                        accepted: { [weak self] in
+                            self?.handleAcceptedUpgrade()
+                        },
+                        answer: answer
+                    )
+                }
+            case let .videoStreamAdded(stream):
+                self?.addVideoStream(stream: stream)
+            case let .stateChanged(state):
+                if case .engaged = state {
+                    self?.environment.log.prefixed(Self.self).info("New Call visualizer engagement loaded")
+                    self?.delegate?(.engagementStarted)
+                    self?.environment.log.prefixed(Self.self).info("Engagement started")
+                }
             case let .screenSharingStateChanged(state):
                 self?.environment.screenShareHandler.updateState(state)
             default:
