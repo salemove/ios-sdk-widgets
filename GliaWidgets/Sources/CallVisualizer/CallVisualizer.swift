@@ -86,6 +86,7 @@ public final class CallVisualizer {
         environment.log.prefixed(Self.self).info("Show Visitor Code Dialog")
         delegate?(.visitorCodeIsRequested)
         coordinator.showVisitorCodeViewController(by: .alert(source))
+        startObservingInteractorEvents()
     }
 
     /// Show VisitorCode embedded view for current Visitor.
@@ -113,6 +114,7 @@ public final class CallVisualizer {
         coordinator.showVisitorCodeViewController(
             by: .embedded(container, onEngagementAccepted: onEngagementAccepted)
         )
+        startObservingInteractorEvents()
     }
 }
 
@@ -151,14 +153,17 @@ extension CallVisualizer {
 extension CallVisualizer {
     func startObservingInteractorEvents() {
         environment.interactorProviding()?.addObserver(self) { [weak self] event in
+            if case .stateChanged(.ended(.byOperator)) = event {
+                self?.endSession()
+                self?.environment.log.prefixed(Self.self).info("Call visualizer engagement ended")
+            }
+
             guard let engagement = self?.environment.getCurrentEngagement(), engagement.source == .callVisualizer else {
                 return
             }
             switch event {
             case let .screenSharingStateChanged(state):
                 self?.environment.screenShareHandler.updateState(state)
-            case .stateChanged(.ended):
-                self?.environment.log.prefixed(Self.self).info("Call visualizer engagement ended")
             default:
                 break
             }
