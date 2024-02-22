@@ -181,7 +181,7 @@ final class GliaTests: XCTestCase {
             calls.append(.onEvent($0))
         }
         try sdk.configure(with: .mock(), theme: .mock()) { _ in }
-        sdk.callVisualizer.delegate?(.visitorCodeIsRequested)
+        sdk.callVisualizer.delegate?(.engagementStarted)
         sdk.environment.coreSdk.getCurrentEngagement = { .mock(source: .callVisualizer) }
 
         sdk.interactor?.state = .engaged(nil)
@@ -220,6 +220,50 @@ final class GliaTests: XCTestCase {
 
         sdk.environment.coreSdk.getCurrentEngagement = { .mock(source: .callVisualizer) }
         sdk.interactor?.state = .ended(.byOperator)
+
+        XCTAssertEqual(calls, [.onEvent(.ended)])
+    }
+
+    func testInteractorEventsAreObservedForCallVisualizer() throws {
+        enum Call: Equatable {
+            case onEvent(GliaEvent)
+        }
+        var calls = [Call]()
+
+        var gliaEnv = Glia.Environment.failing
+        var logger = CoreSdkClient.Logger.failing
+        logger.configureLocalLogLevelClosure = { _ in }
+        logger.configureRemoteLogLevelClosure = { _ in }
+        logger.infoClosure = { _, _, _, _ in }
+        logger.prefixedClosure = { _ in logger }
+        gliaEnv.coreSdk.createLogger = { _ in logger }
+        gliaEnv.conditionalCompilation.isDebug = { true }
+        gliaEnv.coreSdk.configureWithInteractor = { _ in }
+        gliaEnv.coreSdk.configureWithConfiguration = { _, _ in }
+        gliaEnv.gcd.mainQueue.async = { callback in callback() }
+        gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
+            completion(.success(()))
+        }
+        gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
+
+        let sdk = Glia(environment: gliaEnv)
+        sdk.onEvent = {
+            calls.append(.onEvent($0))
+        }
+        try sdk.configure(with: .mock(), theme: .mock()) { _ in }
+
+        sdk.interactor?.state = .engaged(.mock())
+
+        XCTAssertEqual(calls, [])
+
+        sdk.callVisualizer.delegate?(.visitorCodeIsRequested)
+        sdk.environment.coreSdk.getCurrentEngagement = { .mock(source: .callVisualizer) }
+        sdk.interactor?.state = .ended(.byOperator)
+
+        /// Since interactor is created only after visitor code is requested, 
+        /// we can be sure that if this test succeeds, interactor observer is
+        /// added successfully, because observer method is called during
+        /// interactor creation.
 
         XCTAssertEqual(calls, [.onEvent(.ended)])
     }
@@ -536,7 +580,7 @@ final class GliaTests: XCTestCase {
                 XCTFail("There is should be no another event")
             }
         }
-        sdk.interactor?.state = .ended(.byVisitor)
+        sdk.interactor?.state = .ended(.byOperator)
 
         XCTAssertEqual(screenShareHandler.status().value, .stopped)
         XCTAssertEqual(calls, [.ended])

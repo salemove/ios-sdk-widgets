@@ -104,7 +104,9 @@ public class Glia {
             proximityManager: environment.proximityManager,
             log: loggerPhase.logger,
             fetchSiteConfigurations: environment.coreSdk.fetchSiteConfigurations,
-            snackBar: environment.snackBar
+            snackBar: environment.snackBar,
+            coreSdk: environment.coreSdk,
+            operatorRequestHandlerService: operatorRequestHandlerService
         )
     )
     var rootCoordinator: EngagementCoordinator?
@@ -199,6 +201,10 @@ public class Glia {
             switch action {
             case .visitorCodeIsRequested:
                 self.setupInteractor(configuration: configuration)
+            case .engagementStarted:
+                self.onEvent?(.started)
+            case .engagementEnded:
+                self.onEvent?(.ended)
             }
         }
 
@@ -406,62 +412,7 @@ public class Glia {
 }
 
 // MARK: - Internal
-
 extension Glia {
-    internal func startObservingInteractorEvents() {
-        interactor?.addObserver(self) { [weak self] event in
-            guard
-                let engagement = self?.environment.coreSdk.getCurrentEngagement(),
-                engagement.source == .callVisualizer
-            else {
-                switch event {
-                case let .onEngagementRequest(action):
-                    self?.callVisualizer.handleEngagementRequestAccepted(action)
-                default: return
-                }
-                return
-            }
-
-            switch event {
-            case .screenShareOffer(answer: let answer):
-                self?.environment.coreSdk.requestEngagedOperator { operators, _ in
-                    self?.operatorRequestHandlerService.offerScreenShare(
-                        from: operators?.compactMap { $0.name }.joined(separator: ", ") ?? "",
-                        accepted: { [weak self] in
-                            self?.callVisualizer.observeScreenSharingHandlerState()
-                        },
-                        answer: answer
-                    )
-                }
-            case let .upgradeOffer(offer, answer):
-                self?.environment.coreSdk.requestEngagedOperator { operators, _ in
-                    self?.operatorRequestHandlerService.offerMediaUpgrade(
-                        from: operators?.compactMap { $0.name }.joined(separator: ", ") ?? "",
-                        offer: offer,
-                        accepted: { [weak self] in
-                            self?.callVisualizer.handleAcceptedUpgrade()
-                        },
-                        answer: answer
-                    )
-                }
-            case let .videoStreamAdded(stream):
-                self?.callVisualizer.addVideoStream(stream: stream)
-            case let .stateChanged(state):
-                if case .ended = state {
-                    self?.callVisualizer.endSession()
-                    self?.onEvent?(.ended)
-                    self?.loggerPhase.logger.prefixed(Self.self).info("Engagement ended")
-                } else if case .engaged = state {
-                    self?.loggerPhase.logger.prefixed(Self.self).info("New Call visualizer engagement loaded")
-                    self?.onEvent?(.started)
-                    self?.loggerPhase.logger.prefixed(Self.self).info("Engagement started")
-                }
-            default:
-                break
-            }
-        }
-    }
-
     @discardableResult
     func setupInteractor(
         configuration: Configuration,
@@ -484,7 +435,7 @@ extension Glia {
         environment.coreSDKConfigurator.configureWithInteractor(interactor)
         self.interactor = interactor
 
-        startObservingInteractorEvents()
+        self.callVisualizer.startObservingInteractorEvents()
         return interactor
     }
 }
