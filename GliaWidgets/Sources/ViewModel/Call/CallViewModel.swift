@@ -323,12 +323,16 @@ extension CallViewModel {
     private func showLocalVideo(with stream: CoreSdkClient.VideoStreamable) {
         action?(.switchToVideoMode)
         action?(.setLocalVideo(stream.getStreamView()))
-        stream.onHold = { isOnHold in
+        stream.onHold = { [weak stream, environment] isOnHold in
             // onHold case is not handled deliberately because it
             // is handled elsewhere. This logic may need some adjustments
             // in future
             if !isOnHold {
-                stream.playVideo()
+                if let stream = stream {
+                    stream.playVideo()
+                } else {
+                    environment.log.warning("Video stream is not available to be resumed after on-hold.")
+                }
             }
         }
     }
@@ -550,3 +554,11 @@ extension CallViewModel {
                   answer: CoreSdkClient.AnswerWithSuccessBlock)
     }
 }
+
+#if DEBUG
+extension CallViewModel {
+    func callShowLocalVideoForTesting(_ videoStreamable: CoreSdkClient.VideoStreamable) {
+        self.showLocalVideo(with: videoStreamable)
+    }
+}
+#endif

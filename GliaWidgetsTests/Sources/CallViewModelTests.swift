@@ -544,4 +544,13 @@ class CallViewModelTests: XCTestCase {
             .isProximityMonitoringEnabled(false)
         ])
     }
+
+    func test_showLocalVideAssignsOnHoldCallbackThatWeaklyCapturesVideoStream() {
+        var videoStreamable = CoreSdkClient.MockVideoStreamable.mock()
+        weak var weakVideoStreamable = videoStreamable
+        let sdk = CallViewModel.mock()
+        sdk.callShowLocalVideoForTesting(videoStreamable)
+        videoStreamable = .mock()
+        XCTAssertNil(weakVideoStreamable)
+    }
 }
