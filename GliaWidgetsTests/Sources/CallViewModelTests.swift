@@ -553,4 +553,103 @@ class CallViewModelTests: XCTestCase {
         videoStreamable = .mock()
         XCTAssertNil(weakVideoStreamable)
     }
+
+    func test_localVideoIsPausedWhenUpgradingFromAudioDuringOnHold() throws {
+        var isLocalVideoStreamPaused: Bool = false
+
+        call = .init(
+            .audio,
+            environment: .mock
+        )
+
+        viewModel = .init(
+            interactor: .mock(),
+            alertConfiguration: .mock(),
+            screenShareHandler: .mock,
+            environment: .mock,
+            call: call,
+            unreadMessages: .init(with: 0),
+            startWith: .engagement(mediaType: .audio)
+        )
+
+        let remoteAudioStream = CoreSdkClient.MockAudioStreamable.mock(
+            muteFunc: {},
+            unmuteFunc: {},
+            getIsMutedFunc: { false },
+            setIsMutedFunc: { _ in },
+            getIsRemoteFunc: { true },
+            setIsRemoteFunc: { _ in }
+        )
+
+        let remoteVideoStream = CoreSdkClient.MockVideoStreamable.mock(
+            getStreamViewFunc: { .init() },
+            playVideoFunc: {},
+            pauseFunc: {},
+            resumeFunc: {},
+            stopFunc: {},
+            getIsPausedFunc: { false },
+            setIsPausedFunc: { _ in },
+            getIsRemoteFunc: { true },
+            setIsRemoteFunc: { _ in }
+        )
+
+        let localVideoStream = CoreSdkClient.MockVideoStreamable.mock(
+            getStreamViewFunc: { .init() },
+            playVideoFunc: {},
+            pauseFunc: { isLocalVideoStreamPaused = true },
+            resumeFunc: { isLocalVideoStreamPaused = false },
+            stopFunc: {},
+            getIsPausedFunc: { isLocalVideoStreamPaused },
+            setIsPausedFunc: { isLocalVideoStreamPaused = $0 },
+            getIsRemoteFunc: { false },
+            setIsRemoteFunc: { _ in }
+        )
+
+        call.updateAudioStream(with: remoteAudioStream)
+        call.updateVideoStream(with: remoteVideoStream)
+        call.updateVideoStream(with: localVideoStream)
+
+        remoteAudioStream.onHold?(true)
+        remoteVideoStream.onHold?(true)
+
+        viewModel.interactorEvent(.updateOffer(try .init(type: .video, direction: .twoWay)))
+
+        XCTAssertTrue(isLocalVideoStreamPaused)
+    }
+
+    func test_localVideoIsPresentImmediatelyAfterTwoWayVideoUpgrade() throws {
+        var isLocalVideoStreamPaused: Bool = false
+
+        call = .init(
+            .audio,
+            environment: .mock
+        )
+
+        viewModel = .init(
+            interactor: .mock(),
+            alertConfiguration: .mock(),
+            screenShareHandler: .mock,
+            environment: .mock,
+            call: call,
+            unreadMessages: .init(with: 0),
+            startWith: .engagement(mediaType: .video)
+        )
+
+        let localVideoStream = CoreSdkClient.MockVideoStreamable.mock(
+            getStreamViewFunc: { .init() },
+            playVideoFunc: {},
+            pauseFunc: { isLocalVideoStreamPaused = true },
+            resumeFunc: { isLocalVideoStreamPaused = false },
+            stopFunc: {},
+            getIsPausedFunc: { isLocalVideoStreamPaused },
+            setIsPausedFunc: { isLocalVideoStreamPaused = $0 },
+            getIsRemoteFunc: { false },
+            setIsRemoteFunc: { _ in }
+        )
+
+        call.updateVideoStream(with: localVideoStream)
+        viewModel.interactorEvent(.updateOffer(try .init(type: .video, direction: .twoWay)))
+
+        XCTAssertFalse(isLocalVideoStreamPaused)
+    }
 }
