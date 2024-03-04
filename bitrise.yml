@@ -332,6 +332,15 @@ app:
   - opts:
       is_expand: false
     GIT_AUTHOR_EMAIL: bitrise@glia.com
+  upload_coverate_to_amazon:
+    steps:
+    - amazon-s3-upload@3:
+        inputs:
+        - upload_bucket: $AWS_BUCKET_COVERAGE
+        - access_key_id: $AWS_KEY
+        - secret_access_key: $AWS_PASSWORD
+        - acl_control: public-read
+        - upload_local_path: $BITRISE_SOURCE_DIR/$XCODE_PROJ_DIR/coverage/
 trigger_map:
 - push_branch: development
   workflow: development-build
