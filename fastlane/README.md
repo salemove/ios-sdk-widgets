@@ -15,6 +15,14 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 ## iOS
 
+### ios generate_docs
+
+```sh
+[bundle exec] fastlane ios generate_docs
+```
+
+Generates public API web page based on in-code docs and readme file.
+
 ### ios create_pr_for_increment_project_version
 
 ```sh

@@ -9,6 +9,12 @@ PATH_GLIA_STATIC_VALUES = "#{PATH_GLIA_PROJECT_DIR}/StaticValues.swift"
 PATH_GLIA_PODSPEC = "#{PATH_ROOT}/GliaWidgets.podspec"
 
 platform :ios do
+
+  desc "Generates public API web page based on in-code docs and readme file."
+  lane :generate_docs do
+    jazzy
+  end
+
   desc "Creates a pull request in the repository with the required files to increment "\
     "the project version."
   lane :create_pr_for_increment_project_version do |options|

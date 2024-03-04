@@ -1,0 +1,10 @@
+# You can find build configs and their default values here:
+# https://github.com/realm/jazzy/blob/7e8a61a4f1d18ac155a1325572a24ec86e57549f/lib/jazzy/config.rb#L118
+clean: true
+author: Glia Technologies, Inc
+author_url: https://glia.com
+github_url: https://github.com/salemove/ios-sdk-widgets
+root_url: http://ios-sdk-docs.salemove.com.s3-website-us-east-1.amazonaws.com/widgets
+output: docs
+theme: apple
+xcodebuild_arguments: ["-workspace", "GliaWidgets.xcworkspace", "-scheme", "GliaWidgets", "-sdk", "iphonesimulator", "-destination", "platform=iOS Simulator,name=iPhone 14"]
