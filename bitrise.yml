@@ -98,6 +98,20 @@ workflows:
     after_run:
     - _increment_project_version
     - increment_widgets_version_in_cortex_financial
+  documentation_v2:
+    description: Generates documentation using jazzy and uploads to AWS. This workflow doesn't checkout git repository and prepare xcproj/xcworkspace.
+    steps:
+    - fastlane@3:
+        inputs:
+        - work_dir: $BITRISE_SOURCE_DIR/$XCODE_PROJ_DIR
+        - lane: ios sdk_documentation
+    - amazon-s3-upload@3:
+        inputs:
+        - upload_bucket: $AWS_BUCKET
+        - access_key_id: $AWS_KEY
+        - secret_access_key: $AWS_PASSWORD
+        - acl_control: public-read
+        - upload_local_path: $BITRISE_SOURCE_DIR/$XCODE_PROJ_DIR/docs/
   development-build:
     steps:
     - activate-ssh-key@4:
