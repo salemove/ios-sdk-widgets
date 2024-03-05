@@ -90,8 +90,13 @@ class ChatImageFileContentView: ChatFileContentView {
     }
 
     private func updateAccessibilityIdentifier(with download: FileDownload) {
-        accessibilityIdentifier = download.file.name.map {
-            "chat_message_image_\($0)_\(download.state.value.accessibilityString)"
+        switch accessibilityProperties.from {
+        case .operator:
+            accessibilityIdentifier = download.file.name.map {
+                "chat_message_image_\($0)_\(download.state.value.accessibilityString)"
+            }
+        case .visitor:
+            accessibilityIdentifier = "chat_message_image_visitor_\(download.state.value.accessibilityString)"
         }
     }
 }
