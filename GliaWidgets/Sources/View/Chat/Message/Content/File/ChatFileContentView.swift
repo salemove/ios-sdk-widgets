@@ -9,7 +9,7 @@ class ChatFileContentView: UIView {
     private let style: ChatFileContentStyle
     private let content: Content
     private let tap: () -> Void
-    private let accessibilityProperties: ChatFileContentView.AccessibilityProperties
+    let accessibilityProperties: ChatFileContentView.AccessibilityProperties
 
     init(
         with style: ChatFileContentStyle,
