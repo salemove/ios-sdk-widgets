@@ -28,7 +28,7 @@ class FileDownload {
 
         var accessibilityString: String {
             switch self {
-            case .none: return "none"
+            case .none: return "download"
             case .downloading: return "downloading"
             case .downloaded: return "downloaded"
             case .error: return "error"
