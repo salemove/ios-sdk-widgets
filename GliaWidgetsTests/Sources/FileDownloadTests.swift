@@ -44,7 +44,7 @@ class FileDownloadTests: XCTestCase {
 
     func testAccessibilityStrings() {
         let strings = [
-            "none",
+            "download",
             "downloading",
             "downloaded",
             "error"
