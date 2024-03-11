@@ -483,13 +483,15 @@ extension CoreSdkClient.Engagement {
         id: String = "",
         engagedOperator: Operator? = nil,
         source: EngagementSource = .coreEngagement,
-        fetchSurvey: @escaping FetchSurvey = { _, _ in })
-    -> CoreSdkClient.Engagement {
+        fetchSurvey: @escaping FetchSurvey = { _, _ in },
+        restartedFromEngagementId: String? = nil
+    ) -> CoreSdkClient.Engagement {
         .init(
             id: id,
             engagedOperator: engagedOperator,
             source: source,
-            fetchSurvey: fetchSurvey
+            fetchSurvey: fetchSurvey,
+            restartedFromEngagementId: restartedFromEngagementId
         )
     }
 }

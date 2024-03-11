@@ -93,6 +93,9 @@ extension EngagementCoordinator.Environment {
         maximumUploads: {
             fail("\(Self.self).maximumUploads")
             return 2
+        },
+        reloadAllChild: { _ in
+            fail("\(Self.self).reloadAllChild")
         }
     )
 }

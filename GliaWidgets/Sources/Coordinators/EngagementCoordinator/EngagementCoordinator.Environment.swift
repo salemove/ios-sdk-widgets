@@ -41,5 +41,6 @@ extension EngagementCoordinator {
         var snackBar: SnackBar
         var operatorRequestHandlerService: OperatorRequestHandlerService
         var maximumUploads: () -> Int
+        var reloadAllChild: ([any FlowCoordinator]) -> Void
     }
 }
