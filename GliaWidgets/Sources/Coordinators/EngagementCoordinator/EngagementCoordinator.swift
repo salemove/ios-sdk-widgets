@@ -127,6 +127,10 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
     }
     // swiftlint:enable function_body_length
 
+    func reload() {
+        environment.reloadAllChild(coordinators)
+    }
+
     deinit {
         print("\(Self.self) is deallocated.")
     }

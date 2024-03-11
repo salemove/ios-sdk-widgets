@@ -39,7 +39,8 @@ extension EngagementCoordinator.Environment {
         log: .mock,
         snackBar: .mock,
         operatorRequestHandlerService: .mock(),
-        maximumUploads: { 2 }
+        maximumUploads: { 2 },
+        reloadAllChild: { _ in }
     )
 }
 #endif
