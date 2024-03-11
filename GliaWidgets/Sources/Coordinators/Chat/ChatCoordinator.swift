@@ -64,6 +64,10 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
         return viewController
     }
 
+    func reloadChatTranscript() {
+        controller?.viewModel.event(.viewDidLoad)
+    }
+
     private func makeChatViewController() -> ChatViewController {
         // We need to defer passing controller to transcript model,
         // because model will use it later, however controller

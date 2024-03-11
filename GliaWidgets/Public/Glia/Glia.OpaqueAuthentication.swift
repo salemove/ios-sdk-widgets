@@ -16,6 +16,8 @@ extension Glia.Authentication {
     public enum Behavior {
         /// Restrict authentication and deauthentication during ongoing engagement.
         case forbiddenDuringEngagement
+
+        case allowedDuringEngagement
     }
 }
 
@@ -24,6 +26,8 @@ extension Glia.Authentication.Behavior {
         switch behavior {
         case .forbiddenDuringEngagement:
             self = .forbiddenDuringEngagement
+        case .allowedDuringEngagement:
+            self = .allowedDuringEngagement
         @unknown default:
             self = .forbiddenDuringEngagement
         }
@@ -33,6 +37,8 @@ extension Glia.Authentication.Behavior {
         switch self {
         case .forbiddenDuringEngagement:
             return .forbiddenDuringEngagement
+        case .allowedDuringEngagement:
+            return .allowedDuringEngagement
         }
     }
 }
@@ -59,12 +65,18 @@ extension Glia {
     public func authentication(with behavior: Glia.Authentication.Behavior) throws -> Authentication {
         let auth = try environment.coreSdk.authentication(behavior.toCoreSdk())
 
-        // Reset navigation and UI back to initial state,
-        // effectively removing bubble view (if there was one).
-        let cleanup = { [weak self] in
-            self?.rootCoordinator?.popCoordinator()
-            self?.rootCoordinator?.end()
-            self?.rootCoordinator = nil
+        let completion = { [weak self] in
+            self?.environment.gcd.mainQueue.asyncAfterDeadline(.now() + .seconds(2)) { [weak self] in
+                if self?.interactor?.currentEngagement?.restartedFromEngagementId != nil {
+                    self?.rootCoordinator?.reload()
+                } else {
+                    // Reset navigation and UI back to initial state,
+                    // effectively removing bubble view (if there was one).
+                    self?.rootCoordinator?.popCoordinator()
+                    self?.rootCoordinator?.end()
+                    self?.rootCoordinator = nil
+                }
+            }
         }
 
         return .init(
@@ -78,8 +90,8 @@ extension Glia {
                 ) { result in
                     switch result {
                     case .success:
-                        // Cleanup navigation and views.
-                        cleanup()
+                        // Handle authentication
+                        completion()
 
                     case .failure:
                         break
@@ -94,7 +106,7 @@ extension Glia {
                     switch result {
                     case .success:
                         // Cleanup navigation and views.
-                        cleanup()
+                        completion()
                     case .failure:
                         break
                     }

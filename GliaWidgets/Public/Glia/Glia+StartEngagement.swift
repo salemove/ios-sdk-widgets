@@ -172,7 +172,12 @@ extension Glia {
                 log: loggerPhase.logger,
                 snackBar: environment.snackBar,
                 operatorRequestHandlerService: operatorRequestHandlerService,
-                maximumUploads: { self.maximumUploads }
+                maximumUploads: { self.maximumUploads },
+                reloadAllChild: { coordinators in
+                    coordinators.compactMap { $0 as? ChatCoordinator }
+                        .first?
+                        .reloadChatTranscript()
+                }
             )
         )
         rootCoordinator?.delegate = { [weak self] event in
