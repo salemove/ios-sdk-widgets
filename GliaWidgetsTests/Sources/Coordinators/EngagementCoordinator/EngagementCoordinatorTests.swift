@@ -16,6 +16,9 @@ final class EngagementCoordinatorTests: XCTestCase {
             closure()
         }
 
+        coordinator.end()
+        coordinator = nil
+
         UIView.setAnimationsEnabled(true)
     }
 
@@ -239,12 +242,6 @@ final class EngagementCoordinatorTests: XCTestCase {
     }
 
     func test_chatCoordinatorEngaged() throws {
-        var calledEvents: [EngagementCoordinator.DelegateEvent] = []
-
-        coordinator.delegate = { event in
-            calledEvents.append(event)
-        }
-
         coordinator.start()
 
         try showGliaViewController()
@@ -279,7 +276,7 @@ final class EngagementCoordinatorTests: XCTestCase {
     }
 }
 
-private extension EngagementCoordinatorTests {
+extension EngagementCoordinatorTests {
     var currentWindow: UIWindow? {
         get throws {
             let scene = try XCTUnwrap(UIApplication.shared.connectedScenes.first as? UIWindowScene)
