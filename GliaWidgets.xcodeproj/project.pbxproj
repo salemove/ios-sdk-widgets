@@ -180,6 +180,8 @@
 		3100EEFD293F757E00D57F71 /* SecureConversations.WelcomeStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3100EEFC293F757E00D57F71 /* SecureConversations.WelcomeStyle.swift */; };
 		3100EEFF293F7E0900D57F71 /* Theme+SecureConversationsWelcome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3100EEFE293F7E0900D57F71 /* Theme+SecureConversationsWelcome.swift */; };
 		3115D45C29A4FD3F00D99561 /* SecureConversations.Availability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3115D45B29A4FD3F00D99561 /* SecureConversations.Availability.swift */; };
+		3117EBA22B9B041100F520D8 /* EngagementCoordinatorSecureConversationsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3117EBA12B9B041100F520D8 /* EngagementCoordinatorSecureConversationsTests.swift */; };
+		3117EBA42B9B426200F520D8 /* EngagementCoordinatorCallTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3117EBA32B9B426200F520D8 /* EngagementCoordinatorCallTests.swift */; };
 		311C03352B5588C0002E4FF8 /* SecureConversations.CoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 311C03342B5588C0002E4FF8 /* SecureConversations.CoordinatorTests.swift */; };
 		311CAFCD29F8FAE20067B59F /* SecureConversations.TranscriptModel.CustomCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 311CAFCC29F8FAE20067B59F /* SecureConversations.TranscriptModel.CustomCard.swift */; };
 		313EBD552943116E008E9597 /* SecureConversations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313EBD542943116E008E9597 /* SecureConversations.swift */; };
@@ -1123,6 +1125,8 @@
 		3100EEFC293F757E00D57F71 /* SecureConversations.WelcomeStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.WelcomeStyle.swift; sourceTree = "<group>"; };
 		3100EEFE293F7E0900D57F71 /* Theme+SecureConversationsWelcome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Theme+SecureConversationsWelcome.swift"; sourceTree = "<group>"; };
 		3115D45B29A4FD3F00D99561 /* SecureConversations.Availability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.Availability.swift; sourceTree = "<group>"; };
+		3117EBA12B9B041100F520D8 /* EngagementCoordinatorSecureConversationsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EngagementCoordinatorSecureConversationsTests.swift; sourceTree = "<group>"; };
+		3117EBA32B9B426200F520D8 /* EngagementCoordinatorCallTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EngagementCoordinatorCallTests.swift; sourceTree = "<group>"; };
 		311C03342B5588C0002E4FF8 /* SecureConversations.CoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.CoordinatorTests.swift; sourceTree = "<group>"; };
 		311CAFCC29F8FAE20067B59F /* SecureConversations.TranscriptModel.CustomCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.TranscriptModel.CustomCard.swift; sourceTree = "<group>"; };
 		313EBD542943116E008E9597 /* SecureConversations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.swift; sourceTree = "<group>"; };
@@ -3090,6 +3094,8 @@
 			isa = PBXGroup;
 			children = (
 				31758EC32B5FB192007BBD9F /* EngagementCoordinatorTests.swift */,
+				3117EBA12B9B041100F520D8 /* EngagementCoordinatorSecureConversationsTests.swift */,
+				3117EBA32B9B426200F520D8 /* EngagementCoordinatorCallTests.swift */,
 			);
 			path = EngagementCoordinator;
 			sourceTree = "<group>";
@@ -5964,6 +5970,7 @@
 				3142696A29FFB712003DF62E /* Interactor.Failing.swift in Sources */,
 				8491AF602AA1EBB600CC3E72 /* TranscriptModelTests+URLs.swift in Sources */,
 				9A8130C427D9099F00220BBD /* FileDownload.Environment.Failing.swift in Sources */,
+				3117EBA22B9B041100F520D8 /* EngagementCoordinatorSecureConversationsTests.swift in Sources */,
 				AF29811029E06E830005BD55 /* Availability.Environment.Failing.swift in Sources */,
 				AF9C0C442BC5A29B00C25E47 /* GliaPresenterTests.swift in Sources */,
 				8464297A2A44937600943BD6 /* AlertViewControllerTests.swift in Sources */,
@@ -5984,6 +5991,7 @@
 				EB9ADB552828E66B00FAE8A4 /* CallTests.swift in Sources */,
 				AF9DB22E2890571A00A0C442 /* RootCoordinator.Environment.Failing.swift in Sources */,
 				AF9DB23128905A1D00A0C442 /* ViewFactory.Environment.Failing.swift in Sources */,
+				3117EBA42B9B426200F520D8 /* EngagementCoordinatorCallTests.swift in Sources */,
 				9A3E1DA027BA7B9F005634EB /* FileSystemStorageTests.swift in Sources */,
 				EB9ADB5A2829089F00FAE8A4 /* ChatItem+Equatable.swift in Sources */,
 				EB7A150A286D98270035AC62 /* FileUploaderTests.swift in Sources */,
