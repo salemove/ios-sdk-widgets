@@ -16,8 +16,8 @@ let package = Package(
     targets: [
         .binaryTarget(
             name: "GliaCoreDependency",
-            url: "https://github.com/salemove/ios-bundle/releases/download/0.35.0/GliaCoreDependency.xcframework.zip",
-            checksum: "8e1746da612dad8a130fd872b3058511121b7c6f29e3b0351ecbbffa96971489"
+            url: "https://github.com/salemove/ios-bundle/releases/download/1.3.5/GliaCoreDependency.xcframework.zip",
+            checksum: "a7ca12542bc8470af16632311e96a1925f102e0ee6d36f5c86e422aebe655af1"
         ),
         .binaryTarget(
             name: "TwilioVoice",
