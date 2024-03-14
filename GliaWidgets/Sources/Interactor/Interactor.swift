@@ -70,6 +70,11 @@ class Interactor {
     }
     var environment: Environment
 
+    /// Skips Live Observation confirmation alerts/snackbars in
+    /// specific cases. For example after restarting engagement
+    /// after authentication.
+    var skipLOConfirmations = false
+
     init(
         visitorContext: Configuration.VisitorContext?,
         queueIds: [String],
