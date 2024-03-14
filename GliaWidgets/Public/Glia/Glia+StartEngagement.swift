@@ -117,7 +117,8 @@ extension Glia {
         viewFactory: ViewFactory,
         sceneProvider: SceneProvider?,
         engagementKind: EngagementKind,
-        features: Features
+        features: Features,
+        maximize: Bool = true
     ) {
         rootCoordinator = self.environment.rootCoordinator(
             interactor: interactor,
@@ -183,7 +184,7 @@ extension Glia {
         rootCoordinator?.delegate = { [weak self] event in
             self?.handleCoordinatorEvent(event)
         }
-        rootCoordinator?.start()
+        rootCoordinator?.start(maximize: maximize)
     }
 
     private func handleCoordinatorEvent(_ event: EngagementCoordinator.DelegateEvent) {

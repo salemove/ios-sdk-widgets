@@ -65,16 +65,36 @@ extension Glia {
     public func authentication(with behavior: Glia.Authentication.Behavior) throws -> Authentication {
         let auth = try environment.coreSdk.authentication(behavior.toCoreSdk())
 
-        let completion = { [weak self] in
+        let closeRootCoordinator = { [weak self] in
+            self?.rootCoordinator?.popCoordinator()
+            self?.rootCoordinator?.end(surveyPresentation: .doNotPresentSurvey)
+            self?.rootCoordinator = nil
+        }
+
+        let restartEngagementIfNeeded = { [weak self] in
+            guard let rootCoordinator = self?.rootCoordinator else { return }
+
+            let interactor = rootCoordinator.interactor
+            let viewFactory = rootCoordinator.viewFactory
+            let sceneProvider = rootCoordinator.sceneProvider
+            let engagementKind = rootCoordinator.engagementKind
+            let features = rootCoordinator.features
+
             self?.environment.gcd.mainQueue.asyncAfterDeadline(.now() + .seconds(2)) { [weak self] in
                 if self?.interactor?.currentEngagement?.restartedFromEngagementId != nil {
-                    self?.rootCoordinator?.reload()
+                    interactor.skipLOConfirmations = true
+                    self?.startRootCoordinator(
+                        with: interactor,
+                        viewFactory: viewFactory,
+                        sceneProvider: sceneProvider,
+                        engagementKind: engagementKind,
+                        features: features,
+                        maximize: false
+                    )
+
+                    self?.rootCoordinator?.gliaViewController?.minimize(animated: false)
                 } else {
-                    // Reset navigation and UI back to initial state,
-                    // effectively removing bubble view (if there was one).
-                    self?.rootCoordinator?.popCoordinator()
-                    self?.rootCoordinator?.end()
-                    self?.rootCoordinator = nil
+                    closeRootCoordinator()
                 }
             }
         }
@@ -91,7 +111,7 @@ extension Glia {
                     switch result {
                     case .success:
                         // Handle authentication
-                        completion()
+                        restartEngagementIfNeeded()
 
                     case .failure:
                         break
@@ -106,7 +126,7 @@ extension Glia {
                     switch result {
                     case .success:
                         // Cleanup navigation and views.
-                        completion()
+                        closeRootCoordinator()
                     case .failure:
                         break
                     }
