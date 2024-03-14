@@ -11,8 +11,8 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
 
     var gliaViewController: GliaViewController?
     let interactor: Interactor
-    private let viewFactory: ViewFactory
-    private weak var sceneProvider: SceneProvider?
+    let viewFactory: ViewFactory
+    private(set) weak var sceneProvider: SceneProvider?
     private var engagement: Engagement = .none
     private let chatCall = ObservableValue<Call?>(with: nil)
     private let unreadMessages = ObservableValue<Int>(with: 0)
@@ -23,7 +23,7 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
     let navigationPresenter: NavigationPresenter
     let gliaPresenter: GliaPresenter
     private let kBubbleViewSize: CGFloat = 60.0
-    private let features: Features
+    let features: Features
     private let environment: Environment
 
     init(
@@ -50,6 +50,10 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
 
     // swiftlint:disable function_body_length
     func start() {
+        start(maximize: true)
+    }
+
+    func start(maximize: Bool) {
         switch engagementKind {
         case .none:
             break
@@ -122,7 +126,9 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
             features: features
         )
         gliaViewController?.insertChild(navigationController)
-        event(.maximized)
+        if maximize {
+            event(.maximized)
+        }
         delegate?(.started)
     }
     // swiftlint:enable function_body_length
