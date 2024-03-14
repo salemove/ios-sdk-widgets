@@ -77,11 +77,11 @@ class GliaViewController: UIViewController {
             animations: {
                 self.bubbleWindow?.alpha = 0.0
             },
-            completion: { _ in
-                self.bubbleWindow = nil
+            completion: { [weak self] _ in
+                self?.bubbleWindow = nil
+                self?.delegate?.event(.maximized)
             }
         )
-        delegate?.event(.maximized)
     }
 
     func removeBubbleWindow() {
