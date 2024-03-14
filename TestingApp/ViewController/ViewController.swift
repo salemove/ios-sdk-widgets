@@ -51,6 +51,11 @@ class ViewController: UIViewController {
     @IBOutlet var secureConversationsButton: UIButton!
     @IBOutlet var autoConfigureSdkToggle: UISwitch!
 
+    @IBOutlet var authenticationBehaviorSegmentedControl: UISegmentedControl!
+    var authenticationBehavior: Authentication.Behavior {
+        authenticationBehaviorSegmentedControl.selectedSegmentIndex == 0 ? .forbiddenDuringEngagement : .allowedDuringEngagement
+    }
+
     @IBAction private func settingsTapped() {
         presentSettings()
     }
@@ -404,36 +409,33 @@ extension ViewController {
 }
 
 extension ViewController {
-    static func authentication() throws -> Authentication {
-        try Glia.sharedInstance.authentication(with: .forbiddenDuringEngagement)
-    }
-
     @IBAction private func toggleAuthentication() {
-        catchingError {
-            try Glia.sharedInstance.configure(
-                with: configuration,
-                theme: Theme()
-            ) { [weak self] result in
-                guard let self = self else { return }
-
-                switch result {
-                case .success:
-                    self.catchingError {
-                        let authentication = try Self.authentication()
-                        switch authentication.isAuthenticated {
-                        case false:
-                            self.showAuthorize(with: authentication)
-                        case true:
-                            self.showDeauthorize(
-                                authorization: authentication,
-                                from: self.toggleAuthenticateButton
-                            )
-                        }
-                    }
-                case .failure(let error):
-                    self.showErrorAlert(using: error)
+        let authenticate = {
+            self.catchingError {
+                let authentication = try! Glia.sharedInstance.authentication(with: self.authenticationBehavior)
+                switch authentication.isAuthenticated {
+                case false:
+                    self.showAuthorize(with: authentication)
+                case true:
+                    self.showDeauthorize(
+                        authorization: authentication,
+                        from: self.toggleAuthenticateButton
+                    )
                 }
             }
+        }
+
+        if autoConfigureSdkToggle.isOn {
+            configureSDK(uiConfigName: nil) { [weak self] result in
+                switch result {
+                case .success:
+                    authenticate()
+                case let .failure(error):
+                    self?.showErrorAlert(using: error)
+                }
+            }
+        } else {
+            authenticate()
         }
     }
 
@@ -579,6 +581,7 @@ extension ViewController {
             isAuthenticated ? "Deauthenticate" : "Authenticate",
             for: .normal
         )
+        authenticationBehaviorSegmentedControl.isEnabled = !isAuthenticated
     }
 
     /// Report any thrown error via UIAlertController.
