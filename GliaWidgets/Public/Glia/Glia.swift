@@ -15,6 +15,21 @@ public enum EngagementKind: Equatable {
     case messaging(SecureConversations.InitialScreen = .welcome)
 }
 
+extension EngagementKind {
+    /// This initializer makes instance of `EngagementKind`
+    /// to reflect `MediaState` from Core SDK.
+    init(media: Engagement.Media) {
+        switch (media.audio, media.video) {
+        case (.none, .some):
+            self = .videoCall
+        case (.some, .none):
+            self = .audioCall
+        default:
+            self = .chat
+        }
+    }
+}
+
 extension SecureConversations {
     /// The initial screen seen by a visitor when starting a secure conversation.
     public enum InitialScreen: Equatable {
