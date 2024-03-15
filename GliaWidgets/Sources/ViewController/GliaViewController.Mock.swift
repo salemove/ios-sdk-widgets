@@ -12,7 +12,11 @@ extension GliaViewController {
             environment: .init(
                 uiApplication: .mock,
                 uiScreen: .mock,
-                log: .mock
+                log: .mock,
+                animate: { _, animations, completion in
+                    animations()
+                    completion(true)
+                }
             )
         )
     }
