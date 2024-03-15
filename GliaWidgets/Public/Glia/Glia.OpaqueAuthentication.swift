@@ -71,23 +71,30 @@ extension Glia {
             self?.rootCoordinator = nil
         }
 
-        let restartEngagementIfNeeded = { [weak self] in
-            guard let rootCoordinator = self?.rootCoordinator else { return }
+        let restartEngagementIfNeeded: (_ interactor: Interactor?, _ viewFactory: ViewFactory?,
+                                        _ sceneProvider: SceneProvider?,
+                                        _ features: Features?) -> Void = { [weak self] interactor, viewFactory, sceneProvider, features in
+            // Restart engagement happens implicitly, however, to create RootCoordinator
+            // queueId, engagementKind, etc. are needed.
+            // Copy existed interactor, viewFactory, and feature list in case the engagement
+            // should be restarted with the same options.
+            guard let interactor = interactor,
+                  let viewFactory = viewFactory,
+                  let features = features else { return }
 
-            let interactor = rootCoordinator.interactor
-            let viewFactory = rootCoordinator.viewFactory
-            let sceneProvider = rootCoordinator.sceneProvider
-            let engagementKind = rootCoordinator.engagementKind
-            let features = rootCoordinator.features
-
+            // Waits for while for establishing socket connection, connection to channels, and
+            // receive necessary information about engagement.
             self?.environment.gcd.mainQueue.asyncAfterDeadline(.now() + .seconds(2)) { [weak self] in
-                if self?.interactor?.currentEngagement?.restartedFromEngagementId != nil {
+                if let restartedEngagement = self?.interactor?.currentEngagement, restartedEngagement.restartedFromEngagementId != nil {
+                    // In case engagement should be restarted, LO ack should not
+                    // be appeared again.
                     interactor.skipLOConfirmations = true
+
                     self?.startRootCoordinator(
                         with: interactor,
                         viewFactory: viewFactory,
                         sceneProvider: sceneProvider,
-                        engagementKind: engagementKind,
+                        engagementKind: .init(media: restartedEngagement.media),
                         features: features,
                         maximize: false
                     )
@@ -104,6 +111,14 @@ extension Glia {
                 self?.loggerPhase.logger.prefixed(Self.self).info(
                     "Authenticate. Is external access token used: \(accessToken != nil)"
                 )
+
+                let interactor = self?.rootCoordinator?.interactor
+                let viewFactory = self?.rootCoordinator?.viewFactory
+                let sceneProvider = self?.rootCoordinator?.sceneProvider
+                let features = self?.rootCoordinator?.features
+
+                closeRootCoordinator()
+
                 auth.authenticate(
                     with: .init(rawValue: idToken),
                     externalAccessToken: accessToken.map { .init(rawValue: $0) }
@@ -111,7 +126,7 @@ extension Glia {
                     switch result {
                     case .success:
                         // Handle authentication
-                        restartEngagementIfNeeded()
+                        restartEngagementIfNeeded(interactor, viewFactory, sceneProvider, features)
 
                     case .failure:
                         break
