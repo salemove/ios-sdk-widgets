@@ -133,10 +133,6 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
     }
     // swiftlint:enable function_body_length
 
-    func reload() {
-        environment.reloadAllChild(coordinators)
-    }
-
     deinit {
         print("\(Self.self) is deallocated.")
     }
@@ -431,6 +427,24 @@ extension EngagementCoordinator {
         bubbleView: BubbleView,
         features: Features
     ) -> GliaViewController {
+        let animate: (
+            _ animated: Bool,
+            _ animations: @escaping () -> Void,
+            _ completion: @escaping (
+                Bool
+            ) -> Void
+        ) -> Void = { animated, animations, completion in
+            UIView.animate(
+                withDuration: animated ? 0.4 : 0.0,
+                delay: 0.0,
+                usingSpringWithDamping: 0.8,
+                initialSpringVelocity: 0.7,
+                options: .curveEaseInOut,
+                animations: animations,
+                completion: completion
+            )
+        }
+
         if #available(iOS 13.0, *) {
             if let sceneProvider = sceneProvider {
                 return GliaViewController(
@@ -441,7 +455,8 @@ extension EngagementCoordinator {
                     environment: .init(
                         uiApplication: environment.uiApplication,
                         uiScreen: environment.uiScreen,
-                        log: environment.log
+                        log: environment.log,
+                        animate: animate
                     )
                 )
             } else {
@@ -452,7 +467,8 @@ extension EngagementCoordinator {
                     environment: .init(
                         uiApplication: environment.uiApplication,
                         uiScreen: environment.uiScreen,
-                        log: environment.log
+                        log: environment.log,
+                        animate: animate
                     )
                 )
             }
@@ -464,7 +480,8 @@ extension EngagementCoordinator {
                 environment: .init(
                     uiApplication: environment.uiApplication,
                     uiScreen: environment.uiScreen,
-                    log: environment.log
+                    log: environment.log,
+                    animate: animate
                 )
             )
         }
