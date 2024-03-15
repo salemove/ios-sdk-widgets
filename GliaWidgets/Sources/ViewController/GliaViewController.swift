@@ -68,14 +68,10 @@ class GliaViewController: UIViewController {
 
     func maximize(animated: Bool) {
         environment.log.prefixed(Self.self).info("Bubble: hide application-only bubble")
-        UIView.animate(
-            withDuration: animated ? 0.4 : 0.0,
-            delay: 0.0,
-            usingSpringWithDamping: 0.8,
-            initialSpringVelocity: 0.7,
-            options: .curveEaseInOut,
-            animations: {
-                self.bubbleWindow?.alpha = 0.0
+        environment.withAnimation(
+            animated: animated,
+            animations: { [weak self] in
+                self?.bubbleWindow?.alpha = 0.0
             },
             completion: { [weak self] _ in
                 self?.bubbleWindow = nil
@@ -185,5 +181,14 @@ extension GliaViewController {
         var uiApplication: UIKitBased.UIApplication
         var uiScreen: UIKitBased.UIScreen
         var log: CoreSdkClient.Logger
+        var animate: (_ animated: Bool, _ animations: @escaping () -> Void, _ completion: @escaping (Bool) -> Void) -> Void
+
+        func withAnimation(
+            animated: Bool,
+            animations: @escaping () -> Void,
+            completion: @escaping (Bool) -> Void
+        ) {
+            animate(animated, animations, completion)
+        }
     }
 }
