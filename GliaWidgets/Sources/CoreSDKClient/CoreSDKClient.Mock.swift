@@ -493,7 +493,7 @@ extension CoreSdkClient.Engagement {
             source: source,
             fetchSurvey: fetchSurvey,
             restartedFromEngagementId: restartedFromEngagementId,
-            media: media
+            mediaStreams: media
         )
     }
 }
