@@ -167,7 +167,7 @@ class EngagementViewModel: CommonEngagementModel {
                 guard let self else { return }
                 switch result {
                 case let .success(site):
-                    if site.mobileConfirmDialogEnabled == false || interactor.skipLOConfirmations {
+                    if site.mobileConfirmDialogEnabled == false || self.interactor.skipLOConfirmations {
                         self.enqueue(mediaType: mediaType)
                     } else {
                         self.showLiveObservationConfirmation(in: mediaType)
