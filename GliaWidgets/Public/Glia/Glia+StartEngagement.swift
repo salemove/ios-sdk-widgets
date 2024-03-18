@@ -30,6 +30,8 @@ extension Glia {
             .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
             .filter { !$0.isEmpty }
         guard !trimmedQueueIds.isEmpty else { throw GliaError.startingEngagementWithNoQueueIdsIsNotAllowed }
+        // It checks if ongoing engagement exists on WidgetsSDK side, if it doesn't but ongoing engagement exists
+        // on CoreSDK side, it will be restored.
         guard engagement == .none else { throw GliaError.engagementExists }
         guard let configuration = self.configuration else { throw GliaError.sdkIsNotConfigured }
         if let engagement = environment.coreSdk.getCurrentEngagement(),
@@ -61,11 +63,19 @@ extension Glia {
             )
         )
 
+        // If ongoing engagement exists on Core SDK side the engagement kind should be corrected
+        // to correct one before restoring it.
+        var ongoingEngagementMediaStreams = environment.coreSdk.getCurrentEngagement()?.mediaStreams
+        // Currently, CoreSDK can't restore video stream
+        if let media = ongoingEngagementMediaStreams {
+            ongoingEngagementMediaStreams = .init(audio: media.audio, video: nil)
+        }
+
         startRootCoordinator(
             with: createdInteractor,
             viewFactory: viewFactory,
             sceneProvider: sceneProvider,
-            engagementKind: engagementKind,
+            engagementKind: ongoingEngagementMediaStreams.map { EngagementKind(media: $0) } ?? engagementKind,
             features: features
         )
     }

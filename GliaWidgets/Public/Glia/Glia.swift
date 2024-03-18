@@ -20,7 +20,7 @@ extension EngagementKind {
     /// to reflect `MediaState` from Core SDK.
     init(media: Engagement.Media) {
         switch (media.audio, media.video) {
-        case (.none, .some):
+        case (_, .some):
             self = .videoCall
         case (.some, .none):
             self = .audioCall

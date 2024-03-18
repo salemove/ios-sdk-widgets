@@ -94,7 +94,7 @@ extension Glia {
                         with: interactor,
                         viewFactory: viewFactory,
                         sceneProvider: sceneProvider,
-                        engagementKind: .init(media: restartedEngagement.media),
+                        engagementKind: .init(media: restartedEngagement.mediaStreams),
                         features: features,
                         maximize: false
                     )
