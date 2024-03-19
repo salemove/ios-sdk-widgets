@@ -49,6 +49,10 @@ extension ChatEngagementFile {
     var isImage: Bool {
         return contentType?.hasPrefix("image") == true
     }
+
+    var isVideo: Bool {
+        return contentType?.hasPrefix("video") == true
+    }
 }
 
 extension ChatEngagementFile {
