@@ -74,6 +74,7 @@ extension Glia {
         let restartEngagementIfNeeded: (_ interactor: Interactor?, _ viewFactory: ViewFactory?,
                                         _ sceneProvider: SceneProvider?,
                                         _ features: Features?) -> Void = { [weak self] interactor, viewFactory, sceneProvider, features in
+            closeRootCoordinator()
             // Restart engagement happens implicitly, however, to create RootCoordinator
             // queueId, engagementKind, etc. are needed.
             // Copy existed interactor, viewFactory, and feature list in case the engagement
@@ -116,8 +117,6 @@ extension Glia {
                 let viewFactory = self?.rootCoordinator?.viewFactory
                 let sceneProvider = self?.rootCoordinator?.sceneProvider
                 let features = self?.rootCoordinator?.features
-
-                closeRootCoordinator()
 
                 auth.authenticate(
                     with: .init(rawValue: idToken),
