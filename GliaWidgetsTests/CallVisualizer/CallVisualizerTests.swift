@@ -19,7 +19,7 @@ final class CallVisualizerTests: XCTestCase {
         var environmentMock = CallVisualizer.Environment.mock
         environmentMock.screenShareHandler = screenShareHandlerMock
         environmentMock.getCurrentEngagement = {
-            .init(id: "", engagedOperator: nil, source: .callVisualizer, fetchSurvey: { _, _ in }, media: .init(audio: nil, video: nil))
+            .init(id: "", engagedOperator: nil, source: .callVisualizer, fetchSurvey: { _, _ in }, mediaStreams: .init(audio: nil, video: nil))
         }
         let interactorMock = Interactor.mock()
         environmentMock.interactorProviding = { interactorMock }
@@ -64,7 +64,7 @@ final class CallVisualizerTests: XCTestCase {
         var environmentMock = CallVisualizer.Environment.mock
         environmentMock.screenShareHandler = screenShareHandlerMock
         environmentMock.getCurrentEngagement = {
-            .init(id: "", engagedOperator: nil, source: .coreEngagement, fetchSurvey: { _, _ in }, media: .init(audio: nil, video: nil))
+            .init(id: "", engagedOperator: nil, source: .coreEngagement, fetchSurvey: { _, _ in }, mediaStreams: .init(audio: nil, video: nil))
         }
 
         let callVisualizer = CallVisualizer(environment: environmentMock)
