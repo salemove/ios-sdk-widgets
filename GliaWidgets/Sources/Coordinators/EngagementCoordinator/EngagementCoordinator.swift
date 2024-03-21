@@ -336,6 +336,8 @@ extension EngagementCoordinator {
         case .finished:
             popCoordinator()
             self.end()
+        case .minimize:
+            minimize()
         }
     }
 

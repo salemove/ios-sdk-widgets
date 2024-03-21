@@ -86,13 +86,17 @@ private extension ChatViewModel {
                 openUrl(url)
 
             default:
-                if urlTarget == .gvaOptionUrlTargetModal ||
-                    urlTarget == .gvaOptionUrlTargetSelf {
-                    // if GvaOption.urlTarget is "modal" or "self", then button url is deeplink
-                    // and should be opened by UIApplication, to provide integrator
-                    // an ability to handle deeplinks they configured.
+                // if GvaOption.urlTarget is "modal" or "self", then button url is deeplink
+                // and should be opened by UIApplication, to provide integrator
+                // an ability to handle deeplinks they configured.
+                switch urlTarget {
+                case String.gvaOptionUrlTargetSelf:
+                    // In case of urlTarget "self" we need to minimize Glia UI
+                    self.delegate?(.minimize)
                     openUrl(url)
-                } else {
+                case String.gvaOptionUrlTargetModal:
+                    openUrl(url)
+                default:
                     return
                 }
             }
