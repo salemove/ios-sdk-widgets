@@ -73,7 +73,7 @@ class Interactor {
     /// Skips Live Observation confirmation alerts/snackbars in
     /// specific cases. For example after restarting engagement
     /// after authentication.
-    var skipLOConfirmations = false
+    var skipLiveObservationConfirmations = false
 
     init(
         visitorContext: Configuration.VisitorContext?,
