@@ -2,6 +2,45 @@
 import XCTest
 
 extension SecureConversationsTranscriptModelTests {
+    func test_gvaDeepLinkActionCallsMinimize() {
+        let option: GvaOption = .mock(url: "mock://mock.self", urlTarget: "self")
+        var calls: [Call] = []
+        let viewModel = createViewModel()
+        viewModel.delegate = { event in
+            switch event {
+            case .minimize:
+                calls.append(.minimize)
+
+            default:
+                XCTFail("createSendMessagePayload should not be called")
+            }
+        }
+        viewModel.environment.uiApplication.open = { _ in }
+
+        viewModel.gvaOptionAction(for: option)()
+
+        XCTAssertEqual(calls, [.minimize])
+    }
+
+    func test_gvaDeepLinkActionDoesNotCallMinimize() {
+        let option: GvaOption = .mock(url: "mock://mock.modal", urlTarget: "modal")
+        var calls: [Call] = []
+        let viewModel = createViewModel()
+        viewModel.delegate = { event in
+            switch event {
+            case .minimize:
+                calls.append(.minimize)
+
+            default:
+                XCTFail("createSendMessagePayload should not be called")
+            }
+        }
+        viewModel.environment.uiApplication.open = { _ in }
+
+        viewModel.gvaOptionAction(for: option)()
+        XCTAssertTrue(calls.isEmpty)
+    }
+
     func test_gvaLinkButtonAction() {
         let options: [GvaOption] = [
             .mock(url: "http://mock.mock"),
@@ -138,6 +177,7 @@ private extension SecureConversationsTranscriptModelTests {
         case openUrl(String?)
         case sendOption(String?, String?)
         case showAlert
+        case minimize
     }
 
     func createViewModel() -> TranscriptModel {

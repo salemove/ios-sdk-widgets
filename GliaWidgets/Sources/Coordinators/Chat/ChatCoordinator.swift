@@ -13,6 +13,7 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
         )
         case call
         case finished
+        case minimize
     }
 
     var delegate: ((DelegateEvent) -> Void)?
@@ -207,6 +208,8 @@ extension ChatCoordinator {
                 self?.presentQuickLookController(with: file)
             case .call:
                 self?.delegate?(.call)
+            case .minimize:
+                self?.delegate?(.minimize)
             }
         }
 
@@ -317,6 +320,8 @@ extension ChatCoordinator {
                 controller.swapAndBindViewModel(.chat(chatModel))
                 chatModel.migrate(from: transcriptModel)
                 self.delegate?(.secureTranscriptUpgradedToLiveChat(controller))
+            case .minimize:
+                self?.delegate?(.minimize)
             }
         }
     }

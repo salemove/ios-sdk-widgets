@@ -19,7 +19,6 @@ struct SettingsDeeplinkHandler: DeeplinkHandler {
               let root = window?.rootViewController as? ViewController else {
             return false
         }
-        Glia.sharedInstance.minimize()
         root.presentSettings()
         return true
     }

@@ -20,6 +20,7 @@ extension SecureConversations {
             case takeMedia(ObservableValue<MediaPickerEvent>)
             case pickFile(ObservableValue<FilePickerEvent>)
             case upgradeToChatEngagement(TranscriptModel)
+            case minimize
         }
 
         typealias Event = ChatViewModel.Event
