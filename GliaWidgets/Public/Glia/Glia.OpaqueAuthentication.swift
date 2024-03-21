@@ -1,3 +1,5 @@
+import Foundation
+
 extension Glia {
     /// Entry point for Visitor authentication.
     public struct Authentication {
