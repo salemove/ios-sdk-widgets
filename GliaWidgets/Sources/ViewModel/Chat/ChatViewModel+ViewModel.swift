@@ -67,6 +67,7 @@ extension ChatViewModel: ViewModel {
         case secureTranscriptUpgradedToLiveChat(ChatViewController)
         case showFile(LocalFile)
         case call
+        case minimize
     }
 
     enum StartAction {
