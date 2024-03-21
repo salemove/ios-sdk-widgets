@@ -16,7 +16,7 @@ extension Glia.Authentication {
     public enum Behavior {
         /// Restrict authentication and deauthentication during ongoing engagement.
         case forbiddenDuringEngagement
-
+        /// Allow authentication and deauthentication during ongoing engagement.
         case allowedDuringEngagement
     }
 }
@@ -89,7 +89,7 @@ extension Glia {
                 if let restartedEngagement = self?.interactor?.currentEngagement, restartedEngagement.restartedFromEngagementId != nil {
                     // In case engagement should be restarted, LO ack should not
                     // be appeared again.
-                    interactor.skipLOConfirmations = true
+                    interactor.skipLiveObservationConfirmations = true
 
                     self?.startRootCoordinator(
                         with: interactor,
