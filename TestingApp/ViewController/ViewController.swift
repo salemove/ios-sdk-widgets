@@ -30,6 +30,8 @@ class ViewController: UIViewController {
         title = "Glia UI testing"
         view.backgroundColor = .white
         setupPushHandler()
+
+        configureAuthenticationBehaviorToggleAccessibility()
     }
 
     override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
@@ -582,6 +584,21 @@ extension ViewController {
             for: .normal
         )
         authenticationBehaviorSegmentedControl.isEnabled = !isAuthenticated
+    }
+
+    func configureAuthenticationBehaviorToggleAccessibility() {
+        authenticationBehaviorSegmentedControl?
+            .subviews
+            .enumerated()
+            .forEach {
+                switch $0.offset {
+                case 0:
+                    $0.element.accessibilityIdentifier = "main_auth_behaviour_allowed"
+                case 1:
+                    $0.element.accessibilityIdentifier = "main_auth_behaviour_forbidden"
+                default: break
+                }
+            }
     }
 
     /// Report any thrown error via UIAlertController.
