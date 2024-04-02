@@ -137,7 +137,7 @@ extension Glia {
                 }
             },
             deauthenticateWithCallback: { [weak self] callback in
-                self?.loggerPhase.logger.prefixed(Self.self).info("De-authenticate")
+                self?.loggerPhase.logger.prefixed(Self.self).info("Unauthenticate")
                 auth.deauthenticate { result in
                     switch result {
                     case .success:
