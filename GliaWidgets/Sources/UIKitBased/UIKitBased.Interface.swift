@@ -24,4 +24,8 @@ enum UIKitBased {
         var bounds: () -> CGRect
         var scale: () -> CGFloat
     }
+
+    typealias UIWindow = UIKit.UIWindow
 }
+
+extension UIKitBased.UIApplication: Transformable {}

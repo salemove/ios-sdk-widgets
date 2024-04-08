@@ -606,6 +606,9 @@
 		AF7753122B19EC3200E523A2 /* Logger.Live.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF7753112B19EC3200E523A2 /* Logger.Live.swift */; };
 		AF7753142B19ED4F00E523A2 /* Logger.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF7753132B19ED4F00E523A2 /* Logger.Mock.swift */; };
 		AF7753172B1DBFE600E523A2 /* Glia.Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF7753162B1DBFE600E523A2 /* Glia.Logging.swift */; };
+		AF9C0C382BC3F53A00C25E47 /* TaskSleep.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF9C0C372BC3F53A00C25E47 /* TaskSleep.swift */; };
+		AF9C0C3A2BC3F6BC00C25E47 /* TaskSleep.Failing.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF9C0C392BC3F6BC00C25E47 /* TaskSleep.Failing.swift */; };
+		AF9C0C3C2BC4739800C25E47 /* Transformable.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF9C0C3B2BC4739800C25E47 /* Transformable.swift */; };
 		AF9DB22E2890571A00A0C442 /* RootCoordinator.Environment.Failing.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF9DB22D2890571A00A0C442 /* RootCoordinator.Environment.Failing.swift */; };
 		AF9DB23128905A1D00A0C442 /* ViewFactory.Environment.Failing.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF9DB23028905A1D00A0C442 /* ViewFactory.Environment.Failing.swift */; };
 		AFA1A9952AA9248400095BE8 /* ChatViewModel+ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA1A9942AA9248400095BE8 /* ChatViewModel+ViewModel.swift */; };
@@ -1544,6 +1547,9 @@
 		AF7753112B19EC3200E523A2 /* Logger.Live.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.Live.swift; sourceTree = "<group>"; };
 		AF7753132B19ED4F00E523A2 /* Logger.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.Mock.swift; sourceTree = "<group>"; };
 		AF7753162B1DBFE600E523A2 /* Glia.Logging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Glia.Logging.swift; sourceTree = "<group>"; };
+		AF9C0C372BC3F53A00C25E47 /* TaskSleep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskSleep.swift; sourceTree = "<group>"; };
+		AF9C0C392BC3F6BC00C25E47 /* TaskSleep.Failing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskSleep.Failing.swift; sourceTree = "<group>"; };
+		AF9C0C3B2BC4739800C25E47 /* Transformable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transformable.swift; sourceTree = "<group>"; };
 		AF9DB22D2890571A00A0C442 /* RootCoordinator.Environment.Failing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCoordinator.Environment.Failing.swift; sourceTree = "<group>"; };
 		AF9DB23028905A1D00A0C442 /* ViewFactory.Environment.Failing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewFactory.Environment.Failing.swift; sourceTree = "<group>"; };
 		AFA1A9942AA9248400095BE8 /* ChatViewModel+ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatViewModel+ViewModel.swift"; sourceTree = "<group>"; };
@@ -2142,6 +2148,7 @@
 				AF6291142B0818DE00D3D76B /* SwiftBased.Failing.swift */,
 				AFF9542B2ADDA10600C277E0 /* CoreSDKConfigurator.Failing.swift */,
 				AF1C197F2B14FE9F00F8810F /* ConditionalCompilationClient.Failing.swift */,
+				AF9C0C392BC3F6BC00C25E47 /* TaskSleep.Failing.swift */,
 			);
 			path = GliaWidgetsTests;
 			sourceTree = "<group>";
@@ -2556,6 +2563,8 @@
 				1A60AFCC256694E300E53F53 /* ViewFactory */,
 				1A60AFC52566865600E53F53 /* ViewModel */,
 				84D2292C28C61DE000F64FE7 /* WKNavigationPolicyProvider */,
+				AF9C0C372BC3F53A00C25E47 /* TaskSleep.swift */,
+				AF9C0C3B2BC4739800C25E47 /* Transformable.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -5592,6 +5601,7 @@
 				1AC7A7AF258786CB00567FF8 /* EngagementViewModel.swift in Sources */,
 				9AE9E4B327E0E60F00BFE239 /* CallViewModel.Mock.swift in Sources */,
 				C09046DE2B7E0AB9003C437C /* ConnectStatusStyle.RemoteConfig.swift in Sources */,
+				AF9C0C3C2BC4739800C25E47 /* Transformable.swift in Sources */,
 				31882C9B2AA21B71009DE4BD /* Localization+Templates.swift in Sources */,
 				845876A8282A94CF007AC3DF /* BooleanQuestionView.Props.Accessibility.swift in Sources */,
 				C09046F82B7E109B003C437C /* Theme.ChoiceCardStyle.RemoteConfig.swift in Sources */,
@@ -5679,6 +5689,7 @@
 				1AA738AE2578E0D500E1120F /* ConnectAnimationView.swift in Sources */,
 				754CC61627E2816F005676E9 /* Survey.InputQuestionView.swift in Sources */,
 				3146C9492AB18AC70047D8CC /* Localization+StringProviding.swift in Sources */,
+				AF9C0C382BC3F53A00C25E47 /* TaskSleep.swift in Sources */,
 				9A1992DF27D62C2E00161AAE /* ImageView.Cache.Mock.swift in Sources */,
 				8491AF0D2A7A9CB900CC3E72 /* Theme.VisitorChatMessageStyle.swift in Sources */,
 				1A2DA72D25EF9DD900032611 /* FileUpload.swift in Sources */,
@@ -5974,6 +5985,7 @@
 				9ACC25D227B4727500BC5335 /* CoreSDKClient.Failing.swift in Sources */,
 				84265E07298AE96B00D65842 /* ScreenSharingViewModelTests.swift in Sources */,
 				EB9ADB51280EBD4E00FAE8A4 /* InteractorStateTests.swift in Sources */,
+				AF9C0C3A2BC3F6BC00C25E47 /* TaskSleep.Failing.swift in Sources */,
 				8491AF652AAB281500CC3E72 /* ChatViewModelTests+CustomCard.swift in Sources */,
 				EB7A1508286D98000035AC62 /* FileUploader.Environment.Failing.swift in Sources */,
 				AF2355A229C9EC7E007D9896 /* IdCollectionTests.swift in Sources */,
