@@ -79,7 +79,7 @@ class BubbleWindow: UIWindow {
     }
 }
 
-private class BubbleViewController: UIViewController {
+class BubbleViewController: UIViewController {
     private let bubbleView: BubbleView
     private let edgeInset: CGFloat
 
