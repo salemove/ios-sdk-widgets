@@ -40,4 +40,12 @@ extension UIKitBased.UIScreen {
         scale: { .init() }
     )
 }
+
+extension UIKitBased.UIWindow {
+    static func mock(rootViewController: UIKit.UIViewController = . init()) -> UIKitBased.UIWindow {
+        let window = UIKit.UIWindow()
+        window.rootViewController = rootViewController
+        return window
+    }
+}
 #endif

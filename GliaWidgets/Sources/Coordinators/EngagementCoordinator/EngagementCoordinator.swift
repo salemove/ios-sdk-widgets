@@ -39,7 +39,16 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
         self.viewFactory = viewFactory
         self.sceneProvider = sceneProvider
         self.engagementKind = engagementKind
-        self.gliaPresenter = GliaPresenter(sceneProvider: sceneProvider)
+        self.gliaPresenter = GliaPresenter(
+            environment: .init(
+                appWindowsProvider: .init(
+                    uiApplication: environment.uiApplication,
+                    sceneProvider: sceneProvider
+                ),
+                log: environment.log,
+                taskSleep: environment.taskSleep
+            )
+        )
         self.navigationPresenter = NavigationPresenter(with: navigationController)
         self.screenShareHandler = screenShareHandler
         self.features = features

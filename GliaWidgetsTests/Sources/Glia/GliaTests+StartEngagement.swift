@@ -102,7 +102,7 @@ extension GliaTests {
         }
         environment.coreSdk.localeProvider.getRemoteString = { _ in nil }
         environment.createRootCoordinator = { _, _, _, _, _, _, _ in
-            .mock()
+            .mock(environment: .engagementCoordEnvironmentWithKeyWindow)
         }
         let sdk = Glia(environment: environment)
         try sdk.start(.chat, configuration: .mock(), queueID: "queueId", theme: .mock())
@@ -124,6 +124,7 @@ extension GliaTests {
         environment.coreSdk.createLogger = { _ in logger }
         environment.conditionalCompilation.isDebug = { true }
         var resultingViewFactory: ViewFactory?
+
         environment.createRootCoordinator = { _, viewFactory, _, _, _, _, _ in
             resultingViewFactory = viewFactory
 
@@ -134,7 +135,7 @@ extension GliaTests {
                 engagementKind: .none,
                 screenShareHandler: .mock,
                 features: [],
-                environment: .failing
+                environment: .engagementCoordEnvironmentWithKeyWindow
             )
         }
         environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
@@ -176,7 +177,7 @@ extension GliaTests {
                 engagementKind: .none,
                 screenShareHandler: .mock,
                 features: [],
-                environment: .failing
+                environment: .engagementCoordEnvironmentWithKeyWindow
             )
         }
         environment.conditionalCompilation.isDebug = { true }
@@ -236,7 +237,7 @@ extension GliaTests {
                 engagementKind: .none,
                 screenShareHandler: .mock,
                 features: [],
-                environment: .failing
+                environment: .engagementCoordEnvironmentWithKeyWindow
             )
         }
         environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
@@ -283,7 +284,7 @@ extension GliaTests {
                 engagementKind: .none,
                 screenShareHandler: .mock,
                 features: [],
-                environment: .failing
+                environment: .engagementCoordEnvironmentWithKeyWindow
             )
         }
         environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
@@ -330,7 +331,7 @@ extension GliaTests {
                 engagementKind: .none,
                 screenShareHandler: .mock,
                 features: [],
-                environment: .failing
+                environment: .engagementCoordEnvironmentWithKeyWindow
             )
         }
 
@@ -383,7 +384,7 @@ extension GliaTests {
                 engagementKind: .none,
                 screenShareHandler: .mock,
                 features: [],
-                environment: .failing
+                environment: .engagementCoordEnvironmentWithKeyWindow
             )
         }
 
@@ -402,5 +403,13 @@ extension GliaTests {
         let localFallbackCompanyName = "Company Name"
         XCTAssertEqual(configuredSdkTheme?.call.connect.queue.firstText, localFallbackCompanyName)
         XCTAssertEqual(configuredSdkTheme?.chat.connect.queue.firstText, localFallbackCompanyName)
+    }
+}
+
+extension EngagementCoordinator.Environment: Transformable {
+    static var engagementCoordEnvironmentWithKeyWindow: Self {
+        EngagementCoordinator.Environment.mock.transform {
+            $0.uiApplication = .failing.transform { $0.windows = { [ .mock() ] } }
+        }
     }
 }
