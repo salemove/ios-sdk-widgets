@@ -122,3 +122,21 @@ extension BubbleWindow {
         var uiApplication: UIKitBased.UIApplication
     }
 }
+
+#if DEBUG
+extension BubbleWindow {
+    static func mock(makeKeyAndVisible: Bool = true) -> BubbleWindow {
+       let window = BubbleWindow(bubbleView: .mock(), environment: .mock)
+        window.rootViewController = BubbleViewController(bubbleView: .mock(), edgeInset: .zero)
+        if makeKeyAndVisible {
+            window.makeKeyAndVisible()
+        }
+        return window
+    }
+}
+
+extension BubbleWindow.Environment {
+    static let mock = Self(uiScreen: .mock, uiApplication: .mock)
+}
+
+#endif
