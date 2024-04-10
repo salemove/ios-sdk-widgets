@@ -61,8 +61,7 @@ extension Glia.Environment {
         print: .failing,
         conditionalCompilation: .failing,
         snackBar: .failing,
-        processInfo: .failing,
-        taskSleep: .failing
+        processInfo: .failing
     )
 }
 
