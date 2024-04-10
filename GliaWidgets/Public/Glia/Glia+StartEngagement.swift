@@ -183,8 +183,7 @@ extension Glia {
                 log: loggerPhase.logger,
                 snackBar: environment.snackBar,
                 operatorRequestHandlerService: operatorRequestHandlerService,
-                maximumUploads: { self.maximumUploads },
-                taskSleep: environment.taskSleep
+                maximumUploads: { self.maximumUploads }
             )
         )
         rootCoordinator?.delegate = { [weak self] event in self?.handleCoordinatorEvent(event) }
