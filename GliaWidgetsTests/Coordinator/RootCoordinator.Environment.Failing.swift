@@ -93,7 +93,6 @@ extension EngagementCoordinator.Environment {
         maximumUploads: {
             fail("\(Self.self).maximumUploads")
             return 2
-        },
-        taskSleep: .failing
+        }
     )
 }

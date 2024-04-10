@@ -45,8 +45,7 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
                     uiApplication: environment.uiApplication,
                     sceneProvider: sceneProvider
                 ),
-                log: environment.log,
-                taskSleep: environment.taskSleep
+                log: environment.log
             )
         )
         self.navigationPresenter = NavigationPresenter(with: navigationController)

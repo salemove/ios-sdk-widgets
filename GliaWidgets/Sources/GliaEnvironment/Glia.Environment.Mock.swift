@@ -32,8 +32,7 @@ extension Glia.Environment {
         print: .mock,
         conditionalCompilation: .mock,
         snackBar: .mock,
-        processInfo: .mock(),
-        taskSleep: .mock
+        processInfo: .mock()
     )
 }
 

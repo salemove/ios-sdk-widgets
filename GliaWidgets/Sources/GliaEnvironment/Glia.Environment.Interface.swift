@@ -51,7 +51,6 @@ extension Glia {
         var conditionalCompilation: ConditionalCompilationClient
         var snackBar: SnackBar
         var processInfo: ProcessInfoHandling
-        var taskSleep: TaskSleep
     }
 }
 
