@@ -3,6 +3,8 @@ import UIKit
 
 extension CallVisualizer {
     final class Coordinator {
+        var environment: Environment
+
         init(environment: Environment) {
             self.environment = environment
             self.bubbleView = environment.viewFactory.makeBubbleView()
@@ -101,7 +103,6 @@ extension CallVisualizer {
         }
 
         // MARK: - Private
-        private let environment: Environment
         private let bubbleSize = CGSize(width: 60, height: 60)
         private let bubbleView: BubbleView
         private lazy var screensharingImageView: UIView = {
