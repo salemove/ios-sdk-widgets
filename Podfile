@@ -1,4 +1,4 @@
-source 'https://github.com/CocoaPods/Specs.git'
+source 'https://cdn.cocoapods.org/'
 plugin 'cocoapods-no-autoimports'
 # cocoapods-no-autoimports__pods = ['Pods-GliaWidgets.debug']
 project 'GliaWidgets.xcodeproj'
