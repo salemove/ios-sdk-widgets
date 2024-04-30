@@ -118,4 +118,9 @@ platform :ios do
     sh("sed -i '' 's/\${CORE_SDK_VERSION}/#{core_sdk_version}/' ../Package.swift")
     sh("sed -i '' 's/\${CORE_SDK_CHECKSUM}/#{core_sdk_checksum}/' ../Package.swift")
   end
+
+  desc "Generate SDK documentation web page using jazzy"
+  lane :sdk_documentation do
+    jazzy
+  end
 end

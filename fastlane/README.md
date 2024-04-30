@@ -53,6 +53,14 @@ Creates a pull request in the repository with whatever changes have been made. U
 
 Creates a pull request in the repository with updates to Core SDK version. 
 
+### ios sdk_documentation
+
+```sh
+[bundle exec] fastlane ios sdk_documentation
+```
+
+Generate SDK documentation web page using jazzy
+
 ----
 
 This README.md is auto-generated and will be re-generated every time [_fastlane_](https://fastlane.tools) is run.
