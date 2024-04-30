@@ -96,6 +96,7 @@ workflows:
         - content: pod trunk push GliaWidgets.podspec --verbose --allow-warnings
     - cache-push@2: {}
     after_run:
+    - documentation
     - _increment_project_version
     - increment_widgets_version_in_cortex_financial
   development-build:
@@ -283,6 +284,22 @@ workflows:
     - opts:
         is_expand: false
       BITRISE_EXPORT_METHOD: app-store
+  documentation:
+    description: Generates documentation using jazzy and uploads to AWS. This workflow
+      doesn't checkout git repository and prepare xcproj/xcworkspace.
+    steps:
+    - fastlane@3:
+        inputs:
+        - work_dir: "$BITRISE_SOURCE_DIR"
+        - lane: ios sdk_documentation
+    - amazon-s3-upload@3:
+        inputs:
+        - upload_bucket: "$AWS_BUCKET/widgets"
+        - access_key_id: "$AWS_KEY"
+        - secret_access_key: "$AWS_PASSWORD"
+        - acl_control: public-read
+        - upload_local_path: "$BITRISE_SOURCE_DIR/$SDK_SCHEME/docs/"
+
 app:
   envs:
   - opts:

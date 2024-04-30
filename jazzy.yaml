@@ -1,0 +1,8 @@
+clean: true
+author: Glia Technologies, Inc
+author_url: https://glia.com
+github_url: https://github.com/salemove/ios-sdk-widgets
+root_url: https://docs.glia.com/glia-mobile/docs/ios-widgets-sdk
+output: docs
+theme: apple
+xcodebuild_arguments: [-workspace, 'GliaWidgets.xcworkspace', -scheme, 'GliaWidgets', -destination, "platform=iOS Simulator,name=iPhone 14"]
