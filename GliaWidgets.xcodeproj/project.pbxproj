@@ -3040,6 +3040,7 @@
 				AF552EDC2BEE954500FD5653 /* FlipCameraButtonStyle.swift */,
 				AF552EDA2BEE783500FD5653 /* FlipCameraButtonStyle.Accessibility.swift */,
 				1AC8AADC25D419CE00DAFE50 /* VideoStreamView.swift */,
+				AF4698072BE3EEF30046766B /* FlipCameraButton.swift */,
 			);
 			path = Video;
 			sourceTree = "<group>";
