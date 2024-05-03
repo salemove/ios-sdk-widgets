@@ -55,7 +55,12 @@ extension CoreSdkClient {
             startSocketObservation: GliaCore.sharedInstance.startSocketObservation,
             stopSocketObservation: GliaCore.sharedInstance.stopSocketObservation,
             createSendMessagePayload: CoreSdkClient.SendMessagePayload.init(content:attachment:),
-            createLogger: { try Logger(GliaCore.sharedInstance.createLogger(externalParameters: $0)) }
+            createLogger: { try Logger(GliaCore.sharedInstance.createLogger(externalParameters: $0)) },
+            getCameraDeviceManageable: {
+                try CameraDeviceManageableClient(
+                    GliaCore.sharedInstance.cameraDeviceManageable()
+                )
+            }
         )
     }()
 }
@@ -76,5 +81,13 @@ extension CoreSdkClient.AppDelegate {
             applicationDidFinishLaunchingWithOptions: gliaCoreAppDelegate.application(_:didFinishLaunchingWithOptions:),
             applicationDidBecomeActive: gliaCoreAppDelegate.applicationDidBecomeActive
         )
+    }
+}
+
+extension CoreSdkClient.CameraDeviceManageableClient {
+    init(_ live: CameraDeviceManageable) {
+        self.cameraDevices = { live.cameraDevices() }
+        self.currentCameraDevice = { live.currentCameraDevice() }
+        self.setCameraDevice = { live.setCameraDevice($0) }
     }
 }

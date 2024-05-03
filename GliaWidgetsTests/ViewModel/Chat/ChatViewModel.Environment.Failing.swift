@@ -56,7 +56,8 @@ extension ChatViewModel.Environment {
             },
             proximityManager: .failing,
             log: .failing,
-            operatorRequestHandlerService: .failing
+            operatorRequestHandlerService: .failing,
+            cameraDeviceManager: { .failing }
         )
     }
 }

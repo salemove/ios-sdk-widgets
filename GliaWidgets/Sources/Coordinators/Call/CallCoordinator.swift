@@ -86,7 +86,8 @@ private extension CallCoordinator {
                 createSendMessagePayload: environment.createSendMessagePayload,
                 proximityManager: environment.proximityManager,
                 log: environment.log,
-                operatorRequestHandlerService: environment.operatorRequestHandlerService
+                operatorRequestHandlerService: environment.operatorRequestHandlerService,
+                cameraDeviceManager: environment.cameraDeviceManager
             ),
             call: call,
             unreadMessages: unreadMessages,
@@ -163,5 +164,6 @@ extension CallCoordinator {
         var log: CoreSdkClient.Logger
         var snackBar: SnackBar
         var operatorRequestHandlerService: OperatorRequestHandlerService
+        var cameraDeviceManager: CoreSdkClient.GetCameraDeviceManageable
     }
 }

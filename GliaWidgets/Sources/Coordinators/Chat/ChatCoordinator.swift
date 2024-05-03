@@ -167,22 +167,13 @@ extension ChatCoordinator {
             startAction: startAction,
             deliveredStatusText: viewFactory.theme.chat.visitorMessageStyle.delivered,
             chatType: chatType,
-            environment: Self.enviromentForChatModel(environment: environment, viewFactory: viewFactory),
+            environment: Self.environmentForChatModel(environment: environment, viewFactory: viewFactory),
             maximumUploads: environment.maximumUploads
         )
         viewModel.isInteractableCard = viewFactory.messageRenderer?.isInteractable
         viewModel.shouldShowCard = viewFactory.messageRenderer?.shouldShowCard
         viewModel.engagementDelegate = { [weak self] event in
-            switch event {
-            case .back:
-                self?.delegate?(.back)
-            case let .openLink(link):
-                self?.delegate?(.openLink(link))
-            case .engaged(let url):
-                self?.delegate?(.engaged(operatorImageUrl: url))
-            case .finished:
-                self?.delegate?(.finished)
-            }
+            self?.handleEngagementDelegateEvent(event)
         }
         viewModel.delegate = { [weak self] event in
             switch event {
@@ -216,7 +207,20 @@ extension ChatCoordinator {
         return viewModel
     }
 
-    static func enviromentForChatModel(
+    func handleEngagementDelegateEvent(_ event: EngagementViewModel.DelegateEvent) {
+        switch event {
+        case .back:
+            self.delegate?(.back)
+        case let .openLink(link):
+            self.delegate?(.openLink(link))
+        case .engaged(let url):
+            self.delegate?(.engaged(operatorImageUrl: url))
+        case .finished:
+            self.delegate?(.finished)
+        }
+    }
+
+    static func environmentForChatModel(
         environment: Environment,
         viewFactory: ViewFactory
     ) -> ChatViewModel.Environment {
@@ -243,7 +247,8 @@ extension ChatCoordinator {
             createSendMessagePayload: environment.createSendMessagePayload,
             proximityManager: environment.proximityManager,
             log: environment.log,
-            operatorRequestHandlerService: environment.operatorRequestHandlerService
+            operatorRequestHandlerService: environment.operatorRequestHandlerService,
+            cameraDeviceManager: environment.cameraDeviceManager
         )
     }
 }
