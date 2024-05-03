@@ -82,6 +82,11 @@ class CallView: EngagementView {
     }()
 
     var callButtonTapped: ((CallButton.Kind) -> Void)?
+    var flipCameraButtonTapped: Cmd? {
+        didSet {
+            localVideoView.flipCameraButtonTapped = flipCameraButtonTapped
+        }
+    }
     let topStackView = UIStackView()
 
     private let style: CallStyle
