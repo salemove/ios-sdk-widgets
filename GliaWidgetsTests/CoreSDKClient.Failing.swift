@@ -64,6 +64,9 @@ extension CoreSdkClient {
         createLogger: { _ in
             fail("\(Self.self).createLogger")
             return Logger.mock
+        },
+        getCameraDeviceManageable: {
+            .failing
         }
     )
 }
@@ -142,6 +145,22 @@ extension CoreSdkClient.Logger {
         },
         reportDeprecatedMethodClosure: { _, _, _, _ in
             fail("\(Self.self).reportDeprecatedMethodClosure")
+        }
+    )
+}
+
+extension CoreSdkClient.CameraDeviceManageableClient {
+    static let failing = Self(
+        setCameraDevice: { _ in
+            fail("\(Self.self).setCameraDevice")
+        },
+        cameraDevices: {
+            fail("\(Self.self).cameraDevices")
+            return []
+        },
+        currentCameraDevice: {
+            fail("\(Self.self).currentCameraDevice")
+            return nil
         }
     )
 }

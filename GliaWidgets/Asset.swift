@@ -58,6 +58,7 @@ public enum Asset {
       public static let callSpeakerInactive = ImageAsset(name: "call-speaker-inactive")
       public static let callVideoActive = ImageAsset(name: "call-video-active")
       public static let callVideoInactive = ImageAsset(name: "call-video-inactive")
+      public static let flipCamera = ImageAsset(name: "flip-camera")
       public static let callOnHold = ImageAsset(name: "call-on-hold")
     public static let screensharing = ImageAsset(name: "screensharing")
       public static let uploadError = ImageAsset(name: "uploadError")
@@ -101,6 +102,7 @@ public enum Asset {
       callSpeakerInactive,
       callVideoActive,
       callVideoInactive,
+      flipCamera,
       callOnHold,
       screensharing,
       uploadError,
@@ -138,7 +140,8 @@ public enum Asset {
 // swiftlint:enable identifier_name line_length nesting type_body_length type_name
 
 public extension Image {
-  @available(OSX, unavailable,
+  @available(iOS 1.0, tvOS 1.0, watchOS 1.0, *)
+  @available(OSX, deprecated,
     message: "This initializer is unsafe on macOS, please use the ImageAsset.image property")
   convenience init!(asset: ImageAsset) {
     #if os(iOS) || os(tvOS)

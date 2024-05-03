@@ -61,7 +61,11 @@ extension Glia.Environment {
         print: .failing,
         conditionalCompilation: .failing,
         snackBar: .failing,
-        processInfo: .failing
+        processInfo: .failing,
+        cameraDeviceManager: {
+            fail("\(Self.self).cameraDeviceManager")
+            return .failing
+        }
     )
 }
 

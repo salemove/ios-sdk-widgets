@@ -25,5 +25,6 @@ extension EngagementViewModel {
         var proximityManager: ProximityManager
         var log: CoreSdkClient.Logger
         var operatorRequestHandlerService: OperatorRequestHandlerService
+        var cameraDeviceManager: CoreSdkClient.GetCameraDeviceManageable
     }
 }
