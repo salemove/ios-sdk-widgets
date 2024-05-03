@@ -131,6 +131,8 @@ private extension CallViewController {
                 view.setConnectState(.transferring, animated: true)
             case .showSnackBarView:
                 self.showSnackBarView()
+            case let .setCameraFlip(flipCallback):
+                view.flipCameraButtonTapped = flipCallback
             }
         }
     }

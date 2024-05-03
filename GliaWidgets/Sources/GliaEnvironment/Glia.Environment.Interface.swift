@@ -52,6 +52,7 @@ extension Glia {
         var conditionalCompilation: ConditionalCompilationClient
         var snackBar: SnackBar
         var processInfo: ProcessInfoHandling
+        var cameraDeviceManager: CoreSdkClient.GetCameraDeviceManageable
     }
 }
 
