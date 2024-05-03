@@ -36,7 +36,8 @@ extension CoreSdkClient {
         startSocketObservation: {},
         stopSocketObservation: {},
         createSendMessagePayload: { _, _ in .mock() },
-        createLogger: { _ in Logger.mock }
+        createLogger: { _ in Logger.mock },
+        getCameraDeviceManageable: { .mock }
     )
 }
 
@@ -496,5 +497,13 @@ extension CoreSdkClient.Engagement {
             mediaStreams: media
         )
     }
+}
+
+extension CoreSdkClient.CameraDeviceManageableClient {
+    static let mock = Self(
+        setCameraDevice: { _ in },
+        cameraDevices: { [] },
+        currentCameraDevice: { nil }
+    )
 }
 #endif

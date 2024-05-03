@@ -64,7 +64,8 @@ class ChatViewModelTests: XCTestCase {
                 },
                 proximityManager: .mock,
                 log: .mock,
-                operatorRequestHandlerService: .mock()
+                operatorRequestHandlerService: .mock(),
+                cameraDeviceManager: { .mock }
             ),
             maximumUploads: { 2 }
         )

@@ -145,6 +145,9 @@ struct CoreSdkClient {
 
     typealias CreateLogger = ([String: String]) throws -> Logger
     var createLogger: CreateLogger
+
+    typealias GetCameraDeviceManageable = () throws -> CameraDeviceManageableClient
+    var getCameraDeviceManageable: GetCameraDeviceManageable
 }
 
 extension CoreSdkClient {
@@ -189,6 +192,7 @@ extension CoreSdkClient {
     typealias AttachmentType = GliaCoreSDK.AttachmentType
     typealias AudioStreamable = GliaCoreSDK.AudioStreamable
     typealias AudioStreamAddedBlock = GliaCoreSDK.AudioStreamAddedBlock
+    typealias CameraDevice = GliaCoreSDK.CameraDevice
     typealias EngagementFile = GliaCoreSDK.EngagementFile
     typealias EngagementFileCompletionBlock = GliaCoreSDK.EngagementFileCompletionBlock
     typealias EngagementFileData = GliaCoreSDK.EngagementFileData
@@ -234,6 +238,7 @@ extension CoreSdkClient {
     typealias StreamableOnHoldHandler = GliaCoreSDK.StreamableOnHoldHandler
     typealias StreamView = GliaCoreSDK.StreamView
     typealias SuccessBlock = GliaCoreSDK.SuccessBlock
+    typealias VideoScalingOptions = GliaCoreSDK.VideoScalingOptions
     typealias VideoStreamable = GliaCoreSDK.VideoStreamable
     typealias VideoStreamAddedBlock = GliaCoreSDK.VideoStreamAddedBlock
     typealias VisitorContext = GliaCoreSDK.VisitorContext
@@ -258,4 +263,12 @@ extension CoreSdkClient {
     typealias LogConfigurable = GliaCoreSDK.LogConfigurable
     typealias LoggingError = GliaCoreSDK.LoggingError
     typealias LogLevel = GliaCoreSDK.LogLevel
+}
+
+extension CoreSdkClient {
+    struct CameraDeviceManageableClient {
+        var setCameraDevice: (_ cameraDevice: GliaCoreSDK.CameraDevice) -> Void
+        var cameraDevices: () -> [GliaCoreSDK.CameraDevice]
+        var currentCameraDevice: () -> GliaCoreSDK.CameraDevice?
+    }
 }

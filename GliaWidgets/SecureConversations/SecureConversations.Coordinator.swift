@@ -299,7 +299,8 @@ extension SecureConversations.Coordinator {
                 snackBar: environment.snackBar,
                 notificationCenter: environment.notificationCenter,
                 operatorRequestHandlerService: environment.operatorRequestHandlerService,
-                maximumUploads: environment.maximumUploads
+                maximumUploads: environment.maximumUploads,
+                cameraDeviceManager: environment.cameraDeviceManager
             ),
             startWithSecureTranscriptFlow: true
         )
@@ -372,6 +373,7 @@ extension SecureConversations.Coordinator {
         var snackBar: SnackBar
         var operatorRequestHandlerService: OperatorRequestHandlerService
         var maximumUploads: () -> Int
+        var cameraDeviceManager: CoreSdkClient.GetCameraDeviceManageable
     }
 
     enum DelegateEvent {
