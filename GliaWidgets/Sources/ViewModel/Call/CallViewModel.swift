@@ -325,6 +325,7 @@ extension CallViewModel {
         action?(.setLocalVideo(stream.getStreamView()))
         guard call.isVisitorOnHold.value == false else { return }
         stream.playVideo()
+        showCameraFlipIfNeeded()
     }
 
     private func hideRemoteVideo() {
@@ -530,6 +531,7 @@ extension CallViewModel {
         case setLocalVideo(CoreSdkClient.StreamView?)
         case setVisitorOnHold(isOnHold: Bool)
         case showSnackBarView
+        case setCameraFlip(Cmd?)
     }
 
     enum DelegateEvent {

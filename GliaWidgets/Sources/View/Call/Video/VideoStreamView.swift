@@ -16,6 +16,17 @@ class VideoStreamView: UIView {
         }
     }
 
+    let flipButton = FlipCameraButton()
+
+    var flipCameraButtonTapped: Cmd? {
+        didSet {
+            guard flipCameraButtonTapped != oldValue else {
+                return
+            }
+            renderFlipCameraButton()
+        }
+    }
+
     private let kind: Kind
 
     init(_ kind: Kind) {
@@ -66,6 +77,27 @@ class VideoStreamView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         constraints += label.layoutInSuperviewCenter()
         show?(true)
+
+        switch self.kind {
+        case .local:
+            addSubview(flipButton)
+            flipButton.translatesAutoresizingMaskIntoConstraints = false
+            constraints += [
+                flipButton.widthAnchor.constraint(equalToConstant: FlipCameraButton.size.width),
+                flipButton.heightAnchor.constraint(equalToConstant: FlipCameraButton.size.height),
+                flipButton.bottomAnchor.constraint(
+                    equalTo: self.bottomAnchor,
+                    constant: FlipCameraButton.bottomTrailingPadding
+                ),
+                flipButton.trailingAnchor.constraint(
+                    equalTo: self.trailingAnchor,
+                    constant: FlipCameraButton.bottomTrailingPadding
+                )
+            ]
+            renderFlipCameraButton()
+        case .remote:
+            break
+        }
     }
 
     @objc
@@ -75,5 +107,9 @@ class VideoStreamView: UIView {
         let translation = gesture.translation(in: self)
         pan?(translation)
         gesture.setTranslation(.zero, in: self)
+    }
+
+    func renderFlipCameraButton() {
+        flipButton.props = .init(style: .custom, tap: flipCameraButtonTapped)
     }
 }

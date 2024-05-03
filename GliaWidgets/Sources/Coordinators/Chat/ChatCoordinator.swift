@@ -243,7 +243,8 @@ extension ChatCoordinator {
             createSendMessagePayload: environment.createSendMessagePayload,
             proximityManager: environment.proximityManager,
             log: environment.log,
-            operatorRequestHandlerService: environment.operatorRequestHandlerService
+            operatorRequestHandlerService: environment.operatorRequestHandlerService,
+            cameraDeviceManager: environment.cameraDeviceManager
         )
     }
 }

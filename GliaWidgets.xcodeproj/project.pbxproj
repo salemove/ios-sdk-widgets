@@ -601,7 +601,9 @@
 		AF3D520B2983235C00AD8E69 /* FileUploader.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3D520A2983235C00AD8E69 /* FileUploader.Mock.swift */; };
 		AF3D520D2983B3DD00AD8E69 /* FileUploader.Environment.Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3D520C2983B3DD00AD8E69 /* FileUploader.Environment.Interface.swift */; };
 		AF3D520F2983BC5600AD8E69 /* FileUploader.Environment.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3D520E2983BC5600AD8E69 /* FileUploader.Environment.Mock.swift */; };
+		AF4698082BE3EEF30046766B /* FlipCameraButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF4698072BE3EEF30046766B /* FlipCameraButton.swift */; };
 		AF4D821C29D6E572007763F8 /* TranscriptModel.DividedChatItemsForUnreadCountTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF4D821B29D6E572007763F8 /* TranscriptModel.DividedChatItemsForUnreadCountTests.swift */; };
+		AF552ED42BEB8CC900FD5653 /* UIButton+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF552ED22BEB8CC900FD5653 /* UIButton+Extensions.swift */; };
 		AF6291112B0813B000D3D76B /* SwiftBased.Live.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF62910E2B0813B000D3D76B /* SwiftBased.Live.swift */; };
 		AF6291122B0813B000D3D76B /* SwiftBased.Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF62910F2B0813B000D3D76B /* SwiftBased.Interface.swift */; };
 		AF6291132B0813B000D3D76B /* SwiftBased.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF6291102B0813B000D3D76B /* SwiftBased.Mock.swift */; };
@@ -632,6 +634,7 @@
 		AFA2FDFC289082F500428E6D /* OnHoldOverlayStyle.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA2FDFB289082F500428E6D /* OnHoldOverlayStyle.Mock.swift */; };
 		AFA5E96229F2CF9400F13DB7 /* SecureConversations.TranscriptModel.DividedChatItemsForUnreadCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA5E96129F2CF9400F13DB7 /* SecureConversations.TranscriptModel.DividedChatItemsForUnreadCount.swift */; };
 		AFAB409229798BD4007F96CC /* SecureConversations.FileUploadListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFAB409129798BD4007F96CC /* SecureConversations.FileUploadListView.swift */; };
+		AFB24A1A2BEAA8B700B47DBF /* CallViewModel+CameraFlip.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB24A192BEAA8B700B47DBF /* CallViewModel+CameraFlip.swift */; };
 		AFBBF5782851C391004993B3 /* Glia.Deprecated.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBBF5772851C391004993B3 /* Glia.Deprecated.swift */; };
 		AFC40C1C29965F0F001B4C53 /* SecureConversations.ChatWithTranscriptModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC40C1B29965F0F001B4C53 /* SecureConversations.ChatWithTranscriptModel.swift */; };
 		AFCF8A5A2A02A97100B7ABB3 /* ChatItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCF8A592A02A97100B7ABB3 /* ChatItemTests.swift */; };
@@ -1548,7 +1551,9 @@
 		AF3D520A2983235C00AD8E69 /* FileUploader.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUploader.Mock.swift; sourceTree = "<group>"; };
 		AF3D520C2983B3DD00AD8E69 /* FileUploader.Environment.Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUploader.Environment.Interface.swift; sourceTree = "<group>"; };
 		AF3D520E2983BC5600AD8E69 /* FileUploader.Environment.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUploader.Environment.Mock.swift; sourceTree = "<group>"; };
+		AF4698072BE3EEF30046766B /* FlipCameraButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlipCameraButton.swift; sourceTree = "<group>"; };
 		AF4D821B29D6E572007763F8 /* TranscriptModel.DividedChatItemsForUnreadCountTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranscriptModel.DividedChatItemsForUnreadCountTests.swift; sourceTree = "<group>"; };
+		AF552ED22BEB8CC900FD5653 /* UIButton+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIButton+Extensions.swift"; path = "../../../../ios-sdk/GliaCoreSDK/GliaCoreSDK/Extensions/UIButton+Extensions.swift"; sourceTree = "<group>"; };
 		AF62910E2B0813B000D3D76B /* SwiftBased.Live.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftBased.Live.swift; sourceTree = "<group>"; };
 		AF62910F2B0813B000D3D76B /* SwiftBased.Interface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftBased.Interface.swift; sourceTree = "<group>"; };
 		AF6291102B0813B000D3D76B /* SwiftBased.Mock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftBased.Mock.swift; sourceTree = "<group>"; };
@@ -1579,6 +1584,7 @@
 		AFA2FDFB289082F500428E6D /* OnHoldOverlayStyle.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnHoldOverlayStyle.Mock.swift; sourceTree = "<group>"; };
 		AFA5E96129F2CF9400F13DB7 /* SecureConversations.TranscriptModel.DividedChatItemsForUnreadCount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.TranscriptModel.DividedChatItemsForUnreadCount.swift; sourceTree = "<group>"; };
 		AFAB409129798BD4007F96CC /* SecureConversations.FileUploadListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.FileUploadListView.swift; sourceTree = "<group>"; };
+		AFB24A192BEAA8B700B47DBF /* CallViewModel+CameraFlip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CallViewModel+CameraFlip.swift"; sourceTree = "<group>"; };
 		AFBBF5772851C391004993B3 /* Glia.Deprecated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Glia.Deprecated.swift; sourceTree = "<group>"; };
 		AFC40C1B29965F0F001B4C53 /* SecureConversations.ChatWithTranscriptModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.ChatWithTranscriptModel.swift; sourceTree = "<group>"; };
 		AFCF8A592A02A97100B7ABB3 /* ChatItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatItemTests.swift; sourceTree = "<group>"; };
@@ -2780,6 +2786,7 @@
 				84D2293D28D36B2A00F64FE7 /* UIColor+Hex.swift */,
 				C0857DEE28D9AD32008D171D /* UIFont+Extensions.swift */,
 				1A0EDF6C25E7AC100076D1AD /* UIImage+Extensions.swift */,
+				AF552ED22BEB8CC900FD5653 /* UIButton+Extensions.swift */,
 				1A60B0262568070800E53F53 /* UIStackView+Extensions.swift */,
 				1A4AD3BD256D37FD00468BFB /* UITableView+Extensions.swift */,
 				C08D776328F5910A000461E5 /* UIView+Extensions.swift */,
@@ -2963,6 +2970,7 @@
 				1A0C9AB925C93F5100815406 /* Data */,
 				1ABD6CAB25B71D1B00D56EFA /* CallViewModel.swift */,
 				9AE9E4B227E0E60F00BFE239 /* CallViewModel.Mock.swift */,
+				AFB24A192BEAA8B700B47DBF /* CallViewModel+CameraFlip.swift */,
 			);
 			path = Call;
 			sourceTree = "<group>";
@@ -3017,6 +3025,7 @@
 			isa = PBXGroup;
 			children = (
 				1AC8AADC25D419CE00DAFE50 /* VideoStreamView.swift */,
+				AF4698072BE3EEF30046766B /* FlipCameraButton.swift */,
 			);
 			path = Video;
 			sourceTree = "<group>";
@@ -5502,6 +5511,7 @@
 				1A0C144425B868FC00B00695 /* CallCoordinator.swift in Sources */,
 				8491AF022A6FBBBA00CC3E72 /* GvaGalleryListView.swift in Sources */,
 				C02248A72AD53DDA00CC4930 /* LiveObservationConfirmation.swift in Sources */,
+				AF4698082BE3EEF30046766B /* FlipCameraButton.swift in Sources */,
 				7594098C298D38C2008B173A /* CallVisualizer.Environment.swift in Sources */,
 				1A1E309B25F8E1F700850E68 /* DataStorage.swift in Sources */,
 				AF6AB34D298A9F2500003645 /* SecureConversations.FileUploadListViewModel.swift in Sources */,
@@ -5656,6 +5666,7 @@
 				C49A29EA2614A32600819269 /* ChatMessageContent.swift in Sources */,
 				75940961298D3889008B173A /* ChatMessageRenderer.Interface.swift in Sources */,
 				3100D929296E946600DEC9CE /* SecureConversations.ConfirmationView.swift in Sources */,
+				AF552ED42BEB8CC900FD5653 /* UIButton+Extensions.swift in Sources */,
 				9AB3402727FCDD92006E0FE2 /* ChatStyle.Accessibility.swift in Sources */,
 				845E2F74283D43FA00C04D56 /* AlertStyle.Accessibility.swift in Sources */,
 				1A60B0082567F29900E53F53 /* HeaderStyle.swift in Sources */,
@@ -5830,6 +5841,7 @@
 				8491AF1F2A7D027D00CC3E72 /* Theme.ChatTextContentStyle.swift in Sources */,
 				31CA0F6C2AE6947D00A55685 /* ScreenSharingViewModel.mock.swift in Sources */,
 				84D2293C28D1FC4B00F64FE7 /* ChatViewModel+CustomCard.swift in Sources */,
+				AFB24A1A2BEAA8B700B47DBF /* CallViewModel+CameraFlip.swift in Sources */,
 				84265DF02983E62100D65842 /* Theme+ScreenSharing.swift in Sources */,
 				6E9C01AD26D3B8B500EBE1D4 /* OperatorTypingIndicatorView.swift in Sources */,
 				C090469E2B7D075C003C437C /* WelcomeStyle.MessageTextViewActiveStyle.Accessibility.swift in Sources */,

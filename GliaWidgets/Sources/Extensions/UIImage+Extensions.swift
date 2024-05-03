@@ -54,4 +54,24 @@ extension UIImage {
             orientation: self.imageOrientation
         )
     }
+
+    func image(withTintColor color: UIColor) -> UIImage {
+        UIGraphicsBeginImageContextWithOptions(self.size, false, self.scale)
+        guard let context: CGContext = UIGraphicsGetCurrentContext() else {
+            return UIImage()
+        }
+        context.translateBy(x: 0, y: self.size.height)
+        context.scaleBy(x: 1.0, y: -1.0)
+        context.setBlendMode(CGBlendMode.normal)
+        let rect: CGRect = CGRect(x: 0, y: 0, width: self.size.width, height: self.size.height)
+        guard let cgImage = self.cgImage else {
+            return UIImage()
+        }
+        context.clip(to: rect, mask: cgImage)
+        color.setFill()
+        context.fill(rect)
+        let newImage: UIImage = UIGraphicsGetImageFromCurrentImageContext() ?? UIImage()
+        UIGraphicsEndImageContext()
+        return newImage
+    }
 }

@@ -39,5 +39,6 @@ extension ChatCoordinator {
         var notificationCenter: FoundationBased.NotificationCenter
         var operatorRequestHandlerService: OperatorRequestHandlerService
         var maximumUploads: () -> Int
+        var cameraDeviceManager: CoreSdkClient.GetCameraDeviceManageable
     }
 }

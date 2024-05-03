@@ -41,7 +41,8 @@ extension Glia.Environment {
         print: .live,
         conditionalCompilation: .live,
         snackBar: .live,
-        processInfo: .live
+        processInfo: .live, 
+        cameraDeviceManager: { try CoreSdkClient.live.getCameraDeviceManageable() }
     )
 }
 
