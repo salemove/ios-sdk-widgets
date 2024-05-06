@@ -62,13 +62,18 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
     }
 
     func start(maximize: Bool) {
+        guard let queueInformation = self.interactor.queueInformation.first(where: {
+            $0.kind == engagementKind
+        }) else { return }
+
         switch engagementKind {
         case .none:
             break
         case .chat:
             let chatViewController = startChat(
                 withAction: .startEngagement,
-                showsCallBubble: false
+                showsCallBubble: false,
+                queueIds: queueInformation.queueIds
             )
             engagement = .chat(chatViewController)
             interactor.state = .enqueueing(.text)
@@ -101,7 +106,8 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
             interactor.state = .enqueueing(mediaType)
             let chatViewController = startChat(
                 withAction: .none,
-                showsCallBubble: true
+                showsCallBubble: true,
+                queueIds: queueInformation.queueIds
             )
 
             engagement = .call(
@@ -116,7 +122,10 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
                 animated: false
             )
         case .messaging(let messagingInitialScreen):
-            let secureConversationsWelcomeViewController = startSecureConversations(using: messagingInitialScreen)
+            let secureConversationsWelcomeViewController = startSecureConversations(
+                using: messagingInitialScreen,
+                queueIds: queueInformation.queueIds
+            )
             engagement = .secureConversations(secureConversationsWelcomeViewController)
             navigationPresenter.setViewControllers(
                 [secureConversationsWelcomeViewController],
@@ -238,7 +247,8 @@ extension EngagementCoordinator {
 
     private func startChat(
         withAction startAction: ChatViewModel.StartAction,
-        showsCallBubble: Bool
+        showsCallBubble: Bool,
+        queueIds: [String]
     ) -> ChatViewController {
         let coordinator = ChatCoordinator(
             interactor: interactor,
@@ -269,7 +279,7 @@ extension EngagementCoordinator {
                 fetchChatHistory: environment.fetchChatHistory,
                 createFileUploadListModel: environment.createFileUploadListModel,
                 sendSecureMessagePayload: environment.sendSecureMessagePayload,
-                queueIds: interactor.queueIds,
+                queueIds: queueIds,
                 listQueues: environment.listQueues,
                 secureUploadFile: environment.uploadSecureFile,
                 getSecureUnreadMessageCount: environment.getSecureUnreadMessageCount,
@@ -498,14 +508,15 @@ extension EngagementCoordinator {
     }
 
     private func startSecureConversations(
-        using messagingInitialScreen: SecureConversations.InitialScreen
+        using messagingInitialScreen: SecureConversations.InitialScreen,
+        queueIds: [String]
     ) -> UIViewController {
         let coordinator = SecureConversations.Coordinator(
             messagingInitialScreen: messagingInitialScreen,
             viewFactory: viewFactory,
             navigationPresenter: navigationPresenter,
             environment: .init(
-                queueIds: interactor.queueIds,
+                queueIds: queueIds,
                 listQueues: environment.listQueues,
                 sendSecureMessagePayload: environment.sendSecureMessagePayload,
                 createFileUploader: environment.createFileUploader,

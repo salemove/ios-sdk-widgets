@@ -1,5 +1,48 @@
 import Foundation
 
+public struct QueueInformation {
+    public let kind: EngagementKind
+    public let queueIds: [String]
+
+    public init(kind: EngagementKind, queueIds: [String]) {
+        self.kind = kind
+        self.queueIds = queueIds
+    }
+}
+
+extension EngagementKind {
+    func convert() -> CoreSdkClient.MediaType {
+        switch self {
+        case .chat:
+            return .text
+        case .audioCall:
+            return .audio
+        case .videoCall:
+            return .video
+        case .messaging:
+            return .messaging
+        default: return .unknown
+        }
+
+    }
+}
+
+extension CoreSdkClient.MediaType {
+    func convert() -> EngagementKind {
+        switch self {
+        case .text:
+            return .chat
+        case .audio:
+            return .audioCall
+        case .video:
+            return .videoCall
+        case .messaging:
+            return .messaging(.welcome)
+        default: return .none
+        }
+    }
+}
+
 enum InteractorState {
     case none
     case enqueueing(CoreSdkClient.MediaType)
@@ -37,7 +80,8 @@ enum InteractorEvent {
 class Interactor {
     typealias EventHandler = (InteractorEvent) -> Void
 
-    let queueIds: [String]
+    let queueInformation: [QueueInformation]
+
     var engagedOperator: CoreSdkClient.Operator? {
         switch state {
         case .engaged(let engagedOperator):
@@ -77,10 +121,10 @@ class Interactor {
 
     init(
         visitorContext: Configuration.VisitorContext?,
-        queueIds: [String],
+        queueInformation: [QueueInformation],
         environment: Environment
     ) {
-        self.queueIds = queueIds
+        self.queueInformation = queueInformation
         self.visitorContext = visitorContext
         self.environment = environment
     }
@@ -134,9 +178,14 @@ extension Interactor {
             .map(CoreSdkClient.VisitorContext.ContextType.assetId)
             .map(CoreSdkClient.VisitorContext.init(_:))
 
+        let widgetsMediaType = mediaType.convert()
+        let queueIds = self.queueInformation
+            .filter { $0.kind == widgetsMediaType }
+            .flatMap { $0.queueIds }
+
         self.environment.coreSdk.queueForEngagement(
             .init(
-                queueIds: self.queueIds,
+                queueIds: queueIds,
                 visitorContext: coreSdkVisitorContext,
                 // shouldCloseAllQueues is `true` by default core sdk,
                 // here it is passed explicitly

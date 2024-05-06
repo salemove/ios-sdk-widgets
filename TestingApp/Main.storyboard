@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Y6W-OH-hqX">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22155" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Y6W-OH-hqX">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22131"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -84,39 +84,17 @@
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="32" translatesAutoresizingMaskIntoConstraints="NO" id="qwv-F0-vOF">
-                                                <rect key="frame" x="74" y="162" width="266" height="30"/>
+                                                <rect key="frame" x="175" y="162" width="64" height="30"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zmv-pl-N2H">
-                                                        <rect key="frame" x="0.0" y="0.0" width="68" height="30"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="64" height="30"/>
                                                         <accessibility key="accessibilityConfiguration" identifier="main_chat_button"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="30" id="9bb-ZJ-g4f"/>
                                                         </constraints>
-                                                        <state key="normal" title="Start chat"/>
+                                                        <state key="normal" title="Start Glia"/>
                                                         <connections>
                                                             <action selector="chatTapped" destination="Y6W-OH-hqX" eventType="touchUpInside" id="GkY-py-VQr"/>
-                                                        </connections>
-                                                    </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="USF-zD-dZ5">
-                                                        <rect key="frame" x="100" y="0.0" width="67" height="30"/>
-                                                        <accessibility key="accessibilityConfiguration" identifier="main_audio_button"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="height" constant="30" id="PFk-Yr-vcD"/>
-                                                        </constraints>
-                                                        <state key="normal" title="Audio call"/>
-                                                        <connections>
-                                                            <action selector="audioTapped" destination="Y6W-OH-hqX" eventType="touchUpInside" id="Mwu-UC-VQz"/>
-                                                        </connections>
-                                                    </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tG2-uU-gYf">
-                                                        <rect key="frame" x="199" y="0.0" width="67" height="30"/>
-                                                        <accessibility key="accessibilityConfiguration" identifier="main_video_button"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="height" constant="30" id="Hga-kH-fOK"/>
-                                                        </constraints>
-                                                        <state key="normal" title="Video call"/>
-                                                        <connections>
-                                                            <action selector="videoTapped" destination="Y6W-OH-hqX" eventType="touchUpInside" id="gAa-VI-Ha1"/>
                                                         </connections>
                                                     </button>
                                                 </subviews>
@@ -328,7 +306,7 @@
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemBlueColor">
-            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

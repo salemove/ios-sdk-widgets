@@ -215,12 +215,17 @@ extension ViewController {
         #endif
         configuration.pushNotifications = pushNotifications
 
+        let queueInformation: [QueueInformation] = [
+            .init(kind: .chat, queueIds: [queueId]),
+            .init(kind: .audioCall, queueIds: [queueId]),
+            .init(kind: .videoCall, queueIds: [queueId]),
+            .init(kind: .messaging(.welcome), queueIds: [queueId])
+        ]
         let startEngagement = {
             self.catchingError {
                 try Glia.sharedInstance.startEngagement(
                     engagementKind: engagementKind,
-                    in: [self.queueId],
-                    theme: self.theme
+                    with: queueInformation
                 )
             }
         }

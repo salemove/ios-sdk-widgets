@@ -9,7 +9,7 @@ extension Interactor {
     ) -> Interactor {
         .init(
             visitorContext: visitorContext,
-            queueIds: [queueId],
+            queueInformation: [QueueInformation(kind: .chat, queueIds: [queueId])],
             environment: environment
         )
     }

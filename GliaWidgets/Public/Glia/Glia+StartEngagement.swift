@@ -22,14 +22,10 @@ extension Glia {
     ///
     public func startEngagement(
         engagementKind: EngagementKind,
-        in queueIds: [String],
+        with queueInformation: [QueueInformation],
         features: Features = .all,
         sceneProvider: SceneProvider? = nil
     ) throws {
-        let trimmedQueueIds = queueIds
-            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
-            .filter { !$0.isEmpty }
-        guard !trimmedQueueIds.isEmpty else { throw GliaError.startingEngagementWithNoQueueIdsIsNotAllowed }
         // It checks if ongoing engagement exists on WidgetsSDK side, if it doesn't but ongoing engagement exists
         // on CoreSDK side, it will be restored.
         guard engagement == .none else { throw GliaError.engagementExists }
@@ -42,7 +38,7 @@ extension Glia {
         // Creates interactor instance
         let createdInteractor = setupInteractor(
             configuration: configuration,
-            queueIds: trimmedQueueIds
+            queueInformation: queueInformation
         )
 
         // Apply company name to theme and get the modified theme
@@ -71,7 +67,7 @@ extension Glia {
             ongoingEngagementMediaStreams = .init(audio: media.audio, video: nil)
         }
 
-        startRootCoordinator(
+        startMediaSelectorCoordinator(
             with: createdInteractor,
             viewFactory: viewFactory,
             sceneProvider: sceneProvider,
@@ -188,6 +184,45 @@ extension Glia {
         )
         rootCoordinator?.delegate = { [weak self] event in self?.handleCoordinatorEvent(event) }
         rootCoordinator?.start(maximize: maximize)
+    }
+
+    func startMediaSelectorCoordinator(
+        with interactor: Interactor,
+        viewFactory: ViewFactory,
+        sceneProvider: SceneProvider?,
+        engagementKind: EngagementKind,
+        features: Features,
+        maximize: Bool = true
+    ) {
+        self.mediaSelectorCoordinator = MediaSelectorCoordinator(
+            interactor: interactor,
+            viewFactory: viewFactory,
+            sceneProvider: sceneProvider,
+            environment: .init(
+                uiApplication: environment.uiApplication,
+                uiScreen: environment.uiScreen,
+                log: loggerPhase.logger
+            )
+        )
+
+        mediaSelectorCoordinator?.delegate = { [weak self] event in
+            guard let self else { return }
+
+            switch event {
+            case .queueSelected(let information):
+                self.startRootCoordinator(
+                    with: interactor,
+                    viewFactory: viewFactory,
+                    sceneProvider: sceneProvider,
+                    engagementKind: information.kind,
+                    features: features
+                )
+            default: break
+            }
+        }
+
+        _ = self.mediaSelectorCoordinator?.start()
+
     }
 
     private func handleCoordinatorEvent(_ event: EngagementCoordinator.DelegateEvent) {

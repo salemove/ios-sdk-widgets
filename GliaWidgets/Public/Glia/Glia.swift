@@ -13,6 +13,21 @@ public enum EngagementKind: Equatable {
     case videoCall
     /// Secure conversations
     case messaging(SecureConversations.InitialScreen = .welcome)
+
+    var toString: String {
+        switch self {
+        case .none:
+            return "None"
+        case .chat:
+            return "Chat"
+        case .audioCall:
+            return "Audio Call"
+        case .videoCall:
+            return "Video Call"
+        case .messaging:
+            return "Messaging"
+        }
+    }
 }
 
 extension EngagementKind {
@@ -125,7 +140,9 @@ public class Glia {
             operatorRequestHandlerService: operatorRequestHandlerService
         )
     )
+
     var rootCoordinator: EngagementCoordinator?
+    var mediaSelectorCoordinator: MediaSelectorCoordinator?
     var interactor: Interactor?
     var environment: Environment
     var messageRenderer: MessageRenderer? = .webRenderer
@@ -447,11 +464,11 @@ extension Glia {
     @discardableResult
     func setupInteractor(
         configuration: Configuration,
-        queueIds: [String] = []
+        queueInformation: [QueueInformation] = []
     ) -> Interactor {
         let interactor = Interactor(
             visitorContext: configuration.visitorContext,
-            queueIds: queueIds,
+            queueInformation: queueInformation,
             environment: .init(
                 coreSdk: environment.coreSdk,
                 gcd: environment.gcd,
