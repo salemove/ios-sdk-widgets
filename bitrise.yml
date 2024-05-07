@@ -193,16 +193,18 @@ workflows:
     - recreate-user-schemes@1:
         inputs:
         - project_path: $BITRISE_PROJECT_PATH
-    - xcode-test@4:
+    - xcode-test:
         inputs:
         - scheme: $TEST_SCHEME
-    - xcode-test@4:
+        - destination: platform=iOS Simulator,name=iPhone 13,OS=15.5
+    - xcode-test:
         inputs:
         - scheme: $SNAPSHOTS_SCHEME
-        - destination: platform=iOS Simulator,name=iPhone 13,OS=15.2
-    - xcode-test@4:
+        - destination: platform=iOS Simulator,name=iPhone 13,OS=15.5
+    - xcode-test:
         inputs:
         - scheme: $TESTING_APP_TESTS_SCHEME
+        - destination: platform=iOS Simulator,name=iPhone 13,OS=15.5
     - xcode-archive@4:
         inputs:
         - scheme: $APP_SCHEME
