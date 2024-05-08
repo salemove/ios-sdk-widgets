@@ -325,6 +325,9 @@ extension CallViewModel {
         action?(.setLocalVideo(stream.getStreamView()))
         guard call.isVisitorOnHold.value == false else { return }
         stream.playVideo()
+        // For now camera manager is available only when corresponding
+        // local stream is available, that's why camera button presence
+        // is initiated here.
         showCameraFlipIfNeeded()
     }
 

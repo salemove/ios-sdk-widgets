@@ -110,6 +110,10 @@ class VideoStreamView: UIView {
     }
 
     func renderFlipCameraButton() {
-        flipButton.props = .init(style: .custom, tap: flipCameraButtonTapped)
+        flipButton.props = FlipCameraButton.Props(
+            // Relevant style will be provided with MOB-3292.
+            style: .custom,
+            tap: flipCameraButtonTapped
+        )
     }
 }

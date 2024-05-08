@@ -21,7 +21,11 @@ class FlipCameraButton: UIButton {
     }
 
     var props = Props(
-        style: .init(activeState: .nop, inactiveState: .nop, selectedState: .nop),
+        style: .init(
+            activeState: .nop,
+            inactiveState: .nop,
+            selectedState: .nop
+        ),
         tap: nil
     ) {
         didSet {
@@ -37,6 +41,7 @@ class FlipCameraButton: UIButton {
             renderStyleState(renderedActiveState, for: .normal)
         }
     }
+
     private var renderedInactiveState: FlipCameraButtonStyle.State = .nop {
         didSet {
             guard renderedInactiveState != oldValue else {
@@ -45,6 +50,7 @@ class FlipCameraButton: UIButton {
             renderStyleState(renderedInactiveState, for: .disabled)
         }
     }
+
     private var renderedSelectedState: FlipCameraButtonStyle.State = .nop {
         didSet {
             guard renderedSelectedState != oldValue else {
@@ -70,7 +76,7 @@ class FlipCameraButton: UIButton {
         self.addTarget(self, action: #selector(self.handleTap), for: .touchUpInside)
     }
 
-    func renderStyleState(_ styleState: FlipCameraButtonStyle.State, for controlState: UIControl.State) {
+    private func renderStyleState(_ styleState: FlipCameraButtonStyle.State, for controlState: UIControl.State) {
         self.setBackgroundColor(color: styleState.background.color, forState: controlState)
         self.setImage(Asset.flipCamera.image.image(withTintColor: styleState.imageColor.color), for: controlState)
     }
@@ -94,13 +100,27 @@ class FlipCameraButton: UIButton {
 }
 
 extension FlipCameraButtonStyle.State {
-    static let nop = Self(background: .fill(color: .clear), imageColor: .fill(color: .clear))
+    static let nop = Self(
+        background: .fill(color: .clear),
+        imageColor: .fill(color: .clear)
+    )
 }
 
 extension FlipCameraButtonStyle {
+    // Used for feature development.
+    // Will be removed with MOB-3292.
     static let custom = Self(
-        activeState: .init(background: .fill(color: .init(hex: "#04728c")), imageColor: .fill(color: .init(hex: "#FFFFFF"))),
-        inactiveState: .init(background: .fill(color: .init(hex: "#042835")), imageColor: .fill(color: .init(hex: "#FFFFFF"))),
-        selectedState: .init(background: .fill(color: .init(hex: "#000000")), imageColor: .fill(color: .init(hex: "#FFFFFF")))
+        activeState: State(
+            background: .fill(color: .init(hex: "#04728c")),
+            imageColor: .fill(color: .init(hex: "#FFFFFF"))
+        ),
+        inactiveState: State(
+            background: .fill(color: .init(hex: "#042835")),
+            imageColor: .fill(color: .init(hex: "#FFFFFF"))
+        ),
+        selectedState: State(
+            background: .fill(color: .init(hex: "#000000")),
+            imageColor: .fill(color: .init(hex: "#FFFFFF"))
+        )
     )
 }
