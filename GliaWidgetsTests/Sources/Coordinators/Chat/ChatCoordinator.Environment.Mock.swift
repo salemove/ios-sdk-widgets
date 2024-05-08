@@ -39,6 +39,7 @@ extension ChatCoordinator.Environment {
         snackBar: .mock,
         notificationCenter: .mock,
         operatorRequestHandlerService: .mock(),
-        maximumUploads: { 2 }
+        maximumUploads: { 2 },
+        cameraDeviceManager: { .mock }
     )
 }
