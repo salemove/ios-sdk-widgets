@@ -19,16 +19,25 @@ extension CallViewModel {
 
             flipCameraCallback = Cmd { [environment] in
                 // Get currently active camera device.
-                if let currentDevice = cameraDeviceManager.currentCameraDevice(),
-                    // Find corresponding index for active camera
-                    let currentIndex = devices.firstIndex(of: currentDevice) {
-                    // and increase it by one.
-                    let nextIndex = currentIndex.advanced(by: 1)
+                let currentDevice = cameraDeviceManager.currentCameraDevice()
+                // Find corresponding index for active camera
+                let currentIndex = currentDevice.flatMap { devices.firstIndex(of: $0) }
+                // and increase it by one.
+                let nextIndex = currentIndex.flatMap { $0.advanced(by: 1) }
+
+                if let nextIndex {
                     // If next index is valid use it for next device selection, otherwise use first device.
                     let nextDevice = devices.indices.contains(nextIndex) ? devices[nextIndex] : devices[0]
                     cameraDeviceManager.setCameraDevice(nextDevice)
                 } else {
-                    environment.log.warning("Unable to change camera device.")
+                    let warningMessage = """
+                                         Unable to change camera device:
+                                            - currentDevice: '\(String(describing: currentDevice?.name))',
+                                            - currentIndex: '\(String(describing: currentIndex))',
+                                            - nextIndex: '\(String(describing: nextIndex))'.
+                                         """
+
+                    environment.log.warning(warningMessage)
                 }
             }
         } catch {
