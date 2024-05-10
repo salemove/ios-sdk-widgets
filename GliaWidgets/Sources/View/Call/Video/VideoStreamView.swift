@@ -1,6 +1,8 @@
 import UIKit
 
 class VideoStreamView: UIView {
+    typealias FlipCameraAccLabelWithTap = (accessibilityLabel: String, tapCallback: Cmd)
+
     enum Kind {
         case local
         case remote
@@ -16,21 +18,24 @@ class VideoStreamView: UIView {
         }
     }
 
-    let flipButton = FlipCameraButton()
+    private let flipButton = FlipCameraButton()
 
-    var flipCameraButtonTapped: Cmd? {
+    var flipCameraAccessibilityLabelWithTap: FlipCameraAccLabelWithTap? {
         didSet {
-            guard flipCameraButtonTapped != oldValue else {
-                return
-            }
             renderFlipCameraButton()
+            renderLocalVideoAccessibility()
         }
     }
 
     private let kind: Kind
+    private let flipCameraButtonStyle: FlipCameraButtonStyle
 
-    init(_ kind: Kind) {
+    init(
+        _ kind: Kind,
+        flipCameraButtonStyle: FlipCameraButtonStyle
+    ) {
         self.kind = kind
+        self.flipCameraButtonStyle = flipCameraButtonStyle
 
         super.init(frame: .zero)
 
@@ -95,6 +100,7 @@ class VideoStreamView: UIView {
                 )
             ]
             renderFlipCameraButton()
+            renderLocalVideoAccessibility()
         case .remote:
             break
         }
@@ -110,10 +116,44 @@ class VideoStreamView: UIView {
     }
 
     func renderFlipCameraButton() {
-        flipButton.props = FlipCameraButton.Props(
-            // Relevant style will be provided with MOB-3292.
-            style: .custom,
-            tap: flipCameraButtonTapped
-        )
+        let flipButtonStyle = self.flipCameraButtonStyle
+
+        let props: FlipCameraButton.Props
+
+        if let flipCameraAccessibilityLabelWithTap {
+            props = .init(
+                style: flipButtonStyle,
+                tap: flipCameraAccessibilityLabelWithTap.tapCallback,
+                accessibilityLabel: flipCameraAccessibilityLabelWithTap.accessibilityLabel
+            )
+        } else {
+            props = .init(style: flipButtonStyle, tap: nil, accessibilityLabel: "")
+        }
+
+        flipButton.props = props
+    }
+
+    func renderLocalVideoAccessibility() {
+        // We need to change accessibility behaviour
+        // in case if flip camera button is present,
+        // to allow it to be recognizable by screen reader.
+        if flipCameraAccessibilityLabelWithTap != nil {
+            // Parent container can not be accessibility element,
+            // if child needs to be accessibility element as well,
+            // but siblings within same containers can.
+            self.isAccessibilityElement = false
+            // So we make `streamView` (which is sibling to
+            // flip camera button) an accessibility element.
+            streamView?.isAccessibilityElement = true
+            // Also we forward `accessibilityLabel` from parent to
+            // `streamView`, so that it would be read instead.
+            streamView?.accessibilityLabel = accessibilityLabel
+            // Finally we assign `streamView` and `flipButton` to
+            // accessibility elements group.
+            self.accessibilityElements = [streamView].compactMap { $0 } + [self.flipButton]
+        } else {
+            self.isAccessibilityElement = true
+            self.accessibilityElements = nil
+        }
     }
 }

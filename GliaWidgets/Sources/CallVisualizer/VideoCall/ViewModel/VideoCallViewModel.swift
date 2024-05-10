@@ -65,6 +65,8 @@ extension CallVisualizer {
 
         private var endScreenShareButtonHidden: Bool { didSet { reportChange() } }
 
+        private var flipCameraAccLabelWithTap: VideoStreamView.FlipCameraAccLabelWithTap? { didSet { reportChange() } }
+
         // MARK: - Initializer
 
         init(
@@ -179,7 +181,9 @@ extension CallVisualizer.VideoCallViewModel {
                         style: style.header.endScreenShareButton
                     ),
                     style: style.header
-                )
+                ),
+                flipCameraTap: flipCameraAccLabelWithTap?.tapCallback,
+                flipCameraAccLabel: flipCameraAccLabelWithTap?.accessibilityLabel ?? ""
             ),
             viewDidLoad: .init { [weak self] in
                 self?.environment.proximityManager.start()
@@ -430,8 +434,24 @@ private extension CallVisualizer.VideoCallViewModel {
             connectViewHidden = true
             localVideoStream = localStream.getStreamView()
             localStream.playVideo()
+            CallViewModel.setFlipCameraButtonVisible(
+                true,
+                getCameraDeviceManager: environment.cameraDeviceManager,
+                log: environment.log,
+                flipCameraButtonStyle: environment.flipCameraButtonStyle
+            ) { [weak self] in
+                self?.flipCameraAccLabelWithTap = $0
+            }
         } else {
             localVideoStream = nil
+            CallViewModel.setFlipCameraButtonVisible(
+                false,
+                getCameraDeviceManager: environment.cameraDeviceManager,
+                log: environment.log,
+                flipCameraButtonStyle: environment.flipCameraButtonStyle
+            ) { [weak self] in
+                self?.flipCameraAccLabelWithTap = $0
+            }
         }
     }
 

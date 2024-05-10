@@ -90,6 +90,8 @@
 "call.operator_name.accessibility.hint" = "Shows operator name.";
 "call.operator_video.accessibility.label" = "Operator's Video";
 "call.visitor_video.accessibility.label" = "Your Video";
+"call_visitor_video_flip_to_back_camera_button_accessibility_label" = "Switch to back camera";
+"call_visitor_video_flip_to_front_camera_button_accessibility_label" = "Switch to front camera";
 "call_visualizer.screen_sharing.message" = "Your Screen is Being Shared";
 "call_visualizer.screen_sharing.header.title" = "Screen Sharing";
 "call_visualizer.visitor_code.close.accessibility.hint" = "Closes the visitor code";

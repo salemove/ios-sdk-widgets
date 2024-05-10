@@ -28,7 +28,8 @@ extension CallVisualizer.Environment {
         fetchSiteConfigurations: { _ in },
         snackBar: .mock,
         coreSdk: .mock,
-        operatorRequestHandlerService: .mock()
+        operatorRequestHandlerService: .mock(),
+        cameraDeviceManager: { .mock }
     )
 }
 

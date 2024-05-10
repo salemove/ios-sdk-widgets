@@ -604,6 +604,8 @@
 		AF4D821C29D6E572007763F8 /* TranscriptModel.DividedChatItemsForUnreadCountTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF4D821B29D6E572007763F8 /* TranscriptModel.DividedChatItemsForUnreadCountTests.swift */; };
 		AF552ED72BECDCDF00FD5653 /* UIButton+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF552ED62BECDCDF00FD5653 /* UIButton+Extensions.swift */; };
 		AF552ED92BECDCF700FD5653 /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF552ED82BECDCF700FD5653 /* UIImage+Extensions.swift */; };
+		AF552EDB2BEE783500FD5653 /* FlipCameraButtonStyle.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF552EDA2BEE783500FD5653 /* FlipCameraButtonStyle.Accessibility.swift */; };
+		AF552EDD2BEE954500FD5653 /* FlipCameraButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF552EDC2BEE954500FD5653 /* FlipCameraButtonStyle.swift */; };
 		AF6291112B0813B000D3D76B /* SwiftBased.Live.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF62910E2B0813B000D3D76B /* SwiftBased.Live.swift */; };
 		AF6291122B0813B000D3D76B /* SwiftBased.Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF62910F2B0813B000D3D76B /* SwiftBased.Interface.swift */; };
 		AF6291132B0813B000D3D76B /* SwiftBased.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF6291102B0813B000D3D76B /* SwiftBased.Mock.swift */; };
@@ -1552,9 +1554,10 @@
 		AF3D520E2983BC5600AD8E69 /* FileUploader.Environment.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUploader.Environment.Mock.swift; sourceTree = "<group>"; };
 		AF4698072BE3EEF30046766B /* FlipCameraButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlipCameraButton.swift; sourceTree = "<group>"; };
 		AF4D821B29D6E572007763F8 /* TranscriptModel.DividedChatItemsForUnreadCountTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranscriptModel.DividedChatItemsForUnreadCountTests.swift; sourceTree = "<group>"; };
-		AF552ED22BEB8CC900FD5653 /* UIButton+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIButton+Extensions.swift"; path = "../../../../ios-sdk/GliaCoreSDK/GliaCoreSDK/Extensions/UIButton+Extensions.swift"; sourceTree = "<group>"; };
 		AF552ED62BECDCDF00FD5653 /* UIButton+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIButton+Extensions.swift"; sourceTree = "<group>"; };
 		AF552ED82BECDCF700FD5653 /* UIImage+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Extensions.swift"; sourceTree = "<group>"; };
+		AF552EDA2BEE783500FD5653 /* FlipCameraButtonStyle.Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlipCameraButtonStyle.Accessibility.swift; sourceTree = "<group>"; };
+		AF552EDC2BEE954500FD5653 /* FlipCameraButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlipCameraButtonStyle.swift; sourceTree = "<group>"; };
 		AF62910E2B0813B000D3D76B /* SwiftBased.Live.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftBased.Live.swift; sourceTree = "<group>"; };
 		AF62910F2B0813B000D3D76B /* SwiftBased.Interface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftBased.Interface.swift; sourceTree = "<group>"; };
 		AF6291102B0813B000D3D76B /* SwiftBased.Mock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftBased.Mock.swift; sourceTree = "<group>"; };
@@ -2788,7 +2791,6 @@
 				1A60AF95256675C400E53F53 /* UIColor+Extensions.swift */,
 				84D2293D28D36B2A00F64FE7 /* UIColor+Hex.swift */,
 				C0857DEE28D9AD32008D171D /* UIFont+Extensions.swift */,
-				AF552ED22BEB8CC900FD5653 /* UIButton+Extensions.swift */,
 				1A60B0262568070800E53F53 /* UIStackView+Extensions.swift */,
 				1A4AD3BD256D37FD00468BFB /* UITableView+Extensions.swift */,
 				C08D776328F5910A000461E5 /* UIView+Extensions.swift */,
@@ -3026,8 +3028,10 @@
 		1AC8AADB25D419BC00DAFE50 /* Video */ = {
 			isa = PBXGroup;
 			children = (
-				1AC8AADC25D419CE00DAFE50 /* VideoStreamView.swift */,
 				AF4698072BE3EEF30046766B /* FlipCameraButton.swift */,
+				AF552EDC2BEE954500FD5653 /* FlipCameraButtonStyle.swift */,
+				AF552EDA2BEE783500FD5653 /* FlipCameraButtonStyle.Accessibility.swift */,
+				1AC8AADC25D419CE00DAFE50 /* VideoStreamView.swift */,
 			);
 			path = Video;
 			sourceTree = "<group>";
@@ -5553,6 +5557,7 @@
 				1A60AFF12566A4B300E53F53 /* NavigationPresenter.swift in Sources */,
 				AF6291132B0813B000D3D76B /* SwiftBased.Mock.swift in Sources */,
 				1AC7A74F2582571100567FF8 /* Interactor.swift in Sources */,
+				AF552EDD2BEE954500FD5653 /* FlipCameraButtonStyle.swift in Sources */,
 				C0ECC7992B7506D0001F1EEF /* OperatorRequestHandlerService.Mock.swift in Sources */,
 				84C24CFC2B8354A80089A388 /* ProcessInfoHandling.Live.swift in Sources */,
 				845E2F72283D068000C04D56 /* HeaderStyle.Accessibility.swift in Sources */,
@@ -5805,6 +5810,7 @@
 				1A5F8182258B4F0E00A605DA /* OutgoingMessage.swift in Sources */,
 				AFA2FDF428907F0C00428E6D /* BubbleView.Mock.swift in Sources */,
 				84D5B9602A14DF2400807F92 /* QuickLookBased.Interface.swift in Sources */,
+				AF552EDB2BEE783500FD5653 /* FlipCameraButtonStyle.Accessibility.swift in Sources */,
 				3115D45C29A4FD3F00D99561 /* SecureConversations.Availability.swift in Sources */,
 				9A19926E27D3BB7800161AAE /* Theme.Mock.swift in Sources */,
 				9AE9E4B127E0E45200BFE239 /* CallViewController.Mock.swift in Sources */,
