@@ -94,15 +94,22 @@ extension CallVisualizer {
 
             return CGRect(x: x, y: y, width: width, height: height)
         }
+
         lazy var localVideoView: VideoStreamView = {
-            let streamView = VideoStreamView(.local)
+            let streamView = VideoStreamView(
+                .local,
+                flipCameraButtonStyle: props.style.flipCameraButtonStyle
+            )
             streamView.accessibilityLabel = props.style.accessibility.localVideoLabel
             streamView.accessibilityIdentifier = "call_visualizer_visitor_video_view"
             return streamView
         }()
 
         lazy var remoteVideoView: VideoStreamView = {
-            let streamView = VideoStreamView(.remote)
+            let streamView = VideoStreamView(
+                .remote,
+                flipCameraButtonStyle: props.style.flipCameraButtonStyle
+            )
             streamView.accessibilityLabel = props.style.accessibility.remoteVideoLabel
             streamView.accessibilityIdentifier = "call_visualizer_operator_video_view"
             return streamView
@@ -272,6 +279,8 @@ extension CallVisualizer.VideoCallView {
         let connectViewHidden: Bool
         let topStackAlpha: CGFloat
         let headerProps: Header.Props
+        let flipCameraTap: Cmd?
+        let flipCameraAccLabel: String
     }
 }
 
@@ -290,6 +299,7 @@ private extension CallVisualizer.VideoCallView {
         connectView.isHidden = props.connectViewHidden
         topStackView.alpha = props.topStackAlpha
         header.props = props.headerProps
+        localVideoView.flipCameraAccessibilityLabelWithTap = props.flipCameraTap.map { tap in (props.flipCameraAccLabel, tap) }
     }
 
     func adjustVideoViews() {

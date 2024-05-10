@@ -167,7 +167,9 @@ extension CallVisualizer.Coordinator {
                 engagedOperator: environment.engagedOperator,
                 screenShareHandler: environment.screenShareHandler,
                 proximityManager: environment.proximityManager,
-                log: environment.log
+                log: environment.log,
+                cameraDeviceManager: environment.cameraDeviceManager,
+                flipCameraButtonStyle: environment.viewFactory.theme.call.flipCameraButtonStyle
             ),
             theme: environment.viewFactory.theme,
             call: .init(

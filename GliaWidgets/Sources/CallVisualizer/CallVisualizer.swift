@@ -62,7 +62,8 @@ public final class CallVisualizer {
                 log: environment.log,
                 interactorProviding: environment.interactorProviding(),
                 fetchSiteConfigurations: environment.fetchSiteConfigurations,
-                snackBar: environment.snackBar
+                snackBar: environment.snackBar,
+                cameraDeviceManager: environment.cameraDeviceManager
             )
         )
     }()
