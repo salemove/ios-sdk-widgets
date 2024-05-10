@@ -33,7 +33,8 @@ extension ChatViewModel.Environment {
         proximityManager: .mock,
         log: .mock,
         operatorRequestHandlerService: .mock(),
-        cameraDeviceManager: { .mock }
+        cameraDeviceManager: { .mock },
+        flipCameraButtonStyle: .nop
     )
 }
 #endif

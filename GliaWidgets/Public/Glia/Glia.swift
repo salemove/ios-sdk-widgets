@@ -122,7 +122,8 @@ public class Glia {
             fetchSiteConfigurations: environment.coreSdk.fetchSiteConfigurations,
             snackBar: environment.snackBar,
             coreSdk: environment.coreSdk,
-            operatorRequestHandlerService: operatorRequestHandlerService
+            operatorRequestHandlerService: operatorRequestHandlerService,
+            cameraDeviceManager: environment.cameraDeviceManager
         )
     )
     var rootCoordinator: EngagementCoordinator?

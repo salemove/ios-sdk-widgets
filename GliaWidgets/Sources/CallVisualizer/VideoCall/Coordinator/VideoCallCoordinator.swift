@@ -46,7 +46,9 @@ extension CallVisualizer {
                     engagedOperator: environment.engagedOperator,
                     screenShareHandler: environment.screenShareHandler,
                     proximityManager: environment.proximityManager,
-                    log: environment.log
+                    log: environment.log,
+                    cameraDeviceManager: environment.cameraDeviceManager,
+                    flipCameraButtonStyle: environment.flipCameraButtonStyle
                 ),
                 call: call
             )

@@ -40,5 +40,6 @@ extension ChatCoordinator {
         var operatorRequestHandlerService: OperatorRequestHandlerService
         var maximumUploads: () -> Int
         var cameraDeviceManager: CoreSdkClient.GetCameraDeviceManageable
+        var flipCameraButtonStyle: FlipCameraButtonStyle
     }
 }

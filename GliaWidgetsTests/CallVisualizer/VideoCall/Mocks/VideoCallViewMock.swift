@@ -16,7 +16,9 @@ extension CallVisualizer.VideoCallView.Props {
         endScreenShareButtonHidden: Bool = false,
         connectViewHidden: Bool = false,
         topStackAlpha: CGFloat = 1.0,
-        headerProps: Header.Props = .mock()
+        headerProps: Header.Props = .mock(),
+        flipCameraTap: Cmd? = nil,
+        flipCameraAccLabel: String = ""
     ) -> CallVisualizer.VideoCallView.Props {
         return .init(
             style: style,
@@ -31,7 +33,9 @@ extension CallVisualizer.VideoCallView.Props {
             endScreenShareButtonHidden: endScreenShareButtonHidden,
             connectViewHidden: connectViewHidden,
             topStackAlpha: topStackAlpha,
-            headerProps: headerProps
+            headerProps: headerProps,
+            flipCameraTap: flipCameraTap,
+            flipCameraAccLabel: flipCameraAccLabel
         )
     }
 }

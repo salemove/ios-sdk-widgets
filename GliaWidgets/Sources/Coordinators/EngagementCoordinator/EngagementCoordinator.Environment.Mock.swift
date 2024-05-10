@@ -42,7 +42,8 @@ extension EngagementCoordinator.Environment {
         maximumUploads: { 2 },
         cameraDeviceManager: {
             .mock
-        }
+        },
+        flipCameraButtonStyle: .nop
     )
 }
 #endif

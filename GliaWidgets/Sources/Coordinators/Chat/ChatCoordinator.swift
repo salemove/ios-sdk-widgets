@@ -252,7 +252,8 @@ extension ChatCoordinator {
             proximityManager: environment.proximityManager,
             log: environment.log,
             operatorRequestHandlerService: environment.operatorRequestHandlerService,
-            cameraDeviceManager: environment.cameraDeviceManager
+            cameraDeviceManager: environment.cameraDeviceManager,
+            flipCameraButtonStyle: environment.flipCameraButtonStyle
         )
     }
 }

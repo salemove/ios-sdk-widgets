@@ -328,7 +328,14 @@ extension CallViewModel {
         // For now camera manager is available only when corresponding
         // local stream is available, that's why camera button presence
         // is initiated here.
-        showCameraFlipIfNeeded()
+        Self.setFlipCameraButtonVisible(
+            true,
+            getCameraDeviceManager: environment.cameraDeviceManager,
+            log: environment.log,
+            flipCameraButtonStyle: environment.flipCameraButtonStyle
+        ) { [weak self] flipCameraAccLabelWithCallback in
+            self?.action?(.setCameraFlip(flipCameraAccLabelWithCallback))
+        }
     }
 
     private func hideRemoteVideo() {
@@ -337,6 +344,14 @@ extension CallViewModel {
 
     private func hideLocalVideo() {
         action?(.setLocalVideo(nil))
+        Self.setFlipCameraButtonVisible(
+            false,
+            getCameraDeviceManager: environment.cameraDeviceManager,
+            log: environment.log,
+            flipCameraButtonStyle: environment.flipCameraButtonStyle
+        ) { [weak self] flipCameraAccLabelWithCallback in
+            self?.action?(.setCameraFlip(flipCameraAccLabelWithCallback))
+        }
     }
 
     private func updateRemoteVideoVisible() {
@@ -534,7 +549,7 @@ extension CallViewModel {
         case setLocalVideo(CoreSdkClient.StreamView?)
         case setVisitorOnHold(isOnHold: Bool)
         case showSnackBarView
-        case setCameraFlip(Cmd?)
+        case setCameraFlip(VideoStreamView.FlipCameraAccLabelWithTap?)
     }
 
     enum DelegateEvent {

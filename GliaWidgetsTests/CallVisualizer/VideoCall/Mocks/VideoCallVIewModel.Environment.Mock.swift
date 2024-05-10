@@ -13,7 +13,9 @@ extension CallVisualizer.VideoCallViewModel.Environment {
         engagedOperator: { .mock() },
         screenShareHandler: .mock,
         proximityManager: .mock,
-        log: .mock
+        log: .mock,
+        cameraDeviceManager: { .mock },
+        flipCameraButtonStyle: .nop
     )
 }
 

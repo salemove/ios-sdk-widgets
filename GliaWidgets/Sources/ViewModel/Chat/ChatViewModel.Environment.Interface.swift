@@ -26,5 +26,6 @@ extension EngagementViewModel {
         var log: CoreSdkClient.Logger
         var operatorRequestHandlerService: OperatorRequestHandlerService
         var cameraDeviceManager: CoreSdkClient.GetCameraDeviceManageable
+        var flipCameraButtonStyle: FlipCameraButtonStyle
     }
 }
