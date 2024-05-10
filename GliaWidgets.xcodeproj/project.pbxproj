@@ -417,6 +417,8 @@
 		847956362AD96AD7004EF60C /* CoreSDKConfigurator.Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847956352AD96AD7004EF60C /* CoreSDKConfigurator.Interface.swift */; };
 		847956402ADED7A2004EF60C /* CallVisualizer.Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8479563F2ADED7A2004EF60C /* CallVisualizer.Action.swift */; };
 		847A7643285A1914004044D1 /* FileUploadListViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847A7642285A1914004044D1 /* FileUploadListViewModelTests.swift */; };
+		8485704F2BEE3A0800CEBCC5 /* ChatViewTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8485704E2BEE3A0800CEBCC5 /* ChatViewTest.swift */; };
+		848570512BEE3CCC00CEBCC5 /* ChatStyle.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848570502BEE3CCC00CEBCC5 /* ChatStyle.Mock.swift */; };
 		8491AF002A6FB44200CC3E72 /* GvaGalleryCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8491AEFF2A6FB44200CC3E72 /* GvaGalleryCardCell.swift */; };
 		8491AF022A6FBBBA00CC3E72 /* GvaGalleryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8491AF012A6FBBBA00CC3E72 /* GvaGalleryListView.swift */; };
 		8491AF062A77F16D00CC3E72 /* GvaGalleryCardStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8491AF052A77F16D00CC3E72 /* GvaGalleryCardStyle.swift */; };
@@ -1357,6 +1359,8 @@
 		847956352AD96AD7004EF60C /* CoreSDKConfigurator.Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreSDKConfigurator.Interface.swift; sourceTree = "<group>"; };
 		8479563F2ADED7A2004EF60C /* CallVisualizer.Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallVisualizer.Action.swift; sourceTree = "<group>"; };
 		847A7642285A1914004044D1 /* FileUploadListViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUploadListViewModelTests.swift; sourceTree = "<group>"; };
+		8485704E2BEE3A0800CEBCC5 /* ChatViewTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewTest.swift; sourceTree = "<group>"; };
+		848570502BEE3CCC00CEBCC5 /* ChatStyle.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatStyle.Mock.swift; sourceTree = "<group>"; };
 		8491AEFF2A6FB44200CC3E72 /* GvaGalleryCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GvaGalleryCardCell.swift; sourceTree = "<group>"; };
 		8491AF012A6FBBBA00CC3E72 /* GvaGalleryListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GvaGalleryListView.swift; sourceTree = "<group>"; };
 		8491AF052A77F16D00CC3E72 /* GvaGalleryCardStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GvaGalleryCardStyle.swift; sourceTree = "<group>"; };
@@ -3278,6 +3282,7 @@
 		7512A57827BF9FB800319DF1 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				8485704D2BEE39EB00CEBCC5 /* ChatView */,
 				AF9C0C432BC5A22800C25E47 /* GliaPresenter */,
 				84C24CFD2B8357B00089A388 /* ProcessInfoHandling */,
 				C0ECC7952B7278C9001F1EEF /* OperatorRequestsHandlerService */,
@@ -3889,6 +3894,15 @@
 				AFF954292ADD8DB600C277E0 /* CoreSDKConfigurator.Mock.swift */,
 			);
 			path = CoreSDKConfigurator;
+			sourceTree = "<group>";
+		};
+		8485704D2BEE39EB00CEBCC5 /* ChatView */ = {
+			isa = PBXGroup;
+			children = (
+				8485704E2BEE3A0800CEBCC5 /* ChatViewTest.swift */,
+				848570502BEE3CCC00CEBCC5 /* ChatStyle.Mock.swift */,
+			);
+			path = ChatView;
 			sourceTree = "<group>";
 		};
 		8491AEFE2A6FB40B00CC3E72 /* Gallery */ = {
@@ -6024,6 +6038,7 @@
 				84520BED2B19FD3000F97617 /* CallVisualizerTests+LO.swift in Sources */,
 				9A19927027D3BCAE00161AAE /* GCD.Failing.swift in Sources */,
 				3142696A29FFB712003DF62E /* Interactor.Failing.swift in Sources */,
+				8485704F2BEE3A0800CEBCC5 /* ChatViewTest.swift in Sources */,
 				8491AF602AA1EBB600CC3E72 /* TranscriptModelTests+URLs.swift in Sources */,
 				9A8130C427D9099F00220BBD /* FileDownload.Environment.Failing.swift in Sources */,
 				3117EBA22B9B041100F520D8 /* (null) in Sources */,
@@ -6050,6 +6065,7 @@
 				AF9DB22E2890571A00A0C442 /* RootCoordinator.Environment.Failing.swift in Sources */,
 				AF9DB23128905A1D00A0C442 /* ViewFactory.Environment.Failing.swift in Sources */,
 				3117EBA42B9B426200F520D8 /* (null) in Sources */,
+				848570512BEE3CCC00CEBCC5 /* ChatStyle.Mock.swift in Sources */,
 				9A3E1DA027BA7B9F005634EB /* FileSystemStorageTests.swift in Sources */,
 				EB9ADB5A2829089F00FAE8A4 /* ChatItem+Equatable.swift in Sources */,
 				EB7A150A286D98270035AC62 /* FileUploaderTests.swift in Sources */,
