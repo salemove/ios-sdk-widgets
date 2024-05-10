@@ -16,5 +16,7 @@ extension CallVisualizer.VideoCallCoordinator {
         var screenShareHandler: ScreenShareHandler
         var proximityManager: ProximityManager
         var log: CoreSdkClient.Logger
+        var cameraDeviceManager: CoreSdkClient.GetCameraDeviceManageable
+        var flipCameraButtonStyle: FlipCameraButtonStyle
     }
 }

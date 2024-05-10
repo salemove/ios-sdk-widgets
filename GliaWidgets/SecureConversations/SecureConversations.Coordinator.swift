@@ -300,7 +300,8 @@ extension SecureConversations.Coordinator {
                 notificationCenter: environment.notificationCenter,
                 operatorRequestHandlerService: environment.operatorRequestHandlerService,
                 maximumUploads: environment.maximumUploads,
-                cameraDeviceManager: environment.cameraDeviceManager
+                cameraDeviceManager: environment.cameraDeviceManager,
+                flipCameraButtonStyle: environment.flipCameraButtonStyle
             ),
             startWithSecureTranscriptFlow: true
         )
@@ -374,6 +375,7 @@ extension SecureConversations.Coordinator {
         var operatorRequestHandlerService: OperatorRequestHandlerService
         var maximumUploads: () -> Int
         var cameraDeviceManager: CoreSdkClient.GetCameraDeviceManageable
+        var flipCameraButtonStyle: FlipCameraButtonStyle
     }
 
     enum DelegateEvent {

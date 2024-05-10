@@ -60,7 +60,10 @@ public class CallStyle: EngagementStyle {
     /// Style of the call view when the visitor is put on hold.
     public var onHoldStyle: OnHoldStyle
 
-    /// Accessiblity properties for CallStyle.
+    /// Style for camera switching button.
+    public var flipCameraButtonStyle: FlipCameraButtonStyle
+
+    /// Accessibility properties for CallStyle.
     public var accessibility: Accessibility
 
     /// - Parameters:
@@ -113,6 +116,7 @@ public class CallStyle: EngagementStyle {
         bottomTextStyle: UIFont.TextStyle = .body,
         buttonBar: CallButtonBarStyle,
         onHoldStyle: OnHoldStyle,
+        flipCameraButtonStyle: FlipCameraButtonStyle,
         accessibility: Accessibility = .unsupported
     ) {
         self.audioTitle = audioTitle
@@ -135,6 +139,7 @@ public class CallStyle: EngagementStyle {
         self.buttonBar = buttonBar
         self.onHoldStyle = onHoldStyle
         self.accessibility = accessibility
+        self.flipCameraButtonStyle = flipCameraButtonStyle
         super.init(
             header: header,
             connect: connect,
