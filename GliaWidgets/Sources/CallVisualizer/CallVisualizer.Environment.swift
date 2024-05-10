@@ -30,5 +30,6 @@ extension CallVisualizer {
         var snackBar: SnackBar
         var coreSdk: CoreSdkClient
         var operatorRequestHandlerService: OperatorRequestHandlerService
+        var cameraDeviceManager: CoreSdkClient.GetCameraDeviceManageable
     }
 }

@@ -87,7 +87,8 @@ private extension CallCoordinator {
                 proximityManager: environment.proximityManager,
                 log: environment.log,
                 operatorRequestHandlerService: environment.operatorRequestHandlerService,
-                cameraDeviceManager: environment.cameraDeviceManager
+                cameraDeviceManager: environment.cameraDeviceManager,
+                flipCameraButtonStyle: environment.flipCameraButtonStyle
             ),
             call: call,
             unreadMessages: unreadMessages,
@@ -165,5 +166,6 @@ extension CallCoordinator {
         var snackBar: SnackBar
         var operatorRequestHandlerService: OperatorRequestHandlerService
         var cameraDeviceManager: CoreSdkClient.GetCameraDeviceManageable
+        var flipCameraButtonStyle: FlipCameraButtonStyle
     }
 }

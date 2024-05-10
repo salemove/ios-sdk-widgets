@@ -10,6 +10,12 @@ import Foundation
 // swiftlint:disable explicit_type_interface function_parameter_count identifier_name line_length
 // swiftlint:disable nesting type_body_length type_name vertical_whitespace_opening_braces
 internal enum Localization {
+
+  /// Switch to back camera
+  internal static var callVisitorVideoFlipToBackCameraButtonAccessibilityLabel: String { Localization.tr("Localizable", "call_visitor_video_flip_to_back_camera_button_accessibility_label", fallback: "Switch to back camera") }
+
+  /// Switch to front camera
+  internal static var callVisitorVideoFlipToFrontCameraButtonAccessibilityLabel: String { Localization.tr("Localizable", "call_visitor_video_flip_to_front_camera_button_accessibility_label", fallback: "Switch to front camera") }
   internal enum Alert {
     internal enum Action {
       /// Settings

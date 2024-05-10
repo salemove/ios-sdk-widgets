@@ -69,22 +69,28 @@ class CallView: EngagementView {
     let buttonBar: CallButtonBar
 
     lazy var localVideoView: VideoStreamView = {
-        let streamView = VideoStreamView(.local)
+        let streamView = VideoStreamView(
+            .local,
+            flipCameraButtonStyle: style.flipCameraButtonStyle
+        )
         streamView.accessibilityLabel = style.accessibility.localVideoLabel
         return streamView
     }()
 
     lazy var remoteVideoView: VideoStreamView = {
-        let streamView = VideoStreamView(.remote)
+        let streamView = VideoStreamView(
+            .remote,
+            flipCameraButtonStyle: style.flipCameraButtonStyle
+        )
         // Consider to provide Operator name instead of generic 'Operator's'
         streamView.accessibilityLabel = style.accessibility.remoteVideoLabel
         return streamView
     }()
 
     var callButtonTapped: ((CallButton.Kind) -> Void)?
-    var flipCameraButtonTapped: Cmd? {
+    var flipCameraAccessibilityLabelWithTap: VideoStreamView.FlipCameraAccLabelWithTap? {
         didSet {
-            localVideoView.flipCameraButtonTapped = flipCameraButtonTapped
+            localVideoView.flipCameraAccessibilityLabelWithTap = flipCameraAccessibilityLabelWithTap
         }
     }
     let topStackView = UIStackView()
