@@ -288,7 +288,8 @@ extension EngagementCoordinator {
                 notificationCenter: environment.notificationCenter,
                 operatorRequestHandlerService: environment.operatorRequestHandlerService,
                 maximumUploads: environment.maximumUploads,
-                cameraDeviceManager: environment.cameraDeviceManager
+                cameraDeviceManager: environment.cameraDeviceManager,
+                flipCameraButtonStyle: environment.flipCameraButtonStyle
             ),
             startWithSecureTranscriptFlow: false
         )
@@ -388,7 +389,8 @@ extension EngagementCoordinator {
                 log: environment.log,
                 snackBar: environment.snackBar,
                 operatorRequestHandlerService: environment.operatorRequestHandlerService,
-                cameraDeviceManager: environment.cameraDeviceManager
+                cameraDeviceManager: environment.cameraDeviceManager,
+                flipCameraButtonStyle: environment.flipCameraButtonStyle
             )
         )
         coordinator.delegate = { [weak self] event in
@@ -552,7 +554,8 @@ extension EngagementCoordinator {
                 snackBar: environment.snackBar,
                 operatorRequestHandlerService: environment.operatorRequestHandlerService,
                 maximumUploads: environment.maximumUploads,
-                cameraDeviceManager: environment.cameraDeviceManager
+                cameraDeviceManager: environment.cameraDeviceManager,
+                flipCameraButtonStyle: environment.flipCameraButtonStyle
             )
         )
 

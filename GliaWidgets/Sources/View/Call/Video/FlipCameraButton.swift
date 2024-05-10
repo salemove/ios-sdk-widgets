@@ -1,16 +1,5 @@
 import UIKit
 
-struct FlipCameraButtonStyle: Equatable {
-    struct State: Equatable {
-        let background: ColorType
-        let imageColor: ColorType
-    }
-
-    let activeState: State
-    let inactiveState: State
-    let selectedState: State
-}
-
 class FlipCameraButton: UIButton {
     static let size = CGSize(width: 40, height: 40)
     static let bottomTrailingPadding: CGFloat = -8
@@ -18,15 +7,13 @@ class FlipCameraButton: UIButton {
     struct Props: Equatable {
         let style: FlipCameraButtonStyle
         let tap: Cmd?
+        let accessibilityLabel: String
     }
 
     var props = Props(
-        style: .init(
-            activeState: .nop,
-            inactiveState: .nop,
-            selectedState: .nop
-        ),
-        tap: nil
+        style: .nop,
+        tap: nil,
+        accessibilityLabel: ""
     ) {
         didSet {
             renderProps()
@@ -77,7 +64,7 @@ class FlipCameraButton: UIButton {
     }
 
     private func renderStyleState(_ styleState: FlipCameraButtonStyle.State, for controlState: UIControl.State) {
-        self.setBackgroundColor(color: styleState.background.color, forState: controlState)
+        self.setBackgroundColor(color: styleState.backgroundColor.color, forState: controlState)
         self.setImage(Asset.flipCamera.image.image(withTintColor: styleState.imageColor.color), for: controlState)
     }
 
@@ -86,6 +73,7 @@ class FlipCameraButton: UIButton {
         self.renderedActiveState = props.style.activeState
         self.renderedInactiveState = props.style.inactiveState
         self.renderedSelectedState = props.style.selectedState
+        self.accessibilityLabel = props.accessibilityLabel
     }
 
     @objc
@@ -97,30 +85,4 @@ class FlipCameraButton: UIButton {
         super.layoutSubviews()
         self.layer.cornerRadius = min(self.bounds.width, self.self.bounds.width) * 0.5
     }
-}
-
-extension FlipCameraButtonStyle.State {
-    static let nop = Self(
-        background: .fill(color: .clear),
-        imageColor: .fill(color: .clear)
-    )
-}
-
-extension FlipCameraButtonStyle {
-    // Used for feature development.
-    // Will be removed with MOB-3292.
-    static let custom = Self(
-        activeState: State(
-            background: .fill(color: .init(hex: "#04728c")),
-            imageColor: .fill(color: .init(hex: "#FFFFFF"))
-        ),
-        inactiveState: State(
-            background: .fill(color: .init(hex: "#042835")),
-            imageColor: .fill(color: .init(hex: "#FFFFFF"))
-        ),
-        selectedState: State(
-            background: .fill(color: .init(hex: "#000000")),
-            imageColor: .fill(color: .init(hex: "#FFFFFF"))
-        )
-    )
 }
