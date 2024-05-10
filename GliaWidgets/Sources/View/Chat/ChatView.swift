@@ -788,7 +788,10 @@ extension ChatView {
         }
 
         guard let contentView = messageRenderer?.render(message) else {
-            if chatMessage.cardType == .choiceCard {
+            // if metadata can't be handled and
+            // the message has single_choice attachment type
+            // then handle it as Response card
+            if chatMessage.attachment?.type == .singleChoice {
                 return choiceCardMessageContent(
                     chatMessage,
                     showsImage: showsImage,
@@ -796,6 +799,7 @@ extension ChatView {
                     isActive: isActive
                 )
             }
+            // otherwise handle as regular operator message
             return operatorMessageContent(
                 chatMessage,
                 showsImage: showsImage,
