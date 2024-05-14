@@ -75,6 +75,8 @@ class EngagementViewController: UIViewController, AlertPresenter {
                 view?.header.showEndScreenSharingButton()
             case let .showLiveObservationConfirmation(configuration):
                 self.showLiveObservationConfirmation(with: configuration)
+            case let .showSnackbar(text):
+                self.showSnackbar(text: text)
             }
         }
     }
@@ -82,6 +84,18 @@ class EngagementViewController: UIViewController, AlertPresenter {
     func swapAndBindEgagementViewModel(_ engagementModel: CommonEngagementModel) {
         self.viewModel = engagementModel
         bind(engagementViewModel: engagementModel)
+    }
+
+    private func showSnackbar(text: String) {
+        let style = environment.viewFactory.theme.snackBarStyle
+        environment.snackBar.present(
+            text: text,
+            style: style,
+            for: self,
+            timerProviding: environment.timerProviding,
+            gcd: environment.gcd,
+            notificationCenter: environment.notificationCenter
+        )
     }
 
     private func showLiveObservationConfirmation(
@@ -112,5 +126,8 @@ extension EngagementViewController {
     struct Environment {
         var viewFactory: ViewFactory
         var snackBar: SnackBar
+        var timerProviding: FoundationBased.Timer.Providing
+        var gcd: GCD
+        var notificationCenter: FoundationBased.NotificationCenter
     }
 }

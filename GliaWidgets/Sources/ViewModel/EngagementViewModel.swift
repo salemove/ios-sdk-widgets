@@ -321,6 +321,18 @@ private extension EngagementViewModel {
                     dismissed: { self.endSession() }
                 )
             }
+        case let authenticationError as CoreSdkClient.Authentication.Error:
+            switch authenticationError {
+            case let .expiredAccessToken(message):
+                environment.log.prefixed(Self.self).info("Show authentication error snackbar")
+                engagementAction?(.showSnackbar(text: message))
+            default:
+                environment.log.prefixed(Self.self).info("Show Unexpected error Dialog")
+                showAlert(
+                    with: alertConfiguration.unexpectedError,
+                    dismissed: { self.endSession() }
+                )
+            }
         default:
             environment.log.prefixed(Self.self).info("Show Unexpected error Dialog")
             showAlert(
@@ -410,6 +422,7 @@ extension EngagementViewModel {
         case showEndButton
         case showEndScreenShareButton
         case showLiveObservationConfirmation(LiveObservation.Confirmation)
+        case showSnackbar(text: String)
     }
 
     enum DelegateEvent {

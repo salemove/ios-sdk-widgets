@@ -38,6 +38,56 @@ class ChatViewControllerTests: XCTestCase {
         XCTAssertNil(weakViewController, "ChatViewController not deinitilized")
     }
 
+    func testAuthenticationErrorIsShownInSnackbar() throws {
+        enum Call: Equatable {
+            case presentSnackBar
+        }
+        var calls: [Call] = []
+
+        var viewModelEnv = ChatViewModel.Environment.failing { completion in
+            completion(.success([]))
+        }
+
+        let site = try CoreSdkClient.Site.mock(
+            mobileObservationEnabled: true,
+            mobileConfirmDialogEnabled: true,
+            mobileObservationIndicationEnabled: true
+        )
+        viewModelEnv.fetchSiteConfigurations = { completion in
+            completion(.success(site))
+        }
+        viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
+        viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
+        viewModelEnv.createFileUploadListModel = { _ in .mock() }
+        viewModelEnv.log.prefixedClosure = { _ in return .mock }
+        let interactor = Interactor.failing
+        interactor.environment.gcd.mainQueue.async = { $0() }
+        let viewModel = ChatViewModel.mock(interactor: interactor, environment: viewModelEnv)
+
+        var snackBar = SnackBar.failing
+        snackBar.present = { _, _, _, _, _, _, _ in
+            calls.append(.presentSnackBar)
+        }
+        let env = ChatViewController.Environment(
+            timerProviding: .failing,
+            viewFactory: .mock(),
+            gcd: .failing,
+            snackBar: snackBar,
+            notificationCenter: .failing
+        )
+        let viewController = ChatViewController(
+            viewModel: .chat(viewModel),
+            environment: env
+        )
+        viewController.loadView()
+        let errorMessage = "Please restart the app and log in again. There is an authentication issue."
+        let error: CoreSdkClient.SalemoveError = .init(
+            reason: "Expired Access token",
+            error: CoreSdkClient.Authentication.Error.expiredAccessToken(message: errorMessage))
+        interactor.fail(error: error)
+        XCTAssertEqual(calls, [.presentSnackBar])
+    }
+
     func testLiveObservationIndicatorIsPresented() throws {
         enum Call: Equatable {
             case presentSnackBar, prefixedLog(String)

@@ -14,7 +14,10 @@ final class CallViewController: EngagementViewController {
             viewModel: viewModel,
             environment: .init(
                 viewFactory: environment.viewFactory,
-                snackBar: environment.snackBar
+                snackBar: environment.snackBar,
+                timerProviding: environment.timerProviding,
+                gcd: environment.gcd,
+                notificationCenter: environment.notificationCenter
             )
         )
     }
