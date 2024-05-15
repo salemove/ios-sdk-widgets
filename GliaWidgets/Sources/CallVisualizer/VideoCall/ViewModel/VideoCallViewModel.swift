@@ -183,7 +183,7 @@ extension CallVisualizer.VideoCallViewModel {
                     style: style.header
                 ),
                 flipCameraTap: flipCameraAccLabelWithTap?.tapCallback,
-                flipCameraAccLabel: flipCameraAccLabelWithTap?.accessibilityLabel ?? ""
+                flipCameraPropsAccessibility: flipCameraAccLabelWithTap?.accessibility ?? .nop
             ),
             viewDidLoad: .init { [weak self] in
                 self?.environment.proximityManager.start()

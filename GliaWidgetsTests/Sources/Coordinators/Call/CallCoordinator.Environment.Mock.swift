@@ -28,6 +28,7 @@ extension CallCoordinator.Environment {
         log: .mock,
         snackBar: .mock,
         operatorRequestHandlerService: .mock(),
-        cameraDeviceManager: { .mock }
+        cameraDeviceManager: { .mock },
+        flipCameraButtonStyle: .nop
     )
 }

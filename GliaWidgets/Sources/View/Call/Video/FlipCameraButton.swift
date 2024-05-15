@@ -5,45 +5,33 @@ class FlipCameraButton: UIButton {
     static let bottomTrailingPadding: CGFloat = -8
 
     struct Props: Equatable {
+        struct Accessibility: Equatable {
+            let accessibilityLabel: String
+            let accessibilityHint: String
+        }
+
         let style: FlipCameraButtonStyle
         let tap: Cmd?
-        let accessibilityLabel: String
+        let accessibility: Accessibility
+
     }
 
     var props = Props(
         style: .nop,
         tap: nil,
-        accessibilityLabel: ""
+        accessibility: .nop
     ) {
         didSet {
             renderProps()
         }
     }
 
-    private var renderedActiveState: FlipCameraButtonStyle.State = .nop {
+    private var renderedStyle: FlipCameraButtonStyle = .nop {
         didSet {
-            guard renderedActiveState != oldValue else {
+            guard renderedStyle != oldValue else {
                 return
             }
-            renderStyleState(renderedActiveState, for: .normal)
-        }
-    }
-
-    private var renderedInactiveState: FlipCameraButtonStyle.State = .nop {
-        didSet {
-            guard renderedInactiveState != oldValue else {
-                return
-            }
-            renderStyleState(renderedInactiveState, for: .disabled)
-        }
-    }
-
-    private var renderedSelectedState: FlipCameraButtonStyle.State = .nop {
-        didSet {
-            guard renderedSelectedState != oldValue else {
-                return
-            }
-            renderStyleState(renderedSelectedState, for: .highlighted)
+            renderStyle(renderedStyle, for: .normal)
         }
     }
 
@@ -63,17 +51,16 @@ class FlipCameraButton: UIButton {
         self.addTarget(self, action: #selector(self.handleTap), for: .touchUpInside)
     }
 
-    private func renderStyleState(_ styleState: FlipCameraButtonStyle.State, for controlState: UIControl.State) {
-        self.setBackgroundColor(color: styleState.backgroundColor.color, forState: controlState)
-        self.setImage(Asset.flipCamera.image.image(withTintColor: styleState.imageColor.color), for: controlState)
+    private func renderStyle(_ style: FlipCameraButtonStyle, for controlState: UIControl.State) {
+        self.setBackgroundColor(color: style.backgroundColor.color, forState: controlState)
+        self.setImage(Asset.flipCamera.image.image(withTintColor: style.imageColor.color), for: controlState)
     }
 
     private func renderProps() {
         self.isHidden = props.tap == nil
-        self.renderedActiveState = props.style.activeState
-        self.renderedInactiveState = props.style.inactiveState
-        self.renderedSelectedState = props.style.selectedState
-        self.accessibilityLabel = props.accessibilityLabel
+        self.renderedStyle = props.style
+        self.accessibilityLabel = props.accessibility.accessibilityLabel
+        self.accessibilityHint = props.accessibility.accessibilityHint
     }
 
     @objc
@@ -85,4 +72,8 @@ class FlipCameraButton: UIButton {
         super.layoutSubviews()
         self.layer.cornerRadius = min(self.bounds.width, self.self.bounds.width) * 0.5
     }
+}
+
+extension FlipCameraButton.Props.Accessibility {
+    static let nop = Self(accessibilityLabel: "", accessibilityHint: "")
 }
