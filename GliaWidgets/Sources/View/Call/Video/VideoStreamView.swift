@@ -1,7 +1,7 @@
 import UIKit
 
 class VideoStreamView: UIView {
-    typealias FlipCameraAccLabelWithTap = (accessibilityLabel: String, tapCallback: Cmd)
+    typealias FlipCameraAccLabelWithTap = (accessibility: FlipCameraButton.Props.Accessibility, tapCallback: Cmd)
 
     enum Kind {
         case local
@@ -124,10 +124,14 @@ class VideoStreamView: UIView {
             props = .init(
                 style: flipButtonStyle,
                 tap: flipCameraAccessibilityLabelWithTap.tapCallback,
-                accessibilityLabel: flipCameraAccessibilityLabelWithTap.accessibilityLabel
+                accessibility: flipCameraAccessibilityLabelWithTap.accessibility
             )
         } else {
-            props = .init(style: flipButtonStyle, tap: nil, accessibilityLabel: "")
+            props = .init(
+                style: flipButtonStyle,
+                tap: nil,
+                accessibility: .nop
+            )
         }
 
         flipButton.props = props

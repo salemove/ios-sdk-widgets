@@ -173,12 +173,16 @@ extension Theme {
             bottomTextColor: color.baseLight,
             buttonBar: buttonBarStyle,
             onHoldStyle: onHoldStyle,
-            flipCameraButtonStyle: .custom.transform { // Will be changed to proper style with MOB-3292.
-                $0.accessibility = .init(
-                    switchToBackCameraAccessibilityLabel: Localization.callVisitorVideoFlipToBackCameraButtonAccessibilityLabel,
-                    switchToFrontCameraAccessibilityLabel: Localization.callVisitorVideoFlipToFrontCameraButtonAccessibilityLabel
+            flipCameraButtonStyle: .init(
+                backgroundColor: .fill(color: .black.withAlphaComponent(0.6)),
+                imageColor: .fill(color: .white),
+                accessibility: .init(
+                    switchToBackCameraAccessibilityLabel: Localization.Call.VisitorVideo.BackCamera.Button.Accessibility.label,
+                    switchToBackCameraAccessibilityHint: Localization.Call.VisitorVideo.BackCamera.Button.Accessibility.hint,
+                    switchToFrontCameraAccessibilityLabel: Localization.Call.VisitorVideo.FrontCamera.Button.Accessibility.label,
+                    switchToFrontCameraAccessibilityHint: Localization.Call.VisitorVideo.FrontCamera.Button.Accessibility.hint
                 )
-            },
+            ),
             accessibility: .init(
                 operatorNameHint: Localization.Call.Connect.FirstText.Accessibility.hint,
                 durationHint: Localization.Call.Connect.SecondText.Accessibility.hint,

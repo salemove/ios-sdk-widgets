@@ -18,7 +18,7 @@ extension CallVisualizer.VideoCallView.Props {
         topStackAlpha: CGFloat = 1.0,
         headerProps: Header.Props = .mock(),
         flipCameraTap: Cmd? = nil,
-        flipCameraAccLabel: String = ""
+        flipCameraPropsAccessibility: FlipCameraButton.Props.Accessibility = .nop
     ) -> CallVisualizer.VideoCallView.Props {
         return .init(
             style: style,
@@ -35,7 +35,7 @@ extension CallVisualizer.VideoCallView.Props {
             topStackAlpha: topStackAlpha,
             headerProps: headerProps,
             flipCameraTap: flipCameraTap,
-            flipCameraAccLabel: flipCameraAccLabel
+            flipCameraPropsAccessibility: flipCameraPropsAccessibility
         )
     }
 }
