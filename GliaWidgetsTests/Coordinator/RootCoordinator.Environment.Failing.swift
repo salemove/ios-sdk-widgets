@@ -94,6 +94,7 @@ extension EngagementCoordinator.Environment {
             fail("\(Self.self).maximumUploads")
             return 2
         },
-        cameraDeviceManager: { .failing }
+        cameraDeviceManager: { .failing },
+        flipCameraButtonStyle: .nop
     )
 }

@@ -280,7 +280,7 @@ extension CallVisualizer.VideoCallView {
         let topStackAlpha: CGFloat
         let headerProps: Header.Props
         let flipCameraTap: Cmd?
-        let flipCameraAccLabel: String
+        let flipCameraPropsAccessibility: FlipCameraButton.Props.Accessibility
     }
 }
 
@@ -299,7 +299,8 @@ private extension CallVisualizer.VideoCallView {
         connectView.isHidden = props.connectViewHidden
         topStackView.alpha = props.topStackAlpha
         header.props = props.headerProps
-        localVideoView.flipCameraAccessibilityLabelWithTap = props.flipCameraTap.map { tap in (props.flipCameraAccLabel, tap) }
+        localVideoView.flipCameraAccessibilityLabelWithTap = props.flipCameraTap
+            .map { tap in (props.flipCameraPropsAccessibility, tap) }
     }
 
     func adjustVideoViews() {

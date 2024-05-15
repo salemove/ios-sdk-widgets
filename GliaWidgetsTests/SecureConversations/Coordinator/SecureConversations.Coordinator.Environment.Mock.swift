@@ -51,6 +51,7 @@ extension SecureConversations.Coordinator.Environment {
         ),
         operatorRequestHandlerService: .mock(),
         maximumUploads: { 2 },
-        cameraDeviceManager: { .mock }
+        cameraDeviceManager: { .mock }, 
+        flipCameraButtonStyle: .nop
     )
 }
