@@ -33,9 +33,9 @@ extension CallViewModel {
 
             // Get accessibility label for currently used device, in case if there's no
             // selected device, provide empty string for it.
-            let accessibilityLabel = (currentDevice?.facing).map(accessibility.accessibilityLabel(for:)) ?? ""
+            let propsAccessibility = (currentDevice?.facing).map(accessibility.flipCameraButtonPropsAccessibility(for:)) ?? .nop
 
-            flipCameraAccLabelWithCallback = !visible ? nil : (accessibilityLabel, Cmd {
+            flipCameraAccLabelWithCallback = !visible ? nil : (propsAccessibility, Cmd {
                 // Actualize current device again during callback execution
                 // to avoid stale data.
                 let currentDevice = cameraDeviceManager.currentCameraDevice()

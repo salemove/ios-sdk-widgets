@@ -65,7 +65,8 @@ class ChatViewModelTests: XCTestCase {
                 proximityManager: .mock,
                 log: .mock,
                 operatorRequestHandlerService: .mock(),
-                cameraDeviceManager: { .mock }
+                cameraDeviceManager: { .mock },
+                flipCameraButtonStyle: .nop
             ),
             maximumUploads: { 2 }
         )

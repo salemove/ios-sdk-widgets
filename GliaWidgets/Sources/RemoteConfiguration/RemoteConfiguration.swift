@@ -36,12 +36,18 @@ extension RemoteConfiguration {
         let header: Header?
         let callOperator, topText: Text?
         let connect: EngagementStates?
+        let visitorVideo: VisitorVideo?
 
         enum CodingKeys: String, CodingKey {
             case background, bottomText, buttonBar, duration, header, connect
             case callOperator = "operator"
             case topText
+            case visitorVideo
         }
+    }
+
+    struct VisitorVideo: Codable {
+        let flipCameraButton: BarButtonStyle?
     }
 
     struct Alert: Codable {
