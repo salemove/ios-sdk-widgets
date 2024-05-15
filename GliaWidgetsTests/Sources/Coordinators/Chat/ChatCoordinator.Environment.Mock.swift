@@ -40,6 +40,7 @@ extension ChatCoordinator.Environment {
         notificationCenter: .mock,
         operatorRequestHandlerService: .mock(),
         maximumUploads: { 2 },
-        cameraDeviceManager: { .mock }
+        cameraDeviceManager: { .mock }, 
+        flipCameraButtonStyle: .nop
     )
 }
