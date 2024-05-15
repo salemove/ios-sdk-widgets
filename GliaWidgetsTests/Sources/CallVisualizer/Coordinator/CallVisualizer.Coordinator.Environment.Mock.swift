@@ -25,6 +25,7 @@ extension CallVisualizer.Coordinator.Environment {
         proximityManager: .mock,
         log: .mock,
         fetchSiteConfigurations: { completion in },
-        snackBar: .mock
+        snackBar: .mock,
+        cameraDeviceManager: { .mock }
     )
 }

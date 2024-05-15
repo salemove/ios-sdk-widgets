@@ -37,6 +37,8 @@ extension CallStyle {
             configuration: configuration?.connect,
             assetsBuilder: assetsBuilder
         )
+
+        flipCameraButtonStyle.apply(configuration?.visitorVideo?.flipCameraButton)
     }
 
     /// Applies `bottomText` from remote configuration.

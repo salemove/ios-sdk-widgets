@@ -1,87 +1,45 @@
-import Foundation
+import UIKit
 
 /// Style for camera switching button.
 public struct FlipCameraButtonStyle: Equatable {
-    /// Button state that specifies colors for background and image.
-    public struct State: Equatable {
-        /// Button background color.
-        public var backgroundColor: ColorType
-        /// Button image color.
-        public var imageColor: ColorType
-
-        /// - Parameters:
-        ///   - backgroundColor: Button background color.
-        ///   - imageColor: Button image color.
-        public init(
-            backgroundColor: ColorType,
-            imageColor: ColorType
-        ) {
-            self.backgroundColor = backgroundColor
-            self.imageColor = imageColor
-        }
-    }
-
-    /// Active (normal) state of the button.
-    public var activeState: State
-    /// Inactive (disabled) state of the button.
-    public var inactiveState: State
-    /// Selected (highlighted) state of the button.
-    public var selectedState: State
+    /// Button background color.
+    public var backgroundColor: ColorType
+    /// Button image color.
+    public var imageColor: ColorType
     /// Accessibility related properties.
     public var accessibility: Accessibility
 
     /// - Parameters:
-    ///   - activeState: Active (normal) state of the button.
-    ///   - inactiveState: Inactive (disabled) state of the button.
-    ///   - selectedState: Selected (highlighted) state of the button.
+    ///   - backgroundColor: Button background color.
+    ///   - imageColor: Button image color.
     ///   - accessibility: Accessibility related properties.
     public init(
-        activeState: State,
-        inactiveState: State,
-        selectedState: State,
+        backgroundColor: ColorType,
+        imageColor: ColorType,
         accessibility: Accessibility
     ) {
-        self.activeState = activeState
-        self.inactiveState = inactiveState
-        self.selectedState = selectedState
+        self.backgroundColor = backgroundColor
+        self.imageColor = imageColor
         self.accessibility = accessibility
+    }
+
+    mutating func apply(_ config: RemoteConfiguration.BarButtonStyle?) {
+        config?.background?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .unwrap { backgroundColor = .fill(color: $0) }
+
+        config?.imageColor?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .unwrap { imageColor = .fill(color: $0) }
     }
 }
 
 extension FlipCameraButtonStyle {
     static let nop = Self(
-        activeState: .nop,
-        inactiveState: .nop,
-        selectedState: .nop,
-        accessibility: .nop
-    )
-}
-
-extension FlipCameraButtonStyle.State {
-    static let nop = Self(
         backgroundColor: .fill(color: .clear),
-        imageColor: .fill(color: .clear)
-    )
-}
-
-extension FlipCameraButtonStyle {
-    // Used for feature development.
-    // Will be removed with MOB-3292.
-    static let custom = Self(
-        activeState: State(
-            backgroundColor: .fill(color: .init(hex: "#04728c")),
-            imageColor: .fill(color: .init(hex: "#FFFFFF"))
-        ),
-        inactiveState: State(
-            backgroundColor: .fill(color: .init(hex: "#042835")),
-            imageColor: .fill(color: .init(hex: "#FFFFFF"))
-        ),
-        selectedState: State(
-            backgroundColor: .fill(color: .init(hex: "#000000")),
-            imageColor: .fill(color: .init(hex: "#FFFFFF"))
-        ),
+        imageColor: .fill(color: .clear),
         accessibility: .nop
     )
 }
-
-extension FlipCameraButtonStyle: Transformable {}

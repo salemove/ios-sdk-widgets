@@ -10,12 +10,6 @@ import Foundation
 // swiftlint:disable explicit_type_interface function_parameter_count identifier_name line_length
 // swiftlint:disable nesting type_body_length type_name vertical_whitespace_opening_braces
 internal enum Localization {
-
-  /// Switch to back camera
-  internal static var callVisitorVideoFlipToBackCameraButtonAccessibilityLabel: String { Localization.tr("Localizable", "call_visitor_video_flip_to_back_camera_button_accessibility_label", fallback: "Switch to back camera") }
-
-  /// Switch to front camera
-  internal static var callVisitorVideoFlipToFrontCameraButtonAccessibilityLabel: String { Localization.tr("Localizable", "call_visitor_video_flip_to_front_camera_button_accessibility_label", fallback: "Switch to front camera") }
   internal enum Alert {
     internal enum Action {
       /// Settings
@@ -147,6 +141,26 @@ internal enum Localization {
       internal enum Accessibility {
         /// Your Video
         internal static var label: String { Localization.tr("Localizable", "call.visitor_video.accessibility.label", fallback: "Your Video") }
+      }
+      internal enum BackCamera {
+        internal enum Button {
+          internal enum Accessibility {
+            /// Changes camera position to rear
+            internal static var hint: String { Localization.tr("Localizable", "call.visitor_video.back_camera.button.accessibility.hint", fallback: "Changes camera position to rear") }
+            /// Switch to back camera
+            internal static var label: String { Localization.tr("Localizable", "call.visitor_video.back_camera.button.accessibility.label", fallback: "Switch to back camera") }
+          }
+        }
+      }
+      internal enum FrontCamera {
+        internal enum Button {
+          internal enum Accessibility {
+            /// Changes camera position to front
+            internal static var hint: String { Localization.tr("Localizable", "call.visitor_video.front_camera.button.accessibility.hint", fallback: "Changes camera position to front") }
+            /// Switch to front camera
+            internal static var label: String { Localization.tr("Localizable", "call.visitor_video.front_camera.button.accessibility.label", fallback: "Switch to front camera") }
+          }
+        }
       }
     }
   }
