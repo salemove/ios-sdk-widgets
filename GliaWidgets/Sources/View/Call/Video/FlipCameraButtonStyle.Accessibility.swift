@@ -70,3 +70,14 @@ extension FlipCameraButtonStyle.Accessibility {
         }
     }
 }
+
+#if DEBUG
+extension FlipCameraButtonStyle.Accessibility {
+    static let mock = Self(
+        switchToBackCameraAccessibilityLabel: "",
+        switchToBackCameraAccessibilityHint: "",
+        switchToFrontCameraAccessibilityLabel: "",
+        switchToFrontCameraAccessibilityHint: ""
+    )
+}
+#endif
