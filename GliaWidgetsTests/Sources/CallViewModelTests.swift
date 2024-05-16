@@ -652,4 +652,166 @@ class CallViewModelTests: XCTestCase {
 
         XCTAssertFalse(isLocalVideoStreamPaused)
     }
+
+    func test_setFlipCameraButtonVisibleWhenHasCameraDeviceManagerInvokesCallback() {
+        var cameraDeviceManager = CoreSdkClient.CameraDeviceManageableClient.failing
+        let frontCamera = CoreSdkClient.CameraDevice(
+            mockName: "FrontCameraMock",
+            mockFacing: .front
+        )
+        let backCamera = CoreSdkClient.CameraDevice(
+            mockName: "BackCameraMock",
+            mockFacing: .back
+        )
+
+        cameraDeviceManager.cameraDevices = {
+            [frontCamera, backCamera]
+        }
+
+        cameraDeviceManager.currentCameraDevice = { backCamera }
+
+        enum Call {
+            case callback
+        }
+
+        var calls: [Call] = []
+
+        CallViewModel.setFlipCameraButtonVisible(
+            true,
+            getCameraDeviceManager: { cameraDeviceManager },
+            log: .failing,
+            flipCameraButtonStyle: .nop,
+            callback: { _ in
+                calls.append(.callback)
+            })
+
+        XCTAssertEqual(calls, [.callback])
+    }
+
+    func test_setFlipCameraButtonVisibleReceivesExpectedAccessibilityForCurrentDevice() {
+        var cameraDeviceManager = CoreSdkClient.CameraDeviceManageableClient.failing
+        let frontCamera = CoreSdkClient.CameraDevice(
+            mockName: "FrontCameraMock",
+            mockFacing: .front
+        )
+        let backCamera = CoreSdkClient.CameraDevice(
+            mockName: "BackCameraMock",
+            mockFacing: .back
+        )
+
+        cameraDeviceManager.cameraDevices = {
+            [frontCamera, backCamera]
+        }
+
+        var style = FlipCameraButtonStyle.mock
+        style.accessibility.switchToBackCameraAccessibilityLabel = "backCamaraLabel"
+        style.accessibility.switchToBackCameraAccessibilityHint = "backCameraHint"
+        style.accessibility.switchToFrontCameraAccessibilityLabel = "frontCameraLabel"
+        style.accessibility.switchToFrontCameraAccessibilityHint = "frontCameraHint"
+
+        cameraDeviceManager.currentCameraDevice = { backCamera }
+
+        var accessibilities: [FlipCameraButton.Props.Accessibility] = []
+
+        CallViewModel.setFlipCameraButtonVisible(
+            true,
+            getCameraDeviceManager: { cameraDeviceManager },
+            log: .failing,
+            flipCameraButtonStyle: style,
+            callback: {
+                if let accessibility = $0?.accessibility {
+                    accessibilities.append(accessibility)
+                }
+            })
+
+        let backCameraExpectedAccessibility = FlipCameraButton.Props.Accessibility(
+            accessibilityLabel: style.accessibility.switchToFrontCameraAccessibilityLabel,
+            accessibilityHint: style.accessibility.switchToFrontCameraAccessibilityHint
+        )
+
+        cameraDeviceManager.currentCameraDevice = { frontCamera }
+
+        CallViewModel.setFlipCameraButtonVisible(
+            true,
+            getCameraDeviceManager: { cameraDeviceManager },
+            log: .failing,
+            flipCameraButtonStyle: style,
+            callback: {
+                if let accessibility = $0?.accessibility {
+                    accessibilities.append(accessibility)
+                }
+            })
+
+        let frontCameraExpectedAccessibility = FlipCameraButton.Props.Accessibility(
+            accessibilityLabel: style.accessibility.switchToBackCameraAccessibilityLabel,
+            accessibilityHint: style.accessibility.switchToBackCameraAccessibilityHint
+        )
+
+        XCTAssertEqual(accessibilities, [backCameraExpectedAccessibility, frontCameraExpectedAccessibility])
+    }
+
+    func test_setFlipCameraButtonVisibleGivenVisibleParamAsFalseReceivesNil() {
+        var cameraDeviceManager = CoreSdkClient.CameraDeviceManageableClient.failing
+        let frontCamera = CoreSdkClient.CameraDevice(
+            mockName: "FrontCameraMock",
+            mockFacing: .front
+        )
+        let backCamera = CoreSdkClient.CameraDevice(
+            mockName: "BackCameraMock",
+            mockFacing: .back
+        )
+
+        cameraDeviceManager.cameraDevices = {
+            [frontCamera, backCamera]
+        }
+
+        var style = FlipCameraButtonStyle.mock
+        style.accessibility.switchToBackCameraAccessibilityLabel = "backCamaraLabel"
+        style.accessibility.switchToBackCameraAccessibilityHint = "backCameraHint"
+        style.accessibility.switchToFrontCameraAccessibilityLabel = "frontCameraLabel"
+        style.accessibility.switchToFrontCameraAccessibilityHint = "frontCameraHint"
+
+        cameraDeviceManager.currentCameraDevice = { backCamera }
+
+
+        var receivedAccessibilitiesWithCallbacks: [VideoStreamView.FlipCameraAccLabelWithTap?] = []
+
+        CallViewModel.setFlipCameraButtonVisible(
+            false,
+            getCameraDeviceManager: { cameraDeviceManager },
+            log: .failing,
+            flipCameraButtonStyle: style,
+            callback: {
+                receivedAccessibilitiesWithCallbacks.append($0)
+            })
+
+        XCTAssertEqual(receivedAccessibilitiesWithCallbacks[0]?.tapCallback, nil)
+        XCTAssertEqual(receivedAccessibilitiesWithCallbacks[0]?.accessibility, nil)
+    }
+
+    func test_setFlipCameraButtonVisibleGivenThrowingGetCameraDeviceManagerLogsWarning() {
+        let cameraDeviceManager = CoreSdkClient.CameraDeviceManageableClient.failing
+        let style = FlipCameraButtonStyle.mock
+        var receivedAccessibilitiesWithCallbacks: [VideoStreamView.FlipCameraAccLabelWithTap?] = []
+
+        var warnings: [String] = []
+
+        var log = CoreSdkClient.Logger.failing
+        log.warningClosure = { warning, _, _, _ in
+            warnings.append("\(warning)")
+        }
+
+        CallViewModel.setFlipCameraButtonVisible(
+            false,
+            getCameraDeviceManager: { throw CoreSdkClient.CameraDevice.Error.cameraIsNotAccessibleOnStream },
+            log: log,
+            flipCameraButtonStyle: style,
+            callback: {
+                receivedAccessibilitiesWithCallbacks.append($0)
+            })
+
+        XCTAssertEqual(receivedAccessibilitiesWithCallbacks[0]?.tapCallback, nil)
+        XCTAssertEqual(receivedAccessibilitiesWithCallbacks[0]?.accessibility, nil)
+        XCTAssertEqual(warnings, ["Unable to access camera device manager: 'cameraIsNotAccessibleOnStream'."])
+    }
 }
