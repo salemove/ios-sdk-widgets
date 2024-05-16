@@ -12,7 +12,7 @@ PODS:
     - TwilioVoice (= 6.8.0)
     - WebRTC-lib (= 119.0.0)
   - SnapshotTesting (1.9.0)
-  - SwiftLint (0.54.0)
+  - SwiftLint (0.55.0)
   - TwilioVoice (6.8.0)
   - WebRTC-lib (119.0.0)
 
@@ -25,10 +25,10 @@ SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
     - AccessibilitySnapshot
     - SnapshotTesting
-    - SwiftLint
   trunk:
     - GliaCoreDependency
     - GliaCoreSDK
+    - SwiftLint
     - TwilioVoice
     - WebRTC-lib
 
@@ -37,7 +37,7 @@ SPEC CHECKSUMS:
   GliaCoreDependency: 37f48a5a32e2646617b87cbe9d4b30eedd123f6f
   GliaCoreSDK: 6b9daa9eb34a962165cf1216f447e049d6faba5e
   SnapshotTesting: 6141c48b6aa76ead61431ca665c14ab9a066c53b
-  SwiftLint: c1de071d9d08c8aba837545f6254315bc900e211
+  SwiftLint: c5b49076d727b772434318c236548f0a1110c299
   TwilioVoice: 9563c9ad71b9ab7bbad0b59b67cfe4be96c75d23
   WebRTC-lib: 4e9a17058f880cd658e88383c1ac8f1119af3700
 

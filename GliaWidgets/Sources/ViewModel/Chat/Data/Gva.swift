@@ -90,7 +90,9 @@ private extension StringProtocol {
 
 private extension Data {
     var htmlToAttributedString: NSMutableAttributedString? {
-        if let string = String(data: self, encoding: .utf8), containsHtml(string) {
+        let string = String(decoding: self, as: UTF8.self)
+
+        if containsHtml(string) {
             do {
                 let options: [NSAttributedString.DocumentReadingOptionKey: Any] = [
                     .documentType: NSAttributedString.DocumentType.html,
@@ -106,7 +108,9 @@ private extension Data {
                 return NSMutableAttributedString(string: string)
             }
         } else {
-            return NSMutableAttributedString(string: String(data: self, encoding: .utf8) ?? "")
+            return NSMutableAttributedString(
+                string: String(decoding: self, as: UTF8.self)
+            )
         }
     }
 
