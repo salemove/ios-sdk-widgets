@@ -537,7 +537,7 @@ extension ChatViewController {
     }
 
     static private func mockGvaPersistentButtonJson() -> Data? {
-        """
+        Data("""
             {
                 "metadata":
                 {
@@ -559,11 +559,11 @@ extension ChatViewController {
                   ]
                 }
             }
-        """.data(using: .utf8)
+        """.utf8)
     }
 
     static private func mockGvaResponseTextJson() -> Data? {
-        """
+        Data("""
             {
                 "metadata":
                 {
@@ -571,11 +571,11 @@ extension ChatViewController {
                   "content" : "This is a Glia Virutal Assistant Response Text.",
                 }
             }
-        """.data(using: .utf8)
+        """.utf8)
     }
 
     static private func mockGvaGalleryCardJson() -> Data? {
-        """
+        Data("""
             {
                 "metadata": {
                     "type" : "galleryCards",
@@ -619,7 +619,7 @@ extension ChatViewController {
                     ]
                 }
             }
-        """.data(using: .utf8)
+        """.utf8)
     }
 }
 

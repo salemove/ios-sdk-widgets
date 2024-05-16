@@ -185,35 +185,39 @@ extension ChatCoordinator {
             }
         }
         viewModel.delegate = { [weak self] event in
-            switch event {
-            case .pickMedia(let pickerEvent):
-                self?.presentMediaPickerController(
-                    with: pickerEvent,
-                    mediaSource: .library,
-                    mediaTypes: [.image, .movie]
-                )
-            case .takeMedia(let pickerEvent):
-                self?.presentMediaPickerController(
-                    with: pickerEvent,
-                    mediaSource: .camera,
-                    mediaTypes: [.image, .movie]
-                )
-            case .pickFile(let pickerEvent):
-                self?.presentFilePickerController(with: pickerEvent)
-            case .mediaUpgradeAccepted(let offer, let answer):
-                self?.delegate?(.mediaUpgradeAccepted(offer: offer, answer: answer))
-            case .secureTranscriptUpgradedToLiveChat(let chatViewController):
-                self?.delegate?(.secureTranscriptUpgradedToLiveChat(chatViewController))
-            case .showFile(let file):
-                self?.presentQuickLookController(with: file)
-            case .call:
-                self?.delegate?(.call)
-            case .minimize:
-                self?.delegate?(.minimize)
-            }
+            self?.handleDelegateEvent(event: event)
         }
 
         return viewModel
+    }
+
+    private func handleDelegateEvent(event: ChatViewModel.DelegateEvent) {
+        switch event {
+        case .pickMedia(let pickerEvent):
+            presentMediaPickerController(
+                with: pickerEvent,
+                mediaSource: .library,
+                mediaTypes: [.image, .movie]
+            )
+        case .takeMedia(let pickerEvent):
+            presentMediaPickerController(
+                with: pickerEvent,
+                mediaSource: .camera,
+                mediaTypes: [.image, .movie]
+            )
+        case .pickFile(let pickerEvent):
+            presentFilePickerController(with: pickerEvent)
+        case .mediaUpgradeAccepted(let offer, let answer):
+            delegate?(.mediaUpgradeAccepted(offer: offer, answer: answer))
+        case .secureTranscriptUpgradedToLiveChat(let chatViewController):
+            delegate?(.secureTranscriptUpgradedToLiveChat(chatViewController))
+        case .showFile(let file):
+            presentQuickLookController(with: file)
+        case .call:
+            delegate?(.call)
+        case .minimize:
+            delegate?(.minimize)
+        }
     }
 
     static func enviromentForChatModel(

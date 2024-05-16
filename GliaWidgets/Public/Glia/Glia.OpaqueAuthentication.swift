@@ -67,48 +67,6 @@ extension Glia {
     public func authentication(with behavior: Glia.Authentication.Behavior) throws -> Authentication {
         let auth = try environment.coreSdk.authentication(behavior.toCoreSdk())
 
-        let closeRootCoordinator = { [weak self] in
-            self?.rootCoordinator?.popCoordinator()
-            self?.rootCoordinator?.end(surveyPresentation: .doNotPresentSurvey)
-            self?.rootCoordinator = nil
-        }
-
-        let restartEngagementIfNeeded: (_ interactor: Interactor?, _ viewFactory: ViewFactory?,
-                                        _ sceneProvider: SceneProvider?,
-                                        _ features: Features?) -> Void = { [weak self] interactor, viewFactory, sceneProvider, features in
-            closeRootCoordinator()
-            // Restart engagement happens implicitly, however, to create RootCoordinator
-            // queueId, engagementKind, etc. are needed.
-            // Copy existed interactor, viewFactory, and feature list in case the engagement
-            // should be restarted with the same options.
-            guard let interactor = interactor,
-                  let viewFactory = viewFactory,
-                  let features = features else { return }
-
-            // Waits for while for establishing socket connection, connection to channels, and
-            // receive necessary information about engagement.
-            self?.environment.gcd.mainQueue.asyncAfterDeadline(.now() + .seconds(2)) { [weak self] in
-                if let restartedEngagement = self?.interactor?.currentEngagement, restartedEngagement.restartedFromEngagementId != nil {
-                    // In case engagement should be restarted, LO ack should not
-                    // be appeared again.
-                    interactor.skipLiveObservationConfirmations = true
-
-                    self?.startRootCoordinator(
-                        with: interactor,
-                        viewFactory: viewFactory,
-                        sceneProvider: sceneProvider,
-                        engagementKind: .init(media: restartedEngagement.mediaStreams),
-                        features: features,
-                        maximize: false
-                    )
-
-                    self?.rootCoordinator?.gliaViewController?.minimize(animated: false)
-                } else {
-                    closeRootCoordinator()
-                }
-            }
-        }
-
         return .init(
             authenticateWithIdToken: { [weak self] idToken, accessToken, callback in
                 self?.loggerPhase.logger.prefixed(Self.self).info(
@@ -127,8 +85,12 @@ extension Glia {
                     switch result {
                     case .success:
                         // Handle authentication
-                        restartEngagementIfNeeded(interactor, viewFactory, sceneProvider, features)
-
+                        self?.restartEngagementIfNeeded(
+                            interactor: interactor,
+                            viewFactory: viewFactory,
+                            sceneProvider: sceneProvider,
+                            features: features
+                        )
                     case .failure:
                         break
                     }
@@ -142,7 +104,7 @@ extension Glia {
                     switch result {
                     case .success:
                         // Cleanup navigation and views.
-                        closeRootCoordinator()
+                        self?.closeRootCoordinator()
                     case .failure:
                         break
                     }
@@ -155,6 +117,51 @@ extension Glia {
             },
             environment: .init(log: loggerPhase.logger)
         )
+    }
+
+    private func restartEngagementIfNeeded(
+        interactor: Interactor?,
+        viewFactory: ViewFactory?,
+        sceneProvider: SceneProvider?,
+        features: Features?
+    ) {
+        closeRootCoordinator()
+        // Restart engagement happens implicitly, however, to create RootCoordinator
+        // queueId, engagementKind, etc. are needed.
+        // Copy existed interactor, viewFactory, and feature list in case the engagement
+        // should be restarted with the same options.
+        guard let interactor = interactor,
+              let viewFactory = viewFactory,
+              let features = features else { return }
+
+        // Waits for while for establishing socket connection, connection to channels, and
+        // receive necessary information about engagement.
+        environment.gcd.mainQueue.asyncAfterDeadline(.now() + .seconds(2)) { [weak self] in
+            if let restartedEngagement = self?.interactor?.currentEngagement, restartedEngagement.restartedFromEngagementId != nil {
+                // In case engagement should be restarted, LO ack should not
+                // be appeared again.
+                interactor.skipLiveObservationConfirmations = true
+
+                self?.startRootCoordinator(
+                    with: interactor,
+                    viewFactory: viewFactory,
+                    sceneProvider: sceneProvider,
+                    engagementKind: .init(media: restartedEngagement.mediaStreams),
+                    features: features,
+                    maximize: false
+                )
+
+                self?.rootCoordinator?.gliaViewController?.minimize(animated: false)
+            } else {
+                self?.closeRootCoordinator()
+            }
+        }
+    }
+
+    private func closeRootCoordinator() {
+        rootCoordinator?.popCoordinator()
+        rootCoordinator?.end(surveyPresentation: .doNotPresentSurvey)
+        rootCoordinator = nil
     }
 }
 
