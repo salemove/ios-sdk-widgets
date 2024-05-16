@@ -78,6 +78,7 @@ workflows:
     - xcode-test@4:
         inputs:
         - scheme: $TEST_SCHEME
+        - destination: platform=iOS Simulator,name=iPhone 13,OS=15.5
     - git-tag@1:
         inputs:
         - tag: $NEW_VERSION
