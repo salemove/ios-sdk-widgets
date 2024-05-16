@@ -43,3 +43,13 @@ extension FlipCameraButtonStyle {
         accessibility: .nop
     )
 }
+
+#if DEBUG
+extension FlipCameraButtonStyle {
+    static let mock = Self(
+        backgroundColor: .fill(color: .clear),
+        imageColor: .fill(color: .clear),
+        accessibility: .mock
+    )
+}
+#endif
