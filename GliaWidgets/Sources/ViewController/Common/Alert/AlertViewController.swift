@@ -35,13 +35,19 @@ class AlertViewController: UIViewController, Replaceable {
             declined: () -> Void
         )
 
+        case criticalError(
+            MessageAlertConfiguration,
+            accessibilityIdentifier: String?,
+            dismissed: (() -> Void)?
+        )
+
         /// Indicating presentation priority of an alert.
         /// Based on comparing values we can decide whether an alert can be replaced with another alert.
         fileprivate var presentationPriority: PresentationPriority {
             switch self {
-            case .singleAction, .liveObservationConfirmation:
+            case .singleAction, .criticalError:
                 return .highest
-            case .confirmation:
+            case .confirmation, .liveObservationConfirmation:
                 return .high
             case .message, .singleMediaUpgrade, .screenShareOffer:
                 return .regular
@@ -173,6 +179,12 @@ class AlertViewController: UIViewController, Replaceable {
                 link: link,
                 accepted: accepted,
                 declined: declined
+            )
+        case let .criticalError(conf, accessibilityIdentifier, dismissed):
+            return makeMessageAlertView(
+                with: conf,
+                accessibilityIdentifier: accessibilityIdentifier,
+                dismissed: dismissed
             )
         }
     }

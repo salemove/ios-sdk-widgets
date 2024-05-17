@@ -38,9 +38,9 @@ class ChatViewControllerTests: XCTestCase {
         XCTAssertNil(weakViewController, "ChatViewController not deinitilized")
     }
 
-    func testAuthenticationErrorIsShownInSnackbar() throws {
+    func testAuthenticationErrorIsShownInDialog() throws {
         enum Call: Equatable {
-            case presentSnackBar
+            case presentCriticalErrorAlert
         }
         var calls: [Call] = []
 
@@ -62,30 +62,27 @@ class ChatViewControllerTests: XCTestCase {
         viewModelEnv.log.prefixedClosure = { _ in return .mock }
         let interactor = Interactor.failing
         interactor.environment.gcd.mainQueue.async = { $0() }
-        let viewModel = ChatViewModel.mock(interactor: interactor, environment: viewModelEnv)
+        let viewModel = ChatViewModel.mock(
+            interactor: interactor,
+            environment: viewModelEnv
+        )
 
-        var snackBar = SnackBar.failing
-        snackBar.present = { _, _, _, _, _, _, _ in
-            calls.append(.presentSnackBar)
+        viewModel.engagementAction = { action in
+            switch action {
+            case let .showCriticalErrorAlert(conf, accessibilityIdentifier, dismissed):
+                calls.append(.presentCriticalErrorAlert)
+            default:
+                break
+            }
         }
-        let env = ChatViewController.Environment(
-            timerProviding: .failing,
-            viewFactory: .mock(),
-            gcd: .failing,
-            snackBar: snackBar,
-            notificationCenter: .failing
-        )
-        let viewController = ChatViewController(
-            viewModel: .chat(viewModel),
-            environment: env
-        )
-        viewController.loadView()
-        let errorMessage = "Please restart the app and log in again. There is an authentication issue."
+        
+        let errorMessage = "Please restart the app and log in again"
         let error: CoreSdkClient.SalemoveError = .init(
-            reason: "Expired Access token",
+            reason: "Authentication issue",
             error: CoreSdkClient.Authentication.Error.expiredAccessToken(message: errorMessage))
         interactor.fail(error: error)
-        XCTAssertEqual(calls, [.presentSnackBar])
+        
+        XCTAssertEqual(calls, [.presentCriticalErrorAlert])
     }
 
     func testLiveObservationIndicatorIsPresented() throws {
