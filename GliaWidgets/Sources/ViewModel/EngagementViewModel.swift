@@ -260,6 +260,29 @@ class EngagementViewModel: CommonEngagementModel {
 
 // MARK: - Private
 private extension EngagementViewModel {
+    func showCriticalErrorAlert(
+        with conf: MessageAlertConfiguration,
+        accessibilityIdentifier: String? = nil,
+        dismissed: (() -> Void)? = nil
+    ) {
+        let onDismissed = {
+            dismissed?()
+            switch self.interactor.state {
+            case .ended:
+                self.endSession()
+            default:
+                break
+            }
+        }
+        engagementAction?(
+            .showCriticalErrorAlert(
+                conf,
+                accessibilityIdentifier: accessibilityIdentifier,
+                dismissed: { onDismissed() }
+            )
+        )
+    }
+
     private func offerScreenShare(answer: @escaping CoreSdkClient.AnswerBlock) {
         environment.operatorRequestHandlerService.offerScreenShare(
             from: interactor.engagedOperator?.firstName ?? "",
@@ -324,8 +347,11 @@ private extension EngagementViewModel {
         case let authenticationError as CoreSdkClient.Authentication.Error:
             switch authenticationError {
             case let .expiredAccessToken(message):
-                environment.log.prefixed(Self.self).info("Show authentication error snackbar")
-                engagementAction?(.showSnackbar(text: message))
+                environment.log.prefixed(Self.self).info("Show authentication error Dialog")
+                showCriticalErrorAlert(
+                    with: alertConfiguration.expiredAccessTokenError,
+                    dismissed: self.endSession
+                )
             default:
                 environment.log.prefixed(Self.self).info("Show Unexpected error Dialog")
                 showAlert(
@@ -415,6 +441,11 @@ extension EngagementViewModel {
             accessibilityIdentifier: String?,
             dismissed: (() -> Void)?
         )
+        case showCriticalErrorAlert(
+            MessageAlertConfiguration,
+            accessibilityIdentifier: String?,
+            dismissed: (() -> Void)?
+        )
         case showSettingsAlert(
             SettingsAlertConfiguration,
             cancelled: (() -> Void)?
@@ -422,7 +453,7 @@ extension EngagementViewModel {
         case showEndButton
         case showEndScreenShareButton
         case showLiveObservationConfirmation(LiveObservation.Confirmation)
-        case showSnackbar(text: String)
+
     }
 
     enum DelegateEvent {
