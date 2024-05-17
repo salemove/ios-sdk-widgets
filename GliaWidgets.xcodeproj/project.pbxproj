@@ -861,6 +861,7 @@
 		C0D2F08B29A4E95700803B47 /* ConnectView.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D2F08929A4E92D00803B47 /* ConnectView.Mock.swift */; };
 		C0D2F08C29A4EBA900803B47 /* VIdeoCallView.Environment.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D2F06F29A4DB5C00803B47 /* VIdeoCallView.Environment.Mock.swift */; };
 		C0D2F08F29A61A8D00803B47 /* VideoCallViewController.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D2F08D29A61A7800803B47 /* VideoCallViewController.Mock.swift */; };
+		C0D6C9E62BFB695E00D4709B /* ViewController+AuthTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6C9E52BFB695E00D4709B /* ViewController+AuthTimer.swift */; };
 		C0E948042AB1D5D200890026 /* ActionButtonSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E948032AB1D5D200890026 /* ActionButtonSwiftUI.swift */; };
 		C0E948062AB1D64700890026 /* HeaderButtonSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E948052AB1D64700890026 /* HeaderButtonSwiftUI.swift */; };
 		C0E948092AB1D6AB00890026 /* HeaderSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E948082AB1D6AB00890026 /* HeaderSwiftUI.swift */; };
@@ -1813,6 +1814,7 @@
 		C0D2F08629A4E8AE00803B47 /* CallButtonBar.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallButtonBar.Mock.swift; sourceTree = "<group>"; };
 		C0D2F08929A4E92D00803B47 /* ConnectView.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectView.Mock.swift; sourceTree = "<group>"; };
 		C0D2F08D29A61A7800803B47 /* VideoCallViewController.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCallViewController.Mock.swift; sourceTree = "<group>"; };
+		C0D6C9E52BFB695E00D4709B /* ViewController+AuthTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+AuthTimer.swift"; sourceTree = "<group>"; };
 		C0E948032AB1D5D200890026 /* ActionButtonSwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButtonSwiftUI.swift; sourceTree = "<group>"; };
 		C0E948052AB1D64700890026 /* HeaderButtonSwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderButtonSwiftUI.swift; sourceTree = "<group>"; };
 		C0E948082AB1D6AB00890026 /* HeaderSwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderSwiftUI.swift; sourceTree = "<group>"; };
@@ -3696,6 +3698,7 @@
 			isa = PBXGroup;
 			children = (
 				1A205D7E25655CEC003AA3CD /* ViewController.swift */,
+				C0D6C9E52BFB695E00D4709B /* ViewController+AuthTimer.swift */,
 				84265E6D29914DDA00D65842 /* ViewController+CallVisualizer.swift */,
 			);
 			path = ViewController;
@@ -6144,6 +6147,7 @@
 				1A4AD3D6256FE7F800468BFB /* UIColor+Extensions.swift in Sources */,
 				AF11F30728BE6F0C002ACEB4 /* UIAlertController+Extensions.swift in Sources */,
 				7552DFA82A683A2C0093519B /* UIStackView.Extensions.swift in Sources */,
+				C0D6C9E62BFB695E00D4709B /* ViewController+AuthTimer.swift in Sources */,
 				AF3BD1DF2A42026D00A7713E /* Command.swift in Sources */,
 				84CD035F2B56DEE300E7A1DC /* SensitiveDataViewController.swift in Sources */,
 				8491AF2E2A93975100CC3E72 /* ConfigurationDeeplinkHandler.swift in Sources */,

@@ -4,11 +4,17 @@ extension Glia {
     /// Entry point for Visitor authentication.
     public struct Authentication {
         typealias Callback = (Result<Void, Error>) -> Void
+        typealias RefreshCompletion = (Result<Void, Error>) -> Void
         typealias GetVisitor = () -> Void
 
         var authenticateWithIdToken: (_ idToken: IdToken, _ accessToken: AccessToken?, _ callback: @escaping Callback) -> Void
         var deauthenticateWithCallback: (@escaping Callback) -> Void
         var isAuthenticatedClosure: () -> Bool
+        var refresh: (
+            _ idToken: IdToken,
+            _ externalAccessToken: AccessToken?,
+            _ completion: @escaping RefreshCompletion
+        ) -> Void
         var environment: Environment
     }
 }
@@ -115,6 +121,14 @@ extension Glia {
             isAuthenticatedClosure: {
                 auth.isAuthenticated
             },
+            refresh: { idToken, accessToken, completion in
+                auth.refresh(
+                    with: .init(rawValue: idToken),
+                    externalAccessToken: accessToken.map { .init(rawValue: $0) }
+                ) { result in
+                    completion(result.mapError(Glia.Authentication.Error.init))
+                }
+            },
             environment: .init(log: loggerPhase.logger)
         )
     }
@@ -204,6 +218,21 @@ extension Glia.Authentication {
     /// Useful during unit testing.
     public var isAuthenticated: Bool {
         self.isAuthenticatedClosure()
+    }
+
+    /// Refresh access token
+    ///
+    /// - Parameters:
+    ///   - idToken: ID Token
+    ///   - accessToken: External access token
+    ///   - completion: Completion handler.
+    ///
+    public func refresh(
+        with idToken: IdToken,
+        accessToken: AccessToken?,
+        completion: @escaping (Result<Void, Error>) -> Void
+    ) {
+        self.refresh(idToken, accessToken, completion)
     }
 }
 

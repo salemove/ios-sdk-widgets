@@ -133,6 +133,12 @@ extension Theme {
             message: nil
         )
 
+        // TO DO - Localization values will be added in MOB-3343
+        let expiredAccessTokenError = MessageAlertConfiguration(
+            title: "Authentication issue",
+            message: "Please restart the app and log in again."
+        )
+
         let liveObservationConfirmation = ConfirmationAlertConfiguration(
             title: Localization.Engagement.Confirm.title,
             message: Localization.Engagement.Confirm.message,
@@ -163,7 +169,8 @@ extension Theme {
             unavailableMessageCenter: unavailableMessageCenter,
             unavailableMessageCenterForBeingUnauthenticated: unavailableMessageCenterForBeingUnauthenticated,
             unsupportedGvaBroadcastError: unsupportedGvaBroadcastError,
-            liveObservationConfirmation: liveObservationConfirmation
+            liveObservationConfirmation: liveObservationConfirmation,
+            expiredAccessTokenError: expiredAccessTokenError
         )
     }
 }
