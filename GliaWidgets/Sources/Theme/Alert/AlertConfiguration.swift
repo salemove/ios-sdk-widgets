@@ -57,6 +57,9 @@ public struct AlertConfiguration {
     /// Configuration of the live observation aknwoledgement
     public var liveObservationConfirmation: ConfirmationAlertConfiguration
 
+    /// Configuration of expired access token error
+    public var expiredAccessTokenError: MessageAlertConfiguration
+
     /// - Parameters:
     ///   - leaveQueue: Configuration of the queue leaving confirmation alert.
     ///   - endEngagement: Configuration of the engagement ending confirmation alert.
@@ -98,7 +101,8 @@ public struct AlertConfiguration {
         unavailableMessageCenter: MessageAlertConfiguration,
         unavailableMessageCenterForBeingUnauthenticated: MessageAlertConfiguration,
         unsupportedGvaBroadcastError: MessageAlertConfiguration,
-        liveObservationConfirmation: ConfirmationAlertConfiguration
+        liveObservationConfirmation: ConfirmationAlertConfiguration,
+        expiredAccessTokenError: MessageAlertConfiguration
     ) {
         self.leaveQueue = leaveQueue
         self.endEngagement = endEngagement
@@ -119,5 +123,6 @@ public struct AlertConfiguration {
         self.unavailableMessageCenterForBeingUnauthenticated = unavailableMessageCenterForBeingUnauthenticated
         self.unsupportedGvaBroadcastError = unsupportedGvaBroadcastError
         self.liveObservationConfirmation = liveObservationConfirmation
+        self.expiredAccessTokenError = expiredAccessTokenError
     }
 }

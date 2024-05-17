@@ -25,12 +25,14 @@ class ViewController: UIViewController {
         )
     )
 
+    var authentication: Authentication?
+    var authTimer: Timer?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Glia UI testing"
         view.backgroundColor = .white
         setupPushHandler()
-
         configureAuthenticationBehaviorToggleAccessibility()
     }
 
@@ -49,6 +51,7 @@ class ViewController: UIViewController {
 
     @IBOutlet weak var visitorCodeView: UIView!
     @IBOutlet var toggleAuthenticateButton: UIButton!
+    @IBOutlet var refreshAccessTokenButton: UIButton!
     @IBOutlet var configureButton: UIButton!
     @IBOutlet var secureConversationsButton: UIButton!
     @IBOutlet var autoConfigureSdkToggle: UISwitch!
@@ -94,6 +97,10 @@ class ViewController: UIViewController {
         } catch {
             showErrorAlert(using: error)
         }
+    }
+
+    @IBAction func refreshAccessToken() {
+        showRefreshAccessToken()
     }
 
     @IBAction private func showSensitiveDataTapped() {
@@ -417,6 +424,7 @@ extension ViewController {
                 let authentication = try! Glia.sharedInstance.authentication(with: self.authenticationBehavior)
                 switch authentication.isAuthenticated {
                 case false:
+                    self.authentication = authentication
                     self.showAuthorize(with: authentication)
                 case true:
                     self.showDeauthorize(
@@ -478,10 +486,117 @@ extension ViewController {
                 switch result {
                 case .success:
                     self?.renderAuthenticatedState(isAuthenticated: true)
+                    self?.startAuthTimer()
                 case let .failure(error):
                     self?.renderAuthenticatedState(isAuthenticated: false)
                     self?.alert(message: error.reason)
                 }
+            }
+        }
+
+        let isEmptyJwt = { enteredJwt.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
+
+        createAuthorizationAction.isEnabled = !isEmptyJwt()
+        createAuthorizationAction.accessibilityIdentifier = "create_authentication_alert_button"
+
+        let jwtTextFieldDelegate = TextFieldDelegate(
+            textChanged: { [weak createAuthorizationAction] text in
+                enteredJwt = text
+                createAuthorizationAction?.isEnabled = !isEmptyJwt()
+            }
+        )
+
+        let accessTokenTextFieldDelegate = TextFieldDelegate(
+            textChanged: { text in
+                enteredAccessToken = text
+            }
+        )
+
+        alertController.addTextField(
+            configurationHandler: { textField in
+                textField.accessibilityIdentifier = "authentication_id_token_textfield"
+                textField.addTarget(
+                    jwtTextFieldDelegate,
+                    action: #selector(jwtTextFieldDelegate.handleTextChanged(textField:)),
+                    for: .editingChanged
+                )
+            }
+        )
+
+        alertController.addTextField(
+            configurationHandler: { textField in
+                textField.placeholder = "(Optional) Access token"
+                textField.accessibilityIdentifier = "authentication_access_token_textfield"
+                textField.addTarget(
+                    accessTokenTextFieldDelegate,
+                    action: #selector(accessTokenTextFieldDelegate.handleTextChanged(textField:)),
+                    for: .editingChanged
+                )
+            }
+        )
+
+        let cancel = UIAlertAction(
+            title: "Cancel",
+            style: .cancel
+        ) { [jwtTextFieldDelegate, accessTokenTextFieldDelegate] _ in
+            // Keep strong reference to text field delegate
+            // while alert is visible to keep it alive.
+            _ = jwtTextFieldDelegate
+            _ = accessTokenTextFieldDelegate
+        }
+        cancel.accessibilityIdentifier = "cancel_authentication_alert_button"
+
+        alertController.addAction(createAuthorizationAction)
+        alertController.addAction(cancel)
+        present(alertController, animated: true)
+    }
+
+    func showRefreshAccessToken() {
+        guard let authentication else {
+            print("Not authenticated")
+            return
+        }
+        let alertController = UIAlertController(
+            title: nil,
+            message: "Refresh access token",
+            preferredStyle: .alert
+        )
+
+        class TextFieldDelegate: NSObject {
+            var textChanged: (String) -> Void
+
+            init(textChanged: @escaping (String) -> Void) {
+                self.textChanged = textChanged
+            }
+
+            @objc func handleTextChanged(textField: UITextField) {
+                self.textChanged(textField.text ?? "")
+            }
+
+            deinit {
+                print("TextFieldDelegate from UIAlertController has been deinitialized.")
+            }
+        }
+
+        var enteredJwt: String = ""
+        var enteredAccessToken: String = ""
+
+        let createAuthorizationAction = UIAlertAction(
+            title: "Refresh",
+            style: .default
+        ) { _ in
+            authentication.refresh(
+                with: enteredJwt,
+                accessToken: enteredAccessToken.isEmpty ? nil : enteredAccessToken
+            ) { result in
+                switch result {
+                case .success:
+                    let message = "Access token successfully refreshed"
+                    self.alert(message: message)
+                case let .failure(error):
+                    self.alert(message: error.reason)
+                }
+                self.renderAuthenticatedState(isAuthenticated: authentication.isAuthenticated)
             }
         }
 
@@ -559,6 +674,7 @@ extension ViewController {
                 switch result {
                 case .success:
                     self?.renderAuthenticatedState(isAuthenticated: false)
+                    self?.authentication = nil
                 case let .failure(error):
                     self?.alert(message: error.reason)
                 }
@@ -584,6 +700,7 @@ extension ViewController {
             for: .normal
         )
         authenticationBehaviorSegmentedControl.isEnabled = !isAuthenticated
+        refreshAccessTokenButton.isEnabled = isAuthenticated
     }
 
     func configureAuthenticationBehaviorToggleAccessibility() {

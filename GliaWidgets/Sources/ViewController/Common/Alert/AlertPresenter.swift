@@ -30,6 +30,21 @@ protocol AlertPresenter: DismissalAndPresentationController where Self: UIViewCo
 }
 
 extension AlertPresenter {
+    func presentCriticalErrorAlert(
+        with conf: MessageAlertConfiguration,
+        accessibilityIdentifier: String? = nil,
+        dismissed: (() -> Void)? = nil
+    ) {
+        let alert: AlertViewController = .init(
+            kind: .criticalError(
+                conf,
+                accessibilityIdentifier: accessibilityIdentifier,
+                dismissed: dismissed
+            ),
+            viewFactory: viewFactory
+        )
+        replacePresentedOfferIfPossible(with: alert)
+    }
     func presentAlert(
         with conf: MessageAlertConfiguration,
         accessibilityIdentifier: String? = nil,

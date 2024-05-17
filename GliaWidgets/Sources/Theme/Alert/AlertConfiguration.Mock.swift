@@ -21,7 +21,8 @@ extension AlertConfiguration {
             unavailableMessageCenter: .mock(),
             unavailableMessageCenterForBeingUnauthenticated: .mock(),
             unsupportedGvaBroadcastError: .mock(),
-            liveObservationConfirmation: .mock()
+            liveObservationConfirmation: .mock(),
+            expiredAccessTokenError: .mock()
         )
     }
 }
