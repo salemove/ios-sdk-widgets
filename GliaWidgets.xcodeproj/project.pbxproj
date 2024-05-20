@@ -337,6 +337,7 @@
 		75FF151727F4E13900FE7BE2 /* Theme.Survey.BooleanQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FF151627F4E13900FE7BE2 /* Theme.Survey.BooleanQuestion.swift */; };
 		75FF151B27F4F52D00FE7BE2 /* Theme.Survey.SingleQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FF151A27F4F52D00FE7BE2 /* Theme.Survey.SingleQuestion.swift */; };
 		75FF151D27F4F8E000FE7BE2 /* Theme.Survey.InputQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FF151C27F4F8E000FE7BE2 /* Theme.Survey.InputQuestion.swift */; };
+		8418AD7B2BFB69BC007DE207 /* OnHoldOverlayVisualEffectViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8418AD7A2BFB69BC007DE207 /* OnHoldOverlayVisualEffectViewTests.swift */; };
 		84265DF02983E62100D65842 /* Theme+ScreenSharing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84265DEF2983E62100D65842 /* Theme+ScreenSharing.swift */; };
 		84265E07298AE96B00D65842 /* ScreenSharingViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84265E06298AE96B00D65842 /* ScreenSharingViewModelTests.swift */; };
 		84265E4B298D7B1900D65842 /* CallVisualizer.Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84265E49298D7B1900D65842 /* CallVisualizer.Coordinator.swift */; };
@@ -1278,6 +1279,7 @@
 		75FF151A27F4F52D00FE7BE2 /* Theme.Survey.SingleQuestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.Survey.SingleQuestion.swift; sourceTree = "<group>"; };
 		75FF151C27F4F8E000FE7BE2 /* Theme.Survey.InputQuestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.Survey.InputQuestion.swift; sourceTree = "<group>"; };
 		7BF80688D6DD761AADD4A046 /* Pods_SnapshotTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SnapshotTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8418AD7A2BFB69BC007DE207 /* OnHoldOverlayVisualEffectViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnHoldOverlayVisualEffectViewTests.swift; sourceTree = "<group>"; };
 		84265DEF2983E62100D65842 /* Theme+ScreenSharing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Theme+ScreenSharing.swift"; sourceTree = "<group>"; };
 		84265E06298AE96B00D65842 /* ScreenSharingViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenSharingViewModelTests.swift; sourceTree = "<group>"; };
 		84265E0B298AECBA00D65842 /* ScreenSharingViewStyle+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ScreenSharingViewStyle+Mock.swift"; sourceTree = "<group>"; };
@@ -3282,6 +3284,7 @@
 		7512A57827BF9FB800319DF1 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				8418AD792BFB68C9007DE207 /* OnHoldOverlayVisualEffectView */,
 				8485704D2BEE39EB00CEBCC5 /* ChatView */,
 				AF9C0C432BC5A22800C25E47 /* GliaPresenter */,
 				84C24CFD2B8357B00089A388 /* ProcessInfoHandling */,
@@ -3609,6 +3612,14 @@
 				845E2F7E283F99F200C04D56 /* Theme.Survey.ValidationError.swift */,
 			);
 			path = Survey;
+			sourceTree = "<group>";
+		};
+		8418AD792BFB68C9007DE207 /* OnHoldOverlayVisualEffectView */ = {
+			isa = PBXGroup;
+			children = (
+				8418AD7A2BFB69BC007DE207 /* OnHoldOverlayVisualEffectViewTests.swift */,
+			);
+			path = OnHoldOverlayVisualEffectView;
 			sourceTree = "<group>";
 		};
 		84265E05298AE93700D65842 /* ScreenSharing */ = {
@@ -6098,6 +6109,7 @@
 				9AE05CB32805C9D900871321 /* ChatViewModel.Environment.Failing.swift in Sources */,
 				7552DFB12A6FB7DF0093519B /* ChatMessageTests.swift in Sources */,
 				31CCE3E82BCE8F3A00F92535 /* VideoCallCoordinatorTests.swift in Sources */,
+				8418AD7B2BFB69BC007DE207 /* OnHoldOverlayVisualEffectViewTests.swift in Sources */,
 				8491AF672AB8707600CC3E72 /* ChatViewModelTests+Transferring.swift in Sources */,
 				AFEF5C7429929A8D005C3D8D /* SecureConversations.FileUploadListViewModel.Environment.Failing.swift in Sources */,
 				AFF9542C2ADDA10600C277E0 /* CoreSDKConfigurator.Failing.swift in Sources */,
