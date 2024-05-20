@@ -2,13 +2,17 @@ import UIKit
 
 final class OnHoldOverlayView: UIView {
     private let style: OnHoldOverlayStyle
-    private let blurEffectView = OnHoldOverlayVisualEffectView()
+    private let blurEffectView: OnHoldOverlayVisualEffectView
     private let imageView = UIImageView()
 
     private var gradientLayer: CAGradientLayer?
 
-    init(style: OnHoldOverlayStyle) {
+    init(
+        environment: Environment,
+        style: OnHoldOverlayStyle
+    ) {
         self.style = style
+        self.blurEffectView = OnHoldOverlayVisualEffectView(environment: .init(gcd: environment.gcd))
 
         super.init(frame: .zero)
 
@@ -55,5 +59,11 @@ final class OnHoldOverlayView: UIView {
         constraints += imageView.layoutInSuperviewCenter()
         constraints += imageView.match(.width, value: style.imageSize.width)
         constraints += imageView.match(.height, value: style.imageSize.height)
+    }
+}
+
+extension OnHoldOverlayView {
+    struct Environment {
+        let gcd: GCD
     }
 }

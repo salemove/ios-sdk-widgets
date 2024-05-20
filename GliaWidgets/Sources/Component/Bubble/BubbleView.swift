@@ -37,7 +37,10 @@ class BubbleView: BaseView {
     ) {
         self.style = style
         self.environment = environment
-        self.onHoldView = OnHoldOverlayView(style: style.onHoldOverlay)
+        self.onHoldView = OnHoldOverlayView(
+            environment: .init(gcd: environment.gcd),
+            style: style.onHoldOverlay
+        )
         self.onHoldView.clipsToBounds = true
 
         super.init()
