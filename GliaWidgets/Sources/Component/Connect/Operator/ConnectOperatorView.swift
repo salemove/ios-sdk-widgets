@@ -129,7 +129,10 @@ final class ConnectOperatorView: BaseView {
     func showOnHoldView() {
         onHoldView?.removeFromSuperview()
 
-        let onHoldView = OnHoldOverlayView(style: style.onHoldOverlay)
+        let onHoldView = OnHoldOverlayView(
+            environment: .init(gcd: environment.gcd),
+            style: style.onHoldOverlay
+        )
         self.onHoldView = onHoldView
 
         imageView.addSubview(onHoldView)
