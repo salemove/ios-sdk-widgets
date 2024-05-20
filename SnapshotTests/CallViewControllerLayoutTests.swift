@@ -38,4 +38,10 @@ final class CallViewControllerLayoutTests: SnapshotTestCase {
         viewController.assertSnapshot(as: .image, in: .portrait)
         viewController.assertSnapshot(as: .image, in: .landscape)
     }
+
+    func test_mockVideoCallConnectedStateWithFlipToBackCameraButton() throws {
+        let viewController = try CallViewController.mockVideoCallConnectedStateWithFlipToBackCameraButton()
+        viewController.assertSnapshot(as: .image, in: .portrait)
+        viewController.assertSnapshot(as: .image, in: .landscape)
+    }
 }
