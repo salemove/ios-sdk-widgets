@@ -271,5 +271,60 @@ extension CallViewController {
         viewModel.action?(.setButtonEnabled(.speaker, enabled: true))
         return viewController
     }
+
+    static func mockVideoCallConnectedStateWithFlipToBackCameraButton() throws -> CallViewController {
+        let queueId = UUID.mock.uuidString
+        let interactorEnv = Interactor.Environment.mock
+        let interactor = Interactor.mock(
+            queueId: queueId,
+            environment: interactorEnv
+        )
+        let alertConf = AlertConfiguration.mock()
+        let screenShareHandler = ScreenShareHandler.mock
+        let callKind = CallKind.video(direction: .oneWay)
+        let callEnv = Call.Environment.mock
+        let call = Call.mock(kind: callKind, environment: callEnv)
+        let unreadMessages = ObservableValue<Int>.init(with: .zero)
+        let startAction = CallViewModel.StartAction.engagement(mediaType: .video)
+        var callViewModelEnv = CallViewModel.Environment.mock
+        let theme = Theme.mock()
+        callViewModelEnv.flipCameraButtonStyle = theme.call.flipCameraButtonStyle
+        var cameraDeviceManager = CoreSdkClient.CameraDeviceManageableClient.mock
+        let frontCamara = CoreSdkClient.CameraDevice(mockName: "front", mockFacing: .front)
+        let backCamara = CoreSdkClient.CameraDevice(mockName: "back", mockFacing: .back)
+        cameraDeviceManager.cameraDevices = { [frontCamara, backCamara] }
+        cameraDeviceManager.currentCameraDevice = { frontCamara }
+        callViewModelEnv.cameraDeviceManager = { cameraDeviceManager }
+        callViewModelEnv.timerProviding.scheduledTimerWithTimeIntervalAndTarget = { _, target, _, _, _ in
+            (target as? GliaWidgets.CallDurationCounter)?.update()
+            return .mock
+        }
+        let viewModel = CallViewModel.mock(
+            interactor: interactor,
+            alertConfiguration: alertConf,
+            screenShareHandler: screenShareHandler,
+            call: call,
+            unreadMessages: unreadMessages,
+            startWith: startAction,
+            environment: callViewModelEnv
+        )
+        let viewFactEnv = ViewFactory.Environment.mock
+        let viewFactory: ViewFactory = .mock(
+            theme: theme,
+            environment: viewFactEnv
+        )
+        let viewController = CallViewController.mock(viewModel: viewModel, viewFactory: viewFactory)
+
+        call.updateVideoStream(with: CoreSdkClient.MockVideoStreamable.mock())
+        call.state.value = .started
+        viewModel.action?(.connected(name: "Blobby Blob", imageUrl: nil))
+        viewModel.action?(.setButtonEnabled(.chat, enabled: true))
+        viewModel.action?(.setButtonBadge(.chat, itemCount: 1))
+        viewModel.action?(.switchToVideoMode)
+        viewModel.action?(.setButtonEnabled(.video, enabled: true))
+        viewModel.action?(.setButtonEnabled(.mute, enabled: true))
+        viewModel.action?(.setButtonEnabled(.speaker, enabled: true))
+        return viewController
+    }
 }
 #endif
