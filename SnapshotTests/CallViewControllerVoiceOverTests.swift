@@ -33,4 +33,9 @@ final class CallViewControllerVoiceOverTests: SnapshotTestCase {
         let viewController = try CallViewController.mockVideoCallConnectedState()
         viewController.assertSnapshot(as: .accessibilityImage)
     }
+
+    func test_mockVideoCallConnectedStateWithFlipToBackCameraButton() throws {
+        let viewController = try CallViewController.mockVideoCallConnectedStateWithFlipToBackCameraButton()
+        viewController.assertSnapshot(as: .accessibilityImage)
+    }
 }
