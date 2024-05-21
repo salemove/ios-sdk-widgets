@@ -126,6 +126,7 @@ extension Survey {
         }
 
         var _updateUi: (() -> Void)?
+
         func updateUi(theme: Theme) {
 
             _updateUi = { [weak self] in
