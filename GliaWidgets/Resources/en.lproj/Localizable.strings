@@ -162,6 +162,8 @@
 "error.general" = "Something went wrong.";
 "error.internal" = "Something went wrong.";
 "error.unexpected" = "Something went wrong.";
+"ios.alert.expired_access_token.title" = "Authentication issue";
+"ios.alert.expired_access_token.message" = "Please restart the app and log in again.";
 "general.allow" = "Allow";
 "general.accept" = "Accept";
 "general.back" = "Back";

@@ -133,10 +133,9 @@ extension Theme {
             message: nil
         )
 
-        // TO DO - Localization values will be added in MOB-3343
         let expiredAccessTokenError = MessageAlertConfiguration(
-            title: "Authentication issue",
-            message: "Please restart the app and log in again."
+            title: Localization.Ios.Alert.ExpiredAccessToken.title,
+            message: Localization.Ios.Alert.ExpiredAccessToken.message
         )
 
         let liveObservationConfirmation = ConfirmationAlertConfiguration(
