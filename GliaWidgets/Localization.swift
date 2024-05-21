@@ -494,6 +494,12 @@ internal enum Localization {
         /// Allow access to your camera in 'Settings' - 'Privacy & Security' - 'Camera'
         internal static var message: String { Localization.tr("Localizable", "ios.alert.camera_access.message", fallback: "Allow access to your camera in 'Settings' - 'Privacy & Security' - 'Camera'") }
       }
+      internal enum ExpiredAccessToken {
+        /// Please restart the app and log in again.
+        internal static var message: String { Localization.tr("Localizable", "ios.alert.expired_access_token.message", fallback: "Please restart the app and log in again.") }
+        /// Authentication issue
+        internal static var title: String { Localization.tr("Localizable", "ios.alert.expired_access_token.title", fallback: "Authentication issue") }
+      }
       internal enum MediaSource {
         /// This media source is not available on your device
         internal static var message: String { Localization.tr("Localizable", "ios.alert.media_source.message", fallback: "This media source is not available on your device") }
