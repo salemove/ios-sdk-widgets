@@ -5,6 +5,7 @@ extension CallVisualizer {
         init(presenter: @escaping () -> UIViewController?) {
             self.getInstance = presenter
         }
+
         let getInstance: () -> UIViewController?
     }
 }

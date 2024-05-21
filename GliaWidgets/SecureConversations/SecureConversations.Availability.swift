@@ -3,6 +3,7 @@ import Foundation
 extension SecureConversations {
     struct Availability {
         typealias CompletionResult = (Result<Status, CoreSdkClient.SalemoveError>) -> Void
+
         var environment: Environment
 
         func checkSecureConversationsAvailability(completion: @escaping CompletionResult) {

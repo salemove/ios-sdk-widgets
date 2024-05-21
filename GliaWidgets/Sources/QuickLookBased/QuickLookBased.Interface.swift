@@ -2,7 +2,7 @@ import Foundation
 import QuickLook
 import UIKit
 
-struct QuickLookBased {
+enum QuickLookBased {
     struct ThumbnailGenerator {
         var generateBestRepresentation: (QLThumbnailGenerator.Request, @escaping (QuickLookBased.ThumbnailRepresentation?, Error?) -> Void) -> Void
     }

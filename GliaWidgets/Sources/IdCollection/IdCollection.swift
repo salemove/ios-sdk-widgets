@@ -1,8 +1,9 @@
 /// Collection that allows easier access by element identifier.
-struct IdCollection<Identifier: Hashable, Item: Equatable>: Equatable & Collection {
+struct IdCollection<Identifier: Hashable, Item: Equatable>: Equatable, Collection {
 
     typealias DictionaryType = [Identifier: Item]
     typealias ArrayType = [Identifier]
+
     private var items = [Identifier: Item]()
     private var list = [Identifier]()
 

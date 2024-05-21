@@ -3,6 +3,7 @@ import UIKit
 extension CallVisualizer {
     final class ScreenSharingCoordinator: FlowCoordinator {
         typealias ViewController = UIViewController
+
         var delegate: ((DelegateEvent) -> Void)?
 
         private let environment: Environment

@@ -21,6 +21,7 @@ class ActionButton: UIButton {
     }
 
     var isLayoutDefined = false
+
     override func updateConstraints() {
         super.updateConstraints()
 

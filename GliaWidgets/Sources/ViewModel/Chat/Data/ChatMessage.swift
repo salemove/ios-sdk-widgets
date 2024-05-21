@@ -26,6 +26,7 @@ enum ChatMessageSender: Int, Codable {
 
 class ChatMessage: Codable {
     typealias MessageId = String
+
     let id: MessageId
     let `operator`: ChatOperator?
     let sender: ChatMessageSender

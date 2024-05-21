@@ -21,6 +21,7 @@ extension Glia {
             _ features: Features,
             _ environment: EngagementCoordinator.Environment
         ) -> EngagementCoordinator
+
         var coreSdk: CoreSdkClient
         var audioSession: AudioSession
         var uuid: () -> UUID

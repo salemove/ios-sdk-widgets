@@ -6,6 +6,7 @@ extension SecureConversations {
 
         struct Props: Equatable, Identifiying {
             typealias Identifier = String
+
             let id: Identifier
             let style: Style
             let state: State

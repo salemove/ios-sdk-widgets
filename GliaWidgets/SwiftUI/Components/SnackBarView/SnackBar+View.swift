@@ -9,6 +9,7 @@ extension SnackBar {
             case disappear
             case keyboardWillShow
         }
+
         let publisher: AnyPublisher<ViewState, Never>
 
         @State private var text = ""
