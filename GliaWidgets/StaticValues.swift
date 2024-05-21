@@ -1,6 +1,6 @@
 import Foundation
 
-final class StaticValues {
+enum StaticValues {
     /// Current SDK version. This version gets synced with the Info.plist version
     /// when incrementing the version through Fastlane. Unlike the Info.plist, this
     /// version cannot be changed by integrators, so this ensures that our code will

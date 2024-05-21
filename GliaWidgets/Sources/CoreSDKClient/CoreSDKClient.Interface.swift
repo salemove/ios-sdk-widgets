@@ -9,44 +9,52 @@ struct CoreSdkClient {
     var localeProvider: LocaleProvider
 
     typealias FetchVisitorInfo = (_ completion: @escaping (Result<Self.Salemove.VisitorInfo, Error>) -> Void) -> Void
+
     var fetchVisitorInfo: FetchVisitorInfo
 
     typealias UpdateVisitorInfo = (
         _ info: Self.VisitorInfoUpdate,
         _ completion: @escaping (Result<Bool, Error>) -> Void
     ) -> Void
+
     var updateVisitorInfo: UpdateVisitorInfo
 
     typealias ConfigureWithConfiguration = (
         _ sdkConfiguration: Self.Salemove.Configuration,
         _ completion: @escaping Self.ConfigureCompletion
     ) -> Void
+
     var configureWithConfiguration: ConfigureWithConfiguration
 
     typealias ConfigureWithInteractor = (_ interactor: Self.Interactable) -> Void
+
     var configureWithInteractor: ConfigureWithInteractor
 
     typealias ListQueues = (
         _ completion: @escaping Self.QueueRequestBlock
     ) -> Void
+
     var listQueues: ListQueues
 
     typealias QueueForEngagement = (
         _ options: GliaCoreSDK.QueueForEngagementOptions,
         _ completion: @escaping (Result<GliaCoreSDK.QueueTicket, GliaCoreSDK.GliaCoreError>) -> Void
     ) -> Void
+
     var queueForEngagement: QueueForEngagement
 
     typealias RequestMediaUpgradeWithOffer = (
         _ offer: Self.MediaUpgradeOffer,
         _ completion: @escaping Self.SuccessBlock
     ) -> Void
+
     var requestMediaUpgradeWithOffer: RequestMediaUpgradeWithOffer
 
     typealias SendMessagePreview = (
         _ message: String,
         _ completion: @escaping Self.SuccessBlock
     ) -> Void
+
     var sendMessagePreview: SendMessagePreview
 
     typealias SendMessageWithMessagePayloadCallback = (Result<CoreSdkClient.Message, CoreSdkClient.GliaCoreError>) -> Void
@@ -54,18 +62,22 @@ struct CoreSdkClient {
             _ sendMessagePayload: Self.SendMessagePayload,
             _ completion: @escaping SendMessageWithMessagePayloadCallback
         ) -> Void
+
     var sendMessageWithMessagePayload: SendMessageWithMessagePayload
 
     typealias CancelQueueTicket = (
         _ queueTicket: Self.QueueTicket,
         _ completion: @escaping GliaCoreSDK.SuccessBlock
     ) -> Void
+
     var cancelQueueTicket: CancelQueueTicket
 
     typealias EndEngagement = (_ completion: @escaping Self.SuccessBlock) -> Void
+
     var endEngagement: EndEngagement
 
     typealias RequestEngagedOperator = (_ completion: @escaping Self.OperatorBlock) -> Void
+
     var requestEngagedOperator: RequestEngagedOperator
 
     typealias UploadFileToEngagement = (
@@ -73,6 +85,7 @@ struct CoreSdkClient {
         _ progress: Self.EngagementFileProgressBlock?,
         _ completion: @escaping Self.EngagementFileCompletionBlock
     ) -> Void
+
     var uploadFileToEngagement: UploadFileToEngagement
 
     typealias FetchFile = (
@@ -80,12 +93,15 @@ struct CoreSdkClient {
         _ progress: Self.EngagementFileProgressBlock?,
         _ completion: @escaping Self.EngagementFileFetchCompletionBlock
     ) -> Void
+
     var fetchFile: FetchFile
 
     typealias GetCurrentEngagement = () -> Self.Engagement?
+
     var getCurrentEngagement: GetCurrentEngagement
 
     typealias FetchSiteConfigurations = (_ completion: @escaping (Result<Self.Site, Error>) -> Void) -> Void
+
     var fetchSiteConfigurations: FetchSiteConfigurations
 
     typealias SubmitSurveyAnswer = (
@@ -96,14 +112,19 @@ struct CoreSdkClient {
             _ completion: @escaping (Result<Void, GliaCoreSDK.GliaCoreError>) -> Void
         ) -> Void
     )
+
     var submitSurveyAnswer: SubmitSurveyAnswer
+
     typealias CreateAuthentication = (_ behaviour: AuthenticationBehavior) throws -> Authentication
+
     var authentication: CreateAuthentication
 
     typealias FetchChatHistory = (_ completion: @escaping (Result<[ChatMessage], GliaCoreSDK.GliaCoreError>) -> Void) -> Void
+
     var fetchChatHistory: FetchChatHistory
 
     typealias RequestVisitorCode = (_ completion: @escaping (VisitorCodeBlock) -> Void) -> GliaCore.Cancellable
+
     var requestVisitorCode: RequestVisitorCode
 
     typealias SendSecureMessagePayload = (
@@ -111,6 +132,7 @@ struct CoreSdkClient {
         _ queueIds: [String],
         _ completion: @escaping (Result<Self.Message, Error>) -> Void
     ) -> Self.Cancellable
+
     var sendSecureMessagePayload: SendSecureMessagePayload
 
     typealias SecureConversationsUploadFile = (
@@ -118,12 +140,15 @@ struct CoreSdkClient {
         _ progress: EngagementFileProgressBlock?,
         _ completion: @escaping (Result<EngagementFileInformation, Swift.Error>) -> Void
     ) -> Self.Cancellable
+
     var uploadSecureFile: SecureConversationsUploadFile
 
     typealias GetSecureUnreadMessageCount = (_ callback: @escaping (Result<Int, Error>) -> Void) -> Void
+
     var getSecureUnreadMessageCount: GetSecureUnreadMessageCount
 
     typealias SecureMarkMessagesAsRead = (_ callback: @escaping (Result<Void, Error>) -> Void) -> Cancellable
+
     var secureMarkMessagesAsRead: SecureMarkMessagesAsRead
 
     typealias DownloadSecureFile = (
@@ -135,15 +160,19 @@ struct CoreSdkClient {
     var downloadSecureFile: DownloadSecureFile
 
     typealias StartSocketObservation = () -> Void
+
     var startSocketObservation: StartSocketObservation
 
     typealias StopSocketObservation = () -> Void
+
     var stopSocketObservation: StopSocketObservation
 
     typealias CreateSendMessagePayload = (_ content: String, _ attachment: Attachment?) -> SendMessagePayload
+
     var createSendMessagePayload: CreateSendMessagePayload
 
     typealias CreateLogger = ([String: String]) throws -> Logger
+
     var createLogger: CreateLogger
 }
 
@@ -178,6 +207,7 @@ extension CoreSdkClient {
 extension CoreSdkClient {
     struct LocaleProvider {
         typealias CustomLocaleGetRemoteString = (String) -> String?
+
         var getRemoteString: CustomLocaleGetRemoteString
     }
 }

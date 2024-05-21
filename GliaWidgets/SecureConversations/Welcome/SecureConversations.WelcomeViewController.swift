@@ -9,6 +9,7 @@ extension SecureConversations {
             let notificationCenter: FoundationBased.NotificationCenter
             var log: CoreSdkClient.Logger
         }
+
         var props: Props {
             didSet {
                 renderProps()

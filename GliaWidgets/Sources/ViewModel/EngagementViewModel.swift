@@ -3,6 +3,7 @@ import Foundation
 class EngagementViewModel: CommonEngagementModel {
     typealias ActionCallback = (Action) -> Void
     typealias DelegateCallback = (DelegateEvent) -> Void
+
     static let alertSingleActionAccessibilityIdentifier = "alert_close_engagementEnded"
     var engagementAction: ActionCallback?
     var engagementDelegate: DelegateCallback?
