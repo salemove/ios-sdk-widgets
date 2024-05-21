@@ -12,6 +12,7 @@ extension CallVisualizer {
                 case loading
                 case success(visitorCode: String)
             }
+
             let viewState: ViewState
             let viewType: ViewType
             let style: VisitorCodeStyle

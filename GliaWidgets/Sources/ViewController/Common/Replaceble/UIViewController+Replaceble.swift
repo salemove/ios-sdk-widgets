@@ -12,8 +12,9 @@ enum PresentationPriority: Int {
 }
 
 protocol Replaceable where Self: UIViewController {
-    var presentationPriority: PresentationPriority { get }
     func isReplaceable(with replaceable: Replaceable) -> Bool
+
+    var presentationPriority: PresentationPriority { get }
 }
 
 extension Replaceable {

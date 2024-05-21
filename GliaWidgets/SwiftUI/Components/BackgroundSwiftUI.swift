@@ -6,6 +6,7 @@ struct Background: View {
     init(_ colorType: ColorType) {
         self.colorType = colorType
     }
+
     var body: some View {
         switch colorType {
         case .fill(let color):

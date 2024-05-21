@@ -78,5 +78,6 @@ extension CoreSdkClient.Logger {
     enum ParameterKey {
         static let widgetsSDKVersion = "client_app.widgets.version"
     }
+
     static let loggerParameters = [ParameterKey.widgetsSDKVersion: StaticValues.sdkVersion]
 }
