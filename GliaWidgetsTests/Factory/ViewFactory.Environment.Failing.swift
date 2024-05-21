@@ -12,6 +12,7 @@ extension ViewFactory.Environment {
         timerProviding: .failing,
         uiApplication: .failing,
         uiScreen: .failing,
-        log: .failing
+        log: .failing,
+        uiDevice: .failing
     )
 }

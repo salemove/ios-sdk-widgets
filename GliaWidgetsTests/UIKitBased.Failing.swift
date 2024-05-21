@@ -61,6 +61,10 @@ extension UIKitBased.UIDevice {
         orientationDidChangeNotification: {
             fail("\(Self.self).orientationDidChangeNotification")
             return NSNotification.Name(rawValue: "")
+        },
+        orientation: {
+            fail("\(Self.self).orientation")
+            return .unknown
         }
     )
 }

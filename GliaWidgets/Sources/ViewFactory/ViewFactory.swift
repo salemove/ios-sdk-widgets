@@ -84,7 +84,8 @@ class ViewFactory {
                 imageViewCache: environment.imageViewCache,
                 timerProviding: environment.timerProviding,
                 uiApplication: environment.uiApplication,
-                uiScreen: environment.uiScreen
+                uiScreen: environment.uiScreen,
+                uiDevice: environment.uiDevice
             ),
             props: Self.callHeaderProps(
                 theme: theme,

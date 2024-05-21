@@ -18,6 +18,7 @@ enum UIKitBased {
         var proximityState: () -> Bool
         var isProximityMonitoringEnabled: (Bool) -> Void
         var orientationDidChangeNotification: () -> NSNotification.Name
+        var orientation: () -> UIDeviceOrientation
     }
 
     struct UIScreen {

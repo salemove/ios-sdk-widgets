@@ -418,13 +418,15 @@ class CallView: EngagementView {
 // MARK: Local Video
 
 extension CallView {
+    static let localVideoSideMultiplier = 0.3
+
     private func setLocalVideoFrame(isVisible: Bool) {
         if isVisible {
-            let screenSize: CGRect = environment.uiScreen.bounds()
+            let screenBounds = environment.uiScreen.bounds()
 
-            let size = CGSize(
-                width: screenSize.width * 0.3,
-                height: screenSize.height * 0.3
+            let size = Self.localVideoSize(
+                for: environment.uiDevice.orientation(),
+                from: screenBounds.size
             )
 
             localVideoView.frame = CGRect(
@@ -438,19 +440,19 @@ extension CallView {
     }
 
     private func adjustLocalVideoFrameAfterOrientationChange() {
-        let screenSize: CGRect = environment.uiScreen.bounds()
+        let screenBounds = environment.uiScreen.bounds()
 
-        let size = CGSize(
-            width: screenSize.width * 0.3,
-            height: screenSize.height * 0.3
+        let newSize = Self.localVideoSize(
+            for: environment.uiDevice.orientation(),
+            from: screenBounds.size
         )
 
         localVideoView.frame = CGRect(
             origin: CGPoint(
-                x: localVideoBounds.maxX - size.width,
-                y: localVideoBounds.maxY - size.height
+                x: localVideoBounds.maxX - newSize.width,
+                y: localVideoBounds.maxY - newSize.height
             ),
-            size: size
+            size: newSize
         )
     }
 
@@ -488,6 +490,27 @@ extension CallView {
 
         localVideoView.frame = frame
     }
+
+    static func localVideoSize(
+        for orientation: UIDeviceOrientation,
+        from screenSize: CGSize
+    ) -> CGSize {
+        let width: CGFloat
+        let height: CGFloat
+
+        if orientation.isLandscape {
+            width = max(screenSize.width, screenSize.height)
+            height = min(screenSize.width, screenSize.height)
+        } else {
+            width = min(screenSize.width, screenSize.height)
+            height = max(screenSize.width, screenSize.height)
+        }
+
+        return CGSize(
+            width: width * Self.localVideoSideMultiplier,
+            height: height * Self.localVideoSideMultiplier
+        )
+    }
 }
 
 extension CallView {
@@ -499,5 +522,6 @@ extension CallView {
         var timerProviding: FoundationBased.Timer.Providing
         var uiApplication: UIKitBased.UIApplication
         var uiScreen: UIKitBased.UIScreen
+        var uiDevice: UIKitBased.UIDevice
     }
 }
