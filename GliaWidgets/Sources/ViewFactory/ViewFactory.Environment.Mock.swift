@@ -8,7 +8,8 @@ extension ViewFactory.Environment {
         timerProviding: .mock,
         uiApplication: .mock,
         uiScreen: .mock,
-        log: .mock
+        log: .mock,
+        uiDevice: .mock
     )
 }
 #endif

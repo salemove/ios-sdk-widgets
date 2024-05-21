@@ -30,7 +30,8 @@ extension UIKitBased.UIDevice {
     static let mock = Self.init(
         proximityState: { .init() },
         isProximityMonitoringEnabled: { _ in },
-        orientationDidChangeNotification: { .init("") }
+        orientationDidChangeNotification: { .init("") },
+        orientation: { .unknown }
     )
 }
 

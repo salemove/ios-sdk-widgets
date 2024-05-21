@@ -10,5 +10,6 @@ extension ViewFactory {
         var uiApplication: UIKitBased.UIApplication
         var uiScreen: UIKitBased.UIScreen
         var log: CoreSdkClient.Logger
+        var uiDevice: UIKitBased.UIDevice
     }
 }
