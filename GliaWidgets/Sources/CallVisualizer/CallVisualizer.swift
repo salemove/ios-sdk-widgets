@@ -26,7 +26,8 @@ public final class CallVisualizer {
                 timerProviding: environment.timerProviding,
                 uiApplication: environment.uiApplication,
                 uiScreen: environment.uiScreen,
-                log: environment.log
+                log: environment.log,
+                uiDevice: environment.uiDevice
             )
         )
         return Coordinator(

@@ -59,7 +59,8 @@ extension Glia {
                 timerProviding: environment.timerProviding,
                 uiApplication: environment.uiApplication,
                 uiScreen: environment.uiScreen,
-                log: loggerPhase.logger
+                log: loggerPhase.logger,
+                uiDevice: environment.uiDevice
             )
         )
 
