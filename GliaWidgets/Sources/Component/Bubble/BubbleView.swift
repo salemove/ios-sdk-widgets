@@ -74,7 +74,6 @@ class BubbleView: BaseView {
         } else {
             addSubview(onHoldView)
         }
-
     }
 
     func hideOnHoldView() {

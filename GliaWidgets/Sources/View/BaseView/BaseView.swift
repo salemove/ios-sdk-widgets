@@ -1,7 +1,6 @@
 import UIKit
 
 class BaseView: UIView {
-
     var currentOrientation: UIInterfaceOrientation {
         guard let windowScene = UIApplication.shared.windows.first?.windowScene else {
             return .portrait

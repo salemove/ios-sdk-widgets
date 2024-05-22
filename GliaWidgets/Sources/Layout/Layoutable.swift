@@ -4,7 +4,6 @@ import UIKit
 ///  flexible mechanism for defining UI and avoid make strict relations
 ///  with UIView.
 public protocol Layoutable {
-
     var leadingAnchor: NSLayoutXAxisAnchor { get }
     var trailingAnchor: NSLayoutXAxisAnchor { get }
     var leftAnchor: NSLayoutXAxisAnchor { get }

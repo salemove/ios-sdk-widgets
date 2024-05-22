@@ -340,7 +340,6 @@ extension Interactor: CoreSdkClient.Interactable {
     }
 
     func start(engagement: CoreSdkClient.Engagement) {
-
         switch engagement.source {
         case .coreEngagement:
             start()

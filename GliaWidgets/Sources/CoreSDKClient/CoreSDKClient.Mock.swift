@@ -95,7 +95,6 @@ extension CoreSdkClient.Salemove.Configuration {
 
 extension CoreSdkClient.Salemove.AuthorizationMethod {
     static let mock = Self.siteApiKey(id: "mockSiteApiKeyId", secret: "mockSiteApiKeySecret")
-
 }
 
 extension CoreSdkClient.VisitorContext {
@@ -114,7 +113,6 @@ extension CoreSdkClient.EngagementFileInformation {
         isSecurityScanningRequired: Bool = false,
         url: String? = "https://mock.mock/file.mock"
     ) throws -> CoreSdkClient.EngagementFileInformation {
-
         let jsonString = jsonFields(
             [
                 url.map { jsonField("url", value: $0) },
@@ -401,7 +399,6 @@ extension CoreSdkClient.Site.AllowedFileSenders.Mock {
             visitor: visitor
         )
     }
-
 }
 
 extension CoreSdkClient.Site.AllowedFileSenders {

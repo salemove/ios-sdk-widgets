@@ -751,7 +751,6 @@ extension SecureConversations.TranscriptModel {
                 in: self.pendingSection
             )
         }
-
     }
 }
 

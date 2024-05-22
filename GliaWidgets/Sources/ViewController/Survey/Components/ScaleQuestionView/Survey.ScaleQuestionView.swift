@@ -3,7 +3,6 @@ import UIKit
 
 extension Survey {
     final class ScaleQuestionView: BaseView {
-
         var props: Props {
             didSet { render() }
         }

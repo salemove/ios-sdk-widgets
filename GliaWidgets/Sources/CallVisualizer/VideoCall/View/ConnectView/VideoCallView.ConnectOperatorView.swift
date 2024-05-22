@@ -2,7 +2,6 @@ import UIKit
 
 extension CallVisualizer.VideoCallView {
     final class ConnectOperatorView: BaseView {
-
         // MARK: - Properties
 
         var props: Props {

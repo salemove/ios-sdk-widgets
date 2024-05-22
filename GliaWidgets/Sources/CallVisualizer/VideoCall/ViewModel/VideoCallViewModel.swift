@@ -2,7 +2,6 @@ import UIKit
 
 extension CallVisualizer {
     final class VideoCallViewModel {
-
         // MARK: - Properties
 
         var delegate: ((DelegateEvent) -> Void)?

@@ -571,7 +571,6 @@ extension ChatViewModel {
                     isMatchingOutgoingMessage = true
                 default:
                     break
-
                 }
                 // Early out if match was found.
                 if isMatchingOutgoingMessage {

@@ -52,7 +52,6 @@ protocol WebMessageCardViewDelegate: AnyObject {
 }
 
 final class WebMessageCardView: UIView {
-
     private enum ActionType: Int {
         case mobileAction = 1
         case cardOption

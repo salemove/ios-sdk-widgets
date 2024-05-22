@@ -8,7 +8,6 @@ extension Array where Element == UIColor {
 }
 
 extension Array where Element == String {
-
     func convertToCgColors() -> [CGColor] {
         return map { UIColor(hex: $0).cgColor }
     }

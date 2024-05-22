@@ -2,7 +2,6 @@ import UIKit
 
 extension CallVisualizer.VideoCallView {
     final class ConnectView: BaseView {
-
         // MARK: - Properties
 
         private let operatorView: ConnectOperatorView
@@ -111,7 +110,6 @@ private extension CallVisualizer.VideoCallView.ConnectView {
         topPadding(for: props.state)
         renderShowing = props.transition
         updateConstraints()
-
     }
 
     func show(animated: Bool) {

@@ -72,7 +72,6 @@ extension Survey.ViewController.Props {
 }
 
 private extension Survey.ViewController.Props {
-
     static func makeScalePropsMock(
         selectedOption: Survey.Option<Int>? = nil,
         showValidationError: Bool = false

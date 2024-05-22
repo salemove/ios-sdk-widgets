@@ -2,7 +2,6 @@ import UIKit
 
 /// Base style for engagement views.
 public class EngagementStyle: Equatable {
-
     /// Style of the view's header (navigation bar area).
     public var header: HeaderStyle
 
