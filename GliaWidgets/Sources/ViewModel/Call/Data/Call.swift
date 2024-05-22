@@ -134,9 +134,11 @@ class Call {
     }
 
     func updateAudioStream(with stream: CoreSdkClient.AudioStreamable) {
-        updateMediaStream(audio.stream,
-                          with: stream,
-                          isRemote: stream.isRemote)
+        updateMediaStream(
+            audio.stream,
+            with: stream,
+            isRemote: stream.isRemote
+        )
 
         if stream.isRemote {
             stream.onHold = { [weak self] in
@@ -146,9 +148,11 @@ class Call {
     }
 
     func updateVideoStream(with stream: CoreSdkClient.VideoStreamable) {
-        updateMediaStream(video.stream,
-                          with: stream,
-                          isRemote: stream.isRemote)
+        updateMediaStream(
+            video.stream,
+            with: stream,
+            isRemote: stream.isRemote
+        )
 
         if stream.isRemote {
             stream.onHold = { [weak self] in
@@ -231,9 +235,11 @@ class Call {
         }
     }
 
-    private func updateMediaStream<Streamable>(_ mediaStream: ObservableValue<MediaStream<Streamable>>,
-                                               with stream: Streamable,
-                                               isRemote: Bool) {
+    private func updateMediaStream<Streamable>(
+        _ mediaStream: ObservableValue<MediaStream<Streamable>>,
+        with stream: Streamable,
+        isRemote: Bool
+    ) {
         let mediaStreamValue: MediaStream<Streamable>
         defer {
             mediaStream.value = mediaStreamValue

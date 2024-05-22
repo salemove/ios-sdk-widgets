@@ -118,27 +118,32 @@ class AlertViewController: UIViewController, Replaceable {
          ).activate()
 
         alertView.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
-        UIView.animate(withDuration: animated ? 0.4 : 0.0,
-                       delay: 0.0,
-                       usingSpringWithDamping: 0.8,
-                       initialSpringVelocity: 0.7,
-                       options: .curveEaseInOut,
-                       animations: {
-                        alertView.transform = .identity
-                       }, completion: nil)
+        UIView.animate(
+            withDuration: animated ? 0.4 : 0.0,
+            delay: 0.0,
+            usingSpringWithDamping: 0.8,
+            initialSpringVelocity: 0.7,
+            options: .curveEaseInOut,
+            animations: {
+                alertView.transform = .identity
+            },
+            completion: nil
+        )
     }
 
     private func hideAlertView(animated: Bool) {
-        UIView.animate(withDuration: animated ? 0.4 : 0.0,
-                       delay: 0.0,
-                       usingSpringWithDamping: 0.8,
-                       initialSpringVelocity: 0.7,
-                       options: .curveEaseInOut,
-                       animations: {
-                        self.alertView?.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
-                       }, completion: { _ in
-                        self.alertView = nil
-                       })
+        UIView.animate(
+            withDuration: animated ? 0.4 : 0.0,
+            delay: 0.0,
+            usingSpringWithDamping: 0.8,
+            initialSpringVelocity: 0.7,
+            options: .curveEaseInOut,
+            animations: {
+                self.alertView?.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
+            }, completion: { _ in
+                self.alertView = nil
+            }
+        )
     }
 
     private func makeAlertView() -> AlertView {

@@ -79,8 +79,10 @@ class CallButton: UIView {
             for: titleLabel
         )
 
-        let tapRecognizer = UITapGestureRecognizer(target: self,
-                                                   action: #selector(tapped))
+        let tapRecognizer = UITapGestureRecognizer(
+            target: self,
+            action: #selector(tapped)
+        )
         addGestureRecognizer(tapRecognizer)
 
         isAccessibilityElement = true

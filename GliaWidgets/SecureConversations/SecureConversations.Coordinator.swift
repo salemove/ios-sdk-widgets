@@ -179,7 +179,8 @@ extension SecureConversations {
                     case .chatTranscriptScreenRequested:
                         self?.navigateToTranscript()
                     }
-                })
+                }
+            )
 
             let controller = SecureConversations.ConfirmationViewController(model: model)
 

@@ -41,6 +41,8 @@ extension Theme {
             confirmationImageTint: color.primary,
             titleStyle: titleStyle,
             subtitleStyle: subtitleStyle,
-            checkMessagesButtonStyle: checkMessagesButtonStyle, backgroundColor: color.baseLight)
+            checkMessagesButtonStyle: checkMessagesButtonStyle,
+            backgroundColor: color.baseLight
+        )
     }
 }

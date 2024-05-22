@@ -115,14 +115,15 @@ extension SecureConversations {
 
         lazy var messageWarningStackView = UIStackView(
             arrangedSubviews: [
-            messageWarningImageView,
-            messageWarningLabel
-            ])
-            .make { stackView in
-                stackView.alignment = .center
-                stackView.axis = .horizontal
-                stackView.spacing = 5
-            }
+                messageWarningImageView,
+                messageWarningLabel
+            ]
+        )
+        .make { stackView in
+            stackView.alignment = .center
+            stackView.axis = .horizontal
+            stackView.spacing = 5
+        }
 
         let fileUploadListView: FileUploadListView
         let environment: Environemnt

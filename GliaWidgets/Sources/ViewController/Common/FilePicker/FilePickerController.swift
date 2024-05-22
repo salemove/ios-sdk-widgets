@@ -32,8 +32,10 @@ final class FilePickerController: NSObject {
 }
 
 extension FilePickerController: UIDocumentPickerDelegate {
-    func documentPicker(_ controller: UIDocumentPickerViewController,
-                        didPickDocumentsAt urls: [URL]) {
+    func documentPicker(
+        _ controller: UIDocumentPickerViewController,
+        didPickDocumentsAt urls: [URL]
+    ) {
         guard let url = urls.first else { return }
         viewModel.event(.pickedFile(url))
     }
