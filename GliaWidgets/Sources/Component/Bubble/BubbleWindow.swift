@@ -15,8 +15,11 @@ class BubbleWindow: UIWindow {
     private var initialFrame: CGRect {
         let bounds = environment.uiApplication.windows().first?.frame ?? environment.uiScreen.bounds()
         let safeAreaInsets = environment.uiApplication.windows().first?.safeAreaInsets ?? .zero
-        let origin = CGPoint(x: bounds.width - kSize.width - safeAreaInsets.right - kEdgeInset,
-                             y: bounds.height - kSize.height - safeAreaInsets.bottom - kEdgeInset)
+        let origin = CGPoint(
+            x: bounds.width - kSize.width - safeAreaInsets.right - kEdgeInset,
+            y: bounds.height - kSize.height - safeAreaInsets.bottom - kEdgeInset
+        )
+
         return CGRect(origin: origin, size: kSize)
     }
 
@@ -49,8 +52,10 @@ class BubbleWindow: UIWindow {
     private func setup() {
         windowLevel = .statusBar
         clipsToBounds = true
-        rootViewController = BubbleViewController(bubbleView: bubbleView,
-                                                  edgeInset: kBubbleInset)
+        rootViewController = BubbleViewController(
+            bubbleView: bubbleView,
+            edgeInset: kBubbleInset
+        )
 
         bubbleView.tap = { [weak self] in self?.tap?() }
         bubbleView.pan = { [weak self] in self?.pan($0) }
@@ -65,10 +70,12 @@ class BubbleWindow: UIWindow {
         frame.origin.x += translation.x
         frame.origin.y += translation.y
 
-        let insets = UIEdgeInsets(top: -kEdgeInset,
-                                  left: -kEdgeInset,
-                                  bottom: -kEdgeInset,
-                                  right: -kEdgeInset)
+        let insets = UIEdgeInsets(
+            top: -kEdgeInset,
+            left: -kEdgeInset,
+            bottom: -kEdgeInset,
+            right: -kEdgeInset
+        )
         let insetFrame = frame.inset(by: insets)
         let boundsInsets = environment.uiApplication.windows().first?.safeAreaInsets ?? .zero
         let bounds = environment.uiScreen.bounds().inset(by: boundsInsets)
