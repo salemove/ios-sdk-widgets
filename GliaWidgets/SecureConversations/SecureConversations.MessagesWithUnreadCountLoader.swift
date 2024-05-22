@@ -60,7 +60,8 @@ extension SecureConversations {
 
         static func messageWithUnreadCountResult(
             messageResult: Result<[ChatMessage], Error>,
-            unreadCountResult: Result<Int, Error>) -> Result<MessagesWithUnreadCount, Error> {
+            unreadCountResult: Result<Int, Error>
+        ) -> Result<MessagesWithUnreadCount, Error> {
                 // Without messages unread count does not make much sense,
                 // that is why we prefer to report error for messages in case
                 // of failure for both requests. Same for success - ignore

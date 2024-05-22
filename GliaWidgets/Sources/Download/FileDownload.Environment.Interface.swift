@@ -22,7 +22,8 @@ extension FileDownload.Environment.FetchFile {
     func startWithFile(
         _ file: CoreSdkClient.EngagementFile,
         progress: @escaping CoreSdkClient.EngagementFileProgressBlock,
-        completion: @escaping (Result<CoreSdkClient.EngagementFileData, Error>) -> Void) -> CoreSdkClient.Salemove.Cancellable? {
+        completion: @escaping (Result<CoreSdkClient.EngagementFileData, Error>) -> Void
+    ) -> CoreSdkClient.Salemove.Cancellable? {
             switch self {
             case let .fromSecureMessaging(fetch):
                 return fetch(file, progress, completion)

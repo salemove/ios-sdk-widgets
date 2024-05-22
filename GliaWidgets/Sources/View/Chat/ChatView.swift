@@ -652,7 +652,10 @@ extension ChatView {
         view.appendContent(
             .downloads(
                 message.downloads,
-                accessibility: .init(from: .operator(message.operator?.name ?? style.accessibility.operator))),
+                accessibility: .init(
+                    from: .operator(message.operator?.name ?? style.accessibility.operator)
+                )
+            ),
             animated: false
         )
         view.downloadTapped = { [weak self] in self?.downloadTapped?($0) }
@@ -849,7 +852,8 @@ extension ChatView {
                 uuid: environment.uuid,
                 gcd: environment.gcd,
                 imageViewCache: environment.imageViewCache,
-                timerProviding: environment.timerProviding)
+                timerProviding: environment.timerProviding
+            )
         )
         connectView.setState(
             .connected(name: name, imageUrl: imageUrl),
@@ -867,7 +871,8 @@ extension ChatView {
                 uuid: environment.uuid,
                 gcd: environment.gcd,
                 imageViewCache: environment.imageViewCache,
-                timerProviding: environment.timerProviding)
+                timerProviding: environment.timerProviding
+            )
         )
         connectView.setState(
             .transferring,
@@ -912,7 +917,8 @@ extension ChatView {
         view.appendContent(
             .downloads(
                 message.downloads,
-                accessibility: .init(from: .operator(message.operator?.name ?? style.accessibility.operator))),
+                accessibility: .init(from: .operator(message.operator?.name ?? style.accessibility.operator))
+            ),
             animated: false
         )
         view.downloadTapped = { [weak self] in self?.downloadTapped?($0) }
@@ -947,7 +953,8 @@ extension ChatView {
         view.appendContent(
             .downloads(
                 message.downloads,
-                accessibility: .init(from: .operator(message.operator?.name ?? style.accessibility.operator))),
+                accessibility: .init(from: .operator(message.operator?.name ?? style.accessibility.operator))
+            ),
             animated: false
         )
         view.onOptionTapped = { [weak self] in self?.gvaButtonTapped?($0) }

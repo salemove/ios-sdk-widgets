@@ -182,8 +182,11 @@ class AlertView: BaseView {
     private func addCloseButton() {
         guard closeButton == nil else { return }
 
-        let closeButton = Button(kind: .alertClose,
-                                 tap: { [weak self] in self?.closeTapped?() })
+        let closeButton = Button(
+            kind: .alertClose,
+            tap: { [weak self] in self?.closeTapped?() }
+        )
+
         switch style.closeButtonColor {
         case .fill(let color):
             closeButton.tintColor = color

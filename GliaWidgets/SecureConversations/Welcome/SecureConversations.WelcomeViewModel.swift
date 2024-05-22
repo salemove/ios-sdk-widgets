@@ -235,8 +235,7 @@ extension SecureConversations.WelcomeViewModel {
 
         return filePickerButton
     }
-    static func textViewState(for instance: SecureConversations.WelcomeViewModel
-    ) -> TextViewProps? {
+    static func textViewState(for instance: SecureConversations.WelcomeViewModel) -> TextViewProps? {
         guard instance.availabilityStatus == .available else {
             return nil
         }

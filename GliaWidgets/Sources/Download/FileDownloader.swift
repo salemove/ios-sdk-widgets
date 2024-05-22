@@ -22,8 +22,10 @@ class FileDownloader {
         )
     }
 
-    func downloads(for files: [ChatEngagementFile]?,
-                   autoDownload: AutoDownload = .nothing) -> [FileDownload] {
+    func downloads(
+        for files: [ChatEngagementFile]?,
+        autoDownload: AutoDownload = .nothing
+    ) -> [FileDownload] {
         guard let files = files else { return [] }
 
         let downloads = files.compactMap { download(for: $0) }

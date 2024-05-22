@@ -62,9 +62,11 @@ class MediaPickerViewModel: ViewModel {
     private let mediaSource: MediaSource
     private let mediaTypes: [MediaType]
 
-    init(pickerEvent: ObservableValue<MediaPickerEvent>,
-         mediaSource: MediaSource,
-         mediaTypes: [MediaType] = [.image]) {
+    init(
+        pickerEvent: ObservableValue<MediaPickerEvent>,
+        mediaSource: MediaSource,
+        mediaTypes: [MediaType] = [.image]
+    ) {
         self.pickerEvent = pickerEvent
         self.mediaSource = mediaSource
         self.mediaTypes = mediaTypes
