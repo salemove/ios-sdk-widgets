@@ -121,7 +121,6 @@ extension Survey.ViewController.Props {
         setQuestion: @escaping (String, SurveyQuestionPropsProtocol) -> Void,
         updateProps: @escaping (Self) -> Void
     ) -> Survey.ScaleQuestionView.Props {
-
         let accessibilityValue = sdkQuestion.required
         ? Localization.Survey.Question.Required.Accessibility.label
         : nil
@@ -161,7 +160,6 @@ extension Survey.ViewController.Props {
         setQuestion: @escaping (String, SurveyQuestionPropsProtocol) -> Void,
         updateProps: @escaping (Self) -> Void
     ) -> Survey.BooleanQuestionView.Props {
-
         let accessibilityValue = sdkQuestion.required
         ? Localization.Survey.Question.Required.Accessibility.label
         : nil
@@ -198,7 +196,6 @@ extension Survey.ViewController.Props {
         setQuestion: @escaping (String, SurveyQuestionPropsProtocol) -> Void,
         updateProps: @escaping (Self) -> Void
     ) -> Survey.SingleChoiceQuestionView.Props {
-
         let accessibilityValue = sdkQuestion.required
         ? Localization.Survey.Question.Required.Accessibility.label
         : nil
@@ -253,7 +250,6 @@ extension Survey.ViewController.Props {
         setQuestion: @escaping (String, SurveyQuestionPropsProtocol) -> Void,
         updateProps: @escaping (Self) -> Void
     ) -> Survey.InputQuestionView.Props {
-
         let accessibilityValue = sdkQuestion.required
         ? Localization.Survey.Question.Required.Accessibility.label
         : nil

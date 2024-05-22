@@ -522,7 +522,6 @@ extension ChatViewController {
                 ),
                 downloads: []
             )
-
         }
         chatViewModelEnv.fetchChatHistory = { $0(.success(messages)) }
         var interEnv = Interactor.Environment.mock

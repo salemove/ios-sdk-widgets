@@ -2,7 +2,6 @@ import UIKit
 
 extension Survey {
     final class CheckboxView: BaseView {
-
         enum State {
             case active, highlighted, selected
         }

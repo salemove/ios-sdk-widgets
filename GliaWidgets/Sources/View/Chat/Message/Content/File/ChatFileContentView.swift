@@ -79,7 +79,6 @@ extension ChatFileContentView {
             fileValue = file.accessibilityProperties.value
         case .download(let download):
             fileValue = download.accessibilityProperties.value
-
         }
 
         let sender: String

@@ -1,6 +1,5 @@
 #if DEBUG
 extension AlertConfiguration {
-
     static func mock(showsPoweredBy: Bool = true) -> Self {
         .init(
             leaveQueue: .init(showsPoweredBy: showsPoweredBy),
@@ -28,7 +27,6 @@ extension AlertConfiguration {
 }
 
 extension SingleActionAlertConfiguration {
-
     static func mock(
         title: String? = "mocked-title",
         message: String? = "mocked-message",
@@ -84,7 +82,6 @@ extension ConfirmationAlertConfiguration {
 }
 
 extension SingleMediaUpgradeAlertConfiguration {
-
     static func mock() -> Self {
         .init(
             title: "mocked-title",
@@ -97,7 +94,6 @@ extension SingleMediaUpgradeAlertConfiguration {
 }
 
 extension MessageAlertConfiguration {
-
     static func mock(
         title: String? = "mocked-title",
         message: String? = "mocked-message"
@@ -110,7 +106,6 @@ extension MessageAlertConfiguration {
 }
 
 extension MediaUpgradeActionStyle {
-
     static func mock() -> Self {
         .init(
             title: "",
@@ -128,7 +123,6 @@ extension MediaUpgradeActionStyle {
 }
 
 extension MultipleMediaUpgradeAlertConfiguration {
-
     static func mock(
         title: String = "mocked-title",
         audioUpgradeAction: MediaUpgradeActionStyle = .mock(),
@@ -145,7 +139,6 @@ extension MultipleMediaUpgradeAlertConfiguration {
 }
 
 extension SettingsAlertConfiguration {
-
     static func mock() -> Self {
         .init(
             title: "mocked-title",

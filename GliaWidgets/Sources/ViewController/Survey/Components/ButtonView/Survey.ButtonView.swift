@@ -2,7 +2,6 @@ import UIKit
 
 extension Survey {
     final class ButtonView: BaseView {
-
         enum State {
             case active, highlighted, selected
         }

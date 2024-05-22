@@ -58,7 +58,6 @@ extension CallVisualizer {
                 viewState: ViewState = .loading,
                 style: VisitorCodeStyle = Theme().visitorCode,
                 isPoweredByShown: Bool = true
-
             ) {
                 self.viewType = viewType
                 self.style = style

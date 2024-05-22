@@ -2,7 +2,6 @@ import Foundation
 import UIKit
 
 extension UIFont {
-
     static func convertToFont(
         uiFont: UIFont?,
         textStyle: UIFont.TextStyle

@@ -62,7 +62,6 @@ extension SnackBar {
                         withAnimation(.linear(duration: 0.015)) {
                             self.currentOffset = -60
                         }
-
                     }
                 }
         }

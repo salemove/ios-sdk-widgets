@@ -44,7 +44,6 @@ extension CallStyle {
         _ bottomText: RemoteConfiguration.Text?,
         assetsBuilder: RemoteConfiguration.AssetsBuilder
     ) {
-
         bottomText?.alignment.unwrap { _ in
             // The logic for bottomText alignment has not been implemented
         }
@@ -65,7 +64,6 @@ extension CallStyle {
         _ topText: RemoteConfiguration.Text?,
         assetsBuilder: RemoteConfiguration.AssetsBuilder
     ) {
-
         topText?.alignment.unwrap { _ in
             // The logic for topText alignment has not been implemented
         }
@@ -90,7 +88,6 @@ extension CallStyle {
         _ duration: RemoteConfiguration.Text?,
         assetsBuilder: RemoteConfiguration.AssetsBuilder
     ) {
-
         duration?.alignment.unwrap { _ in
             // The logic for duration alignment has not been implemented
         }
