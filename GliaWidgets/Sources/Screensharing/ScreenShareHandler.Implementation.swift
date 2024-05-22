@@ -30,6 +30,7 @@ extension ScreenShareHandler {
             },
             cleanUp: {
                 visitorState = nil
-            })
+            }
+        )
     }
 }

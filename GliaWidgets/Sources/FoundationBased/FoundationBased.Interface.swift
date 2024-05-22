@@ -108,7 +108,8 @@ extension FoundationBased.Timer.Providing {
         target aTarget: Any,
         selector aSelector: Selector,
         userInfo: Any?,
-        repeats yesOrNo: Bool) -> FoundationBased.Timer {
+        repeats yesOrNo: Bool
+    ) -> FoundationBased.Timer {
             scheduledTimerWithTimeIntervalAndTarget(
                 ti,
                 aTarget,
@@ -118,7 +119,11 @@ extension FoundationBased.Timer.Providing {
             )
     }
 
-    func scheduledTimer(withTimeInterval interval: TimeInterval, repeats: Bool, block: @escaping (FoundationBased.Timer) -> Void) -> FoundationBased.Timer {
+    func scheduledTimer(
+        withTimeInterval interval: TimeInterval,
+        repeats: Bool,
+        block: @escaping (FoundationBased.Timer) -> Void
+    ) -> FoundationBased.Timer {
         scheduledTimerWithTimeIntervalAndRepeats(
             interval,
             repeats,

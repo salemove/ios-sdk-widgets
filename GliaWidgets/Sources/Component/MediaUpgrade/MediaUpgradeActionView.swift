@@ -40,8 +40,10 @@ class MediaUpgradeActionView: UIView {
         infoLabel.textColor = style.infoColor
         infoLabel.numberOfLines = 0
 
-        let tapRecognizer = UITapGestureRecognizer(target: self,
-                                                   action: #selector(tapped))
+        let tapRecognizer = UITapGestureRecognizer(
+            target: self,
+            action: #selector(tapped)
+        )
         addGestureRecognizer(tapRecognizer)
     }
 

@@ -250,7 +250,8 @@ extension SecureConversations {
 extension SecureConversations.FileUploadView.Props.State {
     init(
         state: GliaWidgets.FileUpload.State,
-        localFile: GliaWidgets.LocalFile) {
+        localFile: GliaWidgets.LocalFile
+    ) {
         switch state {
         case .none:
             self = .none

@@ -12,7 +12,8 @@ extension SnackBar {
                 environment: .init(
                     timerProviding: timerProviding,
                     notificationCenter: notificationCenter,
-                    gcd: gcd)
+                    gcd: gcd
+                )
             )
             if existedPresenter == nil {
                 Self.presenters.append(presenter)

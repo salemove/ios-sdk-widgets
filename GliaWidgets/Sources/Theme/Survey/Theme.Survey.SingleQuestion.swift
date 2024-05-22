@@ -37,7 +37,8 @@ public extension Theme.SurveyStyle {
                         textStyle: .body,
                         accessibility: .init(isFontScalingEnabled: true)
                     ),
-                    accessibility: .init(isFontScalingEnabled: true)),
+                    accessibility: .init(isFontScalingEnabled: true)
+                ),
                 error: .default(color: color, font: font),
                 accessibility: .init(isFontScalingEnabled: true)
             )

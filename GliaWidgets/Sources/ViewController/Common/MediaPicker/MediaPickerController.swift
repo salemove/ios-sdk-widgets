@@ -37,8 +37,10 @@ final class MediaPickerController: NSObject {
         }
     }
 
-    private func mediaTypes(_ mediaTypes: [MediaPickerViewModel.MediaType],
-                            for sourceType: UIImagePickerController.SourceType) -> [String] {
+    private func mediaTypes(
+        _ mediaTypes: [MediaPickerViewModel.MediaType],
+        for sourceType: UIImagePickerController.SourceType
+    ) -> [String] {
         let types: [String] = mediaTypes.map {
             switch $0 {
             case .image:

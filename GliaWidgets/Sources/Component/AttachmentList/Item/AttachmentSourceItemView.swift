@@ -49,8 +49,11 @@ class AttachmentSourceItemView: UIView {
             stackView.addArrangedSubview(imageView)
         }
 
-        let tapRecognizer = UITapGestureRecognizer(target: self,
-                                                   action: #selector(tapped))
+        let tapRecognizer = UITapGestureRecognizer(
+            target: self,
+            action: #selector(tapped)
+        )
+
         addGestureRecognizer(tapRecognizer)
     }
 

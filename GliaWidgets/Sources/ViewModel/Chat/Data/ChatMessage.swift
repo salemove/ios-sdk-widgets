@@ -68,9 +68,11 @@ class ChatMessage: Codable {
         case metadata
     }
 
-    init(with message: CoreSdkClient.Message,
-         queueID: String? = nil,
-         operator salemoveOperator: CoreSdkClient.Operator? = nil) {
+    init(
+        with message: CoreSdkClient.Message,
+        queueID: String? = nil,
+        operator salemoveOperator: CoreSdkClient.Operator? = nil
+    ) {
         id = message.id
 
         if let salemoveOperator = salemoveOperator {

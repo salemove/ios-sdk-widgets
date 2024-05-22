@@ -19,6 +19,10 @@ opt_in_rules:
   - convenience_type
   - empty_xctest_method
   - let_var_whitespace
+  - multiline_arguments_brackets
+  - multiline_literal_brackets
+  - multiline_parameters
+  - multiline_parameters_brackets
 excluded: # paths to ignore during linting. Takes precedence over `included`.
   - Carthage
   - Pods

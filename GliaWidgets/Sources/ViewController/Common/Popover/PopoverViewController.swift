@@ -6,10 +6,12 @@ final class PopoverViewController: UIViewController, Replaceable {
     private let contentInsets: UIEdgeInsets
     private let minimumWidth: CGFloat
 
-    init(with contentView: UIView,
-         presentFrom sourceView: UIView,
-         contentInsets: UIEdgeInsets = .zero,
-         minimumWidth: CGFloat = 250) {
+    init(
+        with contentView: UIView,
+        presentFrom sourceView: UIView,
+        contentInsets: UIEdgeInsets = .zero,
+        minimumWidth: CGFloat = 250
+    ) {
         self.contentView = contentView
         self.sourceView = sourceView
         self.contentInsets = contentInsets

@@ -31,7 +31,8 @@ extension CallVisualizer {
                 presentation: presentation,
                 environment: .init(
                     timerProviding: environment.timerProviding,
-                    requestVisitorCode: environment.requestVisitorCode),
+                    requestVisitorCode: environment.requestVisitorCode
+                ),
                 theme: theme,
                 delegate: { [weak self] action in
                     switch action {

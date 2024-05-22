@@ -12,12 +12,11 @@ struct ActionButtonSwiftUI: View {
             .background(SwiftUI.Color(model.style.backgroundColor.color))
             .cornerRadius(model.style.cornerRaidus ?? 0)
             .overlay(
-                RoundedRectangle(
-                    cornerRadius: model.style.cornerRaidus ?? 0)
-                        .stroke(
-                            SwiftUI.Color(model.style.borderColor ?? .clear),
-                            lineWidth: model.style.borderWidth ?? 0
-                        )
+                RoundedRectangle(cornerRadius: model.style.cornerRaidus ?? 0)
+                .stroke(
+                    SwiftUI.Color(model.style.borderColor ?? .clear),
+                    lineWidth: model.style.borderWidth ?? 0
+                )
             )
             .shadow(
                 color: SwiftUI.Color(model.style.shadowColor ?? .clear),

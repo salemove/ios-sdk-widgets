@@ -8,11 +8,13 @@ class ChatImageFileContentView: ChatFileContentView {
     private let kInsets = UIEdgeInsets.zero
     private let kHeight: CGFloat = 155
 
-    init(with style: ChatImageFileContentStyle,
-         content: Content,
-         contentAlignment: ChatMessageContentAlignment,
-         accessibilityProperties: ChatFileContentView.AccessibilityProperties,
-         tap: @escaping () -> Void) {
+    init(
+        with style: ChatImageFileContentStyle,
+        content: Content,
+        contentAlignment: ChatMessageContentAlignment,
+        accessibilityProperties: ChatFileContentView.AccessibilityProperties,
+        tap: @escaping () -> Void
+    ) {
         self.style = style
         self.contentAlignment = contentAlignment
         super.init(

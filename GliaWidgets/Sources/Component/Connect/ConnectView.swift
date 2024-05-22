@@ -155,7 +155,9 @@ final class ConnectView: BaseView {
             options: .curveEaseInOut,
             animations: {
                 self.transform = .identity
-            }, completion: nil)
+            },
+            completion: nil
+        )
         isShowing = true
     }
 
@@ -168,7 +170,8 @@ final class ConnectView: BaseView {
             options: .curveEaseInOut,
             animations: {
                 self.transform = CGAffineTransform(scaleX: 0, y: 0)
-            }, completion: nil)
+            }, completion: nil
+        )
         isShowing = false
     }
 }

@@ -45,8 +45,10 @@ class ChatFileContentView: UIView {
             }
         }
 
-        let tapRecognizer = UITapGestureRecognizer(target: self,
-                                                   action: #selector(tapped))
+        let tapRecognizer = UITapGestureRecognizer(
+            target: self,
+            action: #selector(tapped)
+        )
         addGestureRecognizer(tapRecognizer)
 
         isAccessibilityElement = true

@@ -312,22 +312,23 @@ extension ChatViewController {
             ChatChoiceCardOption(with: try .mock(text: "One", value: "eno"))
         ]
         let messages: [ChatMessage] = [
-            .mock(id: messageId(),
-                  operator: .mock(
+            .mock(
+                id: messageId(),
+                operator: .mock(
                     name: "Blob",
                     pictureUrl: "https://mock.mock/operator/234/image.png"
-                  ),
-                  sender: .operator,
-                  content: "What is 2 + 2?",
-                  attachment: .init(
+                ),
+                sender: .operator,
+                content: "What is 2 + 2?",
+                attachment: .init(
                     type: .singleChoice,
                     files: nil,
                     imageUrl: "https://mock.mock/single_choice/567/image.png",
                     options: options,
                     selectedOption: .some("ruof")
-                  ),
-                  downloads: []
-                 )
+                ),
+                downloads: []
+            )
         ]
         chatViewModelEnv.fetchChatHistory = { $0(.success(messages)) }
 
