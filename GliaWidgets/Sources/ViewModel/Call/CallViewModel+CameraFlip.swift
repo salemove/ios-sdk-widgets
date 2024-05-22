@@ -48,9 +48,9 @@ extension CallViewModel {
                     // If next index is valid use it for next device selection, otherwise use first device.
                     let nextDevice = devices.indices.contains(nextIndex) ? devices[nextIndex] : devices[0]
                     cameraDeviceManager.setCameraDevice(nextDevice)
-                    // We need to call `setCameraFlipVisible` to let
+                    // Call `setCameraFlipVisible` to let
                     // accessibility label be propagated to button via
-                    // props.
+                    // properties.
                     Self.setFlipCameraButtonVisible(
                         visible,
                         getCameraDeviceManager: getCameraDeviceManager,
