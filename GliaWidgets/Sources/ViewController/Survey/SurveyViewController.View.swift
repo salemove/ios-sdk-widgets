@@ -2,7 +2,6 @@ import UIKit
 
 extension Survey {
     final class ContentView: BaseView {
-
         // MARK: - Survey questions container
 
         lazy var header = UILabel().make {
@@ -128,7 +127,6 @@ extension Survey {
         var _updateUi: (() -> Void)?
 
         func updateUi(theme: Theme) {
-
             _updateUi = { [weak self] in
                 guard let this = self else { return }
                 this.header.font = theme.survey.title.font

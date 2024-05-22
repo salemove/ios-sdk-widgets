@@ -96,7 +96,6 @@ extension GvaPersistentButtonView {
 
 extension GvaPersistentButtonView {
     final class ContainerView: BaseView {
-
         let style: GvaPersistentButtonStyle
 
         init(style: GvaPersistentButtonStyle) {

@@ -141,7 +141,6 @@ class EngagementViewModel: CommonEngagementModel {
 
         case .ended(let reason) where reason == .byOperator:
             interactor.currentEngagement?.getSurvey(completion: { [weak self] result in
-
                 guard let self = self else { return }
                 guard case .success(let survey) = result, survey == nil else {
                     self.endSession()
@@ -347,7 +346,7 @@ private extension EngagementViewModel {
             }
         case let authenticationError as CoreSdkClient.Authentication.Error:
             switch authenticationError {
-            case let .expiredAccessToken(message):
+            case .expiredAccessToken:
                 environment.log.prefixed(Self.self).info("Show authentication error Dialog")
                 showCriticalErrorAlert(
                     with: alertConfiguration.expiredAccessTokenError,
@@ -416,7 +415,6 @@ extension EngagementViewModel: Hashable {
 }
 
 extension EngagementViewModel {
-
     enum Event {
         case viewWillAppear
         case viewDidAppear
@@ -454,7 +452,6 @@ extension EngagementViewModel {
         case showEndButton
         case showEndScreenShareButton
         case showLiveObservationConfirmation(LiveObservation.Confirmation)
-
     }
 
     enum DelegateEvent {

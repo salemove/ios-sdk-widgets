@@ -2,7 +2,6 @@ import UIKit
 
 /// Style of the call view.
 public class CallStyle: EngagementStyle {
-
     /// Title for the audio call.
     public var audioTitle: String
 

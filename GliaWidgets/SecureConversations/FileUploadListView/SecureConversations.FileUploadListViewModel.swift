@@ -178,7 +178,6 @@ extension SecureConversations.FileUploadListViewModel {
             return nil
         }
         return handleAddedUpload(upload)
-
     }
 
     @discardableResult

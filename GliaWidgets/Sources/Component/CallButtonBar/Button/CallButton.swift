@@ -131,7 +131,6 @@ class CallButton: UIView {
             imageView.tintColor = color
         case .gradient(let colors):
             imageView.makeGradientBackground(colors: colors)
-
         }
         titleLabel.text = style.title
         titleLabel.font = style.titleFont
@@ -180,7 +179,6 @@ class CallButton: UIView {
         stateStyle: CallButtonStyle.StateStyle,
         badgeItemCount: Int?
     ) -> (label: String?, value: String) {
-
         let badgeValue: String
 
         switch badgeItemCount {

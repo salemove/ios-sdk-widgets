@@ -6,8 +6,8 @@ protocol DismissalAndPresentationController where Self: UIViewController {
 
 extension DismissalAndPresentationController {
     func replacePresentedOfferIfPossible(with offer: Replaceable) {
-        let completion = { [unowned self] in
-            self.present(offer, animated: true)
+        let completion: () -> Void = { [weak self] in
+            self?.present(offer, animated: true)
         }
         guard let presented = self.presentedViewController as? Replaceable else {
             completion()

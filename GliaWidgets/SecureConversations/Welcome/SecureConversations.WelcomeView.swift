@@ -379,7 +379,6 @@ extension SecureConversations.WelcomeView {
             )
         ])
         rootStackView.setCustomSpacing(16, after: titleLabel)
-
     }
 
     func defineSubtitleLabelLayout() {
@@ -390,7 +389,6 @@ extension SecureConversations.WelcomeView {
             )
         ])
         rootStackView.setCustomSpacing(16, after: subtitleLabel)
-
     }
 
     func defineCheckMessagesButtonLayout() {
@@ -824,7 +822,6 @@ extension SecureConversations.WelcomeView {
                 bottomOffset,
                 animated: true
             )
-
         }
     }
 }

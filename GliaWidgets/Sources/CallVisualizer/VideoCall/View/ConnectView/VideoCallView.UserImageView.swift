@@ -2,7 +2,6 @@ import UIKit
 
 extension CallVisualizer.VideoCallView {
     final class UserImageView: BaseView {
-
         // MARK: - Properties
 
         var props: Props {
