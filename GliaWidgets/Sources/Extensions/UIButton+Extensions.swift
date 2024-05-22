@@ -1,7 +1,7 @@
 import UIKit
 
 extension UIButton {
-    /// Sets the background color to use for the specified button state.
+    /// Sets the background color to be used for the specified button state.
     func setBackgroundColor(
         color: UIColor,
         forState: UIControl.State

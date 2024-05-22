@@ -138,21 +138,21 @@ class VideoStreamView: UIView {
     }
 
     func renderLocalVideoAccessibility() {
-        // We need to change accessibility behaviour
-        // in case if flip camera button is present,
+        // Change accessibility behaviour
+        // in case the flip camera button is present,
         // to allow it to be recognizable by screen reader.
         if flipCameraAccessibilityLabelWithTap != nil {
             // Parent container can not be accessibility element,
             // if child needs to be accessibility element as well,
             // but siblings within same containers can.
             self.isAccessibilityElement = false
-            // So we make `streamView` (which is sibling to
+            // Thus make `streamView` (which is sibling to
             // flip camera button) an accessibility element.
             streamView?.isAccessibilityElement = true
-            // Also we forward `accessibilityLabel` from parent to
+            // Also, forward `accessibilityLabel` from parent to
             // `streamView`, so that it would be read instead.
             streamView?.accessibilityLabel = accessibilityLabel
-            // Finally we assign `streamView` and `flipButton` to
+            // Finally assign `streamView` and `flipButton` to
             // accessibility elements group.
             self.accessibilityElements = [streamView].compactMap { $0 } + [self.flipButton]
         } else {
