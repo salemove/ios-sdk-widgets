@@ -23,4 +23,15 @@ final class ChatMessageTests: XCTestCase {
         )
         XCTAssertEqual(msg.cardType, .customCard)
     }
+
+    func testCardType__metadataWithoutSingleChoice() throws {
+        let metadataDecodingContainer = try CoreSdkMessageMetadataContainer(
+            jsonData: "{\"html\": \"Hello\"}".data(using: .utf8)!
+        ).container
+        let msg = ChatMessage.mock(
+            attachment: .mock(type: nil, files: nil, imageUrl: nil, options: nil),
+            metadata: MessageMetadata(container: metadataDecodingContainer)
+        )
+        XCTAssertEqual(msg.cardType, .customCard)
+    }
 }
