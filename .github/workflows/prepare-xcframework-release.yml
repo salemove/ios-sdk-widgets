@@ -1,0 +1,119 @@
+name: prepare-xcframework-release
+
+on:
+  workflow_dispatch:
+    inputs:
+      product_name: 
+        description: 'The Xcode product name'
+        required: true
+        default: 'GliaWidgets'
+      xcode_scheme: 
+        description: 'Xcode workspace scheme. It will be used for archieving project.'
+        required: true
+        default: 'GliaWidgets'
+
+jobs:
+  build:
+    name: Create PR, draft release, and build xcframework
+    runs-on: macos-latest
+    permissions:
+      contents: write
+
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Dependencies
+        run: |
+          pod install --repo-update
+
+      - name: Archieve iphoneos
+        run: |
+          xcodebuild archive \
+            -workspace "${{ github.event.inputs.product_name }}.xcworkspace" \
+            -scheme "${{ github.event.inputs.xcode_scheme }}" \
+            -sdk iphoneos \
+            -archivePath "xcf/${{ github.event.inputs.product_name }}-iphoneos.xcarchive" \
+            SKIP_INSTALL=NO \
+            BUILD_LIBRARY_FOR_DISTRIBUTION=YES | xcpretty
+        shell: bash
+
+      - name: Archieve iphonesimulator
+        run: |
+          xcodebuild archive \
+            -workspace "${{ github.event.inputs.product_name }}.xcworkspace" \
+            -scheme "${{ github.event.inputs.xcode_scheme }}" \
+            -sdk iphonesimulator \
+            -archivePath "xcf/${{ github.event.inputs.product_name }}-iossimulator.xcarchive" \
+            SKIP_INSTALL=NO \
+            BUILD_LIBRARY_FOR_DISTRIBUTION=YES | xcpretty
+        shell: bash
+
+      - name: Create xcframework
+        run: |
+          xcodebuild -create-xcframework \
+          -framework "xcf/${{ github.event.inputs.product_name }}-iphoneos.xcarchive/Products/Library/Frameworks/${{ github.event.inputs.product_name }}.framework" \
+          -framework "xcf/${{ github.event.inputs.product_name }}-iossimulator.xcarchive/Products/Library/Frameworks/${{ github.event.inputs.product_name }}.framework" \
+          -output "xcf/${{ github.event.inputs.product_name }}.xcframework"
+        shell: bash
+
+      - name: Zip xcframework
+        run: |
+          cd xcf
+          zip -r GliaWidgetsXcf.xcframework.zip GliaWidgets.xcframework
+        shell: bash
+      
+      - name: Calculate checksum
+        id: calculate_xcf_checksum
+        run: |
+          cd xcf
+          echo "checksum=$(swift package compute-checksum GliaWidgetsXcf.xcframework.zip | tail -1 | tr -d '\n')" >> "$GITHUB_OUTPUT"
+        shell: bash
+
+      - name: Fetch semver
+        id: fetch_semver
+        run: |
+          cd GliaWidgets
+          filename=StaticValues.swift
+          echo "semver=$(grep 'sdkVersion\s*=\s*"' "$filename" | awk -F'"' '{print $2}')" >> "$GITHUB_OUTPUT"
+          
+        shell: bash
+      
+      - name: Update Package.swift
+        run: |
+          filename=Package.swift
+          semver=${{ steps.fetch_semver.outputs.semver}}
+          checksum=${{ steps.calculate_xcf_checksum.outputs.checksum}}
+          sed -i.bak "s/\${WIDGETS_SDK_SEMVER}/$semver/g" "$filename"
+          sed -i.bak "s/\${WIDGETS_SDK_CHECKSUM}/$checksum/g" "$filename"
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: "release/${{ steps.fetch_semver.outputs.semver}}"
+          title: 'GliaWidgets SDK Release ${{ steps.fetch_semver.outputs.semver}}'
+          commit-message: |
+            GliaWidgets SDK Release ${{ steps.fetch_semver.outputs.semver}}
+
+      - uses: actions/create-release@v1
+        id: create_release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.fetch_semver.outputs.semver}}
+          release_name: "GliaWidgetsSDK Release ${{ steps.fetch_semver.outputs.semver}}"
+          draft: true
+          prerelease: false
+          body: |
+            GliaWidgetsSDK Release
+            xcframework checksum: `${{ steps.calculate_xcf_checksum.outputs.checksum }}`
+
+      - uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: "xcf/GliaWidgetsXcf.xcframework.zip"
+          asset_name: "GliaWidgetsXcf.xcframework.zip"
+          asset_content_type: "application/zip"
