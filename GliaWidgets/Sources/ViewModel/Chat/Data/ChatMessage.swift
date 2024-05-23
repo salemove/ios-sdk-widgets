@@ -52,8 +52,12 @@ class ChatMessage: Codable {
             return .gvaGallery(response)
         }
 
+        if metadata != nil {
+            return .customCard
+        }
+
         if attachment?.type == .singleChoice {
-            return metadata != nil ? .customCard : .choiceCard
+            return .choiceCard
         }
 
         return .none
