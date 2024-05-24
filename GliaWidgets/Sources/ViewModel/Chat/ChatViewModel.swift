@@ -458,7 +458,7 @@ extension ChatViewModel {
             var messagePayload = outgoingMessage.payload
             messagePayload.content = messageTextTemp
             messagePayload.attachment = attachment
-            interactor.send(messagePayload: messagePayload) { [weak self, environment] result in
+            interactor.send(messagePayload: messagePayload) { [weak self] result in
                 guard let self else { return }
 
                 switch result {
@@ -473,17 +473,10 @@ extension ChatViewModel {
                         )
                         self.action?(.scrollToBottom(animated: true))
                     }
-
-                case .failure:
-                    environment.log.prefixed(Self.self).info("Message send exception")
-                    environment.log.prefixed(Self.self).info("Show Unexpected error Dialog")
-                    self.showAlert(
-                        with: self.alertConfiguration.unexpectedError,
-                        dismissed: nil
-                    )
+                case let .failure(error):
+                    handleSendMessageError(error)
                 }
             }
-
         case .enqueued:
             handle(pendingMessage: outgoingMessage)
 
@@ -493,6 +486,20 @@ extension ChatViewModel {
         }
 
         messageText = ""
+    }
+
+    func handleSendMessageError(_ error: CoreSdkClient.GliaCoreError) {
+        switch error.error {
+        case let authError as CoreSdkClient.Authentication.Error where authError == .expiredAccessToken:
+            break
+        default:
+            environment.log.prefixed(Self.self).info("Message send exception")
+            environment.log.prefixed(Self.self).info("Show Unexpected error Dialog")
+            showAlert(
+                with: alertConfiguration.unexpectedError,
+                dismissed: nil
+            )
+        }
     }
 
     func handle(pendingMessage: OutgoingMessage) {

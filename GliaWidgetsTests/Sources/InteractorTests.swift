@@ -423,6 +423,40 @@ class InteractorTests: XCTestCase {
         XCTAssertEqual(callbacks, [.sendMessageWithAttachment])
     }
 
+    func test_sendMessageFailsWith401Error() throws {
+        enum Callback: Equatable {
+            case success
+            case expiredAccessToken
+            case unknownError
+        }
+        var callbacks: [Callback] = []
+        var interactorEnv = Interactor.Environment.failing
+        let expectedError: CoreSdkClient.GliaCoreError = .init(
+            reason: "Expired access token",
+            error: CoreSdkClient.Authentication.Error.expiredAccessToken
+        )
+        interactorEnv.coreSdk.sendMessageWithMessagePayload = { payload, result in
+            result(.failure(expectedError))
+        }
+        let interactor = Interactor.mock(environment: interactorEnv)
+
+        interactor.send(messagePayload: .mock(content: "mock-message")) { result in
+            switch result {
+            case .success:
+                callbacks.append(.success)
+            case let .failure(error):
+                switch error.error {
+                case let authError as CoreSdkClient.Authentication.Error where authError == .expiredAccessToken:
+                    callbacks.append(.expiredAccessToken)
+                default:
+                    callbacks.append(.unknownError)
+                }
+            }
+        }
+
+        XCTAssertEqual(callbacks, [.expiredAccessToken])
+    }
+
     func test_onScreenSharingOfferSendsScreenShareOfferEvent() throws {
         enum Callback: Equatable {
             case screenShareOffered
