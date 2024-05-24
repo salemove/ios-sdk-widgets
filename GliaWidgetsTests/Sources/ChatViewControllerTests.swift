@@ -69,7 +69,7 @@ class ChatViewControllerTests: XCTestCase {
 
         viewModel.engagementAction = { action in
             switch action {
-            case let .showCriticalErrorAlert(conf, accessibilityIdentifier, dismissed):
+            case .showCriticalErrorAlert:
                 calls.append(.presentCriticalErrorAlert)
             default:
                 break
@@ -77,7 +77,7 @@ class ChatViewControllerTests: XCTestCase {
         }
 
         let error: CoreSdkClient.SalemoveError = .init(
-            reason: "Authentication issue",
+            reason: "Expired Access Token",
             error: CoreSdkClient.Authentication.Error.expiredAccessToken
         )
         interactor.fail(error: error)
