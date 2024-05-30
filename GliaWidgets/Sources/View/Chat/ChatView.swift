@@ -205,55 +205,38 @@ extension ChatView {
                let item = itemForRow?($0.row, $0.section) {
                 switch cell.content {
                 case .operatorMessage(let view):
-                    switch item.kind {
-                    case .operatorMessage(let message, let showsImage, let imageUrl):
-                        // forward operator name to typing indicator's accessibility
-                        if let operatorName = message.operator?.name {
-                            typingIndicatorView.accessibilityProperties.operatorName = operatorName
-                        }
-
-                        view.showsOperatorImage = showsImage
-                        view.setOperatorImage(fromUrl: imageUrl, animated: animated)
-                    default:
-                        break
+                    guard case let .operatorMessage(message, showsImage, imageUrl) = item.kind else { return }
+                    // forward operator name to typing indicator's accessibility
+                    if let operatorName = message.operator?.name {
+                        typingIndicatorView.accessibilityProperties.operatorName = operatorName
                     }
+
+                    view.showsOperatorImage = showsImage
+                    view.setOperatorImage(fromUrl: imageUrl, animated: animated)
                 case .choiceCard(let view):
-                    switch item.kind {
-                    case .choiceCard(_, let showsImage, let imageUrl, _):
-                        view.showsOperatorImage = showsImage
-                        view.setOperatorImage(fromUrl: imageUrl, animated: animated)
-                    default:
-                        break
-                    }
-
+                    guard case let .choiceCard(_, showsImage, imageUrl, _) = item.kind else { return }
+                    view.showsOperatorImage = showsImage
+                    view.setOperatorImage(fromUrl: imageUrl, animated: animated)
                 case let .gvaGallery(view, _):
-                    switch item.kind {
-                    case let .gvaGallery(_, _, showsImage, imageUrl):
-                        view.showsOperatorImage = showsImage
-                        view.setOperatorImage(fromUrl: imageUrl, animated: animated)
-                    default: break
-                    }
+                    guard case let .gvaGallery(_, _, showsImage, imageUrl) = item.kind else { return }
+                    view.showsOperatorImage = showsImage
+                    view.setOperatorImage(fromUrl: imageUrl, animated: animated)
                 case let .gvaQuickReply(view):
-                    switch item.kind {
-                    case let .gvaGallery(_, _, showsImage, imageUrl):
-                        view.showsOperatorImage = showsImage
-                        view.setOperatorImage(fromUrl: imageUrl, animated: animated)
-                    default: break
-                    }
+                    guard case let .gvaQuickReply(_, _, showsImage, imageUrl) = item.kind else { return }
+                    view.showsOperatorImage = showsImage
+                    view.setOperatorImage(fromUrl: imageUrl, animated: animated)
                 case let .gvaResponseText(view):
-                    switch item.kind {
-                    case let .gvaResponseText(_, _, showsImage, imageUrl):
-                        view.showsOperatorImage = showsImage
-                        view.setOperatorImage(fromUrl: imageUrl, animated: animated)
-                    default: break
-                    }
+                    guard case let .gvaResponseText(_, _, showsImage, imageUrl) = item.kind else { return }
+                    view.showsOperatorImage = showsImage
+                    view.setOperatorImage(fromUrl: imageUrl, animated: animated)
                 case let .gvaPersistentButton(view):
-                    switch item.kind {
-                    case let .gvaPersistentButton(_, _, showsImage, imageUrl):
-                        view.showsOperatorImage = showsImage
-                        view.setOperatorImage(fromUrl: imageUrl, animated: animated)
-                    default: break
-                    }
+                    guard case let .gvaPersistentButton(_, _, showsImage, imageUrl) = item.kind else { return }
+                    view.showsOperatorImage = showsImage
+                    view.setOperatorImage(fromUrl: imageUrl, animated: animated)
+                case let .customCard(view):
+                    guard case let .customCard(_, showsImage, imageUrl, _) = item.kind else { return }
+                    view.showsOperatorImage = showsImage
+                    view.setOperatorImage(fromUrl: imageUrl, animated: animated)
                 default:
                     break
                 }
@@ -810,7 +793,16 @@ extension ChatView {
             )
         }
 
-        let container = CustomCardContainerView()
+        let container = CustomCardContainerView(
+            style: style.operatorMessageStyle.operatorImage,
+            environment: .init(
+                data: environment.data,
+                uuid: environment.uuid,
+                gcd: environment.gcd,
+                imageViewCache: environment.imageViewCache,
+                uiScreen: environment.uiScreen
+            )
+        )
         if let webCardView = contentView as? WebMessageCardView {
             webCardView.isUserInteractionEnabled = isActive
             webCardView.delegate = self
@@ -819,6 +811,8 @@ extension ChatView {
         }
 
         container.addContentView(contentView)
+        container.showsOperatorImage = showsImage
+        container.setOperatorImage(fromUrl: imageUrl, animated: false)
         return .customCard(container)
     }
 

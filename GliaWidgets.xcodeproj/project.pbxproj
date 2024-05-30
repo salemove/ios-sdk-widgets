@@ -420,6 +420,8 @@
 		847A7643285A1914004044D1 /* FileUploadListViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847A7642285A1914004044D1 /* FileUploadListViewModelTests.swift */; };
 		8485704F2BEE3A0800CEBCC5 /* ChatViewTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8485704E2BEE3A0800CEBCC5 /* ChatViewTest.swift */; };
 		848570512BEE3CCC00CEBCC5 /* ChatStyle.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848570502BEE3CCC00CEBCC5 /* ChatStyle.Mock.swift */; };
+		848B8ADC2C0759C500E990E6 /* Theme.CustomCardContainerStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848B8ADB2C0759C500E990E6 /* Theme.CustomCardContainerStyle.swift */; };
+		848B8ADE2C0870DC00E990E6 /* CustomCardContainerViewLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848B8ADD2C0870DC00E990E6 /* CustomCardContainerViewLayoutTests.swift */; };
 		8491AF002A6FB44200CC3E72 /* GvaGalleryCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8491AEFF2A6FB44200CC3E72 /* GvaGalleryCardCell.swift */; };
 		8491AF022A6FBBBA00CC3E72 /* GvaGalleryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8491AF012A6FBBBA00CC3E72 /* GvaGalleryListView.swift */; };
 		8491AF062A77F16D00CC3E72 /* GvaGalleryCardStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8491AF052A77F16D00CC3E72 /* GvaGalleryCardStyle.swift */; };
@@ -1364,6 +1366,8 @@
 		847A7642285A1914004044D1 /* FileUploadListViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUploadListViewModelTests.swift; sourceTree = "<group>"; };
 		8485704E2BEE3A0800CEBCC5 /* ChatViewTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewTest.swift; sourceTree = "<group>"; };
 		848570502BEE3CCC00CEBCC5 /* ChatStyle.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatStyle.Mock.swift; sourceTree = "<group>"; };
+		848B8ADB2C0759C500E990E6 /* Theme.CustomCardContainerStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.CustomCardContainerStyle.swift; sourceTree = "<group>"; };
+		848B8ADD2C0870DC00E990E6 /* CustomCardContainerViewLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCardContainerViewLayoutTests.swift; sourceTree = "<group>"; };
 		8491AEFF2A6FB44200CC3E72 /* GvaGalleryCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GvaGalleryCardCell.swift; sourceTree = "<group>"; };
 		8491AF012A6FBBBA00CC3E72 /* GvaGalleryListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GvaGalleryListView.swift; sourceTree = "<group>"; };
 		8491AF052A77F16D00CC3E72 /* GvaGalleryCardStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GvaGalleryCardStyle.swift; sourceTree = "<group>"; };
@@ -3948,6 +3952,7 @@
 				C09046F52B7E1050003C437C /* Theme.ChoiceCardStyle.Accessibility.swift */,
 				8491AF1E2A7D027D00CC3E72 /* Theme.ChatTextContentStyle.swift */,
 				C09046FD2B7E131B003C437C /* Theme.ChatTextContentStyle.Accessibility.swift */,
+				848B8ADB2C0759C500E990E6 /* Theme.CustomCardContainerStyle.swift */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -4134,6 +4139,7 @@
 				C039FA7E2B19EB6E00DFD0E0 /* MediaPickerLayoutTests.swift */,
 				C039FA802B19ECBA00DFD0E0 /* MediaPickerDynamicFontTests.swift */,
 				C039FA822B19ED7D00DFD0E0 /* MediaPickerVoiceOverTests.swift */,
+				848B8ADD2C0870DC00E990E6 /* CustomCardContainerViewLayoutTests.swift */,
 			);
 			path = SnapshotTests;
 			sourceTree = "<group>";
@@ -5476,6 +5482,7 @@
 				C06A7588296ECD75006B69A2 /* Theme+VisitorCode.swift in Sources */,
 				C090476C2B7E24A8003C437C /* ChoiceCardOptionStateStyle.RemoteConfig.swift in Sources */,
 				C0857DED28D4831E008D171D /* Theme.Text.swift in Sources */,
+				848B8ADC2C0759C500E990E6 /* Theme.CustomCardContainerStyle.swift in Sources */,
 				845876A22823FF34007AC3DF /* Survey.ViewController.Props.Mock.swift in Sources */,
 				C090471D2B7E1AFF003C437C /* GvaGalleryCardStyle.ButtonStyle.swift in Sources */,
 				84520BDD2B10C16E00F97617 /* WebViewController.Props.swift in Sources */,
@@ -6205,6 +6212,7 @@
 				C07FA05029B0E41A00E9FB7F /* VideoCallViewControllerVoiceOverTests.swift in Sources */,
 				C039FA832B19ED7D00DFD0E0 /* MediaPickerVoiceOverTests.swift in Sources */,
 				C07FA05029B0E41A00E9FB7F /* VideoCallViewControllerVoiceOverTests.swift in Sources */,
+				848B8ADE2C0870DC00E990E6 /* CustomCardContainerViewLayoutTests.swift in Sources */,
 				AF755FDA2A71583900871E36 /* BubbleWindowLayoutTests.swift in Sources */,
 				AF22C88D2A6188EF0004BF3C /* ChatViewControllerLayoutTests.swift in Sources */,
 				AF03A7B12A6E96870081887D /* BubbleViewDynamicTypeFontTests.swift in Sources */,
