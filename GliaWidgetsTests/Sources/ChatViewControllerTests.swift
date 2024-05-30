@@ -75,13 +75,13 @@ class ChatViewControllerTests: XCTestCase {
                 break
             }
         }
-        
-        let errorMessage = "Please restart the app and log in again"
+
         let error: CoreSdkClient.SalemoveError = .init(
             reason: "Authentication issue",
-            error: CoreSdkClient.Authentication.Error.expiredAccessToken(message: errorMessage))
+            error: CoreSdkClient.Authentication.Error.expiredAccessToken
+        )
         interactor.fail(error: error)
-        
+
         XCTAssertEqual(calls, [.presentCriticalErrorAlert])
     }
 
