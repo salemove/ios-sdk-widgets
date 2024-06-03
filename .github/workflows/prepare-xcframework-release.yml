@@ -96,10 +96,11 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           branch: "release/${{ steps.fetch_semver.outputs.semver}}"
+          base: "master"
           title: 'GliaWidgets SDK Release ${{ steps.fetch_semver.outputs.semver}}'
           commit-message: |
             GliaWidgets SDK Release ${{ steps.fetch_semver.outputs.semver}}
-          assignees: 'tm-mobile-ios'
+          reviewers: 'tm-mobile-ios'
 
       - uses: actions/create-release@v1
         id: create_release
