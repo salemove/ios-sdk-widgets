@@ -26,6 +26,7 @@ SPEC REPOS:
     - AccessibilitySnapshot
     - SnapshotTesting
   trunk:
+    - AccessibilitySnapshot
     - GliaCoreDependency
     - GliaCoreSDK
     - SwiftLint
