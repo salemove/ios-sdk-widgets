@@ -11,6 +11,10 @@ let package = Package(
         .library(
             name: "GliaWidgets",
             targets: ["GliaWidgets"]
+        ),
+        .library(
+            name: "GliaWidgetsXcf",
+            targets: ["GliaWidgetsXcf"]
         )
     ],
     targets: [
