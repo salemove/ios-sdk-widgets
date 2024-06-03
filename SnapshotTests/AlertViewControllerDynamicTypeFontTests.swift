@@ -26,7 +26,7 @@ final class AlertViewControllerDynamicTypeFontTests: SnapshotTestCase {
 
     func test_messageAlert_extra3Large() {
         let alert = alert(ofKind: .message(
-            .mock(),
+            conf: .mock(),
             accessibilityIdentifier: nil,
             dismissed: {}
         ))
@@ -36,7 +36,7 @@ final class AlertViewControllerDynamicTypeFontTests: SnapshotTestCase {
 
     func test_singleAction_extra3Large() {
         let alert = alert(ofKind: .singleAction(
-            .mock(),
+            conf: .mock(),
             accessibilityIdentifier: "mocked-accessibility-identifier",
             actionTapped: {}
         ))
@@ -44,9 +44,9 @@ final class AlertViewControllerDynamicTypeFontTests: SnapshotTestCase {
         alert.assertSnapshot(as: .extra3LargeFont, in: .landscape)
     }
 
-    private func alert(ofKind kind: AlertViewController.Kind) -> AlertViewController {
+    private func alert(ofKind type: AlertType) -> AlertViewController {
         let viewController = AlertViewController(
-            kind: kind,
+            type: type,
             viewFactory: .mock()
         )
         return viewController

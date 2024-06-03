@@ -22,12 +22,8 @@ extension ChatViewModel {
             case .success(let message):
                 let selection = message.content
                 self.respond(to: messageId, with: selection)
-            case .failure:
-                self.environment.log.prefixed(Self.self).info("Show Unexpected error Dialog")
-                self.showAlert(
-                    with: self.alertConfiguration.unexpectedError,
-                    dismissed: nil
-                )
+            case let .failure(error):
+                self.engagementAction?(.showAlert(.error(error: error.error)))
             }
         }
     }

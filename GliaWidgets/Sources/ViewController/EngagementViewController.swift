@@ -1,6 +1,6 @@
 import UIKit
 
-class EngagementViewController: UIViewController, AlertPresenter {
+class EngagementViewController: UIViewController {
     var viewFactory: ViewFactory {
         environment.viewFactory
     }
@@ -52,34 +52,20 @@ class EngagementViewController: UIViewController, AlertPresenter {
         viewModel.engagementAction = { [weak self, weak view] action in
             guard let self = self else { return }
             switch action {
-            case .confirm(let conf, let accessibilityIdentifier, confirmed: let confirmed):
-                self.presentConfirmation(
-                    with: conf,
-                    accessibilityIdentifier: accessibilityIdentifier
-                ) { confirmed?() }
-            case .showSingleActionAlert(let conf, let accessibilityIdentifier, let actionTapped):
-                self.presentSingleActionAlert(
-                    with: conf,
-                    accessibilityIdentifier: accessibilityIdentifier
-                ) { actionTapped?() }
-            case .showAlert(let conf, let accessibilityIdentifier, dismissed: let dismissed):
-                self.presentAlert(
-                    with: conf,
-                    accessibilityIdentifier: accessibilityIdentifier
-                ) { dismissed?() }
-            case .showSettingsAlert(let conf, cancelled: let cancelled):
-                self.presentSettingsAlert(with: conf, cancelled: cancelled)
             case .showEndButton:
                 view?.header.showEndButton()
             case .showEndScreenShareButton:
                 view?.header.showEndScreenSharingButton()
-            case let .showLiveObservationConfirmation(configuration):
-                self.showLiveObservationConfirmation(with: configuration)
-            case let .showCriticalErrorAlert(conf, accessibilityIdentifier, dismissed):
-                self.presentCriticalErrorAlert(
-                    with: conf,
-                    accessibilityIdentifier: accessibilityIdentifier,
-                    dismissed: dismissed
+            case let .showLiveObservationConfirmation(link, accepted, declined):
+                self.showLiveObservationConfirmation(
+                    link: link,
+                    accepted: accepted,
+                    declined: declined
+                )
+            case let.showAlert(type):
+                self.environment.alertManager.present(
+                    in: .root(self),
+                    as: type
                 )
             }
         }
@@ -91,8 +77,15 @@ class EngagementViewController: UIViewController, AlertPresenter {
     }
 
     private func showLiveObservationConfirmation(
-        with config: LiveObservation.Confirmation
+        link: @escaping (WebViewController.Link) -> Void,
+        accepted: @escaping () -> Void,
+        declined: @escaping () -> Void
     ) {
+        let config: LiveObservation.Confirmation = .init(
+            link: link,
+            accepted: accepted,
+            declined: declined
+        )
         switch viewModel.hasViewAppeared {
         case true: showLiveObservationConfirmationAlert(with: config)
         case false: pendingLiveObservationConfirmation = config
@@ -100,17 +93,14 @@ class EngagementViewController: UIViewController, AlertPresenter {
     }
 
     private func showLiveObservationConfirmationAlert(with config: LiveObservation.Confirmation) {
-        let alert = AlertViewController(
-            kind: .liveObservationConfirmation(
-                config.conf,
+        environment.alertManager.present(
+            in: .root(self),
+            as: .liveObservationConfirmation(
                 link: config.link,
                 accepted: config.accepted,
                 declined: config.declined
-            ),
-            viewFactory: self.environment.viewFactory
+            )
         )
-
-        replacePresentedOfferIfPossible(with: alert)
     }
 }
 
@@ -121,5 +111,6 @@ extension EngagementViewController {
         var timerProviding: FoundationBased.Timer.Providing
         var gcd: GCD
         var notificationCenter: FoundationBased.NotificationCenter
+        var alertManager: AlertManager
     }
 }

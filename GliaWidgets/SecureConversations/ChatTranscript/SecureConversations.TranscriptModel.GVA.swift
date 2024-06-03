@@ -83,10 +83,7 @@ private extension SecureConversations.TranscriptModel {
     func broadcastEventButtonAction() -> Cmd {
         .init { [weak self] in
             guard let self else { return }
-            self.showAlert(
-                with: self.alertConfiguration.unsupportedGvaBroadcastError,
-                dismissed: nil
-            )
+            self.engagementAction?(.showAlert(.unsupportedGvaBroadcastError()))
         }
     }
 
@@ -111,7 +108,7 @@ private extension SecureConversations.TranscriptModel {
         _ = environment.sendSecureMessagePayload(
             outgoingMessage.payload,
             environment.queueIds
-        ) { [weak self, environment] result in
+        ) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case let .success(message):
@@ -121,9 +118,8 @@ private extension SecureConversations.TranscriptModel {
                     with: message,
                     in: self.pendingSection
                 )
-            case .failure:
-                environment.log.prefixed(Self.self).info("Show Unexpected error Dialog")
-                self.showAlert(with: self.environment.alertConfiguration.unexpectedError)
+            case let .failure(error):
+                self.engagementAction?(.showAlert(.error(error: error)))
             }
         }
     }

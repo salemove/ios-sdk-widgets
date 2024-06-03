@@ -17,7 +17,6 @@ extension ChatViewModel {
     ) -> ChatViewModel {
         ChatViewModel(
             interactor: interactor,
-            alertConfiguration: alertConfiguration,
             screenShareHandler: screenShareHandler,
             call: call,
             unreadMessages: unreadMessages,

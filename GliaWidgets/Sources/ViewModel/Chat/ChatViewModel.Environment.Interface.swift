@@ -24,8 +24,8 @@ extension EngagementViewModel {
         var createSendMessagePayload: CoreSdkClient.CreateSendMessagePayload
         var proximityManager: ProximityManager
         var log: CoreSdkClient.Logger
-        var operatorRequestHandlerService: OperatorRequestHandlerService
         var cameraDeviceManager: CoreSdkClient.GetCameraDeviceManageable
         var flipCameraButtonStyle: FlipCameraButtonStyle
+        var alertManager: AlertManager
     }
 }

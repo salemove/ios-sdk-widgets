@@ -37,9 +37,9 @@ extension ChatCoordinator {
         var timerProviding: FoundationBased.Timer.Providing
         var snackBar: SnackBar
         var notificationCenter: FoundationBased.NotificationCenter
-        var operatorRequestHandlerService: OperatorRequestHandlerService
         var maximumUploads: () -> Int
         var cameraDeviceManager: CoreSdkClient.GetCameraDeviceManageable
         var flipCameraButtonStyle: FlipCameraButtonStyle
+        var alertManager: AlertManager
     }
 }

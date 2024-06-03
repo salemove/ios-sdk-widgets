@@ -89,12 +89,12 @@ extension EngagementCoordinator.Environment {
         proximityManager: .failing,
         log: .failing,
         snackBar: .failing,
-        operatorRequestHandlerService: .failing,
         maximumUploads: {
             fail("\(Self.self).maximumUploads")
             return 2
         },
         cameraDeviceManager: { .failing },
-        flipCameraButtonStyle: .nop
+        flipCameraButtonStyle: .nop,
+        alertManager: .failing(viewFactory: .mock())
     )
 }

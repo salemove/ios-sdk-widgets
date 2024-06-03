@@ -158,8 +158,7 @@ extension SecureConversationsTranscriptModelTests {
             environment: modelEnv,
             availability: .init(environment: availabilityEnv),
             deliveredStatusText: "",
-            interactor: .failing,
-            alertConfiguration: .mock()
+            interactor: .failing
         )
         viewModel.action = { action in
             guard case .quickReplyPropsUpdated = action else { return }
@@ -202,8 +201,7 @@ private extension SecureConversationsTranscriptModelTests {
             environment: modelEnv,
             availability: .init(environment: availabilityEnv),
             deliveredStatusText: "",
-            interactor: .failing,
-            alertConfiguration: .mock()
+            interactor: .failing
         )
     }
 }

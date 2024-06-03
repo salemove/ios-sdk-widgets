@@ -1,7 +1,7 @@
 import UIKit
 
 extension Survey {
-    final class ViewController: UIViewController, AlertPresenter {
+    final class ViewController: UIViewController {
         struct Props {
             let header: String
             var questionsProps: [QuestionPropsProtocol]

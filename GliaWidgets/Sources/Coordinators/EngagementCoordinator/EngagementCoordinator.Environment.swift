@@ -39,9 +39,9 @@ extension EngagementCoordinator {
         var proximityManager: ProximityManager
         var log: CoreSdkClient.Logger
         var snackBar: SnackBar
-        var operatorRequestHandlerService: OperatorRequestHandlerService
         var maximumUploads: () -> Int
         var cameraDeviceManager: CoreSdkClient.GetCameraDeviceManageable
         var flipCameraButtonStyle: FlipCameraButtonStyle
+        var alertManager: AlertManager
     }
 }

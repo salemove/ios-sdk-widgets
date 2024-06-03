@@ -83,7 +83,8 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
                 viewFactory: viewFactory,
                 gcd: environment.gcd,
                 snackBar: environment.snackBar,
-                notificationCenter: environment.notificationCenter
+                notificationCenter: environment.notificationCenter,
+                alertManager: environment.alertManager
             )
         )
         self.controller = chatController
@@ -157,7 +158,6 @@ extension ChatCoordinator {
         )
         let viewModel = ChatViewModel(
             interactor: interactor,
-            alertConfiguration: viewFactory.theme.alertConfiguration,
             screenShareHandler: screenShareHandler,
             call: call,
             unreadMessages: unreadMessages,
@@ -251,9 +251,9 @@ extension ChatCoordinator {
             createSendMessagePayload: environment.createSendMessagePayload,
             proximityManager: environment.proximityManager,
             log: environment.log,
-            operatorRequestHandlerService: environment.operatorRequestHandlerService,
             cameraDeviceManager: environment.cameraDeviceManager,
-            flipCameraButtonStyle: environment.flipCameraButtonStyle
+            flipCameraButtonStyle: environment.flipCameraButtonStyle,
+            alertManager: environment.alertManager
         )
     }
 }
@@ -275,8 +275,7 @@ extension ChatCoordinator {
                 )
             ),
             deliveredStatusText: viewFactory.theme.chat.visitorMessageStyle.delivered,
-            interactor: interactor,
-            alertConfiguration: viewFactory.theme.alertConfiguration
+            interactor: interactor
         )
 
         viewModel.shouldShowCard = viewFactory.messageRenderer?.shouldShowCard
@@ -302,12 +301,6 @@ extension ChatCoordinator {
             switch event {
             case .showFile(let file):
                 self?.presentQuickLookController(with: file)
-            case let .showAlertAsView(conf, accessibilityIdentifier, dismissed):
-                controller()?.presentAlertAsView(
-                    with: conf,
-                    accessibilityIdentifier: accessibilityIdentifier,
-                    dismissed: dismissed
-                )
             case .pickMedia(let pickerEvent):
                 self?.presentMediaPickerController(
                     with: pickerEvent,
@@ -356,7 +349,6 @@ extension ChatCoordinator {
            sendSecureMessagePayload: environment.sendSecureMessagePayload,
            queueIds: environment.queueIds,
            listQueues: environment.listQueues,
-           alertConfiguration: viewFactory.theme.alertConfiguration,
            createFileUploadListModel: environment.createFileUploadListModel,
            uuid: environment.uuid,
            secureUploadFile: environment.secureUploadFile,

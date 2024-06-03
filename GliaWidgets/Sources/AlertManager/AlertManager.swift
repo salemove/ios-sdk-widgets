@@ -1,0 +1,246 @@
+import UIKit
+import Foundation
+
+/// The `AlertManager` class is responsible for managing and presenting 
+/// alert views within an application. It handles the presentation of alerts
+/// globally or within specific view controllers, supports theme overrides,
+/// and ensures that alerts are properly replaced and cleaned up as needed.
+final class AlertManager {
+    /// The environment configuration for the alert manager, 
+    /// including logging and application references.
+    private let environment: Environment
+
+    /// The view factory responsible for creating the alert views.
+    private let viewFactory: ViewFactory
+
+    /// The composer that assembles alert types based on input and placement.
+    private var composer: AlertTypeComposer
+
+    /// The currently displayed alert, if any.
+    private var currentAlert: AlertInputType?
+
+    /// The view controller responsible for displaying the alert.
+    private var alertViewController: AlertViewController?
+
+    /// The window used to present global alerts.
+    private var alertWindow: UIWindow?
+
+    /// - Parameters:
+    ///   - environment: The environment configuration for the alert manager.
+    ///   - viewFactory: The view factory responsible for creating the alert views.
+    ///
+    init(
+        environment: Environment,
+        viewFactory: ViewFactory
+    ) {
+        self.environment = environment
+        self.viewFactory = viewFactory
+        composer = .init(
+            environment: .init(log: environment.log),
+            theme: viewFactory.theme
+        )
+    }
+}
+
+// MARK: - Internal Methods
+extension AlertManager {
+    /// Presents an alert based on the specified placement and input type.
+    /// - Parameters:
+    ///   - placement: The placement of the alert (global or in a specific view controller).
+    ///   - input: The input type of the alert.
+    ///
+    func present(
+        in placement: AlertPlacement,
+        as input: AlertInputType
+    ) {
+        guard input != currentAlert else { return }
+
+        let alertType = composer.composeAlert(
+            type: input,
+            in: placement
+        )
+
+        switch placement {
+        case .global:
+            presentGlobally(
+                type: alertType,
+                input: input
+            )
+        case let .root(viewController):
+            presentInRoot(
+                type: alertType,
+                input: input,
+                viewController: viewController
+            )
+        }
+    }
+
+    /// Overrides the current theme with a new theme.
+    /// - Parameters:
+    ///   - newTheme: The new theme to apply.
+    ///
+    func overrideTheme(_ newTheme: Theme) {
+        self.composer.overrideTheme(with: newTheme)
+        self.viewFactory.overrideTheme(with: newTheme)
+    }
+}
+
+// MARK: - Private Methods
+private extension AlertManager {
+    /// Presents an alert in the root view controller.
+    /// - Parameters:
+    ///   - type: The type of the alert.
+    ///   - input: The input type of the alert.
+    ///   - viewController: The view controller in which to present the alert.
+    ///
+    func presentInRoot(
+        type: AlertType,
+        input: AlertInputType,
+        viewController: UIViewController
+    ) {
+        let alertViewController = createAlertViewController(type: type)
+        alertViewController.onDismissed = { [weak self] in
+            self?.cleanup()
+        }
+        guard isAlertReplacable(offer: alertViewController) else { return }
+        self.alertViewController = alertViewController
+        self.currentAlert = input
+        switch type {
+        case let .systemAlert(conf, cancelled):
+            let alert = createSystemAlert(
+                conf: conf,
+                cancelled: cancelled
+            )
+            viewController.present(
+                alert,
+                animated: true,
+                completion: nil
+            )
+        case .view:
+            viewController.insertChild(alertViewController)
+            alertViewController.view.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                viewController.view.topAnchor.constraint(equalTo: alertViewController.view.topAnchor),
+                viewController.view.bottomAnchor.constraint(equalTo: alertViewController.view.bottomAnchor),
+                viewController.view.leadingAnchor.constraint(equalTo: alertViewController.view.leadingAnchor),
+                viewController.view.trailingAnchor.constraint(equalTo: alertViewController.view.trailingAnchor)
+            ])
+        default:
+            let completion: () -> Void = {
+                viewController.present(
+                    alertViewController,
+                    animated: true
+                )
+            }
+            guard let presented = viewController.presentedViewController as? Replaceable else {
+                completion()
+                return
+            }
+            presented.dismiss(
+                animated: true,
+                completion: completion
+            )
+        }
+    }
+
+    /// Presents an alert globally in a new window.
+    /// - Parameters:
+    ///   - type: The type of the alert.
+    ///   - input: The input type of the alert.
+    ///
+    func presentGlobally(
+        type: AlertType,
+        input: AlertInputType
+    ) {
+        let alertViewController = createAlertViewController(type: type)
+        alertViewController.onDismissed = { [weak self] in
+            self?.cleanup()
+        }
+        guard isAlertReplacable(offer: alertViewController) else { return }
+        self.alertViewController = alertViewController
+        self.currentAlert = input
+        createAlertWindow()
+        guard let alertWindow = alertWindow else { return }
+        alertWindow.isHidden = false
+        alertWindow.makeKeyAndVisible()
+        alertWindow.rootViewController?.present(
+            alertViewController,
+            animated: true,
+            completion: nil
+        )
+    }
+
+    func createAlertViewController(type: AlertType) -> AlertViewController {
+        .init(type: type, viewFactory: viewFactory)
+    }
+
+    func createSystemAlert(
+        conf: SettingsAlertConfiguration,
+        cancelled: (() -> Void)? = nil
+    ) -> UIAlertController {
+        let alert = UIAlertController(
+            title: conf.title,
+            message: conf.message,
+            preferredStyle: .alert
+        )
+        let cancel = UIAlertAction(
+            title: conf.cancelTitle,
+            style: .cancel,
+            handler: { _ in
+                cancelled?()
+            }
+        )
+        let settings = UIAlertAction(
+            title: conf.settingsTitle,
+            style: .default,
+            handler: { _ in
+                guard let settingsURL = URL(string: UIApplication.openSettingsURLString) else { return }
+                UIApplication.shared.open(settingsURL)
+            }
+        )
+        alert.addAction(cancel)
+        alert.addAction(settings)
+
+        return alert
+    }
+
+    func isAlertReplacable(offer: Replaceable) -> Bool {
+        alertViewController?.isReplaceable(with: offer) ?? true
+    }
+
+    func cleanup() {
+        alertViewController?.dismiss(animated: true)
+        alertViewController = nil
+        alertWindow?.isHidden = true
+        alertWindow = nil
+        currentAlert = nil
+    }
+}
+
+// MARK: - KeyWindow
+private extension AlertManager {
+    func createAlertWindow() {
+        if let windowScene = windowScene() {
+            alertWindow = UIWindow(windowScene: windowScene)
+        } else {
+            alertWindow = UIWindow(frame: UIScreen.main.bounds)
+        }
+
+        alertWindow?.windowLevel = UIWindow.Level.alert + 1
+        alertWindow?.rootViewController = UIViewController()
+    }
+
+    func windowScene() -> UIWindowScene? {
+        environment.uiApplication.connectionScenes()
+            .compactMap { $0 as? UIWindowScene }
+            .first
+    }
+}
+
+// MARK: - Environment
+extension AlertManager {
+    struct Environment {
+        let log: CoreSdkClient.Logger
+        let uiApplication: UIKitBased.UIApplication
+    }
+}

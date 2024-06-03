@@ -6,16 +6,10 @@ extension SecureConversations {
         typealias DelegateCallback = (DelegateEvent) -> Void
         typealias Action = ChatViewModel.Action
 
-        static let unavailableMessageCenterAlertAccIdentifier = "unavailable_message_center_alert_identifier"
         static let markUnreadMessagesDelaySeconds = 6
 
         enum DelegateEvent {
             case showFile(LocalFile)
-            case showAlertAsView(
-                MessageAlertConfiguration,
-                accessibilityIdentifier: String?,
-                dismissed: (() -> Void)?
-            )
             case pickMedia(ObservableValue<MediaPickerEvent>)
             case takeMedia(ObservableValue<MediaPickerEvent>)
             case pickFile(ObservableValue<FilePickerEvent>)
@@ -38,7 +32,6 @@ extension SecureConversations {
         var shouldShowCard: ((MessageRenderer.Message) -> Bool)?
 
         var isChoiceCardInputModeEnabled: Bool = false
-        var alertConfiguration: AlertConfiguration
 
         private let downloader: FileDownloader
         let fileUploadListModel: SecureConversations.FileUploadListViewModel
@@ -97,8 +90,7 @@ extension SecureConversations {
             environment: Environment,
             availability: Availability,
             deliveredStatusText: String,
-            interactor: Interactor,
-            alertConfiguration: AlertConfiguration
+            interactor: Interactor
         ) {
             self.isCustomCardSupported = isCustomCardSupported
             self.environment = environment
@@ -119,7 +111,6 @@ extension SecureConversations {
             self.availability = availability
             self.deliveredStatusText = deliveredStatusText
             self.interactor = interactor
-            self.alertConfiguration = alertConfiguration
             self.hasViewAppeared = false
             let uploader = FileUploader(
                 maximumUploads: environment.maximumUploads(),
@@ -174,27 +165,13 @@ extension SecureConversations {
                 case .success(.available):
                     self.isSecureConversationsAvailable = true
                 case .failure, .success(.unavailable(.emptyQueue)):
-                    self.environment.log.prefixed(Self.self).info("Show Message Center Unavailable Dialog")
                     self.isSecureConversationsAvailable = false
-                    let configuration = self.environment.alertConfiguration.unavailableMessageCenter
-                    self.reportMessageCenterUnavailable(configuration: configuration)
+                    self.engagementAction?(.showAlert(.unavailableMessageCenter()))
                 case .success(.unavailable(.unauthenticated)):
-                    self.environment.log.prefixed(Self.self).info("Show Unauthenticated Dialog")
+                    self.engagementAction?(.showAlert(.unavailableMessageCenterForBeingUnauthenticated()))
                     self.isSecureConversationsAvailable = false
-                    let configuration = self.environment.alertConfiguration.unavailableMessageCenterForBeingUnauthenticated
-                    self.reportMessageCenterUnavailable(configuration: configuration)
                 }
             }
-        }
-
-        func reportMessageCenterUnavailable(configuration: MessageAlertConfiguration) {
-            self.delegate?(
-                .showAlertAsView(
-                    configuration,
-                    accessibilityIdentifier: Self.unavailableMessageCenterAlertAccIdentifier,
-                    dismissed: nil
-                )
-            )
         }
 
         func numberOfItems(in section: Int) -> Int {
@@ -327,9 +304,8 @@ extension SecureConversations.TranscriptModel {
             switch result {
             case let .success(message):
                 self.receiveMessage(from: .api(message, outgoingMessage: outgoingMessage))
-            case .failure:
-                self.environment.log.prefixed(Self.self).info("Show Unexpected error Dialog")
-                self.showAlert(with: self.environment.alertConfiguration.unexpectedError)
+            case let .failure(error):
+                self.engagementAction?(.showAlert(.error(error: error)))
             }
         }
 
@@ -430,12 +406,9 @@ extension SecureConversations.TranscriptModel {
                 case .pickedMedia(let media):
                     self.mediaPicked(media)
                 case .sourceNotAvailable:
-                    self.showAlert(
-                        with: self.environment.alertConfiguration.mediaSourceNotAvailable,
-                        dismissed: nil
-                    )
+                    self.engagementAction?(.showAlert(.mediaSourceNotAvailable()))
                 case .noCameraPermission:
-                    self.showSettingsAlert(with: self.environment.alertConfiguration.cameraSettings)
+                    self.engagementAction?(.showAlert(.cameraSettings()))
                 }
             }
             let file = ObservableValue<FilePickerEvent>(with: .none)
@@ -477,30 +450,6 @@ extension SecureConversations.TranscriptModel {
     }
 }
 
-// MARK: Handling of alerts
-extension SecureConversations.TranscriptModel {
-    func showSettingsAlert(
-        with conf: SettingsAlertConfiguration,
-        cancelled: (() -> Void)? = nil
-    ) {
-        engagementAction?(.showSettingsAlert(conf, cancelled: cancelled))
-    }
-
-    func showAlert(
-        with conf: MessageAlertConfiguration,
-        accessibilityIdentifier: String? = nil,
-        dismissed: (() -> Void)? = nil
-    ) {
-        engagementAction?(
-            .showAlert(
-                conf,
-                accessibilityIdentifier: accessibilityIdentifier,
-                dismissed: dismissed
-            )
-        )
-    }
-}
-
 // MARK: File Upload
 extension SecureConversations.TranscriptModel {
     private func addUpload(with url: URL) {
@@ -534,12 +483,8 @@ extension SecureConversations.TranscriptModel {
             case .success(let site):
                 self.siteConfiguration = site
                 self.action?(.setAttachmentButtonVisibility(self.mediaPickerButtonVisibility))
-            case .failure:
-                self.environment.log.prefixed(Self.self).info("Show Unexpected error Dialog")
-                self.showAlert(
-                    with: self.environment.alertConfiguration.unexpectedError,
-                    dismissed: nil
-                )
+            case let .failure(error):
+                self.engagementAction?(.showAlert(.error(error: error)))
             }
         }
     }

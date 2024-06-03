@@ -126,7 +126,6 @@
 		1A60B04A256C0E0100E53F53 /* ChatItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60B049256C0E0100E53F53 /* ChatItemCell.swift */; };
 		1A63B2ED257A312700508478 /* AlertCloseButtonProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A63B2EC257A312700508478 /* AlertCloseButtonProperties.swift */; };
 		1A63B2F3257A3F3D00508478 /* AlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A63B2F2257A3F3D00508478 /* AlertViewController.swift */; };
-		1A63B2F6257A469A00508478 /* AlertPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A63B2F5257A469A00508478 /* AlertPresenter.swift */; };
 		1A6EB05725A717CB0007081A /* ChatMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6EB05625A717CB0007081A /* ChatMessage.swift */; };
 		1A6EBB0325ADB82000EE325D /* MediaUpgradeActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6EBB0225ADB82000EE325D /* MediaUpgradeActionView.swift */; };
 		1A6EBB0725ADB84200EE325D /* MediaUpgradeActionStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6EBB0625ADB84200EE325D /* MediaUpgradeActionStyle.swift */; };
@@ -869,6 +868,13 @@
 		C0D2F08C29A4EBA900803B47 /* VIdeoCallView.Environment.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D2F06F29A4DB5C00803B47 /* VIdeoCallView.Environment.Mock.swift */; };
 		C0D2F08F29A61A8D00803B47 /* VideoCallViewController.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D2F08D29A61A7800803B47 /* VideoCallViewController.Mock.swift */; };
 		C0D6C9E62BFB695E00D4709B /* ViewController+AuthTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6C9E52BFB695E00D4709B /* ViewController+AuthTimer.swift */; };
+		C0D6C9EA2C09C87E00D4709B /* AlertManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6C9E82C09C71600D4709B /* AlertManager.swift */; };
+		C0D6C9F02C09D29700D4709B /* AlertManager.mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6C9EE2C09D27E00D4709B /* AlertManager.mock.swift */; };
+		C0D6C9F32C0D293B00D4709B /* AlertTypeComposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6C9F12C0D28EA00D4709B /* AlertTypeComposer.swift */; };
+		C0D6C9F52C0D2F5100D4709B /* AlertType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6C9F42C0D2F5100D4709B /* AlertType.swift */; };
+		C0D6C9F72C0D2F6D00D4709B /* AlertPlacement.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6C9F62C0D2F6D00D4709B /* AlertPlacement.swift */; };
+		C0D6C9FB2C0D2F9A00D4709B /* AlertInputType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6C9FA2C0D2F9A00D4709B /* AlertInputType.swift */; };
+		C0D6CA002C106A1F00D4709B /* AlertManager.Failing.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6C9FF2C106A1F00D4709B /* AlertManager.Failing.swift */; };
 		C0E948042AB1D5D200890026 /* ActionButtonSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E948032AB1D5D200890026 /* ActionButtonSwiftUI.swift */; };
 		C0E948062AB1D64700890026 /* HeaderButtonSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E948052AB1D64700890026 /* HeaderButtonSwiftUI.swift */; };
 		C0E948092AB1D6AB00890026 /* HeaderSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E948082AB1D6AB00890026 /* HeaderSwiftUI.swift */; };
@@ -876,9 +882,6 @@
 		C0EC58CE2B02775100E78C70 /* SnackBar+View+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EC58CD2B02775100E78C70 /* SnackBar+View+Mock.swift */; };
 		C0EC58D02B028FB100E78C70 /* SnackBarVoiceOverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EC58CF2B028FB100E78C70 /* SnackBarVoiceOverTests.swift */; };
 		C0EC58D22B02909500E78C70 /* SnackBarDynamicTypeFontTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EC58D12B02909500E78C70 /* SnackBarDynamicTypeFontTests.swift */; };
-		C0ECC7922B70EA03001F1EEF /* OperatorRequestHandlerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0ECC7912B70EA03001F1EEF /* OperatorRequestHandlerService.swift */; };
-		C0ECC7972B7278F2001F1EEF /* OperatorRequestHandlerService+Failing.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0ECC7962B7278F2001F1EEF /* OperatorRequestHandlerService+Failing.swift */; };
-		C0ECC7992B7506D0001F1EEF /* OperatorRequestHandlerService.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0ECC7982B7506D0001F1EEF /* OperatorRequestHandlerService.Mock.swift */; };
 		C4119E06268F41D1004DFEFB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C4119E05268F41D1004DFEFB /* Main.storyboard */; };
 		C42463742673ABE10082C135 /* ScreenShareHandler.Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42463732673ABE10082C135 /* ScreenShareHandler.Interface.swift */; };
 		C43C12F92694B14900C37E1B /* GliaPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43C12F82694B14900C37E1B /* GliaPresenter.swift */; };
@@ -1088,7 +1091,6 @@
 		1A60B049256C0E0100E53F53 /* ChatItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatItemCell.swift; sourceTree = "<group>"; };
 		1A63B2EC257A312700508478 /* AlertCloseButtonProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertCloseButtonProperties.swift; sourceTree = "<group>"; };
 		1A63B2F2257A3F3D00508478 /* AlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertViewController.swift; sourceTree = "<group>"; };
-		1A63B2F5257A469A00508478 /* AlertPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPresenter.swift; sourceTree = "<group>"; };
 		1A6EB05625A717CB0007081A /* ChatMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessage.swift; sourceTree = "<group>"; };
 		1A6EBB0225ADB82000EE325D /* MediaUpgradeActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaUpgradeActionView.swift; sourceTree = "<group>"; };
 		1A6EBB0625ADB84200EE325D /* MediaUpgradeActionStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaUpgradeActionStyle.swift; sourceTree = "<group>"; };
@@ -1631,7 +1633,6 @@
 		C039FA822B19ED7D00DFD0E0 /* MediaPickerVoiceOverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPickerVoiceOverTests.swift; sourceTree = "<group>"; };
 		C03A8046292BA76D00DDECA6 /* ChatViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewControllerTests.swift; sourceTree = "<group>"; };
 		C03A8048292BC8DB00DDECA6 /* CallViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallViewControllerTests.swift; sourceTree = "<group>"; };
-		C05AB016295DA9FC00AA381F /* AlertViewController+VisitorCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlertViewController+VisitorCode.swift"; sourceTree = "<group>"; };
 		C05AB01B295F416700AA381F /* VisitorCodeCloseButtonProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorCodeCloseButtonProperties.swift; sourceTree = "<group>"; };
 		C05E3EDD29C99E070013BC81 /* ProximityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProximityManager.swift; sourceTree = "<group>"; };
 		C06152D42AB1BC1300063BF8 /* Font+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+Extensions.swift"; sourceTree = "<group>"; };
@@ -1829,6 +1830,13 @@
 		C0D2F08929A4E92D00803B47 /* ConnectView.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectView.Mock.swift; sourceTree = "<group>"; };
 		C0D2F08D29A61A7800803B47 /* VideoCallViewController.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCallViewController.Mock.swift; sourceTree = "<group>"; };
 		C0D6C9E52BFB695E00D4709B /* ViewController+AuthTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+AuthTimer.swift"; sourceTree = "<group>"; };
+		C0D6C9E82C09C71600D4709B /* AlertManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertManager.swift; sourceTree = "<group>"; };
+		C0D6C9EE2C09D27E00D4709B /* AlertManager.mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertManager.mock.swift; sourceTree = "<group>"; };
+		C0D6C9F12C0D28EA00D4709B /* AlertTypeComposer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertTypeComposer.swift; sourceTree = "<group>"; };
+		C0D6C9F42C0D2F5100D4709B /* AlertType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertType.swift; sourceTree = "<group>"; };
+		C0D6C9F62C0D2F6D00D4709B /* AlertPlacement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPlacement.swift; sourceTree = "<group>"; };
+		C0D6C9FA2C0D2F9A00D4709B /* AlertInputType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertInputType.swift; sourceTree = "<group>"; };
+		C0D6C9FF2C106A1F00D4709B /* AlertManager.Failing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertManager.Failing.swift; sourceTree = "<group>"; };
 		C0E948032AB1D5D200890026 /* ActionButtonSwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButtonSwiftUI.swift; sourceTree = "<group>"; };
 		C0E948052AB1D64700890026 /* HeaderButtonSwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderButtonSwiftUI.swift; sourceTree = "<group>"; };
 		C0E948082AB1D6AB00890026 /* HeaderSwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderSwiftUI.swift; sourceTree = "<group>"; };
@@ -1836,9 +1844,6 @@
 		C0EC58CD2B02775100E78C70 /* SnackBar+View+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SnackBar+View+Mock.swift"; sourceTree = "<group>"; };
 		C0EC58CF2B028FB100E78C70 /* SnackBarVoiceOverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnackBarVoiceOverTests.swift; sourceTree = "<group>"; };
 		C0EC58D12B02909500E78C70 /* SnackBarDynamicTypeFontTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnackBarDynamicTypeFontTests.swift; sourceTree = "<group>"; };
-		C0ECC7912B70EA03001F1EEF /* OperatorRequestHandlerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperatorRequestHandlerService.swift; sourceTree = "<group>"; };
-		C0ECC7962B7278F2001F1EEF /* OperatorRequestHandlerService+Failing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OperatorRequestHandlerService+Failing.swift"; sourceTree = "<group>"; };
-		C0ECC7982B7506D0001F1EEF /* OperatorRequestHandlerService.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperatorRequestHandlerService.Mock.swift; sourceTree = "<group>"; };
 		C4119E05268F41D1004DFEFB /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		C42463732673ABE10082C135 /* ScreenShareHandler.Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenShareHandler.Interface.swift; sourceTree = "<group>"; };
 		C43C12F82694B14900C37E1B /* GliaPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GliaPresenter.swift; sourceTree = "<group>"; };
@@ -2552,8 +2557,8 @@
 		1A60AFC12566857200E53F53 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				C0D6C9E72C09C70B00D4709B /* AlertManager */,
 				84C24CF62B8353840089A388 /* ProcessInfoHandling */,
-				C0ECC7902B70E9B5001F1EEF /* OperatorRequestHandlerService */,
 				84520BD92B0FA14700F97617 /* WebViewController */,
 				C02248A82AD53DDF00CC4930 /* LiveObservation */,
 				AF7753152B1DBF8900E523A2 /* GliaLogging */,
@@ -2849,7 +2854,6 @@
 				1A2DA72425EF891300032611 /* FilePicker */,
 				1A4674CB25ED088B0078FA1C /* MediaPicker */,
 				1A0EDF8925E8E20A0076D1AD /* Popover */,
-				1A63B2F1257A3F2D00508478 /* Alert */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -2859,7 +2863,6 @@
 			children = (
 				84681AA52A681E8400DD7406 /* LeftAlignedCollectionViewFlowLayout */,
 				84681AA42A681E6900DD7406 /* SelfSizingCollectionView */,
-				1AA738B025790D4B00E1120F /* Alert */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -2867,14 +2870,12 @@
 		1A63B2F1257A3F2D00508478 /* Alert */ = {
 			isa = PBXGroup;
 			children = (
-				1A63B2F5257A469A00508478 /* AlertPresenter.swift */,
 				1A63B2F2257A3F3D00508478 /* AlertViewController.swift */,
 				1A4AF5CC25AEF4A0002CD0F4 /* AlertViewController+Message.swift */,
 				1A4AF5D225AEF543002CD0F4 /* AlertViewController+Confirmation.swift */,
 				1ABD6C9525B6F46700D56EFA /* AlertViewController+SingleMediaUpgrade.swift */,
 				C47901B625ED2FB0007EE195 /* AlertViewController+ScreenShareOffer.swift */,
 				6E60DD5527146C9D001422EF /* AlertViewController+SingleAction.swift */,
-				C05AB016295DA9FC00AA381F /* AlertViewController+VisitorCode.swift */,
 				C0B325E62AC5A8FA006BC430 /* AlertViewController+LiveObservationConfirmation.swift */,
 			);
 			path = Alert;
@@ -2952,17 +2953,6 @@
 				1AA738AD2578E0D500E1120F /* ConnectAnimationView.swift */,
 			);
 			path = Animation;
-			sourceTree = "<group>";
-		};
-		1AA738B025790D4B00E1120F /* Alert */ = {
-			isa = PBXGroup;
-			children = (
-				1AA738B125790D5A00E1120F /* AlertView.swift */,
-				1AA738BB25790DBE00E1120F /* AlertStyle.swift */,
-				C09047792B7E27AC003C437C /* AlertStyle.RemoteConfig.swift */,
-				845E2F73283D43FA00C04D56 /* AlertStyle.Accessibility.swift */,
-			);
-			path = Alert;
 			sourceTree = "<group>";
 		};
 		1ABD6C5325B574EF00D56EFA /* Bubble */ = {
@@ -3305,11 +3295,11 @@
 		7512A57827BF9FB800319DF1 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				C0D6C9FE2C106A0D00D4709B /* AlertManager */,
 				8418AD792BFB68C9007DE207 /* OnHoldOverlayVisualEffectView */,
 				8485704D2BEE39EB00CEBCC5 /* ChatView */,
 				AF9C0C432BC5A22800C25E47 /* GliaPresenter */,
 				84C24CFD2B8357B00089A388 /* ProcessInfoHandling */,
-				C0ECC7952B7278C9001F1EEF /* OperatorRequestsHandlerService */,
 				31FF0DD22B5AB82000834AFB /* CallVisualizer */,
 				31FF0DC72B5907C600834AFB /* Coordinators */,
 				84602A752AEA5BDE0031E606 /* ProximityManager */,
@@ -4728,6 +4718,32 @@
 			path = Mocks;
 			sourceTree = "<group>";
 		};
+		C0D6C9E72C09C70B00D4709B /* AlertManager */ = {
+			isa = PBXGroup;
+			children = (
+				1A63B2F1257A3F2D00508478 /* Alert */,
+				C0D6C9FA2C0D2F9A00D4709B /* AlertInputType.swift */,
+				C0D6C9EE2C09D27E00D4709B /* AlertManager.mock.swift */,
+				C0D6C9E82C09C71600D4709B /* AlertManager.swift */,
+				C0D6C9F62C0D2F6D00D4709B /* AlertPlacement.swift */,
+				845E2F73283D43FA00C04D56 /* AlertStyle.Accessibility.swift */,
+				C09047792B7E27AC003C437C /* AlertStyle.RemoteConfig.swift */,
+				1AA738BB25790DBE00E1120F /* AlertStyle.swift */,
+				C0D6C9F42C0D2F5100D4709B /* AlertType.swift */,
+				C0D6C9F12C0D28EA00D4709B /* AlertTypeComposer.swift */,
+				1AA738B125790D5A00E1120F /* AlertView.swift */,
+			);
+			path = AlertManager;
+			sourceTree = "<group>";
+		};
+		C0D6C9FE2C106A0D00D4709B /* AlertManager */ = {
+			isa = PBXGroup;
+			children = (
+				C0D6C9FF2C106A1F00D4709B /* AlertManager.Failing.swift */,
+			);
+			path = AlertManager;
+			sourceTree = "<group>";
+		};
 		C0E948012AB1D5B100890026 /* Components */ = {
 			isa = PBXGroup;
 			children = (
@@ -4754,23 +4770,6 @@
 				C0E948082AB1D6AB00890026 /* HeaderSwiftUI.swift */,
 			);
 			path = Header;
-			sourceTree = "<group>";
-		};
-		C0ECC7902B70E9B5001F1EEF /* OperatorRequestHandlerService */ = {
-			isa = PBXGroup;
-			children = (
-				C0ECC7912B70EA03001F1EEF /* OperatorRequestHandlerService.swift */,
-				C0ECC7982B7506D0001F1EEF /* OperatorRequestHandlerService.Mock.swift */,
-			);
-			path = OperatorRequestHandlerService;
-			sourceTree = "<group>";
-		};
-		C0ECC7952B7278C9001F1EEF /* OperatorRequestsHandlerService */ = {
-			isa = PBXGroup;
-			children = (
-				C0ECC7962B7278F2001F1EEF /* OperatorRequestHandlerService+Failing.swift */,
-			);
-			path = OperatorRequestsHandlerService;
 			sourceTree = "<group>";
 		};
 		C42463722673ABCD0082C135 /* Screensharing */ = {
@@ -5393,6 +5392,7 @@
 				C0D2F02C2991219100803B47 /* VideoCallCoordinator.swift in Sources */,
 				75940980298D38C2008B173A /* VisitorCodeViewModel.swift in Sources */,
 				1A277A1625FA60E1009FE131 /* ChatFileContentStyle.swift in Sources */,
+				C0D6C9EA2C09C87E00D4709B /* AlertManager.swift in Sources */,
 				C09046BA2B7D0AF9003C437C /* WelcomeStyle.TitleImageStyle.Accessibility.swift in Sources */,
 				75CF8D6329B7DD8300CB1524 /* SecureConversations.ConfirmationStyle+RemoteConfig.swift in Sources */,
 				C09046D82B7E091F003C437C /* FilePreviewStyle.RemoteConfig.swift in Sources */,
@@ -5479,7 +5479,6 @@
 				C09046C62B7E04BE003C437C /* AttachmentSourceItemStyle.Mock.swift in Sources */,
 				C09046D02B7E074B003C437C /* OperatorTypingIndicatorStyle.RemoteConfig.swift in Sources */,
 				9A186A3B27F5E6B50055886D /* ChatFileContentStyle.Accessibility.swift in Sources */,
-				C0ECC7922B70EA03001F1EEF /* OperatorRequestHandlerService.swift in Sources */,
 				C09046FA2B7E10C7003C437C /* Theme.ChoiceCardStyle.Options.swift in Sources */,
 				7594091529891C5C008B173A /* Environment.swift in Sources */,
 				9A3E1D9927B6D0DB005634EB /* FoundationBased.Live.swift in Sources */,
@@ -5593,7 +5592,6 @@
 				AF6291132B0813B000D3D76B /* SwiftBased.Mock.swift in Sources */,
 				1AC7A74F2582571100567FF8 /* Interactor.swift in Sources */,
 				AF552EDD2BEE954500FD5653 /* FlipCameraButtonStyle.swift in Sources */,
-				C0ECC7992B7506D0001F1EEF /* OperatorRequestHandlerService.Mock.swift in Sources */,
 				84C24CFC2B8354A80089A388 /* ProcessInfoHandling.Live.swift in Sources */,
 				845E2F72283D068000C04D56 /* HeaderStyle.Accessibility.swift in Sources */,
 				AFA1A9952AA9248400095BE8 /* ChatViewModel+ViewModel.swift in Sources */,
@@ -5632,6 +5630,7 @@
 				75D987F82AF2BA500016A702 /* RemoteConfiguration+SnackBar.swift in Sources */,
 				84265E62298D7B2900D65842 /* ScreenSharingCoordinator.DelegateEvent.swift in Sources */,
 				C0D2F048299272D100803B47 /* VideoCallView.ConnectOperatorView.swift in Sources */,
+				C0D6C9FB2C0D2F9A00D4709B /* AlertInputType.swift in Sources */,
 				9A3E1D8A27B6B824005634EB /* FileDownload.Environment.Interface.swift in Sources */,
 				C09047092B7E15CC003C437C /* Theme.SnackBarStyle.RemoteConfig.swift in Sources */,
 				C0175A152A56E2DD001FACDE /* Gva.swift in Sources */,
@@ -5787,6 +5786,7 @@
 				9A19926427D3BA3A00161AAE /* GCD.Live.swift in Sources */,
 				755D187929A6A6F80009F5E8 /* WelcomeStyle.FilePickerButtonStyle.swift in Sources */,
 				75FF151B27F4F52D00FE7BE2 /* Theme.Survey.SingleQuestion.swift in Sources */,
+				C0D6C9F02C09D29700D4709B /* AlertManager.mock.swift in Sources */,
 				1A60AFDD25669A4200E53F53 /* ChatView.swift in Sources */,
 				C09046942B7D05A5003C437C /* WelcomeStyle.MessageTextViewDisabledStyle.Accessibility.swift in Sources */,
 				75B7BD7E2A39D5430060794D /* Layout+UIView.swift in Sources */,
@@ -5865,11 +5865,11 @@
 				1A60B0042567F25600E53F53 /* Header.swift in Sources */,
 				1A4674CD25ED08A30078FA1C /* MediaPickerController.swift in Sources */,
 				C09046C82B7E04F7003C437C /* AttachmentSourceItemStyle.RemoteConfig.swift in Sources */,
-				1A63B2F6257A469A00508478 /* AlertPresenter.swift in Sources */,
 				847956362AD96AD7004EF60C /* CoreSDKConfigurator.Interface.swift in Sources */,
 				1A0452EA25DBE259000DA0C1 /* MessageButton.swift in Sources */,
 				9AE0A7602821904400725946 /* FontScaling.Environment.Interface.swift in Sources */,
 				9A19926627D3BA3A00161AAE /* GCD.Interface.swift in Sources */,
+				C0D6C9F52C0D2F5100D4709B /* AlertType.swift in Sources */,
 				3197F7B829F7C318008EE9F7 /* SecureConversations.CommonEngagementModel.swift in Sources */,
 				31DD41652A57105400F92612 /* SecureConversations.TranscriptModel.Environment.swift in Sources */,
 				AFF9542A2ADD8DB600C277E0 /* CoreSDKConfigurator.Mock.swift in Sources */,
@@ -5930,6 +5930,7 @@
 				AFA2FDEC28907D7C00428E6D /* EngagementCoordinator.Environment.swift in Sources */,
 				C09046B52B7D0A84003C437C /* WelcomeStyle.MessageWarningStyle.Accessibility.swift in Sources */,
 				C090474A2B7E20E0003C437C /* MessageCenterFileUploadStyle.Equatable.swift in Sources */,
+				C0D6C9F72C0D2F6D00D4709B /* AlertPlacement.swift in Sources */,
 				C09046992B7D06D7003C437C /* WelcomeStyle.MessageTextViewNormalStyle.Accessibility.swift in Sources */,
 				C09047642B7E2375003C437C /* ChatFileDownloadStateStyle.RemoteConfig.swift in Sources */,
 				C0D2F0382991394400803B47 /* VideoCallView.swift in Sources */,
@@ -6043,6 +6044,7 @@
 				C0857DEF28D9AD32008D171D /* UIFont+Extensions.swift in Sources */,
 				AF552ED92BECDCF700FD5653 /* UIImage+Extensions.swift in Sources */,
 				C09047192B7E1A1B003C437C /* GvaGalleryListViewStyle.RemoteConfig.swift in Sources */,
+				C0D6C9F32C0D293B00D4709B /* AlertTypeComposer.swift in Sources */,
 				1AFB1E5E25F7ADDA00CA460D /* ChatOperator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -6115,6 +6117,7 @@
 				84D2293328C6240000F64FE7 /* WKNavigationPolicyProviderTests.swift in Sources */,
 				9ACC25D227B4727500BC5335 /* CoreSDKClient.Failing.swift in Sources */,
 				84265E07298AE96B00D65842 /* ScreenSharingViewModelTests.swift in Sources */,
+				C0D6CA002C106A1F00D4709B /* AlertManager.Failing.swift in Sources */,
 				EB9ADB51280EBD4E00FAE8A4 /* InteractorStateTests.swift in Sources */,
 				8491AF652AAB281500CC3E72 /* ChatViewModelTests+CustomCard.swift in Sources */,
 				EB7A1508286D98000035AC62 /* FileUploader.Environment.Failing.swift in Sources */,
@@ -6150,7 +6153,6 @@
 				31FF0DCC2B5907C600834AFB /* ChatCoordinator.Environment.Mock.swift in Sources */,
 				9A8130C627D90B3800220BBD /* FileSystemStorage.Failing.swift in Sources */,
 				846429832A45DA7500943BD6 /* AlertViewController+Mock.swift in Sources */,
-				C0ECC7972B7278F2001F1EEF /* OperatorRequestHandlerService+Failing.swift in Sources */,
 				846A5C4529F6BEFA0049B29F /* GliaTests+StartEngagement.swift in Sources */,
 				7512A57A27BF9FCD00319DF1 /* ChatViewModelTests.swift in Sources */,
 				84602A792AEAB7CA0031E606 /* Survey.Mock.swift in Sources */,

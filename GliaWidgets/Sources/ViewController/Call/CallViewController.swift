@@ -17,7 +17,8 @@ final class CallViewController: EngagementViewController {
                 snackBar: environment.snackBar,
                 timerProviding: environment.timerProviding,
                 gcd: environment.gcd,
-                notificationCenter: environment.notificationCenter
+                notificationCenter: environment.notificationCenter,
+                alertManager: environment.alertManager
             )
         )
     }
@@ -216,5 +217,6 @@ extension CallViewController {
         var timerProviding: FoundationBased.Timer.Providing
         var gcd: GCD
         var snackBar: SnackBar
+        var alertManager: AlertManager
     }
 }

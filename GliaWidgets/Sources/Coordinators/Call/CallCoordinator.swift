@@ -61,7 +61,6 @@ private extension CallCoordinator {
         environment.log.prefixed(Self.self).info("Create Call screen")
         let viewModel = CallViewModel(
             interactor: interactor,
-            alertConfiguration: viewFactory.theme.alertConfiguration,
             screenShareHandler: screenShareHandler,
             environment: .init(
                 fetchFile: environment.fetchFile,
@@ -86,9 +85,9 @@ private extension CallCoordinator {
                 createSendMessagePayload: environment.createSendMessagePayload,
                 proximityManager: environment.proximityManager,
                 log: environment.log,
-                operatorRequestHandlerService: environment.operatorRequestHandlerService,
                 cameraDeviceManager: environment.cameraDeviceManager,
-                flipCameraButtonStyle: environment.flipCameraButtonStyle
+                flipCameraButtonStyle: environment.flipCameraButtonStyle,
+                alertManager: environment.alertManager
             ),
             call: call,
             unreadMessages: unreadMessages,
@@ -108,7 +107,8 @@ private extension CallCoordinator {
                 log: environment.log,
                 timerProviding: environment.timerProviding,
                 gcd: environment.gcd,
-                snackBar: environment.snackBar
+                snackBar: environment.snackBar,
+                alertManager: environment.alertManager
             )
         )
     }
@@ -164,8 +164,8 @@ extension CallCoordinator {
         var proximityManager: ProximityManager
         var log: CoreSdkClient.Logger
         var snackBar: SnackBar
-        var operatorRequestHandlerService: OperatorRequestHandlerService
         var cameraDeviceManager: CoreSdkClient.GetCameraDeviceManageable
         var flipCameraButtonStyle: FlipCameraButtonStyle
+        var alertManager: AlertManager
     }
 }

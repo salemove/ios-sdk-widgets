@@ -21,7 +21,6 @@ class CallViewModelTests: XCTestCase {
 
         viewModel = .init(
             interactor: .mock(),
-            alertConfiguration: .mock(),
             screenShareHandler: .mock,
             environment: .mock,
             call: call,
@@ -114,7 +113,6 @@ class CallViewModelTests: XCTestCase {
 
         viewModel = .init(
             interactor: interactor,
-            alertConfiguration: .mock(),
             screenShareHandler: .mock,
             environment: .mock,
             call: call,
@@ -172,7 +170,6 @@ class CallViewModelTests: XCTestCase {
 
         viewModel = .init(
             interactor: .mock(),
-            alertConfiguration: .mock(),
             screenShareHandler: .mock,
             environment: .mock,
             call: call,
@@ -258,7 +255,6 @@ class CallViewModelTests: XCTestCase {
 
         viewModel = .init(
             interactor: interactor,
-            alertConfiguration: .mock(),
             screenShareHandler: .mock,
             environment: .mock,
             call: call,
@@ -338,7 +334,6 @@ class CallViewModelTests: XCTestCase {
 
         viewModel = .init(
             interactor: interactor,
-            alertConfiguration: .mock(),
             screenShareHandler: .mock,
             environment: .mock,
             call: call,
@@ -379,7 +374,6 @@ class CallViewModelTests: XCTestCase {
 
         viewModel = .init(
             interactor: interactor,
-            alertConfiguration: .mock(),
             screenShareHandler: .mock,
             environment: .mock,
             call: call,
@@ -460,8 +454,12 @@ class CallViewModelTests: XCTestCase {
         )
         viewModel.engagementAction = { action in
             switch action {
-            case let .showLiveObservationConfirmation(config):
-                alertConfig = config
+            case let .showLiveObservationConfirmation(link, accepted, declined):
+                alertConfig = .init(
+                    link: link,
+                    accepted: accepted,
+                    declined: declined
+                )
             default:
                 XCTFail()
             }
@@ -495,8 +493,12 @@ class CallViewModelTests: XCTestCase {
         )
         viewModel.engagementAction = { action in
             switch action {
-            case let .showLiveObservationConfirmation(config):
-                alertConfig = config
+            case let .showLiveObservationConfirmation(link, accepted, declined):
+                alertConfig = .init(
+                    link: link,
+                    accepted: accepted,
+                    declined: declined
+                )
             default:
                 XCTFail()
             }
@@ -521,7 +523,6 @@ class CallViewModelTests: XCTestCase {
         env.proximityManager = .init(environment: proximityManagerEnv)
         viewModel = .init(
             interactor: .mock(),
-            alertConfiguration: .mock(),
             screenShareHandler: .mock,
             environment: env,
             call: .mock(),
@@ -564,7 +565,6 @@ class CallViewModelTests: XCTestCase {
 
         viewModel = .init(
             interactor: .mock(),
-            alertConfiguration: .mock(),
             screenShareHandler: .mock,
             environment: .mock,
             call: call,
@@ -627,7 +627,6 @@ class CallViewModelTests: XCTestCase {
 
         viewModel = .init(
             interactor: .mock(),
-            alertConfiguration: .mock(),
             screenShareHandler: .mock,
             environment: .mock,
             call: call,
@@ -790,7 +789,7 @@ class CallViewModelTests: XCTestCase {
     }
 
     func test_setFlipCameraButtonVisibleGivenThrowingGetCameraDeviceManagerLogsWarning() {
-        let cameraDeviceManager = CoreSdkClient.CameraDeviceManageableClient.failing
+        _ = CoreSdkClient.CameraDeviceManageableClient.failing
         let style = FlipCameraButtonStyle.mock
         var receivedAccessibilitiesWithCallbacks: [VideoStreamView.FlipCameraAccLabelWithTap?] = []
 

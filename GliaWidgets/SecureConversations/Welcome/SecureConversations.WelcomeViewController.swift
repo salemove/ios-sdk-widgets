@@ -78,5 +78,3 @@ extension SecureConversations.WelcomeViewController {
 }
 
 extension SecureConversations.WelcomeViewController: PopoverPresenter {}
-
-extension SecureConversations.WelcomeViewController: AlertPresenter {}
