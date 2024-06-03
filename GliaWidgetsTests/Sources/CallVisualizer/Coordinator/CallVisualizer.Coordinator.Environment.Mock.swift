@@ -26,6 +26,7 @@ extension CallVisualizer.Coordinator.Environment {
         log: .mock,
         fetchSiteConfigurations: { completion in },
         snackBar: .mock,
-        cameraDeviceManager: { .mock }
+        cameraDeviceManager: { .mock },
+        alertManager: .mock()
     )
 }

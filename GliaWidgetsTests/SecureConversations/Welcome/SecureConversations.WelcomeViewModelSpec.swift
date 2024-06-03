@@ -103,13 +103,13 @@ extension SecureConversationsWelcomeViewModelTests {
         }
 
         var isCalled = false
-        var messageAlertConfiguration: MessageAlertConfiguration?
+        var alertInputType: AlertInputType?
 
         let delegate: (WelcomeViewModel.DelegateEvent) -> Void = { event in
             switch event {
-            case .showAlert(let configuration, _, _):
+            case let .showAlert(type):
                 isCalled = true
-                messageAlertConfiguration = configuration
+                alertInputType = type
             default: break
             }
         }
@@ -117,7 +117,14 @@ extension SecureConversationsWelcomeViewModelTests {
         viewModel = .init(environment: environment, availability: .mock, delegate: delegate)
 
         XCTAssertTrue(isCalled)
-        XCTAssertTrue(messageAlertConfiguration?.message == viewModel.environment.alertConfiguration.unexpectedError.message)
+        let isValidInput: Bool
+        if case .error = alertInputType {
+            isValidInput = true
+        } else {
+            isValidInput = false
+        }
+
+        XCTAssertTrue(isValidInput)
     }
 
 }
@@ -155,7 +162,7 @@ extension SecureConversationsWelcomeViewModelTests {
 
     func testFailedMessageSend() {
         var isCalled = false
-        var messageAlertConfiguration: MessageAlertConfiguration?
+        var alertInputType: AlertInputType?
         viewModel.environment.sendSecureMessagePayload = { _, _, completion in
             completion(.failure(CoreSdkClient.GliaCoreError(reason: "")))
 
@@ -164,9 +171,9 @@ extension SecureConversationsWelcomeViewModelTests {
 
         viewModel.delegate = { event in
             switch event {
-            case .showAlert(let configuration, _, _):
+            case let .showAlert(type):
                 isCalled = true
-                messageAlertConfiguration = configuration
+                alertInputType = type
             default: break
             }
         }
@@ -175,7 +182,14 @@ extension SecureConversationsWelcomeViewModelTests {
 
         XCTAssertEqual(viewModel.sendMessageRequestState, .waiting)
         XCTAssertTrue(isCalled)
-        XCTAssertTrue(messageAlertConfiguration?.message == viewModel.environment.alertConfiguration.unexpectedError.message)
+        let isValidInput: Bool
+        if case .error = alertInputType {
+            isValidInput = true
+        } else {
+            isValidInput = false
+        }
+
+        XCTAssertTrue(isValidInput)
     }
 }
 
@@ -432,7 +446,7 @@ extension SecureConversationsWelcomeViewModelTests {
             }
         }
 
-        viewModel.presentMediaPicker(from: UIView(), alertConfiguration: viewModel.environment.alertConfiguration)
+        viewModel.presentMediaPicker(from: UIView())
 
         XCTAssertTrue(isCalled)
     }
@@ -450,7 +464,7 @@ extension SecureConversationsWelcomeViewModelTests {
             }
         }
 
-        viewModel.presentMediaPicker(from: UIView(), alertConfiguration: viewModel.environment.alertConfiguration)
+        viewModel.presentMediaPicker(from: UIView())
 
         XCTAssertTrue(isCalled)
     }
@@ -468,7 +482,7 @@ extension SecureConversationsWelcomeViewModelTests {
             }
         }
 
-        viewModel.presentMediaPicker(from: UIView(), alertConfiguration: viewModel.environment.alertConfiguration)
+        viewModel.presentMediaPicker(from: UIView())
 
         XCTAssertTrue(isCalled)
     }
@@ -484,13 +498,13 @@ extension SecureConversationsWelcomeViewModelTests {
             case .pickMedia(let callback):
                 callback(.cancelled)
                 isCalled = true
-            case .showSettingsAlert(_, _), .showAlert(_, _, _):
+            case .showAlert:
                 XCTFail()
             default: break
             }
         }
 
-        viewModel.presentMediaPicker(from: UIView(), alertConfiguration: viewModel.environment.alertConfiguration)
+        viewModel.presentMediaPicker(from: UIView())
         XCTAssertTrue(isCalled)
     }
 
@@ -507,7 +521,7 @@ extension SecureConversationsWelcomeViewModelTests {
             }
         }
 
-        viewModel.presentMediaPicker(from: UIView(), alertConfiguration: viewModel.environment.alertConfiguration)
+        viewModel.presentMediaPicker(from: UIView())
 
         XCTAssertTrue(!viewModel.fileUploadListModel.activeUploads.isEmpty)
     }
@@ -522,13 +536,13 @@ extension SecureConversationsWelcomeViewModelTests {
                 callback(.photoLibrary)
             case .pickMedia(let callback):
                 callback(.sourceNotAvailable)
-            case .showAlert(_, _, _):
+            case .showAlert:
                 isCalled = true
             default: break
             }
         }
 
-        viewModel.presentMediaPicker(from: UIView(), alertConfiguration: viewModel.environment.alertConfiguration)
+        viewModel.presentMediaPicker(from: UIView())
 
         XCTAssertTrue(isCalled)
     }
@@ -543,13 +557,13 @@ extension SecureConversationsWelcomeViewModelTests {
                 callback(.photoLibrary)
             case .pickMedia(let callback):
                 callback(.noCameraPermission)
-            case .showSettingsAlert(_, _):
+            case .showAlert:
                 isCalled = true
             default: break
             }
         }
 
-        viewModel.presentMediaPicker(from: UIView(), alertConfiguration: viewModel.environment.alertConfiguration)
+        viewModel.presentMediaPicker(from: UIView())
         XCTAssertTrue(isCalled)
     }
 
@@ -566,7 +580,7 @@ extension SecureConversationsWelcomeViewModelTests {
             }
         }
 
-        viewModel.presentMediaPicker(from: UIView(), alertConfiguration: viewModel.environment.alertConfiguration)
+        viewModel.presentMediaPicker(from: UIView())
 
         XCTAssertTrue(!viewModel.fileUploadListModel.activeUploads.isEmpty)
     }
@@ -584,7 +598,7 @@ extension SecureConversationsWelcomeViewModelTests {
             }
         }
 
-        viewModel.presentMediaPicker(from: UIView(), alertConfiguration: viewModel.environment.alertConfiguration)
+        viewModel.presentMediaPicker(from: UIView())
 
         XCTAssertTrue(viewModel.fileUploadListModel.activeUploads.isEmpty)
     }
@@ -615,7 +629,7 @@ extension SecureConversationsWelcomeViewModelTests {
     }
 
     func testAvailabilityUnavailableEmptyQueues() {
-        var alertConfiguration: MessageAlertConfiguration?
+        var alertInputType: AlertInputType?
 
         let uuid = UUID.mock.uuidString
         var availability = SecureConversations.Availability.mock
@@ -635,8 +649,8 @@ extension SecureConversationsWelcomeViewModelTests {
 
         let delegate: (WelcomeViewModel.DelegateEvent) -> Void = { event in
             switch event {
-            case .showAlertAsView(let configuration, _, _):
-                alertConfiguration = configuration
+            case let .showAlert(type):
+                alertInputType = type
             default: break
             }
         }
@@ -648,14 +662,18 @@ extension SecureConversationsWelcomeViewModelTests {
         )
 
         XCTAssertEqual(viewModel.availabilityStatus, .unavailable(.emptyQueue))
-        XCTAssertEqual(
-            alertConfiguration?.message,
-            viewModel.environment.alertConfiguration.unavailableMessageCenter.message
-        )
+        let isValidInput: Bool
+        if case .unavailableMessageCenter = alertInputType {
+            isValidInput = true
+        } else {
+            isValidInput = false
+        }
+
+        XCTAssertTrue(isValidInput)
     }
 
     func testAvailabilityUnavailableUnauthenticated() {
-        var alertConfiguration: MessageAlertConfiguration?
+        var alertInputType: AlertInputType?
 
         let uuid = UUID.mock.uuidString
         var availability = SecureConversations.Availability.mock
@@ -675,8 +693,8 @@ extension SecureConversationsWelcomeViewModelTests {
 
         let delegate: (WelcomeViewModel.DelegateEvent) -> Void = { event in
             switch event {
-            case .showAlertAsView(let configuration, _, _):
-                alertConfiguration = configuration
+            case let .showAlert(type):
+                alertInputType = type
             default: break
             }
         }
@@ -688,10 +706,13 @@ extension SecureConversationsWelcomeViewModelTests {
         )
 
         XCTAssertEqual(viewModel.availabilityStatus, .unavailable(.unauthenticated))
-        XCTAssertEqual(
-            alertConfiguration?.message,
-            viewModel.environment.alertConfiguration.unavailableMessageCenterForBeingUnauthenticated.message
-        )
+        let isValidInput: Bool
+        if case .unavailableMessageCenterForBeingUnauthenticated = alertInputType {
+            isValidInput = true
+        } else {
+            isValidInput = false
+        }
+        XCTAssertTrue(isValidInput)
     }
 }
 
@@ -710,7 +731,7 @@ extension SecureConversationsWelcomeViewModelTests {
             }
         }
 
-        viewModel.presentMediaPicker(from: UIView(), alertConfiguration: viewModel.environment.alertConfiguration)
+        viewModel.presentMediaPicker(from: UIView())
 
         if case .toSecureMessaging = viewModel.fileUploadListModel.environment.uploader.environment.uploadFile {
             XCTAssertTrue(true)
@@ -732,7 +753,7 @@ extension SecureConversationsWelcomeViewModelTests {
             }
         }
 
-        viewModel.presentMediaPicker(from: UIView(), alertConfiguration: viewModel.environment.alertConfiguration)
+        viewModel.presentMediaPicker(from: UIView())
 
         if case .toEngagement = viewModel.fileUploadListModel.environment.uploader.environment.uploadFile {
             XCTAssertTrue(true)

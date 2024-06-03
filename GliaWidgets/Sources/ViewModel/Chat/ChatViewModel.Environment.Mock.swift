@@ -32,9 +32,9 @@ extension ChatViewModel.Environment {
         createSendMessagePayload: { _, _ in .mock() },
         proximityManager: .mock,
         log: .mock,
-        operatorRequestHandlerService: .mock(),
         cameraDeviceManager: { .mock },
-        flipCameraButtonStyle: .nop
+        flipCameraButtonStyle: .nop,
+        alertManager: .mock()
     )
 }
 #endif

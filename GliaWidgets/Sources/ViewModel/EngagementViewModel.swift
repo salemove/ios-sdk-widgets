@@ -4,11 +4,9 @@ class EngagementViewModel: CommonEngagementModel {
     typealias ActionCallback = (Action) -> Void
     typealias DelegateCallback = (DelegateEvent) -> Void
 
-    static let alertSingleActionAccessibilityIdentifier = "alert_close_engagementEnded"
     var engagementAction: ActionCallback?
     var engagementDelegate: DelegateCallback?
     let interactor: Interactor
-    let alertConfiguration: AlertConfiguration
     let environment: Environment
     let screenShareHandler: ScreenShareHandler
     // Need to keep strong reference of `activeEngagement`,
@@ -19,12 +17,10 @@ class EngagementViewModel: CommonEngagementModel {
 
     init(
         interactor: Interactor,
-        alertConfiguration: AlertConfiguration,
         screenShareHandler: ScreenShareHandler,
         environment: Environment
     ) {
         self.interactor = interactor
-        self.alertConfiguration = alertConfiguration
         self.screenShareHandler = screenShareHandler
         self.environment = environment
         self.hasViewAppeared = false
@@ -56,13 +52,7 @@ class EngagementViewModel: CommonEngagementModel {
         case .closeTapped:
             closeTapped()
         case .endScreenSharingTapped:
-            engagementAction?(
-                .confirm(
-                    alertConfiguration.endScreenShare,
-                    accessibilityIdentifier: "alert_confirmation_endScreenSharing",
-                    confirmed: { self.endScreenSharing() }
-                )
-            )
+            engagementAction?(.showAlert(.endScreenShare(confirmed: endScreenSharing)))
         }
     }
 
@@ -76,15 +66,9 @@ class EngagementViewModel: CommonEngagementModel {
                 case .success(let survey) where survey != nil:
                     return
                 default:
-                    self.engagementAction?(
-                        .showSingleActionAlert(
-                            self.alertConfiguration.operatorEndedEngagement,
-                            accessibilityIdentifier: Self.alertSingleActionAccessibilityIdentifier,
-                            actionTapped: { [weak self] in
-                                self?.endSession()
-                            }
-                        )
-                    )
+                    self.engagementAction?(.showAlert(.operatorEndedEngagement(action: { [weak self] in
+                        self?.endSession()
+                    })))
                 }
             }
         }
@@ -146,21 +130,14 @@ class EngagementViewModel: CommonEngagementModel {
                     self.endSession()
                     return
                 }
-                self.environment.log.prefixed(Self.self).info("Show Engagement Ended Dialog")
-                self.engagementAction?(
-                    .showSingleActionAlert(
-                        self.alertConfiguration.operatorEndedEngagement,
-                        accessibilityIdentifier: Self.alertSingleActionAccessibilityIdentifier,
-                        actionTapped: { [weak self] in
-                            self?.endSession()
-                            self?.engagementDelegate?(
-                                  .engaged(
-                                      operatorImageUrl: nil
-                                   )
-                            )
-                        }
+                self.engagementAction?(.showAlert(.endEngagement(confirmed: { [weak self] in
+                    self?.endSession()
+                    self?.engagementDelegate?(
+                          .engaged(
+                              operatorImageUrl: nil
+                           )
                     )
-                )
+                })))
             })
         case let .enqueueing(mediaType):
             environment.fetchSiteConfigurations { [weak self] result in
@@ -172,63 +149,16 @@ class EngagementViewModel: CommonEngagementModel {
                     } else {
                         self.showLiveObservationConfirmation(in: mediaType)
                     }
-                case .failure:
-                    self.showAlert(with: self.alertConfiguration.unexpectedError, dismissed: nil)
+                case let .failure(error):
+                    self.engagementAction?(.showAlert(.error(
+                        error: error,
+                        dismissed: conditionallyEndSession
+                    )))
                 }
             }
         default:
             break
         }
-    }
-
-    func showAlert(
-        with conf: MessageAlertConfiguration,
-        accessibilityIdentifier: String? = nil,
-        dismissed: (() -> Void)? = nil
-    ) {
-        let onDismissed = {
-            dismissed?()
-
-            switch self.interactor.state {
-            case .ended:
-                self.endSession()
-            default:
-                break
-            }
-        }
-        engagementAction?(
-            .showAlert(
-                conf,
-                accessibilityIdentifier: accessibilityIdentifier,
-                dismissed: { onDismissed() }
-            )
-        )
-    }
-
-    func showAlert(for error: Error) {
-        environment.log.prefixed(Self.self).info("Show Unexpected error Dialog")
-        showAlert(with: alertConfiguration.unexpectedError)
-    }
-
-    func showAlert(for error: CoreSdkClient.SalemoveError) {
-        environment.log.prefixed(Self.self).info("Show Unexpected error Dialog")
-        showAlert(with: alertConfiguration.unexpectedError)
-    }
-
-    func showSettingsAlert(
-        with conf: SettingsAlertConfiguration,
-        cancelled: (() -> Void)? = nil
-    ) {
-        engagementAction?(.showSettingsAlert(conf, cancelled: cancelled))
-    }
-
-    func alertConfiguration(
-        with error: CoreSdkClient.SalemoveError
-    ) -> MessageAlertConfiguration {
-        return MessageAlertConfiguration(
-            with: error,
-            templateConf: alertConfiguration.apiError
-        )
     }
 
     func updateScreenSharingState(to state: CoreSdkClient.VisitorScreenSharingState) {
@@ -253,6 +183,15 @@ class EngagementViewModel: CommonEngagementModel {
         self.screenShareHandler.stop(nil)
     }
 
+    func conditionallyEndSession() {
+        switch self.interactor.state {
+        case .ended:
+            self.endSession()
+        default:
+            break
+        }
+    }
+
     func setViewAppeared() {
         hasViewAppeared = true
     }
@@ -260,112 +199,36 @@ class EngagementViewModel: CommonEngagementModel {
 
 // MARK: - Private
 private extension EngagementViewModel {
-    func showCriticalErrorAlert(
-        with conf: MessageAlertConfiguration,
-        accessibilityIdentifier: String? = nil,
-        dismissed: (() -> Void)? = nil
-    ) {
-        let onDismissed = {
-            dismissed?()
-            switch self.interactor.state {
-            case .ended:
-                self.endSession()
-            default:
-                break
-            }
-        }
-        engagementAction?(
-            .showCriticalErrorAlert(
-                conf,
-                accessibilityIdentifier: accessibilityIdentifier,
-                dismissed: { onDismissed() }
-            )
-        )
-    }
-
     private func offerScreenShare(answer: @escaping CoreSdkClient.AnswerBlock) {
-        environment.operatorRequestHandlerService.offerScreenShare(
-            from: interactor.engagedOperator?.firstName ?? "",
-            accepted: {},
-            answer: answer
+        environment.alertManager.present(
+            in: .global,
+            as: .screenSharing(
+                operators: interactor.engagedOperator?.firstName ?? "",
+                answer: answer
+            )
         )
     }
 
     private func closeTapped() {
         switch interactor.state {
         case .enqueueing, .enqueued:
-            environment.log.prefixed(Self.self).info("Show Exit Queue Dialog")
-            engagementAction?(
-                .confirm(
-                    alertConfiguration.leaveQueue,
-                    accessibilityIdentifier: "alert_confirmation_leaveQueue",
-                    confirmed: { [weak self] in
-                        self?.endSession()
-                    }
-                )
-            )
+            engagementAction?(.showAlert(.leaveQueue(confirmed: { [weak self] in
+                self?.endSession()
+            })))
         case .engaged:
-            environment.log.prefixed(Self.self).info("Show End Engagement Dialog")
-            engagementAction?(
-                .confirm(
-                    alertConfiguration.endEngagement,
-                    accessibilityIdentifier: "alert_confirmation_endEngagement",
-                    confirmed: { [weak self] in
-                        self?.endSession()
-                    }
-                )
-            )
+            engagementAction?(.showAlert(.endEngagement(confirmed: { [weak self] in
+                self?.endSession()
+            })))
         default:
             endSession()
         }
     }
 
     private func handleError(_ error: CoreSdkClient.SalemoveError) {
-        switch error.error {
-        case let queueError as CoreSdkClient.QueueError:
-            switch queueError {
-            case .queueClosed:
-                showAlert(
-                    with: alertConfiguration.operatorsUnavailable,
-                    accessibilityIdentifier: "alert_queue_closed",
-                    dismissed: { self.endSession() }
-                )
-            case .queueFull:
-                environment.log.prefixed(Self.self).info("Show No More Operators Dialog")
-                showAlert(
-                    with: alertConfiguration.operatorsUnavailable,
-                    accessibilityIdentifier: "alert_queue_full",
-                    dismissed: { self.endSession() }
-                )
-            default:
-                environment.log.prefixed(Self.self).info("Show Unexpected error Dialog")
-                showAlert(
-                    with: alertConfiguration.unexpectedError,
-                    dismissed: { self.endSession() }
-                )
-            }
-        case let authenticationError as CoreSdkClient.Authentication.Error:
-            switch authenticationError {
-            case .expiredAccessToken:
-                environment.log.prefixed(Self.self).info("Show authentication error Dialog")
-                showCriticalErrorAlert(
-                    with: alertConfiguration.expiredAccessTokenError,
-                    dismissed: self.endSession
-                )
-            default:
-                environment.log.prefixed(Self.self).info("Show Unexpected error Dialog")
-                showAlert(
-                    with: alertConfiguration.unexpectedError,
-                    dismissed: { self.endSession() }
-                )
-            }
-        default:
-            environment.log.prefixed(Self.self).info("Show Unexpected error Dialog")
-            showAlert(
-                with: alertConfiguration.unexpectedError,
-                dismissed: { self.endSession() }
-            )
-        }
+        engagementAction?(.showAlert(.error(
+            error: error.error,
+            dismissed: endSession
+        )))
     }
 
     private func onScreenSharingStatusChange(_ status: ScreenSharingStatus) {
@@ -382,15 +245,7 @@ private extension EngagementViewModel {
 
 extension EngagementViewModel {
     private func showLiveObservationConfirmation(in mediaType: CoreSdkClient.MediaType) {
-        let liveObservationAlertConfig = createLiveObservationAlertConfig(with: mediaType)
-        engagementAction?(.showLiveObservationConfirmation(liveObservationAlertConfig))
-    }
-
-    private func createLiveObservationAlertConfig(
-        with mediaType: CoreSdkClient.MediaType
-    ) -> LiveObservation.Confirmation {
-        .init(
-            conf: self.alertConfiguration.liveObservationConfirmation,
+        engagementAction?(.showLiveObservationConfirmation(
             link: { [weak self] link in
                 self?.engagementDelegate?(.openLink(link))
             },
@@ -400,7 +255,7 @@ extension EngagementViewModel {
             declined: { [weak self] in
                 self?.endSession()
             }
-        )
+        ))
     }
 }
 
@@ -425,33 +280,14 @@ extension EngagementViewModel {
     }
 
     enum Action {
-        case confirm(
-            ConfirmationAlertConfiguration,
-            accessibilityIdentifier: String,
-            confirmed: (() -> Void)?
-        )
-        case showSingleActionAlert(
-            SingleActionAlertConfiguration,
-            accessibilityIdentifier: String,
-            actionTapped: (() -> Void)?
-        )
-        case showAlert(
-            MessageAlertConfiguration,
-            accessibilityIdentifier: String?,
-            dismissed: (() -> Void)?
-        )
-        case showCriticalErrorAlert(
-            MessageAlertConfiguration,
-            accessibilityIdentifier: String?,
-            dismissed: (() -> Void)?
-        )
-        case showSettingsAlert(
-            SettingsAlertConfiguration,
-            cancelled: (() -> Void)?
-        )
         case showEndButton
         case showEndScreenShareButton
-        case showLiveObservationConfirmation(LiveObservation.Confirmation)
+        case showLiveObservationConfirmation(
+            link: (WebViewController.Link) -> Void,
+            accepted: () -> Void,
+            declined: () -> Void
+        )
+        case showAlert(AlertInputType)
     }
 
     enum DelegateEvent {

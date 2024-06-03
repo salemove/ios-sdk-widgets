@@ -30,7 +30,8 @@ class ChatViewControllerTests: XCTestCase {
                     viewFactory: .mock(),
                     gcd: .mock,
                     snackBar: .mock,
-                    notificationCenter: .mock
+                    notificationCenter: .mock,
+                    alertManager: .mock()
                 )
             )
             weakViewController = viewController
@@ -69,7 +70,7 @@ class ChatViewControllerTests: XCTestCase {
 
         viewModel.engagementAction = { action in
             switch action {
-            case .showCriticalErrorAlert:
+            case .showAlert:
                 calls.append(.presentCriticalErrorAlert)
             default:
                 break
@@ -122,7 +123,8 @@ class ChatViewControllerTests: XCTestCase {
             viewFactory: .mock(),
             gcd: .failing,
             snackBar: snackBar,
-            notificationCenter: .failing
+            notificationCenter: .failing,
+            alertManager: .mock()
         )
         let viewController = ChatViewController(
             viewModel: .chat(viewModel),
@@ -176,7 +178,8 @@ class ChatViewControllerTests: XCTestCase {
             viewFactory: .mock(),
             gcd: .failing,
             snackBar: snackBar,
-            notificationCenter: .failing
+            notificationCenter: .failing,
+            alertManager: .mock()
         )
         let viewController = ChatViewController(
             viewModel: .chat(viewModel),
@@ -224,7 +227,8 @@ class ChatViewControllerTests: XCTestCase {
             viewFactory: .mock(),
             gcd: .failing,
             snackBar: snackBar,
-            notificationCenter: .failing
+            notificationCenter: .failing,
+            alertManager: .mock()
         )
         let viewController = ChatViewController(
             viewModel: .chat(viewModel),

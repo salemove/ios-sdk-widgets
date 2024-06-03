@@ -64,7 +64,6 @@ class ChatViewModel: EngagementViewModel {
     // swiftlint:disable function_body_length
     init(
         interactor: Interactor,
-        alertConfiguration: AlertConfiguration,
         screenShareHandler: ScreenShareHandler,
         call: ObservableValue<Call?>,
         unreadMessages: ObservableValue<Int>,
@@ -131,7 +130,6 @@ class ChatViewModel: EngagementViewModel {
         self.deliveredStatusText = deliveredStatusText
         super.init(
             interactor: interactor,
-            alertConfiguration: alertConfiguration,
             screenShareHandler: screenShareHandler,
             environment: environment
         )
@@ -224,13 +222,9 @@ class ChatViewModel: EngagementViewModel {
                         )
 
                         self.action?(.scrollToBottom(animated: true))
-                    case .failure:
+                    case let .failure(error):
                         guard let self else { return }
-                        self.environment.log.prefixed(Self.self).info("Show Unexpected error Dialog")
-                        self.showAlert(
-                            with: self.alertConfiguration.unexpectedError,
-                            dismissed: nil
-                        )
+                        self.engagementAction?(.showAlert(.error(error: error.error)))
                     }
                 }
             }
@@ -400,14 +394,17 @@ extension ChatViewModel {
         _ offer: CoreSdkClient.MediaUpgradeOffer,
         answer: @escaping CoreSdkClient.AnswerWithSuccessBlock
     ) {
-        environment.operatorRequestHandlerService.offerMediaUpgrade(
-            from: interactor.engagedOperator?.name ?? "",
-            offer: offer,
-            accepted: { [weak self] in
-                self?.delegate?(.mediaUpgradeAccepted(offer: offer, answer: answer))
-                self?.showCallBubble()
-            },
-            answer: answer
+        environment.alertManager.present(
+            in: .global,
+            as: .mediaUpgrade(
+                operators: interactor.engagedOperator?.name ?? "",
+                offer: offer,
+                accepted: { [weak self] in
+                    self?.delegate?(.mediaUpgradeAccepted(offer: offer, answer: answer))
+                    self?.showCallBubble()
+                },
+                answer: answer
+            )
         )
     }
 }
@@ -474,7 +471,10 @@ extension ChatViewModel {
                         self.action?(.scrollToBottom(animated: true))
                     }
                 case let .failure(error):
-                    handleSendMessageError(error)
+                    self.engagementAction?(.showAlert(.error(
+                        error: error.error,
+                        dismissed: endSession
+                    )))
                 }
             }
         case .enqueued:
@@ -486,20 +486,6 @@ extension ChatViewModel {
         }
 
         messageText = ""
-    }
-
-    func handleSendMessageError(_ error: CoreSdkClient.GliaCoreError) {
-        switch error.error {
-        case let authError as CoreSdkClient.Authentication.Error where authError == .expiredAccessToken:
-            break
-        default:
-            environment.log.prefixed(Self.self).info("Message send exception")
-            environment.log.prefixed(Self.self).info("Show Unexpected error Dialog")
-            showAlert(
-                with: alertConfiguration.unexpectedError,
-                dismissed: nil
-            )
-        }
     }
 
     func handle(pendingMessage: OutgoingMessage) {
@@ -726,12 +712,9 @@ extension ChatViewModel {
                 case .pickedMedia(let media):
                     self.mediaPicked(media)
                 case .sourceNotAvailable:
-                    self.showAlert(
-                        with: self.alertConfiguration.mediaSourceNotAvailable,
-                        dismissed: nil
-                    )
+                    self.engagementAction?(.showAlert(.mediaSourceNotAvailable()))
                 case .noCameraPermission:
-                    self.showSettingsAlert(with: self.alertConfiguration.cameraSettings)
+                    self.engagementAction?(.showAlert(.cameraSettings()))
                 }
             }
             let file = ObservableValue<FilePickerEvent>(with: .none)
@@ -890,12 +873,8 @@ extension ChatViewModel {
                     .setAttachmentButtonVisibility(self.mediaPickerButtonVisibility)
                 )
                 self.showSnackBarIfNeeded()
-            case .failure:
-                self.environment.log.prefixed(Self.self).info("Show Unexpected error Dialog")
-                self.showAlert(
-                    with: self.alertConfiguration.unexpectedError,
-                    dismissed: nil
-                )
+            case let .failure(error):
+                self.engagementAction?(.showAlert(.error(error: error)))
             }
         }
     }

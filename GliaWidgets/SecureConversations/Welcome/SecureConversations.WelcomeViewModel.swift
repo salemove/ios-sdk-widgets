@@ -11,9 +11,6 @@ extension SecureConversations {
             case waiting, loading
         }
 
-        static let sendMessageErrorAlertAccIdentifier = "send_message_alert_error_identifier"
-        static let unavailableMessageCenterAlertAccIdentidier = "unavailable_message_center_alert_identifier"
-
         static let messageTextLimit = 10_000
 
         var action: ((Action) -> Void)?
@@ -71,24 +68,10 @@ extension SecureConversations {
                     self.availabilityStatus = .available
                 case .success(.unavailable(.emptyQueue)), .failure:
                     self.availabilityStatus = .unavailable(.emptyQueue)
-                    let configuration = self.environment.alertConfiguration.unavailableMessageCenter
-                    self.delegate?(
-                        .showAlertAsView(
-                            configuration,
-                            accessibilityIdentifier: Self.unavailableMessageCenterAlertAccIdentidier,
-                            dismissed: nil
-                        )
-                    )
+                    self.delegate?(.showAlert(.unavailableMessageCenter()))
                 case .success(.unavailable(.unauthenticated)):
                     self.availabilityStatus = .unavailable(.unauthenticated)
-                    let configuration = self.environment.alertConfiguration.unavailableMessageCenterForBeingUnauthenticated
-                    self.delegate?(
-                        .showAlertAsView(
-                            configuration,
-                            accessibilityIdentifier: Self.unavailableMessageCenterAlertAccIdentidier,
-                            dismissed: nil
-                        )
-                    )
+                    self.delegate?(.showAlert(.unavailableMessageCenterForBeingUnauthenticated()))
                 }
             }
         }
@@ -127,38 +110,24 @@ private extension SecureConversations.WelcomeViewModel {
         _ = environment.sendSecureMessagePayload(
             payload,
             queueIds
-        ) { [weak self, alertConfiguration = environment.alertConfiguration, environment] result in
+        ) { [weak self] result in
             self?.sendMessageRequestState = .waiting
 
             switch result {
             case .success:
                 self?.delegate?(.confirmationScreenRequested)
-            case .failure:
-                environment.log.prefixed(Self.self).info("Show Unexpected error Dialog")
-                self?.delegate?(
-                    .showAlert(
-                        alertConfiguration.unexpectedError,
-                        accessibilityIdentifier: Self.sendMessageErrorAlertAccIdentifier,
-                        dismissed: nil
-                    )
-                )
+            case let .failure(error):
+                self?.delegate?(.showAlert(.error(error: error)))
             }
         }
     }
     func loadAttachmentAvailability() {
-        environment.fetchSiteConfigurations { [weak self, alertConfiguration = environment.alertConfiguration] result in
+        environment.fetchSiteConfigurations { [weak self] result in
             switch result {
             case let .success(site):
                 self?.isAttachmentsAvailable = site.allowedFileSenders.visitor
-            case .failure:
-                self?.environment.log.prefixed(Self.self).info("Show Unexpected error Dialog")
-                self?.delegate?(
-                    .showAlert(
-                        alertConfiguration.unexpectedError,
-                        accessibilityIdentifier: Self.sendMessageErrorAlertAccIdentifier,
-                        dismissed: nil
-                    )
-                )
+            case let .failure(error):
+                self?.delegate?(.showAlert(.error(error: error)))
             }
         }
     }
@@ -225,10 +194,7 @@ extension SecureConversations.WelcomeViewModel {
             filePickerButton = WelcomeViewProps.FilePickerButton(
                 isEnabled: isFilePickerEnabled,
                 tap: Command { originView in
-                    instance.presentMediaPicker(
-                        from: originView,
-                        alertConfiguration: instance.environment.alertConfiguration
-                    )
+                    instance.presentMediaPicker(from: originView)
                 }
             )
         }
@@ -383,20 +349,7 @@ extension SecureConversations.WelcomeViewModel {
         case pickMedia(Command<MediaPickerEvent>)
         case takeMedia(Command<MediaPickerEvent>)
         case pickFile(Command<FilePickerEvent>)
-        case showAlert(
-            MessageAlertConfiguration,
-            accessibilityIdentifier: String?,
-            dismissed: (() -> Void)?
-        )
-        case showAlertAsView(
-            MessageAlertConfiguration,
-            accessibilityIdentifier: String?,
-            dismissed: (() -> Void)?
-        )
-        case showSettingsAlert(
-            SettingsAlertConfiguration,
-            cancelled: (() -> Void)?
-        )
+        case showAlert(AlertInputType)
         case transcriptRequested
     }
 
@@ -411,7 +364,6 @@ extension SecureConversations.WelcomeViewModel {
         var queueIds: [String]
         var listQueues: CoreSdkClient.ListQueues
         var sendSecureMessagePayload: CoreSdkClient.SendSecureMessagePayload
-        var alertConfiguration: AlertConfiguration
         var fileUploader: FileUploader
         var uiApplication: UIKitBased.UIApplication
         var createFileUploadListModel: SecureConversations.FileUploadListViewModel.Create
@@ -428,10 +380,7 @@ extension SecureConversations.WelcomeViewModel {
 
 // MARK: - Media Picker
 extension SecureConversations.WelcomeViewModel {
-    func presentMediaPicker(
-        from originView: UIView,
-        alertConfiguration: AlertConfiguration
-    ) {
+    func presentMediaPicker(from originView: UIView) {
         let itemSelected = { (kind: AttachmentSourceItemKind) in
             let media = Command<MediaPickerEvent> { [weak self] event in
                 guard let self = self else { return }
@@ -441,12 +390,9 @@ extension SecureConversations.WelcomeViewModel {
                 case .pickedMedia(let media):
                     self.mediaPicked(media)
                 case .sourceNotAvailable:
-                    self.showAlert(
-                        with: alertConfiguration.mediaSourceNotAvailable,
-                        dismissed: nil
-                    )
+                    self.delegate?(.showAlert(.mediaSourceNotAvailable()))
                 case .noCameraPermission:
-                    self.showSettingsAlert(with: alertConfiguration.cameraSettings)
+                    self.delegate?(.showAlert(.cameraSettings()))
                 }
             }
             let file = Command<FilePickerEvent> { [weak self] event in
@@ -487,32 +433,6 @@ extension SecureConversations.WelcomeViewModel {
         case .none:
             break
         }
-    }
-
-    func showAlert(
-        with conf: MessageAlertConfiguration,
-        accessibilityIdentifier: String? = nil,
-        dismissed: (() -> Void)? = nil
-    ) {
-        delegate?(
-            .showAlert(
-                conf,
-                accessibilityIdentifier: accessibilityIdentifier,
-                dismissed: dismissed
-            )
-        )
-    }
-
-    func showSettingsAlert(
-        with conf: SettingsAlertConfiguration,
-        cancelled: (() -> Void)? = nil
-    ) {
-        delegate?(
-            .showSettingsAlert(
-                conf,
-                cancelled: cancelled
-            )
-        )
     }
 
     func filePicked(_ url: URL) {

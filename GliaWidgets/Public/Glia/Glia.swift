@@ -122,8 +122,8 @@ public class Glia {
             fetchSiteConfigurations: environment.coreSdk.fetchSiteConfigurations,
             snackBar: environment.snackBar,
             coreSdk: environment.coreSdk,
-            operatorRequestHandlerService: operatorRequestHandlerService,
-            cameraDeviceManager: environment.cameraDeviceManager
+            cameraDeviceManager: environment.cameraDeviceManager,
+            alertManager: alertManager
         )
     )
     var rootCoordinator: EngagementCoordinator?
@@ -133,7 +133,7 @@ public class Glia {
     var theme: Theme
     var assetsBuilder: RemoteConfiguration.AssetsBuilder = .standard
     var loggerPhase: LoggerPhase
-    var operatorRequestHandlerService: OperatorRequestHandlerService
+    var alertManager: AlertManager
 
     private(set) var configuration: Configuration?
 
@@ -175,10 +175,10 @@ public class Glia {
             )
         )
 
-        operatorRequestHandlerService = .init(
+        alertManager = .init(
             environment: .init(
-                uiApplication: environment.uiApplication,
-                log: loggerPhase.logger
+                log: loggerPhase.logger,
+                uiApplication: environment.uiApplication
             ),
             viewFactory: viewFactory
         )
@@ -219,7 +219,7 @@ public class Glia {
         // is fired and SDK has previous `configuration`.
         self.configuration = nil
 
-        operatorRequestHandlerService.overrideTheme(theme)
+        alertManager.overrideTheme(theme)
 
         self.callVisualizer.delegate = { action in
             switch action {

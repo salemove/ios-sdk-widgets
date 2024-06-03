@@ -219,11 +219,11 @@ extension EngagementCoordinator {
             },
             endEditing: { viewController.view.endEditing(true) },
             updateProps: { viewController.props = $0 },
-            onError: { [weak self] _ in
+            onError: { [weak self] error in
                 guard let self else { return }
-                self.environment.log.prefixed(Self.self).info("Show Unexpected error Dialog")
-                viewController.presentAlert(
-                    with: self.viewFactory.theme.alertConfiguration.unexpectedError
+                environment.alertManager.present(
+                    in: .root(viewController),
+                    as: .error(error: error)
                 )
             },
             completion: {
@@ -286,10 +286,10 @@ extension EngagementCoordinator {
                 timerProviding: environment.timerProviding,
                 snackBar: environment.snackBar,
                 notificationCenter: environment.notificationCenter,
-                operatorRequestHandlerService: environment.operatorRequestHandlerService,
                 maximumUploads: environment.maximumUploads,
                 cameraDeviceManager: environment.cameraDeviceManager,
-                flipCameraButtonStyle: environment.flipCameraButtonStyle
+                flipCameraButtonStyle: environment.flipCameraButtonStyle,
+                alertManager: environment.alertManager
             ),
             startWithSecureTranscriptFlow: false
         )
@@ -388,9 +388,9 @@ extension EngagementCoordinator {
                 proximityManager: environment.proximityManager,
                 log: environment.log,
                 snackBar: environment.snackBar,
-                operatorRequestHandlerService: environment.operatorRequestHandlerService,
                 cameraDeviceManager: environment.cameraDeviceManager,
-                flipCameraButtonStyle: environment.flipCameraButtonStyle
+                flipCameraButtonStyle: environment.flipCameraButtonStyle,
+                alertManager: environment.alertManager
             )
         )
         coordinator.delegate = { [weak self] event in
@@ -552,10 +552,10 @@ extension EngagementCoordinator {
                 log: environment.log,
                 timerProviding: environment.timerProviding,
                 snackBar: environment.snackBar,
-                operatorRequestHandlerService: environment.operatorRequestHandlerService,
                 maximumUploads: environment.maximumUploads,
                 cameraDeviceManager: environment.cameraDeviceManager,
-                flipCameraButtonStyle: environment.flipCameraButtonStyle
+                flipCameraButtonStyle: environment.flipCameraButtonStyle,
+                alertManager: environment.alertManager
             )
         )
 

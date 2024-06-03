@@ -14,23 +14,23 @@ final class AlertViewControllerTests: XCTestCase {
                         (.confirmation, true)]),
             (.singleAction, [(.message, false),
                              (.singleAction, true),
-                             (.singleMediaUpgrade, false),
-                             (.screenShareOffer, false),
+                             (.singleMediaUpgrade, true),
+                             (.screenShareOffer, true),
                              (.confirmation, false)]),
-            (.singleMediaUpgrade, [(.message, true),
+            (.singleMediaUpgrade, [(.message, false),
                                    (.singleAction, true),
                                    (.singleMediaUpgrade, true),
                                    (.screenShareOffer, true),
-                                   (.confirmation, true)]),
-            (.screenShareOffer, [(.message, true),
+                                   (.confirmation, false)]),
+            (.screenShareOffer, [(.message, false),
                                  (.singleAction, true),
                                  (.singleMediaUpgrade, true),
                                  (.screenShareOffer, true),
-                                 (.confirmation, true)]),
+                                 (.confirmation, false)]),
             (.confirmation, [(.message, false),
                              (.singleAction, true),
-                             (.singleMediaUpgrade, false),
-                             (.screenShareOffer, false),
+                             (.singleMediaUpgrade, true),
+                             (.screenShareOffer, true),
                              (.confirmation, true)])
         ]
 
@@ -38,12 +38,12 @@ final class AlertViewControllerTests: XCTestCase {
             replaceable: Replaceable,
             data: (kind: AlertKind, isReplaceable: Bool)
         ) {
-            let alert = AlertViewController.mock(kind: data.kind)
+            let alert = AlertViewController.mock(type: AlertKind.mock(type: data.kind))
             XCTAssertEqual(replaceable.isReplaceable(with: alert), data.isReplaceable)
         }
 
         data.forEach { item in
-            let alert = AlertViewController.mock(kind: item.lhs)
+            let alert = AlertViewController.mock(type: AlertKind.mock(type: item.lhs))
             item.rhs.forEach {
                 test(replaceable: alert, data: $0)
             }

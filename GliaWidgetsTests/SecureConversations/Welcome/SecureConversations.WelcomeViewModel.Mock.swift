@@ -15,7 +15,6 @@ extension SecureConversations.WelcomeViewModel.Environment {
         queueIds: [],
         listQueues: { _ in },
         sendSecureMessagePayload: { _, _, _ in return .mock },
-        alertConfiguration: .mock(),
         fileUploader: .mock(),
         uiApplication: .mock,
         createFileUploadListModel: { _ in .mock() },
