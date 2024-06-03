@@ -69,7 +69,8 @@ let package = Package(
                 "TwilioVoice",
                 "WebRTC",
                 "GliaWidgetsSDKXcf"
-            ]
+            ],
+            path: "Sources/GliaWidgetsSDK-xcframework"
         )
     ]
 )
