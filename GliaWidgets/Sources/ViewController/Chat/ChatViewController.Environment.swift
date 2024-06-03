@@ -7,5 +7,6 @@ extension ChatViewController {
         var gcd: GCD
         var snackBar: SnackBar
         var notificationCenter: FoundationBased.NotificationCenter
+        var alertManager: AlertManager
     }
 }

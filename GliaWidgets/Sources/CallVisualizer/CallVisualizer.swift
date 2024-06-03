@@ -63,7 +63,8 @@ public final class CallVisualizer {
                 interactorProviding: environment.interactorProviding(),
                 fetchSiteConfigurations: environment.fetchSiteConfigurations,
                 snackBar: environment.snackBar,
-                cameraDeviceManager: environment.cameraDeviceManager
+                cameraDeviceManager: environment.cameraDeviceManager,
+                alertManager: environment.alertManager
             )
         )
     }()
@@ -174,23 +175,29 @@ extension CallVisualizer {
             switch event {
             case .screenShareOffer(answer: let answer):
                 self?.environment.coreSdk.requestEngagedOperator { operators, _ in
-                    self?.environment.operatorRequestHandlerService.offerScreenShare(
-                        from: operators?.compactMap { $0.name }.joined(separator: ", ") ?? "",
-                        accepted: { [weak self] in
-                            self?.observeScreenSharingHandlerState()
-                        },
-                        answer: answer
+                    self?.environment.alertManager.present(
+                        in: .global,
+                        as: .screenSharing(
+                            operators: operators?.compactMap { $0.name }.joined(separator: ", ") ?? "",
+                            accepted: { [weak self] in
+                                self?.observeScreenSharingHandlerState()
+                            },
+                            answer: answer
+                        )
                     )
                 }
             case let .upgradeOffer(offer, answer):
                 self?.environment.coreSdk.requestEngagedOperator { operators, _ in
-                    self?.environment.operatorRequestHandlerService.offerMediaUpgrade(
-                        from: operators?.compactMap { $0.name }.joined(separator: ", ") ?? "",
-                        offer: offer,
-                        accepted: { [weak self] in
-                            self?.handleAcceptedUpgrade()
-                        },
-                        answer: answer
+                    self?.environment.alertManager.present(
+                        in: .global,
+                        as: .mediaUpgrade(
+                            operators: operators?.compactMap { $0.name }.joined(separator: ", ") ?? "",
+                            offer: offer,
+                            accepted: { [weak self] in
+                                self?.handleAcceptedUpgrade()
+                            },
+                            answer: answer
+                        )
                     )
                 }
             case let .videoStreamAdded(stream):

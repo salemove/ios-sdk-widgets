@@ -303,18 +303,7 @@ final class ChatCoordinatorTests: XCTestCase {
 
         switch viewController.viewModel {
         case .transcript(let viewModel):
-            let configuration = MessageAlertConfiguration(
-                title: "",
-                message: ""
-            )
-
-            viewModel.delegate?(
-                .showAlertAsView(
-                    configuration,
-                    accessibilityIdentifier: nil,
-                    dismissed: nil
-                )
-            )
+            viewModel.engagementAction?(.showAlert(.unavailableMessageCenter()))
 
             let presentedViewController = viewController.children.first { $0 is AlertViewController }
 

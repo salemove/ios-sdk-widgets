@@ -8,7 +8,8 @@ extension CallViewController {
         notificationCenter: FoundationBased.NotificationCenter = .mock,
         timerProviding: FoundationBased.Timer.Providing = .mock,
         gcd: GCD = .mock,
-        snackBar: SnackBar = .mock
+        snackBar: SnackBar = .mock,
+        alertManager: AlertManager = .mock()
     ) -> CallViewController {
         .init(
             viewModel: viewModel,
@@ -18,7 +19,8 @@ extension CallViewController {
                 log: .mock,
                 timerProviding: .mock,
                 gcd: .mock,
-                snackBar: snackBar
+                snackBar: snackBar,
+                alertManager: alertManager
             )
         )
     }
@@ -30,7 +32,6 @@ extension CallViewController {
             queueId: queueId,
             environment: interactorEnv
         )
-        let alertConf = AlertConfiguration.mock()
         let screenShareHandler = ScreenShareHandler.mock
         let callKind = CallKind.audio
         let callEnv = Call.Environment.mock
@@ -39,7 +40,6 @@ extension CallViewController {
         let startAction = CallViewModel.StartAction.engagement(mediaType: .audio)
         let viewModel = CallViewModel.mock(
             interactor: interactor,
-            alertConfiguration: alertConf,
             screenShareHandler: screenShareHandler,
             call: call,
             unreadMessages: unreadMessages,
@@ -64,7 +64,6 @@ extension CallViewController {
             queueId: queueId,
             environment: interactorEnv
         )
-        let alertConf = AlertConfiguration.mock()
         let screenShareHandler = ScreenShareHandler.mock
         let callKind = CallKind.audio
         let callEnv = Call.Environment.mock
@@ -73,7 +72,6 @@ extension CallViewController {
         let startAction = CallViewModel.StartAction.engagement(mediaType: .audio)
         let viewModel = CallViewModel.mock(
             interactor: interactor,
-            alertConfiguration: alertConf,
             screenShareHandler: screenShareHandler,
             call: call,
             unreadMessages: unreadMessages,
@@ -100,7 +98,6 @@ extension CallViewController {
             queueId: queueId,
             environment: interactorEnv
         )
-        let alertConf = AlertConfiguration.mock()
         let screenShareHandler = ScreenShareHandler.mock
         let callKind = CallKind.audio
         let callEnv = Call.Environment.mock
@@ -125,7 +122,6 @@ extension CallViewController {
         let startAction = CallViewModel.StartAction.engagement(mediaType: .audio)
         let viewModel = CallViewModel.mock(
             interactor: interactor,
-            alertConfiguration: alertConf,
             screenShareHandler: screenShareHandler,
             call: call,
             unreadMessages: unreadMessages,
@@ -151,7 +147,6 @@ extension CallViewController {
             queueId: queueId,
             environment: interactorEnv
         )
-        let alertConf = AlertConfiguration.mock()
         let screenShareHandler = ScreenShareHandler.mock
         let callKind = CallKind.video(direction: .oneWay)
         let callEnv = Call.Environment.mock
@@ -160,7 +155,6 @@ extension CallViewController {
         let startAction = CallViewModel.StartAction.engagement(mediaType: .audio)
         let viewModel = CallViewModel.mock(
             interactor: interactor,
-            alertConfiguration: alertConf,
             screenShareHandler: screenShareHandler,
             call: call,
             unreadMessages: unreadMessages,
@@ -197,7 +191,6 @@ extension CallViewController {
             queueId: queueId,
             environment: interactorEnv
         )
-        let alertConf = AlertConfiguration.mock()
         let screenShareHandler = ScreenShareHandler.mock
         let callKind = CallKind.video(direction: .oneWay)
         let callEnv = Call.Environment.mock
@@ -206,7 +199,6 @@ extension CallViewController {
         let startAction = CallViewModel.StartAction.engagement(mediaType: .audio)
         let viewModel = CallViewModel.mock(
             interactor: interactor,
-            alertConfiguration: alertConf,
             screenShareHandler: screenShareHandler,
             call: call,
             unreadMessages: unreadMessages,
@@ -231,7 +223,6 @@ extension CallViewController {
             queueId: queueId,
             environment: interactorEnv
         )
-        let alertConf = AlertConfiguration.mock()
         let screenShareHandler = ScreenShareHandler.mock
         let callKind = CallKind.video(direction: .oneWay)
         let callEnv = Call.Environment.mock
@@ -245,7 +236,6 @@ extension CallViewController {
         }
         let viewModel = CallViewModel.mock(
             interactor: interactor,
-            alertConfiguration: alertConf,
             screenShareHandler: screenShareHandler,
             call: call,
             unreadMessages: unreadMessages,
@@ -279,7 +269,6 @@ extension CallViewController {
             queueId: queueId,
             environment: interactorEnv
         )
-        let alertConf = AlertConfiguration.mock()
         let screenShareHandler = ScreenShareHandler.mock
         let callKind = CallKind.video(direction: .oneWay)
         let callEnv = Call.Environment.mock
@@ -301,7 +290,6 @@ extension CallViewController {
         }
         let viewModel = CallViewModel.mock(
             interactor: interactor,
-            alertConfiguration: alertConf,
             screenShareHandler: screenShareHandler,
             call: call,
             unreadMessages: unreadMessages,

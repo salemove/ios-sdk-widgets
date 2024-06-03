@@ -24,7 +24,8 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
                 snackBar: environment.snackBar,
                 timerProviding: environment.timerProviding,
                 gcd: environment.gcd,
-                notificationCenter: environment.notificationCenter
+                notificationCenter: environment.notificationCenter,
+                alertManager: environment.alertManager
             )
         )
     }

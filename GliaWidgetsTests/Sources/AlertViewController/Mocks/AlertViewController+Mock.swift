@@ -3,21 +3,11 @@ import UIKit
 
 extension AlertViewController {
     static func mock(
-        kind: Kind,
+        type: AlertType,
         viewFactory: ViewFactory = .mock()
     ) -> AlertViewController {
         AlertViewController(
-            kind: kind,
-            viewFactory: viewFactory
-        )
-    }
-
-    static func mock(
-        kind: AlertKind,
-        viewFactory: ViewFactory = .mock()
-    ) -> AlertViewController {
-        .mock(
-            kind: .mock(kind: kind),
+            type: type,
             viewFactory: viewFactory
         )
     }

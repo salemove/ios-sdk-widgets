@@ -27,8 +27,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
                 environment: availabilityEnv
             ),
             deliveredStatusText: "",
-            interactor: .failing,
-            alertConfiguration: .mock()
+            interactor: .failing
         )
 
         XCTAssertFalse(viewModel.isSecureConversationsAvailable)
@@ -56,8 +55,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
                 environment: availabilityEnv
             ),
             deliveredStatusText: "",
-            interactor: .failing,
-            alertConfiguration: .mock()
+            interactor: .failing
         )
 
         XCTAssertFalse(viewModel.isSecureConversationsAvailable)
@@ -90,8 +88,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
                 environment: availabilityEnv
             ),
             deliveredStatusText: "",
-            interactor: .failing,
-            alertConfiguration: .mock()
+            interactor: .failing
         )
 
         viewModel.start()
@@ -134,8 +131,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
                 environment: availabilityEnv
             ),
             deliveredStatusText: "",
-            interactor: .failing,
-            alertConfiguration: .mock()
+            interactor: .failing
         )
         viewModel.start()
         XCTAssertEqual(
@@ -166,8 +162,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
                 environment: availabilityEnv
             ),
             deliveredStatusText: "",
-            interactor: .failing,
-            alertConfiguration: .mock()
+            interactor: .failing
         )
         viewModel.start()
         let text = "Test text"
@@ -213,8 +208,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
                 environment: availabilityEnv
             ),
             deliveredStatusText: "",
-            interactor: .failing,
-            alertConfiguration: .mock()
+            interactor: .failing
         )
 
         viewModel.event(.messageTextChanged(emptyMessageText))
@@ -254,8 +248,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
                 environment: availabilityEnv
             ),
             deliveredStatusText: "",
-            interactor: .failing,
-            alertConfiguration: .mock()
+            interactor: .failing
         )
 
         viewModel.event(.messageTextChanged(emptyMessageText))
@@ -291,8 +284,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
                 environment: availabilityEnv
             ),
             deliveredStatusText: "",
-            interactor: .failing,
-            alertConfiguration: .mock()
+            interactor: .failing
         )
 
         viewModel.event(.messageTextChanged(nonEmptyText))
@@ -334,8 +326,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
                 environment: availabilityEnv
             ),
             deliveredStatusText: "",
-            interactor: .failing,
-            alertConfiguration: .mock()
+            interactor: .failing
         )
 
         viewModel.event(.messageTextChanged(nonEmptyText))
@@ -373,8 +364,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
                 environment: availabilityEnv
             ),
             deliveredStatusText: "",
-            interactor: .failing,
-            alertConfiguration: .mock()
+            interactor: .failing
         )
 
         viewModel.start()
@@ -415,8 +405,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
                 environment: availabilityEnv
             ),
             deliveredStatusText: "",
-            interactor: .failing,
-            alertConfiguration: .mock()
+            interactor: .failing
         )
 
         viewModel.start()
@@ -466,8 +455,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
                 environment: availabilityEnv
             ),
             deliveredStatusText: "",
-            interactor: interactor,
-            alertConfiguration: .mock()
+            interactor: interactor
         )
 
         modelEnv.fetchChatHistory = { _ in
@@ -531,8 +519,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
                 environment: availabilityEnv
             ),
             deliveredStatusText: "",
-            interactor: interactor,
-            alertConfiguration: .mock()
+            interactor: interactor
         )
 
         modelEnv.fetchChatHistory = { _ in
@@ -583,8 +570,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             environment: modelEnvironment,
             availability: .init(environment: availabilityEnv),
             deliveredStatusText: "",
-            interactor: .failing,
-            alertConfiguration: .mock()
+            interactor: .failing
         )
         XCTAssertFalse(model.isSecureConversationsAvailable)
     }
@@ -610,8 +596,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             environment: modelEnvironment,
             availability: .init(environment: availabilityEnv),
             deliveredStatusText: "",
-            interactor: .failing,
-            alertConfiguration: .mock()
+            interactor: .failing
         )
         XCTAssertFalse(model.isSecureConversationsAvailable)
     }
@@ -637,8 +622,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             environment: modelEnvironment,
             availability: .init(environment: availabilityEnv),
             deliveredStatusText: "",
-            interactor: .failing,
-            alertConfiguration: .mock()
+            interactor: .failing
         )
         XCTAssertFalse(model.isSecureConversationsAvailable)
     }
@@ -664,8 +648,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             environment: modelEnvironment,
             availability: .init(environment: availabilityEnv),
             deliveredStatusText: "",
-            interactor: .failing,
-            alertConfiguration: .mock()
+            interactor: .failing
         )
         XCTAssertFalse(model.isSecureConversationsAvailable)
     }
@@ -691,8 +674,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             environment: modelEnvironment,
             availability: .init(environment: availabilityEnv),
             deliveredStatusText: "",
-            interactor: .failing,
-            alertConfiguration: .mock()
+            interactor: .failing
         )
         var actions: [TranscriptModel.Action] = []
         model.action = {

@@ -29,7 +29,7 @@ extension CallVisualizer {
         var fetchSiteConfigurations: CoreSdkClient.FetchSiteConfigurations
         var snackBar: SnackBar
         var coreSdk: CoreSdkClient
-        var operatorRequestHandlerService: OperatorRequestHandlerService
         var cameraDeviceManager: CoreSdkClient.GetCameraDeviceManageable
+        var alertManager: AlertManager
     }
 }
