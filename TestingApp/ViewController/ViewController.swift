@@ -603,7 +603,7 @@ extension ViewController {
         let isEmptyJwt = { enteredJwt.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
 
         createAuthorizationAction.isEnabled = !isEmptyJwt()
-        createAuthorizationAction.accessibilityIdentifier = "create_authentication_alert_button"
+        createAuthorizationAction.accessibilityIdentifier = "refresh_token_alert_refresh_button"
 
         let jwtTextFieldDelegate = TextFieldDelegate(
             textChanged: { [weak createAuthorizationAction] text in
@@ -620,7 +620,7 @@ extension ViewController {
 
         alertController.addTextField(
             configurationHandler: { textField in
-                textField.accessibilityIdentifier = "authentication_id_token_textfield"
+                textField.accessibilityIdentifier = "authentication_refresh_token_textfield"
                 textField.addTarget(
                     jwtTextFieldDelegate,
                     action: #selector(jwtTextFieldDelegate.handleTextChanged(textField:)),
