@@ -72,6 +72,7 @@ extension CallVisualizer {
                     answer(isAccepted)
                 }
                 self?.closeVisitorCode {
+
                     if site.mobileConfirmDialogEnabled == true {
                         self?.showConfirmationAlert(completion)
                     } else {
@@ -134,7 +135,6 @@ extension CallVisualizer {
         private var visitorCodeCoordinator: VisitorCodeCoordinator?
         private var screenSharingCoordinator: ScreenSharingCoordinator?
         private var videoCallCoordinator: VideoCallCoordinator?
-        private var alertViewController: AlertViewController?
     }
 }
 
@@ -217,13 +217,6 @@ extension CallVisualizer.Coordinator {
     }
 
     func closeFlow() {
-        // If media upgrade AlertViewController is presented it need to be dismissed.
-        // Possible cases:
-        // - Presented over integrators screen (or Testing app main screen)
-        // - Presented over Glia Call Visualizer screens
-        alertViewController?.dismiss(animated: true)
-        alertViewController = nil
-
         // Presented flow can consist of:
         // - Only screen sharing screen is presented from Root (Main) controller.
         // - Only Video call screen is presented from Root (Main) controller.
@@ -319,73 +312,45 @@ extension CallVisualizer.Coordinator {
 private extension CallVisualizer.Coordinator {
     func fetchSiteConfigurations(_ completion: @escaping (CoreSdkClient.Site) -> Void) {
         environment.fetchSiteConfigurations { [weak self] result in
+            guard let self else { return }
             switch result {
             case let .success(site):
                 completion(site)
-            case .failure:
-                self?.showUnexpectedErrorAlert()
+            case let .failure(error):
+                guard let viewController = environment.presenter.getInstance() else { return }
+                self.environment.alertManager.present(
+                    in: .root(viewController),
+                    as: .error(
+                        error: error,
+                        dismissed: { [weak self] in
+                            self?.declineEngagement()
+                        }
+                    )
+                )
             }
         }
     }
 }
 
 // MARK: - Alert
-
 private extension CallVisualizer.Coordinator {
-    func presentAlert(_ alert: AlertViewController) {
-        let topController = environment.presenter.getInstance()
-
-        // If replaceable is not nil, that means some AlertViewController is presented,
-        // and we need to decide whether to replace presented alert.
-        // Otherwise, just present requested alert.
-        guard let replaceable = topController as? Replaceable else {
-            topController?.present(alert, animated: true)
-            return
-        }
-        let presenting = replaceable.presentingViewController
-        guard replaceable.isReplaceable(with: alert) else { return }
-        replaceable.dismiss(animated: true) {
-            presenting?.present(alert, animated: true)
-        }
-    }
-
     func showConfirmationAlert(_ answer: Command<Bool>) {
-        let alert = AlertViewController(
-            kind: .liveObservationConfirmation(
-                environment.viewFactory.theme.alertConfiguration.liveObservationConfirmation,
+        guard let viewController = environment.presenter.getInstance() else { return }
+        environment.alertManager.present(
+            in: .root(viewController),
+            as: .liveObservationConfirmation(
                 link: { [weak self] link in
                     self?.presentSafariViewController(for: link)
                 },
-                accepted: { [weak self] in
+                accepted: {
                     answer(true)
-                    self?.alertViewController = nil
                 },
                 declined: { [weak self] in
                     answer(false)
-                    self?.alertViewController = nil
                     self?.declineEngagement()
                 }
-            ),
-            viewFactory: environment.viewFactory
+            )
         )
-        self.alertViewController = alert
-        self.presentAlert(alert)
-    }
-
-    func showUnexpectedErrorAlert() {
-        let config: MessageAlertConfiguration = environment.viewFactory.theme.alertConfiguration.unexpectedError
-        let alert = AlertViewController(
-            kind: .message(
-                config,
-                accessibilityIdentifier: nil,
-                dismissed: { [weak self] in
-                    self?.declineEngagement()
-                }
-            ),
-            viewFactory: environment.viewFactory
-        )
-        alertViewController = alert
-        presentAlert(alert)
     }
 }
 

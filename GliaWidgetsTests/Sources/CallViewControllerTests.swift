@@ -14,7 +14,8 @@ class CallViewControllerTests: XCTestCase {
                     log: .mock,
                     timerProviding: .mock,
                     gcd: .mock,
-                    snackBar: .mock
+                    snackBar: .mock,
+                    alertManager: .mock()
                 )
             )
             weakViewController = viewController
@@ -63,7 +64,8 @@ class CallViewControllerTests: XCTestCase {
             log: .mock,
             timerProviding: .failing,
             gcd: .failing,
-            snackBar: snackBar
+            snackBar: snackBar,
+            alertManager: .mock()
         )
         let viewController = CallViewController(
             viewModel: viewModel,
@@ -117,7 +119,8 @@ class CallViewControllerTests: XCTestCase {
             log: .mock,
             timerProviding: .failing,
             gcd: .failing,
-            snackBar: snackBar
+            snackBar: snackBar,
+            alertManager: .mock()
         )
         let viewController = CallViewController(
             viewModel: viewModel,
@@ -171,7 +174,8 @@ class CallViewControllerTests: XCTestCase {
             log: .mock,
             timerProviding: .failing,
             gcd: .failing,
-            snackBar: snackBar
+            snackBar: snackBar,
+            alertManager: .mock()
         )
         let viewController = CallViewController(
             viewModel: viewModel,

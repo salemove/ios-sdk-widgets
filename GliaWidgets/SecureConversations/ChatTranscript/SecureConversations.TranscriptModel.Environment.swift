@@ -17,7 +17,6 @@ extension SecureConversations.TranscriptModel {
         var sendSecureMessagePayload: CoreSdkClient.SendSecureMessagePayload
         var queueIds: [String]
         var listQueues: CoreSdkClient.ListQueues
-        var alertConfiguration: AlertConfiguration
         var createFileUploadListModel: SecureConversations.FileUploadListViewModel.Create
         var uuid: () -> UUID
         var secureUploadFile: CoreSdkClient.SecureConversationsUploadFile

@@ -25,7 +25,7 @@ final class AlertViewControllerLayoutTests: SnapshotTestCase {
 
     func test_messageAlert() {
         let alert = alert(ofKind: .message(
-            .mock(),
+            conf: .mock(),
             accessibilityIdentifier: nil,
             dismissed: {}
         ))
@@ -35,7 +35,7 @@ final class AlertViewControllerLayoutTests: SnapshotTestCase {
 
     func test_singleAction() {
         let alert = alert(ofKind: .singleAction(
-            .mock(),
+            conf: .mock(),
             accessibilityIdentifier: "mocked-accessibility-identifier",
             actionTapped: {}
         ))
@@ -43,9 +43,9 @@ final class AlertViewControllerLayoutTests: SnapshotTestCase {
         alert.assertSnapshot(as: .image, in: .landscape)
     }
 
-    private func alert(ofKind kind: AlertViewController.Kind) -> AlertViewController {
+    private func alert(ofKind type: AlertType) -> AlertViewController {
         let viewController = AlertViewController(
-            kind: kind,
+            type: type,
             viewFactory: .mock()
         )
         return viewController

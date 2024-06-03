@@ -97,8 +97,7 @@ private extension SecureConversationsTranscriptModelTests {
             environment: modelEnv,
             availability: .init(environment: availabilityEnv),
             deliveredStatusText: "",
-            interactor: .failing,
-            alertConfiguration: .mock()
+            interactor: .failing
         )
     }
 }

@@ -17,7 +17,6 @@ class ChatViewModelTests: XCTestCase {
         let choiceCardMock = try ChatChoiceCardOption.mock()
         viewModel = .init(
             interactor: .mock(),
-            alertConfiguration: .mock(),
             screenShareHandler: .mock,
             call: .init(with: nil),
             unreadMessages: .init(with: 0),
@@ -64,9 +63,9 @@ class ChatViewModelTests: XCTestCase {
                 },
                 proximityManager: .mock,
                 log: .mock,
-                operatorRequestHandlerService: .mock(),
                 cameraDeviceManager: { .mock },
-                flipCameraButtonStyle: .nop
+                flipCameraButtonStyle: .nop,
+                alertManager: .mock()
             ),
             maximumUploads: { 2 }
         )
@@ -464,8 +463,7 @@ class ChatViewModelTests: XCTestCase {
                 environment: availabilityEnv
             ),
             deliveredStatusText: "",
-            interactor: .failing,
-            alertConfiguration: .mock()
+            interactor: .failing
         )
 
         transcriptModel.sections[transcriptModel.pendingSection.index].append(.init(kind: .unreadMessageDivider))
@@ -801,8 +799,12 @@ class ChatViewModelTests: XCTestCase {
 
         viewModel.engagementAction = { action in
             switch action {
-            case let .showLiveObservationConfirmation(config):
-                alertConfig = config
+            case let .showLiveObservationConfirmation(link, accepted, declined):
+                alertConfig = .init(
+                    link: link,
+                    accepted: accepted,
+                    declined: declined
+                )
             default:
                 XCTFail()
             }
@@ -836,8 +838,12 @@ class ChatViewModelTests: XCTestCase {
         )
         viewModel.engagementAction = { action in
             switch action {
-            case let .showLiveObservationConfirmation(config):
-                alertConfig = config
+            case let .showLiveObservationConfirmation(link, accepted, declined):
+                alertConfig = .init(
+                    link: link,
+                    accepted: accepted,
+                    declined: declined
+                )
             default:
                 XCTFail()
             }

@@ -38,12 +38,12 @@ extension EngagementCoordinator.Environment {
         proximityManager: .mock,
         log: .mock,
         snackBar: .mock,
-        operatorRequestHandlerService: .mock(),
         maximumUploads: { 2 },
         cameraDeviceManager: {
             .mock
         },
-        flipCameraButtonStyle: .nop
+        flipCameraButtonStyle: .nop,
+        alertManager: .mock()
     )
 }
 #endif

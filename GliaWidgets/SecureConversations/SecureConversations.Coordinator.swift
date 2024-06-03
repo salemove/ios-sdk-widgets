@@ -43,7 +43,6 @@ extension SecureConversations {
                     queueIds: environment.queueIds,
                     listQueues: environment.listQueues,
                     sendSecureMessagePayload: environment.sendSecureMessagePayload,
-                    alertConfiguration: viewFactory.theme.alertConfiguration,
                     fileUploader: environment.createFileUploader(
                         environment.maximumUploads(),
                         .init(
@@ -141,24 +140,14 @@ extension SecureConversations {
                 )
             case let .pickFile(callback):
                 presentFilePickerController(with: callback)
-            case let .showAlert(conf, accessibilityIdentifier, dismissed):
-                controller?.presentAlert(
-                    with: conf,
-                    accessibilityIdentifier: accessibilityIdentifier,
-                    dismissed: dismissed
-                )
-            case let .showAlertAsView(conf, accessibilityIdentifier, dismissed):
-                controller?.presentAlertAsView(
-                    with: conf,
-                    accessibilityIdentifier: accessibilityIdentifier,
-                    dismissed: dismissed
-                )
-            case let .showSettingsAlert(conf, cancelled):
-                controller?.presentSettingsAlert(
-                    with: conf, cancelled: cancelled
-                )
             case .transcriptRequested:
                 navigateToTranscript()
+            case let .showAlert(type):
+                guard let controller else { return }
+                environment.alertManager.present(
+                    in: .root(controller),
+                    as: type
+                )
             }
         }
 
@@ -299,10 +288,10 @@ extension SecureConversations.Coordinator {
                 timerProviding: environment.timerProviding,
                 snackBar: environment.snackBar,
                 notificationCenter: environment.notificationCenter,
-                operatorRequestHandlerService: environment.operatorRequestHandlerService,
                 maximumUploads: environment.maximumUploads,
                 cameraDeviceManager: environment.cameraDeviceManager,
-                flipCameraButtonStyle: environment.flipCameraButtonStyle
+                flipCameraButtonStyle: environment.flipCameraButtonStyle,
+                alertManager: environment.alertManager
             ),
             startWithSecureTranscriptFlow: true
         )
@@ -373,10 +362,10 @@ extension SecureConversations.Coordinator {
         var log: CoreSdkClient.Logger
         var timerProviding: FoundationBased.Timer.Providing
         var snackBar: SnackBar
-        var operatorRequestHandlerService: OperatorRequestHandlerService
         var maximumUploads: () -> Int
         var cameraDeviceManager: CoreSdkClient.GetCameraDeviceManageable
         var flipCameraButtonStyle: FlipCameraButtonStyle
+        var alertManager: AlertManager
     }
 
     enum DelegateEvent {

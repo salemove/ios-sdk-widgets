@@ -23,7 +23,6 @@ class CallViewModel: EngagementViewModel, ViewModel {
 
     init(
         interactor: Interactor,
-        alertConfiguration: AlertConfiguration,
         screenShareHandler: ScreenShareHandler,
         environment: EngagementViewModel.Environment,
         call: Call,
@@ -41,7 +40,6 @@ class CallViewModel: EngagementViewModel, ViewModel {
         self.unreadMessages = unreadMessages
         super.init(
             interactor: interactor,
-            alertConfiguration: alertConfiguration,
             screenShareHandler: screenShareHandler,
             environment: environment
         )
@@ -255,10 +253,10 @@ class CallViewModel: EngagementViewModel, ViewModel {
             call.updateAudioStream(with: stream)
         case .videoStreamAdded(let stream):
             call.updateVideoStream(with: stream)
-        case .audioStreamError(let error):
-            handleStreamError(error, with: alertConfiguration.microphoneSettings)
-        case .videoStreamError(let error):
-            handleStreamError(error, with: alertConfiguration.cameraSettings)
+        case .audioStreamError:
+            engagementAction?(.showAlert(.microphoneSettings()))
+        case .videoStreamError:
+            engagementAction?(.showAlert(.cameraSettings()))
         case .upgradeOffer(let offer, answer: let answer):
             offerMediaUpgrade(offer, answer: answer)
         case .updateOffer(let offer):
@@ -272,22 +270,6 @@ class CallViewModel: EngagementViewModel, ViewModel {
 }
 
 extension CallViewModel {
-    private func handleStreamError(
-        _ error: CoreSdkClient.SalemoveError,
-        with message: SettingsAlertConfiguration
-    ) {
-        switch error.error {
-        case let mediaError as CoreSdkClient.MediaError where mediaError == .permissionDenied:
-            showSettingsAlert(
-                with: message
-            )
-        default:
-            showAlert(
-                for: error
-            )
-        }
-    }
-
     private func onEngagementTransferring() {
         environment.log.prefixed(Self.self).info("Transfer the call")
         endScreenSharing()
@@ -302,13 +284,16 @@ extension CallViewModel {
         _ offer: CoreSdkClient.MediaUpgradeOffer,
         answer: @escaping CoreSdkClient.AnswerWithSuccessBlock
     ) {
-        environment.operatorRequestHandlerService.offerMediaUpgrade(
-            from: interactor.engagedOperator?.firstName ?? "",
-            offer: offer,
-            accepted: { [weak self] in
-                self?.call.upgrade(to: offer)
-            },
-            answer: answer
+        environment.alertManager.present(
+            in: .global,
+            as: .mediaUpgrade(
+                operators: interactor.engagedOperator?.firstName ?? "",
+                offer: offer,
+                accepted: { [weak self] in
+                    self?.call.upgrade(to: offer)
+                },
+                answer: answer
+            )
         )
     }
 }

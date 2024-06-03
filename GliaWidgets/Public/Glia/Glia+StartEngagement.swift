@@ -183,10 +183,10 @@ extension Glia {
                 proximityManager: environment.proximityManager,
                 log: loggerPhase.logger,
                 snackBar: environment.snackBar,
-                operatorRequestHandlerService: operatorRequestHandlerService,
                 maximumUploads: { self.maximumUploads },
                 cameraDeviceManager: environment.cameraDeviceManager,
-                flipCameraButtonStyle: viewFactory.theme.call.flipCameraButtonStyle
+                flipCameraButtonStyle: viewFactory.theme.call.flipCameraButtonStyle,
+                alertManager: alertManager
             )
         )
         rootCoordinator?.delegate = { [weak self] event in self?.handleCoordinatorEvent(event) }

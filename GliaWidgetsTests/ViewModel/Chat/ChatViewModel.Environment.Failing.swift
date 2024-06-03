@@ -56,9 +56,9 @@ extension ChatViewModel.Environment {
             },
             proximityManager: .failing,
             log: .failing,
-            operatorRequestHandlerService: .failing,
             cameraDeviceManager: { .failing },
-            flipCameraButtonStyle: .nop
+            flipCameraButtonStyle: .nop,
+            alertManager: .mock()
         )
     }
 }

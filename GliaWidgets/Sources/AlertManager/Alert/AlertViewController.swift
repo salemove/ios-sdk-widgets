@@ -1,77 +1,25 @@
 import UIKit
 
 class AlertViewController: UIViewController, Replaceable {
-    enum Kind {
-        case message(
-            MessageAlertConfiguration,
-            accessibilityIdentifier: String?,
-            dismissed: (() -> Void)?
-        )
-        case confirmation(
-            ConfirmationAlertConfiguration,
-            accessibilityIdentifier: String,
-            confirmed: () -> Void
-        )
-        case singleAction(
-            SingleActionAlertConfiguration,
-            accessibilityIdentifier: String,
-            actionTapped: () -> Void
-        )
-        case singleMediaUpgrade(
-            SingleMediaUpgradeAlertConfiguration,
-            accepted: () -> Void,
-            declined: () -> Void
-        )
-        case screenShareOffer(
-            ScreenShareOfferAlertConfiguration,
-            accepted: () -> Void,
-            declined: () -> Void
-        )
-
-        case liveObservationConfirmation(
-            ConfirmationAlertConfiguration,
-            link: (WebViewController.Link) -> Void,
-            accepted: () -> Void,
-            declined: () -> Void
-        )
-
-        case criticalError(
-            MessageAlertConfiguration,
-            accessibilityIdentifier: String?,
-            dismissed: (() -> Void)?
-        )
-
-        /// Indicating presentation priority of an alert.
-        /// Based on comparing values we can decide whether an alert can be replaced with another alert.
-        fileprivate var presentationPriority: PresentationPriority {
-            switch self {
-            case .singleAction, .criticalError:
-                return .highest
-            case .confirmation, .liveObservationConfirmation:
-                return .high
-            case .message, .singleMediaUpgrade, .screenShareOffer:
-                return .regular
-            }
-        }
-    }
-
     let viewFactory: ViewFactory
 
     /// Indicating presentation priority of an alert.
     /// Based on comparing values we can decide whether an alert can be replaced with another alert.
     var presentationPriority: PresentationPriority {
-        kind.presentationPriority
+        type.presentationPriority
     }
 
-    private let kind: Kind
+    var onDismissed: (() -> Void)?
+
+    private let type: AlertType
     private var alertView: AlertView?
     private let alertInsets = UIEdgeInsets(top: 0, left: 20, bottom: 10, right: 20)
 
     init(
-        kind: Kind,
+        type: AlertType,
         viewFactory: ViewFactory
     ) {
-        self.kind = kind
+        self.type = type
         self.viewFactory = viewFactory
         super.init(nibName: nil, bundle: nil)
         self.modalPresentationStyle = .overFullScreen
@@ -87,7 +35,7 @@ class AlertViewController: UIViewController, Replaceable {
         super.loadView()
         let view = UIView()
 
-        if case let Kind.message(conf, _, _) = kind, !conf.shouldShowCloseButton {
+        if case let AlertType.message(conf, _, _) = type, !conf.shouldShowCloseButton {
             view.backgroundColor = UIColor.clear
             view.isUserInteractionEnabled = false
         } else {
@@ -106,7 +54,7 @@ class AlertViewController: UIViewController, Replaceable {
     private func showAlertView(animated: Bool) {
         guard alertView == nil else { return }
 
-        let alertView = makeAlertView()
+        guard let alertView = makeAlertView() else { return }
         self.alertView = alertView
 
         view.addSubview(alertView)
@@ -142,12 +90,13 @@ class AlertViewController: UIViewController, Replaceable {
                 self.alertView?.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
             }, completion: { _ in
                 self.alertView = nil
+                self.onDismissed?()
             }
         )
     }
 
-    private func makeAlertView() -> AlertView {
-        switch kind {
+    private func makeAlertView() -> AlertView? {
+        switch type {
         case let .message(conf, accessibilityIdentifier, dismissed):
             return makeMessageAlertView(
                 with: conf,
@@ -184,6 +133,17 @@ class AlertViewController: UIViewController, Replaceable {
                 link: link,
                 accepted: accepted,
                 declined: declined
+            )
+        case .systemAlert:
+            /// This should never be called because system alerts are
+            /// displayed as UIAlertController and not AlertView. We only need
+            /// this case to differenciate between alert types.
+            return nil
+        case let .view(conf, accessibilityIdentifier, dismissed):
+            return makeMessageAlertView(
+                with: conf,
+                accessibilityIdentifier: accessibilityIdentifier,
+                dismissed: dismissed
             )
         case let .criticalError(conf, accessibilityIdentifier, dismissed):
             return makeMessageAlertView(

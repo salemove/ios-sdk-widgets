@@ -27,5 +27,6 @@ extension CallVisualizer.Coordinator {
         var fetchSiteConfigurations: CoreSdkClient.FetchSiteConfigurations
         var snackBar: SnackBar
         var cameraDeviceManager: CoreSdkClient.GetCameraDeviceManageable
+        var alertManager: AlertManager
     }
 }
