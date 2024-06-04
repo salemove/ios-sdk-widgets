@@ -23,7 +23,6 @@ DEPENDENCIES:
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
-    - AccessibilitySnapshot
     - SnapshotTesting
   trunk:
     - AccessibilitySnapshot
