@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name                  = 'GliaWidgets'
-  s.version               = '2.6.0'
+  s.version               = '${WIDGETS_SDK_VERSION_SEMVER}'
   s.summary               = 'The Glia iOS Widgets library'
   s.description           = 'The Glia Widgets library allows to integrate easily a UI/UX for Glia\'s Digital Customer Service platform'
   s.homepage              = 'https://github.com/salemove/ios-sdk-widgets'
@@ -19,5 +19,5 @@ Pod::Spec.new do |s|
   }
   s.exclude_files         = ['GliaWidgets/Window/**']
 
-  s.dependency 'GliaCoreSDK', '1.5.0'
+  s.dependency 'GliaCoreSDK', '1.5.1'
 end
