@@ -86,6 +86,8 @@ platform :ios do
   lane :create_pr_for_dependencies_update do |options|
     sh "git fetch"
     sh "git checkout development"
+    sh "bundle install"
+    sh "pod update GliaCoreSDK --repo-update"
 
     version = options[:version]
     checksum = options[:checksum]
@@ -114,14 +116,17 @@ platform :ios do
     core_sdk_checksum = options[:core_sdk_checksum]
     UI.user_error!("No Core SDK checksum specified") unless !core_sdk_checksum.nil?
 
-    # Changes to GliaWidgets.podspec
-    sh("sed -i '' \"s/.*GliaCoreSDK.*/  s.dependency 'GliaCoreSDK', '#{core_sdk_version}'/g\" ../templates/GliaWidgets.podspec")
+    # Copy a new podspec file from template
     sh("cp ../templates/GliaWidgets.podspec ../GliaWidgets.podspec")
-    sh("sed -i '' \"s/.*  s.version.*/  s.version               = '#{project_version}'/g\" ../GliaWidgets.podspec")
+    # Replace CORE_SDK_VERSION_SEMVER with passed value.
+    sh("sed -i '' 's/${CORE_SDK_VERSION_SEMVER}/#{core_sdk_version}/g' ../GliaWidgets.podspec")
 
-    # Changes to Package.swift
+    # Copy a new Package.swift file from template
     sh("cp ../templates/Package.swift ../Package.swift")
-    sh("sed -i '' 's/\${CORE_SDK_VERSION}/#{core_sdk_version}/' ../Package.swift")
+
+    # Replace CORE_SDK_SEMVER with passed value.
+    sh("sed -i '' 's/\${CORE_SDK_SEMVER}/#{core_sdk_version}/' ../Package.swift")
+    # Replace CORE_SDK_CHECKSUM with passed value.
     sh("sed -i '' 's/\${CORE_SDK_CHECKSUM}/#{core_sdk_checksum}/' ../Package.swift")
   end
 end
