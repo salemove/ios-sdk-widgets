@@ -72,7 +72,6 @@ extension CallVisualizer {
                     answer(isAccepted)
                 }
                 self?.closeVisitorCode {
-
                     if site.mobileConfirmDialogEnabled == true {
                         self?.showConfirmationAlert(completion)
                     } else {

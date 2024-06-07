@@ -54,11 +54,7 @@ extension AlertManager {
         as input: AlertInputType
     ) {
         guard input != currentAlert else { return }
-
-        let alertType = composer.composeAlert(
-            type: input,
-            in: placement
-        )
+        let alertType = composer.composeAlert(input: input)
 
         switch placement {
         case .global:
