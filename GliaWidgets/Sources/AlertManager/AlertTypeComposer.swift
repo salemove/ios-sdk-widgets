@@ -35,10 +35,9 @@ extension AlertManager.AlertTypeComposer {
     /// - Returns: The composed alert type.
     ///
     func composeAlert(
-        type: AlertInputType,
-        in placement: AlertPlacement
+        input: AlertInputType
     ) -> AlertType {
-        switch type {
+        switch input {
         case let .mediaSourceNotAvailable(dismissed):
             return mediaTypeNotAvailableAlertType(dismissed: dismissed)
         case let .cameraSettings(dismissed):
@@ -83,8 +82,7 @@ extension AlertManager.AlertTypeComposer {
         case let .error(error, dismissed):
             return composeErrorAlert(
                 error: error,
-                dismissed: dismissed,
-                in: placement
+                dismissed: dismissed
             )
         }
     }
@@ -108,8 +106,7 @@ private extension AlertManager.AlertTypeComposer {
     ///
     func composeErrorAlert(
         error: (any Error)?,
-        dismissed: (() -> Void)? = nil,
-        in location: AlertPlacement
+        dismissed: (() -> Void)? = nil
     ) -> AlertType {
         switch error {
         case let queueError as CoreSdkClient.QueueError:
