@@ -508,12 +508,7 @@ extension ChatView {
         guard callBubble == nil else { return }
         let callBubble = BubbleView(
             with: style.callBubble,
-            environment: .init(
-                data: environment.data,
-                uuid: environment.uuid,
-                gcd: environment.gcd,
-                imageViewCache: environment.imageViewCache
-            )
+            environment: .create(with: environment)
         )
         callBubble.kind = .userImage(url: imageUrl)
         callBubble.tap = { [weak self] in self?.callBubbleTapped?() }

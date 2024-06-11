@@ -109,12 +109,7 @@ class ViewFactory {
     func makeBubbleView() -> BubbleView {
         return BubbleView(
             with: theme.minimizedBubble,
-            environment: .init(
-                data: environment.data,
-                uuid: environment.uuid,
-                gcd: environment.gcd,
-                imageViewCache: environment.imageViewCache
-            )
+            environment: .create(with: environment)
         )
     }
 
