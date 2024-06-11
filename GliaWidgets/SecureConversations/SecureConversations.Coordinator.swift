@@ -38,42 +38,11 @@ extension SecureConversations {
 
         private func makeWelcomeViewModel() -> SecureConversations.WelcomeViewModel {
             SecureConversations.WelcomeViewModel(
-                environment: .init(
-                    welcomeStyle: viewFactory.theme.secureConversationsWelcome,
-                    queueIds: environment.queueIds,
-                    listQueues: environment.listQueues,
-                    sendSecureMessagePayload: environment.sendSecureMessagePayload,
-                    fileUploader: environment.createFileUploader(
-                        environment.maximumUploads(),
-                        .init(
-                            uploadFile: .toSecureMessaging(environment.uploadSecureFile),
-                            fileManager: environment.fileManager,
-                            data: environment.data,
-                            date: environment.date,
-                            gcd: environment.gcd,
-                            uiScreen: environment.uiScreen,
-                            createThumbnailGenerator: environment.createThumbnailGenerator,
-                            uuid: environment.uuid
-                        )
-                    ),
-                    uiApplication: environment.uiApplication,
-                    createFileUploadListModel: environment.createFileUploadListModel,
-                    fetchSiteConfigurations: environment.fetchSiteConfigurations,
-                    startSocketObservation: environment.startSocketObservation,
-                    stopSocketObservation: environment.stopSocketObservation,
-                    getCurrentEngagement: environment.getCurrentEngagement,
-                    uploadSecureFile: environment.uploadSecureFile,
-                    uploadFileToEngagement: environment.uploadFileToEngagement,
-                    createSendMessagePayload: environment.createSendMessagePayload,
-                    log: environment.log
+                environment: .create(
+                    with: environment,
+                    viewFactory: viewFactory
                 ),
-                availability: .init(
-                    environment: .init(
-                        listQueues: environment.listQueues,
-                        queueIds: environment.queueIds,
-                        isAuthenticated: environment.isAuthenticated
-                    )
-                )
+                availability: .init(environment: .create(with: environment))
             )
         }
 
