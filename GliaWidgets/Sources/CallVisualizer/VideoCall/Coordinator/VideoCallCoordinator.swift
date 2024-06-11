@@ -34,22 +34,7 @@ extension CallVisualizer {
 
             let viewModel = VideoCallViewModel(
                 style: theme.call,
-                environment: .init(
-                    data: environment.data,
-                    uuid: environment.uuid,
-                    gcd: environment.gcd,
-                    imageViewCache: environment.imageViewCache,
-                    timerProviding: environment.timerProviding,
-                    uiApplication: environment.uiApplication,
-                    notificationCenter: environment.notificationCenter,
-                    date: environment.date,
-                    engagedOperator: environment.engagedOperator,
-                    screenShareHandler: environment.screenShareHandler,
-                    proximityManager: environment.proximityManager,
-                    log: environment.log,
-                    cameraDeviceManager: environment.cameraDeviceManager,
-                    flipCameraButtonStyle: environment.flipCameraButtonStyle
-                ),
+                environment: .create(with: environment),
                 call: call
             )
             self.viewModel = viewModel
@@ -57,10 +42,7 @@ extension CallVisualizer {
             let viewController = VideoCallViewController(
                 props: viewModel.makeProps(),
                 environment: .init(
-                    videoCallView: .init(
-                        gcd: environment.gcd,
-                        uiScreen: environment.uiScreen
-                    ),
+                    videoCallView: .create(with: environment),
                     notificationCenter: environment.notificationCenter
                 )
             )
