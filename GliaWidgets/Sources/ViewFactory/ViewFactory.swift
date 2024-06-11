@@ -77,16 +77,7 @@ class ViewFactory {
     ) -> CallView {
         return CallView(
             with: theme.call,
-            environment: .init(
-                data: environment.data,
-                uuid: environment.uuid,
-                gcd: environment.gcd,
-                imageViewCache: environment.imageViewCache,
-                timerProviding: environment.timerProviding,
-                uiApplication: environment.uiApplication,
-                uiScreen: environment.uiScreen,
-                uiDevice: environment.uiDevice
-            ),
+            environment: .create(with: environment),
             props: Self.callHeaderProps(
                 theme: theme,
                 endCmd: endCmd,
