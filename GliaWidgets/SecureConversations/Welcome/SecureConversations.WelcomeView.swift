@@ -5,11 +5,7 @@ import Dispatch
 
 extension SecureConversations {
     final class WelcomeView: BaseView {
-        struct Environemnt {
-            let gcd: GCD
-            let uiScreen: UIKitBased.UIScreen
-            let notificationCenter: FoundationBased.NotificationCenter
-        }
+        
 
         static let sideMargin = 24.0
         static let filePickerButtonSize = 44.0
