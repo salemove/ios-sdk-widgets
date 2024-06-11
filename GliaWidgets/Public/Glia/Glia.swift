@@ -148,11 +148,11 @@ public class Glia {
         )
 
         alertManager = .init(
-            environment: .init(
-                log: loggerPhase.logger,
-                uiApplication: environment.uiApplication
-            ),
-            viewFactory: viewFactory
+            environment: .create(
+                with: environment,
+                logger: loggerPhase.logger,
+                viewFactory: viewFactory
+            )
         )
     }
 

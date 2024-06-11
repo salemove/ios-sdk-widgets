@@ -325,9 +325,3 @@ private extension AlertManager.AlertTypeComposer {
         )
     }
 }
-
-extension AlertManager.AlertTypeComposer {
-    struct Environment {
-        let log: CoreSdkClient.Logger
-    }
-}
