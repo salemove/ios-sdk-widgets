@@ -12,14 +12,7 @@ final class CallViewController: EngagementViewController {
         self.viewModel = viewModel
         super.init(
             viewModel: viewModel,
-            environment: .init(
-                viewFactory: environment.viewFactory,
-                snackBar: environment.snackBar,
-                timerProviding: environment.timerProviding,
-                gcd: environment.gcd,
-                notificationCenter: environment.notificationCenter,
-                alertManager: environment.alertManager
-            )
+            environment: .create(with: environment)
         )
     }
 
