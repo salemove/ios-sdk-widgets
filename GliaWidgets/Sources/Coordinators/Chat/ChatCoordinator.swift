@@ -167,7 +167,10 @@ extension ChatCoordinator {
             startAction: startAction,
             deliveredStatusText: viewFactory.theme.chat.visitorMessageStyle.delivered,
             chatType: chatType,
-            environment: Self.environmentForChatModel(environment: environment, viewFactory: viewFactory),
+            environment: .create(
+                with: environment,
+                viewFactory: viewFactory
+            ),
             maximumUploads: environment.maximumUploads
         )
         viewModel.isInteractableCard = viewFactory.messageRenderer?.isInteractable
@@ -222,39 +225,6 @@ extension ChatCoordinator {
         case .finished:
             self.delegate?(.finished)
         }
-    }
-
-    static func environmentForChatModel(
-        environment: Environment,
-        viewFactory: ViewFactory
-    ) -> ChatViewModel.Environment {
-        ChatViewModel.Environment(
-            fetchFile: environment.fetchFile,
-            downloadSecureFile: environment.downloadSecureFile,
-            uploadFileToEngagement: environment.uploadFileToEngagement,
-            fileManager: environment.fileManager,
-            data: environment.data,
-            date: environment.date,
-            gcd: environment.gcd,
-            uiScreen: environment.uiScreen,
-            createThumbnailGenerator: environment.createThumbnailGenerator,
-            createFileDownload: environment.createFileDownload,
-            loadChatMessagesFromHistory: environment.fromHistory,
-            fetchSiteConfigurations: environment.fetchSiteConfigurations,
-            getCurrentEngagement: environment.getCurrentEngagement,
-            timerProviding: .live,
-            uuid: environment.uuid,
-            uiApplication: environment.uiApplication,
-            fetchChatHistory: environment.fetchChatHistory,
-            fileUploadListStyle: viewFactory.theme.chatStyle.messageEntry.uploadList,
-            createFileUploadListModel: environment.createFileUploadListModel,
-            createSendMessagePayload: environment.createSendMessagePayload,
-            proximityManager: environment.proximityManager,
-            log: environment.log,
-            cameraDeviceManager: environment.cameraDeviceManager,
-            flipCameraButtonStyle: environment.flipCameraButtonStyle,
-            alertManager: environment.alertManager
-        )
     }
 }
 
