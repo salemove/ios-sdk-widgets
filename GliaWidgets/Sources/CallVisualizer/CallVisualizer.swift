@@ -18,17 +18,7 @@ public final class CallVisualizer {
         let viewFactory = ViewFactory(
             with: environment.theme,
             messageRenderer: nil,
-            environment: .init(
-                data: environment.data,
-                uuid: environment.uuid,
-                gcd: environment.gcd,
-                imageViewCache: environment.imageViewCache,
-                timerProviding: environment.timerProviding,
-                uiApplication: environment.uiApplication,
-                uiScreen: environment.uiScreen,
-                log: environment.log,
-                uiDevice: environment.uiDevice
-            )
+            environment: .create(with: environment)
         )
         return Coordinator(
             environment: .init(

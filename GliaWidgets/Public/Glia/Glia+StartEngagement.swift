@@ -51,16 +51,9 @@ extension Glia {
         let viewFactory = ViewFactory(
             with: modifiedTheme,
             messageRenderer: messageRenderer,
-            environment: .init(
-                data: environment.data,
-                uuid: environment.uuid,
-                gcd: environment.gcd,
-                imageViewCache: environment.imageViewCache,
-                timerProviding: environment.timerProviding,
-                uiApplication: environment.uiApplication,
-                uiScreen: environment.uiScreen,
-                log: loggerPhase.logger,
-                uiDevice: environment.uiDevice
+            environment: .create(
+                with: environment,
+                loggerPhase: loggerPhase
             )
         )
 
