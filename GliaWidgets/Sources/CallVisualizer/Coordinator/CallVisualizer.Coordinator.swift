@@ -152,24 +152,7 @@ extension CallVisualizer.Coordinator {
 
     private func buildVideoCallViewController() -> UIViewController {
         let coordinator = CallVisualizer.VideoCallCoordinator(
-            environment: .init(
-                data: environment.data,
-                uuid: environment.uuid,
-                gcd: environment.gcd,
-                imageViewCache: environment.imageViewCache,
-                timerProviding: environment.timerProviding,
-                uiApplication: environment.uiApplication,
-                uiScreen: environment.uiScreen,
-                uiDevice: environment.uiDevice,
-                notificationCenter: environment.notificationCenter,
-                date: environment.date,
-                engagedOperator: environment.engagedOperator,
-                screenShareHandler: environment.screenShareHandler,
-                proximityManager: environment.proximityManager,
-                log: environment.log,
-                cameraDeviceManager: environment.cameraDeviceManager,
-                flipCameraButtonStyle: environment.viewFactory.theme.call.flipCameraButtonStyle
-            ),
+            environment: .create(with: environment),
             theme: environment.viewFactory.theme,
             call: .init(
                 .video(direction: .twoWay),
