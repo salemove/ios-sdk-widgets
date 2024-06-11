@@ -60,12 +60,7 @@ class FileDownload {
             let url = storage.url(for: storageID)
             let localFile = LocalFile(
                 with: url,
-                environment: .init(
-                    fileManager: environment.fileManager,
-                    gcd: environment.gcd,
-                    uiScreen: environment.uiScreen,
-                    thumbnailGenerator: environment.createThumbnailGenerator()
-                )
+                environment: .create(with: environment)
             )
             state.value = .downloaded(localFile)
         }
@@ -105,12 +100,7 @@ class FileDownload {
                 let url = self.storage.url(for: storageID)
                 let file = LocalFile(
                     with: url,
-                    environment: .init(
-                        fileManager: self.environment.fileManager,
-                        gcd: self.environment.gcd,
-                        uiScreen: self.environment.uiScreen,
-                        thumbnailGenerator: self.environment.createThumbnailGenerator()
-                    )
+                    environment: .create(with: self.environment)
                 )
                 self.storage.store(data.data, for: storageID)
                 self.state.value = .downloaded(file)

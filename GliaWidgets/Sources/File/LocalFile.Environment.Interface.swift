@@ -6,3 +6,23 @@ extension LocalFile {
         var thumbnailGenerator: QuickLookBased.ThumbnailGenerator
     }
 }
+
+extension LocalFile.Environment {
+    static func create(with environment: FileUploader.Environment) -> Self {
+        .init(
+            fileManager: environment.fileManager,
+            gcd: environment.gcd,
+            uiScreen: environment.uiScreen,
+            thumbnailGenerator: environment.createThumbnailGenerator()
+        )
+    }
+
+    static func create(with environment: FileDownload.Environment) -> Self {
+        .init(
+            fileManager: environment.fileManager,
+            gcd: environment.gcd,
+            uiScreen: environment.uiScreen,
+            thumbnailGenerator: environment.createThumbnailGenerator()
+        )
+    }
+}
