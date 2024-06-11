@@ -28,15 +28,7 @@ class ViewFactory {
         return ChatView(
             with: theme.chat,
             messageRenderer: messageRenderer,
-            environment: .init(
-                data: environment.data,
-                uuid: environment.uuid,
-                gcd: environment.gcd,
-                imageViewCache: environment.imageViewCache,
-                timerProviding: environment.timerProviding,
-                uiApplication: environment.uiApplication,
-                uiScreen: environment.uiScreen
-            ),
+            environment: .create(with: environment),
             props: Self.chatHeaderProps(
                 theme: theme,
                 endCmd: endCmd,
