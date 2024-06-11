@@ -229,17 +229,11 @@ extension ChatCoordinator {
     private func transcriptModel(with controller: @escaping () -> ChatViewController?) -> SecureConversations.TranscriptModel {
         let viewModel = SecureConversations.TranscriptModel(
             isCustomCardSupported: viewFactory.messageRenderer != nil,
-            environment: Self.environmentForTranscriptModel(
-                environment: environment,
+            environment: .create(
+                with: environment,
                 viewFactory: viewFactory
             ),
-            availability: .init(
-                environment: .init(
-                    listQueues: environment.listQueues,
-                    queueIds: environment.queueIds,
-                    isAuthenticated: environment.isAuthenticated
-                )
-            ),
+            availability: .init(environment: .create(with: environment)),
             deliveredStatusText: viewFactory.theme.chat.visitorMessageStyle.delivered,
             interactor: interactor
         )
@@ -293,43 +287,6 @@ extension ChatCoordinator {
                 self?.delegate?(.minimize)
             }
         }
-    }
-
-    static func environmentForTranscriptModel(
-        environment: Environment,
-        viewFactory: ViewFactory
-    ) -> SecureConversations.TranscriptModel.Environment {
-        SecureConversations.TranscriptModel.Environment(
-           fetchFile: environment.fetchFile,
-           downloadSecureFile: environment.downloadSecureFile,
-           fileManager: environment.fileManager,
-           data: environment.data,
-           date: environment.date,
-           gcd: environment.gcd,
-           uiScreen: environment.uiScreen,
-           createThumbnailGenerator: environment.createThumbnailGenerator,
-           createFileDownload: environment.createFileDownload,
-           loadChatMessagesFromHistory: environment.fromHistory,
-           fetchChatHistory: environment.fetchChatHistory,
-           uiApplication: environment.uiApplication,
-           sendSecureMessagePayload: environment.sendSecureMessagePayload,
-           queueIds: environment.queueIds,
-           listQueues: environment.listQueues,
-           createFileUploadListModel: environment.createFileUploadListModel,
-           uuid: environment.uuid,
-           secureUploadFile: environment.secureUploadFile,
-           fileUploadListStyle: viewFactory.theme.chatStyle.messageEntry.uploadList,
-           fetchSiteConfigurations: environment.fetchSiteConfigurations,
-           getSecureUnreadMessageCount: environment.getSecureUnreadMessageCount,
-           messagesWithUnreadCountLoaderScheduler: environment.messagesWithUnreadCountLoaderScheduler,
-           secureMarkMessagesAsRead: environment.secureMarkMessagesAsRead,
-           interactor: environment.interactor,
-           startSocketObservation: environment.startSocketObservation,
-           stopSocketObservation: environment.stopSocketObservation,
-           createSendMessagePayload: environment.createSendMessagePayload,
-           log: environment.log,
-           maximumUploads: environment.maximumUploads
-       )
     }
 }
 
