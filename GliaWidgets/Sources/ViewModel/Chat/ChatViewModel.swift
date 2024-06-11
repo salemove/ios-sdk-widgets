@@ -114,19 +114,7 @@ class ChatViewModel: EngagementViewModel {
             }
         }
 
-        self.downloader = FileDownloader(
-            environment: .init(
-                fetchFile: environment.fetchFile,
-                downloadSecureFile: environment.downloadSecureFile,
-                fileManager: environment.fileManager,
-                data: environment.data,
-                date: environment.date,
-                gcd: environment.gcd,
-                uiScreen: environment.uiScreen,
-                createThumbnailGenerator: environment.createThumbnailGenerator,
-                createFileDownload: environment.createFileDownload
-            )
-        )
+        self.downloader = FileDownloader(environment: .create(with: environment))
         self.deliveredStatusText = deliveredStatusText
         super.init(
             interactor: interactor,
