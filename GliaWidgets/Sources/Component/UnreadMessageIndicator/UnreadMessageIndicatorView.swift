@@ -34,12 +34,7 @@ final class UnreadMessageIndicatorView: BaseView {
         self.environment = environment
         userImageView = UserImageView(
             with: style.userImage,
-            environment: .init(
-                data: environment.data,
-                uuid: environment.uuid,
-                gcd: environment.gcd,
-                imageViewCache: environment.imageViewCache
-            )
+            environment: .create(with: environment)
         )
         badgeView = BadgeView(with: style.badge)
         super.init()

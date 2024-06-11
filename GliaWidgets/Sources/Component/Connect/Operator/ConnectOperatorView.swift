@@ -54,12 +54,7 @@ final class ConnectOperatorView: BaseView {
         self.environment = environment
         self.imageView = UserImageView(
             with: style.operatorImage,
-            environment: .init(
-                data: environment.data,
-                uuid: environment.uuid,
-                gcd: environment.gcd,
-                imageViewCache: environment.imageViewCache
-            )
+            environment: .create(with: environment)
         )
         super.init()
     }

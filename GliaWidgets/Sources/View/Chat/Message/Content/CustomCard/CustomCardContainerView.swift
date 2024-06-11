@@ -18,12 +18,7 @@ final class CustomCardContainerView: BaseView {
     private let style: UserImageStyle
     private lazy var operatorImageView = UserImageView(
         with: style,
-        environment: .init(
-            data: environment.data,
-            uuid: environment.uuid,
-            gcd: environment.gcd,
-            imageViewCache: environment.imageViewCache
-        )
+        environment: .create(with: environment)
     )
 
     init(
