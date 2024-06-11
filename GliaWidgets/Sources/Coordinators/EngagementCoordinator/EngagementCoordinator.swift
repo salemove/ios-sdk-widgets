@@ -363,35 +363,7 @@ extension EngagementCoordinator {
             unreadMessages: unreadMessages,
             screenShareHandler: screenShareHandler,
             startAction: startAction,
-            environment: .init(
-                fetchFile: environment.fetchFile,
-                downloadSecureFile: environment.downloadSecureFile,
-                uploadFileToEngagement: environment.uploadFileToEngagement,
-                fileManager: environment.fileManager,
-                data: environment.data,
-                date: environment.date,
-                gcd: environment.gcd,
-                createThumbnailGenerator: environment.createThumbnailGenerator,
-                createFileDownload: environment.createFileDownload,
-                fromHistory: environment.loadChatMessagesFromHistory,
-                fetchSiteConfigurations: environment.fetchSiteConfigurations,
-                getCurrentEngagement: environment.getCurrentEngagement,
-                timerProviding: environment.timerProviding,
-                submitSurveyAnswer: environment.submitSurveyAnswer,
-                uuid: environment.uuid,
-                uiApplication: environment.uiApplication,
-                uiScreen: environment.uiScreen,
-                notificationCenter: environment.notificationCenter,
-                fetchChatHistory: environment.fetchChatHistory,
-                createFileUploadListModel: environment.createFileUploadListModel,
-                createSendMessagePayload: environment.createSendMessagePayload,
-                proximityManager: environment.proximityManager,
-                log: environment.log,
-                snackBar: environment.snackBar,
-                cameraDeviceManager: environment.cameraDeviceManager,
-                flipCameraButtonStyle: environment.flipCameraButtonStyle,
-                alertManager: environment.alertManager
-            )
+            environment: .create(with: environment)
         )
         coordinator.delegate = { [weak self] event in
             guard let self = self else { return }
