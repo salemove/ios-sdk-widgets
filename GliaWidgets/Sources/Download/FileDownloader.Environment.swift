@@ -28,4 +28,18 @@ extension FileDownloader.Environment {
             createFileDownload: environment.createFileDownload
         )
     }
+
+    static func create(with environment: ChatViewModel.Environment) -> Self {
+        .init(
+            fetchFile: environment.fetchFile,
+            downloadSecureFile: environment.downloadSecureFile,
+            fileManager: environment.fileManager,
+            data: environment.data,
+            date: environment.date,
+            gcd: environment.gcd,
+            uiScreen: environment.uiScreen,
+            createThumbnailGenerator: environment.createThumbnailGenerator,
+            createFileDownload: environment.createFileDownload
+        )
+    }
 }
