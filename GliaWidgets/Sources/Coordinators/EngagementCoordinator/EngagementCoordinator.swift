@@ -466,10 +466,8 @@ extension EngagementCoordinator {
                     delegate: self,
                     sceneProvider: sceneProvider,
                     features: features,
-                    environment: .init(
-                        uiApplication: environment.uiApplication,
-                        uiScreen: environment.uiScreen,
-                        log: environment.log,
+                    environment: .create(
+                        with: environment,
                         animate: animate
                     )
                 )
@@ -478,10 +476,8 @@ extension EngagementCoordinator {
                     bubbleView: bubbleView,
                     delegate: self,
                     features: features,
-                    environment: .init(
-                        uiApplication: environment.uiApplication,
-                        uiScreen: environment.uiScreen,
-                        log: environment.log,
+                    environment: .create(
+                        with: environment,
                         animate: animate
                     )
                 )
@@ -491,10 +487,8 @@ extension EngagementCoordinator {
                 bubbleView: bubbleView,
                 delegate: self,
                 features: features,
-                environment: .init(
-                    uiApplication: environment.uiApplication,
-                    uiScreen: environment.uiScreen,
-                    log: environment.log,
+                environment: .create(
+                    with: environment,
                     animate: animate
                 )
             )
