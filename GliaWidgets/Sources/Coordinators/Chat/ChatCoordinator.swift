@@ -78,13 +78,9 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
 
         let chatController = ChatViewController(
             viewModel: model,
-            environment: .init(
-                timerProviding: environment.timerProviding,
-                viewFactory: viewFactory,
-                gcd: environment.gcd,
-                snackBar: environment.snackBar,
-                notificationCenter: environment.notificationCenter,
-                alertManager: environment.alertManager
+            environment: .create(
+                with: environment,
+                viewFactory: viewFactory
             )
         )
         self.controller = chatController

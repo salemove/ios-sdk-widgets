@@ -10,3 +10,19 @@ extension ChatViewController {
         var alertManager: AlertManager
     }
 }
+
+extension ChatViewController.Environment {
+    static func create(
+        with environment: ChatCoordinator.Environment,
+        viewFactory: ViewFactory
+    ) -> Self {
+        .init(
+            timerProviding: environment.timerProviding,
+            viewFactory: viewFactory,
+            gcd: environment.gcd,
+            snackBar: environment.snackBar,
+            notificationCenter: environment.notificationCenter,
+            alertManager: environment.alertManager
+        )
+    }
+}
