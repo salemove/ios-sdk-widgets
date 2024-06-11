@@ -208,15 +208,3 @@ private extension CallButton.State {
         }
     }
 }
-
-extension CallViewController {
-    struct Environment {
-        var viewFactory: ViewFactory
-        var notificationCenter: FoundationBased.NotificationCenter
-        var log: CoreSdkClient.Logger
-        var timerProviding: FoundationBased.Timer.Providing
-        var gcd: GCD
-        var snackBar: SnackBar
-        var alertManager: AlertManager
-    }
-}

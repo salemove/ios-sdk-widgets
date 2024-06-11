@@ -78,14 +78,9 @@ private extension CallCoordinator {
         }
         return CallViewController(
             viewModel: viewModel,
-            environment: .init(
-                viewFactory: viewFactory,
-                notificationCenter: environment.notificationCenter,
-                log: environment.log,
-                timerProviding: environment.timerProviding,
-                gcd: environment.gcd,
-                snackBar: environment.snackBar,
-                alertManager: environment.alertManager
+            environment: .create(
+                with: environment,
+                viewFactory: viewFactory
             )
         )
     }
