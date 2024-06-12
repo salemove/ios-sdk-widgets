@@ -45,9 +45,3 @@ extension FilePickerController: UIDocumentPickerDelegate {
         viewModel.event(.cancelled)
     }
 }
-
-extension FilePickerController {
-    public struct Environment {
-        let fileManager: FoundationBased.FileManager
-    }
-}
