@@ -19,7 +19,7 @@ class ChatFileDownloadContentView: ChatFileContentView {
         self.style = style
         self.filePreviewView = FilePreviewView(
             with: style.filePreview,
-            environment: .init(uiScreen: environment.uiScreen)
+            environment: .create(with: environment)
         )
         super.init(
             with: style,
@@ -264,10 +264,4 @@ class ChatFileDownloadContentView: ChatFileContentView {
         }
     }
     // swiftlint:enable function_body_length
-}
-
-extension ChatFileDownloadContentView {
-    struct Environment {
-        var uiScreen: UIKitBased.UIScreen
-    }
 }

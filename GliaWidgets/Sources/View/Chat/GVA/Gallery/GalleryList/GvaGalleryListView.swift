@@ -155,15 +155,3 @@ extension GvaGalleryListView {
         static var nop: Props { .init(items: [], style: .initial) }
     }
 }
-
-// MARK: - Environment
-
-extension GvaGalleryListView {
-    struct Environment {
-        var data: FoundationBased.Data
-        var uuid: () -> UUID
-        var gcd: GCD
-        var imageViewCache: ImageView.Cache
-        var uiScreen: UIKitBased.UIScreen
-    }
-}

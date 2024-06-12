@@ -44,7 +44,7 @@ class OperatorChatMessageView: ChatMessageView {
                 )
             ),
             contentAlignment: .left,
-            environment: .init(uiScreen: environment.uiScreen)
+            environment: .create(with: environment)
         )
         setup()
         layout()

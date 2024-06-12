@@ -240,12 +240,7 @@ extension ChatViewController {
         let fileUploadComplete: FileUpload = .mock(
             localFile: .mock(
                 url: localFileURL,
-                environment: .init(
-                    fileManager: fileManager,
-                    gcd: gcd,
-                    uiScreen: uiScreen,
-                    thumbnailGenerator: .mock
-                )
+                environment: .mock()
             ),
             storage: FileSystemStorage.mock(
                 directory: .documents(fileManager),

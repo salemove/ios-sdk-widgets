@@ -20,4 +20,24 @@ extension OperatorChatMessageView.Environment {
             uiScreen: environment.uiScreen
         )
     }
+
+    static func create(with environment: GvaPersistentButtonView.Environment) -> Self {
+        .init(
+            data: environment.data,
+            uuid: environment.uuid,
+            gcd: environment.gcd,
+            imageViewCache: environment.imageViewCache,
+            uiScreen: environment.uiScreen
+        )
+    }
+
+    static func create(with environment: ChoiceCardView.Environment) -> Self {
+        .init(
+            data: environment.data,
+            uuid: environment.uuid,
+            gcd: environment.gcd,
+            imageViewCache: environment.imageViewCache,
+            uiScreen: environment.uiScreen
+        )
+    }
 }

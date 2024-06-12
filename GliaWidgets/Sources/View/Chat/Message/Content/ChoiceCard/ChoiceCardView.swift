@@ -21,13 +21,7 @@ final class ChoiceCardView: OperatorChatMessageView {
                 operatorImage: style.operatorImage,
                 accessibility: .init(isFontScalingEnabled: style.text.accessibility.isFontScalingEnabled)
             ),
-            environment: .init(
-                data: environment.data,
-                uuid: environment.uuid,
-                gcd: environment.gcd,
-                imageViewCache: environment.imageViewCache,
-                uiScreen: environment.uiScreen
-            )
+            environment: .create(with: environment)
         )
     }
 
@@ -58,14 +52,7 @@ final class ChoiceCardView: OperatorChatMessageView {
         stackView.layoutInSuperview().activate()
 
         if let imageUrl = choiceCard.imageUrl {
-            let imageView = ImageView(
-                environment: .init(
-                    data: environment.data,
-                    uuid: environment.uuid,
-                    gcd: environment.gcd,
-                    imageViewCache: environment.imageViewCache
-                )
-            )
+            let imageView = ImageView(environment: .create(with: environment))
             imageView.contentMode = .scaleAspectFill
             imageView.layer.cornerRadius = 4
             imageView.layer.masksToBounds = true
