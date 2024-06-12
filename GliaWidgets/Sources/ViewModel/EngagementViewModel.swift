@@ -130,7 +130,7 @@ class EngagementViewModel: CommonEngagementModel {
                     self.endSession()
                     return
                 }
-                self.engagementAction?(.showAlert(.endEngagement(confirmed: { [weak self] in
+                self.engagementAction?(.showAlert(.operatorEndedEngagement(action: { [weak self] in
                     self?.endSession()
                     self?.engagementDelegate?(
                           .engaged(
