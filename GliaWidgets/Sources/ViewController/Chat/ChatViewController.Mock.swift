@@ -16,7 +16,14 @@ extension ChatViewController {
     ) -> ChatViewController {
         ChatViewController(
             viewModel: .chat(chatViewModel),
-            environment: .mock()
+            environment: .init(
+                timerProviding: timerProviding,
+                viewFactory: viewFactory,
+                gcd: gcd,
+                snackBar: snackBar,
+                notificationCenter: notificationCenter,
+                alertManager: alertManager
+            )
         )
     }
 
