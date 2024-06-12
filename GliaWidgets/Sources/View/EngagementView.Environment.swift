@@ -36,4 +36,16 @@ extension EngagementView.Environment {
             uiScreen: environment.uiScreen
         )
     }
+
+    static func create(with environment: ChatView.Environment) -> Self {
+        .init(
+            data: environment.data,
+            uuid: environment.uuid,
+            gcd: environment.gcd,
+            imageViewCache: environment.imageViewCache,
+            timerProviding: environment.timerProviding,
+            uiApplication: environment.uiApplication,
+            uiScreen: environment.uiScreen
+        )
+    }
 }

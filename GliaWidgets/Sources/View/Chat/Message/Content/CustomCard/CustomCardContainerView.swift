@@ -59,35 +59,3 @@ final class CustomCardContainerView: BaseView {
         operatorImageView.setOperatorImage(fromUrl: url, animated: animated)
     }
 }
-
-// MARK: - Environment
-
-extension CustomCardContainerView {
-    struct Environment {
-        var data: FoundationBased.Data
-        var uuid: () -> UUID
-        var gcd: GCD
-        var imageViewCache: ImageView.Cache
-        var uiScreen: UIKitBased.UIScreen
-    }
-}
-
-#if DEBUG
-extension CustomCardContainerView.Environment {
-    static func mock(
-        data: FoundationBased.Data = .mock,
-        uuid: @escaping () -> UUID = { .mock },
-        gcd: GCD = .mock,
-        imageViewCache: ImageView.Cache = .mock,
-        uiScreen: UIKitBased.UIScreen = .mock
-    ) -> CustomCardContainerView.Environment {
-        .init(
-            data: data,
-            uuid: uuid,
-            gcd: gcd,
-            imageViewCache: imageViewCache,
-            uiScreen: uiScreen
-        )
-    }
-}
-#endif

@@ -103,12 +103,3 @@ final class UnreadMessageIndicatorView: BaseView {
         accessibilityIdentifier = "unread_message_indicator"
     }
 }
-
-extension UnreadMessageIndicatorView {
-    struct Environment {
-        var data: FoundationBased.Data
-        var uuid: () -> UUID
-        var gcd: GCD
-        var imageViewCache: ImageView.Cache
-    }
-}

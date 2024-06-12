@@ -64,20 +64,11 @@ class ChatView: EngagementView {
         self.environment = environment
         self.messageEntryView = ChatMessageEntryView(
             with: style.messageEntry,
-            environment: .init(
-                gcd: environment.gcd,
-                uiApplication: environment.uiApplication,
-                uiScreen: environment.uiScreen
-            )
+            environment: .create(with: environment)
         )
         self.unreadMessageIndicatorView = UnreadMessageIndicatorView(
             with: style.unreadMessageIndicator,
-            environment: .init(
-                data: environment.data,
-                uuid: environment.uuid,
-                gcd: environment.gcd,
-                imageViewCache: environment.imageViewCache
-            )
+            environment: .create(with: environment)
         )
 
         self.typingIndicatorView = OperatorTypingIndicatorView(
@@ -93,15 +84,7 @@ class ChatView: EngagementView {
         super.init(
             with: style,
             layout: .chat,
-            environment: .init(
-                data: environment.data,
-                uuid: environment.uuid,
-                gcd: environment.gcd,
-                imageViewCache: environment.imageViewCache,
-                timerProviding: environment.timerProviding,
-                uiApplication: environment.uiApplication,
-                uiScreen: environment.uiScreen
-            ),
+            environment: .create(with: environment),
             headerProps: props.header
         )
         self.accessibilityIdentifier = "chat_root_view"
@@ -608,13 +591,7 @@ extension ChatView {
     ) -> ChatItemCell.Content {
         let view = OperatorChatMessageView(
             with: style.operatorMessageStyle,
-            environment: .init(
-                data: environment.data,
-                uuid: environment.uuid,
-                gcd: environment.gcd,
-                imageViewCache: environment.imageViewCache,
-                uiScreen: environment.uiScreen
-            )
+            environment: .create(with: environment)
         )
         view.appendContent(
             .text(
@@ -651,13 +628,7 @@ extension ChatView {
     ) -> ChatItemCell.Content {
         let view = ChoiceCardView(
             with: style.choiceCardStyle,
-            environment: .init(
-                data: environment.data,
-                uuid: environment.uuid,
-                gcd: environment.gcd,
-                imageViewCache: environment.imageViewCache,
-                uiScreen: environment.uiScreen
-            )
+            environment: .create(with: environment)
         )
         let choiceCard = ChoiceCard(with: message, isActive: isActive)
         view.showsOperatorImage = showsImage
@@ -670,9 +641,7 @@ extension ChatView {
     private func systemMessageContent(_ message: ChatMessage) -> ChatItemCell.Content {
         let view = SystemMessageView(
             with: style.systemMessageStyle,
-            environment: .init(
-                uiScreen: environment.uiScreen
-            )
+            environment: .create(with: environment)
         )
 
         view.appendContent(
@@ -693,7 +662,7 @@ extension ChatView {
     private func outgoingMessageContent(_ message: OutgoingMessage) -> ChatItemCell.Content {
         let view = VisitorChatMessageView(
             with: style.visitorMessageStyle,
-            environment: .init(uiScreen: environment.uiScreen)
+            environment: .create(with: environment)
         )
         view.appendContent(
             .text(
@@ -724,7 +693,7 @@ extension ChatView {
     ) -> ChatItemCell.Content {
         let view = VisitorChatMessageView(
             with: style.visitorMessageStyle,
-            environment: .init(uiScreen: environment.uiScreen)
+            environment: .create(with: environment)
         )
         view.appendContent(
             .text(
@@ -790,13 +759,7 @@ extension ChatView {
 
         let container = CustomCardContainerView(
             style: style.operatorMessageStyle.operatorImage,
-            environment: .init(
-                data: environment.data,
-                uuid: environment.uuid,
-                gcd: environment.gcd,
-                imageViewCache: environment.imageViewCache,
-                uiScreen: environment.uiScreen
-            )
+            environment: .create(with: environment)
         )
         if let webCardView = contentView as? WebMessageCardView {
             webCardView.isUserInteractionEnabled = isActive
@@ -836,13 +799,7 @@ extension ChatView {
         let connectView = ConnectView(
             with: style.connect,
             layout: .chat,
-            environment: .init(
-                data: environment.data,
-                uuid: environment.uuid,
-                gcd: environment.gcd,
-                imageViewCache: environment.imageViewCache,
-                timerProviding: environment.timerProviding
-            )
+            environment: .create(with: environment)
         )
         connectView.setState(
             .connected(name: name, imageUrl: imageUrl),
@@ -855,13 +812,7 @@ extension ChatView {
         let connectView = ConnectView(
             with: style.connect,
             layout: .chat,
-            environment: .init(
-                data: environment.data,
-                uuid: environment.uuid,
-                gcd: environment.gcd,
-                imageViewCache: environment.imageViewCache,
-                timerProviding: environment.timerProviding
-            )
+            environment: .create(with: environment)
         )
         connectView.setState(
             .transferring,
@@ -884,13 +835,7 @@ extension ChatView {
     ) -> GvaResponseTextView {
         let view = GvaResponseTextView(
             with: style.operatorMessageStyle,
-            environment: .init(
-                data: environment.data,
-                uuid: environment.uuid,
-                gcd: environment.gcd,
-                imageViewCache: environment.imageViewCache,
-                uiScreen: environment.uiScreen
-            )
+            environment: .create(with: environment)
         )
         view.appendContent(
             .attributedText(
@@ -925,13 +870,7 @@ extension ChatView {
     ) -> ChatItemCell.Content {
         let view = GvaPersistentButtonView(
             with: style,
-            environment: .init(
-                data: environment.data,
-                uuid: environment.uuid,
-                gcd: environment.gcd,
-                imageViewCache: environment.imageViewCache,
-                uiScreen: environment.uiScreen
-            )
+            environment: .create(with: environment)
         )
 
         view.appendContent(
