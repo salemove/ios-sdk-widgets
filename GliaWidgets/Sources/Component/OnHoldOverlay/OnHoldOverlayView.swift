@@ -12,7 +12,7 @@ final class OnHoldOverlayView: UIView {
         style: OnHoldOverlayStyle
     ) {
         self.style = style
-        self.blurEffectView = OnHoldOverlayVisualEffectView(environment: .init(gcd: environment.gcd))
+        self.blurEffectView = .init(environment: .create(with: environment))
 
         super.init(frame: .zero)
 
@@ -59,11 +59,5 @@ final class OnHoldOverlayView: UIView {
         constraints += imageView.layoutInSuperviewCenter()
         constraints += imageView.match(.width, value: style.imageSize.width)
         constraints += imageView.match(.height, value: style.imageSize.height)
-    }
-}
-
-extension OnHoldOverlayView {
-    struct Environment {
-        let gcd: GCD
     }
 }
