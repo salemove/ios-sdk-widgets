@@ -43,6 +43,19 @@ extension FileUploader.Environment {
             uuid: environment.uuid
         )
     }
+
+    static func create(with environment: ChatViewModel.Environment) -> Self {
+        .init(
+            uploadFile: .toEngagement(environment.uploadFileToEngagement),
+            fileManager: environment.fileManager,
+            data: environment.data,
+            date: environment.date,
+            gcd: environment.gcd,
+            uiScreen: environment.uiScreen,
+            createThumbnailGenerator: environment.createThumbnailGenerator,
+            uuid: environment.uuid
+        )
+    }
 }
 
 #if DEBUG
