@@ -117,13 +117,8 @@ extension SecureConversations {
 
         func presentSecureConversationsConfirmationViewController() {
             environment.log.prefixed(Self.self).info("Show Message Center Confirmation screen")
-            let environment: ConfirmationViewSwiftUI.Model.Environment = .init(
-                orientationManager: environment.orientationManager,
-                uiApplication: environment.uiApplication
-            )
-
             let model = SecureConversations.ConfirmationViewSwiftUI.Model(
-                environment: environment,
+                environment: .create(with: environment),
                 style: viewFactory.theme.secureConversationsConfirmation,
                 delegate: { [weak self] event in
                     switch event {
@@ -179,7 +174,7 @@ extension SecureConversations {
             observable.addObserver(self, update: { event, _ in pickerEvent(event) })
             let viewModel = FilePickerViewModel(
                 pickerEvent: observable,
-                environment: .init(log: environment.log)
+                environment: .create(with: environment)
             )
             viewModel.delegate = { [weak self] event in
                 switch event {
@@ -189,7 +184,7 @@ extension SecureConversations {
             }
             let controller = FilePickerController(
                 viewModel: viewModel,
-                environment: .init(fileManager: environment.fileManager)
+                environment: .create(with: environment)
             )
             // Keep strong reference, otherwise
             // `controller` will be deallocted, resulting in

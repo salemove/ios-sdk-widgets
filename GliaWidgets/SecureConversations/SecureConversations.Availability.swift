@@ -70,3 +70,21 @@ extension SecureConversations.Availability.Status {
         case unauthenticated
     }
 }
+
+extension SecureConversations.Availability.Environment {
+    static func create(with environment: ChatCoordinator.Environment) -> Self {
+        .init(
+            listQueues: environment.listQueues,
+            queueIds: environment.queueIds,
+            isAuthenticated: environment.isAuthenticated
+        )
+    }
+
+    static func create(with environment: SecureConversations.Coordinator.Environment) -> Self {
+        .init(
+            listQueues: environment.listQueues,
+            queueIds: environment.queueIds,
+            isAuthenticated: environment.isAuthenticated
+        )
+    }
+}

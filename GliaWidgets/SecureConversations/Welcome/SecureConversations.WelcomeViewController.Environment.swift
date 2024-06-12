@@ -19,3 +19,21 @@ extension SecureConversations.WelcomeViewController.Environemnt {
         )
     }
 }
+
+#if DEBUG
+extension SecureConversations.WelcomeViewController.Environemnt {
+    static func mock(
+        gcd: GCD = .mock,
+        uiScreen: UIKitBased.UIScreen = .mock,
+        notificationCenter: FoundationBased.NotificationCenter = .mock,
+        log: CoreSdkClient.Logger = .mock
+    ) -> Self {
+        .init(
+            gcd: gcd,
+            uiScreen: uiScreen,
+            notificationCenter: notificationCenter,
+            log: log
+        )
+    }
+}
+#endif
