@@ -40,12 +40,9 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
         self.sceneProvider = sceneProvider
         self.engagementKind = engagementKind
         self.gliaPresenter = GliaPresenter(
-            environment: .init(
-                appWindowsProvider: .init(
-                    uiApplication: environment.uiApplication,
-                    sceneProvider: sceneProvider
-                ),
-                log: environment.log
+            environment: .create(
+                with: environment,
+                sceneProvider: sceneProvider
             )
         )
         self.navigationPresenter = NavigationPresenter(with: navigationController)
@@ -86,10 +83,7 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
                 : .video
             let call = Call(
                 kind,
-                environment: .init(
-                    audioSession: environment.audioSession,
-                    uuid: environment.uuid
-                )
+                environment: .create(with: environment)
             )
             call.kind.addObserver(self) { [weak self] _, _ in
                 self?.engagementKind = EngagementKind(with: call.kind.value)
@@ -200,10 +194,7 @@ extension EngagementCoordinator {
         environment.log.prefixed(Self.self).info("Create Survey screen")
         let viewController = Survey.ViewController(
             viewFactory: self.viewFactory,
-            environment: .init(
-                notificationCenter: self.environment.notificationCenter,
-                log: environment.log
-            )
+            environment: .create(with: environment)
         )
         viewController.props = .live(
             sdkSurvey: survey,
@@ -264,7 +255,6 @@ extension EngagementCoordinator {
         return coordinator.start()
     }
 
-    // swiftlint:disable function_body_length
     private func handleChatCoordinatorEvent(event: ChatCoordinator.DelegateEvent) {
         switch event {
         case .back:
@@ -370,7 +360,6 @@ extension EngagementCoordinator {
 
         return coordinator.start()
     }
-    // swiftlint:enable function_body_length
 
     private func makeGliaView(
         bubbleView: BubbleView,
@@ -500,10 +489,7 @@ extension EngagementCoordinator {
             guard let kind = CallKind(with: offer) else { return }
             let call = Call(
                 kind,
-                environment: .init(
-                    audioSession: environment.audioSession,
-                    uuid: environment.uuid
-                )
+                environment: .create(with: environment)
             )
             call.kind.addObserver(self) { [weak self] _, _ in
                 self?.engagementKind = EngagementKind(with: call.kind.value)

@@ -7,10 +7,7 @@ extension AlertManager {
         environment: AlertManager.Environment = .mock(),
         viewFactory: ViewFactory = .mock()
     ) -> AlertManager {
-        return .init(
-            environment: environment,
-            viewFactory: viewFactory
-        )
+        return .init(environment: environment)
     }
 }
 
@@ -18,7 +15,8 @@ extension AlertManager.Environment {
     static func mock(log: CoreSdkClient.Logger = .mock) -> AlertManager.Environment {
         return .init(
             log: log,
-            uiApplication: .mock
+            uiApplication: .mock,
+            viewFactory: .mock()
         )
     }
 }
