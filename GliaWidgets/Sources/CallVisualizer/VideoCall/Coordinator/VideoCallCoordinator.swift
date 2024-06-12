@@ -41,10 +41,7 @@ extension CallVisualizer {
 
             let viewController = VideoCallViewController(
                 props: viewModel.makeProps(),
-                environment: .init(
-                    videoCallView: .create(with: environment),
-                    notificationCenter: environment.notificationCenter
-                )
+                environment: .create(with: environment)
             )
             viewController.modalPresentationStyle = .overFullScreen
             self.viewController = viewController

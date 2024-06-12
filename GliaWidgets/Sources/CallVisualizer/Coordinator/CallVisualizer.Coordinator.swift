@@ -26,10 +26,7 @@ extension CallVisualizer {
         func showVisitorCodeViewController(by presentation: Presentation) {
             let coordinator = VisitorCodeCoordinator(
                 theme: environment.viewFactory.theme,
-                environment: .init(
-                    timerProviding: environment.timerProviding,
-                    requestVisitorCode: environment.requestVisitorCode
-                ),
+                environment: .create(with: environment),
                 presentation: presentation
             )
 
@@ -156,10 +153,7 @@ extension CallVisualizer.Coordinator {
             theme: environment.viewFactory.theme,
             call: .init(
                 .video(direction: .twoWay),
-                environment: .init(
-                    audioSession: environment.audioSession,
-                    uuid: environment.uuid
-                )
+                environment: .create(with: environment)
             )
         )
 
@@ -259,12 +253,7 @@ extension CallVisualizer.Coordinator {
 
     private func buildScreenSharingViewController(uiConfig: RemoteConfiguration? = nil) -> UIViewController {
         let coordinator = CallVisualizer.ScreenSharingCoordinator(
-            environment: .init(
-                theme: environment.viewFactory.theme,
-                screenShareHandler: environment.screenShareHandler,
-                orientationManager: environment.orientationManager,
-                log: environment.log
-            )
+            environment: .create(with: environment)
         )
 
         coordinator.delegate = { [weak self] event in

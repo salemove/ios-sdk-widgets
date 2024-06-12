@@ -8,3 +8,14 @@ extension CallVisualizer.ScreenSharingCoordinator {
         var log: CoreSdkClient.Logger
     }
 }
+
+extension CallVisualizer.ScreenSharingCoordinator.Environment {
+    static func create(with environment: CallVisualizer.Coordinator.Environment) -> Self {
+        .init(
+            theme: environment.viewFactory.theme,
+            screenShareHandler: environment.screenShareHandler,
+            orientationManager: environment.orientationManager,
+            log: environment.log
+        )
+    }
+}
