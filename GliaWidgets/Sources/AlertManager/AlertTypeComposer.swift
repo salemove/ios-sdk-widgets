@@ -63,7 +63,7 @@ extension AlertManager.AlertTypeComposer {
         case let .leaveQueue(confirmed):
             return leaveQueueAlertType(confirmed: confirmed)
         case let .endEngagement(confirmed):
-            return endEngagemtAlertType(confirmed: confirmed)
+            return endEngagementAlertType(confirmed: confirmed)
         case let .mediaUpgrade(operators, offer, accepted, declined, answer):
             return mediaUpgradeOfferAlertType(
                 operators: operators,
@@ -235,7 +235,8 @@ private extension AlertManager.AlertTypeComposer {
     }
 
     func operatorEndedEngagementAlertType(action: @escaping () -> Void) -> AlertType {
-        .singleAction(
+        environment.log.prefixed(Self.self).info("Show Engagement Ended Dialog")
+        return .singleAction(
             conf: theme.alertConfiguration.operatorEndedEngagement,
             accessibilityIdentifier: "alert_close_engagementEnded",
             actionTapped: action
@@ -251,8 +252,8 @@ private extension AlertManager.AlertTypeComposer {
         )
     }
 
-    func endEngagemtAlertType(confirmed: @escaping () -> Void) -> AlertType {
-        environment.log.prefixed(Self.self).info("Show Engagement Ended Dialog")
+    func endEngagementAlertType(confirmed: @escaping () -> Void) -> AlertType {
+        environment.log.prefixed(Self.self).info("Show End Engagement Dialog")
         return .confirmation(
             conf: theme.alertConfiguration.endEngagement,
             accessibilityIdentifier: "alert_confirmation_endEngagement",

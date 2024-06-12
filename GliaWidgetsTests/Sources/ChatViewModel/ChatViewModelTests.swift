@@ -853,6 +853,41 @@ class ChatViewModelTests: XCTestCase {
         XCTAssertEqual(interactor.state, .ended(.byVisitor))
         XCTAssertTrue(calls.isEmpty)
     }
+
+    func test_alertInputTypeWhenEngagementIsEndedByOperator() {
+        var alertInputType: AlertInputType?
+
+        let delegate: (EngagementViewModel.Action) -> Void = { action in
+            switch action {
+            case let .showAlert(type):
+                alertInputType = type
+            default: break
+            }
+        }
+
+        var interactorEnv = Interactor.Environment.failing
+        interactorEnv.gcd = .mock
+        interactorEnv.coreSdk.getCurrentEngagement = {
+            .mock(fetchSurvey: { _, completion in
+                completion(.success(nil))
+            })
+        }
+
+        let interactor = Interactor.mock(environment: interactorEnv)
+
+        viewModel = .mock(interactor: interactor)
+        viewModel.engagementAction = delegate
+
+        interactor.end(with: .operatorHungUp)
+
+        let isValidInput: Bool
+        if case .operatorEndedEngagement = alertInputType {
+            isValidInput = true
+        } else {
+            isValidInput = false
+        }
+        XCTAssertTrue(isValidInput)
+    }
 }
 
 extension ChatChoiceCardOption {
