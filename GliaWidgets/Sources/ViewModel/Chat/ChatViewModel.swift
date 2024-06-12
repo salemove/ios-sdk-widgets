@@ -61,7 +61,6 @@ class ChatViewModel: EngagementViewModel {
 
     let chatType: ChatType
 
-    // swiftlint:disable function_body_length
     init(
         interactor: Interactor,
         screenShareHandler: ScreenShareHandler,
@@ -131,7 +130,6 @@ class ChatViewModel: EngagementViewModel {
             self?.action?(.pickMediaButtonEnabled(!limitReached))
         }
     }
-    // swiftlint:enable function_body_length
 
     override func viewDidAppear() {
         super.viewDidAppear()

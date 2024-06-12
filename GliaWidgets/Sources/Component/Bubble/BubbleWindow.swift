@@ -123,8 +123,6 @@ class BubbleViewController: UIViewController {
     }
 }
 
-
-
 #if DEBUG
 extension BubbleWindow {
     static func mock(makeKeyAndVisible: Bool = true) -> BubbleWindow {
