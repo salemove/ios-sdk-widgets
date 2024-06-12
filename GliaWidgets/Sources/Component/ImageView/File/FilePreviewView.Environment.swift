@@ -7,7 +7,7 @@ extension FilePreviewView {
 }
 
 extension FilePreviewView.Environment {
-//    static func create(with environment: SecureConversations.FileUploadView.Environment) -> Self {
-//        .init(uiScreen: environment.uiScreen)
-//    }
+    static func create(with environment: ChatFileDownloadContentView.Environment) -> Self {
+        .init(uiScreen: environment.uiScreen)
+    }
 }

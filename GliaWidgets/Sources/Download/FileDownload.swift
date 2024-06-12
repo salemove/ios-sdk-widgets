@@ -74,10 +74,7 @@ class FileDownload {
 
         let fetchFile = Environment.FetchFile.fetchForEngagementFile(
             CoreSdkClient.EngagementFile(url: fileUrl),
-            environment: .init(
-                fetchFile: environment.fetchFile,
-                downloadSecureFile: environment.downloadSecureFile
-            )
+            environment: .create(with: environment)
         )
 
         let engagementFile: CoreSdkClient.EngagementFile

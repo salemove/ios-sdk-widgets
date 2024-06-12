@@ -26,3 +26,21 @@ extension LocalFile.Environment {
         )
     }
 }
+
+#if DEBUG
+extension LocalFile.Environment {
+    static func mock(
+        fileManager: FoundationBased.FileManager = .mock,
+        gcd: GCD = .mock,
+        uiScreen: UIKitBased.UIScreen = .mock,
+        thumbnailGenerator: QuickLookBased.ThumbnailGenerator = .mock
+    ) -> Self {
+        .init(
+            fileManager: fileManager,
+            gcd: gcd,
+            uiScreen: uiScreen,
+            thumbnailGenerator: thumbnailGenerator
+        )
+    }
+}
+#endif
