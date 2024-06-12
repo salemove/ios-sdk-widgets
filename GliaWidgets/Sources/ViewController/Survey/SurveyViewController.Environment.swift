@@ -15,3 +15,17 @@ extension Survey.ViewController.Environment {
         )
     }
 }
+
+#if DEBUG
+extension Survey.ViewController.Environment {
+    static func mock(
+        notificationCenter: FoundationBased.NotificationCenter = .mock,
+        log: CoreSdkClient.Logger = .mock
+    ) -> Self {
+        .init(
+            notificationCenter: notificationCenter,
+            log: log
+        )
+    }
+}
+#endif

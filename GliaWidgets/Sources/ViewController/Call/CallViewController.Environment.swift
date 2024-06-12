@@ -28,3 +28,27 @@ extension CallViewController.Environment {
         )
     }
 }
+
+#if DEBUG
+extension CallViewController.Environment {
+    static func mock(
+        viewFactory: ViewFactory = .mock(),
+        notificationCenter: FoundationBased.NotificationCenter = .mock,
+        log: CoreSdkClient.Logger = .mock,
+        timerProviding: FoundationBased.Timer.Providing = .mock,
+        gcd: GCD = .mock,
+        snackBar: SnackBar = .mock,
+        alertManager: AlertManager = .mock()
+    ) -> Self {
+        .init(
+            viewFactory: viewFactory,
+            notificationCenter: notificationCenter,
+            log: log,
+            timerProviding: timerProviding,
+            gcd: gcd,
+            snackBar: snackBar,
+            alertManager: alertManager
+        )
+    }
+}
+#endif

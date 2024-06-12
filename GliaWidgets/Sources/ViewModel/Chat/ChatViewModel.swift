@@ -83,16 +83,7 @@ class ChatViewModel: EngagementViewModel {
         self.chatType = chatType
         let uploader = FileUploader(
             maximumUploads: maximumUploads(),
-            environment: .init(
-                uploadFile: .toEngagement(environment.uploadFileToEngagement),
-                fileManager: environment.fileManager,
-                data: environment.data,
-                date: environment.date,
-                gcd: environment.gcd,
-                uiScreen: environment.uiScreen,
-                createThumbnailGenerator: environment.createThumbnailGenerator,
-                uuid: environment.uuid
-            )
+            environment: .mock(uploadFile: .toEngagement(environment.uploadFileToEngagement))
         )
         self.fileUploadListModel = environment.createFileUploadListModel(
             .init(

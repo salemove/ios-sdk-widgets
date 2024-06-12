@@ -44,3 +44,29 @@ extension FileUploader.Environment {
         )
     }
 }
+
+#if DEBUG
+extension FileUploader.Environment {
+    static func mock(
+        uploadFile: UploadFile = .mock,
+        fileManager: FoundationBased.FileManager = .mock,
+        data: FoundationBased.Data = .mock,
+        date: @escaping () -> Date = { .mock },
+        gcd: GCD = .mock,
+        uiScreen: UIKitBased.UIScreen = .mock,
+        createThumbnailGenerator: @escaping () -> QuickLookBased.ThumbnailGenerator = { .mock },
+        uuid: @escaping () -> UUID = { .mock }
+    ) -> Self {
+        .init(
+            uploadFile: uploadFile,
+            fileManager: fileManager,
+            data: data,
+            date: date,
+            gcd: gcd,
+            uiScreen: uiScreen,
+            createThumbnailGenerator: createThumbnailGenerator,
+            uuid: uuid
+        )
+    }
+}
+#endif

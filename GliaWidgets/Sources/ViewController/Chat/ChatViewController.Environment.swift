@@ -26,3 +26,25 @@ extension ChatViewController.Environment {
         )
     }
 }
+
+#if DEBUG
+extension ChatViewController.Environment {
+    static func mock(
+        timerProviding: FoundationBased.Timer.Providing = .mock,
+        viewFactory: ViewFactory = .mock(),
+        gcd: GCD = .mock,
+        snackBar: SnackBar = .mock,
+        notificationCenter: FoundationBased.NotificationCenter = .mock,
+        alertManager: AlertManager = .mock()
+    ) -> Self {
+        .init(
+            timerProviding: timerProviding,
+            viewFactory: viewFactory,
+            gcd: gcd,
+            snackBar: snackBar,
+            notificationCenter: notificationCenter,
+            alertManager: alertManager
+        )
+    }
+}
+#endif
