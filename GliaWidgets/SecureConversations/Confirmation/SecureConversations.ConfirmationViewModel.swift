@@ -93,9 +93,4 @@ extension SecureConversations.ConfirmationViewSwiftUI.Model {
         case closeTapped
         case chatTranscriptScreenRequested
     }
-
-    struct Environment {
-        var orientationManager: OrientationManager
-        var uiApplication: UIKitBased.UIApplication
-    }
 }

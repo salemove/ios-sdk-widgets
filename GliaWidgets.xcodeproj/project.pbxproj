@@ -879,6 +879,19 @@
 		C0D6CA3D2C19A82100D4709B /* VideoCallViewController.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6CA3C2C19A82100D4709B /* VideoCallViewController.Environment.swift */; };
 		C0D6CA1F2C185E3500D4709B /* BubbleView.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6CA1E2C185E3500D4709B /* BubbleView.Environment.swift */; };
 		C0D6CA472C19B35B00D4709B /* BubbleWindow.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6CA462C19B35B00D4709B /* BubbleWindow.Environment.swift */; };
+		C0D6CA0B2C18472400D4709B /* SecureConversations.Coordinator.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6CA0A2C18472400D4709B /* SecureConversations.Coordinator.Environment.swift */; };
+		C0D6CA0F2C184AB700D4709B /* SecureConversations.WelcomeViewModel.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6CA0E2C184AB700D4709B /* SecureConversations.WelcomeViewModel.Environment.swift */; };
+		C0D6CA112C184CCA00D4709B /* SecureConversations.WelcomeViewController.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6CA102C184CCA00D4709B /* SecureConversations.WelcomeViewController.Environment.swift */; };
+		C0D6CA152C184F1900D4709B /* SecureConversations.MessagesWithUnreadCountLoader.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6CA142C184F1900D4709B /* SecureConversations.MessagesWithUnreadCountLoader.Environment.swift */; };
+		C0D6CA172C18584E00D4709B /* SecureConversations.WelcomeView.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6CA162C18584E00D4709B /* SecureConversations.WelcomeView.Environment.swift */; };
+		C0D6CA3F2C19A8DA00D4709B /* SecureConversations.FileUploadView.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6CA3E2C19A8DA00D4709B /* SecureConversations.FileUploadView.Environment.swift */; };
+		C0D6CA412C19A97100D4709B /* SecureConversations.FileUploadListView.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6CA402C19A97100D4709B /* SecureConversations.FileUploadListView.Environment.swift */; };
+		C0D6CA432C19AA0900D4709B /* SecureConversations.MessageTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6CA422C19AA0900D4709B /* SecureConversations.MessageTextView.swift */; };
+		C0D6CA452C19AA8000D4709B /* SecureConversations.MessageTextView.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6CA442C19AA8000D4709B /* SecureConversations.MessageTextView.Environment.swift */; };
+		C0D6CA532C19BC0300D4709B /* FilePreviewView.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6CA522C19BC0300D4709B /* FilePreviewView.Environment.swift */; };
+		C0D6CA552C19BCDB00D4709B /* SecureConversations.FilePreviewView.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6CA542C19BCDB00D4709B /* SecureConversations.FilePreviewView.Environment.swift */; };
+		C0D6CA5B2C19BF1D00D4709B /* SecureConversations.ConfirmationViewModel.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6CA5A2C19BF1D00D4709B /* SecureConversations.ConfirmationViewModel.Environment.swift */; };
+		C0D6CA5F2C19C34F00D4709B /* ChatFileDownloadContentView.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6CA5E2C19C34F00D4709B /* ChatFileDownloadContentView.Environment.swift */; };
 		C0E948042AB1D5D200890026 /* ActionButtonSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E948032AB1D5D200890026 /* ActionButtonSwiftUI.swift */; };
 		C0E948062AB1D64700890026 /* HeaderButtonSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E948052AB1D64700890026 /* HeaderButtonSwiftUI.swift */; };
 		C0E948092AB1D6AB00890026 /* HeaderSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E948082AB1D6AB00890026 /* HeaderSwiftUI.swift */; };
@@ -1841,6 +1854,19 @@
 		C0D6C9F62C0D2F6D00D4709B /* AlertPlacement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPlacement.swift; sourceTree = "<group>"; };
 		C0D6C9FA2C0D2F9A00D4709B /* AlertInputType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertInputType.swift; sourceTree = "<group>"; };
 		C0D6C9FF2C106A1F00D4709B /* AlertManager.Failing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertManager.Failing.swift; sourceTree = "<group>"; };
+		C0D6CA0A2C18472400D4709B /* SecureConversations.Coordinator.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.Coordinator.Environment.swift; sourceTree = "<group>"; };
+		C0D6CA0E2C184AB700D4709B /* SecureConversations.WelcomeViewModel.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.WelcomeViewModel.Environment.swift; sourceTree = "<group>"; };
+		C0D6CA102C184CCA00D4709B /* SecureConversations.WelcomeViewController.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.WelcomeViewController.Environment.swift; sourceTree = "<group>"; };
+		C0D6CA142C184F1900D4709B /* SecureConversations.MessagesWithUnreadCountLoader.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.MessagesWithUnreadCountLoader.Environment.swift; sourceTree = "<group>"; };
+		C0D6CA162C18584E00D4709B /* SecureConversations.WelcomeView.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.WelcomeView.Environment.swift; sourceTree = "<group>"; };
+		C0D6CA3E2C19A8DA00D4709B /* SecureConversations.FileUploadView.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.FileUploadView.Environment.swift; sourceTree = "<group>"; };
+		C0D6CA402C19A97100D4709B /* SecureConversations.FileUploadListView.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.FileUploadListView.Environment.swift; sourceTree = "<group>"; };
+		C0D6CA422C19AA0900D4709B /* SecureConversations.MessageTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.MessageTextView.swift; sourceTree = "<group>"; };
+		C0D6CA442C19AA8000D4709B /* SecureConversations.MessageTextView.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.MessageTextView.Environment.swift; sourceTree = "<group>"; };
+		C0D6CA522C19BC0300D4709B /* FilePreviewView.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilePreviewView.Environment.swift; sourceTree = "<group>"; };
+		C0D6CA542C19BCDB00D4709B /* SecureConversations.FilePreviewView.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.FilePreviewView.Environment.swift; sourceTree = "<group>"; };
+		C0D6CA5A2C19BF1D00D4709B /* SecureConversations.ConfirmationViewModel.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.ConfirmationViewModel.Environment.swift; sourceTree = "<group>"; };
+		C0D6CA5E2C19C34F00D4709B /* ChatFileDownloadContentView.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatFileDownloadContentView.Environment.swift; sourceTree = "<group>"; };
 		C0D6CA222C1861F400D4709B /* VideoCallView.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCallView.Environment.swift; sourceTree = "<group>"; };
 		C0D6CA3C2C19A82100D4709B /* VideoCallViewController.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCallViewController.Environment.swift; sourceTree = "<group>"; };
 		C0D6CA1E2C185E3500D4709B /* BubbleView.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleView.Environment.swift; sourceTree = "<group>"; };
@@ -3053,10 +3079,15 @@
 			children = (
 				755D186329A6A4B10009F5E8 /* WelcomeStyle */,
 				3100EEF4293E24C700D57F71 /* SecureConversations.WelcomeViewController.swift */,
+				C0D6CA102C184CCA00D4709B /* SecureConversations.WelcomeViewController.Environment.swift */,
 				3100EEFA293F363100D57F71 /* SecureConversations.WelcomeView.swift */,
+				C0D6CA162C18584E00D4709B /* SecureConversations.WelcomeView.Environment.swift */,
 				3100EEFC293F757E00D57F71 /* SecureConversations.WelcomeStyle.swift */,
+				C0D6CA422C19AA0900D4709B /* SecureConversations.MessageTextView.swift */,
+				C0D6CA442C19AA8000D4709B /* SecureConversations.MessageTextView.Environment.swift */,
 				75C1143529A406F00004E5F7 /* SecureConversations.RemoteConfig.swift */,
 				3100EEF7293E276E00D57F71 /* SecureConversations.WelcomeViewModel.swift */,
+				C0D6CA0E2C184AB700D4709B /* SecureConversations.WelcomeViewModel.Environment.swift */,
 				3100EEFE293F7E0900D57F71 /* Theme+SecureConversationsWelcome.swift */,
 			);
 			path = Welcome;
@@ -3071,6 +3102,7 @@
 				3100D926296E946600DEC9CE /* SecureConversations.ConfirmationStyle.swift */,
 				75CF8D6229B7DD8300CB1524 /* SecureConversations.ConfirmationStyle+RemoteConfig.swift */,
 				3100D927296E946600DEC9CE /* SecureConversations.ConfirmationViewController.swift */,
+				C0D6CA5A2C19BF1D00D4709B /* SecureConversations.ConfirmationViewModel.Environment.swift */,
 				3100D928296E946600DEC9CE /* SecureConversations.ConfirmationViewModel.swift */,
 			);
 			name = Confirmation;
@@ -3085,10 +3117,12 @@
 				3100D921296E943100DEC9CE /* Welcome */,
 				AFEF5C6D29928376005C3D8D /* FileUploadListView */,
 				3100EEF1293E214B00D57F71 /* SecureConversations.Coordinator.swift */,
+				C0D6CA0A2C18472400D4709B /* SecureConversations.Coordinator.Environment.swift */,
 				313EBD542943116E008E9597 /* SecureConversations.swift */,
 				AF0D26D529705FDE00816CCB /* SecureConversations.ActivityIndicator.swift */,
 				AF0D26D72971912A00816CCB /* SecureConversations.SendMessageButton.swift */,
 				AF10ED8C29BA210500E85309 /* SecureConversations.MessagesWithUnreadCountLoader.swift */,
+				C0D6CA142C184F1900D4709B /* SecureConversations.MessagesWithUnreadCountLoader.Environment.swift */,
 				3115D45B29A4FD3F00D99561 /* SecureConversations.Availability.swift */,
 			);
 			path = SecureConversations;
@@ -4299,10 +4333,13 @@
 		AFEF5C6D29928376005C3D8D /* FileUploadListView */ = {
 			isa = PBXGroup;
 			children = (
-				AF6AB34C298A9F2500003645 /* SecureConversations.FileUploadListViewModel.swift */,
-				AF6AB34E298AA02400003645 /* SecureConversations.FileUploadListViewModel.Environment.swift */,
 				AFEF5C7029929601005C3D8D /* SecureConversations.FilePreviewView.swift */,
+				C0D6CA542C19BCDB00D4709B /* SecureConversations.FilePreviewView.Environment.swift */,
+				C0D6CA402C19A97100D4709B /* SecureConversations.FileUploadListView.Environment.swift */,
 				AFAB409129798BD4007F96CC /* SecureConversations.FileUploadListView.swift */,
+				AF6AB34E298AA02400003645 /* SecureConversations.FileUploadListViewModel.Environment.swift */,
+				AF6AB34C298A9F2500003645 /* SecureConversations.FileUploadListViewModel.swift */,
+				C0D6CA3E2C19A8DA00D4709B /* SecureConversations.FileUploadView.Environment.swift */,
 				AFEF5C6E29928DB0005C3D8D /* SecureConversations.FileUploadView.swift */,
 			);
 			path = FileUploadListView;
@@ -4855,6 +4892,7 @@
 				C09046D72B7E091F003C437C /* FilePreviewStyle.RemoteConfig.swift */,
 				C09046D52B7E090D003C437C /* FilePreviewStyle.Mock.swift */,
 				C49A29E22614A29700819269 /* FilePreviewView.swift */,
+				C0D6CA522C19BC0300D4709B /* FilePreviewView.Environment.swift */,
 				845E2F6B2837EF2E00C04D56 /* FilePreviewStyle.Accessibility.swift */,
 			);
 			path = File;
@@ -4864,6 +4902,7 @@
 			isa = PBXGroup;
 			children = (
 				C4F176CB261D1543009D9F07 /* ChatFileDownloadContentView.swift */,
+				C0D6CA5E2C19C34F00D4709B /* ChatFileDownloadContentView.Environment.swift */,
 				C09047672B7E23EC003C437C /* ChatFileDownloadErrorStateStyle.RemoteConfig.swift */,
 				C09047652B7E2396003C437C /* ChatFileDownloadErrorStateStyle.swift */,
 				C09047632B7E2375003C437C /* ChatFileDownloadStateStyle.RemoteConfig.swift */,
@@ -5369,6 +5408,7 @@
 				75940987298D38C2008B173A /* VisitorCodeViewModel+Environment.swift in Sources */,
 				1A60AFBC256682C800E53F53 /* SubFlowCoordinator.swift in Sources */,
 				1A0C9A8C25C4092400815406 /* CallButtonStyle.swift in Sources */,
+				C0D6CA412C19A97100D4709B /* SecureConversations.FileUploadListView.Environment.swift in Sources */,
 				C09046CA2B7E05F7003C437C /* AttachmentSourceListStyle.Mock.swift in Sources */,
 				1A6075E7258220E300569B0E /* UserImageStyle.swift in Sources */,
 				1ABD6C5D25B59D1C00D56EFA /* BubbleWindow.swift in Sources */,
@@ -5382,6 +5422,7 @@
 				AF7753122B19EC3200E523A2 /* Logger.Live.swift in Sources */,
 				AFBBF5782851C391004993B3 /* Glia.Deprecated.swift in Sources */,
 				75940950298D3810008B173A /* IdCollection.swift in Sources */,
+				C0D6CA532C19BC0300D4709B /* FilePreviewView.Environment.swift in Sources */,
 				75FF151D27F4F8E000FE7BE2 /* Theme.Survey.InputQuestion.swift in Sources */,
 				8491AF0A2A78FED700CC3E72 /* GvaGalleryListViewStyle.swift in Sources */,
 				845E2F9D283FCB1400C04D56 /* Theme.Survey.Checkbox.Accessibility.swift in Sources */,
@@ -5513,6 +5554,7 @@
 				848B8ADC2C0759C500E990E6 /* Theme.CustomCardContainerStyle.swift in Sources */,
 				845876A22823FF34007AC3DF /* Survey.ViewController.Props.Mock.swift in Sources */,
 				C090471D2B7E1AFF003C437C /* GvaGalleryCardStyle.ButtonStyle.swift in Sources */,
+				C0D6CA172C18584E00D4709B /* SecureConversations.WelcomeView.Environment.swift in Sources */,
 				84520BDD2B10C16E00F97617 /* WebViewController.Props.swift in Sources */,
 				1A4674B625E907320078FA1C /* AttachmentSourceListStyle.swift in Sources */,
 				C09046F22B7E0FD3003C437C /* Theme.SystemMessageStyle.Accessibility.swift in Sources */,
@@ -5579,6 +5621,7 @@
 				75B7BD792A39D12B0060794D /* Button.swift in Sources */,
 				9A19926C27D3BA8700161AAE /* ViewFactory.Mock.swift in Sources */,
 				C09047822B7E29F8003C437C /* CallButtonStyle.StateStyle.RemoteConfig.swift in Sources */,
+				C0D6CA3F2C19A8DA00D4709B /* SecureConversations.FileUploadView.Environment.swift in Sources */,
 				1A60B02D256BF7FF00E53F53 /* OperatorChatMessageView.swift in Sources */,
 				C43C12F92694B14900C37E1B /* GliaPresenter.swift in Sources */,
 				1A0452F025DBE268000DA0C1 /* MessageButtonStyle.swift in Sources */,
@@ -5632,6 +5675,7 @@
 				755D186D29A6A5E30009F5E8 /* WelcomeStyle.MessageTextViewStyle.swift in Sources */,
 				84D5B9642A151B6100807F92 /* QuickLookBased.Mock.swift in Sources */,
 				311CAFCD29F8FAE20067B59F /* SecureConversations.TranscriptModel.CustomCard.swift in Sources */,
+				C0D6CA432C19AA0900D4709B /* SecureConversations.MessageTextView.swift in Sources */,
 				9A19926B27D3BA8700161AAE /* ViewFactory.Environment.Mock.swift in Sources */,
 				84681A9B2A669D8800DD7406 /* QuickReplyView.swift in Sources */,
 				1A6EB05725A717CB0007081A /* ChatMessage.swift in Sources */,
@@ -5700,6 +5744,7 @@
 				AF0D26D629705FDF00816CCB /* SecureConversations.ActivityIndicator.swift in Sources */,
 				1A60AF7A25656E0500E53F53 /* Theme.swift in Sources */,
 				84CFB7732822700000167258 /* Theme.Button.Accessibility.swift in Sources */,
+				C0D6CA0B2C18472400D4709B /* SecureConversations.Coordinator.Environment.swift in Sources */,
 				1A475BB725DE833200296D55 /* BadgeStyle.swift in Sources */,
 				AF6291122B0813B000D3D76B /* SwiftBased.Interface.swift in Sources */,
 				C09047722B7E255E003C437C /* UnreadMessageDividerStyle.Accessibility.swift in Sources */,
@@ -5825,16 +5870,20 @@
 				754CC61627E2816F005676E9 /* Survey.InputQuestionView.swift in Sources */,
 				3146C9492AB18AC70047D8CC /* Localization+StringProviding.swift in Sources */,
 				9A1992DF27D62C2E00161AAE /* ImageView.Cache.Mock.swift in Sources */,
+				C0D6CA112C184CCA00D4709B /* SecureConversations.WelcomeViewController.Environment.swift in Sources */,
 				8491AF0D2A7A9CB900CC3E72 /* Theme.VisitorChatMessageStyle.swift in Sources */,
 				1A2DA72D25EF9DD900032611 /* FileUpload.swift in Sources */,
+				C0D6CA0F2C184AB700D4709B /* SecureConversations.WelcomeViewModel.Environment.swift in Sources */,
 				C499A57E26382FAA009962AC /* UnreadMessageIndicatorView.swift in Sources */,
 				31DB0C01287C2EFC00FB288E /* StaticValues.swift in Sources */,
 				C090471F2B7E1B1F003C437C /* GvaGalleryCardStyle.ButtonStyle.RemoteConfig.swift in Sources */,
 				C09047112B7E17AE003C437C /* Theme.Shadow.RemoteConfig.swift in Sources */,
 				AFA2FDFA2890827E00428E6D /* BadgeStyle.Mock.swift in Sources */,
 				8491AF002A6FB44200CC3E72 /* GvaGalleryCardCell.swift in Sources */,
+				C0D6CA5B2C19BF1D00D4709B /* SecureConversations.ConfirmationViewModel.Environment.swift in Sources */,
 				9AB3402527FCBEB4006E0FE2 /* CallButtonStyle.Accessibility.swift in Sources */,
 				C09047882B7E5C39003C437C /* AttachmentSourceItemStyle.Equatable.swift in Sources */,
+				C0D6CA352C19A45900D4709B /* GvaResponseTextView.Environment.swift in Sources */,
 				C0D2F0332991377C00803B47 /* VideoCallViewController.swift in Sources */,
 				1A8B61D225C974A1000D780E /* ChatCallUpgradeView.swift in Sources */,
 				845E2F88283FB49F00C04D56 /* Theme.Survey.BooleanQuestion.Accessibility.swift in Sources */,
@@ -5888,6 +5937,7 @@
 				31DD41652A57105400F92612 /* SecureConversations.TranscriptModel.Environment.swift in Sources */,
 				AFF9542A2ADD8DB600C277E0 /* CoreSDKConfigurator.Mock.swift in Sources */,
 				1A277A1225FA604E009FE131 /* ChatFileContentView.swift in Sources */,
+				C0D6CA152C184F1900D4709B /* SecureConversations.MessagesWithUnreadCountLoader.Environment.swift in Sources */,
 				C09046C02B7D0E57003C437C /* ScreenSharingViewStyle.RemoteConfig.swift in Sources */,
 				75D987FA2AF2BB330016A702 /* Theme.SnackBarStyle.swift in Sources */,
 				75B7BD802A39D5A70060794D /* Layoutable.swift in Sources */,
@@ -5990,6 +6040,7 @@
 				9A41B66A27E2439000CF9F69 /* Call.Mock.swift in Sources */,
 				C09046A32B7D0844003C437C /* WelcomeStyle.SendButton.RemoteConfig.swift in Sources */,
 				AF6AB34F298AA02400003645 /* SecureConversations.FileUploadListViewModel.Environment.swift in Sources */,
+				C0D6CA5F2C19C34F00D4709B /* ChatFileDownloadContentView.Environment.swift in Sources */,
 				1A4674C225E92A710078FA1C /* AtttachmentSourceItemKind.swift in Sources */,
 				9A1992EB27D6C0F000161AAE /* FileSystemStorage.Mock.swift in Sources */,
 				756B8B1C2996B116001D2BB2 /* ChatCoordinator.Environment.swift in Sources */,
@@ -6040,6 +6091,7 @@
 				75FF151427F3A2D600FE7BE2 /* Theme.Survey.swift in Sources */,
 				84681AA32A66D90000DD7406 /* AdjustedTouchAreaButton.swift in Sources */,
 				1A60AFE825669C5000E53F53 /* ChatStyle.swift in Sources */,
+				C0D6CA552C19BCDB00D4709B /* SecureConversations.FilePreviewView.Environment.swift in Sources */,
 				C09047322B7E1D63003C437C /* GvaStyle.RemotConfig.swift in Sources */,
 				75940984298D38C2008B173A /* VisitorCodeViewController.swift in Sources */,
 				1A4AF5C725AEEA42002CD0F4 /* Operator+Extensions.swift in Sources */,
@@ -6050,6 +6102,7 @@
 				C0D2F08829A4E8E100803B47 /* CallButtonBar.Mock.swift in Sources */,
 				31CA0F6B2AE6947800A55685 /* CallVisualizer.VisitorCodeViewModel.Mock.swift in Sources */,
 				9AB196D627C3E1E400FD60AB /* ChatViewModel.Environment.Interface.swift in Sources */,
+				C0D6CA452C19AA8000D4709B /* SecureConversations.MessageTextView.Environment.swift in Sources */,
 				3197F7B429F7C26A008EE9F7 /* SecureConversations.ChatWithTranscriptViewModel.Hashable.swift in Sources */,
 				AF0D26D82971912A00816CCB /* SecureConversations.SendMessageButton.swift in Sources */,
 				C09046EC2B7E0F28003C437C /* Theme.VisitorChatMessageStyle.Accessibility.swift in Sources */,
