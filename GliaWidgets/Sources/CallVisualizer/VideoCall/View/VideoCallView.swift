@@ -423,10 +423,3 @@ private extension CallVisualizer.VideoCallView {
         localVideoView.frame = frame
     }
 }
-
-extension CallVisualizer.VideoCallView {
-    struct Environment {
-        let gcd: GCD
-        let uiScreen: UIKitBased.UIScreen
-    }
-}

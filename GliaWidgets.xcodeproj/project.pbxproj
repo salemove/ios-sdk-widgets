@@ -875,6 +875,8 @@
 		C0D6C9F72C0D2F6D00D4709B /* AlertPlacement.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6C9F62C0D2F6D00D4709B /* AlertPlacement.swift */; };
 		C0D6C9FB2C0D2F9A00D4709B /* AlertInputType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6C9FA2C0D2F9A00D4709B /* AlertInputType.swift */; };
 		C0D6CA002C106A1F00D4709B /* AlertManager.Failing.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6C9FF2C106A1F00D4709B /* AlertManager.Failing.swift */; };
+		C0D6CA232C1861F400D4709B /* VideoCallView.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6CA222C1861F400D4709B /* VideoCallView.Environment.swift */; };
+		C0D6CA3D2C19A82100D4709B /* VideoCallViewController.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6CA3C2C19A82100D4709B /* VideoCallViewController.Environment.swift */; };
 		C0E948042AB1D5D200890026 /* ActionButtonSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E948032AB1D5D200890026 /* ActionButtonSwiftUI.swift */; };
 		C0E948062AB1D64700890026 /* HeaderButtonSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E948052AB1D64700890026 /* HeaderButtonSwiftUI.swift */; };
 		C0E948092AB1D6AB00890026 /* HeaderSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E948082AB1D6AB00890026 /* HeaderSwiftUI.swift */; };
@@ -1837,6 +1839,8 @@
 		C0D6C9F62C0D2F6D00D4709B /* AlertPlacement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPlacement.swift; sourceTree = "<group>"; };
 		C0D6C9FA2C0D2F9A00D4709B /* AlertInputType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertInputType.swift; sourceTree = "<group>"; };
 		C0D6C9FF2C106A1F00D4709B /* AlertManager.Failing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertManager.Failing.swift; sourceTree = "<group>"; };
+		C0D6CA222C1861F400D4709B /* VideoCallView.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCallView.Environment.swift; sourceTree = "<group>"; };
+		C0D6CA3C2C19A82100D4709B /* VideoCallViewController.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCallViewController.Environment.swift; sourceTree = "<group>"; };
 		C0E948032AB1D5D200890026 /* ActionButtonSwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButtonSwiftUI.swift; sourceTree = "<group>"; };
 		C0E948052AB1D64700890026 /* HeaderButtonSwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderButtonSwiftUI.swift; sourceTree = "<group>"; };
 		C0E948082AB1D6AB00890026 /* HeaderSwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderSwiftUI.swift; sourceTree = "<group>"; };
@@ -4636,6 +4640,7 @@
 			isa = PBXGroup;
 			children = (
 				C0D2F0322991377C00803B47 /* VideoCallViewController.swift */,
+				C0D6CA3C2C19A82100D4709B /* VideoCallViewController.Environment.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -4644,6 +4649,7 @@
 			isa = PBXGroup;
 			children = (
 				C0D2F0372991394400803B47 /* VideoCallView.swift */,
+				C0D6CA222C1861F400D4709B /* VideoCallView.Environment.swift */,
 				C0D2F0522993CCC400803B47 /* ButtonBar */,
 				C0D2F04429925C3A00803B47 /* ConnectView */,
 			);
@@ -5477,6 +5483,7 @@
 				1A60AFCE2566958900E53F53 /* ViewFactory.swift in Sources */,
 				C06A7586296ECC57006B69A2 /* VisitorCodeStyle.Accessibility.swift in Sources */,
 				C09046C62B7E04BE003C437C /* AttachmentSourceItemStyle.Mock.swift in Sources */,
+				C0D6CA232C1861F400D4709B /* VideoCallView.Environment.swift in Sources */,
 				C09046D02B7E074B003C437C /* OperatorTypingIndicatorStyle.RemoteConfig.swift in Sources */,
 				9A186A3B27F5E6B50055886D /* ChatFileContentStyle.Accessibility.swift in Sources */,
 				C09046FA2B7E10C7003C437C /* Theme.ChoiceCardStyle.Options.swift in Sources */,
@@ -5918,6 +5925,7 @@
 				C02248AA2AD53E6100CC4930 /* LiveObservation.swift in Sources */,
 				9AB196D827C3E27300FD60AB /* ChatViewModel.Environment.Mock.swift in Sources */,
 				C09047072B7E158E003C437C /* Theme.SnackBarStyle.Accessibility.swift in Sources */,
+				C0D6CA3D2C19A82100D4709B /* VideoCallViewController.Environment.swift in Sources */,
 				AF1C197C2B14FD0900F8810F /* ConditionalCompilationClient.Live.swift in Sources */,
 				3100EEFF293F7E0900D57F71 /* Theme+SecureConversationsWelcome.swift in Sources */,
 				9A8130BF27D7AEF700220BBD /* FileUpload.Mock.swift in Sources */,

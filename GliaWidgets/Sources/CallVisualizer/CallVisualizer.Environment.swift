@@ -33,3 +33,48 @@ extension CallVisualizer {
         var alertManager: AlertManager
     }
 }
+
+extension CallVisualizer.Environment {
+    static func create(
+        with environment: Glia.Environment,
+        interactorProviding: @escaping () -> Interactor?,
+        engagedOperator: @escaping () -> CoreSdkClient.Operator?,
+        theme: Theme,
+        assetBuilder: @escaping () -> RemoteConfiguration.AssetsBuilder,
+        onEvent: ((GliaEvent) -> Void)?,
+        loggerPhase: Glia.LoggerPhase,
+        alertManager: AlertManager
+    ) -> Self {
+        .init(
+            data: environment.data,
+            uuid: environment.uuid,
+            gcd: environment.gcd,
+            imageViewCache: environment.imageViewCache,
+            timerProviding: environment.timerProviding,
+            uiApplication: environment.uiApplication,
+            uiScreen: environment.uiScreen,
+            uiDevice: environment.uiDevice,
+            notificationCenter: environment.notificationCenter,
+            requestVisitorCode: environment.coreSdk.requestVisitorCode,
+            interactorProviding: interactorProviding,
+            callVisualizerPresenter: environment.callVisualizerPresenter,
+            bundleManaging: environment.bundleManaging,
+            screenShareHandler: environment.screenShareHandler,
+            audioSession: environment.audioSession,
+            date: environment.date,
+            engagedOperator: engagedOperator,
+            theme: theme,
+            assetsBuilder: assetBuilder,
+            getCurrentEngagement: environment.coreSdk.getCurrentEngagement,
+            eventHandler: onEvent,
+            orientationManager: environment.orientationManager,
+            proximityManager: environment.proximityManager,
+            log: loggerPhase.logger,
+            fetchSiteConfigurations: environment.coreSdk.fetchSiteConfigurations,
+            snackBar: environment.snackBar,
+            coreSdk: environment.coreSdk,
+            cameraDeviceManager: environment.cameraDeviceManager,
+            alertManager: alertManager
+        )
+    }
+}
