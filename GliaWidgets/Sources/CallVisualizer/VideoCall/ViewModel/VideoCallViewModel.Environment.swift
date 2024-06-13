@@ -18,3 +18,24 @@ extension CallVisualizer.VideoCallViewModel {
         var flipCameraButtonStyle: FlipCameraButtonStyle
     }
 }
+
+extension CallVisualizer.VideoCallViewModel.Environment {
+    static func create(with environment: CallVisualizer.VideoCallCoordinator.Environment) -> Self {
+        .init(
+            data: environment.data,
+            uuid: environment.uuid,
+            gcd: environment.gcd,
+            imageViewCache: environment.imageViewCache,
+            timerProviding: environment.timerProviding,
+            uiApplication: environment.uiApplication,
+            notificationCenter: environment.notificationCenter,
+            date: environment.date,
+            engagedOperator: environment.engagedOperator,
+            screenShareHandler: environment.screenShareHandler,
+            proximityManager: environment.proximityManager,
+            log: environment.log,
+            cameraDeviceManager: environment.cameraDeviceManager,
+            flipCameraButtonStyle: environment.flipCameraButtonStyle
+        )
+    }
+}
