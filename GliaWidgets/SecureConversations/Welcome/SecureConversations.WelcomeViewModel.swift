@@ -358,26 +358,6 @@ extension SecureConversations.WelcomeViewModel {
     }
 }
 
-extension SecureConversations.WelcomeViewModel {
-    struct Environment {
-        var welcomeStyle: SecureConversations.WelcomeStyle
-        var queueIds: [String]
-        var listQueues: CoreSdkClient.ListQueues
-        var sendSecureMessagePayload: CoreSdkClient.SendSecureMessagePayload
-        var fileUploader: FileUploader
-        var uiApplication: UIKitBased.UIApplication
-        var createFileUploadListModel: SecureConversations.FileUploadListViewModel.Create
-        var fetchSiteConfigurations: CoreSdkClient.FetchSiteConfigurations
-        var startSocketObservation: CoreSdkClient.StartSocketObservation
-        var stopSocketObservation: CoreSdkClient.StopSocketObservation
-        var getCurrentEngagement: CoreSdkClient.GetCurrentEngagement
-        var uploadSecureFile: CoreSdkClient.SecureConversationsUploadFile
-        var uploadFileToEngagement: CoreSdkClient.UploadFileToEngagement
-        var createSendMessagePayload: CoreSdkClient.CreateSendMessagePayload
-        var log: CoreSdkClient.Logger
-    }
-}
-
 // MARK: - Media Picker
 extension SecureConversations.WelcomeViewModel {
     func presentMediaPicker(from originView: UIView) {

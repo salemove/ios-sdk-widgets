@@ -84,11 +84,3 @@ extension SecureConversations.MessagesWithUnreadCount {
         unreadCount: 0
     )
 }
-
-extension SecureConversations.MessagesWithUnreadCountLoader {
-    struct Environment {
-        var getSecureUnreadMessageCount: CoreSdkClient.GetSecureUnreadMessageCount
-        var fetchChatHistory: CoreSdkClient.FetchChatHistory
-        var scheduler: CoreSdkClient.ReactiveSwift.DateScheduler
-    }
-}

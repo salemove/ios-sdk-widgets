@@ -265,9 +265,3 @@ class ChatFileDownloadContentView: ChatFileContentView {
     }
     // swiftlint:enable function_body_length
 }
-
-extension ChatFileDownloadContentView {
-    struct Environment {
-        var uiScreen: UIKitBased.UIScreen
-    }
-}

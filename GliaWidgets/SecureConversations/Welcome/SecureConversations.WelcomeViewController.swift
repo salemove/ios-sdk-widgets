@@ -3,13 +3,6 @@ import UIKit
 
 extension SecureConversations {
     final class WelcomeViewController: UIViewController {
-        struct Environemnt {
-            let gcd: GCD
-            let uiScreen: UIKitBased.UIScreen
-            let notificationCenter: FoundationBased.NotificationCenter
-            var log: CoreSdkClient.Logger
-        }
-
         var props: Props {
             didSet {
                 renderProps()
