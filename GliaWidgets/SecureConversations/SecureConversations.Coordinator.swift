@@ -239,7 +239,6 @@ extension SecureConversations {
 
 // Chat transcript
 extension SecureConversations.Coordinator {
-    // swiftlint:disable function_body_length
     @discardableResult
     private func navigateToTranscript() -> UIViewController {
         let coordinator = ChatCoordinator(
@@ -314,60 +313,9 @@ extension SecureConversations.Coordinator {
 
         return viewController
     }
-    // swiftlint:enable function_body_length
 }
 
 extension SecureConversations.Coordinator {
-    struct Environment {
-        var queueIds: [String]
-        var listQueues: CoreSdkClient.ListQueues
-        var sendSecureMessagePayload: CoreSdkClient.SendSecureMessagePayload
-        var createFileUploader: FileUploader.Create
-        var uploadSecureFile: CoreSdkClient.SecureConversationsUploadFile
-        var fileManager: FoundationBased.FileManager
-        var data: FoundationBased.Data
-        var date: () -> Date
-        var gcd: GCD
-        var createThumbnailGenerator: () -> QuickLookBased.ThumbnailGenerator
-        var uuid: () -> UUID
-        var uiApplication: UIKitBased.UIApplication
-        var uiScreen: UIKitBased.UIScreen
-        var notificationCenter: FoundationBased.NotificationCenter
-        var createFileUploadListModel: SecureConversations.FileUploadListViewModel.Create
-        var viewFactory: ViewFactory
-        var fetchFile: CoreSdkClient.FetchFile
-        var createFileDownload: FileDownloader.CreateFileDownload
-        var loadChatMessagesFromHistory: () -> Bool
-        var fetchChatHistory: CoreSdkClient.FetchChatHistory
-        var fetchSiteConfigurations: CoreSdkClient.FetchSiteConfigurations
-        var chatCall: ObservableValue<Call?>
-        var unreadMessages: ObservableValue<Int>
-        var showsCallBubble: Bool
-        var screenShareHandler: ScreenShareHandler
-        var isWindowVisible: ObservableValue<Bool>
-        var uploadFileToEngagement: CoreSdkClient.UploadFileToEngagement
-        var getCurrentEngagement: CoreSdkClient.GetCurrentEngagement
-        var submitSurveyAnswer: CoreSdkClient.SubmitSurveyAnswer
-        var interactor: Interactor
-        var getSecureUnreadMessageCount: CoreSdkClient.GetSecureUnreadMessageCount
-        var messagesWithUnreadCountLoaderScheduler: CoreSdkClient.ReactiveSwift.DateScheduler
-        var secureMarkMessagesAsRead: CoreSdkClient.SecureMarkMessagesAsRead
-        var downloadSecureFile: CoreSdkClient.DownloadSecureFile
-        var isAuthenticated: () -> Bool
-        var startSocketObservation: CoreSdkClient.StartSocketObservation
-        var stopSocketObservation: CoreSdkClient.StopSocketObservation
-        var createSendMessagePayload: CoreSdkClient.CreateSendMessagePayload
-        var orientationManager: OrientationManager
-        var proximityManager: ProximityManager
-        var log: CoreSdkClient.Logger
-        var timerProviding: FoundationBased.Timer.Providing
-        var snackBar: SnackBar
-        var maximumUploads: () -> Int
-        var cameraDeviceManager: CoreSdkClient.GetCameraDeviceManageable
-        var flipCameraButtonStyle: FlipCameraButtonStyle
-        var alertManager: AlertManager
-    }
-
     enum DelegateEvent {
         case backTapped
         case closeTapped(SurveyPresentation)

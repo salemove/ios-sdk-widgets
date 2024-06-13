@@ -206,9 +206,3 @@ extension SecureConversations.FileUploadListView.Style {
         }
     }
 }
-
-extension SecureConversations.FileUploadListView {
-    struct Environment {
-        var uiScreen: UIKitBased.UIScreen
-    }
-}
