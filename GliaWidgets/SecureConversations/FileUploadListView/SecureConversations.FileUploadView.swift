@@ -431,9 +431,3 @@ extension SecureConversations.FileUploadView.Props {
         }
     }
 }
-
-extension SecureConversations.FileUploadView {
-    struct Environment {
-        var uiScreen: UIKitBased.UIScreen
-    }
-}

@@ -232,9 +232,3 @@ extension SecureConversations.FilePreviewView.Kind {
 private extension FilePreviewStyle {
     static let initial = FileUploadStyle.initial.filePreview
 }
-
-extension SecureConversations.FilePreviewView {
-    struct Environment {
-        var uiScreen: UIKitBased.UIScreen
-    }
-}
