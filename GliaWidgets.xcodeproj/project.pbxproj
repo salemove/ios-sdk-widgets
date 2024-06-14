@@ -877,6 +877,8 @@
 		C0D6CA002C106A1F00D4709B /* AlertManager.Failing.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6C9FF2C106A1F00D4709B /* AlertManager.Failing.swift */; };
 		C0D6CA232C1861F400D4709B /* VideoCallView.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6CA222C1861F400D4709B /* VideoCallView.Environment.swift */; };
 		C0D6CA3D2C19A82100D4709B /* VideoCallViewController.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6CA3C2C19A82100D4709B /* VideoCallViewController.Environment.swift */; };
+		C0D6CA1F2C185E3500D4709B /* BubbleView.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6CA1E2C185E3500D4709B /* BubbleView.Environment.swift */; };
+		C0D6CA472C19B35B00D4709B /* BubbleWindow.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6CA462C19B35B00D4709B /* BubbleWindow.Environment.swift */; };
 		C0E948042AB1D5D200890026 /* ActionButtonSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E948032AB1D5D200890026 /* ActionButtonSwiftUI.swift */; };
 		C0E948062AB1D64700890026 /* HeaderButtonSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E948052AB1D64700890026 /* HeaderButtonSwiftUI.swift */; };
 		C0E948092AB1D6AB00890026 /* HeaderSwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E948082AB1D6AB00890026 /* HeaderSwiftUI.swift */; };
@@ -1841,6 +1843,8 @@
 		C0D6C9FF2C106A1F00D4709B /* AlertManager.Failing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertManager.Failing.swift; sourceTree = "<group>"; };
 		C0D6CA222C1861F400D4709B /* VideoCallView.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCallView.Environment.swift; sourceTree = "<group>"; };
 		C0D6CA3C2C19A82100D4709B /* VideoCallViewController.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCallViewController.Environment.swift; sourceTree = "<group>"; };
+		C0D6CA1E2C185E3500D4709B /* BubbleView.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleView.Environment.swift; sourceTree = "<group>"; };
+		C0D6CA462C19B35B00D4709B /* BubbleWindow.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleWindow.Environment.swift; sourceTree = "<group>"; };
 		C0E948032AB1D5D200890026 /* ActionButtonSwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButtonSwiftUI.swift; sourceTree = "<group>"; };
 		C0E948052AB1D64700890026 /* HeaderButtonSwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderButtonSwiftUI.swift; sourceTree = "<group>"; };
 		C0E948082AB1D6AB00890026 /* HeaderSwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderSwiftUI.swift; sourceTree = "<group>"; };
@@ -2963,7 +2967,9 @@
 			isa = PBXGroup;
 			children = (
 				1ABD6C5C25B59D1C00D56EFA /* BubbleWindow.swift */,
+				C0D6CA462C19B35B00D4709B /* BubbleWindow.Environment.swift */,
 				1ABD6C5425B574FF00D56EFA /* BubbleView.swift */,
+				C0D6CA1E2C185E3500D4709B /* BubbleView.Environment.swift */,
 				AFA2FDF328907F0C00428E6D /* BubbleView.Mock.swift */,
 				1ABD6C5825B5758000D56EFA /* BubbleStyle.swift */,
 				C09046D32B7E08AE003C437C /* BubbleStyle.RemoteConfig.swift */,
@@ -5371,6 +5377,7 @@
 				C09046E42B7E0DB5003C437C /* HeaderButtonStyle.RemoteConfig.swift in Sources */,
 				C090471B2B7E1A94003C437C /* GvaGalleryCardStyle.RemoteConfig.swift in Sources */,
 				1AE15E38257A578B00A642C0 /* MessageAlertConfiguration.swift in Sources */,
+				C0D6CA472C19B35B00D4709B /* BubbleWindow.Environment.swift in Sources */,
 				C0175A132A56E29E001FACDE /* ChatMessageCardType.swift in Sources */,
 				AF7753122B19EC3200E523A2 /* Logger.Live.swift in Sources */,
 				AFBBF5782851C391004993B3 /* Glia.Deprecated.swift in Sources */,
@@ -5969,6 +5976,7 @@
 				1A1E30A325F8E4A400850E68 /* FileSystemStorage.swift in Sources */,
 				75940944298D378A008B173A /* CoreSDKClient.Interface.swift in Sources */,
 				C0D2F08529A4E7CB00803B47 /* HeaderStyle.Mock.swift in Sources */,
+				C0D6CA1F2C185E3500D4709B /* BubbleView.Environment.swift in Sources */,
 				754CC61227E2767A005676E9 /* Survey.BooleanQuestionView.swift in Sources */,
 				755D187529A6A6B70009F5E8 /* WelcomeStyle.SendButton.swift in Sources */,
 				6EA3516926E139DA00BF5941 /* GliaViewTransitionController.swift in Sources */,
