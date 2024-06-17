@@ -43,3 +43,96 @@ extension ChatCoordinator {
         var alertManager: AlertManager
     }
 }
+
+extension ChatCoordinator.Environment {
+    static func create(
+        with environment: EngagementCoordinator.Environment,
+        interactor: Interactor
+    ) -> Self {
+        .init(
+            fetchFile: environment.fetchFile,
+            uploadFileToEngagement: environment.uploadFileToEngagement,
+            fileManager: environment.fileManager,
+            data: environment.data,
+            date: environment.date,
+            gcd: environment.gcd,
+            uiScreen: environment.uiScreen,
+            createThumbnailGenerator: environment.createThumbnailGenerator,
+            createFileDownload: environment.createFileDownload,
+            fromHistory: environment.loadChatMessagesFromHistory,
+            fetchSiteConfigurations: environment.fetchSiteConfigurations,
+            getCurrentEngagement: environment.getCurrentEngagement,
+            submitSurveyAnswer: environment.submitSurveyAnswer,
+            uuid: environment.uuid,
+            uiApplication: environment.uiApplication,
+            fetchChatHistory: environment.fetchChatHistory,
+            createFileUploadListModel: environment.createFileUploadListModel,
+            sendSecureMessagePayload: environment.sendSecureMessagePayload,
+            queueIds: interactor.queueIds,
+            listQueues: environment.listQueues,
+            secureUploadFile: environment.uploadSecureFile,
+            getSecureUnreadMessageCount: environment.getSecureUnreadMessageCount,
+            messagesWithUnreadCountLoaderScheduler: environment.messagesWithUnreadCountLoaderScheduler,
+            secureMarkMessagesAsRead: environment.secureMarkMessagesAsRead,
+            downloadSecureFile: environment.downloadSecureFile,
+            isAuthenticated: environment.isAuthenticated,
+            interactor: interactor,
+            startSocketObservation: environment.startSocketObservation,
+            stopSocketObservation: environment.stopSocketObservation,
+            createSendMessagePayload: environment.createSendMessagePayload,
+            proximityManager: environment.proximityManager,
+            log: environment.log,
+            timerProviding: environment.timerProviding,
+            snackBar: environment.snackBar,
+            notificationCenter: environment.notificationCenter,
+            maximumUploads: environment.maximumUploads,
+            cameraDeviceManager: environment.cameraDeviceManager,
+            flipCameraButtonStyle: environment.flipCameraButtonStyle,
+            alertManager: environment.alertManager
+        )
+    }
+
+    static func create(with environment: SecureConversations.Coordinator.Environment) -> Self {
+        .init(
+            fetchFile: environment.fetchFile,
+            uploadFileToEngagement: environment.uploadFileToEngagement,
+            fileManager: environment.fileManager,
+            data: environment.data,
+            date: environment.date,
+            gcd: environment.gcd,
+            uiScreen: environment.uiScreen,
+            createThumbnailGenerator: environment.createThumbnailGenerator,
+            createFileDownload: environment.createFileDownload,
+            fromHistory: environment.loadChatMessagesFromHistory,
+            fetchSiteConfigurations: environment.fetchSiteConfigurations,
+            getCurrentEngagement: environment.getCurrentEngagement,
+            submitSurveyAnswer: environment.submitSurveyAnswer,
+            uuid: environment.uuid,
+            uiApplication: environment.uiApplication,
+            fetchChatHistory: environment.fetchChatHistory,
+            createFileUploadListModel: environment.createFileUploadListModel,
+            sendSecureMessagePayload: environment.sendSecureMessagePayload,
+            queueIds: environment.queueIds,
+            listQueues: environment.listQueues,
+            secureUploadFile: environment.uploadSecureFile,
+            getSecureUnreadMessageCount: environment.getSecureUnreadMessageCount,
+            messagesWithUnreadCountLoaderScheduler: environment.messagesWithUnreadCountLoaderScheduler,
+            secureMarkMessagesAsRead: environment.secureMarkMessagesAsRead,
+            downloadSecureFile: environment.downloadSecureFile,
+            isAuthenticated: environment.isAuthenticated,
+            interactor: environment.interactor,
+            startSocketObservation: environment.startSocketObservation,
+            stopSocketObservation: environment.stopSocketObservation,
+            createSendMessagePayload: environment.createSendMessagePayload,
+            proximityManager: environment.proximityManager,
+            log: environment.log,
+            timerProviding: environment.timerProviding,
+            snackBar: environment.snackBar,
+            notificationCenter: environment.notificationCenter,
+            maximumUploads: environment.maximumUploads,
+            cameraDeviceManager: environment.cameraDeviceManager,
+            flipCameraButtonStyle: environment.flipCameraButtonStyle,
+            alertManager: environment.alertManager
+        )
+    }
+}

@@ -81,13 +81,3 @@ final class GvaResponseTextView: ChatMessageView {
         constraints += contentViews.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -imageViewInsets.top)
     }
 }
-
-extension GvaResponseTextView {
-    struct Environment {
-        var data: FoundationBased.Data
-        var uuid: () -> UUID
-        var gcd: GCD
-        var imageViewCache: ImageView.Cache
-        var uiScreen: UIKitBased.UIScreen
-    }
-}
