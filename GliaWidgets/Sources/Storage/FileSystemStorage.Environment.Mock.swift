@@ -1,9 +1,15 @@
 #if DEBUG
 extension FileSystemStorage.Environment {
-    static let mock = Self(
-        fileManager: .mock,
-        data: .mock,
-        date: { .mock }
-    )
+    static func mock(
+        fileManager: FoundationBased.FileManager = .mock,
+        data: FoundationBased.Data = .mock,
+        date: @escaping () -> Date = { .mock }
+    ) -> Self {
+        .init(
+            fileManager: fileManager,
+            data: data,
+            date: date
+        )
+    }
 }
 #endif

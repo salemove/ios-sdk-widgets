@@ -12,6 +12,13 @@ extension FileUpload.Environment {
         case toEngagement(CoreSdkClient.UploadFileToEngagement)
         case toSecureMessaging(CoreSdkClient.SecureConversationsUploadFile)
     }
+
+    static func create(with environment: FileUploader.Environment) -> Self {
+        .init(
+            uploadFile: environment.uploadFile,
+            uuid: environment.uuid
+        )
+    }
 }
 
 extension FileUpload.Environment.UploadFile {
