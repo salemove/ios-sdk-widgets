@@ -149,9 +149,3 @@ class ChatMessageView: BaseView {
         }
     }
 }
-
-extension ChatMessageView {
-    struct Environment {
-        var uiScreen: UIKitBased.UIScreen
-    }
-}

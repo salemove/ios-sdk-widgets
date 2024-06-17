@@ -117,16 +117,6 @@ final class ChoiceCardView: OperatorChatMessageView {
 }
 
 extension ChoiceCardView {
-    struct Environment {
-        var data: FoundationBased.Data
-        var uuid: () -> UUID
-        var gcd: GCD
-        var imageViewCache: ImageView.Cache
-        var uiScreen: UIKitBased.UIScreen
-    }
-}
-
-extension ChoiceCardView {
     func setupAccessibilityProperties(for imageView: ImageView) {
         imageView.isAccessibilityElement = true
         imageView.accessibilityLabel = viewStyle.accessibility.imageLabel

@@ -144,12 +144,3 @@ final class ConnectOperatorView: BaseView {
         onHoldView = nil
     }
 }
-
-extension ConnectOperatorView {
-    struct Environment {
-        var data: FoundationBased.Data
-        var uuid: () -> UUID
-        var gcd: GCD
-        var imageViewCache: ImageView.Cache
-    }
-}
