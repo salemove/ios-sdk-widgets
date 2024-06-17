@@ -103,14 +103,3 @@ class EngagementViewController: UIViewController {
         )
     }
 }
-
-extension EngagementViewController {
-    struct Environment {
-        var viewFactory: ViewFactory
-        var snackBar: SnackBar
-        var timerProviding: FoundationBased.Timer.Providing
-        var gcd: GCD
-        var notificationCenter: FoundationBased.NotificationCenter
-        var alertManager: AlertManager
-    }
-}

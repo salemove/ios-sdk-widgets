@@ -45,3 +45,64 @@ extension EngagementCoordinator {
         var alertManager: AlertManager
     }
 }
+
+extension EngagementCoordinator.Environment {
+    static func create(
+        with environment: Glia.Environment,
+        loggerPhase: Glia.LoggerPhase,
+        maximumUploads: @escaping () -> Int,
+        viewFactory: ViewFactory,
+        alertManager: AlertManager
+    ) -> Self {
+        .init(
+            fetchFile: environment.coreSdk.fetchFile,
+            uploadFileToEngagement: environment.coreSdk.uploadFileToEngagement,
+            audioSession: environment.audioSession,
+            uuid: environment.uuid,
+            fileManager: environment.fileManager,
+            data: environment.data,
+            date: environment.date,
+            gcd: environment.gcd,
+            createThumbnailGenerator: environment.createThumbnailGenerator,
+            createFileDownload: environment.createFileDownload,
+            loadChatMessagesFromHistory: environment.loadChatMessagesFromHistory,
+            timerProviding: environment.timerProviding,
+            fetchSiteConfigurations: environment.coreSdk.fetchSiteConfigurations,
+            getCurrentEngagement: environment.coreSdk.getCurrentEngagement,
+            submitSurveyAnswer: environment.coreSdk.submitSurveyAnswer,
+            uiApplication: environment.uiApplication,
+            uiScreen: environment.uiScreen,
+            notificationCenter: environment.notificationCenter,
+            fetchChatHistory: environment.coreSdk.fetchChatHistory,
+            listQueues: environment.coreSdk.listQueues,
+            sendSecureMessagePayload: environment.coreSdk.sendSecureMessagePayload,
+            createFileUploader: environment.createFileUploader,
+            createFileUploadListModel: environment.createFileUploadListModel,
+            uploadSecureFile: environment.coreSdk.uploadSecureFile,
+            getSecureUnreadMessageCount: environment.coreSdk.getSecureUnreadMessageCount,
+            messagesWithUnreadCountLoaderScheduler: environment.messagesWithUnreadCountLoaderScheduler,
+            secureMarkMessagesAsRead: environment.coreSdk.secureMarkMessagesAsRead,
+            downloadSecureFile: environment.coreSdk.downloadSecureFile,
+            isAuthenticated: { [environment] in
+                do {
+                    return try environment.coreSdk.authentication(.forbiddenDuringEngagement).isAuthenticated
+                } catch {
+                    debugPrint(#function, "isAuthenticated:", error.localizedDescription)
+                    return false
+                }
+            },
+            startSocketObservation: environment.coreSdk.startSocketObservation,
+            stopSocketObservation: environment.coreSdk.stopSocketObservation,
+            pushNotifications: environment.coreSdk.pushNotifications,
+            createSendMessagePayload: environment.coreSdk.createSendMessagePayload,
+            orientationManager: environment.orientationManager,
+            proximityManager: environment.proximityManager,
+            log: loggerPhase.logger,
+            snackBar: environment.snackBar,
+            maximumUploads: maximumUploads,
+            cameraDeviceManager: environment.cameraDeviceManager,
+            flipCameraButtonStyle: viewFactory.theme.call.flipCameraButtonStyle,
+            alertManager: alertManager
+        )
+    }
+}

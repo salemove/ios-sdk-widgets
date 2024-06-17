@@ -61,9 +61,3 @@ final class OnHoldOverlayView: UIView {
         constraints += imageView.match(.height, value: style.imageSize.height)
     }
 }
-
-extension OnHoldOverlayView {
-    struct Environment {
-        let gcd: GCD
-    }
-}
