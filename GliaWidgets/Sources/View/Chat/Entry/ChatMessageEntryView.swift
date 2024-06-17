@@ -271,14 +271,6 @@ extension ChatMessageEntryView: UITextViewDelegate {
 }
 
 extension ChatMessageEntryView {
-    struct Environment {
-        var gcd: GCD
-        var uiApplication: UIKitBased.UIApplication
-        var uiScreen: UIKitBased.UIScreen
-    }
-}
-
-extension ChatMessageEntryView {
     func setPickMediaButtonVisibility(_ visibility: MediaPickerButtonVisibility) {
         mediaPickerButtonVisibility = visibility
         updatePickMediaButtonVisibility(visibility)

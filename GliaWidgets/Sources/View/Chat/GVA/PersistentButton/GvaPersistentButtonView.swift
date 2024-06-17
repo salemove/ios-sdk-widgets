@@ -73,16 +73,6 @@ final class GvaPersistentButtonView: OperatorChatMessageView {
 }
 
 extension GvaPersistentButtonView {
-    struct Environment {
-        var data: FoundationBased.Data
-        var uuid: () -> UUID
-        var gcd: GCD
-        var imageViewCache: ImageView.Cache
-        var uiScreen: UIKitBased.UIScreen
-    }
-}
-
-extension GvaPersistentButtonView {
     func setupAccessibilityProperties(for imageView: ImageView) {
         imageView.isAccessibilityElement = true
         imageView.accessibilityLabel = "placeholder" // Will be implemented in another PR

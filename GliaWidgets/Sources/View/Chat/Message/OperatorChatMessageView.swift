@@ -82,13 +82,3 @@ class OperatorChatMessageView: ChatMessageView {
         constraints += contentViews.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -imageViewInsets.bottom)
     }
 }
-
-extension OperatorChatMessageView {
-    struct Environment {
-        var data: FoundationBased.Data
-        var uuid: () -> UUID
-        var gcd: GCD
-        var imageViewCache: ImageView.Cache
-        var uiScreen: UIKitBased.UIScreen
-    }
-}

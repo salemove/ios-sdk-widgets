@@ -105,12 +105,3 @@ final class UserImageView: BaseView {
         operatorImageView.isHidden = !visible
     }
 }
-
-extension UserImageView {
-    struct Environment {
-        var data: FoundationBased.Data
-        var uuid: () -> UUID
-        var gcd: GCD
-        var imageViewCache: ImageView.Cache
-    }
-}

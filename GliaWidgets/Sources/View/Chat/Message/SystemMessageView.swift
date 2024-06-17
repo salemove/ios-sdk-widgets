@@ -44,9 +44,3 @@ final class SystemMessageView: ChatMessageView {
         ])
     }
 }
-
-extension SystemMessageView {
-    struct Environment {
-        var uiScreen: UIKitBased.UIScreen
-    }
-}
