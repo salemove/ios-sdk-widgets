@@ -7,8 +7,7 @@ extension AlertManager {
         viewFactory: ViewFactory
     ) -> AlertManager {
         .init(
-            environment: environment,
-            viewFactory: viewFactory
+            environment: environment
         )
     }
 }
@@ -16,8 +15,13 @@ extension AlertManager {
 extension AlertManager.Environment {
     static func failing(
         log: CoreSdkClient.Logger = .failing,
-        uiApplication: UIKitBased.UIApplication = .failing
+        uiApplication: UIKitBased.UIApplication = .failing,
+        viewFactory: ViewFactory = .mock()
     ) -> Self {
-        .init(log: log, uiApplication: uiApplication)
+        .init(
+            log: log,
+            uiApplication: uiApplication,
+            viewFactory: viewFactory
+        )
     }
 }
