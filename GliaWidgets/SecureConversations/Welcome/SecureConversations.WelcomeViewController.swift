@@ -47,11 +47,7 @@ extension SecureConversations {
             } else {
                 welcomeView = viewFactory.makeSecureConversationsWelcomeView(
                     props: props,
-                    environment: .init(
-                        gcd: environment.gcd,
-                        uiScreen: environment.uiScreen,
-                        notificationCenter: environment.notificationCenter
-                    )
+                    environment: .create(with: environment)
                 )
                 view = welcomeView
             }

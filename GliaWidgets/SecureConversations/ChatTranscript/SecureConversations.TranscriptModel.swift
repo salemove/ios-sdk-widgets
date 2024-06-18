@@ -94,19 +94,7 @@ extension SecureConversations {
         ) {
             self.isCustomCardSupported = isCustomCardSupported
             self.environment = environment
-            self.downloader = FileDownloader(
-                environment: .init(
-                    fetchFile: environment.fetchFile,
-                    downloadSecureFile: environment.downloadSecureFile,
-                    fileManager: environment.fileManager,
-                    data: environment.data,
-                    date: environment.date,
-                    gcd: environment.gcd,
-                    uiScreen: environment.uiScreen,
-                    createThumbnailGenerator: environment.createThumbnailGenerator,
-                    createFileDownload: environment.createFileDownload
-                )
-            )
+            self.downloader = FileDownloader(environment: .create(with: environment))
 
             self.availability = availability
             self.deliveredStatusText = deliveredStatusText
@@ -114,16 +102,7 @@ extension SecureConversations {
             self.hasViewAppeared = false
             let uploader = FileUploader(
                 maximumUploads: environment.maximumUploads(),
-                environment: .init(
-                    uploadFile: .toSecureMessaging(environment.secureUploadFile),
-                    fileManager: environment.fileManager,
-                    data: environment.data,
-                    date: environment.date,
-                    gcd: environment.gcd,
-                    uiScreen: environment.uiScreen,
-                    createThumbnailGenerator: environment.createThumbnailGenerator,
-                    uuid: environment.uuid
-                )
+                environment: .create(with: environment)
             )
 
             self.fileUploadListModel = environment.createFileUploadListModel(
@@ -134,13 +113,7 @@ extension SecureConversations {
                 )
             )
 
-            self.transcriptMessageLoader = SecureConversations.MessagesWithUnreadCountLoader(
-                environment: .init(
-                    getSecureUnreadMessageCount: environment.getSecureUnreadMessageCount,
-                    fetchChatHistory: environment.fetchChatHistory,
-                    scheduler: environment.messagesWithUnreadCountLoaderScheduler
-                )
-            )
+            self.transcriptMessageLoader = .init(environment: .create(with: environment))
 
             self.fileUploadListModel.delegate = { [weak self] event in
                 switch event {

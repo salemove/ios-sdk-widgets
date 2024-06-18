@@ -7,9 +7,7 @@ final class SecureConversationsConfirmationScreenLayoutTests: SnapshotTestCase {
 
     func test_confirmationView() {
         let model: SecureConversations.ConfirmationViewSwiftUI.Model = .init(
-            environment: .init(
-                orientationManager: .mock(), uiApplication: .mock
-            ),
+            environment: .mock(),
             style: theme.defaultSecureConversationsConfirmationStyle,
             delegate: nil
         )

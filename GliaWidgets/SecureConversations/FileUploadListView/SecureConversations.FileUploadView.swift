@@ -38,7 +38,7 @@ extension SecureConversations {
         }
 
         init(props: Props, environment: Environment) {
-            filePreviewView = .init(environment: .init(uiScreen: environment.uiScreen))
+            filePreviewView = .init(environment: .create(with: environment))
             self.props = props
             super.init(frame: .zero)
             setup()
