@@ -38,42 +38,11 @@ extension SecureConversations {
 
         private func makeWelcomeViewModel() -> SecureConversations.WelcomeViewModel {
             SecureConversations.WelcomeViewModel(
-                environment: .init(
-                    welcomeStyle: viewFactory.theme.secureConversationsWelcome,
-                    queueIds: environment.queueIds,
-                    listQueues: environment.listQueues,
-                    sendSecureMessagePayload: environment.sendSecureMessagePayload,
-                    fileUploader: environment.createFileUploader(
-                        environment.maximumUploads(),
-                        .init(
-                            uploadFile: .toSecureMessaging(environment.uploadSecureFile),
-                            fileManager: environment.fileManager,
-                            data: environment.data,
-                            date: environment.date,
-                            gcd: environment.gcd,
-                            uiScreen: environment.uiScreen,
-                            createThumbnailGenerator: environment.createThumbnailGenerator,
-                            uuid: environment.uuid
-                        )
-                    ),
-                    uiApplication: environment.uiApplication,
-                    createFileUploadListModel: environment.createFileUploadListModel,
-                    fetchSiteConfigurations: environment.fetchSiteConfigurations,
-                    startSocketObservation: environment.startSocketObservation,
-                    stopSocketObservation: environment.stopSocketObservation,
-                    getCurrentEngagement: environment.getCurrentEngagement,
-                    uploadSecureFile: environment.uploadSecureFile,
-                    uploadFileToEngagement: environment.uploadFileToEngagement,
-                    createSendMessagePayload: environment.createSendMessagePayload,
-                    log: environment.log
+                environment: .create(
+                    with: environment,
+                    viewFactory: viewFactory
                 ),
-                availability: .init(
-                    environment: .init(
-                        listQueues: environment.listQueues,
-                        queueIds: environment.queueIds,
-                        isAuthenticated: environment.isAuthenticated
-                    )
-                )
+                availability: .init(environment: .create(with: environment))
             )
         }
 
@@ -84,12 +53,7 @@ extension SecureConversations {
             let controller = SecureConversations.WelcomeViewController(
                 viewFactory: viewFactory,
                 props: viewModel.props(),
-                environment: .init(
-                    gcd: environment.gcd,
-                    uiScreen: environment.uiScreen,
-                    notificationCenter: environment.notificationCenter,
-                    log: environment.log
-                )
+                environment: .create(with: environment)
             )
 
             viewModel.delegate = { [weak self, weak controller] event in
@@ -153,13 +117,8 @@ extension SecureConversations {
 
         func presentSecureConversationsConfirmationViewController() {
             environment.log.prefixed(Self.self).info("Show Message Center Confirmation screen")
-            let environment: ConfirmationViewSwiftUI.Model.Environment = .init(
-                orientationManager: environment.orientationManager,
-                uiApplication: environment.uiApplication
-            )
-
             let model = SecureConversations.ConfirmationViewSwiftUI.Model(
-                environment: environment,
+                environment: .create(with: environment),
                 style: viewFactory.theme.secureConversationsConfirmation,
                 delegate: { [weak self] event in
                     switch event {
@@ -215,7 +174,7 @@ extension SecureConversations {
             observable.addObserver(self, update: { event, _ in pickerEvent(event) })
             let viewModel = FilePickerViewModel(
                 pickerEvent: observable,
-                environment: .init(log: environment.log)
+                environment: .create(with: environment)
             )
             viewModel.delegate = { [weak self] event in
                 switch event {
@@ -225,7 +184,7 @@ extension SecureConversations {
             }
             let controller = FilePickerController(
                 viewModel: viewModel,
-                environment: .init(fileManager: environment.fileManager)
+                environment: .create(with: environment)
             )
             // Keep strong reference, otherwise
             // `controller` will be deallocted, resulting in
@@ -251,47 +210,7 @@ extension SecureConversations.Coordinator {
             screenShareHandler: environment.screenShareHandler,
             isWindowVisible: environment.isWindowVisible,
             startAction: .startEngagement,
-            environment: .init(
-                fetchFile: environment.fetchFile,
-                uploadFileToEngagement: environment.uploadFileToEngagement,
-                fileManager: environment.fileManager,
-                data: environment.data,
-                date: environment.date,
-                gcd: environment.gcd,
-                uiScreen: environment.uiScreen,
-                createThumbnailGenerator: environment.createThumbnailGenerator,
-                createFileDownload: environment.createFileDownload,
-                fromHistory: environment.loadChatMessagesFromHistory,
-                fetchSiteConfigurations: environment.fetchSiteConfigurations,
-                getCurrentEngagement: environment.getCurrentEngagement,
-                submitSurveyAnswer: environment.submitSurveyAnswer,
-                uuid: environment.uuid,
-                uiApplication: environment.uiApplication,
-                fetchChatHistory: environment.fetchChatHistory,
-                createFileUploadListModel: environment.createFileUploadListModel,
-                sendSecureMessagePayload: environment.sendSecureMessagePayload,
-                queueIds: environment.queueIds,
-                listQueues: environment.listQueues,
-                secureUploadFile: environment.uploadSecureFile,
-                getSecureUnreadMessageCount: environment.getSecureUnreadMessageCount,
-                messagesWithUnreadCountLoaderScheduler: environment.messagesWithUnreadCountLoaderScheduler,
-                secureMarkMessagesAsRead: environment.secureMarkMessagesAsRead,
-                downloadSecureFile: environment.downloadSecureFile,
-                isAuthenticated: environment.isAuthenticated,
-                interactor: environment.interactor,
-                startSocketObservation: environment.startSocketObservation,
-                stopSocketObservation: environment.stopSocketObservation,
-                createSendMessagePayload: environment.createSendMessagePayload,
-                proximityManager: environment.proximityManager,
-                log: environment.log,
-                timerProviding: environment.timerProviding,
-                snackBar: environment.snackBar,
-                notificationCenter: environment.notificationCenter,
-                maximumUploads: environment.maximumUploads,
-                cameraDeviceManager: environment.cameraDeviceManager,
-                flipCameraButtonStyle: environment.flipCameraButtonStyle,
-                alertManager: environment.alertManager
-            ),
+            environment: .create(with: environment),
             startWithSecureTranscriptFlow: true
         )
 

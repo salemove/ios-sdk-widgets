@@ -6,9 +6,7 @@ final class SecureConversationsConfirmationViewModelTests: XCTestCase {
     typealias ConfirmationViewModel = SecureConversations.ConfirmationViewSwiftUI.Model
 
     var viewModel: ConfirmationViewModel = .init(
-        environment: .init(
-            orientationManager: .mock(), uiApplication: .mock
-        ),
+        environment: .mock(),
         style: Theme().defaultSecureConversationsConfirmationStyle,
         delegate: nil
     )
@@ -25,9 +23,7 @@ extension SecureConversationsConfirmationViewModelTests {
     func testPropsGenerateCorrectTitle() {
         let title = "Test"
         viewModel = .init(
-            environment: .init(
-                orientationManager: .mock(), uiApplication: .mock
-            ),
+            environment: .mock(),
             style: .mock(title: title),
             delegate: nil
         )
@@ -57,9 +53,7 @@ extension SecureConversationsConfirmationViewModelTests {
         var receivedEvent: ConfirmationViewModel.DelegateEvent?
 
         viewModel = .init(
-            environment: .init(
-                orientationManager: .mock(), uiApplication: .mock
-            ),
+            environment: .mock(),
             style: .mock(),
             delegate: { event in
                 receivedEvent = event
@@ -78,9 +72,7 @@ extension SecureConversationsConfirmationViewModelTests {
         var receivedEvent: ConfirmationViewModel.DelegateEvent?
 
         viewModel = .init(
-            environment: .init(
-                orientationManager: .mock(), uiApplication: .mock
-            ),
+            environment: .mock(),
             style: .mock(),
             delegate: { event in
                 receivedEvent = event
