@@ -10,9 +10,6 @@ final class AlertManager {
     /// including logging and application references.
     private let environment: Environment
 
-    /// The view factory responsible for creating the alert views.
-    private let viewFactory: ViewFactory
-
     /// The composer that assembles alert types based on input and placement.
     private var composer: AlertTypeComposer
 
@@ -29,15 +26,11 @@ final class AlertManager {
     ///   - environment: The environment configuration for the alert manager.
     ///   - viewFactory: The view factory responsible for creating the alert views.
     ///
-    init(
-        environment: Environment,
-        viewFactory: ViewFactory
-    ) {
+    init(environment: Environment) {
         self.environment = environment
-        self.viewFactory = viewFactory
         composer = .init(
-            environment: .init(log: environment.log),
-            theme: viewFactory.theme
+            environment: .create(with: environment),
+            theme: environment.viewFactory.theme
         )
     }
 }
@@ -77,7 +70,7 @@ extension AlertManager {
     ///
     func overrideTheme(_ newTheme: Theme) {
         self.composer.overrideTheme(with: newTheme)
-        self.viewFactory.overrideTheme(with: newTheme)
+        self.environment.viewFactory.overrideTheme(with: newTheme)
     }
 }
 
@@ -167,7 +160,7 @@ private extension AlertManager {
     }
 
     func createAlertViewController(type: AlertType) -> AlertViewController {
-        .init(type: type, viewFactory: viewFactory)
+        .init(type: type, viewFactory: environment.viewFactory)
     }
 
     func createSystemAlert(
@@ -230,13 +223,5 @@ private extension AlertManager {
         environment.uiApplication.connectionScenes()
             .compactMap { $0 as? UIWindowScene }
             .first
-    }
-}
-
-// MARK: - Environment
-extension AlertManager {
-    struct Environment {
-        let log: CoreSdkClient.Logger
-        let uiApplication: UIKitBased.UIApplication
     }
 }
