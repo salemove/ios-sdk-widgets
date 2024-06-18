@@ -90,13 +90,6 @@ final class GliaPresenter {
     }
 }
 
-extension GliaPresenter {
-    struct Environment {
-        var appWindowsProvider: AppWindowsProvider
-        var log: CoreSdkClient.Logger
-    }
-}
-
 #if DEBUG
 extension GliaPresenter.Environment {
     static let mock = Self(
