@@ -185,10 +185,3 @@ extension Survey.ViewController {
         }
     }
 }
-
-extension Survey.ViewController {
-    struct Environment {
-        var notificationCenter: FoundationBased.NotificationCenter
-        var log: CoreSdkClient.Logger
-    }
-}
