@@ -8,9 +8,7 @@ final class SecureConversationsConfirmationScreenDynamicTypeFontTests: SnapshotT
 
     func test_confirmationView_extra3Large() {
         let model: SecureConversations.ConfirmationViewSwiftUI.Model = .init(
-            environment: .init(
-                orientationManager: .mock(), uiApplication: .mock
-            ),
+            environment: .mock(),
             style: theme.defaultSecureConversationsConfirmationStyle,
             delegate: nil
         )
