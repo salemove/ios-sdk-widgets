@@ -162,7 +162,7 @@ extension SecureConversations {
                 }
                 let uploadView = FileUploadView(
                     props: uploadViewProps,
-                    environment: .init(uiScreen: environment.uiScreen)
+                    environment: .create(with: environment)
                 )
                 addUploadView(uploadView)
                 cachedViews.append(item: uploadView, identified: id)

@@ -46,7 +46,7 @@ extension SecureConversations {
             )
         }
 
-        lazy var messageTextView = MessageTextView(environment: .init(gcd: environment.gcd)).makeView()
+        lazy var messageTextView = MessageTextView(environment: .create(with: environment)).makeView()
 
         lazy var sendMessageButton: SecureConversations.SendMessageButton = {
             let button = SecureConversations.SendMessageButton()
@@ -131,7 +131,7 @@ extension SecureConversations {
             self.header = Header(props: props.headerProps)
             self.props = props
             self.environment = environment
-            self.fileUploadListView = .init(environment: .init(uiScreen: environment.uiScreen)).makeView()
+            self.fileUploadListView = .init(environment: .create(with: environment)).makeView()
             super.init()
             // Hide warning stack initially.
             setWarningStackHidden(true)
