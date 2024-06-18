@@ -249,9 +249,3 @@ extension Glia.Authentication.Error {
         self.reason = error.reason
     }
 }
-
-extension Glia.Authentication {
-    struct Environment {
-        var log: CoreSdkClient.Logger
-    }
-}
