@@ -19,6 +19,7 @@ public enum GliaError: Error {
     case clearingVisitorSessionDuringEngagementIsNotAllowed
 
     /// Starting engagement with no queue ids is not allowed.
+    @available(*, deprecated, message: "Starting engagement with no queue ids is allowed")
     case startingEngagementWithNoQueueIdsIsNotAllowed
 
     /// The site API key credentials are invalid.

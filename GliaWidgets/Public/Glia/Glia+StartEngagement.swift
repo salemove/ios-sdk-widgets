@@ -22,14 +22,10 @@ extension Glia {
     ///
     public func startEngagement(
         engagementKind: EngagementKind,
-        in queueIds: [String],
+        in queueIds: [String] = [],
         features: Features = .all,
         sceneProvider: SceneProvider? = nil
     ) throws {
-        let trimmedQueueIds = queueIds
-            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
-            .filter { !$0.isEmpty }
-        guard !trimmedQueueIds.isEmpty else { throw GliaError.startingEngagementWithNoQueueIdsIsNotAllowed }
         // It checks if ongoing engagement exists on WidgetsSDK side, if it doesn't but ongoing engagement exists
         // on CoreSDK side, it will be restored.
         guard engagement == .none else { throw GliaError.engagementExists }
@@ -42,7 +38,7 @@ extension Glia {
         // Creates interactor instance
         let createdInteractor = setupInteractor(
             configuration: configuration,
-            queueIds: trimmedQueueIds
+            queueIds: queueIds
         )
 
         // Apply company name to theme and get the modified theme
